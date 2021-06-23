@@ -8,7 +8,9 @@ Please read and follow the instructions before creating and submitting a pull re
 - If you're fixing a bug, try to commit the failing test/s and the code fixing it in different commits.
 - Ensure you're following our contributing guide.
 
-#### 🤔 This is a ...
+**⚠️👆 Delete the instructions before submitting the pull request 👆⚠️**
+
+#### 🤔 This is a
 
 - [ ] New feature
 - [ ] Bug fix
@@ -48,7 +50,5 @@ Please read and follow the instructions before creating and submitting a pull re
 - [ ] Demo is updated/provided or not needed
 - [ ] TypeScript definition is updated/provided or not needed
 - [ ] Changelog is provided or not needed
-
-**⚠️👆 Delete the instructions before submitting the pull request 👆⚠️**
 
 Describe your pull request here.
