@@ -1,9 +1,0 @@
-@import 'config';
-
-/* 改变主题色变量 */
-$--color-primary: #409eff; /* 改变 icon 字体路径变量，必需 */
-$--font-path: '~element-plus/lib/theme-chalk/fonts';
-@import '~element-plus/packages/theme-chalk/src/index';
-.el-skeleton.is-animated .el-skeleton__item {
-  filter: var(--#{$my-namespace}-skeleton);
-}
