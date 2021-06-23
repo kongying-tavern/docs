@@ -36,7 +36,7 @@ jobs:
 
       # 部署
       - name: Deploy
-        uses: easingthemes/ssh-deploy@v2.1.5
+        uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
           # 删除服务器上目录里所有文件
