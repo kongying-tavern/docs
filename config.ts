@@ -7,7 +7,7 @@ export default {
   logo: process.env.DOCS_LOGO || "logo.jpg",
   repo: process.env.DOCS_REPO || "https://gitee.com/KYJGYSDT/",
   repo_docs:
-    process.env.DOCS_REPO_DOCS || "https://gitee.com/KYJGYSDT/yuanshendocs",
+    process.env.DOCS_REPO_DOCS || "https://github.com/jiazengp/GenshinMapDocs",
   cover:
     process.env.DOCS_COVER || "https://yuanshen.site/tiles_test/4/ppp10_9.jpg",
   cover_en:
