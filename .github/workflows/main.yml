@@ -1,8 +1,8 @@
-name: Continuous Deployment
+name: CD
 
 on:
   push:
-    branches: [$default-branch]
+    branches: ["**"]
   pull_request:
     branches: [$default-branch]
 
