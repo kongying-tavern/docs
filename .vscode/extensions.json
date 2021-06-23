@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "steoates.autoimport",
+    "octref.vetur",
+    "taichi.vscode-textlint",
+    "shd101wyy.markdown-preview-enhanced",
+    "jcbuisson.vue",
+    "hollowtree.vue-snippets"
+  ]
+}
