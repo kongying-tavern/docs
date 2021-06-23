@@ -1,8 +1,8 @@
-name: Build
+name: Continuous Deployment
 
 on:
   push:
-    branches: ["**"]
+    branches: [$default-branch]
   pull_request:
     branches: [$default-branch]
 
