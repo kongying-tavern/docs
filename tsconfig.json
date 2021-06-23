@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "alwaysStrict": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "removeComments": false,
+    "moduleResolution": "node",
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "forceConsistentCasingInFileNames": true,
+    "newLine": "lf",
+    "types": [
+      "@vuepress/client/types",
+      "vite/client",
+      "jest",
+      "node"
+    ],
+    "lib": ["DOM", "ESNext"],
+    "declaration": true,
+    "explainFiles": true,
+    "paths": {
+      "~/*": ["docs/*"]
+    }
+  },
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}

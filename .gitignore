@@ -1,0 +1,32 @@
+# MacOS Desktop Services Store
+.DS_Store
+
+# Dist files
+lib
+
+# Node modules
+node_modules
+
+# Explorations files
+explorations
+
+# Log files
+*.log
+TODOs.md
+RELEASE_NOTE*.md
+
+# Build files
+dist
+
+# VuePress files
+docs/.vuepress/.temp/
+docs/.vuepress/.cache/
+
+# Env files
+.env.*.local
+
+# Test coverage files
+coverage
+
+# Typescript build info
+*.tsbuildinfo

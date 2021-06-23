@@ -1,0 +1,158 @@
+{
+  "name": "yuanshenmap-docs",
+  "version": "1.0.0",
+  "description": "yuanshenmap-docs",
+  "homepage": "https://yuanshen.site/docs/",
+  "private": true,
+  "author": {
+    "name": "(^_^)"
+  },
+  "license": "MIT",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitee.com/KYJGYSDT/yuanshendocs.git",
+    "branch": "master",
+    "platform": "gitee"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/genshinmap"
+  },
+  "bugs": {
+    "url": "https://gitee.com/KYJGYSDT/yuanshendocs/issues"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "docs:dev": "vuepress dev docs",
+    "docs:build2": "vuepress build docs",
+    "docs:clean": "rmdir /s/q temp cache dist",
+    "docs:serve": "http-server ./dist -b",
+    "commit": "npx git-cz",
+    "lint": "yarn lint:prettier --write && yarn lint:eslint --fix",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "lint:check": "yarn lint:prettier && yarn lint:eslint",
+    "lint:eslint": "eslint . --ext .js,.ts,.vue",
+    "lint:md": "yarn lint:md-lint && yarn lint:md-textlint",
+    "lint:md-lint": "markdownlint **/*.md",
+    "lint:md-textlint": "textlint ./docs/*.md",
+    "lint:prettier": "prettier --check .",
+    "test": "jest -i",
+    "test:coverage": "jest --coverage",
+    "preview": "vite preview --port 8080 --host",
+    "preview-https": "serve dist",
+    "packages:check-update": "ncu --deep --timeout 600000",
+    "packages:update": "ncu -u --deep --timeout 600000 && yarn install && yarn upgrade",
+    "packages:doctor": "ncu --doctor -u",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.vue": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,yml,css,scss,sass,md}": "prettier --write"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@mr-hope/vuepress-plugin-palette": "^2.0.0-alpha.1",
+    "@textlint-rule/textlint-rule-no-unmatched-pair": "^1.0.8",
+    "@types/concurrently": "^6.2.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/eslint": "^7.2.13",
+    "@types/http-server": "^0.12.0",
+    "@types/jest": "^26.0.23",
+    "@types/katex": "^0.11.0",
+    "@types/markdown-it": "^12.0.2",
+    "@types/node": "^15.12.4",
+    "@types/nprogress": "^0.2.0",
+    "@types/semver": "^7.3.6",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
+    "@vuepress/plugin-back-to-top": "^2.0.0-beta.17",
+    "@vuepress/plugin-git": "^2.0.0-alpha.1",
+    "@vuepress/plugin-google-analytics": "^2.0.0-beta.15",
+    "@vuepress/plugin-nprogress": "^2.0.0-beta.17",
+    "@vuepress/plugin-pwa": "^2.0.0-beta.15",
+    "@vuepress/plugin-pwa-popup": "^2.0.0-beta.16",
+    "@vuepress/plugin-register-components": "^2.0.0-beta.15",
+    "@vuepress/plugin-search": "^2.0.0-beta.16",
+    "@vuepress/plugin-shiki": "^2.0.0-beta.5",
+    "@vuepress/plugin-toc": "^2.0.0-beta.19",
+    "concurrently": "^6.2.0",
+    "conventional-changelog-cli": "^2.1.1",
+    "cpx2": "^3.0.0",
+    "cross-env": "^7.0.3",
+    "cz-conventional-changelog": "^3.3.0",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-vuepress": "^3.2.1",
+    "eslint-config-vuepress-typescript": "^2.2.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "http-server": "^0.12.3",
+    "https-localhost": "^4.6.5",
+    "jest": "^27.0.4",
+    "jest-serializer-vue": "^2.0.2",
+    "katex": "^0.13.11",
+    "lint-md": "^0.2.0",
+    "lint-staged": "^11.0.0",
+    "markdownlint-cli": "^0.27.1",
+    "npm-check-updates": "^11.7.1",
+    "semver": "^7.3.5",
+    "textlint": "^12.0.0",
+    "textlint-filter-rule-allowlist": "^3.0.0",
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-rule-alex": "^3.0.0",
+    "textlint-rule-apostrophe": "^2.0.0",
+    "textlint-rule-common-misspellings": "^1.0.1",
+    "textlint-rule-date-weekday-mismatch": "^1.0.5",
+    "textlint-rule-en-capitalization": "^2.0.3",
+    "textlint-rule-en-spell": "^1.2.3",
+    "textlint-rule-ja-no-abusage": "^3.0.0",
+    "textlint-rule-ja-no-mixed-period": "^2.1.1",
+    "textlint-rule-ja-space-between-half-and-full-width": "^2.1.3",
+    "textlint-rule-no-dead-link": "^4.7.0",
+    "textlint-rule-spellcheck-tech-word": "^5.0.0",
+    "textlint-rule-stop-words": "^2.0.9",
+    "textlint-rule-terminology": "^2.1.5",
+    "textlint-rule-write-good": "^2.0.0",
+    "textlint-rule-zh-half-and-full-width-bracket": "^1.1.0",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.3.4",
+    "vuepress": "^2.0.0-beta.19",
+    "vuepress-plugin-feed2": "^2.0.0-alpha.5",
+    "vuepress-plugin-md-enhance": "^2.0.0-alpha.5",
+    "vuepress-plugin-photo-swipe": "^2.0.0-alpha.5",
+    "vuepress-plugin-seo2": "^2.0.0-alpha.5",
+    "vuepress-plugin-sitemap2": "^2.0.0-alpha.5",
+    "vuepress-vite": "^2.0.0-beta.18"
+  },
+  "dependencies": {
+    "@types/qs": "^6.9.6",
+    "axios": "^0.21.1",
+    "dayjs": "^1.10.5",
+    "element-plus": "^1.0.2-beta.48",
+    "husky": "^6.0.0",
+    "prettier": "^2.3.1",
+    "qs": "^6.10.1",
+    "screenfull": "^5.1.0",
+    "vuepress-plugin-lightgallery": "^2.0.0-alpha.4"
+  }
+}
