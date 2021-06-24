@@ -2648,7 +2648,7 @@
     "@vuepress/core" "2.0.0-beta.5"
     shiki "^0.9.3"
 
-"@vuepress/plugin-theme-data@2.0.0-beta.19":
+"@vuepress/plugin-theme-data@2.0.0-beta.19", "@vuepress/plugin-theme-data@^2.0.0-beta.19":
   version "2.0.0-beta.19"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-theme-data/-/plugin-theme-data-2.0.0-beta.19.tgz#9edab79053eae39d0f4db697dbcf19b7d58d970a"
   integrity sha512-MCQicQL2ex9wJqFfARCIsJYhy0P9B333MBiOGGgcEhGODUE3sYukcfHfYnkTGbDT6Jb+3S4k9WCrpLfJ2LmsfQ==
