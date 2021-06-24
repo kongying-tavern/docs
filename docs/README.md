@@ -4,7 +4,7 @@ title: 首页
 heroImage: /20210609/logo.jpg
 actions:
   - text: 立即下载
-    link: ./download-client.md
+    link: ./download-client.html
     type: primary
   - text: 访问网页版
     link: https://yuanshen.site/
