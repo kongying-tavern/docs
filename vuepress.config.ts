@@ -13,7 +13,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
   dest: "dist",
   public: "public",
   base: config.default.root_path,
-  // theme: path.resolve(__dirname, "./docs/.vuepress/theme/"),
+  theme: path.resolve(__dirname, "./docs/.vuepress/theme/"),
   head: [
     ["meta", { name: "charset", content: "utf-8" }],
     [

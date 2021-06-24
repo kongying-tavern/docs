@@ -2,7 +2,7 @@
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/jiazengp/GenshinMapDocs)
 [![star](https://gitee.com/KYJGYSDT/yuanshendocs/badge/star.svg?theme=dark)](https://gitee.com/KYJGYSDT/yuanshendocs/stargazers)
-[![fork](https://gitee.com/KYJGYSDT/yuanshendocs/badge/fork.svg?theme=dark)](https://gitee.com/KYJGYSDT/yuanshendocs/members)
+[![Coverage](https://coveralls.io/repos/github/jiazengp/GenshinMapDocs/badge.svg?branch=master)](https://coveralls.io/github/jiazengp/GenshinMapDocs?branch=master)
 ![Continuous Deployment](https://img.shields.io/github/workflow/status/jiazengp/GenshinMapDocs/Build)
 ![CodeQL](https://img.shields.io/github/workflow/status/jiazengp/GenshinMapDocs/CodeQL/master)
 ![Top Language](https://img.shields.io/github/languages/top/jiazengp/GenshinMapDocs)]

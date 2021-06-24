@@ -4,6 +4,6 @@ module.exports = {
   name: "vuepress-theme-local",
   extends: "@vuepress/theme-default",
   layouts: {
-    Layout: path.resolve(__dirname, "../Layout/Layout"),
+    Layout: path.resolve(__dirname, "../layout/layout.vue"),
   },
 };

@@ -191,7 +191,6 @@ export default {
       value: ref(null),
       anchor: ref(frontmatter.value.anchor ?? true),
       colors: ref(["#99A9BF", "#F7BA2A", "#FF9900"]),
-      // texts: ref(['真垃圾😭', "一点点😥", "一般般😅", "挺好的😉", "非常好😏"]),
       tips: () => {
         ElMessage({
           type: "success",

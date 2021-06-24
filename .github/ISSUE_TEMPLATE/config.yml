@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Feedback on other questions
     url: https://support.qq.com/products/321980
-    about: Please use the following link to create a new issue.
+    about: Please post any other questions here
   - name: Question & Discussion
     url: https://github.com/jiazengp/GenshinMapDocs/discussions
     about: Please ask and answer questions here.

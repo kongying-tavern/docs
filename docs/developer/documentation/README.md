@@ -26,7 +26,7 @@ sidebar:
 
 ### `用法类`
 
-- [VuePress2](https://vuepress2.netlify.app/zh/)
+- [VuePress-Next](https://vuepress2.netlify.app/zh/)
   - [Frontmatter 配置](https://vuepress2.netlify.app/zh/reference/default-theme/frontmatter.html)
   - [内置组件](https://vuepress2.netlify.app/zh/reference/components.html#clientonly)
 - [TypeScript](https://www.typescriptlang.org/zh/)
@@ -57,7 +57,7 @@ sidebar:
 
 ### `原理类`
 
-- [VuePress2](https://vuepress2.netlify.app/zh/)
+- [VuePress-Next](https://vuepress2.netlify.app/zh/)
   - [本文档是如何工作的](https://vuepress2.netlify.app/zh/guide#它是如何工作的)
   - [核心架构](https://vuepress2.netlify.app/zh/advanced/architecture.html)
 
