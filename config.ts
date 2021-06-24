@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export default {
-  isProduction: process.env.NODE_ENV === "production",
   host: process.env.DOCS_HOST || "https://yuanshen.site",
   root_path: process.env.DOCS_PATH || "/docs/",
   path_ja: process.env.DOCS_PATH_JA || "/docs/ja/",

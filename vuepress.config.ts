@@ -4,6 +4,7 @@ import type { DefaultThemeOptions } from "vuepress";
 import { path } from "@vuepress/utils";
 
 const rootPath = config.default.host + config.default.root_path;
+const isProd = process.env.NODE_ENV === "production";
 
 module.exports = defineUserConfig<DefaultThemeOptions>({
   bundler: "@vuepress/webpack", // Vite 仍然存在兼容问题和奇怪的Bug, 无法使用。
@@ -135,6 +136,19 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
             link: "https://support.qq.com/products/321980",
           },
           {
+            text: "支持我们",
+            children: [
+              {
+                text: "一次性赞助",
+                link: "./support-us.md",
+              },
+              {
+                text: "周期性赞助",
+                link: "./support-us.md#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%B5%9E%E5%8A%A9",
+              },
+            ],
+          },
+          {
             text: "了解更多",
             children: [
               {
@@ -224,6 +238,19 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
             link: "https://support.qq.com/products/321980",
           },
           {
+            text: "Support-Us",
+            children: [
+              {
+                text: "One Time Donation",
+                link: "./support-us.md",
+              },
+              {
+                text: "Weekly Donations",
+                link: "./support-us.md#weekly-donations",
+              },
+            ],
+          },
+          {
             text: "Understand More",
             children: [
               {
@@ -307,6 +334,19 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
           {
             text: "フィードバック",
             link: "https://support.qq.com/products/321980",
+          },
+          {
+            text: "スポンサー",
+            children: [
+              {
+                text: "1回限りのスポンサーシップ",
+                link: "./support-us.md",
+              },
+              {
+                text: "定期的なスポンサーシップ",
+                link: "./support-us.md#weekly-donations",
+              },
+            ],
           },
           {
             text: "もっと理解する",
@@ -530,7 +570,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
     ["@vuepress/plugin-toc"],
     [
       "@vuepress/plugin-shiki",
-      config.default.isProduction
+      isProd
         ? {
             theme: "github-dark", // 主题在线演示网址https://vscodethemes.com/
           }

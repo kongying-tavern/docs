@@ -2,6 +2,8 @@
 @use "print";
 
 :root {
+  --avatar-bg: #c0c4cc;
+
   --box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.1);
   // brand colors
   --c-brand: #3eaf7c;
@@ -129,6 +131,7 @@
 
 // dark mode
 html.dark {
+  --avatar-bg: #666;
   // scroll bar
   color-scheme: dark;
 

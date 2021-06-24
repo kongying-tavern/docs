@@ -1,5 +1,6 @@
 ---
 title: Support Us
+description: Support Us
 ---
 
 ## Support Us
@@ -20,3 +21,9 @@ Weekly donations can receive extra stuff in return, like your name showing up as
 - [Donate through OpenCollective](https://opencollective.com/genshinmap "https://opencollective.com/genshinmap") (Join a foundation to support the work and activities of the community through a transparent cost model)
 
 ## Donators and Sponsors
+
+### Donators
+
+<Personal-sponsorship></Personal-sponsorship>
+
+### Sponsors

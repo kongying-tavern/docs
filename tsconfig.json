@@ -21,12 +21,7 @@
     "strictPropertyInitialization": true,
     "forceConsistentCasingInFileNames": true,
     "newLine": "lf",
-    "types": [
-      "@vuepress/client/types",
-      "vite/client",
-      "jest",
-      "node"
-    ],
+    "types": ["@vuepress/client/types", "vite/client", "jest", "node"],
     "lib": ["DOM", "ESNext"],
     "declaration": true,
     "explainFiles": true,
@@ -34,8 +29,5 @@
       "~/*": ["docs/*"]
     }
   },
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }

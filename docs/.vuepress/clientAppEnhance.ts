@@ -21,6 +21,5 @@ export default defineClientAppEnhance(async ({ app, router, siteData }) => {
     "🎉\u0020%c地图团队欢迎各位同学加入: https://yuanshen.site/docs/join.html",
     "font-size:13px;"
   );
-  // gtag("get", "<target>", "<field_name>", (val) => console.log(val));
   console.log(app, router, siteData);
 });

@@ -20,3 +20,15 @@ title: 支持我们
 - [通过 OpenCollective 赞助](https://opencollective.com/genshinmap "https://opencollective.com/genshinmap") (加入一个基金会，通过透明的费用模型支持社区的工作和活动)
 
 ## 赞助鸣谢
+
+### 个人赞助
+
+<Personal-sponsorship></Personal-sponsorship>
+
+### 赞助商
+
+<el-empty description="您可以通过yuanshenmap@gmail.com联系我们"></el-empty>
+
+如果你是企业经营者那么赞助原神地图可以帮助你在 原神地图 社区里获得更高的曝光度，从而更容易地吸引到原神玩家。
+
+如果你是旅行者并且享受地图带来的高效率，可以用捐助来表示你的谢意 —— 就好像偶尔给我买杯快乐水或者护发水 😃
