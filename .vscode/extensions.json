@@ -7,6 +7,10 @@
     "taichi.vscode-textlint",
     "shd101wyy.markdown-preview-enhanced",
     "jcbuisson.vue",
-    "hollowtree.vue-snippets"
+    "hollowtree.vue-snippets",
+    "antfu.browse-lite",
+    "antfu.vite",
+    "antfu.iconify",
+    "antfu.where-am-i"
   ]
 }

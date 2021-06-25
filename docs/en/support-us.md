@@ -22,7 +22,7 @@ Weekly donations can receive extra stuff in return, like your name showing up as
 
 ## Donators and Sponsors
 
-### Donators
+### Backers
 
 <Personal-sponsorship></Personal-sponsorship>
 
