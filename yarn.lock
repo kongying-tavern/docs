@@ -5255,9 +5255,9 @@ electron-to-chromium@^1.3.723:
   integrity sha512-kP0ooyrvavDC+Y9UG6G/pUVxfRNM2VTJwtLQLvgsJeyf1V+7shMCb68Wj0/TETmfx8dWv9pToGkVT39udE87wQ==
 
 element-plus@^1.0.2-beta.52:
-  version "1.0.2-beta.52"
-  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.0.2-beta.52.tgz#c7ed94d498e390658478aa2438bc35247325b2d0"
-  integrity sha512-oAuJHwXyvM4dsuOz7HSDPIBVPqRJ1KEzFzGqYdqbBjQ/aw79uCJxvS9Q4q9/XrPMfPire09+bPTypiIaHkNBhA==
+  version "1.0.2-beta.53"
+  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.0.2-beta.53.tgz#52208eccce487f452ffc5de8722cb718d6e02953"
+  integrity sha512-PhhOBy1BWSVGWpCcu8fkmjcXvnAlc5dvith9vbNo1hPjm1cqf3AZbbt955VUTyFKWOLUOV9oD76HrNEG5ZTlxg==
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/lodash" "^4.14.161"
@@ -9423,7 +9423,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
