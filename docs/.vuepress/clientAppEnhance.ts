@@ -1,6 +1,6 @@
 import { defineClientAppEnhance } from "@vuepress/client";
-import { usePageData } from "@vuepress/client";
-import type { PageData } from "@vuepress/client";
+import { usePageData, useRouteLocale } from "@vuepress/client";
+import type { PageData, RouteLocale } from "@vuepress/client";
 import { log } from "./utils";
 import ElementPlus from "element-plus";
 import "./utils/date";

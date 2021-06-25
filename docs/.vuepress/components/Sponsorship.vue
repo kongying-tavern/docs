@@ -4,7 +4,7 @@
       v-for="item in items"
       :key="item.cover"
       href="javascript:void(0)"
-      :title="item.title"
+      :title="'通过' + item.title + '支持我们'"
     >
       <el-image
         class="pay-img"
@@ -62,12 +62,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .onetime-sponsorship {
   display: flex;
+  align-items: stretch;
   .pay-img {
     position: relative;
     width: 100%;
     height: 100%;
     margin: 0 auto;
     transform: scale(0.6);
+  }
+  @media only screen and (max-width: 980px) {
+    .pay-img {
+      transform: scale(0.8);
+    }
   }
 }
 </style>

@@ -35,7 +35,7 @@
                 </li>
                 <li class="follow-us-item">
                   <a
-                    href="https://github.com/yuanshenmap"
+                    href="https://github.com/jiazengp/genshinmap-docs/"
                     target="_blank"
                     title="GitHub"
                   >
@@ -82,7 +82,7 @@
               </a>
             </div>
           </div>
-          <nav
+          <!-- <nav
             class="directory"
             aria-label="原神地图网站目录"
             role="navigation"
@@ -170,7 +170,7 @@
                 </li>
               </ul>
             </div>
-          </nav>
+          </nav> -->
           <div class="docs-info">Chinese hoyolab Made By Kongying Tavern</div>
         </div>
       </footer>
@@ -340,9 +340,15 @@ $container-border: 1px solid var(--c-border-dark);
   z-index: 99999;
   display: grid;
   place-items: center;
-  background-color: var(--c-bg-light) !important;
-  svg > use {
-    stroke: red;
+  opacity: 0.7;
+  background-color: var(--c-bg-light);
+  &:hover {
+    opacity: 1;
+    background-color: var(--c-bg-light) !important;
+    transition: all 0.3s;
+  }
+  svg {
+    filter: var(--docs-icon);
   }
 }
 
@@ -355,11 +361,18 @@ $container-border: 1px solid var(--c-border-dark);
     font-size: 12px;
     max-width: 125px;
     min-width: 92px;
+    max-height: 80vh;
     border-left: 1px solid var(--c-border-dark);
     margin: 0;
     li {
       a {
         color: var(--text-color);
+        opacity: 0.85;
+        &:hover {
+          opacity: 1;
+          color: var(--c-text-accent);
+          transition: all 0.3s;
+        }
       }
       a.router-link-active.active {
         color: var(--c-text-accent);

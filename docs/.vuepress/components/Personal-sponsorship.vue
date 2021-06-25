@@ -14,7 +14,7 @@
           :size="medium"
           :src="item.portrait"
         >
-          {{ item.name.substring(0, 3) }}
+          {{ item.name.substring(0, 3).toLocaleUpperCase() }}
         </el-avatar>
         <span
           v-text="item.name.substring(0, 4)"
