@@ -2726,7 +2726,7 @@
     medium-zoom "^1.0.6"
     vue "^3.1.2"
 
-"@vuepress/plugin-nprogress@2.0.0-beta.19", "@vuepress/plugin-nprogress@^2.0.0-beta.19":
+"@vuepress/plugin-nprogress@2.0.0-beta.19":
   version "2.0.0-beta.19"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-nprogress/-/plugin-nprogress-2.0.0-beta.19.tgz#6067126b4239b2bd2f2810fb2487069fa9651356"
   integrity sha512-cLQOGAz7RYJ0E6WjHk5JzQ3GhRPRj1B95MGhJwlCQz9mN3MMKbNPKPdRI3tX8YkJEo6T08VC1gJ8qodB0MCVxA==
@@ -2738,7 +2738,7 @@
     vue "^3.1.1"
     vue-router "^4.0.8"
 
-"@vuepress/plugin-nprogress@2.0.0-beta.20":
+"@vuepress/plugin-nprogress@2.0.0-beta.20", "@vuepress/plugin-nprogress@^2.0.0-beta.19":
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-nprogress/-/plugin-nprogress-2.0.0-beta.20.tgz#f5e3e00f11ce8664a4ac92e6915b73da56cadb8a"
   integrity sha512-i13+n7bm02ekORlZWtT68/IrO6fYh58frj/6vkv1EzaRcCoce6B53TyCJ/yA8TS7+U+Iv71bkGfh4sPJ/oDhuA==
@@ -9832,7 +9832,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
