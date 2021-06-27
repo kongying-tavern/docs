@@ -2819,17 +2819,17 @@
     chokidar "^3.5.1"
 
 "@vuepress/plugin-search@^2.0.0-beta.19":
-  version "2.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@vuepress/plugin-search/-/plugin-search-2.0.0-beta.19.tgz#64ca2167d0e8a0d4c89d5d928367cbc9af98ad2c"
-  integrity sha512-3tiR5VF4hXpTjTMZEgTEVQuepY3yU8qy6NPGOQs3uj9hz5N6/Dx1IQ3nXwWaEMQebf1sfXuS4H6bIBqE7JTqBQ==
+  version "2.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-search/-/plugin-search-2.0.0-beta.20.tgz#7ac1b3818b4b7d5a36bbc11b0c3439b2d3a116b2"
+  integrity sha512-ZQ2fIB8DZ4HCwPl4IXgLj61DcIUM8WyzTG+AGt0E7srQG3mznpbNxC/4e0PogtPKVqptF5QJzcRwHpX0xeAULw==
   dependencies:
-    "@vuepress/client" "2.0.0-beta.19"
-    "@vuepress/core" "2.0.0-beta.19"
-    "@vuepress/shared" "2.0.0-beta.19"
-    "@vuepress/utils" "2.0.0-beta.19"
-    chokidar "^3.5.1"
-    vue "^3.1.1"
-    vue-router "^4.0.8"
+    "@vuepress/client" "2.0.0-beta.20"
+    "@vuepress/core" "2.0.0-beta.20"
+    "@vuepress/shared" "2.0.0-beta.20"
+    "@vuepress/utils" "2.0.0-beta.20"
+    chokidar "^3.5.2"
+    vue "^3.1.2"
+    vue-router "^4.0.10"
 
 "@vuepress/plugin-shiki@^2.0.0-beta.19":
   version "2.0.0-beta.19"
@@ -9832,7 +9832,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
