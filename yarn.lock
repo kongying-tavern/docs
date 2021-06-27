@@ -2832,12 +2832,12 @@
     vue-router "^4.0.8"
 
 "@vuepress/plugin-shiki@^2.0.0-beta.19":
-  version "2.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@vuepress/plugin-shiki/-/plugin-shiki-2.0.0-beta.19.tgz#849c5b14fbc4bf0db154c07123d67b7dc4f260e1"
-  integrity sha512-U9/thpzd3Rb4JidNwb4tSQPqmxwotTJK0LDbMTqfebTYtPsap53B4I3hb7apErIAazQP7EeI+IxLiItLH2f59A==
+  version "2.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-shiki/-/plugin-shiki-2.0.0-beta.20.tgz#e6e5fe763495cdfc29d693345c4c2130f4153fcc"
+  integrity sha512-iU4jFzcLuE3CqAzI9BTIP2Y523718g4Bw67hl21jcz96Rd/qBfedV76GBLBBjqkHze2BOrGFfWW9gAosOvs3rg==
   dependencies:
-    "@vuepress/core" "2.0.0-beta.19"
-    shiki "^0.9.3"
+    "@vuepress/core" "2.0.0-beta.20"
+    shiki "^0.9.5"
 
 "@vuepress/plugin-theme-data@2.0.0-beta.19", "@vuepress/plugin-theme-data@^2.0.0-beta.19":
   version "2.0.0-beta.19"
@@ -9832,7 +9832,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
@@ -12238,7 +12237,7 @@ shelljs@0.8.4, shelljs@^0.8.3:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shiki@^0.9.3:
+shiki@^0.9.5:
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/shiki/-/shiki-0.9.5.tgz#c8da81a05fbfd1810729c6873901a729a72ec541"
   integrity sha512-XFn+rl3wIowDjzdr5DlHoHgQphXefgUTs2bNp/bZu4WF9gTrTLnKwio3f28VjiFG6Jpip7yQn/p4mMj6OrjrtQ==
