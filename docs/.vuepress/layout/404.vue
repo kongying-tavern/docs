@@ -4,11 +4,9 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { useRouteLocale } from '@vuepress/client';
+import { useRouteLocale } from '@vuepress/client'
 export default {
-  setup() {
-  },
-  components: {
-  },
+  setup() {},
+  components: {},
 }
 </script>
