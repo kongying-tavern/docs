@@ -2696,13 +2696,13 @@
     execa "^5.1.1"
 
 "@vuepress/plugin-google-analytics@^2.0.0-beta.19":
-  version "2.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@vuepress/plugin-google-analytics/-/plugin-google-analytics-2.0.0-beta.19.tgz#b31d26c4b4d78d24637b6ce711387761dcf03f0b"
-  integrity sha512-1fF2Y/W0XotIQgP5t8DVZCNA1Y3QrpOnOTTM9xE5tEaYQxi9f5lYmvJbOGkhYuHSqELZHam/ND9K7FmeGZfCNA==
+  version "2.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-google-analytics/-/plugin-google-analytics-2.0.0-beta.20.tgz#6a9a1f055854bd6cff967eb096e35c9de2a94a7f"
+  integrity sha512-tm5XZtB0y8/FU0fV/VqKzCkAMiQMWie7/KbiKck332O8JZdbBwTVNSrm5RRE4VanbN0RF+lWkNwWariLy47Z7g==
   dependencies:
-    "@vuepress/client" "2.0.0-beta.19"
-    "@vuepress/core" "2.0.0-beta.19"
-    "@vuepress/utils" "2.0.0-beta.19"
+    "@vuepress/client" "2.0.0-beta.20"
+    "@vuepress/core" "2.0.0-beta.20"
+    "@vuepress/utils" "2.0.0-beta.20"
 
 "@vuepress/plugin-medium-zoom@2.0.0-beta.19":
   version "2.0.0-beta.19"
@@ -9832,7 +9832,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
