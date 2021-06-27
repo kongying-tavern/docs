@@ -3,12 +3,12 @@
  */
 
 export const encodeCDATA = (content: string): string =>
-  content.replace(/]]>/g, "]]]]><![CDATA[>");
+  content.replace(/]]>/g, ']]]]><![CDATA[>')
 
 export const encodeXML = (content: string): string =>
   content
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')

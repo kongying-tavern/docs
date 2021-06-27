@@ -17,14 +17,14 @@ sidebar: false
 
 周期性赞助可以获得额外的回报，比如你的名字会出现在 原神地图 的 GitHub/Gitee 仓库和官网中赞助鸣谢的名单中，再比如你的公司 logo 会出现在我们的官网上。
 
-- [通过 爱发电 赞助](https://afdian.net/@yuanshenditu "https://afdian.net/@yuanshenditu") (直接支持我们)
-- [通过 OpenCollective 赞助](https://opencollective.com/genshinmap "https://opencollective.com/genshinmap") (加入一个基金会，通过透明的费用模型支持社区的工作和活动)
+- [通过 爱发电 赞助](https://afdian.net/@yuanshenditu 'https://afdian.net/@yuanshenditu') (直接支持我们)
+- [通过 OpenCollective 赞助](https://opencollective.com/genshinmap 'https://opencollective.com/genshinmap') (加入一个基金会，通过透明的费用模型支持社区的工作和活动)
 
 ## 赞助鸣谢
 
 ### 个人赞助
 
-<Personal-sponsorship></Personal-sponsorship>
+<Backers></Backers>
 
 ### 赞助商
 

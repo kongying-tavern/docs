@@ -142,7 +142,7 @@ type 是必需的， title 和 content 是可选的。
 ::: details 点击查看代码
 
 ```js
-console.log("自定义标题！");
+console.log('自定义标题！')
 ```
 ````
 
@@ -153,7 +153,7 @@ console.log("自定义标题！");
 ::: details 点击查看代码
 
 ```js
-console.log("自定义标题！");
+console.log('自定义标题！')
 ```
 
 :::
@@ -169,14 +169,14 @@ console.log("自定义标题！");
 ::: code-group-item FOO
 
 ```js
-const foo = "foo";
+const foo = 'foo'
 ```
 
 :::
 ::: code-group-item BAR
 
 ```js
-const bar = "bar";
+const bar = 'bar'
 ```
 
 :::
@@ -189,14 +189,14 @@ const bar = "bar";
 ::: code-group-item FOO
 
 ```js
-const foo = "foo";
+const foo = 'foo'
 ```
 
 :::
 ::: code-group-item BAR
 
 ```js
-const bar = "bar";
+const bar = 'bar'
 ```
 
 :::

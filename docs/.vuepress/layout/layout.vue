@@ -179,31 +179,31 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { ElMessage } from "element-plus";
-import { usePageData, usePageFrontmatter } from "@vuepress/client";
-import Layout from "@vuepress/theme-default/lib/client/layouts/Layout.vue";
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { usePageData, usePageFrontmatter } from '@vuepress/client'
+import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
 export default {
   setup() {
-    const frontmatter = usePageFrontmatter();
+    const frontmatter = usePageFrontmatter()
     return {
       value: ref(null),
       anchor: ref(frontmatter.value.anchor ?? true),
-      colors: ref(["#99A9BF", "#F7BA2A", "#FF9900"]),
+      colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
       tips: () => {
         ElMessage({
-          type: "success",
-          message: "感谢您的反馈！",
+          type: 'success',
+          message: '感谢您的反馈！',
           center: true,
-        });
+        })
       },
-    };
+    }
   },
   components: {
     Layout,
   },
-};
+}
 </script>
 
 <style lang="scss">

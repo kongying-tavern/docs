@@ -11,7 +11,7 @@ We highly respect your privacy and its everyone's basic rights.
 
 Genshin Map is a open source project and uses the MulanPSL-1.0 license. In our servers, we do not save any user data or private informations.
 
-Login datas and datas that are stored are all based in [Gitee  (Code Hosting Site)](https://gitee.com/) and are stored in their servers. For more details refer to their [privacy terms](https://gitee.com/terms/privacy_terms).
+Login datas and datas that are stored are all based in [Gitee (Code Hosting Site)](https://gitee.com/) and are stored in their servers. For more details refer to their [privacy terms](https://gitee.com/terms/privacy_terms).
 
 ### Personal Information
 

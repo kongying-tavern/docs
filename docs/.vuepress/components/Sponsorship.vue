@@ -20,43 +20,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref } from 'vue'
 export default defineComponent({
-  name: "Sponsorship",
+  name: 'Sponsorship',
   setup() {
     const items = ref([
       {
-        title: "WeChat Pay",
-        cover: "/20210614/wechat-pay.png",
-        qrCode: "/20210617/a8-wechatpay.jpg",
+        title: 'WeChat Pay',
+        cover: '/20210614/wechat-pay.png',
+        qrCode: '/20210617/a8-wechatpay.jpg',
       },
       {
-        title: "Alipay Pay",
-        name: "WeChatPay",
-        cover: "/20210614/alipay-pay.png",
-        qrCode: "/20210617/a8-alipay.png",
+        title: 'Alipay Pay',
+        name: 'WeChatPay',
+        cover: '/20210614/alipay-pay.png',
+        qrCode: '/20210617/a8-alipay.png',
       },
       {
-        title: "Paypal Pay",
-        cover: "/20210614/paypal.png",
-        qrCode: "/20210617/a8-paypal.png",
+        title: 'Paypal Pay',
+        cover: '/20210614/paypal.png',
+        qrCode: '/20210617/a8-paypal.png',
       },
       {
-        title: "QQ Pay",
-        cover: "/20210614/qq-pay.png",
-        qrCode: "/20210617/a8-qqpay.jpg",
+        title: 'QQ Pay',
+        cover: '/20210614/qq-pay.png',
+        qrCode: '/20210617/a8-qqpay.jpg',
       },
       {
-        title: "ETH Pay",
-        cover: "/20210614/ETH.png",
-        qrCode: "/20210617/A8-ethpay.png",
+        title: 'ETH Pay',
+        cover: '/20210614/ETH.png',
+        qrCode: '/20210617/A8-ethpay.png',
       },
-    ]);
+    ])
     return {
       items,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

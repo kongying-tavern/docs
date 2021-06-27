@@ -18,14 +18,14 @@ sidebar: false
 
 当然如果您有任何其他有任何好的想法或者设计, 欢迎加入我们一起实现。
 
-::: details 常见问题
+::: details Q&A
 
-- 我们和米哈游什么关系？
-  - 原神地图项目组和上海米哈游影铁科技有限公司无任何关系。
+- 我们和米哈游有什么关系吗？
+  - 原神地图项目组和上海米哈游影铁科技有限公司没有任何关系哦。
 - 我们能开具正式的实习证明吗？
   - 我们没有注册公司没有公章, 因此无法开具正式的实习证明。
-- 我们有工资吗？
-  - 原神地图项目属于非商业的开源项目目前完全处于用爱发电, 因此我们没有任何工资。
+- 会有工资吗？
+  - 原神地图项目属于非商业的开源项目目前完全处于用爱发电, 因此是没有工资哦。
 
 :::
 
@@ -42,9 +42,22 @@ sidebar: false
 
 主要技术栈：
 
-- [v1](https://yuanshen.site/): Jquery + Leaflet
-- v2: Vue3 + TypeScript + Leaflet + Sass
-- [v3](https://yuanshen.site/v3/) React17 + TypeScript + Deckgl
+- [v1](https://gitee.com/KYJGYSDT/yuan-shen-map)
+  - Jquery
+  - Leaflet
+- [v2](https://gitee.com/MoonlightSmile/yuanshenmap)
+  - Vue3
+  - TypeScript
+  - Leaflet
+  - Sass&Scss
+- [v3](https://yuanshen.site/v3/)（全新领域，全新挑战，是兄弟就来 deckgl）
+  - React17
+  - TypeScript
+  - Deckgl
+
+`前端文档`
+
+[https://yuanshen.site/docs/developer/documentation/](/docs/developer/documentation/)
 
 ### 后端开发
 
@@ -70,8 +83,6 @@ sidebar: false
 
 网页和客户端内的界面交互和 UI 制作；
 
-求求美术大佬带带我们~
-
 ## 内容类
 
 ### 地图打点
@@ -82,8 +93,6 @@ sidebar: false
 
 负责地图项目的 I18N 的翻译工作，等。
 
-部分翻译工作可能需要掌握 Markdown、HTML 等语言的基础使用。
-
 ## 如何加入
 
-有意者欢迎加入群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "地图开发审核群") 洽谈
+有意者欢迎加入群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈

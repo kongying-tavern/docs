@@ -17,14 +17,14 @@ We accept one time donations through the following:
 
 Weekly donations can receive extra stuff in return, like your name showing up as a sponsor on our Gitee repository as well as our website's Donator page. Even your company logo can be displayed on our website.
 
-- [Donate through 爱发电](https://afdian.net/@yuanshenditu "https://afdian.net/@yuanshenditu") (Directly supports us)
-- [Donate through OpenCollective](https://opencollective.com/genshinmap "https://opencollective.com/genshinmap") (Join a foundation to support the work and activities of the community through a transparent cost model)
+- [Donate through 爱发电](https://afdian.net/@yuanshenditu 'https://afdian.net/@yuanshenditu') (Directly supports us)
+- [Donate through OpenCollective](https://opencollective.com/genshinmap 'https://opencollective.com/genshinmap') (Join a foundation to support the work and activities of the community through a transparent cost model)
 
 ## Donators and Sponsors
 
 ### Backers
 
-<Personal-sponsorship></Personal-sponsorship>
+<Backers></Backers>
 
 ### Sponsors
 

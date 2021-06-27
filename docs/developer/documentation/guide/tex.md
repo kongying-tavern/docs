@@ -14,9 +14,9 @@ next:
 
 ## 相关链接
 
-- [什么是 $\TeX$ 维基百科](https://zh.wikipedia.org/wiki/TeX "https://zh.wikipedia.org/wiki/TeX")
-- [$\KaTeX$ 支持功能](https://katex.org/docs/supported.html "https://katex.org/docs/supported.html")
-- [$\KaTeX$ 支持列表](https://katex.org/docs/support_table.html "https://katex.org/docs/support_table.html")
+- [什么是 $\TeX$ 维基百科](https://zh.wikipedia.org/wiki/TeX 'https://zh.wikipedia.org/wiki/TeX')
+- [$\KaTeX$ 支持功能](https://katex.org/docs/supported.html 'https://katex.org/docs/supported.html')
+- [$\KaTeX$ 支持列表](https://katex.org/docs/support_table.html 'https://katex.org/docs/support_table.html')
 
 ## 语法
 

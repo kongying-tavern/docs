@@ -3,8 +3,8 @@ title: Developer for Documentation
 description: Developer for Documentation
 sidebar:
   [
-    { text: "快速上手", link: "/developer/documentation" },
-    { text: "更新日志", link: "/developer/documentation/update.md" },
+    { text: '快速上手', link: '/developer/documentation' },
+    { text: '更新日志', link: '/developer/documentation/update.md' },
   ]
 ---
 

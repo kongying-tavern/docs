@@ -3,7 +3,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/jiazengp/GenshinMapDocs)
 [![star](https://gitee.com/KYJGYSDT/yuanshendocs/badge/star.svg?theme=dark)](https://gitee.com/KYJGYSDT/yuanshendocs/stargazers)
 [![CD](https://github.com/jiazengp/genshinmap-docs/actions/workflows/main.yml/badge.svg)](https://github.com/jiazengp/genshinmap-docs/actions/workflows/main.yml)
-![CodeQL](https://img.shields.io/github/workflow/status/jiazengp/GenshinMapDocs/CodeQL/master)
+[![CodeQL](https://github.com/jiazengp/genshinmap-docs/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jiazengp/genshinmap-docs/actions/workflows/codeql-analysis.yml)
 ![Top Language](https://img.shields.io/github/languages/top/jiazengp/GenshinMapDocs)]
 [![license](https://img.shields.io/badge/license-MIT-green)](https://gitee.com/KYJGYSDT/yuanshendocs/blob/master/LICENSE)
 [![npm](https://img.shields.io/npm/v/2)](https://www.npmjs.com/)

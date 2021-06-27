@@ -1,2 +1,1 @@
-import instance from './http';
-
+import instance from './http'

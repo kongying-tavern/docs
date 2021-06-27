@@ -3,16 +3,94 @@ title: Documentation
 description: Documentation
 sidebar:
   [
-    { text: "文档规范", link: "/developer/documentation/spec/README.md" },
-    { text: "更新日志", link: "/developer/documentation/update.md" },
+    { text: '文档规范', link: '/developer/documentation/spec/README.md' },
+    { text: '更新日志', link: '/developer/documentation/update.md' },
   ]
 ---
 
-## 快速上手
+## 介绍
 
-本章是由 `(^_^)` 撰写, 面向地图的的小伙伴。目前内容可能仅适用于本项目。
+Genshin Map Docs 项目创立于 2021 年六月初。
 
-通过阅读本章内容，快速上手本文档。
+目前由(\^\_\^)独立开发与翻译和编写，suizyun 参与英语翻译，A8 参与相关文档编写。
+
+初衷是为了支持原神地图及其子项目的文档需求。
+
+## 仓库地址
+
+- [GitHub - https://github.com/jiazengp/genshinmap-docs](https://github.com/jiazengp/genshinmap-docs)（主仓库）
+- [Gitee - https://gitee.com/KYJGYSDT/yuanshendocs](https://gitee.com/KYJGYSDT/yuanshendocs)（镜像仓库，非实时同步）
+
+## 目录结构
+
+```md
+.
+├─.editorconfig （编辑器配置文件 https://editorconfig.org/）
+├─.eslintrc.yml （ESlint 配置文件 https://cn.eslint.org/docs/user-guide/configuring）
+├─.gitattributes （定义每个路径的属性 https://git-scm.com/docs/gitattributes）
+├─.gitignore （指定有意忽略的文件 https://git-scm.com/docs/gitignore）
+├─.markdownlint.json（MarkdownLint 的配置文件 https://github.com/DavidAnson/markdownlint）
+├─.npmrc（npm 的配置 https://docs.npmjs.com/cli/v7/configuring-npm/npmrc）
+├─.prettierignore（prettier 的忽略文件配置 https://prettier.io/docs/en/ignore.html）
+├─.textlintrc（TextLint 的配置文件 https://textlint.github.io/docs/configuring.html）
+├─.travis.yml（TravisCI 的配置文件 https://docs.travis-ci.com/user/customizing-the-build）
+├─.yarnrc.yml（Yarn 的配置文件 https://classic.yarnpkg.com/en/docs/yarnrc/）
+├─CHANGELOG.md（更新日志）
+├─commitlint.config.js（CommitLint 的配置文件 https://commitlint.js.org/）
+├─config.ts（全局配置文件）
+├─jest.config.js（Jest 的配置文件 https://jestjs.io/docs/configuration）
+├─LICENSE（许可证 https://opensource.org/licenses/MIT）
+├─package.json（包的描述文件 https://docs.npmjs.com/cli/v6/configuring-npm/package-json）
+├─README.md（项目描述文件）
+├─README.zh-CN.md（项目中文描述文件）
+├─SECURITY.md（安全策略文件 https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository）
+├─tsconfig.eslint.json（Ts for Eslint 配置文件 https://github.com/typescript-eslint）
+├─tsconfig.json（ts 配置文件 https://www.typescriptlang.org/docs/handbook/tsconfig-json.html）
+├─vite.config.ts（Vite 配置文件 https://cn.vitejs.dev/config/）
+├─vuepress.config.ts（VuePress2 配置文件 https://vuepress2.netlify.app/zh/reference/config.html）
+├─yarn.lock（YarnLock https://classic.yarnpkg.com/en/docs/yarn-lock/）
+├─test（Jest 的测试文件文件夹）
+├─public（公共资源目录）
+| ├─browserconfig.xml（browserconfig）
+| ├─manifest.webmanifest（Web 应用程序清单 https://developer.mozilla.org/zh-CN/docs/Web/Manifest）
+├─docs（文档文件目录, 根目录下的为默认语言即中文）
+| ├─ja（日语翻译目录）
+| ├─en（英文翻译目录）
+| ├─developer（开发人员文档）
+| | ├─README.md（首页）
+| | ├─documentation （文档）
+| | | ├─README.md（首页）
+| | | ├─update.md（更新日志）
+| | | ├─spec（规范目录）
+| | | ├─guide（教程目录）
+| | ├─backend（上同）
+| | ├─frontend（上同）
+| ├─announcement（公告文件目录）
+| ├─.vuepress
+| | ├─clientAppEnhance.ts（https://vuepress2.netlify.app/zh/reference/plugin-api.html#clientappenhancefiles）
+| | ├─utils（工具函数目录，包括 dayjs 的封装）
+| | ├─theme（本地主题）
+| | ├─styles（样式目录）
+| | | ├─element-variables.scss（Element-Plus 的样式）
+| | | ├─index.scss（主样式 https://vuepress2.netlify.app/zh/reference/default-theme/styles.html#style-%E6%96%87%E4%BB%B6）
+| | | ├─palette.scss（palette 的样式 https://vuepress2.netlify.app/zh/reference/default-theme/styles.html#palette-%E6%96%87%E4%BB%B6）
+| | | └print.scss（print 时样式）
+| | ├─layout（布局）
+| | ├─components（组件，该目录下的.vue 文件会被自动注册为全局组件可直接在 Markdown 中使用）
+| | ├─api（API 的目录, 包括 Axios 的封装）
+| | ├─.temp（临时文件目录）
+| | ├─.cache（缓存文件目录）
+├─.vscode（VSCode 的配置目录）
+| ├─extensions.json（推荐插件 https://code.visualstudio.com/docs/editor/extension-marketplace）
+| ├─launch.json（调试的配置文件 https://code.visualstudio.com/docs/editor/debugging）
+| └settings.json（配置文件 https://code.visualstudio.com/docs/getstarted/settings）
+├─.husky
+├─.github
+```
+
+::: warning
+请留意目目录以及文件名大小写。
+:::
 
 ## 注意事项
 
@@ -22,7 +100,7 @@ sidebar:
 
 这些标签不会被 Vue 模板编译器识别成原生 HTML 标签。相反，Vue 会尝试将这些标签解析为 Vue 组件，而显然这些组件通常是不存在的。
 
-## 相关链接
+## 参考链接
 
 ### `用法类`
 
@@ -49,9 +127,6 @@ sidebar:
   - [Markdown 中使用 Mermaid](./guide/mermaid.md)
   - [Markdown 中使用 Task list，Footnote，Custom alignment，Custom Containers，Superscript and Subscript，Markup](./guide/other.md)
 - [Vue3](https://v3.cn.vuejs.org/guide/introduction.html)
-
-#### 图标的使用
-
 - [ElementPlus-Icon](https://element-plus.org/#/zh-CN/component/icon)
 - [Iconfont-Icon](https://yuanshen.site/docs/20210619/demo_index.html)
 
@@ -69,11 +144,15 @@ sidebar:
 
 ### `yarn docs:*`
 
-#### `yarn docs:build`,`yarn docs:build2`, `yarn docs:dev`
-
 `docs:` 前缀表明，这些命令是针对文档 (documentation) 进行操作的，即 `docs` 目录。
 
-`docs:build` 为 CI 使用, 生产环境部署或者 CD 请用 `docs:build2`
+#### `yarn docs:build2`
+
+编译文档来生成文档网站的输出文件。
+
+#### `yarn docs:dev`
+
+在本地启动文档网站开放服务器，支持 docs 目录的热更新。
 
 #### `yarn docs:serve`
 
@@ -94,3 +173,7 @@ sidebar:
 `preview` 命令使用 vite 来打包后的本地预览, 仅用于开发
 
 `preview-https` 命令使用 https-localhost 生成 localhost 的 ssl 证书为提供本地做 ssl 预览, 仅用于开发
+
+::: warning
+这里只列出了一部分你可能会用到的，完整命令见根目录下的 package.json 中的 script。
+:::

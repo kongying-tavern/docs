@@ -10,39 +10,39 @@ extends:
   - plugin:prettier/recommended
 
 ignorePatterns:
-  - "**/dist/**"
-  - "**/node_modules/**"
-  - ".cache/**"
-  - ".temp/**"
+  - '**/dist/**'
+  - '**/node_modules/**'
+  - '.cache/**'
+  - '.temp/**'
 
 overrides:
   - files:
-      - "*.vue"
+      - '*.vue'
 
     extends:
       - plugin:@typescript-eslint/eslint-recommended
       - plugin:@typescript-eslint/recommended
       - plugin:prettier/recommended
-      - "@vue/typescript/recommended"
-      - "@vue/prettier"
-      - "@vue/prettier/@typescript-eslint"
+      - '@vue/typescript/recommended'
+      - '@vue/prettier'
+      - '@vue/prettier/@typescript-eslint'
 
     plugins:
-      - "@typescript-eslint"
+      - '@typescript-eslint'
 
     parser: vue-eslint-parser
 
     parserOptions:
       extraFileExtensions:
         - .vue
-      parser: "@typescript-eslint/parser"
+      parser: '@typescript-eslint/parser'
 
     rules:
-      "@typescript-eslint/explicit-function-return-type":
+      '@typescript-eslint/explicit-function-return-type':
         - warn
         - allowTypedFunctionExpressions: true
 
-      "@typescript-eslint/naming-convention":
+      '@typescript-eslint/naming-convention':
         - warn
         - selector: default
           format:
@@ -70,12 +70,12 @@ overrides:
           format:
             - PascalCase
 
-      "@typescript-eslint/no-explicit-any":
+      '@typescript-eslint/no-explicit-any':
         - warn
         - ignoreRestArgs: true
 
   - files:
-      - "*.ts"
+      - '*.ts'
 
     extends:
       - plugin:@typescript-eslint/eslint-recommended
@@ -84,22 +84,22 @@ overrides:
       - plugin:prettier/recommended
 
     plugins:
-      - "@typescript-eslint"
+      - '@typescript-eslint'
 
     parser: vue-eslint-parser
 
     parserOptions:
-      parser: "@typescript-eslint/parser"
+      parser: '@typescript-eslint/parser'
       project:
-        - "./tsconfig.json"
-        - "./tsconfig.eslint.json"
+        - './tsconfig.json'
+        - './tsconfig.eslint.json'
 
     rules:
-      "@typescript-eslint/explicit-function-return-type":
+      '@typescript-eslint/explicit-function-return-type':
         - warn
         - allowTypedFunctionExpressions: true
 
-      "@typescript-eslint/naming-convention":
+      '@typescript-eslint/naming-convention':
         - warn
         - selector: default
           format:
@@ -137,15 +137,15 @@ overrides:
           format:
             - PascalCase
 
-      "@typescript-eslint/no-explicit-any":
+      '@typescript-eslint/no-explicit-any':
         - warn
         - ignoreRestArgs: true
 
-      "@typescript-eslint/no-unsafe-member-access":
+      '@typescript-eslint/no-unsafe-member-access':
         - warn
 
   - files:
-      - "*.d.ts"
+      - '*.d.ts'
     rules:
       no-underscore-dangle:
         - off

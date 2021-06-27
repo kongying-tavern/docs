@@ -11,6 +11,6 @@ Click the link below to download the latest version of Genshin Map Windows clien
 
 ## Tips
 
-- The current client only supports windows system, if you are a user of other systems, you can use our [web version of the map](https://yuanshen.site/index_en.html "Genshin Map")
+- The current client only supports windows system, if you are a user of other systems, you can use our [web version of the map](https://yuanshen.site/index_en.html 'Genshin Map')
 
 We're sorry for the inconvenience.

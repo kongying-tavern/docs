@@ -1,22 +1,22 @@
-const { resolve } = require("path");
-const { compilerOptions } = require("./tsconfig.json");
+const { resolve } = require('path')
+const { compilerOptions } = require('./tsconfig.json')
 
 module.exports = {
   rootDir: resolve(__dirname),
-  testEnvironment: "node",
-  preset: "ts-jest",
+  testEnvironment: 'node',
+  preset: 'ts-jest',
   globals: {
-    "ts-jest": {
+    'ts-jest': {
       tsconfig: {
         ...compilerOptions,
         sourceMap: true,
       },
     },
-    __VERSION__: "",
-    __DEV__: false,
-    __SSR__: false,
+    '__VERSION__': '',
+    '__DEV__': false,
+    '__SSR__': false,
   },
-  moduleFileExtensions: ["js", "json", "jsx", "ts", "d.ts", "tsx", "node"],
-  snapshotSerializers: [require.resolve("jest-serializer-vue")],
-  coverageDirectory: "coverage",
-};
+  moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'd.ts', 'tsx', 'node'],
+  snapshotSerializers: [require.resolve('jest-serializer-vue')],
+  coverageDirectory: 'coverage',
+}

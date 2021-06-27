@@ -60,9 +60,9 @@
   --code-ln-wrapper-width: 3.5rem;
 
   // font vars
-  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  --font-family-code: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-family-code: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 
   // layout vars
   --navbar-height: 3.6rem;
@@ -210,51 +210,51 @@ html:lang(th) {
 }
 
 :lang(cs) {
-  quotes: "„" "“";
+  quotes: '„' '“';
 }
 
 :lang(de) {
-  quotes: "„" "“";
+  quotes: '„' '“';
 }
 
 :lang(de-CH) {
-  quotes: "« " " »";
+  quotes: '« ' ' »';
 }
 
 :lang(fr) {
-  quotes: "« " " »";
+  quotes: '« ' ' »';
 }
 
 :lang(es-ES) {
-  quotes: "«" "»";
+  quotes: '«' '»';
 }
 
 :lang(hu) {
-  quotes: "„" "“";
+  quotes: '„' '“';
 }
 
 :lang(ja-JP) {
-  quotes: "「" "」";
+  quotes: '「' '」';
 }
 
 :lang(no-NO) {
-  quotes: "«" "»";
+  quotes: '«' '»';
 }
 
 :lang(pl) {
-  quotes: "„" "“";
+  quotes: '„' '“';
 }
 
 :lang(ru) {
-  quotes: "« " " »";
+  quotes: '« ' ' »';
 }
 
 :lang(zh) {
-  quotes: "「" "」";
+  quotes: '「' '」';
 }
 
 :lang(zh-CN) {
-  quotes: "“" "”";
+  quotes: '“' '”';
 }
 
 :lang(ja),
