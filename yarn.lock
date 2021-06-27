@@ -2633,7 +2633,7 @@
     vue "^3.1.2"
     vue-router "^4.0.10"
 
-"@vuepress/plugin-back-to-top@2.0.0-beta.19", "@vuepress/plugin-back-to-top@^2.0.0-beta.17":
+"@vuepress/plugin-back-to-top@2.0.0-beta.19":
   version "2.0.0-beta.19"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-back-to-top/-/plugin-back-to-top-2.0.0-beta.19.tgz#3db1022575007c1a9f90889d369223ee38ea55b3"
   integrity sha512-V7tEKgTsu6Lfr1WRnNVr2hBFA7ggiGm5s3o/dqjSbDuKs68HLIoHJtIzsgkMRdZf9QEPIFiv6TQn06RFPDoo1A==
@@ -2643,7 +2643,7 @@
     ts-debounce "^3.0.0"
     vue "^3.1.1"
 
-"@vuepress/plugin-back-to-top@2.0.0-beta.20":
+"@vuepress/plugin-back-to-top@2.0.0-beta.20", "@vuepress/plugin-back-to-top@^2.0.0-beta.17":
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-back-to-top/-/plugin-back-to-top-2.0.0-beta.20.tgz#5dc12c2a21447541093cfa8ba20b60a3e915233c"
   integrity sha512-99k1CkL91QZSgQzvUBjMoArew1a1JBOiFs1jN2/jzCGRFsgzScp9lQxP0KNgPiOfsdJXAs68NGaUSV423eSdyA==
@@ -9832,7 +9832,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
