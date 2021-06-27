@@ -2785,28 +2785,28 @@
     prismjs "^1.23.0"
 
 "@vuepress/plugin-pwa-popup@^2.0.0-beta.19":
-  version "2.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@vuepress/plugin-pwa-popup/-/plugin-pwa-popup-2.0.0-beta.19.tgz#3abcc9fef53e30559a5b8889afb2985cef7334ae"
-  integrity sha512-wAFJX650KEzHQes07gQXaWZrLGhS5b7E6MnjHwvV0Q2NNYz3JJa6LERVOZfCrQabfJjZFQbQpmTGytCXz6vXUA==
+  version "2.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-pwa-popup/-/plugin-pwa-popup-2.0.0-beta.20.tgz#9027f213ac99244cd40f03539f50844d19113cfb"
+  integrity sha512-UqF5+uQDqA+BIvuC3G2AKjvcUlew6gMEPuqZtwrHOenjkXgsULblV07hxdfq++rVOoE1vRhYY1fqaCSBQc1UjQ==
   dependencies:
-    "@vuepress/client" "2.0.0-beta.19"
-    "@vuepress/core" "2.0.0-beta.19"
-    "@vuepress/plugin-pwa" "2.0.0-beta.19"
-    "@vuepress/shared" "2.0.0-beta.19"
-    "@vuepress/utils" "2.0.0-beta.19"
-    vue "^3.1.1"
+    "@vuepress/client" "2.0.0-beta.20"
+    "@vuepress/core" "2.0.0-beta.20"
+    "@vuepress/plugin-pwa" "2.0.0-beta.20"
+    "@vuepress/shared" "2.0.0-beta.20"
+    "@vuepress/utils" "2.0.0-beta.20"
+    vue "^3.1.2"
 
-"@vuepress/plugin-pwa@2.0.0-beta.19", "@vuepress/plugin-pwa@^2.0.0-beta.19":
-  version "2.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@vuepress/plugin-pwa/-/plugin-pwa-2.0.0-beta.19.tgz#cc3cc73075d8545e0e9776464cc01e5136396f06"
-  integrity sha512-h0UWknPpUZNLSda2OhsG5iLIbeP2oGTdgbRMeImUA1WgsvXvZTI+C9YuSegBkJlSa+Jdz5tgwghC/hoi9fK1Gg==
+"@vuepress/plugin-pwa@2.0.0-beta.20", "@vuepress/plugin-pwa@^2.0.0-beta.19":
+  version "2.0.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-pwa/-/plugin-pwa-2.0.0-beta.20.tgz#7db53a1e9252621fdbad944dea9137e75218f38d"
+  integrity sha512-JF+CfGzjqfnUKWAFlBW/g2xj5DLRHcUK6G1ZnI94Xz5wtb8vWIMPTSyYBO1o1q+MFqyO1xuyPHPTN0LPI0NwSA==
   dependencies:
-    "@vuepress/client" "2.0.0-beta.19"
-    "@vuepress/core" "2.0.0-beta.19"
-    "@vuepress/utils" "2.0.0-beta.19"
-    mitt "^2.1.0"
+    "@vuepress/client" "2.0.0-beta.20"
+    "@vuepress/core" "2.0.0-beta.20"
+    "@vuepress/utils" "2.0.0-beta.20"
+    mitt "^3.0.0"
     register-service-worker "^1.7.2"
-    vue "^3.1.1"
+    vue "^3.1.2"
     workbox-build "^6.1.5"
 
 "@vuepress/plugin-register-components@^2.0.0-beta.19":
@@ -9832,7 +9832,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
@@ -9892,6 +9891,11 @@ mitt@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/mitt/-/mitt-2.1.0.tgz#f740577c23176c6205b121b2973514eade1b2230"
   integrity sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==
+
+mitt@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.0.tgz#69ef9bd5c80ff6f57473e8d89326d01c414be0bd"
+  integrity sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==
 
 mkdirp@1.x, mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
