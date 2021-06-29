@@ -10,7 +10,7 @@
 [![node](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen)](https://nodejs.org/)
 [![types](https://img.shields.io/npm/types/ts)](https://img.shields.io/npm/types/ts)
 
-[English](./README.md) | 日本語
+[English](./README.md) | [简体中文](./README.zh-CN.md) | 日本語
 
 ## ステータス
 
