@@ -58,30 +58,7 @@
               </ul>
             </nav>
           </div>
-          <div class="score">
-            <div class="score-container">
-              <span class="score-title" role="heading"
-                >以上内容对您是否有帮助？</span
-              >
-              <div class="rate-container">
-                <el-rate
-                  show-text
-                  class="docs-rate"
-                  v-model="value"
-                  @change="tips"
-                  :texts="false"
-                  :colors="colors"
-                >
-                </el-rate>
-              </div>
-              <a href="https://support.qq.com/products/321980/">
-                <el-button class="feedback-btn" size="medium" plain="true">
-                  反馈
-                  <i class="el-icon-arrow-right el-icon--right"></i>
-                </el-button>
-              </a>
-            </div>
-          </div>
+          <Grade></Grade>
           <!-- <nav
             class="directory"
             aria-label="原神地图网站目录"
@@ -180,24 +157,13 @@
 
 <script>
 import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
 import { usePageData, usePageFrontmatter } from '@vuepress/client'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
-
 export default {
   setup() {
     const frontmatter = usePageFrontmatter()
     return {
-      value: ref(null),
       anchor: ref(frontmatter.value.anchor ?? true),
-      colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
-      tips: () => {
-        ElMessage({
-          type: 'success',
-          message: '感谢您的反馈！',
-          center: true,
-        })
-      },
     }
   },
   components: {
@@ -227,46 +193,6 @@ $container-border: 1px solid var(--c-border-dark);
     }
   }
 
-  .score {
-    display: flex;
-    margin-top: 30px;
-    padding-bottom: 30px;
-    border-bottom: $container-border;
-    .score-container {
-      margin: auto;
-      text-align: center;
-      box-sizing: border-box;
-      .score-title {
-        font-size: 1.35rem;
-        font-weight: bold;
-      }
-      .rate-container {
-        display: flex;
-        cursor: pointer;
-        width: 100%;
-        height: 50px;
-        margin: 12px 0;
-        .docs-rate {
-          margin: auto;
-          transform: scale(1.4);
-        }
-      }
-      a > .feedback-btn {
-        transform: scale(1.1);
-        background-color: transparent;
-        border: 1.5px solid var(--c-border-dark);
-        transition: all 0.3s;
-        &:hover {
-          & {
-            border-color: #409eff !important;
-          }
-          & > span > i {
-            animation: floating-level 3s linear infinite;
-          }
-        }
-      }
-    }
-  }
   .directory {
     display: flex;
     flex-wrap: nowrap;
@@ -341,10 +267,11 @@ $container-border: 1px solid var(--c-border-dark);
   display: grid;
   place-items: center;
   opacity: 0.7;
-  background-color: var(--c-bg-light);
+  background-color: var(--docs-backtop);
+  border: var(--docs-border);
   &:hover {
     opacity: 1;
-    background-color: var(--c-bg-light) !important;
+    background-color: var(--docs-backtop);
     transition: all 0.3s;
   }
   svg {

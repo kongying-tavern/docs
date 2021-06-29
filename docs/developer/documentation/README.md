@@ -68,7 +68,7 @@ Genshin Map Docs 项目创立于 2021 年六月初。
 | ├─announcement（公告文件目录）
 | ├─.vuepress
 | | ├─clientAppEnhance.ts（https://vuepress2.netlify.app/zh/reference/plugin-api.html#clientappenhancefiles）
-| | ├─utils（工具函数目录，包括 dayjs 的封装）
+| | ├─utils（工具函数目录，包括 dayjs 国际化的配置）
 | | ├─theme（本地主题）
 | | ├─styles（样式目录）
 | | | ├─element-variables.scss（Element-Plus 的样式）
@@ -99,42 +99,6 @@ Genshin Map Docs 项目创立于 2021 年六月初。
 已废弃的 HTML 标签默认不允许在本项目中使用，比如 [`<center>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/center) 和 [`<font>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/font) 等。
 
 这些标签不会被 Vue 模板编译器识别成原生 HTML 标签。相反，Vue 会尝试将这些标签解析为 Vue 组件，而显然这些组件通常是不存在的。
-
-## 参考链接
-
-### `用法类`
-
-- [VuePress-Next](https://vuepress2.netlify.app/zh/)
-  - [Frontmatter 配置](https://vuepress2.netlify.app/zh/reference/default-theme/frontmatter.html)
-  - [内置组件](https://vuepress2.netlify.app/zh/reference/components.html#clientonly)
-- [TypeScript](https://www.typescriptlang.org/zh/)
-- [Jest](https://jestjs.io/zh-Hans/)
-- [ESlint](https://eslint.org/)
-- [TextLint](https://textlint.github.io/)
-- [Prettier](https://prettier.io/docs/en/)
-- [Sass](https://sass-lang.com/)
-- [Axios](https://axios-http.com/)
-- [ElementPlus](https://element-plus.org/#/zh-CN/)
-- [Markdown](https://zh.wikipedia.org/wiki/Markdown)
-  - [将当前页的目录添加到 Markdown 的内容](https://vuepress2.netlify.app/zh/guide/markdown.html#%E7%9B%AE%E5%BD%95)
-  - [Markdown 中引用静态资源](https://vuepress2.netlify.app/zh/guide/assets.html#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90)
-  - [Markdown 中的链接](https://vuepress2.netlify.app/zh/guide/markdown.html#%E9%93%BE%E6%8E%A5)
-  - [Markdown 中的代码块/导入代码块](https://vuepress2.netlify.app/zh/guide/markdown.html#%E4%BB%A3%E7%A0%81%E5%9D%97)
-  - [Markdown 中使用 Emoji](https://vuepress2.netlify.app/zh/guide/markdown.html#emoji)
-  - [Markdown 中使用 Vue3](https://vuepress2.netlify.app/zh/guide/markdown.html#%E5%9C%A8-markdown-%E4%B8%AD%E4%BD%BF%E7%94%A8-vue)
-  - [Markdown 中使用 TeX](./guide/tex.md)
-  - [Markdown 中使用 Presentation](./guide/presentation.md)
-  - [Markdown 中使用 Mermaid](./guide/mermaid.md)
-  - [Markdown 中使用 Task list，Footnote，Custom alignment，Custom Containers，Superscript and Subscript，Markup](./guide/other.md)
-- [Vue3](https://v3.cn.vuejs.org/guide/introduction.html)
-- [ElementPlus-Icon](https://element-plus.org/#/zh-CN/component/icon)
-- [Iconfont-Icon](https://yuanshen.site/docs/20210619/demo_index.html)
-
-### `原理类`
-
-- [VuePress-Next](https://vuepress2.netlify.app/zh/)
-  - [本文档是如何工作的](https://vuepress2.netlify.app/zh/guide#它是如何工作的)
-  - [核心架构](https://vuepress2.netlify.app/zh/advanced/architecture.html)
 
 ## 开发脚本
 
@@ -177,3 +141,39 @@ Genshin Map Docs 项目创立于 2021 年六月初。
 ::: warning
 这里只列出了一部分你可能会用到的，完整命令见根目录下的 package.json 中的 script。
 :::
+
+## 参考链接
+
+### `用法类`
+
+- [VuePress-Next](https://vuepress2.netlify.app/zh/)
+  - [Frontmatter 配置](https://vuepress2.netlify.app/zh/reference/default-theme/frontmatter.html)
+  - [内置组件](https://vuepress2.netlify.app/zh/reference/components.html#clientonly)
+- [TypeScript](https://www.typescriptlang.org/zh/)
+- [Jest](https://jestjs.io/zh-Hans/)
+- [ESlint](https://eslint.org/)
+- [TextLint](https://textlint.github.io/)
+- [Prettier](https://prettier.io/docs/en/)
+- [Sass](https://sass-lang.com/)
+- [Axios](https://axios-http.com/)
+- [ElementPlus](https://element-plus.org/#/zh-CN/)
+- [Markdown](https://zh.wikipedia.org/wiki/Markdown)
+  - [将当前页的目录添加到 Markdown 的内容](https://vuepress2.netlify.app/zh/guide/markdown.html#%E7%9B%AE%E5%BD%95)
+  - [Markdown 中引用静态资源](https://vuepress2.netlify.app/zh/guide/assets.html#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90)
+  - [Markdown 中的链接](https://vuepress2.netlify.app/zh/guide/markdown.html#%E9%93%BE%E6%8E%A5)
+  - [Markdown 中的代码块/导入代码块](https://vuepress2.netlify.app/zh/guide/markdown.html#%E4%BB%A3%E7%A0%81%E5%9D%97)
+  - [Markdown 中使用 Emoji](https://vuepress2.netlify.app/zh/guide/markdown.html#emoji)
+  - [Markdown 中使用 Vue3](https://vuepress2.netlify.app/zh/guide/markdown.html#%E5%9C%A8-markdown-%E4%B8%AD%E4%BD%BF%E7%94%A8-vue)
+  - [Markdown 中使用 TeX](./guide/tex.md)
+  - [Markdown 中使用 Presentation](./guide/presentation.md)
+  - [Markdown 中使用 Mermaid](./guide/mermaid.md)
+  - [Markdown 中使用 Task list，Footnote，Custom alignment，Custom Containers，Superscript and Subscript，Markup](./guide/other.md)
+- [Vue3](https://v3.cn.vuejs.org/guide/introduction.html)
+- [ElementPlus-Icon](https://element-plus.org/#/zh-CN/component/icon)
+- [Iconfont-Icon](https://yuanshen.site/docs/20210619/demo_index.html)
+
+### `原理类`
+
+- [VuePress-Next](https://vuepress2.netlify.app/zh/)
+  - [本文档是如何工作的](https://vuepress2.netlify.app/zh/guide#它是如何工作的)
+  - [核心架构](https://vuepress2.netlify.app/zh/advanced/architecture.html)

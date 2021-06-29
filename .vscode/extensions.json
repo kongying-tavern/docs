@@ -12,6 +12,7 @@
     "antfu.vite",
     "antfu.iconify",
     "antfu.where-am-i",
-    "vivaxy.vscode-conventional-commits"
+    "vivaxy.vscode-conventional-commits",
+    "davidanson.vscode-markdownlint"
   ]
 }

@@ -3,8 +3,8 @@
     <a
       v-for="item in items"
       :key="item.cover"
-      href="javascript:void(0)"
-      :title="'通过' + item.title + '支持我们'"
+      :href="'#' + item.title"
+      :title="item.title"
     >
       <el-image
         class="pay-img"
@@ -31,13 +31,13 @@ export default defineComponent({
         qrCode: '/20210617/a8-wechatpay.jpg',
       },
       {
-        title: 'Alipay Pay',
+        title: 'Alipay',
         name: 'WeChatPay',
         cover: '/20210614/alipay-pay.png',
         qrCode: '/20210617/a8-alipay.png',
       },
       {
-        title: 'Paypal Pay',
+        title: 'Paypal',
         cover: '/20210614/paypal.png',
         qrCode: '/20210617/a8-paypal.png',
       },
@@ -47,7 +47,7 @@ export default defineComponent({
         qrCode: '/20210617/a8-qqpay.jpg',
       },
       {
-        title: 'ETH Pay',
+        title: 'ETH',
         cover: '/20210614/ETH.png',
         qrCode: '/20210617/A8-ethpay.png',
       },
@@ -62,17 +62,23 @@ export default defineComponent({
 <style lang="scss" scoped>
 .onetime-sponsorship {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   align-items: stretch;
-  .pay-img {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    transform: scale(0.6);
+  a,
+  .pay-img,
+  img {
+    margin: auto;
+    width: 120px;
   }
-  @media only screen and (max-width: 980px) {
-    .pay-img {
-      transform: scale(0.8);
+  @media only screen and (max-width: 780px) {
+    a,
+    .pay-img,
+    img {
+      display: grid;
+      place-items: center;
+      margin: auto 20px auto 0;
+      width: 100px;
     }
   }
 }

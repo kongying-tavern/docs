@@ -18,21 +18,3 @@ features:
     details: 您可以通过原神地图客户端获得所有功能 - 性能、和速度，使查找点位变得更加轻松。
 footer: Chinese hoyolabMade By Kongying Tavern
 ---
-
-::: center
-
-### 视频介绍
-
-<iframe src="//player.bilibili.com/player.html?aid=673547168&bvid=BV1uU4y157Te&cid=353095751&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="video"> </iframe>
-
-:::
-
-<style lang="scss" scoped>
-
-.video {
-  width: 80%;
-  height: 450px;
-  margin-top: 30px;
-}
-
-</style>

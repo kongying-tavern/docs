@@ -49,12 +49,16 @@ instance.interceptors.response.use(
   }
 )
 
-const tips = (message: string | VNode, type?: MessageType) => {
+const tips = (
+  message: string | VNode,
+  type: MessageType = 'warning',
+  isCenter: boolean = true
+) => {
   const thisElMessage = ElMessage({
     duration: 3000,
-    center: true,
+    center: isCenter,
     offset: 20,
-    type: type || 'warning',
+    type: type,
     message,
     customClass: 'axios_elMessage',
     showClose: true,

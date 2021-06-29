@@ -1,3 +1,4 @@
+<script lang="ts">
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 import { defineComponent, h, onMounted, ref } from 'vue'
 import * as screenfull from 'screenfull'
@@ -31,9 +32,11 @@ export default defineComponent({
                     isFullscreen.value = (screenfull as Screenfull).isFullscreen
                   })
               },
-            },
-            h(isFullscreen.value ? '全屏' : '退出全屏')
+            }
+            // todo 全屏按钮的样式
+            // h(isFullscreen.value ? :)
           )
         : null
   },
 })
+</script>

@@ -3,8 +3,8 @@ import { usePageData, useRouteLocale } from '@vuepress/client'
 import type { PageData, RouteLocale } from '@vuepress/client'
 import { log } from './utils'
 import ElementPlus from 'element-plus'
-import './utils/date'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
+import './utils/date'
 import './styles/element-variables.scss'
 
 export default defineClientAppEnhance(async ({ app, router, siteData }) => {
