@@ -5,7 +5,7 @@ import { path } from '@vuepress/utils'
 
 const rootPath = config.default.host + config.default.root_path
 const isProd = process.env.NODE_ENV === 'production'
-
+const CSP = `default-src "none"; base-uri "none"; connect-src https:; font-src data: https://at.alicdn.com https://cdn.sencdn.com; form-action "none"; frame-src https://*.retiehe.com; img-src https://cdn.jsdelivr.net "self" data: https:; manifest-src "self"; media-src "self" https://cdn.jsdelivr.net; script-src "self" "unsafe-eval" https://rth.limestart.cn https://cdn.jsdelivr.net https://cdn.sencdn.com https://widget.seniverse.com https://www.google-analytics.com https://polyfill.io; style-src "self" "unsafe-inline" https://cdn.jsdelivr.net; worker-src "self"`
 module.exports = defineUserConfig<DefaultThemeOptions>({
   bundler: '@vuepress/webpack', // Vite 仍然存在兼容问题和奇怪的Bug, 无法使用。
   bundlerConfig: {
@@ -22,7 +22,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       {
         name: 'viewport',
         content:
-          'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover',
+          'width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover',
       },
     ],
     ['meta', { name: 'renderer', content: config.default.defaultRenderer }],
@@ -34,14 +34,6 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
     [
       'meta',
       { name: 'msapplication-titleColor', content: config.default.themeColor },
-    ],
-    ['meta', { name: 'theme-color', content: config.default.themeColor }],
-    [
-      'meta',
-      {
-        name: 'msappdivcation-navbutton-color',
-        content: config.default.themeColor,
-      },
     ],
     [
       'meta',
@@ -78,6 +70,13 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       {
         crossOrigin: 'anonymous',
         src: 'https://at.alicdn.com/t/font_2601360_kwt9b79krqc.js',
+      },
+    ],
+    [
+      'script',
+      {
+        crossOrigin: 'anonymous',
+        src: 'https://polyfill.io/v3/polyfill.min.js?features=%7Ehtml5-elements%2CCSS.supports%2ClocalStorage%2Cdefault%2Ces6%2Ces2015%2Ces2016%2CElement.prototype.scroll%2CElement.prototype.scrollBy%2CglobalThis%2Cfetch%2CURLSearchParams',
       },
     ],
   ],
@@ -140,11 +139,11 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
             children: [
               {
                 text: '一次性赞助',
-                link: './support-us.md',
+                link: '/support-us.md',
               },
               {
                 text: '周期性赞助',
-                link: './support-us.md#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%B5%9E%E5%8A%A9',
+                link: '/support-us.md#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%B5%9E%E5%8A%A9',
               },
             ],
           },
@@ -169,7 +168,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: '免责声明',
-                    link: './disclaimer.md',
+                    link: '/disclaimer.md',
                   },
                 ],
               },
@@ -178,19 +177,19 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: '加入讨论组',
-                    link: './communication-group.md',
+                    link: '/communication-group.md',
                   },
                   {
                     text: '下载客户端',
-                    link: './download-client.md',
+                    link: '/download-client.md',
                   },
                   {
                     text: '加入我们',
-                    link: './join.md',
+                    link: '/join.md',
                   },
                   {
                     text: '贡献指南',
-                    link: './contributing.md',
+                    link: '/contributing.md',
                   },
                 ],
               },
@@ -199,15 +198,15 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: '贡献鸣谢',
-                    link: './contribution.md',
+                    link: '/contribution.md',
                   },
                   {
                     text: '赞助鸣谢',
-                    link: './support-us.md#赞助鸣谢',
+                    link: '/support-us.md#赞助鸣谢',
                   },
                   {
                     text: '技术鸣谢',
-                    link: './credits.md',
+                    link: '/credits.md',
                   },
                 ],
               },
@@ -242,11 +241,11 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
             children: [
               {
                 text: 'One Time Donation',
-                link: './support-us.md',
+                link: '/en/support-us.md',
               },
               {
                 text: 'Weekly Donations',
-                link: './support-us.md#weekly-donations',
+                link: '/en/support-us.md#weekly-donations',
               },
             ],
           },
@@ -271,7 +270,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: 'Disclaimer',
-                    link: './disclaimer.md',
+                    link: '/en/disclaimer.md',
                   },
                 ],
               },
@@ -280,7 +279,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: 'Download client',
-                    link: './download-client.md',
+                    link: '/en/download-client.md',
                   },
                   {
                     text: 'Join us',
@@ -288,7 +287,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                   },
                   {
                     text: 'Contributing Guide',
-                    link: './contributing.md',
+                    link: '/en/contributing.md',
                   },
                 ],
               },
@@ -297,15 +296,15 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: 'Contribution',
-                    link: './contribution.md',
+                    link: '/en/contribution.md',
                   },
                   {
                     text: 'Sponsor',
-                    link: './support-us.md',
+                    link: '/en/support-us.md',
                   },
                   {
-                    text: 'Technical',
-                    link: './credits.md',
+                    text: 'Credits',
+                    link: '/en/credits.md',
                   },
                 ],
               },
@@ -340,11 +339,11 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
             children: [
               {
                 text: '1回限りのスポンサーシップ',
-                link: './support-us.md',
+                link: '/ja/support-us.md',
               },
               {
                 text: '定期的なスポンサーシップ',
-                link: './support-us.md#weekly-donations',
+                link: '/ja/support-us.md#weekly-donations',
               },
             ],
           },
@@ -369,7 +368,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: '免責事項',
-                    link: './disclaimer.md',
+                    link: '/ja/disclaimer.md',
                   },
                 ],
               },
@@ -378,7 +377,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: 'マップ クライアントをダウンロードする',
-                    link: './download-client.md',
+                    link: '/ja/download-client.md',
                   },
                   {
                     text: 'リクルート',
@@ -386,7 +385,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                   },
                   {
                     text: '投稿ガイド',
-                    link: './contributing.md',
+                    link: '/ja/contributing.md',
                   },
                 ],
               },
@@ -395,15 +394,15 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                 children: [
                   {
                     text: '貢献',
-                    link: './contribution.md',
+                    link: '/ja/contribution.md',
                   },
                   {
                     text: 'スポンサー',
-                    link: './support-us.md',
+                    link: '/ja/support-us.md',
                   },
                   {
                     text: 'テクニカル',
-                    link: './credits.md',
+                    link: '/ja/credits.md',
                   },
                 ],
               },
