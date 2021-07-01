@@ -1,11 +1,12 @@
 import { defineUserConfig } from 'vuepress'
 import * as config from './config'
-import type { DefaultThemeOptions } from 'vuepress'
 import { path } from '@vuepress/utils'
 
-const rootPath = config.default.host + config.default.root_path
+import type { DefaultThemeOptions } from 'vuepress'
+
+const rootPath = config.default.host + config.default.path
 const isProd = process.env.NODE_ENV === 'production'
-const CSP = `default-src "none"; base-uri "none"; connect-src https:; font-src data: https://at.alicdn.com https://cdn.sencdn.com; form-action "none"; frame-src https://*.retiehe.com; img-src https://cdn.jsdelivr.net "self" data: https:; manifest-src "self"; media-src "self" https://cdn.jsdelivr.net; script-src "self" "unsafe-eval" https://rth.limestart.cn https://cdn.jsdelivr.net https://cdn.sencdn.com https://widget.seniverse.com https://www.google-analytics.com https://polyfill.io; style-src "self" "unsafe-inline" https://cdn.jsdelivr.net; worker-src "self"`
+
 module.exports = defineUserConfig<DefaultThemeOptions>({
   bundler: '@vuepress/webpack', // Vite 仍然存在兼容问题和奇怪的Bug, 无法使用。
   bundlerConfig: {
@@ -13,7 +14,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
   },
   dest: 'dist',
   public: 'public',
-  base: config.default.root_path,
+  base: config.default.path,
   theme: path.resolve(__dirname, './docs/.vuepress/theme/'),
   head: [
     ['meta', { name: 'charset', content: 'utf-8' }],
@@ -170,6 +171,14 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                     text: '免责声明',
                     link: '/disclaimer.md',
                   },
+                  {
+                    text: '隐私政策',
+                    link: '/privacy.md',
+                  },
+                  {
+                    text: '用户协议',
+                    link: '/agreement.md',
+                  },
                 ],
               },
               {
@@ -272,6 +281,14 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                     text: 'Disclaimer',
                     link: '/en/disclaimer.md',
                   },
+                  {
+                    text: 'Privacy',
+                    link: '/en/privacy.md',
+                  },
+                  {
+                    text: 'User Agreement',
+                    link: '/en/agreement.md',
+                  },
                 ],
               },
               {
@@ -370,6 +387,14 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
                     text: '免責事項',
                     link: '/ja/disclaimer.md',
                   },
+                  {
+                    text: 'プライバシー',
+                    link: '/ja/privacy.md',
+                  },
+                  {
+                    text: 'ユーザー規約',
+                    link: '/ja/agreement.md',
+                  },
                 ],
               },
               {
@@ -462,7 +487,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
         },
       },
     ],
-    // todo 等待什么时候可以白嫖了, 再解开封印
+    // todo
     // [
     //   '@vuepress/docsearch',
     //   {
@@ -529,6 +554,9 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       'md-enhance',
       {
         enableAll: true,
+        tex: {
+          strict: 'ignore',
+        },
         presentation: {
           plugins: [
             'highlight',
@@ -543,17 +571,9 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
         },
       },
     ],
-
-    [
-      'add-this',
-      false,
-      // {
-      //   pubid: config.default.pubid,
-      // },
-    ],
     ['photo-swipe'],
     [
-      'vuepress-plugin-lightgallery',
+      'lightgallery',
       false,
       // {
       //   plugins: [
