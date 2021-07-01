@@ -1,0 +1,12 @@
+img.logo {
+  border-radius: 5px;
+}
+
+// .hero {
+//   height: calc(100vh - 105px);
+// }
+
+.hero > img {
+  border-radius: 26px;
+  transform: scale(0.7);
+}

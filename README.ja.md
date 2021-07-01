@@ -16,6 +16,23 @@
 
 W.I.P.
 
+## 開発
+
+```base
+# install dependencies
+
+yarn
+
+# run in dev mode
+
+cd yuanshenmap-docs
+yarn docs:dev
+
+# run in build
+
+yarn docs:build2
+```
+
 ## 資料
 
 こちら [Documentation](https://yuanshen.site/docs/developer/documentation).

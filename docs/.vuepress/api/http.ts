@@ -1,9 +1,10 @@
 import axios, { AxiosInstance } from 'axios'
-import type { VNode } from 'vue'
 import { ElMessage } from 'element-plus'
-import type { MessageType } from 'element-plus/lib/el-message/src/types'
 import NProgress from 'NProgress'
 import qs from 'qs'
+
+import type { MessageType } from 'element-plus/lib/el-message/src/types'
+import type { VNode } from 'vue'
 
 const instance: AxiosInstance = axios.create({
   timeout: 5000,

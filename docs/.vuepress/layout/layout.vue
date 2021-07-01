@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template #page-top>
-      <Toc v-show="anchor" class="docs-anchor" />
+      <Anchor v-show="anchor"></Anchor>
       <el-tooltip
         effect="dark"
         :enterable="false"
@@ -59,95 +59,6 @@
             </nav>
           </div>
           <Grade></Grade>
-          <!-- <nav
-            class="directory"
-            aria-label="原神地图网站目录"
-            role="navigation"
-          >
-            <div class="directory-item">
-              <div class="directory-heading" role="heading" aria-label="4">
-                了解我们
-              </div>
-              <ul>
-                <li>
-                  <a href="https://support.qq.com/products/321980/team/"
-                    >关于我们</a
-                  >
-                </li>
-                <li>
-                  <a href="https://yuanshen.site/docs/join.html">加入我们</a>
-                </li>
-                <li>
-                  <a href="https://yuanshen.site/docs/support-us.html"
-                    >赞助我们</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="directory-item">
-              <div class="directory-heading" role="heading" aria-label="4">
-                相关信息
-              </div>
-              <ul>
-                <li>
-                  <a href="https://yuanshen.site/docs/privacy.html">隐私政策</a>
-                </li>
-                <li>
-                  <a href="https://yuanshen.site/docs/disclaimer.html"
-                    >免责声明</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="https://yuanshen.site/docs/announcement/Identify-fraud.html"
-                    >识别诈骗</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="directory-item">
-              <div class="directory-heading" role="heading" aria-label="4">
-                开发人员
-              </div>
-              <ul>
-                <li>
-                  <a href="https://yuanshen.site/docs/developer/documentation/"
-                    >前端文档</a
-                  >
-                </li>
-                <li><a href="#">素材下载</a></li>
-                <li>
-                  <a
-                    href="https://yuanshen.site/docs/developer/documentation/spec/"
-                    >文档规范</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="friendlink">
-              <div class="friendlink-heading" role="heading" aria-label="4">
-                友情链接
-              </div>
-              <ul>
-                <li>
-                  <a
-                    href="https://www.mona-uranai.com/"
-                    target="_blank"
-                    title="莫娜占卜铺"
-                    >莫娜占卜铺</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="https://genshin.pub/"
-                    target="_blank"
-                    title="可莉特调"
-                    >可莉特调</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </nav> -->
           <div class="docs-info">Chinese hoyolab Made By Kongying Tavern</div>
         </div>
       </footer>
@@ -162,6 +73,7 @@ import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 export default {
   setup() {
     const frontmatter = usePageFrontmatter()
+    console.log(frontmatter.value)
     return {
       anchor: ref(frontmatter.value.anchor ?? true),
     }
@@ -276,41 +188,6 @@ $container-border: 1px solid var(--c-border-dark);
   }
   svg {
     filter: var(--docs-icon);
-  }
-}
-
-.docs-anchor {
-  position: fixed;
-  top: 115px;
-  right: 20px;
-  ul {
-    list-style: none;
-    font-size: 12px;
-    max-width: 125px;
-    min-width: 92px;
-    max-height: 80vh;
-    border-left: 1px solid var(--c-border-dark);
-    margin: 0;
-    li {
-      a {
-        color: var(--text-color);
-        opacity: 0.85;
-        &:hover {
-          opacity: 1;
-          color: var(--c-text-accent);
-          transition: all 0.3s;
-        }
-      }
-      a.router-link-active.active {
-        color: var(--c-text-accent);
-      }
-      &:not(:last-child) {
-        margin-bottom: 4px;
-      }
-      ul {
-        display: none;
-      }
-    }
   }
 }
 

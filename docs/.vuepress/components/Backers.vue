@@ -178,7 +178,7 @@ export default defineComponent({
     }
 
     span.el-avatar {
-      background-color: var(--avatar-bg);
+      background-color: var(--docs-avatar-bg);
     }
   }
 }

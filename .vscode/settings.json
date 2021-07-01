@@ -32,6 +32,7 @@
     "slugify",
     "unmount",
     "vuepress",
+    "yuanshenmap",
     "zoomable"
   ],
   // Use the project's typescript version

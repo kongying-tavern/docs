@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export default {
   host: process.env.DOCS_HOST || 'https://yuanshen.site',
-  root_path: process.env.DOCS_PATH || '/docs/',
+  path: process.env.DOCS_PATH || '/docs/',
   path_ja: process.env.DOCS_PATH_JA || '/docs/ja/',
   path_en: process.env.DOCS_PATH_EN || '/docs/en/',
   logo: process.env.DOCS_LOGO || 'logo.jpg',

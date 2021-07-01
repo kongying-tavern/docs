@@ -1,0 +1,13 @@
+@import 'config';
+
+header.navbar {
+  background-color: var(--#{$my-namespace}-navbar);
+  box-shadow: var(--#{$my-namespace}-box-shadow);
+  backdrop-filter: saturate(180%) blur(20px);
+  transition: background-color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+  pointer-events: auto;
+  // 隐藏顶导航上的外域链接图标
+  .navbar-links-wrapper > nav > div > a > span > svg.icon.outbound {
+    display: none;
+  }
+}

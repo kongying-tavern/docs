@@ -43,6 +43,8 @@ export default defineComponent({
         ElMessage({
           type: 'success',
           message: '感谢您的反馈！',
+          duration: 0,
+          showClose: true,
           center: true,
         })
       },
@@ -78,7 +80,7 @@ $container-border: 1px solid var(--c-border-dark);
         transform: scale(1.4);
       }
     }
-    a > .feedback-btn {
+    .feedback-btn {
       transform: scale(1.1);
       background-color: transparent;
       border: 1.5px solid var(--c-border-dark);
@@ -89,7 +91,8 @@ $container-border: 1px solid var(--c-border-dark);
           border-color: #409eff !important;
         }
         & > span > i {
-          animation: floating-level 3s linear infinite;
+          transform: translate3d(5px, 0, 0);
+          transition: transform 0.3s;
         }
       }
     }
