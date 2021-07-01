@@ -537,10 +537,10 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       },
     ],
     [
-      'feed2',
-      {
-        hostname: config.default.host,
-      },
+      'feed2',false
+//       {
+//         hostname: config.default.host,
+//       },
     ],
     [
       'seo2',
