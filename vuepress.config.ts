@@ -1,11 +1,13 @@
 import { defineUserConfig } from 'vuepress'
-import * as config from './config'
+import { CONFIG } from './config'
 import { path } from '@vuepress/utils'
 
 import type { DefaultThemeOptions } from 'vuepress'
 
-const rootPath = config.default.host + config.default.path
+const rootPath = CONFIG.HOST + CONFIG.PATH
 const isProd = process.env.NODE_ENV === 'production'
+
+console.log('isProd:', isProd)
 
 module.exports = defineUserConfig<DefaultThemeOptions>({
   bundler: '@vuepress/webpack', // Vite 仍然存在兼容问题和奇怪的Bug, 无法使用。
@@ -14,7 +16,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
   },
   dest: 'dist',
   public: 'public',
-  base: config.default.path,
+  base: CONFIG.PATH,
   theme: path.resolve(__dirname, './docs/.vuepress/theme/'),
   head: [
     ['meta', { name: 'charset', content: 'utf-8' }],
@@ -26,16 +28,10 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
           'width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover',
       },
     ],
-    ['meta', { name: 'renderer', content: config.default.defaultRenderer }],
-    [
-      'meta',
-      { name: 'force-rendering', content: config.default.defaultRenderer },
-    ],
+    ['meta', { name: 'renderer', content: CONFIG.RENDERER }],
+    ['meta', { name: 'force-rendering', content: CONFIG.RENDERER }],
     ['meta', { name: 'applicable-device', content: 'pc,mobile' }],
-    [
-      'meta',
-      { name: 'msapplication-titleColor', content: config.default.themeColor },
-    ],
+    ['meta', { name: 'msapplication-titleColor', content: CONFIG.THEME_COLOR }],
     [
       'meta',
       {
@@ -44,26 +40,20 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       },
     ],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
-    [
-      'meta',
-      { name: 'apple-mobile-web-app-title', content: config.default.site_name },
-    ],
+    ['meta', { name: 'apple-mobile-web-app-title', content: CONFIG.SITE_NAME }],
     ['meta', { name: 'format-detection', content: 'telephone=no' }],
     ['meta', { name: 'google', content: 'notranslate' }],
-    ['meta', { name: 'twitter:image', content: config.default.cover }],
-    ['meta', { itemprop: 'image', content: config.default.cover }],
-    ['link', { rel: 'manifest', href: 'manifest.webmanifest' }],
-    [
-      'link',
-      { rel: 'apple-touch-icon', href: config.default.apple_touch_icon },
-    ],
-    ['link', { rel: 'shortcut icon', href: config.default.favicon }],
+    ['meta', { name: 'twitter:image', content: CONFIG.COVER }],
+    ['meta', { itemprop: 'image', content: CONFIG.COVER }],
+    ['link', { rel: 'manifest', href: CONFIG.PATH + '/manifest.webmanifest' }],
+    ['link', { rel: 'apple-touch-icon', href: CONFIG.APP_TOUCH_ICON }],
+    ['link', { rel: 'shortcut icon', href: CONFIG.FAVICON }],
     [
       'link',
       {
         rel: 'mask-icon',
-        href: rootPath + config.default.mask_icon,
-        color: config.default.themeColor,
+        href: rootPath + CONFIG.MASK_ICON,
+        color: CONFIG.THEME_COLOR,
       },
     ],
     [
@@ -84,25 +74,25 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
   locales: {
     '/': {
       lang: 'zh-Hans-CN',
-      title: config.default.site_name,
-      description: config.default.description,
+      title: CONFIG.SITE_NAME,
+      description: CONFIG.DESCRIPTION,
     },
     '/en/': {
       lang: 'en-US',
-      title: config.default.site_name_en,
-      description: config.default.description_en,
+      title: CONFIG.SITE_NAME_EN,
+      description: CONFIG.DESCRIPTION_EN,
     },
     '/ja/': {
       lang: 'ja-JP',
-      title: config.default.site_name_ja,
-      description: config.default.description_ja,
+      title: CONFIG.DESCRIPTION_JA,
+      description: CONFIG.DESCRIPTION_JA,
     },
   },
   themeConfig: {
-    repo: config.default.repo,
+    repo: CONFIG.REPO,
     repoLabel: 'Gitee',
     docsBranch: 'master',
-    docsRepo: config.default.repo_docs,
+    docsRepo: CONFIG.REPO_DOCS,
     docsDir: 'docs',
     editLinkPattern: ':repo/edit/:branch/:path',
     themePlugins: {
@@ -441,7 +431,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
     [
       '@vuepress/google-analytics',
       {
-        id: config.default.analytics_id,
+        id: CONFIG.ANALYTICS_ID,
       },
     ],
     [
@@ -473,7 +463,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       '@vuepress/plugin-search',
       {
         maxSuggestions: 5,
-        // hotKeys: ['s', '/'],
+        hotKeys: ['s', '/'],
         locales: {
           '/en/': {
             placeholder: 'Search',
@@ -532,22 +522,23 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
     [
       'sitemap2',
       {
-        hostname: config.default.host,
+        hostname: CONFIG.HOST,
         exclude: [],
       },
     ],
     [
-      'feed2',false
-//       {
-//         hostname: config.default.host,
-//       },
+      'feed2',
+      false,
+      //       {
+      //         hostname: CONFIG.host,
+      //       },
     ],
     [
       'seo2',
       {
-        author: config.default.author,
-        twitterID: config.default.twitterID,
-        restrictions: config.default.restrictions,
+        author: CONFIG.AUTHOR,
+        twitterID: CONFIG.TWITTER_ID,
+        restrictions: CONFIG.RESTRICTIONS,
       },
     ],
     [
