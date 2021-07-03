@@ -13,7 +13,7 @@ anchor: false
 
 ### 点位贡献
 
-铃，Minazuki*Chocola，丘丘人保护协会，AAAAAAAA，(\^*^\)
+铃，Minazuki\*Chocola，丘丘人保护协会，AAAAAAAA，(\^\_^\)
 
 等等...
 

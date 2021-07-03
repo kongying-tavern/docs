@@ -8,8 +8,8 @@
         content="回到顶部"
         placement="left-start"
       >
-        <el-backtop :visibility-height="200" :right="50" class="docs-backtop">
-          <svg class="iconfont-icon" aria-hidden="true" style="width: 28px">
+        <el-backtop :visibility-height="300" :right="30" class="docs-backtop">
+          <svg class="iconfont-icon" aria-hidden="true" style="width: 29px">
             <use xlink:href="#docs-gotop"></use>
           </svg>
         </el-backtop>
@@ -200,28 +200,6 @@ $container-border: 1px solid var(--c-border-dark);
 @media only screen and (max-width: 980px) {
   .docs-backtop {
     display: none;
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes floating-level {
-  25% {
-    transform: translateX(4px);
-  }
-  50%,
-  100% {
-    transform: translateX(0);
-  }
-  75% {
-    transform: translateX(4px);
   }
 }
 </style>

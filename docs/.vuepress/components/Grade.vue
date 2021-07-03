@@ -5,20 +5,13 @@
       <div class="rate-container">
         <el-rate
           v-model="value"
-          show-text
           class="docs-rate"
-          :texts="false"
           :colors="colors"
-          @change="tips"
+          @change="rateChange"
         >
         </el-rate>
       </div>
-      <el-button
-        class="feedback-btn"
-        size="medium"
-        plain="true"
-        @click="feedback"
-      >
+      <el-button class="feedback-btn" size="medium" @click="feedback">
         反馈
         <i class="el-icon-arrow-right el-icon--right"></i>
       </el-button>
@@ -27,27 +20,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { ElMessage } from 'element-plus'
+import { defineComponent, ref, nextTick } from 'vue'
 import { feedback } from '../utils'
+
 export default defineComponent({
   name: 'Grade',
   setup() {
     return {
       value: ref(null),
       colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
+      rate: ref(null),
       feedback: () => {
         feedback()
       },
-      tips: () => {
-        ElMessage({
-          type: 'success',
-          message: '感谢您的反馈！',
-          duration: 0,
-          showClose: true,
-          center: true,
-        })
-      },
+      rateChange: () => {},
     }
   },
 })

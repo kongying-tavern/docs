@@ -1,5 +1,5 @@
 <template>
-  <div class="onetime-sponsorship">
+  <div class="onetime-sponsorship" v-once>
     <div class="onetime-sponsorship-qrcodepay" v-show="!isSafari">
       <a
         v-for="item in items"

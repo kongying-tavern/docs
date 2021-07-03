@@ -1,6 +1,6 @@
 <template>
-  <div class="backers">
-    <el-space :size="medium" wrap>
+  <div class="backers" v-once>
+    <el-space :size="12" :wrap="true">
       <a
         v-for="(item, index) in items"
         :aria-label="item.name"
@@ -10,8 +10,8 @@
       >
         <el-avatar
           shape="circle"
+          size="large"
           :alt="item.name"
-          :size="medium"
           :src="item.portrait"
         >
           {{ item.name.substring(0, 3).toLocaleUpperCase() }}
