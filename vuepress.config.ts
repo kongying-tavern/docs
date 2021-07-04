@@ -1,7 +1,7 @@
 import { defineUserConfig } from 'vuepress'
 import { CONFIG } from './config'
 import { path } from '@vuepress/utils'
-
+import config from './webpack.config'
 import type { DefaultThemeOptions } from 'vuepress'
 
 const rootPath = CONFIG.HOST + CONFIG.PATH
@@ -10,9 +10,10 @@ const isProd = process.env.NODE_ENV === 'production'
 console.log('isProd:', isProd)
 
 module.exports = defineUserConfig<DefaultThemeOptions>({
-  bundler: '@vuepress/webpack', // Vite 仍然存在兼容问题和奇怪的Bug, 无法使用。
+  bundler: '@vuepress/webpack',
   bundlerConfig: {
     // ...viteCompilerOptions,
+    ...config,
   },
   dest: 'dist',
   public: 'public',
@@ -525,13 +526,6 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
         hostname: CONFIG.HOST,
         exclude: [],
       },
-    ],
-    [
-      'feed2',
-      false,
-      //       {
-      //         hostname: CONFIG.host,
-      //       },
     ],
     [
       'seo2',

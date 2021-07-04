@@ -31,9 +31,10 @@
   "scripts": {
     "build": "tsc --build",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "npx kaomo",
+    "docs:build": "vuepress build docs",
     "docs:build2": "vuepress build docs",
     "docs:serve": "npx http-server ./dist -b",
+    "analyze": "cross-env NODE_ENV=production npm_config_report=true yarn run docs:build2",
     "commit": "npx git-cz",
     "lint": "yarn lint:prettier --write && yarn lint:eslint --fix",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
@@ -89,6 +90,8 @@
     "@types/node": "^15.12.5",
     "@types/nprogress": "^0.2.0",
     "@types/semver": "^7.3.6",
+    "@types/webpack": "^5.28.0",
+    "@types/webpack-bundle-analyzer": "^4.4.1",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
@@ -155,12 +158,13 @@
     "ts-jest": "^27.0.3",
     "typescript": "^4.3.5",
     "vuepress": "^2.0.0-beta.20",
-    "vuepress-plugin-feed2": "^2.0.0-alpha.5",
     "vuepress-plugin-md-enhance": "^2.0.0-alpha.5",
     "vuepress-plugin-photo-swipe": "^2.0.0-alpha.5",
     "vuepress-plugin-seo2": "^2.0.0-alpha.5",
     "vuepress-plugin-sitemap2": "^2.0.0-alpha.5",
-    "vuepress-vite": "^2.0.0-beta.18"
+    "vuepress-vite": "^2.0.0-beta.18",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.7.2"
   },
   "resolutions": {},
   "dependencies": {

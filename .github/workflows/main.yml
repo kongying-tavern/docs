@@ -2,7 +2,9 @@ name: CD
 
 on:
   push:
-    branches: ['**']
+    branches: [$default-branch]
+    paths-ignore:
+      - '/*.md'
   pull_request:
     branches: [$default-branch]
 
