@@ -26,10 +26,10 @@ export default defineClientAppEnhance(async ({ app, router, siteData }) => {
   app.use(ElementPlus, { locale })
   log('原神地图', 'Docs', [
     {
-      VuePressCore: globalThis.__VERSION__,
+      VuePressCore: __VERSION__,
       VueVersion: app.version,
-      isDEV: globalThis.__DEV__,
-      isSSR: globalThis.__SSR__,
+      isDEV: __DEV__,
+      isSSR: __SSR__,
     },
   ])
   console.log(

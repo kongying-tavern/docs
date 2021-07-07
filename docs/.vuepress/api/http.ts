@@ -22,18 +22,27 @@ instance.interceptors.request.use(
   },
   (error) => {
     const response = error.response
-    let result = 'null'
+    let errorMessage = ''
     switch (response?.status) {
-      case 403:
-        result = '无权限'
+      case 401:
+        errorMessage = '未授权，请重新登录。'
         break
+      case 403:
+        errorMessage = '拒绝访问。'
+        break
+      case 404:
+        errorMessage = '请求错误，未找到该资源。'
       case 500:
-        result = '服务器错误'
+        errorMessage = '服务器错误。'
+        break
+      case 504:
+        errorMessage = '网络超时。'
         break
       default:
+        errorMessage = `⚠️请求错误 ${response.status}}`
         break
     }
-    tips(result, 'error')
+    tips(errorMessage, 'error')
     return Promise.reject(error)
   }
 )
@@ -64,7 +73,7 @@ const tips = (
     customClass: 'axios_elMessage',
     showClose: true,
     onClose: () => {
-      console.log('close', thisElMessage)
+      console.log('close', this)
     },
   })
   return thisElMessage

@@ -4,17 +4,18 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+
 export default defineComponent({
   name: 'Anchor',
 })
 </script>
 
 <style lang="scss">
-.docs-anchor {
+.vuepress-toc.docs-anchor {
   position: fixed;
   top: 115px;
   right: 20px;
-  ul {
+  ul.vuepress-toc-list {
     list-style: none;
     font-size: 12px;
     max-width: 125px;
@@ -22,7 +23,7 @@ export default defineComponent({
     max-height: 80vh;
     border-left: 1px solid var(--c-border-dark);
     margin: 0;
-    li {
+    li.vuepress-toc-item {
       a {
         color: var(--text-color);
         opacity: 0.85;
@@ -38,10 +39,16 @@ export default defineComponent({
       &:not(:last-child) {
         margin-bottom: 4px;
       }
-      ul {
+      &:empty,
+      & > .vuepress-toc-list {
         display: none;
       }
     }
   }
+}
+
+ul.vuepress-toc-list > li.vuepress-toc-item:nth-last-child(1):first-child {
+  // 只有一个item时隐藏
+  display: none;
 }
 </style>

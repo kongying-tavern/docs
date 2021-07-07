@@ -2,18 +2,17 @@ import { defineUserConfig } from 'vuepress'
 import { CONFIG } from './config'
 import { path } from '@vuepress/utils'
 
+import type { ViteBundlerOptions } from 'vuepress-vite'
 import type { DefaultThemeOptions } from 'vuepress'
 
 const rootPath = CONFIG.HOST + CONFIG.PATH
 const isProd = process.env.NODE_ENV === 'production'
 
-console.log('isProd:', isProd)
+console.log('Mode:', isProd ? 'Production' : 'development')
 
-module.exports = defineUserConfig<DefaultThemeOptions>({
-  bundler: '@vuepress/webpack', // Vite 仍然存在兼容问题和奇怪的Bug, 无法使用。
-  bundlerConfig: {
-    // ...viteCompilerOptions,
-  },
+module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
+  bundler: '@vuepress/webpack',
+  bundlerConfig: {},
   dest: 'dist',
   public: 'public',
   base: CONFIG.PATH,
@@ -466,13 +465,13 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
         hotKeys: ['s', '/'],
         locales: {
           '/en/': {
-            placeholder: 'Search',
+            placeholder: 'Search ("/" to focus)',
           },
           '/': {
-            placeholder: '搜索',
+            placeholder: '搜索（“/” 聚焦）',
           },
           '/ja/': {
-            placeholder: '検索する',
+            placeholder: '検索する ("/" フォーカス)',
           },
         },
       },

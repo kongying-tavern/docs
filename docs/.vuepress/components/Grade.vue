@@ -11,7 +11,7 @@
         >
         </el-rate>
       </div>
-      <el-button class="feedback-btn" size="medium" @click="feedback">
+      <el-button class="feedback-btn" size="medium" @click.stop="feedback">
         反馈
         <i class="el-icon-arrow-right el-icon--right"></i>
       </el-button>
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { feedback } from '../utils'
 
 export default defineComponent({
@@ -30,9 +30,7 @@ export default defineComponent({
       value: ref(null),
       colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
       rate: ref(null),
-      feedback: () => {
-        feedback()
-      },
+      feedback: () => feedback(),
       rateChange: () => {},
     }
   },
@@ -74,7 +72,8 @@ $container-border: 1px solid var(--c-border-dark);
       transition: all 0.3s;
       &:hover {
         & {
-          border-color: #409eff !important;
+          border-color: var(--c-brand);
+          color: var(--c-brand);
         }
         & > span > i {
           transform: translate3d(5px, 0, 0);

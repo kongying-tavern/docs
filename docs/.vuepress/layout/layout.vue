@@ -73,6 +73,7 @@ import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 export default {
   setup() {
     const frontmatter = usePageFrontmatter()
+    console.log(__DEV__)
     console.log(frontmatter.value)
     return {
       anchor: ref(frontmatter.value.anchor ?? true),

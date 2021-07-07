@@ -10,4 +10,34 @@ header.navbar {
   .navbar-links-wrapper > nav > div > a > span > svg.icon.outbound {
     display: none;
   }
+  .navbar-links-wrapper
+    > .navbar-links
+    > .navbar-links-item:hover
+    > .nav-link::after,
+  .navbar-links-wrapper
+    > .navbar-links
+    > .navbar-links-item:hover
+    > .dropdown-wrapper:first-child::after {
+    width: 100%;
+    left: 0;
+    right: auto;
+  }
+  .navbar-links-wrapper > .navbar-links > .navbar-links-item > .nav-link::after,
+  .navbar-links-wrapper
+    > .navbar-links
+    > .navbar-links-item
+    > .dropdown-wrapper:first-child::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: auto;
+    right: 0;
+    background-color: var(--c-brand);
+    transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
+  }
+  .nav-dropdown {
+    transition: all 0.18s ease-out;
+  }
 }

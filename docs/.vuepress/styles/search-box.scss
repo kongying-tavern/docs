@@ -1,10 +1,18 @@
-// plugin-search
 .search-box {
   --search-bg-color: var(--c-bg);
   --search-accent-color: var(--c-brand);
   --search-text-color: var(--c-text);
   --search-border-color: var(--c-border);
-
+  --search-input-width: auto;
   --search-item-text-color: var(--c-text-lighter);
   --search-item-focus-bg-color: var(--c-bg-light);
+  input {
+    max-width: 11.5rem;
+    &:hover {
+      border-color: var(--c-brand);
+    }
+    @media (min-width: 720px) {
+      border-radius: 6px !important;
+    }
+  }
 }

@@ -1,5 +1,5 @@
 export const isSafari = () => {
-  var ua = navigator.userAgent.toLowerCase()
+  const ua = navigator.userAgent.toLowerCase()
   if (
     ua.indexOf('applewebkit') > -1 &&
     ua.indexOf('mobile') > -1 &&
@@ -11,7 +11,6 @@ export const isSafari = () => {
     ua.indexOf('browser') === -1
   ) {
     return true
-  } else {
-    return false
   }
+  return false
 }
