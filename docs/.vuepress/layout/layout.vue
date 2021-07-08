@@ -1,25 +1,14 @@
 <template>
   <Layout>
     <template #page-top>
-      <Anchor v-show="anchor"></Anchor>
-      <el-tooltip
-        effect="dark"
-        :enterable="false"
-        content="回到顶部"
-        placement="left-start"
-      >
-        <el-backtop :visibility-height="300" :right="30" class="docs-backtop">
-          <svg class="iconfont-icon" aria-hidden="true" style="width: 29px">
-            <use xlink:href="#docs-gotop"></use>
-          </svg>
-        </el-backtop>
-      </el-tooltip>
+      <Anchor v-show="anchor" />
+      <Backtop />
     </template>
     <template #page-bottom>
       <footer class="docs-footer page-meta">
         <div class="footer-container" role="presentation">
           <div class="follow-us" role="region" aria-label="社交媒体链接">
-            <h3>关注我们</h3>
+            <h4>关注我们</h4>
             <nav>
               <ul>
                 <li class="follow-us-item">
@@ -58,7 +47,7 @@
               </ul>
             </nav>
           </div>
-          <Grade></Grade>
+          <Grade />
           <div class="docs-info">Chinese hoyolab Made By Kongying Tavern</div>
         </div>
       </footer>
@@ -66,21 +55,19 @@
   </Layout>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from 'vue'
 import { usePageData, usePageFrontmatter } from '@vuepress/client'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 export default {
+  components: {
+    Layout,
+  },
   setup() {
     const frontmatter = usePageFrontmatter()
-    console.log(__DEV__)
-    console.log(frontmatter.value)
     return {
       anchor: ref(frontmatter.value.anchor ?? true),
     }
-  },
-  components: {
-    Layout,
   },
 }
 </script>
@@ -173,34 +160,5 @@ $container-border: 1px solid var(--c-border-dark);
   place-items: center;
   padding-top: 20px;
   text-align: center;
-}
-
-.docs-backtop {
-  z-index: 99999;
-  display: grid;
-  place-items: center;
-  opacity: 0.7;
-  background-color: var(--docs-backtop);
-  border: var(--docs-border);
-  &:hover {
-    opacity: 1;
-    background-color: var(--docs-backtop);
-    transition: all 0.3s;
-  }
-  svg {
-    filter: var(--docs-icon);
-  }
-}
-
-@media only screen and (max-width: 1280px) {
-  .docs-anchor {
-    display: none;
-  }
-}
-
-@media only screen and (max-width: 980px) {
-  .docs-backtop {
-    display: none;
-  }
 }
 </style>

@@ -32,9 +32,12 @@ export default defineComponent({
                     isFullscreen.value = (screenfull as Screenfull).isFullscreen
                   })
               },
-            }
-            // todo 全屏按钮的样式
-            // h(isFullscreen.value ? :)
+            },
+            h(
+              isFullscreen.value
+                ? h(`i`, { class: 'el-icon-full-screen' })
+                : h('i', { class: 'el-icon-rank' })
+            )
           )
         : null
   },

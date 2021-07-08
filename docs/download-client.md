@@ -8,7 +8,7 @@ sidebar: false
 
 点击下方链接下载最新版原神地图 Windows 客户端
 
-[https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg 'Kongying Tavern Genshin Map-1.8.1_Beta.msi')
+[https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg 'Kongying Tavern Genshin Map-1.10.0_Beta.msi')
 
 提取码：**KYJG**
 

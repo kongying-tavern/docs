@@ -5,11 +5,7 @@
  * @param {Array<object>} data
  * @return {void}
  */
-export const log = (
-  title: string,
-  description: string,
-  data: Array<object>
-): void => {
+export const log = (title, description, data) => {
   console.group(
     `%c${title}${description === '' ? '' : '%c' + description}`,
     'background:#35495e; padding: 2px 4px; border-radius: 3px 0 0 3px; color: #fff;font-family: sans-serif;',
@@ -18,7 +14,7 @@ export const log = (
 
   data.forEach((val) => {
     for (const prop in val) {
-      if (val.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(val, prop)) {
         if (val[prop] === void 0 || val[prop].length === 0) continue
         console.log(
           `%c${prop}${'\u0020'.repeat(18 - prop.length)}: %c${val[prop]}`,

@@ -5,19 +5,20 @@ sidebar:
   [
     { text: '文档规范', link: '/developer/documentation/spec/README.md' },
     { text: '更新日志', link: '/developer/documentation/update.md' },
+    { text: '开发计划', link: '/developer/documentation/roadmap.md' },
   ]
 ---
 
 ## 介绍
 
-Genshin Map Docs 项目创立于 2021 年六月初。
+Genshin Map Docs 项目创立于 2021 年六月初，至今已上线 <time> {{ date }} </time> 天。
 
 初衷是为了支持原神地图及其子项目的文档需求。
 
 ## 仓库地址
 
-- [GitHub - https://github.com/jiazengp/genshinmap-docs](https://github.com/jiazengp/genshinmap-docs)（主仓库）
-- [Gitee - https://gitee.com/KYJGYSDT/yuanshendocs](https://gitee.com/KYJGYSDT/yuanshendocs)（镜像仓库，非实时同步）
+- [GitHub => https://github.com/jiazengp/genshinmap-docs](https://github.com/jiazengp/genshinmap-docs)（主仓库）
+- [Gitee => https://gitee.com/KYJGYSDT/yuanshendocs](https://gitee.com/KYJGYSDT/yuanshendocs)（镜像仓库，非实时同步）
 
 ## 目录结构
 
@@ -87,7 +88,7 @@ Genshin Map Docs 项目创立于 2021 年六月初。
 ```
 
 ::: warning
-请留意目目录以及文件名大小写。
+请留意目目录以及文件名大小写，错误的大小写可能会导致编译失败！
 :::
 
 ## 注意事项
@@ -97,6 +98,10 @@ Genshin Map Docs 项目创立于 2021 年六月初。
 已废弃的 HTML 标签默认不允许在本项目中使用，比如 [`<center>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/center) 和 [`<font>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/font) 等。
 
 这些标签不会被 Vue 模板编译器识别成原生 HTML 标签。相反，Vue 会尝试将这些标签解析为 Vue 组件，而显然这些组件通常是不存在的。
+
+## 开发计划
+
+[/developer/documentation/roadmap.html](/developer/documentation/roadmap.md)
 
 ## 开发脚本
 
@@ -108,7 +113,7 @@ Genshin Map Docs 项目创立于 2021 年六月初。
 
 `docs:` 前缀表明，这些命令是针对文档 (documentation) 进行操作的，即 `docs` 目录。
 
-#### `yarn docs:build2`
+#### `yarn docs:build`
 
 编译文档来生成文档网站的输出文件。
 
@@ -172,6 +177,22 @@ Genshin Map Docs 项目创立于 2021 年六月初。
 
 ### `原理类`
 
-- [VuePress-Next](https://vuepress2.netlify.app/zh/)
+- [VuePress2](https://vuepress2.netlify.app/zh/)
   - [本文档是如何工作的](https://vuepress2.netlify.app/zh/guide#它是如何工作的)
   - [核心架构](https://vuepress2.netlify.app/zh/advanced/architecture.html)
+
+## 其他项目
+
+| 项目                 |                       链接                       | 仓库                                                              |
+| -------------------- | :----------------------------------------------: | ----------------------------------------------------------------- |
+| 空荧地图             | [https://yuanshen.site/](https://yuanshen.site/) | [Gitee](https://gitee.com/KYJGYSDT/yuan-shen-map)                 |
+| 空荧地图 VUE 重制版  |                        -                         | [Gitee](https://gitee.com/KYJGYSDT/island_map)                    |
+| 空荧地图后台管理系统 |                        -                         | [Gitee](https://gitee.com/KYJGYSDT/manage_system)                 |
+| 原神地图自动追踪 dll |                        -                         | [Gitee](https://gitee.com/Yu_Sui_Xian/yuanshen-auto-tracking-dll) |
+
+<script setup>
+import { ref } from 'vue';
+import dayjs from 'dayjs';
+
+const date = ref(dayjs().diff(dayjs('2021-06-1'), 'day'));
+</script>

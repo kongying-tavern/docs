@@ -5,6 +5,7 @@
       <div class="rate-container">
         <el-rate
           v-model="value"
+          :disabled="isDisabled"
           class="docs-rate"
           :colors="colors"
           @change="rateChange"
@@ -26,12 +27,19 @@ import { feedback } from '../utils'
 export default defineComponent({
   name: 'Grade',
   setup() {
+    const value = ref(null)
+    const isDisabled = ref(false)
+    value.value = null
     return {
-      value: ref(null),
+      value,
+      isDisabled,
       colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
       rate: ref(null),
-      feedback: () => feedback(),
-      rateChange: () => {},
+      feedback: (): void => feedback(),
+      rateChange: (): void => {
+        console.log(value.value)
+        isDisabled.value = true
+      },
     }
   },
 })

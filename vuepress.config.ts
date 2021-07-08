@@ -59,7 +59,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
       'script',
       {
         crossOrigin: 'anonymous',
-        src: 'https://at.alicdn.com/t/font_2601360_kwt9b79krqc.js',
+        src: 'https://at.alicdn.com/t/font_2601360_fm2bv1j1zqf.js',
       },
     ],
     [
@@ -72,7 +72,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
   ],
   locales: {
     '/': {
-      lang: 'zh-Hans-CN',
+      lang: 'zh-CN',
       title: CONFIG.SITE_NAME,
       description: CONFIG.DESCRIPTION,
     },

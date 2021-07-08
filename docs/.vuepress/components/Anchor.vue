@@ -51,4 +51,10 @@ ul.vuepress-toc-list > li.vuepress-toc-item:nth-last-child(1):first-child {
   // 只有一个item时隐藏
   display: none;
 }
+
+@media only screen and (max-width: 1280px) {
+  .docs-anchor {
+    display: none;
+  }
+}
 </style>

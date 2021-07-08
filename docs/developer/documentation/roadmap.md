@@ -1,5 +1,11 @@
 ---
-title: Roadmap
+title: Documentation Roadmap
+sidebar:
+  [
+    { text: '文档规范', link: '/developer/documentation/spec/README.md' },
+    { text: '更新日志', link: '/developer/documentation/update.md' },
+    { text: '开发计划', link: '/developer/documentation/roadmap.md' },
+  ]
 ---
 
 ## 原神地图文档 2021 年开发计划草案
@@ -22,19 +28,19 @@ title: Roadmap
 
 - [ ] 🏃 日语翻译（50%+）
 - [ ] 🏃 英语翻译（90%+)
-- [x] 🏃Day.js
-- [x] 🏃ElementPlus
+- [x] 🏃 Day.js
+- [x] 🏃 ElementPlus
 
 ### Theme
 
-- [ ] 🏃Accessibility（80%）
-- [ ] 🏃Dark Mode（75%）
-  - [ ] Element plus
+- [ ] 🏃 Accessibility（80%）
+- [x] 🏃 Dark Mode
+  - [x] Element plus
   - [x] Default Theme
-- [ ] 🏃 主题颜色和字体大小切换
+- [ ] 🏃 全局主题颜色和全局字体大小的自定义切换
 - [ ] 🏃 哀悼日
 - [ ] 🏃 分享
-- [ ] ✋Safari 兼容（没有 Mac
+- [ ] ✋ Safari 兼容（没有 Mac
 - [ ] ⬛ 布局及样式的重构
 - [ ] 🏃 主题的完整单元测试
 
@@ -45,51 +51,52 @@ title: Roadmap
 - [ ] 🏃 客户端下载页
 - [ ] ⬛ 点位数据的导入导出和用户数据的展示
 - [ ] 🏃 更新日志
-- [ ] 🏃Developer 文档的完善
-- [ ] 🏃 开发素材图标库
-- [ ] 🏃 原神角色壁纸语音故事等的展示和下载
-- [ ] ⚫ChatRoom
+- [ ] 🏃 Developer 文档的完善
+- [ ] 🏃 开发素材/图标库
+- [ ] 🏃 原神角色壁纸语音故事等资源的展示和下载
+- [ ] ⚫ ChatRoom
+- [ ] ⚫ OpenAPI Document
 
 ### CI/CD
 
 - [x] 🏃 持续部署
-- [x] 🏃Travis
-- [ ] 🔵Github Page
-- [x] 🏃 自动化测试
+- [x] 🏃 Travis
+- [ ] 🔵 Github Page
+- [x] 🏃 自动化测试&分析
 
 ### SEO
 
-- [x] Automatically Generation SiteMap
-- [x] Automatically Generation Title, Type, EdgeDate, PublishedTime, Locale...
-- [x] Structured data
-- [x] Open Graph Protocal Support
-- [x] Feed
-- [x] SSR
+- [x] 🏃Automatically Generation SiteMap
+- [x] 🏃Automatically Generation Title, Type, EdgeDate, PublishedTime, Locale...
+- [x] 🏃Structured data
+- [x] 🏃Open Graph Protocal Support
+- [x] 🏃Feed
+- [x] 🏃SSR
 
 ### Other
 
-- [x] 🏃TeX Support
-- [x] 🏃CodeDemo Support
-- [x] 🏃Presentation Support
-- [x] 🏃Mermaid Support
-- [x] 🏃Task list Support
-- [x] 🏃Custom alignment Support
-- [x] 🏃Superscript and Subscript Support
-- [x] 🏃Markup Support
-- [x] 🏃TypeScript
-- [x] 🏃Axios Encapsulation
-- [x] 🏃TextLint
-- [x] 🏃ESlint
-- [x] 🏃Commitlint
-- [x] 🏃Jest
-- [x] 🏃karma
-- [x] 🏃Prettier
-- [x] 🏃Automatically Generation CHANGELOG
-- [x] 🏃Anchor
-- [x] 🏃ScreenFull
-- [x] 🏃BackToTop
-- [ ] 🏃Automatically Hide Header
-- [ ] 🏃One key copy of the code
-- [ ] ✋Gitee & Github Bisynchronous
-- [ ] 🏃Context menu
-- [ ] ✋Vite
+- [x] 🏃 TeX Support
+- [x] 🏃 CodeDemo Support
+- [x] 🏃 Presentation Support
+- [x] 🏃 Mermaid Support
+- [x] 🏃 Task list Support
+- [x] 🏃 Custom alignment Support
+- [x] 🏃 Superscript and Subscript Support
+- [x] 🏃 Markup Support
+- [x] 🏃 TypeScript
+- [x] 🏃 Axios Encapsulation
+- [x] 🏃 TextLint
+- [x] 🏃 ESlint
+- [x] 🏃 Commitlint
+- [x] 🏃 Jest
+- [x] 🏃 karma
+- [x] 🏃 Prettier
+- [x] 🏃 Automatically Generation CHANGELOG
+- [x] 🏃 Anchor
+- [x] 🏃 ScreenFull
+- [x] 🏃 BackToTop
+- [ ] 🏃 Automatically Hide Header
+- [ ] 🏃 One key copy of the code
+- [ ] ✋ Gitee & Github Bisynchronous
+- [ ] 🏃 Context menu
+- [ ] ✋ Vite

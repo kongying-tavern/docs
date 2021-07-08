@@ -8,15 +8,13 @@ anchor: false
 
 ## Credits
 
-### Preface
-
 The Genshin Map project uses the following open source technologies, and we have been abiding by various usage agreements.
 
 Thank you authors, it is you who make the world a better place!
 
-### Web[^1]
+### Web
 
-| Name       | Version | License name | Sourse Code                                   | CopyRight/Author               |
+| Name       | Version | License name | Sourse Code                                   | CopyRight                      |
 | :--------- | :------ | :----------- | :-------------------------------------------- | :----------------------------- |
 | Deckgl     | 5.3     | MIT          | <https://github.com/visgl/deck.gl>            | Urban Computing Foundation     |
 | Jquery     | 3.5.1   | MIT          | <https://github.com/jquery/jquery>            | John Resig                     |
@@ -30,4 +28,11 @@ Thank you authors, it is you who make the world a better place!
 | Vue        | 3.1.2   | MIT          | <https://github.com/vuejs/vue>                | Evan You                       |
 | VuePress   | 2.0.0   | MIT          | <https://github.com/vuejs/vuepress>           | Evan You                       |
 
-[^1]: The above list is sorted by first letter, in no particular order.
+### Art
+
+| Name     | Description            | Link                                    | CopyRight |
+| :------- | :--------------------- | :-------------------------------------- | :-------- |
+| MapImage | 地图相关素材           | https://ys.mihoyo.com                   | MiHoYo    |
+| ばたばた | 客户端 [投币] 按钮素材 | https://www.pixiv.net/artworks/88007179 | Seseren   |
+
+> The above list is sorted by first letter, in no particular order.

@@ -1,42 +1,36 @@
-import {
-  useSiteData,
-  usePageData,
-  useRouteLocale,
-  useSiteLocaleData,
-  defineClientAppEnhance,
-} from '@vuepress/client'
+import { usePageData, defineClientAppEnhance } from '@vuepress/client'
 import { useThemeData } from '@vuepress/plugin-theme-data/lib/client'
 import { log, isDEV } from './utils'
 import ElementPlus from 'element-plus'
+import 'default-passive-events'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import './utils/date'
 
-import type {
-  PageData,
-  SiteData,
-  RouteLocale,
-  SiteLocaleData,
-} from '@vuepress/client'
+import type { PageData } from '@vuepress/client'
 import type { ThemeData } from '@vuepress/plugin-theme-data'
 
 import './styles/element-variables.scss'
 
-export default defineClientAppEnhance(async ({ app, router, siteData }) => {
+export default defineClientAppEnhance(({ app, router, siteData }) => {
   const pageData = usePageData<PageData>()
+  const themeData = useThemeData<ThemeData>()
   app.use(ElementPlus, { locale })
+
   log('原神地图', 'Docs', [
     {
       VuePressCore: __VERSION__,
-      VueVersion: app.version,
-      isDEV: __DEV__,
-      isSSR: __SSR__,
+      Vue: app.version,
+      Title: siteData.value.title,
+      Base: siteData.value.base,
+      IsDEV: __DEV__,
+      IsSSR: __SSR__,
     },
   ])
   console.log(
-    '🎉\u0020%c地图团队欢迎各位同学加入: https://yuanshen.site/docs/join.html',
+    '%c🎉\u0020地图团队欢迎各位同学加入:\u0020https://yuanshen.site/docs/join.html',
     'font-size:13px;'
   )
   isDEV(() => {
-    console.log(app, router, siteData)
+    console.log(app, router, siteData, pageData, themeData)
   })
 })

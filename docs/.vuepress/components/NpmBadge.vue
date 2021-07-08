@@ -2,19 +2,19 @@
   <a
     class="npm-badge"
     :href="badgeLink"
-    :title="package"
+    :title="_package"
     target="_blank"
     rel="noopener noreferrer"
   >
-    <img :src="badgeImg" :alt="package" />
+    <img :src="badgeImg" :alt="_package" />
   </a>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, defineProps } from 'vue'
 
 const props = defineProps({
-  package: {
+  _package: {
     type: String,
     required: true,
   },
@@ -26,18 +26,18 @@ const props = defineProps({
 })
 
 const badgeLink = computed(
-  () => `https://www.npmjs.com/package/${props.package}`
+  () => `https://www.npmjs.com/package/${props._package}`
 )
 const badgeLabel = computed(() => {
   if (props.distTag) {
-    return `${props.package}@${props.distTag}`
+    return `${props._package}@${props.distTag}`
   }
 
-  return props.package
+  return props._package
 })
 const badgeImg = computed(
   () =>
-    `https://badgen.net/npm/v/${props.package}/${
+    `https://badgen.net/npm/v/${props._package}/${
       props.distTag
     }?label=${encodeURIComponent(badgeLabel.value)}`
 )

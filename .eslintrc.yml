@@ -9,6 +9,12 @@ extends:
   - eslint:recommended
   - plugin:prettier/recommended
 
+globals:
+  __VERSION__: 'readonly'
+  __DEV__: 'readonly'
+  __SSR__: 'readonly'
+  __VUE_HMR_RUNTIME__: 'writable'
+
 ignorePatterns:
   - '**/dist/**'
   - '**/node_modules/**'

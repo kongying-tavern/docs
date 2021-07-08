@@ -37,7 +37,8 @@ header.navbar {
     background-color: var(--c-brand);
     transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
   }
-  .nav-dropdown {
-    transition: all 0.18s ease-out;
+  .nav-dropdown,
+  .dropdown-subitem-wrapper {
+    transition: all 18s ease-out;
   }
 }
