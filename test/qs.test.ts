@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-const { parse, stringify } = require('qs')
+import { parse, stringify } from 'qs'
 
 describe('parse', () => {
   //分组

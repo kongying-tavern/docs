@@ -1,6 +1,6 @@
 <template>
   <svg class="docs-icon" aria-hidden="true" @click="(e) => $emit('click', e)">
-    <use :xlink:href="'#' + icon"></use>
+    <use :xlink:href="'#docs-' + icon"></use>
   </svg>
 </template>
 
@@ -12,7 +12,7 @@ import { defineComponent } from 'vue'
  */
 
 export default defineComponent({
-  name: 'docs-icon',
+  name: 'Icon',
   props: {
     icon: { type: String, required: true }, //图标名称
   },
@@ -32,5 +32,9 @@ export default defineComponent({
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  &:hover {
+    transform: scale(1.15);
+    transition: all 0.3s;
+  }
 }
 </style>
