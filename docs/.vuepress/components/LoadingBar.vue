@@ -39,25 +39,11 @@ $text-loading-animation-delay: 0.15s;
 $text-loading-animation-item-size: 5px;
 $text-loading-animation-rotate-size: 50px;
 
-html.dark {
-  --Docs-LoadingBackgroundColor: #2c2b30;
-  --Docs-LoadingProspectColor: #ece5d8;
-}
-
-:root {
-  --Docs-LoadingBackgroundColor: #f5f5f5;
-  --Docs-LoadingProspectColor: #666666;
-}
-
 @mixin img-color($color, $top: 500px) {
   position: absolute;
   left: 0;
   top: $top;
   filter: drop-shadow(0 #{-$top} 0 $color);
-}
-
-a {
-  transition: color 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
 }
 
 .loading {

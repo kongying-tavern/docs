@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /**
  * @description: 输出自动对齐的log
  * @param {string} title
@@ -5,7 +8,7 @@
  * @param {Array<object>} data
  * @return {void}
  */
-export const log = (title, description, data) => {
+export const log = (title: string, description: string, data: any[]): void => {
   console.group(
     `%c${title}${description === '' ? '' : '%c' + description}`,
     'background:#35495e; padding: 2px 4px; border-radius: 3px 0 0 3px; color: #fff;font-family: sans-serif;',
