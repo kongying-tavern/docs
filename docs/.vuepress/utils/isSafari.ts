@@ -1,4 +1,4 @@
-export const isSafari = () => {
+export const isSafari = (): boolean => {
   const ua = navigator.userAgent.toLowerCase()
   if (
     ua.indexOf('applewebkit') > -1 &&

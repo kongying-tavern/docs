@@ -10,6 +10,10 @@ sidebar:
 
 ## Documentation Update
 
+::: warning
+正在开发中。
+:::
+
 <div class="documentation-update">
 
 <el-timeline>
@@ -42,11 +46,5 @@ const updateList = ref([
     timestamp: '2021-06-16 16:28',
     size: 'large',
   },
-  {
-    title: "1.0.0-beta.1",
-    content: '完善教程和首页',
-    timestamp: '2021-06-17 11:30',
-    size: 'large',
-  }
 ]);
 </script>

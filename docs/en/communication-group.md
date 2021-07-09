@@ -7,9 +7,9 @@ externalIcon: false
 anchor: false
 ---
 
-## <Icon icon="discord" /> Discord (in Beta)
+<!-- ## <Icon icon="discord" />
 
-> Join the server：<https://discord.gg/rPntkgXBBZ>
+> Join the server：<https://discord.gg/rPntkgXBBZ> -->
 
 ## <Icon icon="qq" /> QQ DiscussionGroup
 

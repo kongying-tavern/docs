@@ -41,4 +41,8 @@ header.navbar {
   .dropdown-subitem-wrapper {
     transition: all 18s ease-out;
   }
+  .navbar-links-item > .dropdown-wrapper:hover .dropdown-title > .arrow {
+    transform: rotate(-180deg);
+    transition: all 0.3s;
+  }
 }

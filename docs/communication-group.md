@@ -22,13 +22,13 @@ anchor: false
 目前除一二群外其他群均未满，各群密码均为 **123456**
 :::
 
-## <Icon icon="discord" /> Discord （公测中）
+<!-- ## <Icon icon="discord" /> Discord
 
 > 加入地图交流服务器：<https://discord.gg/rPntkgXBBZ>
 
 ::: tip
 国内部分地区存在 DNS 污染等问题，可能无法访问，推荐加入 QQ 交流群。
-:::
+::: -->
 
 <style lang="scss" scoped>
 

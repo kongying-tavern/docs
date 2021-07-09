@@ -8,6 +8,7 @@ extends:
   - plugin:vue/vue3-recommended
   - eslint:recommended
   - plugin:prettier/recommended
+  - eslint-config-prettier
 
 globals:
   __VERSION__: 'readonly'

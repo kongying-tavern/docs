@@ -16,64 +16,36 @@
         v-if="type && items.find((val) => val.name === type)"
         class="onetime-sponsorship-pay"
       >
-        <el-skeleton
-          style="width: 240px"
-          :loading="loading"
-          :throttle="300"
-          animated
+        <el-image
+          class="onetime-sponsorship-qrcode"
+          fit="cover"
+          :alt="$withBase(items.find((val) => val.name === type)?.name)"
+          :src="$withBase(items.find((val) => val.name === type)?.qrCode)"
+          :hide-on-click-modal="true"
+          :append-to-body="true"
+          :preview-src-list="[
+            $withBase(items.find((val) => val.name === type)?.qrCode),
+          ]"
         >
-          <template #template>
-            <el-skeleton-item
-              variant="image"
-              style="width: 200px; height: 200px"
-            />
-            <div style="padding: 14px">
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-items: space-between;
-                  margin-top: 16px;
-                  height: 16px;
-                "
-              >
-                <el-skeleton-item variant="text" style="width: 70%" />
-              </div>
+          <template #error>
+            <div class="image-slot">
+              <Icon icon="qrcode" />
+              <span>&nbsp;Load failed</span>
             </div>
           </template>
-          <template #default>
-            <el-image
-              class="onetime-sponsorship-qrcode"
-              fit="cover"
-              :alt="$withBase(items.find((val) => val.name === type)?.name)"
-              :src="$withBase(items.find((val) => val.name === type)?.qrCode)"
-              :hide-on-click-modal="true"
-              :append-to-body="true"
-              :preview-src-list="[
-                $withBase(items.find((val) => val.name === type)?.qrCode),
-              ]"
-            >
-              <template #error>
-                <div class="image-slot">
-                  <Icon icon="qrcode" />
-                  <span>&nbsp;Load failed</span>
-                </div>
-              </template>
-            </el-image>
-            <h4 style="margin: 0 0 20px 0">
-              {{ items.find((val) => val.name === type)?.name }}
-            </h4>
-            <el-link
-              icon="el-icon-share"
-              class="onetime-sponsorship-link"
-              rel="noopener noreferrer"
-              target="_blank"
-              :href="items.find((val) => val.name === type)?.link"
-            >
-              {{ items.find((val) => val.name === type)?.link }}
-            </el-link>
-          </template>
-        </el-skeleton>
+        </el-image>
+        <h4 style="margin: 0 0 20px 0">
+          {{ items.find((val) => val.name === type)?.name }}
+        </h4>
+        <el-link
+          icon="el-icon-share"
+          class="onetime-sponsorship-link"
+          rel="noopener noreferrer"
+          target="_blank"
+          :href="items.find((val) => val.name === type)?.link"
+        >
+          {{ items.find((val) => val.name === type)?.link }}
+        </el-link>
       </div>
     </div>
   </div>
@@ -81,7 +53,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
-import { ElMessage } from 'element-plus'
 
 export default defineComponent({
   name: 'Sponsorship',
@@ -119,14 +90,13 @@ export default defineComponent({
       },
     ])
     const type = ref('')
-    const loading = ref(true)
     const updateType = () => {
       type.value = window.location.hash.slice(1)
     }
     onMounted(() => {
       updateType()
       window.addEventListener('hashchange', updateType)
-      window.addEventListener('load', () => (loading.value = false))
+      console.table(items.value)
     })
     onBeforeUnmount(() => {
       window.addEventListener('hashchange', updateType)
@@ -136,7 +106,6 @@ export default defineComponent({
       items,
       updateType,
       type,
-      loading,
     }
   },
 })

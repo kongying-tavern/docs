@@ -1,39 +1,5 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es6",
-    "module": "ESNext",
-    "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "alwaysStrict": true,
-    "strict": true,
-    "noEmitOnError": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "removeComments": false,
-    "moduleResolution": "node",
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "newLine": "lf",
-    "types": ["@vuepress/client/types", "vite/client", "jest", "node"],
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "declaration": true,
-    "explainFiles": true,
-    "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
-    "paths": {
-      "~/*": ["docs/*"]
-    }
-  },
-  "include": ["**/*.ts", "**/*.vue", "**/.vuepress/**/*"],
+  "extends": "./tsconfig.base.json",
+  "include": ["**/*.ts", "**/*.vue"],
   "exclude": ["dist", "node_modules"]
 }
