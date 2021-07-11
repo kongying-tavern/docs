@@ -34,7 +34,7 @@ export default defineComponent({
   overflow: hidden;
   &:hover {
     transform: scale(1.15);
-    transition: all 0.3s;
+    transition: transform 0.3s;
   }
 }
 </style>

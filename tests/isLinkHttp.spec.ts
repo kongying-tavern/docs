@@ -1,4 +1,4 @@
-import { isLinkHttp } from '../docs/.vuepress/utils/'
+import { isLinkHttp } from '../docs/.vuepress/utils'
 
 const testCases: [string, ReturnType<typeof isLinkHttp>][] = [
   ['https://foobar.com', true],

@@ -1,4 +1,5 @@
 import { Transition, defineComponent, h } from 'vue'
+
 import type { VNode } from 'vue'
 
 export default defineComponent({

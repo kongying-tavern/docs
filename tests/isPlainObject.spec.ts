@@ -1,4 +1,4 @@
-import { isPlainObject } from '../docs/.vuepress/utils/'
+import { isPlainObject } from '../docs/.vuepress/utils'
 
 const testCases: [unknown, boolean][] = [
   [true, false],
