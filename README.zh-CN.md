@@ -35,15 +35,15 @@ yarn docs:build2
 
 ## 文档
 
-见 [Documentation](https://yuanshen.site/docs/developer/documentation).
+见 [Documentation](https://yuanshen.site/docs/developer/documentation)。
 
 ## 贡献指南
 
-见 [Contributing Guide](https://yuanshen.site/docs/contributing.html).
+见 [Contributing Guide](https://yuanshen.site/docs/contributing.html)。
 
 ## 计划
 
-有关于我们未来的计划 [roadmap](https://yuanshen.site/docs/developer/documentation/roadmap.html).
+有关于我们未来的计划 [roadmap](https://yuanshen.site/docs/developer/documentation/roadmap.html)。
 
 ## 许可证
 
