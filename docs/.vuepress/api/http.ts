@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
 import { ElMessage } from 'element-plus'
-import NProgress from 'NProgress'
 import qs from 'qs'
 
 import type { MessageType } from 'element-plus/lib/el-message/src/types'
@@ -17,11 +16,10 @@ const instance: AxiosInstance = axios.create({
 
 instance.interceptors.request.use(
   (request) => {
-    NProgress.start()
     return request
   },
   (error) => {
-    const response = error.response
+    const response = error['response']
     let errorMessage = ''
     switch (response?.status) {
       case 401:
@@ -32,6 +30,7 @@ instance.interceptors.request.use(
         break
       case 404:
         errorMessage = '请求错误，未找到该资源。'
+        break
       case 500:
         errorMessage = '服务器错误。'
         break
@@ -39,7 +38,7 @@ instance.interceptors.request.use(
         errorMessage = '网络超时。'
         break
       default:
-        errorMessage = `⚠️请求错误 ${response.status}}`
+        errorMessage = `⚠️请求错误 ${response['response']}}`
         break
     }
     tips(errorMessage, 'error')
@@ -49,11 +48,9 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    NProgress.done()
     return response
   },
   (error) => {
-    NProgress.done()
     tips('error', 'error')
     return Promise.reject(error || { message: error.message })
   }
@@ -62,7 +59,7 @@ instance.interceptors.response.use(
 const tips = (
   message: string | VNode,
   type: MessageType = 'warning',
-  isCenter: boolean = true
+  isCenter = true
 ) => {
   const thisElMessage = ElMessage({
     duration: 3000,

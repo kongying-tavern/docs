@@ -2,15 +2,34 @@
 title: Download client
 description: Download client
 sidebar: false
+anchor: false
+pageClass: download-client
 ---
 
-## Google Drive Download
+::: center
 
-Click the link below to download the latest version of Genshin Map Windows client
-[https://drive.google.com/file/d/1N4JN8Q_1UxjfGbGjnaVYeKLRtEqO5DYF/view?usp=sharing](https://drive.google.com/file/d/1N4JN8Q_1UxjfGbGjnaVYeKLRtEqO5DYF/view?usp=sharing)
+## Download Genshin Impact Map client
 
-## Tips
+The Genshin Impact Map produced by Kongying Tavern is in public beta, and you are welcome to use it immediately. In the meantime, you are welcome to help us build better products through the "Help and Feedback" in the product.
+:::
 
-- The current client only supports windows system, if you are a user of other systems, you can use our [web version of the map](https://yuanshen.site/index_en.html 'Genshin Map')
+<DownloadClient></DownloadClient>
 
-We're sorry for the inconvenience.
+<style lang="scss" scoped>
+
+.download-client {
+  .custom-container.center{
+    margin: 50px 0;
+    h2 {
+      border: none;
+      font-size: 2.265rem;
+    }
+    p {
+      width: 90%;
+      line-height: 28px;
+      margin: 0 auto;
+    }
+  }
+}
+
+</style>

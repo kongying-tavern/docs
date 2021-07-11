@@ -57,6 +57,16 @@
     "packages:minor": "npx taze minor",
     "prepare": "husky install"
   },
+  "browserslist": {
+    "production": [
+      "> 5%"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "lint-staged": {
     "*.vue": [
       "eslint --fix",
@@ -166,6 +176,7 @@
   },
   "resolutions": {},
   "dependencies": {
+    "@types/qrcode": "^1.4.1",
     "@types/qs": "^6.9.6",
     "@types/webpack": "^5.28.0",
     "@vuepress/utils": "^2.0.0-alpha.1",
@@ -176,6 +187,7 @@
     "element-plus": "^1.0.2-beta.53",
     "husky": "^7.0.0",
     "prettier": "^2.3.2",
+    "qrcode": "^1.4.4",
     "qs": "^6.10.1",
     "screenfull": "^5.1.0",
     "vuepress-plugin-lightgallery": "^2.0.0-alpha.4"

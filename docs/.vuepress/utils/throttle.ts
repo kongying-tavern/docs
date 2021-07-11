@@ -11,7 +11,7 @@ export const throttle = <R, A extends any[]>(
   let previous = 0,
     timer: NodeJS.Timeout | null = null
   return function (...params: A) {
-    let now = +Date.now(),
+    const now = +Date.now(),
       remaining = wait - (now - previous)
     if (remaining <= 0) {
       clearTimeout(Number(timer))

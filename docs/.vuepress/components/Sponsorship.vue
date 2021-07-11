@@ -6,6 +6,7 @@
         v-once
         :key="item.name"
         class="onetime-sponsorship-item"
+        role="button"
         :href="'#' + item.name"
         :title="item.name"
       >
@@ -16,7 +17,18 @@
         v-if="type && items.find((val) => val.name === type)"
         class="onetime-sponsorship-pay"
       >
-        <el-image
+        <QRCode
+          class="onetime-sponsorship-qrcode"
+          aria-label="Scan QRCode"
+          :value="items.find((val) => val.name === type)?.link"
+          tag="svg"
+          :options="{
+            width: 200,
+            height: 200,
+          }"
+        >
+        </QRCode>
+        <!-- <el-image
           class="onetime-sponsorship-qrcode"
           fit="cover"
           :alt="$withBase(items.find((val) => val.name === type)?.name)"
@@ -33,7 +45,7 @@
               <span>&nbsp;Load failed</span>
             </div>
           </template>
-        </el-image>
+        </el-image> -->
         <h4 style="margin: 0 0 20px 0">
           {{ items.find((val) => val.name === type)?.name }}
         </h4>
@@ -41,6 +53,7 @@
           icon="el-icon-share"
           class="onetime-sponsorship-link"
           rel="noopener noreferrer"
+          aria-label="Sponsored links"
           target="_blank"
           :href="items.find((val) => val.name === type)?.link"
         >
@@ -61,36 +74,31 @@ export default defineComponent({
       {
         name: 'WeChatPay',
         logo: 'wechat-pay',
-        qrCode: '/20210617/wechatpay.png',
         link: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',
       },
       {
         name: 'AliPay',
         logo: 'alipay',
-        qrCode: '/20210617/alipay.png',
         link: 'https://qr.alipay.com/tsx11609thmpw9odmvdlxd6',
       },
       {
         name: 'PayPal',
         logo: 'paypal',
-        qrCode: '/20210617/paypal.png',
         link: 'https://www.paypal.me/yuanshenditu',
       },
       {
         name: 'QQPay',
         logo: 'qq-pay',
-        qrCode: '/20210617/qqpay.png',
         link: 'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
       },
       {
         name: 'ETH',
         logo: 'eth',
-        qrCode: '/20210617/ethpay.png',
         link: 'ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde',
       },
     ])
     const type = ref('')
-    const updateType = () => {
+    const updateType = (): void => {
       type.value = window.location.hash.slice(1)
     }
     onMounted(() => {

@@ -4,14 +4,14 @@ function Tucao(data: object = {}, productId = '321980') {
    * @param  {[Object]} data     需要传递的用户信息
    * @param  {Number} productId  需要接入产品 id
    */
-  let form = document.createElement('form')
+  const form = document.createElement('form')
   form.id = 'form'
   form.name = 'form'
   document.body.appendChild(form)
 
   // 设置相应参数
   for (const key in data) {
-    let input = document.createElement('input')
+    const input = document.createElement('input')
     input.type = 'text'
     input.name = key
     input.value = data[key]

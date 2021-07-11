@@ -1,0 +1,9 @@
+a {
+  transition: color 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+  overflow-wrap: break-word;
+}
+
+::selection {
+  color: #fff;
+  background-color: #1890ff;
+}

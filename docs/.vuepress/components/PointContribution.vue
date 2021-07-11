@@ -1,11 +1,11 @@
 <template>
-  <div class="backers" v-once>
+  <div v-once class="backers">
     <el-space :size="22" direction="vertical" :wrap="true">
       <a
         v-for="(item, index) in items"
+        :key="item.name + index"
         :aria-label="item.name"
         :href="item.link === null ? 'javascript:void(0)' : item.link"
-        :key="item.name + index"
         :title="item.name"
       >
         <el-avatar
@@ -16,7 +16,7 @@
         >
           <!-- {{ item.name.substring(0, 3).toLocaleUpperCase() }} -->
         </el-avatar>
-        <dev v-text="item.name.substring(0, 18)" class="backers-name"></dev>
+        <dev class="backers-name" v-text="item.name.substring(0, 18)"></dev>
       </a>
     </el-space>
   </div>

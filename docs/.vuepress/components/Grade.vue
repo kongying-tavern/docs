@@ -1,7 +1,9 @@
 <template>
   <div class="score">
     <div class="score-container">
-      <span class="score-title" role="heading">以上内容对您是否有帮助？</span>
+      <span ref="scoreTitle" class="score-title" role="heading">{{
+        text
+      }}</span>
       <div class="rate-container">
         <el-rate
           v-model="value"
@@ -12,8 +14,13 @@
         >
         </el-rate>
       </div>
-      <el-button class="feedback-btn" size="medium" @click.stop="feedback">
-        反馈
+      <el-button
+        class="feedback-btn"
+        aria-label="Feedback button"
+        size="medium"
+        @click.stop="feedback"
+      >
+        {{ feedbackText }}
         <i class="el-icon-arrow-right el-icon--right"></i>
       </el-button>
     </div>
@@ -23,23 +30,45 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { feedback } from '../utils'
+import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
+import { ElMessage } from 'element-plus'
+
+import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
+
+type MyThemeData = ThemeData<{
+  grade: string
+  feedback: string
+  thankFeedback: string
+}>
 
 export default defineComponent({
   name: 'Grade',
   setup() {
+    const themeLocaleData = useThemeLocaleData<MyThemeData>()
     const value = ref(null)
     const isDisabled = ref(false)
+    const scoreTitle = ref(null)
     value.value = null
     return {
       value,
       isDisabled,
+      scoreTitle,
       colors: ref(['#99A9BF', '#F7BA2A', '#FF9900']),
       rate: ref(null),
       feedback: (): void => feedback(),
       rateChange: (): void => {
-        console.log(value.value)
+        console.log('Score:', value.value)
         isDisabled.value = true
+        ElMessage.success({
+          message: themeLocaleData.value.thankFeedback,
+          center: true,
+          showClose: true,
+          duration: 3000,
+          type: 'success',
+        })
       },
+      text: themeLocaleData.value.grade,
+      feedbackText: themeLocaleData.value.feedback,
     }
   },
 })

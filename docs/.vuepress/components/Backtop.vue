@@ -2,7 +2,7 @@
   <el-tooltip
     effect="dark"
     :enterable="false"
-    content="回到顶部"
+    :content="backToTop"
     placement="left-start"
   >
     <el-backtop :visibility-height="300" :right="30" class="docs-backtop">
@@ -13,8 +13,22 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
+
+import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
+
+type MyThemeData = ThemeData<{
+  backToTop: string
+}>
+
 export default defineComponent({
   name: 'Backtop',
+  setup() {
+    const themeLocaleData = useThemeLocaleData<MyThemeData>()
+    return {
+      backToTop: themeLocaleData.value.backToTop,
+    }
+  },
 })
 </script>
 

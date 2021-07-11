@@ -1,5 +1,5 @@
 const { resolve } = require('path')
-const { compilerOptions } = require('./tsconfig.json')
+const { compilerOptions } = require('./tsconfig.base.json')
 
 module.exports = {
   rootDir: resolve(__dirname),

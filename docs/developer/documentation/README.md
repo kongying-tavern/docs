@@ -48,7 +48,7 @@ Genshin Map Docs 项目创立于 2021 年六月初，至今已上线 <time> {{ d
 ├─vite.config.ts（Vite 配置文件 https://cn.vitejs.dev/config/）
 ├─vuepress.config.ts（VuePress2 配置文件 https://vuepress2.netlify.app/zh/reference/config.html）
 ├─yarn.lock（YarnLock https://classic.yarnpkg.com/en/docs/yarn-lock/）
-├─test（Jest 的测试文件文件夹）
+├─tests（Jest 的测试文件文件夹）
 ├─public（公共资源目录）
 | ├─browserconfig.xml（browserconfig）
 | ├─manifest.webmanifest（Web 应用程序清单 https://developer.mozilla.org/zh-CN/docs/Web/Manifest）
@@ -93,11 +93,19 @@ Genshin Map Docs 项目创立于 2021 年六月初，至今已上线 <time> {{ d
 
 ## 注意事项
 
+### 阅读
+
+本指南假设你已了解关于 Markdown、HTML 的中级知识。如果你还不了解这些那么将阅读本指南作为第一步可能不是最好的主意。
+
 ### 已废弃的 HTML 标签
 
 已废弃的 HTML 标签默认不允许在本项目中使用，比如 [`<center>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/center) 和 [`<font>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/font) 等。
 
 这些标签不会被 Vue 模板编译器识别成原生 HTML 标签。相反，Vue 会尝试将这些标签解析为 Vue 组件，而显然这些组件通常是不存在的。
+
+## 快速上手
+
+[/developer/documentation/guide/getting-started.html](/developer/documentation/guide/getting-started.md)
 
 ## 开发计划
 

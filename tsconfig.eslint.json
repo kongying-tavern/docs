@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["**/.vuepress/**/*", "**/test/**/*.ts"],
+  "include": ["**/tests/**/*.ts", "**/.vuepress/**/*"],
   "exclude": ["node_modules", ".temp", "lib", "dist"]
 }

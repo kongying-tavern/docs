@@ -4,6 +4,7 @@
     "target": "es6",
     "module": "ESNext",
     "checkJs": true,
+    "pretty": true,
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

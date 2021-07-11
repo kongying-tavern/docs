@@ -18,7 +18,7 @@ W.I.P.
 
 ## Development
 
-```base
+```shell
 # install dependencies
 
 yarn

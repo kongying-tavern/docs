@@ -10,7 +10,11 @@ const isProd = process.env.NODE_ENV === 'production'
 
 console.log('Mode:', isProd ? 'Production' : 'development')
 
-module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
+interface myOptions extends DefaultThemeOptions {
+  feed?: '反馈'
+}
+
+module.exports = defineUserConfig<myOptions, ViteBundlerOptions>({
   bundler: '@vuepress/webpack',
   bundlerConfig: {},
   dest: 'dist',
@@ -113,8 +117,17 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         tip: '提示',
         warning: '警告',
         danger: '危险',
+        download: '下载',
+        newFolder: '新建文件夹',
+        grade: '以上内容对您是否有帮助？',
+        selectDownloadMethod: '选择下载方式',
+        feedback: '反馈',
+        thankFeedback: '感谢您的反馈！',
+        stayTuned: '敬请期待',
+        followUs: '关注我们',
         notFound: ['找不到您要查找的页面。', '404 未找到该页面'],
         backToHome: '回到首页',
+        backToTop: '回到顶部',
         openInNewWindow: '在新窗口中打开',
         lastUpdatedText: '更新时间',
         contributorsText: '参与贡献',
@@ -219,15 +232,24 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         selectLanguageAriaLabel: 'Language',
         lastUpdatedText: 'Last Updated',
         contributorsText: 'Contributors',
+        download: 'download',
+        newFolder: 'New folder',
+        followUs: 'Follow us',
+        stayTuned: 'Stay tuned',
+        grade: 'Did the above content help you?',
+        feedback: 'Feedback',
+        thankFeedback: 'Thanks for your feedback!',
         tip: 'Tips',
         notFound: [
           'The page you’re looking for can’t be found.',
           '404 Not Found',
         ],
         backToHome: 'Back to home',
+        backToTop: 'Back to top',
         openInNewWindow: 'open in new window',
         warning: 'Warning',
         danger: 'Danger',
+        selectDownloadMethod: 'Select download method',
         editLinkText: 'Edit this page on GitHub',
         navbar: [
           {
@@ -326,11 +348,20 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         tip: 'ヒント',
         warning: '警告',
         danger: '危険',
+        download: 'ダウンロード',
+        newFolder: '新しいフォルダ',
+        grade: '上記はあなたを助けることができますか？',
+        followUs: 'フォローする',
+        feedback: 'フィードバック',
+        thankFeedback: 'ご意見ありがとうございます！',
+        stayTuned: '乞うご期待',
+        selectDownloadMethod: 'ダウンロード方法を選択してください',
         notFound: [
           'お探しのページが見つかりません。',
           '404 ページが見つかりません',
         ],
         backToHome: 'ホームページに戻る',
+        backToTop: 'トップに戻る',
         openInNewWindow: '新しいウィンドウで開きます',
         lastUpdatedText: '最終更新',
         contributorsText: '貢献者',
