@@ -6,7 +6,6 @@
 [![CodeQL](https://github.com/jiazengp/genshinmap-docs/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jiazengp/genshinmap-docs/actions/workflows/codeql-analysis.yml)
 ![Top Language](https://img.shields.io/github/languages/top/jiazengp/GenshinMapDocs)]
 [![license](https://img.shields.io/badge/license-MIT-green)](https://gitee.com/KYJGYSDT/yuanshendocs/blob/master/LICENSE)
-[![npm](https://img.shields.io/npm/v/2)](https://www.npmjs.com/)
 [![node](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen)](https://nodejs.org/)
 [![types](https://img.shields.io/npm/types/ts)](https://img.shields.io/npm/types/ts)
 
