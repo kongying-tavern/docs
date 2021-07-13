@@ -1,6 +1,5 @@
 ---
 title: 支持我们
-sidebar: false
 ---
 
 ## 支持我们

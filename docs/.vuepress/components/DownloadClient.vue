@@ -112,7 +112,7 @@ export default defineComponent({
         googleDrive: '',
       },
       {
-        name: 'Wechat Applet ',
+        name: 'WeChat Applet ',
         version: '',
         disabled: true,
         bg: '/20210710/b735765c5e121efc0ea5bcd839051972.png',
@@ -120,7 +120,10 @@ export default defineComponent({
         googleDrive: '',
       },
     ])
-    const download = function (baiduNetdisk: string, googleDrive: string) {
+    const download = function (
+      baiduNetdisk: string,
+      googleDrive: string
+    ): void {
       ElMessageBox({
         center: true,
         showClose: false,
@@ -223,6 +226,9 @@ $qrcode-btn-size: 36px;
     flex-direction: column;
     align-items: center;
   }
+  .download-client-card {
+    margin: 16px 0 !important;
+  }
 }
 .download-client {
   display: flex;
@@ -283,6 +289,9 @@ $qrcode-btn-size: 36px;
         border: none;
         &:hover {
           background-color: var(--c-brand-light);
+        }
+        &.is-disabled {
+          opacity: 0.85;
         }
       }
       .card-qrcode {

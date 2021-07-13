@@ -34,19 +34,26 @@ sidebar: false
 - [v1](https://gitee.com/KYJGYSDT/yuan-shen-map)
   - Jquery
   - Leaflet
-- [v2](https://gitee.com/MoonlightSmile/yuanshenmap)
-  - Vue3
-  - TypeScript
+- [v2](https://gitee.com/KYJGYSDT/island_map)
+  - Quasar
+  - Vue2 全家桶
   - Leaflet
   - Sass&Scss
-- [v3](https://yuanshen.site/v3/)（全新领域，全新挑战，是兄弟就来 deckgl）
+- [v3](https://nextjs-imagination-map-nbmzjq21z-peaceshi.vercel.app/)（全新领域，全新挑战，是兄弟就来 Deckgl）
   - React17
   - TypeScript
   - Deckgl
+  - NextJs
 
 `前端文档`
 
-[https://yuanshen.site/docs/developer/documentation/](/docs/developer/documentation/)
+主要技术栈：
+
+- [v1](https://github.com/jiazengp/genshinmap-docs/)
+  - Vuepress2
+  - TypeScript
+
+了解更多：[https://yuanshen.site/docs/developer/documentation/](/docs/developer/documentation/)
 
 ### 后端开发
 
@@ -66,22 +73,28 @@ sidebar: false
 
 （急缺）shader 大佬：求求 shader 大佬带带我们~
 
-## 美术表现类
+## 美术表现类（急缺）
 
 ### 视觉设计、交互设计、美术
 
 网页和客户端内的界面交互和 UI 制作；
 
-## 内容类
+## 内容运营类
 
 ### 地图打点
 
-负责更新地图点位，收集数据等
+负责更新地图点位，收集数据等。
+
+下版本应该有新地图。
+
+肝不动了，新的地图需要你们的帮助~
 
 ### 翻译
 
-负责地图项目的 I18N 的翻译工作，等。
+负责地图项目的国际化的翻译工作，等。
 
 ## 如何加入
 
-有意者欢迎加入群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈
+内容类的小伙伴可以联系：A8：**790489566**，铃：**717818652**。
+
+程序技术类和美术表现类的小伙伴可以加群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈。

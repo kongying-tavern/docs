@@ -16,25 +16,14 @@
   </Layout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref } from 'vue'
 import { usePageFrontmatter } from '@vuepress/client'
-import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
-import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
-
-export default {
-  components: {
-    Layout,
-  },
-  setup() {
-    const frontmatter = usePageFrontmatter()
-    return {
-      anchor: ref(frontmatter.value.anchor ?? true),
-    }
-  },
-}
+const frontmatter = usePageFrontmatter()
+const anchor = ref(frontmatter.value.anchor ?? true)
+console.log('anchor:', anchor.value)
 </script>
 
 <style lang="scss">

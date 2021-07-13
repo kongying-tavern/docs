@@ -15,7 +15,6 @@ footer: Chinese hoyolabMade By Kongying Tavern
 <script setup>
 import { onMounted } from 'vue'
 import { ElNotification } from 'element-plus';
-
 onMounted(()=>{
   if(window.localStorage.getItem("QUESTIONNAIRE")) return;
   setTimeout(()=>{

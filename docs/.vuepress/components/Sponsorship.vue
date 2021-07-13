@@ -92,7 +92,7 @@ export default defineComponent({
         link: 'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
       },
       {
-        name: 'ETH',
+        name: 'Ethereum',
         logo: 'eth',
         link: 'ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde',
       },
