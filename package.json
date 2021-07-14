@@ -4,11 +4,7 @@
   "description": "yuanshenmap-docs",
   "homepage": "https://yuanshen.site/docs/",
   "private": true,
-  "author": {
-    "name": "(^_^)",
-    "email": "1961266616@qq.com",
-    "github": "github.com/jiazengp"
-  },
+  "author": " <jiazengp@gmail.com> (^_^)",
   "license": "MIT",
   "directories": {
     "doc": "docs"
@@ -28,11 +24,14 @@
   "engines": {
     "node": ">=12.0.0"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "tsc --build",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "npx kaomo",
-    "docs:build2": "vuepress build docs",
+    "docs:build": "vuepress build docs",
+    "docs:build2": "vuepress build docs && start ./dist",
     "docs:serve": "npx http-server ./dist -b",
     "commit": "npx git-cz",
     "lint": "yarn lint:prettier --write && yarn lint:eslint --fix",
@@ -113,6 +112,7 @@
     "@vuepress/plugin-search": "^2.0.0-beta.19",
     "@vuepress/plugin-shiki": "^2.0.0-beta.19",
     "@vuepress/plugin-theme-data": "^2.0.0-beta.19",
+    "vuepress-plugin-lightgallery": "^2.0.0-alpha.4",
     "@vuepress/plugin-toc": "^2.0.0-beta.19",
     "concurrently": "^6.2.0",
     "conventional-changelog-cli": "^2.1.1",
@@ -137,6 +137,7 @@
     "karma-spec-reporter": "^0.0.32",
     "karma-webpack": "^5.0.0",
     "katex": "^0.13.11",
+    "lerna": "^4.0.0",
     "lint-md": "^0.2.0",
     "lint-staged": "^11.0.0",
     "markdownlint-cli": "^0.27.1",
@@ -186,10 +187,10 @@
     "default-passive-events": "^2.0.0",
     "element-plus": "^1.0.2-beta.53",
     "husky": "^7.0.0",
+    "js-md5": "^0.7.3",
     "prettier": "^2.3.2",
     "qrcode": "^1.4.4",
     "qs": "^6.10.1",
-    "screenfull": "^5.1.0",
-    "vuepress-plugin-lightgallery": "^2.0.0-alpha.4"
+    "screenfull": "^5.1.0"
   }
 }

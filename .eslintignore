@@ -4,3 +4,5 @@ lib/
 dist/
 !.vuepress/
 !.*.js
+packages/
+public/

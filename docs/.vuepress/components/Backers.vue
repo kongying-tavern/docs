@@ -5,8 +5,8 @@
         v-for="(item, index) in items"
         :key="item.name + index"
         :aria-label="item.name"
-        href="javascript:void(0)"
         :title="item.name"
+        href="javascript:void(0)"
       >
         <el-tooltip
           :content="(item?.platform || '其他') + '：' + item.name"

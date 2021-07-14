@@ -13,9 +13,14 @@
   "MD033": {
     "allowed_elements": [
       "DownloadClient",
+      "ShunyaKoide",
       "Icon",
+      "Dot",
       "br",
+      "Snowflakes",
       "time",
+      "QRCode",
+      "Raining",
       "MyBadge",
       "Badge",
       "ScreenFull",

@@ -11,8 +11,8 @@
   </el-tooltip>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 
 import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
@@ -21,15 +21,8 @@ type MyThemeData = ThemeData<{
   backToTop: string
 }>
 
-export default defineComponent({
-  name: 'Backtop',
-  setup() {
-    const themeLocaleData = useThemeLocaleData<MyThemeData>()
-    return {
-      backToTop: themeLocaleData.value.backToTop,
-    }
-  },
-})
+const themeLocaleData = useThemeLocaleData<MyThemeData>()
+const backToTop = ref(themeLocaleData.value.backToTop)
 </script>
 
 <style lang="scss" scoped>

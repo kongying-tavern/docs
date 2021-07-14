@@ -4,7 +4,6 @@ import {
   useThemeLocaleData,
 } from '@vuepress/plugin-theme-data/lib/client'
 import { log, isDEV, dayjs } from './utils'
-import Empty from './layout/Empty.vue'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import ElementPlus from 'element-plus'
 import 'default-passive-events'
@@ -23,7 +22,6 @@ type MyThemeData = ThemeData<{
 export default defineClientAppEnhance(({ app, router, siteData }) => {
   const pageData = usePageData<PageData>()
   const themeData = useThemeData<MyThemeData>()
-  app.component('Empty', Empty)
   app.use(ElementPlus, { locale })
 
   log('原神地图', 'DOCS', [

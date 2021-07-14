@@ -134,7 +134,7 @@ git branch -d temp
   <CodeGroupItem title="YARN" active>
 
 ```bash
-yarn docs:commit
+yarn commit
 ```
 
   </CodeGroupItem>
@@ -142,7 +142,7 @@ yarn docs:commit
   <CodeGroupItem title="NPM">
 
 ```bash
-npm run docs:commit
+npm run commit
 ```
 
   </CodeGroupItem>
@@ -150,7 +150,7 @@ npm run docs:commit
   <CodeGroupItem title="PNPM">
 
 ```bash
-pnpm run docs:commit
+pnpm run commit
 ```
 
   </CodeGroupItem>

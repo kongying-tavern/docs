@@ -10,16 +10,16 @@ const isProd = process.env.NODE_ENV === 'production'
 
 console.log('Mode:', isProd ? 'Production' : 'development')
 
-interface myOptions extends DefaultThemeOptions {
-  feed?: '反馈'
-}
-
-module.exports = defineUserConfig<myOptions, ViteBundlerOptions>({
+module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
   bundler: '@vuepress/webpack',
   bundlerConfig: {},
   dest: 'dist',
   public: 'public',
   base: CONFIG.PATH,
+  templateSSR: path.resolve(
+    __dirname,
+    './docs/.vuepress/templates/index.ssr.html'
+  ),
   theme: path.resolve(__dirname, './docs/.vuepress/theme/'),
   head: [
     ['meta', { name: 'charset', content: 'utf-8' }],
@@ -48,7 +48,7 @@ module.exports = defineUserConfig<myOptions, ViteBundlerOptions>({
     ['meta', { name: 'google', content: 'notranslate' }],
     ['meta', { name: 'twitter:image', content: CONFIG.COVER }],
     ['meta', { itemprop: 'image', content: CONFIG.COVER }],
-    ['link', { rel: 'manifest', href: CONFIG.PATH + '/manifest.webmanifest' }],
+    ['link', { rel: 'manifest', href: CONFIG.PATH + 'manifest.webmanifest' }],
     ['link', { rel: 'apple-touch-icon', href: CONFIG.APP_TOUCH_ICON }],
     ['link', { rel: 'shortcut icon', href: CONFIG.FAVICON }],
     [

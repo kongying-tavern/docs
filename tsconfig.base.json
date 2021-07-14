@@ -5,6 +5,7 @@
     "module": "ESNext",
     "checkJs": true,
     "pretty": true,
+    "composite": true,
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

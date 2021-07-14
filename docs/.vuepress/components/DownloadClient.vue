@@ -48,10 +48,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, h } from 'vue'
+import { defineComponent, ref, h, onMounted } from 'vue'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 import { ElMessageBox } from 'element-plus'
-
 import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
 
 type MyThemeData = ThemeData<{
@@ -65,7 +64,6 @@ export default defineComponent({
   name: 'DownloadClient',
   setup() {
     const themeLocaleData = useThemeLocaleData<MyThemeData>()
-    console.log(themeLocaleData.value)
     const list = ref([
       {
         name: 'Windows',

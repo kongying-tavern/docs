@@ -23,7 +23,6 @@ import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
 const frontmatter = usePageFrontmatter()
 const anchor = ref(frontmatter.value.anchor ?? true)
-console.log('anchor:', anchor.value)
 </script>
 
 <style lang="scss">

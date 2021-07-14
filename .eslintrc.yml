@@ -8,19 +8,14 @@ extends:
   - plugin:vue/vue3-recommended
   - eslint:recommended
   - plugin:prettier/recommended
-  - eslint-config-prettier
-
-globals:
-  __VERSION__: 'readonly'
-  __DEV__: 'readonly'
-  __SSR__: 'readonly'
-  __VUE_HMR_RUNTIME__: 'writable'
 
 ignorePatterns:
   - '**/dist/**'
   - '**/node_modules/**'
   - '.cache/**'
   - '.temp/**'
+  - 'packages/*/client/**'
+  - 'packages/*/node/**'
 
 overrides:
   - files:
@@ -106,24 +101,6 @@ overrides:
         - warn
         - allowTypedFunctionExpressions: true
 
-      '@typescript-eslint/ban-types':
-        - 0
-
-      '@typescript-eslint/no-this-alias':
-        - 0
-
-      '@typescript-eslint/no-unsafe-assignment':
-        - 0
-
-      '@eslint-plugin/explicit-function-return-type':
-        - 0
-
-      '@typescript-eslint/restrict-template-expressions':
-        - 0
-
-      '@typescript-eslint/ban-ts-comment':
-        - warn
-
       '@typescript-eslint/naming-convention':
         - warn
         - selector: default
@@ -176,7 +153,7 @@ overrides:
         - off
 
   - files:
-      - '**/tests/*.spec.{j,t}s?(x)'
+      - '**/__tests__/**/*.spec.{j,t}s?(x)'
 
     env:
       jest: true

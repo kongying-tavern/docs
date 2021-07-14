@@ -1,5 +1,6 @@
 # 原神地图文档
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/jiazengp/genshinmap-docs)
 ![GitHub Repo stars](https://img.shields.io/github/stars/jiazengp/GenshinMapDocs)
 [![star](https://gitee.com/KYJGYSDT/yuanshendocs/badge/star.svg?theme=dark)](https://gitee.com/KYJGYSDT/yuanshendocs/stargazers)
 [![CD](https://github.com/jiazengp/genshinmap-docs/actions/workflows/main.yml/badge.svg)](https://github.com/jiazengp/genshinmap-docs/actions/workflows/main.yml)
