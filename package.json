@@ -181,7 +181,7 @@
     "@types/qs": "^6.9.6",
     "@types/webpack": "^5.28.0",
     "@vuepress/utils": "^2.0.0-alpha.1",
-    "@vueuse/core": "^5.0.3",
+    "@vueuse/core": "5.1.4",
     "axios": "^0.21.1",
     "dayjs": "^1.10.5",
     "default-passive-events": "^2.0.0",
