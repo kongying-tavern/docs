@@ -197,7 +197,7 @@
     "semantic-release": "^17.4.4",
     "semver": "^7.3.5",
     "textlint": "^12.0.0",
-    "textlint-filter-rule-allowlist": "^3.0.0",
+    "textlint-filter-rule-allowlist": "4.0.0",
     "textlint-filter-rule-comments": "^1.2.2",
     "textlint-rule-alex": "^3.0.0",
     "textlint-rule-apostrophe": "^2.0.0",

@@ -76,7 +76,7 @@ specifiers:
   semantic-release: ^17.4.4
   semver: ^7.3.5
   textlint: ^12.0.0
-  textlint-filter-rule-allowlist: ^3.0.0
+  textlint-filter-rule-allowlist: 4.0.0
   textlint-filter-rule-comments: ^1.2.2
   textlint-rule-alex: ^3.0.0
   textlint-rule-apostrophe: ^2.0.0
@@ -182,7 +182,7 @@ devDependencies:
   semantic-release: 17.4.4
   semver: 7.3.5
   textlint: 12.0.2
-  textlint-filter-rule-allowlist: 3.0.0_textlint@12.0.2
+  textlint-filter-rule-allowlist: 4.0.0_textlint@12.0.2
   textlint-filter-rule-comments: 1.2.2_textlint@12.0.2
   textlint-rule-alex: 3.0.0
   textlint-rule-apostrophe: 2.0.0
@@ -15409,18 +15409,16 @@ packages:
     resolution: {integrity: sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=}
     dev: true
 
-  /textlint-filter-rule-allowlist/3.0.0_textlint@12.0.2:
-    resolution: {integrity: sha512-kOsPFQ+lU+kEEseB3PHatqlPfMcu7EpVJByEMcqW9/imKJ+QgBM0q7Jh09Viyie6cX1OrUQeAbgcDhk5XKwr6A==}
+  /textlint-filter-rule-allowlist/4.0.0_textlint@12.0.2:
+    resolution: {integrity: sha512-rOlWr12sff9ZS8mOtRACPB3l1yK0oW21Owz8XsTAgFWmRhOnBbCKw8tKMDm6EtQHO92SOfyJmT4nowxiJ85Qiw==}
     peerDependencies:
       textlint: '>= 9.0.0'
     dependencies:
       '@textlint/ast-node-types': 12.0.0
       '@textlint/get-config-base-dir': 2.0.0
       '@textlint/regexp-string-matcher': 1.1.0
-      rc-config-loader: 4.0.0
+      js-yaml: 4.1.0
       textlint: 12.0.2
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /textlint-filter-rule-comments/1.2.2_textlint@12.0.2:
