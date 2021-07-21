@@ -2,7 +2,6 @@
 title: 贡献鸣谢
 description: 贡献鸣谢
 sidebar: false
-anchor: false
 ---
 
 ## 贡献鸣谢

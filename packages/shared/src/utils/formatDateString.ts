@@ -6,7 +6,7 @@ export const formatDateString = (
   defaultDateString = ''
 ): string => {
   // match the `yyyy-(M)M-(d)d` pattern
-  const dateMatch = str.match(/\b(\d{4})-(\d{1,2})-(\d{1,2})\b/)
+  const dateMatch = /\b(\d{4})-(\d{1,2})-(\d{1,2})\b/.exec(str)
 
   // return `defaultDateString` if no matched pattern
   if (dateMatch === null) {

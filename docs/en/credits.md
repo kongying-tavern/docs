@@ -3,7 +3,6 @@ title: Credits
 description: Credits
 sidebar: true
 pageClass: credits
-anchor: false
 ---
 
 ## Credits
@@ -27,6 +26,7 @@ Thank you authors, it is you who make the world a better place!
 | Tailwind   | 2.1     | MIT          | <https://github.com/tailwindlabs/tailwindcss> | Adam Wathan & Jonathan Reinink |
 | Vue        | 3.1.2   | MIT          | <https://github.com/vuejs/vue>                | Evan You                       |
 | VuePress   | 2.0.0   | MIT          | <https://github.com/vuejs/vuepress>           | Evan You                       |
+| VueUse     | 5.1.3   | MIT          | <https://github.com/vueuse/vueuse>            | Anthony Fu                     |
 
 ### Art
 

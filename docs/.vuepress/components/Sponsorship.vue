@@ -28,37 +28,20 @@
           }"
         >
         </QRCode>
-        <!-- <el-image
-          class="onetime-sponsorship-qrcode"
-          fit="cover"
-          :alt="$withBase(items.find((val) => val.name === type)?.name)"
-          :src="$withBase(items.find((val) => val.name === type)?.qrCode)"
-          :hide-on-click-modal="true"
-          :append-to-body="true"
-          :preview-src-list="[
-            $withBase(items.find((val) => val.name === type)?.qrCode),
-          ]"
-        >
-          <template #error>
-            <div class="image-slot">
-              <Icon icon="qrcode" />
-              <span>&nbsp;Load failed</span>
-            </div>
-          </template>
-        </el-image> -->
         <h4 style="margin: 0 0 20px 0">
           {{ items.find((val) => val.name === type)?.name }}
         </h4>
-        <el-link
+        <ElLink
           icon="el-icon-share"
           class="onetime-sponsorship-link"
           rel="noopener noreferrer"
           aria-label="Sponsored links"
           target="_blank"
+          style="word-break: break-all"
           :href="items.find((val) => val.name === type)?.link"
         >
           {{ items.find((val) => val.name === type)?.link }}
-        </el-link>
+        </ElLink>
       </div>
     </div>
   </div>
@@ -132,11 +115,7 @@ $qrcode-size: 200px;
       flex: 1 1 auto;
       padding: 12px 0;
       text-decoration: none;
-      &:hover {
-        transform: scale(1.15);
-        transform-origin: center;
-        transition: all 0.3s ease-in-out;
-      }
+      user-select: none;
       svg {
         margin-right: 5px;
         &:hover {

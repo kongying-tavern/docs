@@ -1,0 +1,66 @@
+'/en/':
+  home: /en/
+  selectLanguageName: English
+  selectLanguageText: Language
+  selectLanguageAriaLabel: Language
+  lastUpdatedText: Last Updated
+  contributorsText: Contributors
+  download: Download
+  newFolder: New folder
+  followUs: Follow us
+  stayTuned: Stay tuned
+  grade: Did the above content help you?
+  feedback: Feedback
+  thankFeedback: Thanks for your feedback!
+  tip: Tips
+  notFound:
+    - The page you’re looking for can’t be found.
+    - Not Found
+  backToHome: Back to home
+  backToTop: Back to top
+  openInNewWindow: open in new window
+  warning: Warning
+  danger: Danger
+  selectDownloadMethod: Select download method
+  editLinkText: Edit this page on GitHub
+  navbar:
+    - text: Feedback
+      link: https://support.qq.com/products/321980
+    - text: Support Us
+      children:
+        - text: One Time Donation
+          link: /en/support-us.md
+        - text: Weekly Donations
+          link: /en/support-us.md#weekly-donations
+    - text: Understand More
+      children:
+        - text: Update Content
+          children:
+            - text: WebPage
+              link: https://support.qq.com/products/321980/blog/505810
+            - text: UnityClient
+              link: https://support.qq.com/products/321980/blog/505884
+        - text: Law Related
+          children:
+            - text: Disclaimer
+              link: /en/disclaimer.md
+            - text: Privacy
+              link: /en/privacy.md
+            - text: User Agreement
+              link: /en/agreement.md
+        - text: Other
+          children:
+            - text: Download client
+              link: /en/download-client.md
+            - text: Join us
+              link: /join.html
+            - text: Contributing Guide
+              link: /en/contributing.md
+        - text: Thanks
+          children:
+            - text: Contribution
+              link: /en/contribution.md
+            - text: Sponsor
+              link: /en/support-us.md
+            - text: Credits
+              link: /en/credits.md

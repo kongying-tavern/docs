@@ -8,11 +8,11 @@ export const throttle = <R, A extends any[]>(
   callback: (...params: A) => R,
   wait: number
 ): Function => {
-  let previous = 0,
-    timer: NodeJS.Timeout | null = null
+  let previous = 0
+  let timer: NodeJS.Timeout | null = null
   return function (...params: A) {
-    const now = +Date.now(),
-      remaining = wait - (now - previous)
+    const now = +Date.now()
+    const remaining = wait - (now - previous)
     if (remaining <= 0) {
       clearTimeout(Number(timer))
       timer = null

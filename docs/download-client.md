@@ -2,7 +2,7 @@
 title: 下载客户端
 description: 下载客户端
 sidebar: false
-anchor: false
+
 pageClass: download-client
 ---
 
@@ -16,7 +16,6 @@ pageClass: download-client
 <DownloadClient></DownloadClient>
 
 <style lang="scss" scoped>
-
 .download-client {
   .custom-container.center{
     margin: 50px 0;
@@ -28,6 +27,9 @@ pageClass: download-client
       width: 90%;
       line-height: 28px;
       margin: 0 auto;
+    }
+    @media only screen and (max-width:719px) {
+      p {display: none;}
     }
   }
 }

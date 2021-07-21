@@ -1,7 +1,6 @@
 ---
 title: 用户协议
 sidebar: false
-anchor: false
 ---
 
 ## 空荧酒馆原神地图用户服务协议

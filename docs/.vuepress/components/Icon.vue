@@ -14,7 +14,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'Icon',
   props: {
-    icon: { type: String, required: true }, //图标名称
+    icon: { type: String, required: true }, // 图标名称
   },
 })
 </script>

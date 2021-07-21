@@ -1,8 +1,8 @@
 <template>
   <Layout>
     <template #page-top>
-      <Anchor v-show="anchor" />
-      <Backtop />
+      <Anchor v-show="anchorRight" />
+      <Backtop v-show="backTop" />
     </template>
     <template #page-bottom>
       <footer class="docs-footer page-meta">
@@ -22,10 +22,11 @@ import { usePageFrontmatter } from '@vuepress/client'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
 const frontmatter = usePageFrontmatter()
-const anchor = ref(frontmatter.value.anchor ?? true)
+const backTop = ref(frontmatter.value.backTop ?? true)
+const anchorRight = ref(frontmatter.value.anchorRight ?? true)
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .footer-container {
   .docs-info {
     display: grid;

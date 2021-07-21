@@ -7,7 +7,7 @@
       :aria-label="item.name"
       :style="
         'background:url(' +
-        $withBase(item.bg) +
+        withBase(item.bg) +
         ')no-repeat;background-position: right bottom;background-size: auto 150px;'
       "
     >
@@ -19,7 +19,7 @@
           }}</span>
         </header>
 
-        <el-button
+        <ElButton
           class="card-button"
           title="Download button"
           type="success"
@@ -27,7 +27,7 @@
           @click="download(item.baiduNetdisk, item.googleDrive)"
         >
           {{ item.disabled ? stayTuned : downloadText }}
-        </el-button>
+        </ElButton>
 
         <div v-if="item.QRCode" class="qrcode-container" aria-label="QRCode">
           <Icon icon="qrcode" />
@@ -50,24 +50,18 @@
 <script lang="ts">
 import { defineComponent, ref, h, onMounted } from 'vue'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
+import { withBase } from '@vuepress/client'
 import { ElMessageBox } from 'element-plus'
-import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
-
-type MyThemeData = ThemeData<{
-  download: string
-  newFolder: string
-  selectDownloadMethod: string
-  stayTuned: string
-}>
+import type { ThemeData } from '../shared'
 
 export default defineComponent({
   name: 'DownloadClient',
   setup() {
-    const themeLocaleData = useThemeLocaleData<MyThemeData>()
+    const themeLocaleData = useThemeLocaleData<ThemeData>()
     const list = ref([
       {
         name: 'Windows',
-        version: 'v1.10_beta',
+        version: 'v1.11_beta',
         QRCode: false,
         disabled: false,
         bg: '/20210710/8f6ce2c16420c33e970c1efd524cda04.png',
@@ -201,6 +195,7 @@ export default defineComponent({
     return {
       list,
       download,
+      withBase,
       downloadText: themeLocaleData.value.download,
       newFolder: themeLocaleData.value.newFolder,
       stayTuned: themeLocaleData.value.stayTuned,

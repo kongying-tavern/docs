@@ -1,4 +1,4 @@
-import webpack from 'webpack'
+import type webpack from 'webpack'
 import { path } from '@vuepress/utils'
 
 const config: webpack.Configuration = {

@@ -1,6 +1,6 @@
 <template>
   <div v-once class="backers">
-    <el-space :size="8" :wrap="true">
+    <ElSpace :size="8" :wrap="true">
       <a
         v-for="(item, index) in items"
         :key="item.name + index"
@@ -8,22 +8,22 @@
         :title="item.name"
         href="javascript:void(0)"
       >
-        <el-tooltip
+        <ElTooltip
           :content="(item?.platform || '其他') + '：' + item.name"
           placement="top"
         >
-          <el-avatar
+          <ElAvatar
             shape="circle"
             size="large"
             :alt="item.name"
             :src="item.avatarUrl"
           >
             {{ item.name.substring(0, 3).toLocaleUpperCase() }}
-          </el-avatar>
-        </el-tooltip>
+          </ElAvatar>
+        </ElTooltip>
         <!-- <span class="backers-name" v-text=".substring(0, 4)"></span> -->
       </a>
-    </el-space>
+    </ElSpace>
   </div>
 </template>
 
@@ -486,7 +486,7 @@ export default defineComponent({
           sum: 'unknown',
           date: 'unknown',
         },
-      ].sort((x, y) => x['name'].localeCompare(y['name']))
+      ].sort((x, y) => x.name.localeCompare(y.name))
     )
 
     return {

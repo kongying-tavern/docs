@@ -1,13 +1,11 @@
+<template>
+  <dot class="docs-dot"></dot>
+</template>
 <script lang="ts">
-import { defineComponent, h } from 'vue'
-
-import type { VNode } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'Dot',
-  setup() {
-    return (): VNode => h('dot', { class: 'docs-dot' })
-  },
 })
 </script>
 

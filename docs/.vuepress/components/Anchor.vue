@@ -1,7 +1,6 @@
 <template>
   <Toc class="docs-anchor" />
 </template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 

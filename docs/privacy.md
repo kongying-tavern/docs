@@ -1,7 +1,6 @@
 ---
 title: 隐私政策
 sidebar: false
-anchor: false
 ---
 
 ## 隐私

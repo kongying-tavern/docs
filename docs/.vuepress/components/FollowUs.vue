@@ -35,16 +35,12 @@
 import { defineComponent } from 'vue'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 
-import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
-
-type MyThemeData = ThemeData<{
-  followUs: string
-}>
+import type { ThemeData } from '../shared'
 
 export default defineComponent({
   name: 'FollowUs',
   setup() {
-    const themeLocaleData = useThemeLocaleData<MyThemeData>()
+    const themeLocaleData = useThemeLocaleData<ThemeData>()
     return {
       followUs: themeLocaleData.value.followUs,
     }

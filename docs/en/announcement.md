@@ -1,8 +1,6 @@
 ---
 title: Announcement
 description: Announcement of stand-alone release
-date: 2021-05-30
-permalinkPattern: :year/:month/:day/:slug.html
 ---
 
 ## Announcement of stand-alone release

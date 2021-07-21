@@ -4,7 +4,6 @@ description: 加入讨论组
 sidebar: false
 pageClass: communication-group
 externalIcon: false
-anchor: false
 ---
 
 ## <Icon icon="qq" /> QQ 交流群

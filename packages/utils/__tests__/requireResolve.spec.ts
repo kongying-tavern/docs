@@ -67,14 +67,6 @@ describe('utils > requireResolve', () => {
     })
   })
 
-  describe('should resolve dependencies correctly', () => {
-    depCases.forEach(([source, expected]) => {
-      it(`${source} => ${expected}`, () => {
-        expect(requireResolve(source)).toBe(expected)
-      })
-    })
-  })
-
   describe('should return null', () => {
     nullCases.forEach(([source, expected]) => {
       it(`${source} => ${expected}`, () => {

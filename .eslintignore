@@ -1,8 +1,0 @@
-node_modules/
-.temp/
-lib/
-dist/
-!.vuepress/
-!.*.js
-packages/
-public/

@@ -153,7 +153,7 @@ Genshin Map Docs 项目创立于 2021 年六月初，至今已上线 <time> {{ d
 这里只列出了一部分你可能会用到的，完整命令见根目录下的 package.json 中的 script。
 :::
 
-## 参考链接
+## 目录
 
 ### `用法类`
 
@@ -168,6 +168,7 @@ Genshin Map Docs 项目创立于 2021 年六月初，至今已上线 <time> {{ d
 - [Sass](https://sass-lang.com/)
 - [Axios](https://axios-http.com/)
 - [ElementPlus](https://element-plus.org/#/zh-CN/)
+- [VueUse](https://vueuse.org/)
 - [Markdown](https://zh.wikipedia.org/wiki/Markdown)
   - [将当前页的目录添加到 Markdown 的内容](https://vuepress2.netlify.app/zh/guide/markdown.html#%E7%9B%AE%E5%BD%95)
   - [Markdown 中引用静态资源](https://vuepress2.netlify.app/zh/guide/assets.html#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90)
@@ -180,8 +181,12 @@ Genshin Map Docs 项目创立于 2021 年六月初，至今已上线 <time> {{ d
   - [Markdown 中使用 Mermaid](./guide/mermaid.md)
   - [Markdown 中使用 Task list，Footnote，Custom alignment，Custom Containers，Superscript and Subscript，Markup](./guide/other.md)
 - [Vue3](https://v3.cn.vuejs.org/guide/introduction.html)
-- [ElementPlus-Icon](https://element-plus.org/#/zh-CN/component/icon)
-- [Iconfont-Icon](https://yuanshen.site/docs/20210619/demo_index.html)
+
+### `图标`
+
+- [ElementPlus Icon](https://element-plus.org/#/zh-CN/component/icon)
+- [Iconfont Icon](https://yuanshen.site/docs/20210619/demo_index.html)
+- [VSCode Icon](https://icones.netlify.app/collection/vscode-icons)
 
 ### `原理类`
 

@@ -11,7 +11,7 @@ export const normalizePackageName = (
   const typePrefix = type === null ? '' : `${type}-`
 
   // scoped package pattern
-  const scopedMatch = request.match(/^@(.*)\/(.*)$/)
+  const scopedMatch = /^@(.*)\/(.*)$/.exec(request)
 
   // handle non-scoped package
   if (scopedMatch === null) {

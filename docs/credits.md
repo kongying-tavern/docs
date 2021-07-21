@@ -4,7 +4,6 @@ description: 技术鸣谢
 sidebar: false
 pageClass: credits
 externalIcon: false
-anchor: false
 ---
 
 ## Credits
@@ -27,6 +26,7 @@ anchor: false
 | TypeScript | 4.3.2   | Apache-2.0   | <https://github.com/microsoft/TypeScript> | Microsoft                  |
 | Vue        | 3.1.2   | MIT          | <https://github.com/vuejs/vue>            | Evan You                   |
 | VuePress   | 2.0.0   | MIT          | <https://github.com/vuejs/vuepress>       | Evan You                   |
+| VueUse     | 5.1.3   | MIT          | <https://github.com/vueuse/vueuse>        | Anthony Fu                 |
 
 ### 美术
 

@@ -1,4 +1,4 @@
-import { AxiosPromise } from 'axios'
+import type { AxiosPromise } from 'axios'
 
 export type AxiosReturnType<T> = T extends (
   ...args: any[]
@@ -24,4 +24,14 @@ export interface AxiosRequest {
   headers?: any
   timeout?: number
   responseType?: ResponseType
+}
+
+interface UrlDict {
+  [key: string]: Record<string, string>
+}
+
+export interface ClientActivatedVersionData {
+  code: number
+  data: {}
+  msg: string | null
 }

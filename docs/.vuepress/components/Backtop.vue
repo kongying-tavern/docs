@@ -1,27 +1,23 @@
 <template>
-  <el-tooltip
+  <ElTooltip
     effect="dark"
     :enterable="false"
     :content="backToTop"
     placement="left-start"
   >
-    <el-backtop :visibility-height="300" :right="30" class="docs-backtop">
-      <Icon icon="back-top" />
-    </el-backtop>
-  </el-tooltip>
+    <ElBacktop :visibility-height="300" :right="30" class="docs-backtop">
+      <SvgIcon name="back-top" />
+    </ElBacktop>
+  </ElTooltip>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 
-import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
+import type { ThemeData } from '../shared'
 
-type MyThemeData = ThemeData<{
-  backToTop: string
-}>
-
-const themeLocaleData = useThemeLocaleData<MyThemeData>()
+const themeLocaleData = useThemeLocaleData<ThemeData>()
 const backToTop = ref(themeLocaleData.value.backToTop)
 </script>
 

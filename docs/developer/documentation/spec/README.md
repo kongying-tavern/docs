@@ -15,10 +15,9 @@ sidebar:
 
 此文档规范是由地图团队制作，旨在帮助团队编写制作高质量的文档。
 
-### 原则
-
 ### 目录
 
+- [**Accessibility**](./accessibility.md)
 - **中文文档**
   - [排版](./chinese/typography.md)
 
@@ -33,3 +32,5 @@ sidebar:
 - Apple，[Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/)
 
 - Google，[https://material.io/design](https://material.io/design)
+
+- Github，[https://primer.style/](https://primer.style/)

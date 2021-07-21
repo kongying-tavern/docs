@@ -13,3 +13,9 @@ coverage/
 
 # Public Assets
 public/
+
+# Dist files
+packages/*/client/
+packages/*/node/
+packages/theme/layouts/
+packages/theme/styles/

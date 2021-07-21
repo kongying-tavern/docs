@@ -20,6 +20,8 @@ TODOs.md
 RELEASE_NOTE*.md
 
 # Build files
+packages/*/client/
+packages/*/node/
 dist
 
 # VuePress files
@@ -36,7 +38,7 @@ coverage
 *.tsbuildinfo
 
 # dotenv environment variables file
-.env
+.env.locale
 .env.test
 
 # TypeScript v1 declaration files

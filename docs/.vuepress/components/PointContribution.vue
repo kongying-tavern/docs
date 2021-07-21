@@ -1,6 +1,6 @@
 <template>
   <div v-once class="backers">
-    <el-space :size="22" direction="vertical" :wrap="true">
+    <ElSpace :size="22" direction="vertical" :wrap="true">
       <a
         v-for="(item, index) in items"
         :key="item.name + index"
@@ -8,17 +8,17 @@
         :href="item.link === null ? 'javascript:void(0)' : item.link"
         :title="item.name"
       >
-        <el-avatar
+        <ElAvatar
           shape="circle"
           size="small"
           src="https://bbs.mihoyo.com/ys/accountCenter/postList?id=1179529"
           :alt="item.name"
         >
           <!-- {{ item.name.substring(0, 3).toLocaleUpperCase() }} -->
-        </el-avatar>
-        <dev class="backers-name" v-text="item.name.substring(0, 18)"></dev>
+        </ElAvatar>
+        <Dev class="backers-name" v-text="item.name.substring(0, 18)"></Dev>
       </a>
-    </el-space>
+    </ElSpace>
   </div>
 </template>
 
@@ -51,7 +51,7 @@ export default defineComponent({
           sum: '12',
           date: null,
         },
-      ].sort((x, y) => x['name'].localeCompare(y['name']))
+      ].sort((x, y) => x.name.localeCompare(y.name))
     )
 
     return {

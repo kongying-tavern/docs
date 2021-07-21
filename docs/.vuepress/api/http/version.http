@@ -1,0 +1,82 @@
+@hostname = http://8.129.180.37
+@port = 8089
+@host = {{hostname}}:{{port}}
+
+### Locale
+
+GET http://8.129.180.37:8089/api/dict/type/i18n_lang
+Authorization: Bearer b43bb6dd-8989-43d4-9fc1-229576eaa59a
+### 获取激活的版本
+GET {{ host }}/api/version/activated HTTP/1.1
+Accept-Language: q=0.9,en;q=0.8,en-GB;q=0.7,ja;q=0.6,en-US;q=0.5
+
+### 新增版本
+
+POST {{ host }}/api/version HTTP/1.1
+Content-Type: application/json
+
+{
+  "backgroundImg": "./imgs/test.jpg",
+  "disabled": "0",
+  "id": 0,
+  "name": "Window",
+  "netdisk": [
+    {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    }
+  ],
+  "qrCode": "0",
+  "version": "1.1.1"
+}
+
+### 修改版本
+
+PUT {{ host }}/api/version HTTP/1.1
+Content-Type: application/json
+
+{
+  "backgroundImg": "./imgs/test.jpg",
+  "disabled": "0",
+  "id": 0,
+  "name": "Window",
+  "netdisk": [
+    {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    }
+  ],
+  "qrCode": "0",
+  "version": "1.1.1"
+}
+
+### 激活版本
+
+PUT {{ host }}/api/version/1
+Content-Type: application/json
+
+{
+  "backgroundImg": "./imgs/test.jpg",
+  "disabled": "0",
+  "id": 0,
+  "name": "Window",
+  "netdisk": [
+    {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    }
+  ],
+  "qrCode": "0",
+  "version": "1.1.1"
+}
+
+### 删除版本
+
+DELETE  {{ host }}/api/1
+
+### 版本分页
+
+GET { host }api/version/page

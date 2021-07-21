@@ -5,16 +5,16 @@
         text
       }}</span>
       <div class="rate-container">
-        <el-rate
+        <ElRate
           v-model="value"
           :disabled="isDisabled"
           class="docs-rate"
           :colors="colors"
           @change="rateChange"
         >
-        </el-rate>
+        </ElRate>
       </div>
-      <el-button
+      <ElButton
         class="feedback-btn"
         aria-label="Feedback button"
         size="medium"
@@ -22,7 +22,7 @@
       >
         {{ feedbackText }}
         <i class="el-icon-arrow-right el-icon--right"></i>
-      </el-button>
+      </ElButton>
     </div>
   </div>
 </template>
@@ -33,18 +33,12 @@ import { feedback } from '../utils'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 import { ElMessage } from 'element-plus'
 
-import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
-
-type MyThemeData = ThemeData<{
-  grade: string
-  feedback: string
-  thankFeedback: string
-}>
+import type { ThemeData } from '../shared'
 
 export default defineComponent({
   name: 'Grade',
   setup() {
-    const themeLocaleData = useThemeLocaleData<MyThemeData>()
+    const themeLocaleData = useThemeLocaleData<ThemeData>()
     const value = ref(null)
     const isDisabled = ref(false)
     const scoreTitle = ref(null)

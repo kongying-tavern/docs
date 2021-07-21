@@ -5,9 +5,16 @@
   "keywords": [
     "utils"
   ],
-  "author": " <jiazengp@gmail.com> (^_^)",
   "homepage": "https://yuanshen.site/docs/packages/utils",
+  "bugs": {
+    "url": "https://github.com/jiazengp/genshinmap-docs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiazengp/genshinmap-docs.git"
+  },
   "license": "MIT",
+  "author": " <jiazengp@gmail.com> (^_^)",
   "main": "lib/utils.js",
   "directories": {
     "lib": "lib",
@@ -16,17 +23,11 @@
   "files": [
     "lib"
   ],
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jiazengp/genshinmap-docs.git"
-  },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "rimraf lib *.tsbuildinfo"
   },
-  "bugs": {
-    "url": "https://github.com/jiazengp/genshinmap-docs/issues"
+  "publishConfig": {
+    "access": "public"
   }
 }

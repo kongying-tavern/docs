@@ -1,8 +1,6 @@
 ---
 title: 公告
 description: 机版下架公告
-date: 2021-05-30
-permalinkPattern: :year/:month/:day/:slug.html
 ---
 
 ## 单机版下架公告
