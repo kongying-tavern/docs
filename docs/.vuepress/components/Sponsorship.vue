@@ -10,7 +10,7 @@
         :href="'#' + item.name"
         :title="item.name"
       >
-        <Icon :icon="item.logo" style="font-size: 2em" />
+        <SvgIcon :icon="item.logo" style="font-size: 2em" />
         <span class="onetime-sponsorship-item-text"> {{ item.name }}</span>
       </a>
       <div

@@ -30,7 +30,7 @@
         </ElButton>
 
         <div v-if="item.QRCode" class="qrcode-container" aria-label="QRCode">
-          <Icon icon="qrcode" />
+          <SvgIcon icon="qrcode" />
         </div>
         <div v-if="item.QRCode" class="card-qrcode" aria-label="Scan QRCode">
           <QRCode
