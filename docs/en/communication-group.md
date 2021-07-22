@@ -18,6 +18,7 @@ externalIcon: false
 4. [**DiscussionGroups IV**1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击加入原神地图交流四群')
 5. [**DiscussionGroups V**1149599151](https://qm.qq.com/cgi-bin/qm/qr?k=e8cH0Yz-DESYMSZgcUHVyzIXb80CovXc&jump_from=webapi '点击加入原神地图交流五群')
 6. [**DiscussionGroups VI**1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击加入原神地图交流六群')
+7. [**DiscussionGroups VII**726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击加入原神地图交流七群')
 
 ::: tip
 Password is **123456**
