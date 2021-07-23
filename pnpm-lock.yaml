@@ -63,7 +63,7 @@ specifiers:
   lerna: ^4.0.0
   lint-md: ^0.2.0
   lint-staged: ^11.0.0
-  markdownlint-cli: ^0.27.1
+  markdownlint-cli: 0.28.1
   mocha: ^9.0.1
   npm-check-updates: ^11.7.1
   prettier: ^2.3.2
@@ -169,7 +169,7 @@ devDependencies:
   lerna: 4.0.0
   lint-md: 0.2.0
   lint-staged: 11.1.0
-  markdownlint-cli: 0.27.1
+  markdownlint-cli: 0.28.1
   mocha: 9.0.2
   npm-check-updates: 11.8.3
   prettier: 2.3.2
@@ -5866,14 +5866,14 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /commander/7.1.0:
-    resolution: {integrity: sha512-pRxBna3MJe6HKnBGsDyMv8ETbptw3axEdYHoqNh7gu5oDcew8fs0xnivZGm06Ogk8zGAJ9VX+OPEr2GXEQK4dg==}
-    engines: {node: '>= 10'}
-    dev: true
-
   /commander/7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
+    dev: true
+
+  /commander/8.0.0:
+    resolution: {integrity: sha512-Xvf85aAtu6v22+E5hfVoLHqyul/jyxh91zvqk/ioJTQuJR7Z78n7H558vMPKanPSRgIEeZemT92I2g9Y8LPbSQ==}
+    engines: {node: '>= 12'}
     dev: true
 
   /commandpost/1.4.0:
@@ -11282,12 +11282,12 @@ packages:
       repeat-string: 1.6.1
     dev: true
 
-  /markdownlint-cli/0.27.1:
-    resolution: {integrity: sha512-p1VV6aSbGrDlpUWzHizAnSNEQAweVR3qUI/AIUubxW7BGPXziSXkIED+uRtSohUlRS/jmqp3Wi4es5j6fIrdeQ==}
+  /markdownlint-cli/0.28.1:
+    resolution: {integrity: sha512-RBKtRRBzcuAF/H5wMSzb4zvEtbUkyYNEeaDtlQkyH9SoHWPL01emJ2Wrx6NEOa1ZDGwB+seBGvE157Qzc/t/vA==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      commander: 7.1.0
+      commander: 8.0.0
       deep-extend: 0.6.0
       get-stdin: 8.0.0
       glob: 7.1.7
@@ -11300,7 +11300,7 @@ packages:
       markdownlint-rule-helpers: 0.14.0
       minimatch: 3.0.4
       minimist: 1.2.5
-      rc: 1.2.8
+      run-con: 1.2.10
     dev: true
 
   /markdownlint-rule-helpers/0.14.0:
@@ -14306,6 +14306,16 @@ packages:
   /run-async/2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
     engines: {node: '>=0.12.0'}
+    dev: true
+
+  /run-con/1.2.10:
+    resolution: {integrity: sha512-n7PZpYmMM26ZO21dd8y3Yw1TRtGABjRtgPSgFS/nhzfvbJMXFtJhJVyEgayMiP+w/23craJjsnfDvx4W4ue/HQ==}
+    hasBin: true
+    dependencies:
+      deep-extend: 0.6.0
+      ini: 2.0.0
+      minimist: 1.2.5
+      strip-json-comments: 3.1.1
     dev: true
 
   /run-parallel/1.2.0:
