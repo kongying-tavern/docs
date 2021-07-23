@@ -49,7 +49,7 @@ specifiers:
   eslint-plugin-prettier-vue: ^3.1.0
   https-localhost: ^4.6.5
   husky: ^7.0.0
-  jest: ^27.0.6
+  jest: 27.0.6
   jest-serializer-vue: ^2.0.2
   js-md5: ^0.7.3
   karma: ^6.3.4
