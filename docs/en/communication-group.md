@@ -6,11 +6,11 @@ pageClass: communication-group
 externalIcon: false
 ---
 
-<!-- ## <SvgIcon icon="discord" />
+<!-- ## <SvgIcon name="discord" />
 
 > Join the server：<https://discord.gg/rPntkgXBBZ> -->
 
-## <SvgIcon icon="qq" /> QQ DiscussionGroup
+## <SvgIcon name="qq" /> QQ DiscussionGroup
 
 1. [**DiscussionGroup I**765302904](https://qm.qq.com/cgi-bin/qm/qr?k=p03N6ACWOqFW0WNhhUQSw2goET3L-Tkt&jump_from=webapi '点击加入原神地图交流一群')
 2. [**DiscussionGroup II**853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击加入原神地图交流二群')

@@ -1,7 +1,6 @@
 ---
 title: Disclaimer
 description: Disclaimer
-date: 2021-05-30
 sidebar: false
 ---
 

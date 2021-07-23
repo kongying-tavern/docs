@@ -6,7 +6,6 @@ const localTheme: Plugin = (options, app) => {
   return {
     name: 'vuepress-theme-local',
     extends: '@vuepress/theme-default',
-    clientAppEnhanceFiles: path.resolve(__dirname, '../clientAppEnhance.ts'),
     layouts: {
       Layout: path.resolve(__dirname, '../layout/Layout.vue'),
       // 404: path.resolve(__dirname, 'layouts/404.vue'),
@@ -14,4 +13,4 @@ const localTheme: Plugin = (options, app) => {
   }
 }
 
-module.exports = localTheme
+export default localTheme

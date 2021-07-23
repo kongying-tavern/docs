@@ -9,7 +9,7 @@
             target="_blank"
             title="bilibili"
           >
-            <SvgIcon icon="bilibili" />
+            <SvgIcon name="bilibili" />
           </a>
         </li>
         <li class="follow-us-item">
@@ -18,12 +18,12 @@
             target="_blank"
             title="GitHub"
           >
-            <SvgIcon icon="github" />
+            <SvgIcon name="github" />
           </a>
         </li>
         <li class="follow-us-item">
           <a href="https://gitee.com/KYJGYSDT" target="_blank" title="Gitee">
-            <SvgIcon icon="gitee" />
+            <SvgIcon name="gitee" />
           </a>
         </li>
       </ul>

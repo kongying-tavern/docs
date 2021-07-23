@@ -39,10 +39,10 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
     // process.env.DOCS_BUNDLER ??
     // // use vite in dev, use webpack in prod
     // (isProd ? '@vuepress/webpack' : '@vuepress/vite'),
-    '@vuepress/webpack',
+    process.env.DOCS_BUNDLER || '@vuepress/webpack',
   bundlerConfig: {},
   templateDev: path.resolve(__dirname, './templates/index.dev.html'),
-  templateSSR: path.resolve(__dirname, './templates/index.ssr.html'),
+  // templateSSR: path.resolve(__dirname, './templates/index.ssr.html'),
   theme: path.resolve(__dirname, './theme/'),
   head: [
     ['meta', { name: 'charset', content: 'utf-8' }],
@@ -54,6 +54,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
           'width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover',
       },
     ],
+    ['meta', { name: 'renderer', content: 'origin' }],
     ['meta', { name: 'renderer', content: process.env.RENDERER }],
     ['meta', { name: 'force-rendering', content: process.env.RENDERER }],
     ['meta', { name: 'applicable-device', content: 'pc,mobile' }],
@@ -144,161 +145,162 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
       ...localeData,
     },
   },
-  // plugins: [
-  //   [
-  //     '@vuepress/google-analytics',
-  //     {
-  //       id: process.env.ANALYTICS_ID,
-  //     },
-  //   ],
-  //   [
-  //     '@vuepress/pwa',
-  //     {
-  //       skipWaiting: false,
-  //     },
-  //   ],
-  //   [
-  //     '@vuepress/plugin-pwa-popup',
-  //     {
-  //       locales: {
-  //         '/en/': {
-  //           message: 'New content is available.',
-  //           buttonText: 'Refresh',
-  //         },
-  //         '/': {
-  //           message: '发现新内容可用',
-  //           buttonText: '刷新',
-  //         },
-  //         '/ja/': {
-  //           message: '利用可能な新しいコンテンツが見つかりました',
-  //           buttonText: 'リフレッシュ',
-  //         },
-  //       },
-  //     },
-  //   ],
-  //   [
-  //     '@vuepress/plugin-search',
-  //     {
-  //       maxSuggestions: 5,
-  //       hotKeys: ['s', '/'],
-  //       locales: {
-  //         '/en/': {
-  //           placeholder: 'Search ("/" to focus)',
-  //         },
-  //         '/': {
-  //           placeholder: '搜索（“/” 聚焦）',
-  //         },
-  //         '/ja/': {
-  //           placeholder: '検索する ("/" フォーカス)',
-  //         },
-  //       },
-  //     },
-  //   ],
-  //   // todo
-  //   // [
-  //   //   '@vuepress/docsearch',
-  //   //   {
-  //   //     apiKey: '<API_KEY>',
-  //   //     indexName: '<INDEX_NAME>',
-  //   //     locales: {
-  //   //       '/': {
-  //   //         placeholder: 'Search',
-  //   //       },
-  //   //       '/zh/': {
-  //   //         placeholder: '搜索',
-  //   //       },
-  //   //       '/ja/':{
-  //   //         placeholder: '検索する',
-  //   //       }
-  //   //     },
-  //   //   },
-  //   // ],
-  //   [
-  //     '@vuepress/register-components',
-  //     {
-  //       componentsDir: path.resolve(__dirname, './components'),
-  //     },
-  //   ],
-  //   [
-  //     'sitemap2',
-  //     {
-  //       hostname: process.env.DOMAIN + process.env.BASE,
-  //       exclude: [],
-  //     },
-  //   ],
-  //   [
-  //     'feed2',
-  //     false,
-  //     //       {
-  //     //         hostname: process.env.BASE,
-  //     //       },
-  //   ],
-  //   [
-  //     'seo2',
-  //     {
-  //       author: process.env.AUTHOR,
-  //       twitterID: process.env.TWITTER_ID,
-  //       restrictions: process.env.RESTRICTIONS,
-  //       //   seo: (PageSeoInfo: PageSeoInfo) => {
-  //       //     return {
-  //       //       'twitter:card': 'summary',
-  //       //     }
-  //       //   },
-  //       //   customMeta: (
-  //       //     meta: [Record<'content' | 'name' | 'charset' | 'http-equiv', string>]
-  //       //   ) => {
-  //       //   },
-  //     },
-  //   ],
-  //   [
-  //     'md-enhance',
-  //     {
-  //       enableAll: true,
-  //       tex: {
-  //         strict: 'ignore',
-  //       },
-  //       presentation: {
-  //         plugins: [
-  //           'highlight',
-  //           'math',
-  //           'search',
-  //           'notes',
-  //           'zoom',
-  //           'anything',
-  //           'audio',
-  //           'chalkboard',
-  //         ],
-  //       },
-  //     },
-  //   ],
-  //   ['photo-swipe'],
-  //   [
-  //     'lightgallery',
-  //     false,
-  //     // {
-  //     //   plugins: [
-  //     //     "autoplay",
-  //     //     "fullscreen",
-  //     //     "pager",
-  //     //     "rotate",
-  //     //     "share",
-  //     //     "zoom",
-  //     //   ],
-  //     // },
-  //   ],
-  //   ['@vuepress/plugin-toc'],
+  plugins: [
+    [
+      '@vuepress/google-analytics',
+      {
+        id: process.env.ANALYTICS_ID,
+      },
+    ],
+    [
+      '@vuepress/pwa',
+      {
+        skipWaiting: false,
+      },
+    ],
+    [
+      '@vuepress/plugin-pwa-popup',
+      false,
+      // {
+      //   locales: {
+      //     '/en/': {
+      //       message: 'New content is available.',
+      //       buttonText: 'Refresh',
+      //     },
+      //     '/': {
+      //       message: '发现新内容可用',
+      //       buttonText: '刷新',
+      //     },
+      //     '/ja/': {
+      //       message: '利用可能な新しいコンテンツが見つかりました',
+      //       buttonText: 'リフレッシュ',
+      //     },
+      //   },
+      // },
+    ],
+    [
+      '@vuepress/plugin-search',
+      {
+        maxSuggestions: 5,
+        hotKeys: ['s', '/'],
+        locales: {
+          '/en/': {
+            placeholder: 'Search ("/" to focus)',
+          },
+          '/': {
+            placeholder: '搜索（“/” 聚焦）',
+          },
+          '/ja/': {
+            placeholder: '検索する ("/" フォーカス)',
+          },
+        },
+      },
+    ],
+    // todo
+    // [
+    //   '@vuepress/docsearch',
+    //   {
+    //     apiKey: '<API_KEY>',
+    //     indexName: '<INDEX_NAME>',
+    //     locales: {
+    //       '/': {
+    //         placeholder: 'Search',
+    //       },
+    //       '/zh/': {
+    //         placeholder: '搜索',
+    //       },
+    //       '/ja/':{
+    //         placeholder: '検索する',
+    //       }
+    //     },
+    //   },
+    // ],
+    [
+      '@vuepress/register-components',
+      {
+        componentsDir: path.resolve(__dirname, './components'),
+      },
+    ],
+    [
+      'sitemap2',
+      {
+        hostname: process.env.DOMAIN + process.env.BASE,
+        exclude: [],
+      },
+    ],
+    [
+      'feed2',
+      false,
+      //       {
+      //         hostname: process.env.BASE,
+      //       },
+    ],
+    [
+      'seo2',
+      {
+        author: process.env.AUTHOR,
+        twitterID: process.env.TWITTER_ID,
+        restrictions: process.env.RESTRICTIONS,
+        //   seo: (PageSeoInfo: PageSeoInfo) => {
+        //     return {
+        //       'twitter:card': 'summary',
+        //     }
+        //   },
+        //   customMeta: (
+        //     meta: [Record<'content' | 'name' | 'charset' | 'http-equiv', string>]
+        //   ) => {
+        //   },
+      },
+    ],
+    [
+      'md-enhance',
+      {
+        enableAll: true,
+        tex: {
+          strict: 'ignore',
+        },
+        presentation: {
+          plugins: [
+            'highlight',
+            'math',
+            'search',
+            'notes',
+            'zoom',
+            'anything',
+            'audio',
+            'chalkboard',
+          ],
+        },
+      },
+    ],
+    ['photo-swipe'],
+    [
+      'lightgallery',
+      false,
+      // {
+      //   plugins: [
+      //     "autoplay",
+      //     "fullscreen",
+      //     "pager",
+      //     "rotate",
+      //     "share",
+      //     "zoom",
+      //   ],
+      // },
+    ],
+    ['@vuepress/plugin-toc'],
 
-  //   [
-  //     // 主题在线演示网址https://vscodethemes.com/
-  //     '@vuepress/plugin-shiki',
-  //     isProd
-  //       ? {
-  //           theme: 'github-dark',
-  //         }
-  //       : false,
-  //   ],
-  //   // ['@vuepress/plugin-debug'],
-  // ],
+    [
+      // 主题在线演示网址https://vscodethemes.com/
+      '@vuepress/plugin-shiki',
+      isProd
+        ? {
+            theme: 'github-dark',
+          }
+        : false,
+    ],
+    ['@vuepress/plugin-debug'],
+  ],
   onWatched: (_, watchers, restart) => {
     const watcher = chokidar.watch('locales/*.yml', {
       cwd: __dirname,

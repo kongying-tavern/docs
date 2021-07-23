@@ -1,9 +1,9 @@
 <template>
   <ElTooltip
     effect="dark"
+    placement="left-start"
     :enterable="false"
     :content="backToTop"
-    placement="left-start"
   >
     <ElBacktop :visibility-height="300" :right="30" class="docs-backtop">
       <SvgIcon name="back-top" />

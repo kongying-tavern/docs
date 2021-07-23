@@ -6,7 +6,7 @@ pageClass: communication-group
 externalIcon: false
 ---
 
-## <SvgIcon icon="qq" /> QQ 交流群
+## <SvgIcon name="qq" /> QQ 交流群
 
 1. [**原神地图交流一群**765302904](https://qm.qq.com/cgi-bin/qm/qr?k=p03N6ACWOqFW0WNhhUQSw2goET3L-Tkt&jump_from=webapi '点击加入原神地图交流一群')
 2. [**原神地图交流二群**853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击加入原神地图交流二群')
@@ -22,7 +22,7 @@ externalIcon: false
 目前除七，四群外其他群均满，各群密码均为 **123456**
 :::
 
-<!-- ## <SvgIcon icon="discord" /> Discord
+<!-- ## <SvgIcon name="discord" /> Discord
 
 > 加入地图交流服务器：<https://discord.gg/rPntkgXBBZ>
 
