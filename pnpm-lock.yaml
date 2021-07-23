@@ -1,8 +1,8 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@commitlint/cli': ^12.1.4
-  '@commitlint/config-conventional': ^12.1.4
+  '@commitlint/cli': 12.1.4
+  '@commitlint/config-conventional': 12.1.4
   '@textlint-rule/textlint-rule-no-unmatched-pair': ^1.0.8
   '@types/concurrently': ^6.2.0
   '@types/eslint': ^7.2.13
