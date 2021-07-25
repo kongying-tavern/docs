@@ -1,0 +1,73 @@
+{
+  "rules": {
+    "@textlint-rule/no-unmatched-pair": true,
+    "apostrophe": true,
+    "ja-no-abusage": true,
+    "ja-no-mixed-period": true,
+    "common-misspellings": true,
+    "date-weekday-mismatch": true,
+    "en-spell": true,
+    "editorconfig": true,
+    "en-capitalization": {
+      "allowHeading": false,
+      "allowLists": false,
+      "severity": "warning"
+    },
+    "alex": {
+      "allow": []
+    },
+    "stop-words": {
+      "severity": "warning"
+    },
+    "no-dead-link": {
+      "baseURI": "http://yuanshen.site",
+      "checkRelative": true,
+      "ignore": [
+        "http://example.com/*"
+      ],
+      "preferGET": [
+        "http://example.com/"
+      ],
+      "ignoreRedirects": false,
+      "retry": 3,
+      "userAgent": "textlint-rule-no-dead-link/1.0"
+    },
+    "terminology": {
+      "terms": [
+        "Stylus",
+        "VuePress",
+        [
+          "front[- ]matter",
+          "front matter"
+        ]
+      ],
+      "exclude": [
+        "Node(?:js)?",
+        "URL['’]?s",
+        "repo\\b"
+      ],
+      "severity": "warning"
+    },
+    "write-good": {
+      "passive": false,
+      "severity": "warning",
+      "whitelist": [
+        "daily",
+        "only",
+        "multiple",
+        "validate"
+      ]
+    },
+    "zh-half-and-full-width-bracket": {
+      "bracket": "halfWidth"
+    }
+  },
+  "filters": {
+    "allowlist": {
+      "allow": [
+        "/\\$\\$[\\s\\S]*?\\$\\$/m"
+      ]
+    },
+    "comments": true
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "steoates.autoimport",
+    "octref.vetur",
+    "taichi.vscode-textlint",
+    "jcbuisson.vue",
+    "hollowtree.vue-snippets",
+    "antfu.browse-lite",
+    "antfu.vite",
+    "antfu.where-am-i",
+    "humao.rest-client",
+    "vivaxy.vscode-conventional-commits",
+    "davidanson.vscode-markdownlint",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

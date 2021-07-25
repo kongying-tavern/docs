@@ -1,0 +1,66 @@
+/ja/:
+  selectLanguageName: 日本語
+  selectLanguageText: 言語を選択
+  selectLanguageAriaLabel: 言語を選択
+  tip: ヒント
+  warning: 警告
+  danger: 危険
+  download: ダウンロード
+  newFolder: 新しいフォルダ
+  grade: 上記はあなたを助けることができますか？
+  followUs: フォローする
+  feedback: フィードバック
+  thankFeedback: ご意見ありがとうございます！
+  stayTuned: 乞うご期待
+  selectDownloadMethod: ダウンロード方法を選択してくだ さい
+  swipeRightToClose: 右にスワイプして閉じます
+  notFound:
+    - お探しのページが見つかりません。
+    - 404 ページが見つかりません
+  backToHome: ホームページに戻る
+  backToTop: トップに戻る
+  openInNewWindow: 新しいウィンドウで開きます
+  lastUpdatedText: 最終更新
+  contributorsText: 貢献者
+  editLinkText: このページを編集
+  navbar:
+    - text: フィードバック
+      link: https://support.qq.com/products/321980
+    - text: スポンサー
+      children:
+        - text: 1回限りのスポンサーシップ
+          link: /ja/support-us.md
+        - text: 定期的なスポンサーシップ
+          link: /ja/support-us.md#weekly-donations
+    - text: もっと理解する
+      children:
+        - text: コンテンツを更新する
+          children:
+            - text: Webウェブページ
+              link: https://support.qq.com/products/321980/blog/505810
+            - text: Unityクライアント
+              link: https://support.qq.com/products/321980/blog/505884
+        - text: 法律関係
+          children:
+            - text: 免責事項
+              link: /ja/disclaimer.md
+            - text: プライバシー
+              link: /ja/privacy.md
+            - text: ユーザー規約
+              link: /ja/agreement.md
+        - text: その他
+          children:
+            - text: マップ クライアントをダウンロードする
+              link: /ja/download-client.md
+            - text: リクルート
+              link: /join.html
+            - text: 投稿ガイド
+              link: /ja/contributing.md
+        - text: ありがとう
+          children:
+            - text: 貢献
+              link: /ja/contribution.md
+            - text: スポンサー
+              link: /ja/support-us.md
+            - text: テクニカル
+              link: /ja/credits.md

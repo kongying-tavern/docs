@@ -1,0 +1,21 @@
+# Vuepress Cache
+.cache/
+# Vuepress Temp
+.temp/
+# Vuepress Output
+dist/
+
+# Node modules
+node_modules/
+
+# Test Coverage
+coverage/
+
+# Public Assets
+public/
+
+# Dist files
+packages/*/client/
+packages/*/node/
+packages/theme/layouts/
+packages/theme/styles/

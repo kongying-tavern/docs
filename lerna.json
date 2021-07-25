@@ -1,0 +1,20 @@
+{
+  "packages": ["packages/*"],
+  "version": "0.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "command": {
+    "run": {
+      "npmClient": "yarn"
+    },
+    "command": {
+      "version": {
+        "allowBranch": "master",
+        "conventionalCommits": true,
+        "exact": true,
+        "ignoreChanges": ["**/*.md"],
+        "message": "build: publish %s"
+      }
+    }
+  }
+}
