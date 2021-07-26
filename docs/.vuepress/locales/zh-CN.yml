@@ -9,6 +9,9 @@
   download: 下载
   newFolder: 新建文件夹
   grade: 以上内容对您是否有帮助？
+  notSupportReplication: 你的浏览器不支持一键复制，请手动复制。
+  extractionCode: 提取码
+  copySuccess: 复制成功
   selectDownloadMethod: 选择下载方式
   feedback: 反馈
   thankFeedback: 感谢您的反馈！

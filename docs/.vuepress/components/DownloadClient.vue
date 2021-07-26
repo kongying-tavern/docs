@@ -48,15 +48,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, h, onMounted } from 'vue'
+import { defineComponent, ref, h } from 'vue'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 import { withBase } from '@vuepress/client'
 import { ElMessageBox } from 'element-plus'
+import { useClipboard, useMediaQuery } from '@vueuse/core'
+import { ElMessage } from 'element-plus'
+
 import type { ThemeLocaleData } from '../shared'
 
 export default defineComponent({
   name: 'DownloadClient',
   setup() {
+    const { copy, isSupported } = useClipboard()
+    const isSmallScreen = useMediaQuery('(max-width: 730px)')
     const themeLocaleData = useThemeLocaleData<ThemeLocaleData>()
     const list = ref([
       {
@@ -135,14 +140,58 @@ export default defineComponent({
                 class: 'download-item',
               },
               [
-                h('strong', '百度网盘（提取码：KYJG）：'),
+                h('strong', '加入讨论组：\n'),
                 h(
                   'a',
                   {
-                    'href': baiduNetdisk,
-                    'rel': 'noopener noreferrer',
-                    'target': '_blank',
+                    'href': './communication-group.html',
+                    'aria-label': 'communicationGroup download link',
+                  },
+                  'https://yuanshen.site/docs/communication-group.html'
+                ),
+              ]
+            ),
+            h(
+              'li',
+              {
+                class: 'download-item baidu-netdisk',
+              },
+              [
+                h('strong', '百度网盘（提取码：KYJG，点击链接复制）：'),
+                h(
+                  'a',
+                  {
+                    'href': 'javascript:void(0)',
                     'aria-label': 'baiduNetdisk download link',
+                    'onClick': () => {
+                      if (isSupported) {
+                        document.documentElement.focus()
+                        copy('KYJG')
+                        ElMessage.success({
+                          message:
+                            themeLocaleData.value.extractionCode +
+                            themeLocaleData.value.copySuccess,
+                          duration: 2000,
+                          center: true,
+                          type: 'success',
+                        })
+                      } else {
+                        ElMessage({
+                          message:
+                            themeLocaleData.value.extractionCode +
+                            themeLocaleData.value.notSupportReplication,
+                          duration: 2000,
+                          center: true,
+                        })
+                      }
+                      window.open(
+                        baiduNetdisk,
+                        isSmallScreen.value ? '百度网盘' : '_black',
+                        isSmallScreen.value
+                          ? ''
+                          : 'resizable,scrollbars,status,width=500,height=500'
+                      )
+                    },
                   },
                   baiduNetdisk
                 ),
@@ -167,29 +216,10 @@ export default defineComponent({
                 ),
               ]
             ),
-            h(
-              'li',
-              {
-                class: 'download-item',
-              },
-              [
-                h('strong', '加入讨论组：\n'),
-                h(
-                  'a',
-                  {
-                    'href': './communication-group.html',
-                    'rel': 'noopener noreferrer',
-                    'target': '_blank',
-                    'aria-label': 'communicationGroup download link',
-                  },
-                  'https://yuanshen.site/docs/communication-group.html'
-                ),
-              ]
-            ),
           ]
         ),
       }).catch((e) => {
-        console.log(e)
+        console.log(e, isSmallScreen.value)
       })
     }
     return {

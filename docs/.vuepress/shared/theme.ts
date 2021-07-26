@@ -1,6 +1,6 @@
-import type { ThemeData as _ThemeData } from '@vuepress/plugin-theme-data/lib/client'
+import type { ThemeData } from '@vuepress/plugin-theme-data/lib/client'
 
-export type ThemeLocaleData = _ThemeData<{
+export type ThemeLocaleData = ThemeData<{
   download: string
   newFolder: string
   selectDownloadMethod: string
@@ -11,4 +11,7 @@ export type ThemeLocaleData = _ThemeData<{
   grade: string
   feedback: string
   thankFeedback: string
+  notSupportReplication: string
+  copySuccess: string
+  extractionCode: string
 }>
