@@ -1,4 +1,4 @@
-name: check-vite
+name: Check-vite
 
 on:
   push:
