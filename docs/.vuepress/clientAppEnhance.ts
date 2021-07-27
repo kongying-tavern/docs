@@ -41,7 +41,7 @@ export default defineClientAppEnhance(({ app, router, siteData }) => {
         PixelRatio: pixelRatio.value,
         WindowSize: `${width.value} * ${height.value}`,
         IsDEV: __DEV__,
-        isFullscreen: isFullscreen.value,
+        IsFullscreen: isFullscreen.value,
         Current: dayjs().format('YYYY-MM-DD LT'),
       },
     ])
@@ -50,7 +50,7 @@ export default defineClientAppEnhance(({ app, router, siteData }) => {
   app.use(ElementPlus, { locale })
 
   console.log(
-    `%c🎉\u0020技术宅拯救世界:\u0020https://yuanshen.site/docs/join.html`,
+    `%c✨\u0020技术宅拯救世界:\u0020https://yuanshen.site/docs/join.html`,
     'font-size:13px;'
   )
 

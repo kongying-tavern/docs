@@ -224,7 +224,7 @@ $qrcode-size: 200px;
       cursor: grab;
       display: grid;
       place-items: center;
-      width: 100%;
+      width: 87%;
       height: 330px;
       margin: auto;
       overflow: hidden;

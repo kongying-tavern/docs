@@ -160,23 +160,22 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
     ],
     [
       '@vuepress/plugin-pwa-popup',
-      false,
-      // {
-      //   locales: {
-      //     '/en/': {
-      //       message: 'New content is available.',
-      //       buttonText: 'Refresh',
-      //     },
-      //     '/': {
-      //       message: '发现新内容可用',
-      //       buttonText: '刷新',
-      //     },
-      //     '/ja/': {
-      //       message: '利用可能な新しいコンテンツが見つかりました',
-      //       buttonText: 'リフレッシュ',
-      //     },
-      //   },
-      // },
+      {
+        locales: {
+          '/en/': {
+            message: 'New content is available.',
+            buttonText: 'Refresh',
+          },
+          '/': {
+            message: '发现新内容可用',
+            buttonText: '刷新',
+          },
+          '/ja/': {
+            message: '利用可能な新しいコンテンツが見つかりました',
+            buttonText: 'リフレッシュ',
+          },
+        },
+      },
     ],
     [
       '@vuepress/plugin-search',
@@ -246,10 +245,10 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             'twitter:card': 'summary',
           }
         },
-        //   customMeta: (
-        //     meta: [Record<'content' | 'name' | 'charset' | 'http-equiv', string>]
-        //   ) => {
-        //   },
+        //   //   customMeta: (
+        //   //     meta: [Record<'content' | 'name' | 'charset' | 'http-equiv', string>]
+        //   //   ) => {
+        //   //   },
       },
     ],
     [

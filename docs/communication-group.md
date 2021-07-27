@@ -8,18 +8,20 @@ externalIcon: false
 
 ## <SvgIcon name="qq" /> QQ 交流群
 
-1. [**原神地图交流一群**765302904](https://qm.qq.com/cgi-bin/qm/qr?k=p03N6ACWOqFW0WNhhUQSw2goET3L-Tkt&jump_from=webapi '点击加入原神地图交流一群')
-2. [**原神地图交流二群**853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击加入原神地图交流二群')
-3. [**原神地图交流三群**932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击加入原神地图交流三群')
-4. [**原神地图交流四群**1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击加入原神地图交流四群')
-5. [**原神地图交流五群**1149599151](https://qm.qq.com/cgi-bin/qm/qr?k=e8cH0Yz-DESYMSZgcUHVyzIXb80CovXc&jump_from=webapi '点击加入原神地图交流五群')
-6. [**原神地图交流六群**1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击加入原神地图交流六群')
-7. [**原神地图交流七群**726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击加入原神地图交流七群')
+1. [**原神地图交流一群**765302904](https://qm.qq.com/cgi-bin/qm/qr?k=p03N6ACWOqFW0WNhhUQSw2goET3L-Tkt&jump_from=webapi '点击一键加入原神地图交流一群')
+2. [**原神地图交流二群**853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击一键加入原神地图交流二群')
+3. [**原神地图交流三群**932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图交流三群')
+4. [**原神地图交流四群**1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击一键加入原神地图交流四群')
+5. [**原神地图交流五群**1149599151](https://qm.qq.com/cgi-bin/qm/qr?k=e8cH0Yz-DESYMSZgcUHVyzIXb80CovXc&jump_from=webapi '点击一键加入原神地图交流五群')
+6. [**原神地图交流六群**1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击一键加入原神地图交流六群')
+7. [**原神地图交流七群**726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图交流七群')
 
 ::: tip
 点击上方列表项即可一键加群。
 
-目前除七群外其他群均满，各群密码均为 **123456**
+目前七个群均未满，各群密码均为 **123456**。
+
+如均满请联系管理员 QQ：**1961266616**
 :::
 
 <style lang="scss" scoped>

@@ -19,6 +19,11 @@
         f.parentNode.insertBefore(j, f);
       })(window, document, "script", "dataLayer", "GTM-5H6V3NB");
     </script>
+    <script>
+      if ( (!window.fetch || !window.Proxy) && window.location.pathname.indexOf( 'error.html' ) == -1 ) {
+        location.href = './error.html?path=' + window.location.pathname;
+      }
+    </script>
   </head>
   <body>
     <noscript>
