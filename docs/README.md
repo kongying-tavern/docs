@@ -6,7 +6,7 @@ actions:
   - text: 立即下载
     link: ./download-client.html
     type: primary
-  - text: 访问网页版
+  - text: 返回网页版
     link: https://yuanshen.site/
     type: secondary
 features:
