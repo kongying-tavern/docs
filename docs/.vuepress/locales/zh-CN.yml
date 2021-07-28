@@ -28,15 +28,9 @@
   contributorsText: 参与贡献
   editLinkText: 在 GitHub 上编辑该页
   navbar:
-    - text: 反馈
+    - text: ## 反馈
       link: https://support.qq.com/products/321980
-    - text: 支持我们
-      children:
-        - text: 一次性赞助
-          link: /support-us.md
-        - text: 周期性赞助
-          link: /support-us.md#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%B5%9E%E5%8A%A9
-    - text: 了解更多
+    - text: ## 了解更多
       children:
         - text: 更新内容
           children:
@@ -70,3 +64,9 @@
               link: /support-us.md#赞助鸣谢
             - text: 技术鸣谢
               link: /credits.md
+    - text: ## 支持我们
+      children:
+        - text: 一次性赞助
+          link: /support-us.md
+        - text: 周期性赞助
+          link: /support-us.md#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%B5%9E%E5%8A%A9
