@@ -2,23 +2,18 @@
 import { defineComponent, ref, onMounted, nextTick } from 'vue'
 import { withBase } from '@vuepress/client'
 import { useBackersList } from '../shared'
-import { useElementSize } from '@vueuse/core'
 
 export default defineComponent({
   name: 'Backers',
   setup() {
     const items = useBackersList()
     const el = ref(null)
-    const { width, height } = useElementSize(el)
-    onMounted(async () => {
-      await nextTick()
-      console.log(width.value, height.value)
-    })
-    console.log(width.value, height.value)
+    const errorHandler = () => true
     return {
       el,
       items: items.value,
       withBase,
+      errorHandler,
     }
   },
 })
@@ -32,6 +27,8 @@ export default defineComponent({
         :key="item.name"
         :aria-label="item.name"
         :title="item.name"
+        class="backers-item"
+        tabindex="-1"
         href="javascript:void(0)"
       >
         <ElTooltip placement="top">
@@ -44,6 +41,7 @@ export default defineComponent({
             fit="cover"
             :alt="item.name"
             :src="withBase('20210727/' + item.avatar)"
+            @error="errorHandler"
           >
             {{ item.name.substring(0, 3).toLocaleUpperCase() }}
           </ElAvatar>
@@ -59,7 +57,7 @@ export default defineComponent({
   place-items: center;
   margin-top: 22px;
   min-height: 100%;
-  a {
+  .backers-item {
     overflow: hidden;
     opacity: 0.85;
     &:hover {

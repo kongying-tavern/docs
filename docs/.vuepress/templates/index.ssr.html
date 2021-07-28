@@ -20,9 +20,21 @@
       })(window, document, "script", "dataLayer", "GTM-5H6V3NB");
     </script>
     <script>
-      if ( (!window.fetch || !window.Proxy) && window.location.pathname.indexOf( 'error.html' ) == -1 ) {
-        location.href = './error.html?path=' + window.location.pathname;
-      }
+      ;(function () {
+        if (window.fetch && window.Proxy && window.globalThis == window || window.__ERRORPAGE__ === true) return;
+        window.onload = function () {
+          var locale = '/en/';
+          var lang = (document.documentElement.lang || window.navigator.language || 'zh').toLocaleLowerCase();
+
+          if (/^(yue|zh)(-cn|-hans(-[a-z]+)?)?$/i.test(lang)) {
+            locale = '/';
+          } else if (lang.startsWith("ja") || lang.startsWith("jp")) {
+            locale = '/ja/'
+          }
+
+          location.href = locale + 'error.html?path=' + window.location.pathname + '&timestamp=' + window.Date.now();
+        }
+      })();
     </script>
   </head>
   <body>

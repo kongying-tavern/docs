@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import * as chokidar from 'chokidar'
 
 import type { ViteBundlerOptions } from 'vuepress-vite'
-import type { DefaultThemeOptions } from 'vuepress'
+import type { DefaultThemeOptions, WebpackBundlerOptions } from 'vuepress'
 
 dotenv.config({
   path: path.resolve(
@@ -31,7 +31,7 @@ fs.readdirSync(path.resolve(__dirname, './locales')).forEach((val) => {
 
 console.log('Mode:', isProd ? 'Production' : 'development')
 
-module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
+module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
   dest: path.resolve(__dirname, '../../dist'),
   public: 'public',
   base: process.env.BASE,
@@ -40,7 +40,9 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
     // // use vite in dev, use webpack in prod
     // (isProd ? '@vuepress/webpack' : '@vuepress/vite'),
     process.env.DOCS_BUNDLER || '@vuepress/webpack',
-  bundlerConfig: {},
+  bundlerConfig: {
+    evergreen: false,
+  },
   templateDev: path.resolve(__dirname, './templates/index.dev.html'),
   templateSSR: path.resolve(__dirname, './templates/index.ssr.html'),
   theme: path.resolve(__dirname, './theme/'),
@@ -245,10 +247,10 @@ module.exports = defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
             'twitter:card': 'summary',
           }
         },
-        //   //   customMeta: (
-        //   //     meta: [Record<'content' | 'name' | 'charset' | 'http-equiv', string>]
-        //   //   ) => {
-        //   //   },
+        //   customMeta: (
+        //     meta: [Record<'content' | 'name' | 'charset' | 'http-equiv', string>]
+        //   ) => {
+        //   },
       },
     ],
     [

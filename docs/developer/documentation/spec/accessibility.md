@@ -2,7 +2,7 @@
 title: Accessibility
 ---
 
-页面的可访问性是每个人的责任，本文档的目的是为开发人员和设计人员提供通用的可访问性指南。
+## Accessibility
 
 Accessibility is everyone’s responsibility, and the purpose of this document is to provide general accessibility guidelines to developers and designers.
 

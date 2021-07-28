@@ -43,6 +43,11 @@ See [Contributing Guide](https://yuanshen.site/docs/en/contributing.html).
 
 For details on our planned features and future direction please refer to our [roadmap](https://yuanshen.site/docs/developer/documentation/roadmap.html).
 
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ## License
 
 MIT
