@@ -160,7 +160,7 @@
     "dayjs": "1.10.6",
     "default-passive-events": "2.0.0",
     "dotenv": "10.0.0",
-    "element-plus": "1.0.2-beta.53",
+    "element-plus": "1.0.2-beta.64",
     "eslint": "7.31.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-vuepress": "3.2.1",
