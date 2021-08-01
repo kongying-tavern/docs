@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3612],{73612:function(r,e,n){n.r(e),n.d(e,{default:function(){return t}});var s=n(66252);const a={class:"pyro"},u=(0,s.Wm)("div",{class:"before"},null,-1),c=(0,s.Wm)("div",{class:"after"},null,-1);var l=(0,s.aZ)({name:"Fireworks"});l.render=function(r,e,n,l,t,f){return(0,s.wg)(),(0,s.j4)("div",a,[u,c])};var t=l}}]);

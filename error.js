@@ -1,0 +1,1 @@
+navigator.serviceWorker&&navigator.serviceWorker.getRegistrations().then((function(r){for(var e=0;e<r.length;e++)r[e].unregister()})),window.__ERRORPAGE__=!0;
