@@ -21,7 +21,7 @@
     </script>
     <script>
       ;(function () {
-        if (window.fetch && window.Proxy && window.globalThis == window || window.__ERRORPAGE__ === true) return;
+        if (window.fetch && window.Proxy && globalThis == window || window.__ERRORPAGE__ === true) return;
         window.onload = function () {
           var locale = '/en/';
           var lang = (document.documentElement.lang || window.navigator.language || 'zh').toLocaleLowerCase();

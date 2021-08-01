@@ -7,8 +7,8 @@
     <template #page-bottom>
       <footer class="docs-footer page-meta">
         <div class="footer-container" role="presentation">
-          <FollowUs />
-          <Grade />
+          <!-- <FollowUs />
+          <Grade /> -->
           <div class="docs-info">Chinese hoyolab Made By Kongying Tavern</div>
         </div>
       </footer>

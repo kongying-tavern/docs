@@ -21,6 +21,7 @@ import type { ThemeData } from '@vuepress/plugin-theme-data'
 export default defineClientAppEnhance(({ app, router, siteData }) => {
   const pageData = usePageData<PageData>()
   const themeData = useThemeData<ThemeData>()
+
   if (!__SSR__) {
     const preferredColor = usePreferredColorScheme()
     const online = useOnline()
@@ -36,13 +37,11 @@ export default defineClientAppEnhance(({ app, router, siteData }) => {
         Base: siteData.value.base,
         Online: online.value,
         PreferredColor: preferredColor.value,
-        ThemeMode: themeData.value.darkMode ? 'dark' : 'light',
         NetworkType: type.value || 'unknown',
         PixelRatio: pixelRatio.value,
         WindowSize: `${width.value} * ${height.value}`,
         IsDEV: __DEV__,
-        IsFullscreen: isFullscreen.value,
-        Current: dayjs().format('YYYY-MM-DD LT'),
+        CurrentUTC: dayjs().utc().format('YYYY-MM-DD LT'),
       },
     ])
   }

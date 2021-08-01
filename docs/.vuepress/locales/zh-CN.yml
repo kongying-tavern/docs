@@ -27,10 +27,31 @@
   lastUpdatedText: 更新于
   contributorsText: 参与贡献
   editLinkText: 在 GitHub 上编辑该页
+  sponsorship:
+    - name: 微信支付
+      logo: wechat-pay
+      link: wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp
+    - name: 支付宝
+      logo: alipay
+      link: https://qr.alipay.com/tsx11609thmpw9odmvdlxd6
+    - name: PayPal
+      logo: paypal
+      link: https://www.paypal.com/paypalme/yuanshenditu
+    - name: QQ支付
+      logo: qq-pay
+      link: https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet
+    - name: ETH
+      title: Ethereum
+      logo: eth
+      link: ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde
+    - name: BiliBili
+      title: 一键三连~😁
+      logo: bilibili
+      link: https://space.bilibili.com/518076785
   navbar:
-    - text: ## 反馈
+    - text: 反馈
       link: https://support.qq.com/products/321980
-    - text: ## 了解更多
+    - text: 了解更多
       children:
         - text: 更新内容
           children:
@@ -64,7 +85,7 @@
               link: /support-us.md#赞助鸣谢
             - text: 技术鸣谢
               link: /credits.md
-    - text: ## 支持我们
+    - text: 支持我们
       children:
         - text: 一次性赞助
           link: /support-us.md

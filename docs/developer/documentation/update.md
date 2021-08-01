@@ -13,38 +13,3 @@ sidebar:
 ::: warning
 正在开发中。
 :::
-
-<div class="documentation-update">
-
-<el-timeline>
-  <el-timeline-item
-    v-for="(update, index) in updateList"
-    :key="index"
-    :type="update.type"
-    :size="update.size"
-    :timestamp="update.timestamp">
-    <el-card class="box-card" shadow="hover">
-      <template #header>
-        <div class="card-header">
-          <span style="color: var(--text-color-light);">{{ update.title }}</span>
-        </div>
-      </template>
-      {{ update.content }}
-    </el-card>
-  </el-timeline-item>
-</el-timeline>
-
-</div>
-
-<script setup>
-import { ref } from 'vue';
-
-const updateList = ref([
-  {
-    title: "1.0.0-beta.0",
-    content: '初始化',
-    timestamp: '2021-06-16 16:28',
-    size: 'large',
-  },
-]);
-</script>

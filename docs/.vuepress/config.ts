@@ -35,6 +35,8 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
   dest: path.resolve(__dirname, '../../dist'),
   public: 'public',
   base: process.env.BASE,
+  title: process.env.SITE_NAME,
+  description: process.env.DESCRIPTION,
   bundler:
     // process.env.DOCS_BUNDLER ??
     // // use vite in dev, use webpack in prod

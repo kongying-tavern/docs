@@ -14,4 +14,12 @@ export type ThemeLocaleData = ThemeData<{
   notSupportReplication: string
   copySuccess: string
   extractionCode: string
+  sponsorship: sponsorship[]
 }>
+
+interface sponsorship {
+  name: string
+  logo: string
+  link: string
+  title?: string
+}

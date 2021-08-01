@@ -27,6 +27,23 @@
   danger: Danger
   selectDownloadMethod: Select download method
   editLinkText: Edit this page on GitHub
+  sponsorship:
+    - name: WeChat Pay
+      logo: wechat-pay
+      link: wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp
+    - name: Alipay
+      logo: alipay
+      link: https://qr.alipay.com/tsx11609thmpw9odmvdlxd6
+    - name: PayPal
+      logo: paypal
+      link: https://www.paypal.com/paypalme/yuanshenditu
+    - name: QQ Pay
+      logo: qq-pay
+      link: https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet
+    - name: ETH
+      title: Ethereum
+      logo: eth
+      link: ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde
   navbar:
     - text: Feedback
       link: https://support.qq.com/products/321980

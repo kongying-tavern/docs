@@ -32,7 +32,7 @@
         <div v-if="item.QRCode" class="qrcode-container" aria-label="QRCode">
           <SvgIcon name="qrcode" />
         </div>
-        <div v-if="item.QRCode" class="card-qrcode" aria-label="Scan QRCode">
+        <figure v-if="item.QRCode" class="card-qrcode" aria-label="Scan QRCode">
           <QRCode
             tag="svg"
             :value="item?.baiduNetdisk || item.name"
@@ -41,7 +41,7 @@
               height: 150,
             }"
           ></QRCode>
-        </div>
+        </figure>
       </div>
     </div>
   </div>
@@ -314,7 +314,7 @@ $qrcode-btn-size: 36px;
           background-color: var(--c-brand-light);
         }
         &.is-disabled {
-          opacity: 0.85;
+          opacity: 0.65;
         }
       }
       .card-qrcode {
@@ -326,6 +326,7 @@ $qrcode-btn-size: 36px;
         left: 50%;
         top: 50%;
         opacity: 0;
+        margin: 0;
         transform: translate(-50%, -50%) translateY(-100%);
         transition: all 0.3s;
       }

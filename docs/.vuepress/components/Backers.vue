@@ -9,6 +9,10 @@ export default defineComponent({
     const items = useBackersList()
     const el = ref(null)
     const errorHandler = () => true
+
+    if (!__SSR__) {
+      console.table(items.value)
+    }
     return {
       el,
       items: items.value,
@@ -20,35 +24,39 @@ export default defineComponent({
 </script>
 
 <template>
-  <div ref="el" class="backers">
-    <ElSpace :size="6" :wrap="true">
-      <a
-        v-for="item in items"
-        :key="item.name"
-        :aria-label="item.name"
-        :title="item.name"
-        class="backers-item"
-        tabindex="-1"
-        href="javascript:void(0)"
-      >
-        <ElTooltip placement="top">
-          <template #content>
-            {{ (item?.platform || '其他') + '：' + item.name }}
-          </template>
-          <ElAvatar
-            shape="circle"
-            size="large"
-            fit="cover"
-            :alt="item.name"
-            :src="withBase('20210727/' + item.avatar)"
-            @error="errorHandler"
-          >
-            {{ item.name.substring(0, 3).toLocaleUpperCase() }}
-          </ElAvatar>
-        </ElTooltip>
-      </a>
-    </ElSpace>
-  </div>
+  <ClientOnly>
+    <div ref="el" class="backers">
+      <ElSpace v-once :size="5" :wrap="true">
+        <a
+          v-for="item in items"
+          :key="item.name"
+          :aria-label="item.name"
+          :title="item.name"
+          class="backers-item"
+          tabindex="-1"
+          href="javascript:void(0)"
+        >
+          <ElTooltip placement="top">
+            <template #content>
+              {{ (item?.platform || '其他') + '：' + item.name }}
+            </template>
+            <ElAvatar
+              shape="circle"
+              size="large"
+              fit="cover"
+              :alt="item.name"
+              :src="
+                item?.avatar === null ? '' : withBase('20210727/' + item.avatar)
+              "
+              @error="errorHandler"
+            >
+              {{ item.name.substring(0, 3).toLocaleUpperCase() }}
+            </ElAvatar>
+          </ElTooltip>
+        </a>
+      </ElSpace>
+    </div>
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>

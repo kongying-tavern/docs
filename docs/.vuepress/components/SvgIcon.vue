@@ -1,13 +1,19 @@
 <template>
   <!-- 如果 name 是带协议的图标链接 则通过 style 属性方式渲染 -->
-  <div
+  <figure
     class="svg-icon svg-external-icon"
     v-if="isExt"
     :style="styleExternalIcon"
     v-bind="$attrs"
-  ></div>
+  ></figure>
 
-  <svg v-else :class="svgClass" aria-hidden="true" v-bind="$attrs" @click="(e) => $emit('click', e)">
+  <svg
+    v-else
+    :class="svgClass"
+    aria-hidden="true"
+    v-bind="$attrs"
+    @click="(e) => $emit('click', e)"
+  >
     <use :xlink:href="iconName" />
   </svg>
 </template>

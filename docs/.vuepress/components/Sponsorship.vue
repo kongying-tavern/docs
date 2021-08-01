@@ -1,5 +1,12 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+} from 'vue'
 import { useElementVisibility, usePointerSwipe } from '@vueuse/core'
 import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 
@@ -8,42 +15,10 @@ import type { ThemeLocaleData } from '../shared'
 export default defineComponent({
   name: 'Sponsorship',
   setup() {
-    const items = ref([
-      {
-        name: 'WeChatPay',
-        logo: 'wechat-pay',
-        link: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',
-      },
-      {
-        name: 'AliPay',
-        logo: 'alipay',
-        link: 'https://qr.alipay.com/tsx11609thmpw9odmvdlxd6',
-      },
-      {
-        name: 'PayPal',
-        logo: 'paypal',
-        link: 'https://www.paypal.me/yuanshenditu',
-      },
-      {
-        name: 'QQPay',
-        logo: 'qq-pay',
-        link: 'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
-      },
-      {
-        name: 'ETH',
-        logo: 'eth',
-        link: 'ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde',
-      },
-      {
-        name: 'BiliBili',
-        title: '一键三连~😁',
-        logo: 'bilibili',
-        link: 'https://space.bilibili.com/518076785',
-      },
-    ])
-
     const themeLocaleData = useThemeLocaleData<ThemeLocaleData>()
 
+    const items = reactive(themeLocaleData.value.sponsorship)
+    console.log(items)
     const type = ref<string | null>(null)
     const isDark = ref<boolean | null>(null)
     const target = ref<HTMLElement | null>(null)
@@ -124,10 +99,10 @@ export default defineComponent({
       <div class="onetime-sponsorship-container">
         <a
           v-for="item in items"
-          :key="item.name"
+          :key="item.logo"
           class="onetime-sponsorship-item"
           role="button"
-          :href="'#' + item.name"
+          :href="'#' + item.logo"
           :title="item.title || item.name"
         >
           <SvgIcon :name="item.logo" style="font-size: 2em" />
@@ -138,14 +113,16 @@ export default defineComponent({
           class="onetime-sponsorship-pay"
           v-show="
             opacity !== 0
-              ? type && items.find((val) => val.name === type)
+              ? type && items.find((val) => val.logo === type)
               : false
           "
         >
           <div
             ref="target"
             class="onetime-sponsorship-pay-container"
-            :title="items.find((val) => val.name === type)?.name"
+            :title="`Use ${
+              items.find((val) => val.logo === type)?.name
+            } to scan the QR code below to support us`"
             :class="{ transition: !isSwiping }"
             :style="{ left, opacity }"
           >
@@ -157,7 +134,7 @@ export default defineComponent({
               class="onetime-sponsorship-qrcode"
               aria-label="Scan QRCode"
               tag="svg"
-              :value="items.find((val) => val.name === type)?.link"
+              :value="items.find((val) => val.logo === type)?.link"
               :options="{
                 width: 200,
                 height: 200,
@@ -169,7 +146,7 @@ export default defineComponent({
             >
             </QRCode>
             <h4 class="onetime-sponsorship-select-name">
-              {{ items.find((val) => val.name === type)?.name }}
+              {{ items.find((val) => val.logo === type)?.name }}
             </h4>
             <ElLink
               icon="el-icon-share"
@@ -177,9 +154,9 @@ export default defineComponent({
               rel="noopener noreferrer"
               aria-label="Sponsored links"
               target="_blank"
-              :href="items.find((val) => val.name === type)?.link"
+              :href="items.find((val) => val.logo === type)?.link"
             >
-              {{ items.find((val) => val.name === type)?.link }}
+              {{ items.find((val) => val.logo === type)?.link }}
             </ElLink>
           </div>
         </div>
@@ -203,6 +180,10 @@ $qrcode-size: 200px;
       padding: 12px 8px;
       text-decoration: none;
       user-select: none;
+      transition: transform 0.3s;
+      &:hover {
+        transform: translateY(-3px);
+      }
       svg {
         margin-right: 5px;
         &:hover {
