@@ -44,7 +44,7 @@ specifiers:
   dayjs: 1.10.6
   default-passive-events: 2.0.0
   dotenv: 10.0.0
-  element-plus: 1.0.2-beta.65
+  element-plus: 1.0.2-beta.70
   eslint: 7.32.0
   eslint-config-prettier: 8.3.0
   eslint-config-vuepress: 3.2.1
@@ -154,7 +154,7 @@ devDependencies:
   dayjs: 1.10.6
   default-passive-events: 2.0.0
   dotenv: 10.0.0
-  element-plus: 1.0.2-beta.65
+  element-plus: 1.0.2-beta.70
   eslint: 7.32.0
   eslint-config-prettier: 8.3.0_eslint@7.32.0
   eslint-config-vuepress: 3.2.1_7860543f0da10782aa6293cbb7d2a1ec
@@ -1692,6 +1692,10 @@ packages:
       algoliasearch: 4.10.3
     transitivePeerDependencies:
       - '@algolia/client-search'
+    dev: true
+
+  /@element-plus/icons/0.0.11:
+    resolution: {integrity: sha512-iKQXSxXu131Ai+I9Ymtcof9WId7kaXvB1+WRfAfpQCW7UiAMYgdNDqb/u0hgTo2Yq3MwC4MWJnNuTBEpG8r7+A==}
     dev: true
 
   /@eslint/eslintrc/0.4.3:
@@ -7390,11 +7394,12 @@ packages:
     resolution: {integrity: sha512-WmCgAeURsMFiyoJ646eUaJQ7GNfvMRLXo+GamUyKVNEM4MqTAsXyC0f38JEB4N3BtbD0tlAKozGP5E2T9K3YGg==}
     dev: true
 
-  /element-plus/1.0.2-beta.65:
-    resolution: {integrity: sha512-qQLubUvseYlz5xIatDh4M1wd9mQ3ceEjE/cDtzJ4Y8/63fip96H/JCl39za7wEXiwhqglnu3Ag48MmMbqwgBdw==}
+  /element-plus/1.0.2-beta.70:
+    resolution: {integrity: sha512-q9nqxELedLTFMCff5M5CsFbjWQYa6FvcLr1p7QZI64stZ7oEx1EcFnLEeP7dTg0g6iZf1fnaL5df1fVKWY0Dcg==}
     peerDependencies:
       vue: 3.1.x
     dependencies:
+      '@element-plus/icons': 0.0.11
       '@popperjs/core': 2.9.2
       async-validator: 3.5.2
       dayjs: 1.10.6
