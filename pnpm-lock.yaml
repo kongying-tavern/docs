@@ -66,7 +66,7 @@ specifiers:
   katex: 0.13.13
   lerna: ^4.0.0
   lint-md: 0.2.0
-  lint-staged: 11.1.1
+  lint-staged: 11.1.2
   markdownlint-cli: 0.27.1
   mocha: 9.0.3
   npm-check-updates: 11.8.3
@@ -176,7 +176,7 @@ devDependencies:
   katex: 0.13.13
   lerna: 4.0.0
   lint-md: 0.2.0
-  lint-staged: 11.1.1
+  lint-staged: 11.1.2
   markdownlint-cli: 0.27.1
   mocha: 9.0.3
   npm-check-updates: 11.8.3
@@ -10974,16 +10974,15 @@ packages:
       unified: 7.1.0
     dev: true
 
-  /lint-staged/11.1.1:
-    resolution: {integrity: sha512-eTNGe6i78PSUUH2BZi1gZmGmNfb8IeN4z2OzMYxSZ1qnP1WXKn1E7D+OHwLbRDm/wQINnzIj0bsKJ6lLVSuZiQ==}
+  /lint-staged/11.1.2:
+    resolution: {integrity: sha512-6lYpNoA9wGqkL6Hew/4n1H6lRqF3qCsujVT0Oq5Z4hiSAM7S6NksPJ3gnr7A7R52xCtiZMcEUNNQ6d6X5Bvh9w==}
     hasBin: true
     dependencies:
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-truncate: 2.1.0
       commander: 7.2.0
       cosmiconfig: 7.0.0
       debug: 4.3.2
-      dedent: 0.7.0
       enquirer: 2.3.6
       execa: 5.1.1
       listr2: 3.11.0_enquirer@2.3.6
