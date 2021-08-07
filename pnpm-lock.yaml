@@ -103,7 +103,7 @@ specifiers:
   vuepress-plugin-feed2: 2.0.0-alpha.5
   vuepress-plugin-lightgallery: 2.0.0-alpha.4
   vuepress-plugin-md-enhance: 2.0.0-alpha.5
-  vuepress-plugin-photo-swipe: 2.0.0-alpha.5
+  vuepress-plugin-photo-swipe: 2.0.0-alpha.6
   vuepress-plugin-sass-palette: 2.0.0-alpha.5
   vuepress-plugin-seo2: 2.0.0-alpha.5
   vuepress-plugin-sitemap2: 2.0.0-alpha.5
@@ -213,7 +213,7 @@ devDependencies:
   vuepress-plugin-feed2: 2.0.0-alpha.5
   vuepress-plugin-lightgallery: 2.0.0-alpha.4
   vuepress-plugin-md-enhance: 2.0.0-alpha.5
-  vuepress-plugin-photo-swipe: 2.0.0-alpha.5
+  vuepress-plugin-photo-swipe: 2.0.0-alpha.6
   vuepress-plugin-sass-palette: 2.0.0-alpha.5
   vuepress-plugin-seo2: 2.0.0-alpha.5
   vuepress-plugin-sitemap2: 2.0.0-alpha.5
@@ -2746,6 +2746,15 @@ packages:
 
   /@mr-hope/vuepress-shared/2.0.0-alpha.5:
     resolution: {integrity: sha512-aRJvxQ4+t7CJyGZl7qHxnSR0nMxcrq1MVYqIlw7aYc7XB74mj+4L4ikD66zozjKo305I1my3IMOnH7QZrMtR0w==}
+    dependencies:
+      '@types/webpack-dev-server': 3.11.5
+      dayjs: 1.10.6
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@mr-hope/vuepress-shared/2.0.0-alpha.6:
+    resolution: {integrity: sha512-BZrRJPXUOk4Owxidckr3gJewD7BncZotQMch6gIK1KmMexAKaHTJX9WtOJCz3sM/kcHfiW8icJ3znR5xlD1+ug==}
     dependencies:
       '@types/webpack-dev-server': 3.11.5
       dayjs: 1.10.6
@@ -14577,6 +14586,27 @@ packages:
       sass: 1.37.0
     dev: true
 
+  /sass-loader/12.1.0_sass@1.37.5:
+    resolution: {integrity: sha512-FVJZ9kxVRYNZTIe2xhw93n3xJNYZADr+q69/s98l9nTCrWASo+DR2Ot0s5xTKQDDEosUkatsGeHxcH4QBp5bSg==}
+    engines: {node: '>= 12.13.0'}
+    peerDependencies:
+      fibers: '>= 3.1.0'
+      node-sass: ^4.0.0 || ^5.0.0 || ^6.0.0
+      sass: ^1.3.0
+      webpack: ^5.0.0
+    peerDependenciesMeta:
+      fibers:
+        optional: true
+      node-sass:
+        optional: true
+      sass:
+        optional: true
+    dependencies:
+      klona: 2.0.4
+      neo-async: 2.6.2
+      sass: 1.37.5
+    dev: true
+
   /sass/1.35.2:
     resolution: {integrity: sha512-jhO5KAR+AMxCEwIH3v+4zbB2WB0z67V1X0jbapfVwQQdjHZUGUyukpnoM6+iCMfsIUC016w9OPKQ5jrNOS9uXw==}
     engines: {node: '>=8.9.0'}
@@ -14587,6 +14617,14 @@ packages:
 
   /sass/1.37.0:
     resolution: {integrity: sha512-B+Tu6cSAG8ffs/cqsZl/bgSH2pCmavDaPTYAoW8QA1qNHh/RqndNfVKuABKYkLjUQ5aq/BnCENVpE80cqdSM1w==}
+    engines: {node: '>=8.9.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.2
+    dev: true
+
+  /sass/1.37.5:
+    resolution: {integrity: sha512-Cx3ewxz9QB/ErnVIiWg2cH0kiYZ0FPvheDTVC6BsiEGBTZKKZJ1Gq5Kq6jy3PKtL6+EJ8NIoaBW/RSd2R6cZOA==}
     engines: {node: '>=8.9.0'}
     hasBin: true
     dependencies:
@@ -16904,13 +16942,13 @@ packages:
       - webpack
     dev: true
 
-  /vuepress-plugin-photo-swipe/2.0.0-alpha.5:
-    resolution: {integrity: sha512-xej4t2xNmfaUcNSz7HNGip5DL09Bme4+vTan4+sXDkwOD4GdUrcrTM7M0Y/n/Vrd77EgjfXLO5QAg1d9K954yA==}
+  /vuepress-plugin-photo-swipe/2.0.0-alpha.6:
+    resolution: {integrity: sha512-K9N6vAQRjGw+4obxqMK0j6F/1hGK7/xkKIGCxOp6tCf+tMrbf90+XQvo1YsrEi3sBVKgU/eRFhNzEzVsTogJbA==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.5
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.6
       '@types/photoswipe': 4.1.2
       photoswipe: 4.1.3
-      vuepress-plugin-sass-palette: 2.0.0-alpha.5
+      vuepress-plugin-sass-palette: 2.0.0-alpha.6
     transitivePeerDependencies:
       - debug
       - fibers
@@ -16937,6 +16975,19 @@ packages:
       '@mr-hope/vuepress-shared': 2.0.0-alpha.5
       sass: 1.35.2
       sass-loader: 12.1.0_sass@1.35.2
+    transitivePeerDependencies:
+      - debug
+      - fibers
+      - node-sass
+      - webpack
+    dev: true
+
+  /vuepress-plugin-sass-palette/2.0.0-alpha.6:
+    resolution: {integrity: sha512-AEUWe+EsHT5IgItp+mQ/HwLBvkPqbwWALFfO+igh8Lm9wvWbTOhMU8CjBSgTOblVMATRPZdl3uL4ZLB9at7lNg==}
+    dependencies:
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.6
+      sass: 1.37.5
+      sass-loader: 12.1.0_sass@1.37.5
     transitivePeerDependencies:
       - debug
       - fibers
