@@ -105,7 +105,7 @@ specifiers:
   vuepress-plugin-md-enhance: 2.0.0-alpha.5
   vuepress-plugin-photo-swipe: 2.0.0-alpha.5
   vuepress-plugin-sass-palette: 2.0.0-alpha.5
-  vuepress-plugin-seo2: 2.0.0-alpha.5
+  vuepress-plugin-seo2: 2.0.0-alpha.6
   vuepress-plugin-sitemap2: 2.0.0-alpha.5
   vuepress-vite: 2.0.0-beta.23
   yaml: 2.0.0-7
@@ -215,7 +215,7 @@ devDependencies:
   vuepress-plugin-md-enhance: 2.0.0-alpha.5
   vuepress-plugin-photo-swipe: 2.0.0-alpha.5
   vuepress-plugin-sass-palette: 2.0.0-alpha.5
-  vuepress-plugin-seo2: 2.0.0-alpha.5
+  vuepress-plugin-seo2: 2.0.0-alpha.6
   vuepress-plugin-sitemap2: 2.0.0-alpha.5
   vuepress-vite: 2.0.0-beta.23
   yaml: 2.0.0-7
@@ -2746,6 +2746,15 @@ packages:
 
   /@mr-hope/vuepress-shared/2.0.0-alpha.5:
     resolution: {integrity: sha512-aRJvxQ4+t7CJyGZl7qHxnSR0nMxcrq1MVYqIlw7aYc7XB74mj+4L4ikD66zozjKo305I1my3IMOnH7QZrMtR0w==}
+    dependencies:
+      '@types/webpack-dev-server': 3.11.5
+      dayjs: 1.10.6
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@mr-hope/vuepress-shared/2.0.0-alpha.6:
+    resolution: {integrity: sha512-BZrRJPXUOk4Owxidckr3gJewD7BncZotQMch6gIK1KmMexAKaHTJX9WtOJCz3sM/kcHfiW8icJ3znR5xlD1+ug==}
     dependencies:
       '@types/webpack-dev-server': 3.11.5
       dayjs: 1.10.6
@@ -16944,15 +16953,14 @@ packages:
       - webpack
     dev: true
 
-  /vuepress-plugin-seo2/2.0.0-alpha.5:
-    resolution: {integrity: sha512-5aZCVTWo4AVoRxQ7TGcA6T70uQRS+i3ZcZJWrPemWA/3ETEipZpnZGFOgyYiQUSiz2hnKD2IpRWCr6d3cMY1gg==}
+  /vuepress-plugin-seo2/2.0.0-alpha.6:
+    resolution: {integrity: sha512-4jBenKDdhrH9UQXhSwORkv0MgwAdM01/HlNcFqO/lGSo6FT9AlUmKqduSYecvbwwpqVXVa5sG+ExC+WxOgjiEA==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.5
-      '@types/fs-extra': 9.0.12
-      chalk: 4.1.1
-      fs-extra: 10.0.0
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.6
+      '@vuepress/utils': 2.0.0-beta.23
     transitivePeerDependencies:
       - debug
+      - supports-color
     dev: true
 
   /vuepress-plugin-sitemap2/2.0.0-alpha.5:
