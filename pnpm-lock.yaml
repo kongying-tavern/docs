@@ -100,7 +100,7 @@ specifiers:
   ts-jest: 27.0.4
   typescript: 4.3.5
   vuepress: ^2.0.0-beta.23
-  vuepress-plugin-feed2: 2.0.0-alpha.5
+  vuepress-plugin-feed2: 2.0.0-alpha.6
   vuepress-plugin-lightgallery: 2.0.0-alpha.4
   vuepress-plugin-md-enhance: 2.0.0-alpha.5
   vuepress-plugin-photo-swipe: 2.0.0-alpha.5
@@ -210,7 +210,7 @@ devDependencies:
   ts-jest: 27.0.4_ee7f086b1d1f88c81b98196bb34f34db
   typescript: 4.3.5
   vuepress: 2.0.0-beta.23
-  vuepress-plugin-feed2: 2.0.0-alpha.5
+  vuepress-plugin-feed2: 2.0.0-alpha.6
   vuepress-plugin-lightgallery: 2.0.0-alpha.4
   vuepress-plugin-md-enhance: 2.0.0-alpha.5
   vuepress-plugin-photo-swipe: 2.0.0-alpha.5
@@ -2746,6 +2746,15 @@ packages:
 
   /@mr-hope/vuepress-shared/2.0.0-alpha.5:
     resolution: {integrity: sha512-aRJvxQ4+t7CJyGZl7qHxnSR0nMxcrq1MVYqIlw7aYc7XB74mj+4L4ikD66zozjKo305I1my3IMOnH7QZrMtR0w==}
+    dependencies:
+      '@types/webpack-dev-server': 3.11.5
+      dayjs: 1.10.6
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@mr-hope/vuepress-shared/2.0.0-alpha.6:
+    resolution: {integrity: sha512-BZrRJPXUOk4Owxidckr3gJewD7BncZotQMch6gIK1KmMexAKaHTJX9WtOJCz3sM/kcHfiW8icJ3znR5xlD1+ug==}
     dependencies:
       '@types/webpack-dev-server': 3.11.5
       dayjs: 1.10.6
@@ -16858,13 +16867,10 @@ packages:
       '@vue/shared': 3.1.5
     dev: true
 
-  /vuepress-plugin-feed2/2.0.0-alpha.5:
-    resolution: {integrity: sha512-t7VpbAzbREG3goNJCBht2RnhPRqb0T7Lk+RrSTHRs4kOqpDcy2ud63bdaSxC1LPux7CD4rZq+q5nYEd38O6eKA==}
+  /vuepress-plugin-feed2/2.0.0-alpha.6:
+    resolution: {integrity: sha512-zaUoGVdQR3pUPrZNz4IsEvH3MkLrHqYe0+A8JRZP/BE6YSqogmtYbtfk36QC+FI7zWvnLIAXD5JBbeVS8/BFuQ==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.5
-      '@types/fs-extra': 9.0.12
-      chalk: 4.1.1
-      fs-extra: 10.0.0
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.6
       xml-js: 1.6.11
     transitivePeerDependencies:
       - debug
