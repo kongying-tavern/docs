@@ -1,4 +1,5 @@
 ---
+externalIcon: false
 home: true
 title: 首页
 heroImage: /20210609/logo.jpg
@@ -7,7 +8,7 @@ actions:
     link: ./download-client.html
     type: primary
   - text: 返回网页版
-    link: https://yuanshen.site/
+    link: /
     type: secondary
 features:
   - title: 强大功能

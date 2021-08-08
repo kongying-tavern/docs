@@ -46,7 +46,9 @@ export default defineComponent({
               fit="cover"
               :alt="item.name"
               :src="
-                item?.avatar === null ? '' : withBase('20210727/' + item.avatar)
+                item?.avatarURL === null
+                  ? ''
+                  : withBase('20210727/' + item.avatarURL)
               "
               @error="errorHandler"
             >

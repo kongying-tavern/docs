@@ -1,4 +1,4 @@
-name: Docs
+name: Page
 
 on:
   # 每当 push 到 main 分支时触发部署
@@ -55,3 +55,4 @@ jobs:
         env:
           # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: '/genshinmap-docs/'

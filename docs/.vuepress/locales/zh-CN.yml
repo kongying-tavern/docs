@@ -1,32 +1,48 @@
 /:
   home: /
+
+  # select language
   selectLanguageName: 简体中文
   selectLanguageText: 选择语言
   selectLanguageAriaLabel: 选择语言
+
+  # custom containers
   tip: 提示
   warning: 警告
   danger: 危险
+
+  # download page
   download: 下载
   newFolder: 新建文件夹
-  grade: 以上内容对您是否有帮助？
+  selectDownloadMethod: 选择下载方式
   notSupportReplication: 你的浏览器不支持一键复制，请手动复制。
   extractionCode: 提取码
+  stayTuned: 敬请期待
   copySuccess: 复制成功
-  selectDownloadMethod: 选择下载方式
+
+  # other
+  grade: 以上内容对您是否有帮助？
   feedback: 反馈
   thankFeedback: 感谢您的反馈！
   swipeRightToClose: 向右滑动关闭
-  stayTuned: 敬请期待
   followUs: 关注我们
+  backToTop: 回到顶部
+
+  # page meta
+  lastUpdatedText: 更新于
+  contributorsText: 参与贡献
+  editLinkText: 在 GitHub 上编辑该页
+
+  # 404 page
   notFound:
     - 找不到您要查找的页面。
     - 404 未找到该页面
   backToHome: 回到首页
-  backToTop: 回到顶部
+
+  # a11y
   openInNewWindow: 在新窗口中打开
-  lastUpdatedText: 更新于
-  contributorsText: 参与贡献
-  editLinkText: 在 GitHub 上编辑该页
+
+  # sponsorship page
   sponsorship:
     - name: 微信支付
       logo: wechat-pay
@@ -48,6 +64,8 @@
       title: 一键三连~😁
       logo: bilibili
       link: https://space.bilibili.com/518076785
+
+  # navbar
   navbar:
     - text: 反馈
       link: https://support.qq.com/products/321980

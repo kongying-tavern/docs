@@ -66,7 +66,7 @@ export default defineComponent({
     const list = ref([
       {
         name: 'Windows',
-        version: 'v1.11.1_beta',
+        version: 'v1.12_beta',
         QRCode: false,
         disabled: false,
         bg: '/20210710/8f6ce2c16420c33e970c1efd524cda04.png',

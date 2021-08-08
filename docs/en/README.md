@@ -1,4 +1,5 @@
 ---
+externalIcon: false
 home: true
 title: HomePage
 heroImage: /20210609/logo.jpg
@@ -7,7 +8,7 @@ actions:
     link: ./download-client.html
     type: primary
   - text: Use Web
-    link: https://yuanshen.site/
+    link: /
     type: secondary
 footer: Chinese hoyolabMade By Kongying Tavern
 ---

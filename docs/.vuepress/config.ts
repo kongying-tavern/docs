@@ -1,9 +1,11 @@
 import { defineUserConfig } from '@vuepress/cli'
 import { path, fs, chalk, logger } from '@vuepress/utils'
-import viteCompilerOptions from '../../vite.config'
 import YAML from 'yaml'
 import dotenv from 'dotenv'
 import * as chokidar from 'chokidar'
+
+import viteCompilerOptions from '../../vite.config'
+import webpackCompilerOptions from '../../webpack.config'
 
 import type { ViteBundlerOptions } from 'vuepress-vite'
 import type { DefaultThemeOptions, WebpackBundlerOptions } from 'vuepress'
@@ -18,25 +20,20 @@ dotenv.config({
 
 const isProd = process.env.NODE_ENV === 'production'
 
-let localeData = {}
-
-fs.readdirSync(path.resolve(__dirname, './locales')).forEach((val) => {
-  localeData = Object.assign(
-    localeData,
-    YAML.parse(
-      fs.readFileSync(path.resolve(__dirname, './locales/' + val), 'utf8')
-    )
-  )
-})
-
 console.log('Mode:', isProd ? 'Production' : 'development')
 
+/**
+ * @description Vuepress2 config
+ * @link https://v2.vuepress.vuejs.org/reference/config.html
+ */
 module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
+  base: process.env.BASE,
   dest: path.resolve(__dirname, '../../dist'),
   public: 'public',
-  base: process.env.BASE,
+
   title: process.env.SITE_NAME,
   description: process.env.DESCRIPTION,
+
   bundler:
     // process.env.DOCS_BUNDLER ??
     // // use vite in dev, use webpack in prod
@@ -45,9 +42,12 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
   bundlerConfig: {
     evergreen: false,
   },
+
   templateDev: path.resolve(__dirname, './templates/index.dev.html'),
   templateSSR: path.resolve(__dirname, './templates/index.ssr.html'),
+
   theme: path.resolve(__dirname, './theme/'),
+
   head: [
     ['meta', { name: 'charset', content: 'utf-8' }],
     [
@@ -111,23 +111,41 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
       },
     ],
   ],
+
+  // site-level locales config
   locales: {
+    /**
+     * Chinese locale config
+     */
     '/': {
       lang: 'zh-CN',
       title: process.env.SITE_NAME,
       description: process.env.DESCRIPTION,
     },
+
+    /**
+     * English locale config
+     */
     '/en/': {
       lang: 'en-US',
       title: process.env.SITE_NAME_EN,
       description: process.env.DESCRIPTION_EN,
     },
+
+    /**
+     * Japanese locale config
+     */
     '/ja/': {
       lang: 'ja-JP',
       title: process.env.DESCRIPTION_JA,
       description: process.env.DESCRIPTION_JA,
     },
   },
+
+  /**
+   * @description Vuepress2 theme config
+   * @link https://v2.vuepress.vuejs.org/reference/theme-api.html
+   */
   themeConfig: {
     repo: process.env.REPO,
     repoLabel: 'Gitee',
@@ -145,23 +163,48 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
         details: false,
       },
     },
-    locales: {
-      ...localeData,
-    },
+    locales: (() => {
+      let localeData = {}
+
+      fs.readdirSync(path.resolve(__dirname, './locales')).forEach((val) => {
+        localeData = Object.assign(
+          localeData,
+          YAML.parse(
+            fs.readFileSync(path.resolve(__dirname, './locales/' + val), 'utf8')
+          )
+        )
+      })
+      return localeData
+    })(),
   },
   plugins: [
+    /**
+     * @description This plugin will import gtag.js for Google Analytics 4.
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/google-analytics.html
+     */
     [
       '@vuepress/google-analytics',
       {
+        // we have multiple deployments, which would use different id
         id: process.env.ANALYTICS_ID,
       },
     ],
+
+    /**
+     * @description This plugin uses workbox-build to generate service worker file, and uses register-service-worker to register service worker.
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/pwa.html
+     */
     [
       '@vuepress/pwa',
       {
         skipWaiting: false,
       },
     ],
+
+    /**
+     * @description This plugin must be used together with pwa plugin, and the skipWaiting option must not be set to true.
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/pwa-popup.html
+     */
     [
       '@vuepress/plugin-pwa-popup',
       {
@@ -181,6 +224,11 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
         },
       },
     ],
+
+    /**
+     * @description Provide local search to your documentation site
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/search.html
+     */
     [
       '@vuepress/plugin-search',
       {
@@ -199,31 +247,44 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
         },
       },
     ],
-    // [
-    //   '@vuepress/docsearch',
-    //   {
-    //     apiKey: 'd66aafda844027d72f4ff85378d5f2f2',
-    //     indexName: 'yuanshen.site',
-    //     appId: 'J4CYOK33ZS',
-    //     locales: {
-    //       '/en/': {
-    //         placeholder: 'Search',
-    //       },
-    //       '/': {
-    //         placeholder: '搜索',
-    //       },
-    //       '/ja/': {
-    //         placeholder: '検索する',
-    //       },
-    //     },
-    //   },
-    // ],
+    /**
+     * @description Algolia DocSearch
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/docsearch.html
+     */
+    [
+      '@vuepress/docsearch',
+      false,
+      // {
+      //   apiKey: 'd66aafda844027d72f4ff85378d5f2f2',
+      //   indexName: 'yuanshen.site',
+      //   appId: 'J4CYOK33ZS',
+      //   locales: {
+      //     '/en/': {
+      //       placeholder: 'Search',
+      //     },
+      //     '/': {
+      //       placeholder: '搜索',
+      //     },
+      //     '/ja/': {
+      //       placeholder: '検索する',
+      //     },
+      //   },
+      // },
+    ],
+    /**
+     * @description Register Vue components from component files or directory automatically.
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/register-components.html
+     */
     [
       '@vuepress/register-components',
       {
         componentsDir: path.resolve(__dirname, './components'),
       },
     ],
+
+    /**
+     * @todo
+     */
     [
       'sitemap2',
       {
@@ -231,13 +292,20 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
         exclude: [],
       },
     ],
+
+    /**
+     * @todo
+     */
     [
       'feed2',
-      false,
-      //       {
-      //         hostname: process.env.BASE,
-      //       },
+      {
+        hostname: process.env.HOSTNAME,
+      },
     ],
+
+    /**
+     * @todo
+     */
     [
       'seo2',
       {
@@ -255,6 +323,11 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
         //   },
       },
     ],
+
+    /**
+     * @description  use more syntax in your Markdown files.
+     * @link https://vuepress-theme-hope.github.io/md-enhance/guide/
+     */
     [
       'md-enhance',
       {
@@ -276,7 +349,16 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
         },
       },
     ],
+
+    /**
+     * @description This plugin will make the pictures in the body of the page enter the preview mode when clicked.
+     * @link https://vuepress-theme-hope.github.io/photo-swipe/guide/
+     */
     ['photo-swipe'],
+
+    /**
+     * @todo
+     */
     [
       'lightgallery',
       false,
@@ -291,13 +373,26 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
       //   ],
       // },
     ],
+
+    /**
+     * @description This plugin will provide a table-of-contents (TOC) component
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/toc.html
+     */
     ['@vuepress/plugin-toc'],
 
+    /**
+     * @description This plugin will enable syntax highlighting for markdown code fence with Shiki
+     * @link https://v2.vuepress.vuejs.org/reference/plugin/shiki.html
+     */
     [
-      // 主题在线演示网址https://vscodethemes.com/
       '@vuepress/plugin-shiki',
+      // only enable shiki plugin in production mode
       isProd
         ? {
+            /**
+             * @description shiki theme preview
+             * @link https://vscodethemes.com/
+             */
             theme: 'github-dark',
           }
         : false,

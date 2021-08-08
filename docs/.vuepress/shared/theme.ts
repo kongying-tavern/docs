@@ -17,7 +17,7 @@ export type ThemeLocaleData = ThemeData<{
   sponsorship: sponsorship[]
 }>
 
-interface sponsorship {
+export interface sponsorship {
   name: string
   logo: string
   link: string

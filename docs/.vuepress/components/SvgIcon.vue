@@ -12,6 +12,7 @@
     :class="svgClass"
     aria-hidden="true"
     v-bind="$attrs"
+    focusable="false"
     @click="(e) => $emit('click', e)"
   >
     <use :xlink:href="iconName" />

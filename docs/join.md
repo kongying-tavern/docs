@@ -1,7 +1,6 @@
 ---
 title: 加入我们
 description: 加入我们
-sidebar: false
 ---
 
 ## 加入我们
@@ -31,15 +30,15 @@ sidebar: false
 
 主要技术栈：
 
-- [v1](https://gitee.com/KYJGYSDT/yuan-shen-map)
+- v1[(Gitee)](https://gitee.com/KYJGYSDT/yuan-shen-map)
   - Jquery
   - Leaflet
-- [v2](https://gitee.com/KYJGYSDT/island_map)
+- v2[(Gitee)](https://gitee.com/KYJGYSDT/island_map)
   - Quasar
   - Vue2 全家桶
   - Leaflet
   - Sass&Scss
-- [v3](https://nextjs-imagination-map-nbmzjq21z-peaceshi.vercel.app/)（全新领域，全新挑战，是兄弟就来 Deckgl）
+- v3[(Developer Preview)](https://nextjs-imagination-map-nbmzjq21z-peaceshi.vercel.app/)（全新领域，全新挑战，是兄弟就来 Deckgl）
   - React17
   - TypeScript
   - Deckgl
@@ -49,27 +48,27 @@ sidebar: false
 
 主要技术栈：
 
-- [v1](https://github.com/jiazengp/genshinmap-docs/)
-  - VuepressNext
+- v1[(GitHub)](https://github.com/jiazengp/genshinmap-docs/)
+  - Vuepress2
   - TypeScript
 
 了解更多：[https://yuanshen.site/docs/developer/documentation/](/docs/developer/documentation/)
 
 ### 后端开发
 
-当前后台项目主要基于 Java + MySql + Redis
+当前后台项目主要基于 `Java`, `MySql`, `Redis`。
 
 ### 微信小程序开发
 
-欢迎相关的大佬加入开发
+欢迎相关的大佬加入开发。
 
 ### Android/IOS/Flutter 的移动端开发
 
-欢迎相关的大佬加入开发
+欢迎相关的大佬加入开发。
 
 ### Unity 客户端开发
 
-程序：负责功能脚本编写及项目优化
+程序：负责功能脚本编写及项目优化。
 
 （急缺）shader 大佬：求求 shader 大佬带带我们~
 
@@ -77,7 +76,7 @@ sidebar: false
 
 ### 视觉设计、交互设计、美术
 
-网页和客户端内的界面交互和 UI 制作；
+网页和客户端内的界面交互和 UI 制作。
 
 ## 内容运营类
 
@@ -91,7 +90,7 @@ sidebar: false
 
 ## 如何加入
 
-打点的小伙伴可以直接联系铃QQ：**717818652**。
+打点的小伙伴可加群 [**717818652**](https://qm.qq.com/cgi-bin/qm/qr?k=8gOxT1yNUGIFRT1p1ib6Z8QqhifB4KoQ&jump_from=webapi '点击加入QQ群') 洽谈。
 
 其他的小伙伴可以加群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈。
 
