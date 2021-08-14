@@ -30,7 +30,7 @@
     "copy": "cpx \"src/**/*.{d.ts,vue,scss}\" lib"
   },
   "dependencies": {
-    "@vuepress/client": "2.0.0-beta.21",
+    "@vuepress/client": "2.0.0-beta.24",
     "@vuepress/core": "2.0.0-beta.22",
     "@vuepress/plugin-active-header-links": "2.0.0-beta.22",
     "@vuepress/plugin-back-to-top": "2.0.0-beta.22",
