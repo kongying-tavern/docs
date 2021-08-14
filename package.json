@@ -177,7 +177,7 @@
     "prettier-config-vuepress": "1.2.0",
     "qrcode": "1.4.4",
     "qs": "6.10.1",
-    "release-it": "14.10.1",
+    "release-it": "14.11.4",
     "screenfull": "5.1.0",
     "semantic-release": "^17.4.4",
     "semver": "7.3.5",
