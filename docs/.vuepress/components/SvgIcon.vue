@@ -3,7 +3,6 @@
   <figure
     class="svg-icon svg-external-icon"
     v-if="isExt"
-    :style="styleExternalIcon"
     v-bind="$attrs"
   ></figure>
 
@@ -44,10 +43,9 @@ export default defineComponent({
     )
 
     // 如果name是带协议的图标链接 则通过style css属性方式渲染
-    const styleExternalIcon = computed(() => ({
-      'mask': `url(${props.name}) no-repeat 50% 50%`,
-      '-webkit-mask': `url(${props.name}) no-repeat 50% 50%`,
-    }))
+    const styleExternalIcon = computed(
+      () => `url(${props.name}) no-repeat 50% 50%`
+    )
 
     return {
       isExt,
@@ -82,5 +80,6 @@ export default defineComponent({
   font-size: inherit;
   box-sizing: border-box;
   outline: none;
+  mask: v-bind(styleExternalIcon);
 }
 </style>

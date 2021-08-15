@@ -8,7 +8,7 @@ actions:
     link: ./download-client.html
     type: primary
   - text: 返回网页版
-    link: /
+    link: https://yuanshen.site/index.html
     type: secondary
 features:
   - title: 强大功能
@@ -17,6 +17,5 @@ features:
     details: 一切都刚刚好。
   - title: 完全免费
     details: 原神地图是使用 MulanPSL-1.0 许可的开源项目，使用完全免费并且无广告。
-
-footer: Chinese hoyolabMade By Kongying Tavern
+footer: MIT Licensed | Made by Kongying Tavern
 ---

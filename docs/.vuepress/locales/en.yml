@@ -27,6 +27,7 @@
   danger: Danger
   selectDownloadMethod: Select download method
   editLinkText: Edit this page on GitHub
+  showMore: show More
   sponsorship:
     - name: WeChat Pay
       logo: wechat-pay
@@ -44,6 +45,10 @@
       title: Ethereum
       logo: eth
       link: ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde
+    - name: BTC
+      title: Bitcoin
+      logo: btc
+      link: bitcoin:1N9v9S3FDLJvoHajHaNzT6oveoHbz1GmnT
   navbar:
     - text: Feedback
       link: https://support.qq.com/products/321980

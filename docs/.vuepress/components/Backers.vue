@@ -1,75 +1,96 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from 'vue'
-import { withBase } from '@vuepress/client'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useBackersList } from '../shared'
+import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 
-export default defineComponent({
-  name: 'Backers',
-  setup() {
-    const items = useBackersList()
-    const el = ref(null)
-    const errorHandler = () => true
+import type { ThemeLocaleData } from '../shared'
 
-    if (!__SSR__) {
-      console.table(items.value)
-    }
-    return {
-      el,
-      items: items.value,
-      withBase,
-      errorHandler,
-    }
-  },
-})
+const themeLocaleData = useThemeLocaleData<ThemeLocaleData>()
+const items = useBackersList()
+const index = ref(128)
+
+if (!__SSR__) {
+  onMounted(
+    () =>
+      (index.value =
+        window.innerWidth / 10 >= 128 ? 128 : window.innerWidth / 10)
+  )
+}
 </script>
 
 <template>
   <ClientOnly>
-    <div ref="el" class="backers">
-      <ElSpace v-once :size="5" :wrap="true">
+    <div :class="$style.backers">
+      <div :class="$style.backersContainer">
         <a
-          v-for="item in items"
+          v-for="item in items.slice(0, index)"
           :key="item.name"
           :aria-label="item.name"
-          :title="item.name"
-          class="backers-item"
+          :class="$style.backersItem"
           tabindex="-1"
           href="javascript:void(0)"
         >
           <ElTooltip placement="top">
             <template #content>
               {{ (item?.platform || '其他') + '：' + item.name }}
+              <br />
+              {{ item?.remark }}
             </template>
             <ElAvatar
               shape="circle"
-              size="large"
+              :size="40"
+              style="background-color: var(--docs-avatar-bg)"
               fit="cover"
               :alt="item.name"
               :src="
-                item?.avatarURL === null
-                  ? ''
-                  : withBase('20210727/' + item.avatarURL)
+                item?.avatarURL === null ? '' : './20210727/' + item.avatarURL
               "
-              @error="errorHandler"
+              @error="true"
             >
               {{ item.name.substring(0, 3).toLocaleUpperCase() }}
             </ElAvatar>
           </ElTooltip>
         </a>
-      </ElSpace>
+      </div>
+      <div
+        :class="$style.backersPagination"
+        v-if="index <= items.length"
+        @click="index += 20"
+      >
+        {{ themeLocaleData.showMore
+        }}<i class="el-icon-arrow-down el-icon--right"></i>
+      </div>
     </div>
   </ClientOnly>
 </template>
 
-<style lang="scss" scoped>
+<style module lang="scss">
 .backers {
   display: grid;
   place-items: center;
   margin-top: 22px;
   min-height: 100%;
-  .backers-item {
+  .backersContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: -5px;
+    align-items: center;
+  }
+  .backersPagination {
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    appearance: button;
+    text-align: left;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #768390;
+  }
+  .backersItem {
     overflow: hidden;
     opacity: 0.85;
+    padding-bottom: 2px;
+    margin-right: 4px;
     &:hover {
       opacity: 1;
       text-decoration: none;
@@ -80,14 +101,5 @@ export default defineComponent({
       background-color: var(--docs-avatar-bg);
     }
   }
-}
-.backers-name {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: var(--c-text);
 }
 </style>

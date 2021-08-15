@@ -1,50 +1,56 @@
 <template>
-  <div class="download-client">
-    <div
-      v-for="item in list"
-      :key="item.name"
-      class="download-client-card"
-      :aria-label="item.name"
-      :style="
-        'background:url(' +
-        withBase(item.bg) +
-        ')no-repeat;background-position: right bottom;background-size: auto 150px;'
-      "
-    >
-      <div class="card-container">
-        <header>
-          <h3 class="card-name">{{ item.name }}</h3>
-          <span class="card-description">{{
-            item.disabled ? newFolder : item.version
-          }}</span>
-        </header>
+  <ClientOnly>
+    <div class="download-client">
+      <div
+        v-for="item in list"
+        :key="item.name"
+        class="download-client-card"
+        :aria-label="item.name"
+        :style="
+          'background:url(' +
+          withBase(item.bg) +
+          ')no-repeat;background-position: right bottom;background-size: auto 150px;'
+        "
+      >
+        <div class="card-container">
+          <header>
+            <h3 class="card-name">{{ item.name }}</h3>
+            <span class="card-description">{{
+              item.disabled ? newFolder : item.version
+            }}</span>
+          </header>
 
-        <ElButton
-          class="card-button"
-          title="Download button"
-          type="success"
-          :disabled="item.disabled"
-          @click="download(item.baiduNetdisk, item.googleDrive)"
-        >
-          {{ item.disabled ? stayTuned : downloadText }}
-        </ElButton>
+          <ElButton
+            class="card-button"
+            title="Download button"
+            type="success"
+            :disabled="item.disabled"
+            @click="download(item.baiduNetdisk, item.googleDrive)"
+          >
+            {{ item.disabled ? stayTuned : downloadText }}
+          </ElButton>
 
-        <div v-if="item.QRCode" class="qrcode-container" aria-label="QRCode">
-          <SvgIcon name="qrcode" />
+          <div v-if="item.QRCode" class="qrcode-container" aria-label="QRCode">
+            <SvgIcon name="qrcode" />
+          </div>
+          <figure
+            v-if="item.QRCode"
+            class="card-qrcode"
+            aria-label="Scan QRCode"
+          >
+            <QRCode
+              tag="svg"
+              :value="item?.baiduNetdisk || item.name"
+              :options="{
+                width: 150,
+                height: 150,
+              }"
+            ></QRCode>
+          </figure>
         </div>
-        <figure v-if="item.QRCode" class="card-qrcode" aria-label="Scan QRCode">
-          <QRCode
-            tag="svg"
-            :value="item?.baiduNetdisk || item.name"
-            :options="{
-              width: 150,
-              height: 150,
-            }"
-          ></QRCode>
-        </figure>
       </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <script lang="ts">
@@ -66,7 +72,7 @@ export default defineComponent({
     const list = ref([
       {
         name: 'Windows',
-        version: 'v1.12_beta',
+        version: 'v2.0.1_beta',
         QRCode: false,
         disabled: false,
         bg: '/20210710/8f6ce2c16420c33e970c1efd524cda04.png',
@@ -140,12 +146,32 @@ export default defineComponent({
                 class: 'download-item',
               },
               [
+                h('strong', '阿里云盘：\n'),
+                h('br'),
+                h(
+                  'a',
+                  {
+                    'href': 'https://www.aliyundrive.com/s/k328huBcMKc',
+                    'aria-label': 'communicationGroup download link',
+                  },
+                  'https://www.aliyundrive.com/s/k328huBcMKc'
+                ),
+              ]
+            ),
+            h(
+              'li',
+              {
+                class: 'download-item',
+              },
+              [
                 h('strong', '加入讨论组：\n'),
                 h(
                   'a',
                   {
                     'href': './communication-group.html',
                     'aria-label': 'communicationGroup download link',
+                    'rel': 'noopener noreferrer',
+                    'target': '_blank',
                   },
                   'https://yuanshen.site/docs/communication-group.html'
                 ),

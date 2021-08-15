@@ -1,16 +1,9 @@
 <template>
-  <dot class="docs-dot"></dot>
+  <dot :class="$style.dot"></dot>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  name: 'Dot',
-})
-</script>
-
-<style lang="scss" scoped>
-dot {
+<style module lang="scss">
+.dot {
   display: inline-block;
   height: 1em;
   line-height: 1;

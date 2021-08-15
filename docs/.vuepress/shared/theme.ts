@@ -14,10 +14,11 @@ export type ThemeLocaleData = ThemeData<{
   notSupportReplication: string
   copySuccess: string
   extractionCode: string
-  sponsorship: sponsorship[]
+  showMore: string
+  sponsorship: Sponsorship[]
 }>
 
-export interface sponsorship {
+export interface Sponsorship {
   name: string
   logo: string
   link: string

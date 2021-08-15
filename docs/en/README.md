@@ -10,5 +10,5 @@ actions:
   - text: Use Web
     link: /
     type: secondary
-footer: Chinese hoyolabMade By Kongying Tavern
+footer: MIT Licensed | Made by Kongying Tavern
 ---

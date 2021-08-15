@@ -1,9 +1,9 @@
 import { defineUserConfig } from '@vuepress/cli'
 import { path, fs, chalk, logger } from '@vuepress/utils'
+import { dayjs } from './utils'
 import YAML from 'yaml'
 import dotenv from 'dotenv'
 import * as chokidar from 'chokidar'
-
 import viteCompilerOptions from '../../vite.config'
 import webpackCompilerOptions from '../../webpack.config'
 
@@ -27,7 +27,7 @@ console.log('Mode:', isProd ? 'Production' : 'development')
  * @link https://v2.vuepress.vuejs.org/reference/config.html
  */
 module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
-  base: process.env.BASE,
+  base: process.env.BASE || '/docs/',
   dest: path.resolve(__dirname, '../../dist'),
   public: 'public',
 
@@ -49,7 +49,6 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
   theme: path.resolve(__dirname, './theme/'),
 
   head: [
-    ['meta', { name: 'charset', content: 'utf-8' }],
     [
       'meta',
       {
@@ -100,7 +99,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
       'script',
       {
         crossOrigin: 'anonymous',
-        src: 'https://at.alicdn.com/t/font_2601360_4mb9h2g5y7k.js',
+        src: '//at.alicdn.com/t/font_2601360_6gw2axvn0ee.js',
       },
     ],
     [
@@ -148,7 +147,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
    */
   themeConfig: {
     repo: process.env.REPO,
-    repoLabel: 'Gitee',
+    repoLabel: 'Github',
     docsBranch: 'master',
     docsRepo: process.env.REPO_DOCS,
     docsDir: 'docs',
@@ -194,36 +193,36 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
      * @description This plugin uses workbox-build to generate service worker file, and uses register-service-worker to register service worker.
      * @link https://v2.vuepress.vuejs.org/reference/plugin/pwa.html
      */
-    [
-      '@vuepress/pwa',
-      {
-        skipWaiting: false,
-      },
-    ],
+    // [
+    //   '@vuepress/pwa',
+    //   {
+    //     skipWaiting: false,
+    //   },
+    // ],
 
     /**
      * @description This plugin must be used together with pwa plugin, and the skipWaiting option must not be set to true.
      * @link https://v2.vuepress.vuejs.org/reference/plugin/pwa-popup.html
      */
-    [
-      '@vuepress/plugin-pwa-popup',
-      {
-        locales: {
-          '/en/': {
-            message: 'New content is available.',
-            buttonText: 'Refresh',
-          },
-          '/': {
-            message: '发现新内容可用',
-            buttonText: '刷新',
-          },
-          '/ja/': {
-            message: '利用可能な新しいコンテンツが見つかりました',
-            buttonText: 'リフレッシュ',
-          },
-        },
-      },
-    ],
+    // [
+    //   '@vuepress/plugin-pwa-popup',
+    //   {
+    //     locales: {
+    //       '/en/': {
+    //         message: 'New content is available.',
+    //         buttonText: 'Refresh',
+    //       },
+    //       '/': {
+    //         message: '发现新内容可用',
+    //         buttonText: '刷新',
+    //       },
+    //       '/ja/': {
+    //         message: '利用可能な新しいコンテンツが見つかりました',
+    //         buttonText: 'リフレッシュ',
+    //       },
+    //     },
+    //   },
+    // ],
 
     /**
      * @description Provide local search to your documentation site
@@ -245,6 +244,9 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
             placeholder: '検索する ("/" フォーカス)',
           },
         },
+        // 允许搜索 Frontmatter 中的 `tags`
+        getExtraFields: (page: { frontmatter: { tags: any } }) =>
+          page.frontmatter.tags ?? [],
       },
     ],
     /**
@@ -293,6 +295,10 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
       },
     ],
 
+    /**
+     * @Todo
+     */
+    ['vuepress-plugin-pwa2'],
     /**
      * @todo
      */

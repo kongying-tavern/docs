@@ -33,12 +33,12 @@ export default defineClientAppEnhance(({ app, router, siteData }) => {
       {
         VuePressCore: __VERSION__,
         Vue: app.version,
-        Title: siteData.value.title,
         Base: siteData.value.base,
         Online: online.value,
         PreferredColor: preferredColor.value,
         NetworkType: type.value || 'unknown',
         PixelRatio: pixelRatio.value,
+        IsFullscreen: isFullscreen.value,
         WindowSize: `${width.value} * ${height.value}`,
         IsDEV: __DEV__,
         CurrentUTC: dayjs().utc().format('YYYY-MM-DD LT'),

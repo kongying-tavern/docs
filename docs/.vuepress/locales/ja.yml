@@ -1,66 +1,113 @@
 /ja/:
-  selectLanguageName: 日本語
-  selectLanguageText: 言語を選択
-  selectLanguageAriaLabel: 言語を選択
-  tip: ヒント
+  home: /ja/
+
+  # select language
+  selectLanguageName: 简体中文
+  selectLanguageText: 选择语言
+  selectLanguageAriaLabel: 选择语言
+
+  # custom containers
+  tip: 提示
   warning: 警告
-  danger: 危険
-  download: ダウンロード
-  newFolder: 新しいフォルダ
-  grade: 上記はあなたを助けることができますか？
-  followUs: フォローする
-  feedback: フィードバック
-  thankFeedback: ご意見ありがとうございます！
-  stayTuned: 乞うご期待
-  selectDownloadMethod: ダウンロード方法を選択してくだ さい
-  swipeRightToClose: 右にスワイプして閉じます
+  danger: 危险
+
+  # download page
+  download: 下载
+  newFolder: 新建文件夹
+  selectDownloadMethod: 选择下载方式
+  notSupportReplication: 你的浏览器不支持一键复制，请手动复制。
+  extractionCode: 提取码
+  stayTuned: 敬请期待
+  copySuccess: 复制成功
+
+  # other
+  grade: 以上内容对您是否有帮助？
+  feedback: 反馈
+  thankFeedback: 感谢您的反馈！
+  swipeRightToClose: 向右滑动关闭
+  followUs: 关注我们
+  backToTop: 回到顶部
+
+  # page meta
+  lastUpdatedText: 更新于
+  contributorsText: 参与贡献
+  editLinkText: 在 GitHub 上编辑该页
+
+  # 404 page
   notFound:
-    - お探しのページが見つかりません。
-    - 404 ページが見つかりません
-  backToHome: ホームページに戻る
-  backToTop: トップに戻る
-  openInNewWindow: 新しいウィンドウで開きます
-  lastUpdatedText: 最終更新
-  contributorsText: 貢献者
-  editLinkText: このページを編集
+    - 找不到您要查找的页面。
+    - 404 未找到该页面
+  backToHome: 回到首页
+
+  # a11y
+  openInNewWindow: 在新窗口中打开
+
+  # sponsorship page
+  showMore: 显示更多
+  sponsorship:
+    - name: 微信支付
+      logo: wechat-pay
+      link: wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp
+    - name: 支付宝
+      logo: alipay
+      link: https://qr.alipay.com/tsx11609thmpw9odmvdlxd6
+    - name: 比特币
+      title: Bitcoin
+      logo: btc
+      link: bitcoin:1N9v9S3FDLJvoHajHaNzT6oveoHbz1GmnT
+    - name: QQ支付
+      logo: qq-pay
+      link: https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet
+    - name: 以太坊
+      title: Ethereum
+      logo: eth
+      link: ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde
+    - name: BiliBili
+      title: 一键三连~😁
+      logo: bilibili
+      link: https://space.bilibili.com/518076785
+
+  # navbar
   navbar:
-    - text: フィードバック
+    - text: 反馈
       link: https://support.qq.com/products/321980
-    - text: スポンサー
+    - text: 了解更多
       children:
-        - text: 1回限りのスポンサーシップ
-          link: /ja/support-us.md
-        - text: 定期的なスポンサーシップ
-          link: /ja/support-us.md#weekly-donations
-    - text: もっと理解する
-      children:
-        - text: コンテンツを更新する
+        - text: 更新内容
           children:
-            - text: Webウェブページ
+            - text: Web网页端
               link: https://support.qq.com/products/321980/blog/505810
-            - text: Unityクライアント
+            - text: Unity客户端
               link: https://support.qq.com/products/321980/blog/505884
-        - text: 法律関係
+        - text: 法律相关
           children:
-            - text: 免責事項
-              link: /ja/disclaimer.md
-            - text: プライバシー
-              link: /ja/privacy.md
-            - text: ユーザー規約
-              link: /ja/agreement.md
-        - text: その他
+            - text: 免责声明
+              link: /disclaimer.md
+            - text: 隐私政策
+              link: /privacy.md
+            - text: 用户协议
+              link: /agreement.md
+        - text: 其他
           children:
-            - text: マップ クライアントをダウンロードする
-              link: /ja/download-client.md
-            - text: リクルート
-              link: /join.html
-            - text: 投稿ガイド
-              link: /ja/contributing.md
-        - text: ありがとう
+            - text: 加入讨论组
+              link: /communication-group.md
+            - text: 下载客户端
+              link: /download-client.md
+            - text: 加入我们
+              link: /join.md
+            - text: 贡献指南
+              link: /contributing.md
+        - text: 鸣谢
           children:
-            - text: 貢献
-              link: /ja/contribution.md
-            - text: スポンサー
-              link: /ja/support-us.md
-            - text: テクニカル
-              link: /ja/credits.md
+            - text: 贡献鸣谢
+              link: /contribution.md
+            - text: 赞助鸣谢
+              link: /support-us.md#赞助鸣谢
+            - text: 技术鸣谢
+              link: /credits.md
+    - text: 支持我们
+      children:
+        - text: 一次性赞助
+          link: /support-us.md
+        - text: 周期性赞助
+          link: /support-us.md#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%B5%9E%E5%8A%A9
