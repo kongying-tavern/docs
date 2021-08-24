@@ -45,25 +45,21 @@
   # sponsorship page
   showMore: 显示更多
   sponsorship:
+    - name: 支付宝
+     title: alipay
+      logo: alipay
+      link: https://qr.alipay.com/tsx11609thmpw9odmvdlxd6
+      
     - name: 微信支付
       logo: wechat-pay
       link: wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp
-    - name: 支付宝
-      logo: alipay
-      link: https://qr.alipay.com/tsx11609thmpw9odmvdlxd6
-    - name: 比特币
-      title: Bitcoin
-      logo: btc
-      link: bitcoin:1N9v9S3FDLJvoHajHaNzT6oveoHbz1GmnT
+      
     - name: QQ支付
       logo: qq-pay
       link: https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet
-    - name: 以太坊
-      title: Ethereum
-      logo: eth
-      link: ethereum:0xDe1f8528E6De36697b748CEA7cFF33D0b0f50bde
+      
     - name: BiliBili
-      title: 一键三连~😁
+      title: 一键三连！
       logo: bilibili
       link: https://space.bilibili.com/518076785
 
