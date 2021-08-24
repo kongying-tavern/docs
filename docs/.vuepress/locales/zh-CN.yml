@@ -49,15 +49,14 @@
       title: alipay
       logo: alipay
       link: https://qr.alipay.com/tsx11609thmpw9odmvdlxd6
-      
     - name: 微信支付
       logo: wechat-pay
+      title:Wechat-pay
       link: wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp
-      
     - name: QQ支付
+      title: QQ-pay
       logo: qq-pay
       link: https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet
-      
     - name: BiliBili
       title: 一键三连！
       logo: bilibili
