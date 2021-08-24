@@ -46,7 +46,7 @@
   showMore: 显示更多
   sponsorship:
     - name: 支付宝
-     title: alipay
+      title: alipay
       logo: alipay
       link: https://qr.alipay.com/tsx11609thmpw9odmvdlxd6
       
