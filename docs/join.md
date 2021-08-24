@@ -90,7 +90,7 @@ description: 加入我们
 
 ## 如何加入
 
-打点的小伙伴可加群 [**717818652**](https://qm.qq.com/cgi-bin/qm/qr?k=8gOxT1yNUGIFRT1p1ib6Z8QqhifB4KoQ&jump_from=webapi '点击加入QQ群') 洽谈。
+打点的小伙伴可加群 [**992165223**](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi '点击加入QQ群') 洽谈。
 
 其他的小伙伴可以加群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈。
 
