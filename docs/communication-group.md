@@ -24,6 +24,10 @@ externalIcon: false
 如均满请联系管理员 QQ：**1961266616**
 :::
 
+## <SvgIcon name="discord" /> Discord Server
+
+邀请链接：<https://discord.gg/rZneNXVC>
+
 <style lang="scss" scoped>
 
 .communication-group{
