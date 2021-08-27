@@ -6,9 +6,9 @@ pageClass: communication-group
 externalIcon: false
 ---
 
-<!-- ## <SvgIcon name="discord" />
+## <SvgIcon name="discord" /> Discord Server
 
-> Join the server：<https://discord.gg/rPntkgXBBZ> -->
+Invitation link: <https://discord.gg/rZneNXVC>
 
 ## <SvgIcon name="qq" /> QQ DiscussionGroup
 
