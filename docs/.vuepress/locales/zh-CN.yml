@@ -64,24 +64,16 @@
 
   # navbar
   navbar:
-    - text: 反馈
+    - text: 问题反馈
       link: https://support.qq.com/products/321980
     - text: 了解更多
       children:
-        - text: 更新内容
+        - text: 更新日志
           children:
             - text: Web网页端
               link: https://support.qq.com/products/321980/blog/505810
             - text: Unity客户端
               link: https://support.qq.com/products/321980/blog/505884
-        - text: 法律相关
-          children:
-            - text: 免责声明
-              link: /disclaimer.md
-            - text: 隐私政策
-              link: /privacy.md
-            - text: 用户协议
-              link: /agreement.md
         - text: 其他
           children:
             - text: 加入讨论组
@@ -90,8 +82,6 @@
               link: /download-client.md
             - text: 加入我们
               link: /join.md
-            - text: 贡献指南
-              link: /contributing.md
         - text: 鸣谢
           children:
             - text: 贡献鸣谢
@@ -100,6 +90,14 @@
               link: /support-us.md#赞助鸣谢
             - text: 技术鸣谢
               link: /credits.md
+        - text: 法律相关
+          children:
+            - text: 免责声明
+              link: /disclaimer.md
+            - text: 隐私政策
+              link: /privacy.md
+            - text: 用户协议
+              link: /agreement.md
     - text: 支持我们
       children:
         - text: 一次性赞助
