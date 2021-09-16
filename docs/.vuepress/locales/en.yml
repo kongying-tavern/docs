@@ -66,6 +66,22 @@
               link: https://support.qq.com/products/321980/blog/505810
             - text: UnityClient
               link: https://support.qq.com/products/321980/blog/505884
+        - text: Other
+          children:
+            - text: Download client
+              link: /en/download-client.md
+            - text: Join us
+              link: /join.html
+        - text: Thanks
+          children:
+            - text: Contribution
+              link: /en/contribution.md
+            - text: Sponsor
+              link: /en/support-us.md
+            - text: Credits
+              link: /en/credits.md            
+            - text: Contributing Guide
+              link: /en/contributing.md
         - text: Law Related
           children:
             - text: Disclaimer
@@ -74,19 +90,3 @@
               link: /en/privacy.md
             - text: User Agreement
               link: /en/agreement.md
-        - text: Other
-          children:
-            - text: Download client
-              link: /en/download-client.md
-            - text: Join us
-              link: /join.html
-            - text: Contributing Guide
-              link: /en/contributing.md
-        - text: Thanks
-          children:
-            - text: Contribution
-              link: /en/contribution.md
-            - text: Sponsor
-              link: /en/support-us.md
-            - text: Credits
-              link: /en/credits.md
