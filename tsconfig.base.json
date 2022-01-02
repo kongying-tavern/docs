@@ -37,7 +37,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "ES2015",
-    "types": ["@vuepress/client/types", "vite/client", "jest", "node"],
+    "types": ["@vuepress/client/types", "vite/client", "node"],
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
   }
 }

@@ -1,7 +1,7 @@
 ---
 title: Developer for Documentation
 description: Developer for Documentation
-externalIcon: false
+externalLinkIcon: false
 sidebar:
   [
     { text: '快速上手', link: '/developer/documentation' },

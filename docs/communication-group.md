@@ -3,7 +3,7 @@ title: 加入讨论组
 description: 加入讨论组
 sidebar: false
 pageClass: communication-group
-externalIcon: false
+externalLinkIcon: false
 ---
 
 ## <SvgIcon name="qq" /> QQ 交流群
@@ -26,7 +26,7 @@ externalIcon: false
 
 ## <SvgIcon name="discord" /> Discord Server
 
-邀请链接：<https://discord.gg/rZneNXVC>
+邀请链接：<https://discord.gg/aFe57AKZUF>
 
 <style lang="scss" scoped>
 

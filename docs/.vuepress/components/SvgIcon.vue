@@ -43,7 +43,7 @@ export default defineComponent({
     )
 
     // 如果name是带协议的图标链接 则通过style css属性方式渲染
-    const styleExternalIcon = computed(
+    const styleexternalLinkIcon = computed(
       () => `url(${props.name}) no-repeat 50% 50%`
     )
 
@@ -51,7 +51,7 @@ export default defineComponent({
       isExt,
       iconName,
       svgClass,
-      styleExternalIcon,
+      styleexternalLinkIcon,
     }
   },
 })
@@ -67,10 +67,6 @@ export default defineComponent({
   flex-shrink: 0;
   user-select: none;
   overflow: hidden;
-  &:hover {
-    transform: scale(1.15);
-    transition: transform 0.3s;
-  }
 }
 .svg-external-icon {
   background-color: currentColor;
@@ -80,6 +76,6 @@ export default defineComponent({
   font-size: inherit;
   box-sizing: border-box;
   outline: none;
-  mask: v-bind(styleExternalIcon);
+  mask: v-bind(styleexternalLinkIcon);
 }
 </style>

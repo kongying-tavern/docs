@@ -11,7 +11,7 @@ sidebar:
   ]
 ---
 
-## Genshin Impact Map Document 2021 Development Plan Draft
+## Genshin Impact Map Document 2022 Development Plan Draft
 
 This draft plan records our documented development plan for 2021.
 

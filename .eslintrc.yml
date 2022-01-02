@@ -14,8 +14,6 @@ ignorePatterns:
   - '**/node_modules/**'
   - '.cache/**'
   - '.temp/**'
-  - 'packages/*/client/**'
-  - 'packages/*/node/**'
   - 'public/**'
 
 overrides:
@@ -28,7 +26,6 @@ overrides:
       - plugin:prettier/recommended
       - '@vue/typescript/recommended'
       - '@vue/prettier'
-      - '@vue/prettier/@typescript-eslint'
 
     plugins:
       - '@typescript-eslint'
@@ -180,20 +177,4 @@ overrides:
       - '*.d.ts'
     rules:
       no-underscore-dangle:
-        - off
-
-  - files:
-      - '**/__tests__/**/*.spec.{j,t}s?(x)'
-
-    env:
-      jest: true
-
-    rules:
-      '@typescript-eslint/no-explicit-any':
-        - off
-      '@typescript-eslint/no-unsafe-call':
-        - off
-      '@typescript-eslint/no-unsafe-assignment':
-        - off
-      '@typescript-eslint/no-unsafe-member-access':
         - off

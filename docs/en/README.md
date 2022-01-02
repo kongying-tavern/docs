@@ -1,5 +1,5 @@
 ---
-externalIcon: false
+externalLinkIcon: false
 home: true
 title: HomePage
 heroImage: /20210609/logo.jpg

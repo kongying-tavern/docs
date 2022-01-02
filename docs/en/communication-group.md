@@ -3,12 +3,12 @@ title: Join discussion group
 description: 加入讨论组
 sidebar: false
 pageClass: communication-group
-externalIcon: false
+externalLinkIcon: false
 ---
 
 ## <SvgIcon name="discord" /> Discord Server
 
-Invitation link: <https://discord.gg/rZneNXVC>
+Invitation link: <https://discord.gg/aFe57AKZUF>
 
 ## <SvgIcon name="qq" /> QQ DiscussionGroup
 

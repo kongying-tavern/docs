@@ -48,7 +48,7 @@ description: 加入我们
 
 主要技术栈：
 
-- v1[(GitHub)](https://github.com/jiazengp/genshinmap-docs/)
+- v1[(GitHub)](https://github.com/kongying-tavern/docs)
   - Vuepress2
   - TypeScript
 

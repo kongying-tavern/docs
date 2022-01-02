@@ -1,5 +1,5 @@
 ---
-externalIcon: false
+externalLinkIcon: false
 home: true
 title: 首页
 heroImage: /20210609/logo.jpg

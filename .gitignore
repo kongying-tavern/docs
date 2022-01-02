@@ -20,8 +20,6 @@ TODOs.md
 RELEASE_NOTE*.md
 
 # Build files
-packages/*/client/
-packages/*/node/
 dist
 
 # VuePress files

@@ -59,20 +59,18 @@ import { useThemeLocaleData } from '@vuepress/plugin-theme-data/lib/client'
 import { withBase } from '@vuepress/client'
 import { ElMessageBox } from 'element-plus'
 import { useClipboard, useMediaQuery } from '@vueuse/core'
-import { ElMessage } from 'element-plus'
 
 import type { ThemeLocaleData } from '../shared'
 
 export default defineComponent({
   name: 'DownloadClient',
   setup() {
-    const { copy, isSupported } = useClipboard()
     const isSmallScreen = useMediaQuery('(max-width: 730px)')
     const themeLocaleData = useThemeLocaleData<ThemeLocaleData>()
     const list = ref([
       {
         name: 'Windows',
-        version: 'v2.0.1_beta',
+        version: 'v2.3.0_beta',
         QRCode: false,
         disabled: false,
         bg: '/20210710/8f6ce2c16420c33e970c1efd524cda04.png',
@@ -183,33 +181,13 @@ export default defineComponent({
                 class: 'download-item baidu-netdisk',
               },
               [
-                h('strong', '百度网盘（提取码：KYJG，点击链接复制）：'),
+                h('strong', '百度网盘（提取码：KYJG）：'),
                 h(
                   'a',
                   {
                     'href': 'javascript:void(0)',
                     'aria-label': 'baiduNetdisk download link',
                     'onClick': () => {
-                      if (isSupported) {
-                        document.documentElement.focus()
-                        copy('KYJG')
-                        ElMessage.success({
-                          message:
-                            themeLocaleData.value.extractionCode +
-                            themeLocaleData.value.copySuccess,
-                          duration: 2000,
-                          center: true,
-                          type: 'success',
-                        })
-                      } else {
-                        ElMessage({
-                          message:
-                            themeLocaleData.value.extractionCode +
-                            themeLocaleData.value.notSupportReplication,
-                          duration: 2000,
-                          center: true,
-                        })
-                      }
                       window.open(
                         baiduNetdisk,
                         isSmallScreen.value ? '百度网盘' : '_black',

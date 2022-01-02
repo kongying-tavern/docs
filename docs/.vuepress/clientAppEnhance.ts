@@ -22,7 +22,7 @@ export default defineClientAppEnhance(({ app, router, siteData }) => {
   const pageData = usePageData<PageData>()
   const themeData = useThemeData<ThemeData>()
 
-  if (!__SSR__) {
+  if (!__VUEPRESS_SSR__) {
     const preferredColor = usePreferredColorScheme()
     const online = useOnline()
     const { isFullscreen } = useFullscreen()
@@ -31,7 +31,7 @@ export default defineClientAppEnhance(({ app, router, siteData }) => {
     const { type } = useNetwork()
     log('原神地图', 'DOCS', [
       {
-        VuePressCore: __VERSION__,
+        VuePressCore: __VUEPRESS_VERSION__,
         Vue: app.version,
         Base: siteData.value.base,
         Online: online.value,
@@ -40,7 +40,7 @@ export default defineClientAppEnhance(({ app, router, siteData }) => {
         PixelRatio: pixelRatio.value,
         IsFullscreen: isFullscreen.value,
         WindowSize: `${width.value} * ${height.value}`,
-        IsDEV: __DEV__,
+        IsDEV: __VUEPRESS_DEV__,
         CurrentUTC: dayjs().utc().format('YYYY-MM-DD LT'),
       },
     ])

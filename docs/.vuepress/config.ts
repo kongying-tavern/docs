@@ -8,7 +8,7 @@ import viteCompilerOptions from '../../vite.config'
 import webpackCompilerOptions from '../../webpack.config'
 
 import type { ViteBundlerOptions } from 'vuepress-vite'
-import type { DefaultThemeOptions, WebpackBundlerOptions } from 'vuepress'
+import type { DefaultThemeOptions } from 'vuepress'
 
 dotenv.config({
   path: path.resolve(
@@ -26,8 +26,8 @@ console.log('Mode:', isProd ? 'Production' : 'development')
  * @description Vuepress2 config
  * @link https://v2.vuepress.vuejs.org/reference/config.html
  */
-module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
-  base: process.env.BASE || '/docs/',
+module.exports = defineUserConfig<DefaultThemeOptions>({
+  base: '/docs/',
   dest: path.resolve(__dirname, '../../dist'),
   public: 'public',
 
@@ -44,7 +44,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
   },
 
   templateDev: path.resolve(__dirname, './templates/index.dev.html'),
-  templateSSR: path.resolve(__dirname, './templates/index.ssr.html'),
+  templateBuild: path.resolve(__dirname, './templates/index.ssr.html'),
 
   theme: path.resolve(__dirname, './theme/'),
 
@@ -81,10 +81,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
     ['meta', { name: 'google', content: 'notranslate' }],
     ['meta', { name: 'twitter:image', content: process.env.COVER }],
     ['meta', { itemprop: 'image', content: process.env.COVER }],
-    [
-      'link',
-      { rel: 'manifest', href: process.env.BASE + 'manifest.webmanifest' },
-    ],
+    ['link', { rel: 'manifest', href: './manifest.webmanifest' }],
     ['link', { rel: 'apple-touch-icon', href: process.env.APP_TOUCH_ICON }],
     ['link', { rel: 'shortcut icon', href: process.env.FAVICON }],
     [
@@ -129,15 +126,6 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
       lang: 'en-US',
       title: process.env.SITE_NAME_EN,
       description: process.env.DESCRIPTION_EN,
-    },
-
-    /**
-     * Japanese locale config
-     */
-    '/ja/': {
-      lang: 'ja-JP',
-      title: process.env.DESCRIPTION_JA,
-      description: process.env.DESCRIPTION_JA,
     },
   },
 
@@ -239,9 +227,6 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
           },
           '/': {
             placeholder: '搜索（“/” 聚焦）',
-          },
-          '/ja/': {
-            placeholder: '検索する ("/" フォーカス)',
           },
         },
         // 允许搜索 Frontmatter 中的 `tags`
@@ -357,27 +342,13 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
     ],
 
     /**
-     * @description This plugin will make the pictures in the body of the page enter the preview mode when clicked.
-     * @link https://vuepress-theme-hope.github.io/photo-swipe/guide/
-     */
-    ['photo-swipe'],
-
-    /**
      * @todo
      */
     [
       'lightgallery',
-      false,
-      // {
-      //   plugins: [
-      //     "autoplay",
-      //     "fullscreen",
-      //     "pager",
-      //     "rotate",
-      //     "share",
-      //     "zoom",
-      //   ],
-      // },
+      {
+        plugins: ['autoplay', 'fullscreen', 'pager', 'rotate', 'share', 'zoom'],
+      },
     ],
 
     /**
@@ -385,6 +356,7 @@ module.exports = defineUserConfig<DefaultThemeOptions, WebpackBundlerOptions>({
      * @link https://v2.vuepress.vuejs.org/reference/plugin/toc.html
      */
     ['@vuepress/plugin-toc'],
+    ['vuepress-plugin-copy-code2', {}],
 
     /**
      * @description This plugin will enable syntax highlighting for markdown code fence with Shiki

@@ -1,5 +1,5 @@
 ---
-externalIcon: false
+externalLinkIcon: false
 ---
 
 # 中文排版

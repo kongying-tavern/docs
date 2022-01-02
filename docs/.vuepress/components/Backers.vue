@@ -9,7 +9,7 @@ const themeLocaleData = useThemeLocaleData<ThemeLocaleData>()
 const items = useBackersList()
 const index = ref(128)
 
-if (!__SSR__) {
+if (!__VUEPRESS_SSR__) {
   onMounted(
     () =>
       (index.value =
