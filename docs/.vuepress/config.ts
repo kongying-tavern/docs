@@ -346,9 +346,10 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
      */
     [
       'lightgallery',
-      {
-        plugins: ['autoplay', 'fullscreen', 'pager', 'rotate', 'share', 'zoom'],
-      },
+      false,
+      // {
+      //   plugins: ['autoplay', 'fullscreen', 'pager', 'rotate', 'share', 'zoom'],
+      // },
     ],
 
     /**
@@ -356,7 +357,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
      * @link https://v2.vuepress.vuejs.org/reference/plugin/toc.html
      */
     ['@vuepress/plugin-toc'],
-    ['vuepress-plugin-copy-code2', {}],
+    ['vuepress-plugin-copy-code2'],
 
     /**
      * @description This plugin will enable syntax highlighting for markdown code fence with Shiki
