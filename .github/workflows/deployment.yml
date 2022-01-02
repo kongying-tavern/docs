@@ -33,8 +33,8 @@ jobs:
           run_install: true
 
       # 构建
-      - name: yarn build
-        run: yarn docs:build2
+      - name: Build
+        run: pnpm docs:build2
 
       # 部署
       - name: Deploy
@@ -42,7 +42,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
           # 删除服务器上目录里所有文件
-          ARGS: '-avz --delete'
+          # ARGS: '-avz --delete'
           # 项目 build 后静态文件位置
           SOURCE: 'dist/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
