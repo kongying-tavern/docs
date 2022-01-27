@@ -134,8 +134,6 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
    * @link https://v2.vuepress.vuejs.org/reference/theme-api.html
    */
   themeConfig: {
-    repo: process.env.REPO,
-    repoLabel: 'Github',
     docsBranch: 'master',
     docsRepo: process.env.REPO_DOCS,
     docsDir: 'docs',
@@ -346,10 +344,9 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
      */
     [
       'lightgallery',
-      false,
-      // {
-      //   plugins: ['autoplay', 'fullscreen', 'pager', 'rotate', 'share', 'zoom'],
-      // },
+      {
+        plugins: ['autoplay', 'fullscreen', 'pager', 'rotate', 'share', 'zoom'],
+      },
     ],
 
     /**
@@ -376,7 +373,6 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
           }
         : false,
     ],
-    ['@vuepress/plugin-debug'],
   ],
   onWatched: (_, watchers, restart) => {
     const watcher = chokidar.watch('locales/*.yml', {

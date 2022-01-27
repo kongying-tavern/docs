@@ -1,5 +1,8 @@
 @import 'config';
 
+:root {
+  --navbar-height: 3.6rem;
+}
 header.navbar {
   background-color: var(--#{$my-namespace}-navbar);
   box-shadow: var(--#{$my-namespace}-box-shadow);
@@ -8,8 +11,8 @@ header.navbar {
   border: none;
   pointer-events: auto;
   // 隐藏顶导航上的外域链接图标
-  .navbar-links-wrapper > nav > div > a > span > svg.icon.outbound {
-    display: none;
+  .navbar-items-wrapper > nav > div > a > span > svg.external-link-icon {
+    display: none!important;
   }
   .navbar-links-wrapper
     > .navbar-links
