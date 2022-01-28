@@ -85,20 +85,20 @@ specifiers:
   textlint-rule-zh-half-and-full-width-bracket: 1.1.0
   typescript: 4.5.4
   vuepress: ^2.0.0-beta.35
-  vuepress-plugin-copy-code2: 2.0.0-alpha.8
-  vuepress-plugin-feed2: 2.0.0-alpha.8
-  vuepress-plugin-lightgallery: 2.0.0-alpha.8
-  vuepress-plugin-md-enhance: 2.0.0-alpha.8
-  vuepress-plugin-pwa2: ^2.0.0-alpha.8
-  vuepress-plugin-sass-palette: 2.0.0-alpha.8
-  vuepress-plugin-seo2: 2.0.0-alpha.8
-  vuepress-plugin-sitemap2: 2.0.0-alpha.8
+  vuepress-plugin-copy-code2: 2.0.0-alpha.9
+  vuepress-plugin-feed2: 2.0.0-alpha.9
+  vuepress-plugin-lightgallery: 2.0.0-alpha.9
+  vuepress-plugin-md-enhance: 2.0.0-alpha.9
+  vuepress-plugin-pwa2: ^2.0.0-alpha.9
+  vuepress-plugin-sass-palette: 2.0.0-alpha.9
+  vuepress-plugin-seo2: 2.0.0-alpha.9
+  vuepress-plugin-sitemap2: 2.0.0-alpha.9
   vuepress-vite: 2.0.0-beta.35
   yaml: 2.0.0-7
 
 dependencies:
   '@vuepress/bundler-webpack': 2.0.0-beta.35
-  vuepress-plugin-copy-code2: 2.0.0-alpha.8
+  vuepress-plugin-copy-code2: 2.0.0-alpha.9
 
 devDependencies:
   '@babel/core': 7.16.7
@@ -184,13 +184,13 @@ devDependencies:
   textlint-rule-zh-half-and-full-width-bracket: 1.1.0_textlint@12.1.0
   typescript: 4.5.4
   vuepress: 2.0.0-beta.35
-  vuepress-plugin-feed2: 2.0.0-alpha.8
-  vuepress-plugin-lightgallery: 2.0.0-alpha.8
-  vuepress-plugin-md-enhance: 2.0.0-alpha.8
+  vuepress-plugin-feed2: 2.0.0-alpha.9
+  vuepress-plugin-lightgallery: 2.0.0-alpha.9
+  vuepress-plugin-md-enhance: 2.0.0-alpha.9
   vuepress-plugin-pwa2: 2.0.0-alpha.9
-  vuepress-plugin-sass-palette: 2.0.0-alpha.8
-  vuepress-plugin-seo2: 2.0.0-alpha.8
-  vuepress-plugin-sitemap2: 2.0.0-alpha.8
+  vuepress-plugin-sass-palette: 2.0.0-alpha.9
+  vuepress-plugin-seo2: 2.0.0-alpha.9
+  vuepress-plugin-sitemap2: 2.0.0-alpha.9
   vuepress-vite: 2.0.0-beta.35
   yaml: 2.0.0-7
 
@@ -1919,25 +1919,6 @@ packages:
       '@intlify/shared': 9.1.7
     dev: true
 
-  /@mr-hope/vuepress-shared/2.0.0-alpha.8:
-    resolution: {integrity: sha512-j/wsdB0TL0IgTYH+COvmUYgZmtRFGHw372MQ69ZEw3zukAujWj7VLETrXsyK7xOGHUbAOXkRZGjCk/FjSL9aZw==}
-    dependencies:
-      '@types/webpack-dev-server': 4.7.2
-      '@vuepress/client': 2.0.0-beta.35
-      '@vuepress/plugin-git': 2.0.0-beta.35
-      '@vuepress/plugin-theme-data': 2.0.0-beta.35
-      chalk: 4.1.2
-      dayjs: 1.10.7
-      ora: 5.4.1
-      vue: 3.2.29
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - supports-color
-      - utf-8-validate
-      - webpack
-      - webpack-cli
-
   /@mr-hope/vuepress-shared/2.0.0-alpha.9:
     resolution: {integrity: sha512-JsAcRtNcY4gv5vSOo3U8I4A39FR8sZJMQkOBbjKekOv7/5FA5iG+ql+h7fgMs6WDmd08PdaiNw5YnrRJkr/uNw==}
     dependencies:
@@ -1956,7 +1937,6 @@ packages:
       - utf-8-validate
       - webpack
       - webpack-cli
-    dev: true
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -6343,7 +6323,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       globby: 11.0.4
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
       is-glob: 4.0.3
       is-path-cwd: 2.2.0
       is-path-inside: 3.0.3
@@ -8137,7 +8117,6 @@ packages:
 
   /graceful-fs/4.2.9:
     resolution: {integrity: sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==}
-    dev: false
 
   /graphlib/2.1.8:
     resolution: {integrity: sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==}
@@ -14849,16 +14828,16 @@ packages:
       '@vue/server-renderer': 3.2.29_vue@3.2.29
       '@vue/shared': 3.2.29
 
-  /vuepress-plugin-copy-code2/2.0.0-alpha.8:
-    resolution: {integrity: sha512-IldB43LB86tekcyMm9DVgCbmQH8Ete+Zz4v2nuOMQj+BAAoN+jwxZvJA87jWO1Ley/qKf3/x+KDDjOaaQLp1nw==}
+  /vuepress-plugin-copy-code2/2.0.0-alpha.9:
+    resolution: {integrity: sha512-WBweygwzA/IYC2Vg1z5SlyD3kRblFgWJKC45KIO0/8aNawGvwb+Oztw7XNtv8qJaUQ+F7MnEQO88of/oBUVEZA==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.8
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.9
       '@vuepress/client': 2.0.0-beta.35
       '@vuepress/utils': 2.0.0-beta.35
       balloon-css: 1.2.0
       vue: 3.2.29
       vue-router: 4.0.12_vue@3.2.29
-      vuepress-plugin-sass-palette: 2.0.0-alpha.8
+      vuepress-plugin-sass-palette: 2.0.0-alpha.9
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -14870,10 +14849,10 @@ packages:
       - webpack-cli
     dev: false
 
-  /vuepress-plugin-feed2/2.0.0-alpha.8:
-    resolution: {integrity: sha512-LOXmRa43znTnpV1om4ME8033wzsIPtlICZ4+aMd2n05Pxx8YU/u2G5cGowVOD64zpNcclTvive3WPhOe1aiAow==}
+  /vuepress-plugin-feed2/2.0.0-alpha.9:
+    resolution: {integrity: sha512-JwlCX2D81uRsziMJWaHkei82POKkfSFvuDT14XEHpm8zt4W9jMempSAwfEtf+R8xBHvSQWBpWA4gZdc/sjzESw==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.8
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.9
       '@vuepress/utils': 2.0.0-beta.35
       xml-js: 1.6.11
     transitivePeerDependencies:
@@ -14885,16 +14864,16 @@ packages:
       - webpack-cli
     dev: true
 
-  /vuepress-plugin-lightgallery/2.0.0-alpha.8:
-    resolution: {integrity: sha512-3JtLTN0txIYyjaVOOtiKhqUskYS0gYCSPmA4c5Df+bwZOuC/TmeFu2aQNVXk2NUmzlB+n2c0ucs6kbB8PbAGnQ==}
+  /vuepress-plugin-lightgallery/2.0.0-alpha.9:
+    resolution: {integrity: sha512-EG9ySIf9SGT0G2D2CKyPmJBITr9xMj9Sx6JNq8BmVNHF516Mtan1CQAD0GwpvK6pzLoj0vY7cVwdonkN23F+cQ==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.8
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.9
       '@vuepress/client': 2.0.0-beta.35
       '@vuepress/utils': 2.0.0-beta.35
       lightgallery: 2.3.0
       vue: 3.2.29
       vue-router: 4.0.12_vue@3.2.29
-      vuepress-plugin-sass-palette: 2.0.0-alpha.8
+      vuepress-plugin-sass-palette: 2.0.0-alpha.9
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -14906,11 +14885,11 @@ packages:
       - webpack-cli
     dev: true
 
-  /vuepress-plugin-md-enhance/2.0.0-alpha.8:
-    resolution: {integrity: sha512-Bqy8Qu7DJazJV+d44Hq8xacbyk4FCj7Q8ZJXL9cDmb+b8a5R6TEd3cyIgfZNSlb3jLp4zh+C4GsjEpXlfAMTuw==}
+  /vuepress-plugin-md-enhance/2.0.0-alpha.9:
+    resolution: {integrity: sha512-xT+IcjBE8KzHdM7BBUAxUR9klHsdi3fpg1/C1dwVP0OXLYPD78cfr8hbnhurkzDrvujwLo6K/YhXi+4KSxc+GA==}
     dependencies:
       '@babel/core': 7.16.7
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.8
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.9
       '@types/katex': 0.11.1
       '@types/markdown-it': 12.2.3
       '@types/mermaid': 8.2.7
@@ -14924,7 +14903,7 @@ packages:
       reveal.js: 4.2.1
       vue: 3.2.29
       vue-router: 4.0.12_vue@3.2.29
-      vuepress-plugin-sass-palette: 2.0.0-alpha.8
+      vuepress-plugin-sass-palette: 2.0.0-alpha.9
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -14961,23 +14940,6 @@ packages:
       - webpack-cli
     dev: true
 
-  /vuepress-plugin-sass-palette/2.0.0-alpha.8:
-    resolution: {integrity: sha512-Ul5OFnCei61bnpCXGciq/U5XTfdB35ARQnD3+KZif419UULTtkaY2n6gCR304iZQRfpmy8ALErJENkPLsxRMLw==}
-    dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.8
-      '@vuepress/utils': 2.0.0-beta.35
-      sass: 1.49.0
-      sass-loader: 12.4.0_sass@1.49.0
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - fibers
-      - node-sass
-      - supports-color
-      - utf-8-validate
-      - webpack
-      - webpack-cli
-
   /vuepress-plugin-sass-palette/2.0.0-alpha.9:
     resolution: {integrity: sha512-FQquWkiYXnp0EkbT8q9T8GtjLfYr9JaQCkInUgzIg/ZEnoLIW35LYMqrgxR8XeHiLJyl4sg1+OUlHv1mXKiGEg==}
     dependencies:
@@ -14994,12 +14956,11 @@ packages:
       - utf-8-validate
       - webpack
       - webpack-cli
-    dev: true
 
-  /vuepress-plugin-seo2/2.0.0-alpha.8:
-    resolution: {integrity: sha512-xwrHgK1CFESoZizW8WFqR3+ztc1LQ/ZETSOY2KugZiDxp4YOyUP49jH8jTYeQYHqdjk17ZmsWSfhgquMAEOHWg==}
+  /vuepress-plugin-seo2/2.0.0-alpha.9:
+    resolution: {integrity: sha512-PTK4TQU0Pw7iFtql+QQzUJfYZt0f9HkrqnDMVwvynVwHZGonnZ/m1rUPtE68S0c+vunHqVDP10bptxsS0eC5NQ==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.8
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.9
       '@vuepress/core': 2.0.0-beta.35
       '@vuepress/utils': 2.0.0-beta.35
     transitivePeerDependencies:
@@ -15011,10 +14972,10 @@ packages:
       - webpack-cli
     dev: true
 
-  /vuepress-plugin-sitemap2/2.0.0-alpha.8:
-    resolution: {integrity: sha512-VZLbWR17Sy3HiQ1T2b080OiSV29Yl7BeL2yxRCi7c8m5QU+9cAmeCV77XV+EMUObaLqA4fKQmPqBHNNWGB9Emg==}
+  /vuepress-plugin-sitemap2/2.0.0-alpha.9:
+    resolution: {integrity: sha512-5swaTQDngl0Ur1x0F3Rh1T3o3MxtfFfH/MCPUy84qUOAGmqTyYFS7rnWRs2qf1DHMO4c+TjpGjF5PHhOChRjOA==}
     dependencies:
-      '@mr-hope/vuepress-shared': 2.0.0-alpha.8
+      '@mr-hope/vuepress-shared': 2.0.0-alpha.9
       '@vuepress/core': 2.0.0-beta.35
       '@vuepress/utils': 2.0.0-beta.35
       sitemap: 7.1.0
@@ -15159,7 +15120,7 @@ packages:
       default-gateway: 6.0.3
       del: 6.0.0
       express: 4.17.2
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
       html-entities: 2.3.2
       http-proxy-middleware: 2.0.1
       ipaddr.js: 2.0.1
@@ -15205,7 +15166,7 @@ packages:
       default-gateway: 6.0.3
       del: 6.0.0
       express: 4.17.2
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
       html-entities: 2.3.2
       http-proxy-middleware: 2.0.1
       ipaddr.js: 2.0.1

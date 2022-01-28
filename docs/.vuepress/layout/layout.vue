@@ -36,7 +36,6 @@ import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
 <style lang="scss">
 .footer-container {
-  border-bottom: 1px solid var(--c-border);
   border-top: 1px solid var(--c-border);
   .docs-info {
     display: grid;
@@ -45,6 +44,7 @@ import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
     text-align: center;
   }
 }
+
 .navbar-icons {
   margin-right: -0.5rem;
   a {
