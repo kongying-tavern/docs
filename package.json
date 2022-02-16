@@ -17,10 +17,11 @@
     "lint": "yarn lint:prettier --write && yarn lint:eslint --fix",
     "lint:check": "yarn lint:prettier && yarn lint:eslint",
     "lint:eslint": "eslint . --ext .js,.ts,.vue",
-    "lint:md": "yarn lint:md-lint && yarn lint:md-remark",
+    "lint:md": "yarn lint:md-lint && yarn lint:md-remark && yarn lint:zh",
     "lint:md-lint": "markdownlint **/*.md",
     "lint:md-remark": "remark --quiet .",
     "lint:prettier": "prettier --check .",
+    "lint:zh": "zhlint 'docs/**/*.md'",
     "packages:check-update": "ncu --deep --timeout 600000",
     "packages:doctor": "ncu --doctor -u",
     "packages:major": "npm taze major",
@@ -157,7 +158,8 @@
     "vuepress-plugin-sass-palette": "next",
     "vuepress-plugin-seo2": "next",
     "vuepress-plugin-sitemap2": "next",
-    "yaml": "2.0.0-7"
+    "yaml": "2.0.0-7",
+    "zhlint": "^0.5.3"
   },
   "engines": {
     "node": ">=14.0.0"
