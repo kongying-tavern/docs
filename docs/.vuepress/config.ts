@@ -273,7 +273,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
     [
       'sitemap2',
       {
-        hostname: process.env.DOMAIN + process.env.BASE,
+        hostname: 'htttps://yuanshen.site/docs',
         exclude: [],
       },
     ],
@@ -286,9 +286,9 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
      * @todo
      */
     [
-      'feed2',
+      'vuepress-plugin-feed2',
       {
-        hostname: process.env.HOSTNAME,
+        hostname: 'https://yuanshen.site/docs',
       },
     ],
 
