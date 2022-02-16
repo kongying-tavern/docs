@@ -273,8 +273,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
     [
       'sitemap2',
       {
-        hostname: 'htttps://yuanshen.site/docs',
-        exclude: [],
+        hostname: 'https://yuanshen.site/docs',
       },
     ],
 
@@ -289,6 +288,9 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       'vuepress-plugin-feed2',
       {
         hostname: 'https://yuanshen.site/docs',
+        rss: true,
+        json: true,
+        atom: true,
       },
     ],
 
@@ -299,6 +301,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       'seo2',
       {
         author: process.env.AUTHOR,
+        hostname: 'https://yuanshen.site/docs',
         twitterID: process.env.TWITTER_ID,
         restrictions: process.env.RESTRICTIONS,
         seo: () => {
