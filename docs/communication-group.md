@@ -17,11 +17,11 @@ externalLinkIcon: false
 7. [**原神地图交流七群**726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图交流七群')
 
 ::: tip
-点击上方列表项即可一键加群。
-
 目前七个群均未满，各群密码均为 **123456**。
 
-如均满请联系管理员 QQ：**1961266616**
+如果出现密码错误请加群 [**228382171**](https://qm.qq.com/cgi-bin/qm/qr?k=rRb-v0iOnHVGjQvdDUSIsIPClquSaWPa&jump_from=webapi)
+
+或者联系管理员 QQ：**1961266616**
 :::
 
 ## <SvgIcon name="discord" /> Discord Server
