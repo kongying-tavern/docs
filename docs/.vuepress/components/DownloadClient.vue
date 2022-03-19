@@ -15,9 +15,9 @@
         <div class="card-container">
           <header>
             <h3 class="card-name">{{ item.name }}</h3>
-            <span class="card-description">{{
-              item.disabled ? newFolder : item.version
-            }}</span>
+            <span class="card-description">
+              {{ item.disabled ? newFolder : item.version }}
+            </span>
           </header>
 
           <ElButton
@@ -26,9 +26,8 @@
             type="success"
             :disabled="item.disabled"
             @click="download(item.baiduNetdisk, item.googleDrive)"
+            >{{ item.disabled ? stayTuned : downloadText }}</ElButton
           >
-            {{ item.disabled ? stayTuned : downloadText }}
-          </ElButton>
 
           <div v-if="item.QRCode" class="qrcode-container" aria-label="QRCode">
             <SvgIcon name="qrcode" />
@@ -70,7 +69,7 @@ export default defineComponent({
     const list = ref([
       {
         name: 'Windows',
-        version: 'v2.3.0_beta',
+        version: 'latest',
         QRCode: false,
         disabled: false,
         bg: '/20210710/8f6ce2c16420c33e970c1efd524cda04.png',

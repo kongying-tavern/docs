@@ -127,6 +127,12 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       title: process.env.SITE_NAME_EN,
       description: process.env.DESCRIPTION_EN,
     },
+
+    '/ja/': {
+      lang: 'ja-JP',
+      title: process.env.SITE_NAME_JA,
+      description: process.env.DESCRIPTION_JA,
+    },
   },
 
   /**
@@ -222,6 +228,9 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
         locales: {
           '/en/': {
             placeholder: 'Search ("/" to focus)',
+          },
+          '/ja/': {
+            placeholder: ' 検索する ("/" フォーカス)',
           },
           '/': {
             placeholder: '搜索（“/” 聚焦）',
