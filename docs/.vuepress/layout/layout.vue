@@ -1,23 +1,32 @@
 <template>
   <Layout>
     <template #navbar-after>
-      <nav class="navbar-icons">
-        <a
-          href="https://github.com/kongying-tavern"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Github"
-        >
-          <SvgIcon name="github" />
-        </a>
-        <a
-          href="https://discord.gg/aFe57AKZUF"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="discord"
-        >
-          <SvgIcon name="discord" />
-        </a>
+      <nav class="navbar-icons" style="margin-right: -0.5rem">
+        <i v-for="val in IconList">
+          <a
+            :href="val.link"
+            :target="val.target"
+            rel="noopener noreferrer"
+            :title="val.title"
+          >
+            <SvgIcon
+              style="
+                margin-left: 1rem;
+                width: 1.25rem;
+                height: 1.25rem;
+                display: inline-flex;
+                align-items: center;
+                vertical-align: text-top;
+                gap: 0.75rem;
+                font-size: 20px;
+                filter: grayscale(100%);
+                filter: black;
+                transition: all 0.2s;
+              "
+              :name="val.iconName"
+            />
+          </a>
+        </i>
       </nav>
     </template>
     <template #page-bottom>
@@ -32,6 +41,22 @@
 
 <script setup lang="ts">
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
+import { ref } from 'vue'
+
+const IconList = ref([
+  {
+    link: 'https://github.com/kongying-tavern',
+    target: '_blank',
+    title: 'Github',
+    iconName: 'github',
+  },
+  {
+    link: 'https://discord.gg/aFe57AKZUF',
+    title: 'Discord',
+    target: '_blank',
+    iconName: 'discord',
+  },
+])
 </script>
 
 <style lang="scss">
@@ -42,26 +67,6 @@ import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
     place-items: center;
     padding-top: 20px;
     text-align: center;
-  }
-}
-
-.navbar-icons {
-  margin-right: -0.5rem;
-  a {
-    margin-left: 1rem;
-    width: 1.25rem;
-    height: 1.25rem;
-    display: inline-flex;
-    align-items: center;
-    vertical-align: text-top;
-    gap: 0.75rem;
-    font-size: 20px;
-    filter: grayscale(100%);
-    filter: black;
-    transition: all 0.2s;
-    &:hover {
-      filter: grayscale(0);
-    }
   }
 }
 </style>
