@@ -57,7 +57,6 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
           'width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover',
       },
     ],
-    ['meta', { name: 'origin', content: 'origin' }],
     ['meta', { name: 'renderer', content: process.env.RENDERER }],
     ['meta', { name: 'force-rendering', content: process.env.RENDERER }],
     ['meta', { name: 'applicable-device', content: 'pc,mobile' }],
@@ -180,41 +179,6 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
         id: process.env.ANALYTICS_ID,
       },
     ],
-
-    /**
-     * @description This plugin uses workbox-build to generate service worker file, and uses register-service-worker to register service worker.
-     * @link https://v2.vuepress.vuejs.org/reference/plugin/pwa.html
-     */
-    // [
-    //   '@vuepress/pwa',
-    //   {
-    //     skipWaiting: false,
-    //   },
-    // ],
-
-    /**
-     * @description This plugin must be used together with pwa plugin, and the skipWaiting option must not be set to true.
-     * @link https://v2.vuepress.vuejs.org/reference/plugin/pwa-popup.html
-     */
-    // [
-    //   '@vuepress/plugin-pwa-popup',
-    //   {
-    //     locales: {
-    //       '/en/': {
-    //         message: 'New content is available.',
-    //         buttonText: 'Refresh',
-    //       },
-    //       '/': {
-    //         message: '发现新内容可用',
-    //         buttonText: '刷新',
-    //       },
-    //       '/ja/': {
-    //         message: '利用可能な新しいコンテンツが見つかりました',
-    //         buttonText: 'リフレッシュ',
-    //       },
-    //     },
-    //   },
-    // ],
 
     /**
      * @description Provide local search to your documentation site
