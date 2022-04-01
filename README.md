@@ -3,7 +3,6 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/jiazengp/genshinmap-docs)
 ![GitHub Repo stars](https://img.shields.io/github/stars/jiazengp/GenshinMapDocs)
 [![Star](https://gitee.com/KYJGYSDT/yuanshendocs/badge/star.svg?theme=dark)](https://gitee.com/KYJGYSDT/yuanshendocs/stargazers)
 [![Release Deployment](https://github.com/kongying-tavern/docsactions/workflows/deployment.yml/badge.svg)](https://github.com/kongying-tavern/docsactions/workflows/deployment.yml)
