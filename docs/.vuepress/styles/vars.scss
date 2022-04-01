@@ -1,15 +1,18 @@
 @use "vars-light";
-@use 'vars-dark';
+@use "vars-dark";
 
 :root {
-  scroll-behavior: smooth; // 平滑滚动
-
+  @media (prefers-reduced-motion: no-preference) {
+    :root:focus-within {
+      scroll-behavior: smooth; // 平滑滚动
+    }
+  }
   --code-ln-wrapper-width: 3.5rem;
 
   // font vars
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --font-family-code: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-family-code: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 
   // layout vars
   --navbar-height: 3.6rem;
