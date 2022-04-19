@@ -289,6 +289,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
       },
     ],
 
+    ['vuepress-plugin-right-anchor'],
     /**
      * @description  use more syntax in your Markdown files.
      * @link https://vuepress-theme-hope.github.io/md-enhance/guide/
@@ -301,16 +302,7 @@ module.exports = defineUserConfig<DefaultThemeOptions>({
           strict: 'ignore',
         },
         presentation: {
-          plugins: [
-            'highlight',
-            'math',
-            'search',
-            'notes',
-            'zoom',
-            'anything',
-            'audio',
-            'chalkboard',
-          ],
+          plugins: ['highlight', 'math', 'search', 'notes', 'zoom'],
         },
       },
     ],
