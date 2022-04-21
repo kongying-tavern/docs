@@ -16,7 +16,7 @@ Invitation link: <https://discord.gg/aFe57AKZUF>
 2. [**DiscussionGroup II**853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击加入原神地图交流二群')
 3. [**DiscussionGroups III**932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击加入原神地图交流三群')
 4. [**DiscussionGroups IV**1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击加入原神地图交流四群')
-5. [**DiscussionGroups V**1149599151](https://qm.qq.com/cgi-bin/qm/qr?k=e8cH0Yz-DESYMSZgcUHVyzIXb80CovXc&jump_from=webapi '点击加入原神地图交流五群')
+5. [**DiscussionGroups V**1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi '点击加入原神地图交流五群')
 6. [**DiscussionGroups VI**1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击加入原神地图交流六群')
 7. [**DiscussionGroups VII**726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击加入原神地图交流七群')
 
