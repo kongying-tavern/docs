@@ -14,7 +14,7 @@ externalLinkIcon: false
 4. [**原神地图交流四群**1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击一键加入原神地图交流四群')
 5. [**原神地图交流六群**1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击一键加入原神地图交流六群')
 6. [**原神地图交流七群**726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图交流七群')
-7. [**原神地图交流八**1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi '点击一键加入原神地图交流八群')
+7. [**原神地图交流八群**1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi '点击一键加入原神地图交流八群')
 
 ::: tip
 目前七个群均未满，各群密码均为 **123456**。
