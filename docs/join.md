@@ -20,6 +20,16 @@ description: 加入我们
 **相关详细**
 <Toc />
 
+## 内容运营类
+
+### 地图打点
+
+负责标记地图点位，收集信息数据等。
+
+### 翻译
+
+负责地图项目的国际化的翻译工作，海外帮助文档的翻译。
+
 ## 程序技术类
 
 ### 前端开发
@@ -58,6 +68,12 @@ description: 加入我们
 
 当前后台项目主要基于 `Java`, `MySql`, `Redis`。
 
+## 美术表现类（急缺）
+
+### 视觉设计、交互设计、美术
+
+网页和客户端内的界面交互和 UI 制作。
+
 ### 微信小程序开发
 
 欢迎相关的大佬加入开发。
@@ -84,26 +100,10 @@ description: 加入我们
 
 数理统计与应用。
 
-## 美术表现类（急缺）
-
-### 视觉设计、交互设计、美术
-
-网页和客户端内的界面交互和 UI 制作。
-
-## 内容运营类
-
-### 地图打点
-
-负责更新地图点位，收集数据等。
-
-### 翻译
-
-负责地图项目的国际化的翻译工作，等。
-
 ## 如何加入
 
-打点的小伙伴可加群 [**992165223**](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi '点击加入QQ群') 洽谈。
+有意加入打点的小伙伴可加群 [**992165223**](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi '点击加入QQ群') 洽谈。
 
-其他的小伙伴可以加群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈。
+有意加入开发和翻译的小伙伴可以加群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈。
 
 期待你的加入 😀~
