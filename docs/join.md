@@ -107,8 +107,8 @@ description: 加入我们
 
 ## 如何加入
 
-有意加入打点的小伙伴可加群 [**992165223**](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi '点击加入QQ群') 洽谈。
+有意加入【地图打点】的小伙伴可加群 [**992165223**](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi '点击加入QQ群') 洽谈。
 
-有意加入开发和翻译的小伙伴可以加群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈。
+有意加入【开发或翻译】的小伙伴可以加群 [**717152601**](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi '点击加入QQ群') 洽谈。
 
 期待你的加入 😀~
