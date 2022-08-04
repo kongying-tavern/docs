@@ -7,8 +7,8 @@ actions:
   - text: 立即下载
     link: ./download-client.html
     type: primary
-  - text: 返回网页
-    link: https://yuanshen.site/index.html
+  - text: 加入讨论组
+    link: ./communication-group.html
     type: secondary
 features:
   - title: 强大功能
