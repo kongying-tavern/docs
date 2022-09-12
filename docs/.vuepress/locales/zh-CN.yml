@@ -66,8 +66,8 @@
   navbar:
     - text: 问题反馈
       link: https://support.qq.com/products/321980
-    - text: 加入讨论组
-      link: /communication-group.md
+    - text: 加入社区
+      link: /community.md
     - text: 了解更多
       children:
         - text: 了解我们
