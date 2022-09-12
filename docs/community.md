@@ -19,6 +19,8 @@ externalLinkIcon: false
 9. [**原神地图⑨群** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi '点击一键加入原神地图⑨群')
 
 ::: tip
+各群密码均为 `123456`
+
 如果出现密码错误请加入QQ群：【声讨】空荧开发组 [**228382171**](https://qm.qq.com/cgi-bin/qm/qr?k=rRb-v0iOnHVGjQvdDUSIsIPClquSaWPa&jump_from=webapi)
 :::
 
