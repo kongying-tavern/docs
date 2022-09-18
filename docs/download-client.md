@@ -13,6 +13,9 @@ pageClass: download-client
 空荧原神地图客户端开放下载中，欢迎您立即使用。在此期间，欢迎您通过产品内的「帮助与反馈」，帮助我们打造更好的的产品。
 :::
 
+客户端文档：https://support.qq.com/products/321980/faqs-more?id=94938
+网页端文档（旧）：https://support.qq.com/products/321980/faqs-more?id=126356
+
 <DownloadClient></DownloadClient>
 
 <style lang="scss" scoped>
