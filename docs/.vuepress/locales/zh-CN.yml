@@ -64,8 +64,13 @@
 
   # navbar
   navbar:
-    - text: 问题反馈
+    - text: 文档与社区
       link: https://support.qq.com/products/321980
+      children:
+        - text: 客户端文档
+          link: https://support.qq.com/products/321980/faqs-more?id=94938
+        - text: 网页端文档（新网页端开发中）
+          link: https://support.qq.com/products/321980/faqs-more?id=126356
     - text: 加入社区
       link: /community.md
     - text: 了解更多
