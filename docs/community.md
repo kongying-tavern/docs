@@ -21,7 +21,23 @@ externalLinkIcon: false
 ::: tip
 各群密码均为 `123456`
 
-如果出现密码错误请加入QQ群：【声讨】空荧开发组 [**228382171**](https://qm.qq.com/cgi-bin/qm/qr?k=rRb-v0iOnHVGjQvdDUSIsIPClquSaWPa&jump_from=webapi)
+如果出现密码错误请加入下方问题反馈专用群
+:::
+
+## <SvgIcon name="qq" /> 问题反馈解决群
+
+1. [**【声讨】空荧开发组** 228382171](https://qm.qq.com/cgi-bin/qm/qr?k=p03N6ACWOqFW0WNhhUQSw2goET3L-Tkt&jump_from=webapi '【声讨】空荧开发组')
+
+::: tip
+
+加问题反馈群请备注好问题，并填写群公告的问题收集表，且在解决问题后立即退群！
+
+文档已有的问题不会给予过多的支持
+
+本项目完全用爱发电，如果问题因资金问题或者开发工时过少无法解决，请谅解（或者给我们捐助）
+
+[点击进入客户端文档](https://support.qq.com/products/321980/faqs-more?id=94938)
+
 :::
 
 ## <SvgIcon name="discord" /> Discord Server

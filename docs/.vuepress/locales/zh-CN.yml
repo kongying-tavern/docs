@@ -67,6 +67,8 @@
     - text: 文档与社区
       link: https://support.qq.com/products/321980
       children:
+        - text: 社区
+          link: https://support.qq.com/products/321980/
         - text: 客户端文档
           link: https://support.qq.com/products/321980/faqs-more?id=94938
         - text: 网页端文档（新网页端开发中）
