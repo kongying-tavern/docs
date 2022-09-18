@@ -10,6 +10,12 @@ actions:
   - text: 加入讨论组
     link: ./communication-group.html
     type: secondary
+  - text: 客户端文档
+    link: https://support.qq.com/products/321980/faqs-more?id=94938
+    type: secondary
+  - text: 网页端文档（旧）
+    link: https://support.qq.com/products/321980/faqs-more?id=126356
+    type: secondary
 features:
   - title: 强大功能
     details: 您可以通过原神地图客户端获得 - 更多样的功能、更便捷的享受，使探索大世界变得更加得心应手。
