@@ -26,7 +26,7 @@ externalLinkIcon: false
 
 ## <SvgIcon name="qq" /> 问题反馈解决群
 
-1. [**【声讨】空荧开发组** 228382171](https://qm.qq.com/cgi-bin/qm/qr?k=p03N6ACWOqFW0WNhhUQSw2goET3L-Tkt&jump_from=webapi '【声讨】空荧开发组')
+1. [**【声讨】空荧开发组** 228382171](https://jq.qq.com/?_wv=1027&k=nbveGrfQ '【声讨】空荧开发组')
 
 ::: tip
 
