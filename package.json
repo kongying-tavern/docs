@@ -1,0 +1,108 @@
+{
+  "private": "true",
+  "license": "MIT",
+  "scripts": {
+    "build": "vitepress build",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "commit": "git-cz",
+    "dev": "vitepress",
+    "postinstall": "husky install",
+    "lint": "pnpm lint:prettier --write && pnpm lint:eslint --fix && pnpm lint:stylelint --fix",
+    "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:stylelint",
+    "lint:eslint": "eslint . --ext .js,.ts,.vue",
+    "lint:md": "markdownlint **/*.md && lint:zh",
+    "lint:prettier": "prettier --check .",
+    "lint:stylelint": "stylelint **/*.scss",
+    "lint:zh": "zhlint 'docs/**/*.md'",
+    "serve": "vitepress serve"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json,yml}": [
+      "prettier --write"
+    ],
+    "*.scss": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "package.json": [
+      "sort-package-json"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-git"
+    }
+  },
+  "prettier": "prettier-config-vuepress",
+  "dependencies": {
+    "@iconify-json/logos": "^1.1.14",
+    "@iconify-json/mdi": "^1.1.30",
+    "@vueuse/core": "^9.1.0",
+    "@vueuse/integrations": "^9.2.0",
+    "dayjs": "^1.11.3",
+    "qrcode": "^1.5.1",
+    "sass": "^1.54.0",
+    "sass-loader": "^13.0.0",
+    "typescript": "^4.7.3",
+    "unocss": "^0.45.6",
+    "unplugin-auto-import": "^0.11.1",
+    "unplugin-vue-components": "^0.22.4",
+    "vitepress": "1.0.0-alpha.21",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@commitlint/types": "^17.0.0",
+    "@types/eslint": "^8.4.2",
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "^17.0.39",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/eslint-config-typescript": "^10.0.0",
+    "conventional-changelog-cli": "^2.2.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.17.0",
+    "eslint-config-vuepress": "^3.9.0",
+    "eslint-config-vuepress-typescript": "^2.9.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier-vue": "^3.1.0",
+    "eslint-plugin-vue": "9.1.0",
+    "git-cz": "^4.9.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.0",
+    "markdownlint-cli": "^0.31.1",
+    "prettier": "^2.6.2",
+    "prettier-config-vuepress": "^1.4.0",
+    "sort-package-json": "^1.57.0",
+    "stylelint": "^14.8.5",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-order": "^5.0.0",
+    "tsconfig-vuepress": "^0.2.1",
+    "zhlint": "^0.6.0"
+  },
+  "packageManager": "pnpm@7.1.7",
+  "engines": {
+    "node": ">=14",
+    "pnpm": ">=7"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search",
+        "@types/react",
+        "eslint-plugin-import",
+        "eslint-plugin-n",
+        "eslint-plugin-promise",
+        "react",
+        "react-dom"
+      ]
+    }
+  }
+}
