@@ -86,23 +86,5 @@
     "stylelint-order": "^5.0.0",
     "tsconfig-vuepress": "^0.2.1",
     "zhlint": "^0.6.0"
-  },
-  "packageManager": "pnpm@7.1.7",
-  "engines": {
-    "node": ">=14",
-    "pnpm": ">=7"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search",
-        "@types/react",
-        "eslint-plugin-import",
-        "eslint-plugin-n",
-        "eslint-plugin-promise",
-        "react",
-        "react-dom"
-      ]
-    }
   }
 }
