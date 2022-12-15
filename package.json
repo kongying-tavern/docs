@@ -51,7 +51,7 @@
     "unocss": "^0.45.6",
     "unplugin-auto-import": "^0.11.1",
     "unplugin-vue-components": "^0.22.4",
-    "vitepress": "1.0.0-alpha.21",
+    "vitepress": "1.0.0-alpha.31",
     "vue": "^3.2.37"
   },
   "devDependencies": {
@@ -86,5 +86,9 @@
     "stylelint-order": "^5.0.0",
     "tsconfig-vuepress": "^0.2.1",
     "zhlint": "^0.6.0"
+  },
+  "engines": {
+    "node": ">=14",
+    "pnpm": ">=7"
   }
 }
