@@ -10,11 +10,11 @@ externalLinkIcon: false
 
 ## QQ 交流群
 
-1. [**原神地图 ① 群(被封禁)** 765302904](https://qm.qq.com/cgi-bin/qm/qr?k=p03N6ACWOqFW0WNhhUQSw2goET3L-Tkt&jump_from=webapi '点击一键加入原神地图交流①群')
+1. [**原神地图 ① 群(被封禁)** 765302904](# '点击一键加入原神地图交流①群')
 2. [**原神地图 ② 群** 853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击一键加入原神地图②群')
 3. [**原神地图 ③ 群** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图③群')
 4. [**原神地图 ④ 群** 1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击一键加入原神地图④群')
-5. [**原神地图 ⑤ 群(被封禁)** 1012554070](https://qm.qq.com/ '点击一键加入原神地图⑤群')
+5. [**原神地图 ⑤ 群(被封禁)** 1012554070](# '点击一键加入原神地图⑤群')
 6. [**原神地图 ⑥ 群** 1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击一键加入原神地图⑥群')
 7. [**原神地图 ⑦ 群** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图⑦群')
 8. [**原神地图 ⑧ 群** 1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi '点击一键加入原神地图⑧群')
@@ -68,4 +68,8 @@ externalLinkIcon: false
     }
   }
 
+// 被封禁的群
+ol:nth-child(3) > li:nth-child(1) > a strong,  ol:nth-child(3) > li:nth-child(5) > a strong {
+  text-decoration: line-through !important;
+}
 </style>
