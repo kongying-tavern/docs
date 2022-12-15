@@ -3,3 +3,20 @@
 .VPFooter {
   display: none;
 }
+
+.layout-home {
+  .VPNav {
+    background-color: transparent !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+
+    @media (max-width: 959px) {
+      -webkit-backdrop-filter: saturate(50%) blur(8px) !important;
+      backdrop-filter: saturate(50%) blur(8px) !important;
+    }
+  }
+
+  .VPNavBar {
+    border-bottom: none !important;
+  }
+}
