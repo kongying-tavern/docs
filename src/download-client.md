@@ -8,7 +8,7 @@ pageClass: download-client
 # 下载客户端
 
 - 阿里云盘：
-  - [https://www.aliyundrive.com/s/irmz7CKpMry](https://www.aliyundrive.com/s/irmz7CKpMry)
+  - [https://www.aliyundrive.com/s/fCisk1ireMN](https://www.aliyundrive.com/s/fCisk1ireMN)
 - 加入讨论组：
   - [https://yuanshen.site/docs/community](./community.md)
 - 百度网盘：
