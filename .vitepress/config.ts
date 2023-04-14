@@ -4,8 +4,7 @@ import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { SearchPlugin } from 'vitepress-plugin-search'
 import Inspect from 'vite-plugin-inspect'
-import { withPwa } from '@vite-pwa/vitepress'
-import { defineConfig } from 'vitepress'
+import { defineConfig, withBase } from 'vitepress'
 import { Segment } from 'segment'
 const base = (process.env.BASE || '/docs/') as '/docs/' | `/${string}/`
 const isProd = process.env.NODE_ENV === 'production'
@@ -14,7 +13,6 @@ const segment = new Segment()
 // 使用默认的识别模块及字典，载入字典文件需要1秒，仅初始化时执行一次即可
 segment.useDefault()
 
-// export default withPwa(defineConfig({
 export default defineConfig({
   lang: 'zh-Hans',
   title: '原神地图',
@@ -60,9 +58,20 @@ export default defineConfig({
     ['meta', { name: 'theme-color', content: '#ffffff' }],
     [
       'link',
-      { rel: 'icon', href: '/imgs/favicon-32x32.png', type: 'image/png' },
+      {
+        rel: 'icon',
+        href: withBase('/imgs/favicon-32x32.png'),
+        type: 'image/png',
+      },
     ],
-    ['link', { rel: 'icon', href: '/imgs/favicon.ico', type: 'image/x-icon' }],
+    [
+      'link',
+      {
+        rel: 'icon',
+        href: withBase('/imgs/favicon.ico'),
+        type: 'image/x-icon',
+      },
+    ],
     ['meta', { name: 'author', content: '@Arrebol' }],
     ['meta', { property: 'og:title', content: '原神地图' }],
     [
@@ -168,44 +177,6 @@ export default defineConfig({
       stringify: true,
     },
   },
-  // pwa: {
-  //   base: '/docs/',
-  //   scope: '/',
-  //   registerType: 'autoUpdate',
-  //   // injectRegister: 'inline',
-  //   includeAssets: ['favicon.ico'],
-  //   devOptions: {
-  //     enabled: !isProd
-  //       /* other options */
-  //   },
-  //   manifest: {
-  //     name: '原神地图',
-  //     short_name: '原神地图',
-  //     theme_color: '#ffffff',
-  //     icons: [
-  //       {
-  //         src: '/imgs/logo_128.png',
-  //         sizes: '128x128',
-  //         type: 'image/png',
-  //       },
-  //       {
-  //         src: '/imgs/logo_512.png',
-  //         sizes: '512x512',
-  //         type: 'image/png',
-  //       },
-  //       {
-  //         src: '/imgs/logo_512.png',
-  //         sizes: '512x512',
-  //         type: 'image/png',
-  //         purpose: 'any maskable',
-  //       },
-  //     ],
-  //   },
-  //   workbox: {
-  //     globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}'],
-  //   },
-  // },
-  // }))
 })
 
 function nav() {

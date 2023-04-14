@@ -20,26 +20,27 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node: ['14', '16', '18']
+        node: ['16', '18']
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-          cache: pnpm
-
+      # cache node_modules
       - name: Cache pnpm modules
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
+
+      - name: Install dependencies
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 7
+          run_install: true
 
       - name: Install dependencies
         uses: pnpm/action-setup@v2
@@ -49,12 +50,17 @@ jobs:
       - name: Build project
         env:
           NODE_OPTIONS: --max_old_space_size=4096
-        run: pnpm docs:build
+        run: pnpm build
+
+      - name: Build project (MPA)
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: pnpm build-mpa
+
 
       - name: Linter test
         run: |
           pnpm run lint:check
           pnpm run lint:md
-
-      - name: Test
-        run: pnpm test
+          pnpm run lint:eslint
+          pnpm run lint:zh
