@@ -4,7 +4,7 @@ import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { SearchPlugin } from 'vitepress-plugin-search'
 import Inspect from 'vite-plugin-inspect'
-import { defineConfig, withBase } from 'vitepress'
+import { defineConfig } from 'vitepress'
 import { Segment } from 'segment'
 const base = (process.env.BASE || '/docs/') as '/docs/' | `/${string}/`
 const isProd = process.env.NODE_ENV === 'production'
@@ -60,7 +60,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: withBase('/imgs/favicon-32x32.png'),
+        href: './imgs/favicon-32x32.png',
         type: 'image/png',
       },
     ],
@@ -68,7 +68,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: withBase('/imgs/favicon.ico'),
+        href: './imgs/favicon.ico',
         type: 'image/x-icon',
       },
     ],
