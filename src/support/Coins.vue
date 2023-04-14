@@ -1,0 +1,183 @@
+<template>
+  <div>
+    <div class="one-time-donations">
+      <div
+        class="links"
+        @click="
+          icon.removeAttribute(`i-custom-${coins.value[type.value].icon}`)
+        "
+      >
+        <a href="#wechatpay">
+          <label class="i-custom-wechatpay"></label>微信支付
+        </a>
+        <a href="#alipay"><label class="i-custom-alipay"></label> 支付宝</a>
+        <a href="#qqpay"> <label class="i-custom-qqpay"></label> QQ 支付</a>
+        <a href="#paypal"> <label class="i-custom-paypal"></label> Paypal</a>
+        <a href="#bilibili">
+          <label class="i-custom-bilibili"></label> bilibili</a
+        >
+      </div>
+    </div>
+
+    <div v-if="type && coins[type]" class="coin-details">
+      <p>
+        <label ref="icon"></label>
+        {{ coins[type].name }} Address:<br /><a
+          :href="coins[type].address"
+          :title="coins[type].name"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{{ coins[type].address }}</a
+        >
+      </p>
+      <img :src="qrcode" alt="QR Code" />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+
+let qrcode = null
+const icon = ref()
+const coins = ref({
+  wechatpay: {
+    name: '微信支付',
+    icon: 'wechatpay',
+    address: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',
+  },
+  alipay: {
+    name: '支付宝',
+    icon: 'alipay',
+    address: 'https://qr.alipay.com/tsx11609thmpw9odmvdlxd6',
+  },
+  qqpay: {
+    name: 'QQ 支付',
+    icon: 'qqpay',
+    address:
+      'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
+  },
+  paypal: {
+    name: 'Paypal',
+    icon: 'paypal',
+    address: 'https://www.paypal.com/paypalme/yuanshenditu',
+  },
+  bilibili: {
+    name: 'bilibili',
+    icon: 'bilibili',
+    address: 'https://space.bilibili.com/518076785',
+  },
+})
+const type = ref()
+
+const updateType = () => {
+  if (window.location.hash.slice(1)) {
+    type.value = window.location.hash.slice(1)
+    if (typeof coins.value[type.value]?.address === 'undefined') return
+    qrcode = useQRCode(coins.value[type.value]?.address)
+    nextTick(() => {
+      icon.value.className = `i-custom-${coins.value[type.value].icon}`
+      console.log(icon.value)
+    })
+  }
+}
+
+onMounted(() => {
+  updateType()
+  window.addEventListener('hashchange', updateType)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', updateType)
+})
+</script>
+
+<style lang="scss" scoped>
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  a {
+    flex: 1 1 auto;
+    padding: 12px 8px;
+    text-decoration: none;
+    user-select: none;
+    transition: transform 0.3s;
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+    text-indent: 8px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: var(--vp-c-text-1);
+    & > label {
+      display: inline-block;
+      height: 2em;
+      width: 2em;
+    }
+    @media (any-hover: hover) {
+      &:hover,
+      &:active {
+        transform: translateY(-3px);
+      }
+      svg {
+        &:hover {
+          transform: scale(1);
+        }
+      }
+    }
+    svg {
+      margin-right: 5px;
+    }
+  }
+}
+
+@media (max-width: 788px) {
+  .coin-details > p {
+    display: none !important;
+  }
+}
+
+.coin-details {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2rem;
+  p {
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    width: 400px;
+    a {
+      font-weight: normal;
+    }
+
+    label {
+      display: block;
+      height: 5rem;
+      width: 5rem;
+      margin-left: 1rem;
+      margin-bottom: 12px;
+      animation: 4s whirling linear;
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
+    }
+  }
+}
+
+@keyframes whirling {
+  from {
+    transform: rotate3d(0, 1, 0, -90deg) scale(0.9);
+  }
+  to {
+    transform: rotate3d(0, 1, 0, 90deg) scale(1);
+  }
+}
+</style>

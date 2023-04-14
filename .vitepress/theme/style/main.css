@@ -1,0 +1,39 @@
+html.dark {
+  color-scheme: dark;
+}
+
+.vp-doc h2 {
+  border-top: 0;
+  margin-top: 10px;
+}
+
+.VPMenuLink .link {
+  line-height: 28px !important;
+}
+
+.VPSidebarGroup .link {
+  padding: 3px 0 !important;
+}
+
+#app a:focus-visible,
+#app button:focus-visible,
+#app input[type="checkbox"]:focus-visible {
+  --at-apply: outline-1 outline-primary ring-2 ring-primary;
+}
+
+.layout-home {
+  .VPNav {
+    background-color: transparent !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+
+    @media (max-width: 959px) {
+      -webkit-backdrop-filter: saturate(50%) blur(8px) !important;
+      backdrop-filter: saturate(50%) blur(8px) !important;
+    }
+  }
+
+  .VPNavBar {
+    border-bottom: none !important;
+  }
+}

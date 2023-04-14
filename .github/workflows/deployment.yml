@@ -1,0 +1,51 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # cache node_modules
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 7
+          run_install: true
+
+      # 构建
+      - name: Build
+        run: pnpm build
+
+      # 部署
+      - name: Deploy
+        uses: easingthemes/ssh-deploy@v2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          # 删除服务器上目录里所有文件
+          # ARGS: '-avz --delete'
+          # 项目 build 后静态文件位置
+          SOURCE: '.vitepress/dist/'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.TARGET }}

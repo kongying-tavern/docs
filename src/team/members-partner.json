@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Yu SuiXian",
+    "title": "Organizer",
+    "location": "China",
+    "company": "WeiXiTianLi",
+    "companyLink": "https://github.com/WeiXiTianLi",
+    "socials": {
+      "github": "GengGode"
+    }
+  },
+  {
+    "name": "Wormtql",
+    "title": "Webmaster",
+    "location": "China",
+    "company": "mona-uranai",
+    "companyLink": "https://mona-uranai.com/",
+    "socials": {
+      "github": "wormtql"
+    }
+  }
+]

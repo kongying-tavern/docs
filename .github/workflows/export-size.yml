@@ -1,0 +1,16 @@
+name: Export Size
+on:
+  pull_request:
+    branches:
+      - main
+      - next
+      - dev
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: antfu/export-size-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
