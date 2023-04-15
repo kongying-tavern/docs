@@ -12,7 +12,7 @@ pageClass: download-client
 - 加入讨论组：
   - [https://yuanshen.site/docs/community](./community.md)
 - 百度网盘：
-  - [https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg?pwd=KYJG](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg?pwd=KYJG)
+  - [https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg?pwd=kyjg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg?pwd=kyjg)
 - Google Drive：
   - [https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing](https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing)
 
