@@ -2,16 +2,11 @@ import path from 'path'
 import fs from 'fs'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { SearchPlugin } from 'vitepress-plugin-search'
 import Inspect from 'vite-plugin-inspect'
 import { defineConfig } from 'vitepress'
-import { Segment } from 'segment'
 const base = (process.env.BASE || '/docs/') as '/docs/' | `/${string}/`
 const isProd = process.env.NODE_ENV === 'production'
 const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
-const segment = new Segment()
-// 使用默认的识别模块及字典，载入字典文件需要1秒，仅初始化时执行一次即可
-segment.useDefault()
 
 export default defineConfig({
   lang: 'zh-Hans',
@@ -115,6 +110,29 @@ export default defineConfig({
       pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
       text: '报告错误',
     },
+    search: {
+      provider: 'local',
+      options: {
+        locales: {
+          zh: {
+            translations: {
+              button: {
+                buttonText: '搜索文档',
+                buttonAriaLabel: '搜索文档',
+              },
+              modal: {
+                noResultsText: '无法找到相关结果',
+                resetButtonTitle: '清除查询条件',
+                footer: {
+                  selectText: '选择',
+                  navigateText: '切换',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern/' },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
@@ -160,13 +178,6 @@ export default defineConfig({
         vueTemplate: true,
       }),
 
-      SearchPlugin({
-        //@ts-ignore
-        encode: function (str) {
-          return segment.doSegment(str, { simple: true })
-        },
-        tokenize: 'forward',
-      }),
       Inspect(),
     ],
     build: {

@@ -4,6 +4,13 @@ description: 贡献鸣谢
 sidebar: false
 ---
 
+<script setup>
+import { ref } from 'vue';
+import dayjs from 'dayjs';
+
+const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
+</script>
+
 # 贡献鸣谢
 
 空荧酒馆原神地图从 2020 年 6 月初制作决定开始至今已 <time> {{ date }} </time> 天，点位数据收集总耗时超两万个小时。
@@ -203,13 +210,6 @@ sidebar: false
 > 名单按照打点群的入群时间排序不分先后；
 
 > 如有疑问可联系 QQ 1961266616；
-
-<script setup>
-import { ref } from 'vue';
-import dayjs from 'dayjs';
-
-const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
-</script>
 
 <style lang="scss" scoped>
 thead {

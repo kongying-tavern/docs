@@ -2,6 +2,10 @@
 title: 支持我们
 ---
 
+<script setup>
+import Coins from './support/Coins.vue'
+</script>
+
 # 支持我们
 
 原神地图是采用 MulanPSL-1.0 许可的开源项目，使用完全零广告并且完全免费。
@@ -34,7 +38,3 @@ title: 支持我们
 ::: tip
 未成年人请勿大额赞助 如有其他疑问可联系网站管理者 QQ：790489566，并备注相关问题。
 :::
-
-<script setup>
-import Coins from './support/Coins.vue'
-</script>
