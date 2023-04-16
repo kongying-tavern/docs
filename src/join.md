@@ -147,7 +147,7 @@ description: 加入我们
   }
     
   .header-anchor {
-    padding: 0;
+    display: none;
   }
   h3 {
     margin: 0;
