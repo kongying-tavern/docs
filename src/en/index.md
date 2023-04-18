@@ -8,22 +8,22 @@ features:
     details: Indicate Chests according to [Quality] or [Method], both options display all chests within the selected sub-region.
   - title: Overlay Mode
     icon: 🎪
-    details: Overlay the game window, provide easy access to the map on single displays
+    details: Overlay the game window, provide easy access to the map on single display users
   - title: Automatic Tracking
     icon: 🛠
-    details: Using [Image Recognition], automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
-  - title: Oculus Tracking
+    details: Automatically detect your character location using image recognition and display a simultaneous player indicator on the **map client**
+  - title: Underground Maps
     icon: ✨
-    details: Using [Image Recognition], automatically mark oculi found/not found
-  - title: Progress Syncing
+    details: Exquisite and detailed underground maps by [Teyvat Map Institute], professionally composed with levels and navigational illustrations
+  - title: Progress Sync
     icon: ☁️
     details: Cloud syncing support for marker progress, custom paths, etc.
   - title: 100% Free
     icon: 🎉
-    details: __Genshin Interactive Map__ is a MulanPSL-1.0 open-source project, it is also AD-free.
+    details: _Genshin Interactive Map_ is a MulanPSL-1.0 open-source project, it is also AD-free.
 hero:
   name: Genshin Interactive Map
-  text: An all-encompassing map for completionists, by Kongying Tavern
+  text: An all-encompassing map for completionists by Kongying Tavern
   tagline: Simple, powerful, and performant.
   image:
     src: /imgs/logo_256.png
