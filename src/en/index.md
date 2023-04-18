@@ -1,7 +1,7 @@
 ---
 layout: home
 title: Kongying Tavern Genshin Interactive Map
-titleTemplate: Home Page
+titleTemplate: 首页
 features:
   - title: Dual Mode Indications
     icon: 🦾
@@ -20,7 +20,7 @@ features:
     details: Cloud syncing support for marker progress, custom paths, etc.
   - title: 100% Free
     icon: 🎉
-    details: *Genshin Interactive Map* is a MulanPSL-1.0 open-source project, it is also AD-free.
+    details: __Genshin Interactive Map__ is a MulanPSL-1.0 open-source project, it is also AD-free.
 hero:
   name: Genshin Interactive Map
   text: An all-encompassing map for completionists, by Kongying Tavern
