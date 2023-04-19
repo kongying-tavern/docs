@@ -1,5 +1,5 @@
 ---
-title: \[Auto Update] Non-Responsive Updater 
+title: [Auto Update] Non-Responsive Updater 
 ---
 
 # [Auto Update] Non-Responsive Updater 

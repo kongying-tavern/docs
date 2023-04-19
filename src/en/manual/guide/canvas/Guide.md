@@ -1,5 +1,5 @@
 ---
-title: \[Custom Path Planner (Canvas)] Guide
+title: [Custom Path Planner (Canvas)] Guide
 sidebar: true
 ---
 

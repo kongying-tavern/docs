@@ -1,5 +1,5 @@
 ---
-title: \[Launch Error] Version Check Failed
+title: [Launch Error] Version Check Failed
 ---
 
 # [Launch Error] Version Check Failed

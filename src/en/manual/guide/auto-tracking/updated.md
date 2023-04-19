@@ -1,5 +1,5 @@
 ---
-title: \[Automatic Tracking] Trounbleshooting
+title: [Automatic Tracking] Trounbleshooting
 sidebar: true
 ---
 

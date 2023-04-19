@@ -1,5 +1,5 @@
 ---
-title: \[Overlay Mode] Instructions
+title: [Overlay Mode] Instructions
 sidebar: true
 ---
 

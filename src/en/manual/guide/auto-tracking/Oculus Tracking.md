@@ -1,5 +1,5 @@
 ---
-title: \[Automatic Tracking] Oculus Tracking
+title: [Automatic Tracking] Oculus Tracking
 ---
 
 # [Automatic Tracking] Oculus Tracking

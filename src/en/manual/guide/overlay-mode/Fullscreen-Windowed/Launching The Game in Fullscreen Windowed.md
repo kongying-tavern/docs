@@ -1,5 +1,5 @@
 ---
-title: \[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
+title: [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 sidebar: true
 ---
 

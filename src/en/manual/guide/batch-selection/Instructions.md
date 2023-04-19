@@ -1,5 +1,5 @@
 ---
-title: \[Batch Selection] Instructions
+title: [Batch Selection] Instructions
 sidebar: true
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: \[Automatic Tracking] Important Notes
+title: [Automatic Tracking] Important Notes
 sidebar: true
 ---
 

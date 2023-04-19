@@ -1,5 +1,5 @@
 ---
-title: \[Launch Error] Empty Dialog Box or Stuck Progress Bar
+title: [Launch Error] Empty Dialog Box or Stuck Progress Bar
 ---
 
 # [Launch Error] Empty Dialog Box or Stuck Progress Bar

@@ -1,5 +1,5 @@
 ---
-title: \[Background Suspend] Feature
+title: [Background Suspend] Feature
 ---
 
 # [Background Suspend] Feature

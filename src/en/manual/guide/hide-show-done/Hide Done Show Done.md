@@ -1,5 +1,5 @@
 ---
-title: \[Hide/Show Done] Feature
+title: [Hide/Show Done] Feature
 ---
 
 # [Hide/Show Done] Feature
