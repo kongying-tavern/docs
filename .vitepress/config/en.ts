@@ -2,6 +2,7 @@ import type { DefaultTheme, LocaleSpecificConfig } from "vitepress";
 
 export const META_URL = "https://yuanshen.site/docs/en/";
 export const META_TITLE = "Genshin Interactive Map";
+export const META_TITLE = "Genshin Interactive Map";
 export const META_DESCRIPTION =
   "An all-encompassing map for completionists by Kongying Tavern.";
 
@@ -59,15 +60,19 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       },
       {
         text: "Community",
+        text: "Community",
         link: "./community.md",
       },
       {
         text: "Learn More",
+        text: "Learn More",
         items: [
           {
             text: "About Us",
+            text: "About Us",
             items: [
               {
+                text: "Join Us",
                 text: "Join Us",
                 link: "./join.md",
               },
@@ -79,12 +84,15 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           },
           {
             text: "Update Log",
+            text: "Update Log",
             items: [
               {
+                text: "Web",
                 text: "Web",
                 link: "https://support.qq.com/products/321980/blog/505810",
               },
               {
+                text: "Client",
                 text: "Client",
                 link: "https://support.qq.com/products/321980/blog/772498",
               },
@@ -92,8 +100,10 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           },
           {
             text: "Acknowledgement",
+            text: "Acknowledgement",
             items: [
               {
+                text: "Credits",
                 text: "Credits",
                 link: "./credits.md",
               },
@@ -112,9 +122,11 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             items: [
               {
                 text: "Disclaimer",
+                text: "Disclaimer",
                 link: "./disclaimer.md",
               },
               {
+                text: "Privacy",
                 text: "Privacy",
                 link: "./privacy.md",
               },
