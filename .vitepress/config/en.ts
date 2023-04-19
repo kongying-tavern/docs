@@ -1,7 +1,7 @@
 import type { DefaultTheme, LocaleSpecificConfig } from "vitepress";
 
 export const META_URL = "https://yuanshen.site/docs/en/";
-export const META_TITLE = "Genshin Map";
+export const META_TITLE = "Genshin Interactive Map";
 export const META_DESCRIPTION =
   "空荧酒馆制作的原神全资源攻略地图。";
 
@@ -11,7 +11,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     siteTitle: "Genshin Interactive Map | Kongying Tavern",
     outlineTitle: "ON THIS PAGE",
     logo: "/imgs/logo_256.png",
-    lastUpdatedText: "更新日期",
+    lastUpdatedText: "UPDATE DATE",
     search: {
       provider: "local",
     },
@@ -41,89 +41,77 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
     nav: [
       {
-        text: "帮助和反馈",
+        text: "Help",
         items: [
           {
-            text: "客户端使用手册",
-            link: "https://support.qq.com/products/321980/faqs-more/?id=94938",
-          },
-          {
-            text: "问题反馈",
+            text: "Feedback",
             link: "https://support.qq.com/products/321980",
-          },
-          {
-            text: "功能介绍",
-            link: "https://support.qq.com/products/321980/faqs-more/?id=126362",
-          },
-          {
-            text: "功能投票",
-            link: "https://support.qq.com/products/321980/topic-detail/2016/",
           },
         ],
       },
       {
-        text: "加入社区",
+        text: "Community",
         link: "./community.md",
       },
       {
-        text: "了解更多",
+        text: "Learn More",
         items: [
           {
-            text: "了解我们",
+            text: "About Us",
             items: [
               {
-                text: "加入我们",
+                text: "Join Us",
                 link: "./join.md",
               },
               {
-                text: "了解团队",
+                text: "Team",
                 link: "./team.md",
               },
             ],
           },
           {
-            text: "更新日志",
+            text: "Update Log",
             items: [
               {
-                text: "网页端",
+                text: "Web",
                 link: "https://support.qq.com/products/321980/blog/505810",
               },
               {
-                text: "客户端",
+                text: "Client",
                 link: "https://support.qq.com/products/321980/blog/772498",
               },
             ],
           },
           {
-            text: "鸣谢",
+            text: "Acknowledgement",
             items: [
               {
-                text: "技术鸣谢",
+                text: "Credits",
                 link: "./credits.md",
               },
               {
-                text: "贡献鸣谢",
+                text: "Contribution",
                 link: "./contribution.md",
               },
               {
-                text: "赞助鸣谢",
+                text: "Sponsorship",
                 link: "./support-us.md#赞助鸣谢",
               },
             ],
           },
           {
-            text: "法律相关",
+            text: "Legal terms",
             items: [
               {
-                text: "免责声明",
+                text: "Disclaimer",
                 link: "./disclaimer.md",
               },
               {
-                text: "隐私政策",
+                text: "Privacy",
                 link: "./privacy.md",
               },
               {
-                text: "用户协议",
+                text: "Agreement",
                 link: "./agreement.md",
               },
             ],
@@ -131,7 +119,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         ],
       },
       {
-        text: "支持我们",
+        text: "Sponsor",
         link: "./support-us.md",
       },
     ],
