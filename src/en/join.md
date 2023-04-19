@@ -1,12 +1,14 @@
 ---
-title: 加入我们
-description: 加入我们
+title: Join Us
+description: Join Us
 ---
 
-# 加入我们
+# Join Us
 
-为了进一步完善和优化项目，我们诚招各位小伙伴加入团队一起完成项目，本项目及其衍生项目完全免费。
-或者如果您有任何其他有任何好的想法或者设计，也欢迎加入我们一起实现。
+We invite you to join our effort in completing and improving this project, it and its iterations will always be free.
+If you have any proposals for a new idea or mechanic, join us to make it real.
+
+Contact us in Discord if you cannot access QQ.
 
 :::raw
 
@@ -21,28 +23,28 @@ description: 加入我们
 
 :::raw
 
-> ## 🌎 国际化工作组
+> ## 🌎 Localization
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [Join QQ Discussion Group](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
-### 工作职责
+### Responsibilities
 
-1. 负责地图相关软件，网站，文档的文本内容的本地化工作（包括翻译及校对支持）；
-2. 负责地图相关产品海外地区的日常运营语言支持工作（如公告，社群等）；
-3. 收集整理本地化相关问题，反馈并跟进修复。
+1. Software, website, documentation localization (translation and error checks)；
+2. Manage map-related communities (announcements, message boards, etc.)；
+3. Collected localization problems, report and fix errors.
 
 :::
 
 :::raw
 
-> ## 🎨 美术组
+> ## 🎨 Art
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [Join QQ Discussion Group](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
-### 工作职责
+### Responsibilities
 
-1. 负责地图相关项目界面交互和 UI 设计。
-2. 负责包括但不限于 logo、字形设计、海报、H5、网页、banner、icon 等内容的设计制作；
+1. UI Design
+2. Designing logos, font style, posters, H5, webpages, banners, icons, etc.；
    :::
 
 :::raw

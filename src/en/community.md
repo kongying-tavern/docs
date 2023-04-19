@@ -35,6 +35,10 @@ externalLinkIcon: false
 请勿重复加群，由于群人数均衡原因，若重复加群将踢出「群人数较多的群」！
 :::
 
+## Discord Server
+
+1. [**Join Server** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF)
+
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {
 background: transparent;

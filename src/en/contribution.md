@@ -1,6 +1,6 @@
 ---
-title: 贡献鸣谢
-description: 贡献鸣谢
+title: Contribution Acknowledgement
+description: Contribution Acknowledgement
 sidebar: false
 ---
 
@@ -11,15 +11,15 @@ import dayjs from 'dayjs';
 const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 </script>
 
-# 贡献鸣谢
+# Contribution Acknowledgement
 
-空荧酒馆原神地图从 2020 年 6 月初制作决定开始至今已 <time> {{ date }} </time> 天，点位数据收集总耗时超两万个小时。
+*Kongying Tavern Genshin Interactive Map* began its development in June 2020, during these <time> {{ date }} </time> days,  marker gathering has consumed over 20,000 man-hours.
 
-我们在此鸣谢每一位为地图做出贡献的小伙伴，感谢有你。
+We sincerely thank every individual that contributed to the making of this map.
 
-## 点位贡献
+## Marker Contributions
 
-| 用户名               |
+| Username              |
 | -------------------- |
 | 鈴                   |
 | (ಡωಡ)                |
@@ -207,9 +207,9 @@ const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 | Ծ‸Ծ                  |
 | 你他喵的别来逗！！！ |
 
-> 名单按照打点群的入群时间排序不分先后；
+> The members of the list is arranged in no particular order；
 
-> 如有疑问可联系 QQ 1961266616；
+> Contact QQ 1961266616 for inquiries；
 
 <style lang="scss" scoped>
 thead {
