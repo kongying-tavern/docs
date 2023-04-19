@@ -46,7 +46,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         items: [
           {
             text: "Client User Manual",
-            link: "./manual/index.md",
+            link: "./manual/Map%20Client%20User%20Manual.md",
           },
           {
             text: "Feedback",
@@ -87,7 +87,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               },
               {
                 text: "Client",
-                link: "https://support.qq.com/products/321980/blog/772498",
+                link: "https://discord.gg/SWz6RTWNkm",
               },
             ],
           },
@@ -104,7 +104,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               },
               {
                 text: "Sponsors",
-                link: "./support-us.md#Sponsor Acknowledgements",
+                link: "./support-us.md#Sponsor%20Acknowledgements",
               },
             ],
           },

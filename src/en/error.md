@@ -1,6 +1,6 @@
 ---
-title: 错误页
-description: 错误页
+title: Error
+description: Error
 sidebar: true
 pageClass: error-page
 head:

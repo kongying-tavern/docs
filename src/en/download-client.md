@@ -1,6 +1,6 @@
 ---
-title: 下载客户端
-description: 下载客户端
+title: Download Client
+description: Download Client
 sidebar: false
 pageClass: download-client
 ---
