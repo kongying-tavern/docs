@@ -132,16 +132,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       },
       {
         text: "支持我们",
-        items: [
-          {
-            text: "一次性赞助",
-            link: "./support-us.md",
-          },
-          {
-            text: "周期性赞助",
-            link: "./support-us.md#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%B5%9E%E5%8A%A9",
-          },
-        ],
+        link: "./support-us.md",
       },
     ],
   },

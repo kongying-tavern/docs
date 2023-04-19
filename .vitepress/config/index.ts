@@ -4,10 +4,11 @@ import Unocss from "unocss/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Inspect from "vite-plugin-inspect";
 import { defineConfig } from "vitepress";
-import { enConfig } from "./config/en";
+import { enConfig } from "./en";
+import { zhConfig } from "./zh";
+import { jaConfig } from "./ja";
 import { sharedConfig } from "./config/shared";
-import { zhConfig } from "./config/zh";
-import { jaConfig } from "./config/ja";
+
 
 const base = (process.env.BASE || "/docs/") as "/docs/" | `/${string}/`;
 const isProd = process.env.NODE_ENV === "production";
@@ -53,55 +54,6 @@ export default defineConfig({
     (url) => {
       return url.toLowerCase().includes("ignore");
     },
-  ],
-  head: [
-    ["meta", { name: "theme-color", content: "#ffffff" }],
-    [
-      "link",
-      {
-        rel: "icon",
-        href: "./imgs/favicon-32x32.png",
-        type: "image/png",
-      },
-    ],
-    [
-      "link",
-      {
-        rel: "icon",
-        href: "./imgs/favicon.ico",
-        type: "image/x-icon",
-      },
-    ],
-    ["meta", { name: "author", content: "@Arrebol" }],
-    ["meta", { property: "og:title", content: "原神地图" }],
-    [
-      "meta",
-      { property: "og:image", content: "https://yuanshen.site/imgs/cover.jpg" },
-    ],
-    [
-      "meta",
-      {
-        property: "og:description",
-        content: "空荧酒馆制作的原神全资源攻略地图。",
-      },
-    ],
-    ["meta", { name: "twitter:card", content: "summary_large_image" }],
-    ["meta", { name: "twitter:creator", content: "@KongyingTavern" }],
-    [
-      "meta",
-      {
-        name: "twitter:image",
-        content: "https://yuanshen.site/imgs/cover.jpg",
-      },
-    ],
-    [
-      "meta",
-      {
-        name: "viewport",
-        content:
-          "width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover",
-      },
-    ],
   ],
   vite: {
     // define: {
