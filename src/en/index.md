@@ -1,7 +1,7 @@
 ---
 layout: home
 title: Kongying Tavern Genshin Interactive Map
-titleTemplate: 首页
+titleTemplate: Home page
 features:
   - title: Dual Mode Indications
     icon: 🦾
@@ -31,7 +31,7 @@ hero:
   actions:
     - theme: brand
       text: Download Now
-      link: ./download-client.html
+      link: ./download-client.md
     - theme: alt
       text: View on GitHub
       link: https://github.com/kongying-tavern/docs

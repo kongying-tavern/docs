@@ -3,7 +3,7 @@ title: Support Us
 ---
 
 <script setup>
-import Coins from './support/Coins.vue'
+import Coins from '../support/Coins.vue'
 </script>
 
 # Support Us
@@ -16,12 +16,6 @@ As the user base and the scope of our project grows, development and maintenance
 We accept one-time Contributions through the following channels：
 
 <Coins />
-
-## Recurring Contribution
-
-A recurring Contribution comes with certain perks, you will be credited on *Genshin Interactive Map*'s GitHub/Gitee repository and our site, we can also display your organization's logo on our site.
-
-- [Sponsor through *AFDIAN*](https://afdian.net/@yuanshenditu 'https://afdian.net/@yuanshenditu')（support up）
 
 ## Sponsor Acknowledgements
 

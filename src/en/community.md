@@ -8,6 +8,10 @@ externalLinkIcon: false
 
 # 加入社区
 
+## Discord Server
+
+1. [**Join Server** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
+
 ## QQ 交流群
 
 1. [**原神地图 ① 群(被封禁)** 765302904](# '点击一键加入原神地图交流①群')
@@ -30,10 +34,6 @@ externalLinkIcon: false
 推荐加入人数较少的群。
 请勿重复加群，由于群人数均衡原因，若重复加群将踢出「群人数较多的群」！
 :::
-
-## Discord Server
-
-1. [**Join Server** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
 
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {

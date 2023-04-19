@@ -23,9 +23,3 @@ pageClass: download-client
 
 如果您有兴趣，欢迎[加入我们(^\_^)](./join.md)
 :::
-
-<script setup>
-import { useData } from 'vitepress'
-
-const { page } = useData()
-</script>
