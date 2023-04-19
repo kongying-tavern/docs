@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v2.2.1
         with:
-          version: 7
+          version: latest
           run_install: true
 
       - name: Install dependencies
