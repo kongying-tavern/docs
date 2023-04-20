@@ -5,7 +5,7 @@ sidebar: false
 pageClass: credits
 ---
 
-# Credits
+# 技术鸣谢
 
 原神地图项目使用了包括但不限于以下开源技术和美术资源，我们一直遵守各项使用协议。
 

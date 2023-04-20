@@ -18,7 +18,7 @@ Contact us in Discord if you cannot access QQ.
 
 ### 工作职责
 
-1. 负责标记地图点位及校对，收集相关信息数据等；
+1. 负责标记地图点位及校对，收集相关信息数据等;
    :::
 
 :::raw

@@ -1,6 +1,6 @@
 ---
-title: 技术鸣谢
-description: 技术鸣谢
+title: Credits
+description: Credits
 sidebar: false
 pageClass: credits
 ---
