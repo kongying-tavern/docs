@@ -1,5 +1,5 @@
 ---
-title: \[Restore/Recover] Progress Recovery From Stored Data
+title: \[Restore/Recover] Recovery From Stored Progress
 aside: true
 ---
 
