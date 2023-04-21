@@ -23,7 +23,7 @@ features:
     details: <em>Genshin Interactive Map</em> is a MulanPSL-1.0 open-source project, it is also AD-free.
 hero:
   name: Genshin Interactive Map
-  text: A completionist's interactive map by Kongying Tavern
+  text: A Completionist's Interactive Map by Kongying Tavern
   tagline: Simple, powerful, and performant.
   image:
     src: /imgs/logo_256.png
