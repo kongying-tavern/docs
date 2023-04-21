@@ -51,7 +51,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       {
         icon: {
           svg: fs.readFileSync(
-            path.resolve(__dirname, '../src/public/svg/qq-fill.svg'),
+            path.resolve(__dirname, '../../src/public/svg/qq-fill.svg'),
             'utf8'
           ),
         },
@@ -62,6 +62,65 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     docFooter: {
       prev: '上一页',
       next: '下一页',
+    },
+    footer: {
+      // @ts-ignore
+      qrcodeTitle: '开发反馈群',
+      qrcodeMessage: '欢迎QQ扫码联系我们',
+      qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
+      navigation: [
+        {
+          title: '关于',
+          items: [
+            {
+              text: '加入我们',
+              link: './join',
+            },
+            {
+              text: '了解团队',
+              link: './team',
+            },
+            {
+              text: '赞助鸣谢',
+              link: './support-us',
+            },
+          ],
+        },
+        {
+          title: '政策',
+          items: [
+            {
+              text: '免责声明',
+              link: './disclaimer',
+            },
+            {
+              text: '隐私政策',
+              link: './privacy',
+            },
+            {
+              text: '用户协议',
+              link: './agreement',
+            },
+          ],
+        },
+        {
+          title: '产品',
+          items: [
+            {
+              text: '客户端使用手册',
+              link: 'https://support.qq.com/products/321980/faqs/94938',
+            },
+            {
+              text: '客户端更新日志',
+              link: 'https://support.qq.com/products/321980/blog/505884',
+            },
+            {
+              text: '网页版更新日志',
+              link: 'https://support.qq.com/products/321980/blog/505810',
+            },
+          ],
+        },
+      ],
     },
     editLink: {
       pattern: 'https://github.com/kongying-tavern/docs/edit/src/:path',

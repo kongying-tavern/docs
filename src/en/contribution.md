@@ -13,13 +13,13 @@ const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 
 # Contribution Acknowledgement
 
-*Kongying Tavern Genshin Interactive Map* began its development in June 2020, during these <time> {{ date }} </time> days,  marker gathering has consumed over 20,000 man-hours.
+_Kongying Tavern Genshin Interactive Map_ began its development in June 2020, during these <time> {{ date }} </time> days, marker gathering has consumed over 20,000 man-hours.
 
 We sincerely thank every individual that contributed to the making of this map.
 
 ## Marker Contributions
 
-| Username              |
+| Username             |
 | -------------------- |
 | 鈴                   |
 | (ಡωಡ)                |
@@ -208,8 +208,6 @@ We sincerely thank every individual that contributed to the making of this map.
 | 你他喵的别来逗！！！ |
 
 > The members of the list is arranged in no particular order；
-
-> Contact QQ 1961266616 for inquiries；
 
 <style lang="scss" scoped>
 thead {

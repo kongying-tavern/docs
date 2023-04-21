@@ -10,9 +10,7 @@ export default {
   ...Theme,
 
   Layout() {
-    return h(Theme.Layout, null, {
-      'layout-bottom': () => h(Footer),
-    })
+    return h(Theme.Layout, null, {})
   },
   enhanceApp({ app }) {
     googleAnalytics({

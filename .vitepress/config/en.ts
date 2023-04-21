@@ -16,9 +16,9 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       provider: 'local',
     },
     socialLinks: [
-      { icon: 'Github', link: 'https://github.com/kongying-tavern/' },
-      { icon: 'Discord', link: 'https://discord.gg/aFe57AKZUF' },
-      { icon: 'Twitter', link: 'https://twitter.com/KongyingTavern' },
+      { icon: 'github', link: 'https://github.com/kongying-tavern/' },
+      { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
+      { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },
     ],
 
     docFooter: {
@@ -36,14 +36,14 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         items: [
           {
             text: 'Client User Manual',
-            link: './manual/Map%20Client%20User%20Manual.md',
+            link: './manual/client-user-manual',
           },
           {
             text: 'Feedback',
             link: 'https://support.qq.com/products/321980',
           },
           {
-            text: 'Vote on New Features',
+            text: 'New Features',
             link: 'https://support.qq.com/products/321980/topic-detail/2016/',
           },
         ],
@@ -122,6 +122,65 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         link: './support-us.md',
       },
     ],
+    footer: {
+      // @ts-ignore
+      qrcodeTitle: 'Discord Server',
+      qrcodeMessage: 'Contact us at discord',
+      qrcodeLink: 'https://discord.gg/aFe57AKZUF',
+      navigation: [
+        {
+          title: 'About',
+          items: [
+            {
+              text: 'Join Us',
+              link: './join',
+            },
+            {
+              text: 'Our team',
+              link: './team',
+            },
+            {
+              text: 'Sponsors',
+              link: './support-us',
+            },
+          ],
+        },
+        {
+          title: 'Legal',
+          items: [
+            {
+              text: 'Disclaimer',
+              link: './disclaimer',
+            },
+            {
+              text: 'Privacy',
+              link: './privacy',
+            },
+            {
+              text: 'User Agreement',
+              link: './agreement',
+            },
+          ],
+        },
+        {
+          title: 'Support',
+          items: [
+            {
+              text: 'Client User Manual',
+              link: './manual/client-user-manual',
+            },
+            {
+              text: 'Feedback',
+              link: 'https://support.qq.com/products/321980',
+            },
+            {
+              text: 'New Features',
+              link: 'https://support.qq.com/products/321980/topic-detail/2016/',
+            },
+          ],
+        },
+      ],
+    },
   },
   head: [
     ['meta', { property: 'og:url', content: META_URL }],

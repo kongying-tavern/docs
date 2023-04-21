@@ -207,9 +207,7 @@ const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 | Ծ‸Ծ                  |
 | 你他喵的别来逗！！！ |
 
-> 名单按照打点群的入群时间排序不分先后；
-
-> 如有疑问可联系 QQ 1961266616；
+> 名单排序不分先后；
 
 <style lang="scss" scoped>
 thead {

@@ -1,6 +1,7 @@
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { enConfig } from './en'
 import { zhConfig } from './zh'
@@ -103,6 +104,16 @@ export default defineConfig({
       fs: {
         allow: ['../..'],
       },
+    },
+    resolve: {
+      alias: [
+        {
+          find: /^.*\/VPFooter\.vue$/,
+          replacement: fileURLToPath(
+            new URL('../theme/components/Footer.vue', import.meta.url)
+          ),
+        },
+      ],
     },
     plugins: [
       // https://github.com/antfu/unocss

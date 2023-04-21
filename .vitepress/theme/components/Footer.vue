@@ -1,13 +1,16 @@
 <template>
   <div class="footer-container" v-if="frontmatter.footer !== false">
     <footer class="footer">
-      <div class="footer-navigation" v-for="item in navigationData">
+      <div class="footer-navigation" v-for="item in theme.footer.navigation">
         <h3 class="footer-title">{{ item.title }}</h3>
         <ul>
-          <li v-for="ic in item.children">
-            <a :href="
-              withBase(ic.link)
-            " :title="ic.text" :target="ic.text" rel="noopener noreferrer">
+          <li v-for="ic in item.items">
+            <a
+              :href="withBase(ic.link)"
+              :title="ic.text"
+              :target="ic.text"
+              rel="noopener noreferrer"
+            >
               {{ ic.text }}
             </a>
           </li>
@@ -15,41 +18,76 @@
       </div>
       <div class="justify-self-end footer-qrcode">
         <img :src="qrcode" alt="QR Code" />
-        <h4>开发反馈群</h4>
-        <p>欢迎QQ扫码联系我们</p>
+        <h4>{{ theme.footer.qrcodeTitle }}</h4>
+        <p>{{ theme.footer.qrcodeMessage }}</p>
       </div>
     </footer>
-    <footer class="footer py-4" style="border-top: 1px solid var(--vp-c-gutter)">
+    <footer
+      class="footer py-4"
+      style="border-top: 1px solid var(--vp-c-gutter)"
+    >
       <div class="items-center grid-flow-col">
-         <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            class="fill-current"
-          >
-            <path
-              d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"
-            ></path>
-          </svg>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          class="fill-current"
+        >
+          <path
+            d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"
+          ></path>
+        </svg>
         <p text-left>MIT Licensed<br />Made by Kongying Tavern Team</p>
       </div>
       <div class="md:place-self-center md:justify-self-end">
         <div class="grid grid-flow-col gap-4">
-          <a i-custom-github icon-btn mr-4 href="https://github.com/kongying-tavern" target="_blank" title="GitHub"
-            rel="noopener noreferrer"></a>
-          <a i-custom-gitee icon-btn mr-4 href="https://gitee.com/KYJGYSDT" target="_blank" title="Gitee"
-            rel="noopener noreferrer"></a>
-          <a i-logos-twitter icon-btn mr-4 href="https://twitter.com/KongyingTavern" target="_blank" rel="noopener noreferrer"></a>
-          <a i-custom-bilibili icon-btn mr-4 href="https://space.bilibili.com/518076785" target="_blank" title="Bilibili"
-            rel="noopener noreferrer"></a>
-          <a i-logos-youtube-icon icon-btn mr-4 href="https://www.youtube.com/@KongyingTavernOfficial" target="_blank"
-            title="Youtube" rel="noopener noreferrer"></a>
-          <a i-custom-mys icon-btn border-rd href="https://bbs.mihoyo.com/ys/article/1328298" target="_blank" title="米游社"
-            rel="noopener noreferrer">
-          </a>
+          <a
+            i-custom-github
+            icon-btn
+            mr-4
+            href="https://github.com/kongying-tavern"
+            target="_blank"
+            title="GitHub"
+            rel="noopener noreferrer"
+          ></a>
+          <a
+            i-custom-gitee
+            icon-btn
+            mr-4
+            href="https://gitee.com/KYJGYSDT"
+            target="_blank"
+            title="Gitee"
+            rel="noopener noreferrer"
+          ></a>
+          <a
+            i-logos-twitter
+            icon-btn
+            mr-4
+            href="https://twitter.com/KongyingTavern"
+            target="_blank"
+            rel="noopener noreferrer"
+          ></a>
+          <a
+            i-custom-bilibili
+            icon-btn
+            mr-4
+            href="https://space.bilibili.com/518076785"
+            target="_blank"
+            title="Bilibili"
+            rel="noopener noreferrer"
+          ></a>
+          <a
+            i-logos-youtube-icon
+            icon-btn
+            mr-4
+            href="https://www.youtube.com/@KongyingTavernOfficial"
+            target="_blank"
+            title="Youtube"
+            rel="noopener noreferrer"
+          ></a>
         </div>
       </div>
     </footer>
@@ -57,68 +95,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
-import { useData } from 'vitepress'
-import { defineProps } from 'vue'
-import { withBase } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 
-// TODO: 转为配置导向
+const { theme } = useData()
 const { frontmatter } = useData()
-const navigationData = ref([
-  {
-    title: '关于',
-    children: [
-      {
-        text: '加入我们',
-        link: './join',
-      },
-      {
-        text: '了解团队',
-        link: './team',
-      },
-      {
-        text: '赞助鸣谢',
-        link: './support-us',
-      },
-    ],
-  },
-  {
-    title: '政策',
-    children: [
-      {
-        text: '免责声明',
-        link: './disclaimer',
-      },
-      {
-        text: '隐私政策',
-        link: './privacy',
-      },
-      {
-        text: '用户协议',
-        link: './agreement',
-      },
-    ],
-  },
-  {
-    title: '产品',
-    children: [
-      {
-        text: '客户端使用手册',
-        link: 'https://support.qq.com/products/321980/faqs/94938',
-      },
-      {
-        text: '客户端更新日志',
-        link: 'https://support.qq.com/products/321980/blog/505884',
-      },
-      {
-        text: '网页版更新日志',
-        link: 'https://support.qq.com/products/321980/blog/505810',
-      },
-    ],
-  },
-])
-const qrcode = useQRCode('https://jq.qq.com/?_wv=1027&k=nbveGrfQ')
+const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 </script>
 
 <style lang="scss">
@@ -131,12 +114,12 @@ const qrcode = useQRCode('https://jq.qq.com/?_wv=1027&k=nbveGrfQ')
   background-color: var(--vp-c-bg-alt);
 }
 
-.is-home~.footer-container .footer {
+.is-home ~ .footer-container .footer {
   max-width: 1152px;
 }
 
 // 有侧边栏时隐藏 Footer
-.VPSidebar~.footer-container {
+.VPSidebar ~ .footer-container {
   display: none;
 }
 
@@ -159,7 +142,7 @@ const qrcode = useQRCode('https://jq.qq.com/?_wv=1027&k=nbveGrfQ')
   margin: 0 auto;
 }
 
-.footer>* {
+.footer > * {
   display: grid;
   place-items: start;
   gap: 0.5rem;
@@ -194,7 +177,7 @@ const qrcode = useQRCode('https://jq.qq.com/?_wv=1027&k=nbveGrfQ')
     }
   }
 
-  ul>li>a {
+  ul > li > a {
     display: inline-block;
     transition: color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     color: var(--vp-c-text-1);
@@ -238,8 +221,8 @@ const qrcode = useQRCode('https://jq.qq.com/?_wv=1027&k=nbveGrfQ')
 }
 
 // 这里逻辑还有点问题
-.footer-title:hover~ul,
-.footer-title~ul:hover {
+.footer-title:hover ~ ul,
+.footer-title ~ ul:hover {
   height: 100%;
 }
 
@@ -291,7 +274,7 @@ const qrcode = useQRCode('https://jq.qq.com/?_wv=1027&k=nbveGrfQ')
       height: 100%;
     }
 
-    ul>li>a {
+    ul > li > a {
       padding: 0;
     }
   }
