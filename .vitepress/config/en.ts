@@ -3,7 +3,7 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 export const META_URL = 'https://yuanshen.site/docs/en/'
 export const META_TITLE = 'Genshin Interactive Map'
 export const META_DESCRIPTION =
-  'An all-encompassing map for completionists by Kongying Tavern.'
+  'A completionists interactive map by Kongying Tavern'
 
 export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   description: META_DESCRIPTION,

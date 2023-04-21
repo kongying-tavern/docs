@@ -1,7 +1,7 @@
 ---
 title: Join Community
 description: Join Community
-sidebar: false
+aside: false
 pageClass: communication-group
 externalLinkIcon: false
 ---

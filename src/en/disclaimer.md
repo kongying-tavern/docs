@@ -2,7 +2,7 @@
 title: 免责声明
 description: 免责声明
 date: 2021-5-30
-sidebar: false
+aside: false
 ---
 
 # 免责声明

@@ -1,5 +1,6 @@
 ---
 title: \[Background Suspend] Feature
+aside: false
 ---
 
 # [Background Suspend] Feature

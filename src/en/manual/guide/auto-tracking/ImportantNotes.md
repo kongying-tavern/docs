@@ -20,7 +20,7 @@ Once automatic tracking is enabled, The **map client** will
 - Display your UID at the lower right corner
 - Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
 
-<div align="center"><img align="center" src="./imgs/autotrackingegaged.png)
+![](./../../../../public/imgs/en/manual/auto-tracking/autotrackingegaged.png)
 
 ## Important Notes
 
@@ -29,11 +29,11 @@ Once automatic tracking is enabled, The **map client** will
 - (This feature supports various aspect ratios and the controller UI layout)
 - A low game resolution will reduce tracking accuracy, a resolution of <span style="color: red">1920\*1080 or greater is recommended</span>
 - Automatic tracking will not function with **exclusive fullscreen**. Please use **windowed** for functional tracking.
-- If you wish to play the game fullscreen like **exclusive fullscreen**, refer to the guide: [Launching The Game in Fullscreen Windowed (Borderless)](../overlay-mode/Fullscreen-Windowed/Launching%20The%20Game%20in%20Fullscreen%20Windowed.md)
+- If you wish to play the game fullscreen like **exclusive fullscreen**, refer to the guide: [Launching The Game in Fullscreen Windowed (Borderless)](../overlay-mode/Fullscreen-Windowed/Launching.md)
 - Automatic tracking <span style="color: red">may somtimes return a C++ related error prompt</span>, clicking "OK" will cause the client to crash. This can be solved by installing **2005c++runtime**, if there are further problems please refer to our feedback options
-- Windows 11 users may need to disable "Don't use optimizations for windowed games" for automatic tracking to function
+- Windows 11 users may need to enable "Don't use optimizations for windowed games" for automatic tracking to function
 
-![](./imgs/windowedoptimization.png)
+![](./../../../../public/imgs/en/manual/auto-tracking/windowedoptimization.png)
 
 ## Capabilities
 

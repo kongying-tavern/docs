@@ -1,7 +1,7 @@
 ---
 title: Contribution Acknowledgement
 description: Contribution Acknowledgement
-sidebar: false
+aside: false
 ---
 
 <script setup>

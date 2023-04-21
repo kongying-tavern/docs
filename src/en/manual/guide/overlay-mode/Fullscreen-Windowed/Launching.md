@@ -1,6 +1,6 @@
 ---
 title: \[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
-aside: true
+aside: false
 ---
 
 # [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
@@ -9,22 +9,22 @@ aside: true
 
 ---
 
-You can launch Genshin Impact in **Windowed **Fullscreen\*\* with the following steps:
+You can launch Genshin Impact in **Windowed Fullscreen** with the following steps:
 
 - Step 1. Go to Genshin's installation folder
-  ![](Images\WF-Location-EN.png"></img></div>
+  ![](./../../../../../public/imgs/en/manual/Fullscreen-Windowed/WF-Location-EN.png)
 
 - Step 2. Open the folder named "Genshin Impact Game"
-  ![](Images\WF-Subdir-EN.png"></img></div>
+  ![](./../../../../../public/imgs/en/manual/Fullscreen-Windowed/WF-Subdir-EN.png)
 
 - Step 3. Create a shortcut on the Desktop for GenshinImpact.exe
-  ![](Images\WF-Shortcut-EN.png"></img></div>
+  ![](./../../../../../public/imgs/en/manual/Fullscreen-Windowed/WF-Shortcut-EN.png)
 
 - Step 4. Right-click on the shortcut and select Properties
-  ![](Images\WF-Prop-EN.png"></img></div>
+  ![](./../../../../../public/imgs/en/manual/Fullscreen-Windowed/WF-Prop-EN.png)
 
 - Step 5. In the Target text box, add " -popupwindow" to the end of the address. (remember the space)
-  ![](Images\WF-PropEdit-EN.png"></img></div>
+  ![](./../../../../../public/imgs/en/manual/Fullscreen-Windowed/WF-PropEdit-EN.png)
 
 ## Note
 

@@ -1,7 +1,7 @@
 ---
 title: Download Client
 description: Download Client
-sidebar: false
+aside: false
 pageClass: download-client
 ---
 

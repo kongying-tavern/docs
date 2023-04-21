@@ -1,5 +1,6 @@
 ---
 title: \[Login] Account Login Problems
+aside: false
 ---
 
 # [Login] Account Login Problems
@@ -11,7 +12,8 @@ title: \[Login] Account Login Problems
 
 - The client is <span style="color: red">unable to log you in</span> using a <span style="color: red">phone number</span>, please use your <span style="color: ">linked Email</span> or <span style="color: red">Gitee username</span> to log in
 
-![](image\giteeusername.png)(You can find your username under your Gitee profile, excluding "@")</div>
+![](./../../../../public/imgs/en/manual/login/giteeusername.png)
+(You can find your username under your Gitee profile, excluding "@")
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Contributing
 description: Contributing
-sidebar: false
+aside: false
 ---
 
 # Contributing

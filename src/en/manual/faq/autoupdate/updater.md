@@ -1,6 +1,6 @@
 ---
 title: \[Auto Update] Non-Responsive Updater
-aside: true
+aside: false
 ---
 
 # [Auto Update] Non-Responsive Updater

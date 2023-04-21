@@ -1,5 +1,6 @@
 ---
 title: \[Easter Egg] View Archived Versions of Golden Apple Archipelago
+aside: false
 ---
 
 # [Easter Egg] View Archived Versions of Golden Apple Archipelago

@@ -1,7 +1,7 @@
 ---
 title: 技术鸣谢
 description: 技术鸣谢
-sidebar: false
+aside: false
 pageClass: credits
 ---
 

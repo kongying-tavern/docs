@@ -1,7 +1,7 @@
 ---
 title: 贡献鸣谢
 description: 贡献鸣谢
-sidebar: false
+aside: false
 ---
 
 <script setup>

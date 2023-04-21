@@ -1,6 +1,6 @@
 ---
 title: \[Automatic Tracking] Trounbleshooting
-sidebar: true
+aside: true
 ---
 
 # [Automatic Tracking] Trouble shooting
