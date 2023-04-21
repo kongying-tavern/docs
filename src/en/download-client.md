@@ -21,5 +21,5 @@ pageClass: download-client
 ::: tip
 Currently we only offer the **Windows Version** of our map client, versions in other OS are in progress.
 
-If you are interested, consider [Join Us(^\_^)](./join)
+If you are interested in aiding us in development, consider [Join Us(^\_^)](./join)
 :::

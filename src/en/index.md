@@ -8,21 +8,21 @@ features:
     details: Indicate Chests according to [Quality] or [Method], both options display all chests within the selected sub-region.
   - title: Overlay Mode
     icon: 🎪
-    details: Overlay the game window, provide easy access to the map on single display users
+    details: Overlay the game window, provide easy access to the map on single display users.
   - title: Automatic Tracking
     icon: 🛠
-    details: Automatically detect your character location using image recognition and display a simultaneous player indicator on the **map client**
+    details: Automatically detect your character location using image recognition and display a simultaneous player indicator on the <b>map client</b>.
   - title: Underground Maps
     icon: ✨
-    details: Exquisite and detailed underground maps by [Teyvat Map Institute], professionally composed with levels and navigational illustrations
+    details: Exquisite and detailed underground maps by [Teyvat Map Institute], professionally composed with levels and navigational illustrations.
   - title: Progress Sync
     icon: ☁️
     details: Cloud syncing support for marker progress, custom paths, etc.
   - title: 100% Free
     icon: 🎉
-    details: _Genshin Interactive Map_ is a MulanPSL-1.0 open-source project, it is also AD-free.
+    details: <em>Genshin Interactive Map</em> is a MulanPSL-1.0 open-source project, it is also AD-free.
 hero:
-  name: Genshin Map
+  name: Genshin Interactive Map
   text: An all-encompassing map for Kongying Tavern
   tagline: Simple, powerful, and performant.
   image:

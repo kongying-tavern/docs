@@ -1,10 +1,6 @@
 ---
-title: [Automatic Tracking] Trounbleshooting
+title: \[Automatic Tracking] Trounbleshooting
 sidebar: true
 ---
 
-# [Automatic Tracking] Troub leshooting
-
-
-
-  
+# [Automatic Tracking] Trouble shooting

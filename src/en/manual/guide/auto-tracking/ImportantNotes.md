@@ -1,6 +1,6 @@
 ---
-title: [Automatic Tracking] Important Notes
-sidebar: true
+title: \[Automatic Tracking] Important Notes
+aside: true
 ---
 
 # [Automatic Tracking] Important Notes
@@ -8,6 +8,7 @@ sidebar: true
 This feature is based on **image recognition**
 
 ---
+
 The following are pre-requisites for this feature:
 
 - Windows 10 or above
@@ -19,7 +20,7 @@ Once automatic tracking is enabled, The **map client** will
 - Display your UID at the lower right corner
 - Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
 
-<div align="center"><img align="center" src="./imgs/autotrackingegaged.png"></div>
+<div align="center"><img align="center" src="./imgs/autotrackingegaged.png)
 
 ## Important Notes
 
@@ -32,7 +33,7 @@ Once automatic tracking is enabled, The **map client** will
 - Automatic tracking <span style="color: red">may somtimes return a C++ related error prompt</span>, clicking "OK" will cause the client to crash. This can be solved by installing **2005c++runtime**, if there are further problems please refer to our feedback options
 - Windows 11 users may need to disable "Don't use optimizations for windowed games" for automatic tracking to function
 
-<div align="center"><img src="./imgs/windowedoptimization.png"></div>
+![](./imgs/windowedoptimization.png)
 
 ## Capabilities
 
@@ -40,4 +41,4 @@ Once automatic tracking is enabled, The **map client** will
 - <span style="color: red">[New capability]</span> Functioning properly even when Windows system Scaling is not 100%
 - <span style="color: red">[New capability]</span> More accurate player heading detection
 - <span style="color: red">[New capability]</span> Functioning in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
-​
+  ​

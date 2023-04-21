@@ -1,5 +1,6 @@
 ---
-title: [Auto Update] Non-Responsive Updater 
+title: \[Auto Update] Non-Responsive Updater
+aside: true
 ---
 
 # [Auto Update] Non-Responsive Updater
@@ -10,4 +11,4 @@ Between version updates, some setups will encounter a bug preventing the auto-up
 > https://download.yuanshen.site/d_0/YuanshendtUpdater.exe
 
 Updater Location:
-![updaterlocation](./manual/updaterlocation.png)
+![](./../../../../public/imgs/en/manual/autoupdate/updaterlocation.png)

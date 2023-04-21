@@ -1,5 +1,6 @@
 ---
 title: Can I be Banned For Using Kongying Tavern?
+aside: false
 ---
 
 # Can I be Banned For Using Kongying Tavern?
@@ -8,9 +9,9 @@ _Kongying Tavern Genshin Interactive Map_ is a MulanPSL-1.0 open-source project,
 
 ---
 
-Web version portal: https://yuanshen.site  
-Map client official download links: [(需链接)]()
+Web version portal: <https://yuanshen.site>  
+Map client official download links: [Download Client](../../../download-client.md)
 
 ---
 
-<div align="center"><h3>Thank you for your trust and continuous support!</h3></div>
+### **Thank you for your trust and continuous support!**

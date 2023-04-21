@@ -15,9 +15,9 @@ title: Map Client User Manual
 ## **Guides**
 
 - [Starter Tour]()
-- [[Automatic Tracking] Important Notes](./guide/auto-tracking/Important%20Notes.md)
-- [~~[Automatic Tracking] Oculus Tracking~~](./guide/auto-tracking/Oculus%20Tracking.md)
-- [[Background Suspend] Feature](./guide/bg-suspend/Background%20Suspend.md)
+- [[Automatic Tracking] Important Notes](./guide/auto-tracking/ImportantNotes.md)
+- [~~[Automatic Tracking] Oculus Tracking~~](./guide/batch-selection/)
+- [[Background Suspend] Feature](./guide/bg-suspend/Background-Suspend.md)
 - [[Batch Selection] Instructions](./guide/batch-selection/Instructions.md)
 - [[Custom Path Planner (Canvas)] Guide](./guide/canvas/Guide.md)
 - [[Easter Egg] View Archived Versions of Golden Apple Archipelago](./guide/easter-egg/View%20Archived%20Versions%20of%20Golden%20Apple%20Archipelago.md)
@@ -36,5 +36,4 @@ title: Map Client User Manual
 - [[Launch Error] Version Check Failed](./faq/launch-error/Version%20Check%20Failed.md)
 - [[Login] Account Login Problems](./faq/login/Account%20Login%20Problems.md)
 - [[Login] Client Repeatedly Requests Login](./faq/login/Client%20Repeatedly%20Requests%20Login.md)
-
 - [Can I be Banned For Using Kongying Tavern?](./faq/account-safety/Can%20I%20be%20Banned%20For%20Using%20Kongying%20Tavern.md)

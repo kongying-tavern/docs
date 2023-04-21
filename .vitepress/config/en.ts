@@ -11,7 +11,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     siteTitle: 'Genshin Interactive Map',
     outlineTitle: 'ON THIS PAGE',
     logo: '/imgs/logo_256.png',
-    lastUpdatedText: 'LAST UPDATE',
+    lastUpdatedText: 'Last updated',
     search: {
       provider: 'local',
     },
