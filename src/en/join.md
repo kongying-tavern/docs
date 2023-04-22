@@ -14,7 +14,7 @@ Reach out in [our Discord](https://discord.gg/aFe57AKZUF) if you cannot access Q
 
 > ## 🌎 Localization
 >
-> [Join QQ Discussion Group](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [Contact us](https://discord.gg/aFe57AKZUF)
 
 ### Responsibilities
 
@@ -28,7 +28,7 @@ Reach out in [our Discord](https://discord.gg/aFe57AKZUF) if you cannot access Q
 
 > ## 🎨 Art
 >
-> [Join QQ Discussion Group](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [Contact us](https://discord.gg/aFe57AKZUF)
 
 ### Responsibilities
 

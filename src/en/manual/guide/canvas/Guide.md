@@ -20,33 +20,33 @@ Hotkey summary:
 
 **step** 1. Click on the map icon located in the upper right
 
-![](./../../../../public/imgs/en/manual/canvas/1.png)
+![](./imgs/en/manual/canvas/1.png)
 
 **step** 2. Select "Add a New Canvas"
 
-![](./../../../../public/imgs/en/manual/canvas/2.pngg)
+![](./imgs/en/manual/canvas/2.pngg)
 
 **step** 3. Select the newly created canvas (indicated by darkened background)
 
-![](./../../../../public/imgs/en/manual/canvas/3.png)
+![](./imgs/en/manual/canvas/3.png)
 
-![](./../../../../public/imgs/en/manual/canvas/4.png)
+![](./imgs/en/manual/canvas/4.png)
 (Canvas under selection, click on it again to deselect)
 
 **step** 4. Toggle editing
 
-![](./../../../../public/imgs/en/manual/canvas/5.png)
+![](./imgs/en/manual/canvas/5.png)
 
-![](./../../../../public/imgs/en/manual/canvas/6.png)
+![](./imgs/en/manual/canvas/6.png)
 (Picture shows editing toggled ON, click on it again to toggle OFF)
 
 **step** 5. **Hold Alt and primary click** on any location to create a path
 
-![](./../../../../public/imgs/en/manual/canvas/7.png)
+![](./imgs/en/manual/canvas/7.png)
 
 **step** 6. Holding control allows control over anchors on the path
 
-![](./../../../../public/imgs/en/manual/canvas/9.png)
+![](./imgs/en/manual/canvas/9.png)
 
 At this stage, use **primary click** to control the anchors,  
 use **secondary click** on round anchors to reset path curvature,  
@@ -61,14 +61,14 @@ use **secondary click** on square anchors to delete it,
 
 Open the Canvas list, select "Export" and save to a desirable location
 
-![](./../../../../public/imgs/en/manual/canvas/10.png)
-![](./../../../../public/imgs/en/manual/canvas/11.png)
-![](./../../../../public/imgs/en/manual/canvas/12.png)
+![](./imgs/en/manual/canvas/10.png)
+![](./imgs/en/manual/canvas/11.png)
+![](./imgs/en/manual/canvas/12.png)
 
 ## Import Guide
 
 Open the Canvas list, select "Import" and open the desirable save
 
-![](./../../../../public/imgs/en/manual/canvas/13.png)
-![](./../../../../public/imgs/en/manual/canvas/14.png)
-![](./../../../../public/imgs/en/manual/canvas/15.png)
+![](./imgs/en/manual/canvas/13.png)
+![](./imgs/en/manual/canvas/14.png)
+![](./imgs/en/manual/canvas/15.png)

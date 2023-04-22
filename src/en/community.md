@@ -10,7 +10,7 @@ externalLinkIcon: false
 
 ## Discord Server
 
-1. [**Join Server** aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
+1. [**Join Server** aFe57AKZUF](https://discord.gg/aFe57AKZUF 'Invite Link')
 
 ## QQ 交流群
 

@@ -9,7 +9,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   description: META_DESCRIPTION,
   themeConfig: {
     siteTitle: 'Genshin Interactive Map',
-    outlineTitle: 'On this page',
+    outlineTitle: 'On This Page',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: 'Last updated',
     search: {

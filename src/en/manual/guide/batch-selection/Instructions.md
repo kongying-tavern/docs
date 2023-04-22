@@ -20,24 +20,24 @@ Responding to the requests from travellers, batch selection is now available!
 - **Secondary click** <b><span style="color: red">Undone</span></b> marker will change it to <b><span style="color: green">Done</span></b>.
 - **Secondary click** <b><span style="color: green">Done</span></b> marker will change it to <b><span style="color: red">Undone</span></b>.
 
-![secondary click - Single Marker Selection](./../../../../public/imgs/en/manual/batch-selection/1.gif)
+![secondary click - Single Marker Selection](https://assets.yuanshen.site/docs/en/manual/batch1.gif)
 
 ### **Scenario 2: Swipe Selection**
 
 - Hold **secondary click**, and swipe over markers. <b><span style="color: red">Undone</span></b> markers will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: green">Done</span></b> markers will stay unchanged.
 
-![secondary click Swipe - Mark](./../../../../public/imgs/en/manual/batch-selection/2.gif)
+![secondary click Swipe - Mark](https://assets.yuanshen.site/docs/en/manual/batch2.gif)
 
 - Hold **left Alt** and **secondary click**, and swipe over markers. <b><span style="color: green">Done</span></b> markers will be changed to <b><span style="color: red">Undone</span></b>, and <b><span style="color: red">Undone</span></b> markers will stay unchanged.
 
-![secondary click Swipe - Remove Mark](./../../../../public/imgs/en/manual/batch-selection/3.gif)
+![secondary click Swipe - Remove Mark](https://assets.yuanshen.site/docs/en/manual/batch3.gif)
 
 ### **Scenario 3: Box Selection**
 
 - Hold **Ctrl** and **secondary click**, and drag a rectangular box. Any <b><span style="color: red">Undone</span></b> markers in the box will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: green">Done</span></b> markers will stay unchanged.
 
-![secondary click Box Selection - Mark](./../../../../public/imgs/en/manual/batch-selection/4.gif)
+![secondary click Box Selection - Mark](https://assets.yuanshen.site/docs/en/manual/batch4.gif)
 
 - Hold **Ctrl**, **left Alt** and **secondary click**, and drag a rectangular box. Any <b><span style="color: red">Undone</span></b> markers in the box will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: red">Undone</span></b> markers will stay unchanged.
 
-![secondary click Box Selection - Remove Mark](./../../../../public/imgs/en/manual/batch-selection/5.gif)
+![secondary click Box Selection - Remove Mark](https://assets.yuanshen.site/docs/en/manual/batch5.gif)
