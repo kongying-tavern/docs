@@ -6,7 +6,7 @@ title: Map Client User Manual
 
 ## **Manuals in Other Languages**
 
-- [中文版用户手册](https://support.qq.com/products/321980/faqs/94938)
+- [中文版用户手册 (Chinese Version)](https://support.qq.com/products/321980/faqs/94938)
 
 ## **Update Log**
 
