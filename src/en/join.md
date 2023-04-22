@@ -8,8 +8,6 @@ description: Join Us
 We invite you to join our effort in completing and improving this project, it and its iterations will always be free.
 If you have any proposals for a new idea or mechanic, join us to make it real.
 
-Reach out in [our Discord](https://discord.gg/aFe57AKZUF) if you cannot access QQ.
-
 :::raw
 
 > ## 🌎 Localization
