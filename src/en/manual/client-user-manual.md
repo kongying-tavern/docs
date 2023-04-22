@@ -16,7 +16,7 @@ title: Map Client User Manual
 
 - [Starter Tour]()
 - [[Automatic Tracking] Important Notes](./guide/auto-tracking/ImportantNotes.md)
-- [[Background Usage] Framerate Control]()
+- [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Batch Selection] Instructions](./guide/batch-selection/Instructions.md)
 - [[Custom Path Planner (Canvas)] Guide](./guide/canvas/Guide.md)
 - [[Easter Egg] View Archived Versions of Golden Apple Archipelago](./guide/easter-egg/ViewArchivedVersionsofGoldenAppleArchipelago.md)

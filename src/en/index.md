@@ -5,7 +5,7 @@ titleTemplate: Home page
 features:
   - title: Dual Mode Indications
     icon: 🦾
-    details: Indicate Chests according to [Quality] or [Method], both options display all chests within the selected sub-region.
+    details: Indicate chests according to [Quality] or [Method], both options display all chests within the selected sub-region.
   - title: Overlay Mode
     icon: 🎪
     details: Overlays the game window, providing easy access to the map on single display users
@@ -14,7 +14,7 @@ features:
     details: Automatically detects your character location using image recognition and displays a simultaneous player indicator on the <b>map client</b>.
   - title: Underground Maps
     icon: ✨
-    details: Exquisite and Accurate underground maps by [Teyvat Map Institute], professionally composed with levels and navigational illustrations.
+    details: Exquisite and accurate underground maps by [Teyvat Map Institute], professionally composed with levels and navigational illustrations.
   - title: Progress Sync
     icon: ☁️
     details: Cloud syncing support for marker progress, custom paths, etc.
