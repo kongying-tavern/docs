@@ -11,11 +11,11 @@ aside: false
 
 If you wish to use the [Stay on Top] feature, which pins the map client window on top despite being out of focus, it is recommended to match both frame rate settings' values.
 
-![](./imgs/en/manual/bg-frate/1.png)
+![](/imgs/en/manual/bg-frate/1.png)
 
 Dragging the frame rate slider to the leftmost position will enable \[V-Sync], which matches the frame rate limit to your monitor's refresh rate.
 
-![](./imgs/en/manual/bg-frate/2.png)
+![](/imgs/en/manual/bg-frate/2.png)
 
 ---
 
@@ -27,4 +27,4 @@ Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
 
 Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while also reducing player indicator responsiveness.
 
-![](./imgs/en/manual/bg-frate/3.png)
+![](/imgs/en/manual/bg-frate/3.png)

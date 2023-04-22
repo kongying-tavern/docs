@@ -13,7 +13,7 @@ There are two display modes for Done markers:
 ---
 
 Show Done:
-![](./imgs/en/manual/hide-show-done/Hide.png)
+![](/imgs/en/manual/hide-show-done/Hide.png)
 
 Hide Done:
-![](./imgs/en/manual/hide-show-done/show.png)
+![](/imgs/en/manual/hide-show-done/show.png)

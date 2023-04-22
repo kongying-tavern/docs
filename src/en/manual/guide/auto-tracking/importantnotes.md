@@ -20,7 +20,7 @@ Once automatic tracking is enabled, The **map client** will
 - Display your UID at the lower right corner
 - Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
 
-![](./imgs/en/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/en/manual/auto-tracking/autotrackingegaged.png)
 
 ## Important Notes
 
@@ -33,7 +33,7 @@ Once automatic tracking is enabled, The **map client** will
 - Automatic tracking <span style="color: red">may sometimes return a C++ related error prompt</span>, clicking "OK" will cause the client to crash. This can be solved by installing **2005c++runtime**, if there are further problems please refer to our feedback options
 - Windows 11 users may need to enable "Don't use optimizations for windowed games" for automatic tracking to function
 
-![](./imgs/en/manual/auto-tracking/windowedoptimization.png)
+![](/imgs/en/manual/auto-tracking/windowedoptimization.png)
 
 ## Capabilities
 
