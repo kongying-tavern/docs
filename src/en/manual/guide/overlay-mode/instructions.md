@@ -15,7 +15,7 @@ Overlay Mode <span style="color: green"><b>displays the map client</b></span> ov
 ## Instructions
 
 - Overlay Mode only functions properly when the Genshin is running under a non-fullscreen mode
-- For users who prefer a fullscreen experience, please follow the instructions in: [Launching The Game in Windowed Fullscreen](./Fullscreen-Windowed/Launching.md)
+- For users who prefer a fullscreen experience, please follow the instructions in: [Launching The Game in Windowed Fullscreen](./fullscreen-windowed/launching.md)
 - The map cannot be summoned to the top when Genshin is in exclusive fullscreen. Try setting Genshin to windowed, quitting, or using the **Alt+Enter** shortcut to switch it to windowed without changing the game resolution
 - When Overlay Mode is enabled, a tip is displayed.
 

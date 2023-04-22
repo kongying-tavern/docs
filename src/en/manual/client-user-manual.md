@@ -30,7 +30,7 @@ title: Map Client User Manual
 - [Download The Latest Map Client](../download-client.md)
 - [[Auto Update] Non-Responsive Updater](./faq/autoupdate/updater.md)
 - [[Installation Error] Code 2503](./faq/instlerror/code2503.md)
-- [[Installation Error] Missing .dll file](./faq/Instlerror/missingdll.md)
+- [[Installation Error] Missing .dll file](./faq/instlerror/missingdll.md)
 - [[Launch Error] Empty Dialog Box or Stuck Progress Bar](./faq/launcherror/emptydialog.md)
 - [[Launch Error] Version Check Failed](./faq/launcherror/versioncheck.md)
 - [[Login] Account Login Problems](./faq/login/accountlogin.md)
