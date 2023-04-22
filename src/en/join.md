@@ -5,7 +5,7 @@ description: Join Us
 
 # Join Us
 
-This project and its iterations will always be free, we invite you to join our effort in its completion and polish.
+This project and its iterations will always be free, we sincerely invite you to join our effort in its completion and polish.
 If you have any proposals for a new idea or mechanic, join us to make it real.
 
 :::raw
