@@ -8,18 +8,7 @@ description: Join Us
 We invite you to join our effort in completing and improving this project, it and its iterations will always be free.
 If you have any proposals for a new idea or mechanic, join us to make it real.
 
-Contact us in Discord if you cannot access QQ.
-
-:::raw
-
-> ## 📌 地图打点组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi 'QQ群 992165223')
-
-### 工作职责
-
-1. 负责标记地图点位及校对，收集相关信息数据等;
-   :::
+Reach out in [our Discord](https://discord.gg/aFe57AKZUF) if you cannot access QQ.
 
 :::raw
 
@@ -44,91 +33,9 @@ Contact us in Discord if you cannot access QQ.
 ### Responsibilities
 
 1. UI Design
-2. Designing logos, font style, posters, H5, webpages, banners, icons, etc.；
+2. Designing logos, font style, posters, H5, webpages, banners, icons, etc.
+
    :::
-
-:::raw
-
-> ## 💻 前端开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
-
-### 工作职责
-
-1. 参与地图主页 Web 端和后台前端开发工作。
-2. 参与地图组件库的开发。
-
-### 技术栈
-
-`TypeScript` `Vue3/2` `React` `Next.js` `Deck.GL` `Leaflet` `Quasar`
-:::
-
-:::raw
-
-> ## 🛠 后端开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
-
-### 工作职责
-
-1. 负责地图点位管理系统的开发。
-
-### 技术栈
-
-`Java` `Rust` `MySql` `SpringBoot` `Docker` `Redis`
-:::
-
-:::raw
-
-> ## 📱 App 开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
-
-### 工作职责
-
-1. 负责地图 Android/IOS 的移动端开发。
-
-### 技术栈
-
-`Dark` `Flutter`
-:::
-
-:::raw
-
-> ## 🖥 客户端开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
-
-### 工作职责
-
-1. 负责地图客户端（Windows）的开发。
-
-（急缺）shader 大佬：求求 shader 大佬带带我们~
-
-### 技术栈
-
-`C#` `C` `C++` `Unity`
-:::
-
-:::raw
-
-> ## 📊 算法设计组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
-
-### 工作职责
-
-1. 大数据分析，可视化。
-2. 数理统计与应用。
-
-### 工作要求
-
-1. 数学系相关专业研究生。
-
-### 技术栈
-
-`C#` `C` `C++` `Unity`
-:::
 
 <style lang="scss" scoped>
 .vp-raw {

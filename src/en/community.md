@@ -10,7 +10,7 @@ externalLinkIcon: false
 
 ## Discord Server
 
-1. [**Join Server** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
+1. [**Join Server** aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
 
 ## QQ 交流群
 
@@ -34,10 +34,6 @@ externalLinkIcon: false
 推荐加入人数较少的群。
 请勿重复加群，由于群人数均衡原因，若重复加群将踢出「群人数较多的群」！
 :::
-
-## Discord Server
-
-1. [**Join Server** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF)
 
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {
@@ -102,7 +98,7 @@ background-color: var(--vp-c-bg);
   }
 
 // 被封禁的群
-ol:nth-child(3) > li:nth-child(1) > a strong,  ol:nth-child(3) > li:nth-child(5) > a strong {
+ol:nth-child(5) > li:nth-child(1) > a strong,  ol:nth-child(5) > li:nth-child(5) > a strong {
   text-decoration: line-through !important;
 }
 </style>

@@ -12,9 +12,9 @@ head:
 
 ## What went wrong？
 
-_Genshin Interactive Map_ could not load properly due to absence of critical files,
+_Genshin Interactive Map_ could not load properly due to the absence of critical files,
 
-Your browser may be out of date.
+Your browser may also be out of date.
 
 ## What should I do？
 

@@ -9,7 +9,7 @@ _Kongying Tavern Genshin Interactive Map_ is a MulanPSL-1.0 open-source project,
 
 ---
 
-Web version portal: <https://yuanshen.site>  
+Web-version portal: <https://yuanshen.site>  
 Map client official download links: [Download Client](../../../download-client.md)
 
 ---

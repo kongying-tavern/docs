@@ -9,7 +9,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   description: META_DESCRIPTION,
   themeConfig: {
     siteTitle: 'Genshin Interactive Map',
-    outlineTitle: 'ON THIS PAGE',
+    outlineTitle: 'On this page',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: 'Last updated',
     search: {
@@ -125,7 +125,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     footer: {
       // @ts-ignore
       qrcodeTitle: 'Discord Server',
-      qrcodeMessage: 'Contact us at discord',
+      qrcodeMessage: 'Contact us on discord',
       qrcodeLink: 'https://discord.gg/aFe57AKZUF',
       navigation: [
         {

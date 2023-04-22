@@ -55,7 +55,7 @@ use **secondary click** on square anchors to delete it,
 
 **step** 7. Hit **Enter** to conclude editing this path
 
-**step** 8. Repeat **step** 1 thourgh 7 (note: upon exiting editing via Enter, click on a path to begin editing it)
+**step** 8. Repeat **steps** 1 through 7 (note: upon exiting editing via Enter, click on a path to begin editing it)
 
 ## Export Guide
 

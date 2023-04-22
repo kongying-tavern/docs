@@ -30,7 +30,7 @@ Once automatic tracking is enabled, The **map client** will
 - A low game resolution will reduce tracking accuracy, a resolution of <span style="color: red">1920\*1080 or greater is recommended</span>
 - Automatic tracking will not function with **exclusive fullscreen**. Please use **windowed** for functional tracking.
 - If you wish to play the game fullscreen like **exclusive fullscreen**, refer to the guide: [Launching The Game in Fullscreen Windowed (Borderless)](../overlay-mode/Fullscreen-Windowed/Launching.md)
-- Automatic tracking <span style="color: red">may somtimes return a C++ related error prompt</span>, clicking "OK" will cause the client to crash. This can be solved by installing **2005c++runtime**, if there are further problems please refer to our feedback options
+- Automatic tracking <span style="color: red">may sometimes return a C++ related error prompt</span>, clicking "OK" will cause the client to crash. This can be solved by installing **2005c++runtime**, if there are further problems please refer to our feedback options
 - Windows 11 users may need to enable "Don't use optimizations for windowed games" for automatic tracking to function
 
 ![](./../../../../public/imgs/en/manual/auto-tracking/windowedoptimization.png)
@@ -38,7 +38,7 @@ Once automatic tracking is enabled, The **map client** will
 ## Capabilities
 
 - <span style="color: red">[New capability]</span> Support for most languages (Not limited to Chinese, Korean, and English)
-- <span style="color: red">[New capability]</span> Functioning properly even when Windows system Scaling is not 100%
+- <span style="color: red">[New capability]</span> Functioning properly even when Windows system Scaling is not 100%
 - <span style="color: red">[New capability]</span> More accurate player heading detection
-- <span style="color: red">[New capability]</span> Functioning in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
+- <span style="color: red">[New capability]</span> Functioning in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
   ​
