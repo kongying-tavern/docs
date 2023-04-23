@@ -102,7 +102,6 @@ import { useData, withBase } from 'vitepress'
 const { theme } = useData()
 const { frontmatter } = useData()
 const qrcode = useQRCode(theme.value.footer.qrcodeLink)
-onMounted(()=> qrcode = useQRCode(theme.value.footer.qrcodeLink) )
 </script>
 
 <style lang="scss">
