@@ -20,29 +20,29 @@ Responding to the requests from travellers, batch selection is now available!
 - **Secondary click** <b><span style="color: red">Undone</span></b> marker will change it to <b><span style="color: green">Done</span></b>.
 - **Secondary click** <b><span style="color: green">Done</span></b> marker will change it to <b><span style="color: red">Undone</span></b>.
 
-![](https://assets.yuanshen.site/docs/en/manual/batch1.gif)
+![](https://assets.yuanshen.site/docs/en/manual/1.gif)
 (secondary click - Single Marker Selection)
 
 ### **Scenario 2: Swipe Selection**
 
 - Hold **secondary click**, and swipe over markers. <b><span style="color: red">Undone</span></b> markers will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: green">Done</span></b> markers will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/batch2.gif)
+![](https://assets.yuanshen.site/docs/en/manual/2.gif)
 (secondary click Swipe - Mark)
 
 - Hold **left Alt** and **secondary click**, and swipe over markers. <b><span style="color: green">Done</span></b> markers will be changed to <b><span style="color: red">Undone</span></b>, and <b><span style="color: red">Undone</span></b> markers will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/batch3.gif)
+![](https://assets.yuanshen.site/docs/en/manual/3.gif)
 (secondary click Swipe - Remove Mark)
 
 ### **Scenario 3: Box Selection**
 
 - Hold **Ctrl** and **secondary click**, and drag a rectangular box. Any <b><span style="color: red">Undone</span></b> markers in the box will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: green">Done</span></b> markers will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/batch4.gif)
+![](https://assets.yuanshen.site/docs/en/manual/4.gif)
 (secondary click Box Selection - Mark)
 
 - Hold **Ctrl**, **left Alt** and **secondary click**, and drag a rectangular box. Any <b><span style="color: red">Undone</span></b> markers in the box will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: red">Undone</span></b> markers will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/batch5.gif)
+![](https://assets.yuanshen.site/docs/en/manual/5.gif)
 (secondary click Box Selection - Remove Mark)
