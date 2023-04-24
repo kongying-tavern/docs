@@ -51,7 +51,7 @@ description: 识别和避免钓鱼信息/邮件、虚假支持来电和其他诈
 
 原神地图客户端目前官方下载渠道仅有:
 
-- [官方讨论组下载](./communication-group.md)
+- [官方讨论组下载](./community.md)
 - [官网下载](./download-client.md)
 
 其他均为未授权的第三方下载渠道。

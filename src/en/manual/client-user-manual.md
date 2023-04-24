@@ -1,5 +1,11 @@
 ---
 title: Map Client User Manual
+next:
+  text: '[Automatic Tracking] Important Notes'
+  link: './guide/auto-tracking/importantnotes.md'
+prev:
+  text: 'Home page'
+  link: '../index.md'
 ---
 
 # Map Client User Manual
@@ -14,7 +20,7 @@ title: Map Client User Manual
 
 ## **Guides**
 
-- [Starter Tour]()
+- [Starter Tour](#)
 - [[Automatic Tracking] Important Notes](./guide/auto-tracking/importantnotes.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Batch Selection] Instructions](./guide/batch-selection/instructions.md)

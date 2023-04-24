@@ -18,8 +18,8 @@
       </div>
       <div class="justify-self-end footer-qrcode">
         <img :src="qrcode" alt="QR Code" />
-        <h4>{{ theme.footer.qrcodeTitle }}</h4>
-        <p>{{ theme.footer.qrcodeMessage }}</p>
+        <h4>{{ theme.footer.qrcodeLink }}</h4>
+        <p text-center>{{ theme.footer.qrcodeMessage }}</p>
       </div>
     </footer>
     <footer
@@ -95,7 +95,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
 

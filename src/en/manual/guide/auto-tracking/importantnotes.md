@@ -1,6 +1,9 @@
 ---
 title: \[Automatic Tracking] Important Notes
 aside: true
+next:
+  text: '[Automatic Tracking] Oculus Tracking'
+  link: './oculustracking.md'
 ---
 
 # [Automatic Tracking] Important Notes
@@ -29,7 +32,7 @@ Once automatic tracking is enabled, The **map client** will
 - (This feature supports various aspect ratios and the controller UI layout)
 - A low game resolution will reduce tracking accuracy, a resolution of <span style="color: red">1920\*1080 or greater is recommended</span>
 - Automatic tracking will not function with **exclusive fullscreen**. Please use **windowed** for functional tracking.
-- If you wish to play the game fullscreen like **exclusive fullscreen**, refer to the guide: [Launching The Game in Fullscreen Windowed (Borderless)](../overlay-mode/fullscreen-windowed/Launching.md)
+- If you wish to play the game fullscreen like **exclusive fullscreen**, refer to the guide: [Launching The Game in Fullscreen Windowed (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
 - Automatic tracking <span style="color: red">may sometimes return a C++ related error prompt</span>, clicking "OK" will cause the client to crash. This can be solved by installing **2005c++runtime**, if there are further problems please refer to our feedback options
 - Windows 11 users may need to enable "Don't use optimizations for windowed games" for automatic tracking to function
 

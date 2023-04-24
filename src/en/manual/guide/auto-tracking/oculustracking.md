@@ -1,6 +1,12 @@
 ---
 title: \[Automatic Tracking] Oculus Tracking (Removed)
 aside: false
+next:
+  text: '[Automatic Tracking] Oculus Tracking'
+  link: './oculustracking.md'
+prev:
+  text: '[Automatic Tracking] Trouble shooting'
+  link: './updated.md'
 ---
 
 # [Automatic Tracking] Oculus Tracking
