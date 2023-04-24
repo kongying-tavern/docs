@@ -43,7 +43,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: './imgs/favicon-32x32.png',
+        href: `${base}/imgs/favicon-32x32.png`,
         type: 'image/png',
       },
     ],

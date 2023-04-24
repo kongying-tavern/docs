@@ -18,7 +18,7 @@
       </div>
       <div class="justify-self-end footer-qrcode">
         <img :src="qrcode" alt="QR Code" />
-        <h4>{{ theme.footer.qrcodeLink }}</h4>
+        <h4>{{ theme.footer.qrcodeTitle }}</h4>
         <p text-center>{{ theme.footer.qrcodeMessage }}</p>
       </div>
     </footer>
