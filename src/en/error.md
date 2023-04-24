@@ -1,20 +1,20 @@
 ---
 title: Error
 description: Error
-sidebar: true
+aside: true
 pageClass: error-page
 head:
   - - script
     - src: /docs/error.js
 ---
 
-# *Genshin Interactive Map* has encountered some problems...
+# _Genshin Interactive Map_ has encountered some problems...
 
 ## What went wrong？
 
-*Genshin Interactive Map* could not load properly due to absence of critical files,
+_Genshin Interactive Map_ could not load properly due to the absence of critical files,
 
-Your browser may be out of date.
+Your browser may also be out of date.
 
 ## What should I do？
 

@@ -1,7 +1,7 @@
 ---
 title: Download Client
 description: Download Client
-sidebar: false
+aside: false
 pageClass: download-client
 ---
 
@@ -21,5 +21,5 @@ pageClass: download-client
 ::: tip
 Currently we only offer the **Windows Version** of our map client, versions in other OS are in progress.
 
-If you are interested, consider [Join Us(^\_^)](./join)
+If you are interested in aiding our development, consider [Join Us(^\_^)](./join)
 :::

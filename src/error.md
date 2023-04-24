@@ -1,7 +1,7 @@
 ---
 title: 错误页
 description: 错误页
-sidebar: true
+aside: true
 pageClass: error-page
 head:
   - - script

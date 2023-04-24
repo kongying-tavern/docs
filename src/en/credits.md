@@ -1,7 +1,7 @@
 ---
 title: Credits
 description: Credits
-sidebar: false
+aside: false
 pageClass: credits
 ---
 
@@ -10,6 +10,7 @@ pageClass: credits
 Genshin Interactive Map incorporated the following open-source projects and artworks with respect to their license and usage agreements.
 
 Thank you authors and creators!
+
 ## Web
 
 | Name       | License name | Sourse Code                                 | Copyright                  |
@@ -31,4 +32,4 @@ Thank you authors and creators!
 | Name     | Description            | Link                                                     | CopyRight |
 | :------- | :--------------------- | :------------------------------------------------------- | :-------- |
 | MapImage | Map Illustrations      | [ys.mihoyo.com](https://ys.mihoyo.com)                   | MiHoYo    |
-| ばたばた  | Client [Donate] Button | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |
+| ばたばた | Client [Donate] Button | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |

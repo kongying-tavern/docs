@@ -3,15 +3,15 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 export const META_URL = 'https://yuanshen.site/docs/en/'
 export const META_TITLE = 'Genshin Interactive Map'
 export const META_DESCRIPTION =
-  'An all-encompassing map for completionists by Kongying Tavern.'
+  'A completionists interactive map by Kongying Tavern'
 
 export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   description: META_DESCRIPTION,
   themeConfig: {
     siteTitle: 'Genshin Interactive Map',
-    outlineTitle: 'ON THIS PAGE',
+    outlineTitle: 'On This Page',
     logo: '/imgs/logo_256.png',
-    lastUpdatedText: 'LAST UPDATE',
+    lastUpdatedText: 'Last updated',
     search: {
       provider: 'local',
     },
@@ -125,7 +125,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     footer: {
       // @ts-ignore
       qrcodeTitle: 'Discord Server',
-      qrcodeMessage: 'Contact us at discord',
+      qrcodeMessage: 'Contact us on discord',
       qrcodeLink: 'https://discord.gg/aFe57AKZUF',
       navigation: [
         {

@@ -1,7 +1,7 @@
 ---
 title: 下载客户端
 description: 下载客户端
-sidebar: false
+aside: false
 pageClass: download-client
 ---
 

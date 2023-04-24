@@ -33,6 +33,6 @@ hero:
       text: 立即下载
       link: ./download-client.html
     - theme: alt
-      text: View on GitHub
+      text: 访问 GitHub
       link: https://github.com/kongying-tavern/docs
 ---

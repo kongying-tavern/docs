@@ -1,6 +1,6 @@
 ---
 title: Site Map
-sidebar: false
+aside: false
 ---
 
 ## 网站地图
