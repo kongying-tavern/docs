@@ -18,8 +18,7 @@ description: 加入我们
 
 1. 负责标记地图点位及校对，收集相关信息数据等；
    :::
-
-:::raw
+   :::raw
 
 > ## 🌎 国际化工作组
 >
@@ -129,6 +128,7 @@ description: 加入我们
 :::
 
 <style lang="scss" scoped>
+
 .vp-raw {
   padding: 0 28px 24px 28px;
   box-shadow: var(--vp-shadow-2);
@@ -141,6 +141,17 @@ description: 加入我们
   border-radius: 6px;
   background-color: var(--vp-custom-block-info-bg);
   margin-top: 2rem;
+  &::after {
+
+  }
+  
+  .layer.tiny {
+  z-index: -2;
+  width: 80%;
+  transform: translate(-50%,12px);
+  background: #F1F2F3;
+  }
+  
   &:hover{
     transform: translate3d(0, -8px, 0);
     box-shadow: var(--vp-shadow-3);

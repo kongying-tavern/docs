@@ -1,6 +1,6 @@
 ---
 title: 网站地图
-sidebar: false
+aside: false
 ---
 
 ## 网站地图

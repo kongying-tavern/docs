@@ -6,13 +6,10 @@ on:
       - dev
       - next
       - main
+      - en
     paths-ignore:
       - '**.md'
   pull_request:
-    branches:
-      - dev
-      - next
-      - main
   workflow_dispatch:
 
 jobs:
@@ -20,12 +17,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node: ['16', '18']
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
       # cache node_modules
       - name: Cache pnpm modules
@@ -39,7 +37,7 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v2.2.1
         with:
-          version: 7
+          version: latest
           run_install: true
 
       - name: Install dependencies
@@ -56,7 +54,6 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=4096
         run: pnpm build-mpa
-
 
       - name: Linter test
         run: |

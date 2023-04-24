@@ -1,7 +1,7 @@
 ---
 title: 加入社区
 description: 加入社区
-sidebar: false
+aside: false
 pageClass: communication-group
 externalLinkIcon: false
 ---

@@ -1,8 +1,15 @@
 ---
 title: 贡献鸣谢
 description: 贡献鸣谢
-sidebar: false
+aside: false
 ---
+
+<script setup>
+import { ref } from 'vue';
+import dayjs from 'dayjs';
+
+const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
+</script>
 
 # 贡献鸣谢
 
@@ -200,16 +207,7 @@ sidebar: false
 | Ծ‸Ծ                  |
 | 你他喵的别来逗！！！ |
 
-> 名单按照打点群的入群时间排序不分先后；
-
-> 如有疑问可联系 QQ 1961266616；
-
-<script setup>
-import { ref } from 'vue';
-import dayjs from 'dayjs';
-
-const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
-</script>
+> 名单排序不分先后；
 
 <style lang="scss" scoped>
 thead {
