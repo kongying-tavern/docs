@@ -10,7 +10,7 @@ If you have any proposals for a new idea or mechanic, join us to make it real.
 
 :::raw
 
-> ## 🌎 Localization
+> ## 🌎 I18N
 >
 > [Contact us](https://discord.gg/aFe57AKZUF)
 
