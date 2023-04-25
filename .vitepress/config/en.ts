@@ -53,7 +53,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         link: 'en/community.md',
       },
       {
-        text: 'Learn More',
+        text: 'About',
         items: [
           {
             text: 'About Us',
@@ -146,7 +146,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ],
         },
         {
-          title: 'Legal',
+          title: 'Legal (Chinese)',
           items: [
             {
               text: 'Disclaimer',
