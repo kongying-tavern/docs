@@ -5,3 +5,9 @@
 如果你感兴趣，我们欢迎您[加入我们参与翻译](../join.md);
 
 回到[中文首页](../index.md)
+
+The docs for our map client have gone through major updates recently, some languages are not yet available.
+
+Of you are interested in helping us with our translation efforts, we humbly invite you to [Join Us](en/join.md)
+
+Go to [English Home Page](en/index.md)

@@ -26,7 +26,7 @@ features:
     details: Make, manage, and backup highly customizable farming routes with [Canvas].
   - title: Batch Selection
     icon: ⚡
-    details: Conveniently mark and unmark multiple markers with single clicks, swipes and box select.
+    details: Conveniently mark and unmark multiple markers with simple clicks, swipes and box select.
   - title: Rapid Updates
     icon: 🚀
     details: New markers are available immediately after version updates, get 100% exploration day 1 with ease!

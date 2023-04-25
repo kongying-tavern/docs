@@ -20,7 +20,7 @@ prev:
 
 ## **Guides**
 
-- [Starter Tour (not yet available)](#)
+- [Starter Tour (Coming Soon)](#)
 - [[Automatic Tracking] Important Notes](./guide/auto-tracking/importantnotes.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Batch Selection] Instructions](./guide/batch-selection/instructions.md)
