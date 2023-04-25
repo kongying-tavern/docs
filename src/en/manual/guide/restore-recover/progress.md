@@ -15,17 +15,17 @@ This feature requires a Gitee account that is logged in on your map client
 
 Select **Rectore** in the **Paimon Menu**
 
-![](/imgs/en/manual/restore-recover/1.png)
+![]()
 
 Select the desired save according to **Timestamp** and **Entires**
 
-![](/imgs/en/manual/restore-recover/2.png)
+![]()
 
-![Comfirm prompt](/imgs/en/manual/restore-recover/3.png)
+![]()
 
 Once comfirmed, a new save named "Restored Save" will be created to store the restored progress
 
-![](/imgs/en/manual/restore-recover/4.png)
+![]()
 
 ## 2. Accidental Save Deletion Recovery
 
