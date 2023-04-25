@@ -6,8 +6,10 @@
 
 回到[中文首页](../index.md)
 
+# Multi Language Translations
+
 The docs for our map client have gone through major updates recently, some languages are not yet available.
 
-Of you are interested in helping us with our translation efforts, we humbly invite you to [Join Us](en/join.md)
+If you are interested in helping us with our translation efforts, we humbly invite you to [Join Us](/en/join.md)
 
-Go to [English Home Page](en/index.md)
+Go to the [English Home Page](/en/index.md)
