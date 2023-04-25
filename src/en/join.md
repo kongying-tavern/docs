@@ -17,7 +17,7 @@ If you have proposals for a new idea or mechanic, join us to make it real.
 ### Responsibilities
 
 1. Software, website, documentation localization (translation and error checks)；
-2. Manage map-related communities (announcements, message boards, etc.)；
+2. Manage map-related communities (social media, message boards, etc.)；
 3. Collected localization problems, report and fix errors.
 
 :::

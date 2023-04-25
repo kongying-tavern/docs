@@ -5,7 +5,7 @@ titleTemplate: Kongying Tavern
 features:
   - title: Smart Markers
     icon: 🦾
-    details: Integrates both [Quality] and [Method] properties in chest markers, allowing duplicate-free multi filtering with marker illustrations.
+    details: Integrates both [Quality] and [Method] properties in chest markers, allowing regional duplicate-free filtering with both marker illustrations.
   - title: Overlay Mode
     icon: 🎪
     details: Overlays the game window, providing easy access to the map on one display.
@@ -26,7 +26,7 @@ features:
     details: Make, manage, and backup highly customizable farming routes with [Canvas].
   - title: Batch Selection
     icon: ⚡
-    details: Conveniently mark and unmark multiple markers with simple clicks, swipes and box select.
+    details: Conveniently mark and unmark multiple markers with simple clicks, swipes and box selection.
   - title: Rapid Updates
     icon: 🚀
     details: New markers are available immediately after version updates, get 100% exploration day 1 with ease!
