@@ -7,16 +7,16 @@ aside: true
 
 Hotkey summary:
 
-1. Left Alt + primary click: Create/add a path
+1. Left Alt + left click: Create/add a path
 2. Left Ctrl: Hold to show path anchors
-3. Double primary click: Place an anchor on a path
+3. Double left click: Place an anchor on a path
 4. Secondary click on **round anchors**: reset the path curvature at this anchor
 5. Secondary click on **square anchors**: delete anchors
 6. Enter: Conclude editing on the current path
 
 ---
 
-## Basic Functionality Guide
+## Basic Functionality
 
 **step** 1. Click on the map icon located in the upper right
 
@@ -40,7 +40,7 @@ Hotkey summary:
 ![](/imgs/en/manual/canvas/6.png)
 (Picture shows editing toggled ON, click on it again to toggle OFF)
 
-**step** 5. **Hold Alt and primary click** on any location to create a path
+**step** 5. **Hold Alt and left click** on any location to create a path
 
 ![](/imgs/en/manual/canvas/7.png)
 
@@ -48,26 +48,26 @@ Hotkey summary:
 
 ![](/imgs/en/manual/canvas/9.png)
 
-At this stage, use **primary click** to control the anchors,  
-use **secondary click** on round anchors to reset path curvature,  
-use **secondary click** on square anchors to delete it,  
+At this stage, use **left click** to control the anchors,  
+use **right click** on round anchors to reset path curvature,  
+use **right click** on square anchors to delete it,  
 **double click** on the path to place an anchor.
 
 **step** 7. Hit **Enter** to conclude editing this path
 
 **step** 8. Repeat **steps** 1 through 7 (note: upon exiting editing via Enter, click on a path to begin editing it)
 
-## Export Guide
+## Export
 
-Open the Canvas list, select "Export" and save to a desirable location
+Open the Canvas list, select "Export" and save to a desirable location.
 
 ![](/imgs/en/manual/canvas/10.png)
 ![](/imgs/en/manual/canvas/11.png)
 ![](/imgs/en/manual/canvas/12.png)
 
-## Import Guide
+## Import
 
-Open the Canvas list, select "Import" and open the desirable save
+Open the Canvas list, select "Import" and open the desirable save file.
 
 ![](/imgs/en/manual/canvas/13.png)
 ![](/imgs/en/manual/canvas/14.png)
