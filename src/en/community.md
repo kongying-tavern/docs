@@ -6,7 +6,7 @@ pageClass: communication-group
 externalLinkIcon: false
 ---
 
-# 加入社区
+# Join Community
 
 ## Discord Server
 
