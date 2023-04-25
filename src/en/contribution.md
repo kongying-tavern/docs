@@ -2,6 +2,7 @@
 title: Contribution Acknowledgement
 description: Contribution Acknowledgement
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 <script setup>

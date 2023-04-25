@@ -4,6 +4,7 @@ description: Join Community
 aside: false
 pageClass: communication-group
 externalLinkIcon: false
+titleTemplate: Kongying Tavern
 ---
 
 # Join Community

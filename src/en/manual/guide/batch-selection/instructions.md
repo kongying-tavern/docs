@@ -1,6 +1,13 @@
 ---
 title: \[Batch Selection] Instructions
 aside: false
+titleTemplate: Kongying Tavern
+prev:
+  text: '[Background Usage] Framerate/Tracking Control'
+  link: '../bg/bgfrate'
+next:
+  text: '[Custom Path Planner (Canvas)] Guide'
+  link: '../canvas/guide'
 ---
 
 # [Batch Selection] Instructions

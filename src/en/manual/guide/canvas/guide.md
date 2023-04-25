@@ -1,6 +1,13 @@
 ---
 title: \[Custom Path Planner (Canvas)] Guide
 aside: true
+titleTemplate: Kongying Tavern
+next:
+  text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
+  link: '../easter-egg/view'
+prev:
+  text: '[Batch Selection] Instructions'
+  link: '../batch-selection/instructions'
 ---
 
 # [Custom Path Planner (Canvas)] Guide

@@ -3,6 +3,7 @@ title: 免责声明
 description: 免责声明
 date: 2021-5-30
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 # 免责声明

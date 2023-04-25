@@ -3,6 +3,7 @@ title: Error
 description: Error
 aside: true
 pageClass: error-page
+titleTemplate: Kongying Tavern
 head:
   - - script
     - src: /docs/error.js

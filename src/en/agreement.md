@@ -1,6 +1,7 @@
 ---
 title: 用户协议
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 # 空荧酒馆原神地图用户服务协议

@@ -1,6 +1,7 @@
 ---
 title: Support Us
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 <script setup>

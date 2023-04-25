@@ -1,6 +1,7 @@
 ---
 layout: page
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 <script setup>

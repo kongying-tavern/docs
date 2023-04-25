@@ -1,6 +1,7 @@
 ---
 title: Join Us
 description: Join Us
+titleTemplate: Kongying Tavern
 ---
 
 # Join Us
