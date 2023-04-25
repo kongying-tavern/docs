@@ -17,8 +17,8 @@ Hotkey summary:
 1. Left Alt + left click: Create/add a path
 2. Left Ctrl: Hold to show path anchors
 3. Double left click: Place an anchor on a path
-4. Secondary click on **round anchors**: reset the path curvature at this anchor
-5. Secondary click on **square anchors**: delete anchors
+4. Right click on **round anchors**: reset the path curvature at this anchor
+5. Right click on **square anchors**: delete anchors
 6. Enter: Conclude editing on the current path
 
 ---
