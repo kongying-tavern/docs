@@ -1,6 +1,13 @@
 ---
 title: \[Overlay Mode] Instructions
 aside: true
+titleTemplate: Kongying Tavern
+prev:
+  text: '[Hide/Show Done] Feature'
+  link: '../hide-show-done/hidedoneshowdone'
+next:
+  text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
+  link: './fullscreen-windowed/launching'
 ---
 
 # [Overlay Mode] Instructions

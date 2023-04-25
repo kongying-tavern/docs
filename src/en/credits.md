@@ -3,6 +3,7 @@ title: Credits
 description: Credits
 aside: false
 pageClass: credits
+titleTemplate: Kongying Tavern
 ---
 
 # Credits

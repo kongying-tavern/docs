@@ -1,6 +1,13 @@
 ---
 title: \[Background Usage] Framerate/Tracking Control
 aside: false
+titleTemplate: Kongying Tavern
+prev:
+  text: '[Automatic Tracking] Important Notes'
+  link: '../auto-tracking/importantnotes'
+next:
+  text: '[Batch Selection] Instructions'
+  link: '../batch-selection/instructions'
 ---
 
 # [Background Usage] Framerate/Tracking Control

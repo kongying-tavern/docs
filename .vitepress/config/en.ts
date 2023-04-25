@@ -3,7 +3,7 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 export const META_URL = 'https://yuanshen.site/docs/en/'
 export const META_TITLE = 'Genshin Interactive Map'
 export const META_DESCRIPTION =
-  'A completionists interactive map by Kongying Tavern'
+  'A Genshin interactive map by Kongying Tavern for completionists'
 
 export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   description: META_DESCRIPTION,
@@ -53,7 +53,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
         link: 'en/community.md',
       },
       {
-        text: 'Learn More',
+        text: 'About',
         items: [
           {
             text: 'About Us',
@@ -146,7 +146,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ],
         },
         {
-          title: 'Legal',
+          title: 'Legal (Chinese)',
           items: [
             {
               text: 'Disclaimer',

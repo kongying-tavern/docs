@@ -1,9 +1,13 @@
 ---
 title: \[Automatic Tracking] Important Notes
 aside: true
+titleTemplate: Kongying Tavern
+prev:
+  text: 'Table of Contents'
+  link: 'en/manual/client-user-manual'
 next:
-  text: '[Automatic Tracking] Oculus Tracking'
-  link: './oculustracking.md'
+  text: '[Background Usage] Framerate/Tracking Control'
+  link: '../bg/bgfrate'
 ---
 
 # [Automatic Tracking] Important Notes

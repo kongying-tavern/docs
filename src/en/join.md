@@ -1,23 +1,24 @@
 ---
 title: Join Us
 description: Join Us
+titleTemplate: Kongying Tavern
 ---
 
 # Join Us
 
-This project and its iterations will always be free, we sincerely invite you to join our effort in its completion and polish.
-If you have any proposals for a new idea or mechanic, join us to make it real.
+This project and its iterations will always be free, we sincerely invite you to join our effort in its completion and polishing.
+If you have proposals for a new idea or mechanic, join us to make it real.
 
 :::raw
 
-> ## 🌎 I18N
+> ## 🌎 I18N (Localization)
 >
 > [Contact us](https://discord.gg/aFe57AKZUF)
 
 ### Responsibilities
 
 1. Software, website, documentation localization (translation and error checks)；
-2. Manage map-related communities (announcements, message boards, etc.)；
+2. Manage map-related communities (social media, message boards, etc.)；
 3. Collected localization problems, report and fix errors.
 
 :::

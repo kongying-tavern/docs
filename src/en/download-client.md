@@ -3,6 +3,7 @@ title: Download Client
 description: Download Client
 aside: false
 pageClass: download-client
+titleTemplate: Kongying Tavern
 ---
 
 # Download Client

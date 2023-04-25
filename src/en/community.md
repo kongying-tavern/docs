@@ -4,9 +4,10 @@ description: Join Community
 aside: false
 pageClass: communication-group
 externalLinkIcon: false
+titleTemplate: Kongying Tavern
 ---
 
-# 加入社区
+# Join Community
 
 ## Discord Server
 
