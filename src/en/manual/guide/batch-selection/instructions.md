@@ -25,7 +25,7 @@ Responding to the requests from travellers, batch selection is now available!
 ### **Scenario 1: Single Marker Selection**
 
 - **Right click** an <b><span style="color: red">Undone</span></b> marker will change it to <b><span style="color: green">Done</span></b>.
-- **Right click** an <b><span style="color: green">Done</span></b> marker will change it to <b><span style="color: red">Undone</span></b>.
+- **Right click** a <b><span style="color: green">Done</span></b> marker will change it to <b><span style="color: red">Undone</span></b>.
 
 ![](https://assets.yuanshen.site/docs/en/manual/1.gif)
 (right click - Single Marker Selection)
