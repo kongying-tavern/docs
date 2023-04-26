@@ -41,6 +41,9 @@ hero:
     - theme: brand
       text: 立即下载
       link: ./download-client.html
+    - theme: brand
+      text: 了解更多
+      link: https://support.qq.com/products/321980/faqs-more/?id=94938
     - theme: alt
       text: 网页版
       link: https://v3.yuanshen.site/
