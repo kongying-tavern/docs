@@ -14,7 +14,7 @@ features:
     details: Detects your character location using image recognition and displays a simultaneous player indicator on the <b>map client</b>.
   - title: Underground Maps
     icon: ✨
-    details: Exquisite and accurate underground maps by [Teyvat Map Institute] with levels and cave entries.
+    details: Functional and accurate underground maps in collaboration with [Teyvat Map Institute] featuring levels and cave entries.
   - title: Progress Sync
     icon: ☁️
     details: Cloud sync and recovery support for marker progress, custom paths, etc.
