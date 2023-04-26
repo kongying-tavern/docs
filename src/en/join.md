@@ -34,7 +34,7 @@ If you have proposals for a new idea or mechanic, join us to make it real.
 1. UI Design
 2. Designing logos, font style, posters, H5, webpages, banners, icons, etc.
 
-   :::
+:::
 
 <style lang="scss" scoped>
 .vp-raw {

@@ -1,5 +1,7 @@
 ---
 title: 用户协议
+layout: doc
+titleTemplate: 空荧酒馆
 aside: false
 ---
 

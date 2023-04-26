@@ -9,7 +9,6 @@
     "skipLibCheck": true,
     "noUnusedLocals": true,
     "resolveJsonModule": true,
-    "jsx": "preserve",
     "lib": ["ESNext", "DOM"]
   },
   "exclude": ["**/node_modules/**", "**/dist/**", "unocss.config.ts"]

@@ -2,7 +2,7 @@
 title: Error
 description: Error
 aside: true
-pageClass: error-page
+layout: doc
 titleTemplate: Kongying Tavern
 head:
   - - script

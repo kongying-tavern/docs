@@ -1,6 +1,7 @@
 ---
 title: 下载客户端
 description: 下载客户端
+titleTemplate: 空荧酒馆
 aside: false
 pageClass: download-client
 ---

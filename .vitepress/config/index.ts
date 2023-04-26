@@ -7,9 +7,9 @@ import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
 
-const base = (process.env.BASE || '/docs/') as '/docs/' | `/${string}/`
-const isProd = process.env.NODE_ENV === 'production'
-const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
+export const base = (process.env.BASE || '/docs/') as '/docs/' | `/${string}/`
+export const isProd = process.env.NODE_ENV === 'production'
+export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
 
 export default defineConfig({
   base: base,

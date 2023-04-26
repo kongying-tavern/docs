@@ -1,8 +1,9 @@
 ---
 title: 错误页
 description: 错误页
+titleTemplate: 空荧酒馆
 aside: true
-pageClass: error-page
+layout: doc
 head:
   - - script
     - src: /docs/error.js

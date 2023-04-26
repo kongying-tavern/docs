@@ -7,43 +7,29 @@ on:
       - next
       - main
       - en
-    paths-ignore:
-      - '**.md'
   pull_request:
   workflow_dispatch:
 
 jobs:
-  check:
+  test:
+    runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    runs-on: ${{ matrix.os }}
+        node_version: [16, 18]
 
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      # cache node_modules
-      - name: Cache pnpm modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - name: Install dependencies
-        uses: pnpm/action-setup@v2.2.1
-        with:
-          version: latest
-          run_install: true
-
-      - name: Install dependencies
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
+
+      - name: Set node version to ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
         with:
-          run_install: true
+          node-version: ${{ matrix.node_version }}
+          cache: pnpm
 
       - name: Build project
         env:
@@ -56,8 +42,4 @@ jobs:
         run: pnpm build-mpa
 
       - name: Linter test
-        run: |
-          pnpm run lint:check
-          pnpm run lint:md
-          pnpm run lint:eslint
-          pnpm run lint:zh
+        run: pnpm run lint:check

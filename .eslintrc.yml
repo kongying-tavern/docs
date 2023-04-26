@@ -8,12 +8,12 @@ extends:
   - plugin:vue/vue3-recommended
   - eslint:recommended
   - plugin:prettier/recommended
+  - '@unocss'
 
 ignorePatterns:
   - '**/dist/**'
   - '**/node_modules/**'
-  - '.cache/**'
-  - '.temp/**'
+  - 'cache/**'
   - 'commitlint.config.ts'
   - 'unocss.config.ts'
   - 'auto-imports.d.ts'

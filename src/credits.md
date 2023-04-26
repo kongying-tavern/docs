@@ -1,7 +1,9 @@
 ---
 title: 技术鸣谢
+titleTemplate: 空荧酒馆
 description: 技术鸣谢
 aside: false
+layout: doc
 pageClass: credits
 ---
 

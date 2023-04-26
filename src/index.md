@@ -1,7 +1,7 @@
 ---
 layout: home
 title: 原神地图
-titleTemplate: 首页
+titleTemplate: 空荧酒馆
 features:
   - title: 双筛选逻辑
     icon: 🦾
