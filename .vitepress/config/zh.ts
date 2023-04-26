@@ -18,7 +18,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   ],
   themeConfig: {
     siteTitle: '原神地图',
-    outlineTitle: 'ON THIS PAGE',
+    outlineTitle: '本页目录',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: '更新日期',
     search: {
