@@ -45,6 +45,9 @@ hero:
       text: Learn More
       link: en/manual/client-user-manual.md
     - theme: alt
+      text: Web Version
+      link: https://v3.yuanshen.site/
+    - theme: alt
       text: Visit GitHub
       link: https://github.com/kongying-tavern
 ---

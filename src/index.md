@@ -42,6 +42,9 @@ hero:
       text: 立即下载
       link: ./download-client.html
     - theme: alt
+      text: 网页版
+      link: https://v3.yuanshen.site/
+    - theme: alt
       text: 访问 GitHub
       link: https://github.com/kongying-tavern/docs
 ---
