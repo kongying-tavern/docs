@@ -71,7 +71,7 @@ const coins = ref({
 })
 const type = ref()
 
-const updateType = (): null => {
+const updateType = () => {
   if (window.location.hash.slice(1)) {
     type.value = window.location.hash.slice(1)
     if (typeof coins.value[type.value]?.address === 'undefined') return

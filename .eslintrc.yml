@@ -62,9 +62,7 @@ overrides:
       parser: '@typescript-eslint/parser'
 
     rules:
-      '@typescript-eslint/explicit-function-return-type':
-        - warn
-        - allowTypedFunctionExpressions: true
+      '@typescript-eslint/explicit-function-return-type': 0
 
       'no-undef': 0
 
