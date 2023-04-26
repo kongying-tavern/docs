@@ -10,7 +10,7 @@
     "dev": "vitepress",
     "postinstall": "husky install",
     "lint": "pnpm lint:prettier --write && pnpm lint:eslint --fix && pnpm lint:stylelint --fix",
-    "lint:check": "pnpm lint:prettier && pnpm lint:eslint && lint:zh",
+    "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:zh",
     "lint:eslint": "eslint . --ext .js,.ts,.vue",
     "lint:md": "markdownlint **/*.md && lint:zh",
     "lint:prettier": "prettier --check .",
