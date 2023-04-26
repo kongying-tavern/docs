@@ -1,6 +1,7 @@
 ---
 title: Contributing
 description: Contributing
+layout: doc
 aside: false
 ---
 

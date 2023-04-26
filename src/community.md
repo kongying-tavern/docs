@@ -1,8 +1,9 @@
 ---
 title: 加入社区
 description: 加入社区
+layout: doc
 aside: false
-pageClass: communication-group
+titleTemplate: 空荧酒馆
 externalLinkIcon: false
 ---
 
@@ -13,7 +14,7 @@ externalLinkIcon: false
 1. [**原神地图 ① 群(被封禁)** 765302904](# '点击一键加入原神地图交流①群')
 2. [**原神地图 ② 群(已满)** 853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击一键加入原神地图②群')
 3. [**原神地图 ③ 群(已满)** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图③群')
-4. [**原神地图 ④ 群(推荐)** 1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击一键加入原神地图④群')
+4. [**原神地图 ④ 群(已满)** 1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击一键加入原神地图④群')
 5. [**原神地图 ⑤ 群(被封禁)** 1012554070](# '点击一键加入原神地图⑤群')
 6. [**原神地图 ⑥ 群(推荐)** 1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击一键加入原神地图⑥群')
 7. [**原神地图 ⑦ 群(推荐)** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图⑦群')

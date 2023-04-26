@@ -18,7 +18,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   ],
   themeConfig: {
     siteTitle: '原神地图',
-    outlineTitle: 'ON THIS PAGE',
+    outlineTitle: '本页目录',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: '更新日期',
     search: {
@@ -129,6 +129,14 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
     nav: [
       {
+        text: '加入社区',
+        link: './community.md',
+      },
+      {
+        text: '支持我们',
+        link: './support-us.md',
+      },
+      {
         text: '帮助和反馈',
         items: [
           {
@@ -148,10 +156,6 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             link: 'https://support.qq.com/products/321980/topic-detail/2016/',
           },
         ],
-      },
-      {
-        text: '加入社区',
-        link: './community.md',
       },
       {
         text: '了解更多',
@@ -217,10 +221,6 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             ],
           },
         ],
-      },
-      {
-        text: '支持我们',
-        link: './support-us.md',
       },
     ],
   },

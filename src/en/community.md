@@ -2,8 +2,7 @@
 title: Join Community
 description: Join Community
 aside: false
-pageClass: communication-group
-externalLinkIcon: false
+layout: doc
 titleTemplate: Kongying Tavern
 ---
 

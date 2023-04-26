@@ -2,7 +2,7 @@
 title: Credits
 description: Credits
 aside: false
-pageClass: credits
+layout: doc
 titleTemplate: Kongying Tavern
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: Japanese
 description: Translation in progress.
+titleTemplate: 空荧酒馆
 aside: false
 ---
 
@@ -16,6 +17,6 @@ aside: false
 
 The docs for our map client have gone through major updates recently, some languages are not yet available.
 
-If you are interested in helping us with our translation efforts, we humbly invite you to [Join Us](/en/join.md).
+If you are interested in helping us with our translation efforts, we humbly invite you to [Join Us](../join.md).
 
 Go to the [English Home Page](/en/index.md).

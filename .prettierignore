@@ -10,3 +10,7 @@ coverage/
 # Public Assets
 public/
 
+cache/
+.vscode/
+auto-imports.d.ts
+pnpm-lock.yaml

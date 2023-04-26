@@ -1,6 +1,7 @@
 {
   "private": "true",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "vitepress build",
     "build-mpa": "vitepress build --mpa",
@@ -9,11 +10,10 @@
     "dev": "vitepress",
     "postinstall": "husky install",
     "lint": "pnpm lint:prettier --write && pnpm lint:eslint --fix && pnpm lint:stylelint --fix",
-    "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:stylelint",
+    "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:zh",
     "lint:eslint": "eslint . --ext .js,.ts,.vue",
     "lint:md": "markdownlint **/*.md && lint:zh",
     "lint:prettier": "prettier --check .",
-    "lint:stylelint": "stylelint **/*.scss",
     "lint:zh": "zhlint 'docs/**/*.md'",
     "serve": "vitepress serve"
   },
@@ -48,13 +48,13 @@
     "@vueuse/integrations": "^9.13.0",
     "dayjs": "^1.11.7",
     "qrcode": "^1.5.3",
-    "sass": "^1.62.0",
+    "sass": "^1.62.1",
     "sass-loader": "^13.2.2",
     "typescript": "^4.9.5",
     "unocss": "^0.45.30",
     "unplugin-auto-import": "^0.11.5",
     "unplugin-vue-components": "^0.22.12",
-    "vitepress": "1.0.0-alpha.73",
+    "vitepress": "1.0.0-alpha.74",
     "vue": "^3.2.47"
   },
   "devDependencies": {
@@ -64,8 +64,9 @@
     "@types/eslint": "^8.37.0",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^17.0.45",
-    "@typescript-eslint/eslint-plugin": "^5.59.0",
-    "@typescript-eslint/parser": "^5.59.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "@unocss/eslint-config": "^0.51.8",
     "@vite-pwa/vitepress": "^0.0.5",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^10.0.0",
@@ -95,8 +96,5 @@
     "vite-plugin-inspect": "^0.7.24",
     "zhlint": "^0.6.2"
   },
-  "engines": {
-    "node": ">=14",
-    "pnpm": ">=7"
-  }
+  "packageManager": "pnpm@8.3.1"
 }

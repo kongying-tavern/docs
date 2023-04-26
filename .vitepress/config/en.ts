@@ -32,11 +32,19 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 
     nav: [
       {
+        text: 'Support us',
+        link: 'en/support-us.md',
+      },
+      {
+        text: 'Community',
+        link: 'en/community.md',
+      },
+      {
         text: 'Support',
         items: [
           {
             text: 'Client User Manual',
-            link: 'en/manual/client-user-manual',
+            link: 'en/manual/client-user-manual.md',
           },
           {
             text: 'Feedback',
@@ -47,10 +55,6 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             link: 'https://support.qq.com/products/321980/topic-detail/2016/',
           },
         ],
-      },
-      {
-        text: 'Community',
-        link: 'en/community.md',
       },
       {
         text: 'About',
@@ -117,10 +121,6 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           },
         ],
       },
-      {
-        text: 'Support us',
-        link: 'en/support-us.md',
-      },
     ],
     footer: {
       // @ts-ignore
@@ -133,15 +133,15 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           items: [
             {
               text: 'Join Us',
-              link: 'en/join',
+              link: 'en/join.md',
             },
             {
               text: 'Our team',
-              link: 'en/team',
+              link: 'en/team.md',
             },
             {
               text: 'Sponsors',
-              link: 'en/support-us',
+              link: 'en/support-us.md',
             },
           ],
         },
@@ -150,15 +150,15 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           items: [
             {
               text: 'Disclaimer',
-              link: 'en/disclaimer',
+              link: 'en/disclaimer.md',
             },
             {
               text: 'Privacy',
-              link: 'en/privacy',
+              link: 'en/privacy.md',
             },
             {
               text: 'User Agreement',
-              link: 'en/agreement',
+              link: 'en/agreement.md',
             },
           ],
         },
@@ -167,7 +167,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           items: [
             {
               text: 'Client User Manual',
-              link: 'en/manual/client-user-manual',
+              link: 'en/manual/client-user-manual.md',
             },
             {
               text: 'Feedback',
