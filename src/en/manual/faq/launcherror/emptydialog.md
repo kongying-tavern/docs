@@ -1,6 +1,7 @@
 ---
 title: \[Launch Error] Empty Dialog Box or Stuck Progress Bar
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 # [Launch Error] Empty Dialog Box or Stuck Progress Bar

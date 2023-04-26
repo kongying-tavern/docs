@@ -1,6 +1,7 @@
 ---
-title: Can I be Banned For Using Kongying Tavern?
+title: Can I be Banned For Using Genshin Interactive Map?
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 # Can I be Banned For Using Kongying Tavern?

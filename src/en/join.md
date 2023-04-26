@@ -19,7 +19,8 @@ If you have proposals for a new idea or mechanic, join us to make it real.
 
 1. Software, website, documentation localization (translation and error checks)；
 2. Manage map-related communities (social media, message boards, etc.)；
-3. Collected localization problems, report and fix errors.
+3. Collecting localization problems, report and fix errors.
+   Note: Not limited to English, we welcome any language that Genshin supports.
 
 :::
 

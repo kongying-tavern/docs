@@ -1,6 +1,7 @@
 ---
 title: \[Launch Error] Version Check Failed
 aside: false
+titleTemplate: Kongying Tavern
 ---
 
 # [Launch Error] Version Check Failed
