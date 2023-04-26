@@ -95,9 +95,5 @@
     "tsconfig-vuepress": "^0.2.1",
     "vite-plugin-inspect": "^0.7.24",
     "zhlint": "^0.6.2"
-  },
-  "engines": {
-    "node": ">=14",
-    "pnpm": ">=7"
   }
 }
