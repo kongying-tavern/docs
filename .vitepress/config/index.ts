@@ -123,7 +123,7 @@ export default defineConfig({
       AutoImport({
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         imports: ['vue', '@vueuse/core'],
-        dts: './auto-imports.d.ts',
+        dts: '../auto-imports.d.ts',
         vueTemplate: true,
       }),
 
