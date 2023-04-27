@@ -5,10 +5,6 @@ layout: doc
 titleTemplate: Kongying Tavern
 ---
 
-<script setup>
-import Coins from '../support/Coins.vue'
-</script>
-
 # Support Us
 
 _Genshin Interactive Map_ is a MulanPSL-1.0 open-source project, it is completely free itself and AD-free.

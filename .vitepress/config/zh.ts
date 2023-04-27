@@ -21,6 +21,8 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     outlineTitle: '本页目录',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: '更新日期',
+    returnToTopLabel: '回到顶部',
+    langMenuLabel: '更改语言',
     search: {
       provider: 'local',
       options: {
@@ -62,6 +64,10 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     docFooter: {
       prev: '上一页',
       next: '下一页',
+    },
+    payment: {
+      qqpay: 'QQ支付',
+      wechatpay: '微信支付',
     },
     footer: {
       // @ts-ignore
