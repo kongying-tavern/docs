@@ -12,7 +12,7 @@ prev:
 
 # [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 
-**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](https://support.qq.com/products/321980/faqs-more/?id=135544) "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
+**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](https://support.qq.com/products/321980/faqs-more/?id=135544)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
 
 ---
 

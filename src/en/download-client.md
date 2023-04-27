@@ -7,15 +7,15 @@ titleTemplate: Kongying Tavern
 
 # Download Client
 
-- Google Drive：
+- Google Drive (Recommended)：
   - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
 - Join Community：
   - [https://yuanshen.site/docs/community](community.md)
-- Alibaba Drive：
+- Alibaba Drive (Chinese)：
   - <https://www.aliyundrive.com/s/irmz7CKpMry>
-- Quark Drive:
+- Quark Drive (Chinese):
   - <https://pan.quark.cn/s/fe8bb34c77bc>
-- Baidu Cloud：
+- Baidu Cloud (Chinese)：
   - <https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg>
 
 ::: tip

@@ -56,17 +56,14 @@ export default defineConfig({
       },
     ],
     ['meta', { name: 'author', content: '@Arrebol' }],
-    [
-      'meta',
-      { property: 'og:image', content: 'https://yuanshen.site/imgs/cover.jpg' },
-    ],
+    ['meta', { property: 'og:image', content: './imgs/cover.jpg' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
     [
       'meta',
       {
         name: 'twitter:image',
-        content: 'https://yuanshen.site/imgs/cover.jpg',
+        content: './imgs/cover.jpg',
       },
     ],
     [
