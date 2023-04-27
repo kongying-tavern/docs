@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="one-time-donations">
-      <div
-        class="links"
-        @click="
-          icon.removeAttribute(`i-custom-${coins.value[type.value].icon}`)
-        "
-      >
+      <div class="links">
         <a href="#wechatpay">
           <label class="i-custom-wechatpay"></label>微信支付
         </a>
@@ -35,11 +30,12 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+<script lang="ts" setup>
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 
-let qrcode = null
+let qrcode = ref()
+
 const icon = ref()
 const coins = ref({
   wechatpay: {

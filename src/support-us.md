@@ -4,10 +4,6 @@ titleTemplate: 空荧酒馆
 layout: doc
 ---
 
-<script setup>
-import Coins from './support/Coins.vue'
-</script>
-
 # 支持我们
 
 原神地图是采用 MulanPSL-1.0 许可的开源项目，使用完全零广告并且完全免费。
