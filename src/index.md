@@ -2,6 +2,7 @@
 layout: home
 title: 原神地图
 titleTemplate: 空荧酒馆
+
 features:
   - title: 双筛选逻辑
     icon: 🦾
@@ -30,6 +31,7 @@ features:
   - title: 快速更新
     icon: 🚀
     details: 点位和地图内容在游戏新版本上线后后即能立刻查看，轻松100%探索
+
 hero:
   name: 原神地图
   text: 空荧酒馆制作的原神全资源攻略地图。
@@ -40,7 +42,7 @@ hero:
   actions:
     - theme: brand
       text: 立即下载 →
-      link: ./download-client.html
+      link: ./download-client
     - theme: cta video
       text: 基础使用教程
       link: https://www.bilibili.com/video/BV1uU4y157Te
@@ -51,6 +53,4 @@ hero:
 
 <script setup>
 import '../.vitepress/theme/styles/home-links.css'
-
-
 </script>

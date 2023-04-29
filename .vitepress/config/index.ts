@@ -18,6 +18,7 @@ export default defineConfig({
   srcExclude: [],
   scrollOffset: 'header',
   cleanUrls: true,
+
   locales: {
     root: {
       label: '简体中文',

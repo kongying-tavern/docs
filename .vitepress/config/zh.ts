@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
+import type { CustomConfig } from './types'
 
 export const META_URL = 'https://yuanshen.site/docs/'
 export const META_TITLE = '原神地图'
@@ -9,7 +10,9 @@ export const META_DESCRIPTION = '空荧酒馆制作的原神全资源攻略地�
 export const META_KEYWORDS =
   '原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern'
 
-export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
+export const zhConfig: LocaleSpecificConfig<
+  DefaultTheme.Config & CustomConfig
+> = {
   description: META_DESCRIPTION,
   head: [
     ['meta', { name: 'keywords', content: META_KEYWORDS }],
@@ -26,29 +29,6 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     lastUpdatedText: '更新日期',
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
-    search: {
-      provider: 'local',
-      options: {
-        locales: {
-          zh: {
-            translations: {
-              button: {
-                buttonText: '搜索文档',
-                buttonAriaLabel: '搜索文档',
-              },
-              modal: {
-                noResultsText: '无法找到相关结果',
-                resetButtonTitle: '清除查询条件',
-                footer: {
-                  selectText: '选择',
-                  navigateText: '切换',
-                },
-              },
-            },
-          },
-        },
-      },
-    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern/' },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
@@ -69,11 +49,29 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       next: '下一页',
     },
     payment: {
-      qqpay: 'QQ支付',
-      wechatpay: '微信支付',
+      wechatpay: {
+        name: '微信支付',
+        address: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',
+      },
+      alipay: {
+        name: '支付宝',
+        address: 'https://qr.alipay.com/tsx11609thmpw9odmvdlxd6',
+      },
+      qqpay: {
+        name: 'QQ 支付',
+        address:
+          'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
+      },
+      paypal: {
+        name: 'Paypal',
+        address: 'https://www.paypal.com/paypalme/yuanshenditu',
+      },
+      bilibili: {
+        name: 'bilibili',
+        address: 'https://space.bilibili.com/518076785',
+      },
     },
     footer: {
-      // @ts-ignore
       qrcodeTitle: '开发反馈群',
       qrcodeMessage: '欢迎QQ扫码联系我们',
       qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
