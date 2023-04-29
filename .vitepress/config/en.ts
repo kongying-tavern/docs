@@ -2,6 +2,8 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 
 export const META_URL = 'https://yuanshen.site/docs/en/'
 export const META_TITLE = 'Genshin Interactive Map'
+export const META_KEYWORDS =
+  'Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map'
 export const META_DESCRIPTION =
   'A Genshin interactive map by Kongying Tavern for completionists'
 
@@ -243,6 +245,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     },
   },
   head: [
+    ['meta', { name: 'keywords', content: META_KEYWORDS }],
     ['meta', { property: 'og:url', content: META_URL }],
     ['meta', { property: 'og:description', content: META_DESCRIPTION }],
     ['meta', { property: 'twitter:url', content: META_URL }],

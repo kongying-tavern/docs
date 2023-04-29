@@ -6,10 +6,13 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 export const META_URL = 'https://yuanshen.site/docs/'
 export const META_TITLE = '原神地图'
 export const META_DESCRIPTION = '空荧酒馆制作的原神全资源攻略地图。'
+export const META_KEYWORDS =
+  '原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern'
 
 export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   description: META_DESCRIPTION,
   head: [
+    ['meta', { name: 'keywords', content: META_KEYWORDS }],
     ['meta', { property: 'og:url', content: META_URL }],
     ['meta', { property: 'og:description', content: META_DESCRIPTION }],
     ['meta', { property: 'twitter:url', content: META_URL }],

@@ -46,6 +46,27 @@ export default defineConfig({
           'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover',
       },
     ],
+    [
+      'meta',
+      {
+        name: 'apple-mobile-web-app-status-bar-style',
+        content: 'lack-translucent',
+      },
+    ],
+    [
+      'meta',
+      {
+        name: 'applicable-device',
+        content: 'pc,mobile',
+      },
+    ],
+    [
+      'meta',
+      {
+        name: 'google',
+        content: 'notranslate',
+      },
+    ],
     ['meta', { name: 'theme-color', content: '#ffffff' }],
     [
       'link',
@@ -59,19 +80,19 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: './imgs/favicon.ico',
+        href: `${base}/imgs/favicon.ico`,
         type: 'image/x-icon',
       },
     ],
     ['meta', { name: 'author', content: '@Arrebol' }],
-    ['meta', { property: 'og:image', content: './imgs/cover.jpg' }],
+    ['meta', { property: 'og:image', content: `${base}/imgs/cover.jpg` }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
     [
       'meta',
       {
         name: 'twitter:image',
-        content: './imgs/cover.jpg',
+        content: `${base}/imgs/cover.jpg`,
       },
     ],
   ],
