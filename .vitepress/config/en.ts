@@ -131,6 +131,52 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     sidebar: {
       'en/manual': [
         {
+          text: 'Guides',
+          items: [
+            {
+              text: 'Automatic Tracking',
+              link: 'en/manual/guide/auto-tracking/importantnotes',
+            },
+            {
+              text: 'Framerate/Tracking Control',
+              link: 'en/manual/guide/bg/bgfrate',
+            },
+            {
+              text: 'Batch Selection',
+              link: 'en/manual/guide/batch-selection/instructions',
+            },
+            {
+              text: 'Canvas Guide',
+              link: 'en/manual/guide/canvas/guide',
+            },
+            {
+              text: 'Easter Egg',
+              link: 'en/manual/guide/easter-egg/view',
+            },
+            {
+              text: 'Hide/Show Markers',
+              link: 'en/manual/guide/hide-show-done/hidedoneshowdone',
+            },
+            {
+              text: 'Overlay Mode',
+              items: [
+                {
+                  text: 'Instructions',
+                  link: 'en/manual/guide/overlay-mode/instructions',
+                },
+                {
+                  text: 'Windowed Fullscreen',
+                  link: 'en/manual/guide/overlay-mode/fullscreen-windowed/launching',
+                },
+              ],
+            },
+            {
+              text: 'Restore/Recover Progress',
+              link: 'en/manual/guide/restore-recover/progress',
+            },
+          ],
+        },
+        {
           text: 'FAQ',
           items: [
             {
@@ -158,7 +204,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               text: 'Launch Error',
               items: [
                 {
-                  text: 'Empty Dialog Box or Stuck Progress Bar',
+                  text: 'Stuck/No Progress',
                   link: 'en/manual/faq/launcherror/emptydialog.md',
                 },
                 {
@@ -171,11 +217,11 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
               text: 'About Login',
               items: [
                 {
-                  text: 'Account Login Problems',
+                  text: 'Login Problems',
                   link: 'en/manual/faq/login/accountlogin.md',
                 },
                 {
-                  text: 'Client Repeatedly Requests Login',
+                  text: 'Repeated Login Requests',
                   link: 'en/manual/faq/login/clientrepeatedly.md',
                 },
               ],
