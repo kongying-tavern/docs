@@ -1,6 +1,5 @@
 ---
 title: Can I be Banned For Using Genshin Interactive Map?
-aside: false
 titleTemplate: Kongying Tavern
 ---
 

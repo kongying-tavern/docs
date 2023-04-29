@@ -1,6 +1,5 @@
 ---
 title: \[Auto Update] Non-Responsive Updater
-aside: false
 titleTemplate: Kongying Tavern
 ---
 

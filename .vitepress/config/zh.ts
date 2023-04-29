@@ -129,11 +129,15 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       ],
     },
     editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/src/:path',
+      pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
       text: '报告错误',
     },
 
     nav: [
+      {
+        text: '客户端下载',
+        link: './download-client.md',
+      },
       {
         text: '加入社区',
         link: './community.md',

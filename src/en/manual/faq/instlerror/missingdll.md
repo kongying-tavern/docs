@@ -1,6 +1,5 @@
 ---
 title: \[Installation Error] Missing .dll file
-aside: false
 titleTemplate: Kongying Tavern
 ---
 

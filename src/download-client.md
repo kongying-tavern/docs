@@ -19,14 +19,16 @@ pageClass: download-client
 - Google Drive：
   - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
 
+> [观看客户端基础使用教程（BiliBili）](https://www.bilibili.com/video/BV1uU4y157Te)
+>
+> [客户端使用手册](https://support.qq.com/products/321980/faqs-more/?id=94938)
+
 ::: tip
 当前仅开放地图 **Windows 客户端** 的下载，其他系统版本正在制作中敬请期待！
 
 如果您有兴趣，欢迎[加入我们(^\_^)](./join.md)
 :::
 
-<script setup>
-import { useData } from 'vitepress'
+## 网页版地图
 
-const { page } = useData()
-</script>
+<https://v3.yuanshen.site/>

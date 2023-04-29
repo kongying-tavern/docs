@@ -51,3 +51,7 @@ hero:
       text: Visit GitHub
       link: https://github.com/kongying-tavern
 ---
+
+<script setup>
+import '../../.vitepress/theme/styles/home-links.css'
+</script>

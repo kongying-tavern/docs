@@ -8,8 +8,11 @@
             <a
               :href="withBase(ic.link)"
               :title="ic.text"
-              :target="ic.text"
-              rel="noopener noreferrer"
+              :target="
+                ic.link.match(/(http|https):\/\/([\w.]+\/?)\S*/gi)
+                  ? '_black'
+                  : '_self'
+              "
             >
               {{ ic.text }}
             </a>

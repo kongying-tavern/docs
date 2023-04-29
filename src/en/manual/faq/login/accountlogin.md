@@ -1,6 +1,5 @@
 ---
 title: \[Login] Account Login Problems
-aside: false
 titleTemplate: Kongying Tavern
 ---
 

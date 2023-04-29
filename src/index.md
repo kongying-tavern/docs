@@ -39,15 +39,18 @@ hero:
     alt: 原神地图
   actions:
     - theme: brand
-      text: 立即下载
+      text: 立即下载 →
       link: ./download-client.html
-    - theme: brand
-      text: 了解更多
+    - theme: cta video
+      text: 基础使用教程
+      link: https://www.bilibili.com/video/BV1uU4y157Te
+    - theme: cta mastery
+      text: 客户端使用手册
       link: https://support.qq.com/products/321980/faqs-more/?id=94938
-    - theme: alt
-      text: 网页版
-      link: https://v3.yuanshen.site/
-    - theme: alt
-      text: 访问 GitHub
-      link: https://github.com/kongying-tavern/docs
 ---
+
+<script setup>
+import '../.vitepress/theme/styles/home-links.css'
+
+
+</script>

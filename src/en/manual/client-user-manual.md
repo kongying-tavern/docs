@@ -6,7 +6,6 @@ next:
 prev:
   text: 'Home page'
   link: '../index.md'
-aside: false
 ---
 
 # Map Client User Manual

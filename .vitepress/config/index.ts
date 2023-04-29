@@ -38,6 +38,14 @@ export default defineConfig({
     },
   },
   head: [
+    [
+      'meta',
+      {
+        name: 'viewport',
+        content:
+          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover',
+      },
+    ],
     ['meta', { name: 'theme-color', content: '#ffffff' }],
     [
       'link',
@@ -66,14 +74,6 @@ export default defineConfig({
         content: './imgs/cover.jpg',
       },
     ],
-    [
-      'meta',
-      {
-        name: 'viewport',
-        content:
-          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover',
-      },
-    ],
   ],
   vue: {
     reactivityTransform: true,
@@ -91,11 +91,6 @@ export default defineConfig({
     },
   ],
   vite: {
-    // define: {
-    //   __DATE__: `'${new Date().toISOString()}'`,
-    //   __COMMIT_REF__: commitRef,
-    //   __ISPROD__: isProd
-    // },
     server: {
       host: true,
       fs: {
