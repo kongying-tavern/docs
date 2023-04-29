@@ -54,8 +54,7 @@
     "unocss": "^0.45.30",
     "unplugin-auto-import": "^0.11.5",
     "unplugin-vue-components": "^0.22.12",
-    "vitepress": "1.0.0-alpha.74",
-    "vue": "^3.2.47"
+    "vitepress": "1.0.0-alpha.74"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
@@ -70,7 +69,6 @@
     "@vite-pwa/vitepress": "^0.0.5",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^10.0.0",
-    "body-scroll-lock": "4.0.0-beta.0",
     "conventional-changelog-cli": "^2.2.2",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.39.0",
@@ -79,7 +77,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-prettier-vue": "^3.1.0",
     "eslint-plugin-vue": "9.1.0",
-    "flexsearch": "^0.7.31",
     "git-cz": "^4.9.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
