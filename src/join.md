@@ -14,7 +14,7 @@ description: 加入我们
 
 > ## 📌 地图打点组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi 'QQ群 992165223')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=GWjn9K19d-qRaZU5WNiZ521_v2xYw6Da&jump_from=webapi&authKey=mom+sIS2Tc2b/9DMkbfjQtqY0QJuSPA0LM7c5S62wtqSnlg+iUMcI8ctmdG08KsA 'QQ群 600052487')
 
 ### 工作职责
 
