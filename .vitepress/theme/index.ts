@@ -1,5 +1,5 @@
 import { h } from 'vue'
-import Theme from 'vitepress/theme'
+import Theme from 'vitepress/theme-without-fonts'
 import Coins from './components/Coins.vue'
 import VideoIntroduction from './components/VideoIntroduction.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
@@ -7,6 +7,7 @@ import googleAnalytics from '../plugins/googleAnalytics'
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
+
 export default {
   ...Theme,
 

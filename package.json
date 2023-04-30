@@ -54,7 +54,7 @@
     "unocss": "^0.45.30",
     "unplugin-auto-import": "^0.11.5",
     "unplugin-vue-components": "^0.22.12",
-    "vitepress": "1.0.0-alpha.74",
+    "vitepress": "1.0.0-alpha.75",
     "vue": "^3.2.47"
   },
   "devDependencies": {
