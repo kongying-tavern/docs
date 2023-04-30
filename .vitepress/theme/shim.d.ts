@@ -1,10 +1,5 @@
-interface ImportMetaEnv {
-  [x: string]: any
-  readonly DEV: boolean
-}
-
 interface ImportMeta {
-  readonly env: ImportMetaEnv
+  readonly env: ImportMeta
 }
 
 declare const __VP_HASH_MAP__: Record<string, string>

@@ -18,7 +18,61 @@ export default defineConfig({
   srcExclude: [],
   scrollOffset: 'header',
   cleanUrls: true,
-
+  themeConfig: {
+    search: {
+      provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: '搜索文档',
+            buttonAriaLabel: '搜索文档',
+          },
+          modal: {
+            noResultsText: '无法找到相关结果',
+            resetButtonTitle: '清除查询条件',
+            footer: {
+              selectText: '选择',
+              navigateText: '切换',
+            },
+          },
+        },
+        locales: {
+          en: {
+            translations: {
+              button: {
+                buttonText: 'Search',
+                buttonAriaLabel: 'Search',
+              },
+              modal: {
+                noResultsText: 'No results for',
+                resetButtonTitle: 'Reset search',
+                footer: {
+                  selectText: 'to select',
+                  navigateText: 'to navigate',
+                },
+              },
+            },
+          },
+          ja: {
+            translations: {
+              button: {
+                buttonText: 'Search',
+                buttonAriaLabel: 'Search',
+              },
+              modal: {
+                noResultsText: 'No results for',
+                resetButtonTitle: 'Reset search',
+                footer: {
+                  selectText: 'to select',
+                  navigateText: 'to navigate',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   locales: {
     root: {
       label: '简体中文',
@@ -97,9 +151,6 @@ export default defineConfig({
       },
     ],
   ],
-  vue: {
-    reactivityTransform: true,
-  },
   ignoreDeadLinks: [
     // ignore exact url "/playground"
     '/playground',

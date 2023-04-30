@@ -97,7 +97,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
 

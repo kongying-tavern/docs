@@ -54,7 +54,8 @@
     "unocss": "^0.45.30",
     "unplugin-auto-import": "^0.11.5",
     "unplugin-vue-components": "^0.22.12",
-    "vitepress": "1.0.0-alpha.74"
+    "vitepress": "1.0.0-alpha.74",
+    "vue": "^3.2.47"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
@@ -79,7 +80,7 @@
     "eslint-plugin-vue": "9.1.0",
     "git-cz": "^4.9.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.1",
+    "lint-staged": "^13.2.2",
     "markdown-it": "^13.0.1",
     "markdownlint-cli": "^0.31.1",
     "prettier": "^2.8.8",
@@ -88,6 +89,7 @@
     "stylelint": "^14.16.1",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-standard": "^25.0.0",
+    "stylelint-config-standard-scss": "^9.0.0",
     "stylelint-order": "^5.0.0",
     "tsconfig-vuepress": "^0.2.1",
     "vite-plugin-inspect": "^0.7.24",
