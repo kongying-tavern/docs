@@ -1,5 +1,6 @@
 ---
 title: Map Client User Manual
+aside: false
 next:
   text: '[Automatic Tracking] Important Notes'
   link: './guide/auto-tracking/importantnotes.md'
@@ -8,7 +9,7 @@ prev:
   link: '../index.md'
 ---
 
-# Map Client User Manual
+# Table of Content
 
 ## **Manuals in Other Languages**
 
