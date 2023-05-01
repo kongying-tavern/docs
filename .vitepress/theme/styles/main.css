@@ -11,7 +11,9 @@ html {
   margin-top: 10px;
 }
 
-#VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.main > h1 > span, #VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.main > p.text,#app > div > header > div > div > div.title > div > a  {
+#VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.main > h1 > span,
+#VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.main > p.text,
+#app > div > header > div > div > div.title > div > a {
   font-weight: 900;
 }
 
@@ -33,7 +35,7 @@ html {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-decoration-thickness: 1px;
-  text-underline-offset: .2em
+  text-underline-offset: 0.2em;
 }
 
 .content-container a:not(.header-anchor):hover {
@@ -45,23 +47,23 @@ html {
 }
 
 .VPSidebar::-webkit-scrollbar {
-background: transparent;
-height: 8px;
-width: 8px;
-margin-right: 8px;
+  background: transparent;
+  height: 8px;
+  width: 8px;
+  margin-right: 8px;
 }
 
 .VPSidebar::-webkit-scrollbar-corner {
-width: 4px;
+  width: 4px;
 }
 
 .VPSidebar::-webkit-scrollbar-thumb {
-background-clip: content-box;
-background-color: var(--vp-button-alt-bg);
-border: 2px solid transparent;
-border-radius: 4px;
+  background-clip: content-box;
+  background-color: var(--vp-button-alt-bg);
+  border: 2px solid transparent;
+  border-radius: 4px;
 }
 
 .VPSidebar::-webkit-scrollbar-track {
-background-color: var(--vp-c-bg);
+  background-color: var(--vp-c-bg);
 }

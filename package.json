@@ -9,7 +9,7 @@
     "commit": "git-cz",
     "dev": "vitepress",
     "postinstall": "husky install",
-    "lint": "pnpm lint:prettier --write && pnpm lint:eslint --fix && pnpm lint:stylelint --fix",
+    "lint": "prettier  --write . && eslint --fix --ext .js,.ts,.vue",
     "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:zh",
     "lint:eslint": "eslint . --ext .js,.ts,.vue",
     "lint:md": "markdownlint **/*.md && lint:zh",
