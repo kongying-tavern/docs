@@ -1,3 +1,4 @@
+import { base } from './index'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
@@ -318,5 +319,15 @@ export const enConfig: LocaleSpecificConfig<
     ['meta', { property: 'twitter:url', content: META_URL }],
     ['meta', { property: 'twitter:title', content: META_TITLE }],
     ['meta', { property: 'twitter:description', content: META_DESCRIPTION }],
+    ['meta', { property: 'og:site_name', content: META_TITLE }],
+    ['meta', { property: 'og:locale', content: 'en-US' }],
+    ['meta', { property: 'og:image', content: `${base}/imgs/cover.jpg` }],
+    [
+      'meta',
+      {
+        name: 'twitter:image',
+        content: `${base}imgs/cover.jpg`,
+      },
+    ],
   ],
 }

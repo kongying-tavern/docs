@@ -29,6 +29,21 @@ html {
   --at-apply: outline-1 outline-primary ring-2 ring-primary;
 }
 
+.content-container a:not(.header-anchor) {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em
+}
+
+.content-container a:not(.header-anchor):hover {
+  text-decoration: underline;
+}
+
+.edit-link-button {
+  text-decoration: none !important;
+}
+
 .VPSidebar::-webkit-scrollbar {
 background: transparent;
 height: 8px;

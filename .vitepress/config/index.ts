@@ -149,21 +149,24 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
+        hreflang: 'zh-cn',
+        href: 'https://yuanshen.site/docs',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
         href: `${base}/imgs/favicon.ico`,
         type: 'image/x-icon',
       },
     ],
-    ['meta', { name: 'author', content: '@Arrebol' }],
-    ['meta', { property: 'og:image', content: `${base}/imgs/cover.jpg` }],
+    ['meta', { name: 'author', content: 'Arrebol' }],
+    ['meta', { name: 'article:author', content: 'Arrebol' }],
+    ['meta', { property: 'og:site', content: 'website' }],
+    ['meta', { property: 'og:locale:alternate', content: 'zh-CN' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
-    [
-      'meta',
-      {
-        name: 'twitter:image',
-        content: `${base}/imgs/cover.jpg`,
-      },
-    ],
     ...(isProd ? productionHead : []),
   ],
   ignoreDeadLinks: [
