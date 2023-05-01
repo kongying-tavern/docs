@@ -14,7 +14,7 @@ description: 加入我们
 
 > ## 📌 地图打点组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=32bm2dve4iT1LbqbDhrJTFpS7z_UYOwl&jump_from=webapi 'QQ群 992165223')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=GWjn9K19d-qRaZU5WNiZ521_v2xYw6Da&jump_from=webapi&authKey=mom+sIS2Tc2b/9DMkbfjQtqY0QJuSPA0LM7c5S62wtqSnlg+iUMcI8ctmdG08KsA 'QQ群 600052487')
 
 ### 工作职责
 
@@ -22,7 +22,7 @@ description: 加入我们
    :::
    :::raw
 
-> ## 🌎 国际化工作组
+> ## 🌎 国际化组
 >
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
@@ -31,6 +31,11 @@ description: 加入我们
 1. 负责地图相关软件，网站，文档的文本内容的本地化工作（包括翻译及校对支持）；
 2. 负责地图相关产品海外地区的日常运营语言支持工作（如公告，社群等）；
 3. 收集整理本地化相关问题，反馈并跟进修复。
+
+### 工作要求
+
+1. 具备有中英（或其他外语）互译能力；
+2. 不限国籍和语言，有相关语言环境生活经历或者相关语言专业最好；
 
 :::
 
@@ -122,7 +127,7 @@ description: 加入我们
 
 ### 工作要求
 
-1. 数学系相关专业研究生。
+1. 数学系相关专业研究生及以上学历。
 
 ### 技术栈
 

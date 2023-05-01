@@ -97,7 +97,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
 
@@ -140,6 +140,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   place-items: start;
   column-gap: 1rem;
   font-size: 0.87rem;
+  font-family: var(--vp-font-family-base);
   line-height: 1.25rem;
   margin: 0 auto;
 }

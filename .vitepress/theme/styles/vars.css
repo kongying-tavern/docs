@@ -3,6 +3,7 @@
  * -------------------------------------------------------------------------- */
 
 :root {
+  --vp-font-family-base: -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Segoe UI,Arial,Roboto,"PingFang SC",miui,"Hiragino Sans GB","Microsoft Yahei",sans-serif;
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
   --vp-c-text-code: #476582;

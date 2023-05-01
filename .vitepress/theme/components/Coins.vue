@@ -3,13 +3,24 @@
     <div class="one-time-donations">
       <div class="links">
         <a href="#wechatpay">
-          <label class="i-custom-wechatpay"></label>微信支付
+          <label class="i-custom-wechatpay"></label
+          >{{ theme.payment.wechatpay.name }}
         </a>
-        <a href="#alipay"><label class="i-custom-alipay"></label> 支付宝</a>
-        <a href="#qqpay"> <label class="i-custom-qqpay"></label> QQ 支付</a>
-        <a href="#paypal"> <label class="i-custom-paypal"></label> Paypal</a>
+        <a href="#alipay"
+          ><label class="i-custom-alipay"></label>
+          {{ theme.payment.alipay.name }}</a
+        >
+        <a href="#qqpay">
+          <label class="i-custom-qqpay"></label>
+          {{ theme.payment.qqpay.name }}</a
+        >
+        <a href="#paypal">
+          <label class="i-custom-paypal"></label>
+          {{ theme.payment.paypal.name }}</a
+        >
         <a href="#bilibili">
-          <label class="i-custom-bilibili"></label> bilibili</a
+          <label class="i-custom-bilibili"></label>
+          {{ theme.payment.bilibili.name }}</a
         >
       </div>
     </div>
@@ -30,42 +41,17 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
+import { useData } from 'vitepress'
 
+const { theme } = useData()
 let qrcode = ref()
 
 const icon = ref()
-const coins = ref({
-  wechatpay: {
-    name: '微信支付',
-    icon: 'wechatpay',
-    address: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',
-  },
-  alipay: {
-    name: '支付宝',
-    icon: 'alipay',
-    address: 'https://qr.alipay.com/tsx11609thmpw9odmvdlxd6',
-  },
-  qqpay: {
-    name: 'QQ 支付',
-    icon: 'qqpay',
-    address:
-      'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
-  },
-  paypal: {
-    name: 'Paypal',
-    icon: 'paypal',
-    address: 'https://www.paypal.com/paypalme/yuanshenditu',
-  },
-  bilibili: {
-    name: 'bilibili',
-    icon: 'bilibili',
-    address: 'https://space.bilibili.com/518076785',
-  },
-})
 const type = ref()
+const coins = ref(theme.value.payment)
 
 const updateType = () => {
   if (window.location.hash.slice(1)) {
@@ -73,8 +59,7 @@ const updateType = () => {
     if (typeof coins.value[type.value]?.address === 'undefined') return
     qrcode = useQRCode(coins.value[type.value]?.address)
     nextTick(() => {
-      icon.value.className = `i-custom-${coins.value[type.value].icon}`
-      console.log(icon.value)
+      icon.value.className = `i-custom-${[type.value]}`
     })
   }
 }

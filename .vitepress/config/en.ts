@@ -1,4 +1,5 @@
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
+import type { CustomConfig } from './types'
 
 export const META_URL = 'https://yuanshen.site/docs/en/'
 export const META_TITLE = 'Genshin Interactive Map'
@@ -7,16 +8,15 @@ export const META_KEYWORDS =
 export const META_DESCRIPTION =
   'A Genshin interactive map by Kongying Tavern for completionists'
 
-export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
+export const enConfig: LocaleSpecificConfig<
+  DefaultTheme.Config & CustomConfig
+> = {
   description: META_DESCRIPTION,
   themeConfig: {
     siteTitle: 'Genshin Interactive Map',
     outlineTitle: 'On This Page',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: 'Last updated',
-    search: {
-      provider: 'local',
-    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
@@ -31,7 +31,29 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
       text: 'Suggest changes to this page',
     },
-
+    payment: {
+      wechatpay: {
+        name: 'WeChat Pay',
+        address: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',
+      },
+      alipay: {
+        name: 'Alipay',
+        address: 'https://qr.alipay.com/tsx11609thmpw9odmvdlxd6',
+      },
+      qqpay: {
+        name: 'QQ Pay',
+        address:
+          'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
+      },
+      paypal: {
+        name: 'Paypal',
+        address: 'https://www.paypal.com/paypalme/yuanshenditu',
+      },
+      bilibili: {
+        name: 'bilibili',
+        address: 'https://space.bilibili.com/518076785',
+      },
+    },
     nav: [
       {
         text: 'Download',
@@ -231,7 +253,6 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       ],
     },
     footer: {
-      // @ts-ignore
       qrcodeTitle: 'Discord Server',
       qrcodeMessage: 'Contact us on discord',
       qrcodeLink: 'https://discord.gg/aFe57AKZUF',
