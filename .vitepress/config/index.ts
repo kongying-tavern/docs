@@ -2,7 +2,7 @@ import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vitepress'
+import { defineConfig, HeadConfig } from 'vitepress'
 import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
@@ -10,6 +10,20 @@ import { jaConfig } from './ja'
 export const base = (process.env.BASE || '/docs/') as '/docs/' | `/${string}/`
 export const isProd = process.env.NODE_ENV === 'production'
 export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
+export const productionHead: HeadConfig[] = [
+  [
+    'script',
+    {
+      id: 'Clarity',
+    },
+    `
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "gx0jeyqvg5")`,
+  ],
+]
 
 export default defineConfig({
   base: base,
@@ -150,6 +164,7 @@ export default defineConfig({
         content: `${base}/imgs/cover.jpg`,
       },
     ],
+    ...(isProd ? productionHead : []),
   ],
   ignoreDeadLinks: [
     // ignore exact url "/playground"
