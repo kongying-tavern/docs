@@ -15,12 +15,6 @@ layout: doc
 
 <Coins />
 
-## 周期性赞助
-
-周期性赞助可以获得额外的回报，你的名字会出现在 原神地图 的 GitHub/Gitee 仓库和官网中，或是你的公司 logo 会出现在我们的官网上。
-
-- [通过 爱发电 赞助](https://afdian.net/@yuanshenditu 'https://afdian.net/@yuanshenditu')（直接支持我们）
-
 ## 赞助鸣谢
 
 ### 个人赞助
