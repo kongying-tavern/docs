@@ -1,7 +1,7 @@
-import { base } from './index'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
+const base = process.env.BASE || '/docs/'
 export const META_URL = 'https://yuanshen.site/docs/en/'
 export const META_TITLE = 'Genshin Interactive Map'
 export const META_KEYWORDS =
@@ -326,7 +326,7 @@ export const enConfig: LocaleSpecificConfig<
       'meta',
       {
         name: 'twitter:image',
-        content: `${base}imgs/cover.jpg`,
+        content: `${base}/imgs/cover.jpg`,
       },
     ],
   ],

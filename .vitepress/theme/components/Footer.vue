@@ -120,9 +120,9 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   max-width: 1152px;
 }
 
-// 有侧边栏时隐藏 Footer
 .VPSidebar ~ .footer-container {
-  display: none;
+  width: calc(100% - var(--vp-sidebar-width));
+  left: var(--vp-sidebar-width);
 }
 
 .footer:first-child {
@@ -156,7 +156,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 }
 
 .footer-navigation:first-child {
-  border-top: 1px solid var(--vp-c-gutter);
+  border-top: 1px solid var(--vp-c-divider);
 }
 
 .footer-navigation {
@@ -234,14 +234,17 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   padding: 24px;
   box-sizing: border-box;
   border-radius: 9px;
-  background-color: var(--vp-c-bg-mute);
-  border: 1px solid var(--vp-c-gutter);
+  background-color: var(--vp-c-bg-soft-up);
+  border: 1px solid var(--vp-c-divider);
   display: none;
   flex-direction: column;
   align-items: center;
   font-size: 14px;
   line-height: 22px;
   color: var(--vp-c-text-2);
+  img {
+    box-shadow: var(--vp-shadow-1);
+  }
 
   h4 {
     margin: 4px 0 0;
