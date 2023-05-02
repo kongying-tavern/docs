@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-
+import { base } from './index'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
@@ -20,7 +20,17 @@ export const zhConfig: LocaleSpecificConfig<
     ['meta', { property: 'og:description', content: META_DESCRIPTION }],
     ['meta', { property: 'twitter:url', content: META_URL }],
     ['meta', { property: 'twitter:title', content: META_TITLE }],
+    ['meta', { property: 'og:site_name', content: META_TITLE }],
     ['meta', { property: 'twitter:description', content: META_DESCRIPTION }],
+    ['meta', { property: 'og:locale', content: 'zh-CN' }],
+    ['meta', { property: 'og:image', content: `${base}/imgs/cover.jpg` }],
+    [
+      'meta',
+      {
+        name: 'twitter:image',
+        content: `${base}imgs/cover.jpg`,
+      },
+    ],
   ],
   themeConfig: {
     siteTitle: '原神地图',
