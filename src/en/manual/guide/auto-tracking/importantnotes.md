@@ -62,8 +62,8 @@ Once automatic tracking is enabled, The **map client** will
 
 ### Supported
 
-- Any resolution (recommended 720p or greater)
-- Any aspect ratio (recommended 4:3 to 21:9)
+- Any resolution (recommended: 720p or greater)
+- Any aspect ratio (recommended: 4:3 to 21:9)
 - Any input device
 - Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting 4. a)
 
