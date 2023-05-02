@@ -6,17 +6,24 @@ prev:
   text: 'Table of Contents'
   link: 'en/manual/client-user-manual'
 next:
-  text: '[Background Usage] Framerate/Tracking Control'
-  link: '../bg/bgfrate'
+  text: '[Automatic Tracking] Troubleshooting'
+  link: '../auto-tracking/troubleshoot'
 ---
 
-# [Automatic Tracking] Important Notes
+# [Automatic Tracking] Introduction
 
 This feature is based on **image recognition**
 
+## Capabilities
+
+- Support for most languages (Not limited to Chinese, Korean, and English)
+- Functioning properly even when Windows system Scaling is not 100%
+- Accurate player heading detection
+- Functioning in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
+
 ---
 
-The following are pre-requisites for this feature:
+The following are the requirements for this feature:
 
 - Windows 10 or above
 - The map is unmasked by unlocking the Statues of Seven, and the **minimap** is complete
@@ -29,23 +36,72 @@ Once automatic tracking is enabled, The **map client** will
 
 ![](/imgs/en/manual/auto-tracking/autotrackingegaged.png)
 
-## Important Notes
+---
 
-- If the player indicator remains in the upper left corner, <span style="color: red">please try to update your GPU driver, and close software overlays such as Legion zone, MSI Afterburner, etc.</span>
-- The anti-aliasing setting under **Graphics** must be set to SMAA
-- (This feature supports various aspect ratios and the controller UI layout)
-- A low game resolution will reduce tracking accuracy, a resolution of <span style="color: red">1920\*1080 or greater is recommended</span>
-- Automatic tracking will not function with **exclusive fullscreen**. Please use a **windowed** display mode for functional tracking.
-- If you wish to play the game fullscreen like **exclusive fullscreen**, refer to the guide: [Launching The Game in Windowed Fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
-- Automatic tracking <span style="color: red">may sometimes return a C++ related error prompt</span>, clicking "OK" will cause the client to crash. This can be solved by installing **2005c++runtime**, if there are further problems please refer to our feedback options
-- Windows 11 users may need to enable "Don't use optimizations for windowed games" for automatic tracking via Bitlit to function
+## Software Support
 
-![](/imgs/en/manual/auto-tracking/windowedoptimization.png)
+### Supported
 
-## Capabilities
+- Genshin Impact PC client running on Windows 10/11
 
-- <span style="color: red">[New capability]</span> Support for most languages (Not limited to Chinese, Korean, and English)
-- <span style="color: red">[New capability]</span> Functioning properly even when Windows system Scaling is not 100%
-- <span style="color: red">[New capability]</span> More accurate player heading detection
-- <span style="color: red">[New capability]</span> Functioning in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
-  ​
+### In-progress
+
+- Cloud gaming
+- Windows 8.1 and earlier
+- Remote play/casting from other devices
+
+### Will not support
+
+- Non-Windows OS
+- Android simulators
+- Virtual machines
+
+---
+
+## Graphics Support
+
+### Supported
+
+- Any resolution (recommended 720p or greater)
+- Any aspect ratio (recommended 4:3 to 21:9)
+- Any input device
+- Windowed, and in some scenario, exclusive fullscreen (see Troubleshooting 4.a)
+
+### In-progress
+
+- Rotating map
+- Domains and indoor areas
+
+### Will not support
+
+Compensating for color distortions, which could be caused by:
+
+- Windows HDR calibration
+- Third party color calibration
+- Third party brightness adjustment
+- Auto HDR (Windows 11)
+- "Eye saver" features
+- NVIDIA Freestyle Game Filters
+
+Auto tracking may work with reduced accuracy or not at all.
+
+---
+
+## Troubleshooting
+
+Some facts to know before troubleshooting and submitting feedback:
+
+1. Automatic tracking is based on image recognition, it does not read or modify the game process, thus it brings no risk of an account ban.
+2. The image recognition is not highly accurate, it's normal for the player indicator to shift sporadically. It cannot be resolved due to limitations of the technology implemented.
+3. Please check if your desired range of settings and feature is supported above.
+4. The following troubleshooting files can help us identifying the issue, please attach them with your feedback if possible:
+   - Tracking log (autoTrack.log)
+   - Tracking screenshot (Capture.png)
+
+![](/imgs/en/manual/auto-tracking/1.png)
+
+Tip: You can visit the files's location quickly through the auto tracking settings
+
+![](/imgs/en/manual/auto-tracking/2.png)
+
+5. Please go though the following potential Issues before posting in the #feedback channel in discord. (you are welcomed to ask questions in #chat)

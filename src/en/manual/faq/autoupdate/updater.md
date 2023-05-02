@@ -11,4 +11,5 @@ Between version updates, some setups will encounter a bug preventing the auto-up
 > https://download.yuanshen.site/d_0/YuanshendtUpdater.exe
 
 Updater Location:
+
 ![](/imgs/en/manual/autoupdate/updaterlocation.png)

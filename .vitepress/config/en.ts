@@ -153,11 +153,24 @@ export const enConfig: LocaleSpecificConfig<
     sidebar: {
       'en/manual': [
         {
+          text: 'Table of Contents',
+          link: 'en/manual/client-user-manual',
+        },
+        {
           text: 'Guides',
           items: [
             {
               text: 'Automatic Tracking',
-              link: 'en/manual/guide/auto-tracking/importantnotes',
+              items: [
+                {
+                  text: 'Introduction',
+                  link: 'en/manual/guide/auto-tracking/importantnotes',
+                },
+                {
+                  text: 'Troubleshooting',
+                  link: 'en/manual/guide/auto-tracking/troubleshoot',
+                },
+              ],
             },
             {
               text: 'Framerate/Tracking Control',

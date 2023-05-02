@@ -3,8 +3,8 @@ title: \[Background Usage] Framerate/Tracking Control
 aside: false
 titleTemplate: Kongying Tavern
 prev:
-  text: '[Automatic Tracking] Important Notes'
-  link: '../auto-tracking/importantnotes'
+  text: '[Automatic Tracking] Troubleshooting'
+  link: '../auto-tracking/troubleshoot'
 next:
   text: '[Batch Selection] Instructions'
   link: '../batch-selection/instructions'
