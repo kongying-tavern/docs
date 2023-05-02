@@ -83,7 +83,7 @@ onBeforeUnmount(() => {
   a {
     flex: 1 1 auto;
     padding: 12px 8px;
-    text-decoration: none;
+    text-decoration: none !important;
     user-select: none;
     transition: transform 0.3s;
     display: inline-block;
