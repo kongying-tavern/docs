@@ -18,6 +18,15 @@ Sorry, this page translation is still in progress (:
 
 其登录以及登录后的相关数据均由[Gitee（码云）](https://gitee.com/)提供并存储于 Gitee 服务器中，详细可见[Gitee 隐私政策](https://gitee.com/terms/privacy_terms)
 
+我们的网站通过使用 Microsoft Clarity 和 Google Analytics 或百度统计来改进我们的产品和服务，以了解您如何使用我们的网站。使用我们的网站，即表示您同意我们和微软以及谷歌百度可以收集和使用这些数据。
+
+如需了解详情，请参阅：
+
+- [Google 的隐私权和条款](https://www.google.com/policies/privacy/partners/)
+- [Google 保护您的数据](https://support.google.com/analytics/answer/6004245)
+- [微软隐私声明](https://privacy.microsoft.com/privacystatement)
+- [百度推荐隐私政策](https://tongji.baidu.com/web/help/article?id=375&type=0)
+
 ### 个人信息的安全性
 
 遗憾的是，通过互联网传输信息并不完全安全。尽管我们将实施并保持合理措施来保护您的个人信息，但我们不能保证通过本网站或以其他方式通过互联网传输的信息的安全性；对于任何信息传输，风险均由您自行承担。
