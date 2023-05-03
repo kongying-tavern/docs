@@ -7,8 +7,12 @@ html {
 }
 
 .vp-doc h2 {
-  border-top: 0;
+  border: none;
   margin-top: 10px;
+}
+
+.vp-doc h2:first-child {
+  border-top: 1px;
 }
 
 #VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.main > h1 > span,
