@@ -62,7 +62,13 @@ a {
   align-items: center;
   margin-top: 20px;
   margin-bottom: 10px;
+  transition: all 0.5s, box-shadow 0.25s ease, border-color 0.25s ease;
   text-decoration: none !important;
+
+  &:hover {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: var(--vp-shadow-1);
+  }
 }
 
 .description {

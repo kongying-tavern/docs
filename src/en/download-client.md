@@ -27,7 +27,7 @@ If you are interested in aiding our development, consider [Join Us(^\_^)](./join
 <MediaIntroduction
   media="self"
   text="Map Client User Manual"
-  link="./manual/client-user-manual.md"
+  link="./manual/client-user-manual"
 />
 
 ## Web Version
