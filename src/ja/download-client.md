@@ -23,10 +23,6 @@ Sorry, this page translation is still in progress (:
 - Google Drive：
   - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
 
-> [观看客户端基础使用教程（bilibili）](https://www.bilibili.com/video/BV1uU4y157Te)
->
-> [客户端使用手册](https://support.qq.com/products/321980/faqs-more/?id=94938)
-
 ::: tip
 当前仅开放地图 **Windows 客户端** 的下载，其他系统版本正在开发中敬请期待！
 
