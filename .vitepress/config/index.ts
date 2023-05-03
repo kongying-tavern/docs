@@ -7,14 +7,14 @@ import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
 
-export const base = (process.env.BASE || '/docs/') as '/docs/' | `/${string}/`
+export const base = process.env.BASE || '/docs/'
 export const isProd = process.env.NODE_ENV === 'production'
 export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
 export const productionHead: HeadConfig[] = [
   [
     'script',
     {
-      id: 'Clarity',
+      id: 'clarity',
     },
     `
     (function(c,l,a,r,i,t,y){

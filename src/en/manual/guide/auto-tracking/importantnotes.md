@@ -19,7 +19,7 @@ This feature is based on **image recognition**
 - Support for most languages (Not limited to Chinese, Korean, and English)
 - Functioning properly even when Windows system Scaling is not 100%
 - Accurate player heading detection
-- Functioning in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
+- Functional in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
 
 ---
 

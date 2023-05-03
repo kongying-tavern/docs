@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-import { base } from './index'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
+const base = process.env.BASE || '/docs'
 export const META_URL = 'https://yuanshen.site/docs/'
 export const META_TITLE = '原神地图'
 export const META_DESCRIPTION = '空荧酒馆制作的原神全资源攻略地图。'
@@ -28,7 +28,7 @@ export const zhConfig: LocaleSpecificConfig<
       'meta',
       {
         name: 'twitter:image',
-        content: `${base}imgs/cover.jpg`,
+        content: `${base}/imgs/cover.jpg`,
       },
     ],
   ],
