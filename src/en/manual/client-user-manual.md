@@ -1,6 +1,7 @@
 ---
 title: Map Client User Manual
 aside: false
+titleTemplate: Kongying Tavern
 next:
   text: '[Automatic Tracking] Important Notes'
   link: './guide/auto-tracking/importantnotes.md'
@@ -9,7 +10,7 @@ prev:
   link: '../index.md'
 ---
 
-# Table of Content
+# Table of Contents
 
 ## **Manuals in Other Languages**
 
@@ -23,6 +24,7 @@ prev:
 
 - [Starter Tour (Coming Soon)](#)
 - [[Automatic Tracking] Important Notes](./guide/auto-tracking/importantnotes.md)
+- [[Automatic Tracking] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Batch Selection] Instructions](./guide/batch-selection/instructions.md)
 - [[Custom Path Planner (Canvas)] Guide](./guide/canvas/guide.md)
