@@ -14,7 +14,7 @@ export const productionHead: HeadConfig[] = [
   [
     'script',
     {
-      id: 'clarity',
+      id: 'clarity-script',
     },
     `
     (function(c,l,a,r,i,t,y){
@@ -167,7 +167,8 @@ export default defineConfig({
     ['meta', { property: 'og:locale:alternate', content: 'zh-CN' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
-    ...(isProd ? productionHead : []),
+    // ...(isProd ? productionHead : []),
+    ...(isProd ? productionHead : productionHead),
   ],
   ignoreDeadLinks: [
     // ignore exact url "/playground"
