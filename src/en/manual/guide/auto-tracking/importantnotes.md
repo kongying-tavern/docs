@@ -65,7 +65,7 @@ Once automatic tracking is enabled, The **map client** will
 - Any resolution (recommended: 720p or greater)
 - Any aspect ratio (recommended: 4:3 to 21:9)
 - Any input device
-- Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting 4. a)
+- Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting Issue 4)
 
 ### In-progress
 
@@ -92,9 +92,9 @@ Auto tracking may work with reduced accuracy or not at all.
 Some facts to know before troubleshooting and submitting feedback:
 
 1. Automatic tracking is based on image recognition, it does not read or modify the game process, thus it brings no risk of an account ban.
-2. The image recognition is not highly accurate, it's normal for the player indicator to shift sporadically. It cannot be resolved due to the limitations of the technology implemented.
+2. The image recognition is not highly accurate, it's normal for the player indicator to shift sporadically. This cannot be resolved completely due to the limitations of the technology implemented.
 3. Please check if your desired range of settings and feature is supported above.
-4. The following troubleshooting files can help us identify the issue, please attach them with your feedback if possible:
+4. The following troubleshooting files can help us identify an issue, please attach them with your feedback if possible:
    - Tracking log (autoTrack.log)
    - Tracking screenshot (Capture.png)
 
@@ -104,4 +104,4 @@ Tip: You can visit the files' location quickly through the auto tracking setting
 
 ![](/imgs/en/manual/auto-tracking/2.png)
 
-5. Please go through the following potential Issues before posting in the #feedback channel in Discord. (you are welcomed ask questions in #chat)
+1. Please go through the following [potential Issues](./troubleshoot.md) before posting in the #feedback channel on Discord. (you are welcomed ask any question in #chat)
