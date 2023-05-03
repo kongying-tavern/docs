@@ -23,7 +23,7 @@ const mediaID = computed(() => {
 
 <template>
   <a
-    :href="media !== 'self' ? link : withBase(link.toString())"
+    :href="withBase(link.toString())"
     :title="link"
     :target="media !== 'self' ? '_black' : '_self'"
   >

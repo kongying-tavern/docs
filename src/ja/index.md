@@ -14,7 +14,7 @@ aside: false
 <MediaIntroduction 
   media="self"
   text="回到中文首页"
-  link="../index.md"
+  link="../index"
 />
 
 # Multi Language Translations
@@ -26,5 +26,5 @@ If you are interested in helping us with our translation efforts, we humbly invi
 <MediaIntroduction 
   media="self"
   text="Go to the English Home Page"
-  link="../en/index.md"
+  link="../en/index"
 />
