@@ -6,7 +6,7 @@ aside: false
 pageClass: download-client
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

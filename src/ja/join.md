@@ -5,7 +5,7 @@ titleTemplate: 空荧酒馆
 description: 加入我们
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

@@ -7,7 +7,7 @@ titleTemplate: 空荧酒馆
 externalLinkIcon: false
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

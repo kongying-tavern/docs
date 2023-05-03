@@ -19,16 +19,30 @@ pageClass: download-client
 - Google Drive：
   - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
 
-> [观看客户端基础使用教程（bilibili）](https://www.bilibili.com/video/BV1uU4y157Te)
->
-> [客户端使用手册](https://support.qq.com/products/321980/faqs-more/?id=94938)
-
 ::: tip
 当前仅开放地图 **Windows 客户端** 的下载，其他系统版本正在开发中敬请期待！
 
 如果您有兴趣参与地图的开发与维护，欢迎[加入我们(^\_^)](./join.md)
 :::
 
+:::details 客户端使用教程
+<MediaIntroduction 
+  media="bilibili"
+  text="观看客户端基础使用教程"
+  link="https://www.bilibili.com/video/BV1uU4y157Te"
+/>
+
+<MediaIntroduction
+  media="txc"
+  text="客户端使用手册"
+  link="https://support.qq.com/products/321980/faqs-more/?id=94938"
+/>
+:::
+
 ## 网页版地图
 
-<https://v3.yuanshen.site/>
+<MediaIntroduction 
+  media="self"
+  text="网页版地图 V3"
+  link="https://yuanshen.site"
+/>

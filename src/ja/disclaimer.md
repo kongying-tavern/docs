@@ -7,7 +7,7 @@ date: 2021-5-30
 aside: false
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

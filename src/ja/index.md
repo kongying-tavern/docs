@@ -11,7 +11,11 @@ aside: false
 
 如果您有兴趣参与地图的本地化工作，我们欢迎您[加入我们参与翻译](../join.md);
 
-回到[中文首页](../index.md)
+<MediaIntroduction 
+  media="self"
+  text="回到中文首页"
+  link="../index.md"
+/>
 
 # Multi Language Translations
 
@@ -19,4 +23,8 @@ The docs for our map client have gone through major updates recently, some langu
 
 If you are interested in helping us with our translation efforts, we humbly invite you to [Join Us](../join.md).
 
-Go to the [English Home Page](/en/index.md).
+<MediaIntroduction 
+  media="self"
+  text="Go to the English Home Page"
+  link="../en/index.md"
+/>

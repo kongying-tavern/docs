@@ -4,7 +4,7 @@ layout: doc
 aside: false
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

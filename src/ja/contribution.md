@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 </script>
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

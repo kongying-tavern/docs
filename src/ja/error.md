@@ -9,7 +9,7 @@ head:
     - src: /docs/error.js
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

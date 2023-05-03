@@ -7,7 +7,7 @@ layout: doc
 pageClass: credits
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 

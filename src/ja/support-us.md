@@ -4,7 +4,7 @@ titleTemplate: 空荧酒馆
 layout: doc
 ---
 
-::: tip
+::: info
 Sorry, this page translation is still in progress (:
 :::
 
