@@ -18,8 +18,6 @@ titleTemplate: Kongying Tavern
 - Baidu Cloud (Chinese)：
   - <https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg>
 
-> [Client User Manual](./manual/client-user-manual.md)
-
 ::: tip
 Currently we only offer the **Windows Version** of our map client, versions in other OS are in progress.
 
@@ -31,7 +29,7 @@ If you are interested in aiding our development, consider [Join Us(^\_^)](./join
 <MediaIntroduction
   media="self"
   text="Map Client User Manual"
-  link="./manual/client-user-manual.md"
+  link="./manual/client-user-manual"
 />
 :::
 

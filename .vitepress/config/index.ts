@@ -167,8 +167,7 @@ export default defineConfig({
     ['meta', { property: 'og:locale:alternate', content: 'zh-CN' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
-    // ...(isProd ? productionHead : []),
-    ...(isProd ? productionHead : productionHead),
+    ...(isProd ? productionHead : []),
   ],
   ignoreDeadLinks: [
     // ignore exact url "/playground"
