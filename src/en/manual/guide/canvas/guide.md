@@ -25,33 +25,33 @@ Hotkey summary:
 
 ## Basic Functionality
 
-**step** 1. Click on the map icon located in the upper right
+### **step** 1. Click on the map icon located in the upper right
 
 ![](/imgs/en/manual/canvas/1.png)
 
-**step** 2. Select "Add a New Canvas"
+### **step** 2. Select "Add a New Canvas"
 
 ![](/imgs/en/manual/canvas/2.png)
 
-**step** 3. Select the newly created canvas (indicated by darkened background)
+### **step** 3. Select the newly created canvas (indicated by darkened background)
 
 ![](/imgs/en/manual/canvas/3.png)
 
 ![](/imgs/en/manual/canvas/4.png)
 (Canvas under selection, click on it again to deselect)
 
-**step** 4. Toggle editing
+### **step** 4. Toggle editing
 
 ![](/imgs/en/manual/canvas/5.png)
 
 ![](/imgs/en/manual/canvas/6.png)
 (Picture shows editing toggled ON, click on it again to toggle OFF)
 
-**step** 5. **Hold Alt and left click** on any location to create a path
+### **step** 5. **Hold Alt and left click** on any location to create a path
 
 ![](/imgs/en/manual/canvas/7.png)
 
-**step** 6. Holding control allows control over anchors on the path
+### **step** 6. Holding control allows control over anchors on the path
 
 ![](/imgs/en/manual/canvas/9.png)
 
@@ -60,13 +60,13 @@ use **right click** on round anchors to reset path curvature,
 use **right click** on square anchors to delete it,  
 **double click** on the path to place an anchor.
 
-**step** 7. Hit **Enter** to conclude editing this path
+### **step** 7. Hit **Enter** to conclude editing this path
 
-**step** 8. Repeat **steps** 1 through 7 (note: upon exiting editing via Enter, click on a path to begin editing it)
+### **step** 8. Repeat **steps** 1 through 7 (note: upon exiting editing via Enter, click on a path to begin editing it)
 
 ## Export
 
-Open the Canvas list, select "Export" and save to a desirable location.
+Open the Canvas list, select "Export" and save to a desirable directory.
 
 ![](/imgs/en/manual/canvas/10.png)
 

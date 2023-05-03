@@ -16,9 +16,12 @@ next:
 
 The auto tracking feature cannot overlay the game window, you can use the Stay on Top feature to have a similar effect as the title describes.
 
-Showcase:
-
-- [The Best Underground Map (Kongying Tavern x Teyvat Map Institute)](https://www.reddit.com/r/Genshin_Impact/comments/12znlyd/the_best_underground_map_kongying_tavern_x_teyvat/)
+Showcase
+<MediaIntroduction 
+  media="reddit"
+  text="The Best Underground Map (Kongying Tavern x Teyvat Map Institute)"
+  link="https://www.reddit.com/r/Genshin_Impact/comments/12znlyd/the_best_underground_map_kongying_tavern_x_teyvat/"
+/>
 
 ## 2. Cannot download auto tracking module, the download window flashes or the download speed is 0.00 kb/s
 
@@ -38,13 +41,12 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 - When using a new version for the first time, the module requires 1-5 minutes to rebuild its cache. During this process, switching versions or using the tracking screenshot function may cause the client to stop responding. If no player indicator shows up after 10 minutes, or if it is not the initial activation of a new version, please refer to issues further down the list.
 - Double-check if the auto tracker is toggled on.
 - Check the in-game minimap for obstructions, and ensure it's displaying properly.
-- Check the "DLL" version at the lower left corner of the map client. If it shows "Uninitialized", try restarting auto tracking. If the problem persists, please delete all files in `C:\Users\username\AppData\LocalLow\空荧酒馆\Map\DLL`, and download the tracking module again.
-
-![](/imgs/en/manual/auto-tracking/3.png)
-
-![](/imgs/en/manual/auto-tracking/4.png)
-
-![](/imgs/en/manual/auto-tracking/5.png)
+- Check the "DLL" version at the lower left corner of the map client. If it shows "Uninitialized", try restarting auto tracking.
+  ![](/imgs/en/manual/auto-tracking/3.png)
+  ![](/imgs/en/manual/auto-tracking/4.png)
+  ![](/imgs/en/manual/auto-tracking/5.png)
+  If the problem persists, please delete all files in `C:\Users\username\AppData\LocalLow\空荧酒馆\Map\DLL`, and download the tracking module again.
+  ![](/imgs/en/manual/auto-tracking/1.png)
 
 - Use "Obtain Tracking Screenshot" in the auto tracking settings, if the screenshot is blank, showing a non-current image of the game, or failed, please see Issue 5.
 - If a normal screenshot is obtained, but no player indicator shows up, please see Issue 6.
@@ -73,11 +75,9 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 
 ## 7. Drifting player indicator
 
-When the player indicator is at the wrong location, but moves with your in-game movement, delete the auto tracking cache and restart auto tracking to rebuild it.
+When the player indicator is at the wrong location, but moves with your in-game movement, clear the auto tracking cache from the settings and restart auto tracking to rebuild it. (see **_Issue 3._**)
 
-![](/imgs/en/manual/auto-tracking/6.png)
-
-## 8. Player indicator teleports or updates location slowly
+## 8. Player indicator teleports or updates player movement slowly
 
 Occasional teleportation skips of the player indicator cannot be avoided due to the nature of our image recognition algorithm, but you can reduce its occurrence and improve responsiveness with the following actions:
 

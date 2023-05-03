@@ -98,10 +98,12 @@ Some facts to know before troubleshooting and submitting feedback:
    - Tracking log (autoTrack.log)
    - Tracking screenshot (Capture.png)
 
-![](/imgs/en/manual/auto-tracking/1.png)
+![](/imgs/en/manual/auto-tracking/7.png)
 
-Tip: You can visit the files' location quickly through the auto tracking settings
+::: tip
+You can visit the files' directory quickly through the auto tracking settings.
 
 ![](/imgs/en/manual/auto-tracking/2.png)
+:::
 
 1. Please go through the following [potential Issues](./troubleshoot.md) before posting in the #feedback channel on Discord. (you are welcomed ask any question in #chat)

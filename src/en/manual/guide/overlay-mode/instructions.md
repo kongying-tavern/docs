@@ -35,7 +35,7 @@ Overlay Mode <span style="color: green"><b>displays the map client</b></span> ov
 (Close Button - Go Back to Game)
 
 - Once Overlay Mode is enabled successfully, a **Paimon Icon** displays on the left of the minimap in-game
-- If the Paimon Icon does not appear, **PopTips** likely loaded unsuccessfully. This may be caused by system permission denial, you can launch the **PopTips** plugin manually by executing **_map folder location_\Map_Data\Plugins\x86_64\tips.exe**
+- If the Paimon Icon does not appear, **PopTips** likely loaded unsuccessfully. This may be caused by system permission denial, you can launch the **PopTips** plugin manually by executing `map_folder_directory_\Map_Data\Plugins\x86_64\tips.exe`
 
 ![](/imgs/en/manual/overlay-mode/4.png)
 (Paimon Icon)

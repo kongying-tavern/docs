@@ -9,9 +9,9 @@ prev:
 
 # [Restore/Recover] Progress Recovery From Stored Data
 
-This feature requires a Gitee account that is logged in on your map client
+This feature requires a logged in Gitee account on your map client.
 
-## 1. Return save to an archived timestamp
+## 1. Return saves to an archived timestamp
 
 Select **Restore** in the **Paimon Menu**
 
