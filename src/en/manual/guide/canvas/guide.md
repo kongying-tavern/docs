@@ -69,7 +69,9 @@ use **right click** on square anchors to delete it,
 Open the Canvas list, select "Export" and save to a desirable location.
 
 ![](/imgs/en/manual/canvas/10.png)
+
 ![](/imgs/en/manual/canvas/11.png)
+
 ![](/imgs/en/manual/canvas/12.png)
 
 ## Import
@@ -77,5 +79,7 @@ Open the Canvas list, select "Export" and save to a desirable location.
 Open the Canvas list, select "Import" and open the desirable save file.
 
 ![](/imgs/en/manual/canvas/13.png)
+
 ![](/imgs/en/manual/canvas/14.png)
+
 ![](/imgs/en/manual/canvas/15.png)
