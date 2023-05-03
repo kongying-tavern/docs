@@ -23,7 +23,7 @@ prev:
 ## **Guides**
 
 - [Starter Tour (Coming Soon)](#)
-- [[Automatic Tracking] Important Notes](./guide/auto-tracking/importantnotes.md)
+- [[Automatic Tracking] Introduction](./guide/auto-tracking/importantnotes.md)
 - [[Automatic Tracking] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Batch Selection] Instructions](./guide/batch-selection/instructions.md)
