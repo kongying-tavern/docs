@@ -108,7 +108,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
 <style lang="scss">
 .footer-container {
-  z-index: var(--vp-z-index-footer);
+  z-index: 1;
   position: relative;
   right: 0;
   bottom: 0;
@@ -118,11 +118,6 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
 .is-home ~ .footer-container .footer {
   max-width: 1152px;
-}
-
-.VPSidebar ~ .footer-container {
-  width: calc(100% - var(--vp-sidebar-width));
-  left: var(--vp-sidebar-width);
 }
 
 .footer:first-child {
@@ -266,6 +261,11 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     grid-auto-flow: column;
     place-items: self-start;
     row-gap: 2.5rem;
+  }
+
+  .VPSidebar ~ .footer-container {
+    width: calc(100% - var(--vp-sidebar-width));
+    left: var(--vp-sidebar-width);
   }
 
   .footer-navigation:first-child {

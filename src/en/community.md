@@ -1,7 +1,6 @@
 ---
 title: Join Community
 description: Join Community
-aside: false
 layout: doc
 titleTemplate: Kongying Tavern
 ---
@@ -12,7 +11,7 @@ titleTemplate: Kongying Tavern
 
 1. [**Join Server** aFe57AKZUF](https://discord.gg/aFe57AKZUF 'Invite Link')
 
-## QQ 交流群
+## QQ 交流群（Chinese community）
 
 1. [**原神地图 ① 群(被封禁)** 765302904](# '点击一键加入原神地图交流①群')
 2. [**原神地图 ② 群(已满)** 853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击一键加入原神地图②群')
@@ -34,6 +33,10 @@ titleTemplate: Kongying Tavern
 推荐加入人数较少的群。
 请勿重复加群，由于群人数均衡原因，若重复加群将踢出「群人数较多的群」！
 :::
+
+## QQ 频道（Chinese community）
+
+1. [**加入频道** pd.qq.com/f006fek0f](https://pd.qq.com/s/f006fek0f '邀请链接')
 
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {

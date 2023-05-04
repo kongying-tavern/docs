@@ -2,9 +2,7 @@
 title: 加入社区
 description: 加入社区
 layout: doc
-aside: false
 titleTemplate: 空荧酒馆
-externalLinkIcon: false
 ---
 
 ::: info
