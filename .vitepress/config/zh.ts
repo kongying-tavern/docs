@@ -50,7 +50,7 @@ export const zhConfig: LocaleSpecificConfig<
             'utf8'
           ),
         },
-        link: 'https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi',
+        link: 'https://pd.qq.com/s/f006fek0f',
       },
     ],
 
