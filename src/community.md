@@ -2,7 +2,6 @@
 title: 加入社区
 description: 加入社区
 layout: doc
-aside: false
 titleTemplate: 空荧酒馆
 externalLinkIcon: false
 ---
@@ -32,9 +31,13 @@ externalLinkIcon: false
 请勿重复加群，由于群人数均衡原因，若重复加群将踢出「群人数较多的群」！
 :::
 
+## QQ 频道
+
+1. [**加入频道** pd.qq.com/f006fek0f](https://pd.qq.com/s/f006fek0f '邀请链接')
+
 ## Discord Server
 
-1. [**加入频道** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
+1. [**加入服务器** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
 
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {
