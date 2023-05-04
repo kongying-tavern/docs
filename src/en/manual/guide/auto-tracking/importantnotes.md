@@ -106,4 +106,4 @@ You can visit the files' directory quickly through the auto tracking settings.
 ![](/imgs/en/manual/auto-tracking/2.png)
 :::
 
-1. Please go through the following [potential Issues](./troubleshoot.md) before posting in the #feedback channel on Discord. (you are welcomed ask any question in #chat)
+1. Please go through the following [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
