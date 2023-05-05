@@ -28,7 +28,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> 
             "utf8"
           ),
         },
-        link: "https://pd.qq.com/s/f006fek0f",
+        link: "https://www.reddit.com/user/Kongying_Tavern",
       },
       { icon: "discord", link: "https://discord.gg/aFe57AKZUF" },
       { icon: "twitter", link: "https://twitter.com/KongyingTavern" },
