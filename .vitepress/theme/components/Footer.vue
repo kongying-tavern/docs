@@ -25,10 +25,7 @@
         <p text-center>{{ theme.footer.qrcodeMessage }}</p>
       </div>
     </footer>
-    <footer
-      class="footer py-4"
-      style="border-top: 1px solid var(--vp-c-gutter)"
-    >
+    <footer class="footer py-4">
       <div class="items-center grid-flow-col">
         <svg
           width="24"
@@ -261,6 +258,10 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     grid-auto-flow: column;
     place-items: self-start;
     row-gap: 2.5rem;
+  }
+
+  .footer:last-child {
+    border-top: 1px solid var(--vp-c-divider);
   }
 
   .VPSidebar ~ .footer-container {
