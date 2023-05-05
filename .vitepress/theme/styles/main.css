@@ -46,7 +46,8 @@ html {
   text-decoration: underline;
 }
 
-.pager-link, .edit-link-button {
+.pager-link,
+.edit-link-button {
   text-decoration: none !important;
 }
 

@@ -12,9 +12,7 @@ export const META_KEYWORDS =
 export const META_DESCRIPTION =
   "A Genshin interactive map by Kongying Tavern for completionists";
 
-export const enConfig: LocaleSpecificConfig<
-  DefaultTheme.Config & CustomConfig
-> = {
+export const enConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> = {
   description: META_DESCRIPTION,
   themeConfig: {
     siteTitle: "Genshin Interactive Map",
@@ -23,7 +21,15 @@ export const enConfig: LocaleSpecificConfig<
     lastUpdatedText: "Last updated",
     socialLinks: [
       { icon: "github", link: "https://github.com/kongying-tavern" },
-      
+      {
+        icon: {
+          svg: fs.readFileSync(
+            path.resolve(__dirname, "../../src/public/svg/reddit.svg"),
+            "utf8"
+          ),
+        },
+        link: "https://pd.qq.com/s/f006fek0f",
+      },
       { icon: "discord", link: "https://discord.gg/aFe57AKZUF" },
       { icon: "twitter", link: "https://twitter.com/KongyingTavern" },
     ],
