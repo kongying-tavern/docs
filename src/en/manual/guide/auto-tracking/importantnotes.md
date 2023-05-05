@@ -65,21 +65,21 @@ Once automatic tracking is enabled, The **map client** will
 - Any resolution (recommended: 720p or greater)
 - Any aspect ratio (recommended: 4:3 to 21:9)
 - Any input device
+- **Fixed minimap** (under in-game Gamplay settings)
 - Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting Issue 4)
 
 ### In-progress
 
-- Rotating map
+- Rotating minimap (under in-game Gamplay settings)
 - Domains and indoor areas
 
 ### Will not support
 
 Compensating for color distortions, which could be caused by:
 
-- Windows HDR calibration
 - Third party color calibration
 - Third party brightness adjustment
-- Auto HDR (Windows 11)
+- Windows 11 Auto HDR (tested: reduced player heading accuracy)
 - "Eye saver" features
 - NVIDIA Freestyle Game Filters
 
