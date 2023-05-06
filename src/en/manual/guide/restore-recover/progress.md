@@ -17,7 +17,7 @@ Select **Restore** in the **Paimon Menu**
 
 ![](/imgs/en/manual/restore-recover/1.png)
 
-Select the desired save according to **Timestamp** and **Entires**, you can uncheck the "Current Save Only" option to restore from archives of other saves
+Select the desired save according to **Timestamp** and **Entries**, you can uncheck the "Current Save Only" option to restore from archives of other saves
 
 ![](/imgs/en/manual/restore-recover/2.png)
 
