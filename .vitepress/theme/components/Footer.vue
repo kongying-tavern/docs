@@ -253,6 +253,13 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   }
 }
 
+@media (min-width: 960px) {
+  .VPSidebar ~ .footer-container {
+    width: calc(100% - var(--vp-sidebar-width));
+    left: var(--vp-sidebar-width);
+  }
+}
+
 @media (min-width: 48rem) {
   .footer {
     grid-auto-flow: column;
@@ -262,11 +269,6 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
   .footer:last-child {
     border-top: 1px solid var(--vp-c-divider);
-  }
-
-  .VPSidebar ~ .footer-container {
-    width: calc(100% - var(--vp-sidebar-width));
-    left: var(--vp-sidebar-width);
   }
 
   .footer-navigation:first-child {
