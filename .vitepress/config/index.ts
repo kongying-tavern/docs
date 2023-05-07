@@ -1,12 +1,18 @@
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
+import MarkdownItFootnote from 'markdown-it-footnote'
+import { createWriteStream } from 'node:fs'
+import { resolve } from 'node:path'
+import { SitemapStream } from 'sitemap'
+import { genFeed } from './genFeed'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
 import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
 
+export const links: any[] = []
 export const base = process.env.BASE || '/docs/'
 export const isProd = process.env.NODE_ENV === 'production'
 export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
@@ -219,5 +225,28 @@ export default defineConfig({
     json: {
       stringify: true,
     },
+  },
+  markdown: {
+    config(md) {
+      md.use(MarkdownItFootnote)
+    },
+  },
+  transformHtml: (_, id, { pageData }) => {
+    if (!/[\\/]404\.html$/.test(id))
+      links.push({
+        // you might need to change this if not using clean urls mode
+        url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2'),
+        lastmod: pageData.lastUpdated,
+      })
+  },
+  buildEnd: (config) => {
+    const sitemap = new SitemapStream({
+      hostname: 'https://yuanshen.site/',
+    })
+    const writeStream = createWriteStream(resolve(config.outDir, 'sitemap.xml'))
+    sitemap.pipe(writeStream)
+    links.forEach((link) => sitemap.write(link))
+    sitemap.end()
+    genFeed(config)
   },
 })
