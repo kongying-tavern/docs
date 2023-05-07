@@ -29,11 +29,7 @@ const mediaID = computed(() => {
 </script>
 
 <template>
-  <a
-    :href="withBase(link.toString())"
-    :title="link"
-    :target="media !== 'self' ? '_black' : '_self'"
-  >
+  <a :href="link" :title="link" :target="media !== 'self' ? '_black' : '_self'">
     <span class="logo-wrapper">
       <label i-custom-bilibili v-if="media === 'bilibili'"></label>
       <label i-custom-txc v-if="media === 'txc'"></label>
