@@ -24,19 +24,16 @@ Currently we only offer the **Windows Version** of our map client, versions in o
 If you are interested in aiding our development, consider [Join Us(^\_^)](./join)
 :::
 
-:::details Client use tutorial
-
 <MediaIntroduction
   media="self"
   text="Map Client User Manual"
   link="./manual/client-user-manual"
 />
-:::
 
 ## Web Version
 
 <MediaIntroduction 
   media="self"
-  text="Web-version portal"
+  text="Web Version Portal"
   link="https://yuanshen.site"
 />

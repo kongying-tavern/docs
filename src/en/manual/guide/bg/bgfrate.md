@@ -20,18 +20,19 @@ If you wish to use the [Stay on Top] feature, which pins the map client window o
 
 ![](/imgs/en/manual/bg-frate/1.png)
 
+::: tip
+
 Dragging the frame rate slider to the leftmost position will enable \[V-Sync], which matches the frame rate limit to your monitor's refresh rate.
 
 ![](/imgs/en/manual/bg-frate/2.png)
 
----
+:::
 
 ## Tracking Interval
 
 [Tracking Interval] can be found under [Automatic Tracking] settings, the unit of its value is **second**.
 
-Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
-
-Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while also reducing player indicator responsiveness.
+- Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
+- Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while also reducing player indicator responsiveness.
 
 ![](/imgs/en/manual/bg-frate/3.png)

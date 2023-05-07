@@ -15,7 +15,7 @@ There are three likely scenarios,
 2. the client is stuck on 0%, no dialogue appears
 
 ![](/imgs/en/manual/launcherror/2.jpeg)
-(Cache is corrupted, head to the location in the following picture and delete PlayerPrefs.json)
+(Cache is corrupted, head to the directory in the following picture and delete PlayerPrefs.json)
 
 ![](/imgs/en/manual/launcherror/3.png)
 

@@ -3,7 +3,14 @@ import { computed } from 'vue'
 import { withBase } from 'vitepress'
 
 const props = defineProps<{
-  media: 'bilibili' | 'txc' | 'youtube' | 'twitter' | 'discord' | 'self'
+  media:
+    | 'bilibili'
+    | 'txc'
+    | 'youtube'
+    | 'twitter'
+    | 'discord'
+    | 'self'
+    | 'reddit'
   text: String
   link: URL
 }>()
@@ -33,6 +40,7 @@ const mediaID = computed(() => {
       <label i-logos-youtube-icon v-if="media === 'youtube'"></label>
       <label i-logos-twitter v-if="media === 'twitter'"></label>
       <label i-logos-discord-icon v-if="media === 'discord'"></label>
+      <label i-logos-reddit-icon v-if="media === 'reddit'"></label>
       <img h-10 w-10 v-if="media === 'self'" src="/imgs/logo_128.png" />
     </span>
     <span class="description">
