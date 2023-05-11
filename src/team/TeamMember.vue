@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Member } from './Member'
-import Link from './Link.vue'
 
 const props = defineProps<{
   member: Member
@@ -162,9 +161,13 @@ const avatarUrl = computed(() => {
 .TeamMember {
   position: relative;
   background-color: var(--vp-c-bg-soft);
-  transition: background-color 0.5s;
+  transition: all 0.5s, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
+.TeamMember:hover {
+  transform: translate3d(0, -4px, 0);
+  box-shadow: var(--vp-shadow-1);
+}
 @media (min-width: 512px) {
   .TeamMember {
     display: flex;

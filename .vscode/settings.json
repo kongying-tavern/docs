@@ -9,5 +9,6 @@
     "vitepress",
     "wechat",
     "wechatpay"
-  ]
+  ],
+  "vue.codeActions.enabled": false
 }

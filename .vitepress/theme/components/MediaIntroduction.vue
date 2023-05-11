@@ -15,6 +15,7 @@ const props = defineProps<{
   target: String
   link: URL
 }>()
+const isExternal = computed(() => props.link && /^[a-z]+:/i.test(props.link))
 
 const mediaID = computed(() => {
   switch (props.media) {
@@ -30,11 +31,7 @@ const mediaID = computed(() => {
 </script>
 
 <template>
-  <a
-    :href="link"
-    :title="link"
-    :target="target || media !== 'self' ? '_black' : '_self'"
-  >
+  <Link :href="link" :title="link" :noIcon="true">
     <span class="logo-wrapper">
       <label i-custom-bilibili v-if="media === 'bilibili'"></label>
       <label i-custom-txc v-if="media === 'txc'"></label>
@@ -50,7 +47,8 @@ const mediaID = computed(() => {
         {{ mediaID && `(${mediaID})` }}
       </span>
     </span>
-  </a>
+    <label v-if="isExternal && !noIcon" i-ic-round-arrow-outward />
+  </Link>
 </template>
 
 <style lang="scss" scoped>

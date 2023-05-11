@@ -5,17 +5,13 @@
         <h3 class="footer-title">{{ item.title }}</h3>
         <ul>
           <li v-for="ic in item.items">
-            <a
+            <Link
               :href="withBase(ic.link)"
-              :title="ic.text"
-              :target="
-                ic.link.match(/(http|https):\/\/([\w.]+\/?)\S*/gi)
-                  ? '_black'
-                  : '_self'
-              "
+              :title="ic.text + '（' + withBase(ic.link) + '）'"
+              noIcon="true"
             >
               {{ ic.text }}
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
@@ -71,12 +67,21 @@
             rel="noopener noreferrer"
           ></a>
           <a
+            i-logos-reddit-icon
+            icon-btn
+            mr-4
+            href="https://www.reddit.com/user/Kongying_Tavern"
+            target="_blank"
+            title="Reddit"
+            rel="noopener noreferrer"
+          ></a>
+          <a
             i-custom-bilibili
             icon-btn
             mr-4
             href="https://space.bilibili.com/518076785"
             target="_blank"
-            title="Bilibili"
+            title="bilibili"
             rel="noopener noreferrer"
           ></a>
           <a

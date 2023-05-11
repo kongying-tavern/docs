@@ -1,5 +1,6 @@
 import { h } from 'vue'
 import Theme from 'vitepress/theme-without-fonts'
+import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
 import MediaIntroduction from './components/MediaIntroduction.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
@@ -15,6 +16,7 @@ export default {
     return h(Theme.Layout, null, {})
   },
   enhanceApp({ app }) {
+    app.component('Link', Link)
     app.component('Coins', Coins)
     app.component('MediaIntroduction', MediaIntroduction)
     googleAnalytics({
