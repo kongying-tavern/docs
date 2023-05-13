@@ -29,7 +29,7 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 
 ## 3. Receiving C++ Runtime error or client crashing after enabling auto tracking
 
-- Simply retry enabling auto tracking again
+- Simply retry enabling auto tracking
 - Exit the map client and delete the auto tracking cache, launch the map client again and enable auto tracking, you will need to wait for the cache to build again
 
 ![](/imgs/en/manual/auto-tracking/6.png)
