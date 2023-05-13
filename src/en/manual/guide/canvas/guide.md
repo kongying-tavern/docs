@@ -6,7 +6,7 @@ next:
   text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
   link: '../easter-egg/view'
 prev:
-  text: '[Batch Selection] Instructions'
+  text: '[Multi Mark] Instructions'
   link: '../batch-selection/instructions'
 ---
 

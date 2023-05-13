@@ -12,7 +12,7 @@ next:
 
 # [Automatic Tracking] Troubleshooting
 
-## 1. When auto tracking is engaged, the in-game minimap does not show markers, nor is there an overlay of the map client
+## 1. When auto tracking is engaged, the in-game minimap does not show pins, nor is there an overlay of the map client
 
 The auto tracking feature cannot overlay the game window, you can use the Stay on Top feature to have a similar effect as the title describes.
 
@@ -90,7 +90,7 @@ Occasional teleportation skips of the player indicator cannot be avoided due to 
 
 ---
 
-- Too many **in-game markers** will significantly reduce tracking accuracy. (e.g. Quest navigation, vendors, custom markers, etc.)
+- Too many **in-game pins** will significantly reduce tracking accuracy. (e.g. Quest navigation, vendors, custom pins, etc.)
 - Some areas can change appearance through world quest completion, auto tracking compares the game image to the **final form** of the map. For auto tracking to work accurately, please complete the related world quest. You can view the final form of the map in the map client. Areas that change:
   - Khaj-Nisut
   - Safhe Shatranj

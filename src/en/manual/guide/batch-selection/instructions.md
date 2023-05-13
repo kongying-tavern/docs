@@ -1,5 +1,5 @@
 ---
-title: \[Batch Selection] Instructions
+title: \[Multi Mark] Instructions
 aside: false
 titleTemplate: Kongying Tavern
 prev:
@@ -10,46 +10,46 @@ next:
   link: '../canvas/guide'
 ---
 
-# [Batch Selection] Instructions
+# [Multi Mark] Instructions
 
-Responding to the requests from travellers, batch selection is now available!
+Responding to the requests from travelers, Multi Mark is now available!
 
-- **Right click** a marker. The marker will be toggled <b><span style="color: green">Done</span>/<span style="color: red">Undone</span></b> status.
-- Hold **right click** and drag over markers. These markers will be changed to <b><span style="color: green">Done</span></b> status.
-- Hold **left Alt** and **right click**, and drag over markers. These markers will be changed to <b><span style="color: red">Undone</span></b> status.
-- Hold **Ctrl** and **right click**, and drag a rectangle. Any markers in the rectangle will be changed to <b><span style="color: green">Done</span></b> status.
-- Hold **Ctrl**, **left Alt** and **right click**, and drag a rectangle. Any markers in the rectangle will be changed to <b><span style="color: red">Undone</span></b> status.
+- **Right click** a pin to switch it between <b><span style="color: green">Found</span>/<span style="color: red">To Do</span></b>.
+- Hold **right click** and drag over pins mark them <b><span style="color: green">Found</span></b>.
+- Hold **left Alt** + **right click** and drag over pins to mark them them <b><span style="color: red">To Do</span></b>.
+- Hold **Ctrl** + **right click** to box select pins and mark them <b><span style="color: green">Found</span></b>.
+- Hold **Ctrl** + **left Alt** + **right click** to box select pins and mark them <b><span style="color: red">To Do</span></b>.
 
 ## **Detailed Instructions**
 
-### **Scenario 1: Single Marker Selection**
+### **Scenario 1: Single Pin Selection**
 
-- **Right click** an <b><span style="color: red">Undone</span></b> marker will change it to <b><span style="color: green">Done</span></b>.
-- **Right click** a <b><span style="color: green">Done</span></b> marker will change it to <b><span style="color: red">Undone</span></b>.
+- **Right click** a <b><span style="color: red">To Do</span></b> pin to mark it <b><span style="color: green">Found</span></b>.
+- **Right click** a <b><span style="color: green">Found</span></b> pin to mark it <b><span style="color: red">To Do</span></b>.
 
 ![](https://assets.yuanshen.site/docs/en/manual/1.gif)
-(right click - Single Marker Selection)
+(right click - Single Pin Marking)
 
 ### **Scenario 2: Swipe Selection**
 
-- Hold **right click**, and swipe over markers. <b><span style="color: red">Undone</span></b> markers will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: green">Done</span></b> markers will stay unchanged.
+- Holding **right click** and swiping over <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
 ![](https://assets.yuanshen.site/docs/en/manual/2.gif)
 (right click Swipe - Mark)
 
-- Hold **left Alt** and **right click**, and swipe over markers. <b><span style="color: green">Done</span></b> markers will be changed to <b><span style="color: red">Undone</span></b>, and <b><span style="color: red">Undone</span></b> markers will stay unchanged.
+- Holding **left Alt** + **right click** and swiping over <b><span style="color: green">Found</span></b> pins will mark them <b><span style="color: red">To Do</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
 
 ![](https://assets.yuanshen.site/docs/en/manual/3.gif)
-(right click Swipe - Remove Mark)
+(right click Swipe - Mark Pins "To Do")
 
 ### **Scenario 3: Box Selection**
 
-- Hold **Ctrl** and **right click**, and drag a rectangular box. Any <b><span style="color: red">Undone</span></b> markers in the box will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: green">Done</span></b> markers will stay unchanged.
+- Holding **Ctrl** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
 ![](https://assets.yuanshen.site/docs/en/manual/4.gif)
-(right click Box Selection - Mark)
+(right click Box Selection - Mark Pins Found)
 
-- Hold **Ctrl**, **left Alt** and **right click**, and drag a rectangular box. Any <b><span style="color: red">Undone</span></b> markers in the box will be changed to <b><span style="color: green">Done</span></b>, and <b><span style="color: red">Undone</span></b> markers will stay unchanged.
+- Holding **Ctrl** + **left Alt** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
 
 ![](https://assets.yuanshen.site/docs/en/manual/5.gif)
-(right click Box Selection - Remove Mark)
+(right click Box Selection - Mark Pins "To Do")

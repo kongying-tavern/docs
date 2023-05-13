@@ -3,7 +3,7 @@ title: \[Easter Egg] View Archived Versions of Golden Apple Archipelago
 aside: false
 titleTemplate: Kongying Tavern
 next:
-  text: '[Hide/Show Done] Feature'
+  text: '[Hide/Show Found] Feature'
   link: '../hide-show-done/hidedoneshowdone'
 prev:
   text: '[Custom Path Planner (Canvas)] Guide'

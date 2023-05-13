@@ -6,7 +6,7 @@ prev:
   text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
 next:
-  text: '[Batch Selection] Instructions'
+  text: '[Multi Mark] Instructions'
   link: '../batch-selection/instructions'
 ---
 
@@ -33,6 +33,14 @@ Dragging the frame rate slider to the leftmost position will enable \[V-Sync], w
 [Tracking Interval] can be found under [Automatic Tracking] settings, the unit of its value is **second**.
 
 - Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
-- Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while also reducing player indicator responsiveness.
+- Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while reducing tracking responsiveness.
 
 ![](/imgs/en/manual/bg-frate/3.png)
+
+## Background Suspend
+
+[Background Suspend] will hold the client in stasis completely when it is not in the foreground, you can enable this feature at the bottom right of the map client.
+
+Reduces resource utilization and impact on in-game framerate.
+
+![](/imgs/en/manual/bg-frate/4.png)

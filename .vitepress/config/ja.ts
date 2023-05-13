@@ -165,7 +165,7 @@ export const jaConfig: LocaleSpecificConfig<
               link: 'en/manual/guide/bg/bgfrate',
             },
             {
-              text: 'Batch Selection',
+              text: 'Multi Mark',
               link: 'en/manual/guide/batch-selection/instructions',
             },
             {
@@ -177,7 +177,7 @@ export const jaConfig: LocaleSpecificConfig<
               link: 'en/manual/guide/easter-egg/view',
             },
             {
-              text: 'Hide/Show Markers',
+              text: 'Hide/Show Found',
               link: 'en/manual/guide/hide-show-done/hidedoneshowdone',
             },
             {

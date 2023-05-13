@@ -1,5 +1,5 @@
 ---
-title: \[Hide/Show Done] Feature
+title: \[Hide/Show Found] Feature
 aside: false
 titleTemplate: Kongying Tavern
 prev:
@@ -10,17 +10,17 @@ next:
   link: '../overlay-mode/instructions'
 ---
 
-# [Hide/Show Done] Feature
+# [Hide/Show Found] Feature
 
-There are two display modes for Done markers:
+There are two display modes for Found pins:
 
-1. **Show** - Highlight "done" markers
-2. **Hide** - Fade "done" markers
+1. **Show** - Highlight <b><span style="color: green">Found</span></b> pins
+2. **Hide** - Fade <b><span style="color: green">Found</span></b> pins
 
 ---
 
-Show Done:
+Show Found:
 ![](/imgs/en/manual/hide-show-done/Hide.png)
 
-Hide Done:
+Hide Found:
 ![](/imgs/en/manual/hide-show-done/show.png)
