@@ -10,6 +10,8 @@ next:
   link: './fullscreen-windowed/launching'
 ---
 
+[原文：【覆盖模式】使用说明]: (https://support.qq.com/products/321980/faqs/97047)
+
 # [Overlay Mode] Instructions
 
 ## Introduction

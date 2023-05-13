@@ -10,6 +10,8 @@ prev:
   link: '../index.md'
 ---
 
+[原文：【目录】客户端使用手册]: (https://support.qq.com/products/321980/faqs-more/?id=94938)
+
 # Table of Contents
 
 ## **Manuals in Other Languages**

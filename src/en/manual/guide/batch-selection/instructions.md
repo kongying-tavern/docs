@@ -10,6 +10,8 @@ next:
   link: '../canvas/guide'
 ---
 
+[原文：【批量选择】使用说明]: (https://support.qq.com/products/321980/faqs/97187)
+
 # [Multi Mark] Instructions
 
 Responding to the requests from travelers, Multi Mark is now available!

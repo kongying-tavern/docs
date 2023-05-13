@@ -10,6 +10,10 @@ next:
   link: '../batch-selection/instructions'
 ---
 
+[原文：【地图性能占用高】前后台帧率设置]: (https://support.qq.com/products/321980/faqs/97183)
+
+[]:(最后加入后台暂停的介绍)
+
 # [Background Usage] Framerate/Tracking Control
 
 ## Framerate Control
@@ -36,6 +40,8 @@ Dragging the frame rate slider to the leftmost position will enable \[V-Sync], w
 - Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while reducing tracking responsiveness.
 
 ![](/imgs/en/manual/bg-frate/3.png)
+
+[]:(兔小巢上后台暂停的介绍)
 
 ## Background Suspend
 
