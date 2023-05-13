@@ -9,7 +9,7 @@ prev:
   link: './updated.md'
 ---
 
-[原文：自动神瞳]: ()
+[原文：自动神瞳]: #
 
 # ~~[Automatic Tracking] Oculus Tracking~~
 

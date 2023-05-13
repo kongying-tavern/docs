@@ -10,7 +10,7 @@ prev:
   link: '../instructions'
 ---
 
-[原文：【窗口全屏/无边框窗口模式】启动游戏]: (https://support.qq.com/products/321980/faqs/97887)
+[原文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
 
 # [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 

@@ -44,7 +44,7 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 
 ![](/imgs/ja/manual/auto-tracking/6.png)
 
-[反馈方式]: (最适合目标语言用户的反馈方式)
+[反馈方式]: # '最适合目标语言用户的反馈方式'
 
 - Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【启动自动追踪模块后软件崩溃】" in your message.
 

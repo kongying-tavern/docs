@@ -10,7 +10,7 @@ next:
   link: '../auto-tracking/troubleshoot'
 ---
 
-[原文：【自动更新】没有反应]: (https://support.qq.com/products/321980/faqs/102055)
+[原文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
 
 # [Automatic Tracking] Introduction

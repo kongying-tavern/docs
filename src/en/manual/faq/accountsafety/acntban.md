@@ -3,7 +3,7 @@ title: Can I be Banned For Using Genshin Interactive Map?
 titleTemplate: Kongying Tavern
 ---
 
-[原文：使用地图会被封号吗？]: (https://support.qq.com/products/321980/faqs/97654)
+[原文：使用地图会被封号吗？]: # 'https://support.qq.com/products/321980/faqs/97654'
 
 # Can I be Banned For Using Genshin Interactive Map?
 

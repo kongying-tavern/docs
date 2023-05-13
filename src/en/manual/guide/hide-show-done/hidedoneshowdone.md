@@ -10,7 +10,7 @@ next:
   link: '../overlay-mode/instructions'
 ---
 
-[原文：【隐藏】标记/【显示】标记]: (https://support.qq.com/products/321980/faqs/127250)
+[原文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'
 
 # [Hide/Show Found] Feature
 

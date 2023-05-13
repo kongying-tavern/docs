@@ -10,7 +10,7 @@ prev:
   link: '../batch-selection/instructions'
 ---
 
-[原文：【画板】路线功能教程]: (https://support.qq.com/products/321980/faqs/121965)
+[原文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
 
 # [Custom Path Planner (Canvas)] Guide
 

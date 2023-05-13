@@ -3,7 +3,7 @@ title: \[Login] Client Repeatedly Requests Login
 titleTemplate: Kongying Tavern
 ---
 
-[原文：【每次打开都需重新登陆】]: (https://support.qq.com/products/321980/faqs/130500)
+[原文：【每次打开都需重新登陆】]: # 'https://support.qq.com/products/321980/faqs/130500'
 
 # [Login] Client Repeatedly Requests Login
 

@@ -3,7 +3,7 @@ title: \[Launch Error] Version Check Failed
 titleTemplate: Kongying Tavern
 ---
 
-[原文：【无法打开】提示“数据查询失败”、“版本查询失败”]: (https://support.qq.com/products/321980/faqs/97055)
+[原文：【无法打开】提示“数据查询失败”、“版本查询失败”]: # 'https://support.qq.com/products/321980/faqs/97055'
 
 # [Launch Error] Version Check Failed
 
