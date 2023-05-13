@@ -42,7 +42,7 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 
 [#]: # '这里更新了客户端内一键清理自动追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
 
-![](/imgs/en/manual/auto-tracking/6.png)
+![](/imgs/ja/manual/auto-tracking/6.png)
 
 [反馈方式]: (最适合目标语言用户的反馈方式)
 
@@ -55,15 +55,15 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 - Check the in-game minimap for obstructions, and ensure it's displaying properly.
 - Check the "DLL" version at the lower left corner of the map client. If it shows "Uninitialized", try restarting auto tracking.
 
-![](/imgs/en/manual/auto-tracking/3.png)
-![](/imgs/en/manual/auto-tracking/4.png)
-![](/imgs/en/manual/auto-tracking/5.png)
+![](/imgs/ja/manual/auto-tracking/3.png)
+![](/imgs/ja/manual/auto-tracking/4.png)
+![](/imgs/ja/manual/auto-tracking/5.png)
 
 [#]: # '与第 3 步一样，更新了客户端内一键清理的步骤和图片'
 
 If the problem persists, use [Clear Tracking Module] under the auto tracking settings tab, which deletes all files in `C:%APPDATA%\..\LocalLow\空荧酒馆\Map\DLL`, and download the tracking module again.
 
-![](/imgs/en/manual/auto-tracking/1.png)
+![](/imgs/ja/manual/auto-tracking/1.png)
 
 - Use "Obtain Tracking Screenshot" in the auto tracking settings, if the screenshot is blank, showing a non-current image of the game, or failed, please see Issue 5.
 - If a normal screenshot is obtained, but no player indicator shows up, please see Issue 6.
@@ -79,7 +79,7 @@ If the problem persists, use [Clear Tracking Module] under the auto tracking set
 - Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
 - To use BitBlt in Windows 11, go to the Graphics settings (Settings->System->Display->Graphics), add GenshinImpact.exe to the list (`***\Genshin Impact Game\GenshinImpact.exe`, not launcher.exe) and **enable** "Don't use optimizations for windowed games".
 
-![](/imgs/en/manual/auto-tracking/windowedoptimization.png)
+![](/imgs/ja/manual/auto-tracking/windowedoptimization.png)
 
 - Please message in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【自动追踪截图失败】" in your message.
 

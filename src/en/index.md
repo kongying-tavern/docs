@@ -41,13 +41,13 @@ hero:
     - theme: brand
       text: Download Now
       link: en/download-client.md
-    - theme: brand
+    - theme: alt
       text: Learn More
       link: en/manual/client-user-manual.md
-    - theme: alt
+    - theme: cta mastery
       text: Web Version
       link: https://v3.yuanshen.site/
-    - theme: alt
+    - theme: cta mastery
       text: Visit GitHub
       link: https://github.com/kongying-tavern
 ---
