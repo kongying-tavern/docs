@@ -5,17 +5,13 @@
         <h3 class="footer-title">{{ item.title }}</h3>
         <ul>
           <li v-for="ic in item.items">
-            <a
+            <Link
               :href="withBase(ic.link)"
-              :title="ic.text"
-              :target="
-                ic.link.match(/(http|https):\/\/([\w.]+\/?)\S*/gi)
-                  ? '_black'
-                  : '_self'
-              "
+              :title="ic.text + '（' + withBase(ic.link) + '）'"
+              noIcon="true"
             >
               {{ ic.text }}
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
@@ -25,10 +21,7 @@
         <p text-center>{{ theme.footer.qrcodeMessage }}</p>
       </div>
     </footer>
-    <footer
-      class="footer py-4"
-      style="border-top: 1px solid var(--vp-c-gutter)"
-    >
+    <footer class="footer py-4">
       <div class="items-center grid-flow-col">
         <svg
           width="24"
@@ -74,12 +67,21 @@
             rel="noopener noreferrer"
           ></a>
           <a
+            i-logos-reddit-icon
+            icon-btn
+            mr-4
+            href="https://www.reddit.com/user/Kongying_Tavern"
+            target="_blank"
+            title="Reddit"
+            rel="noopener noreferrer"
+          ></a>
+          <a
             i-custom-bilibili
             icon-btn
             mr-4
             href="https://space.bilibili.com/518076785"
             target="_blank"
-            title="Bilibili"
+            title="bilibili"
             rel="noopener noreferrer"
           ></a>
           <a
@@ -256,6 +258,13 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   }
 }
 
+@media (min-width: 960px) {
+  .VPSidebar ~ .footer-container {
+    width: calc(100% - var(--vp-sidebar-width));
+    left: var(--vp-sidebar-width);
+  }
+}
+
 @media (min-width: 48rem) {
   .footer {
     grid-auto-flow: column;
@@ -263,9 +272,8 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     row-gap: 2.5rem;
   }
 
-  .VPSidebar ~ .footer-container {
-    width: calc(100% - var(--vp-sidebar-width));
-    left: var(--vp-sidebar-width);
+  .footer:last-child {
+    border-top: 1px solid var(--vp-c-divider);
   }
 
   .footer-navigation:first-child {

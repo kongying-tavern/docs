@@ -43,6 +43,7 @@ pageClass: download-client
 
 <MediaIntroduction 
   media="self"
+  target="_black"
   text="网页版地图 V3"
-  link="https://yuanshen.site"
+  link="https://v3.yuanshen.site"
 />

@@ -34,6 +34,7 @@ If you are interested in aiding our development, consider [Join Us(^\_^)](./join
 
 <MediaIntroduction 
   media="self"
+  target="_black"
   text="Web Version Portal"
   link="https://yuanshen.site"
 />

@@ -4,10 +4,6 @@ layout: doc
 aside: false
 ---
 
-::: info
-Sorry, this page translation is still in progress (:
-:::
-
 # 隐私
 
 隐私是每个人的基本权利，我们非常尊重你的隐私。
