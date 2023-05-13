@@ -28,7 +28,7 @@ Select the desired save according to **Timestamp** and **Entries**, you can unch
 
 ![](/imgs/en/manual/restore-recover/3.png)
 
-Once comfirmed, a new save named "Restored Save" will be created to store the restored progress
+Once confirmed, a new save named "Restored Save" will be created to store the restored progress
 
 ![](/imgs/en/manual/restore-recover/4.png)
 
