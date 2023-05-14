@@ -15,6 +15,7 @@ This site is built with [VitePress](https://github.com/vuejs/vitepress). Site co
 For local development, [pnpm](https://pnpm.io/) is preferred as package manager:
 
 ```bash
+corepack enable
 pnpm i
 pnpm run dev
 ```

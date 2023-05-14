@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
@@ -20,6 +23,15 @@ export const jaConfig: LocaleSpecificConfig<
     lastUpdatedText: 'Last updated',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
+      {
+        icon: {
+          svg: fs.readFileSync(
+            path.resolve(__dirname, '../../src/public/svg/reddit.svg'),
+            'utf8'
+          ),
+        },
+        link: 'https://www.reddit.com/user/Kongying_Tavern',
+      },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },
     ],
@@ -58,22 +70,22 @@ export const jaConfig: LocaleSpecificConfig<
     nav: [
       {
         text: 'Download',
-        link: 'en/download-client.md',
+        link: 'ja/download-client.md',
       },
       {
         text: 'Support us',
-        link: 'en/support-us.md',
+        link: 'ja/support-us.md',
       },
       {
         text: 'Community',
-        link: 'en/community.md',
+        link: 'ja/community.md',
       },
       {
         text: 'Support',
         items: [
           {
             text: 'Client User Manual',
-            link: 'en/manual/client-user-manual.md',
+            link: 'ja/manual/client-user-manual.md',
           },
           {
             text: 'Feedback',
@@ -93,11 +105,11 @@ export const jaConfig: LocaleSpecificConfig<
             items: [
               {
                 text: 'Join Us',
-                link: 'en/join.md',
+                link: 'ja/join.md',
               },
               {
                 text: 'Our Team',
-                link: 'en/team.md',
+                link: 'ja/team.md',
               },
             ],
           },
@@ -119,15 +131,15 @@ export const jaConfig: LocaleSpecificConfig<
             items: [
               {
                 text: 'Credits',
-                link: 'en/credits.md',
+                link: 'ja/credits.md',
               },
               {
                 text: 'Contributors',
-                link: 'en/contribution.md',
+                link: 'ja/contribution.md',
               },
               {
                 text: 'Sponsors',
-                link: 'en/support-us.md#Sponsor%20Acknowledgements',
+                link: 'ja/support-us.md#Sponsor%20Acknowledgements',
               },
             ],
           },
@@ -136,15 +148,15 @@ export const jaConfig: LocaleSpecificConfig<
             items: [
               {
                 text: 'Disclaimer',
-                link: 'en/disclaimer.md',
+                link: 'ja/disclaimer.md',
               },
               {
                 text: 'Privacy',
-                link: 'en/privacy.md',
+                link: 'ja/privacy.md',
               },
               {
                 text: 'Agreement',
-                link: 'en/agreement.md',
+                link: 'ja/agreement.md',
               },
             ],
           },
@@ -152,50 +164,63 @@ export const jaConfig: LocaleSpecificConfig<
       },
     ],
     sidebar: {
-      'en/manual': [
+      'ja/manual': [
+        {
+          text: 'Table of Contents',
+          link: 'ja/manual/client-user-manual',
+        },
         {
           text: 'Guides',
           items: [
             {
               text: 'Automatic Tracking',
-              link: 'en/manual/guide/auto-tracking/importantnotes',
+              items: [
+                {
+                  text: 'Introduction',
+                  link: 'ja/manual/guide/auto-tracking/importantnotes',
+                },
+                {
+                  text: 'Troubleshooting',
+                  link: 'ja/manual/guide/auto-tracking/troubleshoot',
+                },
+              ],
             },
             {
               text: 'Framerate/Tracking Control',
-              link: 'en/manual/guide/bg/bgfrate',
+              link: 'ja/manual/guide/bg/bgfrate',
             },
             {
               text: 'Batch Selection',
-              link: 'en/manual/guide/batch-selection/instructions',
+              link: 'ja/manual/guide/batch-selection/instructions',
             },
             {
               text: 'Canvas Guide',
-              link: 'en/manual/guide/canvas/guide',
+              link: 'ja/manual/guide/canvas/guide',
             },
             {
               text: 'Easter Egg',
-              link: 'en/manual/guide/easter-egg/view',
+              link: 'ja/manual/guide/easter-egg/view',
             },
             {
               text: 'Hide/Show Markers',
-              link: 'en/manual/guide/hide-show-done/hidedoneshowdone',
+              link: 'ja/manual/guide/hide-show-done/hidedoneshowdone',
             },
             {
               text: 'Overlay Mode',
               items: [
                 {
                   text: 'Instructions',
-                  link: 'en/manual/guide/overlay-mode/instructions',
+                  link: 'ja/manual/guide/overlay-mode/instructions',
                 },
                 {
                   text: 'Windowed Fullscreen',
-                  link: 'en/manual/guide/overlay-mode/fullscreen-windowed/launching',
+                  link: 'ja/manual/guide/overlay-mode/fullscreen-windowed/launching',
                 },
               ],
             },
             {
               text: 'Restore/Recover Progress',
-              link: 'en/manual/guide/restore-recover/progress',
+              link: 'ja/manual/guide/restore-recover/progress',
             },
           ],
         },
@@ -204,22 +229,22 @@ export const jaConfig: LocaleSpecificConfig<
           items: [
             {
               text: 'Account safety',
-              link: 'en/manual/faq/accountsafety/acntban.md',
+              link: 'ja/manual/faq/accountsafety/acntban.md',
             },
             {
               text: 'Auto Update',
-              link: 'en/manual/faq/autoupdate/updater.md',
+              link: 'ja/manual/faq/autoupdate/updater.md',
             },
             {
               text: 'Installation Error',
               items: [
                 {
                   text: 'Code 2503',
-                  link: 'en/manual/faq/instlerror/code2503.md',
+                  link: 'ja/manual/faq/instlerror/code2503.md',
                 },
                 {
                   text: 'Missing .dll file',
-                  link: 'en/manual/faq/instlerror/missingdll.md',
+                  link: 'ja/manual/faq/instlerror/missingdll.md',
                 },
               ],
             },
@@ -228,11 +253,11 @@ export const jaConfig: LocaleSpecificConfig<
               items: [
                 {
                   text: 'Stuck/No Progress',
-                  link: 'en/manual/faq/launcherror/emptydialog.md',
+                  link: 'ja/manual/faq/launcherror/emptydialog.md',
                 },
                 {
                   text: 'Version Check Failed',
-                  link: 'en/manual/faq/launcherror/versioncheck.md',
+                  link: 'ja/manual/faq/launcherror/versioncheck.md',
                 },
               ],
             },
@@ -241,11 +266,11 @@ export const jaConfig: LocaleSpecificConfig<
               items: [
                 {
                   text: 'Login Problems',
-                  link: 'en/manual/faq/login/accountlogin.md',
+                  link: 'ja/manual/faq/login/accountlogin.md',
                 },
                 {
                   text: 'Repeated Login Requests',
-                  link: 'en/manual/faq/login/clientrepeatedly.md',
+                  link: 'ja/manual/faq/login/clientrepeatedly.md',
                 },
               ],
             },
@@ -263,15 +288,15 @@ export const jaConfig: LocaleSpecificConfig<
           items: [
             {
               text: 'Join Us',
-              link: 'en/join',
+              link: 'ja/join',
             },
             {
               text: 'Our team',
-              link: 'en/team',
+              link: 'ja/team',
             },
             {
               text: 'Sponsors',
-              link: 'en/support-us',
+              link: 'ja/support-us',
             },
           ],
         },
@@ -280,15 +305,15 @@ export const jaConfig: LocaleSpecificConfig<
           items: [
             {
               text: 'Disclaimer',
-              link: 'en/disclaimer',
+              link: 'ja/disclaimer',
             },
             {
               text: 'Privacy',
-              link: 'en/privacy',
+              link: 'ja/privacy',
             },
             {
               text: 'Agreement',
-              link: 'en/agreement',
+              link: 'ja/agreement',
             },
           ],
         },
@@ -297,7 +322,7 @@ export const jaConfig: LocaleSpecificConfig<
           items: [
             {
               text: 'Client User Manual',
-              link: 'en/manual/client-user-manual',
+              link: 'ja/manual/client-user-manual',
             },
             {
               text: 'Feedback',

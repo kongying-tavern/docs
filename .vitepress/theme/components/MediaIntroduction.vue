@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { withBase } from 'vitepress'
 
 const props = defineProps<{
   media:
@@ -13,9 +12,11 @@ const props = defineProps<{
     | 'reddit'
   text: String
   target: String
-  link: URL
+  link: String
 }>()
-const isExternal = computed(() => props.link && /^[a-z]+:/i.test(props.link))
+const isExternal = computed(
+  () => props.link && /^[a-z]+:/i.test(props.link.toString())
+)
 
 const mediaID = computed(() => {
   switch (props.media) {
@@ -23,8 +24,10 @@ const mediaID = computed(() => {
       // @ts-ignore
       return props.link.match(/(BV.*?).{10}/)[0]
     case 'youtube':
+      // @ts-ignore
       return new URL(props.link).searchParams.get('v')
     case 'txc':
+      //@ts-ignore
       return new URL(props.link).searchParams.get('id')
   }
 })
@@ -47,7 +50,12 @@ const mediaID = computed(() => {
         {{ mediaID && `(${mediaID})` }}
       </span>
     </span>
-    <label v-if="isExternal && !noIcon" i-ic-round-arrow-outward />
+    <label v-if="isExternal" i-ic-round-arrow-outward />
+    <label
+      style="transform: rotate(45deg)"
+      v-else="(media = self)"
+      i-ic-round-arrow-outward
+    />
   </Link>
 </template>
 

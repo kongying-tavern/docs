@@ -13,8 +13,8 @@ import dayjs from 'dayjs';
 const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 </script>
 
-::: info
-Sorry, this page translation is still in progress (:
+:::info
+申し訳ありませんが、このページの翻訳はまだ進行中です (:
 :::
 
 # 贡献鸣谢
@@ -23,7 +23,7 @@ Sorry, this page translation is still in progress (:
 
 我们在此鸣谢每一位为地图做出贡献的小伙伴，感谢有你。
 
-## 点位贡献
+## 点位贡献[^1]
 
 | 用户名               |
 | -------------------- |
@@ -213,7 +213,7 @@ Sorry, this page translation is still in progress (:
 | Ծ‸Ծ                  |
 | 你他喵的别来逗！！！ |
 
-> 名单排序不分先后；
+[^1]: 名单排序不分先后；
 
 <style lang="scss" scoped>
 thead {

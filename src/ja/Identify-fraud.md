@@ -6,7 +6,7 @@ layout: doc
 ---
 
 ::: info
-Sorry, this page translation is still in progress (:
+申し訳ありませんが、このページの翻訳はまだ進行中です (:
 :::
 
 # 识别和避免钓鱼信息/邮件、虚假支持来电和其他诈骗
