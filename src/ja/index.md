@@ -1,8 +1,8 @@
 ---
-title: Japanese
-description: Translation in progress.
-titleTemplate: 空荧酒馆
-aside: false
+head:
+  - - meta
+    - http-equiv: refresh
+      content: 0; url=../translations
 ---
 
 # 多语言及翻译

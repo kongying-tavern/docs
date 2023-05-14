@@ -1,8 +1,8 @@
 ---
-title: 한국인
-description: Translation in progress.
-titleTemplate: 空荧酒馆
-aside: false
+head:
+  - - meta
+    - http-equiv: refresh
+      content: 0; url=../translations
 ---
 
 # 다국어 및 번역
