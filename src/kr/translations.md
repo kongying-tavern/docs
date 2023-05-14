@@ -9,11 +9,11 @@ titleTemplate: Kongying Tavern
 ## 다국어 버전 {#available-languages}
 
 - [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
-- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
+- [英文 / English](../en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
 
 ## 번역 언어 {#work-in-progress-languages}
 
-- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
+- [日本語 / Japanese](../ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
 - [韩语 / Korean](#) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
 
 ## 새 번역 시작 {#starting-a-new-translation}
