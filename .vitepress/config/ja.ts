@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
@@ -20,6 +23,15 @@ export const jaConfig: LocaleSpecificConfig<
     lastUpdatedText: 'Last updated',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
+      {
+        icon: {
+          svg: fs.readFileSync(
+            path.resolve(__dirname, '../../src/public/svg/reddit.svg'),
+            'utf8'
+          ),
+        },
+        link: 'https://www.reddit.com/user/Kongying_Tavern',
+      },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },
     ],

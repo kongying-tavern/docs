@@ -6,7 +6,7 @@ titleTemplate: 空荧酒馆
 ---
 
 ::: info
-Sorry, this page translation is still in progress (:
+申し訳ありませんが、このページの翻訳はまだ進行中です (:
 :::
 
 # 加入社区

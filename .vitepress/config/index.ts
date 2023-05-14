@@ -11,6 +11,7 @@ import { defineConfig, HeadConfig } from 'vitepress'
 import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
+import { krConfig } from './kr'
 
 export const links: any[] = []
 export const base = process.env.BASE || '/docs/'
@@ -44,8 +45,8 @@ export default defineConfig({
       options: {
         translations: {
           button: {
-            buttonText: '搜索文档',
-            buttonAriaLabel: '搜索文档',
+            buttonText: '搜索',
+            buttonAriaLabel: '搜索',
           },
           modal: {
             noResultsText: '无法找到相关结果',
@@ -58,6 +59,22 @@ export default defineConfig({
         },
         locales: {
           en: {
+            translations: {
+              button: {
+                buttonText: 'Search',
+                buttonAriaLabel: 'Search',
+              },
+              modal: {
+                noResultsText: 'No results for',
+                resetButtonTitle: 'Reset search',
+                footer: {
+                  selectText: 'to select',
+                  navigateText: 'to navigate',
+                },
+              },
+            },
+          },
+          kr: {
             translations: {
               button: {
                 buttonText: 'Search',
@@ -111,6 +128,12 @@ export default defineConfig({
       link: '/ja/',
       ...jaConfig,
     },
+    kr: {
+      label: '한국인',
+      lang: 'kr',
+      link: '/kr/',
+      ...krConfig,
+    },
   },
   head: [
     [
@@ -143,6 +166,7 @@ export default defineConfig({
       },
     ],
     ['meta', { name: 'theme-color', content: '#ffffff' }],
+    ['meta', { name: 'color-scheme', content: 'dark light' }],
     [
       'link',
       {
@@ -167,6 +191,7 @@ export default defineConfig({
         type: 'image/x-icon',
       },
     ],
+    ['meta', { name: 'referrer', content: 'no-referrer-when-downgrade' }],
     ['meta', { name: 'author', content: 'Arrebol' }],
     ['meta', { name: 'article:author', content: 'Arrebol' }],
     ['meta', { property: 'og:site', content: 'website' }],
@@ -212,7 +237,7 @@ export default defineConfig({
       AutoImport({
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         imports: ['vue', '@vueuse/core'],
-        dts: '../auto-imports.d.ts',
+        dts: './auto-imports.d.ts',
         vueTemplate: true,
       }),
 

@@ -6,7 +6,7 @@ aside: false
 ---
 
 ::: info
-Sorry, this page translation is still in progress (:
+申し訳ありませんが、このページの翻訳はまだ進行中です (:
 :::
 
 <script setup>
