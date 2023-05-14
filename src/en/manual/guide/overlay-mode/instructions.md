@@ -3,12 +3,14 @@ title: \[Overlay Mode] Instructions
 aside: true
 titleTemplate: Kongying Tavern
 prev:
-  text: '[Hide/Show Done] Feature'
+  text: '[Hide/Show Found] Feature'
   link: '../hide-show-done/hidedoneshowdone'
 next:
   text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
   link: './fullscreen-windowed/launching'
 ---
+
+[原文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'
 
 # [Overlay Mode] Instructions
 

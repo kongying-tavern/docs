@@ -3,9 +3,9 @@ layout: home
 title: Genshin Interactive Map
 titleTemplate: Kongying Tavern
 features:
-  - title: Smart Markers
+  - title: Smart Pins
     icon: 🦾
-    details: Integrates both [Quality] and [Method] properties in chest markers, allowing regional duplicate-free filtering with marker illustrations for both.
+    details: Integrates both [Quality] and [Method] properties in chest pins, allowing regional duplicate-free filtering with method illustrations when using either filter.
   - title: Overlay Mode
     icon: 🎪
     details: Overlays the game window, providing easy access to the map on one display.
@@ -17,19 +17,19 @@ features:
     details: Functional and accurate underground maps in collaboration with [Teyvat Map Institute] featuring levels and cave entries.
   - title: Progress Sync
     icon: ☁️
-    details: Cloud sync and recovery support for marker progress, custom paths, etc.
+    details: Cloud sync and recovery support for pin progress, custom paths, etc.
   - title: 100% Free
     icon: 🎉
     details: <em>Genshin Interactive Map</em> is a MulanPSL-1.0 open-source project, it is also AD-free.
   - title: Route Planning
     icon: 🚩
     details: Make, manage, and backup highly customizable farming routes with [Canvas].
-  - title: Batch Selection
+  - title: Multi Mark
     icon: ⚡
-    details: Conveniently mark and unmark multiple markers with simple clicks, swipes and box selection.
+    details: Conveniently mark multiple pins with simple clicks, swipes and box selection.
   - title: Rapid Updates
     icon: 🚀
-    details: New markers are available immediately after version updates, get 100% exploration day 1 with ease!
+    details: New pins are available immediately after version updates, get 100% exploration day 1 with ease!
 hero:
   name: Genshin Interactive Map
   text: A Completionist's Interactive Map by Kongying Tavern
@@ -41,13 +41,13 @@ hero:
     - theme: brand
       text: Download Now
       link: en/download-client.md
-    - theme: brand
+    - theme: alt
       text: Learn More
       link: en/manual/client-user-manual.md
-    - theme: alt
+    - theme: cta mastery
       text: Web Version
       link: https://v3.yuanshen.site/
-    - theme: alt
+    - theme: cta mastery
       text: Visit GitHub
       link: https://github.com/kongying-tavern
 ---

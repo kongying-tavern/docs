@@ -4,11 +4,13 @@ aside: false
 titleTemplate: Kongying Tavern
 next:
   text: '[Restore/Recover] Progress Recovery From Stored Data'
-  link: 'en/manual/guide/restore-recover/progress'
+  link: 'ja/manual/guide/restore-recover/progress'
 prev:
   text: '[Overlay Mode] Instructions'
   link: '../instructions'
 ---
+
+[原文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
 
 # [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 
@@ -20,23 +22,23 @@ You can launch Genshin Impact in **Windowed Fullscreen** with the following step
 
 - Step 1. Go to Genshin's installation folder
 
-![](/imgs/en/manual/fullscreen-windowed/1.png)
+![](/imgs/ja/manual/fullscreen-windowed/1.png)
 
 - Step 2. Open the folder named "Genshin Impact Game"
 
-![](/imgs/en/manual/fullscreen-windowed/2.png)
+![](/imgs/ja/manual/fullscreen-windowed/2.png)
 
 - Step 3. Create a shortcut on the Desktop for GenshinImpact.exe
 
-![](/imgs/en/manual/fullscreen-windowed/3.png)
+![](/imgs/ja/manual/fullscreen-windowed/3.png)
 
 - Step 4. Right-click on the shortcut and select Properties
 
-![](/imgs/en/manual/fullscreen-windowed/4.png)
+![](/imgs/ja/manual/fullscreen-windowed/4.png)
 
 - Step 5. In the Target text box, add " -popupwindow" to the end of the address. (remember the space)
 
-![](/imgs/en/manual/fullscreen-windowed/5.png)
+![](/imgs/ja/manual/fullscreen-windowed/5.png)
 
 ## Note
 

@@ -6,7 +6,7 @@ import type { CustomConfig } from './types'
 
 const base = process.env.BASE || '/docs/'
 export const META_URL = 'https://yuanshen.site/docs/ja/'
-export const META_TITLE = 'Genshin Interactive Map'
+export const META_TITLE = '原神地図'
 export const META_KEYWORDS =
   'Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map'
 export const META_DESCRIPTION =
@@ -17,7 +17,7 @@ export const jaConfig: LocaleSpecificConfig<
 > = {
   description: META_DESCRIPTION,
   themeConfig: {
-    siteTitle: 'Genshin Interactive Map',
+    siteTitle: '原神地図',
     outlineTitle: 'On This Page',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: 'Last updated',
@@ -190,7 +190,7 @@ export const jaConfig: LocaleSpecificConfig<
               link: 'ja/manual/guide/bg/bgfrate',
             },
             {
-              text: 'Batch Selection',
+              text: 'Multi Mark',
               link: 'ja/manual/guide/batch-selection/instructions',
             },
             {
@@ -202,7 +202,7 @@ export const jaConfig: LocaleSpecificConfig<
               link: 'ja/manual/guide/easter-egg/view',
             },
             {
-              text: 'Hide/Show Markers',
+              text: 'Hide/Show Found',
               link: 'ja/manual/guide/hide-show-done/hidedoneshowdone',
             },
             {

@@ -3,6 +3,8 @@ title: \[Launch Error] Empty Dialog Box or Stuck Progress Bar
 titleTemplate: Kongying Tavern
 ---
 
+[原文：【无法打开】空窗提示或卡进度条]: # 'https://support.qq.com/products/321980/faqs/99662'
+
 # [Launch Error] Empty Dialog Box or Stuck Progress Bar
 
 There are three likely scenarios,

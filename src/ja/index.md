@@ -1,6 +1,6 @@
 ---
-title: Japanese
-description: Translation in progress.
+title: 正在进行
+description: 多语言及翻译
 titleTemplate: 空荧酒馆
 aside: false
 ---
@@ -17,6 +17,8 @@ aside: false
   link="../index"
 />
 
+---
+
 # Multi Language Translations
 
 The docs for our map client have gone through major updates recently, some languages are not yet available.
@@ -26,5 +28,5 @@ If you are interested in helping us with our translation efforts, we humbly invi
 <MediaIntroduction 
   media="self"
   text="Go to the English Home Page"
-  link="../en/index"
+  link="../ja/index"
 />
