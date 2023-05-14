@@ -2,5 +2,5 @@
 head:
   - - meta
     - http-equiv: refresh
-      content: 0; url=../translations
+      content: 0; url=./translations
 ---
