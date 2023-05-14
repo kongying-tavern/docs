@@ -15,11 +15,11 @@ const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 
 # Contribution Acknowledgement
 
-_Kongying Tavern Genshin Interactive Map_ began its development in June 2020, during these <time> {{ date }} </time> days, marker gathering has consumed over 20,000 man-hours.
+_Kongying Tavern Genshin Interactive Map_ began its development in June 2020, during these <time> {{ date }} </time> days, pin gathering has consumed over 20,000 man-hours.
 
 We sincerely thank every individual that contributed to the making of this map.
 
-## Marker Contributions
+## Pin Contributions
 
 | Username             |
 | -------------------- |

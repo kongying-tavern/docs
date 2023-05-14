@@ -3,6 +3,7 @@ title: Join Community
 description: Join Community
 layout: doc
 titleTemplate: Kongying Tavern
+aside: false
 ---
 
 # Join Community

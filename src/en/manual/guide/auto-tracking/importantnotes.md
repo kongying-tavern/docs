@@ -10,6 +10,9 @@ next:
   link: '../auto-tracking/troubleshoot'
 ---
 
+[原文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
+[仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。]: #
+
 # [Automatic Tracking] Introduction
 
 This feature is based on **image recognition**
@@ -37,6 +40,8 @@ Once automatic tracking is enabled, The **map client** will
 ![](/imgs/en/manual/auto-tracking/autotrackingegaged.png)
 
 ---
+
+[见：自动追踪问题排查.docx]: # '以下为 自动追踪支持列表： 内容'
 
 ## Software Support
 
@@ -87,6 +92,8 @@ Auto tracking may work with reduced accuracy or not at all.
 
 ---
 
+[见：自动追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
+
 ## Troubleshooting
 
 Some facts to know before troubleshooting and submitting feedback:
@@ -105,5 +112,7 @@ You can visit the files' directory quickly through the auto tracking settings.
 
 ![](/imgs/en/manual/auto-tracking/2.png)
 :::
+
+[反馈方式]: # '最适合目标语言用户的反馈方式'
 
 1. Please go through the following [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)

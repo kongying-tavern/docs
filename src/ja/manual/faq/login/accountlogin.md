@@ -3,6 +3,8 @@ title: \[Login] Account Login Problems
 titleTemplate: Kongying Tavern
 ---
 
+[原文：【不能登录】如何登录]: # 'https://support.qq.com/products/321980/faqs/97057'
+
 # [Login] Account Login Problems
 
 - The map client uses a <span style="color: red">Gitee account</span>, <span style="color: red">not your game account</span>
@@ -12,7 +14,7 @@ titleTemplate: Kongying Tavern
 
 - The client is <span style="color: red">unable to log you in</span> using a <span style="color: red">phone number</span>, please use your <span style="color: ">linked Email</span> or <span style="color: red">Gitee username</span> to log in
 
-![](/imgs/en/manual/login/giteeusername.png)
+![](/imgs/ja/manual/login/giteeusername.png)
 (You can find your username under your Gitee profile, excluding "@")
 
 ---
