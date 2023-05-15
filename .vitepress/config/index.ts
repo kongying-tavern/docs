@@ -178,7 +178,6 @@ export default defineConfig({
     [
       'link',
       {
-        rel: 'icon',
         hreflang: 'zh-cn',
         href: 'https://yuanshen.site/docs',
       },
