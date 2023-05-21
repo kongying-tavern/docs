@@ -45,7 +45,7 @@ hero:
       link: ./download-client
     - theme: cta video
       text: 基础使用教程
-      link: https://www.bilibili.com/video/BV1uU4y157Te
+      link: https://bilibili.com/video/BV1R84y1M7eu
     - theme: cta mastery
       text: 客户端使用手册
       link: https://support.qq.com/products/321980/faqs-more/?id=94938
