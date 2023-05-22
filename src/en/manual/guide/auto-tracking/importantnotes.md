@@ -115,4 +115,4 @@ You can visit the files' directory quickly through the auto tracking settings.
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-1. Please go through the following [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
+Please go through the [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
