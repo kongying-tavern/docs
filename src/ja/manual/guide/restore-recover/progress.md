@@ -17,7 +17,7 @@ description: Return saves to an archived timestamp, or recover save from acciden
 
 [还原存档到历史位置]: # '更新为客户端内还原功能教程'
 
-## 1. Return saves to an archived timestamp
+## 1. Return saves to an archived timestamp {#Return}
 
 Select **Restore** in the **Paimon Menu**
 
@@ -33,7 +33,7 @@ Once confirmed, a new save named "Restored Save" will be created to store the re
 
 ![](/imgs/en/manual/restore-recover/4.png)
 
-## 2. Accidental Save Deletion Recovery
+## 2. Accidental Save Deletion Recovery {#Recovery}
 
 Log into [Gitee](https://gitee.com/) and select "Create Code"
 

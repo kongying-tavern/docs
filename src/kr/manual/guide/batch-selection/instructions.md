@@ -18,7 +18,7 @@ description: Responding to the requests from travelers, Multi Mark is now availa
 Responding to the requests from travelers, Multi Mark is now available!
 
 - **Right click** a pin to switch it between <b><span style="color: green">Found</span>/<span style="color: red">To Do</span></b>.
-- Hold **right click** and drag over pins mark them <b><span style="color: green">Found</span></b>.
+- Hold **right click** and drag over pins to mark them <b><span style="color: green">Found</span></b>.
 - Hold **left Alt** + **right click** and drag over pins to mark them them <b><span style="color: red">To Do</span></b>.
 - Hold **Ctrl** + **right click** to box select pins and mark them <b><span style="color: green">Found</span></b>.
 - Hold **Ctrl** + **left Alt** + **right click** to box select pins and mark them <b><span style="color: red">To Do</span></b>.

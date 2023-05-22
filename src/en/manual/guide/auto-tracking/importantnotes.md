@@ -18,7 +18,7 @@ description: This feature is based on image recognition
 
 This feature is based on **image recognition**
 
-## Capabilities
+## Capabilities {#capabilities}
 
 - Support for most languages (Not limited to Chinese, Korean, and English)
 - Functioning properly even when Windows system Scaling is not 100%
@@ -44,7 +44,7 @@ Once automatic tracking is enabled, The **map client** will
 
 [见：自动追踪问题排查.docx]: # '以下为 自动追踪支持列表： 内容'
 
-## Software Support
+## Software Support {#Software}
 
 ### Supported
 
@@ -64,7 +64,7 @@ Once automatic tracking is enabled, The **map client** will
 
 ---
 
-## Graphics Support
+## Graphics Support {#Graphics}
 
 ### Supported
 
@@ -95,7 +95,7 @@ Auto tracking may work with reduced accuracy or not at all.
 
 [见：自动追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
 
-## Troubleshooting
+## Troubleshooting {#Troubleshooting}
 
 Some facts to know before troubleshooting and submitting feedback:
 
