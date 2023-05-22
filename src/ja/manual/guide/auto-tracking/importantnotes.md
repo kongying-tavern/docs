@@ -4,14 +4,15 @@ aside: true
 titleTemplate: Kongying Tavern
 prev:
   text: 'Table of Contents'
-  link: 'ja/manual/client-user-manual'
+  link: 'en/manual/client-user-manual'
 next:
   text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
+description: This feature is based on image recognition
 ---
 
-[原文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
-[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
+[文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
+[仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。]: #
 
 # [Automatic Tracking] Introduction
 
@@ -37,7 +38,7 @@ Once automatic tracking is enabled, The **map client** will
 - Display your UID at the lower right corner
 - Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
 
-![](/imgs/ja/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/en/manual/auto-tracking/autotrackingegaged.png)
 
 ---
 
@@ -105,12 +106,12 @@ Some facts to know before troubleshooting and submitting feedback:
    - Tracking log (autoTrack.log)
    - Tracking screenshot (Capture.png)
 
-![](/imgs/ja/manual/auto-tracking/7.png)
+![](/imgs/en/manual/auto-tracking/7.png)
 
 ::: tip
 You can visit the files' directory quickly through the auto tracking settings.
 
-![](/imgs/ja/manual/auto-tracking/2.png)
+![](/imgs/en/manual/auto-tracking/2.png)
 :::
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'

@@ -5,9 +5,10 @@ titleTemplate: Kongying Tavern
 prev:
   text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
   link: '../overlay-mode/fullscreen-windowed/launching'
+description: Return saves to an archived timestamp, or recover save from accidental deletion.
 ---
 
-[原文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
+[文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'
 
 # [Restore/Recover] Progress Recovery From Stored Data

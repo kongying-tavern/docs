@@ -6,9 +6,12 @@ next:
   text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
   link: '../easter-egg/view'
 prev:
-  text: '[Batch Selection] Instructions'
+  text: '[Multi Mark] Instructions'
   link: '../batch-selection/instructions'
+description: Basic functionality, import, and export.
 ---
+
+[文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
 
 # [Custom Path Planner (Canvas)] Guide
 

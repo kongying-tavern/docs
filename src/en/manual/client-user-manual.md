@@ -8,9 +8,10 @@ next:
 prev:
   text: 'Home page'
   link: '../index.md'
+description: Table of Contents
 ---
 
-[原文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
+[文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
 
 # Table of Contents
 

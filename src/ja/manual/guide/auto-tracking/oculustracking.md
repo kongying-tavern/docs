@@ -7,9 +7,10 @@ next:
 prev:
   text: '[Automatic Tracking] Trouble shooting'
   link: './updated.md'
+description:
 ---
 
-[原文：自动神瞳]: #
+[文：自动神瞳]: #
 
 # ~~[Automatic Tracking] Oculus Tracking~~
 

@@ -8,9 +8,10 @@ next:
 prev:
   text: '[Multi Mark] Instructions'
   link: '../batch-selection/instructions'
+description: Basic functionality, import, and export.
 ---
 
-[原文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
+[文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
 
 # [Custom Path Planner (Canvas)] Guide
 

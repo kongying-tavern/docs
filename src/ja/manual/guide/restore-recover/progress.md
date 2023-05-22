@@ -5,9 +5,10 @@ titleTemplate: Kongying Tavern
 prev:
   text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
   link: '../overlay-mode/fullscreen-windowed/launching'
+description: Return saves to an archived timestamp, or recover save from accidental deletion.
 ---
 
-[原文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
+[文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'
 
 # [Restore/Recover] Progress Recovery From Stored Data
@@ -20,28 +21,28 @@ prev:
 
 Select **Restore** in the **Paimon Menu**
 
-![](/imgs/ja/manual/restore-recover/1.png)
+![](/imgs/en/manual/restore-recover/1.png)
 
 Select the desired save according to **Timestamp** and **Entries**, you can uncheck the "Current Save Only" option to restore from archives of other saves
 
-![](/imgs/ja/manual/restore-recover/2.png)
+![](/imgs/en/manual/restore-recover/2.png)
 
-![](/imgs/ja/manual/restore-recover/3.png)
+![](/imgs/en/manual/restore-recover/3.png)
 
 Once confirmed, a new save named "Restored Save" will be created to store the restored progress
 
-![](/imgs/ja/manual/restore-recover/4.png)
+![](/imgs/en/manual/restore-recover/4.png)
 
 ## 2. Accidental Save Deletion Recovery
 
 Log into [Gitee](https://gitee.com/) and select "Create Code"
 
-![](/imgs/ja/manual/restore-recover/5.png)
+![](/imgs/en/manual/restore-recover/5.png)
 
 Locate the map client's cache folder, and select the desired save using "Date Modified"
 
-![](/imgs/ja/manual/restore-recover/6.png)
+![](/imgs/en/manual/restore-recover/6.png)
 
 Enter the file contents respectively into the section indicated in the picture below and submit, a save will appear in the list of saves on your map client.
 
-![](/imgs/ja/manual/restore-recover/7.png)
+![](/public/imgs/en/manual/restore-recover/7.png)

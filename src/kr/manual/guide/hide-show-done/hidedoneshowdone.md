@@ -1,5 +1,5 @@
 ---
-title: \[Hide/Show Done] Feature
+title: \[Hide/Show Found] Feature
 aside: false
 titleTemplate: Kongying Tavern
 prev:
@@ -8,19 +8,22 @@ prev:
 next:
   text: '[Overlay Mode] Instructions'
   link: '../overlay-mode/instructions'
+description: There are two display modes for Found pins.
 ---
 
-# [Hide/Show Done] Feature
+[文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'
 
-There are two display modes for Done markers:
+# [Hide/Show Found] Feature
 
-1. **Show** - Highlight "done" markers
-2. **Hide** - Fade "done" markers
+There are two display modes for Found pins:
+
+1. **Show** - Highlight <b><span style="color: green">Found</span></b> pins
+2. **Hide** - Fade <b><span style="color: green">Found</span></b> pins
 
 ---
 
-Show Done:
+Show Found:
 ![](/imgs/en/manual/hide-show-done/Hide.png)
 
-Hide Done:
+Hide Found:
 ![](/imgs/en/manual/hide-show-done/show.png)
