@@ -1,3 +1,8 @@
+---
+layout: doc
+titleTemplate: Kongying Tavern
+---
+
 # 翻译教程（无经验）
 
 ## 软件需求
@@ -68,15 +73,15 @@
 
 ![](/src/public/imgs/i18n-guide/12.png)
 
-3.（推荐）再次前往插件页（Extensions），搜索”Markdown All in One"并安装，这个插件让你可以在VSCode里预览文字格式
+3. （推荐）再次前往插件页（Extensions），搜索”Markdown All in One"并安装，这个插件让你可以在VSCode里预览文字格式
 
-4.（推荐）搜索“markdownlint”并安装，这个插件可以为Markdown语法纠错
+4. （推荐）搜索“markdownlint”并安装，这个插件可以为Markdown语法纠错
 
 ## 翻译内容
 
 须翻译内容顺序由文件浏览器中显示从上至下（字母顺序），“**”为须翻译的语言代号。（例：ja-日语，kr-韩语）
 
--  `\.vitepress\config\**.ts` 对应语言的配置，影响所有页面统一的格式
+- `\.vitepress\config\**.ts` 对应语言的配置，影响所有页面统一的格式
 
 ![](/src/public/imgs/i18n-guide/13.png)
 
@@ -115,7 +120,7 @@
 
 ![](/src/public/imgs/i18n-guide/19.png)
 
-1. 检查完毕即可输入commit message并推送至你自己的分支，可以将commit看成为阶段性改动的记录。Commit message开头格式可以用：“feat:”-加入新页面、“chore:”-更改页面配置（例如上文所做的替换）、“fix:”-修改语法错误，或者链接错误。更多格式见：[commitlint](https://github.com/conventional-changelog/commitlint)
+2. 检查完毕即可输入commit message并推送至你自己的分支，可以将commit看成为阶段性改动的记录。Commit message开头格式可以用：“feat:”-加入新页面、“chore:”-更改页面配置（例如上文所做的替换）、“fix:”-修改语法错误，或者链接错误。更多格式见：[commitlint](https://github.com/conventional-changelog/commitlint)
 
 ![](/src/public/imgs/i18n-guide/20.png)
 
