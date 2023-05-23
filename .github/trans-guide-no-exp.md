@@ -1,8 +1,3 @@
----
-layout: doc
-titleTemplate: Kongying Tavern
----
-
 # 翻译教程（无经验）
 
 ## 软件需求
