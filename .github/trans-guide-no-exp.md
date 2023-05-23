@@ -115,7 +115,7 @@
 
 ![](/src/public/imgs/i18n-guide/19.png)
 
-2. 检查完毕即可输入commit message并推送至你自己的分支，可以将commit看成为阶段性改动的记录。Commit message开头格式可以用：“feat:”-加入新页面、“chore:”-更改页面配置（例如上文所做的替换）、“fix:”-修改语法错误，或者链接错误。更多开通格式见：[commitlint](https://github.com/conventional-changelog/commitlint)
+1. 检查完毕即可输入commit message并推送至你自己的分支，可以将commit看成为阶段性改动的记录。Commit message开头格式可以用：“feat:”-加入新页面、“chore:”-更改页面配置（例如上文所做的替换）、“fix:”-修改语法错误，或者链接错误。更多格式见：[commitlint](https://github.com/conventional-changelog/commitlint)
 
 ![](/src/public/imgs/i18n-guide/20.png)
 
