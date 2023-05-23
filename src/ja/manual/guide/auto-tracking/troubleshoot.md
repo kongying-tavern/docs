@@ -1,7 +1,7 @@
 ---
 title: \[Automatic Tracking] Troubleshooting
 aside: true
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 prev:
   text: '[Automatic Tracking] Important Notes'
   link: '../auto-tracking/importantnotes'
@@ -26,7 +26,7 @@ The auto tracking feature cannot overlay the game window, you can use the Stay o
 Showcase：
 <MediaIntroduction 
   media="reddit"
-  text="The Best Underground Map (Kongying Tavern x Teyvat Map Institute)"
+  text="The Best Underground Map (空荧酒馆 x Teyvat Map Institute)"
   link="https://www.reddit.com/r/Genshin_Impact/comments/12znlyd/the_best_underground_map_kongying_tavern_x_teyvat/"
 />
 

@@ -1,7 +1,7 @@
 ---
 title: \[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 next:
   text: '[Restore/Recover] Progress Recovery From Stored Data'
   link: 'en/manual/guide/restore-recover/progress'

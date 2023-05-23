@@ -1,6 +1,6 @@
 ---
 title: \[Login] Client Repeatedly Requests Login
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 description: Passwords that include "," (comma) will cause this problem, please remove it to avoid this issue.
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Map Client User Manual
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 next:
   text: '[Automatic Tracking] Important Notes'
   link: './guide/auto-tracking/importantnotes.md'
@@ -47,4 +47,4 @@ description: Table of Contents
 - [[Launch Error] Version Check Failed](./faq/launcherror/versioncheck.md)
 - [[Login] Account Login Problems](./faq/login/accountlogin.md)
 - [[Login] Client Repeatedly Requests Login](./faq/login/clientrepeatedly.md)
-- [Can I be Banned For Using Kongying Tavern?](./faq/accountsafety/acntban.md)
+- [Can I be Banned For Using 空荧酒馆?](./faq/accountsafety/acntban.md)

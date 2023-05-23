@@ -1,7 +1,7 @@
 ---
 title: \[Easter Egg] View Archived Versions of Golden Apple Archipelago
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 next:
   text: '[Hide/Show Found] Feature'
   link: '../hide-show-done/hidedoneshowdone'

@@ -1,6 +1,6 @@
 ---
 title: \[Login] Account Login Problems
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 description: Troubleshoot
 ---
 

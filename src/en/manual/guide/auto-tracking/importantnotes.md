@@ -1,5 +1,5 @@
 ---
-title: \[Automatic Tracking] Important Notes
+title: \[Automatic Tracking] Introduction
 aside: true
 titleTemplate: Kongying Tavern
 prev:
@@ -12,7 +12,7 @@ description: This feature is based on image recognition
 ---
 
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
-[仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。]: #
+[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
 
 # [Automatic Tracking] Introduction
 

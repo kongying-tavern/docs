@@ -1,6 +1,6 @@
 ---
 title: \[Launch Error] Empty Dialog Box or Stuck Progress Bar
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 description: Troubleshoot
 ---
 

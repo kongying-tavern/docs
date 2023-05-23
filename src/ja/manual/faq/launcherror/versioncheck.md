@@ -1,6 +1,6 @@
 ---
 title: \[Launch Error] Version Check Failed
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 description: An overwhelming amount of user access attempts can cause our server to become non-responsive.
 ---
 

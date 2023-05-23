@@ -1,7 +1,7 @@
 ---
 title: \[Background Usage] Framerate/Tracking Control
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 prev:
   text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'

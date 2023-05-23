@@ -1,7 +1,7 @@
 ---
 title: \[Overlay Mode] Instructions
 aside: true
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 prev:
   text: '[Hide/Show Found] Feature'
   link: '../hide-show-done/hidedoneshowdone'

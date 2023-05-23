@@ -1,7 +1,7 @@
 ---
 title: \[Multi Mark] Instructions
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 prev:
   text: '[Background Usage] Framerate/Tracking Control'
   link: '../bg/bgfrate'

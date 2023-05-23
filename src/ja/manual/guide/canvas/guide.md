@@ -1,7 +1,7 @@
 ---
 title: \[Custom Path Planner (Canvas)] Guide
 aside: true
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 next:
   text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
   link: '../easter-egg/view'
