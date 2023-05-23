@@ -125,4 +125,12 @@
 
 ### 同步
 
-1. Commit至你的分支以后，前往分支的GitHub页，并发起“Pull Request”就可以开始对网站内容的更新流程
+1. Commit至你的分支以后，前往分支的GitHub页，并发起“Pull Request”就可以开始对网站内容（主分支）的更新流程
+
+![](/src/public/imgs/i18n-guide/22.png)
+
+2. 如果主分支有新的改动，你可以先在“sync fork”处同步（图一，这张图没有同步按钮，因为已经同步），然后在VSCode中点击同步（Sync）将其同步至本地即可（图二）
+
+![](/src/public/imgs/i18n-guide/24.png)
+
+![](/src/public/imgs/i18n-guide/23.png)
