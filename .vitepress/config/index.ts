@@ -226,6 +226,12 @@ export default defineConfig({
             new URL('../theme/components/Footer.vue', import.meta.url)
           ),
         },
+        {
+          find: /^.*\/VPSwitchAppearance\.vue$/,
+          replacement: fileURLToPath(
+            new URL('../theme/components/SwitchAppearance.vue', import.meta.url)
+          ),
+        },
       ],
     },
     plugins: [
