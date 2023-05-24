@@ -5,9 +5,10 @@ titleTemplate: Kongying Tavern
 prev:
   text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
   link: '../overlay-mode/fullscreen-windowed/launching'
+description: Return saves to an archived timestamp, or recover save from accidental deletion.
 ---
 
-[原文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
+[文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'
 
 # [Restore/Recover] Progress Recovery From Stored Data
@@ -16,7 +17,7 @@ prev:
 
 [还原存档到历史位置]: # '更新为客户端内还原功能教程'
 
-## 1. Return saves to an archived timestamp
+## 1. Return saves to an archived timestamp {#Return}
 
 Select **Restore** in the **Paimon Menu**
 
@@ -32,7 +33,7 @@ Once confirmed, a new save named "Restored Save" will be created to store the re
 
 ![](/imgs/en/manual/restore-recover/4.png)
 
-## 2. Accidental Save Deletion Recovery
+## 2. Accidental Save Deletion Recovery {#Recovery}
 
 Log into [Gitee](https://gitee.com/) and select "Create Code"
 

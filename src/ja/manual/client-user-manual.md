@@ -1,16 +1,17 @@
 ---
 title: Map Client User Manual
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: 空荧酒馆
 next:
   text: '[Automatic Tracking] Important Notes'
   link: './guide/auto-tracking/importantnotes.md'
 prev:
   text: 'Home page'
   link: '../index.md'
+description: Table of Contents
 ---
 
-[原文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
+[文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
 
 # Table of Contents
 
@@ -46,4 +47,4 @@ prev:
 - [[Launch Error] Version Check Failed](./faq/launcherror/versioncheck.md)
 - [[Login] Account Login Problems](./faq/login/accountlogin.md)
 - [[Login] Client Repeatedly Requests Login](./faq/login/clientrepeatedly.md)
-- [Can I be Banned For Using Kongying Tavern?](./faq/accountsafety/acntban.md)
+- [Can I be Banned For Using 空荧酒馆?](./faq/accountsafety/acntban.md)

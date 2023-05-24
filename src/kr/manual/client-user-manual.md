@@ -8,7 +8,10 @@ next:
 prev:
   text: 'Home page'
   link: '../index.md'
+description: Table of Contents
 ---
+
+[文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
 
 # Table of Contents
 
@@ -26,10 +29,10 @@ prev:
 - [[Automatic Tracking] Introduction](./guide/auto-tracking/importantnotes.md)
 - [[Automatic Tracking] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
-- [[Batch Selection] Instructions](./guide/batch-selection/instructions.md)
+- [[Multi Mark] Instructions](./guide/batch-selection/instructions.md)
 - [[Custom Path Planner (Canvas)] Guide](./guide/canvas/guide.md)
 - [[Easter Egg] View Archived Versions of Golden Apple Archipelago](./guide/easter-egg/view.md)
-- [[Hide/Show Done] Feature](./guide/hide-show-done/hidedoneshowdone.md)
+- [[Hide/Show Found] Feature](./guide/hide-show-done/hidedoneshowdone.md)
 - [[Overlay Mode] Instructions](./guide/overlay-mode/instructions.md)
 - [[Overlay Mode] Launching The Game in Windowed Fullscreen](./guide/overlay-mode/fullscreen-windowed/launching.md)
 - [[Restore/Recover] Recovery From Stored Progress](./guide/restore-recover/progress.md)

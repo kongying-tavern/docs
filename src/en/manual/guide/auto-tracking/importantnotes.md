@@ -1,5 +1,5 @@
 ---
-title: \[Automatic Tracking] Important Notes
+title: \[Automatic Tracking] Introduction
 aside: true
 titleTemplate: Kongying Tavern
 prev:
@@ -8,16 +8,17 @@ prev:
 next:
   text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
+description: This feature is based on image recognition
 ---
 
-[原文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
-[仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。]: #
+[文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
+[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
 
 # [Automatic Tracking] Introduction
 
 This feature is based on **image recognition**
 
-## Capabilities
+## Capabilities {#capabilities}
 
 - Support for most languages (Not limited to Chinese, Korean, and English)
 - Functioning properly even when Windows system Scaling is not 100%
@@ -43,7 +44,7 @@ Once automatic tracking is enabled, The **map client** will
 
 [见：自动追踪问题排查.docx]: # '以下为 自动追踪支持列表： 内容'
 
-## Software Support
+## Software Support {#Software}
 
 ### Supported
 
@@ -63,7 +64,7 @@ Once automatic tracking is enabled, The **map client** will
 
 ---
 
-## Graphics Support
+## Graphics Support {#Graphics}
 
 ### Supported
 
@@ -94,7 +95,7 @@ Auto tracking may work with reduced accuracy or not at all.
 
 [见：自动追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
 
-## Troubleshooting
+## Troubleshooting {#Troubleshooting}
 
 Some facts to know before troubleshooting and submitting feedback:
 
@@ -115,4 +116,4 @@ You can visit the files' directory quickly through the auto tracking settings.
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-1. Please go through the following [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
+Please go through the [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)

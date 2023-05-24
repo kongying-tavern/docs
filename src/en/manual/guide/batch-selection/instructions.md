@@ -8,16 +8,17 @@ prev:
 next:
   text: '[Custom Path Planner (Canvas)] Guide'
   link: '../canvas/guide'
+description: Responding to the requests from travelers, Multi Mark is now available!
 ---
 
-[原文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'
+[文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'
 
 # [Multi Mark] Instructions
 
 Responding to the requests from travelers, Multi Mark is now available!
 
 - **Right click** a pin to switch it between <b><span style="color: green">Found</span>/<span style="color: red">To Do</span></b>.
-- Hold **right click** and drag over pins mark them <b><span style="color: green">Found</span></b>.
+- Hold **right click** and drag over pins to mark them <b><span style="color: green">Found</span></b>.
 - Hold **left Alt** + **right click** and drag over pins to mark them them <b><span style="color: red">To Do</span></b>.
 - Hold **Ctrl** + **right click** to box select pins and mark them <b><span style="color: green">Found</span></b>.
 - Hold **Ctrl** + **left Alt** + **right click** to box select pins and mark them <b><span style="color: red">To Do</span></b>.
