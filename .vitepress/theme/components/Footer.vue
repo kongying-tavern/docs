@@ -8,7 +8,7 @@
             <Link
               :href="withBase(ic.link)"
               :title="ic.text + '（' + withBase(ic.link) + '）'"
-              noIcon="true"
+              :noIcon="true"
             >
               {{ ic.text }}
             </Link>
