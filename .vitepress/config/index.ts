@@ -8,6 +8,7 @@ import { SitemapStream } from 'sitemap'
 import { genFeed } from './genFeed'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
+import { colorPreviewPlugin } from '../plugins/colorPreview'
 import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
@@ -259,6 +260,7 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(MarkdownItFootnote)
+      md.use(colorPreviewPlugin)
     },
   },
   transformHtml: (_, id, { pageData }) => {
