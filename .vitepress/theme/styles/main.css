@@ -76,3 +76,24 @@ html {
 .VPSidebar::-webkit-scrollbar-track {
   background-color: var(--vp-c-bg);
 }
+
+.vp-doc .color-swatch {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  min-width: 12px;
+  min-height: 12px;
+  font-size: inherit;
+  border: 0;
+  border-radius: 2px;
+  margin: 0 3px 0 6px;
+  cursor: pointer;
+}
+
+.medium-zoom-overlay {
+  z-index: 20;
+}
+
+.medium-zoom-image {
+  z-index: 21;
+}

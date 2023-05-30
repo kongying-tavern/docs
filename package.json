@@ -49,6 +49,7 @@
     "dayjs": "^1.11.7",
     "feed": "^4.2.2",
     "markdown-it-footnote": "^3.0.3",
+    "medium-zoom": "^1.0.8",
     "qrcode": "^1.5.3",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.2",
