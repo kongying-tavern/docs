@@ -63,7 +63,7 @@ background-color: var(--vp-c-bg);
     padding: 0;
     max-height: 475px;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     overflow-y: scroll;
     
     li {
