@@ -61,7 +61,7 @@ background-color: var(--vp-c-bg);
   ol {
     display: inherit;
     padding: 0;
-    max-height: 410px;
+    max-height: 475px;
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
