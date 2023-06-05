@@ -26,24 +26,23 @@ pageClass: download-client
 :::
 
 :::details 客户端使用教程
-<MediaIntroduction 
-  media="bilibili"
-  text="观看客户端基础使用教程"
-  link="https://www.bilibili.com/video/BV1uU4y157Te"
-/>
 
-<MediaIntroduction
-  media="txc"
-  text="客户端使用手册"
-  link="https://support.qq.com/products/321980/faqs-more/?id=94938"
-/>
+```card
+title: 观看客户端基础使用教程
+link: https://www.bilibili.com/video/BV1uU4y157Te
+```
+
+```card
+title: 客户端使用手册
+link: https://support.qq.com/products/321980/faqs-more/?id=94938
+```
+
 :::
 
 ## 网页版地图
 
-<MediaIntroduction 
-  media="self"
-  target="_black"
-  text="网页版地图 V3"
-  link="https://v3.yuanshen.site"
-/>
+```card
+title: 网页版地图 V3
+link: https://v3.yuanshen.site
+theme: medium
+```

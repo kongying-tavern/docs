@@ -3,16 +3,27 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import { createWriteStream } from 'node:fs'
-import { resolve } from 'node:path'
+import path, { resolve } from 'node:path'
 import { SitemapStream } from 'sitemap'
 import { genFeed } from './genFeed'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
-import { colorPreviewPlugin } from '../plugins/colorPreview'
+import { colorPreviewPlugin } from '../theme/markdown/colorPreview'
+import { cardPlugin } from '../theme/markdown/card'
+import { imgLazyload } from '@mdit/plugin-img-lazyload'
+import { figure } from '@mdit/plugin-figure'
+import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
+import { mark } from '@mdit/plugin-mark'
+import { sub } from '@mdit/plugin-sub'
+import { sup } from '@mdit/plugin-sup'
+import { include } from '@mdit/plugin-include'
+
 import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
 import { krConfig } from './kr'
+
+import type { MarkdownEnv } from 'vitepress'
 
 export const links: any[] = []
 export const base = process.env.BASE || '/docs/'
@@ -261,6 +272,25 @@ export default defineConfig({
     config(md) {
       md.use(MarkdownItFootnote)
       md.use(colorPreviewPlugin)
+      md.use(cardPlugin)
+      md.use(sub)
+      md.use(sup)
+      md.use(mark)
+      md.use(imgLazyload)
+      md.use(imgSize)
+      md.use(obsidianImageSize)
+      md.use(figure)
+      md.use(include, {
+        currentPath: (env: MarkdownEnv) => env.relativePath,
+        ...{
+          resolvePath: (file) => {
+            if (file.startsWith('@src'))
+              return file.replace('@src', path.resolve(__dirname, '..'))
+
+            return file
+          },
+        },
+      })
     },
   },
   transformHtml: (_, id, { pageData }) => {
@@ -273,7 +303,7 @@ export default defineConfig({
   },
   buildEnd: (config) => {
     const sitemap = new SitemapStream({
-      hostname: 'https://yuanshen.site/',
+      hostname: 'https://yuanshen.site/docs',
     })
     const writeStream = createWriteStream(resolve(config.outDir, 'sitemap.xml'))
     sitemap.pipe(writeStream)

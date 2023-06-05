@@ -26,7 +26,6 @@
       "prettier --write"
     ],
     "*.scss": [
-      "stylelint --fix",
       "prettier --write"
     ],
     "package.json": [
@@ -44,10 +43,15 @@
     "@iconify-json/logos": "^1.1.25",
     "@iconify-json/mdi": "^1.1.50",
     "@iconify-json/ph": "^1.1.5",
+    "@mdit/plugin-container": "^0.4.6",
+    "@mdit/plugin-include": "^0.4.6",
+    "@mdit/plugin-mark": "^0.4.6",
+    "@types/js-yaml": "^4.0.5",
     "@vueuse/core": "^9.13.0",
     "@vueuse/integrations": "^9.13.0",
     "dayjs": "^1.11.7",
     "feed": "^4.2.2",
+    "js-yaml": "^4.1.0",
     "markdown-it-footnote": "^3.0.3",
     "medium-zoom": "^1.0.8",
     "qrcode": "^1.5.3",
@@ -59,12 +63,19 @@
     "unplugin-auto-import": "^0.11.5",
     "unplugin-vue-components": "^0.22.12",
     "vitepress": "1.0.0-beta.1",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
     "@commitlint/types": "^17.4.4",
+    "@mdit/plugin-figure": "^0.4.6",
+    "@mdit/plugin-img-lazyload": "^0.4.6",
+    "@mdit/plugin-img-mark": "^0.4.6",
+    "@mdit/plugin-img-size": "^0.4.6",
+    "@mdit/plugin-sub": "^0.4.6",
+    "@mdit/plugin-sup": "^0.4.6",
     "@types/eslint": "^8.37.0",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^17.0.45",
@@ -87,6 +98,7 @@
     "lint-staged": "^13.2.2",
     "markdown-it": "^13.0.1",
     "markdownlint-cli": "^0.31.1",
+    "pnpm": "^8.6.0",
     "prettier": "^2.8.8",
     "prettier-config-vuepress": "^1.4.0",
     "sort-package-json": "^1.57.0",

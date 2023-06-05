@@ -14,8 +14,8 @@ onMounted(() => {
   checked.value = document.documentElement.classList.contains('dark')
 })
 
-// @ts-expect-error: Transition API
 const isAppearanceTransition =
+  // @ts-expect-error: Transition API
   document.startViewTransition &&
   !window.matchMedia(`(prefers-reduced-motion: reduce)`).matches
 

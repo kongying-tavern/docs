@@ -4,9 +4,9 @@ import mediumZoom from 'medium-zoom'
 import Theme from 'vitepress/theme-without-fonts'
 import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
-import MediaIntroduction from './components/MediaIntroduction.vue'
+import AutoJump from './components/AutoJump.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
-
+import Card from '../theme/components/Card'
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
@@ -20,7 +20,8 @@ export default {
   enhanceApp({ app }) {
     app.component('Link', Link)
     app.component('Coins', Coins)
-    app.component('MediaIntroduction', MediaIntroduction)
+    app.component('AutoJump', AutoJump)
+    app.component('VPCard', Card)
     googleAnalytics({
       id: 'G-Q2K9DXZCEY',
       debug: false,
@@ -31,6 +32,7 @@ export default {
     const initZoom = () => {
       mediumZoom('.main img', { background: 'var(--vp-c-bg)' })
     }
+
     onMounted(() => {
       initZoom()
     })

@@ -24,11 +24,13 @@ The auto tracking feature cannot overlay the game window, you can use the Stay o
 [#]: # '因此在这链接了 reddit 上的演示'
 
 Showcase：
-<MediaIntroduction 
-  media="reddit"
-  text="The Best Underground Map (Kongying Tavern x Teyvat Map Institute)"
-  link="https://www.reddit.com/r/Genshin_Impact/comments/12znlyd/the_best_underground_map_kongying_tavern_x_teyvat/"
-/>
+
+```card
+title: The Best Underground Map (Kongying Tavern x Teyvat Map Institute)
+
+link: https://www.reddit.com/r/Genshin_Impact/comments/12znlyd/the_best_underground_map_kongying_tavern_x_teyvat/
+theme: medium
+```
 
 ## 2. Cannot download auto tracking module, the download window flashes or the download speed is 0.00 kb/s {#issue2}
 
