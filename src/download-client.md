@@ -8,8 +8,6 @@ pageClass: download-client
 
 # 下载客户端
 
-- 阿里云盘：
-  - <https://www.aliyundrive.com/s/irmz7CKpMry>
 - 加入讨论组：
   - [https://yuanshen.site/docs/community](./community.md)
 - 夸克网盘:
