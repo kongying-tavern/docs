@@ -3,7 +3,7 @@ import { writeFileSync } from 'fs'
 import { Feed } from 'feed'
 import { createContentLoader, type SiteConfig } from 'vitepress'
 
-const baseURL = process.env.BASE || 'https://yuanshen.site/docs/'
+const baseURL = process.env.BASE || 'https://yuanshen.site/'
 export async function genFeed(config: SiteConfig) {
   const feed = new Feed({
     title: 'Genshin Interactive Map',

@@ -303,7 +303,7 @@ export default defineConfig({
   },
   buildEnd: (config) => {
     const sitemap = new SitemapStream({
-      hostname: 'https://yuanshen.site/docs',
+      hostname: 'https://yuanshen.site/docs/',
     })
     const writeStream = createWriteStream(resolve(config.outDir, 'sitemap.xml'))
     sitemap.pipe(writeStream)
