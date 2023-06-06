@@ -9,3 +9,9 @@ description: Please use the portable version.
 # [Installation Error] Missing .dll file
 
 Please use the portable version.
+
+```card
+title: Web Version Portal
+link: https://yuanshen.site
+theme: medium
+```

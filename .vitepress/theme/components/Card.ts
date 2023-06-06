@@ -94,7 +94,7 @@ const Card: FunctionalComponent<CardProps> = ({
   const children = [
     icon === ''
       ? h('img', {
-          class: 'vp-card-logo',
+          class: 'vp-card-logo no-zoomable',
           src: withBase(logo || '/imgs/logo_128.png'),
         })
       : h('label', {

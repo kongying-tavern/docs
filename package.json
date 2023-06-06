@@ -44,7 +44,6 @@
     "@iconify-json/mdi": "^1.1.50",
     "@iconify-json/ph": "^1.1.5",
     "@mdit/plugin-container": "^0.4.6",
-    "@mdit/plugin-include": "^0.4.6",
     "@mdit/plugin-mark": "^0.4.6",
     "@types/js-yaml": "^4.0.5",
     "@vueuse/core": "^9.13.0",

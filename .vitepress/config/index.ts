@@ -16,14 +16,11 @@ import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import { include } from '@mdit/plugin-include'
 
 import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
 import { krConfig } from './kr'
-
-import type { MarkdownEnv } from 'vitepress'
 
 export const links: any[] = []
 export const base = process.env.BASE || '/docs/'
@@ -280,17 +277,6 @@ export default defineConfig({
       md.use(imgSize)
       md.use(obsidianImageSize)
       md.use(figure)
-      md.use(include, {
-        currentPath: (env: MarkdownEnv) => env.relativePath,
-        ...{
-          resolvePath: (file) => {
-            if (file.startsWith('@src'))
-              return file.replace('@src', path.resolve(__dirname, '..'))
-
-            return file
-          },
-        },
-      })
     },
   },
   transformHtml: (_, id, { pageData }) => {

@@ -16,9 +16,6 @@ dependencies:
   '@mdit/plugin-container':
     specifier: ^0.4.6
     version: 0.4.6
-  '@mdit/plugin-include':
-    specifier: ^0.4.6
-    version: 0.4.6
   '@mdit/plugin-mark':
     specifier: ^0.4.6
     version: 0.4.6
@@ -2126,14 +2123,6 @@ packages:
       '@types/markdown-it': 12.2.3
       markdown-it: 13.0.1
     dev: true
-
-  /@mdit/plugin-include@0.4.6:
-    resolution: {integrity: sha512-MQaBAcAlk/d8Skyg2fhAVclqE5do5PJdBBD0wsaXIom96TONNZJnOJQrSqGXUhqHGee8iSccMzIaZN6g3XHRVQ==}
-    dependencies:
-      '@types/markdown-it': 12.2.3
-      markdown-it: 13.0.1
-      upath: 2.0.1
-    dev: false
 
   /@mdit/plugin-mark@0.4.6:
     resolution: {integrity: sha512-mpAwN2tW+lT7lmLyI6nb9U2EFSOLU+qT1i5FAT/i2JG7agPN5VYeCTf5QPg6Wj8ujMHv9h/0TXgK6KUSiArWFg==}
@@ -8445,11 +8434,6 @@ packages:
     resolution: {integrity: sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==}
     engines: {node: '>=4'}
     dev: true
-
-  /upath@2.0.1:
-    resolution: {integrity: sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==}
-    engines: {node: '>=4'}
-    dev: false
 
   /update-browserslist-db@1.0.11(browserslist@4.21.5):
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}
