@@ -1,7 +1,6 @@
 import { withBase } from 'vitepress'
 import { isLinkExternal } from '../utils'
 import { type FunctionalComponent, h } from 'vue'
-import { useRouter } from 'vitepress'
 
 import '../styles/card.scss'
 
