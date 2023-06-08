@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div slide-enter>
     <div class="one-time-donations">
       <div class="links">
         <a href="#wechatpay">

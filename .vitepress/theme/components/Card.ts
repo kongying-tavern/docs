@@ -111,7 +111,7 @@ const Card: FunctionalComponent<CardProps> = ({
   ]
 
   const props: Record<string, unknown> = {
-    class: `vp-card vp-card-theme-${theme} ${
+    class: `vp-card slide-enter vp-card-theme-${theme} ${
       hoverShadow ? 'vp-card-hover' : ''
     }`,
     title: title,

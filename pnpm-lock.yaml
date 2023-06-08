@@ -76,6 +76,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.2
     version: 4.2.2(vue@3.2.47)
+  vue-router-better-scroller:
+    specifier: ^0.0.0
+    version: 0.0.0(vue-router@4.2.2)(vue@3.2.47)
 
 devDependencies:
   '@commitlint/cli':
@@ -8758,6 +8761,16 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /vue-router-better-scroller@0.0.0(vue-router@4.2.2)(vue@3.2.47):
+    resolution: {integrity: sha512-E+ovMBUOgr0TU6rYnc5X8h7rlu+QUkK2AMBXt2S6yMrAlW86cq6k5OExM4WnL4vfHbmJEtf+SbAtZ3H3bxYoBQ==}
+    peerDependencies:
+      vue: ^3.3.4
+      vue-router: ^4.2.2
+    dependencies:
+      vue: 3.2.47
+      vue-router: 4.2.2(vue@3.2.47)
+    dev: false
 
   /vue-router@4.2.2(vue@3.2.47):
     resolution: {integrity: sha512-cChBPPmAflgBGmy3tBsjeoe3f3VOSG6naKyY5pjtrqLGbNEXdzCigFUHgBvp9e3ysAtFtEx7OLqcSDh/1Cq2TQ==}

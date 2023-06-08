@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-container" v-if="frontmatter.footer !== false">
+  <div class="footer-container slide-enter" v-if="frontmatter.footer !== false">
     <footer class="footer">
       <div class="footer-navigation" v-for="item in theme.footer.navigation">
         <h3 class="footer-title">{{ item.title }}</h3>

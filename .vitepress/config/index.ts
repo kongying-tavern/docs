@@ -39,6 +39,15 @@ export const productionHead: HeadConfig[] = [
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "gx0jeyqvg5")`,
   ],
+  [
+    'script',
+    {
+      id: 'application-json',
+      type: 'application/ld+json',
+    },
+    `
+    {"@context":"https://schema.org","@type":"WebPage","name":Kongying Tavern Genshin Interactive Map"}`,
+  ],
 ]
 
 export default defineConfig({
@@ -189,6 +198,14 @@ export default defineConfig({
       {
         hreflang: 'zh-cn',
         href: 'https://yuanshen.site/docs',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        href: `${base}/feed.rss`,
+        type: 'application/rss',
       },
     ],
     [
