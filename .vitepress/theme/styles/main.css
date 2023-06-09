@@ -19,8 +19,19 @@ html {
   border-top: 1px;
 }
 
-#VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.VPContent > h1 > span,
-#VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.VPContent > p.text,
+#VPContent
+  > div
+  > div.VPHero.has-image.VPHomeHero
+  > div
+  > div.VPContent
+  > h1
+  > span,
+#VPContent
+  > div
+  > div.VPHero.has-image.VPHomeHero
+  > div
+  > div.VPContent
+  > p.text,
 #app > div > header > div > div > div.title > div > a {
   font-weight: 900;
 }
@@ -101,16 +112,16 @@ html {
 @keyframes slide-enter {
   0% {
     transform: translateY(10px);
-    opacity: 0
+    opacity: 0;
   }
 
   to {
     transform: translateY(0);
-    opacity: 100
+    opacity: 100;
   }
 }
 
-@media (prefers-reduced-motion:no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   html:not(.no-sliding) [slide-enter],
   html:not(.no-sliding) .slide-enter,
   html:not(.no-sliding) .VPContent > * {
@@ -118,29 +129,71 @@ html {
     --enter-step: 90ms;
     --enter-initial: 0ms;
     animation: slide-enter 1s both 1;
-    animation-delay: calc(var(--enter-initial) + var(--enter-stage) * var(--enter-step));
+    animation-delay: calc(
+      var(--enter-initial) + var(--enter-stage) * var(--enter-step)
+    );
   }
 
-  .VPContent > *:nth-child(1) { --enter-stage: 1; }
-  .VPContent > *:nth-child(2) { --enter-stage: 2; }
-  .VPContent > *:nth-child(3) { --enter-stage: 3; }
-  .VPContent > *:nth-child(4) { --enter-stage: 4; }
-  .VPContent > *:nth-child(5) { --enter-stage: 5; }
-  .VPContent > *:nth-child(6) { --enter-stage: 6; }
-  .VPContent > *:nth-child(7) { --enter-stage: 7; }
-  .VPContent > *:nth-child(8) { --enter-stage: 8; }
-  .VPContent > *:nth-child(9) { --enter-stage: 9; }
-  .VPContent > *:nth-child(10) { --enter-stage: 10; }
-  .VPContent > *:nth-child(11) { --enter-stage: 11; }
-  .VPContent > *:nth-child(12) { --enter-stage: 12; }
-  .VPContent > *:nth-child(13) { --enter-stage: 13; }
-  .VPContent > *:nth-child(14) { --enter-stage: 14; }
-  .VPContent > *:nth-child(15) { --enter-stage: 15; }
-  .VPContent > *:nth-child(16) { --enter-stage: 16; }
-  .VPContent > *:nth-child(17) { --enter-stage: 17; }
-  .VPContent > *:nth-child(18) { --enter-stage: 18; }
-  .VPContent > *:nth-child(19) { --enter-stage: 19; }
-  .VPContent > *:nth-child(20) { --enter-stage: 20; }
+  .VPContent > *:nth-child(1) {
+    --enter-stage: 1;
+  }
+  .VPContent > *:nth-child(2) {
+    --enter-stage: 2;
+  }
+  .VPContent > *:nth-child(3) {
+    --enter-stage: 3;
+  }
+  .VPContent > *:nth-child(4) {
+    --enter-stage: 4;
+  }
+  .VPContent > *:nth-child(5) {
+    --enter-stage: 5;
+  }
+  .VPContent > *:nth-child(6) {
+    --enter-stage: 6;
+  }
+  .VPContent > *:nth-child(7) {
+    --enter-stage: 7;
+  }
+  .VPContent > *:nth-child(8) {
+    --enter-stage: 8;
+  }
+  .VPContent > *:nth-child(9) {
+    --enter-stage: 9;
+  }
+  .VPContent > *:nth-child(10) {
+    --enter-stage: 10;
+  }
+  .VPContent > *:nth-child(11) {
+    --enter-stage: 11;
+  }
+  .VPContent > *:nth-child(12) {
+    --enter-stage: 12;
+  }
+  .VPContent > *:nth-child(13) {
+    --enter-stage: 13;
+  }
+  .VPContent > *:nth-child(14) {
+    --enter-stage: 14;
+  }
+  .VPContent > *:nth-child(15) {
+    --enter-stage: 15;
+  }
+  .VPContent > *:nth-child(16) {
+    --enter-stage: 16;
+  }
+  .VPContent > *:nth-child(17) {
+    --enter-stage: 17;
+  }
+  .VPContent > *:nth-child(18) {
+    --enter-stage: 18;
+  }
+  .VPContent > *:nth-child(19) {
+    --enter-stage: 19;
+  }
+  .VPContent > *:nth-child(20) {
+    --enter-stage: 20;
+  }
 }
 
 ::view-transition-old(root),
