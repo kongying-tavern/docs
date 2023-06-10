@@ -27,6 +27,7 @@ externalLinkIcon: false
 15. [**原神地图 15 群** 668424173](https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi '点击一键加入原神地图15群')
 
 :::tip
+加群密码 '123456 '
 推荐加入人数较少的群。
 请勿重复加群，由于群人数均衡原因，若重复加群将踢出「群人数较多的群」！
 :::
