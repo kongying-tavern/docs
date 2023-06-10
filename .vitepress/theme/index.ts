@@ -44,13 +44,6 @@ export default {
       () =>
         nextTick(() => {
           initZoom()
-
-          document.querySelector('#VPContent')?.classList.toggle('slide-enter')
-          setTimeout(() => {
-            document
-              .querySelector('#VPContent')
-              ?.classList.toggle('slide-enter')
-          }, 1000)
         })
     )
   },

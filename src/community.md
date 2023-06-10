@@ -39,7 +39,7 @@ externalLinkIcon: false
 
 ## Discord Server
 
-1. [**加入服务器** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
+1. [**加入频道** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
 
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {
@@ -87,13 +87,13 @@ background-color: var(--vp-c-bg);
         padding: 10px 16px;
         box-sizing: border-box;
         transition: all .3s;
+        text-decoration:none !important;
         strong {
           position: absolute;
           left: 25px;
         }
         &:hover{
           opacity: 1;
-          text-decoration:none !important;
         }
       }
       &:hover{
