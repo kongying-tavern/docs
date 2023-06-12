@@ -16,6 +16,7 @@ export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
   description: META_DESCRIPTION,
+  titleTemplate: 'Kongying Tavern',
   themeConfig: {
     siteTitle: '原神地図',
     outlineTitle: 'On This Page',

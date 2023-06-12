@@ -1,4 +1,4 @@
-import { onMounted, watch, nextTick, h } from 'vue'
+import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
 import { useRoute, inBrowser } from 'vitepress'
 import mediumZoom from 'medium-zoom'
 import Theme from 'vitepress/theme-without-fonts'
@@ -7,7 +7,6 @@ import Coins from './components/Coins.vue'
 import AutoJump from './components/AutoJump.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
-
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
@@ -16,7 +15,10 @@ export default {
   ...Theme,
 
   Layout() {
-    return h(Theme.Layout, null, {})
+    return h(Theme.Layout, null, {
+      // 'layout-top': () =>
+      //   h(defineAsyncComponent(() => import('./components/Banner.vue'))),
+    })
   },
   enhanceApp({ app }) {
     app.component('Link', Link)

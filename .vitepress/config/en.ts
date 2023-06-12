@@ -16,6 +16,7 @@ export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
   description: META_DESCRIPTION,
+  titleTemplate: 'Kongying Tavern',
   themeConfig: {
     siteTitle: 'Genshin Interactive Map',
     outlineTitle: 'On This Page',

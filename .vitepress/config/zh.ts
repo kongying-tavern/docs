@@ -14,6 +14,7 @@ export const zhConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
   description: META_DESCRIPTION,
+  titleTemplate: '空荧酒馆',
   head: [
     ['meta', { name: 'keywords', content: META_KEYWORDS }],
     ['meta', { property: 'og:url', content: META_URL }],
