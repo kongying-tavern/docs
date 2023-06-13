@@ -39,6 +39,7 @@
   },
   "prettier": "prettier-config-vuepress",
   "dependencies": {
+    "@7c00/canvas-tilemap": "^0.6.0",
     "@iconify-json/ic": "^1.1.13",
     "@iconify-json/logos": "^1.1.31",
     "@iconify-json/mdi": "^1.1.52",
@@ -61,7 +62,7 @@
     "unocss": "^0.45.30",
     "unplugin-auto-import": "^0.11.5",
     "unplugin-vue-components": "^0.22.12",
-    "vitepress": "1.0.0-beta.1",
+    "vitepress": "latest",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2",
     "vue-router-better-scroller": "^0.0.0"

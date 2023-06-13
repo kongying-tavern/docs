@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch } from 'vue'
 import { useData } from 'vitepress/dist/client/theme-default/composables/data'
-import { APPEARANCE_KEY } from 'vitepress/dist/client/shared'
+import { APPEARANCE_KEY, inBrowser } from 'vitepress/dist/client/shared'
 import VPSwitch from 'vitepress/dist/client/theme-default/components/VPSwitch.vue'
 import VPIconSun from 'vitepress/dist/client/theme-default/components/icons/VPIconSun.vue'
 import VPIconMoon from 'vitepress/dist/client/theme-default/components/icons/VPIconMoon.vue'
 
 const { site, isDark } = useData()
 const checked = ref(false)
-const toggle = typeof localStorage !== 'undefined' ? useAppearance() : () => {}
+const toggle = inBrowser ? useAppearance() : () => {}
 
 onMounted(() => {
   checked.value = document.documentElement.classList.contains('dark')
