@@ -11,14 +11,9 @@
     reactions-enabled="1"
     emit-metadata="0"
     input-position="top"
-    :theme="[
-      isDark
-        ? 'https://yuanshen.site/docs/giscus-dark.css'
-        : 'https://yuanshen.site/docs/giscus-light.css',
-    ]"
+    :theme="[isDark ? '/themes/dark.css' : '/themes/light.css']"
     :lang="lang"
     loading="lazy"
-    style=""
   />
 </template>
 
