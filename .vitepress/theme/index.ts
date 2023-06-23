@@ -1,7 +1,7 @@
 import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
 import { useRoute, inBrowser } from 'vitepress'
 import mediumZoom from 'medium-zoom'
-import Theme from 'vitepress/theme-without-fonts'
+import DefaultTheme from 'vitepress/theme-without-fonts'
 import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
 import AutoJump from './components/AutoJump.vue'
@@ -12,12 +12,12 @@ import './styles/vars.css'
 import './styles/main.css'
 
 export default {
-  ...Theme,
+  ...DefaultTheme,
 
   Layout() {
-    return h(Theme.Layout, null, {
-      // 'layout-top': () =>
-      //   h(defineAsyncComponent(() => import('./components/Banner.vue'))),
+    return h(DefaultTheme.Layout, null, {
+      'doc-after': () =>
+        h(defineAsyncComponent(() => import('./components/Giscus.vue'))),
     })
   },
   enhanceApp({ app }) {
