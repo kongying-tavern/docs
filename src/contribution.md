@@ -3,23 +3,13 @@ title: 贡献鸣谢
 description: 贡献鸣谢
 titleTemplate: 空荧酒馆
 layout: doc
+comment: false
 aside: false
 ---
 
-<script setup>
-import { ref } from 'vue';
-import dayjs from 'dayjs';
+# 贡献鸣谢[^1]
 
-const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
-</script>
-
-# 贡献鸣谢
-
-空荧酒馆原神地图从 2020 年 6 月初制作决定开始至今已 <time> {{ date }} </time> 天，点位数据收集总耗时超两万个小时。
-
-我们在此鸣谢每一位为地图做出贡献的小伙伴，感谢有你。
-
-## 点位贡献[^1]
+## 点位贡献
 
 | 用户名               |
 | -------------------- |
@@ -212,6 +202,14 @@ const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 [^1]: 名单排序不分先后；
 
 <style lang="scss" scoped>
+h1,h2,h3,h4 {
+  text-align: center;
+}
+
+h4 {
+  opacity: .75;
+}
+
 thead {
   display: none;
 }

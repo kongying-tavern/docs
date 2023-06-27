@@ -13,7 +13,6 @@
     input-position="top"
     :theme="[isDark ? '/themes/dark.css' : '/themes/light.css']"
     :lang="lang"
-    loading="lazy"
   />
 </template>
 

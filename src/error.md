@@ -4,6 +4,7 @@ description: 错误页
 titleTemplate: 空荧酒馆
 aside: true
 layout: doc
+comment: false
 head:
   - - script
     - src: /docs/error.js

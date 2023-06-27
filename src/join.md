@@ -111,7 +111,7 @@ description: 加入我们
 
 ### 技术栈
 
-`C#` `C` `C++` `Unity`
+`C#` `C` `C++` `Unity` `Qt`
 :::
 
 :::raw
@@ -128,11 +128,7 @@ description: 加入我们
 ### 要求
 
 1. 数学系相关专业研究生及以上学历。
-
-### 技术栈
-
-`C#` `C` `C++` `Unity`
-:::
+   :::
 
 <style lang="scss" scoped>
 

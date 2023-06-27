@@ -4,7 +4,7 @@ description: 下载客户端
 titleTemplate: 空荧酒馆
 layout: doc
 aside: false
-pageClass: download-client
+comment: true
 ---
 
 # 下载客户端

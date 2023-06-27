@@ -3,6 +3,7 @@ title: 用户协议
 layout: doc
 titleTemplate: 空荧酒馆
 aside: false
+comment: false
 ---
 
 # 空荧酒馆原神地图用户服务协议
