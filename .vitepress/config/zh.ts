@@ -95,12 +95,12 @@ export const zhConfig: LocaleSpecificConfig<
               link: './join',
             },
             {
-              text: '了解团队',
-              link: './team',
-            },
-            {
               text: '赞助鸣谢',
               link: './support-us',
+            },
+            {
+              text: '友情链接',
+              link: './friends-links',
             },
           ],
         },
@@ -239,6 +239,15 @@ export const zhConfig: LocaleSpecificConfig<
               {
                 text: '用户协议',
                 link: './agreement.md',
+              },
+            ],
+          },
+          {
+            text: '其他',
+            items: [
+              {
+                text: '友情链接',
+                link: './friends-links.md',
               },
             ],
           },

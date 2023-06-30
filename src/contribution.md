@@ -268,6 +268,7 @@ h1 {
 thead {
   display: none;
 }
+
 tbody {
 display: flex;
   flex-wrap: wrap;
@@ -285,7 +286,6 @@ display: flex;
       display: inline-block;
       width: 100%;
       border: none;
-      text-align: center;
       background-color: transparent !important;
     }
   }
