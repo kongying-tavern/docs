@@ -9,9 +9,57 @@ aside: false
 
 # 贡献鸣谢[^1]
 
+## 翻译贡献
+
+| Name                                       |
+| ------------------------------------------ |
+| Pop_Slime <br /> (英语翻译)                |
+| Suizyun <br /> (英语翻译)                  |
+| Pat <br /> (英语翻译)                      |
+| 栖客。<br /> (英语翻译)                    |
+| Arrebol <br /> (英语翻译)                  |
+| 一团猫 <br /> (日语翻译)                   |
+| Yuka <br /> (日语翻译)                     |
+| 小璐 るーちゃん <br /> (日语翻译)          |
+| 尉迟兰屏 <br /> (世界语翻译)               |
+| 夜 銀河 <br /> (法语翻译)                  |
+| 1670732206 <br /> (粤语翻译)               |
+| 想太多了 <br /> (韩语翻译)                 |
+| Mercury <br /> (英语/德语/西语/瑞典语翻译) |
+
+## 社区管理
+
+| Name                   |
+| ---------------------- |
+| 鈴                     |
+| 不服输的泡泡           |
+| AAAAAAAA               |
+| 莫                     |
+| 蹲在墓地吓鬼           |
+| C.c.                   |
+| Zn(OH)₂·H₂ZnO₂         |
+| 梦梦                   |
+| SSSSSSSan              |
+| 捕食中的 Scorpion Girl |
+| 这应该可能是昵称       |
+| 願                     |
+| 暂无此人               |
+| 天羽落晨曦             |
+| 阿奇                   |
+| い守护、约定。         |
+| 第一可爱小萌新づ       |
+| 艾琳·艾德勒            |
+| kylin 丶               |
+| Arrebol                |
+| 洳忘                   |
+| Steven                 |
+| 残光                   |
+| continued story        |
+| 暖冬是凉春             |
+
 ## 点位贡献
 
-| 用户名               |
+| Name                 |
 | -------------------- |
 | 鈴                   |
 | (ಡωಡ)                |
@@ -210,21 +258,34 @@ h4 {
   opacity: .75;
 }
 
+h1 {
+  background: var(--vp-home-hero-name-background);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: var(--vp-home-hero-name-color);
+}
+
 thead {
   display: none;
 }
 tbody {
 display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   tr {
     width: 150px;
     border: none;
-      background-color: transparent !important;
+    background-color: transparent !important;
+    &:hover {
+      color: var(--vp-button-brand-active-bg);
+      transform: translate3d(0, -4px, 0);
+      transition: all .5s;
+    }
     td {
       display: inline-block;
       width: 100%;
       border: none;
+      text-align: center;
       background-color: transparent !important;
     }
   }
