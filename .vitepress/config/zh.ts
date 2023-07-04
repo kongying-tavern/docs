@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
-import type { CustomConfig } from './types'
+import type { CustomConfig } from '/types'
 
 const base = process.env.BASE || '/docs'
 export const META_URL = 'https://yuanshen.site/docs/'
@@ -92,15 +92,15 @@ export const zhConfig: LocaleSpecificConfig<
           items: [
             {
               text: '加入我们',
-              link: './join',
+              link: '/join',
             },
             {
               text: '赞助鸣谢',
-              link: './support-us',
+              link: '/support-us',
             },
             {
               text: '友情链接',
-              link: './friends-links',
+              link: '/friends-links',
             },
           ],
         },
@@ -109,15 +109,15 @@ export const zhConfig: LocaleSpecificConfig<
           items: [
             {
               text: '免责声明',
-              link: './disclaimer',
+              link: '/disclaimer',
             },
             {
               text: '隐私政策',
-              link: './privacy',
+              link: '/privacy',
             },
             {
               text: '用户协议',
-              link: './agreement',
+              link: '/agreement',
             },
           ],
         },
@@ -126,7 +126,7 @@ export const zhConfig: LocaleSpecificConfig<
           items: [
             {
               text: '客户端使用手册',
-              link: 'https://support.qq.com/products/321980/faqs/94938',
+              link: '/manual/client-user-manual.md',
             },
             {
               text: '客户端更新日志',
@@ -148,22 +148,22 @@ export const zhConfig: LocaleSpecificConfig<
     nav: [
       {
         text: '客户端下载',
-        link: './download-client.md',
+        link: '/download-client.md',
       },
       {
         text: '加入社区',
-        link: './community.md',
+        link: '/community.md',
       },
       {
         text: '支持我们',
-        link: './support-us.md',
+        link: '/support-us.md',
       },
       {
         text: '帮助和反馈',
         items: [
           {
             text: '客户端使用手册',
-            link: 'https://support.qq.com/products/321980/faqs-more/?id=94938',
+            link: '/manual/client-user-manual.md',
           },
           {
             text: '问题反馈',
@@ -187,11 +187,11 @@ export const zhConfig: LocaleSpecificConfig<
             items: [
               {
                 text: '加入我们',
-                link: './join.md',
+                link: '/join.md',
               },
               {
                 text: '了解团队',
-                link: './team.md',
+                link: '/team.md',
               },
             ],
           },
@@ -213,15 +213,15 @@ export const zhConfig: LocaleSpecificConfig<
             items: [
               {
                 text: '技术鸣谢',
-                link: './credits.md',
+                link: '/credits.md',
               },
               {
                 text: '贡献鸣谢',
-                link: './contribution.md',
+                link: '/contribution.md',
               },
               {
                 text: '赞助鸣谢',
-                link: './support-us.md#赞助鸣谢',
+                link: '/support-us.md#赞助鸣谢',
               },
             ],
           },
@@ -230,15 +230,15 @@ export const zhConfig: LocaleSpecificConfig<
             items: [
               {
                 text: '免责声明',
-                link: './disclaimer.md',
+                link: '/disclaimer.md',
               },
               {
                 text: '隐私政策',
-                link: './privacy.md',
+                link: '/privacy.md',
               },
               {
                 text: '用户协议',
-                link: './agreement.md',
+                link: '/agreement.md',
               },
             ],
           },
@@ -247,7 +247,7 @@ export const zhConfig: LocaleSpecificConfig<
             items: [
               {
                 text: '友情链接',
-                link: './friends-links.md',
+                link: '/friends-links.md',
               },
             ],
           },
