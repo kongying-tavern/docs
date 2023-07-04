@@ -28,6 +28,24 @@
 
 5. 重启 VSCode，此步骤用于装载 Git
 
+6. 点击窗口上方菜单栏“View”，并选择“Terminal”
+
+![](/src/public/imgs/i18n-guide/25.png)
+
+7. 在底部打开的窗口中点击右上“+”菜单，并选择“Git Bash”
+
+![](/src/public/imgs/i18n-guide/26.png)
+
+8. 在命令行内分别输入以下指令，将昵称和邮件地址替换为你的信息，并回车
+
+```
+git config --global user.name "你的昵称"
+
+git config --global user.email "邮件地址"
+```
+
+![](/src/public/imgs/i18n-guide/27.png)
+
 ## 资源管理准备
 
 0. 注册一个 GitHub 账户
