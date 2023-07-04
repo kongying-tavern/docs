@@ -223,6 +223,11 @@ export default defineConfig({
     ['meta', { property: 'og:locale:alternate', content: 'zh-CN' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
+    [
+      'script',
+      { id: 'spotlightEffectLinks' },
+      'function spotlightEffectLinks() {document.querySelector("body").addEventListener("mousemove", (e) => {e.currentTarget.style.setProperty("--x", `${e.clientX}px`);e.currentTarget.style.setProperty("--y", `${e.clientY}px`);});function setLinksPositions() {document.querySelectorAll("a").forEach((a) => {const bounding = a.getBoundingClientRect();a.style.setProperty("--positionX", `${bounding.x}px`);a.style.setProperty("--positionY", `${bounding.y}px`);});}window.addEventListener("load", setLinksPositions);window.addEventListener("resize", setLinksPositions)} spotlightEffectLinks() ',
+    ],
     ...(isProd ? productionHead : []),
   ],
   ignoreDeadLinks: [

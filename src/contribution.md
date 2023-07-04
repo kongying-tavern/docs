@@ -56,9 +56,9 @@ aside: false
 | 残光                         |
 | continued story              |
 | 暖冬是凉春                   |
-| Pop_Slime <br /> (海外社区)  |
-| Pat <br /> (海外社区)        |
-| \(\^\_\^\) <br /> (海外社区) |
+| Pop_Slime <br /> (国际社区)  |
+| Pat <br /> (国际社区)        |
+| \(\^\_\^\) <br /> (国际社区) |
 
 ## 点位贡献
 
