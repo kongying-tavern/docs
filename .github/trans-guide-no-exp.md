@@ -8,7 +8,7 @@
 - [Visual Studio Code](https://code.visualstudio.com/)（内容编辑器）
 - [Git](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（资源管理）
 - [Vite 插件](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（网站架构官方辅助插件）
-- [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+- [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) (Markdown 语言插件)
 
 ## 工具准备
 
@@ -86,13 +86,13 @@ git config --global user.email "邮件地址"
 
 ![](/src/public/imgs/i18n-guide/12.png)
 
-3. （推荐）再次前往插件页（Extensions），搜索”Markdown All in One"并安装，这个插件让你可以在 VSCode 里预览文字格式
+3. （推荐）再次前往插件页（Extensions），搜索”Markdown All in One"并安装，这个插件让你可以在 VSCode 编辑器里预览文字格式（加粗，倾斜）
 
 4. （推荐）搜索“markdownlint”并安装，这个插件可以为 Markdown 语法纠错
 
 ## 翻译内容
 
-须翻译内容顺序由文件浏览器中显示从上至下（字母顺序），“\*\*”为须翻译的语言代号。（例：ja-日语，kr-韩语）
+以下须翻译内容排列顺序由文件浏览器中显示从上至下（字母顺序），“\*\*”为须翻译的语言代号。（例：ja-日语，kr-韩语）
 
 - `\.vitepress\config\**.ts` 对应语言的配置，影响所有页面统一的格式
 
@@ -104,14 +104,14 @@ git config --global user.email "邮件地址"
 
 ![](/src/public/imgs/i18n-guide/15.png)
 
-- `src\en\community.md` 加入社区
-- `src\contribution.md` 贡献鸣谢
-- `src\en\credits.md` 技术鸣谢
-- `src\download-client.md` 下载客户端
-- `src\error.md` 错误页
-- `src\index.md` 主页
-- `src\join.md` 加入我们
-- `src\support-us.md` 支持我们
+- `src\**\community.md` 加入社区
+- `src\**\contribution.md` 贡献鸣谢
+- `src\**\credits.md` 技术鸣谢
+- `src\**\download-client.md` 下载客户端
+- `src\**\error.md` 错误页
+- `src\**\index.md` 主页
+- `src\**\join.md` 加入我们
+- `src\**\support-us.md` 支持我们
 
 推荐翻译时多运用“查找/替换”功能，以下为一个例子：（将“Kongying Tavern”替换为“空荧酒馆”）
 
@@ -147,7 +147,7 @@ git config --global user.email "邮件地址"
 
 ![](/src/public/imgs/i18n-guide/22.png)
 
-2. 如果主分支有新的改动，你可以先在“sync fork”处同步（图一，这张图没有同步按钮，因为已经同步），然后在 VSCode 中点击同步（Sync）将其同步至本地即可（图二）
+2. 如果主分支有新的改动，你可以先在“sync fork”处同步，然后在 VSCode 中点击同步（Sync）将其同步至本地即可（图二）
 
 ![](/src/public/imgs/i18n-guide/24.png)
 
