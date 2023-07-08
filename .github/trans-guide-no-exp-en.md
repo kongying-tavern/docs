@@ -13,7 +13,9 @@ This site uses [Vitepress](https://vitepress.dev/), you can refer to their websi
 ## Tool Prep
 
 > You can also use VSCode Web, simply press `.` at the Github page when logged in will open the repository in VSCode Web
+>
 > Working with VSCode web does not require following preparations, please skip to [#Translation Items](#Translation Items) below
+>
 > VSCode web has various limitations, you will not have access to preview and terminals, see <https://code.visualstudio.com/docs/editor/vscode-web> for details
 
 1. [Download and install Node.js](https://nodejs.org/en/download)
