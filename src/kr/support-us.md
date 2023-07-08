@@ -1,37 +1,38 @@
 ---
-title: Support Us
-aside: false
+title: 支持我们
+titleTemplate: 空荧酒馆
 layout: doc
-titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다(:
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다:
 :::
 
-# Support Us
+# 支持我们
 
-_Genshin Interactive Map_ is a MulanPSL-1.0 open-source project, it is completely free itself and AD-free.
-As the user base and the scope of our project grows, development and maintenance also incur rising costs. You can support the development and maintenance of _Genshin Interactive Map_ through the following ways:
+原神地图是采用 MulanPSL-1.0 许可的开源项目，使用完全零广告并且完全免费。
+但是随着项目规模和用户数量的持续增长，也需要有相应的资金支持才能持续项目的维护和开发。 你可以通过下列的方法来支持 原神地图 的开发与维护：
 
-## One-time Contribution
+## 一次性赞助
 
-We accept one-time contributions through the following channels：
+我们通过以下方式接受一次性赞助：
 
 <Coins />
 
-## Sponsor Acknowledgement
+## 赞助鸣谢
 
-### Personal Sponsors
-
-If you are a fellow Traveler and appreciate the efficiency our map offers, consider supporting us financially - think of it as you are buying us soda or hair treatment. 😃
+### 个人赞助
 
 ![backers](/imgs/backers_202347.png)
 
-### Sponsor Organizations
+### 赞助商
 
-Sponsor Organizations can gain increased exposure in the _Genshin Interactive Map_ community by supporting us, expanding their reach to more _Genshin Impact_ players
+请致信 [yuanshenmap@gmail.com](mailto:yuanshenmap@gmail.com) 咨询具体事宜。
+
+如果你是企业经营者那么赞助原神地图可以帮助你在 原神地图 社区里获得更高的曝光度，从而更容易地吸引到原神玩家。
+
+如果你是旅行者并且享受地图带来的高效率，可以用捐助来表示你的谢意 —— 就好像偶尔给我们买杯快乐水或者护发素 😃
 
 ::: tip
-Do not contribute large amounts if you are underaged, please reach out to us if there is any question. QQ：790489566.
+未成年人请勿大额赞助 如有其他疑问可联系网站管理者 QQ：790489566，并备注相关问题。
 :::

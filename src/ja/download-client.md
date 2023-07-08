@@ -2,18 +2,18 @@
 title: 下载客户端
 description: 下载客户端
 titleTemplate: 空荧酒馆
+layout: doc
 aside: false
+comment: true
 pageClass: download-client
 ---
 
 ::: info
-申し訳ありませんが、このページの翻訳はまだ進行中です (:
+申し訳ありませんが、このページの翻訳はまだ進行中です :
 :::
 
 # 下载客户端
 
-- 阿里云盘：
-  - <https://www.aliyundrive.com/s/irmz7CKpMry>
 - 加入讨论组：
   - [https://yuanshen.site/docs/community](./community.md)
 - 夸克网盘:
@@ -29,6 +29,24 @@ pageClass: download-client
 如果您有兴趣参与地图的开发与维护，欢迎[加入我们(^\_^)](./join.md)
 :::
 
+:::details 客户端使用教程
+
+```card
+title: 观看客户端基础使用教程
+link: https://www.bilibili.com/video/BV1uU4y157Te
+```
+
+```card
+title: 客户端使用手册
+link: https://support.qq.com/products/321980/faqs-more/?id=94938
+```
+
+:::
+
 ## 网页版地图
 
-<https://v3.yuanshen.site/>
+```card
+title: 网页版地图 V3
+link: https://v3.yuanshen.site
+theme: medium
+```

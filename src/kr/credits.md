@@ -1,20 +1,21 @@
 ---
-title: Credits
-description: Credits
+title: 技术鸣谢
+titleTemplate: 空荧酒馆
+description: 技术鸣谢
 aside: false
 layout: doc
-titleTemplate: :title | Kongying Tavern
+pageClass: credits
 ---
 
 ::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다(:
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다:
 :::
 
-# Credits
+# 技术鸣谢
 
-Genshin Interactive Map incorporated the following open-source projects and artworks with respect to their license and usage agreements.
+原神地图项目使用了包括但不限于以下开源技术和美术资源，我们一直遵守各项使用协议。
 
-Thank you authors and creators!
+感谢作者们，是你们让世界更美好！
 
 ## Web
 
@@ -32,9 +33,9 @@ Thank you authors and creators!
 | VuePress   |     MIT      | <https://github.com/vuepress/vuepress-next> | Evan You                   |
 | VueUse     |     MIT      | <https://github.com/vueuse/vueuse>          | Anthony Fu                 |
 
-## Art
+## 美术
 
 | Name     | Description            | Link                                                     | CopyRight |
 | :------- | :--------------------- | :------------------------------------------------------- | :-------- |
-| MapImage | Map Illustrations      | [ys.mihoyo.com](https://ys.mihoyo.com)                   | MiHoYo    |
-| ばたばた | Client [Donate] Button | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |
+| MapImage | 地图相关素材           | [ys.mihoyo.com](https://ys.mihoyo.com)                   | MiHoYo    |
+| ばたばた | 客户端 [投币] 按钮素材 | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |
