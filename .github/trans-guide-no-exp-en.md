@@ -2,7 +2,7 @@
 
 ## Software Needed
 
-This site uses[Vitepress](https://vitepress.dev/), you can refer to their website for more information.
+This site uses [Vitepress](https://vitepress.dev/), you can refer to their website for more information.
 
 - [Node.js](https://nodejs.org/en/download)（JavaScript runtime environment）
 - [Visual Studio Code](https://code.visualstudio.com/)（Editor）
