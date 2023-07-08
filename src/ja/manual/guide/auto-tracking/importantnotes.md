@@ -1,119 +1,114 @@
 ---
-title: \[Automatic Tracking] Introduction
 aside: true
-titleTemplate: 空荧酒馆
+titleTemplate: :title | 空蛍酒場
 prev:
-  text: 'Table of Contents'
-  link: 'en/manual/client-user-manual'
+  text: '目录'
+  link: '/manual/client-user-manual'
 next:
-  text: '[Automatic Tracking] Troubleshooting'
+  text: '【自动追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
 ---
 
-[文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
+[文：【自动追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
 
-# [Automatic Tracking] Introduction
+# 【自动追踪】注意事项
 
-This feature is based on **image recognition**
+本功能基于【图像识别】技术实现
 
-## Capabilities {#capabilities}
+## 特性 {#capabilities}
 
-- Support for most languages (Not limited to Chinese, Korean, and English)
-- Functioning properly even when Windows system Scaling is not 100%
-- Accurate player heading detection
-- Functional in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
+- 可支持大部分原神客户端的匹配（包括但不限于中、韩、英）
+- 当 Windows 系统缩放比例不为 100% 时，也能正确追踪
+- 角度定位比以前更加精准
+- 全地区追踪，包括渊下宫和地下矿区，但需先在客户端内切换至该地区
 
 ---
 
-The following are the requirements for this feature:
+- 请确认：您的操作版本至少是 win10 或以上版本（win7 不支持追踪）
+- 请确认：游戏内【解锁神像点亮地图】，游戏内【左上角小地图】完整。
+- 请确认：游戏内【左上角小地图】中，无【任务坐标、范围】指引遮挡。
+- 请确认：游戏不处于【独占全屏】显示模式，推荐使用[【全屏窗口化】](../overlay-mode/fullscreen-windowed/launching.md)模式运行游戏。
 
-- Windows 10 or above
-- The map is unmasked by unlocking the Statues of Seven, and the **minimap** is complete
-- The **minimap** contains no **custom waypoints** or **highlighted regions**
+成功开启自动追踪后，
 
-Once automatic tracking is enabled, The **map client** will
+- 【地图客户端】右下角会**显示 UID**
+- 自动检测游戏内**当前角色位置**（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）
 
-- Display your UID at the lower right corner
-- Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
-
-![](/imgs/en/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/ja/manual/auto-tracking/autotrackingegaged.png)
 
 ---
 
 [见：自动追踪问题排查.docx]: # '以下为 自动追踪支持列表： 内容'
 
-## Software Support {#Software}
+## 程序列表 {#Software}
 
-### Supported
+### 已支持的程序
 
-- Genshin Impact PC client running on Windows 10/11
+- Windows10/11 下的原神 PC 版
 
-### In-progress
+### 不支持，但未来可能会适配
 
-- Cloud gaming
-- Windows 8.1 and earlier
-- Remote play/casting from other devices
+- 云·原神
+- Windows 10 以前的系统
+- 手机，或 PS4/5 的投屏
 
-### Will not support
+### 不支持并且不会考虑适配
 
-- Non-Windows OS
-- Android simulators
-- Virtual machines
-
----
-
-## Graphics Support {#Graphics}
-
-### Supported
-
-- Any resolution (recommended: 720p or greater)
-- Any aspect ratio (recommended: 4:3 to 21:9)
-- Any input device
-- **Fixed minimap** (under in-game Gamplay settings)
-- Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting Issue 4)
-
-### In-progress
-
-- Rotating minimap (under in-game Gamplay settings)
-- Domains and indoor areas
-
-### Will not support
-
-Compensating for color distortions, which could be caused by:
-
-- Third party color calibration
-- Third party brightness adjustment
-- Windows 11 Auto HDR (tested: reduced player heading accuracy)
-- "Eye saver" features
-- NVIDIA Freestyle Game Filters
-
-Auto tracking may work with reduced accuracy or not at all.
+- 非 Windows 系统
+- 安卓模拟器
+- 虚拟机
 
 ---
 
-[见：自动追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
+## 画面设置 {#Graphics}
 
-## Troubleshooting {#Troubleshooting}
+### 支持（或部分支持）的画面设置
 
-Some facts to know before troubleshooting and submitting feedback:
+- 支持任意分辨率（建议不小于 1280x720）
+- 支持任意画面比例（推荐画面比例在 4:3~21:9 之间）
+- 支持手柄、键鼠
+- 支持窗口化，部分支持独占全屏（见问题排查 4.a）
 
-1. Automatic tracking is based on image recognition, it does not read or modify the game process, thus it brings no risk of an account ban.
-2. The image recognition is not highly accurate, it's normal for the player indicator to shift sporadically. This cannot be resolved completely due to the limitations of the technology implemented.
-3. Please check if your desired range of settings and feature is supported above.
-4. The following troubleshooting files can help us identify an issue, please attach them with your feedback if possible:
-   - Tracking log (autoTrack.log)
-   - Tracking screenshot (Capture.png)
+### 不支持，但未来可能会适配
 
-![](/imgs/en/manual/auto-tracking/7.png)
+- 小地图仅支持锁定方向，不支持锁定玩家视角
+- 不支持秘境，室内等有独立地图的区域
+
+### 不支持并且不会考虑适配
+
+使用了可能会影响到屏幕色彩的软件，包括但不限于：
+
+- 第三方校色软件
+- 第三方亮度调节软件
+- Windows 11 自动 HDR (影响角度定位精确度)
+- 开启了护眼
+- 显卡滤镜
+
+---
+
+[见：自动追踪问题排查.docx]: # '以下为“反馈问题前你需要知道的：”内容'
+
+## 反馈问题前你需要知道的 {#Troubleshooting}
+
+1. 自动追踪基于图像识别，不会侵入游戏进程，所以不存在封号的风险。可以放心使用
+2. 图像识别的准确度并不高，抖动和偶发的瞬移属于正常现象，这个属于图像识别本身的缺陷，无法完全解决
+3. 在反馈之前，请确定使用的程序和画面设置在自动追踪支持列表之中
+4. 在反馈问题前，请确保了解自动追踪产生的日志文件，以方便为开发组排查问题:
+   - 追踪日志：可用记事本打开的文本文件（建议使用第三方文本编辑器，如 notepad3,vscode）
+   - 追踪截图：png 图像，用来排查 UI 定位的问题。因为带有 Alpha 通道，所以可能会有很大的色差，用 PS 打开或者粘贴到 QQ 上既可正常显示游戏画面。
+
+<span style="color: red">【注意】：如果反馈群要求发送追踪截图，请不要使用截图或者用 qq 的发送图片功能，必须要以文件的方式发送图像。可以将追踪截图的文件直接拖到聊天框来发送文件。</span>
+
+![](/imgs/ja/manual/auto-tracking/7.png)
 
 ::: tip
 You can visit the files' directory quickly through the auto tracking settings.
 
-![](/imgs/en/manual/auto-tracking/2.png)
+![](/imgs/ja/manual/auto-tracking/2.png)
 :::
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-Please go through the [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
+### 请确保[问题排查](./troubleshoot.md)的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题。

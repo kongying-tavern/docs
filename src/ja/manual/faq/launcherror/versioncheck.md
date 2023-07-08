@@ -1,15 +1,14 @@
 ---
-title: \[Launch Error] Version Check Failed
-titleTemplate: 空荧酒馆
-description: An overwhelming amount of user access attempts can cause our server to become non-responsive.
+titleTemplate: :title | 空蛍酒場
+description: 这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 ---
 
 [文：【无法打开】提示“数据查询失败”、“版本查询失败”]: # 'https://support.qq.com/products/321980/faqs/97055'
 
-# [Launch Error] Version Check Failed
+# 【无法打开】提示“数据查询失败”、“版本查询失败”
 
-An overwhelming amount of user access attempts can cause our server to become non-responsive. Upon entering the map,
+这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 
-- if the Paimon navigation menu does not show pin categories, relaunch the map client;
+- 如果进入地图后筛选器没有点位，可以尝试重启客户端
 
-- if the Paimon navigation menu functions properly, there is no need to relaunch, proceed to use the client as normal.
+- 如果进入地图后筛选器项目正常，则无需重启客户端，可以正常使用。

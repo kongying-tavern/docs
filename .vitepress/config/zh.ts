@@ -83,13 +83,13 @@ export const zhConfig: LocaleSpecificConfig<
       },
     },
     sidebar: {
-      manual: [
+      '/manual': [
         {
           text: '目录',
           link: 'manual/client-user-manual',
         },
         {
-          text: 'Guides',
+          text: '使用帮助',
           items: [
             {
               text: '【自动追踪】',
@@ -241,7 +241,7 @@ export const zhConfig: LocaleSpecificConfig<
           items: [
             {
               text: '客户端使用手册',
-              link: '/manual/client-user-manual.md',
+              link: 'manual/client-user-manual.md',
             },
             {
               text: '客户端更新日志',
@@ -278,7 +278,7 @@ export const zhConfig: LocaleSpecificConfig<
         items: [
           {
             text: '客户端使用手册',
-            link: '/manual/client-user-manual.md',
+            link: 'manual/client-user-manual.md',
           },
           {
             text: '问题反馈',

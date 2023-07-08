@@ -1,28 +1,29 @@
 ---
-title: \[Easter Egg] View Archived Versions of Golden Apple Archipelago
 aside: false
-titleTemplate: 空荧酒馆
+titleTemplate: :title | 空蛍酒場
 next:
-  text: '[Hide/Show Found] Feature'
+  text: '【隐藏】标记/【显示】标记'
   link: '../hide-show-done/hidedoneshowdone'
 prev:
-  text: '[Custom Path Planner (Canvas)] Guide'
+  text: '【画板】路线功能教程'
   link: '../canvas/guide'
-description: Although version 1.6 and 2.8 has passed, the summer islands will be preserved in the client as an easter egg.
+description: 1.6版本、2.8版本已经过去，海岛将会作为彩蛋保存在客户端内。
 ---
 
 [文：【彩蛋】查看历史版本金苹果群岛]: # 'https://support.qq.com/products/321980/faqs/97056'
 
-# [Easter Egg] View Archived Versions of Golden Apple Archipelago
+# 【彩蛋】查看历史版本金苹果群岛
 
-Although version 1.6 and 2.8 has passed, the summer islands will be preserved in the client as an easter egg.
+1.6 版本、2.8 版本已经过去，海岛将会作为彩蛋保存在客户端内。
 
-Key in certain mysterious code to access summer island maps,
+键入某神秘代码即可开启海岛地区地图
+
 Mysterious code
 
 > ↑↑↓↓←→←→BABA
 
-Key in the inverse of the mysterious code to turn off the easter egg
+键入反向神秘代码即可关闭彩蛋~
+
 Mysterious code
 
 > ↓↓↑↑→←→←ABAB

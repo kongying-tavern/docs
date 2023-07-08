@@ -1,29 +1,28 @@
 ---
-title: \[Hide/Show Found] Feature
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | 空荧酒馆
 prev:
-  text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
+  text: '【彩蛋】查看历史版本金苹果群岛'
   link: '../easter-egg/view'
 next:
-  text: '[Overlay Mode] Instructions'
+  text: '【覆盖模式】使用说明'
   link: '../overlay-mode/instructions'
-description: There are two display modes for Found pins.
+description: 地图对标记【已完成】的点位有两种显示方式。
 ---
 
 [文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'
 
-# [Hide/Show Found] Feature
+# 【隐藏】标记/【显示】标记
 
-There are two display modes for Found pins:
+地图对标记【已完成】的点位有两种显示方式：
 
-1. **Show** - Highlight <b><span style="color: green">Found</span></b> pins
-2. **Hide** - Fade <b><span style="color: green">Found</span></b> pins
+1. 【显示】标记：高亮【已完成】点位
+2. 【隐藏】标记：淡化【已完成】点位
 
 ---
 
-Show Found:
-![](/imgs/en/manual/hide-show-done/Hide.png)
+【显示】标记
+![](/imgs/kr/manual/hide-show-done/Hide.png)
 
-Hide Found:
-![](/imgs/en/manual/hide-show-done/show.png)
+【隐藏】标记
+![](/imgs/kr/manual/hide-show-done/show.png)
