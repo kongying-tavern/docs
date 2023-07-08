@@ -96,15 +96,31 @@ export default defineConfig({
           kr: {
             translations: {
               button: {
-                buttonText: 'Search',
-                buttonAriaLabel: 'Search',
+                buttonText: '찾다',
+                buttonAriaLabel: '찾다',
               },
               modal: {
-                noResultsText: 'No results for',
-                resetButtonTitle: 'Reset search',
+                noResultsText: '관련 결과가 없습니다',
+                resetButtonTitle: '검색 재설정',
                 footer: {
-                  selectText: 'to select',
-                  navigateText: 'to navigate',
+                  selectText: '선택하다',
+                  navigateText: '전환하다',
+                },
+              },
+            },
+          },
+          fr: {
+            translations: {
+              button: {
+                buttonText: 'Recherche',
+                buttonAriaLabel: 'Recherche',
+              },
+              modal: {
+                noResultsText: 'Aucun résultat pour',
+                resetButtonTitle: 'Réinitialiser la recherche',
+                footer: {
+                  selectText: 'pour sélectionner',
+                  navigateText: 'naviguer',
                 },
               },
             },
@@ -112,15 +128,15 @@ export default defineConfig({
           ja: {
             translations: {
               button: {
-                buttonText: 'Search',
-                buttonAriaLabel: 'Search',
+                buttonText: '検索',
+                buttonAriaLabel: '検索',
               },
               modal: {
-                noResultsText: 'No results for',
-                resetButtonTitle: 'Reset search',
+                noResultsText: '結果はありません',
+                resetButtonTitle: '検索をリセットする',
                 footer: {
-                  selectText: 'to select',
-                  navigateText: 'to navigate',
+                  selectText: '選ぶ',
+                  navigateText: '切り替える',
                 },
               },
             },
