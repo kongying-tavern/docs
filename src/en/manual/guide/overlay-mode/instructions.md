@@ -54,6 +54,6 @@ Overlay Mode <span style="color: green"><b>displays the map client</b></span> ov
 
 ## FAQs
 
-- If the hotkey conflicts with another hotkey, you can delete all files in the hotkey cache directory reset the hotkey configuration. After the deletion, the shortcut will be reset to its default: **Alt+M**.
+- If the hotkey conflicts with another hotkey, you can delete all files in the hotkey cache directory reset the hotkey configuration. After the deletion, the shortcut will be reset to its default: **Alt+M** upon relaunch.
 
 ![](/imgs/en/manual/overlay-mode/6.png)

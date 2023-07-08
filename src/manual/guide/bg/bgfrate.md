@@ -1,52 +1,41 @@
 ---
-title: \[Background Usage] Framerate/Tracking Control
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | 空荧酒馆
 prev:
-  text: '[Automatic Tracking] Troubleshooting'
+  text: '【自动追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
 next:
-  text: '[Multi Mark] Instructions'
+  text: '【批量选择】使用说明'
   link: '../batch-selection/instructions'
-description: \[Foreground Frame Rate] and [Background Frame Rate] can be configured in the General settings, it is recommended to reduce resource utilization by setting [Foreground Frame Rate] to 30-50 fps and [Background Frame Rate] to 1-10 fps, thus minimizing fps loss in-game.
+description: 在设置中可以调整【前台帧率】、【后台帧率】，以降低性能，降低对游戏帧率的影响。
 ---
 
 [文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'
 [#]: # '最后加入后台暂停的介绍'
 
-# [Background Usage] Framerate/Tracking Control
+# 【地图性能占用高】前后台帧率设置
 
-## Framerate Control
+## 帧率 {#frt}
 
-[Foreground Frame Rate] and [Background Frame Rate] can be configured in the General settings, it is recommended to reduce resource utilization by setting [Foreground Frame Rate] to 30-50 fps and [Background Frame Rate] to 1-10 fps, thus minimizing fps loss in-game.
+在设置中可以调整【前台帧率】、【后台帧率】，以降低性能，降低对游戏帧率的影响。推荐前台帧率 30-50 帧，后台帧率 1-10 帧。
 
-If you wish to use the [Stay on Top] feature, which pins the map client window on top despite being out of focus, it is recommended to match both frame rate settings' values.
+若希望使用【窗口置顶】功能，该功能将使客户端处于后台（非当前操作窗口）时，仍置顶显示。推荐设置后台帧率与前台帧率一致。
 
-![](/imgs/en/manual/bg-frate/1.png)
+![](/imgs/manual/bg-frate/1.png)
 
 ::: tip
 
-Dragging the frame rate slider to the leftmost position will enable \[V-Sync], which matches the frame rate limit to your monitor's refresh rate.
+若将帧率拉至最左，将提示【垂直同步】，垂直同步功能实际为【与显示器帧率同步】，例如显示器是 144 帧，则拉至【垂直同步】，地图帧率也将设置为 144 帧
 
-![](/imgs/en/manual/bg-frate/2.png)
+![](/imgs/manual/bg-frate/2.png)
 
 :::
 
-## Tracking Interval
+## 追踪间隔 {#int}
 
-[Tracking Interval] can be found under [Automatic Tracking] settings, the unit of its value is **second**.
+自动追踪设置中，【追踪间隔】设置的单位是秒。
 
-- Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
-- Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while reducing tracking responsiveness.
+- 若调低追踪间隔（最大间隔 1 秒），则 CPU 性能占用提高；
+- 若调高追踪间隔（最小间隔 1 秒），则 CPU 性能占用降低，同时追踪坐标显示会略有延迟。
 
-![](/imgs/en/manual/bg-frate/3.png)
-
-[#]: # '兔小巢上后台暂停的介绍'
-
-## Background Suspend
-
-[Background Suspend] will hold the client in stasis completely when it is not in the foreground, you can enable this feature at the bottom right of the map client.
-
-Reduces resource utilization and impact on in-game framerate.
-
-![](/imgs/en/manual/bg-frate/4.png)
+![](/imgs/manual/bg-frate/3.png)
