@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
-import type { CustomConfig } from '/types'
+import type { CustomConfig } from './types'
 
 const base = process.env.BASE || '/docs'
 export const META_URL = 'https://yuanshen.site/docs/'
