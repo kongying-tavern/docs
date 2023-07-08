@@ -21,6 +21,7 @@ import { enConfig } from './en'
 import { zhConfig } from './zh'
 import { jaConfig } from './ja'
 import { krConfig } from './kr'
+import { frConfig } from './fr'
 
 export const links: any[] = []
 export const base = process.env.BASE || '/docs/'
@@ -151,6 +152,12 @@ export default defineConfig({
       lang: 'kr',
       link: '/kr/',
       ...krConfig,
+    },
+    fr: {
+      label: 'Français',
+      lang: 'fr',
+      link: '/fr/',
+      ...frConfig,
     },
   },
   head: [

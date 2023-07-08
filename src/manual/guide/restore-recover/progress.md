@@ -1,5 +1,4 @@
 ---
-title: \[Restore/Recover] Recovery From Stored Progress
 aside: true
 titleTemplate: :title | 空荧酒馆
 prev:

@@ -2,7 +2,7 @@
 title: Join Community
 description: Join Community
 layout: doc
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info

@@ -1,7 +1,7 @@
 ---
 layout: page
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info

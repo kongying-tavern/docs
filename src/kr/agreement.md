@@ -2,7 +2,7 @@
 title: 用户协议
 aside: false
 layout: doc
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info

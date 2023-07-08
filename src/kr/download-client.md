@@ -2,7 +2,7 @@
 title: Download Client
 description: Download Client
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info
