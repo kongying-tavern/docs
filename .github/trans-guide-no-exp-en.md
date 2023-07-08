@@ -2,7 +2,7 @@
 
 ## Software Needed
 
-This site uses[Vitepress](https://vitepress.dev/), you can refer to their website for more information.
+This site uses [Vitepress](https://vitepress.dev/), you can refer to their website for more information.
 
 - [Node.js](https://nodejs.org/en/download)（JavaScript runtime environment）
 - [Visual Studio Code](https://code.visualstudio.com/)（Editor）
@@ -12,8 +12,10 @@ This site uses[Vitepress](https://vitepress.dev/), you can refer to their websit
 
 ## Tool Prep
 
-> You can also use VSCode Web, simply press `.` at the GitHub page when logged in will open the repository in VSCode Web
-> Working with VSCode web does not require the following preparations, please skip to [#Translation Items](#Translation Items) below
+> You can also use VSCode Web, simply press `.` at the Github page when logged in will open the repository in VSCode Web
+>
+> Working with VSCode web does not require following preparations, please skip to [#Translation Items](#Translation Items) below
+>
 > VSCode web has various limitations, you will not have access to preview and terminals, see <https://code.visualstudio.com/docs/editor/vscode-web> for details
 
 1. [Download and install Node.js](https://nodejs.org/en/download)
