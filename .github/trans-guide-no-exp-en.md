@@ -12,6 +12,10 @@ This site uses[Vitepress](https://vitepress.dev/), you can refer to their websit
 
 ## Tool Prep
 
+> You can also use VSCode Web, simply press `.` at the Github page when logged in will open the repository in VSCode Web
+> Working with VSCode web does not require following preparations, please skip to [#Translation Items](#Translation Items) below
+> VSCode web has various limitations, you will not have access to preview and terminals, see <https://code.visualstudio.com/docs/editor/vscode-web> for details
+
 1. [Download and install Node.js](https://nodejs.org/en/download)
 
 2. [Download and install VSCode](https://code.visualstudio.com/), launch VSCode, and head to "Source Control"
@@ -89,6 +93,8 @@ git config --global user.email "youremail"
 3. (Recommended)Head to "Extensions" page again，search for "Markdown All in One" and install, this extension allows you to preview text styles (bold, italic, etc.) in the VSCode editor
 
 4. (Recommended) Seach for "markdownlint" and install, this extension can correct Markdown grammar
+
+5. (Recommended) Seach for "antfu.iconify” and install, this extension provide inline icon previews
 
 ## Translation Items
 

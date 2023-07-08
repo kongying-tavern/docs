@@ -9,14 +9,13 @@
 - [Git](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（资源管理）
 - [Vite 插件](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（网站架构官方辅助插件）
 - [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) (VSCode Markdown 语言插件)
-- [Iconify IntelliSense]()
+- [Iconify IntelliSense](#)
 
 ## 工具准备
 
-> 你也可以需要使用网页版 VSCode，只需要在GitHub登录后在对应的仓库页面按键盘 `.` 键即可在 VSCode 网页版打开该仓库。
+> 你也可以需要使用网页版 VSCode，只需要在 GitHub 登录后在对应的仓库页面按键盘 `.` 键即可在 VSCode 网页版打开该仓库。
 > 如使用网页版无需以下准备可跳转阅读至[#翻译内容](#翻译内容)。
 > 不过因为是网页版会有一定限制，例如无法进行本地预览无法使用终端无法安装部分插件，详情可以看 <https://code.visualstudio.com/docs/editor/vscode-web>
-
 
 1. [下载并安装 Node.js](https://nodejs.org/en/download)，安装时一直点 next 就行
 
@@ -98,7 +97,7 @@ git config --global user.email "邮件地址"
 
 5. （推荐）搜索“antfu.iconify”并安装，这个插件可以为在文件中直接提供图标预览
 
->（首次使用VSCode 打开仓库代码时，左下角会提示是否自动安装该仓库推荐的扩展。如你选择同意即无需手动安装）
+> （首次使用 VSCode 打开仓库代码时，左下角会提示是否自动安装该仓库推荐的扩展。如你选择同意即无需手动安装）
 
 ## 翻译内容
 
