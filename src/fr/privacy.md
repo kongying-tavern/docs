@@ -5,7 +5,7 @@ aside: false
 ---
 
 ::: info
-Sorry, this page translation is still in progress (:
+Désolé, la traduction de cette page est toujours en cours
 :::
 
 # 隐私

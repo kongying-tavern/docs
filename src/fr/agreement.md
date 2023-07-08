@@ -6,7 +6,7 @@ titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info
-Sorry, this page translation is still in progress (:
+Désolé, la traduction de cette page est toujours en cours
 :::
 
 # 空荧酒馆原神地图用户服务协议

@@ -3,6 +3,10 @@ titleTemplate: :title | 空荧酒馆
 description: 分为3种情况
 ---
 
+::: info
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다
+:::
+
 [文：【无法打开】空窗提示或卡进度条]: # 'https://support.qq.com/products/321980/faqs/99662'
 
 # 【无法打开】空窗提示或卡进度条

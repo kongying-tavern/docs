@@ -3,6 +3,10 @@ titleTemplate: :title | 空蛍酒場
 description: 客户端登录使用的账号是Gitee账号，并不是游戏账号
 ---
 
+::: info
+申し訳ありませんが、このページの翻訳はまだ進行中です
+:::
+
 [文：【不能登录】如何登录]: # 'https://support.qq.com/products/321980/faqs/97057'
 
 # 【不能登录】如何登录

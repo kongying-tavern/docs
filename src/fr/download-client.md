@@ -5,6 +5,10 @@ aside: false
 titleTemplate: :title | Kongying Tavern
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 # Download Client
 
 - Google Drive (Recommended)：
@@ -26,7 +30,7 @@ If you are interested in aiding our development, consider [Join Us(^\_^)](./join
 
 ```card
 title: Map Client User Manual
-link: /en/manual/client-user-manual
+link: /fr/manual/client-user-manual
 theme: medium
 ```
 

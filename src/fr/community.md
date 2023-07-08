@@ -6,6 +6,10 @@ titleTemplate: :title | Kongying Tavern
 aside: false
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 # Join Community
 
 ## Discord Server

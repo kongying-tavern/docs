@@ -13,6 +13,10 @@ import dayjs from 'dayjs';
 const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 </script>
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 # Contribution Acknowledgement
 
 _Kongying Tavern Genshin Interactive Map_ began its development in June 2020, during these <time> {{ date }} </time> days, pin gathering has consumed over 20,000 man-hours.

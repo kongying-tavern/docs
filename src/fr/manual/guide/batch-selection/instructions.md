@@ -10,6 +10,10 @@ next:
 description: Responding to the requests from travelers, Multi Mark is now available!
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 [文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'
 
 # [Multi Mark] Instructions
@@ -29,29 +33,29 @@ Responding to the requests from travelers, Multi Mark is now available!
 - **Right click** a <b><span style="color: red">To Do</span></b> pin to mark it <b><span style="color: green">Found</span></b>.
 - **Right click** a <b><span style="color: green">Found</span></b> pin to mark it <b><span style="color: red">To Do</span></b>.
 
-![](https://assets.yuanshen.site/docs/en/manual/1.gif)
+![](https://assets.yuanshen.site/docs/fr/manual/1.gif)
 (right click - Single Pin Marking)
 
 ### **Scenario 2: Swipe Selection**
 
 - Holding **right click** and swiping over <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/2.gif)
+![](https://assets.yuanshen.site/docs/fr/manual/2.gif)
 (right click Swipe - Mark)
 
 - Holding **left Alt** + **right click** and swiping over <b><span style="color: green">Found</span></b> pins will mark them <b><span style="color: red">To Do</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/3.gif)
+![](https://assets.yuanshen.site/docs/fr/manual/3.gif)
 (right click Swipe - Mark Pins "To Do")
 
 ### **Scenario 3: Box Selection**
 
 - Holding **Ctrl** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/4.gif)
+![](https://assets.yuanshen.site/docs/fr/manual/4.gif)
 (right click Box Selection - Mark Pins Found)
 
 - Holding **Ctrl** + **left Alt** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/5.gif)
+![](https://assets.yuanshen.site/docs/fr/manual/5.gif)
 (right click Box Selection - Mark Pins "To Do")

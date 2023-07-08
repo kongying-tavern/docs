@@ -10,6 +10,10 @@ prev:
 description: 目录
 ---
 
+::: info
+申し訳ありませんが、このページの翻訳はまだ進行中です
+:::
+
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
 
 # 【目录】客户端使用手册

@@ -10,6 +10,10 @@ next:
 description: There are two display modes for Found pins.
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 [文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'
 
 # [Hide/Show Found] Feature
@@ -22,7 +26,7 @@ There are two display modes for Found pins:
 ---
 
 Show Found:
-![](/imgs/en/manual/hide-show-done/Hide.png)
+![](/imgs/fr/manual/hide-show-done/Hide.png)
 
 Hide Found:
-![](/imgs/en/manual/hide-show-done/show.png)
+![](/imgs/fr/manual/hide-show-done/show.png)

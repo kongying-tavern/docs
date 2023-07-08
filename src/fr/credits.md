@@ -6,6 +6,10 @@ layout: doc
 titleTemplate: :title | Kongying Tavern
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 # Credits
 
 Genshin Interactive Map incorporated the following open-source projects and artworks with respect to their license and usage agreements.

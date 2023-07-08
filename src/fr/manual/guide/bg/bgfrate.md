@@ -10,6 +10,10 @@ next:
 description: \[Foreground Frame Rate] and [Background Frame Rate] can be configured in the General settings, it is recommended to reduce resource utilization by setting [Foreground Frame Rate] to 30-50 fps and [Background Frame Rate] to 1-10 fps, thus minimizing fps loss in-game.
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 [文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'
 [#]: # '最后加入后台暂停的介绍'
 
@@ -21,13 +25,13 @@ description: \[Foreground Frame Rate] and [Background Frame Rate] can be configu
 
 If you wish to use the [Stay on Top] feature, which pins the map client window on top despite being out of focus, it is recommended to match both frame rate settings' values.
 
-![](/imgs/en/manual/bg-frate/1.png)
+![](/imgs/fr/manual/bg-frate/1.png)
 
 ::: tip
 
 Dragging the frame rate slider to the leftmost position will enable \[V-Sync], which matches the frame rate limit to your monitor's refresh rate.
 
-![](/imgs/en/manual/bg-frate/2.png)
+![](/imgs/fr/manual/bg-frate/2.png)
 
 :::
 
@@ -38,7 +42,7 @@ Dragging the frame rate slider to the leftmost position will enable \[V-Sync], w
 - Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
 - Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while reducing tracking responsiveness.
 
-![](/imgs/en/manual/bg-frate/3.png)
+![](/imgs/fr/manual/bg-frate/3.png)
 
 [#]: # '兔小巢上后台暂停的介绍'
 
@@ -48,4 +52,4 @@ Dragging the frame rate slider to the leftmost position will enable \[V-Sync], w
 
 Reduces resource utilization and impact on in-game framerate.
 
-![](/imgs/en/manual/bg-frate/4.png)
+![](/imgs/fr/manual/bg-frate/4.png)

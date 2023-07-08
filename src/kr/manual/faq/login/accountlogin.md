@@ -3,6 +3,10 @@ titleTemplate: :title | 空荧酒馆
 description: 客户端登录使用的账号是Gitee账号，并不是游戏账号
 ---
 
+::: info
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다
+:::
+
 [文：【不能登录】如何登录]: # 'https://support.qq.com/products/321980/faqs/97057'
 
 # 【不能登录】如何登录

@@ -10,6 +10,10 @@ next:
 description: This feature is based on image recognition
 ---
 
+::: info
+申し訳ありませんが、このページの翻訳はまだ進行中です
+:::
+
 [文：【自动追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
 

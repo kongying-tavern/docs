@@ -10,6 +10,10 @@ prev:
 description: Windowed Fullscreen lets the game run fullscreen while satisfying the [Overlay Mode]'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
 ---
 
+::: info
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다
+:::
+
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
 
 # 【窗口全屏/无边框窗口模式】启动游戏

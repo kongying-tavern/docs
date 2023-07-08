@@ -3,6 +3,10 @@ titleTemplate: :title | Kongying Tavern
 description: Between version updates, some setups will encounter a bug that prevents the auto-updater from launching, which will require you to run the updater manually.
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
 
 # [Auto Update] Non-Responsive Updater
@@ -14,4 +18,4 @@ Between version updates, some setups will encounter a bug that prevents the auto
 
 Updater directory:
 
-![](/imgs/en/manual/autoupdate/updaterlocation.png)
+![](/imgs/fr/manual/autoupdate/updaterlocation.png)

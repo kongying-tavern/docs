@@ -9,6 +9,10 @@ head:
     - src: /docs/error.js
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 # _Genshin Interactive Map_ has encountered some problems...
 
 ## What went wrong？

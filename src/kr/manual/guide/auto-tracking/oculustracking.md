@@ -10,6 +10,10 @@ prev:
 description:
 ---
 
+::: info
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다
+:::
+
 [文：自动神瞳]: #
 
 # ~~[Automatic Tracking] Oculus Tracking~~

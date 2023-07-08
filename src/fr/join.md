@@ -4,6 +4,10 @@ description: This project and its iterations will always be free, we sincerely i
 titleTemplate: :title | Kongying Tavern
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 # Join Us
 
 This project and its iterations will always be free, we sincerely invite you to join our effort in its completion and polishing.

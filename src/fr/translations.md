@@ -4,6 +4,10 @@ title: Translations
 titleTemplate: :title | Kongying Tavern
 ---
 
+::: info
+Désolé, la traduction de cette page est toujours en cours
+:::
+
 # Translations {#translations}
 
 ## Available Languages {#available-languages}

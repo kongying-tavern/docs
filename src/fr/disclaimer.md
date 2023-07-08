@@ -7,7 +7,7 @@ titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info
-Sorry, this page translation is still in progress (:
+Désolé, la traduction de cette page est toujours en cours
 :::
 
 # 免责声明

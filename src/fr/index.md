@@ -1,4 +1,8 @@
 ---
+head:
+  - - meta
+    - http-equiv: refresh
+      content: 0; url=./translations
 layout: home
 title: Genshin Interactive Map
 titleTemplate: :title | Kongying Tavern
@@ -40,10 +44,10 @@ hero:
   actions:
     - theme: brand
       text: Download Now
-      link: en/download-client.md
+      link: fr/download-client.md
     - theme: alt
       text: Learn More
-      link: en/manual/client-user-manual.md
+      link: fr/manual/client-user-manual.md
     - theme: cta mastery
       text: Web Version
       link: https://v3.yuanshen.site/
