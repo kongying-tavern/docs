@@ -41,9 +41,11 @@ hero:
     alt: 原神地图
   actions:
     - theme: brand slide-enter
-
       text: 立即下载 →
       link: ./download-client
+    - theme: alt
+      text: 用户手册
+      link: manual/client-user-manual.md
     - theme: cta video slide-enter
       text: 基础使用教程
       link: https://bilibili.com/video/BV1R84y1M7eu
