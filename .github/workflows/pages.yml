@@ -61,4 +61,3 @@ jobs:
         env:
           # @See https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BASE: 'docs'

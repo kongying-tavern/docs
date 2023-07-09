@@ -34,7 +34,7 @@ jobs:
 
       # 构建
       - name: Build
-        run: pnpm build
+        run: pnpm vitepress build --base /
       
       - run: |
           zip -r _site.zip .vitepress/dist
