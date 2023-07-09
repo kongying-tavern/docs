@@ -3,11 +3,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "vitepress build",
-    "build-mpa": "vitepress build --mpa",
+    "build": "vitepress build --base /docs/",
+    "build-mpa": "vitepress build --mpa --base /docs/",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "commit": "git-cz",
-    "dev": "vitepress",
+    "dev": "vitepress --base /docs/",
     "postinstall": "husky install",
     "lint": "prettier  --write . && eslint --fix --ext .js,.ts,.vue",
     "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:zh",
@@ -15,7 +15,7 @@
     "lint:md": "markdownlint **/*.md && lint:zh",
     "lint:prettier": "prettier --check .",
     "lint:zh": "zhlint 'docs/**/*.md'",
-    "serve": "vitepress serve"
+    "serve": "vitepress serve --base /docs/"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [

@@ -4,7 +4,6 @@ import path from 'path'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
-const base = process.env.BASE || '/docs/'
 export const META_URL = 'https://yuanshen.site/docs/ja/'
 export const META_TITLE = '原神地図'
 export const META_KEYWORDS =
