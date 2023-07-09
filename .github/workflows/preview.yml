@@ -1,7 +1,12 @@
 name: Previte
 
+
+
 on:
   workflow_call:
+    secrets:
+      SURGE_TOKEN:
+        required: true
   push:
     branches:
       - dev
@@ -27,36 +32,15 @@ jobs:
       - name: save PR id
         id: pr
         run: echo "::set-output name=id::$(<pr-id.txt)"
-      
-      - name: Checkout
-        uses: actions/checkout@main
-        with:
-          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
 
-      # cache node_modules
-      - name: Cache pnpm modules
-        uses: actions/cache@v2
+      - name: download _site artifact
+        uses: dawidd6/action-download-artifact@v2
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - name: Install dependencies
-        uses: pnpm/action-setup@v2
-        with:
-          run_install: true
-
-      # 构建
-      - name: Build
-        run: pnpm build
-        env: 
-          BASE: /
-
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: _site
+      - run: |
+          unzip _site.zip
 
       - name: Upload surge service and generate preview URL
         id: deploy
@@ -77,7 +61,7 @@ jobs:
             <!-- AUTO_PREVIEW_HOOK -->
           number: ${{ steps.pr.outputs.id }}
           body-include: "<!-- AUTO_PREVIEW_HOOK -->"
-
+        
       - run: |
           rm -rf .vitepress/dist
 
