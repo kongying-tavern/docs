@@ -346,12 +346,18 @@ export const jaConfig: LocaleSpecificConfig<
     ['meta', { property: 'twitter:description', content: META_DESCRIPTION }],
     ['meta', { property: 'og:site_name', content: META_TITLE }],
     ['meta', { property: 'og:locale', content: 'en-US' }],
-    ['meta', { property: 'og:image', content: `${base}/imgs/cover.jpg` }],
+    [
+      'meta',
+      {
+        property: 'og:image',
+        content: `https://yuanshen.site/docs/imgs/cover.jpg`,
+      },
+    ],
     [
       'meta',
       {
         name: 'twitter:image',
-        content: `${base}/imgs/cover.jpg`,
+        content: `https://yuanshen.site/docs/imgs/cover.jpg`,
       },
     ],
   ],
