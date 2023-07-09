@@ -1,0 +1,116 @@
+name: Previte
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - dev
+      - next
+      - main
+      - en
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  preview-success:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: download pr artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pr
+      - name: save PR id
+        id: pr
+        run: echo "::set-output name=id::$(<pr-id.txt)"
+      
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # cache node_modules
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+
+      # 构建
+      - name: Build
+        run: pnpm build
+
+
+      - name: Upload surge service and generate preview URL
+        id: deploy
+        run: |
+          repository=${{github.repository}}
+          project_name=${repository#*/}
+          export DEPLOY_DOMAIN=https://kongying-tavern-preview-pr${{ steps.pr.outputs.id }}-$project_name.surge.sh
+          npx surge --project .vitepress/dist --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN  }}
+          echo the preview URL is $DEPLOY_DOMAIN
+          echo "::set-output name=url::$DEPLOY_DOMAIN"
+      - name: update status comment
+        uses: actions-cool/maintain-one-comment@v2.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            <a href="${{steps.deploy.outputs.url}}">Kongying Tavern PR Preview</a>
+            <!-- [工作流地址](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}) -->
+            <!-- AUTO_PREVIEW_HOOK -->
+          number: ${{ steps.pr.outputs.id }}
+          body-include: "<!-- AUTO_PREVIEW_HOOK -->"
+
+      - run: |
+          rm -rf .vitepress/dist
+
+      - name: The job failed
+        if: ${{ failure() }}
+        uses: actions-cool/maintain-one-comment@v2.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            [失败](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
+            <!-- AUTO_PREVIEW_HOOK -->
+          number: ${{ steps.pr.outputs.id }}
+          body-include: "<!-- AUTO_PREVIEW_HOOK -->"
+
+  preview-failed:
+    runs-on: ubuntu-latest
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'failure'
+    steps:
+      - name: download pr artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pr
+      - name: save PR id
+        id: pr
+        run: echo "::set-output name=id::$(<pr-id.txt)"
+      - name: The job failed
+        uses: actions-cool/maintain-one-comment@v2.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            [失败](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
+            <!-- AUTO_PREVIEW_HOOK -->
+          number: ${{ steps.pr.outputs.id }}
+          body-include: "<!-- AUTO_PREVIEW_HOOK -->"
