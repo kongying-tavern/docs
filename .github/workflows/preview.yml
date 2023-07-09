@@ -7,13 +7,10 @@ on:
     secrets:
       SURGE_TOKEN:
         required: true
-  push:
-    branches:
-      - dev
-      - next
-      - main
-      - en
-  pull_request:
+  workflow_run:
+    workflows: ["MAIN_PULL_REQUEST"]
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
