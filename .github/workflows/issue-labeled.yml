@@ -1,4 +1,4 @@
-name: Issue Labeled
+name: ISSUE_LABELED
 
 on:
   issues:

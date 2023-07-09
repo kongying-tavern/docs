@@ -1,11 +1,11 @@
-name: Test Build
+name: TEST_BUILD
 
 on:
   workflow_call:
   pull_request:
     branches: [next, main]
     types: [opened, synchronize, reopened]
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest

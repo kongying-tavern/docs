@@ -1,6 +1,4 @@
-name: Previte
-
-
+name: PREVIEW
 
 on:
   workflow_call:
@@ -8,7 +6,7 @@ on:
       SURGE_TOKEN:
         required: true
   workflow_run:
-    workflows: ["MAIN_PULL_REQUEST"]
+    workflows: ["TEST_BUILD"]
     types:
       - completed
   workflow_dispatch:

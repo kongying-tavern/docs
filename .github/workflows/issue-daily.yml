@@ -1,4 +1,4 @@
-name: Issue Daily
+name: ISSUE_DAILY
 
 on:
   schedule:

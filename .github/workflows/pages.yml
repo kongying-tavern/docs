@@ -1,8 +1,5 @@
 # @See https://pages.github.com/
-name: Gtihub Pages
-
-env:
-  - BASE: 'docs'
+name: GITHUB_PAGE
 
 on:
   # trigger deployment on every push to main branch
@@ -64,3 +61,4 @@ jobs:
         env:
           # @See https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: 'docs'
