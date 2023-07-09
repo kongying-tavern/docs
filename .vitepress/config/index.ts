@@ -24,7 +24,6 @@ import { krConfig } from './kr'
 import { frConfig } from './fr'
 
 export const links: any[] = []
-export const base = process.env.BASE || '/docs/'
 export const isProd = process.env.NODE_ENV === 'production'
 export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
 export const productionHead: HeadConfig[] = [
@@ -52,7 +51,6 @@ export const productionHead: HeadConfig[] = [
 ]
 
 export default defineConfig({
-  base: base,
   lastUpdated: true,
   srcDir: 'src',
   srcExclude: [],
@@ -212,7 +210,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: `${base}/imgs/favicon-32x32.png`,
+        href: `https://yuanshen.site/docs/imgs/favicon-32x32.png`,
         type: 'image/png',
       },
     ],
@@ -227,7 +225,7 @@ export default defineConfig({
       'link',
       {
         rel: 'alternate',
-        href: `${base}/feed.rss`,
+        href: `https://yuanshen.site/docs/feed.rss`,
         type: 'application/rss',
       },
     ],
@@ -235,7 +233,7 @@ export default defineConfig({
       'link',
       {
         rel: 'alternate',
-        href: `${base}/imgs/favicon.ico`,
+        href: `https://yuanshen.site/docs/imgs/favicon.ico`,
         type: 'image/x-icon',
       },
     ],

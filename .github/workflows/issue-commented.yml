@@ -1,4 +1,4 @@
-name: Issue Commented
+name: ISSUE_COMMENTED
 
 on:
   issue_comment:

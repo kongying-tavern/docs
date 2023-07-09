@@ -3,7 +3,6 @@ import path from 'path'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
-const base = process.env.BASE || '/docs'
 export const META_URL = 'https://yuanshen.site/docs/'
 export const META_TITLE = '原神地图'
 export const META_DESCRIPTION = '空荧酒馆制作的原神全资源攻略地图。'
@@ -24,12 +23,18 @@ export const zhConfig: LocaleSpecificConfig<
     ['meta', { property: 'og:site_name', content: META_TITLE }],
     ['meta', { property: 'twitter:description', content: META_DESCRIPTION }],
     ['meta', { property: 'og:locale', content: 'zh-CN' }],
-    ['meta', { property: 'og:image', content: `${base}/imgs/cover.jpg` }],
+    [
+      'meta',
+      {
+        property: 'og:image',
+        content: `https://yuanshen.site/docs/imgs/cover.jpg`,
+      },
+    ],
     [
       'meta',
       {
         name: 'twitter:image',
-        content: `${base}/imgs/cover.jpg`,
+        content: `https://yuanshen.site/docs/imgs/cover.jpg`,
       },
     ],
   ],

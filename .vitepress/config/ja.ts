@@ -4,7 +4,6 @@ import path from 'path'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
-const base = process.env.BASE || '/docs/'
 export const META_URL = 'https://yuanshen.site/docs/ja/'
 export const META_TITLE = '原神地図'
 export const META_KEYWORDS =
@@ -360,12 +359,18 @@ export const jaConfig: LocaleSpecificConfig<
     ['meta', { property: 'twitter:description', content: META_DESCRIPTION }],
     ['meta', { property: 'og:site_name', content: META_TITLE }],
     ['meta', { property: 'og:locale', content: 'en-US' }],
-    ['meta', { property: 'og:image', content: `${base}/imgs/cover.jpg` }],
+    [
+      'meta',
+      {
+        property: 'og:image',
+        content: `https://yuanshen.site/docs/imgs/cover.jpg`,
+      },
+    ],
     [
       'meta',
       {
         name: 'twitter:image',
-        content: `${base}/imgs/cover.jpg`,
+        content: `https://yuanshen.site/docs/imgs/cover.jpg`,
       },
     ],
   ],
