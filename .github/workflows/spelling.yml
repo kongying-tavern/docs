@@ -1,6 +1,5 @@
 name: PRSPELLCHECK
 on: [pull_request]
-
 jobs:
   run:
     name: Spell Check with Typos
