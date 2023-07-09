@@ -16,7 +16,7 @@ For local development, [pnpm](https://pnpm.io/) is preferred as package manager:
 
 ```bash
 corepack enable
-pnpm i
+pnpm install
 pnpm run dev
 ```
 
