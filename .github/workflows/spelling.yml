@@ -8,5 +8,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Check spelling
-        uses: crate-ci/typos@master
-        with: { config: ./.github/_typos.yml }
+        uses: typoci/spellcheck-action@master
