@@ -6,7 +6,7 @@ on:
       SURGE_TOKEN:
         required: true
   workflow_run:
-    workflows: ["TEST_BUILD"]
+    workflows: ['TEST_BUILD']
     types:
       - completed
   workflow_dispatch:
@@ -51,14 +51,14 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            <a href="${{steps.deploy.outputs.url}}">Kongying Tavern PR Preview</a>
+            <a href="${{steps.deploy.outputs.url}}"><img alt="成功" src="https://assets.yuanshen.site/images/privew_is_ready_v1.png"></a>
             <!-- [工作流地址](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}) -->
             <!-- AUTO_PREVIEW_HOOK -->
           number: ${{ steps.pr.outputs.id }}
-          body-include: "<!-- AUTO_PREVIEW_HOOK -->"
-        
+          body-include: '<!-- AUTO_PREVIEW_HOOK -->'
+
       - run: |
-          rm -rf .vitepress/dist
+          rm -rf _site/
 
       - name: The job failed
         if: ${{ failure() }}
@@ -66,10 +66,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            [失败](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
+            [<img alt="失败" src="https://assets.yuanshen.site/images/privew_failed_v1.png">](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
             <!-- AUTO_PREVIEW_HOOK -->
           number: ${{ steps.pr.outputs.id }}
-          body-include: "<!-- AUTO_PREVIEW_HOOK -->"
+          body-include: '<!-- AUTO_PREVIEW_HOOK -->'
 
   preview-failed:
     runs-on: ubuntu-latest
@@ -91,7 +91,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            [失败](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
+            [<img alt="失败" src="https://assets.yuanshen.site/images/privew_failed_v1.png">](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
             <!-- AUTO_PREVIEW_HOOK -->
           number: ${{ steps.pr.outputs.id }}
-          body-include: "<!-- AUTO_PREVIEW_HOOK -->"
+          body-include: '<!-- AUTO_PREVIEW_HOOK -->'

@@ -45,3 +45,6 @@ jobs:
 
       - name: Linter test
         run: pnpm run lint:check
+
+      - name: Linter markdown
+        run: pnpm lint:md
