@@ -97,6 +97,11 @@
       </div>
     </footer>
   </div>
+  <div style="width: 1px; height: 1px">
+    <label i-custom-baidu />
+    <label i-custom-txc />
+    <label i-custom-qq />
+  </div>
 </template>
 
 <script setup>
@@ -239,6 +244,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   font-size: 14px;
   line-height: 22px;
   color: var(--vp-c-text-2);
+
   img {
     box-shadow: var(--vp-shadow-1);
   }

@@ -14,7 +14,12 @@ description: Troubleshoot
 
 # 【自动追踪】问题排查
 
-## [开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)
+```card
+theme: medium
+title: 官方开发反馈 QQ 群
+desc: 228382171（https://jq.qq.com/?_wv=1027&k=EqhYN9uI）
+link: https://jq.qq.com/?_wv=1027&k=EqhYN9uI
+```
 
 ## 0. 准备工作 {#issue0}
 

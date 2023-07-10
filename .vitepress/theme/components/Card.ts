@@ -87,6 +87,10 @@ const Card: FunctionalComponent<CardProps> = ({
       icon = 'i-logos-discord-icon'
     } else if (link.includes('reddit.com')) {
       icon = 'i-logos-reddit-icon'
+    } else if (link.includes('baidu.com')) {
+      icon = 'i-custom-baidu'
+    } else if (link.includes('qq.com')) {
+      icon = 'i-custom-qq'
     }
   }
 
