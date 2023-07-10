@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: 다국어 및 번역
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 # 다국어 및 번역 {#translations}

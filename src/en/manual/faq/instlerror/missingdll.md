@@ -1,6 +1,5 @@
 ---
-title: \[Installation Error] Missing .dll file
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 description: Please use the portable version.
 ---
 

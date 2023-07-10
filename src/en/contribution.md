@@ -3,7 +3,7 @@ title: Contribution Acknowledgement
 description: Kongying Tavern Genshin Interactive Map began its development in June 2020, during these days, pin gathering has consumed over 20,000 man-hours. We sincerely thank every individual that contributed to the making of this map. We sincerely thank every individual that contributed to the making of this map.
 aside: false
 layout: doc
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 <script setup>
@@ -19,9 +19,62 @@ _Kongying Tavern Genshin Interactive Map_ began its development in June 2020, du
 
 We sincerely thank every individual that contributed to the making of this map.
 
+## Localizations
+
+| Name                              |
+| --------------------------------- |
+| Pop_Slime <br /> (English)        |
+| Suizyun <br /> (English)          |
+| Pat <br /> (English)              |
+| 栖客。<br /> (English)            |
+| Arrebol <br /> (English)          |
+| 一团猫 <br /> (Japanese)          |
+| Yuka <br /> (Japanese)            |
+| 小璐 るーちゃん <br /> (Japanese) |
+| 尉迟兰屏 <br /> (Esperanto)       |
+| 夜 銀河 <br /> (French)           |
+| Poypoy17 <br /> (French)          |
+| Foxy 狐の夏 <br /> (French)       |
+| 1670732206 <br /> (Cantonese)     |
+| 想太多了 <br /> (Korean)          |
+| Mercury <br /> (en/gr/es/sv)      |
+
+## Communities
+
+| Name                         |
+| ---------------------------- |
+| 鈴                           |
+| 不服输的泡泡                 |
+| AAAAAAAA                     |
+| 莫                           |
+| 蹲在墓地吓鬼                 |
+| C.c.                         |
+| Zn(OH)₂·H₂ZnO₂               |
+| 梦梦                         |
+| SSSSSSSan                    |
+| 捕食中的 Scorpion Girl       |
+| 这应该可能是昵称             |
+| 願                           |
+| 暂无此人                     |
+| 天羽落晨曦                   |
+| 阿奇                         |
+| い守护、约定。               |
+| 第一可爱小萌新づ             |
+| 艾琳·艾德勒                  |
+| kylin 丶                     |
+| Arrebol                      |
+| 洳忘                         |
+| Steven                       |
+| 残光                         |
+| continued story              |
+| 暖冬是凉春                   |
+| Pop_Slime <br /> (Overseas)  |
+| Pat <br /> (Overseas)        |
+| \(\^\_\^\) <br /> (Overseas) |
+
 ## Pin Contributions
 
-| Username             |
+| Name                 |
 | -------------------- |
 | 鈴                   |
 | (ಡωಡ)                |
@@ -203,26 +256,47 @@ We sincerely thank every individual that contributed to the making of this map.
 | 彩虹猴子             |
 | 封情                 |
 | Z boss               |
+| 你他喵的别来逗！！！ |
 | Lin\_\_cache         |
 | 正义的伙伴           |
 | 枫原万叶             |
 | Ծ‸Ծ                  |
-| 你他喵的别来逗！！！ |
 
 > The members of the list is arranged in no particular order；
 
 <style lang="scss" scoped>
+h1,h2,h3,h4 {
+  text-align: center;
+}
+
+h4 {
+  opacity: .75;
+}
+
+h1 {
+  background: var(--vp-home-hero-name-background);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: var(--vp-home-hero-name-color);
+}
+
 thead {
   display: none;
 }
+
 tbody {
 display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   tr {
     width: 150px;
     border: none;
-      background-color: transparent !important;
+    background-color: transparent !important;
+    &:hover {
+      color: var(--vp-button-brand-active-bg);
+      transform: translate3d(0, -4px, 0);
+      transition: all .5s;
+    }
     td {
       display: inline-block;
       width: 100%;

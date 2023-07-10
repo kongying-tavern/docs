@@ -4,13 +4,14 @@ description: 错误页
 titleTemplate: 空荧酒馆
 aside: true
 layout: doc
+comment: false
 head:
   - - script
     - src: /docs/error.js
 ---
 
 ::: info
-申し訳ありませんが、このページの翻訳はまだ進行中です (:
+申し訳ありませんが、このページの翻訳はまだ進行中です :
 :::
 
 # 原神地图遇到了一些问题...

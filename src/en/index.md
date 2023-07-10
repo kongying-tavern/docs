@@ -1,7 +1,7 @@
 ---
 layout: home
 title: Genshin Interactive Map
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 features:
   - title: Smart Pins
     icon: 🦾

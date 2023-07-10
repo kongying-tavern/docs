@@ -1,7 +1,7 @@
 ---
 title: Site Map
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 ## 网站地图

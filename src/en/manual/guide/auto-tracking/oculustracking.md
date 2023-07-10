@@ -1,5 +1,4 @@
 ---
-title: \[Automatic Tracking] Oculus Tracking (Removed)
 aside: false
 next:
   text: '[Automatic Tracking] Oculus Tracking'

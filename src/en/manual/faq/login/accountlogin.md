@@ -1,6 +1,5 @@
 ---
-title: \[Login] Account Login Problems
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 description: Troubleshoot
 ---
 

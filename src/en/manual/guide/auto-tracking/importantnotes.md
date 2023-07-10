@@ -1,7 +1,6 @@
 ---
-title: \[Automatic Tracking] Introduction
 aside: true
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 prev:
   text: 'Table of Contents'
   link: 'en/manual/client-user-manual'
@@ -32,6 +31,7 @@ The following are the requirements for this feature:
 - Windows 10 or above
 - The map is unmasked by unlocking the Statues of Seven, and the **minimap** is complete
 - The **minimap** contains no **custom waypoints** or **highlighted regions**
+- The Game in not under **exclusive fullscreen**, running [windowed fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)is recommended
 
 Once automatic tracking is enabled, The **map client** will
 

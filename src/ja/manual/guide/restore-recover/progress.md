@@ -1,48 +1,54 @@
 ---
-title: \[Restore/Recover] Recovery From Stored Progress
 aside: true
-titleTemplate: 空荧酒馆
+titleTemplate: :title | 空蛍酒場
 prev:
-  text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
+  text: '【窗口全屏/无边框窗口模式】启动游戏'
   link: '../overlay-mode/fullscreen-windowed/launching'
-description: Return saves to an archived timestamp, or recover save from accidental deletion.
+description: 还原存档到历史位置，或存档误删还原。
+next:
+  text: '目录'
+  link: 'ja/manual/client-user-manual.md'
 ---
+
+::: info
+申し訳ありませんが、このページの翻訳はまだ進行中です
+:::
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'
 
-# [Restore/Recover] Progress Recovery From Stored Data
+# 【存档丢失】存档还原/误删恢复
 
-### This feature requires a logged in Gitee account on your map client.
+### 这个功能需要在客户端登陆 Gitee 账户
 
 [还原存档到历史位置]: # '更新为客户端内还原功能教程'
 
-## 1. Return saves to an archived timestamp {#Return}
+## 1. 还原存档到历史位置 {#Return}
 
-Select **Restore** in the **Paimon Menu**
+在派蒙菜单内选择“存档回溯”
 
-![](/imgs/en/manual/restore-recover/1.png)
+![](/imgs/ja/manual/restore-recover/1.png)
 
-Select the desired save according to **Timestamp** and **Entries**, you can uncheck the "Current Save Only" option to restore from archives of other saves
+根据更新时间和数据量选择还原的版本, 也可以取消勾选“仅当前存档”从其他存档进行回溯
 
-![](/imgs/en/manual/restore-recover/2.png)
+![](/imgs/ja/manual/restore-recover/2.png)
 
-![](/imgs/en/manual/restore-recover/3.png)
+![](/imgs/ja/manual/restore-recover/3.png)
 
-Once confirmed, a new save named "Restored Save" will be created to store the restored progress
+确认后, 客户端会生成一个新的存档来存储回溯存档
 
-![](/imgs/en/manual/restore-recover/4.png)
+![](/imgs/ja/manual/restore-recover/4.png)
 
-## 2. Accidental Save Deletion Recovery {#Recovery}
+## 2. 存档误删还原 {#Recovery}
 
-Log into [Gitee](https://gitee.com/) and select "Create Code"
+登录[Gitee](https://gitee.com/)，登录后在右上角点击发布代码片段
 
-![](/imgs/en/manual/restore-recover/5.png)
+![](/imgs/ja/manual/restore-recover/5.png)
 
-Locate the map client's cache folder, and select the desired save using "Date Modified"
+找到软件缓存目录，根据更新时间找到需要还原的存档
 
-![](/imgs/en/manual/restore-recover/6.png)
+![](/imgs/ja/manual/restore-recover/6.png)
 
-Enter the file contents respectively into the section indicated in the picture below and submit, a save will appear in the list of saves on your map client.
+之后如图编辑代码片段，并发布，然后就能看到存档了。
 
-![](/public/imgs/en/manual/restore-recover/7.png)
+![](/public/imgs/ja/manual/restore-recover/7.png)

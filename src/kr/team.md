@@ -1,11 +1,11 @@
 ---
 layout: page
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다(:
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 :::
 
 <script setup>

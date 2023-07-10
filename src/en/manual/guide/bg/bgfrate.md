@@ -1,7 +1,6 @@
 ---
-title: \[Background Usage] Framerate/Tracking Control
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 prev:
   text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
