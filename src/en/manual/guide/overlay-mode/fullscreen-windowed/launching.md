@@ -1,7 +1,6 @@
 ---
-title: \[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 next:
   text: '[Restore/Recover] Progress Recovery From Stored Data'
   link: 'en/manual/guide/restore-recover/progress'
@@ -15,7 +14,7 @@ description: Windowed Fullscreen lets the game run fullscreen while satisfying t
 
 # [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 
-**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](https://support.qq.com/products/321980/faqs-more/?id=135544)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
+**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](../instructions.md)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
 
 ---
 
@@ -29,7 +28,7 @@ You can launch Genshin Impact in **Windowed Fullscreen** with the following step
 
 ![](/imgs/en/manual/fullscreen-windowed/2.png)
 
-- Step 3. Create a shortcut on the Desktop for GenshinImpact.exe
+- Step 3. Create a shortcut on the Desktop for `GenshinImpact.exe`
 
 ![](/imgs/en/manual/fullscreen-windowed/3.png)
 
@@ -43,4 +42,5 @@ You can launch Genshin Impact in **Windowed Fullscreen** with the following step
 
 ## Note
 
-If your game resolution setting is "<span style="color: red">####x#### Fullscreen</span>" (exclusive fullscreen), please make sure that when you press Alt+Tab, the game window does not minimize. If the game minimizes please press Alt+Enter to exit exclusive fullscreen.
+- If your game resolution setting is "<span style="color: red">####x#### Fullscreen</span>" (exclusive fullscreen), please make sure that when you press Alt+Tab, the game window does not minimize. If the game minimizes please press Alt+Enter to exit exclusive fullscreen.
+- You can also use third party app to launch the game in Windowed Fullscreen.

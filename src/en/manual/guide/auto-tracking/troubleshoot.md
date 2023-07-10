@@ -1,7 +1,6 @@
 ---
-title: \[Automatic Tracking] Troubleshooting
 aside: true
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 prev:
   text: '[Automatic Tracking] Important Notes'
   link: '../auto-tracking/importantnotes'

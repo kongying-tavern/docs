@@ -110,7 +110,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
 <style lang="scss">
 .footer-container {
-  z-index: 1;
+  z-index: -1;
   position: relative;
   right: 0;
   bottom: 0;

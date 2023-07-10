@@ -1,11 +1,20 @@
 ---
-title: \[Installation Error] Missing .dll file
-titleTemplate: 空荧酒馆
-description: Please use the portable version.
+titleTemplate: :title | 空蛍酒場
+description: 请使用免安装压缩包，正是为此准备的
 ---
+
+::: info
+申し訳ありませんが、このページの翻訳はまだ進行中です
+:::
 
 [文：【无法安装】提示缺乏dll文件]: # 'https://support.qq.com/products/321980/faqs/127820'
 
-# [Installation Error] Missing .dll file
+# 【无法安装】提示缺乏 dll 文件
 
-Please use the portable version.
+请使用免安装压缩包，正是为此准备的
+
+```card
+title: 地图客户端官方下载渠道
+link: ./download-client.md
+theme: medium
+```

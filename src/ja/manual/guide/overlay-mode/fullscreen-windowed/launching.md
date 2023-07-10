@@ -1,46 +1,50 @@
 ---
-title: \[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 aside: false
-titleTemplate: 空荧酒馆
+titleTemplate: :title | 空蛍酒場
 next:
-  text: '[Restore/Recover] Progress Recovery From Stored Data'
-  link: 'en/manual/guide/restore-recover/progress'
+  text: '【存档丢失】存档还原/误删恢复'
+  link: 'ja/manual/guide/restore-recover/progress'
 prev:
-  text: '[Overlay Mode] Instructions'
+  text: '【覆盖模式】使用说明'
   link: '../instructions'
 description: Windowed Fullscreen lets the game run fullscreen while satisfying the [Overlay Mode]'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
 ---
 
+::: info
+申し訳ありませんが、このページの翻訳はまだ進行中です
+:::
+
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
 
-# [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
+# 【窗口全屏/无边框窗口模式】启动游戏
 
-**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](https://support.qq.com/products/321980/faqs-more/?id=135544)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
+【全屏窗口化】可以使游戏保持全屏显示的情况下，仍能满足实现追踪、覆盖功能所需的【仅窗口化可用】的条件。
 
 ---
 
-You can launch Genshin Impact in **Windowed Fullscreen** with the following steps:
+通过以下步骤，可以全屏启动窗口模式的“原神”游戏：
 
-- Step 1. Go to Genshin's installation folder
+- 步骤一：打开“原神”所在的安装路径（见图）
 
-![](/imgs/en/manual/fullscreen-windowed/1.png)
+![](/imgs/ja/manual/fullscreen-windowed/1.png)
 
-- Step 2. Open the folder named "Genshin Impact Game"
+- 步骤二：打开游戏安装路径下“Genshin Impact Game”文件夹
 
-![](/imgs/en/manual/fullscreen-windowed/2.png)
+![](/imgs/ja/manual/fullscreen-windowed/2.png)
 
-- Step 3. Create a shortcut on the Desktop for GenshinImpact.exe
+- 步骤三：将”YuanShen.exe“在桌面创建快捷方式（其他服务器的原神客户端启动程序名字可能不同）
 
-![](/imgs/en/manual/fullscreen-windowed/3.png)
+![](/imgs/ja/manual/fullscreen-windowed/3.png)
 
-- Step 4. Right-click on the shortcut and select Properties
+- 步骤四：在桌面生成的快捷方式上，右键点击，选择【属性】
 
-![](/imgs/en/manual/fullscreen-windowed/4.png)
+![](/imgs/ja/manual/fullscreen-windowed/4.png)
 
-- Step 5. In the Target text box, add " -popupwindow" to the end of the address. (remember the space)
+- 步骤五：在“快捷方式”选项中，“目标”一栏，加上【 -popupwindow】（注意”-“前面有 1 个空格）
 
-![](/imgs/en/manual/fullscreen-windowed/5.png)
+![](/imgs/ja/manual/fullscreen-windowed/5.png)
 
-## Note
+## 注意事项
 
-If your game resolution setting is "<span style="color: red">####x#### Fullscreen</span>" (exclusive fullscreen), please make sure that when you press Alt+Tab, the game window does not minimize. If the game minimizes please press Alt+Enter to exit exclusive fullscreen.
+- 如果你的游戏分辨率设置为“独占全屏”（即全屏模式），请确认 Alt+Tab 切换程序后窗口不会最小化。如果仍然最小化请按 Alt+Enter（回车）手动切换窗口模式。'
+- 你也可以通过其他第三方启动器实现全屏窗口化显示，如[“胡桃工具箱”](https://hut.ao/)、[“寻空”](https://xunkong.cc/)等。

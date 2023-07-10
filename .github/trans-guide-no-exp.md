@@ -8,9 +8,14 @@
 - [Visual Studio Code](https://code.visualstudio.com/)（内容编辑器）
 - [Git](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（资源管理）
 - [Vite 插件](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（网站架构官方辅助插件）
-- [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+- [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) (VSCode Markdown 语言插件)
+- [Iconify IntelliSense](#)
 
 ## 工具准备
+
+> 你也可以需要使用网页版 VSCode，只需要在 GitHub 登录后在对应的仓库页面按键盘 `.` 键即可在 VSCode 网页版打开该仓库。
+> 如使用网页版无需以下准备可跳转阅读至[#翻译内容](#翻译内容)。
+> 不过因为是网页版会有一定限制，例如无法进行本地预览无法使用终端无法安装部分插件，详情可以看 <https://code.visualstudio.com/docs/editor/vscode-web>
 
 1. [下载并安装 Node.js](https://nodejs.org/en/download)，安装时一直点 next 就行
 
@@ -27,6 +32,24 @@
 ![](/src/public/imgs/i18n-guide/4.png)
 
 5. 重启 VSCode，此步骤用于装载 Git
+
+6. 点击窗口上方菜单栏“View”，并选择“Terminal”
+
+![](/src/public/imgs/i18n-guide/25.png)
+
+7. 在底部打开的窗口中点击右上“+”菜单，并选择“Git Bash”
+
+![](/src/public/imgs/i18n-guide/26.png)
+
+8. 在命令行内分别输入以下指令，将昵称和邮件地址替换为你的信息，并回车
+
+```
+git config --global user.name "你的昵称"
+
+git config --global user.email "邮件地址"
+```
+
+![](/src/public/imgs/i18n-guide/27.png)
 
 ## 资源管理准备
 
@@ -68,13 +91,17 @@
 
 ![](/src/public/imgs/i18n-guide/12.png)
 
-3. （推荐）再次前往插件页（Extensions），搜索”Markdown All in One"并安装，这个插件让你可以在 VSCode 里预览文字格式
+3. （推荐）再次前往插件页（Extensions），搜索”Markdown All in One"并安装，这个插件让你可以在 VSCode 编辑器里预览文字格式（加粗，倾斜）
 
 4. （推荐）搜索“markdownlint”并安装，这个插件可以为 Markdown 语法纠错
 
+5. （推荐）搜索“antfu.iconify”并安装，这个插件可以为在文件中直接提供图标预览
+
+> （首次使用 VSCode 打开仓库代码时，左下角会提示是否自动安装该仓库推荐的扩展。如你选择同意即无需手动安装）
+
 ## 翻译内容
 
-须翻译内容顺序由文件浏览器中显示从上至下（字母顺序），“\*\*”为须翻译的语言代号。（例：ja-日语，kr-韩语）
+以下须翻译内容排列顺序由文件浏览器中显示从上至下（字母顺序），“\*\*”为须翻译的语言代号。（例：ja-日语，kr-韩语）
 
 - `\.vitepress\config\**.ts` 对应语言的配置，影响所有页面统一的格式
 
@@ -86,14 +113,14 @@
 
 ![](/src/public/imgs/i18n-guide/15.png)
 
-- `src\en\community.md` 加入社区
-- `src\contribution.md` 贡献鸣谢
-- `src\en\credits.md` 技术鸣谢
-- `src\download-client.md` 下载客户端
-- `src\error.md` 错误页
-- `src\index.md` 主页
-- `src\join.md` 加入我们
-- `src\support-us.md` 支持我们
+- `src\**\community.md` 加入社区
+- `src\**\contribution.md` 贡献鸣谢
+- `src\**\credits.md` 技术鸣谢
+- `src\**\download-client.md` 下载客户端
+- `src\**\error.md` 错误页
+- `src\**\index.md` 主页
+- `src\**\join.md` 加入我们
+- `src\**\support-us.md` 支持我们
 
 推荐翻译时多运用“查找/替换”功能，以下为一个例子：（将“Kongying Tavern”替换为“空荧酒馆”）
 
@@ -115,7 +142,7 @@
 
 ![](/src/public/imgs/i18n-guide/19.png)
 
-2. 检查完毕即可输入 commit message 并推送至你自己的分支，可以将 commit 看成为阶段性改动的记录。Commit message 开头格式可以用：“feat:”-加入新页面、“chore:”-更改页面配置（例如上文所做的替换）、“fix:”-修改语法错误，或者链接错误。更多格式见：[commitlint](https://github.com/conventional-changelog/commitlint)
+2. 检查完毕即可输入 commit message 并推送至你自己的分支，可以将 commit 看成为阶段性改动的记录。Commit message 开头格式可以用：“docs:”-加入新页面、“chore:”-更改页面配置（例如上文所做的替换）、“fix:”-修改语法错误，或者链接错误。更多格式见：[commitlint](https://github.com/conventional-changelog/commitlint)
 
 ![](/src/public/imgs/i18n-guide/20.png)
 
@@ -129,7 +156,7 @@
 
 ![](/src/public/imgs/i18n-guide/22.png)
 
-2. 如果主分支有新的改动，你可以先在“sync fork”处同步（图一，这张图没有同步按钮，因为已经同步），然后在 VSCode 中点击同步（Sync）将其同步至本地即可（图二）
+2. 如果主分支有新的改动，你可以先在“sync fork”处同步，然后在 VSCode 中点击同步（Sync）将其同步至本地即可（图二）
 
 ![](/src/public/imgs/i18n-guide/24.png)
 

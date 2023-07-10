@@ -1,6 +1,5 @@
 name: PRSPELLCHECK
 on: [pull_request]
-
 jobs:
   run:
     name: Spell Check with Typos
@@ -10,3 +9,5 @@ jobs:
       - name: Check spelling
         uses: crate-ci/typos@master
         with: { config: ./.github/_typos.toml }
+
+

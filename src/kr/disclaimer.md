@@ -3,11 +3,11 @@ title: 免责声明
 description: 免责声明
 layout: doc
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 ---
 
 ::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다(:
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 :::
 
 # 免责声明

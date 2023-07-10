@@ -1,7 +1,6 @@
 ---
-title: Map Client User Manual
 aside: false
-titleTemplate: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
 next:
   text: '[Automatic Tracking] Important Notes'
   link: './guide/auto-tracking/importantnotes.md'
