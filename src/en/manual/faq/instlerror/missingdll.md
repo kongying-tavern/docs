@@ -10,7 +10,7 @@ description: Please use the portable version.
 Please use the portable version.
 
 ```card
-title: Web Version Portal
-link: https://yuanshen.site
+title: Download Page
+link: ../../../download-client.md
 theme: medium
 ```

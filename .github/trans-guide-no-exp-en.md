@@ -38,11 +38,17 @@ This site uses [Vitepress](https://vitepress.dev/), you can refer to their websi
 
 ![](/src/public/imgs/i18n-guide/25.png)
 
-7. Select the “+” menu in the terminal section, and then open "Git Bash"
+7. Enter the following command and hit enter to install pnpm
+
+```
+iwr https://get.pnpm.io/install.ps1 -useb | iex
+```
+
+8. Next, select the “+” menu in the terminal section, and then open "Git Bash"
 
 ![](/src/public/imgs/i18n-guide/26.png)
 
-8. Enter the following commands into the terminal one at a time and hit enter, replace "username" and "youremail" with relevant information
+9. Enter the following commands into the terminal one at a time and hit enter, replace "username" and "youremail" with relevant information
 
 ```
 git config --global user.name "username"
