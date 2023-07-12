@@ -9,8 +9,6 @@ titleTemplate: :title | Kongying Tavern
 
 - Google Drive (Recommended)：
   - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
-- Join Community：
-  - [https://yuanshen.site/docs/community](community.md)
 - Aliyun Drive (Chinese)：
   - <https://www.aliyundrive.com/s/irmz7CKpMry>
 - Quark Drive (Chinese):
