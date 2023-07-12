@@ -9,8 +9,6 @@ titleTemplate: :title | Kongying Tavern
 
 - Google Drive (Recommended)：
   - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
-- Join Community：
-  - [https://yuanshen.site/docs/en/community](./community.md)
 - Aliyun Drive (Chinese)：
   - <https://www.aliyundrive.com/s/irmz7CKpMry>
 - Quark Drive (Chinese):
@@ -23,6 +21,12 @@ Currently we only offer the **Windows Version** of our map client, versions in o
 
 If you are interested in aiding our development, consider [Join Us(^\_^)](./join)
 :::
+
+```card
+title: Discord
+link: https://discord.gg/aFe57AKZUF
+theme: medium
+```
 
 ```card
 title: Map Client User Manual
