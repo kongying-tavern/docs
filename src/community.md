@@ -35,7 +35,7 @@ titleTemplate: 空荧酒馆
 :::tip
 推荐加入人数较少的群。
 
-请勿重复加群，由于群人数均衡原因，若重复加群将踢出<span style="color: red;">「群人数较多的群」！</span>
+请勿重复加群，由于群人数均衡原因，若<span style="color: red;">重复加群将踢出「群人数较多的群」！</span>
 :::
 
 ## QQ 频道
