@@ -17,10 +17,10 @@ export const frConfig: LocaleSpecificConfig<
   description: META_DESCRIPTION,
   titleTemplate: 'Kongying Tavern',
   themeConfig: {
-    siteTitle: 'Genshin Interactive Map',
-    outlineTitle: 'On This Page',
+    siteTitle: 'Carte interactive de Genshin',
+    outlineTitle: 'Sur cette page',
     logo: '/imgs/logo_256.png',
-    lastUpdatedText: 'Last updated',
+    lastUpdatedText: 'Dernière mise à jour ',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       {
@@ -37,12 +37,12 @@ export const frConfig: LocaleSpecificConfig<
     ],
 
     docFooter: {
-      prev: 'Previous page',
-      next: 'Next page',
+      prev: 'Page précédente',
+      next: 'Page suivante',
     },
     editLink: {
       pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
-      text: 'Suggest changes to this page',
+      text: 'Suggérer des modifications à cette page',
     },
     payment: {
       wechatpay: {
@@ -69,52 +69,52 @@ export const frConfig: LocaleSpecificConfig<
     },
     nav: [
       {
-        text: 'Download',
+        text: 'Télécharger',
         link: 'fr/download-client.md',
       },
       {
-        text: 'Support us',
+        text: 'Soutenez-nous',
         link: 'fr/support-us.md',
       },
       {
-        text: 'Community',
+        text: 'Communauté',
         link: 'fr/community.md',
       },
       {
         text: 'Support',
         items: [
           {
-            text: 'Client User Manual',
+            text: "Manuel d'utilisation du client",
             link: 'fr/manual/client-user-manual.md',
           },
           {
-            text: 'Feedback',
+            text: "Retour d'expérience",
             link: 'https://support.qq.com/products/321980',
           },
           {
-            text: 'New Features',
+            text: 'Nouvelles fonctionnalités',
             link: 'https://support.qq.com/products/321980/topic-detail/2016/',
           },
         ],
       },
       {
-        text: 'About',
+        text: 'À propos',
         items: [
           {
-            text: 'About Us',
+            text: 'À propos de nous',
             items: [
               {
-                text: 'Join Us',
+                text: 'Rejoignez-nous',
                 link: 'fr/join.md',
               },
               {
-                text: 'Our Team',
+                text: 'Notre équipe',
                 link: 'fr/team.md',
               },
             ],
           },
           {
-            text: 'Update Log',
+            text: 'Journal des mises à jour',
             items: [
               {
                 text: 'Web',
@@ -127,14 +127,14 @@ export const frConfig: LocaleSpecificConfig<
             ],
           },
           {
-            text: 'Acknowledgement',
+            text: 'Remerciements',
             items: [
               {
-                text: 'Credits',
+                text: 'Crédits',
                 link: 'fr/credits.md',
               },
               {
-                text: 'Contributors',
+                text: 'Contributeurs',
                 link: 'fr/contribution.md',
               },
               {
@@ -144,18 +144,18 @@ export const frConfig: LocaleSpecificConfig<
             ],
           },
           {
-            text: 'Legal (Chinese)',
+            text: 'Mentions légales (chinois)',
             items: [
               {
-                text: 'Disclaimer',
+                text: 'Clause de non-responsabilité',
                 link: 'fr/disclaimer.md',
               },
               {
-                text: 'Privacy',
+                text: 'Confidentialité',
                 link: 'fr/privacy.md',
               },
               {
-                text: 'Agreement',
+                text: 'Accord',
                 link: 'fr/agreement.md',
               },
             ],
@@ -166,35 +166,35 @@ export const frConfig: LocaleSpecificConfig<
     sidebar: {
       'fr/manual': [
         {
-          text: 'Table of Contents',
+          text: 'Table des matières',
           link: 'fr/manual/client-user-manual',
         },
         {
           text: 'Guides',
           items: [
             {
-              text: 'Automatic Tracking',
+              text: 'Suivi automatique',
               items: [
                 {
                   text: 'Introduction',
                   link: 'fr/manual/guide/auto-tracking/importantnotes',
                 },
                 {
-                  text: 'Troubleshooting',
+                  text: 'Résolution des problèmes',
                   link: 'fr/manual/guide/auto-tracking/troubleshoot',
                 },
               ],
             },
             {
-              text: 'Framerate/Tracking Control',
+              text: "Contrôle de la fréquence d'images/du suivi",
               link: 'fr/manual/guide/bg/bgfrate',
             },
             {
-              text: 'Multi Mark',
+              text: 'Marquage multiple',
               link: 'fr/manual/guide/batch-selection/instructions',
             },
             {
-              text: 'Canvas Guide',
+              text: 'Guide du canvas',
               link: 'fr/manual/guide/canvas/guide',
             },
             {
@@ -202,24 +202,24 @@ export const frConfig: LocaleSpecificConfig<
               link: 'fr/manual/guide/easter-egg/view',
             },
             {
-              text: 'Hide/Show Found',
+              text: 'Cacher/Afficher les éléments trouvés',
               link: 'fr/manual/guide/hide-show-done/hidedoneshowdone',
             },
             {
-              text: 'Overlay Mode',
+              text: 'Mode superposition',
               items: [
                 {
                   text: 'Instructions',
                   link: 'fr/manual/guide/overlay-mode/instructions',
                 },
                 {
-                  text: 'Windowed Fullscreen',
+                  text: 'Fenêtré plein écran',
                   link: 'fr/manual/guide/overlay-mode/fullscreen-windowed/launching',
                 },
               ],
             },
             {
-              text: 'Restore/Recover Progress',
+              text: 'Restauration/récupération de la progression',
               link: 'fr/manual/guide/restore-recover/progress',
             },
           ],
@@ -228,48 +228,48 @@ export const frConfig: LocaleSpecificConfig<
           text: 'FAQ',
           items: [
             {
-              text: 'Account safety',
+              text: 'Sécurité du compte',
               link: 'fr/manual/faq/accountsafety/acntban.md',
             },
             {
-              text: 'Auto Update',
+              text: 'Mise à jour automatique',
               link: 'fr/manual/faq/autoupdate/updater.md',
             },
             {
-              text: 'Installation Error',
+              text: "Erreur d'installation",
               items: [
                 {
                   text: 'Code 2503',
                   link: 'fr/manual/faq/instlerror/code2503.md',
                 },
                 {
-                  text: 'Missing .dll file',
+                  text: 'Fichier .dll manquant',
                   link: 'fr/manual/faq/instlerror/missingdll.md',
                 },
               ],
             },
             {
-              text: 'Launch Error',
+              text: 'Erreur de lancement',
               items: [
                 {
-                  text: 'Stuck/No Progress',
+                  text: 'Blocage/pas de progression',
                   link: 'fr/manual/faq/launcherror/emptydialog.md',
                 },
                 {
-                  text: 'Version Check Failed',
+                  text: 'Échec de la vérification de la version',
                   link: 'fr/manual/faq/launcherror/versioncheck.md',
                 },
               ],
             },
             {
-              text: 'About Login',
+              text: 'À propos de la connexion',
               items: [
                 {
-                  text: 'Login Problems',
+                  text: 'Problèmes de connexion',
                   link: 'fr/manual/faq/login/accountlogin.md',
                 },
                 {
-                  text: 'Repeated Login Requests',
+                  text: 'Demandes de connexion répétées',
                   link: 'fr/manual/faq/login/clientrepeatedly.md',
                 },
               ],
@@ -279,19 +279,19 @@ export const frConfig: LocaleSpecificConfig<
       ],
     },
     footer: {
-      qrcodeTitle: 'Discord Server',
-      qrcodeMessage: 'Contact us on discord',
+      qrcodeTitle: 'Serveur Discord',
+      qrcodeMessage: 'Contactez-nous sur Discord',
       qrcodeLink: 'https://discord.gg/aFe57AKZUF',
       navigation: [
         {
-          title: 'About',
+          title: 'À propos',
           items: [
             {
-              text: 'Join Us',
+              text: 'Rejoignez-nous',
               link: 'fr/join',
             },
             {
-              text: 'Our team',
+              text: 'Notre équipe',
               link: 'fr/team',
             },
             {
@@ -301,18 +301,18 @@ export const frConfig: LocaleSpecificConfig<
           ],
         },
         {
-          title: 'Legal (Chinese)',
+          title: 'Mentions légales (chinois)',
           items: [
             {
-              text: 'Disclaimer',
+              text: 'Clause de non-responsabilité',
               link: 'fr/disclaimer',
             },
             {
-              text: 'Privacy',
+              text: 'Confidentialité',
               link: 'fr/privacy',
             },
             {
-              text: 'Agreement',
+              text: 'Accord',
               link: 'fr/agreement',
             },
           ],
@@ -321,15 +321,15 @@ export const frConfig: LocaleSpecificConfig<
           title: 'Support',
           items: [
             {
-              text: 'Client User Manual',
+              text: "Manuel d'utilisation du client",
               link: 'fr/manual/client-user-manual',
             },
             {
-              text: 'Feedback',
+              text: "Retour d'expérience",
               link: 'https://support.qq.com/products/321980',
             },
             {
-              text: 'New Features',
+              text: 'Nouvelles fonctionnalités',
               link: 'https://support.qq.com/products/321980/topic-detail/2016/',
             },
           ],
