@@ -1,14 +1,16 @@
-# Docs Translation Guide（No Experience）
+# Docs Translation Guide (No Experience)
 
 ## Software Needed
 
 This site uses [Vitepress](https://vitepress.dev/), you can refer to their website for more information.
 
-- [Node.js](https://nodejs.org/en/download)（JavaScript runtime environment）
-- [Visual Studio Code](https://code.visualstudio.com/)（Editor）
-- [Git](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（Source Management）
-- [Vite Extension](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（Offical VSCode Extension）
+- [Node.js](https://nodejs.org/en/download) (JavaScript runtime environment)
+- [pnpm](https://pnpm.io/) (Package Manager)
+- [Visual Studio Code](https://code.visualstudio.com/) (Source Editor)
+- [Git](https://marketplace.visualstudio.com/items?itemName=antfu.vite) (Source Management)
+- [Vite Extension](https://marketplace.visualstudio.com/items?itemName=antfu.vite) (Offical VSCode Extension)
 - [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) (Markdown Toolkit Extension)
+- [Iconify IntelliSense](#)
 
 ## Tool Prep
 
@@ -94,7 +96,7 @@ git config --global user.email "youremail"
 
 ![](/src/public/imgs/i18n-guide/11.png)
 
-2. Once the installation completes, the Vite extension will automatically start a local test server at `http://localhost:4000`, and open a build-in browser, you can also use your own browser by visiting the address there（you may encounter problems right after installation, relaunch to VSCode if error occurs）
+2. Once the installation completes, the Vite extension will automatically start a local test server at `http://localhost:4000`, and open a build-in browser, you can also use your own browser by visiting the address there(you may encounter problems right after installation, relaunch to VSCode if error occurs)
 
 ![](/src/public/imgs/i18n-guide/12.png)
 
@@ -106,13 +108,13 @@ git config --global user.email "youremail"
 
 ## Translation Items
 
-The following content that requires translation is listed in the order they appear in the file explorer (alphabetically),"\*\*" refers to the language code of a certain language（e.g. ja-Japanese,fr-French）
+The following content that requires translation is listed in the order they appear in the file explorer (alphabetically),"\*\*" refers to the language code of a certain language(e.g. ja-Japanese,fr-French)
 
 - `\.vitepress\config\**.ts` Configuration of its respective language, affects all pages' format in that language
 
 ![](/src/public/imgs/i18n-guide/13.png)
 
-- `\src\**\manual` All content requires translation, you need to configure each page's "frontmatter"（second picture below）, which affects that specific page's format
+- `\src\**\manual` All content requires translation, you need to configure each page's "frontmatter"(second picture below), which affects that specific page's format
 
 ![](/src/public/imgs/i18n-guide/14.png)
 
