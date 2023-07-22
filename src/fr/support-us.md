@@ -34,5 +34,5 @@ If you are a fellow Traveler and appreciate the efficiency our map offers, consi
 Sponsor Organizations can gain increased exposure in the _Genshin Interactive Map_ community by supporting us, expanding their reach to more _Genshin Impact_ players
 
 ::: tip
-Do not contribute large amounts if you are underaged, please reach out to us if there is any question. QQ：790489566.
+Do not contribute large amounts if you are underaged, please reach out to us if there is any question. email：support@yuanshen.site.
 :::

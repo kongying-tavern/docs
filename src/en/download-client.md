@@ -23,6 +23,12 @@ If you are interested in aiding our development, consider [Join Us(^\_^)](./join
 :::
 
 ```card
+title: Discord
+link: https://discord.gg/aFe57AKZUF
+theme: medium
+```
+
+```card
 title: Map Client User Manual
 link: /en/manual/client-user-manual
 theme: medium
