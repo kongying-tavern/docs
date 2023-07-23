@@ -5,6 +5,7 @@
 使用架构为[Vitepress](https://vitepress.dev/)，有疑惑可以访问他们的网站检索说明书。
 
 - [Node.js](https://nodejs.org/en/download)（网站运行环境）
+- [pnpm](https://pnpm.io/)（包管理器）
 - [Visual Studio Code](https://code.visualstudio.com/)（内容编辑器）
 - [Git](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（资源管理）
 - [Vite 插件](https://marketplace.visualstudio.com/items?itemName=antfu.vite)（网站架构官方辅助插件）
@@ -37,11 +38,17 @@
 
 ![](/src/public/imgs/i18n-guide/25.png)
 
-7. 在底部打开的窗口中点击右上“+”菜单，并选择“Git Bash”
+7. 在命令行内输入以下指令以安装 pnpm
+
+```
+iwr https://get.pnpm.io/install.ps1 -useb | iex
+```
+
+8. 在底部打开的窗口中点击右上“+”菜单，并选择“Git Bash”
 
 ![](/src/public/imgs/i18n-guide/26.png)
 
-8. 在命令行内分别输入以下指令，将昵称和邮件地址替换为你的信息，并回车
+9. 在命令行内分别输入以下指令，将昵称和邮件地址替换为你的信息，并回车
 
 ```
 git config --global user.name "你的昵称"
