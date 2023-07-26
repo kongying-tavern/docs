@@ -5,11 +5,11 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
 export const META_URL = 'https://yuanshen.site/docs/ja/'
-export const META_TITLE = '原神地図'
+export const META_TITLE = '原神マップ'
 export const META_KEYWORDS =
-  'Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map'
+  '原神マップ, テイワットマップ, 空蛍酒場, yuanshenmap, Genshin Impact Map, Kongying Map'
 export const META_DESCRIPTION =
-  'A Genshin interactive map by Kongying Tavern for completionists'
+  '空蛍酒場は開発している資源、任務など攻略全般掲載するマップ'
 
 export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -17,10 +17,10 @@ export const jaConfig: LocaleSpecificConfig<
   description: META_DESCRIPTION,
   titleTemplate: 'Kongying Tavern',
   themeConfig: {
-    siteTitle: '原神地図',
-    outlineTitle: 'On This Page',
+    siteTitle: '原神マップ',
+    outlineTitle: 'このページでは',
     logo: '/imgs/logo_256.png',
-    lastUpdatedText: 'Last updated',
+    lastUpdatedText: '更新日時',
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       {
@@ -37,20 +37,20 @@ export const jaConfig: LocaleSpecificConfig<
     ],
 
     docFooter: {
-      prev: '上一页',
-      next: '下一页',
+      prev: '前へ',
+      next: '次へ',
     },
     payment: {
       wechatpay: {
-        name: '微信支付',
+        name: 'WeChat Pay',
         address: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',
       },
       alipay: {
-        name: '支付宝',
+        name: 'Alipay',
         address: 'https://qr.alipay.com/tsx11609thmpw9odmvdlxd6',
       },
       qqpay: {
-        name: 'QQ 支付',
+        name: 'QQ Pay',
         address:
           'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
       },
@@ -65,110 +65,110 @@ export const jaConfig: LocaleSpecificConfig<
     },
     editLink: {
       pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
-      text: '报告错误',
+      text: 'エラー報告',
     },
     nav: [
       {
-        text: '客户端下载',
+        text: 'ダウンロード',
         link: 'ja/download-client.md',
       },
       {
-        text: '加入社区',
+        text: 'コミュニティ',
         link: 'ja/community.md',
       },
       {
-        text: '支持我们',
+        text: 'Support us',
         link: 'ja/support-us.md',
       },
       {
-        text: '帮助和反馈',
+        text: 'フィードバック',
         items: [
           {
-            text: '客户端使用手册',
+            text: 'マニュアル',
             link: 'ja/manual/client-user-manual.md',
           },
           {
-            text: '问题反馈',
+            text: 'フィートバック',
             link: 'https://support.qq.com/products/321980',
           },
           {
-            text: '功能介绍',
+            text: '機能紹介',
             link: 'https://support.qq.com/products/321980/faqs-more/?id=126362',
           },
           {
-            text: '功能投票',
+            text: 'ご要望',
             link: 'https://support.qq.com/products/321980/topic-detail/2016/',
           },
         ],
       },
       {
-        text: '了解更多',
+        text: 'もっと知る',
         items: [
           {
-            text: '了解我们',
+            text: '私たちを知る',
             items: [
               {
-                text: '加入我们',
+                text: '開発に参画',
                 link: 'ja/join.md',
               },
               {
-                text: '了解团队',
+                text: 'チームを知る',
                 link: 'ja/team.md',
               },
             ],
           },
           {
-            text: '更新日志',
+            text: 'アップデートログ',
             items: [
               {
-                text: '网页端',
+                text: 'Web版',
                 link: 'https://support.qq.com/products/321980/blog/505810',
               },
               {
-                text: '客户端',
+                text: 'Windows版',
                 link: 'https://support.qq.com/products/321980/blog/772498',
               },
             ],
           },
           {
-            text: '鸣谢',
+            text: '感謝',
             items: [
               {
-                text: '技术鸣谢',
+                text: '技術提供',
                 link: 'ja/credits.md',
               },
               {
-                text: '贡献鸣谢',
+                text: '貢献者感謝',
                 link: 'ja/contribution.md',
               },
               {
-                text: '赞助鸣谢',
-                link: 'ja/support-us.md#赞助鸣谢',
+                text: '寄付感謝',
+                link: 'ja/support-us.md#Sponsor%20Acknowledgements',
               },
             ],
           },
           {
-            text: '法律相关',
+            text: '法令について',
             items: [
               {
-                text: '免责声明',
+                text: '免責事項',
                 link: 'ja/disclaimer.md',
               },
               {
-                text: '隐私政策',
+                text: 'プライバシーポリシー',
                 link: 'ja/privacy.md',
               },
               {
-                text: '用户协议',
+                text: '利用規約',
                 link: 'ja/agreement.md',
               },
             ],
           },
           {
-            text: '其他',
+            text: 'その他',
             items: [
               {
-                text: '友情链接',
+                text: 'リンク集',
                 link: 'ja/friends-links.md',
               },
             ],
@@ -179,110 +179,110 @@ export const jaConfig: LocaleSpecificConfig<
     sidebar: {
       'ja/manual': [
         {
-          text: '目录',
+          text: '目次',
           link: 'ja/manual/client-user-manual',
         },
         {
-          text: '使用帮助',
+          text: '使い方ガイド',
           items: [
             {
-              text: '【自动追踪】',
+              text: '【オートトラッキング】',
               items: [
                 {
-                  text: '功能介绍',
+                  text: '機能紹介',
                   link: 'ja/manual/guide/auto-tracking/importantnotes',
                 },
                 {
-                  text: '疑难解答',
+                  text: 'トラブルシューティング',
                   link: 'ja/manual/guide/auto-tracking/troubleshoot',
                 },
               ],
             },
             {
-              text: '【地图性能占用高】前后台帧率设置',
+              text: '【バックグラウンドユーセージ】フレームレート設定',
               link: 'ja/manual/guide/bg/bgfrate',
             },
             {
-              text: '【批量选择】使用说明',
+              text: '【一括選択】利用ガイド',
               link: 'ja/manual/guide/batch-selection/instructions',
             },
             {
-              text: '【画板】路线功能 教程',
+              text: '【キャンバス】ルート計画機能紹介',
               link: 'ja/manual/guide/canvas/guide',
             },
             {
-              text: '【彩蛋】查看历史版本金苹果群岛',
+              text: '【おまけ】金リンゴ群島を見る',
               link: 'ja/manual/guide/easter-egg/view',
             },
             {
-              text: '【隐藏】标记/【显示】标记',
+              text: '【表示】/【非表示】マーカー',
               link: 'ja/manual/guide/hide-show-done/hidedoneshowdone',
             },
             {
-              text: '【覆盖模式】',
+              text: '【オーバーレイモード】',
               items: [
                 {
-                  text: '使用说明',
+                  text: '利用ガイド',
                   link: 'ja/manual/guide/overlay-mode/instructions',
                 },
                 {
-                  text: '【窗口全屏】启动游戏',
+                  text: '【ウィンドウ全画面】ゲーム起動',
                   link: 'ja/manual/guide/overlay-mode/fullscreen-windowed/launching',
                 },
               ],
             },
             {
-              text: '【存档丢失】存档还原/误删恢复',
+              text: '【セーブデータ】データ復元',
               link: 'ja/manual/guide/restore-recover/progress',
             },
           ],
         },
         {
-          text: '常见问题',
+          text: 'よくある質問',
           items: [
             {
-              text: '使用地图客户端会被封号吗？',
+              text: 'ゲームアカウントが凍結される可能性は？',
               link: 'ja/manual/faq/accountsafety/acntban.md',
             },
             {
-              text: '【自动更新】没有反应',
+              text: '【自動更新】自動更新されない',
               link: 'ja/manual/faq/autoupdate/updater.md',
             },
             {
-              text: '安装错误',
+              text: '【インストールできない】',
               items: [
                 {
-                  text: '错误码 2503',
+                  text: 'エラーコード 2503',
                   link: 'ja/manual/faq/instlerror/code2503.md',
                 },
                 {
-                  text: '【无法安装】提示缺乏 dll 文件',
+                  text: '【インストールできない】.dll がないため',
                   link: 'ja/manual/faq/instlerror/missingdll.md',
                 },
               ],
             },
             {
-              text: '【无法打开】',
+              text: '【アプリ開かない】',
               items: [
                 {
-                  text: '空窗提示或卡进度条',
+                  text: '画面真っ白またはプログレスバーが止まる',
                   link: 'ja/manual/faq/launcherror/emptydialog.md',
                 },
                 {
-                  text: '“数据查询失败”、“版本查询失败”',
+                  text: '「データクエリ失敗」「バージョンチェック失敗」',
                   link: 'ja/manual/faq/launcherror/versioncheck.md',
                 },
               ],
             },
             {
-              text: '登录',
+              text: 'ログイン',
               items: [
                 {
-                  text: '【不能登录】如何登录',
+                  text: '【ログインできない】ログイン方法',
                   link: 'ja/manual/faq/login/accountlogin.md',
                 },
                 {
-                  text: '【每次打开都需重新登陆】',
+                  text: '【毎回ログインを求められる】',
                   link: 'ja/manual/faq/login/clientrepeatedly.md',
                 },
               ],
@@ -292,15 +292,15 @@ export const jaConfig: LocaleSpecificConfig<
       ],
     },
     footer: {
-      qrcodeTitle: 'Discord Server',
+      qrcodeTitle: 'Discordサーバー',
       qrcodeMessage: 'Contact us on discord',
       qrcodeLink: 'https://discord.gg/aFe57AKZUF',
       navigation: [
         {
-          title: 'About',
+          title: '私たちについて',
           items: [
             {
-              text: 'Join Us',
+              text: '仲間になる',
               link: 'ja/join',
             },
             {
@@ -308,41 +308,41 @@ export const jaConfig: LocaleSpecificConfig<
               link: 'ja/team',
             },
             {
-              text: 'Sponsors',
+              text: 'スポンサー',
               link: 'ja/support-us',
             },
           ],
         },
         {
-          title: 'Legal (Chinese)',
+          title: '法令について',
           items: [
             {
-              text: 'Disclaimer',
+              text: '免責事項',
               link: 'ja/disclaimer',
             },
             {
-              text: 'Privacy',
+              text: 'プライバシーポリシー',
               link: 'ja/privacy',
             },
             {
-              text: 'Agreement',
+              text: '利用規約',
               link: 'ja/agreement',
             },
           ],
         },
         {
-          title: 'Support',
+          title: 'サポート',
           items: [
             {
-              text: 'Client User Manual',
+              text: 'ユーザマニュアル',
               link: 'ja/manual/client-user-manual',
             },
             {
-              text: 'Feedback',
+              text: 'フィードバック',
               link: 'https://support.qq.com/products/321980',
             },
             {
-              text: 'New Features',
+              text: '新機能',
               link: 'https://support.qq.com/products/321980/topic-detail/2016/',
             },
           ],
