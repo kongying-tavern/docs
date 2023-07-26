@@ -40,10 +40,10 @@ hero:
   actions:
     - theme: brand
       text: ダウンロードへ
-      link: jp/download-client.md
+      link: ja/download-client.md
     - theme: alt
       text: 使い方について
-      link: jp/manual/client-user-manual.md
+      link: ja/manual/client-user-manual.md
     - theme: cta mastery
       text: Web版
       link: https://v3.yuanshen.site/
