@@ -36,7 +36,7 @@ description: 目次
 - [【ウィンドウ全画面/ボーダレスウィンドウモード】での起動](./guide/overlay-mode/fullscreen-windowed/launching.md)
 - [【セーブデータ】データ復元](./guide/restore-recover/progress.md)
 
-## **FAQs**
+## **よくある質問**
 
 - [最新版のマップをダウンロード](../download-client.md)
 - [【自動更新】自動更新されない](./faq/autoupdate/updater.md)
