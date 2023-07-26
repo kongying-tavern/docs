@@ -32,7 +32,7 @@ features:
     details: ゲームバージョンアップデート後、本アプリのマーカーやマップ内容も速やかに更新します。ゲーム体験100％快適！
 hero:
   name: 原神マップ
-  text: 空蛍酒場は開発している資源、任務など攻略全般掲載するマップ
+  text: 空蛍酒場が開発している資源、任務など攻略全般掲載するマップツール
   tagline: Simple, powerful, and performant.
   image:
     src: /imgs/logo_256.png
