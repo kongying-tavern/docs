@@ -15,7 +15,8 @@
     "lint:md": "markdownlint **/*.md && lint:zh",
     "lint:prettier": "prettier --check .",
     "lint:zh": "zhlint 'docs/**/*.md'",
-    "serve": "vitepress serve --base /docs/"
+    "serve": "vitepress serve --base /docs/",
+    "site:preview": "vitepress serve --base /"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [

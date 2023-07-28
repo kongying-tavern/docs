@@ -34,10 +34,10 @@ jobs:
 
       # 构建
       - name: Build
-        run: pnpm vitepress build --base /
+        run: pnpm site:preview
 
       - run: |
-          zip -r _site.zip .vitepress/dist
+          zip -r _site.zip ./dist
 
       - name: upload _site artifact
         uses: actions/upload-artifact@v2

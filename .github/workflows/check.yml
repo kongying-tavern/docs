@@ -33,11 +33,6 @@ jobs:
           node-version: ${{ matrix.node_version }}
           cache: pnpm
 
-      - name: Build project
-        env:
-          NODE_OPTIONS: --max_old_space_size=4096
-        run: pnpm build
-
       - name: Build project (MPA)
         env:
           NODE_OPTIONS: --max_old_space_size=4096
