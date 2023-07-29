@@ -279,3 +279,6 @@ function debounce(func, wait, options) {
 }
 
 export default debounce
+
+export const isRelativeLink = (link: string) =>
+  /^(?!www\.|http[s]?:\/\/|[A-Za-z]:\\|\/\/).*/.test(link)

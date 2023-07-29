@@ -101,6 +101,8 @@
     <label i-custom-baidu />
     <label i-custom-txc />
     <label i-custom-qq />
+    <label i-custom-wxtl />
+    <label i-logos-discord-icon />
   </div>
 </template>
 

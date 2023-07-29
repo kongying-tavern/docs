@@ -2,7 +2,7 @@
 import { useElementSize } from '@vueuse/core'
 import { ref, watchEffect } from 'vue'
 import { useData } from 'vitepress'
-
+import { onMounted } from 'vue'
 const el = ref<HTMLElement>()
 const { height } = useElementSize(el)
 const { frontmatter, page } = useData()
@@ -20,10 +20,12 @@ watchEffect(() => {
 
 const restore = (key, def = false) => {
   const saved = localStorage.getItem(key)
+  console.log(typeof frontmatter.value.banner !== 'string')
+  if (typeof frontmatter.value.banner !== 'string') hideBanner()
   if (saved ? saved !== 'false' && deal() > saved : def) hideBanner()
 }
 
-restore(`banner-${page.value.relativePath}`)
+onMounted(() => restore(`banner-${page.value.relativePath}`))
 
 const dismiss = () => {
   localStorage.setItem(`banner-${page.value.relativePath}`, deal())

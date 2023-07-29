@@ -252,6 +252,30 @@ aside: false
 
 [^1]: 名单排序不分先后；
 
+<script setup>
+import { useWindowFocus, useScroll  } from '@vueuse/core'
+import { onMounted, nextTick, watch } from 'vue'
+onMounted(()=> {
+nextTick(()=> {
+const focused = useWindowFocus()
+const { y } = useScroll(window, { behavior: 'smooth' })
+
+watch(focused, () => {
+   setInterval(() =>  {
+      if (!focused.value && y.value <= 3000){
+        y.value += 10;
+        console.log(y.value)
+      }
+    }, 20)
+})
+
+y.value = 99;
+})
+
+})
+
+</script>
+
 <style lang="scss" scoped>
 h1,h2,h3,h4 {
   text-align: center;

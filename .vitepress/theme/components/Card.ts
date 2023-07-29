@@ -1,5 +1,5 @@
 import { withBase } from 'vitepress'
-import { isLinkExternal } from '../utils'
+import { isLinkExternal, isRelativeLink } from '../utils'
 import { type FunctionalComponent, h } from 'vue'
 
 import '../styles/card.scss'
@@ -83,7 +83,7 @@ const Card: FunctionalComponent<CardProps> = ({
       icon = 'i-logos-youtube-icon'
     } else if (link.includes('twitter.com')) {
       icon = 'i-logos-twitter'
-    } else if (link.includes('discord.com')) {
+    } else if (link.includes('discord')) {
       icon = 'i-logos-discord-icon'
     } else if (link.includes('reddit.com')) {
       icon = 'i-logos-reddit-icon'
@@ -91,6 +91,8 @@ const Card: FunctionalComponent<CardProps> = ({
       icon = 'i-custom-baidu'
     } else if (link.includes('qq.com')) {
       icon = 'i-custom-qq'
+    } else if (link.includes('weixitianli.com')) {
+      icon = `i-custom-wxtl`
     }
   }
 
@@ -108,7 +110,13 @@ const Card: FunctionalComponent<CardProps> = ({
       h('hr'),
       h('div', {
         class: 'vp-card-desc',
-        innerHTML: desc ? desc : withBase(link),
+        innerHTML: desc
+          ? desc
+          : isRelativeLink(link)
+          ? `https://yuanshen.site/docs/${
+              link.substring(0, 3).replace(/(\.\/|\/)/g, '') + link.substring(3)
+            }`
+          : link,
       }),
     ]),
   ]

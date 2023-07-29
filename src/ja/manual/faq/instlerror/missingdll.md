@@ -1,7 +1,7 @@
 ---
 titleTemplate: :title | 空蛍酒場
 description: 请使用免安装压缩包，正是为此准备的
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です (:
+banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 [文：【无法安装】提示缺乏dll文件]: # 'https://support.qq.com/products/321980/faqs/127820'

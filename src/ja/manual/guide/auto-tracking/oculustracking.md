@@ -8,7 +8,7 @@ prev:
   text: '[Automatic Tracking] Trouble shooting'
   link: './updated.md'
 description:
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です (:
+banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 [文：自动神瞳]: #
