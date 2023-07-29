@@ -57,6 +57,9 @@ export default defineConfig({
   srcExclude: [],
   scrollOffset: 'header',
   cleanUrls: true,
+  sitemap: {
+    hostname: 'https://yuanshen.site',
+  },
   themeConfig: {
     search: {
       provider: 'local',
@@ -332,13 +335,6 @@ export default defineConfig({
       })
   },
   buildEnd: (config) => {
-    const sitemap = new SitemapStream({
-      hostname: 'https://yuanshen.site/docs/',
-    })
-    const writeStream = createWriteStream(resolve(config.outDir, 'sitemap.xml'))
-    sitemap.pipe(writeStream)
-    links.forEach((link) => sitemap.write(link))
-    sitemap.end()
     genFeed(config)
   },
 })

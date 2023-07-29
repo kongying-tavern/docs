@@ -1,5 +1,12 @@
-import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
-import { useRoute, inBrowser } from 'vitepress'
+import {
+  onMounted,
+  watch,
+  nextTick,
+  defineAsyncComponent,
+  h,
+  watchEffect,
+} from 'vue'
+import { useRoute, inBrowser, useData } from 'vitepress'
 import mediumZoom from 'medium-zoom'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import Link from './components/Link.vue'
@@ -32,6 +39,7 @@ export default {
   },
   setup() {
     const route = useRoute()
+    const { lang } = useData()
     const initZoom = () => {
       mediumZoom('.main img:not(.no-zoomable)', {
         background: 'var(--vp-c-bg)',
@@ -48,5 +56,11 @@ export default {
           initZoom()
         })
     )
+
+    watchEffect(() => {
+      if (inBrowser) {
+        document.cookie = `nf_lang=${lang.value}; expires=Mon, 1 Jan 2024 00:00:00 UTC; path=/`
+      }
+    })
   },
 }
