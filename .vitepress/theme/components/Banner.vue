@@ -39,7 +39,7 @@ const hideBanner = () => {
 </script>
 
 <template>
-  <div v-if="isShow" ref="el" class="banner">
+  <div v-show="isShow" ref="el" class="banner">
     <div class="text" v-html="frontmatter.banner"></div>
 
     <button type="button" @click="dismiss">
