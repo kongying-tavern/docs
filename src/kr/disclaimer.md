@@ -4,11 +4,8 @@ description: 免责声明
 layout: doc
 aside: false
 titleTemplate: :title | Kongying Tavern
+banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
-
-::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다
-:::
 
 # 免责声明
 

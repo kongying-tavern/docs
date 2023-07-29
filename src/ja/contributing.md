@@ -2,11 +2,8 @@
 title: Contributing
 description: Contributing
 aside: false
+banner: 申し訳ありませんが、このページの翻訳はまだ進行中です (:
 ---
-
-::: info
-申し訳ありませんが、このページの翻訳はまだ進行中です (:
-:::
 
 # Contributing
 

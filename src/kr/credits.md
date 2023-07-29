@@ -5,11 +5,8 @@ description: 技术鸣谢
 aside: false
 layout: doc
 pageClass: credits
+banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
-
-::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다:
-:::
 
 # 技术鸣谢
 

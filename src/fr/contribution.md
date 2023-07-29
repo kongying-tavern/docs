@@ -4,6 +4,7 @@ description: Kongying Tavern Genshin Interactive Map began its development in Ju
 aside: false
 layout: doc
 titleTemplate: :title | Kongying Tavern
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
 
 <script setup>
@@ -12,10 +13,6 @@ import dayjs from 'dayjs';
 
 const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
 </script>
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 # Contribution Acknowledgement
 

@@ -73,6 +73,8 @@
     #35495e80
   );
   --vp-home-hero-image-filter: blur(30px);
+
+  --vp-layout-top-height: 0.1px;
 }
 
 @media (min-width: 640px) {

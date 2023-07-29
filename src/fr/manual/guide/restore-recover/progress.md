@@ -8,11 +8,8 @@ description: Return saves to an archived timestamp, or recover save from acciden
 next:
   text: 'Table of Content'
   link: 'fr/manual/client-user-manual.md'
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'

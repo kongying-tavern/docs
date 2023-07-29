@@ -2,11 +2,8 @@
 title: Join Us
 description: This project and its iterations will always be free, we sincerely invite you to join our effort in its completion and polishing. If you have proposals for a new idea or mechanic, join us to make it real.
 titleTemplate: :title | Kongying Tavern
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 # Join Us
 

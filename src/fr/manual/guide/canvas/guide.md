@@ -8,11 +8,8 @@ prev:
   text: '[Multi Mark] Instructions'
   link: '../batch-selection/instructions'
 description: Basic functionality, import, and export.
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
 

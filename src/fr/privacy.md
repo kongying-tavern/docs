@@ -2,11 +2,8 @@
 title: 隐私政策
 layout: doc
 aside: false
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 # 隐私
 

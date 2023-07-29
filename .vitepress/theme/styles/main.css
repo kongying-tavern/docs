@@ -27,6 +27,15 @@ html {
   padding: 3px 0 !important;
 }
 
+.VPLocalNav {
+  padding-top: 0 !important;
+  margin-top: var(--vp-layout-top-height);
+}
+
+.reached-top {
+  top: var(--vp-layout-top-height) !important;
+}
+
 #app a:focus-visible,
 #app button:focus-visible,
 #app input[type='checkbox']:focus-visible {

@@ -8,11 +8,8 @@ prev:
   text: '【批量选择】使用说明'
   link: '../batch-selection/instructions'
 description: 基础使用教程。
+banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
-
-::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다
-:::
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
 

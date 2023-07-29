@@ -8,11 +8,8 @@ next:
   text: '【地图性能占用高】前后台帧率设置'
   link: '../bg/bgfrate'
 description: Troubleshoot
+banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
-
-::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다
-:::
 
 [文：自动追踪问题排查.docx]: # '以下为“问题排查”内容'
 

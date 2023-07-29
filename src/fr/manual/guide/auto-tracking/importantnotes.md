@@ -8,11 +8,8 @@ next:
   text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'

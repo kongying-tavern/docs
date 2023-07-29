@@ -8,11 +8,8 @@ next:
   text: '[Background Usage] Framerate/Tracking Control'
   link: '../bg/bgfrate'
 description: Troubleshoot
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 [文：自动追踪问题排查.docx]: # '以下为 问题排查 内容'
 

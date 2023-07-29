@@ -2,11 +2,8 @@
 title: 隐私政策
 layout: doc
 aside: false
+banner: Sorry, this page translation is still in progress
 ---
-
-::: info
-Sorry, this page translation is still in progress (:
-:::
 
 # 隐私
 

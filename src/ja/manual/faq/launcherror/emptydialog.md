@@ -1,11 +1,8 @@
 ---
 titleTemplate: :title | 空蛍酒場
 description: 分为3种情况
+banner: 申し訳ありませんが、このページの翻訳はまだ進行中です (:
 ---
-
-::: info
-申し訳ありませんが、このページの翻訳はまだ進行中です
-:::
 
 [文：【无法打开】空窗提示或卡进度条]: # 'https://support.qq.com/products/321980/faqs/99662'
 

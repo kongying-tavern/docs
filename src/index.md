@@ -7,6 +7,7 @@ features:
   - title: 双筛选逻辑
     icon: 🦾
     details: 宝箱点位同时记录【宝箱品质】与【获取方式】。两种筛选方式无重叠，均可显示指定地区所有【宝箱、宝箱相关】点位
+    link: https://xxx.com
   - title: 覆盖模式
     icon: 🎪
     details: 覆盖游戏窗口的模式，方便单屏幕玩家快速打开地图查看标记~

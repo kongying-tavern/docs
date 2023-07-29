@@ -1,11 +1,8 @@
 ---
 titleTemplate: :title | Kongying Tavern
 description: An overwhelming amount of user access attempts can cause our server to become non-responsive.
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 [文：【无法打开】提示“数据查询失败”、“版本查询失败”]: # 'https://support.qq.com/products/321980/faqs/97055'
 

@@ -4,11 +4,8 @@ description: Join Community
 layout: doc
 titleTemplate: :title | Kongying Tavern
 aside: false
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 # Join Community
 

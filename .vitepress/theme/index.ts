@@ -16,8 +16,8 @@ export default {
 
   Layout() {
     return h(DefaultTheme.Layout, null, {
-      'doc-after': () =>
-        h(defineAsyncComponent(() => import('./components/Giscus.vue'))),
+      'layout-top': () =>
+        h(defineAsyncComponent(() => import('./components/Banner.vue'))),
     })
   },
   enhanceApp({ app }) {

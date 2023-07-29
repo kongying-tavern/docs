@@ -8,11 +8,8 @@ prev:
   text: 'Home page'
   link: '../index.md'
 description: Table of Contents
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
 

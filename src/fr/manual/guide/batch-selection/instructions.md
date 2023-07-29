@@ -8,11 +8,8 @@ next:
   text: '[Custom Path Planner (Canvas)] Guide'
   link: '../canvas/guide'
 description: Responding to the requests from travelers, Multi Mark is now available!
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 [文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'
 

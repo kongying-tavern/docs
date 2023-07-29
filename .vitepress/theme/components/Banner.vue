@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core'
 import { ref, watchEffect } from 'vue'
-defineProps<{
-  version: string
-}>()
+import { useData } from 'vitepress'
+
 const el = ref<HTMLElement>()
 const { height } = useElementSize(el)
+const { frontmatter, page } = useData()
+const isShow = ref(typeof frontmatter.value.banner === 'string')
 const deal = () => (Date.now() + 8.64e7 * 1).toString() // current time + 1 day
+
 watchEffect(() => {
   if (height.value) {
     document.documentElement.style.setProperty(
@@ -15,23 +17,28 @@ watchEffect(() => {
     )
   }
 })
-const restore = (key, cls, def = false) => {
+
+const restore = (key, def = false) => {
   const saved = localStorage.getItem(key)
-  console.log('a')
-  if (saved ? saved !== 'false' && deal() > saved : def) {
-    document.documentElement.classList.add(cls)
-  }
+  if (saved ? saved !== 'false' && deal() > saved : def) hideBanner()
 }
-restore('banner', 'banner-dismissed')
+
+restore(`banner-${page.value.relativePath}`)
+
 const dismiss = () => {
-  localStorage.setItem('banner', deal())
-  document.documentElement.classList.add('banner-dismissed')
+  localStorage.setItem(`banner-${page.value.relativePath}`, deal())
+  hideBanner()
+}
+
+const hideBanner = () => {
+  isShow.value = false
+  document.documentElement.style.setProperty('--vp-layout-top-height', '0.1px')
 }
 </script>
 
 <template>
-  <div ref="el" class="banner">
-    <div class="text">测试 Banner</div>
+  <div v-if="isShow" ref="el" class="banner">
+    <div class="text" v-html="frontmatter.banner"></div>
 
     <button type="button" @click="dismiss">
       <svg
@@ -47,42 +54,7 @@ const dismiss = () => {
   </div>
 </template>
 
-<style>
-.banner-dismissed {
-  --vp-layout-top-height: 0px !important;
-}
-
-html {
-  --vp-layout-top-height: 88px;
-}
-
-.banner > button {
-  opacity: 0.7;
-  transition: opacity cubic-bezier(0.39, 0.575, 0.565, 1) 0.3s;
-}
-
-.banner > button:hover {
-  opacity: 1;
-}
-
-@media (min-width: 375px) {
-  html {
-    --vp-layout-top-height: 64px;
-  }
-}
-
-@media (min-width: 768px) {
-  html {
-    --vp-layout-top-height: 40px;
-  }
-}
-</style>
-
 <style scoped>
-.banner-dismissed .banner {
-  display: none;
-}
-
 .banner {
   position: fixed;
   top: 0;
@@ -99,6 +71,19 @@ html {
 
 .text {
   flex: 1;
+}
+
+.banner-dismissed {
+  --vp-layout-top-height: 0px !important;
+}
+
+.banner > button {
+  opacity: 0.7;
+  transition: opacity cubic-bezier(0.39, 0.575, 0.565, 1) 0.3s;
+}
+
+.banner > button:hover {
+  opacity: 1;
 }
 
 a {

@@ -8,11 +8,8 @@ next:
   text: '【画板】路线功能教程'
   link: '../canvas/guide'
 description: 应旅行者需求，现已将多选功能加入豪华午餐！
+banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
-
-::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다
-:::
 
 [文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'
 

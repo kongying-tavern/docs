@@ -67,7 +67,7 @@ theme: medium
 - 确定游戏里是否正常显示小地图
 - 查看左侧菜单下方的“自动追踪版本”，如果显示为“未初始化”，尝试重新开启自动追踪
 
-![](/imgs/manual/auto-tracking/3.png)
+![](/imgs/manual/auto-tracking/3.png =200x300)
 ![](/imgs/manual/auto-tracking/4.png)
 ![](/imgs/manual/auto-tracking/5.png)
 

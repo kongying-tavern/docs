@@ -8,11 +8,8 @@ description: 还原存档到历史位置，或存档误删还原。
 next:
   text: '目录'
   link: 'ja/manual/client-user-manual.md'
+banner: 申し訳ありませんが、このページの翻訳はまだ進行中です (:
 ---
-
-::: info
-申し訳ありませんが、このページの翻訳はまだ進行中です
-:::
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'

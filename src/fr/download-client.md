@@ -3,11 +3,8 @@ title: Download Client
 description: Currently we only offer the Windows Version of our map client, versions in other OS are in progress.
 aside: false
 titleTemplate: :title | Kongying Tavern
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 # Download Client
 

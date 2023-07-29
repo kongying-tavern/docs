@@ -1,11 +1,8 @@
 ---
 titleTemplate: :title | 空荧酒馆
 description: 在版本更新中，部分系统会出现无法自动打开更新程序的bug，此时需要手动运行更新程序进行更新
+banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
-
-::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다
-:::
 
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
 

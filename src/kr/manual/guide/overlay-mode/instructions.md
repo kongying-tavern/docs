@@ -8,11 +8,8 @@ next:
   text: '【窗口全屏/无边框窗口模式】启动游戏'
   link: './fullscreen-windowed/launching'
 description: Overlay Mode displays the map client over the Genshin game window. This mode benefits players who only have one monitor, allowing quicker switching between the game and the map client.
+banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
-
-::: info
-죄송합니다. 이 페이지 번역은 아직 진행 중입니다
-:::
 
 [文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'
 

@@ -7,11 +7,8 @@ titleTemplate: :title | Kongying Tavern
 head:
   - - script
     - src: /docs/error.js
+banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-::: info
-Désolé, la traduction de cette page est toujours en cours
-:::
 
 # _Genshin Interactive Map_ has encountered some problems...
 
