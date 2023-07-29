@@ -69,6 +69,8 @@ const hideBanner = () => {
   color: #fff;
   display: flex;
   justify-content: space-between;
+  animation: slide-enter-inverse 1s both 1;
+  animation-delay: 0.3s;
 }
 
 .text {
@@ -96,5 +98,17 @@ svg {
   width: 20px;
   height: 20px;
   margin-left: 8px;
+}
+
+@keyframes slide-enter-inverse {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0px);
+    opacity: 100;
+  }
 }
 </style>
