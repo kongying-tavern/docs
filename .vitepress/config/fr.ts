@@ -4,7 +4,7 @@ import path from 'path'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
-export const META_URL = 'https://yuanshen.site/docs/'
+export const META_URL = 'https://yuanshen.site/docs/fr'
 export const META_TITLE = 'Genshin Interactive Map'
 export const META_KEYWORDS =
   'Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map'

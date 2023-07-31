@@ -2,30 +2,30 @@
   <div slide-enter>
     <div class="one-time-donations">
       <div class="links">
-        <a href="#wechatpay">
+        <a href="#wechatpay" title="WeChat Pay">
           <label class="i-custom-wechatpay"></label
           >{{ theme.payment.wechatpay.name }}
         </a>
-        <a href="#alipay"
+        <a href="#alipay" title="AliPay"
           ><label class="i-custom-alipay"></label>
           {{ theme.payment.alipay.name }}</a
         >
-        <a href="#qqpay">
+        <a href="#qqpay" title="QQ Pay">
           <label class="i-custom-qqpay"></label>
           {{ theme.payment.qqpay.name }}</a
         >
-        <a href="#paypal">
+        <a href="#paypal" title="Paypal">
           <label class="i-custom-paypal"></label>
           {{ theme.payment.paypal.name }}</a
         >
-        <a href="#bilibili">
+        <a href="#bilibili" title="bilibili">
           <label class="i-custom-bilibili"></label>
           {{ theme.payment.bilibili.name }}</a
         >
       </div>
     </div>
 
-    <div v-if="type && coins[type]" class="coin-details">
+    <div v-if="type && coins[type]" class="coin-details slide-enter">
       <p>
         <label ref="icon"></label>
         {{ coins[type].name }} Address:<br /><a
@@ -80,6 +80,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+
   a {
     flex: 1 1 auto;
     padding: 12px 8px;
@@ -96,22 +97,26 @@ onBeforeUnmount(() => {
     justify-content: center;
     align-items: center;
     color: var(--vp-c-text-1);
+
     & > label {
       display: inline-block;
       height: 2em;
       width: 2em;
     }
+
     @media (any-hover: hover) {
       &:hover,
       &:active {
         transform: translateY(-3px);
       }
+
       svg {
         &:hover {
           transform: scale(1);
         }
       }
     }
+
     svg {
       margin-right: 5px;
     }
@@ -129,6 +134,11 @@ onBeforeUnmount(() => {
   justify-content: space-around;
   align-items: center;
   margin-top: 2rem;
+
+  img {
+    box-shadow: var(--vp-shadow-1);
+  }
+
   p {
     font-weight: bold;
     text-overflow: ellipsis;
@@ -136,6 +146,7 @@ onBeforeUnmount(() => {
     overflow: hidden;
     display: inline-block;
     width: 400px;
+
     a {
       font-weight: normal;
     }
@@ -157,6 +168,7 @@ onBeforeUnmount(() => {
   from {
     transform: rotate3d(0, 1, 0, -90deg) scale(0.9);
   }
+
   to {
     transform: rotate3d(0, 1, 0, 90deg) scale(1);
   }

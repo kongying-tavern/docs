@@ -2,9 +2,6 @@ import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
 import MarkdownItFootnote from 'markdown-it-footnote'
-import { createWriteStream } from 'node:fs'
-import path, { resolve } from 'node:path'
-import { SitemapStream } from 'sitemap'
 import { genFeed } from './genFeed'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
@@ -248,11 +245,6 @@ export default defineConfig({
     ['meta', { property: 'og:locale:alternate', content: 'zh-CN' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
-    [
-      'script',
-      { id: 'spotlightEffectLinks' },
-      'function spotlightEffectLinks() {document.querySelector("body").addEventListener("mousemove", (e) => {e.currentTarget.style.setProperty("--x", `${e.clientX}px`);e.currentTarget.style.setProperty("--y", `${e.clientY}px`);});function setLinksPositions() {document.querySelectorAll("a").forEach((a) => {const bounding = a.getBoundingClientRect();a.style.setProperty("--positionX", `${bounding.x}px`);a.style.setProperty("--positionY", `${bounding.y}px`);});}window.addEventListener("load", setLinksPositions);window.addEventListener("resize", setLinksPositions)} spotlightEffectLinks() ',
-    ],
     ...(isProd ? productionHead : []),
   ],
   ignoreDeadLinks: [
