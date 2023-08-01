@@ -18,12 +18,39 @@ jobs:
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success'
     steps:
+      - uses: actions/checkout@main
+        with:
+          repository: https://github.com/kongying-tavern/docs
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # cache node_modules
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+
+      # 构建
+      - name: Build
+        run: pnpm site:preview
+
       - name: download pr artifact
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           run_id: ${{ github.event.workflow_run.id }}
           name: pr
+
       - name: save PR id
         id: pr
         run: echo "::set-output name=id::$(<pr-id.txt)"
@@ -46,12 +73,17 @@ jobs:
           npx surge --project ./dist --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN  }}
           echo the preview URL is $DEPLOY_DOMAIN
           echo "::set-output name=url::$DEPLOY_DOMAIN"
+
+      - name: Get output diff
+        run: nodejs .github/diff.js
+
       - name: update status comment
         uses: actions-cool/maintain-one-comment@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             <a href="${{steps.deploy.outputs.url}}"><img alt="成功" src="https://assets.yuanshen.site/images/privew_is_ready_v1.png"></a>
+            ${{ env.DIFFER_INFO }}
             <!-- [工作流地址](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}) -->
             <!-- AUTO_PREVIEW_HOOK -->
           number: ${{ steps.pr.outputs.id }}
