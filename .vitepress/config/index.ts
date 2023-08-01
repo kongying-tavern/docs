@@ -20,7 +20,6 @@ import { jaConfig } from './ja'
 import { krConfig } from './kr'
 import { frConfig } from './fr'
 
-export const links: any[] = []
 export const isProd = process.env.NODE_ENV === 'production'
 export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
 export const productionHead: HeadConfig[] = [
@@ -317,14 +316,6 @@ export default defineConfig({
       md.use(obsidianImageSize)
       md.use(figure)
     },
-  },
-  transformHtml: (_, id, { pageData }) => {
-    if (!/[\\/]404\.html$/.test(id))
-      links.push({
-        // you might need to change this if not using clean urls mode
-        url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2'),
-        lastmod: pageData.lastUpdated,
-      })
   },
   buildEnd: (config) => {
     genFeed(config)
