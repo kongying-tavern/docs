@@ -2,7 +2,6 @@ import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Inspect from 'vite-plugin-inspect'
 import MarkdownItFootnote from 'markdown-it-footnote'
-import { genFeed } from './genFeed'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
 import { colorPreviewPlugin } from '../theme/markdown/colorPreview'
@@ -316,8 +315,5 @@ export default defineConfig({
       md.use(obsidianImageSize)
       md.use(figure)
     },
-  },
-  buildEnd: (config) => {
-    genFeed(config)
   },
 })
