@@ -1,6 +1,4 @@
 import Unocss from 'unocss/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import Inspect from 'vite-plugin-inspect'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
@@ -283,16 +281,6 @@ export default defineConfig({
     plugins: [
       // https://github.com/antfu/unocss
       Unocss(),
-
-      // https://github.com/antfu/unplugin-auto-import
-      AutoImport({
-        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-        imports: ['vue', '@vueuse/core'],
-        dts: './auto-imports.d.ts',
-        vueTemplate: true,
-      }),
-
-      Inspect(),
     ],
     build: {
       minify: 'terser',
