@@ -79,7 +79,7 @@ description: 加入我们
 
 ### 技术栈
 
-`Java` `Rust` `MySql` `SpringBoot` `Docker` `Redis`
+`Java` `Rust` `PostgreSQL` `SpringBoot` `Docker` `Redis`
 :::
 
 :::raw
@@ -94,7 +94,7 @@ description: 加入我们
 
 ### 技术栈
 
-`Dark` `Flutter`
+`Dart` `Flutter`
 :::
 
 :::raw
