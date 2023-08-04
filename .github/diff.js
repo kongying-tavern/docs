@@ -6,7 +6,6 @@ const core = require('@actions/core')
 function init() {
   const DEPLOY_DOMAIN =
     process.env.DEPLOY_DOMAIN | 'https://yuanshen.site/docs/'
-  const OUT_DIR = process.env.OUT_DIR | core.toPlatformPath('./src/_dist')
   let result = ''
   let outRange = false
 
@@ -69,8 +68,8 @@ function init() {
   }
 
   const { changedFiles, newFiles } = compareFilesWithHash(
-    calculateHashForHTMLFiles(OUT_DIR == 0 ? 'dist' : OUT_DIR),
-    calculateHashForHTMLFiles('dist')
+    calculateHashForHTMLFiles(core.toPlatformPath('./src/dist')),
+    calculateHashForHTMLFiles(core.toPlatformPath('./src/_dist'))
   )
 
   if (changedFiles.length === 0 && newFiles.length === 0) {
