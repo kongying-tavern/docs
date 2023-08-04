@@ -16,7 +16,7 @@
     "lint:prettier": "prettier --check .",
     "lint:zh": "zhlint 'docs/**/*.md'",
     "serve": "vitepress serve --base /docs/",
-    "site:preview": "vitepress serve --base /"
+    "site:preview": "vitepress build"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [
