@@ -62,7 +62,7 @@
     "sass-loader": "^13.3.1",
     "typescript": "^4.9.5",
     "unocss": "^0.45.30",
-    "vitepress": "2.0.0-beta.6",
+    "vitepress": "^1.0.0-beta.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2",
     "vue-router-better-scroller": "^0.0.0"
