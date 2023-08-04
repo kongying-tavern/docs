@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
         with:
-          repository: https://github.com/kongying-tavern/docs
+          repository: kongying-tavern/docs
 
       - uses: actions/setup-node@v3
         with:
