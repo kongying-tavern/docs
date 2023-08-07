@@ -5,10 +5,10 @@ const core = require('@actions/core')
 
 function init() {
   const DEPLOY_DOMAIN =
-    process.env.DEPLOY_DOMAIN | 'https://yuanshen.site/docs/'
+    process.env.DEPLOY_DOMAIN || 'https://yuanshen.site/docs/'
   let result = ''
   let outRange = false
-
+  console.log(process.env.DEPLOY_DOMAIN, DEPLOY_DOMAIN)
   function calculateHashForHTMLFiles(directoryPath) {
     const files = fs.readdirSync(core.toPlatformPath(directoryPath))
     const result = {}
@@ -21,7 +21,7 @@ function init() {
         const fileContent = fs.readFileSync(filePath, 'utf8')
         const hash = crypto.createHash('md5').update(fileContent).digest('hex')
 
-        result[filePath.substring(filePath.indexOf('\\') + 1)] = hash
+        result[filePath.substring(filePath.indexOf('dist') + 4)] = hash
       } else if (fileStats.isDirectory()) {
         const subDirectoryPath = path.join(directoryPath, file)
         const subDirectoryFiles = calculateHashForHTMLFiles(subDirectoryPath) // 递归调用遍历子目录
@@ -68,8 +68,8 @@ function init() {
   }
 
   const { changedFiles, newFiles } = compareFilesWithHash(
-    calculateHashForHTMLFiles(core.toPlatformPath('./src/dist')),
-    calculateHashForHTMLFiles(core.toPlatformPath('./src/_dist'))
+    calculateHashForHTMLFiles(core.toPlatformPath('./src/_dist')),
+    calculateHashForHTMLFiles(core.toPlatformPath('./src/dist'))
   )
 
   if (changedFiles.length === 0 && newFiles.length === 0) {
