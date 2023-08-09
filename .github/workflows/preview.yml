@@ -67,7 +67,7 @@ jobs:
           echo "::set-output name=url::$DEPLOY_DOMAIN"
 
       - name: Get output diff
-        run: nodejs .github/diff.js
+        run: node .github/diff.cjs
 
       - name: update status comment
         uses: actions-cool/maintain-one-comment@v2.0.0
