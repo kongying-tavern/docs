@@ -1,0 +1,405 @@
+{
+  "description": "A Genshin interactive map by Kongying Tavern for completionists",
+  "titleTemplate": "Kongying Tavern",
+  "themeConfig": {
+    "siteTitle": "Genshin Interactive Map",
+    "outlineTitle": "On This Page",
+    "logo": "/imgs/logo_256.png",
+    "lastUpdatedText": "Last updated",
+    "notFound": {
+      "title": "PAGE NOT FOUND",
+      "quote": "But if you don't change your direction, and if you keep looking, you may end up where you are heading."
+    },
+    "socialLinks": [
+      {
+        "icon": "github",
+        "link": "https://github.com/kongying-tavern"
+      },
+      {
+        "icon": {
+          "svg": "\n<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 256 256\"><path fill=\"currentColor\" d=\"M248 104a32 32 0 0 0-52.94-24.19c-16.75-8.9-36.76-14.28-57.66-15.53l5.19-31.17l17.72 2.72a24 24 0 1 0 2.87-15.74l-26-4a8 8 0 0 0-9.11 6.59l-6.87 41.48c-21.84.94-42.82 6.38-60.26 15.65a32 32 0 0 0-42.59 47.74A59 59 0 0 0 16 144c0 21.93 12 42.35 33.91 57.49C70.88 216 98.61 224 128 224s57.12-8 78.09-22.51C228 186.35 240 165.93 240 144a59 59 0 0 0-2.35-16.45A32.16 32.16 0 0 0 248 104Zm-64-80a8 8 0 1 1-8 8a8 8 0 0 1 8-8ZM72 128a16 16 0 1 1 16 16a16 16 0 0 1-16-16Zm91.75 55.07a76.18 76.18 0 0 1-71.5 0a8 8 0 1 1 7.5-14.14a60.18 60.18 0 0 0 56.5 0a8 8 0 1 1 7.5 14.14ZM168 144a16 16 0 1 1 16-16a16 16 0 0 1-16 16Z\"/></svg>"
+        },
+        "link": "https://www.reddit.com/user/Kongying_Tavern"
+      },
+      {
+        "icon": "discord",
+        "link": "https://discord.gg/aFe57AKZUF"
+      },
+      {
+        "icon": "twitter",
+        "link": "https://twitter.com/KongyingTavern"
+      }
+    ],
+    "docFooter": {
+      "prev": "Previous page",
+      "next": "Next page"
+    },
+    "editLink": {
+      "pattern": "https://github.com/kongying-tavern/docs/edit/next/src/:path",
+      "text": "Suggest changes to this page"
+    },
+    "payment": {
+      "wechatpay": {
+        "name": "WeChat Pay",
+        "address": "wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp"
+      },
+      "alipay": {
+        "name": "Alipay",
+        "address": "https://qr.alipay.com/tsx11609thmpw9odmvdlxd6"
+      },
+      "qqpay": {
+        "name": "QQ Pay",
+        "address": "https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet"
+      },
+      "paypal": {
+        "name": "Paypal",
+        "address": "https://www.paypal.com/paypalme/yuanshenditu"
+      },
+      "bilibili": {
+        "name": "bilibili",
+        "address": "https://space.bilibili.com/518076785"
+      }
+    },
+    "nav": [
+      {
+        "text": "Download",
+        "link": "ko/download-client.md"
+      },
+      {
+        "text": "Support us",
+        "link": "ko/support-us.md"
+      },
+      {
+        "text": "Community",
+        "link": "ko/community.md"
+      },
+      {
+        "text": "Support",
+        "items": [
+          {
+            "text": "Client User Manual",
+            "link": "ko/manual/client-user-manual.md"
+          },
+          {
+            "text": "Feedback",
+            "link": "https://support.qq.com/products/321980"
+          },
+          {
+            "text": "New Features",
+            "link": "https://support.qq.com/products/321980/topic-detail/2016/"
+          }
+        ]
+      },
+      {
+        "text": "About",
+        "items": [
+          {
+            "text": "About Us",
+            "items": [
+              {
+                "text": "Join Us",
+                "link": "ko/join.md"
+              },
+              {
+                "text": "Our Team",
+                "link": "ko/team.md"
+              }
+            ]
+          },
+          {
+            "text": "Update Log",
+            "items": [
+              {
+                "text": "Web",
+                "link": "https://support.qq.com/products/321980/blog/505810"
+              },
+              {
+                "text": "Client",
+                "link": "https://discord.gg/SWz6RTWNkm"
+              }
+            ]
+          },
+          {
+            "text": "Acknowledgement",
+            "items": [
+              {
+                "text": "Credits",
+                "link": "ko/credits.md"
+              },
+              {
+                "text": "Contributors",
+                "link": "ko/contribution.md"
+              },
+              {
+                "text": "Sponsors",
+                "link": "ko/support-us.md#Sponsor%20Acknowledgements"
+              }
+            ]
+          },
+          {
+            "text": "Legal (Chinese)",
+            "items": [
+              {
+                "text": "Disclaimer",
+                "link": "ko/disclaimer.md"
+              },
+              {
+                "text": "Privacy",
+                "link": "ko/privacy.md"
+              },
+              {
+                "text": "Agreement",
+                "link": "ko/agreement.md"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sidebar": {
+      "ko/manual": [
+        {
+          "text": "Table of Contents",
+          "link": "ko/manual/client-user-manual"
+        },
+        {
+          "text": "Guides",
+          "items": [
+            {
+              "text": "Automatic Tracking",
+              "items": [
+                {
+                  "text": "Introduction",
+                  "link": "ko/manual/guide/auto-tracking/importantnotes"
+                },
+                {
+                  "text": "Troubleshooting",
+                  "link": "ko/manual/guide/auto-tracking/troubleshoot"
+                }
+              ]
+            },
+            {
+              "text": "Framerate/Tracking Control",
+              "link": "ko/manual/guide/bg/bgfrate"
+            },
+            {
+              "text": "Multi Mark",
+              "link": "ko/manual/guide/batch-selection/instructions"
+            },
+            {
+              "text": "Canvas Guide",
+              "link": "ko/manual/guide/canvas/guide"
+            },
+            {
+              "text": "Easter Egg",
+              "link": "ko/manual/guide/easter-egg/view"
+            },
+            {
+              "text": "Hide/Show Found",
+              "link": "ko/manual/guide/hide-show-done/hidedoneshowdone"
+            },
+            {
+              "text": "Overlay Mode",
+              "items": [
+                {
+                  "text": "Instructions",
+                  "link": "ko/manual/guide/overlay-mode/instructions"
+                },
+                {
+                  "text": "Windowed Fullscreen",
+                  "link": "ko/manual/guide/overlay-mode/fullscreen-windowed/launching"
+                }
+              ]
+            },
+            {
+              "text": "Restore/Recover Progress",
+              "link": "ko/manual/guide/restore-recover/progress"
+            }
+          ]
+        },
+        {
+          "text": "FAQ",
+          "items": [
+            {
+              "text": "Account safety",
+              "link": "ko/manual/faq/accountsafety/acntban.md"
+            },
+            {
+              "text": "Auto Update",
+              "link": "ko/manual/faq/autoupdate/updater.md"
+            },
+            {
+              "text": "Installation Error",
+              "items": [
+                {
+                  "text": "Code 2503",
+                  "link": "ko/manual/faq/instlerror/code2503.md"
+                },
+                {
+                  "text": "Missing .dll file",
+                  "link": "ko/manual/faq/instlerror/missingdll.md"
+                }
+              ]
+            },
+            {
+              "text": "Launch Error",
+              "items": [
+                {
+                  "text": "Stuck/No Progress",
+                  "link": "ko/manual/faq/launcherror/emptydialog.md"
+                },
+                {
+                  "text": "Version Check Failed",
+                  "link": "ko/manual/faq/launcherror/versioncheck.md"
+                }
+              ]
+            },
+            {
+              "text": "About Login",
+              "items": [
+                {
+                  "text": "Login Problems",
+                  "link": "ko/manual/faq/login/accountlogin.md"
+                },
+                {
+                  "text": "Repeated Login Requests",
+                  "link": "ko/manual/faq/login/clientrepeatedly.md"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "qrcodeTitle": "Discord Server",
+      "qrcodeMessage": "Contact us on discord",
+      "qrcodeLink": "https://discord.gg/aFe57AKZUF",
+      "navigation": [
+        {
+          "title": "About",
+          "items": [
+            {
+              "text": "Join Us",
+              "link": "ko/join"
+            },
+            {
+              "text": "Our team",
+              "link": "ko/team"
+            },
+            {
+              "text": "Sponsors",
+              "link": "ko/support-us"
+            }
+          ]
+        },
+        {
+          "title": "Legal (Chinese)",
+          "items": [
+            {
+              "text": "Disclaimer",
+              "link": "ko/disclaimer"
+            },
+            {
+              "text": "Privacy",
+              "link": "ko/privacy"
+            },
+            {
+              "text": "Agreement",
+              "link": "ko/agreement"
+            }
+          ]
+        },
+        {
+          "title": "Support",
+          "items": [
+            {
+              "text": "Client User Manual",
+              "link": "ko/manual/client-user-manual"
+            },
+            {
+              "text": "Feedback",
+              "link": "https://support.qq.com/products/321980"
+            },
+            {
+              "text": "New Features",
+              "link": "https://support.qq.com/products/321980/topic-detail/2016/"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "head": [
+    [
+      "meta",
+      {
+        "name": "keywords",
+        "content": "Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "og:url",
+        "content": "https://yuanshen.site/docs/ko/"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "twitter:url",
+        "content": "https://yuanshen.site/docs/ko/"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "twitter:title",
+        "content": "Genshin Interactive Map"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "twitter:description",
+        "content": "A Genshin interactive map by Kongying Tavern for completionists"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "og:site_name",
+        "content": "Genshin Interactive Map"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "og:locale",
+        "content": "en-US"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "og:image",
+        "content": "https://yuanshen.site/docs/imgs/cover.jpg"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "og:image",
+        "content": "https://yuanshen.site/docs/imgs/cover.jpg"
+      }
+    ],
+    [
+      "meta",
+      {
+        "name": "twitter:image",
+        "content": "https://yuanshen.site/docs/imgs/cover.jpg"
+      }
+    ]
+  ]
+}
