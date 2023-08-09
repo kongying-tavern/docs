@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Member } from './Member'
-
+import { computed } from 'vue'
 const props = defineProps<{
   member: Member
 }>()
@@ -161,13 +161,17 @@ const avatarUrl = computed(() => {
 .TeamMember {
   position: relative;
   background-color: var(--vp-c-bg-soft);
-  transition: all 0.5s, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition:
+    all 0.5s,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .TeamMember:hover {
   transform: translate3d(0, -4px, 0);
   box-shadow: var(--vp-shadow-1);
 }
+
 @media (min-width: 512px) {
   .TeamMember {
     display: flex;
@@ -192,7 +196,9 @@ const avatarUrl = computed(() => {
   font-size: 12px;
   font-weight: 500;
   color: #fd1d7c;
-  transition: color 0.25s, background-color 0.25s;
+  transition:
+    color 0.25s,
+    background-color 0.25s;
 }
 
 .sponsor:hover {
@@ -225,6 +231,7 @@ const avatarUrl = computed(() => {
   background-color: var(--vp-c-mute-dark);
   transform: translateX(-8px);
 }
+
 .avatar-img .skeleton {
   animation: skeleton--flashed 2s linear 2s infinite;
 }

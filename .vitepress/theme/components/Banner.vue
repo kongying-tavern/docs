@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core'
-import { ref, watchEffect } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
 import { useData } from 'vitepress'
-import { onMounted } from 'vue'
 const el = ref<HTMLElement>()
 const { height } = useElementSize(el)
 const { frontmatter, page } = useData()
@@ -13,7 +12,7 @@ watchEffect(() => {
   if (height.value) {
     document.documentElement.style.setProperty(
       '--vp-layout-top-height',
-      `${height.value + 16}px`
+      `${height.value + 16}px`,
     )
   }
 })

@@ -34,6 +34,7 @@
 
 :root {
   --vp-code-line-highlight-color: rgba(125, 125, 125, 0.2);
+  --vp-c-brand-light: #34d399;
 }
 
 .dark {

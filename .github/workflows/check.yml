@@ -1,14 +1,19 @@
 name: CHECK
 
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
+
 on:
   push:
-    branches:
-      - dev
-      - next
-      - main
-      - en
+    branches: [main]
   pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -16,11 +21,15 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [16, 18]
+        node_version:
+          - 18
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2

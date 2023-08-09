@@ -14,7 +14,7 @@ titleTemplate: 空荧酒馆
 ## 翻訳中の言語 {#work-in-progress-languages}
 
 - [日本語 / Japanese](#) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
-- [韩语 / Korean](../kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
+- [韩语 / Korean](../ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
 - [法语 / French](../fr/index.md)[[source]](https://github.com/kongying-tavern/docs/tree/next/src/fr)]
 
 ## 新しい翻訳を開始する {#starting-a-new-translation}

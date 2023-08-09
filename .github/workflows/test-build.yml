@@ -9,23 +9,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node_version:
+          - 18
+
     steps:
       - uses: actions/checkout@main
         with:
           # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
           fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
 
-      # cache node_modules
-      - name: Cache pnpm modules
-        uses: actions/cache@v2
+      - name: Set node version to ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
+          node-version: ${{ matrix.node_version }}
+          cache: pnpm
 
       - name: Install dependencies
         uses: pnpm/action-setup@v2
