@@ -5,5 +5,10 @@ pull_request_labels:
 files:
   - source: src/**/*.md
     translation: src/%locale%/**/%file_name%.md
+    ignore:
+      - src/en/**/*
+      - src/ja/**/*
+      - src/ko/**/*
+      - src/fr/**/*
   - source: .vitepress/locales/zh-CN.json
     translation: .vitepress/locales/%locale%.json
