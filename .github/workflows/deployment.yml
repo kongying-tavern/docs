@@ -4,16 +4,10 @@ on:
   push:
     branches:
       - main
-      - next
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node_version:
-          - 18
 
     steps:
       - name: Checkout
@@ -22,10 +16,10 @@ jobs:
           # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
           fetch-depth: 0
 
-      - name: Set node version to ${{ matrix.node_version }}
+      - name: Set node version to 18
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version: 18
           cache: pnpm
 
       - name: Install dependencies

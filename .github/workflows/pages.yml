@@ -31,11 +31,6 @@ jobs:
   docs:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node_version:
-          - 18
-
     steps:
       - uses: actions/checkout@v3
         with:
@@ -47,30 +42,32 @@ jobs:
         with:
           # choose node.js version to use
           node-version: '18'
+          cache: pnpm
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
 
       - name: Install dependencies
         uses: pnpm/action-setup@v2
         with:
           run_install: true
 
-      - name: Set node version to ${{ matrix.node_version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node_version }}
-          cache: pnpm
-      # run build script
       - name: Build site
         run: pnpm build
-
-      # please check out the docs of the workflow for more details
-      # @See https://github.com/crazy-max/ghaction-github-pages
-      - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          # deploy to gh-pages branch
-          target_branch: gh-pages
-          # deploy the default output dir
-          build_dir: ./dist
-        env:
-          # @See https://docs.github.com/en/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: docs/.vitepress/dist
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
