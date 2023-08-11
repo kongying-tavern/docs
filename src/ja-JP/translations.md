@@ -1,23 +1,23 @@
 ---
 layout: doc
-title: 多语言及翻译
+title: 多言語と翻訳
 titleTemplate: 空荧酒馆
 ---
 
-# 多语言及翻译 {#translations}
+# 多言語と翻訳 {#translations}
 
-## 多语言版本 {#available-languages}
+## 多言語版 {#available-languages}
 
-- [简体中文 / Simplified Chinese](index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
-- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
+- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
+- [英文 / English](../en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
 
-## 翻译中的语言 {#work-in-progress-languages}
+## 翻訳中の言語 {#work-in-progress-languages}
 
-- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
-- [韩语 / Korean](./ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
+- [日本語 / Japanese](#) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
+- [韩语 / Korean](../ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
 
-## 启动新的翻译 {#starting-a-new-translation}
+## 新しい翻訳を開始する {#starting-a-new-translation}
 
-近期地图的文档经历了一次大的版本升级，所以其他语言的翻译版本仍不可用或进行中。
+地図のドキュメントは最近メジャー バージョン アップグレードされたため、他の言語への翻訳はまだ利用できないか、進行中です。
 
-我们希望通过社区的努力提供更多语言的翻译。这些工作是在 [kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 组织仓库进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。
+私たちはコミュニティの取り組みを通じて、より多くの言語で翻訳を提供したいと考えています。この作業は、[kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 組織リポジトリで行われます。ご興味がございましたら、[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md) をご覧ください。
