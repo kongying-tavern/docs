@@ -1,5 +1,5 @@
 commit_message: '[skip ci] Update translations (%language%) %original_file_name%'
-append_commit_message: false
+append_commit_message: 
 pull_request_title: 'i18n: update translations'
 pull_request_labels:
   - i18n
