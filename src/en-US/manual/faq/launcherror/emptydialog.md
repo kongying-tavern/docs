@@ -1,5 +1,5 @@
 ---
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 description: 分为3种情况
 ---
 
@@ -7,7 +7,7 @@ description: 分为3种情况
 
 # 【无法打开】空窗提示或卡进度条
 
-分为 3 种情况
+There are three likely scenarios,
 
 1. 第一种，卡在 0%，且弹窗空提示
 
@@ -19,7 +19,7 @@ description: 分为3种情况
 
 ![](/imgs/manual/launcherror/2.jpeg)
 
-这种情况是缓存文件损坏了，前往如下地址删除 PlayerPrefs.json 即可解决。
+(Cache is corrupted, head to the directory in the following picture and delete PlayerPrefs.json)
 
 ![](/imgs/manual/launcherror/3.png)
 
