@@ -1,52 +1,52 @@
 ---
-aside: false
-titleTemplate: ':title | 空荧酒馆'
+aside: true
+titleTemplate: ':title | Kongying Tavern'
 prev:
   text: '【地图性能占用高】前后台帧率设置'
   link: '../bg/bgfrate'
 next:
-  text: '【画板】路线功能教程'
-  link: '../canvas/guide'
+  text: '[Custom Path Planner (Canvas)] Guide'
+  link: '/imgs/en/manual/overlay-mode/4.png'
 description: 应旅行者需求，现已将多选功能加入豪华午餐！
 ---
 
-[文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'
+[文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'
 
 # 【批量选择】使用说明
 
 应旅行者需求，现已将多选功能加入豪华午餐！
 
-- <span style="color: red">右键单击</span>某个点位，将直接转换<b><span style="color: green">完成</span>/<span style="color: red">未标记</span></b>状态
-- <span style="color: red">按住右键划过</span>点位，将直接将划过的点位标记为<b><span style="color: green">已完成</span></b>状态
-- 按住<span style="color: red">左 Alt+右键划过</span>点位，将直接将划过的点位标记为<b><span style="color: red">未标记</span></b>状态
-- 按住<span style="color: red">左 Ctrl+右键框选</span>点位，将直接将框选的所有点位标记为<b><span style="color: green">已完成</span></b>状态
-- 按住<span style="color: red">左 Ctrl+左 Alt+右键框选</span>点位，将直接将框选的所有点位标记为<b><span style="color: red">未标记</span></b>状态
+- <span style="color: red">Right click</span> a pin to switch it between <b><span style="color: green">Found</span>/<span style="color: red">To Do</span></b>.
+- Hold <span style="color: red">right click</span> and drag over pins to mark them <b><span style="color: green">Found</span></b>.
+- Hold <span style="color: red">left Alt + right click</span> and drag over pins to mark them them <b><span style="color: red">To Do</span></b>.
+- Hold <span style="color: red">Ctrl + right click</span> to box select pins and mark them <b><span style="color: green">Found</span></b>.
+- Hold <span style="color: red">Ctrl + left Alt + right click</span> to box select pins and mark them <b><span style="color: red">To Do</span></b>.
 
-## **详细说明** {#instruction}
+## **Detailed Instructions** {#instruction}
 
 ### **多选方式一：点选** {#s1}
 
-- 右键点击<b><span style="color: red">未完成</span></b>点位，未完成点位将切换为<b><span style="color: green">已完成</span></b>状态；
-- 右键点击<b><span style="color: green">已完成</span></b>点位，未完成点位将切换为<b><span style="color: red">未完成</span></b>状态。
+- **Right click** a <b><span style="color: red">To Do</span></b> pin to mark it <b><span style="color: green">Found</span></b>.
+- **Right click** a <b><span style="color: green">Found</span></b> pin to mark it <b><span style="color: red">To Do</span></b>.
 
 ![](https://assets.yuanshen.site/docs/en/manual/1.gif) (右键点选)
 
-### **多选方式二：滑动选择** {#s2}
+### **Scenario 2: Swipe Selection** {#s2}
 
-- 按下鼠标右键，滑过相应的点位，<b><span style="color: red">未完成</span></b>的点位会被标记为<b><span style="color: green">已完成</span></b>，已完成的点位不会改变。
+- Holding **right click** and swiping over <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/2.gif) (右键滑动 - 标记)
+![](https://assets.yuanshen.site/docs/en/manual/2.gif) (right click Swipe - Mark)
 
-- 按下左 Alt+鼠标右键，滑过相应点位，<b><span style="color: green">已完成</span></b>的点位会被标记为<b><span style="color: red">未完成</span></b>，未完成的点位不会改变。
+- Holding **left Alt** + **right click** and swiping over <b><span style="color: green">Found</span></b> pins will mark them <b><span style="color: red">To Do</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/3.gif) (右键滑动 - 取消标记)
+![](https://assets.yuanshen.site/docs/en/manual/3.gif) (right click Swipe - Mark Pins "To Do")
 
-### **多选方式三：框选** {#s3}
+### **Scenario 3: Box Selection** {#s3}
 
-- 按下 Ctrl+鼠标右键，开始拖动，松开鼠标右键后，选框中<b><span style="color: red">未完成</span></b>的点位会被标记为<b><span style="color: green">已完成</span></b>，已完成的点位不会改变。
+- Holding **Ctrl** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/4.gif) (右键框选 - 标记)
+![](https://assets.yuanshen.site/docs/en/manual/4.gif) (right click Box Selection - Mark Pins Found)
 
-- 按下 Ctrl+左 Alt+鼠标右键，开始拖动，松开鼠标右键后，选框中<b><span style="color: red">未完成</span></b>的点位会被标记为<b><span style="color: green">已完成</span></b>，未完成的点位不会改变。
+- Holding **Ctrl** + **left Alt** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
 
-![](https://assets.yuanshen.site/docs/en/manual/5.gif) (右键框选 - 取消标记)
+![](https://assets.yuanshen.site/docs/en/manual/5.gif) (right click Box Selection - Mark Pins "To Do")
