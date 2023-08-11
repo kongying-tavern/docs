@@ -1,6 +1,6 @@
 ---
-title: 贡献鸣谢
-description: 贡献鸣谢
+title: Contribution Acknowledgement
+description: Contribution Acknowledgement
 titleTemplate: 空荧酒馆
 layout: doc
 comment: false
@@ -11,56 +11,56 @@ aside: false
 
 ## 翻译贡献
 
-| Name                                  |
-| ------------------------------------- |
-| Pop_Slime <br /> (英语翻译)         |
-| Suizyun <br /> (英语翻译)           |
-| Pat <br /> (英语翻译)               |
-| 栖客。<br /> (英语翻译)                |
-| Arrebol <br /> (英语翻译)           |
-| 一团猫 <br /> (日语翻译)               |
-| Yuka <br /> (日语翻译)              |
-| 小璐 るーちゃん <br /> (日语翻译)          |
-| 尉迟兰屏 <br /> (世界语翻译)             |
-| 夜 銀河 <br /> (法语翻译)              |
-| 1670732206 <br /> (粤语翻译)        |
-| 想太多了 <br /> (韩语翻译)              |
-| Mercury <br /> (英语/德语/西语/瑞典语翻译) |
+| Name                                         |
+| -------------------------------------------- |
+| Pop_Slime <br /> (English)             |
+| Suizyun <br /> (English)               |
+| Pat <br /> (English)                   |
+| 栖客。<br /> (English)<br /> (英语翻译) |
+| Arrebol <br /> (English)               |
+| 一团猫 <br /> (Japanese)                  |
+| Yuka <br /> (Japanese)                 |
+| 小璐 るーちゃん <br /> (Japanese)             |
+| 尉迟兰屏 <br /> (Esperanto)                |
+| 夜 銀河 <br /> (French)                   |
+| 1670732206 <br /> (Cantonese)          |
+| 想太多了 <br /> (Korean)                   |
+| Mercury <br /> (en/gr/es/sv)           |
 
-## 社区管理
+## Communities
 
-| Name                                 |
-| ------------------------------------ |
-| 鈴                                    |
-| 不服输的泡泡                               |
-| AAAAAAAA                             |
-| 莫                                    |
-| 蹲在墓地吓鬼                               |
-| C.c.                                 |
-| Zn(OH)₂·H₂ZnO₂                       |
-| 梦梦                                   |
-| SSSSSSSan                            |
-| 捕食中的 Scorpion Girl                   |
-| 这应该可能是昵称                             |
-| 願                                    |
-| 暂无此人                                 |
-| 天羽落晨曦                                |
-| 阿奇                                   |
-| い守护、约定。                              |
-| 第一可爱小萌新づ                             |
-| 艾琳·艾德勒                               |
-| kylin 丶                              |
-| Arrebol                              |
-| 洳忘                                   |
-| Steven                               |
-| 残光                                   |
-| continued story                      |
-| 暖冬是凉春                                |
-| Pop_Slime <br /> (国际社区)        |
-| Pat <br /> (国际社区)              |
-| \(\^\_\^\) <br /> (国际社区) |
+| Name                                     |
+| ---------------------------------------- |
+| 鈴                                        |
+| 不服输的泡泡                                   |
+| AAAAAAAA                                 |
+| 莫                                        |
+| 蹲在墓地吓鬼                                   |
+| C.c.                                     |
+| Zn(OH)₂·H₂ZnO₂                           |
+| 梦梦                                       |
+| SSSSSSSan                                |
+| 捕食中的 Scorpion Girl                       |
+| 这应该可能是昵称                                 |
+| 願                                        |
+| 暂无此人                                     |
+| 天羽落晨曦                                    |
+| 阿奇                                       |
+| い守护、约定。                                  |
+| 第一可爱小萌新づ                                 |
+| 艾琳·艾德勒                                   |
+| kylin 丶                                  |
+| Arrebol                                  |
+| 洳忘                                       |
+| Steven                                   |
+| 残光                                       |
+| continued story                          |
+| 暖冬是凉春                                    |
+| Pop_Slime <br /> (Overseas)        |
+| Pat <br /> (Overseas)              |
+| \(\^\_\^\) <br /> (Overseas) |
 
-## 点位贡献
+## Pin Contributions
 
 | Name             |
 | ---------------- |
@@ -244,7 +244,7 @@ aside: false
 | 彩虹猴子             |
 | 封情               |
 | Z boss           |
-| 你他喵的别来逗！！！       |
+| 你他喵的别来逗！！！！！     |
 | Lin\_\_cache |
 | 正义的伙伴            |
 | 枫原万叶             |
