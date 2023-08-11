@@ -1,8 +1,8 @@
 ---
 aside: true
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 next:
-  text: '【彩蛋】查看历史版本金苹果群岛'
+  text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
   link: '../easter-egg/view'
 prev:
   text: '【批量选择】使用说明'
@@ -12,13 +12,13 @@ description: 基础使用教程。
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
 
-# 【画板】路线功能教程
+# [Custom Path Planner (Canvas)] Guide
 
-快捷键说明：
+Hotkey summary:
 
 1. 左 Alt+鼠标左键：新建/添加线段
-2. 左 Ctrl：按住显示控制节点
-3. 左键双击线条：在此处插入新节点
+2. Left Ctrl: Hold to show path anchors
+3. Double left click: Place an anchor on a path
 4. 右键点击【圆形节点】：初始化该节点弧度为线性
 5. 右键点击【方形节点】：删除此节点
 6. 回车：完成该线条编辑
@@ -41,19 +41,19 @@ description: 基础使用教程。
 
 ### 第三步 {#step3}
 
-选中新的画布（黑色背景为被选中状态）
+Select the newly created canvas (indicated by darkened background)
 
 ![](/imgs/manual/canvas/3.png) （此为未选中状态）
 
-![](/imgs/manual/canvas/4.png) （此为选中状态，再次点击可隐藏）
+![](/imgs/manual/canvas/4.png) (Canvas under selection, click on it again to deselect)
 
 ### 第四步 {#step4}
 
-打开编辑模式
+Toggle editing
 
 ![](/imgs/manual/canvas/5.png)
 
-![](/imgs/manual/canvas/6.png) （此为开启状态，再次点击关闭）
+![](/imgs/manual/canvas/6.png) (Picture shows editing toggled ON, click on it again to toggle OFF)
 
 ### 第五步 {#step5}
 
@@ -85,7 +85,7 @@ description: 基础使用教程。
 
 （PS：完成编辑后，鼠标左键选中任意一条线进入该线条编辑）
 
-## 导出教程 {#export}
+## Export {#export}
 
 打开面板点击导出此画布，选择位置保存
 
@@ -95,7 +95,7 @@ description: 基础使用教程。
 
 ![](/imgs/manual/canvas/12.png)
 
-## 导入教程 {#import}
+## Import {#import}
 
 打开面板选择导入画布，可导入选择的画布
 
