@@ -1,8 +1,8 @@
 ---
 aside: false
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 prev:
-  text: '【自动追踪】问题排查'
+  text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
 next:
   text: '【批量选择】使用说明'
@@ -30,11 +30,11 @@ description: 在设置中可以调整【前台帧率】、【后台帧率】，�
 
 :::
 
-## 追踪间隔 {#int}
+## Tracking Interval {#int}
 
 自动追踪设置中，【追踪间隔】设置的单位是秒。
 
-- 若调低追踪间隔（最大间隔 1 秒），则 CPU 性能占用提高；
+- Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
 - 若调高追踪间隔（最小间隔 1 秒），则 CPU 性能占用降低，同时追踪坐标显示会略有延迟。
 
 ![](/imgs/manual/bg-frate/3.png)
