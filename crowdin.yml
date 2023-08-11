@@ -1,14 +1,10 @@
-commit_message: '[skip ci]'
+commit_message: '[skip ci] Update translations (%language%) %original_file_name%'
+append_commit_message: false
 pull_request_title: 'i18n: update translations'
 pull_request_labels:
   - i18n
 files:
   - source: src/**/*.md
-    translation: src/%locale%/**/%file_name%.md
-    ignore:
-      - src/en/**/*
-      - src/ja/**/*
-      - src/ko/**/*
-      - src/fr/**/*
+    translation: src/%locale%/**/%original_file_name%.md
   - source: .vitepress/locales/zh-CN.json
     translation: .vitepress/locales/%locale%.json
