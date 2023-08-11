@@ -5,7 +5,7 @@ pull_request_labels:
   - i18n
 files:
   - source: /src/**/*.md
-    translation: '/src/**/%original_file_name%.md'
+    translation: /src/%locale%/**/%file_name%.md
     ignore:
       - /src/en/
       - /src/ja/
