@@ -1,5 +1,5 @@
 ---
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 description: 这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 ---
 
