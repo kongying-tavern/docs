@@ -1,23 +1,23 @@
 ---
 aside: true
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 prev:
-  text: '【窗口全屏/无边框窗口模式】启动游戏'
+  text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
   link: '../overlay-mode/fullscreen-windowed/launching'
 description: 还原存档到历史位置，或存档误删还原。
 next:
   text: '目录'
-  link: 'manual/client-user-manual.md'
+  link: 'en/manual/client-user-manual.md'
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007' [#]: # '仅第 2 部分为原文直接翻译'
 
-# 【存档丢失】存档还原/误删恢复
+# [Restore/Recover] Progress Recovery From Stored Data
 
-### 这个功能需要在客户端登陆 Gitee 账户
+### This feature requires a logged in Gitee account on your map client.
 [还原存档到历史位置]: # '更新为客户端内还原功能教程'
 
-## 1. 还原存档到历史位置 {#Return}
+## 1. Return saves to an archived timestamp {#Return}
 
 在派蒙菜单内选择“存档回溯”
 
@@ -29,13 +29,13 @@ next:
 
 ![](/imgs/manual/restore-recover/3.png)
 
-确认后, 客户端会生成一个新的存档来存储回溯存档
+Once confirmed, a new save named "Restored Save" will be created to store the restored progress
 
 ![](/imgs/manual/restore-recover/4.png)
 
-## 2. 存档误删还原 {#Recovery}
+## 2. Accidental Save Deletion Recovery {#Recovery}
 
-登录[Gitee](https://gitee.com/)，登录后在右上角点击发布代码片段
+Log into [Gitee](https://gitee.com/) and select "Create Code"
 
 ![](/imgs/manual/restore-recover/5.png)
 
