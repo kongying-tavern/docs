@@ -1,6 +1,6 @@
 ---
-title: 错误页
-description: 错误页
+title: Error
+description: Error
 titleTemplate: 空荧酒馆
 aside: true
 layout: doc
@@ -20,10 +20,10 @@ head:
 
 您的可能浏览器过于老旧，因此无法正常运行。
 
-## 我该怎么做？
+## What should I do？
 
 - 请尝试用别的浏览器访问原神地图（推荐使用 [Chrome 浏览器](https://google.cn/chrome) 获取更好体验）
-- 请尝试清除您的浏览器缓存和网站数据
-- 请尝试禁用您的浏览器插件
+- Please try to clear your browser cache and cookies
+- Please try disabling some extensions
 - 请稍后尝试刷新重试
 - 如果以上方法均无法解决此问题，请联系开发者 QQ **1961266616**并提供您的浏览器以及操作系统版本相关信息。
