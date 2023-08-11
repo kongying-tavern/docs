@@ -1,13 +1,13 @@
 ---
-title: 加入社区
-description: 加入社区
+title: Join Community
+description: Join Community
 layout: doc
 titleTemplate: 空荧酒馆
 ---
 
-# 加入社区
+# Join Community
 
-## QQ 交流群
+## QQ 交流群（Chinese community）
 
 1. [**原神地图 10 群(推荐)** 781455797](https://qm.qq.com/cgi-bin/qm/qr?k=m79I_BhZswOY5DmpBN0gpqoRFhgNRehf&jump_from=webapi "点击一键加入原神地图10群")
 2. [**原神地图 11 群(推荐)** 675165437](https://qm.qq.com/cgi-bin/qm/qr?k=vtEdBtKfhnwHpPVr1wTtiS6b_axepPmW&jump_from=webapi "点击一键加入原神地图11群")
@@ -16,35 +16,36 @@ titleTemplate: 空荧酒馆
 
 :::details 全部群聊（各群密码均为：123456）
 
-1. [**原神地图 ① 群(被封禁)** 765302904](# "点击一键加入原神地图交流①群"){slide-enter}
-1. [**原神地图 ② 群(已满)** 853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi "点击一键加入原神地图②群"){slide-enter}
-1. [**原神地图 ③ 群(已满)** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi "点击一键加入原神地图③群"){slide-enter}
-1. [**原神地图 ④ 群(已满)** 1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi "点击一键加入原神地图④群"){slide-enter}
-1. [**原神地图 ⑤ 群(被封禁)** 1012554070](# "点击一键加入原神地图⑤群"){slide-enter}
+1. **原神地图 ① 群(被封禁)** 765302904
+1. 点击一键加入原神地图②群
+1. 点击一键加入原神地图③群
+1. 点击一键加入原神地图④群
+1. **原神地图 ⑤ 群(被封禁)** 1012554070
 1. [**原神地图 ⑥ 群(已满)** 1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi "点击一键加入原神地图⑥群"){slide-enter}
-1. [**原神地图 ⑦ 群(推荐)** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi "点击一键加入原神地图⑦群"){slide-enter}
-1. [**原神地图 ⑧ 群** 1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi "点击一键加入原神地图⑧群"){slide-enter}
+1. 点击一键加入原神地图⑦群
+1. **原神地图 ⑧ 群** 1012554070
 1. [**原神地图 ⑨ 群** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi "点击一键加入原神地图⑨群")
 1. [**原神地图 10 群(推荐)** 781455797](https://qm.qq.com/cgi-bin/qm/qr?k=m79I_BhZswOY5DmpBN0gpqoRFhgNRehf&jump_from=webapi "点击一键加入原神地图10群")
 1. [**原神地图 11 群(推荐)** 675165437](https://qm.qq.com/cgi-bin/qm/qr?k=vtEdBtKfhnwHpPVr1wTtiS6b_axepPmW&jump_from=webapi "点击一键加入原神地图11群")
 1. [**原神地图 12 群(推荐)** 657416377](https://qm.qq.com/cgi-bin/qm/qr?k=ywsBJa1bgrLxgRWn7EfS6Kjve_74UaY5&jump_from=webapi "点击一键加入原神地图12群")
 1. [**原神地图 13 群(推荐)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi "点击一键加入原神地图13群")
-1. [**原神地图 14 群** 468263682](https://qm.qq.com/cgi-bin/qm/qr?k=g-By7txM78GfoPhk29d59Z5KkJV_Gt-z&jump_from=webapi "点击一键加入原神地图14群")
+1. [**原神地图 14 群(已满)** 468263682](https://qm.qq.com/cgi-bin/qm/qr?k=g-By7txM78GfoPhk29d59Z5KkJV_Gt-z&jump_from=webapi "点击一键加入原神地图14群")
 1. [**原神地图 15 群** 668424173](https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi "点击一键加入原神地图15群")
 
 :::tip
-推荐加入人数较少的群。
+推荐加入人数较少的群。 请勿重复加群，由于群人数均衡原因，若重复加群将踢出「群人数较多的群」！
+:::
 
 请勿重复加群，由于群人数均衡原因，若<span style="color: red;">重复加群将踢出「群人数较多的群」！</span>
 :::
 
-## QQ 频道
+## QQ 频道（Chinese community）
 
 1. [**加入频道** pd.qq.com/f006fek0f](https://pd.qq.com/s/f006fek0f "邀请链接")
 
 ## Discord Server
 
-1. [**加入频道** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF "邀请链接")
+1. [**Join Server** aFe57AKZUF](https://discord.gg/aFe57AKZUF "邀请链接")
 
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {
