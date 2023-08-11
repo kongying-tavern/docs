@@ -1,8 +1,8 @@
 ---
 aside: true
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 prev:
-  text: '【自动追踪】注意事项'
+  text: '[Automatic Tracking] Important Notes'
   link: '../auto-tracking/importantnotes'
 next:
   text: '【地图性能占用高】前后台帧率设置'
@@ -10,9 +10,9 @@ next:
 description: Troubleshoot
 ---
 
-[文：自动追踪问题排查.docx]: # '以下为“问题排查”内容'
+[文：自动追踪问题排查.docx]: # '以下为 问题排查 内容'
 
-# 【自动追踪】问题排查
+# [Automatic Tracking] Troubleshooting
 
 ```card
 theme: medium
@@ -25,7 +25,7 @@ link: https://jq.qq.com/?_wv=1027&k=EqhYN9uI
 
 <span style="color: red">请关闭 360 或者其他国产的杀毒软件 如果不想关闭，请将"%APPDATA%\..\LocalLow\空荧酒馆\"加入到信任区。</span>
 
-## 1. 自动追踪开启后，小地图区域没有出现地图点位，或者没有出现地图悬浮窗 {#issue1}
+## 1. When auto tracking is engaged, the in-game minimap does not show pins, nor is there an overlay of the map client {#issue1}
 [#]: # '这里没有直接翻译，因英文用户大概率没有看过演示视频，未提及《天理地图》'
 
 自动追踪只是为了在查看地图客户端时，能自动完成地图区域的定位操作，省去手动拖动地图的麻烦，并实现神瞳的自动标记。 《空荧酒馆原神地图》目前没有标题所述的叠加、悬浮窗功能，在网上能看到的演示视频，属于另外一个姊妹项目《天理地图》 如果需要使用，可以在以下链接下载（尚在开发中，不稳定）
@@ -37,15 +37,15 @@ link: http://www.weixitianli.com/
 theme: medium
 ```
 
-## 2. 自动追踪无法下载，窗口闪现或速度为 0.00kb/s {#issue2}
+## 2. Cannot download auto tracking module, the download window flashes or the download speed is 0.00 kb/s {#issue2}
 [#]: # '“请使用【群文件】的一键安装包手动安装” 的部分 替换 给了 dc 服务器里的下载频道'
 
 服务器出现故障，请使用【群文件】的一键安装包手动安装，安装后需要重新打开“空荧酒馆”，就会切换到刚刚安装的版本
 
-## 3. 开启自动追踪后，地图崩溃或弹出 C++错误 {#issue3}
+## 3. Receiving C++ Runtime error or client crashing after enabling auto tracking {#issue3}
 
 - 重启地图后，重新尝试开启自动追踪
-- 退出地图，并删除安装目录的自动追踪缓存，重新启动地图并等待数分钟重建缓存
+- Clear the auto tracking cache, launch the map client again and enable auto tracking, you will need to wait for the cache to build again
 [#]: # '这里更新了客户端内一键清理自动追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
 
 ![](/imgs/manual/auto-tracking/6.png)
@@ -53,46 +53,46 @@ theme: medium
 
 - 如果依然无效，请反馈【启动自动追踪模块后软件崩溃】，最好反馈一下崩溃时地图的具体位置
 
-## 4. 开启自动追踪后，地图长时间（>30s）没有任何反应 {#issue4}
+## 4. Nothing happens when auto tracking is engaged {#issue4}
 
-- 在第一次使用新版本的自动追踪时，需要大约 1~5 分钟的时间（取决于配置）重建特征缓存。在此期间尝试截图，切换模式都有可能导致客户端卡死，请耐心等待。如果 10 分钟后依然没有点位显示，或者你不是第一次使用新版本自动追踪，请看下面其他条目。
-- 在设置里再次确定是否开启自动追踪
-- 确定游戏里是否正常显示小地图
-- 查看左侧菜单下方的“自动追踪版本”，如果显示为“未初始化”，尝试重新开启自动追踪
+- When using a new version for the first time, the module requires 1-5 minutes to rebuild its cache.During this process, switching versions or using the tracking screenshot function may cause the client to stop responding.If no player indicator shows up after 10 minutes, or if it is not the initial activation of a new version, please refer to issues further down the list.
+- Double-check if the auto tracker is toggled on.
+- Check the in-game minimap for obstructions, and ensure that it's displaying properly.
+- If it shows "Uninitialized", try restarting auto tracking.
 
-![](/imgs/manual/auto-tracking/3.png =200x300) ![](/imgs/manual/auto-tracking/4.png) ![](/imgs/manual/auto-tracking/5.png)
+/imgs/en/manual/auto-tracking/3.png![](/imgs/manual/auto-tracking/4.png) ![](/imgs/manual/auto-tracking/5.png)
 [#]: # '与第 3 步一样，更新了客户端内一键清理的步骤和图片'
 
-若依然如此，请删除 `%APPDATA%\..\LocalLow\空荧酒馆\Map\DLL` 中的文件，并重新下载
+If the problem persists, use [Clear Tracking Module] under the auto tracking settings tab, which deletes all files in `%APPDATA%\..\LocalLow\空荧酒馆\Map\DLL`, and download the tracking module again.
 
 ![](/imgs/manual/auto-tracking/1.png)
 
-- 截取并查看追踪截图，如果截图空白、显示的不是现在的游戏画面，截图失败，请查看[章节 5](#issue5)
+- Use "Obtain Tracking Screenshot" in the auto tracking settings, if the screenshot is blank, showing a non-current image of the game, or unsuccessful, please see Issue 5.
 - 截取并查看追踪截图，如果追踪截图正常，但一直不显示箭头，请查看[章节 6](#issue6)
 
-## 5. 截图异常：空白或不是当前的游戏画面 {#issue5}
+## 5. Screenshot errors (Blank or non-current game image) {#issue5}
 
-<span style="color: red">部分 windows11 的电脑，对 Bitblt 支持有问题，换成 DirectX 大概率能解决问题。</span>
+<span style="color: red">Some Windows 11 machines may not support BitBlt properly, switching the Tracking Mode to DirectX will likely solve the issue.</span>
 
 - 尝试切换追踪模式，Bitblt 和 DirectX 都试试
 
-  - Bitblt 同时支持窗口模式和独占全屏模式，DirectX 只支持窗口模式
-  - 这两种模式只是截图方式的不同，不会影响到追踪的精度
+  - BitBlt supports both windowed and exclusive fullscreen game
+  - Try switching Tracking Modes (The modes differ only in capture method, there is no effect on tracking accuracy)
 
-- 尝试将游戏切换为窗口化运行（快捷键 Alt+Enter，按下 win 键游戏没有最小化即为窗口化状态）如何以[无边框窗口运行游戏](../overlay-mode/fullscreen-windowed/launching.md)，你也可以使用“寻空”或“胡桃工具箱”等第三方启动器来以无边框窗口运行。
+- Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
 
-- 如果你想要在 Windows11 使用 Bitblt，在图形设置【设置->系统->显示卡】中，添加原神到列表中【`安装目录\Genshin Impact Game\yuanshen.exe，不是launcher.exe`】，添加后，对应的选项设置为【高性能】和【不使用窗口化优化】
+- To use BitBlt in Windows 11, go to the Graphics settings (Settings->System->Display->Graphics), add GenshinImpact.exe to the list (`***\Genshin Impact Game\GenshinImpact.exe`, not launcher.exe) and **enable** "Don't use optimizations for windowed games".
 
 ![](/imgs/manual/auto-tracking/windowedoptimization.png)
 
-- 如果没有解决问题，请反馈【自动追踪截图失败】
+- Please message in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【自动追踪截图失败】" in your message.
 
-## 6. 截图正常，但自动追踪箭头不显示或固定不动 {#issue6}
+## 6. The screenshot is normal, but the player indicator is not displayed or does not move {#issue6}
 
-- 请确保分辨率 ≥1280x720
+- Please try with a resolution greater than 720p.
 - 请确保运行原神的屏幕没有开启 HDR，没有使用全局软件校色，没有开启显卡滤镜，没开护眼，也没有运行其他可能会影响屏幕色彩的软件
-- 长宽比>21:9 的带鱼屏/拼接屏可能无法正常工作，如果切换为 16:9 的窗口，并且重启游戏后自动追踪正常工作，请反馈【带鱼屏适配有问题】
-- 如果没有解决问题，请反馈【自动追踪截图正常但无法追踪】
+- Auto tracking may not work properly with an aspect ratio greater than 21:9, switch to a 16:9 resolution and restart the game, if tracking functions properly in 16:9 only, reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) with a message including "【带鱼屏适配有问题】".
+- Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【自动追踪截图正常但无法追踪】" in your message.
 
 ## 7. 自动追踪坐标漂移 {#issue7}
 
@@ -103,11 +103,11 @@ theme: medium
 限于图像识别算法的局限性，瞬移无法避免，请参照以下做法排除：
 
 - 确保游戏中小地图锁定是“锁定方向”
-- 确保游戏分辨率 ≥1280x720
-- 开启抗锯齿有利于提高追踪精度（不开也能追踪）
-- 在不影响游玩的前提下，适当降低追踪间隔，能够大大缓解定位速度慢的问题
+- Use a game resolution greater than 720p
+- Improve tracking accuracy by enabling anti-aliasing
+- Reducing tracking interval when it does not impact performance too much
 - 请在原地等待 3~10 秒，不要走动，一般情况下都能定位到正确的位置
-- 如果还是在不断瞬移，请传送到其他地点，如果正常追踪了，则说明刚才的地点特征点太少，无法追踪（如海面上，大赤沙海空地，千壑沙地的中心，未解锁区域）
+- If the player indicator continues to skip around, teleport to a waypoint, if the tracking returns to normal, the previous location does not have enough features for the tracker to recognize. (e.g. on the sea, open desert, sand storms, masked and yet-to-unlock areas)
 
 ---
 
@@ -116,8 +116,8 @@ theme: medium
 
 已知会发生变化的区域：
 
-| 圣显厅       | 神弃殿阁    | 镔铁沙丘     |
-| --------- | ------- | -------- |
-| **三运河之地** | **折胫谷** | **荼泥黑渊** |
+| 圣显厅                           | 神弃殿阁                    | 镔铁沙丘     |
+| ----------------------------- | ----------------------- | -------- |
+| **The Sands of Three Canals** | **Wounded Shin Valley** | **荼泥黑渊** |
 
 - 如果超过 1 分钟依然在不断的瞬移，并且无论传送到哪里都是如此，请反馈【全局追踪无法定位到正确的位置】
