@@ -4,7 +4,7 @@ titleTemplate: 空荧酒馆
 description: 技术鸣谢
 aside: false
 layout: doc
-pageClass: credits
+pageClass: Credits
 ---
 
 # 技术鸣谢
@@ -29,9 +29,9 @@ pageClass: credits
 | VuePress   |     MIT      | <https://github.com/vuepress/vuepress-next> | Evan You                   |
 | VueUse     |     MIT      | <https://github.com/vueuse/vueuse>          | Anthony Fu                 |
 
-## 美术
+## Art
 
-| Name     | Description   | Link                                                     | CopyRight |
-|:-------- |:------------- |:-------------------------------------------------------- |:--------- |
-| MapImage | 地图相关素材        | [ys.mihoyo.com](https://ys.mihoyo.com)                   | MiHoYo    |
-| ばたばた     | 客户端 [投币] 按钮素材 | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |
+| Name     | Description            | Link                                                     | CopyRight |
+|:-------- |:---------------------- |:-------------------------------------------------------- |:--------- |
+| MapImage | Map Illustrations      | [ys.mihoyo.com](https://ys.mihoyo.com)                   | MiHoYo    |
+| ばたばた     | Client [Donate] Button | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |
