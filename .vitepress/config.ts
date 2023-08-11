@@ -11,11 +11,11 @@ import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
 
-import enUSConfig from './locales/en-US.json'
-import zhCNConfig from './locales/zh-CN.json'
-import jaJPConfig from './locales/ja-JP.json'
-import krKRConfig from './locales/ko-KR.json'
-import foFRConfig from './locales/fr-FR.json'
+import enConfig from './locales/en.json'
+import zhConfig from './locales/zh.json'
+import jaConfig from './locales/ja.json'
+import krConfig from './locales/ko.json'
+import foConfig from './locales/fr.json'
 
 export const isProd = process.env.NODE_ENV === 'production'
 export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
@@ -145,35 +145,36 @@ export default defineConfig({
     root: {
       label: '简体中文',
       lang: 'zh-CN',
-      ...zhCNConfig,
+      link: '/',
+      ...zhConfig,
     },
     // @ts-ignore
     en: {
       label: 'English',
       lang: 'en-US',
       link: '/en/',
-      ...enUSConfig,
+      ...enConfig,
     },
     // @ts-ignore
     ja: {
       label: '日本語',
       lang: 'ja-JP',
       link: '/ja/',
-      ...jaJPConfig,
+      ...jaConfig,
     },
     // @ts-ignore
     ko: {
       label: '한국인',
       lang: 'ko-KR',
       link: '/ko/',
-      ...krKRConfig,
+      ...krConfig,
     },
     // @ts-ignore
     fr: {
       label: 'Français',
       lang: 'fr',
       link: '/fo-FR/',
-      ...foFRConfig,
+      ...foConfig,
     },
   },
   head: [

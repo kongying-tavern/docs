@@ -62,6 +62,7 @@
     "unocss": "^0.54.2",
     "vitepress": "^1.0.0-rc.4",
     "vue": "^3.3.4",
+    "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.4",
     "vue-router-better-scroller": "^0.0.0"
   },

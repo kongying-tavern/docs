@@ -13,6 +13,7 @@ import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
+import { createI18n } from 'vue-i18n'
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
@@ -34,6 +35,11 @@ export default {
       id: 'G-Q2K9DXZCEY',
       debug: false,
     })
+    const i18n = createI18n({
+      legacy: false,
+      locale: 'zh-CN',
+      fallbackLocale: '',
+    })
   },
   setup() {
     const route = useRoute()
@@ -52,7 +58,7 @@ export default {
       () =>
         nextTick(() => {
           initZoom()
-        })
+        }),
     )
 
     watchEffect(() => {

@@ -69,7 +69,7 @@ function init() {
 
   const { changedFiles, newFiles } = compareFilesWithHash(
     calculateHashForHTMLFiles(core.toPlatformPath('./_dist')),
-    calculateHashForHTMLFiles(core.toPlatformPath('./dist'))
+    calculateHashForHTMLFiles(core.toPlatformPath('./dist')),
   )
 
   if (changedFiles.length === 0 && newFiles.length === 0) {

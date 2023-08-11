@@ -139,7 +139,7 @@ const Card: FunctionalComponent<CardProps> = ({
           target: '_blank',
           ...props,
         },
-        children
+        children,
       )
     : h(
         'a',
@@ -148,7 +148,7 @@ const Card: FunctionalComponent<CardProps> = ({
           target: '_self',
           ...props,
         },
-        children
+        children,
       )
 }
 

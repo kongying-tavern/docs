@@ -53,7 +53,7 @@ function getCustomIcons() {
     // @ts-ignore
     data[val.replace('.svg', '')] = fs.readFileSync(
       path.resolve(__dirname, './src/public/svg/' + val),
-      'utf8'
+      'utf8',
     )
   })
 

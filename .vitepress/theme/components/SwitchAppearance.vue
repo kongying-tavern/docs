@@ -58,7 +58,7 @@ function useAppearance() {
     const y = event.clientY
     const endRadius = Math.hypot(
       Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y)
+      Math.max(y, innerHeight - y),
     )
 
     // @ts-expect-error: Transition API
@@ -92,7 +92,7 @@ function useAppearance() {
           pseudoElement: isDark
             ? '::view-transition-new(root)'
             : '::view-transition-old(root)',
-        }
+        },
       )
     })
   }
@@ -108,8 +108,8 @@ function useAppearance() {
   -o-transition: none !important;
   -ms-transition: none !important;
   transition: none !important;
-}`
-      )
+}`,
+      ),
     )
     document.head.appendChild(css)
 
