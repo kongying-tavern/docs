@@ -1,18 +1,18 @@
 ---
 aside: false
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 next:
-  text: '【存档丢失】存档还原/误删恢复'
-  link: '/manual/guide/restore-recover/progress'
+  text: '[Restore/Recover] Progress Recovery From Stored Data'
+  link: 'en/manual/guide/restore-recover/progress'
 prev:
-  text: '【覆盖模式】使用说明'
+  text: '[Overlay Mode] Instructions'
   link: '../instructions'
 description: Windowed Fullscreen lets the game run fullscreen while satisfying the [Overlay Mode]'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
 ---
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
 
-# 【窗口全屏/无边框窗口模式】启动游戏
+# [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 
 【全屏窗口化】可以使游戏保持全屏显示的情况下，仍能满足实现追踪、覆盖功能所需的【仅窗口化可用】的条件。
 
@@ -24,7 +24,7 @@ description: Windowed Fullscreen lets the game run fullscreen while satisfying t
 
 ![](/imgs/manual/fullscreen-windowed/1.png)
 
-- 步骤二：打开游戏安装路径下“Genshin Impact Game”文件夹
+- Open the folder named "Genshin Impact Game"
 
 ![](/imgs/manual/fullscreen-windowed/2.png)
 
@@ -40,7 +40,7 @@ description: Windowed Fullscreen lets the game run fullscreen while satisfying t
 
 ![](/imgs/manual/fullscreen-windowed/5.png)
 
-## 注意事项
+## Note
 
-- 如果你的游戏分辨率设置为“独占全屏”（即全屏模式），请确认 Alt+Tab 切换程序后窗口不会最小化。如果仍然最小化请按 Alt+Enter（回车）手动切换窗口模式。'
-- 你也可以通过其他第三方启动器实现全屏窗口化显示，如[“胡桃工具箱”](https://hut.ao/)、[“寻空”](https://xunkong.cc/)等。
+- If your game resolution setting is "<span style="color: red">####x#### Fullscreen</span>" (exclusive fullscreen), please make sure that when you press Alt+Tab, the game window does not minimize. If the game minimizes please press Alt+Enter to exit exclusive fullscreen.如果仍然最小化请按 Alt+Enter（回车）手动切换窗口模式。'
+- You can also use third party app to launch the game in Windowed Fullscreen.
