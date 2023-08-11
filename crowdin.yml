@@ -11,5 +11,5 @@ files:
       - /src/ja/
       - /src/ko/
       - /src/fr/
-  - source: /.vitepress/locales/zh-CN.json
+  - source: /.vitepress/locales/zh.json
     translation: /.vitepress/locales/%locale%.json
