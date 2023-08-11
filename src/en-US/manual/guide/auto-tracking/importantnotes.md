@@ -1,25 +1,25 @@
 ---
 aside: true
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 prev:
   text: '目录'
-  link: '/manual/client-user-manual'
+  link: 'en/manual/client-user-manual'
 next:
-  text: '【自动追踪】问题排查'
+  text: '[Automatic Tracking] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
 ---
 
-[文：【自动追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055' [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
+[文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055' [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。''
 
-# 【自动追踪】注意事项
+# [Automatic Tracking] Introduction
 
 本功能基于【图像识别】技术实现
 
-## 特性 {#capabilities}
+## Capabilities {#capabilities}
 
 - 可支持大部分原神客户端的匹配（包括但不限于中、韩、英）
-- 当 Windows 系统缩放比例不为 100% 时，也能正确追踪
+- Functioning properly even when Windows system Scaling is not 100%
 - 角度定位比以前更加精准
 - 全地区追踪，包括渊下宫和地下矿区，但需先在客户端内切换至该地区
 
@@ -28,12 +28,12 @@ description: This feature is based on image recognition
 - 请确认：您的操作版本至少是 win10 或以上版本（win7 不支持追踪）
 - 请确认：游戏内【解锁神像点亮地图】，游戏内【左上角小地图】完整。
 - 请确认：游戏内【左上角小地图】中，无【任务坐标、范围】指引遮挡。
-- 请确认：游戏不处于【独占全屏】显示模式，推荐使用[【全屏窗口化】](../overlay-mode/fullscreen-windowed/launching.md)模式运行游戏。
+- The Game in not under **exclusive fullscreen**, running [windowed fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)is recommended
 
 成功开启自动追踪后，
 
-- 【地图客户端】右下角会**显示 UID**
-- 自动检测游戏内**当前角色位置**（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）
+- Once automatic tracking is enabled, The **map client** will
+- Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
 
 ![](/imgs/manual/auto-tracking/autotrackingegaged.png)
 
@@ -42,21 +42,21 @@ description: This feature is based on image recognition
 
 ## 程序列表 {#Software}
 
-### 已支持的程序
+### Supported
 
-- Windows10/11 下的原神 PC 版
+- Genshin Impact PC client running on Windows 10/11
 
 ### 不支持，但未来可能会适配
 
 - 云·原神
-- Windows 10 以前的系统
+- Windows 8.1 and earlier
 - 手机，或 PS4/5 的投屏
 
-### 不支持并且不会考虑适配
+### Will not support
 
-- 非 Windows 系统
-- 安卓模拟器
-- 虚拟机
+- Non-Windows OS
+- Android simulators
+- Virtual machines
 
 ---
 
@@ -65,31 +65,31 @@ description: This feature is based on image recognition
 ### 支持（或部分支持）的画面设置
 
 - 支持任意分辨率（建议不小于 1280x720）
-- 支持任意画面比例（推荐画面比例在 4:3~21:9 之间）
+- Any aspect ratio (recommended: 4:3 to 21:9)
 - 支持手柄、键鼠
-- 支持窗口化，部分支持独占全屏（见问题排查 4.a）
+- Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting Issue 4)
 
 ### 不支持，但未来可能会适配
 
 - 小地图仅支持锁定方向，不支持锁定玩家视角
 - 不支持秘境，室内等有独立地图的区域
 
-### 不支持并且不会考虑适配
+### Will not support
 
 使用了可能会影响到屏幕色彩的软件，包括但不限于：
 
-- 第三方校色软件
-- 第三方亮度调节软件
-- Windows 11 自动 HDR (影响角度定位精确度)
+- Third party color calibration
+- Third party brightness adjustment
+- Windows 11 Auto HDR (tested: reduced player heading accuracy)
 - 开启了护眼
-- 显卡滤镜
+- NVIDIA Freestyle Game Filters
 
 ---
-[见：自动追踪问题排查.docx]: # '以下为“反馈问题前你需要知道的：”内容'
+[见：自动追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
 
 ## 反馈问题前你需要知道的 {#Troubleshooting}
 
-1. 自动追踪基于图像识别，不会侵入游戏进程，所以不存在封号的风险。可以放心使用
+1. Automatic tracking is based on image recognition, it does not read or modify the game process, thus it brings no risk of an account ban.可以放心使用
 2. 图像识别的准确度并不高，抖动和偶发的瞬移属于正常现象，这个属于图像识别本身的缺陷，无法完全解决
 3. 在反馈之前，请确定使用的程序和画面设置在自动追踪支持列表之中
 4. 在反馈问题前，请确保了解自动追踪产生的日志文件，以方便为开发组排查问题:
