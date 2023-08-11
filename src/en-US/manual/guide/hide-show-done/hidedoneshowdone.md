@@ -1,11 +1,11 @@
 ---
 aside: false
-titleTemplate: ':title | 空荧酒馆'
+titleTemplate: ':title | Kongying Tavern'
 prev:
-  text: '【彩蛋】查看历史版本金苹果群岛'
+  text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
   link: '../easter-egg/view'
 next:
-  text: '【覆盖模式】使用说明'
+  text: '[Overlay Mode] Instructions'
   link: '../overlay-mode/instructions'
 description: 地图对标记【已完成】的点位有两种显示方式。
 ---
