@@ -282,3 +282,38 @@ export default debounce
 
 export const isRelativeLink = (link: string) =>
   /^(?!www\.|http[s]?:\/\/|[A-Za-z]:\\|\/\/).*/.test(link)
+
+export function baseHelper(obj, base): any {
+  function modifyLink(obj) {
+    if (Array.isArray(obj)) {
+      return obj.map((item) => modifyLink(item))
+    } else if (isObject(obj)) {
+      const newObj = {}
+      for (let key in obj) {
+        if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
+          newObj[key] = modifyLink(obj[key])
+        } else if (key === 'link' && isRelativeLink(obj[key])) {
+          newObj[key] = base + obj[key]
+        } else {
+          newObj[key] = obj[key]
+        }
+      }
+      return newObj
+    } else {
+      return obj
+    }
+  }
+
+  function modifyKey(obj) {
+    let newObj = {}
+    for (let key in obj) {
+      if (key.startsWith('/') && base !== '') {
+        newObj[base + key] = obj[key]
+      } else {
+        newObj[key] = obj[key]
+      }
+    }
+    return newObj
+  }
+  return modifyKey(modifyLink(obj))
+}
