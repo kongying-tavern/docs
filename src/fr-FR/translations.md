@@ -20,4 +20,4 @@ titleTemplate: 空荧酒馆
 
 近期地图的文档经历了一次大的版本升级，所以其他语言的翻译版本仍不可用或进行中。
 
-我们希望通过社区的努力提供更多语言的翻译。这些工作是在 [kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 组织仓库进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。
+我们希望通过社区的努力提供更多语言的翻译。这些工作是在 [Crowdin](https://crowdin.com/translate/genshin-interactive-map) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。
