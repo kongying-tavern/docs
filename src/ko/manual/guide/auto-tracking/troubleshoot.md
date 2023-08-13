@@ -1,6 +1,6 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+titleTemplate: ':title | 空荧酒馆'
 prev:
   text: '【自动追踪】注意事项'
   link: '../auto-tracking/importantnotes'
@@ -8,27 +8,27 @@ next:
   text: '【地图性能占用高】前后台帧率设置'
   link: '../bg/bgfrate'
 description: Troubleshoot
-banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
 [文：自动追踪问题排查.docx]: # '以下为“问题排查”内容'
 
 # 【自动追踪】问题排查
 
-## [开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)
+```card
+theme: medium
+title: 官方开发反馈 QQ 群
+desc: 228382171（https://jq.qq.com/?_wv=1027&k=EqhYN9uI）
+link: https://jq.qq.com/?_wv=1027&k=EqhYN9uI
+```
 
 ## 0. 准备工作 {#issue0}
 
-<span style="color: red">请关闭 360 或者其他国产的杀毒软件
-如果不想关闭，请将"%APPDATA%\..\LocalLow\空荧酒馆\"加入到信任区。</span>
+<span style="color: red">请关闭 360 或者其他国产的杀毒软件 如果不想关闭，请将"%APPDATA%\..\LocalLow\空荧酒馆\"加入到信任区。</span>
 
 ## 1. 自动追踪开启后，小地图区域没有出现地图点位，或者没有出现地图悬浮窗 {#issue1}
-
 [#]: # '这里没有直接翻译，因英文用户大概率没有看过演示视频，未提及《天理地图》'
 
-自动追踪只是为了在查看地图客户端时，能自动完成地图区域的定位操作，省去手动拖动地图的麻烦，并实现神瞳的自动标记。
-《空荧酒馆原神地图》目前没有标题所述的叠加、悬浮窗功能，在网上能看到的演示视频，属于另外一个姊妹项目《天理地图》
-如果需要使用，可以在以下链接下载（尚在开发中，不稳定）
+自动追踪只是为了在查看地图客户端时，能自动完成地图区域的定位操作，省去手动拖动地图的麻烦，并实现神瞳的自动标记。 《空荧酒馆原神地图》目前没有标题所述的叠加、悬浮窗功能，在网上能看到的演示视频，属于另外一个姊妹项目《天理地图》 如果需要使用，可以在以下链接下载（尚在开发中，不稳定）
 
 ```card
 title: 维系天理
@@ -38,7 +38,6 @@ theme: medium
 ```
 
 ## 2. 自动追踪无法下载，窗口闪现或速度为 0.00kb/s {#issue2}
-
 [#]: # '“请使用【群文件】的一键安装包手动安装” 的部分 替换 给了 dc 服务器里的下载频道'
 
 服务器出现故障，请使用【群文件】的一键安装包手动安装，安装后需要重新打开“空荧酒馆”，就会切换到刚刚安装的版本
@@ -47,11 +46,9 @@ theme: medium
 
 - 重启地图后，重新尝试开启自动追踪
 - 退出地图，并删除安装目录的自动追踪缓存，重新启动地图并等待数分钟重建缓存
-
 [#]: # '这里更新了客户端内一键清理自动追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
 
-![](/imgs/ko/manual/auto-tracking/6.png)
-
+![](/imgs/manual/auto-tracking/6.png)
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
 - 如果依然无效，请反馈【启动自动追踪模块后软件崩溃】，最好反馈一下崩溃时地图的具体位置
@@ -63,15 +60,12 @@ theme: medium
 - 确定游戏里是否正常显示小地图
 - 查看左侧菜单下方的“自动追踪版本”，如果显示为“未初始化”，尝试重新开启自动追踪
 
-![](/imgs/ko/manual/auto-tracking/3.png)
-![](/imgs/ko/manual/auto-tracking/4.png)
-![](/imgs/ko/manual/auto-tracking/5.png)
-
+![](/imgs/manual/auto-tracking/3.png =200x300) ![](/imgs/manual/auto-tracking/4.png) ![](/imgs/manual/auto-tracking/5.png)
 [#]: # '与第 3 步一样，更新了客户端内一键清理的步骤和图片'
 
 若依然如此，请删除 `%APPDATA%\..\LocalLow\空荧酒馆\Map\DLL` 中的文件，并重新下载
 
-![](/imgs/ko/manual/auto-tracking/1.png)
+![](/imgs/manual/auto-tracking/1.png)
 
 - 截取并查看追踪截图，如果截图空白、显示的不是现在的游戏画面，截图失败，请查看[章节 5](#issue5)
 - 截取并查看追踪截图，如果追踪截图正常，但一直不显示箭头，请查看[章节 6](#issue6)
@@ -89,7 +83,7 @@ theme: medium
 
 - 如果你想要在 Windows11 使用 Bitblt，在图形设置【设置->系统->显示卡】中，添加原神到列表中【`安装目录\Genshin Impact Game\yuanshen.exe，不是launcher.exe`】，添加后，对应的选项设置为【高性能】和【不使用窗口化优化】
 
-![](/imgs/ko/manual/auto-tracking/windowedoptimization.png)
+![](/imgs/manual/auto-tracking/windowedoptimization.png)
 
 - 如果没有解决问题，请反馈【自动追踪截图失败】
 
@@ -122,8 +116,8 @@ theme: medium
 
 已知会发生变化的区域：
 
-| 圣显厅         | 神弃殿阁   | 镔铁沙丘     |
-| -------------- | ---------- | ------------ |
+| 圣显厅       | 神弃殿阁    | 镔铁沙丘     |
+| --------- | ------- | -------- |
 | **三运河之地** | **折胫谷** | **荼泥黑渊** |
 
 - 如果超过 1 分钟依然在不断的瞬移，并且无论传送到哪里都是如此，请反馈【全局追踪无法定位到正确的位置】
