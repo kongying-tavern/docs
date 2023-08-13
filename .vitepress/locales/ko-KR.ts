@@ -1,14 +1,14 @@
-import fs from 'fs';
+import fs from "./types";
 import path from 'path';
 import { baseHelper } from '../theme/utils';
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress';
 import type { CustomConfig } from './types';
-export const META_URL = 'https://yuanshen.site/docs/en/';
-export const META_TITLE = '原神地图';
-export const META_DESCRIPTION = '空荧酒馆制作的原神全资源攻略地图。';
-export const META_KEYWORDS = '原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern';
+export const META_URL = 'https://yuanshen.site/docs/';
+export const META_TITLE = "Genshin Interactive Map";
+export const META_DESCRIPTION = "A Genshin interactive map by Kongying Tavern for completionists";
+export const META_KEYWORDS = "Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map";
 export const META_IMAGE = 'https://yuanshen.site/docs/imgs/cover.jpg';
-export const LOCAL_CODE = 'zh-CN';
+export const LOCAL_CODE = "ko-KR";
 export const LOCAL_BASE = '';
 export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> = {
   description: META_DESCRIPTION,
@@ -112,72 +112,72 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> 
 
 function nav(): DefaultTheme.NavItem[] {
   return [{
-    text: '客户端下载',
-    link: '/download-client.md'
+    text: "Download",
+    link: "/download-client"
   }, {
-    text: '加入社区',
-    link: '/community.md'
+    text: "Support us",
+    link: "/support-us"
   }, {
-    text: '支持我们',
-    link: '/support-us.md'
+    text: "Community",
+    link: "/community"
   }, {
-    text: '帮助和反馈',
+    text: "Support",
     items: [{
-      text: '客户端使用手册',
-      link: 'manual/client-user-manual.md'
+      text: "Client User Manual",
+      link: "/manual/client-user-manual"
     }, {
-      text: '问题反馈',
+      text: "Feedback",
       link: 'https://support.qq.com/products/321980'
     }, {
-      text: '功能介绍',
-      link: 'https://support.qq.com/products/321980/faqs-more/?id=126362'
+      text: "New Features",
+      link: "https://support.qq.com/products/321980/topic-detail/2016/"
     }, {
       text: '功能投票',
       link: 'https://support.qq.com/products/321980/topic-detail/2016/'
     }]
   }, {
-    text: '了解更多',
+    text: "About",
     items: [{
-      text: '了解我们',
+      text: "About Us",
       items: [{
-        text: '加入我们',
-        link: '/join.md'
+        text: "Join Us",
+        link: "/join"
       }, {
-        text: '了解团队',
-        link: '/team.md'
+        text: "Our Team",
+        link: "/team"
       }]
     }, {
-      text: '更新日志',
+      text: "Update Log",
       items: [{
-        text: '网页端',
+        text: "Web",
         link: 'https://support.qq.com/products/321980/blog/505810'
       }, {
-        text: '客户端',
-        link: 'https://support.qq.com/products/321980/blog/772498'
+        text: "Client",
+        link: "https://discord.gg/SWz6RTWNkm"
       }]
     }, {
-      text: '鸣谢',
+      text: "Acknowledgement",
       items: [{
-        text: '技术鸣谢',
-        link: '/credits.md'
+        text: "Credits",
+        link: "/credits"
       }, {
-        text: '贡献鸣谢',
-        link: '/contribution.md'
+        text: "Contributors",
+        link: "/contribution"
       }, {
-        text: '赞助鸣谢',
-        link: '/support-us.md#赞助鸣谢'
+        text: "Sponsors",
+        link: "/support-us#Sponsor%20Acknowledgements"
       }]
     }, {
-      text: '法律相关',
+      text: "Legal (Chinese)",
       items: [{
-        text: '免责声明',
-        link: '/disclaimer.md'
+        text: "Disclaimer",
+        link: "/disclaimer"
       }, {
-        text: '隐私政策',
-        link: '/privacy.md'
+        text: "Privacy",
+        link: "/privacy"
       }, {
-        text: '用户协议',
-        link: '/agreement.md'
+        text: "Agreement",
+        link: "/agreement"
       }]
     }, {
       text: '其他',
@@ -191,44 +191,44 @@ function nav(): DefaultTheme.NavItem[] {
 
 function footer(): CustomConfig['footer'] {
   return {
-    qrcodeTitle: '开发反馈群',
-    qrcodeMessage: '欢迎QQ扫码联系我们',
-    qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
+    qrcodeTitle: "Discord Server",
+    qrcodeMessage: "Contact us on discord",
+    qrcodeLink: "https://discord.gg/aFe57AKZUF",
     navigation: [{
-      title: '关于',
+      title: "About",
       items: [{
-        text: '加入我们',
+        text: "Join Us",
         link: '/join'
       }, {
-        text: '赞助鸣谢',
-        link: '/support-us'
+        text: "Our team",
+        link: "/team"
       }, {
-        text: '友情链接',
-        link: '/friends-links'
+        text: "Sponsors",
+        link: "/support-us"
       }]
     }, {
-      title: '政策',
+      title: "Legal (Chinese)",
       items: [{
-        text: '免责声明',
+        text: "Disclaimer",
         link: '/disclaimer'
       }, {
-        text: '隐私政策',
+        text: "Privacy",
         link: '/privacy'
       }, {
-        text: '用户协议',
+        text: "Agreement",
         link: '/agreement'
       }]
     }, {
-      title: '产品',
+      title: "Support",
       items: [{
-        text: '客户端使用手册',
-        link: 'manual/client-user-manual.md'
+        text: "Client User Manual",
+        link: "/manual/client-user-manual"
       }, {
-        text: '客户端更新日志',
-        link: 'https://support.qq.com/products/321980/blog/505884'
+        text: "Feedback",
+        link: "https://support.qq.com/products/321980"
       }, {
-        text: '网页版更新日志',
-        link: 'https://support.qq.com/products/321980/blog/505810'
+        text: "New Features",
+        link: "https://support.qq.com/products/321980/topic-detail/2016/"
       }]
     }]
   };
@@ -238,81 +238,81 @@ function sidebar(): DefaultTheme.SidebarItem[] {
   return {
     // @ts-ignore
     '/manual': [{
-      text: '目录',
-      link: 'manual/client-user-manual'
+      text: "Table of Contents",
+      link: "/manual/client-user-manual"
     }, {
-      text: '使用帮助',
+      text: "Guides",
       items: [{
-        text: '【自动追踪】',
+        text: "Automatic Tracking",
         items: [{
-          text: '功能介绍',
-          link: 'manual/guide/auto-tracking/importantnotes'
+          text: "Introduction",
+          link: "/manual/guide/auto-tracking/importantnotes"
         }, {
-          text: '疑难解答',
-          link: 'manual/guide/auto-tracking/troubleshoot'
+          text: "Troubleshooting",
+          link: "/manual/guide/auto-tracking/troubleshoot"
         }]
       }, {
-        text: '【地图性能占用高】前后台帧率设置',
-        link: 'manual/guide/bg/bgfrate'
+        text: "Framerate/Tracking Control",
+        link: "/manual/guide/bg/bgfrate"
       }, {
-        text: '【批量选择】使用说明',
-        link: 'manual/guide/batch-selection/instructions'
+        text: "Multi Mark",
+        link: "/manual/guide/batch-selection/instructions"
       }, {
-        text: '【画板】路线功能 教程',
-        link: 'manual/guide/canvas/guide'
+        text: "Canvas Guide",
+        link: "/manual/guide/canvas/guide"
       }, {
-        text: '【彩蛋】查看历史版本金苹果群岛',
-        link: 'manual/guide/easter-egg/view'
+        text: "Easter Egg",
+        link: "/manual/guide/easter-egg/view"
       }, {
-        text: '【隐藏】标记/【显示】标记',
-        link: 'manual/guide/hide-show-done/hidedoneshowdone'
+        text: "Hide/Show Found",
+        link: "/manual/guide/hide-show-done/hidedoneshowdone"
       }, {
-        text: '【覆盖模式】',
+        text: "Overlay Mode",
         items: [{
-          text: '使用说明',
-          link: 'manual/guide/overlay-mode/instructions'
+          text: "Instructions",
+          link: "/manual/guide/overlay-mode/instructions"
         }, {
-          text: '【窗口全屏】启动游戏',
-          link: 'manual/guide/overlay-mode/fullscreen-windowed/launching'
+          text: "Windowed Fullscreen",
+          link: "/manual/guide/overlay-mode/fullscreen-windowed/launching"
         }]
       }, {
-        text: '【存档丢失】存档还原/误删恢复',
-        link: 'manual/guide/restore-recover/progress'
+        text: "Restore/Recover Progress",
+        link: "/manual/guide/restore-recover/progress"
       }]
     }, {
-      text: '常见问题',
+      text: "FAQ",
       items: [{
-        text: '使用地图客户端会被封号吗？',
-        link: 'manual/faq/accountsafety/acntban.md'
+        text: "Account safety",
+        link: "/manual/faq/accountsafety/acntban"
       }, {
-        text: '【自动更新】没有反应',
-        link: 'manual/faq/autoupdate/updater.md'
+        text: "Auto Update",
+        link: "/manual/faq/autoupdate/updater"
       }, {
-        text: '安装错误',
+        text: "Installation Error",
         items: [{
-          text: '错误码 2503',
-          link: 'manual/faq/instlerror/code2503.md'
+          text: "Code 2503",
+          link: "/manual/faq/instlerror/code2503"
         }, {
-          text: '【无法安装】提示缺乏 dll 文件',
-          link: 'manual/faq/instlerror/missingdll.md'
+          text: "Missing .dll file",
+          link: "/manual/faq/instlerror/missingdll"
         }]
       }, {
-        text: '【无法打开】',
+        text: "Launch Error",
         items: [{
-          text: '空窗提示或卡进度条',
-          link: 'manual/faq/launcherror/emptydialog.md'
+          text: "Stuck/No Progress",
+          link: "/manual/faq/launcherror/emptydialog"
         }, {
-          text: '“数据查询失败”、“版本查询失败”',
-          link: 'manual/faq/launcherror/versioncheck.md'
+          text: "Version Check Failed",
+          link: "/manual/faq/launcherror/versioncheck"
         }]
       }, {
-        text: '登录',
+        text: "About Login",
         items: [{
-          text: '【不能登录】如何登录',
-          link: 'manual/faq/login/accountlogin.md'
+          text: "Login Problems",
+          link: "/manual/faq/login/accountlogin"
         }, {
-          text: '【每次打开都需重新登陆】',
-          link: 'manual/faq/login/clientrepeatedly.md'
+          text: "Repeated Login Requests",
+          link: "/manual/faq/login/clientrepeatedly"
         }]
       }]
     }]
