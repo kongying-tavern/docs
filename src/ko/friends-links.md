@@ -5,7 +5,6 @@ titleTemplate: 空荧酒馆
 layout: doc
 comment: false
 aside: false
-banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
 # 友情链接
