@@ -1,6 +1,6 @@
 <script lang="ts">
 const shuffleMembers = (members: Member[], pinTheFirstMember = false): void => {
-  let offset = pinTheFirstMember ? 1 : 0
+  const offset = pinTheFirstMember ? 1 : 0
   // `i` is between `1` and `length - offset`
   // `j` is between `0` and `length - offset - 1`
   // `offset + i - 1` is between `offset` and `length - 1`

@@ -5,7 +5,7 @@ import { baseHelper } from '../theme/utils'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
 
-export const META_URL = 'https://yuanshen.site/docs//'
+export const META_URL = 'https://yuanshen.site/docs/ja/'
 export const META_TITLE = '原神マップ'
 export const META_KEYWORDS =
   '原神マップ, テイワットマップ, 空蛍酒場, yuanshenmap, Genshin Impact Map, Kongying Map'
