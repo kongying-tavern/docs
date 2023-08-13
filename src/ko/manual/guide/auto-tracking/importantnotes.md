@@ -1,6 +1,6 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+titleTemplate: ':title | 空荧酒馆'
 prev:
   text: '目录'
   link: '/manual/client-user-manual'
@@ -8,11 +8,9 @@ next:
   text: '【自动追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
-banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
-[文：【自动追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
-[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
+[文：【自动追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055' [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
 
 # 【自动追踪】注意事项
 
@@ -37,10 +35,9 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 - 【地图客户端】右下角会**显示 UID**
 - 自动检测游戏内**当前角色位置**（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）
 
-![](/imgs/ko/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/manual/auto-tracking/autotrackingegaged.png)
 
 ---
-
 [见：自动追踪问题排查.docx]: # '以下为 自动追踪支持列表： 内容'
 
 ## 程序列表 {#Software}
@@ -88,7 +85,6 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 - 显卡滤镜
 
 ---
-
 [见：自动追踪问题排查.docx]: # '以下为“反馈问题前你需要知道的：”内容'
 
 ## 反馈问题前你需要知道的 {#Troubleshooting}
@@ -102,14 +98,13 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 
 <span style="color: red">【注意】：如果反馈群要求发送追踪截图，请不要使用截图或者用 qq 的发送图片功能，必须要以文件的方式发送图像。可以将追踪截图的文件直接拖到聊天框来发送文件。</span>
 
-![](/imgs/ko/manual/auto-tracking/7.png)
+![](/imgs/manual/auto-tracking/7.png)
 
 ::: tip
 You can visit the files' directory quickly through the auto tracking settings.
 
-![](/imgs/ko/manual/auto-tracking/2.png)
+![](/imgs/manual/auto-tracking/2.png)
 :::
-
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
 ### 请确保[问题排查](./troubleshoot.md)的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题。
