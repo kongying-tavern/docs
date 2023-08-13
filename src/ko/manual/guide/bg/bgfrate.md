@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+titleTemplate: ':title | 空荧酒馆'
 prev:
   text: '【自动追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
@@ -8,11 +8,9 @@ next:
   text: '【批量选择】使用说明'
   link: '../batch-selection/instructions'
 description: 在设置中可以调整【前台帧率】、【后台帧率】，以降低性能，降低对游戏帧率的影响。
-banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
-[文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'
-[#]: # '最后加入后台暂停的介绍'
+[文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183' [#]: # '最后加入后台暂停的介绍'
 
 # 【地图性能占用高】前后台帧率设置
 
@@ -22,13 +20,13 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 
 若希望使用【窗口置顶】功能，该功能将使客户端处于后台（非当前操作窗口）时，仍置顶显示。推荐设置后台帧率与前台帧率一致。
 
-![](/imgs/ko/manual/bg-frate/1.png)
+![](/imgs/manual/bg-frate/1.png)
 
 ::: tip
 
 若将帧率拉至最左，将提示【垂直同步】，垂直同步功能实际为【与显示器帧率同步】，例如显示器是 144 帧，则拉至【垂直同步】，地图帧率也将设置为 144 帧
 
-![](/imgs/ko/manual/bg-frate/2.png)
+![](/imgs/manual/bg-frate/2.png)
 
 :::
 
@@ -39,4 +37,4 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 - 若调低追踪间隔（最大间隔 1 秒），则 CPU 性能占用提高；
 - 若调高追踪间隔（最小间隔 1 秒），则 CPU 性能占用降低，同时追踪坐标显示会略有延迟。
 
-![](/imgs/ko/manual/bg-frate/3.png)
+![](/imgs/manual/bg-frate/3.png)
