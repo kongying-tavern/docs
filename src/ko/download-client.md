@@ -5,7 +5,6 @@ titleTemplate: 空荧酒馆
 layout: doc
 aside: false
 comment: true
-banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
 # 下载客户端
@@ -22,22 +21,20 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ::: tip
 当前仅开放地图 **Windows 客户端** 的下载，其他系统版本正在开发中敬请期待！
 
-如果您有兴趣参与地图的开发与维护，欢迎[加入我们(^\_^)](./join.md)
+如果您有兴趣参与地图的开发与维护，欢迎[加入我们\(\^\_\^\)](./join.md)
 :::
 
-:::details 客户端使用教程
+```card
+title: 客户端使用手册
+link: ./manual/client-user-manual
+theme: medium
+```
 
 ```card
 title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
+theme: medium
 ```
-
-```card
-title: 客户端使用手册
-link: https://support.qq.com/products/321980/faqs-more/?id=94938
-```
-
-:::
 
 ## 网页版地图
 
