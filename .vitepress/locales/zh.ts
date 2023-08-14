@@ -68,7 +68,7 @@ export const zhConfig: LocaleSpecificConfig<
         icon: {
           svg: socialList.bilibili.icon,
         },
-        link: 'https://pd.qq.com/s/f006fek0f',
+        link: 'https://space.bilibili.com/518076785',
         ariaLabel: 'bilibili',
       },
     ],
