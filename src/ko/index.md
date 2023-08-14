@@ -58,7 +58,7 @@ hero:
     - 
       theme: cta mastery slide-enter
       text: 客户端使用手册
-      link: manual/client-user-manual.md
+      link: manual/client-user-manual
 ---
 
 <script setup>
