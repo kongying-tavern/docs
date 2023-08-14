@@ -1,6 +1,5 @@
-import fs from 'fs'
-import path from 'path'
 import { baseHelper } from '../theme/utils'
+import { socialList } from '../theme/composables/socialList'
 
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
@@ -35,12 +34,10 @@ export const frConfig: LocaleSpecificConfig<
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       {
         icon: {
-          svg: fs.readFileSync(
-            path.resolve(__dirname, '../../src/public/svg/reddit.svg'),
-            'utf8',
-          ),
+          svg: socialList.reddit.icon,
         },
         link: 'https://www.reddit.com/user/Kongying_Tavern',
+        ariaLabel: 'Reddit',
       },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },
@@ -119,7 +116,7 @@ function nav(): DefaultTheme.NavItem[] {
       items: [
         {
           text: "Manuel d'utilisation du client",
-          link: '/manual/client-user-manual.md',
+          link: '/manual/client-user-manual',
         },
         {
           text: "Retour d'expérience",

@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { baseHelper } from '../theme/utils'
+import { socialList } from '../theme/composables/socialList'
 
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
@@ -35,10 +36,7 @@ export const enConfig: LocaleSpecificConfig<
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       {
         icon: {
-          svg: fs.readFileSync(
-            path.resolve(__dirname, '../../src/public/svg/reddit.svg'),
-            'utf8',
-          ),
+          svg: socialList.reddit.icon,
         },
         link: 'https://www.reddit.com/user/Kongying_Tavern',
       },
@@ -133,7 +131,7 @@ function nav(): DefaultTheme.NavItem[] {
       items: [
         {
           text: 'Client User Manual',
-          link: '/manual/client-user-manual.md',
+          link: '/manual/client-user-manual',
         },
         {
           text: 'Feedback',

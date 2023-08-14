@@ -7,7 +7,7 @@ prev:
 description: Return saves to an archived timestamp, or recover save from accidental deletion.
 next:
   text: 'Table of Content'
-  link: 'en/manual/client-user-manual.md'
+  link: 'en/manual/client-user-manual'
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'

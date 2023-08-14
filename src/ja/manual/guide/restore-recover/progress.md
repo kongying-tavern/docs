@@ -7,7 +7,7 @@ prev:
 description: 还原存档到历史位置，或存档误删还原。
 next:
   text: '目录'
-  link: 'ja/manual/client-user-manual.md'
+  link: 'ja/manual/client-user-manual'
 banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 

@@ -7,7 +7,7 @@ prev:
 description: 还原存档到历史位置，或存档误删还原。
 next:
   text: '目录'
-  link: 'manual/client-user-manual.md'
+  link: 'manual/client-user-manual'
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'

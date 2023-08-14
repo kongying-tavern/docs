@@ -41,57 +41,14 @@
       <div class="md:place-self-center md:justify-self-end">
         <div class="grid grid-flow-col gap-4">
           <a
-            i-custom-github
-            icon-btn
-            mr-4
-            href="https://github.com/kongying-tavern"
-            target="_blank"
-            title="GitHub"
-            rel="noopener noreferrer"
-          ></a>
-          <a
-            i-custom-gitee
-            icon-btn
-            mr-4
-            href="https://gitee.com/KYJGYSDT"
-            target="_blank"
-            title="Gitee"
-            rel="noopener noreferrer"
-          ></a>
-          <a
-            i-logos-twitter
-            icon-btn
-            mr-4
-            href="https://twitter.com/KongyingTavern"
+            v-for="item in socialList"
+            :href="item.link"
+            :aria-label="item.title"
+            :title="item.title"
             target="_blank"
             rel="noopener noreferrer"
-          ></a>
-          <a
-            i-logos-reddit-icon
-            icon-btn
-            mr-4
-            href="https://www.reddit.com/user/Kongying_Tavern"
-            target="_blank"
-            title="Reddit"
-            rel="noopener noreferrer"
-          ></a>
-          <a
-            i-custom-bilibili
-            icon-btn
-            mr-4
-            href="https://space.bilibili.com/518076785"
-            target="_blank"
-            title="bilibili"
-            rel="noopener noreferrer"
-          ></a>
-          <a
-            i-logos-youtube-icon
-            icon-btn
-            mr-4
-            href="https://www.youtube.com/@KongyingTavernOfficial"
-            target="_blank"
-            title="Youtube"
-            rel="noopener noreferrer"
+            class="footer-sociallink"
+            v-html="item.icon"
           ></a>
         </div>
       </div>
@@ -109,6 +66,7 @@
 <script setup>
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
+import { socialList } from '../composables/sociallist'
 
 const { theme } = useData()
 const { frontmatter } = useData()
@@ -319,6 +277,26 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     &::after {
       display: none;
     }
+  }
+}
+
+.footer-sociallink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  color: var(--vp-c-text-2);
+
+  &:hover {
+    color: var(--vp-c-text-1);
+    transition: color 0.25s;
+  }
+
+  svg {
+    width: 26px;
+    height: 26px;
+    fill: currentColor;
   }
 }
 </style>

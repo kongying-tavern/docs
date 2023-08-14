@@ -7,7 +7,7 @@ prev:
 description: Return saves to an archived timestamp, or recover save from accidental deletion.
 next:
   text: 'Table of Content'
-  link: 'fr/manual/client-user-manual.md'
+  link: 'fr/manual/client-user-manual'
 banner: Désolé, la traduction de cette page est toujours en cours
 ---
 

@@ -48,7 +48,7 @@ hero:
       link: https://bilibili.com/video/BV1R84y1M7eu
     - theme: cta mastery slide-enter
       text: 客户端使用手册
-      link: manual/client-user-manual.md
+      link: manual/client-user-manual
 ---
 
 <script setup>

@@ -13,6 +13,7 @@ import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
+import LinkGrid from '../theme/components/LinkGrid.vue'
 import { createI18n } from 'vue-i18n'
 import 'uno.css'
 import './styles/vars.css'
@@ -28,9 +29,6 @@ export default {
     })
   },
   enhanceApp({ app }) {
-    app.component('Link', Link)
-    app.component('Coins', Coins)
-    app.component('VPCard', Card)
     googleAnalytics({
       id: 'G-Q2K9DXZCEY',
       debug: false,
@@ -40,6 +38,10 @@ export default {
       locale: 'zh-CN',
       fallbackLocale: '',
     })
+    app.component('Link', Link)
+    app.component('Coins', Coins)
+    app.component('VPCard', Card)
+    app.component('LinkGrid', LinkGrid)
   },
   setup() {
     const route = useRoute()
@@ -49,7 +51,6 @@ export default {
         background: 'var(--vp-c-bg)',
       })
     }
-
     onMounted(() => {
       initZoom()
     })
@@ -60,11 +61,5 @@ export default {
           initZoom()
         }),
     )
-
-    watchEffect(() => {
-      if (inBrowser) {
-        document.cookie = `nf_lang=${lang.value}; expires=Mon, 1 Jan 2024 00:00:00 UTC; path=/`
-      }
-    })
   },
 }

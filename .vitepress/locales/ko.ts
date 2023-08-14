@@ -1,5 +1,4 @@
-import fs from 'fs'
-import path from 'path'
+import { socialList } from '../theme/composables/socialList'
 import { baseHelper } from '../theme/utils'
 
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
@@ -35,12 +34,10 @@ export const koConfig: LocaleSpecificConfig<
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       {
         icon: {
-          svg: fs.readFileSync(
-            path.resolve(__dirname, '../../src/public/svg/reddit.svg'),
-            'utf8',
-          ),
+          svg: socialList.reddit.icon,
         },
         link: 'https://www.reddit.com/user/Kongying_Tavern',
+        ariaLabel: 'reddit',
       },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },

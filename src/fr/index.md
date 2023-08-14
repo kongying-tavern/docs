@@ -47,7 +47,7 @@ hero:
       link: fr/download-client.md
     - theme: alt
       text: Learn More
-      link: fr/manual/client-user-manual.md
+      link: fr/manual/client-user-manual
     - theme: cta mastery
       text: Web Version
       link: https://v3.yuanshen.site/

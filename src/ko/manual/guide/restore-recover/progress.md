@@ -7,7 +7,7 @@ prev:
 description: 还原存档到历史位置，或存档误删还原。
 next:
   text: '目录'
-  link: 'manual/client-user-manual.md'
+  link: 'manual/client-user-manual'
 banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
