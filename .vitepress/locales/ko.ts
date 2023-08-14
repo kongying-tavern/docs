@@ -1,6 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import { baseHelper } from '../theme/utils';
+import { socialList } from '../theme/composables/socialList';
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress';
 import type { CustomConfig } from './types';
 export const META_URL = 'https://yuanshen.site/docs/';
@@ -70,9 +69,10 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> 
       link: 'https://twitter.com/KongyingTavern'
     }, {
       icon: {
-        svg: fs.readFileSync(path.resolve(__dirname, '../../src/public/svg/qq-fill.svg'), 'utf8')
+        svg: socialList.bilibili.icon
       },
-      link: 'https://pd.qq.com/s/f006fek0f'
+      link: 'https://space.bilibili.com/518076785',
+      ariaLabel: 'bilibili'
     }],
     docFooter: {
       prev: '上一页',
@@ -124,7 +124,7 @@ function nav(): DefaultTheme.NavItem[] {
     text: '帮助和反馈',
     items: [{
       text: '客户端使用手册',
-      link: 'manual/client-user-manual.md'
+      link: 'manual/client-user-manual'
     }, {
       text: '问题反馈',
       link: 'https://support.qq.com/products/321980'
@@ -222,7 +222,7 @@ function footer(): CustomConfig['footer'] {
       title: '产品',
       items: [{
         text: '客户端使用手册',
-        link: 'manual/client-user-manual.md'
+        link: 'manual/client-user-manual'
       }, {
         text: '客户端更新日志',
         link: 'https://support.qq.com/products/321980/blog/505884'
