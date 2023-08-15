@@ -3,29 +3,27 @@ title: 加入我们
 layout: doc
 titleTemplate: 空荧酒馆
 description: 加入我们
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 # 加入我们
 
-为了进一步完善和优化项目，我们诚招各位小伙伴加入团队一起完成项目，本项目及其衍生项目完全免费。
-或者如果您有任何其他有任何好的想法或者设计，也欢迎加入我们一起实现。
+为了进一步完善和优化项目，我们诚招各位小伙伴加入团队一起完成项目，本项目及其衍生项目完全免费。 或者如果您有任何其他有任何好的想法或者设计，也欢迎加入我们一起实现。
 
 :::raw
 
 > ## 📌 地图打点组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=GWjn9K19d-qRaZU5WNiZ521_v2xYw6Da&jump_from=webapi&authKey=mom+sIS2Tc2b/9DMkbfjQtqY0QJuSPA0LM7c5S62wtqSnlg+iUMcI8ctmdG08KsA 'QQ群 600052487')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601 （备注打点）")
 
 ### 负责内容
 
 1. 负责标记地图点位及校对，收集相关信息数据等；
-   :::
-   :::raw
+:::
+:::raw
 
 > ## 🌎 国际化组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
 
 ### 负责内容
 
@@ -43,20 +41,20 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 :::raw
 
 > ## 🎨 美术组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
 
 ### 负责内容
 
 1. 负责地图相关项目界面交互和 UI 设计。
 2. 负责包括但不限于 logo、字形设计、海报、H5、网页、banner、icon 等内容的设计制作；
-   :::
+:::
 
 :::raw
 
 > ## 💻 前端开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
 
 ### 负责内容
 
@@ -71,8 +69,8 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 :::raw
 
 > ## 🛠 后端开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
 
 ### 负责内容
 
@@ -80,14 +78,14 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 ### 技术栈
 
-`Java` `Rust` `MySql` `SpringBoot` `Docker` `Redis`
+`Java` `Rust` `PostgreSQL` `SpringBoot` `Docker` `Redis`
 :::
 
 :::raw
 
 > ## 📱 App 开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
 
 ### 负责内容
 
@@ -95,14 +93,14 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 ### 技术栈
 
-`Dark` `Flutter`
+`Dart` `Flutter`
 :::
 
 :::raw
 
 > ## 🖥 客户端开发组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
 
 ### 负责内容
 
@@ -118,8 +116,8 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 :::raw
 
 > ## 📊 算法设计组
->
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
 
 ### 负责内容
 
@@ -129,7 +127,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 ### 要求
 
 1. 数学系相关专业研究生及以上学历。
-   :::
+:::
 
 <style lang="scss" scoped>
 
