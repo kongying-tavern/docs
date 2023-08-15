@@ -13,7 +13,7 @@ description: 加入我们
 
 > ## 📌 地图打点组
 > 
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=GWjn9K19d-qRaZU5WNiZ521_v2xYw6Da&jump_from=webapi&authKey=mom+sIS2Tc2b/9DMkbfjQtqY0QJuSPA0LM7c5S62wtqSnlg+iUMcI8ctmdG08KsA "QQ群 600052487")
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601 （备注打点）")
 
 ### 负责内容
 
