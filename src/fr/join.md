@@ -13,30 +13,13 @@ description: 加入我们
 
 > ## 📌 地图打点组
 > 
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601 （备注打点）")
+> [加群咨询](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=VjJqYl8rFwpgcG_UuVyjxPSt3mxgIyV_&authKey=nte%2BbLDi46bByfbh8MQLEjNUialMC0vkqDX8hAa%2B9X8DgQ9GLdPDWoz4DuAVFD7G&noverify=0&group_code=992165223 "QQ群 992165223")
 
 ### 负责内容
 
 1. 负责标记地图点位及校对，收集相关信息数据等；
 :::
 :::raw
-
-> ## 🌎 国际化组
-> 
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
-
-### 负责内容
-
-1. 负责地图相关软件，网站，文档的文本内容的本地化工作（包括翻译及校对支持）；
-2. 负责地图相关产品海外地区的日常运营语言支持工作（如公告，社群等）；
-3. 收集整理本地化相关问题，反馈并跟进修复。
-
-### 要求
-
-1. 具备有中英（或其他外语）互译能力；
-2. 不限国籍和语言，有相关语言环境生活经历或者相关语言专业最好；
-
-:::
 
 :::raw
 
@@ -111,6 +94,24 @@ description: 加入我们
 ### 技术栈
 
 `C#` `C` `C++` `Unity` `Qt`
+:::
+
+
+> ## 🌎 国际化组
+> 
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi "QQ群 717152601")
+
+### 负责内容
+
+1. 负责地图相关软件，网站，文档的文本内容的本地化工作（包括翻译及校对支持）；
+2. 负责地图相关产品海外地区的日常运营语言支持工作（如公告，社群等）；
+3. 收集整理本地化相关问题，反馈并跟进修复。
+
+### 要求
+
+1. 具备有中英（或其他外语）互译能力；
+2. 不限国籍和语言，有相关语言环境生活经历或者相关语言专业最好；
+
 :::
 
 :::raw
