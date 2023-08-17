@@ -63,6 +63,10 @@ html {
   text-decoration: none !important;
 }
 
+.VPSidebar {
+  z-index: 2 !important;
+}
+
 .VPSidebar::-webkit-scrollbar {
   background: transparent;
   height: 8px;
@@ -122,6 +126,7 @@ html {
   html:not(.no-sliding) [slide-enter],
   html:not(.no-sliding) .slide-enter,
   html:not(.no-sliding) .main > div > *,
+  html:not(.no-sliding) #VPContent > div > div.VPFeatures.VPHomeFeatures > *,
   html:not(.no-sliding) .TeamPage > *,
   html:not(.no-sliding) .VPHomeHero > * {
     --enter-stage: 0;
