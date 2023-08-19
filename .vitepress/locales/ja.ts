@@ -122,6 +122,7 @@ function nav(): DefaultTheme.NavItem[] {
     link: '/support-us.md'
   }, {
     text: "フィードバック",
+    activeMatch: `^/manual/`,
     items: [{
       text: "マニュアル",
       link: 'manual/client-user-manual'
@@ -137,6 +138,7 @@ function nav(): DefaultTheme.NavItem[] {
     }]
   }, {
     text: "もっと知る",
+    activeMatch: `^/join|team|credits|contribution|disclaimer|agreement|friends-links|privacy|disclaimer|/^`,
     items: [{
       text: "私たちを知る",
       items: [{
@@ -242,6 +244,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       link: "/manual/client-user-manual"
     }, {
       text: "使い方ガイド",
+      collapsed: false,
       items: [{
         text: "【オートトラッキング】",
         items: [{
@@ -281,6 +284,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       }]
     }, {
       text: "よくある質問",
+      collapsed: false,
       items: [{
         text: "ゲームアカウントが凍結される可能性は？",
         link: "/manual/faq/accountsafety/acntban.md"
