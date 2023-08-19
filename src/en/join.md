@@ -18,8 +18,8 @@ This project and its iterations will always be free, we sincerely invite you to 
 ### Responsibilities
 
 1. 负责标记地图点位及校对，收集相关信息数据等；
+
 :::
-:::raw
 
 :::raw
 
@@ -96,6 +96,7 @@ This project and its iterations will always be free, we sincerely invite you to 
 `C#` `C` `C++` `Unity` `Qt`
 :::
 
+:::raw
 
 > ## 🌎 国际化组
 > 
