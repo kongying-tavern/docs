@@ -122,6 +122,7 @@ function nav(): DefaultTheme.NavItem[] {
     link: "/community.md"
   }, {
     text: "Support",
+    activeMatch: `^/manual/`,
     items: [{
       text: "Manuel d'utilisation du client",
       link: 'manual/client-user-manual'
@@ -137,6 +138,7 @@ function nav(): DefaultTheme.NavItem[] {
     }]
   }, {
     text: "À propos",
+    activeMatch: `^/join|team|credits|contribution|disclaimer|agreement|friends-links|privacy|disclaimer|/^`,
     items: [{
       text: "À propos de nous",
       items: [{
@@ -242,6 +244,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       link: "/manual/client-user-manual"
     }, {
       text: "Guides",
+      collapsed: false,
       items: [{
         text: "Suivi automatique",
         items: [{
@@ -281,6 +284,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       }]
     }, {
       text: "FAQ",
+      collapsed: false,
       items: [{
         text: "Sécurité du compte",
         link: "/manual/faq/accountsafety/acntban.md"
