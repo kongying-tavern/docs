@@ -14,13 +14,13 @@ description: 加入我们
 
 > ## 📌 地图打点组
 >
-> [加群咨询](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=VjJqYl8rFwpgcG_UuVyjxPSt3mxgIyV_&authKey=nte%2BbLDi46bByfbh8MQLEjNUialMC0vkqDX8hAa%2B9X8DgQ9GLdPDWoz4DuAVFD7G&noverify=0&group_code=992165223  'QQ群 992165223')
+> [加群咨询](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=VjJqYl8rFwpgcG_UuVyjxPSt3mxgIyV_&authKey=nte%2BbLDi46bByfbh8MQLEjNUialMC0vkqDX8hAa%2B9X8DgQ9GLdPDWoz4DuAVFD7G&noverify=0&group_code=992165223 'QQ群 992165223')
 
 ### 负责内容
 
 1. 负责标记地图点位及校对，收集相关信息数据等；
-   :::
-   :::raw
+
+:::
 
 :::raw
 
@@ -97,6 +97,7 @@ description: 加入我们
 `C#` `C` `C++` `Unity` `Qt`
 :::
 
+:::raw
 
 > ## 🌎 国际化组
 >

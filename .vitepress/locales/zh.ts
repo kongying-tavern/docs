@@ -126,6 +126,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '帮助和反馈',
+      activeMatch: `^/manual/`,
       items: [
         {
           text: '客户端使用手册',
@@ -147,6 +148,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '了解更多',
+      activeMatch: `^/join|team|credits|contribution|disclaimer|agreement|friends-links|privacy|disclaimer|/^`,
       items: [
         {
           text: '了解我们',
@@ -293,6 +295,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       },
       {
         text: '使用帮助',
+        collapsed: false,
         items: [
           {
             text: '【自动追踪】',
@@ -348,6 +351,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       },
       {
         text: '常见问题',
+        collapsed: false,
         items: [
           {
             text: '使用地图客户端会被封号吗？',

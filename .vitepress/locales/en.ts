@@ -128,6 +128,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: 'Support',
+      activeMatch: `/manual/`,
       items: [
         {
           text: 'Client User Manual',
@@ -145,6 +146,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: 'About',
+      activeMatch: `/join|team|credits|contribution|disclaimer|agreement|friends-links|privacy|disclaimer|/`,
       items: [
         {
           text: 'About Us',
@@ -282,6 +284,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       },
       {
         text: 'Guides',
+        collapsed: false,
         items: [
           {
             text: 'Automatic Tracking',
@@ -337,6 +340,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       },
       {
         text: 'FAQ',
+        collapsed: false,
         items: [
           {
             text: 'Account safety',
