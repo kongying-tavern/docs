@@ -7,6 +7,10 @@ titleTemplate: 空荧酒馆
 
 # 加入社区
 
+## 社区服务器
+
+<LinkGrid :items="downloadMethod" />
+
 ## QQ 交流群
 
 1. [**原神地图 10 群(推荐)** 781455797](https://qm.qq.com/cgi-bin/qm/qr?k=m79I_BhZswOY5DmpBN0gpqoRFhgNRehf&jump_from=webapi "点击一键加入原神地图10群")
@@ -38,17 +42,31 @@ titleTemplate: 空荧酒馆
 请勿重复加群，由于群人数均衡原因，若<span style="color: red;">重复加群将踢出「群人数较多的群」！</span>
 :::
 
-## 米游社大别野
+:::details 空荧酒馆 • QQ 社群公约（加入即代表你已同意接受该公约）
 
-1. [**加入大别野** ID：VBFqyWV](https://webstatic.miyoushe.com/app/community-villa/toVilla.html?villa_id=3898&mhy_presentation_style=fullscreen "邀请链接")
+- 切勿重复加群，若同时处于多个群聊将会直接踢出人数较多的群
+- 禁止发布血腥暴力、惊悚、色 情（含擦边）以及引起多数成员严重反感的任何内容。
+- 严禁键政、讨论敏感话题（包括暗示等形式）
+- 禁止任何影响正常群聊风气的行为，包括但不限于辱骂引战、人身攻击、恶意挂人、发表传播负面言论等。玩梗请适度。
+- 请勿传播未经证实的信息，转发信息前请验明真实性。不传谣不信谣。一切以官方信息为准。
+- 请勿谈论个人隐私信息。保护个人信息财产安全，个人账号安全。
+- 禁止发送各种广告、二维码、不相关链接（包括但不限于代肝、游戏推广、拼单刷单、私服外挂等）
+- 请勿恶意刷屏（1分钟内「相同内容」或「图片」超过3次则视为刷屏）
+- 请勿发起或发送：群通话、小额群红包（低于0.5/10人）、语音/口令红包、群投票等对群员影响大的功能。
+- 若违反群规，会视情况与次数，给予：警告禁言10分钟/禁言1小时/禁言12小时/踢出群聊等处理。
 
-## QQ 频道
+:::
 
-1. [**加入频道** pd.qq.com/f006fek0f](https://pd.qq.com/s/f006fek0f "邀请链接")
-
-## Discord Server
-
-1. [**加入频道** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF "邀请链接")
+<script setup>
+const downloadMethod = [
+  { name: 'Discord', target: '_black', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
+  { name: '米游社', target: '_black', secondary: 'VBFqyWV', link: 'https://webstatic.miyoushe.com/app/community-villa/toVilla.html?villa_id=3898&mhy_presentation_style=fullscreen', icon: '/imgs/mihoyo-a4504610.png' 
+  },
+  { name: 'QQ 频道', target: '_black',
+    secondary: 'f006fek0f', link: 'https://pd.qq.com/s/f006fek0f', icon: '/svg/qq-channel.svg' 
+  },
+]
+</script>
 
 <style lang="scss" scoped>
 ol::-webkit-scrollbar {
