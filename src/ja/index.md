@@ -52,11 +52,8 @@ hero:
       text: 立即下载 →
       link: ja/download-client.md
     - 
-      theme: cta mastery
+      theme: alt slide-enter
       text: 网页版地图
       link: https://v3.yuanshen.site
 ---
 
-<script setup>
-import '../.vitepress/theme/styles/home-links.css'
-</script>
