@@ -5,29 +5,21 @@ titleTemplate: 空蛍酒場
 layout: doc
 aside: false
 comment: true
-pageClass: download-client
 ---
 
-# ダウンロード
+# 下载地图客户端
 
-- Google Drive (推奨)：
-  - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
-- Aliyun Drive (中国語)：
-  - <https://www.aliyundrive.com/s/irmz7CKpMry>
-- Quark Drive (中国語):
-  - <https://pan.quark.cn/s/fe8bb34c77bc>
-- Baidu Cloud (中国語)：
-  - <https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg>
+当前已开放地图 **`Windows 客户端（Beta）`** 的下载，其他系统版本仍在开发中，如果你希望抢先体验其他系统版本，欢迎点击下方加入地图社区，即有机会在未来参与新版地图内测!
 
-::: tip
-現在 **Windows 版** のみご利用いただきます。他 OS のバージョンを乞うご期待。
+<LinkGrid :items="downloadMethod" />
 
-原神マップ開発に興味がある方は是非[ご参加ください(^\_^)](./join.md)
-:::
+如果您有兴趣参与地图的开发和维护，欢迎[加入我们参与其中~](./join.md)
+
+## 客户端使用教程
 
 ```card
-title: Discord
-link: https://discord.gg/aFe57AKZUF
+title: 客户端使用手册
+link: ./manual/client-user-manual
 theme: medium
 ```
 
@@ -37,10 +29,21 @@ link: /ja/manual/client-user-manual
 theme: medium
 ```
 
-## Web 版
+## 网页版地图
 
 ```card
 title: Web版マップ
 link: https://v3.yuanshen.site
 theme: medium
 ```
+
+<script setup>
+const downloadMethod = [
+  { name: '加入社区', target: '_black', link: './community', icon: '/imgs/logo_256.png' },
+  { name: '百度网盘', target: '_black', link: 'https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg', icon: '/svg/baidu-drive.svg' 
+  },
+  { name: '夸克网盘', target: '_black', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg' 
+  },
+  { name: 'Google Drive', target: '_black', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+]
+</script>
