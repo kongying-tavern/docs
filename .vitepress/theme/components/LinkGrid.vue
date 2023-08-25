@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { withBase } from 'vitepress'
+
 defineProps<{
   items: Integration[]
 }>()
@@ -26,7 +28,11 @@ interface Integration {
         :class="item.icon"
         class="w-10 h-10 mb2"
       />
-      <img v-else :src="item.icon" class="w-10 h-10 mb-2 no-zoomable" />
+      <img
+        v-else
+        :src="withBase(item.icon)"
+        class="w-10 h-10 mb-2 no-zoomable"
+      />
       <span class="text-sm">{{ item.name }}</span>
       <span class="text-xs opacity-50">{{ item.secondary }}</span>
     </a>
