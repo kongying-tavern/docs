@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Member } from './Member'
 import { computed } from 'vue'
+import { socialList } from '../../.vitepress/theme/composables/socialList'
 const props = defineProps<{
   member: Member
 }>()
@@ -8,7 +9,7 @@ const props = defineProps<{
 const avatarUrl = computed(() => {
   return (
     props.member.avatarPic ??
-    `https://www.github.com/${props.member.socials?.github}.png`
+    `https://q1.qlogo.cn/g?b=qq&nk=${props.member.qq}&s=640`
   )
 })
 </script>
@@ -21,7 +22,7 @@ const avatarUrl = computed(() => {
       :href="`https://github.com/sponsors/${member.socials?.github}`"
       no-icon
     >
-      <label i-ic-sharp-favorite class="sponsor-icon" /> 赞助
+      <svg i-ic-sharp-favorite class="sponsor-icon" /> 赞助
     </Link>
 
     <figure class="avatar">
@@ -29,12 +30,12 @@ const avatarUrl = computed(() => {
         class="avatar-img skeleton"
         onload="this.classList.toggle('skeleton')"
         :src="avatarUrl"
-        :alt="`${member.name}'s Profile Picture`"
+        :alt="`${member.nick}'s Profile Picture`"
       />
     </figure>
 
     <div class="data">
-      <h1 class="name">{{ member.name }}</h1>
+      <h1 class="name">{{ member.nick }}</h1>
       <p class="org">
         {{ member.title }}
         <span v-if="member.company" class="nowrap">
@@ -57,7 +58,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.projects" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">Projects</h2>
-            <label i-ph-code-bold class="desc-icon code" />
+            <svg i-ph-code-bold class="desc-icon code" />
           </div>
           <ul class="desc-list">
             <li
@@ -75,7 +76,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.location" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">Location</h2>
-            <label i-ic-sharp-location-on class="desc-icon" />
+            <svg i-ic-sharp-location-on class="desc-icon" />
           </div>
           <p class="desc-text">
             {{ member.location }}
@@ -85,7 +86,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.languages" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">Languages</h2>
-            <label i-ic-round-language class="desc-icon" />
+            <svg i-ic-round-language class="desc-icon" />
           </div>
           <ul class="desc-list">
             <li
@@ -101,7 +102,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.website" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">Website</h2>
-            <label
+            <svg
               i-ic-baseline-attachment
               class="desc-icon"
               style="transform: rotate(135deg)"
@@ -121,7 +122,7 @@ const avatarUrl = computed(() => {
               :href="`https://github.com/${member.socials?.github}`"
               :no-icon="true"
             >
-              <label i-logos-github-icon class="social-icon" />
+              <svg i-logos-github-icon class="social-icon" />
             </Link>
           </li>
           <li v-if="member.socials?.twitter" class="social-item">
@@ -130,7 +131,7 @@ const avatarUrl = computed(() => {
               :href="`https://twitter.com/${member.socials?.twitter}`"
               :no-icon="true"
             >
-              <label i-logos-twitter class="social-icon" />
+              <svg i-logos-twitter class="social-icon" />
             </Link>
           </li>
           <li v-if="member.socials?.linkedin" class="social-item">
@@ -139,7 +140,7 @@ const avatarUrl = computed(() => {
               :href="`https://www.linkedin.com/in/${member.socials?.linkedin}`"
               :no-icon="true"
             >
-              <label i-logos-linkedin-icon class="social-icon" />
+              <svg i-logos-linkedin-icon class="social-icon" />
             </Link>
           </li>
           <li v-if="member.socials?.codepen" class="social-item">
@@ -148,7 +149,7 @@ const avatarUrl = computed(() => {
               :href="`https://codepen.io/${member.socials?.codepen}`"
               :no-icon="true"
             >
-              <label i-custom-bilibili class="social-icon" />
+              <svg i-custom-bilibili class="social-icon" />
             </Link>
           </li>
         </ul>
@@ -156,7 +157,6 @@ const avatarUrl = computed(() => {
     </div>
   </article>
 </template>
-
 <style scoped>
 .TeamMember {
   position: relative;
@@ -211,6 +211,8 @@ const avatarUrl = computed(() => {
   width: 14px;
   height: 14px;
   fill: currentColor;
+  color: var(--vp-c-text-2);
+  transition: color 0.5s;
 }
 
 .avatar {

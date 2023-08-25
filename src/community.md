@@ -38,6 +38,10 @@ titleTemplate: 空荧酒馆
 请勿重复加群，由于群人数均衡原因，若<span style="color: red;">重复加群将踢出「群人数较多的群」！</span>
 :::
 
+## 米游社大别野
+
+1. [**加入大别野** ID：VBFqyWV](https://webstatic.miyoushe.com/app/community-villa/toVilla.html?villa_id=3898&mhy_presentation_style=fullscreen '邀请链接')
+
 ## QQ 频道
 
 1. [**加入频道** pd.qq.com/f006fek0f](https://pd.qq.com/s/f006fek0f '邀请链接')

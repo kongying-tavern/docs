@@ -7,22 +7,15 @@ aside: false
 comment: true
 ---
 
-# 下载客户端
+# 下载地图客户端
 
-- 加入讨论组：
-  - [https://yuanshen.site/docs/community](./community.md)
-- 夸克网盘:
-  - <https://pan.quark.cn/s/fe8bb34c77bc>
-- 百度网盘：
-  - <https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg>
-- Google Drive：
-  - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
+当前已开放地图 **`Windows 客户端（Beta）`** 的下载，其他系统版本仍在开发中，如果你希望抢先体验其他系统版本，欢迎点击下方加入地图社区，即有机会在未来参与新版地图内测!
 
-::: tip
-当前仅开放地图 **Windows 客户端** 的下载，其他系统版本正在开发中敬请期待！
+<LinkGrid :items="downloadMethod" />
 
-如果您有兴趣参与地图的开发与维护，欢迎[加入我们\(\^\_\^\)](./join.md)
-:::
+如果您有兴趣参与地图的开发和维护，欢迎[加入我们参与其中~](./join.md)
+
+## 客户端使用教程
 
 ```card
 title: 客户端使用手册
@@ -43,3 +36,14 @@ title: 网页版地图 V3
 link: https://v3.yuanshen.site
 theme: medium
 ```
+
+<script setup>
+const downloadMethod = [
+  { name: '加入社区', target: '_black', link: './community', icon: '/imgs/logo_256.png' },
+  { name: '百度网盘', target: '_black', link: 'https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg', icon: '/svg/baidu-drive.svg' 
+  },
+  { name: '夸克网盘', target: '_black', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg' 
+  },
+  { name: 'Google Drive', target: '_black', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+]
+</script>

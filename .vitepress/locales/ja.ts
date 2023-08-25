@@ -70,7 +70,7 @@ export const jaConfig: LocaleSpecificConfig<
       },
     },
     editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
+      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
       text: 'エラー報告',
     },
     nav: baseHelper(nav(), LOCAL_BASE),

@@ -47,7 +47,7 @@ export const frConfig: LocaleSpecificConfig<
       next: 'Page suivante',
     },
     editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
+      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
       text: 'Suggérer des modifications à cette page',
     },
     payment: {

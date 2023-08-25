@@ -1,12 +1,12 @@
 export interface Member {
-  name: string
+  nick: string
+  qq: string
   avatarPic?: string
   title: string
   company?: string
   companyLink?: string
   projects: Link[]
   location: string
-  github: string
   languages: string[]
   website?: Link
   socials: Socials

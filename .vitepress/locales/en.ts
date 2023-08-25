@@ -48,7 +48,7 @@ export const enConfig: LocaleSpecificConfig<
       next: 'Next page',
     },
     editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
+      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
       text: 'Suggest changes to this page',
     },
     payment: {
@@ -128,7 +128,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: 'Support',
-      activeMatch: `/manual/`,
+      activeMatch: `^/en/manual/`,
       items: [
         {
           text: 'Client User Manual',
@@ -146,7 +146,6 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: 'About',
-      activeMatch: `/join|team|credits|contribution|disclaimer|agreement|friends-links|privacy|disclaimer|/`,
       items: [
         {
           text: 'About Us',

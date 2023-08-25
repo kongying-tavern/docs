@@ -1,13 +1,17 @@
 [
   {
-    "name": "Yu SuiXian",
-    "title": "Organizer",
+    "gender": 1,
+    "jd": 1611481793,
     "location": "China",
+    "nick": "於随仙",
+    "qq": 2112028542,
     "company": "WeiXiTianLi",
     "companyLink": "https://github.com/WeiXiTianLi",
     "socials": {
       "github": "GengGode"
-    }
+    },
+    "sort": "-1",
+    "title": "追踪/图像识别"
   },
   {
     "name": "Wormtql",
@@ -18,5 +22,15 @@
     "socials": {
       "github": "wormtql"
     }
+  },
+  {
+    "gender": -1,
+    "jd": 1674717510,
+    "location": "China",
+    "nick": "晓羽",
+    "qq": 570359547,
+    "socials": {},
+    "sort": "-1",
+    "title": "友链、前端/"
   }
 ]

@@ -101,7 +101,7 @@ export const zhConfig: LocaleSpecificConfig<
       },
     },
     editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
+      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
       text: '报告错误',
     },
     sidebar: baseHelper(sidebar(), LOCAL_BASE),
@@ -148,7 +148,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '了解更多',
-      activeMatch: `^/join|team|credits|contribution|disclaimer|agreement|friends-links|privacy|disclaimer|/^`,
+
       items: [
         {
           text: '了解我们',
