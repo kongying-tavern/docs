@@ -21,6 +21,7 @@ interface Integration {
       :key="item.name"
       :href="item.link"
       :target="item.target"
+      :title="withBase(item.link)"
       class="Link w-30 h-30 text-center text-inherit flex flex-col items-center justify-center"
     >
       <div
