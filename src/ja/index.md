@@ -52,13 +52,9 @@ hero:
       text: 立即下载 →
       link: ja/download-client.md
     - 
-      theme: cta video slide-enter
-      text: 基础使用教程
-      link: https://v3.yuanshen.site/
-    - 
       theme: cta mastery
-      text: 客户端使用手册
-      link: manual/client-user-manual
+      text: 网页版地图
+      link: https://v3.yuanshen.site
 ---
 
 <script setup>
