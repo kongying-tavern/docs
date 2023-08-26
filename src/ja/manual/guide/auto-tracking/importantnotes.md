@@ -1,20 +1,18 @@
 ---
 aside: true
-titleTemplate: :title | 空蛍酒場
+titleTemplate: ':title | 空荧酒馆'
 prev:
   text: '目录'
   link: '/manual/client-user-manual'
 next:
-  text: '【自动追踪】问题排查'
+  text: '【位置追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
-[文：【自动追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
-[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
+[文：【位置追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055' [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 位置追踪问题排查.docx 。'
 
-# 【自动追踪】注意事项
+# 【位置追踪】注意事项
 
 本功能基于【图像识别】技术实现
 
@@ -32,16 +30,15 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 - 请确认：游戏内【左上角小地图】中，无【任务坐标、范围】指引遮挡。
 - 请确认：游戏不处于【独占全屏】显示模式，推荐使用[【全屏窗口化】](../overlay-mode/fullscreen-windowed/launching.md)模式运行游戏。
 
-成功开启自动追踪后，
+成功开启位置追踪后，
 
 - 【地图客户端】右下角会**显示 UID**
 - 自动检测游戏内**当前角色位置**（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）
 
-![](/imgs/ja/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/manual/auto-tracking/autotrackingegaged.png)
 
 ---
-
-[见：自动追踪问题排查.docx]: # '以下为 自动追踪支持列表： 内容'
+[见：位置追踪问题排查.docx]: # '以下为 位置追踪支持列表： 内容'
 
 ## 程序列表 {#Software}
 
@@ -88,28 +85,26 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 - 显卡滤镜
 
 ---
-
-[见：自动追踪问题排查.docx]: # '以下为“反馈问题前你需要知道的：”内容'
+[见：位置追踪问题排查.docx]: # '以下为“反馈问题前你需要知道的：”内容'
 
 ## 反馈问题前你需要知道的 {#Troubleshooting}
 
-1. 自动追踪基于图像识别，不会侵入游戏进程，所以不存在封号的风险。可以放心使用
+1. 位置追踪基于图像识别，不会侵入游戏进程，所以不存在封号的风险。可以放心使用
 2. 图像识别的准确度并不高，抖动和偶发的瞬移属于正常现象，这个属于图像识别本身的缺陷，无法完全解决
-3. 在反馈之前，请确定使用的程序和画面设置在自动追踪支持列表之中
-4. 在反馈问题前，请确保了解自动追踪产生的日志文件，以方便为开发组排查问题:
+3. 在反馈之前，请确定使用的程序和画面设置在位置追踪支持列表之中
+4. 在反馈问题前，请确保了解位置追踪产生的日志文件，以方便为开发组排查问题:
    - 追踪日志：可用记事本打开的文本文件（建议使用第三方文本编辑器，如 notepad3,vscode）
    - 追踪截图：png 图像，用来排查 UI 定位的问题。因为带有 Alpha 通道，所以可能会有很大的色差，用 PS 打开或者粘贴到 QQ 上既可正常显示游戏画面。
 
 <span style="color: red">【注意】：如果反馈群要求发送追踪截图，请不要使用截图或者用 qq 的发送图片功能，必须要以文件的方式发送图像。可以将追踪截图的文件直接拖到聊天框来发送文件。</span>
 
-![](/imgs/ja/manual/auto-tracking/7.png)
+![](/imgs/manual/auto-tracking/7.png)
 
 ::: tip
-You can visit the files' directory quickly through the auto tracking settings.
+可以通过追踪设置页快速访问以上文件的目录。
 
-![](/imgs/ja/manual/auto-tracking/2.png)
+![](/imgs/manual/auto-tracking/2.png)
 :::
-
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
 ### 请确保[问题排查](./troubleshoot.md)的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题。
