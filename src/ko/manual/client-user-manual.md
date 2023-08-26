@@ -2,7 +2,7 @@
 aside: false
 titleTemplate: ':title | 空荧酒馆'
 next:
-  text: '【自动追踪】注意事项'
+  text: '【位置追踪】注意事项'
   link: './guide/auto-tracking/importantnotes.md'
 prev:
   text: '首页'
@@ -21,8 +21,8 @@ description: 目录
 ## **使用帮助**
 
 - [【视频】基础使用教程](https://www.bilibili.com/video/BV1uU4y157Te/)
-- [【自动追踪】功能介绍](./guide/auto-tracking/importantnotes.md)
-- [【自动追踪】疑难解答](./guide/auto-tracking/troubleshoot.md)
+- [【位置追踪】功能介绍](./guide/auto-tracking/importantnotes.md)
+- [【位置追踪】疑难解答](./guide/auto-tracking/troubleshoot.md)
 - [【地图性能占用高】前后台帧率设置](./guide/bg/bgfrate.md)
 - [【批量选择】使用说明](./guide/batch-selection/instructions.md)
 - [【画板】路线功能 教程](./guide/canvas/guide.md)
