@@ -11,7 +11,7 @@ description: Troubleshoot
 banner: Désolé, la traduction de cette page est toujours en cours
 ---
 
-[文：自动追踪问题排查.docx]: # '以下为 问题排查 内容'
+[文：位置追踪问题排查.docx]: # '以下为 问题排查 内容'
 
 # [Position Tracker] Troubleshooting
 
@@ -43,13 +43,13 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 - Simply re-enable **Position Tracker**
 - Clear the **Position Tracker** cache, launch the map client again and enable **Position Tracker**, you will need to wait for the cache to build again
 
-[#]: # '这里更新了客户端内一键清理自动追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
+[#]: # '这里更新了客户端内一键清理位置追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
 
 ![](/imgs/fr/manual/auto-tracking/6.png)
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-- Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【启动自动追踪模块后软件崩溃】" in your message.
+- Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【启动位置追踪模块后软件崩溃】" in your message.
 
 ## 4. Nothing happens when **Position Tracker** is engaged {#issue4}
 
@@ -83,14 +83,14 @@ If the problem persists, use [Clear Tracking Module] under the **Position Tracke
 
 ![](/imgs/fr/manual/auto-tracking/windowedoptimization.png)
 
-- Please message in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【自动追踪截图失败】" in your message.
+- Please message in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【位置追踪截图失败】" in your message.
 
 ## 6. The screenshot is normal, but the player indicator is not displayed or does not move {#issue6}
 
 - Please try with a resolution greater than 720p.
 - Auto HDR, some color calibration profiles, Game Filters, "eye savers", etc. can reduce tracking accuracy or prevent the **Position Tracker** from working.
 - **Position Tracker** may not work properly with an aspect ratio greater than 21:9, switch to a 16:9 resolution and restart the game, if tracking functions properly in 16:9 only, reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) with a message including "【带鱼屏适配有问题】".
-- Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【自动追踪截图正常但无法追踪】" in your message.
+- Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【位置追踪截图正常但无法追踪】" in your message.
 
 ## 7. Drifting player indicator {#issue7}
 

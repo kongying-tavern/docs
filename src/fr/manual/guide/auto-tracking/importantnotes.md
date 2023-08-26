@@ -12,7 +12,7 @@ banner: Désolé, la traduction de cette page est toujours en cours
 ---
 
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
-[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
+[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 位置追踪问题排查.docx 。'
 
 # [Position Tracker] Introduction
 
@@ -43,7 +43,7 @@ Once Position Tracker is enabled, The **map client** will
 
 ---
 
-[见：自动追踪问题排查.docx]: # '以下为 自动追踪支持列表： 内容'
+[见：位置追踪问题排查.docx]: # '以下为 位置追踪支持列表： 内容'
 
 ## Software Support {#Software}
 
@@ -94,7 +94,7 @@ Compensating for color distortions, which could be caused by:
 
 ---
 
-[见：自动追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
+[见：位置追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
 
 ## Troubleshooting {#Troubleshooting}
 
