@@ -44,7 +44,7 @@ jobs:
         run: pnpm site:preview
 
       - run: |
-          zip -r _site.zip ./src/_dist
+          zip -r _site.zip ./_dist
 
       - name: upload _site artifact
         uses: actions/upload-artifact@v2
