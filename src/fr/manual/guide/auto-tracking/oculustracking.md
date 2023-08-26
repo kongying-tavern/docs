@@ -1,10 +1,10 @@
 ---
 aside: false
 next:
-  text: '[Automatic Tracking] Oculus Tracking'
+  text: '[Position Tracker] Oculus Tracking'
   link: './oculustracking.md'
 prev:
-  text: '[Automatic Tracking] Trouble shooting'
+  text: '[Position Tracker] Trouble shooting'
   link: './updated.md'
 description:
 banner: Désolé, la traduction de cette page est toujours en cours
@@ -12,7 +12,7 @@ banner: Désolé, la traduction de cette page est toujours en cours
 
 [文：自动神瞳]: #
 
-# ~~[Automatic Tracking] Oculus Tracking~~
+# ~~[Position Tracker] Oculus Tracking~~
 
 Functioning principle:
 

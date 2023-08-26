@@ -2,7 +2,7 @@
 aside: false
 titleTemplate: :title | Kongying Tavern
 next:
-  text: '[Automatic Tracking] Important Notes'
+  text: '[Position Tracker] Important Notes'
   link: './guide/auto-tracking/importantnotes.md'
 prev:
   text: 'Home page'
@@ -25,8 +25,8 @@ description: Table of Contents
 ## **Guides**
 
 - [Starter Tour (Coming Soon)](#)
-- [[Automatic Tracking] Introduction](./guide/auto-tracking/importantnotes.md)
-- [[Automatic Tracking] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
+- [[Position Tracker] Introduction](./guide/auto-tracking/importantnotes.md)
+- [[Position Tracker] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Multi Mark] Instructions](./guide/batch-selection/instructions.md)
 - [[Custom Path Planner (Canvas)] Guide](./guide/canvas/guide.md)

@@ -27,7 +27,7 @@ export const enConfig: LocaleSpecificConfig<
     logo: '/imgs/logo_256.png',
     lastUpdatedText: 'Last updated',
     notFound: {
-      title: 'PAGE NOT FOUNDz',
+      title: 'PAGE NOT FOUND',
       quote:
         "But if you don't change your direction, and if you keep looking, you may end up where you are heading.",
       linkLabel: 'Take me home',
