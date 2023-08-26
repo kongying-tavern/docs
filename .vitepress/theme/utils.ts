@@ -316,7 +316,8 @@ export function baseHelper(obj, base): any {
     }
     return newObj
   }
-  return modifyKey(obj)
+
+  return modifyKey(modifyLink(obj))
 }
 
 /**
