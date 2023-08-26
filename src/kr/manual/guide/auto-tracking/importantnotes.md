@@ -1,6 +1,6 @@
 ---
 aside: true
-titleTemplate: :title | 空蛍酒場
+titleTemplate: :title | 空荧酒馆
 prev:
   text: '目录'
   link: '/manual/client-user-manual'
@@ -8,8 +8,11 @@ next:
   text: '【自动追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
+
+::: info
+죄송합니다. 이 페이지 번역은 아직 진행 중입니다
+:::
 
 [文：【自动追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
@@ -37,7 +40,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 - 【地图客户端】右下角会**显示 UID**
 - 自动检测游戏内**当前角色位置**（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）
 
-![](/imgs/ja/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/kr/manual/auto-tracking/autotrackingegaged.png)
 
 ---
 
@@ -102,12 +105,12 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 <span style="color: red">【注意】：如果反馈群要求发送追踪截图，请不要使用截图或者用 qq 的发送图片功能，必须要以文件的方式发送图像。可以将追踪截图的文件直接拖到聊天框来发送文件。</span>
 
-![](/imgs/ja/manual/auto-tracking/7.png)
+![](/imgs/kr/manual/auto-tracking/7.png)
 
 ::: tip
 You can visit the files' directory quickly through the **Position Tracker** settings.
 
-![](/imgs/ja/manual/auto-tracking/2.png)
+![](/imgs/kr/manual/auto-tracking/2.png)
 :::
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'

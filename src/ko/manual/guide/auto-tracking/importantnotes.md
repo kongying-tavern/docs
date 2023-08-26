@@ -105,7 +105,7 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ![](/imgs/ko/manual/auto-tracking/7.png)
 
 ::: tip
-You can visit the files' directory quickly through the auto tracking settings.
+可以通过追踪设置页快速访问以上文件的目录。
 
 ![](/imgs/ko/manual/auto-tracking/2.png)
 :::

@@ -13,7 +13,7 @@ features:
   - title: Overlay Mode
     icon: 🎪
     details: Overlays the game window, providing easy access to the map on one display.
-  - title: Automatic Tracking
+  - title: Position Tracker
     icon: 🛠
     details: Detects your character location using image recognition and displays a simultaneous player indicator on the <b>map client</b>.
   - title: Underground Maps

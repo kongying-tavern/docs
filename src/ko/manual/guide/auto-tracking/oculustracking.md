@@ -1,11 +1,11 @@
 ---
-title: \[Automatic Tracking] Oculus Tracking (Removed)
+title: \[Position Tracker] Oculus Tracking (Removed)
 aside: false
 next:
-  text: '[Automatic Tracking] Oculus Tracking'
+  text: '[Position Tracker] Oculus Tracking'
   link: './oculustracking.md'
 prev:
-  text: '[Automatic Tracking] Trouble shooting'
+  text: '[Position Tracker] Trouble shooting'
   link: './updated.md'
 description:
 banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
@@ -13,7 +13,7 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 
 [文：自动神瞳]: #
 
-# ~~[Automatic Tracking] Oculus Tracking~~
+# ~~[Position Tracker] Oculus Tracking~~
 
 Functioning principle:
 

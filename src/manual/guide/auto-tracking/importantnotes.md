@@ -104,7 +104,7 @@ description: This feature is based on image recognition
 ![](/imgs/manual/auto-tracking/7.png)
 
 ::: tip
-You can visit the files' directory quickly through the auto tracking settings.
+可以通过追踪设置页快速访问以上文件的目录。
 
 ![](/imgs/manual/auto-tracking/2.png)
 :::

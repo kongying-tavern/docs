@@ -2,7 +2,7 @@
 aside: false
 titleTemplate: :title | Kongying Tavern
 prev:
-  text: '[Automatic Tracking] Troubleshooting'
+  text: '[Position Tracker] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
 next:
   text: '[Multi Mark] Instructions'
@@ -34,7 +34,7 @@ Dragging the frame rate slider to the leftmost position will enable \[V-Sync], w
 
 ## Tracking Interval
 
-[Tracking Interval] can be found under [Automatic Tracking] settings, the unit of its value is **second**.
+[Tracking Interval] can be found under [Position Tracker] settings, the unit of its value is **second**.
 
 - Reducing [Tracking Interval] will increase CPU usage (minimum 0.1 sec);
 - Increasing [Tracking Interval] will reduce CPU usage (maximum 1.0 sec), while reducing tracking responsiveness.

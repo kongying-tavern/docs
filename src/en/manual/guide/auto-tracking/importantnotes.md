@@ -5,7 +5,7 @@ prev:
   text: 'Table of Contents'
   link: 'en/manual/client-user-manual'
 next:
-  text: '[Automatic Tracking] Troubleshooting'
+  text: '[Position Tracker] Troubleshooting'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
 ---
@@ -13,7 +13,7 @@ description: This feature is based on image recognition
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 自动追踪问题排查.docx 。'
 
-# [Automatic Tracking] Introduction
+# [Position Tracker] Introduction
 
 This feature is based on **image recognition**
 
@@ -33,7 +33,7 @@ The following are the requirements for this feature:
 - The **minimap** contains no **custom waypoints** or **highlighted regions**
 - The Game in not under **exclusive fullscreen**, running [windowed fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)is recommended
 
-Once automatic tracking is enabled, The **map client** will
+Once Position Tracker is enabled, The **map client** will
 
 - Display your UID at the lower right corner
 - Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
@@ -89,7 +89,7 @@ Compensating for color distortions, which could be caused by:
 - "Eye saver" features
 - NVIDIA Freestyle Game Filters
 
-Auto tracking may work with reduced accuracy or not at all.
+**Position Tracker** may work with reduced accuracy or not at all.
 
 ---
 
@@ -99,7 +99,7 @@ Auto tracking may work with reduced accuracy or not at all.
 
 Some facts to know before troubleshooting and submitting feedback:
 
-1. Automatic tracking is based on image recognition, it does not read or modify the game process, thus it brings no risk of an account ban.
+1. Position Tracker is based on image recognition, it does not read or modify the game process, thus it brings no risk of an account ban.
 2. The image recognition is not highly accurate, it's normal for the player indicator to shift sporadically. This cannot be resolved completely due to the limitations of the technology implemented.
 3. Please check if your desired range of settings and feature is supported above.
 4. The following troubleshooting files can help us identify an issue, please attach them with your feedback if possible:
@@ -109,7 +109,7 @@ Some facts to know before troubleshooting and submitting feedback:
 ![](/imgs/en/manual/auto-tracking/7.png)
 
 ::: tip
-You can visit the files' directory quickly through the auto tracking settings.
+You can visit the files' directory quickly through the **Position Tracker** settings.
 
 ![](/imgs/en/manual/auto-tracking/2.png)
 :::
