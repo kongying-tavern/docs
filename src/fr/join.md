@@ -168,7 +168,6 @@ description: 加入我们
     margin: 0;
   }
   code {
-    background-color: var(--vp-c-mute-dark);
     font-weight: 600;
   }
   blockquote {
