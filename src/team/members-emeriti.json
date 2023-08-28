@@ -3,20 +3,18 @@
     "gender": 0,
     "jd": 1600139874,
     "location": "China",
-    "nick": "南极制造",
+    "name": "南极制造",
     "qq": 3344579041,
     "socials": {},
-    "sort": "-1",
     "title": "UI"
   },
   {
     "gender": 0,
     "jd": 1599103196,
     "location": "China",
-    "nick": "南极风",
+    "name": "南极风",
     "qq": 1529770248,
     "socials": {},
-    "sort": "-1",
     "title": "后端"
   }
 ]

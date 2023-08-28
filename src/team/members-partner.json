@@ -3,7 +3,7 @@
     "gender": 1,
     "jd": 1611481793,
     "location": "China",
-    "nick": "於随仙",
+    "name": "於随仙",
     "qq": 2112028542,
     "company": "WeiXiTianLi",
     "companyLink": "https://github.com/WeiXiTianLi",
@@ -27,10 +27,20 @@
     "gender": -1,
     "jd": 1674717510,
     "location": "China",
-    "nick": "晓羽",
+    "name": "晓羽",
     "qq": 570359547,
     "socials": {},
     "sort": "-1",
-    "title": "友链、前端/"
+    "title": "前端"
+  },
+  {
+    "gender": -1,
+    "jd": 2216844639,
+    "location": "China",
+    "name": "晓羽",
+    "qq": 570359547,
+    "socials": {},
+    "sort": "-1",
+    "title": "前端"
   }
 ]

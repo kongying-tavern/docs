@@ -55,13 +55,6 @@
       </div>
     </footer>
   </div>
-  <div style="width: 1px; height: 1px">
-    <label i-custom-baidu />
-    <label i-custom-txc />
-    <label i-custom-qq />
-    <label i-custom-wxtl />
-    <label i-logos-discord-icon />
-  </div>
 </template>
 
 <script setup>

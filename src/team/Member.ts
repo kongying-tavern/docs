@@ -1,5 +1,5 @@
 export interface Member {
-  nick: string
+  name: string
   qq: string
   avatarPic?: string
   title: string
@@ -23,5 +23,5 @@ export interface Socials {
   [x: string]: unknown
   github: string
   twitter?: string
-  codepen?: string
+  bilibili?: string
 }

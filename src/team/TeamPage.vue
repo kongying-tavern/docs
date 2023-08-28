@@ -20,12 +20,15 @@ const shuffleMembers = (members: Member[], pinTheFirstMember = false): void => {
 </script>
 
 <script setup lang="ts">
+import { useData } from 'vitepress'
 import membersCoreData from './members-core.json'
 import membersEmeritiData from './members-emeriti.json'
 import membersPartnerData from './members-partner.json'
 import TeamHero from './TeamHero.vue'
 import TeamList from './TeamList.vue'
 import type { Member } from './Member'
+const { theme } = useData()
+
 shuffleMembers(membersCoreData as Member[], true)
 shuffleMembers(membersEmeritiData as Member[])
 shuffleMembers(membersPartnerData as Member[])
@@ -34,11 +37,9 @@ shuffleMembers(membersPartnerData as Member[])
 <template>
   <div class="TeamPage">
     <TeamHero>
-      <template #title>关于团队</template>
+      <template #title>{{ theme.team.title }}</template>
       <template #lead>
-        <span class="nowrap"
-          >地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。</span
-        >
+        <span class="nowrap">{{ theme.team.desc }}</span>
       </template>
       <template #action>
         <Link href="https://github.com/orgs/kongying-tavern/teams"
@@ -48,20 +49,17 @@ shuffleMembers(membersPartnerData as Member[])
     </TeamHero>
 
     <TeamList :members="membersCoreData as Member[]">
-      <template #title>团队成员</template>
-      <template #lead></template>
+      <template #title>{{ theme.team.coreMember.title }}</template>
+      <template #lead>{{ theme.team.coreMember.desc }}</template>
+    </TeamList>
+    <TeamList :members="membersEmeritiData as Member[]">
+      <template #title>{{ theme.team.emeritiMember.title }}</template>
+      <template #lead>{{ theme.team.emeritiMember.desc }}</template>
     </TeamList>
     <TeamList :members="membersPartnerData as Member[]">
-      <template #title>社区伙伴</template>
-      <template #lead></template>
+      <template #title>{{ theme.team.partnerMember.title }}</template>
+      <template #lead>{{ theme.team.partnerMember.desc }}</template>
     </TeamList>
-
-    <TeamList :members="membersEmeritiData as Member[]">
-      <template #title></template>
-      <template #lead></template>
-    </TeamList>
-
-    x
   </div>
 </template>
 

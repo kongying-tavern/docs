@@ -20,9 +20,12 @@ defineProps<{
       </div>
 
       <div class="members">
-        <div v-for="member in members" :key="member.name" class="member">
-          <TeamMember :member="member" />
-        </div>
+        <!-- to skip SSG since the members are shuffled -->
+        <ClientOnly>
+          <div v-for="member in members" :key="member.name" class="member">
+            <TeamMember :member="member" />
+          </div>
+        </ClientOnly>
       </div>
     </div>
   </section>
@@ -36,7 +39,7 @@ defineProps<{
 }
 
 .container {
-  border-top: 1px solid var(--vp-c-border);
+  border-top: 1px solid var(--vp-c-divider-light);
   padding-top: 24px;
 }
 
@@ -58,18 +61,26 @@ defineProps<{
 @media (min-width: 768px) {
   .info {
     position: sticky;
-    top: 32px;
+    top: calc(var(--vp-banner-height, 0px) + 32px);
     left: 0;
     padding: 0 24px 0 0;
     width: 256px;
+  }
+
+  html.banner-dismissed .info {
+    top: 32px;
   }
 }
 
 @media (min-width: 960px) {
   .info {
-    top: 88px;
+    top: calc(var(--vp-banner-height, 0px) + 88px);
     padding: 0 64px 0 0;
     width: 384px;
+  }
+
+  html.banner-dismissed .info {
+    top: 88px;
   }
 }
 

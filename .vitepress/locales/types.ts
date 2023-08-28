@@ -11,6 +11,22 @@ export interface CustomConfig {
       }[]
     }[]
   }
+  team: {
+    title: string
+    desc: string
+    coreMember: {
+      title: string
+      desc: string
+    }
+    emeritiMember: {
+      title: string
+      desc: string
+    }
+    partnerMember: {
+      title: string
+      desc: string
+    }
+  }
   payment?: Record<
     string,
     {

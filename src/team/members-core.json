@@ -1,12 +1,21 @@
 [
   {
-    "name": "AAAAAAA8",
     "location": "China",
-    "nick": "AAAAAA",
+    "name": "AAAAAA8",
     "qq": 790489566,
-    "title": "Creator",
+    "title": "Client Developer  &  Creator",
     "company": "Kongying Tavern",
     "companyLink": "https://github.com/orgs/kongying-tavern",
+    "projects": [
+      {
+        "label": "Genshin Map Client",
+        "url": "https://github.com/kongying-tavern/"
+      },
+      {
+        "label": "Genshin Map Web V1",
+        "url": "https://github.com/kongying-tavern/yuan-shen-map"
+      }
+    ],
     "socials": {
       "github": "A8Chann"
     }
@@ -15,148 +24,170 @@
     "gender": 1,
     "jd": 1599572679,
     "location": "China",
-    "nick": "铃",
+    "name": "铃",
     "qq": 717818652,
-    "socials": {},
+    "socials": {
+      "bilibili": "https://space.bilibili.com/5769504/"
+    },
     "title": "Product Manager"
   },
   {
     "gender": 0,
     "jd": 1598092032,
     "location": "China",
-    "nick": "Icarus",
+    "name": "Icarus",
     "qq": 595272421,
     "socials": {},
-    "title": "前端主程"
+    "projects": [
+      {
+        "label": "Genshin Map Web V3",
+        "url": "https://gitee.com/KYJGYSDT/yuanshenmap_v3"
+      },
+      {
+        "label": "Genshin Map Web V1",
+        "url": "https://github.com/kongying-tavern/yuan-shen-map"
+      }
+    ],
+    "title": "Web Developer"
   },
   {
     "gender": 0,
     "jd": 1614167120,
     "location": "China",
-    "nick": "(^_^)",
+    "name": "(^_^)",
     "qq": 1961266616,
     "socials": {},
-    "title": "前端/社区/国际化"
+    "projects": [
+      {
+        "label": "Genshin Map Web V1",
+        "url": "https://github.com/kongying-tavern/yuan-shen-map"
+      },
+      {
+        "label": "docs",
+        "url": "https://github.com/kongying-tavern/yuan-shen-map"
+      }
+    ],
+    "title": "Web Developer & Community Management & I18N"
   },
   {
     "gender": -1,
     "jd": 1623694032,
     "location": "China",
-    "nick": "尉迟兰屏",
+    "name": "尉迟兰屏",
     "qq": 444146855,
     "socials": {},
-    "title": "后端/前端"
+    "title": "Backend Developer & Web Developer"
   },
   {
     "gender": 1,
     "jd": 1623844069,
-    "location": "China",
-    "nick": "壹団喵",
+    "location": "Japan",
+    "name": "壹団喵",
     "qq": 1611956452,
     "socials": {},
-    "title": "APP/国际化"
+    "title": "Mobile Developer & I18n"
   },
   {
     "gender": 0,
     "jd": 1648646500,
     "location": "China",
-    "nick": "Moment",
+    "name": "Moment",
     "qq": 1026821350,
     "socials": {},
-    "title": "后端/UI"
+    "title": "Backend Developer & Designer"
   },
   {
     "gender": 0,
     "jd": 1602235440,
     "location": "China",
-    "nick": "音丨HAT丶molisha",
+    "name": "音丨HAT丶molisha",
     "qq": 1126218124,
     "socials": {},
-    "title": "架构"
+    "title": "Architect"
   },
   {
     "gender": 0,
     "jd": 1601547536,
     "location": "China",
-    "nick": "月光下的微笑",
+    "name": "月光下的微笑",
     "qq": 362652565,
     "socials": {},
-    "title": "前端"
+    "title": "Web Developer"
   },
   {
     "gender": 1,
     "jd": 1671415743,
     "location": "China",
-    "nick": "时间有泪",
+    "name": "时间有泪",
     "qq": 2541413819,
     "socials": {},
-    "title": "前端"
+    "title": "Web Developer"
   },
   {
     "gender": -1,
     "jd": 1663596063,
     "location": "China",
-    "nick": "夕云葛城",
+    "name": "夕云葛城",
     "qq": 576788943,
     "socials": {},
-    "title": "前端/WebGL"
+    "title": "Web Developer & WebGL"
   },
   {
     "gender": 0,
     "jd": 1675003271,
     "location": "China",
-    "nick": "7c00",
+    "name": "7c00",
     "qq": 812760721,
     "socials": {},
-    "title": "APP"
+    "title": "Mobile Developer"
   },
   {
     "gender": 0,
     "jd": 1675228987,
     "location": "China",
-    "nick": "小狸卡",
+    "name": "小狸卡",
     "qq": 885331635,
     "socials": {},
-    "title": "自动追踪"
+    "title": "Automatic Tracking Developer"
   },
   {
     "gender": 1,
     "jd": 1675072848,
-    "location": "China",
-    "nick": "千本喵Nyancat",
+    "location": "Japan",
+    "name": "千本喵Nyancat",
     "qq": 1158280933,
     "socials": {},
-    "title": "设计/美术"
+    "title": "Designer"
   },
   {
     "gender": 1,
     "jd": 1611481793,
     "location": "China",
-    "nick": "於随仙",
+    "name": "於随仙",
     "qq": 2112028542,
     "company": "WeiXiTianLi",
-    "companyLink": "https://github.com/WeiXiTianLi",
+    "companyLink": "https://github.com & WeiXiTianLi",
     "socials": {
       "github": "GengGode"
     },
-    "title": "追踪/图像识别"
+    "title": "Automatic Tracking Developer"
   },
   {
     "gender": 0,
     "jd": 1627232875,
     "location": "China",
-    "nick": "SSSSSSSan",
+    "name": "SSSSSSSan",
     "qq": 398522895,
     "socials": {},
-    "title": "更新器"
+    "title": "Client Developer"
   },
   {
     "gender": 0,
     "jd": 1648636631,
     "location": "China",
-    "nick": "(:◎)≡",
+    "name": "(:◎)≡",
     "qq": 582129961,
     "socials": {},
-    "title": "后端"
+    "title": "Backend Developer"
   }
 ]
