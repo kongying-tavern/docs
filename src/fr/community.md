@@ -9,7 +9,7 @@ titleTemplate: 空荧酒馆
 
 ## 社区服务器
 
-<LinkGrid :items="downloadMethod" />
+<LinkGrid :items="server" />
 
 ## QQ 交流群
 
@@ -58,7 +58,7 @@ titleTemplate: 空荧酒馆
 :::
 
 <script setup>
-const downloadMethod = [
+const server = [
   { name: 'Discord', target: '_black', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
   { name: '米游社', target: '_black', secondary: 'VBFqyWV', link: 'https://webstatic.miyoushe.com/app/community-villa/toVilla.html?villa_id=3898&mhy_presentation_style=fullscreen', icon: '/imgs/mihoyo-a4504610.png' 
   },
