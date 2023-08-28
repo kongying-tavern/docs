@@ -39,7 +39,7 @@ theme: medium
 
 <script setup>
 const downloadMethod = [
-  { name: '加入社区', target: '_black', link: './community', icon: '/imgs/logo_256.png' },
+  { name: '加入社区', target: '_self', link: './community', icon: '/imgs/logo_256.png' },
   { name: '百度网盘', target: '_black', link: 'https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg', icon: '/svg/baidu-drive.svg' 
   },
   { name: '夸克网盘', target: '_black', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg' 
