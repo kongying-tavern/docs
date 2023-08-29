@@ -44,7 +44,7 @@ const downloadMethod = [
   },
   { name: '夸克网盘', target: '_black', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg' 
   },
-  { name: '天翼云盘（访问码：exn0）', target: '_black', link: 'https://cloud.189.cn/t/YF7Fj2zIRVbi', icon: '/svg/TianYi-drive.svg' 
+  { name: '天翼云盘',secondary: '访问码：exn0', target: '_black', link: 'https://cloud.189.cn/t/YF7Fj2zIRVbi', icon: '/svg/tianyi-drive.svg' 
   },
   { name: 'Google Drive', target: '_black', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
 ]
