@@ -2,12 +2,11 @@
  * Colors
  * -------------------------------------------------------------------------- */
 
-
 :root {
   --vp-c-indigo-1: #60bf90;
   --vp-c-indigo-2: #3aa374;
   --vp-c-indigo-3: #008858;
-  --vp-c-indigo-soft: rgba(0, 108, 69 .16);
+  --vp-c-indigo-soft: rgba(0, 108, 69 0.16);
   --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
     Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
     'Microsoft Yahei', sans-serif;
@@ -27,8 +26,7 @@
 
   --nav-c-bg: rgba(255, 255, 255, 0.7);
 
-  --vp-button-brand-text: rgba(255, 255, 245, .86);
-
+  --vp-button-brand-text: rgba(255, 255, 245, 0.86);
 }
 
 .dark {
@@ -58,13 +56,13 @@
 
 :root {
   --vp-button-brand-border: var(--vp-c-brand-light);
-  --vp-button-brand-text: var(--vp-button-brand-text));
+  --vp-button-brand-text: var(--vp-button-brand-text);
   --vp-button-brand-bg: var(--vp-c-brand);
   --vp-button-brand-hover-border: var(--vp-c-brand-light);
   --vp-button-brand-hover-text: var(--vp-c-white);
   --vp-button-brand-hover-bg: var(--vp-c-brand-light);
   --vp-button-brand-active-border: var(--vp-c-brand-light);
-  --vp-button-brand-active-text:var(--vp-c-white);
+  --vp-button-brand-active-text: var(--vp-c-white);
   --vp-button-brand-active-bg: var(--vp-button-brand-bg);
 }
 
