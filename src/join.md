@@ -14,7 +14,7 @@ description: 加入我们
 
 > ## 📌 地图打点组
 >
-> [加群咨询](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=VjJqYl8rFwpgcG_UuVyjxPSt3mxgIyV_&authKey=nte%2BbLDi46bByfbh8MQLEjNUialMC0vkqDX8hAa%2B9X8DgQ9GLdPDWoz4DuAVFD7G&noverify=0&group_code=992165223 'QQ群 992165223')
+> [立即申请](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=VjJqYl8rFwpgcG_UuVyjxPSt3mxgIyV_&authKey=nte%2BbLDi46bByfbh8MQLEjNUialMC0vkqDX8hAa%2B9X8DgQ9GLdPDWoz4DuAVFD7G&noverify=0&group_code=992165223 'QQ群 992165223')
 
 ### 负责内容
 
@@ -26,7 +26,7 @@ description: 加入我们
 
 > ## 🎨 美术组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
 ### 负责内容
 
@@ -38,7 +38,7 @@ description: 加入我们
 
 > ## 💻 前端开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
 ### 负责内容
 
@@ -54,7 +54,7 @@ description: 加入我们
 
 > ## 🛠 后端开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
 ### 负责内容
 
@@ -69,7 +69,7 @@ description: 加入我们
 
 > ## 📱 App 开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
 ### 负责内容
 
@@ -84,7 +84,7 @@ description: 加入我们
 
 > ## 🖥 客户端开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
 ### 负责内容
 
@@ -101,7 +101,7 @@ description: 加入我们
 
 > ## 🌎 国际化组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
 ### 负责内容
 
@@ -120,7 +120,7 @@ description: 加入我们
 
 > ## 📊 算法设计组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
 
 ### 负责内容
 

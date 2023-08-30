@@ -15,7 +15,7 @@ interface Integration {
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-4">
+  <div class="flex flex-wrap gap-4 slide-enter">
     <a
       v-for="item of items"
       :key="item.name"
