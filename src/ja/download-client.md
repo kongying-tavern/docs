@@ -9,11 +9,13 @@ comment: true
 
 # 下载地图客户端
 
-当前已开放地图 **`Windows 客户端（Beta）`** 的下载，其他系统版本仍在开发中，如果你希望抢先体验其他系统版本，欢迎点击下方加入地图社区，即有机会在未来参与新版地图内测!
+当前提供地图 **`Windows 客户端（Beta）`** 客户端下载
+
+可选择下方任意方式下载
 
 <LinkGrid :items="downloadMethod" />
 
-如果您有兴趣参与地图的开发和维护，欢迎[加入我们参与其中~](./join.md)
+如果您有兴趣参与地图的开发和维护，欢迎[加入我们](./join.md)参与其中~
 
 ## 客户端使用教程
 
@@ -44,7 +46,7 @@ const downloadMethod = [
   },
   { name: '夸克网盘', target: '_black', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg' 
   },
-  { name: '天翼云盘',secondary: '访问码：exn0', target: '_black', link: 'https://cloud.189.cn/t/YF7Fj2zIRVbi', icon: '/svg/tianyi-drive.svg' 
+  { name: '天翼云盘', secondary: '访问码：exn0', target: '_black', link: 'https://cloud.189.cn/t/YF7Fj2zIRVbi', icon: '/svg/tianyi-drive.svg' 
   },
   { name: 'Google Drive', target: '_black', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
 ]
