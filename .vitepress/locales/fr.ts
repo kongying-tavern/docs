@@ -10,44 +10,20 @@ export const META_IMAGE = 'https://yuanshen.site/docs/imgs/cover.jpg';
 export const LOCAL_CODE = "fr";
 export const LOCAL_BASE = '';
 export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> = {
-  description: META_DESCRIPTION,
   titleTemplate: '空荧酒馆',
+  description: '123123',
   head: [['meta', {
-    name: 'keywords',
-    content: META_KEYWORDS
-  }], ['meta', {
-    property: 'og:url',
-    content: META_URL
-  }], ['meta', {
-    property: 'og:description',
-    content: META_DESCRIPTION
-  }], ['meta', {
-    property: 'twitter:url',
-    content: META_URL
-  }], ['meta', {
-    property: 'twitter:title',
-    content: META_TITLE
-  }], ['meta', {
     property: 'og:site_name',
     content: META_TITLE
   }], ['meta', {
-    property: 'twitter:description',
-    content: META_DESCRIPTION
-  }], ['meta', {
     property: 'og:locale',
     content: LOCAL_CODE
-  }], ['meta', {
-    property: 'og:image',
-    content: META_IMAGE
-  }], ['meta', {
-    property: 'og:image',
-    content: META_IMAGE
-  }], ['meta', {
-    name: 'twitter:image',
-    content: META_IMAGE
   }]],
   themeConfig: {
     siteTitle: '原神地图',
+    keyword: META_KEYWORDS,
+    description: META_DESCRIPTION,
+    image: META_IMAGE,
     outlineTitle: '本页目录',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: '更新日期',
