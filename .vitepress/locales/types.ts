@@ -1,4 +1,7 @@
 export interface CustomConfig {
+  keyword: string
+  description: string
+  image: string
   footer: {
     qrcodeTitle: string
     qrcodeMessage: string

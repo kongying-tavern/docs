@@ -58,14 +58,42 @@ titleTemplate: 空荧酒馆
 :::
 
 <script setup>
+import { useUrlSearchParams } from '@vueuse/core'
+import { onMounted } from 'vue'
+import { isNumber } from '../.vitepress/theme/utils'
+
+const params = useUrlSearchParams('history')
 const server = [
-  { name: 'Discord', target: '_black', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
-  { name: '米游社', target: '_black', secondary: 'VBFqyWV', link: 'https://webstatic.miyoushe.com/app/community-villa/toVilla.html?villa_id=3898&mhy_presentation_style=fullscreen', icon: '/imgs/mihoyo-a4504610.png' 
+  { id: 'discord', name: 'Discord', target: '_black', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
+  {
+    id: 'mys', name: '米游社', target: '_black', secondary: 'VBFqyWV', link: 'https://webstatic.miyoushe.com/app/community-villa/toVilla.html?villa_id=3898&mhy_presentation_style=fullscreen', icon: '/imgs/mihoyo-a4504610.png'
   },
-  { name: 'QQ 频道', target: '_black',
-    secondary: 'f006fek0f', link: 'https://pd.qq.com/s/f006fek0f', icon: '/svg/qq-channel.svg' 
+  {
+    id: 'qq', name: 'QQ 频道', target: '_black',
+    secondary: 'f006fek0f', link: 'https://pd.qq.com/s/f006fek0f', icon: '/svg/qq-channel.svg'
   },
 ]
+
+function jump() {
+  if (Number(params.q) <= document.querySelectorAll('#VPContent > div > div > div.content > div > main > div > div > details:nth-child(6) > ol > li').length) {
+    let link = document.querySelector(`#VPContent > div > div > div.content > div > main > div > div > details:nth-child(6) > ol > li:nth-child(${Number(params.q)
+}) > a`).href
+    if (link.includes(location.host)) return;
+    location.href = link
+  } else {
+    const target = String(params.q).toLocaleLowerCase()
+
+    server.forEach((val) => {
+      if (val.id === target) {
+        location.href = val.link
+      }
+    })
+  }
+}
+
+onMounted(()=> {
+  jump()
+})
 </script>
 
 <style lang="scss" scoped>

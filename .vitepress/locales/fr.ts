@@ -17,9 +17,11 @@ export const LOCAL_BASE = 'fr'
 export const frConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  description: META_DESCRIPTION,
   titleTemplate: 'Kongying Tavern',
   themeConfig: {
+    keyword: META_KEYWORDS,
+    description: META_DESCRIPTION,
+    image: META_IMAGE,
     siteTitle: 'Carte interactive de Genshin',
     outlineTitle: 'Sur cette page',
     logo: '/imgs/logo_256.png',

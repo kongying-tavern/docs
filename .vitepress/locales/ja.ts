@@ -17,9 +17,11 @@ export const LOCAL_BASE = 'ja'
 export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  description: META_DESCRIPTION,
   titleTemplate: 'Kongying Tavern',
   themeConfig: {
+    keyword: META_KEYWORDS,
+    description: META_DESCRIPTION,
+    image: META_IMAGE,
     siteTitle: '原神マップ',
     outlineTitle: 'このページでは',
     logo: '/imgs/logo_256.png',

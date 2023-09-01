@@ -241,6 +241,7 @@ export default defineConfig({
     ['meta', { property: 'og:site', content: 'website' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
+    ['meta', { name: 'twitter:widgets:csp', content: 'on' }],
     ...(isProd ? productionHead : []),
   ],
   ignoreDeadLinks: [
@@ -285,6 +286,102 @@ export default defineConfig({
     json: {
       stringify: true,
     },
+  },
+  transformPageData(pageData, { siteConfig }) {
+    pageData.frontmatter.head ??= []
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'og:url',
+        content: `https://yuanshen.site/${
+          siteConfig.site.base
+        }${pageData.relativePath.replace('.md', '')}`,
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'twitter:url',
+        content: `https://yuanshen.site/${
+          siteConfig.site.base
+        }${pageData.relativePath.replace('.md', '')}`,
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'og:title',
+        content: pageData.frontmatter.title
+          ? pageData.frontmatter.title
+          : 'Kongying Tavern',
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'twitter:title',
+        content: pageData.frontmatter.title
+          ? pageData.frontmatter.title
+          : 'Kongying Tavern',
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'og:description',
+        content: pageData.frontmatter.description
+          ? pageData.frontmatter.description
+          : `Genshin Interactive Map
+A Completionist's Interactive Map by Kongying Tavern`,
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'twitter:description',
+        content: pageData.frontmatter.description
+          ? pageData.frontmatter.description
+          : `Genshin Interactive Map
+A Completionist's Interactive Map by Kongying Tavern`,
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'description',
+        content: pageData.frontmatter.description
+          ? pageData.frontmatter.description
+          : `Genshin Interactive Map
+A Completionist's Interactive Map by Kongying Tavern`,
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'keywords',
+        content: pageData.frontmatter.keywords
+          ? pageData.frontmatter.keywords
+          : '空荧酒馆,空荧地图,空荧酒馆原神地图,原神全资源攻略地图,原神攻略地图,原神地图,原神电子地图,原神互动地图,Genshin,Genshin_map,Genshin_Treasure,Genshin Map,Genshin Impact Map,Genshin Impact Interactive Map',
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'og:image',
+        content: pageData.frontmatter.image
+          ? pageData.frontmatter.image
+          : 'https://yuanshen.site/docs/cover.jpg',
+      },
+    ])
+    pageData.frontmatter.head.push([
+      'meta',
+      {
+        name: 'twitter:image',
+        content: pageData.frontmatter.image
+          ? pageData.frontmatter.image
+          : 'https://yuanshen.site/docs/cover.jpg',
+      },
+    ])
   },
   markdown: {
     config(md) {

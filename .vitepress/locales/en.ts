@@ -19,9 +19,11 @@ export const LOCAL_BASE = 'en'
 export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  description: META_DESCRIPTION,
   titleTemplate: 'Kongying Tavern',
   themeConfig: {
+    keyword: META_KEYWORDS,
+    description: META_DESCRIPTION,
+    image: META_IMAGE,
     siteTitle: 'Genshin Interactive Map',
     outlineTitle: 'On This Page',
     logo: '/imgs/logo_256.png',
@@ -95,36 +97,8 @@ export const enConfig: LocaleSpecificConfig<
     footer: baseHelper(footer(), LOCAL_BASE),
   },
   head: [
-    ['meta', { name: 'keywords', content: META_KEYWORDS }],
-    ['meta', { property: 'og:url', content: META_URL }],
-    ['meta', { property: 'og:description', content: META_DESCRIPTION }],
-    ['meta', { property: 'twitter:url', content: META_URL }],
-    ['meta', { property: 'twitter:title', content: META_TITLE }],
-    ['meta', { property: 'twitter:description', content: META_DESCRIPTION }],
     ['meta', { property: 'og:site_name', content: META_TITLE }],
     ['meta', { property: 'og:locale', content: 'en-US' }],
-
-    [
-      'meta',
-      {
-        property: 'og:image',
-        content: META_IMAGE,
-      },
-    ],
-    [
-      'meta',
-      {
-        property: 'og:image',
-        content: META_IMAGE,
-      },
-    ],
-    [
-      'meta',
-      {
-        name: 'twitter:image',
-        content: META_IMAGE,
-      },
-    ],
   ],
 }
 
