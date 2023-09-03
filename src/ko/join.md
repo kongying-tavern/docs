@@ -131,6 +131,32 @@ description: 加入我们
 1. 数学系相关专业研究生及以上学历。
 :::
 
+<script setup>
+import { useUrlSearchParams } from '@vueuse/core'
+import { onMounted } from 'vue'
+import { isNumber } from '../.vitepress/theme/utils'
+
+const params = useUrlSearchParams('history')
+const group = [
+  {id: 'dd', link: 'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=-HGS3II1no-AEcWHYdrhsJCN2IfKQeji&authKey=qbjuuv5VygEdFUAZSCCr2kim3V0lYvLvRjJwM7nv8KplMKjVAO4m2FuDovmcx%2FJP&noverify=0&group_code=522563995 '},
+  {id: 'kf', link: 'https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi' }
+]
+
+function jump() {
+    const target = String(params.q).toLocaleLowerCase()
+
+    group.forEach((val) => {
+      if (val.id === target) {
+        location.href = val.link
+      }
+    })
+}
+
+onMounted(()=> {
+  jump()
+})
+</script>
+
 <style lang="scss" scoped>
 
 .vp-raw {
