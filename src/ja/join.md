@@ -13,7 +13,7 @@ description: 加入我们
 
 > ## 📌 地图打点组
 > 
-> [立即申请](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=VjJqYl8rFwpgcG_UuVyjxPSt3mxgIyV_&authKey=nte%2BbLDi46bByfbh8MQLEjNUialMC0vkqDX8hAa%2B9X8DgQ9GLdPDWoz4DuAVFD7G&noverify=0&group_code=992165223 "QQ群 992165223")
+> [立即申请](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=-HGS3II1no-AEcWHYdrhsJCN2IfKQeji&authKey=qbjuuv5VygEdFUAZSCCr2kim3V0lYvLvRjJwM7nv8KplMKjVAO4m2FuDovmcx%2FJP&noverify=0&group_code=522563995 "QQ群 522563995")
 
 ### 负责内容
 
