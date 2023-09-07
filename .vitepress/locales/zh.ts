@@ -49,7 +49,7 @@ export const zhConfig: LocaleSpecificConfig<
       },
       partnerMember: {
         title: '社区伙伴',
-        desc: '我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能和新闻展开协作。',
+        desc: '我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。',
       },
     },
     socialLinks: [

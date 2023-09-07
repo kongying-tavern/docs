@@ -17,7 +17,8 @@
       }
     ],
     "socials": {
-      "github": "A8Chann"
+      "github": "A8Chann",
+      "gitee": "aaaaaaa8"
     }
   },
   {
@@ -27,7 +28,7 @@
     "name": "铃",
     "qq": 717818652,
     "socials": {
-      "bilibili": "https://space.bilibili.com/5769504/"
+      "bilibili": "5769504"
     },
     "title": "Product Manager"
   },
@@ -63,7 +64,7 @@
         "url": "https://github.com/kongying-tavern/yuan-shen-map"
       },
       {
-        "label": "docs",
+        "label": "Docs",
         "url": "https://github.com/kongying-tavern/yuan-shen-map"
       }
     ],
@@ -189,5 +190,21 @@
     "qq": 582129961,
     "socials": {},
     "title": "Backend Developer"
+  },
+  {
+    "qq": 1148707279,
+    "jt": 1662293485,
+    "name": "Pop_Slime",
+    "socials": {},
+    "title": "English Translator & Community Management",
+    "location": "China"
+  },
+  {
+    "qq": 2405391333,
+    "jt": 1690630845,
+    "name": "Pat",
+    "socials": {},
+    "title": "English Translator & Community Management",
+    "location": "China"
   }
 ]

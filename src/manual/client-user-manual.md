@@ -14,6 +14,10 @@ description: 目录
 
 # 【目录】客户端使用手册
 
+## 其他语言手册
+
+- [英文版用户手册 (English Version)](../en/manual/client-user-manual.md)
+
 ## **更新日志**
 
 - [客户端更新日志](https://support.qq.com/products/321980/blog/505884)

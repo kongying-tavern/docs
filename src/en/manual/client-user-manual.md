@@ -10,13 +10,13 @@ prev:
 description: Table of Contents
 ---
 
-[文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
+[文：【目录】客户端使用手册]: # '../../manual/client-user-manual.md'
 
 # Table of Contents
 
 ## **Manuals in Other Languages**
 
-- [中文版用户手册 (Chinese Version)](https://support.qq.com/products/321980/faqs/94938)
+- [中文版用户手册 (Chinese Version)](../../manual/client-user-manual.md)
 
 ## **Update Log**
 

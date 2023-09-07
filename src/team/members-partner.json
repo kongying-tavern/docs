@@ -10,11 +10,11 @@
     "socials": {
       "github": "GengGode"
     },
-    "sort": "-1",
-    "title": "追踪/图像识别"
+    "title": "Automatic Tracking Developer"
   },
   {
     "name": "Wormtql",
+    "qq": 584130248,
     "title": "Webmaster",
     "location": "China",
     "company": "mona-uranai",
@@ -25,22 +25,13 @@
   },
   {
     "gender": -1,
-    "jd": 1674717510,
-    "location": "China",
-    "name": "晓羽",
-    "qq": 570359547,
-    "socials": {},
-    "sort": "-1",
-    "title": "前端"
-  },
-  {
-    "gender": -1,
     "jd": 2216844639,
     "location": "China",
     "name": "晓羽",
     "qq": 570359547,
     "socials": {},
-    "sort": "-1",
-    "title": "前端"
+    "title": "Developer",
+    "company": "Cocogoat",
+    "companyLink": "https://cocogoat.work/"
   }
 ]

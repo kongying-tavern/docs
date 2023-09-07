@@ -156,7 +156,7 @@ const avatarUrl = computed(() => {
           <li v-if="member.socials?.bilibili" class="social-item">
             <Link
               class="social-link"
-              :href="`https://www.linkedin.com/in/${member.socials?.bilibili}`"
+              :href="`https://space.bilibili.com/${member.socials?.bilibili}`"
               :no-icon="true"
             >
               <svg
@@ -175,7 +175,7 @@ const avatarUrl = computed(() => {
           <li v-if="member.socials?.gitee" class="social-item">
             <Link
               class="social-link"
-              :href="`https://codepen.io/${member.socials?.gitee}`"
+              :href="`https://gitee.com/${member.socials?.gitee}`"
               :no-icon="true"
             >
               <svg
