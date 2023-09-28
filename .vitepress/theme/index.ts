@@ -14,7 +14,6 @@ import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
 import LinkGrid from '../theme/components/LinkGrid.vue'
-import { useCssVar } from '@vueuse/core'
 import { createI18n } from 'vue-i18n'
 import 'uno.css'
 import './styles/vars.css'
@@ -55,10 +54,13 @@ export default {
     onMounted(() => {
       initZoom()
 
-      const font = new FontFace('zh-cn-full', 'url(./fonts/zh-cn-full.ttf)')
+      const font = new FontFace('zh-cn-full', 'url(./fonts/zh-cn-full.ttf)', {
+        display: 'swap',
+      })
 
       document.fonts.add(font)
       font.load().then((e) => {
+        console.log(e)
         document.documentElement.classList.toggle('font-full')
       })
     })
