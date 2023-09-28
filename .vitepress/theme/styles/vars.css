@@ -1,7 +1,7 @@
 
 @font-face {
   font-family: zh-cn-min;
-  src: url('./fonts/zh-cn-min.woff') format("truetype");
+  src: url('https:///assets.yuanshen.site/fonts/zh-cn-min.woff');
 }
 
 /**
