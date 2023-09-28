@@ -60,7 +60,7 @@
     "sass": "^1.64.2",
     "typescript": "^5.1.6",
     "unocss": "^0.54.2",
-    "vitepress": "^1.0.0-rc.9",
+    "vitepress": "^1.0.0-rc.20",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.4",
@@ -111,13 +111,5 @@
     "vite-plugin-inspect": "^0.7.35",
     "zhlint": "^0.7.1"
   },
-  "packageManager": "pnpm@8.6.12",
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search",
-        "search-insights"
-      ]
-    }
-  }
+  "packageManager": "pnpm@8.6.12"
 }
