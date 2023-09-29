@@ -58,11 +58,11 @@ export default {
         display: 'swap',
       })
 
-      document.fonts.add(font)
-      font.load().then((e) => {
-        console.log(e)
-        document.documentElement.classList.toggle('font-full')
-      })
+      // document.fonts.add(font)
+      // font.load().then((e) => {
+      //   console.log(e)
+      //   document.documentElement.classList.toggle('font-full')
+      // })
     })
     watch(
       () => route.path,
