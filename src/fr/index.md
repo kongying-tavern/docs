@@ -1,58 +1,54 @@
 ---
-head:
-  - - meta
-    - http-equiv: refresh
-      content: 0; url=./translations
 layout: home
-title: Genshin Interactive Map
+title: Carte Interactive de Genshin
 titleTemplate: :title | Kongying Tavern
 features:
-  - title: Smart Pins
+  - title: Épingler intelligentes
     icon: 🦾
-    details: Integrates both [Quality] and [Method] properties in chest pins, allowing regional duplicate-free filtering with method illustrations when using either filter.
-  - title: Overlay Mode
+    details: Intègre les propriétés [Qualité] et [Méthode] dans les Épingler de coffre, permettant un filtrage régional sans doublon avec des solution pour les énigme
+  - title: Superposition en jeux
     icon: 🎪
-    details: Overlays the game window, providing easy access to the map on one display.
-  - title: Position Tracker
+    details: La carte se superpose sur la fenêtre du jeu, offrant un accès facile et rapide à la carte sur un seul écran.
+  - title: Suivi de position
     icon: 🛠
-    details: Detects your character location using image recognition and displays a simultaneous player indicator on the <b>map client</b>.
-  - title: Underground Maps
+    details: Détecte l'emplacement de votre personnage à l'aide de reconnaissance d'image et affiche un indicateur en simultané sur le <b>client carte</b>.
+  - title: Cartes souterraines
     icon: ✨
-    details: Functional and accurate underground maps in collaboration with [Teyvat Map Institute] featuring levels and cave entries.
-  - title: Progress Sync
+    details: Les cartes souterraines sont fonctionnelles et précises en collaboration avec [Teyvat Map Institute] pour les niveaux et entrées des grottes.
+  - title: Synchronisation de la progression
     icon: ☁️
-    details: Cloud sync and recovery support for pin progress, custom paths, etc.
-  - title: 100% Free
+    details: Synchronisation et récupération dans le cloud pour la progression des Épingler, les chemins personnalisés, etc.
+  - title: 100% Gratuit
     icon: 🎉
-    details: <em>Genshin Interactive Map</em> is a MulanPSL-1.0 open-source project, it is also AD-free.
-  - title: Route Planning
+    details: <em>Genshin Interactive Map</em> est un projet open source MulanPSL-1.0, il est aussi sans pub.
+  - title: Planification d'itinéraire
     icon: 🚩
-    details: Make, manage, and backup highly customizable farming routes with [Canvas].
-  - title: Multi Mark
+    details: Créez, gérez et sauvegardez des itinéraires de farming hautement personnalisables avec [Canvas].
+  - title: Marquage multiple
     icon: ⚡
-    details: Conveniently mark multiple pins with simple clicks, swipes and box selection.
-  - title: Rapid Updates
+    details: Marquez facilement plusieurs Épingler avec de simples clics, balayages ou sélection.
+  - title: Mises à jour rapides
     icon: 🚀
-    details: New pins are available immediately after version updates, get 100% exploration day 1 with ease!
+    details: De nouveaux Épingler sont disponibles immédiatement après les mises à jour du jeux, obtenez facilement de 100% d'exploration day 1!
 hero:
-  name: Genshin Interactive Map
-  text: A Completionist's Interactive Map by Kongying Tavern
-  tagline: Simple, powerful, and performant.
+  name: Carte Interactive de Genshin
+  text: La Carte Interactive Ultime par Kongying Tavern
+  tagline: Simple, rapide et performant.
   image:
     src: /imgs/logo_256.png
     alt: 原神地图
   actions:
     - theme: brand
-      text: Download Now
+      text: Télécharger maintenant
       link: fr/download-client.md
     - theme: alt
-      text: Learn More
+      text: En savoir plus
       link: fr/manual/client-user-manual
     - theme: cta mastery
-      text: Web Version
+      text: Version Web
       link: https://v3.yuanshen.site/
     - theme: cta mastery
-      text: Visit GitHub
+      text: GitHub
       link: https://github.com/kongying-tavern
 ---
 
