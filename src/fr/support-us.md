@@ -1,35 +1,35 @@
 ---
-title: Support Us
+title: Soutenez-nous
 aside: false
 layout: doc
 titleTemplate: :title | Kongying Tavern
-description: Genshin Interactive Map is a MulanPSL-1.0 open-source project, it is completely free itself and AD-free. As the user base and the scope of our project grows, development and maintenance also incur rising costs.
-banner: Désolé, la traduction de cette page est toujours en cours
+description: _Genshin Interactive Map_ est un projet open source sous MulanPSL-1.0, il est entièrement gratuit et sans pubs.
+À mesure que la base d'utilisateurs et la popularité de notre projet augmentent, les coûts de développement et maintenance augmente 
 ---
 
-# Support Us
+# Soutenez-nous
 
-_Genshin Interactive Map_ is a MulanPSL-1.0 open-source project, it is completely free itself and AD-free.
-As the user base and the scope of our project grows, development and maintenance also incur rising costs. You can support the development and maintenance of _Genshin Interactive Map_ through the following ways:
+_Genshin Interactive Map_ est un projet open source sous MulanPSL-1.0, il est entièrement gratuit et sans pubs.
+À mesure que la base d'utilisateurs et la popularité de notre projet augmentent, les coûts de développement et maintenance augmente également. Vous pouvez soutenir le développement et la maintenance de _Genshin Interactive Map_ des manières suivantes :
 
-## One-time Contribution
+## Contribution unique
 
-We accept one-time contributions through the following channels：
+Nous acceptons les contributions uniques via les outils suivants :
 
 <Coins />
 
-## Sponsor Acknowledgement
+## Remerciement des sponsors
 
-### Personal Sponsors
+### Utilisateur Sponsor 
 
-If you are a fellow Traveler and appreciate the efficiency our map offers, consider supporting us financially - think of it as you are buying us soda or hair treatment. 😃
+Si vous êtes un autre voyageur et appréciez l'efficacité qu'offre notre carte, pensez à nous soutenir financièrement - pensez-y comme si vous achetez des sodas ou des soins capillaires. 😃
 
 ![backers](/imgs/backers_202347.png)
 
-### Sponsor Organizations
+### Organisations sponsors
 
-Sponsor Organizations can gain increased exposure in the _Genshin Interactive Map_ community by supporting us, expanding their reach to more _Genshin Impact_ players
+Les organisations sponsors peuvent gagner en visibilité dans la communauté _Genshin Interactive Map_ en nous soutenant, étendant ainsi leur portée à davantage de joueurs _Genshin Impact_.
 
 ::: tip
-Do not contribute large amounts if you are underaged, please reach out to us if there is any question. email：support@yuanshen.site.
+Ne contribuez pas de grosses sommes si vous êtes mineur, veuillez nous contacter si vous avez des questions. e-mail : support@yuanshen.site.
 :::
