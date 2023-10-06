@@ -26,7 +26,7 @@ description: 加入我们
 
 > ## 🎨 美术组
 >
-> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -38,7 +38,7 @@ description: 加入我们
 
 > ## 💻 前端开发组
 >
-> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -54,7 +54,7 @@ description: 加入我们
 
 > ## 🛠 后端开发组
 >
-> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -69,7 +69,7 @@ description: 加入我们
 
 > ## 📱 App 开发组
 >
-> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -84,7 +84,7 @@ description: 加入我们
 
 > ## 🖥 客户端开发组
 >
-> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -101,7 +101,7 @@ description: 加入我们
 
 > ## 🌎 国际化组
 >
-> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -120,7 +120,7 @@ description: 加入我们
 
 > ## 📊 算法设计组
 >
-> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -140,7 +140,7 @@ import { isNumber } from '../.vitepress/theme/utils'
 const params = useUrlSearchParams('history')
 const group = [
   {id: 'dd', link: 'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=-HGS3II1no-AEcWHYdrhsJCN2IfKQeji&authKey=qbjuuv5VygEdFUAZSCCr2kim3V0lYvLvRjJwM7nv8KplMKjVAO4m2FuDovmcx%2FJP&noverify=0&group_code=522563995 '},
-  {id: 'kf', link: 'https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi' }
+  {id: 'kf', link: 'https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We' }
 ]
 
 function jump() {

@@ -25,7 +25,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 > ## 🌎 国际化组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -44,7 +44,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 > ## 🎨 美术组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -56,7 +56,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 > ## 💻 前端开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -72,7 +72,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 > ## 🛠 后端开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -87,7 +87,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 > ## 📱 App 开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -102,7 +102,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 > ## 🖥 客户端开发组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
@@ -119,7 +119,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 > ## 📊 算法设计组
 >
-> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=jkbGpnEQlZ-1J2W0_RpWJXDkqD49Z-8N&jump_from=webapi 'QQ群 717152601')
+> [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We 'QQ群 717152601')
 
 ### 负责内容
 
