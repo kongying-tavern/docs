@@ -22,10 +22,13 @@ jobs:
         with:
           repository: kongying-tavern/docs
 
-      - uses: actions/setup-node@v3
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
         with:
-          node-version: '18'
-          cache: pnpm
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
       - name: Install dependencies
         uses: pnpm/action-setup@v2

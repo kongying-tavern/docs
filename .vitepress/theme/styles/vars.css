@@ -1,8 +1,7 @@
-
-/* @font-face {
-  font-family: zh-cn-min;
-  src: url('https:///assets.yuanshen.site/fonts/zh-cn-min.woff');
-} */
+@font-face {
+  font-family: zh-cn-full;
+  src: url('/fonts/zh-cn-full.ttf');
+}
 
 /**
  * Colors
@@ -13,9 +12,9 @@
   --vp-c-indigo-2: #3aa374;
   --vp-c-indigo-3: #008858;
   --vp-c-indigo-soft: rgba(0, 108, 69 0.16);
-  --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
-    Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
-    'Microsoft Yahei', sans-serif;
+  --vp-font-family-base: 'zh-cn-full', -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui,
+    'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
   --vp-c-text-code: #476582;
@@ -34,9 +33,9 @@
 }
 
 .font-full {
-  --vp-font-family-base: zh-cn-full, zh-cn-min, -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
-    Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
-    'Microsoft Yahei', sans-serif;
+  --vp-font-family-base: zh-cn-full, zh-cn-min, -apple-system,
+    BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto,
+    'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
 }
 
 .dark {

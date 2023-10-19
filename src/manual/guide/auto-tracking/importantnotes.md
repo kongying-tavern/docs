@@ -16,8 +16,7 @@ description: This feature is based on image recognition
 
 ## 使用说明
 
-* 在开启位置追踪后，《空荧酒馆》会实时获取游戏中玩家的位置，并在地图中显示小箭头，帮助玩家拖动地图并显示自己的位置，以方便玩家更快的找到需要标记的点位。
-
+- 在开启位置追踪后，《空荧酒馆》会实时获取游戏中玩家的位置，并在地图中显示小箭头，帮助玩家拖动地图并显示自己的位置，以方便玩家更快的找到需要标记的点位。
 
 ## 特性 {#capabilities}
 
@@ -48,7 +47,7 @@ description: This feature is based on image recognition
 ## 支持的程序 {#Software}
 
 - Windows10/11 下的原神Unity客户端
-- 【已不再支持】云原神（*云原神有反录屏，无法获取到截图*）
+- 【已不再支持】云原神（_云原神有反录屏，无法获取到截图_）
 
 ---
 
@@ -79,32 +78,40 @@ description: This feature is based on image recognition
 2. 图像识别的准确度并不高，可能会出现抖动，延迟这个属于图像识别本身的缺陷，无法完全解决
 3. 在反馈之前，请确定程序和画面设置没有问题
 4. 在反馈问题前，请确保了解位置追踪产生的日志文件，以方便为开发组排查问题:
-   
-    **追踪日志：**
-    ```
-    <地图安装目录>/AutoTrack.log
-    ```
-    可用记事本打开的文本文件（建议使用第三方文本编辑器，如 notepad3,vscode）
-   
-    **追踪截图：**
-    ```
-    <地图安装目录>/capture.png
-    ```
-    png 图像，用来排查 UI 定位的问题。因为带有 Alpha 通道，所以可能会有很大的色差，用 PS 打开或者粘贴到 QQ 上既可正常显示游戏画面
-   
-    **定位缓存：**
-    ```
-    <地图安装目录>/cvAutoTrack.xml
-    ```
-    后缀为xml，实际上是二进制文件，用于对匹配加速
-    
-    如果坐标不准确或者新地图无法追踪，可以尝试删除，会重新生成
 
-    **崩溃镜像：**
-    ```
-    <地图安装目录>/cvAutoTrack-[时间].dmp
-    ```
-    位置追踪崩溃后自动生成的文件，如果近期没有出现崩溃的问题，可以删除
+   **追踪日志：**
+
+   ```
+   <地图安装目录>/AutoTrack.log
+   ```
+
+   可用记事本打开的文本文件（建议使用第三方文本编辑器，如 notepad3,vscode）
+
+   **追踪截图：**
+
+   ```
+   <地图安装目录>/capture.png
+   ```
+
+   png 图像，用来排查 UI 定位的问题。因为带有 Alpha 通道，所以可能会有很大的色差，用 PS 打开或者粘贴到 QQ 上既可正常显示游戏画面
+
+   **定位缓存：**
+
+   ```
+   <地图安装目录>/cvAutoTrack.xml
+   ```
+
+   后缀为xml，实际上是二进制文件，用于对匹配加速
+
+   如果坐标不准确或者新地图无法追踪，可以尝试删除，会重新生成
+
+   **崩溃镜像：**
+
+   ```
+   <地图安装目录>/cvAutoTrack-[时间].dmp
+   ```
+
+   位置追踪崩溃后自动生成的文件，如果近期没有出现崩溃的问题，可以删除
 
 **【注意】：如果反馈群要求发送追踪截图，请不要使用截图，拍屏或者用 qq 的发送图片功能，必须要以文件的方式发送图像。可以将追踪截图的文件直接拖到聊天框来发送文件。**
 
@@ -117,4 +124,3 @@ description: This feature is based on image recognition
 仓库地址：https://github.com/GengGode/cvAutoTrack
 
 位置追踪基于 **C++和OpenCV** 技术栈，如果你想参与到**空荧酒馆原神地图**位置追踪模块的开发，可以[点击这里](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We)加入到开发组。或者自行fork修改
-

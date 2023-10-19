@@ -52,10 +52,6 @@ html {
   --at-apply: outline-1 outline-primary ring-2 ring-primary;
 }
 
-.VPSidebar {
-  z-index: 2 !important;
-}
-
 .VPSidebar::-webkit-scrollbar {
   background: transparent;
   height: 8px;
