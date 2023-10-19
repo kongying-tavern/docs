@@ -98,6 +98,32 @@ description: 加入我们
 
 :::raw
 
+> ## 🧭 追踪组
+> 
+> [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
+
+### 负责内容
+
+1. 负责位置追踪插件基于C++的维护和算法改进；
+2. 负责位置追踪插件的网页端或移动端移植；
+3. 负责位置追踪插件的Rust语言重写
+4. 负责位置追踪插件的更新服务器维护
+
+  以上职责满足其一即可
+
+### 要求
+
+1. 具有OpenCV的相关项目经历
+2. 了解常用的目标匹配算法
+
+### 技术栈
+
+`C++` `Rust` `js` `WASM` `OpenCV`
+
+:::
+
+:::raw
+
 > ## 🌎 国际化组
 > 
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
