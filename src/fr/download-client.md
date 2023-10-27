@@ -19,7 +19,7 @@ titleTemplate: :title | Kongying Tavern
 ::: tip
 Actuellement, nous proposons uniquement la **Version Windows** de notre client, des versions pour d'autres OS sont en cours.
 
-Si vous souhaitez contribuer au développement, pensez à Nous Rejoindre (^\_^)](./join)
+Si vous souhaitez contribuer au développement, pensez à Nous Rejoindre [(^\_^)](./join.md)
 :::
 
 ```card

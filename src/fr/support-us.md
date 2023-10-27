@@ -19,7 +19,7 @@ Nous acceptons les contributions uniques via les outils suivants :
 
 ## Remerciement des sponsors
 
-### Utilisateur Sponsor 
+### Utilisateur Sponsor
 
 Si vous êtes un autre voyageur et appréciez l'efficacité qu'offre notre carte, pensez à nous soutenir financièrement - pensez-y comme si vous achetez des sodas ou des soins capillaires. 😃
 
