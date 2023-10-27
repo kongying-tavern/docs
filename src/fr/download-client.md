@@ -1,38 +1,37 @@
 ---
-title: Download Client
-description: Currently we only offer the Windows Version of our map client, versions in other OS are in progress.
+title: Télécharger le client
+description: Actuellement, nous proposons uniquement la version Windows de notre client carte, des versions pour d'autres OS sont en cours.
 aside: false
 titleTemplate: :title | Kongying Tavern
-banner: Désolé, la traduction de cette page est toujours en cours
 ---
 
-# Download Client
+# Télécharger le client
 
-- Google Drive (Recommended)：
+- Google Drive (Recommandé) :
   - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
-- Aliyun Drive (Chinese)：
+- Aliyun Drive (Chinois) :
   - <https://www.aliyundrive.com/s/irmz7CKpMry>
-- Quark Drive (Chinese):
+- Quark Drive (Chinois) :
   - <https://pan.quark.cn/s/fe8bb34c77bc>
-- Baidu Cloud (Chinese)：
+- Baidu Cloud (Chinois) :
   - <https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg>
 
 ::: tip
-Currently we only offer the **Windows Version** of our map client, versions in other OS are in progress.
+Actuellement, nous proposons uniquement la **Version Windows** de notre client, des versions pour d'autres OS sont en cours.
 
-If you are interested in aiding our development, consider [Join Us(^\_^)](./join)
+Si vous souhaitez contribuer au développement, pensez à Nous Rejoindre (^\_^)](./join)
 :::
 
 ```card
-title: Map Client User Manual
+title: Manuel d'utilisation du client carte
 link: /fr/manual/client-user-manual
 theme: medium
 ```
 
-## Web Version
+## Version Web
 
 ```card
-title: Web Version Portal
+title: Site de la versions Web
 link: https://yuanshen.site
 theme: medium
 ```
