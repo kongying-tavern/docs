@@ -37,7 +37,7 @@ jobs:
 
       # 构建
       - name: Build
-        run: pnpm build --outDir dist
+        run: pnpm build --outDir dist --base /
 
       - name: download pr artifact
         uses: dawidd6/action-download-artifact@v2
