@@ -1,6 +1,6 @@
 ---
 aside: true
-titleTemplate: :title | 空蛍酒場
+titleTemplate: ':title | 空荧酒馆'
 next:
   text: '【彩蛋】查看历史版本金苹果群岛'
   link: '../easter-egg/view'
@@ -8,7 +8,6 @@ prev:
   text: '【批量选择】使用说明'
   link: '../batch-selection/instructions'
 description: 基础使用教程。
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
@@ -32,42 +31,39 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 点击右上角打开画板
 
-![](/imgs/ja/manual/canvas/1.png)
+![](/imgs/manual/canvas/1.png)
 
 ### 第二步 {#step2}
 
 点击添加一个空画布
 
-![](/imgs/ja/manual/canvas/2.png)
+![](/imgs/manual/canvas/2.png)
 
 ### 第三步 {#step3}
 
 选中新的画布（黑色背景为被选中状态）
 
-![](/imgs/ja/manual/canvas/3.png)
-（此为未选中状态）
+![](/imgs/manual/canvas/3.png) （此为未选中状态）
 
-![](/imgs/ja/manual/canvas/4.png)
-（此为选中状态，再次点击可隐藏）
+![](/imgs/manual/canvas/4.png) （此为选中状态，再次点击可隐藏）
 
 ### 第四步 {#step4}
 
 打开编辑模式
 
-![](/imgs/ja/manual/canvas/5.png)
+![](/imgs/manual/canvas/5.png)
 
-![](/imgs/ja/manual/canvas/6.png)
-（此为开启状态，再次点击关闭）
+![](/imgs/manual/canvas/6.png) （此为开启状态，再次点击关闭）
 
 ### 第五步 {#step5}
 
 在任意位置【按住 alt】并【鼠标左键点击】即可生成线条
 
-![](/imgs/ja/manual/canvas/7.png)
+![](/imgs/manual/canvas/7.png)
 
 按住 ctrl 可显示控制节点
 
-![](/imgs/ja/manual/canvas/9.png)
+![](/imgs/manual/canvas/9.png)
 
 ### 第六步 {#step6}
 
@@ -93,18 +89,18 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 打开面板点击导出此画布，选择位置保存
 
-![](/imgs/ja/manual/canvas/10.png)
+![](/imgs/manual/canvas/10.png)
 
-![](/imgs/ja/manual/canvas/11.png)
+![](/imgs/manual/canvas/11.png)
 
-![](/imgs/ja/manual/canvas/12.png)
+![](/imgs/manual/canvas/12.png)
 
 ## 导入教程 {#import}
 
 打开面板选择导入画布，可导入选择的画布
 
-![](/imgs/ja/manual/canvas/13.png)
+![](/imgs/manual/canvas/13.png)
 
-![](/imgs/ja/manual/canvas/14.png)
+![](/imgs/manual/canvas/14.png)
 
-![](/imgs/ja/manual/canvas/15.png)
+![](/imgs/manual/canvas/15.png)
