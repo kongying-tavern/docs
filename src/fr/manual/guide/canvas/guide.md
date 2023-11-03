@@ -1,104 +1,106 @@
 ---
 aside: true
-titleTemplate: :title | Kongying Tavern
+titleTemplate: ':title | 空荧酒馆'
 next:
-  text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
+  text: '【彩蛋】查看历史版本金苹果群岛'
   link: '../easter-egg/view'
 prev:
-  text: '[Multi Mark] Instructions'
+  text: '【批量选择】使用说明'
   link: '../batch-selection/instructions'
-description: Basic functionality, import, and export.
-banner: Désolé, la traduction de cette page est toujours en cours
+description: 基础使用教程。
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
 
-# [Custom Path Planner (Canvas)] Guide
+# 【画板】路线功能教程
 
-Hotkey summary:
+快捷键说明：
 
-1. Left Alt + left click: Create/add a path
-2. Left Ctrl: Hold to show path anchors
-3. Double left click: Place an anchor on a path
-4. Right click on **round anchors**: reset the path curvature at this anchor
-5. Right click on **square anchors**: delete anchors
-6. Enter: Conclude editing on the current path
+1. 左 Alt+鼠标左键：新建/添加线段
+2. 左 Ctrl：按住显示控制节点
+3. 左键双击线条：在此处插入新节点
+4. 右键点击【圆形节点】：初始化该节点弧度为线性
+5. 右键点击【方形节点】：删除此节点
+6. 回车：完成该线条编辑
 
 ---
 
-## Basic Functionality
+## 基础使用教程
 
-### **Step** 1
+### 第一步 {#step1}
 
-Click on the map icon located in the upper right
+点击右上角打开画板
 
-![](/imgs/fr/manual/canvas/1.png)
+![](/imgs/manual/canvas/1.png)
 
-### **Step** 2
+### 第二步 {#step2}
 
-Select "Add a New Canvas"
+点击添加一个空画布
 
-![](/imgs/fr/manual/canvas/2.png)
+![](/imgs/manual/canvas/2.png)
 
-### **Step** 3
+### 第三步 {#step3}
 
-Select the newly created canvas (indicated by darkened background)
+选中新的画布（黑色背景为被选中状态）
 
-![](/imgs/fr/manual/canvas/3.png)
+![](/imgs/manual/canvas/3.png) （此为未选中状态）
 
-![](/imgs/fr/manual/canvas/4.png)
-(Canvas under selection, click on it again to deselect)
+![](/imgs/manual/canvas/4.png) （此为选中状态，再次点击可隐藏）
 
-### **Step** 4
+### 第四步 {#step4}
 
-Toggle editing
+打开编辑模式
 
-![](/imgs/fr/manual/canvas/5.png)
+![](/imgs/manual/canvas/5.png)
 
-![](/imgs/fr/manual/canvas/6.png)
-(Picture shows editing toggled ON, click on it again to toggle OFF)
+![](/imgs/manual/canvas/6.png) （此为开启状态，再次点击关闭）
 
-### **Step** 5
+### 第五步 {#step5}
 
-**Hold Alt and left click** on any location to create a path
+在任意位置【按住 alt】并【鼠标左键点击】即可生成线条
 
-![](/imgs/fr/manual/canvas/7.png)
+![](/imgs/manual/canvas/7.png)
 
-### **Step** 6
+按住 ctrl 可显示控制节点
 
-Holding control allows control over anchors on the path
+![](/imgs/manual/canvas/9.png)
 
-![](/imgs/fr/manual/canvas/9.png)
+### 第六步 {#step6}
 
-At this stage, use **left click** to control the anchors,  
-use **right click** on round anchors to reset path curvature,  
-use **right click** on square anchors to delete it,  
-**double click** on the path to place an anchor.
+此时可以【鼠标左键节点】进行点操作，
 
-### **Step** 7
+【右键圆形节点】可以使该点弧度初始化，
 
-Hit **Enter** to conclude editing this path
+【右键方形节点】可删除此节点，
 
-### **Step** 8
+在线条上【双击鼠标左键】可插入节点。
 
-Repeat **Steps** 1 through 7 (note: upon exiting editing via Enter, click on a path to begin editing it)
+### 第七步 {#step7}
 
-## Export
+敲回车键完成此线条编辑
 
-Open the Canvas list, select "Export" and save to a desirable directory.
+### 第八步 {#step8}
 
-![](/imgs/fr/manual/canvas/10.png)
+重复第一步—第七步。
 
-![](/imgs/fr/manual/canvas/11.png)
+（PS：完成编辑后，鼠标左键选中任意一条线进入该线条编辑）
 
-![](/imgs/fr/manual/canvas/12.png)
+## 导出教程 {#export}
 
-## Import
+打开面板点击导出此画布，选择位置保存
 
-Open the Canvas list, select "Import" and open the desirable save file.
+![](/imgs/manual/canvas/10.png)
 
-![](/imgs/fr/manual/canvas/13.png)
+![](/imgs/manual/canvas/11.png)
 
-![](/imgs/fr/manual/canvas/14.png)
+![](/imgs/manual/canvas/12.png)
 
-![](/imgs/fr/manual/canvas/15.png)
+## 导入教程 {#import}
+
+打开面板选择导入画布，可导入选择的画布
+
+![](/imgs/manual/canvas/13.png)
+
+![](/imgs/manual/canvas/14.png)
+
+![](/imgs/manual/canvas/15.png)
