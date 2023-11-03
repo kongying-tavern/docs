@@ -1,9 +1,10 @@
 ---
 head:
-  - - meta
-    - http-equiv: refresh
+  - 
+    - meta
+    - 
+      http-equiv: refresh
       content: 0; url=./community
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 :::tip
