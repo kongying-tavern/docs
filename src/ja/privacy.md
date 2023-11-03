@@ -2,7 +2,7 @@
 title: 隐私政策
 layout: doc
 aside: false
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+comment: false
 ---
 
 # 隐私
@@ -15,7 +15,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 其登录以及登录后的相关数据均由[Gitee（码云）](https://gitee.com/)提供并存储于 Gitee 服务器中，详细可见[Gitee 隐私政策](https://gitee.com/terms/privacy_terms)
 
-我们的网站通过使用 Microsoft Clarity 和 Google Analytics 或百度统计来改进我们的产品和服务，以了解您如何使用我们的网站。使用我们的网站，即表示您同意我们和合作方可以收集和使用这些数据。
+我们的网站通过使用 Microsoft Clarity 和 Google Analytics 或百度统计来改进我们的产品和服务，以了解您如何使用我们的网站。使用我们的网站，即表示您同意我们和第三方服务提供商可以收集和使用这些数据。
 
 如需了解详情，请参阅：
 
