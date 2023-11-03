@@ -1,7 +1,6 @@
 ---
-titleTemplate: :title | 空蛍酒場
+titleTemplate: ':title | 空荧酒馆'
 description: 客户端登录使用的账号是Gitee账号，并不是游戏账号
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 [文：【不能登录】如何登录]: # 'https://support.qq.com/products/321980/faqs/97057'
@@ -17,7 +16,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 【Gitee 主页下图指示处，查看自己【用户名】，注意账号不包含“@”符号】
 
-![](/imgs/ja/manual/login/giteeusername.png)
+![](/imgs/manual/login/giteeusername.png)
 
 ---
 
