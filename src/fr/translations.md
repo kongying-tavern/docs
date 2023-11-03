@@ -1,25 +1,23 @@
 ---
 layout: doc
-title: Translations
-titleTemplate: :title | Kongying Tavern
-banner: Désolé, la traduction de cette page est toujours en cours
+title: 多语言及翻译
+titleTemplate: 空荧酒馆
 ---
 
-# Translations {#translations}
+# 多语言及翻译 {#translations}
 
-## Available Languages {#available-languages}
+## 多语言版本 {#available-languages}
 
-- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
-- [英文 / English](./index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
+- [简体中文 / Simplified Chinese](index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
+- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
 
-## Work in Progress Languages {#work-in-progress-languages}
+## 翻译中的语言 {#work-in-progress-languages}
 
-- [日本語 / Japanese](../ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
-- [韩语 / Korean](../ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
-- [法语 / French](../fr/index.md)[[source]](https://github.com/kongying-tavern/docs/tree/next/src/fr)]
+- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
+- [韩语 / Korean](./ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
 
-## Starting a new Translation {#starting-a-new-translation}
+## 启动新的翻译 {#starting-a-new-translation}
 
-The Genshin Interactive Map documentation has recently undergone a major revision, so translations in other languages are still missing or work-in-progress.
+近期地图的文档经历了一次大的版本升级，所以其他语言的翻译版本仍不可用或进行中。
 
-We welcome community efforts to provide more translations. Translation efforts are managed in the [kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub organization repositorie. If you are interested in contributing, please check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md) to get started.
+我们希望通过社区的努力提供更多语言的翻译。这些工作是在 [Crowdin](https://crowdin.com/translate/genshin-interactive-map) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。
