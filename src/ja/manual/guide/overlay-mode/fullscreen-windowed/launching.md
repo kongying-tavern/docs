@@ -1,14 +1,13 @@
 ---
 aside: false
-titleTemplate: :title | 空蛍酒場
+titleTemplate: ':title | 空荧酒馆'
 next:
   text: '【存档丢失】存档还原/误删恢复'
-  link: 'ja/manual/guide/restore-recover/progress'
+  link: '/manual/guide/restore-recover/progress'
 prev:
   text: '【覆盖模式】使用说明'
   link: '../instructions'
 description: Windowed Fullscreen lets the game run fullscreen while satisfying the [Overlay Mode]'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
@@ -23,23 +22,23 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 - 步骤一：打开“原神”所在的安装路径（见图）
 
-![](/imgs/ja/manual/fullscreen-windowed/1.png)
+![](/imgs/manual/fullscreen-windowed/1.png)
 
 - 步骤二：打开游戏安装路径下“Genshin Impact Game”文件夹
 
-![](/imgs/ja/manual/fullscreen-windowed/2.png)
+![](/imgs/manual/fullscreen-windowed/2.png)
 
 - 步骤三：将”YuanShen.exe“在桌面创建快捷方式（其他服务器的原神客户端启动程序名字可能不同）
 
-![](/imgs/ja/manual/fullscreen-windowed/3.png)
+![](/imgs/manual/fullscreen-windowed/3.png)
 
 - 步骤四：在桌面生成的快捷方式上，右键点击，选择【属性】
 
-![](/imgs/ja/manual/fullscreen-windowed/4.png)
+![](/imgs/manual/fullscreen-windowed/4.png)
 
 - 步骤五：在“快捷方式”选项中，“目标”一栏，加上【 -popupwindow】（注意”-“前面有 1 个空格）
 
-![](/imgs/ja/manual/fullscreen-windowed/5.png)
+![](/imgs/manual/fullscreen-windowed/5.png)
 
 ## 注意事项
 
