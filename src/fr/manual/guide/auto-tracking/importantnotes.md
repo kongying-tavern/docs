@@ -21,7 +21,7 @@ Cette fonctionnalité est basée sur la **reconnaissance d'image**
 
 - Prise en charge de la plupart des langues (non limitée au chinois, au français et à l'anglais)
 - Fonctionne même lorsque la mise à l'échelle du système n'est pas à 100 %
-- Détection précise du cap position joueur
+- Détection précise de la position du joueur
 - Fonctionnel dans toutes les régions, y compris Enkanomia et le Gouffre: les Mines souterraines s'affiche automatiquement
 
 ---
@@ -33,10 +33,10 @@ Voici la configuration minimale pour cette fonctionnalité :
 - La **mini-carte** ne contient aucun **waypoints personnalisés** ni **régions mises en surbrillance**.
 - Le jeu n'est pas en **plein écran exclusif**, l'exécution de [plein écran fenêtré (sans bordure)](../overlay-mode/fullscreen-windowed/launching.md) est recommandée
 
-Une fois le Position Tracker activé, le **client**
+Une fois le Suivi Automatique activé, le **client**
 
-- Affichez votre UID dans le coin inférieur droit
-- Détectez automatiquement l'emplacement actuel de votre personnage et affichez un indicateur en simultané sur le **client**
+- Affichage de votre UID dans le coin inférieur droit
+- Détection automatique l'emplacement actuel de votre personnage et affiche un indicateur en simultané sur le **client**
 
 ![](/imgs/fr/manual/auto-tracking/autotrackingegaged.png)
 
