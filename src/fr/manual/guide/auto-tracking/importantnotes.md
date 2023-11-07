@@ -2,42 +2,41 @@
 aside: true
 titleTemplate: :title | Kongying Tavern
 prev:
-  text: 'Table of Contents'
+  text: 'Manuels'
   link: 'fr/manual/client-user-manual'
 next:
-  text: '[Position Tracker] Troubleshooting'
+  text: '[Suivi Automatique] Dépannage'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
-banner: Désolé, la traduction de cette page est toujours en cours
 ---
 
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 位置追踪问题排查.docx 。'
 
-# [Position Tracker] Introduction
+# [Suivi Automatique] Introduction
 
-This feature is based on **image recognition**
+Cette fonctionnalité est basée sur la **reconnaissance d'image**
 
-## Capabilities {#capabilities}
+## Fonctionnalités {#Fonctionnalités}
 
-- Support for most languages (Not limited to Chinese, Korean, and English)
-- Functioning properly even when Windows system Scaling is not 100%
-- Accurate player heading detection
-- Functional in all regions, including Enkanomia and Chasm: Underground Mines when the client is displaying them
+- Prise en charge de la plupart des langues (non limitée au chinois, au français et à l'anglais)
+- Fonctionne même lorsque la mise à l'échelle du système n'est pas à 100 %
+- Détection précise du cap position joueur
+- Fonctionnel dans toutes les régions, y compris Enkanomia et le Gouffre: les Mines souterraines s'affiche automatiquement
 
 ---
 
-The following are the requirements for this feature:
+Voici la configuration minimale pour cette fonctionnalité :
 
-- Windows 10 or above
-- The map is unmasked by unlocking the Statues of Seven, and the **minimap** is complete
-- The **minimap** contains no **custom waypoints** or **highlighted regions**
-- The Game in not under **exclusive fullscreen**, running [windowed fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)is recommended
+- Windows 10/11
+- La carte est débloquer en déverrouillant les Statues des Sept, et la **mini-carte** est complète
+- La **mini-carte** ne contient aucun **waypoints personnalisés** ni **régions mises en surbrillance**.
+- Le jeu n'est pas en **plein écran exclusif**, l'exécution de [plein écran fenêtré (sans bordure)](../overlay-mode/fullscreen-windowed/launching.md) est recommandée
 
-Once Position Tracker is enabled, The **map client** will
+Une fois le Position Tracker activé, le **client**
 
-- Display your UID at the lower right corner
-- Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
+- Affichez votre UID dans le coin inférieur droit
+- Détectez automatiquement l'emplacement actuel de votre personnage et affichez un indicateur en simultané sur le **client**
 
 ![](/imgs/fr/manual/auto-tracking/autotrackingegaged.png)
 
@@ -45,76 +44,76 @@ Once Position Tracker is enabled, The **map client** will
 
 [见：位置追踪问题排查.docx]: # '以下为 位置追踪支持列表： 内容'
 
-## Software Support {#Software}
+## Support logiciel {#Logiciel}
 
-### Supported
+### Pris en charge
 
-- Genshin Impact PC client running on Windows 10/11
+- Genshin Impact version PC fonctionnant sous Windows 10/11
 
-### In-progress
+### En cours
 
-- Cloud gaming
-- Windows 8.1 and earlier
-- Remote play/casting from other devices
+- Cloud-Gaming
+- Windows 8.1 et versions antérieures
+- Lecture/diffusion à distance depuis d'autres appareils
 
-### Will not support
+### Ne supportera pas
 
-- Non-Windows OS
-- Android simulators
-- Virtual machines
+- Système d'exploitation non Windows (Linux)
+- émulateur Android
+- Machines virtuelles
 
 ---
 
-## Graphics Support {#Graphics}
+## Support graphique {#Graphique}
 
-### Supported
+### Pris en charge
 
-- Any resolution (recommended: 720p or greater)
-- Any aspect ratio (recommended: 4:3 to 21:9)
-- Any input device
-- **Fixed minimap** (under in-game Gamplay settings)
-- Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting Issue 4)
+- N'importe quelle résolution (recommandée : 720p (1280×720) ou supérieure)
+- Tout format d'image (recommandé : 4:3 à 21:9)
+- Tout périphérique d'entrée
+- **Mini-carte fixe** (sous les paramètres de gameplay du jeu)
+- Fenêtré et, dans certains scénarios, plein écran exclusif (voir Dépannage, problème 4)
 
-### In-progress
+### En cours
 
-- Rotating minimap (under in-game Gamplay settings)
-- Domains and indoor areas
+- Mini-carte rotative (sous les paramètres de jeu du jeu)
+- Donjons et espaces intérieurs
 
-### Will not support
+### Ne supportera pas
 
-Compensating for color distortions, which could be caused by:
+Les distorsions de couleur causées par :
 
-- Third party color calibration
-- Third party brightness adjustment
-- Windows 11 Auto HDR (tested: reduced player heading accuracy)
-- "Eye saver" features
-- NVIDIA Freestyle Game Filters
+- étalonnage des couleurs par un tiers
+- Réglage de la luminosité par un tiers
+- L'Auto HDR de Windows 11 (testé : précision de cap du joueur réduite)
+- Fonctionnalités « Eye Saver »
+- Filtres de jeu NVIDIA Freestyle
 
-**Position Tracker** may work with reduced accuracy or not at all.
+**Le Suivi Automatique** peut fonctionner avec une précision réduite, voire pas du tout.
 
 ---
 
 [见：位置追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
 
-## Troubleshooting {#Troubleshooting}
+## Dépannage {#Dépannage}
 
-Some facts to know before troubleshooting and submitting feedback:
+Quelques faits à connaître avant de dépanner et de soumettre des commentaires :
 
-1. Position Tracker is based on image recognition, it does not read or modify the game process, thus it brings no risk of an account ban.
-2. The image recognition is not highly accurate, it's normal for the player indicator to shift sporadically. This cannot be resolved completely due to the limitations of the technology implemented.
-3. Please check if your desired range of settings and feature is supported above.
-4. The following troubleshooting files can help us identify an issue, please attach them with your feedback if possible:
-   - Tracking log (autoTrack.log)
-   - Tracking screenshot (Capture.png)
+1. Le suivi automatique est basé sur la reconnaissance d'images, il ne lit ni ne modifie le processus du jeu, il n'entraîne donc aucun risque de bannissement.
+2. La reconnaissance d'image n'est pas une science exacte, il est donc normal que l'indicateur de position change anormalement. Ce problème ne peut être résolu complètement en raison des limites de la technologie mise en œuvre.
+3. Veuillez vérifier si la vos paramètres et fonctionnalités utiliser sont prise en charge ci-dessus.
+4. Les fichiers de dépannage suivants peuvent nous aider à identifier un problème. Veuillez les joindre si possible à vos commentaires :
+- Journal de suivi (autoTrack.log)
+- Capture d'écran de suivi (Capture.png)
 
 ![](/imgs/fr/manual/auto-tracking/7.png)
 
-::: tip
-You can visit the files' directory quickly through the **Position Tracker** settings.
+::: Conseil
+Vous pouvez visiter rapidement le répertoire des fichiers via les paramètres du **Suivi Automatique**.
 
 ![](/imgs/fr/manual/auto-tracking/2.png)
 :::
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-Please go through the [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
+Veuillez parcourir les [problèmes potentiels](./troubleshoot.md) avant de publier sur le [canal #feedback sur Discord](https://discord.gg/8wgttNDwse). (vous êtes invités à poser n'importe quelle question dans #chat)
