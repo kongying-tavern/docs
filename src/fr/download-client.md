@@ -1,5 +1,5 @@
 ---
-title: Download Client
+title: Télécharger le client
 description: Actuellement, nous proposons uniquement la version Windows de notre client carte, des versions pour d'autres OS sont en cours.
 aside: false
 titleTemplate: :title | Kongying Tavern
