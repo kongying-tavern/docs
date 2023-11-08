@@ -178,7 +178,7 @@ export default defineConfig({
       {
         name: 'viewport',
         content:
-          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover',
+          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover',
       },
     ],
     [
@@ -215,8 +215,41 @@ export default defineConfig({
     [
       'link',
       {
-        hreflang: 'zh-cn',
+        rel: 'alternate',
+        hreflang: 'zh',
         href: 'https://yuanshen.site/docs',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'en',
+        href: 'https://yuanshen.site/docs/en',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'fr',
+        href: 'https://yuanshen.site/docs/fr',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'ja',
+        href: 'https://yuanshen.site/docs/ja',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'kr',
+        href: 'https://yuanshen.site/docs/kr',
       },
     ],
     [

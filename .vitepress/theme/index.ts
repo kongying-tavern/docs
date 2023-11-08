@@ -14,7 +14,7 @@ import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
 import LinkGrid from '../theme/components/LinkGrid.vue'
-import { createI18n } from 'vue-i18n'
+
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
@@ -32,11 +32,6 @@ export default {
     googleAnalytics({
       id: 'G-Q2K9DXZCEY',
       debug: false,
-    })
-    const i18n = createI18n({
-      legacy: false,
-      locale: 'zh-CN',
-      fallbackLocale: '',
     })
     app.component('Link', Link)
     app.component('Coins', Coins)

@@ -418,7 +418,7 @@ rules:
   scss/at-function-pattern: ^[a-z]+([a-z0-9-]+[a-z0-9]+)?$
   scss/at-import-no-partial-leading-underscore: true
 
-  scss/at-import-partial-extension-blacklist:
+  scss/at-import-partial-extension-_blanklist:
     - scss
 
   scss/at-mixin-pattern: ^[a-z]+([a-z0-9-]+[a-z0-9]+)?$
