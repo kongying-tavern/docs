@@ -47,13 +47,13 @@ import { isNumber } from '../.vitepress/theme/utils'
 const params = useUrlSearchParams('history')
 const downloadMethod = [
   { id:'sq', name: '加入社区', target: '_self', link: './community', icon: '/imgs/logo_256.png' },
-  { id:'bd', name: '百度网盘', target: '_black', link: 'https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg', icon: '/svg/baidu-drive.svg' 
+  { id:'bd', name: '百度网盘', target: '_blank', link: 'https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg', icon: '/svg/baidu-drive.svg' 
   },
-  { id: 'kk', name: '夸克网盘', target: '_black', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg' 
+  { id: 'kk', name: '夸克网盘', target: '_blank', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg' 
   },
-  { id: 'ty', name: '天翼云盘', secondary: '访问码：exn0', target: '_black', link: 'https://cloud.189.cn/t/YF7Fj2zIRVbi', icon: '/svg/tianyi-drive.svg' 
+  { id: 'ty', name: '天翼云盘', secondary: '访问码：exn0', target: '_blank', link: 'https://cloud.189.cn/t/YF7Fj2zIRVbi', icon: '/svg/tianyi-drive.svg' 
   },
-  { id:'gd', name: 'Google Drive', target: '_black', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+  { id:'gd', name: 'Google Drive', target: '_blank', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
 ]
 
 function jump() {
