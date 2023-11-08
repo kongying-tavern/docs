@@ -11,7 +11,7 @@ export const LOCAL_CODE = "fr";
 export const LOCAL_BASE = '';
 export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> = {
   titleTemplate: '空荧酒馆',
-  description: '123123',
+  description: META_DESCRIPTION,
   head: [['meta', {
     property: 'og:site_name',
     content: META_TITLE
