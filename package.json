@@ -19,14 +19,11 @@
     "site:preview": "vitepress build --outDir _dist --base /"
   },
   "lint-staged": {
-    "*.{js,ts,vue}": [
+    "*.{js,ts,vue,scss,sass,css}": [
       "eslint --fix",
       "prettier --write"
     ],
     "*.{md,json,yml}": [
-      "prettier --write"
-    ],
-    "*.scss": [
       "prettier --write"
     ],
     "package.json": [

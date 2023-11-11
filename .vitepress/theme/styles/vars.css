@@ -12,9 +12,9 @@
   --vp-c-indigo-2: #3aa374;
   --vp-c-indigo-3: #008858;
   --vp-c-indigo-soft: rgba(0, 108, 69 0.16);
-  --vp-font-family-base: zh-cn-min, -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
-    Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
-    'Microsoft Yahei', sans-serif;
+  --vp-font-family-base: zh-cn-min, -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui,
+    'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
   --vp-c-text-code: #476582;
@@ -38,13 +38,23 @@
 .font-full {
   --vp-font-family-base: zh-cn-full, zh-cn-min, -apple-system,
     BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto,
-    'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif!important;
+    'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif !important;
 }
 
 .lang-zh-cn:not(.font-full) {
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
-  Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
-  'Microsoft Yahei', sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Helvetica Neue',
+    Helvetica,
+    Segoe UI,
+    Arial,
+    Roboto,
+    'PingFang SC',
+    miui,
+    'Hiragino Sans GB',
+    'Microsoft Yahei',
+    sans-serif;
 }
 
 .dark {
@@ -52,8 +62,7 @@
   --vp-c-text-code: #aac8e4;
   /* fix contrast on gray cards: check the same above (this is the default) */
   --vp-c-text-dark-2: rgba(235, 235, 235, 0.6);
-  --vp-c-tip-1: var(v--vp-c-tip-1)
-  --nav-c-bg: rgba(30, 30, 32, 0.5);
+  --vp-c-tip-1: var(v--vp-c-tip-1) --nav-c-bg: rgba(30, 30, 32, 0.5);
 }
 
 /**
