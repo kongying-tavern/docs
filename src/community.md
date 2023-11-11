@@ -36,6 +36,8 @@ titleTemplate: 空荧酒馆
 1. [**原神地图 14 群** 468263682](https://qm.qq.com/cgi-bin/qm/qr?k=g-By7txM78GfoPhk29d59Z5KkJV_Gt-z&jump_from=webapi '点击一键加入原神地图14群')
 1. [**原神地图 15 群** 668424173](https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi '点击一键加入原神地图15群')
 
+---
+
 :::tip
 推荐加入人数较少的群。
 
@@ -118,10 +120,10 @@ background-color: var(--vp-c-bg);
   ol {
     display: inherit;
     padding: 0;
-    max-height: 475px;
+    /* max-height: 475px; */
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     
     li {
       cursor: pointer;
@@ -129,7 +131,7 @@ background-color: var(--vp-c-bg);
       margin: 10px 0;
       width: 98%;
       font-size: 16px;
-      border: 1px solid var(--vp-c-divider);
+      border: 1.5px solid var(--vp-c-divider);
       border-radius: 5px;
       transition: all .3s;
       text-align: right;
