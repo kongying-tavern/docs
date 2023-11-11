@@ -36,7 +36,7 @@ hero:
   tagline: Simple, rapide et performant.
   image:
     src: /imgs/logo_256.png
-    alt: 原神地图
+    alt: Carte Interactive pour Genshin
   actions:
     - theme: brand
       text: Télécharger maintenant
