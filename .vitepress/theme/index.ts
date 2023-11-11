@@ -49,9 +49,13 @@ export default {
     onMounted(() => {
       initZoom()
 
-      const font = new FontFace('zh-cn-full', 'url(./fonts/zh-cn-full.ttf)', {
-        display: 'swap',
-      })
+      const font = new FontFace(
+        'zh-cn-full',
+        'url(https://yuanshen.site/docs/fonts/zh-cn-full.ttf)',
+        {
+          display: 'swap',
+        },
+      )
 
       document.fonts.add(font)
       font.load().then((e) => {
