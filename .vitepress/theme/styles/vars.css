@@ -1,3 +1,8 @@
+@font-face {
+  font-family: zh-cn-min;
+  src: url('/fonts/zh-cn-min.woff');
+}
+
 /**
  * Colors
  * -------------------------------------------------------------------------- */
@@ -7,7 +12,7 @@
   --vp-c-indigo-2: #3aa374;
   --vp-c-indigo-3: #008858;
   --vp-c-indigo-soft: rgba(0, 108, 69 0.16);
-  --vp-font-family-base: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+  --vp-font-family-base: zh-cn-min, -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
     Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
     'Microsoft Yahei', sans-serif;
   --vp-c-accent: #35495e;
@@ -30,7 +35,13 @@
 .font-full {
   --vp-font-family-base: zh-cn-full, zh-cn-min, -apple-system,
     BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto,
-    'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+    'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif!important;
+}
+
+.lang-zh-cn:not(.font-full) {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+  Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
+  'Microsoft Yahei', sans-serif;
 }
 
 .dark {

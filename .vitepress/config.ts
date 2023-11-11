@@ -269,8 +269,6 @@ export default defineConfig({
       },
     ],
     ['meta', { name: 'referrer', content: 'no-referrer-when-downgrade' }],
-    ['meta', { name: 'author', content: 'Arrebol' }],
-    ['meta', { name: 'article:author', content: 'Arrebol' }],
     ['meta', { property: 'og:site', content: 'website' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
@@ -304,12 +302,6 @@ export default defineConfig({
             new URL('./theme/components/Footer.vue', import.meta.url),
           ),
         },
-        {
-          find: /^.*\/VPSwitchAppearance\.vue$/,
-          replacement: fileURLToPath(
-            new URL('./theme/components/SwitchAppearance.vue', import.meta.url),
-          ),
-        },
       ],
     },
     plugins: [
@@ -320,7 +312,8 @@ export default defineConfig({
       stringify: true,
     },
   },
-  transformPageData(pageData, { siteConfig }) {
+  transformHead(content) {
+    const { pageData, siteConfig } = content
     pageData.frontmatter.head ??= []
     pageData.frontmatter.head.push([
       'meta',

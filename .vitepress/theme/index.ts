@@ -49,15 +49,15 @@ export default {
     onMounted(() => {
       initZoom()
 
-      // const font = new FontFace('zh-cn-full', 'url(./fonts/zh-cn-full.ttf)', {
-      //   display: 'swap',
-      // })
+      const font = new FontFace('zh-cn-full', 'url(./fonts/zh-cn-full.ttf)', {
+        display: 'swap',
+      })
 
-      // document.fonts.add(font)
-      // font.load().then((e) => {
-      //   console.log(e)
-      //   document.documentElement.classList.toggle('font-full')
-      // })
+      document.fonts.add(font)
+      font.load().then((e) => {
+        console.log(e)
+        document.documentElement.classList.toggle('font-full')
+      })
     })
     watch(
       () => route.path,
