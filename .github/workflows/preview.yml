@@ -37,7 +37,7 @@ jobs:
 
       # 构建
       - name: Build
-        run: pnpm vitepress build --outDir dist --base /
+        run: pnpm vitepress build --outDir _dist --base /
 
       - name: download pr artifact
         uses: dawidd6/action-download-artifact@v2
