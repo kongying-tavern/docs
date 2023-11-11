@@ -103,6 +103,7 @@ Quelques faits à connaître avant de dépanner et de soumettre des commentaires
 2. La reconnaissance d'image n'est pas une science exacte, il est donc normal que l'indicateur de position change anormalement. Ce problème ne peut être résolu complètement en raison des limites de la technologie mise en œuvre.
 3. Veuillez vérifier si la vos paramètres et fonctionnalités utiliser sont prise en charge ci-dessus.
 4. Les fichiers de dépannage suivants peuvent nous aider à identifier un problème. Veuillez les joindre si possible à vos commentaires :
+
 - Journal de suivi (autoTrack.log)
 - Capture d'écran de suivi (Capture.png)
 

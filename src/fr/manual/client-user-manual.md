@@ -16,6 +16,7 @@ banner: Désolé, la traduction de cette page est toujours en cours
 # Manuels
 
 ## **Manuels**
+
 - [[Suivi Automatique] Introduction](./guide/auto-tracking/importantnotes.md)
 
 ## **Manuels dans d'autres langues**
@@ -32,12 +33,9 @@ banner: Désolé, la traduction de cette page est toujours en cours
 - [[Overlay Mode] Launching The Game in Windowed Fullscreen](./guide/overlay-mode/fullscreen-windowed/launching.md)
 - [[Restore/Recover] Recovery From Stored Progress](./guide/restore-recover/progress.md)
 
-
 ## **Information des mise à jour**
 
 - [Client Update Log](https://discord.gg/SWz6RTWNkm)
-
-
 
 ## **FAQs (Anglais)**
 
