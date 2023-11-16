@@ -3,23 +3,23 @@
     <div class="one-time-donations">
       <div class="links">
         <a href="#wechatpay" title="WeChat Pay">
-          <label class="i-custom-wechatpay"></label
+          <span class="i-custom-wechatpay"></span
           >{{ theme.payment.wechatpay.name }}
         </a>
         <a href="#alipay" title="AliPay"
-          ><label class="i-custom-alipay"></label>
+          ><span class="i-custom-alipay"></span>
           {{ theme.payment.alipay.name }}</a
         >
         <a href="#qqpay" title="QQ Pay">
-          <label class="i-custom-qqpay"></label>
+          <span class="i-custom-qqpay"></span>
           {{ theme.payment.qqpay.name }}</a
         >
         <a href="#paypal" title="Paypal">
-          <label class="i-custom-paypal"></label>
+          <span class="i-custom-paypal"></span>
           {{ theme.payment.paypal.name }}</a
         >
         <a href="#bilibili" title="bilibili">
-          <label class="i-custom-bilibili"></label>
+          <span class="i-custom-bilibili"></span>
           {{ theme.payment.bilibili.name }}</a
         >
       </div>
@@ -27,7 +27,7 @@
 
     <div v-if="type && coins[type]" class="coin-details slide-enter">
       <p>
-        <label ref="icon"></label>
+        <span ref="icon"></span>
         {{ coins[type].name }} Address:<br /><a
           :href="coins[type].address"
           :title="coins[type].name"
@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
     align-items: center;
     color: var(--vp-c-text-1);
 
-    & > label {
+    & > span {
       display: inline-block;
       height: 2em;
       width: 2em;
@@ -151,7 +151,7 @@ onBeforeUnmount(() => {
       font-weight: normal;
     }
 
-    label {
+    span {
       display: block;
       height: 5rem;
       width: 5rem;

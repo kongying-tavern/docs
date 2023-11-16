@@ -178,7 +178,7 @@ export default defineConfig({
       {
         name: 'viewport',
         content:
-          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover',
+          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover',
       },
     ],
     [
@@ -215,8 +215,41 @@ export default defineConfig({
     [
       'link',
       {
-        hreflang: 'zh-cn',
+        rel: 'alternate',
+        hreflang: 'zh',
         href: 'https://yuanshen.site/docs',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'en',
+        href: 'https://yuanshen.site/docs/en',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'fr',
+        href: 'https://yuanshen.site/docs/fr',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'ja',
+        href: 'https://yuanshen.site/docs/ja',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'kr',
+        href: 'https://yuanshen.site/docs/kr',
       },
     ],
     [
@@ -236,8 +269,6 @@ export default defineConfig({
       },
     ],
     ['meta', { name: 'referrer', content: 'no-referrer-when-downgrade' }],
-    ['meta', { name: 'author', content: 'Arrebol' }],
-    ['meta', { name: 'article:author', content: 'Arrebol' }],
     ['meta', { property: 'og:site', content: 'website' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
@@ -271,12 +302,6 @@ export default defineConfig({
             new URL('./theme/components/Footer.vue', import.meta.url),
           ),
         },
-        {
-          find: /^.*\/VPSwitchAppearance\.vue$/,
-          replacement: fileURLToPath(
-            new URL('./theme/components/SwitchAppearance.vue', import.meta.url),
-          ),
-        },
       ],
     },
     plugins: [
@@ -287,7 +312,8 @@ export default defineConfig({
       stringify: true,
     },
   },
-  transformPageData(pageData, { siteConfig }) {
+  transformHead(content) {
+    const { pageData, siteConfig } = content
     pageData.frontmatter.head ??= []
     pageData.frontmatter.head.push([
       'meta',

@@ -14,7 +14,7 @@ import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
 import LinkGrid from '../theme/components/LinkGrid.vue'
-import { createI18n } from 'vue-i18n'
+
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
@@ -33,11 +33,6 @@ export default {
       id: 'G-Q2K9DXZCEY',
       debug: false,
     })
-    const i18n = createI18n({
-      legacy: false,
-      locale: 'zh-CN',
-      fallbackLocale: '',
-    })
     app.component('Link', Link)
     app.component('Coins', Coins)
     app.component('VPCard', Card)
@@ -54,15 +49,19 @@ export default {
     onMounted(() => {
       initZoom()
 
-      // const font = new FontFace('zh-cn-full', 'url(./fonts/zh-cn-full.ttf)', {
-      //   display: 'swap',
-      // })
+      const font = new FontFace(
+        'zh-cn-full',
+        'url(https://yuanshen.site/docs/fonts/zh-cn-full.ttf)',
+        {
+          display: 'swap',
+        },
+      )
 
-      // document.fonts.add(font)
-      // font.load().then((e) => {
-      //   console.log(e)
-      //   document.documentElement.classList.toggle('font-full')
-      // })
+      document.fonts.add(font)
+      font.load().then((e) => {
+        console.log(e)
+        document.documentElement.classList.toggle('font-full')
+      })
     })
     watch(
       () => route.path,
