@@ -5,6 +5,7 @@
     "davidanson.vscode-markdownlint",
     "streetsidesoftware.code-spell-checker",
     "Vue.vscode-typescript-vue-plugin",
-    "antfu.iconify"
+    "antfu.iconify",
+    "streetsidesoftware.code-spell-checker-french"
   ]
 }

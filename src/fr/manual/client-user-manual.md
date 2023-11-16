@@ -13,20 +13,16 @@ banner: Désolé, la traduction de cette page est toujours en cours
 
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
 
-# Table of Contents
+# Manuels
 
-## **Manuals in Other Languages**
+## **Manuels**
+
+- [[Suivi Automatique] Introduction](./guide/auto-tracking/importantnotes.md)
+
+## **Manuels dans d'autres langues**
 
 - [中文版用户手册 (Chinese Version)](https://support.qq.com/products/321980/faqs/94938)
-
-## **Update Log**
-
-- [Client Update Log](https://discord.gg/SWz6RTWNkm)
-
-## **Guides**
-
 - [Starter Tour (Coming Soon)](#)
-- [[Position Tracker] Introduction](./guide/auto-tracking/importantnotes.md)
 - [[Position Tracker] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Multi Mark] Instructions](./guide/batch-selection/instructions.md)
@@ -37,7 +33,11 @@ banner: Désolé, la traduction de cette page est toujours en cours
 - [[Overlay Mode] Launching The Game in Windowed Fullscreen](./guide/overlay-mode/fullscreen-windowed/launching.md)
 - [[Restore/Recover] Recovery From Stored Progress](./guide/restore-recover/progress.md)
 
-## **FAQs**
+## **Information des mise à jour**
+
+- [Client Update Log](https://discord.gg/SWz6RTWNkm)
+
+## **FAQs (Anglais)**
 
 - [Download The Latest Map Client](../download-client.md)
 - [[Auto Update] Non-Responsive Updater](./faq/autoupdate/updater.md)
