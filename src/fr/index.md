@@ -44,10 +44,4 @@ hero:
     - theme: alt
       text: En savoir plus
       link: fr/manual/client-user-manual
-    - theme: cta mastery
-      text: Version Web
-      link: https://v3.yuanshen.site/
-    - theme: cta mastery
-      text: GitHub
-      link: https://github.com/kongying-tavern
 ---

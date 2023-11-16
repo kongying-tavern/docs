@@ -7,13 +7,11 @@ titleTemplate: :title | Kongying Tavern
 
 # Télécharger le client
 
-<LinkGrid :items="downloadMethod" />
-
-::: tip
 Actuellement, nous proposons uniquement la **Version Windows** de notre client, des versions pour d'autres OS sont en cours.
 
+<LinkGrid :items="downloadMethod" />
+
 Si vous souhaitez contribuer au développement, pensez à [Nous Rejoindre!](./join.md)
-:::
 
 ```card
 title: Manuel d'utilisation du client carte
