@@ -4,7 +4,6 @@ aside: false
 layout: doc
 banner: Desculpe, a tradução desta página ainda está em andamento
 titleTemplate: :title | Kongying Tavern
-banner: Sorry, this page translation is still in progress
 ---
 
 # 空荧酒馆原神地图用户服务协议
