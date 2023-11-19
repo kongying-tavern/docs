@@ -1,7 +1,7 @@
 <template>
   <div slide-enter>
     <div class="one-time-donations">
-      <div class="links">
+      <div class="links" @click="close">
         <a href="#wechatpay" title="WeChat Pay">
           <span class="i-custom-wechatpay"></span
           >{{ theme.payment.wechatpay.name }}
@@ -24,8 +24,12 @@
         >
       </div>
     </div>
-
-    <div v-if="type && coins[type]" class="coin-details slide-enter">
+    {{ lastState }}
+    <div
+      ref="coinDetails"
+      v-if="type && coins[type]"
+      class="coin-details slide-enter"
+    >
       <p>
         <span ref="icon"></span>
         {{ coins[type].name }} Address:<br /><a
@@ -51,6 +55,8 @@ let qrcode = ref()
 
 const icon = ref()
 const type = ref()
+const lastState = ref()
+const coinDetails = ref()
 const coins = ref(theme.value.payment)
 
 const updateType = () => {
@@ -64,10 +70,15 @@ const updateType = () => {
   }
 }
 
+const close = (e) => {
+  const v = e.target.href?.substr(1)
+  if (lastState.value === v) coinDetails.value.classList.toggle('hide')
+}
 onMounted(() => {
   updateType()
   window.addEventListener('hashchange', updateType)
 })
+
 onBeforeUnmount(() => {
   window.removeEventListener('hashchange', updateType)
 })
@@ -130,6 +141,7 @@ onBeforeUnmount(() => {
 }
 
 .coin-details {
+  position: relative;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -164,6 +176,11 @@ onBeforeUnmount(() => {
   }
 }
 
+.hide {
+  z-index: -1 !important;
+  animation: hide 1s both 1 !important;
+}
+
 @keyframes whirling {
   from {
     transform: rotate3d(0, 1, 0, -90deg) scale(0.9);
@@ -171,6 +188,18 @@ onBeforeUnmount(() => {
 
   to {
     transform: rotate3d(0, 1, 0, 90deg) scale(1);
+  }
+}
+
+@keyframes hide {
+  0% {
+    transform: translateY(0);
+    opacity: 100;
+  }
+
+  to {
+    transform: translateY(-40%);
+    opacity: 0;
   }
 }
 </style>

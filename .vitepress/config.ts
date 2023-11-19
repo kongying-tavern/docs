@@ -16,6 +16,7 @@ import { zhConfig } from './locales/zh'
 import { jaConfig } from './locales/ja'
 import { koConfig } from './locales/ko'
 import { frConfig } from './locales/fr'
+import { ptConfig } from './locales/pt'
 
 export const isProd = process.env.NODE_ENV === 'production'
 export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
@@ -136,6 +137,22 @@ export default defineConfig({
               },
             },
           },
+          pt: {
+            translations: {
+              button: {
+                buttonText: 'Search',
+                buttonAriaLabel: 'Search',
+              },
+              modal: {
+                noResultsText: 'No results for',
+                resetButtonTitle: 'Reset search',
+                footer: {
+                  selectText: 'to select',
+                  navigateText: 'to navigate',
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -170,6 +187,12 @@ export default defineConfig({
       lang: 'fr',
       link: '/fr/',
       ...frConfig,
+    },
+    pt: {
+      label: 'Português',
+      lang: 'pt',
+      link: '/pt/',
+      ...ptConfig,
     },
   },
   head: [

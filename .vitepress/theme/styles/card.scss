@@ -133,16 +133,23 @@
     mask-position: center;
     -webkit-mask-position: center;
     mask-size: 100% 100%;
+    position: relative;
+    top: -8px;
+    left: 8px;
     background-color: currentColor;
     width: 28px !important;
     height: 28px !important;
-    margin-top: 8px !important;
     color: currentColor !important;
   }
 
   hr {
     display: none;
   }
+}
+
+.vp-card-local::after {
+  transform: rotate(45deg);
+  left: 4px;
 }
 
 .i-custom-txc {
