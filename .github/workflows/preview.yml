@@ -69,9 +69,6 @@ jobs:
           echo the preview URL is $DEPLOY_DOMAIN
           echo "::set-output name=url::$DEPLOY_DOMAIN"
 
-      - name: Get output diff
-        run: node .github/diff.cjs
-
       - name: update status comment
         uses: actions-cool/maintain-one-comment@v2.0.0
         with:
