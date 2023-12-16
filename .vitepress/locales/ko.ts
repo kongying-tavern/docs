@@ -255,7 +255,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         text: '【画板】路线功能 教程',
         link: 'manual/guide/canvas/guide'
       }, {
-        text: '【彩蛋】查看历史版本金苹果群岛',
+        text: '【彩蛋】查看历史版本内容',
         link: 'manual/guide/easter-egg/view'
       }, {
         text: '【隐藏】标记/【显示】标记',
