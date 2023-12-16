@@ -255,7 +255,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         text: "Guide du canvas",
         link: "/manual/guide/canvas/guide"
       }, {
-        text: "Easter Egg",
+        text: '【彩蛋】查看历史版本内容',
         link: "/manual/guide/easter-egg/view"
       }, {
         text: "Cacher/Afficher les éléments trouvés",
