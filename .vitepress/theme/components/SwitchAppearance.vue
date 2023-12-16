@@ -46,8 +46,8 @@ function useAppearance() {
           ? 'auto'
           : 'dark'
         : query.matches
-        ? 'light'
-        : 'auto'
+          ? 'light'
+          : 'auto'
 
       localStorage.setItem(APPEARANCE_KEY, userPreference)
 
@@ -70,8 +70,8 @@ function useAppearance() {
           ? 'auto'
           : 'dark'
         : query.matches
-        ? 'light'
-        : 'auto'
+          ? 'light'
+          : 'auto'
 
       localStorage.setItem(APPEARANCE_KEY, userPreference)
     })

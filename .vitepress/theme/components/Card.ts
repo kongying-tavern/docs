@@ -113,10 +113,11 @@ const Card: FunctionalComponent<CardProps> = ({
         innerHTML: desc
           ? desc
           : isRelativeLink(link)
-          ? `https://yuanshen.site/docs/${
-              link.substring(0, 3).replace(/(\.\/|\/)/g, '') + link.substring(3)
-            }`
-          : link,
+            ? `https://yuanshen.site/docs/${
+                link.substring(0, 3).replace(/(\.\/|\/)/g, '') +
+                link.substring(3)
+              }`
+            : link,
       }),
     ]),
   ]
