@@ -2,7 +2,7 @@
 aside: true
 titleTemplate: :title | 空蛍酒場
 next:
-  text: '【彩蛋】查看历史版本金苹果群岛'
+  text: '【彩蛋】查看历史版本内容'
   link: '../easter-egg/view'
 prev:
   text: '【批量选择】使用说明'
