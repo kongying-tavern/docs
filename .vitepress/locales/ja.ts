@@ -255,7 +255,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         text: "【キャンバス】ルート計画機能紹介",
         link: "/manual/guide/canvas/guide"
       }, {
-        text: "【おまけ】金リンゴ群島を見る",
+        text: '【彩蛋】查看历史版本内容',
         link: "/manual/guide/easter-egg/view"
       }, {
         text: "【表示】/【非表示】マーカー",
