@@ -30,7 +30,7 @@ description: 目录
 - [【地图性能占用高】前后台帧率设置](./guide/bg/bgfrate.md)
 - [【批量选择】使用说明](./guide/batch-selection/instructions.md)
 - [【画板】路线功能 教程](./guide/canvas/guide.md)
-- [【彩蛋】查看历史版本金苹果群岛](./guide/easter-egg/view.md)
+- [【彩蛋】查看历史版本内容](./guide/easter-egg/view.md)
 - [【隐藏】标记/【显示】标记](./guide/hide-show-done/hidedoneshowdone.md)
 - [【覆盖模式】使用说明](./guide/overlay-mode/instructions.md)
 - [【窗口全屏/无边框窗口模式】启动游戏](./guide/overlay-mode/fullscreen-windowed/launching.md)
