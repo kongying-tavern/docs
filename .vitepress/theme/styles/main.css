@@ -19,6 +19,21 @@ html {
   border-top: 1px;
 }
 
+.vp-doc figure {
+  text-align: center;
+}
+
+.vp-doc figure figcaption {
+  font-weight: bold;
+  line-height: 1.5;
+  padding: 0.3rem 0;
+  color: var(--vp-fig-light-text);
+}
+
+html.dark .vp-doc figure figcaption {
+  color: var(--vp-fig-text);
+}
+
 .VPMenuLink .link {
   line-height: 28px !important;
 }
