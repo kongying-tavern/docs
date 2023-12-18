@@ -64,7 +64,7 @@ jobs:
           repository=${{github.repository}}
           project_name=${repository#*/}
           export DEPLOY_DOMAIN=https://kongying-tavern-preview-pr${{ steps.pr.outputs.id }}-$project_name.surge.sh
-          npx surge --project ./dist --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN  }}
+          npx surge --project ./_dist --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN  }}
           echo the preview URL is $DEPLOY_DOMAIN
           echo "::set-output name=url::$DEPLOY_DOMAIN"
 
