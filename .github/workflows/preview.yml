@@ -57,7 +57,7 @@ jobs:
           run_id: ${{ github.event.workflow_run.id }}
           name: _site
       - run: |
-          unzip _site.zip
+          unzip -q _site.zip
 
       - name: Upload surge service and generate preview URL
         id: deploy
