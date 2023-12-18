@@ -19,6 +19,7 @@ features:
     icon: ✨
     details: Functional and accurate underground maps in collaboration with [Teyvat Map Institute] featuring levels and cave entries.
     link: https://space.bilibili.com/1872522256/
+    target: _blank
   - title: Progress Sync
     icon: ☁️
     details: Cloud sync and recovery support for pin progress, custom paths, etc.

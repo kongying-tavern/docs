@@ -19,6 +19,7 @@ features:
     icon: ✨
     details: 与【图研所】合作提供的精确的地下地图，附带可选择分层与洞口标识
     link: https://space.bilibili.com/1872522256/
+    target: _blank
   - title: 自动同步
     icon: ☁️
     details: 支持云端自动将标记的点位、路线以及其他数据同步云端
