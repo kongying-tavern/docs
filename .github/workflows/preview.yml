@@ -9,7 +9,6 @@ on:
     workflows: ['TEST_BUILD']
     types:
       - completed
-  workflow_dispatch:
 
 jobs:
   preview-success:
@@ -57,7 +56,7 @@ jobs:
           run_id: ${{ github.event.workflow_run.id }}
           name: _site
       - run: |
-          unzip -q _site.zip
+          unzip -o _site.zip
 
       - name: Upload surge service and generate preview URL
         id: deploy
