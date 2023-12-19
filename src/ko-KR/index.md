@@ -11,14 +11,18 @@ features:
     title: 覆盖模式
     icon: '🎪'
     details: 覆盖游戏窗口的模式，方便单屏幕玩家快速打开地图查看标记~
+    link: manual/guide/overlay-mode/instructions
   - 
-    title: 自动追踪
+    title: 位置追踪
     icon: '🛠'
     details: 基于【图像识别】技术自动检测游戏内当前角色位置（小地图坐标位置）并同步显示到【地图客户端】上，就像游戏内地图一样
+    link: manual/guide/auto-tracking/importantnotes
   - 
     title: 地下地图
     icon: '✨'
     details: 与【图研所】合作提供的精确的地下地图，附带可选择分层与洞口标识
+    link: https://space.bilibili.com/1872522256/
+    target: _blank
   - 
     title: 自动同步
     icon: '☁️'
@@ -31,10 +35,12 @@ features:
     title: 路线规划
     icon: '🚩'
     details: 用【画板】制作、编辑以及备份自定义路线
+    link: manual/guide/canvas/guide
   - 
     title: 批量选择
     icon: '⚡'
     details: 使用点击、拖动以及框选快速便利的标记点位
+    link: manual/guide/batch-selection/instructions
   - 
     title: 快速更新
     icon: '🚀'
@@ -52,15 +58,8 @@ hero:
       text: 立即下载 →
       link: ./download-client
     - 
-      theme: cta video slide-enter
-      text: 基础使用教程
-      link: https://bilibili.com/video/BV1R84y1M7eu
-    - 
-      theme: cta mastery slide-enter
-      text: 客户端使用手册
-      link: manual/client-user-manual.md
+      theme: alt slide-enter
+      text: 网页版地图
+      link: https://v3.yuanshen.site
 ---
 
-<script setup>
-import '../.vitepress/theme/styles/home-links.css'
-</script>
