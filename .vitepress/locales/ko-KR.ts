@@ -1,6 +1,5 @@
-import fs from "./types";
-import path from 'path';
 import { baseHelper } from '../theme/utils';
+import { socialList } from '../theme/composables/socialList';
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress';
 import type { CustomConfig } from './types';
 export const META_URL = 'https://yuanshen.site/docs/';
@@ -11,44 +10,20 @@ export const META_IMAGE = 'https://yuanshen.site/docs/imgs/cover.jpg';
 export const LOCAL_CODE = "ko-KR";
 export const LOCAL_BASE = '';
 export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> = {
-  description: META_DESCRIPTION,
   titleTemplate: '空荧酒馆',
+  description: META_DESCRIPTION,
   head: [['meta', {
-    name: 'keywords',
-    content: META_KEYWORDS
-  }], ['meta', {
-    property: 'og:url',
-    content: META_URL
-  }], ['meta', {
-    property: 'og:description',
-    content: META_DESCRIPTION
-  }], ['meta', {
-    property: 'twitter:url',
-    content: META_URL
-  }], ['meta', {
-    property: 'twitter:title',
-    content: META_TITLE
-  }], ['meta', {
     property: 'og:site_name',
     content: META_TITLE
   }], ['meta', {
-    property: 'twitter:description',
-    content: META_DESCRIPTION
-  }], ['meta', {
     property: 'og:locale',
     content: LOCAL_CODE
-  }], ['meta', {
-    property: 'og:image',
-    content: META_IMAGE
-  }], ['meta', {
-    property: 'og:image',
-    content: META_IMAGE
-  }], ['meta', {
-    name: 'twitter:image',
-    content: META_IMAGE
   }]],
   themeConfig: {
     siteTitle: '原神地图',
+    keyword: META_KEYWORDS,
+    description: META_DESCRIPTION,
+    image: META_IMAGE,
     outlineTitle: '本页目录',
     logo: '/imgs/logo_256.png',
     lastUpdatedText: '更新日期',
@@ -58,6 +33,22 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> 
       title: '这个页面找不到了',
       quote: '可能跟温迪一起出游了吧',
       linkLabel: '回到首页'
+    },
+    team: {
+      title: '关于团队',
+      desc: '地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。',
+      coreMember: {
+        title: '核心团队成员',
+        desc: '核心团队成员是那些积极长期参与维护一个或多个核心项目的人。 他们对空荧酒馆的生态系统做出了重大贡献。'
+      },
+      emeritiMember: {
+        title: '名誉核心团队',
+        desc: '我们在此致敬过去曾做出过突出贡献的不再活跃的团队成员。'
+      },
+      partnerMember: {
+        title: '社区伙伴',
+        desc: '我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。'
+      }
     },
     socialLinks: [{
       icon: 'github',
@@ -70,9 +61,10 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> 
       link: 'https://twitter.com/KongyingTavern'
     }, {
       icon: {
-        svg: fs.readFileSync(path.resolve(__dirname, '../../src/public/svg/qq-fill.svg'), 'utf8')
+        svg: socialList.bilibili.icon
       },
-      link: 'https://pd.qq.com/s/f006fek0f'
+      link: 'https://space.bilibili.com/518076785',
+      ariaLabel: 'bilibili'
     }],
     docFooter: {
       prev: '上一页',
@@ -101,7 +93,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> 
       }
     },
     editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/next/src/:path',
+      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
       text: '报告错误'
     },
     sidebar: baseHelper(sidebar(), LOCAL_BASE),
@@ -122,9 +114,10 @@ function nav(): DefaultTheme.NavItem[] {
     link: "/community"
   }, {
     text: "Support",
+    activeMatch: `^/manual/`,
     items: [{
       text: "Client User Manual",
-      link: "/manual/client-user-manual"
+      link: 'manual/client-user-manual'
     }, {
       text: "Feedback",
       link: 'https://support.qq.com/products/321980'
@@ -222,7 +215,7 @@ function footer(): CustomConfig['footer'] {
       title: "Support",
       items: [{
         text: "Client User Manual",
-        link: "/manual/client-user-manual"
+        link: 'manual/client-user-manual'
       }, {
         text: "Feedback",
         link: "https://support.qq.com/products/321980"
@@ -242,6 +235,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       link: "/manual/client-user-manual"
     }, {
       text: "Guides",
+      collapsed: false,
       items: [{
         text: "Automatic Tracking",
         items: [{
@@ -261,7 +255,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         text: "Canvas Guide",
         link: "/manual/guide/canvas/guide"
       }, {
-        text: "Easter Egg",
+        text: '【彩蛋】查看历史版本内容',
         link: "/manual/guide/easter-egg/view"
       }, {
         text: "Hide/Show Found",
@@ -281,6 +275,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       }]
     }, {
       text: "FAQ",
+      collapsed: false,
       items: [{
         text: "Account safety",
         link: "/manual/faq/accountsafety/acntban"
