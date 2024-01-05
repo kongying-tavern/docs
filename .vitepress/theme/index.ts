@@ -51,7 +51,7 @@ export default {
 
       const font = new FontFace(
         'zh-cn-full',
-        'url(https://yuanshen.site/docs/fonts/zh-cn-full.ttf)',
+        'url(/docs/fonts/zh-cn-full.ttf)',
         {
           display: 'swap',
         },

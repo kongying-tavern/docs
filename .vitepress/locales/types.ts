@@ -1,3 +1,8 @@
+interface Info {
+  title: string
+  desc?: string
+}
+
 export interface CustomConfig {
   keyword: string
   description: string
@@ -14,21 +19,21 @@ export interface CustomConfig {
       }[]
     }[]
   }
+  staff: {
+    title: string
+    desc: string
+    clientStaff: Info
+    webStaff: Info
+    pinStaff: Info
+    translateStaff: Info
+    communityStaff: Info
+  }
   team: {
     title: string
     desc: string
-    coreMember: {
-      title: string
-      desc: string
-    }
-    emeritiMember: {
-      title: string
-      desc: string
-    }
-    partnerMember: {
-      title: string
-      desc: string
-    }
+    coreMember: Info
+    emeritiMember: Info
+    partnerMember: Info
   }
   payment?: Record<
     string,

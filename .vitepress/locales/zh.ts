@@ -2,6 +2,7 @@ import { baseHelper } from '../theme/utils'
 import { socialList } from '../theme/composables/socialList'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
+import { title } from 'process'
 
 export const META_URL = 'https://yuanshen.site/docs/'
 export const META_TITLE = '原神地图'
@@ -35,6 +36,25 @@ export const zhConfig: LocaleSpecificConfig<
       title: '这个页面找不到了',
       quote: '可能跟温迪一起出游了吧',
       linkLabel: '回到首页',
+    },
+    staff: {
+      title: 'Staff',
+      desc: '空荧酒馆『原神地图』项目参与制作',
+      communityStaff: {
+        title: '社区运营',
+      },
+      clientStaff: {
+        title: '客户端开发',
+      },
+      webStaff: {
+        title: '网页端开发',
+      },
+      translateStaff: {
+        title: '本地化翻译',
+      },
+      pinStaff: {
+        title: '地图点位标记',
+      },
     },
     team: {
       title: '关于团队',
@@ -172,16 +192,16 @@ function nav(): DefaultTheme.NavItem[] {
           text: '鸣谢',
           items: [
             {
-              text: '技术鸣谢',
-              link: '/credits.md',
-            },
-            {
-              text: '贡献鸣谢',
-              link: '/contribution.md',
+              text: '制作人员',
+              link: '/staff.md',
             },
             {
               text: '赞助鸣谢',
               link: '/support-us.md#赞助鸣谢',
+            },
+            {
+              text: '技术鸣谢',
+              link: '/credits.md',
             },
           ],
         },
