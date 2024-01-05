@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import StaffHero from './staffHero.vue'
-import StaffList from './staffList.vue'
+import StaffHero from './StaffHero.vue'
+import StaffList from './StaffList.vue'
 import staffTranslate from './staff-translate.json'
 import staffPin from './staff-pin.json'
-import staffClient from './staff-client.json'
-import staffWeb from './staff-web.json'
+// import staffClient from './staff-client.json'
+// import staffWeb from './staff-web.json'
 import staffCommunity from './staff-community.json'
 import type { Member } from './Member'
 const { theme } = useData()

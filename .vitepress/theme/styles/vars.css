@@ -1,6 +1,6 @@
 @font-face {
   font-family: zh-cn-min;
-  src: url('/docs/fonts/zh-cn-min.woff');
+  src: url('../../../src/public/fonts/zh-cn-min.woff');
 }
 
 /**
