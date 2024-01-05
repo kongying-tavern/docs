@@ -1,4 +1,5 @@
 ---
+title: \[Position Tracker] Oculus Tracking (Removed)
 aside: false
 next:
   text: '[Position Tracker] Oculus Tracking'
@@ -7,10 +8,7 @@ prev:
   text: '[Position Tracker] Trouble shooting'
   link: './updated.md'
 description:
-banner: Désolé, la traduction de cette page est toujours en cours
 ---
-
-[文：自动神瞳]: #
 
 # ~~[Position Tracker] Oculus Tracking~~
 
