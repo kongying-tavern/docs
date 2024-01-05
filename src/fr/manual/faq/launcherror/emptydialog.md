@@ -1,25 +1,26 @@
 ---
-titleTemplate: :title | Kongying Tavern
-description: Troubleshoot
-banner: Désolé, la traduction de cette page est toujours en cours
+titleTemplate: ':title | Kongying Tavern'
+description: 分为3种情况
 ---
 
 [文：【无法打开】空窗提示或卡进度条]: # 'https://support.qq.com/products/321980/faqs/99662'
 
-# [Launch Error] Empty Dialog Box or Stuck Progress Bar
+# 【无法打开】空窗提示或卡进度条
 
 There are three likely scenarios,
 
-1. the client is stuck on 0%, and displays an empty dialogue
+1. 第一种，卡在 0%，且弹窗空提示
 
-![](/imgs/fr/manual/launcherror/1.png)
-(A firewall has blocked the API request, check your firewall and anti-virus provider)
+![](/imgs/manual/launcherror/1.png)
 
-2. the client is stuck on 0%, no dialogue appears
+这种情况是防火墙阻止了接口请求，退出防火墙即可解决（特别是 360）。
 
-![](/imgs/fr/manual/launcherror/2.jpeg)
+2. 第二种，卡在 0%，无提示
+
+![](/imgs/manual/launcherror/2.jpeg)
+
 (Cache is corrupted, head to the directory in the following picture and delete PlayerPrefs.json)
 
-![](/imgs/fr/manual/launcherror/3.png)
+![](/imgs/manual/launcherror/3.png)
 
-3. the client is stuck on 100%, with no dialogue, this is a version 1.11 bug contained in the login module, and it can be resolved with the same method in scenario 2.
+3. 第三种，卡在 100%，无提示，是 1.11 版本的 bug，属于登录模块的 bug，解决方法同第二种。
