@@ -107,11 +107,11 @@ html.dark .vp-doc figure figcaption {
 }
 
 .medium-zoom-overlay {
-  z-index: 20;
+  z-index: 999999999999;
 }
 
 .medium-zoom-image {
-  z-index: 21;
+  z-index: 999999999999;
 }
 
 @keyframes slide-enter {

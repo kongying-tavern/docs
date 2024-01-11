@@ -4,7 +4,6 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
 import { colorPreviewPlugin } from './theme/markdown/colorPreview'
 import { cardPlugin } from './theme/markdown/card'
-import { imgLazyload } from '@mdit/plugin-img-lazyload'
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
@@ -410,6 +409,9 @@ A Completionist's Interactive Map by Kongying Tavern`,
     ])
   },
   markdown: {
+    image: {
+      lazyLoading: true,
+    },
     config(md) {
       md.use(MarkdownItFootnote)
       md.use(colorPreviewPlugin)
@@ -417,7 +419,6 @@ A Completionist's Interactive Map by Kongying Tavern`,
       md.use(sub)
       md.use(sup)
       md.use(mark)
-      md.use(imgLazyload)
       md.use(imgSize)
       md.use(obsidianImageSize)
       md.use(figure)
