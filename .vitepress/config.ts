@@ -38,7 +38,7 @@ export const productionHead: HeadConfig[] = [
       type: 'application/ld+json',
     },
     `
-    {"@context":"https://schema.org","@type":"WebPage","name":Kongying Tavern Genshin Interactive Map"}`,
+    {"@context":"https://schema.org","@type":"WebPage","name":"Kongying Tavern Genshin Interactive Map"}`,
   ],
 ]
 

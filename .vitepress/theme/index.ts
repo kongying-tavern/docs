@@ -1,11 +1,4 @@
-import {
-  onMounted,
-  watch,
-  nextTick,
-  defineAsyncComponent,
-  h,
-  watchEffect,
-} from 'vue'
+import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
 import { useRoute, inBrowser, useData } from 'vitepress'
 import mediumZoom from 'medium-zoom'
 import DefaultTheme from 'vitepress/theme-without-fonts'
@@ -41,27 +34,10 @@ export default {
   setup() {
     const route = useRoute()
     const { lang } = useData()
-    const initZoom = () => {
-      mediumZoom('.main img:not(.no-zoomable)', {
-        background: 'var(--vp-c-bg)',
-      })
-    }
+
     onMounted(() => {
       initZoom()
-
-      const font = new FontFace(
-        'zh-cn-full',
-        'url(/docs/fonts/zh-cn-full.ttf)',
-        {
-          display: 'swap',
-        },
-      )
-
-      document.fonts.add(font)
-      font.load().then((e) => {
-        console.log(e)
-        document.documentElement.classList.toggle('font-full')
-      })
+      loadFont()
     })
     watch(
       () => route.path,
@@ -70,10 +46,23 @@ export default {
           initZoom()
         }),
     )
-    watchEffect(() => {
-      if (inBrowser) {
-        document.cookie = `nf_lang=${lang.value}; expires=Mon, 1 Jan 2024 00:00:00 UTC; path=/`
-      }
-    })
   },
+}
+
+const loadFont = () => {
+  const font = new FontFace('zh-cn-full', 'url(/docs/fonts/zh-cn-full.ttf)', {
+    display: 'swap',
+  })
+
+  document.fonts.add(font)
+  font.load().then((e) => {
+    console.log(e)
+    document.documentElement.classList.toggle('font-full')
+  })
+}
+
+const initZoom = () => {
+  mediumZoom('.main img:not(.no-zoomable)', {
+    background: 'var(--vp-c-bg)',
+  })
 }
