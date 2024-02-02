@@ -18,29 +18,21 @@ description: Windowed Fullscreen lets the game run fullscreen while satisfying t
 
 ---
 
-通过以下步骤，可以全屏启动窗口模式的“原神”游戏：
+通过以下步骤，可以全屏打开无边框窗口模式的“原神”游戏：
 
-- 步骤一：打开“原神”所在的安装路径（见图）
+- 步骤一：启动“原神”
 
-![](/imgs/manual/fullscreen-windowed/1.png)
+- 步骤二：打开派蒙菜单，然后打开设置
 
-- 步骤二：打开游戏安装路径下“Genshin Impact Game”文件夹
+- 步骤三：转到“图像”设置
 
-![](/imgs/manual/fullscreen-windowed/2.png)
+![](/imgs/manual/fullscreen-windowed/6.png)
 
-- 步骤三：将”YuanShen.exe“在桌面创建快捷方式（其他服务器的原神客户端启动程序名字可能不同）
+- 步骤四：在“显示模式”选项中，选择“<你的分辨率> 无边框”选项
 
-![](/imgs/manual/fullscreen-windowed/3.png)
-
-- 步骤四：在桌面生成的快捷方式上，右键点击，选择【属性】
-
-![](/imgs/manual/fullscreen-windowed/4.png)
-
-- 步骤五：在“快捷方式”选项中，“目标”一栏，加上【 -popupwindow】（注意”-“前面有 1 个空格）
-
-![](/imgs/manual/fullscreen-windowed/5.png)
+![](/imgs/manual/fullscreen-windowed/7.png)
 
 ## 注意事项
 
-- 如果你的游戏分辨率设置为“独占全屏”（即全屏模式），请确认 Alt+Tab 切换程序后窗口不会最小化。如果仍然最小化请按 Alt+Enter（回车）手动切换窗口模式。'
+- 如果你的游戏分辨率设置为“独占全屏”，请手动切换到“无边框”模式。
 - 你也可以通过其他第三方启动器实现全屏窗口化显示，如[“胡桃工具箱”](https://hut.ao/)、[“寻空”](https://xunkong.cc/)等。
