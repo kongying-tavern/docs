@@ -1,7 +1,6 @@
 ---
-titleTemplate: :title | 空蛍酒場
+titleTemplate: ':title | 空蛍酒場'
 description: 请检查密码中是否包含【,】（半角逗号），若包含请修改密码去除后重试
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
 [文：【每次打开都需重新登陆】]: # 'https://support.qq.com/products/321980/faqs/130500'

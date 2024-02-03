@@ -5,7 +5,6 @@ description: 技术鸣谢
 aside: false
 layout: doc
 pageClass: credits
-banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
 # 技术鸣谢
@@ -17,7 +16,7 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ## Web
 
 | Name       | License name | Sourse Code                                 | Copyright                  |
-| :--------- | :----------: | :------------------------------------------ | :------------------------- |
+|:---------- |:------------:|:------------------------------------------- |:-------------------------- |
 | Deckgl     |     MIT      | <https://github.com/visgl/deck.gl>          | Urban Computing Foundation |
 | Jquery     |     MIT      | <https://github.com/jquery/jquery>          | John Resig                 |
 | Jest       |     MIT      | <https://github.com/facebook/jest>          | Facebook                   |
@@ -32,7 +31,7 @@ banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 
 ## 美术
 
-| Name     | Description            | Link                                                     | CopyRight |
-| :------- | :--------------------- | :------------------------------------------------------- | :-------- |
-| MapImage | 地图相关素材           | [ys.mihoyo.com](https://ys.mihoyo.com)                   | MiHoYo    |
-| ばたばた | 客户端 [投币] 按钮素材 | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |
+| Name     | Description   | Link                                                     | CopyRight |
+|:-------- |:------------- |:-------------------------------------------------------- |:--------- |
+| MapImage | 地图相关素材        | [ys.mihoyo.com](https://ys.mihoyo.com)                   | MiHoYo    |
+| ばたばた     | 客户端 [投币] 按钮素材 | [www.pixiv.net](https://www.pixiv.net/artworks/88007179) | Seseren   |

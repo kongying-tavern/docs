@@ -6,9 +6,10 @@ aside: true
 layout: doc
 comment: false
 head:
-  - - script
-    - src: /docs/error.js
-banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
+  - 
+    - script
+    - 
+      src: /docs/error.js
 ---
 
 # 原神地图遇到了一些问题...

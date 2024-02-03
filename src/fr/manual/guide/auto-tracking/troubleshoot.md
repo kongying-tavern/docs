@@ -1,119 +1,168 @@
 ---
 aside: true
-titleTemplate: :title | Kongying Tavern
+titleTemplate: ':title | Kongying Tavern'
 prev:
   text: '[Position Tracker] Important Notes'
   link: '../auto-tracking/importantnotes'
 next:
-  text: '[Background Usage] Framerate/Tracking Control'
+  text: '【地图性能占用高】前后台帧率设置'
   link: '../bg/bgfrate'
 description: Troubleshoot
-banner: Désolé, la traduction de cette page est toujours en cours
 ---
 
-[文：位置追踪问题排查.docx]: # '以下为 问题排查 内容'
+[文：位置追踪问题排查.docx]: # '以下为“问题排查”内容'
 
 # [Position Tracker] Troubleshooting
 
-## 1. When **Position Tracker** is engaged, the in-game minimap does not show pins, nor is there an overlay of the map client {#issue1}
-
-[#]: # '这里没有直接翻译，因英文用户大概率没有看过演示视频，未提及《天理地图》'
-
-The **Position Tracker** feature cannot overlay the game window, you can use the Stay on Top feature to have a similar effect as the title describes.
-
-[#]: # '因此在这链接了 reddit 上的演示'
-
-Showcase：
-
 ```card
-title: The Best Underground Map (Kongying Tavern x Teyvat Map Institute)
-
-link: https://www.reddit.com/r/Genshin_Impact/comments/12znlyd/the_best_underground_map_kongying_tavern_x_teyvat/
 theme: medium
+title: 官方开发反馈 QQ 群
+desc: 228382171（https://jq.qq.com/?_wv=1027&k=EqhYN9uI）
+link: https://jq.qq.com/?_wv=1027&k=EqhYN9uI
 ```
 
-## 2. Cannot download **Position Tracker** module, the download window flashes or the download speed is 0.00 kb/s {#issue2}
+English version: [\[Automatic Tracking\] Important Notes | Kongying Tavern](http://yuanshen.site/docs/en/manual/guide/auto-tracking/importantnotes)
 
-[#]: # '“请使用【群文件】的一键安装包手动安装” 的部分 替换 给了 dc 服务器里的下载频道'
+## 简介
 
-There is a problem with our server, join our [Discord](https://discord.gg/S7MxgjcbtD) and download the module there. Once the installation finishes, restart the map client to load the module.
+本功能基于【图像识别】技术实现。不是外挂，不会导致封号。
 
-## 3. Receiving C++ Runtime error or client crashing after enabling **Position Tracker** {#issue3}
+若想使用本功能，请确认：
 
-- Simply re-enable **Position Tracker**
-- Clear the **Position Tracker** cache, launch the map client again and enable **Position Tracker**, you will need to wait for the cache to build again
+- 您的操作版本至少是win10或以上版本（win7不支持追踪）
+- 使用原神客户端，不限服务器，不支持云游戏
+- 游戏内【解锁神像点亮地图】，游戏内【左上角小地图】完整。
+- 游戏内【左上角小地图】中，无大面积遮挡（如黄色的任务范围圆圈）
+- If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
 
-[#]: # '这里更新了客户端内一键清理位置追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
+## 基础说明
 
-![](/imgs/fr/manual/auto-tracking/6.png)
+成功开启位置追踪后，菜单左下角会出现自动追踪版本号。
 
-[反馈方式]: # '最适合目标语言用户的反馈方式'
+![192584e1056ce0916dc418c79e942977.png](https://txc.gtimg.com/data/321980/2023/0825/192584e1056ce0916dc418c79e942977.png)
 
-- Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【启动位置追踪模块后软件崩溃】" in your message.
+将实时识别游戏内当前角色位置（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）。以便于对照地图，防止迷路。
 
-## 4. Nothing happens when **Position Tracker** is engaged {#issue4}
+![fd745ec564afdff997a49957a17f4080.png](https://txc.gtimg.com/data/321980/2021/0611/fd745ec564afdff997a49957a17f4080.png)
 
-- When using a new version for the first time, the module requires 1-5 minutes to rebuild its cache. During this process, switching versions or using the tracking screenshot function may cause the client to stop responding. If no player indicator shows up after 10 minutes, or if it is not the initial activation of a new version, please refer to issues further down the list.
-- Double-check if the **Position Tracker** is toggled on.
-- Check the in-game minimap for obstructions, and ensure that it's displaying properly.
-- Check the "DLL" version at the lower left corner of the map client. If it shows "Uninitialized", try restarting **Position Tracker**.
+## 扩展使用
 
-![](/imgs/fr/manual/auto-tracking/3.png)
-![](/imgs/fr/manual/auto-tracking/4.png)
-![](/imgs/fr/manual/auto-tracking/5.png)
+可在设置中开启【窗口置顶】，并拖动缩小地图窗口，以替代游戏内小地图
 
-[#]: # '与第 3 步一样，更新了客户端内一键清理的步骤和图片'
+可在设置中开启【覆盖模式】，可自行设置触发快捷键，以替代游戏内大地图
 
-If the problem persists, use [Clear Tracking Module] under the **Position Tracker** settings tab, which deletes all files in `%APPDATA%\..\LocalLow\空荧酒馆\Map\DLL`, and download the tracking module again.
+## 注意事项
 
-![](/imgs/fr/manual/auto-tracking/1.png)
+### 自动追踪无反应
 
-- Use "Obtain Tracking Screenshot" in the **Position Tracker** settings, if the screenshot is blank, showing a non-current image of the game, or unsuccessful, please see Issue 5.
-- If a normal screenshot is obtained, but no player indicator shows up, please see Issue 6.
+- Win11系统可能由于使用了「窗口化游戏优化」导致追踪失败，在图形设置中开启「不使用窗口化游戏优化」（见下图）
 
-## 5. Screenshot errors (Blank or non-current game image) {#issue5}
+- 如果图像设置中没有「原神」，可以将“<游戏安装目录>/Genshin Impact Game/YuanShen.exe”添加到列表中。
 
-<span style="color: red">Some Windows 11 machines may not support BitBlt properly, switching the Tracking Mode to DirectX will likely solve the issue.</span>
+![7c54b7ab7d92dcf0885fddb388bde9e3.jpeg](https://txc.gtimg.com/data/321980/2023/0225/7c54b7ab7d92dcf0885fddb388bde9e3.jpeg)
 
-- Try switching Tracking Modes (The modes differ only in capture method, there is no effect on tracking accuracy)
-  - BitBlt supports both windowed and exclusive fullscreen game
-  - DirectX supports windowed game only
-- Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
-- To use BitBlt in Windows 11, go to the Graphics settings (Settings->System->Display->Graphics), add GenshinImpact.exe to the list (`***\Genshin Impact Game\GenshinImpact.exe`, not launcher.exe) and **enable** "Don't use optimizations for windowed games".
+- 如果自动追踪长时间没反应，或者出现原地卡死，可使用菜单中的“追踪截图”功能获取追踪截图，并选择“截图目录”查看。如果追踪截图空白，或者与当前地图不符，可能是截图模式不兼容当前系统，更换截图模式即可。
 
-![](/imgs/fr/manual/auto-tracking/windowedoptimization.png)
+- Some Windows 11 machines may not support BitBlt properly, switching the Tracking Mode to DirectX will likely solve the issue.
 
-- Please message in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【位置追踪截图失败】" in your message.
+- 如果能正常截图，但依然出现原地卡死，请检查分辨率是否过小（不小于1280x720，建议1920x1080以上），小地图是否解锁，是否有大面积遮挡，是否有显著的特征。若调整后依旧无法追踪，请参见文末提交反馈。
+- 官方的【云 · 原神】由于设置了不可捕获屏幕，所以无法追踪（可能由于防止多开脚本缘故）。
 
-## 6. The screenshot is normal, but the player indicator is not displayed or does not move {#issue6}
+### 自动追踪坐标错误
 
-- Please try with a resolution greater than 720p.
-- Auto HDR, some color calibration profiles, Game Filters, "eye savers", etc. can reduce tracking accuracy or prevent the **Position Tracker** from working.
-- **Position Tracker** may not work properly with an aspect ratio greater than 21:9, switch to a 16:9 resolution and restart the game, if tracking functions properly in 16:9 only, reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) with a message including "【带鱼屏适配有问题】".
-- Please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【位置追踪截图正常但无法追踪】" in your message.
+- 表现为箭头能跟着角色移动，没有晃动等异常情况，但坐标偏差很大（比如人在璃月港，箭头却在层岩巨渊）。
+- 或者已经更新到新版本，但新地图依然无法追踪
 
-## 7. Drifting player indicator {#issue7}
+- 重启地图客户端，在设置中选择「清理定位缓存」后重新开启即可。
 
-When the player indicator is at the wrong location, but moves with your in-game movement, clear the **Position Tracker** cache from the settings and restart **Position Tracker** to rebuild it. (see [**_Issue 3._**](#_3-receiving-c-runtime-error-or-client-crashing-after-enabling-auto-tracking))
+### 自动追踪晃动，速度慢
 
-## 8. Player indicator teleports or updates player movement slowly {#issue8}
+限于算法限制，晃动和延迟很难避免，一般10m以内算正常误差
 
-Occasional teleportation skips of the player indicator cannot be avoided due to the nature of our image recognition algorithm, but you can reduce its occurrence and improve responsiveness with the following actions:
+目前存在的问题如下：
 
-- Set the in-game minimap to "Fixed" (required)
-- Use a game resolution greater than 720p
-- Improve tracking accuracy by enabling anti-aliasing
-- Reducing tracking interval when it does not impact performance too much
-- Standing still for 3-10 seconds will allow the **Position Tracker** to recapture your location
-- If the player indicator continues to skip around, teleport to a waypoint, if the tracking returns to normal, the previous location does not have enough features for the tracker to recognize. (e.g. on the sea, open desert, sand storms, masked and yet-to-unlock areas)
+- 为了尽量减少晃动，输出结果进行了滤波，在移动时可能会出现轻微的惯性。
+- 对于比较规则的区域（梅洛彼得堡，赤王遗迹群等）识别精度可能会大幅度下降。
+- 特征点较少的区域，坐标偏移比较严重
+- 因为视角扇形的遮挡，原地转动视角可能会导致追踪小箭头绕圈转
 
----
+以下是减轻晃动的几个建议：
 
-- Too many **in-game custom pins** will significantly reduce tracking accuracy. (e.g. Quest navigation, vendors, custom pins, etc.)
-- Some areas can change appearance through world quest progression, **Position Tracker** compares the game image to the **final form** of the map. For **Position Tracker** to work accurately, please complete the related world quests. You can view the final form of the map in the map client. Areas that change:
+- 如果能正常截图，但时常出现乱晃的现象，请检查分辨率是否过小（不小于1280x720，建议1920x1080以上），小地图是否解锁，是否有大面积遮挡，是否有显著的特征。
+- 若开启显卡滤镜、HDR等改变色彩显示的功能，则可能会影响到自动追踪的精度。
+- 后台暂停会导致位置追踪也同时暂停，可能会导致切地图时，追踪延迟变高。
+- 在配置允许的情况下，将追踪间隔调到0.1秒，能比较好的改善延迟高的问题。
+- 如果在某一个区域，长时间没反应（超过3分钟以上），或者箭头跑到地图外面，请于文末与开发者联系反馈。
 
-| Khaj-Nisut                    | Safhe Shatranj          | Dunes of Steel    |
-| ----------------------------- | ----------------------- | ----------------- |
-| **The Sands of Three Canals** | **Wounded Shin Valley** | **Tunigi Hollow** |
+### 自动追踪崩溃：
 
-- If teleportation persists, please reach out in [#feedback on Discord](https://discord.gg/8wgttNDwse), include "【全局追踪无法定位到正确的位置】" in your message.
+- 自动追踪（特别是DirectX模式）有概率会崩溃，崩溃的表现包括但不限于：
+
+- 弹出「Runtime Error」窗口或者「该内存不能为Read」
+- 地图客户端突然无响应
+- 地图客户端崩溃，任务栏卡派蒙
+- 地图客户端所有地图消失，变成灰蓝底暗角
+
+- 如果遇到以上情况，请检查「空荧酒馆」的安装目录是否生成dmp格式的文件。如果有，则证明自动追踪发生了崩溃现象。
+- 遇到崩溃，可以先尝试清理定位缓存，如果无效，可以升级或者重装显卡驱动
+- 如果依旧不行，请添加反馈QQ群，并把dmp文件发送给@小狸卡 分析崩溃原因
+
+  如果有其他问题请提交反馈。
+
+  紧急问题请加入[开发反馈QQ群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)
+
+## 更新日志
+
+以下更新日志供参考，用于排查bug使用
+
+【7.10.2】
+
+1\. 修正了地下的坐标映射，现在地下坐标会更准确一些  
+2\. 如果没有获取到坐标，将不会在枫丹左上角显示箭头  
+3\. 降低了在地下区域，箭头瞬移到地图外的概率
+4. 修复了歌剧院坐标漂移
+5. 修复须弥城无法追踪
+
+#### 7.10.0
+
+1. 适配枫丹2
+2. 适配地下地图，暂时不支持检测层级
+3. 调整坐标系，稍微提高了精度
+4. 修复望舒客栈无法追踪
+
+#### 7.9.36
+
+继续修复DirectX截图崩溃问题
+
+#### 7.9.35
+
+修复DirectX截图崩溃问题
+
+#### 7.9.33
+
+支持枫丹的水下区域追踪
+
+#### 7.9.32
+
+1. 支持枫丹已解锁地区追踪
+2. 优化主城内的识别
+
+#### GIv38海岛分支
+
+1.适配3.8活动地图  
+2.大幅减小了包体体积（需要测试）  
+3.修复了自动追踪缓存无法正常更新的问题
+
+#### 7.9.5
+
+修复传送后箭头漂移
+
+#### 7.9.1
+
+1. 改进视角识别算法
+2. 提高识别稳定性
+3. 修复若干DirectX的报错
+
+#### 7.8.55
+
+优化定位缓存文件的大小

@@ -3,9 +3,8 @@ title: 免责声明
 description: 免责声明
 titleTemplate: 空荧酒馆
 layout: doc
-date: 2021-5-30
 aside: false
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+comment: false
 ---
 
 # 免责声明
@@ -16,5 +15,4 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 本站部分功能将使用 cookie 与本地缓存。您可以通过修改浏览器设置的方式禁止本站使用 cookie，您也可以在浏览器中清空本地缓存。如果您选择禁止 cookie 或清除本地缓存，则可能导致您部分自定义的数据丢失或部分功能无法使用，敬请知晓。本站不会在任何情况下向第三方提供或分享任何基于 cookie 与本地缓存的用户信息
 
-[!["知识共享许可协议"](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png '知识共享许可协议')](http://creativecommons.org/licenses/by-nc-sa/4.0/)
-本网站采用[知识共享署名-非商业性使用-相同方式共享 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)国际许可协议进行许可授权。
+[!["知识共享许可协议"](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png "知识共享许可协议")](http://creativecommons.org/licenses/by-nc-sa/4.0/) 本网站采用[知识共享署名-非商业性使用-相同方式共享 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)国际许可协议进行许可授权。

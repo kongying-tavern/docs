@@ -1,11 +1,10 @@
 ---
-titleTemplate: :title | Kongying Tavern
-description: Passwords that include "," (comma) will cause this problem, please remove it to avoid this issue.
-banner: Désolé, la traduction de cette page est toujours en cours
+titleTemplate: ':title | Kongying Tavern'
+description: 请检查密码中是否包含【,】（半角逗号），若包含请修改密码去除后重试
 ---
 
 [文：【每次打开都需重新登陆】]: # 'https://support.qq.com/products/321980/faqs/130500'
 
-# [Login] Client Repeatedly Requests Login
+# 【每次打开都需重新登陆】
 
-Passwords that include "," (comma) will cause this problem, please remove it to avoid this issue.
+请检查密码中是否包含【,】（半角逗号），若包含请修改密码去除后重试。

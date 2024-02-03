@@ -3,11 +3,11 @@ title: Team
 layout: page
 titleTemplate: 空荧酒馆
 aside: false
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+banner: 开发中页面，仅预览
 ---
 
 <script setup>
-import TeamPage from '../team/TeamPage.vue'
+import TeamPage from './team/TeamPage.vue'
 </script>
 
 <TeamPage />

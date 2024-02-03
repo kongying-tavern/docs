@@ -1,120 +1,124 @@
 ---
 aside: true
-titleTemplate: :title | Kongying Tavern
+titleTemplate: ':title | Kongying Tavern'
 prev:
   text: 'Manuels'
   link: 'fr/manual/client-user-manual'
 next:
-  text: '[Suivi Automatique] Dépannage'
+  text: '【位置追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
 ---
 
-[文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
-[#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 位置追踪问题排查.docx 。'
+[文：【位置追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
 
-# [Suivi Automatique] Introduction
+# 【位置追踪】功能介绍
 
-Cette fonctionnalité est basée sur la **reconnaissance d'image**
+## 使用说明
 
-## Fonctionnalités {#Fonctionnalités}
+- 在开启位置追踪后，《空荧酒馆》会实时获取游戏中玩家的位置，并在地图中显示小箭头，帮助玩家拖动地图并显示自己的位置，以方便玩家更快的找到需要标记的点位。
 
-- Prise en charge de la plupart des langues (non limitée au chinois, au français et à l'anglais)
-- Fonctionne même lorsque la mise à l'échelle du système n'est pas à 100 %
-- Détection précise de la position du joueur
-- Fonctionnel dans toutes les régions, y compris Enkanomia et le Gouffre: les Mines souterraines s'affiche automatiquement
+## 特性 {#capabilities}
 
----
+- 本功能基于【图像识别】技术实现，不会侵入游戏进程，请放心使用，
+- 离线工作，可支持大部分原神客户端的匹配，不限服务器和语言
+- 适配多种屏幕比例
+- 支持全地区追踪，包括渊下宫，层岩巨渊和4.0之后的地下分层地图。目前自动切换层级功能在开发中
 
-Voici la configuration minimale pour cette fonctionnalité :
+## 开启
 
-- Windows 10/11
-- La carte est débloquer en déverrouillant les Statues des Sept, et la **mini-carte** est complète
-- La **mini-carte** ne contient aucun **waypoints personnalisés** ni **régions mises en surbrillance**.
-- Le jeu n'est pas en **plein écran exclusif**, l'exécution de [plein écran fenêtré (sans bordure)](../overlay-mode/fullscreen-windowed/launching.md) est recommandée
+成功开启位置追踪后，
 
-Une fois le Suivi Automatique activé, le **client**
+- Une fois le Suivi Automatique activé, le **client**
+  - 基于OCR识别，没有读取在线数据
+  - 在窗口模式下，uid可能会因为标题栏的挤压显示在屏幕外面，可能会影响到uid的识别，但不会影响到追踪
+- 筛选列表下方显示**位置追踪版本**
 
-- Affichage de votre UID dans le coin inférieur droit
+![image](https://github.com/Sallee1/docs/assets/99392726/b9c6cbbd-430b-4886-ac70-ee4bc9f27633)
+
 - Détection automatique l'emplacement actuel de votre personnage et affiche un indicateur en simultané sur le **client**
 
-![](/imgs/fr/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/manual/auto-tracking/autotrackingegaged.png)
 
 ---
-
 [见：位置追踪问题排查.docx]: # '以下为 位置追踪支持列表： 内容'
 
-## Support logiciel {#Logiciel}
+## Support logiciel {#Software}
 
-### Pris en charge
-
-- Genshin Impact version PC fonctionnant sous Windows 10/11
-
-### En cours
-
-- Cloud-Gaming
-- Windows 8.1 et versions antérieures
-- Lecture/diffusion à distance depuis d'autres appareils
-
-### Ne supportera pas
-
-- Système d'exploitation non Windows (Linux)
-- émulateur Android
-- Machines virtuelles
+- Windows10/11 下的原神Unity客户端
+- 【已不再支持】云原神（_云原神有反录屏，无法获取到截图_）
 
 ---
 
-## Support graphique {#Graphique}
-
-### Pris en charge
+## 推荐画面设置 {#Graphics}
 
 - N'importe quelle résolution (recommandée : 720p (1280×720) ou supérieure)
 - Tout format d'image (recommandé : 4:3 à 21:9)
-- Tout périphérique d'entrée
-- **Mini-carte fixe** (sous les paramètres de gameplay du jeu)
-- Fenêtré et, dans certains scénarios, plein écran exclusif (voir Dépannage, problème 4)
+  - 如果画面是小于16:9的窄屏，则按照宽度固定计算等效分辨率
+  - 如果画面是大于16:9的带鱼屏，则按照高度固定计算等效分辨率
+- 支持手柄、键鼠
+- 支持独占全屏和窗口（建议使用“[无边框窗口](http://yuanshen.site/docs/manual/guide/overlay-mode/fullscreen-windowed/launching)”代替全屏模式）
+- 小地图仅支持锁定方向，不支持锁定玩家视角
+- 不支持秘境，室内等有独立地图的区域
+- 不要使用可能影响屏幕色彩的软件，包括但不限于：
+  - 第三方校色软件
+  - Réglage de la luminosité par un tiers
+  - L'Auto HDR de Windows 11 (testé : précision de cap du joueur réduite)
+  - 开启了护眼
+  - 显卡滤镜
 
-### En cours
+## 无法追踪怎么办
 
-- Mini-carte rotative (sous les paramètres de jeu du jeu)
-- Donjons et espaces intérieurs
+参见：[【位置追踪】注意事项](http://yuanshen.site/docs/manual/guide/auto-tracking/troubleshoot)
 
-### Ne supportera pas
+## 问题反馈 {#Troubleshooting}
 
-Les distorsions de couleur causées par :
+1. 位置追踪基于图像识别，不会侵入游戏进程，不存在封号的风险，如果出现封号问题，请联系官方客服，可能是其他软件导致的误封禁。
+2. 图像识别的准确度并不高，可能会出现抖动，延迟这个属于图像识别本身的缺陷，无法完全解决
+3. 在反馈之前，请确定程序和画面设置没有问题
+4. 在反馈问题前，请确保了解位置追踪产生的日志文件，以方便为开发组排查问题:
 
-- étalonnage des couleurs par un tiers
-- Réglage de la luminosité par un tiers
-- L'Auto HDR de Windows 11 (testé : précision de cap du joueur réduite)
-- Fonctionnalités « Eye Saver »
-- Filtres de jeu NVIDIA Freestyle
+   **追踪日志：**
 
-**Le Suivi Automatique** peut fonctionner avec une précision réduite, voire pas du tout.
+   ```
+   <地图安装目录>/AutoTrack.log
+   ```
 
----
+   可用记事本打开的文本文件（建议使用第三方文本编辑器，如 notepad3,vscode）
 
-[见：位置追踪问题排查.docx]: # '以下为 反馈问题前你需要知道的： 内容'
+   **Capture d'écran de suivi (Capture.png)**
 
-## Dépannage {#Dépannage}
+   ```
+   <地图安装目录>/capture.png
+   ```
 
-Quelques faits à connaître avant de dépanner et de soumettre des commentaires :
+   png 图像，用来排查 UI 定位的问题。因为带有 Alpha 通道，所以可能会有很大的色差，用 PS 打开或者粘贴到 QQ 上既可正常显示游戏画面
 
-1. Le suivi automatique est basé sur la reconnaissance d'images, il ne lit ni ne modifie le processus du jeu, il n'entraîne donc aucun risque de bannissement.
-2. La reconnaissance d'image n'est pas une science exacte, il est donc normal que l'indicateur de position change anormalement. Ce problème ne peut être résolu complètement en raison des limites de la technologie mise en œuvre.
-3. Veuillez vérifier si la vos paramètres et fonctionnalités utiliser sont prise en charge ci-dessus.
-4. Les fichiers de dépannage suivants peuvent nous aider à identifier un problème. Veuillez les joindre si possible à vos commentaires :
+   **定位缓存：**
 
-- Journal de suivi (autoTrack.log)
-- Capture d'écran de suivi (Capture.png)
+   ```
+   <地图安装目录>/cvAutoTrack.xml
+   ```
 
-![](/imgs/fr/manual/auto-tracking/7.png)
+   后缀为xml，实际上是二进制文件，用于对匹配加速
 
-::: Conseil
-Vous pouvez visiter rapidement le répertoire des fichiers via les paramètres du **Suivi Automatique**.
+   如果坐标不准确或者新地图无法追踪，可以尝试删除，会重新生成
 
-![](/imgs/fr/manual/auto-tracking/2.png)
-:::
+   **崩溃镜像：**
 
+   ```
+   <地图安装目录>/cvAutoTrack-[时间].dmp
+   ```
+
+   位置追踪崩溃后自动生成的文件，如果近期没有出现崩溃的问题，可以删除
+
+**【注意】：如果反馈群要求发送追踪截图，请不要使用截图，拍屏或者用 qq 的发送图片功能，必须要以文件的方式发送图像。可以将追踪截图的文件直接拖到聊天框来发送文件。**
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-Veuillez parcourir les [problèmes potentiels](./troubleshoot.md) avant de publier sur le [canal #feedback sur Discord](https://discord.gg/8wgttNDwse). (vous êtes invités à poser n'importe quelle question dans #chat)
+### 请确保[问题排查](./troubleshoot.md)的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题。
+
+## 帮助开发
+
+仓库地址：https://github.com/GengGode/cvAutoTrack
+
+位置追踪基于 **C++和OpenCV** 技术栈，如果你想参与到**空荧酒馆原神地图**位置追踪模块的开发，可以[点击这里](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We)加入到开发组。或者自行fork修改
