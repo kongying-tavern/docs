@@ -204,4 +204,21 @@ html.dark .vp-doc figure figcaption {
   .main > div > *:nth-child(20) {
     --enter-stage: 20;
   }
+
+  @keyframes slide-enter-left {
+    0% {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 100;
+    }
+  }
+
+  .VPSidebar {
+    animation: slide-enter-left 1s both 1;
+    -webkit-animation-timing-function: cubic-bezier(0.333, 0, 0.667, 1);
+  }
 }

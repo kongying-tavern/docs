@@ -20,15 +20,15 @@ titleTemplate: 空荧酒馆
 
 :::details 全部群聊（各群密码均为：123456）
 
-1. [**原神地图 ① 群(被封禁)** 765302904](# '点击一键加入原神地图交流①群'){slide-enter}
-1. [**原神地图 ② 群** 853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击一键加入原神地图②群'){slide-enter}
-1. [**原神地图 ③ 群** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图③群'){slide-enter}
-1. [**原神地图 ④ 群** 1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击一键加入原神地图④群'){slide-enter}
-1. [**原神地图 ⑤ 群(被封禁)** 1012554070](# '点击一键加入原神地图⑤群'){slide-enter}
-1. [**原神地图 ⑥ 群** 1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击一键加入原神地图⑥群'){slide-enter}
-1. [**原神地图 ⑦ 群** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图⑦群'){slide-enter}
-1. [**原神地图 ⑧ 群** 1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi '点击一键加入原神地图⑧群'){slide-enter}
-1. [**原神地图 ⑨ 群** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi '点击一键加入原神地图⑨群')
+1. [**原神地图 1 群(被封禁)** 765302904](# '点击一键加入原神地图交流①群'){slide-enter}
+1. [**原神地图 2 群** 853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击一键加入原神地图②群'){slide-enter}
+1. [**原神地图 3 群** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图③群'){slide-enter}
+1. [**原神地图 4 群** 1139510554](https://qm.qq.com/cgi-bin/qm/qr?k=oHCv-c0sRdA3mtPtQY1q6Tr3oNAJErn2&jump_from=webapi '点击一键加入原神地图④群'){slide-enter}
+1. [**原神地图 5 群(被封禁)** 1012554070](# '点击一键加入原神地图⑤群'){slide-enter}
+1. [**原神地图 6 群** 1168337427](https://qm.qq.com/cgi-bin/qm/qr?k=-9GO5ByOM-6gpS9UmQhd2Tu_W8KACHln&jump_from=webapi '点击一键加入原神地图⑥群'){slide-enter}
+1. [**原神地图 7 群** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图⑦群'){slide-enter}
+1. [**原神地图 8 群** 1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi '点击一键加入原神地图⑧群'){slide-enter}
+1. [**原神地图 9 群** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi '点击一键加入原神地图⑨群')
 1. [**原神地图 10 群(已满)** 781455797](https://qm.qq.com/cgi-bin/qm/qr?k=m79I_BhZswOY5DmpBN0gpqoRFhgNRehf&jump_from=webapi '点击一键加入原神地图10群'){slide-enter}
 1. [**原神地图 11 群(推荐)** 675165437](https://qm.qq.com/cgi-bin/qm/qr?k=vtEdBtKfhnwHpPVr1wTtiS6b_axepPmW&jump_from=webapi '点击一键加入原神地图11群')
 1. [**原神地图 12 群(推荐)** 657416377](https://qm.qq.com/cgi-bin/qm/qr?k=ywsBJa1bgrLxgRWn7EfS6Kjve_74UaY5&jump_from=webapi '点击一键加入原神地图12群')
@@ -140,11 +140,12 @@ background-color: var(--vp-c-bg);
         position: relative;
         width: 100%;
         height: 100%;
-        opacity: .8;
+        opacity: .95;
         padding: 10px 16px;
         box-sizing: border-box;
         transition: all .3s;
         text-decoration:none !important;
+        color: var(--vp-c-brand-2);
         strong {
           position: absolute;
           left: 25px;
@@ -162,10 +163,16 @@ background-color: var(--vp-c-bg);
 
 // 被封禁的群
 .custom-block.details {
-  color: var(--vp-c-brand);
+  
+  ol > li {
+    border-color: var(--vp-c-text-3)
+  }
+  ol > li > a strong {
+    color: var(--vp-c-brand-2)!important;
+  }
   ol > li:nth-child(1) > a strong,  ol > li:nth-child(5) > a strong {
     text-decoration: line-through !important;
-    opacity: .7;
+    opacity: .65;
   }
 }
 </style>
