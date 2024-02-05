@@ -77,7 +77,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> 
       icon: 'discord',
       link: 'https://discord.gg/aFe57AKZUF'
     }, {
-      icon: 'twitter',
+      icon: 'x',
       link: 'https://twitter.com/KongyingTavern'
     }, {
       icon: {
