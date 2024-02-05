@@ -75,7 +75,7 @@ export const zhConfig: LocaleSpecificConfig<
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern/' },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
-      { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },
+      { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
       {
         icon: {
           svg: socialList.bilibili.icon,

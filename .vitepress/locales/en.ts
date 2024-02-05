@@ -59,7 +59,7 @@ export const enConfig: LocaleSpecificConfig<
         link: 'https://www.reddit.com/user/Kongying_Tavern',
       },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
-      { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },
+      { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
     ],
     docFooter: {
       prev: 'Previous page',

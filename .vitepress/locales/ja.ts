@@ -58,7 +58,7 @@ export const jaConfig: LocaleSpecificConfig<
         ariaLabel: 'reddit',
       },
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
-      { icon: 'twitter', link: 'https://twitter.com/KongyingTavern' },
+      { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
     ],
     docFooter: {
       prev: '前へ',

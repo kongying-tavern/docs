@@ -284,12 +284,14 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
   &:hover {
     color: var(--vp-c-text-1);
-    transition: color 0.25s;
+    transition: all 0.25s;
+    background-color: var(--vp-c-bg-elv);
+    border-radius: 25%;
   }
 
   svg {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     fill: currentColor;
   }
 }
