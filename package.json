@@ -63,7 +63,7 @@
     "sass": "^1.70.0",
     "typescript": "^5.3.3",
     "unocss": "^0.58.4",
-    "vitepress": "1.0.0-rc.40",
+    "vitepress": "1.0.0-rc.42",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },

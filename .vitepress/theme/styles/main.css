@@ -47,6 +47,15 @@ html.dark .vp-doc figure figcaption {
   margin-top: var(--vp-layout-top-height);
 }
 
+.banner > .text > a {
+  color: var(--vp-c-brand-1);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition:
+    color 0.25s,
+    opacity 0.25s;
+}
+
 .reached-top {
   top: var(--vp-layout-top-height) !important;
 }
@@ -216,9 +225,10 @@ html.dark .vp-doc figure figcaption {
       opacity: 100;
     }
   }
-
-  .VPSidebar {
-    animation: slide-enter-left 1s both 1;
-    -webkit-animation-timing-function: cubic-bezier(0.333, 0, 0.667, 1);
+  @media (min-width: 960px) {
+    .VPSidebar {
+      animation: slide-enter-left 1s both 1;
+      -webkit-animation-timing-function: cubic-bezier(0.333, 0, 0.667, 1);
+    }
   }
 }
