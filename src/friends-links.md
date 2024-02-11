@@ -20,6 +20,14 @@ theme: medium
 ```
 
 ```card
+title: 你的影月月
+link: https://space.bilibili.com/431073645
+logo: /imgs/friend-links/5b6e078ee8f63c4638dca02ba80e44b44225bf1b.jpg
+desc: bilibili 知名游戏UP主、直播高能主播
+theme: medium
+```
+
+```card
 title: 云喵喵嗷
 link: https://space.bilibili.com/52914908/
 logo: /imgs/friend-links/01a19822e04820995c159b1b04fdd96436036517.jpg
@@ -28,10 +36,10 @@ theme: medium
 ```
 
 ```card
-title: 你的影月月
-link: https://space.bilibili.com/431073645
-logo: /imgs/friend-links/5b6e078ee8f63c4638dca02ba80e44b44225bf1b.jpg
-desc: bilibili 知名游戏UP主、直播高能主播
+title: Ziv紫薇
+link: https://space.bilibili.com/635041
+logo: /imgs/friend-links/78ad313b067f95c5df82250653a508b796b02918.jpg
+desc: bilibili 知名游戏UP主
 theme: medium
 ```
 
