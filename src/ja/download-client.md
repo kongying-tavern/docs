@@ -4,6 +4,7 @@ description: ダウンロード
 titleTemplate: 空蛍酒場
 layout: doc
 banner: 位置追踪服务器维护中，如需启用位置追踪请前往链接手动下载 <a href="http://a6t.cn/fa565" target="_black">http://a6t.cn/fa565</a>（提取码：KYJG）
+bannerExpiryDate: 2024/2/15
 aside: false
 comment: true
 ---
