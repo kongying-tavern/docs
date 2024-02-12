@@ -7,9 +7,11 @@ import dayjs from 'dayjs'
 const el = ref<HTMLElement>()
 const { height } = useElementSize(el)
 const { frontmatter, page } = useData()
+const storeKey = `banner-${page.value.relativePath}`
 const isShow = ref(typeof frontmatter.value.banner === 'string')
 const deal = () => (Date.now() + 8.64e7 * 1).toString() // current time + 1 day
 const inExpiryDate = () => {
+  if (!frontmatter.value.bannerExpiryDate) return false
   if (!dayjs(frontmatter.value.bannerExpiryDate).isValid())
     console.error(
       `The ${page.value.relativePath} of ${frontmatter.value.bannerExpiryDate} is an invalid date`,
@@ -17,6 +19,7 @@ const inExpiryDate = () => {
   if (dayjs().isBefore(dayjs(frontmatter.value.bannerExpiryDate))) return false
   return true
 }
+
 watchEffect(() => {
   if (height.value) {
     document.documentElement.style.setProperty(
@@ -27,28 +30,26 @@ watchEffect(() => {
 })
 
 const restore = (key, def = false) => {
-  const saved = JSON.parse(localStorage.getItem(key) || '{}')
-  if (typeof frontmatter.value.banner !== 'string') hideBanner()
+  const saved = localStorage.getItem(key)
+  const banner = JSON.parse(saved!)
+  if (typeof frontmatter.value.banner !== 'string') return hideBanner()
   if (
     saved
-      ? hash(frontmatter.value.banner) == saved.hash && deal() > saved.time
+      ? hash(frontmatter.value.banner) == banner.hash && deal() > banner.time
       : def
   ) {
     hideBanner()
   } else if (inExpiryDate()) hideBanner()
 }
 
-onMounted(() => restore(`banner-${page.value.relativePath}`))
+onMounted(() => restore(storeKey))
 
 const dismiss = () => {
   const bannerData = {
     time: deal(),
     hash: hash(frontmatter.value.banner),
   }
-  localStorage.setItem(
-    `banner-${page.value.relativePath}`,
-    JSON.stringify(bannerData),
-  )
+  localStorage.setItem(storeKey, JSON.stringify(bannerData))
   hideBanner()
 }
 
