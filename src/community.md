@@ -15,10 +15,10 @@ titleTemplate: 空荧酒馆
 
 - [**原神地图 12 群(推荐)** 657416377](https://qm.qq.com/cgi-bin/qm/qr?k=ywsBJa1bgrLxgRWn7EfS6Kjve_74UaY5&jump_from=webapi '点击一键加入原神地图12群')
 - [**原神地图 13 群(推荐)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi '点击一键加入原神地图13群')
-- [**原神地图 9 群(推荐)** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi '点击一键加入原神地图⑨群')
 - [**原神地图 10 群(推荐)** 781455797](https://qm.qq.com/cgi-bin/qm/qr?k=m79I_BhZswOY5DmpBN0gpqoRFhgNRehf&jump_from=webapi '点击一键加入原神地图10群')
+- [**原神地图 9 群(推荐)** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi '点击一键加入原神地图⑨群')
 
-:::details 全部群聊（各群密码均为：123456）
+:::details 全部群聊
 
 1. [**原神地图 1 群(被封禁)** 765302904](# '点击一键加入原神地图交流①群'){slide-enter}
 2. [**原神地图 2 群** 853210278](https://qm.qq.com/cgi-bin/qm/qr?k=XXQPSSokSPuv8xKcM-52HT7ufLsE4leo&jump_from=webapi '点击一键加入原神地图②群'){slide-enter}
@@ -30,9 +30,9 @@ titleTemplate: 空荧酒馆
 8. [**原神地图 8 群** 1012554070](https://qm.qq.com/cgi-bin/qm/qr?k=V-VnkK33Yx-PZmBXIFPS_frnIKCDghcq&jump_from=webapi '点击一键加入原神地图⑧群'){slide-enter}
 9. [**原神地图 9 群** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi '点击一键加入原神地图⑨群')
 10. [**原神地图 10 群(已满)** 781455797](https://qm.qq.com/cgi-bin/qm/qr?k=m79I_BhZswOY5DmpBN0gpqoRFhgNRehf&jump_from=webapi '点击一键加入原神地图10群'){slide-enter}
-11. [**原神地图 11 群(推荐)** 675165437](https://qm.qq.com/cgi-bin/qm/qr?k=vtEdBtKfhnwHpPVr1wTtiS6b_axepPmW&jump_from=webapi '点击一键加入原神地图11群')
-12. [**原神地图 12 群(推荐)** 657416377](https://qm.qq.com/cgi-bin/qm/qr?k=ywsBJa1bgrLxgRWn7EfS6Kjve_74UaY5&jump_from=webapi '点击一键加入原神地图12群')
-13. [**原神地图 13 群(推荐)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi '点击一键加入原神地图13群')
+11. [**原神地图 11 群(已满)** 675165437](https://qm.qq.com/cgi-bin/qm/qr?k=vtEdBtKfhnwHpPVr1wTtiS6b_axepPmW&jump_from=webapi '点击一键加入原神地图11群')
+12. [**原神地图 12 群(已满)** 657416377](https://qm.qq.com/cgi-bin/qm/qr?k=ywsBJa1bgrLxgRWn7EfS6Kjve_74UaY5&jump_from=webapi '点击一键加入原神地图12群')
+13. [**原神地图 13 群(已满)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi '点击一键加入原神地图13群')
 14. [**原神地图 14 群** 468263682](https://qm.qq.com/cgi-bin/qm/qr?k=g-By7txM78GfoPhk29d59Z5KkJV_Gt-z&jump_from=webapi '点击一键加入原神地图14群')
 15. [**原神地图 15 群** 668424173](https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi '点击一键加入原神地图15群')
 
