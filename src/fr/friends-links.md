@@ -43,7 +43,13 @@ desc: bilibili 知名游戏UP主
 theme: medium
 ```
 
-## 原神知名工具和攻略网站
+```card
+title: 提瓦特图研所
+link: https://space.bilibili.com/1872522256
+logo: /imgs/friend-links/05e032429ff23c49f7786255eed4027fcb751df8.jpg
+desc: bilibili 知名游戏UP主、以提瓦特地图研究为主的同好组织
+theme: medium
+```
 
 ```card
 title: 游创工坊
@@ -52,6 +58,8 @@ logo: /imgs/friend-links/f0da26fd7705a1680bab7301e1f30d44f39db778.jpg
 desc: 专注于二次元手游工具开发、攻略制作、资讯速递的团队
 theme: medium
 ```
+
+## 原神知名工具和攻略网站
 
 ```card
 title: 非小酋
@@ -66,14 +74,6 @@ title: 维系天理
 link: https://www.weixitianlizhi.ren/
 logo: https://www.weixitianlizhi.ren/images/hero_tianli.png
 desc: 原神地图自动追踪、天理启动器
-theme: medium
-```
-
-```card
-title: 提瓦特图研所
-link: https://space.bilibili.com/1872522256
-logo: /imgs/friend-links/05e032429ff23c49f7786255eed4027fcb751df8.jpg
-desc: bilibili 知名游戏UP主、以提瓦特地图研究为主的同好组织
 theme: medium
 ```
 
