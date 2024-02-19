@@ -293,7 +293,7 @@ export function baseHelper(obj, base): any {
         if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
           newObj[key] = modifyLink(obj[key])
         } else if (key === 'link' && isRelativeLink(obj[key])) {
-          newObj[key] = base + obj[key]
+          newObj[key] = base + (obj[key][0] === '/' ? obj[key] : '/' + obj[key])
           if (isLinkExternal(obj[key])) newObj['target'] = '_blank'
         } else {
           newObj[key] = obj[key]
@@ -337,36 +337,6 @@ export function copyArray(source, array) {
     array[index] = source[index]
   }
   return array
-}
-
-/**
- * Creates an array of shuffled values, using a version of the
- * [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher-Yates_shuffle).
- *
- * @since 0.1.0
- * @category Array
- * @param {Array} array The array to shuffle.
- * @returns {Array} Returns the new shuffled array.
- * @example
- *
- * shuffle([1, 2, 3, 4])
- * // => [4, 1, 3, 2]
- */
-export function shuffle(array: Array<any>): Array<any> {
-  const length = array == null ? 0 : array.length
-  if (!length) {
-    return []
-  }
-  let index = -1
-  const lastIndex = length - 1
-  const result = copyArray(array)
-  while (++index < length) {
-    const rand = index + Math.floor(Math.random() * (lastIndex - index + 1))
-    const value = result[rand]
-    result[rand] = result[index]
-    result[index] = value
-  }
-  return result
 }
 
 export const hash = (str) => {

@@ -6,7 +6,7 @@
         <ul>
           <li v-for="ic in item.items">
             <Link
-              :href="'/' + withBase(ic.link)"
+              :href="ic.link"
               :title="ic.text + '（' + withBase(ic.link) + '）'"
               :noIcon="true"
             >

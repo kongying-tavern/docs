@@ -44,10 +44,8 @@
           }}</span></a
         ><a
           class="flex items-center gap-1.5 hover:color-[var(--vp-c-text-1)] transition-200"
-          :href="
-            withBase(
-              '/' + (localeIndex === 'root' ? '' : localeIndex) + '/support-us',
-            )
+          @click="
+            go((localeIndex === 'root' ? '' : localeIndex) + '/community')
           "
           rel="noopener noreferrer"
           target="_self"
@@ -62,12 +60,15 @@
 </template>
 
 <script lang="ts" setup>
-import { useData, withBase } from 'vitepress'
+import { useData, withBase, useRouter } from 'vitepress'
 
 const { theme, page, localeIndex, frontmatter } = useData()
+const { go } = useRouter()
 const editLink =
   'https://github.com/kongying-tavern/docs/edit/main/src/:path'.replace(
     /:path/g,
     page.value.filePath,
   )
 </script>
+:href=" withBase( '/' + (localeIndex === 'root' ? '' : localeIndex) +
+'/support-us', ) "
