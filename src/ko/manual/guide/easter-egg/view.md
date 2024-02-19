@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【隐藏】标记/【显示】标记'
   link: '../hide-show-done/hidedoneshowdone'

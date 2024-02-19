@@ -3,7 +3,7 @@ title: 免责声明
 description: 免责声明
 layout: doc
 aside: false
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 banner: Désolé, la traduction de cette page est toujours en cours
 ---
 

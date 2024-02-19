@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 next:
   text: '[Position Tracker] Important Notes'
   link: './guide/auto-tracking/importantnotes.md'

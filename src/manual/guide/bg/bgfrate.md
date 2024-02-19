@@ -1,6 +1,7 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+title: 【地图性能占用高】前后台帧率设置
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【位置追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
@@ -12,8 +13,6 @@ description: 在设置中可以调整【前台帧率】、【后台帧率】，�
 
 [文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'
 [#]: # '最后加入后台暂停的介绍'
-
-# 【地图性能占用高】前后台帧率设置
 
 ## 帧率 {#frt}
 

@@ -1,6 +1,6 @@
 ---
 aside: true
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 next:
   text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
   link: '../easter-egg/view'

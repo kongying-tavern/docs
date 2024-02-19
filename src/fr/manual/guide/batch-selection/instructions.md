@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 prev:
   text: '[Background Usage] Framerate/Tracking Control'
   link: '../bg/bgfrate'

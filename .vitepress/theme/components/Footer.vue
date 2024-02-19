@@ -62,8 +62,7 @@ import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
 import { socialList } from '../composables/socialList'
 
-const { theme } = useData()
-const { frontmatter } = useData()
+const { frontmatter, theme } = useData()
 const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 </script>
 

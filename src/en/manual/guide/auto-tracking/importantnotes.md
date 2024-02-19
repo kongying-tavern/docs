@@ -1,6 +1,6 @@
 ---
 aside: true
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 prev:
   text: 'Table of Contents'
   link: 'en/manual/client-user-manual'

@@ -7,8 +7,6 @@ comment: false
 aside: false
 ---
 
-# 友情链接
-
 ## bilibili 原神知名攻略UP
 
 ```card

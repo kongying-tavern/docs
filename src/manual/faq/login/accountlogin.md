@@ -1,11 +1,10 @@
 ---
-titleTemplate: :title | 空荧酒馆
+title: 【不能登录】如何登录
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 客户端登录使用的账号是Gitee账号，并不是游戏账号
 ---
 
 [文：【不能登录】如何登录]: # 'https://support.qq.com/products/321980/faqs/97057'
-
-# 【不能登录】如何登录
 
 - 客户端登录使用的账号是<span style="color: red">Gitee 账号</span>，并<span style="color: red">不是游戏账号</span>
 - 如果没有 Gitee 账号可以点击注册进行注册

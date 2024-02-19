@@ -1,6 +1,7 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+title: 【存档丢失】存档还原/误删恢复
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【窗口全屏/无边框窗口模式】启动游戏'
   link: '../overlay-mode/fullscreen-windowed/launching'
@@ -12,8 +13,6 @@ next:
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'
-
-# 【存档丢失】存档还原/误删恢复
 
 ### 这个功能需要在客户端登陆 Gitee 账户
 

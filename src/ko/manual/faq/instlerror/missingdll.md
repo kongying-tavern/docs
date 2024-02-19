@@ -1,5 +1,5 @@
 ---
-titleTemplate: :title | 空荧酒馆
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 请使用免安装压缩包，正是为此准备的
 banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---

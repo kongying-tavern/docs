@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 prev:
   text: '[Position Tracker] Troubleshooting'
   link: '../auto-tracking/troubleshoot'

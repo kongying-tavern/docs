@@ -1,19 +1,18 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【位置追踪】注意事项'
   link: './guide/auto-tracking/importantnotes.md'
 prev:
   text: '首页'
   link: '../index.md'
+title: 客户端使用手册
 description: 目录
 banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
 ---
 
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
-
-# 【目录】客户端使用手册
 
 ## **更新日志**
 

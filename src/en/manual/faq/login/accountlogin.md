@@ -1,5 +1,5 @@
 ---
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Troubleshoot
 ---
 

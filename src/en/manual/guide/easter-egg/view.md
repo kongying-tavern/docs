@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 next:
   text: '[Hide/Show Found] Feature'
   link: '../hide-show-done/hidedoneshowdone'

@@ -3,7 +3,7 @@ title: Error
 description: Error
 aside: true
 layout: doc
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 head:
   - - script
     - src: /docs/error.js

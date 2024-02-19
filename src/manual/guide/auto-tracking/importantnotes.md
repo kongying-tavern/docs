@@ -1,18 +1,17 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '目录'
   link: '/manual/client-user-manual'
 next:
   text: '【位置追踪】问题排查'
   link: '../auto-tracking/troubleshoot'
+title: 【位置追踪】功能介绍
 description: This feature is based on image recognition
 ---
 
 [文：【位置追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
-
-# 【位置追踪】功能介绍
 
 ## 使用说明
 

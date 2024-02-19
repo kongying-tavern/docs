@@ -1,6 +1,6 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【窗口全屏/无边框窗口模式】启动游戏'
   link: '../overlay-mode/fullscreen-windowed/launching'

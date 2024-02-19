@@ -1,6 +1,7 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+title: 【覆盖模式】使用说明
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【隐藏】标记/【显示】标记'
   link: '../hide-show-done/hidedoneshowdone'
@@ -11,8 +12,6 @@ description: Overlay Mode displays the map client over the Genshin game window. 
 ---
 
 [文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'
-
-# 【覆盖模式】使用说明
 
 ## 功能介绍
 

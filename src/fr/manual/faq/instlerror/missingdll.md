@@ -1,5 +1,5 @@
 ---
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Please use the portable version.
 banner: Désolé, la traduction de cette page est toujours en cours
 ---

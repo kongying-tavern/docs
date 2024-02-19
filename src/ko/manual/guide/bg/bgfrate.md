@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【位置追踪】问题排查'
   link: '../auto-tracking/troubleshoot'

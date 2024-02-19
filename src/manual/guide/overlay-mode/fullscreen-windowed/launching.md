@@ -1,6 +1,7 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+title: 【窗口全屏/无边框窗口模式】启动游戏
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【存档丢失】存档还原/误删恢复'
   link: '/manual/guide/restore-recover/progress'
@@ -11,8 +12,6 @@ description: Windowed Fullscreen lets the game run fullscreen while satisfying t
 ---
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
-
-# 【窗口全屏/无边框窗口模式】启动游戏
 
 【全屏窗口化】可以使游戏保持全屏显示的情况下，仍能满足实现追踪、覆盖功能所需的【仅窗口化可用】的条件。
 

@@ -1,6 +1,6 @@
 ---
 aside: false
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 next:
   text: '[Restore/Recover] Progress Recovery From Stored Data'
   link: 'en/manual/guide/restore-recover/progress'

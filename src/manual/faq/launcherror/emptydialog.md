@@ -1,11 +1,10 @@
 ---
-titleTemplate: :title | 空荧酒馆
+title: 【无法打开】空窗提示或卡进度条
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 分为3种情况
 ---
 
 [文：【无法打开】空窗提示或卡进度条]: # 'https://support.qq.com/products/321980/faqs/99662'
-
-# 【无法打开】空窗提示或卡进度条
 
 分为 3 种情况
 

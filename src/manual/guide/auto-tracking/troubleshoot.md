@@ -1,6 +1,7 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+title: 【位置追踪】问题排查
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【位置追踪】注意事项'
   link: '../auto-tracking/importantnotes'
@@ -11,8 +12,6 @@ description: Troubleshoot
 ---
 
 [文：位置追踪问题排查.docx]: # '以下为“问题排查”内容'
-
-# 【位置追踪】问题排查
 
 ```card
 theme: medium

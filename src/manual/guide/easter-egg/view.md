@@ -1,6 +1,7 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+title: 【彩蛋】查看历史版本内容
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【隐藏】标记/【显示】标记'
   link: '../hide-show-done/hidedoneshowdone'
@@ -9,8 +10,6 @@ prev:
   link: '../canvas/guide'
 description: 1.6版本、2.8版本已经过去，海岛将会作为彩蛋保存在客户端内。
 ---
-
-# 【彩蛋】查看历史版本内容
 
 1.6、2.5、2.8、3.8版本已经过去。
 

@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Translations
-titleTemplate: :title | Kongying Tavern
+titleTemplate: :title - Client Manuals | Kongying Tavern
 banner: Désolé, la traduction de cette page est toujours en cours
 ---
 

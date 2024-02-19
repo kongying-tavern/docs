@@ -19,6 +19,9 @@ export default {
     return h(DefaultTheme.Layout, null, {
       'layout-top': () =>
         h(defineAsyncComponent(() => import('./components/Banner.vue'))),
+      'doc-before': h(
+        defineAsyncComponent(() => import('./components/DocHeader.vue')),
+      ),
     })
   },
   enhanceApp({ app }) {

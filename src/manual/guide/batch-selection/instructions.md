@@ -1,6 +1,7 @@
 ---
 aside: false
-titleTemplate: :title | 空荧酒馆
+title: 【批量选择】使用说明
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【地图性能占用高】前后台帧率设置'
   link: '../bg/bgfrate'
@@ -9,10 +10,6 @@ next:
   link: '../canvas/guide'
 description: 应旅行者需求，现已将多选功能加入豪华午餐！
 ---
-
-# 【批量选择】使用说明
-
-应旅行者需求，现已将多选功能加入豪华午餐！
 
 - <span style="color: red">右键单击</span>某个点位，将直接转换 **<span style="color: green">完成</span>/<span style="color: red">未标记</span>** 状态
 - <span style="color: red">按住右键划过</span>点位，将直接将划过的点位标记为 **<span style="color: green">已完成</span>** 状态

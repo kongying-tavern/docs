@@ -1,6 +1,7 @@
 ---
 aside: true
-titleTemplate: :title | 空荧酒馆
+title: 【画板】路线功能教程
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【彩蛋】查看历史版本内容'
   link: '../easter-egg/view'
@@ -11,8 +12,6 @@ description: 基础使用教程。
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
-
-# 【画板】路线功能教程
 
 快捷键说明：
 
