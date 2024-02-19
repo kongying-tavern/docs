@@ -90,6 +90,7 @@ export const zhConfig: LocaleSpecificConfig<
       next: '下一页',
     },
     asideLinks: {
+      title: '快捷链接',
       starOnGitHub: 'Star on GitHub ',
       contactUsText: '加入Discord服务器',
       contactUsLink: 'https://discord.gg/SWz6RTWNkm',

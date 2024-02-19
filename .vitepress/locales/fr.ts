@@ -61,8 +61,9 @@ export const frConfig: LocaleSpecificConfig<
       { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
     ],
     asideLinks: {
+      title: 'Links',
       starOnGitHub: 'Star on GitHub ',
-      contactUs: 'Chat on Discord',
+      contactUsText: 'Chat on Discord',
       contactUsLink: 'https://discord.gg/SWz6RTWNkm',
       sponsor: 'Become a Sponsor',
       editLink: 'Edit this page',

@@ -36,6 +36,7 @@ export interface CustomConfig {
     partnerMember: Info
   }
   asideLinks: {
+    title: string
     starOnGitHub: string
     contactUsText: string
     contactUsLink: string

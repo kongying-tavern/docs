@@ -49,6 +49,7 @@ export const jaConfig: LocaleSpecificConfig<
       },
     },
     asideLinks: {
+      title: 'Links',
       starOnGitHub: 'Star on GitHub',
       contactUsText: 'Chat on Discord',
       contactUsLink: 'https://discord.gg/SWz6RTWNkm',
