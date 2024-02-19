@@ -1,5 +1,4 @@
 ---
-title: Support Us
 aside: false
 layout: doc
 titleTemplate: :title | Kongying Tavern

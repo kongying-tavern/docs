@@ -22,6 +22,9 @@ export default {
       'doc-before': h(
         defineAsyncComponent(() => import('./components/DocHeader.vue')),
       ),
+      'aside-outline-after': h(
+        defineAsyncComponent(() => import('./components/AsideLeft.vue')),
+      ),
     })
   },
   enhanceApp({ app }) {

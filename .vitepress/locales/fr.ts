@@ -60,6 +60,32 @@ export const frConfig: LocaleSpecificConfig<
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
     ],
+    asideLinks: {
+      starOnGitHub: 'Star on GitHub ',
+      contactUs: 'Chat on Discord',
+      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
+      sponsor: 'Become a Sponsor',
+      editLink: 'Edit this page',
+    },
+    staff: {
+      title: 'Staff',
+      desc: '空荧酒馆『原神地图』项目参与制作',
+      communityStaff: {
+        title: '社区运营',
+      },
+      clientStaff: {
+        title: '客户端开发',
+      },
+      webStaff: {
+        title: '网页端开发',
+      },
+      translateStaff: {
+        title: '本地化翻译',
+      },
+      pinStaff: {
+        title: '地图点位标记',
+      },
+    },
     docFooter: {
       prev: 'Page précédente',
       next: 'Page suivante',

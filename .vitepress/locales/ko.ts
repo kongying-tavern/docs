@@ -48,6 +48,32 @@ export const koConfig: LocaleSpecificConfig<
         desc: '我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。',
       },
     },
+    staff: {
+      title: 'Staff',
+      desc: '空荧酒馆『原神地图』项目参与制作',
+      communityStaff: {
+        title: '社区运营',
+      },
+      clientStaff: {
+        title: '客户端开发',
+      },
+      webStaff: {
+        title: '网页端开发',
+      },
+      translateStaff: {
+        title: '本地化翻译',
+      },
+      pinStaff: {
+        title: '地图点位标记',
+      },
+    },
+    asideLinks: {
+      starOnGitHub: 'Star on GitHub ',
+      contactUsText: 'Chat on Discord',
+      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
+      sponsor: 'Become a Sponsor',
+      editLink: 'Edit this page',
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       {
@@ -63,10 +89,6 @@ export const koConfig: LocaleSpecificConfig<
     docFooter: {
       prev: 'Previous page',
       next: 'Next page',
-    },
-    editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
-      text: 'Suggest changes to this page',
     },
     payment: {
       wechatpay: {

@@ -48,6 +48,13 @@ export const jaConfig: LocaleSpecificConfig<
         desc: '我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。',
       },
     },
+    asideLinks: {
+      starOnGitHub: 'Star on GitHub',
+      contactUsText: 'Chat on Discord',
+      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
+      sponsor: 'スポンサーになる',
+      editLink: 'このページを編集する',
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },
       {
@@ -63,6 +70,25 @@ export const jaConfig: LocaleSpecificConfig<
     docFooter: {
       prev: '前へ',
       next: '次へ',
+    },
+    staff: {
+      title: 'Staff',
+      desc: '空荧酒馆『原神地图』项目参与制作',
+      communityStaff: {
+        title: '社区运营',
+      },
+      clientStaff: {
+        title: '客户端开发',
+      },
+      webStaff: {
+        title: '网页端开发',
+      },
+      translateStaff: {
+        title: '本地化翻译',
+      },
+      pinStaff: {
+        title: '地图点位标记',
+      },
     },
     payment: {
       wechatpay: {
@@ -86,10 +112,6 @@ export const jaConfig: LocaleSpecificConfig<
         name: 'bilibili',
         address: 'https://space.bilibili.com/518076785',
       },
-    },
-    editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
-      text: 'エラー報告',
     },
     nav: baseHelper(nav(), LOCAL_BASE),
     sidebar: baseHelper(sidebar(), LOCAL_BASE),
@@ -132,7 +154,7 @@ function nav(): DefaultTheme.NavItem[] {
       link: '/community.md',
     },
     {
-      text: 'Support us',
+      text: 'スポンサーになる',
       link: '/support-us.md',
     },
     {

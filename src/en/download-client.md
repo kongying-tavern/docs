@@ -1,5 +1,4 @@
 ---
-title: Download Client
 description: Currently we only offer the Windows Version of our map client, versions in other OS are in progress.
 aside: false
 titleTemplate: :title | Kongying Tavern

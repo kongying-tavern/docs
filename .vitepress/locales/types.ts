@@ -35,6 +35,13 @@ export interface CustomConfig {
     emeritiMember: Info
     partnerMember: Info
   }
+  asideLinks: {
+    starOnGitHub: string
+    contactUsText: string
+    contactUsLink: string
+    sponsor: string
+    editLink: string
+  }
   payment?: Record<
     string,
     {

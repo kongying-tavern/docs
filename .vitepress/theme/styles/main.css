@@ -115,6 +115,18 @@ html.dark .vp-doc figure figcaption {
   cursor: pointer;
 }
 
+#VPContent
+  > div
+  > div
+  > div.aside
+  > div.aside-container
+  > div
+  > div
+  > div.VPDocAsideOutline.has-outline
+  > div {
+  border: none;
+}
+
 .medium-zoom-overlay {
   z-index: 999999999999;
 }

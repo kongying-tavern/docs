@@ -89,6 +89,13 @@ export const zhConfig: LocaleSpecificConfig<
       prev: '上一页',
       next: '下一页',
     },
+    asideLinks: {
+      starOnGitHub: 'Star on GitHub ',
+      contactUsText: '加入Discord服务器',
+      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
+      sponsor: '支持我们',
+      editLink: '报告页面错误',
+    },
     payment: {
       wechatpay: {
         name: '微信支付',
@@ -111,10 +118,6 @@ export const zhConfig: LocaleSpecificConfig<
         name: 'bilibili',
         address: 'https://space.bilibili.com/518076785',
       },
-    },
-    editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
-      text: '报告错误',
     },
     sidebar: baseHelper(sidebar(), LOCAL_BASE),
     footer: baseHelper(footer(), LOCAL_BASE),

@@ -43,7 +43,6 @@ export const productionHead: HeadConfig[] = [
 ]
 
 export default defineConfig({
-  lastUpdated: true,
   srcDir: 'src',
   outDir: './dist',
   srcExclude: [],

@@ -27,7 +27,6 @@ export const enConfig: LocaleSpecificConfig<
     siteTitle: 'Genshin Interactive Map',
     outlineTitle: 'On This Page',
     logo: '/imgs/logo_256.png',
-    lastUpdatedText: 'Last updated',
     notFound: {
       title: 'PAGE NOT FOUND',
       quote:
@@ -65,9 +64,31 @@ export const enConfig: LocaleSpecificConfig<
       prev: 'Previous page',
       next: 'Next page',
     },
-    editLink: {
-      pattern: 'https://github.com/kongying-tavern/docs/edit/main/src/:path',
-      text: 'Suggest changes to this page',
+    staff: {
+      title: 'Staff',
+      desc: '空荧酒馆『原神地图』项目参与制作',
+      communityStaff: {
+        title: '社区运营',
+      },
+      clientStaff: {
+        title: '客户端开发',
+      },
+      webStaff: {
+        title: '网页端开发',
+      },
+      translateStaff: {
+        title: '本地化翻译',
+      },
+      pinStaff: {
+        title: '地图点位标记',
+      },
+    },
+    asideLinks: {
+      starOnGitHub: 'Star on GitHub ',
+      contactUsText: 'Chat on Discord',
+      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
+      sponsor: 'Become a Sponsor',
+      editLink: 'Edit this page',
     },
     payment: {
       wechatpay: {
