@@ -1,0 +1,19 @@
+kbd {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  min-width: 20px;
+  height: 1.25rem;
+  vertical-align: text-top;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  border-radius: 0.25rem;
+  margin: 0 0.25rem;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  border-color: var(--vp-badge-info-border);
+  color: var(--vp-c-text-1);
+  box-shadow: var(--vp-shadow-1);
+  background-color: var(--vp-badge-info-bg);
+}

@@ -1,0 +1,43 @@
+:root {
+  --timeline-title-text: #000;
+}
+
+html.dark {
+  --timeline-title-text: #fff;
+}
+
+.timeline-dot {
+  position: relative;
+  padding: 0 0 18px 24px;
+  color: #adadad;
+  box-sizing: border-box;
+}
+
+.timeline-dot::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: '';
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: solid 1px var(--vp-c-brand);
+  transform: translate(0, 18%);
+}
+
+.timeline-dot::after {
+  position: absolute;
+  left: 7px;
+  top: 19px;
+  content: '';
+  width: 2px;
+  height: calc(100% - 18px);
+  background-color: #e9e9e9;
+}
+
+.timeline-dot .timeline-dot-title {
+  color: var(--timeline-title-text);
+  font-size: 24px;
+  font-weight: bold;
+  /* padding-top: 0; */
+}
