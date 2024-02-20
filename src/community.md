@@ -67,9 +67,6 @@ const params = useUrlSearchParams('history')
 const server = [
   { id: 'discord', name: 'Discord', target: '_blank', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
   {
-    id: 'mys', name: '米游社', target: '_blank', secondary: 'VBFqyWV', link: 'https://webstatic.miyoushe.com/app/community-villa/toVilla.html?villa_id=3898&mhy_presentation_style=fullscreen', icon: '/imgs/mihoyo-a4504610.png'
-  },
-  {
     id: 'qq', name: 'QQ 频道', target: '_blank',
     secondary: 'f006fek0f', link: 'https://pd.qq.com/s/f006fek0f', icon: '/svg/qq-channel.svg'
   },

@@ -25,7 +25,7 @@ export default {
         defineAsyncComponent(() => import('./components/DocHeader.vue')),
       ),
       'aside-outline-after': h(
-        defineAsyncComponent(() => import('./components/AsideLeft.vue')),
+        defineAsyncComponent(() => import('./components/Aside.vue')),
       ),
     })
   },

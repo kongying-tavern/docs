@@ -4,7 +4,6 @@ description: 友情链接
 titleTemplate: 空荧酒馆
 layout: doc
 comment: false
-aside: false
 ---
 
 ## bilibili 原神知名攻略UP

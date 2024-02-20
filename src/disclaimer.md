@@ -3,11 +3,8 @@ title: 免责声明
 description: 免责声明
 titleTemplate: 空荧酒馆
 layout: doc
-aside: false
 comment: false
 ---
-
-# 免责声明
 
 本站是基于 [leaflet](https://leafletjs.com/) 免费开源 JavaScript 地图库制作的《原神》游戏地图网站，本站所使用部分静态资源（包括但不限于文字、图片、音频、视频、图表、界面设计、版面框架、有关数据或电子文档等），其版权属于[上海米哈游影铁科技有限公司](https://www.mihayou.com/)及其关联公司。本站在基于其[游戏使用许可及服务协议](https://ys.mihoyo.com/main/company/agreement)规定下进行使用，相关文件的使用仅用于更好地表现游戏资料和进行相关的游戏交流
 

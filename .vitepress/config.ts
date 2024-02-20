@@ -314,7 +314,7 @@ export default defineConfig({
   },
   transformHead(content) {
     const { pageData, siteConfig } = content
-    pageData.frontmatter.head ?? []
+    pageData.frontmatter.head ??= []
     pageData.frontmatter.head.push([
       'meta',
       {

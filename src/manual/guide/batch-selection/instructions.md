@@ -1,5 +1,4 @@
 ---
-aside: false
 title: 【批量选择】使用说明
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
