@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!frontmatter == false"
+    v-if="frontmatter.docAside !== false"
     class="hidden lg:block space-y-6 !mt-6 pl-4"
   >
     <div class="space-y-3">

@@ -1,6 +1,7 @@
 ---
 layout: doc
 title: 多语言及翻译
+description: 我们希望通过社区的共同努力提供所有原神支持的语言翻译！
 titleTemplate: 空荧酒馆
 ---
 
@@ -16,7 +17,10 @@ titleTemplate: 空荧酒馆
 - [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
 - [韩语 / Korean](./ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
 - [法语 / French](./fr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/fr)]
--
+
+## 参与地图客户端的翻译 {#translations-client}
+
+地图客户端的翻译在金山文档进行，如果您想要参与地图客户端的翻译请在QQ或者Discord联系我们。
 
 ## 启动新的翻译 {#starting-a-new-translation}
 

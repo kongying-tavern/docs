@@ -230,6 +230,10 @@ function nav(): DefaultTheme.NavItem[] {
           text: '其他',
           items: [
             {
+              text: '参与翻译',
+              link: '/translations.md',
+            },
+            {
               text: '友情链接',
               link: '/friends-links.md',
             },
