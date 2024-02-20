@@ -15,9 +15,11 @@ titleTemplate: 空荧酒馆
 
 - [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
 - [韩语 / Korean](./ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
+- [法语 / French](./fr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/fr)]
+-
 
 ## 启动新的翻译 {#starting-a-new-translation}
 
 近期地图的文档经历了一次大的版本升级，所以其他语言的翻译版本仍不可用或进行中。
 
-我们希望通过社区的努力提供更多语言的翻译。这些工作是在 [Crowdin](https://crowdin.com/translate/genshin-interactive-map) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。
+我们希望通过社区的努力提供所有原神支持的语言翻译，这些工作是在 [GitHub](https://github.com/kongying-tavern/docs/issues/242) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。

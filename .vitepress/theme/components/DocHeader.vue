@@ -22,9 +22,10 @@
           </h1>
           <!---->
         </div>
-        <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
-          {{ frontmatter.description }}
-        </p>
+        <p
+          v-html="frontmatter.description"
+          class="mt-4 text-lg text-gray-500 dark:text-gray-400"
+        ></p>
       </div>
     </div>
   </div>
