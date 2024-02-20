@@ -1,5 +1,6 @@
 import Unocss from 'unocss/vite'
 import MarkdownItFootnote from 'markdown-it-footnote'
+import MarkdownItKbd from 'markdown-it-kbd-better'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, HeadConfig } from 'vitepress'
 import { colorPreviewPlugin } from './theme/markdown/colorPreview'
@@ -9,6 +10,7 @@ import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
+import { timeline } from './theme/markdown/timeline'
 
 import { enConfig } from './locales/en'
 import { zhConfig } from './locales/zh'
@@ -312,7 +314,7 @@ export default defineConfig({
   },
   transformHead(content) {
     const { pageData, siteConfig } = content
-    pageData.frontmatter.head ??= []
+    pageData.frontmatter.head ?? []
     pageData.frontmatter.head.push([
       'meta',
       {
@@ -421,6 +423,8 @@ A Completionist's Interactive Map by Kongying Tavern`,
       md.use(imgSize)
       md.use(obsidianImageSize)
       md.use(figure)
+      md.use(timeline)
+      md.use(MarkdownItKbd)
     },
   },
 })

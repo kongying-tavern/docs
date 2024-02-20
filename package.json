@@ -92,6 +92,8 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "markdown-it": "^14.0.0",
+    "markdown-it-container": "^4.0.0",
+    "markdown-it-kbd-better": "^1.2.5",
     "markdownlint-cli": "^0.38.0",
     "pnpm": "^8.15.3",
     "prettier": "^3.2.5",

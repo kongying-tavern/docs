@@ -11,6 +11,8 @@ import LinkGrid from '../theme/components/LinkGrid.vue'
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
+import './styles/timeline.css'
+import './styles/kbd.css'
 
 export default {
   ...DefaultTheme,

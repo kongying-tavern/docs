@@ -30,3 +30,21 @@ H\~2\~O 19\^th\^
 :::
 
 ##
+
+::: timeline 2023-05-24
+
+- **do some thing1**
+- do some thing2
+  :::
+
+::: timeline 2023-05-23
+do some thing3
+do some thing4
+:::
+
+则[[⌘+C]]Ac12321
+
+[[Copy]]
+mac:cmd⌘copy⌘+Cwin:ctrl[[⊞+Ctrl]]
+
+[[Meta]][[K]]
