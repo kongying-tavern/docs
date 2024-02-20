@@ -2,7 +2,6 @@ import { baseHelper } from '../theme/utils'
 import { socialList } from '../theme/composables/socialList'
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from './types'
-import { title } from 'process'
 
 export const META_URL = 'https://yuanshen.site/docs/'
 export const META_TITLE = '原神地图'

@@ -1,5 +1,6 @@
 import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
-import { useRoute, inBrowser, useData } from 'vitepress'
+import { useRoute, useData } from 'vitepress'
+import { VPBadge } from 'vitepress/theme'
 import mediumZoom from 'medium-zoom'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import Link from './components/Link.vue'
@@ -38,6 +39,7 @@ export default {
     app.component('Coins', Coins)
     app.component('VPCard', Card)
     app.component('LinkGrid', LinkGrid)
+    app.component('Badge', VPBadge)
   },
   setup() {
     const route = useRoute()

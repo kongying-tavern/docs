@@ -1,16 +1,13 @@
 ---
-description: 下载客户端
+title: 下载客户端
+description:
 titleTemplate: 空荧酒馆
-layout: doc
 banner: 位置追踪服务器维护中，如需启用位置追踪请前往链接手动下载 <a href="http://a6t.cn/fa565" target="_black">http://a6t.cn/fa565</a>（提取码：KYJG）
 bannerExpiryDate: 2024/2/15
-aside: false
 comment: true
 ---
 
-# 下载地图客户端
-
-当前提供地图 **Windows 客户端（Beta）** 客户端下载
+## **Windows 客户端** <Badge type="warning" text="Beta" />
 
 可选择下方任意方式下载
 
@@ -21,7 +18,7 @@ comment: true
 ## 客户端使用教程
 
 ```card
-title: 客户端使用手册
+title: Windows 客户端使用手册
 link: ./manual/client-user-manual
 theme: medium
 ```

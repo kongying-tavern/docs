@@ -23,6 +23,7 @@
           <!---->
         </div>
         <p
+          v-if="frontmatter.description"
           v-html="frontmatter.description"
           class="mt-4 text-lg text-gray-500 dark:text-gray-400"
         ></p>
