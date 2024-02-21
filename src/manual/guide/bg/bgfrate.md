@@ -1,5 +1,6 @@
 ---
 title: 【地图性能占用高】前后台帧率设置
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【位置追踪】问题排查'

@@ -1,6 +1,7 @@
 ---
 aside: false
 title: 【窗口全屏/无边框窗口模式】启动游戏
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【存档丢失】存档还原/误删恢复'

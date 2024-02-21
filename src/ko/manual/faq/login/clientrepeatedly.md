@@ -1,4 +1,5 @@
 ---
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 请检查密码中是否包含【,】（半角逗号），若包含请修改密码去除后重试
 banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다

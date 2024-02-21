@@ -1,5 +1,6 @@
 ---
 aside: false
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【位置追踪】注意事项'

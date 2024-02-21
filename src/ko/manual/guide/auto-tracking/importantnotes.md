@@ -1,5 +1,6 @@
 ---
 aside: true
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '目录'

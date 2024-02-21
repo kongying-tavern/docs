@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="frontmatter.docHeader !== false"
+    v-if="frontmatter.docHeader !== false && frontmatter.layout == 'doc'"
     class="docs-header slide-enter relative border-b-solid border-b-color-[var(--vp-c-divider)] pb-8 mb-4"
   >
     <div
@@ -20,7 +20,6 @@
           >
             {{
               frontmatter.title ||
-              page.title ||
               page.title ||
               page.relativePath.replace('.md', '')
             }}

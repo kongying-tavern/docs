@@ -1,6 +1,7 @@
 ---
 aside: false
 title: 【隐藏】标记/【显示】标记
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 prev:
   text: '【彩蛋】查看历史版本内容'

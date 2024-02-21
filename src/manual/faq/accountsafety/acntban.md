@@ -1,5 +1,6 @@
 ---
 title: '使用地图会被封号吗？'
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 我们非常尊重有关规定绝不会做读取游戏内存数据，修改游戏数据等违规行为。
 ---

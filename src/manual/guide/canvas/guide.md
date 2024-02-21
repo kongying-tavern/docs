@@ -1,6 +1,7 @@
 ---
 aside: true
 title: 【画板】路线功能教程
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 next:
   text: '【彩蛋】查看历史版本内容'

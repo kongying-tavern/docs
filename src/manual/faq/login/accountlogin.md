@@ -1,5 +1,6 @@
 ---
 title: 【不能登录】如何登录
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 客户端登录使用的账号是Gitee账号，并不是游戏账号
 ---

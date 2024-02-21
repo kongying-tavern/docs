@@ -1,4 +1,5 @@
 ---
+layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 banner: 죄송합니다. 이 페이지 번역은 아직 진행 중입니다
