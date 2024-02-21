@@ -247,3 +247,18 @@ banner: 服务器维护公告
 bannerExpiryDate: 2024-2-1
 ---
 ```
+
+### docHeader
+
+- 类型：Boolean
+- 默认：true
+
+是否使用 docHeader 展示标题
+
+> 仅会在 `Layout: doc` 时自动启用
+
+```yml
+---
+docHeader: false #隐藏该页面的 docHeader
+---
+```
