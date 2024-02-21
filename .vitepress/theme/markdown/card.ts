@@ -18,6 +18,7 @@ export interface CardOptions {
   logo?: string
   link?: string
   color?: string
+  cover?: string
   theme?: 'normal' | 'medium'
   hoverShadow?: boolean
   shadow?: boolean
@@ -29,6 +30,7 @@ const CARD_PROPS = [
   'logo',
   'link',
   'color',
+  'cover',
   'hoverShadow',
   'shadow',
   'theme',
@@ -97,7 +99,7 @@ export const cardPlugin: PluginSimple = (md) => {
     name: 'card',
     openRender: () =>
       `\
-<div class="vp-card-container">
+<div class="card-container">
 `,
   })
 

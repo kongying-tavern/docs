@@ -17,6 +17,7 @@ export default defineConfig({
       'icon-btn',
       'inline-block cursor-pointer select-none opacity-75 scale-155 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600',
     ],
+    ['card-grid', 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'],
   ],
   presets: [
     presetUno(),

@@ -1,11 +1,14 @@
 @use './config.scss';
 
-.vp-card {
-  display: inline-flex;
-
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: flex-start;
+  justify-content: flex-start;
   align-items: center;
-  border-radius: 0.5rem;
-
+  border-radius: 0.75rem;
+  border: 1px solid var(--vp-c-divider);
   background-color: var(--vp-c-bg-alt);
   color: inherit;
 
@@ -17,15 +20,70 @@
   text-decoration: none !important;
 }
 
-.vp-card-hover:hover {
+.card-hover:hover {
   transform: translate3d(0, -4px, 0);
+  border-color: var(--vp-c-brand-1);
   box-shadow: var(--vp-shadow-2);
 }
 
-.vp-card-theme-normal {
+[card-grid] {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  [card-grid] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.card-theme-normal {
   max-width: 360px;
   margin: 1rem 0.5rem;
-  padding: 1rem;
+
+  .card-cover-contanier {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 160px;
+    border-radius: 0.75rem 0.75rem 0 0;
+
+    .load-error::after {
+      content: '图片被派蒙吃掉了！' !important;
+      text-align: center;
+      line-height: 10;
+      background-color: var(--vp-c-bg-alt) !important;
+      animation: none !important;
+    }
+
+    // 骨架屏动画
+    .skeleton-animation::after {
+      content: ' ';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0),
+        var(--skeleton-animation-gradient),
+        rgba(255, 255, 255, 0)
+      );
+      animation: t-skeleton--gradient 1.5s linear 2s infinite;
+    }
+  }
+
+  .card-footer {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1.25rem 1rem;
+    width: 100%;
+  }
 
   hr {
     margin: 0.25em 0;
@@ -33,12 +91,12 @@
 }
 
 @media (max-width: config.$mobile) {
-  .vp-card-theme-normal {
+  .card-theme-normal {
     max-width: 95%;
   }
 }
 
-.vp-card-icon {
+.card-icon {
   width: 2em !important;
   height: 2em !important;
   background-color: var(--vp-c-bg-soft);
@@ -46,19 +104,20 @@
   padding: 1em;
 }
 
-.vp-card-logo {
+.card-logo {
   width: 3em;
   height: 3em;
   margin-right: 1em;
   border-radius: 50%;
 }
 
-.vp-card-content {
+.card-content,
+.card-footer {
   flex: 1;
   width: calc(100% - 6em);
 }
 
-.vp-card-title {
+.card-title {
   font-weight: 500;
   font-size: 1.1em;
   width: 95%;
@@ -67,21 +126,21 @@
   overflow: hidden;
 }
 
-.vp-card-desc {
+.card-desc {
   color: #888;
   font-size: 0.9em;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.vp-card-container {
+.card-container {
   display: flex;
   flex-wrap: wrap;
   align-content: stretch;
   align-items: stretch;
   justify-content: center;
 
-  .vp-card {
+  .card {
     flex-basis: calc(50% - 3rem);
     max-width: unset;
     margin: 0.5rem;
@@ -100,25 +159,30 @@
   }
 }
 
-.vp-card-theme-medium {
+.card-theme-medium {
   width: 100%;
   margin: 1rem 0.5rem;
   padding: 0.38rem;
 
-  .vp-card-logo {
+  .card-footer {
+    display: flex;
+    align-items: center;
+  }
+
+  .card-logo {
     width: 2.5em;
     height: 2.5em;
   }
 
-  .vp-card-icon {
+  .card-icon {
     margin-left: 0.5em;
   }
 
-  .vp-card-title {
+  .card-title {
     font-size: 1em;
   }
 
-  .vp-card-desc {
+  .card-desc {
     width: 95%;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -149,4 +213,14 @@
   background: url('https://yuanshen.site/docs/svg/txc.svg') no-repeat;
   background-size: 100% 100%;
   background-color: transparent;
+}
+
+@keyframes t-skeleton--gradient {
+  0% {
+    transform: translate(-100%) skew(-15deg);
+  }
+
+  to {
+    transform: translate(100%) skew(-15deg);
+  }
 }

@@ -118,6 +118,9 @@ devDependencies:
   '@unocss/eslint-config':
     specifier: ^0.58.5
     version: 0.58.5(eslint@8.56.0)(typescript@5.3.3)
+  '@unocss/extractor-mdc':
+    specifier: ^0.58.5
+    version: 0.58.5
   '@vite-pwa/vitepress':
     specifier: ^0.3.1
     version: 0.3.1(vite-plugin-pwa@0.19.0)
@@ -2946,6 +2949,10 @@ packages:
     dependencies:
       '@unocss/core': 0.58.5
     dev: false
+
+  /@unocss/extractor-mdc@0.58.5:
+    resolution: {integrity: sha512-8gsQ7xS9jy+hEARbMyhMGKH96U9YBdKw/F5qpBP63aaIRGQ7fXGtZGPlEGTpNchKV5NJY84zrVREFubZ8PXvdA==}
+    dev: true
 
   /@unocss/inspector@0.58.5:
     resolution: {integrity: sha512-cbJlIHEZ14puTtttf7sl+VZFDscV1DJiSseh9sSe0xJ/1NVBT9Bvkm09/1tnpLYAgF5gfa1CaCcjKmURgYzKrA==}

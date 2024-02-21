@@ -42,6 +42,13 @@ export interface CardProps {
   color?: string
 
   /**
+   * Card cover
+   *
+   * 卡片封面，Only NormalTheme
+   */
+  cover?: string
+
+  /**
    * Card hover shadow
    *
    * 是否启用卡片 hover 时阴影效果，默认启用
@@ -69,88 +76,105 @@ const Card: FunctionalComponent<CardProps> = ({
   logo = '',
   color = '',
   link = '',
+  cover = '',
   theme = 'normal',
   hoverShadow = true,
   shadow = true,
 }) => {
   let icon = ''
+
+  const iconMap = {
+    'bilibili.com': 'i-custom-bilibili',
+    'txc.qq.com': 'i-custom-txc',
+    'support.qq.com': 'i-custom-txc',
+    'youtube.com': 'i-logos-youtube-icon',
+    'twitter.com': 'i-logos-twitter',
+    'discord': 'i-logos-discord-icon',
+    'reddit.com': 'i-logos-reddit-icon',
+    'baidu.com': 'i-custom-baidu',
+    'qq.com': 'i-custom-qq',
+    'weixitianli.com': 'i-custom-wxtl',
+  }
+
   if (logo === '' && link !== '') {
-    if (link.includes('bilibili.com')) {
-      icon = 'i-custom-bilibili'
-    } else if (link.includes('txc.qq.com') || link.includes('support.qq.com')) {
-      icon = 'i-custom-txc'
-    } else if (link.includes('youtube.com')) {
-      icon = 'i-logos-youtube-icon'
-    } else if (link.includes('twitter.com')) {
-      icon = 'i-logos-twitter'
-    } else if (link.includes('discord')) {
-      icon = 'i-logos-discord-icon'
-    } else if (link.includes('reddit.com')) {
-      icon = 'i-logos-reddit-icon'
-    } else if (link.includes('baidu.com')) {
-      icon = 'i-custom-baidu'
-    } else if (link.includes('qq.com')) {
-      icon = 'i-custom-qq'
-    } else if (link.includes('weixitianli.com')) {
-      icon = `i-custom-wxtl`
+    const linkDomain = link.match(/(?:https?:\/\/)?(?:www\.)?([^\/]+)\//)
+    if (linkDomain && linkDomain[1]) {
+      const domain = linkDomain[1]
+      for (const key in iconMap) {
+        if (new RegExp(key).test(domain)) {
+          icon = iconMap[key]
+          break
+        }
+      }
     }
   }
 
+  const _Cover = () => {
+    return cover
+      ? h('div', { class: 'card-cover-contanier' }, [
+          h('img', {
+            class: 'card-cover-img no-zoomable skeleton-animation',
+            onLoad: (e) => {
+              e.target!['classList'].remove('skeleton-animation')
+            },
+            onError: (e) => {
+              e.target!['classList'].add('load-error')
+              e.target!['src'] =
+                'https://assets.yuanshen.site/images/noImage.png'
+            },
+            src: isRelativeLink(cover) ? withBase(cover) : cover,
+          }),
+        ])
+      : ''
+  }
+
+  const logoLink = (i) => {
+    if (i === 'self') return withBase('/imgs/logo_128.png')
+    if (isRelativeLink(i) && !logo && !icon)
+      return withBase('/imgs/logo_128.png')
+    return isRelativeLink(i) ? withBase(i) : i
+  }
+
   const children = [
-    icon === ''
-      ? h('img', {
-          class: 'vp-card-logo no-zoomable',
-          src: withBase(logo || '/imgs/logo_128.png'),
-        })
-      : h('label', {
-          class: `vp-card-icon ${icon}`,
+    _Cover(),
+    h('div', { class: 'card-footer' }, [
+      icon === ''
+        ? logo
+          ? h('img', { class: 'card-logo no-zoomable', src: logoLink(logo) })
+          : ''
+        : h('label', { class: `card-icon ${icon}` }),
+      h('div', { class: 'card-content' }, [
+        h('div', { class: 'card-title', innerHTML: title }),
+        h('hr'),
+        h('div', {
+          class: 'card-desc',
+          innerHTML: desc
+            ? desc
+            : isRelativeLink(link)
+              ? `https://yuanshen.site/docs/${link.substring(0, 3).replace(/(\.\/|\/)/g, '') + link.substring(3)}`
+              : link,
         }),
-    h('div', { class: 'vp-card-content' }, [
-      h('div', { class: 'vp-card-title', innerHTML: title }),
-      h('hr'),
-      h('div', {
-        class: 'vp-card-desc',
-        innerHTML: desc
-          ? desc
-          : isRelativeLink(link)
-            ? `https://yuanshen.site/docs/${
-                link.substring(0, 3).replace(/(\.\/|\/)/g, '') +
-                link.substring(3)
-              }`
-            : link,
-      }),
+      ]),
     ]),
   ]
 
   const props: Record<string, unknown> = {
-    class: `vp-card vp-card-theme-${theme} ${
-      hoverShadow ? 'vp-card-hover' : ''
-    }`,
+    class: `card card-theme-${theme} ${hoverShadow ? 'card-hover' : ''}`,
     title: title,
   }
 
   if (color) props['style'] = { background: color }
   if (shadow) props['style'] = { 'box-shadow': 'var(--vp-shadow-1)' }
 
-  return isLinkExternal(link)
-    ? h(
-        'a',
-        {
-          href: link,
-          target: '_blank',
-          ...props,
-        },
-        children,
-      )
-    : h(
-        'a',
-        {
-          href: withBase(link),
-          target: '_self',
-          ...props,
-        },
-        children,
-      )
+  return h(
+    'a',
+    {
+      href: isLinkExternal(link) ? link : withBase(link),
+      target: isLinkExternal(link) ? '_blank' : '_self',
+      ...props,
+    },
+    children,
+  )
 }
 
 Card.displayName = 'Card'

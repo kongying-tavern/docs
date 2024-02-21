@@ -424,7 +424,13 @@ A Completionist's Interactive Map by Kongying Tavern`,
       md.use(obsidianImageSize)
       md.use(figure)
       md.use(timeline)
-      md.use(MarkdownItKbd)
+      md.use(MarkdownItKbd, {
+        presets: [
+          {
+            name: 'icons',
+          },
+        ],
+      })
     },
   },
 })

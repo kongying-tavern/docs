@@ -19,6 +19,7 @@ comment: true
 
 ```card
 title: Windows 客户端使用手册
+logo: self
 link: ./manual/client-user-manual
 theme: medium
 ```
@@ -33,6 +34,7 @@ theme: medium
 
 ```card
 title: 网页版地图 V3
+logo: self
 link: https://v3.yuanshen.site
 theme: medium
 ```
