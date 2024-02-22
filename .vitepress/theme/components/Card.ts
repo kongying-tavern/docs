@@ -128,34 +128,54 @@ const Card: FunctionalComponent<CardProps> = ({
       : ''
   }
 
-  const logoLink = (i) => {
-    if (i === 'self') return withBase('/imgs/logo_128.png')
-    if (isRelativeLink(i) && !logo && !icon)
+  const getlogoLink = (i) => {
+    if (i === 'self' || link.includes('yuanshen.site') || isRelativeLink(link))
       return withBase('/imgs/logo_128.png')
-    return isRelativeLink(i) ? withBase(i) : i
+    if (logo === '') return 'no-logo'
+    return i
   }
 
   const children = [
     _Cover(),
-    h('div', { class: 'card-footer' }, [
-      icon === ''
-        ? logo
-          ? h('img', { class: 'card-logo no-zoomable', src: logoLink(logo) })
-          : ''
-        : h('label', { class: `card-icon ${icon}` }),
-      h('div', { class: 'card-content' }, [
-        h('div', { class: 'card-title', innerHTML: title }),
-        h('hr'),
-        h('div', {
-          class: 'card-desc',
-          innerHTML: desc
-            ? desc
-            : isRelativeLink(link)
-              ? `https://yuanshen.site/docs/${link.substring(0, 3).replace(/(\.\/|\/)/g, '') + link.substring(3)}`
-              : link,
-        }),
-      ]),
-    ]),
+    h(
+      'div',
+      {
+        class: `card-footer ${getlogoLink(logo) === 'no-logo' && !icon ? 'no-logo' : ''}`,
+      },
+      [
+        !icon
+          ? getlogoLink(logo) === 'no-logo'
+            ? ''
+            : h('img', {
+                class: 'card-logo no-zoomable',
+                src: getlogoLink(logo),
+              })
+          : h('label', {
+              class: `card-icon ${icon}`,
+            }),
+        h(
+          'div',
+          {
+            class: 'card-content',
+          },
+          [
+            h('div', {
+              class: 'card-title',
+              innerHTML: title,
+            }),
+            h('hr'),
+            h('div', {
+              class: 'card-desc',
+              innerHTML: desc
+                ? desc
+                : isRelativeLink(link)
+                  ? `https://yuanshen.site/docs/${link.substring(0, 3).replace(/(\.\/|\/)/g, '') + link.substring(3)}`
+                  : link,
+            }),
+          ],
+        ),
+      ],
+    ),
   ]
 
   const props: Record<string, unknown> = {

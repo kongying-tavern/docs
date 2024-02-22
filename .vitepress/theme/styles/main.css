@@ -127,7 +127,29 @@ html.dark .vp-doc figure figcaption {
   border: none;
 }
 
-.vp-clear {
+.load-error::after {
+  content: '图片被派蒙吃掉了！' !important;
+  text-align: center;
+  line-height: 10;
+  background-color: var(--vp-c-bg-alt) !important;
+  animation: none !important;
+}
+
+// 骨架屏动画
+.skeleton-animation::after {
+  content: ' ';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    var(--skeleton-animation-gradient),
+    rgba(255, 255, 255, 0)
+  );
+  animation: skeleton--gradient 1.5s linear 2s infinite;
 }
 
 .medium-zoom-overlay {
@@ -245,5 +267,15 @@ html.dark .vp-doc figure figcaption {
       animation: slide-enter-left 1s both 1;
       -webkit-animation-timing-function: cubic-bezier(0.333, 0, 0.667, 1);
     }
+  }
+}
+
+@keyframes skeleton--gradient {
+  0% {
+    transform: translate(-100%) skew(-15deg);
+  }
+
+  to {
+    transform: translate(100%) skew(-15deg);
   }
 }

@@ -18,7 +18,10 @@ layout: doc
 
 ### 个人赞助
 
-![backers](/imgs/backers_202347.png)
+![Backers](/imgs/backers_202347.png)
+
+> [!Info]
+> 出于篇幅和更新难度考虑，当前此处仅展示**2023年之前**在爱赞助、微信、支付宝渠道赞助的部分小伙伴。23年后赞助的以及之前在哔哩哔哩充电、Paypal、QQ Pay、ETC、BTC渠道赞助的暂未更新。还请谅解\(´◡`\)
 
 ### 赞助商
 

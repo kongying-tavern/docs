@@ -48,31 +48,6 @@
     width: 100%;
     height: 160px;
     border-radius: 0.75rem 0.75rem 0 0;
-
-    .load-error::after {
-      content: '图片被派蒙吃掉了！' !important;
-      text-align: center;
-      line-height: 10;
-      background-color: var(--vp-c-bg-alt) !important;
-      animation: none !important;
-    }
-
-    // 骨架屏动画
-    .skeleton-animation::after {
-      content: ' ';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      top: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0),
-        var(--skeleton-animation-gradient),
-        rgba(255, 255, 255, 0)
-      );
-      animation: t-skeleton--gradient 1.5s linear 2s infinite;
-    }
   }
 
   .card-footer {
@@ -169,17 +144,21 @@
     align-items: center;
   }
 
+  .no-logo {
+    padding-left: 1rem;
+  }
+
   .card-logo {
-    width: 2.5em;
-    height: 2.5em;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
   .card-icon {
-    margin-left: 0.5em;
+    margin-left: 0.5rem;
   }
 
   .card-title {
-    font-size: 1em;
+    font-size: 1rem;
   }
 
   .card-desc {
@@ -213,14 +192,4 @@
   background: url('https://yuanshen.site/docs/svg/txc.svg') no-repeat;
   background-size: 100% 100%;
   background-color: transparent;
-}
-
-@keyframes t-skeleton--gradient {
-  0% {
-    transform: translate(-100%) skew(-15deg);
-  }
-
-  to {
-    transform: translate(100%) skew(-15deg);
-  }
 }
