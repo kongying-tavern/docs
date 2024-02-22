@@ -131,8 +131,8 @@ const Card: FunctionalComponent<CardProps> = ({
   const getlogoLink = (i) => {
     if (i === 'self' || link.includes('yuanshen.site') || isRelativeLink(link))
       return withBase('/imgs/logo_128.png')
-    if (logo === '') return 'no-logo'
-    return i
+    if (i === '') return 'no-logo'
+    return isRelativeLink(i) ? withBase(i) : i
   }
 
   const children = [
