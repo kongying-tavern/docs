@@ -39,7 +39,7 @@ export default {
     })
     app.component('Link', Link)
     app.component('Coins', Coins)
-    app.component('VPCard', Card)
+    app.component('Card', Card)
     app.component('LinkGrid', LinkGrid)
     app.component('Badge', VPBadge)
   },

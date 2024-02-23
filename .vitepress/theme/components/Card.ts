@@ -191,6 +191,7 @@ const Card: FunctionalComponent<CardProps> = ({
     {
       href: isLinkExternal(link) ? link : withBase(link),
       target: isLinkExternal(link) ? '_blank' : '_self',
+      isExternalLink: isLinkExternal(link) ? 'true' : 'false',
       ...props,
     },
     children,

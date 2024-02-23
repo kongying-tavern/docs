@@ -183,6 +183,16 @@
     color: currentColor !important;
   }
 
+  &[isexternallink='true']::after {
+    margin-top: -16px !important;
+    transform: translateX(8px);
+  }
+
+  &[isexternallink='false']::after {
+    margin-top: -16px !important;
+    transform: translateX(4px) rotate(45deg);
+  }
+
   hr {
     display: none;
   }

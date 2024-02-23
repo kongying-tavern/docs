@@ -82,7 +82,7 @@ const cardRender = (
 
   const cardData = checkCardProps(config)
 
-  if (cardData) return `<VPCard v-bind='${stringifyProp(cardData)}' />`
+  if (cardData) return `<Card v-bind='${stringifyProp(cardData)}' />`
 
   console.error(
     `Invalid card config${relativePath ? ` found in ${relativePath}` : ''}:
