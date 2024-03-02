@@ -15,7 +15,6 @@ import { timeline } from './theme/markdown/timeline'
 import { enConfig } from './locales/en'
 import { zhConfig } from './locales/zh'
 import { jaConfig } from './locales/ja'
-import { koConfig } from './locales/ko'
 import { frConfig } from './locales/fr'
 
 export const isProd = process.env.NODE_ENV === 'production'
@@ -88,22 +87,6 @@ export default defineConfig({
               },
             },
           },
-          kr: {
-            translations: {
-              button: {
-                buttonText: '찾다',
-                buttonAriaLabel: '찾다',
-              },
-              modal: {
-                noResultsText: '관련 결과가 없습니다',
-                resetButtonTitle: '검색 재설정',
-                footer: {
-                  selectText: '선택하다',
-                  navigateText: '전환하다',
-                },
-              },
-            },
-          },
           fr: {
             translations: {
               button: {
@@ -158,12 +141,6 @@ export default defineConfig({
       lang: 'ja-JP',
       link: '/ja/',
       ...jaConfig,
-    },
-    ko: {
-      label: '한국인',
-      lang: 'ko-KR',
-      link: '/ko/',
-      ...koConfig,
     },
     fr: {
       label: 'Français',

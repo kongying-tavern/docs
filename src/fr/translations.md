@@ -15,7 +15,6 @@ banner: Désolé, la traduction de cette page est toujours en cours
 ## Work in Progress Languages {#work-in-progress-languages}
 
 - [日本語 / Japanese](../ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
-- [韩语 / Korean](../ko/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
 - [法语 / French](../fr/index.md)[[source]](https://github.com/kongying-tavern/docs/tree/next/src/fr)]
 
 ## Starting a new Translation {#starting-a-new-translation}
