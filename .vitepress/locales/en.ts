@@ -219,6 +219,15 @@ function nav(): DefaultTheme.NavItem[] {
             },
           ],
         },
+        {
+          text: 'Other',
+          items: [
+            {
+              text: 'Friend-links',
+              link: '/friends-links.md',
+            },
+          ],
+        },
       ],
     },
   ]
