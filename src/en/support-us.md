@@ -1,11 +1,10 @@
 ---
 aside: false
 layout: doc
+title: Supprot Us
 titleTemplate: :title | Kongying Tavern
 description: Thank for your support
 ---
-
-# Support Us
 
 _Genshin Interactive Map_ is a MulanPSL-1.0 open-source project, it is completely free itself and AD-free.
 As the user base and the scope of our project grows, development and maintenance also incur rising costs. You can support the development and maintenance of _Genshin Interactive Map_ through the following ways:

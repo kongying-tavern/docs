@@ -50,4 +50,32 @@ export interface CustomConfig {
       address: string
     }
   >
+  ui: {
+    button: {
+      submit: string
+      cancel: string
+    }
+  }
+  docsFeedback: {
+    feedbackMsg: string
+    good: string
+    bad: string
+    badFeedbackSuccessMsg: string
+    feedbackFailMsg: string
+    feedbackSuccessMsg: string
+    form: {
+      chooseIssues: string
+      translationIssue: string
+      typosIssue: string
+      ContentImgLinkIssue: string
+      feedbackDetail: string
+      feedbackTip: string
+      otherIssue: string
+      contactWay: string
+      issueOptions: {
+        label: string
+        value: string
+      }[]
+    }
+  }
 }

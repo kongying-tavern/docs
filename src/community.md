@@ -52,7 +52,8 @@ titleTemplate: 空荧酒馆
 13. [**原神地图 13 群(已满)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi '点击一键加入原神地图13群')
 14. [**原神地图 14 群** 468263682](https://qm.qq.com/cgi-bin/qm/qr?k=g-By7txM78GfoPhk29d59Z5KkJV_Gt-z&jump_from=webapi '点击一键加入原神地图14群')
 15. [**原神地图 15 群** 668424173](https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi '点击一键加入原神地图15群')
-:::
+    :::
+
 <script setup>
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'

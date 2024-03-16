@@ -70,6 +70,10 @@ html.dark .vp-doc figure figcaption {
     top 0.35s ease-out !important;
 }
 
+textarea {
+  font-family: var(--vp-font-family-base);
+}
+
 #app a:focus-visible,
 #app button:focus-visible,
 #app input[type='checkbox']:focus-visible {
@@ -158,6 +162,14 @@ html.dark .vp-doc figure figcaption {
 
 .medium-zoom-image {
   z-index: 999999999999;
+}
+
+.prev-next {
+  margin-top: 1em;
+}
+
+.edit-info {
+  display: none !important;
 }
 
 @keyframes slide-enter {

@@ -4,11 +4,11 @@ import { ref, onMounted, watchEffect } from 'vue'
 import { useData } from 'vitepress'
 import { hash } from '../utils'
 import dayjs from 'dayjs'
-const el = ref<HTMLElement>()
-const { height } = useElementSize(el)
+const banner = ref<HTMLElement>()
+const { height } = useElementSize(banner)
 const { frontmatter, page } = useData()
 const storeKey = `banner-${page.value.relativePath}`
-const isShow = ref(typeof frontmatter.value.banner === 'string')
+const isBannerVisible = ref(typeof frontmatter.value.banner === 'string')
 const deal = () => (Date.now() + 8.64e7 * 1).toString() // current time + 1 day
 const inExpiryDate = () => {
   if (!frontmatter.value.bannerExpiryDate) return false
@@ -54,14 +54,14 @@ const dismiss = () => {
 }
 
 const hideBanner = () => {
-  isShow.value = false
+  isBannerVisible.value = false
   document.documentElement.style.setProperty('--vp-layout-top-height', '0.1px')
 }
 </script>
 
 <template>
   <ClientOnly>
-    <div v-show="isShow" ref="el" class="banner">
+    <div v-show="isBannerVisible" ref="banner" class="banner">
       <div class="text" v-html="frontmatter.banner"></div>
 
       <button type="button" @click="dismiss">

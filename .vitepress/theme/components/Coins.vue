@@ -2,38 +2,30 @@
   <div slide-enter>
     <div class="one-time-donations">
       <div class="links">
-        <a href="#wechatpay" title="WeChat Pay">
-          <span class="i-custom-wechatpay"></span
-          >{{ theme.payment.wechatpay.name }}
+        <a
+          v-for="(payment, key) in theme.payment"
+          :key="key"
+          :href="`#${key}`"
+          :title="payment.name"
+        >
+          <span :class="`i-custom-${key}`"></span>
+          {{ payment.name }}
         </a>
-        <a href="#alipay" title="AliPay"
-          ><span class="i-custom-alipay"></span>
-          {{ theme.payment.alipay.name }}</a
-        >
-        <a href="#qqpay" title="QQ Pay">
-          <span class="i-custom-qqpay"></span>
-          {{ theme.payment.qqpay.name }}</a
-        >
-        <a href="#paypal" title="Paypal">
-          <span class="i-custom-paypal"></span>
-          {{ theme.payment.paypal.name }}</a
-        >
-        <a href="#bilibili" title="bilibili">
-          <span class="i-custom-bilibili"></span>
-          {{ theme.payment.bilibili.name }}</a
-        >
       </div>
     </div>
 
-    <div v-if="type && coins[type]" class="coin-details slide-enter">
+    <div
+      v-if="selectedPayment && coins[selectedPayment]"
+      class="coin-details slide-enter"
+    >
       <p>
         <span ref="icon"></span>
-        {{ coins[type].name }} Address:<br /><a
-          :href="coins[type].address"
-          :title="coins[type].name"
+        {{ coins[selectedPayment].name }} Address:<br /><a
+          :href="coins[selectedPayment].address"
+          :title="coins[selectedPayment].name"
           target="_blank"
           rel="noopener noreferrer"
-          >{{ coins[type].address }}</a
+          >{{ coins[selectedPayment].address }}</a
         >
       </p>
       <img :src="qrcode" alt="QR Code" />
@@ -50,26 +42,27 @@ const { theme } = useData()
 let qrcode = ref()
 
 const icon = ref()
-const type = ref()
+const selectedPayment = ref()
 const coins = ref(theme.value.payment)
 
-const updateType = () => {
-  if (window.location.hash.slice(1)) {
-    type.value = window.location.hash.slice(1)
-    if (typeof coins.value[type.value]?.address === 'undefined') return
-    qrcode = useQRCode(coins.value[type.value]?.address)
+const updatePaymentType = () => {
+  const hash = window.location.hash.slice(1)
+  if (hash && coins.value[hash]?.address) {
+    selectedPayment.value = hash
+    qrcode = useQRCode(coins.value[hash].address)
     nextTick(() => {
-      icon.value.className = `i-custom-${[type.value]}`
+      icon.value.className = `i-custom-${hash}`
     })
   }
 }
 
 onMounted(() => {
-  updateType()
-  window.addEventListener('hashchange', updateType)
+  updatePaymentType()
+  window.addEventListener('hashchange', updatePaymentType)
 })
+
 onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', updateType)
+  window.removeEventListener('hashchange', updatePaymentType)
 })
 </script>
 

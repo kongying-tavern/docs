@@ -1,6 +1,6 @@
 import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
 import { useRoute, useData } from 'vitepress'
-import { VPBadge } from 'vitepress/theme'
+import { VPBadge } from 'vitepress/theme-without-fonts'
 import mediumZoom from 'medium-zoom'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import Link from './components/Link.vue'
@@ -8,14 +8,18 @@ import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
 import LinkGrid from '../theme/components/LinkGrid.vue'
+import { createPinia } from 'pinia'
 
 import type { Theme } from 'vitepress'
 
 import 'uno.css'
 import './styles/vars.css'
 import './styles/main.css'
+import './styles/ui.css'
 import './styles/timeline.css'
 import './styles/kbd.css'
+
+const pinia = createPinia()
 
 export default {
   ...DefaultTheme,
@@ -27,6 +31,12 @@ export default {
       'doc-before': h(
         defineAsyncComponent(() => import('./components/DocHeader.vue')),
       ),
+      'doc-footer-before': h(
+        defineAsyncComponent(() => import('./components/DocInfo.vue')),
+      ),
+      'doc-after': h(
+        defineAsyncComponent(() => import('./components/DocFeedback.vue')),
+      ),
       'aside-outline-after': h(
         defineAsyncComponent(() => import('./components/DocAside.vue')),
       ),
@@ -37,6 +47,7 @@ export default {
       id: 'G-Q2K9DXZCEY',
       debug: false,
     })
+    app.use(pinia)
     app.component('Link', Link)
     app.component('Coins', Coins)
     app.component('Card', Card)
