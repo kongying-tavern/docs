@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, defineProps, inject } from 'vue'
 import { useData, useRoute } from 'vitepress'
 
-import { newDocFeedback } from '../../apis/newDocFeedback'
+import { newDocFeedback } from '../apis/newDocFeedback'
 
 const { theme, page } = useData()
 
