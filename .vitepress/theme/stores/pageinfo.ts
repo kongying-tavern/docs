@@ -4,6 +4,7 @@ import type { PageInfoResponse } from '../apis/getPageInfo'
 
 export const usePageInfoStore = defineStore('pageinfo', () => {
   // Current Pageinfo of the user.
+  // @ts-ignore
   const currentPageinfo = ref<PageInfoResponse['data']>({
     good: 0,
     bad: 0,
@@ -12,6 +13,8 @@ export const usePageInfoStore = defineStore('pageinfo', () => {
     id: '',
     record_id: '',
   })
+  // @ts-ignore
+  if (import.meta.env.SSR) return currentPageinfo
   const previousPageinfos = ref<PageInfoResponse['data'][]>([])
 
   const usedPageinfos = computed(() => previousPageinfos.value.slice())
