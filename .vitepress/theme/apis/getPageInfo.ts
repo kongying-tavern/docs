@@ -13,11 +13,14 @@ export type PageInfoResponse = {
   }
 }
 
-export const getPageInfo = async (page): Promise<PageInfoResponse> =>
-  await fetcher
+export const getPageInfo = async (page): Promise<PageInfoResponse | null> => {
+  // @ts-ignore
+  if (import.meta.env.SSR) return null
+  return await fetcher
     .get('docs/pageinfo', {
       searchParams: {
         path: String(page.value.filePath).replace('.md', ''),
       },
     })
     .json()
+}
