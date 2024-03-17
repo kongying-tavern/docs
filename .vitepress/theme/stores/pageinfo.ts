@@ -13,8 +13,6 @@ export const usePageInfoStore = defineStore('pageinfo', () => {
     id: '',
     record_id: '',
   })
-  // @ts-ignore
-  if (import.meta.env.SSR) return currentPageinfo
   const previousPageinfos = ref<PageInfoResponse['data'][]>([])
 
   const usedPageinfos = computed(() => previousPageinfos.value.slice())

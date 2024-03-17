@@ -13,7 +13,7 @@ export type PageInfoResponse = {
   }
 }
 
-export const getPageInfo = async (page): Promise<PageInfoResponse | null> => {
+export const getPageInfo = async (page): Promise<PageInfoResponse> => {
   // @ts-ignore
   if (import.meta.env.SSR) return null
   return await fetcher

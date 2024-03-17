@@ -36,8 +36,10 @@ const { page, theme } = useData()
 const pageinfo = usePageInfoStore()
 
 const updateData = async () => {
+  // @ts-ignore
+  if (import.meta.env.SSR) return null
   const info = await getPageInfo(page)
-  pageinfo.setNewPageinfo(info.data)
+  pageinfo.setNewPageinfo(info.data!)
   await PV(info.data.record_id)
 }
 
