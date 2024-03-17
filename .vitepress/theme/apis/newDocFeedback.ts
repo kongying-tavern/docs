@@ -1,9 +1,5 @@
-import { Content } from 'vitepress'
 import { UAParser } from 'ua-parser-js'
 import { fetcher } from '.'
-
-const parser = new UAParser(window.navigator.userAgent)
-const result = parser.getResult()
 
 export type NewDocFeedbackResponse = {
   code: number
@@ -24,6 +20,25 @@ export const newDocFeedback = async (data: {
   file?: Array<string>
   user_contact?: string
 }): Promise<NewDocFeedbackResponse> => {
+  let env_data = {
+    screen: {},
+    ua: '',
+    user_platform: '',
+  }
+
+  const parser = new UAParser(window.navigator.userAgent)
+  const result = parser.getResult()
+  env_data = {
+    screen: {
+      availWidth: window.screen.availWidth,
+      availHeight: window.screen.availHeight,
+      width: window.screen.width,
+      height: window.screen.height,
+    },
+    ua: navigator.userAgent,
+    user_platform: `${result.os.name}-${result.browser.name}`,
+  }
+
   try {
     return await fetcher
       .post('docs/feedback/new', {
@@ -35,16 +50,8 @@ export const newDocFeedback = async (data: {
           file: data.file,
           nickname: data.nickname,
           user_contract: data.user_contact,
-          user_platform: `${result.os.name}-${result.browser.name}`,
-          user_env_info: JSON.stringify({
-            userAgent: navigator.userAgent,
-            screen: {
-              availWidth: window.screen.availWidth,
-              availHeight: window.screen.availHeight,
-              width: window.screen.width,
-              height: window.screen.height,
-            },
-          }),
+          user_platform: env_data.user_platform,
+          user_env_info: JSON.stringify(env_data),
         },
       })
       .json()

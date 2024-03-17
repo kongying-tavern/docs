@@ -139,7 +139,6 @@ textarea {
   animation: none !important;
 }
 
-// 骨架屏动画
 .skeleton-animation::after {
   content: ' ';
   position: absolute;

@@ -30,6 +30,14 @@
       </p>
       <img :src="qrcode" alt="QR Code" />
     </div>
+    <!-- 在这里显式声明Pay Icon，给Unocss识别导入 -->
+    <div hidden>
+      <span class="i-custom-qqpay"></span>
+      <span class="i-custom-wechatpay"></span>
+      <span class="i-custom-bilibili"></span>
+      <span class="i-custom-alipay"></span>
+      <span class="i-custom-paypal"></span>
+    </div>
   </div>
 </template>
 
