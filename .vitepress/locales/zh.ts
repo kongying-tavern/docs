@@ -140,7 +140,7 @@ export const zhConfig: LocaleSpecificConfig<
           'https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet',
       },
       paypal: {
-        name: 'Paypal',
+        name: 'PayPal',
         address: 'https://www.paypal.com/paypalme/yuanshenditu',
       },
       bilibili: {
