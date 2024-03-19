@@ -10,7 +10,7 @@ const hmacDigest = (date) =>
 export const fetcher = ky.create({
   prefixUrl: 'https://kongying-tavern-feedback-api.arrebol.cc/apis/v1',
   timeout: 5000,
-  retry: 0,
+  retry: 1,
   hooks: {
     beforeRequest: [
       (request) => {

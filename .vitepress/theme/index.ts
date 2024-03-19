@@ -9,6 +9,10 @@ import googleAnalytics from '../plugins/googleAnalytics'
 import Card from '../theme/components/Card'
 import LinkGrid from '../theme/components/LinkGrid.vue'
 import { createPinia } from 'pinia'
+import DocAside from './components/DocAside.vue'
+import DocHeader from './components/DocHeader.vue'
+import DocInfo from './components/DocInfo.vue'
+import DocFeedback from './components/DocFeedback.vue'
 
 import type { Theme } from 'vitepress'
 
@@ -28,18 +32,10 @@ export default {
     return h(DefaultTheme.Layout, null, {
       'layout-top': () =>
         h(defineAsyncComponent(() => import('./components/Banner.vue'))),
-      'doc-before': h(
-        defineAsyncComponent(() => import('./components/DocHeader.vue')),
-      ),
-      'doc-footer-before': h(
-        defineAsyncComponent(() => import('./components/DocInfo.vue')),
-      ),
-      'doc-after': h(
-        defineAsyncComponent(() => import('./components/DocFeedback.vue')),
-      ),
-      'aside-outline-after': h(
-        defineAsyncComponent(() => import('./components/DocAside.vue')),
-      ),
+      'doc-before': () => h(DocHeader),
+      'doc-footer-before': () => h(DocInfo),
+      'doc-after': () => h(DocFeedback),
+      'aside-outline-after': () => h(DocAside),
     })
   },
   enhanceApp({ app }) {
