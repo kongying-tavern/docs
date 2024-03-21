@@ -8,7 +8,7 @@ const hmacDigest = (date) =>
   Base64.stringify(hmacSHA512(sha256(parseInt(date)), 'site.yuanshen'))
 
 export const fetcher = ky.create({
-  prefixUrl: 'https://kongying-tavern-feedback-api.arrebol.cc/apis/v1',
+  prefixUrl: 'https://doc-apis.yuanshen.site/apis/v1',
   timeout: 5000,
   retry: 1,
   hooks: {
