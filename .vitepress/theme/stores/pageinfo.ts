@@ -3,8 +3,6 @@ import { ref, computed } from 'vue'
 import type { PageInfoResponse } from '../apis/getPageInfo'
 
 export const usePageInfoStore = defineStore('pageinfo', () => {
-  // Current Pageinfo of the user.
-  // @ts-ignore
   const currentPageinfo = ref<PageInfoResponse['data']>({
     good: 0,
     bad: 0,
@@ -14,7 +12,6 @@ export const usePageInfoStore = defineStore('pageinfo', () => {
     record_id: '',
   })
   const previousPageinfos = ref<PageInfoResponse['data'][]>([])
-
   const usedPageinfos = computed(() => previousPageinfos.value.slice())
   const otherPageinfos = computed(() =>
     usedPageinfos.value.filter(
@@ -22,12 +19,6 @@ export const usePageInfoStore = defineStore('pageinfo', () => {
     ),
   )
 
-  /**
-   * Changes the current Pageinfo of the user and saves the one that was used
-   * before.
-   *
-   * @param newPageinfo - new Pageinfo to set
-   */
   function setNewPageinfo(newPageinfo: PageInfoResponse['data']) {
     previousPageinfos.value.push(currentPageinfo.value)
     console.log(newPageinfo)

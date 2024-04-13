@@ -18,11 +18,7 @@
           <h1
             class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight"
           >
-            {{
-              frontmatter.title ||
-              page.title ||
-              page.relativePath.replace('.md', '')
-            }}
+            {{ title }}
           </h1>
         </div>
         <p
@@ -37,11 +33,17 @@
 
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 
 const { frontmatter, page } = useData()
 
-let match = ref<string | boolean>(false)
+const match = ref<string | boolean>(false)
+const title = computed(
+  () =>
+    frontmatter.value.title ||
+    page.value.title ||
+    page.value.relativePath.replace('.md', ''),
+)
 
 watchEffect(() => {
   if (!frontmatter.value.titleTemplate) return (match.value = false)

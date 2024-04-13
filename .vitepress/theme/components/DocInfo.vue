@@ -6,18 +6,11 @@
     </div>
     <ClientOnly>
       <div class="doc-info-right" text-right flex justify-end>
-        <i i-custom-eye></i>
-        {{
-          pageinfo.currentPageinfo.pageview
-            ? Number(pageinfo.currentPageinfo.pageview) + 1
-            : '-'
-        }}
-        <i i-custom-star ml-6></i>
-        {{
-          pageinfo.currentPageinfo.good
-            ? Number(pageinfo.currentPageinfo.good)
-            : '-'
-        }}
+        <i i-custom-thumb ml-6></i>
+        <div v-if="loading" class="loader mr-4"></div>
+        <span v-else>
+          {{ thumbText }}
+        </span>
       </div>
     </ClientOnly>
   </div>
@@ -25,7 +18,7 @@
 
 <script lang="ts" setup>
 import { useData, useRoute } from 'vitepress'
-import { watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 import { getPageInfo } from '../apis/getPageInfo'
 import { pageview as PV } from '../apis/pageview'
@@ -34,18 +27,27 @@ import { usePageInfoStore } from '../stores/pageinfo'
 const router = useRoute()
 const { page, theme } = useData()
 const pageinfo = usePageInfoStore()
+const loading = ref(false)
+const thumbText = computed(() => {
+  return pageinfo.currentPageinfo.good
+    ? Number(pageinfo.currentPageinfo.good)
+    : '-'
+})
 
 const updateData = async () => {
   // @ts-ignore
   if (import.meta.env.SSR) return null
   const info = await getPageInfo(page)
   pageinfo.setNewPageinfo(info.data!)
-  await PV(info.data.record_id)
 }
 
 watch(
   () => router.path,
-  () => updateData(),
+  async () => {
+    loading.value = true
+    updateData()
+    loading.value = false
+  },
 )
 updateData()
 </script>
@@ -78,4 +80,3 @@ updateData()
   }
 }
 </style>
-../../apis/getPageInfo../../apis/pageview./apis/getPageInfo./apis/pageview
