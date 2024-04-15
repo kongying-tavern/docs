@@ -6,7 +6,7 @@
     </div>
     <ClientOnly>
       <div class="doc-info-right" text-right flex justify-end>
-        <i i-custom-thumb ml-6></i>
+        <i i-custom-thumb></i>
         <div v-if="loading" class="loader mr-4"></div>
         <span v-else>
           {{ thumbText }}
@@ -54,7 +54,8 @@ updateData()
 
 <style scoped>
 .doc-info {
-  display: grid;
+  display: flex;
+  justify-content: space-between;
   grid-row-gap: 4px;
 
   i {
@@ -71,6 +72,7 @@ updateData()
 
 @media (min-width: 640px) {
   .doc-info {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 16px;
   }
