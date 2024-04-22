@@ -69,13 +69,17 @@ export default {
 } satisfies Theme
 
 const loadFont = () => {
-  const font = new FontFace('zh-cn-full', 'url(/docs/fonts/zh-cn-full.ttf)', {
-    display: 'swap',
-  })
+  const font = new FontFace(
+    'zh-cn-full',
+    'url(/docs/fonts/HYWenHei-85W-zh-full.woff2)',
+    {
+      display: 'swap',
+    },
+  )
 
   document.fonts.add(font)
+
   font.load().then((e) => {
-    console.log(e)
     document.documentElement.classList.toggle('font-full')
   })
 }

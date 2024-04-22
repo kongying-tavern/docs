@@ -4,6 +4,7 @@ description: 本项目文档页面使用Markdown语法进行编写，除了 Vite
 layout: doc
 aside: false
 titleTemplate: 空荧酒馆
+search: false
 ---
 
 <!-- 该页面无需翻译 -->

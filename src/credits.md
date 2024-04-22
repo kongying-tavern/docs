@@ -5,6 +5,7 @@ titleTemplate: 空荧酒馆
 aside: false
 layout: doc
 pageClass: credits
+search: false
 ---
 
 ## Web

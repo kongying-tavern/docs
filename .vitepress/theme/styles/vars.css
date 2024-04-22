@@ -1,6 +1,8 @@
 @font-face {
   font-family: zh-cn-min;
-  src: url('../../../src/public/fonts/zh-cn-min.woff');
+  src:
+    url('../../../src/public/fonts/HYWenHei-85W-zh-min.woff2') format('woff2'),
+    url('../../../src/public/fonts/HYWenHei-85W-zh-min.woff') format('woff');
 }
 
 /**

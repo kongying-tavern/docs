@@ -1,6 +1,7 @@
 ---
 title: 公告
 description: 机版下架公告
+search: false
 ---
 
 ## 单机版下架公告
