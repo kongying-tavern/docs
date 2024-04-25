@@ -153,10 +153,9 @@ description: 为了进一步完善和优化项目，我们诚招各位小伙伴�
 1. 数学系相关专业研究生及以上学历。
    :::
 
-<script setup>
+<script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { isNumber } from '../../.vitepress/theme/utils'
 import { linkMap, linkJump } from '../../components/Join.ts'
 
 const params = useUrlSearchParams('history')

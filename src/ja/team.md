@@ -6,7 +6,7 @@ aside: false
 banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---
 
-<script setup>
+<script setup lang="ts">
 import TeamPage from '../components/team/TeamPage.vue'
 </script>
 

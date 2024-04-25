@@ -7,7 +7,7 @@ aside: false
 banner: 开发中页面，仅预览
 ---
 
-<script setup>
+<script setup lang="ts">
 import StaffPage from '../components/staff/StaffPage.vue'
 </script>
 

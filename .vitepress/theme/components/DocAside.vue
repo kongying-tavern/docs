@@ -61,7 +61,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useData, withBase } from 'vitepress'
 
 const { theme, page, localeIndex, frontmatter } = useData()

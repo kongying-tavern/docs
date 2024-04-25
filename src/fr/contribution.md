@@ -7,7 +7,7 @@ titleTemplate: :title - Client Manuals | Kongying Tavern
 banner: Désolé, la traduction de cette page est toujours en cours
 ---
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import dayjs from 'dayjs';
 
@@ -305,5 +305,5 @@ display: flex;
       background-color: transparent !important;
     }
   }
-} 
+}
 </style>

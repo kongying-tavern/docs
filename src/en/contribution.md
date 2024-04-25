@@ -6,7 +6,7 @@ layout: doc
 titleTemplate: :title | Kongying Tavern
 ---
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import dayjs from 'dayjs';
 
@@ -304,5 +304,5 @@ display: flex;
       background-color: transparent !important;
     }
   }
-} 
+}
 </style>

@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData } from 'vitepress'
