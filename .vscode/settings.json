@@ -12,5 +12,6 @@
     "wechatpay",
     "wxtl"
   ],
-  "vue.codeActions.enabled": false
+  "vue.codeActions.enabled": false,
+  "files.trimTrailingWhitespace": true
 }
