@@ -26,11 +26,11 @@ description: Windowed Fullscreen lets the game run fullscreen while satisfying t
 
 - 步骤三：转到“图像”设置
 
-![](/imgs/manual/fullscreen-windowed/6.png)
+![](/imgs/zh/manual/fullscreen-windowed/6.png)
 
 - 步骤四：在“显示模式”选项中，选择“<你的分辨率> 无边框”选项
 
-![](/imgs/manual/fullscreen-windowed/7.png)
+![](/imgs/zh/manual/fullscreen-windowed/7.png)
 
 ## 注意事项
 

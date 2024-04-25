@@ -14,4 +14,4 @@ description: 在版本更新中，部分系统会出现无法自动打开更新�
 
 更新器位置：
 
-![](/imgs/manual/autoupdate/updaterlocation.png)
+![](/imgs/zh/manual/autoupdate/updaterlocation.png)

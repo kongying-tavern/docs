@@ -22,7 +22,7 @@ description: 地图对标记【已完成】的点位有两种显示方式。
 ---
 
 【显示】标记
-![](/imgs/manual/hide-show-done/Hide.png)
+![](/imgs/zh/manual/hide-show-done/Hide.png)
 
 【隐藏】标记
-![](/imgs/manual/hide-show-done/show.png)
+![](/imgs/zh/manual/hide-show-done/show.png)

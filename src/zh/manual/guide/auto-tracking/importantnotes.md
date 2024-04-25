@@ -38,7 +38,7 @@ description: This feature is based on image recognition
 
 - 自动检测游戏内**当前角色位置**（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）
 
-![](/imgs/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/zh/manual/auto-tracking/autotrackingegaged.png)
 
 ---
 
