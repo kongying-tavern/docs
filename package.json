@@ -7,7 +7,7 @@
     "build-mpa": "vitepress build --mpa --base /docs/",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "commit": "git-cz",
-    "dev": "vitepress --base /docs/",
+    "dev": "vitepress",
     "postinstall": "husky install",
     "lint": "prettier  --write . && eslint --fix --ext .js,.ts,.vue",
     "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:zh",
