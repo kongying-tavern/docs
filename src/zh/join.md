@@ -156,7 +156,7 @@ description: 为了进一步完善和优化项目，我们诚招各位小伙伴�
 <script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { linkMap, linkJump } from '../../components/Join.ts'
+import { linkMap, linkJump } from '../components/links/Join.ts'
 
 const params = useUrlSearchParams('history')
 const links = [linkMap.dd, linkMap.kf]
