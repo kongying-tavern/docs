@@ -61,11 +61,22 @@ import { isNumber } from '../../.vitepress/theme/utils'
 
 const params = useUrlSearchParams('history')
 const server = [
-{ id: 'discord', name: 'Discord', target: '_blank', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
-{
-id: 'qq', name: 'QQ 频道', target: '_blank',
-secondary: 'f006fek0f', link: 'https://pd.qq.com/s/f006fek0f', icon: '/svg/qq-channel.svg'
-},
+  {
+    id: 'discord',
+    name: 'Discord',
+    target: '_blank',
+    link: 'https://discord.com/invite/aFe57AKZUF',
+    secondary: 'aFe57AKZUF',
+    icon: 'i-logos-discord-icon'
+  },
+  {
+    id: 'qq',
+    name: 'QQ 频道',
+    target: '_blank',
+    secondary: 'f006fek0f',
+    link: 'https://pd.qq.com/s/f006fek0f',
+    icon: '/imgs/common/svg/qq-channel.svg'
+  },
 ]
 
 function jump() {

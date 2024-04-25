@@ -33,8 +33,21 @@ import { onMounted } from 'vue'
 
 const params = useUrlSearchParams('history')
 const downloadMethod = [
-  { id: 'discord', name: 'Discord', target: '_black', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
-  { id:'gd', name: 'Google Drive', target: '_black', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+  {
+    id: 'discord',
+    name: 'Discord',
+    target: '_blank',
+    link: 'https://discord.com/invite/aFe57AKZUF',
+    secondary: 'aFe57AKZUF',
+    icon: 'i-logos-discord-icon'
+  },
+  {
+    id:'gd',
+    name: 'Google Drive',
+    target: '_blank',
+    link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing',
+    icon: 'i-logos-google-drive'
+  }
 ]
 
 function jump() {

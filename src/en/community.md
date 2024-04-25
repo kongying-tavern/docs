@@ -55,11 +55,22 @@ titleTemplate: :title | Kongying Tavern
 
 <script setup>
 const server = [
-{ id: 'discord', name: 'Discord', target: '_blank', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
-{
-id: 'qq', name: 'QQ 频道', target: '_blank',
-secondary: 'f006fek0f', link: 'https://pd.qq.com/s/f006fek0f', icon: '/svg/qq-channel.svg'
-},
+  {
+    id: 'discord',
+    name: 'Discord',
+    target: '_blank',
+    link: 'https://discord.com/invite/aFe57AKZUF',
+    secondary: 'aFe57AKZUF',
+    icon: 'i-logos-discord-icon'
+  },
+  {
+    id: 'qq',
+    name: 'QQ 频道',
+    target: '_blank',
+    secondary: 'f006fek0f',
+    link: 'https://pd.qq.com/s/f006fek0f',
+    icon: '/imgs/common/svg/qq-channel.svg'
+  },
 ]
 </script>
 
@@ -88,7 +99,7 @@ ol,ul {
     display: flex;
     flex-direction: column;
     /* overflow-y: scroll; */
-    
+
     li {
       cursor: pointer;
       display: inline-block;
@@ -128,9 +139,9 @@ ol,ul {
 ul > li {
   padding: 4px 0;
 }
+
 // 被封禁的群
 .custom-block.details {
-  
   ol > li {
     border-color: var(--vp-c-text-3)
   }
@@ -152,6 +163,6 @@ ul > li {
       font-size: 14px !important;
     }
   }
-  
+
 }
 </style>

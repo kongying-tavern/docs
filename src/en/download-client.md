@@ -34,7 +34,19 @@ import { onMounted } from 'vue'
 import { isNumber } from '../../.vitepress/theme/utils'
 
 const downloadMethod = [
-  { id:'sq', name: 'Discord', target: '_self', link: 'https://discord.gg/aFe57AKZUF', icon: 'i-logos-discord-icon' },
-  { id:'gd', name: 'Google Drive', target: '_blank', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+  {
+    id:'sq',
+    name: 'Discord',
+    target: '_self',
+    link: 'https://discord.gg/aFe57AKZUF',
+    icon: 'i-logos-discord-icon'
+  },
+  {
+    id:'gd',
+    name: 'Google Drive',
+    target: '_blank',
+    link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing',
+    icon: 'i-logos-google-drive'
+  }
 ]
 </script>
