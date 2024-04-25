@@ -7,7 +7,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 ---
 
 <script setup>
-import TeamPage from '../team/TeamPage.vue'
+import TeamPage from '../components/team/TeamPage.vue'
 </script>
 
 <TeamPage />

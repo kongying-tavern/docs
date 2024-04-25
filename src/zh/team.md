@@ -7,7 +7,7 @@ banner: 开发中页面，仅预览
 ---
 
 <script setup>
-import TeamPage from './team/TeamPage.vue'
+import TeamPage from '../components/team/TeamPage.vue'
 </script>
 
 <TeamPage />
