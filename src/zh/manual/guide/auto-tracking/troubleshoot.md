@@ -21,8 +21,6 @@ desc: 228382171（https://jq.qq.com/?_wv=1027&k=EqhYN9uI）
 link: https://jq.qq.com/?_wv=1027&k=EqhYN9uI
 ```
 
-English version: [\[Automatic Tracking\] Important Notes | Kongying Tavern](http://yuanshen.site/docs/en/manual/guide/auto-tracking/importantnotes)
-
 ## 简介
 
 本功能基于【图像识别】技术实现。不是外挂，不会导致封号。
@@ -117,11 +115,9 @@ English version: [\[Automatic Tracking\] Important Notes | Kongying Tavern](http
 
 【7.10.2】
 
-1\. 修正了地下的坐标映射，现在地下坐标会更准确一些  
-2\. 如果没有获取到坐标，将不会在枫丹左上角显示箭头  
-3\. 降低了在地下区域，箭头瞬移到地图外的概率  
-4. 修复了歌剧院坐标漂移  
-5. 修复须弥城无法追踪
+1\. 修正了地下的坐标映射，现在地下坐标会更准确一些
+2\. 如果没有获取到坐标，将不会在枫丹左上角显示箭头
+3\. 降低了在地下区域，箭头瞬移到地图外的概率 4. 修复了歌剧院坐标漂移 5. 修复须弥城无法追踪
 
 #### 7.10.0
 
@@ -149,9 +145,7 @@ English version: [\[Automatic Tracking\] Important Notes | Kongying Tavern](http
 
 #### GIv38海岛分支
 
-1.适配3.8活动地图  
-2.大幅减小了包体体积（需要测试）  
-3.修复了自动追踪缓存无法正常更新的问题
+1.适配3.8活动地图2.大幅减小了包体体积（需要测试）3.修复了自动追踪缓存无法正常更新的问题
 
 #### 7.9.5
 

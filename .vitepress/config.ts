@@ -377,7 +377,7 @@ A Completionist's Interactive Map by Kongying Tavern`,
         name: 'og:image',
         content: pageData.frontmatter.image
           ? pageData.frontmatter.image
-          : 'https://yuanshen.site/docs/cover.jpg',
+          : 'https://yuanshen.site/docs/imgs/cover.jpg',
       },
     ])
     pageData.frontmatter.head.push([
@@ -386,7 +386,7 @@ A Completionist's Interactive Map by Kongying Tavern`,
         name: 'twitter:image',
         content: pageData.frontmatter.image
           ? pageData.frontmatter.image
-          : 'https://yuanshen.site/docs/cover.jpg',
+          : 'https://yuanshen.site/docs/imgs/cover.jpg',
       },
     ])
   },

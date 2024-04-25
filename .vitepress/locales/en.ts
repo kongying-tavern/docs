@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import { baseHelper } from '../theme/utils'
 import { socialList } from '../theme/composables/socialList'
 

@@ -58,7 +58,7 @@ description: This feature is based on image recognition
   - 如果画面是小于16:9的窄屏，则按照宽度固定计算等效分辨率
   - 如果画面是大于16:9的带鱼屏，则按照高度固定计算等效分辨率
 - 支持手柄、键鼠
-- 支持独占全屏和窗口（建议使用“[无边框窗口](http://yuanshen.site/docs/manual/guide/overlay-mode/fullscreen-windowed/launching)”代替全屏模式）
+- 支持独占全屏和窗口（建议使用“[无边框窗口](/manual/guide/overlay-mode/fullscreen-windowed/launching)”代替全屏模式）
 - 小地图仅支持锁定方向，不支持锁定玩家视角
 - 不支持秘境，室内等有独立地图的区域
 - 不要使用可能影响屏幕色彩的软件，包括但不限于：
@@ -70,7 +70,7 @@ description: This feature is based on image recognition
 
 ## 无法追踪怎么办
 
-参见：[【位置追踪】注意事项](http://yuanshen.site/docs/manual/guide/auto-tracking/troubleshoot)
+参见：[【位置追踪】注意事项](/manual/guide/auto-tracking/troubleshoot)
 
 ## 问题反馈 {#Troubleshooting}
 
