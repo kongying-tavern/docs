@@ -125,7 +125,7 @@ export default defineConfig({
     },
   },
   rewrites: {
-    'zh/:path': ':path',
+    'zh/:splat(.*)': ':splat',
   },
   locales: {
     root: {
