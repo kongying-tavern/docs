@@ -21,7 +21,7 @@ We accept one-time contributions through the following channels：
 
 If you are a fellow Traveler and appreciate the efficiency our map offers, consider supporting us financially - think of it as you are buying us soda or hair treatment. 😃
 
-![backers](/imgs/backers_202347.png)
+![backers](/imgs/common/backers_202347.png)
 
 ### Sponsor Organizations
 

@@ -20,7 +20,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 ### 个人赞助
 
-![backers](/imgs/backers_202347.png)
+![backers](/imgs/common/backers_202347.png)
 
 ### 赞助商
 

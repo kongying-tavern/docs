@@ -46,7 +46,7 @@ import { isNumber } from '../../.vitepress/theme/utils'
 
 const params = useUrlSearchParams('history')
 const downloadMethod = [
-  { id:'sq', name: '加入社区', target: '_self', link: './community', icon: '/imgs/logo_256.png' },
+  { id:'sq', name: '加入社区', target: '_self', link: './community', icon: '/imgs/common/logo/logo_256.png' },
   { id:'bd', name: '百度网盘', target: '_blank', link: 'https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg', icon: '/svg/baidu-drive.svg'
   },
   { id: 'kk', name: '夸克网盘', target: '_blank', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg'

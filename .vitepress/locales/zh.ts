@@ -8,7 +8,7 @@ export const META_TITLE = '原神地图'
 export const META_DESCRIPTION = '空荧酒馆制作的原神全资源攻略地图。'
 export const META_KEYWORDS =
   '原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern'
-export const META_IMAGE = 'https://yuanshen.site/docs/imgs/cover.jpg'
+export const META_IMAGE = 'https://yuanshen.site/docs/imgs/common/cover.jpg'
 export const LOCAL_CODE = 'zh-CN'
 export const LOCAL_BASE = ''
 
@@ -27,7 +27,7 @@ export const zhConfig: LocaleSpecificConfig<
     description: META_DESCRIPTION,
     image: META_IMAGE,
     outlineTitle: '本页目录',
-    logo: '/imgs/logo_256.png',
+    logo: '/imgs/common/logo/logo_256.png',
     lastUpdatedText: '更新日期',
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',

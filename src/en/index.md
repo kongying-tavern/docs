@@ -43,7 +43,7 @@ hero:
   text: A Completionist's Interactive Map by Kongying Tavern
   tagline: Simple, powerful, and performant.
   image:
-    src: /imgs/logo_256.png
+    src: /imgs/common/logo/logo_256.png
     alt: 原神地图
   actions:
     - theme: brand

@@ -10,7 +10,7 @@ export const META_KEYWORDS =
   '原神マップ, テイワットマップ, 空蛍酒場, yuanshenmap, Genshin Impact Map, Kongying Map'
 export const META_DESCRIPTION =
   '空蛍酒場は開発している資源、任務など攻略全般掲載するマップ'
-export const META_IMAGE = 'https://yuanshen.site/docs/imgs/cover.jpg'
+export const META_IMAGE = 'https://yuanshen.site/docs/imgs/common/cover.jpg'
 export const LOCAL_CODE = 'ja-JP'
 export const LOCAL_BASE = 'ja'
 
@@ -24,7 +24,7 @@ export const jaConfig: LocaleSpecificConfig<
     image: META_IMAGE,
     siteTitle: '原神マップ',
     outlineTitle: 'このページでは',
-    logo: '/imgs/logo_256.png',
+    logo: '/imgs/common/logo/logo_256.png',
     lastUpdatedText: '更新日時',
     notFound: {
       title: 'PAGE NOT FOUNDz',

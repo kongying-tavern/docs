@@ -84,7 +84,7 @@ theme: medium
 ```card
 title: 莫娜占卜铺
 link: https://mona-uranai.com
-logo: https://mona-uranai.com//favicon.ico
+logo: https://mona-uranai.com/favicon.ico
 theme: medium
 desc: 圣遗物搭配，圣遗物潜力多方向圣遗物自动搭配，多方向圣遗物潜力与评分
 ```

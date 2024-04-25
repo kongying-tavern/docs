@@ -10,7 +10,7 @@ export const META_KEYWORDS =
   'Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map'
 export const META_DESCRIPTION =
   'A Genshin interactive map by Kongying Tavern for completionists'
-export const META_IMAGE = 'https://yuanshen.site/docs/imgs/cover.jpg'
+export const META_IMAGE = 'https://yuanshen.site/docs/imgs/common/cover.jpg'
 export const LOCAL_CODE = 'fr'
 export const LOCAL_BASE = 'fr'
 
@@ -24,7 +24,7 @@ export const frConfig: LocaleSpecificConfig<
     image: META_IMAGE,
     siteTitle: 'Carte interactive de Genshin',
     outlineTitle: 'Sur cette page',
-    logo: '/imgs/logo_256.png',
+    logo: '/imgs/common/logo/logo_256.png',
     lastUpdatedText: 'Dernière mise à jour ',
     notFound: {
       title: 'PAGE NOT FOUNDz',
