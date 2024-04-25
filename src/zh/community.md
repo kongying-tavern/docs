@@ -58,7 +58,6 @@ titleTemplate: 空荧酒馆
 <script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { isNumber } from '../../.vitepress/theme/utils'
 import { serverMap, serverJump } from '../components/links/Community'
 
 const params = useUrlSearchParams('history')
