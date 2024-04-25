@@ -1,12 +1,6 @@
 ---
 aside: false
 titleTemplate: :title | 空蛍酒場
-next:
-  text: '【オートトラッキング】注意事項'
-  link: './guide/auto-tracking/importantnotes.md'
-prev:
-  text: 'ホームページ'
-  link: '../index.md'
 description: 目次
 ---
 

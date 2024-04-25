@@ -1,13 +1,7 @@
 ---
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
-prev:
-  text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
-  link: '../overlay-mode/fullscreen-windowed/launching'
 description: Return saves to an archived timestamp, or recover save from accidental deletion.
-next:
-  text: 'Table of Content'
-  link: 'fr/manual/client-user-manual'
 banner: Désolé, la traduction de cette page est toujours en cours
 ---
 

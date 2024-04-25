@@ -2,12 +2,6 @@
 title: 【地图性能占用高】前后台帧率设置
 layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
-prev:
-  text: '【位置追踪】问题排查'
-  link: '../auto-tracking/troubleshoot'
-next:
-  text: '【批量选择】使用说明'
-  link: '../batch-selection/instructions'
 description: 在设置中可以调整【前台帧率】、【后台帧率】，以降低性能，降低对游戏帧率的影响。
 ---
 

@@ -1,12 +1,6 @@
 ---
 aside: false
 titleTemplate: :title | 空蛍酒場
-prev:
-  text: '【位置追踪】问题排查'
-  link: '../auto-tracking/troubleshoot'
-next:
-  text: '【批量选择】使用说明'
-  link: '../batch-selection/instructions'
 description: 在设置中可以调整【前台帧率】、【后台帧率】，以降低性能，降低对游戏帧率的影响。
 banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---

@@ -1,12 +1,6 @@
 ---
 aside: false
 titleTemplate: :title | 空蛍酒場
-prev:
-  text: '【地图性能占用高】前后台帧率设置'
-  link: '../bg/bgfrate'
-next:
-  text: '【画板】路线功能教程'
-  link: '../canvas/guide'
 description: 应旅行者需求，现已将多选功能加入豪华午餐！
 banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---

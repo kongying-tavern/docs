@@ -2,12 +2,6 @@
 aside: true
 layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
-prev:
-  text: '目录'
-  link: '/manual/client-user-manual'
-next:
-  text: '【位置追踪】问题排查'
-  link: '../auto-tracking/troubleshoot'
 title: 【位置追踪】功能介绍
 description: This feature is based on image recognition
 ---

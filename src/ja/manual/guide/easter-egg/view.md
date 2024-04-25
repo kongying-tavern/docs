@@ -1,12 +1,6 @@
 ---
 aside: false
 titleTemplate: :title | 空蛍酒場
-next:
-  text: '【隐藏】标记/【显示】标记'
-  link: '../hide-show-done/hidedoneshowdone'
-prev:
-  text: '【画板】路线功能教程'
-  link: '../canvas/guide'
 description: 1.6版本、2.8版本已经过去，海岛将会作为彩蛋保存在客户端内。
 banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---

@@ -3,12 +3,6 @@ aside: true
 title: 【位置追踪】问题排查
 layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
-prev:
-  text: '【位置追踪】注意事项'
-  link: '../auto-tracking/importantnotes'
-next:
-  text: '【地图性能占用高】前后台帧率设置'
-  link: '../bg/bgfrate'
 description: Troubleshoot
 ---
 

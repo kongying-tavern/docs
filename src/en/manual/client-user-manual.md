@@ -1,12 +1,6 @@
 ---
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-next:
-  text: '[Position Tracker] Important Notes'
-  link: './guide/auto-tracking/importantnotes.md'
-prev:
-  text: 'Home page'
-  link: '../index.md'
 description: Table of Contents
 ---
 

@@ -1,12 +1,6 @@
 ---
 aside: true
 titleTemplate: :title | 空蛍酒場
-prev:
-  text: '【隐藏】标记/【显示】标记'
-  link: '../hide-show-done/hidedoneshowdone'
-next:
-  text: '【窗口全屏/无边框窗口模式】启动游戏'
-  link: './fullscreen-windowed/launching'
 description: Overlay Mode displays the map client over the Genshin game window. This mode benefits players who only have one monitor, allowing quicker switching between the game and the map client.
 banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---

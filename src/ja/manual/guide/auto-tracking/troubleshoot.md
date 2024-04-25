@@ -1,12 +1,6 @@
 ---
 aside: true
 titleTemplate: :title | 空蛍酒場
-prev:
-  text: '【位置追踪】注意事项'
-  link: '../auto-tracking/importantnotes'
-next:
-  text: '【地图性能占用高】前后台帧率设置'
-  link: '../bg/bgfrate'
 description: Troubleshoot
 banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
 ---

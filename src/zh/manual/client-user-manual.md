@@ -2,12 +2,6 @@
 aside: false
 layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
-next:
-  text: '【位置追踪】注意事项'
-  link: './guide/auto-tracking/importantnotes.md'
-prev:
-  text: '首页'
-  link: '../index.md'
 title: 客户端使用手册
 description: 客户端使用手册目录
 ---

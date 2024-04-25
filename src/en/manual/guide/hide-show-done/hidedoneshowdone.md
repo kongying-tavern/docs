@@ -1,12 +1,6 @@
 ---
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-prev:
-  text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
-  link: '../easter-egg/view'
-next:
-  text: '[Overlay Mode] Instructions'
-  link: '../overlay-mode/instructions'
 description: There are two display modes for Found pins.
 ---
 

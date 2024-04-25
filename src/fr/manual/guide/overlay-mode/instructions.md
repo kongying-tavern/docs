@@ -1,12 +1,6 @@
 ---
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
-prev:
-  text: '[Hide/Show Found] Feature'
-  link: '../hide-show-done/hidedoneshowdone'
-next:
-  text: '[Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)'
-  link: './fullscreen-windowed/launching'
 description: Overlay Mode displays the map client over the Genshin game window. This mode benefits players who only have one monitor, allowing quicker switching between the game and the map client.
 banner: Désolé, la traduction de cette page est toujours en cours
 ---
