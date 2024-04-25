@@ -9,7 +9,7 @@
     "commit": "git-cz",
     "dev": "vitepress",
     "postinstall": "husky install",
-    "lint": "prettier  --write . && eslint --fix --ext .js,.ts,.vue",
+    "lint": "prettier --write . && eslint --fix --ext .js,.ts,.vue",
     "lint:check": "pnpm lint:prettier && pnpm lint:eslint && pnpm lint:zh",
     "lint:eslint": "eslint . --ext .js,.ts,.vue",
     "lint:md": "markdownlint **/*.md && lint:zh",
@@ -20,8 +20,11 @@
     "up": "taze major -I"
   },
   "lint-staged": {
-    "*.{js,ts,vue,scss,sass,css}": [
+    "*.{js,ts,vue}": [
       "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{scss,sass,css}": [
       "prettier --write"
     ],
     "*.{md,json,yml}": [
