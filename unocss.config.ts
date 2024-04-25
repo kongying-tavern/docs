@@ -50,10 +50,12 @@ export default defineConfig({
 function getCustomIcons() {
   const data = {}
 
-  fs.readdirSync(path.resolve(__dirname, './src/public/svg')).forEach((val) => {
+  fs.readdirSync(
+    path.resolve(__dirname, './src/public/imgs/common/svg'),
+  ).forEach((val) => {
     // @ts-ignore
     data[val.replace('.svg', '')] = fs.readFileSync(
-      path.resolve(__dirname, './src/public/svg/' + val),
+      path.resolve(__dirname, './src/public/imgs/common/svg/' + val),
       'utf8',
     )
   })

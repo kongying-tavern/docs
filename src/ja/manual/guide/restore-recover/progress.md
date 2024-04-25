@@ -48,4 +48,4 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 之后如图编辑代码片段，并发布，然后就能看到存档了。
 
-![](/public/imgs/ja/manual/restore-recover/7.png)
+![](/imgs/ja/manual/restore-recover/7.png)

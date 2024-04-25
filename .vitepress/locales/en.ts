@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import { baseHelper } from '../theme/utils'
 import { socialList } from '../theme/composables/socialList'
 
@@ -12,7 +10,7 @@ export const META_KEYWORDS =
   'Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map'
 export const META_DESCRIPTION =
   'A Genshin interactive map by Kongying Tavern for completionists'
-export const META_IMAGE = 'https://yuanshen.site/docs/imgs/cover.jpg'
+export const META_IMAGE = 'https://yuanshen.site/docs/imgs/common/cover.jpg'
 export const LOCAL_CODE = 'en-US'
 export const LOCAL_BASE = 'en'
 
@@ -27,7 +25,7 @@ export const enConfig: LocaleSpecificConfig<
     siteTitle: 'Genshin Interactive Map',
     outlineTitle: 'On This Page',
     lastUpdatedText: 'Update Date',
-    logo: '/imgs/logo_256.png',
+    logo: '/imgs/common/logo/logo_256.png',
     ui: {
       button: {
         submit: 'Submit',

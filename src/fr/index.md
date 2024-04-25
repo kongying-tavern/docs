@@ -35,7 +35,7 @@ hero:
   text: La Carte Ultime de Kongying Tavern
   tagline: Simple, rapide et performant.
   image:
-    src: /imgs/logo_256.png
+    src: /imgs/common/logo/logo_256.png
     alt: Carte Interactive pour Genshin
   actions:
     - theme: brand

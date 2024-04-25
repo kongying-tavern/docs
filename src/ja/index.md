@@ -35,7 +35,7 @@ hero:
   text: 空蛍酒場が開発している資源、任務など攻略全般掲載するマップツール
   tagline: Simple, powerful, and performant.
   image:
-    src: /imgs/logo_256.png
+    src: /imgs/common/logo/logo_256.png
     alt: 原神マップ
   actions:
     - theme: brand

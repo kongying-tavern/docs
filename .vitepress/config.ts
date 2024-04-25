@@ -124,6 +124,9 @@ export default defineConfig({
       },
     },
   },
+  rewrites: {
+    'zh/:splat(.*)': ':splat',
+  },
   locales: {
     root: {
       label: '简体中文',
@@ -186,7 +189,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: `https://yuanshen.site/docs/imgs/favicon-32x32.png`,
+        href: `https://yuanshen.site/docs/imgs/common/favicon/favicon-32x32.png`,
         type: 'image/png',
       },
     ],
@@ -242,7 +245,7 @@ export default defineConfig({
       'link',
       {
         rel: 'alternate',
-        href: `https://yuanshen.site/docs/imgs/favicon.ico`,
+        href: `https://yuanshen.site/docs/imgs/common/favicon/favicon.ico`,
         type: 'image/x-icon',
       },
     ],
@@ -374,7 +377,7 @@ A Completionist's Interactive Map by Kongying Tavern`,
         name: 'og:image',
         content: pageData.frontmatter.image
           ? pageData.frontmatter.image
-          : 'https://yuanshen.site/docs/cover.jpg',
+          : 'https://yuanshen.site/docs/imgs/common/cover.jpg',
       },
     ])
     pageData.frontmatter.head.push([
@@ -383,7 +386,7 @@ A Completionist's Interactive Map by Kongying Tavern`,
         name: 'twitter:image',
         content: pageData.frontmatter.image
           ? pageData.frontmatter.image
-          : 'https://yuanshen.site/docs/cover.jpg',
+          : 'https://yuanshen.site/docs/imgs/common/cover.jpg',
       },
     ])
   },

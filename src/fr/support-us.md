@@ -23,7 +23,7 @@ Nous acceptons les contributions uniques via les outils suivants :
 
 Si vous êtes un autre voyageur et appréciez l'efficacité qu'offre notre carte, pensez à nous soutenir financièrement - pensez-y comme si vous achetez des sodas ou des soins capillaires. 😃
 
-![backers](/imgs/backers_202347.png)
+![backers](/imgs/common/backers_202347.png)
 
 ### Organisations sponsors
 
