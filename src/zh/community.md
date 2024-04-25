@@ -58,10 +58,13 @@ titleTemplate: 空荧酒馆
 <script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { serverMap, serverJump } from '../components/links/Community'
+import { serverLink, serverJump } from '../components/links/Community'
 
 const params = useUrlSearchParams('history')
-const server = [serverMap.discord, serverMap.qq]
+const server = [
+  serverLink('discord', 'Discord'),
+  serverLink('qq', 'QQ 频道'),
+]
 
 onMounted(()=> {
   serverJump(params, server)
