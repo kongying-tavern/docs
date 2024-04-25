@@ -57,7 +57,7 @@ titleTemplate: 空荧酒馆
 <script setup>
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { isNumber } from '../.vitepress/theme/utils'
+import { isNumber } from '../../.vitepress/theme/utils'
 
 const params = useUrlSearchParams('history')
 const server = [
@@ -116,7 +116,7 @@ ol,ul {
     display: flex;
     flex-direction: column;
     /* overflow-y: scroll; */
-    
+
     li {
       cursor: pointer;
       display: inline-block;
@@ -158,7 +158,7 @@ ul > li {
 }
 // 被封禁的群
 .custom-block.details {
-  
+
   ol > li {
     border-color: var(--vp-c-text-3)
   }
@@ -180,6 +180,6 @@ ul > li {
       font-size: 14px !important;
     }
   }
-  
+
 }
 </style>

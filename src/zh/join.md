@@ -156,7 +156,7 @@ description: 为了进一步完善和优化项目，我们诚招各位小伙伴�
 <script setup>
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { isNumber } from '../.vitepress/theme/utils'
+import { isNumber } from '../../.vitepress/theme/utils'
 
 const params = useUrlSearchParams('history')
 const group = [
@@ -196,19 +196,19 @@ onMounted(()=> {
   &::after {
 
   }
-  
+
   .layer.tiny {
   z-index: -2;
   width: 80%;
   transform: translate(-50%,12px);
   background: #F1F2F3;
   }
-  
+
   &:hover{
     transform: translate3d(0, -8px, 0);
     box-shadow: var(--vp-shadow-3);
   }
-    
+
   .header-anchor {
     display: none;
   }

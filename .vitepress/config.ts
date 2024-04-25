@@ -124,6 +124,9 @@ export default defineConfig({
       },
     },
   },
+  rewrites: {
+    'zh/:path': ':path',
+  },
   locales: {
     root: {
       label: '简体中文',
