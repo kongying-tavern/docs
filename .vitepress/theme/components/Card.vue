@@ -56,6 +56,15 @@
       </div>
     </div>
   </a>
+
+  <!-- 在这里显式声明Logo，给Unocss识别导入 -->
+  <div v-once hidden>
+    <span class="i-logos-youtube-icon"></span>
+    <span class="i-logos-twitter"></span>
+    <span class="i-logos-discord-icon"></span>
+    <span class="i-logos-reddit-icon"></span>
+    <span class="i-logos-google-drive"></span>
+  </div>
 </template>
 
 <script setup lang="ts">

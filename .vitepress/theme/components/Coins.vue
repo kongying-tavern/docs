@@ -30,23 +30,15 @@
       </p>
       <img :src="qrcode" alt="QR Code" />
     </div>
-    <!-- 在这里显式声明Pay Icon，给Unocss识别导入 -->
-    <div hidden>
-      <span class="i-custom-qqpay"></span>
-      <span class="i-custom-wechatpay"></span>
-      <span class="i-custom-bilibili"></span>
-      <span class="i-custom-alipay"></span>
-      <span class="i-custom-paypal"></span>
-    </div>
   </div>
 
-  <!-- 在这里显式声明Logo，给Unocss识别导入 -->
-  <div hidden>
-    <span class="i-logos-youtube-icon"></span>
-    <span class="i-logos-twitter"></span>
-    <span class="i-logos-discord-icon"></span>
-    <span class="i-logos-reddit-icon"></span>
-    <span class="i-logos-google-drive"></span>
+  <!-- 在这里显式声明Pay Icon，给Unocss识别导入 -->
+  <div v-once hidden>
+    <span class="i-custom-qqpay"></span>
+    <span class="i-custom-wechatpay"></span>
+    <span class="i-custom-bilibili"></span>
+    <span class="i-custom-alipay"></span>
+    <span class="i-custom-paypal"></span>
   </div>
 </template>
 
