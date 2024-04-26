@@ -6,7 +6,7 @@ aside: false
 titleTemplate: :title | Kongying Tavern
 ---
 
-## Windows Clinet <Badge type="warning" text="Beta" />
+## Windows Client <Badge type="warning" text="Beta" />
 
 <LinkGrid :items="downloadMethod" />
 
