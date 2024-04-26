@@ -181,15 +181,15 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     {
       text: 'ダウンロード',
-      link: '/download-client.md',
+      link: '/download-client',
     },
     {
       text: 'コミュニティ',
-      link: '/community.md',
+      link: '/community',
     },
     {
       text: 'スポンサーになる',
-      link: '/support-us.md',
+      link: '/support-us',
     },
     {
       text: 'フィードバック',
@@ -220,11 +220,11 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: '開発に参画',
-              link: '/join.md',
+              link: '/join',
             },
             {
               text: 'チームを知る',
-              link: '/team.md',
+              link: '/team',
             },
           ],
         },
@@ -246,15 +246,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: '技術提供',
-              link: '/credits.md',
+              link: '/credits',
             },
             {
               text: '貢献者感謝',
-              link: '/contribution.md',
+              link: '/contribution',
             },
             {
               text: '寄付感謝',
-              link: '/support-us.md#Sponsor%20Acknowledgements',
+              link: '/support-us#Sponsor%20Acknowledgements',
             },
           ],
         },
@@ -263,15 +263,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: '免責事項',
-              link: '/disclaimer.md',
+              link: '/disclaimer',
             },
             {
               text: 'プライバシーポリシー',
-              link: '/privacy.md',
+              link: '/privacy',
             },
             {
               text: '利用規約',
-              link: '/agreement.md',
+              link: '/agreement',
             },
           ],
         },
@@ -280,7 +280,7 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'リンク集',
-              link: '/friends-links.md',
+              link: '/friends-links',
             },
           ],
         },
@@ -418,22 +418,22 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         items: [
           {
             text: 'ゲームアカウントが凍結される可能性は？',
-            link: '/manual/faq/accountsafety/acntban.md',
+            link: '/manual/faq/accountsafety/acntban',
           },
           {
             text: '【自動更新】自動更新されない',
-            link: '/manual/faq/autoupdate/updater.md',
+            link: '/manual/faq/autoupdate/updater',
           },
           {
             text: '【インストールできない】',
             items: [
               {
                 text: 'エラーコード 2503',
-                link: '/manual/faq/instlerror/code2503.md',
+                link: '/manual/faq/instlerror/code2503',
               },
               {
                 text: '【インストールできない】.dll がないため',
-                link: '/manual/faq/instlerror/missingdll.md',
+                link: '/manual/faq/instlerror/missingdll',
               },
             ],
           },
@@ -442,11 +442,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: '画面真っ白またはプログレスバーが止まる',
-                link: '/manual/faq/launcherror/emptydialog.md',
+                link: '/manual/faq/launcherror/emptydialog',
               },
               {
                 text: '「データクエリ失敗」「バージョンチェック失敗」',
-                link: '/manual/faq/launcherror/versioncheck.md',
+                link: '/manual/faq/launcherror/versioncheck',
               },
             ],
           },
@@ -455,11 +455,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: '【ログインできない】ログイン方法',
-                link: '/manual/faq/login/accountlogin.md',
+                link: '/manual/faq/login/accountlogin',
               },
               {
                 text: '【毎回ログインを求められる】',
-                link: '/manual/faq/login/clientrepeatedly.md',
+                link: '/manual/faq/login/clientrepeatedly',
               },
             ],
           },

@@ -115,7 +115,7 @@ export const enConfig: LocaleSpecificConfig<
     },
     asideLinks: {
       title: 'Links',
-      starOnGitHub: 'Star on GitHub ',
+      starOnGitHub: 'Star on GitHub',
       contactUsText: 'Chat on Discord',
       contactUsLink: 'https://discord.gg/SWz6RTWNkm',
       sponsor: 'Become a Sponsor',
@@ -158,15 +158,15 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     {
       text: 'Download',
-      link: '/download-client.md',
+      link: '/download-client',
     },
     {
       text: 'Support us',
-      link: '/support-us.md',
+      link: '/support-us',
     },
     {
       text: 'Community',
-      link: '/community.md',
+      link: '/community',
     },
     {
       text: 'Support',
@@ -194,11 +194,11 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'Join Us',
-              link: '/join.md',
+              link: '/join',
             },
             {
               text: 'Our Team',
-              link: '/team.md',
+              link: '/team',
             },
           ],
         },
@@ -220,15 +220,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'Credits',
-              link: '/credits.md',
+              link: '/credits',
             },
             {
               text: 'Contributors',
-              link: '/contribution.md',
+              link: '/contribution',
             },
             {
               text: 'Sponsors',
-              link: '/support-us.md#Sponsor%20Acknowledgements',
+              link: '/support-us#Sponsor%20Acknowledgements',
             },
           ],
         },
@@ -237,15 +237,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'Disclaimer',
-              link: '/disclaimer.md',
+              link: '/disclaimer',
             },
             {
               text: 'Privacy',
-              link: '/privacy.md',
+              link: '/privacy',
             },
             {
               text: 'Agreement',
-              link: '/agreement.md',
+              link: '/agreement',
             },
           ],
         },
@@ -254,7 +254,7 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'Friend-links',
-              link: '/friends-links.md',
+              link: '/friends-links',
             },
           ],
         },
@@ -394,22 +394,22 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         items: [
           {
             text: 'Account safety',
-            link: '/manual/faq/accountsafety/acntban.md',
+            link: '/manual/faq/accountsafety/acntban',
           },
           {
             text: 'Auto Update',
-            link: '/manual/faq/autoupdate/updater.md',
+            link: '/manual/faq/autoupdate/updater',
           },
           {
             text: 'Installation Error',
             items: [
               {
                 text: 'Code 2503',
-                link: '/manual/faq/instlerror/code2503.md',
+                link: '/manual/faq/instlerror/code2503',
               },
               {
                 text: 'Missing .dll file',
-                link: '/manual/faq/instlerror/missingdll.md',
+                link: '/manual/faq/instlerror/missingdll',
               },
             ],
           },
@@ -418,11 +418,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: 'Stuck/No Progress',
-                link: '/manual/faq/launcherror/emptydialog.md',
+                link: '/manual/faq/launcherror/emptydialog',
               },
               {
                 text: 'Version Check Failed',
-                link: '/manual/faq/launcherror/versioncheck.md',
+                link: '/manual/faq/launcherror/versioncheck',
               },
             ],
           },
@@ -431,11 +431,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: 'Login Problems',
-                link: '/manual/faq/login/accountlogin.md',
+                link: '/manual/faq/login/accountlogin',
               },
               {
                 text: 'Repeated Login Requests',
-                link: '/manual/faq/login/clientrepeatedly.md',
+                link: '/manual/faq/login/clientrepeatedly',
               },
             ],
           },

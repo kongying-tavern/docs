@@ -94,7 +94,7 @@ export const frConfig: LocaleSpecificConfig<
     ],
     asideLinks: {
       title: 'Links',
-      starOnGitHub: 'Star on GitHub ',
+      starOnGitHub: 'Star on GitHub',
       contactUsText: 'Chat on Discord',
       contactUsLink: 'https://discord.gg/SWz6RTWNkm',
       sponsor: 'Become a Sponsor',
@@ -178,15 +178,15 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     {
       text: 'Télécharger',
-      link: '/download-client.md',
+      link: '/download-client',
     },
     {
       text: 'Soutenez-nous',
-      link: '/support-us.md',
+      link: '/support-us',
     },
     {
       text: 'Communauté',
-      link: '/community.md',
+      link: '/community',
     },
     {
       text: 'Support',
@@ -213,11 +213,11 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'Rejoignez-nous',
-              link: '/join.md',
+              link: '/join',
             },
             {
               text: 'Notre équipe',
-              link: '/team.md',
+              link: '/team',
             },
           ],
         },
@@ -239,15 +239,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'Crédits',
-              link: '/credits.md',
+              link: '/credits',
             },
             {
               text: 'Contributeurs',
-              link: '/contribution.md',
+              link: '/contribution',
             },
             {
               text: 'Sponsors',
-              link: '/support-us.md#Sponsor%20Acknowledgements',
+              link: '/support-us#Sponsor%20Acknowledgements',
             },
           ],
         },
@@ -256,15 +256,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: 'Clause de non-responsabilité',
-              link: '/disclaimer.md',
+              link: '/disclaimer',
             },
             {
               text: 'Confidentialité',
-              link: '/privacy.md',
+              link: '/privacy',
             },
             {
               text: 'Accord',
-              link: '/agreement.md',
+              link: '/agreement',
             },
           ],
         },
@@ -402,22 +402,22 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         items: [
           {
             text: 'Sécurité du compte',
-            link: '/manual/faq/accountsafety/acntban.md',
+            link: '/manual/faq/accountsafety/acntban',
           },
           {
             text: 'Mise à jour automatique',
-            link: '/manual/faq/autoupdate/updater.md',
+            link: '/manual/faq/autoupdate/updater',
           },
           {
             text: "Erreur d'installation",
             items: [
               {
                 text: 'Code 2503',
-                link: '/manual/faq/instlerror/code2503.md',
+                link: '/manual/faq/instlerror/code2503',
               },
               {
                 text: 'Fichier .dll manquant',
-                link: '/manual/faq/instlerror/missingdll.md',
+                link: '/manual/faq/instlerror/missingdll',
               },
             ],
           },
@@ -426,11 +426,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: 'Blocage/pas de progression',
-                link: '/manual/faq/launcherror/emptydialog.md',
+                link: '/manual/faq/launcherror/emptydialog',
               },
               {
                 text: 'Échec de la vérification de la version',
-                link: '/manual/faq/launcherror/versioncheck.md',
+                link: '/manual/faq/launcherror/versioncheck',
               },
             ],
           },
@@ -439,11 +439,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: 'Problèmes de connexion',
-                link: '/manual/faq/login/accountlogin.md',
+                link: '/manual/faq/login/accountlogin',
               },
               {
                 text: 'Demandes de connexion répétées',
-                link: '/manual/faq/login/clientrepeatedly.md',
+                link: '/manual/faq/login/clientrepeatedly',
               },
             ],
           },

@@ -89,7 +89,7 @@ export const zhConfig: LocaleSpecificConfig<
     },
     asideLinks: {
       title: '快捷链接',
-      starOnGitHub: 'Star on GitHub ',
+      starOnGitHub: 'Star on GitHub',
       contactUsText: '加入Discord服务器',
       contactUsLink: 'https://discord.gg/SWz6RTWNkm',
       sponsor: '支持我们',
@@ -158,15 +158,15 @@ function nav(): DefaultTheme.NavItem[] {
   return [
     {
       text: '客户端下载',
-      link: '/download-client.md',
+      link: '/download-client',
     },
     {
       text: '加入社区',
-      link: '/community.md',
+      link: '/community',
     },
     {
       text: '支持我们',
-      link: '/support-us.md',
+      link: '/support-us',
     },
     {
       text: '帮助和反馈',
@@ -199,11 +199,11 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: '加入我们',
-              link: '/join.md',
+              link: '/join',
             },
             {
               text: '了解团队',
-              link: '/team.md',
+              link: '/team',
             },
           ],
         },
@@ -225,15 +225,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: '制作人员',
-              link: '/staff.md',
+              link: '/staff',
             },
             {
               text: '赞助鸣谢',
-              link: '/support-us.md#赞助鸣谢',
+              link: '/support-us#赞助鸣谢',
             },
             {
               text: '技术鸣谢',
-              link: '/credits.md',
+              link: '/credits',
             },
           ],
         },
@@ -242,15 +242,15 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: '免责声明',
-              link: '/disclaimer.md',
+              link: '/disclaimer',
             },
             {
               text: '隐私政策',
-              link: '/privacy.md',
+              link: '/privacy',
             },
             {
               text: '用户协议',
-              link: '/agreement.md',
+              link: '/agreement',
             },
           ],
         },
@@ -259,11 +259,11 @@ function nav(): DefaultTheme.NavItem[] {
           items: [
             {
               text: '参与翻译',
-              link: '/translations.md',
+              link: '/translations',
             },
             {
               text: '友情链接',
-              link: '/friends-links.md',
+              link: '/friends-links',
             },
           ],
         },
@@ -403,22 +403,22 @@ function sidebar(): DefaultTheme.SidebarItem[] {
         items: [
           {
             text: '使用地图客户端会被封号吗？',
-            link: 'manual/faq/accountsafety/acntban.md',
+            link: 'manual/faq/accountsafety/acntban',
           },
           {
             text: '【自动更新】没有反应',
-            link: 'manual/faq/autoupdate/updater.md',
+            link: 'manual/faq/autoupdate/updater',
           },
           {
             text: '安装错误',
             items: [
               {
                 text: '错误码 2503',
-                link: 'manual/faq/instlerror/code2503.md',
+                link: 'manual/faq/instlerror/code2503',
               },
               {
                 text: '【无法安装】提示缺乏 dll 文件',
-                link: 'manual/faq/instlerror/missingdll.md',
+                link: 'manual/faq/instlerror/missingdll',
               },
             ],
           },
@@ -427,11 +427,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: '空窗提示或卡进度条',
-                link: 'manual/faq/launcherror/emptydialog.md',
+                link: 'manual/faq/launcherror/emptydialog',
               },
               {
                 text: '“数据查询失败”、“版本查询失败”',
-                link: 'manual/faq/launcherror/versioncheck.md',
+                link: 'manual/faq/launcherror/versioncheck',
               },
             ],
           },
@@ -440,11 +440,11 @@ function sidebar(): DefaultTheme.SidebarItem[] {
             items: [
               {
                 text: '【不能登录】如何登录',
-                link: 'manual/faq/login/accountlogin.md',
+                link: 'manual/faq/login/accountlogin',
               },
               {
                 text: '【每次打开都需重新登陆】',
-                link: 'manual/faq/login/clientrepeatedly.md',
+                link: 'manual/faq/login/clientrepeatedly',
               },
             ],
           },
