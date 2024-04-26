@@ -30,8 +30,8 @@
     <div
       :class="`card-footer ${getLogoLink(logo) === 'no-logo' && !icon ? 'no-logo' : ''}`"
     >
-      <template v-if="icon">
-        <label :class="`card-icon ${icon}`"></label>
+      <template v-if="iconLink">
+        <label :class="`card-icon ${iconLink}`"></label>
       </template>
       <template v-else>
         <template v-if="getLogoLink(logo) !== 'no-logo'">
@@ -169,6 +169,7 @@ const iconLink = computed(() => {
 
   if (props.logo === '' && props.link !== '') {
     const linkDomain = props.link.match(/(?:https?:\/\/)?(?:www\.)?([^\/]+)\//)
+    console.log(linkDomain)
     if (linkDomain && linkDomain[1]) {
       const domain = linkDomain[1]
       for (const key in iconMap) {
@@ -190,7 +191,7 @@ const getLogoLink = (i) => {
     isRelativeLink(props.link)
   )
     return withBase('/imgs/common/logo/logo_128.png')
-  if (i === '') return 'no-logo'
+  if (i === '' && iconLink.value === '') return 'no-logo'
   return isRelativeLink(i) ? withBase(i) : i
 }
 </script>
