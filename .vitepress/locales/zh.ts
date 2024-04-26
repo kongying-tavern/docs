@@ -157,8 +157,39 @@ export const zhConfig: LocaleSpecificConfig<
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: '客户端下载',
-      link: '/download-client',
+      text: '地图工具',
+      items: [
+        {
+          text: '下载客户端',
+          link: '/download-client',
+        },
+        {
+          text: 'Windows客户端',
+          items: [
+            {
+              text: '使用手册',
+              link: '/manual/client-user-manual',
+            },
+            {
+              text: '更新日志',
+              link: 'https://support.qq.com/products/321980/blog/505884',
+            },
+          ],
+        },
+        {
+          text: '地图网页版',
+          items: [
+            {
+              text: '立即体验',
+              link: 'https://v3.yuanshen.site',
+            },
+            {
+              text: '更新日志',
+              link: 'https://support.qq.com/products/321980/blog/505810',
+            },
+          ],
+        },
+      ],
     },
     {
       text: '加入社区',
@@ -170,12 +201,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '帮助和反馈',
-      activeMatch: `^/manual/`,
       items: [
-        {
-          text: '客户端使用手册',
-          link: 'manual/client-user-manual',
-        },
         {
           text: '问题反馈',
           link: 'https://support.qq.com/products/321980',
@@ -192,7 +218,6 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '了解更多',
-
       items: [
         {
           text: '了解我们',
@@ -204,19 +229,6 @@ function nav(): DefaultTheme.NavItem[] {
             {
               text: '了解团队',
               link: '/team',
-            },
-          ],
-        },
-        {
-          text: '更新日志',
-          items: [
-            {
-              text: '网页端',
-              link: 'https://support.qq.com/products/321980/blog/505810',
-            },
-            {
-              text: '客户端',
-              link: 'https://support.qq.com/products/321980/blog/772498',
             },
           ],
         },
