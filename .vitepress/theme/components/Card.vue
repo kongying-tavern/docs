@@ -8,6 +8,7 @@
       ...(color ? { background: color } : null),
       ...(shadow ? { 'box-shadow': 'var(--vp-shadow-1)' } : null),
     }"
+    :is-external-link="isLinkExternal(link) ? 'true' : 'false'"
   >
     <div v-if="cover" class="card-cover-contanier">
       <img
