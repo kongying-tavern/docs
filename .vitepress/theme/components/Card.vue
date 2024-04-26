@@ -1,42 +1,31 @@
 <template>
   <a
-    :href="isLinkExternal(link) ? link : withBase(link)"
-    :target="isLinkExternal(link) ? '_blank' : '_self'"
+    :href="isExternal ? link : withBase(link)"
+    :target="isExternal ? '_blank' : '_self'"
     :class="`card card-theme-${theme} ${hoverShadow ? 'card-hover' : ''}`"
     :title="title"
     :style="{
       ...(color ? { background: color } : null),
       ...(shadow ? { 'box-shadow': 'var(--vp-shadow-1)' } : null),
     }"
-    :is-external-link="isLinkExternal(link) ? 'true' : 'false'"
+    :is-external-link="isExternal ? 'true' : 'false'"
   >
     <div v-if="cover" class="card-cover-contanier">
       <img
         class="card-cover-img no-zoomable skeleton-animation"
-        @load="
-          (e) => {
-            e.target!['classList'].remove('skeleton-animation')
-          }
-        "
-        @error="
-          (e) => {
-            e.target!['classList'].add('load-error')
-            e.target!['src'] = 'https://assets.yuanshen.site/images/noImage.png'
-          }
-        "
-        :src="isRelativeLink(cover) ? withBase(cover) : cover"
+        @load="imgLoadHandler"
+        @error="imgErrorHandler"
+        :src="coverLink"
       />
     </div>
 
-    <div
-      :class="`card-footer ${getLogoLink(logo) === 'no-logo' && !icon ? 'no-logo' : ''}`"
-    >
+    <div :class="`card-footer ${logoMissing && !icon ? 'no-logo' : ''}`">
       <template v-if="iconLink">
         <label :class="`card-icon ${iconLink}`"></label>
       </template>
       <template v-else>
-        <template v-if="getLogoLink(logo) !== 'no-logo'">
-          <img class="card-logo no-zoomable" :src="getLogoLink(logo)" />
+        <template v-if="!logoMissing">
+          <img class="card-logo no-zoomable" :src="logoLink" />
         </template>
       </template>
 
@@ -45,15 +34,11 @@
           {{ title }}
         </div>
         <hr />
-        <div class="card-desc">
-          {{
-            desc
-              ? desc
-              : isRelativeLink(link)
-                ? `https://yuanshen.site/docs/${link.substring(0, 3).replace(/(\.\/|\/)/g, '') + link.substring(3)}`
-                : link
-          }}
-        </div>
+        <ClientOnly>
+          <div class="card-desc">
+            {{ descText }}
+          </div>
+        </ClientOnly>
       </div>
     </div>
   </a>
@@ -165,6 +150,15 @@ const iconMap = {
   'weixitianli.com': 'i-custom-wxtl',
 }
 
+const imgLoadHandler = (e) => {
+  e.target!['classList'].remove('skeleton-animation')
+}
+
+const imgErrorHandler = (e) => {
+  e.target!['classList'].add('load-error')
+  e.target!['src'] = 'https://assets.yuanshen.site/images/noImage.png'
+}
+
 const iconLink = computed(() => {
   let icon = ''
 
@@ -184,14 +178,35 @@ const iconLink = computed(() => {
   return icon
 })
 
-const getLogoLink = (i) => {
+const isExternal = computed(() => isLinkExternal(props.link))
+
+const logoLink = computed(() => {
   if (
-    i === 'self' ||
+    props.link === 'self' ||
     props.link.includes('yuanshen.site') ||
     isRelativeLink(props.link)
   )
     return withBase('/imgs/common/logo/logo_128.png')
-  if (i === '' && iconLink.value === '') return 'no-logo'
-  return isRelativeLink(i) ? withBase(i) : i
-}
+  if (props.link === '' && iconLink.value === '') return 'no-logo'
+  return isRelativeLink(props.link) ? withBase(props.link) : props.link
+})
+
+const logoMissing = computed(() => logoLink.value === 'no-logo')
+
+const coverLink = computed(() =>
+  isRelativeLink(props.cover) ? withBase(props.cover) : props.cover,
+)
+
+const descText = computed(() => {
+  if (props.desc) {
+    return props.desc
+  } else if (isRelativeLink(props.link)) {
+    const prefix: string = props.link.substring(0, 3).replace(/(\.\/|\/)/g, '')
+    const suffix: string = props.link.substring(3)
+    console.log(location.href)
+    return location.origin + withBase(`/${prefix}${suffix}`)
+  } else {
+    return props.link
+  }
+})
 </script>
