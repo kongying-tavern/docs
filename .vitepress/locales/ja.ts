@@ -180,8 +180,39 @@ export const jaConfig: LocaleSpecificConfig<
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: 'ダウンロード',
-      link: '/download-client',
+      text: 'アプリ',
+      items: [
+        {
+          text: 'アプリ ダウンロード',
+          link: '/download-client',
+        },
+        {
+          text: 'Windowsアプリ',
+          items: [
+            {
+              text: 'ガイダンス',
+              link: '/manual/client-user-manual',
+            },
+            {
+              text: 'リリースノート',
+              link: 'https://support.qq.com/products/321980/blog/505884',
+            },
+          ],
+        },
+        {
+          text: 'Webアプリ',
+          items: [
+            {
+              text: '今すぐ体験',
+              link: 'https://v3.yuanshen.site',
+            },
+            {
+              text: 'リリースノート',
+              link: 'https://support.qq.com/products/321980/blog/505810',
+            },
+          ],
+        },
+      ],
     },
     {
       text: 'コミュニティ',
@@ -194,10 +225,6 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'フィードバック',
       items: [
-        {
-          text: 'マニュアル',
-          link: '/manual/client-user-manual',
-        },
         {
           text: 'フィートバック',
           link: 'https://support.qq.com/products/321980',
@@ -225,19 +252,6 @@ function nav(): DefaultTheme.NavItem[] {
             {
               text: 'チームを知る',
               link: '/team',
-            },
-          ],
-        },
-        {
-          text: 'アップデートログ',
-          items: [
-            {
-              text: 'Web版',
-              link: 'https://support.qq.com/products/321980/blog/505810',
-            },
-            {
-              text: 'Windows版',
-              link: 'https://support.qq.com/products/321980/blog/772498',
             },
           ],
         },
