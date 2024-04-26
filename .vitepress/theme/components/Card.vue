@@ -169,7 +169,6 @@ const iconLink = computed(() => {
 
   if (props.logo === '' && props.link !== '') {
     const linkDomain = props.link.match(/(?:https?:\/\/)?(?:www\.)?([^\/]+)\//)
-    console.log(linkDomain)
     if (linkDomain && linkDomain[1]) {
       const domain = linkDomain[1]
       for (const key in iconMap) {
