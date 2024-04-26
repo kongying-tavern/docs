@@ -12,12 +12,12 @@
     <div v-if="cover" class="card-cover-contanier">
       <img
         class="card-cover-img no-zoomable skeleton-animation"
-        :onload="
+        @load="
           (e) => {
             e.target!['classList'].remove('skeleton-animation')
           }
         "
-        :onerror="
+        @error="
           (e) => {
             e.target!['classList'].add('load-error')
             e.target!['src'] = 'https://assets.yuanshen.site/images/noImage.png'
