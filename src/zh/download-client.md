@@ -42,15 +42,15 @@ theme: medium
 <script setup>
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { clientMap, downloadJump } from '../components/Download.ts'
+import { clientLink, downloadJump } from '../components/links/Download.ts'
 
 const params = useUrlSearchParams('history')
 const downloadMethod = [
-  clientMap.sq
-  clientMap.bd
-  clientMap.kk
-  clientMap.ty
-  clientMap.gd
+  clientLink('sq', '加入社区'),
+  clientLink('bd', '百度网盘'),
+  clientLink('kk', '夸克网盘'),
+  clientLink('ty', '天翼云盘', '访问码：exn0'),
+  clientLink('gd', 'Google Drive'),
 ]
 
 onMounted(()=> {

@@ -31,12 +31,12 @@ theme: medium
 <script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { clientMap, downloadJump } from '../components/Download.ts'
+import { clientLink, downloadJump } from '../components/links/Download.ts'
 
 const params = useUrlSearchParams('history')
 const downloadMethod = [
-  clientMap.sq
-  clientMap.gd
+  clientLink('sq', 'Community'),
+  clientLink('gd', 'Google Drive'),
 ]
 
 onMounted(()=> {
