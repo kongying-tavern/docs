@@ -1,5 +1,5 @@
 import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
-import { useRoute, useData } from 'vitepress'
+import { useRoute, useData, withBase } from 'vitepress'
 import { VPBadge } from 'vitepress/theme-without-fonts'
 import mediumZoom from 'medium-zoom'
 import DefaultTheme from 'vitepress/theme-without-fonts'
@@ -71,7 +71,7 @@ export default {
 const loadFont = () => {
   const font = new FontFace(
     'zh-cn-full',
-    'url(/docs/fonts/HYWenHei-85W-zh-full.woff2)',
+    `url(${withBase('/fonts/HYWenHei-85W-zh-full.woff2')})`,
     {
       display: 'swap',
     },
