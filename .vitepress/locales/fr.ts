@@ -177,8 +177,39 @@ export const frConfig: LocaleSpecificConfig<
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: 'Télécharger',
-      link: '/download-client',
+      text: 'APP',
+      items: [
+        {
+          text: 'Télécharger le client',
+          link: '/download-client',
+        },
+        {
+          text: 'Client pour Windows',
+          items: [
+            {
+              text: `Guides d'utilisations`,
+              link: '/manual/client-user-manual',
+            },
+            {
+              text: 'Note des mises à jour',
+              link: 'https://support.qq.com/products/321980/blog/505884',
+            },
+          ],
+        },
+        {
+          text: 'Carte en ligne',
+          items: [
+            {
+              text: 'Éssayer maintenant',
+              link: 'https://v3.yuanshen.site',
+            },
+            {
+              text: 'Note des mises à jour',
+              link: 'https://support.qq.com/products/321980/blog/505810',
+            },
+          ],
+        },
+      ],
     },
     {
       text: 'Soutenez-nous',
@@ -191,10 +222,6 @@ function nav(): DefaultTheme.NavItem[] {
     {
       text: 'Support',
       items: [
-        {
-          text: "Manuel d'utilisation du client",
-          link: '/manual/client-user-manual',
-        },
         {
           text: "Retour d'expérience",
           link: 'https://support.qq.com/products/321980',
@@ -218,19 +245,6 @@ function nav(): DefaultTheme.NavItem[] {
             {
               text: 'Notre équipe',
               link: '/team',
-            },
-          ],
-        },
-        {
-          text: 'Journal des mises à jour',
-          items: [
-            {
-              text: 'Web',
-              link: 'https://support.qq.com/products/321980/blog/505810',
-            },
-            {
-              text: 'Client',
-              link: 'https://discord.gg/SWz6RTWNkm',
             },
           ],
         },
