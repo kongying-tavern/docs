@@ -27,7 +27,7 @@ export const jaConfig: LocaleSpecificConfig<
     logo: '/imgs/common/logo/logo_256.png',
     lastUpdatedText: '更新日時',
     notFound: {
-      title: 'PAGE NOT FOUNDz',
+      title: 'PAGE NOT FOUND',
       quote:
         "But if you don't change your direction, and if you keep looking, you may end up where you are heading.",
       linkLabel: 'Take me home',
