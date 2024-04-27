@@ -43,11 +43,11 @@ export const frConfig: LocaleSpecificConfig<
       good: 'Utile',
       bad: 'Pas utile',
       feedbackFailMsg:
-        "Échec de la rétroaction, veuillez réessayer ou contacter l'administrateur (QQ : 1961266616) !",
-      feedbackSuccessMsg: 'Rétroaction soumise avec succès, merci !',
+        "Échec de la rétroaction, veuillez réessayer ou contacter l'administrateur (QQ : 1961266616)!",
+      feedbackSuccessMsg: 'Rétroaction soumise avec succès, merci!',
       badFeedbackSuccessMsg: 'Veuillez spécifier les problèmes ci-dessous~',
       form: {
-        chooseIssues: "Avez-vous rencontré l'un de ces problèmes ?",
+        chooseIssues: "Avez-vous rencontré l'un de ces problèmes?",
         translationIssue: 'Problème de traduction',
         typosIssue: 'Erreurs de frappe/ponctuation',
         ContentImgLinkIssue:
