@@ -21,7 +21,8 @@ import Payment from './payment'
 export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  titleTemplate: 'Kongying Tavern',
+  titleTemplate: '原神マップ',
+  description: C.META_DESCRIPTION,
   head: Head,
   themeConfig: {
     siteTitle: '原神マップ',
