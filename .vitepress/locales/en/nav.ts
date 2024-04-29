@@ -87,7 +87,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'Sponsors',
-            link: '/support-us#Sponsor%20Acknowledgements',
+            link: '/support-us#sponsor-acknowledgement',
           },
         ],
       },
