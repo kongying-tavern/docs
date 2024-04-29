@@ -2,6 +2,14 @@ import type { DefaultTheme } from 'vitepress'
 
 const nav: DefaultTheme.NavItem[] = [
   {
+    text: '加入社区',
+    link: '/community',
+  },
+  {
+    text: '支持我们',
+    link: '/support-us',
+  },
+  {
     text: '地图工具',
     items: [
       {
@@ -35,14 +43,6 @@ const nav: DefaultTheme.NavItem[] = [
         ],
       },
     ],
-  },
-  {
-    text: '加入社区',
-    link: '/community',
-  },
-  {
-    text: '支持我们',
-    link: '/support-us',
   },
   {
     text: '帮助和反馈',

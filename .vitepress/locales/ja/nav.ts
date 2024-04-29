@@ -2,6 +2,14 @@ import type { DefaultTheme } from 'vitepress'
 
 const nav: DefaultTheme.NavItem[] = [
   {
+    text: 'コミュニティ',
+    link: '/community',
+  },
+  {
+    text: 'スポンサーになる',
+    link: '/support-us',
+  },
+  {
     text: 'アプリ',
     items: [
       {
@@ -35,14 +43,6 @@ const nav: DefaultTheme.NavItem[] = [
         ],
       },
     ],
-  },
-  {
-    text: 'コミュニティ',
-    link: '/community',
-  },
-  {
-    text: 'スポンサーになる',
-    link: '/support-us',
   },
   {
     text: 'フィードバック',
