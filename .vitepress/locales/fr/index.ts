@@ -10,6 +10,7 @@ import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
 import UI from './ui'
+import AsideLinks from './aside-links'
 
 export const frConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -25,6 +26,7 @@ export const frConfig: LocaleSpecificConfig<
     lastUpdatedText: 'Dernière mise à jour ',
     notFound: _404,
     ui: UI,
+    asideLinks: AsideLinks,
     docsFeedback: {
       feedbackMsg: 'Ce document vous a-t-il été utile ?',
       good: 'Utile',
@@ -79,14 +81,6 @@ export const frConfig: LocaleSpecificConfig<
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
     ],
-    asideLinks: {
-      title: 'Links',
-      starOnGitHub: 'Star on GitHub',
-      contactUsText: 'Chat on Discord',
-      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
-      sponsor: 'Become a Sponsor',
-      editLink: 'Edit this page',
-    },
     staff: {
       title: 'Staff',
       desc: '空荧酒馆『原神地图』项目参与制作',

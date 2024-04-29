@@ -9,6 +9,7 @@ import Nav from './nav'
 import Sidebar from './sidebar'
 import _404 from './404'
 import UI from './ui'
+import AsideLinks from './aside-links'
 
 export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -24,6 +25,7 @@ export const enConfig: LocaleSpecificConfig<
     logo: '/imgs/common/logo/logo_256.png',
     notFound: _404,
     ui: UI,
+    asideLinks: AsideLinks,
     docsFeedback: {
       feedbackMsg: 'Was this document helpful?',
       good: 'Yes',
@@ -98,14 +100,6 @@ export const enConfig: LocaleSpecificConfig<
       pinStaff: {
         title: '地图点位标记',
       },
-    },
-    asideLinks: {
-      title: 'Links',
-      starOnGitHub: 'Star on GitHub',
-      contactUsText: 'Chat on Discord',
-      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
-      sponsor: 'Become a Sponsor',
-      editLink: 'Edit this page',
     },
     payment: {
       wechatpay: {

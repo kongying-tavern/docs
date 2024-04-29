@@ -10,6 +10,7 @@ import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
 import UI from './ui'
+import AsideLinks from './aside-links'
 
 export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -25,6 +26,7 @@ export const jaConfig: LocaleSpecificConfig<
     lastUpdatedText: '更新日時',
     notFound: _404,
     ui: UI,
+    asideLinks: AsideLinks,
     docsFeedback: {
       feedbackMsg: 'このドキュメントは役立ちましたか？',
       good: '役立つ',
@@ -67,14 +69,6 @@ export const jaConfig: LocaleSpecificConfig<
         title: '社区伙伴',
         desc: '我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。',
       },
-    },
-    asideLinks: {
-      title: 'Links',
-      starOnGitHub: 'Star on GitHub',
-      contactUsText: 'Chat on Discord',
-      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
-      sponsor: 'スポンサーになる',
-      editLink: 'このページを編集する',
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kongying-tavern' },

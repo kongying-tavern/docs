@@ -10,6 +10,7 @@ import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
 import UI from './ui'
+import AsideLinks from './aside-links'
 
 export const zhConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -32,6 +33,7 @@ export const zhConfig: LocaleSpecificConfig<
     langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
+    asideLinks: AsideLinks,
     staff: {
       title: 'Staff',
       desc: '空荧酒馆『原神地图』项目参与制作',
@@ -82,14 +84,6 @@ export const zhConfig: LocaleSpecificConfig<
     docFooter: {
       prev: '上一页',
       next: '下一页',
-    },
-    asideLinks: {
-      title: '快捷链接',
-      starOnGitHub: 'Star on GitHub',
-      contactUsText: '加入Discord服务器',
-      contactUsLink: 'https://discord.gg/SWz6RTWNkm',
-      sponsor: '支持我们',
-      editLink: '报告页面错误',
     },
     docsFeedback: {
       feedbackMsg: '这篇文档是否对你有帮助？',
