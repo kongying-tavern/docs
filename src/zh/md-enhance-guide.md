@@ -9,13 +9,13 @@ search: false
 
 <!-- 该页面无需翻译 -->
 
-## 目录
+## 目录 {#toc}
 
 [[TOC]]
 
 ---
 
-## Timeline 时间线
+## Timeline 时间线 {#timeline}
 
 ```md
 ::: timeline 2023-05-24
@@ -45,7 +45,7 @@ search: false
 
 ---
 
-## Kbd 快捷键
+## Kbd 快捷键 {#kbd}
 
 快捷方式组件建立在 Kbd 组件之上，可帮助您在内容中显示键盘快捷方式。
 
@@ -57,13 +57,13 @@ search: false
 
 ---
 
-## Footnote 脚注
+## Footnote 脚注 {#footnote}
 
 - 在 Markdown 中使用 [^锚点文字] 来定义脚注。
 - 在之后的任何位置使用 [^锚点文字]: ... 来描述脚注内容。
 - 如果脚注包含多个段落，其后的段落应当保持双层缩进
 
-#### 例子
+#### 例子 {#footnote-example}
 
 脚注 1 链接[^first]。
 
@@ -97,11 +97,11 @@ search: false
 
 ---
 
-## Mark 标记
+## Mark 标记 {#mark}
 
 使用 == == 进行标记。请注意两边需要有空格。
 
-#### 例子
+#### 例子 {#mark-example}
 
 对于习惯了传统吟游诗人的蒙德来说， ==「偶像」== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
 
@@ -111,16 +111,16 @@ search: false
 
 ---
 
-## Card 卡片
+## Card 卡片 {#card}
 
-### Props
+### Props {#card-props}
 
 | 接口        | 描述                                             | 默认值 |       类型        |
 | ----------- | :----------------------------------------------- | :----: | :---------------: |
 | title       | 卡片标题，必填项                                 |   -    |     `String`      |
 | desc        | 卡片描述，为空时默认显示为 link                  |  link  |     `String`      |
 | link        | 卡片跳转链接，非必填                             |   -    |     `String`      |
-| logo        | 卡片下方Logo的链接，非比填。填self默认为空荧logo |   -    |     `Strong`      |
+| logo        | 卡片下方Logo的链接，非比填。填self默认为空荧logo |   -    |     `String`      |
 | theme       | 卡片主题，非必填                                 | normal | `normal`or`media` |
 | color       | 卡片链颜色，非必填                               | normal |     `String`      |
 | cover       | 卡片封面链接，非必填。仅在normal主题生效         |   -    |     `String`      |
@@ -129,7 +129,7 @@ search: false
 
 > B站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写logo
 
-### Example
+### Example {#card-example}
 
 > Normal Theme
 
@@ -194,9 +194,9 @@ theme: medium
 
 ---
 
-## Frontmatter Config
+## Frontmatter Config {#frontmatter}
 
-### footer
+### footer {#fm-footer}
 
 - 类型：Boolean
 - 默认：true
@@ -209,12 +209,12 @@ footer: false #隐藏该页面的页脚
 ---
 ```
 
-### aside
+### aside {#fm-aside}
 
 - 类型：Boolean
 - 默认：true
 
-是否显示页面的侧比栏
+是否显示页面的侧边栏
 
 > 仅会在 `Layout: doc` 时自动启用
 
@@ -224,7 +224,20 @@ footer: false #隐藏该页面的侧比栏
 ---
 ```
 
-### banner
+### wip {#fm-wip}
+
+- 类型：Boolean
+- 默认：false
+
+配置页面顶部显示“施工中”的横幅，会覆盖 `banner` 配置
+
+```yml
+---
+wip: true #显示施工中横幅
+---
+```
+
+### banner {#fm-banner}
 
 - 类型：String
 
@@ -236,7 +249,7 @@ banner: 我是Banner
 ---
 ```
 
-### bannerExpiryDate
+### bannerExpiryDate {#fm-banner-expiry-date}
 
 - 类型：Date
 
@@ -249,7 +262,7 @@ bannerExpiryDate: 2024-2-1
 ---
 ```
 
-### docHeader
+### docHeader {#fm-doc-header}
 
 - 类型：Boolean
 - 默认：true
