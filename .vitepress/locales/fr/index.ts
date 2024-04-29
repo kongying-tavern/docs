@@ -12,6 +12,7 @@ import _404 from './404'
 import UI from './ui'
 import AsideLinks from './aside-links'
 import DocsFeedback from './docs-feedback'
+import Staff from './staff'
 
 export const frConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -33,6 +34,7 @@ export const frConfig: LocaleSpecificConfig<
       prev: 'Page précédente',
       next: 'Page suivante',
     },
+    staff: Staff,
     team: {
       title: '关于团队',
       desc: '地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。',
@@ -61,25 +63,7 @@ export const frConfig: LocaleSpecificConfig<
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
     ],
-    staff: {
-      title: 'Staff',
-      desc: '空荧酒馆『原神地图』项目参与制作',
-      communityStaff: {
-        title: '社区运营',
-      },
-      clientStaff: {
-        title: '客户端开发',
-      },
-      webStaff: {
-        title: '网页端开发',
-      },
-      translateStaff: {
-        title: '本地化翻译',
-      },
-      pinStaff: {
-        title: '地图点位标记',
-      },
-    },
+
     payment: {
       wechatpay: {
         name: 'WeChat Pay',
