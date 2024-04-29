@@ -52,7 +52,7 @@ const nav: DefaultTheme.NavItem[] = [
         link: 'https://support.qq.com/products/321980',
       },
       {
-        text: 'New Features',
+        text: 'Feature Requests',
         link: 'https://support.qq.com/products/321980/topic-detail/2016/',
       },
     ],
