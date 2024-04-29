@@ -2,7 +2,7 @@
 title: 支持我们
 titleTemplate: 空荧酒馆
 layout: doc
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 支持我们

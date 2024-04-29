@@ -2,7 +2,7 @@
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Basic functionality, import, and export.
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'

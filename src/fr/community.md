@@ -4,7 +4,7 @@ description: Join Community
 layout: doc
 titleTemplate: :title - Client Manuals | Kongying Tavern
 aside: false
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 # Join Community

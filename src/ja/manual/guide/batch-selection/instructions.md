@@ -2,7 +2,7 @@
 aside: false
 titleTemplate: :title | 空蛍酒場
 description: 应旅行者需求，现已将多选功能加入豪华午餐！
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'

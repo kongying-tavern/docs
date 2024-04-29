@@ -3,7 +3,7 @@ title: 用户协议
 aside: false
 layout: doc
 titleTemplate: :title - Client Manuals | Kongying Tavern
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 # 空荧酒馆原神地图用户服务协议

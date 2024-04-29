@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core'
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, computed, onMounted, watchEffect } from 'vue'
 import { useData } from 'vitepress'
 import { hash } from '../utils'
 import dayjs from 'dayjs'
+
 const banner = ref<HTMLElement>()
 const { height } = useElementSize(banner)
-const { frontmatter, page } = useData()
+const { frontmatter, page, theme } = useData()
 const storeKey = `banner-${page.value.relativePath}`
-const isBannerVisible = ref(typeof frontmatter.value.banner === 'string')
+const canBannerVisible = computed(
+  () => frontmatter.value.wip || typeof frontmatter.value.banner === 'string',
+)
+const isBannerVisible = ref(canBannerVisible.value)
 const deal = () => (Date.now() + 8.64e7 * 1).toString() // current time + 1 day
 const inExpiryDate = () => {
   if (!frontmatter.value.bannerExpiryDate) return false
@@ -19,6 +23,11 @@ const inExpiryDate = () => {
   if (dayjs().isBefore(dayjs(frontmatter.value.bannerExpiryDate))) return false
   return true
 }
+const bannerText = computed(() => {
+  return frontmatter.value.wip
+    ? theme.value.ui?.banner?.wip ?? ''
+    : frontmatter.value.banner
+})
 
 watchEffect(() => {
   if (height.value) {
@@ -32,7 +41,7 @@ watchEffect(() => {
 const restore = (key, def = false) => {
   const saved = localStorage.getItem(key)
   const banner = JSON.parse(saved!)
-  if (typeof frontmatter.value.banner !== 'string') return hideBanner()
+  if (!canBannerVisible.value) return hideBanner()
   if (
     saved
       ? hash(frontmatter.value.banner) == banner.hash && deal() > banner.time
@@ -62,7 +71,7 @@ const hideBanner = () => {
 <template>
   <ClientOnly>
     <div v-show="isBannerVisible" ref="banner" class="banner">
-      <div class="text" v-html="frontmatter.banner"></div>
+      <div class="text" v-html="bannerText"></div>
 
       <button type="button" @click="dismiss">
         <svg

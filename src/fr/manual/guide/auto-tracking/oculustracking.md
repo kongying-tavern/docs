@@ -1,7 +1,7 @@
 ---
 aside: false
 description:
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：自动神瞳]: #

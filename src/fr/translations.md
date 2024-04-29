@@ -2,7 +2,7 @@
 layout: doc
 title: Translations
 titleTemplate: :title - Client Manuals | Kongying Tavern
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 # Translations {#translations}

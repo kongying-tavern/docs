@@ -8,7 +8,7 @@ comment: false
 head:
   - - script
     - src: /docs/error.js
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 原神地图遇到了一些问题...

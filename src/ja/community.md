@@ -3,7 +3,7 @@ title: 加入社区
 description: 加入社区
 layout: doc
 titleTemplate: 空荧酒馆
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 加入社区

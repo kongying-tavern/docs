@@ -4,7 +4,7 @@ description: Kongying Tavern Genshin Interactive Map began its development in Ju
 aside: false
 layout: doc
 titleTemplate: :title - Client Manuals | Kongying Tavern
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 <script setup lang="ts">

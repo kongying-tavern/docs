@@ -51,6 +51,9 @@ export interface CustomConfig {
     }
   >
   ui: {
+    banner: {
+      wip: string
+    }
     button: {
       submit: string
       cancel: string

@@ -2,7 +2,7 @@
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Return saves to an archived timestamp, or recover save from accidental deletion.
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'

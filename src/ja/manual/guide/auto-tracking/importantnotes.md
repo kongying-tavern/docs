@@ -2,7 +2,7 @@
 aside: true
 titleTemplate: :title | 空蛍酒場
 description: This feature is based on image recognition
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：【位置追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'

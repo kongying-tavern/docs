@@ -3,7 +3,7 @@ title: 加入我们
 layout: doc
 titleTemplate: 空荧酒馆
 description: 加入我们
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 加入我们

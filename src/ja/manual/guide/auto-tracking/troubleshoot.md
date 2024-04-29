@@ -2,7 +2,7 @@
 aside: true
 titleTemplate: :title | 空蛍酒場
 description: Troubleshoot
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：位置追踪问题排查.docx]: # '以下为“问题排查”内容'

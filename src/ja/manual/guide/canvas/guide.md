@@ -2,7 +2,7 @@
 aside: true
 titleTemplate: :title | 空蛍酒場
 description: 基础使用教程。
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'

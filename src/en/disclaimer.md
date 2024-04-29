@@ -3,7 +3,7 @@ title: 免责声明
 layout: doc
 aside: false
 titleTemplate: :title | Kongying Tavern
-banner: Sorry, this page translation is still in progress
+wip: true
 ---
 
 # 免责声明

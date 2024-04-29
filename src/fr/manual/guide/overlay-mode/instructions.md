@@ -2,7 +2,7 @@
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Overlay Mode displays the map client over the Genshin game window. This mode benefits players who only have one monitor, allowing quicker switching between the game and the map client.
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'
