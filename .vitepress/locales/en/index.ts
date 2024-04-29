@@ -10,6 +10,7 @@ import Sidebar from './sidebar'
 import _404 from './404'
 import UI from './ui'
 import AsideLinks from './aside-links'
+import DocsFeedback from './docs-feedback'
 
 export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -26,31 +27,7 @@ export const enConfig: LocaleSpecificConfig<
     notFound: _404,
     ui: UI,
     asideLinks: AsideLinks,
-    docsFeedback: {
-      feedbackMsg: 'Was this document helpful?',
-      good: 'Yes',
-      bad: 'No',
-      feedbackFailMsg:
-        'Feedback failed, please retry or contact admin (QQ: 1961266616)!',
-      feedbackSuccessMsg: 'Feedback submitted successfully, thank you!',
-      badFeedbackSuccessMsg: 'Please specify any issues below~',
-      form: {
-        chooseIssues: 'Did you encounter these issues?',
-        translationIssue: 'Translation',
-        typosIssue: 'Typos/Punctuation',
-        ContentImgLinkIssue: 'Inaccurate Content, Image or Link',
-        feedbackDetail: 'Details/Suggestions',
-        feedbackTip: 'Describe issues or suggestions here',
-        otherIssue: 'Other (specify below)',
-        contactWay: 'Contact (optional)',
-        issueOptions: [
-          { label: 'Page Display Error', value: 'pagedisplay-issue' },
-          { label: 'Typos, Punctuation', value: 'typos-issue' },
-          { label: 'Content, Image, Link Error', value: 'content-issue' },
-          { label: 'Other Issues', value: 'other-issue' },
-        ],
-      },
-    },
+    docsFeedback: DocsFeedback,
     team: {
       title: '关于团队',
       desc: '地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。',
