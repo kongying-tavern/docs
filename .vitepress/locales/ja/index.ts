@@ -22,13 +22,16 @@ export const jaConfig: LocaleSpecificConfig<
 > = {
   titleTemplate: 'Kongying Tavern',
   themeConfig: {
+    siteTitle: '原神マップ',
     keyword: C.META_KEYWORDS,
     description: C.META_DESCRIPTION,
     image: C.META_IMAGE,
-    siteTitle: '原神マップ',
-    outlineTitle: 'このページでは',
     logo: '/imgs/common/logo/logo_256.png',
+
+    outlineTitle: 'このページでは',
     lastUpdatedText: '更新日時',
+    returnToTopLabel: '回到顶部',
+    langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
     socialLinks: SocialLinks,

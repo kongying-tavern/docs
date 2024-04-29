@@ -22,13 +22,16 @@ export const enConfig: LocaleSpecificConfig<
 > = {
   titleTemplate: 'Kongying Tavern',
   themeConfig: {
+    siteTitle: 'Genshin Interactive Map',
     keyword: C.META_KEYWORDS,
     description: C.META_DESCRIPTION,
     image: C.META_IMAGE,
-    siteTitle: 'Genshin Interactive Map',
+    logo: '/imgs/common/logo/logo_256.png',
+
     outlineTitle: 'On This Page',
     lastUpdatedText: 'Update Date',
-    logo: '/imgs/common/logo/logo_256.png',
+    returnToTopLabel: '回到顶部',
+    langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
     socialLinks: SocialLinks,

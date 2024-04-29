@@ -31,8 +31,9 @@ export const zhConfig: LocaleSpecificConfig<
     keyword: C.META_KEYWORDS,
     description: C.META_DESCRIPTION,
     image: C.META_IMAGE,
-    outlineTitle: '本页目录',
     logo: '/imgs/common/logo/logo_256.png',
+
+    outlineTitle: '本页目录',
     lastUpdatedText: '更新日期',
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
