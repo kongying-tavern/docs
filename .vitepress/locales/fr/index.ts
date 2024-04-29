@@ -1,5 +1,4 @@
 import { baseHelper } from '../../theme/utils'
-import { socialList } from '../../theme/composables/socialList'
 
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from '../types'
@@ -10,6 +9,7 @@ import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
 import UI from './ui'
+import SocialLinks from './social-links'
 import AsideLinks from './aside-links'
 import DocsFeedback from './docs-feedback'
 import Staff from './staff'
@@ -29,27 +29,16 @@ export const frConfig: LocaleSpecificConfig<
     lastUpdatedText: 'Dernière mise à jour ',
     notFound: _404,
     ui: UI,
+    socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
     docFooter: {
       prev: 'Page précédente',
       next: 'Page suivante',
     },
+
     staff: Staff,
     team: Team,
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/kongying-tavern' },
-      {
-        icon: {
-          svg: socialList.reddit.icon,
-        },
-        link: 'https://www.reddit.com/user/Kongying_Tavern',
-        ariaLabel: 'Reddit',
-      },
-      { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
-      { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
-    ],
-
     payment: {
       wechatpay: {
         name: 'WeChat Pay',
@@ -73,6 +62,7 @@ export const frConfig: LocaleSpecificConfig<
         address: 'https://space.bilibili.com/518076785',
       },
     },
+
     nav: baseHelper(Nav, C.LOCAL_BASE),
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
     footer: baseHelper(Footer, C.LOCAL_BASE),

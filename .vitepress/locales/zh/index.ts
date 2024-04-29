@@ -1,5 +1,4 @@
 import { baseHelper } from '../../theme/utils'
-import { socialList } from '../../theme/composables/socialList'
 
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from '../types'
@@ -10,6 +9,7 @@ import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
 import UI from './ui'
+import SocialLinks from './social-links'
 import AsideLinks from './aside-links'
 import DocsFeedback from './docs-feedback'
 import Staff from './staff'
@@ -36,26 +36,16 @@ export const zhConfig: LocaleSpecificConfig<
     langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
+    socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
     docFooter: {
       prev: '上一页',
       next: '下一页',
     },
+
     staff: Staff,
     team: Team,
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/kongying-tavern/' },
-      { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
-      { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
-      {
-        icon: {
-          svg: socialList.bilibili.icon,
-        },
-        link: 'https://space.bilibili.com/518076785',
-        ariaLabel: 'bilibili',
-      },
-    ],
     payment: {
       wechatpay: {
         name: '微信支付',
@@ -79,6 +69,7 @@ export const zhConfig: LocaleSpecificConfig<
         address: 'https://space.bilibili.com/518076785',
       },
     },
+
     nav: baseHelper(Nav, C.LOCAL_BASE),
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
     footer: baseHelper(Footer, C.LOCAL_BASE),

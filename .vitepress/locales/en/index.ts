@@ -1,5 +1,4 @@
 import { baseHelper } from '../../theme/utils'
-import { socialList } from '../../theme/composables/socialList'
 
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from '../types'
@@ -9,6 +8,7 @@ import Nav from './nav'
 import Sidebar from './sidebar'
 import _404 from './404'
 import UI from './ui'
+import SocialLinks from './social-links'
 import AsideLinks from './aside-links'
 import DocsFeedback from './docs-feedback'
 import Staff from './staff'
@@ -28,26 +28,16 @@ export const enConfig: LocaleSpecificConfig<
     logo: '/imgs/common/logo/logo_256.png',
     notFound: _404,
     ui: UI,
+    socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
     docFooter: {
       prev: 'Previous page',
       next: 'Next page',
     },
+
     staff: Staff,
     team: Team,
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/kongying-tavern' },
-      {
-        icon: {
-          svg: socialList.reddit.icon,
-        },
-        link: 'https://www.reddit.com/user/Kongying_Tavern',
-      },
-      { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
-      { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
-    ],
-
     payment: {
       wechatpay: {
         name: 'WeChat Pay',
@@ -71,73 +61,13 @@ export const enConfig: LocaleSpecificConfig<
         address: 'https://space.bilibili.com/518076785',
       },
     },
+
     nav: baseHelper(Nav, C.LOCAL_BASE),
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
-    footer: baseHelper(footer(), C.LOCAL_BASE),
+    footer: baseHelper(Footer, C.LOCAL_BASE),
   },
   head: [
     ['meta', { property: 'og:site_name', content: C.META_TITLE }],
     ['meta', { property: 'og:locale', content: 'en-US' }],
   ],
-}
-
-function footer(): CustomConfig['footer'] {
-  return {
-    qrcodeTitle: 'Discord Server',
-    qrcodeMessage: 'Contact us on discord',
-    qrcodeLink: 'https://discord.gg/aFe57AKZUF',
-    navigation: [
-      {
-        title: 'About',
-        items: [
-          {
-            text: 'Join Us',
-            link: '/join',
-          },
-          {
-            text: 'Our team',
-            link: '/team',
-          },
-          {
-            text: 'Sponsors',
-            link: '/support-us',
-          },
-        ],
-      },
-      {
-        title: 'Legal (Chinese)',
-        items: [
-          {
-            text: 'Disclaimer',
-            link: '/disclaimer',
-          },
-          {
-            text: 'Privacy',
-            link: '/privacy',
-          },
-          {
-            text: 'Agreement',
-            link: '/agreement',
-          },
-        ],
-      },
-      {
-        title: 'Support',
-        items: [
-          {
-            text: 'Client User Manual',
-            link: '/manual/client-user-manual',
-          },
-          {
-            text: 'Feedback',
-            link: 'https://support.qq.com/products/321980',
-          },
-          {
-            text: 'New Features',
-            link: 'https://support.qq.com/products/321980/topic-detail/2016/',
-          },
-        ],
-      },
-    ],
-  }
 }
