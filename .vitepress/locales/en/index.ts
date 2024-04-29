@@ -4,6 +4,7 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from '../types'
 
 import C from './constants'
+import Head from './head'
 import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
@@ -21,6 +22,7 @@ export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
   titleTemplate: 'Kongying Tavern',
+  head: Head,
   themeConfig: {
     siteTitle: 'Genshin Interactive Map',
     keyword: C.META_KEYWORDS,
@@ -50,8 +52,4 @@ export const enConfig: LocaleSpecificConfig<
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
     footer: baseHelper(Footer, C.LOCAL_BASE),
   },
-  head: [
-    ['meta', { property: 'og:site_name', content: C.META_TITLE }],
-    ['meta', { property: 'og:locale', content: 'en-US' }],
-  ],
 }

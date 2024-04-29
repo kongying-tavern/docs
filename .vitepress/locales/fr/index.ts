@@ -4,6 +4,7 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from '../types'
 
 import C from './constants'
+import Head from './head'
 import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
@@ -21,6 +22,7 @@ export const frConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
   titleTemplate: 'Kongying Tavern',
+  head: Head,
   themeConfig: {
     siteTitle: 'Carte interactive de Genshin',
     keyword: C.META_KEYWORDS,
@@ -50,22 +52,4 @@ export const frConfig: LocaleSpecificConfig<
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
     footer: baseHelper(Footer, C.LOCAL_BASE),
   },
-  head: [
-    ['meta', { name: 'keywords', content: C.META_KEYWORDS }],
-    ['meta', { property: 'og:url', content: C.META_URL }],
-    ['meta', { property: 'og:description', content: C.META_DESCRIPTION }],
-    ['meta', { property: 'twitter:url', content: C.META_URL }],
-    ['meta', { property: 'twitter:title', content: C.META_TITLE }],
-    ['meta', { property: 'twitter:description', content: C.META_DESCRIPTION }],
-    ['meta', { property: 'og:site_name', content: C.META_TITLE }],
-    ['meta', { property: 'og:locale', content: C.LOCAL_CODE }],
-    ['meta', { property: 'og:image', content: C.META_IMAGE }],
-    [
-      'meta',
-      {
-        name: 'twitter:image',
-        content: C.META_IMAGE,
-      },
-    ],
-  ],
 }

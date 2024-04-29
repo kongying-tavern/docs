@@ -4,6 +4,7 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from '../types'
 
 import C from './constants'
+import Head from './head'
 import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
@@ -22,10 +23,7 @@ export const zhConfig: LocaleSpecificConfig<
 > = {
   titleTemplate: '空荧酒馆',
   description: C.META_DESCRIPTION,
-  head: [
-    ['meta', { property: 'og:site_name', content: C.META_TITLE }],
-    ['meta', { property: 'og:locale', content: C.LOCAL_CODE }],
-  ],
+  head: Head,
   themeConfig: {
     siteTitle: '原神地图',
     keyword: C.META_KEYWORDS,
