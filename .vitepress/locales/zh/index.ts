@@ -8,6 +8,7 @@ import C from './constants'
 import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
+import _404 from './404'
 
 export const zhConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -28,11 +29,7 @@ export const zhConfig: LocaleSpecificConfig<
     lastUpdatedText: '更新日期',
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
-    notFound: {
-      title: '这个页面找不到了',
-      quote: '可能跟温迪一起出游了吧',
-      linkLabel: '回到首页',
-    },
+    notFound: _404,
     staff: {
       title: 'Staff',
       desc: '空荧酒馆『原神地图』项目参与制作',

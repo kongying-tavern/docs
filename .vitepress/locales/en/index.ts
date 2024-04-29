@@ -7,6 +7,7 @@ import type { CustomConfig } from '../types'
 import C from './constants'
 import Nav from './nav'
 import Sidebar from './sidebar'
+import _404 from './404'
 
 export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -20,6 +21,7 @@ export const enConfig: LocaleSpecificConfig<
     outlineTitle: 'On This Page',
     lastUpdatedText: 'Update Date',
     logo: '/imgs/common/logo/logo_256.png',
+    notFound: _404,
     ui: {
       button: {
         submit: 'Submit',
@@ -51,12 +53,7 @@ export const enConfig: LocaleSpecificConfig<
         ],
       },
     },
-    notFound: {
-      title: 'PAGE NOT FOUND',
-      quote:
-        "But if you don't change your direction, and if you keep looking, you may end up where you are heading.",
-      linkLabel: 'Take me home',
-    },
+
     team: {
       title: '关于团队',
       desc: '地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。',

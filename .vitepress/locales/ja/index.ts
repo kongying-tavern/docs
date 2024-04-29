@@ -8,6 +8,7 @@ import C from './constants'
 import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
+import _404 from './404'
 
 export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -21,12 +22,7 @@ export const jaConfig: LocaleSpecificConfig<
     outlineTitle: 'このページでは',
     logo: '/imgs/common/logo/logo_256.png',
     lastUpdatedText: '更新日時',
-    notFound: {
-      title: 'PAGE NOT FOUND',
-      quote:
-        "But if you don't change your direction, and if you keep looking, you may end up where you are heading.",
-      linkLabel: 'Take me home',
-    },
+    notFound: _404,
     ui: {
       button: {
         submit: '提出する',
