@@ -21,11 +21,11 @@ import Payment from './payment'
 export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  titleTemplate: '原神マップ',
+  titleTemplate: '空蛍酒場',
   description: C.META_DESCRIPTION,
   head: Head,
   themeConfig: {
-    siteTitle: '原神マップ',
+    siteTitle: C.META_TITLE,
     keyword: C.META_KEYWORDS,
     description: C.META_DESCRIPTION,
     image: C.META_IMAGE,

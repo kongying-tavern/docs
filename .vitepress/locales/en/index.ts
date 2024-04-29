@@ -21,11 +21,11 @@ import Payment from './payment'
 export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  titleTemplate: 'Genshin Interactive Map',
+  titleTemplate: 'Kongying Tavern',
   description: C.META_DESCRIPTION,
   head: Head,
   themeConfig: {
-    siteTitle: 'Genshin Interactive Map',
+    siteTitle: C.META_TITLE,
     keyword: C.META_KEYWORDS,
     description: C.META_DESCRIPTION,
     image: C.META_IMAGE,

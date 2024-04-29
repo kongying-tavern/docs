@@ -25,7 +25,7 @@ export const zhConfig: LocaleSpecificConfig<
   description: C.META_DESCRIPTION,
   head: Head,
   themeConfig: {
-    siteTitle: '原神地图',
+    siteTitle: C.META_TITLE,
     keyword: C.META_KEYWORDS,
     description: C.META_DESCRIPTION,
     image: C.META_IMAGE,
