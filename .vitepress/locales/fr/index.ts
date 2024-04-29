@@ -21,7 +21,7 @@ import Payment from './payment'
 export const frConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  titleTemplate: 'Kongying Tavern',
+  titleTemplate: 'Taverne Kongying',
   description: C.META_DESCRIPTION,
   head: Head,
   themeConfig: {
