@@ -90,7 +90,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: '寄付感謝',
-            link: '/support-us#S#sponsor-acknowledgement',
+            link: '/support-us#sponsor-acknowledgement',
           },
         ],
       },
