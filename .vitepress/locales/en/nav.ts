@@ -4,17 +4,21 @@ const nav: DefaultTheme.NavItem[] = [
   {
     text: 'Community',
     link: '/community',
+    activeMatch: '^/en/community',
   },
   {
     text: 'Support us',
     link: '/support-us',
+    activeMatch: '^/en/support-us',
   },
   {
     text: 'Map Utilities',
+    activeMatch: '^/en/(download-client|manual/)',
     items: [
       {
         text: 'Download',
         link: '/download-client',
+        activeMatch: '^/en/download-client',
       },
       {
         text: 'Windows Client',
@@ -22,6 +26,7 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Manual',
             link: '/manual/client-user-manual',
+            activeMatch: '^/en/manual/',
           },
           {
             text: 'Release Notes',
@@ -59,6 +64,8 @@ const nav: DefaultTheme.NavItem[] = [
   },
   {
     text: 'About',
+    activeMatch:
+      '^/en/(join|team|staff|support-us|credits|disclaimer|privacy|agreement|translations|friends-links)',
     items: [
       {
         text: 'About Us',
@@ -66,27 +73,32 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Join Us',
             link: '/join',
+            activeMatch: '^/en/join',
           },
           {
             text: 'Our Team',
             link: '/team',
+            activeMatch: '^/en/team',
           },
         ],
       },
       {
-        text: 'Acknowledgement',
+        text: 'Acknowledgements',
         items: [
           {
-            text: 'Credits',
-            link: '/credits',
-          },
-          {
             text: 'Contributors',
-            link: '/contribution',
+            link: '/staff',
+            activeMatch: '^/en/staff',
           },
           {
             text: 'Sponsors',
             link: '/support-us#sponsor-acknowledgement',
+            activeMatch: '^/en/support-us',
+          },
+          {
+            text: 'Credits',
+            link: '/credits',
+            activeMatch: '^/en/credits',
           },
         ],
       },
@@ -96,14 +108,17 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Disclaimer',
             link: '/disclaimer',
+            activeMatch: '^/en/disclaimer',
           },
           {
             text: 'Privacy',
             link: '/privacy',
+            activeMatch: '^/en/privacy',
           },
           {
             text: 'Agreement',
             link: '/agreement',
+            activeMatch: '^/en/agreement',
           },
         ],
       },
@@ -111,8 +126,14 @@ const nav: DefaultTheme.NavItem[] = [
         text: 'Other',
         items: [
           {
+            text: 'Translate for Us',
+            link: '/translations',
+            activeMatch: '^/en/translations',
+          },
+          {
             text: 'Friend-links',
             link: '/friends-links',
+            activeMatch: '^/en/friends-links',
           },
         ],
       },

@@ -52,10 +52,6 @@ const nav: DefaultTheme.NavItem[] = [
         link: 'https://support.qq.com/products/321980',
       },
       {
-        text: '功能介绍',
-        link: 'https://support.qq.com/products/321980/faqs-more/?id=126362',
-      },
-      {
         text: '功能投票',
         link: 'https://support.qq.com/products/321980/topic-detail/2016/',
       },
@@ -86,7 +82,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: '赞助鸣谢',
-            link: '/support-us#赞助鸣谢',
+            link: '/support-us#sponsor-acknowledgement',
           },
           {
             text: '技术鸣谢',

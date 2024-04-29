@@ -15,7 +15,7 @@ We accept one-time contributions through the following channels：
 
 <Coins />
 
-## Sponsor Acknowledgement
+## Sponsor Acknowledgement {#sponsor-acknowledgement}
 
 ### Personal Sponsors
 
