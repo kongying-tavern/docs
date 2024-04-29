@@ -9,6 +9,7 @@ import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
+import UI from './ui'
 
 export const zhConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -30,6 +31,7 @@ export const zhConfig: LocaleSpecificConfig<
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
     notFound: _404,
+    ui: UI,
     staff: {
       title: 'Staff',
       desc: '空荧酒馆『原神地图』项目参与制作',
@@ -88,12 +90,6 @@ export const zhConfig: LocaleSpecificConfig<
       contactUsLink: 'https://discord.gg/SWz6RTWNkm',
       sponsor: '支持我们',
       editLink: '报告页面错误',
-    },
-    ui: {
-      button: {
-        submit: '提交',
-        cancel: '取消',
-      },
     },
     docsFeedback: {
       feedbackMsg: '这篇文档是否对你有帮助？',

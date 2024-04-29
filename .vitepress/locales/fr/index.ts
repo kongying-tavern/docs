@@ -9,6 +9,7 @@ import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
+import UI from './ui'
 
 export const frConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -23,12 +24,7 @@ export const frConfig: LocaleSpecificConfig<
     logo: '/imgs/common/logo/logo_256.png',
     lastUpdatedText: 'Dernière mise à jour ',
     notFound: _404,
-    ui: {
-      button: {
-        submit: 'Soumettre',
-        cancel: 'Annuler',
-      },
-    },
+    ui: UI,
     docsFeedback: {
       feedbackMsg: 'Ce document vous a-t-il été utile ?',
       good: 'Utile',

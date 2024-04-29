@@ -9,6 +9,7 @@ import Nav from './nav'
 import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
+import UI from './ui'
 
 export const jaConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -23,12 +24,7 @@ export const jaConfig: LocaleSpecificConfig<
     logo: '/imgs/common/logo/logo_256.png',
     lastUpdatedText: '更新日時',
     notFound: _404,
-    ui: {
-      button: {
-        submit: '提出する',
-        cancel: 'キャンセル',
-      },
-    },
+    ui: UI,
     docsFeedback: {
       feedbackMsg: 'このドキュメントは役立ちましたか？',
       good: '役立つ',
