@@ -28,6 +28,10 @@ export const enConfig: LocaleSpecificConfig<
     ui: UI,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
+    docFooter: {
+      prev: 'Previous page',
+      next: 'Next page',
+    },
     team: {
       title: '关于团队',
       desc: '地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。',
@@ -55,10 +59,6 @@ export const enConfig: LocaleSpecificConfig<
       { icon: 'discord', link: 'https://discord.gg/aFe57AKZUF' },
       { icon: 'x', link: 'https://twitter.com/KongyingTavern' },
     ],
-    docFooter: {
-      prev: 'Previous page',
-      next: 'Next page',
-    },
     staff: {
       title: 'Staff',
       desc: '空荧酒馆『原神地图』项目参与制作',

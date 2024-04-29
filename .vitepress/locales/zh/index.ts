@@ -36,6 +36,10 @@ export const zhConfig: LocaleSpecificConfig<
     ui: UI,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
+    docFooter: {
+      prev: '上一页',
+      next: '下一页',
+    },
     staff: {
       title: 'Staff',
       desc: '空荧酒馆『原神地图』项目参与制作',
@@ -83,10 +87,6 @@ export const zhConfig: LocaleSpecificConfig<
         ariaLabel: 'bilibili',
       },
     ],
-    docFooter: {
-      prev: '上一页',
-      next: '下一页',
-    },
     payment: {
       wechatpay: {
         name: '微信支付',
