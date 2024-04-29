@@ -157,8 +157,39 @@ export const enConfig: LocaleSpecificConfig<
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      text: 'Download',
-      link: '/download-client',
+      text: 'Map Utilities',
+      items: [
+        {
+          text: 'Download',
+          link: '/download-client',
+        },
+        {
+          text: 'Windows Client',
+          items: [
+            {
+              text: 'Manual',
+              link: '/manual/client-user-manual',
+            },
+            {
+              text: 'Release Notes',
+              link: 'https://support.qq.com/products/321980/blog/505884',
+            },
+          ],
+        },
+        {
+          text: 'Web Version',
+          items: [
+            {
+              text: 'Try Now',
+              link: 'https://v3.yuanshen.site',
+            },
+            {
+              text: 'Release Notes',
+              link: 'https://support.qq.com/products/321980/blog/505810',
+            },
+          ],
+        },
+      ],
     },
     {
       text: 'Support us',
@@ -168,14 +199,10 @@ function nav(): DefaultTheme.NavItem[] {
       text: 'Community',
       link: '/community',
     },
+
     {
       text: 'Support',
-      activeMatch: `^/en/manual/`,
       items: [
-        {
-          text: 'Client User Manual',
-          link: '/manual/client-user-manual',
-        },
         {
           text: 'Feedback',
           link: 'https://support.qq.com/products/321980',
@@ -199,19 +226,6 @@ function nav(): DefaultTheme.NavItem[] {
             {
               text: 'Our Team',
               link: '/team',
-            },
-          ],
-        },
-        {
-          text: 'Update Log',
-          items: [
-            {
-              text: 'Web',
-              link: 'https://support.qq.com/products/321980/blog/505810',
-            },
-            {
-              text: 'Client',
-              link: 'https://discord.gg/SWz6RTWNkm',
             },
           ],
         },
