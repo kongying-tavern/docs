@@ -45,8 +45,7 @@ const restore = (key, def = false) => {
   if (!canBannerVisible.value) return hideBanner()
   if (
     saved
-      ? bannerHash.value === bannerData.hash &&
-        dismissExpiryTime.value < bannerData.time
+      ? bannerHash.value === bannerData.hash && Date.now() < bannerData.time
       : def
   ) {
     hideBanner()
