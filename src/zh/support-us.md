@@ -14,7 +14,7 @@ layout: doc
 
 <Coins />
 
-## 赞助鸣谢
+## 赞助鸣谢 {#sponsor-acknowledgement}
 
 ### 个人赞助
 

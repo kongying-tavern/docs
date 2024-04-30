@@ -1,14 +1,8 @@
 ---
 aside: true
 titleTemplate: :title | 空蛍酒場
-prev:
-  text: '目录'
-  link: '/manual/client-user-manual'
-next:
-  text: '【位置追踪】问题排查'
-  link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：【位置追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'

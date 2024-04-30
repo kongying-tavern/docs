@@ -1,14 +1,8 @@
 ---
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-next:
-  text: '[Restore/Recover] Progress Recovery From Stored Data'
-  link: 'fr/manual/guide/restore-recover/progress'
-prev:
-  text: '[Overlay Mode] Instructions'
-  link: '../instructions'
 description: Windowed Fullscreen lets the game run fullscreen while satisfying the [Overlay Mode]'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'

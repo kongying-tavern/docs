@@ -1,13 +1,7 @@
 ---
 aside: false
-next:
-  text: '[Position Tracker] Oculus Tracking'
-  link: './oculustracking.md'
-prev:
-  text: '[Position Tracker] Trouble shooting'
-  link: './updated.md'
 description:
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：自动神瞳]: #

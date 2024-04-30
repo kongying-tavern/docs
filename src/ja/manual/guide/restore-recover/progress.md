@@ -1,14 +1,8 @@
 ---
 aside: true
 titleTemplate: :title | 空蛍酒場
-prev:
-  text: '【窗口全屏/无边框窗口模式】启动游戏'
-  link: '../overlay-mode/fullscreen-windowed/launching'
 description: 还原存档到历史位置，或存档误删还原。
-next:
-  text: '目录'
-  link: 'ja/manual/client-user-manual'
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'

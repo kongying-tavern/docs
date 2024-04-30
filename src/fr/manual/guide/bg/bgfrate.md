@@ -1,14 +1,8 @@
 ---
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-prev:
-  text: '[Position Tracker] Troubleshooting'
-  link: '../auto-tracking/troubleshoot'
-next:
-  text: '[Multi Mark] Instructions'
-  link: '../batch-selection/instructions'
 description: \[Foreground Frame Rate] and [Background Frame Rate] can be configured in the General settings, it is recommended to reduce resource utilization by setting [Foreground Frame Rate] to 30-50 fps and [Background Frame Rate] to 1-10 fps, thus minimizing fps loss in-game.
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'

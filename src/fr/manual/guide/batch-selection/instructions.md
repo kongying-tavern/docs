@@ -1,14 +1,8 @@
 ---
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-prev:
-  text: '[Background Usage] Framerate/Tracking Control'
-  link: '../bg/bgfrate'
-next:
-  text: '[Custom Path Planner (Canvas)] Guide'
-  link: '../canvas/guide'
 description: Responding to the requests from travelers, Multi Mark is now available!
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'

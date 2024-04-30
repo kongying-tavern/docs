@@ -1,11 +1,5 @@
 ---
 aside: false
-next:
-  text: '[Position Tracker] Oculus Tracking'
-  link: './oculustracking.md'
-prev:
-  text: '[Position Tracker] Trouble shooting'
-  link: './updated.md'
 description:
 ---
 

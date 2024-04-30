@@ -1,12 +1,6 @@
 ---
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
-prev:
-  text: 'Table of Contents'
-  link: 'en/manual/client-user-manual'
-next:
-  text: '[Position Tracker] Troubleshooting'
-  link: '../auto-tracking/troubleshoot'
 description: This feature is based on image recognition
 ---
 

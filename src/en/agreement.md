@@ -3,7 +3,7 @@ title: 用户协议
 aside: false
 layout: doc
 titleTemplate: :title | Kongying Tavern
-banner: Sorry, this page translation is still in progress
+wip: true
 ---
 
 # 空荧酒馆原神地图用户服务协议

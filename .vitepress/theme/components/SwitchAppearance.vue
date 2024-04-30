@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { useData } from 'vitepress/dist/client/theme-default/composables/data'
 import { APPEARANCE_KEY, inBrowser } from 'vitepress/dist/client/shared'

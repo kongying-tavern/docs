@@ -1,14 +1,8 @@
 ---
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-next:
-  text: '[Position Tracker] Important Notes'
-  link: './guide/auto-tracking/importantnotes.md'
-prev:
-  text: 'Home page'
-  link: '../index.md'
 description: Table of Contents
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'

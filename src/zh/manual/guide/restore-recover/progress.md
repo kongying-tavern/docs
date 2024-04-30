@@ -3,13 +3,7 @@ aside: true
 title: 【存档丢失】存档还原/误删恢复
 layout: doc
 titleTemplate: :title - 客户端使用手册 | 空荧酒馆
-prev:
-  text: '【窗口全屏/无边框窗口模式】启动游戏'
-  link: '../overlay-mode/fullscreen-windowed/launching'
 description: 还原存档到历史位置，或存档误删还原。
-next:
-  text: '目录'
-  link: 'manual/client-user-manual'
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'

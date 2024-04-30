@@ -1,14 +1,8 @@
 ---
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-next:
-  text: '[Hide/Show Found] Feature'
-  link: '../hide-show-done/hidedoneshowdone'
-prev:
-  text: '[Custom Path Planner (Canvas)] Guide'
-  link: '../canvas/guide'
 description: Although version 1.6 and 2.8 has passed, the summer islands will be preserved in the client as an easter egg.
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【彩蛋】查看历史版本内容]: # 'https://support.qq.com/products/321980/faqs/97056'

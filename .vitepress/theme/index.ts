@@ -1,12 +1,12 @@
 import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
-import { useRoute, useData } from 'vitepress'
+import { useRoute, useData, withBase } from 'vitepress'
 import { VPBadge } from 'vitepress/theme-without-fonts'
 import mediumZoom from 'medium-zoom'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/googleAnalytics'
-import Card from '../theme/components/Card'
+import Card from '../theme/components/Card.vue'
 import LinkGrid from '../theme/components/LinkGrid.vue'
 import { createPinia } from 'pinia'
 import DocAside from './components/DocAside.vue'
@@ -71,7 +71,7 @@ export default {
 const loadFont = () => {
   const font = new FontFace(
     'zh-cn-full',
-    'url(/docs/fonts/HYWenHei-85W-zh-full.woff2)',
+    `url(${withBase('/fonts/HYWenHei-85W-zh-full.woff2')})`,
     {
       display: 'swap',
     },

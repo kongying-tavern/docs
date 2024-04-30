@@ -2,8 +2,6 @@
 title: 下载客户端
 layout: doc
 titleTemplate: 空荧酒馆
-banner: 位置追踪服务器维护中，如需启用位置追踪请前往链接手动下载 <a href="http://a6t.cn/fa565" target="_black">http://a6t.cn/fa565</a>（提取码：KYJG）
-bannerExpiryDate: 2024/2/15
 comment: true
 ---
 
@@ -42,31 +40,18 @@ theme: medium
 <script setup>
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { isNumber } from '../../.vitepress/theme/utils'
+import { clientLink, downloadJump } from '../components/links/Download.ts'
 
 const params = useUrlSearchParams('history')
 const downloadMethod = [
-  { id:'sq', name: '加入社区', target: '_self', link: './community', icon: '/imgs/common/logo/logo_256.png' },
-  { id:'bd', name: '百度网盘', target: '_blank', link: 'https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg', icon: '/svg/baidu-drive.svg'
-  },
-  { id: 'kk', name: '夸克网盘', target: '_blank', link: 'https://pan.quark.cn/s/fe8bb34c77bc', icon: '/svg/quark-drive.svg'
-  },
-  { id: 'ty', name: '天翼云盘', secondary: '访问码：exn0', target: '_blank', link: 'https://cloud.189.cn/t/YF7Fj2zIRVbi', icon: '/svg/tianyi-drive.svg'
-  },
-  { id:'gd', name: 'Google Drive', target: '_blank', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+  clientLink('sq', '加入社区'),
+  clientLink('bd', '百度网盘'),
+  clientLink('kk', '夸克网盘'),
+  clientLink('ty', '天翼云盘', '访问码：exn0'),
+  clientLink('gd', 'Google Drive'),
 ]
 
-function jump() {
-    const target = String(params.q).toLocaleLowerCase()
-
-    downloadMethod.forEach((val) => {
-      if (val.id === target) {
-        location.href = val.link
-      }
-    })
-}
-
 onMounted(()=> {
-  jump()
+  downloadJump(params, downloadMethod)
 })
 </script>

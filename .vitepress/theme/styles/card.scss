@@ -183,12 +183,12 @@
     color: currentColor !important;
   }
 
-  &[isexternallink='true']::after {
+  &[is-external-link='true']::after {
     margin-top: -16px !important;
     transform: translateX(8px);
   }
 
-  &[isexternallink='false']::after {
+  &[is-external-link='false']::after {
     margin-top: -16px !important;
     transform: translateX(4px) rotate(45deg);
   }

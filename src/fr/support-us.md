@@ -17,7 +17,7 @@ Nous acceptons les contributions uniques via les outils suivants :
 
 <Coins />
 
-## Remerciement des sponsors
+## Remerciement des sponsors {#sponsor-acknowledgement}
 
 ### Utilisateur Sponsor
 

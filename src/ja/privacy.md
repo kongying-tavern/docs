@@ -2,7 +2,7 @@
 title: 隐私政策
 layout: doc
 aside: false
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 隐私

@@ -3,7 +3,7 @@ title: 加入社区
 description: 加入社区
 layout: doc
 titleTemplate: 空荧酒馆
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 加入社区
@@ -36,69 +36,6 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 1. [**加入频道** discord.gg/aFe57AKZUF](https://discord.gg/aFe57AKZUF '邀请链接')
 
 <style lang="scss" scoped>
-ol::-webkit-scrollbar {
-background: transparent;
-height: 8px;
-width: 8px;
-}
-ol::-webkit-scrollbar-corner {
-width: 0;
-}
-ol::-webkit-scrollbar-thumb {
-background-clip: content-box;
-background-color: var(--vp-button-alt-bg);
-border: 2px solid transparent;
-border-radius: 4px;
-}
-ol::-webkit-scrollbar-track {
-background-color: var(--vp-c-bg);
-}
-
-  ol {
-    display: inherit;
-    padding: 0;
-    max-height: 410px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    
-    li {
-      cursor: pointer;
-      display: inline-block;
-      margin: 10px 0;
-      width: 98%;
-      font-size: 16px;
-      border: 1px solid var(--vp-c-divider);
-      border-radius: 5px;
-      transition: all .3s;
-      text-align: right;
-      a {
-        display: inline-block;
-        position: relative;
-        width: 100%;
-        height: 100%;
-        opacity: .8;
-        padding: 10px 16px;
-        box-sizing: border-box;
-        transition: all .3s;
-        strong {
-          position: absolute;
-          left: 25px;
-        }
-        &:hover{
-          opacity: 1;
-          text-decoration:none !important;
-        }
-      }
-      &:hover{
-        transform: translate3d(0, -2px, 0);
-        box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-      }
-    }
-  }
-
-// 被封禁的群
-ol:nth-child(3) > li:nth-child(1) > a strong,  ol:nth-child(3) > li:nth-child(5) > a strong {
-  text-decoration: line-through !important;
-}
+@use '../components/links/Community.scss';
+@include Community.main;
 </style>

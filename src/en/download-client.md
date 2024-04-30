@@ -6,7 +6,7 @@ aside: false
 titleTemplate: :title | Kongying Tavern
 ---
 
-## Windows Clinet <Badge type="warning" text="Beta" />
+## Windows Client <Badge type="warning" text="Beta" />
 
 <LinkGrid :items="downloadMethod" />
 
@@ -28,13 +28,18 @@ link: https://yuanshen.site
 theme: medium
 ```
 
-<script setup>
+<script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { isNumber } from '../../.vitepress/theme/utils'
+import { clientLink, downloadJump } from '../components/links/Download.ts'
 
+const params = useUrlSearchParams('history')
 const downloadMethod = [
-  { id:'sq', name: 'Discord', target: '_self', link: 'https://discord.gg/aFe57AKZUF', icon: 'i-logos-discord-icon' },
-  { id:'gd', name: 'Google Drive', target: '_blank', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+  clientLink('sq', 'Community'),
+  clientLink('gd', 'Google Drive'),
 ]
+
+onMounted(()=> {
+  downloadJump(params, downloadMethod)
+})
 </script>

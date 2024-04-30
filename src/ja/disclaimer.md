@@ -5,7 +5,7 @@ titleTemplate: 空荧酒馆
 layout: doc
 date: 2021-5-30
 aside: false
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 免责声明

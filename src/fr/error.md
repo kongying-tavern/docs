@@ -7,7 +7,7 @@ titleTemplate: :title - Client Manuals | Kongying Tavern
 head:
   - - script
     - src: /docs/error.js
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 # _Genshin Interactive Map_ has encountered some problems...

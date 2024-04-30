@@ -1,14 +1,8 @@
 ---
 aside: false
 titleTemplate: :title | 空蛍酒場
-prev:
-  text: '【彩蛋】查看历史版本内容'
-  link: '../easter-egg/view'
-next:
-  text: '【覆盖模式】使用说明'
-  link: '../overlay-mode/instructions'
 description: 地图对标记【已完成】的点位有两种显示方式。
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'

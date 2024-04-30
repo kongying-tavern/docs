@@ -54,6 +54,6 @@ hero:
       link: https://github.com/kongying-tavern
 ---
 
-<script setup>
+<script setup lang="ts">
 import '../../.vitepress/theme/styles/home-links.css'
 </script>

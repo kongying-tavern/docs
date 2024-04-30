@@ -1,14 +1,8 @@
 ---
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
-prev:
-  text: '[Position Tracker] Important Notes'
-  link: '../auto-tracking/importantnotes'
-next:
-  text: '[Background Usage] Framerate/Tracking Control'
-  link: '../bg/bgfrate'
 description: Troubleshoot
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：位置追踪问题排查.docx]: # '以下为 问题排查 内容'

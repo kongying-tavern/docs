@@ -1,7 +1,7 @@
 ---
 titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Troubleshoot
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【不能登录】如何登录]: # 'https://support.qq.com/products/321980/faqs/97057'

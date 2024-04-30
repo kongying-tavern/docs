@@ -1,14 +1,8 @@
 ---
 aside: true
 titleTemplate: :title | 空蛍酒場
-next:
-  text: '【彩蛋】查看历史版本内容'
-  link: '../easter-egg/view'
-prev:
-  text: '【批量选择】使用说明'
-  link: '../batch-selection/instructions'
 description: 基础使用教程。
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'

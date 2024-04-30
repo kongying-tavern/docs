@@ -4,7 +4,7 @@ description: 免责声明
 layout: doc
 aside: false
 titleTemplate: :title - Client Manuals | Kongying Tavern
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 # 免责声明

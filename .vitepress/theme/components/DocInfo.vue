@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import dayjs from 'dayjs'

@@ -1,14 +1,8 @@
 ---
 title: \[Position Tracker] Oculus Tracking (Removed)
 aside: false
-next:
-  text: '[Position Tracker] Oculus Tracking'
-  link: './oculustracking.md'
-prev:
-  text: '[Position Tracker] Trouble shooting'
-  link: './updated.md'
 description:
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 [文：自动神瞳]: #

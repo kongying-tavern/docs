@@ -1,14 +1,8 @@
 ---
 aside: true
 titleTemplate: :title - Client Manuals | Kongying Tavern
-next:
-  text: '[Easter Egg] View Archived Versions of Golden Apple Archipelago'
-  link: '../easter-egg/view'
-prev:
-  text: '[Multi Mark] Instructions'
-  link: '../batch-selection/instructions'
 description: Basic functionality, import, and export.
-banner: Désolé, la traduction de cette page est toujours en cours
+wip: true
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
@@ -70,9 +64,9 @@ Holding control allows control over anchors on the path
 
 ![](/imgs/fr/manual/canvas/9.png)
 
-At this stage, use **left click** to control the anchors,  
-use **right click** on round anchors to reset path curvature,  
-use **right click** on square anchors to delete it,  
+At this stage, use **left click** to control the anchors,
+use **right click** on round anchors to reset path curvature,
+use **right click** on square anchors to delete it,
 **double click** on the path to place an anchor.
 
 ### **Step** 7

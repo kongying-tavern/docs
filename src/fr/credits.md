@@ -5,7 +5,7 @@ description: 技术鸣谢
 aside: false
 layout: doc
 pageClass: credits
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 技术鸣谢

@@ -27,27 +27,18 @@ link: https://yuanshen.site
 theme: medium
 ```
 
-<script setup>
+<script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
+import { clientLink, downloadJump } from '../components/links/Download.ts'
 
 const params = useUrlSearchParams('history')
 const downloadMethod = [
-  { id: 'discord', name: 'Discord', target: '_black', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
-  { id:'gd', name: 'Google Drive', target: '_black', link: 'https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing', icon: 'i-logos-google-drive' }
+  clientLink('sq', 'Communautés'),
+  clientLink('gd', 'Google Drive'),
 ]
 
-function jump() {
-    const target = String(params.q).toLocaleLowerCase()
-
-    downloadMethod.forEach((val) => {
-      if (val.id === target) {
-        location.href = val.link
-      }
-    })
-}
-
 onMounted(()=> {
-  jump()
+  downloadJump(params, downloadMethod)
 })
 </script>

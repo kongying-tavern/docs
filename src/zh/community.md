@@ -52,134 +52,26 @@ titleTemplate: 空荧酒馆
 13. [**原神地图 13 群(已满)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi '点击一键加入原神地图13群')
 14. [**原神地图 14 群** 468263682](https://qm.qq.com/cgi-bin/qm/qr?k=g-By7txM78GfoPhk29d59Z5KkJV_Gt-z&jump_from=webapi '点击一键加入原神地图14群')
 15. [**原神地图 15 群** 668424173](https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi '点击一键加入原神地图15群')
-    :::
 
-<script setup>
+:::
+
+<script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { isNumber } from '../../.vitepress/theme/utils'
+import { serverLink, serverJump } from '../components/links/Community'
 
 const params = useUrlSearchParams('history')
 const server = [
-{ id: 'discord', name: 'Discord', target: '_blank', link: 'https://discord.com/invite/aFe57AKZUF', secondary: 'aFe57AKZUF', icon: 'i-logos-discord-icon' },
-{
-id: 'qq', name: 'QQ 频道', target: '_blank',
-secondary: 'f006fek0f', link: 'https://pd.qq.com/s/f006fek0f', icon: '/svg/qq-channel.svg'
-},
+  serverLink('discord', 'Discord'),
+  serverLink('qq', 'QQ 频道'),
 ]
 
-function jump() {
-if (Number(params.q) <= document.querySelectorAll('#VPContent > div > div > div.content > div > main > div > div > details:nth-child(6) > ol > li').length) {
-let link = document.querySelector(`#VPContent > div > div > div.content > div > main > div > div > details:nth-child(6) > ol > li:nth-child(${Number(params.q)
-}) > a`).href
-if (link.includes(location.host)) return;
-location.href = link
-} else {
-const target = String(params.q).toLocaleLowerCase()
-
-    server.forEach((val) => {
-      if (val.id === target) {
-        location.href = val.link
-      }
-    })
-
-}
-}
-
 onMounted(()=> {
-jump()
+  serverJump(params, server)
 })
 </script>
 
 <style lang="scss" scoped>
-ol::-webkit-scrollbar {
-background: transparent;
-height: 8px;
-width: 8px;
-}
-ol::-webkit-scrollbar-corner {
-width: 0;
-}
-ol::-webkit-scrollbar-thumb {
-background-clip: content-box;
-background-color: var(--vp-button-alt-bg);
-border: 2px solid transparent;
-border-radius: 4px;
-}
-ol::-webkit-scrollbar-track {
-background-color: var(--vp-c-bg);
-}
-ol,ul {
-    display: inherit;
-    padding: 0;
-    /* max-height: 475px; */
-    display: flex;
-    flex-direction: column;
-    /* overflow-y: scroll; */
-
-    li {
-      cursor: pointer;
-      display: inline-block;
-      margin: 10px 0;
-      width: 98%;
-      font-size: 16px;
-      border: 1.5px solid var(--vp-c-divider);
-      border-radius: 5px;
-      transition: all .3s;
-      text-align: right;
-      a {
-        display: inline-block;
-        position: relative;
-        width: 100%;
-        height: 100%;
-        opacity: .95;
-        padding: 10px 16px;
-        box-sizing: border-box;
-        transition: all .3s;
-        text-decoration:none !important;
-        color: var(--vp-c-brand-2);
-        strong {
-          position: absolute;
-          left: 25px;
-        }
-        &:hover{
-          opacity: 1;
-        }
-      }
-      &:hover{
-        transform: translate3d(0, -2px, 0);
-        box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-      }
-    }
-  }
-
-ul > li {
-  padding: 4px 0;
-}
-// 被封禁的群
-.custom-block.details {
-
-  ol > li {
-    border-color: var(--vp-c-text-3)
-  }
-  ol > li > a strong {
-    color: var(--vp-c-brand-2)!important;
-  }
-  ol > li:nth-child(1) > a strong,  ol > li:nth-child(5) > a strong {
-    text-decoration: line-through !important;
-    opacity: .65;
-  }
-}
-
-#VPContent > div > div > div.content > div > main > div > div > details:nth-child(5) {
-  ol {
-    display: inherit !important;
-    li {
-      text-align: left !important;
-      border: none !important;
-      font-size: 14px !important;
-    }
-  }
-
-}
+@use '../components/links/Community.scss';
+@include Community.main;
 </style>

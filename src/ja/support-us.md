@@ -2,7 +2,7 @@
 title: 支持我们
 titleTemplate: 空荧酒馆
 layout: doc
-banner: 申し訳ありませんが、このページの翻訳はまだ進行中です
+wip: true
 ---
 
 # 支持我们
@@ -16,7 +16,7 @@ banner: 申し訳ありませんが、このページの翻訳はまだ進行中
 
 <Coins />
 
-## 赞助鸣谢
+## 赞助鸣谢 {#sponsor-acknowledgement}
 
 ### 个人赞助
 
