@@ -13,8 +13,8 @@ const canBannerVisible = computed(
   () => frontmatter.value.wip || typeof frontmatter.value.banner === 'string',
 )
 const isBannerVisible = ref(canBannerVisible.value)
-const deal = () => (Date.now() + 8.64e7 * 1).toString() // current time + 1 day
-const inExpiryDate = () => {
+const dismissExpiryTime = computed(() => (Date.now() + 8.64e7 * 1).toString()) // current time + 1 day
+const inExpiryDate = computed(() => {
   if (!frontmatter.value.bannerExpiryDate) return false
   if (!dayjs(frontmatter.value.bannerExpiryDate).isValid())
     console.error(
@@ -22,12 +22,13 @@ const inExpiryDate = () => {
     )
   if (dayjs().isBefore(dayjs(frontmatter.value.bannerExpiryDate))) return false
   return true
-}
+})
 const bannerText = computed(() => {
   return frontmatter.value.wip
     ? theme.value.ui?.banner?.wip ?? ''
     : frontmatter.value.banner
 })
+const bannerHash = computed(() => hash(bannerText.value))
 
 watchEffect(() => {
   if (height.value) {
@@ -40,23 +41,24 @@ watchEffect(() => {
 
 const restore = (key, def = false) => {
   const saved = localStorage.getItem(key)
-  const banner = JSON.parse(saved!)
+  const bannerData = JSON.parse(saved!)
   if (!canBannerVisible.value) return hideBanner()
   if (
     saved
-      ? hash(frontmatter.value.banner) == banner.hash && deal() > banner.time
+      ? bannerHash.value === bannerData.hash &&
+        dismissExpiryTime.value < bannerData.time
       : def
   ) {
     hideBanner()
-  } else if (inExpiryDate()) hideBanner()
+  } else if (inExpiryDate.value) hideBanner()
 }
 
 onMounted(() => restore(storeKey))
 
 const dismiss = () => {
   const bannerData = {
-    time: deal(),
-    hash: hash(frontmatter.value.banner),
+    time: dismissExpiryTime.value,
+    hash: bannerHash.value,
   }
   localStorage.setItem(storeKey, JSON.stringify(bannerData))
   hideBanner()
