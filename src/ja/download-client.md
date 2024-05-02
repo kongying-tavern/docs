@@ -33,7 +33,7 @@ theme: medium
 
 ```card
 title: マニュアル
-link: /ja/manual/client-user-manual
+link: /ja/manual/client
 theme: medium
 ```
 

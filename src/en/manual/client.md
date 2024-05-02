@@ -4,13 +4,13 @@ titleTemplate: ':title - Client Manuals | Kongying Tavern'
 description: Table of Contents
 ---
 
-[文：【目录】客户端使用手册]: # '../../manual/client-user-manual.md'
+[文：【目录】客户端使用手册]: # '../../manual/client.md'
 
 # Table of Contents
 
 ## **Manuals in Other Languages**
 
-- [中文版用户手册 (Chinese Version)](../../manual/client-user-manual.md)
+- [中文版用户手册 (Chinese Version)](../../manual/client.md)
 
 ## **Update Log**
 

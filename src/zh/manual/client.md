@@ -10,7 +10,7 @@ description: 客户端使用手册目录
 
 ## 其他语言手册
 
-- [英文版用户手册 (English Version)](../en/manual/client-user-manual.md)
+- [英文版用户手册 (English Version)](../en/manual/client.md)
 
 ## **更新日志**
 

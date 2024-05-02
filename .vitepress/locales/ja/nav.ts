@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
         items: [
           {
             text: 'ガイダンス',
-            link: '/manual/client-user-manual',
+            link: '/manual/client',
             activeMatch: '^/ja/manual/',
           },
           {

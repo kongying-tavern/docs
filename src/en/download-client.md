@@ -16,7 +16,7 @@ If you are interested in aiding our development, consider [Join Us](./join)
 
 ```card
 title: Map Client User Manual
-link: /en/manual/client-user-manual
+link: /en/manual/client
 theme: medium
 ```
 

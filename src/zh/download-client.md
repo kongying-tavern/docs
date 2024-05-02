@@ -18,7 +18,7 @@ comment: true
 ```card
 title: Windows 客户端使用手册
 logo: self
-link: ./manual/client-user-manual
+link: /manual/client
 theme: medium
 ```
 

@@ -15,7 +15,7 @@ Si vous souhaitez contribuer au développement, pensez à [Nous Rejoindre!](./jo
 
 ```card
 title: Manuel d'utilisation du client carte
-link: /fr/manual/client-user-manual
+link: /fr/manual/client
 theme: medium
 ```
 

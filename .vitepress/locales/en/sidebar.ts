@@ -5,7 +5,7 @@ const sidebar: DefaultTheme.SidebarItem[] = {
   '/manual': [
     {
       text: 'Table of Contents',
-      link: '/manual/client-user-manual',
+      link: '/manual/client',
     },
     {
       text: 'Guides',
@@ -16,50 +16,50 @@ const sidebar: DefaultTheme.SidebarItem[] = {
           items: [
             {
               text: 'Introduction',
-              link: '/manual/guide/auto-tracking/importantnotes',
+              link: '/manual/client/position-tracking',
             },
             {
               text: 'Troubleshooting',
-              link: '/manual/guide/auto-tracking/troubleshoot',
+              link: '/manual/client/position-tracking',
             },
           ],
         },
         {
           text: 'Framerate/Tracking Control',
-          link: '/manual/guide/bg/bgfrate',
+          link: '/manual/client/framerate',
         },
         {
           text: 'Multi Mark',
-          link: '/manual/guide/batch-selection/instructions',
+          link: '/manual/client/batch-selection',
         },
         {
           text: 'Canvas Guide',
-          link: '/manual/guide/canvas/guide',
+          link: '/manual/client/canvas',
         },
         {
           text: 'Easter Egg',
-          link: '/manual/guide/easter-egg/view',
+          link: '/manual/client/easter-egg',
         },
         {
           text: 'Hide/Show Found',
-          link: '/manual/guide/hide-show-done/hidedoneshowdone',
+          link: '/manual/client/hide-show-done',
         },
         {
           text: 'Overlay Mode',
           items: [
             {
               text: 'Instructions',
-              link: '/manual/guide/overlay-mode/instructions',
+              link: '/manual/client/overlay-mode',
             },
             {
               text: 'Windowed Fullscreen',
-              link: '/manual/guide/overlay-mode/fullscreen-windowed/launching',
+              link: '/manual/client/fullscreen-windowed',
             },
           ],
         },
         {
           text: 'Restore/Recover Progress',
-          link: '/manual/guide/restore-recover/progress',
+          link: '/manual/client/save-restore',
         },
       ],
     },

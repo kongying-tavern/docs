@@ -5,7 +5,7 @@ const sidebar: DefaultTheme.SidebarItem[] = {
   '/manual': [
     {
       text: 'Table des matières',
-      link: '/manual/client-user-manual',
+      link: '/manual/client',
     },
     {
       text: 'Guides',
@@ -15,50 +15,50 @@ const sidebar: DefaultTheme.SidebarItem[] = {
           items: [
             {
               text: 'Introduction',
-              link: '/manual/guide/auto-tracking/importantnotes',
+              link: '/manual/client/position-tracking',
             },
             {
               text: 'Résolution des problèmes',
-              link: '/manual/guide/auto-tracking/troubleshoot',
+              link: '/manual/client/position-tracking',
             },
           ],
         },
         {
           text: "Contrôle de la fréquence d'images/du suivi",
-          link: '/manual/guide/bg/bgfrate',
+          link: '/manual/client/framerate',
         },
         {
           text: 'Marquage multiple',
-          link: '/manual/guide/batch-selection/instructions',
+          link: '/manual/client/batch-selection',
         },
         {
           text: 'Guide du canvas',
-          link: '/manual/guide/canvas/guide',
+          link: '/manual/client/canvas',
         },
         {
           text: 'Easter Egg',
-          link: '/manual/guide/easter-egg/view',
+          link: '/manual/client/easter-egg',
         },
         {
           text: 'Cacher/Afficher les éléments trouvés',
-          link: '/manual/guide/hide-show-done/hidedoneshowdone',
+          link: '/manual/client/hide-show-done',
         },
         {
           text: 'Mode superposition',
           items: [
             {
               text: 'Instructions',
-              link: '/manual/guide/overlay-mode/instructions',
+              link: '/manual/client/overlay-mode',
             },
             {
               text: 'Fenêtré plein écran',
-              link: '/manual/guide/overlay-mode/fullscreen-windowed/launching',
+              link: '/manual/client/fullscreen-windowed',
             },
           ],
         },
         {
           text: 'Restauration/récupération de la progression',
-          link: '/manual/guide/restore-recover/progress',
+          link: '/manual/client/save-restore',
         },
       ],
     },

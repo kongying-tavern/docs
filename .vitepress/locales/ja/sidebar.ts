@@ -5,7 +5,7 @@ const sidebar: DefaultTheme.SidebarItem[] = {
   '/manual': [
     {
       text: '目次',
-      link: '/manual/client-user-manual',
+      link: '/manual/client',
     },
     {
       text: '使い方ガイド',
@@ -15,50 +15,50 @@ const sidebar: DefaultTheme.SidebarItem[] = {
           items: [
             {
               text: '機能紹介',
-              link: '/manual/guide/auto-tracking/importantnotes',
+              link: '/manual/client/position-tracking',
             },
             {
               text: 'トラブルシューティング',
-              link: '/manual/guide/auto-tracking/troubleshoot',
+              link: '/manual/client/position-tracking',
             },
           ],
         },
         {
           text: '【バックグラウンドユーセージ】フレームレート設定',
-          link: '/manual/guide/bg/bgfrate',
+          link: '/manual/client/framerate',
         },
         {
           text: '【一括選択】利用ガイド',
-          link: '/manual/guide/batch-selection/instructions',
+          link: '/manual/client/batch-selection',
         },
         {
           text: '【キャンバス】ルート計画機能紹介',
-          link: '/manual/guide/canvas/guide',
+          link: '/manual/client/canvas',
         },
         {
           text: '【おまけ】金リンゴ群島を見る',
-          link: '/manual/guide/easter-egg/view',
+          link: '/manual/client/easter-egg',
         },
         {
           text: '【表示】/【非表示】マーカー',
-          link: '/manual/guide/hide-show-done/hidedoneshowdone',
+          link: '/manual/client/hide-show-done',
         },
         {
           text: '【オーバーレイモード】',
           items: [
             {
               text: '利用ガイド',
-              link: '/manual/guide/overlay-mode/instructions',
+              link: '/manual/client/overlay-mode',
             },
             {
               text: '【ウィンドウ全画面】ゲーム起動',
-              link: '/manual/guide/overlay-mode/fullscreen-windowed/launching',
+              link: '/manual/client/fullscreen-windowed',
             },
           ],
         },
         {
           text: '【セーブデータ】データ復元',
-          link: '/manual/guide/restore-recover/progress',
+          link: '/manual/client/save-restore',
         },
       ],
     },

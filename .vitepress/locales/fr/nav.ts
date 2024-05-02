@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
         items: [
           {
             text: `Guides d'utilisations`,
-            link: '/manual/client-user-manual',
+            link: '/manual/client',
             activeMatch: '^/fr/manual/',
           },
           {

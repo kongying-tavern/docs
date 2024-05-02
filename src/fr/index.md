@@ -40,8 +40,8 @@ hero:
   actions:
     - theme: brand
       text: Télécharger maintenant
-      link: fr/download-client.md
+      link: /fr/download-client.md
     - theme: alt
       text: En savoir plus
-      link: fr/manual/client-user-manual
+      link: /fr/manual/client
 ---

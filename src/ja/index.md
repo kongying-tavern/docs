@@ -40,10 +40,10 @@ hero:
   actions:
     - theme: brand
       text: ダウンロードへ
-      link: ja/download-client.md
+      link: /ja/download-client.md
     - theme: alt
       text: 使い方について
-      link: ja/manual/client-user-manual
+      link: /ja/manual/client
     - theme: cta mastery
       text: Web版
       link: https://v3.yuanshen.site/
@@ -51,7 +51,3 @@ hero:
       text: Visit GitHub
       link: https://github.com/kongying-tavern
 ---
-
-<script setup lang="ts">
-import '../../.vitepress/theme/styles/home-links.css'
-</script>

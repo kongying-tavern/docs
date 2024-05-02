@@ -5,7 +5,7 @@ const sidebar: DefaultTheme.SidebarItem[] = {
   '/manual': [
     {
       text: '目录',
-      link: '/manual/client-user-manual',
+      link: '/manual/client',
     },
     {
       text: '使用帮助',
@@ -16,50 +16,50 @@ const sidebar: DefaultTheme.SidebarItem[] = {
           items: [
             {
               text: '功能介绍',
-              link: '/manual/guide/auto-tracking/importantnotes',
+              link: '/manual/client/position-tracking',
             },
             {
               text: '疑难解答',
-              link: '/manual/guide/auto-tracking/troubleshoot',
+              link: '/manual/client/position-tracking',
             },
           ],
         },
         {
           text: '【地图性能占用高】前后台帧率设置',
-          link: '/manual/guide/bg/bgfrate',
+          link: '/manual/client/framerate',
         },
         {
           text: '【批量选择】使用说明',
-          link: '/manual/guide/batch-selection/instructions',
+          link: '/manual/client/batch-selection',
         },
         {
           text: '【画板】路线功能 教程',
-          link: '/manual/guide/canvas/guide',
+          link: '/manual/client/canvas',
         },
         {
           text: '【彩蛋】查看历史版本内容',
-          link: '/manual/guide/easter-egg/view',
+          link: '/manual/client/easter-egg',
         },
         {
           text: '【隐藏】标记/【显示】标记',
-          link: '/manual/guide/hide-show-done/hidedoneshowdone',
+          link: '/manual/client/hide-show-done',
         },
         {
           text: '【覆盖模式】',
           items: [
             {
               text: '使用说明',
-              link: '/manual/guide/overlay-mode/instructions',
+              link: '/manual/client/overlay-mode',
             },
             {
               text: '【窗口全屏】启动游戏',
-              link: '/manual/guide/overlay-mode/fullscreen-windowed/launching',
+              link: '/manual/client/fullscreen-windowed',
             },
           ],
         },
         {
           text: '【存档丢失】存档还原/误删恢复',
-          link: '/manual/guide/restore-recover/progress',
+          link: '/manual/client/save-restore',
         },
       ],
     },
