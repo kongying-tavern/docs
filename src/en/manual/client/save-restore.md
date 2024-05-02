@@ -40,4 +40,4 @@ Locate the map client's cache folder, and select the desired save using "Date Mo
 
 Enter the file contents respectively into the section indicated in the picture below and submit, a save will appear in the list of saves on your map client.
 
-![](/public/imgs/en/manual/restore-recover/7.png)
+![](/imgs/en/manual/restore-recover/7.png)
