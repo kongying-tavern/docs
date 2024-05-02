@@ -8,58 +8,44 @@ const sidebar: DefaultTheme.SidebarItem[] = {
       link: '/manual/client',
     },
     {
-      text: '使用帮助',
+      text: '使用手册',
       collapsed: false,
       items: [
         {
-          text: '【自动追踪】',
-          items: [
-            {
-              text: '功能介绍',
-              link: '/manual/client/position-tracking',
-            },
-            {
-              text: '疑难解答',
-              link: '/manual/client/position-tracking',
-            },
-          ],
-        },
-        {
-          text: '【地图性能占用高】前后台帧率设置',
-          link: '/manual/client/framerate',
-        },
-        {
-          text: '【批量选择】使用说明',
+          text: '批量选择',
           link: '/manual/client/batch-selection',
         },
         {
-          text: '【画板】路线功能 教程',
-          link: '/manual/client/canvas',
-        },
-        {
-          text: '【彩蛋】查看历史版本内容',
-          link: '/manual/client/easter-egg',
-        },
-        {
-          text: '【隐藏】标记/【显示】标记',
+          text: '隐藏/显示标记',
           link: '/manual/client/hide-show-done',
         },
         {
-          text: '【覆盖模式】',
-          items: [
-            {
-              text: '使用说明',
-              link: '/manual/client/overlay-mode',
-            },
-            {
-              text: '【窗口全屏】启动游戏',
-              link: '/manual/client/fullscreen-windowed',
-            },
-          ],
+          text: '覆盖模式',
+          link: '/manual/client/overlay-mode',
         },
         {
-          text: '【存档丢失】存档还原/误删恢复',
+          text: '位置追踪',
+          link: '/manual/client/position-tracking',
+        },
+        {
+          text: '画板/路线功能',
+          link: '/manual/client/canvas',
+        },
+        {
+          text: '窗口全屏/无边框窗口模式',
+          link: '/manual/client/fullscreen-windowed',
+        },
+        {
+          text: '帧率设置',
+          link: '/manual/client/framerate',
+        },
+        {
+          text: '存档恢复',
           link: '/manual/client/save-restore',
+        },
+        {
+          text: '彩蛋',
+          link: '/manual/client/easter-egg',
         },
       ],
     },
