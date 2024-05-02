@@ -8,58 +8,44 @@ const sidebar: DefaultTheme.SidebarItem[] = {
       link: '/manual/client',
     },
     {
-      text: 'Guides',
+      text: 'Handbook',
       collapsed: false,
       items: [
         {
-          text: 'Automatic Tracking',
-          items: [
-            {
-              text: 'Introduction',
-              link: '/manual/client/position-tracking',
-            },
-            {
-              text: 'Troubleshooting',
-              link: '/manual/client/position-tracking',
-            },
-          ],
+          text: 'Marking Multiple Pins',
+          link: '/manual/client/batch-selection',
+        },
+        {
+          text: 'Change Pin Visibility',
+          link: '/manual/client/hide-show-done',
+        },
+        {
+          text: 'Overlay Mode',
+          link: '/manual/client/overlay-mode',
+        },
+        {
+          text: 'Position Tracker',
+          link: '/manual/client/position-tracking',
+        },
+        {
+          text: 'Custom Path Planner (Canvas)',
+          link: '/manual/client/canvas',
+        },
+        {
+          text: 'Launching The Game in Windowed Fullscreen',
+          link: '/manual/client/fullscreen-windowed',
         },
         {
           text: 'Framerate/Tracking Control',
           link: '/manual/client/framerate',
         },
         {
-          text: 'Multi Mark',
-          link: '/manual/client/batch-selection',
-        },
-        {
-          text: 'Canvas Guide',
-          link: '/manual/client/canvas',
-        },
-        {
-          text: 'Easter Egg',
-          link: '/manual/client/easter-egg',
-        },
-        {
-          text: 'Hide/Show Found',
-          link: '/manual/client/hide-show-done',
-        },
-        {
-          text: 'Overlay Mode',
-          items: [
-            {
-              text: 'Instructions',
-              link: '/manual/client/overlay-mode',
-            },
-            {
-              text: 'Windowed Fullscreen',
-              link: '/manual/client/fullscreen-windowed',
-            },
-          ],
-        },
-        {
-          text: 'Restore/Recover Progress',
+          text: 'Progress Recovery',
           link: '/manual/client/save-restore',
+        },
+        {
+          text: 'Easter Eggs',
+          link: '/manual/client/easter-egg',
         },
       ],
     },
