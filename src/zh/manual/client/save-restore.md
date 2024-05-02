@@ -1,8 +1,8 @@
 ---
 aside: true
 layout: doc
-titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
-description: 还原存档到历史位置，或存档误删还原。
+title: 存档恢复
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'

@@ -1,7 +1,7 @@
 ---
 layout: doc
-titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
-description: 在设置中可以调整【前台帧率】、【后台帧率】，以降低性能，降低对游戏帧率的影响。
+title: 帧率设置
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'

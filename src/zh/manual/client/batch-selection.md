@@ -1,7 +1,7 @@
 ---
 layout: doc
-titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
-description: 应旅行者需求，现已将多选功能加入豪华午餐！
+title: 批量选择
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 - <span style="color: red">右键单击</span>某个点位，将直接转换 **<span style="color: green">完成</span>/<span style="color: red">未标记</span>** 状态

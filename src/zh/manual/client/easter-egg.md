@@ -1,8 +1,8 @@
 ---
 aside: false
 layout: doc
-titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
-description: 1.6版本、2.8版本已经过去，海岛将会作为彩蛋保存在客户端内。
+title: 彩蛋
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 1.6、2.5、2.8、3.8版本已经过去。

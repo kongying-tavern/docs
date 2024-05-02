@@ -1,8 +1,8 @@
 ---
 aside: false
 layout: doc
-titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
-description: 地图对标记【已完成】的点位有两种显示方式。
+title: 隐藏/显示标记
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'

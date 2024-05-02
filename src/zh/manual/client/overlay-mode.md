@@ -1,11 +1,8 @@
 ---
 aside: true
 layout: doc
-titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
-description: >-
-  Overlay Mode displays the map client over the Genshin game window. This mode
-  benefits players who only have one monitor, allowing quicker switching between
-  the game and the map client.
+title: 覆盖模式
+titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'
