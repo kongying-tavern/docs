@@ -269,7 +269,7 @@ link: https://jq.qq.com/?_wv=1027&k=EqhYN9uI
 
 [文：自动神瞳]: #
 
-# ~~[Position Tracker] Oculus Tracking~~
+## ~~[Position Tracker] Oculus Tracking~~
 
 Functioning principle:
 

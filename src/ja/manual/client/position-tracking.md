@@ -227,7 +227,7 @@ theme: medium
 
 [文：自动神瞳]: #
 
-# ~~[Position Tracker] Oculus Tracking~~
+## ~~[Position Tracker] Oculus Tracking~~
 
 Functioning principle:
 

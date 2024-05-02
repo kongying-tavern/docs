@@ -221,7 +221,7 @@ Occasional teleportation skips of the player indicator cannot be avoided due to 
 
 [文：自动神瞳]: #
 
-# ~~[Position Tracker] Oculus Tracking~~
+## ~~[Position Tracker] Oculus Tracking~~
 
 Functioning principle:
 
