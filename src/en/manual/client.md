@@ -5,7 +5,7 @@ title: Table of Contents
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
-[文：【目录】客户端使用手册]: # '../../manual/client.md'
+[文：【目录】客户端使用手册]: # '../../manual/client'
 
 ## **Update Log**
 
@@ -14,25 +14,25 @@ titleTemplate: :title - Client Manuals | Kongying Tavern
 ## **Guides**
 
 - [Starter Tour (Coming Soon)](#)
-- [[Position Tracker] Introduction](./guide/auto-tracking/importantnotes.md)
-- [[Position Tracker] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
-- [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
-- [[Multi Mark] Instructions](./guide/batch-selection/instructions.md)
-- [[Custom Path Planner (Canvas)] Guide](./guide/canvas/guide.md)
-- [[Easter Egg] View Archived Versions of Golden Apple Archipelago](./guide/easter-egg/view.md)
-- [[Hide/Show Found] Feature](./guide/hide-show-done/hidedoneshowdone.md)
-- [[Overlay Mode] Instructions](./guide/overlay-mode/instructions.md)
-- [[Overlay Mode] Launching The Game in Windowed Fullscreen](./guide/overlay-mode/fullscreen-windowed/launching.md)
-- [[Restore/Recover] Recovery From Stored Progress](./guide/restore-recover/progress.md)
+- [[Position Tracker] Introduction](./client/position-tracking)
+- [[Position Tracker] Troubleshooting](./client/position-tracking)
+- [[Background Usage] Framerate/Tracking Control](./client/framerate)
+- [[Multi Mark] Instructions](./client/batch-selection)
+- [[Custom Path Planner (Canvas)] Guide](./client/canvas)
+- [[Easter Egg] View Archived Versions of Golden Apple Archipelago](./client/easter-egg)
+- [[Hide/Show Found] Feature](./client/hide-show-done)
+- [[Overlay Mode] Instructions](./client/overlay-mode)
+- [[Overlay Mode] Launching The Game in Windowed Fullscreen](./client/fullscreen-windowed)
+- [[Restore/Recover] Recovery From Stored Progress](./client/save-restore)
 
 ## **FAQs**
 
-- [Download The Latest Map Client](../download-client.md)
-- [[Auto Update] Non-Responsive Updater](./faq/autoupdate/updater.md)
-- [[Installation Error] Code 2503](./faq/instlerror/code2503.md)
-- [[Installation Error] Missing .dll file](./faq/instlerror/missingdll.md)
-- [[Launch Error] Empty Dialog Box or Stuck Progress Bar](./faq/launcherror/emptydialog.md)
-- [[Launch Error] Version Check Failed](./faq/launcherror/versioncheck.md)
-- [[Login] Account Login Problems](./faq/login/accountlogin.md)
-- [[Login] Client Repeatedly Requests Login](./faq/login/clientrepeatedly.md)
-- [Can I be Banned For Using Kongying Tavern?](./faq/accountsafety/acntban.md)
+- [Download The Latest Map Client](../download-client)
+- [[Auto Update] Non-Responsive Updater](./faq/autoupdate/updater)
+- [[Installation Error] Code 2503](./faq/instlerror/code2503)
+- [[Installation Error] Missing .dll file](./faq/instlerror/missingdll)
+- [[Launch Error] Empty Dialog Box or Stuck Progress Bar](./faq/launcherror/emptydialog)
+- [[Launch Error] Version Check Failed](./faq/launcherror/versioncheck)
+- [[Login] Account Login Problems](./faq/login/accountlogin)
+- [[Login] Client Repeatedly Requests Login](./faq/login/clientrepeatedly)
+- [Can I be Banned For Using Kongying Tavern?](./faq/accountsafety/acntban)
