@@ -9,7 +9,7 @@ const constants: CustomConstant = {
     'A Genshin interactive map by Kongying Tavern for completionists',
   META_IMAGE: 'https://yuanshen.site/docs/imgs/common/cover.jpg',
   LOCAL_CODE: 'fr',
-  LOCAL_BASE: 'fr',
+  LOCAL_BASE: '/fr',
 }
 
 export default constants

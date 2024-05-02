@@ -4,21 +4,17 @@ const nav: DefaultTheme.NavItem[] = [
   {
     text: 'Communauté',
     link: '/community',
-    activeMatch: '^/fr/community',
   },
   {
     text: 'Soutenez-nous',
     link: '/support-us',
-    activeMatch: '^/fr/support-us',
   },
   {
     text: 'APP',
-    activeMatch: '^/fr/(download-client|manual/)',
     items: [
       {
         text: 'Télécharger le client',
         link: '/download-client',
-        activeMatch: '^/fr/download-client',
       },
       {
         text: 'Client pour Windows',
@@ -26,7 +22,6 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: `Guides d'utilisations`,
             link: '/manual/client',
-            activeMatch: '^/fr/manual/',
           },
           {
             text: 'Note des mises à jour',
@@ -64,8 +59,6 @@ const nav: DefaultTheme.NavItem[] = [
   },
   {
     text: 'À propos',
-    activeMatch:
-      '^/fr/(join|team|staff|support-us|credits|disclaimer|privacy|agreement|translations|friends-links)',
     items: [
       {
         text: 'À propos de nous',
@@ -73,12 +66,10 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Rejoignez-nous',
             link: '/join',
-            activeMatch: '^/fr/join',
           },
           {
             text: 'Notre équipe',
             link: '/team',
-            activeMatch: '^/fr/team',
           },
         ],
       },
@@ -88,17 +79,14 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Contributeurs',
             link: '/staff',
-            activeMatch: '^/fr/staff',
           },
           {
             text: 'Sponsors',
             link: '/support-us#sponsor-acknowledgement',
-            activeMatch: '^/fr/support-us',
           },
           {
             text: 'Crédits',
             link: '/credits',
-            activeMatch: '^/fr/credits',
           },
         ],
       },
@@ -108,17 +96,14 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Clause de non-responsabilité',
             link: '/disclaimer',
-            activeMatch: '^/fr/disclaimer',
           },
           {
             text: 'Confidentialité',
             link: '/privacy',
-            activeMatch: '^/fr/privacy',
           },
           {
             text: 'Accord',
             link: '/agreement',
-            activeMatch: '^/fr/agreement',
           },
         ],
       },
@@ -128,12 +113,10 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Participer aux translations',
             link: '/translations',
-            activeMatch: '^/fr/translations',
           },
           {
             text: 'Échange de liens',
             link: '/friends-links',
-            activeMatch: '^/fr/friends-links',
           },
         ],
       },

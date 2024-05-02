@@ -8,7 +8,7 @@ const constants: CustomConstant = {
     '原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern',
   META_IMAGE: 'https://yuanshen.site/docs/imgs/common/cover.jpg',
   LOCAL_CODE: 'zh-CN',
-  LOCAL_BASE: '',
+  LOCAL_BASE: '/',
 }
 
 export default constants

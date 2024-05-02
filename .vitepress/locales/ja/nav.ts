@@ -4,21 +4,17 @@ const nav: DefaultTheme.NavItem[] = [
   {
     text: 'コミュニティ',
     link: '/community',
-    activeMatch: '^/ja/community',
   },
   {
     text: 'スポンサーになる',
     link: '/support-us',
-    activeMatch: '^/ja/support-us',
   },
   {
     text: 'アプリ',
-    activeMatch: '^/ja/(download-client|manual/)',
     items: [
       {
         text: 'アプリダウンロード',
         link: '/download-client',
-        activeMatch: '^/ja/download-client',
       },
       {
         text: 'Windowsアプリ',
@@ -26,7 +22,6 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'ガイダンス',
             link: '/manual/client',
-            activeMatch: '^/ja/manual/',
           },
           {
             text: 'リリースノート',
@@ -64,8 +59,6 @@ const nav: DefaultTheme.NavItem[] = [
   },
   {
     text: 'もっと知る',
-    activeMatch:
-      '^/ja/(join|team|staff|support-us|credits|disclaimer|privacy|agreement|translations|friends-links)',
     items: [
       {
         text: '私たちを知る',
@@ -73,12 +66,10 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: '開発に参画',
             link: '/join',
-            activeMatch: '^/ja/join',
           },
           {
             text: 'チームを知る',
             link: '/team',
-            activeMatch: '^/ja/team',
           },
         ],
       },
@@ -88,17 +79,14 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: '貢献者感謝',
             link: '/staff',
-            activeMatch: '^/ja/staff',
           },
           {
             text: '寄付感謝',
             link: '/support-us#sponsor-acknowledgement',
-            activeMatch: '^/ja/support-us',
           },
           {
             text: '技術提供',
             link: '/credits',
-            activeMatch: '^/ja/credits',
           },
         ],
       },
@@ -108,17 +96,14 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: '免責事項',
             link: '/disclaimer',
-            activeMatch: '^/ja/disclaimer',
           },
           {
             text: 'プライバシーポリシー',
             link: '/privacy',
-            activeMatch: '^/ja/privacy',
           },
           {
             text: '利用規約',
             link: '/agreement',
-            activeMatch: '^/ja/agreement',
           },
         ],
       },
@@ -128,12 +113,10 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: '翻訳に参加',
             link: '/translations',
-            activeMatch: '^/ja/translations',
           },
           {
             text: 'リンク集',
             link: '/friends-links',
-            activeMatch: '^/ja/friends-links',
           },
         ],
       },
