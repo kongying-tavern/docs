@@ -2,7 +2,7 @@
 aside: false
 layout: doc
 title: ウィンドウ全画面/ボーダレスウィンドウモード
-titleTemplate: :title | 空蛍酒場
+titleTemplate: :title - アプリガイダンス | 空蛍酒場
 wip: true
 ---
 
