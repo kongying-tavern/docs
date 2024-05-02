@@ -1,6 +1,5 @@
 ---
 aside: true
-title: 【覆盖模式】使用说明
 layout: doc
 titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
 description: >-

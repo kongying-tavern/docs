@@ -1,6 +1,5 @@
 ---
 aside: true
-title: 【画板】路线功能教程
 layout: doc
 titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
 description: 基础使用教程。

@@ -1,5 +1,4 @@
 ---
-title: 【批量选择】使用说明
 layout: doc
 titleTemplate: ':title - 客户端使用手册 | 空荧酒馆'
 description: 应旅行者需求，现已将多选功能加入豪华午餐！
