@@ -1,12 +1,11 @@
 ---
 aside: false
-titleTemplate: ':title | 空蛍酒場'
-description: 目次
+layout: doc
+title: 目次
+titleTemplate: :title | 空蛍酒場
 ---
 
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
-
-# 目次
 
 ## **ほかの言語のマニュアル**
 

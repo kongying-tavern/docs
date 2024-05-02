@@ -1,13 +1,12 @@
 ---
 aside: false
-titleTemplate: ':title - Client Manuals | Kongying Tavern'
-description: Table of Contents
+layout: doc
+title: Manuels
+titleTemplate: :title - Client Manuals | Kongying Tavern
 wip: true
 ---
 
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
-
-# Manuels
 
 ## **Manuels**
 

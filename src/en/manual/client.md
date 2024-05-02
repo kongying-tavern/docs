@@ -1,12 +1,11 @@
 ---
 aside: false
-titleTemplate: ':title - Client Manuals | Kongying Tavern'
-description: Table of Contents
+layout: doc
+title: Table of Contents
+titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【目录】客户端使用手册]: # '../../manual/client.md'
-
-# Table of Contents
 
 ## **Manuals in Other Languages**
 
