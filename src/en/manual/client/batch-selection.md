@@ -1,12 +1,10 @@
 ---
 aside: false
-titleTemplate: ':title - Client Manuals | Kongying Tavern'
-description: Responding to the requests from travelers, Multi Mark is now available!
+title: Marking Multiple Pins
+titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'
-
-# [Multi Mark] Instructions
 
 Responding to the requests from travelers, Multi Mark is now available!
 

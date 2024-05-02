@@ -1,13 +1,11 @@
 ---
 aside: false
-description: null
-titleTemplate: ':title - Client Manuals | Kongying Tavern'
+title: Position Tracker
+titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 位置追踪问题排查.docx 。'
-
-# [Position Tracker] Introduction
 
 This feature is based on **image recognition**
 
@@ -114,7 +112,7 @@ Please go through the [potential Issues](./troubleshoot.md) before posting in th
 
 [文：位置追踪问题排查.docx]: # '以下为 问题排查 内容'
 
-# [Position Tracker] Troubleshooting
+## Troubleshooting
 
 ## 1. When **Position Tracker** is engaged, the in-game minimap does not show pins, nor is there an overlay of the map client {#issue1}
 
