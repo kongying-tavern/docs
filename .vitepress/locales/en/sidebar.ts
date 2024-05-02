@@ -1,7 +1,6 @@
 import type { DefaultTheme } from 'vitepress'
 
-const sidebar: DefaultTheme.SidebarItem[] = {
-  // @ts-ignore
+const sidebar: DefaultTheme.SidebarMulti = {
   '/manual': [
     {
       text: 'Table of Contents',
