@@ -7,10 +7,6 @@ titleTemplate: :title - Client Manuals | Kongying Tavern
 
 [文：【目录】客户端使用手册]: # '../../manual/client.md'
 
-## **Manuals in Other Languages**
-
-- [中文版用户手册 (Chinese Version)](../../manual/client.md)
-
 ## **Update Log**
 
 - [Client Update Log](https://discord.gg/SWz6RTWNkm)

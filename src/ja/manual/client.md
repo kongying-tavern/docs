@@ -7,10 +7,6 @@ titleTemplate: :title | 空蛍酒場
 
 [文：【目录】客户端使用手册]: # 'https://support.qq.com/products/321980/faqs-more/?id=94938'
 
-## **ほかの言語のマニュアル**
-
-- [中文版用户手册 (Chinese Version)](https://support.qq.com/products/321980/faqs/94938)
-
 ## **アップデートログ**
 
 - [アップデートログ](https://support.qq.com/products/321980/blog/505884)

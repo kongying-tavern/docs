@@ -10,12 +10,8 @@ wip: true
 
 ## **Manuels**
 
-- [[Suivi Automatique] Introduction](./guide/auto-tracking/importantnotes.md)
-
-## **Manuels dans d'autres langues**
-
-- [中文版用户手册 (Chinese Version)](https://support.qq.com/products/321980/faqs/94938)
 - [Starter Tour (Coming Soon)](#)
+- [[Suivi Automatique] Introduction](./guide/auto-tracking/importantnotes.md)
 - [[Position Tracker] Troubleshooting](./guide/auto-tracking/troubleshoot.md)
 - [[Background Usage] Framerate/Tracking Control](./guide/bg/bgfrate.md)
 - [[Multi Mark] Instructions](./guide/batch-selection/instructions.md)
