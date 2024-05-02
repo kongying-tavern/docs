@@ -8,57 +8,44 @@ const sidebar: DefaultTheme.SidebarItem[] = {
       link: '/manual/client',
     },
     {
-      text: '使い方ガイド',
+      text: 'ガイダンス',
+      collapsed: false,
       items: [
         {
-          text: '【オートトラッキング】',
-          items: [
-            {
-              text: '機能紹介',
-              link: '/manual/client/position-tracking',
-            },
-            {
-              text: 'トラブルシューティング',
-              link: '/manual/client/position-tracking',
-            },
-          ],
-        },
-        {
-          text: '【バックグラウンドユーセージ】フレームレート設定',
-          link: '/manual/client/framerate',
-        },
-        {
-          text: '【一括選択】利用ガイド',
+          text: '一括選択',
           link: '/manual/client/batch-selection',
         },
         {
-          text: '【キャンバス】ルート計画機能紹介',
-          link: '/manual/client/canvas',
-        },
-        {
-          text: '【おまけ】金リンゴ群島を見る',
-          link: '/manual/client/easter-egg',
-        },
-        {
-          text: '【表示】/【非表示】マーカー',
+          text: 'マーカー表示/非表示',
           link: '/manual/client/hide-show-done',
         },
         {
-          text: '【オーバーレイモード】',
-          items: [
-            {
-              text: '利用ガイド',
-              link: '/manual/client/overlay-mode',
-            },
-            {
-              text: '【ウィンドウ全画面】ゲーム起動',
-              link: '/manual/client/fullscreen-windowed',
-            },
-          ],
+          text: 'オーバーレイモード',
+          link: '/manual/client/overlay-mode',
         },
         {
-          text: '【セーブデータ】データ復元',
+          text: 'オートトラ',
+          link: '/manual/client/position-tracking',
+        },
+        {
+          text: 'キャンバス-ルート計画',
+          link: '/manual/client/canvas',
+        },
+        {
+          text: 'ウィンドウ全画面/ボーダレスウィンドウモード',
+          link: '/manual/client/fullscreen-windowed',
+        },
+        {
+          text: 'フレームレート',
+          link: '/manual/client/framerate',
+        },
+        {
+          text: 'データ復元',
           link: '/manual/client/save-restore',
+        },
+        {
+          text: 'イースターエッグ',
+          link: '/manual/client/easter-egg',
         },
       ],
     },
