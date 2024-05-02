@@ -1,5 +1,6 @@
 ---
 aside: true
+layout: doc
 title: Progress Recovery
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---

@@ -1,5 +1,6 @@
 ---
 aside: false
+layout: doc
 title: Easter Eggs
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---

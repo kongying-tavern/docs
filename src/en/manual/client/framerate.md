@@ -1,5 +1,6 @@
 ---
 aside: false
+layout: doc
 title: Framerate/Tracking Control
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---

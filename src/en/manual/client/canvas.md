@@ -1,5 +1,6 @@
 ---
 aside: true
+layout: doc
 title: Custom Path Planner (Canvas)
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---

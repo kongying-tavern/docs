@@ -1,5 +1,6 @@
 ---
 aside: true
+layout: doc
 title: Overlay Mode
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---

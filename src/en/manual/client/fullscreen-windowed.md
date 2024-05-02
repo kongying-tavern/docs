@@ -1,5 +1,6 @@
 ---
 aside: false
+layout: doc
 title: Launching The Game in Windowed Fullscreen
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---

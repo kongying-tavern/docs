@@ -1,5 +1,6 @@
 ---
 aside: false
+layout: doc
 title: Marking Multiple Pins
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---

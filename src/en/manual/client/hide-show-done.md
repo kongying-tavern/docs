@@ -1,5 +1,6 @@
 ---
 aside: false
+layout: doc
 title: Change Pin Visibility
 titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
