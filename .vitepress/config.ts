@@ -2,7 +2,16 @@ import Unocss from 'unocss/vite'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig, HeadConfig } from 'vitepress'
+import { defineConfig } from 'vitepress'
+import type {
+  DefaultTheme,
+  HeadConfig,
+  PageData,
+  SiteConfig,
+  TransformContext,
+  TransformPageContext,
+  UserConfig,
+} from 'vitepress'
 import { colorPreviewPlugin } from './theme/markdown/colorPreview'
 import { cardPlugin } from './theme/markdown/card'
 import { figure } from '@mdit/plugin-figure'
@@ -17,9 +26,9 @@ import { zhConfig } from './locales/zh'
 import { jaConfig } from './locales/ja'
 import { frConfig } from './locales/fr'
 
-export const isProd = process.env.NODE_ENV === 'production'
-export const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
-export const productionHead: HeadConfig[] = [
+const isProd = process.env.NODE_ENV === 'production'
+const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
+const productionHead: HeadConfig[] = [
   [
     'script',
     {
@@ -42,6 +51,139 @@ export const productionHead: HeadConfig[] = [
     {"@context":"https://schema.org","@type":"WebPage","name":"Kongying Tavern Genshin Interactive Map"}`,
   ],
 ]
+
+const configureDynamicHead = (
+  pageData: PageData,
+  siteConfig: SiteConfig,
+): void => {
+  pageData.frontmatter.head ??= []
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'og:url',
+      content: `https://yuanshen.site/${
+        siteConfig.site.base
+      }${pageData.relativePath.replace('.md', '')}`,
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'twitter:url',
+      content: `https://yuanshen.site/${
+        siteConfig.site.base
+      }${pageData.relativePath.replace('.md', '')}`,
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'og:title',
+      content: pageData.frontmatter.title
+        ? pageData.frontmatter.title
+        : 'Kongying Tavern',
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'twitter:title',
+      content: pageData.frontmatter.title
+        ? pageData.frontmatter.title
+        : 'Kongying Tavern',
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'og:description',
+      content: pageData.frontmatter.description
+        ? pageData.frontmatter.description
+        : `Genshin Interactive Map
+A Completionist's Interactive Map by Kongying Tavern`,
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'twitter:description',
+      content: pageData.frontmatter.description
+        ? pageData.frontmatter.description
+        : `Genshin Interactive Map
+A Completionist's Interactive Map by Kongying Tavern`,
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'description',
+      content: pageData.frontmatter.description
+        ? pageData.frontmatter.description
+        : `Genshin Interactive Map
+A Completionist's Interactive Map by Kongying Tavern`,
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'keywords',
+      content: pageData.frontmatter.keywords
+        ? pageData.frontmatter.keywords
+        : '空荧酒馆,空荧地图,空荧酒馆原神地图,原神全资源攻略地图,原神攻略地图,原神地图,原神电子地图,原神互动地图,Genshin,Genshin_map,Genshin_Treasure,Genshin Map,Genshin Impact Map,Genshin Impact Interactive Map',
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'og:image',
+      content: pageData.frontmatter.image
+        ? pageData.frontmatter.image
+        : 'https://yuanshen.site/docs/imgs/common/cover.jpg',
+    },
+  ])
+  pageData.frontmatter.head.push([
+    'meta',
+    {
+      name: 'twitter:image',
+      content: pageData.frontmatter.image
+        ? pageData.frontmatter.image
+        : 'https://yuanshen.site/docs/imgs/common/cover.jpg',
+    },
+  ])
+}
+const configureDynamicFrontmatter = (
+  pageData: PageData,
+  siteConfig: SiteConfig,
+): void => {}
+type TransformHeadFunc = Pick<UserConfig<DefaultTheme.Config>, 'transformHead'>
+type TransformPageDataFunc = Pick<
+  UserConfig<DefaultTheme.Config>,
+  'transformPageData'
+>
+const createConfigureFunction = ():
+  | TransformHeadFunc
+  | TransformPageDataFunc => {
+  if (isProd) {
+    return {
+      transformHead: (context: TransformContext) => {
+        const { pageData, siteConfig } = context
+        configureDynamicHead(pageData, siteConfig)
+        configureDynamicFrontmatter(pageData, siteConfig)
+      },
+    }
+  } else {
+    return {
+      transformPageData: (
+        pageData: PageData,
+        context: TransformPageContext,
+      ) => {
+        const { siteConfig } = context
+        configureDynamicHead(pageData, siteConfig)
+        configureDynamicFrontmatter(pageData, siteConfig)
+      },
+    }
+  }
+}
 
 export default defineConfig({
   srcDir: 'src',
@@ -293,103 +435,7 @@ export default defineConfig({
       stringify: true,
     },
   },
-  transformHead(content) {
-    const { pageData, siteConfig } = content
-    pageData.frontmatter.head ??= []
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'og:url',
-        content: `https://yuanshen.site/${
-          siteConfig.site.base
-        }${pageData.relativePath.replace('.md', '')}`,
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'twitter:url',
-        content: `https://yuanshen.site/${
-          siteConfig.site.base
-        }${pageData.relativePath.replace('.md', '')}`,
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'og:title',
-        content: pageData.frontmatter.title
-          ? pageData.frontmatter.title
-          : 'Kongying Tavern',
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'twitter:title',
-        content: pageData.frontmatter.title
-          ? pageData.frontmatter.title
-          : 'Kongying Tavern',
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'og:description',
-        content: pageData.frontmatter.description
-          ? pageData.frontmatter.description
-          : `Genshin Interactive Map
-A Completionist's Interactive Map by Kongying Tavern`,
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'twitter:description',
-        content: pageData.frontmatter.description
-          ? pageData.frontmatter.description
-          : `Genshin Interactive Map
-A Completionist's Interactive Map by Kongying Tavern`,
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'description',
-        content: pageData.frontmatter.description
-          ? pageData.frontmatter.description
-          : `Genshin Interactive Map
-A Completionist's Interactive Map by Kongying Tavern`,
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'keywords',
-        content: pageData.frontmatter.keywords
-          ? pageData.frontmatter.keywords
-          : '空荧酒馆,空荧地图,空荧酒馆原神地图,原神全资源攻略地图,原神攻略地图,原神地图,原神电子地图,原神互动地图,Genshin,Genshin_map,Genshin_Treasure,Genshin Map,Genshin Impact Map,Genshin Impact Interactive Map',
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'og:image',
-        content: pageData.frontmatter.image
-          ? pageData.frontmatter.image
-          : 'https://yuanshen.site/docs/imgs/common/cover.jpg',
-      },
-    ])
-    pageData.frontmatter.head.push([
-      'meta',
-      {
-        name: 'twitter:image',
-        content: pageData.frontmatter.image
-          ? pageData.frontmatter.image
-          : 'https://yuanshen.site/docs/imgs/common/cover.jpg',
-      },
-    ])
-  },
+  ...createConfigureFunction(),
   markdown: {
     image: {
       lazyLoading: true,
