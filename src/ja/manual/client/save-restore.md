@@ -1,14 +1,13 @@
 ---
 aside: true
-titleTemplate: ':title | 空蛍酒場'
-description: 还原存档到历史位置，或存档误删还原。
+layout: doc
+title: データ復元
+titleTemplate: :title | 空蛍酒場
 wip: true
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'
 [#]: # '仅第 2 部分为原文直接翻译'
-
-# 【存档丢失】存档还原/误删恢复
 
 ### 这个功能需要在客户端登陆 Gitee 账户
 

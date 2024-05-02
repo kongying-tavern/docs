@@ -1,13 +1,12 @@
 ---
 aside: true
-titleTemplate: ':title | 空蛍酒場'
-description: 基础使用教程。
+layout: doc
+title: キャンバス-ルート計画
+titleTemplate: :title | 空蛍酒場
 wip: true
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'
-
-# 【画板】路线功能教程
 
 快捷键说明：
 

@@ -1,13 +1,12 @@
 ---
 aside: false
-titleTemplate: ':title | 空蛍酒場'
-description: 地图对标记【已完成】的点位有两种显示方式。
+layout: doc
+title: マーカー表示/非表示
+titleTemplate: :title | 空蛍酒場
 wip: true
 ---
 
 [文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'
-
-# 【隐藏】标记/【显示】标记
 
 地图对标记【已完成】的点位有两种显示方式：
 

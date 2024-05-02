@@ -1,14 +1,13 @@
 ---
 aside: false
-description: null
+layout: doc
+title: オートトラ
+titleTemplate: :title | 空蛍酒場
 wip: true
-titleTemplate: ':title | 空蛍酒場'
 ---
 
 [文：【位置追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'
 [#]: # '仅 capabilities 内容来自原文，其余来自申讨反馈群群文件 位置追踪问题排查.docx 。'
-
-# 【位置追踪】注意事项
 
 本功能基于【图像识别】技术实现
 
@@ -110,8 +109,6 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 
 [文：位置追踪问题排查.docx]: # '以下为“问题排查”内容'
 
-# 【位置追踪】问题排查
-
 ## [开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)
 
 ## 0. 准备工作 {#issue0}
@@ -128,6 +125,7 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 如果需要使用，可以在以下链接下载（尚在开发中，不稳定）
 
 ```card
+layout: doc
 title: 维系天理
 
 link: http://www.weixitianli.com/

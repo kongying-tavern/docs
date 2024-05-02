@@ -1,16 +1,12 @@
 ---
 aside: false
-titleTemplate: ':title | 空蛍酒場'
-description: >-
-  Windowed Fullscreen lets the game run fullscreen while satisfying the [Overlay
-  Mode]'s "running in non-fullscreen mode." pre-requisite. Allowing the map
-  client to overlay the game while it's displaying fullscreen.
+layout: doc
+title: ウィンドウ全画面/ボーダレスウィンドウモード
+titleTemplate: :title | 空蛍酒場
 wip: true
 ---
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
-
-# 【窗口全屏/无边框窗口模式】启动游戏
 
 【全屏窗口化】可以使游戏保持全屏显示的情况下，仍能满足实现追踪、覆盖功能所需的【仅窗口化可用】的条件。
 

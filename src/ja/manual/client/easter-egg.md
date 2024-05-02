@@ -1,13 +1,12 @@
 ---
 aside: false
-titleTemplate: ':title | 空蛍酒場'
-description: 1.6版本、2.8版本已经过去，海岛将会作为彩蛋保存在客户端内。
+layout: doc
+title: イースターエッグ
+titleTemplate: :title | 空蛍酒場
 wip: true
 ---
 
 [文：【彩蛋】查看历史版本内容]: # 'https://support.qq.com/products/321980/faqs/97056'
-
-# 【彩蛋】查看历史版本内容
 
 1.6 版本、2.8 版本已经过去，海岛将会作为彩蛋保存在客户端内。
 
