@@ -2,7 +2,6 @@
 aside: true
 layout: doc
 title: 画板/路线功能
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'

@@ -2,7 +2,6 @@
 aside: true
 layout: doc
 title: 覆盖模式
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'

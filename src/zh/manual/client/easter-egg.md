@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: 彩蛋
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 1.6、2.5、2.8、3.8版本已经过去。

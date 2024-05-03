@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Troubleshoot
 wip: true
 ---

@@ -2,7 +2,6 @@
 aside: true
 layout: doc
 title: Progress Recovery
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【存档丢失】存档还原/误删恢复]: # 'https://support.qq.com/products/321980/faqs/113007'

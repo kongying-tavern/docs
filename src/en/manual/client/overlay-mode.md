@@ -2,7 +2,6 @@
 aside: true
 layout: doc
 title: Overlay Mode
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【覆盖模式】使用说明]: # 'https://support.qq.com/products/321980/faqs/97047'

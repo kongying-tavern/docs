@@ -2,7 +2,6 @@
 aside: true
 layout: doc
 title: オーバーレイモード
-titleTemplate: :title - アプリガイダンス | 空蛍酒場
 wip: true
 ---
 

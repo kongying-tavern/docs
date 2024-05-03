@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Between version updates, some setups will encounter a bug that prevents the auto-updater from launching, which will require you to run the updater manually.
 wip: true
 ---

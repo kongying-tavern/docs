@@ -1,7 +1,6 @@
 ---
 layout: doc
 title: 帧率设置
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'

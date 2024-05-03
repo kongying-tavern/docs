@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: 窗口全屏/无边框窗口模式
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'

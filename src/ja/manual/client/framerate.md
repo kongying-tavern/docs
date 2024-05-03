@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: フレームレート
-titleTemplate: :title - アプリガイダンス | 空蛍酒場
 wip: true
 ---
 

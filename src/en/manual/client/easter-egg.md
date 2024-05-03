@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Easter Eggs
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【彩蛋】查看历史版本内容]: # 'https://support.qq.com/products/321980/faqs/97056'

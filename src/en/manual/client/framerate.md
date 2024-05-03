@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Framerate/Tracking Control
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【地图性能占用高】前后台帧率设置]: # 'https://support.qq.com/products/321980/faqs/97183'

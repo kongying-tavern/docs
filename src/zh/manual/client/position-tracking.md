@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: 位置追踪
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【位置追踪】注意事项]: # 'https://support.qq.com/products/321980/faqs/102055'

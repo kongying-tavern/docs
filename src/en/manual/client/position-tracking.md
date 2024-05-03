@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Position Tracker
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【自动更新】没有反应]: # 'https://support.qq.com/products/321980/faqs/102055'

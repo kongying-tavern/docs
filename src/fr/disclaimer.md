@@ -3,7 +3,6 @@ title: 免责声明
 description: 免责声明
 layout: doc
 aside: false
-titleTemplate: :title - Client Manuals | Kongying Tavern
 wip: true
 ---
 

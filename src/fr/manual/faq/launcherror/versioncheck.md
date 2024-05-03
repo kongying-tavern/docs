@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title - Client Manuals | Kongying Tavern
 description: An overwhelming amount of user access attempts can cause our server to become non-responsive.
 wip: true
 ---

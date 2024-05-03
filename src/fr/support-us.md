@@ -2,7 +2,6 @@
 title: Support Us
 aside: false
 layout: doc
-titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Genshin Interactive Map_ est un projet open source sous MulanPSL-1.0, il est entièrement gratuit et sans pubs. À mesure que la base d'utilisateurs et la popularité de notre projet augmentent, les coûts de développement et maintenance augmente également.
 ---
 

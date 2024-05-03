@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title - Client Manuals | Kongying Tavern
 description: Please use the portable version.
 wip: true
 ---

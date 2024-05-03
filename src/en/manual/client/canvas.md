@@ -2,7 +2,6 @@
 aside: true
 layout: doc
 title: Custom Path Planner (Canvas)
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【画板】路线功能教程]: # 'https://support.qq.com/products/321980/faqs/121965'

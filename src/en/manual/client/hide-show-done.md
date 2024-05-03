@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Change Pin Visibility
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'

@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Launching The Game in Windowed Fullscreen
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'

@@ -3,7 +3,6 @@ title: Contribution Acknowledgement
 description: Kongying Tavern Genshin Interactive Map began its development in June 2020, during these days, pin gathering has consumed over 20,000 man-hours. We sincerely thank every individual that contributed to the making of this map. We sincerely thank every individual that contributed to the making of this map.
 aside: false
 layout: doc
-titleTemplate: :title - Client Manuals | Kongying Tavern
 wip: true
 ---
 

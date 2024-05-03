@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Marking Multiple Pins
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【批量选择】使用说明]: # 'https://support.qq.com/products/321980/faqs/97187'

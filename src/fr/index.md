@@ -1,7 +1,6 @@
 ---
 layout: home
 title: Carte Interactive pour Genshin
-titleTemplate: :title - Client Manuals | Kongying Tavern
 features:
   - title: Marqueurs intelligentes
     icon: 🦾

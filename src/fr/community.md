@@ -2,7 +2,6 @@
 title: Join Community
 description: Join Community
 layout: doc
-titleTemplate: :title - Client Manuals | Kongying Tavern
 aside: false
 wip: true
 ---

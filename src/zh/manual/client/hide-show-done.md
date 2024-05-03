@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: 隐藏/显示标记
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 ---
 
 [文：【隐藏】标记/【显示】标记]: # 'https://support.qq.com/products/321980/faqs/127250'

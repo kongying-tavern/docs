@@ -1,7 +1,6 @@
 ---
 title: 【无法打开】提示“数据查询失败”、“版本查询失败”
 layout: doc
-titleTemplate: :title - 客户端使用手册 | 空荧酒馆
 description: 这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 ---
 

@@ -1,7 +1,6 @@
 ---
 layout: doc
 title: Translations
-titleTemplate: :title - Client Manuals | Kongying Tavern
 wip: true
 ---
 

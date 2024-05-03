@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Manuels
-titleTemplate: :title - Client Manuals | Kongying Tavern
 wip: true
 ---
 

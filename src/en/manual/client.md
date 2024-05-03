@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Table of Contents
-titleTemplate: :title - Client Manuals | Kongying Tavern
 ---
 
 [文：【目录】客户端使用手册]: # '../../manual/client'
