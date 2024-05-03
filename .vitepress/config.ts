@@ -139,6 +139,12 @@ const createConfigureFunction = (): ConfigureFuncType => {
       transformHead: (context: TransformContext) => {
         const { pageData, siteConfig } = context
         cfgDynamicHead(pageData, siteConfig)
+      },
+      transformPageData: (
+        pageData: PageData,
+        context: TransformPageContext,
+      ) => {
+        const { siteConfig } = context
         cfgDynamicTitleTemplate(pageData, siteConfig)
       },
     }
