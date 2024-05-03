@@ -1,7 +1,6 @@
 ---
 title: 技术鸣谢
 description: 原神地图项目使用了包括但不限于以下开源技术和美术资源，我们一直遵守各项使用协议。感谢作者们，是你们让世界更美好！
-titleTemplate: 空荧酒馆
 aside: false
 layout: doc
 pageClass: credits

@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title | 空蛍酒場
 description: 在版本更新中，部分系统会出现无法自动打开更新程序的bug，此时需要手动运行更新程序进行更新
 wip: true
 ---

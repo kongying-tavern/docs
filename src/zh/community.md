@@ -2,7 +2,6 @@
 title: 加入社区
 description: 希望各位小伙伴能够在地图的社区友好交流，结识同好，收获成长！
 layout: doc
-titleTemplate: 空荧酒馆
 ---
 
 ## 社区服务器

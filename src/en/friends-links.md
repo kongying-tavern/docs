@@ -1,6 +1,5 @@
 ---
 title: friend-links
-titleTemplate: :title | Kongying Tavern
 layout: doc
 comment: false
 ---

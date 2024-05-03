@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title | 空蛍酒場
 description: 请检查密码中是否包含【,】（半角逗号），若包含请修改密码去除后重试
 wip: true
 ---

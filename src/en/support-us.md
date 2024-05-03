@@ -2,7 +2,6 @@
 aside: false
 layout: doc
 title: Supprot Us
-titleTemplate: :title | Kongying Tavern
 description: Thank for your support
 ---
 

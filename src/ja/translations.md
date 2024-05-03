@@ -1,7 +1,6 @@
 ---
 layout: doc
 title: 多言語と翻訳
-titleTemplate: 空荧酒馆
 ---
 
 # 多言語と翻訳 {#translations}

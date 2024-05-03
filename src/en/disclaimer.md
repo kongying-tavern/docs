@@ -2,7 +2,6 @@
 title: 免责声明
 layout: doc
 aside: false
-titleTemplate: :title | Kongying Tavern
 wip: true
 ---
 

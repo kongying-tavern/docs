@@ -1,7 +1,6 @@
 ---
 title: Join Community
 layout: doc
-titleTemplate: :title | Kongying Tavern
 ---
 
 ## Community

@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title | 空蛍酒場
 description: 请使用免安装压缩包，正是为此准备的
 wip: true
 ---

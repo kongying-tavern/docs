@@ -1,7 +1,6 @@
 ---
 title: 利用規約
 layout: doc
-titleTemplate: 空蛍酒場
 aside: false
 ---
 

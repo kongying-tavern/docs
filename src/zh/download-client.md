@@ -1,7 +1,6 @@
 ---
 title: 下载客户端
 layout: doc
-titleTemplate: 空荧酒馆
 comment: true
 ---
 

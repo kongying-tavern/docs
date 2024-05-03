@@ -1,7 +1,6 @@
 ---
 layout: doc
 title: Translations
-titleTemplate: :title | Kongying Tavern
 ---
 
 # Translations {#translations}

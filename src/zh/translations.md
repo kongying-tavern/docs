@@ -2,7 +2,6 @@
 layout: doc
 title: 多语言及翻译
 description: 我们希望通过社区的共同努力提供所有原神支持的语言翻译！
-titleTemplate: 空荧酒馆
 ---
 
 # 多语言及翻译 {#translations}

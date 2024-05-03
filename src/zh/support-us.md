@@ -1,7 +1,6 @@
 ---
 title: 支持我们
 description: 非常感谢您对地图开发的支持！
-titleTemplate: 空荧酒馆
 layout: doc
 ---
 

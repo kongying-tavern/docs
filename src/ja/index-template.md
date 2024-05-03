@@ -1,7 +1,6 @@
 ---
 layout: home
 title: 原神地図
-titleTemplate: 空荧酒馆
 
 features:
   - title: 双筛选逻辑

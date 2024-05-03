@@ -1,7 +1,6 @@
 ---
 layout: home
 title: 原神マップ
-titleTemplate: :title | 空蛍酒場
 features:
   - title: ダブルカテゴリ
     icon: 🦾

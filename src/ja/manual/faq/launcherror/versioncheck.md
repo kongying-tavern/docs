@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title | 空蛍酒場
 description: 这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 wip: true
 ---

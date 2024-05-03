@@ -1,7 +1,6 @@
 ---
 title: ダウンロード
 description: ダウンロード
-titleTemplate: 空蛍酒場
 layout: doc
 aside: false
 comment: true
