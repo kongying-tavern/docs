@@ -320,7 +320,7 @@ const modifyKey = (obj: any, base: string) => {
   return newObj
 }
 
-export const baseHelper = (obj: unknown, base: string): unknown =>
+export const baseHelper = (obj: any, base: string): any =>
   modifyKey(modifyLink(obj, base), base)
 
 /**
