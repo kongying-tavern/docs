@@ -23,7 +23,7 @@ wip: true
 - 请确认：您的操作版本至少是 win10 或以上版本（win7 不支持追踪）
 - 请确认：游戏内【解锁神像点亮地图】，游戏内【左上角小地图】完整。
 - 请确认：游戏内【左上角小地图】中，无【任务坐标、范围】指引遮挡。
-- 请确认：游戏不处于【独占全屏】显示模式，推荐使用[【全屏窗口化】](../overlay-mode/fullscreen-windowed/launching.md)模式运行游戏。
+- 请确认：游戏不处于【独占全屏】显示模式，推荐使用[【全屏窗口化】](./fullscreen-windowed.md)模式运行游戏。
 
 成功开启位置追踪后，
 
@@ -105,7 +105,7 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-### 请确保[问题排查](./troubleshoot.md)的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题。
+### 请确保问题排查的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题。
 
 [文：位置追踪问题排查.docx]: # '以下为“问题排查”内容'
 
@@ -180,7 +180,7 @@ theme: medium
   - Bitblt 同时支持窗口模式和独占全屏模式，DirectX 只支持窗口模式
   - 这两种模式只是截图方式的不同，不会影响到追踪的精度
 
-- 尝试将游戏切换为窗口化运行（快捷键 Alt+Enter，按下 win 键游戏没有最小化即为窗口化状态）如何以[无边框窗口运行游戏](../overlay-mode/fullscreen-windowed/launching.md)，你也可以使用“寻空”或“胡桃工具箱”等第三方启动器来以无边框窗口运行。
+- 尝试将游戏切换为窗口化运行（快捷键 Alt+Enter，按下 win 键游戏没有最小化即为窗口化状态）如何以[无边框窗口运行游戏](./fullscreen-windowed.md)，你也可以使用“寻空”或“胡桃工具箱”等第三方启动器来以无边框窗口运行。
 
 - 如果你想要在 Windows11 使用 Bitblt，在图形设置【设置->系统->显示卡】中，添加原神到列表中【`安装目录\Genshin Impact Game\yuanshen.exe，不是launcher.exe`】，添加后，对应的选项设置为【高性能】和【不使用窗口化优化】
 

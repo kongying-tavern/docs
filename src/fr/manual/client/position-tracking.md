@@ -26,7 +26,7 @@ Voici la configuration minimale pour cette fonctionnalité :
 - Windows 10/11
 - La carte est débloquer en déverrouillant les Statues des Sept, et la **mini-carte** est complète
 - La **mini-carte** ne contient aucun **waypoints personnalisés** ni **régions mises en surbrillance**.
-- Le jeu n'est pas en **plein écran exclusif**, l'exécution de [plein écran fenêtré (sans bordure)](../overlay-mode/fullscreen-windowed/launching.md) est recommandée
+- Le jeu n'est pas en **plein écran exclusif**, l'exécution de [plein écran fenêtré (sans bordure)](./fullscreen-windowed.md) est recommandée
 
 Une fois le Suivi Automatique activé, le **client**
 
@@ -112,7 +112,7 @@ Vous pouvez visiter rapidement le répertoire des fichiers via les paramètres d
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-Veuillez parcourir les [problèmes potentiels](./troubleshoot.md) avant de publier sur le [canal #feedback sur Discord](https://discord.gg/8wgttNDwse). (vous êtes invités à poser n'importe quelle question dans #chat)
+Veuillez parcourir les [problèmes potentiels](#Troubleshooting) avant de publier sur le [canal #feedback sur Discord](https://discord.gg/8wgttNDwse). (vous êtes invités à poser n'importe quelle question dans #chat)
 
 [文：位置追踪问题排查.docx]: # '以下为 问题排查 内容'
 
@@ -181,7 +181,7 @@ If the problem persists, use [Clear Tracking Module] under the **Position Tracke
 - Try switching Tracking Modes (The modes differ only in capture method, there is no effect on tracking accuracy)
   - BitBlt supports both windowed and exclusive fullscreen game
   - DirectX supports windowed game only
-- Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
+- Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](./fullscreen-windowed.md)
 - To use BitBlt in Windows 11, go to the Graphics settings (Settings->System->Display->Graphics), add GenshinImpact.exe to the list (`***\Genshin Impact Game\GenshinImpact.exe`, not launcher.exe) and **enable** "Don't use optimizations for windowed games".
 
 ![](/imgs/fr/manual/auto-tracking/windowedoptimization.png)

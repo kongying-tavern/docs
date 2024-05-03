@@ -24,7 +24,7 @@ The following are the requirements for this feature:
 - Windows 10 or above
 - The map is unmasked by unlocking the Statues of Seven, and the **minimap** is complete
 - The **minimap** contains no **custom waypoints** or **highlighted regions**
-- The Game in not under **exclusive fullscreen**, running [windowed fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)is recommended
+- The Game in not under **exclusive fullscreen**, running [windowed fullscreen (Borderless)](./fullscreen-windowed.md)is recommended
 
 Once Position Tracker is enabled, The **map client** will
 
@@ -109,7 +109,7 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-Please go through the [potential Issues](./troubleshoot.md) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
+Please go through the [potential Issues](#Troubleshooting) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
 
 [文：位置追踪问题排查.docx]: # '以下为 问题排查 内容'
 
@@ -179,7 +179,7 @@ If the problem persists, use [Clear Tracking Module] under the **Position Tracke
 - Try switching Tracking Modes (The modes differ only in capture method, there is no effect on tracking accuracy)
   - BitBlt supports both windowed and exclusive fullscreen game
   - DirectX supports windowed game only
-- Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](../overlay-mode/fullscreen-windowed/launching.md)
+- Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](./fullscreen-windowed.md)
 - To use BitBlt in Windows 11, go to the Graphics settings (Settings->System->Display->Graphics), add GenshinImpact.exe to the list (`***\Genshin Impact Game\GenshinImpact.exe`, not launcher.exe) and **enable** "Don't use optimizations for windowed games".
 
 ![](/imgs/en/manual/auto-tracking/windowedoptimization.png)

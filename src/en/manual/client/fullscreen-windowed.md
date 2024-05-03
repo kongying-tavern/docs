@@ -7,7 +7,7 @@ titleTemplate: :title - Client Manuals | Kongying Tavern
 
 [文：【窗口全屏/无边框窗口模式】启动游戏]: # 'https://support.qq.com/products/321980/faqs/97887'
 
-**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](../instructions.md)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
+**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](./overlay-mode)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
 
 ---
 

@@ -12,7 +12,7 @@ wip: true
 
 # [Overlay Mode] Launching The Game in Windowed Fullscreen (Borderless)
 
-**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](../instructions.md)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
+**Windowed Fullscreen** lets the game run fullscreen while satisfying the [Overlay Mode](./overlay-mode)'s "running in non-fullscreen mode." pre-requisite. Allowing the map client to overlay the game while it's displaying fullscreen.
 
 ---
 
