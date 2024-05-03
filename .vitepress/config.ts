@@ -52,10 +52,14 @@ const productionHead: HeadConfig[] = [
   ],
 ]
 
-const configureDynamicHead = (
-  pageData: PageData,
-  siteConfig: SiteConfig,
-): void => {
+type TransformHeadFunc = Pick<UserConfig<DefaultTheme.Config>, 'transformHead'>
+type TransformPageDataFunc = Pick<
+  UserConfig<DefaultTheme.Config>,
+  'transformPageData'
+>
+const cfgDynamicHead = (pageData: PageData, siteConfig: SiteConfig): void => {
+  if (!isProd) return
+
   pageData.frontmatter.head ??= []
   pageData.frontmatter.head.push([
     'meta',
@@ -151,15 +155,15 @@ A Completionist's Interactive Map by Kongying Tavern`,
     },
   ])
 }
-const configureDynamicFrontmatter = (
+const cfgDynamicTitleTemplate = (
   pageData: PageData,
   siteConfig: SiteConfig,
 ): void => {}
-type TransformHeadFunc = Pick<UserConfig<DefaultTheme.Config>, 'transformHead'>
-type TransformPageDataFunc = Pick<
-  UserConfig<DefaultTheme.Config>,
-  'transformPageData'
->
+const configureDynamic = (pageData: PageData, siteConfig: SiteConfig): void => {
+  cfgDynamicHead(pageData, siteConfig)
+  cfgDynamicTitleTemplate(pageData, siteConfig)
+}
+
 const createConfigureFunction = ():
   | TransformHeadFunc
   | TransformPageDataFunc => {
@@ -167,8 +171,7 @@ const createConfigureFunction = ():
     return {
       transformHead: (context: TransformContext) => {
         const { pageData, siteConfig } = context
-        configureDynamicHead(pageData, siteConfig)
-        configureDynamicFrontmatter(pageData, siteConfig)
+        configureDynamic(pageData, siteConfig)
       },
     }
   } else {
@@ -178,8 +181,7 @@ const createConfigureFunction = ():
         context: TransformPageContext,
       ) => {
         const { siteConfig } = context
-        configureDynamicHead(pageData, siteConfig)
-        configureDynamicFrontmatter(pageData, siteConfig)
+        configureDynamic(pageData, siteConfig)
       },
     }
   }
