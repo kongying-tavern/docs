@@ -8,9 +8,12 @@ import type {
   HeadConfig,
   PageData,
   SiteConfig,
-  TransformContext,
   UserConfig,
+  LocaleSpecificConfig,
+  TransformContext,
+  TransformPageContext,
 } from 'vitepress'
+import type { CustomConfig } from './locales/types'
 import { colorPreviewPlugin } from './theme/markdown/colorPreview'
 import { cardPlugin } from './theme/markdown/card'
 import { figure } from '@mdit/plugin-figure'
@@ -55,6 +58,7 @@ type ConfigureFuncType = Pick<
   UserConfig<DefaultTheme.Config>,
   'transformHead' | 'transformPageData'
 >
+type LocaleConfigVal = LocaleSpecificConfig<DefaultTheme.Config & CustomConfig>
 
 const cfgGetPageUrl = (pageData: PageData, siteConfig: SiteConfig): string =>
   `https://yuanshen.site/${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
@@ -101,6 +105,33 @@ const cfgDynamicHead = (pageData: PageData, siteConfig: SiteConfig): void => {
   pageData.frontmatter.head ??= []
   pageData.frontmatter.head.splice(Infinity, 0, ...head)
 }
+const cfgDynamicTitleTemplate = (
+  pageData: PageData,
+  siteConfig: SiteConfig,
+): void => {
+  let titleTemplate: string | boolean =
+    pageData.frontmatter.titleTemplate ?? siteConfig.userConfig.titleTemplate
+  if (titleTemplate === null || titleTemplate === undefined) {
+    const localeKey: string =
+      pageData.relativePath === pageData.filePath
+        ? pageData.relativePath.split('/', 1)[0]
+        : 'root'
+    const localeConfig: LocaleConfigVal =
+      siteConfig.userConfig.locales![localeKey] ?? {}
+    const templateMappings: CustomConfig['ui']['title']['templateMappings'] =
+      localeConfig.themeConfig?.ui.title.templateMappings ?? []
+    for (let templateMapping of templateMappings) {
+      if (
+        templateMapping.test &&
+        templateMapping.test.test(pageData.relativePath)
+      ) {
+        titleTemplate = templateMapping.template
+        break
+      }
+    }
+  }
+  pageData.titleTemplate = titleTemplate
+}
 
 const createConfigureFunction = (): ConfigureFuncType => {
   if (isProd) {
@@ -108,10 +139,20 @@ const createConfigureFunction = (): ConfigureFuncType => {
       transformHead: (context: TransformContext) => {
         const { pageData, siteConfig } = context
         cfgDynamicHead(pageData, siteConfig)
+        cfgDynamicTitleTemplate(pageData, siteConfig)
       },
     }
   } else {
-    return {}
+    return {
+      transformPageData: (
+        pageData: PageData,
+        context: TransformPageContext,
+      ) => {
+        const { siteConfig } = context
+        cfgDynamicHead(pageData, siteConfig)
+        cfgDynamicTitleTemplate(pageData, siteConfig)
+      },
+    }
   }
 }
 
