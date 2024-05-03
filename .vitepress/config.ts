@@ -9,7 +9,6 @@ import type {
   PageData,
   SiteConfig,
   TransformContext,
-  TransformPageContext,
   UserConfig,
 } from 'vitepress'
 import { colorPreviewPlugin } from './theme/markdown/colorPreview'
@@ -52,10 +51,9 @@ const productionHead: HeadConfig[] = [
   ],
 ]
 
-type TransformHeadFunc = Pick<UserConfig<DefaultTheme.Config>, 'transformHead'>
-type TransformPageDataFunc = Pick<
+type ConfigureFuncType = Pick<
   UserConfig<DefaultTheme.Config>,
-  'transformPageData'
+  'transformHead' | 'transformPageData'
 >
 
 const cfgGetPageUrl = (pageData: PageData, siteConfig: SiteConfig): string =>
@@ -87,74 +85,33 @@ const cfgDynamicHead = (pageData: PageData, siteConfig: SiteConfig): void => {
   const pageKeywords = cfgGetPageKeywords(pageData, siteConfig)
   const pageCover = cfgGetPageCover(pageData, siteConfig)
 
+  const head: any = [
+    ['meta', { name: 'og:url', content: pageUrl }],
+    ['meta', { name: 'twitter:url', content: pageUrl }],
+    ['meta', { name: 'og:title', content: pageTitle }],
+    ['meta', { name: 'twitter:title', content: pageTitle }],
+    ['meta', { name: 'og:description', content: pageDesc }],
+    ['meta', { name: 'twitter:description', content: pageDesc }],
+    ['meta', { name: 'description', content: pageDesc }],
+    ['meta', { name: 'keywords', content: pageKeywords }],
+    ['meta', { name: 'og:image', content: pageCover }],
+    ['meta', { name: 'twitter:image', content: pageCover }],
+  ]
+
   pageData.frontmatter.head ??= []
-  pageData.frontmatter.head.push(['meta', { name: 'og:url', content: pageUrl }])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'twitter:url', content: pageUrl },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'og:title', content: pageTitle },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'twitter:title', content: pageTitle },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'og:description', content: pageDesc },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'twitter:description', content: pageDesc },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'description', content: pageDesc },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'keywords', content: pageKeywords },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'og:image', content: pageCover },
-  ])
-  pageData.frontmatter.head.push([
-    'meta',
-    { name: 'twitter:image', content: pageCover },
-  ])
-}
-const cfgDynamicTitleTemplate = (
-  pageData: PageData,
-  siteConfig: SiteConfig,
-): void => {}
-const configureDynamic = (pageData: PageData, siteConfig: SiteConfig): void => {
-  cfgDynamicHead(pageData, siteConfig)
-  cfgDynamicTitleTemplate(pageData, siteConfig)
+  pageData.frontmatter.head.splice(Infinity, 0, ...head)
 }
 
-const createConfigureFunction = ():
-  | TransformHeadFunc
-  | TransformPageDataFunc => {
+const createConfigureFunction = (): ConfigureFuncType => {
   if (isProd) {
     return {
       transformHead: (context: TransformContext) => {
         const { pageData, siteConfig } = context
-        configureDynamic(pageData, siteConfig)
+        cfgDynamicHead(pageData, siteConfig)
       },
     }
   } else {
-    return {
-      transformPageData: (
-        pageData: PageData,
-        context: TransformPageContext,
-      ) => {
-        const { siteConfig } = context
-        configureDynamic(pageData, siteConfig)
-      },
-    }
+    return {}
   }
 }
 
