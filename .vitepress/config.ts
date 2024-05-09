@@ -26,7 +26,6 @@ import { timeline } from './theme/markdown/timeline'
 import { enConfig } from './locales/en'
 import { zhConfig } from './locales/zh'
 import { jaConfig } from './locales/ja'
-import { frConfig } from './locales/fr'
 
 const isProd = process.env.NODE_ENV === 'production'
 const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
@@ -264,12 +263,6 @@ export default defineConfig({
       lang: 'ja-JP',
       link: '/ja/',
       ...jaConfig,
-    },
-    fr: {
-      label: 'Français',
-      lang: 'fr',
-      link: '/fr/',
-      ...frConfig,
     },
   },
   head: [

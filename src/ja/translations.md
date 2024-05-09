@@ -14,8 +14,6 @@ title: 多言語と翻訳
 
 - [日本語 / Japanese](#) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
 
-- [法语 / French](../fr/index.md)[[source]](https://github.com/kongying-tavern/docs/tree/next/src/fr)]
-
 ## 新しい翻訳を開始する {#starting-a-new-translation}
 
 地図のドキュメントは最近メジャー バージョン アップグレードされたため、他の言語への翻訳はまだ利用できないか、進行中です。
