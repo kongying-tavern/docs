@@ -1,7 +1,6 @@
 ---
 layout: home
 title: Genshin Interactive Map
-titleTemplate: :title | Kongying Tavern
 
 features:
   - title: Smart Pins
@@ -10,11 +9,11 @@ features:
   - title: Overlay Mode
     icon: 🎪
     details: Overlays the game window, providing easy access to the map on one display.
-    link: en/manual/guide/overlay-mode/instructions
+    link: /en/manual/client/overlay-mode
   - title: Position Tracker
     icon: 🛠
     details: Detects your character location using image recognition and displays a simultaneous player indicator on the <b>map client</b>.
-    link: en/manual/guide/auto-tracking/importantnotes
+    link: /en/manual/client/position-tracking
   - title: Underground Maps
     icon: ✨
     details: Functional and accurate underground maps in collaboration with [Teyvat Map Institute] featuring levels and cave entries.
@@ -29,11 +28,11 @@ features:
   - title: Route Planning
     icon: 🚩
     details: Make, manage, and backup highly customizable farming routes with [Canvas].
-    link: en/manual/guide/canvas/guide
+    link: /en/manual/client/canvas
   - title: Multi Mark
     icon: ⚡
     details: Conveniently mark multiple pins with simple clicks, swipes and box selection.
-    link: en/manual/guide/batch-selection/instructions
+    link: /en/manual/client/batch-selection
   - title: Rapid Updates
     icon: 🚀
     details: New pins are available immediately after version updates, get 100% exploration day 1 with ease!
@@ -48,10 +47,10 @@ hero:
   actions:
     - theme: brand
       text: Download Now
-      link: en/download-client.md
+      link: /en/download-client.md
     - theme: alt
       text: Learn More
-      link: en/manual/client-user-manual
+      link: /en/manual/client
     - theme: cta mastery
       text: Web Version
       link: https://v3.yuanshen.site/

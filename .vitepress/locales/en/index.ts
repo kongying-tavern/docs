@@ -21,7 +21,7 @@ import Payment from './payment'
 export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  titleTemplate: 'Kongying Tavern',
+  titleTemplate: ':title | Kongying Tavern',
   description: C.META_DESCRIPTION,
   head: Head,
   themeConfig: {

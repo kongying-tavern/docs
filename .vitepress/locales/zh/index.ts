@@ -21,7 +21,7 @@ import Payment from './payment'
 export const zhConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
 > = {
-  titleTemplate: '空荧酒馆',
+  titleTemplate: ':title | 空荧酒馆',
   description: C.META_DESCRIPTION,
   head: Head,
   themeConfig: {

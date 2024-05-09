@@ -21,7 +21,7 @@ const nav: DefaultTheme.NavItem[] = [
         items: [
           {
             text: '使用手册',
-            link: '/manual/client-user-manual',
+            link: '/manual/client',
           },
           {
             text: '更新日志',

@@ -1,7 +1,6 @@
 ---
 title: 下载客户端
 layout: doc
-titleTemplate: 空荧酒馆
 comment: true
 ---
 
@@ -18,7 +17,7 @@ comment: true
 ```card
 title: Windows 客户端使用手册
 logo: self
-link: ./manual/client-user-manual
+link: /manual/client
 theme: medium
 ```
 

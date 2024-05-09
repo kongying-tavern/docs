@@ -283,42 +283,45 @@ export default debounce
 export const isRelativeLink = (link: string) =>
   /^(?!www\.|http[s]?:\/\/|[A-Za-z]:\\|\/\/).*/.test(link)
 
-export function baseHelper(obj, base): any {
-  function modifyLink(obj) {
-    if (Array.isArray(obj)) {
-      return obj.map((item) => modifyLink(item))
-    } else if (isObject(obj)) {
-      const newObj = {}
-      for (let key in obj) {
-        if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
-          newObj[key] = modifyLink(obj[key])
-        } else if (key === 'link' && isRelativeLink(obj[key])) {
-          newObj[key] = base + (obj[key][0] === '/' ? obj[key] : '/' + obj[key])
-          if (isLinkExternal(obj[key])) newObj['target'] = '_blank'
-        } else {
-          newObj[key] = obj[key]
-        }
-      }
-      return newObj
-    } else {
-      return obj
-    }
-  }
+const concatLink = (link: string, base: string): string =>
+  `/${base}/${link}`.replace(/\/+/giu, '/')
 
-  function modifyKey(obj) {
-    let newObj = {}
+const modifyLink = (obj: any, base: string): any => {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => modifyLink(item, base))
+  } else if (isObject(obj)) {
+    const newObj = {}
     for (let key in obj) {
-      if (key.startsWith('/') && base !== '') {
-        newObj[base + key] = obj[key]
+      if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
+        newObj[key] = modifyLink(obj[key], base)
+      } else if (key === 'link' && isRelativeLink(obj[key])) {
+        newObj[key] = concatLink(obj[key], base)
+        if (isLinkExternal(obj[key])) newObj['target'] = '_blank'
       } else {
         newObj[key] = obj[key]
       }
     }
     return newObj
+  } else {
+    return obj
   }
-
-  return modifyKey(modifyLink(obj))
 }
+
+const modifyKey = (obj: any, base: string) => {
+  let newObj = {}
+  for (let key in obj) {
+    if (key.startsWith('/') && base !== '') {
+      const newKey = concatLink(key, base)
+      newObj[newKey] = obj[key]
+    } else {
+      newObj[key] = obj[key]
+    }
+  }
+  return newObj
+}
+
+export const baseHelper = (obj: any, base: string): any =>
+  modifyKey(modifyLink(obj, base), base)
 
 /**
  * Copies the values of `source` to `array`.

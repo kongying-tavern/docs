@@ -1,7 +1,6 @@
 ---
 layout: doc
 title: Translations
-titleTemplate: :title | Kongying Tavern
 ---
 
 # Translations {#translations}
@@ -14,7 +13,6 @@ titleTemplate: :title | Kongying Tavern
 ## Work in Progress Languages {#work-in-progress-languages}
 
 - [日本語 / Japanese](../ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
-- [法语 / French](../fr/index.md)[[source]](https://github.com/kongying-tavern/docs/tree/next/src/fr)]
 
 ## Starting a new Translation {#starting-a-new-translation}
 

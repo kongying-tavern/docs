@@ -51,6 +51,12 @@ export interface CustomConfig {
     }
   >
   ui: {
+    title: {
+      templateMappings: {
+        test: RegExp
+        template: string
+      }[]
+    }
     banner: {
       wip: string
     }

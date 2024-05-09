@@ -1,5 +1,4 @@
 ---
-titleTemplate: :title | 空蛍酒場
 description: 客户端登录使用的账号是Gitee账号，并不是游戏账号
 wip: true
 ---

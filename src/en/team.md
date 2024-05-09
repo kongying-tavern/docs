@@ -1,7 +1,6 @@
 ---
 layout: page
 aside: false
-titleTemplate: :title | Kongying Tavern
 ---
 
 <script setup lang="ts">

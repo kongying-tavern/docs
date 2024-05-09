@@ -1,65 +1,50 @@
 import type { DefaultTheme } from 'vitepress'
 
-const sidebar: DefaultTheme.SidebarItem[] = {
-  // @ts-ignore
+const sidebar: DefaultTheme.SidebarMulti = {
   '/manual': [
     {
       text: 'Table of Contents',
-      link: '/manual/client-user-manual',
+      link: '/manual/client',
     },
     {
-      text: 'Guides',
+      text: 'Handbook',
       collapsed: false,
       items: [
         {
-          text: 'Automatic Tracking',
-          items: [
-            {
-              text: 'Introduction',
-              link: '/manual/guide/auto-tracking/importantnotes',
-            },
-            {
-              text: 'Troubleshooting',
-              link: '/manual/guide/auto-tracking/troubleshoot',
-            },
-          ],
+          text: 'Marking Multiple Pins',
+          link: '/manual/client/batch-selection',
         },
         {
-          text: 'Framerate/Tracking Control',
-          link: '/manual/guide/bg/bgfrate',
-        },
-        {
-          text: 'Multi Mark',
-          link: '/manual/guide/batch-selection/instructions',
-        },
-        {
-          text: 'Canvas Guide',
-          link: '/manual/guide/canvas/guide',
-        },
-        {
-          text: 'Easter Egg',
-          link: '/manual/guide/easter-egg/view',
-        },
-        {
-          text: 'Hide/Show Found',
-          link: '/manual/guide/hide-show-done/hidedoneshowdone',
+          text: 'Change Pin Visibility',
+          link: '/manual/client/hide-show-done',
         },
         {
           text: 'Overlay Mode',
-          items: [
-            {
-              text: 'Instructions',
-              link: '/manual/guide/overlay-mode/instructions',
-            },
-            {
-              text: 'Windowed Fullscreen',
-              link: '/manual/guide/overlay-mode/fullscreen-windowed/launching',
-            },
-          ],
+          link: '/manual/client/overlay-mode',
         },
         {
-          text: 'Restore/Recover Progress',
-          link: '/manual/guide/restore-recover/progress',
+          text: 'Position Tracker',
+          link: '/manual/client/position-tracking',
+        },
+        {
+          text: 'Custom Path Planner (Canvas)',
+          link: '/manual/client/canvas',
+        },
+        {
+          text: 'Launching The Game in Windowed Fullscreen',
+          link: '/manual/client/fullscreen-windowed',
+        },
+        {
+          text: 'Framerate/Tracking Control',
+          link: '/manual/client/framerate',
+        },
+        {
+          text: 'Progress Recovery',
+          link: '/manual/client/save-restore',
+        },
+        {
+          text: 'Easter Eggs',
+          link: '/manual/client/easter-egg',
         },
       ],
     },

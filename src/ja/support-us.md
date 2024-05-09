@@ -1,6 +1,5 @@
 ---
 title: 支持我们
-titleTemplate: 空荧酒馆
 layout: doc
 wip: true
 ---

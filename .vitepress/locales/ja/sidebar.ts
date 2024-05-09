@@ -1,64 +1,50 @@
 import type { DefaultTheme } from 'vitepress'
 
-const sidebar: DefaultTheme.SidebarItem[] = {
-  // @ts-ignore
+const sidebar: DefaultTheme.SidebarMulti = {
   '/manual': [
     {
       text: '目次',
-      link: '/manual/client-user-manual',
+      link: '/manual/client',
     },
     {
-      text: '使い方ガイド',
+      text: 'ガイダンス',
+      collapsed: false,
       items: [
         {
-          text: '【オートトラッキング】',
-          items: [
-            {
-              text: '機能紹介',
-              link: '/manual/guide/auto-tracking/importantnotes',
-            },
-            {
-              text: 'トラブルシューティング',
-              link: '/manual/guide/auto-tracking/troubleshoot',
-            },
-          ],
+          text: '一括選択',
+          link: '/manual/client/batch-selection',
         },
         {
-          text: '【バックグラウンドユーセージ】フレームレート設定',
-          link: '/manual/guide/bg/bgfrate',
+          text: 'マーカー表示/非表示',
+          link: '/manual/client/hide-show-done',
         },
         {
-          text: '【一括選択】利用ガイド',
-          link: '/manual/guide/batch-selection/instructions',
+          text: 'オーバーレイモード',
+          link: '/manual/client/overlay-mode',
         },
         {
-          text: '【キャンバス】ルート計画機能紹介',
-          link: '/manual/guide/canvas/guide',
+          text: 'オートトラ',
+          link: '/manual/client/position-tracking',
         },
         {
-          text: '【おまけ】金リンゴ群島を見る',
-          link: '/manual/guide/easter-egg/view',
+          text: 'キャンバス-ルート計画',
+          link: '/manual/client/canvas',
         },
         {
-          text: '【表示】/【非表示】マーカー',
-          link: '/manual/guide/hide-show-done/hidedoneshowdone',
+          text: 'ウィンドウ全画面/ボーダレスウィンドウモード',
+          link: '/manual/client/fullscreen-windowed',
         },
         {
-          text: '【オーバーレイモード】',
-          items: [
-            {
-              text: '利用ガイド',
-              link: '/manual/guide/overlay-mode/instructions',
-            },
-            {
-              text: '【ウィンドウ全画面】ゲーム起動',
-              link: '/manual/guide/overlay-mode/fullscreen-windowed/launching',
-            },
-          ],
+          text: 'フレームレート',
+          link: '/manual/client/framerate',
         },
         {
-          text: '【セーブデータ】データ復元',
-          link: '/manual/guide/restore-recover/progress',
+          text: 'データ復元',
+          link: '/manual/client/save-restore',
+        },
+        {
+          text: 'イースターエッグ',
+          link: '/manual/client/easter-egg',
         },
       ],
     },

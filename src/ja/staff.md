@@ -1,7 +1,6 @@
 ---
 title: 贡献鸣谢
 description: 贡献鸣谢
-titleTemplate: 空荧酒馆
 layout: doc
 comment: false
 aside: false

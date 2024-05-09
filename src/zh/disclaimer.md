@@ -1,7 +1,6 @@
 ---
 title: 免责声明
 description: 免责声明
-titleTemplate: 空荧酒馆
 layout: doc
 comment: false
 ---

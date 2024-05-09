@@ -1,8 +1,3 @@
----
-layout: doc
-titleTemplate: Kongying Tavern
----
-
 # Genshin Interactive Map Community Translation Guidelines
 
 If you are here, you are likely interested in contributing to the translation of the Genshin Interactive Map documentation. Thank you! Before you start, make sure to read the following guidelines to get an understanding of the workflow.

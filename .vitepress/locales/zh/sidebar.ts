@@ -1,65 +1,50 @@
 import type { DefaultTheme } from 'vitepress'
 
-const sidebar: DefaultTheme.SidebarItem[] = {
-  // @ts-ignore
+const sidebar: DefaultTheme.SidebarMulti = {
   '/manual': [
     {
       text: '目录',
-      link: '/manual/client-user-manual',
+      link: '/manual/client',
     },
     {
-      text: '使用帮助',
+      text: '使用手册',
       collapsed: false,
       items: [
         {
-          text: '【自动追踪】',
-          items: [
-            {
-              text: '功能介绍',
-              link: '/manual/guide/auto-tracking/importantnotes',
-            },
-            {
-              text: '疑难解答',
-              link: '/manual/guide/auto-tracking/troubleshoot',
-            },
-          ],
+          text: '批量选择',
+          link: '/manual/client/batch-selection',
         },
         {
-          text: '【地图性能占用高】前后台帧率设置',
-          link: '/manual/guide/bg/bgfrate',
+          text: '隐藏/显示标记',
+          link: '/manual/client/hide-show-done',
         },
         {
-          text: '【批量选择】使用说明',
-          link: '/manual/guide/batch-selection/instructions',
+          text: '覆盖模式',
+          link: '/manual/client/overlay-mode',
         },
         {
-          text: '【画板】路线功能 教程',
-          link: '/manual/guide/canvas/guide',
+          text: '位置追踪',
+          link: '/manual/client/position-tracking',
         },
         {
-          text: '【彩蛋】查看历史版本内容',
-          link: '/manual/guide/easter-egg/view',
+          text: '画板/路线功能',
+          link: '/manual/client/canvas',
         },
         {
-          text: '【隐藏】标记/【显示】标记',
-          link: '/manual/guide/hide-show-done/hidedoneshowdone',
+          text: '窗口全屏/无边框窗口模式',
+          link: '/manual/client/fullscreen-windowed',
         },
         {
-          text: '【覆盖模式】',
-          items: [
-            {
-              text: '使用说明',
-              link: '/manual/guide/overlay-mode/instructions',
-            },
-            {
-              text: '【窗口全屏】启动游戏',
-              link: '/manual/guide/overlay-mode/fullscreen-windowed/launching',
-            },
-          ],
+          text: '帧率设置',
+          link: '/manual/client/framerate',
         },
         {
-          text: '【存档丢失】存档还原/误删恢复',
-          link: '/manual/guide/restore-recover/progress',
+          text: '存档恢复',
+          link: '/manual/client/save-restore',
+        },
+        {
+          text: '彩蛋',
+          link: '/manual/client/easter-egg',
         },
       ],
     },

@@ -1,7 +1,6 @@
 ---
 title: 错误页
 description: 错误页
-titleTemplate: 空荧酒馆
 aside: true
 layout: doc
 comment: false

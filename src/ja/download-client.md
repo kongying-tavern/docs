@@ -1,7 +1,6 @@
 ---
 title: ダウンロード
 description: ダウンロード
-titleTemplate: 空蛍酒場
 layout: doc
 aside: false
 comment: true
@@ -33,7 +32,7 @@ theme: medium
 
 ```card
 title: マニュアル
-link: /ja/manual/client-user-manual
+link: /ja/manual/client
 theme: medium
 ```
 

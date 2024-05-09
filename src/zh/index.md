@@ -1,7 +1,6 @@
 ---
 layout: home
 title: 原神地图
-titleTemplate: 空荧酒馆
 
 features:
   - title: 双筛选逻辑
@@ -10,11 +9,11 @@ features:
   - title: 覆盖模式
     icon: 🎪
     details: 覆盖游戏窗口的模式，方便单屏幕玩家快速打开地图查看标记~
-    link: manual/guide/overlay-mode/instructions
+    link: /manual/client/overlay-mode
   - title: 位置追踪
     icon: 🛠
     details: 基于【图像识别】技术自动检测游戏内当前角色位置（小地图坐标位置）并同步显示到【地图客户端】上，就像游戏内地图一样
-    link: manual/guide/auto-tracking/importantnotes
+    link: /manual/client/position-tracking
   - title: 地下地图
     icon: ✨
     details: 与【图研所】合作提供的精确的地下地图，附带可选择分层与洞口标识
@@ -29,11 +28,11 @@ features:
   - title: 路线规划
     icon: 🚩
     details: 用【画板】制作、编辑以及备份自定义路线
-    link: manual/guide/canvas/guide
+    link: /manual/client/canvas
   - title: 批量选择
     icon: ⚡
     details: 使用点击、拖动以及框选快速便利的标记点位
-    link: manual/guide/batch-selection/instructions
+    link: /manual/client/batch-selection
   - title: 快速更新
     icon: 🚀
     details: 点位和地图内容在游戏新版本上线后后即能立刻查看，轻松100%探索
@@ -48,7 +47,7 @@ hero:
   actions:
     - theme: brand slide-enter
       text: 立即下载 →
-      link: ./download-client
+      link: /download-client
     - theme: alt slide-enter
       text: 网页版地图
       link: https://v3.yuanshen.site

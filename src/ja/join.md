@@ -1,7 +1,6 @@
 ---
 title: 加入我们
 layout: doc
-titleTemplate: 空荧酒馆
 description: 加入我们
 wip: true
 ---

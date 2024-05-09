@@ -3,7 +3,6 @@ title: Credits
 description: Genshin Interactive Map incorporated the following open-source projects and artworks with respect to their license and usage agreements. Thank you authors and creators!
 aside: false
 layout: doc
-titleTemplate: :title | Kongying Tavern
 ---
 
 # Credits
