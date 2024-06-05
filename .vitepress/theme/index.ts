@@ -13,6 +13,12 @@ import DocAside from './components/DocAside.vue'
 import DocHeader from './components/DocHeader.vue'
 import DocInfo from './components/DocInfo.vue'
 import DocFeedback from './components/DocFeedback.vue'
+import { NolebaseInlineLinkPreviewPlugin } from '@nolebase/vitepress-plugin-inline-link-preview/client'
+import {
+  InjectionKey,
+  NolebaseGitChangelog,
+  NolebaseGitContributors,
+} from '@nolebase/vitepress-plugin-git-changelog/client'
 
 import type { Theme } from 'vitepress'
 
@@ -22,6 +28,8 @@ import './styles/main.css'
 import './styles/ui.css'
 import './styles/timeline.css'
 import './styles/kbd.css'
+import '@nolebase/vitepress-plugin-inline-link-preview/client/style.css'
+import '@nolebase/vitepress-plugin-git-changelog/client/style.css'
 
 const pinia = createPinia()
 
@@ -44,15 +52,29 @@ export default {
       debug: false,
     })
     app.use(pinia)
+    app.use(NolebaseInlineLinkPreviewPlugin)
+
     app.component('Link', Link)
     app.component('Coins', Coins)
     app.component('Card', Card)
     app.component('LinkGrid', LinkGrid)
     app.component('Badge', VPBadge)
+    app.component('Changelog', NolebaseGitChangelog)
+    app.component('Contributors', NolebaseGitContributors)
+
+    app.provide(InjectionKey, {
+      locales: {},
+      mapAuthors: [
+        {
+          name: 'Hyouka',
+          username: 'jiazengp',
+          mapByEmailAliases: ['jiazengp@gmail.com'],
+        },
+      ],
+    })
   },
   setup() {
     const route = useRoute()
-    const { lang } = useData()
 
     onMounted(() => {
       initZoom()

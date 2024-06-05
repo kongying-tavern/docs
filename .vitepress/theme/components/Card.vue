@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { isLinkExternal, isRelativeLink } from '../utils'
-import { computed, defineProps, withDefaults } from 'vue'
+import { computed, withDefaults } from 'vue'
 
 import '../styles/card.scss'
 
@@ -114,7 +114,7 @@ interface CardProps {
   /**
    * Card shadow
    *
-   * 是否启用卡片阴影效果，默认启用
+   * 是否启用卡片阴影效果，默认不启用
    */
   shadow?: boolean
 
@@ -134,7 +134,7 @@ const props = withDefaults(defineProps<CardProps>(), {
   cover: '',
   theme: 'normal',
   hoverShadow: true,
-  shadow: true,
+  shadow: false,
 })
 
 const iconMap = {
@@ -210,3 +210,4 @@ const descText = computed(() => {
   }
 })
 </script>
+: { target: any; }: { target: any; }: { target: any; }: { target: any; }

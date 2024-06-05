@@ -44,18 +44,6 @@ search: false
 
 ---
 
-## Kbd 快捷键 {#kbd}
-
-快捷方式组件建立在 Kbd 组件之上，可帮助您在内容中显示键盘快捷方式。
-
-```md
-[[Meta]][[K]]
-```
-
-[[Meta]][[K]]
-
----
-
 ## Footnote 脚注 {#footnote}
 
 - 在 Markdown 中使用 [^锚点文字] 来定义脚注。
@@ -273,5 +261,26 @@ bannerExpiryDate: 2024-2-1
 ```yml
 ---
 docHeader: false #隐藏该页面的 docHeader
+---
+```
+
+## 双向链接
+
+From <https://nolebase-integrations.ayaka.io/pages/zh-CN/integrations/markdown-it-bi-directional-links/>
+
+### Demo
+
+[[zh/join]]
+
+## ChangeLog & Contributors
+
+- 类型：Boolean
+- 默认：false
+
+> 仅在客户端用户手册上自动启用
+
+```yml
+---
+gitlog: true # 展示该页面的 Git 日志和贡献者
 ---
 ```

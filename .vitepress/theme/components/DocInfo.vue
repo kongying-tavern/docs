@@ -1,5 +1,10 @@
 <template>
-  <div class="doc-info">
+  <div class="doc-gitlog pb-6" v-if="gitlogIsVisible">
+    <h3 pt-6 mt-12 font-size-6>{{ theme.gitlog.title }}</h3>
+    <Contributors />
+    <Changelog />
+  </div>
+  <div class="doc-info" v-else>
     <div class="doc-info-left">
       {{ theme.lastUpdatedText }}
       {{ dayjs(page.lastUpdated).format('YYYY-MM-DD') }}
@@ -21,13 +26,21 @@ import { useData, useRoute } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 import { getPageInfo } from '../apis/getPageInfo'
-import { pageview as PV } from '../apis/pageview'
 import { usePageInfoStore } from '../stores/pageinfo'
 
 const router = useRoute()
-const { page, theme } = useData()
+const { page, theme, frontmatter } = useData()
 const pageinfo = usePageInfoStore()
 const loading = ref(false)
+const gitlogIsVisible = computed(() => {
+  if (frontmatter.value.gitlog === true) return true
+  // 默认仅在用户手册中展示
+  return (
+    frontmatter.value.gitlog !== false &&
+    frontmatter.value.layout == 'doc' &&
+    page.value.filePath.includes('manual')
+  )
+})
 const thumbText = computed(() => {
   return pageinfo.currentPageinfo.good
     ? Number(pageinfo.currentPageinfo.good)
@@ -49,10 +62,16 @@ watch(
     loading.value = false
   },
 )
+
 updateData()
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.doc-gitlog {
+  display: grid;
+  grid-row-gap: 26px;
+}
+
 .doc-info {
   display: flex;
   justify-content: space-between;
@@ -66,6 +85,7 @@ updateData()
     fill: currentColor;
   }
 }
+
 .doc-info-right {
   justify-content: flex-start;
 }

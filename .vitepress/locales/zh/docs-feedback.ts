@@ -11,7 +11,7 @@ const docsFeedback: CustomConfig['docsFeedback'] = {
     chooseIssues: '是否遇到以下问题？',
     translationIssue: '翻译问题',
     typosIssue: '错别字/标点符号',
-    ContentImgLinkIssue: '文案表达不准确、图片加载失败或链接错误',
+    contentImgLinkIssue: '文案表达不准确、图片加载失败或链接错误',
     feedbackDetail: '反馈内容/更多建议',
     feedbackTip: '请详细描述你在使用文档过程中遇到的问题或优化建议',
     otherIssue: '其他问题（请在反馈内容中具体描述）',

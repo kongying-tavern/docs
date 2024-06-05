@@ -171,6 +171,10 @@ textarea {
   display: none !important;
 }
 
+.doc-gitlog > h2 {
+  display: none !important;
+}
+
 @keyframes slide-enter {
   0% {
     transform: translateY(10px);
