@@ -4,7 +4,7 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/manual': [
     {
       text: '目录',
-      link: '/manual/client',
+      link: '/manual/client/',
     },
     {
       text: '使用手册',
