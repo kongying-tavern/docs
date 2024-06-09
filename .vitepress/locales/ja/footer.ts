@@ -44,7 +44,7 @@ const footer: CustomConfig['footer'] = {
       items: [
         {
           text: 'ユーザマニュアル',
-          link: '/manual/client',
+          link: '/manual/client/',
         },
         {
           text: 'フィードバック',

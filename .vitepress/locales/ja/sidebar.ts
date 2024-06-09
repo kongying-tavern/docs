@@ -4,7 +4,7 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/manual': [
     {
       text: '目次',
-      link: '/manual/client',
+      link: '/manual/client/',
     },
     {
       text: 'ガイダンス',

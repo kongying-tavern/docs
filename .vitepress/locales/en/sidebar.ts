@@ -4,7 +4,7 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/manual': [
     {
       text: 'Table of Contents',
-      link: '/manual/client',
+      link: '/manual/client/',
     },
     {
       text: 'Handbook',

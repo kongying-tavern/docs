@@ -21,7 +21,7 @@ const nav: DefaultTheme.NavItem[] = [
         items: [
           {
             text: 'Manual',
-            link: '/manual/client',
+            link: '/manual/client/',
           },
           {
             text: 'Release Notes',

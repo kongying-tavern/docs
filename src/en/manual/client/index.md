@@ -4,7 +4,7 @@ layout: doc
 title: Table of Contents
 ---
 
-[文：【目录】客户端使用手册]: # '../../manual/client'
+[文：【目录】客户端使用手册]: # '../../manual/client/'
 
 ## **Update Log**
 
