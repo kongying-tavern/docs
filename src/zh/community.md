@@ -10,10 +10,11 @@ layout: doc
 
 ## QQ 交流群
 
-- [**原神地图 3 群** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图③群')
-- [**原神地图 7 群** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图⑦群')
 - [**原神地图 17 群(推荐)** 942420580](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=QDJVb-cyrzNHWGdc0MVrJ1p72eEr-nzN&authKey=y82tEuXNdXNpc7Jr10lq0PPyfMAsQzx5WO%2BzePnbU%2FEXzJ2HfmYpjZ4X5fWuuFfE&noverify=0&group_code=942420580 '点击一键加入原神地图17群')
 - [**原神地图 16 群(推荐)** 965207278](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oHKQ4kiomCFGMlniJbyr_SmUb3Ux0fY_&authKey=y6Ee9pCe1XWHssFOXIDHpiGx61DWuC4ubZF4LAJB3JY3buJNMsdvrSuTgReMJ0D3&noverify=0&group_code=965207278 '点击一键加入原神地图16群')
+- [**原神地图 3 群(推荐)** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图③群')
+- [**原神地图 7 群(推荐)** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图⑦群')
+
 
 :::details 空荧酒馆 • QQ 社群公约
 
