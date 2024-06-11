@@ -1,7 +1,7 @@
 ---
 aside: false
 layout: doc
-title: Supprot Us
+title: Support Us
 description: Thank for your support
 ---
 

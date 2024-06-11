@@ -135,7 +135,7 @@ search: false
 ```card
 logo: self
 title: That normal theme card
-desc: This is descrption
+desc: This is description
 cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace,1/format,jpg
 ```
 
@@ -156,7 +156,7 @@ cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1ad
 ```card
 logo: self
 title: This normal theme card
-description: i am descrption
+description: i am description
 ```
 ````
 
