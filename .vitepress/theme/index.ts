@@ -5,7 +5,7 @@ import mediumZoom from 'medium-zoom'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
-import googleAnalytics from '../plugins/googleAnalytics'
+import googleAnalytics from '../plugins/google-analytics'
 import Card from '../theme/components/Card.vue'
 import LinkGrid from '../theme/components/LinkGrid.vue'
 import { createPinia } from 'pinia'
@@ -13,7 +13,7 @@ import DocAside from './components/DocAside.vue'
 import DocHeader from './components/DocHeader.vue'
 import DocInfo from './components/DocInfo.vue'
 import DocFeedback from './components/DocFeedback.vue'
-
+import HighlightTargetedHeading from './components/HighlightTargetedHeading.vue'
 import type { Theme } from 'vitepress'
 
 import 'uno.css'
@@ -32,6 +32,7 @@ export default {
     return h(DefaultTheme.Layout, null, {
       'layout-top': () =>
         h(defineAsyncComponent(() => import('./components/Banner.vue'))),
+      'layout-bottom': () => h(HighlightTargetedHeading),
       'doc-before': () => h(DocHeader),
       'doc-footer-before': () => h(DocInfo),
       'doc-after': () => h(DocFeedback),
