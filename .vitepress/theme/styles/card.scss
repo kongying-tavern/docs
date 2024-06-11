@@ -177,20 +177,19 @@
     -webkit-mask-position: center;
     mask-size: 100% 100%;
     background-color: currentColor;
-    width: 28px !important;
-    height: 28px !important;
+    width: 18px !important;
+    height: 18px !important;
     margin-top: 8px !important;
     color: currentColor !important;
   }
 
   &[is-external-link='true']::after {
-    margin-top: -16px !important;
-    transform: translateX(8px);
+    margin-top: -30px !important;
   }
 
   &[is-external-link='false']::after {
-    margin-top: -16px !important;
-    transform: translateX(4px) rotate(45deg);
+    margin-top: -30px !important;
+    transform: rotate(45deg);
   }
 
   hr {

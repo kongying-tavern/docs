@@ -91,7 +91,7 @@ const submit = async () => {
           type="button"
           @click="submit()"
           :disabled="checkedItems.length < 1"
-          class="px-4 py-2 text-sm font-medium text-center rounded-lg focus:outline-none bg-[var(--vp-c-brand)] border-[var(--vp-button-brand-border)] hover:bg-[var(--vp-c-brand)] hover:border-[var(--vp-button-brand-border)] color-white dark:bg-[var(--vp-c-bg-alt)]"
+          class="px-4 py-2 text-sm font-medium text-center rounded-lg focus:outline-none bg-[var(--vp-c-brand)] border-[var(--vp-button-brand-border)] hover:bg-[var(--vp-c-brand)] hover:border-[var(--vp-button-brand-border)] color-white dark:bg-[var(--vp-button-brand-bg)]"
         >
           {{ theme.ui.button.submit }}
         </button>
@@ -150,7 +150,7 @@ const submit = async () => {
   }
 
   button[disabled] {
-    background-color: #bbbfc4;
+    opacity: 0.8;
     cursor: not-allowed;
   }
 }
