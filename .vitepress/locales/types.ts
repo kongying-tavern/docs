@@ -76,7 +76,7 @@ export interface CustomConfig {
       chooseIssues: string
       translationIssue: string
       typosIssue: string
-      ContentImgLinkIssue: string
+      contentImgLinkIssue: string
       feedbackDetail: string
       feedbackTip: string
       otherIssue: string
