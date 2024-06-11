@@ -39,7 +39,7 @@ hero:
   actions:
     - theme: brand
       text: ダウンロードへ
-      link: /ja/download-client.md
+      link: /ja/download-client
     - theme: alt
       text: 使い方について
       link: /ja/manual/client/

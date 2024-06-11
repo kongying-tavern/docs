@@ -11,6 +11,6 @@ wip: true
 
 ```card
 title: 地图客户端官方下载渠道
-link: ./download-client.md
+link: ./download-client
 theme: medium
 ```

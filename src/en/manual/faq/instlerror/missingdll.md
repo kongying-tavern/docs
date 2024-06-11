@@ -10,6 +10,6 @@ Please use the portable version.
 
 ```card
 title: Download Page
-link: ../../../download-client.md
+link: ../../../download-client
 theme: medium
 ```

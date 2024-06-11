@@ -47,7 +47,7 @@ hero:
   actions:
     - theme: brand
       text: Download Now
-      link: /en/download-client.md
+      link: /en/download-client
     - theme: alt
       text: Learn More
       link: /en/manual/client/
