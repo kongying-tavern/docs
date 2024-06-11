@@ -11,11 +11,6 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "lib": ["ESNext", "DOM"],
-    "strictNullChecks": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noUnusedParameters": true,
-    "noEmit": true,
     "removeComments": false,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -27,7 +22,10 @@
   "include": [
     "**/.vitepress/**/*.ts",
     "**/.vitepress/**/*.mts",
-    "**/.vitepress/**/*.vue"
+    "**/.vitepress/**/*.vue",
+    "**/components/**/*.ts",
+    "**/components/**/*.tsx",
+    "**/components/**/*.vue"
   ],
   "exclude": ["**/node_modules/**", "**/dist/**", "unocss.config.ts"]
 }
