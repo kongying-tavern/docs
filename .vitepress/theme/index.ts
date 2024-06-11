@@ -35,7 +35,7 @@ export default {
       'doc-before': () => h(DocHeader),
       'doc-footer-before': () => h(DocInfo),
       'doc-after': () => h(DocFeedback),
-      'aside-outline-after': () => h(DocAside),
+      // 'aside-outline-after': () => h(DocAside),
     })
   },
   enhanceApp({ app }) {
