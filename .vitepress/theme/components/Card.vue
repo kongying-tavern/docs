@@ -134,7 +134,7 @@ const props = withDefaults(defineProps<CardProps>(), {
   cover: '',
   theme: 'normal',
   hoverShadow: true,
-  shadow: true,
+  shadow: false,
 })
 
 const iconMap = {
@@ -182,13 +182,13 @@ const isExternal = computed(() => isLinkExternal(props.link))
 
 const logoLink = computed(() => {
   if (
-    props.link === 'self' ||
-    props.link.includes('yuanshen.site') ||
+    props.logo === 'self' ||
+    props.logo.includes('yuanshen.site') ||
     isRelativeLink(props.link)
   )
     return withBase('/imgs/common/logo/logo_128.png')
-  if (props.link === '' && iconLink.value === '') return 'no-logo'
-  return isRelativeLink(props.link) ? withBase(props.link) : props.link
+  if (props.logo === '' && iconLink.value === '') return 'no-logo'
+  return isRelativeLink(props.logo) ? withBase(props.logo) : props.logo
 })
 
 const logoMissing = computed(() => logoLink.value === 'no-logo')
