@@ -44,7 +44,7 @@ const footer: CustomConfig['footer'] = {
       items: [
         {
           text: '客户端使用手册',
-          link: '/manual/client',
+          link: '/manual/client/',
         },
         {
           text: '客户端更新日志',

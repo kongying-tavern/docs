@@ -10,10 +10,11 @@ layout: doc
 
 ## QQ 交流群
 
-- [**原神地图 12 群(推荐)** 657416377](https://qm.qq.com/cgi-bin/qm/qr?k=ywsBJa1bgrLxgRWn7EfS6Kjve_74UaY5&jump_from=webapi '点击一键加入原神地图12群')
-- [**原神地图 13 群(推荐)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi '点击一键加入原神地图13群')
-- [**原神地图 10 群(推荐)** 781455797](https://qm.qq.com/cgi-bin/qm/qr?k=m79I_BhZswOY5DmpBN0gpqoRFhgNRehf&jump_from=webapi '点击一键加入原神地图10群')
-- [**原神地图 9 群(推荐)** 902221505](https://qm.qq.com/cgi-bin/qm/qr?k=uwMrGyjdb8BXBe3g0PjFkjv_W0Y6VmSA&jump_from=webapi '点击一键加入原神地图⑨群')
+- [**原神地图 17 群(推荐)** 942420580](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=QDJVb-cyrzNHWGdc0MVrJ1p72eEr-nzN&authKey=y82tEuXNdXNpc7Jr10lq0PPyfMAsQzx5WO%2BzePnbU%2FEXzJ2HfmYpjZ4X5fWuuFfE&noverify=0&group_code=942420580 '点击一键加入原神地图17群')
+- [**原神地图 16 群(推荐)** 965207278](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oHKQ4kiomCFGMlniJbyr_SmUb3Ux0fY_&authKey=y6Ee9pCe1XWHssFOXIDHpiGx61DWuC4ubZF4LAJB3JY3buJNMsdvrSuTgReMJ0D3&noverify=0&group_code=965207278 '点击一键加入原神地图16群')
+- [**原神地图 3 群(推荐)** 932683801](https://qm.qq.com/cgi-bin/qm/qr?k=YgBbiFrBbXBH4eFzn_QEBA4jDGBgO4s8&jump_from=webapi '点击一键加入原神地图③群')
+- [**原神地图 7 群(推荐)** 726524364](https://qm.qq.com/cgi-bin/qm/qr?k=sDQXH18A-nbJT7y6PRM1GYM80qsvtWp7&jump_from=webapi '点击一键加入原神地图⑦群')
+
 
 :::details 空荧酒馆 • QQ 社群公约
 
@@ -51,7 +52,8 @@ layout: doc
 13. [**原神地图 13 群(已满)** 670338986](https://qm.qq.com/cgi-bin/qm/qr?k=SSV94vBcOvHNfZl0joiHXz0RKEilCAKb&jump_from=webapi '点击一键加入原神地图13群')
 14. [**原神地图 14 群** 468263682](https://qm.qq.com/cgi-bin/qm/qr?k=g-By7txM78GfoPhk29d59Z5KkJV_Gt-z&jump_from=webapi '点击一键加入原神地图14群')
 15. [**原神地图 15 群** 668424173](https://qm.qq.com/cgi-bin/qm/qr?k=qDLY3l2-A_zf2AW73X5S5PHuHcjicVbf&jump_from=webapi '点击一键加入原神地图15群')
-
+16. [**原神地图 16 群(推荐)** 965207278](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=oHKQ4kiomCFGMlniJbyr_SmUb3Ux0fY_&authKey=y6Ee9pCe1XWHssFOXIDHpiGx61DWuC4ubZF4LAJB3JY3buJNMsdvrSuTgReMJ0D3&noverify=0&group_code=965207278 '点击一键加入原神地图16群')
+17. [**原神地图 17 群(推荐)** 942420580](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=QDJVb-cyrzNHWGdc0MVrJ1p72eEr-nzN&authKey=y82tEuXNdXNpc7Jr10lq0PPyfMAsQzx5WO%2BzePnbU%2FEXzJ2HfmYpjZ4X5fWuuFfE&noverify=0&group_code=942420580 '点击一键加入原神地图17群')
 :::
 
 <script setup lang="ts">
