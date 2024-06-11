@@ -17,6 +17,7 @@ import DocsFeedback from './docs-feedback'
 import Staff from './staff'
 import Team from './team'
 import Payment from './payment'
+import gitlog from './gitlog'
 
 export const enConfig: LocaleSpecificConfig<
   DefaultTheme.Config & CustomConfig
@@ -48,6 +49,7 @@ export const enConfig: LocaleSpecificConfig<
     staff: Staff,
     team: Team,
     payment: Payment,
+    gitlog: gitlog,
 
     nav: baseHelper(Nav, C.LOCAL_BASE),
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),

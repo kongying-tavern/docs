@@ -12,7 +12,7 @@ const docsFeedback: CustomConfig['docsFeedback'] = {
     chooseIssues: 'Did you encounter these issues?',
     translationIssue: 'Translation',
     typosIssue: 'Typos/Punctuation',
-    ContentImgLinkIssue: 'Inaccurate Content, Image or Link',
+    contentImgLinkIssue: 'Inaccurate Content, Image or Link',
     feedbackDetail: 'Details/Suggestions',
     feedbackTip: 'Describe issues or suggestions here',
     otherIssue: 'Other (specify below)',

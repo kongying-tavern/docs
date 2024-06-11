@@ -1,6 +1,12 @@
 import Unocss from 'unocss/vite'
+import { cwd } from 'node:process'
+import { BiDirectionalLinks } from '@nolebase/markdown-it-bi-directional-links'
+import { InlineLinkPreviewElementTransform } from '@nolebase/vitepress-plugin-inline-link-preview/markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
-import MarkdownItKbd from 'markdown-it-kbd-better'
+import {
+  GitChangelog,
+  GitChangelogMarkdownSection,
+} from '@nolebase/vitepress-plugin-git-changelog/vite'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitepress'
 import type {
@@ -26,6 +32,7 @@ import { timeline } from './theme/markdown/timeline'
 import { enConfig } from './locales/en'
 import { zhConfig } from './locales/zh'
 import { jaConfig } from './locales/ja'
+import path from 'node:path'
 
 const isProd = process.env.NODE_ENV === 'production'
 const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
@@ -167,7 +174,7 @@ export default defineConfig({
   srcExclude: [],
   scrollOffset: 'header',
   cleanUrls: true,
-  lastUpdated: true,
+  lastUpdated: false,
   sitemap: {
     hostname: 'https://yuanshen.site',
   },
@@ -387,6 +394,9 @@ export default defineConfig({
         allow: ['../..'],
       },
     },
+    optimizeDeps: {
+      exclude: ['@nolebase/vitepress-plugin-git-changelog/client'],
+    },
     resolve: {
       alias: [
         {
@@ -397,9 +407,22 @@ export default defineConfig({
         },
       ],
     },
+    ssr: {
+      noExternal: [
+        // If there are other packages that need to be processed by Vite, you can add them here.
+        '@nolebase/vitepress-plugin-highlight-targeted-heading',
+        '@nolebase/vitepress-plugin-git-changelog',
+      ],
+    },
     plugins: [
       // https://github.com/antfu/unocss
       Unocss(),
+      GitChangelog({
+        // Fill in your repository URL here
+        repoURL: () =>
+          'https://github.com/https://github.com/kongying-tavern/docs',
+      }),
+      GitChangelogMarkdownSection(),
     ],
     json: {
       stringify: true,
@@ -409,6 +432,11 @@ export default defineConfig({
   markdown: {
     image: {
       lazyLoading: true,
+    },
+    preConfig(md) {
+      // md.use(BiDirectionalLinks({
+      //   dir: cwd(),
+      // }))
     },
     config(md) {
       md.use(MarkdownItFootnote)
@@ -421,13 +449,19 @@ export default defineConfig({
       md.use(obsidianImageSize)
       md.use(figure)
       md.use(timeline)
-      md.use(MarkdownItKbd, {
-        presets: [
-          {
-            name: 'icons',
-          },
-        ],
-      })
+      md.use(InlineLinkPreviewElementTransform)
+      md.use(
+        BiDirectionalLinks({
+          dir: path.join(cwd(), '/src'),
+        }),
+      )
+      // md.use(MarkdownItKbd, {
+      //   presets: [
+      //     {
+      //       name: 'icons',
+      //     },
+      //   ],
+      // })
     },
   },
 })

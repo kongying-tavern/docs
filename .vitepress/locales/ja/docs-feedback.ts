@@ -13,7 +13,7 @@ const docsFeedback: CustomConfig['docsFeedback'] = {
     chooseIssues: '以下の問題に遭遇しましたか？',
     translationIssue: '翻訳の問題',
     typosIssue: '誤字/句読点のエラー',
-    ContentImgLinkIssue:
+    contentImgLinkIssue:
       '不正確なコンテンツ表現、画像読み込みエラー、またはリンクエラー',
     feedbackDetail: '詳細/提案',
     feedbackTip: 'ここに遭遇した問題や提案を説明してください',

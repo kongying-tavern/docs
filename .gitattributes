@@ -12,3 +12,8 @@
 *.ttf binary
 *.woff binary
 *.woff2 binary
+
+*.md linguist-vendored=false
+*.md linguist-generated=false
+*.md linguist-documentation=false
+*.md linguist-detectable=true
