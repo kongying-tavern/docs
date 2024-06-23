@@ -1,6 +1,5 @@
 ---
 title: 空荧酒馆原神地图用户服务协议
-description: 欢迎您使用空荧酒馆平台软件及服务！
 layout: doc
 comment: false
 ---

@@ -1,6 +1,5 @@
 ---
 title: 免责声明
-description: 免责声明
 layout: doc
 comment: false
 ---
