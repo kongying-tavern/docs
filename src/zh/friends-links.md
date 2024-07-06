@@ -10,7 +10,7 @@ comment: false
 title: 你的影月月
 link: https://space.bilibili.com/431073645
 logo: /imgs/common/friend-links/5b6e078ee8f63c4638dca02ba80e44b44225bf1b.jpg
-desc: bilibili 知名游戏UP主、直播高能主播
+desc: bilibili 2023百大UP主、知名游戏UP主、直播高能主播
 theme: medium
 ```
 
