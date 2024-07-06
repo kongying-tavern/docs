@@ -4,7 +4,6 @@ import {
   presetIcons,
   presetTypography,
   presetUno,
-  presetWebFonts,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
@@ -23,13 +22,7 @@ export default defineConfig({
     presetUno(),
     presetAttributify(),
     presetTypography(),
-    presetWebFonts({
-      fonts: {
-        sans: 'DM Sans',
-        serif: 'DM Serif Display',
-        mono: 'DM Mono',
-      },
-    }),
+
     presetIcons({
       scale: 1.2,
       warn: true,
@@ -59,6 +52,5 @@ function getCustomIcons() {
       'utf8',
     )
   })
-
   return data
 }

@@ -6,7 +6,7 @@ layout: doc
 comment: false
 head:
   - - script
-    - src: /docs/error.js
+    - src: ../error.js
 wip: true
 ---
 
