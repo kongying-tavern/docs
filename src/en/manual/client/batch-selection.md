@@ -21,29 +21,14 @@ Responding to the requests from travelers, Multi Mark is now available!
 - **Right click** a <b><span style="color: red">To Do</span></b> pin to mark it <b><span style="color: green">Found</span></b>.
 - **Right click** a <b><span style="color: green">Found</span></b> pin to mark it <b><span style="color: red">To Do</span></b>.
 
-![](/imgs/_zh/manual/batch-selection/BS-01-Dot.gif)
-(right click - Single Pin Marking)
-
 ### **Scenario 2: Swipe Selection**
 
 - Holding **right click** and swiping over <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
-![](/imgs/_zh/manual/batch-selection/BS-02.1-Swipe-On.gif)
-(right click Swipe - Mark)
-
 - Holding **left Alt** + **right click** and swiping over <b><span style="color: green">Found</span></b> pins will mark them <b><span style="color: red">To Do</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
-
-![](/imgs/_zh/manual/batch-selection/BS-02.2-Swipe-Off.gif)
-(right click Swipe - Mark Pins "To Do")
 
 ### **Scenario 3: Box Selection**
 
 - Holding **Ctrl** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: green">Found</span></b> pins will stay unchanged.
 
-![](/imgs/_zh/manual/batch-selection/BS-03.1-Box-On.gif)
-(right click Box Selection - Mark Pins Found)
-
 - Holding **Ctrl** + **left Alt** + **right click** and box select <b><span style="color: red">To Do</span></b> pins will mark them <b><span style="color: green">Found</span></b>, and <b><span style="color: red">To Do</span></b> pins will stay unchanged.
-
-![](/imgs/_zh/manual/batch-selection/BS-03.2-Box-Off.gif)
-(right click Box Selection - Mark Pins "To Do")
