@@ -14,23 +14,23 @@ You can launch Genshin Impact in **Windowed Fullscreen** with the following step
 
 - Step 1. Go to Genshin's installation folder
 
-![](/imgs/en/manual/fullscreen-windowed/1.png)
+![](/imgs/_en/manual/fullscreen-windowed/1.png)
 
 - Step 2. Open the folder named "Genshin Impact Game"
 
-![](/imgs/en/manual/fullscreen-windowed/2.png)
+![](/imgs/_en/manual/fullscreen-windowed/2.png)
 
 - Step 3. Create a shortcut on the Desktop for `GenshinImpact.exe`
 
-![](/imgs/en/manual/fullscreen-windowed/3.png)
+![](/imgs/_en/manual/fullscreen-windowed/3.png)
 
 - Step 4. Right-click on the shortcut and select Properties
 
-![](/imgs/en/manual/fullscreen-windowed/4.png)
+![](/imgs/_en/manual/fullscreen-windowed/4.png)
 
 - Step 5. In the Target text box, add " -popupwindow" to the end of the address. (remember the space)
 
-![](/imgs/en/manual/fullscreen-windowed/5.png)
+![](/imgs/_en/manual/fullscreen-windowed/5.png)
 
 ## Note
 

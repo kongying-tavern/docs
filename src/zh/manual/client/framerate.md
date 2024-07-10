@@ -12,13 +12,13 @@ title: 帧率设置
 
 若希望使用【窗口置顶】功能，该功能将使客户端处于后台（非当前操作窗口）时，仍置顶显示。推荐设置后台帧率与前台帧率一致。
 
-![](/imgs/zh/manual/bg-frate/1.png)
+![](/imgs/_zh/manual/bg-frate/1.png)
 
 ::: tip
 
 若将帧率拉至最左，将提示【垂直同步】，垂直同步功能实际为【与显示器帧率同步】，例如显示器是 144 帧，则拉至【垂直同步】，地图帧率也将设置为 144 帧
 
-![](/imgs/zh/manual/bg-frate/2.png)
+![](/imgs/_zh/manual/bg-frate/2.png)
 
 :::
 
@@ -29,4 +29,4 @@ title: 帧率设置
 - 若调低追踪间隔（最小间隔 0.1 秒），则 CPU 占用提高；
 - 若调高追踪间隔（最大间隔 1 秒），则 CPU 占用降低，同时追踪坐标显示会略有延迟。
 
-![](/imgs/zh/manual/bg-frate/3.png)
+![](/imgs/_zh/manual/bg-frate/3.png)
