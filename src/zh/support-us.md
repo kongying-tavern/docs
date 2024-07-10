@@ -1,6 +1,5 @@
 ---
 title: 支持我们
-description: 非常感谢您对地图开发的支持！
 layout: doc
 ---
 

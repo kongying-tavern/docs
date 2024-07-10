@@ -5,7 +5,7 @@ aside: true
 layout: doc
 head:
   - - script
-    - src: /docs/error.js
+    - src: ../error.js
 ---
 
 # _Genshin Interactive Map_ has encountered some problems...
