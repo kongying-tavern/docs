@@ -242,6 +242,9 @@ export default defineConfig({
         },
       },
     },
+    outline: {
+      level: [2, 4],
+    },
   },
   rewrites: {
     'zh/:splat(.*)': ':splat',
