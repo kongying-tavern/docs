@@ -1,6 +1,7 @@
 import Unocss from 'unocss/vite'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
+import MarkdownItColorInline from 'markdown-it-color-inline'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitepress'
 import type {
@@ -421,6 +422,7 @@ export default defineConfig({
       md.use(obsidianImageSize)
       md.use(figure)
       md.use(timeline)
+      md.use(MarkdownItColorInline)
       md.use(MarkdownItKbd, {
         presets: [
           {
