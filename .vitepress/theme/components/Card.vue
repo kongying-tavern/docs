@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { isLinkExternal, isRelativeLink } from '../utils'
-import { computed, defineProps, withDefaults } from 'vue'
+import { computed } from 'vue'
 
 import '../styles/card.scss'
 
