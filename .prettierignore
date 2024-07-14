@@ -14,3 +14,5 @@ cache/
 .vscode/
 auto-imports.d.ts
 pnpm-lock.yaml
+
+**/*.md
