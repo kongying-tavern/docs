@@ -1,0 +1,56 @@
+$padding-x: 0.3rem;
+
+.qa {
+  &::marker {
+    display: none;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.qa-summary {
+  margin: 0 !important;
+  padding: 0 $padding-x;
+  display: block;
+
+  .qa.qa-collapsible & {
+    cursor: pointer;
+    pointer-events: all;
+  }
+  .qa:not(.qa-collapsible) & {
+    pointer-events: none;
+  }
+}
+
+.qa-detail {
+  margin: 0 !important;
+  padding: $padding-x;
+  display: block;
+}
+
+.qa-wrapper {
+  align-items: top;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.qa-mark {
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: bolder;
+}
+
+.qa-mark-question {
+  color: #6666;
+}
+
+.qa-mark-answer {
+  color: #aaa8;
+}
+
+.qa-content {
+  flex: none;
+}

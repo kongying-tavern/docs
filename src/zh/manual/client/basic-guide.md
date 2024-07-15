@@ -1,8 +1,25 @@
-<QA>
-## 1234
+::::qa
+Title
 ----
-<Badge>123</Badge>
+:::qa
+@config
+collapsible: true
+----
+Question 0
+----
+Answer 0
 
-## 3456
+Answer 0
+:::
 
-</QA>
+:::qa
+@config
+collapsible: true
+----
+Question 1
+----
+Answer 1
+
+Answer 1
+:::
+::::
