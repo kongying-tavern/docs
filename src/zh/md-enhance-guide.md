@@ -2,17 +2,10 @@
 title: Markdown 增强语法指南
 description: 本项目文档页面使用Markdown语法进行编写，除了 Vitepress 支持的 Markdown 基础组件之外我们额外添加和实现了一些特有语法和组件并在此演示
 layout: doc
-aside: false
 search: false
 ---
 
 <!-- 该页面无需翻译 -->
-
-## 目录 {#toc}
-
-[[TOC]]
-
----
 
 ## Timeline 时间线 {#timeline}
 
@@ -54,11 +47,11 @@ search: false
 
 ## Footnote 脚注 {#footnote}
 
-- 在 Markdown 中使用 [^锚点文字] 来定义脚注。
-- 在之后的任何位置使用 [^锚点文字]: ... 来描述脚注内容。
+- 在 Markdown 中使用 `[^锚点文字]` 来定义脚注。
+- 在之后的任何位置使用 `[^锚点文字]: ...` 来描述脚注内容。
 - 如果脚注包含多个段落，其后的段落应当保持双层缩进
 
-#### 例子 {#footnote-example}
+#### 示例 {#footnote-example}
 
 脚注 1 链接[^first]。
 
@@ -96,7 +89,7 @@ search: false
 
 使用 == == 进行标记。请注意两边需要有空格。
 
-#### 例子 {#mark-example}
+#### 示例 {#mark-example}
 
 对于习惯了传统吟游诗人的蒙德来说， ==「偶像」== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
 
@@ -108,7 +101,7 @@ search: false
 
 ## Card 卡片 {#card}
 
-### Props {#card-props}
+### 参数 {#card-props}
 
 | 接口        | 描述                                             | 默认值 |       类型        |
 | ----------- | :----------------------------------------------- | :----: | :---------------: |
@@ -124,9 +117,9 @@ search: false
 
 > B站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写logo
 
-### Example {#card-example}
+### 示例 {#card-example}
 
-> Normal Theme
+> 常规主题
 
 ```card
 logo: self
@@ -156,7 +149,7 @@ description: i am description
 ```
 ````
 
-> Medium Theme
+> 宽主题
 
 ```card
 title: 观看客户端基础使用教程
@@ -189,7 +182,7 @@ theme: medium
 
 ---
 
-## Frontmatter Config {#frontmatter}
+## Frontmatter 配置 {#frontmatter}
 
 ### footer {#fm-footer}
 
