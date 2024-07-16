@@ -14,7 +14,7 @@ title: 隐藏/显示标记
 ---
 
 【显示】标记
-![](/imgs/zh/manual/hide-show-done/Hide.png)
+![](/imgs/_zh/manual/hide-show-done/Hide.png)
 
 【隐藏】标记
-![](/imgs/zh/manual/hide-show-done/show.png)
+![](/imgs/_zh/manual/hide-show-done/show.png)

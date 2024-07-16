@@ -18,11 +18,11 @@ title: 窗口全屏/无边框窗口模式
 
 - 步骤三：转到“图像”设置
 
-![](/imgs/zh/manual/fullscreen-windowed/6.png)
+![](/imgs/_zh/manual/fullscreen-windowed/6.png)
 
 - 步骤四：在“显示模式”选项中，选择“<你的分辨率> 无边框”选项
 
-![](/imgs/zh/manual/fullscreen-windowed/7.png)
+![](/imgs/_zh/manual/fullscreen-windowed/7.png)
 
 ## 注意事项
 

@@ -15,23 +15,23 @@ wip: true
 
 - 步骤一：打开“原神”所在的安装路径（见图）
 
-![](/imgs/ja/manual/fullscreen-windowed/1.png)
+![](/imgs/_ja/manual/fullscreen-windowed/1.png)
 
 - 步骤二：打开游戏安装路径下“Genshin Impact Game”文件夹
 
-![](/imgs/ja/manual/fullscreen-windowed/2.png)
+![](/imgs/_ja/manual/fullscreen-windowed/2.png)
 
 - 步骤三：将”YuanShen.exe“在桌面创建快捷方式（其他服务器的原神客户端启动程序名字可能不同）
 
-![](/imgs/ja/manual/fullscreen-windowed/3.png)
+![](/imgs/_ja/manual/fullscreen-windowed/3.png)
 
 - 步骤四：在桌面生成的快捷方式上，右键点击，选择【属性】
 
-![](/imgs/ja/manual/fullscreen-windowed/4.png)
+![](/imgs/_ja/manual/fullscreen-windowed/4.png)
 
 - 步骤五：在“快捷方式”选项中，“目标”一栏，加上【 -popupwindow】（注意”-“前面有 1 个空格）
 
-![](/imgs/ja/manual/fullscreen-windowed/5.png)
+![](/imgs/_ja/manual/fullscreen-windowed/5.png)
 
 ## 注意事项
 
