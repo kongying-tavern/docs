@@ -6,10 +6,6 @@ $mark-radius-size: 0.3rem;
 $mark-indent-gap: 0.2rem;
 
 .qa {
-  &::marker {
-    display: none;
-  }
-
   p {
     margin: 0;
     padding: 0;
@@ -79,4 +75,14 @@ $mark-indent-gap: 0.2rem;
 
 .qa-toggle {
   flex: none;
+  color: var(--vp-c-brand);
+
+  & > span {
+    display: inline-block;
+  }
+  & > .icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    vertical-align: sub;
+  }
 }

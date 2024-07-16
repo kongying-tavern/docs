@@ -11,6 +11,16 @@
       <div class="qa-content">
         <slot name="summary"></slot>
       </div>
+      <div v-if="collapsible" class="qa-toggle">
+        <span
+          class="icon"
+          :class="[isOpened ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down']"
+        >
+        </span>
+        <span class="text">
+          {{ isOpened ? theme.qa.button.collapse : theme.qa.button.expand }}
+        </span>
+      </div>
     </div>
     <div class="qa-wrapper qa-detail">
       <div class="qa-mark qa-mark-answer">A</div>
@@ -23,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useData } from 'vitepress'
 
 import '../styles/qa.scss'
 
@@ -33,6 +44,8 @@ interface QAProps {
 const props = withDefaults(defineProps<QAProps>(), {
   collapsible: true,
 })
+
+const { theme } = useData()
 
 const isOpened = ref<boolean>(!props.collapsible)
 
