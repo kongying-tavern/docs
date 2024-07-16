@@ -1,8 +1,9 @@
-$padding-x: 0.3rem;
+$content-space-x: 0.3rem;
+$summary-space-y: 0.5rem;
+$detail-space-y: 0.6rem;
 $mark-size: 2rem;
 $mark-radius-size: 0.3rem;
-$mark-indent-gap: 0.3rem;
-$container-between-space: 0.4rem;
+$mark-indent-gap: 0.2rem;
 
 .qa {
   &::marker {
@@ -16,15 +17,12 @@ $container-between-space: 0.4rem;
 
   & + .qa {
     border-top: 1px solid var(--vp-c-brand);
-    padding-top: $container-between-space;
   }
 }
 
 .qa-summary {
-  margin: 0 !important;
-  padding: 0 $padding-x;
-  padding-bottom: $container-between-space;
-  display: block;
+  margin: $summary-space-y 0;
+  padding: 0 $content-space-x;
 
   .qa.qa-collapsible & {
     cursor: pointer;
@@ -36,9 +34,18 @@ $container-between-space: 0.4rem;
 }
 
 .qa-detail {
-  margin: 0 !important;
-  padding: $padding-x;
-  display: block;
+  margin: $detail-space-y 0;
+  padding: 0 $content-space-x;
+  overflow-y: hidden;
+  transition: height 10s ease;
+
+  .qa.qa-opened & {
+    height: auto;
+  }
+  .qa:not(.qa-opened) & {
+    display: none;
+    height: 0;
+  }
 }
 
 .qa-wrapper {
@@ -68,4 +75,8 @@ $container-between-space: 0.4rem;
 
 .qa-content {
   flex: auto;
+}
+
+.qa-toggle {
+  flex: none;
 }

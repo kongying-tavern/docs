@@ -11,7 +11,7 @@ Answer 0
 
 :::qa
 @config
-collapsible: true
+collapsible: false
 ----
 Question 1
 ----

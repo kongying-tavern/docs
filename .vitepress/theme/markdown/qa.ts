@@ -29,8 +29,8 @@ export interface QAOptions {
   collapsible?: boolean
 }
 
-const SEPARATOR_TOKEN_TEST = /----/giu
-const CONFIG_LABEL_TEST = /@config/giu
+const SEPARATOR_TOKEN_TEST = '----'
+const CONFIG_LABEL_TEST = '@config'
 const OPEN_TAG_TEST = /^:{3,}\s*qa$/giu
 const CLOSE_TAG_TEST = /^:{3,}$/giu
 const QA_PROPS = ['collapsible']
@@ -45,7 +45,7 @@ const parseChunks = (chunks: string[]): QAParts => {
   let tagLevels: number[] = []
   let lines: [string[], string[], string[]] = [[], [], []]
   for (let chunk of chunks) {
-    if (SEPARATOR_TOKEN_TEST.test(chunk)) {
+    if (SEPARATOR_TOKEN_TEST === chunk.trim()) {
       if (tagLevels.length <= 0) {
         curIter++
         continue
@@ -66,13 +66,13 @@ const parseChunks = (chunks: string[]): QAParts => {
 
   // Re-arrange config, summary and detail
   const hasConfig: boolean =
-    lines[QAPartEnum.CONFIG].findIndex((text) =>
-      CONFIG_LABEL_TEST.test(text),
+    lines[QAPartEnum.CONFIG].findIndex(
+      (text) => CONFIG_LABEL_TEST === text.trim(),
     ) !== -1
   if (hasConfig) {
     const [configLines, summaryLines, detailLines] = lines
     const cleanConfigLines = configLines.filter(
-      (line) => !CONFIG_LABEL_TEST.test(line),
+      (line) => CONFIG_LABEL_TEST !== line.trim(),
     )
     lines = [cleanConfigLines, summaryLines, detailLines]
   } else {
@@ -95,6 +95,7 @@ const parseChunks = (chunks: string[]): QAParts => {
   parts.summary = lines[QAPartEnum.SUMMARY].join('\n')
   parts.detail = lines[QAPartEnum.DETAIL].join('\n')
 
+  console.log(parts)
   return parts
 }
 
@@ -123,8 +124,12 @@ const qaRender = (
   const contentParts: QAParts = parseChunks(contentChunks)
 
   // Render title & detail
-  const renderedTitle: string | undefined = md?.render(contentParts.summary!)
-  const renderedDetail: string | undefined = md?.render(contentParts.detail!)
+  const renderedTitle: string | undefined = md?.render(
+    contentParts.summary ?? '',
+  )
+  const renderedDetail: string | undefined = md?.render(
+    contentParts.detail ?? '',
+  )
 
   return `\
     <QA v-bind='${stringifyProp(contentParts.config)}'>
