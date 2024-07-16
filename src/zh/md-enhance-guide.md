@@ -109,7 +109,7 @@ search: false
 
 ## Mark 标记 {#mark}
 
-使用 == == 进行标记。请注意两边需要有空格。
+使用 `== ==` 进行标记。请注意两边需要有空格。
 
 #### 示例 {#mark-example}
 
@@ -226,7 +226,7 @@ footer: false #隐藏该页面的页脚
 
 是否显示页面的侧边栏
 
-> 仅会在 `Layout: doc` 时自动启用
+> 仅会在 `layout: doc` 时自动启用
 
 ```yml
 ---
@@ -279,7 +279,7 @@ bannerExpiryDate: 2024-2-1
 
 是否使用 docHeader 展示标题
 
-> 仅会在 `Layout: doc` 时自动启用
+> 仅会在 `layout: doc` 时自动启用
 
 ```yml
 ---
