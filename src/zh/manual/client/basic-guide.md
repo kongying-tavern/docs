@@ -1,6 +1,3 @@
-::::qa
-Title
-----
 :::qa
 @config
 collapsible: true
@@ -22,4 +19,3 @@ Answer 1
 
 Answer 1
 :::
-::::

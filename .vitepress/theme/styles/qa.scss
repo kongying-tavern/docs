@@ -1,4 +1,8 @@
 $padding-x: 0.3rem;
+$mark-size: 2rem;
+$mark-radius-size: 0.3rem;
+$mark-indent-gap: 0.3rem;
+$container-between-space: 0.4rem;
 
 .qa {
   &::marker {
@@ -9,11 +13,17 @@ $padding-x: 0.3rem;
     margin: 0;
     padding: 0;
   }
+
+  & + .qa {
+    border-top: 1px solid var(--vp-c-brand);
+    padding-top: $container-between-space;
+  }
 }
 
 .qa-summary {
   margin: 0 !important;
   padding: 0 $padding-x;
+  padding-bottom: $container-between-space;
   display: block;
 
   .qa.qa-collapsible & {
@@ -32,25 +42,30 @@ $padding-x: 0.3rem;
 }
 
 .qa-wrapper {
-  align-items: top;
+  align-items: baseline;
   display: flex;
   gap: 0.5rem;
 }
 
 .qa-mark {
+  flex: none;
   display: inline-block;
+  width: $mark-size;
+  height: $mark-size;
+  line-height: $mark-size;
+  background-color: var(--vp-c-brand);
+  vertical-align: middle;
+  text-align: center;
   font-size: 1.4rem;
+  border-radius: $mark-radius-size;
   font-weight: bolder;
-}
-
-.qa-mark-question {
-  color: #6666;
+  color: #fff;
 }
 
 .qa-mark-answer {
-  color: #aaa8;
+  margin-left: $mark-indent-gap + $mark-size;
 }
 
 .qa-content {
-  flex: none;
+  flex: auto;
 }
