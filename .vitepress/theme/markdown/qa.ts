@@ -133,7 +133,7 @@ const qaRender = (
     </QA>`
 }
 
-export const qa = (md: MarkdownIt, options: any) => {
+export const qa = (md: MarkdownIt, _options: any) => {
   md.use(...createFence('qa', md))
 }
 
