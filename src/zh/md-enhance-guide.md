@@ -35,13 +35,25 @@ search: false
 
 ## Kbd 快捷键 {#kbd}
 
-快捷方式组件建立在 Kbd 组件之上，可帮助您在内容中显示键盘快捷方式。
+- 快捷方式组件建立在 Kbd 组件之上，可帮助您在内容中显示键盘快捷方式。
+- 可使用这些标记显示图标：
+    - `[[cmd]]` `[[command]]`
+    - `[[opt]]` `[[option]]`
+    - `[[ctrl]]` `[[control]]`
+    - `[[shift]]`
+    - `[[ret]]` `[[return]]` `[[enter]]`
+    - `[[pageup]]` `[[pagedown]]`
+    - `[[backspace]]` `[[delete]]`
+    - `[[arrRight]]` `[[arrLeft]]` `[[arrUp]]` `[[arrDown]]`
+    - `[[capslock]]`
+    - `[[tab]]`
+    - `[[space]]`
 
 ```md
-[[Meta]][[K]]
+[[Meta]][[K]][[cmd]]
 ```
 
-[[Meta]][[K]]
+[[Meta]][[K]][[cmd]]
 
 ---
 
