@@ -16,7 +16,7 @@ wip: true
 
 【Gitee 主页下图指示处，查看自己【用户名】，注意账号不包含“@”符号】
 
-![](/imgs/ja/manual/login/giteeusername.png)
+![](/imgs/_ja/manual/login/giteeusername.png)
 
 ---
 

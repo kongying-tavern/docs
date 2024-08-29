@@ -108,32 +108,6 @@
   overflow-wrap: anywhere;
 }
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: stretch;
-  align-items: stretch;
-  justify-content: center;
-
-  .card {
-    flex-basis: calc(50% - 3rem);
-    max-width: unset;
-    margin: 0.5rem;
-
-    @media (max-width: config.$pad) {
-      flex-basis: 100%;
-    }
-
-    @media (max-width: config.$tablet) {
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: config.$mobile) {
-      font-size: 0.9rem;
-    }
-  }
-}
-
 .card-theme-medium {
   width: 100%;
   margin: 1rem 0.5rem;

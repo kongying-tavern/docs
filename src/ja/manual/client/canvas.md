@@ -24,42 +24,42 @@ wip: true
 
 点击右上角打开画板
 
-![](/imgs/ja/manual/canvas/1.png)
+![](/imgs/_ja/manual/canvas/1.png)
 
 ### 第二步 {#step2}
 
 点击添加一个空画布
 
-![](/imgs/ja/manual/canvas/2.png)
+![](/imgs/_ja/manual/canvas/2.png)
 
 ### 第三步 {#step3}
 
 选中新的画布（黑色背景为被选中状态）
 
-![](/imgs/ja/manual/canvas/3.png)
+![](/imgs/_ja/manual/canvas/3.png)
 （此为未选中状态）
 
-![](/imgs/ja/manual/canvas/4.png)
+![](/imgs/_ja/manual/canvas/4.png)
 （此为选中状态，再次点击可隐藏）
 
 ### 第四步 {#step4}
 
 打开编辑模式
 
-![](/imgs/ja/manual/canvas/5.png)
+![](/imgs/_ja/manual/canvas/5.png)
 
-![](/imgs/ja/manual/canvas/6.png)
+![](/imgs/_ja/manual/canvas/6.png)
 （此为开启状态，再次点击关闭）
 
 ### 第五步 {#step5}
 
 在任意位置【按住 alt】并【鼠标左键点击】即可生成线条
 
-![](/imgs/ja/manual/canvas/7.png)
+![](/imgs/_ja/manual/canvas/7.png)
 
 按住 ctrl 可显示控制节点
 
-![](/imgs/ja/manual/canvas/9.png)
+![](/imgs/_ja/manual/canvas/9.png)
 
 ### 第六步 {#step6}
 
@@ -85,18 +85,18 @@ wip: true
 
 打开面板点击导出此画布，选择位置保存
 
-![](/imgs/ja/manual/canvas/10.png)
+![](/imgs/_ja/manual/canvas/10.png)
 
-![](/imgs/ja/manual/canvas/11.png)
+![](/imgs/_ja/manual/canvas/11.png)
 
-![](/imgs/ja/manual/canvas/12.png)
+![](/imgs/_ja/manual/canvas/12.png)
 
 ## 导入教程 {#import}
 
 打开面板选择导入画布，可导入选择的画布
 
-![](/imgs/ja/manual/canvas/13.png)
+![](/imgs/_ja/manual/canvas/13.png)
 
-![](/imgs/ja/manual/canvas/14.png)
+![](/imgs/_ja/manual/canvas/14.png)
 
-![](/imgs/ja/manual/canvas/15.png)
+![](/imgs/_ja/manual/canvas/15.png)

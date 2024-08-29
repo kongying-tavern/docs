@@ -1,0 +1,82 @@
+$content-space-x: 0.3rem;
+$summary-space-y: 0.5rem;
+$detail-space-y: 0.6rem;
+$mark-size: 2rem;
+$mark-radius-size: 0.3rem;
+$mark-indent-gap: 0.2rem;
+
+.qa {
+  &::marker {
+    display: none;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  & + .qa {
+    border-top: 1px solid var(--vp-c-brand);
+  }
+}
+
+.qa-summary {
+  margin: $summary-space-y 0;
+  padding: 0 $content-space-x;
+
+  .qa.qa-collapsible & {
+    cursor: pointer;
+    pointer-events: all;
+  }
+  .qa:not(.qa-collapsible) & {
+    pointer-events: none;
+  }
+}
+
+.qa-detail {
+  margin: $detail-space-y 0;
+  padding: 0 $content-space-x;
+  overflow-y: hidden;
+  transition: height 10s ease;
+
+  .qa.qa-opened & {
+    height: auto;
+  }
+  .qa:not(.qa-opened) & {
+    display: none;
+    height: 0;
+  }
+}
+
+.qa-wrapper {
+  align-items: baseline;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.qa-mark {
+  flex: none;
+  display: inline-block;
+  width: $mark-size;
+  height: $mark-size;
+  line-height: $mark-size;
+  background-color: var(--vp-c-brand);
+  vertical-align: middle;
+  text-align: center;
+  font-size: 1.4rem;
+  border-radius: $mark-radius-size;
+  font-weight: bolder;
+  color: #fff;
+}
+
+.qa-mark-answer {
+  margin-left: $mark-indent-gap + $mark-size;
+}
+
+.qa-content {
+  flex: auto;
+}
+
+.qa-toggle {
+  flex: none;
+}

@@ -14,4 +14,4 @@ wip: true
 
 更新器位置：
 
-![](/imgs/ja/manual/autoupdate/updaterlocation.png)
+![](/imgs/_ja/manual/autoupdate/updaterlocation.png)

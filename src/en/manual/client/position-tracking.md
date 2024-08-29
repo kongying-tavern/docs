@@ -30,7 +30,7 @@ Once Position Tracker is enabled, The **map client** will
 - Display your UID at the lower right corner
 - Automatically detect the current location of your character and display a simultaneous player indicator on the **map client**
 
-![](/imgs/en/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/_en/manual/auto-tracking/autotrackingegaged.png)
 
 ---
 
@@ -98,12 +98,12 @@ Some facts to know before troubleshooting and submitting feedback:
    - Tracking log (autoTrack.log)
    - Tracking screenshot (Capture.png)
 
-![](/imgs/en/manual/auto-tracking/7.png)
+![](/imgs/_en/manual/auto-tracking/7.png)
 
 ::: tip
 You can visit the files' directory quickly through the **Position Tracker** settings.
 
-![](/imgs/en/manual/auto-tracking/2.png)
+![](/imgs/_en/manual/auto-tracking/2.png)
 :::
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
@@ -145,7 +145,7 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 
 [#]: # '这里更新了客户端内一键清理位置追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
 
-![](/imgs/en/manual/auto-tracking/6.png)
+![](/imgs/_en/manual/auto-tracking/6.png)
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
@@ -158,15 +158,15 @@ There is a problem with our server, join our [Discord](https://discord.gg/S7Mxgj
 - Check the in-game minimap for obstructions, and ensure that it's displaying properly.
 - Check the "DLL" version at the lower left corner of the map client. If it shows "Uninitialized", try restarting **Position Tracker**.
 
-![](/imgs/en/manual/auto-tracking/3.png)
-![](/imgs/en/manual/auto-tracking/4.png)
-![](/imgs/en/manual/auto-tracking/5.png)
+![](/imgs/_en/manual/auto-tracking/3.png)
+![](/imgs/_en/manual/auto-tracking/4.png)
+![](/imgs/_en/manual/auto-tracking/5.png)
 
 [#]: # '与第 3 步一样，更新了客户端内一键清理的步骤和图片'
 
 If the problem persists, use [Clear Tracking Module] under the **Position Tracker** settings tab, which deletes all files in `%APPDATA%\..\LocalLow\空荧酒馆\Map\DLL`, and download the tracking module again.
 
-![](/imgs/en/manual/auto-tracking/1.png)
+![](/imgs/_en/manual/auto-tracking/1.png)
 
 - Use "Obtain Tracking Screenshot" in the **Position Tracker** settings, if the screenshot is blank, showing a non-current image of the game, or unsuccessful, please see Issue 5.
 - If a normal screenshot is obtained, but no player indicator shows up, please see Issue 6.
@@ -181,7 +181,7 @@ If the problem persists, use [Clear Tracking Module] under the **Position Tracke
 - Try running the game windowed (**Alt+Enter**, game does not minimize when pressing **Win** key). If you want to play the game fullscreen, please refer to: [Launching The Game in Windowed Fullscreen (Borderless)](./fullscreen-windowed.md)
 - To use BitBlt in Windows 11, go to the Graphics settings (Settings->System->Display->Graphics), add GenshinImpact.exe to the list (`***\Genshin Impact Game\GenshinImpact.exe`, not launcher.exe) and **enable** "Don't use optimizations for windowed games".
 
-![](/imgs/en/manual/auto-tracking/windowedoptimization.png)
+![](/imgs/_en/manual/auto-tracking/windowedoptimization.png)
 
 - Please message in [#feedback on Discord](https://discord.gg/8wgttNDwse) if the issue remains, include "【位置追踪截图失败】" in your message.
 

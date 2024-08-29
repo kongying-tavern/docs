@@ -13,7 +13,7 @@ description: Troubleshoot
 
 - The client is <span style="color: red">unable to log you in</span> using a <span style="color: red">phone number</span>, please use your <span style="color: ">linked Email</span> or <span style="color: red">Gitee username</span> to log in
 
-![](/imgs/en/manual/login/giteeusername.png)
+![](/imgs/_en/manual/login/giteeusername.png)
 (You can find your username under your Gitee profile, excluding "@")
 
 ---
