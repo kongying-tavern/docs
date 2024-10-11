@@ -43,8 +43,11 @@ jobs:
       - name: Build
         run: pnpm site:preview
 
+      - name: Build lunaria
+        run: pnpm lunaria:build
+
       - run: |
-          zip -r _site.zip ./_dist
+          zip -r _site.zip ./dist
 
       - name: upload _site artifact
         uses: actions/upload-artifact@v2
