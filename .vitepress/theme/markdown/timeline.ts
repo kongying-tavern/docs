@@ -1,9 +1,9 @@
-import container from 'markdown-it-container'
 import dayjs from 'dayjs'
 
 import type MarkdownIt from 'markdown-it'
-import type Token from 'markdown-it/lib/token'
 import type { RenderRule } from 'markdown-it/lib/renderer'
+import type Token from 'markdown-it/lib/token'
+import container from 'markdown-it-container'
 
 export const getdefaultTime = () => {
   return dayjs().format('YYYY-MM-DD')
@@ -29,15 +29,12 @@ const createContainer = (
         if (token.nesting === 1) {
           // opening tag
           const title = md.renderInline(info)
-          return (
-            "<div class='timeline-dot'><span class='timeline-dot-title'>" +
-            title +
-            '</span>\n'
-          )
-        } else {
-          // closing tag
-          return '</div>\n'
+          return `<div class='timeline-dot'><span class='timeline-dot-title'>${
+            title
+          }</span>\n`
         }
+        // closing tag
+        return '</div>\n'
       },
     },
   ]

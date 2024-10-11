@@ -37,11 +37,9 @@ export function serverJump(
       '#VPContent > div > div > div.content > div > main > div > div > details:nth-child(6) > ol > li',
     ).length
   ) {
-    const link = (
-      document?.querySelector(
-        `#VPContent > div > div > div.content > div > main > div > div > details:nth-child(6) > ol > li:nth-child(${Number(params.q)}) > a`,
-      ) as HTMLAnchorElement
-    ).href
+    const link = document.querySelector(
+      `#VPContent > div > div > div.content > div > main > div > div > details:nth-child(6) > ol > li:nth-child(${Number(params.q)}) > a`,
+    )!.href
 
     if (link.includes(location.host)) return
     location.href = link

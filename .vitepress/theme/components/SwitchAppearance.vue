@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import { useData } from 'vitepress/dist/client/theme-default/composables/data'
 import { APPEARANCE_KEY, inBrowser } from 'vitepress/dist/client/shared'
 import VPSwitch from 'vitepress/dist/client/theme-default/components/VPSwitch.vue'
-import VPIconSun from 'vitepress/dist/client/theme-default/components/icons/VPIconSun.vue'
 import VPIconMoon from 'vitepress/dist/client/theme-default/components/icons/VPIconMoon.vue'
+import VPIconSun from 'vitepress/dist/client/theme-default/components/icons/VPIconSun.vue'
+import { useData } from 'vitepress/dist/client/theme-default/composables/data'
+import { onMounted, ref, watch } from 'vue'
 
 const { site, isDark } = useData()
 const checked = ref(false)
@@ -21,7 +21,7 @@ const isAppearanceTransition =
 
 function useAppearance() {
   const query = window.matchMedia('(prefers-color-scheme: dark)')
-  const classList = document.documentElement.classList
+  const { classList } = document.documentElement
 
   let userPreference = localStorage.getItem(APPEARANCE_KEY)
 

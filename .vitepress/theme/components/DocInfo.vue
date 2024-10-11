@@ -1,25 +1,7 @@
-<template>
-  <div class="doc-info">
-    <div class="doc-info-left">
-      {{ theme.lastUpdatedText }}
-      {{ dayjs(page.lastUpdated).format('YYYY-MM-DD') }}
-    </div>
-    <ClientOnly>
-      <div class="doc-info-right" text-right flex justify-end>
-        <i i-custom-thumb></i>
-        <div v-if="loading" class="loader mr-4"></div>
-        <span v-else>
-          {{ thumbText }}
-        </span>
-      </div>
-    </ClientOnly>
-  </div>
-</template>
-
 <script setup lang="ts">
+import dayjs from 'dayjs'
 import { useData, useRoute } from 'vitepress'
 import { computed, ref, watch } from 'vue'
-import dayjs from 'dayjs'
 import { getPageInfo } from '../apis/getPageInfo'
 import { pageview as PV } from '../apis/pageview'
 import { usePageInfoStore } from '../stores/pageinfo'
@@ -38,7 +20,7 @@ const updateData = async () => {
   // @ts-ignore
   if (import.meta.env.SSR) return null
   const info = await getPageInfo(page)
-  pageinfo.setNewPageinfo(info.data!)
+  pageinfo.setNewPageinfo(info.data)
 }
 
 watch(
@@ -51,6 +33,24 @@ watch(
 )
 updateData()
 </script>
+
+<template>
+  <div class="doc-info">
+    <div class="doc-info-left">
+      {{ theme.lastUpdatedText }}
+      {{ dayjs(page.lastUpdated).format('YYYY-MM-DD') }}
+    </div>
+    <ClientOnly>
+      <div class="doc-info-right" text-right flex justify-end>
+        <i i-custom-thumb></i>
+        <div v-if="loading" class="loader mr-4"></div>
+        <span v-else>
+          {{ thumbText }}
+        </span>
+      </div>
+    </ClientOnly>
+  </div>
+</template>
 
 <style scoped>
 .doc-info {

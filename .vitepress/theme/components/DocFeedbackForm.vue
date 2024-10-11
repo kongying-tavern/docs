@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, inject } from 'vue'
 import { useData, useRoute } from 'vitepress'
+import { inject, onMounted, ref, watch } from 'vue'
 
 import { newDocFeedback } from '../apis/newDocFeedback'
 
 const { theme, page } = useData()
 
 const feedbackContent = ref('')
-const checkedItems = ref<Array<string>>([])
+const checkedItems = ref<string[]>([])
 const contractWay = ref('')
 const loading = ref(false)
 const feedback = inject('feedback')
@@ -25,7 +25,7 @@ const submit = async () => {
     user_contact: contractWay.value,
   })
 
-  if (res?.code == 200) {
+  if (res.code == 200) {
     feedbackID.value = res.data?.feedback_id!
   }
   loading.value = false
@@ -46,15 +46,15 @@ const submit = async () => {
           class="flex items-center mb-4 mt-2 w-full"
         >
           <input
-            :id="'feedback-question-checkbox-' + index"
+            :id="`feedback-question-checkbox-${index}`"
+            v-model="checkedItems"
             type="checkbox"
             :value="item.value"
-            v-model="checkedItems"
-            class="w-4 h-4 text-color-[var(--vp-c-brand-1)] bg-gray-100 border-gray-300 rounded focus:color-[var(--vp-c-brand-1)] dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-[var(--vp-local-search-bg)] dark:border-gray-600"
+            class="bg-gray-100 border-gray-300 dark:bg-[var(--vp-local-search-bg)] dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:color-[var(--vp-c-brand-1)] focus:ring-2 h-4 rounded text-color-[var(--vp-c-brand-1)] w-4"
           />
           <label
-            :for="'feedback-question-checkbox-' + index"
-            class="ms-2 text-sm font-medium text-color-[var(--vp-c-text-1)]"
+            :for="`feedback-question-checkbox-${index}`"
+            class="font-medium ms-2 text-color-[var(--vp-c-text-1)] text-sm"
             >{{ item.label }}</label
           >
         </div>
@@ -68,37 +68,37 @@ const submit = async () => {
         rows="4"
         :placeholder="theme.docsFeedback.form.feedbackTip"
         maxlength="2000"
-        class="mt-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[var(--vp-c-bg-alt)] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        class="bg-gray-50 block border border-gray-300 dark:bg-[var(--vp-c-bg-alt)] dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white focus:border-blue-500 focus:ring-blue-500 mt-4 p-2.5 rounded-lg text-gray-900 text-sm w-full"
       ></textarea>
       <div mt-4>
         <label
           for="contract_way"
-          class="flex justify-between block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          class="block dark:text-white flex font-medium justify-between mb-2 text-gray-900 text-sm"
           >{{ theme.docsFeedback.form.contactWay }}
           <span op-50 font-size-3>{{ contractWay.length }}/50</span>
         </label>
         <input
-          type="text"
           id="contract_way"
           v-model.trim="contractWay"
+          type="text"
           maxlength="50"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[var(--vp-c-bg-alt)] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="bg-gray-50 block border border-gray-300 dark:bg-[var(--vp-c-bg-alt)] dark:border-gray-600 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400 dark:text-white focus:border-blue-500 focus:ring-blue-500 p-2.5 rounded-lg text-gray-900 text-sm w-full"
           placeholder="Phone/E-Mail/QQ/WeChat/Discord"
         />
       </div>
       <div class="feedback-question-submit" mt-8>
         <button
           type="button"
-          @click="submit()"
           :disabled="checkedItems.length < 1"
-          class="px-4 py-2 text-sm font-medium text-center rounded-lg focus:outline-none bg-[var(--vp-c-brand)] border-[var(--vp-button-brand-border)] hover:bg-[var(--vp-c-brand)] hover:border-[var(--vp-button-brand-border)] color-white dark:bg-[var(--vp-button-brand-bg)]"
+          class="bg-[var(--vp-c-brand)] border-[var(--vp-button-brand-border)] color-white dark:bg-[var(--vp-button-brand-bg)] focus:outline-none font-medium hover:bg-[var(--vp-c-brand)] hover:border-[var(--vp-button-brand-border)] px-4 py-2 rounded-lg text-center text-sm"
+          @click="submit()"
         >
           {{ theme.ui.button.submit }}
         </button>
         <button
           type="button"
+          class="bg-[var(--vp-button-alt-bg)] border border-[var(--vp-button-alt-border)] font-medium hover:bg-[var(--vp-button-alt-hover-bg)] hover:border-[var(--vp-button-alt-hover-border)] ml-4 px-4 py-2 rounded-lg text-center text-sm"
           @click="feedback = null"
-          class="ml-4 px-4 py-2 text-sm font-medium text-center rounded-lg border bg-[var(--vp-button-alt-bg)] border-[var(--vp-button-alt-border)] hover:bg-[var(--vp-button-alt-hover-bg)] hover:border-[var(--vp-button-alt-hover-border)]"
         >
           {{ theme.ui.button.cancel }}
         </button>
@@ -110,12 +110,12 @@ const submit = async () => {
       <div v-else flex justify-center items-center flex-wrap>
         <span
           v-if="feedbackID"
-          class="feedback-state text-color-[var(--vp-c-green-2)] mr-2"
+          class="feedback-state mr-2 text-color-[var(--vp-c-green-2)]"
           i-custom-badge-check
         ></span>
         <span
           v-if="!feedbackID"
-          class="feedback-state text-color-[var(--vp-c-red-2)] mr-2"
+          class="feedback-state mr-2 text-color-[var(--vp-c-red-2)]"
           i-custom-badge-x
         ></span>
         {{
@@ -124,7 +124,7 @@ const submit = async () => {
             : theme.docsFeedback.feedbackFailMsg
         }}
         <p inline-block text-center style="width: 100%">
-          {{ feedbackID ? 'Feedback ID: ' + feedbackID : '' }}
+          {{ feedbackID ? `Feedback ID: ${feedbackID}` : '' }}
         </p>
       </div>
     </div>

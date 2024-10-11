@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { Member } from './Member'
 import { computed } from 'vue'
+import type { Member } from './Member'
+
 const props = defineProps<{
   member: Member
 }>()
@@ -57,7 +58,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.projects" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">Projects</h2>
-            <svg i-ph-code-bold class="desc-icon code" />
+            <svg i-ph-code-bold class="code desc-icon" />
           </div>
           <ul class="desc-list">
             <li

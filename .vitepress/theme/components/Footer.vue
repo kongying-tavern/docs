@@ -1,28 +1,37 @@
+<script setup lang="ts">
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+import { useData, withBase } from 'vitepress'
+import { socialList } from '../composables/socialList'
+
+const { frontmatter, theme } = useData()
+const qrcode = useQRCode(theme.value.footer.qrcodeLink)
+</script>
+
 <template>
-  <div class="footer-container slide-enter" v-if="frontmatter.footer !== false">
+  <div v-if="frontmatter.footer !== false" class="footer-container slide-enter">
     <footer class="footer">
-      <div class="footer-navigation" v-for="item in theme.footer.navigation">
+      <div v-for="item in theme.footer.navigation" class="footer-navigation">
         <h3 class="footer-title">{{ item.title }}</h3>
         <ul>
           <li v-for="ic in item.items">
             <Link
               :href="ic.link"
-              :title="ic.text + '（' + withBase(ic.link) + '）'"
-              :noIcon="true"
+              :title="`${ic.text}（${withBase(ic.link)}）`"
+              :no-icon="true"
             >
               {{ ic.text }}
             </Link>
           </li>
         </ul>
       </div>
-      <div class="justify-self-end footer-qrcode">
+      <div class="footer-qrcode justify-self-end">
         <img :src="qrcode" alt="QR Code" />
         <h4>{{ theme.footer.qrcodeTitle }}</h4>
         <p text-center>{{ theme.footer.qrcodeMessage }}</p>
       </div>
     </footer>
     <footer class="footer py-4">
-      <div class="items-center grid-flow-col">
+      <div class="grid-flow-col items-center">
         <svg
           width="24"
           height="24"
@@ -39,8 +48,8 @@
         </svg>
         <p text-left>MIT Licensed<br />Made with ❤ by Kongying Tavern</p>
       </div>
-      <div class="md:place-self-center md:justify-self-end">
-        <div class="grid grid-flow-col gap-4">
+      <div class="md:justify-self-end md:place-self-center">
+        <div class="gap-4 grid grid-flow-col">
           <a
             v-for="item in socialList"
             :href="item.link"
@@ -56,15 +65,6 @@
     </footer>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useQRCode } from '@vueuse/integrations/useQRCode'
-import { useData, withBase } from 'vitepress'
-import { socialList } from '../composables/socialList'
-
-const { frontmatter, theme } = useData()
-const qrcode = useQRCode(theme.value.footer.qrcodeLink)
-</script>
 
 <style lang="scss">
 .footer-container {

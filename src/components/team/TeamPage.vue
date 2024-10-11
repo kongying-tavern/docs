@@ -1,4 +1,14 @@
-<script lang="ts">
+<script lang="ts"></script>
+
+<script setup lang="ts">
+import { useData } from 'vitepress'
+import type { Member } from './Member'
+import TeamHero from './TeamHero.vue'
+import TeamList from './TeamList.vue'
+import membersCoreData from './members-core.json'
+import membersEmeritiData from './members-emeriti.json'
+import membersPartnerData from './members-partner.json'
+
 const shuffleMembers = (members: Member[], pinTheFirstMember = false): void => {
   const offset = pinTheFirstMember ? 2 : 0
   // `i` is between `1` and `length - offset`
@@ -17,16 +27,7 @@ const shuffleMembers = (members: Member[], pinTheFirstMember = false): void => {
     i--
   }
 }
-</script>
 
-<script setup lang="ts">
-import { useData } from 'vitepress'
-import membersCoreData from './members-core.json'
-import membersEmeritiData from './members-emeriti.json'
-import membersPartnerData from './members-partner.json'
-import TeamHero from './TeamHero.vue'
-import TeamList from './TeamList.vue'
-import type { Member } from './Member'
 const { theme } = useData()
 
 shuffleMembers(membersCoreData as Member[], true)

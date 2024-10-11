@@ -1,7 +1,7 @@
 import { UAParser } from 'ua-parser-js'
 import { fetcher } from '.'
 
-export type NewDocFeedbackResponse = {
+export interface NewDocFeedbackResponse {
   code: number
   message?: string
   data?: {
@@ -13,11 +13,11 @@ export type NewDocFeedbackResponse = {
 
 export const newDocFeedback = async (data: {
   path: string
-  feedback_type?: Array<string>
+  feedback_type?: string[]
   feedback_content?: string
   user_id?: string
   nickname?: string
-  file?: Array<string>
+  file?: string[]
   user_contact?: string
 }): Promise<NewDocFeedbackResponse> => {
   let env_data = {

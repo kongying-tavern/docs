@@ -125,13 +125,18 @@ export function isObject(value) {
 }
 /* Object helper */
 
-export const entries = Object.entries
-export const fromEntries = Object.fromEntries
-export const keys = Object.keys
-export const values = Object.values
+export const { entries } = Object
+export const { fromEntries } = Object
+export const { keys } = Object
+export const { values } = Object
 
 function debounce(func, wait, options) {
-  let lastArgs, lastThis, maxWait, result, timerId, lastCallTime
+  let lastArgs
+  let lastThis
+  let maxWait
+  let result
+  let timerId
+  let lastCallTime
 
   let lastInvokeTime = 0
   let leading = false
@@ -289,27 +294,27 @@ const concatLink = (link: string, base: string): string =>
 const modifyLink = (obj: any, base: string): any => {
   if (Array.isArray(obj)) {
     return obj.map((item) => modifyLink(item, base))
-  } else if (isObject(obj)) {
+  }
+  if (isObject(obj)) {
     const newObj = {}
-    for (let key in obj) {
+    for (const key in obj) {
       if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
         newObj[key] = modifyLink(obj[key], base)
       } else if (key === 'link' && isRelativeLink(obj[key])) {
         newObj[key] = concatLink(obj[key], base)
-        if (isLinkExternal(obj[key])) newObj['target'] = '_blank'
+        if (isLinkExternal(obj[key])) newObj.target = '_blank'
       } else {
         newObj[key] = obj[key]
       }
     }
     return newObj
-  } else {
-    return obj
   }
+  return obj
 }
 
 const modifyKey = (obj: any, base: string) => {
-  let newObj = {}
-  for (let key in obj) {
+  const newObj = {}
+  for (const key in obj) {
     if (key.startsWith('/') && base !== '') {
       const newKey = concatLink(key, base)
       newObj[newKey] = obj[key]
@@ -333,7 +338,7 @@ export const baseHelper = (obj: any, base: string): any =>
  */
 export function copyArray(source, array) {
   let index = -1
-  const length = source.length
+  const { length } = source
 
   array || (array = new Array(length))
   while (++index < length) {
@@ -346,7 +351,7 @@ export const hash = (str) => {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
     hash = (hash << 5) - hash + str.charCodeAt(i)
-    hash = hash & hash // Convert to 32bit integer
+    hash &= hash // Convert to 32bit integer
   }
   return hash
 }
