@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, inject } from 'vue'
-import { useData, useRoute } from 'vitepress'
+import { ref, inject } from 'vue'
+import { useData } from 'vitepress'
 
 import { newDocFeedback } from '../apis/newDocFeedback'
 

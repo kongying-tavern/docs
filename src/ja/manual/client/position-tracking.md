@@ -29,7 +29,7 @@ wip: true
 - 【地图客户端】右下角会**显示 UID**
 - 自动检测游戏内**当前角色位置**（小地图坐标位置）并同步显示到【地图客户端】上（像游戏内地图一样）
 
-![](/imgs/ja/manual/auto-tracking/autotrackingegaged.png)
+![](/imgs/_ja/manual/auto-tracking/autotrackingegaged.png)
 
 ---
 
@@ -94,12 +94,12 @@ wip: true
 
 <span style="color: red">【注意】：如果反馈群要求发送追踪截图，请不要使用截图或者用 qq 的发送图片功能，必须要以文件的方式发送图像。可以将追踪截图的文件直接拖到聊天框来发送文件。</span>
 
-![](/imgs/ja/manual/auto-tracking/7.png)
+![](/imgs/_ja/manual/auto-tracking/7.png)
 
 ::: tip
 You can visit the files' directory quickly through the **Position Tracker** settings.
 
-![](/imgs/ja/manual/auto-tracking/2.png)
+![](/imgs/_ja/manual/auto-tracking/2.png)
 :::
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
@@ -144,7 +144,7 @@ theme: medium
 
 [#]: # '这里更新了客户端内一键清理位置追踪缓存的步骤，而不是到安装目录里删除，因此图片不同'
 
-![](/imgs/ja/manual/auto-tracking/6.png)
+![](/imgs/_ja/manual/auto-tracking/6.png)
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
@@ -157,15 +157,15 @@ theme: medium
 - 确定游戏里是否正常显示小地图
 - 查看左侧菜单下方的“位置追踪版本”，如果显示为“未初始化”，尝试重新开启位置追踪
 
-![](/imgs/ja/manual/auto-tracking/3.png)
-![](/imgs/ja/manual/auto-tracking/4.png)
-![](/imgs/ja/manual/auto-tracking/5.png)
+![](/imgs/_ja/manual/auto-tracking/3.png)
+![](/imgs/_ja/manual/auto-tracking/4.png)
+![](/imgs/_ja/manual/auto-tracking/5.png)
 
 [#]: # '与第 3 步一样，更新了客户端内一键清理的步骤和图片'
 
 若依然如此，请删除 `%APPDATA%\..\LocalLow\空蛍酒場\Map\DLL` 中的文件，并重新下载
 
-![](/imgs/ja/manual/auto-tracking/1.png)
+![](/imgs/_ja/manual/auto-tracking/1.png)
 
 - 截取并查看追踪截图，如果截图空白、显示的不是现在的游戏画面，截图失败，请查看[章节 5](#issue5)
 - 截取并查看追踪截图，如果追踪截图正常，但一直不显示箭头，请查看[章节 6](#issue6)
@@ -183,7 +183,7 @@ theme: medium
 
 - 如果你想要在 Windows11 使用 Bitblt，在图形设置【设置->系统->显示卡】中，添加原神到列表中【`安装目录\Genshin Impact Game\yuanshen.exe，不是launcher.exe`】，添加后，对应的选项设置为【高性能】和【不使用窗口化优化】
 
-![](/imgs/ja/manual/auto-tracking/windowedoptimization.png)
+![](/imgs/_ja/manual/auto-tracking/windowedoptimization.png)
 
 - 如果没有解决问题，请反馈【位置追踪截图失败】
 

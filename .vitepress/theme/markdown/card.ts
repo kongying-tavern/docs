@@ -1,9 +1,10 @@
-import { container } from '@mdit/plugin-container'
 import { type MarkdownEnv } from 'vitepress'
 import { load } from 'js-yaml'
-import { type Options, type PluginSimple } from 'markdown-it'
-import type Token from 'markdown-it/lib/token.js'
-
+import MarkdownIt from 'markdown-it'
+import type { Options, PluginSimple } from 'markdown-it'
+import type Token from 'markdown-it/lib/token.mjs'
+import type { RenderRule } from 'markdown-it/lib/renderer.mjs'
+import MarkdownItFence from 'markdown-it-fence'
 import {
   stringifyProp,
   entries,
@@ -93,30 +94,36 @@ ${content}
   return ''
 }
 
-export const cardPlugin: PluginSimple = (md) => {
-  // add card container
-  md.use(container, {
-    name: 'card',
-    openRender: () =>
-      `\
-<div class="card-container">
-`,
-  })
+export const cardPlugin: PluginSimple = (md: MarkdownIt) => {
+  md.use(...createFence('card', md))
+}
 
-  // Handle ```card  blocks
-  const fence = md.renderer.rules.fence
-
-  md.renderer.rules.fence = (...args): string => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const [tokens, index, options, env] = args
-    const { info } = tokens[index]
-    const realInfo = info.split(':', 2)[0]
-
-    if (realInfo === 'card')
-      return cardRender(tokens, index, options, <MarkdownEnv>env)
-
-    return fence!(...args)
-  }
-
-  md.renderer.rules['card'] = cardRender
+type FenceArgs = [
+  typeof MarkdownItFence,
+  string,
+  {
+    marker?: string
+    validate?: (params: string) => boolean
+    render: RenderRule
+  },
+]
+const createFence = (klass: string, _md: MarkdownIt): FenceArgs => {
+  return [
+    MarkdownItFence,
+    klass,
+    {
+      marker: '`',
+      validate(params) {
+        return params.split(':', 2)[0] === 'card'
+      },
+      render(
+        tokens: Token[],
+        idx: number,
+        options: MarkdownIt.Options,
+        env: any,
+      ) {
+        return cardRender(tokens, idx, options, <MarkdownEnv>env)
+      },
+    },
+  ]
 }

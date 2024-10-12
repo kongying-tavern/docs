@@ -2,67 +2,78 @@
 title: Markdown 增强语法指南
 description: 本项目文档页面使用Markdown语法进行编写，除了 Vitepress 支持的 Markdown 基础组件之外我们额外添加和实现了一些特有语法和组件并在此演示
 layout: doc
-aside: false
 search: false
 ---
 
 <!-- 该页面无需翻译 -->
 
-## 目录 {#toc}
-
-[[TOC]]
-
----
-
 ## Timeline 时间线 {#timeline}
 
 ```md
 ::: timeline 2023-05-24
-
 - **do some thing1**
 - do some thing2
-  :::
+:::
 
 ::: timeline 2023-05-23
-
 - do some thing3
 - do some thing4
-  :::
+:::
 ```
 
 ::: timeline 2023-05-24
-
 - **do some thing1**
 - do some thing2
-  :::
+:::
 
 ::: timeline 2023-05-23
-
 - do some thing3
 - do some thing4
-  :::
+:::
 
 ---
 
 ## Kbd 快捷键 {#kbd}
 
-快捷方式组件建立在 Kbd 组件之上，可帮助您在内容中显示键盘快捷方式。
+- 快捷方式组件建立在 Kbd 组件之上，可帮助您在内容中显示键盘快捷方式。
+- 可使用这些标记显示图标：
+    - `[[cmd]]` `[[command]]`
+    - `[[opt]]` `[[option]]`
+    - `[[ctrl]]` `[[control]]`
+    - `[[shift]]`
+    - `[[ret]]` `[[return]]` `[[enter]]`
+    - `[[pageup]]` `[[pagedown]]`
+    - `[[backspace]]` `[[delete]]`
+    - `[[arrRight]]` `[[arrLeft]]` `[[arrUp]]` `[[arrDown]]`
+    - `[[capslock]]`
+    - `[[tab]]`
+    - `[[space]]`
 
 ```md
-[[Meta]][[K]]
+[[Meta]][[K]][[cmd]]
 ```
 
-[[Meta]][[K]]
+[[Meta]][[K]][[cmd]]
+
+---
+
+## Color 颜色 {#color}
+
+```md
+此处是{red}(红色)文字，此处是{#999}(灰色)文字。
+```
+
+此处是{red}(红色)文字，此处是{#999}(灰色)文字。
 
 ---
 
 ## Footnote 脚注 {#footnote}
 
-- 在 Markdown 中使用 [^锚点文字] 来定义脚注。
-- 在之后的任何位置使用 [^锚点文字]: ... 来描述脚注内容。
+- 在 Markdown 中使用 `[^锚点文字]` 来定义脚注。
+- 在之后的任何位置使用 `[^锚点文字]: ...` 来描述脚注内容。
 - 如果脚注包含多个段落，其后的段落应当保持双层缩进
 
-#### 例子 {#footnote-example}
+#### 示例 {#footnote-example}
 
 脚注 1 链接[^first]。
 
@@ -98,9 +109,9 @@ search: false
 
 ## Mark 标记 {#mark}
 
-使用 == == 进行标记。请注意两边需要有空格。
+使用 `== ==` 进行标记。请注意两边需要有空格。
 
-#### 例子 {#mark-example}
+#### 示例 {#mark-example}
 
 对于习惯了传统吟游诗人的蒙德来说， ==「偶像」== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
 
@@ -112,7 +123,7 @@ search: false
 
 ## Card 卡片 {#card}
 
-### Props {#card-props}
+### 参数 {#card-props}
 
 | 接口        | 描述                                             | 默认值 |       类型        |
 | ----------- | :----------------------------------------------- | :----: | :---------------: |
@@ -128,9 +139,9 @@ search: false
 
 > B站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写logo
 
-### Example {#card-example}
+### 示例 {#card-example}
 
-> Normal Theme
+> 常规主题
 
 ```card
 logo: self
@@ -160,7 +171,7 @@ description: i am description
 ```
 ````
 
-> Medium Theme
+> 宽主题
 
 ```card
 title: 观看客户端基础使用教程
@@ -193,7 +204,7 @@ theme: medium
 
 ---
 
-## Frontmatter Config {#frontmatter}
+## Frontmatter 配置 {#frontmatter}
 
 ### footer {#fm-footer}
 
@@ -215,7 +226,7 @@ footer: false #隐藏该页面的页脚
 
 是否显示页面的侧边栏
 
-> 仅会在 `Layout: doc` 时自动启用
+> 仅会在 `layout: doc` 时自动启用
 
 ```yml
 ---
@@ -268,7 +279,7 @@ bannerExpiryDate: 2024-2-1
 
 是否使用 docHeader 展示标题
 
-> 仅会在 `Layout: doc` 时自动启用
+> 仅会在 `layout: doc` 时自动启用
 
 ```yml
 ---

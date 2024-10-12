@@ -13,4 +13,4 @@ Between version updates, some setups will encounter a bug that prevents the auto
 
 Updater directory:
 
-![](/imgs/en/manual/autoupdate/updaterlocation.png)
+![](/imgs/_en/manual/autoupdate/updaterlocation.png)

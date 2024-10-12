@@ -2,8 +2,8 @@ import container from 'markdown-it-container'
 import dayjs from 'dayjs'
 
 import type MarkdownIt from 'markdown-it'
-import type Token from 'markdown-it/lib/token'
-import type { RenderRule } from 'markdown-it/lib/renderer'
+import type Token from 'markdown-it/lib/token.mjs'
+import type { RenderRule } from 'markdown-it/lib/renderer.mjs'
 
 export const getdefaultTime = () => {
   return dayjs().format('YYYY-MM-DD')

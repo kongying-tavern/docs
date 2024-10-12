@@ -24,7 +24,7 @@ export const NEWLINES_RE = /\r\n?|\n/g
 
 // single quote will break @vue/compiler-sfc
 export const stringifyProp = (data: unknown): string =>
-  JSON.stringify(data).replace(/'/g, '&#39')
+  JSON.stringify(data).replace(/'/g, '&#39;')
 
 export const escapeHtml = (unsafeHTML: string): string =>
   unsafeHTML
