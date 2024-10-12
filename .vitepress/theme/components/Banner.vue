@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core'
-import { ref, computed, onMounted, watchEffect } from 'vue'
-import { useData } from 'vitepress'
-import { hash } from '../utils'
 import dayjs from 'dayjs'
+import { useData } from 'vitepress'
+import { computed, onMounted, ref, watchEffect } from 'vue'
+import { hash } from '../utils'
 
 const banner = ref<HTMLElement>()
 const { height } = useElementSize(banner)
@@ -25,7 +25,7 @@ const inExpiryDate = computed(() => {
 })
 const bannerText = computed(() => {
   return frontmatter.value.wip
-    ? theme.value.ui?.banner?.wip ?? ''
+    ? (theme.value.ui?.banner?.wip ?? '')
     : frontmatter.value.banner
 })
 const bannerHash = computed(() => hash(bannerText.value))
@@ -42,7 +42,10 @@ watchEffect(() => {
 const restore = (key, def = false) => {
   const saved = localStorage.getItem(key)
   const bannerData = JSON.parse(saved!)
-  if (!canBannerVisible.value) return hideBanner()
+  if (!canBannerVisible.value) {
+    hideBanner()
+    return
+  }
   if (
     saved
       ? bannerHash.value === bannerData.hash && Date.now() < bannerData.time
@@ -52,7 +55,9 @@ const restore = (key, def = false) => {
   } else if (inExpiryDate.value) hideBanner()
 }
 
-onMounted(() => restore(storeKey))
+onMounted(() => {
+  restore(storeKey)
+})
 
 const dismiss = () => {
   const bannerData = {

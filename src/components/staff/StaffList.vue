@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Member } from './Member'
 import { computed } from 'vue'
+import type { Member } from './Member'
 
 const props = defineProps<{
   members: Member[]

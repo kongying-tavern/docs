@@ -1,15 +1,15 @@
 import { container } from '@mdit/plugin-container'
-import { type MarkdownEnv } from 'vitepress'
 import { load } from 'js-yaml'
-import { type Options, type PluginSimple } from 'markdown-it'
+import type { Options, PluginSimple } from 'markdown-it'
 import type Token from 'markdown-it/lib/token.js'
+import type { MarkdownEnv } from 'vitepress'
 
 import {
-  stringifyProp,
   entries,
   fromEntries,
   isPlainObject,
   isString,
+  stringifyProp,
 } from '../utils.js'
 
 export interface CardOptions {
@@ -19,7 +19,7 @@ export interface CardOptions {
   link?: string
   color?: string
   cover?: string
-  theme?: 'normal' | 'medium'
+  theme?: 'medium' | 'normal'
   hoverShadow?: boolean
   shadow?: boolean
 }
@@ -37,7 +37,7 @@ const CARD_PROPS = [
 ]
 
 const checkCardProps = (config: unknown): CardOptions | null => {
-  if (isPlainObject(config) && isString(config['title']))
+  if (isPlainObject(config) && isString(config.title))
     return fromEntries(
       entries(config).filter(
         (item): item is [string, string] =>
@@ -68,7 +68,7 @@ const cardRender = (
     }
   else if (language === 'json')
     try {
-      config = <unknown>JSON.parse(content)
+      config = JSON.parse(content) as unknown
     } catch (err) {
       // do nothing
       console.error(`Parsing card JSON config failed:`, err)
@@ -104,7 +104,7 @@ export const cardPlugin: PluginSimple = (md) => {
   })
 
   // Handle ```card  blocks
-  const fence = md.renderer.rules.fence
+  const { fence } = md.renderer.rules
 
   md.renderer.rules.fence = (...args): string => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -113,10 +113,10 @@ export const cardPlugin: PluginSimple = (md) => {
     const realInfo = info.split(':', 2)[0]
 
     if (realInfo === 'card')
-      return cardRender(tokens, index, options, <MarkdownEnv>env)
+      return cardRender(tokens, index, options, env as MarkdownEnv)
 
     return fence!(...args)
   }
 
-  md.renderer.rules['card'] = cardRender
+  md.renderer.rules.card = cardRender
 }

@@ -13,7 +13,7 @@ Thank you authors and creators!
 
 ## Web
 
-| Name       | License name | Sourse Code                                 | Copyright                  |
+| Name       | License name | Source Code                                 | Copyright                  |
 | :--------- | :----------: | :------------------------------------------ | :------------------------- |
 | Deckgl     |     MIT      | <https://github.com/visgl/deck.gl>          | Urban Computing Foundation |
 | Jquery     |     MIT      | <https://github.com/jquery/jquery>          | John Resig                 |

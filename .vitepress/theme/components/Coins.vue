@@ -1,3 +1,36 @@
+<script setup lang="ts">
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+import { useData } from 'vitepress'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+
+const { theme } = useData()
+let qrcode = ref()
+
+const icon = ref()
+const selectedPayment = ref()
+const coins = ref(theme.value.payment)
+
+const updatePaymentType = () => {
+  const hash = window.location.hash.slice(1)
+  if (hash && coins.value[hash]?.address) {
+    selectedPayment.value = hash
+    qrcode = useQRCode(coins.value[hash].address)
+    nextTick(() => {
+      icon.value.className = `i-custom-${hash}`
+    })
+  }
+}
+
+onMounted(() => {
+  updatePaymentType()
+  window.addEventListener('hashchange', updatePaymentType)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', updatePaymentType)
+})
+</script>
+
 <template>
   <div slide-enter>
     <div class="one-time-donations">
@@ -41,39 +74,6 @@
     <span class="i-custom-paypal"></span>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import { useQRCode } from '@vueuse/integrations/useQRCode'
-import { useData } from 'vitepress'
-
-const { theme } = useData()
-let qrcode = ref()
-
-const icon = ref()
-const selectedPayment = ref()
-const coins = ref(theme.value.payment)
-
-const updatePaymentType = () => {
-  const hash = window.location.hash.slice(1)
-  if (hash && coins.value[hash]?.address) {
-    selectedPayment.value = hash
-    qrcode = useQRCode(coins.value[hash].address)
-    nextTick(() => {
-      icon.value.className = `i-custom-${hash}`
-    })
-  }
-}
-
-onMounted(() => {
-  updatePaymentType()
-  window.addEventListener('hashchange', updatePaymentType)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', updatePaymentType)
-})
-</script>
 
 <style lang="scss" scoped>
 .links {

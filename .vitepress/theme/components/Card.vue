@@ -1,62 +1,7 @@
-<template>
-  <a
-    :href="isExternal ? link : withBase(link)"
-    :target="isExternal ? '_blank' : '_self'"
-    :class="`card card-theme-${theme} ${hoverShadow ? 'card-hover' : ''}`"
-    :title="title"
-    :style="{
-      ...(color ? { background: color } : null),
-      ...(shadow ? { 'box-shadow': 'var(--vp-shadow-1)' } : null),
-    }"
-    :is-external-link="isExternal ? 'true' : 'false'"
-  >
-    <div v-if="cover" class="card-cover-contanier">
-      <img
-        class="card-cover-img no-zoomable skeleton-animation"
-        @load="imgLoadHandler"
-        @error="imgErrorHandler"
-        :src="coverLink"
-      />
-    </div>
-
-    <div :class="`card-footer ${logoMissing && !icon ? 'no-logo' : ''}`">
-      <template v-if="iconLink">
-        <label :class="`card-icon ${iconLink}`"></label>
-      </template>
-      <template v-else>
-        <template v-if="!logoMissing">
-          <img class="card-logo no-zoomable" :src="logoLink" />
-        </template>
-      </template>
-
-      <div class="card-content">
-        <div class="card-title">
-          {{ title }}
-        </div>
-        <hr />
-        <ClientOnly>
-          <div class="card-desc">
-            {{ descText }}
-          </div>
-        </ClientOnly>
-      </div>
-    </div>
-  </a>
-
-  <!-- 在这里显式声明Logo，给Unocss识别导入 -->
-  <div v-once hidden>
-    <span class="i-logos-youtube-icon"></span>
-    <span class="i-logos-twitter"></span>
-    <span class="i-logos-discord-icon"></span>
-    <span class="i-logos-reddit-icon"></span>
-    <span class="i-logos-google-drive"></span>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { isLinkExternal, isRelativeLink } from '../utils'
 import { computed, defineProps, withDefaults } from 'vue'
+import { isLinkExternal, isRelativeLink } from '../utils'
 
 import '../styles/card.scss'
 
@@ -123,7 +68,7 @@ interface CardProps {
    *
    * 卡片主题，默认 normal
    */
-  theme?: 'normal' | 'medium'
+  theme?: 'medium' | 'normal'
 }
 
 const props = withDefaults(defineProps<CardProps>(), {
@@ -151,12 +96,12 @@ const iconMap = {
 }
 
 const imgLoadHandler = (e) => {
-  e.target!['classList'].remove('skeleton-animation')
+  e.target!.classList.remove('skeleton-animation')
 }
 
 const imgErrorHandler = (e) => {
-  e.target!['classList'].add('load-error')
-  e.target!['src'] = 'https://assets.yuanshen.site/images/noImage.png'
+  e.target!.classList.add('load-error')
+  e.target!.src = 'https://assets.yuanshen.site/images/noImage.png'
 }
 
 const iconLink = computed(() => {
@@ -200,13 +145,68 @@ const coverLink = computed(() =>
 const descText = computed(() => {
   if (props.desc) {
     return props.desc
-  } else if (isRelativeLink(props.link)) {
+  }
+  if (isRelativeLink(props.link)) {
     const prefix: string = props.link.substring(0, 3).replace(/(\.\/|\/)/g, '')
     const suffix: string = props.link.substring(3)
     console.log(location.href)
     return location.origin + withBase(`/${prefix}${suffix}`)
-  } else {
-    return props.link
   }
+  return props.link
 })
 </script>
+
+<template>
+  <a
+    :href="isExternal ? link : withBase(link)"
+    :target="isExternal ? '_blank' : '_self'"
+    :class="`card card-theme-${theme} ${hoverShadow ? 'card-hover' : ''}`"
+    :title="title"
+    :style="{
+      ...(color ? { background: color } : null),
+      ...(shadow ? { 'box-shadow': 'var(--vp-shadow-1)' } : null),
+    }"
+    :is-external-link="isExternal ? 'true' : 'false'"
+  >
+    <div v-if="cover" class="card-cover-contanier">
+      <img
+        class="card-cover-img no-zoomable skeleton-animation"
+        :src="coverLink"
+        @load="imgLoadHandler"
+        @error="imgErrorHandler"
+      />
+    </div>
+
+    <div :class="`card-footer ${logoMissing && !icon ? 'no-logo' : ''}`">
+      <template v-if="iconLink">
+        <label :class="`card-icon ${iconLink}`"></label>
+      </template>
+      <template v-else>
+        <template v-if="!logoMissing">
+          <img class="card-logo no-zoomable" :src="logoLink" />
+        </template>
+      </template>
+
+      <div class="card-content">
+        <div class="card-title">
+          {{ title }}
+        </div>
+        <hr />
+        <ClientOnly>
+          <div class="card-desc">
+            {{ descText }}
+          </div>
+        </ClientOnly>
+      </div>
+    </div>
+  </a>
+
+  <!-- 在这里显式声明Logo，给Unocss识别导入 -->
+  <div v-once hidden>
+    <span class="i-logos-youtube-icon"></span>
+    <span class="i-logos-twitter"></span>
+    <span class="i-logos-discord-icon"></span>
+    <span class="i-logos-reddit-icon"></span>
+    <span class="i-logos-google-drive"></span>
+  </div>
+</template>

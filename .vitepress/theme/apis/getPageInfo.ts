@@ -1,6 +1,6 @@
 import { fetcher } from '.'
 
-export type PageInfoResponse = {
+export interface PageInfoResponse {
   code: number
   message?: string
   data: {
@@ -16,7 +16,7 @@ export type PageInfoResponse = {
 export const getPageInfo = async (page): Promise<PageInfoResponse> => {
   // @ts-ignore
   if (import.meta.env.SSR) return null
-  return await fetcher
+  return fetcher
     .get('docs/pageinfo', {
       searchParams: {
         path: String(page.value.filePath).replace('.md', ''),

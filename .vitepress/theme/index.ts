@@ -1,20 +1,19 @@
-import { onMounted, watch, nextTick, defineAsyncComponent, h } from 'vue'
-import { useRoute, useData, withBase } from 'vitepress'
-import { VPBadge } from 'vitepress/theme-without-fonts'
 import mediumZoom from 'medium-zoom'
-import DefaultTheme from 'vitepress/theme-without-fonts'
-import Link from './components/Link.vue'
-import Coins from './components/Coins.vue'
-import googleAnalytics from '../plugins/google-analytics'
-import Card from '../theme/components/Card.vue'
-import LinkGrid from '../theme/components/LinkGrid.vue'
 import { createPinia } from 'pinia'
+import type { Theme } from 'vitepress'
+import { useData, useRoute, withBase } from 'vitepress'
+import DefaultTheme, { VPBadge } from 'vitepress/theme-without-fonts'
+import { defineAsyncComponent, h, nextTick, onMounted, watch } from 'vue'
+import googleAnalytics from '../plugins/google-analytics'
+import Card from './components/Card.vue'
+import Coins from './components/Coins.vue'
 import DocAside from './components/DocAside.vue'
+import DocFeedback from './components/DocFeedback.vue'
 import DocHeader from './components/DocHeader.vue'
 import DocInfo from './components/DocInfo.vue'
-import DocFeedback from './components/DocFeedback.vue'
 import HighlightTargetedHeading from './components/HighlightTargetedHeading.vue'
-import type { Theme } from 'vitepress'
+import Link from './components/Link.vue'
+import LinkGrid from './components/LinkGrid.vue'
 
 import 'uno.css'
 import './styles/vars.css'
@@ -31,7 +30,7 @@ export default {
   Layout() {
     return h(DefaultTheme.Layout, null, {
       'layout-top': () =>
-        h(defineAsyncComponent(() => import('./components/Banner.vue'))),
+        h(defineAsyncComponent(async () => import('./components/Banner.vue'))),
       'layout-bottom': () => h(HighlightTargetedHeading),
       'doc-before': () => h(DocHeader),
       'doc-footer-before': () => h(DocInfo),
@@ -61,7 +60,7 @@ export default {
     })
     watch(
       () => route.path,
-      () =>
+      async () =>
         nextTick(() => {
           initZoom()
         }),

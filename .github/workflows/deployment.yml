@@ -38,6 +38,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Build lunaria
+        run: pnpm lunaria:build
+
       # 部署
       - name: Deploy
         uses: easingthemes/ssh-deploy@v2.2.11

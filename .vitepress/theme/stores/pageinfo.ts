@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { PageInfoResponse } from '../apis/getPageInfo'
 
 export const usePageInfoStore = defineStore('pageinfo', () => {
