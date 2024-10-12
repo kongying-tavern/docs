@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           run_install: true
 
@@ -39,7 +39,7 @@ jobs:
         run: pnpm vitepress build --outDir _dist --base /
 
       - name: download pr artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v6
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           run_id: ${{ github.event.workflow_run.id }}
@@ -50,7 +50,7 @@ jobs:
         run: echo "::set-output name=id::$(<pr-id.txt)"
 
       - name: download _site artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v6
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           run_id: ${{ github.event.workflow_run.id }}
@@ -101,7 +101,7 @@ jobs:
       github.event.workflow_run.conclusion == 'failure'
     steps:
       - name: download pr artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v6
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           run_id: ${{ github.event.workflow_run.id }}
