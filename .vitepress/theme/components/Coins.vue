@@ -4,7 +4,7 @@ import { useData } from 'vitepress'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const { theme } = useData()
-const qrcode = ref()
+let qrcode = ref()
 
 const icon = ref()
 const selectedPayment = ref()
@@ -14,7 +14,7 @@ const updatePaymentType = () => {
   const hash = window.location.hash.slice(1)
   if (hash && coins.value[hash]?.address) {
     selectedPayment.value = hash
-    qrcode.value = useQRCode(coins.value[hash].address)
+    qrcode = useQRCode(coins.value[hash].address)
     nextTick(() => {
       icon.value.className = `i-custom-${hash}`
     })
