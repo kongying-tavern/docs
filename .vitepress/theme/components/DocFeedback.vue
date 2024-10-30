@@ -1,53 +1,18 @@
-<template>
-  <ClientOnly>
-    <div class="feedback">
-      <p class="title" flex items-center>
-        <span v-if="loading" class="loader feedback-state"></span>
-        <span v-if="feedbackState" :class="feedbackStateClass"></span>
-        {{ feedbackMessage }}
-        <br />
-        {{ additionalMessage }}
-      </p>
-      <div class="feedback-con">
-        <span
-          :tooltip="theme.docsFeedback.good"
-          role="button"
-          class="feedback-btn good"
-          :class="{ active: isGoodFeedback }"
-          @click="setFeedback('good')"
-        >
-          <i i-custom-thumb />
-        </span>
-        <span
-          :tooltip="theme.docsFeedback.bad"
-          role="button"
-          class="feedback-btn bad"
-          :class="{ active: isBadFeedback }"
-          @click="setFeedback('bad')"
-        >
-          <i i-custom-thumb rotate-180 />
-        </span>
-      </div>
-      <DocFeedbackForm v-if="isBadFeedback" />
-    </div>
-  </ClientOnly>
-</template>
-
 <script setup lang="ts">
-import { ref, watch, computed, provide } from 'vue'
 import { useData, useRoute } from 'vitepress'
+import { computed, provide, ref, watch } from 'vue'
 
-import { usePageInfoStore } from '../stores/pageinfo'
 import { sendDocFeedback } from '../apis/sendDocFeedback'
+import { usePageInfoStore } from '../stores/pageinfo'
 import DocFeedbackForm from './DocFeedbackForm.vue'
 
 const { theme } = useData()
 const router = useRoute()
 const pageinfo = usePageInfoStore()
 
-const feedback = ref<'good' | 'bad' | null>(null)
+const feedback = ref<'bad' | 'good' | null>(null)
 const loading = ref(false)
-const feedbackState = ref<null | boolean>(null)
+const feedbackState = ref<boolean | null>(null)
 
 const isGoodFeedback = computed(() => feedback.value === 'good')
 const isBadFeedback = computed(() => feedback.value === 'bad')
@@ -60,10 +25,8 @@ const feedbackStateClass = computed(() => {
 })
 const feedbackMessage = computed(() => {
   if (feedbackState.value === null) return theme.value.docsFeedback.feedbackMsg
-  if (feedbackState.value === true)
-    return theme.value.docsFeedback.feedbackSuccessMsg
-  if (feedbackState.value === false)
-    return theme.value.docsFeedback.feedbackFailMsg
+  if (feedbackState.value) return theme.value.docsFeedback.feedbackSuccessMsg
+  if (!feedbackState.value) return theme.value.docsFeedback.feedbackFailMsg
   return ''
 })
 
@@ -73,7 +36,7 @@ const additionalMessage = computed(() => {
   return ''
 })
 
-const setFeedback = (type: 'good' | 'bad') => {
+const setFeedback = (type: 'bad' | 'good') => {
   feedback.value = feedback.value === type ? null : type
 }
 
@@ -94,7 +57,7 @@ const sendFeedback = async (isCancel?: boolean) => {
 
 watch(
   () => feedback.value,
-  async (newVal) => {
+  async (newVal: null) => {
     if (newVal === null) return
     if (feedbackState.value === null && isGoodFeedback.value) pageinfo.addGood()
     if (feedbackState.value === true) {
@@ -118,7 +81,42 @@ watch(
 provide('feedback', feedback)
 </script>
 
-<style scoped>
+<template>
+  <ClientOnly>
+    <div class="feedback">
+      <p class="title" flex items-center>
+        <span v-if="loading" class="feedback-state loader"></span>
+        <span v-if="feedbackState" :class="feedbackStateClass"></span>
+        {{ feedbackMessage }}
+        <br />
+        {{ additionalMessage }}
+      </p>
+      <div class="feedback-con">
+        <span
+          :tooltip="theme.docsFeedback.good"
+          role="button"
+          class="feedback-btn good"
+          :class="{ active: isGoodFeedback }"
+          @click="setFeedback('good')"
+        >
+          <i i-custom-thumb />
+        </span>
+        <span
+          :tooltip="theme.docsFeedback.bad"
+          role="button"
+          class="bad feedback-btn"
+          :class="{ active: isBadFeedback }"
+          @click="setFeedback('bad')"
+        >
+          <i i-custom-thumb rotate-180 />
+        </span>
+      </div>
+      <DocFeedbackForm v-if="isBadFeedback" />
+    </div>
+  </ClientOnly>
+</template>
+
+<style lang="scss" scoped>
 .feedback {
   border-top: 1px solid var(--vp-c-divider);
   padding-top: 36px;
@@ -177,6 +175,8 @@ provide('feedback', feedback)
     }
 
     i {
+      width: 22px;
+      height: 22px;
       transition: color 0.1s;
     }
 

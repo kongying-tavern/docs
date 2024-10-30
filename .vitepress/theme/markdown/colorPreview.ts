@@ -8,10 +8,10 @@ export const colorPreviewPlugin = (md: MarkdownIt) => {
     colorStr = colorStr.trim()
     let color = colorStr.replace(/\P{ASCII}\p{Nd}/gu, '')
 
-    if (color.charAt(0) === '#') {
+    if (color.startsWith('#')) {
       color = color.replace(/[^#0-9a-fA-F]/g, '')
     } else {
-      let index = color.lastIndexOf(')')
+      const index = color.lastIndexOf(')')
       if (index !== -1) {
         color = color.slice(0, index + 1)
       }

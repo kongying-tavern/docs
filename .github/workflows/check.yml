@@ -55,4 +55,4 @@ jobs:
         run: pnpm build-mpa
 
       - name: Linter test
-        run: pnpm run lint:check
+        run: pnpm run lint

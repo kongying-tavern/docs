@@ -1,31 +1,31 @@
-import Unocss from 'unocss/vite'
-import MarkdownItFootnote from 'markdown-it-footnote'
-import MarkdownItKbd from 'markdown-it-kbd-better'
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vitepress'
-import type {
-  DefaultTheme,
-  HeadConfig,
-  PageData,
-  SiteConfig,
-  UserConfig,
-  LocaleSpecificConfig,
-  TransformContext,
-  TransformPageContext,
-} from 'vitepress'
-import type { CustomConfig } from './locales/types'
-import { colorPreviewPlugin } from './theme/markdown/colorPreview'
-import { cardPlugin } from './theme/markdown/card'
+import { URL, fileURLToPath } from 'node:url'
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import { timeline } from './theme/markdown/timeline'
+import MarkdownItFootnote from 'markdown-it-footnote'
+import MarkdownItKbd from 'markdown-it-kbd-better'
+import Unocss from 'unocss/vite'
+import type {
+  DefaultTheme,
+  HeadConfig,
+  LocaleSpecificConfig,
+  PageData,
+  SiteConfig,
+  TransformContext,
+  TransformPageContext,
+  UserConfig,
+} from 'vitepress'
+import { defineConfig } from 'vitepress'
 
 import { enConfig } from './locales/en'
-import { zhConfig } from './locales/zh'
 import { jaConfig } from './locales/ja'
+import type { CustomConfig } from './locales/types'
+import { zhConfig } from './locales/zh'
+import { cardPlugin } from './theme/markdown/card'
+import { colorPreviewPlugin } from './theme/markdown/colorPreview'
+import { timeline } from './theme/markdown/timeline'
 
 const isProd = process.env.NODE_ENV === 'production'
 const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
@@ -57,7 +57,7 @@ type ConfigureFuncType = Pick<
   UserConfig<DefaultTheme.Config>,
   'transformHead' | 'transformPageData'
 >
-type LocaleConfigVal = LocaleSpecificConfig<DefaultTheme.Config & CustomConfig>
+type LocaleConfigVal = LocaleSpecificConfig<CustomConfig & DefaultTheme.Config>
 
 const cfgGetPageUrl = (pageData: PageData, siteConfig: SiteConfig): string =>
   `https://yuanshen.site/${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
@@ -108,7 +108,7 @@ const cfgDynamicTitleTemplate = (
   pageData: PageData,
   siteConfig: SiteConfig,
 ): void => {
-  let titleTemplate: string | boolean =
+  let titleTemplate: boolean | string =
     pageData.frontmatter.titleTemplate ?? siteConfig.userConfig.titleTemplate
   if (titleTemplate === null || titleTemplate === undefined) {
     const localeKey: string =
@@ -119,7 +119,7 @@ const cfgDynamicTitleTemplate = (
       siteConfig.userConfig.locales![localeKey] ?? {}
     const templateMappings: CustomConfig['ui']['title']['templateMappings'] =
       localeConfig.themeConfig?.ui.title.templateMappings ?? []
-    for (let templateMapping of templateMappings) {
+    for (const templateMapping of templateMappings) {
       if (
         templateMapping.test &&
         templateMapping.test.test(pageData.relativePath)
@@ -147,18 +147,14 @@ const createConfigureFunction = (): ConfigureFuncType => {
         cfgDynamicTitleTemplate(pageData, siteConfig)
       },
     }
-  } else {
-    return {
-      transformPageData: (
-        pageData: PageData,
-        context: TransformPageContext,
-      ) => {
-        const { siteConfig } = context
-        cfgDynamicHead(pageData, siteConfig)
-        cfgDynamicTitleTemplate(pageData, siteConfig)
-      },
-    }
   }
+  return {
+    transformPageData: (pageData: PageData, context: TransformPageContext) => {
+      const { siteConfig } = context
+      cfgDynamicHead(pageData, siteConfig)
+      cfgDynamicTitleTemplate(pageData, siteConfig)
+    },
+  } as ConfigureFuncType
 }
 
 export default defineConfig({
@@ -249,19 +245,16 @@ export default defineConfig({
     root: {
       label: '简体中文',
       lang: 'zh-CN',
-      link: '/',
       ...zhConfig,
     },
     en: {
       label: 'English',
       lang: 'en-US',
-      link: '/en/',
       ...enConfig,
     },
     ja: {
       label: '日本語',
       lang: 'ja-JP',
-      link: '/ja/',
       ...jaConfig,
     },
   },
@@ -376,7 +369,7 @@ export default defineConfig({
     // ignore all links include "/repl/""
     /\/repl\//,
     // custom function, ignore all links include "ignore"
-    (url) => {
+    (url: string) => {
       return url.toLowerCase().includes('ignore')
     },
   ],

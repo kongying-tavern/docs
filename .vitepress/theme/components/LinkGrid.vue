@@ -22,20 +22,20 @@ interface Integration {
       :href="item.link"
       :target="item.target"
       :title="withBase(item.link)"
-      class="Link w-30 h-30 text-center text-inherit flex flex-col items-center justify-center"
+      class="Link flex flex-col h-30 items-center justify-center text-center text-inherit w-30"
     >
       <div
         v-if="item.icon.startsWith('i')"
         :class="item.icon"
-        class="w-10 h-10 mb2"
+        class="h-10 mb2 w-10"
       />
       <img
         v-else
         :src="withBase(item.icon)"
-        class="w-10 h-10 mb-2 no-zoomable"
+        class="h-10 mb-2 no-zoomable w-10"
       />
       <span class="text-sm">{{ item.name }}</span>
-      <span class="text-xs opacity-50">{{ item.secondary }}</span>
+      <span class="opacity-50 text-xs">{{ item.secondary }}</span>
     </a>
   </div>
 </template>

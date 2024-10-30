@@ -1,21 +1,21 @@
 import { fetcher } from '.'
 
-export type DocFeedbackResponse = {
+export interface DocFeedbackResponse {
   code: number
   message?: string
 }
 
 export const sendDocFeedback = async (
   record_id: string,
-  type: 'good' | 'bad',
+  type: 'bad' | 'good',
   cancel?: boolean,
 ): Promise<DocFeedbackResponse> =>
-  await fetcher
+  fetcher
     .post('docs/feedback', {
       json: {
-        record_id: record_id,
-        type: type,
-        cancel: cancel,
+        record_id,
+        type,
+        cancel,
       },
     })
     .json()

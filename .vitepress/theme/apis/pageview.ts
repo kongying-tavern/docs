@@ -1,6 +1,6 @@
 import { fetcher } from '.'
 
-export type PageviewResponse = {
+export interface PageviewResponse {
   code: number
   message?: string
 }
@@ -8,7 +8,7 @@ export type PageviewResponse = {
 export const pageview = async (record_id): Promise<PageviewResponse | null> => {
   // @ts-ignore
   if (import.meta.env.SSR) return null
-  return await fetcher
+  return fetcher
     .get('docs/pageview', {
       searchParams: {
         record_id,

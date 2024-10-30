@@ -1,25 +1,25 @@
+import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import { baseHelper } from '../../theme/utils'
 
-import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import type { CustomConfig } from '../types'
 
+import _404 from './404'
+import AsideLinks from './aside-links'
 import C from './constants'
+import DocsFeedback from './docs-feedback'
+import Footer from './footer'
 import Head from './head'
 import Nav from './nav'
+import Payment from './payment'
 import Sidebar from './sidebar'
-import Footer from './footer'
-import _404 from './404'
-import UI from './ui'
 import SocialLinks from './social-links'
-import AsideLinks from './aside-links'
-import DocsFeedback from './docs-feedback'
 
 import Staff from './staff'
 import Team from './team'
-import Payment from './payment'
+import UI from './ui'
 
 export const enConfig: LocaleSpecificConfig<
-  DefaultTheme.Config & CustomConfig
+  CustomConfig & DefaultTheme.Config
 > = {
   titleTemplate: ':title | Kongying Tavern',
   description: C.META_DESCRIPTION,
