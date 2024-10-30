@@ -21,6 +21,7 @@ import './styles/main.css'
 import './styles/ui.css'
 import './styles/timeline.css'
 import './styles/kbd.css'
+import './styles/animation.css'
 
 const pinia = createPinia()
 

@@ -15,7 +15,7 @@ const avatarUrl = computed(() => {
 </script>
 
 <template>
-  <article class="TeamMember">
+  <article class="TeamMember view-fade-y">
     <Link
       v-if="member.sponsor"
       class="sponsor"
@@ -275,7 +275,7 @@ const avatarUrl = computed(() => {
 }
 
 .avatar-img .skeleton {
-  animation: skeleton--flashed 2s linear 2s infinite;
+  animation: skeleton-flashed 2s linear 2s infinite;
 }
 
 @media (min-width: 512px) {
@@ -427,30 +427,5 @@ const avatarUrl = computed(() => {
   width: 20px;
   height: 20px;
   fill: currentColor;
-}
-
-@keyframes skeleton--gradient {
-  0% {
-    transform: translate(-100%) skew(-15deg);
-  }
-
-  to {
-    transform: translate(100%) skew(-15deg);
-  }
-}
-
-@keyframes skeleton--flashed {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    background-color: #e6e6e64d;
-    opacity: 0.3;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 </style>

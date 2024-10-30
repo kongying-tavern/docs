@@ -24,10 +24,10 @@ const sortedMembers = computed(() => {
   <section class="staffList">
     <div class="container">
       <div class="info">
-        <h2 class="title">
+        <h2 class="title view-fade-title">
           <slot name="title" />
         </h2>
-        <p class="lead">
+        <p class="lead view-fade-title">
           <slot name="lead" />
         </p>
       </div>
@@ -40,8 +40,10 @@ const sortedMembers = computed(() => {
             :key="member.name"
             class="member"
           >
-            <p class="member-name">{{ member.name }}</p>
-            <p v-if="member?.title" class="member-title">{{ member.title }}</p>
+            <p class="member-name view-fade-y">{{ member.name }}</p>
+            <p v-if="member?.title" class="member-title view-fade-y">
+              {{ member.title }}
+            </p>
             <div
               v-if="
                 member.title === undefined &&
@@ -114,7 +116,7 @@ const sortedMembers = computed(() => {
 }
 
 .title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 500;
 }
 
