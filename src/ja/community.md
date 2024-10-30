@@ -9,7 +9,6 @@ outline: false
 <LinkGrid :items="server" />
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { serverLink } from '../components/links/Community'
 
 const server = [
