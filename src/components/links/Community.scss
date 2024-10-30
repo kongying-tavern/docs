@@ -1,22 +1,33 @@
 @mixin main {
-  ol::-webkit-scrollbar {
-    background: transparent;
-    height: 8px;
-    width: 8px;
+  // 推荐群
+  @include set-badge(1, 'suggest');
+  @include set-badge(2, 'suggest');
+  @include set-badge(3, 'suggest');
+
+  // 已满群
+  @include set-badge(12, 'warning');
+  @include set-badge(13, 'warning');
+  @include set-badge(14, 'warning');
+  @include set-badge(17, 'warning');
+  @include set-badge(16, 'warning');
+
+  // 被封禁的群
+  @include set-badge(4, 'baned');
+  @include set-badge(8, 'baned');
+
+  ul > li:nth-child(4),
+  ul > li:nth-child(8),
+  ul > li:nth-child(4) > a strong,
+  ul > li:nth-child(4) > a,
+  ul > li:nth-child(8) > a strong,
+  ul > li:nth-child(8) > a {
+    cursor: no-drop;
+    color: var(--vp-c-text-2);
+    box-shadow: none !important;
+    transform: none !important;
+    border: none !important;
   }
-  ol::-webkit-scrollbar-corner {
-    width: 0;
-  }
-  ol::-webkit-scrollbar-thumb {
-    background-clip: content-box;
-    background-color: var(--vp-button-alt-bg);
-    border: 2px solid transparent;
-    border-radius: 4px;
-  }
-  ol::-webkit-scrollbar-track {
-    background-color: var(--vp-c-bg);
-  }
-  ol,
+
   ul {
     display: inherit;
     padding: 0;
@@ -24,24 +35,26 @@
     display: flex;
     flex-direction: column;
     /* overflow-y: scroll; */
-
     li {
       cursor: pointer;
       display: inline-block;
       margin: 10px 0;
-      width: 98%;
+      width: 100%;
       font-size: 16px;
-      border: 1.5px solid var(--vp-c-divider);
-      border-radius: 5px;
-      transition: all 0.3s;
+      border-radius: 8px;
+      transition: border 0.1s;
       text-align: right;
+      line-height: 24px;
+      background-color: var(--vp-c-bg-soft);
+      border: 1px transparent solid;
+
       a {
         display: inline-block;
         position: relative;
         width: 100%;
         height: 100%;
         opacity: 0.95;
-        padding: 10px 16px;
+        padding: 14px 16px;
         box-sizing: border-box;
         transition: all 0.3s;
         text-decoration: none !important;
@@ -55,46 +68,40 @@
         }
       }
       &:hover {
-        transform: translate3d(0, -2px, 0);
-        box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+        border: 1px var(--vp-c-brand-2) solid;
       }
     }
   }
+}
 
-  ul > li {
-    padding: 4px 0;
-  }
-  // 被封禁的群
-  .custom-block.details {
-    ol > li {
-      border-color: var(--vp-c-text-3);
-    }
-    ol > li > a strong {
-      color: var(--vp-c-brand-2) !important;
-    }
-    ol > li:nth-child(1) > a strong,
-    ol > li:nth-child(5) > a strong {
-      text-decoration: line-through !important;
-      opacity: 0.65;
-    }
-  }
+@mixin set-badge($number, $type) {
+  ul > li:nth-child(#{$number}) > a strong::after {
+    display: inline-block;
+    margin-left: 6px;
+    border-radius: 12px;
+    padding: 0 6px;
+    line-height: 22px;
+    font-size: 12px;
+    font-weight: 500;
+    border-color: var(--vp-badge-tip-border);
+    transform: translateY(-2px);
 
-  #VPContent
-    > div
-    > div
-    > div.content
-    > div
-    > main
-    > div
-    > div
-    > details:nth-child(5) {
-    ol {
-      display: inherit !important;
-      li {
-        text-align: left !important;
-        border: none !important;
-        font-size: 14px !important;
-      }
+    @if $type == 'suggest' {
+      color: var(--vp-c-indigo-3);
+      background-color: #60bf90bd;
+      content: '推荐';
+    }
+
+    @if $type == 'baned' {
+      color: var(--vp-badge-info-text);
+      background-color: var(--vp-badge-info-bg);
+      content: '被封禁';
+    }
+
+    @if $type == 'warning' {
+      color: var(--vp-badge-warning-text);
+      background-color: var(--vp-badge-warning-bg);
+      content: '已满';
     }
   }
 }

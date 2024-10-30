@@ -13,8 +13,7 @@ import { onMounted } from 'vue'
 import { serverLink, serverJump } from '../components/links/Community'
 
 const server = [
-  serverLink('discord', 'Discord'),
-  serverLink('qq', 'QQ 频道'),
+  serverLink('discord', 'Discord')
 ]
 </script>
 
