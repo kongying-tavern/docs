@@ -39,7 +39,7 @@ watchEffect(() => {
   }
 })
 
-const restore = (key, def = false) => {
+const restore = (key: string, def = false) => {
   const saved = localStorage.getItem(key)
   const bannerData = JSON.parse(saved!)
   if (!canBannerVisible.value) {

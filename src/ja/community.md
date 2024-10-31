@@ -9,7 +9,7 @@ outline: false
 <LinkGrid :items="server" />
 
 <script setup lang="ts">
-import { serverLink } from '../components/links/Community'
+import serverLink from '../components/links/Community'
 
 const server = [
   serverLink('discord', 'Discord')

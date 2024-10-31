@@ -5,11 +5,7 @@
   @include set-badge(3, 'suggest');
 
   // 已满群
-  @include set-badge(12, 'warning');
-  @include set-badge(13, 'warning');
-  @include set-badge(14, 'warning');
   @include set-badge(17, 'warning');
-  @include set-badge(16, 'warning');
 
   // 被封禁的群
   @include set-badge(4, 'baned');
@@ -56,7 +52,7 @@
         opacity: 0.95;
         padding: 14px 16px;
         box-sizing: border-box;
-        transition: all 0.3s;
+        transition: all 0.25s ease;
         text-decoration: none !important;
         color: var(--vp-c-brand-2);
         strong {

@@ -1,7 +1,6 @@
 @mixin main {
   .vp-raw {
     padding: 0 28px 24px 28px;
-    box-shadow: var(--vp-shadow-2);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -23,19 +22,22 @@
     }
 
     &:hover {
-      transform: translate3d(0, -8px, 0);
-      box-shadow: var(--vp-shadow-3);
+      transform: translate3d(0, -2px, 0);
+      box-shadow: var(--vp-shadow-1);
     }
 
     .header-anchor {
       display: none;
     }
+
     h3 {
       margin: 0;
     }
+
     code {
       font-weight: 600;
     }
+
     blockquote {
       display: flex;
       border-left: none;
@@ -45,11 +47,13 @@
       border-bottom: 2px solid var(--vp-c-divider);
       padding-bottom: 18px;
       padding-left: 0;
+
       h2 {
         padding-top: 0;
         letter-spacing: 0;
         margin: 0;
       }
+
       a {
         display: inline-block;
         border-radius: 6px;
@@ -68,6 +72,7 @@
           border-color 0.25s,
           background-color 0.25s;
         text-decoration: none;
+
         &:hover {
           border-color: var(--vp-button-brand-hover-border);
           color: var(--vp-button-brand-hover-text);
