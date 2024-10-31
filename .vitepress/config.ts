@@ -4,6 +4,7 @@ import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
+import { spoiler } from '@mdit/plugin-spoiler'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import Unocss from 'unocss/vite'
@@ -414,6 +415,7 @@ export default defineConfig({
       md.use(obsidianImageSize)
       md.use(figure)
       md.use(timeline)
+      md.use(spoiler)
       md.use(MarkdownItKbd, {
         presets: [
           {

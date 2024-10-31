@@ -123,7 +123,7 @@ search: false
 | theme       | 卡片主题，非必填                                 | normal | `normal`or`media` |
 | color       | 卡片链颜色，非必填                               | normal |     `String`      |
 | cover       | 卡片封面链接，非必填。仅在normal主题生效         |   -    |     `String`      |
-| hoverShadow | 是否启用卡片 hover 时阴影效果，默认启用          |  true  |     `Boolean`     |
+| hoverShadow | 是否启用卡片 hover 时阴影效果，默认不启用        | false  |     `Boolean`     |
 | shadow      | 是否启用卡片阴影效果，默认启用                   |  true  |     `Boolean`     |
 
 > B站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写logo
@@ -274,4 +274,18 @@ bannerExpiryDate: 2024-2-1
 ---
 docHeader: false #隐藏该页面的 docHeader
 ---
+```
+
+### Spoiler
+
+用于隐藏内容的插件
+
+使用 !! !! 进行标记。
+
+### Example {#spolier-example}
+
+输入!!xxx!!显示彩蛋
+
+```md
+输入!!xxx!!显示彩蛋
 ```
