@@ -8,9 +8,7 @@ layout: doc
 <LinkGrid :items="server" />
 
 <script setup lang="ts">
-import { useUrlSearchParams } from '@vueuse/core'
-import { onMounted } from 'vue'
-import { serverLink, serverJump } from '../components/links/Community'
+import { serverLink } from '../components/links/Community'
 
 const server = [
   serverLink('discord', 'Discord')
