@@ -24,10 +24,10 @@ const sortedMembers = computed(() => {
   <section class="staffList">
     <div class="container">
       <div class="info">
-        <h2 class="title view-fade-title">
+        <h2 class="title view-fade-y">
           <slot name="title" />
         </h2>
-        <p class="lead view-fade-title">
+        <p class="lead view-fade-y">
           <slot name="lead" />
         </p>
       </div>
@@ -116,8 +116,36 @@ const sortedMembers = computed(() => {
 }
 
 .title {
+  display: inline-block;
+  width: max-content;
   font-size: 24px;
   font-weight: 500;
+  word-break: keep-all;
+
+  &::before {
+    display: inline-block;
+    content: '';
+    position: relative;
+    bottom: -35px;
+    height: 2px;
+    background-color: var(--vp-c-gutter);
+    background-size: 200%;
+    animation: progress both linear;
+    animation-timeline: view();
+    background-repeat: no-repeat;
+    animation-range: entry 25% cover 75%;
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
 }
 
 .lead {
