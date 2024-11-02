@@ -26,15 +26,17 @@
       "ignore": [
         "public/",
         "fr/",
-        "staff.md",
-        "md-enhance-guide.md",
-        "team.md"
+        "src/zh/staff.md",
+        "src/zh/md-enhance-guide.md",
+        "src/zh/team.md",
+        "src/zh/announcement.md"
       ],
       "type": "universal"
     },
     {
-      "location": ".vitepress/locales/@lang/*.ts",
+      "location": ".vitepress/locales/**/*.ts",
       "pattern": ".vitepress/locales/@lang/@path",
+      "ignore": [".vitepress/locales/types.ts"],
       "type": "universal"
     }
   ]
