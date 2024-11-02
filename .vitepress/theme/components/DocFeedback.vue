@@ -18,9 +18,9 @@ const isGoodFeedback = computed(() => feedback.value === 'good')
 const isBadFeedback = computed(() => feedback.value === 'bad')
 const feedbackStateClass = computed(() => {
   if (feedbackState.value === true)
-    return 'feedback-state text-color-[var(--vp-c-green-2)] i-custom-badge-check'
+    return 'feedback-state text-color-[var(--vp-c-green-2)] i-custom-badge-check w-5 h-5'
   if (feedbackState.value === false)
-    return 'feedback-state text-color-[var(--vp-c-red-2)] i-custom-badge-x'
+    return 'feedback-state text-color-[var(--vp-c-red-2)] i-custom-badge-x w-5 h-5'
   return ''
 })
 const feedbackMessage = computed(() => {
@@ -57,7 +57,7 @@ const sendFeedback = async (isCancel?: boolean) => {
 
 watch(
   () => feedback.value,
-  async (newVal: null) => {
+  async (newVal) => {
     if (newVal === null) return
     if (feedbackState.value === null && isGoodFeedback.value) pageinfo.addGood()
     if (feedbackState.value === true) {
