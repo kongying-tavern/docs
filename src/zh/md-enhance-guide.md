@@ -282,7 +282,7 @@ docHeader: false #隐藏该页面的 docHeader
 
 使用 !! !! 进行标记。
 
-### Example {#spolier-example}
+#### Example {#spolier-example}
 
 输入!!xxx!!显示彩蛋
 

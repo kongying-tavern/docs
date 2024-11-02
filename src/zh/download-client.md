@@ -12,7 +12,7 @@ comment: true
 
 如果您有兴趣参与地图的开发和维护，欢迎[加入我们](./join.md)参与其中~
 
-## 客户端使用教程
+::: details 客户端使用教程
 
 ```card
 title: Windows 客户端使用手册
@@ -26,6 +26,8 @@ title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
 ```
+
+:::
 
 ## 网页版地图
 
