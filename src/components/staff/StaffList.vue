@@ -158,12 +158,13 @@ const sortedMembers = computed(() => {
 
 .members {
   padding-top: 24px;
+  margin-left: 12px;
 }
 
 @media (min-width: 768px) {
   .members {
     flex-grow: 1;
-    padding-top: 16px;
+    padding-top: 52px;
   }
 }
 
@@ -184,6 +185,7 @@ const sortedMembers = computed(() => {
     max-width: 100%;
   }
 }
+
 .members {
   display: flex;
   flex-wrap: wrap;
@@ -208,6 +210,8 @@ const sortedMembers = computed(() => {
 .member-name {
   font-size: 16px; /* Adjust the font size as needed */
   font-weight: bold;
+  word-break: keep-all;
+  white-space: nowrap;
 }
 
 .member-title {

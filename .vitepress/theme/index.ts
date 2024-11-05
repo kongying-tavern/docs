@@ -12,7 +12,6 @@ import DocFeedback from './components/DocFeedback.vue'
 import DocHeader from './components/DocHeader.vue'
 import DocInfo from './components/DocInfo.vue'
 import HighlightTargetedHeading from './components/HighlightTargetedHeading.vue'
-import Link from './components/Link.vue'
 import LinkGrid from './components/LinkGrid.vue'
 
 import 'uno.css'
@@ -45,7 +44,6 @@ export default {
       debug: false,
     })
     app.use(pinia)
-    app.component('Link', Link)
     app.component('Coins', Coins)
     app.component('Card', Card)
     app.component('LinkGrid', LinkGrid)

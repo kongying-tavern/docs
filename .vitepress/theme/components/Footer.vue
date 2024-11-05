@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
+import { VPLink } from 'vitepress/theme'
 import { socialList } from '../composables/socialList'
 
 const { frontmatter, theme } = useData()
@@ -14,13 +15,12 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
         <h3 class="footer-title">{{ item.title }}</h3>
         <ul>
           <li v-for="ic in item.items">
-            <Link
+            <VPLink
               :href="ic.link"
               :title="`${ic.text}（${withBase(ic.link)}）`"
-              :no-icon="true"
             >
               {{ ic.text }}
-            </Link>
+            </VPLink>
           </li>
         </ul>
       </div>
