@@ -15,6 +15,7 @@ const ui: CustomConfig['ui'] = {
   button: {
     submit: 'Submit',
     cancel: 'Cancel',
+    loading: 'Loading',
   },
 }
 

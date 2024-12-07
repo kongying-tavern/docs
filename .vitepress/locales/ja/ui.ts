@@ -15,6 +15,7 @@ const ui: CustomConfig['ui'] = {
   button: {
     submit: '提出する',
     cancel: 'キャンセル',
+    loading: 'Loading',
   },
 }
 

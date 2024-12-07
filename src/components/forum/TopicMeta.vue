@@ -95,7 +95,7 @@ const isHandler = computed(
   () => typeof props.commentClickHandler === 'function',
 )
 const topicLink = computed(() =>
-  withBase(`/feedback/topic?number=${props.topicId}#reply`),
+  withBase(`./feedback/topic?number=${props.topicId}#reply`),
 )
 const str = computed(() => {
   if (props.commentCount && props.commentCount > 0) return props.commentCount

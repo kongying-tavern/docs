@@ -243,7 +243,6 @@ export default defineConfig({
   },
   rewrites: {
     'zh/:splat(.*)': ':splat',
-    'feedback/topic/xxx': 'zh/feedback/topic',
   },
   locales: {
     root: {

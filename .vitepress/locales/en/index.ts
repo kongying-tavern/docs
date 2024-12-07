@@ -13,6 +13,7 @@ import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
 
+import Forum from './forum'
 import Staff from './staff'
 import Team from './team'
 import UI from './ui'
@@ -38,6 +39,7 @@ export const enConfig: LocaleSpecificConfig<
     ui: UI,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
+    forum: Forum,
     docFooter: {
       prev: 'Previous page',
       next: 'Next page',

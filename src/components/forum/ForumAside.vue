@@ -110,7 +110,9 @@ const { showButton = true, showQrcode = false } = defineProps<{
 const { theme } = useData()
 const qrcode = useQRCode(theme.value.forum.aside.contactUs.qrcodeLink)
 const roadomSuggest = getRandomElements(
-  flattenWithTags(theme.value.sidebar['/manual'].slice(1)),
+  flattenWithTags(
+    theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1),
+  ),
   Math.max(Math.ceil(getPageHeight() / 400), 5),
 )
 

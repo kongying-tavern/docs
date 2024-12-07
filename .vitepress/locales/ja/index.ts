@@ -15,6 +15,7 @@ import Sidebar from './sidebar'
 
 import Staff from './staff'
 import Team from './team'
+import Forum from './forum'
 import UI from './ui'
 
 export const jaConfig: LocaleSpecificConfig<
@@ -38,6 +39,7 @@ export const jaConfig: LocaleSpecificConfig<
     ui: UI,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
+    forum: Forum,
     docFooter: {
       prev: '前へ',
       next: '次へ',

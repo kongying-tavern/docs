@@ -133,7 +133,7 @@ const sessionCacheRedirect = (hash?: string) => {
 
   window.open(
     withBase(
-      `/feedback/topic?number=${props.topic.id}${hash ? `#${hash}` : ''}`,
+      `./feedback/topic?number=${props.topic.id}${hash ? `#${hash}` : ''}`,
     ),
   )
 }

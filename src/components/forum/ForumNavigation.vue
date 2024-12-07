@@ -59,7 +59,9 @@ import { inject, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import { flattenWithTags } from './utils'
 
 const { theme } = useData()
-const faq = flattenWithTags([theme.value.sidebar['/manual'][2]])
+const faq = flattenWithTags([
+  theme.value.sidebar[Object.keys(theme.value.sidebar)[0]][1],
+])
 
 const menuItems = [
   {
