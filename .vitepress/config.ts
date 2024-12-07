@@ -5,6 +5,7 @@ import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
 import { spoiler } from '@mdit/plugin-spoiler'
+import autoprefixer from 'autoprefixer'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import Unocss from 'unocss/vite'
@@ -27,6 +28,7 @@ import { zhConfig } from './locales/zh'
 import { cardPlugin } from './theme/markdown/card'
 import { colorPreviewPlugin } from './theme/markdown/colorPreview'
 import { timeline } from './theme/markdown/timeline'
+import path from 'node:path'
 
 const isProd = process.env.NODE_ENV === 'production'
 const commitRef = process.env.COMMIT_REF?.slice(0, 8) || 'dev'
@@ -241,6 +243,7 @@ export default defineConfig({
   },
   rewrites: {
     'zh/:splat(.*)': ':splat',
+    'feedback/topic/xxx': 'zh/feedback/topic',
   },
   locales: {
     root: {
@@ -375,6 +378,11 @@ export default defineConfig({
     },
   ],
   vite: {
+    css: {
+      postcss: {
+        plugins: [autoprefixer()],
+      },
+    },
     server: {
       host: true,
       fs: {
@@ -388,6 +396,10 @@ export default defineConfig({
           replacement: fileURLToPath(
             new URL('./theme/components/Footer.vue', import.meta.url),
           ),
+        },
+        {
+          find: '@',
+          replacement: path.resolve(__dirname, '../.vitepress/theme'),
         },
       ],
     },

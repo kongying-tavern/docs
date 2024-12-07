@@ -83,7 +83,7 @@
     transform: translateY(-2px);
 
     @if $type == 'suggest' {
-      color: var(--vp-c-indigo-3);
+      color: rgb(235, 235, 235);
       background-color: #60bf90bd;
       content: '推荐';
     }

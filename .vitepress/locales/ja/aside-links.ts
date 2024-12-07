@@ -7,6 +7,7 @@ const asideLinks: CustomConfig['asideLinks'] = {
   contactUsLink: 'https://discord.gg/SWz6RTWNkm',
   sponsor: 'スポンサーになる',
   editLink: 'このページを編集する',
+  translateThisPage: 'Translate this page',
 }
 
 export default asideLinks

@@ -12,11 +12,12 @@ import Head from './head'
 import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
-import SocialLinks from './social-links'
+import Forum from './forum'
 
 import Staff from './staff'
 import Team from './team'
 import UI from './ui'
+import forum from './forum'
 
 export const zhConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config
@@ -37,7 +38,6 @@ export const zhConfig: LocaleSpecificConfig<
     langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
-    socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
     docFooter: {
@@ -48,7 +48,7 @@ export const zhConfig: LocaleSpecificConfig<
     staff: Staff,
     team: Team,
     payment: Payment,
-
+    forum: forum,
     nav: baseHelper(Nav, C.LOCAL_BASE),
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
     footer: baseHelper(Footer, C.LOCAL_BASE),

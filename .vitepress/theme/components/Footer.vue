@@ -59,14 +59,15 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
             rel="noopener noreferrer"
             class="footer-sociallink"
             v-html="item.icon"
-          ></a>
+          >
+          </a>
         </div>
       </div>
     </footer>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .footer-container {
   z-index: 1;
   position: relative;
@@ -288,7 +289,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     border-radius: 25%;
   }
 
-  svg {
+  & ~ svg {
     width: 24px;
     height: 24px;
     fill: currentColor;

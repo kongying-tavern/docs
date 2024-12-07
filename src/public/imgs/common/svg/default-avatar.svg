@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Linear / person.crop.circle / 30px</title>
+  <defs>
+    <circle id="path-1" cx="15" cy="15" r="15"></circle>
+    <path
+      d="M15,0 C23.2836,0 30,6.7164 30,15 C30,23.2836 23.2836,30 15,30 C6.7164,30 0,23.2836 0,15 C0,6.7164 6.7164,0 15,0 Z M15,1.2 C7.3908,1.2 1.2,7.3908 1.2,15 C1.2,18.6336 2.622,21.9336 4.926,24.4008 C5.43,22.0956 9.7476,19.9368 15,19.9368 C20.2524,19.9368 24.57,22.0956 25.074,24.4008 C27.378,21.9336 28.8,18.6336 28.8,15 C28.8,7.3908 22.6092,1.2 15,1.2 Z M15,6.3 C17.8992,6.3 20.25,8.718 20.25,11.7 C20.25,14.682 17.8992,17.1 15,17.1 C12.1008,17.1 9.75,14.682 9.75,11.7 C9.75,8.718 12.1008,6.3 15,6.3 Z"
+      id="path-3"></path>
+  </defs>
+  <g id="Linear-/-person.crop.circle-/-30px" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Mukund-Avatar" transform="translate(-0.000000, 0.000000)">
+      <mask id="mask-2" fill="white">
+        <use xlink:href="#path-1"></use>
+      </mask>
+      <g id="Mask"></g>
+      <mask id="mask-4" fill="white">
+        <use xlink:href="#path-3"></use>
+      </mask>
+      <use id="person.crop.circle" fill="#8E8E93" xlink:href="#path-3"></use>
+    </g>
+  </g>
+</svg>

@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { PageInfoResponse } from '../apis/getPageInfo'
 
-export const usePageInfoStore = defineStore('pageinfo', () => {
+import type { PageInfoResponse } from '../apis/feedback/getPageInfo'
+
+export const usePageInfoStore = defineStore('page-info', () => {
   const currentPageinfo = ref<PageInfoResponse['data']>({
     good: 0,
     bad: 0,

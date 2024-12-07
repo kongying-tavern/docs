@@ -2,6 +2,7 @@
 import { useEventListener } from '@vueuse/core'
 import { useRoute } from 'vitepress'
 import { nextTick, onMounted, watch } from 'vue'
+import Notifications from './ui/Notifications.vue'
 
 function handleHighlight() {
   if (!window || !window.location) return
@@ -43,6 +44,7 @@ useEventListener('hashchange', handleHighlight)
 
 <template>
   <slot />
+  <Notifications />
 </template>
 
 <style>

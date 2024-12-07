@@ -289,3 +289,13 @@ docHeader: false #隐藏该页面的 docHeader
 ```md
 输入!!xxx!!显示彩蛋
 ```
+
+<Steps :level="1">
+# 333
+<Steps :level="2">
+# 333
+</Steps>
+</Steps>
+<Steps :level="1">
+# 333
+</Steps>
