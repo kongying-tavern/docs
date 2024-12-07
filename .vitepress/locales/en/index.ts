@@ -12,7 +12,6 @@ import Head from './head'
 import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
-import SocialLinks from './social-links'
 
 import Staff from './staff'
 import Team from './team'
@@ -37,7 +36,6 @@ export const enConfig: LocaleSpecificConfig<
     langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
-    socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
     docFooter: {

@@ -7,6 +7,7 @@ const asideLinks: CustomConfig['asideLinks'] = {
   contactUsLink: 'https://discord.gg/SWz6RTWNkm',
   sponsor: 'Become a Sponsor',
   editLink: 'Edit this page',
+  translateThisPage: 'Translate this page',
 }
 
 export default asideLinks

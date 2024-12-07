@@ -1,15 +1,13 @@
 ---
-title: 错误页
-description: 错误页
-aside: true
+title: 原神地图遇到了一些问题...
+aside: false
+outline: false
 layout: doc
 comment: false
 head:
   - - script
     - src: ./error.js
 ---
-
-# 原神地图遇到了一些问题...
 
 ## 为什么会出现该页面？
 

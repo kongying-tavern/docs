@@ -1,0 +1,56 @@
+<script setup lang="ts">
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { useRoute } from 'vitepress'
+import { computed } from 'vue'
+
+const route = useRoute()
+
+interface Item {
+  title: string
+  href: string
+}
+
+function generateBreadcrumb(url: string): Item[] {
+  const breadcrumbItems: Item[] = []
+  const segments = url.split('/').filter((segment) => segment !== '') // Remove empty segments
+
+  // Construct breadcrumb for each segment
+  let href = ''
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i].replace('.html', '')
+    href += `/${segment}`
+    breadcrumbItems.push({ title: segment, href })
+  }
+  return breadcrumbItems
+}
+
+const breadcrumbs = computed(() => generateBreadcrumb(route.path))
+</script>
+
+<template>
+  <Breadcrumb v-if="breadcrumbs.length > 1">
+    <BreadcrumbList>
+      <template
+        v-for="(breadcrumb, index) in breadcrumbs"
+        :key="breadcrumb.title"
+      >
+        <BreadcrumbItem>
+          <BreadcrumbLink
+            class="capitalize"
+            :href="breadcrumb.href"
+            :class="{ 'text-foreground': index === breadcrumbs.length - 1 }"
+          >
+            {{ breadcrumb.title }}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator v-if="index !== breadcrumbs.length - 1" />
+      </template>
+    </BreadcrumbList>
+  </Breadcrumb>
+</template>

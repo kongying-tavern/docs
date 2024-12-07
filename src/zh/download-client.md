@@ -4,7 +4,7 @@ layout: doc
 comment: true
 ---
 
-## **Windows 客户端** <Badge type="warning" text="Beta" />
+## **Windows 客户端** <VPBadge type="warning" text="Beta" />
 
 可选择下方任意方式下载
 

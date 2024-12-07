@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed, ref, watchEffect } from 'vue'
+import DocsBreadCrumb from './DocsBreadcrumb.vue'
 
 const { frontmatter, page } = useData()
 
@@ -11,29 +12,16 @@ const title = computed(
     page.value.title ||
     page.value.relativePath.replace('.md', ''),
 )
-
-watchEffect(() => {
-  if (!frontmatter.value.titleTemplate) return (match.value = false)
-  const str = frontmatter.value.titleTemplate.match(/-(.*?)\|/)
-  if (str && str.length >= 1) {
-    match.value = str[1].trim()
-  } else {
-    match.value = false
-  }
-})
 </script>
 
 <template>
   <div
     v-if="frontmatter.docHeader !== false && frontmatter.layout == 'doc'"
-    class="border-b-color-[var(--vp-c-divider)] border-b-solid docs-header mb-4 pb-8 relative slide-enter"
+    class="border-b-color-[var(--vp-c-divider)] border-b-solid docs-header mb-4 relative slide-enter"
   >
-    <div
-      v-if="match"
+    <DocsBreadCrumb
       class="flex font-semibold gap-1.5 items-center mb-3 text-primary text-sm/6"
-    >
-      {{ match }}
-    </div>
+    />
     <div class="flex flex-col gap-6 items-start lg:flex-row">
       <!---->
       <div class="flex-1">
