@@ -94,6 +94,10 @@ export interface CustomConfig {
     noMore: string
     loadError: string
     user: {
+      menu: {
+        giteePage: string
+        giteeAccountInfo: string
+      }
       myFeedback: {
         title: string
       }
@@ -138,11 +142,16 @@ export interface CustomConfig {
       loginMsg: string
       logoutMsg: string
       loginTips: string
+      loginToCheck: string
       jumpToGiteeTips: string
       loginSuccess: string
+      logoutSuccess: string
       loginFail: string
+      logoutFail: string
       loginAlert: string
       loginAlertMsg: string
+      notGiteeAccountMsg: string
+      clickToGiteeSignup: string
     }
     aside: {
       contactUs: {

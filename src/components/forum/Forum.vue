@@ -6,6 +6,7 @@
           class="forum-content w-[clamp(calc(100%-240px),700px,55vw)] float-left"
         >
           <ForumHeader class="forum-header" />
+          <a href="#login-alert">Test</a>
           <Transition mode="out-in">
             <Suspense>
               <ForumTopicsList :data-loader="fetchData"></ForumTopicsList>

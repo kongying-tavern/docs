@@ -1,4 +1,4 @@
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount, computed } from 'vue'
 
 interface UseHashCheckerOptions {
   immediate?: boolean
@@ -22,14 +22,9 @@ export const useHashChecker = (
     ...options,
   }
 
-  const currentHash = ref<string>(window.location.hash.slice(1))
+  const currentHash = computed(() => window.location.hash.slice(1))
   const isMatch = ref(false)
   const callbackState = ref(false)
-
-  const updateHash = () => {
-    currentHash.value = window.location.hash.slice(1)
-    checkHash()
-  }
 
   const checkHash = () => {
     if (currentHash.value !== targetHash) return (isMatch.value = false)
@@ -39,26 +34,22 @@ export const useHashChecker = (
     if (clearHash)
       history.replaceState(null, '', window.location.href.split('#')[0])
     if (callback) callbackState.value = Boolean(callback())
-    if (callbackState.value && redirectHash) location.hash = redirectHash
-    if (callback === undefined && redirectHash) location.hash = redirectHash
+    if ((callback === undefined || callbackState.value) && redirectHash)
+      location.hash = redirectHash
   }
 
   const handleHashChangeEvent = () => {
-    window.addEventListener('hashchange', updateHash)
+    window.addEventListener('hashchange', checkHash)
 
     onBeforeUnmount(() => {
-      window.removeEventListener('hashchange', updateHash)
+      window.removeEventListener('hashchange', checkHash)
     })
   }
 
   if (immediate) {
     checkHash()
 
-    window.addEventListener('hashchange', updateHash)
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('hashchange', updateHash)
-    })
+    handleHashChangeEvent()
   }
 
   return {

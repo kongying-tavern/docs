@@ -1,117 +1,63 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import VPMenu from 'vitepress/dist/client/theme-default/components/VPMenu.vue'
-import { oauth } from '../apis/forum/gitee'
 import UserAvatar from './UserAvatar.vue'
-import { useUserAuthStore, useUserInfoStore } from '../stores/index'
 import LoginAlertDialog from './LoginAlertDialog.vue'
+import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
+import { ref } from 'vue'
 import { useData } from 'vitepress'
-import { toast } from 'vue-sonner'
+import { useUserInfoStore } from '@/stores'
 
 const { theme } = useData()
+
+const userInfo = useUserInfoStore()
 const open = ref(false)
 const el = ref<HTMLElement>()
-const userAuthStore = useUserAuthStore()
-const userInfoStore = useUserInfoStore()
-const notLogedIn = [
+
+const list: { title: string; href: string; icon: string }[] = [
   {
-    text: theme.value.forum.auth.loginMsg,
-    link: '#login',
+    title: theme.value.forum.user.myFeedback.title,
+    href: '/feedback/user',
+    icon: 'i-lucide-message-square-text',
+  },
+  {
+    title: theme.value.forum.user.menu.giteeAccountInfo,
+    href: 'https://gitee.com/profile/account_information',
+    icon: 'i-lucide-user-round-pen',
   },
 ]
-const loggedIn = [
-  {
-    text: '我的反馈',
-    link: '/feedback/user',
-  },
-  {
-    text: theme.value.forum.auth.logoutMsg,
-    link: '#logout',
-  },
-]
-
-const code = ref()
-const list = computed(() => [
-  ...(userAuthStore.isTokenValid ? loggedIn : notLogedIn),
-])
-
-const login = async () => {
-  if (code.value) {
-    userAuthStore.setAuth(await oauth.getToken(code.value))
-    userInfoStore.refreshUserInfo()
-    toast.success(theme.value.forum.auth.loginSuccess)
-  } else {
-    location.hash = 'login-alert'
-  }
-}
-
-const logout = () => {
-  userAuthStore.clearAuth()
-  userInfoStore.clearUserInfo()
-}
-
-const handleAuth = () => {
-  const hash = window.location.hash.slice(1)
-
-  if (!list.value.some((item) => item.link.replace('#', '') === hash)) return
-
-  history.replaceState(null, '', window.location.href.split('#')[0])
-
-  if (hash === 'login' && !userAuthStore.isTokenValid) login()
-  if (hash === 'logout' && userAuthStore.isTokenValid) logout()
-}
-
-const init = () => {
-  if (!userAuthStore.isTokenValid) {
-    code.value = location.search.match(/code=[^&]+/)?.[0]?.split('=')?.[1]
-    if (code.value) return login()
-    return
-  }
-
-  userAuthStore.ensureTokenRefreshMission()
-}
-
-init()
-
-onMounted(() => {
-  handleAuth()
-  window.addEventListener('hashchange', handleAuth)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', handleAuth)
-})
 </script>
 
 <template>
-  <div
-    class="VPFlyout"
-    ref="el"
-    @mouseenter="open = true"
-    @mouseleave="open = false"
-  >
-    <button
-      type="button"
-      class="button avatar"
-      aria-haspopup="true"
-      :aria-expanded="open"
-      @click="open = !open"
+  <ClientOnly>
+    <div
+      class="VPFlyout"
+      ref="el"
+      @mouseenter="open = true"
+      @mouseleave="open = false"
     >
-      <UserAvatar
-        :src="userInfoStore.info?.avatar"
-        :alt="userInfoStore.info?.username"
-        size="sm"
-      />
-    </button>
+      <button
+        type="button"
+        class="button avatar"
+        aria-haspopup="true"
+        :aria-expanded="open"
+        @click="open = !open"
+      >
+        <UserAvatar
+          :src="userInfo.info?.avatar"
+          :alt="userInfo.info?.username"
+          size="sm"
+        />
+      </button>
 
-    <div class="menu">
-      <VPMenu :items="list"> </VPMenu>
+      <div class="menu">
+        <NavBarUserAvatarDropdownMenu :list="list">
+        </NavBarUserAvatarDropdownMenu>
+      </div>
+
+      <Teleport to="body">
+        <LoginAlertDialog></LoginAlertDialog>
+      </Teleport>
     </div>
-
-    <Teleport to="body">
-      <LoginAlertDialog></LoginAlertDialog>
-    </Teleport>
-  </div>
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>

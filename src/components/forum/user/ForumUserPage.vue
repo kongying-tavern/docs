@@ -13,6 +13,15 @@
             </h2>
             <div></div>
           </div>
+          <h3 class="w-full text-align-center mt-4">
+            <DynamicTextReplacer :data="theme.forum.auth.loginToCheck">
+              <template #login>
+                <a class="vp-link" href="#login-alert">
+                  [{{ theme.forum.auth.login }}]
+                </a>
+              </template>
+            </DynamicTextReplacer>
+          </h3>
           <Transition mode="out-in">
             <Suspense>
               <ForumTopicsList :data-loader="fetchData"></ForumTopicsList>
@@ -59,6 +68,7 @@
 <script setup lang="ts">
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumAside from '../ForumAside.vue'
+import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import { onMounted, provide, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { ReloadIcon } from '@radix-icons/vue'

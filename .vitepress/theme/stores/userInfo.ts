@@ -4,6 +4,8 @@ import { getUser } from '../apis/forum/gitee/user'
 import { computed, ref } from 'vue'
 import { issues, user } from '../apis/forum/gitee'
 import { useNotificationStore } from './useNotification'
+import { useLocalStorage } from '@vueuse/core'
+
 import type ForumAPI from '@/apis/forum/api'
 
 export const useUserInfoStore = defineStore('user-info', () => {
@@ -11,7 +13,12 @@ export const useUserInfoStore = defineStore('user-info', () => {
   const userAuthStore = useUserAuthStore()
 
   const info = ref<ForumAPI.User>()
-  const teamMembersID = ref<number[]>()
+  const teamMembersID = useLocalStorage<
+    Partial<{
+      updatedAt: number
+      list: number[]
+    }>
+  >('TEAM-MEMBERS-ID', {})
 
   const refreshUserInfo = async () => {
     if (userAuthStore.isTokenValid && userAuthStore.auth.accessToken) {
@@ -19,26 +26,35 @@ export const useUserInfoStore = defineStore('user-info', () => {
     }
   }
   const isTeamMember = (id = info.value?.id) =>
-    Boolean(teamMembersID.value?.find((val) => id === val))
+    Boolean(teamMembersID.value?.list!.find((val) => id === val))
+  const setTeamMembersID = async () => {
+    if (
+      !teamMembersID.value.updatedAt ||
+      Date.now() - teamMembersID.value?.updatedAt! > 1000 * 60 * 60 * 24
+    ) {
+      return (teamMembersID.value = {
+        updatedAt: Date.now(),
+        list: await refreshTeamMemberID(),
+      })
+    }
+  }
 
-  const getTeamMembersID = async () =>
-    (teamMembersID.value = (await user.getOrgMembers()).map((val) =>
-      Number(val.id),
-    ))
+  const refreshTeamMemberID = async () =>
+    (await user.getOrgMembers()).map((val) => Number(val.id))
   const clearUserInfo = () => (info.value = undefined)
 
   refreshUserInfo()
-  getTeamMembersID()
+  setTeamMembersID()
 
   return {
     // states
     info,
 
     // getters
+    isTeamMember,
 
     // actions
     refreshUserInfo,
     clearUserInfo,
-    isTeamMember,
   }
 })

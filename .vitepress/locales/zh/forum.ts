@@ -44,11 +44,16 @@ const forum: CustomConfig['forum'] = {
     loginMsg: '登录 Gitte 账号',
     logoutMsg: '登出 Gitte 账号',
     loginTips: '请登录后重试',
+    loginToCheck: '请 %login 后查看 (・ω・)',
     jumpToGiteeTips: '即将跳转到Gitee进行授权登录',
     loginSuccess: '登录成功',
+    logoutSuccess: '已登出',
     loginFail: '登录失败',
+    logoutFail: '登出失败',
     loginAlert: '登录提示',
     loginAlertMsg: '即将跳转到 Gitee 进行授权登录',
+    notGiteeAccountMsg: '没有 Gitee 账号？%signup',
+    clickToGiteeSignup: '点击注册 Gitee 账号',
   },
   aside: {
     contactUs: {
@@ -165,6 +170,10 @@ const forum: CustomConfig['forum'] = {
     },
   },
   user: {
+    menu: {
+      giteePage: 'Gitee 个人主页',
+      giteeAccountInfo: 'Gitee 账号信息',
+    },
     myFeedback: {
       title: '我的反馈',
     },
