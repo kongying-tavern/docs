@@ -27,3 +27,12 @@ declare module '@theme/index' {
   const theme: Theme
   export default theme
 }
+
+type SnakeCaseToCamelCase<S> = S extends `${infer Prefix}_${infer Rest}`
+  ? `${SnakeCaseToCamelCase<Prefix>}${Capitalize<SnakeCaseToCamelCase<Rest>>}`
+  : S
+
+/** 转换对象的所有下划线风格 key 为小驼峰风格的 key */
+type SnakeCaseKeysToCamelCase<T extends Record<string, unknown>> = {
+  [K in keyof T as SnakeCaseToCamelCase<K>]: T[K]
+}

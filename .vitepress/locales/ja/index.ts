@@ -12,10 +12,10 @@ import Head from './head'
 import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
-import SocialLinks from './social-links'
 
 import Staff from './staff'
 import Team from './team'
+import Forum from './forum'
 import UI from './ui'
 
 export const jaConfig: LocaleSpecificConfig<
@@ -37,9 +37,9 @@ export const jaConfig: LocaleSpecificConfig<
     langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
-    socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
+    forum: Forum,
     docFooter: {
       prev: '前へ',
       next: '次へ',

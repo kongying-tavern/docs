@@ -12,8 +12,8 @@ import Head from './head'
 import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
-import SocialLinks from './social-links'
 
+import Forum from './forum'
 import Staff from './staff'
 import Team from './team'
 import UI from './ui'
@@ -37,9 +37,9 @@ export const enConfig: LocaleSpecificConfig<
     langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
-    socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,
+    forum: Forum,
     docFooter: {
       prev: 'Previous page',
       next: 'Next page',

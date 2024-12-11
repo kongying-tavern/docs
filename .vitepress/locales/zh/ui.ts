@@ -15,6 +15,7 @@ const ui: CustomConfig['ui'] = {
   button: {
     submit: '提交',
     cancel: '取消',
+    loading: '加载中',
   },
 }
 
