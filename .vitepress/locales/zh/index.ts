@@ -8,16 +8,16 @@ import AsideLinks from './aside-links'
 import C from './constants'
 import DocsFeedback from './docs-feedback'
 import Footer from './footer'
+import Forum from './forum'
 import Head from './head'
 import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
-import Forum from './forum'
 
+import forum from './forum'
 import Staff from './staff'
 import Team from './team'
 import UI from './ui'
-import forum from './forum'
 
 export const zhConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config

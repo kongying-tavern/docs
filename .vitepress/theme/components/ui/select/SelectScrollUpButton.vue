@@ -6,7 +6,7 @@ import {
   type SelectScrollUpButtonProps,
   useForwardProps,
 } from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
+import { type HTMLAttributes, computed } from 'vue'
 
 const props = defineProps<
   SelectScrollUpButtonProps & { class?: HTMLAttributes['class'] }

@@ -6,7 +6,7 @@ import {
   type NavigationMenuRootProps,
   useForwardPropsEmits,
 } from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
+import { type HTMLAttributes, computed } from 'vue'
 import NavigationMenuViewport from './NavigationMenuViewport.vue'
 
 const props = defineProps<

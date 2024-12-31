@@ -1,6 +1,6 @@
-import { ref, computed } from 'vue'
 import { useTimestamp } from '@vueuse/core'
 import type { UseTimestampOptions } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
 export function useTimer(
   cb: (...args: unknown[]) => any,

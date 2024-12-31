@@ -12,8 +12,8 @@
         <span class="vp-icon DocSearch-Search-Icon" aria-hidden="true"></span>
       </div>
       <input
-        v-model.trim="searchParm"
-        @keydown.enter.prevent="search(searchParm)"
+        v-model.trim="params.q"
+        @keydown.enter.prevent="search(params.q)"
         type="search"
         id="default-search"
         class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-100 bg-[var(--vp-c-bg-alt)] c-[var(--vp-c-text-1)]"
@@ -22,7 +22,7 @@
         required
       />
       <button
-        @click="search(searchParm)"
+        @click="search(params.q)"
         type="button"
         class="text-white absolute end-2.5 bottom-2.5 focus:border-color-[--vp-c-border] focus:outline-none font-medium rounded-25 text-sm px-4 py-2 vp-button"
       >
@@ -32,41 +32,36 @@
   </form>
   <div
     class="h-5 font-size-3.5 flex absolute top-28"
-    v-if="isSearching && !loading"
+    v-if="isSearching && !forumData.loading"
   >
     <p class="color-[var(--vp-c-text-3)] mr-2">
       {{ theme.forum.header.search.allRelatedContentCount }}
     </p>
-    <span>{{ topics.length }}</span>
+    <span>{{ forumData.topics.length }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue'
-import { useUrlSearchParams } from '@vueuse/core'
 import { useData } from 'vitepress'
+import { onMounted, ref } from 'vue'
+import { useUrlSearchParams } from '@vueuse/core'
+import { useForumData } from '../../stores/useForumData'
 
 const { theme } = useData()
-const searchParm = ref<string>('')
-const isSearching = ref<boolean>(false)
 
-const search = (q: string) => {
-  searchTopics(encodeURIComponent(q))
+const isSearching = ref(false)
+const params = useUrlSearchParams('history')
+
+const search = (q: string | string[]) => {
+  forumData.searchTopics(encodeURIComponent(String(q)))
   isSearching.value = true
   if (!q) isSearching.value = false
 }
 
 onMounted(() => {
-  const { q } = useUrlSearchParams('history')
-
-  if (typeof q !== 'string') return
-
-  searchParm.value = q
-
-  search(searchParm.value)
+  if (typeof params.q !== 'string') return
+  search(params.q)
 })
 
-const searchTopics = inject<(q: string) => Promise<void>>('searchTopics')!
-const topics = inject<GITEE.IssueList>('topics')!
-const loading = inject<boolean>('loading')!
+const forumData = useForumData()
 </script>

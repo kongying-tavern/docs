@@ -3,8 +3,8 @@
     v-if="userInfo.info"
     class="grid p-3 md:min-w-[128px] lg:min-w-[450px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)] c-[var(--vp-c-text-2)] bg-[var(--vp-c-bg-elv)] border border-[var(--vp-c-divider)] shadow-[var(--vp-shadow-3)] opacity-100 border-rd-12px"
   >
-    <li class="row-span-4 lg:border-r-2px lg:border-[var(--vp-c-divider)]">
-      <NavigationMenuLink as-child>
+    <li class="row-span-4 lg:border-r-2px pr-3 lg:border-[var(--vp-c-divider)]">
+      <NavigationMenuLink as-child class="important:shadow-none">
         <a
           class="flex h-full w-full select-none rounded-md from-muted/50 to-muted p-3 no-underline outline-none focus:shadow-md lg:justify-evenly lg:flex-col lg:items-center"
           href="/"
@@ -42,7 +42,7 @@
       <NavigationMenuLink as-child>
         <button
           class="inline-block w-full text-align-left select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-[var(--vp-c-bg-soft)]"
-          @click="logout"
+          @click="logout()"
         >
           <div class="text-sm font-medium leading-none">
             <span class="icon-btn mr-2 vertical-mid i-lucide-log-out"></span>
@@ -57,7 +57,7 @@
     class="grid p-3 md:min-w-[128px] w-[300px] c-[var(--vp-c-text-2)] bg-[var(--vp-c-bg-elv)] border border-[var(--vp-c-divider)] shadow-[var(--vp-shadow-3)] opacity-100 border-rd-12px"
   >
     <li>
-      <Button class="vp-button w-full mt-2" @click="login()">
+      <Button class="vp-button w-full mt-2" @click="login({ method: 'Oauth' })">
         {{ theme.forum.auth.loginMsg }}
       </Button>
     </li>
@@ -81,52 +81,20 @@
 </template>
 
 <script setup lang="ts">
-import { NavigationMenuLink } from '@/components/ui/navigation-menu'
-import { Button } from '@/components/ui/button'
-import UserAvatar from './UserAvatar.vue'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
-import { oauth } from '../apis/forum/gitee'
-import { toast } from 'vue-sonner'
+import { Button } from '@/components/ui/button'
+import { NavigationMenuLink } from '@/components/ui/navigation-menu'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useData, withBase } from 'vitepress'
-import { useUserAuthStore, useUserInfoStore } from '@/stores'
-import { computed, ref } from 'vue'
+import UserAvatar from './UserAvatar.vue'
+import useLogin from '@/hooks/useLogin'
 
 defineProps<{
   list: { title: string; href: string; icon: string }[]
 }>()
 
 const userInfo = useUserInfoStore()
-const userAuth = useUserAuthStore()
-
-const code = ref()
 
 const { theme } = useData()
-
-const login = async () => {
-  if (code.value) {
-    userAuth.setAuth(await oauth.getToken(code.value))
-    userInfo.refreshUserInfo()
-    toast.success(theme.value.forum.auth.loginSuccess)
-  } else {
-    location.hash = 'login-alert'
-  }
-}
-
-const logout = () => {
-  userAuth.clearAuth()
-  userInfo.clearUserInfo()
-  toast.success(theme.value.forum.auth.logoutSuccess)
-}
-
-const init = () => {
-  if (!userAuth.isTokenValid) {
-    code.value = location.search.match(/code=[^&]+/)?.[0]?.split('=')?.[1]
-    if (code.value) return login()
-    return
-  }
-
-  userAuth.ensureTokenRefreshMission()
-}
-
-init()
+const { login, logout } = useLogin()
 </script>

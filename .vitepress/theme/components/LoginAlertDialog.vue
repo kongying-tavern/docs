@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { oauth } from '@/apis/forum/gitee'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,9 +10,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { oauth } from '@/apis/forum/gitee'
+import { useHashChecker } from '@/hooks/useHashChecker'
 import { useData } from 'vitepress'
-import { useHashChecker } from '@/composables/useHashChecker'
 
 const { theme } = useData()
 

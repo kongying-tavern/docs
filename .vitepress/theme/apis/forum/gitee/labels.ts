@@ -1,15 +1,21 @@
-import { apiCall, GITEE_OWNER, GITEE_REPO } from '.'
+import { GITEE_OWNER, GITEE_REPO, apiCall } from '.'
+import { excludeStateTags } from './utils'
 
-export const getAllLabels = async (): Promise<GITEE.IssueLabel[]> => {
+export const getAllLabels = async (
+  useCache = true,
+): Promise<GITEE.IssueLabel[]> => {
   return (
     await apiCall<GITEE.IssueLabel[]>(
       'get',
       `repos/${GITEE_OWNER}/${GITEE_REPO}/labels`,
+      {
+        useCache,
+      },
     )
-  ).json()
+  )[0]
 }
 
 export const getAllLabelsName = async (): Promise<string[]> => {
   const data = await getAllLabels()
-  return data.map((val) => val.name)
+  return excludeStateTags(data)
 }

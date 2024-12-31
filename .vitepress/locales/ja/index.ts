@@ -13,9 +13,9 @@ import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
 
+import Forum from './forum'
 import Staff from './staff'
 import Team from './team'
-import Forum from './forum'
 import UI from './ui'
 
 export const jaConfig: LocaleSpecificConfig<

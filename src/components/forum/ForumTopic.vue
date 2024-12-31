@@ -1,14 +1,13 @@
 <template>
   <Transition mode="out-in">
     <div
-      class="forum-topic-item w-full p-b-4 p-t-6 border-b-1 border-[var(--vp-c-divider)]"
+      :class="[
+        topic.type,
+        'forum-topic-item w-full p-b-4 p-t-6 border-b-1 border-[var(--vp-c-divider)]',
+      ]"
     >
       <div class="topic-content">
-        <a
-          @click="sessionCacheRedirect()"
-          target="_blank"
-          class="cursor-pointer"
-        >
+        <a @click="sessionCacheRedirect()" target="_blank">
           <h4 class="font-size-5 break-words flex justify-between">
             <p>
               {{ title }}
@@ -17,16 +16,12 @@
             <p v-if="topic.type">
               <span
                 class="inline-flex items-center px-1 pt-.5 text-center font-size-3 rounded-0.5 align-middle text-xs font-semibold transition-colors color-[#b2b2b2] border-[#bdbdbd] border border-solid"
-                >{{ getTopicTypeText }}</span
+                >{{ topicTypeMap.get(topic.type) }}</span
               >
             </p>
           </h4>
         </a>
-        <a
-          @click="sessionCacheRedirect()"
-          target="_blank"
-          class="cursor-pointer"
-        >
+        <a @click="sessionCacheRedirect()" target="_blank">
           <!-- 非公告类型限制在三行以内 -->
           <article
             class="font-size-4 mt-3.5 pr-4 opacity-99 max-h-30 overflow-hidden"
@@ -40,7 +35,7 @@
           class="topic-content-img flex mt-4 cursor-pointer"
           v-if="topic.content?.images"
         >
-          <img
+          <Image
             v-for="(img, index) in topic.content.images"
             :key="index"
             :src="img.src"
@@ -49,14 +44,7 @@
           />
         </div>
 
-        <div class="my-2">
-          <span
-            v-for="tag in topic.tags"
-            :key="tag"
-            class="px-2.5 font-size-3 inline-flex pointer-events-auto bg-[--vp-c-bg-soft] mr-2 rounded-full color-[--vp-c-text-2]"
-            >#{{ tag }}</span
-          >
-        </div>
+        <ForumTagList class="my-2" :data="topic.tags" />
       </div>
       <div class="topic-info mt-4">
         <TopicMeta
@@ -64,6 +52,7 @@
           :created-at="topic.createdAt"
           :tags="topic.tags"
           :comment-count="topic.commentCount"
+          :comment-id="isAnn ? -1 : 0"
           :author-id="topic.user.id"
         ></TopicMeta>
       </div>
@@ -87,15 +76,19 @@
 </template>
 
 <script setup lang="ts">
-import TopicMeta from './TopicMeta.vue'
-import ForumTopicComment from './ForumTopicComment.vue'
-import { computed } from 'vue'
-import { useUserInfoStore } from '@/stores'
-import { useData, withBase } from 'vitepress'
 import type ForumAPI from '@/apis/forum/api'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useData, withBase } from 'vitepress'
+import { computed } from 'vue'
 import ForumRuleBadge from './ForumRuleBadge.vue'
+import ForumTagList from './ForumTagList.vue'
+import ForumTopicComment from './ForumTopicComment.vue'
+import TopicMeta from './TopicMeta.vue'
+import { Image } from '@/components/ui/image'
+import { getTopicTypeMap } from '../../composables/getTopicTypeMap'
 
 const userInfo = useUserInfoStore()
+const topicTypeMap = getTopicTypeMap()
 const { theme } = useData()
 
 const props = defineProps<{
@@ -112,29 +105,12 @@ const showComment = computed(
   () => props.topic.importantComments && props.topic.type !== 'ANN',
 )
 
-const getTopicTypeText = computed(() => {
-  switch (props.topic.type) {
-    case 'ANN':
-      return theme.value.forum.topic.type.ann
-    case 'BUG':
-      return theme.value.forum.topic.type.bug
-    case 'FEAT':
-      return theme.value.forum.topic.type.feat
-    case 'SUG':
-      return theme.value.forum.topic.type.suggest
-    default:
-      return ''
-  }
-})
-
 const sessionCacheRedirect = (hash?: string) => {
   if (props.topic.type === 'ANN') return
   sessionStorage.setItem('issue-info', JSON.stringify(props.topic))
 
   window.open(
-    withBase(
-      `./feedback/topic?number=${props.topic.id}${hash ? `#${hash}` : ''}`,
-    ),
+    withBase(`./topic?number=${props.topic.id}${hash ? `#${hash}` : ''}`),
   )
 }
 </script>
@@ -148,7 +124,15 @@ const sessionCacheRedirect = (hash?: string) => {
   opacity: 1 !important;
 }
 
-.forum-topic-item:hover > div > a > h4 > p {
+.forum-topic-item:not(.ANN):hover > div > a > h4 > p {
   text-decoration: underline;
+}
+
+.forum-topic-item:not(.ANN):hover > div > a {
+  cursor: pointer;
+}
+
+.forum-topic-item:has(.ANN):hover > div > a {
+  cursor: default;
 }
 </style>

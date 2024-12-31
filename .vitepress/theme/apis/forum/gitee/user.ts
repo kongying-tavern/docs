@@ -4,26 +4,34 @@ import { normalizeUser } from './utils'
 
 export const getUser = async (access_token: string): Promise<ForumAPI.User> => {
   return normalizeUser(
-    await (
-      await apiCall<GITEE.UserInfo>('get', 'user', { access_token })
-    ).json(),
+    (
+      await apiCall<GITEE.UserInfo>('get', 'user', { params: { access_token } })
+    )[0],
   )
 }
 
-export const getUserOrgs = async (username: string): Promise<ForumAPI.User> => {
+export const getUserOrgs = async (
+  username: string,
+  useCache = true,
+): Promise<ForumAPI.User> => {
   return normalizeUser(
-    await (
-      await apiCall<GITEE.UserInfo>('get', `users/${username}/orgs`)
-    ).json(),
+    (
+      await apiCall<GITEE.UserInfo>('get', `users/${username}/orgs`, {
+        useCache,
+      })
+    )[0],
   )
 }
 
-export const getOrgMembers = async (): Promise<ForumAPI.User[]> => {
+export const getOrgMembers = async (
+  useCache = true,
+): Promise<ForumAPI.User[]> => {
   return (
-    await (
-      await apiCall<GITEE.User[]>('get', `orgs/${GITEE_OWNER}/members`, {
+    await apiCall<GITEE.User[]>('get', `orgs/${GITEE_OWNER}/members`, {
+      params: {
         per_page: 100,
-      })
-    ).json()
-  ).map((val) => normalizeUser(val))
+      },
+      useCache,
+    })
+  )[0].map((val) => normalizeUser(val))
 }

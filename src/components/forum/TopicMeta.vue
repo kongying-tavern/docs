@@ -58,20 +58,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { formatDate } from './utils'
-import { useData, withBase } from 'vitepress'
+import type ForumAPI from '@/apis/forum/api'
+import { issues } from '@/apis/forum/gitee'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import { issues } from '@/apis/forum/gitee'
-import { useUserAuthStore, useUserInfoStore } from '@/stores'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { useData, withBase } from 'vitepress'
+import { computed } from 'vue'
 import { toast } from 'vue-sonner'
-import type ForumAPI from '@/apis/forum/api'
+import { formatDate } from './utils'
 
 const { localeIndex, theme } = useData()
 
@@ -91,13 +92,20 @@ const props = defineProps<{
 const hasPermission = computed(
   () => userInfo.isTeamMember() || userInfo?.info?.id === props.authorId,
 )
+
 const isHandler = computed(
   () => typeof props.commentClickHandler === 'function',
 )
-const topicLink = computed(() =>
-  withBase(`./feedback/topic?number=${props.topicId}#reply`),
-)
+
+const topicLink = computed(() => {
+  if (props.topicId == -1) return '#'
+  return withBase(
+    `./topic?number=${props.topicId}#reply${props.commentId ? '-' + props.commentId : ''}`,
+  )
+})
+
 const str = computed(() => {
+  if (props.commentId == -1) return theme.value.forum.comment.commentsClosed
   if (props.commentCount && props.commentCount > 0) return props.commentCount
   return theme.value.forum.comment.comment
 })

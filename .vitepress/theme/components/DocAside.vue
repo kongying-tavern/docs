@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useData, withBase } from 'vitepress'
-import { VPLink } from 'vitepress/theme'
 import { computed } from 'vue'
 
 const { theme, page, frontmatter } = useData()

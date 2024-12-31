@@ -5,7 +5,7 @@
         <NavigationMenuLink
           :href="`#${item.hash}`"
           :class="[
-            'navigation-menu-link block color-[var(--vp-c-text-3)]',
+            'navigation-menu-link block color-[var(--vp-c-text-3)] bg-transparent',
             { active: activeItem === item.id },
             navigationMenuTriggerStyle(),
           ]"
@@ -18,9 +18,9 @@
         <NavigationMenuTrigger class="color-[var(--vp-c-text-3)]">
           {{ theme.forum.header.navigation.faq.title }}
         </NavigationMenuTrigger>
-        <NavigationMenuContent>
+        <NavigationMenuContent class="z-index-999999">
           <ul
-            class="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]"
+            class="grid w-[400px] gap-3 p-4 md:w-[400px] md:grid-cols-2 lg:w-[500px]"
           >
             <li v-for="item in faq" :key="item.text">
               <NavigationMenuLink as-child>
@@ -55,15 +55,22 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { useData } from 'vitepress'
-import { inject, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { flattenWithTags } from './utils'
+import { useForumData, type FilterType } from '../../stores/useForumData'
+import { storeToRefs } from 'pinia'
 
 const { theme } = useData()
+
 const faq = flattenWithTags([
-  theme.value.sidebar[Object.keys(theme.value.sidebar)[0]][1],
+  theme.value.sidebar[Object.keys(theme.value.sidebar)[0]][2],
 ])
 
-const menuItems = [
+const menuItems: {
+  id: FilterType
+  hash: FilterType
+  label: string
+}[] = [
   {
     id: 'ALL',
     hash: 'ALL',
@@ -81,12 +88,13 @@ const menuItems = [
   },
 ]
 
-const activeItem = ref('ALL')
-const filterBy = inject<Ref<string>>('filterBy')!
+const activeItem = ref<FilterType>('ALL')
 
-const setActive = (id: string) => {
+const { filter } = storeToRefs(useForumData())
+
+const setActive = (id: FilterType) => {
   activeItem.value = id
-  filterBy.value = id
+  filter.value = id
   window.location.hash = id
 }
 
@@ -101,7 +109,7 @@ const updateFilterType = () => {
 }
 
 watch(activeItem, (newValue) => {
-  filterBy.value = newValue
+  filter.value = newValue
 })
 
 onMounted(() => {

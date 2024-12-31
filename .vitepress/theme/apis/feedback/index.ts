@@ -5,7 +5,7 @@ import ky from 'ky'
 
 const hmacDigest = (date) =>
   // @ts-ignore
-  Base64.stringify(hmacSHA512(sha256(parseInt(date)), 'site.yuanshen'))
+  Base64.stringify(hmacSHA512(sha256(Number.parseInt(date)), 'site.yuanshen'))
 
 export const fetcher = ky.create({
   prefixUrl: 'https://doc-apis.yuanshen.site/apis/v1',

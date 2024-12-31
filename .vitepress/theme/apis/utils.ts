@@ -8,6 +8,13 @@ export const catchError = <T>(
     .catch((error) => [error])
 }
 
+export const removeTrailingSlash = (str: string) => {
+  if (str.endsWith('/')) {
+    return str.slice(0, -1)
+  }
+  return str
+}
+
 export function asyncOnce(cb: (...args: any[]) => Promise<any>) {
   const map: Record<string, null | Promise<any>> = {}
   return (...args: any[]) => {
@@ -23,9 +30,20 @@ export function asyncOnce(cb: (...args: any[]) => Promise<any>) {
   }
 }
 
-export function getGiteePaginationParams(response: KyResponse) {
-  return {
-    total: Number(response.headers.get('Total_count')!),
-    totalPage: Number(response.headers.get('Total_page')!),
+export const getHeader = (
+  response: Response,
+  headerNameList: string[],
+): [undefined, Error] | [string[], undefined] => {
+  let result: string[] = []
+
+  for (const headerName of headerNameList) {
+    const val = response.headers.get(headerName)
+    if (!val || isNaN(Number(val))) {
+      console.warn(`Invalid or missing header: ${headerName}`)
+      return [undefined, new Error(`Invalid or missing header: ${headerName}`)]
+    }
+    result.push(val)
   }
+
+  return [result, undefined]
 }

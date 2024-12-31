@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
+import { ReloadIcon } from '@radix-icons/vue'
 import { ref, useAttrs } from 'vue'
 import { Button } from './button'
-import { ReloadIcon } from '@radix-icons/vue'
 
 defineOptions({
   inheritAttrs: false,

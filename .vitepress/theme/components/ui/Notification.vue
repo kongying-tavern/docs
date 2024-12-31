@@ -103,11 +103,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, onUnmounted, watch, watchEffect } from 'vue'
-import { twMerge, twJoin } from 'tailwind-merge'
-import { UI } from './config'
-import { useTimer } from '../../composables/useTimer'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
 import type { PropType } from 'vue'
+import { useTimer } from '../../hooks/useTimer'
+import { UI } from './config'
 import type { NotificationAction } from './types/notification'
 
 const props = defineProps({

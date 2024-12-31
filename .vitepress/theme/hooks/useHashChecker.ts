@@ -1,4 +1,4 @@
-import { ref, onBeforeUnmount, computed } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 
 interface UseHashCheckerOptions {
   immediate?: boolean
@@ -8,7 +8,7 @@ interface UseHashCheckerOptions {
 
 export const useHashChecker = (
   targetHash: string,
-  callback?: () => Boolean | void,
+  callback?: () => boolean | void,
   options: UseHashCheckerOptions = {},
 ) => {
   const defaultOptions: UseHashCheckerOptions = {

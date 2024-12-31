@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import ForumTagsInput from './ForumTagsInput.vue'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
 import {
   Dialog,
   DialogContent,
@@ -9,19 +7,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { VisuallyHidden } from 'radix-vue'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { issues } from '@/apis/forum/gitee'
-import { useUserInfoStore, useUserAuthStore } from '@/stores'
-import { ref, computed, inject, type Ref } from 'vue'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { VisuallyHidden } from 'radix-vue'
 import { useData } from 'vitepress'
+import { computed, ref } from 'vue'
+import ForumTagsInput from './ForumTagsInput.vue'
 
 import type ForumAPI from '@/apis/forum/api'
-import { useHashChecker } from '@/composables/useHashChecker'
+import { useHashChecker } from '@/hooks/useHashChecker'
+import ForumContentInputBox from './ForumContentInputBox.vue'
+import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
+import { useForumData } from '../../stores/useForumData'
 
 const { theme } = useData()
 
@@ -32,24 +32,23 @@ const open = ref(false)
 const type = ref<Exclude<ForumAPI.TopicType, null>>('SUG')
 const tags = ref<string[]>([])
 const title = ref('')
-const body = ref('')
-
-const submittedTopic = inject<Ref<ForumAPI.Topic[]>>('submittedTopic')!
-
-const { data, runAsync, loading, error } = useRequest(issues.postTopic, {
-  manual: true,
+const uploading = ref(false)
+const uploadedImages = ref<string[]>([])
+const body = ref<{
+  text: string
+  images: UploadUserFile[] | undefined
+}>({
+  text: '',
+  images: [],
 })
 
-useHashChecker(
-  'publish-topic',
-  () => {
-    if (!userAuth.isTokenValid) return true
-    open.value = true
-  },
-  {
-    redirectHash: 'login-alert',
-  },
-)
+const { submitTopic } = useForumData()
+
+const { loading, runAsync } = submitTopic()
+
+const isDisabled = computed(() => {
+  return loading.value || title.value.length === 0 || uploading.value
+})
 
 const formFields = computed(() => ({
   title: {
@@ -69,26 +68,39 @@ const formFields = computed(() => ({
   },
 }))
 
+useHashChecker(
+  'publish-topic',
+  () => {
+    if (!userAuth.isTokenValid) return true
+    open.value = true
+  },
+  {
+    redirectHash: 'login-alert',
+  },
+)
+
 const submit = async () => {
-  await runAsync(userAuth.accessToken, {
-    body: body.value,
-    title: `${type.value}:${title.value}`,
-    labels: tags.value.join(','),
+  body.value.images?.forEach((val, ind) => {
+    if (val.status === 'uploading' || !val.url) return
+    uploadedImages.value.push(val.url)
   })
-  if (!data.value)
-    return toast.error(
-      theme.value.forum.publish.publishFail + error.value?.message,
-    )
-  submittedTopic.value.unshift(data.value)
-  open.value = false
-  toast.success(theme.value.forum.publish.publishSuccess, {
-    action: {
-      label: theme.value.forum.topic.menu.giteeLink,
-      onClick: () => {
-        issues.openTopicOnGitee(data.value?.id!)
-      },
+  console.log(type.value, {
+    title: title.value,
+    tags: tags.value,
+    content: {
+      text: body.value.text,
+      images: uploadedImages.value,
     },
   })
+  await runAsync(type.value, {
+    title: title.value,
+    tags: tags.value,
+    content: {
+      text: body.value.text,
+      images: uploadedImages.value,
+    },
+  })
+  open.value = false
 }
 </script>
 
@@ -109,16 +121,16 @@ const submit = async () => {
             class="grid w-full mb-3"
             :class="userInfo.isTeamMember() ? 'grid-cols-4' : 'grid-cols-3'"
           >
-            <TabsTrigger value="sug">{{
+            <TabsTrigger value="SUG">{{
               theme.forum.publish.type.sug
             }}</TabsTrigger>
-            <TabsTrigger value="bug">{{
+            <TabsTrigger value="BUG">{{
               theme.forum.publish.type.bug
             }}</TabsTrigger>
-            <TabsTrigger value="feat">{{
+            <TabsTrigger value="FEAT">{{
               theme.forum.publish.type.feat
             }}</TabsTrigger>
-            <TabsTrigger v-if="userInfo.isTeamMember()" value="ann">{{
+            <TabsTrigger v-if="userInfo.isTeamMember()" value="ANN">{{
               theme.forum.publish.type.ann
             }}</TabsTrigger>
           </TabsList>
@@ -128,11 +140,11 @@ const submit = async () => {
 
         <!-- Loop through all types to create reusable content -->
         <TabsContent
-          v-for="(content, typeValue) in {
-            sug: 'sug',
-            bug: 'bug',
-            feat: 'feat',
-            ann: 'ann',
+          v-for="typeValue in {
+            sug: 'SUG',
+            bug: 'BUG',
+            feat: 'FEAT',
+            ann: 'ANN',
           }"
           :key="typeValue"
           :value="typeValue"
@@ -170,38 +182,30 @@ const submit = async () => {
             <div class="flex justify-between items-center w-full">
               <Label for="content">{{ formFields.content.label }}</Label>
               <span class="font-size-[13px] color-[var(--vp-c-text-3)]"
-                >{{ body.length }}/{{ formFields.content.maxLength }}</span
+                >{{ body.text.length }}/{{ formFields.content.maxLength }}</span
               >
             </div>
-            <Textarea
+
+            <ForumContentInputBox
               v-model="body"
-              id="content"
-              :placeholder="formFields.content.placeholder"
-              :maxlength="formFields.content.maxLength"
-              class="h-36 vp-border-input"
+              :file-limit="3"
+              :max-file-size="3"
+              :auto-upload="true"
+              :uploadTips="theme.forum.publish.form.upload.tip"
             />
           </div>
         </TabsContent>
       </Tabs>
 
       <DialogFooter class="mt-4 flex flex-wrap w-90%">
-        <p
-          class="text-sm color-[var(--vp-c-text-3)] w-full"
-          v-for="item in theme.forum.publish.tips"
-        >
-          * {{ item }}
-        </p>
-        <Button
-          class="mt-4"
-          :disabled="loading || title.length === 0"
-          @click="submit()"
-        >
+        <Button class="mt-4" :disabled="isDisabled" @click="submit()">
           {{
             loading
               ? theme.forum.publish.publishLoading
               : theme.ui.button.submit
           }}
         </Button>
+        {{ isDisabled }}
       </DialogFooter>
     </DialogContent>
   </Dialog>

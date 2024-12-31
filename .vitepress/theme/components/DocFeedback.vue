@@ -2,8 +2,8 @@
 import { useData, useRoute } from 'vitepress'
 import { computed, provide, ref, watch } from 'vue'
 
-import { sendDocFeedback } from '../apis/feedback/sendDocFeedback'
-import { usePageInfoStore } from '../stores/pageInfo'
+import { sendDocFeedback } from '@/apis/feedback/sendDocFeedback'
+import { usePageInfoStore } from '@/stores/usePageInfo'
 import DocFeedbackForm from './DocFeedbackForm.vue'
 
 const { theme } = useData()

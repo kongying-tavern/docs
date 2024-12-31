@@ -14,6 +14,7 @@
     <div class="comment-list slide-enter mt-8">
       <ForumTopicComment
         v-for="comment in [...userSubmittedComment, ...data]"
+        :id="'reply-' + comment.id"
         :key="comment.id"
         :comment-id="comment.id"
         :created-at="comment.createdAt"
@@ -66,16 +67,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, type Ref } from 'vue'
-import { ReloadIcon } from '@radix-icons/vue'
+import type ForumAPI from '@/apis/forum/api'
 import { issues } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
-import ForumTopicComment from '../ForumTopicComment.vue'
-import ForumCommentInputBox from '../ForumCommentInputBox.vue'
+import { ReloadIcon } from '@radix-icons/vue'
 import { useData } from 'vitepress'
+import { type Ref, computed, ref } from 'vue'
 import { useLoadMore } from '../../../composables/useLoadMore'
-import type ForumAPI from '@/apis/forum/api'
+import ForumCommentInputBox from '../ForumCommentInputBox.vue'
+import ForumTopicComment from '../ForumTopicComment.vue'
 
 const props = defineProps<{
   topicId: string

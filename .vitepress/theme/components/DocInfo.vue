@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { usePageInfoStore } from '@/stores/usePageInfo'
 import dayjs from 'dayjs'
 import { useData, useRoute } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { getPageInfo } from '../apis/feedback/getPageInfo'
-import { usePageInfoStore } from '@/stores/pageInfo'
 
 const router = useRoute()
 const { page, theme } = useData()

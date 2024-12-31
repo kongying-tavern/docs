@@ -43,8 +43,8 @@ shuffleMembers(membersPartnerData as Member[])
         <span class="nowrap">{{ theme.team.desc }}</span>
       </template>
       <template #action>
-        <Link href="https://github.com/orgs/kongying-tavern/teams"
-          >了解更多关于团队</Link
+        <VPLink href="https://github.com/orgs/kongying-tavern/teams"
+          >了解更多关于团队</VPLink
         >
       </template>
     </TeamHero>

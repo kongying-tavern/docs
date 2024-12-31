@@ -8,7 +8,7 @@ import {
   SelectItemText,
   useForwardProps,
 } from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
+import { type HTMLAttributes, computed } from 'vue'
 
 const props = defineProps<
   SelectItemProps & { class?: HTMLAttributes['class'] }

@@ -36,3 +36,13 @@ type SnakeCaseToCamelCase<S> = S extends `${infer Prefix}_${infer Rest}`
 type SnakeCaseKeysToCamelCase<T extends Record<string, unknown>> = {
   [K in keyof T as SnakeCaseToCamelCase<K>]: T[K]
 }
+
+type Flatten<T> = {
+  [K in keyof T]: T[K] extends object ? Flatten<T[K]> : T[K]
+}
+
+type FlattenWithKeys<T, Prefix extends string = ''> = {
+  [K in keyof T]: T[K] extends object
+    ? FlattenWithKeys<T[K], `${Prefix}${K & string}.`>
+    : { [P in `${Prefix}${K & string}`]: T[K] }
+}[keyof T]

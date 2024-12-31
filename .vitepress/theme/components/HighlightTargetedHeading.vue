@@ -2,7 +2,6 @@
 import { useEventListener } from '@vueuse/core'
 import { useRoute } from 'vitepress'
 import { nextTick, onMounted, watch } from 'vue'
-import Notifications from './ui/Notifications.vue'
 
 function handleHighlight() {
   if (!window || !window.location) return
@@ -44,7 +43,6 @@ useEventListener('hashchange', handleHighlight)
 
 <template>
   <slot />
-  <Notifications />
 </template>
 
 <style>
@@ -58,6 +56,7 @@ useEventListener('hashchange', handleHighlight)
     background-color: transparent;
     box-shadow: 0px 0px 0px 8px transparent;
   }
+
   10%,
   35% {
     color: var(--highlight-targeted-heading-color);
@@ -66,11 +65,13 @@ useEventListener('hashchange', handleHighlight)
     background-color: var(--highlight-targeted-heading-bg);
     box-shadow: 0px 0px 0px 8px var(--highlight-targeted-heading-bg);
   }
+
   99% {
     background-color: transparent;
     border-radius: 4px;
     box-shadow: 0px 0px 0px 8px transparent;
   }
+
   100% {
     border-radius: 0px;
     background-color: transparent;

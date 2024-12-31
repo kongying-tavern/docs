@@ -27,7 +27,8 @@
     "**/components/**/*.ts",
     "**/components/**/*.tsx",
     "**/components/**/*.vue",
-    "**/composables/**/*.ts"
+    "**/composables/**/*.ts",
+    "**/stores/**/*.ts"
   ],
   "exclude": ["**/node_modules/**", "**/dist/**"],
   "vueCompilerOptions": {

@@ -1,4 +1,7 @@
+import fs from 'fs'
+import path from 'path'
 import {
+  type Preset,
   defineConfig,
   presetAttributify,
   presetIcons,
@@ -6,11 +9,9 @@ import {
   presetUno,
   transformerDirectives,
   transformerVariantGroup,
-  type Preset,
 } from 'unocss'
-import { presetAnimations } from 'unocss-preset-animations'
-import path from 'path'
-import fs from 'fs'
+import presetAnimations from 'unocss-preset-animations'
+import { presetShadcn } from 'unocss-preset-shadcn'
 
 export default defineConfig({
   shortcuts: [
@@ -52,6 +53,7 @@ export default defineConfig({
     presetAttributify(),
     presetTypography(),
     presetAnimations() as Preset<object>,
+    presetShadcn(),
     presetIcons({
       scale: 1.2,
       warn: true,
@@ -132,6 +134,16 @@ export default defineConfig({
       'accordion-up': 'accordion-up 0.2s ease-out',
       'collapsible-down': 'collapsible-down 0.2s ease-in-out',
       'collapsible-up': 'collapsible-up 0.2s ease-in-out',
+    },
+  },
+  content: {
+    pipeline: {
+      include: [
+        // the default
+        /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
+        // include js/ts files
+        'src/**/*.{js,ts}',
+      ],
     },
   },
   transformers: [transformerDirectives(), transformerVariantGroup()],

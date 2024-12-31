@@ -43,7 +43,7 @@
           :tags="tags"
           :comment-id="commentId"
           :author-id="author.id"
-          :comments="commentCount"
+          :comment-count="commentCount"
           :comment-click-handler="commentClickHandler"
         >
         </TopicMeta>
@@ -55,12 +55,12 @@
 </template>
 
 <script setup lang="ts">
-import TopicMeta from './TopicMeta.vue'
-import { useUserInfoStore } from '@/stores'
-import { useData } from 'vitepress'
 import type ForumAPI from '@/apis/forum/api'
-import ForumRuleBadge from './ForumRuleBadge.vue'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useData } from 'vitepress'
 import { computed } from 'vue'
+import ForumRuleBadge from './ForumRuleBadge.vue'
+import TopicMeta from './TopicMeta.vue'
 
 const { theme } = useData()
 

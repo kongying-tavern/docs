@@ -2,9 +2,9 @@ import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 
+import type ForumAPI from '@/apis/forum/api'
 import { oauth } from '../apis/forum/gitee'
 import { camelCase } from '../utils'
-import type ForumAPI from '@/apis/forum/api'
 
 export interface LocalAuth {
   accessToken: string

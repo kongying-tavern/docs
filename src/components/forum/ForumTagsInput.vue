@@ -6,7 +6,11 @@
         :model-value="modelValue"
       >
         <div class="flex gap-2 flex-wrap items-center px-3">
-          <TagsInputItem v-for="item in modelValue" :key="item" :value="item">
+          <TagsInputItem
+            v-for="item in modelValue"
+            :key="item"
+            :value="getLocalizedTagName(item)"
+          >
             <TagsInputItemText />
             <TagsInputItemDelete />
           </TagsInputItem>
@@ -43,7 +47,7 @@
                 :disabled="isDisabled"
                 @select.prevent="handleSelect(tag)"
               >
-                {{ tag.label }}
+                {{ getLocalizedTagName(tag.label) }}
               </CommandItem>
             </CommandGroup>
           </CommandList>
@@ -55,34 +59,35 @@
 
 <script setup lang="ts">
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '@/components/ui/command'
+import {
   TagsInput,
   TagsInputInput,
   TagsInputItem,
   TagsInputItemDelete,
   TagsInputItemText,
 } from '@/components/ui/tags-input'
-import {
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-  Command,
-  CommandInput,
-  CommandSeparator,
-} from '@/components/ui/command'
 import { ComboboxRoot } from 'radix-vue'
 
+import { labels } from '@/apis/forum/gitee'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { labels } from '@/apis/forum/gitee'
-import { computed, onMounted, ref } from 'vue'
 import { useVModel } from '@vueuse/core'
+import { computed, onMounted, ref } from 'vue'
 
-import type { HTMLAttributes } from 'vue'
 import { useData } from 'vitepress'
+import type { HTMLAttributes } from 'vue'
+import { getTopicTagMap } from '../../composables/getTopicTagMap'
 
 const props = withDefaults(
   defineProps<{
@@ -94,15 +99,16 @@ const props = withDefaults(
     max: 5,
   },
 )
-const emits = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void
-}>()
+
+const emits = defineEmits<(e: 'update:modelValue', value: string[]) => void>()
 
 const modelValue = useVModel(props, 'modelValue', emits, {
   passive: true,
 })
 
 const { theme } = useData()
+const topicTagMap = getTopicTagMap()
+
 const allowTags = <{ value: string; label: string }[]>[]
 const searchTags = ref('')
 const isDisabled = computed(() =>
@@ -111,6 +117,7 @@ const isDisabled = computed(() =>
 const filteredTags = computed(() =>
   allowTags.filter((i) => !modelValue.value.includes(i.label)),
 )
+const getLocalizedTagName = (key: string) => topicTagMap.get(key) || key
 const handleSelect = (tag: { value: string; label: string }) => {
   if (typeof tag.value === 'string') {
     searchTags.value = ''

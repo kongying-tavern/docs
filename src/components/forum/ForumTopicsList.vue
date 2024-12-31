@@ -1,17 +1,7 @@
 <template>
   <div>
     <ul>
-      <!-- 基于审核和安全考虑，只展示发布超过两个小时的反馈 -->
-      <li
-        v-for="item in [
-          ...submittedTopic,
-          ...topics.filter(
-            (val) =>
-              Date.now() - new Date(val.createdAt).getTime() >=
-              1000 * 60 * 60 * 2,
-          ),
-        ]"
-      >
+      <li v-for="item in renderData">
         <ForumTopic
           :content="item.content"
           :title="item.title"
@@ -24,16 +14,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue'
 import ForumTopic from './ForumTopic.vue'
+import { useForumData } from '../../stores/useForumData'
 import type ForumAPI from '@/apis/forum/api'
+import { computed } from 'vue'
 
-const { dataLoader: fetchData } = defineProps<{
+const { dataLoader: fetchData, data } = defineProps<{
+  data?: ForumAPI.Topic[]
   dataLoader: () => Promise<any>
 }>()
 
 await fetchData()
 
-const topics = inject<ForumAPI.Topic[]>('topics')!
-const submittedTopic = inject<ForumAPI.Topic[]>('submittedTopic')!
+const renderData = computed(() => {
+  if (data) return data
+
+  const forumData = useForumData()
+
+  return [
+    ...forumData.userSubmittedTopic,
+    ...(forumData.filter === 'ALL' ? forumData.annData || [] : []),
+    // 基于审核和安全考虑，只展示发布超过两个小时的反馈
+    ...forumData.topics.filter(
+      (val) =>
+        Date.now() - new Date(val.createdAt).getTime() >= 1000 * 60 * 60 * 2,
+    ),
+  ]
+})
 </script>

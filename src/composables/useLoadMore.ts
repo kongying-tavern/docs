@@ -1,15 +1,15 @@
 import type ForumAPI from '@/apis/forum/api'
-import { computed, ref, watch, type Ref } from 'vue'
+import { type Ref, computed, ref, watch } from 'vue'
 import {
-  usePagination,
-  useRequestProvider,
   type PaginationOptions,
   type Service,
+  usePagination,
+  useRequestProvider,
 } from 'vue-request'
 
 export const useLoadMore = <R, P extends unknown[] = any>(
-  service: Service<ForumAPI.PaginationParams<R>, P>,
-  options?: PaginationOptions<ForumAPI.PaginationParams<R>, P>,
+  service: Service<ForumAPI.PaginatedResult<R>, P>,
+  options?: PaginationOptions<ForumAPI.PaginatedResult<R>, P>,
 ) => {
   useRequestProvider({
     loadingDelay: 400,
@@ -33,14 +33,13 @@ export const useLoadMore = <R, P extends unknown[] = any>(
     current,
     pageSize,
     error,
-    ...outherReturn
+    ...rest
   } = usePagination(service, options)
 
   const data = ref<R | []>([])
 
   const loadMore = () => {
-    console.log(totalPage.value, current.value, noMore.value)
-    if (noMore.value) return
+    if (noMore.value || error.value !== undefined) return
     current.value++
   }
 
@@ -49,7 +48,7 @@ export const useLoadMore = <R, P extends unknown[] = any>(
     current.value = 1
   }
 
-  const noMore = computed(() => totalPage.value === current.value)
+  const noMore = computed(() => current.value >= totalPage.value)
   const loadingMore = computed(() => {
     if (current.value === 1 && loadingMore.value) return false
     if (noMore.value) return false
@@ -88,6 +87,6 @@ export const useLoadMore = <R, P extends unknown[] = any>(
     mutate,
     initialData,
     noMore,
-    ...outherReturn,
+    ...rest,
   }
 }

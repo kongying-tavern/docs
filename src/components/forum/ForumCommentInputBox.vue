@@ -50,14 +50,15 @@
 
 <script setup lang="ts">
 import { issues } from '@/apis/forum/gitee'
-import { useUserInfoStore, useUserAuthStore } from '@/stores'
-import { useFocus, useTextareaAutosize } from '@vueuse/core'
+import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import { Button } from '@/components/ui/button'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 import { ReloadIcon } from '@radix-icons/vue'
+import { useFocus, useTextareaAutosize } from '@vueuse/core'
+import { useData } from 'vitepress'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
-import { useData } from 'vitepress'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 
 const { theme } = useData()
 
@@ -97,7 +98,9 @@ const submit = async () => {
     return toast.error(
       theme.value.forum.comment.commentFail + error.value?.message,
     )
+
   emit('comment:submit', data)
+
   input.value = ''
   location.hash = 'reply'
   toast.info(theme.value.forum.comment.commentSuccess)

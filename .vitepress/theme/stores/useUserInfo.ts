@@ -1,10 +1,10 @@
+import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { useUserAuthStore } from './userAuth'
-import { getUser } from '../apis/forum/gitee/user'
 import { computed, ref } from 'vue'
 import { issues, user } from '../apis/forum/gitee'
+import { getUser } from '../apis/forum/gitee/user'
 import { useNotificationStore } from './useNotification'
-import { useLocalStorage } from '@vueuse/core'
+import { useUserAuthStore } from './useUserAuth'
 
 import type ForumAPI from '@/apis/forum/api'
 

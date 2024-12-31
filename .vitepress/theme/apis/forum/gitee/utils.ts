@@ -1,5 +1,5 @@
-import { useUserInfoStore } from '@/stores'
-import { issues, SUPPORT_TOPIC_TYPE } from '.'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { STATE_TAGS, SUPPORT_TOPIC_TYPE, issues } from '.'
 import type ForumAPI from '../api'
 
 export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
@@ -32,7 +32,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     link: issue.html_url,
     commentCount: issue.comments,
     user: normalizeUser(issue.user),
-    tags: extractTags(issue.labels),
+    tags: excludeStateTags(issue.labels),
     type: type,
     state: issue.state,
     createdAt: issue.created_at,
@@ -55,6 +55,15 @@ export function normalizeComment(comment: GITEE.Comment): ForumAPI.Comment {
     replyID: comment.in_reply_to_id || null,
     reactions: null,
   }
+}
+
+export function setFilterTags(arr: string[] = []) {
+  const tags = ['WEB-FEEDBACK', ...arr]
+  return tags.join(',')
+}
+
+export function isUpperCase(str: string) {
+  return str.toLocaleUpperCase() === str
 }
 
 export function replaceAtMentions(text: string): string {
@@ -83,8 +92,11 @@ function getTopicTypeFromTitle(title: string): {
   return { type: null, title: title }
 }
 
-function extractTags(labels: GITEE.IssueLabel[]) {
-  return labels.map((val) => val.name)
+export function excludeStateTags(labels: GITEE.IssueLabel[]) {
+  return labels
+    .map((val) => val.name)
+    .filter((val) => isUpperCase(val))
+    .filter((val) => !STATE_TAGS.has(val))
 }
 
 function markdownToTextWithImages(markdown?: string): {
@@ -104,20 +116,6 @@ function markdownToTextWithImages(markdown?: string): {
   text = text.replace(/\s+/g, ' ').trim()
 
   return { text, images: images.length > 0 ? images : undefined }
-}
-
-export function pinnedAnn(list: ForumAPI.Topic[]) {
-  const userInfoStore = useUserInfoStore()
-
-  const isAnnouncement = (item: ForumAPI.Topic): boolean =>
-    item.type === 'ANN' && userInfoStore.isTeamMember(item.user.id)
-
-  return list.sort((a, b) => {
-    const aIsAnnouncement = isAnnouncement(a)
-    const bIsAnnouncement = isAnnouncement(b)
-
-    return (aIsAnnouncement ? -1 : 1) - (bIsAnnouncement ? -1 : 1)
-  })
 }
 
 export function extractOfficialAndAuthorComments(
@@ -143,6 +141,46 @@ export function extractOfficialAndAuthorComments(
   if (officialComment) comments.push(normalizeComment(officialComment))
 
   return comments.length > 0 ? comments : null
+}
+
+function filterLinks(str: string, whitelist: string[]): string {
+  const isWhitelisted = (text: string): boolean => {
+    return whitelist.some((regex: string) => new RegExp(regex).test(text))
+  }
+
+  const maskUrl = (url: string): string => {
+    return url.replace(
+      /([a-zA-Z]+:\/\/|\/\/)?([a-zA-Z0-9.-]+)([^\s]*)/,
+      (match, protocol = '', domain, path) => {
+        if (isWhitelisted(domain)) return match // 白名单域名保持不变
+        return `${protocol}${'*'.repeat(domain.length)}${'*'.repeat(path.length)}`
+      },
+    )
+  }
+
+  return (
+    str
+      // 处理 Markdown 图片链接
+      .replace(/!\[([^\]]*)\]\((https?:\/\/[^\)]+)\)/g, (match, alt, url) => {
+        const domainMatch = url.match(
+          /(?:[a-zA-Z]+:\/\/|\/\/)?([a-zA-Z0-9.-]+)/,
+        )
+        const domain = domainMatch ? domainMatch[1] : ''
+        const maskedAlt = isWhitelisted(alt) ? alt : '图片违规' // 替换 alt
+        const maskedUrl = maskUrl(url)
+        return `![${maskedAlt}](${maskedUrl})` // 替换 alt 和链接
+      })
+      // 处理 Markdown 普通链接
+      .replace(
+        /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+        (match, text, url) => `[${text}](${maskUrl(url)})`,
+      )
+      // 处理普通链接（支持无协议链接）
+      .replace(
+        /(^|[^!])((?:[a-zA-Z]+:\/\/|\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}([^\s]*))/g,
+        (match, prefix, url) => `${prefix}${maskUrl(url)}`,
+      )
+  )
 }
 
 export default {

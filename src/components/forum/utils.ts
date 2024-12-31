@@ -1,15 +1,17 @@
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 import 'dayjs/locale/zh-cn'
 import 'dayjs/locale/en'
 import 'dayjs/locale/ja'
-import { useUrlSearchParams } from '@vueuse/core'
 import type ForumAPI from '@/apis/forum/api'
+import { useQueryState } from '../../composables/useQueryState'
+import { catchError } from '@/apis/utils'
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
+
 const locales = {
   root: 'zh-cn',
   en: 'en',
@@ -66,12 +68,12 @@ export function replaceAtMentions(text: string): string {
 }
 
 export function getIssueNumberFromUrlSearchParamsWithData(): string {
-  const { number } = useUrlSearchParams('history')
-  if (typeof number !== 'string') location.href = '../error.html'
-  return String(number)
+  const params = useQueryState('history')
+  if (typeof params.number !== 'string') location.href = '../error.html'
+  return String(params.number)
 }
 
-export function setPageTitle(newTitle: string = '', prefix?: string): void {
+export function setPageTitle(newTitle = '', prefix?: string): void {
   const title = document.title.split('|')
   document.title = `${prefix ? `${prefix} -` : ''} ${newTitle} | ${title[1]}`
 }
@@ -138,4 +140,39 @@ export function getPageHeight() {
     document.body.clientHeight,
     document.documentElement.clientHeight,
   )
+}
+
+export const compressImage = async (
+  file: File,
+): Promise<[Error | undefined, File]> => {
+  try {
+    const { default: Compressor } = await import('compressorjs')
+
+    const [err, result] = await catchError(
+      new Promise((resolve, reject) => {
+        new Compressor(file, {
+          quality: 0.8,
+          success(result: File) {
+            resolve(result)
+          },
+          error(err: Error) {
+            reject([err, file])
+          },
+        })
+      }),
+    )
+    console.log(err, result)
+    return [err, result as File]
+  } catch (err) {
+    throw new Error('Failed to load Compressor.js')
+  }
+}
+
+export function convertMultipleToMarkdown(images: string[], altTexts = []) {
+  return images
+    .map((url, index) => {
+      const altText = altTexts[index] || 'image'
+      return `![${altText}](${url})`
+    })
+    .join('\n')
 }

@@ -26,7 +26,7 @@ const forum: CustomConfig['forum'] = {
       },
     },
     type: {
-      suggest: '提建议',
+      sug: '提建议',
       bug: '提漏洞',
       feat: '我想要',
       ann: '公告',
@@ -45,7 +45,7 @@ const forum: CustomConfig['forum'] = {
     logoutMsg: '登出 Gitte 账号',
     loginTips: '请登录后重试',
     loginToCheck: '请 %login 后查看 (・ω・)',
-    jumpToGiteeTips: '即将跳转到Gitee进行授权登录',
+    jumpToGiteeTips: '即将跳转到 Gitee 进行授权登录',
     loginSuccess: '登录成功',
     logoutSuccess: '已登出',
     loginFail: '登录失败',
@@ -108,6 +108,7 @@ const forum: CustomConfig['forum'] = {
     noMoreComment: '没有更多评论',
     loadingComment: '评论加载中...',
     reply: '回复',
+    commentsClosed: '评论关闭',
   },
   header: {
     sort: {
@@ -136,6 +137,23 @@ const forum: CustomConfig['forum'] = {
     },
   },
   publish: {
+    tags: {
+      issue: {
+        typos: '错别字',
+        display: '显示问题',
+        login: '登录问题',
+        performance: '性能问题',
+        translation: '翻译问题',
+        other: '其他问题',
+        pin: '点位问题',
+        docs: '文档问题',
+      },
+      platforms: {
+        all: '全平台可复现',
+        web: '网页端问题',
+        client: '客户端问题',
+      },
+    },
     title: '发布反馈',
     type: {
       sug: '提建议',
@@ -148,9 +166,6 @@ const forum: CustomConfig['forum'] = {
       maxTagsLimit: '已达到最大可选标签数量',
       noResultsFound: '没有符合的结果',
     },
-    tips: [
-      '因Gitee接口限制暂无法提供图片在线上传，如需上传相关截图可填写图片链接或在提交后跳转Gitee进行上传',
-    ],
     publishSuccess: '反馈上传成功：',
     publishFail: '反馈上传失败：',
     publishLoading: '反馈提交中',
@@ -166,6 +181,11 @@ const forum: CustomConfig['forum'] = {
       content: {
         text: '反馈内容',
         placeholder: '',
+      },
+      upload: {
+        tip: '请上传相关错误截图或报错信息最多 %range 张，最大不超过 %size MB',
+        fail: '%filename 上传失败',
+        violation: '图片违规！请勿上传任何与反馈无关的图片',
       },
     },
   },

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { DrawerRootEmits, DrawerRootProps } from 'vaul-vue'
 import { useForwardPropsEmits } from 'radix-vue'
+import type { DrawerRootEmits, DrawerRootProps } from 'vaul-vue'
 import { DrawerRoot } from 'vaul-vue'
 
 const props = withDefaults(defineProps<DrawerRootProps>(), {

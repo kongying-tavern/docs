@@ -1,5 +1,5 @@
-import { fetcher, GITEE_CLIENT_ID, GITEE_CLIENT_SECRET } from '.'
-import { catchError } from '../../utils'
+import { GITEE_CLIENT_ID, GITEE_CLIENT_SECRET, fetcher } from '.'
+import { catchError, removeTrailingSlash } from '../../utils'
 import type ForumAPI from '../api'
 import { normalizeAuth } from './utils'
 
@@ -11,7 +11,8 @@ export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
           code,
           grant_type: 'authorization_code',
           client_id: GITEE_CLIENT_ID,
-          redirect_uri: location.origin + location.pathname,
+          redirect_uri:
+            location.origin + removeTrailingSlash(location.pathname),
         },
         json: {
           client_secret: GITEE_CLIENT_SECRET,
@@ -51,4 +52,4 @@ export const refreshToken = async (
 }
 
 export const redirectAuth = () =>
-  (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_CLIENT_ID}&redirect_uri=${location.origin + location.pathname}&response_type=code`)
+  (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_CLIENT_ID}&redirect_uri=${location.origin + removeTrailingSlash(location.pathname)}&response_type=code`)

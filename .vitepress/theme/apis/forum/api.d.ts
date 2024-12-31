@@ -79,12 +79,23 @@ export namespace ForumAPI {
     current: number
     pageSize: number
     sort: string
+    filter?: string[]
   }
 
-  type PaginationParams<T> = {
+  export type SortMethod = 'created' | 'updated_at'
+
+  type PaginatedResult<T> = PaginationParams & {
     data: T
+  }
+
+  type PaginationParams = {
     total: number
     totalPage: number
+  }
+
+  type Image = {
+    link: string
+    fileSize: number
   }
 }
 

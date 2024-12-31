@@ -9,9 +9,9 @@
             @click="notification.click && notification.click(notification)"
             @close="toast.remove(notification.id)"
           >
-            <template v-for="(_, name) in $slots" #[name]="slotData">
+            <!--<template v-for="(_, name) in $slots" #[name]="slotData">
               <slot :name="name" v-bind="slotData" />
-            </template>
+            </template>-->
           </Notification>
         </div>
       </div>
@@ -20,9 +20,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watchEffect } from 'vue'
-import { useNotificationStore } from '../../stores'
 import { twJoin, twMerge } from 'tailwind-merge'
+import { computed, ref, watchEffect } from 'vue'
+import { useNotificationStore } from '@/stores/useNotification'
 import { UI } from './config'
 
 import type { PropType } from 'vue'

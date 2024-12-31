@@ -6,7 +6,7 @@ import {
   type TagsInputRootProps,
   useForwardPropsEmits,
 } from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
+import { type HTMLAttributes, computed } from 'vue'
 
 const props = defineProps<
   TagsInputRootProps & { class?: HTMLAttributes['class'] }

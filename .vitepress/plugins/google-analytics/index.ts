@@ -34,7 +34,7 @@ const mountGoogleAnalytics = (id: string, debug: boolean) => {
   // insert gtag snippet
   window.dataLayer = window.dataLayer || []
   // the gtag function must use `arguments` object to forward parameters
-  window.gtag = function () {
+  window.gtag = () => {
     dataLayer.push(arguments)
   }
   gtag('js', new Date())

@@ -139,14 +139,6 @@ textarea {
   animation: none !important;
 }
 
-.medium-zoom-overlay {
-  z-index: 999999999999;
-}
-
-.medium-zoom-image {
-  z-index: 999999999999;
-}
-
 .prev-next {
   margin-top: 1em;
 }

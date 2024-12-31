@@ -1,13 +1,16 @@
-// @unocss-includes
+import { useMemoize } from '@vueuse/core'
+import { useNotificationStore } from '@/stores/useNotification'
 import ky, { type KyResponse } from 'ky'
-import * as oauth from './oauth'
-import * as issues from './issues'
-import * as user from './user'
-import * as labels from './labels'
-import { catchError } from '../../utils'
-import { useNotificationStore } from '@/stores'
+import type { Hooks } from 'ky'
+import { catchError, getHeader } from '../../utils'
 
+import * as issues from './issues'
+import * as labels from './labels'
+import * as oauth from './oauth'
+import * as user from './user'
 import type ForumAPI from '../api'
+
+class HTTPError extends Error {}
 
 export const PREFIX_URL = 'https://gitee.com/'
 export const GITEE_CLIENT_ID =
@@ -17,7 +20,17 @@ export const GITEE_CLIENT_SECRET =
 export const GITEE_OWNER = 'KYJGYSDT'
 export const GITEE_REPO = 'Feedback'
 export const SUPPORT_TOPIC_TYPE = ['BUG', 'FEAT', 'SUG', 'ANN']
-export const BASIC_FILTER_TAG = 'good-issues'
+export const STATE_TAGS = new Set([
+  'WEB-FEEDBACK',
+  'GOOD-ISSUE',
+  'FEAT',
+  'SUG',
+  'BUG',
+  'ANN',
+  'ZH',
+  'EN',
+  'JA',
+])
 export const PaginationPageSize = 20
 
 export const fetcher = ky.create({
@@ -25,15 +38,13 @@ export const fetcher = ky.create({
   timeout: 5000,
   retry: 1,
   hooks: {
-    beforeRequest: [(request) => {}],
-    afterResponse: [async (_request, _options, response) => {}],
     beforeError: [
       async (error) => {
         const { response } = error
         if (response && response.body) {
           // @ts-ignore
           error.message = `${response.body?.message || (await response.text())}`
-          error.name = `GiteeApiError - ${response.status}`
+          error.name = `[GITEE_API_ERROR] - ${response.status}`
         }
         return error
       },
@@ -41,57 +52,136 @@ export const fetcher = ky.create({
   },
 })
 
-// TODO
-// const httpErrorCode = {
-//   '404': () => {
-
-//   },
-//   '403': () => {
-
-//   },
-//   '400': () => {
-
-//   },
-//   '500': () => {
-
-//   }
-// }
-
-class HTTPError extends Error {}
-
-const apiCall = async <T>(
-  method: 'get' | 'post' | 'patch' | 'delete',
-  endpoint: string,
-  params?: Record<string, any>,
-  body?: any,
-): Promise<KyResponse<Promise<T>>> => {
-  const notification = useNotificationStore()
-  const url = `api/v5/${endpoint}`
-
-  let token = (params ? params['access_token'] : body?.['access_token']) ?? null
-
-  if (token === 'null') return Promise.reject(new Error('Not available token'))
-
-  const [error, response] = await catchError(
-    fetcher[method]<Promise<T>>(url, {
-      searchParams: params,
-      ...(method === 'post' && { json: body }),
-    }),
-  )
-
-  if (error) {
-    notification.add({
-      title: error.name,
-      icon: 'i-lucide-badge-x bg-red',
-      description: `API Error at ${method}:${url}: ${error.message}`,
-    })
-    return Promise.reject(
-      new HTTPError(`API Error at ${url}: ${error.message}`),
-    )
-  }
-
-  // TODO: EXPORT ERROR
-  return response
+export enum ApiErrorType {
+  RateLimitExceeded = 'Rate Limit Exceeded',
+  MissingPaginationParams = 'Missing Pagination Params',
+  ApiError = 'Gitee Api Error',
 }
 
-export { oauth, user, issues, apiCall, labels }
+export type HttpMethod = 'get' | 'post' | 'patch' | 'delete'
+
+export type ApiCallParams = {
+  params?: Record<string, any>
+  body?: Record<string, any>
+  hooks?: Hooks
+  useCache?: boolean
+}
+
+export type ApiCallResult<T> = Promise<
+  [T, undefined] | [T, ForumAPI.PaginationParams]
+>
+
+const extractPagination = (
+  params?: Record<string, any>,
+  body?: Record<string, any>,
+): number | null => {
+  return (params ? params['page'] : body?.['page']) ?? null
+}
+
+const getGiteeApiPaginationParams = (
+  response: KyResponse,
+): [ForumAPI.PaginationParams, undefined] | [undefined, Error] => {
+  const [data, error] = getHeader(response, ['Total_count', 'Total_page'])
+
+  if (error) {
+    return [
+      undefined,
+      new HTTPError(
+        `${ApiErrorType.MissingPaginationParams}: ${error.message}`,
+      ),
+    ]
+  }
+
+  return [
+    {
+      total: Number(data[0]),
+      totalPage: Number(data[1]),
+    },
+    undefined,
+  ]
+}
+
+const cachedApiCall = useMemoize(
+  async <T>(
+    method: HttpMethod,
+    endpoint: string,
+    { params, body, hooks }: ApiCallParams,
+  ): ApiCallResult<T> => {
+    const notification = useNotificationStore()
+    const url = `api/v5/${endpoint}`
+
+    const [error, response] = await catchError(
+      fetcher[method]<Promise<T>>(url, {
+        searchParams: params,
+        hooks,
+        ...(method === 'post' && { json: body }),
+      }),
+    )
+
+    if (error) {
+      notification.add({
+        title: error.name,
+        icon: 'i-lucide-badge-x bg-red',
+        description: `API Error at ${method.toUpperCase()}: ${url} - ${error.message}`,
+      })
+      return Promise.reject(
+        new HTTPError(`${ApiErrorType.ApiError} at ${url}: ${error.message}`),
+      )
+    }
+
+    //  如果参数包含 page，说明是分页请求，从请求头提取并中返回分页信息
+    if (extractPagination(params, body) !== null) {
+      const [paginationParams, error] = getGiteeApiPaginationParams(response)
+
+      if (error) return Promise.reject(error)
+
+      return [await response.json(), paginationParams]
+    }
+
+    return [await response.json(), undefined]
+  },
+  {
+    getKey: (
+      method: HttpMethod,
+      endpoint: string,
+      { params, body }: ApiCallParams,
+    ) => JSON.stringify({ method, endpoint, params, body }),
+  },
+)
+
+/**
+ * 通用 API 调用函数，支持可选缓存。
+ * @param method 请求方法。
+ * @param endpoint 请求路径。
+ * @param options 请求参数，包括 params、body 和 useCache。
+ */
+const apiCall = async <T>(
+  method: HttpMethod,
+  endpoint: string,
+  options: ApiCallParams = {},
+): ApiCallResult<T> => {
+  const { useCache = true, ...rest } = options
+
+  return useCache
+    ? (cachedApiCall(method, endpoint, rest) as ApiCallResult<T>)
+    : (cachedApiCall.load(method, endpoint, rest) as ApiCallResult<T>)
+}
+
+/**
+ * 清空所有缓存。
+ */
+const clearApiCache = () => cachedApiCall.clear()
+
+/**
+ * 删除特定请求的缓存。
+ * @param method 请求方法。
+ * @param endpoint 请求路径。
+ * @param options 请求参数，包括 params 和 body。
+ */
+const deleteApiCache = (
+  method: HttpMethod,
+  endpoint: string,
+  options: Omit<ApiCallParams, 'useCache'>,
+) => cachedApiCall.delete(method, endpoint, options)
+
+export { oauth, user, issues, apiCall, labels, clearApiCache, deleteApiCache }

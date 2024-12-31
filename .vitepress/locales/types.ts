@@ -112,7 +112,7 @@ export interface CustomConfig {
         progressing: string
       }
       type: {
-        suggest: string
+        sug: string
         bug: string
         feat: string
         ann?: string
@@ -192,6 +192,7 @@ export interface CustomConfig {
       noComment: string
       loadingComment: string
       reply: string
+      commentsClosed: string
     }
     header: {
       sort: {
@@ -222,6 +223,23 @@ export interface CustomConfig {
       publishSuccess: string
       publishFail: string
       publishLoading: string
+      tags: {
+        issue: {
+          typos: string
+          display: string
+          login: string
+          performance: string
+          translation: string
+          other: string
+          pin: string
+          docs: string
+        }
+        platforms: {
+          all: string
+          web: string
+          client: string
+        }
+      }
       type: {
         sug: string
         bug: string
@@ -246,8 +264,12 @@ export interface CustomConfig {
           text: string
           placeholder: string
         }
+        upload: {
+          tip: string
+          fail: string
+          violation: string
+        }
       }
-      tips: string[]
     }
   }
 }

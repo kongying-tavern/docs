@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import UserAvatar from './UserAvatar.vue'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useData } from 'vitepress'
+import { ref } from 'vue'
 import LoginAlertDialog from './LoginAlertDialog.vue'
 import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
-import { ref } from 'vue'
-import { useData } from 'vitepress'
-import { useUserInfoStore } from '@/stores'
+import UserAvatar from './UserAvatar.vue'
 
 const { theme } = useData()
 
@@ -36,7 +36,7 @@ const list: { title: string; href: string; icon: string }[] = [
     >
       <button
         type="button"
-        class="button avatar"
+        class="button avatar focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0 ring-offset-background"
         aria-haspopup="true"
         :aria-expanded="open"
         @click="open = !open"
