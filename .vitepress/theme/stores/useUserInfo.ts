@@ -27,7 +27,8 @@ export const useUserInfoStore = defineStore('user-info', () => {
   }
   const isTeamMember = (id = info.value?.id) =>
     Boolean(teamMembersID.value?.list!.find((val) => id === val))
-  const setTeamMembersID = async () => {
+  const refreshTeamMembersID = async () => {
+    if (import.meta.env.SSR) return
     if (
       !teamMembersID.value.updatedAt ||
       Date.now() - teamMembersID.value?.updatedAt! > 1000 * 60 * 60 * 24
@@ -44,7 +45,7 @@ export const useUserInfoStore = defineStore('user-info', () => {
   const clearUserInfo = () => (info.value = undefined)
 
   refreshUserInfo()
-  setTeamMembersID()
+  refreshTeamMembersID()
 
   return {
     // states

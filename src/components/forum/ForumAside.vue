@@ -36,10 +36,7 @@
       >
         <img
           class="mr-2 w-23 h-13"
-          :src="
-            item.cover ||
-            'https://developer.huawei.com/consumer/cn/forum/assets/images/home/selectArtilcs.png'
-          "
+          :src="withBase(item.cover || '/imgs/common/selectArtilcs.png')"
           :alt="item.title"
         />
         <VPLink
@@ -108,7 +105,7 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 import ForumPublishTopicDialog from './ForumPublishTopicDialog.vue'
 import { flattenWithTags, getPageHeight, getRandomElements } from './utils'
 
