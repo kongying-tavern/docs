@@ -24,8 +24,6 @@ export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
       .json(),
   )
 
-  history.pushState({}, '', location.href.replace(location.search, ''))
-
   if (error) throw new Error(`Can not get token: ${error.message}`)
   return normalizeAuth(await data)
 }

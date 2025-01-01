@@ -3,6 +3,7 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
+import { removeQueryParam } from '@/utils'
 
 const useLogin = () => {
   const userInfo = useUserInfoStore()
@@ -76,7 +77,13 @@ const useLogin = () => {
   }
 
   function getAuthCode() {
-    return location.search.match(/code=[^&]+/)?.[0]?.split('=')?.[1]
+    if (!location.search.includes('code')) return null
+    const code = location.search.match(/code=[^&]+/)?.[0]?.split('=')?.[1]
+
+    console.log('AuthCode:', code)
+
+    removeQueryParam('code')
+    return code
   }
 
   return {

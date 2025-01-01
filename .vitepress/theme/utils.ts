@@ -377,3 +377,11 @@ export const loadFont = (family: string, url: string) => {
       console.error(`Failed to load font ${family}: ${err}`)
     })
 }
+
+export function removeQueryParam(param: string) {
+  const urlObj = new URL(location.href)
+  urlObj.searchParams.delete(param)
+  const url = urlObj.toString()
+  window.history.replaceState({}, '', url)
+  return url
+}
