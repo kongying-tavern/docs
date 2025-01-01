@@ -171,10 +171,13 @@ export const getTopicNumber = () => {
 }
 
 export function convertMultipleToMarkdown(images: string[], altTexts = []) {
-  return images
-    .map((url, index) => {
-      const altText = altTexts[index] || ''
-      return `![${altText}](${url})`
-    })
-    .join('\n')
+  return (
+    '\n' +
+    images
+      .map((url, index) => {
+        const altText = altTexts[index] || ''
+        return `![${altText}](${url})`
+      })
+      .join('\n')
+  )
 }

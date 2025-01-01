@@ -18,6 +18,9 @@ import ForumTopic from './ForumTopic.vue'
 import { useForumData } from '../../stores/useForumData'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+
+const userInfo = useUserInfoStore()
 
 const { dataLoader: fetchData, data } = defineProps<{
   data?: ForumAPI.Topic[]
@@ -34,10 +37,11 @@ const renderData = computed(() => {
   return [
     ...forumData.userSubmittedTopic,
     ...(forumData.filter === 'ALL' ? forumData.annData || [] : []),
-    // 基于审核和安全考虑，只展示发布超过两个小时的反馈
+    // 基于审核和安全考虑，普通用户只展示发布超过两个小时的反馈
     ...forumData.topics.filter(
       (val) =>
-        Date.now() - new Date(val.createdAt).getTime() >= 1000 * 60 * 60 * 2,
+        Date.now() - new Date(val.createdAt).getTime() >= 1000 * 60 * 60 * 2 ||
+        userInfo.isTeamMember(val.user.id),
     ),
   ]
 })

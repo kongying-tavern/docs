@@ -28,8 +28,8 @@
 
           <article
             id="content"
-            class="font-size-4 mt-3.5 opacity-99 overflow-hidden"
-            v-html="sanitizeHtml(markdownit().render(data.content.text))"
+            class="font-size-4 line-height-6 mt-3.5 opacity-99 overflow-hidden whitespace-pre-wrap"
+            v-html="sanitizeHtml(markdownit().render(data.contentRaw))"
           ></article>
 
           <ForumTagList class="my-2" :data="data?.tags" />

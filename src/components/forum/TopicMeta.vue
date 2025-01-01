@@ -44,11 +44,11 @@
         </DropdownMenuContent>
       </DropdownMenu>
       <component
-        class="avatar-image"
-        :is="commentClickHandler ? 'button' : 'a'"
-        @click="commentClickHandler"
+        :class="isDisabled ? 'cursor-default' : ''"
+        :is="isDisabled ? 'span' : commentClickHandler ? 'button' : 'a'"
         :href="isHandler ? '' : topicLink"
-        target="_black"
+        :target="topicId"
+        @click="commentClickHandler"
       >
         <span class="i-lucide:message-circle icon-btn"></span>
         {{ str }}
@@ -97,8 +97,10 @@ const isHandler = computed(
   () => typeof props.commentClickHandler === 'function',
 )
 
+const isDisabled = computed(() => props.commentId === -1)
+
 const topicLink = computed(() => {
-  if (props.topicId == -1) return '#'
+  if (props.topicId == -1 || props.commentId == -1) return ''
   return withBase(
     `./topic?number=${props.topicId}#reply${props.commentId ? '-' + props.commentId : ''}`,
   )
@@ -106,6 +108,7 @@ const topicLink = computed(() => {
 
 const str = computed(() => {
   if (props.commentId == -1) return theme.value.forum.comment.commentsClosed
+  if (props.commentCount == -1) return theme.value.forum.comment.reply
   if (props.commentCount && props.commentCount > 0) return props.commentCount
   return theme.value.forum.comment.comment
 })
@@ -139,3 +142,11 @@ const closeTopic = async () => {
   toast.error(theme.value.forum.topic.menu.closeFeedback.fail)
 }
 </script>
+
+<style lang="css">
+.topic-info-list {
+  display: flex;
+  align-items: center;
+  cursor: default;
+}
+</style>

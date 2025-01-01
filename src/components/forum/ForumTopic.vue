@@ -24,11 +24,10 @@
         <a @click="sessionCacheRedirect()" target="_blank">
           <!-- 非公告类型限制在三行以内 -->
           <article
-            class="font-size-4 mt-3.5 pr-4 opacity-99 max-h-30 overflow-hidden"
-            :class="isAnn ? '' : 'line-clamp-3'"
-          >
-            {{ topic.content.text }}
-          </article>
+            class="font-size-4 mt-3.5 pr-4 opacity-99 overflow-hidden"
+            :class="isAnn ? 'whitespace-pre-wrap' : 'line-clamp-3 max-h-30'"
+            v-text="topic.contentRaw"
+          ></article>
         </a>
 
         <div
@@ -60,7 +59,7 @@
         <ForumTopicComment
           class="bg-[var(--vp-c-bg-soft)] px-4 first:mt-4"
           v-for="comment in topic.importantComments.slice(0, 1)"
-          :comment-count="topic.commentCount"
+          :comment-count="-1"
           :comment-id="comment.id"
           :created-at="comment.createdAt"
           :topic-author-id="topic.user.id"

@@ -12,6 +12,8 @@ import { watchOnce } from '@vueuse/core'
 import { convertMultipleToMarkdown } from '../components/forum/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 
+const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG'])
+
 export const useForumData = defineStore('forum-data', () => {
   const userSubmittedTopic = ref<ForumAPI.Topic[]>([])
   const topics = ref<ForumAPI.Topic[]>([])
@@ -22,7 +24,7 @@ export const useForumData = defineStore('forum-data', () => {
   }>({
     sort: 'created',
     page: 1,
-    filter: 'ALL',
+    filter: getValidFilter() || 'ALL',
   })
 
   const { theme, lang } = useData()
@@ -107,9 +109,7 @@ export const useForumData = defineStore('forum-data', () => {
       const bodyText = () => {
         if (!isArray(body.content?.images)) return body.content.text
         return (
-          body.content.text +
-          '/n' +
-          convertMultipleToMarkdown(body.content.images)
+          body.content.text + convertMultipleToMarkdown(body.content.images)
         )
       }
 
@@ -159,6 +159,11 @@ export const useForumData = defineStore('forum-data', () => {
     if (topics.value.length === 0) return 'No Data'
     if (noMore.value) return theme.value.forum.noMore
   })
+
+  function getValidFilter(value?: string): FilterType | null {
+    const filter = value || location.hash.slice(1)
+    return filterSet.has(filter) ? (filter as FilterType) : null
+  }
 
   watch(
     loading,

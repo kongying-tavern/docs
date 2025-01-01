@@ -59,6 +59,7 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { flattenWithTags } from './utils'
 import { useForumData, type FilterType } from '../../stores/useForumData'
 import { storeToRefs } from 'pinia'
+import { load } from 'js-yaml'
 
 const { theme } = useData()
 
@@ -88,9 +89,9 @@ const menuItems: {
   },
 ]
 
-const activeItem = ref<FilterType>('ALL')
+const { filter, loading } = storeToRefs(useForumData())
 
-const { filter } = storeToRefs(useForumData())
+const activeItem = ref<FilterType>(filter.value)
 
 const setActive = (id: FilterType) => {
   activeItem.value = id
@@ -100,7 +101,7 @@ const setActive = (id: FilterType) => {
 
 const updateFilterType = () => {
   const hash = window.location.hash.slice(1)
-
+  if (loading.value) return
   if (!hash) return (activeItem.value = 'ALL')
 
   const item = menuItems.find((item) => item.hash === hash)

@@ -43,7 +43,7 @@
               <CommandItem
                 v-for="tag in filteredTags"
                 :key="tag"
-                :value="tag"
+                :value="getLocalizedTagName(tag)"
                 :disabled="isDisabled"
                 @select.prevent="handleSelect(tag)"
               >
