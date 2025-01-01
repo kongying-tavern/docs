@@ -16,7 +16,7 @@ import { VisuallyHidden } from 'radix-vue'
 import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
 import ForumTagsInput from './ForumTagsInput.vue'
-
+import { ReloadIcon } from '@radix-icons/vue'
 import type ForumAPI from '@/apis/forum/api'
 import { useHashChecker } from '@/hooks/useHashChecker'
 import ForumContentInputBox from './ForumContentInputBox.vue'
@@ -84,14 +84,7 @@ const submit = async () => {
     if (val.status === 'uploading' || !val.url) return
     uploadedImages.value.push(val.url)
   })
-  console.log(type.value, {
-    title: title.value,
-    tags: tags.value,
-    content: {
-      text: body.value.text,
-      images: uploadedImages.value,
-    },
-  })
+
   await runAsync(type.value, {
     title: title.value,
     tags: tags.value,
@@ -100,6 +93,7 @@ const submit = async () => {
       images: uploadedImages.value,
     },
   })
+
   open.value = false
 }
 </script>
@@ -198,14 +192,14 @@ const submit = async () => {
       </Tabs>
 
       <DialogFooter class="mt-4 flex flex-wrap w-90%">
-        <Button class="mt-4" :disabled="isDisabled" @click="submit()">
+        <Button :disabled="isDisabled" @click="submit()">
+          <ReloadIcon class="w-4 h-4 mr-2 animate-spin" v-if="loading" />
           {{
             loading
               ? theme.forum.publish.publishLoading
               : theme.ui.button.submit
           }}
         </Button>
-        {{ isDisabled }}
       </DialogFooter>
     </DialogContent>
   </Dialog>

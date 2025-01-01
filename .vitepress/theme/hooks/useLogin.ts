@@ -26,8 +26,9 @@ const useLogin = () => {
     if (getLoginStatus() || !authCode) return
 
     userAuth.setAuth(await oauth.getToken(authCode))
-    userInfo.refreshUserInfo()
+    await userInfo.refreshUserInfo()
     userAuth.ensureTokenRefreshMission()
+    afterLogin()
   }
 
   function signup() {
@@ -36,18 +37,19 @@ const useLogin = () => {
 
   function login(credentials: CredentialsParams) {
     const result = LoginMethodsMap[credentials.method]()
-    afterLogin()
     return result
   }
 
   function afterLogin() {
-    toast.success(theme.value.forum.auth.loginSuccess)
+    if (getLoginStatus()) {
+      toast.success(theme.value.forum.auth.loginSuccess)
+    } else {
+      toast.info(theme.value.forum.auth.loginFail)
+    }
   }
 
   function oauthLogin() {
-    if (!getLoginStatus && location.hash !== 'login-alert')
-      return (location.hash = 'login-alert')
-    oauth.redirectAuth()
+    if (location.hash !== 'login-alert') return (location.hash = 'login-alert')
   }
 
   function passwordLogin() {

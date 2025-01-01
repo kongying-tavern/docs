@@ -122,8 +122,9 @@ const cachedApiCall = useMemoize(
       notification.add({
         title: error.name,
         icon: 'i-lucide-badge-x bg-red',
-        description: `API Error at ${method.toUpperCase()}: ${url} - ${error.message}`,
+        description: `Gitee API Error at ${method.toUpperCase()}: ${error.message}`,
       })
+
       return Promise.reject(
         new HTTPError(`${ApiErrorType.ApiError} at ${url}: ${error.message}`),
       )

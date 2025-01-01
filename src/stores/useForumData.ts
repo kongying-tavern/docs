@@ -130,11 +130,11 @@ export const useForumData = defineStore('forum-data', () => {
     watch(submitLoading, () => {
       if (!submittedTopic.value) return
       userSubmittedTopic.value.unshift(submittedTopic.value)
-      toast(theme.value.forum.publish.publishSuccess)
+      toast.success(theme.value.forum.publish.publishSuccess)
     })
 
     watch(submitError, () => {
-      toast(theme.value.forum.publish.publishFail)
+      toast.info(theme.value.forum.publish.publishFail)
     })
 
     return {

@@ -112,9 +112,9 @@ const forum: CustomConfig['forum'] = {
   },
   header: {
     sort: {
-      created: '创建日期',
+      created: '最近创建',
       updated: '最近更新',
-      notesCount: '评论数',
+      notesCount: '评论数正序',
     },
     search: {
       placeholder: '搜索反馈',

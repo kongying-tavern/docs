@@ -40,8 +40,6 @@
               <template v-if="maxFileSize" #size>
                 <span>{{ maxFileSize }}</span>
               </template>
-              <span v-if="fileLimit" class="font-size-3 c-[var(--vp-c-text-2)]">
-              </span>
             </DynamicTextReplacer>
           </template>
         </PhotoWall>

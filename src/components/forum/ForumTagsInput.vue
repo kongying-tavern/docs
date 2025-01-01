@@ -12,7 +12,7 @@
             :value="getLocalizedTagName(item)"
           >
             <TagsInputItemText />
-            <TagsInputItemDelete />
+            <TagsInputItemDelete @click="handDelete(item)" />
           </TagsInputItem>
         </div>
         <TagsInputInput
@@ -30,7 +30,7 @@
             :placeholder="
               isDisabled
                 ? theme.forum.publish.tagsInput.maxTagsLimit
-                : theme.forum.publish.tagsInput.searchTags
+                : theme.forum.publish.tagsInput.searchTerm
             "
           >
           </CommandInput>
@@ -42,12 +42,12 @@
             <CommandGroup heading="Suggestions">
               <CommandItem
                 v-for="tag in filteredTags"
-                :key="tag.value"
-                :value="tag.label"
+                :key="tag"
+                :value="tag"
                 :disabled="isDisabled"
                 @select.prevent="handleSelect(tag)"
               >
-                {{ getLocalizedTagName(tag.label) }}
+                {{ getLocalizedTagName(tag) }}
               </CommandItem>
             </CommandGroup>
           </CommandList>
@@ -109,31 +109,32 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 const { theme } = useData()
 const topicTagMap = getTopicTagMap()
 
-const allowTags = <{ value: string; label: string }[]>[]
-const searchTags = ref('')
+const tags = <string[]>[]
+const searchTerm = ref('')
+
 const isDisabled = computed(() =>
   modelValue.value.length >= props.max ? true : false,
 )
 const filteredTags = computed(() =>
-  allowTags.filter((i) => !modelValue.value.includes(i.label)),
+  tags.filter((i) => !modelValue.value.includes(i)),
 )
-const getLocalizedTagName = (key: string) => topicTagMap.get(key) || key
-const handleSelect = (tag: { value: string; label: string }) => {
-  if (typeof tag.value === 'string') {
-    searchTags.value = ''
-    modelValue.value.push(tag.value)
-  }
 
-  if (filteredTags.value.length === 0) return
+const getLocalizedTagName = (key: string) => topicTagMap.get(key) || key
+
+const handleSelect = (tag: string) => {
+  if (typeof tag === 'string') {
+    searchTerm.value = ''
+    modelValue.value.push(tag)
+  }
+}
+
+const handDelete = (tag: string) => {
+  modelValue.value = modelValue.value.filter((i) => i !== tag)
 }
 
 onMounted(async () => {
   const data = await labels.getAllLabelsName()
 
-  data.map((val) => {
-    if (['good-issue', 'test'].find((item) => item === val)) return
-
-    allowTags.push({ value: val, label: val })
-  })
+  data.map((val) => tags.push(val))
 })
 </script>

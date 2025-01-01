@@ -1,11 +1,21 @@
 <template>
   <ClientOnly>
-    <component :is="tag" v-html="formattedString" v-bind="$slots"> </component>
+    <component
+      :is="tag"
+      v-html="formattedString"
+      v-bind="$slots"
+      :class="class"
+    >
+    </component>
   </ClientOnly>
 </template>
 
 <script setup lang="ts">
 import { computed, useSlots } from 'vue'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = defineProps({
   data: {
@@ -14,6 +24,11 @@ const props = defineProps({
   tag: {
     type: String,
     default: 'p',
+  },
+  class: {
+    type: String,
+    default:
+      'font-size-3.5 line-height-[24px] color-[--vp-c-text-3] break-keep',
   },
 })
 
