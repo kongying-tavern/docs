@@ -49,12 +49,12 @@ const nav: DefaultTheme.NavItem[] = [
     items: [
       {
         text: 'フィートバック',
-        link: 'https://support.qq.com/products/321980',
+        link: '/feedback/',
       },
-      {
-        text: 'ご要望',
-        link: 'https://support.qq.com/products/321980/topic-detail/2016/',
-      },
+      // {
+      //   text: 'ご要望',
+      //   link: 'https://support.qq.com/products/321980/topic-detail/2016/',
+      // },
     ],
   },
   {

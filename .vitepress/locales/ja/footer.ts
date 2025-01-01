@@ -48,12 +48,12 @@ const footer: CustomConfig['footer'] = {
         },
         {
           text: 'フィードバック',
-          link: 'https://support.qq.com/products/321980',
+          link: '/feedback/',
         },
-        {
-          text: '新機能',
-          link: 'https://support.qq.com/products/321980/topic-detail/2016/',
-        },
+        // {
+        //   text: '新機能',
+        //   link: 'https://support.qq.com/products/321980/topic-detail/2016/',
+        // },
       ],
     },
   ],
