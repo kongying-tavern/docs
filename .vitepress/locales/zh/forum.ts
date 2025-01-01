@@ -121,7 +121,7 @@ const forum: CustomConfig['forum'] = {
       allRelatedContentCount: '搜索到相关反馈数',
     },
     navigation: {
-      allFeedback: '全部问答',
+      allFeedback: '全部反馈',
       bugFeedback: '问题反馈',
       featFeedback: '功能建议',
       faq: {

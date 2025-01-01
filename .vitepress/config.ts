@@ -397,7 +397,7 @@ export default defineConfig({
         },
         {
           find: '@',
-          replacement: path.resolve(__dirname, '../.vitepress/theme'),
+          replacement: fileURLToPath(new URL('./theme', import.meta.url)),
         },
       ],
     },

@@ -74,11 +74,8 @@ import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import ForumAside from '../ForumAside.vue'
 import ForumRuleBadge from '../ForumRuleBadge.vue'
-import {
-  getIssueInfoFromSession,
-  getIssueNumberFromUrlSearchParamsWithData,
-  setPageTitle,
-} from '../utils'
+import ForumTagList from '../ForumTagList.vue'
+import { getIssueInfoFromSession, getTopicNumber, setPageTitle } from '../utils'
 import ForumTopicPageCommentArea from './ForumTopicPageCommentArea.vue'
 import { sanitizeHtml } from '../../../composables/sanitizeHtml'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
@@ -89,7 +86,7 @@ import { getTopicTypeMap } from '../../../composables/getTopicTypeMap'
 const { theme } = useData()
 
 const userInfo = useUserInfoStore()
-const number = getIssueNumberFromUrlSearchParamsWithData()
+const number = getTopicNumber()
 const sessionData = getIssueInfoFromSession()
 const topicTypeMap = getTopicTypeMap()
 

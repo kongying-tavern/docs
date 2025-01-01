@@ -6,8 +6,8 @@ import 'dayjs/locale/zh-cn'
 import 'dayjs/locale/en'
 import 'dayjs/locale/ja'
 import type ForumAPI from '@/apis/forum/api'
-import { useQueryState } from '../../composables/useQueryState'
 import { catchError } from '@/apis/utils'
+import { useUrlSearchParams } from '@vueuse/core'
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
@@ -52,6 +52,7 @@ export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
 }
 
 export function getIssueInfoFromSession(): ForumAPI.Topic | null {
+  if (import.meta.env.SSR) return null
   const issueInfo = sessionStorage.getItem('issue-info')
   sessionStorage.removeItem('issue-info')
   return issueInfo ? JSON.parse(issueInfo) : null
@@ -65,12 +66,6 @@ export function replaceAtMentions(text: string): string {
   return text.replaceAll(regex, (match, p1) => {
     return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
   })
-}
-
-export function getIssueNumberFromUrlSearchParamsWithData(): string {
-  const params = useQueryState('history')
-  if (typeof params.number !== 'string') location.href = '../error.html'
-  return String(params.number)
 }
 
 export function setPageTitle(newTitle = '', prefix?: string): void {
@@ -168,10 +163,17 @@ export const compressImage = async (
   }
 }
 
+export const getTopicNumber = () => {
+  if (import.meta.env.SSR) return ''
+  const params = useUrlSearchParams('history')
+  if (typeof params.number !== 'string') location.href = '../error.html'
+  return String(params.number)
+}
+
 export function convertMultipleToMarkdown(images: string[], altTexts = []) {
   return images
     .map((url, index) => {
-      const altText = altTexts[index] || 'image'
+      const altText = altTexts[index] || ''
       return `![${altText}](${url})`
     })
     .join('\n')

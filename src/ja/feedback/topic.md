@@ -1,11 +1,15 @@
 ---
-title: 问题反馈
+title: トピック
 layout: page
 aside: false
 ---
 
 <script setup lang="ts">
-import ForumTopicPage from '../../components/forum/topic/ForumTopicPage.vue'
+import { defineClientComponent } from 'vitepress'
+
+const ForumTopicPage = defineClientComponent(() => {
+  return import('../../components/forum/topic/ForumTopicPage.vue')
+})
 </script>
 
 <ForumTopicPage />

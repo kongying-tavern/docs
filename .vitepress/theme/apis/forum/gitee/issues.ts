@@ -120,7 +120,7 @@ export const searchTopics = async (
         sort: query.sort + '_at',
         page: query.current,
         per_page: query.pageSize,
-        labels: setFilterTags(query.filter),
+        labels: query.filter?.join(','),
       },
     },
   )

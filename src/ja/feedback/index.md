@@ -1,5 +1,5 @@
 ---
-title: 问题反馈
+title: フィードバック
 layout: page
 aside: false
 ---

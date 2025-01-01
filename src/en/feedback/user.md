@@ -1,11 +1,15 @@
 ---
-title: 我的反馈
+title: My Feedback
 layout: page
 aside: false
 ---
 
 <script setup lang="ts">
-import ForumUserPage from '../../components/forum/user/ForumUserPage.vue'
+import { defineClientComponent } from 'vitepress'
+
+const ForumUserPage = defineClientComponent(() => {
+  return import('../../components/forum/user/ForumUserPage.vue')
+})
 </script>
 
 <ForumUserPage />

@@ -48,6 +48,4 @@ useInfiniteScroll(
     canLoadMore: () => forumData.canLoadMore,
   },
 )
-
-const publishTopic = () => (location.hash = 'publish-topic')
 </script>

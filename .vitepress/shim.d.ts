@@ -1,4 +1,5 @@
 interface ImportMeta {
+  readonly SSR: Boolean
   readonly env: ImportMeta
 }
 
