@@ -1,10 +1,10 @@
 import { GITEE_CLIENT_ID, GITEE_CLIENT_SECRET, fetcher } from '.'
-import { catchError, removeTrailingSlash } from '../../utils'
+import { catchError } from '../../utils'
 import type ForumAPI from '../api'
 import { normalizeAuth } from './utils'
 
 export function getRedirectUri() {
-  return removeTrailingSlash(location.origin + location.pathname)
+  return location.origin + location.pathname
 }
 
 export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
@@ -24,7 +24,7 @@ export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
       .json(),
   )
 
-  if (error) throw new Error(`Can not get token: ${error.message}`)
+  if (error) return Promise.reject(`Can not get token: ${error.message}`)
   return normalizeAuth(await data)
 }
 
