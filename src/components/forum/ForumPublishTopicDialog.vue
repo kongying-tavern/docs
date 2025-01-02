@@ -14,7 +14,7 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { VisuallyHidden } from 'radix-vue'
 import { useData } from 'vitepress'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import ForumTagsInput from './ForumTagsInput.vue'
 import { ReloadIcon } from '@radix-icons/vue'
 import type ForumAPI from '@/apis/forum/api'
@@ -96,6 +96,17 @@ const submit = async () => {
 
   open.value = false
 }
+
+watch(
+  () => body.value.images,
+  () => {
+    uploading.value =
+      body.value.images?.some((val) => val.status === 'uploading') ?? false
+  },
+  {
+    deep: true,
+  },
+)
 </script>
 
 <template>

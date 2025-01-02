@@ -135,6 +135,7 @@ const upload = async (uploadFile: UploadFile) => {
   }
 
   watch(error, () => {
+    console.log(error)
     updateImage(uploadFile.uid, undefined, 'fail')
     toast.error(`[${uploadFile.name}] 上传失败`)
   })

@@ -6,17 +6,20 @@ import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
 
 import type ForumAPI from '@/apis/forum/api'
-import { isArray, isError } from 'lodash-es'
+import { isArray, isError, uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
-import { watchOnce } from '@vueuse/core'
+import { useUrlSearchParams, watchOnce } from '@vueuse/core'
 import { convertMultipleToMarkdown } from '../components/forum/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
+import { removeQueryParam } from '@/utils'
 
 const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG'])
 
 export const useForumData = defineStore('forum-data', () => {
   const userSubmittedTopic = ref<ForumAPI.Topic[]>([])
   const topics = ref<ForumAPI.Topic[]>([])
+  const isSearching = ref(false)
+  const defaultPageSize = 20
   const pagination = reactive<{
     sort: string
     page: number
@@ -50,15 +53,18 @@ export const useForumData = defineStore('forum-data', () => {
     runAsync: loadAnn,
   } = useRequest(issues.getAnnouncementList)
 
-  const refreshData = async () => {
-    const data = await runAsync({
-      current: pagination.page,
-      sort: pagination.sort,
-      pageSize: 5,
-      filter: [
-        pagination.filter === 'ALL' ? 'WEB-FEEDBACK' : pagination.filter,
-      ],
-    })
+  const refreshData = async (q?: string | string[]) => {
+    const data = await runAsync(
+      {
+        current: pagination.page,
+        sort: pagination.sort,
+        pageSize: defaultPageSize,
+        filter: [
+          pagination.filter === 'ALL' ? 'WEB-FEEDBACK' : pagination.filter,
+        ],
+      },
+      q ? encodeURIComponent(String(q)) : undefined,
+    )
 
     console.log(data)
   }
@@ -68,19 +74,61 @@ export const useForumData = defineStore('forum-data', () => {
     pagination.filter = val
   }
 
-  const searchTopics = async (q: string) => {
+  const searchTopics = async (q: string | string[]) => {
     initialData()
 
-    const result = await runAsync(
-      {
-        current: pagination.page,
-        sort: pagination.sort,
-        pageSize: 20,
-      },
-      q,
-    )
+    if (q.length === 0) return (isSearching.value = false)
 
-    return result
+    isSearching.value = true
+
+    return refreshData(q)
+  }
+
+  const topicAction = async (
+    action: Function,
+    argument: any[],
+    successMsg: string,
+    errorMsg: string,
+  ) => {
+    const userAuth = useUserAuthStore()
+    if (!userAuth.isTokenValid) {
+      toast.info(theme.value.forum.auth.loginTips)
+      return false
+    }
+
+    const state = await action(userAuth.accessToken, ...argument)
+
+    if (state) {
+      toast.success(successMsg)
+    } else {
+      toast.error(errorMsg)
+    }
+
+    return state
+  }
+
+  const closeTopic = async (id: string | number): Promise<boolean> => {
+    const state = await topicAction(
+      issues.putTopic,
+      [id, { state: 'closed' }],
+      theme.value.forum.topic.menu.closeFeedback.success,
+      theme.value.forum.topic.menu.closeFeedback.fail,
+    )
+    if (state) removeTopic(id)
+    return state
+  }
+
+  const deleteComment = async (id: string | number): Promise<boolean> => {
+    return await topicAction(
+      issues.deleteIssueComment,
+      [id],
+      theme.value.forum.topic.menu.deleteComment.success,
+      theme.value.forum.topic.menu.deleteComment.fail,
+    )
+  }
+
+  const removeTopic = (id: string | number) => {
+    topics.value = topics.value.filter((topic) => topic.id !== id)
   }
 
   const submitTopic = () => {
@@ -169,7 +217,6 @@ export const useForumData = defineStore('forum-data', () => {
     loading,
     () => {
       topics.value = data.value
-      if (pagination.filter !== 'ALL') switchTopicFilter()
     },
     {
       immediate: true,
@@ -180,7 +227,7 @@ export const useForumData = defineStore('forum-data', () => {
     annLoading,
     () => {
       if (annData.value?.length === 0) return
-      topics.value = [...(annData.value || []), ...topics.value]
+      topics.value = uniqBy([...(annData.value || []), ...topics.value], 'id')
     },
     {
       immediate: true,
@@ -207,6 +254,19 @@ export const useForumData = defineStore('forum-data', () => {
     },
   )
 
+  watch(isSearching, async () => {
+    if (!isSearching.value) {
+      removeQueryParam('q')
+      initialData()
+      await refreshData()
+    }
+  })
+
+  watch(lang, async () => {
+    initialData()
+    await refreshData()
+  })
+
   return {
     // data
     userSubmittedTopic,
@@ -219,6 +279,7 @@ export const useForumData = defineStore('forum-data', () => {
     total,
     totalPage,
     error,
+    isSearching,
     ...toRefs(pagination),
 
     // getters
@@ -234,6 +295,8 @@ export const useForumData = defineStore('forum-data', () => {
     loadMore,
     loadAnn,
     submitTopic,
+    closeTopic,
+    deleteComment,
   }
 })
 

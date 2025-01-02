@@ -27,7 +27,7 @@
       ></article>
 
       <div class="topic-content-img flex mt-4" v-if="body?.images">
-        <img
+        <Image
           v-for="(img, ind) in body.images"
           :key="ind"
           :src="img.src"
@@ -38,9 +38,9 @@
 
       <div class="comment-info mt-2">
         <TopicMeta
+          type="comment"
           :topic-id="topicId"
           :created-at="createdAt"
-          :tags="tags"
           :comment-id="commentId"
           :author-id="author.id"
           :comment-count="commentCount"
@@ -57,12 +57,10 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useData } from 'vitepress'
 import { computed } from 'vue'
 import ForumRuleBadge from './ForumRuleBadge.vue'
 import TopicMeta from './TopicMeta.vue'
-
-const { theme } = useData()
+import { Image } from '@/components/ui/image'
 
 const { size = 'normal', ...props } = defineProps<{
   body: ForumAPI.Content

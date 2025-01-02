@@ -8,8 +8,8 @@ export const PREFIX_URL = 'https://img.violetsnow.cc/'
 
 export const fetcher = ky.create({
   prefixUrl: PREFIX_URL,
-  timeout: 10000,
-  retry: 1,
+  timeout: 8000,
+  retry: 2,
   headers: {
     code: 'yuanshen.site',
   },

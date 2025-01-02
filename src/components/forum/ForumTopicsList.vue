@@ -35,8 +35,10 @@ const renderData = computed(() => {
   const forumData = useForumData()
 
   return [
-    ...forumData.userSubmittedTopic,
-    ...(forumData.filter === 'ALL' ? forumData.annData || [] : []),
+    ...(forumData.isSearching ? [] : forumData.userSubmittedTopic),
+    ...(forumData.filter === 'ALL' && !forumData.isSearching
+      ? forumData.annData || []
+      : []),
     // 基于审核和安全考虑，普通用户只展示发布超过两个小时的反馈
     ...forumData.topics.filter(
       (val) =>

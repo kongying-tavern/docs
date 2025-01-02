@@ -22,9 +22,10 @@
         <button
           class="absolute top-0 right-0 size-5 bg-[#0003] flex justify-center items-center rounded-bl-sm"
           v-if="!disabled && file.status === 'uploading'"
+          @click="handleRemove(file)"
         >
           <span
-            class="i-lucide-loader-circle animate-spin size-3.5 bg-white"
+            class="i-lucide-loader-circle animate-spin size-3.5 bg-white hover-animate-none"
           ></span>
         </button>
         <img

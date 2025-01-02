@@ -13,7 +13,7 @@
       </div>
       <input
         v-model.trim="params.q"
-        @keydown.enter.prevent="search(params.q)"
+        @keydown.enter.prevent="forumData.searchTopics(params.q)"
         type="search"
         id="default-search"
         class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-100 bg-[var(--vp-c-bg-alt)] c-[var(--vp-c-text-1)]"
@@ -22,7 +22,7 @@
         required
       />
       <button
-        @click="search(params.q)"
+        @click="forumData.searchTopics(params.q)"
         type="button"
         class="text-white absolute end-2.5 bottom-2.5 focus:border-color-[--vp-c-border] focus:outline-none font-medium rounded-25 text-sm px-4 py-2 vp-button"
       >
@@ -32,7 +32,7 @@
   </form>
   <div
     class="h-5 font-size-3.5 flex absolute top-28"
-    v-if="isSearching && !forumData.loading"
+    v-if="forumData.isSearching && !forumData.loading"
   >
     <p class="color-[var(--vp-c-text-3)] mr-2">
       {{ theme.forum.header.search.allRelatedContentCount }}
@@ -43,25 +43,17 @@
 
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { useUrlSearchParams } from '@vueuse/core'
 import { useForumData } from '../../stores/useForumData'
 
 const { theme } = useData()
 
-const isSearching = ref(false)
 const params = useUrlSearchParams('history')
-
-const search = (q: string | string[]) => {
-  forumData.searchTopics(encodeURIComponent(String(q)))
-  isSearching.value = true
-  if (!q) isSearching.value = false
-}
+const forumData = useForumData()
 
 onMounted(() => {
   if (typeof params.q !== 'string') return
-  search(params.q)
+  forumData.searchTopics(params.q)
 })
-
-const forumData = useForumData()
 </script>

@@ -47,11 +47,11 @@
       </div>
       <div class="topic-info mt-4">
         <TopicMeta
+          type="topic"
           :topic-id="topic.id"
           :created-at="topic.createdAt"
-          :tags="topic.tags"
           :comment-count="topic.commentCount"
-          :comment-id="isAnn ? -1 : 0"
+          :comment-id="isAnn ? -1 : 1"
           :author-id="topic.user.id"
         ></TopicMeta>
       </div>
