@@ -10,7 +10,9 @@
     "vitepress",
     "wechat",
     "wechatpay",
-    "wxtl"
+    "wxtl",
+    "Gitee",
+    "GITEE"
   ],
   "vue.codeActions.enabled": false,
   "files.trimTrailingWhitespace": true

@@ -26,7 +26,7 @@
           <article
             class="font-size-4 mt-3.5 pr-4 opacity-99 overflow-hidden"
             :class="isAnn ? 'whitespace-pre-wrap' : 'line-clamp-3 max-h-30'"
-            v-text="topic.contentRaw"
+            v-text="topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '')"
           ></article>
         </a>
 

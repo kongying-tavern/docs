@@ -41,8 +41,8 @@ const forum: CustomConfig['forum'] = {
   auth: {
     login: '登录',
     logout: '登出',
-    loginMsg: '登录 Gitte 账号',
-    logoutMsg: '登出 Gitte 账号',
+    loginMsg: '登录 Gitee 账号',
+    logoutMsg: '登出 Gitee 账号',
     loginTips: '请登录后重试',
     loginToCheck: '请 %login 后查看 (・ω・)',
     jumpToGiteeTips: '即将跳转到 Gitee 进行授权登录',

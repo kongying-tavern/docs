@@ -129,6 +129,9 @@ export const useForumData = defineStore('forum-data', () => {
 
   const removeTopic = (id: string | number) => {
     topics.value = topics.value.filter((topic) => topic.id !== id)
+    userSubmittedTopic.value = userSubmittedTopic.value.filter(
+      (topic) => topic.id !== id,
+    )
   }
 
   const submitTopic = () => {
