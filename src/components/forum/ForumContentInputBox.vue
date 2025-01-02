@@ -63,6 +63,7 @@ import type {
   UploadUserFile,
 } from '@/components/ui/photo-wall/upload'
 import { compressImage } from './utils'
+import { useData } from 'vitepress'
 
 interface Content {
   text: string
@@ -86,7 +87,6 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string | number): void
-  (e: 'on-progress', loading: boolean): void
 }>()
 
 const modelValue = useVModel(props, 'modelValue', emits, {
@@ -94,12 +94,17 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
 })
 
+const { theme } = useData()
+
 const uploadedFiles = new Map<number, UploadFile>()
 const canAddImages = computed(() => {
   return (props.modelValue.images?.length || 0) < (props.fileLimit || 0)
 })
 
 const { textarea, input } = useTextareaAutosize()
+const { data, runAsync, loading, error } = useRequest(uploadImg, {
+  manual: true,
+})
 
 const upload = async (uploadFile: UploadFile) => {
   if (!props.autoUpload || !uploadFile.raw) return
@@ -115,41 +120,29 @@ const upload = async (uploadFile: UploadFile) => {
     return
   }
 
-  const { data, runAsync, loading, error } = useRequest(uploadImg, {
-    manual: true,
-  })
+  // 测试压缩 jpg 格式图片后会导致后端无法正常解析，原因未知
+  // let [compressError, compressedFile] = await compressImage(uploadFile.raw)
 
-  let [compressError, compressedFile] = await compressImage(uploadFile.raw)
+  // console.info(compressedFile.size, uploadFile.raw.size)
 
-  console.info(compressedFile.size, uploadFile.raw.size)
+  // if (compressError) console.error(`[${uploadFile.name}] ${compressError}`)
 
-  if (compressError) console.error(`[${uploadFile.name}] ${compressError}`)
-
-  await runAsync(compressedFile, uploadFile.raw.type)
+  await runAsync(uploadFile.raw, uploadFile.uid)
 
   await nextTick()
 
-  if (data.value) {
-    updateImage(uploadFile.uid, data.value?.link, 'ready')
+  if (data.value?.state && data.value?.data) {
+    updateImage(uploadFile.uid, data.value.data.link, 'ready')
     uploadedFiles.set(uploadFile.uid, uploadFile)
-  }
-
-  watch(error, () => {
-    console.log(error)
+  } else {
     updateImage(uploadFile.uid, undefined, 'fail')
-    toast.error(`[${uploadFile.name}] 上传失败`)
-  })
+    toast.error(`[${uploadFile.name}] ${data.value?.message}`)
+  }
+}
 
-  watch(
-    loading,
-    () => {
-      console.log(loading)
-      emits('on-progress', loading.value)
-    },
-    {
-      immediate: true,
-    },
-  )
+const uploadMultipleFiles = async (files: UploadFiles) => {
+  const newFiles = files.filter((f) => !uploadedFiles.has(f.uid))
+  await Promise.all(newFiles.map(upload))
 }
 
 const updateImage = (
@@ -167,14 +160,11 @@ const updateImage = (
 const handleFileChange = async (file: UploadFile, files: UploadFiles) => {
   if (!props.multiple) return upload(file)
 
-  const uploadFiles = files.filter((f) => !uploadedFiles.has(f.uid))
-
-  uploadFiles.forEach((f) => {
-    upload(f)
-  })
+  uploadMultipleFiles(files)
 }
 
 watch(input, () => (modelValue.value.text = input.value))
+watch(error, () => toast.error(theme.value.forum.publish.form.upload.fail))
 </script>
 
 <style scoped>

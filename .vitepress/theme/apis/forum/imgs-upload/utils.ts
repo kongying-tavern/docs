@@ -1,8 +1,14 @@
-import { PREFIX_URL } from '.'
-
 export const normalizeImage = (image: IMAGES_UPLOAD.IMAGE) => {
   return {
-    link: PREFIX_URL + image.info?.md5,
-    fileSize: image.info?.size || 0,
+    state: true,
+    message: image.message,
+    data: {
+      id: image.data.key,
+      link: image.data.links.url,
+      fileSize: image.data.size || 0,
+      md5: image.data.md5,
+      thumbnailUrl: image.data.links.thumbnail_url,
+      originName: image.data.origin_name,
+    },
   }
 }

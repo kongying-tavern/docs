@@ -94,8 +94,16 @@ export namespace ForumAPI {
   }
 
   type Image = {
-    link: string
-    fileSize: number
+    state: boolean
+    message: string
+    data?: {
+      id: string | number
+      link: string
+      fileSize: number
+      md5: string
+      thumbnailUrl: string
+      originName: string
+    }
   }
 }
 

@@ -25,8 +25,9 @@ const useLogin = () => {
 
   async function initialize() {
     if (getLoginStatus() || !authCode) return
-
-    userAuth.setAuth(await oauth.getToken(authCode))
+    const auth = await oauth.getToken(authCode)
+    if (!auth) return toast.error(theme.value.forum.auth.loginFail)
+    userAuth.setAuth(auth)
     await userInfo.refreshUserInfo()
     userAuth.ensureTokenRefreshMission()
     afterLogin()

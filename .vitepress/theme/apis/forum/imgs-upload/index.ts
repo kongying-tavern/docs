@@ -4,27 +4,24 @@ import { normalizeImage } from './utils'
 
 import type ForumAPI from '../api'
 
-export const PREFIX_URL = 'https://img.violetsnow.cc/'
+export const PREFIX_URL = 'https://images.violetsnow.cc/api/v1/'
 
 export const fetcher = ky.create({
   prefixUrl: PREFIX_URL,
   timeout: 8000,
   retry: 2,
-  headers: {
-    code: 'yuanshen.site',
-  },
 })
 
 export const uploadImg = async (
   rawFile: File,
-  type: IMAGES_UPLOAD.ALLOWED_TYPE | string,
+  id: number,
 ): Promise<ForumAPI.Image> => {
+  const formData = new FormData()
+  formData.append('file', rawFile)
+
   const [error, response] = await catchError(
     fetcher.post<IMAGES_UPLOAD.IMAGE>('upload', {
-      body: await rawFile.arrayBuffer(),
-      headers: {
-        'Content-Type': type.split('/')[1],
-      },
+      body: formData,
     }),
   )
 
@@ -32,7 +29,8 @@ export const uploadImg = async (
 
   const data = await response.json()
 
-  if (data.error) return Promise.reject(data.error)
+  if (!data.status)
+    return Promise.resolve({ id: id, message: data.message, state: false })
 
   return normalizeImage(data)
 }
