@@ -51,11 +51,7 @@
       <p class="h-14 lh-14 mb-4 vp-border-divider color-[var(--vp-c-text-1)]">
         {{ message.forum.aside.suggest.text }}
       </p>
-      <div
-        class="flex mb-2"
-        v-for="item in [...message.forum.aside.suggest.items, ...roadomSuggest]"
-        :key="item.text"
-      >
+      <div class="flex mb-2" v-for="item in suggestList" :key="item.text">
         <div
           v-if="item.tag"
           class="mr-3 font-size-3.5 line-height-[24px] color-[--vp-c-text-3] break-keep"
@@ -65,7 +61,7 @@
         <VPLink
           v-if="item.tag"
           :href="item.link"
-          class="h-12 font-size-3.5 lh-6 line-clamp-2 text-ellipsis overflow-hidden break-all color-[--vp-c-text-2]"
+          class="h-12 font-size-3.5 lh-6 line-clamp-2 text-ellipsis overflow-hidden color-[--vp-c-text-2]"
         >
           {{ item.text?.replace(/【|】|\[|\]/g, ' ').trim() }}
         </VPLink>
@@ -107,6 +103,7 @@ import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
 import { flattenWithTags, getPageHeight, getRandomElements } from './utils'
 import { useLocalized } from '@/hooks/useLocalized'
+import { computed } from 'vue'
 
 const { showButton = true, showQrcode = false } = defineProps<{
   showButton?: boolean
@@ -123,6 +120,12 @@ const roadomSuggest = getRandomElements(
   ),
   Math.max(Math.ceil(getPageHeight() / 400), 5),
 )
+
+const suggestList = computed(() => {
+  return [...message.value.forum.aside.suggest.items, ...roadomSuggest].sort(
+    (a, b) => a.tag.localeCompare(b.tag),
+  )
+})
 
 const publishTopic = () => {
   location.hash = 'publish-topic'

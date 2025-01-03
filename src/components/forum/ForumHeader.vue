@@ -1,11 +1,15 @@
 <template>
   <div mb-6>
     <ForumNavigation />
+
     <div flex justify-between>
       <ForumSearchbox />
+
       <div class="forum-topic-sort">
         <Select v-model="forumData.sort">
-          <SelectTrigger class="w-27 font-size-4 mt-2 shadow-none">
+          <SelectTrigger
+            class="w-27 font-size-4 mt-2 shadow-none whitespace-break-spaces"
+          >
             {{ sortLabel.get(forumData.sort) }}
           </SelectTrigger>
           <SelectContent>

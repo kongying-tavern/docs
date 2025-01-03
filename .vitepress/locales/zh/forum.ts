@@ -76,18 +76,7 @@ const forum: CustomConfig['forum'] = {
     },
     suggest: {
       text: '相关推荐',
-      items: [
-        {
-          text: 'xxxxxxxxxxxx',
-          tag: 'tag',
-          link: '#',
-        },
-        {
-          text: 'xxxxxxxxxxxx',
-          tag: 'tag',
-          link: '#',
-        },
-      ],
+      items: [],
     },
     info: [
       {
