@@ -4,14 +4,15 @@ import { useLoadMore } from '../composables/useLoadMore'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
-
-import type ForumAPI from '@/apis/forum/api'
 import { isArray, isError, uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
-import { useUrlSearchParams, watchOnce } from '@vueuse/core'
+import { watchOnce } from '@vueuse/core'
+import { useLocalized } from '@/hooks/useLocalized'
 import { convertMultipleToMarkdown } from '../components/forum/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { removeQueryParam } from '@/utils'
+
+import type ForumAPI from '@/apis/forum/api'
 
 const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG'])
 
@@ -30,7 +31,8 @@ export const useForumData = defineStore('forum-data', () => {
     filter: getValidFilter() || 'ALL',
   })
 
-  const { theme, lang } = useData()
+  const { message } = useLocalized()
+  const { lang } = useData()
 
   const {
     data,
@@ -92,7 +94,7 @@ export const useForumData = defineStore('forum-data', () => {
   ) => {
     const userAuth = useUserAuthStore()
     if (!userAuth.isTokenValid) {
-      toast.info(theme.value.forum.auth.loginTips)
+      toast.info(message.value.forum.auth.loginTips)
       return false
     }
 
@@ -111,8 +113,8 @@ export const useForumData = defineStore('forum-data', () => {
     const state = await topicAction(
       issues.putTopic,
       [id, { state: 'closed' }],
-      theme.value.forum.topic.menu.closeFeedback.success,
-      theme.value.forum.topic.menu.closeFeedback.fail,
+      message.value.forum.topic.menu.closeFeedback.success,
+      message.value.forum.topic.menu.closeFeedback.fail,
     )
     if (state) removeTopic(id)
     return state
@@ -122,8 +124,8 @@ export const useForumData = defineStore('forum-data', () => {
     return await topicAction(
       issues.deleteIssueComment,
       [id],
-      theme.value.forum.topic.menu.deleteComment.success,
-      theme.value.forum.topic.menu.deleteComment.fail,
+      message.value.forum.topic.menu.deleteComment.success,
+      message.value.forum.topic.menu.deleteComment.fail,
     )
   }
 
@@ -181,11 +183,11 @@ export const useForumData = defineStore('forum-data', () => {
     watch(submitLoading, () => {
       if (!submittedTopic.value) return
       userSubmittedTopic.value.unshift(submittedTopic.value)
-      toast.success(theme.value.forum.publish.publishSuccess)
+      toast.success(message.value.forum.publish.publishSuccess)
     })
 
     watch(submitError, () => {
-      toast.info(theme.value.forum.publish.publishFail)
+      toast.info(message.value.forum.publish.publishFail)
     })
 
     return {
@@ -205,10 +207,10 @@ export const useForumData = defineStore('forum-data', () => {
     () => !noMore.value && !isFirstLoad.value && !isError(error),
   )
   const loadStateMessage = computed(() => {
-    if (loading.value) return theme.value.forum.loadMore
-    if (error.value) return theme.value.forum.loadError
+    if (loading.value) return message.value.forum.loadMore
+    if (error.value) return message.value.forum.loadError
     if (topics.value.length === 0) return 'No Data'
-    if (noMore.value) return theme.value.forum.noMore
+    if (noMore.value) return message.value.forum.noMore
   })
 
   function getValidFilter(value?: string): FilterType | null {
@@ -238,7 +240,7 @@ export const useForumData = defineStore('forum-data', () => {
   )
 
   watch(error, () => {
-    toast.error(theme.value.forum.loadError)
+    toast.error(message.value.forum.loadError)
   })
 
   watch(

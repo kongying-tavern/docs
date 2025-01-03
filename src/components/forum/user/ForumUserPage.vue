@@ -6,15 +6,15 @@
           class="header border-b border-[var(--vp-c-divider)] flex justify-between"
         >
           <h2 class="font-size-6 py-3">
-            {{ theme.forum.user.myFeedback.title }}
+            {{ message.forum.user.myFeedback.title }}
           </h2>
           <div></div>
         </div>
         <h3 class="w-full text-align-center mt-4" v-if="!userAuth.isTokenValid">
-          <DynamicTextReplacer :data="theme.forum.auth.loginToCheck">
+          <DynamicTextReplacer :data="message.forum.auth.loginToCheck">
             <template #login>
               <a class="vp-link" href="#login-alert">
-                [{{ theme.forum.auth.login }}]
+                [{{ message.forum.auth.login }}]
               </a>
             </template>
           </DynamicTextReplacer>
@@ -32,7 +32,7 @@
             <div v-if="loading" class="flex justify-center w-full my-8">
               <ReloadIcon class="w-4 h-4 mr-2 animate-spin v-middle" />
               <p class="font-size-4 lh-[1]">
-                {{ theme.ui.button.loading }}
+                {{ message.ui.button.loading }}
               </p>
             </div>
           </template>
@@ -51,14 +51,14 @@ import { issues } from '@/apis/forum/gitee'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { ReloadIcon } from '@radix-icons/vue'
-import { useData } from 'vitepress'
-import { provide, ref, watch } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
+import { ref } from 'vue'
 import { useLoadMore } from '../../../composables/useLoadMore'
 import ForumAside from '../ForumAside.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumLayout from '../ForumLayout.vue'
 
-const { theme } = useData()
+const { message } = useLocalized()
 
 const page = ref(1)
 const userAuth = useUserAuthStore()

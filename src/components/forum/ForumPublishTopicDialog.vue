@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { VisuallyHidden } from 'radix-vue'
-import { useData } from 'vitepress'
+import { useLocalized } from '@/hooks/useLocalized'
 import { computed, ref, watch } from 'vue'
 import ForumTagsInput from './ForumTagsInput.vue'
 import { ReloadIcon } from '@radix-icons/vue'
@@ -23,7 +23,7 @@ import ForumContentInputBox from './ForumContentInputBox.vue'
 import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
 import { useForumData } from '../../stores/useForumData'
 
-const { theme } = useData()
+const { message } = useLocalized()
 
 const userInfo = useUserInfoStore()
 const userAuth = useUserAuthStore()
@@ -52,18 +52,18 @@ const isDisabled = computed(() => {
 
 const formFields = computed(() => ({
   title: {
-    label: theme.value.forum.publish.form.title.text,
-    placeholder: theme.value.forum.publish.form.title.placeholder,
+    label: message.value.forum.publish.form.title.text,
+    placeholder: message.value.forum.publish.form.title.placeholder,
     maxLength: 50,
   },
   type: {
-    label: theme.value.forum.publish.form.type.text,
-    placeholder: theme.value.forum.publish.form.type.placeholder,
+    label: message.value.forum.publish.form.type.text,
+    placeholder: message.value.forum.publish.form.type.placeholder,
     maxLength: 5,
   },
   content: {
-    label: theme.value.forum.publish.form.content.text,
-    placeholder: theme.value.forum.publish.form.content.placeholder,
+    label: message.value.forum.publish.form.content.text,
+    placeholder: message.value.forum.publish.form.content.placeholder,
     maxLength: 2000,
   },
 }))
@@ -116,7 +116,7 @@ watch(
     >
       <VisuallyHidden>
         <DialogTitle>
-          {{ theme.forum.publish.title }}
+          {{ message.forum.publish.title }}
         </DialogTitle>
       </VisuallyHidden>
 
@@ -127,16 +127,16 @@ watch(
             :class="userInfo.isTeamMember() ? 'grid-cols-4' : 'grid-cols-3'"
           >
             <TabsTrigger value="SUG">{{
-              theme.forum.publish.type.sug
+              message.forum.publish.type.sug
             }}</TabsTrigger>
             <TabsTrigger value="BUG">{{
-              theme.forum.publish.type.bug
+              message.forum.publish.type.bug
             }}</TabsTrigger>
             <TabsTrigger value="FEAT">{{
-              theme.forum.publish.type.feat
+              message.forum.publish.type.feat
             }}</TabsTrigger>
             <TabsTrigger v-if="userInfo.isTeamMember()" value="ANN">{{
-              theme.forum.publish.type.ann
+              message.forum.publish.type.ann
             }}</TabsTrigger>
           </TabsList>
         </DialogHeader>
@@ -196,7 +196,7 @@ watch(
               :file-limit="3"
               :max-file-size="3"
               :auto-upload="true"
-              :uploadTips="theme.forum.publish.form.upload.tip"
+              :uploadTips="message.forum.publish.form.upload.tip"
             />
           </div>
         </TabsContent>
@@ -207,8 +207,8 @@ watch(
           <ReloadIcon class="w-4 h-4 mr-2 animate-spin" v-if="loading" />
           {{
             loading
-              ? theme.forum.publish.publishLoading
-              : theme.ui.button.submit
+              ? message.forum.publish.publishLoading
+              : message.ui.button.submit
           }}
         </Button>
       </DialogFooter>

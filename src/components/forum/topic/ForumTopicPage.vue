@@ -22,7 +22,7 @@
               class="color-[--vp-c-text-3] font-size-3"
               :datetime="data?.createdAt"
             >
-              {{ dayjs(data?.createdAt).format('YYYY/MM/DD HH:mm') }}
+              {{ formatDate(data?.createdAt, 'YYYY/MM/DD HH:mm') }}
             </time>
           </div>
 
@@ -66,9 +66,7 @@
 import { issues } from '@/apis/forum/gitee'
 import DocsBreadcrumb from '@/components/DocsBreadcrumb.vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import dayjs from 'dayjs'
 import markdownit from 'markdown-it'
-import { useData } from 'vitepress'
 import { computed, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
@@ -82,13 +80,14 @@ import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 import ForumLayout from '../ForumLayout.vue'
 import { watch } from 'vue'
 import { getTopicTypeMap } from '../../../composables/getTopicTypeMap'
-
-const { theme } = useData()
+import { useLocalized } from '@/hooks/useLocalized'
 
 const userInfo = useUserInfoStore()
 const number = getTopicNumber()
 const sessionData = getIssueInfoFromSession()
 const topicTypeMap = getTopicTypeMap()
+
+const { message, formatDate } = useLocalized()
 
 const { data, run, loading, mutate, error } = useRequest(issues.getTopic, {
   defaultParams: [number],
@@ -111,6 +110,6 @@ watchEffect(() => {
 
 watch(error, () => {
   if (!error.value) return
-  toast.error(theme.value.forum.loadError + error.value.message)
+  toast.error(message.value.forum.loadError + error.value.message)
 })
 </script>

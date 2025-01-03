@@ -29,15 +29,15 @@
             :disabled="isDisabled"
             :placeholder="
               isDisabled
-                ? theme.forum.publish.tagsInput.maxTagsLimit
-                : theme.forum.publish.tagsInput.searchTerm
+                ? message.forum.publish.tagsInput.maxTagsLimit
+                : message.forum.publish.tagsInput.searchTags
             "
           >
           </CommandInput>
           <CommandSeparator />
           <CommandList>
             <CommandEmpty>{{
-              theme.forum.publish.tagsInput.noResultsFound
+              message.forum.publish.tagsInput.noResultsFound
             }}</CommandEmpty>
             <CommandGroup heading="Suggestions">
               <CommandItem
@@ -84,10 +84,10 @@ import {
 } from '@/components/ui/popover'
 import { useVModel } from '@vueuse/core'
 import { computed, onMounted, ref } from 'vue'
-
-import { useData } from 'vitepress'
-import type { HTMLAttributes } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { getTopicTagMap } from '../../composables/getTopicTagMap'
+
+import type { HTMLAttributes } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -106,7 +106,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   passive: true,
 })
 
-const { theme } = useData()
+const { message } = useLocalized()
 const topicTagMap = getTopicTagMap()
 
 const tags = <string[]>[]

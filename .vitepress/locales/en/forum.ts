@@ -62,28 +62,28 @@ const forum: CustomConfig['forum'] = {
       qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
     },
     teamBlog: {
-      title: 'Team Blog',
+      text: 'Team Blog',
       items: [
         {
-          title: 'Genshin Map Client Update Log',
+          text: 'Genshin Map Client Update Log',
           link: '#',
         },
         {
-          title: 'Genshin Map Web Update Log',
+          text: 'Genshin Map Web Update Log',
           link: '#',
         },
       ],
     },
     suggest: {
-      title: 'Recommended',
+      text: 'Recommended',
       items: [
         {
-          title: 'xxxxxxxxxxxx',
+          text: 'xxxxxxxxxxxx',
           tag: 'tag',
           link: '#',
         },
         {
-          title: 'xxxxxxxxxxxx',
+          text: 'xxxxxxxxxxxx',
           tag: 'tag',
           link: '#',
         },

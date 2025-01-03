@@ -10,10 +10,10 @@
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="created">
-              {{ theme.forum.header.sort.created }}
+              {{ message.forum.header.sort.created }}
             </SelectItem>
             <SelectItem value="updated">
-              {{ theme.forum.header.sort.updated }}
+              {{ message.forum.header.sort.updated }}
             </SelectItem>
           </SelectContent>
         </Select>
@@ -28,19 +28,18 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from '@/components/ui/select'
-import { useData } from 'vitepress'
 import ForumNavigation from './ForumNavigation.vue'
 import ForumSearchbox from './ForumSearchbox.vue'
 import { useForumData } from '../../stores/useForumData'
+import { useLocalized } from '@/hooks/useLocalized'
 
-const { theme } = useData()
+const { message } = useLocalized()
 
 const sortLabel = new Map([
-  ['created', theme.value.forum.header.sort.created],
-  ['updated', theme.value.forum.header.sort.updated],
-  ['notes_count', theme.value.forum.header.sort.notesCount],
+  ['created', message.value.forum.header.sort.created],
+  ['updated', message.value.forum.header.sort.updated],
+  ['notes_count', message.value.forum.header.sort.notesCount],
 ])
 
 const forumData = useForumData()

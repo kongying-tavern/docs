@@ -37,7 +37,7 @@
       </div>
 
       <div class="comment-info mt-2">
-        <TopicMeta
+        <ForumTopicMeta
           type="comment"
           :topic-id="topicId"
           :created-at="createdAt"
@@ -46,7 +46,7 @@
           :comment-count="commentCount"
           :comment-click-handler="commentClickHandler"
         >
-        </TopicMeta>
+        </ForumTopicMeta>
       </div>
 
       <slot></slot>
@@ -59,7 +59,7 @@ import type ForumAPI from '@/apis/forum/api'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { computed } from 'vue'
 import ForumRuleBadge from './ForumRuleBadge.vue'
-import TopicMeta from './TopicMeta.vue'
+import ForumTopicMeta from './ForumTopicMeta.vue'
 import { Image } from '@/components/ui/image'
 
 const { size = 'normal', ...props } = defineProps<{

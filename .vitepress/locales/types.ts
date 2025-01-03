@@ -160,17 +160,17 @@ export interface CustomConfig {
         qrcodeLink: string
       }
       teamBlog: {
-        title: string
+        text: string
         items: {
           cover?: string
-          title: string
+          text: string
           link: string
         }[]
       }
       suggest: {
-        title: string
+        text: string
         items: {
-          title: string
+          text: string
           tag: string
           link: string
         }[]
@@ -178,6 +178,7 @@ export interface CustomConfig {
       info: {
         text: string
         link: string
+        alt?: string
       }[]
     }
     comment: {

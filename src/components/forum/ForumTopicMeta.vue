@@ -1,10 +1,10 @@
 <template>
   <div class="flex justify-between font-size-3 mr-2">
     <time :datetime="createdAt" class="color-[--vp-c-text-3]">
-      {{ formatDate(createdAt || '', localeIndex) }}
+      {{ formatDate(toRef(createdAt || '1980-1-1')) }}
     </time>
 
-    <div class="topic-info-list">
+    <div class="topic-info-list flex items-center cursor-default">
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
           <Button
@@ -18,18 +18,18 @@
         <DropdownMenuContent side="top" class="w-23">
           <DropdownMenuItem @click="issues.openTopicOnGitee(topicId!)">
             <span class="i-lucide:link"></span>
-            <span>{{ theme.forum.topic.menu.giteeLink }}</span>
+            <span>{{ message.forum.topic.menu.giteeLink }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             v-if="isTopic && hasPermission"
             @click="closeTopic(topicId!)"
           >
             <span class="i-lucide:trash-2 icon-btn"></span>
-            <span>{{ theme.forum.topic.menu.closeFeedback.text }}</span>
+            <span>{{ message.forum.topic.menu.closeFeedback.text }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem v-else @click="deleteComment(commentId)">
             <span class="i-lucide:trash-2 icon-btn"></span>
-            <span>{{ theme.forum.topic.menu.deleteComment.text }}</span>
+            <span>{{ message.forum.topic.menu.deleteComment.text }}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -48,8 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useData } from 'vitepress'
+import { computed, toRef } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import {
@@ -59,10 +58,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { formatDate } from './utils'
 import { useForumData } from '../../stores/useForumData'
+import { useLocalized } from '@/hooks/useLocalized'
 
-const { localeIndex, theme } = useData()
+const { message, formatDate } = useLocalized()
+
 const { closeTopic, deleteComment } = useForumData()
 
 const userInfo = useUserInfoStore()
@@ -93,17 +93,9 @@ const topicLink = computed(() => {
 })
 
 const str = computed(() => {
-  if (props.commentId == -1) return theme.value.forum.comment.commentsClosed
-  if (props.commentCount == -1) return theme.value.forum.comment.reply
+  if (props.commentId == -1) return message.value.forum.comment.commentsClosed
+  if (props.commentCount == -1) return message.value.forum.comment.reply
   if (props.commentCount > 0) return props.commentCount
-  return theme.value.forum.comment.comment
+  return message.value.forum.comment.comment
 })
 </script>
-
-<style lang="css">
-.topic-info-list {
-  display: flex;
-  align-items: center;
-  cursor: default;
-}
-</style>

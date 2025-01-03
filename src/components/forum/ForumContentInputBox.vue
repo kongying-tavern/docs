@@ -64,6 +64,7 @@ import type {
 } from '@/components/ui/photo-wall/upload'
 import { compressImage } from './utils'
 import { useData } from 'vitepress'
+import { useLocalized } from '@/hooks/useLocalized'
 
 interface Content {
   text: string
@@ -94,7 +95,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
 })
 
-const { theme } = useData()
+const { message } = useLocalized()
 
 const uploadedFiles = new Map<number, UploadFile>()
 const canAddImages = computed(() => {
@@ -164,7 +165,7 @@ const handleFileChange = async (file: UploadFile, files: UploadFiles) => {
 }
 
 watch(input, () => (modelValue.value.text = input.value))
-watch(error, () => toast.error(theme.value.forum.publish.form.upload.fail))
+watch(error, () => toast.error(message.value.forum.publish.form.upload.fail))
 </script>
 
 <style scoped>

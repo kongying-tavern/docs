@@ -46,14 +46,14 @@
         <ForumTagList class="my-2" :data="topic.tags" />
       </div>
       <div class="topic-info mt-4">
-        <TopicMeta
+        <ForumTopicMeta
           type="topic"
           :topic-id="topic.id"
           :created-at="topic.createdAt"
           :comment-count="topic.commentCount"
           :comment-id="isAnn ? -1 : 1"
           :author-id="topic.user.id"
-        ></TopicMeta>
+        ></ForumTopicMeta>
       </div>
       <div class="topic-comment" v-if="showComment && topic.importantComments">
         <ForumTopicComment
@@ -77,18 +77,17 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useData, withBase } from 'vitepress'
+import { withBase } from 'vitepress'
 import { computed } from 'vue'
 import ForumRuleBadge from './ForumRuleBadge.vue'
 import ForumTagList from './ForumTagList.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
-import TopicMeta from './TopicMeta.vue'
+import ForumTopicMeta from './ForumTopicMeta.vue'
 import { Image } from '@/components/ui/image'
 import { getTopicTypeMap } from '../../composables/getTopicTypeMap'
 
 const userInfo = useUserInfoStore()
 const topicTypeMap = getTopicTypeMap()
-const { theme } = useData()
 
 const props = defineProps<{
   title: string

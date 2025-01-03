@@ -62,28 +62,28 @@ const forum: CustomConfig['forum'] = {
       qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
     },
     teamBlog: {
-      title: 'チームブログ',
+      text: 'チームブログ',
       items: [
         {
-          title: '原神マップクライアント更新ログ',
+          text: '原神マップクライアント更新ログ',
           link: '#',
         },
         {
-          title: '原神マップウェブ版更新ログ',
+          text: '原神マップウェブ版更新ログ',
           link: '#',
         },
       ],
     },
     suggest: {
-      title: 'おすすめ',
+      text: 'おすすめ',
       items: [
         {
-          title: 'xxxxxxxxxxxx',
+          text: 'xxxxxxxxxxxx',
           tag: 'タグ',
           link: '#',
         },
         {
-          title: 'xxxxxxxxxxxx',
+          text: 'xxxxxxxxxxxx',
           tag: 'タグ',
           link: '#',
         },

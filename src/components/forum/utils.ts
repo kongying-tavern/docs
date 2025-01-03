@@ -1,48 +1,6 @@
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import relativeTime from 'dayjs/plugin/relativeTime'
-
-import 'dayjs/locale/zh-cn'
-import 'dayjs/locale/en'
-import 'dayjs/locale/ja'
 import type ForumAPI from '@/apis/forum/api'
 import { catchError } from '@/apis/utils'
 import { useUrlSearchParams } from '@vueuse/core'
-
-dayjs.extend(relativeTime)
-dayjs.extend(localizedFormat)
-
-const locales = {
-  root: 'zh-cn',
-  en: 'en',
-  ja: 'ja',
-}
-
-let currentLocale: string | null = null
-
-/**
- * Formats a given date according to the specified locale.
- * @param givenDate - The date to format, can be a Date object or a string.
- * @param locale - The locale to use for formatting.
- * @returns A formatted string representing the date.
- */
-export function formatDate(givenDate: Date | string, locale: string): string {
-  const date = dayjs(givenDate)
-
-  if (currentLocale !== locale) {
-    // @ts-ignore
-    dayjs.locale(locales[locale])
-    currentLocale = locale
-  }
-
-  const now = dayjs()
-  const diffInMinutes = now.diff(date, 'minute')
-
-  if (diffInMinutes < 720) return date.fromNow()
-  if (date.year() === now.year()) return date.format('MM/DD HH:mm')
-
-  return date.format('YYYY/MM/DD HH:mm')
-}
 
 export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   const arr: string[] = []

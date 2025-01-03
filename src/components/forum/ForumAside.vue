@@ -6,14 +6,14 @@
       @click="publishTopic"
     >
       <span class="i-lucide:square-pen icon-btn"></span
-      >{{ theme.forum.publish.title }}
+      >{{ message.forum.publish.title }}
     </Button>
     <div class="selected-articles mb-4">
       <p
         v-if="showQrcode"
         class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)]"
       >
-        {{ theme.forum.aside.contactUs.title }}
+        {{ message.forum.aside.contactUs.title }}
       </p>
       <div
         v-if="showQrcode"
@@ -23,37 +23,37 @@
         <p
           class="h-[fit-content] pr-2.5 mt-2.75 font-size-3.5 text-center text-ellipsis overflow-hidden break-all color-[--vp-c-text-1]"
         >
-          {{ theme.forum.aside.contactUs.desc }}
+          {{ message.forum.aside.contactUs.desc }}
         </p>
       </div>
       <p class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)]">
-        {{ theme.forum.aside.teamBlog.title }}
+        {{ message.forum.aside.teamBlog.text }}
       </p>
       <div
         class="flex justify-between mb-2"
-        v-for="item in theme.forum.aside.teamBlog.items"
-        :key="item.title"
+        v-for="item in message.forum.aside.teamBlog.items"
+        :key="item.text"
       >
         <img
           class="mr-2 w-23 h-13"
           :src="withBase(item.cover || '/imgs/common/selectArtilcs.png')"
-          :alt="item.title"
+          :alt="item.text"
         />
         <VPLink
           :href="item.link"
           class="h-12 font-size-3.5 lh-6 line-clamp-2 text-ellipsis overflow-hidden break-all color-[--vp-c-text-2]"
         >
-          {{ item.title }}
+          {{ item.text }}
         </VPLink>
       </div>
     </div>
     <div class="selected-articles mb-4 vp-border-divider border-b">
       <p class="h-14 lh-14 mb-4 vp-border-divider color-[var(--vp-c-text-1)]">
-        {{ theme.forum.aside.suggest.title }}
+        {{ message.forum.aside.suggest.text }}
       </p>
       <div
         class="flex mb-2"
-        v-for="item in [theme.forum.aside.suggest.items, ...roadomSuggest]"
+        v-for="item in [...message.forum.aside.suggest.items, ...roadomSuggest]"
         :key="item.text"
       >
         <div
@@ -74,7 +74,7 @@
     <div class="aside-footer">
       <nav class="flex basis-auto flex-wrap shrink-0" role="navigation">
         <a
-          v-for="item in theme.forum.aside.info"
+          v-for="item in message.forum.aside.info"
           :href="item.link"
           :target="item.text"
           :alt="item?.alt"
@@ -87,7 +87,6 @@
   </div>
 
   <Teleport to="body">
-    <ForumPublishTopicDialog></ForumPublishTopicDialog>
     <Button
       v-if="showButton"
       variant="outline"
@@ -106,16 +105,18 @@
 import { Button } from '@/components/ui/button'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
-import ForumPublishTopicDialog from './ForumPublishTopicDialog.vue'
 import { flattenWithTags, getPageHeight, getRandomElements } from './utils'
+import { useLocalized } from '@/hooks/useLocalized'
 
 const { showButton = true, showQrcode = false } = defineProps<{
   showButton?: boolean
   showQrcode?: boolean
 }>()
 
+const { message } = useLocalized()
 const { theme } = useData()
-const qrcode = useQRCode(theme.value.forum.aside.contactUs.qrcodeLink)
+
+const qrcode = useQRCode(message.value.forum.aside.contactUs.qrcodeLink)
 const roadomSuggest = getRandomElements(
   flattenWithTags(
     theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1),

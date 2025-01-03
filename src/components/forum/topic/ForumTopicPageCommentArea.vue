@@ -1,13 +1,13 @@
 <template>
   <div class="pb-24">
     <p id="reply" class="mb-5.5 line-height-[21px] font-size-5">
-      {{ theme.forum.comment.commentCount }}
+      {{ message.forum.comment.commentCount }}
       <span class="font-size-3.5 vertical-text-top color-[var(--vp-c-text-3)]">
         {{ allCommentCount }}
       </span>
     </p>
     <ForumCommentInputBox
-      :placeholder="theme.forum.comment.placeholder"
+      :placeholder="message.forum.comment.placeholder"
       :number="topicId"
       @comment:submit="handleCommentSubmit"
     />
@@ -29,7 +29,7 @@
           v-if="isReplyingTo(comment.id)"
           :number="topicId"
           :reply="`@${comment.author.login}`"
-          :placeholder="`${theme.forum.comment.reply} @${comment.author.username}：`"
+          :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
           @comment:submit="handleCommentSubmit"
         />
       </ForumTopicComment>
@@ -44,7 +44,7 @@
           class="w-4 h-4 mr-2"
           :class="loading ? 'animate-spin' : ''"
         />
-        {{ theme.forum.comment.loadMoreComment }}
+        {{ message.forum.comment.loadMoreComment }}
       </Button>
       <p
         v-else-if="!loading"
@@ -52,15 +52,15 @@
       >
         {{
           data.length === 0
-            ? theme.forum.comment.noCommnet
-            : theme.forum.comment.noMoreComment
+            ? message.forum.comment.noComment
+            : message.forum.comment.noMoreComment
         }}
       </p>
     </div>
     <Separator
       v-if="current === 1 && loading"
       class="inline-block w-full my-8 text-center c-[var(--vp-c-text-3)] font-size-3"
-      :label="theme.forum.comment.loadingComment"
+      :label="message.forum.comment.loadingComment"
     >
     </Separator>
   </div>
@@ -72,7 +72,7 @@ import { issues } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { ReloadIcon } from '@radix-icons/vue'
-import { useData } from 'vitepress'
+import { useLocalized } from '@/hooks/useLocalized'
 import { type Ref, computed, ref } from 'vue'
 import { useLoadMore } from '../../../composables/useLoadMore'
 import ForumCommentInputBox from '../ForumCommentInputBox.vue'
@@ -83,7 +83,7 @@ const props = defineProps<{
   topicAuthorId: string | number
 }>()
 
-const { theme } = useData()
+const { message } = useLocalized()
 
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 const replyCommentID = ref<number | string | null>(null)

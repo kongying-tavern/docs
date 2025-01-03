@@ -23,10 +23,10 @@
           v-else
           class="h-8 w-full min-h-48px h-auto text-center rounded-md p-2 line-height-[32px] cursor-text font-size-3.5 bg-[var(--vp-c-bg-soft)]"
         >
-          <DynamicTextReplacer :data="theme.forum.comment.commentAfterLogin">
+          <DynamicTextReplacer :data="message.forum.comment.commentAfterLogin">
             <template #login>
               <a class="vp-link" href="#login-alert">
-                [{{ theme.forum.auth.login }}]
+                [{{ message.forum.auth.login }}]
               </a>
             </template>
           </DynamicTextReplacer>
@@ -40,7 +40,7 @@
         <div class="btn flex">
           <Button :disabled="loading" @click="submit()">
             <ReloadIcon class="w-4 h-4 mr-2 animate-spin" v-if="loading" />
-            {{ theme.ui.button.submit }}
+            {{ message.ui.button.submit }}
           </Button>
         </div>
       </div>
@@ -56,11 +56,11 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { ReloadIcon } from '@radix-icons/vue'
 import { useFocus, useTextareaAutosize } from '@vueuse/core'
-import { useData } from 'vitepress'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 
-const { theme } = useData()
+const { message } = useLocalized()
 
 import UserAvatar from '@/components/UserAvatar.vue'
 
@@ -96,14 +96,14 @@ const submit = async () => {
   )
   if (error.value)
     return toast.error(
-      theme.value.forum.comment.commentFail + error.value?.message,
+      message.value.forum.comment.commentFail + error.value?.message,
     )
 
   emit('comment:submit', data)
 
   input.value = ''
   location.hash = 'reply'
-  toast.info(theme.value.forum.comment.commentSuccess)
+  toast.info(message.value.forum.comment.commentSuccess)
 }
 </script>
 

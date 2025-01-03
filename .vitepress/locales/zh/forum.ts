@@ -62,28 +62,28 @@ const forum: CustomConfig['forum'] = {
       qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
     },
     teamBlog: {
-      title: '团队博客',
+      text: '团队博客',
       items: [
         {
-          title: '原神地图客户端更新日志',
+          text: '原神地图客户端更新日志',
           link: '#',
         },
         {
-          title: '原神地图网页版更新日志',
+          text: '原神地图网页版更新日志',
           link: '#',
         },
       ],
     },
     suggest: {
-      title: '相关推荐',
+      text: '相关推荐',
       items: [
         {
-          title: 'xxxxxxxxxxxx',
+          text: 'xxxxxxxxxxxx',
           tag: 'tag',
           link: '#',
         },
         {
-          title: 'xxxxxxxxxxxx',
+          text: 'xxxxxxxxxxxx',
           tag: 'tag',
           link: '#',
         },

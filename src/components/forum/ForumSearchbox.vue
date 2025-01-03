@@ -17,7 +17,7 @@
         type="search"
         id="default-search"
         class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-100 bg-[var(--vp-c-bg-alt)] c-[var(--vp-c-text-1)]"
-        :placeholder="theme.forum.header.search.placeholders"
+        :placeholder="message.forum.header.search.placeholder"
         maxlength="50"
         required
       />
@@ -35,19 +35,19 @@
     v-if="forumData.isSearching && !forumData.loading"
   >
     <p class="color-[var(--vp-c-text-3)] mr-2">
-      {{ theme.forum.header.search.allRelatedContentCount }}
+      {{ message.forum.header.search.allRelatedContentCount }}
     </p>
     <span>{{ forumData.topics.length }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useLocalized } from '@/hooks/useLocalized'
 import { onMounted } from 'vue'
 import { useUrlSearchParams } from '@vueuse/core'
 import { useForumData } from '../../stores/useForumData'
 
-const { theme } = useData()
+const { message } = useLocalized()
 
 const params = useUrlSearchParams('history')
 const forumData = useForumData()

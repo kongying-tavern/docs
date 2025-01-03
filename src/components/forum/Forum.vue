@@ -20,6 +20,9 @@
         <ForumAside />
       </template>
     </ForumLayout>
+    <Teleport to="body">
+      <ForumPublishTopicDialog />
+    </Teleport>
   </ClientOnly>
 </template>
 
@@ -29,7 +32,7 @@ import ForumHeader from './ForumHeader.vue'
 import ForumTopicsList from './ForumTopicsList.vue'
 import ForumLayout from './ForumLayout.vue'
 import ForumLoadState from './ForumLoadState.vue'
-import { Button } from '@/components/ui/button'
+import ForumPublishTopicDialog from './ForumPublishTopicDialog.vue'
 import { useForumData } from '../../stores/useForumData'
 import { useInfiniteScroll } from '@vueuse/core'
 
