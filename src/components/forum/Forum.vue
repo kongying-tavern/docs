@@ -40,15 +40,20 @@ const forumData = useForumData()
 
 const { refreshData, loadMore } = forumData
 
-useInfiniteScroll(
-  window,
-  () => {
-    loadMore()
-  },
-  {
-    distance: 10,
-    interval: 1500,
-    canLoadMore: () => forumData.canLoadMore,
-  },
-)
+const init = () => {
+  if (import.meta.env.SSR) return null
+  useInfiniteScroll(
+    window,
+    () => {
+      loadMore()
+    },
+    {
+      distance: 10,
+      interval: 1500,
+      canLoadMore: () => forumData.canLoadMore,
+    },
+  )
+}
+
+init()
 </script>

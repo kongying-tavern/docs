@@ -1,6 +1,6 @@
 import { issues } from '@/apis/forum/gitee'
 import { computed, reactive, ref, toRefs, watch } from 'vue'
-import { useLoadMore } from '../composables/useLoadMore'
+import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
@@ -53,9 +53,12 @@ export const useForumData = defineStore('forum-data', () => {
     loading: annLoading,
     error: annLoadError,
     runAsync: loadAnn,
-  } = useRequest(issues.getAnnouncementList)
+  } = useRequest(issues.getAnnouncementList, { manual: true })
+
+  if (!import.meta.env.SSR) loadAnn()
 
   const refreshData = async (q?: string | string[]) => {
+    if (import.meta.env.SSR) return null
     const data = await runAsync(
       {
         current: pagination.page,
@@ -214,6 +217,7 @@ export const useForumData = defineStore('forum-data', () => {
   })
 
   function getValidFilter(value?: string): FilterType | null {
+    if (import.meta.env.SSR) return null
     const filter = value || location.hash.slice(1)
     return filterSet.has(filter) ? (filter as FilterType) : null
   }
