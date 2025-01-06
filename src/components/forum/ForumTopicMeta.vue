@@ -96,6 +96,7 @@ const str = computed(() => {
   if (props.commentId == -1) return message.value.forum.comment.commentsClosed
   if (props.commentCount == -1) return message.value.forum.comment.reply
   if (props.commentCount > 0) return props.commentCount
-  return message.value.forum.comment.comment
+  if (props.type === 'topic') return message.value.forum.comment.comment
+  return message.value.forum.comment.reply
 })
 </script>

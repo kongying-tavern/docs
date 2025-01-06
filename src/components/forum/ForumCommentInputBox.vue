@@ -23,7 +23,10 @@
           v-else
           class="h-8 w-full min-h-48px h-auto text-center rounded-md p-2 line-height-[32px] cursor-text font-size-3.5 bg-[var(--vp-c-bg-soft)]"
         >
-          <DynamicTextReplacer :data="message.forum.comment.commentAfterLogin">
+          <DynamicTextReplacer
+            :data="message.forum.comment.commentAfterLogin"
+            class="line-height-[32px]"
+          >
             <template #login>
               <a class="vp-link" href="#login-alert">
                 [{{ message.forum.auth.login }}]

@@ -27,7 +27,7 @@ const { dataLoader: fetchData, data } = defineProps<{
   dataLoader: () => Promise<any>
 }>()
 
-await fetchData()
+if (!import.meta.SSR) await fetchData()
 
 const renderData = computed(() => {
   if (data) return data

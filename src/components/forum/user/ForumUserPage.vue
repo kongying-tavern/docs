@@ -53,17 +53,19 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import { ReloadIcon } from '@radix-icons/vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { ref } from 'vue'
-import { useLoadMore } from '../../../composables/useLoadMore'
+import { useLoadMore } from '@/hooks/useLoadMore'
 import ForumAside from '../ForumAside.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumLayout from '../ForumLayout.vue'
+import { watchOnce } from '@vueuse/core'
+import { toast } from 'vue-sonner'
 
 const { message } = useLocalized()
 
 const page = ref(1)
 const userAuth = useUserAuthStore()
 
-const { data, runAsync, loading, loadMore, noMore, initialData } = useLoadMore(
+const { data, runAsync, loading, error } = useLoadMore(
   issues.getUserCreatedTopics,
   {
     manual: true,
@@ -73,7 +75,7 @@ const { data, runAsync, loading, loadMore, noMore, initialData } = useLoadMore(
 const refreshData = async () => {
   if (!userAuth.isTokenValid) return (location.hash = 'login-alert')
 
-  const data = await runAsync(
+  await runAsync(
     {
       current: page.value,
       sort: 'created',
@@ -82,6 +84,10 @@ const refreshData = async () => {
     userAuth.accessToken,
   )
 }
+
+watchOnce(error, () => {
+  toast.error(message.value.forum.loadError)
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,7 @@
 <template>
-  <div class="aside-content">
+  <div
+    class="aside-content flex flex-col pb-8 min-h-[calc(100vh-(var(--vp-nav-height)+var(--vp-layout-top-height,0px)+32px))]"
+  >
     <Button
       v-if="showButton"
       class="vp-button h-11.5 rounded-full mb-6"
@@ -8,15 +10,11 @@
       <span class="i-lucide:square-pen icon-btn"></span
       >{{ message.forum.publish.title }}
     </Button>
-    <div class="selected-articles mb-4">
-      <p
-        v-if="showQrcode"
-        class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)]"
-      >
+    <div v-if="contactUs" class="selected-articles mb-4">
+      <p class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)]">
         {{ message.forum.aside.contactUs.title }}
       </p>
       <div
-        v-if="showQrcode"
         class="flex justify-between mb-2 p-1 border border-solid rounded-md border-color-[var(--vp-c-gutter)]"
       >
         <img class="mr-2 w-23 h-23" :src="qrcode" alt="QR Code" />
@@ -26,6 +24,8 @@
           {{ message.forum.aside.contactUs.desc }}
         </p>
       </div>
+    </div>
+    <div>
       <p class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)]">
         {{ message.forum.aside.teamBlog.text }}
       </p>
@@ -105,15 +105,16 @@ import { flattenWithTags, getPageHeight, getRandomElements } from './utils'
 import { useLocalized } from '@/hooks/useLocalized'
 import { computed } from 'vue'
 
-const { showButton = true, showQrcode = false } = defineProps<{
+const { showButton = true, contactUs = false } = defineProps<{
   showButton?: boolean
-  showQrcode?: boolean
+  contactUs?: boolean
 }>()
 
 const { message } = useLocalized()
 const { theme } = useData()
 
 const qrcode = useQRCode(message.value.forum.aside.contactUs.qrcodeLink)
+
 const roadomSuggest = getRandomElements(
   flattenWithTags(
     theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1),
@@ -131,14 +132,3 @@ const publishTopic = () => {
   location.hash = 'publish-topic'
 }
 </script>
-
-<style lang="scss" scoped>
-.aside-content {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(
-    100vh - (var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 32px)
-  );
-  padding-bottom: 32px;
-}
-</style>

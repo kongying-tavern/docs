@@ -11,7 +11,11 @@ interface Props {
   zoom?: ZoomOptions | false
 }
 
-const { zoom: zoomConfig = {} } = defineProps<Props>()
+const {
+  zoom: zoomConfig = {
+    background: 'var(--vp-c-bg)',
+  },
+} = defineProps<Props>()
 
 defineOptions({ inheritAttrs: false })
 

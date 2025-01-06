@@ -1,12 +1,12 @@
-import { useData } from 'vitepress'
+import { useLocalized } from '@/hooks/useLocalized'
 
 export const getTopicTypeMap = () => {
-  const { theme } = useData()
+  const { message } = useLocalized()
 
   return new Map([
-    ['FEAT', theme.value.forum.topic.type.feat],
-    ['ANN', theme.value.forum.topic.type.ann],
-    ['BUG', theme.value.forum.topic.type.bug],
-    ['SUG', theme.value.forum.topic.type.sug],
+    ['FEAT', message.value.forum.topic.type.feat],
+    ['ANN', message.value.forum.topic.type.ann],
+    ['BUG', message.value.forum.topic.type.bug],
+    ['SUG', message.value.forum.topic.type.sug],
   ])
 }

@@ -245,7 +245,7 @@ export interface CustomConfig {
         sug: string
         bug: string
         feat: string
-        ann?: string
+        ann: string
       }
       tagsInput: {
         searchTags: string

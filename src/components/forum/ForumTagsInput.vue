@@ -12,7 +12,7 @@
             :value="getLocalizedTagName(item)"
           >
             <TagsInputItemText />
-            <TagsInputItemDelete @click="handDelete(item)" />
+            <TagsInputItemDelete @click="handleDelete(item)" />
           </TagsInputItem>
         </div>
         <TagsInputInput
@@ -128,7 +128,7 @@ const handleSelect = (tag: string) => {
   }
 }
 
-const handDelete = (tag: string) => {
+const handleDelete = (tag: string) => {
   modelValue.value = modelValue.value.filter((i) => i !== tag)
 }
 

@@ -2,11 +2,11 @@
   <div class="flex">
     <div class="comment-area w-full">
       <div
-        class="body border-color-[var(--vp-c-gutter)] border-style-solid border rounded-md p-2"
+        class="body border-color-[var(--vp-c-gutter)] border-style-solid border rounded-md px-2 py-1"
       >
         <div class="editor">
           <textarea
-            class="h-8 w-full min-h-48px max-h-200px h-auto line-height-[32px] cursor-text font-size-3.5 bg-transparent resize-none"
+            class="h-8 w-full min-h-68px max-h-200px h-auto line-height-[32px] cursor-text font-size-3.5 bg-transparent resize-none"
             ref="textarea"
             v-model.trim="input"
             :maxlength="textLimit"
@@ -62,9 +62,8 @@ import type {
   UploadStatus,
   UploadUserFile,
 } from '@/components/ui/photo-wall/upload'
-import { compressImage } from './utils'
-import { useData } from 'vitepress'
 import { useLocalized } from '@/hooks/useLocalized'
+// import { compressImage } from './utils'
 
 interface Content {
   text: string

@@ -74,7 +74,7 @@ import Separator from '@/components/ui/separator/Separator.vue'
 import { ReloadIcon } from '@radix-icons/vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { type Ref, computed, ref } from 'vue'
-import { useLoadMore } from '../../../composables/useLoadMore'
+import { useLoadMore } from '@/hooks/useLoadMore'
 import ForumCommentInputBox from '../ForumCommentInputBox.vue'
 import ForumTopicComment from '../ForumTopicComment.vue'
 

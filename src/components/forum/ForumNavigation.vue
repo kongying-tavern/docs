@@ -15,8 +15,10 @@
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
-        <NavigationMenuTrigger class="color-[var(--vp-c-text-3)]">
-          {{ theme.forum.header.navigation.faq.title }}
+        <NavigationMenuTrigger
+          class="color-[var(--vp-c-text-3)] bg-transparent"
+        >
+          {{ message.forum.header.navigation.faq.title }}
         </NavigationMenuTrigger>
         <NavigationMenuContent class="z-index-999999">
           <ul
@@ -54,13 +56,15 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useData } from 'vitepress'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { flattenWithTags } from './utils'
 import { useForumData, type FilterType } from '../../stores/useForumData'
 import { storeToRefs } from 'pinia'
-import { load } from 'js-yaml'
+import { useHashChecker } from '@/hooks/useHashChecker'
 
+const { message } = useLocalized()
 const { theme } = useData()
 
 const faq = flattenWithTags([
@@ -75,17 +79,17 @@ const menuItems: {
   {
     id: 'ALL',
     hash: 'ALL',
-    label: theme.value.forum.header.navigation.allFeedback,
+    label: message.value.forum.header.navigation.allFeedback,
   },
   {
     id: 'BUG',
     hash: 'BUG',
-    label: theme.value.forum.header.navigation.bugFeedback,
+    label: message.value.forum.header.navigation.bugFeedback,
   },
   {
     id: 'FEAT',
     hash: 'FEAT',
-    label: theme.value.forum.header.navigation.featFeedback,
+    label: message.value.forum.header.navigation.featFeedback,
   },
 ]
 

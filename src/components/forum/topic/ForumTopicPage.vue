@@ -29,12 +29,13 @@
           <article
             id="content"
             class="font-size-4 line-height-6 mt-3.5 opacity-99 overflow-hidden whitespace-pre-wrap"
-            v-html="sanitizeHtml(markdownit().render(data.contentRaw))"
+            v-html="renderedContent"
           ></article>
 
           <ForumTagList class="my-2" :data="data?.tags" />
-          <div v-if="data.content.images" class="topic-content-img flex mt-4">
-            <img
+
+          <div v-if="data.content.images" class="topic-content-img flex mt-6">
+            <Image
               v-for="(img, index) in data.content.images"
               :key="index"
               :src="img.src"
@@ -56,7 +57,7 @@
       </template>
 
       <template #aside>
-        <ForumAside :show-button="false" :show-qrcode="true" />
+        <ForumAside :show-button="false" :contact-us="true" />
       </template>
     </ForumLayout>
   </ClientOnly>
@@ -65,6 +66,7 @@
 <script setup lang="ts">
 import { issues } from '@/apis/forum/gitee'
 import DocsBreadcrumb from '@/components/DocsBreadcrumb.vue'
+import Image from '@/components/ui/image/Image.vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import markdownit from 'markdown-it'
 import { computed, watchEffect } from 'vue'
@@ -78,9 +80,9 @@ import ForumTopicPageCommentArea from './ForumTopicPageCommentArea.vue'
 import { sanitizeHtml } from '../../../composables/sanitizeHtml'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 import ForumLayout from '../ForumLayout.vue'
-import { watch } from 'vue'
 import { getTopicTypeMap } from '../../../composables/getTopicTypeMap'
 import { useLocalized } from '@/hooks/useLocalized'
+import { watchOnce } from '@vueuse/core'
 
 const userInfo = useUserInfoStore()
 const number = getTopicNumber()
@@ -95,11 +97,14 @@ const { data, run, loading, mutate, error } = useRequest(issues.getTopic, {
 })
 
 const isTeamMember = computed(() => userInfo.isTeamMember(data.value?.user.id))
+const renderedContent = computed(() =>
+  sanitizeHtml(markdownit().render(data.value?.contentRaw || '')),
+)
 
 if (sessionData) {
   mutate(sessionData)
   setPageTitle(data.value?.title, topicTypeMap.get(data.value?.type || ''))
-} else {
+} else if (!import.meta.env.SSR) {
   run(number)
 }
 
@@ -108,7 +113,7 @@ watchEffect(() => {
   setPageTitle(data.value?.title, topicTypeMap.get(data.value?.type || ''))
 })
 
-watch(error, () => {
+watchOnce(error, () => {
   if (!error.value) return
   toast.error(message.value.forum.loadError + error.value.message)
 })
