@@ -21,7 +21,7 @@
       </template>
     </ForumLayout>
     <Teleport to="body">
-      <ForumPublishTopicDialog />
+      <ForumPublishTopicForm />
     </Teleport>
   </ClientOnly>
 </template>
@@ -32,7 +32,7 @@ import ForumHeader from './ForumHeader.vue'
 import ForumTopicsList from './ForumTopicsList.vue'
 import ForumLayout from './ForumLayout.vue'
 import ForumLoadState from './ForumLoadState.vue'
-import ForumPublishTopicDialog from './ForumPublishTopicDialog.vue'
+import ForumPublishTopicForm from './ForumPublishTopicForm.vue'
 import { useForumData } from '../../stores/useForumData'
 import { useInfiniteScroll } from '@vueuse/core'
 
