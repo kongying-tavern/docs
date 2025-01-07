@@ -5,6 +5,9 @@
   @include set-badge(3, 'suggest');
 
   // 已满群
+  @include set-badge(9, 'warning');
+  @include set-badge(15, 'warning');
+  @include set-badge(16, 'warning');
   @include set-badge(17, 'warning');
 
   // 被封禁的群
