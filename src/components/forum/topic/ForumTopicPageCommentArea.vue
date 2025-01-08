@@ -33,29 +33,8 @@
           @comment:submit="handleCommentSubmit"
         />
       </ForumTopicComment>
-      <Button
-        class="vp-link flex w-full m-6"
-        variant="link"
-        :disabled="loading"
-        @click="loadMore"
-        v-if="!noMore && data.length !== 0"
-      >
-        <ReloadIcon
-          class="w-4 h-4 mr-2"
-          :class="loading ? 'animate-spin' : ''"
-        />
-        {{ message.forum.comment.loadMoreComment }}
-      </Button>
-      <p
-        v-else-if="!loading"
-        class="inline-block w-full my-8 text-center c-[var(--vp-c-text-3)] font-size-3"
-      >
-        {{
-          data.length === 0
-            ? message.forum.comment.noComment
-            : message.forum.comment.noMoreComment
-        }}
-      </p>
+
+      <ForumLoadState :loading="loading" :text="loadStateMessage" />
     </div>
     <Separator
       v-if="current === 1 && loading"
@@ -69,14 +48,14 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { issues } from '@/apis/forum/gitee'
-import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { ReloadIcon } from '@radix-icons/vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { type Ref, computed, ref } from 'vue'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import ForumCommentInputBox from '../ForumCommentInputBox.vue'
 import ForumTopicComment from '../ForumTopicComment.vue'
+import ForumLoadState from '../ForumLoadState.vue'
+import { useScrollToHash } from '~/composables/useScrollToHash'
 
 const props = defineProps<{
   topicId: string
@@ -84,6 +63,10 @@ const props = defineProps<{
 }>()
 
 const { message } = useLocalized()
+
+useScrollToHash({
+  offset: 20,
+})
 
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 const replyCommentID = ref<number | string | null>(null)
@@ -115,6 +98,14 @@ const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) => {
   if (!submittedComment.value) return
   userSubmittedComment.value.push(submittedComment.value)
 }
+
+const loadStateMessage = computed(() => {
+  if (!noMore && data.value.length !== 0)
+    return message.value.forum.comment.loadMoreComment
+  if (data.value.length === 0 && !loading.value)
+    return message.value.forum.comment.noComment
+  return message.value.forum.comment.noMoreComment
+})
 </script>
 
 <style>

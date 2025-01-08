@@ -35,7 +35,7 @@ import {
 } from '@/components/ui/select'
 import ForumNavigation from './ForumNavigation.vue'
 import ForumSearchbox from './ForumSearchbox.vue'
-import { useForumData } from '../../stores/useForumData'
+import { useForumData } from '~/stores/useForumData'
 import { useLocalized } from '@/hooks/useLocalized'
 
 const { message } = useLocalized()

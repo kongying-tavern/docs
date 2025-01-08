@@ -1,6 +1,6 @@
 <template>
   <div
-    class="topic-comment-item rounded-md flex mt-2"
+    class="topic-comment-item rounded-md flex mt-.5"
     :class="style[size].container"
   >
     <div :class="style[size].leftWidth">
@@ -37,16 +37,12 @@
       </div>
 
       <div class="comment-info mt-2">
-        <ForumTopicMeta
-          type="comment"
-          :topic-id="topicId"
+        <ForumCommentMeta
           :created-at="createdAt"
           :comment-id="commentId"
           :author-id="author.id"
-          :comment-count="commentCount"
           :comment-click-handler="commentClickHandler"
-        >
-        </ForumTopicMeta>
+        />
       </div>
 
       <slot></slot>
@@ -59,8 +55,8 @@ import type ForumAPI from '@/apis/forum/api'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { computed } from 'vue'
 import ForumRuleBadge from './ForumRuleBadge.vue'
-import ForumTopicMeta from './ForumTopicMeta.vue'
 import { Image } from '@/components/ui/image'
+import ForumCommentMeta from './ForumCommentMeta.vue'
 
 const { size = 'normal', ...props } = defineProps<{
   body: ForumAPI.Content
@@ -68,11 +64,10 @@ const { size = 'normal', ...props } = defineProps<{
   topicAuthorId: string | number
   createdAt: string
   commentId: string | number
-  commentCount?: number
   author: ForumAPI.User
-  commentClickHandler?: () => void
   tags?: ForumAPI.TopicTags
   size?: 'small' | 'normal'
+  commentClickHandler: Function
 }>()
 
 const style = {

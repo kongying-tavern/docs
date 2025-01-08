@@ -7,8 +7,10 @@ const forum: CustomConfig['forum'] = {
   topic: {
     official: '官方',
     author: '作者',
+    showMore: '显示更多',
     menu: {
       giteeLink: 'Gitee链接',
+      toOriginal: '转到原文',
       hideFeedback: {
         text: '隐藏反馈',
         success: '反馈隐藏成功',
@@ -23,6 +25,11 @@ const forum: CustomConfig['forum'] = {
         text: '关闭反馈',
         success: '反馈关闭成功',
         fail: '反馈关闭失败',
+      },
+      copyLink: {
+        text: '复制链接',
+        success: '已复制',
+        fail: '复制失败',
       },
     },
     type: {

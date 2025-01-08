@@ -105,6 +105,7 @@ export interface CustomConfig {
     topic: {
       official: string
       author: string
+      showMore: string
       state: {
         open: string
         closed: string
@@ -119,6 +120,7 @@ export interface CustomConfig {
       }
       menu: {
         giteeLink: string
+        toOriginal: string
         hideFeedback: {
           text: string
           success: string
@@ -130,6 +132,11 @@ export interface CustomConfig {
           fail: string
         }
         closeFeedback: {
+          text: string
+          success: string
+          fail: string
+        }
+        copyLink: {
           text: string
           success: string
           fail: string

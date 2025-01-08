@@ -17,6 +17,7 @@
     "verbatimModuleSyntax": true,
     "paths": {
       "@/*": ["./.vitepress/theme/*"],
+      "~/*": ["./src/*"],
       "vite": ["./node_modules/vite"]
     }
   },

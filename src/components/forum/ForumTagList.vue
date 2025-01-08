@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getTopicTagMap } from '../../composables/getTopicTagMap'
+import { getTopicTagMap } from '~/composables/getTopicTagMap'
 
 defineProps<{
   data: string[]

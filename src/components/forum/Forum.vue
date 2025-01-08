@@ -7,7 +7,7 @@
 
       <template #content>
         <Suspense>
-          <ForumTopicsList :data-loader="refreshData"></ForumTopicsList>
+          <ForumTopicsList></ForumTopicsList>
         </Suspense>
 
         <ForumLoadState
@@ -33,12 +33,12 @@ import ForumTopicsList from './ForumTopicsList.vue'
 import ForumLayout from './ForumLayout.vue'
 import ForumLoadState from './ForumLoadState.vue'
 import ForumPublishTopicForm from './ForumPublishTopicForm.vue'
-import { useForumData } from '../../stores/useForumData'
+import { useForumData } from '~/stores/useForumData'
 import { useInfiniteScroll } from '@vueuse/core'
 
 const forumData = useForumData()
 
-const { refreshData, loadMore } = forumData
+const { loadMore } = forumData
 
 const init = () => {
   if (import.meta.env.SSR) return null

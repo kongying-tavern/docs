@@ -25,8 +25,14 @@ export const useUserInfoStore = defineStore('user-info', () => {
       info.value = await getUser(userAuthStore.auth.accessToken)
     }
   }
-  const isTeamMember = (id = info.value?.id) =>
-    Boolean(teamMembersID.value?.list!.find((val) => id === val))
+
+  const isTeamMember = (id?: string | number) => {
+    id ??= info.value?.id
+    return computed(
+      () => teamMembersID.value?.list!.findIndex((val) => id === val) !== -1,
+    )
+  }
+
   const refreshTeamMembersID = async () => {
     if (import.meta.env.SSR) return
     if (

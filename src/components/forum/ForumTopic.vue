@@ -3,11 +3,11 @@
     <div
       :class="[
         topic.type,
-        'forum-topic-item w-full p-b-4 p-t-6 border-b-1 border-[var(--vp-c-divider)]',
+        'forum-topic-item w-full p-b-2 p-t-6 border-b-1 border-[var(--vp-c-divider)]',
       ]"
     >
       <div class="topic-content">
-        <a @click="sessionCacheRedirect()" target="_blank">
+        <a @click="sessionCacheRedirect(topic)" target="_blank">
           <h4 class="font-size-5 break-words flex justify-between">
             <p>
               {{ title }}
@@ -21,17 +21,30 @@
             </p>
           </h4>
         </a>
-        <a @click="sessionCacheRedirect()" target="_blank">
-          <!-- 非公告类型限制在三行以内 -->
+        <a @click="sessionCacheRedirect(topic)" target="_blank">
           <article
-            class="font-size-4 mt-3.5 pr-4 opacity-99 overflow-hidden"
-            :class="isAnn ? 'whitespace-pre-wrap' : 'line-clamp-3 max-h-30'"
-            v-text="topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '')"
-          ></article>
+            ref="text"
+            class="font-size-4 mt-3.5 pr-4 opacity-99 overflow-hidden whitespace-pre-wrap transition-all duration-300"
+            :class="{
+              // 'line-clamp-4': !(isExpanded || isAnn),
+            }"
+          >
+            {{ renderText }}
+            <Button
+              v-if="!isAnn && hasOverflow && !isExpanded"
+              class="px-0 font-size-4"
+              variant="link"
+              @click.stop="toggleExpand()"
+            >
+              {{ message.forum.topic.showMore }}
+            </Button>
+          </article>
         </a>
 
+        <ForumTagList class="mb-4" :data="topic.tags" />
+
         <div
-          class="topic-content-img flex mt-4 cursor-pointer"
+          class="topic-content-img flex mt-2 cursor-pointer"
           v-if="topic.content?.images"
         >
           <Image
@@ -42,23 +55,21 @@
             class="max-h-24 mr-4 rounded-sm"
           />
         </div>
-
-        <ForumTagList class="my-2" :data="topic.tags" />
       </div>
       <div class="topic-info mt-4">
         <ForumTopicMeta
-          type="topic"
           :topic-id="topic.id"
           :created-at="topic.createdAt"
           :comment-count="topic.commentCount"
           :comment-id="isAnn ? -1 : 1"
           :author-id="topic.user.id"
+          :commentClickHandler="() => sessionCacheRedirect(topic, 'replay')"
         ></ForumTopicMeta>
       </div>
-      <div class="topic-comment" v-if="showComment && topic.importantComments">
+      <div class="topic-comment" v-if="showComment && topic.relatedComments">
         <ForumTopicComment
           class="bg-[var(--vp-c-bg-soft)] px-4 first:mt-4"
-          v-for="comment in topic.importantComments.slice(0, 1)"
+          v-for="comment in topic.relatedComments.slice(0, 1)"
           :comment-count="-1"
           :comment-id="comment.id"
           :created-at="comment.createdAt"
@@ -67,6 +78,9 @@
           :body="comment.content"
           :author="comment.author"
           size="small"
+          :commentClickHandler="
+            () => sessionCacheRedirect(topic, 'reply-' + comment.id)
+          "
         >
         </ForumTopicComment>
       </div>
@@ -77,19 +91,23 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { withBase } from 'vitepress'
 import { computed } from 'vue'
 import ForumRuleBadge from './ForumRuleBadge.vue'
 import ForumTagList from './ForumTagList.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
 import ForumTopicMeta from './ForumTopicMeta.vue'
 import { Image } from '@/components/ui/image'
-import { getTopicTypeMap } from '../../composables/getTopicTypeMap'
+import { Button } from '@/components/ui/button'
+import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
+import { useToggle } from '@vueuse/core'
+import { useLocalized } from '@/hooks/useLocalized'
+import { sessionCacheRedirect } from '~/composables/sessionCacheRedirect'
 
 const userInfo = useUserInfoStore()
 const topicTypeMap = getTopicTypeMap()
+const { message } = useLocalized()
 
-const props = defineProps<{
+const { title, author, topic } = defineProps<{
   title: string
   content: ForumAPI.Content
   author: ForumAPI.User
@@ -97,20 +115,23 @@ const props = defineProps<{
   comment?: ForumAPI.Comment
 }>()
 
-const isTeamMember = computed(() => userInfo.isTeamMember(props.author.id))
-const isAnn = computed(() => props.topic.type === 'ANN')
-const showComment = computed(
-  () => props.topic.importantComments && props.topic.type !== 'ANN',
+const [isExpanded, toggleExpand] = useToggle()
+
+const renderText = computed(() => {
+  if (isAnn.value) return topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '')
+  return topic.contentRaw
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .slice(0, isExpanded.value ? undefined : 180)
+})
+
+const hasOverflow = computed(
+  () => topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '').length > 180,
 )
-
-const sessionCacheRedirect = (hash?: string) => {
-  if (props.topic.type === 'ANN') return
-  sessionStorage.setItem('issue-info', JSON.stringify(props.topic))
-
-  window.open(
-    withBase(`./topic?number=${props.topic.id}${hash ? `#${hash}` : ''}`),
-  )
-}
+const isTeamMember = computed(() => userInfo.isTeamMember(author.id))
+const isAnn = computed(() => topic.type === 'ANN')
+const showComment = computed(
+  () => topic.relatedComments && topic.type !== 'ANN',
+)
 </script>
 
 <style>

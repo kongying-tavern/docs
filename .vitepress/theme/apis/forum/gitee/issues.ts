@@ -57,7 +57,7 @@ export const getTopics = async (
     if (topic.type === 'ANN') return
 
     data.push({
-      importantComments: extractOfficialAndAuthorComments(val, comments),
+      relatedComments: extractOfficialAndAuthorComments(val, comments),
       ...topic,
     })
   })
@@ -77,6 +77,7 @@ export const getAnnouncementList = async (): Promise<ForumAPI.Topic[]> => {
         state: 'open',
         labels: ['ANN'],
       },
+      useCache: true,
     },
   )
 

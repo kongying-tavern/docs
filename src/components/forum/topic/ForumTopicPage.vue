@@ -75,19 +75,20 @@ import { toast } from 'vue-sonner'
 import ForumAside from '../ForumAside.vue'
 import ForumRuleBadge from '../ForumRuleBadge.vue'
 import ForumTagList from '../ForumTagList.vue'
-import { getIssueInfoFromSession, getTopicNumber, setPageTitle } from '../utils'
+import { getTopicNumber, setPageTitle } from '../utils'
 import ForumTopicPageCommentArea from './ForumTopicPageCommentArea.vue'
-import { sanitizeHtml } from '../../../composables/sanitizeHtml'
+import { sanitizeHtml } from '~/composables/sanitizeHtml'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 import ForumLayout from '../ForumLayout.vue'
-import { getTopicTypeMap } from '../../../composables/getTopicTypeMap'
+import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { useLocalized } from '@/hooks/useLocalized'
 import { watchOnce } from '@vueuse/core'
+import { useSharedTopicInfo } from '~/composables/sharedTopicInfo'
 
 const userInfo = useUserInfoStore()
 const number = getTopicNumber()
-const sessionData = getIssueInfoFromSession()
 const topicTypeMap = getTopicTypeMap()
+const sharedTopicInfo = useSharedTopicInfo()
 
 const { message, formatDate } = useLocalized()
 
@@ -101,9 +102,8 @@ const renderedContent = computed(() =>
   sanitizeHtml(markdownit().render(data.value?.contentRaw || '')),
 )
 
-if (sessionData) {
-  mutate(sessionData)
-  setPageTitle(data.value?.title, topicTypeMap.get(data.value?.type || ''))
+if (sharedTopicInfo.value) {
+  mutate(sharedTopicInfo.value)
 } else if (!import.meta.env.SSR) {
   run(number)
 }

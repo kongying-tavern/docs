@@ -55,8 +55,6 @@ export const useForumData = defineStore('forum-data', () => {
     runAsync: loadAnn,
   } = useRequest(issues.getAnnouncementList, { manual: true })
 
-  if (!import.meta.env.SSR) loadAnn()
-
   const refreshData = async (q?: string | string[]) => {
     if (import.meta.env.SSR) return null
     const data = await runAsync(
@@ -221,6 +219,8 @@ export const useForumData = defineStore('forum-data', () => {
     const filter = value || location.hash.slice(1)
     return filterSet.has(filter) ? (filter as FilterType) : null
   }
+
+  if (!import.meta.env.SSR) Promise.all([loadAnn(), refreshData()])
 
   watch(
     loading,

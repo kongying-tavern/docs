@@ -7,8 +7,10 @@ const forum: CustomConfig['forum'] = {
   topic: {
     official: 'Official',
     author: 'Author',
+    showMore: 'Show More',
     menu: {
       giteeLink: 'Gitee Link',
+      toOriginal: 'Go To Original',
       hideFeedback: {
         text: 'Hide Feedback',
         success: 'Feedback Hidden',
@@ -23,6 +25,11 @@ const forum: CustomConfig['forum'] = {
         text: 'Close Feedback',
         success: 'Feedback Closed',
         fail: 'Failed to Close Feedback',
+      },
+      copyLink: {
+        text: 'Copy Link',
+        success: 'Copied',
+        fail: 'Copy Failed',
       },
     },
     type: {

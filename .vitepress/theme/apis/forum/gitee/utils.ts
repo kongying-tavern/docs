@@ -1,5 +1,5 @@
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { STATE_TAGS, SUPPORT_TOPIC_TYPE, issues } from '.'
+import { STATE_TAGS, TOPIC_TYPE, issues } from '.'
 import type ForumAPI from '../api'
 
 export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
@@ -82,7 +82,7 @@ function getTopicTypeFromTitle(title: string): {
 } {
   const match = title
     .toLocaleUpperCase()
-    .match(RegExp(`^(${SUPPORT_TOPIC_TYPE.join('|')}):`))
+    .match(RegExp(`^(${TOPIC_TYPE.join('|')}):`))
 
   if (match) {
     const prefix = match[0].replace(':', '') as ForumAPI.TopicType

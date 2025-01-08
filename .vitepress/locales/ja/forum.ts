@@ -7,8 +7,10 @@ const forum: CustomConfig['forum'] = {
   topic: {
     official: '公式',
     author: '作成者',
+    showMore: 'もっと見る',
     menu: {
       giteeLink: 'Giteeリンク',
+      toOriginal: '元のテキストに移動',
       hideFeedback: {
         text: 'フィードバックを隠す',
         success: '隠しました',
@@ -23,6 +25,11 @@ const forum: CustomConfig['forum'] = {
         text: 'フィードバックを閉じる',
         success: '閉じました',
         fail: '閉じるのに失敗しました',
+      },
+      copyLink: {
+        text: 'リンクをコピー',
+        success: 'コピーされました',
+        fail: 'コピーに失敗しました',
       },
     },
     type: {

@@ -42,7 +42,7 @@ export namespace ForumAPI {
     user: ForumAPI.User
     state: ForumAPI.TopicState
     type: ForumAPI.TopicType
-    importantComments?: Comment[] | null
+    relatedComments?: Comment[] | null
     createdAt: string
     updatedAt: string
   }

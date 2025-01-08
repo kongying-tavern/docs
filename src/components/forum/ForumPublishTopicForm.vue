@@ -20,15 +20,16 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { VisuallyHidden } from 'radix-vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed, readonly, ref, watch } from 'vue'
+import { computed, readonly, ref, watch, type ComputedRef } from 'vue'
 import ForumTagsInput from './ForumTagsInput.vue'
 import { ReloadIcon } from '@radix-icons/vue'
-import type ForumAPI from '@/apis/forum/api'
 import { useHashChecker } from '@/hooks/useHashChecker'
 import ForumContentInputBox from './ForumContentInputBox.vue'
-import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
-import { useForumData } from '../../stores/useForumData'
+import { useForumData } from '~/stores/useForumData'
+
+import type ForumAPI from '@/apis/forum/api'
+import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
 
 const { message } = useLocalized()
 
@@ -82,7 +83,7 @@ type FieldConfig = {
 type TabsConfig = {
   value: Exclude<ForumAPI.TopicType, null>
   label: string
-  condition: boolean
+  condition: boolean | ComputedRef<Boolean>
   fields: {
     title: FieldConfig
     type: FieldConfig

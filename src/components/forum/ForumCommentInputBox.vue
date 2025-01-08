@@ -9,7 +9,6 @@
     </div>
     <div class="comment-area ml-4 w-[calc(100%-40px)]">
       <div class="body">
-        <!-- TODO: 字数表现 -->
         <textarea
           v-if="userAuth.isTokenValid"
           ref="textarea"

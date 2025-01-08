@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between font-size-3 mr-2">
     <time :datetime="createdAt" class="color-[--vp-c-text-3] lh-[36px]">
-      {{ formatDate(createdAt || '1980-1-1') }}
+      {{ formattedDate }}
     </time>
 
     <div class="topic-info-list flex items-center cursor-default">
@@ -16,34 +16,21 @@
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" class="w-23">
-          <DropdownMenuItem @click="openGiteeLink">
-            <span class="i-lucide:external-link"></span>
-            <span>{{ menuLabels.giteeLink }}</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            v-if="isSupported"
-            @click="copy(getRedirectUrlText(topicId, undefined, false))"
-          >
-            <span class="i-lucide:clipboard"></span>
-            <span v-if="!copied">{{ menuLabels.copyLink.text }}</span>
-            <span v-else>{{ menuLabels.copyLink.success }}</span>
+          <DropdownMenuItem @click="handleCommentClick">
+            <span class="i-lucide:link"></span>
+            <span>{{ menuLabels.toOriginal }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             v-if="hasPermission(authorId)"
-            @click="handleCloseTopic"
+            @click="handleDeleteComment"
           >
             <span class="i-lucide:trash-2 icon-btn"></span>
-            <span>{{ menuLabels.closeFeedback.text }}</span>
+            <span>{{ menuLabels.deleteComment.text }}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Button
-        variant="ghost"
-        :disabled="isClosedComment"
-        :class="{ 'cursor-default': isClosedComment }"
-        @click="handleCommentClick"
-      >
+      <Button variant="ghost" @click="handleCommentClick">
         <span class="i-lucide:message-circle icon-btn"></span>
         {{ displayText }}
       </Button>
@@ -53,7 +40,6 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { issues } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -64,40 +50,32 @@ import {
 import { useForumData } from '~/stores/useForumData'
 import { useLocalized } from '@/hooks/useLocalized'
 import { hasPermission } from '~/composables/hasPermission'
-import { useClipboard } from '@vueuse/core'
-import { getRedirectUrlText } from '~/composables/sessionCacheRedirect'
 
 const { message, formatDate } = useLocalized()
-const { closeTopic } = useForumData()
+const menuLabels = ref(message.value.forum.topic.menu)
+
+const { deleteComment } = useForumData()
 
 const {
   createdAt,
-  topicId,
+  authorId,
   commentCount = 0,
   commentId,
   commentClickHandler,
 } = defineProps<{
   createdAt: string
-  topicId: string | number
   commentCount?: number
   commentId: number | string
   authorId: number | string
   commentClickHandler: Function
 }>()
 
-const { copy, copied, isSupported } = useClipboard()
-
-const menuLabels = ref(message.value.forum.topic.menu)
-
-const isClosedComment = computed(() => commentId === -1)
 const displayText = computed(() => {
-  if (isClosedComment.value) return message.value.forum.comment.commentsClosed
-  if (commentCount === -1) return message.value.forum.comment.reply
   if (commentCount > 0) return commentCount
-  return message.value.forum.comment.comment
+  return message.value.forum.comment.reply
 })
 
-const openGiteeLink = () => issues.openTopicOnGitee(topicId!)
-const handleCloseTopic = () => closeTopic(topicId!)
-const handleCommentClick = () => commentClickHandler
+const formattedDate = computed(() => formatDate(createdAt || '1980-1-1'))
+const handleDeleteComment = () => deleteComment(commentId)
+const handleCommentClick = (event: Event) => commentClickHandler(event)
 </script>

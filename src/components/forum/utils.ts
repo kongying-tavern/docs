@@ -1,4 +1,3 @@
-import type ForumAPI from '@/apis/forum/api'
 import { catchError } from '@/apis/utils'
 import { useUrlSearchParams } from '@vueuse/core'
 
@@ -7,13 +6,6 @@ export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   labels.map((val) => arr.push(val.name))
 
   return arr
-}
-
-export function getIssueInfoFromSession(): ForumAPI.Topic | null {
-  if (import.meta.env.SSR) return null
-  const issueInfo = sessionStorage.getItem('issue-info')
-  sessionStorage.removeItem('issue-info')
-  return issueInfo ? JSON.parse(issueInfo) : null
 }
 
 export function replaceAtMentions(text: string): string {
@@ -27,6 +19,7 @@ export function replaceAtMentions(text: string): string {
 }
 
 export function setPageTitle(newTitle = '', prefix?: string): void {
+  if (import.meta.env.SSR) return
   const title = document.title.split('|')
   document.title = `${prefix ? `${prefix} -` : ''} ${newTitle} | ${title[1]}`
 }

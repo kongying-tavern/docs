@@ -60,7 +60,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useData } from 'vitepress'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { flattenWithTags } from './utils'
-import { useForumData, type FilterType } from '../../stores/useForumData'
+import { useForumData, type FilterType } from '~/stores/useForumData'
 import { storeToRefs } from 'pinia'
 import { useHashChecker } from '@/hooks/useHashChecker'
 

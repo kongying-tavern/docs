@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-block" v-if="type">
+  <div class="inline-block align-middle mb-1" v-if="type">
     <span
       v-if="type === 'official'"
       class="inline-flex items-center rounded-md px-1.5 pb-0.5 pt-0.75 align-middle text-xs font-semibold transition-colors bg-[#c9353f1a] c-[#d8111b] ml-0.5 scale-80"

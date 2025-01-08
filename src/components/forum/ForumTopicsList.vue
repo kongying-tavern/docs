@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import ForumTopic from './ForumTopic.vue'
-import { useForumData } from '../../stores/useForumData'
+import { useForumData } from '~/stores/useForumData'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
@@ -24,10 +24,10 @@ const userInfo = useUserInfoStore()
 
 const { dataLoader: fetchData, data } = defineProps<{
   data?: ForumAPI.Topic[]
-  dataLoader: () => Promise<any>
+  dataLoader?: () => Promise<any>
 }>()
 
-if (!import.meta.SSR) await fetchData()
+if (!import.meta.SSR && fetchData) await fetchData()
 
 const renderData = computed(() => {
   if (data) return data

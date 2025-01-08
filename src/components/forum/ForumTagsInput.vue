@@ -85,7 +85,7 @@ import {
 import { useVModel } from '@vueuse/core'
 import { computed, onMounted, ref } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { getTopicTagMap } from '../../composables/getTopicTagMap'
+import { getTopicTagMap } from '~/composables/getTopicTagMap'
 
 import type { HTMLAttributes } from 'vue'
 

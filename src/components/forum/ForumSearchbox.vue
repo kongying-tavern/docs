@@ -45,7 +45,7 @@
 import { useLocalized } from '@/hooks/useLocalized'
 import { onMounted } from 'vue'
 import { useUrlSearchParams } from '@vueuse/core'
-import { useForumData } from '../../stores/useForumData'
+import { useForumData } from '~/stores/useForumData'
 
 const { message } = useLocalized()
 

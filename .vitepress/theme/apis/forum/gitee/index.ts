@@ -19,7 +19,7 @@ export const GITEE_CLIENT_SECRET =
   '490930078ce5da2580a193af163c275c670567e70a93fbe0ca39e15faa8f5271'
 export const GITEE_OWNER = 'KYJGYSDT'
 export const GITEE_REPO = 'Feedback'
-export const SUPPORT_TOPIC_TYPE = ['BUG', 'FEAT', 'SUG', 'ANN']
+export const TOPIC_TYPE = ['BUG', 'FEAT', 'SUG', 'ANN']
 export const STATE_TAGS = new Set([
   'WEB-FEEDBACK',
   'GOOD-ISSUE',
@@ -31,7 +31,6 @@ export const STATE_TAGS = new Set([
   'EN',
   'JA',
 ])
-export const PaginationPageSize = 20
 
 export const fetcher = ky.create({
   prefixUrl: PREFIX_URL,
@@ -41,9 +40,19 @@ export const fetcher = ky.create({
     beforeError: [
       async (error) => {
         const { response } = error
+        const rateLimitRemaining = Number(
+          response.headers.get('x-ratelimit-remaining'),
+        )
+        const rateLimitLimit = Number(response.headers.get('x-ratelimit-limit'))
+
+        if (rateLimitRemaining === 0) {
+          error.name = ApiErrorType.RateLimitExceeded
+          error.message = `Rate limit exceeded. Limit: ${rateLimitLimit}, Remaining: ${rateLimitRemaining}`
+          return error
+        }
+
         if (response && response.body) {
-          // @ts-ignore
-          error.message = `${response.body?.message || (await response.text())}`
+          error.message = `${await response.text()}`
           error.name = `[GITEE_API_ERROR] - ${response.status}`
         }
         return error
@@ -81,7 +90,7 @@ const extractPagination = (
 const getGiteeApiPaginationParams = (
   response: KyResponse,
 ): [ForumAPI.PaginationParams, undefined] | [undefined, Error] => {
-  const [data, error] = getHeader(response, ['Total_count', 'Total_page'])
+  const [pagination, error] = getHeader(response, ['Total_count', 'Total_page'])
 
   if (error) {
     return [
@@ -94,8 +103,8 @@ const getGiteeApiPaginationParams = (
 
   return [
     {
-      total: Number(data[0]),
-      totalPage: Number(data[1]),
+      total: Number(pagination[0]),
+      totalPage: Number(pagination[1]),
     },
     undefined,
   ]
