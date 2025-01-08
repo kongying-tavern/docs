@@ -44,6 +44,8 @@ export const useForumData = defineStore('forum-data', () => {
     error,
     totalPage,
     total,
+    isFirstLoad,
+    canLoadMore,
   } = useLoadMore(issues.getTopics, {
     manual: true,
   })
@@ -181,13 +183,13 @@ export const useForumData = defineStore('forum-data', () => {
       })
     }
 
-    watch(submitLoading, () => {
+    watchOnce(submitLoading, () => {
       if (!submittedTopic.value) return
       userSubmittedTopic.value.unshift(submittedTopic.value)
       toast.success(message.value.forum.publish.publishSuccess)
     })
 
-    watch(submitError, () => {
+    watchOnce(submitError, () => {
       toast.info(message.value.forum.publish.publishFail)
     })
 
@@ -199,14 +201,6 @@ export const useForumData = defineStore('forum-data', () => {
     }
   }
 
-  const isFirstLoad = computed(() =>
-    Boolean(
-      topics.value.length === 0 && !noMore.value && !isError(error.value),
-    ),
-  )
-  const canLoadMore = computed(
-    () => !noMore.value && !isFirstLoad.value && !isError(error),
-  )
   const loadStateMessage = computed(() => {
     if (loading.value) return message.value.forum.loadMore
     if (error.value) return message.value.forum.loadError

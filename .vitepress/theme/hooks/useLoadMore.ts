@@ -1,4 +1,5 @@
 import type ForumAPI from '@/apis/forum/api'
+import { isError } from 'lodash-es'
 import { type Ref, computed, ref, watch } from 'vue'
 import {
   type PaginationOptions,
@@ -48,6 +49,12 @@ export const useLoadMore = <R, P extends unknown[] = any>(
     current.value = 1
   }
 
+  const isFirstLoad = computed(() =>
+    Boolean(data.value.length === 0 && !noMore.value && !isError(error.value)),
+  )
+  const canLoadMore = computed(
+    () => !noMore.value && !isFirstLoad.value && !isError(error),
+  )
   const noMore = computed(() => current.value >= totalPage.value)
   const loadingMore = computed(() => {
     if (current.value === 1 && loadingMore.value) return false
@@ -87,6 +94,8 @@ export const useLoadMore = <R, P extends unknown[] = any>(
     mutate,
     initialData,
     noMore,
+    isFirstLoad,
+    canLoadMore,
     ...rest,
   }
 }

@@ -1,6 +1,7 @@
 <template>
   <Transition mode="out-in">
     <div
+      :id="'topic-' + topic.id"
       :class="[
         topic.type,
         'forum-topic-item w-full p-b-2 p-t-6 border-b-1 border-[var(--vp-c-divider)]',
@@ -63,7 +64,7 @@
           :comment-count="topic.commentCount"
           :comment-id="isAnn ? -1 : 1"
           :author-id="topic.user.id"
-          :commentClickHandler="() => sessionCacheRedirect(topic, 'replay')"
+          :commentClickHandler="() => sessionCacheRedirect(topic, 'reply')"
         ></ForumTopicMeta>
       </div>
       <div class="topic-comment" v-if="showComment && topic.relatedComments">
@@ -127,7 +128,7 @@ const renderText = computed(() => {
 const hasOverflow = computed(
   () => topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '').length > 180,
 )
-const isTeamMember = computed(() => userInfo.isTeamMember(author.id))
+const isTeamMember = computed(() => userInfo.isTeamMember(author.id).value)
 const isAnn = computed(() => topic.type === 'ANN')
 const showComment = computed(
   () => topic.relatedComments && topic.type !== 'ANN',

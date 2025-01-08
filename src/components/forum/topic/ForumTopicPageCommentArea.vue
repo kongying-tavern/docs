@@ -50,12 +50,13 @@ import type ForumAPI from '@/apis/forum/api'
 import { issues } from '@/apis/forum/gitee'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { type Ref, computed, ref } from 'vue'
+import { type Ref, computed, nextTick, ref } from 'vue'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import ForumCommentInputBox from '../ForumCommentInputBox.vue'
 import ForumTopicComment from '../ForumTopicComment.vue'
 import ForumLoadState from '../ForumLoadState.vue'
-import { useScrollToHash } from '~/composables/useScrollToHash'
+import { scrollTo } from '~/composables/scrollTo'
+import { useInfiniteScroll, watchOnce } from '@vueuse/core'
 
 const props = defineProps<{
   topicId: string
@@ -63,10 +64,6 @@ const props = defineProps<{
 }>()
 
 const { message } = useLocalized()
-
-useScrollToHash({
-  offset: 20,
-})
 
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 const replyCommentID = ref<number | string | null>(null)
@@ -79,20 +76,30 @@ const toggleCommentReply = (id: number | string) => {
   replyCommentID.value = replyCommentID.value === id ? null : id
 }
 
-const {
-  loadMore,
-  data,
-  noMore,
-  unshiftData,
-  loading,
-  loadingMore,
-  total,
-  totalPage,
-  current,
-  pageSize,
-} = useLoadMore(issues.getTopicComments, {
-  defaultParams: [{ current: 1, pageSize: 20, sort: 'created' }, props.topicId],
-})
+const { data, noMore, loading, total, current, loadMore, canLoadMore, error } =
+  useLoadMore(issues.getTopicComments, {
+    defaultParams: [
+      { current: 1, pageSize: 20, sort: 'created' },
+      props.topicId,
+    ],
+  })
+
+const init = () => {
+  if (import.meta.env.SSR) return null
+  useInfiniteScroll(
+    window,
+    () => {
+      loadMore()
+    },
+    {
+      distance: 10,
+      interval: 1500,
+      canLoadMore: () => canLoadMore.value,
+    },
+  )
+}
+
+init()
 
 const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) => {
   if (!submittedComment.value) return
@@ -100,11 +107,18 @@ const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) => {
 }
 
 const loadStateMessage = computed(() => {
+  if (error.value) return message.value.forum.loadError
   if (!noMore && data.value.length !== 0)
     return message.value.forum.comment.loadMoreComment
   if (data.value.length === 0 && !loading.value)
     return message.value.forum.comment.noComment
   return message.value.forum.comment.noMoreComment
+})
+
+watchOnce(loading, async () => {
+  await nextTick()
+
+  scrollTo()
 })
 </script>
 

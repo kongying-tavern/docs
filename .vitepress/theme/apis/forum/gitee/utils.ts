@@ -133,8 +133,8 @@ export function extractOfficialAndAuthorComments(
     (comment) => comment.user.id === issue.user.id,
   )
   // 查找官方团队的评论
-  const officialComment = relatedComments.find((comment) =>
-    userInfoStore.isTeamMember(comment.user.id),
+  const officialComment = relatedComments.find(
+    (comment) => userInfoStore.isTeamMember(comment.user.id).value,
   )
 
   if (authorComment) comments.push(normalizeComment(authorComment))

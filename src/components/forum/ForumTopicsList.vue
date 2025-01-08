@@ -43,7 +43,7 @@ const renderData = computed(() => {
     ...forumData.topics.filter(
       (val) =>
         Date.now() - new Date(val.createdAt).getTime() >= 1000 * 60 * 60 * 2 ||
-        userInfo.isTeamMember(val.user.id),
+        userInfo.isTeamMember(val.user.id).value,
     ),
   ]
 })

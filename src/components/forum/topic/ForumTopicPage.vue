@@ -97,7 +97,9 @@ const { data, run, loading, mutate, error } = useRequest(issues.getTopic, {
   manual: true,
 })
 
-const isTeamMember = computed(() => userInfo.isTeamMember(data.value?.user.id))
+const isTeamMember = computed(
+  () => userInfo.isTeamMember(data.value?.user.id).value,
+)
 const renderedContent = computed(() =>
   sanitizeHtml(markdownit().render(data.value?.contentRaw || '')),
 )
