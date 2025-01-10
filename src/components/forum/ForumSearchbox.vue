@@ -12,8 +12,9 @@
         <span class="vp-icon DocSearch-Search-Icon" aria-hidden="true"></span>
       </div>
       <input
-        v-model.trim="params.q"
-        @keydown.enter.prevent="forumData.searchTopics(params.q)"
+        ref="searchInput"
+        v-model.trim="searchQuery"
+        @keydown.enter.prevent="forumData.searchTopics(searchQuery)"
         type="search"
         id="default-search"
         class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-100 bg-[var(--vp-c-bg-alt)] c-[var(--vp-c-text-1)]"
@@ -22,7 +23,7 @@
         required
       />
       <button
-        @click="forumData.searchTopics(params.q)"
+        @click="forumData.searchTopics(searchQuery)"
         type="button"
         class="text-white absolute end-2.5 bottom-2.5 focus:border-color-[--vp-c-border] focus:outline-none font-medium rounded-25 text-sm px-4 py-2 vp-button"
       >
@@ -43,17 +44,11 @@
 
 <script setup lang="ts">
 import { useLocalized } from '@/hooks/useLocalized'
-import { onMounted } from 'vue'
-import { useUrlSearchParams } from '@vueuse/core'
 import { useForumData } from '~/stores/useForumData'
+import { useSearchInput } from '~/composables/useSearchInput'
 
 const { message } = useLocalized()
+const { searchInput, searchQuery } = useSearchInput()
 
-const params = useUrlSearchParams('history')
 const forumData = useForumData()
-
-onMounted(() => {
-  if (typeof params.q !== 'string') return
-  forumData.searchTopics(params.q)
-})
 </script>

@@ -20,5 +20,11 @@ export const getRedirectUrlText = (
 ) => {
   const rl = withBase(`./topic?number=${id}${hash ? `#${hash}` : ''}`)
   if (relativeLink) return rl
-  return location.hostname + location.pathname + rl.substring(1)
+  return (
+    location.protocol +
+    '//' +
+    location.host +
+    location.pathname +
+    rl.substring(1)
+  )
 }

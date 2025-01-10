@@ -13,7 +13,7 @@ interface Props {
 
 const {
   zoom: zoomConfig = {
-    background: 'var(--vp-c-bg)',
+    background: 'transparent',
   },
 } = defineProps<Props>()
 

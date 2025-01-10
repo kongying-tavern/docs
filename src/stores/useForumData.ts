@@ -259,7 +259,6 @@ export const useForumData = defineStore('forum-data', () => {
 
   watch(isSearching, async () => {
     if (!isSearching.value) {
-      removeQueryParam('q')
       initialData()
       await refreshData()
     }
