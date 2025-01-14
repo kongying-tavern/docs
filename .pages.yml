@@ -1,0 +1,38 @@
+media:
+  input: src/public
+  output: /
+content:
+  - name: zh
+    label: Posts
+    type: collection
+    path: 'src/zh'
+    view:
+      fields: [ title, layout, description, aside, footer, docHeader, outline ]
+    fields:
+      - name: layout
+        label: layout
+        type: select
+        options:
+            values: [ doc, page, home, headline ]
+      - name: title
+        label: title
+        type: string
+      - name: description
+        label: description
+        type: rich-text
+      - name: aside
+        label: aside
+        type: boolean
+        default: false
+      - name: footer
+        label: footer
+        type: boolean
+        default: false
+      - name: docHeader
+        label: docHeader
+        type: boolean
+        default: false
+      - name: outline
+        label: outline
+        type: boolean
+        default: false
