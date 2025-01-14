@@ -3,9 +3,9 @@ media:
   output: /
 content:
   - name: zh
-    label: Posts
+    label: src
     type: collection
-    path: 'src/zh'
+    path: src
     view:
       fields: [ title, layout, description, aside, footer, docHeader, outline ]
     fields:
