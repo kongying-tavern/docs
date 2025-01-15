@@ -51,6 +51,11 @@ export const getTopics = async (
     const topic = normalizeIssue(val)
 
     if (topic.type === 'ANN') return
+    if (
+      val.labels.map((val) => val.name).includes('CLOSED') &&
+      !query.filter?.includes('CLOSED')
+    )
+      return
 
     data.push({
       relatedComments: extractOfficialAndAuthorComments(val, comments),
