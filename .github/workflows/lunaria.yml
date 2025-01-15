@@ -29,12 +29,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
-      - run: pnpm install
+      - name: Install dependencies
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: true
 
       - name: Generate Lunaria Overview
         uses: yanthomasdev/lunaria-action@v0.1.0
