@@ -22,7 +22,7 @@
               class="color-[--vp-c-text-3] font-size-3"
               :datetime="data?.createdAt"
             >
-              {{ formatDate(data?.createdAt, 'YYYY/MM/DD HH:mm') }}
+              {{ formatDate(data?.createdAt) }}
             </time>
           </div>
 
@@ -43,16 +43,23 @@
               class="max-h-24 mr-4 rounded-sm"
             />
           </div>
+
+          <ForumTopicFooter
+            prev-page-link="../"
+            :text="message.forum.topic.backToFeedbackForum"
+          />
         </div>
 
         <ForumTopicSkeletonPage v-else />
 
         <div class="vp-divider"></div>
 
-        <ForumTopicPageCommentArea
+        <ForumCommentArea
           class="mt-8"
+          repo="Feedback"
           :topic-id="number"
           :topic-author-id="data?.user.id!"
+          :comment-count="data?.commentCount"
         />
       </template>
 
@@ -76,7 +83,7 @@ import ForumAside from '../ForumAside.vue'
 import ForumRuleBadge from '../ForumRuleBadge.vue'
 import ForumTagList from '../ForumTagList.vue'
 import { getTopicNumber, setPageTitle } from '../utils'
-import ForumTopicPageCommentArea from './ForumTopicPageCommentArea.vue'
+import ForumCommentArea from '../ForumCommentArea.vue'
 import { sanitizeHtml } from '~/composables/sanitizeHtml'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 import ForumLayout from '../ForumLayout.vue'
@@ -84,6 +91,7 @@ import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { useLocalized } from '@/hooks/useLocalized'
 import { watchOnce } from '@vueuse/core'
 import { useSharedTopicInfo } from '~/composables/sharedTopicInfo'
+import ForumTopicFooter from './ForumTopicFooter.vue'
 
 const userInfo = useUserInfoStore()
 const number = getTopicNumber()

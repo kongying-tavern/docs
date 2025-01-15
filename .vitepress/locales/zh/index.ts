@@ -14,7 +14,7 @@ import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
 
-import forum from './forum'
+import Changelog from './changelog'
 import Staff from './staff'
 import Team from './team'
 import UI from './ui'
@@ -48,7 +48,8 @@ export const zhConfig: LocaleSpecificConfig<
     staff: Staff,
     team: Team,
     payment: Payment,
-    forum: forum,
+    forum: Forum,
+    changelog: Changelog,
     nav: baseHelper(Nav, C.LOCAL_BASE),
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
     footer: baseHelper(Footer, C.LOCAL_BASE),

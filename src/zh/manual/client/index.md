@@ -8,7 +8,7 @@ title: 目录
 
 ## **更新日志**
 
-- [客户端更新日志](https://support.qq.com/products/321980/blog/505884)
+- [客户端更新日志](./../../changelog/windows-client)
 
 ## **使用帮助**
 

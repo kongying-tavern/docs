@@ -11,7 +11,6 @@ import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import lightbox from './plugins/lightbox'
 
-import path from 'node:path'
 import UnoCSS from 'unocss/vite'
 
 import { enConfig } from './locales/en'
@@ -438,5 +437,11 @@ export default defineConfig({
         ],
       })
     },
+  },
+  transformPageData(pageData) {
+    pageData.frontmatter.breadcrumbs = [
+      ...pageData.relativePath.split('/').slice(0, -1),
+      pageData.title,
+    ]
   },
 })

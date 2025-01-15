@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import {
   type Preset,
   defineConfig,
@@ -12,6 +10,7 @@ import {
 } from 'unocss'
 import presetAnimations from 'unocss-preset-animations'
 import { presetShadcn } from 'unocss-preset-shadcn'
+import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
 
 export default defineConfig({
   shortcuts: [
@@ -58,7 +57,7 @@ export default defineConfig({
       scale: 1.2,
       warn: true,
       collections: {
-        custom: getCustomIcons(),
+        custom: resolveCustomIcons(),
       },
     }),
   ],
@@ -149,18 +148,3 @@ export default defineConfig({
   transformers: [transformerDirectives(), transformerVariantGroup()],
   safelist: 'prose prose-sm m-auto text-left'.split(' '),
 })
-
-function getCustomIcons() {
-  const data = {}
-
-  fs.readdirSync(
-    path.resolve(__dirname, './src/public/imgs/common/svg'),
-  ).forEach((val) => {
-    // @ts-ignore
-    data[val.replace('.svg', '')] = fs.readFileSync(
-      path.resolve(__dirname, './src/public/imgs/common/svg/' + val),
-      'utf8',
-    )
-  })
-  return data
-}

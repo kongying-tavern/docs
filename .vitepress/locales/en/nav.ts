@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'Release Notes',
-            link: 'https://support.qq.com/products/321980/blog/505884',
+            link: '/changelog/windows-clinet',
           },
         ],
       },
@@ -38,7 +38,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'Release Notes',
-            link: 'https://support.qq.com/products/321980/blog/505810',
+            link: '/changelog/web',
           },
         ],
       },
@@ -51,10 +51,10 @@ const nav: DefaultTheme.NavItem[] = [
         text: 'Feedback',
         link: '/feedback/',
       },
-      // {
-      //   text: 'Feature Requests',
-      //   link: 'https://support.qq.com/products/321980/topic-detail/2016/',
-      // },
+      {
+        text: 'Feature Requests',
+        link: '/feedback/#FEAT',
+      },
     ],
   },
   {
@@ -70,6 +70,10 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: 'Our Team',
             link: '/team',
+          },
+          {
+            text: 'Team Blog',
+            link: '/blog',
           },
         ],
       },

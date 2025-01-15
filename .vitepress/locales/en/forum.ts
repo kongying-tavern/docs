@@ -8,6 +8,7 @@ const forum: CustomConfig['forum'] = {
     official: 'Official',
     author: 'Author',
     showMore: 'Show More',
+    backToFeedbackForum: 'Back to forum',
     menu: {
       giteeLink: 'Gitee Link',
       toOriginal: 'Go To Original',
@@ -44,6 +45,8 @@ const forum: CustomConfig['forum'] = {
       rejected: 'Rejected',
       progressing: 'In Progress',
     },
+    backToTeamBlog: 'Back To Blog',
+    backToPrevPage: 'Back To Prev Page',
   },
   auth: {
     login: 'Login',
@@ -73,11 +76,11 @@ const forum: CustomConfig['forum'] = {
       items: [
         {
           text: 'Genshin Map Client Update Log',
-          link: '#',
+          link: '/changelog/windows-client',
         },
         {
           text: 'Genshin Map Web Update Log',
-          link: '#',
+          link: '/changelog/web',
         },
       ],
     },
@@ -113,7 +116,7 @@ const forum: CustomConfig['forum'] = {
       notesCount: 'Comments Count',
     },
     search: {
-      placeholder: 'Search Feedback',
+      placeholder: 'Search',
       allRelatedContentCount: 'Feedback Found',
     },
     navigation: {
@@ -194,6 +197,7 @@ const forum: CustomConfig['forum'] = {
       title: 'My Feedback',
     },
   },
+  readMore: 'Read More',
 }
 
 export default forum

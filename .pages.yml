@@ -1,0 +1,61 @@
+media:
+  input: src/public
+  output: /
+content:
+  - name: zh
+    label: src
+    type: collection
+    path: src
+  - name: release
+    label: 客户端更新日志
+    path: src/_data/releases.json
+    type: file
+    list: true
+    fields:
+      - name: version
+        label: 版本
+        type: string
+      - name: type
+        label: 版本 Prefix
+        type: select
+        options:
+          values: [Beta, Alpha, RC, Release, Stable, Test]
+      - name: date
+        label: 发布日期
+        type: date
+        options:
+          time: true
+          format: yyyy-MM-dd
+      - name: description
+        label: 描述
+        type: rich-text
+      - name: warning
+        label: 重要更改/关键版本提示
+        type: string
+      - name: features
+        label: 新增功能
+        list: true
+        type: rich-text
+      - name: fixes
+        label: 修复问题
+        list: true
+        type: rich-text
+      - name: breaking
+        label: 重大变更
+        list: true
+        type: rich-text
+      - name: optimized
+        label: 体验优化
+        list: true
+        type: rich-text
+      - name: actions
+        label: actions
+        type: object
+        fields:
+          - name: text
+            label: text
+            type: string
+          - name: link
+            label: link
+            type: string
+            pattern: ^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$

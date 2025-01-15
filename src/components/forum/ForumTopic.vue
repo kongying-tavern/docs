@@ -26,11 +26,11 @@
           <article
             ref="text"
             class="font-size-4 mt-3.5 pr-4 opacity-99 overflow-hidden whitespace-pre-wrap transition-all duration-300"
-            :class="{
-              // 'line-clamp-4': !(isExpanded || isAnn),
-            }"
           >
-            {{ renderText }}
+            <div :class="{ 'line-clamp-4': !(isExpanded || isAnn) }">
+              {{ renderText }}
+            </div>
+
             <Button
               v-if="!isAnn && hasOverflow && !isExpanded"
               class="px-0 font-size-4"
@@ -41,8 +41,6 @@
             </Button>
           </article>
         </a>
-
-        <ForumTagList class="mb-4" :data="topic.tags" />
 
         <div
           class="topic-content-img flex mt-2 cursor-pointer"
@@ -57,6 +55,9 @@
           />
         </div>
       </div>
+
+      <ForumTagList class="mt-4" :data="topic.tags" />
+
       <div class="topic-info mt-4">
         <ForumTopicMeta
           :topic-id="topic.id"

@@ -22,9 +22,17 @@ export const useSearchInput = () => {
   })
 
   onMounted(() => {
+    if (import.meta.SSR) return
     const searchParams = new URLSearchParams(window.location.search)
 
-    if (searchParams.has('q')) searchQuery.value = searchParams.get('q') || ''
+    if (searchParams.has('q')) {
+      const query = searchParams.get('q')
+      if (query) {
+        searchQuery.value = query
+        searchInput.value.dispatchEvent(createEnterEvent())
+      }
+    }
+
     if (searchParams.has('focus')) searchInput.value.focus()
   })
 
@@ -49,4 +57,13 @@ export function getDefaultThrottle() {
   } catch {
     return 320
   }
+}
+
+export function createEnterEvent() {
+  return new KeyboardEvent('keydown', {
+    key: 'Enter',
+    code: 'Enter',
+    bubbles: true,
+    cancelable: true,
+  })
 }

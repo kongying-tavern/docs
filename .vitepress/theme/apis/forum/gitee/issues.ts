@@ -1,12 +1,8 @@
-import { GITEE_OWNER, GITEE_REPO, apiCall, type labels } from '.'
-import {
-  extractOfficialAndAuthorComments,
-  normalizeComment,
-  normalizeIssue,
-  setFilterTags,
-} from './utils'
+import { GITEE_OWNER, GITEE_BLOG_REPO, GITEE_REPO, apiCall } from '.'
+import { normalizeComment, normalizeIssue, setFilterTags } from './utils'
 
 import type ForumAPI from '../api'
+import { extractOfficialAndAuthorComments } from './inBrowserUtils'
 
 export const getTopic = async (number: string): Promise<ForumAPI.Topic> => {
   const [data] = await apiCall<GITEE.IssueInfo>(
@@ -85,12 +81,13 @@ export const getAnnouncementList = async (): Promise<ForumAPI.Topic[]> => {
 }
 
 export const getTopicComments = async (
+  repo: typeof GITEE_REPO | typeof GITEE_BLOG_REPO,
   query: ForumAPI.Query,
   number: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Comment[]>> => {
   const [commentList, paginationParams] = await apiCall<GITEE.CommentList>(
     'get',
-    `repos/${GITEE_OWNER}/${GITEE_REPO}/issues/${number}/comments`,
+    `repos/${GITEE_OWNER}/${repo}/issues/${number}/comments`,
     {
       params: {
         number: number,

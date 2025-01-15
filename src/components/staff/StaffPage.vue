@@ -41,6 +41,7 @@ const { theme } = useData()
 
 <style scoped>
 .StaffPage {
+  position: relative;
   padding-bottom: 16px;
 }
 

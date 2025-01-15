@@ -16,6 +16,8 @@ const ui: CustomConfig['ui'] = {
     submit: '提出する',
     cancel: 'キャンセル',
     loading: 'Loading',
+    search: '検索',
+    all: '全て',
   },
 }
 

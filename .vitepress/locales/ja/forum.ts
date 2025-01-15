@@ -8,6 +8,7 @@ const forum: CustomConfig['forum'] = {
     official: '公式',
     author: '作成者',
     showMore: 'もっと見る',
+    backToFeedbackForum: 'フォーラムに戻る',
     menu: {
       giteeLink: 'Giteeリンク',
       toOriginal: '元のテキストに移動',
@@ -44,6 +45,8 @@ const forum: CustomConfig['forum'] = {
       rejected: '却下',
       progressing: '進行中',
     },
+    backToTeamBlog: 'ブログに戻る',
+    backToPrevPage: '前のページに戻る',
   },
   auth: {
     login: 'ログイン',
@@ -113,7 +116,7 @@ const forum: CustomConfig['forum'] = {
       notesCount: 'コメント数',
     },
     search: {
-      placeholder: 'フィードバック検索',
+      placeholder: 'Search',
       allRelatedContentCount: '件の関連フィードバック',
     },
     navigation: {
@@ -195,6 +198,7 @@ const forum: CustomConfig['forum'] = {
       title: '私のフィードバック',
     },
   },
+  readMore: 'もっと詳しく知る',
 }
 
 export default forum

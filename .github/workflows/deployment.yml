@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**/github/**'
+      - './README.md'
+      - './.pages.yml'
+  workflow_dispatch:
 
 jobs:
   build:

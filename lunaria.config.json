@@ -29,7 +29,8 @@
         "src/zh/staff.md",
         "src/zh/md-enhance-guide.md",
         "src/zh/team.md",
-        "src/zh/announcement.md"
+        "src/zh/announcement.md",
+        "src/zh/blog/[id].md"
       ],
       "type": "universal"
     },

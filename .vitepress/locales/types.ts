@@ -62,9 +62,11 @@ export interface CustomConfig {
       wip: string
     }
     button: {
+      search: string
       submit: string
       cancel: string
       loading: string
+      all: string
     }
   }
   docsFeedback: {
@@ -91,6 +93,7 @@ export interface CustomConfig {
   }
   forum: {
     loadMore: string
+    readMore: string
     noMore: string
     loadError: string
     user: {
@@ -106,6 +109,9 @@ export interface CustomConfig {
       official: string
       author: string
       showMore: string
+      backToFeedbackForum: string
+      backToTeamBlog: string
+      backToPrevPage: string
       state: {
         open: string
         closed: string
@@ -278,6 +284,21 @@ export interface CustomConfig {
           violation: string
         }
       }
+    }
+  }
+  changelog: {
+    title: string
+    reportIssues: string
+    feedbackPage: string
+    changeType: {
+      features: string
+      fixed: string
+      optimized: string
+      breaking: string
+    }
+    action: {
+      download: string
+      community: string
     }
   }
 }

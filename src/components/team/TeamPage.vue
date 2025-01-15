@@ -53,10 +53,12 @@ shuffleMembers(membersPartnerData as Member[])
       <template #title>{{ theme.team.coreMember.title }}</template>
       <template #lead>{{ theme.team.coreMember.desc }}</template>
     </TeamList>
+
     <TeamList :members="membersEmeritiData as Member[]">
       <template #title>{{ theme.team.emeritiMember.title }}</template>
       <template #lead>{{ theme.team.emeritiMember.desc }}</template>
     </TeamList>
+
     <TeamList :members="membersPartnerData as Member[]">
       <template #title>{{ theme.team.partnerMember.title }}</template>
       <template #lead>{{ theme.team.partnerMember.desc }}</template>

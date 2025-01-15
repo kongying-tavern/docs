@@ -8,6 +8,7 @@ const forum: CustomConfig['forum'] = {
     official: '官方',
     author: '作者',
     showMore: '显示更多',
+    backToFeedbackForum: '返回反馈',
     menu: {
       giteeLink: 'Gitee链接',
       toOriginal: '转到原文',
@@ -44,6 +45,8 @@ const forum: CustomConfig['forum'] = {
       rejected: '已拒绝',
       progressing: '进行中',
     },
+    backToTeamBlog: '返回团队博客',
+    backToPrevPage: '返回上一页',
   },
   auth: {
     login: '登录',
@@ -73,11 +76,11 @@ const forum: CustomConfig['forum'] = {
       items: [
         {
           text: '原神地图客户端更新日志',
-          link: '#',
+          link: '/changelog/windows-client',
         },
         {
           text: '原神地图网页版更新日志',
-          link: '#',
+          link: '/changelog/web',
         },
       ],
     },
@@ -194,6 +197,7 @@ const forum: CustomConfig['forum'] = {
       title: '我的反馈',
     },
   },
+  readMore: '了解更多',
 }
 
 export default forum

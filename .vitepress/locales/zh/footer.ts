@@ -48,11 +48,11 @@ const footer: CustomConfig['footer'] = {
         },
         {
           text: '客户端更新日志',
-          link: 'https://support.qq.com/products/321980/blog/505884',
+          link: '/changelog/windows-clinet',
         },
         {
           text: '网页版更新日志',
-          link: 'https://support.qq.com/products/321980/blog/505810',
+          link: '/changelog/web',
         },
       ],
     },

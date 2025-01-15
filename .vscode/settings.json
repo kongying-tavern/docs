@@ -12,7 +12,10 @@
     "wechatpay",
     "wxtl",
     "Gitee",
-    "GITEE"
+    "GITEE",
+    "bilibili",
+    "qzone",
+    "wechat"
   ],
   "vue.codeActions.enabled": false,
   "files.trimTrailingWhitespace": true

@@ -6,7 +6,7 @@ import { sendDocFeedback } from '@/apis/feedback/sendDocFeedback'
 import { usePageInfoStore } from '@/stores/usePageInfo'
 import DocFeedbackForm from './DocFeedbackForm.vue'
 
-const { theme } = useData()
+const { theme, frontmatter } = useData()
 const router = useRoute()
 const pageinfo = usePageInfoStore()
 
@@ -83,7 +83,7 @@ provide('feedback', feedback)
 
 <template>
   <ClientOnly>
-    <div class="feedback">
+    <div class="feedback" v-if="frontmatter.docInfo !== false">
       <p class="title" flex items-center>
         <span v-if="loading" class="feedback-state loader"></span>
         <span v-if="feedbackState" :class="feedbackStateClass"></span>

@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: '更新日志',
-            link: 'https://support.qq.com/products/321980/blog/505884',
+            link: '/changelog/windows-client',
           },
         ],
       },
@@ -38,7 +38,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: '更新日志',
-            link: 'https://support.qq.com/products/321980/blog/505810',
+            link: '/changelog/web',
           },
         ],
       },
@@ -70,6 +70,10 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: '了解团队',
             link: '/team',
+          },
+          {
+            text: '团队博客',
+            link: './blog',
           },
         ],
       },

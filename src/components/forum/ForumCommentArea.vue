@@ -52,40 +52,61 @@ import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { type Ref, computed, nextTick, ref } from 'vue'
 import { useLoadMore } from '@/hooks/useLoadMore'
-import ForumCommentInputBox from '../ForumCommentInputBox.vue'
-import ForumTopicComment from '../ForumTopicComment.vue'
-import ForumLoadState from '../ForumLoadState.vue'
+import ForumCommentInputBox from './ForumCommentInputBox.vue'
+import ForumTopicComment from './ForumTopicComment.vue'
+import ForumLoadState from './ForumLoadState.vue'
 import { scrollTo } from '~/composables/scrollTo'
 import { useInfiniteScroll, watchOnce } from '@vueuse/core'
 
-const props = defineProps<{
+const {
+  repo,
+  topicId,
+  topicAuthorId,
+  commentCount = null,
+} = defineProps<{
+  repo: 'Feedback' | 'blog'
   topicId: string
   topicAuthorId: string | number
+  commentCount?: number
 }>()
 
 const { message } = useLocalized()
 
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 const replyCommentID = ref<number | string | null>(null)
-const allCommentCount = computed(
-  () => total.value + userSubmittedComment.value.length,
+const allCommentCount = computed(() =>
+  total.value
+    ? total.value
+    : commentCount
+      ? commentCount
+      : 0 + userSubmittedComment.value.length,
 )
+const noComment = computed(() => commentCount === 0)
 
 const isReplyingTo = (id: number | string) => replyCommentID.value === id
 const toggleCommentReply = (id: number | string) => {
   replyCommentID.value = replyCommentID.value === id ? null : id
 }
 
-const { data, noMore, loading, total, current, loadMore, canLoadMore, error } =
-  useLoadMore(issues.getTopicComments, {
-    defaultParams: [
-      { current: 1, pageSize: 20, sort: 'created' },
-      props.topicId,
-    ],
-  })
+const {
+  data,
+  noMore,
+  loading,
+  total,
+  current,
+  loadMore,
+  canLoadMore,
+  error,
+  runAsync,
+} = useLoadMore(issues.getTopicComments, {
+  manual: true,
+})
 
-const init = () => {
-  if (import.meta.env.SSR) return null
+const init = async () => {
+  if (import.meta.env.SSR || noComment.value) return null
+
+  await runAsync(repo, { current: 1, pageSize: 20, sort: 'created' }, topicId)
+
   useInfiniteScroll(
     window,
     () => {
@@ -110,7 +131,7 @@ const loadStateMessage = computed(() => {
   if (error.value) return message.value.forum.loadError
   if (!noMore && data.value.length !== 0)
     return message.value.forum.comment.loadMoreComment
-  if (data.value.length === 0 && !loading.value)
+  if ((data.value.length === 0 && !loading.value) || noComment)
     return message.value.forum.comment.noComment
   return message.value.forum.comment.noMoreComment
 })

@@ -13,9 +13,11 @@ const ui: CustomConfig['ui'] = {
     wip: '此页面正在施工中，不代表最终效果。',
   },
   button: {
+    search: '搜索',
     submit: '提交',
     cancel: '取消',
     loading: '加载中',
+    all: '全部',
   },
 }
 

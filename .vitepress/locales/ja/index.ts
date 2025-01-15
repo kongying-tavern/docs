@@ -13,6 +13,7 @@ import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
 
+import Changelog from './changelog'
 import Forum from './forum'
 import Staff from './staff'
 import Team from './team'
@@ -48,6 +49,7 @@ export const jaConfig: LocaleSpecificConfig<
     staff: Staff,
     team: Team,
     payment: Payment,
+    changelog: Changelog,
 
     nav: baseHelper(Nav, C.LOCAL_BASE),
     sidebar: baseHelper(Sidebar, C.LOCAL_BASE),

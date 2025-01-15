@@ -24,7 +24,7 @@
         >
           <DynamicTextReplacer
             :data="message.forum.comment.commentAfterLogin"
-            class="line-height-[32px]"
+            class="important:line-height-[32px] important:m-0"
           >
             <template #login>
               <a class="vp-link" href="#login-alert">

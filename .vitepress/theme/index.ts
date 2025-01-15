@@ -13,6 +13,7 @@ import googleAnalytics from '../plugins/google-analytics'
 import type { Theme } from 'vitepress'
 
 import 'uno.css'
+import HeadlinePage from './layouts/HeadlinePage.vue'
 
 const pinia = createPinia()
 
@@ -32,6 +33,7 @@ export default {
     app.component('VPBadge', VPBadge)
     app.component('VPImage', VPImage)
     app.component('VPLink', VPLink)
+    app.component('Headline', HeadlinePage)
 
     for (const component of Object.keys(
       components,

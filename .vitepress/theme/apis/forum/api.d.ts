@@ -105,6 +105,10 @@ export namespace ForumAPI {
       originName: string
     }
   }
+
+  type PostParams = {
+    author: ForumAPI.User
+  } & Omit<ForumAPI.Topic, 'content' | 'contentRaw' | 'user' | 'type'>
 }
 
 export default ForumAPI

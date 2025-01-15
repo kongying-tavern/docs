@@ -26,9 +26,15 @@
       </div>
     </div>
     <div>
-      <p class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)]">
-        {{ message.forum.aside.teamBlog.text }}
-      </p>
+      <div class="h-14 lh-14 mb-4 flex justify-between vp-border-divider">
+        <p class="color-[var(--vp-c-text-1)]">
+          {{ message.forum.aside.teamBlog.text }}
+        </p>
+        <VPLink class="font-size-13px vp-link" href="../blog">
+          {{ message.ui.button.all }}
+        </VPLink>
+      </div>
+
       <div
         class="flex justify-between mb-2"
         v-for="item in message.forum.aside.teamBlog.items"

@@ -10,7 +10,6 @@ import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
 import { convertMultipleToMarkdown } from '../components/forum/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { removeQueryParam } from '@/utils'
 
 import type ForumAPI from '@/apis/forum/api'
 
@@ -236,6 +235,12 @@ export const useForumData = defineStore('forum-data', () => {
       immediate: true,
     },
   )
+
+  watch(annLoadError, () => {
+    toast.error(
+      message.value.forum.topic.type.ann + message.value.forum.loadError,
+    )
+  })
 
   watch(error, () => {
     toast.error(message.value.forum.loadError)

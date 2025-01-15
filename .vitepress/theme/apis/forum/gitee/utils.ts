@@ -1,5 +1,4 @@
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import { STATE_TAGS, TOPIC_TYPE, issues } from '.'
+import { STATE_TAGS, TOPIC_TYPE } from '.'
 import type ForumAPI from '../api'
 
 export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
@@ -12,6 +11,7 @@ export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
     tokenType: auth.token_type,
   }
 }
+
 export function normalizeUser(user: GITEE.User): ForumAPI.User {
   return {
     username: user.login,
@@ -116,31 +116,6 @@ function markdownToTextWithImages(markdown?: string): {
   text = text.replace(/\s+/g, ' ').trim()
 
   return { text, images: images.length > 0 ? images : undefined }
-}
-
-export function extractOfficialAndAuthorComments(
-  issue: GITEE.IssueInfo,
-  commentList: GITEE.CommentList,
-): ForumAPI.Comment[] | null {
-  const userInfoStore = useUserInfoStore()
-
-  const comments: ForumAPI.Comment[] = []
-  const relatedComments = commentList.filter(
-    (comment) => comment.target.issue.id === issue.id,
-  )
-  // 查找作者的评论
-  const authorComment = relatedComments.find(
-    (comment) => comment.user.id === issue.user.id,
-  )
-  // 查找官方团队的评论
-  const officialComment = relatedComments.find(
-    (comment) => userInfoStore.isTeamMember(comment.user.id).value,
-  )
-
-  if (authorComment) comments.push(normalizeComment(authorComment))
-  if (officialComment) comments.push(normalizeComment(officialComment))
-
-  return comments.length > 0 ? comments : null
 }
 
 function filterLinks(str: string, whitelist: string[]): string {

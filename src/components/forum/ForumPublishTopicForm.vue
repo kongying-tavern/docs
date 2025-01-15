@@ -170,7 +170,7 @@ const formTabs = readonly<TabsConfig>([
   {
     value: 'ANN',
     label: '发公告',
-    condition: userInfo.isTeamMember(),
+    condition: userInfo.isTeamMember().value,
     fields: {
       title: {
         label: message.value.forum.publish.form.title.text,
@@ -230,7 +230,7 @@ watch(
       <DialogHeader>
         <TabsList
           class="grid w-full mb-3"
-          :class="userInfo.isTeamMember() ? 'grid-cols-4' : 'grid-cols-3'"
+          :class="userInfo.isTeamMember().value ? 'grid-cols-4' : 'grid-cols-3'"
         >
           <TabsTrigger
             v-for="tab in formTabs"

@@ -8,7 +8,7 @@ title: 目次
 
 ## **アップデートログ**
 
-- [アップデートログ](https://support.qq.com/products/321980/blog/505884)
+- [アップデートログ](./../../changelog/windows-client)
 
 ## **ガイド**
 

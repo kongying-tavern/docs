@@ -50,13 +50,13 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
       <div class="md:justify-self-end md:place-self-center">
         <div class="gap-4 grid grid-flow-col">
           <a
+            class="fill-[var(--vp-c-text-1)] footer-sociallink"
             v-for="item in socialList"
             :href="item.link"
             :aria-label="item.title"
             :title="item.title"
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-sociallink"
             v-html="item.icon"
           >
           </a>

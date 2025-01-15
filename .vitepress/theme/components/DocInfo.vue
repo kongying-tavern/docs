@@ -6,7 +6,7 @@ import { computed, ref, watch } from 'vue'
 import { getPageInfo } from '../apis/feedback/getPageInfo'
 
 const router = useRoute()
-const { page, theme } = useData()
+const { page, theme, frontmatter } = useData()
 const pageinfo = usePageInfoStore()
 const loading = ref(false)
 const thumbText = computed(() => {
@@ -34,7 +34,7 @@ updateData()
 </script>
 
 <template>
-  <div class="doc-info">
+  <div class="doc-info" v-if="frontmatter.docInfo !== false">
     <div class="doc-info-left">
       {{ theme.lastUpdatedText }}
       {{ dayjs(page.lastUpdated).format('YYYY-MM-DD') }}

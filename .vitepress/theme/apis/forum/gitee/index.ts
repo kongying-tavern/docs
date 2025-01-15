@@ -1,9 +1,9 @@
 import { useMemoize } from '@vueuse/core'
-import { useNotificationStore } from '@/stores/useNotification'
 import ky, { type KyResponse } from 'ky'
 import type { Hooks } from 'ky'
 import { catchError, getHeader } from '../../utils'
 
+import * as blog from './blog'
 import * as issues from './issues'
 import * as labels from './labels'
 import * as oauth from './oauth'
@@ -19,6 +19,7 @@ export const GITEE_CLIENT_SECRET =
   '490930078ce5da2580a193af163c275c670567e70a93fbe0ca39e15faa8f5271'
 export const GITEE_OWNER = 'KYJGYSDT'
 export const GITEE_REPO = 'Feedback'
+export const GITEE_BLOG_REPO = 'blog'
 export const TOPIC_TYPE = ['BUG', 'FEAT', 'SUG', 'ANN']
 export const STATE_TAGS = new Set([
   'WEB-FEEDBACK',
@@ -116,7 +117,6 @@ const cachedApiCall = useMemoize(
     endpoint: string,
     { params, body, hooks }: ApiCallParams,
   ): ApiCallResult<T> => {
-    const notification = useNotificationStore()
     const url = `api/v5/${endpoint}`
 
     const [error, response] = await catchError(
@@ -128,12 +128,6 @@ const cachedApiCall = useMemoize(
     )
 
     if (error) {
-      notification.add({
-        title: error.name,
-        icon: 'i-lucide-badge-x bg-red',
-        description: `Gitee API Error at ${method.toUpperCase()}: ${error.message}`,
-      })
-
       return Promise.reject(
         new HTTPError(`${ApiErrorType.ApiError} at ${url}: ${error.message}`),
       )
@@ -194,4 +188,13 @@ const deleteApiCache = (
   options: Omit<ApiCallParams, 'useCache'>,
 ) => cachedApiCall.delete(method, endpoint, options)
 
-export { oauth, user, issues, apiCall, labels, clearApiCache, deleteApiCache }
+export {
+  oauth,
+  user,
+  blog,
+  issues,
+  apiCall,
+  labels,
+  clearApiCache,
+  deleteApiCache,
+}

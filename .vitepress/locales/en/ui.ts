@@ -16,6 +16,8 @@ const ui: CustomConfig['ui'] = {
     submit: 'Submit',
     cancel: 'Cancel',
     loading: 'Loading',
+    search: 'Search',
+    all: 'All',
   },
 }
 

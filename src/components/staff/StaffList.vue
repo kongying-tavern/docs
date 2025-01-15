@@ -1,3 +1,4 @@
+// @unocss-includes
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Member } from './Member'
@@ -24,6 +25,9 @@ const sortedMembers = computed(() => {
   <section class="staffList">
     <div class="container">
       <div class="info">
+        <span
+          class="i-lucide-git-commit-horizontal size-[28px] ml[-24px] inline-block"
+        ></span>
         <h2 class="title view-fade-y">
           <slot name="title" />
         </h2>
@@ -63,6 +67,19 @@ const sortedMembers = computed(() => {
 </template>
 
 <style scoped>
+.staffList::before {
+  border-left: 2px solid var(--vp-c-gutter);
+  content: '';
+  height: 100%;
+  left: 280px;
+  position: absolute;
+  top: 32px;
+}
+
+.staffList + .staffList {
+  margin-top: 36px;
+}
+
 @media (min-width: 768px) {
   .staffList {
     padding: 0 32px;
@@ -71,7 +88,6 @@ const sortedMembers = computed(() => {
 
 .container {
   border-top: 1px solid var(--vp-c-divider-light);
-  padding-top: 24px;
 }
 
 @media (min-width: 768px) {
@@ -121,20 +137,6 @@ const sortedMembers = computed(() => {
   font-size: 24px;
   font-weight: 500;
   word-break: keep-all;
-
-  &::before {
-    display: inline-block;
-    content: '';
-    position: relative;
-    bottom: -35px;
-    height: 2px;
-    background-color: var(--vp-c-gutter);
-    background-size: 200%;
-    animation: progress both linear;
-    animation-timeline: view();
-    background-repeat: no-repeat;
-    animation-range: entry 25% cover 75%;
-  }
 }
 
 @keyframes progress {
@@ -157,14 +159,12 @@ const sortedMembers = computed(() => {
 }
 
 .members {
-  padding-top: 24px;
   margin-left: 12px;
 }
 
 @media (min-width: 768px) {
   .members {
     flex-grow: 1;
-    padding-top: 52px;
   }
 }
 
