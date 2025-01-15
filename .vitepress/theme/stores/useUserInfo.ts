@@ -1,24 +1,15 @@
-import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { issues, user } from '../apis/forum/gitee'
 import { getUser } from '../apis/forum/gitee/user'
-import { useNotificationStore } from './useNotification'
 import { useUserAuthStore } from './useUserAuth'
+import teamMemberList from '~/_data/teamMemberList.json'
 
 import type ForumAPI from '@/apis/forum/api'
 
 export const useUserInfoStore = defineStore('user-info', () => {
-  const notification = useNotificationStore()
   const userAuthStore = useUserAuthStore()
 
   const info = ref<ForumAPI.User>()
-  const teamMembersID = useLocalStorage<
-    Partial<{
-      updatedAt: number
-      list: number[]
-    }>
-  >('TEAM-MEMBERS-ID', {})
 
   const refreshUserInfo = async () => {
     if (userAuthStore.isTokenValid && userAuthStore.auth.accessToken) {
@@ -28,30 +19,12 @@ export const useUserInfoStore = defineStore('user-info', () => {
 
   const isTeamMember = (id?: string | number) => {
     id ??= info.value?.id
-    return computed(
-      () => teamMembersID.value?.list!.findIndex((val) => id === val) !== -1,
-    )
+    return computed(() => teamMemberList.findIndex((val) => id === val) !== -1)
   }
 
-  const refreshTeamMembersID = async () => {
-    if (import.meta.env.SSR) return
-    if (
-      !teamMembersID.value.updatedAt ||
-      Date.now() - teamMembersID.value?.updatedAt! > 1000 * 60 * 60 * 24
-    ) {
-      return (teamMembersID.value = {
-        updatedAt: Date.now(),
-        list: await refreshTeamMemberID(),
-      })
-    }
-  }
-
-  const refreshTeamMemberID = async () =>
-    (await user.getOrgMembers()).map((val) => Number(val.id))
   const clearUserInfo = () => (info.value = undefined)
 
   refreshUserInfo()
-  refreshTeamMembersID()
 
   return {
     // states

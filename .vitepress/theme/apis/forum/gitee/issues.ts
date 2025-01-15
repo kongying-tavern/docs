@@ -138,7 +138,7 @@ export const postTopic = async (
     `repos/${GITEE_OWNER}/issues`,
     {
       body: {
-        owenr: GITEE_OWNER,
+        owner: GITEE_OWNER,
         repo: GITEE_REPO,
         access_token: accessToken,
         ...data,
@@ -151,12 +151,13 @@ export const postTopic = async (
 
 export const postTopicComment = async (
   accessToken: string,
+  repo: string,
   number: string,
   body: string,
 ): Promise<ForumAPI.Comment> => {
   const [comment] = await apiCall<GITEE.Comment>(
     'post',
-    `repos/${GITEE_OWNER}/${GITEE_REPO}/issues/${number}/comments`,
+    `repos/${GITEE_OWNER}/${repo}/issues/${number}/comments`,
     {
       params: {
         access_token: accessToken,
@@ -171,6 +172,7 @@ export const postTopicComment = async (
 
 export const deleteIssueComment = async (
   accessToken: string,
+  repo: string,
   id: number | string,
 ): Promise<boolean> => {
   let state = false
@@ -187,6 +189,7 @@ export const deleteIssueComment = async (
         afterResponse: [
           async (_input, _options, response) => {
             if (response.status === 204) state = true
+            return Promise.resolve()
           },
         ],
       },

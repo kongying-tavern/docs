@@ -27,5 +27,5 @@ const { data } = defineProps<{
   data: ReleasesData
 }>()
 
-data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 </script>

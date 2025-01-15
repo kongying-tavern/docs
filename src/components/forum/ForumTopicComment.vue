@@ -38,6 +38,7 @@
 
       <div class="comment-info mt-2">
         <ForumCommentMeta
+          :repo="repo"
           :created-at="createdAt"
           :comment-id="commentId"
           :author-id="author.id"
@@ -58,7 +59,12 @@ import ForumRuleBadge from './ForumRuleBadge.vue'
 import { Image } from '@/components/ui/image'
 import ForumCommentMeta from './ForumCommentMeta.vue'
 
-const { size = 'normal', ...props } = defineProps<{
+const {
+  size = 'normal',
+  repo = 'Feedback',
+  ...props
+} = defineProps<{
+  repo: string
   body: ForumAPI.Content
   topicId: string | number
   topicAuthorId: string | number

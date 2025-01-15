@@ -19,7 +19,7 @@
     "lunaria:preview": "lunaria preview",
     "prepare": "husky",
     "serve": "vitepress serve --base /docs/",
-    "site:preview": "vitepress build --base /",
+    "site:preview": "pnpm build-blog & vitepress build --base /",
     "up": "taze major -I"
   },
   "lint-staged": {

@@ -1,5 +1,6 @@
-import { blog, user } from '@/apis/forum/gitee'
+import { blog } from '@/apis/forum/gitee'
 import fs from 'node:fs/promises'
+import teamMemberList from '~/_data/teamMemberList.json'
 import { URL } from 'node:url'
 
 import type ForumAPI from '@/apis/forum/api'
@@ -7,7 +8,6 @@ import type ForumAPI from '@/apis/forum/api'
 export const refreshBlogData = async () => {
   let page = 1
   let posts: ForumAPI.Topic[] = []
-  let teamMemberList: (string | number)[] | null = null
 
   const requestData = async (page: number) => {
     const { data, totalPage } = await blog.getPosts({
@@ -27,10 +27,6 @@ export const refreshBlogData = async () => {
   }
 
   const isTeamMember = async (id: string | number) => {
-    if (!teamMemberList) {
-      teamMemberList = (await user.getOrgMembers()).map((member) => member.id)
-    }
-
     return teamMemberList.findIndex((val) => val === id)
   }
 

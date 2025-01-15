@@ -5,7 +5,7 @@ const { frontmatter } = useData()
 </script>
 
 <template>
-  <div class="Headline is-home">
+  <div class="Headline is-home slide-enter">
     <div class="border-b pb-6">
       <h1
         class="title text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"

@@ -35,6 +35,7 @@ import ForumLoadState from './ForumLoadState.vue'
 import ForumPublishTopicForm from './ForumPublishTopicForm.vue'
 import { useForumData } from '~/stores/useForumData'
 import { useInfiniteScroll } from '@vueuse/core'
+import { onMounted } from 'vue'
 
 const forumData = useForumData()
 
@@ -42,6 +43,7 @@ const { loadMore } = forumData
 
 const init = () => {
   if (import.meta.env.SSR) return null
+
   useInfiniteScroll(
     window,
     () => {
@@ -55,5 +57,7 @@ const init = () => {
   )
 }
 
-init()
+onMounted(() => {
+  init()
+})
 </script>

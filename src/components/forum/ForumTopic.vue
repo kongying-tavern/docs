@@ -71,6 +71,7 @@
       <div class="topic-comment" v-if="showComment && topic.relatedComments">
         <ForumTopicComment
           class="bg-[var(--vp-c-bg-soft)] px-4 first:mt-4"
+          repo="Feedback"
           v-for="comment in topic.relatedComments.slice(0, 1)"
           :comment-count="-1"
           :comment-id="comment.id"

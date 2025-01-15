@@ -63,12 +63,12 @@ Once Position Tracker is enabled, The **map client** will
 - Any resolution (recommended: 720p or greater)
 - Any aspect ratio (recommended: 4:3 to 21:9)
 - Any input device
-- **Fixed minimap** (under in-game Gamplay settings)
+- **Fixed minimap** (under in-game GameGameplayplay settings)
 - Windowed, and in some scenarios, exclusive fullscreen (see Troubleshooting Issue 4)
 
 ### In-progress
 
-- Rotating minimap (under in-game Gamplay settings)
+- Rotating minimap (under in-game Gameplay settings)
 - Domains and indoor areas
 
 ### Will not support

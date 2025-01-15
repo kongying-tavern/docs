@@ -1,10 +1,10 @@
 import { issues } from '@/apis/forum/gitee'
-import { computed, reactive, ref, toRefs, watch } from 'vue'
+import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
-import { isArray, isError, uniqBy } from 'lodash-es'
+import { isArray, uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
 import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -12,6 +12,7 @@ import { convertMultipleToMarkdown } from '../components/forum/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 
 import type ForumAPI from '@/apis/forum/api'
+import { executeWithAuth } from '~/composables/executeWithAuth'
 
 const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG'])
 
@@ -88,47 +89,16 @@ export const useForumData = defineStore('forum-data', () => {
     return refreshData(q)
   }
 
-  const topicAction = async (
-    action: Function,
-    argument: any[],
-    successMsg: string,
-    errorMsg: string,
-  ) => {
-    const userAuth = useUserAuthStore()
-    if (!userAuth.isTokenValid) {
-      toast.info(message.value.forum.auth.loginTips)
-      return false
-    }
-
-    const state = await action(userAuth.accessToken, ...argument)
-
-    if (state) {
-      toast.success(successMsg)
-    } else {
-      toast.error(errorMsg)
-    }
-
-    return state
-  }
-
   const closeTopic = async (id: string | number): Promise<boolean> => {
-    const state = await topicAction(
+    const state = await executeWithAuth(
       issues.putTopic,
       [id, { state: 'closed' }],
       message.value.forum.topic.menu.closeFeedback.success,
       message.value.forum.topic.menu.closeFeedback.fail,
+      message,
     )
     if (state) removeTopic(id)
     return state
-  }
-
-  const deleteComment = async (id: string | number): Promise<boolean> => {
-    return await topicAction(
-      issues.deleteIssueComment,
-      [id],
-      message.value.forum.topic.menu.deleteComment.success,
-      message.value.forum.topic.menu.deleteComment.fail,
-    )
   }
 
   const removeTopic = (id: string | number) => {
@@ -213,7 +183,13 @@ export const useForumData = defineStore('forum-data', () => {
     return filterSet.has(filter) ? (filter as FilterType) : null
   }
 
-  if (!import.meta.env.SSR) Promise.all([loadAnn(), refreshData()])
+  const initData = () => {
+    if (!import.meta.env.SSR) Promise.all([loadAnn(), refreshData()])
+  }
+
+  onMounted(() => {
+    initData()
+  })
 
   watch(
     loading,
@@ -303,7 +279,6 @@ export const useForumData = defineStore('forum-data', () => {
     loadAnn,
     submitTopic,
     closeTopic,
-    deleteComment,
   }
 })
 

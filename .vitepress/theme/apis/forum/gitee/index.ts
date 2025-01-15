@@ -142,6 +142,10 @@ const cachedApiCall = useMemoize(
       return [await response.json(), paginationParams]
     }
 
+    if (method === 'delete') {
+      return [{} as T, undefined]
+    }
+
     return [await response.json(), undefined]
   },
   {

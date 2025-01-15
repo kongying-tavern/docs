@@ -8,7 +8,7 @@ content:
     path: src
   - name: release
     label: 客户端更新日志
-    path: src/_data/releases.json
+    path: src/_data/windows-client.json
     type: file
     list: true
     fields:

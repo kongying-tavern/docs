@@ -47,14 +47,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useForumData } from '~/stores/useForumData'
+
 import { useLocalized } from '@/hooks/useLocalized'
 import { hasPermission } from '~/composables/hasPermission'
+import { useTopicComments } from '~/composables/useTopicComment'
 
+const emit = defineEmits(['comment:delete'])
+
+const { deleteComment } = useTopicComments()
 const { message, formatDate } = useLocalized()
-const menuLabels = ref(message.value.forum.topic.menu)
 
-const { deleteComment } = useForumData()
+const menuLabels = ref(message.value.forum.topic.menu)
 
 const {
   createdAt,
@@ -62,7 +65,9 @@ const {
   commentCount = 0,
   commentId,
   commentClickHandler,
+  repo = 'Feedback',
 } = defineProps<{
+  repo: string
   createdAt: string
   commentCount?: number
   commentId: number | string
@@ -76,6 +81,10 @@ const displayText = computed(() => {
 })
 
 const formattedDate = computed(() => formatDate(createdAt || '1980-1-1'))
-const handleDeleteComment = () => deleteComment(commentId)
+const handleDeleteComment = async () => {
+  await deleteComment(repo, commentId)
+
+  emit('comment:delete', commentId)
+}
 const handleCommentClick = (event: Event) => commentClickHandler(event)
 </script>

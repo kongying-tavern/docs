@@ -6,6 +6,8 @@
 		"streetsidesoftware.code-spell-checker",
 		"Vue.vscode-typescript-vue-plugin",
 		"antfu.iconify",
-		"streetsidesoftware.code-spell-checker-french"
-	]
+		"bierner.markdown-yaml-preamble",
+    "mrmlnc.vscode-scss",
+    "redhat.vscode-yaml"
+  ]
 }

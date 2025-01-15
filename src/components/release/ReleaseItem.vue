@@ -1,6 +1,6 @@
 <template>
   <section
-    class="relative flex flex-col border-t py-24 lg:flex-row w-full header-anchor"
+    class="relative flex flex-col border-t py-24 lg:flex-row w-full header-anchor slide-enter"
     :id="version"
   >
     <div class="md:px-5 w-full">

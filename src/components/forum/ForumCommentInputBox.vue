@@ -72,10 +72,12 @@ const {
   number,
   reply = '',
   placeholder = '',
+  repo = 'Feedback',
 } = defineProps<{
   number: string
   placeholder?: string
   reply?: string
+  repo: 'Feedback' | 'blog'
 }>()
 
 const userInfo = useUserInfoStore()
@@ -93,6 +95,7 @@ const submit = async () => {
   if (!userAuth.isTokenValid) location.hash = 'login-alert'
   await runAsync(
     userAuth.accessToken,
+    repo,
     number,
     reply ? reply + ' ' + input.value : input.value,
   )
@@ -105,7 +108,6 @@ const submit = async () => {
 
   input.value = ''
   location.hash = 'reply'
-  toast.info(message.value.forum.comment.commentSuccess)
 }
 </script>
 

@@ -7,13 +7,15 @@
       </span>
     </p>
     <ForumCommentInputBox
+      :repo="repo"
       :placeholder="message.forum.comment.placeholder"
       :number="topicId"
       @comment:submit="handleCommentSubmit"
     />
     <div class="comment-list slide-enter mt-8">
       <ForumTopicComment
-        v-for="comment in [...userSubmittedComment, ...data]"
+        v-for="comment in renderComments"
+        :repo="repo"
         :id="'reply-' + comment.id"
         :key="comment.id"
         :comment-id="comment.id"
@@ -27,6 +29,7 @@
         <ForumCommentInputBox
           class="mt-4"
           v-if="isReplyingTo(comment.id)"
+          :repo="repo"
           :number="topicId"
           :reply="`@${comment.author.login}`"
           :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
@@ -34,10 +37,10 @@
         />
       </ForumTopicComment>
 
-      <ForumLoadState :loading="loading" :text="loadStateMessage" />
+      <ForumLoadState :loading="commentLoading" :text="loadStateMessage" />
     </div>
     <Separator
-      v-if="current === 1 && loading"
+      v-if="currentCommentPage === 1 && commentLoading"
       class="inline-block w-full my-8 text-center c-[var(--vp-c-text-3)] font-size-3"
       :label="message.forum.comment.loadingComment"
     >
@@ -47,16 +50,15 @@
 
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { issues } from '@/apis/forum/gitee'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { type Ref, computed, nextTick, ref } from 'vue'
-import { useLoadMore } from '@/hooks/useLoadMore'
+import { type Ref, computed, nextTick, onMounted, ref } from 'vue'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
 import ForumLoadState from './ForumLoadState.vue'
 import { scrollTo } from '~/composables/scrollTo'
 import { useInfiniteScroll, watchOnce } from '@vueuse/core'
+import { useTopicComments } from '~/composables/useTopicComment'
 
 const {
   repo,
@@ -71,72 +73,55 @@ const {
 }>()
 
 const { message } = useLocalized()
-
-const userSubmittedComment = ref<ForumAPI.Comment[]>([])
+const {
+  userSubmittedComment,
+  comments,
+  noComment,
+  loadMoreComment,
+  canLoadMoreComment,
+  loadStateMessage,
+  submitComment,
+  commentLoading,
+  allCommentCount,
+  currentCommentPage,
+  initComments,
+} = useTopicComments()
 const replyCommentID = ref<number | string | null>(null)
-const allCommentCount = computed(() =>
-  total.value
-    ? total.value
-    : commentCount
-      ? commentCount
-      : 0 + userSubmittedComment.value.length,
-)
-const noComment = computed(() => commentCount === 0)
 
 const isReplyingTo = (id: number | string) => replyCommentID.value === id
 const toggleCommentReply = (id: number | string) => {
   replyCommentID.value = replyCommentID.value === id ? null : id
 }
-
-const {
-  data,
-  noMore,
-  loading,
-  total,
-  current,
-  loadMore,
-  canLoadMore,
-  error,
-  runAsync,
-} = useLoadMore(issues.getTopicComments, {
-  manual: true,
+const renderComments = computed(() => {
+  return [...userSubmittedComment.value, ...comments.value]
 })
 
 const init = async () => {
   if (import.meta.env.SSR || noComment.value) return null
 
-  await runAsync(repo, { current: 1, pageSize: 20, sort: 'created' }, topicId)
+  await initComments(topicId, repo, commentCount)
 
   useInfiniteScroll(
     window,
     () => {
-      loadMore()
+      loadMoreComment()
     },
     {
       distance: 10,
       interval: 1500,
-      canLoadMore: () => canLoadMore.value,
+      canLoadMore: () => canLoadMoreComment.value,
     },
   )
 }
 
-init()
-
-const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) => {
-  if (!submittedComment.value) return
-  userSubmittedComment.value.push(submittedComment.value)
-}
-
-const loadStateMessage = computed(() => {
-  if (error.value) return message.value.forum.loadError
-  if (!noMore && data.value.length !== 0)
-    return message.value.forum.comment.loadMoreComment
-  if ((data.value.length === 0 && !loading.value) || noComment)
-    return message.value.forum.comment.noComment
-  return message.value.forum.comment.noMoreComment
+onMounted(async () => {
+  await init()
 })
 
-watchOnce(loading, async () => {
+const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) =>
+  submitComment(submittedComment)
+
+watchOnce(commentLoading, async () => {
   await nextTick()
 
   scrollTo()
