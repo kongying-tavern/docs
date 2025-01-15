@@ -26,7 +26,7 @@
           >
             <li v-for="item in faq" :key="item.text">
               <NavigationMenuLink as-child>
-                <a
+                <VPLink
                   :href="item.link"
                   class="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                 >
@@ -36,7 +36,7 @@
                   <!-- <p class="line-clamp-2 text-sm leading-snug text-muted-foreground">
                     {{ item.link }}
                   </p> -->
-                </a>
+                </VPLink>
               </NavigationMenuLink>
             </li>
           </ul>
@@ -90,6 +90,11 @@ const menuItems: {
     id: 'FEAT',
     hash: 'FEAT',
     label: message.value.forum.header.navigation.featFeedback,
+  },
+  {
+    id: 'CLOSED',
+    hash: 'CLOSED',
+    label: message.value.forum.header.navigation.closedFeedback,
   },
 ]
 

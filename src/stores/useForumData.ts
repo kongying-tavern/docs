@@ -14,7 +14,9 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import type ForumAPI from '@/apis/forum/api'
 import { executeWithAuth } from '~/composables/executeWithAuth'
 
-const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG'])
+const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG', 'CLOSED'])
+
+export type FilterType = 'FEAT' | 'BUG' | 'ALL' | 'SUG' | 'CLOSED'
 
 export const useForumData = defineStore('forum-data', () => {
   const userSubmittedTopic = ref<ForumAPI.Topic[]>([])
@@ -70,8 +72,6 @@ export const useForumData = defineStore('forum-data', () => {
       },
       q ? encodeURIComponent(String(q)) : undefined,
     )
-
-    console.log(data)
   }
 
   const switchTopicFilter = (val = pagination.filter) => {
@@ -95,6 +95,18 @@ export const useForumData = defineStore('forum-data', () => {
       [id, { state: 'closed' }],
       message.value.forum.topic.menu.closeFeedback.success,
       message.value.forum.topic.menu.closeFeedback.fail,
+      message,
+    )
+    if (state) removeTopic(id)
+    return state
+  }
+
+  const hidleTopic = async (id: string | number): Promise<boolean> => {
+    const state = await executeWithAuth(
+      issues.putTopic,
+      [id, { labels: 'CLOSED' }],
+      message.value.forum.topic.menu.hideFeedback.success,
+      message.value.forum.topic.menu.hideFeedback.fail,
       message,
     )
     if (state) removeTopic(id)
@@ -279,7 +291,6 @@ export const useForumData = defineStore('forum-data', () => {
     loadAnn,
     submitTopic,
     closeTopic,
+    hidleTopic,
   }
 })
-
-export type FilterType = 'ALL' | 'BUG' | 'FEAT'

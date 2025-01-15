@@ -35,6 +35,13 @@
             <span class="i-lucide:trash-2 icon-btn"></span>
             <span>{{ menuLabels.closeFeedback.text }}</span>
           </DropdownMenuItem>
+          <DropdownMenuItem
+            v-if="hasPermission(authorId)"
+            @click="handleHideTopic"
+          >
+            <span class="i-lucide:eye-off icon-btn"></span>
+            <span>{{ menuLabels.hideFeedback.text }}</span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -68,7 +75,7 @@ import { useClipboard } from '@vueuse/core'
 import { getRedirectUrlText } from '~/composables/sessionCacheRedirect'
 
 const { message, formatDate } = useLocalized()
-const { closeTopic } = useForumData()
+const { closeTopic, hidleTopic } = useForumData()
 
 const {
   createdAt,
@@ -99,5 +106,6 @@ const displayText = computed(() => {
 
 const openGiteeLink = () => issues.openTopicOnGitee(topicId!)
 const handleCloseTopic = () => closeTopic(topicId!)
+const handleHideTopic = () => hidleTopic(topicId)
 const handleCommentClick = () => commentClickHandler()
 </script>
