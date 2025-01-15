@@ -19,9 +19,10 @@ export const GITEE_CLIENT_SECRET =
   '490930078ce5da2580a193af163c275c670567e70a93fbe0ca39e15faa8f5271'
 export const GITEE_OWNER = 'KYJGYSDT'
 export const GITEE_REPO = 'Feedback'
-export const GITEE_BLOG_REPO = 'blog'
+export const GITEE_BLOG_REPO = 'Blog'
 export const TOPIC_TYPE = ['BUG', 'FEAT', 'SUG', 'ANN']
 export const STATE_TAGS = new Set([
+  'CLOSED',
   'WEB-FEEDBACK',
   'GOOD-ISSUE',
   'FEAT',

@@ -15,7 +15,7 @@ docHeader: false
 
 <!-- @content -->
 
-<ForumTopicFooter prev-page-link="../" :text="message.forum.topic.backToTeamBlog" />
+<ForumTopicFooter prev-page-link="./" :text="message.forum.topic.backToTeamBlog" />
 
 <div class="my-2 vp-divider" />
 

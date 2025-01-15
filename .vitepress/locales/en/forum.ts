@@ -123,6 +123,7 @@ const forum: CustomConfig['forum'] = {
       allFeedback: 'All Feedback',
       bugFeedback: 'Bug Feedback',
       featFeedback: 'Feature Suggestions',
+      closedFeedback: 'Closed Feedback',
       faq: {
         title: 'FAQ',
         items: [

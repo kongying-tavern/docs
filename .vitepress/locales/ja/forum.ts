@@ -123,6 +123,7 @@ const forum: CustomConfig['forum'] = {
       allFeedback: '全フィードバック',
       bugFeedback: 'バグ報告',
       featFeedback: '機能提案',
+      closedFeedback: '終了済み',
       faq: {
         title: 'よくある質問',
         items: [

@@ -45,7 +45,7 @@
           </div>
 
           <ForumTopicFooter
-            prev-page-link="../"
+            prev-page-link="./"
             :text="message.forum.topic.backToFeedbackForum"
           />
         </div>

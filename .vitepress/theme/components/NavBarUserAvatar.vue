@@ -32,7 +32,8 @@ const list: { title: string; href: string; icon: string }[] = [
       class="VPFlyout"
       ref="el"
       @mouseenter="open = true"
-      @mouseleave="open = false"
+      @focusin="open = true"
+      @focusout="open = false"
     >
       <button
         type="button"

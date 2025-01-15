@@ -222,6 +222,7 @@ export interface CustomConfig {
         allFeedback: string
         bugFeedback: string
         featFeedback: string
+        closedFeedback: string
         faq: {
           title: string
           items: {

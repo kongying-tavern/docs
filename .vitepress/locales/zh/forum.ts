@@ -123,6 +123,7 @@ const forum: CustomConfig['forum'] = {
       allFeedback: '全部反馈',
       bugFeedback: '问题反馈',
       featFeedback: '功能建议',
+      closedFeedback: '已结反馈',
       faq: {
         title: '常见问题',
         items: [
