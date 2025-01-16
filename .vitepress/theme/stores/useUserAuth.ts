@@ -118,7 +118,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     if (!auth.value.accessToken) {
       // 如果未登录或者 Token 过期触发登录提醒
       location.hash = 'login-alert'
-      return 'null'
+      return null
     }
 
     return auth.value.accessToken
@@ -139,6 +139,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
 
     // getters
     isTokenValid,
+    accessToken,
 
     // actions
     setAuth,
@@ -146,6 +147,5 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     refreshAuth,
     ensureTokenRefreshMission,
     logout,
-    accessToken,
   }
 })

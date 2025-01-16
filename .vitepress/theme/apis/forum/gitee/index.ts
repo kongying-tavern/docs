@@ -2,6 +2,7 @@ import { useMemoize } from '@vueuse/core'
 import ky, { type KyResponse } from 'ky'
 import type { Hooks } from 'ky'
 import { catchError, getHeader } from '../../utils'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 
 import * as blog from './blog'
 import * as issues from './issues'
@@ -118,14 +119,25 @@ const cachedApiCall = useMemoize(
     endpoint: string,
     { params, body, hooks }: ApiCallParams,
   ): ApiCallResult<T> => {
+    const { auth } = useUserAuthStore()
+
     const url = `api/v5/${endpoint}`
+    if (params) {
+      params.access_token = auth.accessToken
+    }
+    if (body) {
+      if (body instanceof FormData)
+        body.append('access_token', auth.accessToken ?? '')
+      else body.access_token = auth.accessToken
+    }
+    const options = {
+      searchParams: params,
+      hooks,
+      ...(body && (body instanceof FormData ? { body } : { json: body })),
+    }
 
     const [error, response] = await catchError(
-      fetcher[method]<Promise<T>>(url, {
-        searchParams: params,
-        hooks,
-        ...(method === 'post' && { json: body }),
-      }),
+      fetcher[method]<Promise<T>>(url, options),
     )
 
     if (error) {
