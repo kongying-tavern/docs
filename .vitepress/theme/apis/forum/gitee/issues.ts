@@ -72,7 +72,7 @@ export const getAnnouncementList = async (): Promise<ForumAPI.Topic[]> => {
     {
       params: {
         state: 'open',
-        labels: ['ANN'],
+        labels: ['TYP-ANN'],
       },
       useCache: true,
     },

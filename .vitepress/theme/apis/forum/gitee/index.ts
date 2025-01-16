@@ -25,13 +25,13 @@ export const STATE_TAGS = new Set([
   'CLOSED',
   'WEB-FEEDBACK',
   'GOOD-ISSUE',
-  'FEAT',
-  'SUG',
-  'BUG',
-  'ANN',
-  'ZH',
-  'EN',
-  'JA',
+  'TYP-FEAT',
+  'TYP-SUG',
+  'TYP-BUG',
+  'TYP-ANN',
+  'LC-ZH',
+  'LC-EN',
+  'LC-JA',
 ])
 
 export const fetcher = ky.create({
