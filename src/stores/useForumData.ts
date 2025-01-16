@@ -4,7 +4,7 @@ import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
-import { isArray, uniqBy } from 'lodash-es'
+import { chain, isArray, uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
 import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -13,6 +13,13 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 
 import type ForumAPI from '@/apis/forum/api'
 import { executeWithAuth } from '~/composables/executeWithAuth'
+import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
+import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
+import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
+
+const typeLabelGetter = getTopicTypeLabelGetter()
+const localeLabelGetter = getForumLocaleLabelGetter()
+const topicLabelGetter = getTopicTagLabelGetter()
 
 const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG', 'CLOSED'])
 
@@ -66,10 +73,17 @@ export const useForumData = defineStore('forum-data', () => {
         current: pagination.page,
         sort: pagination.sort,
         pageSize: defaultPageSize,
-        filter: [
-          pagination.filter === 'ALL' ? 'WEB-FEEDBACK' : pagination.filter,
-          pagination.filter === 'CLOSED' ? 'WEB-FEEDBACK' : pagination.filter,
-        ],
+        filter: chain([
+          pagination.filter === 'ALL'
+            ? 'WEB-FEEDBACK'
+            : (typeLabelGetter.getLabel(pagination.filter) ?? ''),
+          pagination.filter === 'CLOSED'
+            ? 'WEB-FEEDBACK'
+            : (typeLabelGetter.getLabel(pagination.filter) ?? ''),
+        ])
+          .filter((v) => v !== '')
+          .uniq()
+          .value(),
       },
       pagination.filter === 'CLOSED' ? 'progressing' : 'open',
       q ? encodeURIComponent(String(q)) : undefined,
@@ -157,9 +171,9 @@ export const useForumData = defineStore('forum-data', () => {
         title: `${type}:${body.title}`,
         labels: [
           'WEB-FEEDBACK',
-          type,
-          lang.value.substring(0, 2).toUpperCase(),
-          ...body.tags,
+          typeLabelGetter.getLabel(type),
+          localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
+          ...topicLabelGetter.toLabels(body.tags),
         ].join(','),
       })
     }

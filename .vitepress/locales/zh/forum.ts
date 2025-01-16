@@ -10,7 +10,7 @@ const forum: CustomConfig['forum'] = {
     showMore: '显示更多',
     backToFeedbackForum: '返回反馈',
     menu: {
-      giteeLink: 'Gitee链接',
+      giteeLink: '在Gitee查看',
       toOriginal: '转到原文',
       hideFeedback: {
         text: '隐藏反馈',
@@ -154,7 +154,7 @@ const forum: CustomConfig['forum'] = {
         client: '客户端问题',
       },
     },
-    title: '发布反馈',
+    title: '提交反馈',
     type: {
       sug: '提建议',
       bug: '提缺陷',

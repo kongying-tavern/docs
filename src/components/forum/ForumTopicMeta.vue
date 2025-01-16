@@ -32,7 +32,7 @@
             v-if="hasPermission(authorId)"
             @click="handleCloseTopic"
           >
-            <span class="i-lucide:trash-2 icon-btn"></span>
+            <span class="i-lucide:x icon-btn"></span>
             <span>{{ menuLabels.closeFeedback.text }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem

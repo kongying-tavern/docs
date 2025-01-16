@@ -264,7 +264,7 @@ watch(
             id="Title"
             type="text"
             :placeholder="tab.fields.title.placeholder"
-            class="vp-border-input"
+            class="vp-border-input border-color-[var(--vp-c-text-2)]"
             :maxlength="tab.fields.title.maxLength"
             autocomplete="off"
             v-model="title"
@@ -283,6 +283,7 @@ watch(
           <ForumTagsInput
             v-if="tab.fields.type.show"
             id="label"
+            class="border-color-[var(--vp-c-text-2)]"
             :placeholder="tab.fields.type.placeholder"
             v-model="tags"
           />
@@ -300,6 +301,7 @@ watch(
           <ForumContentInputBox
             v-if="tab.fields.content.show"
             v-model="body"
+            class="border-color-[var(--vp-c-text-2)]"
             :file-limit="3"
             :max-file-size="3"
             :auto-upload="true"

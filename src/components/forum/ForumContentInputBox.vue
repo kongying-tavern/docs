@@ -2,7 +2,8 @@
   <div class="flex">
     <div class="comment-area w-full">
       <div
-        class="body border-color-[var(--vp-c-gutter)] border-style-solid border rounded-md px-2 py-1"
+        class="body border-style-solid border rounded-md px-2 py-1"
+        :class="class"
       >
         <div class="editor">
           <textarea
