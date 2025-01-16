@@ -3,6 +3,7 @@ import { normalizeComment, normalizeIssue, setFilterTags } from './utils'
 
 import type ForumAPI from '../api'
 import { extractOfficialAndAuthorComments } from './inBrowserUtils'
+import { buildFormData } from '@/apis/utils'
 
 export const getTopic = async (number: string): Promise<ForumAPI.Topic> => {
   const [data] = await apiCall<GITEE.IssueInfo>(
@@ -134,16 +135,18 @@ export const postTopic = async (
   accessToken: ForumAPI.AccessToken,
   data: { body: string; title: string; labels?: string },
 ): Promise<ForumAPI.Topic> => {
+  const form = buildFormData({
+    owner: GITEE_OWNER,
+    repo: GITEE_REPO,
+    access_token: accessToken,
+    ...data,
+  })
+
   const [issueInfo] = await apiCall<GITEE.IssueInfo>(
     'post',
     `repos/${GITEE_OWNER}/issues`,
     {
-      body: {
-        owner: GITEE_OWNER,
-        repo: GITEE_REPO,
-        access_token: accessToken,
-        ...data,
-      },
+      body: form,
     },
   )
   console.log(issueInfo)

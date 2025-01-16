@@ -47,3 +47,16 @@ export const getHeader = (
 
   return [result, undefined]
 }
+
+export const buildFormData = <T extends {}>(body: T): FormData => {
+  const form = new FormData()
+  for (let key in body) {
+    const value = body[key]
+    if (value instanceof Blob) {
+      form.append(key, value)
+    } else {
+      form.append(key, String(value))
+    }
+  }
+  return form
+}
