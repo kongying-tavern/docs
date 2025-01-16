@@ -3,6 +3,7 @@
     <PopoverTrigger>
       <TagsInput
         class="px-0 gap-0 w-full border vp-border-input"
+        :class="class"
         :model-value="modelValue"
       >
         <div class="flex gap-2 flex-wrap items-center px-3">
