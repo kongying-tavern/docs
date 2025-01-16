@@ -1,5 +1,9 @@
 import { STATE_TAGS, TOPIC_TYPE } from '.'
+import { avatarList, avatarBaseURl } from '@/composables/avatarList'
+
 import type ForumAPI from '../api'
+
+const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
 export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
   return {
@@ -13,13 +17,31 @@ export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
 }
 
 export function normalizeUser(user: GITEE.User): ForumAPI.User {
+  console.log(user.avatar_url === GITEE_DEFAULT_AVATAR_URL, user.avatar_url)
   return {
     username: user.login,
-    avatar: user.avatar_url,
+    avatar:
+      user.avatar_url === GITEE_DEFAULT_AVATAR_URL
+        ? getRandomAvatar(user.id)
+        : user.avatar_url,
     homepage: user.html_url,
     id: user.id,
     login: user.login,
   }
+}
+
+export function getRandomAvatar(uuid: number) {
+  return avatarBaseURl + avatarList[getUniqueIndexById(uuid, avatarList.length)]
+}
+
+function getUniqueIndexById(id: number, range: number): number {
+  if (range <= 0) {
+    throw new Error('Range must be a positive number.')
+  }
+  const positiveId = Math.abs(id)
+  const hash = (positiveId * 2654435761) >>> 0 // >>> 0 确保结果是无符号整数
+
+  return hash % range
 }
 
 export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
