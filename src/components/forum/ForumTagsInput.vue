@@ -89,6 +89,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { getTopicTagMap } from '~/composables/getTopicTagMap'
 
 import type { HTMLAttributes } from 'vue'
+import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 
 const props = withDefaults(
   defineProps<{
@@ -109,6 +110,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 const { message } = useLocalized()
 const topicTagMap = getTopicTagMap()
+const topicTagLabelGetter = getTopicTagLabelGetter()
 
 const tags = <string[]>[]
 const searchTerm = ref('')
@@ -120,7 +122,10 @@ const filteredTags = computed(() =>
   tags.filter((i) => !modelValue.value.includes(i)),
 )
 
-const getLocalizedTagName = (key: string) => topicTagMap.get(key) || key
+const getLocalizedTagName = (key: string) =>
+  topicTagMap.get(key) ||
+  topicTagMap.get(topicTagLabelGetter.getTag(key) ?? '') ||
+  key
 
 const handleSelect = (tag: string) => {
   if (typeof tag === 'string') {
