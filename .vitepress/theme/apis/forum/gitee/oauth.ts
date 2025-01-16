@@ -2,10 +2,9 @@ import { GITEE_CLIENT_ID, GITEE_CLIENT_SECRET, fetcher } from '.'
 import { catchError } from '../../utils'
 import type ForumAPI from '../api'
 import { normalizeAuth } from './utils'
-import { withBase } from 'vitepress'
 
 export function getRedirectUri() {
-  if (window.location.search) return location.origin + withBase('/feeback')
+  if (window.location.search) return location.origin + '/docs/feeback'
   return location.origin + location.pathname
 }
 
