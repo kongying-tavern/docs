@@ -119,16 +119,19 @@ const cachedApiCall = useMemoize(
     endpoint: string,
     { params, body, hooks }: ApiCallParams,
   ): ApiCallResult<T> => {
+    if (import.meta.env.SSR) return [{} as T, undefined]
     const { auth } = useUserAuthStore()
 
+    const accessToken = auth.accessToken
     const url = `api/v5/${endpoint}`
-    if (params) {
-      params.access_token = auth.accessToken
-    }
-    if (body) {
-      if (body instanceof FormData)
-        body.append('access_token', auth.accessToken ?? '')
-      else body.access_token = auth.accessToken
+    if (accessToken) {
+      if (params) {
+        params.access_token = accessToken
+      }
+      if (body) {
+        if (body instanceof FormData) body.append('access_token', accessToken)
+        else body.access_token = accessToken
+      }
     }
     const options = {
       searchParams: params,
