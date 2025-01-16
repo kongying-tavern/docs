@@ -119,7 +119,6 @@ const cachedApiCall = useMemoize(
     endpoint: string,
     { params, body, hooks }: ApiCallParams,
   ): ApiCallResult<T> => {
-    if (import.meta.env.SSR) return [{} as T, undefined]
     const { auth } = useUserAuthStore()
 
     const accessToken = auth.accessToken
