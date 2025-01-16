@@ -121,8 +121,8 @@ const forum: CustomConfig['forum'] = {
     },
     navigation: {
       allFeedback: 'All Feedback',
-      bugFeedback: 'Bug Feedback',
-      featFeedback: 'Feature Suggestions',
+      bugFeedback: 'Bug Repoort',
+      featFeedback: 'Feature Request',
       closedFeedback: 'Closed Feedback',
       faq: {
         title: 'FAQ',

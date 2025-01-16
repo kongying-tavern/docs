@@ -33,7 +33,7 @@
     </div>
   </form>
   <div
-    class="h-5 font-size-3.5 flex absolute top-28"
+    class="h-5 font-size-3.5 flex absolute md:top-28 top-16"
     v-if="forumData.isSearching && !forumData.loading"
   >
     <p class="color-[var(--vp-c-text-3)] mr-2">

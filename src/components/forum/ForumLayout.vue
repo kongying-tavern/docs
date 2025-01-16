@@ -2,7 +2,7 @@
   <div class="Forum slide-enter">
     <div class="forum-container">
       <div
-        class="forum-content w-[clamp(calc(100%-240px),700px,55vw)] float-left"
+        class="forum-content w-[clamp(calc(100%-240px),700px,55vw)] min-h-[calc(100vh-64px)] float-left"
       >
         <slot name="header" />
 
