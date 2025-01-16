@@ -40,8 +40,11 @@ jobs:
           run_install: true
 
       # 构建
-      - name: Build
-        run: pnpm build
+      - name: Refresh Blog Data
+        run: pnpm build-blog
+
+      - name: Build Site
+        run: pnpm build-vitepress
 
       - name: Build lunaria
         run: pnpm lunaria:build

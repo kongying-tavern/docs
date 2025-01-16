@@ -40,6 +40,9 @@ jobs:
           run_install: true
 
       # 构建
+      - name: Refresh Blog Data
+        run: pnpm build-blog
+
       - name: Build
         run: pnpm site:preview
 

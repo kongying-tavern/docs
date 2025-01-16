@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm build-blog & pnpm build-vitepress",
-    "build-blog": "npx tsx ./scripts/refreshBlogData.ts",
+    "build-blog": "tsx ./scripts/refreshBlogData.ts",
     "build-mpa": "vitepress build --mpa --base /docs/",
     "build-vitepress": "vitepress build --base /docs/",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
@@ -126,6 +126,7 @@
     "taze": "^0.16.9",
     "tsconfig-paths": "^4.2.0",
     "tsconfig-vuepress": "^5.2.1",
+    "tsx": "^4.19.2",
     "vite": "^6.0.6",
     "vite-plugin-inspect": "^0.8.9",
     "zhlint": "^0.8.2"

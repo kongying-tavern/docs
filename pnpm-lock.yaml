@@ -252,6 +252,9 @@ importers:
       tsconfig-vuepress:
         specifier: ^5.2.1
         version: 5.2.1
+      tsx:
+        specifier: ^4.19.2
+        version: 4.19.2
       vite:
         specifier: ^6.0.6
         version: 6.0.6(@types/node@22.10.2)(jiti@2.4.2)(sass@1.83.0)(tsx@4.19.2)(yaml@2.6.1)
