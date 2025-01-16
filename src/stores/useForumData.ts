@@ -68,8 +68,10 @@ export const useForumData = defineStore('forum-data', () => {
         pageSize: defaultPageSize,
         filter: [
           pagination.filter === 'ALL' ? 'WEB-FEEDBACK' : pagination.filter,
+          pagination.filter === 'CLOSED' ? 'WEB-FEEDBACK' : pagination.filter,
         ],
       },
+      pagination.filter === 'CLOSED' ? 'progressing' : 'open',
       q ? encodeURIComponent(String(q)) : undefined,
     )
   }
@@ -104,7 +106,7 @@ export const useForumData = defineStore('forum-data', () => {
   const hidleTopic = async (id: string | number): Promise<boolean> => {
     const state = await executeWithAuth(
       issues.putTopic,
-      [id, { labels: 'CLOSED' }],
+      [id, { state: 'progressing' }],
       message.value.forum.topic.menu.hideFeedback.success,
       message.value.forum.topic.menu.hideFeedback.fail,
       message,
@@ -153,24 +155,25 @@ export const useForumData = defineStore('forum-data', () => {
       submit(userAuth.accessToken, {
         body: bodyText(),
         title: `${type}:${body.title}`,
-        labels: Array.from(
-          new Set([
-            'WEB-FEEDBACK',
-            type,
-            lang.value.substring(0, 2).toLocaleUpperCase(),
-            ...body.tags,
-          ]),
-        ).join(','),
+        labels: [
+          'WEB-FEEDBACK',
+          type,
+          lang.value.substring(0, 2).toLocaleUpperCase(),
+          ...body.tags,
+        ].join(','),
       })
     }
 
-    watchOnce(submitLoading, () => {
-      if (!submittedTopic.value) return
-      userSubmittedTopic.value.unshift(submittedTopic.value)
-      toast.success(message.value.forum.publish.publishSuccess)
+    watch(submittedTopic, () => {
+      console.log(submittedTopic.value)
+
+      if (submittedTopic.value) {
+        userSubmittedTopic.value.unshift(submittedTopic.value)
+        toast.success(message.value.forum.publish.publishSuccess)
+      }
     })
 
-    watchOnce(submitError, () => {
+    watch(submitError, () => {
       toast.info(message.value.forum.publish.publishFail)
     })
 

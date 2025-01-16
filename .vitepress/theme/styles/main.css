@@ -119,6 +119,10 @@ textarea {
   cursor: pointer;
 }
 
+#VPContent {
+  background-color: var(--vp-c-bg);
+}
+
 #VPContent
   > div
   > div

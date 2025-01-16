@@ -105,7 +105,7 @@ const displayText = computed(() => {
 })
 
 const openGiteeLink = () => issues.openTopicOnGitee(topicId!)
-const handleCloseTopic = () => closeTopic(topicId!)
+const handleCloseTopic = () => closeTopic(topicId)
 const handleHideTopic = () => hidleTopic(topicId)
 const handleCommentClick = () => commentClickHandler()
 </script>

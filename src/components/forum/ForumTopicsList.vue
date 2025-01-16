@@ -39,12 +39,13 @@ const renderData = computed(() => {
     ...(forumData.filter === 'ALL' && !forumData.isSearching
       ? forumData.annData || []
       : []),
+    ...forumData.topics,
     // 基于审核和安全考虑，普通用户只展示发布超过两个小时的反馈
-    ...forumData.topics.filter(
-      (val) =>
-        Date.now() - new Date(val.createdAt).getTime() >= 1000 * 60 * 60 * 2 ||
-        userInfo.isTeamMember(val.user.id).value,
-    ),
+    // ...forumData.topics.filter(
+    //   (val) =>
+    //     Date.now() - new Date(val.createdAt).getTime() >= 1000 * 60 * 60 * 2 ||
+    //     userInfo.isTeamMember(val.user.id).value,
+    // ),
   ]
 })
 </script>

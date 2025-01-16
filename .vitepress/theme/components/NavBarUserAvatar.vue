@@ -49,7 +49,7 @@ const list: { title: string; href: string; icon: string }[] = [
         />
       </button>
 
-      <div class="menu">
+      <div class="menu" @mouseout="open = false">
         <NavBarUserAvatarDropdownMenu :list="list">
         </NavBarUserAvatarDropdownMenu>
       </div>

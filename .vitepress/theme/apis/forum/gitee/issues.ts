@@ -15,6 +15,7 @@ export const getTopic = async (number: string): Promise<ForumAPI.Topic> => {
 
 export const getTopics = async (
   query: ForumAPI.Query,
+  state?: ForumAPI.TopicState,
   search?: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> => {
   if (search) return searchTopics(query, search)
@@ -25,7 +26,7 @@ export const getTopics = async (
       `repos/${GITEE_OWNER}/${GITEE_REPO}/issues`,
       {
         params: {
-          state: 'open',
+          state: state || 'open',
           page: query.current,
           sort: query.sort || 'created',
           per_page: query.pageSize,
@@ -51,11 +52,6 @@ export const getTopics = async (
     const topic = normalizeIssue(val)
 
     if (topic.type === 'ANN') return
-    if (
-      val.labels.map((val) => val.name).includes('CLOSED') &&
-      !query.filter?.includes('CLOSED')
-    )
-      return
 
     data.push({
       relatedComments: extractOfficialAndAuthorComments(val, comments),
@@ -150,7 +146,7 @@ export const postTopic = async (
       },
     },
   )
-
+  console.log(issueInfo)
   return normalizeIssue(issueInfo)
 }
 
@@ -256,5 +252,5 @@ export const getUserCreatedTopics = async (
 }
 
 export const openTopicOnGitee = (number: string | number) => {
-  window.open(`https://gitee.com/KYJGYSDT/Feedback/issues/${number}`)
+  window.open(`https://gitee.com/${GITEE_OWNER}/${GITEE_REPO}/issues/${number}`)
 }
