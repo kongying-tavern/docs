@@ -13,6 +13,13 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 
 import type ForumAPI from '@/apis/forum/api'
 import { executeWithAuth } from '~/composables/executeWithAuth'
+import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
+import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
+import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
+
+const typeLabelGetter = getTopicTypeLabelGetter()
+const localeLabelGetter = getForumLocaleLabelGetter()
+const topicLabelGetter = getTopicTagLabelGetter()
 
 const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG', 'CLOSED'])
 
@@ -157,9 +164,9 @@ export const useForumData = defineStore('forum-data', () => {
         title: `${type}:${body.title}`,
         labels: [
           'WEB-FEEDBACK',
-          type,
-          lang.value.substring(0, 2).toUpperCase(),
-          ...body.tags,
+          typeLabelGetter.getLabel(type),
+          localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
+          ...topicLabelGetter.toLabels(body.tags),
         ].join(','),
       })
     }
