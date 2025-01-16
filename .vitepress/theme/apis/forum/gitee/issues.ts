@@ -246,7 +246,11 @@ export const getUserCreatedTopics = async (
   )
 
   return {
-    data: issueList.map((val) => normalizeIssue(val)),
+    data: issueList
+      .filter(
+        (val) => val.repository.full_name === GITEE_OWNER + '/' + GITEE_REPO,
+      )
+      .map((val) => normalizeIssue(val)),
     ...paginationParams!,
   }
 }
