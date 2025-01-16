@@ -158,7 +158,7 @@ export const useForumData = defineStore('forum-data', () => {
         labels: [
           'WEB-FEEDBACK',
           type,
-          lang.value.substring(0, 2).toLocaleUpperCase(),
+          lang.value.substring(0, 2).toUpperCase(),
           ...body.tags,
         ].join(','),
       })

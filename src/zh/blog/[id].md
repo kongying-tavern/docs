@@ -21,7 +21,7 @@ docHeader: false
 
 <ForumCommentArea
   class="mt-8"
-  repo="blog"
+  repo="Blog"
   v-if="params.commentCount !== -1"
   :topic-id="params.id"
   :topic-author-id="params.author.id"

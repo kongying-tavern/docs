@@ -77,7 +77,7 @@ const {
   number: string
   placeholder?: string
   reply?: string
-  repo: 'Feedback' | 'blog'
+  repo: 'Feedback' | 'Blog'
 }>()
 
 const userInfo = useUserInfoStore()

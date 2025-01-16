@@ -66,7 +66,7 @@ const {
   topicAuthorId,
   commentCount = null,
 } = defineProps<{
-  repo: 'Feedback' | 'blog'
+  repo: 'Feedback' | 'Blog'
   topicId: string
   topicAuthorId: string | number
   commentCount?: number
