@@ -58,7 +58,7 @@
           class="mt-8"
           repo="Feedback"
           :topic-id="number"
-          :topic-author-id="data?.user.id!"
+          :topic-author-id="data?.user.id || -1"
           :comment-count="data?.commentCount"
         />
       </template>
@@ -84,7 +84,6 @@ import ForumRuleBadge from '../ForumRuleBadge.vue'
 import ForumTagList from '../ForumTagList.vue'
 import { getTopicNumber, setPageTitle } from '../utils'
 import ForumCommentArea from '../ForumCommentArea.vue'
-import { sanitizeHtml } from '~/composables/sanitizeHtml'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 import ForumLayout from '../ForumLayout.vue'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
@@ -109,7 +108,7 @@ const isTeamMember = computed(
   () => userInfo.isTeamMember(data.value?.user.id).value,
 )
 const renderedContent = computed(() =>
-  sanitizeHtml(markdownit().render(data.value?.contentRaw || '')),
+  markdownit().render(data.value?.content.text || ''),
 )
 
 if (sharedTopicInfo.value) {
