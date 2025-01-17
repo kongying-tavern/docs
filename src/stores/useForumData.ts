@@ -4,7 +4,7 @@ import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
-import { isArray, uniqBy } from 'lodash-es'
+import { isArray, uniqBy, merge } from 'lodash-es'
 import { useRequest } from 'vue-request'
 import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -138,6 +138,9 @@ export const useForumData = defineStore('forum-data', () => {
       manual: true,
     })
 
+    // 因为 Gitee 接口不识别普通用户上传的 tags(labels)，为了前端预览正常这里手动缓存并在后面与接口返回值合并
+    let userSelectedTags: string[] | null = null
+
     const submitData = (
       type: ForumAPI.TopicType,
       body: {
@@ -156,6 +159,8 @@ export const useForumData = defineStore('forum-data', () => {
         )
       }
 
+      userSelectedTags = body.tags
+
       submit({
         body: bodyText(),
         title: `${type}:${body.title}`,
@@ -169,10 +174,21 @@ export const useForumData = defineStore('forum-data', () => {
     }
 
     watch(submittedTopic, () => {
-      console.log(submittedTopic.value)
+      console.log(
+        {
+          ...submittedTopic.value,
+          ...(userSelectedTags ? { tags: userSelectedTags } : {}),
+        },
+        userSelectedTags,
+        submittedTopic.value,
+      )
 
       if (submittedTopic.value) {
-        userSubmittedTopic.value.unshift(submittedTopic.value)
+        console.log()
+        userSubmittedTopic.value.unshift({
+          ...submittedTopic.value,
+          ...(userSelectedTags ? { tags: userSelectedTags } : {}),
+        })
         toast.success(message.value.forum.publish.publishSuccess)
       }
     })
