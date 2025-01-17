@@ -174,17 +174,7 @@ export const useForumData = defineStore('forum-data', () => {
     }
 
     watch(submittedTopic, () => {
-      console.log(
-        {
-          ...submittedTopic.value,
-          ...(userSelectedTags ? { tags: userSelectedTags } : {}),
-        },
-        userSelectedTags,
-        submittedTopic.value,
-      )
-
       if (submittedTopic.value) {
-        console.log()
         userSubmittedTopic.value.unshift({
           ...submittedTopic.value,
           ...(userSelectedTags ? { tags: userSelectedTags } : {}),
