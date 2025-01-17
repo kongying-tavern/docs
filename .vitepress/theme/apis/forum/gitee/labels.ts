@@ -1,4 +1,5 @@
-import { GITEE_OWNER, GITEE_REPO, apiCall } from '.'
+import { apiCall } from '.'
+import { GITEE_API_CONFIG } from './config'
 import { excludeStateTags } from './utils'
 
 export const getAllLabels = async (
@@ -7,7 +8,7 @@ export const getAllLabels = async (
   return (
     await apiCall<GITEE.IssueLabel[]>(
       'get',
-      `repos/${GITEE_OWNER}/${GITEE_REPO}/labels`,
+      `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/labels`,
       {
         useCache,
       },

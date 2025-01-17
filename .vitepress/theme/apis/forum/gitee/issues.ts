@@ -1,14 +1,16 @@
-import { GITEE_OWNER, GITEE_BLOG_REPO, GITEE_REPO, apiCall } from '.'
+import { apiCall } from '.'
 import { normalizeComment, normalizeIssue, setFilterTags } from './utils'
+import { GITEE_API_CONFIG } from './config'
 
-import type ForumAPI from '../api'
 import { extractOfficialAndAuthorComments } from './inBrowserUtils'
 import { buildFormData } from '@/apis/utils'
+
+import type ForumAPI from '../api'
 
 export const getTopic = async (number: string): Promise<ForumAPI.Topic> => {
   const [data] = await apiCall<GITEE.IssueInfo>(
     'get',
-    `repos/${GITEE_OWNER}/${GITEE_REPO}/issues/${number}`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/issues/${number}`,
   )
 
   return normalizeIssue(data)
@@ -24,7 +26,7 @@ export const getTopics = async (
   const [[issues, paginationParams], [comments]] = await Promise.all([
     apiCall<GITEE.IssueList>(
       'get',
-      `repos/${GITEE_OWNER}/${GITEE_REPO}/issues`,
+      `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/issues`,
       {
         params: {
           state: state || 'open',
@@ -37,7 +39,7 @@ export const getTopics = async (
     ),
     apiCall<GITEE.CommentList>(
       'get',
-      `repos/${GITEE_OWNER}/${GITEE_REPO}/issues/comments`,
+      `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/issues/comments`,
       {
         params: {
           page: query.current,
@@ -69,7 +71,7 @@ export const getTopics = async (
 export const getAnnouncementList = async (): Promise<ForumAPI.Topic[]> => {
   const [issues] = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${GITEE_OWNER}/${GITEE_REPO}/issues`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/issues`,
     {
       params: {
         state: 'open',
@@ -83,13 +85,13 @@ export const getAnnouncementList = async (): Promise<ForumAPI.Topic[]> => {
 }
 
 export const getTopicComments = async (
-  repo: typeof GITEE_REPO | typeof GITEE_BLOG_REPO,
+  repo: typeof GITEE_API_CONFIG.REPO | typeof GITEE_API_CONFIG.BLOG_REPO,
   query: ForumAPI.Query,
   number: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Comment[]>> => {
   const [commentList, paginationParams] = await apiCall<GITEE.CommentList>(
     'get',
-    `repos/${GITEE_OWNER}/${repo}/issues/${number}/comments`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${repo}/issues/${number}/comments`,
     {
       params: {
         number: number,
@@ -114,7 +116,7 @@ export const searchTopics = async (
     `search/issues`,
     {
       params: {
-        repo: `${GITEE_OWNER}/${GITEE_REPO}`,
+        repo: `${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}`,
         state: 'open',
         q: q,
         sort: query.sort + '_at',
@@ -131,20 +133,20 @@ export const searchTopics = async (
   }
 }
 
-export const postTopic = async (
-  accessToken: ForumAPI.AccessToken,
-  data: { body: string; title: string; labels?: string },
-): Promise<ForumAPI.Topic> => {
+export const postTopic = async (data: {
+  body: string
+  title: string
+  labels?: string
+}): Promise<ForumAPI.Topic> => {
   const form = buildFormData({
-    owner: GITEE_OWNER,
-    repo: GITEE_REPO,
-    access_token: accessToken,
+    owner: GITEE_API_CONFIG.OWNER,
+    repo: GITEE_API_CONFIG.REPO,
     ...data,
   })
 
   const [issueInfo] = await apiCall<GITEE.IssueInfo>(
     'post',
-    `repos/${GITEE_OWNER}/issues`,
+    `repos/${GITEE_API_CONFIG.OWNER}/issues`,
     {
       body: form,
     },
@@ -154,17 +156,15 @@ export const postTopic = async (
 }
 
 export const postTopicComment = async (
-  accessToken: string,
   repo: string,
   number: string,
   body: string,
 ): Promise<ForumAPI.Comment> => {
   const [comment] = await apiCall<GITEE.Comment>(
     'post',
-    `repos/${GITEE_OWNER}/${repo}/issues/${number}/comments`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${repo}/issues/${number}/comments`,
     {
       params: {
-        access_token: accessToken,
         number,
         body,
       },
@@ -175,7 +175,6 @@ export const postTopicComment = async (
 }
 
 export const deleteIssueComment = async (
-  accessToken: string,
   repo: string,
   id: number | string,
 ): Promise<boolean> => {
@@ -183,10 +182,9 @@ export const deleteIssueComment = async (
 
   await apiCall<GITEE.IssueList>(
     'delete',
-    `repos/${GITEE_OWNER}/${GITEE_REPO}/issues/comments/${id}`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/issues/comments/${id}`,
     {
       params: {
-        access_token: accessToken,
         id,
       },
       hooks: {
@@ -204,7 +202,6 @@ export const deleteIssueComment = async (
 }
 
 export const putTopic = async (
-  accessToken: string,
   number: string | number,
   data: {
     title?: string
@@ -215,12 +212,11 @@ export const putTopic = async (
 ): Promise<ForumAPI.Topic> => {
   const [issueInfo] = await apiCall<GITEE.IssueInfo>(
     'patch',
-    `repos/${GITEE_OWNER}/issues/${number}`,
+    `repos/${GITEE_API_CONFIG.OWNER}/issues/${number}`,
     {
       params: {
-        access_token: accessToken,
-        repo: GITEE_REPO,
-        owner: GITEE_OWNER,
+        repo: GITEE_API_CONFIG.REPO,
+        owner: GITEE_API_CONFIG.OWNER,
         ...data,
       },
     },
@@ -230,14 +226,12 @@ export const putTopic = async (
 
 export const getUserCreatedTopics = async (
   query: ForumAPI.Query,
-  AccessToken: ForumAPI.AccessToken,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> => {
   const [issueList, paginationParams] = await apiCall<GITEE.IssueList>(
     'get',
-    `/orgs/${GITEE_OWNER}/issues`,
+    `/orgs/${GITEE_API_CONFIG.OWNER}/issues`,
     {
       params: {
-        access_token: AccessToken,
         page: query.current,
         sort: query.sort || 'created',
         per_page: query.pageSize,
@@ -251,7 +245,9 @@ export const getUserCreatedTopics = async (
   return {
     data: issueList
       .filter(
-        (val) => val.repository.full_name === GITEE_OWNER + '/' + GITEE_REPO,
+        (val) =>
+          val.repository.full_name ===
+          GITEE_API_CONFIG.OWNER + '/' + GITEE_API_CONFIG.REPO,
       )
       .map((val) => normalizeIssue(val)),
     ...paginationParams!,
@@ -259,5 +255,7 @@ export const getUserCreatedTopics = async (
 }
 
 export const openTopicOnGitee = (number: string | number) => {
-  window.open(`https://gitee.com/${GITEE_OWNER}/${GITEE_REPO}/issues/${number}`)
+  window.open(
+    `https://gitee.com/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/issues/${number}`,
+  )
 }

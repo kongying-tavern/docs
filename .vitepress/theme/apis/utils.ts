@@ -60,3 +60,11 @@ export const buildFormData = <T extends {}>(body: T): FormData => {
   }
   return form
 }
+
+export function isNodeEnvironment(): boolean {
+  return (
+    typeof process !== 'undefined' &&
+    process.versions != null &&
+    process.versions.node != null
+  )
+}

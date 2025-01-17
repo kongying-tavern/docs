@@ -1,4 +1,4 @@
-# Kongying Tavern Genshin Interactive Map Documentation
+# 空荧地图文档
 
 [![Check](https://github.com/kongying-tavern/docs/actions/workflows/check.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/check.yml)
 [![Links](https://github.com/kongying-tavern/docs/actions/workflows/links.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/links.yml)
@@ -20,7 +20,7 @@ pnpm i
 pnpm run dev
 ```
 
-This project requires Node.js to be `v14.0.0` or higher, because we use new JavaScript features in our code, such as optional chaining.
+This project requires Node.js to be `v18.0.0` or higher, because we use new JavaScript features in our code, such as optional chaining.
 
 ## Working on the content
 

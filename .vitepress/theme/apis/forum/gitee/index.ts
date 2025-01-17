@@ -1,8 +1,8 @@
 import { useMemoize } from '@vueuse/core'
-import ky, { type KyResponse } from 'ky'
-import type { Hooks } from 'ky'
-import { catchError, getHeader } from '../../utils'
+import ky, { type KyResponse, type Hooks } from 'ky'
+import { catchError, getHeader, isNodeEnvironment } from '../../utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
+import { GITEE_API_CONFIG } from './config'
 
 import * as blog from './blog'
 import * as issues from './issues'
@@ -13,30 +13,8 @@ import type ForumAPI from '../api'
 
 class HTTPError extends Error {}
 
-export const PREFIX_URL = 'https://gitee.com/'
-export const GITEE_CLIENT_ID =
-  '053290d8af24515ea1ba7aa9d19175698eef3be29ada8a6a3156804093a21c4d'
-export const GITEE_CLIENT_SECRET =
-  '490930078ce5da2580a193af163c275c670567e70a93fbe0ca39e15faa8f5271'
-export const GITEE_OWNER = 'KYJGYSDT'
-export const GITEE_REPO = 'Feedback'
-export const GITEE_BLOG_REPO = 'Blog'
-export const TOPIC_TYPE = ['BUG', 'FEAT', 'SUG', 'ANN']
-export const STATE_TAGS = new Set([
-  'CLOSED',
-  'WEB-FEEDBACK',
-  'GOOD-ISSUE',
-  'TYP-FEAT',
-  'TYP-SUG',
-  'TYP-BUG',
-  'TYP-ANN',
-  'LC-ZH',
-  'LC-EN',
-  'LC-JA',
-])
-
 export const fetcher = ky.create({
-  prefixUrl: PREFIX_URL,
+  prefixUrl: GITEE_API_CONFIG.PREFIX_URL,
   timeout: 5000,
   retry: 1,
   hooks: {
@@ -119,19 +97,24 @@ const cachedApiCall = useMemoize(
     endpoint: string,
     { params, body, hooks }: ApiCallParams,
   ): ApiCallResult<T> => {
-    const { auth } = useUserAuthStore()
+    if (!isNodeEnvironment() && !endpoint.includes('oauth')) {
+      const { auth } = useUserAuthStore()
 
-    const accessToken = auth.accessToken
-    const url = `api/v5/${endpoint}`
-    if (accessToken) {
-      if (params) {
-        params.access_token = accessToken
-      }
-      if (body) {
-        if (body instanceof FormData) body.append('access_token', accessToken)
-        else body.access_token = accessToken
+      const accessToken = auth.accessToken
+
+      if (accessToken) {
+        if (params) {
+          params.access_token = accessToken
+        }
+        if (body) {
+          if (body instanceof FormData) body.append('access_token', accessToken)
+          else body.access_token = accessToken
+        }
       }
     }
+
+    const url = `api/v5/${endpoint}`
+
     const options = {
       searchParams: params,
       hooks,

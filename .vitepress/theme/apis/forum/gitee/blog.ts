@@ -1,11 +1,12 @@
-import { apiCall, GITEE_OWNER, GITEE_BLOG_REPO } from '.'
+import { apiCall } from '.'
+import { GITEE_API_CONFIG } from './config'
 import type ForumAPI from '../api'
 import { normalizeComment, normalizeIssue } from './utils'
 
 export const getPost = async (number: string): Promise<ForumAPI.Topic> => {
   const [data] = await apiCall<GITEE.IssueInfo>(
     'get',
-    `repos/${GITEE_OWNER}/${GITEE_BLOG_REPO}/issues/${number}`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${number}`,
   )
 
   return normalizeIssue(data)
@@ -19,7 +20,7 @@ export const getPosts = async (
 
   const [issues, paginationParams] = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${GITEE_OWNER}/${GITEE_BLOG_REPO}/issues`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues`,
     {
       params: {
         state: 'open',
@@ -47,7 +48,7 @@ export const searchPosts = async (
     `search/issues`,
     {
       params: {
-        repo: `${GITEE_OWNER}/${GITEE_BLOG_REPO}`,
+        repo: `${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}`,
         state: 'open',
         q: q,
         sort: query.sort + '_at',
@@ -70,7 +71,7 @@ export const getPostComments = async (
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Comment[]>> => {
   const [commentList, paginationParams] = await apiCall<GITEE.CommentList>(
     'get',
-    `repos/${GITEE_OWNER}/${GITEE_BLOG_REPO}/issues/${number}/comments`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${number}/comments`,
     {
       params: {
         number: number,

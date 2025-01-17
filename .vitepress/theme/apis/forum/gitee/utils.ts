@@ -1,4 +1,4 @@
-import { STATE_TAGS, TOPIC_TYPE } from '.'
+import { GITEE_API_CONFIG } from './config'
 import { avatarList, avatarBaseURl } from '@/composables/avatarList'
 
 import type ForumAPI from '../api'
@@ -17,7 +17,6 @@ export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
 }
 
 export function normalizeUser(user: GITEE.User): ForumAPI.User {
-  console.log(user.avatar_url === GITEE_DEFAULT_AVATAR_URL, user.avatar_url)
   return {
     username: user.login,
     avatar:
@@ -104,7 +103,7 @@ function getTopicTypeFromTitle(title: string): {
 } {
   const match = title
     .toLocaleUpperCase()
-    .match(RegExp(`^(${TOPIC_TYPE.join('|')}):`))
+    .match(RegExp(`^(${GITEE_API_CONFIG.TOPIC_TYPE.join('|')}):`))
 
   if (match) {
     const prefix = match[0].replace(':', '') as ForumAPI.TopicType
@@ -118,7 +117,7 @@ export function excludeStateTags(labels: GITEE.IssueLabel[]) {
   return labels
     .map((val) => val.name)
     .filter((val) => isUpperCase(val))
-    .filter((val) => !STATE_TAGS.has(val))
+    .filter((val) => !GITEE_API_CONFIG.STATE_TAGS.has(val))
 }
 
 function markdownToTextWithImages(markdown?: string): {

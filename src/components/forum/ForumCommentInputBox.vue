@@ -93,12 +93,7 @@ const { data, loading, runAsync, error } = useRequest(issues.postTopicComment, {
 const submit = async () => {
   focused.value = true
   if (!userAuth.isTokenValid) location.hash = 'login-alert'
-  await runAsync(
-    userAuth.accessToken,
-    repo,
-    number,
-    reply ? reply + ' ' + input.value : input.value,
-  )
+  await runAsync(repo, number, reply ? reply + ' ' + input.value : input.value)
   if (error.value)
     return toast.error(
       message.value.forum.comment.commentFail + error.value?.message,

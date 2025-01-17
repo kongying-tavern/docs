@@ -3,10 +3,7 @@ import { toast } from 'vue-sonner'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import type { Ref } from 'vue'
 
-type ActionFunction<T extends any[]> = (
-  token: string,
-  ...args: T
-) => Promise<boolean | any>
+type ActionFunction<T extends any[]> = (...args: T) => Promise<boolean | any>
 
 export const executeWithAuth = async <T extends any[]>(
   action: ActionFunction<T>,
@@ -22,7 +19,7 @@ export const executeWithAuth = async <T extends any[]>(
     return false
   }
 
-  const state = await action(userAuth.accessToken, ...argument)
+  const state = await action(...argument)
 
   if (state) {
     toast.success(successMsg)

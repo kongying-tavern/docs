@@ -73,17 +73,14 @@ export const useForumData = defineStore('forum-data', () => {
         current: pagination.page,
         sort: pagination.sort,
         pageSize: defaultPageSize,
-        filter: chain([
+        filter: [
           pagination.filter === 'ALL'
             ? 'WEB-FEEDBACK'
             : (typeLabelGetter.getLabel(pagination.filter) ?? ''),
           pagination.filter === 'CLOSED'
             ? 'WEB-FEEDBACK'
             : (typeLabelGetter.getLabel(pagination.filter) ?? ''),
-        ])
-          .filter((v) => v !== '')
-          .uniq()
-          .value(),
+        ].filter((v) => v),
       },
       pagination.filter === 'CLOSED' ? 'progressing' : 'open',
       q ? encodeURIComponent(String(q)) : undefined,
@@ -137,8 +134,6 @@ export const useForumData = defineStore('forum-data', () => {
   }
 
   const submitTopic = () => {
-    const userAuth = useUserAuthStore()
-
     const {
       data: submittedTopic,
       runAsync: submit,
@@ -166,7 +161,7 @@ export const useForumData = defineStore('forum-data', () => {
         )
       }
 
-      submit(userAuth.accessToken, {
+      submit({
         body: bodyText(),
         title: `${type}:${body.title}`,
         labels: [

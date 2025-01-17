@@ -75,14 +75,11 @@ const { data, runAsync, loading, error } = useLoadMore(
 const refreshData = async () => {
   if (!userAuth.isTokenValid) return (location.hash = 'login-alert')
 
-  await runAsync(
-    {
-      current: page.value,
-      sort: 'created',
-      pageSize: 50,
-    },
-    userAuth.accessToken,
-  )
+  await runAsync({
+    current: page.value,
+    sort: 'created',
+    pageSize: 50,
+  })
 }
 
 watchOnce(error, () => {

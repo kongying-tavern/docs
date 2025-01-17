@@ -1,7 +1,9 @@
-import { GITEE_CLIENT_ID, GITEE_CLIENT_SECRET, fetcher } from '.'
+import { fetcher } from '.'
 import { catchError } from '../../utils'
-import type ForumAPI from '../api'
+import { GITEE_API_CONFIG } from './config'
 import { normalizeAuth } from './utils'
+
+import type ForumAPI from '../api'
 
 export function getRedirectUri() {
   if (window.location.search) return location.origin + '/docs/feeback'
@@ -15,11 +17,11 @@ export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
         searchParams: {
           code,
           grant_type: 'authorization_code',
-          client_id: GITEE_CLIENT_ID,
+          client_id: GITEE_API_CONFIG.CLIENT_ID,
           redirect_uri: getRedirectUri(),
         },
         json: {
-          client_secret: GITEE_CLIENT_SECRET,
+          client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
         },
       })
       .json(),
@@ -38,11 +40,11 @@ export const refreshToken = async (
         searchParams: {
           grant_type: 'refresh_token',
           refresh_token: refreshToken,
-          client_id: GITEE_CLIENT_ID,
+          client_id: GITEE_API_CONFIG.CLIENT_ID,
           redirect_uri: getRedirectUri(),
         },
         json: {
-          client_secret: GITEE_CLIENT_SECRET,
+          client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
         },
       })
       .json(),
@@ -54,4 +56,4 @@ export const refreshToken = async (
 }
 
 export const redirectAuth = () =>
-  (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_CLIENT_ID}&redirect_uri=${getRedirectUri()}&response_type=code`)
+  (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_API_CONFIG.CLIENT_ID}&redirect_uri=${getRedirectUri()}&response_type=code`)

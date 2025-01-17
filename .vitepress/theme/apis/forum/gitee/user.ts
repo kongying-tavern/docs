@@ -1,6 +1,8 @@
-import { GITEE_OWNER, apiCall } from '.'
-import type ForumAPI from '../api'
+import { apiCall } from '.'
+import { GITEE_API_CONFIG } from './config'
 import { normalizeUser } from './utils'
+
+import type ForumAPI from '../api'
 
 export const getUser = async (access_token: string): Promise<ForumAPI.User> => {
   return normalizeUser(
@@ -27,11 +29,15 @@ export const getOrgMembers = async (
   useCache = true,
 ): Promise<ForumAPI.User[]> => {
   return (
-    await apiCall<GITEE.User[]>('get', `orgs/${GITEE_OWNER}/members`, {
-      params: {
-        per_page: 100,
+    await apiCall<GITEE.User[]>(
+      'get',
+      `orgs/${GITEE_API_CONFIG.OWNER}/members`,
+      {
+        params: {
+          per_page: 100,
+        },
+        useCache,
       },
-      useCache,
-    })
+    )
   )[0].map((val) => normalizeUser(val))
 }
