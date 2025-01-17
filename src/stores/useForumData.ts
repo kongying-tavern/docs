@@ -4,18 +4,18 @@ import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
-import { chain, isArray, uniqBy } from 'lodash-es'
+import { isArray, uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
 import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
 import { convertMultipleToMarkdown } from '../components/forum/utils'
-import { useUserAuthStore } from '@/stores/useUserAuth'
 
-import type ForumAPI from '@/apis/forum/api'
 import { executeWithAuth } from '~/composables/executeWithAuth'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
+
+import type ForumAPI from '@/apis/forum/api'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -160,7 +160,7 @@ export const useForumData = defineStore('forum-data', () => {
         body: bodyText(),
         title: `${type}:${body.title}`,
         labels: [
-          'WEB-FEEDBACK',
+          import.meta.env.DEV ? 'DEV-TET' : 'WEB-FEEDBACK',
           typeLabelGetter.getLabel(type),
           localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
           ...topicLabelGetter.toLabels(body.tags),

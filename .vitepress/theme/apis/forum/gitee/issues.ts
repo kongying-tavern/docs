@@ -60,6 +60,11 @@ export const getTopics = async (
     const topic = normalizeIssue(val)
 
     if (topic.type === 'ANN') return
+    if (
+      !import.meta.env.DEV &&
+      val.labels.map((val) => val.name).includes('DEV-TEST')
+    )
+      return
 
     data.push({
       relatedComments: extractOfficialAndAuthorComments(val, comments),
