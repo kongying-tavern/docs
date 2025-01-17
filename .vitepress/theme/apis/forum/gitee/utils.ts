@@ -2,6 +2,7 @@ import { GITEE_API_CONFIG } from './config'
 import { avatarList, avatarBaseURl } from '@/composables/avatarList'
 
 import type ForumAPI from '../api'
+import { isArray, uniq } from 'lodash-es'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
@@ -179,8 +180,23 @@ function filterLinks(str: string, whitelist: string[]): string {
   )
 }
 
+export function processLabels(
+  value: ForumAPI.Query['filter'],
+): Record<string, string> {
+  return {
+    ...(value
+      ? {
+          labels: isArray(value)
+            ? uniq(value.filter((v) => v.trim() !== '')).join(',')
+            : value,
+        }
+      : {}),
+  }
+}
+
 export default {
   normalizeUser,
   normalizeIssue,
   normalizeComment,
+  processLabels,
 }

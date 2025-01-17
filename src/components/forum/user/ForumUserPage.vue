@@ -79,6 +79,7 @@ const refreshData = async () => {
     current: page.value,
     sort: 'created',
     pageSize: 50,
+    filter: null,
   })
 }
 

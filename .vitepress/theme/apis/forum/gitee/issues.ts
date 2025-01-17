@@ -1,5 +1,10 @@
 import { apiCall } from '.'
-import { normalizeComment, normalizeIssue, setFilterTags } from './utils'
+import {
+  normalizeComment,
+  normalizeIssue,
+  setFilterTags,
+  processLabels,
+} from './utils'
 import { GITEE_API_CONFIG } from './config'
 
 import { extractOfficialAndAuthorComments } from './inBrowserUtils'
@@ -33,7 +38,7 @@ export const getTopics = async (
           page: query.current,
           sort: query.sort || 'created',
           per_page: query.pageSize,
-          labels: query.filter,
+          ...processLabels(query.filter),
         },
       },
     ),
@@ -122,7 +127,7 @@ export const searchTopics = async (
         sort: query.sort + '_at',
         page: query.current,
         per_page: query.pageSize,
-        labels: query.filter?.join(','),
+        ...processLabels(query.filter),
       },
     },
   )
@@ -236,7 +241,7 @@ export const getUserCreatedTopics = async (
         sort: query.sort || 'created',
         per_page: query.pageSize,
         filter: 'created',
-        lables: setFilterTags(query.filter),
+        lables: setFilterTags(Array.from(query.filter || [])),
         state: 'all',
       },
     },

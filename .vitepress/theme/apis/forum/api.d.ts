@@ -79,7 +79,7 @@ export namespace ForumAPI {
     current: number
     pageSize: number
     sort: string
-    filter?: string[]
+    filter: string | string[] | null
   }
 
   export type SortMethod = 'created' | 'updated_at'

@@ -1,7 +1,7 @@
 import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
 import type ForumAPI from '../api'
-import { normalizeComment, normalizeIssue } from './utils'
+import { normalizeComment, normalizeIssue, processLabels } from './utils'
 
 export const getPost = async (number: string): Promise<ForumAPI.Topic> => {
   const [data] = await apiCall<GITEE.IssueInfo>(
@@ -54,7 +54,7 @@ export const searchPosts = async (
         sort: query.sort + '_at',
         page: query.current,
         per_page: query.pageSize,
-        labels: query.filter?.join(','),
+        ...processLabels(query.filter),
       },
     },
   )
