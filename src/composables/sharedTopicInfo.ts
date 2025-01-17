@@ -1,14 +1,18 @@
 import type ForumAPI from '@/apis/forum/api'
-import { useStorage } from '@vueuse/core'
 import { computed } from 'vue'
+
+export const SHARED_TOPIC_INFO_KEY = 'topic-info'
 
 export const useSharedTopicInfo = (topic?: ForumAPI.Topic) => {
   if (import.meta.env.SSR) return computed(() => null)
 
-  const data = useStorage('topic-info', JSON.stringify(topic), sessionStorage)
-
   return computed<ForumAPI.Topic>(() => {
-    if (data.value == undefined) return null
-    return JSON.parse(data.value)
+    const data = sessionStorage.getItem(SHARED_TOPIC_INFO_KEY)
+    if (data) {
+      sessionStorage.removeItem(SHARED_TOPIC_INFO_KEY)
+      return JSON.parse(data)
+    }
+    sessionStorage.setItem(SHARED_TOPIC_INFO_KEY, JSON.stringify(topic))
+    return topic
   })
 }

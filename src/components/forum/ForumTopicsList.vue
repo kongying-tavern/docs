@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <li v-for="item in renderData">
+      <li v-for="item in renderData" :key="item.id">
         <ForumTopic
           :content="item.content"
           :title="item.title"
