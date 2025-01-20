@@ -45,7 +45,7 @@ export const useTopicComments = createGlobalState(() => {
     commentCount.value = topicCommentCount
     await refreshComment(
       repo,
-      { current: 1, pageSize: 20, sort: 'created' },
+      { current: 1, pageSize: 20, sort: 'created', filter: null },
       topicId,
     )
     isLoaded.value = true

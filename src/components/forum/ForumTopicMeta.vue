@@ -15,16 +15,19 @@
             <span class="i-custom-ellipsis-vertical icon-btn"></span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="top" class="w-23">
-          <DropdownMenuItem @click="openGiteeLink">
-            <span class="i-lucide:external-link"></span>
+        <DropdownMenuContent side="top" class="text-nowrap">
+          <DropdownMenuItem
+            v-if="isTeamMemberOrInDevEnv"
+            @click="openGiteeLink"
+          >
+            <span class="i-lucide:external-link icon-btn"></span>
             <span>{{ menuLabels.giteeLink }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             v-if="isSupported"
             @click="copy(getRedirectUrlText(topicId, undefined, false))"
           >
-            <span class="i-lucide:clipboard"></span>
+            <span class="i-lucide:clipboard icon-btn"></span>
             <span v-if="!copied">{{ menuLabels.copyLink.text }}</span>
             <span v-else>{{ menuLabels.copyLink.success }}</span>
           </DropdownMenuItem>
@@ -32,7 +35,7 @@
             v-if="hasPermission(authorId)"
             @click="handleCloseTopic"
           >
-            <span class="i-lucide:x icon-btn"></span>
+            <span class="i-lucide:square-x icon-btn"></span>
             <span>{{ menuLabels.closeFeedback.text }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -71,6 +74,7 @@ import {
 import { useForumData } from '~/stores/useForumData'
 import { useLocalized } from '@/hooks/useLocalized'
 import { hasPermission } from '~/composables/hasPermission'
+import { isTeamMemberOrInDevEnv } from '~/composables/isTeamMemberOrInDevEnv'
 import { useClipboard } from '@vueuse/core'
 import { getRedirectUrlText } from '~/composables/sessionCacheRedirect'
 

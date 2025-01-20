@@ -12,7 +12,6 @@
 import ForumShareThis from '../ForumShareThis.vue'
 import { useData } from 'vitepress'
 
-const { page } = useData()
 defineProps<{
   prevPageLink: string
   text: string

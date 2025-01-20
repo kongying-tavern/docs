@@ -15,9 +15,9 @@
             <span class="i-custom-ellipsis-vertical icon-btn"></span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="top" class="w-23">
+        <DropdownMenuContent side="top" class="text-nowrap">
           <DropdownMenuItem @click="handleCommentClick">
-            <span class="i-lucide:link"></span>
+            <span class="i-lucide:link icon-btn"></span>
             <span>{{ menuLabels.toOriginal }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem

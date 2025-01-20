@@ -14,9 +14,9 @@
               {{ title }}
               <ForumRuleBadge :type="isTeamMember ? 'official' : null" />
             </p>
-            <p v-if="topic.type">
+            <p class="mr-2" v-if="topic.type">
               <span
-                class="inline-flex items-center px-1 pt-.5 text-center font-size-3 rounded-0.5 align-middle text-xs font-semibold transition-colors color-[#b2b2b2] border-[#bdbdbd] border border-solid"
+                class="inline-flex items-center px-1 pt-.5 text-nowrap text-center font-size-3 rounded-0.5 align-middle text-xs font-semibold transition-colors color-[#b2b2b2] border-[#bdbdbd] border border-solid"
                 >{{ topicTypeMap.get(topic.type) }}</span
               >
             </p>

@@ -7,7 +7,10 @@
 
       <template #content>
         <div v-if="!loading && data" class="mb-4 slide-enter">
-          <h3 id="title" class="font-size-[clamp(1rem,10vw,2rem)] break-words">
+          <h3
+            id="title"
+            class="font-size-[clamp(1rem,10vw,2rem)] lh-[1.2] break-words"
+          >
             {{ data.title }}
           </h3>
 
