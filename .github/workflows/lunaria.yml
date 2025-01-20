@@ -1,4 +1,4 @@
-name: Lunaria
+name: LUNARIA
 
 on:
   # Trigger the workflow every time a pull request is opened or synchronized at the target `main` branch

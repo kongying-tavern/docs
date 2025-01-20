@@ -1,4 +1,4 @@
-name: Check Chinese text
+name: CHECK-CHINESE-TEXT
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
