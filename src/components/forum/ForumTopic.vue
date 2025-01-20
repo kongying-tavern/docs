@@ -17,8 +17,9 @@
             <p class="mr-2" v-if="topic.type">
               <span
                 class="inline-flex items-center px-1 pt-.5 text-nowrap text-center font-size-3 rounded-0.5 align-middle text-xs font-semibold transition-colors color-[#b2b2b2] border-[#bdbdbd] border border-solid"
-                >{{ topicTypeMap.get(topic.type) }}</span
               >
+                {{ topicTypeMap.get(topic.type) }}
+              </span>
             </p>
           </h4>
         </a>
@@ -121,10 +122,11 @@ const { title, author, topic } = defineProps<{
 const [isExpanded, toggleExpand] = useToggle()
 
 const renderText = computed(() => {
-  if (isAnn.value) return topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '')
-  return topic.contentRaw
+  const contentSanitized = topic.contentRaw
     .replace(/!\[.*?\]\(.*?\)/g, '')
-    .slice(0, isExpanded.value ? undefined : 180)
+    .replace(/<!--.*(?=-->)-->/giu, '')
+  if (isAnn.value) return contentSanitized
+  return contentSanitized.slice(0, isExpanded.value ? undefined : 180)
 })
 
 const hasOverflow = computed(

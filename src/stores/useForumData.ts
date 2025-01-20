@@ -16,6 +16,7 @@ import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 
 import type ForumAPI from '@/apis/forum/api'
+import { composeTopicBody } from '~/composables/composeTopicBody'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -161,15 +162,17 @@ export const useForumData = defineStore('forum-data', () => {
 
       userSelectedTags = body.tags
 
+      const labels = [
+        import.meta.env.DEV ? 'DEV-TEST' : 'WEB-FEEDBACK',
+        typeLabelGetter.getLabel(type),
+        localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
+        ...topicLabelGetter.toLabels(body.tags),
+      ]
+
       submit({
-        body: bodyText(),
+        body: composeTopicBody(bodyText(), labels),
         title: `${type}:${body.title}`,
-        labels: [
-          import.meta.env.DEV ? 'DEV-TEST' : 'WEB-FEEDBACK',
-          typeLabelGetter.getLabel(type),
-          localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
-          ...topicLabelGetter.toLabels(body.tags),
-        ].join(','),
+        labels: labels.join(','),
       })
     }
 

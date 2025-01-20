@@ -94,6 +94,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { watchOnce } from '@vueuse/core'
 import { useSharedTopicInfo } from '~/composables/sharedTopicInfo'
 import ForumTopicFooter from './ForumTopicFooter.vue'
+import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 
 const userInfo = useUserInfoStore()
 const number = getTopicNumber()
@@ -111,7 +112,9 @@ const isTeamMember = computed(
   () => userInfo.isTeamMember(data.value?.user.id).value,
 )
 const renderedContent = computed(() =>
-  markdownit().render(data.value?.content.text || ''),
+  sanitizeMarkdown(
+    markdownit().render(sanitizeMarkdown(data.value?.contentRaw)),
+  ),
 )
 
 if (sharedTopicInfo.value) {
