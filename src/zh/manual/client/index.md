@@ -17,7 +17,7 @@ title: 目录
 - [【位置追踪】疑难解答](./position-tracking)
 - [【地图性能占用高】前后台帧率设置](./framerate)
 - [【批量选择】使用说明](./batch-selection)
-- [【画板】路线功能 教程](./canvas)
+- [【画板】路线功能教程](./canvas)
 - [【彩蛋】查看历史版本内容](./easter-egg)
 - [【隐藏】标记/【显示】标记](./hide-show-done)
 - [【覆盖模式】使用说明](./overlay-mode)

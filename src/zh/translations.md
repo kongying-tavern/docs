@@ -17,7 +17,7 @@ description: 我们希望通过社区的共同努力提供所有原神支持的�
 
 ## 参与地图客户端的翻译 {#translations-client}
 
-地图客户端的翻译在金山文档进行，如果您想要参与地图客户端的翻译请在QQ或者Discord联系我们。
+地图客户端的翻译在金山文档进行，如果您想要参与地图客户端的翻译请在 QQ 或者 Discord 联系我们。
 
 ## 启动新的翻译 {#starting-a-new-translation}
 

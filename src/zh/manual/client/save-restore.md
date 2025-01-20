@@ -17,19 +17,19 @@ title: 存档恢复
 
 ![](/imgs/zh/manual/restore-recover/1.png)
 
-根据更新时间和数据量选择还原的版本, 也可以取消勾选“仅当前存档”从其他存档进行回溯
+根据更新时间和数据量选择还原的版本，也可以取消勾选“仅当前存档”从其他存档进行回溯
 
 ![](/imgs/zh/manual/restore-recover/2.png)
 
 ![](/imgs/zh/manual/restore-recover/3.png)
 
-确认后, 客户端会生成一个新的存档来存储回溯存档
+确认后，客户端会生成一个新的存档来存储回溯存档
 
 ![](/imgs/zh/manual/restore-recover/4.png)
 
 ## 2. 存档误删还原 {#Recovery}
 
-登录[Gitee](https://gitee.com/)，登录后在右上角点击发布代码片段
+登录 [Gitee](https://gitee.com/)，登录后在右上角点击发布代码片段
 
 ![](/imgs/zh/manual/restore-recover/5.png)
 

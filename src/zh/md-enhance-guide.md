@@ -64,15 +64,15 @@ search: false
 
 #### 例子 {#footnote-example}
 
-脚注 1 链接[^first]。
+脚注 1 链接 [^first]。
 
-脚注 2 链接[^second]。
+脚注 2 链接 [^second]。
 
 行内的脚注^[行内脚注文本] 定义。
 
-重复的页脚定义[^second]。
+重复的页脚定义 [^second]。
 
-[^first]: 脚注 **可以包含特殊标记**
+[^first]: 脚注**可以包含特殊标记**
 
     也可以由多个段落组成
 
@@ -102,7 +102,7 @@ search: false
 
 #### 例子 {#mark-example}
 
-对于习惯了传统吟游诗人的蒙德来说， ==「偶像」== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
+对于习惯了传统吟游诗人的蒙德来说， ==“偶像”== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
 
 ```md
 对于习惯了传统吟游诗人的蒙德来说， ==「偶像」== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
@@ -126,7 +126,7 @@ search: false
 | hoverShadow | 是否启用卡片 hover 时阴影效果，默认不启用        | false  |     `Boolean`     |
 | shadow      | 是否启用卡片阴影效果，默认启用                   |  true  |     `Boolean`     |
 
-> B站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写logo
+> B 站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写 logo
 
 ### Example {#card-example}
 
@@ -240,7 +240,7 @@ wip: true #显示施工中横幅
 
 - 类型：String
 
-配置页面的顶部的横幅内容，支持输入HTML不支持Markdown。默认隐藏
+配置页面的顶部的横幅内容，支持输入 HTML 不支持 Markdown。默认隐藏
 
 ```yml
 ---

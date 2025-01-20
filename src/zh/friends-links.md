@@ -4,7 +4,7 @@ layout: doc
 comment: false
 ---
 
-## bilibili 原神知名攻略UP
+## bilibili 原神知名攻略 UP
 
 ```card
 title: 你的影月月
