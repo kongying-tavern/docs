@@ -10,6 +10,7 @@ import * as labels from './labels'
 import * as oauth from './oauth'
 import * as user from './user'
 import type ForumAPI from '../api'
+import { isPlainObject } from 'lodash-es'
 
 class HTTPError extends Error {}
 
@@ -95,7 +96,7 @@ const cachedApiCall = useMemoize(
   async <T>(
     method: HttpMethod,
     endpoint: string,
-    { params, body, hooks }: ApiCallParams,
+    { params = {}, body, hooks }: ApiCallParams,
   ): ApiCallResult<T> => {
     if (!isNodeEnvironment() && !endpoint.includes('oauth')) {
       const { auth } = useUserAuthStore()
@@ -103,12 +104,12 @@ const cachedApiCall = useMemoize(
       const accessToken = auth.accessToken
 
       if (accessToken) {
-        if (params) {
-          params.access_token = accessToken
-        }
         if (body) {
           if (body instanceof FormData) body.append('access_token', accessToken)
-          else body.access_token = accessToken
+          else if (isPlainObject(body)) body.access_token = accessToken
+          else params.access_token = accessToken
+        } else {
+          params.access_token = accessToken
         }
       }
     }
