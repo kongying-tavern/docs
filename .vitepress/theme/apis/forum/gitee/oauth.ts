@@ -6,7 +6,7 @@ import { normalizeAuth } from './utils'
 import type ForumAPI from '../api'
 
 export function getRedirectUri() {
-  if (window.location.search) return location.origin + '/docs/feeback'
+  if (window.location.search) return location.origin + '/docs/feedback/'
   return location.origin + location.pathname
 }
 
