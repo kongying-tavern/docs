@@ -1,4 +1,4 @@
-name: CHECK
+name: Check Chinese text
 
 env:
   NODE_OPTIONS: --max-old-space-size=6144
@@ -6,9 +6,12 @@ env:
 on:
   push:
     branches: [main]
+    paths:
+      - '**/zh/**/*.md'
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened]
+    types: [opened]
+
   workflow_dispatch:
 
 concurrency:
@@ -49,7 +52,5 @@ jobs:
           node-version: ${{ matrix.node_version }}
           cache: pnpm
 
-      - name: Build project (MPA)
-        env:
-          NODE_OPTIONS: --max_old_space_size=4096
-        run: pnpm build-mpa
+      - name: Linter zh markdown
+        run: pnpm run lint:zh

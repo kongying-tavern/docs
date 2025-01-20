@@ -1,0 +1,13 @@
+{
+  "preset": "default",
+  "rules": {
+    "adjustedFullwidthPunctuation": "‘’",
+    "spaceOutsideHalfQuote": false
+  },
+  "caseIgnores": {
+    "IgnoredCase": {
+      "textStart": "[^",
+      "textEnd": ":"
+    }
+  }
+}
