@@ -2,6 +2,7 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import { toast } from 'vue-sonner'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import type { Ref } from 'vue'
+import { catchError } from '@/apis/utils'
 
 type ActionFunction<T extends any[]> = (...args: T) => Promise<boolean | any>
 
@@ -19,9 +20,11 @@ export const executeWithAuth = async <T extends any[]>(
     return false
   }
 
-  const state = await action(...argument)
+  const [error, state] = await catchError<T>(action(...argument))
 
-  if (state) {
+  console.log(error, state)
+
+  if (state && !error) {
     toast.success(successMsg)
   } else {
     toast.error(errorMsg)

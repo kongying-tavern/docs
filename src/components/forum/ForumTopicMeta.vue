@@ -39,7 +39,7 @@
             <span>{{ menuLabels.closeFeedback.text }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            v-if="hasPermission(authorId)"
+            v-if="isTeamMemberOrInDevEnv"
             @click="handleHideTopic"
           >
             <span class="i-lucide:eye-off icon-btn"></span>

@@ -4,7 +4,7 @@ import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
-import { isArray, uniqBy, merge } from 'lodash-es'
+import { isArray, uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
 import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -13,14 +13,12 @@ import { convertMultipleToMarkdown } from '../components/forum/utils'
 import { executeWithAuth } from '~/composables/executeWithAuth'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
+import { composeTopicBody } from '~/composables/composeTopicBody'
 
 import type ForumAPI from '@/apis/forum/api'
-import { composeTopicBody } from '~/composables/composeTopicBody'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
-const topicLabelGetter = getTopicTagLabelGetter()
 
 const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG', 'CLOSED'])
 
@@ -88,6 +86,12 @@ export const useForumData = defineStore('forum-data', () => {
     pagination.filter = val
   }
 
+  const getTopic = (id: string | number) => {
+    return [...topics.value, ...userSubmittedTopic.value].find(
+      (topic) => topic.id === id,
+    )
+  }
+
   const searchTopics = async (q: string | string[]) => {
     initialData()
 
@@ -99,15 +103,28 @@ export const useForumData = defineStore('forum-data', () => {
   }
 
   const closeTopic = async (id: string | number): Promise<boolean> => {
+    const targetTopic = getTopic(id)
+
+    if (!targetTopic) {
+      toast.error(message.value.forum.topic.menu.closeFeedback.fail)
+      return false
+    }
+
     const state = await executeWithAuth(
       issues.putTopic,
-      [id, { state: 'closed' }],
+      [
+        id,
+        {
+          body: composeTopicBody(targetTopic.contentRaw, { state: 'closed' }),
+          state: 'closed',
+        },
+      ],
       message.value.forum.topic.menu.closeFeedback.success,
       message.value.forum.topic.menu.closeFeedback.fail,
       message,
     )
     if (state) removeTopic(id)
-    return state
+    return !state
   }
 
   const hidleTopic = async (id: string | number): Promise<boolean> => {
@@ -119,7 +136,7 @@ export const useForumData = defineStore('forum-data', () => {
       message,
     )
     if (state) removeTopic(id)
-    return state
+    return !state
   }
 
   const removeTopic = (id: string | number) => {
@@ -170,7 +187,7 @@ export const useForumData = defineStore('forum-data', () => {
       ]
 
       submit({
-        body: composeTopicBody(bodyText(), labels),
+        body: composeTopicBody(bodyText(), { labels }),
         title: `${type}:${body.title}`,
         labels: labels.join(','),
       })

@@ -1,4 +1,4 @@
-import { apiCall } from '.'
+import { apiCall, labels } from '.'
 import {
   normalizeComment,
   normalizeIssue,
@@ -11,6 +11,8 @@ import { extractOfficialAndAuthorComments } from './inBrowserUtils'
 import { buildFormData } from '@/apis/utils'
 
 import type ForumAPI from '../api'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { reformat } from '../webhook'
 
 export const getTopic = async (number: string): Promise<ForumAPI.Topic> => {
   const [data] = await apiCall<GITEE.IssueInfo>(
@@ -231,7 +233,21 @@ export const putTopic = async (
       },
     },
   )
-  return normalizeIssue(issueInfo)
+
+  const result = normalizeIssue(issueInfo)
+
+  // 因为 Gitee 接口不识别无权限用户提交的 labels 和 state，所以这里手动通知 Webhook 同步数据
+  if (!(data.labels || data.state)) return result
+
+  // 团队成员的提交不需要通知 Webhook 同步
+  const userInfo = useUserInfoStore()
+  if (userInfo.isTeamMember().value) return result
+
+  const [reformatError, reformatData] = await reformat({ number: number })
+
+  if (reformatError) Promise.reject(result)
+
+  return result
 }
 
 export const getUserCreatedTopics = async (
