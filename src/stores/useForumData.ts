@@ -166,7 +166,7 @@ export const useForumData = defineStore('forum-data', () => {
         import.meta.env.DEV ? 'DEV-TEST' : 'WEB-FEEDBACK',
         typeLabelGetter.getLabel(type),
         localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
-        ...topicLabelGetter.toLabels(body.tags),
+        ...body.tags,
       ]
 
       submit({
