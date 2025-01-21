@@ -15,7 +15,7 @@ const topicLabelGetter = getTopicTagLabelGetter()
     <span
       v-for="label in data"
       :key="label"
-      class="px-2.5 font-size-3 inline-flex pointer-events-auto bg-[--vp-c-bg-soft] mr-2 rounded-full color-[--vp-c-text-2]"
+      class="px-2.5 mt-2 font-size-3 inline-flex pointer-events-auto bg-[--vp-c-bg-soft] mr-2 rounded-full color-[--vp-c-text-2]"
     >
       #{{ topicTagMap.get(topicLabelGetter.getTag(label) ?? '') }}
     </span>

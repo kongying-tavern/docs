@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <ForumTagList class="mt-4" :data="topic.tags" />
+      <ForumTagList class="mt-2" :data="topic.tags" />
 
       <div class="topic-info mt-4">
         <ForumTopicMeta
