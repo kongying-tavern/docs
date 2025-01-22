@@ -14,6 +14,7 @@ export const refreshBlogData = async () => {
       pageSize: 50,
       current: page,
       sort: 'created',
+      filter: null,
     })
 
     if (data) {
