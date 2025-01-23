@@ -170,7 +170,7 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   sitemap: {
-    hostname: 'https://yuanshen.site',
+    hostname: 'https://yuanshen.site/docs',
   },
   themeConfig: {
     search: {
