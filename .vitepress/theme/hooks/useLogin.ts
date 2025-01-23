@@ -8,6 +8,7 @@ import { refAutoReset, useStorage } from '@vueuse/core'
 import { ref } from 'vue'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
+const REQUIRED_LOGIN_PAGES = ['/feedback/user']
 
 const useLogin = () => {
   const userInfo = useUserInfoStore()
@@ -37,12 +38,23 @@ const useLogin = () => {
 
   async function initialize() {
     if (getLoginStatus() || !authCode) return
+
     isAuthenticating.value = true
+    const redirectState = redirectToNoRequiredLoginPage()
+
     const auth = await oauth.getToken(authCode)
-    if (!auth) return toast.error(theme.value.forum.auth.loginFail)
+
+    if (!auth) {
+      toast.error(theme.value.forum.auth.loginFail)
+      isAuthenticating.value = false
+      return
+    }
+
     userAuth.setAuth(auth)
     await userInfo.refreshUserInfo()
     userAuth.ensureTokenRefreshMission()
+    if (!redirectState) await go(cachedRedirectUrl.value)
+    isAuthenticating.value = false
     afterLogin()
   }
 
@@ -61,9 +73,6 @@ const useLogin = () => {
     } else {
       toast.info(theme.value.forum.auth.loginFail)
     }
-
-    isAuthenticating.value = false
-    await go(cachedRedirectUrl.value)
   }
 
   function oauthLogin() {
@@ -86,6 +95,18 @@ const useLogin = () => {
     userAuth.clearAuth()
     userInfo.clearUserInfo()
     toast.success(theme.value.forum.auth.logoutSuccess)
+  }
+
+  function redirectToNoRequiredLoginPage() {
+    if (
+      REQUIRED_LOGIN_PAGES.some(
+        (page) => !cachedRedirectUrl.value.includes(page),
+      )
+    ) {
+      go(cachedRedirectUrl.value)
+      return true
+    }
+    return false
   }
 
   function getLoginStatus() {
