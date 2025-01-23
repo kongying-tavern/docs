@@ -1,16 +1,28 @@
 import { oauth } from '@/apis/forum/gitee'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useData } from 'vitepress'
+import { useData, useRouter, withBase } from 'vitepress'
 import { toast } from 'vue-sonner'
 import { removeQueryParam } from '@/utils'
+import { refAutoReset, useStorage } from '@vueuse/core'
+import { ref } from 'vue'
+
+const REDIRECT_LINK_KEY = 'redirect-link'
 
 const useLogin = () => {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
   const authCode = getAuthCode()
+  const redirectUrl = refAutoReset(withBase('/'), 1000 * 60 * 5)
+  const cachedRedirectUrl = useStorage(
+    REDIRECT_LINK_KEY,
+    redirectUrl,
+    sessionStorage,
+  )
+  const isAuthenticating = ref<boolean>(false)
 
-  const { theme } = useData()
+  const { go } = useRouter()
+  const { theme, localeIndex } = useData()
 
   const LoginMethodsMap = {
     Oauth: oauthLogin,
@@ -25,6 +37,7 @@ const useLogin = () => {
 
   async function initialize() {
     if (getLoginStatus() || !authCode) return
+    isAuthenticating.value = true
     const auth = await oauth.getToken(authCode)
     if (!auth) return toast.error(theme.value.forum.auth.loginFail)
     userAuth.setAuth(auth)
@@ -42,16 +55,26 @@ const useLogin = () => {
     return result
   }
 
-  function afterLogin() {
+  async function afterLogin() {
     if (getLoginStatus()) {
       toast.success(theme.value.forum.auth.loginSuccess)
     } else {
       toast.info(theme.value.forum.auth.loginFail)
     }
+
+    isAuthenticating.value = false
+    await go(cachedRedirectUrl.value)
   }
 
   function oauthLogin() {
     if (location.hash !== 'login-alert') return (location.hash = 'login-alert')
+    return redirectAuth()
+  }
+
+  function redirectAuth() {
+    isAuthenticating.value = true
+    redirectUrl.value = location.pathname + location.hash + location.search
+    oauth.redirectAuth(localeIndex.value)
   }
 
   function passwordLogin() {
@@ -93,6 +116,8 @@ const useLogin = () => {
     signup,
     getAccessToken,
     getUserInfo,
+    redirectAuth,
+    isAuthenticating,
   }
 }
 

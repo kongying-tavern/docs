@@ -11,15 +11,13 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { useHashChecker } from '@/hooks/useHashChecker'
+import useLogin from '@/hooks/useLogin'
 import { useData } from 'vitepress'
 
 const { theme } = useData()
 
 const { isMatch: open } = useHashChecker('login-alert')
-
-const login = () => {
-  return oauth.redirectAuth()
-}
+const { redirectAuth: login } = useLogin()
 </script>
 
 <template>

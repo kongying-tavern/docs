@@ -5,9 +5,18 @@ import { normalizeAuth } from './utils'
 
 import type ForumAPI from '../api'
 
-export function getRedirectUri() {
-  if (window.location.search) return location.origin + '/docs/feedback/'
-  return location.origin + location.pathname
+const LAST_OAUTH_REDIRECT_URL_KEY = 'oauth-redirect-url'
+
+export const getRedirectUrl = (localeIndex?: string): string => {
+  const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
+  if (lastRedirectUrl) return lastRedirectUrl
+
+  const localeStr = localeIndex === 'root' ? '/' : `/${localeIndex}/`
+  const result = import.meta.env.DEV
+    ? `${location.protocol}//${location.host}${localeStr}callback`
+    : `https://yuanshen.site/docs${localeStr}callback`
+  localStorage.setItem(LAST_OAUTH_REDIRECT_URL_KEY, result)
+  return result
 }
 
 export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
@@ -18,7 +27,7 @@ export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
           code,
           grant_type: 'authorization_code',
           client_id: GITEE_API_CONFIG.CLIENT_ID,
-          redirect_uri: getRedirectUri(),
+          redirect_uri: getRedirectUrl(),
         },
         json: {
           client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
@@ -41,7 +50,7 @@ export const refreshToken = async (
           grant_type: 'refresh_token',
           refresh_token: refreshToken,
           client_id: GITEE_API_CONFIG.CLIENT_ID,
-          redirect_uri: getRedirectUri(),
+          redirect_uri: getRedirectUrl(),
         },
         json: {
           client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
@@ -55,5 +64,7 @@ export const refreshToken = async (
   return normalizeAuth(await data)
 }
 
-export const redirectAuth = () =>
-  (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_API_CONFIG.CLIENT_ID}&redirect_uri=${getRedirectUri()}&response_type=code`)
+export const redirectAuth = (localeIndex: string) => {
+  localStorage.removeItem(LAST_OAUTH_REDIRECT_URL_KEY)
+  return (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_API_CONFIG.CLIENT_ID}&redirect_uri=${getRedirectUrl(localeIndex)}&response_type=code`)
+}
