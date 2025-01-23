@@ -32,16 +32,13 @@
             <span v-else>{{ menuLabels.copyLink.success }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            v-if="hasPermission(authorId)"
+            v-if="isAuthorOrTeamMember"
             @click="handleCloseTopic"
           >
             <span class="i-lucide:square-x icon-btn"></span>
             <span>{{ menuLabels.closeFeedback.text }}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            v-if="isTeamMemberOrInDevEnv"
-            @click="handleHideTopic"
-          >
+          <DropdownMenuItem v-if="isTeamNember" @click="handleHideTopic">
             <span class="i-lucide:eye-off icon-btn"></span>
             <span>{{ menuLabels.hideFeedback.text }}</span>
           </DropdownMenuItem>
@@ -73,8 +70,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useForumData } from '~/stores/useForumData'
 import { useLocalized } from '@/hooks/useLocalized'
-import { hasPermission } from '~/composables/hasPermission'
-import { isTeamMemberOrInDevEnv } from '~/composables/isTeamMemberOrInDevEnv'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useClipboard } from '@vueuse/core'
 import { getRedirectUrlText } from '~/composables/sessionCacheRedirect'
 
@@ -87,6 +83,7 @@ const {
   commentCount = 0,
   commentId,
   commentClickHandler,
+  authorId,
 } = defineProps<{
   createdAt: string
   topicId: string | number
@@ -97,6 +94,8 @@ const {
 }>()
 
 const { copy, copied, isSupported } = useClipboard()
+const { isAuthorOrTeamMember, isTeamMemberOrInDevEnv, isTeamNember } =
+  useRuleChecks(authorId)
 
 const menuLabels = ref(message.value.forum.topic.menu)
 

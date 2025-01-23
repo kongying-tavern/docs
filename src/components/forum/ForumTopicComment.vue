@@ -99,7 +99,7 @@ const userInfo = useUserInfoStore()
 
 const userRule = computed(() => {
   if (props.author.id === props.topicAuthorId) return 'author'
-  if (userInfo.isTeamMember(props.author.id).value) return 'official'
+  if (userInfo.isTeamMember(props.author.id)) return 'official'
   return null
 })
 </script>

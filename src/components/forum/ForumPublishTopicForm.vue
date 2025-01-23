@@ -170,7 +170,7 @@ const formTabs = readonly<TabsConfig>([
   {
     value: 'ANN',
     label: '发公告',
-    condition: isTeamMember.value,
+    condition: isTeamMember,
     fields: {
       title: {
         label: message.value.forum.publish.form.title.text,

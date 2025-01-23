@@ -21,7 +21,7 @@
             <span>{{ menuLabels.toOriginal }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            v-if="hasPermission(authorId)"
+            v-if="isAuthorOrTeamMember"
             @click="handleDeleteComment"
           >
             <span class="i-lucide:trash-2 icon-btn"></span>
@@ -49,15 +49,13 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { useLocalized } from '@/hooks/useLocalized'
-import { hasPermission } from '~/composables/hasPermission'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicComments } from '~/composables/useTopicComment'
 
 const emit = defineEmits(['comment:delete'])
 
 const { deleteComment } = useTopicComments()
 const { message, formatDate } = useLocalized()
-
-const menuLabels = ref(message.value.forum.topic.menu)
 
 const {
   createdAt,
@@ -74,6 +72,9 @@ const {
   authorId: number | string
   commentClickHandler: Function
 }>()
+
+const { isAuthorOrTeamMember } = useRuleChecks(authorId)
+const menuLabels = ref(message.value.forum.topic.menu)
 
 const displayText = computed(() => {
   if (commentCount > 0) return commentCount

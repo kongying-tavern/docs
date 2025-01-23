@@ -132,7 +132,7 @@ const renderText = computed(() => {
 const hasOverflow = computed(
   () => topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '').length > 180,
 )
-const isTeamMember = computed(() => userInfo.isTeamMember(author.id).value)
+const isTeamMember = computed(() => userInfo.isTeamMember(author.id))
 const isAnn = computed(() => topic.type === 'ANN')
 const showComment = computed(
   () => topic.relatedComments && topic.type !== 'ANN',

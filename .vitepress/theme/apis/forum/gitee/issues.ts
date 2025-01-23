@@ -241,7 +241,7 @@ export const putTopic = async (
 
   // 团队成员的提交不需要通知 Webhook 同步
   const userInfo = useUserInfoStore()
-  if (userInfo.isTeamMember().value) return result
+  if (userInfo.isTeamMember()) return result
 
   const [reformatError, reformatData] = await reformat({ number: number })
 

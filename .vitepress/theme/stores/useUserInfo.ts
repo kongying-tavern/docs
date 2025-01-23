@@ -19,7 +19,7 @@ export const useUserInfoStore = defineStore('user-info', () => {
 
   const isTeamMember = (id?: string | number) => {
     id ??= info.value?.id
-    return computed(() => teamMemberList.findIndex((val) => id === val) !== -1)
+    return teamMemberList.findIndex((val) => id === val) !== -1
   }
 
   const clearUserInfo = () => (info.value = undefined)
