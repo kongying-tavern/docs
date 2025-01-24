@@ -96,6 +96,7 @@ export interface CustomConfig {
     readMore: string
     noMore: string
     loadError: string
+    exceededRateLimitWarning: string
     user: {
       menu: {
         giteePage: string

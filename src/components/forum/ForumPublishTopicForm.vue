@@ -325,7 +325,7 @@ watch(
 
   <Dialog v-if="isDesktop" v-model:open="isOpen">
     <DialogContent
-      class="flex items-center flex-col max-w-[clamp(50vw,500px,90vw)]"
+      class="flex items-center flex-col top-[110px] w-800px mx-auto mb-70px"
     >
       <VisuallyHidden>
         <DialogTitle>

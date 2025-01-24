@@ -4,6 +4,8 @@ const forum: CustomConfig['forum'] = {
   loadMore: 'もっと読む',
   noMore: 'これ以上ありません',
   loadError: '読み込み失敗',
+  exceededRateLimitWarning:
+    'Gitee APIの最大リクエストレート制限に達しました。ログインして再試行してください',
   topic: {
     official: '公式',
     author: '作成者',

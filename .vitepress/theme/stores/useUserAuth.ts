@@ -1,10 +1,12 @@
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
+import { toast } from 'vue-sonner'
 
 import type ForumAPI from '@/apis/forum/api'
 import { oauth } from '../apis/forum/gitee'
 import { camelCase } from '../utils'
+import { useLocalized } from '@/hooks/useLocalized'
 
 export interface LocalAuth {
   accessToken: string
@@ -32,6 +34,7 @@ const differenceTokenTime = (expiressTime: number) =>
   getRestTime(expiressTime) - TOKEN_REFRESH_REST_TIME
 
 export const useUserAuthStore = defineStore('user-auth', () => {
+  const { message } = useLocalized()
   const auth = useLocalStorage<Partial<LocalAuth>>(USERAUTH_KEY, {})
 
   const toCamelCaseObject = <T extends Record<string, unknown>>(
@@ -65,10 +68,23 @@ export const useUserAuthStore = defineStore('user-auth', () => {
   })
 
   const refreshAuth = () =>
-    new Promise<void>((resolve, reject) => {
+    new Promise<void>(async (resolve, reject) => {
       const { refreshToken } = auth.value
-      if (!refreshToken) return reject(new Error('鉴权信息为空'))
-      const request = oauth.refreshToken(refreshToken)
+      if (!refreshToken) {
+        logout()
+        return reject(new Error('鉴权信息为空'))
+      }
+
+      const [error, newAuth] = await oauth.refreshToken(refreshToken)
+
+      if (error || !newAuth) {
+        logout()
+        toast.error(message.value.forum.auth.loginFail)
+        return reject(new Error('Token 刷新失败'))
+      }
+
+      auth.value = newAuth
+      resolve()
     })
 
   /** 刷新计时器 */
@@ -87,7 +103,9 @@ export const useUserAuthStore = defineStore('user-auth', () => {
       const seconds = (refreshInterval / 1000).toFixed(0)
 
       if (intervalRefreshTimer.value !== undefined) {
-        console.info(`已存在定时刷新任务，将于 ${seconds} 秒后刷新`)
+        console.info(
+          `已存在定时刷新任务，将在 ${new Date(Date.now() + 1000 * Number(seconds)).toLocaleString()} 刷新`,
+        )
         return
       }
 
@@ -99,11 +117,14 @@ export const useUserAuthStore = defineStore('user-auth', () => {
       }
 
       if (refreshInterval <= 0) {
+        console.info('Token 已过期，立即刷新...')
         await commitRefresh()
         return
       }
 
-      console.info(`token 将于 ${seconds} 秒后刷新`)
+      console.info(
+        `token 将在 ${new Date(Date.now() + 1000 * Number(seconds)).toLocaleString()} 刷新`,
+      )
       intervalRefreshTimer.value = window.setTimeout(async () => {
         await commitRefresh()
       }, refreshInterval)

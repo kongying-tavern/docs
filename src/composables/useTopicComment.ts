@@ -5,6 +5,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { computed, ref, watch, type Ref } from 'vue'
 import { executeWithAuth } from './executeWithAuth'
 import { createGlobalState } from '@vueuse/core'
+import { handleError } from './handleError'
 
 export const useTopicComments = createGlobalState(() => {
   const comments = ref<ForumAPI.Comment[]>([])
@@ -65,13 +66,15 @@ export const useTopicComments = createGlobalState(() => {
       (comment) => comment.id !== id,
     )
 
-    return await executeWithAuth(
-      issues.deleteIssueComment,
+    const result = await executeWithAuth(
+      issues.deleteTopicComment,
       [repo, id],
       message.value.forum.topic.menu.deleteComment.success,
       message.value.forum.topic.menu.deleteComment.fail,
       message,
     )
+
+    return !!result
   }
 
   const loadStateMessage = computed(() => {
@@ -92,6 +95,10 @@ export const useTopicComments = createGlobalState(() => {
       immediate: true,
     },
   )
+
+  watch(commentLoadError, () => {
+    handleError(commentLoadError.value, message)
+  })
 
   return {
     comments,

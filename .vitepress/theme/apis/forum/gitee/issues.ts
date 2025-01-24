@@ -186,7 +186,7 @@ export const postTopicComment = async (
   return normalizeComment(comment)
 }
 
-export const deleteIssueComment = async (
+export const deleteTopicComment = async (
   repo: string,
   id: number | string,
 ): Promise<boolean> => {

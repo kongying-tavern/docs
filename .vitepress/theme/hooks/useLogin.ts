@@ -8,7 +8,7 @@ import { refAutoReset, useStorage } from '@vueuse/core'
 import { ref } from 'vue'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
-const REQUIRED_LOGIN_PAGES = ['/feedback/user']
+const REQUIRED_LOGIN_PAGES = ['/feedback/user', '/feedback/', '/feedback/topic']
 
 const useLogin = () => {
   const userInfo = useUserInfoStore()
@@ -42,11 +42,12 @@ const useLogin = () => {
     isAuthenticating.value = true
     const redirectState = redirectToNoRequiredLoginPage()
 
-    const auth = await oauth.getToken(authCode)
+    const [error, auth] = await oauth.getToken(authCode)
 
-    if (!auth) {
+    if (error || !auth) {
       toast.error(theme.value.forum.auth.loginFail)
       isAuthenticating.value = false
+      afterLogin()
       return
     }
 
@@ -100,7 +101,7 @@ const useLogin = () => {
   function redirectToNoRequiredLoginPage() {
     if (
       REQUIRED_LOGIN_PAGES.some(
-        (page) => !cachedRedirectUrl.value.includes(page),
+        (page) => !page.includes(cachedRedirectUrl.value),
       )
     ) {
       go(cachedRedirectUrl.value)

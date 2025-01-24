@@ -4,6 +4,7 @@ const forum: CustomConfig['forum'] = {
   loadMore: '加载更多',
   noMore: '没有更多',
   loadError: '加载失败',
+  exceededRateLimitWarning: '已达到 Gitee 接口的最大请求频率限制，请登录后重试',
   topic: {
     official: '官方',
     author: '作者',

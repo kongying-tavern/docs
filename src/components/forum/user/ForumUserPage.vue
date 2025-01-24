@@ -58,7 +58,7 @@ import ForumAside from '../ForumAside.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumLayout from '../ForumLayout.vue'
 import { watchOnce } from '@vueuse/core'
-import { toast } from 'vue-sonner'
+import { handleError } from '~/composables/handleError'
 
 const { message } = useLocalized()
 
@@ -84,7 +84,7 @@ const refreshData = async () => {
 }
 
 watchOnce(error, () => {
-  toast.error(message.value.forum.loadError)
+  handleError(error.value, message)
 })
 </script>
 

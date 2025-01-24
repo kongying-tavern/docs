@@ -95,6 +95,7 @@ import { watchOnce } from '@vueuse/core'
 import { useSharedTopicInfo } from '~/composables/sharedTopicInfo'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
+import { handleError } from '~/composables/handleError'
 
 const userInfo = useUserInfoStore()
 const number = getTopicNumber()
@@ -127,7 +128,8 @@ watchEffect(() => {
 })
 
 watchOnce(error, () => {
-  if (!error.value) return
-  toast.error(message.value.forum.loadError + error.value.message)
+  handleError(error.value, message, {
+    errorMessage: message.value.forum.loadError + error?.value?.message,
+  })
 })
 </script>

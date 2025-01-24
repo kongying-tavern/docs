@@ -4,6 +4,8 @@ const forum: CustomConfig['forum'] = {
   loadMore: 'Load More',
   noMore: 'No More',
   loadError: 'Load Error',
+  exceededRateLimitWarning:
+    'Reached the maximum request rate limit of Gitee API. Please login and try again',
   topic: {
     official: 'Official',
     author: 'Author',

@@ -19,7 +19,9 @@ export const getRedirectUrl = (localeIndex?: string): string => {
   return result
 }
 
-export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
+export const getToken = async (
+  code: string,
+): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> => {
   const [error, data] = await catchError(
     fetcher
       .post<Promise<GITEE.Auth>>('oauth/token', {
@@ -36,13 +38,15 @@ export const getToken = async (code: string): Promise<ForumAPI.Auth> => {
       .json(),
   )
 
-  if (error) return Promise.reject(`Can not get token: ${error.message}`)
-  return normalizeAuth(await data)
+  if (error)
+    return [new Error(`Can not get token: ${error.message}`), undefined]
+
+  return [undefined, normalizeAuth(await data)]
 }
 
 export const refreshToken = async (
   refreshToken: string,
-): Promise<ForumAPI.Auth> => {
+): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> => {
   const [error, data] = await catchError(
     fetcher
       .post<Promise<GITEE.Auth>>('oauth/token', {
@@ -59,9 +63,10 @@ export const refreshToken = async (
       .json(),
   )
 
-  if (error) throw new Error(`Refresh Token fail: ${error.message}`)
+  if (error)
+    return [new Error(`Refresh Token fail: ${error.message}`), undefined]
 
-  return normalizeAuth(await data)
+  return [undefined, normalizeAuth(await data)]
 }
 
 export const redirectAuth = (localeIndex: string) => {

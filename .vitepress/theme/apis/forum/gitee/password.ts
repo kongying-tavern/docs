@@ -8,7 +8,7 @@ export const getToken = async (
   username: string,
   password: string,
   scope: string[] = ['user_info', 'issues', 'notes'],
-): Promise<ForumAPI.Auth> => {
+): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> => {
   const [error, data] = await catchError(
     fetcher
       .post<Promise<GITEE.Auth>>('oauth/token', {
@@ -27,7 +27,8 @@ export const getToken = async (
       .json(),
   )
 
-  if (error) return Promise.reject(`Can not get token: ${error.message}`)
+  if (error)
+    return [new Error(`Can not get token: ${error.message}`), undefined]
 
-  return normalizeAuth(await data)
+  return [undefined, normalizeAuth(await data)]
 }

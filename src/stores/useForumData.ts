@@ -1,4 +1,4 @@
-import { issues } from '@/apis/forum/gitee'
+import { GiteeAPIError, issues } from '@/apis/forum/gitee'
 import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
@@ -16,6 +16,7 @@ import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { composeTopicBody } from '~/composables/composeTopicBody'
 
 import type ForumAPI from '@/apis/forum/api'
+import { handleError } from '~/composables/handleError'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -257,15 +258,16 @@ export const useForumData = defineStore('forum-data', () => {
     },
   )
 
-  watch(annLoadError, () => {
-    toast.error(
-      message.value.forum.topic.type.ann + message.value.forum.loadError,
-    )
-  })
-
-  watch(error, () => {
-    toast.error(message.value.forum.loadError)
-  })
+  watch(
+    () => error.value || annLoadError.value,
+    () => {
+      handleError(error.value, message, {
+        errorMessage: error.value
+          ? message.value.forum.loadError
+          : message.value.forum.topic.type.ann + message.value.forum.loadError,
+      })
+    },
+  )
 
   watch(
     () => pagination.sort,

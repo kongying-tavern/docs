@@ -4,7 +4,6 @@ import teamMemberList from '~/_data/teamMemberList.json'
 import { URL } from 'node:url'
 
 import type ForumAPI from '@/apis/forum/api'
-import { catchError } from '@/apis/utils'
 
 const USERNAME = process.env.GITEE_USERNAME
 const PASSWORD = process.env.GITEE_PASSWORD
@@ -16,7 +15,7 @@ export const refreshBlogData = async () => {
   let page = 1
   let posts: ForumAPI.Topic[] = []
 
-  const [error, auth] = await catchError(password.getToken(USERNAME, PASSWORD))
+  const [error, auth] = await password.getToken(USERNAME, PASSWORD)
 
   if (error) console.error('Error getting token:', error)
 

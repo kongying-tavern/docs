@@ -3,6 +3,10 @@ import { avatarList, avatarBaseURl } from '@/composables/avatarList'
 
 import type ForumAPI from '../api'
 import { isArray, uniq } from 'lodash-es'
+import { GiteeAPIError } from '.'
+import { getHeader } from '@/apis/utils'
+import type { KyResponse } from 'ky'
+import { GiteeApiErrorType } from './types'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
@@ -192,6 +196,54 @@ export function processLabels(
         }
       : {}),
   }
+}
+
+export const extractPagination = (
+  params?: Record<string, any>,
+  body?: Record<string, any>,
+): number | null => {
+  return (params ? params['page'] : body?.['page']) ?? null
+}
+
+export const getGiteeApiPaginationParams = (
+  response: KyResponse,
+): [ForumAPI.PaginationParams, undefined] | [undefined, Error] => {
+  const [pagination, error] = getHeader(response, ['Total_count', 'Total_page'])
+
+  if (error) {
+    return [
+      undefined,
+      new GiteeAPIError(GiteeApiErrorType.MissingPaginationParams),
+    ]
+  }
+
+  return [
+    {
+      total: Number(pagination[0]),
+      totalPage: Number(pagination[1]),
+    },
+    undefined,
+  ]
+}
+
+export const handlePagination = async (
+  response: KyResponse,
+): Promise<[ForumAPI.PaginationParams, undefined] | [undefined, Error]> => {
+  const [pagination, error] = getHeader(response, ['Total_count', 'Total_page'])
+
+  if (error && !pagination)
+    return [
+      undefined,
+      new GiteeAPIError(GiteeApiErrorType.MissingPaginationParams),
+    ]
+
+  return [
+    {
+      total: Number(pagination[0]),
+      totalPage: Number(pagination[1]),
+    },
+    undefined,
+  ]
 }
 
 export default {
