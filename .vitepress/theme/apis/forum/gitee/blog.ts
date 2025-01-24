@@ -1,7 +1,7 @@
 import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
 import type ForumAPI from '../api'
-import { normalizeComment, normalizeIssue, processLabels } from './utils'
+import { normalizeComment, normalizeIssueToBlog, processLabels } from './utils'
 
 export const getPosts = async (
   query: ForumAPI.Query,
@@ -21,7 +21,7 @@ export const getPosts = async (
     },
   )
 
-  const data: ForumAPI.Topic[] = issues.map((val) => normalizeIssue(val))
+  const data: ForumAPI.Topic[] = issues.map((val) => normalizeIssueToBlog(val))
 
   return {
     data: data,
@@ -50,7 +50,7 @@ export const searchPosts = async (
   )
 
   return {
-    data: issueList.map((val) => normalizeIssue(val)),
+    data: issueList.map((val) => normalizeIssueToBlog(val)),
     ...paginationParams!,
   }
 }
