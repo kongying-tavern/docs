@@ -31,6 +31,14 @@ theme: medium
 ```
 
 ```card
+title: 珊瑚宫路线组
+link: https://space.bilibili.com/56794738
+logo: /imgs/common/friend-links/bd7c7e7c28984e8f69216f807ce85429b49a5ae2.jpg
+desc: 原神路线类攻略组
+theme: medium
+```
+
+```card
 title: 提瓦特图研所
 link: https://space.bilibili.com/1872522256
 logo: /imgs/common/friend-links/05e032429ff23c49f7786255eed4027fcb751df8.jpg
@@ -39,10 +47,18 @@ theme: medium
 ```
 
 ```card
-title: 珊瑚宫路线组
-link: https://space.bilibili.com/56794738
-logo: /imgs/common/friend-links/bd7c7e7c28984e8f69216f807ce85429b49a5ae2.jpg
-desc: 原神路线类攻略组
+title: 孤胆飞客
+link: https://space.bilibili.com/267411577
+logo: /imgs/common/friend-links/0d6cbd545473bd3cac4b46341643e9ca9b3b599c.jpg
+desc: 机制分析、数据统计
+theme: medium
+```
+
+```card
+title: 彼音星垠
+link: https://space.bilibili.com/492579
+logo: /imgs/common/friend-links/915d8a28dc81587b47c2736dff1d934b969c8bdf.jpg
+desc: 成就攻略、圣遗物调查点路线
 theme: medium
 ```
 
@@ -53,6 +69,14 @@ title: 椰羊
 link: https://cocogoat.work/
 logo: https://cocogoat.cn/static/favicon.png
 desc: 纯网页圣遗物管理，成就扫描
+theme: medium
+```
+
+```card
+title: 胡桃工具箱
+link: https://hut.ao/zh/
+logo: https://img.alicdn.com/imgextra/i1/1797064093/O1CN01ybZ68o1g6e7nwgiKI_!!1797064093.png
+desc: 祈愿抽卡数据查询，实现服务器切换、画面设置的高级启动器
 theme: medium
 ```
 
