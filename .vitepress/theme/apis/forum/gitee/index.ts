@@ -25,20 +25,18 @@ export const fetcher = ky.create({
       async (error) => {
         const { response } = error
         const rateLimitRemaining = Number(
-          response.headers.get('x-ratelimit-remaining'),
+          response.headers.get('x-ratelimit-remaining') || 1,
         )
-        const rateLimitLimit = Number(response.headers.get('x-ratelimit-limit'))
+        const rateLimitLimit = Number(
+          response.headers.get('x-ratelimit-limit') || 1,
+        )
 
-        if (rateLimitRemaining === 0) {
+        if (rateLimitRemaining === 0 && rateLimitLimit !== 0) {
           error.name = ApiErrorType.RateLimitExceeded
           error.message = `Rate limit exceeded. Limit: ${rateLimitLimit}, Remaining: ${rateLimitRemaining}`
           return error
         }
 
-        if (response && response.body) {
-          error.message = `${await response.text()}`
-          error.name = `[GITEE_API_ERROR] - ${response.status}`
-        }
         return error
       },
     ],

@@ -19,7 +19,7 @@ export const getToken = async (
           grant_type: 'password',
           client_id: GITEE_API_CONFIG.CLIENT_ID,
           client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
-          scope: scope.join(','),
+          scope: scope.join(' '),
           username,
           password,
         },
