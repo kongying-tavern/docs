@@ -1,12 +1,10 @@
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
-import { toast } from 'vue-sonner'
-
-import type ForumAPI from '@/apis/forum/api'
 import { oauth } from '../apis/forum/gitee'
 import { camelCase } from '../utils'
-import { useLocalized } from '@/hooks/useLocalized'
+
+import type ForumAPI from '@/apis/forum/api'
 
 export interface LocalAuth {
   accessToken: string
@@ -34,7 +32,6 @@ const differenceTokenTime = (expiressTime: number) =>
   getRestTime(expiressTime) - TOKEN_REFRESH_REST_TIME
 
 export const useUserAuthStore = defineStore('user-auth', () => {
-  const { message } = useLocalized()
   const auth = useLocalStorage<Partial<LocalAuth>>(USERAUTH_KEY, {})
 
   const toCamelCaseObject = <T extends Record<string, unknown>>(
@@ -79,7 +76,6 @@ export const useUserAuthStore = defineStore('user-auth', () => {
 
       if (error || !newAuth) {
         logout()
-        toast.error(message.value.forum.auth.loginFail)
         return reject(new Error('Token 刷新失败'))
       }
 
