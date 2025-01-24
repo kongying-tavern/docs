@@ -3,21 +3,10 @@ import { GITEE_API_CONFIG } from './config'
 import type ForumAPI from '../api'
 import { normalizeComment, normalizeIssue, processLabels } from './utils'
 
-export const getPost = async (number: string): Promise<ForumAPI.Topic> => {
-  const [data] = await apiCall<GITEE.IssueInfo>(
-    'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${number}`,
-  )
-
-  return normalizeIssue(data)
-}
-
 export const getPosts = async (
   query: ForumAPI.Query,
-  search?: string,
+  accessToken?: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> => {
-  if (search) return searchPosts(query, search)
-
   const [issues, paginationParams] = await apiCall<GITEE.IssueList>(
     'get',
     `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues`,
@@ -27,6 +16,7 @@ export const getPosts = async (
         page: query.current,
         sort: query.sort || 'created',
         per_page: query.pageSize,
+        ...(accessToken ? { access_token: accessToken } : {}),
       },
     },
   )

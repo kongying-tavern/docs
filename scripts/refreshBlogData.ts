@@ -1,21 +1,35 @@
-import { blog } from '@/apis/forum/gitee'
+import { blog, password } from '@/apis/forum/gitee'
 import fs from 'node:fs/promises'
 import teamMemberList from '~/_data/teamMemberList.json'
 import { URL } from 'node:url'
 
 import type ForumAPI from '@/apis/forum/api'
+import { catchError } from '@/apis/utils'
+
+const USERNAME = process.env.GITEE_USERNAME
+const PASSWORD = process.env.GITEE_PASSWORD
 
 export const refreshBlogData = async () => {
+  if (!USERNAME || !PASSWORD)
+    return console.error('Missing username or password')
+
   let page = 1
   let posts: ForumAPI.Topic[] = []
 
+  const [error, auth] = await catchError(password.getToken(USERNAME, PASSWORD))
+
+  if (error) console.error('Error getting token:', error)
+
   const requestData = async (page: number) => {
-    const { data, totalPage } = await blog.getPosts({
-      pageSize: 50,
-      current: page,
-      sort: 'created',
-      filter: null,
-    })
+    const { data, totalPage } = await blog.getPosts(
+      {
+        pageSize: 50,
+        current: page,
+        sort: 'created',
+        filter: null,
+      },
+      auth?.accessToken,
+    )
 
     if (data) {
       posts = [...posts, ...data]

@@ -9,8 +9,10 @@ import * as issues from './issues'
 import * as labels from './labels'
 import * as oauth from './oauth'
 import * as user from './user'
-import type ForumAPI from '../api'
+import * as password from './password'
 import { isPlainObject } from 'lodash-es'
+
+import type ForumAPI from '../api'
 
 class HTTPError extends Error {}
 
@@ -196,6 +198,7 @@ export {
   user,
   blog,
   issues,
+  password,
   apiCall,
   labels,
   clearApiCache,
