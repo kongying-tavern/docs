@@ -99,7 +99,7 @@ desc: 圣遗物搭配，圣遗物潜力多方向圣遗物自动搭配，多方�
 ```card
 title: 维系天理
 link: https://www.weixitianlizhi.ren/
-logo: https://www.weixitianlizhi.ren/images/hero_tianli.png
+logo: https://www.weixitianli.com/images/hero_tianli.png
 desc: 原神地图自动追踪、天理启动器
 theme: medium
 ```
