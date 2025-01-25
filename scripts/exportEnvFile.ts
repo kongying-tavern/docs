@@ -9,12 +9,11 @@ export const exportEnvFile = async () => {
     'BLOG_CHANGELOG_WEB_EN_ID',
     'BLOG_CHANGELOG_WEB_JA_ID',
   ]
-  console.log(process.env.BLOG_CHANGELOG_WEB_JA_ID)
 
   const envContent = keys
     .map((key) => `VITE_${key}=${process.env[key] ?? ''}`)
     .join('\n')
-  const envFilePath = new URL('../.env.local', import.meta.url)
+  const envFilePath = new URL('../src/.env.local', import.meta.url)
 
   try {
     await fs.writeFile(envFilePath, envContent, 'utf-8')

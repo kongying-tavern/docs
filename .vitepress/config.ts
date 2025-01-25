@@ -162,17 +162,6 @@ const createConfigureFunction = (): ConfigureFuncType => {
   } as ConfigureFuncType
 }
 
-const createEnvInject = (envMap: Record<string, string>) => {
-  return Object.fromEntries(
-    Object.entries(envMap).map(([key, value]) => [
-      `import.meta.env.${key}`,
-      JSON.stringify(value),
-    ]),
-  )
-}
-
-const env = loadEnv('', process.cwd())
-
 export default defineConfig({
   srcDir: 'src',
   outDir: './dist',
@@ -397,7 +386,6 @@ export default defineConfig({
         allow: ['../..'],
       },
     },
-    define: createEnvInject(env),
     resolve: {
       alias: [
         {
