@@ -18,6 +18,7 @@ export const exportEnvFile = async () => {
   try {
     await fs.writeFile(envFilePath, envContent, 'utf-8')
     console.info(`Env successfully overwritten in ${envFilePath.pathname}`)
+    console.info(`Env file generated as:\n${envContent}`)
   } catch (error) {
     console.error('Error export env:', error)
   }
