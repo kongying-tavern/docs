@@ -1,7 +1,7 @@
 import { container } from '@mdit/plugin-container'
 import { load } from 'js-yaml'
 import type { Options, PluginSimple } from 'markdown-it'
-import type Token from 'markdown-it/lib/token.js'
+import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 
 import {
