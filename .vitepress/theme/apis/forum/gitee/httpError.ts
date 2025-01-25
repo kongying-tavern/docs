@@ -35,7 +35,6 @@ export class HTTPError extends Error {
   }
 
   isExceededRateLimit(): boolean {
-    console.log(this.type)
     return this.type === GiteeApiErrorType.RateLimitExceeded
   }
 
