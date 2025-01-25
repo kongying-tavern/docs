@@ -32,7 +32,6 @@ import type {
   UserConfig,
 } from 'vitepress'
 import type { CustomConfig } from './locales/types'
-import { mapKeys, mapValues } from 'lodash-es'
 
 const isProd = process.env.NODE_ENV === 'production'
 const productionHead: HeadConfig[] = [
@@ -161,6 +160,15 @@ const createConfigureFunction = (): ConfigureFuncType => {
       cfgDynamicTitleTemplate(pageData, siteConfig)
     },
   } as ConfigureFuncType
+}
+
+const createEnvInject = (envMap: Record<string, string>) => {
+  return Object.fromEntries(
+    Object.entries(envMap).map(([key, value]) => [
+      `import.meta.env.${key}`,
+      JSON.stringify(value),
+    ]),
+  )
 }
 
 const env = loadEnv('', process.cwd())
@@ -389,10 +397,7 @@ export default defineConfig({
         allow: ['../..'],
       },
     },
-    define: mapKeys(
-      mapValues(env, (value) => JSON.stringify(value)),
-      (key) => `import.meta.env.${key}`,
-    ),
+    define: createEnvInject(env),
     resolve: {
       alias: [
         {
