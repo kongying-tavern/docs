@@ -32,7 +32,7 @@ import type {
   UserConfig,
 } from 'vitepress'
 import type { CustomConfig } from './locales/types'
-import { mapValues } from 'lodash-es'
+import { mapKeys, mapValues } from 'lodash-es'
 
 const isProd = process.env.NODE_ENV === 'production'
 const productionHead: HeadConfig[] = [
@@ -389,7 +389,10 @@ export default defineConfig({
         allow: ['../..'],
       },
     },
-    define: mapValues(env, (value) => JSON.stringify(value)),
+    define: mapKeys(
+      mapValues(env, (value) => JSON.stringify(value)),
+      (key) => `import.meta.env.${key}`,
+    ),
     resolve: {
       alias: [
         {

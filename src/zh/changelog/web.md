@@ -5,6 +5,6 @@ aside: false
 ---
 
 <script>
-        if(!import.meta.env.SSR && window)
-        window.location.href = `../blog/${window.VITE_BLOG_CHANGELOG_WEB_ZH_ID}`;
+  if(!import.meta.env.SSR && window)
+    window.location.href = `../blog/${import.meta.env.VITE_BLOG_CHANGELOG_WEB_ZH_ID}`;
 </script>
