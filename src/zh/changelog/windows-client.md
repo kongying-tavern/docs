@@ -5,5 +5,5 @@ aside: false
 head:
   - - meta
     - http-equiv: refresh
-      content: 0; url='../blog/IBHSC9'
+      content: 0; url='../blog/IBHSAQ'
 ---
