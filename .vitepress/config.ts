@@ -1,5 +1,5 @@
 import { URL, fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitepress'
+import { defineConfig, loadEnv } from 'vitepress'
 
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
@@ -32,6 +32,7 @@ import type {
   UserConfig,
 } from 'vitepress'
 import type { CustomConfig } from './locales/types'
+import { mapValues } from 'lodash-es'
 
 const isProd = process.env.NODE_ENV === 'production'
 const productionHead: HeadConfig[] = [
@@ -161,6 +162,8 @@ const createConfigureFunction = (): ConfigureFuncType => {
     },
   } as ConfigureFuncType
 }
+
+const env = loadEnv('', process.cwd())
 
 export default defineConfig({
   srcDir: 'src',
@@ -386,6 +389,7 @@ export default defineConfig({
         allow: ['../..'],
       },
     },
+    define: mapValues(env, (value) => JSON.stringify(value)),
     resolve: {
       alias: [
         {

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "pnpm build-blog & pnpm build-vitepress",
     "build-blog": "tsx ./scripts/refreshBlogData.ts",
+    "build-env": "tsx ./scripts/exportEnvFile.ts",
     "build-mpa": "vitepress build --mpa --base /docs/",
     "build-vitepress": "vitepress build --base /docs/",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",

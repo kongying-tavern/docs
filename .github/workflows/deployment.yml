@@ -46,6 +46,16 @@ jobs:
           GITEE_USERNAME: ${{ secrets.GITEE_USERNAME }}
           GITEE_PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
+      - name: Export .env File
+        run: pnpm build-env
+        env:
+          BLOG_CHANGELOG_WINCLIENT_ZH_ID: ${{ env.BLOG_CHANGELOG_WINCLIENT_ZH_ID }}
+          BLOG_CHANGELOG_WINCLIENT_EN_ID: ${{ env.BLOG_CHANGELOG_WINCLIENT_EN_ID }}
+          BLOG_CHANGELOG_WINCLIENT_JA_ID: ${{ env.BLOG_CHANGELOG_WINCLIENT_JA_ID }}
+          BLOG_CHANGELOG_WEB_ZH_ID: ${{ env.BLOG_CHANGELOG_WEB_ZH_ID }}
+          BLOG_CHANGELOG_WEB_EN_ID: ${{ env.BLOG_CHANGELOG_WEB_EN_ID }}
+          BLOG_CHANGELOG_WEB_JA_ID: ${{ env.BLOG_CHANGELOG_WEB_JA_ID }}
+
       - name: Build Site
         run: pnpm build-vitepress
 
