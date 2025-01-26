@@ -17,7 +17,7 @@ function variableInject(md: MarkdownIt): void {
       if (silent) return true
 
       // Extract key and value
-      const key = match[1]
+      const key = (match[1] ?? '').trim()
       const value = match[2]
 
       variables[key] = value
@@ -40,7 +40,7 @@ function variableInject(md: MarkdownIt): void {
       if (silent) return true
 
       // Extract key and get value
-      const key = match[1] ?? ''
+      const key = (match[1] ?? '').trim()
       const value = variables[key] ?? ''
 
       // Create content token

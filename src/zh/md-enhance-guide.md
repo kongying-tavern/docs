@@ -189,6 +189,64 @@ theme: medium
 ```
 ````
 
+## 变量声明 {#variable}
+
+用于声明并使用可重复使用的 Markdown 部分
+
+声明时使用以下语法，此语句不会产生任何内容
+
+- 示例中 `KEY` 为变量名，
+- 变量名前后可加空格
+- 变量名仅可包含字母数字与下划线
+
+```md
+{define:KEY}_被声明的内容_{/define}
+```
+
+{define:KEY}_被声明的内容_{/define}
+
+使用变量声明时，使用以下语法
+
+```md
+{{ KEY }}
+```
+
+{{ KEY }}
+
+## Spoiler 文本遮罩 {#spolier}
+
+用于隐藏内容的插件
+
+使用 !! !! 进行标记。
+
+输入!!xxx!!显示彩蛋
+
+```md
+输入!!xxx!!显示彩蛋
+```
+
+## Custom Color 自定义文字颜色 {#custom-color}
+
+用于设置文字颜色的插件
+
+```md
+{color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
+
+{color: red}红色文字{/color}
+
+{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
+
+{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
+```
+
+{color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
+
+{color: red}红色文字{/color}
+
+{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
+
+{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
+
 ## Frontmatter Config {#frontmatter}
 
 ### footer {#fm-footer}
@@ -211,7 +269,7 @@ footer: false #隐藏该页面的页脚
 
 是否显示页面的侧边栏
 
-> 仅会在 `Layout: doc` 时自动启用
+> 仅会在 `layout: doc` 时自动启用
 
 ```yml
 ---
@@ -264,48 +322,10 @@ bannerExpiryDate: 2024-2-1
 
 是否使用 docHeader 展示标题
 
-> 仅会在 `Layout: doc` 时自动启用
+> 仅会在 `layout: doc` 时自动启用
 
 ```yml
 ---
 docHeader: false #隐藏该页面的 docHeader
 ---
 ```
-
-### Spoiler {#spolier}
-
-用于隐藏内容的插件
-
-使用 !! !! 进行标记。
-
-#### Example {#spolier-example}
-
-输入!!xxx!!显示彩蛋
-
-```md
-输入!!xxx!!显示彩蛋
-```
-
-### Custom Color 自定义文字颜色 {#custom-color}
-
-用于设置文字颜色的插件
-
-#### Example {#custom-color-example}
-
-```md
-{color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
-
-{color: red}红色文字{/color}
-
-{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
-
-{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
-```
-
-{color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
-
-{color: red}红色文字{/color}
-
-{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
-
-{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
