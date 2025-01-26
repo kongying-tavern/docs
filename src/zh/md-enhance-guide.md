@@ -276,7 +276,7 @@ docHeader: false #隐藏该页面的 docHeader
 ---
 ```
 
-### Spoiler
+### Spoiler {#spolier}
 
 用于隐藏内容的插件
 
@@ -290,36 +290,26 @@ docHeader: false #隐藏该页面的 docHeader
 输入!!xxx!!显示彩蛋
 ```
 
-<Steps :level="1">
-# 333
-<Steps :level="2">
-# 333
-</Steps>
-</Steps>
-<Steps :level="1">
-# 333
-</Steps>
-
-### Custom Color 自定义文字颜色
+### Custom Color 自定义文字颜色 {#custom-color}
 
 用于设置文字颜色的插件
 
-#### Example {#custom-color}
+#### Example {#custom-color-example}
 
 ```md
 {color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
 
 {color: red}红色文字{/color}
 
-{color: var(--vp-c-purple-3)}使用CSS Var的紫色文字{/color}
+{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
 
-{color: rgba(44,195,184,1)}使用RGBA的青色文字{/color}
+{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
 ```
 
 {color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
 
 {color: red}红色文字{/color}
 
-{color: var(--vp-c-purple-3)}使用CSS Var的紫色文字{/color}
+{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
 
-{color: rgba(44,195,184,1)}使用RGBA的青色文字{/color}
+{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
