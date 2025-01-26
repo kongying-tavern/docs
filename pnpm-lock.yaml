@@ -98,9 +98,6 @@ importers:
       markdown-it-footnote:
         specifier: ^4.0.0
         version: 4.0.0
-      markdown-it-variable:
-        specifier: ^1.0.2
-        version: 1.0.2(markdown-it@14.1.0)
       medium-zoom:
         specifier: ^1.1.0
         version: 1.1.0
@@ -2812,11 +2809,6 @@ packages:
   markdown-it-kbd-better@1.2.5:
     resolution: {integrity: sha512-2L2ilVYinjUAxUwuB2mRlgoqm9iqqt/RAa6XWvto1UNy7CdACINzB0SHMU7IZnweWSOLC8bBj6VARSZIL4GxEw==}
     engines: {node: '>=16.0.0'}
-
-  markdown-it-variable@1.0.2:
-    resolution: {integrity: sha512-T3rkBHvtvFREA/1IsrbDE2toBl5t8wsdrbeSiY9YTnDlEe6p0MXYPRy5MHcPBH5HnpKXzeWcDHKoiNllnIoNPQ==}
-    peerDependencies:
-      markdown-it: '>=5'
 
   markdown-it@13.0.2:
     resolution: {integrity: sha512-FtwnEuuK+2yVU7goGn/MJ0WBZMM9ZPgU9spqlFs7/A/pDIUNSOQZhUgOqYCficIuR2QaFnrt8LHqBWsbTAoI5w==}
@@ -6554,10 +6546,6 @@ snapshots:
   markdown-it-kbd-better@1.2.5:
     dependencies:
       markdown-it: 13.0.2
-
-  markdown-it-variable@1.0.2(markdown-it@14.1.0):
-    dependencies:
-      markdown-it: 14.1.0
 
   markdown-it@13.0.2:
     dependencies:

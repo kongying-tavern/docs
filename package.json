@@ -78,7 +78,6 @@
     "js-yaml": "^4.1.0",
     "ky": "^1.7.4",
     "markdown-it-footnote": "^4.0.0",
-    "markdown-it-variable": "^1.0.2",
     "medium-zoom": "^1.1.0",
     "pinia": "^2.3.0",
     "qrcode": "^1.5.4",

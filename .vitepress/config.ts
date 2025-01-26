@@ -7,7 +7,6 @@ import { mark } from '@mdit/plugin-mark'
 import { spoiler } from '@mdit/plugin-spoiler'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import MarkdownItVairable from 'markdown-it-variable'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import lightbox from './plugins/lightbox'
@@ -21,6 +20,8 @@ import { zhConfig } from './locales/zh'
 import { cardPlugin } from './theme/markdown/card'
 import { colorPreviewPlugin } from './theme/markdown/colorPreview'
 import { timeline } from './theme/markdown/timeline'
+import variableInject from './theme/markdown/variableInject'
+import customColor from './theme/markdown/customColor'
 
 import type {
   DefaultTheme,
@@ -33,7 +34,6 @@ import type {
   UserConfig,
 } from 'vitepress'
 import type { CustomConfig } from './locales/types'
-import customColor from './theme/markdown/customColor'
 
 const isProd = process.env.NODE_ENV === 'production'
 const productionHead: HeadConfig[] = [
@@ -419,7 +419,6 @@ export default defineConfig({
       lazyLoading: true,
     },
     config(md) {
-      md.use(MarkdownItVairable)
       md.use(MarkdownItFootnote)
       md.use(colorPreviewPlugin)
       md.use(cardPlugin)
@@ -432,6 +431,7 @@ export default defineConfig({
       md.use(timeline)
       md.use(spoiler)
       md.use(lightbox)
+      md.use(variableInject)
       md.use(customColor)
       md.use(MarkdownItKbd, {
         presets: [
