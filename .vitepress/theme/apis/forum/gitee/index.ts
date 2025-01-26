@@ -36,7 +36,7 @@ const cachedApiCall = useMemoize(
     endpoint: string,
     { params = {}, hooks = {}, body }: ApiCallParams,
   ): ApiCallResult<T> => {
-    const url = `${GITEE_API_CONFIG.START_POINT}${endpoint}`
+    const url = `${GITEE_API_CONFIG.ENDPOINT_PREFIX}${endpoint}`
 
     const options = {
       hooks,

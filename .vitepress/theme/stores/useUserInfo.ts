@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { getUser } from '../apis/forum/gitee/user'
 import { useUserAuthStore } from './useUserAuth'
 import teamMemberList from '~/_data/teamMemberList.json'
