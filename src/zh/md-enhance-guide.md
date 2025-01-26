@@ -299,3 +299,27 @@ docHeader: false #隐藏该页面的 docHeader
 <Steps :level="1">
 # 333
 </Steps>
+
+### Custom Color 自定义文字颜色
+
+用于设置文字颜色的插件
+
+#### Example {#custom-color}
+
+```md
+{color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
+
+{color: red}红色文字{/color}
+
+{color: var(--vp-c-purple-3)}使用CSS Var的紫色文字{/color}
+
+{color: rgba(44,195,184,1)}使用RGBA的青色文字{/color}
+```
+
+{color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
+
+{color: red}红色文字{/color}
+
+{color: var(--vp-c-purple-3)}使用CSS Var的紫色文字{/color}
+
+{color: rgba(44,195,184,1)}使用RGBA的青色文字{/color}
