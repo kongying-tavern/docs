@@ -106,6 +106,7 @@ import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { useToggle } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
 import { sessionCacheRedirect } from '~/composables/sessionCacheRedirect'
+import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 
 const userInfo = useUserInfoStore()
 const topicTypeMap = getTopicTypeMap()
@@ -122,9 +123,7 @@ const { title, author, topic } = defineProps<{
 const [isExpanded, toggleExpand] = useToggle()
 
 const renderText = computed(() => {
-  const contentSanitized = topic.contentRaw
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    .replace(/<!--.*(?=-->)-->/giu, '')
+  const contentSanitized = sanitizeMarkdown(topic.contentRaw)
   if (isAnn.value) return contentSanitized
   return contentSanitized.slice(0, isExpanded.value ? undefined : 180)
 })

@@ -1,5 +1,6 @@
 import { catchError } from '@/apis/utils'
 import { useUrlSearchParams } from '@vueuse/core'
+import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 
 export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   const arr: string[] = []
@@ -157,6 +158,9 @@ export function extractPlainText(input: string): string {
     .replace(/([*_]{1,3}|~{2}|`{1,3}|#+|!\[|\]|\[|\]|\(|\)|>)/g, '') // Remove Markdown special characters
     .replace(/\s*[-+*] /g, '') // Remove list markers
     .replace(/\n{2,}/g, '\n') // Normalize multiple newlines
-  console.log(markdownToPlainText, htmlEntityDecode, htmlToNewline)
-  return markdownToPlainText.trim()
+
+  // Step 4: Sanitize to remove markdown plugin syntax
+  const plaintextSanitized = sanitizeMarkdown(markdownToPlainText)
+
+  return plaintextSanitized.trim()
 }
