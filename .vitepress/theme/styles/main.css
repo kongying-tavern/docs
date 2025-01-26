@@ -159,7 +159,16 @@ textarea {
   padding: 0 0.1em;
 }
 
+.spoiler * {
+  visibility: hidden;
+}
+
 .spoiler:hover,
 .spoiler:focus {
   background-color: transparent;
+}
+
+.spoiler:hover *,
+.spoiler:focus * {
+  visibility: visible;
 }
