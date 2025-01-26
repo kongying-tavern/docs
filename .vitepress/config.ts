@@ -1,5 +1,5 @@
 import { URL, fileURLToPath } from 'node:url'
-import { defineConfig, loadEnv } from 'vitepress'
+import { defineConfig } from 'vitepress'
 
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
@@ -7,6 +7,7 @@ import { mark } from '@mdit/plugin-mark'
 import { spoiler } from '@mdit/plugin-spoiler'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
+import MarkdownItVairable from 'markdown-it-variable'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import lightbox from './plugins/lightbox'
@@ -417,6 +418,7 @@ export default defineConfig({
       lazyLoading: true,
     },
     config(md) {
+      md.use(MarkdownItVairable)
       md.use(MarkdownItFootnote)
       md.use(colorPreviewPlugin)
       md.use(cardPlugin)
