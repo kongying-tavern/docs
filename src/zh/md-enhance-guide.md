@@ -21,28 +21,30 @@ search: false
 
 - **do some thing1**
 - do some thing2
-  :::
+
+:::
 
 ::: timeline 2023-05-23
 
 - do some thing3
 - do some thing4
-  :::
+
+:::
 ```
 
 ::: timeline 2023-05-24
 
 - **do some thing1**
 - do some thing2
-  :::
+
+:::
 
 ::: timeline 2023-05-23
 
 - do some thing3
 - do some thing4
-  :::
 
----
+:::
 
 ## Kbd 快捷键 {#kbd}
 
@@ -53,8 +55,6 @@ search: false
 ```
 
 [[Meta]][[K]]
-
----
 
 ## Footnote 脚注 {#footnote}
 
@@ -93,8 +93,6 @@ search: false
 
 [^second]: 脚注文字。
 ```
-
----
 
 ## Mark 标记 {#mark}
 
@@ -190,8 +188,6 @@ desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
 ```
 ````
-
----
 
 ## Frontmatter Config {#frontmatter}
 
