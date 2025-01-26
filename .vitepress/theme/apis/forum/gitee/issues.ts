@@ -1,4 +1,4 @@
-import { apiCall, labels } from '.'
+import { apiCall } from '.'
 import {
   normalizeComment,
   normalizeIssue,

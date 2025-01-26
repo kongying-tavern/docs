@@ -20,11 +20,11 @@ function customColor(md: MarkdownIt): void {
 
       // Create opening tag token
       const tokenOpen = state.push('html_inline', '', 0)
-      tokenOpen.content = `<span style=\"color:${color}\">`
+      tokenOpen.content = `<span style="color:${color}">`
 
       // Create content token
-      const tokenContent = state.push('text', '', 0)
-      tokenContent.content = content
+      const tokenContent = state.push('html_inline', '', 0)
+      tokenContent.content = md.renderInline(content)
 
       // Create closing tag token
       const tokenClose = state.push('html_inline', '', 0)
