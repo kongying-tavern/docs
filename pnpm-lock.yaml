@@ -98,6 +98,9 @@ importers:
       markdown-it-footnote:
         specifier: ^4.0.0
         version: 4.0.0
+      markdown-it-variable:
+        specifier: ^1.0.2
+        version: 1.0.2(markdown-it@14.1.0)
       medium-zoom:
         specifier: ^1.1.0
         version: 1.1.0
@@ -186,6 +189,9 @@ importers:
       cz-conventional-changelog:
         specifier: ^3.3.0
         version: 3.3.0(@types/node@22.10.2)(typescript@5.7.2)
+      dotenv-cli:
+        specifier: ^8.0.0
+        version: 8.0.0
       git-cz:
         specifier: ^4.9.0
         version: 4.9.0
@@ -2125,6 +2131,18 @@ packages:
     resolution: {integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==}
     engines: {node: '>=8'}
 
+  dotenv-cli@8.0.0:
+    resolution: {integrity: sha512-aLqYbK7xKOiTMIRf1lDPbI+Y+Ip/wo5k3eyp6ePysVaSqbyxjyK3dK35BTxG+rmd7djf5q2UPs4noPNH+cj0Qw==}
+    hasBin: true
+
+  dotenv-expand@10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
+
+  dotenv@16.4.7:
+    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
+    engines: {node: '>=12'}
+
   duplexer@0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
 
@@ -2794,6 +2812,11 @@ packages:
   markdown-it-kbd-better@1.2.5:
     resolution: {integrity: sha512-2L2ilVYinjUAxUwuB2mRlgoqm9iqqt/RAa6XWvto1UNy7CdACINzB0SHMU7IZnweWSOLC8bBj6VARSZIL4GxEw==}
     engines: {node: '>=16.0.0'}
+
+  markdown-it-variable@1.0.2:
+    resolution: {integrity: sha512-T3rkBHvtvFREA/1IsrbDE2toBl5t8wsdrbeSiY9YTnDlEe6p0MXYPRy5MHcPBH5HnpKXzeWcDHKoiNllnIoNPQ==}
+    peerDependencies:
+      markdown-it: '>=5'
 
   markdown-it@13.0.2:
     resolution: {integrity: sha512-FtwnEuuK+2yVU7goGn/MJ0WBZMM9ZPgU9spqlFs7/A/pDIUNSOQZhUgOqYCficIuR2QaFnrt8LHqBWsbTAoI5w==}
@@ -5825,6 +5848,17 @@ snapshots:
     dependencies:
       is-obj: 2.0.0
 
+  dotenv-cli@8.0.0:
+    dependencies:
+      cross-spawn: 7.0.6
+      dotenv: 16.4.7
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
+
+  dotenv-expand@10.0.0: {}
+
+  dotenv@16.4.7: {}
+
   duplexer@0.1.2: {}
 
   eastasianwidth@0.2.0: {}
@@ -6520,6 +6554,10 @@ snapshots:
   markdown-it-kbd-better@1.2.5:
     dependencies:
       markdown-it: 13.0.2
+
+  markdown-it-variable@1.0.2(markdown-it@14.1.0):
+    dependencies:
+      markdown-it: 14.1.0
 
   markdown-it@13.0.2:
     dependencies:

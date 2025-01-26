@@ -24,6 +24,7 @@ dist
 .vitepress/dist/
 .temp
 # Env files
+.env.local
 .env.*.local
 
 # Test coverage files

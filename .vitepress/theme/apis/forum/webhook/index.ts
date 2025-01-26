@@ -14,7 +14,7 @@ export const reformat = async (
   options: GITEE_WEBHOOK.OPTIONS,
 ): Promise<[undefined, GITEE_WEBHOOK.PARAMS] | [Error, undefined]> => {
   const {
-    repo = GITEE_API_CONFIG.REPO,
+    repo = GITEE_API_CONFIG.FEEDBACK_REPO,
     owner = GITEE_API_CONFIG.OWNER,
     number,
   } = options

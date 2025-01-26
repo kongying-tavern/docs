@@ -1,6 +1,7 @@
 import { blog, password } from '@/apis/forum/gitee'
 import fs from 'node:fs/promises'
 import teamMemberList from '~/_data/teamMemberList.json'
+import blogMemberList from '~/_data/blogMemberList.json'
 import { URL } from 'node:url'
 
 import type ForumAPI from '@/apis/forum/api'
@@ -40,8 +41,11 @@ export const refreshBlogData = async () => {
     return totalPage
   }
 
-  const isTeamMember = async (id: string | number) => {
-    return teamMemberList.findIndex((val) => val === id)
+  const isGrantedMember = (id: string | number) => {
+    return (
+      teamMemberList.some((val) => val === Number(id)) ||
+      blogMemberList.some((val) => val === Number(id))
+    )
   }
 
   const totalPage = await requestData(page)
@@ -53,7 +57,7 @@ export const refreshBlogData = async () => {
   await Promise.all(pool.flatMap((item) => Array(totalPage - 1).fill(item)))
 
   posts
-    .filter((val) => isTeamMember(val.user.id))
+    .filter((val) => isGrantedMember(val.user.id))
     .sort(
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),

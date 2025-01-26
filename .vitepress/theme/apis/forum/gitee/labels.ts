@@ -8,7 +8,7 @@ export const getAllLabels = async (
   return (
     await apiCall<GITEE.IssueLabel[]>(
       'get',
-      `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.REPO}/labels`,
+      `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/labels`,
       {
         useCache,
       },
