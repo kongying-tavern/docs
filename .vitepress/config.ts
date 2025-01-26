@@ -32,6 +32,7 @@ import type {
   UserConfig,
 } from 'vitepress'
 import type { CustomConfig } from './locales/types'
+import customColor from './theme/markdown/customColor'
 
 const isProd = process.env.NODE_ENV === 'production'
 const productionHead: HeadConfig[] = [
@@ -429,6 +430,7 @@ export default defineConfig({
       md.use(timeline)
       md.use(spoiler)
       md.use(lightbox)
+      md.use(customColor)
       md.use(MarkdownItKbd, {
         presets: [
           {
