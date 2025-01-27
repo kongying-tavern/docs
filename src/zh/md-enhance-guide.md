@@ -207,11 +207,13 @@ theme: medium
 
 使用变量声明时，使用以下语法
 
+- 变量名前后可加空格
+
 ```md
-{{ KEY }}
+{%= KEY %}
 ```
 
-{{ KEY }}
+{%= KEY %}
 
 ## Spoiler 文本遮罩 {#spolier}
 

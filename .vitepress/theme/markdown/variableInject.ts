@@ -11,7 +11,7 @@ function variableInject(md: MarkdownIt): void {
       const start = state.pos
       const src = state.src.slice(start)
 
-      const match = src.match(/^\{define:([^}]+)\}(.*?)\{\/define\}/)
+      const match = src.match(/^\{define:\s*(\w+)\s*\}(.*?)\{\/define\}/)
 
       if (!match) return false
       if (silent) return true
@@ -34,7 +34,7 @@ function variableInject(md: MarkdownIt): void {
       const start = state.pos
       const src = state.src.slice(start)
 
-      const match = src.match(/^\{\{([^}]+)\}\}/)
+      const match = src.match(/^\{%=\s*(\w+)\s*%\}/)
 
       if (!match) return false
       if (silent) return true
