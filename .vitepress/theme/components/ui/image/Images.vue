@@ -20,7 +20,6 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { defineProps } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import Image from './Image.vue'
 
