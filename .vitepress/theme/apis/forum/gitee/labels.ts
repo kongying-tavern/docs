@@ -1,6 +1,6 @@
 import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
-import { excludeStateTags } from './utils'
+import { filterWhitelistTags } from './utils'
 
 export const getAllLabels = async (
   useCache = true,
@@ -18,5 +18,5 @@ export const getAllLabels = async (
 
 export const getAllLabelsName = async (): Promise<string[]> => {
   const data = await getAllLabels()
-  return excludeStateTags(data)
+  return filterWhitelistTags(data)
 }

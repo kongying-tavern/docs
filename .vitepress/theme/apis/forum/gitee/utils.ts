@@ -7,8 +7,15 @@ import { GiteeAPIError } from '.'
 import { getHeader } from '@/apis/utils'
 import type { KyResponse } from 'ky'
 import { GiteeApiErrorType } from './types'
+import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
+import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
+import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
+
+const forumLocaleLabelGetter = getForumLocaleLabelGetter()
+const topicTypeLabelGetter = getTopicTypeLabelGetter()
+const topicTagLabelGetter = getTopicTagLabelGetter()
 
 export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
   return {
@@ -58,7 +65,7 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Topic {
     link: issue.html_url,
     commentCount: issue.comments,
     user: normalizeUser(issue.assignee || issue.user),
-    tags: excludeStateTags(issue.labels),
+    tags: filterWhitelistTags(issue.labels),
     type: type,
     state: issue.state,
     createdAt: issue.created_at,
@@ -76,7 +83,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     link: issue.html_url,
     commentCount: issue.comments,
     user: normalizeUser(issue.user),
-    tags: excludeStateTags(issue.labels),
+    tags: filterWhitelistTags(issue.labels),
     type: type,
     state: issue.state,
     createdAt: issue.created_at,
@@ -136,11 +143,17 @@ function getTopicTypeFromTitle(title: string): {
   return { type: null, title: title }
 }
 
-export function excludeStateTags(labels: GITEE.IssueLabel[]) {
+export function filterWhitelistTags(labels: GITEE.IssueLabel[]) {
   return labels
     .map((val) => val.name)
     .filter((val) => isUpperCase(val))
-    .filter((val) => !GITEE_API_CONFIG.STATE_TAGS.has(val))
+    .filter(
+      (val) =>
+        GITEE_API_CONFIG.STATE_TAGS.has(val) ||
+        forumLocaleLabelGetter.isLabel(val) ||
+        topicTypeLabelGetter.isLabel(val) ||
+        topicTagLabelGetter.isLabel(val),
+    )
 }
 
 function markdownToTextWithImages(markdown?: string): {

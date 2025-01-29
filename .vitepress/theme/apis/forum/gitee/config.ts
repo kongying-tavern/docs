@@ -8,17 +8,5 @@ export const GITEE_API_CONFIG = {
   FEEDBACK_REPO: 'Feedback',
   BLOG_REPO: 'Blog',
   TOPIC_TYPE: ['BUG', 'FEAT', 'SUG', 'ANN'],
-  STATE_TAGS: new Set([
-    'DEV-TEST',
-    'CLOSED',
-    'WEB-FEEDBACK',
-    'GOOD-ISSUE',
-    'TYP-FEAT',
-    'TYP-SUG',
-    'TYP-BUG',
-    'TYP-ANN',
-    'LC-ZH',
-    'LC-EN',
-    'LC-JA',
-  ]),
+  STATE_TAGS: new Set(['DEV-TEST', 'CLOSED', 'WEB-FEEDBACK', 'GOOD-ISSUE']),
 }

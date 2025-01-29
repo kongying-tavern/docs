@@ -37,9 +37,9 @@
           </CommandInput>
           <CommandSeparator />
           <CommandList>
-            <CommandEmpty>{{
-              message.forum.publish.tagsInput.noResultsFound
-            }}</CommandEmpty>
+            <CommandEmpty>
+              {{ message.forum.publish.tagsInput.noResultsFound }}
+            </CommandEmpty>
             <CommandGroup heading="Suggestions">
               <CommandItem
                 v-for="tag in filteredTags"
@@ -140,7 +140,10 @@ const handleDelete = (tag: string) => {
 
 onMounted(async () => {
   const data = await labels.getAllLabelsName()
-
-  data.map((val) => tags.push(val))
+  data
+    .filter((label) => topicTagLabelGetter.isLabel(label))
+    .forEach((label) => {
+      tags.push(label)
+    })
 })
 </script>
