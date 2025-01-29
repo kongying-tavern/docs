@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'Release Notes',
-            link: '/changelog/windows-clinet',
+            link: '/changelog/windows-client',
           },
         ],
       },

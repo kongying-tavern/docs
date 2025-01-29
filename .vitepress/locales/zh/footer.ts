@@ -48,7 +48,7 @@ const footer: CustomConfig['footer'] = {
         },
         {
           text: '客户端更新日志',
-          link: '/changelog/windows-clinet',
+          link: '/changelog/windows-client',
         },
         {
           text: '网页版更新日志',

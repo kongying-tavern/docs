@@ -27,7 +27,7 @@ import customColor from '@/markdown/customColor'
 
 withDefaults(
   defineProps<{
-    height: string | number
+    height?: string | number
   }>(),
   {
     height: '10rem',
