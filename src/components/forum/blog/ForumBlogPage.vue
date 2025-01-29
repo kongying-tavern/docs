@@ -1,12 +1,29 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import posts from '~/_data/posts.json'
-import { useData } from 'vitepress'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumDate from '../ForumDate.vue'
 import { VPLink } from 'vitepress/theme'
 import { extractPlainText } from '../utils'
+import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
+import { useData } from 'vitepress'
+
+const localeLabelGetter = getForumLocaleLabelGetter()
 
 const { message } = useLocalized()
+const { lang } = useData()
+
+const filteredPosts = computed(() =>
+  posts.filter(
+    (post) =>
+      post.tags &&
+      post.tags.some(
+        (label) =>
+          label ===
+          localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
+      ),
+  ),
+)
 </script>
 
 <template>
@@ -14,7 +31,7 @@ const { message } = useLocalized()
     <ul class="c-[var(--vp-c-text-1)]">
       <li
         class="py-12 border-b border-b-[var(--vp-c-divider)]"
-        v-for="{ title, createdAt, contentRaw, id } of posts"
+        v-for="{ title, createdAt, contentRaw, id } of filteredPosts"
       >
         <article
           class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline"

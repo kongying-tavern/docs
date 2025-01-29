@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
 import ForumShareThis from '../ForumShareThis.vue'
-import { useData } from 'vitepress'
 
 defineProps<{
   prevPageLink: string
