@@ -23,7 +23,7 @@ import { computed } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import Image from './Image.vue'
 
-import type { DefaultTheme } from 'vitepress/theme'
+import type { DefaultTheme } from 'vitepress/theme-without-fonts'
 
 const { images } = defineProps<{
   images: DefaultTheme.ThemeableImage[]

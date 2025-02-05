@@ -2,7 +2,7 @@
 import { withBase } from 'vitepress'
 import mediumZoom, { type Zoom, type ZoomOptions } from 'medium-zoom'
 
-import type { DefaultTheme } from 'vitepress/theme'
+import type { DefaultTheme } from 'vitepress/theme-without-fonts'
 import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 
 interface Props {
