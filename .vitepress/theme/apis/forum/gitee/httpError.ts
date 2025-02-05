@@ -15,10 +15,12 @@ export class HTTPError extends Error {
       endpoint?: string
       method?: HttpMethod
       state?: number
+      message?: string
     },
   ) {
     super(type)
     this.type = type
+    this.message = options?.message || 'An error occurred'
     this.cause = options?.cause
     this.state = options?.state
     this.method = options?.method
@@ -40,6 +42,10 @@ export class HTTPError extends Error {
 
   isMissingPaginationParams(): boolean {
     return this.type === GiteeApiErrorType.MissingPaginationParams
+  }
+
+  isUnauthorized(): boolean {
+    return this.type === GiteeApiErrorType.Unauthorized
   }
 
   toJSON(): Record<string, unknown> {

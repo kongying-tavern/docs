@@ -385,3 +385,11 @@ export function removeQueryParam(param: string) {
   window.history.replaceState({}, '', url)
   return url
 }
+
+export const toCamelCaseObject = <T extends Record<string, unknown>>(
+  obj: T,
+): SnakeCaseKeysToCamelCase<T> => {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [camelCase(key), value]),
+  ) as SnakeCaseKeysToCamelCase<T>
+}

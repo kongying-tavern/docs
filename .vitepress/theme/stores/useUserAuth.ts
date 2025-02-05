@@ -2,7 +2,7 @@ import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import { oauth } from '../apis/forum/gitee'
-import { camelCase } from '../utils'
+import { toCamelCaseObject } from '@/utils'
 
 import type ForumAPI from '@/apis/forum/api'
 
@@ -34,14 +34,6 @@ const differenceTokenTime = (expiressTime: number) =>
 export const useUserAuthStore = defineStore('user-auth', () => {
   const auth = useLocalStorage<Partial<LocalAuth>>(USERAUTH_KEY, {})
 
-  const toCamelCaseObject = <T extends Record<string, unknown>>(
-    obj: T,
-  ): SnakeCaseKeysToCamelCase<T> => {
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => [camelCase(key), value]),
-    ) as SnakeCaseKeysToCamelCase<T>
-  }
-
   const setAuth = (newAuth: ForumAPI.Auth) => {
     const { refreshToken, expiresIn, tokenType, accessToken } =
       toCamelCaseObject(newAuth)
@@ -62,6 +54,8 @@ export const useUserAuthStore = defineStore('user-auth', () => {
 
   watch(isTokenValid, (valid) => {
     console.info('token changed', valid)
+
+    if (!valid) clearAuth()
   })
 
   const refreshAuth = () =>
@@ -132,11 +126,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
   }
 
   const accessToken = computed(() => {
-    if (!auth.value.accessToken) {
-      // 如果未登录或者 Token 过期触发登录提醒
-      location.hash = 'login-alert'
-      return null
-    }
+    if (!isTokenValid.value) return null
 
     return auth.value.accessToken
   })

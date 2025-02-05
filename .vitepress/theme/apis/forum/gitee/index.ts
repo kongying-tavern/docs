@@ -45,9 +45,7 @@ const cachedApiCall = useMemoize(
     }
 
     if (!isNodeEnvironment() && !endpoint.includes('oauth')) {
-      const { auth } = useUserAuthStore()
-
-      const accessToken = auth.accessToken
+      const { accessToken } = useUserAuthStore()
 
       if (accessToken) {
         if (body) {
@@ -70,6 +68,7 @@ const cachedApiCall = useMemoize(
           cause: error,
           method: method,
           endpoint: endpoint,
+          message: error.message,
         }),
       )
     }

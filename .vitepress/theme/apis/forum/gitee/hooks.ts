@@ -1,18 +1,40 @@
-import type { BeforeErrorHook, BeforeRequestHook } from 'ky'
-import { GiteeApiErrorType } from './types'
+import type { BeforeErrorHook } from 'ky'
+import { GiteeApiErrorType, type ErrorHandler } from './types'
+import { parseErrorMessage } from './utils'
 
-const handleRateLimitExceeded: BeforeErrorHook = async (error) => {
+const errorHandlers: ErrorHandler[] = [
+  {
+    match: 'Rate Limit Exceeded',
+    state: [401, 403],
+    errorName: GiteeApiErrorType.RateLimitExceeded,
+    getErrorMessage: () => 'Rate limit exceeded',
+  },
+  {
+    match: '401 Unauthorized',
+    state: [401],
+    errorName: GiteeApiErrorType.Unauthorized,
+    getErrorMessage: (text: string) => text.trim(),
+  },
+]
+
+const handleApiErrors: BeforeErrorHook = async (error) => {
   const { response } = error
-  if (response.status === 403 || response.status === 401) {
-    const errorMessage = await response.text()
-    if (errorMessage.includes('Rate Limit Exceeded')) {
-      error.name = GiteeApiErrorType.RateLimitExceeded
-      error.message = `Rate limit exceeded`
-      return error
-    }
+  if (!response) return error
+
+  const errorText = await parseErrorMessage(response)
+  if (!errorText) return error
+
+  const [errorType, errorMessage = ''] = errorText.split(':')
+  const handler = errorHandlers.find(
+    (h) => h.state.includes(response.status) && errorType.includes(h.match),
+  )
+
+  if (handler) {
+    error.name = handler.errorName
+    error.message = handler.getErrorMessage(errorMessage)
   }
 
   return error
 }
 
-export const beforeErrorHooks: BeforeErrorHook[] = [handleRateLimitExceeded]
+export const beforeErrorHooks: BeforeErrorHook[] = [handleApiErrors]

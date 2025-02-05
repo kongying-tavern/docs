@@ -277,6 +277,22 @@ export const handlePagination = async (
   ]
 }
 
+export const parseErrorMessage = async (
+  response: Response,
+): Promise<string | null> => {
+  try {
+    const contentType = response.headers.get('content-type')
+    if (contentType?.includes('application/json')) {
+      const { message } = (await response.json()) as { message?: string }
+      return message || 'Unknown error'
+    }
+    return await response.text()
+  } catch {
+    console.error('Failed to parse error response')
+    return null
+  }
+}
+
 export default {
   normalizeUser,
   normalizeIssue,

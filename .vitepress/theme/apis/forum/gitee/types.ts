@@ -4,6 +4,7 @@ import type ForumAPI from '../api'
 export enum GiteeApiErrorType {
   RateLimitExceeded = 'Rate Limit Exceeded',
   MissingPaginationParams = 'Missing Pagination Params',
+  Unauthorized = 'Unauthorized',
   ApiError = 'Gitee Api Error',
 }
 
@@ -19,3 +20,10 @@ export type ApiCallParams = {
 export type ApiCallResult<T> = Promise<
   [T, undefined] | [T, ForumAPI.PaginationParams]
 >
+
+export interface ErrorHandler {
+  match: string
+  state: number[]
+  errorName: GiteeApiErrorType
+  getErrorMessage: (text: string) => string
+}
