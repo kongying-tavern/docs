@@ -21,7 +21,7 @@
             <span>{{ menuLabels.toOriginal }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            v-if="isAuthorOrTeamMember"
+            v-if="hasAllPermissions('manage_feedback', 'edit_feedback')"
             @click="handleDeleteComment"
           >
             <span class="i-lucide:trash-2 icon-btn"></span>
@@ -73,7 +73,7 @@ const {
   commentClickHandler: Function
 }>()
 
-const { isAuthorOrTeamMember } = useRuleChecks(authorId)
+const { hasAllPermissions } = useRuleChecks(authorId)
 const menuLabels = ref(message.value.forum.topic.menu)
 
 const displayText = computed(() => {

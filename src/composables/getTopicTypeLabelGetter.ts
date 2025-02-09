@@ -3,7 +3,6 @@ export const getTopicTypeLabelGetter = () => {
     ['FEAT', 'TYP-FEAT'],
     ['ANN', 'TYP-ANN'],
     ['BUG', 'TYP-BUG'],
-    ['SUG', 'TYP-SUG'],
   ]
 
   const forwardMap = new Map(constructList)

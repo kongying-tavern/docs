@@ -1,3 +1,5 @@
+import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
+
 export namespace ForumAPI {
   export type Auth = {
     accessToken: string
@@ -18,7 +20,7 @@ export namespace ForumAPI {
     homepage?: string
   }
 
-  export type TopicType = 'ANN' | 'SUG' | 'BUG' | 'FEAT' | null
+  export type TopicType = 'ANN' | 'BUG' | 'FEAT' | null
 
   export interface ImageInfo {
     src: string
@@ -103,6 +105,16 @@ export namespace ForumAPI {
       md5: string
       thumbnailUrl: string
       originName: string
+    }
+  }
+
+  type CreateTopicOption = {
+    type: Exclude<ForumAPI.TopicType, null>
+    title: string
+    tags: string[]
+    body: {
+      text: string
+      images: UploadUserFile[]
     }
   }
 

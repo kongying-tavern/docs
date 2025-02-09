@@ -1,60 +1,66 @@
 <template>
   <Popover>
-    <PopoverTrigger>
+    <PopoverTrigger class="w-full">
       <TagsInput
-        class="px-0 gap-0 w-full border vp-border-input"
-        :class="class"
+        class="min-h-42px px-0 gap-0 w-full border vp-border-input"
+        v-bind="$attrs"
         :model-value="modelValue"
       >
-        <div class="flex gap-2 flex-wrap items-center px-3">
+        <div class="flex gap-2 flex-wrap items-center pl-3">
           <TagsInputItem
             v-for="item in modelValue"
             :key="item"
-            :value="getLocalizedTagName(item)"
+            :value="'#' + getLocalizedTagName(item)"
+            @dblclick="handleDelete(item)"
           >
             <TagsInputItemText />
             <TagsInputItemDelete @click="handleDelete(item)" />
           </TagsInputItem>
         </div>
-        <TagsInputInput
-          class="w-full px-3"
-          :class="modelValue.length > 0 ? 'mt-2' : ''"
-          @keydown.enter.prevent
-        />
+        <TagsInputInput class="w-full px-3" @keydown.enter.prevent />
       </TagsInput>
     </PopoverTrigger>
-    <PopoverContent>
-      <ComboboxRoot>
-        <Command>
-          <CommandInput
-            :disabled="isDisabled"
-            :placeholder="
-              isDisabled
-                ? message.forum.publish.tagsInput.maxTagsLimit
-                : message.forum.publish.tagsInput.searchTags
-            "
-          >
-          </CommandInput>
-          <CommandSeparator />
-          <CommandList>
-            <CommandEmpty>
-              {{ message.forum.publish.tagsInput.noResultsFound }}
-            </CommandEmpty>
-            <CommandGroup heading="Suggestions">
-              <CommandItem
-                v-for="tag in filteredTags"
-                :key="tag"
-                :value="getLocalizedTagName(tag)"
-                :disabled="isDisabled"
-                @select.prevent="handleSelect(tag)"
+    <PopoverPortal>
+      <PopoverContent
+        class="w-[--radix-popper-anchor-width] rounded-md mt-2 border bg-popover text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+      >
+        <ComboboxRoot>
+          <Command>
+            <CommandInput
+              :disabled="isDisabled"
+              :placeholder="
+                isDisabled
+                  ? message.forum.publish.tagsInput.maxTagsLimit
+                  : message.forum.publish.tagsInput.searchTags
+              "
+            >
+            </CommandInput>
+            <CommandSeparator />
+            <CommandList>
+              <CommandEmpty>
+                {{ message.forum.publish.tagsInput.noResultsFound }}
+              </CommandEmpty>
+
+              <CommandGroup
+                v-for="item in tagList"
+                :key="item.heading"
+                :heading="item.heading"
               >
-                {{ getLocalizedTagName(tag) }}
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </ComboboxRoot>
-    </PopoverContent>
+                <CommandItem
+                  v-for="tag in item.list"
+                  :key="tag"
+                  :value="getLocalizedTagName(tag)"
+                  :disabled="isDisabled"
+                  @select.prevent="handleSelect(tag)"
+                >
+                  {{ getLocalizedTagName(tag) }}
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </ComboboxRoot>
+      </PopoverContent>
+    </PopoverPortal>
   </Popover>
 </template>
 
@@ -75,7 +81,7 @@ import {
   TagsInputItemDelete,
   TagsInputItemText,
 } from '@/components/ui/tags-input'
-import { ComboboxRoot } from 'radix-vue'
+import { ComboboxRoot, PopoverPortal } from 'radix-vue'
 
 import { labels } from '@/apis/forum/gitee'
 import {
@@ -137,6 +143,17 @@ const handleSelect = (tag: string) => {
 const handleDelete = (tag: string) => {
   modelValue.value = modelValue.value.filter((i) => i !== tag)
 }
+
+const tagList = computed(() => [
+  {
+    heading: 'Platforum',
+    list: filteredTags.value.filter((val) => val.includes('PLATFORM')),
+  },
+  {
+    heading: 'Type',
+    list: filteredTags.value.filter((val) => !val.includes('PLATFORM')),
+  },
+])
 
 onMounted(async () => {
   const data = await labels.getAllLabelsName()

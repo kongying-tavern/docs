@@ -184,6 +184,7 @@ const forum: CustomConfig['forum'] = {
         placeholder: '',
       },
       upload: {
+        text: '上传错误截图',
         tip: '请上传相关错误截图或报错信息最多 %range 张，最大不超过 %size MB',
         fail: '%filename 上传失败',
         violation: '图片违规！请勿上传任何与反馈无关的图片',

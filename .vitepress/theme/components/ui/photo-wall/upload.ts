@@ -94,6 +94,14 @@ export const uploadBaseProps = {
    * @description hide default upload trigger
    */
   hideDefaultTrigger: Boolean,
+
+  /**
+   * @description hide default upload trigger
+   */
+  size: {
+    type: definePropType<'xl' | 'lg'>(String),
+    default: 'xl',
+  },
 } as const
 
 export const uploadProps = {
@@ -131,3 +139,11 @@ export const uploadProps = {
 export type UploadProps = ExtractPropTypes<typeof uploadProps>
 
 export type UploadInstance = InstanceType<typeof PhotoWall>
+
+// @unocss-include
+export const uploadVariants = {
+  size: {
+    xl: 'size-18 rounded-sm mr-2',
+    lg: 'size-24 rounded-lg mr-4',
+  },
+}

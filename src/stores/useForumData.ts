@@ -1,29 +1,22 @@
-import { GiteeAPIError, issues } from '@/apis/forum/gitee'
+import { issues } from '@/apis/forum/gitee'
 import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
-import { toast } from 'vue-sonner'
 import { defineStore } from 'pinia'
-import { isArray, uniqBy } from 'lodash-es'
+import { uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
 import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
-import { convertMultipleToMarkdown } from '../components/forum/utils'
-
-import { executeWithAuth } from '~/composables/executeWithAuth'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
-import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { composeTopicBody } from '~/composables/composeTopicBody'
+import { handleError } from '~/composables/handleError'
+import { getValidFilter } from '~/composables/getValidFilter'
 
 import type ForumAPI from '@/apis/forum/api'
-import { handleError } from '~/composables/handleError'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
-const localeLabelGetter = getForumLocaleLabelGetter()
+export const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'CLOSED'])
 
-const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'SUG', 'CLOSED'])
-
-export type FilterType = 'FEAT' | 'BUG' | 'ALL' | 'SUG' | 'CLOSED'
+export type FilterType = 'FEAT' | 'BUG' | 'ALL' | 'CLOSED'
 
 export const useForumData = defineStore('forum-data', () => {
   const userSubmittedTopic = ref<ForumAPI.Topic[]>([])
@@ -87,12 +80,6 @@ export const useForumData = defineStore('forum-data', () => {
     pagination.filter = val
   }
 
-  const getTopic = (id: string | number) => {
-    return [...topics.value, ...userSubmittedTopic.value].find(
-      (topic) => topic.id === id,
-    )
-  }
-
   const searchTopics = async (q: string | string[]) => {
     initialData()
 
@@ -103,131 +90,12 @@ export const useForumData = defineStore('forum-data', () => {
     return refreshData(q)
   }
 
-  const closeTopic = async (id: string | number): Promise<boolean> => {
-    const targetTopic = getTopic(id)
-
-    if (!targetTopic) {
-      toast.error(message.value.forum.topic.menu.closeFeedback.fail)
-      return false
-    }
-
-    const state = await executeWithAuth(
-      issues.putTopic,
-      [
-        id,
-        {
-          body: composeTopicBody(targetTopic.contentRaw, { state: 'closed' }),
-          state: 'closed',
-        },
-      ],
-      message.value.forum.topic.menu.closeFeedback.success,
-      message.value.forum.topic.menu.closeFeedback.fail,
-      message,
-    )
-    if (state) removeTopic(id)
-    return !state
-  }
-
-  const hidleTopic = async (id: string | number): Promise<boolean> => {
-    const state = await executeWithAuth(
-      issues.putTopic,
-      [id, { state: 'progressing' }],
-      message.value.forum.topic.menu.hideFeedback.success,
-      message.value.forum.topic.menu.hideFeedback.fail,
-      message,
-    )
-    if (state) removeTopic(id)
-    return !state
-  }
-
-  const removeTopic = (id: string | number) => {
-    topics.value = topics.value.filter((topic) => topic.id !== id)
-    userSubmittedTopic.value = userSubmittedTopic.value.filter(
-      (topic) => topic.id !== id,
-    )
-  }
-
-  const submitTopic = () => {
-    const {
-      data: submittedTopic,
-      runAsync: submit,
-      loading: submitLoading,
-      error: submitError,
-    } = useRequest(issues.postTopic, {
-      manual: true,
-    })
-
-    // 因为 Gitee 接口不识别普通用户上传的 tags(labels)，为了前端预览正常这里手动缓存并在后面与接口返回值合并
-    let userSelectedTags: string[] | null = null
-
-    const submitData = (
-      type: ForumAPI.TopicType,
-      body: {
-        title: string
-        content: {
-          text: string
-          images?: string[]
-        }
-        tags: string[]
-      },
-    ) => {
-      const bodyText = () => {
-        if (!isArray(body.content?.images)) return body.content.text
-        return (
-          body.content.text + convertMultipleToMarkdown(body.content.images)
-        )
-      }
-
-      userSelectedTags = body.tags
-
-      const labels = [
-        import.meta.env.DEV ? 'DEV-TEST' : 'WEB-FEEDBACK',
-        typeLabelGetter.getLabel(type),
-        localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
-        ...body.tags,
-      ]
-
-      submit({
-        body: composeTopicBody(bodyText(), { labels }),
-        title: `${type}:${body.title}`,
-        labels: labels.join(','),
-      })
-    }
-
-    watch(submittedTopic, () => {
-      if (submittedTopic.value) {
-        userSubmittedTopic.value.unshift({
-          ...submittedTopic.value,
-          ...(userSelectedTags ? { tags: userSelectedTags } : {}),
-        })
-        toast.success(message.value.forum.publish.publishSuccess)
-      }
-    })
-
-    watch(submitError, () => {
-      toast.info(message.value.forum.publish.publishFail)
-    })
-
-    return {
-      data: submittedTopic,
-      loading: submitLoading,
-      error: submitError,
-      runAsync: submitData,
-    }
-  }
-
   const loadStateMessage = computed(() => {
     if (loading.value) return message.value.forum.loadMore
     if (error.value) return message.value.forum.loadError
     if (topics.value.length === 0) return 'No Data'
     if (noMore.value) return message.value.forum.noMore
   })
-
-  function getValidFilter(value?: string): FilterType | null {
-    if (import.meta.env.SSR) return null
-    const filter = value || location.hash.slice(1)
-    return filterSet.has(filter) ? (filter as FilterType) : null
-  }
 
   const initData = () => {
     if (!import.meta.env.SSR) Promise.all([loadAnn(), refreshData()])
@@ -324,8 +192,5 @@ export const useForumData = defineStore('forum-data', () => {
     refreshData,
     loadMore,
     loadAnn,
-    submitTopic,
-    closeTopic,
-    hidleTopic,
   }
 })

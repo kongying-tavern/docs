@@ -1,3 +1,4 @@
+import { isArray } from 'lodash-es'
 import { computed, onBeforeUnmount, ref } from 'vue'
 
 interface UseHashCheckerOptions {
@@ -7,8 +8,8 @@ interface UseHashCheckerOptions {
 }
 
 export const useHashChecker = (
-  targetHash: string,
-  callback?: () => boolean | void,
+  targetHash: string | string[],
+  callback?: (hash: string) => boolean | void,
   options: UseHashCheckerOptions = {},
 ) => {
   const defaultOptions: UseHashCheckerOptions = {
@@ -25,15 +26,22 @@ export const useHashChecker = (
   const currentHash = computed(() => window.location.hash.slice(1))
   const isMatch = ref(false)
   const callbackState = ref(false)
+  let matchedHash = null
 
   const checkHash = () => {
-    if (currentHash.value !== targetHash) return (isMatch.value = false)
+    if (isArray(targetHash)) {
+      isMatch.value = targetHash.some((hash) => currentHash.value === hash)
+    } else {
+      isMatch.value = currentHash.value === targetHash
+    }
 
-    isMatch.value = true
+    if (!isMatch.value) return
+
+    matchedHash = currentHash.value
 
     if (clearHash)
       history.replaceState(null, '', window.location.href.split('#')[0])
-    if (callback) callbackState.value = Boolean(callback())
+    if (callback) callbackState.value = Boolean(callback(matchedHash))
     if ((callback === undefined || callbackState.value) && redirectHash)
       location.hash = redirectHash
   }

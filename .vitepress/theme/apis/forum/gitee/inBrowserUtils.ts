@@ -1,13 +1,12 @@
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import type ForumAPI from '../api'
 import { normalizeComment } from './utils'
+import { useRuleChecks } from '~/composables/useRuleChecks'
+
+import type ForumAPI from '../api'
 
 export function extractOfficialAndAuthorComments(
   issue: GITEE.IssueInfo,
   commentList: GITEE.CommentList,
 ): ForumAPI.Comment[] | null {
-  const userInfoStore = useUserInfoStore()
-
   const comments: ForumAPI.Comment[] = []
   const relatedComments = commentList.filter(
     (comment) => comment.target.issue.id === issue.id,
@@ -17,9 +16,10 @@ export function extractOfficialAndAuthorComments(
     (comment) => comment.user.id === issue.user.id,
   )
   // 查找官方团队的评论
-  const officialComment = relatedComments.find((comment) =>
-    userInfoStore.isTeamMember(comment.user.id),
-  )
+  const officialComment = relatedComments.find((comment) => {
+    const { hasAnyRoles } = useRuleChecks(comment.user.id)
+    return hasAnyRoles('teamMember', 'feedbackMember').value
+  })
 
   if (authorComment) comments.push(normalizeComment(authorComment))
   if (officialComment) comments.push(normalizeComment(officialComment))

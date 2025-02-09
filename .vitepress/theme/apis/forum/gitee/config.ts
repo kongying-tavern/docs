@@ -7,6 +7,6 @@ export const GITEE_API_CONFIG = {
   OWNER: 'KYJGYSDT',
   FEEDBACK_REPO: 'Feedback',
   BLOG_REPO: 'Blog',
-  TOPIC_TYPE: ['BUG', 'FEAT', 'SUG', 'ANN'],
+  TOPIC_TYPE: ['BUG', 'FEAT', 'ANN'],
   STATE_TAGS: new Set(['DEV-TEST', 'CLOSED', 'WEB-FEEDBACK', 'GOOD-ISSUE']),
 }

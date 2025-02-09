@@ -17,6 +17,7 @@ const ui: CustomConfig['ui'] = {
     submit: '提交',
     cancel: '取消',
     loading: '加载中',
+    close: '关闭',
     all: '全部',
   },
 }

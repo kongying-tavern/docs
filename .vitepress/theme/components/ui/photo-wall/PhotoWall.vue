@@ -5,6 +5,7 @@
       :files="uploadFiles"
       :handle-preview="onPreview"
       @remove="handleRemove"
+      :class="uploadVariants.size[size]"
     >
       <template v-if="$slots.file" #default="{ file, index }">
         <slot name="file" :file="file" :index="index" />
@@ -30,9 +31,13 @@
 import { computed, onBeforeUnmount, provide, ref, shallowRef } from 'vue'
 import PhotoList from './PhotoList.vue'
 import UploadPhoto from './UploadPhoto.vue'
-import { uploadContextKey, uploadProps } from './upload'
+import { uploadContextKey, uploadProps, uploadVariants } from './upload'
 import type { UploadPhotoInstance, UploadPhotoProps } from './uploadPhoto'
 import { useHandlers } from './useHandlers'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = defineProps(uploadProps)
 

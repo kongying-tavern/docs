@@ -9,10 +9,10 @@ import { GITEE_API_CONFIG } from './config'
 
 import { extractOfficialAndAuthorComments } from './inBrowserUtils'
 import { buildFormData } from '@/apis/utils'
+import { reformat } from '../webhook'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 
 import type ForumAPI from '../api'
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import { reformat } from '../webhook'
 
 export const getTopic = async (number: string): Promise<ForumAPI.Topic> => {
   const [data] = await apiCall<GITEE.IssueInfo>(
@@ -165,7 +165,7 @@ export const postTopic = async (data: {
       body: form,
     },
   )
-  console.log(issueInfo)
+
   return normalizeIssue(issueInfo)
 }
 
@@ -242,8 +242,8 @@ export const putTopic = async (
   if (!(data.labels || data.state)) return result
 
   // 团队成员的提交不需要通知 Webhook 同步
-  const userInfo = useUserInfoStore()
-  if (userInfo.isTeamMember()) return result
+  const { hasAnyRoles } = useRuleChecks()
+  if (hasAnyRoles('teamMember', 'feedbackMember').value) return result
 
   const [reformatError, reformatData] = await reformat({ number: number })
 

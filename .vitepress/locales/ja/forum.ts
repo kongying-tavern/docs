@@ -185,6 +185,7 @@ const forum: CustomConfig['forum'] = {
         placeholder: '',
       },
       upload: {
+        text: 'エラーのスクリーンショットをアップロードする',
         tip: '%range 枚までのスクリーンショットをアップロード (最大 %size MB)',
         fail: '%filename アップロード失敗',
         violation:

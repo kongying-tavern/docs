@@ -17,7 +17,7 @@
       <div class="title flex" :class="style[size].header">
         <p class="font-size-3.5">{{ author.username }}</p>
 
-        <ForumRuleBadge :type="userRule" />
+        <ForumRuleBadge :author-id="author.id" />
       </div>
 
       <article
@@ -53,7 +53,6 @@
 
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { computed } from 'vue'
 import ForumRuleBadge from './ForumRuleBadge.vue'
 import { Image } from '@/components/ui/image'
@@ -94,14 +93,6 @@ const style = {
     content: 'break-words font-size-3.75 line-height-[24px] break-all',
   },
 }
-
-const userInfo = useUserInfoStore()
-
-const userRule = computed(() => {
-  if (props.author.id === props.topicAuthorId) return 'author'
-  if (userInfo.isTeamMember(props.author.id)) return 'official'
-  return null
-})
 </script>
 
 <style>

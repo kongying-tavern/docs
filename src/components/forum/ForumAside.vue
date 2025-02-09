@@ -110,6 +110,7 @@ import { useData, withBase } from 'vitepress'
 import { flattenWithTags, getPageHeight, getRandomElements } from './utils'
 import { useLocalized } from '@/hooks/useLocalized'
 import { computed } from 'vue'
+import { FORM_HASH } from '~/components/forum/publish-topic-form/config'
 
 const { showButton = true, contactUs = false } = defineProps<{
   showButton?: boolean
@@ -135,6 +136,16 @@ const suggestList = computed(() => {
 })
 
 const publishTopic = () => {
-  location.hash = 'publish-topic'
+  const currentHash = location.hash.slice(1)
+  let targetHash = FORM_HASH
+
+  if (
+    location.hash &&
+    ['FEAT', 'BUG', 'ANN'].some((val) => val === currentHash)
+  ) {
+    targetHash = targetHash + '-' + currentHash
+  }
+
+  location.hash = targetHash
 }
 </script>

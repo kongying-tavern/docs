@@ -17,6 +17,7 @@ const ui: CustomConfig['ui'] = {
     cancel: 'キャンセル',
     loading: 'Loading',
     search: '検索',
+    close: '閉鎖',
     all: '全て',
   },
 }

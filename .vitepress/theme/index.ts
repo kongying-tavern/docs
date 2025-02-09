@@ -11,6 +11,7 @@ import DefaultTheme, {
   VPLink,
 } from 'vitepress/theme-without-fonts'
 import googleAnalytics from '../plugins/google-analytics'
+import { MotionPlugin } from '@vueuse/motion'
 
 import type { Theme } from 'vitepress'
 
@@ -29,6 +30,7 @@ export default {
     })
 
     app.use(pinia)
+    app.use(MotionPlugin)
     app.component('Coins', Coins)
     app.component('Card', Card)
     app.component('VPBadge', VPBadge)

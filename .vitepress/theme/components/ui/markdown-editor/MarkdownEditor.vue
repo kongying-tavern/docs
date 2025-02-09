@@ -17,7 +17,7 @@ import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
-import lightbox from '@/../plugins/lightbox'
+import lightbox from '@/markdown/lightbox'
 
 import { cardPlugin } from '@/markdown/card'
 import { colorPreviewPlugin } from '@/markdown/colorPreview'

@@ -17,7 +17,7 @@
           <div class="flex items-center mt-4">
             <Avatar :src="data?.user.avatar" :alt="data?.user.username" />
             <p class="mx-2 font-size-3.5">{{ data?.user.username }}</p>
-            <ForumRuleBadge :type="isTeamMember ? 'official' : null" />
+            <ForumRuleBadge :author-id="data.user.id" />
 
             <span class="color-[--vp-c-text-3]">·</span>
 
@@ -109,7 +109,6 @@ const { data, run, loading, mutate, error } = useRequest(issues.getTopic, {
   manual: true,
 })
 
-const isTeamMember = computed(() => userInfo.isTeamMember(data.value?.user.id))
 const renderedContent = computed(() =>
   sanitizeMarkdown(
     markdownit().render(sanitizeMarkdown(data.value?.contentRaw)),

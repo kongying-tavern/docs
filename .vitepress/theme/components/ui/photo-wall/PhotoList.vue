@@ -1,7 +1,7 @@
 <template>
   <TransitionGroup name="list" tag="ul" class="flex w-[fit-content]">
     <li
-      class="size-18 rounded-sm mr-2 overflow-hidden relative"
+      class="size-18 rounded-sm overflow-hidden relative"
       v-for="(file, index) in files"
       :key="file.uid || file.name"
       :class="[{ focusing }, stateStyle[file.status!]]"
@@ -10,6 +10,7 @@
       @focus="focusing = true"
       @blur="focusing = false"
       @click="focusing = false"
+      v-bind="$attrs"
     >
       <slot :file="file" :index="index">
         <button
@@ -48,7 +49,12 @@ import {
   type UploadHooks,
   type UploadStatus,
   definePropType,
+  uploadVariants,
 } from './upload'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = defineProps({
   files: {

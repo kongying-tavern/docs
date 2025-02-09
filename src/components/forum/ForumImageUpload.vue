@@ -1,56 +1,42 @@
 <template>
-  <div class="flex">
-    <div class="comment-area w-full">
-      <div
-        class="body border-style-solid border rounded-md px-2 py-1"
-        :class="class"
-      >
-        <div class="editor">
-          <textarea
-            class="h-8 w-full min-h-68px max-h-200px h-auto line-height-[32px] cursor-text font-size-3.5 bg-transparent resize-none"
-            ref="textarea"
-            v-model.trim="input"
-            :maxlength="textLimit"
-            :placeholder="placeholder"
-          >
-          </textarea>
-        </div>
-        <PhotoWall
-          v-model:file-list="modelValue.images"
-          :limit="fileLimit"
-          :accept="accent"
-          :multiple="multiple"
-          :hideDefaultTrigger="hideDefaultTrigger || false"
-          :on-change="handleFileChange"
-          default-state="uploading"
+  <div class="mt-2">
+    <PhotoWall
+      v-model:file-list="modelValue"
+      :limit="fileLimit"
+      :accept="accent"
+      :multiple="multiple"
+      :hideDefaultTrigger="hideDefaultTrigger || false"
+      :on-change="handleFileChange"
+      :size="size"
+      :drag="true"
+      default-state="uploading"
+      v-bind="$attrs"
+    >
+      <span i-lucide-image-plus v-if="canAddImages" />
+      <span i-lucide-image-off v-else />
+      <template #tip v-if="fileLimit || uploadTips">
+        <DynamicTextReplacer
+          v-if="uploadTips"
+          :data="uploadTips"
+          tag="p"
+          class="font-size-3 c-[var(--vp-c-text-2)]"
         >
-          <span i-lucide-image-plus v-if="canAddImages" />
-          <span i-lucide-image-off v-else />
-          <template #tip v-if="fileLimit || uploadTips">
-            <DynamicTextReplacer
-              v-if="uploadTips"
-              :data="uploadTips"
-              tag="p"
-              class="font-size-3 c-[var(--vp-c-text-2)]"
-            >
-              <template #range>
-                <span>
-                  {{ fileLimit }}
-                </span>
-              </template>
-              <template v-if="maxFileSize" #size>
-                <span>{{ maxFileSize }}</span>
-              </template>
-            </DynamicTextReplacer>
+          <template #range>
+            <span>
+              {{ fileLimit }}
+            </span>
           </template>
-        </PhotoWall>
-      </div>
-    </div>
+          <template v-if="maxFileSize" #size>
+            <span>{{ maxFileSize }}</span>
+          </template>
+        </DynamicTextReplacer>
+      </template>
+    </PhotoWall>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useTextareaAutosize, useVModel } from '@vueuse/core'
+import { useVModel } from '@vueuse/core'
 import { computed, nextTick, watch, type HTMLAttributes } from 'vue'
 import { PhotoWall } from '@/components/ui/photo-wall'
 import { uploadImg } from '@/apis/forum/imgs-upload'
@@ -64,26 +50,20 @@ import type {
   UploadUserFile,
 } from '@/components/ui/photo-wall/upload'
 import { useLocalized } from '@/hooks/useLocalized'
-// import { compressImage } from './utils'
-
-interface Content {
-  text: string
-  images?: UploadUserFile[]
-}
 
 const props = defineProps<{
-  modelValue: Content
+  modelValue: UploadUserFile[]
   class?: HTMLAttributes['class']
-  defaultValue?: Content
+  defaultValue?: UploadUserFile[]
   placeholder?: string
   accent?: string
   multiple?: boolean
-  textLimit?: number
   maxFileSize?: number
   fileLimit?: number
   autoUpload?: boolean
   uploadTips?: string
   hideDefaultTrigger?: boolean
+  size?: 'xl' | 'lg'
 }>()
 
 const emits = defineEmits<{
@@ -95,20 +75,19 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
 })
 
-const { message } = useLocalized()
-
-const uploadedFiles = new Map<number, UploadFile>()
-const canAddImages = computed(() => {
-  return (props.modelValue.images?.length || 0) < (props.fileLimit || 0)
-})
-
-const { textarea, input } = useTextareaAutosize()
 const { data, runAsync, loading, error } = useRequest(uploadImg, {
   manual: true,
 })
 
+const { message } = useLocalized()
+
+const uploadedFiles = new Map<number, UploadFile>()
+const canAddImages = computed(() => {
+  return (props.modelValue.length || 0) <= (props.fileLimit || 0)
+})
+
 const upload = async (uploadFile: UploadFile) => {
-  if (!props.autoUpload || !uploadFile.raw) return
+  if (!uploadFile.raw) return
 
   if (
     props.maxFileSize &&
@@ -151,10 +130,10 @@ const updateImage = (
   url: string | undefined,
   status: UploadStatus,
 ) => {
-  const index = props.modelValue.images?.findIndex((img) => img.uid === uid)
+  const index = props.modelValue.findIndex((img) => img.uid === uid)
   if (index !== undefined && index >= 0) {
-    props.modelValue.images![index].status = status
-    if (url) props.modelValue.images![index].url = url
+    props.modelValue![index].status = status
+    if (url) props.modelValue[index].url = url
   }
 }
 
@@ -164,17 +143,9 @@ const handleFileChange = async (file: UploadFile, files: UploadFiles) => {
   uploadMultipleFiles(files)
 }
 
-watch(input, () => (modelValue.value.text = input.value))
-watch(error, () => toast.error(message.value.forum.publish.form.upload.fail))
+watch(error, (val) =>
+  toast.error(
+    message.value.forum.publish.form.upload.fail + `(${val?.message})`,
+  ),
+)
 </script>
-
-<style scoped>
-textarea {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-textarea::-webkit-scrollbar {
-  display: none;
-}
-</style>

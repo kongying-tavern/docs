@@ -185,6 +185,7 @@ const forum: CustomConfig['forum'] = {
         placeholder: '',
       },
       upload: {
+        text: 'Upload Image',
         tip: 'Upload up to %range images, max %size MB each',
         fail: '%filename Upload Failed',
         violation: 'Image Violation! Do not upload unrelated images.',

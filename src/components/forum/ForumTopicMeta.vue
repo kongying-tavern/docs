@@ -17,7 +17,7 @@
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" class="text-nowrap">
           <DropdownMenuItem
-            v-if="isTeamMemberOrInDevEnv"
+            v-if="hasAnyPermissions('manage_feedback')"
             @click="openGiteeLink"
           >
             <span class="i-lucide:external-link icon-btn"></span>
@@ -32,13 +32,16 @@
             <span v-else>{{ menuLabels.copyLink.success }}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            v-if="isAuthorOrTeamMember"
+            v-if="hasAnyPermissions('manage_feedback', 'edit_feedback')"
             @click="handleCloseTopic"
           >
             <span class="i-lucide:square-x icon-btn"></span>
             <span>{{ menuLabels.closeFeedback.text }}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem v-if="isTeamNember" @click="handleHideTopic">
+          <DropdownMenuItem
+            v-if="hasAnyPermissions('manage_feedback')"
+            @click="handleHideTopic"
+          >
             <span class="i-lucide:eye-off icon-btn"></span>
             <span>{{ menuLabels.hideFeedback.text }}</span>
           </DropdownMenuItem>
@@ -68,14 +71,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useForumData } from '~/stores/useForumData'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useClipboard } from '@vueuse/core'
 import { getRedirectUrlText } from '~/composables/sessionCacheRedirect'
+import { useTopicMannger } from '~/composables/useTopicMannger'
 
 const { message, formatDate } = useLocalized()
-const { closeTopic, hidleTopic } = useForumData()
+const { closeTopic, hidleTopic } = useTopicMannger()
 
 const {
   createdAt,
@@ -94,8 +97,7 @@ const {
 }>()
 
 const { copy, copied, isSupported } = useClipboard()
-const { isAuthorOrTeamMember, isTeamMemberOrInDevEnv, isTeamNember } =
-  useRuleChecks(authorId)
+const { hasAnyPermissions } = useRuleChecks(authorId)
 
 const menuLabels = ref(message.value.forum.topic.menu)
 

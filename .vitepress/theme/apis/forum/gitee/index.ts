@@ -98,7 +98,7 @@ const apiCall = async <T>(
   endpoint: string,
   options: ApiCallParams = {},
 ): ApiCallResult<T> => {
-  const { useCache = true, ...rest } = options
+  const { useCache = false, ...rest } = options
 
   return useCache
     ? (cachedApiCall(method, endpoint, rest) as ApiCallResult<T>)

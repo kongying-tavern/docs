@@ -66,6 +66,7 @@ export interface CustomConfig {
       submit: string
       cancel: string
       loading: string
+      close: string
       all: string
     }
   }
@@ -281,6 +282,7 @@ export interface CustomConfig {
           placeholder: string
         }
         upload: {
+          text: string
           tip: string
           fail: string
           violation: string

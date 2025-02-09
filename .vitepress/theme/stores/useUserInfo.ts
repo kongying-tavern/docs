@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getUser } from '../apis/forum/gitee/user'
 import { useUserAuthStore } from './useUserAuth'
-import teamMemberList from '~/_data/teamMemberList.json'
 
 import type ForumAPI from '@/apis/forum/api'
 
@@ -17,11 +16,6 @@ export const useUserInfoStore = defineStore('user-info', () => {
     }
   }
 
-  const isTeamMember = (id?: string | number) => {
-    id ??= info.value?.id
-    return teamMemberList.findIndex((val) => id === val) !== -1
-  }
-
   const clearUserInfo = () => (info.value = undefined)
 
   refreshUserInfo()
@@ -29,9 +23,6 @@ export const useUserInfoStore = defineStore('user-info', () => {
   return {
     // states
     info,
-
-    // getters
-    isTeamMember,
 
     // actions
     refreshUserInfo,

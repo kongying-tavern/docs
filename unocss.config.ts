@@ -19,14 +19,17 @@ export default defineConfig({
       'inline-block align-mid w-5 h-5 flex-shrink-0 cursor-pointer select-none transition duration-200 ease-in-out',
     ],
     ['card-grid', 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'],
-    ['vp-divider', 'bg-[var(--vp-c-gutter)] h-[1px] w-full'],
+    [
+      'vp-divider',
+      'border-b-[var(--vp-c-gutter)] border-b-1px box-sizing-border w-full',
+    ],
     [
       'vp-link',
       'color-[var(--vp-button-brand-bg)] hover:color-[var(--vp-button-brand-hover-bg)] hover:decoration-underline cursor-pointer',
     ],
     [
       'vp-border-input',
-      'border-color-[var(--vp-c-gutter)] border border-solid important:shadow-none important:hover:shadow-none',
+      'border-color-[var(--vp-c-border)] border border-solid important:shadow-none important:hover:shadow-none',
     ],
     [
       'vp-border-divider',
@@ -43,6 +46,10 @@ export default defineConfig({
     [
       'clear-bg',
       'bg-transparent shadow-none hover:bg-transparent hover:shadow-none',
+    ],
+    [
+      'char-count',
+      'before:content-[attr(data-valuelength)/attr(data-maxlength)] before:absolute before:left-0 before:bottom--0 before:c-[var(--vp-c-text-3)] before:font-size-[12px]',
     ],
   ],
   presets: [

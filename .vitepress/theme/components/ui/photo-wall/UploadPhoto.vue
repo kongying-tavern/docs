@@ -1,6 +1,7 @@
 <template>
   <div
-    class="size-18 rounded-sm mr-2 overflow-hidden relative border-dashed border flex justify-center items-center"
+    class="size-full rounded-sm overflow-hidden relative border-dashed border flex justify-center items-center"
+    :class="uploadVariants.size[size]"
     :tabindex="disabled ? '-1' : '0'"
     @click="handleClick"
     @keydown.self.enter.space="handleKeydown"
@@ -30,7 +31,7 @@
 
 <script lang="ts" setup>
 import { shallowRef } from 'vue'
-import { genFileId } from './upload'
+import { genFileId, uploadVariants } from './upload'
 import { uploadPhotoProps } from './uploadPhoto'
 import UploadPhotoDragger from './UploadPhotoDragger.vue'
 

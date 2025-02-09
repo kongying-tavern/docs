@@ -17,6 +17,7 @@ const ui: CustomConfig['ui'] = {
     cancel: 'Cancel',
     loading: 'Loading',
     search: 'Search',
+    close: 'Close',
     all: 'All',
   },
 }
