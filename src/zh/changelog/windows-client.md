@@ -4,7 +4,15 @@ layout: Headline
 aside: false
 ---
 
-<script>
-  if(!import.meta.env.SSR && window)
-    window.location.href = `../blog/${import.meta.env.VITE_BLOG_CHANGELOG_WINCLIENT_ZH_ID}`;
+<script setup>
+import { useHead } from '@unhead/vue'
+
+useHead({
+ meta: [
+    {
+      'http-equiv': 'refresh',
+      content: `0; url=../blog/${import.meta.env.VITE_BLOG_CHANGELOG_WINCLIENT_ZH_ID}`,
+    },
+  ],
+})
 </script>

@@ -65,6 +65,7 @@
     "@mdit/plugin-sup": "^0.13.1",
     "@radix-icons/vue": "^1.0.0",
     "@types/js-yaml": "^4.0.9",
+    "@unhead/vue": "^1.11.18",
     "@vue/shared": "^3.5.13",
     "@vueuse/core": "^11.3.0",
     "@vueuse/integrations": "^11.3.0",
