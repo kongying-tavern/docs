@@ -370,6 +370,10 @@ watch(
       transform: rotate(var(--form-rotate-hover));
     }
 
+    .action-bar {
+      transform: rotate(calc(0 - var(--form-rotate-hover)));
+    }
+
     &::before,
     &::after {
       transform: rotate(var(--form-rotate-hover));
@@ -408,8 +412,9 @@ watch(
 
 .paper::before,
 .paper::after {
-  --at-apply: content-[ ''] absolute size-full sm: rounded-lg shadow-lg
-    transform-preserve-3d perspective-1000px z--1 shadow-[var(--vp-shadow-3)];
+  content: '';
+  --at-apply: absolute size-full sm: rounded-lg shadow-lg transform-preserve-3d
+    perspective-1000px z--1 shadow-[var(--vp-shadow-3)];
 }
 
 .paper::before {
