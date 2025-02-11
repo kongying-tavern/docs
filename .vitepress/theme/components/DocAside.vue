@@ -21,7 +21,7 @@ const isOpen = computed(
 <template>
   <div
     v-if="isOpen"
-    class="!mt-5 pt-5 hidden lg:block space-y-6 border-color-[var(--vp-c-divider)] border-t-solid border"
+    class="!mt-5 pt-5 hidden lg:block space-y-6 border-color-[var(--vp-c-divider)] font-[var(--vp-font-family-subtitle)] border-none"
   >
     <div class="space-y-3">
       <div

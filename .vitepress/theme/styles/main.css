@@ -10,6 +10,32 @@ html {
   scroll-behavior: smooth;
 }
 
+h1,
+h2,
+h3,
+.header-anchor::before {
+  font-family: var(--vp-font-family-title);
+}
+
+button,
+summary,
+strong h4,
+h5,
+h6,
+kbd,
+.VPButton,
+[data-menu-item],
+.custom-block-title,
+.outline-title,
+.VPLocalNavOutlineDropdown,
+.doc-info-left,
+.subtitle,
+.vp-link,
+.lead,
+.timeline-dot-title {
+  font-family: var(--vp-font-family-subtitle);
+}
+
 .vp-doc h2 {
   border: none;
   margin-top: 10px;
@@ -32,6 +58,14 @@ html {
 
 html.dark .vp-doc figure figcaption {
   color: var(--vp-fig-text);
+}
+
+.VPNav {
+  font-family: var(--vp-font-family-subtitle);
+}
+
+.title {
+  font-family: var(--vp-font-family-title);
 }
 
 .VPMenuLink .link {

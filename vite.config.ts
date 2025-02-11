@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
+import { FontaineTransform } from 'fontaine'
 
 import UnoCSS from 'unocss/vite'
 
@@ -33,6 +34,12 @@ export default defineConfig({
   plugins: [
     // https://github.com/antfu/unocss
     UnoCSS(),
+
+    // https://github.com/unjs/fontaine
+    FontaineTransform.vite({
+      fallbacks: ['Arial'],
+      resolvePath: (id) => new URL(`./public/fonts/${id}`, import.meta.url),
+    }),
   ],
   css: {
     preprocessorOptions: {

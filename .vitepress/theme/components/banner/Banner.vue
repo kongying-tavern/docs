@@ -134,7 +134,10 @@ router.onAfterRouteChanged = recheck
         class="max-w-[calc(var(--vp-layout-max-width)-64px)] mx-auto flex justify-center text-center"
       >
         <template v-if="!isShowLanguageSuggestBar">
-          <div class="text" v-html="bannerText"></div>
+          <div
+            class="text font-[var(--vp-font-family-subtitle)]"
+            v-html="bannerText"
+          ></div>
 
           <button type="button" @click="dismiss">
             <svg

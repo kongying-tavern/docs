@@ -106,23 +106,6 @@ export function camelCase(str: string): string {
   return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
 }
 
-export const loadFont = (family: string, url: string) => {
-  // 创建自定义字体对象
-  const font = new FontFace(family, `url(${url})`, { display: 'swap' })
-
-  document.fonts.add(font)
-
-  font
-    .load()
-    .then(() => {
-      document.documentElement.classList.add('font-full')
-      console.log(`Font ${family} loaded successfully.`)
-    })
-    .catch((err) => {
-      console.error(`Failed to load font ${family}: ${err}`)
-    })
-}
-
 export function removeQueryParam(param: string) {
   const urlObj = new URL(location.href)
   urlObj.searchParams.delete(param)

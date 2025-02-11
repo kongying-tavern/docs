@@ -42,7 +42,7 @@ const breadcrumbs = computed(() => generateBreadcrumb(route.path))
       >
         <BreadcrumbItem>
           <BreadcrumbLink
-            class="capitalize"
+            class="capitalize font-[var(--vp-font-family-subtitle)]"
             :href="breadcrumb.href"
             :class="{ 'text-foreground': index === breadcrumbs.length - 1 }"
           >

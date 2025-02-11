@@ -9,7 +9,9 @@
   >
     <div class="topic-content">
       <a @click="sessionCacheRedirect(topic)" target="_blank">
-        <h4 class="font-size-5 break-words flex justify-between">
+        <h4
+          class="font-size-5 break-words flex justify-between font-[var(--vp-font-family-subtitle)]"
+        >
           <p>
             {{ title }}
             <ForumRuleBadge :type="rule" />

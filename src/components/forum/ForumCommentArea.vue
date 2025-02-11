@@ -1,6 +1,9 @@
 <template>
   <div class="pb-24">
-    <p id="reply" class="mb-5.5 line-height-[21px] font-size-5">
+    <p
+      id="reply"
+      class="mb-5.5 line-height-[21px] font-size-5 font-[var(--vp-font-family-subtitle)]"
+    >
       {{ message.forum.comment.commentCount }}
       <span class="font-size-3.5 vertical-text-top color-[var(--vp-c-text-3)]">
         {{ allCommentCount }}

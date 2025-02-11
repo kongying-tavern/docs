@@ -16,7 +16,9 @@
 
           <div class="flex items-center mt-4">
             <Avatar :src="data?.user.avatar" :alt="data?.user.username" />
-            <p class="mx-2 font-size-3.5">{{ data?.user.username }}</p>
+            <p class="mx-2 font-size-3.5 font-[var(--vp-font-family-subtitle)]">
+              {{ data?.user.username }}
+            </p>
             <ForumRuleBadge :author-id="data.user.id" />
 
             <span class="color-[--vp-c-text-3]">·</span>

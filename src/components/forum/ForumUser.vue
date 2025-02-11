@@ -2,10 +2,14 @@
   <Button variant="ghost" @click="handleClick">
     <Avatar size="sm" :src="user.avatar" />
     <div class="text-left w-fit">
-      <span class="font-medium block c-[var(--vp-c-text-1)] lh-4">
+      <span
+        class="font-medium block c-[var(--vp-c-text-1)] lh-4 font-[var(--vp-font-family-subtitle)]"
+      >
         {{ user.username }}
       </span>
-      <span class="c-[var(--vp-c-text-3)]"> @{{ user.login }} </span>
+      <span class="c-[var(--vp-c-text-3)] font-[var(--vp-font-family-content)]">
+        @{{ user.login }}
+      </span>
     </div>
   </Button>
 </template>

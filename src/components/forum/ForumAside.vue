@@ -11,7 +11,9 @@
       >{{ message.forum.publish.title }}
     </Button>
     <div v-if="contactUs" class="selected-articles mb-4">
-      <p class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)]">
+      <p
+        class="h-14 lh-14 mb-6 vp-border-divider color-[var(--vp-c-text-1)] font-[var(--vp-font-family-subtitle)]"
+      >
         {{ message.forum.aside.contactUs.title }}
       </p>
       <div
@@ -26,7 +28,9 @@
       </div>
     </div>
     <div>
-      <div class="h-14 lh-14 mb-4 flex justify-between vp-border-divider">
+      <div
+        class="h-14 lh-14 mb-4 flex justify-between vp-border-divider font-[var(--vp-font-family-subtitle)]"
+      >
         <p class="color-[var(--vp-c-text-1)]">
           {{ message.forum.aside.teamBlog.text }}
         </p>
@@ -36,7 +40,7 @@
       </div>
 
       <div
-        class="flex justify-between mb-2"
+        class="flex justify-between mb-2 font-[var(--vp-font-family-subtitle)]"
         v-for="item in message.forum.aside.teamBlog.items"
         :key="item.text"
       >

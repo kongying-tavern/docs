@@ -37,7 +37,7 @@ const filteredPosts = computed(() =>
           class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline"
         >
           <ForumDate
-            class="list-none c-[var(--vp-c-text-3)] text-base leading-6"
+            class="list-none font-[var(--vp-font-family-subtitle)] c-[var(--vp-c-text-3)] text-base leading-6"
             :date="createdAt"
             format="LL"
           />

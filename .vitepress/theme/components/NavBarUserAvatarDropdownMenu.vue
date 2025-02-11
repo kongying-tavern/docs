@@ -1,7 +1,7 @@
 <template>
   <ul
     v-if="userInfo.info"
-    class="grid p-3 md:min-w-[128px] lg:min-w-[450px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)] c-[var(--vp-c-text-2)] bg-[var(--vp-c-bg-elv)] border border-[var(--vp-c-divider)] shadow-[var(--vp-shadow-3)] opacity-100 border-rd-12px"
+    class="grid p-3 md:min-w-[128px] lg:min-w-[450px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)] c-[var(--vp-c-text-2)] bg-[var(--vp-c-bg-elv)] border border-[var(--vp-c-divider)] shadow-[var(--vp-shadow-3)] opacity-100 border-rd-12px font-[var(--vp-font-family-subtitle)]"
   >
     <li class="row-span-4 lg:border-r-2px pr-3 lg:border-[var(--vp-c-divider)]">
       <NavigationMenuLink as-child class="important:shadow-none">
@@ -14,7 +14,9 @@
             <div class="mt-1 text-xl font-medium color-[var(--vp-c-text-1)]">
               {{ userInfo.info?.username || 'Unknown' }}
             </div>
-            <p class="text-sm leading-tight color-[var(--vp-c-text-3)]">
+            <p
+              class="text-sm leading-tight color-[var(--vp-c-text-3)] font-[var(--vp-font-family-content)]"
+            >
               @{{ userInfo.info?.login || '00000' }}
             </p>
           </div>
@@ -67,7 +69,7 @@
           <template #signup>
             <a
               href="https://gitee.com/signup"
-              class="vp-link"
+              class="vp-link font-[var(--vp-font-family-content)]"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -34,7 +34,9 @@ interface Integration {
         :src="withBase(item.icon)"
         class="h-10 mb-2 no-zoomable w-10"
       />
-      <span class="text-sm">{{ item.name }}</span>
+      <span class="text-sm font-[var(--vp-font-family-subtitle)]">{{
+        item.name
+      }}</span>
       <span class="opacity-50 text-xs">{{ item.secondary }}</span>
     </a>
   </div>

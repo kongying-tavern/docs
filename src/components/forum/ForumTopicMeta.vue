@@ -1,6 +1,9 @@
 <template>
   <div class="flex justify-between font-size-3 mr-2">
-    <time :datetime="createdAt" class="color-[--vp-c-text-3] lh-[36px]">
+    <time
+      :datetime="createdAt"
+      class="font-[var(--vp-font-family-subtitle)] color-[--vp-c-text-3] lh-[36px]"
+    >
       {{ formatDate(createdAt || '1980-1-1') }}
     </time>
 

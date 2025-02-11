@@ -34,7 +34,7 @@ onBeforeUnmount(() => {
 <template>
   <div slide-enter>
     <div class="one-time-donations">
-      <div class="links">
+      <div class="links font-[var(--vp-font-family-subtitle)]">
         <a
           v-for="(payment, key) in theme.payment"
           :key="key"
@@ -49,7 +49,7 @@ onBeforeUnmount(() => {
 
     <div
       v-if="selectedPayment && coins[selectedPayment]"
-      class="coin-details slide-enter"
+      class="coin-details font-[var(--vp-font-family-subtitle)] slide-enter"
     >
       <p>
         <span ref="icon"></span>

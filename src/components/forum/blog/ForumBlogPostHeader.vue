@@ -1,7 +1,11 @@
 <template>
   <div class="w-full pb-2 flex flex-col items-center text-center">
     <div class="flex-1">
-      <ForumDate class="c-[var(--vp-c-text-3)]" :date="date" format="LL" />
+      <ForumDate
+        class="c-[var(--vp-c-text-3)] font-[var(--vp-font-family-subtitle)]"
+        :date="date"
+        format="LL"
+      />
 
       <div
         class="flex flex-col lg:flex-row lg:items-center lg:justify-between max-w-800px mt-2"
