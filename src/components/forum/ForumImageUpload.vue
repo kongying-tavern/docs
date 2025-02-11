@@ -8,7 +8,6 @@
       :hideDefaultTrigger="hideDefaultTrigger || false"
       :on-change="handleFileChange"
       :size="size"
-      :drag="true"
       default-state="uploading"
       v-bind="$attrs"
     >
