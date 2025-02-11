@@ -19,7 +19,7 @@
             <p class="mx-2 font-size-3.5 font-[var(--vp-font-family-subtitle)]">
               {{ data?.user.username }}
             </p>
-            <ForumRuleBadge :author-id="data.user.id" />
+            <ForumRoleBadge :author-id="data.user.id" />
 
             <span class="color-[--vp-c-text-3]">·</span>
 
@@ -85,7 +85,7 @@ import { computed, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import ForumAside from '../ForumAside.vue'
-import ForumRuleBadge from '../ForumRuleBadge.vue'
+import ForumRoleBadge from '../ForumRoleBadge.vue'
 import ForumTagList from '../ForumTagList.vue'
 import { getTopicNumber, setPageTitle } from '../utils'
 import ForumCommentArea from '../ForumCommentArea.vue'

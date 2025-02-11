@@ -17,7 +17,7 @@
       <div class="title flex" :class="style[size].header">
         <p class="font-size-3.5">{{ author.username }}</p>
 
-        <ForumRuleBadge :author-id="author.id" />
+        <ForumRoleBadge :type="rule" />
       </div>
 
       <article
@@ -54,13 +54,15 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import ForumRuleBadge from './ForumRuleBadge.vue'
+import ForumRoleBadge from './ForumRoleBadge.vue'
 import { Image } from '@/components/ui/image'
 import ForumCommentMeta from './ForumCommentMeta.vue'
 
 const {
   size = 'normal',
   repo = 'Feedback',
+  topicAuthorId,
+  author,
   ...props
 } = defineProps<{
   repo: string
@@ -74,6 +76,8 @@ const {
   size?: 'small' | 'normal'
   commentClickHandler: Function
 }>()
+
+const rule = computed(() => (topicAuthorId === author.id ? 'author' : null))
 
 const style = {
   small: {

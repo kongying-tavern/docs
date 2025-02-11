@@ -17,11 +17,12 @@
 
 <script setup lang="ts">
 import { useLocalized } from '@/hooks/useLocalized'
-import { isOfficial } from '~/composables/isOfficial'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import { isAuthor } from '~/composables/isAuthor'
 import { computed } from 'vue'
 
 const { message } = useLocalized()
+const { isOfficial } = useRuleChecks()
 
 let { authorId = null, type = null } = defineProps<{
   type?: 'official' | 'author' | null

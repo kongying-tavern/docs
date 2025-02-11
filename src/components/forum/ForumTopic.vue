@@ -14,7 +14,7 @@
         >
           <p>
             {{ title }}
-            <ForumRuleBadge :type="rule" />
+            <ForumRoleBadge :type="rule" />
           </p>
           <p class="mr-2" v-if="topic.type">
             <span
@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import ForumRuleBadge from './ForumRuleBadge.vue'
+import ForumRoleBadge from './ForumRoleBadge.vue'
 import ForumTagList from './ForumTagList.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
 import ForumTopicMeta from './ForumTopicMeta.vue'
@@ -106,7 +106,7 @@ import { useToggle } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
 import { sessionCacheRedirect } from '~/composables/sessionCacheRedirect'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
-import { isOfficial } from '~/composables/isOfficial'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 
 import type ForumAPI from '@/apis/forum/api'
 
@@ -123,6 +123,7 @@ const topicTypeMap = getTopicTypeMap()
 const { message } = useLocalized()
 
 const [isExpanded, toggleExpand] = useToggle()
+const { isOfficial } = useRuleChecks()
 
 const renderText = computed(() => {
   const contentSanitized = sanitizeMarkdown(topic.contentRaw)

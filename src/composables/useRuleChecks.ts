@@ -20,7 +20,7 @@ const userRolesMap = {
 type Role = keyof typeof rolesPermissions
 type Permission = (typeof rolesPermissions)[Role][number]
 
-export const useRuleChecks = (inputId?: string | number) => {
+export const useRuleChecks = (inputId: string | number = '') => {
   const userInfo = useUserInfoStore()
   const id = computed(() => userInfo.info?.id || 0)
 
@@ -31,7 +31,7 @@ export const useRuleChecks = (inputId?: string | number) => {
   })
 
   const userRoles = computed((): Array<Role> => {
-    return id.value === String(userInfo.info?.id)
+    return String(inputId) === String(userInfo.info?.id)
       ? [...staticRoles.value, 'author']
       : staticRoles.value
   })
@@ -62,10 +62,21 @@ export const useRuleChecks = (inputId?: string | number) => {
   const hasAllRoles = (...roles: Role[]) =>
     computed(() => roles.every((role) => userRoles.value.includes(role)))
 
+  const isOfficial = (userId: string | number) => {
+    return computed(() => {
+      userId ??= id.value
+      return (
+        userRolesMap.feedbackMember.has(Number(userId)) ||
+        userRolesMap.teamMember.has(Number(userId))
+      )
+    })
+  }
+
   return {
     hasAnyPermissions,
     hasAllPermissions,
     hasAnyRoles,
     hasAllRoles,
+    isOfficial,
   }
 }
