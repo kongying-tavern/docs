@@ -2,7 +2,7 @@ import Card from '@/components/Card.vue'
 import Coins from '@/components/Coins.vue'
 import * as components from '@/components/ui/'
 import Layout from '@/layouts/Layout.vue'
-import HeadlinePage from './layouts/HeadlinePage.vue'
+import Headline from './layouts/Headline.vue'
 import Post from './layouts/Post.vue'
 import { createPinia } from 'pinia'
 import DefaultTheme, {
@@ -39,7 +39,7 @@ export default {
     app.component('VPBadge', VPBadge)
     app.component('VPImage', VPImage)
     app.component('VPLink', VPLink)
-    app.component('Headline', HeadlinePage)
+    app.component('Headline', Headline)
     app.component('Post', Post)
 
     for (const component of Object.keys(
