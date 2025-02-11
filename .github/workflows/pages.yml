@@ -28,11 +28,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  cache-and-install:
+  build:
     runs-on: ubuntu-latest
     name: Cache and install Deps
 
     steps:
+      - uses: actions/checkout@v3
+        with:
+          # fetch all commits to get last updated time or other git log info
+          fetch-depth: 0
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -49,17 +54,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-
-  build:
-    runs-on: ubuntu-latest
-    needs: cache-and-install
-    name: Build
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          # fetch all commits to get last updated time or other git log info
-          fetch-depth: 0
 
       - name: Build site
         run: pnpm build
