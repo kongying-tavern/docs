@@ -95,10 +95,7 @@ const { hasAnyPermissions } = useRuleChecks(authorId)
 
 const hasManagePermission = hasAnyPermissions('manage_feedback')
 const hasEditPermission = hasAnyPermissions('edit_feedback')
-console.log(
-  hasAnyPermissions('manage_feedback', 'edit_feedback').value,
-  authorId,
-)
+
 const menuLabels = ref(message.value.forum.topic.menu)
 
 const isClosedComment = computed(() => commentId === -1)

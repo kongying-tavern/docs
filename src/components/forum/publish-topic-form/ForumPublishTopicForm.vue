@@ -84,7 +84,6 @@ useHashChecker(
   (hash: string) => {
     if (!userAuth.isTokenValid) return true
     const targetTab = last(hash.split('-'))
-    console.log(targetTab)
     if (targetTab && tabList.value.some((val) => val === targetTab)) {
       formData.value.type = targetTab as ForumAPI.CreateTopicOption['type']
     }
