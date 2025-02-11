@@ -4,13 +4,9 @@ import type { Options, PluginSimple } from 'markdown-it'
 import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 
-import {
-  entries,
-  fromEntries,
-  isPlainObject,
-  isString,
-  stringifyProp,
-} from '../utils.js'
+import { entries, isPlainObject, isString, fromPairs } from 'lodash-es'
+
+import { stringifyProp } from '../utils'
 
 export interface CardOptions {
   title: string
@@ -36,9 +32,9 @@ const CARD_PROPS = [
   'theme',
 ]
 
-const checkCardProps = (config: unknown): CardOptions | null => {
+const checkCardProps = (config: CardOptions): CardOptions | null => {
   if (isPlainObject(config) && isString(config.title))
-    return fromEntries(
+    return fromPairs(
       entries(config).filter(
         (item): item is [string, string] =>
           CARD_PROPS.includes(item[0]) && isString(item[1]),
@@ -80,7 +76,7 @@ const cardRender = (
       }.`,
     )
 
-  const cardData = checkCardProps(config)
+  const cardData = checkCardProps(config as CardOptions)
 
   if (cardData) return `<Card v-bind='${stringifyProp(cardData)}' />`
 
