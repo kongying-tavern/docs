@@ -34,6 +34,13 @@ export default defineConfig({
     // https://github.com/antfu/unocss
     UnoCSS(),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+      },
+    },
+  },
   json: {
     stringify: true,
   },
