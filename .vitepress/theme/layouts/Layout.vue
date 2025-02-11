@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Banner from '@/components/Banner.vue'
+import Banner from '@/components/banner/Banner.vue'
 import DocAside from '@/components/DocAside.vue'
 import DocFeedback from '@/components/DocFeedback.vue'
 import DocHeader from '@/components/DocHeader.vue'

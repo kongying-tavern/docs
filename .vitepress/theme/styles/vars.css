@@ -41,6 +41,10 @@
 
   --skeleton-animation-gradient: rgba(0, 0, 0, 0.04);
 
+  --banner-bg: #383636;
+  --suggest-language-bar-bg: rgba(255, 255, 255, 0.078);
+  --suggest-language-bar-hover-bg: rgba(255, 255, 255, 0.161);
+
   --radius: 0.5rem;
 }
 

@@ -1,6 +1,7 @@
 ---
 layout: home
 title: Genshin Interactive Map
+languageSuggest: true
 
 features:
   - title: Smart Pins

@@ -1,7 +1,4 @@
-import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 import { baseHelper } from '../../theme/utils'
-
-import type { CustomConfig } from '../types'
 
 import _404 from './404'
 import AsideLinks from './aside-links'
@@ -18,6 +15,9 @@ import Forum from './forum'
 import Staff from './staff'
 import Team from './team'
 import UI from './ui'
+
+import type { CustomConfig } from '../types'
+import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 
 export const enConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config

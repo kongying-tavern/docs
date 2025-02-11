@@ -1,6 +1,8 @@
 ---
 layout: home
 title: 原神マップ
+languageSuggest: true
+
 features:
   - title: ダブルカテゴリ
     icon: 🦾

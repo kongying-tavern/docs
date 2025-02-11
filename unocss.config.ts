@@ -21,7 +21,7 @@ export default defineConfig({
     ['card-grid', 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'],
     [
       'vp-divider',
-      'border-b-[var(--vp-c-gutter)] border-b-1px box-sizing-border w-full',
+      'border-b-[var(--vp-c-gutter)] border-b-1px box-border w-full',
     ],
     [
       'vp-link',

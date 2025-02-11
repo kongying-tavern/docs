@@ -1,6 +1,7 @@
 ---
 layout: home
 title: 原神地图
+languageSuggest: true
 
 features:
   - title: 双筛选逻辑
