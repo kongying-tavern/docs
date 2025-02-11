@@ -24,7 +24,7 @@ const router = useRouter()
 const suggestLanguage =
   matchLanguages(
     LOCALE_CONFIG.map((val) => val.lang!),
-    navigator.languages,
+    navigator?.languages || DEFAULT_LOCALE_CODE,
   )?.split('-')[0] || DEFAULT_LOCALE_CODE
 
 const bannerData = useLocalStorage<BannerItem[]>(STORE_KEY, [{}])
