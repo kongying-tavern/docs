@@ -22,7 +22,7 @@ type Permission = (typeof rolesPermissions)[Role][number]
 
 export const useRuleChecks = (inputId?: string | number) => {
   const userInfo = useUserInfoStore()
-  const id = computed(() => (inputId ?? userInfo.info?.id) || 0)
+  const id = computed(() => userInfo.info?.id || 0)
 
   const staticRoles = computed(() => {
     return (

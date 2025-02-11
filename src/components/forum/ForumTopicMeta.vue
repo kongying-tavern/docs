@@ -19,10 +19,7 @@
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" class="text-nowrap">
-          <DropdownMenuItem
-            v-if="hasAnyPermissions('manage_feedback')"
-            @click="openGiteeLink"
-          >
+          <DropdownMenuItem v-if="hasManagePermission" @click="openGiteeLink">
             <span class="i-lucide:external-link icon-btn"></span>
             <span>{{ menuLabels.giteeLink }}</span>
           </DropdownMenuItem>
@@ -34,17 +31,11 @@
             <span v-if="!copied">{{ menuLabels.copyLink.text }}</span>
             <span v-else>{{ menuLabels.copyLink.success }}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            v-if="hasAnyPermissions('manage_feedback', 'edit_feedback')"
-            @click="handleCloseTopic"
-          >
+          <DropdownMenuItem v-if="hasEditPermission" @click="handleCloseTopic">
             <span class="i-lucide:square-x icon-btn"></span>
             <span>{{ menuLabels.closeFeedback.text }}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            v-if="hasAnyPermissions('manage_feedback')"
-            @click="handleHideTopic"
-          >
+          <DropdownMenuItem v-if="hasManagePermission" @click="handleHideTopic">
             <span class="i-lucide:eye-off icon-btn"></span>
             <span>{{ menuLabels.hideFeedback.text }}</span>
           </DropdownMenuItem>
@@ -102,6 +93,12 @@ const {
 const { copy, copied, isSupported } = useClipboard()
 const { hasAnyPermissions } = useRuleChecks(authorId)
 
+const hasManagePermission = hasAnyPermissions('manage_feedback')
+const hasEditPermission = hasAnyPermissions('edit_feedback')
+console.log(
+  hasAnyPermissions('manage_feedback', 'edit_feedback').value,
+  authorId,
+)
 const menuLabels = ref(message.value.forum.topic.menu)
 
 const isClosedComment = computed(() => commentId === -1)
