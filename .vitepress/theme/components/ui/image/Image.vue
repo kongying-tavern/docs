@@ -1,81 +1,81 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import mediumZoom, { type Zoom, type ZoomOptions } from 'medium-zoom'
-
+import mediumZoom, { type ZoomOptions } from 'medium-zoom'
+import {
+  onMounted,
+  onUnmounted,
+  ref,
+  computed,
+  useTemplateRef,
+  watch,
+  useAttrs,
+} from 'vue'
+import { cn } from '@/lib/utils'
 import type { DefaultTheme } from 'vitepress/theme-without-fonts'
-import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 
 interface Props {
   image?: DefaultTheme.ThemeableImage
   alt?: string
   zoom?: ZoomOptions | false
+  class?: string
 }
 
-const {
-  zoom: zoomConfig = {
-    background: 'transparent',
-  },
-} = defineProps<Props>()
+const { zoom: zoomConfig = { background: 'transparent' }, image } =
+  defineProps<Props>()
 
 defineOptions({ inheritAttrs: false })
 
 const img = useTemplateRef('img')
+const loadFail = ref(false)
+const attrs = useAttrs()
+// 计算 `imgSrc`，动态监听 `image` 变化
+const imgSrc = computed(() =>
+  withBase(
+    (typeof image === 'string' ? image : image?.src) ||
+      attrs?.src ||
+      'https://assets.yuanshen.site/images/noImage.png',
+  ),
+)
+
+// medium-zoom 只创建一次，避免重复初始化
+const zoom = zoomConfig === false ? null : mediumZoom(zoomConfig)
 
 const initZoom = () => {
-  if (zoomConfig === false) return
-  let zoom: Zoom | null = null
-
-  const getZoom = () => (zoom === null ? mediumZoom(zoomConfig) : zoom)
-
-  onMounted(() => {
-    if (!img.value) return
-
-    getZoom().attach(img.value)
-
-    watch(
-      () => zoomConfig,
-      (options) => {
-        const zoom = getZoom()
-        zoom.update(zoomConfig || {})
-      },
-    )
-  })
-
-  onUnmounted(() => {
-    if (img.value) getZoom().detach()
-  })
+  if (!zoom || !img.value) return
+  zoom.attach(img.value)
 }
 
-initZoom()
+onMounted(initZoom)
+onUnmounted(() => zoom?.detach())
+
+// 监听 zoomConfig 的变化，避免 Vue 的 shallow 监听失效
+watch(
+  () => JSON.stringify(zoomConfig),
+  () => zoom?.update(zoomConfig || {}),
+)
+
+const handleLoadError = () => {
+  loadFail.value = true
+}
 </script>
 
 <template>
-  <template v-if="image">
-    <img
-      v-if="typeof image === 'string' || 'src' in image"
-      ref="img"
-      class="VPImage"
-      v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
-      :src="withBase(typeof image === 'string' ? image : image.src)"
-      :alt="alt ?? (typeof image === 'string' ? '' : image.alt || '')"
-    />
-    <template v-else>
-      <Image
-        class="dark"
-        :image="image.dark"
-        :alt="image.alt"
-        v-bind="$attrs"
-      />
-      <Image
-        class="light"
-        :image="image.light"
-        :alt="image.alt"
-        v-bind="$attrs"
-      />
-    </template>
-  </template>
+  <img
+    v-if="!loadFail"
+    ref="img"
+    v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
+    :src="imgSrc"
+    :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
+    :class="cn('VPImage', $props.class)"
+    @error="handleLoadError"
+  />
   <template v-else>
-    <img ref="img" class="VPImage" v-bind="$attrs" />
+    <img
+      :class="cn('VPImage bg-[var(--vp-c-bg-alt)]', $props.class)"
+      :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
+      v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
+      src="https://assets.yuanshen.site/images/noImage.png"
+    />
   </template>
 </template>
 
@@ -83,7 +83,6 @@ initZoom()
 html:not(.dark) .VPImage.dark {
   display: none;
 }
-
 .dark .VPImage.light {
   display: none;
 }

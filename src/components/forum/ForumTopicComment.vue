@@ -28,8 +28,8 @@
 
       <div class="topic-content-img flex mt-4" v-if="body?.images">
         <Image
-          v-for="(img, ind) in body.images"
-          :key="ind"
+          v-for="img in body.images"
+          :key="img.src"
           :src="img.src"
           :alt="img.alt"
           class="max-h-24 mr-4 rounded-sm"

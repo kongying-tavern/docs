@@ -10,7 +10,7 @@
     >
       <Image
         class="object-cover flex-1"
-        :class="{ 'flex-1': images.length === 3 && index === 0 }"
+        :class="images.length === 3 && index === 0 ? 'flex-1' : ''"
         :data-image-index="index"
         :image="image"
       />

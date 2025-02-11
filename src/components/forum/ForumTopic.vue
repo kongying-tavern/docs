@@ -50,12 +50,11 @@
         v-if="topic.content?.images"
       >
         <Image
-          v-for="(img, index) in topic.content.images"
-          :key="index"
-          B
-          :src="img.src"
+          v-for="img in topic.content.images"
+          :key="img.src"
+          :image="img.src"
           :alt="img.alt"
-          class="max-h-24 mr-4 rounded-sm"
+          class="max-h-30 max-w-30 object-cover mr-4 rounded-sm"
         />
       </div>
     </div>

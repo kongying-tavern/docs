@@ -108,7 +108,12 @@ const switchTab = () => {
 
 const handleSubmit = async () => {
   formData.value.body.images?.forEach((val, ind) => {
-    if (val.status === 'uploading' || !val.url) return
+    if (
+      val.status === 'uploading' ||
+      !val?.url ||
+      val.url?.substring(3) === 'blob'
+    )
+      return
     uploadedImages.value.push(val.url)
   })
 
@@ -128,8 +133,9 @@ watch(
   () => formData.value.body.images,
   () => {
     isUploading.value =
-      formData.value.body.images?.some((val) => val.status === 'uploading') ??
-      false
+      formData.value.body.images?.some(
+        (val) => val.status === 'uploading' || val.url?.substring(3) === 'blob',
+      ) ?? false
   },
   {
     deep: true,
