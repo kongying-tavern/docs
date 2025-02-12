@@ -14,7 +14,7 @@
         >
           <p>
             {{ title }}
-            <ForumRoleBadge :type="rule" />
+            <ForumRoleBadge :type="role" />
           </p>
           <p class="mr-2" v-if="topic.type">
             <span
@@ -130,7 +130,7 @@ const renderText = computed(() => {
   if (isAnn.value) return contentSanitized
   return contentSanitized.slice(0, isExpanded.value ? undefined : 180)
 })
-const rule = computed(() => (isOfficial(author.id).value ? 'official' : null))
+const role = computed(() => (isOfficial(author.id).value ? 'official' : null))
 const hasOverflow = computed(
   () => topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '').length > 180,
 )

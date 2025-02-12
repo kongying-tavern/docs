@@ -17,7 +17,7 @@
       <div class="title flex" :class="style[size].header">
         <p class="font-size-3.5">{{ author.username }}</p>
 
-        <ForumRoleBadge :type="rule" />
+        <ForumRoleBadge :type="role" />
       </div>
 
       <article
@@ -57,6 +57,7 @@ import { computed } from 'vue'
 import ForumRoleBadge from './ForumRoleBadge.vue'
 import { Image } from '@/components/ui/image'
 import ForumCommentMeta from './ForumCommentMeta.vue'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 
 const {
   size = 'normal',
@@ -77,7 +78,13 @@ const {
   commentClickHandler: Function
 }>()
 
-const rule = computed(() => (topicAuthorId === author.id ? 'author' : null))
+const { isOfficial } = useRuleChecks()
+
+const role = computed(() => {
+  if (topicAuthorId === author.id) return 'author'
+  if (isOfficial(author.id).value) return 'official'
+  return null
+})
 
 const style = {
   small: {
