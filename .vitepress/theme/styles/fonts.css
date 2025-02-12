@@ -4,9 +4,9 @@
   font-weight: 100;
   src:
     local('☺'),
-    url('~/public/fonts/HYWenHei-85W-zh-min.woff2') format('woff2'),
-    url('~/public/fonts/HYWenHei-85W-zh-min.woff') format('woff'),
-    url('~/public/fonts/HYWenHei-85W-zh-min.ttf') format('ttf');
+    url('/fonts/HYWenHei-85W-zh-min.woff2') format('woff2'),
+    url('/fonts/HYWenHei-85W-zh-min.woff') format('woff'),
+    url('/fonts/HYWenHei-85W-zh-min.ttf') format('ttf');
 }
 
 @font-face {
@@ -15,9 +15,9 @@
   font-weight: 100;
   src:
     local('☺'),
-    url('~/public/fonts/HYWenHei-45W-min.woff2') format('woff2'),
-    url('~/public/fonts/HYWenHei-45W-min.woff') format('woff'),
-    url('~/public/fonts/HYWenHei-45W-min.ttf') format('truetype');
+    url('/fonts/HYWenHei-45W-min.woff2') format('woff2'),
+    url('/fonts/HYWenHei-45W-min.woff') format('woff'),
+    url('/fonts/HYWenHei-45W-min.ttf') format('truetype');
 }
 
 @font-face {
@@ -26,7 +26,7 @@
   font-weight: 100;
   src:
     local('☺'),
-    url('~/public/fonts/HYWenHei-65W-min.woff2') format('woff2'),
-    url('~/public/fonts/HYWenHei-65W-min.woff') format('woff'),
-    url('~/public/fonts/HYWenHei-65W-min.ttf') format('truetype');
+    url('/fonts/HYWenHei-65W-min.woff2') format('woff2'),
+    url('/fonts/HYWenHei-65W-min.woff') format('woff'),
+    url('/fonts/HYWenHei-65W-min.ttf') format('truetype');
 }

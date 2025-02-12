@@ -13,6 +13,7 @@ html {
 h1,
 h2,
 h3,
+div.VPHomeHero > div > div.main > p.text,
 .header-anchor::before {
   font-family: var(--vp-font-family-title);
 }
@@ -25,6 +26,7 @@ h6,
 kbd,
 .VPButton,
 [data-menu-item],
+[data-radix-vue-collection-item],
 .custom-block-title,
 .outline-title,
 .VPLocalNavOutlineDropdown,
@@ -32,7 +34,8 @@ kbd,
 .subtitle,
 .vp-link,
 .lead,
-.timeline-dot-title {
+.timeline-dot-title,
+div.VPHomeHero > div > div.main > p.tagline {
   font-family: var(--vp-font-family-subtitle);
 }
 

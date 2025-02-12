@@ -58,7 +58,9 @@
       </div>
     </div>
     <div class="selected-articles mb-4 vp-border-divider border-b">
-      <p class="h-14 lh-14 mb-4 vp-border-divider color-[var(--vp-c-text-1)]">
+      <p
+        class="h-14 lh-14 mb-4 vp-border-divider color-[var(--vp-c-text-1)] font-[var(--vp-font-family-subtitle)]"
+      >
         {{ message.forum.aside.suggest.text }}
       </p>
       <div class="flex mb-2" v-for="item in suggestList" :key="item.text">

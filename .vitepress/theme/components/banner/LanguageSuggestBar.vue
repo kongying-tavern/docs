@@ -6,7 +6,7 @@
     aria-label="Choose country or region"
   >
     <div class="flex flex-wrap items-center w-full">
-      <div class="font-size-14px max-md:w-85%">
+      <div class="font-size-14px max-md:w-85% text-align-left">
         {{ languageSuggestBarTranslate[suggestLocale.key].changeLanguage }}
       </div>
       <div class="flex justify-end md:mt-0 mt-4 items-center flex-1">
