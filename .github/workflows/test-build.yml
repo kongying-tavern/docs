@@ -21,23 +21,19 @@ jobs:
           # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
           fetch-depth: 0
 
-      - name: Set node version to ${{ matrix.node_version }}
-        uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          node-version: ${{ matrix.node_version }}
+          run_install: false
 
-      - name: Cache pnpm modules
-        uses: actions/cache@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
+          node-version: 20
+          cache: 'pnpm'
 
       - name: Install dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: true
+        run: pnpm install
 
       # 构建
       - name: Refresh Blog Data
