@@ -1,0 +1,50 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:js-lib",
+    ":semanticPrefixChore",
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone",
+    ":enableVulnerabilityAlerts",
+    ":dependencyDashboard",
+    "schedule:weekends"
+  ],
+  "packageRules": [
+    {
+      "groupName": "vitepress",
+      "matchPackageNames": ["vitepress", "@vitepress/**", "vitepress-**"]
+    },
+    {
+      "matchPackageNames": [
+        "!vite",
+        "!vitepress",
+        "!@vitepress/**",
+        "!vitepress-**"
+      ]
+    },
+    {
+      "matchPackageNames": ["vite"],
+      "matchUpdateTypes": ["patch"]
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "commitMessageAction": "update lockfile",
+    "platformAutomerge": true,
+    "extends": ["group:allNonMajor", "schedule:weekly"],
+    "packageRules": [
+      {
+        "matchPackageNames": [
+          "!vite",
+          "!vitepress",
+          "!@vitepress/**",
+          "!vitepress-**"
+        ]
+      },
+      {
+        "matchPackageNames": ["vite"],
+        "matchUpdateTypes": ["patch"]
+      }
+    ]
+  }
+}
