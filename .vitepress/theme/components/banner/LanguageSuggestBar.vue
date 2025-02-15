@@ -100,7 +100,7 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { computed, ref } from 'vue'
-import { useData, useRouter } from 'vitepress'
+import { useData, useRouter, withBase } from 'vitepress'
 import { ensureStartingSlash, getLangPath } from '@/utils'
 import { languageSuggestBarTranslate } from '../../../locales/common/LanguageSuggestBar'
 import { LOCALE_CONFIG } from './configs'
@@ -129,14 +129,15 @@ const handleLanguageSelect = (ev: CustomEvent) => {
 }
 
 function toSuggestLanguagePage(locale?: string) {
-  console.log(locale, suggestLocale.value.key)
   go(
-    normalizeLink(
-      getLangPath(locale || suggestLocale.value.key),
-      theme.value.i18nRouting !== false,
-      page.value.relativePath.slice(currentLang.value.length - 1),
-      !site.value.cleanUrls,
-    ) + hash.value,
+    withBase(
+      normalizeLink(
+        getLangPath(locale || suggestLocale.value.key),
+        theme.value.i18nRouting !== false,
+        page.value.relativePath.slice(currentLang.value.length - 1),
+        !site.value.cleanUrls,
+      ) + hash.value,
+    ),
   )
 }
 

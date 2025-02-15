@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useElementSize, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
-import { useData, useRouter } from 'vitepress'
-import { computed, ref, watchEffect, onBeforeMount } from 'vue'
+import { useData } from 'vitepress'
+import { computed, ref, watchEffect, onBeforeMount, watch } from 'vue'
 import { hash } from '../../utils'
 import LanguageSuggestBar from './LanguageSuggestBar.vue'
 import { isFromExternalPage } from '@/composables/isFromExternalPage'
@@ -19,7 +19,6 @@ type BannerItem = Partial<{
 const banner = ref<HTMLElement>()
 const { height } = useElementSize(banner)
 const { frontmatter, page, theme, lang, localeIndex } = useData()
-const router = useRouter()
 
 const suggestLanguage =
   matchLanguages(
@@ -120,7 +119,8 @@ const hideBanner = () => {
 }
 
 onBeforeMount(recheck)
-router.onAfterRouteChanged = recheck
+
+watch(() => page.value.relativePath, recheck)
 </script>
 
 <template>
