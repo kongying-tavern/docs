@@ -59,7 +59,7 @@
     "@mdit/plugin-figure": "^0.13.1",
     "@mdit/plugin-img-mark": "^0.13.1",
     "@mdit/plugin-img-size": "^0.13.1",
-    "@mdit/plugin-mark": "^0.13.1",
+    "@mdit/plugin-mark": "^0.16.0",
     "@mdit/plugin-spoiler": "^0.13.1",
     "@mdit/plugin-sub": "^0.13.1",
     "@mdit/plugin-sup": "^0.13.1",
