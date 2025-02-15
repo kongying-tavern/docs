@@ -135,7 +135,7 @@
     "tsconfig-vuepress": "5.2.1",
     "tsx": "4.19.2",
     "vite": "^6.0.6",
-    "vite-plugin-inspect": "0.8.9",
+    "vite-plugin-inspect": "10.2.1",
     "zhlint": "0.8.2"
   },
   "packageManager": "pnpm@9.11.0"
