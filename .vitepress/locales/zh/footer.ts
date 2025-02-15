@@ -6,6 +6,23 @@ const footer: CustomConfig['footer'] = {
   qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
   navigation: [
     {
+      title: '产品',
+      items: [
+        {
+          text: '客户端使用手册',
+          link: '/manual/client/',
+        },
+        {
+          text: '客户端更新日志',
+          link: '/changelog/windows-client',
+        },
+        {
+          text: '网页版更新日志',
+          link: '/changelog/web',
+        },
+      ],
+    },
+    {
       title: '关于',
       items: [
         {
@@ -13,12 +30,12 @@ const footer: CustomConfig['footer'] = {
           link: '/join',
         },
         {
-          text: '赞助鸣谢',
-          link: '/support-us',
+          text: '团队博客',
+          link: './blog',
         },
         {
-          text: '友情链接',
-          link: '/friends-links',
+          text: '赞助鸣谢',
+          link: '/support-us',
         },
       ],
     },
@@ -40,19 +57,19 @@ const footer: CustomConfig['footer'] = {
       ],
     },
     {
-      title: '产品',
+      title: '更多',
       items: [
         {
-          text: '客户端使用手册',
-          link: '/manual/client/',
+          text: '问题反馈',
+          link: '/feedback/',
         },
         {
-          text: '客户端更新日志',
-          link: '/changelog/windows-client',
+          text: '参与翻译',
+          link: '/translations',
         },
         {
-          text: '网页版更新日志',
-          link: '/changelog/web',
+          text: '友情链接',
+          link: '/friends-links',
         },
       ],
     },

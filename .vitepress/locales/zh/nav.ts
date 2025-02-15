@@ -13,12 +13,12 @@ const nav: DefaultTheme.NavItem[] = [
     text: '地图工具',
     items: [
       {
-        text: '下载客户端',
-        link: '/download-client',
-      },
-      {
         text: 'Windows客户端',
         items: [
+          {
+            text: '前往下载',
+            link: '/download-client',
+          },
           {
             text: '使用手册',
             link: '/manual/client/',
@@ -91,23 +91,6 @@ const nav: DefaultTheme.NavItem[] = [
           {
             text: '技术鸣谢',
             link: '/credits',
-          },
-        ],
-      },
-      {
-        text: '法律相关',
-        items: [
-          {
-            text: '免责声明',
-            link: '/disclaimer',
-          },
-          {
-            text: '隐私政策',
-            link: '/privacy',
-          },
-          {
-            text: '用户协议',
-            link: '/agreement',
           },
         ],
       },
