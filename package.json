@@ -61,7 +61,7 @@
     "@mdit/plugin-img-size": "^0.13.1",
     "@mdit/plugin-mark": "^0.13.1",
     "@mdit/plugin-spoiler": "^0.13.1",
-    "@mdit/plugin-sub": "^0.13.1",
+    "@mdit/plugin-sub": "^0.16.0",
     "@mdit/plugin-sup": "^0.13.1",
     "@radix-icons/vue": "^1.0.0",
     "@types/js-yaml": "^4.0.9",
