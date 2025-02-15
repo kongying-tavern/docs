@@ -7,14 +7,10 @@
   --vp-c-indigo-2: #3aa374;
   --vp-c-indigo-3: #008858;
   --vp-c-indigo-soft: rgba(0, 108, 69 0.16);
-  --vp-font-family-base: 'HYWenHei-45W-min', 'HYWenHei-65W-min',
-    'HYWenHei-85W-min', -apple-system, 'Poppins variant',
-    'Poppins variant fallback', BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
-    Segoe UI, Arial, Roboto, 'PingFang SC', miui, 'Hiragino Sans GB',
-    'Microsoft Yahei', sans-serif;
-  --vp-font-family-title: 'HYWenHei-85W-min', var(--vp-font-family-base);
-  --vp-font-family-subtitle: 'HYWenHei-85W-min', var(--vp-font-family-base);
-  --vp-font-family-content: 'HYWenHei-45W-min', var(--vp-font-family-base);
+  --vp-font-family-base: 'HYWenHei-45W-min', 'HYWenHei-45W-min override';
+  --vp-font-family-title: 'HYWenHei-85W-min', 'HYWenHei-85W-min override';
+  --vp-font-family-subtitle: 'HYWenHei-65W-min', 'HYWenHei-65W-min override';
+  --vp-font-family-content: var(--vp-font-family-base);
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
   --vp-c-text-code: #476582;
@@ -60,13 +56,10 @@
 }
 
 html.font-loaded {
-  --vp-font-family-base: 'HYWenHei-45W', 'HYWenHei-65W', 'HYWenHei-85W',
-    -apple-system, 'Poppins variant', 'Poppins variant fallback',
-    BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto,
-    'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+  --vp-font-family-base: 'HYWenHei-45W', 'HYWenHei-45W override';
   --vp-font-family-title: 'HYWenHei-85W', var(--vp-font-family-base);
   --vp-font-family-subtitle: 'HYWenHei-65W', var(--vp-font-family-base);
-  --vp-font-family-content: 'HYWenHei-45W', var(--vp-font-family-base);
+  --vp-font-family-content: var(--vp-font-family-base);
 }
 
 .dark {

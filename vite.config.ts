@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import { FontaineTransform } from 'fontaine'
+import Inspect from 'vite-plugin-inspect'
 
 import UnoCSS from 'unocss/vite'
 
@@ -35,9 +36,16 @@ export default defineConfig({
     // https://github.com/antfu/unocss
     UnoCSS(),
 
+    Inspect(),
     // https://github.com/unjs/fontaine
     FontaineTransform.vite({
-      fallbacks: ['Arial'],
+      fallbacks: [
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'Helvetica Neue',
+        'Arial',
+        'Noto Sans',
+      ],
       resolvePath: (id) => new URL(`./public/fonts/${id}`, import.meta.url),
     }),
   ],
