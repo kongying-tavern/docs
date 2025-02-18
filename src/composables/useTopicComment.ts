@@ -39,7 +39,7 @@ export const useTopicComments = createGlobalState(() => {
 
   const initComments = async (
     topicId: string,
-    repo: 'Feedback' | 'Blog',
+    repo: ForumAPI.Repo,
     topicCommentCount: number | null,
   ) => {
     if (import.meta.env.SSR || topicCommentCount === 0) return null

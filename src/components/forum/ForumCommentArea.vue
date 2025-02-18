@@ -49,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { type Ref, computed, nextTick, onMounted, ref } from 'vue'
@@ -60,13 +59,15 @@ import { scrollTo } from '~/composables/scrollTo'
 import { useInfiniteScroll, watchOnce } from '@vueuse/core'
 import { useTopicComments } from '~/composables/useTopicComment'
 
+import type ForumAPI from '@/apis/forum/api'
+
 const {
   repo,
   topicId,
   topicAuthorId,
   commentCount = null,
 } = defineProps<{
-  repo: 'Feedback' | 'Blog'
+  repo: ForumAPI.Repo
   topicId: string
   topicAuthorId: string | number
   commentCount?: number

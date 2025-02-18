@@ -85,6 +85,7 @@
     </div>
     <ForumCommentInputBox
       v-if="inReply"
+      :id="'reply-' + topic.id"
       repo="Feedback"
       class="bg-[var(--vp-c-bg-soft)] rounded-md pb-4 px-8"
       :class="{ 'rounded-t-none': showComment && topic.relatedComments }"
@@ -97,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref, nextTick, type Ref } from 'vue'
 import { Image } from '@/components/ui/image'
 import { Button } from '@/components/ui/button'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
@@ -108,6 +109,7 @@ import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicComments } from '~/composables/useTopicComment'
 import { useTextCollapse } from '~/composables/useTextCollapse'
+import { scrollTo } from '~/composables/scrollTo'
 import ForumRoleBadge from './ForumRoleBadge.vue'
 import ForumTagList from './ForumTagList.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
@@ -146,8 +148,24 @@ const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) =>
   submitComment(submittedComment)
 
 const handleToggleCommentInput = (user: ForumAPI.User) => {
-  toggleReply()
-  replyTarget.value = user.username
+  if (
+    user.username === replyTarget.value ||
+    !replyTarget.value ||
+    !inReply.value
+  ) {
+    toggleReply()
+  }
+
+  if (inReply.value) {
+    replyTarget.value = user.username
+
+    nextTick(() => {
+      location.hash = `reply-${topic.id}`
+      scrollTo({
+        offset: -300,
+      })
+    })
+  }
 }
 </script>
 

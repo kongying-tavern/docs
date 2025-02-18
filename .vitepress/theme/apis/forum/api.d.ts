@@ -121,6 +121,8 @@ export namespace ForumAPI {
   type PostParams = {
     author: ForumAPI.User
   } & Omit<ForumAPI.Topic, 'content' | 'contentRaw' | 'user' | 'type'>
+
+  type Repo = 'Feedback' | 'Blog'
 }
 
 export default ForumAPI

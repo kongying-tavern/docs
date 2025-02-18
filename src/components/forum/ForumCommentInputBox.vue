@@ -66,6 +66,9 @@ import { useFocus, useTextareaAutosize } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
+import { watch } from 'vue'
+
+import type ForumAPI from '@/apis/forum/api'
 
 const { message } = useLocalized()
 
@@ -84,7 +87,7 @@ const {
   placeholder?: string
   replyTarget?: string
   collapse?: boolean
-  repo: 'Feedback' | 'Blog'
+  repo: ForumAPI.Repo
 }>()
 
 const userInfo = useUserInfoStore()
@@ -105,15 +108,21 @@ const submit = async () => {
     topicId,
     replyTarget ? '@' + replyTarget + ' ' + input.value : input.value,
   )
-  if (error.value)
-    return toast.error(
-      message.value.forum.comment.commentFail + error.value?.message,
-    )
 
   emit('comment:submit', data)
 
   input.value = ''
 }
+
+watch(data, (newVal) => {
+  if (newVal) {
+    toast.success(message.value.forum.comment.commentSuccess)
+  }
+})
+
+watch(error, () => {
+  toast.error(message.value.forum.comment.commentFail + error.value?.message)
+})
 </script>
 
 <style scoped>
