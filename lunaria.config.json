@@ -37,7 +37,10 @@
     {
       "location": ".vitepress/locales/**/*.ts",
       "pattern": ".vitepress/locales/@lang/@path",
-      "ignore": [".vitepress/locales/types.ts"],
+      "ignore": [
+        ".vitepress/locales/types.ts",
+        ".vitepress/theme/components/banner/LanguageSuggestBar.ts"
+      ],
       "type": "universal"
     }
   ]
