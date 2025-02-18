@@ -81,7 +81,10 @@ export const useTopicComments = createGlobalState(() => {
     if (commentLoadError.value) return message.value.forum.loadError
     if (!noMoreComment && comments.value.length !== 0)
       return message.value.forum.comment.loadMoreComment
-    if ((comments.value.length === 0 && !commentLoading.value) || noComment)
+    if (
+      (comments.value.length === 0 && !commentLoading.value) ||
+      noComment.value
+    )
       return message.value.forum.comment.noComment
     return message.value.forum.comment.noMoreComment
   })
