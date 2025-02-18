@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
 import { Button } from '@/components/ui/button'
 import { ReloadIcon } from '@radix-icons/vue'
 
