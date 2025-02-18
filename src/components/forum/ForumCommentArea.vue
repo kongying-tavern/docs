@@ -12,7 +12,7 @@
     <ForumCommentInputBox
       :repo="repo"
       :placeholder="message.forum.comment.placeholder"
-      :number="topicId"
+      :topic-id="topicId"
       @comment:submit="handleCommentSubmit"
     />
     <div class="comment-list slide-enter mt-8">
@@ -21,20 +21,17 @@
         :repo="repo"
         :id="'reply-' + comment.id"
         :key="comment.id"
-        :comment-id="comment.id"
-        :created-at="comment.createdAt"
         :topic-author-id="topicAuthorId"
         :topic-id="topicId"
-        :body="comment.content"
-        :author="comment.author"
+        :commentData="comment"
         :comment-click-handler="() => toggleCommentReply(comment.id)"
       >
         <ForumCommentInputBox
           class="mt-4"
           v-if="isReplyingTo(comment.id)"
           :repo="repo"
-          :number="topicId"
-          :reply="`@${comment.author.login}`"
+          :topic-id="topicId"
+          :reply-target="comment.author.login"
           :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
           @comment:submit="handleCommentSubmit"
         />
@@ -89,6 +86,7 @@ const {
   currentCommentPage,
   initComments,
 } = useTopicComments()
+
 const replyCommentID = ref<number | string | null>(null)
 
 const isReplyingTo = (id: number | string) => replyCommentID.value === id

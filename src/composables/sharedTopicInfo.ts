@@ -1,9 +1,11 @@
 import type ForumAPI from '@/apis/forum/api'
-import { computed } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 
 export const SHARED_TOPIC_INFO_KEY = 'topic-info'
 
-export const useSharedTopicInfo = (topic?: ForumAPI.Topic) => {
+export const useSharedTopicInfo = (
+  topic?: ForumAPI.Topic,
+): ComputedRef<ForumAPI.Topic | null> => {
   if (import.meta.env.SSR) return computed(() => null)
   const data = sessionStorage.getItem(SHARED_TOPIC_INFO_KEY)
 

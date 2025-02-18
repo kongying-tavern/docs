@@ -57,8 +57,9 @@ const { focused } = useFocus(searchInput)
 const forumData = useForumData()
 
 watch(focused, (focused) => {
-  if (!(focused && searchQuery.value) && forumData.isSearching)
-    forumData.refreshData()
+  if (focused && searchQuery.value.length !== 0) return
+  forumData.refreshData()
+  forumData.isSearching = false
 })
 </script>
 

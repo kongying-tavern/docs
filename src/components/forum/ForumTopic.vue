@@ -31,7 +31,7 @@
           class="font-size-4 mt-3.5 pr-4 opacity-99 overflow-hidden whitespace-pre-wrap transition-all duration-300"
         >
           <div :class="{ 'line-clamp-4': !(isExpanded || isAnn) }">
-            {{ renderText }}
+            {{ isAnn ? renderedText : collapseText }}
           </div>
 
           <Button
@@ -62,43 +62,42 @@
     <ForumTagList class="mt-2" :data="topic.tags" />
 
     <div class="topic-info mt-4">
-      <ForumTopicMeta
-        :topic-id="topic.id"
-        :created-at="topic.createdAt"
-        :comment-count="topic.commentCount"
+      <ForumTopicFooter
+        :topicData="topic"
         :comment-id="isAnn ? -1 : 1"
-        :author-id="topic.user.id"
-        :commentClickHandler="() => sessionCacheRedirect(topic, 'reply')"
-      ></ForumTopicMeta>
+        @comment:click="handleToggleCommentInput"
+      ></ForumTopicFooter>
     </div>
     <div class="topic-comment" v-if="showComment && topic.relatedComments">
       <ForumTopicComment
         class="bg-[var(--vp-c-bg-soft)] px-4 first:mt-4"
+        :class="{ 'rounded-b-none': inReply }"
         repo="Feedback"
         v-for="comment in topic.relatedComments.slice(0, 1)"
         :comment-count="-1"
-        :comment-id="comment.id"
-        :created-at="comment.createdAt"
+        :commentData="comment"
         :topic-author-id="topic.user.id"
         :topicId="topic.id"
-        :body="comment.content"
-        :author="comment.author"
         size="small"
-        :commentClickHandler="
-          () => sessionCacheRedirect(topic, 'reply-' + comment.id)
-        "
+        @comment:click="handleToggleCommentInput"
       >
       </ForumTopicComment>
     </div>
+    <ForumCommentInputBox
+      v-if="inReply"
+      repo="Feedback"
+      class="bg-[var(--vp-c-bg-soft)] rounded-md pb-4 px-8"
+      :class="{ 'rounded-t-none': showComment && topic.relatedComments }"
+      :topic-id="String(topic.id)"
+      :reply-target="replyTarget"
+      :collapse="false"
+      @comment:submit="handleCommentSubmit"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import ForumRoleBadge from './ForumRoleBadge.vue'
-import ForumTagList from './ForumTagList.vue'
-import ForumTopicComment from './ForumTopicComment.vue'
-import ForumTopicMeta from './ForumTopicMeta.vue'
+import { computed, ref, type Ref } from 'vue'
 import { Image } from '@/components/ui/image'
 import { Button } from '@/components/ui/button'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
@@ -107,6 +106,13 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { sessionCacheRedirect } from '~/composables/sessionCacheRedirect'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { useTopicComments } from '~/composables/useTopicComment'
+import { useTextCollapse } from '~/composables/useTextCollapse'
+import ForumRoleBadge from './ForumRoleBadge.vue'
+import ForumTagList from './ForumTagList.vue'
+import ForumTopicComment from './ForumTopicComment.vue'
+import ForumTopicFooter from './ForumTopicFooter.vue'
+import ForumCommentInputBox from './ForumCommentInputBox.vue'
 
 import type ForumAPI from '@/apis/forum/api'
 
@@ -118,26 +124,31 @@ const { title, author, topic } = defineProps<{
   comment?: ForumAPI.Comment
 }>()
 
+const replyTarget = ref('')
 const topicTypeMap = getTopicTypeMap()
+const renderedText = sanitizeMarkdown(topic.contentRaw)
 
 const { message } = useLocalized()
-
-const [isExpanded, toggleExpand] = useToggle()
 const { isOfficial } = useRuleChecks()
+const { submitComment } = useTopicComments()
+const { isExpanded, hasOverflow, collapseText, toggleExpand } =
+  useTextCollapse(renderedText)
 
-const renderText = computed(() => {
-  const contentSanitized = sanitizeMarkdown(topic.contentRaw)
-  if (isAnn.value) return contentSanitized
-  return contentSanitized.slice(0, isExpanded.value ? undefined : 180)
-})
+const [inReply, toggleReply] = useToggle()
+
 const role = computed(() => (isOfficial(author.id).value ? 'official' : null))
-const hasOverflow = computed(
-  () => topic.contentRaw.replace(/!\[.*?\]\(.*?\)/g, '').length > 180,
-)
 const isAnn = computed(() => topic.type === 'ANN')
 const showComment = computed(
   () => topic.relatedComments && topic.type !== 'ANN',
 )
+
+const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) =>
+  submitComment(submittedComment)
+
+const handleToggleCommentInput = (user: ForumAPI.User) => {
+  toggleReply()
+  replyTarget.value = user.username
+}
 </script>
 
 <style>

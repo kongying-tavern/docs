@@ -125,3 +125,7 @@ export function escapeHtml(str: string): string {
     .replace(/"/g, '&quot;')
     .replace(/&(?![\w#]+;)/g, '&amp;')
 }
+
+export const enableTransitions = () =>
+  'startViewTransition' in document &&
+  window.matchMedia('(prefers-reduced-motion: no-preference)').matches

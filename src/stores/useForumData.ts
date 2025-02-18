@@ -3,19 +3,24 @@ import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useData } from 'vitepress'
 import { defineStore } from 'pinia'
-import { uniqBy } from 'lodash-es'
+import { isArray, uniqBy } from 'lodash-es'
 import { useRequest } from 'vue-request'
 import { watchOnce } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { handleError } from '~/composables/handleError'
 import { getValidFilter } from '~/composables/getValidFilter'
+import { convertMultipleToMarkdown } from '~/components/forum/utils'
+import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
+import { composeTopicBody } from '~/composables/composeTopicBody'
+import { toast } from 'vue-sonner'
 
 import type ForumAPI from '@/apis/forum/api'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
-export const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'CLOSED'])
+const localeLabelGetter = getForumLocaleLabelGetter()
 
+export const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'CLOSED'])
 export type FilterType = 'FEAT' | 'BUG' | 'ALL' | 'CLOSED'
 
 export const useForumData = defineStore('forum-data', () => {
@@ -71,13 +76,86 @@ export const useForumData = defineStore('forum-data', () => {
           : typeLabelGetter.getLabel(pagination.filter) || '',
       },
       pagination.filter === 'CLOSED' ? 'progressing' : 'open',
-      q ? encodeURIComponent(String(q)) : undefined,
+      q ? String(q) : undefined,
     )
   }
 
   const switchTopicFilter = (val = pagination.filter) => {
     if (!val) return
     pagination.filter = val
+  }
+
+  const submitTopic = () => {
+    const {
+      data: submittedTopic,
+      runAsync: asyncSubmit,
+      loading: submitLoading,
+      error: submitError,
+    } = useRequest(issues.postTopic, {
+      manual: true,
+    })
+
+    // 因为 Gitee 接口不识别普通用户上传的 tags(labels)，为了前端预览正常这里手动缓存并在后面与接口返回值合并
+    let userSelectedTags: string[] | null = null
+
+    const submitData = (options: ForumAPI.CreateTopicOption) => {
+      const { body, title, tags, type } = options
+
+      const bodyText = () => {
+        if (!isArray(body?.images)) return body.text
+        return (
+          body.text +
+          convertMultipleToMarkdown(
+            body.images
+              .map((image) => image.url)
+              .filter((url): url is string => !!url),
+          )
+        )
+      }
+
+      userSelectedTags = tags
+
+      const labels = [
+        import.meta.env.DEV ? 'DEV-TEST' : 'WEB-FEEDBACK',
+        typeLabelGetter.getLabel(type),
+        localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
+        ...tags,
+      ]
+
+      const newTopic = {
+        body: composeTopicBody(bodyText(), { labels }),
+        title: `${type}:${title}`,
+        labels: labels.join(','),
+      }
+
+      const result = asyncSubmit(newTopic)
+
+      toast.promise(result, {
+        loading: message.value.forum.publish.publishLoading,
+        success: (data: ForumAPI.Topic) =>
+          `${message.value.forum.publish.publishSuccess}${data.title}`,
+        error: (error: Error) =>
+          `${message.value.forum.publish.publishFail} (${error.message})`,
+      })
+    }
+
+    watch(submittedTopic, () => {
+      if (!submittedTopic.value) return
+      userSubmittedTopic.value = [
+        {
+          ...submittedTopic.value,
+          ...(userSelectedTags ? { tags: userSelectedTags } : {}),
+        },
+        ...userSubmittedTopic.value,
+      ]
+    })
+
+    return {
+      data: submittedTopic,
+      loading: submitLoading,
+      error: submitError,
+      runAsync: submitData,
+    }
   }
 
   const searchTopics = async (q: string | string[]) => {
@@ -88,6 +166,32 @@ export const useForumData = defineStore('forum-data', () => {
     isSearching.value = true
 
     return refreshData(q)
+  }
+
+  const getTopic = (id: string | number) => {
+    return [...topics.value, ...userSubmittedTopic.value].find(
+      (topic) => topic.id === id,
+    )
+  }
+
+  const getTopicIndex = (id: string | number) => {
+    const index = [...topics.value, ...userSubmittedTopic.value].findIndex(
+      (topic) => topic.id === id,
+    )
+    return index === -1 ? false : index
+  }
+
+  const removeTopic = (id: string | number) => {
+    topics.value = topics.value.filter((topic) => topic.id !== id)
+    userSubmittedTopic.value = userSubmittedTopic.value.filter(
+      (topic) => topic.id !== id,
+    )
+  }
+
+  const addTopic = (id: string | number) => {
+    const targetTopic = getTopic(id)
+    if (targetTopic) return (topics.value = [targetTopic, ...topics.value])
+    return null
   }
 
   const loadStateMessage = computed(() => {
@@ -138,15 +242,7 @@ export const useForumData = defineStore('forum-data', () => {
   )
 
   watch(
-    () => pagination.sort,
-    async () => {
-      initialData()
-      await refreshData()
-    },
-  )
-
-  watch(
-    () => pagination.filter,
+    () => [pagination.sort, pagination.filter, lang.value],
     async () => {
       initialData()
       await refreshData()
@@ -154,13 +250,7 @@ export const useForumData = defineStore('forum-data', () => {
   )
 
   watch(isSearching, async () => {
-    if (!isSearching.value) {
-      initialData()
-      await refreshData()
-    }
-  })
-
-  watch(lang, async () => {
+    if (isSearching.value) return
     initialData()
     await refreshData()
   })
@@ -192,5 +282,10 @@ export const useForumData = defineStore('forum-data', () => {
     refreshData,
     loadMore,
     loadAnn,
+    getTopic,
+    addTopic,
+    getTopicIndex,
+    removeTopic,
+    submitTopic,
   }
 })

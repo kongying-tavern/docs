@@ -25,7 +25,6 @@ import { ReloadIcon } from '@radix-icons/vue'
 import { useHashChecker } from '@/hooks/useHashChecker'
 import ForumContentInputBox from './ForumContentInputBox.vue'
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
-import { useTopicMannger } from '~/composables/useTopicMannger'
 import {
   getFormTabsConfig,
   MAX_UPLOAD_FILE_SIZE,
@@ -41,6 +40,7 @@ import { useRuleChecks } from '~/composables/useRuleChecks'
 import { last } from 'lodash-es'
 
 import type ForumAPI from '@/apis/forum/api'
+import { useForumData } from '~/stores/useForumData'
 
 const formTabs = getFormTabsConfig()
 const userAuth = useUserAuthStore()
@@ -57,7 +57,7 @@ const formData = useLocalStorage<ForumAPI.CreateTopicOption>(
 )
 
 const { message } = useLocalized()
-const { submitTopic } = useTopicMannger()
+const { submitTopic } = useForumData()
 const { loading, runAsync } = submitTopic()
 
 const [UseForm, Form] = createReusableTemplate()

@@ -5,8 +5,8 @@
   >
     <div :class="style[size].leftWidth">
       <Avatar
-        :src="author.avatar"
-        :alt="author.username"
+        :src="commentData.author.avatar"
+        :alt="commentData.author.username"
         :size="style[size].avatarSize"
       />
     </div>
@@ -15,7 +15,7 @@
       :class="style[size].contentContainer"
     >
       <div class="title flex" :class="style[size].header">
-        <p class="font-size-3.5">{{ author.username }}</p>
+        <p class="font-size-3.5">{{ commentData.author.username }}</p>
 
         <ForumRoleBadge :type="role" />
       </div>
@@ -23,12 +23,15 @@
       <article
         class="content mt-3 font-size-3.5"
         :class="style[size].content"
-        v-html="body.text"
+        v-html="commentData.content.text"
       ></article>
 
-      <div class="topic-content-img flex mt-4" v-if="body?.images">
+      <div
+        class="topic-content-img flex mt-4"
+        v-if="commentData.content.images"
+      >
         <Image
-          v-for="img in body.images"
+          v-for="img in commentData.content.images"
           :key="img.src"
           :src="img.src"
           :alt="img.alt"
@@ -37,12 +40,11 @@
       </div>
 
       <div class="comment-info mt-2">
-        <ForumCommentMeta
+        <ForumCommentFooter
           :repo="repo"
-          :created-at="createdAt"
-          :comment-id="commentId"
-          :author-id="author.id"
+          :commentData="commentData"
           :comment-click-handler="commentClickHandler"
+          @comment:click="handleCommentClick"
         />
       </div>
 
@@ -56,36 +58,36 @@ import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import ForumRoleBadge from './ForumRoleBadge.vue'
 import { Image } from '@/components/ui/image'
-import ForumCommentMeta from './ForumCommentMeta.vue'
+import ForumCommentFooter from './ForumCommentFooter.vue'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 
 const {
   size = 'normal',
   repo = 'Feedback',
   topicAuthorId,
-  author,
-  ...props
+  commentData,
 } = defineProps<{
   repo: string
-  body: ForumAPI.Content
   topicId: string | number
   topicAuthorId: string | number
-  createdAt: string
-  commentId: string | number
-  author: ForumAPI.User
-  tags?: ForumAPI.TopicTags
+  commentData: ForumAPI.Comment
   size?: 'small' | 'normal'
-  commentClickHandler: Function
+  commentClickHandler?: Function
 }>()
+
+const emit = defineEmits(['comment:click'])
 
 const { isOfficial } = useRuleChecks()
 
 const role = computed(() => {
-  if (topicAuthorId === author.id) return 'author'
-  if (isOfficial(author.id).value) return 'official'
+  if (topicAuthorId === commentData.author.id) return 'author'
+  if (isOfficial(commentData.author.id).value) return 'official'
   return null
 })
 
+const handleCommentClick = (author: ForumAPI.User) => {
+  emit('comment:click', author)
+}
 const style = {
   small: {
     container: 'py-3',

@@ -7,28 +7,42 @@
 
       <template #content>
         <div v-if="!loading && data" class="mb-4 slide-enter">
-          <h3
-            id="title"
-            class="font-size-[clamp(1rem,10vw,2rem)] lh-[1.2] break-words"
-          >
-            {{ data.title }}
-          </h3>
+          <div class="flex justify-between items-center w-full">
+            <h3
+              id="title"
+              class="font-size-[clamp(1rem,10vw,2rem)] lh-[1.2] break-words"
+            >
+              {{ data.title }}
+            </h3>
+
+            <ForumTopicDropdownMenu
+              side="bottom"
+              :topicData="data"
+              @topic:close="handleTopicClose"
+            >
+              <template #trigger>
+                <span
+                  class="i-lucide:ellipsis icon-btn c-[var(--vp-c-text-2)]"
+                />
+              </template>
+            </ForumTopicDropdownMenu>
+          </div>
 
           <div class="flex items-center mt-4">
             <Avatar :src="data?.user.avatar" :alt="data?.user.username" />
+
             <p class="mx-2 font-size-3.5 font-[var(--vp-font-family-subtitle)]">
               {{ data?.user.username }}
             </p>
+
             <ForumRoleBadge :author-id="data.user.id" />
 
             <span class="color-[--vp-c-text-3]">·</span>
 
-            <time
+            <ForumDate
               class="color-[--vp-c-text-3] font-size-3"
-              :datetime="data?.createdAt"
-            >
-              {{ formatDate(data?.createdAt) }}
-            </time>
+              :date="data?.createdAt"
+            />
           </div>
 
           <article
@@ -79,11 +93,9 @@
 import { issues } from '@/apis/forum/gitee'
 import DocsBreadcrumb from '@/components/DocsBreadcrumb.vue'
 import Image from '@/components/ui/image/Image.vue'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import markdownit from 'markdown-it'
 import { computed, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
 import ForumAside from '../ForumAside.vue'
 import ForumRoleBadge from '../ForumRoleBadge.vue'
 import ForumTagList from '../ForumTagList.vue'
@@ -98,13 +110,16 @@ import { useSharedTopicInfo } from '~/composables/sharedTopicInfo'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { handleError } from '~/composables/handleError'
+import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
+import ForumDate from '../ForumDate.vue'
+import { useRouter } from 'vitepress'
 
-const userInfo = useUserInfoStore()
 const number = getTopicNumber()
 const topicTypeMap = getTopicTypeMap()
 const sharedTopicInfo = useSharedTopicInfo()
 
-const { message, formatDate } = useLocalized()
+const { go } = useRouter()
+const { message } = useLocalized()
 
 const { data, run, loading, mutate, error } = useRequest(issues.getTopic, {
   defaultParams: [number],
@@ -121,6 +136,10 @@ if (sharedTopicInfo.value) {
   mutate(sharedTopicInfo.value)
 } else if (!import.meta.env.SSR) {
   run(number)
+}
+
+const handleTopicClose = () => {
+  go('./')
 }
 
 watchEffect(() => {

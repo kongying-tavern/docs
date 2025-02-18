@@ -8,7 +8,7 @@
       variant="ghost"
       @click="copyCurrentURL"
     >
-      <span class="i-lucide:clipboard"></span>
+      <span class="i-lucide:link"></span>
       <p v-show="isExpand">
         <span v-if="!copied">{{ message.forum.topic.menu.copyLink.text }}</span>
         <span v-else>{{ message.forum.topic.menu.copyLink.success }}</span>

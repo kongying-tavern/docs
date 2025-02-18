@@ -10,12 +10,17 @@
     <div class="comment-area ml-4 w-[calc(100%-40px)]">
       <div class="body">
         <textarea
+          class="h-8 w-full min-h-48px h-auto rounded-md p-2 line-height-[32px] cursor-text border font-size-3.5 border-color-[var(--vp-c-gutter)] focus:border-style-solid focus:bg-transparent bg-[var(--vp-c-bg-soft)]"
           v-if="userAuth.isTokenValid"
           ref="textarea"
           v-model.trim="input"
           maxlength="500"
-          :placeholder="placeholder"
-          class="h-8 w-full min-h-48px h-auto rounded-md p-2 line-height-[32px] cursor-text border font-size-3.5 border-color-[var(--vp-c-gutter)] focus:border-style-solid focus:bg-transparent bg-[var(--vp-c-bg-soft)]"
+          :placeholder="
+            placeholder
+              ? placeholder
+              : `${message.forum.comment.reply} ${replyTarget}@:`
+          "
+          :class="{ 'border-style-solid bg-transparent': !collapse }"
         >
         </textarea>
         <div
@@ -36,11 +41,11 @@
       </div>
       <div
         class="footer flex justify-between items-center mt-2.5"
-        v-show="focused || input?.length > 0"
+        v-show="!collapse || focused || input?.length > 0"
       >
         <div class="tool"></div>
         <div class="btn flex">
-          <Button :disabled="loading" @click="submit()">
+          <Button :disabled="loading || input?.length === 0" @click="submit()">
             <ReloadIcon class="w-4 h-4 mr-2 animate-spin" v-if="loading" />
             {{ message.ui.button.submit }}
           </Button>
@@ -69,14 +74,16 @@ import UserAvatar from '@/components/UserAvatar.vue'
 const emit = defineEmits(['comment:submit'])
 
 const {
-  number,
-  reply = '',
+  topicId,
+  replyTarget = '',
   placeholder = '',
   repo = 'Feedback',
+  collapse = true,
 } = defineProps<{
-  number: string
+  topicId: string
   placeholder?: string
-  reply?: string
+  replyTarget?: string
+  collapse?: boolean
   repo: 'Feedback' | 'Blog'
 }>()
 
@@ -93,7 +100,11 @@ const { data, loading, runAsync, error } = useRequest(issues.postTopicComment, {
 const submit = async () => {
   focused.value = true
   if (!userAuth.isTokenValid) location.hash = 'login-alert'
-  await runAsync(repo, number, reply ? reply + ' ' + input.value : input.value)
+  await runAsync(
+    repo,
+    topicId,
+    replyTarget ? '@' + replyTarget + ' ' + input.value : input.value,
+  )
   if (error.value)
     return toast.error(
       message.value.forum.comment.commentFail + error.value?.message,
@@ -102,7 +113,6 @@ const submit = async () => {
   emit('comment:submit', data)
 
   input.value = ''
-  location.hash = 'reply'
 }
 </script>
 
