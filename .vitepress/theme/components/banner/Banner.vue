@@ -20,11 +20,12 @@ const banner = ref<HTMLElement>()
 const { height } = useElementSize(banner)
 const { frontmatter, page, theme, lang, localeIndex } = useData()
 
-const suggestLanguage =
-  matchLanguages(
-    LOCALE_CONFIG.map((val) => val.lang!),
-    navigator?.languages || DEFAULT_LOCALE_CODE,
-  )?.split('-')[0] || DEFAULT_LOCALE_CODE
+const suggestLanguage = import.meta.env.SSR
+  ? DEFAULT_LOCALE_CODE
+  : matchLanguages(
+      LOCALE_CONFIG.map((val) => val.lang!),
+      navigator?.languages || DEFAULT_LOCALE_CODE,
+    )?.split('-')[0] || DEFAULT_LOCALE_CODE
 
 const bannerData = useLocalStorage<BannerItem[]>(STORE_KEY, [{}])
 
