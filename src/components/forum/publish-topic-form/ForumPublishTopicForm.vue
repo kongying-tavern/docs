@@ -38,15 +38,14 @@ import ForumPublishTopicFormField from './ForumPublishTopicFormField.vue'
 import { useLocalStorage, refAutoReset } from '@vueuse/core'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { last } from 'lodash-es'
+import { useImageUpload } from '~/composables/useImageUpload'
+import { useForumData } from '~/stores/useForumData'
 
 import type ForumAPI from '@/apis/forum/api'
-import { useForumData } from '~/stores/useForumData'
 
 const formTabs = getFormTabsConfig()
 const userAuth = useUserAuthStore()
 const isOpen = ref(false)
-const isUploading = ref(false)
-const uploadedImages = ref<string[]>([])
 const currentTabIndex = ref<number>(0)
 const inSwitchTabTransition = refAutoReset(false, TRANSITION_DURATION)
 const isDesktop = useMediaQuery('(min-width: 768px)')
@@ -59,7 +58,8 @@ const formData = useLocalStorage<ForumAPI.CreateTopicOption>(
 const { message } = useLocalized()
 const { submitTopic } = useForumData()
 const { loading, runAsync } = submitTopic()
-
+const { isUploading, uploadedImages, restImageList, imageList } =
+  useImageUpload()
 const [UseForm, Form] = createReusableTemplate()
 const [UseSubmit, SubmitButton] = createReusableTemplate()
 const { hasAnyPermissions } = useRuleChecks()
@@ -106,16 +106,6 @@ const switchTab = () => {
 }
 
 const handleSubmit = async () => {
-  formData.value.body.images?.forEach((val, ind) => {
-    if (
-      val.status === 'uploading' ||
-      !val?.url ||
-      val.url?.substring(3) === 'blob'
-    )
-      return
-    uploadedImages.value.push(val.url)
-  })
-
   await runAsync(formData.value)
 
   isOpen.value = false
@@ -124,22 +114,12 @@ const handleSubmit = async () => {
 
 const initFormData = () => {
   formData.value = FORM_DEFAULT_DATA
-  uploadedImages.value = []
-  isUploading.value = false
+  restImageList()
 }
 
-watch(
-  () => formData.value.body.images,
-  () => {
-    isUploading.value =
-      formData.value.body.images?.some(
-        (val) => val.status === 'uploading' || val.url?.substring(3) === 'blob',
-      ) ?? false
-  },
-  {
-    deep: true,
-  },
-)
+watch(uploadedImages, () => {
+  formData.value.body.images = uploadedImages.value
+})
 </script>
 
 <template>
@@ -248,7 +228,7 @@ watch(
             ></p>
             <ForumImageUpload
               id="upload"
-              v-model="formData.body.images"
+              v-model="imageList"
               size="lg"
               :file-limit="tab.fields.upload.maxLength"
               :max-file-size="MAX_UPLOAD_FILE_SIZE"

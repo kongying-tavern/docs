@@ -2,6 +2,7 @@
   <div class="mt-2">
     <PhotoWall
       v-model:file-list="modelValue"
+      ref="photoWallRef"
       :limit="fileLimit"
       :accept="accent"
       :multiple="multiple"
@@ -36,7 +37,13 @@
 
 <script setup lang="ts">
 import { useVModel } from '@vueuse/core'
-import { computed, nextTick, watch, type HTMLAttributes } from 'vue'
+import {
+  computed,
+  nextTick,
+  watch,
+  useTemplateRef,
+  type HTMLAttributes,
+} from 'vue'
 import { PhotoWall } from '@/components/ui/photo-wall'
 import { uploadImg } from '@/apis/forum/imgs-upload'
 import { useRequest } from 'vue-request'
@@ -45,6 +52,7 @@ import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import type {
   UploadFile,
   UploadFiles,
+  UploadRawFile,
   UploadStatus,
   UploadUserFile,
 } from '@/components/ui/photo-wall/upload'
@@ -79,6 +87,8 @@ const { data, runAsync, loading, error } = useRequest(uploadImg, {
 })
 
 const { message } = useLocalized()
+
+const photoWallRef = useTemplateRef('photoWallRef')
 
 const uploadedFiles = new Map<number, UploadFile>()
 const canAddImages = computed(() => {
@@ -141,6 +151,15 @@ const handleFileChange = async (file: UploadFile, files: UploadFiles) => {
 
   uploadMultipleFiles(files)
 }
+
+const handleStart = (rawFile: UploadRawFile) => {
+  if (!photoWallRef.value?.handleStart) return
+  return photoWallRef.value.handleStart(rawFile)
+}
+
+defineExpose({
+  handleStart,
+})
 
 watch(error, (val) =>
   toast.error(
