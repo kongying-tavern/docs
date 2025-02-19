@@ -105,7 +105,7 @@ import { computed, ref, nextTick, type Ref } from 'vue'
 import { Image } from '@/components/ui/image'
 import { Button } from '@/components/ui/button'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
-import { useToggle } from '@vueuse/core'
+import { useCached, useToggle } from '@vueuse/core'
 import { useLocalized } from '@/hooks/useLocalized'
 import { sessionCacheRedirect } from '~/composables/sessionCacheRedirect'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
@@ -147,11 +147,16 @@ const isAnn = computed(() => topic.type === 'ANN')
 const showComment = computed(
   () => isArray(topic.relatedComments) && topic.type !== 'ANN',
 )
+const hash = computed({
+  get: () => location.hash.slice(1),
+  set: (val) => (location.hash = val),
+})
+const cachedHash = useCached(hash, (a, b) => !b.includes('reply'))
 
 const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) =>
   submitComment(submittedComment)
 
-const handleToggleCommentInput = (user: ForumAPI.User) => {
+const handleToggleCommentInput = async (user: ForumAPI.User) => {
   if (
     user.username === replyTarget.value ||
     !replyTarget.value ||
@@ -163,12 +168,15 @@ const handleToggleCommentInput = (user: ForumAPI.User) => {
   if (inReply.value) {
     replyTarget.value = user.username
 
-    nextTick(() => {
-      location.hash = `reply-${topic.id}`
+    await nextTick(() => {
+      hash.value = `reply-${topic.id}`
+
       scrollTo({
         offset: -300,
       })
     })
+
+    location.hash = cachedHash.value
   }
 }
 </script>
