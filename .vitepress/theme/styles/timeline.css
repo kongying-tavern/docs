@@ -21,7 +21,7 @@ html.dark {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: solid 1px var(--vp-c-brand);
+  border: solid 3px var(--vp-c-brand);
   transform: translate(0, 18%);
 }
 
@@ -39,5 +39,8 @@ html.dark {
   color: var(--timeline-title-text);
   font-size: 24px;
   font-weight: bold;
-  /* padding-top: 0; */
+}
+
+.timeline-dot .header-anchor {
+  display: none;
 }
