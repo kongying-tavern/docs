@@ -39,7 +39,7 @@
       "pattern": ".vitepress/locales/@lang/@path",
       "ignore": [
         ".vitepress/locales/types.ts",
-        ".vitepress/theme/components/banner/LanguageSuggestBar.ts"
+        ".vitepress/locales/common/LanguageSuggestBar.ts"
       ],
       "type": "universal"
     }
