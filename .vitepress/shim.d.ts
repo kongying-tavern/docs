@@ -1,7 +1,16 @@
+interface ImportMetaEnv {
+  VITE_BLOG_CHANGELOG_WINCLIENT_ZH_ID: string
+  VITE_BLOG_CHANGELOG_WINCLIENT_EN_ID: string
+  VITE_BLOG_CHANGELOG_WINCLIENT_JA_ID: string
+  VITE_BLOG_CHANGELOG_WEB_ZH_ID: string
+  VITE_BLOG_CHANGELOG_WEB_EN_ID: string
+  VITE_BLOG_CHANGELOG_WEB_JA_ID: string
+}
+
 interface ImportMeta {
   readonly SSR: Boolean
   readonly DEV: Boolean
-  readonly env: ImportMeta
+  readonly env: ImportMetaEnv
 }
 
 declare const __VP_HASH_MAP__: Record<string, string>

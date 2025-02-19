@@ -1,7 +1,14 @@
 import Blog from '../_data/posts.json'
+import BlogRewrites from '../_data/blogRewrites.json'
 import { getForumLocaleLabelGetter } from '../composables/getForumLocaleGetter'
 
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
+
+type BlogRewriteKey = keyof typeof BlogRewrites
+
+interface PostConfig {
+  rewriteUrl?: string
+}
 
 const localeLabelGetter = getForumLocaleLabelGetter()
 
@@ -31,7 +38,8 @@ export const usePostData = (locale: string) => {
               .includes('NO-COMMENT')
               ? -1
               : entry.commentCount,
-          } satisfies ForumAPI.PostParams,
+            rewriteUrl: BlogRewrites[entry.id as BlogRewriteKey],
+          } satisfies ForumAPI.PostParams & PostConfig,
           content: entry.contentRaw,
         }
       })
