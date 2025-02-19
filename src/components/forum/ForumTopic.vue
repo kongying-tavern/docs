@@ -88,7 +88,10 @@
       :id="'reply-' + topic.id"
       repo="Feedback"
       class="bg-[var(--vp-c-bg-soft)] rounded-md pb-4 px-8"
-      :class="{ 'rounded-t-none': showComment && topic.relatedComments }"
+      :class="{
+        'rounded-t-none': showComment && topic.relatedComments,
+        'pt-4': topic.relatedComments?.length === 0,
+      }"
       :topic-id="String(topic.id)"
       :reply-target="replyTarget"
       :collapse="false"
@@ -117,6 +120,7 @@ import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
 
 import type ForumAPI from '@/apis/forum/api'
+import { isArray } from 'lodash-es'
 
 const { title, author, topic } = defineProps<{
   title: string
@@ -141,7 +145,7 @@ const [inReply, toggleReply] = useToggle()
 const role = computed(() => (isOfficial(author.id).value ? 'official' : null))
 const isAnn = computed(() => topic.type === 'ANN')
 const showComment = computed(
-  () => topic.relatedComments && topic.type !== 'ANN',
+  () => isArray(topic.relatedComments) && topic.type !== 'ANN',
 )
 
 const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) =>
