@@ -90,7 +90,8 @@
       class="bg-[var(--vp-c-bg-soft)] rounded-md pb-4 px-8"
       :class="{
         'rounded-t-none': showComment && topic.relatedComments,
-        'pt-4': topic.relatedComments?.length === 0,
+        'important:py-2':
+          topic.relatedComments?.length === 0 || !userAuth.isTokenValid,
       }"
       :topic-id="String(topic.id)"
       :reply-target="replyTarget"
@@ -121,6 +122,7 @@ import ForumCommentInputBox from './ForumCommentInputBox.vue'
 
 import type ForumAPI from '@/apis/forum/api'
 import { isArray } from 'lodash-es'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 
 const { title, author, topic } = defineProps<{
   title: string
@@ -132,6 +134,7 @@ const { title, author, topic } = defineProps<{
 
 const replyTarget = ref('')
 const topicTypeMap = getTopicTypeMap()
+const userAuth = useUserAuthStore()
 const renderedText = sanitizeMarkdown(topic.contentRaw)
 
 const { message } = useLocalized()

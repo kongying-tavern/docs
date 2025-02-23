@@ -60,6 +60,7 @@
       <div
         v-motion-slide-top
         class="footer flex justify-between items-center mt-2.5"
+        v-if="userAuth.isTokenValid"
         v-show="!collapse || !hideFooter || input?.length > 0"
       >
         <div class="tool">
