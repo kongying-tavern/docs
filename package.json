@@ -121,7 +121,7 @@
     "markdown-it-container": "4.0.0",
     "markdown-it-kbd-better": "1.2.5",
     "markdownlint-cli": "0.41.0",
-    "pnpm": "9.15.2",
+    "pnpm": "10.4.1",
     "prettier": "3.4.2",
     "prettier-config-vuepress": "5.0.0",
     "sort-package-json": "2.12.0",
@@ -138,5 +138,5 @@
     "vite-plugin-inspect": "0.8.9",
     "zhlint": "0.8.2"
   },
-  "packageManager": "pnpm@9.11.0"
+  "packageManager": "pnpm@10.4.1"
 }
