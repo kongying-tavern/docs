@@ -105,9 +105,9 @@ router.onAfterRouteChanged = setupMediumZoom
       <DocInfo />
     </template>
 
-    <template #aside-outline-after>
+    <!-- <template #aside-outline-after>
       <DocAside />
-    </template>
+    </template> -->
 
     <template #nav-bar-content-after>
       <NavBarUserAvatar />

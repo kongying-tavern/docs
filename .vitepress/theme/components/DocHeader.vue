@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed, ref, watchEffect } from 'vue'
-import DocsBreadCrumb from './DocsBreadcrumb.vue'
 
 const { frontmatter, page } = useData()
 
@@ -19,9 +18,6 @@ const title = computed(
     v-if="frontmatter.docHeader !== false && frontmatter.layout == 'doc'"
     class="border-b-color-[var(--vp-c-divider)] border-b-solid docs-header mb-4 relative slide-enter"
   >
-    <DocsBreadCrumb
-      class="flex font-semibold gap-1.5 items-center mb-3 text-primary text-sm/6"
-    />
     <div class="flex flex-col gap-6 items-start lg:flex-row">
       <!---->
       <div class="flex-1">

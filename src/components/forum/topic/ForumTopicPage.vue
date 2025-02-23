@@ -1,10 +1,6 @@
 <template>
   <ClientOnly>
     <ForumLayout>
-      <template #header>
-        <DocsBreadcrumb class="mb-4" />
-      </template>
-
       <template #content>
         <div v-if="!loading && data" class="mb-4 slide-enter">
           <div class="flex justify-between items-center w-full">
@@ -91,7 +87,6 @@
 
 <script setup lang="ts">
 import { issues } from '@/apis/forum/gitee'
-import DocsBreadcrumb from '@/components/DocsBreadcrumb.vue'
 import Image from '@/components/ui/image/Image.vue'
 import markdownit from 'markdown-it'
 import { computed, watchEffect } from 'vue'
