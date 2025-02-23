@@ -15,6 +15,26 @@
       "matchPackageNames": ["vitepress", "@vitepress/**", "vitepress-**"]
     },
     {
+      "groupName": "mdit",
+      "matchPackageNames": ["@mdit/**"]
+    },
+    {
+      "groupName": "markdown-it",
+      "matchPackageNames": [
+        "markdown-it",
+        "markdown-it-**",
+        "@types/markdown-it-**"
+      ]
+    },
+    {
+      "groupName": "unocss",
+      "matchPackageNames": ["unocss", "unocss-**"]
+    },
+    {
+      "groupName": "iconify",
+      "matchPackageNames": ["@iconify-json/**"]
+    },
+    {
       "matchPackageNames": [
         "!vite",
         "!vitepress",
