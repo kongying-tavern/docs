@@ -23,7 +23,7 @@
             :placeholder="
               placeholder
                 ? placeholder
-                : `${message.forum.comment.reply} ${replyTarget}@:`
+                : `${message.forum.comment.reply} @${replyTarget}:`
             "
             :class="{ 'border-style-solid bg-transparent': !collapse }"
           >
