@@ -70,15 +70,20 @@
     </div>
     <div class="topic-comment" v-if="showComment && topic.relatedComments">
       <ForumTopicComment
+        v-motion-slide-top
         class="bg-[var(--vp-c-bg-soft)] px-4 first:mt-4"
         :class="{ 'rounded-b-none': inReply }"
         repo="Feedback"
-        v-for="comment in topic.relatedComments.slice(0, 1)"
+        size="small"
+        v-for="comment in [
+          ...topic.relatedComments.slice(0, 1),
+          ...userSubmittedComment,
+        ]"
+        :key="comment.id"
         :comment-count="-1"
         :commentData="comment"
         :topic-author-id="topic.user.id"
         :topicId="topic.id"
-        size="small"
         @comment:click="handleToggleCommentInput"
       >
       </ForumTopicComment>
@@ -114,6 +119,9 @@ import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicComments } from '~/composables/useTopicComment'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 import { scrollTo } from '~/composables/scrollTo'
+import { isArray } from 'lodash-es'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+
 import ForumRoleBadge from './ForumRoleBadge.vue'
 import ForumTagList from './ForumTagList.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
@@ -121,8 +129,6 @@ import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
 
 import type ForumAPI from '@/apis/forum/api'
-import { isArray } from 'lodash-es'
-import { useUserAuthStore } from '@/stores/useUserAuth'
 
 const { title, author, topic } = defineProps<{
   title: string
@@ -136,6 +142,7 @@ const replyTarget = ref('')
 const topicTypeMap = getTopicTypeMap()
 const userAuth = useUserAuthStore()
 const renderedText = sanitizeMarkdown(topic.contentRaw)
+const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 
 const { message } = useLocalized()
 const { isOfficial } = useRuleChecks()
@@ -156,8 +163,10 @@ const hash = computed({
 })
 const cachedHash = useCached(hash, (a, b) => !b.includes('reply'))
 
-const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) =>
+const handleCommentSubmit = (submittedComment: Ref<ForumAPI.Comment>) => {
   submitComment(submittedComment)
+  userSubmittedComment.value.push(submittedComment.value)
+}
 
 const handleToggleCommentInput = async (user: ForumAPI.User) => {
   if (
