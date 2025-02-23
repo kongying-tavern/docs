@@ -210,3 +210,13 @@ textarea {
 .spoiler:focus * {
   visibility: visible;
 }
+
+.VPDocAsideOutline.has-outline > .content {
+  border: none;
+}
+
+.VPDocAsideOutline.has-outline > .content > .outline-marker {
+  border-radius: 4px;
+  width: 4px;
+  left: 0px;
+}
