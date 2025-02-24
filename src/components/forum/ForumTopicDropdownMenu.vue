@@ -20,7 +20,7 @@
       </DropdownMenuItem>
       <DropdownMenuItem
         v-if="isSupported"
-        @click="copy(getRedirectUrlText(topicData.user.id, undefined, false))"
+        @click="copy(getRedirectUrlText(topicData.id, undefined, false))"
       >
         <span class="i-lucide:link icon-btn mr-2"></span>
         <span v-if="!copied">{{ menuLabels.copyLink.text }}</span>
