@@ -8,6 +8,7 @@ import { markdownConfig } from './config/markdown'
 import { localesConfig } from './config/locales'
 import { sitemapConfig } from './config/sitemap'
 import { rewritesConfig } from './config/rewrites'
+import { generateBreadcrumbsData } from './config/breadcrumbsDataGenerator'
 
 export default defineConfig({
   srcDir: 'src',
@@ -16,6 +17,7 @@ export default defineConfig({
   scrollOffset: 'header',
   cleanUrls: true,
   lastUpdated: true,
+  title: '原神地图',
   locales: localesConfig,
   sitemap: sitemapConfig,
   markdown: markdownConfig,
@@ -32,10 +34,7 @@ export default defineConfig({
     configFile: fileURLToPath(import.meta.resolve('../vite.config.ts')),
   },
   ...createConfigureFunction(),
-  transformPageData(pageData) {
-    pageData.frontmatter.breadcrumbs = [
-      ...pageData.relativePath.split('/').slice(0, -1),
-      pageData.title,
-    ]
+  transformPageData(pageData, context) {
+    generateBreadcrumbsData(pageData, context)
   },
 })

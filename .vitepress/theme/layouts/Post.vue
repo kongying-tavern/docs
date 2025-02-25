@@ -83,6 +83,7 @@ import ForumTopicFooter from '~/components/forum/topic/ForumTopicFooter.vue'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
 import { useRoute } from 'vitepress'
 import { computed } from 'vue'
+import { replaceTitle } from '@/composables/replaceTitle'
 
 const ForumCommentArea = defineClientComponent(() => {
   return import('~/components/forum/ForumCommentArea.vue')
@@ -97,8 +98,8 @@ const pageName = computed(() =>
   route.path.replace(/[./]+/g, '_').replace(/_html$/, ''),
 )
 
-if (!import.meta.env.SSR && params?.value) {
-  document.title = document.title.replace('VitePress', params?.value.title)
+if (params?.value) {
+  replaceTitle(params?.value.title)
 }
 </script>
 

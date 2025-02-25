@@ -22,6 +22,7 @@ import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 export const enConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config
 > = {
+  title: 'Genshin Map',
   titleTemplate: ':title | Kongying Tavern',
   description: C.META_DESCRIPTION,
   head: Head,

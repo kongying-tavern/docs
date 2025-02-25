@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 interface ImportMetaEnv {
   VITE_BLOG_CHANGELOG_WINCLIENT_ZH_ID: string
   VITE_BLOG_CHANGELOG_WINCLIENT_EN_ID: string
@@ -8,8 +10,6 @@ interface ImportMetaEnv {
 }
 
 interface ImportMeta {
-  readonly SSR: Boolean
-  readonly DEV: Boolean
   readonly env: ImportMetaEnv
 }
 

@@ -22,6 +22,7 @@ import UI from './ui'
 export const jaConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config
 > = {
+  title: '原神マップ',
   titleTemplate: ':title | 空蛍酒場',
   description: C.META_DESCRIPTION,
   head: Head,
