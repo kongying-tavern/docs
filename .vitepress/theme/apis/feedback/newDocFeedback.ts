@@ -1,4 +1,5 @@
 import { UAParser } from 'ua-parser-js'
+
 import { fetcher } from '.'
 
 export interface NewDocFeedbackResponse {
@@ -11,7 +12,7 @@ export interface NewDocFeedbackResponse {
   }
 }
 
-export const newDocFeedback = async (data: {
+export async function newDocFeedback(data: {
   path: string
   feedback_type?: string[]
   feedback_content?: string
@@ -19,7 +20,7 @@ export const newDocFeedback = async (data: {
   nickname?: string
   file?: string[]
   user_contact?: string
-}): Promise<NewDocFeedbackResponse> => {
+}): Promise<NewDocFeedbackResponse> {
   let env_data = {
     screen: {},
     ua: '',
@@ -55,7 +56,8 @@ export const newDocFeedback = async (data: {
         },
       })
       .json()
-  } catch (error) {
+  }
+  catch (error) {
     console.log(error)
     return await error.response
   }

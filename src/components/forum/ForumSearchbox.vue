@@ -1,54 +1,9 @@
-<template>
-  <form class="w-full p-r-4">
-    <label
-      for="default-search"
-      class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >{{ message.ui.button.search }}</label
-    >
-    <div class="relative">
-      <div
-        class="absolute inset-y-0 start-0 mx-2 pr-2 flex items-center ps-3 pointer-events-none"
-      >
-        <span class="vp-icon DocSearch-Search-Icon" aria-hidden="true"></span>
-      </div>
-      <input
-        ref="searchInput"
-        v-model.trim="searchQuery"
-        @keydown.enter.prevent="forumData.searchTopics(searchQuery)"
-        @search="forumData.searchTopics(searchQuery)"
-        type="search"
-        id="default-search"
-        class="block w-full py-15px pe-[110px] ps-12 text-4 border border-gray-300 rounded-100 bg-[var(--vp-c-bg-alt)] c-[var(--vp-c-text-1)]"
-        :placeholder="message.forum.header.search.placeholder"
-        maxlength="50"
-        required
-      />
-      <button
-        @click="forumData.searchTopics(searchQuery)"
-        type="button"
-        class="text-white absolute end-2.5 bottom-2.5 focus:border-color-[--vp-c-border] focus:outline-none font-medium rounded-25 text-sm px-4 py-2 vp-button"
-      >
-        {{ message.forum.header.search.placeholder }}
-      </button>
-    </div>
-  </form>
-  <div
-    class="h-5 font-size-3.5 flex absolute md:top-28 top-16"
-    v-if="forumData.isSearching && !forumData.loading"
-  >
-    <p class="color-[var(--vp-c-text-3)] mr-2">
-      {{ message.forum.header.search.allRelatedContentCount }}
-    </p>
-    <span>{{ forumData.topics.length }}</span>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumData } from '~/stores/useForumData'
-import { useSearchInput } from '~/composables/useSearchInput'
 import { useFocus } from '@vueuse/core'
 import { watch } from 'vue'
+import { useSearchInput } from '~/composables/useSearchInput'
+import { useForumData } from '~/stores/useForumData'
 
 const { message } = useLocalized()
 const { searchInput, searchQuery } = useSearchInput()
@@ -57,11 +12,56 @@ const { focused } = useFocus(searchInput)
 const forumData = useForumData()
 
 watch(focused, (focused) => {
-  if (focused && searchQuery.value.length !== 0) return
+  if (focused && searchQuery.value.length !== 0)
+    return
   forumData.refreshData()
   forumData.isSearching = false
 })
 </script>
+
+<template>
+  <form class="w-full p-r-4">
+    <label
+      for="default-search"
+      class="sr-only mb-2 text-sm text-gray-900 font-medium dark:text-white"
+    >{{ message.ui.button.search }}</label>
+    <div class="relative">
+      <div
+        class="pointer-events-none absolute start-0 inset-y-0 mx-2 flex items-center pr-2 ps-3"
+      >
+        <span class="vp-icon DocSearch-Search-Icon" aria-hidden="true" />
+      </div>
+      <input
+        id="default-search"
+        ref="searchInput"
+        v-model.trim="searchQuery"
+        type="search"
+        class="block w-full border border-gray-300 rounded-100 bg-[var(--vp-c-bg-alt)] py-15px pe-[110px] ps-12 text-4 c-[var(--vp-c-text-1)]"
+        :placeholder="message.forum.header.search.placeholder"
+        maxlength="50"
+        required
+        @keydown.enter.prevent="forumData.searchTopics(searchQuery)"
+        @search="forumData.searchTopics(searchQuery)"
+      >
+      <button
+        type="button"
+        class="absolute end-2.5 bottom-2.5 rounded-25 px-4 py-2 text-sm text-white font-medium focus:border-color-[--vp-c-border] vp-button focus:outline-none"
+        @click="forumData.searchTopics(searchQuery)"
+      >
+        {{ message.forum.header.search.placeholder }}
+      </button>
+    </div>
+  </form>
+  <div
+    v-if="forumData.isSearching && !forumData.loading"
+    class="absolute top-16 h-5 flex font-size-3.5 md:top-28"
+  >
+    <p class="mr-2 color-[var(--vp-c-text-3)]">
+      {{ message.forum.header.search.allRelatedContentCount }}
+    </p>
+    <span>{{ forumData.topics.length }}</span>
+  </div>
+</template>
 
 <style scoped>
 input::-webkit-search-cancel-button {

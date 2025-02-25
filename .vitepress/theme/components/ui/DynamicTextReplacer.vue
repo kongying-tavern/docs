@@ -1,43 +1,25 @@
-<template>
-  <ClientOnly>
-    <component
-      :is="tag"
-      v-html="formattedString"
-      v-bind="$slots"
-      :class="class"
-    >
-    </component>
-  </ClientOnly>
-</template>
-
 <script setup lang="ts">
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 import { computed, useSlots } from 'vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  data: {
-    type: String,
-  },
-  tag: {
-    type: String,
-    default: 'p',
-  },
-  class: {
-    type: String,
-    default:
-      'font-size-3.5 line-height-[24px] color-[--vp-c-text-3] break-keep',
-  },
-})
+const { tag = 'p', data } = defineProps<{
+  data: string
+  tag?: string
+  class?: HTMLAttributes['class']
+}>()
 
 const slots = useSlots() as Record<string, () => any>
 
 const placeholderRegex = /%(\w+)/g
 
-const renderVNodeToHTML = (vnode: any): string => {
-  if (!vnode) return ''
+function renderVNodeToHTML(vnode: any): string {
+  if (!vnode)
+    return ''
 
   if (typeof vnode === 'string') {
     return vnode // 处理纯字符串
@@ -66,7 +48,7 @@ const renderVNodeToHTML = (vnode: any): string => {
 }
 
 const formattedString = computed(() => {
-  const result = props.data || ''
+  const result = data || ''
 
   return result.replace(placeholderRegex, (match, slotName) => {
     if (slots[slotName]) {
@@ -77,3 +59,15 @@ const formattedString = computed(() => {
   })
 })
 </script>
+
+<template>
+  <ClientOnly>
+    <!-- eslint-disable vue/no-v-text-v-html-on-component -->
+    <component
+      :is="tag"
+      v-bind="$slots"
+      :class="cn('font-size-3.5 line-height-[24px] color-[--vp-c-text-3] break-keep', $props.class)"
+      v-html="formattedString"
+    />
+  </ClientOnly>
+</template>

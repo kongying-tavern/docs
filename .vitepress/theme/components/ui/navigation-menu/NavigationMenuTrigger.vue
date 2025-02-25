@@ -1,12 +1,10 @@
 <script setup lang="ts">
+import type { NavigationMenuTriggerProps } from 'radix-vue'
+import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 import { ChevronDownIcon } from '@radix-icons/vue'
-import {
-  NavigationMenuTrigger,
-  type NavigationMenuTriggerProps,
-  useForwardProps,
-} from 'radix-vue'
-import { type HTMLAttributes, computed } from 'vue'
+import { NavigationMenuTrigger, useForwardProps } from 'radix-vue'
+import { computed } from 'vue'
 import { navigationMenuTriggerStyle } from '.'
 
 const props = defineProps<

@@ -1,8 +1,19 @@
+<script setup lang="ts">
+import type { ReleasesData } from './Release'
+import ReleaseItem from './ReleaseItem.vue'
+
+const { data } = defineProps<{
+  data: ReleasesData
+}>()
+
+const releaseData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+</script>
+
 <template>
   <div class="w-full">
     <div class="container">
       <ReleaseItem
-        v-for="item in data"
+        v-for="item in releaseData"
         :key="item.version"
         :version="item.version"
         :description="item.description"
@@ -18,14 +29,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { ReleasesData } from './Release'
-import ReleaseItem from './ReleaseItem.vue'
-
-const { data } = defineProps<{
-  data: ReleasesData
-}>()
-
-data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-</script>

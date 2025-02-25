@@ -3,9 +3,11 @@ import hmacSHA512 from 'crypto-js/hmac-sha512'
 import sha256 from 'crypto-js/sha256'
 import ky from 'ky'
 
-const hmacDigest = (date) =>
-  // @ts-ignore
-  Base64.stringify(hmacSHA512(sha256(Number.parseInt(date)), 'site.yuanshen'))
+function hmacDigest(date) {
+  return Base64.stringify(
+    hmacSHA512(sha256(Number.parseInt(date)), 'site.yuanshen'),
+  )
+}
 
 export const fetcher = ky.create({
   prefixUrl: 'https://doc-apis.yuanshen.site/apis/v1',

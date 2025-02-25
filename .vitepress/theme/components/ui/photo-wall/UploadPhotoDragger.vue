@@ -1,16 +1,7 @@
-<template>
-  <div
-    @drop.prevent="onDrop"
-    @dragover.prevent="onDragover"
-    @dragleave.prevent="dragover = false"
-  >
-    <slot />
-  </div>
-</template>
-
 <script lang="ts" setup>
-import { inject, ref } from 'vue'
 import { isArray } from 'lodash-es'
+import { inject, ref } from 'vue'
+
 import { uploadContextKey } from './upload'
 
 const props = defineProps({
@@ -27,13 +18,14 @@ const emit = defineEmits({
 const uploaderContext = inject(uploadContextKey)
 
 if (!uploaderContext) {
-  throw Error('usage: <PhotoWall><PhototUploadDragger /></PhotoWall>')
+  throw new Error('usage: <PhotoWall><PhototUploadDragger /></PhotoWall>')
 }
 
 const dragover = ref(false)
 
-const onDrop = (e: DragEvent) => {
-  if (props.disabled) return
+function onDrop(e: DragEvent) {
+  if (props.disabled)
+    return
   dragover.value = false
 
   e.stopPropagation()
@@ -42,7 +34,18 @@ const onDrop = (e: DragEvent) => {
   emit('file', files)
 }
 
-const onDragover = () => {
-  if (!props.disabled) dragover.value = true
+function onDragover() {
+  if (!props.disabled)
+    dragover.value = true
 }
 </script>
+
+<template>
+  <div
+    @drop.prevent="onDrop"
+    @dragover.prevent="onDragover"
+    @dragleave.prevent="dragover = false"
+  >
+    <slot />
+  </div>
+</template>

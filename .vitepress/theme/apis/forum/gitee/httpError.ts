@@ -1,4 +1,5 @@
-import { GiteeApiErrorType, type HttpMethod } from './types'
+import type { HttpMethod } from './types'
+import { GiteeApiErrorType } from './types'
 
 export class HTTPError extends Error {
   cause?: unknown

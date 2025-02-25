@@ -1,5 +1,5 @@
-import { localesConfig } from '../../../config/locales'
 import type { LanguageSuggestBarTranslate } from '../../../locales/common/LanguageSuggestBar'
+import { localesConfig } from '../../../config/locales'
 
 export const STORE_KEY = 'BANNER'
 export const DEFAULT_LOCALE_CODE = 'zh'

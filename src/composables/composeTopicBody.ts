@@ -1,35 +1,36 @@
-import { endsWith, startsWith, uniq } from 'lodash-es'
 import type ForumAPI from '@/apis/forum/api'
+import { endsWith, startsWith, uniq } from 'lodash-es'
 
-export const composeTopicBody = (
+export function composeTopicBody(
   body: string,
   options: {
     labels?: (string | null | undefined)[]
     state?: ForumAPI.TopicState
   },
-): string => {
+): string {
   const { labels, state } = options
 
   const meta = {
-    ...(labels ? { labels: uniq(labels.filter((v) => v)) } : {}),
+    ...(labels ? { labels: uniq(labels.filter(v => v)) } : {}),
     ...(state ? { state } : {}),
   }
 
   return writeTopicBodyComment(body, meta)
 }
 
-export const writeTopicBodyComment = (
+export function writeTopicBodyComment(
   body: string,
   params: Record<string, any>,
-): string => {
-  if (!body) return ''
+): string {
+  if (!body)
+    return ''
 
   const chunks = body.split(/(<!--.*(?=-->)-->)/gu)
   const chunksComments = chunks.filter(
-    (v) => startsWith(v, '<!--') && endsWith(v, '-->'),
+    v => startsWith(v, '<!--') && endsWith(v, '-->'),
   )
   const chunksContents = chunks.filter(
-    (v) => !startsWith(v, '<!--') || !endsWith(v, '-->'),
+    v => !startsWith(v, '<!--') || !endsWith(v, '-->'),
   )
 
   const chunksJson = chunksComments
@@ -42,7 +43,8 @@ export const writeTopicBodyComment = (
         try {
           const commentJson = JSON.parse(commentContent)
           newJson = { ...json, ...commentJson }
-        } catch {}
+        }
+        catch {}
 
         return newJson
       }, {})

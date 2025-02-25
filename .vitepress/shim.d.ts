@@ -1,3 +1,4 @@
+/* eslint-disable ts/naming-convention */
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {

@@ -1,9 +1,9 @@
-type LanguageSuggestBar = {
+interface LanguageSuggestBar {
   changeLanguage: string
   continue: string
 }
 
-export type LanguageSuggestBarTranslate = {
+export interface LanguageSuggestBarTranslate {
   root: LanguageSuggestBar
   en: LanguageSuggestBar
   ja: LanguageSuggestBar

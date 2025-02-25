@@ -20,7 +20,7 @@ declare global {
  * @see https://support.google.com/analytics/answer/9216061
  */
 
-const mountGoogleAnalytics = (id: string, debug: boolean) => {
+function mountGoogleAnalytics(id: string, debug: boolean) {
   // avoid duplicated import
   if (window.dataLayer && window.gtag) {
     return
@@ -35,22 +35,25 @@ const mountGoogleAnalytics = (id: string, debug: boolean) => {
   window.dataLayer = window.dataLayer || []
   // the gtag function must use `arguments` object to forward parameters
   window.gtag = function () {
+    // eslint-disable-next-line prefer-rest-params
     dataLayer.push(arguments)
   }
   gtag('js', new Date())
   if (debug) {
     gtag('config', id, { debug_mode: true })
-  } else {
+  }
+  else {
     gtag('config', id)
   }
 }
-/* global GA_ID, ga */
-export default ({ id, debug }) => {
+
+export default ({ id, debug }: { id: string, debug: boolean }) => {
   // Google analytics integration
   if (
-    process.env.NODE_ENV === 'production' &&
-    id &&
-    typeof window !== 'undefined'
+    // eslint-disable-next-line node/prefer-global/process
+    process.env.NODE_ENV === 'production'
+    && id
+    && typeof window !== 'undefined'
   ) {
     mountGoogleAnalytics(id, debug)
   }

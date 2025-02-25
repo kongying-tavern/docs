@@ -32,11 +32,12 @@ export const productionHead: HeadConfig[] = [
   ],
 ]
 
-export const cfgDynamicHead = (
+export function cfgDynamicHead(
   pageData: PageData,
   siteConfig: SiteConfig,
-): void => {
-  if (!isProd) return
+): void {
+  if (!isProd)
+    return
 
   const pageUrl = cfgGetPageUrl(pageData, siteConfig)
   const pageTitle = cfgGetPageTitle(pageData, siteConfig)

@@ -1,17 +1,18 @@
-import { useSessionStorage } from '@vueuse/core'
 import { withBase } from 'vitepress'
 
-const FONT_LOAD_STATE_STORE_KEY = 'FONTS_LOAD_STATE'
+// const FONT_LOAD_STATE_STORE_KEY = 'FONTS_LOAD_STATE'
 const FONT_LOAD_COMPLETE_CLASS = 'font-loaded'
 
-type FontItem = {
+interface FontItem {
   fontName: string
   fontPath: string
 }
 
-export const loadFonts = (options: FontItem[]) => {
-  if (import.meta.env.SSR) return null
-  if (!('fonts' in document)) return null
+export function loadFonts(options: FontItem[]) {
+  if (import.meta.env.SSR)
+    return null
+  if (!('fonts' in document))
+    return null
 
   // const fontsLoadState = useSessionStorage<string[]>(FONT_LOAD_STATE_STORE_KEY, [])
 
@@ -35,7 +36,7 @@ export const loadFonts = (options: FontItem[]) => {
       })
   }
 
-  Promise.all(options.map((font) => loadFont(font.fontName, font.fontPath)))
+  Promise.all(options.map(font => loadFont(font.fontName, font.fontPath)))
     .then(() => {
       document.documentElement.classList.add(FONT_LOAD_COMPLETE_CLASS)
     })

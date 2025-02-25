@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import { isFromExternalPage } from '@/composables/isFromExternalPage'
+import { matchLanguages } from '@/composables/matchLanguages'
 import { useElementSize, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { useData } from 'vitepress'
-import { computed, ref, watchEffect, onBeforeMount, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue'
 import { hash } from '../../utils'
+import { DEFAULT_LOCALE_CODE, LOCALE_CONFIG, STORE_KEY } from './configs'
 import LanguageSuggestBar from './LanguageSuggestBar.vue'
-import { isFromExternalPage } from '@/composables/isFromExternalPage'
-import { matchLanguages } from '@/composables/matchLanguages'
-import { LOCALE_CONFIG, STORE_KEY, DEFAULT_LOCALE_CODE } from './configs'
 
 type BannerItem = Partial<{
   expiryDate: number
@@ -23,24 +23,24 @@ const { frontmatter, page, theme, lang, localeIndex } = useData()
 const suggestLanguage = import.meta.env.SSR
   ? DEFAULT_LOCALE_CODE
   : matchLanguages(
-      LOCALE_CONFIG.map((val) => val.lang!),
-      navigator?.languages || DEFAULT_LOCALE_CODE,
-    )?.split('-')[0] || DEFAULT_LOCALE_CODE
+    LOCALE_CONFIG.map(val => val.lang!),
+    navigator?.languages || DEFAULT_LOCALE_CODE,
+  )?.split('-')[0] || DEFAULT_LOCALE_CODE
 
 const bannerData = useLocalStorage<BannerItem[]>(STORE_KEY, [{}])
 
 // 只有在 `languageSuggest` 存在 或 来自外部页面 或 在首页，且用户当前语言不同才显示
 const isShowLanguageSuggestBar = computed(
   () =>
-    (frontmatter.value.languageSuggest ||
-      (isFromExternalPage() && page.value.filePath.includes('index.md'))) &&
-    !lang.value.includes(suggestLanguage),
+    (frontmatter.value.languageSuggest
+      || (isFromExternalPage() && page.value.filePath.includes('index.md')))
+    && !lang.value.includes(suggestLanguage),
 )
 const canBannerVisible = computed(
   () =>
-    frontmatter.value.wip ||
-    typeof frontmatter.value.banner === 'string' ||
-    isShowLanguageSuggestBar.value,
+    frontmatter.value.wip
+    || typeof frontmatter.value.banner === 'string'
+    || isShowLanguageSuggestBar.value,
 )
 const isShowBanner = ref(canBannerVisible.value)
 
@@ -73,7 +73,7 @@ watchEffect(() => {
   }
 })
 
-const recheck = () => {
+function recheck() {
   if (!canBannerVisible.value || inExpiryDate.value) {
     hideBanner()
     return
@@ -83,9 +83,9 @@ const recheck = () => {
     // 同页面 Banner 内容不变情况下一天仅展示一次
     for (const val of bannerData.value) {
       if (
-        page.value.relativePath === val.path &&
-        bannerHash.value === val.contentHash &&
-        Date.now() < (val?.expiryDate ?? 0)
+        page.value.relativePath === val.path
+        && bannerHash.value === val.contentHash
+        && Date.now() < (val?.expiryDate ?? 0)
       ) {
         hideBanner()
         return
@@ -96,7 +96,7 @@ const recheck = () => {
   isShowBanner.value = canBannerVisible.value
 }
 
-const dismiss = () => {
+function dismiss() {
   insertOrUpdateBannerData({
     expiryDate: dismissExpiryTime.value,
     contentHash: bannerHash.value,
@@ -106,15 +106,16 @@ const dismiss = () => {
   hideBanner()
 }
 
-const insertOrUpdateBannerData = (options: BannerItem) => {
-  const index = bannerData.value.findIndex((item) => item.path === options.path)
+function insertOrUpdateBannerData(options: BannerItem) {
+  const index = bannerData.value.findIndex(item => item.path === options.path)
 
-  if (index === -1) return (bannerData.value = [...bannerData.value, options])
+  if (index === -1)
+    return (bannerData.value = [...bannerData.value, options])
 
   bannerData.value[index] = options
 }
 
-const hideBanner = () => {
+function hideBanner() {
   isShowBanner.value = false
   document.documentElement.style.setProperty('--vp-layout-top-height', '0.1px')
 }
@@ -129,16 +130,16 @@ watch(() => page.value.relativePath, recheck)
     <div
       v-show="isShowBanner"
       ref="banner"
-      class="banner md:px-32px py-8px pl-24px pr-8px"
+      class="banner py-8px pl-24px pr-8px md:px-32px"
     >
       <div
-        class="max-w-[calc(var(--vp-layout-max-width)-64px)] mx-auto flex justify-center text-center"
+        class="mx-auto max-w-[calc(var(--vp-layout-max-width)-64px)] flex justify-center text-center"
       >
         <template v-if="!isShowLanguageSuggestBar">
           <div
             class="text font-[var(--vp-font-family-subtitle)]"
             v-html="bannerText"
-          ></div>
+          />
 
           <button type="button" @click="dismiss">
             <svg

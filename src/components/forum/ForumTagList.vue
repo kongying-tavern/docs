@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getTopicTagMap } from '~/composables/getTopicTagMap'
+
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
+import { getTopicTagMap } from '~/composables/getTopicTagMap'
 
 const props = defineProps<{
   data: string[]
@@ -11,7 +12,7 @@ const topicTagMap = getTopicTagMap()
 const topicLabelGetter = getTopicTagLabelGetter()
 
 const tags = computed(() =>
-  props.data.filter((label) => topicLabelGetter.isLabel(label)),
+  props.data.filter(label => topicLabelGetter.isLabel(label)),
 )
 </script>
 
@@ -20,7 +21,7 @@ const tags = computed(() =>
     <span
       v-for="label in tags"
       :key="label"
-      class="px-2.5 mt-2 font-size-3 inline-flex pointer-events-auto bg-[--vp-c-bg-soft] mr-2 rounded-full color-[--vp-c-text-2] font-[var(--vp-font-family-subtitle)]"
+      class="pointer-events-auto mr-2 mt-2 inline-flex rounded-full bg-[--vp-c-bg-soft] px-2.5 font-size-3 color-[--vp-c-text-2] font-[var(--vp-font-family-subtitle)]"
     >
       #{{ topicTagMap.get(topicLabelGetter.getTag(label) ?? '') }}
     </span>

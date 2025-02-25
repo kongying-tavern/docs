@@ -1,5 +1,5 @@
+import type { Preset } from 'unocss'
 import {
-  type Preset,
   defineConfig,
   presetAttributify,
   presetIcons,

@@ -1,21 +1,40 @@
+<script setup lang="ts">
+import { Button } from '@/components/ui/button'
+import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
+import { NavigationMenuLink } from '@/components/ui/navigation-menu'
+import useLogin from '@/hooks/useLogin'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useData, withBase } from 'vitepress'
+import UserAvatar from './UserAvatar.vue'
+
+defineProps<{
+  list: { title: string, href: string, icon: string }[]
+}>()
+
+const userInfo = useUserInfoStore()
+
+const { theme } = useData()
+const { login, logout } = useLogin()
+</script>
+
 <template>
   <ul
     v-if="userInfo.info"
-    class="grid p-3 md:min-w-[128px] lg:min-w-[450px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)] c-[var(--vp-c-text-2)] bg-[var(--vp-c-bg-elv)] border border-[var(--vp-c-divider)] shadow-[var(--vp-shadow-3)] opacity-100 border-rd-12px font-[var(--vp-font-family-subtitle)]"
+    class="grid border border-[var(--vp-c-divider)] border-rd-12px bg-[var(--vp-c-bg-elv)] p-3 c-[var(--vp-c-text-2)] font-[var(--vp-font-family-subtitle)] opacity-100 shadow-[var(--vp-shadow-3)] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)] lg:min-w-[450px] md:min-w-[128px]"
   >
-    <li class="row-span-4 lg:border-r-2px pr-3 lg:border-[var(--vp-c-divider)]">
+    <li class="row-span-4 pr-3 lg:border-r-2px lg:border-[var(--vp-c-divider)]">
       <NavigationMenuLink as-child class="important:shadow-none">
         <a
-          class="flex h-full w-full select-none rounded-md from-muted/50 to-muted p-3 no-underline outline-none focus:shadow-md lg:justify-evenly lg:flex-col lg:items-center"
+          class="h-full w-full flex select-none rounded-md from-muted/50 to-muted p-3 no-underline outline-none lg:flex-col lg:items-center lg:justify-evenly focus:shadow-md"
           href="/"
         >
           <UserAvatar size="xl" :src="userInfo.info.avatar" />
-          <div class="ml-4 lg:text-align-center lg:ml-0">
-            <div class="mt-1 text-xl font-medium color-[var(--vp-c-text-1)]">
+          <div class="ml-4 lg:ml-0 lg:text-align-center">
+            <div class="mt-1 text-xl color-[var(--vp-c-text-1)] font-medium">
               {{ userInfo.info?.username || 'Unknown' }}
             </div>
             <p
-              class="text-sm leading-tight color-[var(--vp-c-text-3)] font-[var(--vp-font-family-content)]"
+              class="text-sm color-[var(--vp-c-text-3)] leading-tight font-[var(--vp-font-family-content)]"
             >
               @{{ userInfo.info?.login || '00000' }}
             </p>
@@ -24,30 +43,30 @@
       </NavigationMenuLink>
     </li>
 
-    <li class="lg:ml-2" v-for="item in list" :key="item.title">
+    <li v-for="item in list" :key="item.title" class="lg:ml-2">
       <NavigationMenuLink as-child>
         <a
           :href="withBase(item.href)"
-          class="flex select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          class="flex select-none rounded-md p-3 leading-none no-underline outline-none transition-colors space-y-1 focus:bg-accent hover:bg-accent focus:text-accent-foreground hover:text-accent-foreground"
         >
           <div class="text-sm font-medium leading-none">
-            <span class="icon-btn mr-2 vertical-mid" :class="item.icon"></span>
+            <span class="mr-2 icon-btn vertical-mid" :class="item.icon" />
             {{ item.title }}
           </div>
         </a>
       </NavigationMenuLink>
     </li>
 
-    <div class="lg:hidden vp-divider h-1.5px my-2"></div>
+    <div class="my-2 vp-divider h-1.5px lg:hidden" />
 
     <li class="lg:ml-2">
       <NavigationMenuLink as-child>
         <button
-          class="inline-block w-full text-align-left select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          class="inline-block w-full select-none rounded-md p-3 text-align-left leading-none no-underline outline-none transition-colors space-y-1 focus:bg-accent hover:bg-accent focus:text-accent-foreground hover:text-accent-foreground"
           @click="logout()"
         >
           <div class="text-sm font-medium leading-none">
-            <span class="icon-btn mr-2 vertical-mid i-lucide-log-out"></span>
+            <span class="i-lucide-log-out mr-2 icon-btn vertical-mid" />
             {{ theme.forum.auth.logoutMsg }}
           </div>
         </button>
@@ -56,20 +75,20 @@
   </ul>
   <ul
     v-else
-    class="grid p-3 md:min-w-[128px] w-[300px] c-[var(--vp-c-text-2)] bg-[var(--vp-c-bg-elv)] border border-[var(--vp-c-divider)] shadow-[var(--vp-shadow-3)] opacity-100 border-rd-12px"
+    class="grid w-[300px] border border-[var(--vp-c-divider)] border-rd-12px bg-[var(--vp-c-bg-elv)] p-3 c-[var(--vp-c-text-2)] opacity-100 shadow-[var(--vp-shadow-3)] md:min-w-[128px]"
   >
     <li>
-      <Button class="vp-button w-full mt-2" @click="login({ method: 'Oauth' })">
+      <Button class="mt-2 w-full vp-button" @click="login({ method: 'Oauth' })">
         {{ theme.forum.auth.loginMsg }}
       </Button>
     </li>
     <li>
-      <p class="font-size-3 c-[var(--vp-v-text-3)] text-align-center mt-3">
+      <p class="mt-3 text-align-center font-size-3 c-[var(--vp-v-text-3)]">
         <DynamicTextReplacer :data="theme.forum.auth.notGiteeAccountMsg">
           <template #signup>
             <a
               href="https://gitee.com/signup"
-              class="vp-link font-[var(--vp-font-family-content)]"
+              class="font-[var(--vp-font-family-content)] vp-link"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -81,22 +100,3 @@
     </li>
   </ul>
 </template>
-
-<script setup lang="ts">
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
-import { Button } from '@/components/ui/button'
-import { NavigationMenuLink } from '@/components/ui/navigation-menu'
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useData, withBase } from 'vitepress'
-import UserAvatar from './UserAvatar.vue'
-import useLogin from '@/hooks/useLogin'
-
-defineProps<{
-  list: { title: string; href: string; icon: string }[]
-}>()
-
-const userInfo = useUserInfoStore()
-
-const { theme } = useData()
-const { login, logout } = useLogin()
-</script>

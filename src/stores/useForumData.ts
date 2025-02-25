@@ -1,21 +1,20 @@
-import { issues } from '@/apis/forum/gitee'
-import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue'
-import { useLoadMore } from '@/hooks/useLoadMore'
-import { useData } from 'vitepress'
-import { defineStore } from 'pinia'
-import { isArray, uniqBy } from 'lodash-es'
-import { useRequest } from 'vue-request'
-import { watchOnce } from '@vueuse/core'
-import { useLocalized } from '@/hooks/useLocalized'
-import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
-import { handleError } from '~/composables/handleError'
-import { getValidFilter } from '~/composables/getValidFilter'
-import { convertMultipleToMarkdown } from '~/components/forum/utils'
-import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { composeTopicBody } from '~/composables/composeTopicBody'
-import { toast } from 'vue-sonner'
-
 import type ForumAPI from '@/apis/forum/api'
+import { issues } from '@/apis/forum/gitee'
+import { useLoadMore } from '@/hooks/useLoadMore'
+import { useLocalized } from '@/hooks/useLocalized'
+import { watchOnce } from '@vueuse/core'
+import { isArray, uniqBy } from 'lodash-es'
+import { defineStore } from 'pinia'
+import { useData } from 'vitepress'
+import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { useRequest } from 'vue-request'
+import { toast } from 'vue-sonner'
+import { convertMultipleToMarkdown } from '~/components/forum/utils'
+import { composeTopicBody } from '~/composables/composeTopicBody'
+import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
+import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
+import { getValidFilter } from '~/composables/getValidFilter'
+import { handleError } from '~/composables/handleError'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -65,8 +64,9 @@ export const useForumData = defineStore('forum-data', () => {
   } = useRequest(issues.getAnnouncementList, { manual: true })
 
   const refreshData = async (q?: string | string[]) => {
-    if (import.meta.env.SSR) return null
-    const data = await runAsync(
+    if (import.meta.env.SSR)
+      return null
+    await runAsync(
       {
         current: pagination.page,
         sort: pagination.sort,
@@ -81,7 +81,8 @@ export const useForumData = defineStore('forum-data', () => {
   }
 
   const switchTopicFilter = (val = pagination.filter) => {
-    if (!val) return
+    if (!val)
+      return
     pagination.filter = val
   }
 
@@ -102,12 +103,13 @@ export const useForumData = defineStore('forum-data', () => {
       const { body, title, tags, type } = options
 
       const bodyText = () => {
-        if (!isArray(body?.images)) return body.text
+        if (!isArray(body?.images))
+          return body.text
         return (
-          body.text +
-          convertMultipleToMarkdown(
+          body.text
+          + convertMultipleToMarkdown(
             body.images
-              .map((image) => image.url)
+              .map(image => image.url)
               .filter((url): url is string => !!url),
           )
         )
@@ -140,7 +142,8 @@ export const useForumData = defineStore('forum-data', () => {
     }
 
     watch(submittedTopic, () => {
-      if (!submittedTopic.value) return
+      if (!submittedTopic.value)
+        return
       userSubmittedTopic.value = [
         {
           ...submittedTopic.value,
@@ -161,7 +164,8 @@ export const useForumData = defineStore('forum-data', () => {
   const searchTopics = async (q: string | string[]) => {
     initialData()
 
-    if (q.length === 0) return (isSearching.value = false)
+    if (q.length === 0)
+      return (isSearching.value = false)
 
     isSearching.value = true
 
@@ -170,39 +174,45 @@ export const useForumData = defineStore('forum-data', () => {
 
   const getTopic = (id: string | number) => {
     return [...topics.value, ...userSubmittedTopic.value].find(
-      (topic) => topic.id === id,
+      topic => topic.id === id,
     )
   }
 
   const getTopicIndex = (id: string | number) => {
     const index = [...topics.value, ...userSubmittedTopic.value].findIndex(
-      (topic) => topic.id === id,
+      topic => topic.id === id,
     )
     return index === -1 ? false : index
   }
 
   const removeTopic = (id: string | number) => {
-    topics.value = topics.value.filter((topic) => topic.id !== id)
+    topics.value = topics.value.filter(topic => topic.id !== id)
     userSubmittedTopic.value = userSubmittedTopic.value.filter(
-      (topic) => topic.id !== id,
+      topic => topic.id !== id,
     )
   }
 
   const addTopic = (id: string | number) => {
     const targetTopic = getTopic(id)
-    if (targetTopic) return (topics.value = [targetTopic, ...topics.value])
+    if (targetTopic)
+      return (topics.value = [targetTopic, ...topics.value])
     return null
   }
 
   const loadStateMessage = computed(() => {
-    if (loading.value) return message.value.forum.loadMore
-    if (error.value) return message.value.forum.loadError
-    if (topics.value.length === 0) return 'No Data'
-    if (noMore.value) return message.value.forum.noMore
+    if (loading.value)
+      return message.value.forum.loadMore
+    if (error.value)
+      return message.value.forum.loadError
+    if (topics.value.length === 0)
+      return 'No Data'
+    if (noMore.value)
+      return message.value.forum.noMore
   })
 
   const initData = () => {
-    if (!import.meta.env.SSR) Promise.all([loadAnn(), refreshData()])
+    if (!import.meta.env.SSR)
+      Promise.all([loadAnn(), refreshData()])
   }
 
   onMounted(() => {
@@ -222,7 +232,8 @@ export const useForumData = defineStore('forum-data', () => {
   watchOnce(
     annLoading,
     () => {
-      if (annData.value?.length === 0) return
+      if (annData.value?.length === 0)
+        return
       topics.value = uniqBy([...(annData.value || []), ...topics.value], 'id')
     },
     {
@@ -250,7 +261,8 @@ export const useForumData = defineStore('forum-data', () => {
   )
 
   watch(isSearching, async () => {
-    if (isSearching.value) return
+    if (isSearching.value)
+      return
     initialData()
     await refreshData()
   })

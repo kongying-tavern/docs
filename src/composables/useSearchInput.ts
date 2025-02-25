@@ -1,7 +1,7 @@
 import { useDebounce } from '@vueuse/core'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
-export const useSearchInput = () => {
+export function useSearchInput() {
   const searchInput = ref()
   const searchQuery = ref<string>('')
   const searchQueryDebounced = useDebounce<string>(
@@ -14,7 +14,8 @@ export const useSearchInput = () => {
 
     if (searchString === '') {
       newUrl.searchParams.delete('q')
-    } else {
+    }
+    else {
       newUrl.searchParams.set('q', searchString)
     }
 
@@ -22,7 +23,8 @@ export const useSearchInput = () => {
   })
 
   onMounted(() => {
-    if (import.meta.SSR) return
+    if (import.meta.SSR)
+      return
     const searchParams = new URLSearchParams(window.location.search)
 
     if (searchParams.has('q')) {
@@ -33,7 +35,8 @@ export const useSearchInput = () => {
       }
     }
 
-    if (searchParams.has('focus')) searchInput.value.focus()
+    if (searchParams.has('focus'))
+      searchInput.value.focus()
   })
 
   return {
@@ -44,17 +47,20 @@ export const useSearchInput = () => {
 }
 
 export function getDefaultThrottle() {
-  if (typeof window === 'undefined') return 50
+  if (typeof window === 'undefined')
+    return 50
   // https://stackoverflow.com/questions/7944460/detect-safari-browser
+  // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
   const isSafari = Boolean(window.GestureEvent)
   if (!isSafari) {
     return 50
   }
   try {
-    const match = navigator.userAgent?.match(/version\/([\d\.]+) safari/i)
-    return parseFloat(match![1]!) >= 17 ? 120 : 320
-  } catch {
+    const match = navigator.userAgent?.match(/version\/([\d.]+) safari/i)
+    return Number.parseFloat(match![1]!) >= 17 ? 120 : 320
+  }
+  catch {
     return 320
   }
 }

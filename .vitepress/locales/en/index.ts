@@ -1,23 +1,21 @@
+import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
+import type { CustomConfig } from '../types'
 import { baseHelper } from '../../theme/utils'
-
 import _404 from './404'
 import AsideLinks from './aside-links'
+import Changelog from './changelog'
 import C from './constants'
 import DocsFeedback from './docs-feedback'
 import Footer from './footer'
+import Forum from './forum'
 import Head from './head'
 import Nav from './nav'
 import Payment from './payment'
 import Sidebar from './sidebar'
-
-import Changelog from './changelog'
-import Forum from './forum'
 import Staff from './staff'
+
 import Team from './team'
 import UI from './ui'
-
-import type { CustomConfig } from '../types'
-import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
 
 export const enConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config

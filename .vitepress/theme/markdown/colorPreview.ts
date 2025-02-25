@@ -1,16 +1,17 @@
 import type MarkdownIt from 'markdown-it'
 
-const COLOR_REGEX =
-  /(?:\s|^)(#(?:[a-fA-F0-9]{3}){1,2}|(?:#(?:[a-fA-F0-9]{4}){1,2})?\b|rgba?\(\d+,\s*\d+,\s*\d+(?:,\s*\d+(?:\.\d+)?)?\)|hsla?\(\d+,\s*\d+%?,\s*\d+%?,?\s*(?:,\s*\d+(?:\.\d+)?)?\))(?:[^#a-zA-Z0-9]|$)/g
+const COLOR_REGEX
+  = /(?:\s|^)(#(?:[a-fA-F0-9]{3}){1,2}|(?:#(?:[a-fA-F0-9]{4}){1,2})?\b|rgba?\(\d+,\s*\d+,\s*\d+(?:,\s*\d+(?:\.\d+)?)?\)|hsla?\(\d+,\s*\d+%?,\s*\d+%?,?\s*(?:,\s*\d+(?:\.\d+)?)?\))(?:[^#a-zA-Z0-9]|$)/g
 
-export const colorPreviewPlugin = (md: MarkdownIt) => {
+export function colorPreviewPlugin(md: MarkdownIt) {
   const replaceColor = (colorStr: string) => {
     colorStr = colorStr.trim()
     let color = colorStr.replace(/\P{ASCII}\p{Nd}/gu, '')
 
     if (color.startsWith('#')) {
-      color = color.replace(/[^#0-9a-fA-F]/g, '')
-    } else {
+      color = color.replace(/[^#0-9a-f]/gi, '')
+    }
+    else {
       const index = color.lastIndexOf(')')
       if (index !== -1) {
         color = color.slice(0, index + 1)

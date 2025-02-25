@@ -1,10 +1,10 @@
+import type ForumAPI from '../api'
 import { apiCall } from '.'
+
 import { GITEE_API_CONFIG } from './config'
 import { normalizeUser } from './utils'
 
-import type ForumAPI from '../api'
-
-export const getUser = async (access_token: string): Promise<ForumAPI.User> => {
+export async function getUser(access_token: string): Promise<ForumAPI.User> {
   return normalizeUser(
     (
       await apiCall<GITEE.UserInfo>('get', 'user', { params: { access_token } })
@@ -12,11 +12,11 @@ export const getUser = async (access_token: string): Promise<ForumAPI.User> => {
   )
 }
 
-export const getUserOrgs = async (
+export async function getUserOrgs(
   username: string,
   accessToken: string,
   useCache = true,
-): Promise<ForumAPI.User> => {
+): Promise<ForumAPI.User> {
   return normalizeUser(
     (
       await apiCall<GITEE.UserInfo>('get', `users/${username}/orgs`, {
@@ -26,10 +26,10 @@ export const getUserOrgs = async (
   )
 }
 
-export const getOrgMembers = async (
+export async function getOrgMembers(
   accessToken?: string,
   useCache = true,
-): Promise<ForumAPI.User[]> => {
+): Promise<ForumAPI.User[]> {
   return (
     await apiCall<GITEE.User[]>(
       'get',
@@ -42,16 +42,16 @@ export const getOrgMembers = async (
         useCache,
       },
     )
-  )[0].map((val) => normalizeUser(val))
+  )[0].map(val => normalizeUser(val))
 }
 
-export const getRepoMembers = async (
+export async function getRepoMembers(
   repo:
     | typeof GITEE_API_CONFIG.FEEDBACK_REPO
     | typeof GITEE_API_CONFIG.BLOG_REPO,
   accessToken?: string,
   useCache = true,
-): Promise<ForumAPI.User[]> => {
+): Promise<ForumAPI.User[]> {
   return (
     await apiCall<GITEE.User[]>(
       'get',
@@ -64,5 +64,5 @@ export const getRepoMembers = async (
         useCache,
       },
     )
-  )[0].map((val) => normalizeUser(val))
+  )[0].map(val => normalizeUser(val))
 }

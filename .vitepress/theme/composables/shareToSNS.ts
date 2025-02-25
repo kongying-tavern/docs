@@ -1,7 +1,7 @@
 // Used under CC0 1.0 from https://simpleicons.org/
 // @unocss-include
 
-export type SNS = {
+export interface SNS {
   title: string
   color: string
   link: string

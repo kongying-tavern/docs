@@ -1,28 +1,29 @@
-import { useVModel } from '@vueuse/core'
-import { watch } from 'vue'
-import {
-  type UploadFile,
-  type UploadFiles,
-  type UploadProps,
-  type UploadRawFile,
-  type UploadStatus,
-  genFileId,
-} from './upload'
-import { isNil } from 'lodash-es'
+/* eslint-disable unused-imports/no-unused-vars */
 
-import type { UploadPhotoInstance, UploadPhotoProps } from './uploadPhoto'
 import type { ShallowRef } from 'vue'
+import type {
+  UploadFile,
+  UploadFiles,
+  UploadProps,
+  UploadRawFile,
+  UploadStatus,
+} from './upload'
+import type { UploadPhotoInstance, UploadPhotoProps } from './uploadPhoto'
+import { useVModel } from '@vueuse/core'
+import { isNil } from 'lodash-es'
+import { watch } from 'vue'
+import { genFileId } from './upload'
 
-const revokeFileObjectURL = (file: UploadFile) => {
+function revokeFileObjectURL(file: UploadFile) {
   if (file.url?.startsWith('blob:')) {
     URL.revokeObjectURL(file.url)
   }
 }
 
-export const useHandlers = (
+export function useHandlers(
   props: UploadProps,
   uploadRef: ShallowRef<UploadPhotoInstance | undefined>,
-) => {
+) {
   const uploadFiles = useVModel(
     props as Omit<UploadProps, 'fileList'> & { fileList: UploadFiles },
     'fileList',
@@ -38,7 +39,7 @@ export const useHandlers = (
     states: UploadStatus[] = ['ready', 'uploading', 'success', 'fail'],
   ) {
     uploadFiles.value = uploadFiles.value.filter(
-      (row) => !states.includes(row.status!),
+      row => !states.includes(row.status!),
     )
   }
 
@@ -46,7 +47,9 @@ export const useHandlers = (
     file,
   ): Promise<void> => {
     const uploadFile = file instanceof File ? getFile(file) : file
-    if (!uploadFile) new Error('file to be removed not found')
+    if (!uploadFile)
+      // eslint-disable-next-line no-new
+      new Error('file to be removed not found')
 
     const doRemove = (file: UploadFile) => {
       removeFile(file)
@@ -59,12 +62,13 @@ export const useHandlers = (
 
   function removeFile(file: UploadFile) {
     uploadFiles.value = uploadFiles.value.filter(
-      (uploadFile) => uploadFile !== file,
+      uploadFile => uploadFile !== file,
     )
   }
 
   const handleStart: UploadPhotoProps['onStart'] = (file: UploadRawFile) => {
-    if (isNil(file.uid)) file.uid = genFileId()
+    if (isNil(file.uid))
+      file.uid = genFileId()
     const uploadFile: UploadFile = {
       name: file.name,
       status: props.defaultState,
@@ -81,7 +85,8 @@ export const useHandlers = (
     uploadFiles,
     (files) => {
       for (const file of files) {
-        if (file.uid) return
+        if (file.uid)
+          return
         file.uid ||= genFileId()
         console.log(file.status)
         file.status ||= 'success'

@@ -1,17 +1,13 @@
 import type ForumAPI from '@/apis/forum/api'
+import type { PaginationOptions, Service } from 'vue-request'
 import { isError } from 'lodash-es'
-import { type Ref, computed, ref, watch } from 'vue'
-import {
-  type PaginationOptions,
-  type Service,
-  usePagination,
-  useRequestProvider,
-} from 'vue-request'
+import { computed, ref, watch } from 'vue'
+import { usePagination, useRequestProvider } from 'vue-request'
 
-export const useLoadMore = <R, P extends unknown[] = any>(
+export function useLoadMore<R extends any[], P extends unknown[] = any>(
   service: Service<ForumAPI.PaginatedResult<R>, P>,
   options?: PaginationOptions<ForumAPI.PaginatedResult<R>, P>,
-) => {
+) {
   useRequestProvider({
     loadingDelay: 400,
     loadingKeep: 1000,
@@ -39,8 +35,11 @@ export const useLoadMore = <R, P extends unknown[] = any>(
 
   const data = ref<R | []>([])
 
+  const noMore = computed(() => current.value >= totalPage.value)
+
   const loadMore = () => {
-    if (noMore.value || error.value !== undefined) return
+    if (noMore.value || error.value !== undefined)
+      return
     current.value++
   }
 
@@ -55,22 +54,19 @@ export const useLoadMore = <R, P extends unknown[] = any>(
   const canLoadMore = computed(
     () => !noMore.value && !isFirstLoad.value && !isError(error),
   )
-  const noMore = computed(() => current.value >= totalPage.value)
   const loadingMore = computed(() => {
-    if (current.value === 1 && loadingMore.value) return false
-    if (noMore.value) return false
+    if (current.value === 1 && loadingMore.value)
+      return false
+    if (noMore.value)
+      return false
     return loading.value
   })
 
   const unshiftData = (data: DataArray) =>
-    // @ts-ignore
-    mutate((oldData: { data: P }) => {
+    mutate((oldData: ForumAPI.PaginatedResult<R>) => {
       return {
-        data: [data, ...oldData.data],
-        total: total.value,
-        pageSize: pageSize.value,
-        current: current.value,
-        totalPage: totalPage.value,
+        ...oldData,
+        data: [data, ...oldData.data] as unknown as R,
       }
     })
 

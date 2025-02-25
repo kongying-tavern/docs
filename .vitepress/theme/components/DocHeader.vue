@@ -1,42 +1,43 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { computed, ref, watchEffect } from 'vue'
+import { computed } from 'vue'
+
 import DocsBreadCrumb from './DocsBreadCrumb.vue'
 
 const { frontmatter, page } = useData()
 
 const title = computed(
   () =>
-    frontmatter.value.title ||
-    page.value.title ||
-    page.value.relativePath.replace('.md', ''),
+    frontmatter.value.title
+    || page.value.title
+    || page.value.relativePath.replace('.md', ''),
 )
 </script>
 
 <template>
   <div
-    v-if="frontmatter.docHeader !== false && frontmatter.layout == 'doc'"
-    class="border-b-color-[var(--vp-c-divider)] border-b-solid docs-header mb-4 relative slide-enter"
+    v-if="frontmatter.docHeader !== false && frontmatter.layout === 'doc'"
+    class="slide-enter docs-header relative mb-4 border-b-color-[var(--vp-c-divider)] border-b-solid"
   >
     <DocsBreadCrumb
-      class="flex font-semibold gap-1.5 items-center mb-3 text-primary text-sm/6"
+      class="mb-3 flex items-center gap-1.5 text-sm/6 text-primary font-semibold"
     />
-    <div class="flex flex-col gap-6 items-start lg:flex-row">
+    <div class="flex flex-col items-start gap-6 lg:flex-row">
       <div class="flex-1">
         <div
           class="flex flex-col lg:flex-row lg:items-center lg:justify-between"
         >
           <h1
-            class="dark:text-white font-bold sm:text-4xl text-3xl text-gray-900 tracking-tight"
+            class="text-3xl text-gray-900 font-bold tracking-tight sm:text-4xl dark:text-white"
           >
             {{ title }}
           </h1>
         </div>
         <p
           v-if="frontmatter.description"
-          class="dark:text-gray-400 mt-4 text-gray-500 text-lg"
+          class="mt-4 text-lg text-gray-500 dark:text-gray-400"
           v-html="frontmatter.description"
-        ></p>
+        />
       </div>
     </div>
   </div>

@@ -1,9 +1,8 @@
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
 import { FontaineTransform } from 'fontaine'
-import Inspect from 'vite-plugin-inspect'
-
 import UnoCSS from 'unocss/vite'
+import { defineConfig } from 'vite'
+import Inspect from 'vite-plugin-inspect'
 
 export default defineConfig({
   server: {
@@ -46,7 +45,7 @@ export default defineConfig({
         'Arial',
         'Noto Sans',
       ],
-      resolvePath: (id) => new URL(`./public/fonts/${id}`, import.meta.url),
+      resolvePath: id => new URL(`./public/fonts/${id}`, import.meta.url),
     }),
   ],
   css: {

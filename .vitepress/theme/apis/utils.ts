@@ -1,14 +1,13 @@
-import type { KyResponse } from 'ky'
-
-export const catchError = <T>(
+/* eslint-disable node/prefer-global/process */
+export function catchError<T>(
   promise: Promise<T>,
-): Promise<[undefined, T] | [Error]> => {
+): Promise<[undefined, T] | [Error]> {
   return promise
-    .then((data) => [undefined, data] as [undefined, T])
-    .catch((error) => [error])
+    .then(data => [undefined, data] as [undefined, T])
+    .catch(error => [error])
 }
 
-export const removeTrailingSlash = (str: string) => {
+export function removeTrailingSlash(str: string) {
   if (str.endsWith('/')) {
     return str.slice(0, -1)
   }
@@ -30,15 +29,15 @@ export function asyncOnce(cb: (...args: any[]) => Promise<any>) {
   }
 }
 
-export const getHeader = (
+export function getHeader(
   response: Response,
   headerNameList: string[],
-): [undefined, Error] | [string[], undefined] => {
-  let result: string[] = []
+): [undefined, Error] | [string[], undefined] {
+  const result: string[] = []
 
   for (const headerName of headerNameList) {
     const val = response.headers.get(headerName)
-    if (!val || isNaN(Number(val))) {
+    if (!val || Number.isNaN(Number(val))) {
       console.warn(`Invalid or missing header: ${headerName}`)
       return [undefined, new Error(`Invalid or missing header: ${headerName}`)]
     }
@@ -48,13 +47,14 @@ export const getHeader = (
   return [result, undefined]
 }
 
-export const buildFormData = <T extends {}>(body: T): FormData => {
+export function buildFormData<T extends object>(body: T): FormData {
   const form = new FormData()
-  for (let key in body) {
+  for (const key in body) {
     const value = body[key]
     if (value instanceof Blob) {
       form.append(key, value)
-    } else {
+    }
+    else {
       form.append(key, String(value))
     }
   }
@@ -63,8 +63,8 @@ export const buildFormData = <T extends {}>(body: T): FormData => {
 
 export function isNodeEnvironment(): boolean {
   return (
-    typeof process !== 'undefined' &&
-    process.versions != null &&
-    process.versions.node != null
+    typeof process !== 'undefined'
+    && process.versions != null
+    && process.versions.node != null
   )
 }

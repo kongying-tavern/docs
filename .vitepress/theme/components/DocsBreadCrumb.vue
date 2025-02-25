@@ -30,7 +30,7 @@ const breadcrumbs = computed(
       >
         <BreadcrumbItem>
           <BreadcrumbLink
-            class="capitalize font-[var(--vp-font-family-subtitle)]"
+            class="font-[var(--vp-font-family-subtitle)] capitalize"
             href="#"
             :class="{ 'text-foreground': index === breadcrumbs.length - 1 }"
             @click="go(breadcrumb.link)"

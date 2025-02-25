@@ -1,6 +1,6 @@
 import { useLocalized } from '@/hooks/useLocalized'
 
-export const getTopicTagMap = () => {
+export function getTopicTagMap() {
   const { message } = useLocalized()
 
   return new Map([

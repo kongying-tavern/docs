@@ -1,7 +1,8 @@
 {
-  "private": "true",
-  "license": "MIT",
   "type": "module",
+  "private": "true",
+  "packageManager": "pnpm@9.11.0",
+  "license": "MIT",
   "scripts": {
     "build": "pnpm build-vitepress",
     "build-blog": "tsx ./scripts/refreshBlogData.ts",
@@ -13,10 +14,10 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "commit": "git-cz",
     "dev": "vitepress",
-    "lint": "prettier --check . && pnpm lint:zh",
-    "lint:fix": "prettier --write . & pnpm lint:zh-fix",
+    "lint": "eslint --cache . && pnpm lint:zh",
+    "lint:eslint": "eslint --cache .",
+    "lint:eslint-fix": "eslint --cache --fix .",
     "lint:md": "markdownlint **/*.md",
-    "lint:prettier": "prettier --check .",
     "lint:zh": "zhlint **/zh/**/*.md",
     "lint:zh-fix": "zhlint **/zh/**/*.md --fix",
     "lunaria:build": "lunaria build",
@@ -27,26 +28,6 @@
     "up": "taze major -I",
     "use-data-env": "dotenv -e .env.data -c --"
   },
-  "lint-staged": {
-    "*.{js,ts,vue}": [
-      "prettier --write"
-    ],
-    "*.{scss,sass,css}": [
-      "prettier --write"
-    ],
-    "*.{md,json,yml}": [
-      "prettier --write"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-git"
-    }
-  },
-  "prettier": "prettier-config-vuepress",
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@iconify-json/ic": "^1.2.2",
@@ -98,6 +79,7 @@
     "vue-sonner": "^1.3.0"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^4.3.0",
     "@commitlint/cli": "19.6.1",
     "@commitlint/config-conventional": "19.6.0",
     "@commitlint/types": "19.5.0",
@@ -107,11 +89,14 @@
     "@types/markdown-it-footnote": "3.0.4",
     "@types/node": "22.10.2",
     "@types/ua-parser-js": "0.7.39",
+    "@unocss/eslint-config": "^66.0.0",
+    "@unocss/eslint-plugin": "^66.0.0",
     "@unocss/extractor-mdc": "0.62.4",
     "@unocss/preset-tagify": "0.64.1",
     "conventional-changelog-cli": "5.0.0",
     "cz-conventional-changelog": "3.3.0",
     "dotenv-cli": "8.0.0",
+    "eslint": "^9.21.0",
     "fontaine": "0.5.0",
     "git-cz": "4.9.0",
     "husky": "9.1.7",
@@ -122,8 +107,6 @@
     "markdown-it-kbd-better": "1.2.5",
     "markdownlint-cli": "0.41.0",
     "pnpm": "9.15.2",
-    "prettier": "3.4.2",
-    "prettier-config-vuepress": "5.0.0",
     "sort-package-json": "2.12.0",
     "stylelint": "16.12.0",
     "stylelint-config-prettier": "9.0.5",
@@ -138,5 +121,12 @@
     "vite-plugin-inspect": "0.8.9",
     "zhlint": "0.8.2"
   },
-  "packageManager": "pnpm@9.11.0"
+  "lint-staged": {
+     "*": "eslint --fix"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-git"
+    }
+  }
 }

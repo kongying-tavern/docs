@@ -1,15 +1,10 @@
-import { useData } from 'vitepress'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { CustomConfig } from '../../locales/types'
-import {
-  toValue,
-  watch,
-  type MaybeRefOrGetter,
-  type ComputedRef,
-  computed,
-} from 'vue'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useData } from 'vitepress'
+import { computed, toValue, watch } from 'vue'
 
 import 'dayjs/locale/zh-cn'
 import 'dayjs/locale/en'
@@ -18,7 +13,7 @@ import 'dayjs/locale/ja'
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 
-export const useLocalized = () => {
+export function useLocalized() {
   const { theme, localeIndex } = useData<CustomConfig>()
 
   const locales = {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { sendDocFeedback } from '@/apis/feedback/sendDocFeedback'
+
+import { usePageInfoStore } from '@/stores/usePageInfo'
 import { useData, useRoute } from 'vitepress'
 import { computed, provide, ref, watch } from 'vue'
-
-import { sendDocFeedback } from '@/apis/feedback/sendDocFeedback'
-import { usePageInfoStore } from '@/stores/usePageInfo'
 import DocFeedbackForm from './DocFeedbackForm.vue'
 
 const { theme, frontmatter } = useData()
@@ -24,9 +24,12 @@ const feedbackStateClass = computed(() => {
   return ''
 })
 const feedbackMessage = computed(() => {
-  if (feedbackState.value === null) return theme.value.docsFeedback.feedbackMsg
-  if (feedbackState.value) return theme.value.docsFeedback.feedbackSuccessMsg
-  if (!feedbackState.value) return theme.value.docsFeedback.feedbackFailMsg
+  if (feedbackState.value === null)
+    return theme.value.docsFeedback.feedbackMsg
+  if (feedbackState.value)
+    return theme.value.docsFeedback.feedbackSuccessMsg
+  if (!feedbackState.value)
+    return theme.value.docsFeedback.feedbackFailMsg
   return ''
 })
 
@@ -36,14 +39,16 @@ const additionalMessage = computed(() => {
   return ''
 })
 
-const setFeedback = (type: 'bad' | 'good') => {
+function setFeedback(type: 'bad' | 'good') {
   feedback.value = feedback.value === type ? null : type
 }
 
-const sendFeedback = async (isCancel?: boolean) => {
-  if (!pageinfo.currentPageinfo.record_id) return (feedbackState.value = false)
+async function sendFeedback(isCancel?: boolean) {
+  if (!pageinfo.currentPageinfo.record_id)
+    return (feedbackState.value = false)
   const type = feedback.value
-  if (isCancel) feedback.value = null
+  if (isCancel)
+    feedback.value = null
   loading.value = true // Set loading to true before sending feedback
   const res = await sendDocFeedback(
     pageinfo.currentPageinfo.record_id,
@@ -51,17 +56,22 @@ const sendFeedback = async (isCancel?: boolean) => {
     isCancel,
   )
   loading.value = false // Set loading to false after feedback response
-  if (res.code === 200 && !isCancel) return (feedbackState.value = true)
-  if (res.code !== 200) return (feedbackState.value = false)
+  if (res.code === 200 && !isCancel)
+    return (feedbackState.value = true)
+  if (res.code !== 200)
+    return (feedbackState.value = false)
 }
 
 watch(
   () => feedback.value,
   async (newVal) => {
-    if (newVal === null) return
-    if (feedbackState.value === null && isGoodFeedback.value) pageinfo.addGood()
+    if (newVal === null)
+      return
+    if (feedbackState.value === null && isGoodFeedback.value)
+      pageinfo.addGood()
     if (feedbackState.value === true) {
-      if (isBadFeedback.value) pageinfo.removeGood()
+      if (isBadFeedback.value)
+        pageinfo.removeGood()
       feedbackState.value = null
       await sendFeedback(true)
       return
@@ -83,12 +93,12 @@ provide('feedback', feedback)
 
 <template>
   <ClientOnly>
-    <div class="feedback" v-if="frontmatter.docInfo !== false">
+    <div v-if="frontmatter.docInfo !== false" class="feedback">
       <p class="title" flex items-center>
-        <span v-if="loading" class="feedback-state loader"></span>
-        <span v-if="feedbackState" :class="feedbackStateClass"></span>
+        <span v-if="loading" class="feedback-state loader" />
+        <span v-if="feedbackState" :class="feedbackStateClass" />
         {{ feedbackMessage }}
-        <br />
+        <br>
         {{ additionalMessage }}
       </p>
       <div class="feedback-con">
@@ -104,7 +114,7 @@ provide('feedback', feedback)
         <span
           :tooltip="theme.docsFeedback.bad"
           role="button"
-          class="bad feedback-btn"
+          class="feedback-btn bad"
           :class="{ active: isBadFeedback }"
           @click="setFeedback('bad')"
         >

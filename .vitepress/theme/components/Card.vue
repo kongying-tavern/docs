@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { computed } from 'vue'
+
 import { isLinkExternal, isRelativeLink } from '../utils'
 
 import '../styles/card.scss'
@@ -50,12 +51,12 @@ const iconMap: Record<string, string> = {
   'weixitianli.com': 'i-custom-wxtl',
 }
 
-const imgLoadHandler = (e: Event) => {
+function imgLoadHandler(e: Event) {
   const target = e.target as HTMLImageElement
   target.classList.remove('skeleton-animation')
 }
 
-const imgErrorHandler = (e: Event) => {
+function imgErrorHandler(e: Event) {
   const target = e.target as HTMLImageElement
   target.classList.add('load-error')
   target.src = 'https://assets.yuanshen.site/images/noImage.png'
@@ -64,7 +65,7 @@ const imgErrorHandler = (e: Event) => {
 const iconLink = computed(() => {
   let icon = ''
   if (props.logo === '' && props.link) {
-    const linkDomain = props.link.match(/(?:https?:\/\/)?(?:www\.)?([^\/]+)\//)
+    const linkDomain = props.link.match(/(?:https?:\/\/)?(?:www\.)?([^/]+)\//)
     if (linkDomain && linkDomain[1]) {
       const domain = linkDomain[1]
       for (const key in iconMap) {
@@ -82,13 +83,14 @@ const isExternal = computed(() => isLinkExternal(props.link))
 
 const logoLink = computed(() => {
   if (
-    props.logo === 'self' ||
-    props.logo.includes('yuanshen.site') ||
-    isRelativeLink(props.link)
+    props.logo === 'self'
+    || props.logo.includes('yuanshen.site')
+    || isRelativeLink(props.link)
   ) {
     return withBase('/imgs/common/logo/logo_128.png')
   }
-  if (props.logo === '' && iconLink.value === '') return 'no-logo'
+  if (props.logo === '' && iconLink.value === '')
+    return 'no-logo'
   return isRelativeLink(props.logo) ? withBase(props.logo) : props.logo
 })
 
@@ -129,16 +131,16 @@ const descText = computed(() => {
         :src="coverLink"
         @load="imgLoadHandler"
         @error="imgErrorHandler"
-      />
+      >
     </div>
 
     <div :class="`card-footer ${logoMissing && !iconLink ? 'no-logo' : ''}`">
       <template v-if="iconLink">
-        <label :class="`card-icon ${iconLink}`"></label>
+        <label :class="`card-icon ${iconLink}`" />
       </template>
       <template v-else>
         <template v-if="!logoMissing">
-          <img class="card-logo no-zoomable" :src="logoLink" />
+          <img class="no-zoomable card-logo" :src="logoLink">
         </template>
       </template>
 
@@ -146,7 +148,7 @@ const descText = computed(() => {
         <div class="card-title">
           {{ title }}
         </div>
-        <hr />
+        <hr>
         <ClientOnly>
           <div class="card-desc">
             {{ descText }}
@@ -158,10 +160,10 @@ const descText = computed(() => {
 
   <!-- 提前声明Logo，以便Unocss识别导入 -->
   <div v-once hidden>
-    <span class="i-logos-youtube-icon"></span>
-    <span class="i-logos-twitter"></span>
-    <span class="i-logos-discord-icon"></span>
-    <span class="i-logos-reddit-icon"></span>
-    <span class="i-logos-google-drive"></span>
+    <span class="i-logos-youtube-icon" />
+    <span class="i-logos-twitter" />
+    <span class="i-logos-discord-icon" />
+    <span class="i-logos-reddit-icon" />
+    <span class="i-logos-google-drive" />
   </div>
 </template>

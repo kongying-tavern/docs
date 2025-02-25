@@ -1,52 +1,5 @@
-<template>
-  <NavigationMenu class="forum-navigation mb-4">
-    <NavigationMenuList>
-      <NavigationMenuItem v-for="item in menuItems" :key="item.id">
-        <NavigationMenuLink
-          :href="`#${item.hash}`"
-          :class="[
-            'navigation-menu-link block color-[var(--vp-c-text-3)] bg-transparent',
-            { active: activeItem === item.id },
-            navigationMenuTriggerStyle(),
-          ]"
-          @click="setActive(item.id)"
-        >
-          {{ item.label }}
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuTrigger
-          class="color-[var(--vp-c-text-3)] bg-transparent"
-        >
-          {{ message.forum.header.navigation.faq.title }}
-        </NavigationMenuTrigger>
-        <NavigationMenuContent class="z-index-999999">
-          <ul
-            class="grid w-[400px] gap-3 p-4 md:w-[400px] md:grid-cols-2 lg:w-[500px]"
-          >
-            <li v-for="item in faq" :key="item.text">
-              <NavigationMenuLink as-child>
-                <VPLink
-                  :href="item.link"
-                  class="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                >
-                  <div class="text-sm font-medium leading-none">
-                    {{ item.text }}
-                  </div>
-                  <!-- <p class="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                    {{ item.link }}
-                  </p> -->
-                </VPLink>
-              </NavigationMenuLink>
-            </li>
-          </ul>
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-    </NavigationMenuList>
-  </NavigationMenu>
-</template>
-
 <script setup lang="ts">
+import type { FilterType } from '~/stores/useForumData'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -57,12 +10,13 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { useLocalized } from '@/hooks/useLocalized'
+import { storeToRefs } from 'pinia'
 import { useData } from 'vitepress'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
+import { useForumData } from '~/stores/useForumData'
+
 import { flattenWithTags } from './utils'
-import { useForumData, type FilterType } from '~/stores/useForumData'
-import { storeToRefs } from 'pinia'
-import { useHashChecker } from '@/hooks/useHashChecker'
 
 const { message } = useLocalized()
 const { theme } = useData()
@@ -102,20 +56,23 @@ const { filter, loading } = storeToRefs(useForumData())
 
 const activeItem = ref<FilterType>(filter.value)
 
-const setActive = (id: FilterType) => {
+function setActive(id: FilterType) {
   activeItem.value = id
   filter.value = id
   window.location.hash = id
 }
 
-const updateFilterType = () => {
+function updateFilterType() {
   const hash = window.location.hash.slice(1)
-  if (loading.value) return
-  if (!hash) return (activeItem.value = 'ALL')
+  if (loading.value)
+    return
+  if (!hash)
+    return (activeItem.value = 'ALL')
 
-  const item = menuItems.find((item) => item.hash === hash)
+  const item = menuItems.find(item => item.hash === hash)
 
-  if (item) activeItem.value = item.id
+  if (item)
+    activeItem.value = item.id
 }
 
 watch(activeItem, (newValue) => {
@@ -131,6 +88,54 @@ onBeforeUnmount(() => {
   window.removeEventListener('hashchange', updateFilterType)
 })
 </script>
+
+<template>
+  <NavigationMenu class="forum-navigation mb-4">
+    <NavigationMenuList>
+      <NavigationMenuItem v-for="item in menuItems" :key="item.id">
+        <NavigationMenuLink
+          :href="`#${item.hash}`"
+          class="navigation-menu-link block bg-transparent color-[var(--vp-c-text-3)]"
+          :class="[
+            { active: activeItem === item.id },
+            navigationMenuTriggerStyle(),
+          ]"
+          @click="setActive(item.id)"
+        >
+          {{ item.label }}
+        </NavigationMenuLink>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger
+          class="bg-transparent color-[var(--vp-c-text-3)]"
+        >
+          {{ message.forum.header.navigation.faq.title }}
+        </NavigationMenuTrigger>
+        <NavigationMenuContent class="z-index-999999">
+          <ul
+            class="grid w-[400px] gap-3 p-4 md:grid-cols-2 lg:w-[500px] md:w-[400px]"
+          >
+            <li v-for="item in faq" :key="item.text">
+              <NavigationMenuLink as-child>
+                <VPLink
+                  :href="item.link"
+                  class="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors space-y-1 focus:bg-accent hover:bg-accent focus:text-accent-foreground hover:text-accent-foreground"
+                >
+                  <div class="text-sm font-medium leading-none">
+                    {{ item.text }}
+                  </div>
+                  <!-- <p class="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {{ item.link }}
+                  </p> -->
+                </VPLink>
+              </NavigationMenuLink>
+            </li>
+          </ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>
+</template>
 
 <style scoped>
 @media (max-width: 468px) {

@@ -1,7 +1,7 @@
 import type { DefaultTheme, LocaleConfig } from 'vitepress'
-import { zhConfig } from '../locales/zh'
 import { enConfig } from '../locales/en'
 import { jaConfig } from '../locales/ja'
+import { zhConfig } from '../locales/zh'
 
 export const localesConfig: LocaleConfig<DefaultTheme.Config> = {
   root: {

@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import Banner from '@/components/banner/Banner.vue'
-import DocAside from '@/components/DocAside.vue'
 import DocFeedback from '@/components/DocFeedback.vue'
 import DocHeader from '@/components/DocHeader.vue'
 import DocInfo from '@/components/DocInfo.vue'
-import { Notifications } from '@/components/ui'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
+import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
+import { loadFonts } from '@/composables/loadFonts'
+import { enableTransitions } from '@/shared'
 import mediumZoom from 'medium-zoom'
-import { useRouter, useData } from 'vitepress'
+import { useData, useRouter } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import { nextTick, onMounted, provide } from 'vue'
-import { loadFonts } from '@/composables/loadFonts'
-
 import '@/styles/vars.css'
 import '@/styles/main.css'
 import '@/styles/ui.css'
@@ -22,14 +21,13 @@ import '@/styles/kbd.css'
 import '@/styles/animation.css'
 import '@/styles/shadcn.css'
 import '@/styles/fonts.css'
-import { enableTransitions } from '@/shared'
 
 const { Layout } = DefaultTheme
 const { isDark } = useData()
 
 const router = useRouter()
 
-const setupMediumZoom = () => {
+function setupMediumZoom() {
   mediumZoom('[data-zoomable]', {
     background: 'transparent',
   })

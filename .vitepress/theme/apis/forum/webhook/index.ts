@@ -1,4 +1,5 @@
 import ky from 'ky'
+
 import { catchError } from '../../utils'
 import { GITEE_API_CONFIG } from '../gitee/config'
 
@@ -10,9 +11,9 @@ export const fetcher = ky.create({
   retry: 2,
 })
 
-export const reformat = async (
+export async function reformat(
   options: GITEE_WEBHOOK.OPTIONS,
-): Promise<[undefined, GITEE_WEBHOOK.PARAMS] | [Error, undefined]> => {
+): Promise<[undefined, GITEE_WEBHOOK.PARAMS] | [Error, undefined]> {
   const {
     repo = GITEE_API_CONFIG.FEEDBACK_REPO,
     owner = GITEE_API_CONFIG.OWNER,
@@ -22,14 +23,15 @@ export const reformat = async (
     fetcher.post<GITEE_WEBHOOK.PARAMS>('gitee/feedback/reformat', {
       json: {
         webhook_token: WEBHOOK_TOKEN,
-        owner: owner,
-        repo: repo,
-        number: number,
+        owner,
+        repo,
+        number,
       },
     }),
   )
 
-  if (error) return Promise.reject(error)
+  if (error)
+    return Promise.reject(error)
 
   const data = await response.json()
 

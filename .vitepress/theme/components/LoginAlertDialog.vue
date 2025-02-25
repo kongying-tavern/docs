@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { oauth } from '@/apis/forum/gitee'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,7 +30,7 @@ const { redirectAuth: login } = useLogin()
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel
-          class="important:border-width-1 important:border-style-solid border-color-[var(--vp-c-divider)]"
+          class="border-color-[var(--vp-c-divider)] important:border-width-1 important:border-style-solid"
         >
           {{ theme.ui.button.cancel }}
         </AlertDialogCancel>

@@ -1,13 +1,10 @@
 <script setup lang="ts">
+import type { SelectTriggerProps } from 'radix-vue'
+import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 import { CaretSortIcon } from '@radix-icons/vue'
-import {
-  SelectIcon,
-  SelectTrigger,
-  type SelectTriggerProps,
-  useForwardProps,
-} from 'radix-vue'
-import { type HTMLAttributes, computed } from 'vue'
+import { SelectIcon, SelectTrigger, useForwardProps } from 'radix-vue'
+import { computed } from 'vue'
 
 const props = defineProps<
   SelectTriggerProps & { class?: HTMLAttributes['class'] }
@@ -34,7 +31,7 @@ const forwardedProps = useForwardProps(delegatedProps)
   >
     <slot />
     <SelectIcon as-child>
-      <CaretSortIcon class="w-4 h-4 opacity-50 shrink-0" />
+      <CaretSortIcon class="h-4 w-4 shrink-0 opacity-50" />
     </SelectIcon>
   </SelectTrigger>
 </template>

@@ -7,11 +7,11 @@ interface UseHashCheckerOptions {
   clearHash?: boolean
 }
 
-export const useHashChecker = (
+export function useHashChecker(
   targetHash: string | string[],
   callback?: (hash: string) => boolean | void,
   options: UseHashCheckerOptions = {},
-) => {
+) {
   const defaultOptions: UseHashCheckerOptions = {
     immediate: true,
     clearHash: true,
@@ -30,18 +30,21 @@ export const useHashChecker = (
 
   const checkHash = () => {
     if (isArray(targetHash)) {
-      isMatch.value = targetHash.some((hash) => currentHash.value === hash)
-    } else {
+      isMatch.value = targetHash.includes(currentHash.value)
+    }
+    else {
       isMatch.value = currentHash.value === targetHash
     }
 
-    if (!isMatch.value) return
+    if (!isMatch.value)
+      return
 
     matchedHash = currentHash.value
 
     if (clearHash)
       history.replaceState(null, '', window.location.href.split('#')[0])
-    if (callback) callbackState.value = Boolean(callback(matchedHash))
+    if (callback)
+      callbackState.value = Boolean(callback(matchedHash))
     if ((callback === undefined || callbackState.value) && redirectHash)
       location.hash = redirectHash
   }

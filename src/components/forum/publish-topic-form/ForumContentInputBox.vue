@@ -1,58 +1,11 @@
-<template>
-  <div class="flex">
-    <div class="comment-area w-full">
-      <div
-        class="body border-style-solid border rounded-md px-2 py-1 border-input bg-transparent shadow-sm transition-colors placeholder:text-muted-foreground vp-border-input"
-        :class="
-          cn(
-            focused
-              ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
-              : '',
-            props.class,
-          )
-        "
-      >
-        <div class="editor relative">
-          <textarea
-            ref="textarea"
-            class="char-count w-full max-h-256px h-auto line-height-[32px] cursor-text font-size-3.5 bg-transparent resize-none"
-            v-bind="$attrs"
-            v-model.trim="input"
-            :class="isUploadDisabled || false ? 'min-h-100px' : 'min-h-128px'"
-            :maxlength="textLimit"
-            :placeholder="placeholder"
-          >
-          </textarea>
-          <span
-            class="pos-absolute md:bottom-0 right-0 bottom-[-104px] c-[var(--vp-c-text-3)] font-size-[12px]"
-          >
-            <span :class="input?.length >= (textLimit || -1) ? 'c-red' : ''">
-              {{ input?.length || 0 }}
-            </span>
-            / {{ textLimit }}
-          </span>
-        </div>
-        <ForumImageUpload
-          v-if="isUploadDisabled"
-          v-model="imagesModel"
-          :fileLimit="fileLimit"
-          :accept="accept"
-          :multiple="multiple"
-          :hideDefaultTrigger="isHideDefaultTrigger || false"
-          :uploadTips="uploadTips"
-          :max-file-size="3"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { useTextareaAutosize, useVModel, useFocus } from '@vueuse/core'
-import { computed, watch, type HTMLAttributes } from 'vue'
-import ForumImageUpload from '~/components/forum/ForumImageUpload.vue'
-import { cn } from '@/lib/utils'
 import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { useFocus, useTextareaAutosize, useVModel } from '@vueuse/core'
+import { computed, watch } from 'vue'
+
+import ForumImageUpload from '~/components/forum/ForumImageUpload.vue'
 
 interface Content {
   text: string
@@ -89,11 +42,59 @@ const { focused } = useFocus(textarea)
 
 const imagesModel = computed({
   get: () => modelValue.value.images || [],
-  set: (val) => (modelValue.value.images = val),
+  set: val => (modelValue.value.images = val),
 })
 
 watch(input, () => (modelValue.value.text = input.value))
 </script>
+
+<template>
+  <div class="flex">
+    <div class="comment-area w-full">
+      <div
+        class="body border border-input rounded-md border-style-solid bg-transparent px-2 py-1 shadow-sm transition-colors placeholder:text-muted-foreground vp-border-input"
+        :class="
+          cn(
+            focused
+              ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+              : '',
+            props.class,
+          )
+        "
+      >
+        <div class="editor relative">
+          <textarea
+            ref="textarea"
+            v-bind="$attrs"
+            v-model.trim="input"
+            class="h-auto max-h-256px w-full cursor-text resize-none bg-transparent font-size-3.5 line-height-[32px] char-count"
+            :class="isUploadDisabled || false ? 'min-h-100px' : 'min-h-128px'"
+            :maxlength="textLimit"
+            :placeholder="placeholder"
+          />
+          <span
+            class="pos-absolute bottom-[-104px] right-0 font-size-[12px] c-[var(--vp-c-text-3)] md:bottom-0"
+          >
+            <span :class="input?.length >= (textLimit || -1) ? 'c-red' : ''">
+              {{ input?.length || 0 }}
+            </span>
+            / {{ textLimit }}
+          </span>
+        </div>
+        <ForumImageUpload
+          v-if="isUploadDisabled"
+          v-model="imagesModel"
+          :file-limit="fileLimit"
+          :accept="accept"
+          :multiple="multiple"
+          :hide-default-trigger="isHideDefaultTrigger || false"
+          :upload-tips="uploadTips"
+          :max-file-size="3"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 textarea {

@@ -1,7 +1,7 @@
-import { ref, computed, watch } from 'vue'
-import { convertMultipleToMarkdown } from '~/components/forum/utils'
-
 import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
+import { computed, ref, watch } from 'vue'
+
+import { convertMultipleToMarkdown } from '~/components/forum/utils'
 
 export function useImageUpload() {
   const uploadedImages = ref<UploadUserFile[]>([])
@@ -24,10 +24,10 @@ export function useImageUpload() {
 
   const markdownFormatImages = computed(() => {
     console.log(uploadedImages.value, imageList.value)
-    console.log(uploadedImages.value.map((image) => image.url))
+    console.log(uploadedImages.value.map(image => image.url))
     return convertMultipleToMarkdown(
       uploadedImages.value
-        .map((image) => image.url)
+        .map(image => image.url)
         .filter((url): url is string => url !== undefined),
     )
   })

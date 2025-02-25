@@ -1,15 +1,15 @@
-import { GiteeAPIError } from '@/apis/forum/gitee'
 import type { Ref } from 'vue'
-import { toast } from 'vue-sonner'
 import type { CustomConfig } from '../../.vitepress/locales/types'
+import { GiteeAPIError } from '@/apis/forum/gitee'
+import { toast } from 'vue-sonner'
 
-export const handleError = (
+export function handleError(
   error: Error | undefined,
   message: Ref<CustomConfig>,
   options?: {
     errorMessage: string
   },
-) => {
+) {
   if (error instanceof GiteeAPIError) {
     if (error.isExceededRateLimit()) {
       return toast.error(message.value.forum.loadError, {

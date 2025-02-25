@@ -1,41 +1,11 @@
-<template>
-  <div
-    class="size-full rounded-sm overflow-hidden relative border-dashed border flex justify-center items-center"
-    :class="uploadVariants.size[size]"
-    :tabindex="disabled ? '-1' : '0'"
-    @click="handleClick"
-    @keydown.self.enter.space="handleKeydown"
-  >
-    <template v-if="drag">
-      <UploadPhotoDragger :disabled="disabled" @file="uploadFiles">
-        <slot />
-      </UploadPhotoDragger>
-    </template>
-    <template v-else>
-      <slot />
-    </template>
-    <input
-      class="hidden"
-      ref="inputRef"
-      :name="name"
-      :disabled="disabled || fileList.length === limit"
-      :maxlength="limit"
-      :multiple="multiple"
-      :accept="accept"
-      type="file"
-      @change="handleChange"
-      @click.stop
-    />
-  </div>
-</template>
-
 <script lang="ts" setup>
+import type { UploadRawFile } from './upload'
+
 import { shallowRef } from 'vue'
 import { genFileId, uploadVariants } from './upload'
 import { uploadPhotoProps } from './uploadPhoto'
-import UploadPhotoDragger from './UploadPhotoDragger.vue'
 
-import type { UploadRawFile } from './upload'
+import UploadPhotoDragger from './UploadPhotoDragger.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -45,8 +15,9 @@ const props = defineProps(uploadPhotoProps)
 
 const inputRef = shallowRef<HTMLInputElement>()
 
-const uploadFiles = (files: File[]) => {
-  if (files.length === 0) return
+function uploadFiles(files: File[]) {
+  if (files.length === 0)
+    return
 
   const { limit, fileList, multiple, onExceed, onStart } = props
 
@@ -67,20 +38,52 @@ const uploadFiles = (files: File[]) => {
   }
 }
 
-const handleChange = (e: Event) => {
+function handleChange(e: Event) {
   const files = (e.target as HTMLInputElement).files
-  if (!files) return
+  if (!files)
+    return
   uploadFiles(Array.from(files))
 }
 
-const handleClick = () => {
+function handleClick() {
   if (!props.disabled) {
     inputRef.value!.value = ''
     inputRef.value!.click()
   }
 }
 
-const handleKeydown = () => {
+function handleKeydown() {
   handleClick()
 }
 </script>
+
+<template>
+  <div
+    class="relative size-full flex items-center justify-center overflow-hidden border rounded-sm border-dashed"
+    :class="uploadVariants.size[size]"
+    :tabindex="disabled ? '-1' : '0'"
+    @click="handleClick"
+    @keydown.self.enter.space="handleKeydown"
+  >
+    <template v-if="drag">
+      <UploadPhotoDragger :disabled="disabled" @file="uploadFiles">
+        <slot />
+      </UploadPhotoDragger>
+    </template>
+    <template v-else>
+      <slot />
+    </template>
+    <input
+      ref="inputRef"
+      class="hidden"
+      :name="name"
+      :disabled="disabled || fileList.length === limit"
+      :maxlength="limit"
+      :multiple="multiple"
+      :accept="accept"
+      type="file"
+      @change="handleChange"
+      @click.stop
+    >
+  </div>
+</template>

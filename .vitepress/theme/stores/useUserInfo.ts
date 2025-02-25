@@ -1,9 +1,10 @@
+import type ForumAPI from '@/apis/forum/api'
+
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+
 import { getUser } from '../apis/forum/gitee/user'
 import { useUserAuthStore } from './useUserAuth'
-
-import type ForumAPI from '@/apis/forum/api'
 
 export const useUserInfoStore = defineStore('user-info', () => {
   const userAuthStore = useUserAuthStore()

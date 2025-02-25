@@ -1,6 +1,3 @@
-// @ts-ignore
-import mediumZoom from 'medium-zoom'
-
 /**
  * VitePress plugin to add `medium-zoom` lightbox to images.
  * @param {any} md - Markdown.

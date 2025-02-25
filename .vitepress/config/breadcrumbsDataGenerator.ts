@@ -52,5 +52,6 @@ export function generateBreadcrumbsData(
     breadcrumbs.push({ title, link: `/${encodedLink}` })
   }
 
-  if (splitPath.length) pageData.frontmatter.breadcrumbs = breadcrumbs
+  if (splitPath.length)
+    pageData.frontmatter.breadcrumbs = breadcrumbs
 }

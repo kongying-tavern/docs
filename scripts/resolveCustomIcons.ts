@@ -1,6 +1,6 @@
-import fs from 'fs'
-import path from 'path'
-import { URL, fileURLToPath } from 'node:url'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath, URL } from 'node:url'
 
 interface IconData {
   [key: string]: string
@@ -19,7 +19,7 @@ export function resolveCustomIcons(): IconData {
 
   const svgFiles = fs
     .readdirSync(svgDir)
-    .filter((file) => file.endsWith('.svg'))
+    .filter(file => file.endsWith('.svg'))
 
   svgFiles.forEach((file) => {
     const fileNameWithoutExt = path.basename(file, '.svg')

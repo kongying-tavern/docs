@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
 export function useTextCollapse(contentRaw: string, maxLength: number = 180) {
   const isExpanded = ref(false)

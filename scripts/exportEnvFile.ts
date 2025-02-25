@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
+import process from 'node:process'
 
-export const exportEnvFile = async () => {
+export async function exportEnvFile() {
   const keyUrlMap: Record<string, string> = {
     BLOG_CHANGELOG_WINCLIENT_JA_ID: '/ja/changelog/windows-client',
     BLOG_CHANGELOG_WINCLIENT_EN_ID: '/en/changelog/windows-client',
@@ -27,13 +28,14 @@ export const exportEnvFile = async () => {
     console.info(
       `Env JSON generated as:\n${JSON.stringify(jsonContent, null, 2)}`,
     )
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error export env JSON:', error)
   }
 
   // Build `.env` file
   const envContent = Object.keys(keyUrlMap)
-    .map((key) => `VITE_${key}=${process.env[key] ?? ''}`)
+    .map(key => `VITE_${key}=${process.env[key] ?? ''}`)
     .join('\n')
   const envFilePath = new URL('../src/.env.local', import.meta.url)
 
@@ -41,7 +43,8 @@ export const exportEnvFile = async () => {
     await fs.writeFile(envFilePath, envContent, 'utf-8')
     console.info(`Env successfully overwritten in ${envFilePath.pathname}`)
     console.info(`Env file generated as:\n${envContent}`)
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error export env file:', error)
   }
 }

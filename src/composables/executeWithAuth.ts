@@ -1,18 +1,18 @@
+import type { Ref } from 'vue'
+import type { CustomConfig } from '../../.vitepress/locales/types'
+import { catchError } from '@/apis/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { toast } from 'vue-sonner'
-import type { CustomConfig } from '../../.vitepress/locales/types'
-import type { Ref } from 'vue'
-import { catchError } from '@/apis/utils'
 
 type ActionFunction<T extends any[]> = (...args: T) => Promise<boolean | any>
 
-export const executeWithAuth = async <T extends any[]>(
+export async function executeWithAuth<T extends any[]>(
   action: ActionFunction<T>,
   argument: T,
   successMsg: string,
   errorMsg: string,
   message: Ref<CustomConfig>,
-) => {
+) {
   const userAuth = useUserAuthStore()
 
   if (!userAuth.isTokenValid) {
@@ -26,7 +26,8 @@ export const executeWithAuth = async <T extends any[]>(
 
   if (state && !error) {
     toast.success(successMsg)
-  } else {
+  }
+  else {
     toast.error(errorMsg)
   }
 

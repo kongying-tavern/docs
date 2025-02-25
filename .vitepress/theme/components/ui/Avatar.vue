@@ -1,28 +1,9 @@
-<template>
-  <div class="Avatar" :class="wrapperClass">
-    <component
-      class="avatar-image"
-      :is="as"
-      v-if="url && !error"
-      :class="imgClass"
-      :alt="alt"
-      :src="url"
-      @error="onError"
-    />
-    <span v-else-if="text">{{ text }}</span>
-    <span v-else-if="icon" :class="(icon, iconClass)"></span>
-    <span v-else-if="placeholder" class="avatar-placeholder">{{
-      placeholder
-    }}</span>
-  </div>
-</template>
-
 <script setup lang="ts">
+import type { PropType } from 'vue'
+
 import { twJoin, twMerge } from 'tailwind-merge'
 import { computed, ref, watch } from 'vue'
 import { UI } from './config'
-
-import type { PropType } from 'vue'
 
 const props = defineProps({
   as: {
@@ -66,18 +47,6 @@ const props = defineProps({
   },
 })
 
-const wrapperClass = computed(() => {
-  return twMerge(
-    twJoin(
-      UI.Avatar.wrapper,
-      (error.value || !url.value) && UI.Avatar.background,
-      UI.Avatar.rounded,
-      UI.Avatar.size[props.size],
-    ),
-    props.class,
-  )
-})
-
 const imgClass = computed(() => {
   return twMerge(
     twJoin(UI.Avatar.rounded, UI.Avatar.size[props.size]),
@@ -89,7 +58,26 @@ const iconClass = computed(() => {
   return twJoin(UI.Avatar.icon.base, UI.Avatar.icon.size[props.size])
 })
 
+const url = computed(() => {
+  if (typeof props.src === 'boolean') {
+    return null
+  }
+  return props.src
+})
+
 const error = ref(false)
+
+const wrapperClass = computed(() => {
+  return twMerge(
+    twJoin(
+      UI.Avatar.wrapper,
+      (error.value || !url.value) && UI.Avatar.background,
+      UI.Avatar.rounded,
+      UI.Avatar.size[props.size],
+    ),
+    props.class,
+  )
+})
 
 watch(
   () => props.src,
@@ -104,18 +92,30 @@ function onError() {
   error.value = true
 }
 
-const url = computed(() => {
-  if (typeof props.src === 'boolean') {
-    return null
-  }
-  return props.src
-})
-
 const placeholder = computed(() => {
   return (props.alt || '')
     .split(' ')
-    .map((word) => word.charAt(0))
+    .map(word => word.charAt(0))
     .join('')
     .substring(0, 2)
 })
 </script>
+
+<template>
+  <div class="Avatar" :class="wrapperClass">
+    <component
+      :is="as"
+      v-if="url && !error"
+      class="avatar-image"
+      :class="imgClass"
+      :alt="alt"
+      :src="url"
+      @error="onError"
+    />
+    <span v-else-if="text">{{ text }}</span>
+    <span v-else-if="icon" :class="(icon, iconClass)" />
+    <span v-else-if="placeholder" class="avatar-placeholder">{{
+      placeholder
+    }}</span>
+  </div>
+</template>

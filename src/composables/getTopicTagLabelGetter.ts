@@ -1,4 +1,4 @@
-export const getTopicTagLabelGetter = () => {
+export function getTopicTagLabelGetter() {
   const constructList: [string, string][] = [
     ['DOCS-ISSUE', 'CATA-DOCS'],
     ['TYPOS-ISSUE', 'CATA-TYPOS'],
@@ -29,10 +29,10 @@ export const getTopicTagLabelGetter = () => {
     reverseMap.has(label ?? '')
 
   const toTags = (labels?: string[] | null | undefined) =>
-    labels ? labels.map((label) => getTag(label)) : []
+    labels ? labels.map(label => getTag(label)) : []
 
   const toLabels = (tags?: string[] | null | undefined) =>
-    tags ? tags.map((tag) => getLabel(tag)) : []
+    tags ? tags.map(tag => getLabel(tag)) : []
 
   return {
     getTag,

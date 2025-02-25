@@ -1,4 +1,5 @@
-import { computed, watch, type Ref, type ComputedRef, shallowRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 
 export function useOptimistic<TState, TOptimisticValue>(
   state: Ref<TState>,
@@ -6,7 +7,7 @@ export function useOptimistic<TState, TOptimisticValue>(
 ): [
   optimisticState: ComputedRef<TState>,
   addOptimistic: (value: TOptimisticValue) => { rollback: () => void },
-] {
+  ] {
   const pendingQueue = shallowRef<
     Array<{
       value: TOptimisticValue
@@ -38,7 +39,7 @@ export function useOptimistic<TState, TOptimisticValue>(
       rollback: () => {
         if (currentVersion === stateVersion) {
           pendingQueue.value = pendingQueue.value.filter(
-            (entry) => entry !== newEntry,
+            entry => entry !== newEntry,
           )
         }
       },

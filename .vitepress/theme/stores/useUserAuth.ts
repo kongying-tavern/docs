@@ -1,10 +1,11 @@
+import type ForumAPI from '@/apis/forum/api'
+import { toCamelCaseObject } from '@/utils'
 import { useLocalStorage } from '@vueuse/core'
+
 import { defineStore } from 'pinia'
+
 import { computed, ref, watch } from 'vue'
 import { oauth } from '../apis/forum/gitee'
-import { toCamelCaseObject } from '@/utils'
-
-import type ForumAPI from '@/apis/forum/api'
 
 export interface LocalAuth {
   accessToken: string
@@ -24,19 +25,21 @@ const TOKEN_REFRESH_REST_TIME = 1000
 const getExpiressTime = (expiressIn: number) => Date.now() + expiressIn * 1000
 
 /** 计算剩余有效时间 */
-const getRestTime = (expiressTime: number) =>
-  new Date(expiressTime).getTime() - Date.now()
+function getRestTime(expiressTime: number) {
+  return new Date(expiressTime).getTime() - Date.now()
+}
 
 /** 计算剩余有效时间与设定刷新阈值时间的差 */
-const differenceTokenTime = (expiressTime: number) =>
-  getRestTime(expiressTime) - TOKEN_REFRESH_REST_TIME
+function differenceTokenTime(expiressTime: number) {
+  return getRestTime(expiressTime) - TOKEN_REFRESH_REST_TIME
+}
 
 export const useUserAuthStore = defineStore('user-auth', () => {
   const auth = useLocalStorage<Partial<LocalAuth>>(USERAUTH_KEY, {})
 
   const setAuth = (newAuth: ForumAPI.Auth) => {
-    const { refreshToken, expiresIn, tokenType, accessToken } =
-      toCamelCaseObject(newAuth)
+    const { refreshToken, expiresIn, tokenType, accessToken }
+      = toCamelCaseObject(newAuth as unknown as Record<string, string>) as unknown as LocalAuth
     auth.value = {
       refreshToken,
       expiresIn,
@@ -47,35 +50,11 @@ export const useUserAuthStore = defineStore('user-auth', () => {
   }
 
   const isTokenValid = computed(() => {
-    if (!auth.value.accessToken) return false
+    if (!auth.value.accessToken)
+      return false
     const { expiresTime = 0 } = auth.value
     return expiresTime > Date.now()
   })
-
-  watch(isTokenValid, (valid) => {
-    console.info('token changed', valid)
-
-    if (!valid) clearAuth()
-  })
-
-  const refreshAuth = () =>
-    new Promise<void>(async (resolve, reject) => {
-      const { refreshToken } = auth.value
-      if (!refreshToken) {
-        logout()
-        return reject(new Error('鉴权信息为空'))
-      }
-
-      const [error, newAuth] = await oauth.refreshToken(refreshToken)
-
-      if (error || !newAuth) {
-        logout()
-        return reject(new Error('Token 刷新失败'))
-      }
-
-      auth.value = newAuth
-      resolve()
-    })
 
   /** 刷新计时器 */
   const intervalRefreshTimer = ref<number>()
@@ -84,6 +63,37 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     window.clearTimeout(intervalRefreshTimer.value)
     intervalRefreshTimer.value = undefined
   }
+
+  const clearAuth = () => {
+    stopAutoRefresh()
+    auth.value = {}
+  }
+
+  const logout = () => {
+    clearAuth()
+  }
+
+  const refreshAuth = () =>
+    new Promise<void>((resolve, reject) => {
+      const refresh = async () => {
+        const { refreshToken } = auth.value
+        if (!refreshToken) {
+          logout()
+          return reject(new Error('鉴权信息为空'))
+        }
+
+        const [error, newAuth] = await oauth.refreshToken(refreshToken)
+
+        if (error || !newAuth) {
+          logout()
+          return reject(new Error('Token 刷新失败'))
+        }
+
+        auth.value = newAuth
+        resolve()
+      }
+      refresh()
+    })
 
   /** 确认自动刷新 token 任务存在 */
   const ensureTokenRefreshMission = async () => {
@@ -101,7 +111,8 @@ export const useUserAuthStore = defineStore('user-auth', () => {
 
       const commitRefresh = async () => {
         stopAutoRefresh()
-        if (!auth.value.refreshToken) return
+        if (!auth.value.refreshToken)
+          return
         await refreshAuth()
         ensureTokenRefreshMission()
       }
@@ -118,7 +129,8 @@ export const useUserAuthStore = defineStore('user-auth', () => {
       intervalRefreshTimer.value = window.setTimeout(async () => {
         await commitRefresh()
       }, refreshInterval)
-    } catch (err) {
+    }
+    catch (err) {
       stopAutoRefresh()
       auth.value = {}
       console.error(err)
@@ -126,19 +138,18 @@ export const useUserAuthStore = defineStore('user-auth', () => {
   }
 
   const accessToken = computed(() => {
-    if (!isTokenValid.value) return null
+    if (!isTokenValid.value)
+      return null
 
     return auth.value.accessToken
   })
 
-  const clearAuth = () => {
-    stopAutoRefresh()
-    auth.value = {}
-  }
+  watch(isTokenValid, (valid) => {
+    console.info('token changed', valid)
 
-  const logout = () => {
-    clearAuth()
-  }
+    if (!valid)
+      clearAuth()
+  })
 
   return {
     // states

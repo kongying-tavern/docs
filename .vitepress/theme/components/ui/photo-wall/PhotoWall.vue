@@ -1,38 +1,9 @@
-<template>
-  <div>
-    <PhotoList
-      :disabled="disabled"
-      :files="uploadFiles"
-      :handle-preview="onPreview"
-      @remove="handleRemove"
-      :class="uploadVariants.size[size]"
-    >
-      <template v-if="$slots.file" #default="{ file, index }">
-        <slot name="file" :file="file" :index="index" />
-      </template>
-      <template #append>
-        <UploadPhoto
-          ref="uploadRef"
-          v-bind="uploadPhotoProps"
-          v-if="!hideDefaultTrigger"
-        >
-          <slot v-if="$slots.trigger" name="trigger" />
-          <slot v-if="!$slots.trigger && $slots.default" />
-        </UploadPhoto>
-      </template>
-    </PhotoList>
-
-    <slot v-if="$slots.trigger" />
-    <slot name="tip" />
-  </div>
-</template>
-
 <script lang="ts" setup>
+import type { UploadPhotoInstance, UploadPhotoProps } from './uploadPhoto'
 import { computed, onBeforeUnmount, provide, ref, shallowRef } from 'vue'
 import PhotoList from './PhotoList.vue'
-import UploadPhoto from './UploadPhoto.vue'
 import { uploadContextKey, uploadProps, uploadVariants } from './upload'
-import type { UploadPhotoInstance, UploadPhotoProps } from './uploadPhoto'
+import UploadPhoto from './UploadPhoto.vue'
 import { useHandlers } from './useHandlers'
 
 defineOptions({
@@ -76,3 +47,32 @@ defineExpose({
   handleRemove,
 })
 </script>
+
+<template>
+  <div>
+    <PhotoList
+      :disabled="disabled"
+      :files="uploadFiles"
+      :handle-preview="onPreview"
+      :class="uploadVariants.size[size]"
+      @remove="handleRemove"
+    >
+      <template v-if="$slots.file" #default="{ file, index }">
+        <slot name="file" :file="file" :index="index" />
+      </template>
+      <template #append>
+        <UploadPhoto
+          v-if="!hideDefaultTrigger"
+          ref="uploadRef"
+          v-bind="uploadPhotoProps"
+        >
+          <slot v-if="$slots.trigger" name="trigger" />
+          <slot v-if="!$slots.trigger && $slots.default" />
+        </UploadPhoto>
+      </template>
+    </PhotoList>
+
+    <slot v-if="$slots.trigger" />
+    <slot name="tip" />
+  </div>
+</template>

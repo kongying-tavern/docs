@@ -4,34 +4,36 @@ import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 
 export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   const arr: string[] = []
-  labels.map((val) => arr.push(val.name))
+  labels.map(val => arr.push(val.name))
 
   return arr
 }
 
 export function replaceAtMentions(text: string): string {
-  const regex = /@([a-zA-Z0-9]+)(?=\s|$)/g
+  const regex = /@([a-z0-9]+)(?=\s|$)/gi
 
-  if (regex.exec(text) == null) return text
+  if (regex.exec(text) == null)
+    return text
 
   return text.replaceAll(regex, (match, p1) => {
     return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
   })
 }
 
-export function setPageTitle(newTitle = '', prefix?: string): void {
-  if (import.meta.env.SSR) return
+export function setPageTitle(newTitle: string, prefix?: string): void {
+  if (import.meta.env.SSR)
+    return
   const title = document.title.split('|')
   document.title = `${prefix ? `${prefix} -` : ''} ${newTitle} | ${title[1]}`
 }
 
-type DataNode = {
+interface DataNode {
   text: string
   link?: string
   items?: DataNode[]
 }
 
-type FlattenedNode = {
+interface FlattenedNode {
   text: string
   link: string
   tag: string
@@ -89,53 +91,55 @@ export function getPageHeight() {
   )
 }
 
-export const compressImage = async (
+export async function compressImage(
   file: File,
-): Promise<[Error | undefined, File]> => {
+): Promise<[Error | undefined, File]> {
   try {
     const { default: Compressor } = await import('compressorjs')
 
     const [err, result] = await catchError(
       new Promise((resolve, reject) => {
+        // eslint-disable-next-line no-new
         new Compressor(file, {
           quality: 0.8,
           success(result: File) {
             resolve(result)
           },
           error(err: Error) {
-            reject([err, file])
+            reject(err)
           },
         })
       }),
     )
     console.log(err, result)
     return [err, result as File]
-  } catch (err) {
+  }
+  catch {
     throw new Error('Failed to load Compressor.js')
   }
 }
 
-export const getTopicNumber = () => {
-  if (import.meta.env.SSR) return ''
+export function getTopicNumber() {
+  if (import.meta.env.SSR)
+    return ''
   const params = useUrlSearchParams('history')
-  if (typeof params.number !== 'string') location.href = '../error.html'
+  if (typeof params.number !== 'string')
+    location.href = '../error.html'
   return String(params.number)
 }
 
 export function convertMultipleToMarkdown(images: string[], altTexts = []) {
-  return (
-    '\n' +
-    images
-      .map((url, index) => {
-        const altText = altTexts[index] || ''
-        return `![${altText}](${url})`
-      })
-      .join('\n')
-  )
+  return `\n${images
+    .map((url, index) => {
+      const altText = altTexts[index] || ''
+      return `![${altText}](${url})`
+    })
+    .join('\n')}`
 }
 
 export function extractPlainText(input: string): string {
-  if (!input) return ''
+  if (!input)
+    return ''
 
   // Step 1: Remove HTML tags but preserve line breaks (e.g., <br>, <p>, <div>)
   const htmlToNewline = input
@@ -155,7 +159,7 @@ export function extractPlainText(input: string): string {
 
   // Step 3: Remove Markdown syntax while preserving line breaks
   const markdownToPlainText = htmlEntityDecode
-    .replace(/([*_]{1,3}|~{2}|`{1,3}|#+|!\[|\]|\[|\]|\(|\)|>)/g, '') // Remove Markdown special characters
+    .replace(/([*_]{1,3}|~{2}|`{1,3}|#+|!\[|[\][()>])/g, '') // Remove Markdown special characters
     .replace(/\s*[-+*] /g, '') // Remove list markers
     .replace(/\n{2,}/g, '\n') // Normalize multiple newlines
 

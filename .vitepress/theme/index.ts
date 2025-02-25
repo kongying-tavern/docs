@@ -1,9 +1,10 @@
+import type { Theme } from 'vitepress'
 import Card from '@/components/Card.vue'
 import Coins from '@/components/Coins.vue'
 import * as components from '@/components/ui/'
 import Layout from '@/layouts/Layout.vue'
-import Headline from './layouts/Headline.vue'
-import Post from './layouts/Post.vue'
+import { createHead } from '@unhead/vue'
+import { MotionPlugin } from '@vueuse/motion'
 import { createPinia } from 'pinia'
 import DefaultTheme, {
   VPBadge,
@@ -11,10 +12,8 @@ import DefaultTheme, {
   VPLink,
 } from 'vitepress/theme-without-fonts'
 import googleAnalytics from '../plugins/google-analytics'
-import { MotionPlugin } from '@vueuse/motion'
-import { createHead } from '@unhead/vue'
-
-import type { Theme } from 'vitepress'
+import Headline from './layouts/Headline.vue'
+import Post from './layouts/Post.vue'
 
 import 'uno.css'
 

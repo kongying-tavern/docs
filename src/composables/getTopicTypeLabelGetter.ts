@@ -1,4 +1,4 @@
-export const getTopicTypeLabelGetter = () => {
+export function getTopicTypeLabelGetter() {
   const constructList: [string, string][] = [
     ['FEAT', 'TYP-FEAT'],
     ['ANN', 'TYP-ANN'],

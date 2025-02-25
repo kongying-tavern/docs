@@ -4,28 +4,34 @@ import { useRoute } from 'vitepress'
 import { nextTick, onMounted, watch } from 'vue'
 
 function handleHighlight() {
-  if (!window || !window.location) return
-  if (!window.location.hash) return
+  if (!window || !window.location)
+    return
+  if (!window.location.hash)
+    return
 
   const targetedHashId = decodeURIComponent(window.location.hash)
-  if (!targetedHashId) return
+  if (!targetedHashId)
+    return
 
   let elem: HTMLElement | null
 
   try {
     elem = document.querySelector(targetedHashId)
-  } catch (e) {
+  }
+  catch (e) {
     console.error(e)
     return
   }
-  if (!elem) return
+  if (!elem)
+    return
 
   if (!elem.classList.contains('HighlightTargetedHeading'))
     elem.classList.add('HighlightTargetedHeading')
 
   elem.classList.remove('HighlightTargetedHeadingAnimated')
   setTimeout(() => {
-    if (elem) elem.classList.add('HighlightTargetedHeadingAnimated')
+    if (elem)
+      elem.classList.add('HighlightTargetedHeadingAnimated')
   }, 10)
 }
 

@@ -1,5 +1,5 @@
-import { useTimestamp } from '@vueuse/core'
 import type { UseTimestampOptions } from '@vueuse/core'
+import { useTimestamp } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
 export function useTimer(

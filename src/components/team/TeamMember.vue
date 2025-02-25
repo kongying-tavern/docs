@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { Member } from './Member'
+import { computed } from 'vue'
 
 const props = defineProps<{
   member: Member
@@ -8,14 +8,14 @@ const props = defineProps<{
 
 const avatarUrl = computed(() => {
   return (
-    props.member.avatarPic ??
-    `https://q1.qlogo.cn/g?b=qq&nk=${props.member.qq}&s=640`
+    props.member.avatarPic
+    ?? `https://q1.qlogo.cn/g?b=qq&nk=${props.member.qq}&s=640`
   )
 })
 </script>
 
 <template>
-  <article class="TeamMember view-fade-y">
+  <article class="view-fade-y TeamMember">
     <VPLink
       v-if="member.sponsor"
       class="sponsor"
@@ -31,11 +31,13 @@ const avatarUrl = computed(() => {
         onload="this.classList.toggle('skeleton')"
         :src="avatarUrl"
         :alt="`${member.name}'s Profile Picture`"
-      />
+      >
     </figure>
 
     <div class="data">
-      <h1 class="name">{{ member.name }}</h1>
+      <h1 class="name">
+        {{ member.name }}
+      </h1>
       <p class="org">
         {{ member.title }}
         <span v-if="member.company" class="nowrap">
@@ -57,7 +59,9 @@ const avatarUrl = computed(() => {
       <div class="profiles">
         <section v-if="member.projects" class="desc">
           <div class="desc-title">
-            <h2 class="sr-only">Projects</h2>
+            <h2 class="sr-only">
+              Projects
+            </h2>
             <svg i-ph-code-bold class="code desc-icon" />
           </div>
           <ul class="desc-list">
@@ -75,7 +79,9 @@ const avatarUrl = computed(() => {
 
         <section v-if="member.location" class="desc">
           <div class="desc-title">
-            <h2 class="sr-only">Location</h2>
+            <h2 class="sr-only">
+              Location
+            </h2>
             <svg i-ic-sharp-location-on class="desc-icon" />
           </div>
           <p class="desc-text">
@@ -85,7 +91,9 @@ const avatarUrl = computed(() => {
 
         <section v-if="member.languages" class="desc">
           <div class="desc-title">
-            <h2 class="sr-only">Languages</h2>
+            <h2 class="sr-only">
+              Languages
+            </h2>
             <svg i-ic-round-language class="desc-icon" />
           </div>
           <ul class="desc-list">
@@ -101,7 +109,9 @@ const avatarUrl = computed(() => {
 
         <section v-if="member.website" class="desc">
           <div class="desc-title">
-            <h2 class="sr-only">Website</h2>
+            <h2 class="sr-only">
+              Website
+            </h2>
             <svg
               i-ic-baseline-attachment
               class="desc-icon"

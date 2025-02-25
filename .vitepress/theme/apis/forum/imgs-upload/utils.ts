@@ -1,4 +1,4 @@
-export const normalizeImage = (image: IMAGES_UPLOAD.IMAGE) => {
+export function normalizeImage(image: IMAGES_UPLOAD.IMAGE) {
   return {
     state: true,
     message: image.message,

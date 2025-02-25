@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { useLocalized } from '@/hooks/useLocalized'
+import { useData } from 'vitepress'
+import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import posts from '~/_data/posts.json'
-import { useLocalized } from '@/hooks/useLocalized'
-import ForumDate from '../ForumDate.vue'
-import { VPLink } from 'vitepress/theme-without-fonts'
-import { extractPlainText } from '../utils'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { useData } from 'vitepress'
+import ForumDate from '../ForumDate.vue'
+import { extractPlainText } from '../utils'
 
 const localeLabelGetter = getForumLocaleLabelGetter()
 
@@ -15,12 +15,13 @@ const { lang } = useData()
 
 const filteredPosts = computed(() =>
   posts.filter(
-    (post) =>
-      post.tags &&
-      post.tags.some(
-        (label) =>
-          label ===
-          localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
+    post =>
+      post.tags
+      // eslint-disable-next-line unicorn/prefer-includes
+      && post.tags.some(
+        label =>
+          label
+          === localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
       ),
   ),
 )
@@ -30,36 +31,37 @@ const filteredPosts = computed(() =>
   <div class="divide-y">
     <ul class="c-[var(--vp-c-text-1)]">
       <li
-        class="py-12 border-b border-b-[var(--vp-c-divider)]"
         v-for="{ title, createdAt, contentRaw, id } of filteredPosts"
+        :key="id"
+        class="border-b border-b-[var(--vp-c-divider)] py-12"
       >
         <article
-          class="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline"
+          class="xl:grid xl:grid-cols-4 xl:items-baseline space-y-2 xl:space-y-0"
         >
           <ForumDate
-            class="list-none font-[var(--vp-font-family-subtitle)] c-[var(--vp-c-text-3)] text-base leading-6"
+            class="list-none text-base c-[var(--vp-c-text-3)] leading-6 font-[var(--vp-font-family-subtitle)]"
             :date="createdAt"
             format="LL"
           />
 
-          <div class="space-y-5 xl:col-span-3">
+          <div class="xl:col-span-3 space-y-5">
             <div class="space-y-6">
-              <h2 class="text-2xl leading-8 font-bold tracking-tight">
+              <h2 class="text-2xl font-bold leading-8 tracking-tight">
                 <a
                   class="c-[var(--vp-c-text-1)] hover:underline"
-                  :href="'./' + id"
+                  :href="`./${id}`"
                 >
                   {{ title }}
                 </a>
               </h2>
               <div
                 v-if="contentRaw"
-                class="prose max-w-none c-[var(--vp-c-text-2)] whitespace-pre-wrap line-clamp-5"
+                class="line-clamp-5 max-w-none whitespace-pre-wrap c-[var(--vp-c-text-2)] prose"
                 v-html="extractPlainText(contentRaw)"
-              ></div>
+              />
             </div>
-            <div class="text-base leading-6 font-medium">
-              <VPLink class="vp-link" :href="'./' + id">
+            <div class="text-base font-medium leading-6">
+              <VPLink class="vp-link" :href="`./${id}`">
                 {{ message.forum.readMore }} →
               </VPLink>
             </div>

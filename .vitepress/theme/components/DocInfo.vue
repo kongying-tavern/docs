@@ -15,11 +15,13 @@ const thumbText = computed(() => {
     : '-'
 })
 
-const updateData = async () => {
-  // @ts-ignore
-  if (import.meta.env.SSR) return null
+async function updateData() {
+  if (import.meta.env.SSR)
+    return null
   const info = await getPageInfo(page)
-  pageinfo.setNewPageinfo(info.data)
+  if (info) {
+    pageinfo.setNewPageinfo(info.data)
+  }
 }
 
 watch(
@@ -34,15 +36,15 @@ updateData()
 </script>
 
 <template>
-  <div class="doc-info" v-if="frontmatter.docInfo !== false">
+  <div v-if="frontmatter.docInfo !== false" class="doc-info">
     <div class="doc-info-left">
       {{ theme.lastUpdatedText }}
       {{ dayjs(page.lastUpdated).format('YYYY-MM-DD') }}
     </div>
     <ClientOnly>
-      <div class="doc-info-right" text-right flex justify-end>
-        <i i-custom-thumb></i>
-        <div v-if="loading" class="loader mr-4"></div>
+      <div class="doc-info-right" flex justify-end text-right>
+        <i i-custom-thumb />
+        <div v-if="loading" class="loader mr-4" />
         <span v-else>
           {{ thumbText }}
         </span>

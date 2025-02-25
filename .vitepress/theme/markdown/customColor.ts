@@ -1,5 +1,5 @@
-import MarkdownIt from 'markdown-it'
-import StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
+import type MarkdownIt from 'markdown-it'
+import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 
 function customColor(md: MarkdownIt): void {
   md.inline.ruler.before(
@@ -11,8 +11,10 @@ function customColor(md: MarkdownIt): void {
 
       const match = src.match(/^\{color:([^}]+)\}(.*?)\{\/color\}/)
 
-      if (!match) return false
-      if (silent) return true
+      if (!match)
+        return false
+      if (silent)
+        return true
 
       // Extract color and content
       const color = match[1]

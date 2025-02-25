@@ -1,7 +1,7 @@
 // @unocss-includes
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { Member } from './Member'
+import { computed } from 'vue'
 
 const props = defineProps<{
   members: Member[]
@@ -26,12 +26,12 @@ const sortedMembers = computed(() => {
     <div class="container">
       <div class="info">
         <span
-          class="i-lucide-git-commit-horizontal size-[28px] ml[-24px] inline-block"
-        ></span>
+          class="i-lucide-git-commit-horizontal ml[-24px] inline-block size-[28px]"
+        />
         <h2 class="title view-fade-y">
           <slot name="title" />
         </h2>
-        <p class="lead view-fade-y">
+        <p class="view-fade-y lead">
           <slot name="lead" />
         </p>
       </div>
@@ -44,21 +44,23 @@ const sortedMembers = computed(() => {
             :key="member.name"
             class="member"
           >
-            <p class="member-name view-fade-y">{{ member.name }}</p>
-            <p v-if="member?.title" class="member-title view-fade-y">
+            <p class="view-fade-y member-name">
+              {{ member.name }}
+            </p>
+            <p v-if="member?.title" class="view-fade-y member-title">
               {{ member.title }}
             </p>
             <div
               v-if="
-                member.title === undefined &&
-                sortedMembers[
-                  index < sortedMembers.length
-                    ? index + 1
-                    : sortedMembers.length
-                ]?.title !== undefined
+                member.title === undefined
+                  && sortedMembers[
+                    index < sortedMembers.length
+                      ? index + 1
+                      : sortedMembers.length
+                  ]?.title !== undefined
               "
               class="break-line"
-            ></div>
+            />
           </div>
         </ClientOnly>
       </div>

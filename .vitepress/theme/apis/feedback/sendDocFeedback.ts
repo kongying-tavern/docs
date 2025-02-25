@@ -5,12 +5,12 @@ export interface DocFeedbackResponse {
   message?: string
 }
 
-export const sendDocFeedback = async (
+export async function sendDocFeedback(
   record_id: string,
   type: 'bad' | 'good',
   cancel?: boolean,
-): Promise<DocFeedbackResponse> =>
-  fetcher
+): Promise<DocFeedbackResponse> {
+  return fetcher
     .post('docs/feedback', {
       json: {
         record_id,
@@ -19,3 +19,4 @@ export const sendDocFeedback = async (
       },
     })
     .json()
+}

@@ -1,5 +1,5 @@
-import MarkdownIt from 'markdown-it'
-import StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
+import type MarkdownIt from 'markdown-it'
+import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 
 function variableInject(md: MarkdownIt): void {
   const variables: Record<string, string> = {}
@@ -13,8 +13,10 @@ function variableInject(md: MarkdownIt): void {
 
       const match = src.match(/^\{define:\s*(\w+)\s*\}(.*?)\{\/define\}/)
 
-      if (!match) return false
-      if (silent) return true
+      if (!match)
+        return false
+      if (silent)
+        return true
 
       // Extract key and value
       const key = (match[1] ?? '').trim()
@@ -36,8 +38,10 @@ function variableInject(md: MarkdownIt): void {
 
       const match = src.match(/^\{%=\s*(\w+)\s*%\}/)
 
-      if (!match) return false
-      if (silent) return true
+      if (!match)
+        return false
+      if (silent)
+        return true
 
       // Extract key and get value
       const key = (match[1] ?? '').trim()

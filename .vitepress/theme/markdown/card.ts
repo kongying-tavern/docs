@@ -1,11 +1,11 @@
-import { container } from '@mdit/plugin-container'
-import { load } from 'js-yaml'
 import type { Options, PluginSimple } from 'markdown-it'
 import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 
-import { entries, isPlainObject, isString, fromPairs } from 'lodash-es'
+import { container } from '@mdit/plugin-container'
 
+import { load } from 'js-yaml'
+import { entries, fromPairs, isPlainObject, isString } from 'lodash-es'
 import { stringifyProp } from '../utils'
 
 export interface CardOptions {
@@ -32,53 +32,60 @@ const CARD_PROPS = [
   'theme',
 ]
 
-const checkCardProps = (config: CardOptions): CardOptions | null => {
-  if (isPlainObject(config) && isString(config.title))
+function checkCardProps(config: CardOptions): CardOptions | null {
+  if (isPlainObject(config) && isString(config.title)) {
     return fromPairs(
       entries(config).filter(
         (item): item is [string, string] =>
           CARD_PROPS.includes(item[0]) && isString(item[1]),
       ),
     ) as unknown as CardOptions
+  }
 
   return null
 }
 
-const cardRender = (
+function cardRender(
   tokens: Token[],
   index: number,
   _options: Options,
   { relativePath }: MarkdownEnv,
-): string => {
+): string {
   const token = tokens[index]
   const { content, info } = token
 
   const language = info.trim().split(':', 2)[1] || 'yml'
   let config: unknown = null
 
-  if (language === 'yaml' || language === 'yml')
+  if (language === 'yaml' || language === 'yml') {
     try {
       config = load(content)
-    } catch (err) {
+    }
+    catch (err) {
       console.error(`Parsing card YAML config failed:`, err)
     }
-  else if (language === 'json')
+  }
+  else if (language === 'json') {
     try {
       config = JSON.parse(content) as unknown
-    } catch (err) {
+    }
+    catch (err) {
       // do nothing
       console.error(`Parsing card JSON config failed:`, err)
     }
-  else
+  }
+  else {
     console.error(
       `Can not parse card config ${language}${
         relativePath ? `, found in ${relativePath}` : ''
       }.`,
     )
+  }
 
   const cardData = checkCardProps(config as CardOptions)
 
-  if (cardData) return `<Card v-bind='${stringifyProp(cardData)}' />`
+  if (cardData)
+    return `<Card v-bind='${stringifyProp(cardData)}' />`
 
   console.error(
     `Invalid card config${relativePath ? ` found in ${relativePath}` : ''}:
@@ -103,7 +110,6 @@ export const cardPlugin: PluginSimple = (md) => {
   const { fence } = md.renderer.rules
 
   md.renderer.rules.fence = (...args): string => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const [tokens, index, options, env] = args
     const { info } = tokens[index]
     const realInfo = info.split(':', 2)[0]

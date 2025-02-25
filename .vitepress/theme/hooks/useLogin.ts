@@ -1,16 +1,16 @@
 import { oauth } from '@/apis/forum/gitee'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useData, useRouter, withBase } from 'vitepress'
-import { toast } from 'vue-sonner'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 import { removeQueryParam } from '@/utils'
 import { refAutoReset, useStorage } from '@vueuse/core'
+import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
 const REQUIRED_LOGIN_PAGES = ['/feedback/user', '/feedback/', '/feedback/topic']
 
-const useLogin = () => {
+function useLogin() {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
   const authCode = getAuthCode()
@@ -30,14 +30,15 @@ const useLogin = () => {
     Password: passwordLogin,
   } as const
 
-  type CredentialsParams = {
+  interface CredentialsParams {
     method: keyof typeof LoginMethodsMap
   }
 
   initialize()
 
   async function initialize() {
-    if (getLoginStatus() || !authCode) return
+    if (getLoginStatus() || !authCode)
+      return
 
     isAuthenticating.value = true
     const redirectState = redirectToNoRequiredLoginPage()
@@ -54,7 +55,8 @@ const useLogin = () => {
     userAuth.setAuth(auth)
     await userInfo.refreshUserInfo()
     userAuth.ensureTokenRefreshMission()
-    if (!redirectState) await go(cachedRedirectUrl.value)
+    if (!redirectState)
+      await go(cachedRedirectUrl.value)
     isAuthenticating.value = false
     afterLogin()
   }
@@ -71,13 +73,15 @@ const useLogin = () => {
   async function afterLogin() {
     if (getLoginStatus()) {
       toast.success(theme.value.forum.auth.loginSuccess)
-    } else {
+    }
+    else {
       toast.info(theme.value.forum.auth.loginFail)
     }
   }
 
   function oauthLogin() {
-    if (location.hash !== 'login-alert') return (location.hash = 'login-alert')
+    if (location.hash !== 'login-alert')
+      return (location.hash = 'login-alert')
     return redirectAuth()
   }
 
@@ -91,7 +95,7 @@ const useLogin = () => {
     // TODO: password login
   }
 
-  function logout(revoke = false) {
+  function logout() {
     // TODO: revoke
     userAuth.clearAuth()
     userInfo.clearUserInfo()
@@ -101,7 +105,7 @@ const useLogin = () => {
   function redirectToNoRequiredLoginPage() {
     if (
       REQUIRED_LOGIN_PAGES.some(
-        (page) => !page.includes(cachedRedirectUrl.value),
+        page => !page.includes(cachedRedirectUrl.value),
       )
     ) {
       go(cachedRedirectUrl.value)
@@ -123,7 +127,8 @@ const useLogin = () => {
   }
 
   function getAuthCode() {
-    if (!location.search.includes('code')) return null
+    if (!location.search.includes('code'))
+      return null
     const code = location.search.match(/code=[^&]+/)?.[0]?.split('=')?.[1]
 
     console.log('AuthCode:', code)

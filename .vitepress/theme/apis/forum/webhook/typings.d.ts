@@ -1,11 +1,11 @@
 declare namespace GITEE_WEBHOOK {
-  type OPTIONS = {
+  interface OPTIONS {
     owner?: string
     repo?: string
     number: string | number
   }
 
-  type PARAMS = {
+  interface PARAMS {
     rawContent: string
     sanitizedContent: string
     json: Record<string, unknown>

@@ -1,9 +1,3 @@
-<template>
-  <time :datetime="dateStr">
-    {{ dateStr }}
-  </time>
-</template>
-
 <script setup lang="ts">
 import { useLocalized } from '@/hooks/useLocalized'
 
@@ -15,3 +9,9 @@ const { formatDate } = useLocalized()
 
 const dateStr = formatDate(date, format)
 </script>
+
+<template>
+  <time :datetime="dateStr">
+    {{ dateStr }}
+  </time>
+</template>

@@ -1,24 +1,24 @@
-import dayjs from 'dayjs'
-
 import type MarkdownIt from 'markdown-it'
-import container from 'markdown-it-container'
 import type { RenderRule } from 'markdown-it/lib/renderer'
 import type Token from 'markdown-it/lib/token'
+import dayjs from 'dayjs'
 
-export const getdefaultTime = () => {
+import container from 'markdown-it-container'
+
+export function getdefaultTime() {
   return dayjs().format('YYYY-MM-DD')
 }
 
-export const timeline = (md: MarkdownIt, options: any) => {
+export function timeline(md: MarkdownIt) {
   md.use(...createContainer('timeline', getdefaultTime(), md))
 }
 
 type ContainerArgs = [typeof container, string, { render: RenderRule }]
-const createContainer = (
+function createContainer(
   klass: string,
   defaultTime: string,
   md: MarkdownIt,
-): ContainerArgs => {
+): ContainerArgs {
   return [
     container,
     klass,

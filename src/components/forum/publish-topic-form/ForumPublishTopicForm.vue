@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import type ForumAPI from '@/apis/forum/api'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogScrollContent,
+  DialogTitle,
 } from '@/components/ui/dialog'
 import {
   Drawer,
@@ -15,33 +16,37 @@ import {
   DrawerFooter,
 } from '@/components/ui/drawer'
 import { Input } from '@/components/ui/input'
-import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { VisuallyHidden } from 'radix-vue'
-import { useLocalized } from '@/hooks/useLocalized'
-import { computed, ref, watch } from 'vue'
-import ForumTagsInput from './ForumTagsInput.vue'
-import { ReloadIcon } from '@radix-icons/vue'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useHashChecker } from '@/hooks/useHashChecker'
-import ForumContentInputBox from './ForumContentInputBox.vue'
-import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
+import { useLocalized } from '@/hooks/useLocalized'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { ReloadIcon } from '@radix-icons/vue'
 import {
-  getFormTabsConfig,
-  MAX_UPLOAD_FILE_SIZE,
-  FORM_DEFAULT_DATA,
-  FORM_DATA_KEY,
-  TRANSITION_DURATION,
-  FORM_HASH,
-} from './config'
-import ForumImageUpload from '~/components/forum/ForumImageUpload.vue'
-import ForumPublishTopicFormField from './ForumPublishTopicFormField.vue'
-import { useLocalStorage, refAutoReset } from '@vueuse/core'
-import { useRuleChecks } from '~/composables/useRuleChecks'
+  createReusableTemplate,
+  refAutoReset,
+  useLocalStorage,
+  useMediaQuery,
+} from '@vueuse/core'
 import { last } from 'lodash-es'
+import { VisuallyHidden } from 'radix-vue'
+import { computed, ref, watch } from 'vue'
+
+import ForumImageUpload from '~/components/forum/ForumImageUpload.vue'
 import { useImageUpload } from '~/composables/useImageUpload'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useForumData } from '~/stores/useForumData'
 
-import type ForumAPI from '@/apis/forum/api'
+import {
+  FORM_DATA_KEY,
+  FORM_DEFAULT_DATA,
+  FORM_HASH,
+  getFormTabsConfig,
+  MAX_UPLOAD_FILE_SIZE,
+  TRANSITION_DURATION,
+} from './config'
+import ForumContentInputBox from './ForumContentInputBox.vue'
+import ForumPublishTopicFormField from './ForumPublishTopicFormField.vue'
+import ForumTagsInput from './ForumTagsInput.vue'
 
 const formTabs = getFormTabsConfig()
 const userAuth = useUserAuthStore()
@@ -58,8 +63,8 @@ const formData = useLocalStorage<ForumAPI.CreateTopicOption>(
 const { message } = useLocalized()
 const { submitTopic } = useForumData()
 const { loading, runAsync } = submitTopic()
-const { isUploading, uploadedImages, restImageList, imageList } =
-  useImageUpload()
+const { isUploading, uploadedImages, restImageList, imageList }
+  = useImageUpload()
 const [UseForm, Form] = createReusableTemplate()
 const [UseSubmit, SubmitButton] = createReusableTemplate()
 const { hasAnyPermissions } = useRuleChecks()
@@ -70,21 +75,25 @@ const isDisabled = computed(() => {
   return loading.value || formData.value.title.length === 0 || isUploading.value
 })
 const tabList = computed(() => {
-  return formTabs.map((val) => val.value)
+  return formTabs.map(val => val.value)
 })
 const nextTabIndex = computed(() => {
   return (currentTabIndex.value + 1) % tabList.value.length
 })
 const nextTab = computed(() => {
-  return formTabs.find((val) => val.value === tabList.value[nextTabIndex.value])
+  return formTabs.find(val => val.value === tabList.value[nextTabIndex.value])
 })
 
 useHashChecker(
-  [FORM_HASH, ...tabList.value.map((val) => `${FORM_HASH}-${val}`)],
+  [FORM_HASH, ...tabList.value.map(val => `${FORM_HASH}-${val}`)],
   (hash: string) => {
-    if (!userAuth.isTokenValid) return true
+    if (!userAuth.isTokenValid)
+      return true
     const targetTab = last(hash.split('-'))
-    if (targetTab && tabList.value.some((val) => val === targetTab)) {
+    if (
+      targetTab
+      && tabList.value.includes(targetTab as ForumAPI.CreateTopicOption['type'])
+    ) {
       formData.value.type = targetTab as ForumAPI.CreateTopicOption['type']
     }
     isOpen.value = true
@@ -94,7 +103,7 @@ useHashChecker(
   },
 )
 
-const switchTab = () => {
+function switchTab() {
   currentTabIndex.value = nextTabIndex.value
   if (formData.value.type === tabList.value[currentTabIndex.value])
     return switchTab()
@@ -105,14 +114,14 @@ const switchTab = () => {
   )
 }
 
-const handleSubmit = async () => {
+async function handleSubmit() {
   await runAsync(formData.value)
 
   isOpen.value = false
   initFormData()
 }
 
-const initFormData = () => {
+function initFormData() {
   formData.value = FORM_DEFAULT_DATA
   restImageList()
 }
@@ -130,19 +139,20 @@ watch(uploadedImages, () => {
       :class="{ 'animate-switching': inSwitchTabTransition }"
     >
       <DialogHeader>
-        <div
-          v-if="isDesktop"
-          v-for="tab in formTabs"
-          v-show="formData.type === tab.value && tab?.condition"
-          :key="tab.value"
-        >
-          <h2 class="font-size-28px mt-18px mb-3">
-            {{ tab.label }}
-          </h2>
-        </div>
+        <template v-if="isDesktop">
+          <div
+            v-for="tab in formTabs"
+            v-show="formData.type === tab.value && tab?.condition"
+            :key="tab.value"
+          >
+            <h2 class="mb-3 mt-18px font-size-28px">
+              {{ tab.label }}
+            </h2>
+          </div>
+        </template>
         <TabsList
           v-else
-          class="grid w-full mb-3"
+          class="grid mb-3 w-full"
           :class="hasPermission ? 'grid-cols-3' : 'grid-cols-2'"
         >
           <TabsTrigger
@@ -156,9 +166,7 @@ watch(uploadedImages, () => {
         </TabsList>
       </DialogHeader>
 
-      <div
-        class="vp-divider mb-6 md:border-width-2px md:border-style-dashed"
-      ></div>
+      <div class="mb-6 vp-divider md:border-width-2px md:border-style-dashed" />
 
       <TabsContent v-for="tab in formTabs" :key="tab.value" :value="tab.value">
         <div class="grid w-[100%] items-center gap-6">
@@ -171,12 +179,12 @@ watch(uploadedImages, () => {
           >
             <Input
               id="title"
+              v-model="formData.title"
               type="text"
               :placeholder="tab.fields.title.placeholder"
               class="vp-border-input"
               :maxlength="tab.fields.title.maxLength"
               autocomplete="off"
-              v-model="formData.title"
             />
           </ForumPublishTopicFormField>
 
@@ -188,9 +196,9 @@ watch(uploadedImages, () => {
           >
             <ForumTagsInput
               id="tags"
+              v-model="formData.tags"
               class="w-full"
               :placeholder="tab.fields.tags.placeholder"
-              v-model="formData.tags"
             />
           </ForumPublishTopicFormField>
 
@@ -225,7 +233,7 @@ watch(uploadedImages, () => {
                   .replace('%size', String(MAX_UPLOAD_FILE_SIZE))
                   .replace('%range', String(tab.fields.upload.maxLength))
               "
-            ></p>
+            />
             <ForumImageUpload
               id="upload"
               v-model="imageList"
@@ -248,7 +256,7 @@ watch(uploadedImages, () => {
       :disabled="isDisabled"
       @click="handleSubmit()"
     >
-      <ReloadIcon class="w-4 h-4 mr-2 animate-spin" v-if="loading" />
+      <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />
       {{
         loading
           ? message.forum.publish.publishLoading
@@ -260,17 +268,17 @@ watch(uploadedImages, () => {
 
   <Dialog v-if="isDesktop" v-model:open="isOpen">
     <DialogScrollContent
-      class="paper form-container flex flex-col min-w-800px h-fit min-h-100vh mx-auto mt-110px mb-70px before:pos-absolute shadow-[var(--vp-shadow-3)]"
+      class="form-container paper mx-auto mb-70px mt-110px h-fit min-h-100vh min-w-800px flex flex-col shadow-[var(--vp-shadow-3)] before:pos-absolute"
       :class="{ 'animate-switching': inSwitchTabTransition }"
     >
       <div
-        class="action-bar absolute top-[-70px] md:rotate--1.4deg flex items-start flex-col"
+        class="action-bar absolute top-[-70px] flex flex-col items-start md:rotate--1.4deg"
         style="left: calc(0px - (100vw - 800px) / 2)"
       >
         <DialogClose class="form-close-btn">
           <Button class="form-action-btn" type="button" variant="secondary">
             <span> {{ message.ui.button.close }}</span>
-            <span class="i-lucide:x icon-btn"></span>
+            <span class="i-lucide:x icon-btn" />
           </Button>
         </DialogClose>
 
@@ -284,7 +292,7 @@ watch(uploadedImages, () => {
           <span
             class="i-lucide:refresh-cw icon-btn"
             :class="{ 'animate-spin': inSwitchTabTransition }"
-          ></span>
+          />
         </Button>
       </div>
 
@@ -297,7 +305,7 @@ watch(uploadedImages, () => {
       <Form />
 
       <DialogFooter
-        class="flex flex-wrap w-full mt-8 py-4 sticky bottom-0 md:rotate--1.4deg form-footer-container"
+        class="form-footer-container sticky bottom-0 mt-8 w-full flex flex-wrap py-4 md:rotate--1.4deg"
         :class="{ 'animate-switching': inSwitchTabTransition }"
       >
         <SubmitButton class="min-w-96px" />
@@ -313,7 +321,7 @@ watch(uploadedImages, () => {
         <DrawerClose as-child>
           <Button
             variant="outline"
-            class="border border-solid border-color-[var(--vp-c-gutter)]"
+            class="border border-color-[var(--vp-c-gutter)] border-solid"
           >
             {{ message.ui.button.cancel }}
           </Button>

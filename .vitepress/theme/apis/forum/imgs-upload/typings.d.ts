@@ -1,7 +1,8 @@
 declare namespace IMAGES_UPLOAD {
+  // eslint-disable-next-line ts/naming-convention
   type ALLOWED_TYPE = 'jpeg' | 'jpg' | 'png' | 'gif' | 'webp'
 
-  type IMAGE = {
+  interface IMAGE {
     status: boolean
     message: string
     data: {

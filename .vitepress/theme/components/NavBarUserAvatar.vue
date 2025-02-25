@@ -12,7 +12,7 @@ const userInfo = useUserInfoStore()
 const open = ref(false)
 const el = ref<HTMLElement>()
 
-const list: { title: string; href: string; icon: string }[] = [
+const list: { title: string, href: string, icon: string }[] = [
   {
     title: theme.value.forum.user.myFeedback.title,
     href: '/feedback/user',
@@ -29,15 +29,15 @@ const list: { title: string; href: string; icon: string }[] = [
 <template>
   <ClientOnly>
     <div
-      class="VPFlyout"
       ref="el"
+      class="VPFlyout"
       @mouseenter="open = true"
       @focusin="open = true"
       @focusout="open = false"
     >
       <button
         type="button"
-        class="button avatar focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0 ring-offset-background"
+        class="button avatar ring-offset-background focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-ring"
         aria-haspopup="true"
         :aria-expanded="open"
         @click="open = !open"
@@ -50,12 +50,11 @@ const list: { title: string; href: string; icon: string }[] = [
       </button>
 
       <div class="menu" @mouseout="open = false">
-        <NavBarUserAvatarDropdownMenu :list="list">
-        </NavBarUserAvatarDropdownMenu>
+        <NavBarUserAvatarDropdownMenu :list="list" />
       </div>
 
       <Teleport to="body">
-        <LoginAlertDialog></LoginAlertDialog>
+        <LoginAlertDialog />
       </Teleport>
     </div>
   </ClientOnly>

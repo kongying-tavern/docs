@@ -1,4 +1,4 @@
-export const getForumLocaleLabelGetter = () => {
+export function getForumLocaleLabelGetter() {
   const getLabel = (locale?: string | null | undefined) =>
     locale ? `LC-${locale}` : null
 

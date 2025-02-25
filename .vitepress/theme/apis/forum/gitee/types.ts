@@ -10,7 +10,7 @@ export enum GiteeApiErrorType {
 
 export type HttpMethod = 'get' | 'post' | 'patch' | 'delete'
 
-export type ApiCallParams = {
+export interface ApiCallParams {
   params?: Record<string, any>
   body?: Record<string, any>
   hooks?: Hooks

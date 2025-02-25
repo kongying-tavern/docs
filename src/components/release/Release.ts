@@ -6,7 +6,7 @@ export type VersionType =
   | 'Test'
   | 'Release'
 
-export type ReleaseActions = {
+export interface ReleaseActions {
   text: string
   link: string
 }

@@ -1,5 +1,5 @@
 declare namespace GITEE {
-  type Auth = {
+  interface Auth {
     access_token: string
     created_at: number
     expires_in: number
@@ -8,7 +8,7 @@ declare namespace GITEE {
     token_type: string
   }
 
-  type List = {
+  interface List {
     body: string
     created_at: string
     id: number
@@ -26,7 +26,7 @@ declare namespace GITEE {
     user: User
   }
 
-  type User = {
+  interface User {
     id: number
     login: string
     name: string
@@ -46,7 +46,7 @@ declare namespace GITEE {
     type: string
   }
 
-  type UserInfo = {
+  interface UserInfo {
     avatar_url: string
     bio: string
     blog: string
@@ -79,7 +79,7 @@ declare namespace GITEE {
     weibo: string
   }
 
-  type IssueInfo = {
+  interface IssueInfo {
     id: number
     url: string
     repository_url: string
@@ -120,7 +120,7 @@ declare namespace GITEE {
 
   type IssueList = IssueInfo[]
 
-  type IssueLabel = {
+  interface IssueLabel {
     id: number
     color: string
     name: string
@@ -130,7 +130,7 @@ declare namespace GITEE {
     updated_at: string
   }
 
-  type Repository = {
+  interface Repository {
     id: number
     full_name: string
     human_name: string
@@ -200,7 +200,7 @@ declare namespace GITEE {
     issue_template_source: string
   }
 
-  type Namespace = {
+  interface Namespace {
     id: number
     type: string
     name: string
@@ -208,7 +208,7 @@ declare namespace GITEE {
     html_url: string
   }
 
-  type IssueTypeDetail = {
+  interface IssueTypeDetail {
     id: number
     title: string
     template: string | null
@@ -219,7 +219,7 @@ declare namespace GITEE {
     updated_at: string
   }
 
-  type IssueStateDetail = {
+  interface IssueStateDetail {
     id: number
     title: string
     color: string
@@ -230,18 +230,18 @@ declare namespace GITEE {
     updated_at: string
   }
 
-  type Issue = {
+  interface Issue {
     id: number
     title: string
     number: string
   }
 
-  type CommentTarget = {
+  interface CommentTarget {
     issue: Issue
     pull_request: null | object
   }
 
-  type Comment = {
+  interface Comment {
     id: number
     in_reply_to_id?: string | number
     body: string
@@ -257,7 +257,7 @@ declare namespace GITEE {
 
   type CommentList = Comment[]
 
-  type PaginationParams<T> = {
+  interface PaginationParams<T> {
     data: T
     total: number
     totalPage: number

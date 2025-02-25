@@ -1,9 +1,8 @@
-import { definePropType, uploadBaseProps } from './upload'
-import { NOOP } from '@/components/type'
-
 import type { ExtractPropTypes } from 'vue'
-import type UploadPhoto from './UploadPhoto.vue'
 import type { UploadFile, UploadHooks, UploadRawFile } from './upload.ts'
+import type UploadPhoto from './UploadPhoto.vue'
+import { NOOP } from '@/components/type'
+import { definePropType, uploadBaseProps } from './upload'
 
 export const uploadPhotoProps = {
   ...uploadBaseProps,

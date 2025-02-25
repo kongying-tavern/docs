@@ -1,10 +1,12 @@
 import type ForumAPI from '@/apis/forum/api'
+import type { Ref } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed, ref, watch, type Ref } from 'vue'
-import { executeWithAuth } from './executeWithAuth'
 import { createGlobalState } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
+
+import { executeWithAuth } from './executeWithAuth'
 import { handleError } from './handleError'
 
 export const useTopicComments = createGlobalState(() => {
@@ -42,7 +44,8 @@ export const useTopicComments = createGlobalState(() => {
     repo: ForumAPI.Repo,
     topicCommentCount: number | null,
   ) => {
-    if (import.meta.env.SSR || topicCommentCount === 0) return null
+    if (import.meta.env.SSR || topicCommentCount === 0)
+      return null
     commentCount.value = topicCommentCount
     await refreshComment(
       repo,
@@ -53,7 +56,8 @@ export const useTopicComments = createGlobalState(() => {
   }
 
   const submitComment = (submittedComment: Ref<ForumAPI.Comment>) => {
-    if (!submittedComment.value) return
+    if (!submittedComment.value)
+      return
     userSubmittedComment.value.push(submittedComment.value)
   }
 
@@ -61,9 +65,9 @@ export const useTopicComments = createGlobalState(() => {
     repo: string,
     id: string | number,
   ): Promise<boolean> => {
-    comments.value = comments.value.filter((comment) => comment.id !== id)
+    comments.value = comments.value.filter(comment => comment.id !== id)
     userSubmittedComment.value = userSubmittedComment.value.filter(
-      (comment) => comment.id !== id,
+      comment => comment.id !== id,
     )
 
     const result = await executeWithAuth(
@@ -78,14 +82,16 @@ export const useTopicComments = createGlobalState(() => {
   }
 
   const loadStateMessage = computed(() => {
-    if (commentLoadError.value) return message.value.forum.loadError
+    if (commentLoadError.value)
+      return message.value.forum.loadError
     if (!noMoreComment && comments.value.length !== 0)
       return message.value.forum.comment.loadMoreComment
     if (
-      (comments.value.length === 0 && !commentLoading.value) ||
-      noComment.value
-    )
+      (comments.value.length === 0 && !commentLoading.value)
+      || noComment.value
+    ) {
       return message.value.forum.comment.noComment
+    }
     return message.value.forum.comment.noMoreComment
   })
 

@@ -3,15 +3,15 @@ import type {
   TransformContext,
   TransformPageContext,
 } from 'vitepress'
-import type { ConfigureFuncType } from './types'
 
+import type { ConfigureFuncType } from './types'
 import { cfgDynamicHead } from './head'
 import { cfgDynamicTitleTemplate } from './title'
 import { isProd } from './utils'
 
 export const hostname = 'https://yuanshen.site/docs'
 
-export const createConfigureFunction = (): ConfigureFuncType => {
+export function createConfigureFunction(): ConfigureFuncType {
   if (isProd) {
     return {
       transformHead: (context: TransformContext) => {

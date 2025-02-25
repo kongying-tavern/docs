@@ -1,15 +1,16 @@
+import type ForumAPI from '../api'
 import { fetcher } from '.'
+
 import { catchError } from '../../utils'
 import { GITEE_API_CONFIG } from './config'
 import { normalizeAuth } from './utils'
 
-import type ForumAPI from '../api'
-
 const LAST_OAUTH_REDIRECT_URL_KEY = 'oauth-redirect-url'
 
-export const getRedirectUrl = (localeIndex?: string): string => {
+export function getRedirectUrl(localeIndex?: string): string {
   const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
-  if (lastRedirectUrl) return lastRedirectUrl
+  if (lastRedirectUrl)
+    return lastRedirectUrl
 
   const localeStr = localeIndex === 'root' ? '/' : `/${localeIndex}/`
   const result = import.meta.env.DEV
@@ -19,9 +20,9 @@ export const getRedirectUrl = (localeIndex?: string): string => {
   return result
 }
 
-export const getToken = async (
+export async function getToken(
   code: string,
-): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> => {
+): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> {
   const [error, data] = await catchError(
     fetcher
       .post<Promise<GITEE.Auth>>('oauth/token', {
@@ -44,9 +45,9 @@ export const getToken = async (
   return [undefined, normalizeAuth(await data)]
 }
 
-export const refreshToken = async (
+export async function refreshToken(
   refreshToken: string,
-): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> => {
+): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> {
   const [error, data] = await catchError(
     fetcher
       .post<Promise<GITEE.Auth>>('oauth/token', {
@@ -69,7 +70,7 @@ export const refreshToken = async (
   return [undefined, normalizeAuth(await data)]
 }
 
-export const redirectAuth = (localeIndex: string) => {
+export function redirectAuth(localeIndex: string) {
   localStorage.removeItem(LAST_OAUTH_REDIRECT_URL_KEY)
   return (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_API_CONFIG.CLIENT_ID}&redirect_uri=${getRedirectUrl(localeIndex)}&response_type=code`)
 }

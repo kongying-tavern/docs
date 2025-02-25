@@ -1,62 +1,19 @@
-<template>
-  <TransitionGroup name="list" tag="ul" class="flex w-[fit-content]">
-    <li
-      class="size-18 rounded-sm overflow-hidden relative"
-      v-for="(file, index) in files"
-      :key="file.uid || file.name"
-      :class="[{ focusing }, stateStyle[file.status!]]"
-      tabindex="0"
-      @keydown.delete="!disabled && handleRemove(file)"
-      @focus="focusing = true"
-      @blur="focusing = false"
-      @click="focusing = false"
-      v-bind="$attrs"
-    >
-      <slot :file="file" :index="index">
-        <button
-          class="absolute top-0 right-0 size-5 bg-[#0003] flex justify-center items-center rounded-bl-sm"
-          v-if="!disabled && file.status !== 'uploading'"
-          @click="handleRemove(file)"
-        >
-          <span class="i-lucide-x size-3.5 bg-white"></span>
-        </button>
-        <button
-          class="absolute top-0 right-0 size-5 bg-[#0003] flex justify-center items-center rounded-bl-sm"
-          v-if="!disabled && file.status === 'uploading'"
-          @click="handleRemove(file)"
-        >
-          <span
-            class="i-lucide-loader-circle animate-spin size-3.5 bg-white hover-animate-none"
-          ></span>
-        </button>
-        <img
-          class="size-100% object-cover"
-          :src="file.url"
-          :alt="file.name"
-          @error="file.status = 'fail'"
-        />
-      </slot>
-    </li>
-    <slot name="append" />
-  </TransitionGroup>
-</template>
 <script lang="ts" setup>
-import { NOOP, mutable } from '@/components/type'
-import { ref } from 'vue'
-import {
-  type UploadFile,
-  type UploadFiles,
-  type UploadHooks,
-  type UploadStatus,
-  definePropType,
-  uploadVariants,
+import type {
+  UploadFile,
+  UploadFiles,
+  UploadHooks,
+  UploadStatus,
 } from './upload'
+import { mutable, NOOP } from '@/components/type'
+import { ref } from 'vue'
+import { definePropType } from './upload'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
+defineProps({
   files: {
     type: definePropType<UploadFiles>(Array),
     default: () => mutable([]),
@@ -84,7 +41,50 @@ const stateStyle: { [K in UploadStatus]: string } = {
   success: 'success',
 }
 
-const handleRemove = (file: UploadFile) => {
+function handleRemove(file: UploadFile) {
   emit('remove', file)
 }
 </script>
+
+<template>
+  <TransitionGroup name="list" tag="ul" class="w-[fit-content] flex">
+    <li
+      v-for="(file, index) in files"
+      :key="file.uid || file.name"
+      class="relative size-18 overflow-hidden rounded-sm"
+      :class="[{ focusing }, stateStyle[file.status!]]"
+      tabindex="0"
+      v-bind="$attrs"
+      @keydown.delete="!disabled && handleRemove(file)"
+      @focus="focusing = true"
+      @blur="focusing = false"
+      @click="focusing = false"
+    >
+      <slot :file="file" :index="index">
+        <button
+          v-if="!disabled && file.status !== 'uploading'"
+          class="absolute right-0 top-0 size-5 flex items-center justify-center rounded-bl-sm bg-[#0003]"
+          @click="handleRemove(file)"
+        >
+          <span class="i-lucide-x size-3.5 bg-white" />
+        </button>
+        <button
+          v-if="!disabled && file.status === 'uploading'"
+          class="absolute right-0 top-0 size-5 flex items-center justify-center rounded-bl-sm bg-[#0003]"
+          @click="handleRemove(file)"
+        >
+          <span
+            class="i-lucide-loader-circle size-3.5 animate-spin bg-white hover-animate-none"
+          />
+        </button>
+        <img
+          class="size-100% object-cover"
+          :src="file.url"
+          :alt="file.name"
+          @error="file.status = 'fail'"
+        >
+      </slot>
+    </li>
+    <slot name="append" />
+  </TransitionGroup>
+</template>

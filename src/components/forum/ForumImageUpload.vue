@@ -1,54 +1,4 @@
-<template>
-  <div class="mt-2">
-    <PhotoWall
-      v-model:file-list="modelValue"
-      ref="photoWallRef"
-      :limit="fileLimit"
-      :accept="accent"
-      :multiple="multiple"
-      :hideDefaultTrigger="hideDefaultTrigger || false"
-      :on-change="handleFileChange"
-      :size="size"
-      default-state="uploading"
-      v-bind="$attrs"
-    >
-      <span i-lucide-image-plus v-if="canAddImages" />
-      <span i-lucide-image-off v-else />
-      <template #tip v-if="fileLimit || uploadTips">
-        <DynamicTextReplacer
-          v-if="uploadTips"
-          :data="uploadTips"
-          tag="p"
-          class="font-size-3 c-[var(--vp-c-text-2)]"
-        >
-          <template #range>
-            <span>
-              {{ fileLimit }}
-            </span>
-          </template>
-          <template v-if="maxFileSize" #size>
-            <span>{{ maxFileSize }}</span>
-          </template>
-        </DynamicTextReplacer>
-      </template>
-    </PhotoWall>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { useVModel } from '@vueuse/core'
-import {
-  computed,
-  nextTick,
-  watch,
-  useTemplateRef,
-  type HTMLAttributes,
-} from 'vue'
-import { PhotoWall } from '@/components/ui/photo-wall'
-import { uploadImg } from '@/apis/forum/imgs-upload'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import type {
   UploadFile,
   UploadFiles,
@@ -56,7 +6,15 @@ import type {
   UploadStatus,
   UploadUserFile,
 } from '@/components/ui/photo-wall/upload'
+import type { HTMLAttributes } from 'vue'
+import { uploadImg } from '@/apis/forum/imgs-upload'
+import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
+import { PhotoWall } from '@/components/ui/photo-wall'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useVModel } from '@vueuse/core'
+import { computed, nextTick, useTemplateRef, watch } from 'vue'
+import { useRequest } from 'vue-request'
+import { toast } from 'vue-sonner'
 
 const props = defineProps<{
   modelValue: UploadUserFile[]
@@ -82,7 +40,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
 })
 
-const { data, runAsync, loading, error } = useRequest(uploadImg, {
+const { data, runAsync, error } = useRequest(uploadImg, {
   manual: true,
 })
 
@@ -95,12 +53,13 @@ const canAddImages = computed(() => {
   return (props.modelValue.length || 0) <= (props.fileLimit || 0)
 })
 
-const upload = async (uploadFile: UploadFile) => {
-  if (!uploadFile.raw) return
+async function upload(uploadFile: UploadFile) {
+  if (!uploadFile.raw)
+    return
 
   if (
-    props.maxFileSize &&
-    uploadFile.raw.size > props.maxFileSize * 1024 * 1024
+    props.maxFileSize
+    && uploadFile.raw.size > props.maxFileSize * 1024 * 1024
   ) {
     toast(
       `[${uploadFile.name}] File too large (${uploadFile.raw.size / 1024 / 1024}/${props.maxFileSize} MB)`,
@@ -123,37 +82,42 @@ const upload = async (uploadFile: UploadFile) => {
   if (data.value?.state && data.value?.data) {
     updateImage(uploadFile.uid, data.value.data.link, 'ready')
     uploadedFiles.set(uploadFile.uid, uploadFile)
-  } else {
+  }
+  else {
     updateImage(uploadFile.uid, undefined, 'fail')
     toast.error(`[${uploadFile.name}] ${data.value?.message}`)
   }
 }
 
-const uploadMultipleFiles = async (files: UploadFiles) => {
-  const newFiles = files.filter((f) => !uploadedFiles.has(f.uid))
+async function uploadMultipleFiles(files: UploadFiles) {
+  const newFiles = files.filter(f => !uploadedFiles.has(f.uid))
   await Promise.all(newFiles.map(upload))
 }
 
-const updateImage = (
+function updateImage(
   uid: number,
   url: string | undefined,
   status: UploadStatus,
-) => {
-  const index = props.modelValue.findIndex((img) => img.uid === uid)
+) {
+  const index = props.modelValue.findIndex(img => img.uid === uid)
   if (index !== undefined && index >= 0) {
     props.modelValue![index].status = status
-    if (url) props.modelValue[index].url = url
+    if (url)
+      // eslint-disable-next-line vue/no-mutating-props
+      props.modelValue[index].url = url
   }
 }
 
-const handleFileChange = async (file: UploadFile, files: UploadFiles) => {
-  if (!props.multiple) return upload(file)
+async function handleFileChange(file: UploadFile, files: UploadFiles) {
+  if (!props.multiple)
+    return upload(file)
 
   uploadMultipleFiles(files)
 }
 
-const handleStart = (rawFile: UploadRawFile) => {
-  if (!photoWallRef.value?.handleStart) return
+function handleStart(rawFile: UploadRawFile) {
+  if (!photoWallRef.value?.handleStart)
+    return
   return photoWallRef.value.handleStart(rawFile)
 }
 
@@ -161,9 +125,45 @@ defineExpose({
   handleStart,
 })
 
-watch(error, (val) =>
+watch(error, val =>
   toast.error(
-    message.value.forum.publish.form.upload.fail + `(${val?.message})`,
-  ),
-)
+    `${message.value.forum.publish.form.upload.fail}(${val?.message})`,
+  ))
 </script>
+
+<template>
+  <div class="mt-2">
+    <PhotoWall
+      ref="photoWallRef"
+      v-model:file-list="modelValue"
+      :limit="fileLimit"
+      :accept="accent"
+      :multiple="multiple"
+      :hide-default-trigger="hideDefaultTrigger || false"
+      :on-change="handleFileChange"
+      :size="size"
+      default-state="uploading"
+      v-bind="$attrs"
+    >
+      <span v-if="canAddImages" i-lucide-image-plus />
+      <span v-else i-lucide-image-off />
+      <template v-if="fileLimit || uploadTips" #tip>
+        <DynamicTextReplacer
+          v-if="uploadTips"
+          :data="uploadTips"
+          tag="p"
+          class="font-size-3 c-[var(--vp-c-text-2)]"
+        >
+          <template #range>
+            <span>
+              {{ fileLimit }}
+            </span>
+          </template>
+          <template v-if="maxFileSize" #size>
+            <span>{{ maxFileSize }}</span>
+          </template>
+        </DynamicTextReplacer>
+      </template>
+    </PhotoWall>
+  </div>
+</template>

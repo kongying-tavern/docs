@@ -1,8 +1,8 @@
-import Blog from '../_data/posts.json'
-import BlogRewrites from '../_data/blogRewrites.json'
-import { getForumLocaleLabelGetter } from '../composables/getForumLocaleGetter'
-
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
+import BlogRewrites from '../_data/blogRewrites.json'
+
+import Blog from '../_data/posts.json'
+import { getForumLocaleLabelGetter } from '../composables/getForumLocaleGetter'
 
 type BlogRewriteKey = keyof typeof BlogRewrites
 
@@ -12,14 +12,15 @@ interface PostConfig {
 
 const localeLabelGetter = getForumLocaleLabelGetter()
 
-export const usePostData = (locale: string) => {
+export function usePostData(locale: string) {
   return {
     paths() {
       return Blog.filter(
-        (post) =>
-          post.tags &&
-          post.tags.some(
-            (label) =>
+        post =>
+          post.tags
+          // eslint-disable-next-line unicorn/prefer-includes
+          && post.tags.some(
+            label =>
               label === localeLabelGetter.getLabel(locale.toUpperCase()),
           ),
       ).map((entry) => {
@@ -34,7 +35,7 @@ export const usePostData = (locale: string) => {
             author: entry.user,
             link: entry.link,
             commentCount: entry.tags
-              .map((val) => String(val))
+              .map(val => String(val))
               .includes('NO-COMMENT')
               ? -1
               : entry.commentCount,

@@ -2,9 +2,9 @@ import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
 import { filterWhitelistTags } from './utils'
 
-export const getAllLabels = async (
+export async function getAllLabels(
   useCache = true,
-): Promise<GITEE.IssueLabel[]> => {
+): Promise<GITEE.IssueLabel[]> {
   return (
     await apiCall<GITEE.IssueLabel[]>(
       'get',
@@ -16,7 +16,7 @@ export const getAllLabels = async (
   )[0]
 }
 
-export const getAllLabelsName = async (): Promise<string[]> => {
+export async function getAllLabelsName(): Promise<string[]> {
   const data = await getAllLabels()
   return filterWhitelistTags(data)
 }

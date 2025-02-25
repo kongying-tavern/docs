@@ -1,8 +1,6 @@
 import type { ConfigurableWindow } from '@vueuse/core'
-import { pausableWatch } from '@vueuse/core'
-import { reactive, toRefs } from 'vue'
-import { defaultWindow } from '@vueuse/core'
-import { useEventListener } from '@vueuse/core'
+import { defaultWindow, pausableWatch, useEventListener } from '@vueuse/core'
+import { reactive } from 'vue'
 
 export type UrlParams = Record<string, string[] | string>
 
@@ -64,18 +62,21 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
     window = defaultWindow!,
   } = options
 
-  if (!window) return reactive(initialValue) as T
+  if (!window)
+    return reactive(initialValue) as T
 
   const state: Record<string, any> = reactive({}) as T
 
   function getRawParams() {
     if (mode === 'history') {
       return window.location.search || ''
-    } else if (mode === 'hash') {
+    }
+    else if (mode === 'hash') {
       const hash = window.location.hash || ''
       const index = hash.indexOf('?')
       return index > 0 ? hash.slice(index) : ''
-    } else {
+    }
+    else {
       return (window.location.hash || '').replace(/^#/, '')
     }
   }
@@ -102,8 +103,8 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
     const unusedKeys = new Set(Object.keys(state))
     for (const key of params.keys()) {
       const paramsForKey = params.getAll(key)
-      state[key] =
-        paramsForKey.length > 1 ? paramsForKey : params.get(key) || ''
+      state[key]
+        = paramsForKey.length > 1 ? paramsForKey : params.get(key) || ''
       unusedKeys.delete(key)
     }
 
@@ -113,7 +114,7 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
       }
     })
 
-    Array.from(unusedKeys).forEach((key) => delete state[key])
+    Array.from(unusedKeys).forEach(key => delete state[key])
   }
 
   const { pause, resume } = pausableWatch(
@@ -123,15 +124,23 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
       Object.keys(state).forEach((key) => {
         const mapEntry = state[key]
         if (
-          mapEntry === initialValue[key] ||
-          (mapEntry === '' && clearOnDefault)
-        )
+          mapEntry === initialValue[key]
+          || (mapEntry === '' && clearOnDefault)
+        ) {
           params.delete(key)
-        else if (Array.isArray(mapEntry))
-          mapEntry.forEach((value) => params.append(key, value))
-        else if (removeNullishValues && mapEntry == null) params.delete(key)
-        else if (removeFalsyValues && !mapEntry) params.delete(key)
-        else params.set(key, mapEntry)
+        }
+        else if (Array.isArray(mapEntry)) {
+          mapEntry.forEach(value => params.append(key, value))
+        }
+        else if (removeNullishValues && mapEntry == null) {
+          params.delete(key)
+        }
+        else if (removeFalsyValues && !mapEntry) {
+          params.delete(key)
+        }
+        else {
+          params.set(key, mapEntry)
+        }
       })
       write(params, false)
     },
@@ -141,7 +150,8 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
   function write(params: URLSearchParams, shouldUpdate: boolean) {
     pause()
 
-    if (shouldUpdate) updateState(params)
+    if (shouldUpdate)
+      updateState(params)
 
     if (writeMode === 'replace') {
       window.history.replaceState(
@@ -149,7 +159,8 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
         window.document.title,
         window.location.pathname + constructQuery(params),
       )
-    } else {
+    }
+    else {
       window.history.pushState(
         window.history.state,
         window.document.title,
@@ -161,7 +172,8 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
   }
 
   function onChanged() {
-    if (!enableWrite) return
+    if (!enableWrite)
+      return
 
     write(read(), true)
   }
@@ -173,23 +185,29 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
   const initial = read()
   if (initial.keys().next().value) {
     updateState(initial)
-  } else Object.assign(state, initialValue)
+  }
+  else {
+    Object.assign(state, initialValue)
+  }
 
   return state as T
 }
 
 export function getDefaultThrottle() {
-  if (typeof window === 'undefined') return 50
+  if (typeof window === 'undefined')
+    return 50
   // https://stackoverflow.com/questions/7944460/detect-safari-browser
+  // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
   const isSafari = Boolean(window.GestureEvent)
   if (!isSafari) {
     return 50
   }
   try {
-    const match = navigator.userAgent?.match(/version\/([\d\.]+) safari/i)
-    return parseFloat(match![1]!) >= 17 ? 120 : 320
-  } catch {
+    const match = navigator.userAgent?.match(/version\/([\d.]+) safari/i)
+    return Number.parseFloat(match![1]!) >= 17 ? 120 : 320
+  }
+  catch {
     return 320
   }
 }

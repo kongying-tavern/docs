@@ -1,7 +1,6 @@
-import { normalizeComment } from './utils'
-import { useRuleChecks } from '~/composables/useRuleChecks'
-
 import type ForumAPI from '../api'
+import { useRuleChecks } from '~/composables/useRuleChecks'
+import { normalizeComment } from './utils'
 
 export function extractOfficialAndAuthorComments(
   issue: GITEE.IssueInfo,
@@ -9,11 +8,11 @@ export function extractOfficialAndAuthorComments(
 ): ForumAPI.Comment[] | null {
   const comments: ForumAPI.Comment[] = []
   const relatedComments = commentList.filter(
-    (comment) => comment.target.issue.id === issue.id,
+    comment => comment.target.issue.id === issue.id,
   )
   // 查找作者的评论
   const authorComment = relatedComments.find(
-    (comment) => comment.user.id === issue.user.id,
+    comment => comment.user.id === issue.user.id,
   )
   // 查找官方团队的评论
   const officialComment = relatedComments.find((comment) => {
@@ -21,8 +20,10 @@ export function extractOfficialAndAuthorComments(
     return hasAnyRoles('teamMember', 'feedbackMember').value
   })
 
-  if (authorComment) comments.push(normalizeComment(authorComment))
-  if (officialComment) comments.push(normalizeComment(officialComment))
+  if (authorComment)
+    comments.push(normalizeComment(authorComment))
+  if (officialComment)
+    comments.push(normalizeComment(officialComment))
 
   return comments.length > 0 ? comments : null
 }

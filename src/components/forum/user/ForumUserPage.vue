@@ -1,16 +1,61 @@
+<script setup lang="ts">
+import { issues } from '@/apis/forum/gitee'
+import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
+import { useLoadMore } from '@/hooks/useLoadMore'
+import { useLocalized } from '@/hooks/useLocalized'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { ReloadIcon } from '@radix-icons/vue'
+import { watchOnce } from '@vueuse/core'
+import { ref } from 'vue'
+
+import { handleError } from '~/composables/handleError'
+
+import ForumAside from '../ForumAside.vue'
+import ForumLayout from '../ForumLayout.vue'
+import ForumTopicsList from '../ForumTopicsList.vue'
+
+const { message } = useLocalized()
+
+const page = ref(1)
+const userAuth = useUserAuthStore()
+
+const { data, runAsync, loading, error } = useLoadMore(
+  issues.getUserCreatedTopics,
+  {
+    manual: true,
+  },
+)
+
+async function refreshData() {
+  if (!userAuth.isTokenValid)
+    return (location.hash = 'login-alert')
+
+  await runAsync({
+    current: page.value,
+    sort: 'created',
+    pageSize: 50,
+    filter: null,
+  })
+}
+
+watchOnce(error, () => {
+  handleError(error.value, message)
+})
+</script>
+
 <template>
   <ClientOnly>
     <ForumLayout>
       <template #header>
         <div
-          class="header border-b border-[var(--vp-c-divider)] flex justify-between"
+          class="header flex justify-between border-b border-[var(--vp-c-divider)]"
         >
-          <h2 class="font-size-6 py-3">
+          <h2 class="py-3 font-size-6">
             {{ message.forum.user.myFeedback.title }}
           </h2>
-          <div></div>
+          <div />
         </div>
-        <h3 class="w-full text-align-center mt-4" v-if="!userAuth.isTokenValid">
+        <h3 v-if="!userAuth.isTokenValid" class="mt-4 w-full text-align-center">
           <DynamicTextReplacer :data="message.forum.auth.loginToCheck">
             <template #login>
               <a class="vp-link" href="#login-alert">
@@ -23,14 +68,11 @@
 
       <template #content>
         <Suspense>
-          <ForumTopicsList
-            :data="data"
-            :data-loader="refreshData"
-          ></ForumTopicsList>
+          <ForumTopicsList :data="data" :data-loader="refreshData" />
 
           <template #fallback>
-            <div v-if="loading" class="flex justify-center w-full my-8">
-              <ReloadIcon class="w-4 h-4 mr-2 animate-spin v-middle" />
+            <div v-if="loading" class="my-8 w-full flex justify-center">
+              <ReloadIcon class="mr-2 h-4 w-4 animate-spin v-middle" />
               <p class="font-size-4 lh-[1]">
                 {{ message.ui.button.loading }}
               </p>
@@ -45,48 +87,6 @@
     </ForumLayout>
   </ClientOnly>
 </template>
-
-<script setup lang="ts">
-import { issues } from '@/apis/forum/gitee'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { ReloadIcon } from '@radix-icons/vue'
-import { useLocalized } from '@/hooks/useLocalized'
-import { ref } from 'vue'
-import { useLoadMore } from '@/hooks/useLoadMore'
-import ForumAside from '../ForumAside.vue'
-import ForumTopicsList from '../ForumTopicsList.vue'
-import ForumLayout from '../ForumLayout.vue'
-import { watchOnce } from '@vueuse/core'
-import { handleError } from '~/composables/handleError'
-
-const { message } = useLocalized()
-
-const page = ref(1)
-const userAuth = useUserAuthStore()
-
-const { data, runAsync, loading, error } = useLoadMore(
-  issues.getUserCreatedTopics,
-  {
-    manual: true,
-  },
-)
-
-const refreshData = async () => {
-  if (!userAuth.isTokenValid) return (location.hash = 'login-alert')
-
-  await runAsync({
-    current: page.value,
-    sort: 'created',
-    pageSize: 50,
-    filter: null,
-  })
-}
-
-watchOnce(error, () => {
-  handleError(error.value, message)
-})
-</script>
 
 <style lang="scss" scoped>
 $ForumAsideWidth: 248px;

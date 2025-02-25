@@ -5,17 +5,17 @@ const { frontmatter } = useData()
 </script>
 
 <template>
-  <div class="Headline is-home slide-enter">
+  <div class="slide-enter Headline is-home">
     <div class="border-b pb-6">
       <h1
-        class="title text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
+        class="title text-3xl font-bold tracking-tight lg:text-5xl sm:text-4xl"
       >
         {{ frontmatter.title }}
       </h1>
       <p class="lead mt-4 text-lg">
         {{ frontmatter.subtext }}
       </p>
-      <p class="action" v-if="frontmatter.action">
+      <p v-if="frontmatter.action" class="action">
         <VPLink :href="frontmatter.action.link">
           {{ frontmatter.action.text }}
         </VPLink>

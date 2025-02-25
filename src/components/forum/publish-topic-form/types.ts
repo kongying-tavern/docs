@@ -1,7 +1,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import type { ComputedRef } from 'vue'
 
-export type FieldConfig = {
+export interface FieldConfig {
   label: string
   placeholder: string
   maxLength: number
@@ -10,7 +10,7 @@ export type FieldConfig = {
 export type TabsConfig = {
   value: Exclude<ForumAPI.TopicType, null>
   label: string
-  condition: boolean | ComputedRef<Boolean>
+  condition: boolean | ComputedRef<boolean>
   fields: {
     upload: FieldConfig
     content: FieldConfig

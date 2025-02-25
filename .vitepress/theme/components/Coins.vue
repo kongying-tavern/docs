@@ -4,17 +4,17 @@ import { useData } from 'vitepress'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const { theme } = useData()
-let qrcode = ref()
+const qrcode = ref()
 
 const icon = ref()
 const selectedPayment = ref()
 const coins = ref(theme.value.payment)
 
-const updatePaymentType = () => {
+function updatePaymentType() {
   const hash = window.location.hash.slice(1)
   if (hash && coins.value[hash]?.address) {
     selectedPayment.value = hash
-    qrcode = useQRCode(coins.value[hash].address)
+    qrcode.value = useQRCode(coins.value[hash].address)
     nextTick(() => {
       icon.value.className = `i-custom-${hash}`
     })
@@ -41,7 +41,7 @@ onBeforeUnmount(() => {
           :href="`#${key}`"
           :title="payment.name"
         >
-          <span :class="`i-custom-${key}`"></span>
+          <span :class="`i-custom-${key}`" />
           {{ payment.name }}
         </a>
       </div>
@@ -49,29 +49,28 @@ onBeforeUnmount(() => {
 
     <div
       v-if="selectedPayment && coins[selectedPayment]"
-      class="coin-details font-[var(--vp-font-family-subtitle)] slide-enter"
+      class="slide-enter coin-details font-[var(--vp-font-family-subtitle)]"
     >
       <p>
-        <span ref="icon"></span>
-        {{ coins[selectedPayment].name }} Address:<br /><a
+        <span ref="icon" />
+        {{ coins[selectedPayment].name }} Address:<br><a
           :href="coins[selectedPayment].address"
           :title="coins[selectedPayment].name"
           target="_blank"
           rel="noopener noreferrer"
-          >{{ coins[selectedPayment].address }}</a
-        >
+        >{{ coins[selectedPayment].address }}</a>
       </p>
-      <img :src="qrcode" alt="QR Code" />
+      <img :src="qrcode" alt="QR Code">
     </div>
   </div>
 
   <!-- 在这里显式声明Pay Icon，给Unocss识别导入 -->
   <div v-once hidden>
-    <span class="i-custom-qqpay"></span>
-    <span class="i-custom-wechatpay"></span>
-    <span class="i-custom-bilibili"></span>
-    <span class="i-custom-alipay"></span>
-    <span class="i-custom-paypal"></span>
+    <span class="i-custom-qqpay" />
+    <span class="i-custom-wechatpay" />
+    <span class="i-custom-bilibili" />
+    <span class="i-custom-alipay" />
+    <span class="i-custom-paypal" />
   </div>
 </template>
 

@@ -1,21 +1,21 @@
+import type ForumAPI from '@/apis/forum/api'
+import type { ComputedRef } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
-import { executeWithAuth } from './executeWithAuth'
+import { computed } from 'vue'
 import { composeTopicBody } from './composeTopicBody'
-import { computed, type ComputedRef } from 'vue'
+import { executeWithAuth } from './executeWithAuth'
 
-import type ForumAPI from '@/apis/forum/api'
-
-export const useTopicMannger = (targetTopic: ForumAPI.Topic) => {
+export function useTopicMannger(targetTopic: ForumAPI.Topic) {
   const targetTopicId = targetTopic.id
 
   const { message } = useLocalized()
 
   if (!targetTopic && !targetTopicId) {
-    throw Error('Not found target' + targetTopic)
+    throw new Error(`Not found target${targetTopic}`)
   }
 
-  const toggleCloseTopic = (): [ComputedRef<Boolean>, Function] => {
+  const toggleCloseTopic = (): [ComputedRef<boolean>, () => void] => {
     const closeState = computed(() => targetTopic?.state === 'closed')
     const targetState = computed(() => (closeState.value ? 'open' : 'closed'))
     const body = computed(() =>
@@ -43,7 +43,7 @@ export const useTopicMannger = (targetTopic: ForumAPI.Topic) => {
     return [closeState, toggleClose]
   }
 
-  const toggleHideTopic = (): [ComputedRef<Boolean>, Function] => {
+  const toggleHideTopic = (): [ComputedRef<boolean>, () => void] => {
     const hideState = computed(() => targetTopic?.state === 'progressing')
 
     async function toggleHide() {

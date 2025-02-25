@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { replaceTitle } from '@/composables/replaceTitle'
+import { useLocalized } from '@/hooks/useLocalized'
+import { defineClientComponent, useData, useRoute } from 'vitepress'
+import VPDocAside, { useSidebar } from 'vitepress/theme-without-fonts'
+import { computed } from 'vue'
+import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
+import ForumTopicFooter from '~/components/forum/topic/ForumTopicFooter.vue'
+
+const ForumCommentArea = defineClientComponent(() => {
+  return import('~/components/forum/ForumCommentArea.vue')
+})
+
+const { message } = useLocalized()
+const { params, theme } = useData()
+const { hasSidebar, hasAside, leftAside } = useSidebar()
+const route = useRoute()
+
+const pageName = computed(() =>
+  route.path.replace(/[./]+/g, '_').replace(/_html$/, ''),
+)
+
+if (params?.value) {
+  replaceTitle(params?.value.title)
+}
+</script>
+
 <template>
   <div
     class="Post"
@@ -62,9 +89,9 @@
           <div class="my-2 vp-divider" />
 
           <ForumCommentArea
+            v-if="params?.commentCount !== -1"
             class="mt-8"
             repo="Blog"
-            v-if="params?.commentCount !== -1"
             :topic-id="params?.id"
             :topic-author-id="params?.author.id"
           />
@@ -74,34 +101,6 @@
     <slot name="doc-bottom" />
   </div>
 </template>
-
-<script setup lang="ts">
-import { defineClientComponent, useData } from 'vitepress'
-import VPDocAside, { useSidebar } from 'vitepress/theme-without-fonts'
-import { useLocalized } from '@/hooks/useLocalized'
-import ForumTopicFooter from '~/components/forum/topic/ForumTopicFooter.vue'
-import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
-import { useRoute } from 'vitepress'
-import { computed } from 'vue'
-import { replaceTitle } from '@/composables/replaceTitle'
-
-const ForumCommentArea = defineClientComponent(() => {
-  return import('~/components/forum/ForumCommentArea.vue')
-})
-
-const { message } = useLocalized()
-const { params, theme } = useData()
-const { hasSidebar, hasAside, leftAside } = useSidebar()
-const route = useRoute()
-
-const pageName = computed(() =>
-  route.path.replace(/[./]+/g, '_').replace(/_html$/, ''),
-)
-
-if (params?.value) {
-  replaceTitle(params?.value.title)
-}
-</script>
 
 <style scoped>
 .Post {

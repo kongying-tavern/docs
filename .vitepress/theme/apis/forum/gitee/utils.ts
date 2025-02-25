@@ -1,15 +1,16 @@
-import { GITEE_API_CONFIG } from './config'
-import { avatarList, avatarBaseURl } from '@/composables/avatarList'
-
-import type ForumAPI from '../api'
-import { isArray, uniq } from 'lodash-es'
-import { GiteeAPIError } from '.'
-import { getHeader } from '@/apis/utils'
+/* eslint-disable regexp/no-super-linear-backtracking */
 import type { KyResponse } from 'ky'
-import { GiteeApiErrorType } from './types'
+import type ForumAPI from '../api'
+import { getHeader } from '@/apis/utils'
+import { avatarBaseURl, avatarList } from '@/composables/avatarList'
+import { isArray, uniq } from 'lodash-es'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
+import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
+
+import { GiteeAPIError } from '.'
+import { GITEE_API_CONFIG } from './config'
+import { GiteeApiErrorType } from './types'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
@@ -59,14 +60,14 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Topic {
   const { type, title } = getTopicTypeFromTitle(issue.title)
   return {
     id: issue.number,
-    title: title,
+    title,
     content: markdownToTextWithImages(issue.body),
     contentRaw: issue.body,
     link: issue.html_url,
     commentCount: issue.comments,
     user: normalizeUser(issue.assignee || issue.user),
     tags: filterWhitelistTags(issue.labels),
-    type: type,
+    type,
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,
@@ -77,14 +78,14 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
   const { type, title } = getTopicTypeFromTitle(issue.title)
   return {
     id: issue.number,
-    title: title,
+    title,
     content: markdownToTextWithImages(issue.body),
     contentRaw: issue.body,
     link: issue.html_url,
     commentCount: issue.comments,
     user: normalizeUser(issue.user),
     tags: filterWhitelistTags(issue.labels),
-    type: type,
+    type,
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,
@@ -118,9 +119,10 @@ export function isUpperCase(str: string) {
 }
 
 export function replaceAtMentions(text: string): string {
-  const regex = /@([a-zA-Z0-9]+)(?=\s|$)/g
+  const regex = /@([a-z0-9]+)(?=\s|$)/gi
 
-  if (regex.exec(text) == null) return text
+  if (regex.exec(text) == null)
+    return text
 
   return text.replaceAll(regex, (match, p1) => {
     return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
@@ -133,26 +135,27 @@ function getTopicTypeFromTitle(title: string): {
 } {
   const match = title
     .toLocaleUpperCase()
-    .match(RegExp(`^(${GITEE_API_CONFIG.TOPIC_TYPE.join('|')}):`))
+    .match(new RegExp(`^(${GITEE_API_CONFIG.TOPIC_TYPE.join('|')}):`))
 
   if (match) {
     const prefix = match[0].replace(':', '') as ForumAPI.TopicType
-    if (prefix) return { type: prefix, title: title.slice(prefix.length + 1) }
+    if (prefix)
+      return { type: prefix, title: title.slice(prefix.length + 1) }
   }
 
-  return { type: null, title: title }
+  return { type: null, title }
 }
 
 export function filterWhitelistTags(labels: GITEE.IssueLabel[]) {
   return labels
-    .map((val) => val.name)
-    .filter((val) => isUpperCase(val))
+    .map(val => val.name)
+    .filter(val => isUpperCase(val))
     .filter(
-      (val) =>
-        GITEE_API_CONFIG.STATE_TAGS.has(val) ||
-        forumLocaleLabelGetter.isLabel(val) ||
-        topicTypeLabelGetter.isLabel(val) ||
-        topicTagLabelGetter.isLabel(val),
+      val =>
+        GITEE_API_CONFIG.STATE_TAGS.has(val)
+        || forumLocaleLabelGetter.isLabel(val)
+        || topicTypeLabelGetter.isLabel(val)
+        || topicTagLabelGetter.isLabel(val),
     )
 }
 
@@ -160,59 +163,20 @@ function markdownToTextWithImages(markdown?: string): {
   text: string
   images?: ForumAPI.ImageInfo[]
 } {
-  if (!markdown) return { text: '' }
+  if (!markdown)
+    return { text: '' }
 
   const images: ForumAPI.ImageInfo[] = []
   const imageRegex = /!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\s*\)/g
 
   let text = markdown.replace(imageRegex, (match, altText, src, title) => {
     images.push({ src, alt: altText || undefined, title: title || undefined })
-    return altText ? altText : ''
+    return altText || ''
   })
 
   text = text.replace(/\s+/g, ' ').trim()
 
   return { text, images: images.length > 0 ? images : undefined }
-}
-
-function filterLinks(str: string, whitelist: string[]): string {
-  const isWhitelisted = (text: string): boolean => {
-    return whitelist.some((regex: string) => new RegExp(regex).test(text))
-  }
-
-  const maskUrl = (url: string): string => {
-    return url.replace(
-      /([a-zA-Z]+:\/\/|\/\/)?([a-zA-Z0-9.-]+)([^\s]*)/,
-      (match, protocol = '', domain, path) => {
-        if (isWhitelisted(domain)) return match // 白名单域名保持不变
-        return `${protocol}${'*'.repeat(domain.length)}${'*'.repeat(path.length)}`
-      },
-    )
-  }
-
-  return (
-    str
-      // 处理 Markdown 图片链接
-      .replace(/!\[([^\]]*)\]\((https?:\/\/[^\)]+)\)/g, (match, alt, url) => {
-        const domainMatch = url.match(
-          /(?:[a-zA-Z]+:\/\/|\/\/)?([a-zA-Z0-9.-]+)/,
-        )
-        const domain = domainMatch ? domainMatch[1] : ''
-        const maskedAlt = isWhitelisted(alt) ? alt : '图片违规' // 替换 alt
-        const maskedUrl = maskUrl(url)
-        return `![${maskedAlt}](${maskedUrl})` // 替换 alt 和链接
-      })
-      // 处理 Markdown 普通链接
-      .replace(
-        /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
-        (match, text, url) => `[${text}](${maskUrl(url)})`,
-      )
-      // 处理普通链接（支持无协议链接）
-      .replace(
-        /(^|[^!])((?:[a-zA-Z]+:\/\/|\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}([^\s]*))/g,
-        (match, prefix, url) => `${prefix}${maskUrl(url)}`,
-      )
-  )
 }
 
 export function processLabels(
@@ -222,23 +186,23 @@ export function processLabels(
     ...(value
       ? {
           labels: isArray(value)
-            ? uniq(value.filter((v) => v.trim() !== '')).join(',')
+            ? uniq(value.filter(v => v.trim() !== '')).join(',')
             : value,
         }
       : {}),
   }
 }
 
-export const extractPagination = (
+export function extractPagination(
   params?: Record<string, any>,
   body?: Record<string, any>,
-): number | null => {
-  return (params ? params['page'] : body?.['page']) ?? null
+): number | null {
+  return (params ? params.page : body?.page) ?? null
 }
 
-export const getGiteeApiPaginationParams = (
+export function getGiteeApiPaginationParams(
   response: KyResponse,
-): [ForumAPI.PaginationParams, undefined] | [undefined, Error] => {
+): [ForumAPI.PaginationParams, undefined] | [undefined, Error] {
   const [pagination, error] = getHeader(response, ['Total_count', 'Total_page'])
 
   if (error) {
@@ -257,16 +221,17 @@ export const getGiteeApiPaginationParams = (
   ]
 }
 
-export const handlePagination = async (
+export async function handlePagination(
   response: KyResponse,
-): Promise<[ForumAPI.PaginationParams, undefined] | [undefined, Error]> => {
+): Promise<[ForumAPI.PaginationParams, undefined] | [undefined, Error]> {
   const [pagination, error] = getHeader(response, ['Total_count', 'Total_page'])
 
-  if (error && !pagination)
+  if (error && !pagination) {
     return [
       undefined,
       new GiteeAPIError(GiteeApiErrorType.MissingPaginationParams),
     ]
+  }
 
   return [
     {
@@ -277,9 +242,9 @@ export const handlePagination = async (
   ]
 }
 
-export const parseErrorMessage = async (
+export async function parseErrorMessage(
   response: Response,
-): Promise<string | null> => {
+): Promise<string | null> {
   try {
     const contentType = response.headers.get('content-type')
     if (contentType?.includes('application/json')) {
@@ -287,7 +252,8 @@ export const parseErrorMessage = async (
       return message || 'Unknown error'
     }
     return await response.text()
-  } catch {
+  }
+  catch {
     console.error('Failed to parse error response')
     return null
   }

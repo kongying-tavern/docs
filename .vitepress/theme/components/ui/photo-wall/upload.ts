@@ -1,15 +1,14 @@
-import { NOOP, mutable } from '@/components/type'
-import type { ExtractPropTypes, PropType } from 'vue'
-import type { ComputedRef, InjectionKey } from 'vue'
+import type { ComputedRef, ExtractPropTypes, InjectionKey, PropType } from 'vue'
 import type PhotoWall from './PhotoWall.vue'
-import { Upload } from '../config/Upload'
+
+import { mutable, NOOP } from '@/components/type'
 
 export interface UploadContext {
   accept: ComputedRef<string>
 }
 
-export const uploadContextKey: InjectionKey<UploadContext> =
-  Symbol('uploadContextKey')
+export const uploadContextKey: InjectionKey<UploadContext>
+  = Symbol('uploadContextKey')
 
 export const definePropType = <T>(val: any): PropType<T> => val
 

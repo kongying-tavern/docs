@@ -1,3 +1,5 @@
+import type { PageData } from 'vitepress'
+import type { Ref } from 'vue'
 import { fetcher } from '.'
 
 export interface PageInfoResponse {
@@ -13,9 +15,11 @@ export interface PageInfoResponse {
   }
 }
 
-export const getPageInfo = async (page): Promise<PageInfoResponse> => {
-  // @ts-ignore
-  if (import.meta.env.SSR) return null
+export async function getPageInfo(
+  page: Ref<PageData, PageData>,
+): Promise<PageInfoResponse | null> {
+  if (import.meta.env.SSR)
+    return null
   return fetcher
     .get('docs/pageinfo', {
       searchParams: {

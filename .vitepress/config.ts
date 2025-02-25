@@ -1,14 +1,15 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
-import { headConfig } from './config/head'
-import { createConfigureFunction } from './config/common'
-import { localeSearchConfig } from './config/search'
-import { ignoreDeadLinksConfig } from './config/ignoreDeadLinks'
-import { markdownConfig } from './config/markdown'
-import { localesConfig } from './config/locales'
-import { sitemapConfig } from './config/sitemap'
-import { rewritesConfig } from './config/rewrites'
+
 import { generateBreadcrumbsData } from './config/breadcrumbsDataGenerator'
+import { createConfigureFunction } from './config/common'
+import { headConfig } from './config/head'
+import { ignoreDeadLinksConfig } from './config/ignoreDeadLinks'
+import { localesConfig } from './config/locales'
+import { markdownConfig } from './config/markdown'
+import { rewritesConfig } from './config/rewrites'
+import { localeSearchConfig } from './config/search'
+import { sitemapConfig } from './config/sitemap'
 
 export default defineConfig({
   srcDir: 'src',

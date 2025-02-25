@@ -203,7 +203,7 @@ theme: medium
 {define:KEY}_被声明的内容_{/define}
 ```
 
-{define:KEY}_被声明的内容_{/define}
+{define:KEY} _被声明的内容_ {/define}
 
 使用变量声明时，使用以下语法
 
@@ -241,13 +241,13 @@ theme: medium
 {color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
 ```
 
-{color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
+{color:#FF5733} 红橙色文字 {/color} 普通文字 {color:#33FF57} 绿色文字 {/color}
 
-{color: red}红色文字{/color}
+{color：red} 红色文字 {/color}
 
-{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
+{color：var (--vp-c-purple-3)} _使用 CSS Var 的紫色文字_ {/color}
 
-{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
+{color：rgba(44,195,184,1)} **使用 RGBA 的青色文字** {/color}
 
 ## Frontmatter Config {#frontmatter}
 

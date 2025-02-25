@@ -1,18 +1,21 @@
+/* eslint-disable regexp/no-unused-capturing-group */
 import { isObject } from 'lodash-es'
 
-export const escapeHtml = (unsafeHTML: string): string =>
-  unsafeHTML
+export function escapeHtml(unsafeHTML: string): string {
+  return unsafeHTML
     .replace(/&/gu, '&amp;')
     .replace(/</gu, '&lt;')
     .replace(/>/gu, '&gt;')
     .replace(/"/gu, '&quot;')
     .replace(/'/gu, '&#039;')
+}
 
 const markdownLinkRegexp = /.md((\?|#).*)?$/
 
 // single quote will break @vue/compiler-sfc
-export const stringifyProp = (data: unknown): string =>
-  JSON.stringify(data).replace(/'/g, '&#39')
+export function stringifyProp(data: unknown): string {
+  return JSON.stringify(data).replace(/'/g, '&#39')
+}
 
 /**
  * Determine a link is http link or not
@@ -21,8 +24,9 @@ export const stringifyProp = (data: unknown): string =>
  * - https://github.com
  * - //github.com
  */
-export const isLinkHttp = (link: string): boolean =>
-  /^(https?:)?\/\//.test(link)
+export function isLinkHttp(link: string): boolean {
+  return /^(https?:)?\/\//.test(link)
+}
 
 /**
  * Determine a link is ftp link or not
@@ -32,7 +36,7 @@ export const isLinkFtp = (link: string): boolean => link.startsWith('ftp://')
 /**
  * Determine a link is external or not
  */
-export const isLinkExternal = (link: string, base = '/'): boolean => {
+export function isLinkExternal(link: string, base = '/'): boolean {
   // http link or ftp link
   if (isLinkHttp(link) || isLinkFtp(link)) {
     return true
@@ -40,9 +44,9 @@ export const isLinkExternal = (link: string, base = '/'): boolean => {
 
   // absolute link that does not start with `base` and does not end with `.md`
   if (
-    link.startsWith('/') &&
-    !link.startsWith(base) &&
-    !markdownLinkRegexp.test(link)
+    link.startsWith('/')
+    && !link.startsWith(base)
+    && !markdownLinkRegexp.test(link)
   ) {
     return true
   }
@@ -50,25 +54,30 @@ export const isLinkExternal = (link: string, base = '/'): boolean => {
   return false
 }
 
-export const isRelativeLink = (link: string) =>
-  /^(?!www\.|http[s]?:\/\/|[A-Za-z]:\\|\/\/).*/.test(link)
+export function isRelativeLink(link: string) {
+  return /^(?!www\.|https?:\/\/|[A-Za-z]:\\|\/\/).*/.test(link)
+}
 
-const concatLink = (link: string, base: string): string =>
-  `/${base}/${link}`.replace(/\/+/giu, '/')
+function concatLink(link: string, base: string): string {
+  return `/${base}/${link}`.replace(/\/+/gu, '/')
+}
 
-const modifyLink = (obj: Record<string, any>, base: string): any => {
+function modifyLink(obj: Record<string, any>, base: string): any {
   if (Array.isArray(obj)) {
-    return obj.map((item) => modifyLink(item, base))
+    return obj.map(item => modifyLink(item, base))
   }
   if (isObject(obj)) {
     const newObj: Record<string, any> = {}
     for (const key in obj) {
       if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
         newObj[key] = modifyLink(obj[key], base)
-      } else if (key === 'link' && isRelativeLink(obj[key])) {
+      }
+      else if (key === 'link' && isRelativeLink(obj[key])) {
         newObj[key] = concatLink(obj[key], base)
-        if (isLinkExternal(obj[key])) newObj.target = '_blank'
-      } else {
+        if (isLinkExternal(obj[key]))
+          newObj.target = '_blank'
+      }
+      else {
         newObj[key] = obj[key]
       }
     }
@@ -77,23 +86,25 @@ const modifyLink = (obj: Record<string, any>, base: string): any => {
   return obj
 }
 
-const modifyKey = (obj: any, base: string) => {
+function modifyKey(obj: any, base: string) {
   const newObj: Record<string, any> = {}
   for (const key in obj) {
     if (key.startsWith('/') && base !== '') {
       const newKey = concatLink(key, base)
       newObj[newKey] = obj[key]
-    } else {
+    }
+    else {
       newObj[key] = obj[key]
     }
   }
   return newObj
 }
 
-export const baseHelper = (obj: any, base: string): any =>
-  modifyKey(modifyLink(obj, base), base)
+export function baseHelper(obj: any, base: string): any {
+  return modifyKey(modifyLink(obj, base), base)
+}
 
-export const hash = (str: string) => {
+export function hash(str: string) {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
     hash = (hash << 5) - hash + str.charCodeAt(i)
@@ -114,9 +125,9 @@ export function removeQueryParam(param: string) {
   return url
 }
 
-export const toCamelCaseObject = <T extends Record<string, unknown>>(
+export function toCamelCaseObject<T extends Record<string, unknown>>(
   obj: T,
-): SnakeCaseKeysToCamelCase<T> => {
+): SnakeCaseKeysToCamelCase<T> {
   return Object.fromEntries(
     Object.entries(obj).map(([key, value]) => [camelCase(key), value]),
   ) as SnakeCaseKeysToCamelCase<T>

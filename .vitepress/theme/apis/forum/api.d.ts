@@ -1,7 +1,7 @@
 import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
 
 export namespace ForumAPI {
-  export type Auth = {
+  export interface Auth {
     accessToken: string
     createdAt: number
     expiresIn: number
@@ -12,7 +12,7 @@ export namespace ForumAPI {
 
   export type AccessToken = string | null
 
-  export type User = {
+  export interface User {
     id: string | number
     login: string
     username: string
@@ -28,12 +28,12 @@ export namespace ForumAPI {
     title?: string
   }
 
-  export type Content = {
+  export interface Content {
     text: string
     images?: ImageInfo[]
   }
 
-  export type Topic = {
+  export interface Topic {
     id: string | number
     title: string
     content: ForumAPI.Content
@@ -53,7 +53,7 @@ export namespace ForumAPI {
 
   export type TopicState = 'open' | 'closed' | 'progressing'
 
-  export type Comment = {
+  export interface Comment {
     id: string | number
     content: ForumAPI.Content
     contentRaw: string
@@ -65,19 +65,19 @@ export namespace ForumAPI {
     // replyCommets?: Omit<ForumAPI.Comment, replyCommets>
   }
 
-  export type Comments = {
+  export interface Comments {
     total: number
     totalPage: number
     data: Array<ForumAPI.Comment>
   }
 
-  export type Reactions = {
+  export interface Reactions {
     like?: number
     unlike?: number
     heart?: number
   }
 
-  export type Query = {
+  export interface Query {
     current: number
     pageSize: number
     sort: string
@@ -90,12 +90,12 @@ export namespace ForumAPI {
     data: T
   }
 
-  type PaginationParams = {
+  interface PaginationParams {
     total: number
     totalPage: number
   }
 
-  type Image = {
+  interface Image {
     state: boolean
     message: string
     data?: {
@@ -108,7 +108,7 @@ export namespace ForumAPI {
     }
   }
 
-  type CreateTopicOption = {
+  interface CreateTopicOption {
     type: Exclude<ForumAPI.TopicType, null>
     title: string
     tags: string[]

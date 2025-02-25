@@ -1,5 +1,6 @@
 import type { BeforeErrorHook } from 'ky'
-import { GiteeApiErrorType, type ErrorHandler } from './types'
+import type { ErrorHandler } from './types'
+import { GiteeApiErrorType } from './types'
 import { parseErrorMessage } from './utils'
 
 const errorHandlers: ErrorHandler[] = [
@@ -19,14 +20,16 @@ const errorHandlers: ErrorHandler[] = [
 
 const handleApiErrors: BeforeErrorHook = async (error) => {
   const { response } = error
-  if (!response) return error
+  if (!response)
+    return error
 
   const errorText = await parseErrorMessage(response)
-  if (!errorText) return error
+  if (!errorText)
+    return error
 
   const [errorType, errorMessage = ''] = errorText.split(':')
   const handler = errorHandlers.find(
-    (h) => h.state.includes(response.status) && errorType.includes(h.match),
+    h => h.state.includes(response.status) && errorType.includes(h.match),
   )
 
   if (handler) {

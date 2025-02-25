@@ -1,9 +1,8 @@
+import type ForumAPI from '@/apis/forum/api'
+import type { TabsConfig } from './types'
 import { useLocalized } from '@/hooks/useLocalized'
 import { readonly } from 'vue'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-
-import type { TabsConfig } from './types'
-import type ForumAPI from '@/apis/forum/api'
 
 export const MAX_UPLOAD_FILE_SIZE = 3
 export const TRANSITION_DURATION = 800
@@ -19,7 +18,7 @@ export const FORM_DEFAULT_DATA: ForumAPI.CreateTopicOption = {
   },
 }
 
-export const getFormTabsConfig = () => {
+export function getFormTabsConfig() {
   const { message } = useLocalized()
   const { hasAnyPermissions } = useRuleChecks()
 
@@ -28,7 +27,7 @@ export const getFormTabsConfig = () => {
   return readonly<TabsConfig>([
     {
       value: 'BUG',
-      label: '🐛' + message.value.forum.publish.type.bug,
+      label: `🐛${message.value.forum.publish.type.bug}`,
       condition: true,
       fields: {
         title: {
@@ -55,7 +54,7 @@ export const getFormTabsConfig = () => {
     },
     {
       value: 'FEAT',
-      label: '💡' + message.value.forum.publish.type.feat,
+      label: `💡${message.value.forum.publish.type.feat}`,
       condition: true,
       fields: {
         title: {

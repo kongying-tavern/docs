@@ -1,9 +1,8 @@
-export const sanitizeMarkdown = (
-  markdown: string | null | undefined,
-): string => {
+export function sanitizeMarkdown(markdown: string | null | undefined): string {
   return (markdown || '')
+    // eslint-disable-next-line regexp/no-super-linear-backtracking
     .replaceAll(/!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\s*\)/g, '')
-    .replace(/<!--.*(?=-->)-->/giu, '')
+    .replace(/<!--.*(?=-->)-->/gu, '')
     .replace(/\{define:[^}]*\}.*?\{\/define\}/giu, '')
     .replace(/\{color:[^}]*\}(.*?)\{\/color\}/giu, '$1')
 }

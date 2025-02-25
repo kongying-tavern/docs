@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-
 import type { PageInfoResponse } from '../apis/feedback/getPageInfo'
+import { defineStore } from 'pinia'
+
+import { computed, ref } from 'vue'
 
 export const usePageInfoStore = defineStore('page-info', () => {
   const currentPageinfo = ref<PageInfoResponse['data']>({
@@ -16,7 +16,7 @@ export const usePageInfoStore = defineStore('page-info', () => {
   const usedPageinfos = computed(() => previousPageinfos.value.slice())
   const otherPageinfos = computed(() =>
     usedPageinfos.value.filter(
-      (pageinfo) => pageinfo !== currentPageinfo.value,
+      pageinfo => pageinfo !== currentPageinfo.value,
     ),
   )
 

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils'
 import type { ComboboxGroupProps } from 'radix-vue'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
 import { ComboboxGroup, ComboboxLabel } from 'radix-vue'
-import { type HTMLAttributes, computed } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<
   ComboboxGroupProps & {
@@ -30,7 +31,7 @@ const delegatedProps = computed(() => {
   >
     <ComboboxLabel
       v-if="heading"
-      class="px-2 py-1.5 text-xs font-medium text-muted-foreground"
+      class="px-2 py-1.5 text-xs text-muted-foreground font-medium"
     >
       {{ heading }}
     </ComboboxLabel>

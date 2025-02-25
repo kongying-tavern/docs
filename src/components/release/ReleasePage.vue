@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ReleaseList from './ReleaseList.vue'
 import type { ReleasesData } from './Release'
+import ReleaseList from './ReleaseList.vue'
 
 defineProps<{
   data: ReleasesData
