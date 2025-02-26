@@ -3,11 +3,11 @@
   @include set-badge(1, 'suggest');
   @include set-badge(2, 'suggest');
   @include set-badge(3, 'suggest');
+  @include set-badge(4, 'suggest');
 
   // 已满群
-  @include set-badge(9, 'warning');
+  @include set-badge(11, 'warning');
   @include set-badge(15, 'warning');
-  @include set-badge(16, 'warning');
   @include set-badge(17, 'warning');
 
   // 被封禁的群
