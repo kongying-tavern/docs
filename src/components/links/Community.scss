@@ -11,7 +11,7 @@
   @include set-badge(17, 'warning');
 
   // 被封禁的群
-  @include set-badge(4, 'baned');
+  @include set-badge(5, 'baned');
   @include set-badge(8, 'baned');
 
   ul > li:nth-child(4),
