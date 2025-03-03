@@ -12,7 +12,7 @@
 
   // 被封禁的群
   @include set-badge(5, 'baned');
-  @include set-badge(8, 'baned');
+  @include set-badge(9, 'baned');
 
   ul > li:nth-child(4),
   ul > li:nth-child(8),
