@@ -133,7 +133,7 @@
     "taze": "0.16.9",
     "tsconfig-paths": "4.2.0",
     "tsconfig-vuepress": "5.2.1",
-    "tsx": "4.19.2",
+    "tsx": "4.19.3",
     "vite": "^6.0.6",
     "vite-plugin-inspect": "0.8.9",
     "zhlint": "0.8.2"
