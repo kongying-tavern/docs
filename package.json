@@ -85,7 +85,7 @@
     "qrcode": "^1.5.4",
     "radix-vue": "^1.9.12",
     "sass": "^1.83.0",
-    "tailwind-merge": "^2.6.0",
+    "tailwind-merge": "^3.0.0",
     "typescript": "^5.7.2",
     "ua-parser-js": "^1.0.40",
     "unocss": "^0.62.4",
