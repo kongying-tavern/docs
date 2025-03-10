@@ -81,7 +81,7 @@
     "ky": "^1.7.4",
     "markdown-it-footnote": "^4.0.0",
     "medium-zoom": "^1.1.0",
-    "pinia": "^2.3.0",
+    "pinia": "^3.0.0",
     "qrcode": "^1.5.4",
     "radix-vue": "^1.9.12",
     "sass": "^1.83.0",
