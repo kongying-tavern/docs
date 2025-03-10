@@ -87,7 +87,7 @@
     "sass": "^1.83.0",
     "tailwind-merge": "^2.6.0",
     "typescript": "^5.7.2",
-    "ua-parser-js": "^1.0.40",
+    "ua-parser-js": "^2.0.0",
     "unocss": "^0.62.4",
     "unocss-preset-animations": "^1.1.0",
     "unocss-preset-shadcn": "^0.3.1",
