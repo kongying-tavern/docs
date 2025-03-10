@@ -130,7 +130,7 @@
     "stylelint-config-standard": "36.0.1",
     "stylelint-config-standard-scss": "13.1.0",
     "stylelint-order": "6.0.4",
-    "taze": "0.16.9",
+    "taze": "0.18.0",
     "tsconfig-paths": "4.2.0",
     "tsconfig-vuepress": "5.2.1",
     "tsx": "4.19.2",
