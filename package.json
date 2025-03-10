@@ -120,7 +120,7 @@
     "markdown-it": "14.1.0",
     "markdown-it-container": "4.0.0",
     "markdown-it-kbd-better": "1.2.5",
-    "markdownlint-cli": "0.41.0",
+    "markdownlint-cli": "0.44.0",
     "pnpm": "9.15.2",
     "prettier": "3.4.2",
     "prettier-config-vuepress": "5.0.0",
