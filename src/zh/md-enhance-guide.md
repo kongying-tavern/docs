@@ -234,7 +234,7 @@ theme: medium
 ```md
 {color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
 
-{color: red}红色文字{/color}
+{color:red}红色文字{/color}
 
 {color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
 
@@ -243,11 +243,23 @@ theme: medium
 
 {color:#FF5733} 红橙色文字 {/color} 普通文字 {color:#33FF57} 绿色文字 {/color}
 
-{color：red} 红色文字 {/color}
+{color: red} 红色文字 {/color}
 
-{color：var (--vp-c-purple-3)} _使用 CSS Var 的紫色文字_ {/color}
+{color: var(--vp-c-purple-3)} _使用 CSS Var 的紫色文字_ {/color}
 
-{color：rgba(44,195,184,1)} **使用 RGBA 的青色文字** {/color}
+{color: rgba(44,195,184,1)} **使用 RGBA 的青色文字** {/color}
+
+## markdownItAttrs
+
+<https://www.npmjs.com/package/markdown-it-attrs>
+
+### Demo
+
+paragraph *style me*{.red} more text
+
+```markdown
+paragraph *style me*{.red} more text
+```
 
 ## Frontmatter Config {#frontmatter}
 
