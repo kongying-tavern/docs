@@ -6,7 +6,7 @@ import * as reactions from './reactions'
 import * as translate from './translate'
 import * as upload from './upload'
 
-export const PREFIX_URL = !import.meta.env.DEV ? 'http://localhost:3000/api/' : 'https://hub.inter-knot.site/api/'
+export const PREFIX_URL = 'https://hub.inter-knot.site/api/'
 
 export const fetcher = ky.create({
   prefixUrl: PREFIX_URL,
