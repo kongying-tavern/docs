@@ -30,7 +30,7 @@ const { localeIndex, page, theme, site, hash } = useData()
 const { go } = useRouter()
 
 const open = ref(false)
-const currentLang = computed(() => getLangPath(localeIndex.value))
+const currentLangPath = computed(() => getLangPath(localeIndex.value))
 const suggestLocale = computed(
   () =>
     LOCALE_CONFIG.find(val => val?.lang.includes(suggestLang))
@@ -50,7 +50,7 @@ function toSuggestLanguagePage(locale?: string) {
       normalizeLink(
         getLangPath(locale || suggestLocale.value.key),
         theme.value.i18nRouting !== false,
-        page.value.relativePath.slice(currentLang.value.length - 1),
+        page.value.relativePath.slice(currentLangPath.value.length - 1),
         !site.value.cleanUrls,
       ) + hash.value,
     ),

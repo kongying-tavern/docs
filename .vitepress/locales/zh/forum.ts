@@ -201,6 +201,13 @@ const forum: CustomConfig['forum'] = {
     },
   },
   readMore: '了解更多',
+  translate: {
+    translateText: '翻译贴子',
+    translateInfo: '翻译由 Meta Seq2Seq 模型提供支持',
+    error: '翻译失败',
+    limit: '已达到最大请求次数，请稍后再试',
+    loading: '翻译中...',
+  },
 }
 
 export default forum

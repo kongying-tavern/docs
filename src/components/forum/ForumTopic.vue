@@ -1,27 +1,30 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import type { Ref } from 'vue'
+import type { FORUM } from './types'
 import { Button } from '@/components/ui/button'
 import { Image } from '@/components/ui/image'
+import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
+
 import { useCached, useToggle } from '@vueuse/core'
 import { isArray } from 'lodash-es'
-import { computed, nextTick, ref } from 'vue'
-
+import { computed, nextTick, ref, useTemplateRef } from 'vue'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { scrollTo } from '~/composables/scrollTo'
 import { sessionCacheRedirect } from '~/composables/sessionCacheRedirect'
+
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 import { useTopicComments } from '~/composables/useTopicComment'
-
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
 import ForumRoleBadge from './ForumRoleBadge.vue'
 import ForumTagList from './ForumTagList.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
 import ForumTopicFooter from './ForumTopicFooter.vue'
+import ForumTopicTranslator from './ForumTopicTranslator.vue'
 
 const { title, author, topic } = defineProps<{
   title: string
@@ -32,14 +35,16 @@ const { title, author, topic } = defineProps<{
 }>()
 
 const replyTarget = ref('')
+const translator = useTemplateRef('translator')
 const topicTypeMap = getTopicTypeMap()
-const userAuth = useUserAuthStore()
+
 const renderedText = sanitizeMarkdown(topic.contentRaw)
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 
 const { message } = useLocalized()
 const { isOfficial } = useRuleChecks()
 const { submitComment } = useTopicComments()
+const userAuth = useUserAuthStore()
 const { isExpanded, hasOverflow, collapseText, toggleExpand }
   = useTextCollapse(renderedText)
 
@@ -55,6 +60,25 @@ const hash = computed({
   set: val => (location.hash = val),
 })
 const cachedHash = useCached(hash, (a, b) => !b.includes('reply'))
+const { noTranslationRequirement } = useLanguage()
+
+const menu = computed<FORUM.TopicDropdownMenu[]>(() => {
+  if (topic.type === 'ANN' || !userAuth.isTokenValid || topic.language === 'zh-CN' || noTranslationRequirement.value)
+    return []
+
+  return [
+    {
+      type: 'item',
+      id: 'translator',
+      label: '翻译',
+      icon: 'vpi-languages option-icon',
+      order: 2,
+      action: () => {
+        translator.value?.startTranslate()
+      },
+    },
+  ]
+})
 
 function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>) {
   submitComment(submittedComment)
@@ -89,7 +113,6 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
 <template>
   <div
     :id="`topic-${topic.id}`"
-    v-motion-slide-top
     class="forum-topic-item w-full border-b-1 border-[var(--vp-c-divider)] p-b-2 p-t-6"
     :class="[topic.type]"
   >
@@ -130,6 +153,8 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
         </article>
       </a>
 
+      <ForumTopicTranslator ref="translator" :content="renderedText" :source-language="topic.language" />
+
       <div
         v-if="topic.content?.images"
         class="topic-content-img mt-2 flex cursor-pointer"
@@ -139,7 +164,10 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
           :key="img.src"
           :image="img.src"
           :alt="img.alt"
-          class="mr-4 max-h-30 max-w-30 rounded-sm object-cover"
+          :thumbhash="img.thumbHash"
+          :width="img.width"
+          :height="img.height"
+          class="mr-4 max-h-30 max-w-30 min-h-22 min-w-22 rounded-sm object-cover"
         />
       </div>
     </div>
@@ -150,6 +178,7 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
       <ForumTopicFooter
         :topic-data="topic"
         :comment-id="isAnn ? -1 : 1"
+        :menu="menu"
         @comment:click="handleToggleCommentInput"
       />
     </div>
@@ -179,8 +208,7 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
       class="rounded-md bg-[var(--vp-c-bg-soft)] px-8 pb-4"
       :class="{
         'rounded-t-none': showComment && topic.relatedComments,
-        'important:py-2':
-          topic.relatedComments?.length === 0 || !userAuth.isTokenValid,
+        'important:py-4': !topic.relatedComments,
       }"
       :topic-id="String(topic.id)"
       :reply-target="replyTarget"

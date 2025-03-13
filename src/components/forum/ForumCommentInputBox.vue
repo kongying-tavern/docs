@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import type { HTMLAttributes } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { cn } from '@/lib/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { ReloadIcon } from '@radix-icons/vue'
@@ -16,7 +18,6 @@ import {
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
-
 import ForumImageUpload from '~/components/forum/ForumImageUpload.vue'
 import { useImageUpload } from '~/composables/useImageUpload'
 
@@ -32,6 +33,7 @@ const {
   replyTarget?: string
   collapse?: boolean
   repo: ForumAPI.Repo
+  class?: HTMLAttributes['class']
 }>()
 
 const emit = defineEmits(['comment:submit'])
@@ -47,7 +49,7 @@ const { open, onChange } = useFileDialog({
   accept: 'image/*',
   directory: false,
 })
-const { isUploading, markdownFormatImages, restImageList, imageList }
+const { isCompleted, markdownFormatImages, resetImageList, imageList, upload }
   = useImageUpload()
 const { data, loading, runAsync, error } = useRequest(issues.postTopicComment, {
   manual: true,
@@ -82,7 +84,7 @@ async function submit() {
   emit('comment:submit', data)
 
   input.value = ''
-  restImageList()
+  resetImageList()
 }
 
 watch(data, (newVal) => {
@@ -97,7 +99,7 @@ watch(error, () => {
 </script>
 
 <template>
-  <div ref="commentInputBox" v-motion-slide-top class="flex">
+  <div ref="commentInputBox" v-motion-slide-top class="flex" :class="cn('flex', $props.class)">
     <div class="user-avatar mr-2 flex">
       <UserAvatar
         size="lg"
@@ -136,6 +138,7 @@ watch(error, () => {
             :auto-upload="true"
             :multiple="true"
             :hide-default-trigger="true"
+            @upload="upload"
           />
         </div>
         <div
@@ -173,7 +176,7 @@ watch(error, () => {
         </div>
         <div class="btn flex">
           <Button
-            :disabled="loading || input?.length === 0 || isUploading"
+            :disabled="loading || input?.length === 0 || !isCompleted"
             @click="submit()"
           >
             <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { isFromExternalPage } from '@/composables/isFromExternalPage'
-import { matchLanguages } from '@/composables/matchLanguages'
+import { useLanguage } from '@/composables/useLanguage'
 import { useElementSize, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { useData } from 'vitepress'
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue'
-import { hash } from '../../utils'
+import { getLangCode, hash } from '../../utils'
 import { DEFAULT_LOCALE_CODE, LOCALE_CONFIG, STORE_KEY } from './configs'
 import LanguageSuggestBar from './LanguageSuggestBar.vue'
 
@@ -19,13 +19,11 @@ type BannerItem = Partial<{
 const banner = ref<HTMLElement>()
 const { height } = useElementSize(banner)
 const { frontmatter, page, theme, lang, localeIndex } = useData()
+const { matchedLang } = useLanguage(LOCALE_CONFIG.map(val => val.lang!), DEFAULT_LOCALE_CODE)
 
 const suggestLanguage = import.meta.env.SSR
   ? DEFAULT_LOCALE_CODE
-  : matchLanguages(
-    LOCALE_CONFIG.map(val => val.lang!),
-    navigator?.languages || DEFAULT_LOCALE_CODE,
-  )?.split('-')[0] || DEFAULT_LOCALE_CODE
+  : getLangCode(matchedLang) || DEFAULT_LOCALE_CODE
 
 const bannerData = useLocalStorage<BannerItem[]>(STORE_KEY, [{}])
 

@@ -12,10 +12,7 @@ export const FORM_DEFAULT_DATA: ForumAPI.CreateTopicOption = {
   type: 'BUG',
   title: '',
   tags: [],
-  body: {
-    text: '',
-    images: [],
-  },
+  text: '',
 }
 
 export function getFormTabsConfig() {

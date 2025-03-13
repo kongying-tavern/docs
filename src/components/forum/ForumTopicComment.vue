@@ -95,6 +95,9 @@ const style = {
           :key="img.src"
           :src="img.src"
           :alt="img.alt"
+          :thumbhash="img.thumbHash"
+          :width="img.width"
+          :height="img.height"
           class="mr-4 max-h-24 rounded-sm"
         />
       </div>

@@ -6,6 +6,13 @@ const forum: CustomConfig['forum'] = {
   loadError: 'Load Error',
   exceededRateLimitWarning:
     'Reached the maximum request rate limit of Gitee API. Please login and try again',
+  translate: {
+    translateText: 'Translate',
+    translateInfo: 'Translation is supported by Meta Seq2Seq model',
+    error: 'Translation failed',
+    limit: 'Maximum request limit reached',
+    loading: 'Translating...',
+  },
   topic: {
     official: 'Official',
     author: 'Author',

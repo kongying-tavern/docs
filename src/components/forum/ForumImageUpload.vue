@@ -1,31 +1,23 @@
 <script setup lang="ts">
 import type {
   UploadFile,
-  UploadFiles,
   UploadRawFile,
-  UploadStatus,
   UploadUserFile,
 } from '@/components/ui/photo-wall/upload'
 import type { HTMLAttributes } from 'vue'
-import { uploadImg } from '@/apis/forum/imgs-upload'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import { PhotoWall } from '@/components/ui/photo-wall'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useVModel } from '@vueuse/core'
-import { computed, nextTick, useTemplateRef, watch } from 'vue'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
+import { useTemplateRef } from 'vue'
 
 const props = defineProps<{
   modelValue: UploadUserFile[]
+  maxFileSize: number
+  fileLimit: number
+  placeholder?: string
   class?: HTMLAttributes['class']
   defaultValue?: UploadUserFile[]
-  placeholder?: string
   accent?: string
-  multiple?: boolean
-  maxFileSize?: number
-  fileLimit?: number
-  autoUpload?: boolean
   uploadTips?: string
   hideDefaultTrigger?: boolean
   size?: 'xl' | 'lg'
@@ -33,6 +25,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string | number): void
+  (e: 'upload', file: UploadFile): void
 }>()
 
 const modelValue = useVModel(props, 'modelValue', emits, {
@@ -40,79 +33,10 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
 })
 
-const { data, runAsync, error } = useRequest(uploadImg, {
-  manual: true,
-})
-
-const { message } = useLocalized()
-
 const photoWallRef = useTemplateRef('photoWallRef')
 
-const uploadedFiles = new Map<number, UploadFile>()
-const canAddImages = computed(() => {
-  return (props.modelValue.length || 0) <= (props.fileLimit || 0)
-})
-
-async function upload(uploadFile: UploadFile) {
-  if (!uploadFile.raw)
-    return
-
-  if (
-    props.maxFileSize
-    && uploadFile.raw.size > props.maxFileSize * 1024 * 1024
-  ) {
-    toast(
-      `[${uploadFile.name}] File too large (${uploadFile.raw.size / 1024 / 1024}/${props.maxFileSize} MB)`,
-    )
-    uploadFile.status = 'fail'
-    return
-  }
-
-  // 测试压缩 jpg 格式图片后会导致后端无法正常解析，原因未知
-  // let [compressError, compressedFile] = await compressImage(uploadFile.raw)
-
-  // console.info(compressedFile.size, uploadFile.raw.size)
-
-  // if (compressError) console.error(`[${uploadFile.name}] ${compressError}`)
-
-  await runAsync(uploadFile.raw, uploadFile.uid)
-
-  await nextTick()
-
-  if (data.value?.state && data.value?.data) {
-    updateImage(uploadFile.uid, data.value.data.link, 'ready')
-    uploadedFiles.set(uploadFile.uid, uploadFile)
-  }
-  else {
-    updateImage(uploadFile.uid, undefined, 'fail')
-    toast.error(`[${uploadFile.name}] ${data.value?.message}`)
-  }
-}
-
-async function uploadMultipleFiles(files: UploadFiles) {
-  const newFiles = files.filter(f => !uploadedFiles.has(f.uid))
-  await Promise.all(newFiles.map(upload))
-}
-
-function updateImage(
-  uid: number,
-  url: string | undefined,
-  status: UploadStatus,
-) {
-  const index = props.modelValue.findIndex(img => img.uid === uid)
-  if (index !== undefined && index >= 0) {
-    props.modelValue![index].status = status
-    if (url)
-      // eslint-disable-next-line vue/no-mutating-props
-      props.modelValue[index].url = url
-  }
-}
-
-async function handleFileChange(file: UploadFile, files: UploadFiles) {
-  if (!props.multiple)
-    return upload(file)
-
-  uploadMultipleFiles(files)
+async function handleFileChange(file: UploadFile) {
+  emits('upload', file)
 }
 
 function handleStart(rawFile: UploadRawFile) {
@@ -124,11 +48,6 @@ function handleStart(rawFile: UploadRawFile) {
 defineExpose({
   handleStart,
 })
-
-watch(error, val =>
-  toast.error(
-    `${message.value.forum.publish.form.upload.fail}(${val?.message})`,
-  ))
 </script>
 
 <template>
@@ -138,14 +57,14 @@ watch(error, val =>
       v-model:file-list="modelValue"
       :limit="fileLimit"
       :accept="accent"
-      :multiple="multiple"
+      :multiple="false"
       :hide-default-trigger="hideDefaultTrigger || false"
       :on-change="handleFileChange"
       :size="size"
       default-state="uploading"
       v-bind="$attrs"
     >
-      <span v-if="canAddImages" i-lucide-image-plus />
+      <span v-if="modelValue.length < fileLimit" i-lucide-image-plus />
       <span v-else i-lucide-image-off />
       <template v-if="fileLimit || uploadTips" #tip>
         <DynamicTextReplacer

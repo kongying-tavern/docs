@@ -1,4 +1,5 @@
 import { oauth } from '@/apis/forum/gitee'
+import { oauth as interKnotOauth } from '@/apis/inter-knot.site'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { removeQueryParam } from '@/utils'
@@ -73,9 +74,25 @@ function useLogin() {
   async function afterLogin() {
     if (getLoginStatus()) {
       toast.success(theme.value.forum.auth.loginSuccess)
+      await refreshInterKnotToken()
     }
-    else {
-      toast.info(theme.value.forum.auth.loginFail)
+  }
+
+  async function refreshInterKnotToken() {
+    if (!userAuth.isSSOTokenValid('interKnot').value && userAuth.accessToken) {
+      const [error, auth] = await interKnotOauth.refreshToken(userAuth.accessToken)
+
+      if (error) {
+        toast.error(`inter-knot.site: ${theme.value.forum.auth.loginFail} (${error.message})`)
+        return
+      }
+      console.log(auth)
+      userAuth.setSSOAuth('interKnot', {
+        accessToken: auth.accessToken,
+        expiresTime: auth.expiresTime,
+        createdAt: auth.createdAt,
+        expiresIn: auth.expiresIn,
+      })
     }
   }
 
@@ -97,7 +114,7 @@ function useLogin() {
 
   function logout() {
     // TODO: revoke
-    userAuth.clearAuth()
+    userAuth.logout()
     userInfo.clearUserInfo()
     toast.success(theme.value.forum.auth.logoutSuccess)
   }

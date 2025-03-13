@@ -20,7 +20,7 @@ export const genFileId = () => Date.now() + fileId++
 
 export interface UploadFile {
   name: string
-  size?: number
+  size: number
   uid: number
   url?: string
   raw?: UploadRawFile

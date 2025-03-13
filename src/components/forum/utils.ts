@@ -1,4 +1,4 @@
-import { catchError } from '@/apis/utils'
+import type { UploadedUserFile } from '~/composables/useImageUpload'
 import { useUrlSearchParams } from '@vueuse/core'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 
@@ -91,34 +91,6 @@ export function getPageHeight() {
   )
 }
 
-export async function compressImage(
-  file: File,
-): Promise<[Error | undefined, File]> {
-  try {
-    const { default: Compressor } = await import('compressorjs')
-
-    const [err, result] = await catchError(
-      new Promise((resolve, reject) => {
-        // eslint-disable-next-line no-new
-        new Compressor(file, {
-          quality: 0.8,
-          success(result: File) {
-            resolve(result)
-          },
-          error(err: Error) {
-            reject(err)
-          },
-        })
-      }),
-    )
-    console.log(err, result)
-    return [err, result as File]
-  }
-  catch {
-    throw new Error('Failed to load Compressor.js')
-  }
-}
-
 export function getTopicNumber() {
   if (import.meta.env.SSR)
     return ''
@@ -128,11 +100,10 @@ export function getTopicNumber() {
   return String(params.number)
 }
 
-export function convertMultipleToMarkdown(images: string[], altTexts = []) {
-  return `\n${images
-    .map((url, index) => {
-      const altText = altTexts[index] || ''
-      return `![${altText}](${url})`
+export function convertMultipleToMarkdown(uploadedImages: UploadedUserFile[]) {
+  return `\n${uploadedImages
+    .map(({ url, thumbHash, alt }) => {
+      return `![${alt}](${url})${thumbHash ? `{thumbhash:"${thumbHash.dataBase64}",width:"${thumbHash.width}",height:"${thumbHash.height}"}` : ''}`
     })
     .join('\n')}`
 }

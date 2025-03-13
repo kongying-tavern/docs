@@ -140,3 +140,36 @@ export function ensureStartingSlash(path: string): string {
 export function getLangPath(localeIndex: string) {
   return localeIndex === 'root' ? '/' : `/${localeIndex}/`
 }
+
+// https://github.com/evanw/thumbhash/blob/main/examples/browser/index.html
+export function binaryToBase64(binary: Uint8Array) {
+  return btoa(String.fromCharCode(...binary))
+}
+
+export function equalLangCode(lang: string, _lang: string) {
+  return getLangCode(lang) === getLangCode(_lang)
+}
+
+export function equalScriptCode(lang: string, _lang: string) {
+  return getScriptCode(lang) === getScriptCode(_lang)
+}
+
+export function equalCountryCode(lang: string, _lang: string) {
+  return getCountryCode(lang) === getCountryCode(_lang)
+}
+
+export function equalLocaleCode(lang: string, _lang: string) {
+  return lang.toLowerCase() === _lang.toLowerCase()
+}
+
+export function getLangCode(lang: string) {
+  return lang.split('-')[0].toLowerCase()
+}
+
+export function getScriptCode(lang: string) {
+  return lang.split('-')[1].charAt(0).toUpperCase() + lang.split('-')[1].slice(1).toLowerCase()
+}
+
+export function getCountryCode(lang: string) {
+  return lang.split('-')[2].toUpperCase()
+}

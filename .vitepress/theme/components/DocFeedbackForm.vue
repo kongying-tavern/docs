@@ -1,56 +1,71 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
-import { inject, ref } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
+import { Button } from '@/components/ui/button/'
+import { Textarea } from '@/components/ui/textarea/'
+import { useSessionStorage } from '@vueuse/core'
+import { isEqual } from 'lodash-es'
+import { useData, withBase } from 'vitepress'
+import { computed } from 'vue'
+import { useSubmitTopic } from '~/composables/useSubmitTopic'
+import BlurFade from './ui/BlurFade.vue'
 
-import { newDocFeedback } from '../apis/feedback/newDocFeedback'
+const { showForm } = defineProps<{
+  showForm: boolean
+}>()
 
 const { theme, page } = useData()
 
-const feedbackContent = ref('')
-const checkedItems = ref<string[]>([])
-const contractWay = ref('')
-const loading = ref(false)
-const feedback = inject('feedback')
-const feedbackID = ref('')
-const hideForm = ref(false)
+const initFormData: ForumAPI.CreateTopicOption = {
+  title: 'DOC FEEDBACK',
+  text: '',
+  tags: [],
+  type: 'BUG',
+} as const
+
+const formData = useSessionStorage<ForumAPI.CreateTopicOption>(`doc-feedback-form-${page.value.relativePath}`, initFormData, {
+  deep: true,
+  mergeDefaults: true,
+})
+
+const { loading, submitData, data, error } = useSubmitTopic()
+
+const isEditing = computed(() => !isEqual(formData.value, initFormData))
 
 async function submit() {
-  loading.value = true
-  hideForm.value = true
-
-  const res = await newDocFeedback({
-    path: page.value.filePath,
-    feedback_content: feedbackContent.value,
-    feedback_type: checkedItems.value,
-    user_contact: contractWay.value,
-  })
-
-  if (res.code === 200) {
-    feedbackID.value = res.data?.feedback_id ?? ''
+  await submitData(formData.value)
+  if (data.value?.id) {
+    formData.value = initFormData
   }
-  loading.value = false
 }
+
+function cancel() {
+  formData.value = initFormData
+}
+
+defineExpose({
+  isEditing,
+})
 </script>
 
 <template>
-  <div class="slide-enter feedback-question">
-    <form v-if="!hideForm">
+  <BlurFade v-if="isEditing || showForm" class="slide-enter feedback-question" :duration="0.2" :delay="200">
+    <div v-if="loading" class="loader mr-4" />
+    <p v-if="loading">
+      Loading...
+    </p>
+    <form v-if="!(data || error)">
       <div class="feedback-title" mt-4>
+        <span class="required" />
         {{ theme.docsFeedback.form.chooseIssues }}
-        <span class="feedback-question-title_required" color-red>*</span> :
       </div>
       <div class="mb-4 mt-2 flex flex-wrap items-center">
         <div
-          v-for="(item, index) in theme.docsFeedback.form.issueOptions"
-          :key="index"
+          v-for="(item, index) in theme.docsFeedback.form.issueOptions" :key="index"
           class="mb-4 mt-2 w-full flex items-center"
         >
           <input
-            :id="`feedback-question-checkbox-${index}`"
-            v-model="checkedItems"
-            type="checkbox"
-            :value="item.value"
-            class="h-4 w-4 border-gray-300 rounded bg-gray-100 text-color-[var(--vp-c-brand-1)] dark:border-gray-600 dark:bg-[var(--vp-local-search-bg)] focus:color-[var(--vp-c-brand-1)] focus:ring-2 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            :id="`feedback-question-checkbox-${index}`" v-model="formData.tags" type="checkbox" :value="item.value"
+            class="h-4 w-4 border-gray-300 rounded bg-gray-100 text-color-[var(--vp-c-brand-1)] dark:border-gray-600 dark:bg-[var(--vp-local-search-bg)] focus:color-[var(--vp-c-brand-1)] focus:ring-2 dark:ring-offset-gray-800 dark:focus:ring-green-600"
           >
           <label
             :for="`feedback-question-checkbox-${index}`"
@@ -58,78 +73,57 @@ async function submit() {
           >{{ item.label }}</label>
         </div>
       </div>
+
       <div class="feedback-title" mt-4 flex justify-between>
         {{ theme.docsFeedback.form.feedbackDetail }}
-        <span font-size-3 op-50>{{ feedbackContent.length }}/2000</span>
       </div>
-      <textarea
-        v-model.trim="feedbackContent"
+      <Textarea
+        v-model="formData.text"
         rows="4"
         :placeholder="theme.docsFeedback.form.feedbackTip"
         maxlength="2000"
-        class="mt-4 block w-full border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-[var(--vp-c-bg-alt)] dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
+        class="mt-4 block w-full border border-gray-300 rounded-lg border-solid bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-[var(--vp-c-bg-alt)] dark:text-white"
       />
-      <div mt-4>
-        <label
-          for="contract_way"
-          class="mb-2 block flex justify-between text-sm text-gray-900 font-medium dark:text-white"
-        >{{ theme.docsFeedback.form.contactWay }}
-          <span font-size-3 op-50>{{ contractWay.length }}/50</span>
-        </label>
-        <input
-          id="contract_way"
-          v-model.trim="contractWay"
-          type="text"
-          maxlength="50"
-          class="block w-full border border-gray-300 rounded-lg bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 focus:border-blue-500 dark:bg-[var(--vp-c-bg-alt)] dark:text-white focus:ring-blue-500 dark:focus:border-blue-500 dark:focus:ring-blue-500 dark:placeholder-gray-400"
-          placeholder="Phone/E-Mail/QQ/WeChat/Discord"
-        >
-      </div>
+
       <div class="feedback-question-submit" mt-8>
-        <button
-          type="button"
-          :disabled="checkedItems.length < 1"
-          class="border-[var(--vp-button-brand-border)] rounded-lg bg-[var(--vp-c-brand)] px-4 py-2 text-center text-sm color-white font-medium hover:border-[var(--vp-button-brand-border)] dark:bg-[var(--vp-button-brand-bg)] hover:bg-[var(--vp-c-brand)] focus:outline-none"
+        <Button
+          type="button" :disabled="formData.tags.length < 1"
           @click="submit()"
         >
           {{ theme.ui.button.submit }}
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="secondary"
           type="button"
-          class="ml-4 border border-[var(--vp-button-alt-border)] rounded-lg bg-[var(--vp-button-alt-bg)] px-4 py-2 text-center text-sm font-medium hover:border-[var(--vp-button-alt-hover-border)] hover:bg-[var(--vp-button-alt-hover-bg)]"
-          @click="feedback = null"
+          ml-4
+          @click="cancel()"
         >
           {{ theme.ui.button.cancel }}
-        </button>
+        </Button>
       </div>
     </form>
     <div v-else h-80 w-full flex items-center justify-center>
-      <div v-if="loading" class="loader mr-4" />
-      <p v-if="loading">
-        Loading...
-      </p>
-      <div v-else flex flex-wrap items-center justify-center>
-        <span
-          v-if="feedbackID"
-          class="feedback-state mr-2 text-color-[var(--vp-c-green-2)]"
-          i-custom-badge-check
-        />
-        <span
-          v-if="!feedbackID"
-          class="feedback-state mr-2 text-color-[var(--vp-c-red-2)]"
-          i-custom-badge-x
-        />
+      <div flex flex-wrap items-center justify-center>
+        <span v-if="data?.id" class="feedback-state mr-2 text-color-[var(--vp-c-green-2)]" i-custom-badge-check />
+        <span v-if="!data?.id" class="feedback-state mr-2 text-color-[var(--vp-c-red-2)]" i-custom-badge-x />
         {{
-          feedbackID
+          data?.id
             ? theme.docsFeedback.feedbackSuccessMsg
             : theme.docsFeedback.feedbackFailMsg
         }}
-        <p inline-block text-center style="width: 100%">
-          {{ feedbackID ? `Feedback ID: ${feedbackID}` : '' }}
-        </p>
+
+        <pre v-if="error" class="mt-4" tabindex="0">
+          <code>
+            Error Message: {{ error?.message }}
+          </code>
+        </pre>
+
+        <a class="mt-1 inline-block w-full text-center vp-link" :href="withBase(`/feedback/topic?number=${data?.id}`)" target="_blank" rel="noopener noreferrer">
+          {{ data?.id ? `Feedback ID: ${data?.id}` : '' }}
+        </a>
       </div>
     </div>
-  </div>
+  </BlurFade>
 </template>
 
 <style lang="scss" scoped>

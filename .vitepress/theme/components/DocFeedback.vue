@@ -1,113 +1,58 @@
 <script setup lang="ts">
-import { sendDocFeedback } from '@/apis/feedback/sendDocFeedback'
-
-import { usePageInfoStore } from '@/stores/usePageInfo'
-import { useData, useRoute } from 'vitepress'
-import { computed, provide, ref, watch } from 'vue'
+import { useReactionStore } from '@/stores/useReaction'
+import { useData } from 'vitepress'
+import { computed, useTemplateRef } from 'vue'
 import DocFeedbackForm from './DocFeedbackForm.vue'
 
 const { theme, frontmatter } = useData()
-const router = useRoute()
-const pageinfo = usePageInfoStore()
+const reaction = useReactionStore()
+const feedbackForm = useTemplateRef('feedbackForm')
 
-const feedback = ref<'bad' | 'good' | null>(null)
-const loading = ref(false)
-const feedbackState = ref<boolean | null>(null)
-
-const isGoodFeedback = computed(() => feedback.value === 'good')
-const isBadFeedback = computed(() => feedback.value === 'bad')
 const feedbackStateClass = computed(() => {
-  if (feedbackState.value === true)
-    return 'feedback-state text-color-[var(--vp-c-green-2)] i-custom-badge-check w-5 h-5'
-  if (feedbackState.value === false)
+  if (!reaction.setReactionResponse)
+    return 'hide'
+  if (reaction.setReactionResponse?.statusCode !== 200 || feedbackForm.value?.isEditing)
     return 'feedback-state text-color-[var(--vp-c-red-2)] i-custom-badge-x w-5 h-5'
-  return ''
+  if (reaction.setReactionResponse?.statusCode === 200 || feedbackForm.value?.isEditing)
+    return 'feedback-state text-color-[var(--vp-c-green-2)] i-custom-badge-check w-5 h-5'
+  return 'hide'
 })
+
 const feedbackMessage = computed(() => {
-  if (feedbackState.value === null)
-    return theme.value.docsFeedback.feedbackMsg
-  if (feedbackState.value)
+  if (feedbackForm.value?.isEditing)
     return theme.value.docsFeedback.feedbackSuccessMsg
-  if (!feedbackState.value)
+  if (!reaction.setReactionResponse)
+    return theme.value.docsFeedback.feedbackMsg
+  if (reaction.setReactionResponse?.statusCode !== 200)
     return theme.value.docsFeedback.feedbackFailMsg
-  return ''
+  return theme.value.docsFeedback.feedbackSuccessMsg
 })
 
 const additionalMessage = computed(() => {
-  if (feedbackState.value === true && feedback.value === 'bad')
+  if ((feedbackForm.value?.isEditing || reaction.setReactionResponse?.statusCode === 200) && reaction.reactionState === 'dislike')
     return theme.value.docsFeedback.badFeedbackSuccessMsg
   return ''
 })
-
-function setFeedback(type: 'bad' | 'good') {
-  feedback.value = feedback.value === type ? null : type
-}
-
-async function sendFeedback(isCancel?: boolean) {
-  if (!pageinfo.currentPageinfo.record_id)
-    return (feedbackState.value = false)
-  const type = feedback.value
-  if (isCancel)
-    feedback.value = null
-  loading.value = true // Set loading to true before sending feedback
-  const res = await sendDocFeedback(
-    pageinfo.currentPageinfo.record_id,
-    isCancel ? (type === 'good' ? 'bad' : 'good') : type!,
-    isCancel,
-  )
-  loading.value = false // Set loading to false after feedback response
-  if (res.code === 200 && !isCancel)
-    return (feedbackState.value = true)
-  if (res.code !== 200)
-    return (feedbackState.value = false)
-}
-
-watch(
-  () => feedback.value,
-  async (newVal) => {
-    if (newVal === null)
-      return
-    if (feedbackState.value === null && isGoodFeedback.value)
-      pageinfo.addGood()
-    if (feedbackState.value === true) {
-      if (isBadFeedback.value)
-        pageinfo.removeGood()
-      feedbackState.value = null
-      await sendFeedback(true)
-      return
-    }
-    await sendFeedback(false)
-  },
-)
-
-watch(
-  () => router.path,
-  () => {
-    feedback.value = null
-    feedbackState.value = null
-  },
-)
-
-provide('feedback', feedback)
 </script>
 
 <template>
   <ClientOnly>
-    <div v-if="frontmatter.docInfo !== false" class="feedback">
+    <div v-if="frontmatter.docInfo !== false" id="doc-feedback" class="feedback">
       <p class="title" flex items-center>
-        <span v-if="loading" class="feedback-state loader" />
-        <span v-if="feedbackState" :class="feedbackStateClass" />
+        <span v-if="reaction.reactionSubmitLoading" class="feedback-state loader" />
+        <span :class="feedbackStateClass" />
         {{ feedbackMessage }}
         <br>
         {{ additionalMessage }}
+        {{ reaction.error?.message }}
       </p>
       <div class="feedback-con">
         <span
           :tooltip="theme.docsFeedback.good"
           role="button"
           class="feedback-btn good"
-          :class="{ active: isGoodFeedback }"
-          @click="setFeedback('good')"
+          :class="{ active: reaction.reactionState === 'like' }"
+          @click="reaction.setReactionState('like')"
         >
           <i i-custom-thumb />
         </span>
@@ -115,13 +60,13 @@ provide('feedback', feedback)
           :tooltip="theme.docsFeedback.bad"
           role="button"
           class="feedback-btn bad"
-          :class="{ active: isBadFeedback }"
-          @click="setFeedback('bad')"
+          :class="{ active: reaction.reactionState === 'dislike' }"
+          @click="reaction.setReactionState('dislike')"
         >
           <i i-custom-thumb rotate-180 />
         </span>
       </div>
-      <DocFeedbackForm v-if="isBadFeedback" />
+      <DocFeedbackForm ref="feedbackForm" :show-form="reaction.reactionState === 'dislike' && reaction.setReactionResponse?.statusCode === 200" />
     </div>
   </ClientOnly>
 </template>

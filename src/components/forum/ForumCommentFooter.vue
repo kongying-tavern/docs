@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import type { FORUM } from './types'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { computed } from 'vue'
+import { defineCommentDropdownMenu } from '~/composables/defineCommentDropdownMenu'
 import ForumDate from './ForumDate.vue'
 import ForumTopicCommentDropdownMenu from './ForumTopicCommentDropdownMenu.vue'
 
@@ -10,14 +12,18 @@ const {
   commentData,
   commentCount = 0,
   commentClickHandler = () => {},
+  repo = 'Feedback',
 } = defineProps<{
   repo: string
   commentCount?: number
   commentData: ForumAPI.Comment
   commentClickHandler?: (event: Event) => void
+  menus?: FORUM.TopicDropdownMenu[]
 }>()
 
 const emit = defineEmits(['comment:delete', 'comment:click'])
+
+const dropdownMenus = defineCommentDropdownMenu(repo, commentData)
 
 const { message } = useLocalized()
 
@@ -41,7 +47,7 @@ function handleCommentClick(event: Event) {
     />
 
     <div class="topic-info-list flex cursor-default items-center">
-      <ForumTopicCommentDropdownMenu :repo="repo" :comment-data="commentData" />
+      <ForumTopicCommentDropdownMenu :menus="[...(menus ?? []), ...dropdownMenus]" />
 
       <Button variant="ghost" @click="handleCommentClick">
         <span class="i-lucide:message-circle icon-btn" />

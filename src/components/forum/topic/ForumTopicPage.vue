@@ -7,6 +7,7 @@ import markdownit from 'markdown-it'
 import { useRouter } from 'vitepress'
 import { computed, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
+import { defineTopicDropdownMenu } from '~/composables/defineTopicDropdownMenu'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
@@ -18,6 +19,7 @@ import ForumLayout from '../ForumLayout.vue'
 import ForumRoleBadge from '../ForumRoleBadge.vue'
 import ForumTagList from '../ForumTagList.vue'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
+import ForumTopicTranslator from '../ForumTopicTranslator.vue'
 import { getTopicNumber, setPageTitle } from '../utils'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
@@ -33,6 +35,8 @@ const { data, run, loading, mutate, error } = useRequest(issues.getTopic, {
   defaultParams: [number],
   manual: true,
 })
+
+const menu = computed(() => defineTopicDropdownMenu(data.value).value)
 
 const renderedContent = computed(() =>
   sanitizeMarkdown(
@@ -54,7 +58,7 @@ function handleTopicClose() {
 watchEffect(() => {
   if (loading.value)
     return
-  setPageTitle(data.value?.title, topicTypeMap.get(data.value?.type || ''))
+  setPageTitle(data.value?.title || '', topicTypeMap.get(data.value?.type || ''))
 })
 
 watchOnce(error, () => {
@@ -80,6 +84,7 @@ watchOnce(error, () => {
             <ForumTopicDropdownMenu
               side="bottom"
               :topic-data="data"
+              :menu="menu"
               @topic:close="handleTopicClose"
             >
               <template #trigger>
@@ -113,6 +118,12 @@ watchOnce(error, () => {
             v-html="renderedContent"
           />
 
+          <ForumTopicTranslator
+            class="font-size-4 line-height-6"
+            :content="renderedContent"
+            :source-language="data?.language"
+          />
+
           <ForumTagList class="my-2" :data="data?.tags" />
 
           <div v-if="data.content.images" class="topic-content-img mt-6 flex">
@@ -121,6 +132,9 @@ watchOnce(error, () => {
               :key="index"
               :src="img.src"
               :alt="img.alt"
+              :thumb-hash="img?.thumbHash"
+              :width="img?.width"
+              :height="img?.height"
               class="mr-4 max-h-24 rounded-sm"
             />
           </div>

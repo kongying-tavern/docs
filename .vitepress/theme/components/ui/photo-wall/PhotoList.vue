@@ -1,3 +1,4 @@
+// @unocss-include
 <script lang="ts" setup>
 import type {
   UploadFile,
@@ -79,9 +80,9 @@ function handleRemove(file: UploadFile) {
         </button>
         <img
           class="size-100% object-cover"
-          :src="file.url"
+          :src="file.status === 'fail' ? 'https://assets.yuanshen.site/images/noImage.png' : file.url"
           :alt="file.name"
-          @error="file.status = 'fail'"
+          @error="$event => file.status = 'fail'"
         >
       </slot>
     </li>

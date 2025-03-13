@@ -29,12 +29,12 @@ import {
 } from '@vueuse/core'
 import { last } from 'lodash-es'
 import { VisuallyHidden } from 'radix-vue'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
 import ForumImageUpload from '~/components/forum/ForumImageUpload.vue'
 import { useImageUpload } from '~/composables/useImageUpload'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { useForumData } from '~/stores/useForumData'
+import { useSubmitTopic } from '~/composables/useSubmitTopic'
 
 import {
   FORM_DATA_KEY,
@@ -58,21 +58,25 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 const formData = useLocalStorage<ForumAPI.CreateTopicOption>(
   FORM_DATA_KEY,
   FORM_DEFAULT_DATA,
+  {
+    deep: true,
+    mergeDefaults: false,
+  },
 )
 
 const { message } = useLocalized()
-const { submitTopic } = useForumData()
-const { loading, runAsync } = submitTopic()
-const { isUploading, uploadedImages, restImageList, imageList }
+const { loading, submitData } = useSubmitTopic()
+const { isCompleted, markdownFormatImages, resetImageList, imageList, upload }
   = useImageUpload()
 const [UseForm, Form] = createReusableTemplate()
 const [UseSubmit, SubmitButton] = createReusableTemplate()
+const [UseUploader, Uploader] = createReusableTemplate()
 const { hasAnyPermissions } = useRuleChecks()
 
 const hasPermission = hasAnyPermissions('manage_feedback')
 
 const isDisabled = computed(() => {
-  return loading.value || formData.value.title.length === 0 || isUploading.value
+  return loading.value || formData.value.title.length === 0 || !isCompleted.value
 })
 const tabList = computed(() => {
   return formTabs.map(val => val.value)
@@ -115,7 +119,10 @@ function switchTab() {
 }
 
 async function handleSubmit() {
-  await runAsync(formData.value)
+  await submitData({
+    ...formData.value,
+    text: formData.value.text + markdownFormatImages.value,
+  })
 
   isOpen.value = false
   initFormData()
@@ -123,15 +130,25 @@ async function handleSubmit() {
 
 function initFormData() {
   formData.value = FORM_DEFAULT_DATA
-  restImageList()
+  resetImageList()
 }
-
-watch(uploadedImages, () => {
-  formData.value.body.images = uploadedImages.value
-})
 </script>
 
 <template>
+  <UseUploader v-slot="{ fileLimit, size, uploadTips }">
+    <ForumImageUpload
+      id="upload"
+      v-model="imageList"
+      :size="size"
+      :file-limit="fileLimit"
+      :max-file-size="MAX_UPLOAD_FILE_SIZE"
+      :auto-upload="true"
+      :multiple="true"
+      :upload-tips="uploadTips"
+      @upload="upload"
+    />
+  </UseUploader>
+
   <UseForm>
     <Tabs
       v-model="formData.type"
@@ -210,15 +227,14 @@ watch(uploadedImages, () => {
           >
             <ForumContentInputBox
               id="content"
-              v-model="formData.body"
-              :file-limit="tab.fields.upload.maxLength"
+              v-model="formData.text"
               :text-limit="tab.fields.content.maxLength"
-              :max-file-size="MAX_UPLOAD_FILE_SIZE"
-              :auto-upload="true"
-              :multiple="true"
-              :upload-tips="message.forum.publish.form.upload.tip"
-              :is-upload-disabled="!isDesktop"
-            />
+              :class="isDesktop ? 'min-h-128px' : 'min-h-100px'"
+            >
+              <template v-if="!isDesktop" #uploader>
+                <Uploader :file-limit="tab.fields.upload.maxLength" size="xl" :upload-tips="message.forum.publish.form.upload.tip" />
+              </template>
+            </ForumContentInputBox>
           </ForumPublishTopicFormField>
 
           <ForumPublishTopicFormField
@@ -234,15 +250,7 @@ watch(uploadedImages, () => {
                   .replace('%range', String(tab.fields.upload.maxLength))
               "
             />
-            <ForumImageUpload
-              id="upload"
-              v-model="imageList"
-              size="lg"
-              :file-limit="tab.fields.upload.maxLength"
-              :max-file-size="MAX_UPLOAD_FILE_SIZE"
-              :auto-upload="true"
-              :multiple="true"
-            />
+            <Uploader :file-limit="tab.fields.upload.maxLength" size="lg" />
           </ForumPublishTopicFormField>
         </div>
       </TabsContent>

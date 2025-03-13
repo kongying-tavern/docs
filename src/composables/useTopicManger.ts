@@ -6,7 +6,7 @@ import { computed } from 'vue'
 import { composeTopicBody } from './composeTopicBody'
 import { executeWithAuth } from './executeWithAuth'
 
-export function useTopicMannger(targetTopic: ForumAPI.Topic) {
+export function useTopicManger(targetTopic: ForumAPI.Topic) {
   const targetTopicId = targetTopic.id
 
   const { message } = useLocalized()

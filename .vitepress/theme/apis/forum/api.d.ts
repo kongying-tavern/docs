@@ -1,5 +1,3 @@
-import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
-
 export namespace ForumAPI {
   export interface Auth {
     accessToken: string
@@ -26,6 +24,10 @@ export namespace ForumAPI {
     src: string
     alt?: string
     title?: string
+    thumbHash?: string
+    width?: number
+    height?: number
+    [key: string]: unknown
   }
 
   export interface Content {
@@ -47,6 +49,7 @@ export namespace ForumAPI {
     relatedComments?: Comment[] | null
     createdAt: string
     updatedAt: string
+    language?: string
   }
 
   export type TopicTags = string[]
@@ -102,8 +105,6 @@ export namespace ForumAPI {
       id: string | number
       link: string
       fileSize: number
-      md5: string
-      thumbnailUrl: string
       originName: string
     }
   }
@@ -112,10 +113,7 @@ export namespace ForumAPI {
     type: Exclude<ForumAPI.TopicType, null>
     title: string
     tags: string[]
-    body: {
-      text: string
-      images: UploadUserFile[]
-    }
+    text: string
   }
 
   type PostParams = {

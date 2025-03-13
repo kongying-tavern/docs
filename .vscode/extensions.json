@@ -7,7 +7,7 @@
 		"Vue.vscode-typescript-vue-plugin",
 		"antfu.iconify",
 		"bierner.markdown-yaml-preamble",
-    "mrmlnc.vscode-scss",
-    "redhat.vscode-yaml"
-  ]
+		"mrmlnc.vscode-scss",
+		"redhat.vscode-yaml"
+	]
 }

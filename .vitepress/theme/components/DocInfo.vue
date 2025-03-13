@@ -1,38 +1,10 @@
 <script setup lang="ts">
-import { usePageInfoStore } from '@/stores/usePageInfo'
+import { useReactionStore } from '@/stores/useReaction'
 import dayjs from 'dayjs'
-import { useData, useRoute } from 'vitepress'
-import { computed, ref, watch } from 'vue'
-import { getPageInfo } from '../apis/feedback/getPageInfo'
+import { useData } from 'vitepress'
 
-const router = useRoute()
 const { page, theme, frontmatter } = useData()
-const pageinfo = usePageInfoStore()
-const loading = ref(false)
-const thumbText = computed(() => {
-  return pageinfo.currentPageinfo.good
-    ? Number(pageinfo.currentPageinfo.good)
-    : '-'
-})
-
-async function updateData() {
-  if (import.meta.env.SSR)
-    return null
-  const info = await getPageInfo(page)
-  if (info) {
-    pageinfo.setNewPageinfo(info.data)
-  }
-}
-
-watch(
-  () => router.path,
-  async () => {
-    loading.value = true
-    updateData()
-    loading.value = false
-  },
-)
-updateData()
+const reaction = useReactionStore()
 </script>
 
 <template>
@@ -42,11 +14,16 @@ updateData()
       {{ dayjs(page.lastUpdated).format('YYYY-MM-DD') }}
     </div>
     <ClientOnly>
-      <div class="doc-info-right" flex justify-end text-right>
+      <div class="doc-info-right flex justify-end text-right font-[var(--vp-font-family-subtitle)]">
         <i i-custom-thumb />
-        <div v-if="loading" class="loader mr-4" />
+        <div v-if="reaction.loading" class="loader mr-4" />
         <span v-else>
-          {{ thumbText }}
+          {{ reaction.currentPageReactionState?.likeCount }}
+        </span>
+        <i i-custom-thumb ml-2 rotate-180 />
+        <div v-if="reaction.loading" class="loader mr-4" />
+        <span v-else>
+          {{ reaction.currentPageReactionState?.dislikeCount }}
         </span>
       </div>
     </ClientOnly>

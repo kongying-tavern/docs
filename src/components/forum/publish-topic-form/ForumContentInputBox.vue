@@ -1,30 +1,14 @@
 <script setup lang="ts">
-import type { UploadUserFile } from '@/components/ui/photo-wall/upload'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 import { useFocus, useTextareaAutosize, useVModel } from '@vueuse/core'
-import { computed, watch } from 'vue'
-
-import ForumImageUpload from '~/components/forum/ForumImageUpload.vue'
-
-interface Content {
-  text: string
-  images?: UploadUserFile[]
-}
 
 const props = defineProps<{
-  modelValue: Content
+  modelValue: string
+  textLimit: number
   class?: HTMLAttributes['class']
-  defaultValue?: Content
+  defaultValue?: string
   placeholder?: string
-  accept?: string
-  multiple?: boolean
-  textLimit?: number
-  maxFileSize?: number
-  fileLimit?: number
-  autoUpload?: boolean
-  uploadTips?: string
-  isHideDefaultTrigger?: boolean
   isUploadDisabled?: boolean
 }>()
 
@@ -39,13 +23,6 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 const { textarea, input } = useTextareaAutosize()
 const { focused } = useFocus(textarea)
-
-const imagesModel = computed({
-  get: () => modelValue.value.images || [],
-  set: val => (modelValue.value.images = val),
-})
-
-watch(input, () => (modelValue.value.text = input.value))
 </script>
 
 <template>
@@ -58,7 +35,6 @@ watch(input, () => (modelValue.value.text = input.value))
             focused
               ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
               : '',
-            props.class,
           )
         "
       >
@@ -66,9 +42,8 @@ watch(input, () => (modelValue.value.text = input.value))
           <textarea
             ref="textarea"
             v-bind="$attrs"
-            v-model.trim="input"
-            class="h-auto max-h-256px w-full cursor-text resize-none bg-transparent font-size-3.5 line-height-[32px] char-count"
-            :class="isUploadDisabled || false ? 'min-h-100px' : 'min-h-128px'"
+            v-model.trim="modelValue"
+            :class="cn('h-auto max-h-256px w-full cursor-text resize-none bg-transparent font-size-3.5 line-height-[32px] char-count', props.class)"
             :maxlength="textLimit"
             :placeholder="placeholder"
           />
@@ -81,16 +56,7 @@ watch(input, () => (modelValue.value.text = input.value))
             / {{ textLimit }}
           </span>
         </div>
-        <ForumImageUpload
-          v-if="isUploadDisabled"
-          v-model="imagesModel"
-          :file-limit="fileLimit"
-          :accept="accept"
-          :multiple="multiple"
-          :hide-default-trigger="isHideDefaultTrigger || false"
-          :upload-tips="uploadTips"
-          :max-file-size="3"
-        />
+        <slot name="uploader" />
       </div>
     </div>
   </div>

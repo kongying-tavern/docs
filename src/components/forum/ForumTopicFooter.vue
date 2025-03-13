@@ -1,23 +1,25 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import type { FORUM } from './types'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { computed } from 'vue'
-import { useForumData } from '~/stores/useForumData'
 
+import { defineTopicDropdownMenu } from '~/composables/defineTopicDropdownMenu'
 import ForumDate from './ForumDate.vue'
 import ForumTopicDropdownMenu from './ForumTopicDropdownMenu.vue'
 
-const { topicData, commentId } = defineProps<{
+const { topicData, commentId, menu } = defineProps<{
   topicData: ForumAPI.Topic
   commentId: number
+  menu?: FORUM.TopicDropdownMenu[]
 }>()
 
-const emit = defineEmits(['comment:Click'])
+const emit = defineEmits(['comment:click'])
 
 const { message } = useLocalized()
 
-const { removeTopic } = useForumData()
+const dropdownMenu = defineTopicDropdownMenu(topicData)
 
 const isClosedComment = computed(() => commentId === -1)
 const displayText = computed(() => {
@@ -29,14 +31,6 @@ const displayText = computed(() => {
     return topicData.commentCount
   return message.value.forum.comment.comment
 })
-
-function handleTopicClose() {
-  removeTopic(topicData.id)
-}
-
-function handleTopicHide() {
-  removeTopic(topicData.id)
-}
 
 function handleCommentClick() {
   emit('comment:click', topicData.user)
@@ -54,8 +48,7 @@ function handleCommentClick() {
       <ForumTopicDropdownMenu
         class="opacity-0"
         :topic-data="topicData"
-        @topic:close="handleTopicClose"
-        @topic:hide="handleTopicHide"
+        :menu="[...(menu ?? []), ...dropdownMenu]"
       />
 
       <Button

@@ -98,6 +98,13 @@ export interface CustomConfig {
     noMore: string
     loadError: string
     exceededRateLimitWarning: string
+    translate: {
+      translateText: string
+      translateInfo: string
+      loading: string
+      error: string
+      limit: string
+    }
     user: {
       menu: {
         giteePage: string

@@ -1,4 +1,3 @@
-/* eslint-disable regexp/no-super-linear-backtracking */
 import type { KyResponse } from 'ky'
 import type ForumAPI from '../api'
 import { getHeader } from '@/apis/utils'
@@ -89,6 +88,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,
+    language: getLanguageFromLabel(issue.labels),
   }
 }
 
@@ -146,6 +146,10 @@ function getTopicTypeFromTitle(title: string): {
   return { type: null, title }
 }
 
+export function getLanguageFromLabel(label: GITEE.IssueLabel[]): string {
+  return label.map(val => val.name).filter(item => item.startsWith('LC-'))[0].split('-')[1].toLowerCase()
+}
+
 export function filterWhitelistTags(labels: GITEE.IssueLabel[]) {
   return labels
     .map(val => val.name)
@@ -167,15 +171,30 @@ function markdownToTextWithImages(markdown?: string): {
     return { text: '' }
 
   const images: ForumAPI.ImageInfo[] = []
-  const imageRegex = /!\[(.*?)\]\((.*?)(?:\s+"(.*?)")?\s*\)/g
 
-  let text = markdown.replace(imageRegex, (match, altText, src, title) => {
-    images.push({ src, alt: altText || undefined, title: title || undefined })
+  // 更新正则表达式，提取 thumbHash 以及其它相关属性
+  const imageRegex = /!\[(.*?)\]\((.*?)\)(?:\{thumbhash:\s*"([^"]+)",\s*width:\s*"([^"]+)",\s*height:\s*"([^"]+)"\})?/g
+
+  let text = markdown.replace(imageRegex, (match, altText, src, thumbHash, width, height) => {
+    const imageInfo: ForumAPI.ImageInfo = {
+      src,
+      alt: altText || undefined,
+      thumbHash: thumbHash || undefined,
+      width: width ? Number(width) : undefined,
+      height: height ? Number(height) : undefined,
+    }
+
+    // 将图像信息存入 images 数组
+    images.push(imageInfo)
+
+    // 返回 altText 作为替代文本
     return altText || ''
   })
 
+  // 清理多余的空格并去除前后空白
   text = text.replace(/\s+/g, ' ').trim()
 
+  // 如果有图像，返回 images，若无图像返回 undefined
   return { text, images: images.length > 0 ? images : undefined }
 }
 

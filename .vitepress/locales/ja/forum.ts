@@ -6,6 +6,14 @@ const forum: CustomConfig['forum'] = {
   loadError: '読み込み失敗',
   exceededRateLimitWarning:
     'Gitee APIの最大リクエストレート制限に達しました。ログインして再試行してください',
+
+  translate: {
+    translateText: '翻訳',
+    translateInfo: '翻訳は Meta Seq2Seq モデルによって提供されています',
+    error: '翻訳に失敗しました',
+    limit: '最大リクエスト数に達しました',
+    loading: '翻訳中...',
+  },
   topic: {
     official: '公式',
     author: '作成者',

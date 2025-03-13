@@ -17,10 +17,10 @@ const docsFeedback: CustomConfig['docsFeedback'] = {
     otherIssue: '其他问题（请在反馈内容中具体描述）',
     contactWay: '联系方式（可选）',
     issueOptions: [
-      { label: '页面显示错误', value: 'pagedisplay-issue' },
-      { label: '错别字、标点符号错误', value: 'typos-issue' },
-      { label: '内容表达有误、图片/文字链接错误', value: 'content-issue' },
-      { label: '其他问题', value: 'other-issue' },
+      { label: '页面显示错误', value: 'CATA-DISPLAY' },
+      { label: '错别字、标点符号错误', value: 'CATA-TYPOS' },
+      { label: '内容表达有误、图片/文字链接错误', value: 'CATA-DOCS' },
+      { label: '其他问题', value: 'CATA-OTHER' },
     ],
   },
 }

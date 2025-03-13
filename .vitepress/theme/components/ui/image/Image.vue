@@ -2,35 +2,43 @@
 import type { ZoomOptions } from 'medium-zoom'
 import type { DefaultTheme } from 'vitepress/theme-without-fonts'
 import { cn } from '@/lib/utils'
+import { useToggle } from '@vueuse/core'
 import mediumZoom from 'medium-zoom'
 import { withBase } from 'vitepress'
 import {
   computed,
+  nextTick,
   onMounted,
   onUnmounted,
-  ref,
   useAttrs,
-  useTemplateRef,
+  useId,
   watch,
 } from 'vue'
+import LazyImage from './LazyImage.vue'
 
 interface Props {
   image?: DefaultTheme.ThemeableImage
   alt?: string
   zoom?: ZoomOptions | false
   class?: string
+  preload?: boolean
+  thumbHash?: string
+  width?: number
+  height?: number
+  autoSizes?: boolean
 }
 
 defineOptions({ inheritAttrs: false })
 
 // eslint-disable-next-line vue/require-valid-default-prop
-const { zoom: zoomConfig = { background: 'transparent' }, image }
+const { zoom: zoomConfig = { background: 'transparent' }, width = -1, height = -1, image, preload = false, thumbHash, autoSizes = true }
   = defineProps<Props>()
 
-const img = useTemplateRef('img')
-const loadFail = ref(false)
+const [isLoaded, toggleLoaded] = useToggle(false)
+const [isLoadFail, toggleLoadFail] = useToggle(false)
 const attrs = useAttrs()
-// 计算 `imgSrc`，动态监听 `image` 变化
+const imgId = useId()
+
 const imgSrc = computed(() =>
   withBase(
     (typeof image === 'string' ? image : image?.src)
@@ -39,47 +47,73 @@ const imgSrc = computed(() =>
   ),
 )
 
-// medium-zoom 只创建一次，避免重复初始化
 const zoom = zoomConfig === false ? null : mediumZoom(zoomConfig)
 
 function initZoom() {
-  if (!zoom || !img.value)
+  if (import.meta.env.SSR)
     return
-  zoom.attach(img.value)
+  const target = document.getElementById(imgId) as HTMLImageElement | undefined
+  if (!target)
+    return
+  zoom?.attach(target)
 }
 
-onMounted(initZoom)
+async function handleLoaded() {
+  toggleLoaded()
+
+  await nextTick()
+
+  initZoom()
+}
+
+onMounted(() => initZoom())
 onUnmounted(() => zoom?.detach())
 
-// 监听 zoomConfig 的变化，避免 Vue 的 shallow 监听失效
 watch(
   () => JSON.stringify(zoomConfig),
   () => zoom?.update(zoomConfig || {}),
 )
-
-function handleLoadError() {
-  loadFail.value = true
-}
 </script>
 
 <template>
-  <img
-    v-if="!loadFail"
-    ref="img"
-    v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
-    :src="imgSrc"
-    :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
-    :class="cn('VPImage', $props.class)"
-    @error="handleLoadError"
-  >
-  <template v-else>
+  <ClientOnly>
+    <Transition v-if="!isLoaded && thumbHash" leave-active-class="animate-fade-out animate-duration-750 animate-ease-in-out">
+      <LazyImage
+        :src-set="imgSrc"
+        :auto-sizes="autoSizes"
+        :thumbhash="thumbHash"
+        :preload="preload"
+        :width="width"
+        :height="height"
+        :style="{
+          aspectRatio: `${width} / ${height}`,
+        }"
+        :class="cn('VPImage', $props.class)"
+        @loaded="handleLoaded"
+        @error="$event => toggleLoadFail()"
+      />
+    </Transition>
     <img
+      v-else-if="!isLoadFail"
+      v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
+      :id="imgId"
+      :src="imgSrc"
+      :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
+      :class="cn('VPImage', $props.class)"
+      :width="width"
+      :height="height"
+      :style="{
+        aspectRatio: `${width} / ${height}`,
+      }"
+    >
+    <img
+      v-else
+      v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
       :class="cn('VPImage bg-[var(--vp-c-bg-alt)]', $props.class)"
       :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
-      v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
       src="https://assets.yuanshen.site/images/noImage.png"
     >
-  </template>
+  </ClientOnly>
 </template>
 
 <style scoped>

@@ -4,14 +4,17 @@
     "Aliyun",
     "axline",
     "bilibili",
+    "canvaskit",
     "gitee",
     "Gitee",
     "GITEE",
     "ISPROD",
     "qrcode",
     "qzone",
+    "thumbhash",
     "unocss",
     "vitepress",
+    "vueuse",
     "wechat",
     "wechatpay",
     "wxtl",
@@ -28,7 +31,5 @@
     "**/dist/**": true,
     "packages/*/lib/**": true
   },
-  "prettier.prettierPath": "./node_modules/prettier",
-  "stylelint.validate": ["css", "scss"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
