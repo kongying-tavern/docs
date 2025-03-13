@@ -9,6 +9,7 @@
     ":dependencyDashboard",
     "schedule:weekends"
   ],
+  "ignoreDeps": ["@fingerprintjs/**"],
   "packageRules": [
     {
       "groupName": "vitepress",

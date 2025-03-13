@@ -11,6 +11,9 @@ importers:
       '@actions/core':
         specifier: ^1.11.1
         version: 1.11.1
+      '@fingerprintjs/fingerprintjs':
+        specifier: 3.4.2
+        version: 3.4.2
       '@iconify-json/ic':
         specifier: ^1.2.2
         version: 1.2.2
@@ -77,6 +80,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
+      canvaskit-wasm:
+        specifier: ^0.39.1
+        version: 0.39.1
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -101,6 +107,9 @@ importers:
       ky:
         specifier: ^1.7.4
         version: 1.7.4
+      markdown-it-attrs:
+        specifier: ^4.3.1
+        version: 4.3.1(markdown-it@14.1.0)
       markdown-it-footnote:
         specifier: ^4.0.0
         version: 4.0.0
@@ -122,6 +131,9 @@ importers:
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
+      thumbhash:
+        specifier: ^0.1.1
+        version: 0.1.1
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
@@ -174,6 +186,9 @@ importers:
       '@types/markdown-it':
         specifier: 14.1.2
         version: 14.1.2
+      '@types/markdown-it-attrs':
+        specifier: ^4.1.3
+        version: 4.1.3
       '@types/markdown-it-footnote':
         specifier: 3.0.4
         version: 3.0.4
@@ -183,6 +198,9 @@ importers:
       '@types/ua-parser-js':
         specifier: 0.7.39
         version: 0.7.39
+      '@unlazy/vue':
+        specifier: ^0.12.3
+        version: 0.12.3
       '@unocss/eslint-config':
         specifier: ^66.0.0
         version: 66.0.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.7.2)
@@ -267,6 +285,9 @@ importers:
       tsx:
         specifier: 4.19.2
         version: 4.19.2
+      unlazy:
+        specifier: ^0.12.3
+        version: 0.12.3
       vite:
         specifier: ^6.0.6
         version: 6.0.6(@types/node@22.10.2)(jiti@2.4.2)(sass@1.83.0)(tsx@4.19.2)(yaml@2.6.1)
@@ -1151,6 +1172,9 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
+  '@fingerprintjs/fingerprintjs@3.4.2':
+    resolution: {integrity: sha512-3Ncze6JsJpB7BpYhqIgvBpfvEX1jsEKrad5hQBpyRQxtoAp6hx3+R46zqfsuQG4D9egQZ+xftQ0u4LPFMB7Wmg==}
+
   '@floating-ui/core@1.6.8':
     resolution: {integrity: sha512-7XJ9cPU+yI2QeLS+FCSlqNFZJq8arvswefkZrYI1yQBbftw6FyrZOxYSh+9S7z7TpeWlRt9zJ5IhM1WIL334jA==}
 
@@ -1637,6 +1661,9 @@ packages:
   '@types/lodash@4.17.13':
     resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
 
+  '@types/markdown-it-attrs@4.1.3':
+    resolution: {integrity: sha512-1JsseFdHD6rQHsPcy4W3xx/whxvZ09Z+CqPpnOtrGtpmkFW07N11q7oM383//LtoKv54yn+HGnk6r4ZHUTHJVg==}
+
   '@types/markdown-it-footnote@3.0.4':
     resolution: {integrity: sha512-XJ6n+v+2u+2gmYLSHcxyoNT/YrgrKvHuDJQlykFjuxCQCr86P2/fx1V6/0lcKxv5cSIlCaJ6sUcNS3zDI7I+LA==}
 
@@ -1739,6 +1766,12 @@ packages:
     resolution: {integrity: sha512-Jfi7t/XNBnlcauP9UTH3VHBcS69G70ikFd2e5zdgULLDRWpOlLs1sSTH1V2juNptc93DOk9RQfC5jLWbLcivFw==}
     peerDependencies:
       vue: '>=2.7 || >=3'
+
+  '@unlazy/core@0.12.3':
+    resolution: {integrity: sha512-YApNfNBxpNjIDfXclHWmdiwZbRpZL0lQbSdUyClGau9evWrjMvsl4fPgQInlJ23GYbnjDCfl4TLWst9YbQOSSg==}
+
+  '@unlazy/vue@0.12.3':
+    resolution: {integrity: sha512-ulWpxWCsYgTRW5dCPiPsAwEOJzweLoWjwR/Mk6K1ygFwU4M9EAnz+pyvKnbVqNI2WWNMXU0bfm9B/tULz5wGGQ==}
 
   '@unocss/astro@0.62.4':
     resolution: {integrity: sha512-98KfkbrNhBLx2+uYxMiGsldIeIZ6/PbL4yaGRHeHoiHd7p4HmIyCF+auYe4Psntx3Yr8kU+XSIAhGDYebvTidQ==}
@@ -2023,6 +2056,9 @@ packages:
   '@vueuse/shared@12.5.0':
     resolution: {integrity: sha512-vMpcL1lStUU6O+kdj6YdHDixh0odjPAUM15uJ9f7MY781jcYkIwFA4iv2EfoIPO6vBmvutI1HxxAwmf0cx5ISQ==}
 
+  '@webgpu/types@0.1.21':
+    resolution: {integrity: sha512-pUrWq3V5PiSGFLeLxoGqReTZmiiXwY3jRkIG5sLLKjyqNxrwm/04b4nw7LSmGWJcKk59XOM/YRTUwOzo4MMlow==}
+
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
     hasBin: true
@@ -2211,6 +2247,9 @@ packages:
 
   caniuse-lite@1.0.30001690:
     resolution: {integrity: sha512-5ExiE3qQN6oF8Clf8ifIDcMRCRE/dMGcETG/XGMD8/XiXm6HXQgQTh1yZYLXXpSOsEUlJm1Xr7kGULZTuGtP/w==}
+
+  canvaskit-wasm@0.39.1:
+    resolution: {integrity: sha512-Gy3lCmhUdKq+8bvDrs9t8+qf7RvcjuQn+we7vTVVyqgOVO1UVfHpsnBxkTZw+R4ApEJ3D5fKySl9TU11hmjl/A==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -3637,6 +3676,12 @@ packages:
   mark.js@8.11.1:
     resolution: {integrity: sha512-1I+1qpDt4idfgLQG+BNWmrqku+7/2bi5nLf4YwF8y8zXvmfiTBY3PV3ZibfrjBueCByROpuBjLLFCajqkgYoLQ==}
 
+  markdown-it-attrs@4.3.1:
+    resolution: {integrity: sha512-/ko6cba+H6gdZ0DOw7BbNMZtfuJTRp9g/IrGIuz8lYc/EfnmWRpaR3CFPnNbVz0LDvF8Gf1hFGPqrQqq7De0rg==}
+    engines: {node: '>=6'}
+    peerDependencies:
+      markdown-it: '>= 9.0.0'
+
   markdown-it-container@4.0.0:
     resolution: {integrity: sha512-HaNccxUH0l7BNGYbFbjmGpf5aLHAMTinqRZQAEQbMr2cdD3z91Q6kIo1oUn1CQndkT03jat6ckrdRYuwwqLlQw==}
 
@@ -4818,6 +4863,9 @@ packages:
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
 
+  thumbhash@0.1.1:
+    resolution: {integrity: sha512-kH5pKeIIBPQXAOni2AiY/Cu/NKdkFREdpH+TLdM0g6WA7RriCv0kPLgP731ady67MhTAqrVG/4mnEeibVuCJcg==}
+
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
 
@@ -4992,6 +5040,9 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
+
+  unlazy@0.12.3:
+    resolution: {integrity: sha512-v+Q9A5enT3csqxwCkjYPNlpMc9CKi26mdMqeQEotPW4/Z6RbzbeGaqi78FYkD5XoP6nGagmA6GtU7JFmUotp7w==}
 
   unocss-preset-animations@1.1.0:
     resolution: {integrity: sha512-wCcVnu1IvQmzKK9dZpeZbPPuXO5sKmYGe5VaASjH8st6G3wgw4tw7HsVRP0bXHRhO0PXGtC5Kw9IRKh6dPGPtA==}
@@ -6121,6 +6172,10 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
+  '@fingerprintjs/fingerprintjs@3.4.2':
+    dependencies:
+      tslib: 2.8.1
+
   '@floating-ui/core@1.6.8':
     dependencies:
       '@floating-ui/utils': 0.2.8
@@ -6577,6 +6632,10 @@ snapshots:
 
   '@types/lodash@4.17.13': {}
 
+  '@types/markdown-it-attrs@4.1.3':
+    dependencies:
+      '@types/markdown-it': 14.1.2
+
   '@types/markdown-it-footnote@3.0.4':
     dependencies:
       '@types/markdown-it': 14.1.2
@@ -6715,6 +6774,12 @@ snapshots:
       hookable: 5.5.3
       unhead: 1.11.18
       vue: 3.5.13(typescript@5.7.2)
+
+  '@unlazy/core@0.12.3': {}
+
+  '@unlazy/vue@0.12.3':
+    dependencies:
+      unlazy: 0.12.3
 
   '@unocss/astro@0.62.4(rollup@4.29.1)(vite@6.0.6(@types/node@22.10.2)(jiti@2.4.2)(sass@1.83.0)(tsx@4.19.2)(yaml@2.6.1))':
     dependencies:
@@ -7083,6 +7148,8 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
+  '@webgpu/types@0.1.21': {}
+
   JSONStream@1.3.5:
     dependencies:
       jsonparse: 1.3.1
@@ -7270,6 +7337,10 @@ snapshots:
   camelcase@5.3.1: {}
 
   caniuse-lite@1.0.30001690: {}
+
+  canvaskit-wasm@0.39.1:
+    dependencies:
+      '@webgpu/types': 0.1.21
 
   ccount@2.0.1: {}
 
@@ -8845,6 +8916,10 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   mark.js@8.11.1: {}
+
+  markdown-it-attrs@4.3.1(markdown-it@14.1.0):
+    dependencies:
+      markdown-it: 14.1.0
 
   markdown-it-container@4.0.0: {}
 
@@ -10432,6 +10507,8 @@ snapshots:
 
   through@2.3.8: {}
 
+  thumbhash@0.1.1: {}
+
   tiny-inflate@1.0.3: {}
 
   tinyexec@0.3.2: {}
@@ -10631,6 +10708,10 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   universalify@2.0.1: {}
+
+  unlazy@0.12.3:
+    dependencies:
+      '@unlazy/core': 0.12.3
 
   unocss-preset-animations@1.1.0(@unocss/preset-wind@0.62.4)(unocss@0.62.4(postcss@8.4.49)(rollup@4.29.1)(vite@6.0.6(@types/node@22.10.2)(jiti@2.4.2)(sass@1.83.0)(tsx@4.19.2)(yaml@2.6.1))):
     dependencies:

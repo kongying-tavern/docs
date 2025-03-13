@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
+    "@fingerprintjs/fingerprintjs": "3.4.2",
     "@iconify-json/ic": "^1.2.2",
     "@iconify-json/logos": "^1.2.4",
     "@iconify-json/lucide": "^1.2.20",
@@ -52,6 +53,7 @@
     "@vueuse/integrations": "^11.3.0",
     "@vueuse/motion": "^2.2.6",
     "autoprefixer": "^10.4.20",
+    "canvaskit-wasm": "^0.39.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "compressorjs": "^1.2.1",
@@ -60,6 +62,7 @@
     "feed": "^4.2.2",
     "js-yaml": "^4.1.0",
     "ky": "^1.7.4",
+    "markdown-it-attrs": "^4.3.1",
     "markdown-it-footnote": "^4.0.0",
     "medium-zoom": "^1.1.0",
     "pinia": "^2.3.0",
@@ -67,6 +70,7 @@
     "radix-vue": "^1.9.12",
     "sass": "^1.83.0",
     "tailwind-merge": "^2.6.0",
+    "thumbhash": "^0.1.1",
     "typescript": "^5.7.2",
     "ua-parser-js": "^1.0.40",
     "unocss": "^0.62.4",
@@ -86,9 +90,11 @@
     "@types/crypto-js": "4.2.2",
     "@types/lodash-es": "4.17.12",
     "@types/markdown-it": "14.1.2",
+    "@types/markdown-it-attrs": "^4.1.3",
     "@types/markdown-it-footnote": "3.0.4",
     "@types/node": "22.10.2",
     "@types/ua-parser-js": "0.7.39",
+    "@unlazy/vue": "^0.12.3",
     "@unocss/eslint-config": "^66.0.0",
     "@unocss/eslint-plugin": "^66.0.0",
     "@unocss/extractor-mdc": "0.62.4",
@@ -117,12 +123,13 @@
     "tsconfig-paths": "4.2.0",
     "tsconfig-vuepress": "5.2.1",
     "tsx": "4.19.2",
+    "unlazy": "^0.12.3",
     "vite": "^6.0.6",
     "vite-plugin-inspect": "0.8.9",
     "zhlint": "0.8.2"
   },
   "lint-staged": {
-     "*": "eslint --fix"
+    "*": "eslint --fix"
   },
   "config": {
     "commitizen": {
