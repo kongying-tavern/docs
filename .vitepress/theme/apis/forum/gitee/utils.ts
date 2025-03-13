@@ -146,8 +146,20 @@ function getTopicTypeFromTitle(title: string): {
   return { type: null, title }
 }
 
-export function getLanguageFromLabel(label: GITEE.IssueLabel[]): string {
-  return label.map(val => val.name).filter(item => item.startsWith('LC-'))[0].split('-')[1].toLowerCase()
+export function getLanguageFromLabel(label: GITEE.IssueLabel[]): string | undefined {
+  if (!label || label.length === 0) {
+    return undefined
+  }
+
+  const languageLabel = label
+    .map(val => val && val.name)
+    .find(item => item && item.startsWith('LC-'))
+
+  if (!languageLabel) {
+    return undefined
+  }
+
+  return languageLabel.split('-')[1]?.toLowerCase() || undefined
 }
 
 export function filterWhitelistTags(labels: GITEE.IssueLabel[]) {
@@ -167,35 +179,69 @@ function markdownToTextWithImages(markdown?: string): {
   text: string
   images?: ForumAPI.ImageInfo[]
 } {
-  if (!markdown)
+  // 如果输入为空，返回默认值
+  if (!markdown) {
     return { text: '' }
+  }
 
   const images: ForumAPI.ImageInfo[] = []
 
-  // 更新正则表达式，提取 thumbHash 以及其它相关属性
-  const imageRegex = /!\[(.*?)\]\((.*?)\)(?:\{thumbhash:\s*"([^"]+)",\s*width:\s*"([^"]+)",\s*height:\s*"([^"]+)"\})?/g
+  // 匹配 Markdown 图片语法，包括可选的 {} 元数据
+  const imageRegex = /!\[(.*?)\]\((.*?)\)\s*(\{[^}]*\})?/g
 
-  let text = markdown.replace(imageRegex, (match, altText, src, thumbHash, width, height) => {
-    const imageInfo: ForumAPI.ImageInfo = {
-      src,
-      alt: altText || undefined,
-      thumbHash: thumbHash || undefined,
-      width: width ? Number(width) : undefined,
-      height: height ? Number(height) : undefined,
+  // 替换图片语法为空字符串，并提取图片信息
+  let text = markdown.replace(imageRegex, (match, altText, src, meta) => {
+    let thumbHash: string | undefined
+    let width: number | undefined
+    let height: number | undefined
+
+    if (meta) {
+      const metaContent = meta.slice(1, -1).trim()
+      const metaPairs = metaContent.split(',').map((pair: string) => pair.trim())
+
+      metaPairs.forEach((pair: string) => {
+        const [key, value] = pair.split(':').map((item: string) => item.trim())
+        if (!value)
+          return
+
+        const cleanValue = value.replace(/^"|"$/g, '')
+
+        switch (key) {
+          case 'thumbhash':
+            thumbHash = cleanValue
+            break
+          case 'width':
+            width = Number(cleanValue)
+            break
+          case 'height':
+            height = Number(cleanValue)
+            break
+        }
+      })
     }
 
-    // 将图像信息存入 images 数组
-    images.push(imageInfo)
+    images.push({
+      src,
+      alt: altText || undefined,
+      thumbHash,
+      width,
+      height,
+    })
 
-    // 返回 altText 作为替代文本
-    return altText || ''
+    return ''
   })
 
-  // 清理多余的空格并去除前后空白
+  // 移除 HTML 注释（如 <!-- -->）
+  text = text.replace(/<!--.*?-->/gs, '').trim()
+
+  // 清理多余空格和换行，替换为单个空格
   text = text.replace(/\s+/g, ' ').trim()
 
-  // 如果有图像，返回 images，若无图像返回 undefined
-  return { text, images: images.length > 0 ? images : undefined }
+  // 返回处理后的文本和图片信息（如果有）
+  return {
+    text,
+    images: images.length > 0 ? images : undefined,
+  }
 }
 
 export function processLabels(

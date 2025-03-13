@@ -38,7 +38,7 @@ const replyTarget = ref('')
 const translator = useTemplateRef('translator')
 const topicTypeMap = getTopicTypeMap()
 
-const renderedText = sanitizeMarkdown(topic.contentRaw)
+const renderedText = sanitizeMarkdown(topic.content.text)
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 
 const { message } = useLocalized()

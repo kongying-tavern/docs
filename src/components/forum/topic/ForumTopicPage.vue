@@ -40,7 +40,7 @@ const menu = computed(() => defineTopicDropdownMenu(data.value).value)
 
 const renderedContent = computed(() =>
   sanitizeMarkdown(
-    markdownit().render(sanitizeMarkdown(data.value?.contentRaw)),
+    markdownit().render(sanitizeMarkdown(data.value?.content.text)),
   ),
 )
 

@@ -49,9 +49,12 @@ const imgSrc = computed(() =>
 
 const zoom = zoomConfig === false ? null : mediumZoom(zoomConfig)
 
-function initZoom() {
+async function initZoom() {
   if (import.meta.env.SSR)
     return
+
+  await nextTick()
+
   const target = document.getElementById(imgId) as HTMLImageElement | undefined
   if (!target)
     return
@@ -60,9 +63,6 @@ function initZoom() {
 
 async function handleLoaded() {
   toggleLoaded()
-
-  await nextTick()
-
   initZoom()
 }
 
