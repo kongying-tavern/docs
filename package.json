@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": "true",
-  "packageManager": "pnpm@9.11.0",
+  "packageManager": "pnpm@9.15.9",
   "license": "MIT",
   "scripts": {
     "build": "pnpm build-vitepress",
@@ -114,7 +114,7 @@
     "markdown-it-kbd-better": "1.2.5",
     "markdownlint-cli": "0.41.0",
     "open-editor": "^5.1.0",
-    "pnpm": "9.15.2",
+    "pnpm": "9.15.9",
     "sort-package-json": "2.12.0",
     "stylelint": "16.12.0",
     "stylelint-config-prettier": "9.0.5",
