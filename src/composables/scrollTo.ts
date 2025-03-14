@@ -8,7 +8,7 @@ interface ScrollToOptions {
 }
 
 export function scrollTo(options: ScrollToOptions = {}) {
-  if (import.meta.SSR || !location.hash)
+  if (import.meta.env.SSR || !location.hash)
     return
 
   const { el, offset = 0, smooth = true, hash = location.hash } = options

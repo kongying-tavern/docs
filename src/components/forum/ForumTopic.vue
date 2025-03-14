@@ -59,7 +59,7 @@ const hash = computed({
   get: () => location.hash.slice(1),
   set: val => (location.hash = val),
 })
-const cachedHash = useCached(hash, (a, b) => !b.includes('reply'))
+const cachedHash = useCached(hash, (_a, b) => !b.includes('reply'))
 const { noTranslationRequirement } = useLanguage()
 
 const menu = computed<FORUM.TopicDropdownMenu[]>(() => {

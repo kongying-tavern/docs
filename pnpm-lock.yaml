@@ -189,6 +189,9 @@ importers:
       '@types/markdown-it-attrs':
         specifier: ^4.1.3
         version: 4.1.3
+      '@types/markdown-it-container':
+        specifier: ^2.0.10
+        version: 2.0.10
       '@types/markdown-it-footnote':
         specifier: 3.0.4
         version: 3.0.4
@@ -1673,6 +1676,9 @@ packages:
 
   '@types/markdown-it-attrs@4.1.3':
     resolution: {integrity: sha512-1JsseFdHD6rQHsPcy4W3xx/whxvZ09Z+CqPpnOtrGtpmkFW07N11q7oM383//LtoKv54yn+HGnk6r4ZHUTHJVg==}
+
+  '@types/markdown-it-container@2.0.10':
+    resolution: {integrity: sha512-zv+YxrlSYRq51e9kzm3orv4OvF4U79Ll1OyplNXr00o4ZC/8PukJk/jEWH7CnsMtrSWZlyv0czhz42jm9J4uLw==}
 
   '@types/markdown-it-footnote@3.0.4':
     resolution: {integrity: sha512-XJ6n+v+2u+2gmYLSHcxyoNT/YrgrKvHuDJQlykFjuxCQCr86P2/fx1V6/0lcKxv5cSIlCaJ6sUcNS3zDI7I+LA==}
@@ -6711,6 +6717,10 @@ snapshots:
   '@types/lodash@4.17.13': {}
 
   '@types/markdown-it-attrs@4.1.3':
+    dependencies:
+      '@types/markdown-it': 14.1.2
+
+  '@types/markdown-it-container@2.0.10':
     dependencies:
       '@types/markdown-it': 14.1.2
 

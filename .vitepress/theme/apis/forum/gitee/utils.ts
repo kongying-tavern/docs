@@ -190,7 +190,7 @@ function markdownToTextWithImages(markdown?: string): {
   const imageRegex = /!\[(.*?)\]\((.*?)\)\s*(\{[^}]*\})?/g
 
   // 替换图片语法为空字符串，并提取图片信息
-  let text = markdown.replace(imageRegex, (match, altText, src, meta) => {
+  let text = markdown.replace(imageRegex, (_match, altText, src, meta) => {
     let thumbHash: string | undefined
     let width: number | undefined
     let height: number | undefined

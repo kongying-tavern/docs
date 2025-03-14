@@ -8,24 +8,6 @@ declare namespace GITEE {
     token_type: string
   }
 
-  interface List {
-    body: string
-    created_at: string
-    id: number
-    in_reply_to_id: number
-    source: any
-    target: {
-      issue: {
-        id: number
-        number: string
-        title: string
-      }
-      pull_request: any
-    }
-    updated_at: string
-    user: User
-  }
-
   interface User {
     id: number
     login: string

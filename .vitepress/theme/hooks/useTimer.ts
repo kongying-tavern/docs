@@ -3,7 +3,7 @@ import { useTimestamp } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
 export function useTimer(
-  cb: (...args: unknown[]) => any,
+  cb: (...args: unknown[]) => void,
   interval: number,
   options?: UseTimestampOptions<true>,
 ) {

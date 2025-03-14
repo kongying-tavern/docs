@@ -190,14 +190,14 @@ export async function postTopicComment(
 }
 
 export async function deleteTopicComment(
-  repo: string,
   id: number | string,
+  repo: string = GITEE_API_CONFIG.FEEDBACK_REPO,
 ): Promise<boolean> {
   let state = false
 
   await apiCall<GITEE.IssueList>(
     'delete',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues/comments/${id}`,
+    `repos/${GITEE_API_CONFIG.OWNER}/${repo}/issues/comments/${id}`,
     {
       params: {
         id,

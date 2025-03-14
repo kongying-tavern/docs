@@ -100,11 +100,11 @@ function modifyKey(obj: any, base: string) {
   return newObj
 }
 
-export function baseHelper(obj: any, base: string): any {
-  return modifyKey(modifyLink(obj, base), base)
+export function baseHelper<T extends Record<string, unknown> | unknown[]>(obj: T, base: string): T {
+  return modifyKey(modifyLink(obj, base), base) as T
 }
 
-export function hash(str: string) {
+export function hash(str: string): number {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
     hash = (hash << 5) - hash + str.charCodeAt(i)

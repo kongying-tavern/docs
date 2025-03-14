@@ -11,8 +11,8 @@ export interface Notification {
   closeButton?: boolean
   timeout: number
   actions?: NotificationAction[]
-  click?: (...args: any[]) => void
-  callback?: (...args: any[]) => void
+  click?: (...args: unknown[]) => void
+  callback?: (...args: unknown[]) => void
   color?: string
   ui?: any
 }

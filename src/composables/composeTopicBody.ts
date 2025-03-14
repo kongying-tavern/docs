@@ -20,7 +20,7 @@ export function composeTopicBody(
 
 export function writeTopicBodyComment(
   body: string,
-  params: Record<string, any>,
+  params: Record<string, unknown>,
 ): string {
   if (!body)
     return ''

@@ -45,7 +45,7 @@ export function cfgDynamicHead(
   const pageKeywords = cfgGetPageKeywords(pageData, siteConfig)
   const pageCover = cfgGetPageCover(pageData, siteConfig)
 
-  const head: any = [
+  const head: HeadConfig[] = [
     ['meta', { name: 'og:url', content: pageUrl }],
     ['meta', { name: 'twitter:url', content: pageUrl }],
     ['meta', { name: 'og:title', content: pageTitle }],

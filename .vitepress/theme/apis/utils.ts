@@ -14,9 +14,9 @@ export function removeTrailingSlash(str: string) {
   return str
 }
 
-export function asyncOnce(cb: (...args: any[]) => Promise<any>) {
-  const map: Record<string, null | Promise<any>> = {}
-  return (...args: any[]) => {
+export function asyncOnce<T extends unknown[], R>(cb: (...args: T) => Promise<R>) {
+  const map: Record<string, null | Promise<R>> = {}
+  return (...args: T) => {
     const key = JSON.stringify(args)
     return (map[key] ??= new Promise((resolve, reject) => {
       cb(...args)

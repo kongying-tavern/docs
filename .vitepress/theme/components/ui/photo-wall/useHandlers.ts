@@ -32,7 +32,7 @@ export function useHandlers(
   )
 
   const getFile = (rawFile: UploadRawFile) =>
-    uploadFiles.value.find((file: { uid: any }) => file.uid === rawFile.uid)
+    uploadFiles.value.find((file: { uid: number }) => file.uid === rawFile.uid)
 
   function clearFiles(
     /** @default ['ready', 'uploading', 'success', 'fail'] */

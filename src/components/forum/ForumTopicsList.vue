@@ -7,7 +7,7 @@ import ForumTopic from './ForumTopic.vue'
 
 const { dataLoader: fetchData, data } = defineProps<{
   data?: ForumAPI.Topic[]
-  dataLoader?: () => Promise<any>
+  dataLoader?: () => Promise<void>
 }>()
 
 if (!import.meta.env.SSR && fetchData)
