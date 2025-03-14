@@ -6,8 +6,8 @@ const asideLinks: CustomConfig['asideLinks'] = {
   contactUsText: '加入Discord服务器',
   contactUsLink: 'https://discord.gg/SWz6RTWNkm',
   sponsor: '支持我们',
-  editLink: '报告页面错误',
-  translateThisPage: '翻译该页',
+  editLink: '在 GitHub 上编辑该页',
+  translateThisPage: '帮助我们完善该页翻译',
 }
 
 export default asideLinks

@@ -1,7 +1,7 @@
 import type { CustomConfig } from '../types'
 
-const docsFeedback: CustomConfig['docsFeedback'] = {
-  feedbackMsg: '这篇文档是否对你有帮助？',
+const docReaction: CustomConfig['docReaction'] = {
+  feedbackMsg: '本页对您有帮助吗？',
   good: '有帮助',
   bad: '无帮助',
   feedbackFailMsg: '反馈失败，请重试或联系管理员（QQ：1961266616）！',
@@ -25,4 +25,4 @@ const docsFeedback: CustomConfig['docsFeedback'] = {
   },
 }
 
-export default docsFeedback
+export default docReaction

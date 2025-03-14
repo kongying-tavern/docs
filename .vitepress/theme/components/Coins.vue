@@ -2,6 +2,7 @@
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData } from 'vitepress'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import BlurFade from './ui/BlurFade.vue'
 
 const { theme } = useData()
 const qrcode = ref()
@@ -47,8 +48,10 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <div
+    <BlurFade
       v-if="selectedPayment && coins[selectedPayment]"
+      :duration="200"
+      :delay="200"
       class="slide-enter coin-details font-[var(--vp-font-family-subtitle)]"
     >
       <p>
@@ -60,8 +63,8 @@ onBeforeUnmount(() => {
           rel="noopener noreferrer"
         >{{ coins[selectedPayment].address }}</a>
       </p>
-      <img :src="qrcode" alt="QR Code">
-    </div>
+      <img :src="qrcode.value" alt="QR Code">
+    </BlurFade>
   </div>
 
   <!-- 在这里显式声明Pay Icon，给Unocss识别导入 -->

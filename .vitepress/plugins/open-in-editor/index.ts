@@ -6,7 +6,7 @@ export default function openInEditorPlugin(): Plugin {
     name: 'vite-plugin-open-in-editor',
 
     configureServer(server) {
-      server.middlewares.use('/__open-in-editor', (req, res, next) => {
+      server.middlewares.use('/__open-in-editor', async (req, res, next) => {
         if (!req.url)
           return next()
 
@@ -20,7 +20,7 @@ export default function openInEditorPlugin(): Plugin {
           const line = Number.parseInt(params.get('line') || '1', 10)
           const column = Number.parseInt(params.get('column') || '1', 10)
 
-          openEditor([{ file, line, column }])
+          await openEditor([{ file, line, column }])
           res.statusCode = 204
         }
         catch (err) {

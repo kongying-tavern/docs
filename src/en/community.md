@@ -3,7 +3,7 @@ title: Join Community
 layout: doc
 ---
 
-## Community
+## Community Server
 
 <LinkGrid :items="server" />
 

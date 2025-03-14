@@ -56,11 +56,11 @@ defineExpose({
     <form v-if="!(data || error)">
       <div class="feedback-title" mt-4>
         <span class="required" />
-        {{ theme.docsFeedback.form.chooseIssues }}
+        {{ theme.docReaction.form.chooseIssues }}
       </div>
       <div class="mb-4 mt-2 flex flex-wrap items-center">
         <div
-          v-for="(item, index) in theme.docsFeedback.form.issueOptions" :key="index"
+          v-for="(item, index) in theme.docReaction.form.issueOptions" :key="index"
           class="mb-4 mt-2 w-full flex items-center"
         >
           <input
@@ -75,12 +75,12 @@ defineExpose({
       </div>
 
       <div class="feedback-title" mt-4 flex justify-between>
-        {{ theme.docsFeedback.form.feedbackDetail }}
+        {{ theme.docReaction.form.feedbackDetail }}
       </div>
       <Textarea
         v-model="formData.text"
         rows="4"
-        :placeholder="theme.docsFeedback.form.feedbackTip"
+        :placeholder="theme.docReaction.form.feedbackTip"
         maxlength="2000"
         class="mt-4 block w-full border border-gray-300 rounded-lg border-solid bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-[var(--vp-c-bg-alt)] dark:text-white"
       />
@@ -108,8 +108,8 @@ defineExpose({
         <span v-if="!data?.id" class="feedback-state mr-2 text-color-[var(--vp-c-red-2)]" i-custom-badge-x />
         {{
           data?.id
-            ? theme.docsFeedback.feedbackSuccessMsg
-            : theme.docsFeedback.feedbackFailMsg
+            ? theme.docReaction.feedbackSuccessMsg
+            : theme.docReaction.feedbackFailMsg
         }}
 
         <pre v-if="error" class="mt-4" tabindex="0">

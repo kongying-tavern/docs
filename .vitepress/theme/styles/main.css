@@ -13,6 +13,7 @@ html {
 h1,
 h2,
 h3,
+.outline-title,
 div.VPHomeHero > div > div.main > p.text,
 .header-anchor::before {
   font-family: var(--vp-font-family-title);
@@ -30,7 +31,6 @@ thead,
 [data-menu-item],
 [data-radix-vue-collection-item],
 .custom-block-title,
-.outline-title,
 .VPLocalNavOutlineDropdown,
 .doc-info-left,
 .subtitle,
@@ -160,6 +160,18 @@ textarea {
 
 #VPContent {
   background-color: var(--vp-c-bg);
+}
+
+#VPContent > div > div > div.aside > div.aside-container > div > div > nav > div {
+  padding-left: 0;
+}
+
+.outline-marker {
+  display: none;
+}
+
+.outline-link.active {
+  font-family: var(--vp-font-family-subtitle);
 }
 
 #VPContent

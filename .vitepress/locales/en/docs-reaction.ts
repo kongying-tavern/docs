@@ -1,6 +1,6 @@
 import type { CustomConfig } from '../types'
 
-const docsFeedback: CustomConfig['docsFeedback'] = {
+const docReaction: CustomConfig['docReaction'] = {
   feedbackMsg: 'Was this document helpful?',
   good: 'Yes',
   bad: 'No',
@@ -26,4 +26,4 @@ const docsFeedback: CustomConfig['docsFeedback'] = {
   },
 }
 
-export default docsFeedback
+export default docReaction

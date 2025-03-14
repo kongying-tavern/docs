@@ -3,6 +3,7 @@ import { FontaineTransform } from 'fontaine'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
+import openInEditor from './.vitepress/plugins/open-in-editor'
 
 export default defineConfig({
   server: {
@@ -47,6 +48,8 @@ export default defineConfig({
       ],
       resolvePath: id => new URL(`./public/fonts/${id}`, import.meta.url),
     }),
+
+    openInEditor(),
   ],
   css: {
     preprocessorOptions: {

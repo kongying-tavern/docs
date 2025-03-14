@@ -70,7 +70,7 @@ export interface CustomConfig {
       all: string
     }
   }
-  docsFeedback: {
+  docReaction: {
     feedbackMsg: string
     good: string
     bad: string

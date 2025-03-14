@@ -5,7 +5,7 @@ import _404 from './404'
 import AsideLinks from './aside-links'
 import Changelog from './changelog'
 import C from './constants'
-import DocsFeedback from './docs-feedback'
+import docReaction from './docs-feedback'
 import Footer from './footer'
 import Forum from './forum'
 import Head from './head'
@@ -38,7 +38,7 @@ export const zhConfig: LocaleSpecificConfig<
     notFound: _404,
     ui: UI,
     asideLinks: AsideLinks,
-    docsFeedback: DocsFeedback,
+    docReaction,
     docFooter: {
       prev: '上一页',
       next: '下一页',

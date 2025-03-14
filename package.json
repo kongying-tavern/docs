@@ -112,6 +112,7 @@
     "markdown-it-container": "4.0.0",
     "markdown-it-kbd-better": "1.2.5",
     "markdownlint-cli": "0.41.0",
+    "open-editor": "^5.1.0",
     "pnpm": "9.15.2",
     "sort-package-json": "2.12.0",
     "stylelint": "16.12.0",

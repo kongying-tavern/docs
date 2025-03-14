@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import Banner from '@/components/banner/Banner.vue'
-import DocFeedback from '@/components/DocFeedback.vue'
+import DocAside from '@/components/DocAside.vue'
 import DocHeader from '@/components/DocHeader.vue'
-import DocInfo from '@/components/DocInfo.vue'
+import DocReaction from '@/components/DocReaction.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
 import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
 import { loadFonts } from '@/composables/loadFonts'
 import { enableTransitions } from '@/shared'
+import { useIntersectionObserver } from '@vueuse/core'
 import mediumZoom from 'medium-zoom'
 import { useData, useRouter } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { nextTick, onMounted, provide } from 'vue'
+import { computed, nextTick, onMounted, provide, shallowRef, useTemplateRef, watch } from 'vue'
+
 import '@/styles/vars.css'
 import '@/styles/main.css'
 import '@/styles/ui.css'
@@ -23,9 +25,17 @@ import '@/styles/shadcn.css'
 import '@/styles/fonts.css'
 
 const { Layout } = DefaultTheme
-const { isDark } = useData()
+const { isDark, frontmatter } = useData()
 
 const router = useRouter()
+const target = useTemplateRef<HTMLDivElement>('target')
+const targetIsVisible = shallowRef(false)
+const showAside = computed(
+  () =>
+    frontmatter.value.docAside !== false
+    && frontmatter.value.aside === true
+    && frontmatter.value.outline !== false,
+)
 
 function setupMediumZoom() {
   mediumZoom('[data-zoomable]', {
@@ -50,6 +60,19 @@ loadFonts([
 
 onMounted(() => {
   setupMediumZoom()
+})
+
+watch(showAside, (value) => {
+  if (value) {
+    useIntersectionObserver(
+      target,
+      ([entry]) => {
+        targetIsVisible.value = entry?.isIntersecting || false
+      },
+    )
+  }
+}, {
+  immediate: true,
 })
 
 provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
@@ -92,20 +115,20 @@ router.onAfterRouteChanged = setupMediumZoom
     </template>
 
     <template #doc-after>
-      <DocFeedback />
+      <DocReaction ref="target" />
     </template>
 
     <template #doc-before>
       <DocHeader />
     </template>
-
+    <!--
     <template #doc-footer-before>
       <DocInfo />
-    </template>
-
-    <!-- <template #aside-outline-after>
-      <DocAside />
     </template> -->
+
+    <template #aside-outline-after>
+      <DocAside v-if="showAside" :show-reaction="!targetIsVisible" />
+    </template>
 
     <template #nav-bar-content-after>
       <NavBarUserAvatar />
