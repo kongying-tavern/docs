@@ -51,7 +51,7 @@
     "@vue/shared": "^3.5.13",
     "@vueuse/core": "^11.3.0",
     "@vueuse/integrations": "^11.3.0",
-    "@vueuse/motion": "^2.2.6",
+    "@vueuse/motion": "^3.0.0",
     "autoprefixer": "^10.4.20",
     "canvaskit-wasm": "^0.39.1",
     "class-variance-authority": "^0.7.1",
