@@ -1,5 +1,7 @@
 export { default as Avatar } from './Avatar.vue'
 export { default as DynamicTextReplacer } from './DynamicTextReplacer.vue'
+export { default as Image } from './image/Image.vue'
+export { default as LazyImage } from './image/LazyImage.vue'
 export { default as LinkGrid } from './LinkGrid.vue'
 export { default as Notification } from './Notification.vue'
 export { default as Notifications } from './Notifications.vue'

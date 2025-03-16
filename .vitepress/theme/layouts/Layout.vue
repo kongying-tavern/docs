@@ -38,7 +38,7 @@ const showAside = computed(
 )
 
 function setupMediumZoom() {
-  mediumZoom('[data-zoomable]', {
+  mediumZoom('[data-zoomable="true"]', {
     background: 'transparent',
   })
 }

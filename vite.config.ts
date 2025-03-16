@@ -1,4 +1,7 @@
 import { fileURLToPath } from 'node:url'
+import {
+  ThumbnailHashImages,
+} from '@nolebase/vitepress-plugin-thumbnail-hash/vite'
 import { FontaineTransform } from 'fontaine'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
@@ -36,7 +39,6 @@ export default defineConfig({
     // https://github.com/antfu/unocss
     UnoCSS(),
 
-    Inspect(),
     // https://github.com/unjs/fontaine
     FontaineTransform.vite({
       fallbacks: [
@@ -48,8 +50,9 @@ export default defineConfig({
       ],
       resolvePath: id => new URL(`./public/fonts/${id}`, import.meta.url),
     }),
-
+    ThumbnailHashImages(),
     openInEditor(),
+    Inspect(),
   ],
   css: {
     preprocessorOptions: {

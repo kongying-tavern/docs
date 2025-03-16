@@ -6,8 +6,8 @@ import { mark } from '@mdit/plugin-mark'
 import { spoiler } from '@mdit/plugin-spoiler'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import markdownItAttrs from 'markdown-it-attrs'
 
+import markdownItAttrs from 'markdown-it-attrs'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import { cardPlugin } from '../theme/markdown/card'
@@ -37,7 +37,7 @@ export const markdownConfig: MarkdownOptions = {
     md.use(variableInject)
     md.use(customColor)
     md.use(markdownItAttrs, {
-      allowedAttributes: ['id', 'class', 'thumbhash', /^regex.*$/],
+      allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', /^regex.*$/],
     })
     md.use(MarkdownItKbd, {
       presets: [

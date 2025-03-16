@@ -25,6 +25,13 @@ export default defineConfig({
   head: headConfig,
   rewrites: rewritesConfig,
   ignoreDeadLinks: ignoreDeadLinksConfig,
+  vue: {
+    template: {
+      transformAssetUrls: {
+        Image: ['src', 'set-src'],
+      },
+    },
+  },
   themeConfig: {
     search: {
       provider: 'local',
