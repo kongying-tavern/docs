@@ -9,7 +9,7 @@ import { useUserInfoStore } from './useUserInfo'
 export const useReactionStore = defineStore('reaction', () => {
   const userInfo = useUserInfoStore()
   const currentPageReactionState = ref<INTER_KNOT.ReactionResponse['data']['reaction'] | null>(null)
-  const { data, runAsync: updateReaction, loading, error } = useRequest<INTER_KNOT.ReactionResponse | null>(reactions.getPageReaction, {
+  const { data, runAsync: updateReaction, loading, error, cancel, mutate } = useRequest<INTER_KNOT.ReactionResponse | null>(reactions.getPageReaction, {
     manual: true,
   })
   const { runAsync: setReaction, data: setReactionResponse, loading: reactionSubmitLoading, error: reactionSubmitError } = useRequest<INTER_KNOT.ReactionResponse | null>(reactions.setPageReaction, {
@@ -66,6 +66,9 @@ export const useReactionStore = defineStore('reaction', () => {
     async () => {
       if (import.meta.env.SSR)
         return
+      if (loading.value)
+        cancel()
+      mutate(null)
       await updateReaction(userInfo.info?.id)
     },
     {
