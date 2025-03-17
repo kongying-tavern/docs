@@ -4,7 +4,7 @@
 		"esbenp.prettier-vscode",
 		"davidanson.vscode-markdownlint",
 		"streetsidesoftware.code-spell-checker",
-		"Vue.vscode-typescript-vue-plugin",
+		"Vue.volar"
 		"antfu.iconify",
 		"bierner.markdown-yaml-preamble",
 		"mrmlnc.vscode-scss",

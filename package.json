@@ -138,5 +138,12 @@
     "commitizen": {
       "path": "./node_modules/cz-git"
     }
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "vue-demi"
+    ]
   }
 }
