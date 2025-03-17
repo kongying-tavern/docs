@@ -1,6 +1,7 @@
 import type { SSOAuth } from '@/stores/useUserAuth'
 import type { INTER_KNOT } from './api'
-import { PREFIX_URL } from '.'
+
+export const ASSETS_URL_PREFIX = 'https://assets.webp.inter-knot.site/'
 
 export function normalizeImage(image: INTER_KNOT.ImageResponse) {
   return {
@@ -8,7 +9,7 @@ export function normalizeImage(image: INTER_KNOT.ImageResponse) {
     message: image.statusMessage || '',
     data: {
       id: image.data.pathname,
-      link: `${PREFIX_URL.replace('api/', 'images/')}${image.data.pathname}`,
+      link: `${ASSETS_URL_PREFIX}${image.data.pathname}`,
       fileSize: image.data.size,
       originName: image.data.pathname,
     },
