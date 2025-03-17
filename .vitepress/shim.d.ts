@@ -19,6 +19,17 @@ declare const __ALGOLIA__: boolean
 declare const __CARBON__: boolean
 declare const __VUE_PROD_DEVTOOLS__: boolean
 
+declare module '*.md' {
+  import type { PageData } from 'vitepress'
+  import type { Component } from 'vue'
+
+  const component: Component
+  const __pageData: PageData
+
+  export default component
+  export { __pageData }
+}
+
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
 
