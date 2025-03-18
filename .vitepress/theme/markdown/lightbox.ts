@@ -169,7 +169,7 @@ const lightbox: PluginSimple = (md: MarkdownIt) => {
     props.autoSizes = 'true'
     props['data-zoomable'] = 'true'
 
-    return `<LazyImage ${Object.entries(props).map(([name, value]) => `${name}="${value}"`).join(' ')} />`
+    return `<Image ${Object.entries(props).map(([name, value]) => `${name}="${value}"`).join(' ')} />`
   }
 }
 

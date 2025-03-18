@@ -9,7 +9,7 @@ import { cfgDynamicHead } from './head'
 import { cfgDynamicTitleTemplate } from './title'
 import { isProd } from './utils'
 
-export const hostname = 'https://yuanshen.site/docs'
+export const hostname = 'https://yuanshen.site/docs/'
 
 export function createConfigureFunction(): ConfigureFuncType {
   if (isProd) {

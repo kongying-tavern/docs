@@ -4,7 +4,6 @@ import type { DefaultTheme } from 'vitepress/theme-without-fonts'
 import { cn } from '@/lib/utils'
 import { useToggle } from '@vueuse/core'
 import mediumZoom from 'medium-zoom'
-import { withBase } from 'vitepress'
 import {
   computed,
   nextTick,
@@ -26,6 +25,7 @@ interface Props {
   width?: number
   height?: number
   autoSizes?: boolean
+  placeholderSrc?: string
 }
 
 defineOptions({ inheritAttrs: false })
@@ -36,15 +36,14 @@ const { zoom: zoomConfig = { background: 'transparent' }, width = -1, height = -
 
 const [isLoaded, toggleLoaded] = useToggle(false)
 const [isLoadFail, toggleLoadFail] = useToggle(false)
+
 const attrs = useAttrs()
 const imgId = useId()
 
 const imgSrc = computed(() =>
-  withBase(
-    (typeof image === 'string' ? image : image?.src)
-    || attrs?.src
-    || 'https://assets.yuanshen.site/images/noImage.png',
-  ),
+  (typeof image === 'string' ? image : image?.src)
+  || attrs?.src
+  || 'https://assets.yuanshen.site/images/noImage.png',
 )
 
 const zoom = zoomConfig === false ? null : mediumZoom(zoomConfig)
@@ -77,7 +76,7 @@ watch(
 
 <template>
   <ClientOnly>
-    <Transition v-if="!isLoaded && thumbHash" leave-active-class="animate-fade-out animate-duration-750 animate-ease-in-out">
+    <Transition v-if="!isLoaded && (thumbHash || placeholderSrc)" leave-active-class="animate-fade-out animate-duration-750 animate-ease-in-out">
       <LazyImage
         :src-set="imgSrc"
         :auto-sizes="autoSizes"
@@ -85,6 +84,7 @@ watch(
         :preload="preload"
         :width="width"
         :height="height"
+        :placeholder-src="placeholderSrc"
         :style="{
           aspectRatio: `${width} / ${height}`,
         }"
@@ -105,6 +105,7 @@ watch(
       :style="{
         aspectRatio: `${width} / ${height}`,
       }"
+      @error="$event => toggleLoadFail()"
     >
     <img
       v-else

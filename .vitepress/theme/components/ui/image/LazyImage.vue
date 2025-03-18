@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ImgHTMLAttributes } from 'vue'
 import { autoSizes as _autoSizes, lazyLoad, loadImage } from 'unlazy'
-import { withBase } from 'vitepress'
 import { onBeforeUnmount, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
@@ -67,7 +66,7 @@ onBeforeUnmount(() => {
   <img
     ref="target"
     :src="placeholderSrc"
-    :data-src="withBase(src || 'https://assets.yuanshen.site/images/noImage.png')"
+    :data-src="src"
     :data-srcset="srcSet"
     :data-sizes="autoSizes ? 'auto' : undefined"
     loading="lazy"
