@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core'
-import { onMounted } from 'vue'
 
 import { useForumData } from '~/stores/useForumData'
 import ForumAside from './ForumAside.vue'
@@ -14,9 +13,8 @@ const forumData = useForumData()
 
 const { loadMore } = forumData
 
-function init() {
-  if (import.meta.env.SSR)
-    return null
+if (!import.meta.env.SSR) {
+  forumData.loadForumData()
 
   useInfiniteScroll(
     window,
@@ -30,10 +28,6 @@ function init() {
     },
   )
 }
-
-onMounted(() => {
-  init()
-})
 </script>
 
 <template>

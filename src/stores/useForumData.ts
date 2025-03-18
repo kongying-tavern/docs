@@ -6,7 +6,7 @@ import { watchOnce } from '@vueuse/core'
 import { uniqBy } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { useData } from 'vitepress'
-import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { computed, reactive, ref, toRefs, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { getValidFilter } from '~/composables/getValidFilter'
@@ -130,14 +130,10 @@ export const useForumData = defineStore('forum-data', () => {
       return message.value.forum.noMore
   })
 
-  const initData = () => {
+  const loadForumData = () => {
     if (!import.meta.env.SSR)
       Promise.all([loadAnn(), refreshData()])
   }
-
-  onMounted(() => {
-    initData()
-  })
 
   watch(
     loading,
@@ -218,5 +214,6 @@ export const useForumData = defineStore('forum-data', () => {
     addTopic,
     getTopicIndex,
     removeTopic,
+    loadForumData,
   }
 })
