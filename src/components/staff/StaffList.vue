@@ -1,106 +1,63 @@
 // @unocss-includes
 <script setup lang="ts">
-import type { Member } from './Member'
-import { computed } from 'vue'
+import type { StaffListItem } from './types'
+import Timeline from '@/components/ui/Timeline.vue'
 
-const props = defineProps<{
-  members: Member[]
+const { list, title, desc } = defineProps<{
+  list: StaffListItem[]
+  title: string
+  desc: string
 }>()
-
-const sortedMembers = computed(() => {
-  const sorted = [...props.members]
-
-  sorted.sort((a, b) => {
-    const orderA = a.order !== undefined ? a.order : Number.MIN_SAFE_INTEGER
-    const orderB = b.order !== undefined ? b.order : Number.MIN_SAFE_INTEGER
-
-    return orderA - orderB
-  })
-
-  return sorted
-})
 </script>
 
 <template>
-  <section class="staffList">
-    <div class="container">
-      <div class="info">
-        <span
-          class="i-lucide-git-commit-horizontal ml[-24px] inline-block size-[28px]"
-        />
-        <h2 class="title view-fade-y">
-          <slot name="title" />
-        </h2>
-        <p class="view-fade-y lead">
-          <slot name="lead" />
-        </p>
-      </div>
+  <Timeline
+    class="h-fit w-full"
+    :title="title"
+    :description="desc"
+    :items="list"
+  >
+    <template
+      v-for="(item) in list"
+      :key="`${item.id}template`"
+      #[item.id]
+    >
+      <div
+        class="grid grid-cols-[repeat(auto-fit,minmax(150px,3fr))] ml-0 h-fit w-full justify-items-center md:mt-62px md:justify-items-stretch"
+      >
+        <h3 :id="item.id" class="col-span-full mb-4 mt-1 w-full text-center text-2xl font-medium md:hidden md:text-left">
+          {{ item.label }}
+        </h3>
 
-      <div class="members">
-        <!-- to skip SSG since the members are shuffled -->
-        <ClientOnly>
+        <div
+          v-for="(member, index) in item.members"
+          :key="member.name"
+          class="member mb-8 text-xs text-neutral-800 font-normal md:text-sm"
+        >
+          <p class="view-fade-y member-name w-full text-center font-[var(--vp-font-family-subtitle)] md:text-left">
+            {{ member.name }}
+          </p>
+          <p v-if="member?.title" class="view-fade-y member-title w-full text-center md:text-right">
+            {{ member.title }}
+          </p>
           <div
-            v-for="(member, index) in sortedMembers"
-            :key="member.name"
-            class="member"
-          >
-            <p class="view-fade-y member-name">
-              {{ member.name }}
-            </p>
-            <p v-if="member?.title" class="view-fade-y member-title">
-              {{ member.title }}
-            </p>
-            <div
-              v-if="
-                member.title === undefined
-                  && sortedMembers[
-                    index < sortedMembers.length
-                      ? index + 1
-                      : sortedMembers.length
-                  ]?.title !== undefined
-              "
-              class="break-line"
-            />
-          </div>
-        </ClientOnly>
+            v-if="
+              member.title === undefined
+                && item.members[
+                  index < item.members.length
+                    ? index + 1
+                    : item.members.length
+                ]?.title !== undefined
+            "
+            class="break-line"
+          />
+        </div>
       </div>
-    </div>
-  </section>
+    </template>
+  </Timeline>
 </template>
 
 <style scoped>
-.staffList::before {
-  border-left: 2px solid var(--vp-c-gutter);
-  content: '';
-  height: 100%;
-  left: 280px;
-  position: absolute;
-  top: 32px;
-}
-
-.staffList + .staffList {
-  margin-top: 36px;
-}
-
-@media (min-width: 768px) {
-  .staffList {
-    padding: 0 32px;
-  }
-}
-
-.container {
-  border-top: 1px solid var(--vp-c-divider-light);
-}
-
-@media (min-width: 768px) {
-  .container {
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-start;
-    max-width: 960px;
-  }
-}
-
 .info {
   flex-shrink: 0;
   padding: 0 24px;
