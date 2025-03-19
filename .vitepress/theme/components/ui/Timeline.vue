@@ -71,17 +71,17 @@ watch(height, (newHeight) => {
         class="relative z-1 flex justify-start pt-10 md:gap-10 md:pt-40"
       >
         <div
-          className="hidden md:flex z-0 sticky flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full"
+          class="sticky top-40 z-0 z-40 hidden max-w-xs flex-col items-center self-start lg:max-w-sm md:w-full md:flex md:flex-row"
         >
           <div
-            className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center"
+            class="absolute left-3 h-10 w-10 flex items-center justify-center rounded-full bg-white md:left-3 dark:bg-black"
           >
             <div
-              className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2"
+              class="h-4 w-4 border border-neutral-300 rounded-full bg-neutral-200 p-2 dark:border-neutral-700 dark:bg-neutral-800"
             />
           </div>
           <h3
-            className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 "
+            class="hidden text-xl text-neutral-500 font-bold md:block md:pl-20 md:text-5xl dark:text-neutral-500"
           >
             {{ item.label }}
           </h3>
@@ -97,7 +97,7 @@ watch(height, (newHeight) => {
         <Motion
           as="div"
           :style="{
-            height: heightTransform,
+            height: heightTransform as unknown as string,
             opacity: opacityTransform,
           }"
           class="absolute inset-x-0 top-0 w-[2px] rounded-full from-green-500 via-blue-500 to-transparent from-0% via-10% bg-gradient-to-t"
