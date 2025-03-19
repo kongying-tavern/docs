@@ -29,6 +29,7 @@ export default defineConfig({
     template: {
       transformAssetUrls: {
         Image: ['src', 'set-src'],
+        LazyImage: ['src', 'set-src'],
       },
     },
   },
