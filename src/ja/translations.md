@@ -18,4 +18,4 @@ title: 多言語と翻訳
 
 地図のドキュメントは最近メジャー バージョン アップグレードされたため、他の言語への翻訳はまだ利用できないか、進行中です。
 
-私たちはコミュニティの取り組みを通じて、より多くの言語で翻訳を提供したいと考えています。 この作業は、[kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 組織リポジトリで行われます。 ご興味がございましたら、[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md) をご覧ください。
+私たちはコミュニティの取り組みを通じて、より多くの言語で翻訳を提供したいと考えています。 この作業は、[kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 組織リポジトリで行われます。 ご興味がございましたら、[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) をご覧ください。

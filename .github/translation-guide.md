@@ -36,7 +36,7 @@ When working as a team, make sure to use consistent translations for common term
 
 ### Translating Non-Content Text
 
-Some text are part of the VitePress theme instead of markdown content. You can translate these in `.vitepress/config/[langCode].ts`. In addition to navigation and sidebar items, you can also customize most of the theme text by providing the `themeConfig.i18n` option. [Example usage in English translation](https://github.com/kongying-tavern/docs/blob/next/.vitepress/config/en.ts)
+Some text are part of the VitePress theme instead of markdown content. You can translate these in `.vitepress/config/[langCode].ts`. In addition to navigation and sidebar items, you can also customize most of the theme text by providing the `themeConfig.i18n` option. [Example usage in English translation](https://github.com/kongying-tavern/docs/blob/main/.vitepress/config/en.ts)
 
 ### Retaining Original Anchors
 

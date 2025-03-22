@@ -3,7 +3,7 @@
 [![Check](https://github.com/kongying-tavern/docs/actions/workflows/check.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/check.yml)
 [![Links](https://github.com/kongying-tavern/docs/actions/workflows/links.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/links.yml)
 [![Deployment](https://github.com/kongying-tavern/docs/actions/workflows/deployment.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/deployment.yml)
-[![license](https://badgen.net/github/license/kongying-tavern/docs)](https://github.com/kongying-tavern/docs/blob/next/LICENSE)
+[![license](https://badgen.net/github/license/kongying-tavern/docs)](https://github.com/kongying-tavern/docs/blob/main/LICENSE)
 [![discord](https://badgen.net/discord/online-members/aFe57AKZUF?icon=discord&label=discord)](https://discord.gg/aFe57AKZUF)
 
 ## Status: W.I.P.
@@ -28,4 +28,4 @@ This project requires Node.js to be `v18.0.0` or higher, because we use new Java
 
 ## License
 
-[MIT](https://github.com/kongying-tavern/docs/blob/next/LICENSE)
+[MIT](https://github.com/kongying-tavern/docs/blob/main/LICENSE)

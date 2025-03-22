@@ -8990,7 +8990,7 @@ https://raw.githubusercontent.com/kongying-tavern/docs/5235429e29031712cef22d31c
  3 | [![Check](https://github.com/kongying-tavern/docs/actions/workflows/check.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/check.yml)
  4 | [![Links](https://github.com/kongying-tavern/docs/actions/workflows/links.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/links.yml)
  5 | [![Deployment](https://github.com/kongying-tavern/docs/actions/workflows/deployment.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/deployment.yml)
- 6 | [![license](https://badgen.net/github/license/kongying-tavern/docs)](https://github.com/kongying-tavern/docs/blob/next/LICENSE)
+ 6 | [![license](https://badgen.net/github/license/kongying-tavern/docs)](https://github.com/kongying-tavern/docs/blob/main/LICENSE)
  7 | [![discord](https://badgen.net/discord/online-members/aFe57AKZUF?icon=discord&label=discord)](https://discord.gg/aFe57AKZUF)
  8 |
  9 | ## Status: W.I.P.
@@ -9015,7 +9015,7 @@ https://raw.githubusercontent.com/kongying-tavern/docs/5235429e29031712cef22d31c
 28 |
 29 | ## License
 30 |
-31 | [MIT](https://github.com/kongying-tavern/docs/blob/next/LICENSE)
+31 | [MIT](https://github.com/kongying-tavern/docs/blob/main/LICENSE)
 32 |
 
 
@@ -11873,7 +11873,7 @@ https://raw.githubusercontent.com/kongying-tavern/docs/5235429e29031712cef22d31c
 18 |
 19 | The Genshin Interactive Map documentation has recently undergone a major revision, so translations in other languages are still missing or work-in-progress.
 20 |
-21 | We welcome community efforts to provide more translations. Translation efforts are managed in the [GitHub](https://github.com/kongying-tavern/docs/issues/242). If you are interested in contributing, please check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md) to get started.
+21 | We welcome community efforts to provide more translations. Translation efforts are managed in the [GitHub](https://github.com/kongying-tavern/docs/issues/242). If you are interested in contributing, please check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) to get started.
 22 |
 
 
@@ -12895,7 +12895,7 @@ https://raw.githubusercontent.com/kongying-tavern/docs/5235429e29031712cef22d31c
 18 |
 19 | 地図のドキュメントは最近メジャー バージョン アップグレードされたため、他の言語への翻訳はまだ利用できないか、進行中です。
 20 |
-21 | 私たちはコミュニティの取り組みを通じて、より多くの言語で翻訳を提供したいと考えています。 この作業は、[kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 組織リポジトリで行われます。 ご興味がございましたら、[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md) をご覧ください。
+21 | 私たちはコミュニティの取り組みを通じて、より多くの言語で翻訳を提供したいと考えています。 この作業は、[kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 組織リポジトリで行われます。 ご興味がございましたら、[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) をご覧ください。
 22 |
 
 
@@ -15349,7 +15349,7 @@ https://raw.githubusercontent.com/kongying-tavern/docs/5235429e29031712cef22d31c
 23 |
 24 | 近期地图的文档经历了一次大的版本升级，所以其他语言的翻译版本仍不可用或进行中。
 25 |
-26 | 我们希望通过社区的努力提供所有原神支持的语言翻译，这些工作是在 [GitHub](https://github.com/kongying-tavern/docs/issues/242) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。
+26 | 我们希望通过社区的努力提供所有原神支持的语言翻译，这些工作是在 [GitHub](https://github.com/kongying-tavern/docs/issues/242) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)。
 27 |
 
 
