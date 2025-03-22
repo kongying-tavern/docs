@@ -77,3 +77,19 @@ jobs:
           REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
+
+      - name: Create Deployment via GitHub API
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const response = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: ${{ github.ref_name }},
+              auto_merge: false,
+              required_contexts: [],
+              environment: "Production",
+              payload: { web_url: "https://yuanshen.site/docs/", "commit_hash": "${{ env.COMMIT_HASH }}" }
+            });
+            console.log("Production deployment created:", response.data)
