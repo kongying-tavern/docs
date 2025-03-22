@@ -12,9 +12,9 @@ const rolesPermissions = {
 } as const
 
 const userRolesMap = {
-  teamMember: new Set(teamMemberList),
-  feedbackMember: new Set(feedbackMemberList),
-  blogMember: new Set(blogMemberList),
+  teamMember: new Set(teamMemberList.map(val => Number(val.id))),
+  feedbackMember: new Set(feedbackMemberList.map(val => Number(val.id))),
+  blogMember: new Set(blogMemberList.map(val => Number(val.id))),
 } as const
 
 type Role = keyof typeof rolesPermissions

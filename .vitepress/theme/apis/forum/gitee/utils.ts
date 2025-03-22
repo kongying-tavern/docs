@@ -30,7 +30,7 @@ export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
 
 export function normalizeUser(user: GITEE.User): ForumAPI.User {
   return {
-    username: user.login,
+    username: user.name,
     avatar:
       user.avatar_url === GITEE_DEFAULT_AVATAR_URL
         ? getRandomAvatar(user.id)

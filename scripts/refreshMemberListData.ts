@@ -1,8 +1,10 @@
+import type ForumAPI from '@/apis/forum/api'
 import fs from 'node:fs/promises'
 import process from 'node:process'
-import { URL } from 'node:url'
 
+import { URL } from 'node:url'
 import { password, user } from '@/apis/forum/gitee'
+
 import { GITEE_API_CONFIG } from '@/apis/forum/gitee/config'
 
 const USERNAME = process.env.GITEE_USERNAME
@@ -17,21 +19,17 @@ export async function refreshMemberListData() {
   if (error)
     console.error('Error getting token:', error)
 
-  const refreshTeamMemberID = async () =>
-    (await user.getOrgMembers(auth?.accessToken)).map(val => Number(val.id))
+  const refreshTeamMemberID = async () => await user.getOrgMembers(auth?.accessToken)
 
   const refreshRepositoryMemberID = async (
     repo:
       | typeof GITEE_API_CONFIG.FEEDBACK_REPO
       | typeof GITEE_API_CONFIG.BLOG_REPO,
-  ) =>
-    (await user.getRepoMembers(repo, auth?.accessToken)).map(val =>
-      Number(val.id),
-    )
+  ) => await user.getRepoMembers(repo, auth?.accessToken)
 
   const generateFile = async (
     filename: string,
-    getter: () => Promise<number[]>,
+    getter: () => Promise<ForumAPI.User[]>,
   ) => {
     const outputFilePath = new URL(
       `../src/_data/${filename}.json`,

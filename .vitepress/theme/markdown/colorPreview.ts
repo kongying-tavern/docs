@@ -3,7 +3,7 @@ import type MarkdownIt from 'markdown-it'
 const COLOR_REGEX
   = /(?:\s|^)(#(?:[a-fA-F0-9]{3}){1,2}|(?:#(?:[a-fA-F0-9]{4}){1,2})?\b|rgba?\(\d+,\s*\d+,\s*\d+(?:,\s*\d+(?:\.\d+)?)?\)|hsla?\(\d+,\s*\d+%?,\s*\d+%?,?\s*(?:,\s*\d+(?:\.\d+)?)?\))(?:[^#a-zA-Z0-9]|$)/g
 
-export function colorPreviewPlugin(md: MarkdownIt) {
+function MarkdownItColorPreview(md: MarkdownIt) {
   const replaceColor = (colorStr: string) => {
     colorStr = colorStr.trim()
     let color = colorStr.replace(/\P{ASCII}\p{Nd}/gu, '')
@@ -27,3 +27,5 @@ export function colorPreviewPlugin(md: MarkdownIt) {
     return text.replace(COLOR_REGEX, replaceColor)
   }
 }
+
+export default MarkdownItColorPreview

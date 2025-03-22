@@ -47,16 +47,16 @@ watch(height, (newHeight) => {
 <template>
   <div
     ref="timelineContainerRef"
-    class="w-full bg-white font-sans dark:bg-neutral-950 md:px-10"
+    class="w-full font-sans md:px-10"
   >
     <div
       v-if="title || description"
       class="mx-auto max-w-7xl px-4 py-20 lg:px-10 md:px-8"
     >
-      <h2 class="mb-4 max-w-4xl text-center text-4xl text-black md:text-left md:text-6xl dark:text-white">
+      <h2 class="mb-4 max-w-4xl text-center text-4xl c-[var(--vp-c-text-1)] md:text-left md:text-6xl">
         {{ title }}
       </h2>
-      <p class="subtitle max-w-sm text-center text-sm text-neutral-700 md:text-left md:text-base dark:text-neutral-300">
+      <p class="subtitle inline-block w-full text-center text-sm c-[var(--vp-c-text-2)] md:max-w-sm md:text-left md:text-base">
         {{ description }}
       </p>
     </div>
@@ -81,7 +81,7 @@ watch(height, (newHeight) => {
             />
           </div>
           <h3
-            class="hidden text-xl text-neutral-500 font-bold md:block md:pl-20 md:text-5xl dark:text-neutral-500"
+            class="hidden text-xl c-[var(--vp-c-text-1)] font-bold md:block md:pl-20 md:text-2.25rem"
           >
             {{ item.label }}
           </h3>

@@ -1,7 +1,7 @@
 import type MarkdownIt from 'markdown-it'
 import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 
-function variableInject(md: MarkdownIt): void {
+function MarkdownItVariableInject(md: MarkdownIt): void {
   const variables: Record<string, string> = {}
 
   md.inline.ruler.before(
@@ -58,4 +58,4 @@ function variableInject(md: MarkdownIt): void {
   )
 }
 
-export default variableInject
+export default MarkdownItVariableInject

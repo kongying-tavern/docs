@@ -58,6 +58,9 @@ jobs:
           GITEE_USERNAME: ${{ secrets.GITEE_USERNAME }}
           GITEE_PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
+      - name: Refresh Emoji Data
+        run: pnpm build-emoji
+
       - name: Build Site
         run: pnpm build-vitepress
 

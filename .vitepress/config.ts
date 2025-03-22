@@ -27,6 +27,10 @@ export default defineConfig({
   ignoreDeadLinks: ignoreDeadLinksConfig,
   vue: {
     template: {
+      compilerOptions: {
+        // treat all tags with a dash as custom elements
+        isCustomElement: tag => tag.includes('-'),
+      },
       transformAssetUrls: {
         Image: ['src', 'set-src'],
         LazyImage: ['src', 'set-src'],

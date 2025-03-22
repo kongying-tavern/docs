@@ -255,10 +255,45 @@ theme: medium
 
 ### Demo
 
-paragraph *style me*{.red} more text
+paragraph *style me*{.vp-link} more text
 
 ```markdown
-paragraph *style me*{.red} more text
+paragraph *style me*{.vp-link} more text
+```
+
+## Mention
+
+在输入 @xxx 时，插件将自动通过 src 下 _data 目录中团队成员的 Gitee 账号数据 JSON 中的 username/login 识别转换
+
+### Demo
+
+@kongying-demo
+
+```markdown
+@kongying-demo
+```
+
+## Emoji
+
+### 语法
+
+:preset/emoji.资源后缀名:
+
+> preset 为 `src/public/emojis` 下的子目录名，每一个子目录对应的一个 Preset。emoji为该 preset 下这个 emoji 的文件名
+>
+> 新建 Preset/Emoji 只需要在 `src/public/emojis` 目录下直接新建目录/添加 emoji 文件即可
+
+### Demo
+
+3123**[:1.小黄脸/呲牙.png:]**
+:1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
+test:2.原神/芙宁娜-乐.png:)
+
+```markdown
+3123**[:1.小黄脸/呲牙.png:]**
+:1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
+test:2.原神/芙宁娜-乐.png:)
+
 ```
 
 ## Frontmatter Config {#frontmatter}

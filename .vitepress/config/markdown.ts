@@ -10,12 +10,14 @@ import { sup } from '@mdit/plugin-sup'
 import markdownItAttrs from 'markdown-it-attrs'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
-import { cardPlugin } from '../theme/markdown/card'
-import { colorPreviewPlugin } from '../theme/markdown/colorPreview'
-import customColor from '../theme/markdown/customColor'
-import lightbox from '../theme/markdown/lightbox'
-import { timeline } from '../theme/markdown/timeline'
-import variableInject from '../theme/markdown/variableInject'
+import MarkdownItCard from '../theme/markdown/card'
+import MarkdownItColorPreview from '../theme/markdown/colorPreview'
+import MarkdownItCustomColor from '../theme/markdown/customColor'
+import MarkdownItEmoji from '../theme/markdown/emoji'
+import MarkdownItLightbox from '../theme/markdown/lightbox'
+import MarkdownItMention from '../theme/markdown/mention'
+import MarkdownItTimeline from '../theme/markdown/timeline'
+import MarkdownItVariableInject from '../theme/markdown/variableInject'
 
 export const markdownConfig: MarkdownOptions = {
   image: {
@@ -23,19 +25,21 @@ export const markdownConfig: MarkdownOptions = {
   },
   config(md) {
     md.use(MarkdownItFootnote)
-    md.use(colorPreviewPlugin)
-    md.use(cardPlugin)
+    md.use(MarkdownItColorPreview)
+    md.use(MarkdownItCard)
     md.use(sub)
     md.use(sup)
     md.use(mark)
     md.use(imgSize)
     md.use(obsidianImageSize)
     md.use(figure)
-    md.use(timeline)
+    md.use(...MarkdownItTimeline('timeline', md))
     md.use(spoiler)
-    md.use(lightbox)
-    md.use(variableInject)
-    md.use(customColor)
+    md.use(MarkdownItLightbox)
+    md.use(MarkdownItVariableInject)
+    md.use(MarkdownItCustomColor)
+    md.use(MarkdownItMention)
+    md.use(MarkdownItEmoji)
     md.use(markdownItAttrs, {
       allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', /^regex.*$/],
     })

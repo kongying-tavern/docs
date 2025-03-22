@@ -8,6 +8,7 @@ import type { HTMLAttributes } from 'vue'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import { PhotoWall } from '@/components/ui/photo-wall'
 import { useVModel } from '@vueuse/core'
+import { isArray } from 'lodash-es'
 import { useTemplateRef } from 'vue'
 
 const props = defineProps<{
@@ -17,7 +18,7 @@ const props = defineProps<{
   placeholder?: string
   class?: HTMLAttributes['class']
   defaultValue?: UploadUserFile[]
-  accent?: string
+  accept?: string[] | string
   uploadTips?: string
   hideDefaultTrigger?: boolean
   size?: 'xl' | 'lg'
@@ -56,7 +57,7 @@ defineExpose({
       ref="photoWallRef"
       v-model:file-list="modelValue"
       :limit="fileLimit"
-      :accept="accent"
+      :accept="isArray(accept) ? accept?.map(val => `.${val.split('/')[1]}`).join(',') : accept"
       :multiple="false"
       :hide-default-trigger="hideDefaultTrigger || false"
       :on-change="handleFileChange"

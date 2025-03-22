@@ -72,7 +72,7 @@ export const useTopicComments = createGlobalState(() => {
 
     const result = await executeWithAuth(
       issues.deleteTopicComment,
-      [repo, id],
+      [id, repo],
       message.value.forum.topic.menu.deleteComment.success,
       message.value.forum.topic.menu.deleteComment.fail,
       message,

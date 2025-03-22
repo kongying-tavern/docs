@@ -20,6 +20,7 @@
 /* HTML: <div tooltip></div> */
 [tooltip],
 .tooltip {
+  z-index: 9999999999999999;
   position: relative;
 }
 

@@ -363,7 +363,7 @@ Windows 客户端使用手册
   <url>https://yuanshen.site/docs/join</url>
   <content>> 📌 地图打点组 [​](#📌-地图打点组)
 > -----------------------
-> 
+>
 > [立即申请](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=-HGS3II1no-AEcWHYdrhsJCN2IfKQeji&authKey=qbjuuv5VygEdFUAZSCCr2kim3V0lYvLvRjJwM7nv8KplMKjVAO4m2FuDovmcx%2FJP&noverify=0&group_code=522563995 "QQ群 522563995")
 
 ### 负责内容 [​](#负责内容)
@@ -372,7 +372,7 @@ Windows 客户端使用手册
 
 > 🎨 美术组 [​](#🎨-美术组)
 > -------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-1)
@@ -382,7 +382,7 @@ Windows 客户端使用手册
 
 > 💻 前端开发组 [​](#💻-前端开发组)
 > -----------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-2)
@@ -396,7 +396,7 @@ Windows 客户端使用手册
 
 > 🛠 后端开发组 [​](#🛠-后端开发组)
 > -----------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-3)
@@ -409,7 +409,7 @@ Windows 客户端使用手册
 
 > 📱 App 开发组 [​](#📱-app-开发组)
 > ---------------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-4)
@@ -422,7 +422,7 @@ Windows 客户端使用手册
 
 > 🖥 客户端开发组 [​](#🖥-客户端开发组)
 > -------------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-5)
@@ -437,7 +437,7 @@ Windows 客户端使用手册
 
 > 🧭 追踪组 [​](#🧭-追踪组)
 > -------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-6)
@@ -460,7 +460,7 @@ Windows 客户端使用手册
 
 > 🌎 国际化组 [​](#🌎-国际化组)
 > ---------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-7)
@@ -476,7 +476,7 @@ Windows 客户端使用手册
 
 > 📊 算法设计组 [​](#📊-算法设计组)
 > -----------------------
-> 
+>
 > [立即申请](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-8)
@@ -581,7 +581,7 @@ Windows 客户端使用手册
 
 近期地图的文档经历了一次大的版本升级，所以其他语言的翻译版本仍不可用或进行中。
 
-我们希望通过社区的努力提供所有原神支持的语言翻译，这些工作是在 [GitHub](https://github.com/kongying-tavern/docs/issues/242) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md)。</content>
+我们希望通过社区的努力提供所有原神支持的语言翻译，这些工作是在 [GitHub](https://github.com/kongying-tavern/docs/issues/242) 进行的。如果你对此感兴趣，请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)。</content>
 </page>
 
 <page>
@@ -979,7 +979,7 @@ image
 \* Win11 系统可能由于使用了“窗口化游戏优化”导致追踪失败，在图形设置中开启“不使用窗口化游戏优化”(见下图)
 
     * 如果图像设置中没有「原神」，可以将“<游戏安装目录>/Genshin Impact Game/YuanShen.exe”添加到列表中。
-    
+
 
 image
 
@@ -1065,11 +1065,11 @@ image
 ### 【7.10.0】 [​](#【7-10-0】)
 
 1.  适配枫丹 2
-    
+
 2.  适配地下地图，暂时不支持检测层级
-    
+
 3.  调整坐标系，稍微提高了精度
-    
+
 
 4。修复望舒客栈无法追踪
 
@@ -1684,11 +1684,11 @@ Was this document helpful?</content>
 通过以下步骤，可以全屏打开无边框窗口模式的“原神”游戏：
 
 *   步骤一：启动“原神”
-    
+
 *   步骤二：打开派蒙菜单，然后打开设置
-    
+
 *   步骤三：转到“图像”设置
-    
+
 
 *   步骤四：在“显示模式”选项中，选择“<你的分辨率> 无边框”选项
 
@@ -1888,7 +1888,7 @@ TIP
   <content>这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 
 *   如果进入地图后筛选器没有点位，可以尝试重启客户端
-    
+
 *   如果进入地图后筛选器项目正常，则无需重启客户端，可以正常使用。</content>
 </page>
 
@@ -1974,7 +1974,7 @@ This project and its iterations will always be free, we sincerely invite you to 
 
 > 🌎 I18N (Localization) [​](#🌎-i18n-localization)
 > -------------------------------------------------
-> 
+>
 > [Contact us](https://discord.gg/aFe57AKZUF)
 
 ### Responsibilities [​](#responsibilities)
@@ -1985,7 +1985,7 @@ This project and its iterations will always be free, we sincerely invite you to 
 
 > 🎨 Art [​](#🎨-art)
 > -------------------
-> 
+>
 > [Contact us](https://discord.gg/aFe57AKZUF)
 
 ### Responsibilities [​](#responsibilities-1)
@@ -2006,7 +2006,7 @@ Was this document helpful?</content>
 
 > 📌 地图打点组 [​](#📌-地图打点组)
 > -----------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=GWjn9K19d-qRaZU5WNiZ521_v2xYw6Da&jump_from=webapi&authKey=mom+sIS2Tc2b/9DMkbfjQtqY0QJuSPA0LM7c5S62wtqSnlg+iUMcI8ctmdG08KsA "QQ群 600052487")
 
 ### 负责内容 [​](#负责内容)
@@ -2015,7 +2015,7 @@ Was this document helpful?</content>
 
 > 🌎 国际化组 [​](#🌎-国际化组)
 > ---------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-1)
@@ -2031,7 +2031,7 @@ Was this document helpful?</content>
 
 > 🎨 美术组 [​](#🎨-美术组)
 > -------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-2)
@@ -2041,7 +2041,7 @@ Was this document helpful?</content>
 
 > 💻 前端开发组 [​](#💻-前端开发组)
 > -----------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-3)
@@ -2055,7 +2055,7 @@ Was this document helpful?</content>
 
 > 🛠 后端开发组 [​](#🛠-后端开发组)
 > -----------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-4)
@@ -2068,7 +2068,7 @@ Was this document helpful?</content>
 
 > 📱 App 开发组 [​](#📱-app-开发组)
 > ---------------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-5)
@@ -2081,7 +2081,7 @@ Was this document helpful?</content>
 
 > 🖥 客户端开发组 [​](#🖥-客户端开发组)
 > -------------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-6)
@@ -2096,7 +2096,7 @@ Was this document helpful?</content>
 
 > 📊 算法设计组 [​](#📊-算法设计组)
 > -----------------------
-> 
+>
 > [加群咨询](https://qm.qq.com/cgi-bin/qm/qr?k=wXbtoDmXCjlR8iJ-3lRwdNIOWio3quit&jump_from=webapi&authKey=aS/Be7vKSbcu/6zrmYVlpF6DsSnkHVMGT6Arn+RU+IiJf8ItKIFEXnVvfFmOL9We "QQ群 717152601")
 
 ### 负责内容 [​](#负责内容-7)
@@ -2176,35 +2176,35 @@ Localizations [​](#localizations)
 
 | Name |
 | --- |
-| Pop\_Slime  
+| Pop\_Slime
 (English) |
-| Suizyun  
+| Suizyun
 (English) |
-| Pat  
+| Pat
 (English) |
-| 栖客。  
+| 栖客。
 (English) |
-| Arrebol  
+| Arrebol
 (English) |
-| 一团猫  
+| 一团猫
 (Japanese) |
-| Yuka  
+| Yuka
 (Japanese) |
-| 小璐 るーちゃん  
+| 小璐 るーちゃん
 (Japanese) |
-| 尉迟兰屏  
+| 尉迟兰屏
 (Esperanto) |
-| 夜 銀河  
+| 夜 銀河
 (French) |
-| Poypoy17  
+| Poypoy17
 (French) |
-| Foxy 狐の夏  
+| Foxy 狐の夏
 (French) |
-| 1670732206  
+| 1670732206
 (Cantonese) |
-| 想太多了  
+| 想太多了
 (Korean) |
-| Mercury  
+| Mercury
 (en/gr/es/sv) |
 
 Communities [​](#communities)
@@ -2237,11 +2237,11 @@ Communities [​](#communities)
 | 残光 |
 | continued story |
 | 暖冬是凉春 |
-| Pop\_Slime  
+| Pop\_Slime
 (Overseas) |
-| Pat  
+| Pat
 (Overseas) |
-| (^\_^)  
+| (^\_^)
 (Overseas) |
 
 Pin Contributions [​](#pin-contributions)
@@ -2451,31 +2451,31 @@ Was this document helpful?</content>
 
 | Name |
 | --- |
-| Pop\_Slime  
+| Pop\_Slime
 (英语翻译) |
-| Suizyun  
+| Suizyun
 (英语翻译) |
-| Pat  
+| Pat
 (英语翻译) |
-| 栖客。  
+| 栖客。
 (英语翻译) |
-| Arrebol  
+| Arrebol
 (英语翻译) |
-| 一团猫  
+| 一团猫
 (日语翻译) |
-| Yuka  
+| Yuka
 (日语翻译) |
-| 小璐 るーちゃん  
+| 小璐 るーちゃん
 (日语翻译) |
-| 尉迟兰屏  
+| 尉迟兰屏
 (世界语翻译) |
-| 夜 銀河  
+| 夜 銀河
 (法语翻译) |
-| 1670732206  
+| 1670732206
 (粤语翻译) |
-| 想太多了  
+| 想太多了
 (韩语翻译) |
-| Mercury  
+| Mercury
 (英语/德语/西语/瑞典语翻译) |
 
 社区管理 [​](#社区管理)
@@ -2508,11 +2508,11 @@ Was this document helpful?</content>
 | 残光 |
 | continued story |
 | 暖冬是凉春 |
-| Pop\_Slime  
+| Pop\_Slime
 (海外社区) |
-| Pat  
+| Pat
 (海外社区) |
-| (^\_^)  
+| (^\_^)
 (海外社区) |
 
 点位贡献 [​](#点位贡献)
@@ -2763,7 +2763,7 @@ Starting a new Translation [​](#starting-a-new-translation)
 
 The Genshin Interactive Map documentation has recently undergone a major revision, so translations in other languages are still missing or work-in-progress.
 
-We welcome community efforts to provide more translations. Translation efforts are managed in the [GitHub](https://github.com/kongying-tavern/docs/issues/242). If you are interested in contributing, please check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md) to get started.
+We welcome community efforts to provide more translations. Translation efforts are managed in the [GitHub](https://github.com/kongying-tavern/docs/issues/242). If you are interested in contributing, please check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) to get started.
 
 Was this document helpful?</content>
 </page>
@@ -2790,7 +2790,7 @@ Was this document helpful?</content>
 
 地図のドキュメントは最近メジャー バージョン アップグレードされたため、他の言語への翻訳はまだ利用できないか、進行中です。
 
-私たちはコミュニティの取り組みを通じて、より多くの言語で翻訳を提供したいと考えています。 この作業は、[kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 組織リポジトリで行われます。 ご興味がございましたら、[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/next/.github/translation-guide.md) をご覧ください。</content>
+私たちはコミュニティの取り組みを通じて、より多くの言語で翻訳を提供したいと考えています。 この作業は、[kongying-tavern/docs](https://github.com/kongying-tavern/docs) GitHub 組織リポジトリで行われます。 ご興味がございましたら、[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) をご覧ください。</content>
 </page>
 
 <page>
@@ -3870,13 +3870,13 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 部分 windows11 的电脑，对 Bitblt 支持有问题，换成 DirectX 大概率能解决问题。
 
 *   尝试切换追踪模式，Bitblt 和 DirectX 都试试
-    
+
     *   Bitblt 同时支持窗口模式和独占全屏模式，DirectX 只支持窗口模式
     *   这两种模式只是截图方式的不同，不会影响到追踪的精度
 *   尝试将游戏切换为窗口化运行（快捷键 Alt+Enter，按下 win 键游戏没有最小化即为窗口化状态）如何以[无边框窗口运行游戏](https://yuanshen.site/docs/ja/manual/client/fullscreen-windowed)，你也可以使用“寻空”或“胡桃工具箱”等第三方启动器来以无边框窗口运行。
-    
+
 *   如果你想要在 Windows11 使用 Bitblt，在图形设置【设置->系统->显示卡】中，添加原神到列表中【`安装目录\Genshin Impact Game\yuanshen.exe，不是launcher.exe`】，添加后，对应的选项设置为【高性能】和【不使用窗口化优化】
-    
+
 
 *   如果没有解决问题，请反馈【位置追踪截图失败】
 
@@ -4252,9 +4252,9 @@ Was this document helpful?</content>
   <content>An overwhelming amount of user access attempts can cause our server to become non-responsive. Upon entering the map,
 
 *   if the Paimon navigation menu does not show pin categories, relaunch the map client;
-    
+
 *   if the Paimon navigation menu functions properly, there is no need to relaunch, proceed to use the client as normal.
-    
+
 
 Was this document helpful?</content>
 </page>
@@ -4533,7 +4533,7 @@ Mysterious code
 这是由于使用用户过多，服务器压力激增导致的数据访问卡死。
 
 *   如果进入地图后筛选器没有点位，可以尝试重启客户端
-    
+
 *   如果进入地图后筛选器项目正常，则无需重启客户端，可以正常使用。</content>
 </page>
 
@@ -4610,7 +4610,7 @@ Mysterious code
 ------------------------
 
 > **Client Download Method (Other than auto update)**
-> 
+>
 > *   Quark Netdisk: [https://pan.quark.cn/s/fe8bb34c77bc](https://pan.quark.cn/s/fe8bb34c77bc)
 > *   Join community: [https://yuanshen.site/docs/community.html](https://yuanshen.site/docs/community.html)
 > *   Baidu Netdisk (Access code: KYJG): [https://pan.baidu.com/s/1t\_FRadAiGHGxw1YvvWt0bg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg)
@@ -5331,7 +5331,7 @@ Beta2.1.2: 2021-09-03
 -----------------
 
 > **Client Download Method (Other than automatic update)**
-> 
+>
 > *   Quark Netdisk: [https://pan.quark.cn/s/fe8bb34c77bc](https://pan.quark.cn/s/fe8bb34c77bc)
 > *   Join community: [https://yuanshen.site/docs/community.html](https://yuanshen.site/docs/community.html)
 > *   Baidu Netdisk (Key: KYJG): [https://pan.baidu.com/s/1t\_FRadAiGHGxw1YvvWt0bg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg)
@@ -5429,7 +5429,7 @@ Beta2.1.2: 2021-09-03
 -----------------
 
 > **Client Download Method (Other than automatic update)**
-> 
+>
 > *   Quark Netdisk: [https://pan.quark.cn/s/fe8bb34c77bc](https://pan.quark.cn/s/fe8bb34c77bc)
 > *   Join community: [https://yuanshen.site/docs/community.html](https://yuanshen.site/docs/community.html)
 > *   Baidu Netdisk (Key: KYJG): [https://pan.baidu.com/s/1t\_FRadAiGHGxw1YvvWt0bg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg)
@@ -6372,7 +6372,7 @@ _**【2020年地图网页版更新内容】**_ [​](#【2020年地图网页版�
 ---------
 
 > **客户端下载方式（除了自动更新外的方式）**
-> 
+>
 > *   夸克云盘：[https://pan.quark.cn/s/fe8bb34c77bc](https://pan.quark.cn/s/fe8bb34c77bc)
 > *   加入讨论组： [https://yuanshen.site/docs/community.html](https://yuanshen.site/docs/community.html)
 > *   百度网盘（提取码：KYJG）：[https://pan.baidu.com/s/1t\_FRadAiGHGxw1YvvWt0bg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg)
@@ -7028,7 +7028,7 @@ _**【2020年地图网页版更新内容】**_ [​](#【2020年地图网页版�
 ---------
 
 > **客户端下载方式（除了自动更新外的方式）**
-> 
+>
 > *   夸克云盘：[https://pan.quark.cn/s/fe8bb34c77bc](https://pan.quark.cn/s/fe8bb34c77bc)
 > *   加入讨论组： [https://yuanshen.site/docs/community.html](https://yuanshen.site/docs/community.html)
 > *   百度网盘（提取码：KYJG）：[https://pan.baidu.com/s/1t\_FRadAiGHGxw1YvvWt0bg](https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg)

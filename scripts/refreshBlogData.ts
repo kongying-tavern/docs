@@ -43,9 +43,12 @@ export async function refreshBlogData() {
     return totalPage
   }
 
+  const teamMemberIdList = teamMemberList.map(val => Number(val.id))
+  const blogMemberIdList = blogMemberList.map(val => Number(val.id))
+
   const isGrantedMember = (id: string | number) => {
     return (
-      teamMemberList.includes(Number(id)) || blogMemberList.includes(Number(id))
+      teamMemberIdList.includes(Number(id)) || blogMemberIdList.includes(Number(id))
     )
   }
 

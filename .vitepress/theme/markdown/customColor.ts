@@ -1,7 +1,7 @@
 import type MarkdownIt from 'markdown-it'
 import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 
-function customColor(md: MarkdownIt): void {
+function MarkdownItCustomColor(md: MarkdownIt): void {
   md.inline.ruler.before(
     'emphasis',
     'custom_color',
@@ -40,4 +40,4 @@ function customColor(md: MarkdownIt): void {
   )
 }
 
-export default customColor
+export default MarkdownItCustomColor

@@ -71,7 +71,7 @@ function ensureThumbhashMap() {
  * VitePress plugin to add `medium-zoom` lightbox to images.
  * @param {MarkdownIt} md - Markdown instance.
  */
-const lightbox: PluginSimple = (md: MarkdownIt) => {
+const MarkdownItLightbox: PluginSimple = (md: MarkdownIt) => {
   // Store the original image renderer
   const thumbhashMap = ensureThumbhashMap()
   const imageRule = md.renderer.rules.image as RenderRule
@@ -173,4 +173,4 @@ const lightbox: PluginSimple = (md: MarkdownIt) => {
   }
 }
 
-export default lightbox
+export default MarkdownItLightbox

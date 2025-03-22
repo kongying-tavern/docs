@@ -25,7 +25,7 @@ const { list, title, desc } = defineProps<{
       <div
         class="grid grid-cols-[repeat(auto-fit,minmax(150px,3fr))] ml-0 h-fit w-full justify-items-center md:mt-62px md:justify-items-stretch"
       >
-        <h3 :id="item.id" class="col-span-full mb-4 mt-1 w-full text-center text-2xl font-medium md:hidden md:text-left">
+        <h3 :id="item.id" class="col-span-full mb-4 mt-1 w-full text-center text-2xl c-[var(--vp-c-text-1)] font-medium md:hidden md:text-left">
           {{ item.label }}
         </h3>
 
@@ -34,10 +34,10 @@ const { list, title, desc } = defineProps<{
           :key="member.name"
           class="member mb-8 text-xs text-neutral-800 font-normal md:text-sm"
         >
-          <p class="view-fade-y member-name w-full text-center font-[var(--vp-font-family-subtitle)] md:text-left">
+          <p class="view-fade-y member-name w-full text-center c-[var(--vp-c-text-1)] font-[var(--vp-font-family-subtitle)] md:text-left">
             {{ member.name }}
           </p>
-          <p v-if="member?.title" class="view-fade-y member-title w-full text-center md:text-right">
+          <p v-if="member?.title" class="view-fade-y member-title w-full text-center c-[var(--vp-c-text-2)] md:text-right">
             {{ member.title }}
           </p>
           <div

@@ -35,9 +35,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # 构建
-      - name: Refresh Blog Data
-        run: pnpm build-blog
+      - name: Refresh Emoji Data
+        run: pnpm build-emoji
 
       - name: Build
         run: pnpm site:preview
