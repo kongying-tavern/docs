@@ -86,7 +86,7 @@ function selectMention(member: ForumAPI.User) {
     </PopoverTrigger>
     <PopoverContent v-bind="{ ...$props }" class="size-fit p-0">
       <Command class="max-w-[250px] border rounded-lg shadow-md">
-        <CommandInput v-if="showSearch" :auto-focus="false" :value="searchTerm" placeholder="Search..." />
+        <CommandInput v-if="showSearch" :auto-focus="false" placeholder="Search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup v-if="recentMentionFiltered.length > 0" heading="Recent">
