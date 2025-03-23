@@ -53,7 +53,7 @@
     "@tiptap/starter-kit": "^2.11.5",
     "@tiptap/vue-3": "^2.11.5",
     "@types/js-yaml": "^4.0.9",
-    "@unhead/vue": "^1.11.20",
+    "@unhead/vue": "^2.0.0",
     "@vue/shared": "^3.5.13",
     "@vueuse/core": "^13.0.0",
     "@vueuse/integrations": "^13.0.0",
