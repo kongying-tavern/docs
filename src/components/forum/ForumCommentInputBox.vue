@@ -23,7 +23,7 @@ const {
   collapse = true,
 } = defineProps<{
   topicId: string
-  placeholder?: string[]
+  placeholder?: string[] | string
   replyTarget?: string
   collapse?: boolean
   repo?: ForumAPI.Repo

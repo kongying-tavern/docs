@@ -13,14 +13,14 @@ import 'dayjs/locale/ja'
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 
+const locales = {
+  root: 'zh-cn',
+  en: 'en',
+  ja: 'ja',
+} as const
+
 export function useLocalized() {
   const { theme, localeIndex } = useData<CustomConfig>()
-
-  const locales = {
-    root: 'zh-cn',
-    en: 'en',
-    ja: 'ja',
-  } as const
 
   function formatDate(
     date: MaybeRefOrGetter<Date | number | string>,

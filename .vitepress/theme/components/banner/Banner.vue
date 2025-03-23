@@ -25,7 +25,7 @@ const suggestLanguage = import.meta.env.SSR
   ? DEFAULT_LOCALE_CODE
   : getLangCode(matchedLang) || DEFAULT_LOCALE_CODE
 
-const bannerData = useLocalStorage<BannerItem[]>(STORE_KEY, [{}])
+const bannerData = useLocalStorage<BannerItem[]>(STORE_KEY, [])
 
 // 只有在 `languageSuggest` 存在 或 来自外部页面 或 在首页，且用户当前语言不同才显示
 const isShowLanguageSuggestBar = computed(

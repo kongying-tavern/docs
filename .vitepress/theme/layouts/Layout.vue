@@ -38,6 +38,8 @@ const showAside = computed(
 )
 
 function setupMediumZoom() {
+  if (import.meta.env.SSR)
+    return
   mediumZoom('[data-zoomable="true"]', {
     background: 'transparent',
   })
