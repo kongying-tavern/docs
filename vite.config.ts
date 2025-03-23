@@ -6,6 +6,7 @@ import { FontaineTransform } from 'fontaine'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
+import llmstxt from 'vitepress-plugin-llms'
 import openInEditor from './.vitepress/plugins/open-in-editor'
 
 export default defineConfig({
@@ -53,6 +54,9 @@ export default defineConfig({
     ThumbnailHashImages(),
     openInEditor(),
     Inspect(),
+    llmstxt({
+      workDir: 'zh',
+    }),
   ],
   css: {
     preprocessorOptions: {
