@@ -4,7 +4,7 @@ import type { Ref } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useInfiniteScroll, watchOnce } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 
 import { scrollTo } from '~/composables/scrollTo'
 import { useTopicComments } from '~/composables/useTopicComment'
@@ -38,6 +38,7 @@ const {
   allCommentCount,
   currentCommentPage,
   initComments,
+  initialCommentData,
 } = useTopicComments()
 
 const replyCommentID = ref<number | string | null>(null)
@@ -71,6 +72,11 @@ async function init() {
 
 onMounted(async () => {
   await init()
+})
+
+onUnmounted(() => {
+  initialCommentData()
+  userSubmittedComment.value = []
 })
 
 function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>) {

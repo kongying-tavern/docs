@@ -23,6 +23,7 @@ export const useTopicComments = createGlobalState(() => {
     canLoadMore: canLoadMoreComment,
     error: commentLoadError,
     runAsync: refreshComment,
+    initialData: initialCommentData,
   } = useLoadMore(issues.getTopicComments, {
     manual: true,
   })
@@ -124,6 +125,7 @@ export const useTopicComments = createGlobalState(() => {
     deleteComment,
     initComments,
     loadMoreComment,
+    initialCommentData,
 
     loadStateMessage,
   }
