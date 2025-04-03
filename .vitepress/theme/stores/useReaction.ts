@@ -28,7 +28,7 @@ export const useReactionStore = defineStore('reaction', () => {
     if (reactionState.value === 'dislike')
       currentPageReactionState.value.dislikeCount = Math.max(currentPageReactionState.value.dislikeCount - 1, 0)
     reactionState.value = null
-    await setReaction('revoke', userInfo.info?.id)
+    await setReaction('revoke', { ...(userInfo.info?.id ? { userId: userInfo.info?.id } : {}) })
   }
 
   const setReactionState = async (state: INTER_KNOT.ReactionState, revoke = true) => {
@@ -51,7 +51,7 @@ export const useReactionStore = defineStore('reaction', () => {
     }
 
     reactionState.value = state
-    return await setReaction(state, userInfo.info?.id)
+    return await setReaction(state, { ...(userInfo.info?.id ? { userId: userInfo.info?.id } : {}) })
   }
 
   const toggleReaction = async (defaultState: INTER_KNOT.ReactionState = 'like') => {
@@ -69,7 +69,7 @@ export const useReactionStore = defineStore('reaction', () => {
       if (loading.value)
         cancel()
       mutate(null)
-      await updateReaction(userInfo.info?.id)
+      await updateReaction({ ...(userInfo.info?.id ? { userId: userInfo.info?.id } : {}) })
     },
     {
       immediate: true,

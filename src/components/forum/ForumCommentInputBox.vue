@@ -77,7 +77,7 @@ watch(error, () => {
   <div ref="commentInputBox" v-motion-slide-top class="flex" :class="cn('flex', $props.class)">
     <div class="user-avatar mr-2 flex">
       <UserAvatar
-        size="lg"
+        size="md"
         :src="userInfo.info?.avatar"
         :alt="userInfo.info?.username"
       />

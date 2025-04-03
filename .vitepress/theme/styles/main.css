@@ -84,6 +84,7 @@ html.dark .vp-doc figure figcaption {
 .VPLocalNav {
   padding-top: 0 !important;
   margin-top: var(--vp-layout-top-height);
+  backdrop-filter: saturate(180%) blur(20px);
 }
 
 .banner > .text > a {

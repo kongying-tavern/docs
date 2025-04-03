@@ -173,15 +173,15 @@ const forum: CustomConfig['forum'] = {
     form: {
       title: {
         text: '标题',
-        placeholder: '',
+        placeholder: '请输入标题（5-50个字）',
       },
       type: {
         text: '标签',
-        placeholder: '',
+        placeholder: '请选择反馈类型（需至少选择一个）',
       },
       content: {
         text: '反馈内容',
-        placeholder: '',
+        placeholder: '请详细描述你的反馈内容（5-2000字）',
       },
       upload: {
         text: '上传错误截图',

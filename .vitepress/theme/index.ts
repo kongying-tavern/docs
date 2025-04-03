@@ -12,6 +12,7 @@ import DefaultTheme, {
   VPLink,
 } from 'vitepress/theme-without-fonts'
 import googleAnalytics from '../plugins/google-analytics'
+import Forum from './layouts/Forum.vue'
 import Headline from './layouts/Headline.vue'
 import Post from './layouts/Post.vue'
 
@@ -40,6 +41,7 @@ export default {
     app.component('VPLink', VPLink)
     app.component('Headline', Headline)
     app.component('Post', Post)
+    app.component('Forum', Forum)
 
     for (const component of Object.keys(
       components,

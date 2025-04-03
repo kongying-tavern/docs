@@ -106,11 +106,11 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
   )
 })
 
-router.onAfterRouteChanged = setupMediumZoom
+router.onAfterRouteChange = setupMediumZoom
 </script>
 
 <template>
-  <Layout>
+  <Layout :class="{ [frontmatter.layout || '']: true, [frontmatter.class || '']: true }">
     <template #layout-top>
       <Banner />
       <Sonner />

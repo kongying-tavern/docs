@@ -1,6 +1,7 @@
 import type { UploadedUserFile } from '~/composables/useImageUpload'
 import { useUrlSearchParams } from '@vueuse/core'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
+import { FORM_HASH } from './publish-topic-form/config'
 
 export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   const arr: string[] = []
@@ -96,8 +97,17 @@ export function getTopicNumber() {
     return ''
   const params = useUrlSearchParams('history')
   if (typeof params.number !== 'string')
-    location.href = '../error.html'
+    location.href = '../404.html'
   return String(params.number)
+}
+
+export function getTargeUsername() {
+  if (import.meta.env.SSR)
+    return ''
+  const params = useUrlSearchParams('history')
+  if (typeof params.name !== 'string')
+    return null
+  return String(params.name)
 }
 
 export function convertMultipleToMarkdown(uploadedImages: UploadedUserFile[]) {
@@ -138,4 +148,15 @@ export function extractPlainText(input: string): string {
   const plaintextSanitized = sanitizeMarkdown(markdownToPlainText)
 
   return plaintextSanitized.trim()
+}
+
+export function publishTopic() {
+  const currentHash = location.hash.slice(1)
+  let targetHash = FORM_HASH
+
+  if (location.hash && ['FEAT', 'BUG', 'ANN'].includes(currentHash)) {
+    targetHash = `${targetHash}-${currentHash}`
+  }
+
+  location.hash = targetHash
 }

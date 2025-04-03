@@ -1,11 +1,12 @@
 ---
 title: Feedback
-layout: page
+layout: Forum
 aside: false
+footer: false
 ---
 
 <script setup lang="ts">
-import Forum from '../../components/forum/Forum.vue'
+import ForumHome from '../../components/forum/ForumHome.vue'
 </script>
 
-<Forum />
+<ForumHome />

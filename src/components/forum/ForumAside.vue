@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
-import { FORM_HASH } from '~/components/forum/publish-topic-form/config'
 import { flattenWithTags, getPageHeight, getRandomElements } from './utils'
 
-const { showButton = true, contactUs = false } = defineProps<{
+const { contactUs = false } = defineProps<{
   showButton?: boolean
   contactUs?: boolean
 }>()
@@ -17,44 +15,24 @@ const { theme } = useData()
 
 const qrcode = useQRCode(message.value.forum.aside.contactUs.qrcodeLink)
 
-const roadomSuggest = getRandomElements(
+const randomSuggest = getRandomElements(
   flattenWithTags(
     theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1),
   ),
-  Math.max(Math.ceil(getPageHeight() / 400), 5),
+  Math.max(Math.ceil(getPageHeight() / 400), 8),
 )
 
 const suggestList = computed(() => {
-  return [...message.value.forum.aside.suggest.items, ...roadomSuggest].sort(
+  return [...message.value.forum.aside.suggest.items, ...randomSuggest].sort(
     (a, b) => a.tag.localeCompare(b.tag),
   )
 })
-
-function publishTopic() {
-  const currentHash = location.hash.slice(1)
-  let targetHash = FORM_HASH
-
-  if (location.hash && ['FEAT', 'BUG', 'ANN'].includes(currentHash)) {
-    targetHash = `${targetHash}-${currentHash}`
-  }
-
-  location.hash = targetHash
-}
 </script>
 
 <template>
   <div
-    class="aside-content min-h-[calc(100vh-(var(--vp-nav-height)+var(--vp-layout-top-height,0px)+32px))] flex flex-col pb-8"
+    class="aside-content min-h-[calc(100vh-(var(--vp-nav-height)+var(--vp-layout-top-height,0px)+32px))] flex flex-col rounded-lg bg-[--vp-c-bg-soft] px-4 pb-4"
   >
-    <Button
-      v-if="showButton"
-      class="mb-6 h-11.5 rounded-full vp-button"
-      @click="publishTopic"
-    >
-      <span class="i-lucide:square-pen icon-btn" />{{
-        message.forum.publish.title
-      }}
-    </Button>
     <div v-if="contactUs" class="selected-articles mb-4">
       <p
         class="mb-6 h-14 vp-border-divider color-[var(--vp-c-text-1)] lh-14 font-[var(--vp-font-family-subtitle)]"
@@ -79,7 +57,7 @@ function publishTopic() {
         <p class="color-[var(--vp-c-text-1)]">
           {{ message.forum.aside.teamBlog.text }}
         </p>
-        <VPLink class="font-size-13px vp-link" href="../blog">
+        <VPLink class="font-size-14px vp-link" href="../blog">
           {{ message.ui.button.all }}
         </VPLink>
       </div>
@@ -102,7 +80,7 @@ function publishTopic() {
         </VPLink>
       </div>
     </div>
-    <div class="selected-articles mb-4 border-b vp-border-divider">
+    <div class="selected-articles mb-4">
       <p
         class="mb-4 h-14 vp-border-divider color-[var(--vp-c-text-1)] lh-14 font-[var(--vp-font-family-subtitle)]"
       >
@@ -118,39 +96,25 @@ function publishTopic() {
         <VPLink
           v-if="item.tag"
           :href="item.link"
-          class="line-clamp-2 h-12 overflow-hidden text-ellipsis font-size-3.5 color-[--vp-c-text-2] lh-6"
+          class="line-clamp-1 h-12 overflow-hidden text-ellipsis font-size-3.5 color-[--vp-c-text-2] lh-6"
         >
           {{ item.text?.replace(/【|】|\[|\]/g, ' ').trim() }}
         </VPLink>
       </div>
     </div>
-    <div class="aside-footer">
-      <nav class="flex shrink-0 basis-auto flex-wrap" role="navigation">
-        <a
-          v-for="item in message.forum.aside.info"
-          :key="item.text"
-          :href="item.link"
-          :target="item.text"
-          :alt="item?.alt"
-          class="mr-3 overflow-unset px-[2px] font-size-[13px] color-[var(--vp-c-text-2)] line-height-4"
-        >
-          {{ item.text }}
-        </a>
-      </nav>
-    </div>
   </div>
-
-  <Teleport to="body">
-    <Button
-      v-if="showButton"
-      variant="outline"
-      size="icon"
-      class="fixed bottom-4 right-4 size-[3.5rem] rounded-full md:hidden important:vp-button"
-      @click="publishTopic()"
-    >
-      <span
-        class="i-lucide-plus z-9999 size-[1.75rem] shadow-[var(--vp-shadow-1)]"
-      />
-    </Button>
-  </Teleport>
+  <div class="aside-footer mt-4 px-4">
+    <nav class="flex shrink-0 basis-auto flex-wrap" role="navigation">
+      <a
+        v-for="item in message.forum.aside.info"
+        :key="item.text"
+        :href="item.link"
+        :target="item.text"
+        :alt="item?.alt"
+        class="mr-3 overflow-unset px-[2px] font-size-[13px] color-[var(--vp-c-text-2)] line-height-4"
+      >
+        {{ item.text }}
+      </a>
+    </nav>
+  </div>
 </template>

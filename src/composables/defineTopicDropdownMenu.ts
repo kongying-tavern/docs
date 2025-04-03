@@ -1,37 +1,34 @@
 import type ForumAPI from '@/apis/forum/api'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import type { CustomConfig } from '../../.vitepress/locales/types'
 import type { FORUM } from '~/components/forum/types'
 import { issues } from '@/apis/forum/gitee'
-import { useLocalized } from '@/hooks/useLocalized'
-import { useClipboard } from '@vueuse/core'
-
 import { computed, ref } from 'vue'
-import { getRedirectUrlText } from '~/composables/sessionCacheRedirect'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicManger } from '~/composables/useTopicManger'
 import { useForumData } from '~/stores/useForumData'
+import { useTopicTagsEditor } from './useTopicTagsEditor'
 
 // @unocss-include
-export function defineTopicDropdownMenu(topicData?: ForumAPI.Topic): ComputedRef<FORUM.TopicDropdownMenu[]> {
+export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
   if (!topicData)
     return computed(() => [])
 
-  const { message } = useLocalized()
-
   const { removeTopic } = useForumData()
 
-  const { toggleCloseTopic, toggleHideTopic } = useTopicManger(topicData)
+  const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManger(topicData, message)
   const { hasAnyPermissions } = useRuleChecks(topicData.user.id)
 
   const [closeState, toggleClose] = toggleCloseTopic()
   const [hideState, toggleHide] = toggleHideTopic()
 
-  const { copy, copied, isSupported: isCopySupported } = useClipboard()
+  const { openTopicTagsEditorDialog } = useTopicTagsEditor()
 
   const menuLabels = ref(message.value.forum.topic.menu)
 
   const hasManagePermission = hasAnyPermissions('manage_feedback')
   const hasEditPermission = hasAnyPermissions('edit_feedback')
+  const topicTypeEnum: Exclude<ForumAPI.TopicType, null>[] = ['FEAT', 'BUG', 'ANN'] as const
 
   const openOnGitee = () => issues.openTopicOnGitee(topicData.id)
 
@@ -59,17 +56,6 @@ export function defineTopicDropdownMenu(topicData?: ForumAPI.Topic): ComputedRef
         icon: 'i-lucide:cable',
         action: openOnGitee,
       },
-      isCopySupported.value
-        ? {
-            type: 'item',
-            id: 'copy-link',
-            label: copied.value ? menuLabels.value.copyLink.success : menuLabels.value.copyLink.text,
-            icon: 'i-lucide:link',
-            action: async () => {
-              await copy(getRedirectUrlText(topicData.id, undefined, false))
-            },
-          }
-        : null,
     ].filter(Boolean) as FORUM.TopicDropdownMenu[]
   })
 
@@ -79,9 +65,46 @@ export function defineTopicDropdownMenu(topicData?: ForumAPI.Topic): ComputedRef
 
     return [
       {
-        id: 'hide-feedback',
+        type: 'separator',
+      },
+      {
+        type: 'submenu',
+        label: '更改类型',
+        icon: 'i-lucide:settings',
+        items: topicTypeEnum.filter(val => val !== topicData.type).map(
+          val => ({
+            id: `change-topic-${val}`,
+            type: 'item',
+            label: val,
+            action: () => toggleTopicType(val),
+          }),
+        ),
+      },
+      {
+        id: 'tags-topic',
         type: 'item',
-        label: hideState ? menuLabels.value.hideFeedback.text : '取消隐藏',
+        label: '修改 Tags',
+        icon: 'i-lucide-tags',
+        action: () => openTopicTagsEditorDialog(topicData),
+      },
+      {
+        id: 'pinned-topic',
+        type: 'item',
+        label: topicData.pinned ? '取消固定' : '固定话题',
+        icon: topicData.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
+        action: togglePinedTopic,
+      },
+      {
+        id: 'close-comment-topic',
+        type: 'item',
+        label: topicData.commentCount === -1 ? '打开评论' : '关闭评论',
+        icon: topicData.commentCount === -1 ? 'i-lucide:message-circle' : 'i-lucide:message-circle-off',
+        action: toggleTopicCommentArea,
+      },
+      {
+        id: 'hide-topic',
+        type: 'item',
+        label: hideState ? menuLabels.value.hideFeedback.text : '取消话题',
         icon: hideState ? 'i-lucide:eye-off' : 'i-lucide:eye',
         action: handleToggleHideTopic,
       },

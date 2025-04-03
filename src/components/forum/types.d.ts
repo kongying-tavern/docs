@@ -3,6 +3,8 @@ import type { HTMLAttributes } from 'vue'
 export namespace FORUM {
   type MenuOrder = number | 'last'
 
+  type TopicViewMode = 'Card' | 'Compact'
+
   interface MenuItemBase {
     type: 'item'
     label: string
@@ -10,7 +12,7 @@ export namespace FORUM {
     shortcut?: string
     disabled?: boolean
     class?: HTMLAttributes['class']
-    action?: () => void
+    action?: (() => void | Promise<any>) | (() => any)
     id?: string
     order?: MenuOrder
   }

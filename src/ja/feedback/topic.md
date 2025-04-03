@@ -1,7 +1,9 @@
 ---
 title: トピック
-layout: page
+layout: Forum
 aside: false
+footer: false
+publishTopic: false
 ---
 
 <script setup lang="ts">

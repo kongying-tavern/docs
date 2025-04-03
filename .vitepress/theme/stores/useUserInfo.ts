@@ -3,7 +3,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import { getUser } from '../apis/forum/gitee/user'
+import { getAuthorizedUser } from '../apis/forum/gitee/user'
 import { useUserAuthStore } from './useUserAuth'
 
 interface FingerprintAgain {
@@ -36,7 +36,7 @@ export const useUserInfoStore = defineStore('user-info', () => {
 
   const refreshUserInfo = async () => {
     if (userAuthStore.isTokenValid && userAuthStore.auth.accessToken) {
-      info.value = await getUser(userAuthStore.auth.accessToken)
+      info.value = await getAuthorizedUser(userAuthStore.auth.accessToken)
     }
   }
 

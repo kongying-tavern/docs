@@ -8,7 +8,7 @@ export enum GiteeApiErrorType {
   ApiError = 'Gitee Api Error',
 }
 
-export type HttpMethod = 'get' | 'post' | 'patch' | 'delete'
+export type HttpMethod = 'get' | 'post' | 'patch' | 'delete' | 'put'
 
 export interface ApiCallParams {
   params?: Record<string, any>

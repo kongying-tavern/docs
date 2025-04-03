@@ -36,6 +36,7 @@ const props = withDefaults(
     class?: HTMLAttributes['class']
     max?: number
     modelValue: string[]
+    placeholder?: string
   }>(),
   {
     max: 5,
@@ -107,6 +108,7 @@ onMounted(async () => {
         class="min-h-42px w-full gap-0 border px-0 vp-border-input"
         v-bind="$attrs"
         :model-value="modelValue"
+        :placeholder="placeholder"
       >
         <div class="flex flex-wrap items-center gap-2 pl-3">
           <TagsInputItem

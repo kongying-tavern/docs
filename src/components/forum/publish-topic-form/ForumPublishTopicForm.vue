@@ -76,8 +76,35 @@ const { hasAnyPermissions } = useRuleChecks()
 const hasPermission = hasAnyPermissions('manage_feedback')
 
 const isDisabled = computed(() => {
-  return loading.value || formData.value.title.length === 0 || !isCompleted.value
+  const currentTab = formTabs.find(tab => tab.value === formData.value.type)
+  if (!currentTab)
+    return true
+
+  if (loading.value || !isCompleted.value)
+    return true
+
+  if (currentTab.fields.title) {
+    const titleLength = formData.value.title.length
+    if (titleLength < (currentTab.fields.title.minLength ?? 0))
+      return true
+  }
+
+  if (currentTab.fields.tags) {
+    const tagsLength = formData.value.tags.length
+    if (tagsLength < (currentTab.fields.tags.minLength ?? 0))
+      return true
+  }
+
+  // 检查内容字段
+  if (currentTab.fields.content) {
+    const contentLength = formData.value.text.length
+    if (contentLength < (currentTab.fields.content.minLength ?? 0))
+      return true
+  }
+
+  return false
 })
+
 const tabList = computed(() => {
   return formTabs.map(val => val.value)
 })
@@ -230,6 +257,7 @@ function initFormData() {
               v-model="formData.text"
               :text-limit="tab.fields.content.maxLength"
               :class="isDesktop ? 'min-h-128px' : 'min-h-100px'"
+              :placeholder="tab.fields.content.placeholder"
             >
               <template v-if="!isDesktop" #uploader>
                 <Uploader :file-limit="tab.fields.upload.maxLength" size="xl" :upload-tips="message.forum.publish.form.upload.tip" />

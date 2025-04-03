@@ -1,7 +1,9 @@
 ---
 title: 私のフィードバック
-layout: page
+layout: Forum
 aside: false
+footer: false
+publishTopic: false
 ---
 
 <script setup lang="ts">

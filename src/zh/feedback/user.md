@@ -1,7 +1,8 @@
 ---
-title: 我的反馈
-layout: page
+title: User Profile
+layout: Forum
 aside: false
+publishTopic: false
 ---
 
 <script setup lang="ts">

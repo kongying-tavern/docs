@@ -25,7 +25,7 @@ export default defineConfig({
     ],
     [
       'vp-link',
-      'color-[var(--vp-button-brand-bg)] hover:color-[var(--vp-button-brand-hover-bg)] hover:decoration-underline cursor-pointer',
+      'color-[var(--vp-button-brand-bg)] hover:color-[var(--vp-button-brand-hover-bg)] cursor-pointer transition-color',
     ],
     [
       'vp-border-input',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import User from '@/components/ui/User.vue'
 import ForumDate from '../ForumDate.vue'
-import ForumUser from '../ForumUser.vue'
 
 const { title } = defineProps<{
   title: string
@@ -31,8 +31,10 @@ const { title } = defineProps<{
       </div>
     </div>
 
-    <div class="pt-3">
-      <ForumUser :user="author" />
+    <div class="mt-6 flex flex-wrap items-center gap-6">
+      <div class="group/user relative flex items-center gap-2">
+        <User :avatar="{ src: author.avatar, alt: author.username }" :description="author.login" :name="author.username" />
+      </div>
     </div>
 
     <div class="my-20px h-1.5px w-148px bg-[var(--vp-c-bg-alt)]" />

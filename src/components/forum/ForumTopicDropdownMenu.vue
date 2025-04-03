@@ -9,24 +9,35 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
+import { computed } from 'vue'
+import { defineTopicDropdownMenu } from '~/composables/defineTopicDropdownMenu'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const { side = 'top' } = defineProps<
+const { side = 'bottom', menu = [], topicData } = defineProps<
   {
     topicData: ForumAPI.Topic
     class?: HTMLAttributes['class']
-    menu: FORUM.TopicDropdownMenu[]
+    menu?: FORUM.TopicDropdownMenu[]
   } & DropdownMenuContentProps
 >()
+
+const { message } = useLocalized()
+
+const dropdownMenu = computed(() => {
+  if (topicData)
+    return defineTopicDropdownMenu(topicData, message).value
+  return []
+})
 </script>
 
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="[...menu, ...dropdownMenu].length > 0">
     <DropdownMenuTrigger as-child>
       <Button
         variant="ghost"
@@ -34,13 +45,13 @@ const { side = 'top' } = defineProps<
         :class="cn('topic-btn-more align-mid h-auto', $props.class)"
       >
         <slot name="trigger">
-          <span class="i-custom-ellipsis-vertical icon-btn" />
+          <span class="i-lucide-ellipsis icon-btn bg-[var(--vp-c-text-3)]" />
         </slot>
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent :side="side" class="w-max text-nowrap">
+    <DropdownMenuContent align="start" :side="side" class="w-max text-nowrap">
       <slot name="menu" />
-      <ForumDropdownMenu :items="menu" />
+      <ForumDropdownMenu :items="[...menu, ...dropdownMenu]" />
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

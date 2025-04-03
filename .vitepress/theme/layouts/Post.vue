@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
-import { defineClientComponent, useData, useRoute } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
 import VPDocAside, { useSidebar } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
 import ForumTopicFooter from '~/components/forum/topic/ForumTopicFooter.vue'
-
-const ForumCommentArea = defineClientComponent(() => {
-  return import('~/components/forum/ForumCommentArea.vue')
-})
 
 const { message } = useLocalized()
 const { params, theme } = useData()
@@ -83,18 +79,11 @@ if (params?.value) {
 
           <ForumTopicFooter
             prev-page-link="./"
+            :topic-id="params?.id"
             :text="message.forum.topic.backToTeamBlog"
           />
 
-          <div class="my-2 vp-divider" />
-
-          <ForumCommentArea
-            v-if="params?.commentCount !== -1"
-            class="mt-8"
-            repo="Blog"
-            :topic-id="params?.id"
-            :topic-author-id="params?.author.id"
-          />
+          <div class="mt-2 vp-divider" />
         </div>
       </div>
     </div>

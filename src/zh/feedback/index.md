@@ -1,11 +1,11 @@
 ---
-title: 问题反馈
-layout: page
+title: 反馈社区
+layout: Forum
 aside: false
 ---
 
 <script setup lang="ts">
-import Forum from '../../components/forum/Forum.vue'
+import ForumHome from '../../components/forum/ForumHome.vue'
 </script>
 
-<Forum />
+<ForumHome />

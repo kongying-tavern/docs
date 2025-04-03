@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import ForumShareThis from '../ForumShareThis.vue'
+import ForumCopyLinkButton from '../ForumCopyLinkButton.vue'
+import ForumTopicReactionButton from '../ForumTopicReactionButton.vue'
 
 defineProps<{
   prevPageLink: string
   text: string
+  topicId: string
 }>()
 </script>
 
@@ -13,6 +15,9 @@ defineProps<{
       ← {{ text }}
     </VPLink>
 
-    <ForumShareThis />
+    <div class="flex gap-1.5">
+      <ForumTopicReactionButton :topic-id="topicId" />
+      <ForumCopyLinkButton />
+    </div>
   </div>
 </template>

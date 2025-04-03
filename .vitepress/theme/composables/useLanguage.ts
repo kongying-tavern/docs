@@ -10,11 +10,11 @@ export function useLanguage(supportedLanguages: string[] = ['zh', 'en', 'ja'], d
 
   const currentPageLang = computed(() => getLangPath(localeIndex.value).replace('/', DEFAULT_LANG))
   const matchedLang = matchLanguages(supportedLanguages, import.meta.env.SSR ? [defaultLang] : navigator?.languages) || defaultLang
-  const noTranslationRequirement = computed(() => equalLangCode(matchedLang, currentPageLang.value))
+  const isNoTranslationRequirement = computed(() => equalLangCode(matchedLang, currentPageLang.value))
 
   return {
     currentPageLang,
-    noTranslationRequirement,
+    isNoTranslationRequirement,
     matchedLang,
   }
 }

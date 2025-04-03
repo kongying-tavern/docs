@@ -14,7 +14,7 @@ const {
   commentClickHandler = () => {},
   repo = 'Feedback',
 } = defineProps<{
-  repo: string
+  repo?: string
   commentCount?: number
   commentData: ForumAPI.Comment
   commentClickHandler?: (event: Event) => void
@@ -49,8 +49,8 @@ function handleCommentClick(event: Event) {
     <div class="topic-info-list flex cursor-default items-center">
       <ForumTopicCommentDropdownMenu :menus="[...(menus ?? []), ...dropdownMenus]" />
 
-      <Button variant="ghost" @click="handleCommentClick">
-        <span class="i-lucide:message-circle icon-btn" />
+      <Button class="h-8" variant="ghost" @click="handleCommentClick">
+        <span class="i-lucide:message-circle icon-btn size-4" />
         {{ commentMsg }}
       </Button>
     </div>

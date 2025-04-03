@@ -16,9 +16,13 @@ export namespace ForumAPI {
     username: string
     avatar?: string
     homepage?: string
+    bio?: string
+    email?: string
+    createAt?: Date
+    updateAt?: Date
   }
 
-  export type TopicType = 'ANN' | 'BUG' | 'FEAT' | null
+  export type TopicType = 'ANN' | 'BUG' | 'FEAT' | 'POST' | null
 
   export interface ImageInfo {
     src: string
@@ -46,6 +50,7 @@ export namespace ForumAPI {
     user: ForumAPI.User
     state: ForumAPI.TopicState
     type: ForumAPI.TopicType
+    pinned?: boolean
     relatedComments?: Comment[] | null
     createdAt: string
     updatedAt: string
@@ -85,6 +90,7 @@ export namespace ForumAPI {
     pageSize: number
     sort: string
     filter: string | string[] | null
+    creator: string | null
   }
 
   export type SortMethod = 'created' | 'updated_at'
@@ -121,6 +127,9 @@ export namespace ForumAPI {
   } & Omit<ForumAPI.Topic, 'content' | 'contentRaw' | 'user' | 'type'>
 
   type Repo = 'Feedback' | 'Blog'
+
+  type FilterBy = 'FEAT' | 'BUG' | 'ALL' | 'CLOSED'
+
 }
 
 export default ForumAPI

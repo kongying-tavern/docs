@@ -5,6 +5,7 @@ export interface FieldConfig {
   label: string
   placeholder: string
   maxLength: number
+  minLength?: number
 }
 
 export type TabsConfig = {

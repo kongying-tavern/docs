@@ -15,7 +15,10 @@ import { useData } from 'vitepress'
 
 const { theme } = useData()
 
-const { isMatch: open } = useHashChecker('login-alert')
+const { isMatch: open } = useHashChecker('login-alert', () => {}, {
+  clearHash: false,
+})
+
 const { redirectAuth: login } = useLogin()
 </script>
 

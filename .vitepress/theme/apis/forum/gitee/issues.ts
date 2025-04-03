@@ -39,6 +39,7 @@ export async function getTopics(
           page: query.current,
           sort: query.sort || 'created',
           per_page: query.pageSize,
+          ...(query.creator ? { creator: query.creator } : {}),
           ...processLabels(query.filter),
         },
       },
@@ -52,6 +53,7 @@ export async function getTopics(
           sort: query.sort || 'created',
           per_page: 100,
         },
+        useCache: true,
       },
     ),
   ])
@@ -60,8 +62,6 @@ export async function getTopics(
   issues.forEach((val) => {
     const topic = normalizeIssue(val)
 
-    if (topic.type === 'ANN')
-      return
     if (
       !import.meta.env.DEV
       && val.labels.map(val => val.name).includes('DEV-TEST')
@@ -79,6 +79,22 @@ export async function getTopics(
     data,
     ...paginationParams!,
   }
+}
+
+export async function getPinnedList(): Promise<ForumAPI.Topic[]> {
+  const [issues] = await apiCall<GITEE.IssueList>(
+    'get',
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues`,
+    {
+      params: {
+        state: 'open',
+        labels: ['PINNED'],
+      },
+      useCache: true,
+    },
+  )
+
+  return issues.map(issue => Object.assign(normalizeIssue(issue), { pinned: true }))
 }
 
 export async function getAnnouncementList(): Promise<ForumAPI.Topic[]> {

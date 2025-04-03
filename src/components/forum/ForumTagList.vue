@@ -21,7 +21,7 @@ const tags = computed(() =>
     <span
       v-for="label in tags"
       :key="label"
-      class="pointer-events-auto mr-2 mt-2 inline-flex rounded-full bg-[--vp-c-bg-soft] px-2.5 font-size-3 color-[--vp-c-text-2] font-[var(--vp-font-family-subtitle)]"
+      class="pointer-events-auto mr-2 mt-2 inline-flex rounded-full bg-[--vp-c-gray-soft] px-2.5 font-size-3 color-[--vp-c-text-2] font-[var(--vp-font-family-subtitle)]"
     >
       #{{ topicTagMap.get(topicLabelGetter.getTag(label) ?? '') }}
     </span>

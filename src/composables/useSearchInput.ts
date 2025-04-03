@@ -23,7 +23,7 @@ export function useSearchInput() {
   })
 
   onMounted(() => {
-    if (import.meta.SSR)
+    if (import.meta.env.SSR)
       return
     const searchParams = new URLSearchParams(window.location.search)
 
@@ -31,7 +31,6 @@ export function useSearchInput() {
       const query = searchParams.get('q')
       if (query) {
         searchQuery.value = query
-        searchInput.value.dispatchEvent(createEnterEvent())
       }
     }
 

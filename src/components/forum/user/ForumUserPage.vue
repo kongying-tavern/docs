@@ -1,148 +1,90 @@
 <script setup lang="ts">
-import { issues } from '@/apis/forum/gitee'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
-import { useLoadMore } from '@/hooks/useLoadMore'
-import { useLocalized } from '@/hooks/useLocalized'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { ReloadIcon } from '@radix-icons/vue'
-import { watchOnce } from '@vueuse/core'
-import { ref } from 'vue'
-
-import { handleError } from '~/composables/handleError'
-
+import type { FORUM } from '../types'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useLocalStorage } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
+import { computed, onUnmounted, provide, ref } from 'vue'
+import { useForumData } from '~/stores/useForumData'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
+import ForumLoadState from '../ForumLoadState.vue'
+import ForumTopicListSkeletons from '../ForumTopicListSkeletons.vue'
+import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
+import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
+import { FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
+import { getTargeUsername } from '../utils'
+import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
+import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
-const { message } = useLocalized()
+const forumData = useForumData()
+const userInfo = useUserInfoStore()
+const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
+const activeTab = ref<'feedback' | ''>('feedback')
 
-const page = ref(1)
-const userAuth = useUserAuthStore()
+const { loadMore, loadForumData, resetState } = forumData
+const { sort, filter, loading, isSearching, canLoadMore, userSubmittedTopic, topics, creator } = storeToRefs(forumData)
 
-const { data, runAsync, loading, error } = useLoadMore(
-  issues.getUserCreatedTopics,
-  {
-    manual: true,
-  },
-)
+const username = getTargeUsername() || userInfo.info?.login
 
-async function refreshData() {
-  if (!userAuth.isTokenValid)
-    return (location.hash = 'login-alert')
+creator.value = username!
 
-  await runAsync({
-    current: page.value,
-    sort: 'created',
-    pageSize: 50,
-    filter: null,
-  })
-}
+if (!username)
+  location.href = './404.html'
 
-watchOnce(error, () => {
-  handleError(error.value, message)
+const renderData = computed(() => {
+  return [
+    ...(isSearching.value ? [] : userSubmittedTopic.value),
+    ...topics.value,
+  ]
 })
+
+onUnmounted(resetState)
+
+provide(FORUM_TOPIC_VIEW_MODE_KEY, viewMode)
+provide(FORUM_TOPIC_SORT_KEY, sort)
+provide(FORUM_TOPIC_FILTER_KEY, filter)
+provide(FORUM_TOPIC_LOADING_KEY, loading)
 </script>
 
 <template>
   <ClientOnly>
     <ForumLayout>
       <template #header>
-        <div
-          class="header flex justify-between border-b border-[var(--vp-c-divider)]"
-        >
-          <h2 class="py-3 font-size-6">
-            {{ message.forum.user.myFeedback.title }}
-          </h2>
-          <div />
-        </div>
-        <h3 v-if="!userAuth.isTokenValid" class="mt-4 w-full text-align-center">
-          <DynamicTextReplacer :data="message.forum.auth.loginToCheck">
-            <template #login>
-              <a class="vp-link" href="#login-alert">
-                [{{ message.forum.auth.login }}]
-              </a>
-            </template>
-          </DynamicTextReplacer>
-        </h3>
-      </template>
-
-      <template #content>
         <Suspense>
-          <ForumTopicsList :data="data" :data-loader="refreshData" />
+          <ForumUserProfileHeader v-model:active-tab="activeTab" :username="username!" :topic-count="renderData.length" />
 
           <template #fallback>
-            <div v-if="loading" class="my-8 w-full flex justify-center">
-              <ReloadIcon class="mr-2 h-4 w-4 animate-spin v-middle" />
-              <p class="font-size-4 lh-[1]">
-                {{ message.ui.button.loading }}
-              </p>
-            </div>
+            <ForumUserProfileHeaderSkeleton />
           </template>
         </Suspense>
       </template>
 
+      <template #content>
+        <div v-show="activeTab === 'feedback'">
+          <ForumTopicMenubar />
+          <div class="mt-2" />
+          <Suspense>
+            <ForumTopicsList
+              :view-mode="viewMode" :data="renderData" :data-loader="loadForumData" :load-more="loadMore"
+              :can-load-more="canLoadMore"
+            />
+
+            <template #fallback>
+              <ForumTopicListSkeletons :view-mode="viewMode" />
+            </template>
+          </Suspense>
+
+          <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />
+        </div>
+      </template>
+
       <template #aside>
-        <ForumAside :show-button="false" />
+        <ForumAside />
       </template>
     </ForumLayout>
+    <Teleport to="body">
+      <ForumTopicTagsEditorDialog />
+    </Teleport>
   </ClientOnly>
 </template>
-
-<style lang="scss" scoped>
-$ForumAsideWidth: 248px;
-
-.Forum {
-  flex-grow: 1;
-  flex-shrink: 0;
-  margin: calc(var(--vp-layout-top-height, 0px) + 48px) auto 0;
-  width: 100%;
-  margin-bottom: 32px;
-}
-
-.forum-container {
-  margin: 0 auto;
-  padding: 0 32px;
-}
-
-@media (min-width: 1440px) {
-  .forum-container {
-    max-width: 945px;
-    padding: 0;
-  }
-}
-
-@media (min-width: 768px) {
-  .Forum {
-    padding-bottom: 96px;
-  }
-
-  .forum-mobile-publish-btn {
-    display: none;
-  }
-}
-
-@media (max-width: (768 + $ForumAsideWidth)) {
-  .Forum {
-    margin: 36px auto 0;
-  }
-
-  .forum-content {
-    width: calc(100% - $ForumAsideWidth);
-    margin-right: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .forum-content {
-    width: calc(100%);
-    margin-right: 1.5rem;
-  }
-}
-
-@media (max-width: 468px) {
-  .forum-content {
-    width: 85vw;
-    margin-right: 1.5rem;
-  }
-}
-</style>

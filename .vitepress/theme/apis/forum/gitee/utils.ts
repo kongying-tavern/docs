@@ -38,6 +38,10 @@ export function normalizeUser(user: GITEE.User): ForumAPI.User {
     homepage: user.html_url,
     id: user.id,
     login: user.login,
+    ...(user.bio ? { bio: user.bio } : {}),
+    ...(user.email ? { email: user.email } : {}),
+    ...(user.created_at ? { createAt: new Date(user.created_at) } : {}),
+    ...(user.updated_at ? { updateAt: new Date(user.updated_at) } : {}),
   }
 }
 
@@ -75,16 +79,18 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Topic {
 
 export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
   const { type, title } = getTopicTypeFromTitle(issue.title)
+  const tags = filterWhitelistTags(issue.labels)
+
   return {
+    tags,
+    type,
     id: issue.number,
     title,
     content: markdownToTextWithImages(issue.body),
     contentRaw: issue.body,
     link: issue.html_url,
-    commentCount: issue.comments,
+    commentCount: getCommentAreaState(issue.labels) ? -1 : issue.comments,
     user: normalizeUser(issue.user),
-    tags: filterWhitelistTags(issue.labels),
-    type,
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,
@@ -107,6 +113,10 @@ export function normalizeComment(comment: GITEE.Comment): ForumAPI.Comment {
     replyID: comment.in_reply_to_id || null,
     reactions: null,
   }
+}
+
+function getCommentAreaState(labels: GITEE.IssueLabel[]) {
+  return labels.map(val => val.name).includes('COMMENT-CLOSED')
 }
 
 export function setFilterTags(arr: string[] = []) {

@@ -40,12 +40,6 @@ const cachedApiCall = useMemoize(
   ): ApiCallResult<T> => {
     const url = `${GITEE_API_CONFIG.ENDPOINT_PREFIX}${endpoint}`
 
-    const options = {
-      hooks,
-      searchParams: params,
-      ...(body && (body instanceof FormData ? { body } : { json: body })),
-    }
-
     if (!isNodeEnvironment() && !endpoint.includes('oauth')) {
       const { accessToken } = useUserAuthStore()
 
@@ -61,6 +55,12 @@ const cachedApiCall = useMemoize(
           params.access_token = accessToken
         }
       }
+    }
+
+    const options = {
+      hooks,
+      ...(Object.keys(params).length > 0 ? { searchParams: params } : {}),
+      ...(body && (body instanceof FormData ? { body } : { json: body })),
     }
 
     const [error, response] = await catchError(
@@ -83,7 +83,7 @@ const cachedApiCall = useMemoize(
       return [await response.json(), pagination ? pagination[0] : undefined]
     }
 
-    if (method === 'delete') {
+    if (['delete', 'put'].includes(method)) {
       return [{} as T, undefined]
     }
 

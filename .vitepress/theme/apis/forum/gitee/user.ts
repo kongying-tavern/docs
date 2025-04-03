@@ -4,7 +4,20 @@ import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
 import { normalizeUser } from './utils'
 
-export async function getUser(access_token: string): Promise<ForumAPI.User> {
+export async function getUser(username: string, access_token?: string): Promise<ForumAPI.User> {
+  return normalizeUser(
+    (
+      await apiCall<GITEE.UserInfo>('get', `users/${username}`, {
+        params: {
+          ...(access_token ? { access_token } : {}),
+        },
+        useCache: true,
+      })
+    )[0],
+  )
+}
+
+export async function getAuthorizedUser(access_token: string): Promise<ForumAPI.User> {
   return normalizeUser(
     (
       await apiCall<GITEE.UserInfo>('get', 'user', { params: { access_token } })
@@ -65,4 +78,40 @@ export async function getRepoMembers(
       },
     )
   )[0].map(val => normalizeUser(val))
+}
+
+export async function getFollowStatus(user: string, targetUser: string, accessToken?: string): Promise<boolean | null> {
+  console.log(user, targetUser)
+  let state = null
+  await apiCall('get', `users/${user}/following/${targetUser}`, {
+    params: {
+      access_token: accessToken,
+    },
+    hooks: {
+      afterResponse: [
+        async (_input, _options, response) => {
+          if (response.status === 204)
+            state = true
+          return Promise.resolve()
+        },
+      ],
+    },
+  })
+  return state
+}
+
+export async function toggleFollowUser(toggle: boolean, targetUser: string): Promise<boolean | null> {
+  let state = null
+  await apiCall<boolean>(toggle ? 'put' : 'delete', `user/following/${targetUser}`, {
+    hooks: {
+      afterResponse: [
+        async (_input, _options, response) => {
+          if (response.status === 204)
+            state = true
+          return Promise.resolve()
+        },
+      ],
+    },
+  })
+  return state
 }

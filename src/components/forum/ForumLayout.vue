@@ -1,42 +1,31 @@
 <template>
-  <div class="slide-enter Forum">
-    <div class="forum-container">
-      <div
-        class="forum-content float-left min-h-[calc(100vh-64px)] w-[clamp(calc(100%-240px),700px,55vw)]"
-      >
-        <slot name="header" />
+  <div class="forum-container relative overflow-auto">
+    <slot name="header" />
+    <div
+      class="forum-content float-left mt-4 min-h-[calc(100vh-64px)] w-[clamp(calc(100%-276px),660px,55vw)]"
+    >
+      <slot name="content" />
 
-        <slot name="content" />
+      <slot />
+    </div>
 
-        <slot />
-      </div>
-
-      <div class="forum-aside">
-        <slot name="aside" />
-      </div>
+    <div class="forum-aside sticky top-64px mt-4">
+      <slot name="aside" />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-$ForumAsideWidth: 248px;
-
-.Forum {
-  flex-grow: 1;
-  flex-shrink: 0;
-  margin: calc(var(--vp-layout-top-height, 0px) + 48px) auto 0;
-  width: 100%;
-  margin-bottom: 32px;
-}
+$ForumAsideWidth: 274px;
 
 .forum-container {
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 16px;
 }
 
 .forum-aside {
   float: right;
-  width: 224px;
+  width: 250px;
   height: 100%;
 
   overflow-x: hidden;

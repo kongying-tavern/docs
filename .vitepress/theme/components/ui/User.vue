@@ -197,7 +197,7 @@ const chipColorClasses: Record<NonNullable<ChipProps['color']>, string> = {
       <slot name="name">
         <span
           v-if="name"
-          class="text-gray-900 font-medium font-[var(--vp-font-family-title)] dark:text-gray-100" :class="[
+          class="c-[var(--vp-c-text-1)] font-medium font-[var(--vp-font-family-title)] dark:text-gray-100" :class="[
             sizeClasses[size].name,
             props.ui?.name,
           ]"

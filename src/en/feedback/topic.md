@@ -1,7 +1,9 @@
 ---
-title: Topics
-layout: page
+title: Topics Detail
+layout: Forum
 aside: false
+footer: false
+publishTopic: false
 ---
 
 <script setup lang="ts">

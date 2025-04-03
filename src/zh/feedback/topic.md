@@ -1,7 +1,9 @@
 ---
-title: 问题反馈
-layout: page
+title: 反馈详情
+layout: Forum
 aside: false
+footer: false
+publishTopic: false
 ---
 
 <script setup lang="ts">

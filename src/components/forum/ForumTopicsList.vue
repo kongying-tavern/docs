@@ -1,50 +1,44 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { computed } from 'vue'
-import { useForumData } from '~/stores/useForumData'
-
+import type { FORUM } from './types'
+import { useInfiniteScroll } from '@vueuse/core'
 import ForumTopic from './ForumTopic.vue'
 
-const { dataLoader: fetchData, data } = defineProps<{
-  data?: ForumAPI.Topic[]
-  dataLoader?: () => Promise<void>
+const { dataLoader: fetchData, loadMore, canLoadMore, data, viewMode = 'Card' } = defineProps<{
+  data: ForumAPI.Topic[]
+  viewMode?: FORUM.TopicViewMode
+  dataLoader?: () => Promise<unknown>
+  loadMore?: () => Promise<unknown> | unknown
+  canLoadMore?: boolean
 }>()
 
 if (!import.meta.env.SSR && fetchData)
   await fetchData()
 
-const renderData = computed(() => {
-  if (data)
-    return data
-
-  const forumData = useForumData()
-
-  return [
-    ...(forumData.isSearching ? [] : forumData.userSubmittedTopic),
-    ...(forumData.filter === 'ALL' && !forumData.isSearching
-      ? forumData.annData || []
-      : []),
-    ...forumData.topics,
-    // 基于审核和安全考虑，普通用户只展示发布超过两个小时的反馈
-    // ...forumData.topics.filter(
-    //   (val) =>
-    //     Date.now() - new Date(val.createdAt).getTime() >= 1000 * 60 * 60 * 2 ||
-    //     userInfo.isTeamMember(val.user.id).value,
-    // ),
-  ]
-})
+if (!import.meta.env.SSR && loadMore && canLoadMore) {
+  useInfiniteScroll(
+    window,
+    () => {
+      loadMore()
+    },
+    {
+      distance: 10,
+      interval: 1500,
+      canLoadMore: () => canLoadMore,
+    },
+  )
+}
 </script>
 
 <template>
   <div>
-    <TransitionGroup tag="ul" name="fade" class="container">
-      <li v-for="item in renderData" :key="item.id">
+    <TransitionGroup tag="ul" name="fade">
+      <li v-for="item in data" :key="item.id">
         <ForumTopic
-          :content="item.content"
-          :title="item.title"
-          :author="item.user"
           :topic="item"
+          :view-mode="viewMode"
         />
+        <div class="vp-divider" />
       </li>
     </TransitionGroup>
   </div>

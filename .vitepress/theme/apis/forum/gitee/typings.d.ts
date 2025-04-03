@@ -25,6 +25,10 @@ declare namespace GITEE {
     repos_url: string
     events_url: string
     received_events_url: string
+    bio?: string
+    created_at?: string
+    updated_at?: string
+    email?: string
     type: string
   }
 

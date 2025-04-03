@@ -2,7 +2,7 @@
 import { useLocalized } from '@/hooks/useLocalized'
 
 const { date = new Date(), format = undefined } = defineProps<{
-  date?: string | number
+  date?: string | number | Date
   format?: string
 }>()
 const { formatDate } = useLocalized()

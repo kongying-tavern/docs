@@ -251,7 +251,7 @@ defineExpose({
             <EmojiPicker v-if="features.includes('Emoji')" class="border-none" :reference="container" @select="handleEmojiSelect" />
           </div>
           <InputPlaceholders
-            v-show="!isEditorFocused && imageList.length === 0" :text="text" :placeholders="replyTarget
+            v-show="!isEditorFocused && imageList.length === 0" :text="text" class="pl-2" :placeholders="replyTarget
               ? [`${message.forum.comment.reply} @${replyTarget}:`] : placeholders"
           />
           <EditorContent

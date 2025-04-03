@@ -71,59 +71,63 @@ onBeforeUnmount(() => {
 
 const style = {
   small: {
-    container: 'py-3',
-    avatarSize: 'sm',
-    leftWidth: 'w-[40px] mr-4',
+    container: 'py-2',
+    avatarSize: 'xs',
+    leftWidth: '',
     header: 'mt-1',
-    contentContainer: '',
-    content: 'line-clamp-3 overflow-hidden pr-4',
+    contentContainer: 'w-full',
+    content: 'line-clamp-3 overflow-hidden pr-4 font-size-xs c-[var(--vp-c-text-2)]',
   },
   normal: {
-    container: '',
-    contentContainer: 'border-b-1 border-[var(--vp-c-divider)] pb-3',
+    container: 'mt-.5',
+    contentContainer: 'border-b-1 border-[var(--vp-c-divider)] pb-3 flex-col',
     avatarSize: 'md',
     leftWidth: 'w-[64px] mr-2',
     header: 'mt-2',
-    content: 'break-words font-size-3.75 line-height-[24px] break-all',
+    content: 'break-words font-size-3.75 line-height-[24px] break-all mt-1.5',
   },
 }
 </script>
 
 <template>
-  <div class="topic-comment-item mt-.5 flex rounded-md" :class="style[size].container">
-    <div :class="style[size].leftWidth">
+  <div class="topic-comment-item flex rounded-md" :class="style[size].container">
+    <div v-if="size !== 'small'" class="mr-2 w-[64px]">
       <Avatar :src="commentData.author.avatar" :alt="commentData.author.username" :size="style[size].avatarSize" />
     </div>
-    <div class="w-[calc(100%-40px)] flex flex-col" :class="style[size].contentContainer">
-      <div class="title flex" :class="style[size].header">
+    <div class="w-[calc(100%-40px)] flex" :class="style[size].contentContainer">
+      <div v-if="size !== 'small'" class="title flex" :class="style[size].header">
         <p class="font-size-3.5">
           {{ commentData.author.username }}
         </p>
 
-        <ForumRoleBadge :type="role" />
+        <ForumRoleBadge class="mb-2" :type="role" />
       </div>
+      <span v-else class="title flex whitespace-nowrap font-size-xs">
+        <ForumRoleBadge class="important:mb-0" :type="role" />
+        {{ commentData.author.username }}：
+      </span>
 
       <EditorContent
         v-if="richTextData"
-        class="content mt-3 font-size-3.5" :class="style[size].content"
+        class="content" :class="style[size].content"
         :editor="(editor as any)"
       />
 
       <article
         v-else
-        class="content mt-3 font-size-3.5"
+        class="content"
         :class="style[size].content"
         v-html="commentData.content.text"
       />
 
-      <div v-if="commentData.content.images" class="topic-content-img mt-4 flex">
+      <div v-if="commentData.content.images && size !== 'small'" class="topic-content-img mt-4 flex">
         <Image
           v-for="img in commentData.content.images" :key="img.src" :src="img.src" :alt="img.alt"
           :thumbhash="img.thumbHash" :width="img.width" :height="img.height" class="mr-4 max-h-24 rounded-sm"
         />
       </div>
 
-      <div class="comment-info mt-2">
+      <div v-if="size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
           :repo="repo" :comment-data="commentData" :comment-click-handler="commentClickHandler"
           @comment:click="handleCommentClick"

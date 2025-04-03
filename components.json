@@ -12,7 +12,11 @@
   },
   "framework": "vite",
   "aliases": {
-    "components": "@/components/ui",
-    "utils": "@/lib/utils"
-  }
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "composables": "@/composables"
+  },
+   "iconLibrary": "lucide"
 }
