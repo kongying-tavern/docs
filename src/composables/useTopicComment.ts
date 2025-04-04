@@ -3,13 +3,12 @@ import type { Ref } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useLocalized } from '@/hooks/useLocalized'
-import { createGlobalState } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 
 import { executeWithAuth } from './executeWithAuth'
 import { handleError } from './handleError'
 
-export const useTopicComments = createGlobalState(() => {
+export function useTopicComments() {
   const comments = ref<ForumAPI.Comment[]>([])
   const commentCount = ref<number | null>(null)
   const isLoaded = ref(false)
@@ -129,4 +128,4 @@ export const useTopicComments = createGlobalState(() => {
 
     loadStateMessage,
   }
-})
+}
