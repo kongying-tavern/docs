@@ -10,15 +10,15 @@ import { useRequest } from 'vue-request'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
-import { useSharedTopicInfo } from '~/composables/sharedTopicInfo'
+import { useForumData } from '~/stores/useForumData'
 import ForumAside from '../ForumAside.vue'
 import ForumCommentArea from '../ForumCommentArea.vue'
 import ForumDate from '../ForumDate.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumRoleBadge from '../ForumRoleBadge.vue'
 import ForumTagList from '../ForumTagList.vue'
-import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 
+import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
 import { getTopicNumber, setPageTitle } from '../utils'
@@ -27,7 +27,9 @@ import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 
 const number = getTopicNumber()
 const topicTypeMap = getTopicTypeMap()
-const sharedTopicInfo = useSharedTopicInfo()
+
+const forumData = useForumData()
+const targetTopicData = forumData.topics.find(val => val.id === number)
 
 const { go } = useRouter()
 const { message } = useLocalized()
@@ -42,8 +44,8 @@ const renderedContent = computed(() =>
   ),
 )
 
-if (sharedTopicInfo.value) {
-  mutate(sharedTopicInfo.value)
+if (targetTopicData) {
+  mutate(targetTopicData)
 }
 else if (!import.meta.env.SSR) {
   run(number)
@@ -56,7 +58,12 @@ function handleTopicClose() {
 watchEffect(() => {
   if (loading.value)
     return
-  setPageTitle(topic.value?.title || '', topicTypeMap.get(topic.value?.type || ''))
+  setPageTitle(topic.value?.type === 'BUG'
+    ? `${topic.value
+      .content
+      .text
+      .substring(0, 6)}...`
+    : topic.value?.title || '', topicTypeMap.get(topic.value?.type || ''))
 })
 
 watchOnce(error, () => {
@@ -85,7 +92,7 @@ watchOnce(error, () => {
             <ForumTopicDropdownMenu side="bottom" :topic-data="topic" @topic:close="handleTopicClose" />
           </div>
 
-          <h3 v-if="topic.type !== 'BUG'" id="title" class="break-words font-size-[clamp(1rem,10vw,2rem)] lh-[1.2]">
+          <h3 v-if="topic.type !== 'BUG'" id="title" class="m-0 mb-xs mt-2 overflow-hidden break-words text-xl font-semibold md:mb-1 md:text-1.5rem">
             {{ topic.title }}
           </h3>
 

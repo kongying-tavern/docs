@@ -11,11 +11,11 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useCached, useToggle } from '@vueuse/core'
 import { isArray } from 'lodash-es'
-import { computed, nextTick, ref, useTemplateRef } from 'vue'
+import { useRouter, withBase } from 'vitepress'
 
+import { computed, nextTick, ref, useTemplateRef } from 'vue'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { scrollTo } from '~/composables/scrollTo'
-import { sessionCacheRedirect } from '~/composables/sessionCacheRedirect'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 import { useTopicComments } from '~/composables/useTopicComment'
@@ -42,6 +42,7 @@ const translator = useTemplateRef('translator')
 
 const renderedText = sanitizeMarkdown(topic.content.text)
 const userAuth = useUserAuthStore()
+const router = useRouter()
 
 const { message } = useLocalized()
 const { isOfficial } = useRuleChecks()
@@ -92,9 +93,13 @@ function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>) {
   userSubmittedComment.value.push(submittedComment.value)
 }
 
+async function toPostDetailPage(hash?: string, isBlog = false) {
+  await router.go(withBase(`${isBlog ? 'blog/' : 'feedback/topic?number='}${topic.id}${hash ? `#${hash}` : ''}`))
+}
+
 async function handleToggleCommentInput(user: ForumAPI.User) {
   if (isCompactMode.value) {
-    return sessionCacheRedirect(topic, 'reply')
+    return toPostDetailPage('reply')
   }
 
   if (
@@ -148,7 +153,7 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
       <div :class="{ 'flex w-full justify-between': isCompactMode }">
         <a
           target="_blank" class="cursor-pointer" :class="{ 'max-w-[calc(100%-100px)] overflow-hidden': isCompactMode }"
-          @click="topic.type === 'POST' ? `./blog/${topic.id}` : sessionCacheRedirect(topic)"
+          @click="toPostDetailPage('', topic.type === 'POST')"
         >
           <h4
             class="line-clamp-2 mt-2 flex break-words"
