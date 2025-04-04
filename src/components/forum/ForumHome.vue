@@ -13,7 +13,6 @@ import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
 import ForumTopicMenubar from './ForumTopicMenubar.vue'
 import ForumTopicSearchInfo from './ForumTopicSearchInfo.vue'
 import ForumTopicsList from './ForumTopicsList.vue'
-import ForumTopicTagsEditorDialog from './ForumTopicTagsEditorDialog.vue'
 import { FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from './shared'
 
 const forumData = useForumData()
@@ -91,8 +90,5 @@ provide(FORUM_TOPIC_LOADING_KEY, loading)
         <ForumAside />
       </template>
     </ForumLayout>
-    <Teleport to="body">
-      <ForumTopicTagsEditorDialog />
-    </Teleport>
   </ClientOnly>
 </template>

@@ -104,7 +104,7 @@ function useLogin() {
 
   function redirectAuth() {
     isAuthenticating.value = true
-    redirectUrl.value = location.pathname + location.hash + location.search
+    redirectUrl.value = location.href
     oauth.redirectAuth(localeIndex.value)
   }
 

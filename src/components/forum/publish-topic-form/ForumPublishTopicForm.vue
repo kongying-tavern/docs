@@ -237,6 +237,7 @@ function initFormData() {
             v-if="tab.fields?.tags"
             for="tags"
             :title="tab.fields.tags.label"
+            :required="true"
           >
             <ForumTagsInput
               id="tags"
@@ -304,7 +305,7 @@ function initFormData() {
 
   <Dialog v-if="isDesktop" v-model:open="isOpen">
     <DialogScrollContent
-      class="form-container paper mx-auto mb-70px mt-110px h-fit min-h-100vh min-w-800px flex flex-col shadow-[var(--vp-shadow-3)] before:pos-absolute"
+      class="form-container paper mx-auto mb-70px mt-110px h-fit max-h-[1200px] min-h-100vh min-w-800px flex flex-col shadow-[var(--vp-shadow-3)] before:pos-absolute"
       :class="{ 'animate-switching': inSwitchTabTransition }"
     >
       <div

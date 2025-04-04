@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { replaceTitle } from '@/composables/replaceTitle'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useData, useRoute } from 'vitepress'
 import VPDocAside, { useSidebar } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
-import ForumTopicFooter from '~/components/forum/topic/ForumTopicFooter.vue'
 
-const { message } = useLocalized()
 const { params, theme } = useData()
 const { hasSidebar, hasAside, leftAside } = useSidebar()
 const route = useRoute()
@@ -76,12 +73,6 @@ if (params?.value) {
               ]"
             />
           </main>
-
-          <ForumTopicFooter
-            prev-page-link="./"
-            :topic-id="params?.id"
-            :text="message.forum.topic.backToTeamBlog"
-          />
 
           <div class="mt-2 vp-divider" />
         </div>

@@ -3,6 +3,7 @@ import { useStyleTag } from '@vueuse/core'
 import { onMounted, onUnmounted, ref } from 'vue'
 import ForumLocalNav from '~/components/forum/ForumLocalNav.vue'
 import ForumSearchCurtain from '~/components/forum/ForumSearchCurtain.vue'
+import ForumTopicTagsEditorDialog from '~/components/forum/ForumTopicTagsEditorDialog.vue'
 
 const { load, unload } = useStyleTag('.VPNav { position: relative !important; }\n#VPContent { padding-top: 0 !important;')
 
@@ -31,6 +32,9 @@ onUnmounted(unload)
     <slot />
     <Content />
   </div>
+  <Teleport to="body">
+    <ForumTopicTagsEditorDialog />
+  </Teleport>
 </template>
 
 <style>

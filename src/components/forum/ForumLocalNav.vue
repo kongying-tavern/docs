@@ -7,7 +7,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useMediaQuery, useUrlSearchParams } from '@vueuse/core'
+import { useMediaQuery, useTitle, useUrlSearchParams } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import ForumPublishTopicForm from '~/components/forum/publish-topic-form/ForumPublishTopicForm.vue'
@@ -20,8 +20,10 @@ const open = defineModel<boolean>('open-search-curtain', {
 const { frontmatter } = useData()
 const { message } = useLocalized()
 const params = useUrlSearchParams()
-
+const pageTitle = useTitle()
 const isDesktop = useMediaQuery('(min-width: 768px)')
+
+const title = computed(() => frontmatter.value.title || pageTitle.value?.split('|')[0])
 
 // @unocss-includes
 const selectPublishTopicMenu = computed(() => {
@@ -46,9 +48,9 @@ const selectPublishTopicMenu = computed(() => {
 
 <template>
   <LocalNav :class="{ 'important:bg-[var(--vp-c-bg)] important:border-b-none': open }">
-    <div class="min-w-100px flex items-center">
-      <h2 class="font-size-18px c-[var(--vp-c-text-1)]">
-        {{ frontmatter.title }}
+    <div class="mr-4 w-fit flex items-center">
+      <h2 class="text-nowrap font-size-18px c-[var(--vp-c-text-1)]">
+        {{ title }}
       </h2>
     </div>
 

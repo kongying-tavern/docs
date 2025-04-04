@@ -1,5 +1,4 @@
 ---
-title: 私のフィードバック
 layout: Forum
 aside: false
 footer: false

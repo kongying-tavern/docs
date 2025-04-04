@@ -1,5 +1,4 @@
 ---
-title: My Feedback
 layout: Forum
 aside: false
 footer: false

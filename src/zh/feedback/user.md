@@ -1,5 +1,4 @@
 ---
-title: User Profile
 layout: Forum
 aside: false
 publishTopic: false

@@ -3,18 +3,12 @@ import ForumCopyLinkButton from '../ForumCopyLinkButton.vue'
 import ForumTopicReactionButton from '../ForumTopicReactionButton.vue'
 
 defineProps<{
-  prevPageLink: string
-  text: string
   topicId: string
 }>()
 </script>
 
 <template>
   <div class="mt-12 flex items-center justify-between">
-    <VPLink class="vp-link important:no-underline" :href="prevPageLink">
-      ← {{ text }}
-    </VPLink>
-
     <div class="flex gap-1.5">
       <ForumTopicReactionButton :topic-id="topicId" />
       <ForumCopyLinkButton />

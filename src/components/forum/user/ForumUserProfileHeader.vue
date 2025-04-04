@@ -4,11 +4,12 @@ import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumRoleBadge from '../ForumRoleBadge.vue'
+import { setPageTitle } from '../utils'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
 
 const { username } = defineProps<{
@@ -20,7 +21,6 @@ const modelValue = defineModel('activeTab', { default: 'feedback' })
 const userInfo = useUserInfoStore()
 const userAuth = useUserAuthStore()
 
-// 简化的活动指示器实现
 const menuRef = ref<HTMLElement | null>(null)
 
 const { runAsync: getUser, data: userData } = useRequest(user.getUser, {
@@ -65,6 +65,14 @@ const menu = computed<{
 function sendMessage() {
   window.open(`https://gitee.com/notifications/messages/${renderedUser.value?.id}`, String(renderedUser.value?.id))
 }
+
+watch(renderedUser, (newVal) => {
+  if (!newVal)
+    return
+  setPageTitle(`${newVal.username} 的个人主页`)
+}, {
+  immediate: true,
+})
 </script>
 
 <template>
