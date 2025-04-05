@@ -3,7 +3,7 @@ import { issues } from '@/apis/forum/gitee'
 import Image from '@/components/ui/image/Image.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { watchOnce } from '@vueuse/core'
-import markdownit from 'markdown-it'
+import markdownIt from 'markdown-it'
 import { useRouter } from 'vitepress'
 import { computed, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
@@ -40,7 +40,7 @@ const { data: topic, run, loading, mutate, error } = useRequest(issues.getTopic,
 })
 const renderedContent = computed(() =>
   sanitizeMarkdown(
-    markdownit().render(sanitizeMarkdown(topic?.value?.content.text)),
+    markdownIt().render(sanitizeMarkdown(topic?.value?.content.text)),
   ),
 )
 

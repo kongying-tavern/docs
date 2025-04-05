@@ -94,7 +94,7 @@ function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>) {
 }
 
 async function toPostDetailPage(hash?: string, isBlog = false) {
-  await router.go(withBase(`${isBlog ? 'blog/' : 'feedback/topic?number='}${topic.id}${hash ? `#${hash}` : ''}`))
+  await router.go(withBase(`${isBlog ? '/blog/' : '/feedback/topic?number='}${topic.id}${hash ? `#${hash}` : ''}`))
 }
 
 async function handleToggleCommentInput(user: ForumAPI.User) {
