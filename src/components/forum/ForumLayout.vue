@@ -72,8 +72,7 @@ $ForumAsideWidth: 274px;
 
 @media (max-width: 468px) {
   .forum-content {
-    width: 85vw;
-    margin-right: 1.5rem;
+    width: 100%;
   }
 }
 </style>

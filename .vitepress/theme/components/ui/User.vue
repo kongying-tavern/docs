@@ -131,6 +131,7 @@ const chipColorClasses: Record<NonNullable<ChipProps['color']>, string> = {
       orientationClasses[orientation],
       sizeClasses[size].root,
       props.ui?.root,
+      to && 'cursor-pointer',
     ]"
     :to="to"
     :target="target"
@@ -200,6 +201,7 @@ const chipColorClasses: Record<NonNullable<ChipProps['color']>, string> = {
           class="c-[var(--vp-c-text-1)] font-medium font-[var(--vp-font-family-title)] dark:text-gray-100" :class="[
             sizeClasses[size].name,
             props.ui?.name,
+            to && 'vp-link',
           ]"
         >
           {{ name }}

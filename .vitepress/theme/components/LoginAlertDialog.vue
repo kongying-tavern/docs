@@ -11,15 +11,22 @@ import {
 } from '@/components/ui/alert-dialog'
 import { useHashChecker } from '@/hooks/useHashChecker'
 import useLogin from '@/hooks/useLogin'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useData } from 'vitepress'
+import { ref } from 'vue'
+
+const userAuth = useUserAuthStore()
 
 const { theme } = useData()
-
-const { isMatch: open } = useHashChecker('login-alert', () => {}, {
-  clearHash: false,
-})
-
 const { redirectAuth: login } = useLogin()
+
+const open = ref(false)
+
+useHashChecker('login-alert', () => {
+  if (!userAuth.isTokenValid) {
+    open.value = true
+  }
+})
 </script>
 
 <template>

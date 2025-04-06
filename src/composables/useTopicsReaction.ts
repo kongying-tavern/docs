@@ -30,7 +30,7 @@ export const useTopicsReaction = createGlobalState(() => {
 
     if (!data)
       return null
-    console.log(data)
+
     const id = data.data.reaction.url.split('=')[1]
 
     const targetTopicReactionIndex = useTopicsReaction.value.findIndex(
@@ -74,7 +74,7 @@ export const useTopicsReaction = createGlobalState(() => {
       return result
 
     await requestTopicReaction(topicId)
-    console.log(result.value)
+
     return result
   }
 
@@ -193,7 +193,7 @@ export const useTopicsReaction = createGlobalState(() => {
   }
 
   function getTopicUrl(topicId: string) {
-    return `${location.host}/${withBase(`feedback/topic?number=${topicId}`)}`
+    return `${location.host}/${withBase(`/feedback/topic?number=${topicId}`)}`
   }
 
   const isSetReactionSuccess = computed(

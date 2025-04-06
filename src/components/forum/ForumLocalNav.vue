@@ -32,14 +32,14 @@ const selectPublishTopicMenu = computed(() => {
       label: '提 BUG',
       icon: 'i-lucide-bug',
       action: () => {
-        location.hash = '#PUBLISH-TOPIC-BUG'
+        location.hash = 'PUBLISH-TOPIC-BUG'
       },
     },
     {
       label: '提建议',
       icon: 'i-lucide-file-text',
       action: () => {
-        location.hash = '#PUBLISH-TOPIC-FEAT'
+        location.hash = 'PUBLISH-TOPIC-FEAT'
       },
     },
   ]

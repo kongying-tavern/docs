@@ -21,6 +21,7 @@ import ForumTagList from '../ForumTagList.vue'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
+import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { getTopicNumber, setPageTitle } from '../utils'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
@@ -80,7 +81,11 @@ watchOnce(error, () => {
         <div v-if="!loading && topic" class="slide-enter mb-4">
           <div class="w-full flex items-center justify-between">
             <div class="relative min-w-0 flex flex-wrap items-center gap-[0.25rem] text-14">
-              <User size="sm" :name="topic.user.username" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
+              <ForumUserHoverCard :user="topic.user">
+                <template #trigger>
+                  <User size="sm" :name="topic.user.username" :to="`../user?name=${topic.user.login}`" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
+                </template>
+              </ForumUserHoverCard>
               <ForumRoleBadge :author-id="topic.user.id" />
               <span class="my-0 inline-block text-xs color-[--vp-c-text-3]">•</span>
               <ForumDate

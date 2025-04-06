@@ -1,4 +1,5 @@
 ---
+title: 个人主页
 layout: Forum
 aside: false
 publishTopic: false

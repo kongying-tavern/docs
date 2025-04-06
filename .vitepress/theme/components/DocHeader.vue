@@ -17,7 +17,7 @@ const title = computed(
 <template>
   <div
     v-if="frontmatter.docHeader !== false && frontmatter.layout === 'doc'"
-    class="slide-enter docs-header relative mb-4 border-b-color-[var(--vp-c-divider)] border-b-solid"
+    class="slide-enter docs-header relative border-b border-b-color-[var(--vp-c-divider)] border-b-solid pb-6"
   >
     <DocsBreadCrumb
       class="mb-3 flex items-center gap-1.5 text-sm/6 text-primary font-semibold"

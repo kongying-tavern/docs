@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useLocalStorage } from '@vueuse/core'
+import { useLocalStorage, useUrlSearchParams } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { computed, onUnmounted, provide, ref } from 'vue'
+import { computed, onMounted, onUnmounted, provide, ref } from 'vue'
 import { useForumData } from '~/stores/useForumData'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
@@ -19,6 +19,7 @@ import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue
 
 const forumData = useForumData()
 const userInfo = useUserInfoStore()
+const params = useUrlSearchParams()
 const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
 const activeTab = ref<'feedback' | ''>('feedback')
 
@@ -37,6 +38,12 @@ const renderData = computed(() => {
     ...(isSearching.value ? [] : userSubmittedTopic.value),
     ...topics.value,
   ]
+})
+
+onMounted(() => {
+  if (!params.name && userInfo.info?.login) {
+    params.name = userInfo.info.login
+  }
 })
 
 onUnmounted(resetState)

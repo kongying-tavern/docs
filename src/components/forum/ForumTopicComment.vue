@@ -13,6 +13,7 @@ import { MentionNode } from '~/composables/tiptap/mentionNode'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumCommentFooter from './ForumCommentFooter.vue'
 import ForumRoleBadge from './ForumRoleBadge.vue'
+import ForumUserHoverCard from './user/ForumUserHoverCard.vue'
 
 const {
   size = 'normal',
@@ -92,13 +93,23 @@ const style = {
 <template>
   <div class="topic-comment-item flex rounded-md" :class="style[size].container">
     <div v-if="size !== 'small'" class="mr-2 w-[64px]">
-      <Avatar :src="commentData.author.avatar" :alt="commentData.author.username" :size="style[size].avatarSize" />
+      <ForumUserHoverCard :user="commentData.author">
+        <template #trigger>
+          <a class="cursor-pointer" :href="`../user?name=${commentData.author.login}`">
+            <Avatar :src="commentData.author.avatar" :alt="commentData.author.username" :size="style[size].avatarSize" />
+          </a>
+        </template>
+      </ForumUserHoverCard>
     </div>
     <div class="w-[calc(100%-40px)] flex" :class="style[size].contentContainer">
       <div v-if="size !== 'small'" class="title flex" :class="style[size].header">
-        <p class="font-size-3.5">
-          {{ commentData.author.username }}
-        </p>
+        <ForumUserHoverCard :user="commentData.author">
+          <template #trigger>
+            <a class="font-size-3.5" :href="`../user?name=${commentData.author.login}`">
+              {{ commentData.author.username }}
+            </a>
+          </template>
+        </ForumUserHoverCard>
 
         <ForumRoleBadge class="mb-2" :type="role" />
       </div>
