@@ -1,6 +1,6 @@
 ---
 layout: home
-title: 空荧酒馆
+title: 原神地图
 languageSuggest: true
 
 features:
