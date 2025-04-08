@@ -1,6 +1,6 @@
 ---
 layout: home
-title: 原神地图
+title: 主页
 languageSuggest: true
 
 features:
