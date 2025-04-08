@@ -53,8 +53,7 @@ features:
 
 hero:
   name: 空荧酒馆
-  text: 空荧酒馆制作的
-  原神全资源攻略地图。
+  text: 原神全资源攻略地图
   tagline: Simple, powerful, and performant.
   image:
     src: /imgs/common/logo/logo_256.png
