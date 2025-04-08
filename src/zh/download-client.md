@@ -29,10 +29,10 @@ theme: medium
 
 :::
 
-## 网页版地图
+## 网页地图
 
 ```card
-title: 网页版地图 V3
+title: 网页地图 V3
 logo: self
 link: https://v3.yuanshen.site
 theme: medium
