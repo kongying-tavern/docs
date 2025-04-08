@@ -63,6 +63,6 @@ hero:
       text: 立即下载 →
       link: /download-client
     - theme: alt slide-enter
-      text: 网页地图
+      text: 网页地图 →
       link: https://v3.yuanshen.site
 ---
