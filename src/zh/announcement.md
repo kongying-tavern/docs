@@ -1,12 +1,12 @@
 ---
 title: 公告
-description: 机版下架公告
+description: 测试版下架公告
 search: false
 ---
 
 ## 单机版下架公告
 
-感谢大家的支持，单机版现已下架，全新 Windows 客户端和网页端已开始公测！
+感谢大家的支持，测试版现已下架，全新 Windows 客户端和网页端已正式上线！
 
 ```card
 title: 网页版地图 V3
