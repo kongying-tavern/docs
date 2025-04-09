@@ -1,11 +1,12 @@
 ---
 title: Download Client
 layout: doc
-description: Currently we only offer the Windows Version of our map client, versions in other OS are in progress.
 aside: false
 ---
 
 ## Windows Client <Badge type="warning" text="Beta" />
+
+Currently we only offer the Windows Version of our map client, versions in other OS are in progress.
 
 <LinkGrid :items="downloadMethod" />
 

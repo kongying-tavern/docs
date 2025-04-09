@@ -20,7 +20,7 @@ import UI from './ui'
 export const enConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config
 > = {
-  title: 'Genshin Map',
+  title: 'Kongying Tavern',
   titleTemplate: ':title | Kongying Tavern',
   description: C.META_DESCRIPTION,
   head: Head,
@@ -33,8 +33,8 @@ export const enConfig: LocaleSpecificConfig<
 
     outlineTitle: 'On This Page',
     lastUpdatedText: 'Update Date',
-    returnToTopLabel: '回到顶部',
-    langMenuLabel: '更改语言',
+    returnToTopLabel: 'Back to Top',
+    langMenuLabel: 'Change language',
     notFound: _404,
     ui: UI,
     asideLinks: AsideLinks,

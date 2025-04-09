@@ -1,45 +1,60 @@
 ---
 title: ダウンロード
-description: ダウンロード
 layout: doc
 aside: false
 comment: true
 pageClass: download-client
 ---
 
-# ダウンロード
+## **Windows クライアント** <VPBadge type="warning" text="Beta" />
 
-- Google Drive (推奨)：
-  - <https://drive.google.com/drive/folders/1ade5zOu14oMIJlwaJd0qf-S_xdH9pkSa?usp=sharing>
-- Aliyun Drive (中国語)：
-  - <https://www.aliyundrive.com/s/irmz7CKpMry>
-- Quark Drive (中国語):
-  - <https://pan.quark.cn/s/fe8bb34c77bc>
-- Baidu Cloud (中国語)：
-  - <https://pan.baidu.com/s/1mrU_bkqcpcdjeKPUCzMNDQ?pwd=kyjg>
+以下のいずれかの方法でダウンロードできます
 
-::: tip
-現在 **Windows 版** のみご利用いただきます。他 OS のバージョンを乞うご期待。
+<LinkGrid :items="downloadMethod" />
 
-原神マップ開発に興味がある方は是非[ご参加ください(^\_^)](./join.md)
-:::
+原神マップ開発に興味がある方は是非[ご参加ください(^_^)](./join.md)
+
+::: details クライアントの使い方
 
 ```card
-title: Discord
-link: https://discord.gg/aFe57AKZUF
-theme: medium
-```
-
-```card
-title: マニュアル
+title: Windows クライアントマニュアル
+logo: self
 link: /ja/manual/client/
 theme: medium
 ```
 
+```card
+title: クライアントの基本的な使い方チュートリアル
+link: https://www.bilibili.com/video/BV1uU4y157Te
+theme: medium
+```
+
+:::
+
 ## Web 版
 
 ```card
-title: Web版マップ
+title: Web版マップ V3
+logo: self
 link: https://v3.yuanshen.site
 theme: medium
 ```
+
+<script setup>
+import { useUrlSearchParams } from '@vueuse/core'
+import { onMounted } from 'vue'
+import { clientLink, downloadJump } from '../components/links/Download.ts'
+
+const params = useUrlSearchParams('history')
+const downloadMethod = [
+  clientLink('sq', 'Community'),
+  clientLink('bd', '百度网盘'),
+  clientLink('kk', 'Quark Drive'),
+  clientLink('ty', '天翼云盘', 'アクセスコード：exn0'),
+  clientLink('gd', 'Google Drive'),
+]
+
+onMounted(()=> {
+  downloadJump(params, downloadMethod)
+})
+</script>

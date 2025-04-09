@@ -20,7 +20,7 @@ import UI from './ui'
 export const zhConfig: LocaleSpecificConfig<
   CustomConfig & DefaultTheme.Config
 > = {
-  title: '原神地图',
+  title: '空荧酒馆',
   titleTemplate: ':title | 空荧酒馆',
   description: C.META_DESCRIPTION,
   head: Head,

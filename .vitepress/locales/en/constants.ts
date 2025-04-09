@@ -2,7 +2,7 @@ import type { CustomConstant } from '../types'
 
 const constants: CustomConstant = {
   META_URL: 'https://yuanshen.site/docs/en/',
-  META_TITLE: 'Genshin Interactive Map',
+  META_TITLE: 'Kongying Tavern',
   META_KEYWORDS:
     'Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map',
   META_DESCRIPTION:
