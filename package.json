@@ -96,7 +96,7 @@
     "@commitlint/cli": "19.6.1",
     "@commitlint/config-conventional": "19.6.0",
     "@commitlint/types": "19.5.0",
-    "@nolebase/markdown-it-unlazy-img": "^2.15.1",
+    "@nolebase/markdown-it-unlazy-img": "^2.16.0",
     "@nolebase/vitepress-plugin-thumbnail-hash": "^2.15.1",
     "@types/crypto-js": "4.2.2",
     "@types/lodash-es": "4.17.12",
