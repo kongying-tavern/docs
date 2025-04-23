@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import Button from '@/components/ui/button/Button.vue'
 import User from '@/components/ui/User.vue'
 import ForumDate from '../ForumDate.vue'
 
@@ -12,31 +13,41 @@ const { title } = defineProps<{
 </script>
 
 <template>
-  <div class="w-full flex flex-col items-center pb-2 text-center">
+  <div class="w-full flex flex-col pb-2 text-left">
+    <Button variant="ghost" class="mb-4 w-fit flex items-center gap-2 px-0 c-[var(--vp-c-text-3)] important:bg-transparent">
+      <span class="i-lucide-arrow-left icon-btn" />
+      返回博客
+    </Button>
+
     <div class="flex-1">
       <ForumDate
-        class="c-[var(--vp-c-text-3)] font-[var(--vp-font-family-subtitle)]"
+        class="c-[var(--vp-c-text-2)] font-[var(--vp-font-family-subtitle)]"
         :date="date"
         format="LL"
       />
 
       <div
-        class="mt-2 max-w-800px flex flex-col lg:flex-row lg:items-center lg:justify-between"
+        class="mb-48px mt-24px max-w-800px flex flex-col lg:flex-row lg:items-center lg:justify-between"
       >
         <h1
-          class="c-[var(--vp-c-text-1)] font-bold lh-[1.4] tracking-[2px] important:font-size-4xl"
+          class="font-size-[clamp(28px,4vw,42px)] c-[var(--vp-c-text-1)] font-bold lh-[1.2] tracking-[2px]"
         >
           {{ title }}
         </h1>
       </div>
     </div>
 
-    <div class="mt-6 flex flex-wrap items-center gap-6">
-      <div class="group/user relative flex items-center gap-2">
-        <User :avatar="{ src: author.avatar, alt: author.username }" :description="author.login" :name="author.username" />
-      </div>
-    </div>
+    <template v-if="author">
+      <p class="subtitle font-size-3.5 c-[--vp-c-text-2] line-height-snug">
+        Posted by
+      </p>
 
-    <div class="my-20px h-1.5px w-148px bg-[var(--vp-c-bg-alt)]" />
+      <div class="mt-3 flex flex-wrap items-center gap-6">
+        <div class="group/user relative flex items-center gap-2">
+          <User size="sm" :avatar="{ src: author.avatar, alt: author.username }" :description="author.login" :name="author.username" />
+        </div>
+      </div>
+    </template>
+    <div class="my-20px h-1px w-full bg-[var(--vp-c-bg-alt)]" />
   </div>
 </template>

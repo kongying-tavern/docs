@@ -38,7 +38,7 @@ function handleCommentClick() {
         variant="outline"
         :disabled="isClosedComment"
         :class="{ 'cursor-default': isClosedComment, 'important:bg-transparent': isClosedComment }"
-        class="rounded-full bg-[var(--vp-c-bg-soft)] important:h-32px"
+        class="rounded-full bg-[--vp-c-bg-alt] important:h-32px"
         @click="handleCommentClick"
       >
         <span class="i-lucide:message-circle icon-btn" />

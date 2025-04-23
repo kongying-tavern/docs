@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { issues } from '@/apis/forum/gitee'
+import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image/Image.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { watchOnce } from '@vueuse/core'
 import markdownIt from 'markdown-it'
-import { useRouter } from 'vitepress'
+import { useRouter, withBase } from 'vitepress'
 import { computed, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
@@ -53,7 +54,11 @@ else if (!import.meta.env.SSR) {
 }
 
 function handleTopicClose() {
-  go('./')
+  if (window.history.state?.idx === 1) {
+    return go(withBase('/feedback/'))
+  }
+
+  window.history.back()
 }
 
 watchEffect(() => {
@@ -81,6 +86,9 @@ watchOnce(error, () => {
         <div v-if="!loading && topic" class="slide-enter mb-4">
           <div class="w-full flex items-center justify-between">
             <div class="relative min-w-0 flex flex-wrap items-center gap-[0.25rem] text-14">
+              <Button variant="ghost" @click="handleTopicClose()" class="flex items-center w-36px bg-[var(--vp-c-bg-alt)] rounded-full mr-1 max-sm:hidden">
+                <span class="i-lucide-arrow-left icon-btn" />
+              </Button>
               <ForumUserHoverCard :user="topic.user">
                 <template #trigger>
                   <User size="sm" :name="topic.user.username" :to="`../user?name=${topic.user.login}`" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />

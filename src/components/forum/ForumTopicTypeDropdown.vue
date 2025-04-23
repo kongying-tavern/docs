@@ -58,11 +58,11 @@ watch(filter, (newVal) => {
 
 onMounted(() => {
   updateFilterType()
-  // window.addEventListener('hashchange', updateFilterType)
+  window.addEventListener('hashchange', updateFilterType)
 })
 
 onBeforeUnmount(() => {
-  // window.removeEventListener('hashchange', updateFilterType)
+  window.removeEventListener('hashchange', updateFilterType)
 })
 </script>
 
