@@ -4,6 +4,7 @@ import type { DefaultTheme } from 'vitepress/theme-without-fonts'
 import { cn } from '@/lib/utils'
 import { useToggle } from '@vueuse/core'
 import mediumZoom from 'medium-zoom'
+import { withBase } from 'vitepress'
 import {
   computed,
   nextTick,
@@ -40,10 +41,12 @@ const [isLoadFail, toggleLoadFail] = useToggle(false)
 const attrs = useAttrs()
 const imgId = useId()
 
-const imgSrc = computed(() =>
+const imgSrc = computed((): string =>
   (typeof image === 'string' ? image : image?.src)
-  || attrs?.src
-  || 'https://assets.yuanshen.site/images/noImage.png',
+  || attrs.src!.toString().startsWith(withBase('/'))
+    ? attrs.src as string
+    : withBase(attrs.src as string)
+      || 'https://assets.yuanshen.site/images/noImage.png',
 )
 
 const zoom = zoomConfig === false ? null : mediumZoom(zoomConfig)
