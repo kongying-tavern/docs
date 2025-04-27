@@ -137,7 +137,7 @@
     "tsx": "4.19.2",
     "unlazy": "^0.12.4",
     "vite": "^6.3.2",
-    "vite-plugin-inspect": "0.8.9",
+    "vite-plugin-inspect": "0.10.6",
     "vitepress-plugin-llms": "^1.1.0",
     "zhlint": "0.8.2"
   },
