@@ -95,7 +95,7 @@ const style = {
     <div v-if="size !== 'small'" class="mr-2 w-[64px]">
       <ForumUserHoverCard :user="commentData.author">
         <template #trigger>
-          <a class="cursor-pointer" :href="`../user?name=${commentData.author.login}`">
+          <a class="cursor-pointer" :href="`../user/${commentData.author.login}`">
             <Avatar :src="commentData.author.avatar" :alt="commentData.author.username" :size="style[size].avatarSize" />
           </a>
         </template>
@@ -105,7 +105,7 @@ const style = {
       <div v-if="size !== 'small'" class="title flex" :class="style[size].header">
         <ForumUserHoverCard :user="commentData.author">
           <template #trigger>
-            <a class="font-size-3.5" :href="`../user?name=${commentData.author.login}`">
+            <a class="font-size-3.5" :href="`../user/${commentData.author.login}`">
               {{ commentData.author.username }}
             </a>
           </template>
@@ -114,8 +114,9 @@ const style = {
         <ForumRoleBadge class="mb-2" :type="role" />
       </div>
       <span v-else class="title flex whitespace-nowrap font-size-xs">
+        {{ commentData.author.username }}
         <ForumRoleBadge class="important:mb-0" :type="role" />
-        {{ commentData.author.username }}：
+        :
       </span>
 
       <EditorContent

@@ -65,7 +65,7 @@ const selectPublishTopicMenu = computed(() => {
 
       <HoverCard>
         <HoverCardTrigger as-child>
-          <Button v-if="frontmatter.publishTopic ?? true" variant="default" class="vp-btn" @click="() => { open = false; publishTopic() }">
+          <Button v-if="frontmatter.publishTopic ?? true" variant="default" class="vp-btn max-sm:hidden" @click="() => { open = false; publishTopic() }">
             {{ message.forum.publish.title }}
           </Button>
         </HoverCardTrigger>

@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: '更新日志',
-            link: '/changelog/windows-client',
+            link: '/blog/hotupdatelog-client',
           },
         ],
       },
@@ -38,7 +38,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: '更新日志',
-            link: '/changelog/web',
+            link: '/blog/changelog-web',
           },
         ],
       },

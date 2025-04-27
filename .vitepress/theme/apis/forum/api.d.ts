@@ -122,9 +122,11 @@ export namespace ForumAPI {
     text: string
   }
 
-  type PostParams = {
+  type Post = {
     author: ForumAPI.User
-  } & Omit<ForumAPI.Topic, 'content' | 'contentRaw' | 'user' | 'type'>
+    path: string
+
+  } & ForumAPI.Topic
 
   type Repo = 'Feedback' | 'Blog'
 

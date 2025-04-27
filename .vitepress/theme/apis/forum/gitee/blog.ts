@@ -6,7 +6,7 @@ import { normalizeComment, normalizeIssueToBlog, processLabels } from './utils'
 export async function getPosts(
   query: ForumAPI.Query,
   accessToken?: string,
-): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
+): Promise<ForumAPI.PaginatedResult<ForumAPI.Post[]>> {
   const [issues, paginationParams] = await apiCall<GITEE.IssueList>(
     'get',
     `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues`,
@@ -21,7 +21,7 @@ export async function getPosts(
     },
   )
 
-  const data: ForumAPI.Topic[] = issues.map(val => normalizeIssueToBlog(val))
+  const data: ForumAPI.Post[] = issues.map(val => normalizeIssueToBlog(val))
 
   return {
     data,
@@ -32,7 +32,7 @@ export async function getPosts(
 export async function searchPosts(
   query: ForumAPI.Query,
   q: string,
-): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
+): Promise<ForumAPI.PaginatedResult<ForumAPI.Post[]>> {
   const [issueList, paginationParams] = await apiCall<GITEE.IssueList>(
     'get',
     `search/issues`,

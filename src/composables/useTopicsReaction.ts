@@ -111,7 +111,7 @@ export const useTopicsReaction = createGlobalState(() => {
   const revokeReaction = async (topicId: string) => {
     const reactionState = await getTopicReaction(topicId)
     if (reactionState.value?.state !== null && !reactionState.value?.data) {
-      toast.error('服务器无相应，请稍后重试')
+      toast.error('服务器无响应，请稍后重试')
       return
     }
     if (reactionState.value?.state === 'like') {
@@ -144,7 +144,7 @@ export const useTopicsReaction = createGlobalState(() => {
       return
     }
     if (!reactionState.value) {
-      toast.error('无相应，请稍后重试')
+      toast.error('无响应，请稍后重试')
       return
     }
     if (state === 'like') {
@@ -193,7 +193,7 @@ export const useTopicsReaction = createGlobalState(() => {
   }
 
   function getTopicUrl(topicId: string) {
-    return `${location.host}/${withBase(`/feedback/topic?number=${topicId}`)}`
+    return `${location.host}/${withBase(`/feedback/topic/${topicId}`)}`
   }
 
   const isSetReactionSuccess = computed(

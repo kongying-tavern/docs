@@ -8,7 +8,7 @@ title: 目录
 
 ## **更新日志**
 
-- [客户端更新日志](./../../changelog/windows-client)
+- [客户端更新日志](./../../blog/hotupdatelog-client)
 
 ## **使用帮助**
 

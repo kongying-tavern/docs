@@ -54,7 +54,7 @@ const filteredItems = computed(() =>
       <li v-for="item in filteredItems.slice(0, limit)" :key="item.id" class="search-term w-full flex cursor-pointer items-center gap-4">
         <span class="vp-icon DocSearch-Search-Icon inline-block size-4 important:bg-[--vp-c-text-3]" aria-hidden="true" />
         <VPLink
-          :no-icon="true" :href="`./topic?number=${item.id}`" class="search-term w-full overflow-hidden text-ellipsis break-all"
+          :no-icon="true" :href="`./topic/${item.id}`" class="search-term w-full overflow-hidden text-ellipsis break-all"
           @click="emits('select')"
         >
           <div class="flex items-center">

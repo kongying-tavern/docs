@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'リリースノート',
-            link: '/changelog/windows-client',
+            link: '/blog/hotupdatelog-client',
           },
         ],
       },
@@ -38,7 +38,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'リリースノート',
-            link: '/changelog/web',
+            link: '/blog/changelog-web',
           },
         ],
       },

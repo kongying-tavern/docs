@@ -118,7 +118,7 @@ defineExpose({
           </code>
         </pre>
 
-        <a class="mt-1 inline-block w-full text-center vp-link" :href="withBase(`/feedback/topic?number=${data?.id}`)" target="_blank" rel="noopener noreferrer">
+        <a class="mt-1 inline-block w-full text-center vp-link" :href="withBase(`/feedback/topic/${data?.id}`)" target="_blank" rel="noopener noreferrer">
           {{ data?.id ? `Feedback ID: ${data?.id}` : '' }}
         </a>
       </div>

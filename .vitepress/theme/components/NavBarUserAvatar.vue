@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useData } from 'vitepress'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import LoginAlertDialog from './LoginAlertDialog.vue'
 import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
 import UserAvatar from './UserAvatar.vue'
@@ -12,10 +12,10 @@ const userInfo = useUserInfoStore()
 const open = ref(false)
 const el = ref<HTMLElement>()
 
-const list: { title: string, href: string, icon: string }[] = [
+const list = computed<{ title: string, href: string, icon: string }[]>(() => [
   {
     title: theme.value.forum.user.myFeedback.title,
-    href: '/feedback/user',
+    href: `/feedback/user/${userInfo.info?.login}`,
     icon: 'i-lucide-message-square-text',
   },
   {
@@ -23,7 +23,7 @@ const list: { title: string, href: string, icon: string }[] = [
     href: 'https://gitee.com/profile/account_information',
     icon: 'i-lucide-user-round-pen',
   },
-]
+])
 </script>
 
 <template>

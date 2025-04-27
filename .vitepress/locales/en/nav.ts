@@ -25,7 +25,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'Release Notes',
-            link: '/changelog/windows-client',
+            link: '/blog/hotupdatelog-client',
           },
         ],
       },
@@ -38,7 +38,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: 'Release Notes',
-            link: '/changelog/web',
+            link: '/blog/changelog-web',
           },
         ],
       },

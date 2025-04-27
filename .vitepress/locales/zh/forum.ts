@@ -77,11 +77,11 @@ const forum: CustomConfig['forum'] = {
       items: [
         {
           text: '原神地图客户端更新日志',
-          link: '/changelog/windows-client',
+          link: '/blog/hotupdatelog-client',
         },
         {
           text: '原神地图网页版更新日志',
-          link: '/changelog/web',
+          link: '/blog/changelog-web',
         },
       ],
     },

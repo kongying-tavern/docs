@@ -6,8 +6,6 @@ import { password } from '@/apis/forum/gitee'
 const USERNAME = process.env.GITEE_USERNAME
 const PASSWORD = process.env.GITEE_PASSWORD
 
-export const IS_CI = process.env.CI === 'true'
-
 export async function getAuthToken() {
   if (!USERNAME || !PASSWORD) {
     console.error('Missing username or password')

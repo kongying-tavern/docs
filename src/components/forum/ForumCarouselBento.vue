@@ -64,7 +64,7 @@ const sortedList = computed(() => {
   >
     <CarouselContent class="-ml-1">
       <CarouselItem v-for="topic in [...sortedList, ...presetList]" :key="topic.id" class="pl-4 lg:basis-1/4 md:basis-1/2">
-        <BentoGridItem class="border border-[var(--vp-c-divider)]" :to="withBase('relativeLink' in topic ? topic.relativeLink : `/feedback/topic/?number=${topic.id}`)">
+        <BentoGridItem class="border border-[var(--vp-c-divider)]" :to="withBase('relativeLink' in topic ? topic.relativeLink : `/feedback/topic/${topic.id}`)">
           <template #icon>
             <span class="icon-btn size-6" :class="'icon' in topic ? topic.icon : 'i-lucide-pin'" />
           </template>

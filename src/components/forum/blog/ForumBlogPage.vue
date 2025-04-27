@@ -31,7 +31,7 @@ const filteredPosts = computed(() =>
   <div class="divide-y">
     <ul class="c-[var(--vp-c-text-1)]">
       <li
-        v-for="{ title, createdAt, contentRaw, id } of filteredPosts"
+        v-for="{ title, createdAt, contentRaw, id, path } of filteredPosts"
         :key="id"
         class="border-b border-b-[var(--vp-c-divider)] py-12"
       >
@@ -49,7 +49,7 @@ const filteredPosts = computed(() =>
               <h2 class="text-2xl font-bold leading-8 tracking-tight">
                 <a
                   class="c-[var(--vp-c-text-1)] hover:underline"
-                  :href="`./${id}`"
+                  :href="`./${path}`"
                 >
                   {{ title }}
                 </a>
@@ -61,7 +61,7 @@ const filteredPosts = computed(() =>
               />
             </div>
             <div class="text-base font-medium leading-6">
-              <VPLink class="vp-link" :href="`./${id}`">
+              <VPLink class="vp-link" :href="`./${path}`">
                 {{ message.forum.readMore }} →
               </VPLink>
             </div>

@@ -17,7 +17,7 @@ function color() {
     case 'ANN':
       return '#0088CC'
     case 'POST':
-      return '##8e5cd9'
+      return '#8e5cd9'
   }
 }
 </script>

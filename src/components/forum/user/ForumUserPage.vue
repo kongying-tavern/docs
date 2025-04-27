@@ -13,7 +13,7 @@ import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
 import { FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
-import { getTargeUsername } from '../utils'
+import { getLastPathSegment } from '../utils'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
@@ -26,7 +26,7 @@ const activeTab = ref<'feedback' | ''>('feedback')
 const { loadMore, loadForumData, resetState } = forumData
 const { sort, filter, loading, isSearching, canLoadMore, userSubmittedTopic, topics, creator } = storeToRefs(forumData)
 
-const username = getTargeUsername() || userInfo.info?.login
+const username = getLastPathSegment() || userInfo.info?.login
 
 creator.value = username!
 

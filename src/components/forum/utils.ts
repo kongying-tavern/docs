@@ -1,5 +1,4 @@
 import type { UploadedUserFile } from '~/composables/useImageUpload'
-import { useUrlSearchParams } from '@vueuse/core'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { FORM_HASH } from './publish-topic-form/config'
 
@@ -92,24 +91,15 @@ export function getPageHeight() {
   )
 }
 
-export function getTopicNumber() {
+export function getLastPathSegment(): string {
   if (import.meta.env.SSR)
     return ''
-  const params = useUrlSearchParams('history')
-  if (typeof params.number !== 'string')
-    location.href = '../404.html'
-  return String(params.number)
+  const segment = window.location.pathname.split('/').filter(Boolean).pop()
+  if (segment)
+    return segment
+  location.href = '/404.html'
+  return ''
 }
-
-export function getTargeUsername() {
-  if (import.meta.env.SSR)
-    return ''
-  const params = useUrlSearchParams('history')
-  if (typeof params.name !== 'string')
-    return null
-  return String(params.name)
-}
-
 export function convertMultipleToMarkdown(uploadedImages: UploadedUserFile[]) {
   return `\n${uploadedImages
     .map(({ url, thumbHash, alt }) => {

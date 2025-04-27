@@ -16,7 +16,7 @@ async function copyCurrentURL() {
 
 <template>
   <Button
-    v-if="isSupported" class="w-fit bg-[--vp-c-bg-alt] rounded-full" :title="message.forum.topic.menu.copyLink.text"
+    v-if="isSupported" class="w-fit rounded-full bg-[--vp-c-bg-alt]" :title="message.forum.topic.menu.copyLink.text"
     :data-tooltip="message.forum.topic.menu.copyLink.text" variant="ghost" @click="copyCurrentURL"
   >
     <span class="i-lucide:link" />

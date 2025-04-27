@@ -39,7 +39,7 @@ const { topic, viewMode } = defineProps<{
 const replyTarget = ref('')
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 const translator = useTemplateRef('translator')
-
+console.log(topic)
 const renderedText = sanitizeMarkdown(topic.content.text)
 const userAuth = useUserAuthStore()
 const router = useRouter()
@@ -94,7 +94,7 @@ function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>) {
 }
 
 async function toPostDetailPage(hash?: string, isBlog = false) {
-  await router.go(withBase(`${isBlog ? '/blog/' : '/feedback/topic?number='}${topic.id}${hash ? `#${hash}` : ''}`))
+  await router.go(withBase(`${isBlog ? '/blog/' : '/feedback/topic/'}${topic.id}${hash ? `#${hash}` : ''}`))
 }
 
 async function handleToggleCommentInput(user: ForumAPI.User) {

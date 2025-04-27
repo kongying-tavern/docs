@@ -59,18 +59,19 @@ function getUniqueIndexById(id: number, range: number): number {
   return hash % range
 }
 
-export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Topic {
-  const { type, title } = getTopicTypeFromTitle(issue.title)
+export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
   return {
+    type: 'POST',
     id: issue.number,
-    title,
+    title: issue.title.split('%%')[0]?.trim(),
+    path: issue.title.split('%%')[1]?.trim() || issue.number,
+    link: issue.html_url,
     content: markdownToTextWithImages(issue.body),
     contentRaw: issue.body,
-    link: issue.html_url,
     commentCount: issue.comments,
     user: normalizeUser(issue.assignee || issue.user),
+    author: normalizeUser(issue.assignee || issue.user),
     tags: filterWhitelistTags(issue.labels),
-    type,
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,

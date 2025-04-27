@@ -1,11 +1,11 @@
 import { user } from '@/apis/forum/gitee'
 import { GITEE_API_CONFIG } from '@/apis/forum/gitee/config'
-import { getAuthToken, IS_CI, saveJsonToFile } from './utils'
+import { getAuthToken, saveJsonToFile } from './utils'
 
 export async function refreshMemberListData() {
   const auth = await getAuthToken()
 
-  if (!auth && IS_CI)
+  if (!auth)
     return
 
   const refreshTeamMemberID = async () => await user.getOrgMembers(auth?.accessToken)

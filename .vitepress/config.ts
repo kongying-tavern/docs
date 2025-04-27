@@ -18,7 +18,6 @@ export default defineConfig({
   scrollOffset: 'header',
   cleanUrls: true,
   lastUpdated: true,
-  title: '空荧酒馆',
   locales: localesConfig,
   sitemap: sitemapConfig,
   markdown: markdownConfig,

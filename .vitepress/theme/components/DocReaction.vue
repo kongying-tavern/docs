@@ -61,7 +61,7 @@ const styles = computed(() => {
 <template>
   <div id="doc-feedback" class="feedback" :class="styles.container">
     <p flex items-center :class="styles.message">
-      <span v-if="reaction.reactionSubmitLoading" class="feedback-state loader" />
+      <span v-if="reaction.reactionSubmitLoading" class="loader feedback-state" />
       <span :class="feedbackStateClass" />
       {{ feedbackMessage }}
 

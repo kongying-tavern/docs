@@ -13,6 +13,10 @@ const pageName = computed(() =>
   route.path.replace(/[./]+/g, '_').replace(/_html$/, ''),
 )
 
+if (params?.value?.title === 'Redirect Page' && !import.meta.env.SSR) {
+  location.replace(`./${params?.value.id}`)
+}
+
 if (params?.value) {
   replaceTitle(params?.value.title)
 }
@@ -73,8 +77,6 @@ if (params?.value) {
               ]"
             />
           </main>
-
-          <div class="mt-2 vp-divider" />
         </div>
       </div>
     </div>

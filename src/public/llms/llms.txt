@@ -311,7 +311,7 @@ Windows 客户端使用手册
 **更新日志** [​](#更新日志)
 -------------------
 
-*   [客户端更新日志](https://yuanshen.site/docs/changelog/windows-client)
+*   [客户端更新日志](https://yuanshen.site/docs/blog/hotupdatelog-client)
 
 **使用帮助** [​](#使用帮助)
 -------------------
@@ -346,14 +346,14 @@ Windows 客户端使用手册
 
 <page>
   <title>原神地图客户端更新日志 | 空荧酒馆GitHubXYouTubeBilibiliRedditGitee</title>
-  <url>https://yuanshen.site/docs/changelog/windows-client</url>
+  <url>https://yuanshen.site/docs/blog/hotupdatelog-client</url>
   <content>原神地图客户端更新日志
 -----------</content>
 </page>
 
 <page>
   <title>原神地图客户端更新日志 | 空荧酒馆GitHubXYouTubeBilibiliRedditGitee</title>
-  <url>https://yuanshen.site/docs/changelog/web</url>
+  <url>https://yuanshen.site/docs/blog/changelog-web</url>
   <content>原神地图客户端更新日志
 -----------</content>
 </page>
@@ -1616,7 +1616,7 @@ Was this document helpful?</content>
 **アップデートログ** [​](#アップデートログ)
 ------------------------------
 
-*   [アップデートログ](https://yuanshen.site/docs/ja/changelog/windows-client)
+*   [アップデートログ](https://yuanshen.site/docs/ja/blog/hotupdatelog-client)
 
 **ガイド** [​](#ガイド)
 -------------------
@@ -1945,21 +1945,21 @@ TIP
 
 <page>
   <title>原神マップクライアント更新ログ | 空蛍酒場GitHubXYouTubeBilibiliRedditGitee</title>
-  <url>https://yuanshen.site/docs/ja/changelog/windows-client</url>
+  <url>https://yuanshen.site/docs/ja/blog/hotupdatelog-client</url>
   <content>原神マップクライアント更新ログ
 ---------------</content>
 </page>
 
 <page>
   <title>原神地图客户端更新日志 | Kongying TavernGitHubXYouTubeBilibiliRedditGitee</title>
-  <url>https://yuanshen.site/docs/en/changelog/web</url>
+  <url>https://yuanshen.site/docs/en/blog/changelog-web</url>
   <content>原神地图客户端更新日志
 -----------</content>
 </page>
 
 <page>
   <title>原神地图网页版更新日志 | 空蛍酒場GitHubXYouTubeBilibiliRedditGitee</title>
-  <url>https://yuanshen.site/docs/ja/changelog/web</url>
+  <url>https://yuanshen.site/docs/ja/blog/changelog-web</url>
   <content>原神地图网页版更新日志
 -----------</content>
 </page>

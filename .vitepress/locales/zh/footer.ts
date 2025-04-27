@@ -14,11 +14,11 @@ const footer: CustomConfig['footer'] = {
         },
         {
           text: '客户端更新日志',
-          link: '/changelog/windows-client',
+          link: '/blog/hotupdatelog-client',
         },
         {
           text: '网页版更新日志',
-          link: '/changelog/web',
+          link: '/blog/changelog-web',
         },
       ],
     },

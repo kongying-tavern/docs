@@ -23,22 +23,27 @@ import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
-import { getTopicNumber, setPageTitle } from '../utils'
+import { getLastPathSegment, setPageTitle } from '../utils'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 
-const number = getTopicNumber()
+const topicNumber = getLastPathSegment()
 const topicTypeMap = getTopicTypeMap()
 
 const forumData = useForumData()
-const targetTopicData = forumData.topics.find(val => val.id === number)
+const targetTopicData = forumData.topics.find(val => val.id === topicNumber)
 
 const { go } = useRouter()
 const { message } = useLocalized()
 
 const { data: topic, run, loading, mutate, error } = useRequest(issues.getTopic, {
-  defaultParams: [number],
+  defaultParams: [topicNumber],
   manual: true,
+  onError: (err) => {
+    if (err.message.includes('404 Not Found')) {
+      return go(withBase('/404.html'))
+    }
+  },
 })
 const renderedContent = computed(() =>
   sanitizeMarkdown(
@@ -50,7 +55,7 @@ if (targetTopicData) {
   mutate(targetTopicData)
 }
 else if (!import.meta.env.SSR) {
-  run(number)
+  run(topicNumber)
 }
 
 function handleTopicClose() {
@@ -86,12 +91,12 @@ watchOnce(error, () => {
         <div v-if="!loading && topic" class="slide-enter mb-4">
           <div class="w-full flex items-center justify-between">
             <div class="relative min-w-0 flex flex-wrap items-center gap-[0.25rem] text-14">
-              <Button variant="ghost" @click="handleTopicClose()" class="flex items-center w-36px bg-[var(--vp-c-bg-alt)] rounded-full mr-1 max-sm:hidden">
+              <Button variant="ghost" class="mr-1 w-36px flex items-center rounded-full bg-[var(--vp-c-bg-alt)] max-sm:hidden" @click="handleTopicClose()">
                 <span class="i-lucide-arrow-left icon-btn" />
               </Button>
               <ForumUserHoverCard :user="topic.user">
                 <template #trigger>
-                  <User size="sm" :name="topic.user.username" :to="`../user?name=${topic.user.login}`" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
+                  <User size="sm" :name="topic.user.username" :to="`../user/${topic.user.login}`" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
                 </template>
               </ForumUserHoverCard>
               <ForumRoleBadge :author-id="topic.user.id" />
@@ -138,7 +143,7 @@ watchOnce(error, () => {
         <div class="vp-divider" />
 
         <ForumCommentArea
-          class="mt-8" repo="Feedback" :topic-id="number" :topic-author-id="topic?.user.id || -1"
+          class="mt-8" repo="Feedback" :topic-id="topicNumber" :topic-author-id="topic?.user.id || -1"
           :comment-count="topic?.commentCount"
         />
       </template>

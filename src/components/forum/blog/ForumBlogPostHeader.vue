@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import Button from '@/components/ui/button/Button.vue'
 import User from '@/components/ui/User.vue'
+import { VPLink } from 'vitepress/theme-without-fonts'
 import ForumDate from '../ForumDate.vue'
 
 const { title } = defineProps<{
@@ -13,11 +13,11 @@ const { title } = defineProps<{
 </script>
 
 <template>
-  <div class="w-full flex flex-col pb-2 text-left">
-    <Button variant="ghost" class="mb-4 w-fit flex items-center gap-2 px-0 c-[var(--vp-c-text-3)] important:bg-transparent">
+  <div class="slide-enter w-full flex flex-col pb-2 text-left">
+    <VPLink class="mb-4 w-fit flex items-center gap-2 px-0 c-[var(--vp-c-text-3)]" href="./">
       <span class="i-lucide-arrow-left icon-btn" />
       返回博客
-    </Button>
+    </VPLink>
 
     <div class="flex-1">
       <ForumDate

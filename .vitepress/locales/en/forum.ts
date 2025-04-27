@@ -85,11 +85,11 @@ const forum: CustomConfig['forum'] = {
       items: [
         {
           text: 'Genshin Map Client Update Log',
-          link: '/changelog/windows-client',
+          link: '/blog/hotupdatelog-client',
         },
         {
           text: 'Genshin Map Web Update Log',
-          link: '/changelog/web',
+          link: '/blog/changelog-web',
         },
       ],
     },

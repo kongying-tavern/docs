@@ -39,7 +39,7 @@ const reactionState = computed(() => reactionData.value?.state)
 <template>
   <Button ref="button" variant="ghost" class="rounded-full bg-[var(--vp-c-bg-alt)] px-8px">
     <button class="i-lucide-arrow-up icon-btn rounded-full transition hover:bg-green" :class="{ 'bg-green': reactionState === 'like' }" :disabled="reactionSubmitLoading" @click="setReactionState('like', topicId)" />
-    <span v-if="hasLoaded"> {{ likeCount }} </span>
+    <span v-if="hasLoaded"> {{ likeCount || '0' }} </span>
     <ReloadIcon v-else class="animate-spin" />
     <button class="i-lucide-arrow-down icon-btn rounded-full transition hover:bg-red" :class="{ 'bg-red': reactionState === 'dislike' }" :disabled="reactionSubmitLoading" @click="setReactionState('dislike', topicId)" />
   </Button>

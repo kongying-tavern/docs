@@ -2,12 +2,12 @@ import type ForumAPI from '@/apis/forum/api'
 import { blog } from '@/apis/forum/gitee'
 import blogMemberList from '~/_data/blogMemberList.json'
 import teamMemberList from '~/_data/teamMemberList.json'
-import { getAuthToken, IS_CI, saveJsonToFile } from './utils'
+import { getAuthToken, saveJsonToFile } from './utils'
 
 export async function refreshBlogData() {
   const auth = await getAuthToken()
 
-  if (!auth && IS_CI)
+  if (!auth)
     return
 
   let posts: ForumAPI.Post[] = []

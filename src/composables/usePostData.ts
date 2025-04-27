@@ -1,14 +1,6 @@
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
-import BlogRewrites from '../_data/blogRewrites.json'
-
 import Blog from '../_data/posts.json'
 import { getForumLocaleLabelGetter } from '../composables/getForumLocaleGetter'
-
-type BlogRewriteKey = keyof typeof BlogRewrites
-
-interface PostConfig {
-  rewriteUrl?: string
-}
 
 const localeLabelGetter = getForumLocaleLabelGetter()
 
@@ -23,26 +15,41 @@ export function usePostData(locale: string) {
             label =>
               label === localeLabelGetter.getLabel(locale.toUpperCase()),
           ),
-      ).map((entry) => {
-        return {
+      ).flatMap((entry) => {
+        const baseItem = {
           params: {
             id: entry.id,
+            path: entry.path,
             state: entry.state as ForumAPI.TopicState,
             title: entry.title,
             tags: entry.tags,
             createdAt: entry.createdAt,
             updatedAt: entry.updatedAt,
-            author: entry.user,
+            author: entry.author,
             link: entry.link,
             commentCount: entry.tags
               .map(val => String(val))
               .includes('NO-COMMENT')
               ? -1
               : entry.commentCount,
-            rewriteUrl: BlogRewrites[entry.id as BlogRewriteKey],
-          } satisfies ForumAPI.PostParams & PostConfig,
+          } satisfies Omit<ForumAPI.Post, | 'contentRaw' | 'content' | 'type' | 'user'>,
           content: entry.contentRaw,
         }
+
+        if (entry.id === entry.path)
+          return [baseItem]
+
+        const duplicatedItem = {
+          params: {
+            ...baseItem.params,
+            title: 'Redirect Page',
+            id: entry.path,
+            path: entry.id,
+          },
+          content: `<a href="./${entry.path}">Jump to post</a>`,
+        }
+
+        return [baseItem, duplicatedItem]
       })
     },
   }

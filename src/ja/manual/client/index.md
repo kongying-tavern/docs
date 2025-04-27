@@ -8,7 +8,7 @@ title: 目次
 
 ## **アップデートログ**
 
-- [アップデートログ](./../../changelog/windows-client)
+- [アップデートログ](./../../blog/hotupdatelog-client)
 
 ## **ガイド**
 
