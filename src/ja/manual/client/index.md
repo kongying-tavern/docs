@@ -8,7 +8,7 @@ title: 目次
 
 ## **アップデートログ**
 
-- [アップデートログ](./../../blog/hotupdatelog-client)
+- [アップデートログ（Chinese）](./../../../blog/hotupdatelog-client)
 
 ## **ガイド**
 
