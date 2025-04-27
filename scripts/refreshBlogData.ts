@@ -1,86 +1,50 @@
 import type ForumAPI from '@/apis/forum/api'
-import fs from 'node:fs/promises'
-import process from 'node:process'
-import { URL } from 'node:url'
-import { blog, password } from '@/apis/forum/gitee'
+import { blog } from '@/apis/forum/gitee'
 import blogMemberList from '~/_data/blogMemberList.json'
 import teamMemberList from '~/_data/teamMemberList.json'
-
-const USERNAME = process.env.GITEE_USERNAME
-const PASSWORD = process.env.GITEE_PASSWORD
+import { getAuthToken, IS_CI, saveJsonToFile } from './utils'
 
 export async function refreshBlogData() {
-  if (!USERNAME || !PASSWORD)
-    return console.error('Missing username or password')
+  const auth = await getAuthToken()
 
-  const page = 1
-  let posts: ForumAPI.Topic[] = []
+  if (!auth && IS_CI)
+    return
 
-  const [error, auth] = await password.getToken(USERNAME, PASSWORD)
-
-  if (error)
-    console.error('Error getting token:', error)
-
-  const requestData = async (page: number) => {
-    const { data, totalPage } = await blog.getPosts(
-      {
-        pageSize: 50,
-        current: page,
-        sort: 'created',
-        filter: null,
-      },
-      auth?.accessToken,
-    )
-
-    if (data) {
-      posts = [...posts, ...data]
-      page++
-    }
-    else {
-      console.info('No blog data')
-    }
-
-    return totalPage
-  }
+  let posts: ForumAPI.Post[] = []
+  let currentPage = 1
+  let totalPage = 1
 
   const teamMemberIdList = teamMemberList.map(val => Number(val.id))
   const blogMemberIdList = blogMemberList.map(val => Number(val.id))
 
   const isGrantedMember = (id: string | number) => {
-    return (
-      teamMemberIdList.includes(Number(id)) || blogMemberIdList.includes(Number(id))
-    )
+    return teamMemberIdList.includes(Number(id)) || blogMemberIdList.includes(Number(id))
   }
 
-  const totalPage = await requestData(page)
-
-  if (totalPage + 1 === page)
-    return posts
-
-  const pool: Array<(page: number) => Promise<number>> = [requestData]
-
-  await Promise.all(
-    pool.flatMap(item => Array.from({ length: totalPage - 1 }).fill(item)),
-  )
-
-  posts
-    .filter(val => isGrantedMember(val.user.id))
-    .sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  do {
+    const { data, totalPage: fetchedTotalPage } = await blog.getPosts(
+      {
+        pageSize: 50,
+        current: currentPage,
+        sort: 'created',
+        filter: null,
+        creator: null,
+      },
+      auth?.accessToken,
     )
 
-  const outputFilePath = new URL('../src/_data/posts.json', import.meta.url)
+    if (data)
+      posts.push(...data)
 
-  try {
-    await fs.writeFile(outputFilePath, JSON.stringify(posts, null, 2), 'utf8')
-    console.info(`Data successfully overwritten in ${outputFilePath.pathname}`)
-  }
-  catch (error) {
-    console.error('Error saving data:', error)
-  }
+    totalPage = fetchedTotalPage
+    currentPage++
+  } while (currentPage <= totalPage)
 
-  return posts
+  posts = posts
+    .filter(val => isGrantedMember(val.author.id))
+    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+
+  await saveJsonToFile('posts', posts)
 }
 
 refreshBlogData()

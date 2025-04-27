@@ -3,12 +3,12 @@ import process from 'node:process'
 
 export async function exportEnvFile() {
   const keyUrlMap: Record<string, string> = {
-    BLOG_CHANGELOG_WINCLIENT_JA_ID: '/ja/changelog/windows-client',
-    BLOG_CHANGELOG_WINCLIENT_EN_ID: '/en/changelog/windows-client',
-    BLOG_CHANGELOG_WINCLIENT_ZH_ID: '/changelog/windows-client',
-    BLOG_CHANGELOG_WEB_JA_ID: '/ja/changelog/web',
-    BLOG_CHANGELOG_WEB_EN_ID: '/en/changelog/web',
-    BLOG_CHANGELOG_WEB_ZH_ID: '/changelog/web',
+    BLOG_CHANGELOG_WINCLIENT_JA_ID: '/ja/blog/hotupdatelog-client',
+    BLOG_CHANGELOG_WINCLIENT_EN_ID: '/en/blog/hotupdatelog-client',
+    BLOG_CHANGELOG_WINCLIENT_ZH_ID: '/blog/hotupdatelog-client',
+    BLOG_CHANGELOG_WEB_JA_ID: '/ja/blog/changelog-web',
+    BLOG_CHANGELOG_WEB_EN_ID: '/en/blog/changelog-web',
+    BLOG_CHANGELOG_WEB_ZH_ID: '/blog/changelog-web',
   }
 
   // Build JSON file
