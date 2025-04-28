@@ -5,7 +5,7 @@ const { frontmatter } = useData()
 </script>
 
 <template>
-  <div class="slide-enter Headline is-home">
+  <div class="slide-enter Headline">
     <div class="border-b pb-6">
       <h1
         class="title text-3xl font-bold tracking-tight lg:text-5xl sm:text-4xl"
@@ -21,7 +21,7 @@ const { frontmatter } = useData()
         </VPLink>
       </p>
     </div>
-    <Content />
+    <Content class="Headline" />
   </div>
 </template>
 

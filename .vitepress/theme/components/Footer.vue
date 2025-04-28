@@ -83,7 +83,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   background-color: var(--vp-c-bg-alt);
 }
 
-.is-home ~ .footer-container .footer {
+.is-home ~ .footer-container .footer, .Headline > .footer-container .footer {
   max-width: 1152px;
 }
 
