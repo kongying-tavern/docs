@@ -4,6 +4,8 @@ import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { getLangPath } from '@/utils'
+import { useData, useRouter, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
@@ -18,15 +20,22 @@ const { username } = defineProps<{
 }>()
 
 const modelValue = defineModel('activeTab', { default: 'feedback' })
+
+const { go } = useRouter()
+const { localeIndex } = useData()
+
 const userInfo = useUserInfoStore()
 const userAuth = useUserAuthStore()
-
 const menuRef = ref<HTMLElement | null>(null)
 
 const { runAsync: getUser, data: userData } = useRequest(user.getUser, {
   manual: true,
-  onError: (error) => {
-    toast.error(`拉取用户资料失败 (${error})`)
+  onError: (err) => {
+    toast.error(`拉取用户资料失败 (${err})`)
+
+    if (err.message.includes('404 Not Found')) {
+      return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
+    }
   },
 })
 

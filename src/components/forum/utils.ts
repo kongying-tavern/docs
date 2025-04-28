@@ -91,15 +91,6 @@ export function getPageHeight() {
   )
 }
 
-export function getLastPathSegment(): string {
-  if (import.meta.env.SSR)
-    return ''
-  const segment = window.location.pathname.split('/').filter(Boolean).pop()
-  if (segment)
-    return segment
-  location.href = '/404.html'
-  return ''
-}
 export function convertMultipleToMarkdown(uploadedImages: UploadedUserFile[]) {
   return `\n${uploadedImages
     .map(({ url, thumbHash, alt }) => {
@@ -149,4 +140,23 @@ export function publishTopic() {
   }
 
   location.hash = targetHash
+}
+
+export function updateLastPathSegment(newSegment: string, replace = true) {
+  if (!newSegment)
+    return
+
+  const { pathname, search, hash } = window.location
+  const segments = pathname.replace(/\/+$/, '').split('/')
+
+  if (segments.length === 0 || (segments.length === 1 && segments[0] === ''))
+    segments[0] = newSegment
+  else
+    segments[segments.length - 1] = newSegment
+
+  const newPath = `/${segments.filter(Boolean).join('/')}`
+  const newUrl = `${newPath}${search}${hash}`
+
+  const method = replace ? 'replaceState' : 'pushState'
+  history[method](null, '', newUrl)
 }

@@ -23,7 +23,12 @@ export function useHashChecker(
     ...options,
   }
 
-  const currentHash = computed(() => window.location.hash.slice(1))
+  const currentHash = computed(() => {
+    if (import.meta.env.SSR)
+      return ''
+    return window.location.hash.slice(1)
+  })
+
   const isMatch = ref(false)
   const callbackState = ref(false)
   let matchedHash = null

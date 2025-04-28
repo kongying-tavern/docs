@@ -17,12 +17,18 @@ const typeLabelGetter = getTopicTypeLabelGetter()
 
 export const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'CLOSED'])
 
-// 将默认分页配置拆分为单独的常量
 const DEFAULT_SORT = 'created' as ForumAPI.SortMethod
 const DEFAULT_PAGE = 1
 const DEFAULT_FILTER = getValidFilter() || 'ALL'
 const DEFAULT_CREATOR = null
 const DEFAULT_PAGE_SIZE = 20
+
+function getDefaultFilter(): ForumAPI.FilterBy {
+  if (import.meta.env.SSR)
+    return DEFAULT_FILTER
+  const hash = location.hash.split('#')[1]?.toUpperCase()
+  return filterSet.has(hash) ? hash as ForumAPI.FilterBy : DEFAULT_FILTER
+}
 
 export const useForumData = defineStore('forum-data', () => {
   const userSubmittedTopic = ref<ForumAPI.Topic[]>([])
@@ -30,7 +36,7 @@ export const useForumData = defineStore('forum-data', () => {
 
   const sort = ref<ForumAPI.SortMethod>(DEFAULT_SORT)
   const page = ref<number>(DEFAULT_PAGE)
-  const filter = ref<ForumAPI.FilterBy>(DEFAULT_FILTER)
+  const filter = ref<ForumAPI.FilterBy>(getDefaultFilter())
   const creator = ref<string | null>(DEFAULT_CREATOR)
 
   // 加载状态

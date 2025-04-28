@@ -8,7 +8,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { withBase } from 'vitepress'
+import { getLangPath } from '@/utils'
+import { useData, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
@@ -23,6 +24,8 @@ const { user, userId } = defineProps<{
 
 if (!user && !userId)
   throw new Error('Must contain any of the two parameters')
+
+const { localeIndex } = useData()
 
 const { run: getUser, data: userData, loading: getUserLoading } = useRequest(userAPI.getUser, {
   manual: true,
@@ -44,7 +47,7 @@ watch(userData, (newVal) => {
 
 const { isOfficial } = useRuleChecks()
 const role = computed(() => (isOfficial(userInfo.value?.id || 0).value ? 'official' : null))
-const href = computed(() => withBase(`/feedback/user/${userInfo.value?.login}`))
+const href = computed(() => withBase(`${getLangPath(localeIndex.value)}feedback/${userInfo.value?.login}`))
 
 function openUserProfilePage() {
   window.open(href.value, userInfo.value?.login)

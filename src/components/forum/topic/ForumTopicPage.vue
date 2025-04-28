@@ -3,9 +3,10 @@ import { issues } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image/Image.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { getLangPath } from '@/utils'
 import { watchOnce } from '@vueuse/core'
 import markdownIt from 'markdown-it'
-import { useRouter, withBase } from 'vitepress'
+import { useData, useRouter, withBase } from 'vitepress'
 import { computed, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
@@ -17,34 +18,36 @@ import ForumCommentArea from '../ForumCommentArea.vue'
 import ForumDate from '../ForumDate.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumRoleBadge from '../ForumRoleBadge.vue'
-import ForumTagList from '../ForumTagList.vue'
 
+import ForumTagList from '../ForumTagList.vue'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
-import { getLastPathSegment, setPageTitle } from '../utils'
+import { setPageTitle } from '../utils'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 
-const topicNumber = getLastPathSegment()
 const topicTypeMap = getTopicTypeMap()
 
 const forumData = useForumData()
-const targetTopicData = forumData.topics.find(val => val.id === topicNumber)
 
+const { params, localeIndex } = useData()
 const { go } = useRouter()
 const { message } = useLocalized()
 
 const { data: topic, run, loading, mutate, error } = useRequest(issues.getTopic, {
-  defaultParams: [topicNumber],
+  defaultParams: [params.value?.id],
   manual: true,
   onError: (err) => {
     if (err.message.includes('404 Not Found')) {
-      return go(withBase('/404.html'))
+      return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
     }
   },
 })
+
+const targetTopicData = forumData.topics.find(val => val.id === params.value?.id)
+
 const renderedContent = computed(() =>
   sanitizeMarkdown(
     markdownIt().render(sanitizeMarkdown(topic?.value?.content.text)),
@@ -55,12 +58,12 @@ if (targetTopicData) {
   mutate(targetTopicData)
 }
 else if (!import.meta.env.SSR) {
-  run(topicNumber)
+  run(params.value?.id)
 }
 
 function handleTopicClose() {
   if (window.history.state?.idx === 1) {
-    return go(withBase('/feedback/'))
+    return go(withBase(`${getLangPath(localeIndex.value)}feedback/`))
   }
 
   window.history.back()
@@ -143,7 +146,7 @@ watchOnce(error, () => {
         <div class="vp-divider" />
 
         <ForumCommentArea
-          class="mt-8" repo="Feedback" :topic-id="topicNumber" :topic-author-id="topic?.user.id || -1"
+          class="mt-8" repo="Feedback" :topic-id="params?.id" :topic-author-id="topic?.user.id || -1"
           :comment-count="topic?.commentCount"
         />
       </template>

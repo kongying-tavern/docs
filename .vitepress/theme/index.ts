@@ -53,32 +53,35 @@ export default {
 
     router.onBeforePageLoad = async (to) => {
       const locales = Object.keys(siteData.value.locales)
-      const target = routes.find((route) => {
-        if (route.i18n) {
-          return locales.map(val => match(withBase(`${getLangPath(val)}${route.match}`))(to)).some(Boolean)
+      let matchedParams: Partial<Record<string, string | string[]>> = {}
+      let target: typeof routes[number] | undefined
+
+      for (const route of routes) {
+        const matches = route.i18n
+          ? locales.map(locale => match(withBase(`${getLangPath(locale)}${route.match}`))(to))
+          : [match(withBase(route.match))(to)]
+
+        const found = matches.find(Boolean)
+
+        if (found) {
+          matchedParams = found.params || {}
+          target = route
+          break
         }
-        return match(withBase(route.match))(to)
-      })
+      }
 
       if (!target)
         return true
 
-      const { path, component } = target
-
-      if (path) {
-        router.route.path = path
-      }
-      else {
-        router.route.path = to
-      }
-
-      router.route.component = markRaw(component)
+      router.route.path = target.path || to
+      router.route.component = markRaw(target.component)
       router.route.data = {
         relativePath: '',
         filePath: '',
         title: '',
         description: '',
         headers: [],
+        params: matchedParams,
         frontmatter: { sidebar: false, layout: 'page' },
       }
       return false
