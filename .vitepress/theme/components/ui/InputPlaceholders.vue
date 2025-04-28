@@ -55,24 +55,26 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <!-- Placeholder Text -->
-  <div v-if="props.text.length === 0" class="pointer-events-none absolute inset-0 flex items-center rounded-full">
-    <Transition
-      v-show="!vanishingText"
-      mode="out-in"
-      enter-active-class="transition duration-300 ease-out"
-      leave-active-class="transition duration-300 ease-in"
-      enter-from-class="opacity-0 translate-y-4"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-4"
-    >
-      <p
-        :key="currentPlaceholder"
-        :class="cn('w-[calc(100%-2rem)] truncate text-left text-sm font-normal sm:px-4 sm:text-base color-[var(--vp-c-text-3)]', props.class)"
+  <ClientOnly>
+    <!-- Placeholder Text -->
+    <div v-if="props.text.length === 0" class="pointer-events-none absolute inset-0 flex items-center rounded-full">
+      <Transition
+        v-show="!vanishingText"
+        mode="out-in"
+        enter-active-class="transition duration-300 ease-out"
+        leave-active-class="transition duration-300 ease-in"
+        enter-from-class="opacity-0 translate-y-4"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-4"
       >
-        {{ placeholders[currentPlaceholder] }}
-      </p>
-    </Transition>
-  </div>
+        <p
+          :key="currentPlaceholder"
+          :class="cn('w-[calc(100%-2rem)] truncate text-left text-sm font-normal sm:px-4 sm:text-base color-[var(--vp-c-text-3)]', props.class)"
+        >
+          {{ placeholders[currentPlaceholder] }}
+        </p>
+      </Transition>
+    </div>
+  </ClientOnly>
 </template>

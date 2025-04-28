@@ -49,7 +49,7 @@ const imgSrc = computed((): string =>
       || 'https://assets.yuanshen.site/images/noImage.png',
 )
 
-const zoom = zoomConfig === false ? null : mediumZoom(zoomConfig)
+const zoom = zoomConfig === false ? null : import.meta.env.SSR ? null : mediumZoom(zoomConfig)
 
 async function initZoom() {
   if (import.meta.env.SSR)
@@ -78,46 +78,44 @@ watch(
 </script>
 
 <template>
-  <ClientOnly>
-    <Transition v-if="!isLoaded && (thumbHash || placeholderSrc)" leave-active-class="animate-fade-out animate-duration-750 animate-ease-in-out">
-      <LazyImage
-        :src-set="imgSrc"
-        :auto-sizes="autoSizes"
-        :thumbhash="thumbHash"
-        :preload="preload"
-        :width="width"
-        :height="height"
-        :placeholder-src="placeholderSrc"
-        :style="{
-          aspectRatio: `${width} / ${height}`,
-        }"
-        :class="cn('VPImage', $props.class)"
-        @loaded="handleLoaded"
-        @error="$event => toggleLoadFail()"
-      />
-    </Transition>
-    <img
-      v-else-if="!isLoadFail"
-      v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
-      :id="imgId"
-      :src="imgSrc"
-      :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
-      :class="cn('VPImage', $props.class)"
+  <Transition v-if="!isLoaded && (thumbHash || placeholderSrc)" leave-active-class="animate-fade-out animate-duration-750 animate-ease-in-out">
+    <LazyImage
+      :src-set="imgSrc"
+      :auto-sizes="autoSizes"
+      :thumbhash="thumbHash"
+      :preload="preload"
       :width="width"
       :height="height"
+      :placeholder-src="placeholderSrc"
       :style="{
         aspectRatio: `${width} / ${height}`,
       }"
+      :class="cn('VPImage', $props.class)"
+      @loaded="handleLoaded"
       @error="$event => toggleLoadFail()"
-    >
-    <img
-      v-else
-      v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
-      :class="cn('VPImage bg-[var(--vp-c-bg-alt)]', $props.class)"
-      :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
-      src="https://assets.yuanshen.site/images/noImage.png"
-    >
-  </ClientOnly>
+    />
+  </Transition>
+  <img
+    v-else-if="!isLoadFail"
+    v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
+    :id="imgId"
+    :src="imgSrc"
+    :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
+    :class="cn('VPImage', $props.class)"
+    :width="width"
+    :height="height"
+    :style="{
+      aspectRatio: `${width} / ${height}`,
+    }"
+    @error="$event => toggleLoadFail()"
+  >
+  <img
+    v-else
+    v-bind="typeof image === 'string' ? $attrs : { ...image, ...$attrs }"
+    :class="cn('VPImage bg-[var(--vp-c-bg-alt)]', $props.class)"
+    :alt="alt ?? (typeof image === 'string' ? '' : image?.alt || '')"
+    src="https://assets.yuanshen.site/images/noImage.png"
+  >
 </template>
 
 <style scoped>
