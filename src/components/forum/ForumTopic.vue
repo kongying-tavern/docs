@@ -9,10 +9,11 @@ import { useLanguage } from '@/composables/useLanguage'
 
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
+import { getLangPath } from '@/utils'
 import { useCached, useToggle } from '@vueuse/core'
 import { isArray } from 'lodash-es'
-import { useRouter, withBase } from 'vitepress'
 
+import { useData, useRouter, withBase } from 'vitepress'
 import { computed, nextTick, ref, useTemplateRef } from 'vue'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { scrollTo } from '~/composables/scrollTo'
@@ -31,7 +32,7 @@ import ForumTopicTypeBadge from './ForumTopicTypeBadge.vue'
 import ForumUserHoverCard from './user/ForumUserHoverCard.vue'
 
 const { topic, viewMode } = defineProps<{
-  topic: ForumAPI.Topic
+  topic: ForumAPI.Topic | ForumAPI.Post
   comment?: ForumAPI.Comment
   viewMode: FORUM.TopicViewMode
 }>()
@@ -39,11 +40,11 @@ const { topic, viewMode } = defineProps<{
 const replyTarget = ref('')
 const userSubmittedComment = ref<ForumAPI.Comment[]>([])
 const translator = useTemplateRef('translator')
-console.log(topic)
 const renderedText = sanitizeMarkdown(topic.content.text)
 const userAuth = useUserAuthStore()
 const router = useRouter()
 
+const { localeIndex } = useData()
 const { message } = useLocalized()
 const { isOfficial } = useRuleChecks()
 const { submitComment } = useTopicComments()
@@ -52,6 +53,7 @@ const { isExpanded, hasOverflow, collapseText, toggleExpand }
   = useTextCollapse(renderedText)
 const [inReply, toggleReply] = useToggle()
 
+const isPost = topic.type === 'POST'
 const role = computed(() => (isOfficial(topic.user.id).value ? 'official' : null))
 const isAnn = computed(() => topic.type === 'ANN')
 const showComment = computed(() => isArray(topic.relatedComments) && topic.type !== 'ANN')
@@ -93,8 +95,9 @@ function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>) {
   userSubmittedComment.value.push(submittedComment.value)
 }
 
-async function toPostDetailPage(hash?: string, isBlog = false) {
-  await router.go(withBase(`${isBlog ? '/blog/' : '/feedback/topic/'}${topic.id}${hash ? `#${hash}` : ''}`))
+async function toPostDetailPage(hash?: string) {
+  const path = isPost ? `blog/${(topic as ForumAPI.Post).path}` : `feedback/topic/${topic.id}`
+  return await router.go(withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`))
 }
 
 async function handleToggleCommentInput(user: ForumAPI.User) {
@@ -151,16 +154,17 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
       </div>
 
       <div :class="{ 'flex w-full justify-between': isCompactMode }">
-        <a
-          target="_blank" class="cursor-pointer" :class="{ 'max-w-[calc(100%-100px)] overflow-hidden': isCompactMode }"
-          @click="toPostDetailPage('', topic.type === 'POST')"
+        <div
+          class="cursor-pointer" :class="{ 'max-w-[calc(100%-100px)] overflow-hidden': isCompactMode }"
+          @click="toPostDetailPage()"
         >
           <h4
             class="line-clamp-2 mt-2 flex break-words"
             :class="{ 'font-size-4.5 font-[--vp-font-family-title]': isCardMode, 'font-size-3.5 font-[--vp-font-family-subtitle]': isCompactMode }"
           >
             <p v-if="topic.type !== 'BUG'" class="line-clamp-2">
-              {{ isCompactMode ? topic.title.length < 10 ? renderedText : topic.title : topic.title }} </p>
+              {{ isCompactMode ? topic.title.length < 10 ? renderedText : topic.title : topic.title }}
+            </p>
             <p v-else-if="isCompactMode" class="line-clamp-2">
               {{ renderedText }}
             </p>
@@ -176,14 +180,18 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
               {{ isAnn ? renderedText : collapseText }}
             </div>
 
+            <Button v-if="isPost" class="px-0 font-size-4" variant="link" @click.stop="toPostDetailPage()">
+              {{ message.forum.readMore }}
+            </Button>
+
             <Button
-              v-if="!isAnn && hasOverflow && !isExpanded" class="px-0 font-size-4" variant="link"
+              v-else-if="!isAnn && hasOverflow && !isExpanded" class="px-0 font-size-4" variant="link"
               @click.stop="toggleExpand()"
             >
               {{ message.forum.topic.showMore }}
             </Button>
           </article>
-        </a>
+        </div>
 
         <div
           v-if="isCompactMode"
@@ -224,6 +232,7 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
     <ForumTagList v-if="isCardMode" class="mt-2" :data="topic.tags" />
 
     <ForumTopicFooter
+      v-if="topic.type !== 'POST'"
       :class="{ 'mt-4': isCardMode, 'mt-2': isCompactMode }" :topic-data="topic"
       :comment-id="isAnn ? -1 : 1" :view-mode="viewMode" @comment:click="handleToggleCommentInput"
     />
