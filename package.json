@@ -65,7 +65,7 @@
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "embla-carousel-vue": "^8.6.0",
-    "feed": "^4.2.2",
+    "feed": "^5.0.0",
     "js-yaml": "^4.1.0",
     "ky": "^1.8.1",
     "markdown-it-attrs": "^4.3.1",
