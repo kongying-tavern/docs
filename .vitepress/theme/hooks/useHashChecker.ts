@@ -46,7 +46,7 @@ export function useHashChecker(
 
     matchedHash = currentHash.value
 
-    if (clearHash)
+    if (clearHash && !import.meta.env.SSR)
       history.replaceState(null, '', window.location.href.split('#')[0])
     if (callback)
       callbackState.value = Boolean(callback(matchedHash))
@@ -55,6 +55,9 @@ export function useHashChecker(
   }
 
   const handleHashChangeEvent = () => {
+    if (import.meta.env.SSR)
+      return
+
     window.addEventListener('hashchange', checkHash)
 
     onBeforeUnmount(() => {
