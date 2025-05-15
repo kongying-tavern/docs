@@ -37,6 +37,7 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    outline: [2, 4],
     search: {
       provider: 'local',
       options: localeSearchConfig,
