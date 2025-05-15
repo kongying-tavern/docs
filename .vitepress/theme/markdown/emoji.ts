@@ -32,7 +32,7 @@ const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
   const emojiRegex = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/
 
   // 添加内联规则
-  md.inline.ruler.push('emoji', (state, silent) => {
+  md.inline.ruler.push('customEmoji', (state, silent) => {
     const pos = state.pos
     const ch = state.src.charCodeAt(pos)
 
@@ -60,7 +60,7 @@ const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
     }
 
     // 创建 token
-    const token = state.push('emoji', 'Emoji', 0)
+    const token = state.push('customEmoji', 'Emoji', 0)
     token.attrs = [
       ['emoji', emojiData.url],
       ['height', emojiData.height.toString()],
@@ -73,7 +73,7 @@ const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
   })
 
   // 添加渲染规则
-  md.renderer.rules.emoji = (tokens, idx) => {
+  md.renderer.rules.customEmoji = (tokens, idx) => {
     const token = tokens[idx]
     const emoji = token.attrs?.find(attr => attr[0] === 'emoji')?.[1] || ''
     const height = token.attrs?.find(attr => attr[0] === 'height')?.[1] || '20'
