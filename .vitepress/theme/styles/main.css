@@ -77,6 +77,11 @@ html.dark .vp-doc figure figcaption {
   line-height: 28px !important;
 }
 
+.VPMenu .items > :not(.VPMenuLink).title {
+  font-weight: bold;
+  color: var(--vp-c-brand-1)
+}
+
 .VPSidebarGroup .link {
   padding: 3px 0 !important;
 }
