@@ -1,18 +1,13 @@
 ---
 title: Markdown 增强语法指南
-description: 本项目文档页面使用Markdown语法进行编写，除了 Vitepress 支持的 Markdown 基础组件之外我们额外添加和实现了一些特有语法和组件并在此演示
 layout: doc
-aside: false
+aside: true
 search: false
 ---
 
 <!-- 该页面无需翻译 -->
 
-## 目录 {#toc}
-
-[[TOC]]
-
----
+本项目文档页面使用Markdown语法进行编写，除了 Vitepress 支持的 Markdown 基础组件之外我们额外添加和实现了一些特有语法和组件并在此演示。
 
 ## Timeline 时间线 {#timeline}
 
