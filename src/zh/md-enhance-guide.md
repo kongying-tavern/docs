@@ -308,6 +308,7 @@ paragraph *style me*{.vp-link} more text
 - “预设名”对应 `src/public/emojis` 目录下的子目录名。
 - “预设文件名”与预设文件夹中的文件一一对应。
 - 若需要添加预设或预设文件，只需在 `src/public/emojis` 目录下添加目录或文件即可。
+- 由于此语法与 GitHub 格式的 Markdown (GFM) emoji 语法一致，当预设文件不存在时，会回退为 GFM 语法的 emoji 表示。
 :::
 
 #### 示例
