@@ -112,7 +112,7 @@ const MarkdownItCard: PluginSimple = (md) => {
   md.renderer.rules.fence = (...args): string => {
     const [tokens, index, options, env] = args
     const { info } = tokens[index]
-    const realInfo = info.split(':', 2)[0]
+    const realInfo = info.split(':', 2)[0]?.trim() || ''
 
     if (realInfo === 'card')
       return cardRender(tokens, index, options, env as MarkdownEnv)

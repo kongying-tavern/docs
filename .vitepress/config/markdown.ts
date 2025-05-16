@@ -1,6 +1,7 @@
 import type { MarkdownOptions } from 'vitepress'
-import { figure } from '@mdit/plugin-figure'
 
+import { demo } from '@mdit/plugin-demo'
+import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { spoiler } from '@mdit/plugin-spoiler'
@@ -49,6 +50,29 @@ export const markdownConfig: MarkdownOptions = {
           name: 'icons',
         },
       ],
+    })
+    md.use(demo, {
+      openRender: () => {
+        return '<details class="vp-container vp-md-demo">'
+      },
+      closeRender: () => {
+        return '</details>'
+      },
+      contentOpenRender: () => {
+        return [
+          '<summary class="demo-content">',
+          '<div class="vp-container-header">',
+          '<button type="button" title="toggle" class="vp-md-demo-toggle-button"></button>',
+          '</div>',
+          '<div class="vp-md-demo-display">',
+        ].join('')
+      },
+      contentCloseRender: () => {
+        return [
+          '</div>',
+          '</summary>',
+        ].join('')
+      },
     })
   },
 }
