@@ -264,19 +264,17 @@ theme: medium
 {color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
 ::::
 
-### markdownItAttrs {#attrs}
+### Attrs 自定义属性 {#attrs}
 
-<!-- TODO: 修订 attrs 文档 -->
+#### 语法
 
-<https://www.npmjs.com/package/markdown-it-attrs>
+自定义属性由 `markdown-it-attrs` 插件实现，具体语法请参见 [markdown-it-attrs 文档](https://www.npmjs.com/package/markdown-it-attrs)。
 
-#### Demo
+#### 示例
 
+:::: demo
 paragraph *style me*{.vp-link} more text
-
-```markdown
-paragraph *style me*{.vp-link} more text
-```
+::::
 
 ### Mention 提及
 
