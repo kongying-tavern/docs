@@ -317,61 +317,71 @@ paragraph *style me*{.vp-link} more text
 :::: demo
 大家好~**[:1.小黄脸/呲牙.png:]**
 :1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
-欢唱，开始~:2.原神/芙宁娜-乐.png:)
+演出，开始~:2.原神/芙宁娜-乐.png:)
 ::::
 
 ## Frontmatter 配置 {#frontmatter}
 
-<!-- TODO: 修订 Frontmatter 配置文档 -->
+Frontmatter 是 Vitepress 框架中一种书写于 Markdown 文档顶部，用于调节页面布局或行为的一种配置。Frontmatter 内容由 YAML 语法写成。
 
 ### footer {#fm-footer}
 
-- 类型：Boolean
-- 默认：true
+- 类型：`Boolean`
+- 默认：`true`
+- 描述：是否显示页面的页脚。
 
-是否显示页面的页脚
-
-```yml
+``` yml
 ---
-footer: false #隐藏该页面的页脚
+footer: false # 隐藏该页面的页脚
 ---
 ```
 
 ### aside {#fm-aside}
 
-- 类型：Boolean
-- 默认：true
-
-是否显示页面的侧边栏
+- 类型：`Boolean`
+- 默认：`true`
+- 描述：是否显示页面的侧边栏。
 
 > 仅会在 `layout: doc` 时自动启用
 
-```yml
+``` yml
 ---
-footer: false #隐藏该页面的侧比栏
+aside: false # 隐藏该页面的侧比栏
+---
+```
+
+### outline {#fm-outline}
+
+当 `aside` 为 `true` 时，侧边栏默认显示 2 - 4 级目录。此时，可通过配置 `outline` 配置设置当前文档侧边栏显示的层级。
+
+- 类型：`[Integer, Integer]`
+- 默认：`[2, 4]`
+
+``` yml
+---
+aside: true
+outline: [2, 3] # 仅显示 2 - 3 级目录
 ---
 ```
 
 ### wip {#fm-wip}
 
-- 类型：Boolean
-- 默认：false
+- 类型：`Boolean`
+- 默认：`false`
+- 描述：页面顶部是否显示“施工中”的横幅，此配置会覆盖 `banner` 配置。
 
-配置页面顶部显示“施工中”的横幅，会覆盖 `banner` 配置
-
-```yml
+``` yml
 ---
-wip: true #显示施工中横幅
+wip: true # 显示施工中横幅
 ---
 ```
 
 ### banner {#fm-banner}
 
-- 类型：String
+- 类型：`String`
+- 描述：页面的顶部的横幅文本，支持输入 HTML，不支持 Markdown。配置文本为空或者未配置时隐藏。
 
-配置页面的顶部的横幅内容，支持输入 HTML 不支持 Markdown。默认隐藏
-
-```yml
+``` yml
 ---
 banner: 我是Banner
 ---
@@ -379,11 +389,10 @@ banner: 我是Banner
 
 ### bannerExpiryDate {#fm-banner-expiry-date}
 
-- 类型：Date
+- 类型：`Date`
+- 描述：页面顶部的横幅的失效日期，需配合 `banner` 配置使用。不设置时横幅文本永久显示。
 
-配置页面顶部的横幅关闭日期，默认无
-
-```yml
+``` yml
 ---
 banner: 服务器维护公告
 bannerExpiryDate: 2024-2-1
@@ -392,15 +401,14 @@ bannerExpiryDate: 2024-2-1
 
 ### docHeader {#fm-doc-header}
 
-- 类型：Boolean
-- 默认：true
-
-是否使用 docHeader 展示标题
+- 类型：`Boolean`
+- 默认：`true`
+- 描述：是否使用 docHeader 展示标题。
 
 > 仅会在 `layout: doc` 时自动启用
 
-```yml
+``` yml
 ---
-docHeader: false #隐藏该页面的 docHeader
+docHeader: false # 隐藏该页面的 docHeader
 ---
 ```
