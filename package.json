@@ -39,6 +39,7 @@
     "@iconify-json/ph": "^1.2.2",
     "@lunariajs/core": "^0.1.1",
     "@mdit/plugin-container": "^0.16.0",
+    "@mdit/plugin-demo": "^0.18.0",
     "@mdit/plugin-figure": "^0.16.0",
     "@mdit/plugin-img-mark": "^0.16.0",
     "@mdit/plugin-img-size": "^0.16.0",

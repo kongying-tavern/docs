@@ -2,16 +2,33 @@
 title: Markdown 增强语法指南
 layout: doc
 aside: true
+outline: [2, 3]
 search: false
 ---
 
 <!-- 该页面无需翻译 -->
 
-本项目文档页面使用Markdown语法进行编写，除了 Vitepress 支持的 Markdown 基础组件之外我们额外添加和实现了一些特有语法和组件并在此演示。
+本项目文档页面使用 Markdown 语法进行编写，除了 Vitepress 支持的 Markdown 基础组件之外，我们额外添加和实现了一些特有语法和组件。
 
-## Timeline 时间线 {#timeline}
+## 组件语法 {#section-components}
 
-```md
+我们扩展了代码块语法，用于显示一些特有组件。
+
+### Timeline 时间线 {#timeline}
+
+#### 语法
+
+``` markdown
+::: timeline <标题>
+<内容>
+:::
+```
+
+> 该语法生成一条时间线条目。连续使用多次时间线条目时，连续的时间线条目会连成时间线。
+
+#### 示例
+
+:::: demo
 ::: timeline 2023-05-24
 
 - **do some thing1**
@@ -25,89 +42,25 @@ search: false
 - do some thing4
 
 :::
+::::
+
+### Card 卡片 {#card}
+
+#### 语法
+
+```` markdown
+``` card
+<属性名1>: <属性值1>
+<属性名2>: <属性值2>
+...
 ```
+````
 
-::: timeline 2023-05-24
+> 卡片属性会按照 YAML 语法进行解析。
 
-- **do some thing1**
-- do some thing2
+#### 卡片属性
 
-:::
-
-::: timeline 2023-05-23
-
-- do some thing3
-- do some thing4
-
-:::
-
-## Kbd 快捷键 {#kbd}
-
-快捷方式组件建立在 Kbd 组件之上，可帮助您在内容中显示键盘快捷方式。
-
-```md
-[[Meta]][[K]]
-```
-
-[[Meta]][[K]]
-
-## Footnote 脚注 {#footnote}
-
-- 在 Markdown 中使用 [^锚点文字] 来定义脚注。
-- 在之后的任何位置使用 [^锚点文字]: ... 来描述脚注内容。
-- 如果脚注包含多个段落，其后的段落应当保持双层缩进
-
-#### 例子 {#footnote-example}
-
-脚注 1 链接 [^first]。
-
-脚注 2 链接 [^second]。
-
-行内的脚注^[行内脚注文本] 定义。
-
-重复的页脚定义 [^second]。
-
-[^first]: 脚注**可以包含特殊标记**
-
-    也可以由多个段落组成
-
-[^second]: 脚注文字。
-
-```md
-脚注 1 链接[^first]。
-
-脚注 2 链接[^second]。
-
-行内的脚注^[行内脚注文本] 定义。
-
-重复的页脚定义[^second]。
-
-[^first]: 脚注 **可以包含特殊标记**
-
-    也可以由多个段落组成
-
-[^second]: 脚注文字。
-```
-
-## Mark 标记 {#mark}
-
-使用 == == 进行标记。请注意两边需要有空格。
-
-#### 例子 {#mark-example}
-
-对于习惯了传统吟游诗人的蒙德来说， ==“偶像”== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
-
-```md
-对于习惯了传统吟游诗人的蒙德来说， ==「偶像」== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
-```
-
----
-
-## Card 卡片 {#card}
-
-### Props {#card-props}
-
-| 接口        | 描述                                             | 默认值 |       类型        |
+| 属性名      | 描述                                             | 默认值 |       类型        |
 | ----------- | :----------------------------------------------- | :----: | :---------------: |
 | title       | 卡片标题，必填项                                 |   -    |     `String`      |
 | desc        | 卡片描述，为空时默认显示为 link                  |  link  |     `String`      |
@@ -121,112 +74,187 @@ search: false
 
 > B 站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写 logo
 
-### Example {#card-example}
+#### 示例
 
-> Normal Theme
+> 基础主题
 
-```card
+:::: demo
+``` card
 logo: self
 title: That normal theme card
 desc: This is description
 cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace,1/format,jpg
 ```
+::::
 
-```card
+:::: demo
+``` card
 logo: self
 title: That normal theme card
 desc: No cover
 ```
+::::
 
-````md
-```card
-logo: self
-title: This normal theme card but no cover
-desc: No cover
-cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace,1/format,jpg
-```
+> 中等主题
 
-```card
-logo: self
-title: This normal theme card
-description: i am description
-```
-````
-
-> Medium Theme
-
-```card
+:::: demo
+``` card
 title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
 ```
+::::
 
-```card
+:::: demo
+``` card
 title: 网页版地图
 link: https://yuanshen.site/
 logo: self
 desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
 ```
+::::
 
-````md
-```card
-title: 观看客户端基础使用教程
-link: https://www.bilibili.com/video/BV1uU4y157Te
-theme: medium
+## Markdown 语法扩展 {#section-markdown-syntax}
+
+此外，我们还扩展了部分 Markdown 语法，用于实现一些显示或逻辑效果。
+
+### Kbd 快捷键 {#kbd}
+
+#### 语法
+
+``` markdown
+[[<快捷键>]]
 ```
 
-```card
-title: 网页版地图
-link: https://yuanshen.site/
-desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-theme: medium
-```
-````
+#### 示例
 
-## 变量声明 {#variable}
+:::: demo
+[[Meta]][[K]]
+::::
 
-用于声明并使用可重复使用的 Markdown 部分
+### Footnote 脚注 {#footnote}
 
-声明时使用以下语法，此语句不会产生任何内容
+脚注用于在页面底部添加额外的注解说明。
 
-- 示例中 `KEY` 为变量名，
-- 变量名前后可加空格
-- 变量名仅可包含字母数字与下划线
+#### 语法
 
-```md
-{define:KEY}_被声明的内容_{/define}
+在 Markdown 中使用以下语法定义脚注。
+
+``` markdown
+[^<脚注文字>]
 ```
 
-{define:KEY} _被声明的内容_ {/define}
+在后续任意位置，使用以下语法对脚注进行描述。
 
-使用变量声明时，使用以下语法
-
-- 变量名前后可加空格
-
-```md
-{%= KEY %}
+``` markdown
+[^<脚注文字>]: <脚注说明>
 ```
 
-{%= KEY %}
+> 如果脚注包含多个段落，其后的段落应当添加缩进。
 
-## Spoiler 文本遮罩 {#spolier}
+#### 示例
 
-用于隐藏内容的插件
+> 由于脚注会生成在页面底部，因此生成的示例脚注位于当前文档最底部。
 
-使用 !! !! 进行标记。
+:::: demo
+脚注 1 链接 [^first]。
 
+脚注 2 链接 [^second]。
+
+行内的脚注^[行内脚注文本] 定义。
+
+重复的页脚定义 [^second]。
+
+[^first]: 脚注**可以包含特殊标记**
+
+    也可以由多个段落组成
+
+[^second]: 脚注文字。
+::::
+
+### Mark 标记 {#mark}
+
+#### 语法
+
+``` markdown
+==<标记文本>==
+```
+
+> 请注意，`==`外侧需要添加空格（详见示例）。
+
+#### 示例
+
+:::: demo
+对于习惯了传统吟游诗人的蒙德来说， ==“偶像”== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
+::::
+
+### 变量声明 {#variable}
+
+变量声明可将 Markdown 声明为局部变量，并在后续 Markdown 中嵌入使用。
+
+#### 语法
+
+在 Markdown 中使用以下语法定义变量。此语法仅声明变量，但不会渲染任何内容。
+
+``` markdown
+{define:<变量名>}<被声明的内容>{/define}
+```
+
+::: warning 提示
+在上述语法中，
+
+- 变量名前后可加空格。
+- 变量名仅可包含字母数字与下划线。
+:::
+
+声明变量后，可使用以下语法调用变量。
+
+``` markdown
+{%=<变量名>%}
+```
+
+::: warning 提示
+在上述语法中，变量名前后可加空格。
+:::
+
+#### 示例
+
+:::: demo
+{define:CONTENT}我是被定义的 **_变量_**{/define}
+{%= CONTENT %}
+::::
+
+### Spoiler 文本遮罩 {#spolier}
+
+#### 语法
+
+``` markdown
+!!<被隐藏的内容>!!
+```
+
+#### 示例
+
+:::: demo
 输入!!xxx!!显示彩蛋
+::::
 
-```md
-输入!!xxx!!显示彩蛋
+### Custom Color 文字颜色 {#custom-color}
+
+#### 语法
+
+``` markdown
+{color:<文字颜色>}<文字内容>{/color}
 ```
 
-## Custom Color 自定义文字颜色 {#custom-color}
+::: warning 提示
+- 文字颜色可为 CSS 支持的颜色表示方式。
+- 文字颜色前后可添加空格。
+:::
 
-用于设置文字颜色的插件
+#### 示例
 
-```md
+:::: demo
 {color:#FF5733}红橙色文字{/color} 普通文字 {color:#33FF57}绿色文字{/color}
 
 {color:red}红色文字{/color}
@@ -234,21 +262,15 @@ theme: medium
 {color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
 
 {color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
-```
+::::
 
-{color:#FF5733} 红橙色文字 {/color} 普通文字 {color:#33FF57} 绿色文字 {/color}
+### markdownItAttrs {#attrs}
 
-{color: red} 红色文字 {/color}
-
-{color: var(--vp-c-purple-3)} _使用 CSS Var 的紫色文字_ {/color}
-
-{color: rgba(44,195,184,1)} **使用 RGBA 的青色文字** {/color}
-
-## markdownItAttrs
+<!-- TODO: 修订 attrs 文档 -->
 
 <https://www.npmjs.com/package/markdown-it-attrs>
 
-### Demo
+#### Demo
 
 paragraph *style me*{.vp-link} more text
 
@@ -256,42 +278,51 @@ paragraph *style me*{.vp-link} more text
 paragraph *style me*{.vp-link} more text
 ```
 
-## Mention
+### Mention 提及
 
-在输入 @xxx 时，插件将自动通过 src 下 _data 目录中团队成员的 Gitee 账号数据 JSON 中的 username/login 识别转换
+提及功能可将 `@xxx` 类型的标记，转换为 Gitee 链接。
 
-### Demo
+#### 语法
 
-@kongying-demo
-
-```markdown
-@kongying-demo
+``` markdown
+@<被提及的人或者团队>
 ```
 
-## Emoji
+::: warning 说明
+“被提及的人或团队”会根据 `src/_data` 目录下团队成员的 Gitee 账号数据，通过 `username` 或 `login` 字段转换成 Gitee 地址链接。
+:::
 
-### 语法
+#### 示例
 
-:preset/emoji.资源后缀名:
+:::: demo
+@kongying-demo
+::::
 
-> preset 为 `src/public/emojis` 下的子目录名，每一个子目录对应的一个 Preset。emoji为该 preset 下这个 emoji 的文件名
->
-> 新建 Preset/Emoji 只需要在 `src/public/emojis` 目录下直接新建目录/添加 emoji 文件即可
+### Custom Emoji 自定义绘表情
 
-### Demo
+#### 语法
 
-3123**[:1.小黄脸/呲牙.png:]**
-:1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
-test:2.原神/芙宁娜-乐.png:)
-
-```markdown
-3123**[:1.小黄脸/呲牙.png:]**
-:1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
-test:2.原神/芙宁娜-乐.png:)
-
+``` markdown
+:<预设名>/<预设文件名>.<文件扩展名>:
 ```
 
-## Frontmatter Config {#frontmatter}
+::: warning 说明
+- “预设名”对应 `src/public/emojis` 目录下的子目录名。
+- “预设文件名”与预设文件夹中的文件一一对应。
+- 若需要添加预设或预设文件，只需在 `src/public/emojis` 目录下添加目录或文件即可。
+:::
+
+#### 示例
+
+:::: demo
+大家好~**[:1.小黄脸/呲牙.png:]**
+:1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
+欢唱，开始~:2.原神/芙宁娜-乐.png:)
+::::
+
+## Frontmatter 配置 {#frontmatter}
+
+<!-- TODO: 修订 Frontmatter 配置文档 -->
 
 ### footer {#fm-footer}
 
