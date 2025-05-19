@@ -1,14 +1,7 @@
 /* eslint-disable ts/naming-convention */
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {
-  VITE_BLOG_CHANGELOG_WINCLIENT_ZH_ID: string
-  VITE_BLOG_CHANGELOG_WINCLIENT_EN_ID: string
-  VITE_BLOG_CHANGELOG_WINCLIENT_JA_ID: string
-  VITE_BLOG_CHANGELOG_WEB_ZH_ID: string
-  VITE_BLOG_CHANGELOG_WEB_EN_ID: string
-  VITE_BLOG_CHANGELOG_WEB_JA_ID: string
-}
+interface ImportMetaEnv {}
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
