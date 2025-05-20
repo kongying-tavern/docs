@@ -6,7 +6,7 @@
   "scripts": {
     "build": "pnpm build-vitepress",
     "build-blog": "tsx ./scripts/refreshBlogData.ts",
-    "build-data": "pnpm use-data-env pnpm build-env && pnpm use-data-env pnpm build-member && pnpm use-data-env pnpm build-blog",
+    "build-data": "pnpm use-data-env && pnpm use-data-env pnpm build-member && pnpm use-data-env pnpm build-blog",
     "build-member": "tsx ./scripts/refreshMemberListData.ts",
     "build-mpa": "vitepress build --mpa --base /docs/",
     "build-vitepress": "vitepress build --base /docs/",
