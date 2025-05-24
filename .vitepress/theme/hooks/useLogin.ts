@@ -9,85 +9,85 @@ import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
-const REQUIRED_LOGIN_PAGES = ['/feedback/user', '/feedback/', '/feedback/topic']
+const PROTECTED_PAGES = ['/feedback']
 
 function useLogin() {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
-  const authCode = getAuthCode()
+  const authCode = getAuthCodeFromURL()
+  const isAuthenticating = ref(false)
+
   const redirectUrl = refAutoReset(withBase('/'), 1000 * 60 * 5)
-  const cachedRedirectUrl = useStorage(
-    REDIRECT_LINK_KEY,
-    redirectUrl,
-    sessionStorage,
-  )
-  const isAuthenticating = ref<boolean>(false)
+  const storedRedirectUrl = useStorage(REDIRECT_LINK_KEY, redirectUrl, sessionStorage)
 
   const { go } = useRouter()
   const { theme, localeIndex } = useData()
 
   const LoginMethodsMap = {
-    Oauth: oauthLogin,
-    Password: passwordLogin,
+    Oauth: handleOAuthLoginStart,
+    Password: handlePasswordLogin,
   } as const
 
   interface CredentialsParams {
     method: keyof typeof LoginMethodsMap
   }
 
-  initialize()
+  initOAuthFlow()
 
-  async function initialize() {
-    if (getLoginStatus() || !authCode)
+  async function initOAuthFlow() {
+    if (isLoggedIn() || !authCode)
       return
 
     isAuthenticating.value = true
-    const redirectState = redirectToNoRequiredLoginPage()
+
+    if (!isProtectedRoute())
+      redirectToOriginalPage()
 
     const [error, auth] = await oauth.getToken(authCode)
 
     if (error || !auth) {
       toast.error(theme.value.forum.auth.loginFail)
       isAuthenticating.value = false
-      afterLogin()
+      handlePostLogin()
       return
     }
 
+    await storeUserSession(auth)
+    await refreshInterKnotSSOToken()
+
+    redirectToOriginalPage()
+
+    isAuthenticating.value = false
+    handlePostLogin()
+  }
+
+  async function redirectToOriginalPage() {
+    const redirectUrl = storedRedirectUrl.value || withBase('')
+    window.history.replaceState({}, '', redirectUrl)
+    return await go(redirectUrl)
+  }
+
+  function isProtectedRoute(): boolean {
+    return PROTECTED_PAGES.some(page => storedRedirectUrl.value.includes(page))
+  }
+
+  async function storeUserSession(auth: any) {
     userAuth.setAuth(auth)
     await userInfo.refreshUserInfo()
     userAuth.ensureTokenRefreshMission()
-    if (!redirectState)
-      await go(cachedRedirectUrl.value)
-    isAuthenticating.value = false
-    afterLogin()
   }
 
-  function signup() {
-    return window.open('https://gitee.com/signup')
-  }
+  async function refreshInterKnotSSOToken() {
+    const { isSSOTokenValid, accessToken, setSSOAuth } = userAuth
 
-  function login(credentials: CredentialsParams) {
-    const result = LoginMethodsMap[credentials.method]()
-    return result
-  }
-
-  async function afterLogin() {
-    if (getLoginStatus()) {
-      toast.success(theme.value.forum.auth.loginSuccess)
-      await refreshInterKnotToken()
-    }
-  }
-
-  async function refreshInterKnotToken() {
-    if (!userAuth.isSSOTokenValid('interKnot').value && userAuth.accessToken) {
-      const [error, auth] = await interKnotOauth.refreshToken(userAuth.accessToken)
-
+    if (!isSSOTokenValid('interKnot').value && accessToken) {
+      const [error, auth] = await interKnotOauth.refreshToken(accessToken)
       if (error) {
         toast.error(`inter-knot.site: ${theme.value.forum.auth.loginFail} (${error.message})`)
         return
       }
-      console.log(auth)
-      userAuth.setSSOAuth('interKnot', {
+
+      setSSOAuth('interKnot', {
         accessToken: auth.accessToken,
         expiresTime: auth.expiresTime,
         createdAt: auth.createdAt,
@@ -96,42 +96,46 @@ function useLogin() {
     }
   }
 
-  function oauthLogin() {
-    if (location.hash !== 'login-alert')
-      return (location.hash = 'login-alert')
-    return redirectAuth()
+  function handlePostLogin() {
+    if (isLoggedIn()) {
+      toast.success(theme.value.forum.auth.loginSuccess)
+    }
   }
 
-  function redirectAuth() {
+  function handleOAuthLoginStart() {
+    console.info('Starting OAuth login flow...')
+
     isAuthenticating.value = true
     redirectUrl.value = location.href
     oauth.redirectAuth(localeIndex.value)
   }
 
-  function passwordLogin() {
-    // TODO: password login
+  function handlePasswordLogin() {
+    // TODO: Implement password login
+  }
+
+  function login(credentials: CredentialsParams) {
+    return LoginMethodsMap[credentials.method]()
   }
 
   function logout() {
-    // TODO: revoke
     userAuth.logout()
     userInfo.clearUserInfo()
     toast.success(theme.value.forum.auth.logoutSuccess)
   }
 
-  function redirectToNoRequiredLoginPage() {
-    if (
-      REQUIRED_LOGIN_PAGES.some(
-        page => !page.includes(cachedRedirectUrl.value),
-      )
-    ) {
-      go(cachedRedirectUrl.value)
-      return true
-    }
-    return false
+  function signup() {
+    window.open('https://gitee.com/signup')
   }
 
-  function getLoginStatus() {
+  function getAuthCodeFromURL(): string | null {
+    const code = new URLSearchParams(location.search).get('code')
+    if (code)
+      removeQueryParam('code')
+    return code
+  }
+
+  function isLoggedIn() {
     return userAuth.isTokenValid
   }
 
@@ -143,24 +147,13 @@ function useLogin() {
     return userInfo.info
   }
 
-  function getAuthCode() {
-    if (!location.search.includes('code'))
-      return null
-    const code = location.search.match(/code=[^&]+/)?.[0]?.split('=')?.[1]
-
-    console.log('AuthCode:', code)
-
-    removeQueryParam('code')
-    return code
-  }
-
   return {
     login,
     logout,
     signup,
     getAccessToken,
     getUserInfo,
-    redirectAuth,
+    redirectAuth: handleOAuthLoginStart,
     isAuthenticating,
   }
 }
