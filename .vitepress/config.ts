@@ -24,18 +24,6 @@ export default defineConfig({
   head: headConfig,
   rewrites: rewritesConfig,
   ignoreDeadLinks: ignoreDeadLinksConfig,
-  vue: {
-    template: {
-      compilerOptions: {
-        // treat all tags with a dash as custom elements
-        isCustomElement: tag => tag.includes('-'),
-      },
-      transformAssetUrls: {
-        Image: ['src', 'set-src'],
-        LazyImage: ['src', 'set-src'],
-      },
-    },
-  },
   themeConfig: {
     outline: [2, 4],
     search: {
