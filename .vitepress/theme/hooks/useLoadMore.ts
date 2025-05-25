@@ -38,7 +38,7 @@ export function useLoadMore<R extends any[], P extends unknown[] = any>(
   const noMore = computed(() => current.value >= totalPage.value)
 
   const loadMore = () => {
-    if (noMore.value || error.value !== undefined)
+    if (noMore.value || error.value !== undefined || loading.value)
       return
     current.value++
   }
@@ -52,7 +52,7 @@ export function useLoadMore<R extends any[], P extends unknown[] = any>(
     Boolean(data.value.length === 0 && !noMore.value && !isError(error.value)),
   )
   const canLoadMore = computed(
-    () => !noMore.value && !isFirstLoad.value && !isError(error),
+    () => !noMore.value && !isFirstLoad.value && !isError(error.value),
   )
   const loadingMore = computed(() => {
     if (current.value === 1 && loadingMore.value)

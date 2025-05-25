@@ -9,7 +9,6 @@ import { useForumData } from '~/stores/useForumData'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumLoadState from '../ForumLoadState.vue'
-import ForumTopicListSkeletons from '../ForumTopicListSkeletons.vue'
 import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
@@ -44,6 +43,7 @@ onMounted(() => {
   }
 })
 
+onMounted(loadForumData)
 onUnmounted(resetState)
 
 provide(FORUM_TOPIC_VIEW_MODE_KEY, viewMode)
@@ -69,16 +69,12 @@ provide(FORUM_TOPIC_LOADING_KEY, loading)
         <div v-show="activeTab === 'feedback'">
           <ForumTopicMenubar />
           <div class="mt-2" />
-          <Suspense>
+          <KeepAlive>
             <ForumTopicsList
-              :view-mode="viewMode" :data="renderData" :data-loader="loadForumData" :load-more="loadMore"
+              :view-mode="viewMode" :data="renderData" :loading="forumData.loading" :load-more="loadMore"
               :can-load-more="canLoadMore"
             />
-
-            <template #fallback>
-              <ForumTopicListSkeletons :view-mode="viewMode" />
-            </template>
-          </Suspense>
+          </KeepAlive>
 
           <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />
         </div>

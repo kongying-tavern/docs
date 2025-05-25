@@ -2,45 +2,53 @@
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from './types'
 import { useInfiniteScroll } from '@vueuse/core'
+import { inject, onMounted } from 'vue'
 import ForumTopic from './ForumTopic.vue'
+import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
+import { FORUM_TOPIC_CAN_LOAD_MORE } from './shared'
 
-const { dataLoader: fetchData, loadMore, canLoadMore, data, viewMode = 'Card' } = defineProps<{
+const {
+  data,
+  loadMore,
+  viewMode = 'Card',
+} = defineProps<{
   data: ForumAPI.Topic[]
   viewMode?: FORUM.TopicViewMode
-  dataLoader?: () => Promise<unknown>
   loadMore?: () => Promise<unknown> | unknown
-  canLoadMore?: boolean
+  loading?: boolean
 }>()
 
-if (!import.meta.env.SSR && fetchData)
-  await fetchData()
+const canLoadMore = inject(FORUM_TOPIC_CAN_LOAD_MORE)
 
-if (!import.meta.env.SSR && loadMore && canLoadMore) {
-  useInfiniteScroll(
-    window,
-    () => {
-      loadMore()
-    },
-    {
-      distance: 10,
-      interval: 1500,
-      canLoadMore: () => canLoadMore,
-    },
-  )
-}
+onMounted(() => {
+  if (loadMore) {
+    useInfiniteScroll(
+      window,
+      () => {
+        loadMore()
+      },
+      {
+        distance: 10,
+        interval: 1500,
+        canLoadMore: () => canLoadMore?.value || false,
+      },
+    )
+  }
+})
 </script>
 
 <template>
   <div>
-    <TransitionGroup tag="ul" name="fade">
-      <li v-for="item in data" :key="item.id">
-        <ForumTopic
-          :topic="item"
-          :view-mode="viewMode"
-        />
-        <div class="vp-divider" />
-      </li>
-    </TransitionGroup>
+    <KeepAlive>
+      <TransitionGroup tag="ul" name="fade">
+        <li v-for="item in data" :key="item.id">
+          <ForumTopic :topic="item" :view-mode="viewMode" />
+          <div class="vp-divider" />
+        </li>
+      </TransitionGroup>
+    </KeepAlive>
+
+    <ForumTopicListSkeletons v-if="loading" :view-mode="viewMode" />
   </div>
 </template>
 

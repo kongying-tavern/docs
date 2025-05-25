@@ -2,18 +2,17 @@
 import type { FORUM } from './types'
 import { useLocalStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import { computed, onUnmounted, provide } from 'vue'
+import { computed, onMounted, onUnmounted, provide } from 'vue'
 import { useForumData } from '~/stores/useForumData'
 import BlogPosts from '../../_data/posts.json'
 import ForumAside from './ForumAside.vue'
 import ForumCarouselBento from './ForumCarouselBento.vue'
 import ForumLayout from './ForumLayout.vue'
 import ForumLoadState from './ForumLoadState.vue'
-import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
 import ForumTopicMenubar from './ForumTopicMenubar.vue'
 import ForumTopicSearchInfo from './ForumTopicSearchInfo.vue'
 import ForumTopicsList from './ForumTopicsList.vue'
-import { FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from './shared'
+import { FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from './shared'
 
 const forumData = useForumData()
 const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
@@ -49,12 +48,14 @@ const renderData = computed(() => {
   ]
 })
 
+onMounted(loadForumData)
 onUnmounted(resetState)
 
 provide(FORUM_TOPIC_VIEW_MODE_KEY, viewMode)
 provide(FORUM_TOPIC_SORT_KEY, sort)
 provide(FORUM_TOPIC_FILTER_KEY, filter)
 provide(FORUM_TOPIC_LOADING_KEY, loading)
+provide(FORUM_TOPIC_CAN_LOAD_MORE, canLoadMore)
 </script>
 
 <template>
@@ -69,19 +70,15 @@ provide(FORUM_TOPIC_LOADING_KEY, loading)
         <ForumTopicSearchInfo />
         <ForumTopicMenubar />
         <div class="mt-2 vp-divider" />
-        <Suspense>
+        <KeepAlive>
           <ForumTopicsList
             :view-mode="viewMode"
             :data="renderData"
-            :data-loader="loadForumData"
+            :loading="loading"
             :load-more="loadMore"
             :can-load-more="canLoadMore"
           />
-
-          <template #fallback>
-            <ForumTopicListSkeletons :view-mode="viewMode" />
-          </template>
-        </Suspense>
+        </KeepAlive>
 
         <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />
       </template>
