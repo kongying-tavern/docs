@@ -198,8 +198,8 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
           class="relative ml-2 mt-1 h-75px min-w-100px flex items-center overflow-hidden border border-[var(--vp-c-divider)] rounded-sm transition"
         >
           <Image
-            v-if="topic.content?.images" :image="topic.content.images[0].src" :alt="topic.content.images[0].alt"
-            :thumbhash="topic.content.images[0].thumbHash" :width="topic.content.images[0].width"
+            v-if="topic.content?.images" :src="topic.content.images[0].src" :alt="topic.content.images[0].alt"
+            :thumb-hash="topic.content.images[0].thumbHash" :width="topic.content.images[0].width"
             :height="topic.content.images[0].height" class="h-75px w-100px object-cover"
           />
           <div v-else class="size-full flex items-center justify-center bg-[--vp-c-bg-soft]">
@@ -219,11 +219,10 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
         v-if="isCardMode" ref="translator" :content="renderedText"
         :source-language="topic.language"
       />
-
       <div v-if="topic.content?.images && viewMode !== 'Compact'" class="topic-content-img mt-2 flex cursor-pointer">
         <Image
-          v-for="img in topic.content.images" :key="img.src" :image="img.src" :alt="img.alt"
-          :thumbhash="img.thumbHash" :width="img.width" :height="img.height"
+          v-for="img in topic.content.images" :key="img.src" :src="img.src" :alt="img.alt"
+          :thumb-hash="img.thumbHash" :width="img.width" :height="img.height" :preload="true"
           class="mr-4 max-h-30 max-w-30 min-h-22 min-w-22 rounded-sm object-cover"
         />
       </div>
