@@ -2,7 +2,7 @@ import type { UploadFile, UploadStatus, UploadUserFile } from '@/components/ui/p
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
 import { uploadImg } from '@/apis/inter-knot.site/upload'
 import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import { convertMultipleToMarkdown } from '~/components/forum/utils'
@@ -111,10 +111,6 @@ export function useImageUpload(options = {
       })
     }
   }
-
-  watch(imageList, (newVal) => {
-    uploadedImages.value = uploadedImages.value.filter(val => newVal.includes(val))
-  })
 
   return {
     isUploading,
