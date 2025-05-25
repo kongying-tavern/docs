@@ -47,7 +47,7 @@ watch(userData, (newVal) => {
 
 const { isOfficial } = useRuleChecks()
 const role = computed(() => (isOfficial(userInfo.value?.id || 0).value ? 'official' : null))
-const href = computed(() => withBase(`${getLangPath(localeIndex.value)}feedback/${userInfo.value?.login}`))
+const href = computed(() => withBase(`${getLangPath(localeIndex.value)}feedback/user/${userInfo.value?.login}`))
 
 function openUserProfilePage() {
   window.open(href.value, userInfo.value?.login)
