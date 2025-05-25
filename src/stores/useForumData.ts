@@ -23,30 +23,21 @@ const DEFAULT_FILTER = getValidFilter() || 'ALL'
 const DEFAULT_CREATOR = null
 const DEFAULT_PAGE_SIZE = 20
 
-function getDefaultFilter(): ForumAPI.FilterBy {
-  if (import.meta.env.SSR)
-    return DEFAULT_FILTER
-  const hash = location.hash.split('#')[1]?.toUpperCase()
-  return filterSet.has(hash) ? hash as ForumAPI.FilterBy : DEFAULT_FILTER
-}
-
 export const useForumData = defineStore('forum-data', () => {
   const userSubmittedTopic = ref<ForumAPI.Topic[]>([])
   const topics = ref<ForumAPI.Topic[]>([])
 
   const sort = ref<ForumAPI.SortMethod>(DEFAULT_SORT)
   const page = ref<number>(DEFAULT_PAGE)
-  const filter = ref<ForumAPI.FilterBy>(getDefaultFilter())
+  const filter = ref<ForumAPI.FilterBy>(DEFAULT_FILTER)
   const creator = ref<string | null>(DEFAULT_CREATOR)
 
-  // 加载状态
   const isSearching = ref(false)
   const isInitialized = ref(false)
   const isResetting = ref(false)
 
-  // 国际化与环境
   const { message } = useLocalized()
-  const { lang } = useData()
+  const { lang, hash } = useData()
 
   const {
     data,
@@ -92,7 +83,6 @@ export const useForumData = defineStore('forum-data', () => {
   const loadForumData = async () => {
     if (import.meta.env.SSR || isInitialized.value)
       return null
-
     try {
       isInitialized.value = true
       await Promise.all([loadPinnedTopicData(), refreshData()])
@@ -223,8 +213,23 @@ export const useForumData = defineStore('forum-data', () => {
 
   watch(loading, () => {
     if (data.value)
-      topics.value = data.value
+      topics.value = uniqBy(data.value, 'id')
   }, { immediate: true })
+
+  watch(hash, () => {
+    const filterType = getValidFilter()
+    if (filterType)
+      filter.value = filterType
+  })
+
+  watch(filter, (newVal) => {
+    if (newVal === 'ALL') {
+      return history.pushState(null, '', location.href.split('#')[0])
+    }
+
+    if (newVal !== hash.value && getValidFilter(newVal))
+      return window.location.hash = newVal
+  })
 
   watchOnce(
     pinnedTopicLoading,
@@ -232,9 +237,6 @@ export const useForumData = defineStore('forum-data', () => {
       if (pinnedTopicData.value?.length === 0)
         return
       topics.value = uniqBy([...(pinnedTopicData.value || []), ...topics.value], 'id')
-    },
-    {
-      immediate: true,
     },
   )
 
