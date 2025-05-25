@@ -139,7 +139,7 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
         <div class="relative min-w-0 flex flex-wrap items-center gap-[0.25rem] text-12">
           <ForumUserHoverCard :user="topic.user">
             <template #trigger>
-              <User class="cursor-pointer" size="xs" :name="topic.user.username" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
+              <User class="cursor-pointer" size="xs" :name="topic.user.username" :to="`./user/${topic.user.login}`" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
             </template>
           </ForumUserHoverCard>
           <ForumRoleBadge :type="role" />

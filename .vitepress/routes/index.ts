@@ -18,7 +18,7 @@ export const routes: LocaleRoute[] = [
     i18n: true,
   },
   {
-    match: 'feedback/:id',
+    match: 'feedback/user/:id',
     component: ForumUserPage,
     i18n: true,
   },

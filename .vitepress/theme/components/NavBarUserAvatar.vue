@@ -15,7 +15,7 @@ const el = ref<HTMLElement>()
 const list = computed<{ title: string, href: string, icon: string }[]>(() => [
   {
     title: theme.value.forum.user.myFeedback.title,
-    href: `/feedback/${userInfo.info?.login}`,
+    href: `/feedback/user/${userInfo.info?.login}`,
     icon: 'i-lucide-message-square-text',
   },
   {
