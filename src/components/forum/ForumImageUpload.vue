@@ -16,6 +16,7 @@ const props = defineProps<{
   maxFileSize: number
   fileLimit: number
   placeholder?: string
+  multiple?: boolean
   class?: HTMLAttributes['class']
   defaultValue?: UploadUserFile[]
   accept?: string[] | string
@@ -58,7 +59,7 @@ defineExpose({
       v-model:file-list="modelValue"
       :limit="fileLimit"
       :accept="isArray(accept) ? accept?.map(val => `.${val.split('/')[1]}`).join(',') : accept"
-      :multiple="false"
+      :multiple="multiple || true"
       :hide-default-trigger="hideDefaultTrigger || false"
       :on-change="handleFileChange"
       :size="size"

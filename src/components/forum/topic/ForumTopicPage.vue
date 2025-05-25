@@ -61,7 +61,29 @@ else if (!import.meta.env.SSR) {
   run(params.value?.id)
 }
 
-function handleTopicClose() {
+const gridClass = computed(() => {
+  if (!topic.value)
+    return ''
+  const count = topic.value.content.images?.length || 0
+  if (count === 1)
+    return 'grid-cols-1'
+  if (count === 2)
+    return 'grid-cols-2'
+  if (count === 3 || count >= 4)
+    return 'grid-cols-2'
+  return 'grid-cols-1'
+})
+
+function imageClass(index: number) {
+  if (!topic.value)
+    return ''
+  const count = topic.value.content.images?.length || 0
+  if (count === 3 && index === 2)
+    return 'col-span-2 aspect-video'
+  return 'aspect-square'
+}
+
+function backToPreviousPage() {
   if (window.history.state?.idx === 1) {
     return go(withBase(`${getLangPath(localeIndex.value)}feedback/`))
   }
@@ -94,7 +116,7 @@ watchOnce(error, () => {
         <div v-if="!loading && topic" class="slide-enter mb-4">
           <div class="w-full flex items-center justify-between">
             <div class="relative min-w-0 flex flex-wrap items-center gap-[0.25rem] text-14">
-              <Button variant="ghost" class="mr-1 w-36px flex items-center rounded-full bg-[var(--vp-c-bg-alt)] max-sm:hidden" @click="handleTopicClose()">
+              <Button variant="ghost" class="mr-1 w-36px flex items-center rounded-full bg-[var(--vp-c-bg-alt)] max-sm:hidden" @click="backToPreviousPage()">
                 <span class="i-lucide-arrow-left icon-btn" />
               </Button>
               <ForumUserHoverCard :user="topic.user">
@@ -110,7 +132,7 @@ watchOnce(error, () => {
               />
             </div>
 
-            <ForumTopicDropdownMenu side="bottom" :topic-data="topic" @topic:close="handleTopicClose" />
+            <ForumTopicDropdownMenu side="bottom" :topic-data="topic" @topic:close="backToPreviousPage" />
           </div>
 
           <h3 v-if="topic.type !== 'BUG'" id="title" class="m-0 mb-xs mt-2 overflow-hidden break-words text-xl font-semibold md:mb-1 md:text-1.5rem">
@@ -131,10 +153,10 @@ watchOnce(error, () => {
 
           <ForumTagList class="my-2" :data="topic?.tags" />
 
-          <div v-if="topic?.content.images" class="topic-content-img mt-6 flex">
+          <div v-if="topic?.content.images" class="topic-content-img grid mt-6 w-full gap-1 overflow-hidden rounded-sm" :class="gridClass">
             <Image
               v-for="(img, index) in topic?.content.images" :key="index" :src="img.src" :alt="img.alt"
-              :thumb-hash="img?.thumbHash" :width="img?.width" :height="img?.height" class="mr-4 max-h-24 rounded-sm"
+              :thumb-hash="img?.thumbHash" :width="img?.width" :height="img?.height" class="size-full" :class="imageClass(index)"
             />
           </div>
 
