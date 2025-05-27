@@ -35,6 +35,7 @@
     "**/dist/**": true,
     "packages/*/lib/**": true
   },
+  "vue.server.includeLanguages": ["vue", "markdown"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "scss.lint.unknownAtRules": "ignore"
 }
