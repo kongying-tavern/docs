@@ -33,32 +33,32 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1
       '@mdit/plugin-container':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-demo':
-        specifier: ^0.18.0
-        version: 0.18.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-figure':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-img-mark':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-img-size':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-mark':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-spoiler':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-sub':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@mdit/plugin-sup':
-        specifier: ^0.16.0
-        version: 0.16.0(markdown-it@14.1.0)
+        specifier: ^0.21.0
+        version: 0.21.0(markdown-it@14.1.0)
       '@radix-icons/vue':
         specifier: ^1.0.0
         version: 1.0.0(vue@3.5.13(typescript@5.8.3))
@@ -1280,8 +1280,8 @@ packages:
     engines: {node: '>=18.17.0'}
     hasBin: true
 
-  '@mdit/helper@0.16.0':
-    resolution: {integrity: sha512-vUmLSZp+7UXJIYxOya9BkD0OgjgQ+6gpX+htEnc4SKaDPx4S1E7h5TE6Wy4E9Gm/JhkMHoD6TdeoQwrN/I9cLQ==}
+  '@mdit/helper@0.21.0':
+    resolution: {integrity: sha512-EJJWK0oyhXdk5e6dwcpsdQ2orgIhYkCtru1o/ksOnWdYbj8akal4PwNjdktfBT8zKRq2mZvCvIim1I1NhyUVOA==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1289,8 +1289,8 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-container@0.16.0':
-    resolution: {integrity: sha512-NCsyEiOmoJvXSEVJSY6vaEcvbE11sciRSx5qXBvQQZxUYGYsB+ObYSFVZDFPezsEN35X3b07rurLx8P2Mi9DgQ==}
+  '@mdit/plugin-container@0.21.0':
+    resolution: {integrity: sha512-6a3EsIFteaaKt7HQVWWdF3W+7aLcu/StxLfbzCvoMOWDaqdobJGW8UHrgIN6eJCuBnFRMlw+hJ0FRpLaHtL7Sg==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1298,16 +1298,16 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-demo@0.18.0':
-    resolution: {integrity: sha512-oWrADUZmkFm0YTFKg8NT/YRDekL5I+xreryiwyFldVo7WyXDUxLJ7ae4TLHwU4KV2heCm3A1jTtPNORzQewUmA==}
+  '@mdit/plugin-demo@0.21.0':
+    resolution: {integrity: sha512-oU4yQsPRZrMw35PPgO31jHfHsCmT/H+aMk2SBEgPAIWQBAZHzkWJVCAQBnthRJM231U9bc+ZXP0oi3qiGPK6Gw==}
     peerDependencies:
       markdown-it: ^14.1.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-figure@0.16.0':
-    resolution: {integrity: sha512-0lYZX3cCUNaygtQXXZH2fHXzmF7sMZ5Jbk5MXDxEDIk1Nkxj8ADo/SctvXN5exwyGpJyw8nTbm7CGgMqifDpmQ==}
+  '@mdit/plugin-figure@0.21.0':
+    resolution: {integrity: sha512-6WKHQOryrwXJ+GK+/wcmR+65sikO2AzT56bOAOhgcnrcgidO51tNej4Z6v5STcHKeJ7IVdiMoT5y5kB+VD0hrg==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1315,8 +1315,8 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-img-mark@0.16.0':
-    resolution: {integrity: sha512-BUYqQRWUxNKB0BbMb8SZtlTeDZNXxuJ9AuiuB54RIWlbx3iRlQkbQI3B/AxTT5/EbRMDhxOq0R8PumBuA1gNFA==}
+  '@mdit/plugin-img-mark@0.21.0':
+    resolution: {integrity: sha512-7XU2sr7pvkCJhkmHgMrVDwEpO8Z16hdRd88dv/vh836zFKs2Dhuia5ouKzE6+1ENkCxu2cEXJyAL12M4Uk9Urg==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1324,8 +1324,8 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-img-size@0.16.0':
-    resolution: {integrity: sha512-4FBvIHYWT22bjU+kO1I00xLtnCi7aXdZ7QD3CJnK4Xl6gN8/WB9IkfqYnBPv8yDiaZrabduQo8Dh8Dm8hPOm2A==}
+  '@mdit/plugin-img-size@0.21.0':
+    resolution: {integrity: sha512-ueYDsKKjtgdLi/fO50K2fRg3lwIFIgQ3bVHlJcrc9Wm++XhudqQZmLrbRjRVrTkLmGI7Zx23QsfG2ve5IXQAkw==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1333,8 +1333,8 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-mark@0.16.0':
-    resolution: {integrity: sha512-VY8HhLaNw6iO6E1pSZr3bG6MzyxcAdQmQ+S0r/l87S0EKHCBrUJusaUjxa9aTVHiBcgGUjg9aumribGrWfuitA==}
+  '@mdit/plugin-mark@0.21.0':
+    resolution: {integrity: sha512-YcHmtkKLVmqitT66PPkA5YGAYVJsdcq/nyFEekmHQf9vwFKpP8d+FLFyOdKklMj4/xUJy8megx6kR3fIyhUvsQ==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1342,8 +1342,8 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-spoiler@0.16.0':
-    resolution: {integrity: sha512-lm2lLx5H6649igzmbEe7KGsYfS6EOHn3Ps1ZdOHIFo0AY9eEh//gbjPOuJNJU58vtMnzLYzQHQKp/JqViYTIQQ==}
+  '@mdit/plugin-spoiler@0.21.0':
+    resolution: {integrity: sha512-6T6gbuWEMW6uKKsEmAs1ti2c0xTafwjnQFE9lxw7VRIM7wY3p14LEnbMoUaY/copWog9aKN6SxgUoGCrpuVE5w==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1351,8 +1351,8 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-sub@0.16.0':
-    resolution: {integrity: sha512-XpGcZW11SAWuiWtx9aYugM67OLtQJSfN87Q/aZbEfm6ahgdbO5lAe/vBFTBmL9aDc2EVatytGeZL3kA7pfHlOA==}
+  '@mdit/plugin-sub@0.21.0':
+    resolution: {integrity: sha512-6xo7gww8srC8XWSrui5jeUVTPStuzdUr/aKUgAzCou9AIzLxgFRNrXe3u9kpPkiSWTjoBFv7wgvzWn4zrUALtg==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1360,8 +1360,8 @@ packages:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-sup@0.16.0':
-    resolution: {integrity: sha512-45Sws9TC9h9ZRB/IcXAae+uYXb+FkVr/rkr9eMYKMFKksjMBddN+WY3Gpl9O7LhaGPipqTkm68QZnRSS1jvFkw==}
+  '@mdit/plugin-sup@0.21.0':
+    resolution: {integrity: sha512-793y/OrEG6VCO2gDEAGPbT8W/3ajq7kRTzfcr1tG2BHIBmDjK/CwLNq1loRH4pt37JOiL369tWA9p6cyye9Pug==}
     engines: {node: '>= 18'}
     peerDependencies:
       markdown-it: ^14.1.0
@@ -1422,42 +1422,36 @@ packages:
     engines: {node: '>= 10.0.0'}
     cpu: [arm]
     os: [linux]
-    libc: [glibc]
 
   '@parcel/watcher-linux-arm-musl@2.5.1':
     resolution: {integrity: sha512-6E+m/Mm1t1yhB8X412stiKFG3XykmgdIOqhjWj+VL8oHkKABfu/gjFj8DvLrYVHSBNC+/u5PeNrujiSQ1zwd1Q==}
     engines: {node: '>= 10.0.0'}
     cpu: [arm]
     os: [linux]
-    libc: [musl]
 
   '@parcel/watcher-linux-arm64-glibc@2.5.1':
     resolution: {integrity: sha512-LrGp+f02yU3BN9A+DGuY3v3bmnFUggAITBGriZHUREfNEzZh/GO06FF5u2kx8x+GBEUYfyTGamol4j3m9ANe8w==}
     engines: {node: '>= 10.0.0'}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@parcel/watcher-linux-arm64-musl@2.5.1':
     resolution: {integrity: sha512-cFOjABi92pMYRXS7AcQv9/M1YuKRw8SZniCDw0ssQb/noPkRzA+HBDkwmyOJYp5wXcsTrhxO0zq1U11cK9jsFg==}
     engines: {node: '>= 10.0.0'}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@parcel/watcher-linux-x64-glibc@2.5.1':
     resolution: {integrity: sha512-GcESn8NZySmfwlTsIur+49yDqSny2IhPeZfXunQi48DMugKeZ7uy1FX83pO0X22sHntJ4Ub+9k34XQCX+oHt2A==}
     engines: {node: '>= 10.0.0'}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@parcel/watcher-linux-x64-musl@2.5.1':
     resolution: {integrity: sha512-n0E2EQbatQ3bXhcH2D1XIAANAcTZkQICBPVaxMeaCVBtOpBZpWJuf7LwyWPSBDITb7In8mqQgJ7gH8CILCURXg==}
     engines: {node: '>= 10.0.0'}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@parcel/watcher-win32-arm64@2.5.1':
     resolution: {integrity: sha512-RFzklRvmc3PkjKjry3hLF9wD7ppR4AKcWNzH7kXR7GUe0Igb3Nz8fyPwtZCSquGrhU5HhUNDr/mKBqj7tqA2Vw==}
@@ -1554,61 +1548,51 @@ packages:
     resolution: {integrity: sha512-bvXVU42mOVcF4le6XSjscdXjqx8okv4n5vmwgzcmtvFdifQ5U4dXFYaCB87namDRKlUL9ybVtLQ9ztnawaSzvg==}
     cpu: [arm]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.36.0':
     resolution: {integrity: sha512-JFIQrDJYrxOnyDQGYkqnNBtjDwTgbasdbUiQvcU8JmGDfValfH1lNpng+4FWlhaVIR4KPkeddYjsVVbmJYvDcg==}
     cpu: [arm]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.36.0':
     resolution: {integrity: sha512-KqjYVh3oM1bj//5X7k79PSCZ6CvaVzb7Qs7VMWS+SlWB5M8p3FqufLP9VNp4CazJ0CsPDLwVD9r3vX7Ci4J56A==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.36.0':
     resolution: {integrity: sha512-QiGnhScND+mAAtfHqeT+cB1S9yFnNQ/EwCg5yE3MzoaZZnIV0RV9O5alJAoJKX/sBONVKeZdMfO8QSaWEygMhw==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-linux-loongarch64-gnu@4.36.0':
     resolution: {integrity: sha512-1ZPyEDWF8phd4FQtTzMh8FQwqzvIjLsl6/84gzUxnMNFBtExBtpL51H67mV9xipuxl1AEAerRBgBwFNpkw8+Lg==}
     cpu: [loong64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-powerpc64le-gnu@4.36.0':
     resolution: {integrity: sha512-VMPMEIUpPFKpPI9GZMhJrtu8rxnp6mJR3ZzQPykq4xc2GmdHj3Q4cA+7avMyegXy4n1v+Qynr9fR88BmyO74tg==}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-gnu@4.36.0':
     resolution: {integrity: sha512-ttE6ayb/kHwNRJGYLpuAvB7SMtOeQnVXEIpMtAvx3kepFQeowVED0n1K9nAdraHUPJ5hydEMxBpIR7o4nrm8uA==}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-s390x-gnu@4.36.0':
     resolution: {integrity: sha512-4a5gf2jpS0AIe7uBjxDeUMNcFmaRTbNv7NxI5xOCs4lhzsVyGR/0qBXduPnoWf6dGC365saTiwag8hP1imTgag==}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.36.0':
     resolution: {integrity: sha512-5KtoW8UWmwFKQ96aQL3LlRXX16IMwyzMq/jSSVIIyAANiE1doaQsx/KRyhAvpHlPjPiSU/AYX/8m+lQ9VToxFQ==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.36.0':
     resolution: {integrity: sha512-sycrYZPrv2ag4OCvaN5js+f01eoZ2U+RmT5as8vhxiFz+kxwlHrsxOwKPSA8WyS+Wc6Epid9QeI/IkQ9NkgYyQ==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@rollup/rollup-win32-arm64-msvc@4.36.0':
     resolution: {integrity: sha512-qbqt4N7tokFwwSVlWDsjfoHgviS3n/vZ8LK0h1uLG9TYIRuUTJC88E1xb3LM2iqZ/WTqNQjYrtmtGmrmmawB6A==}
@@ -2145,43 +2129,36 @@ packages:
     resolution: {integrity: sha512-kgyNRMgN7Z2pF2GJBHGIxhkN9e0rMOZwWORH3RjGHZnjtdrThxyQSMUGjK5MDM6+V3waPL0Kv9Y6pJnYxlvcXA==}
     cpu: [arm64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-arm64-musl@1.6.4':
     resolution: {integrity: sha512-bLlGWp3Z7eiO6sytt5T3NFwiUfvIjYH9wGIVD01lnVOIBxHUjQQo+7Nv+SkZVP+Y7oySlyyrrzn5y9VFn1MLeQ==}
     cpu: [arm64]
     os: [linux]
-    libc: [musl]
 
   '@unrs/resolver-binding-linux-ppc64-gnu@1.6.4':
     resolution: {integrity: sha512-Qt3g8MRemL9h51MCMh4BtQMNzK2JPo2CG8rVeTw8F2xKuUtLRqTsRGitOCbA6cuogv8EezBNyddKKT+bZ70W3g==}
     cpu: [ppc64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-riscv64-gnu@1.6.4':
     resolution: {integrity: sha512-MFMn6TCZZkaOt90lTC+OzfGuGTcOyNDDB6gqgmHEiNUAz8sfljbhKIyms8e792J/Dsq0H1LSWcNhtMjnRZtv8g==}
     cpu: [riscv64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-s390x-gnu@1.6.4':
     resolution: {integrity: sha512-RGV8V4VjxH8WhcAqvVuHAv85nbdU87dbcJmarXYuAUPLWC76ptJ32eGY5CM4MmmdU8NA3m4EkiBilSvzSt+BMA==}
     cpu: [s390x]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-gnu@1.6.4':
     resolution: {integrity: sha512-9SWe0F8kD7+4oD1dLvyHiVXN77PrBKbo46JVuwiCGtv3HnbSgNpjyl/9N4xqsXQScERwRWS6qjjA8fTaedwjRQ==}
     cpu: [x64]
     os: [linux]
-    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-musl@1.6.4':
     resolution: {integrity: sha512-EJP5VyeRTPHqm1CEVoeAcGY7z6fmvAl8MGi06NFxdvczRRwazg0SZre+kzYis/Px4jZY6nZwBXMsHamyY0CELg==}
     cpu: [x64]
     os: [linux]
-    libc: [musl]
 
   '@unrs/resolver-binding-wasm32-wasi@1.6.4':
     resolution: {integrity: sha512-/Igzy4K6QTajH0m1PesWaYyor/USENYiX7PQQHHsVvewX9rx2mUwpH0ckOLXKpnLNghm+mzDcEufdgFsZQEK3A==}
@@ -6907,64 +6884,64 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mdit/helper@0.16.0(markdown-it@14.1.0)':
+  '@mdit/helper@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-container@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-container@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-demo@0.18.0(markdown-it@14.1.0)':
+  '@mdit/plugin-demo@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-figure@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-figure@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-img-mark@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-img-mark@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-img-size@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-img-size@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-mark@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-mark@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-spoiler@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-spoiler@0.21.0(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-sub@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-sub@0.21.0(markdown-it@14.1.0)':
     dependencies:
-      '@mdit/helper': 0.16.0(markdown-it@14.1.0)
+      '@mdit/helper': 0.21.0(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-sup@0.16.0(markdown-it@14.1.0)':
+  '@mdit/plugin-sup@0.21.0(markdown-it@14.1.0)':
     dependencies:
-      '@mdit/helper': 0.16.0(markdown-it@14.1.0)
+      '@mdit/helper': 0.21.0(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
