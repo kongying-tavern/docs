@@ -5,6 +5,7 @@
 [![Deployment](https://github.com/kongying-tavern/docs/actions/workflows/deployment.yml/badge.svg)](https://github.com/kongying-tavern/docs/actions/workflows/deployment.yml)
 [![license](https://badgen.net/github/license/kongying-tavern/docs)](https://github.com/kongying-tavern/docs/blob/main/LICENSE)
 [![discord](https://badgen.net/discord/online-members/aFe57AKZUF?icon=discord&label=discord)](https://discord.gg/aFe57AKZUF)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kongying-tavern/docs)
 
 ## Status: W.I.P.
 
