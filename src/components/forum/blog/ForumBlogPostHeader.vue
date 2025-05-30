@@ -2,7 +2,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import User from '@/components/ui/User.vue'
 import { VPLink } from 'vitepress/theme-without-fonts'
-import ForumDate from '../ForumDate.vue'
+import ForumTime from '../ForumTime.vue'
 
 const { title } = defineProps<{
   title: string
@@ -20,7 +20,7 @@ const { title } = defineProps<{
     </VPLink>
 
     <div class="flex-1">
-      <ForumDate
+      <ForumTime
         class="c-[var(--vp-c-text-2)] font-[var(--vp-font-family-subtitle)]"
         :date="date"
         format="LL"

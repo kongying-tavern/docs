@@ -9,7 +9,7 @@ import { flattenWithTags } from './utils'
 
 const emits = defineEmits(['close'])
 const forumData = useForumData()
-const isLocked = useScrollLock(document.body, true)
+const isLocked = useScrollLock(import.meta.env.SSR ? null : document.body, true)
 const { y } = useWindowScroll()
 const { theme } = useData()
 const isTop = computed(() => y.value === 0)

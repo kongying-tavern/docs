@@ -5,7 +5,7 @@ import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import posts from '~/_data/posts.json'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import ForumDate from '../ForumDate.vue'
+import ForumTime from '../ForumTime.vue'
 import { extractPlainText } from '../utils'
 
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -38,7 +38,7 @@ const filteredPosts = computed(() =>
         <article
           class="xl:grid xl:grid-cols-4 xl:items-baseline space-y-2 xl:space-y-0"
         >
-          <ForumDate
+          <ForumTime
             class="list-none text-base c-[var(--vp-c-text-3)] leading-6 font-[var(--vp-font-family-subtitle)]"
             :date="createdAt"
             format="LL"

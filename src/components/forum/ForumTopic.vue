@@ -21,9 +21,9 @@ import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 import { useTopicComments } from '~/composables/useTopicComment'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
-import ForumDate from './ForumDate.vue'
 import ForumRoleBadge from './ForumRoleBadge.vue'
 import ForumTagList from './ForumTagList.vue'
+import ForumTime from './ForumTime.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
 import ForumTopicDropdownMenu from './ForumTopicDropdownMenu.vue'
 import ForumTopicFooter from './ForumTopicFooter.vue'
@@ -144,7 +144,7 @@ async function handleToggleCommentInput(user: ForumAPI.User) {
           </ForumUserHoverCard>
           <ForumRoleBadge :type="role" />
           <span class="my-0 inline-block text-xs color-[--vp-c-text-3]">•</span>
-          <ForumDate
+          <ForumTime
             class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)]"
             :date="topic.createdAt"
           />

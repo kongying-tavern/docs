@@ -211,10 +211,9 @@ export const useForumData = defineStore('forum-data', () => {
     isResetting.value = false
   }
 
-  watch(loading, () => {
-    if (data.value)
-      topics.value = uniqBy(data.value, 'id')
-  }, { immediate: true })
+  watch(data, () => {
+    topics.value = uniqBy(data.value, 'id')
+  })
 
   watch(hash, () => {
     const filterType = getValidFilter()

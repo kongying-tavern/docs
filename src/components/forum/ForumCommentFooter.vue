@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { computed } from 'vue'
 import { defineCommentDropdownMenu } from '~/composables/defineCommentDropdownMenu'
-import ForumDate from './ForumDate.vue'
+import ForumTime from './ForumTime.vue'
 import ForumTopicCommentDropdownMenu from './ForumTopicCommentDropdownMenu.vue'
 
 const {
@@ -41,7 +41,7 @@ function handleCommentClick(event: Event) {
 
 <template>
   <div class="mr-2 flex justify-between font-size-3">
-    <ForumDate
+    <ForumTime
       class="color-[--vp-c-text-3] lh-[36px] font-[var(--vp-font-family-subtitle)]"
       :date="commentData.createdAt"
     />

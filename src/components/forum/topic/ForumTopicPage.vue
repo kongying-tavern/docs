@@ -15,11 +15,11 @@ import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { useForumData } from '~/stores/useForumData'
 import ForumAside from '../ForumAside.vue'
 import ForumCommentArea from '../ForumCommentArea.vue'
-import ForumDate from '../ForumDate.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumRoleBadge from '../ForumRoleBadge.vue'
-
 import ForumTagList from '../ForumTagList.vue'
+
+import ForumTime from '../ForumTime.vue'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
@@ -126,7 +126,7 @@ watchOnce(error, () => {
               </ForumUserHoverCard>
               <ForumRoleBadge :author-id="topic.user.id" />
               <span class="my-0 inline-block text-xs color-[--vp-c-text-3]">•</span>
-              <ForumDate
+              <ForumTime
                 class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)]"
                 :date="topic.createdAt"
               />

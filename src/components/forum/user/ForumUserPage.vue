@@ -69,12 +69,10 @@ provide(FORUM_TOPIC_LOADING_KEY, loading)
         <div v-show="activeTab === 'feedback'">
           <ForumTopicMenubar />
           <div class="mt-2" />
-          <KeepAlive>
-            <ForumTopicsList
-              :view-mode="viewMode" :data="renderData" :loading="forumData.loading" :load-more="loadMore"
-              :can-load-more="canLoadMore"
-            />
-          </KeepAlive>
+          <ForumTopicsList
+            :view-mode="viewMode" :data="renderData" :loading="forumData.loading" :load-more="loadMore"
+            :can-load-more="canLoadMore"
+          />
 
           <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />
         </div>
