@@ -125,7 +125,7 @@
     "stylelint-order": "6.0.4",
     "taze": "0.16.9",
     "tsconfig-paths": "4.2.0",
-    "tsx": "4.19.2",
+    "tsx": "4.19.4",
     "unlazy": "^0.12.4",
     "vite": "^6.3.2",
     "vite-plugin-inspect": "0.8.9",
