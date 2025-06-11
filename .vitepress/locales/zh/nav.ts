@@ -53,7 +53,7 @@ const nav: DefaultTheme.NavItem[] = [
       },
       {
         text: '功能建议',
-        link: '/feedback/#FEAT',
+        link: '/feedback/feat',
       },
     ],
   },

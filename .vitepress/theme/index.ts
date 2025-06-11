@@ -4,6 +4,7 @@ import Coins from '@/components/Coins.vue'
 import * as components from '@/components/ui/'
 import Layout from '@/layouts/Layout.vue'
 import { MotionPlugin } from '@vueuse/motion'
+import { merge } from 'lodash-es'
 import { match } from 'path-to-regexp'
 import { createPinia } from 'pinia'
 import { withBase } from 'vitepress'
@@ -16,10 +17,11 @@ import { markRaw } from 'vue'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
 import Forum from './layouts/Forum.vue'
-import Headline from './layouts/Headline.vue'
 
+import Headline from './layouts/Headline.vue'
 import Post from './layouts/Post.vue'
 import { getLangPath } from './utils'
+
 import 'uno.css'
 
 const pinia = createPinia()
@@ -54,6 +56,7 @@ export default {
     router.onBeforePageLoad = async (to) => {
       const locales = Object.keys(siteData.value.locales)
       let matchedParams: Partial<Record<string, string | string[]>> = {}
+      let matchedLocale = ''
       let target: typeof routes[number] | undefined
 
       for (const route of routes) {
@@ -64,6 +67,8 @@ export default {
         const found = matches.find(Boolean)
 
         if (found) {
+          if (route.i18n)
+            matchedLocale = locales[matches.indexOf(found)]
           matchedParams = found.params || {}
           target = route
           break
@@ -73,17 +78,24 @@ export default {
       if (!target)
         return true
 
+      if (target.options && matchedParams) {
+        for (const [key, values] of Object.entries(target.options)) {
+          if (matchedParams[key] && !values.includes(String(matchedParams[key])))
+            return true
+        }
+      }
+
       router.route.path = target.path || to
       router.route.component = markRaw(target.component)
-      router.route.data = {
-        relativePath: '',
-        filePath: '',
-        title: '',
-        description: '',
+      router.route.data = merge({
+        relativePath: to,
+        filePath: to,
+        title: target.locales?.[matchedLocale]?.title || '',
+        description: target.locales?.[matchedLocale]?.description || '',
         headers: [],
         params: matchedParams,
         frontmatter: { sidebar: false, layout: 'page' },
-      }
+      }, target.data)
       return false
     }
   },

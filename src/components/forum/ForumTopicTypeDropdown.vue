@@ -13,38 +13,33 @@ import { FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY } from './shared'
 
 const { message } = useLocalized()
 
-const menuItems: {
+const menuItems = computed<{
   id: ForumAPI.FilterBy
-  hash: ForumAPI.FilterBy
   label: string
-}[] = [
+}[]>(() => [
   {
-    id: 'ALL',
-    hash: 'ALL',
+    id: 'all',
     label: message.value.forum.header.navigation.allFeedback,
   },
   {
-    id: 'BUG',
-    hash: 'BUG',
+    id: 'bug',
     label: message.value.forum.header.navigation.bugFeedback,
   },
   {
-    id: 'FEAT',
-    hash: 'FEAT',
+    id: 'feat',
     label: message.value.forum.header.navigation.featFeedback,
   },
   {
-    id: 'CLOSED',
-    hash: 'CLOSED',
+    id: 'closed',
     label: message.value.forum.header.navigation.closedFeedback,
   },
-]
+])
 
 const filter = inject(FORUM_TOPIC_FILTER_KEY)!
 const loading = inject(FORUM_TOPIC_LOADING_KEY)!
 
 const currentLabel = computed(() => {
-  const item = menuItems.find(i => i.id === filter.value)
+  const item = menuItems.value.find(i => i.id === filter.value)
   return item?.label ?? ''
 })
 </script>

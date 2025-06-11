@@ -130,7 +130,7 @@ export namespace ForumAPI {
 
   type Repo = 'Feedback' | 'Blog'
 
-  type FilterBy = 'FEAT' | 'BUG' | 'ALL' | 'CLOSED'
+  type FilterBy = 'feat' | 'bug' | 'all' | 'closed'
 
 }
 

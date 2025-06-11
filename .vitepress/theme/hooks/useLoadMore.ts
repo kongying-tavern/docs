@@ -72,7 +72,7 @@ export function useLoadMore<R extends any[], P extends unknown[] = any>(
 
   watch(paginationData as unknown as GITEE.PaginationParams<R>, (newValue) => {
     if (newValue && Array.isArray(newValue.data)) {
-      data.value.push(...newValue.data)
+      data.value = [...data.value, ...newValue.data]
     }
   })
 

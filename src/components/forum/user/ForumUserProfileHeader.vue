@@ -103,7 +103,7 @@ watch(renderedUser, (newVal) => {
                   <span class="i-lucide-mail text-base" @click="sendMessage" />
                   <span class="max-sm:hidden">私信</span>
                 </Button>
-                <ForumFollowUserButton v-if="renderedUser?.username" class="border border-[var(--vp-c-divider)] rounded-full border-solid" :user="renderedUser?.username" />
+                <ForumFollowUserButton v-if="renderedUser?.login" class="border border-[var(--vp-c-divider)] rounded-full border-solid" :user="renderedUser?.login" />
               </div>
             </div>
 
@@ -142,7 +142,7 @@ watch(renderedUser, (newVal) => {
               <Button variant="outline" class="border border-[var(--vp-c-divider)] rounded-full border-solid">
                 <span class="i-lucide-mail text-base" @click="sendMessage" />
               </Button>
-              <ForumFollowUserButton v-if="renderedUser?.login" class="border border-[var(--vp-c-divider)] rounded-full border-solid" text-class="max-sm:hidden" :user="renderedUser?.username" />
+              <ForumFollowUserButton v-if="renderedUser?.login" class="border border-[var(--vp-c-divider)] rounded-full border-solid" text-class="max-sm:hidden" :user="renderedUser?.login" />
             </div>
           </div>
         </div>

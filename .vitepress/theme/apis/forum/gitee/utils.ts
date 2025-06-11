@@ -84,9 +84,9 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
 
   return {
     tags,
-    type,
-    id: issue.number,
     title,
+    id: issue.number,
+    type: type || 'BUG',
     content: markdownToTextWithImages(issue.body),
     contentRaw: issue.body,
     link: issue.html_url,

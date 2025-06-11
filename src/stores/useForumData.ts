@@ -6,38 +6,51 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { watchOnce } from '@vueuse/core'
 import { uniqBy } from 'lodash-es'
 import { defineStore } from 'pinia'
-import { useData } from 'vitepress'
+import { useData, useRouter } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
-import { getValidFilter } from '~/composables/getValidFilter'
 import { handleError } from '~/composables/handleError'
-
-const typeLabelGetter = getTopicTypeLabelGetter()
-
-export const filterSet = new Set(['FEAT', 'BUG', 'ALL', 'CLOSED'])
 
 const DEFAULT_SORT = 'created' as ForumAPI.SortMethod
 const DEFAULT_PAGE = 1
-const DEFAULT_FILTER = getValidFilter() || 'ALL'
+const DEFAULT_FILTER = 'all'
 const DEFAULT_CREATOR = null
 const DEFAULT_PAGE_SIZE = 20
+
+const typeLabelGetter = getTopicTypeLabelGetter()
+const filterSet = new Set(['feat', 'bug', 'closed', 'all'])
 
 export const useForumData = defineStore('forum-data', () => {
   const userSubmittedTopic = ref<ForumAPI.Topic[]>([])
   const topics = ref<ForumAPI.Topic[]>([])
-
-  const sort = ref<ForumAPI.SortMethod>(DEFAULT_SORT)
-  const page = ref<number>(DEFAULT_PAGE)
-  const filter = ref<ForumAPI.FilterBy>(DEFAULT_FILTER)
-  const creator = ref<string | null>(DEFAULT_CREATOR)
+  const { route, go } = useRouter()
 
   const isSearching = ref(false)
   const isInitialized = ref(false)
   const isResetting = ref(false)
 
+  const sort = ref<ForumAPI.SortMethod>(DEFAULT_SORT)
+  const page = ref<number>(DEFAULT_PAGE)
+  const filter = computed<ForumAPI.FilterBy>({
+    get: () => {
+      return filterSet.has(route.data?.params?.type) ? route.data?.params?.type : DEFAULT_FILTER
+    },
+    set: (value) => {
+      if (isResetting.value)
+        return
+      const parts = location.pathname.split('/').filter(Boolean)
+      if (parts.length && filterSet.has(parts.at(-1)!))
+        parts.pop()
+
+      go(`/${parts.join('/')}${parts.length ? '/' : ''}${value === 'all' ? '' : value}`)
+    },
+  })
+
+  const creator = ref<string | null>(DEFAULT_CREATOR)
+
   const { message } = useLocalized()
-  const { lang, hash } = useData()
+  const { lang } = useData()
 
   const {
     data,
@@ -71,11 +84,11 @@ export const useForumData = defineStore('forum-data', () => {
         sort: sort.value,
         pageSize: DEFAULT_PAGE_SIZE,
         creator: creator.value,
-        filter: ['CLOSED', 'ALL'].includes(filter.value)
+        filter: ['closed', 'all'].includes(filter.value)
           ? null
           : typeLabelGetter.getLabel(filter.value) || '',
       },
-      filter.value === 'CLOSED' ? 'progressing' : 'open',
+      filter.value === 'closed' ? 'progressing' : 'open',
       q ? String(q) : undefined,
     )
   }
@@ -91,12 +104,6 @@ export const useForumData = defineStore('forum-data', () => {
       isInitialized.value = false
       throw err
     }
-  }
-
-  const switchTopicFilter = (val = filter.value) => {
-    if (!val)
-      return
-    filter.value = val
   }
 
   const searchTopics = async (q: string | string[]) => {
@@ -198,9 +205,9 @@ export const useForumData = defineStore('forum-data', () => {
     isInitialized.value = false
     initialData()
 
+    filter.value = DEFAULT_FILTER
     sort.value = DEFAULT_SORT
     page.value = DEFAULT_PAGE
-    filter.value = DEFAULT_FILTER
     creator.value = DEFAULT_CREATOR
 
     if (resetOptions?.reloadData) {
@@ -213,22 +220,7 @@ export const useForumData = defineStore('forum-data', () => {
 
   watch(data, () => {
     topics.value = uniqBy(data.value, 'id')
-  })
-
-  watch(hash, () => {
-    const filterType = getValidFilter()
-    if (filterType)
-      filter.value = filterType
-  })
-
-  watch(filter, (newVal) => {
-    if (newVal === 'ALL') {
-      return history.pushState(null, '', location.href.split('#')[0])
-    }
-
-    if (newVal !== hash.value && getValidFilter(newVal))
-      return window.location.hash = newVal
-  })
+  }, { immediate: true })
 
   watchOnce(
     pinnedTopicLoading,
@@ -293,7 +285,6 @@ export const useForumData = defineStore('forum-data', () => {
     // actions
     initialData,
     searchTopics,
-    switchTopicFilter,
     refreshData,
     loadMore,
     loadPinnedTopicData,

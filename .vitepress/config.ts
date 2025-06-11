@@ -32,6 +32,9 @@ export default defineConfig({
     },
   },
   vite: {
+    define: {
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
+    },
     configFile: fileURLToPath(import.meta.resolve('../vite.config.ts')),
   },
   ...createConfigureFunction(),

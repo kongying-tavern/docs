@@ -1,8 +1,8 @@
 export function getTopicTypeLabelGetter() {
   const constructList: [string, string][] = [
-    ['FEAT', 'TYP-FEAT'],
-    ['ANN', 'TYP-ANN'],
-    ['BUG', 'TYP-BUG'],
+    ['feat', 'TYP-FEAT'],
+    ['ann', 'TYP-ANN'],
+    ['bug', 'TYP-BUG'],
   ]
 
   const forwardMap = new Map(constructList)

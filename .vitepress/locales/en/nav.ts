@@ -53,7 +53,7 @@ const nav: DefaultTheme.NavItem[] = [
       },
       {
         text: 'Feature Requests',
-        link: '/feedback/#FEAT',
+        link: '/feedback/feat',
       },
     ],
   },

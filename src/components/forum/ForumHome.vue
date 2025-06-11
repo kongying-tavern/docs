@@ -15,16 +15,17 @@ import ForumTopicsList from './ForumTopicsList.vue'
 import { FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from './shared'
 
 const forumData = useForumData()
+
 const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
 
 const { loadMore, loadForumData, resetState } = forumData
 const { sort, filter, pinnedTopicData, loading, isSearching, canLoadMore, userSubmittedTopic, topics } = storeToRefs(forumData)
 
 const renderData = computed(() => {
-  if (import.meta.env.SSR)
-    return []
+  // if (import.meta.env.SSR)
+  //   return []
 
-  const shouldShowBlogPosts = !filter.value || filter.value === 'ALL'
+  const shouldShowBlogPosts = !filter.value || filter.value === 'all'
   const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000
 
   const recentBlogPosts = shouldShowBlogPosts
@@ -70,8 +71,6 @@ provide(FORUM_TOPIC_CAN_LOAD_MORE, canLoadMore)
 
       <template #content>
         <ForumTopicSearchInfo />
-        {{ renderData.length }}
-        {{ topics.length }}
         <ForumTopicMenubar />
         <div class="mt-2 vp-divider" />
         <ForumTopicsList
@@ -79,7 +78,6 @@ provide(FORUM_TOPIC_CAN_LOAD_MORE, canLoadMore)
           :data="renderData"
           :loading="loading"
           :load-more="loadMore"
-          :can-load-more="canLoadMore"
         />
 
         <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />

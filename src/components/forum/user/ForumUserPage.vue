@@ -12,7 +12,7 @@ import ForumLoadState from '../ForumLoadState.vue'
 import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
-import { FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
+import { FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
 import { updateLastPathSegment } from '../utils'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
@@ -50,6 +50,7 @@ provide(FORUM_TOPIC_VIEW_MODE_KEY, viewMode)
 provide(FORUM_TOPIC_SORT_KEY, sort)
 provide(FORUM_TOPIC_FILTER_KEY, filter)
 provide(FORUM_TOPIC_LOADING_KEY, loading)
+provide(FORUM_TOPIC_CAN_LOAD_MORE, canLoadMore)
 </script>
 
 <template>
@@ -71,7 +72,6 @@ provide(FORUM_TOPIC_LOADING_KEY, loading)
           <div class="mt-2" />
           <ForumTopicsList
             :view-mode="viewMode" :data="renderData" :loading="forumData.loading" :load-more="loadMore"
-            :can-load-more="canLoadMore"
           />
 
           <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />
