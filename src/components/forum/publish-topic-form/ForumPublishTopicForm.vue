@@ -83,6 +83,9 @@ const isDisabled = computed(() => {
   if (loading.value || !isCompleted.value)
     return true
 
+  if (currentTab.value === 'ANN' && !hasPermission)
+    return true
+
   if (currentTab.fields.title) {
     const titleLength = formData.value.title.length
     if (titleLength < (currentTab.fields.title.minLength ?? 0))
@@ -106,7 +109,11 @@ const isDisabled = computed(() => {
 })
 
 const tabList = computed(() => {
-  return formTabs.map(val => val.value)
+  return formTabs.map(val => val.value).filter((val) => {
+    if (val === 'ANN' && !hasPermission)
+      return false
+    return true
+  })
 })
 const nextTabIndex = computed(() => {
   return (currentTabIndex.value + 1) % tabList.value.length
@@ -310,7 +317,7 @@ function initFormData() {
     >
       <div
         class="action-bar absolute top-[-70px] flex flex-col items-start md:rotate--1.4deg"
-        style="left: calc(0px - (100vw - 800px) / 2)"
+        style="left: calc(0px - (100vw - 780px) / 2)"
       >
         <DialogClose class="form-close-btn">
           <Button class="form-action-btn" type="button" variant="secondary">
