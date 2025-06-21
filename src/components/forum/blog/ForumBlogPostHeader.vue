@@ -2,6 +2,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import Time from '@/components/ui/Time/Time.vue'
 import User from '@/components/ui/User.vue'
+import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 
 const { title } = defineProps<{
@@ -10,6 +11,8 @@ const { title } = defineProps<{
   description?: string
   author: ForumAPI.User
 }>()
+
+const { lang } = useData()
 </script>
 
 <template>
@@ -23,6 +26,7 @@ const { title } = defineProps<{
       <Time
         class="c-[var(--vp-c-text-2)] font-[var(--vp-font-family-subtitle)]"
         :datetime="date"
+        :locale="lang"
         date-style="medium"
       />
 

@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
 
 const formatter = computed(() => {
   const { locale: propsLocale, relative, ...rest } = props
-  const locale = propsLocale || navigator.language
+  const locale = propsLocale || import.meta.env.SSR ? 'zh-CN' : navigator.language
   if (relative) {
     return new Intl.RelativeTimeFormat(locale, rest)
   }
