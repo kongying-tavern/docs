@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import Time from '@/components/ui/Time/Time.vue'
 import User from '@/components/ui/User.vue'
 import { VPLink } from 'vitepress/theme-without-fonts'
-import ForumTime from '../ForumTime.vue'
 
 const { title } = defineProps<{
   title: string
@@ -20,10 +20,10 @@ const { title } = defineProps<{
     </VPLink>
 
     <div class="flex-1">
-      <ForumTime
+      <Time
         class="c-[var(--vp-c-text-2)] font-[var(--vp-font-family-subtitle)]"
-        :date="date"
-        format="LL"
+        :datetime="date"
+        date-style="medium"
       />
 
       <div

@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import Time from '@/components/ui/Time/Time.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import posts from '~/_data/posts.json'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import ForumTime from '../ForumTime.vue'
 import { extractPlainText } from '../utils'
 
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -38,11 +38,7 @@ const filteredPosts = computed(() =>
         <article
           class="xl:grid xl:grid-cols-4 xl:items-baseline space-y-2 xl:space-y-0"
         >
-          <ForumTime
-            class="list-none text-base c-[var(--vp-c-text-3)] leading-6 font-[var(--vp-font-family-subtitle)]"
-            :date="createdAt"
-            format="LL"
-          />
+          <Time class="list-none text-base c-[var(--vp-c-text-3)] leading-6 font-[var(--vp-font-family-subtitle)]" :datetime="createdAt" date-style="medium" />
 
           <div class="xl:col-span-3 space-y-5">
             <div class="space-y-6">

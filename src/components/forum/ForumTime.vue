@@ -2,7 +2,7 @@
 import Time from '@/components/ui/Time/Time.vue'
 import { useData } from 'vitepress'
 
-const { date = new Date(), relative = true, format = undefined } = defineProps<{
+const { date = new Date(), relative = true } = defineProps<{
   date?: string | number | Date
   format?: string
   relative?: boolean
@@ -15,7 +15,6 @@ const { lang } = useData()
   <Time
     :datetime="date"
     :locale="lang"
-    :format="format"
     :relative="relative"
     title
   />
