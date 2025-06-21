@@ -52,4 +52,4 @@ export const routes: LocaleRoute[] = [
     component: ForumUserPage,
     i18n: true,
   },
-]
+] as const

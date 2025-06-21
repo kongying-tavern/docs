@@ -173,3 +173,12 @@ export function getScriptCode(lang: string) {
 export function getCountryCode(lang: string) {
   return lang.split('-')[2].toUpperCase()
 }
+
+export function stripTrailingSlashInPath() {
+  const { pathname, search, hash } = window.location
+  if (pathname !== '/' && pathname.endsWith('/')) {
+    const newPath = pathname.replace(/\/$/, '')
+    const newUrl = newPath + search + hash
+    history.replaceState(history.state, '', newUrl)
+  }
+}
