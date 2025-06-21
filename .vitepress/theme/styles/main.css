@@ -11,8 +11,6 @@ html {
 }
 
 h1,
-h2,
-h3,
 .outline-title,
 div.VPHomeHero > div > div.main > p.text,
 .header-anchor::before {
@@ -22,6 +20,8 @@ div.VPHomeHero > div > div.main > p.text,
 button,
 summary,
 strong,
+h2,
+h3,
 h4,
 h5,
 h6,
