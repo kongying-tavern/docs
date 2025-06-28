@@ -25,7 +25,7 @@ theme: medium
 ```card
 title: 蒸汽鸟报
 link: https://space.bilibili.com/356433080
-logo: /imgs/common/friend-links/78ad313b067f95c5df82250653a508b796b02918.jpg
+logo: /imgs/common/friend-links/2f849d8d63cf78445c7c61f9914d3cf5c5d03537.jpg@128w_128h_1c_1s.jpg
 desc: bilibili 知名游戏UP主
 theme: medium
 ```
