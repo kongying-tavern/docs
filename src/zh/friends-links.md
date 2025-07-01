@@ -23,14 +23,6 @@ theme: medium
 ```
 
 ```card
-title: 蒸汽鸟报
-link: https://space.bilibili.com/356433080
-logo: /imgs/common/friend-links/2f849d8d63cf78445c7c61f9914d3cf5c5d03537.jpg
-desc: bilibili 知名游戏UP主
-theme: medium
-```
-
-```card
 title: 珊瑚宫路线组
 link: https://space.bilibili.com/56794738
 logo: /imgs/common/friend-links/bd7c7e7c28984e8f69216f807ce85429b49a5ae2.jpg
@@ -43,6 +35,14 @@ title: 提瓦特图研所
 link: https://space.bilibili.com/1872522256
 logo: /imgs/common/friend-links/05e032429ff23c49f7786255eed4027fcb751df8.jpg
 desc: bilibili 知名游戏UP主、以提瓦特地图研究为主的同好组织
+theme: medium
+```
+
+```card
+title: 蒸汽鸟报
+link: https://space.bilibili.com/356433080
+logo: /imgs/common/friend-links/2f849d8d63cf78445c7c61f9914d3cf5c5d03537.jpg
+desc: bilibili 知名游戏UP主
 theme: medium
 ```
 
