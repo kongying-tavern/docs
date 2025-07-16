@@ -3,24 +3,20 @@
   @include set-badge(1, 'suggest');
   @include set-badge(2, 'suggest');
   @include set-badge(3, 'suggest');
-  @include set-badge(4, 'suggest');
 
   // 已满群
-  @include set-badge(10, 'warning');
+  @include set-badge(6, 'warning');
   @include set-badge(11, 'warning');
-  @include set-badge(15, 'warning');
-  @include set-badge(17, 'warning');
-
   // 被封禁的群
-  @include set-badge(8, 'baned');
-  @include set-badge(5, 'baned');
+  @include set-badge(4, 'baned');
+  @include set-badge(7, 'baned');
 
-  ul > li:nth-child(8),
-  ul > li:nth-child(5),
-  ul > li:nth-child(8) > a strong,
-  ul > li:nth-child(8) > a,
-  ul > li:nth-child(5) > a strong,
-  ul > li:nth-child(5) > a {
+  ul > li:nth-child(4),
+  ul > li:nth-child(7),
+  ul > li:nth-child(4) > a strong,
+  ul > li:nth-child(4) > a,
+  ul > li:nth-child(7) > a strong,
+  ul > li:nth-child(7) > a {
     cursor: no-drop;
     color: var(--vp-c-text-2);
     box-shadow: none !important;

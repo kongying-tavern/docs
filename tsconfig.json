@@ -10,12 +10,24 @@
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "jsx": "preserve",
-    "lib": ["esnext", "dom", "dom.iterable"],
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ],
     "paths": {
-      "@/*": ["./.vitepress/theme/*"],
-      "#theme/*": ["./.vitepress/theme/*"],
-      "~/*": ["./src/*"],
-      "vite": ["./node_modules/vite"]
+      "@/*": [
+        "./.vitepress/theme/*"
+      ],
+      "#theme/*": [
+        "./.vitepress/theme/*"
+      ],
+      "~/*": [
+        "./src/*"
+      ],
+      "vite": [
+        "./node_modules/vite"
+      ]
     }
   },
   "include": [
@@ -30,10 +42,10 @@
     "**/scripts/**/*.ts",
     "**/src/**/*.ts"
   ],
-  "exclude": ["**/node_modules/**", "**/dist/**"],
-  "vueCompilerOptions": {
-    "vitePressExtensions": [".md"]
-  },
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**"
+  ],
   "ts-node": {
     "esm": true
   }
