@@ -1,8 +1,8 @@
 import type { CustomConfig } from '../types'
 
 const footer: CustomConfig['footer'] = {
-  qrcodeTitle: '开发反馈群',
-  qrcodeMessage: '欢迎QQ扫码联系我们',
+  qrcodeTitle: '反馈QQ群',
+  qrcodeMessage: '如遇问题欢迎联系我们',
   qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
   navigation: [
     {
