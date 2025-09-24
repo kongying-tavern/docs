@@ -21,7 +21,7 @@ import * as oauth from './oauth'
 import * as password from './password'
 import * as user from './user'
 
-import { handlePagination } from './utils'
+import { handlePagination, hasPagination } from './utils'
 
 export const fetcher = ky.extend({
   prefixUrl: GITEE_API_CONFIG.PREFIX_URL,
@@ -41,7 +41,8 @@ const cachedApiCall = useMemoize(
     const url = `${GITEE_API_CONFIG.ENDPOINT_PREFIX}${endpoint}`
 
     if (!isNodeEnvironment() && !endpoint.includes('oauth')) {
-      const { accessToken } = useUserAuthStore()
+      const userAuth = useUserAuthStore()
+      const accessToken = userAuth.auth?.accessToken
 
       if (accessToken) {
         if (body) {
@@ -57,9 +58,20 @@ const cachedApiCall = useMemoize(
       }
     }
 
+    // Convert params to URLSearchParams for ky compatibility
+    const searchParams = new URLSearchParams()
+    Object.entries(params).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach(item => searchParams.append(key, String(item)))
+      }
+      else if (value != null) {
+        searchParams.set(key, String(value))
+      }
+    })
+
     const options = {
       hooks,
-      ...(Object.keys(params).length > 0 ? { searchParams: params } : {}),
+      ...(searchParams.toString() ? { searchParams } : {}),
       ...(body && (body instanceof FormData ? { body } : { json: body })),
     }
 
@@ -78,7 +90,7 @@ const cachedApiCall = useMemoize(
       )
     }
 
-    if (params ? params.page : body?.page) {
+    if (hasPagination(params, body)) {
       const pagination = await handlePagination(response)
       return [await response.json(), pagination ? pagination[0] : undefined]
     }

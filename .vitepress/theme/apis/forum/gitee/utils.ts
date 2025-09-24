@@ -135,7 +135,7 @@ export function replaceAtMentions(text: string): string {
   if (regex.exec(text) == null)
     return text
 
-  return text.replaceAll(regex, (match, p1) => {
+  return text.replaceAll(regex, (_match, p1) => {
     return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
   })
 }
@@ -270,10 +270,33 @@ export function processLabels(
 }
 
 export function extractPagination(
-  params?: Record<string, any>,
-  body?: Record<string, any>,
+  params?: Record<string, string | number | boolean | string[]>,
+  body?: Record<string, unknown> | FormData,
 ): number | null {
-  return (params ? params.page : body?.page) ?? null
+  // Check params first
+  if (params?.page && typeof params.page === 'number') {
+    return params.page
+  }
+
+  // Check body only if it's a plain object (not FormData)
+  if (body && typeof body === 'object' && !(body instanceof FormData)) {
+    const bodyObj = body as Record<string, unknown>
+    if ('page' in bodyObj && typeof bodyObj.page === 'number') {
+      return bodyObj.page
+    }
+  }
+
+  return null
+}
+
+/**
+ * Helper to check if pagination is needed
+ */
+export function hasPagination(
+  params?: Record<string, string | number | boolean | string[]>,
+  body?: Record<string, unknown> | FormData,
+): boolean {
+  return extractPagination(params, body) !== null
 }
 
 export function getGiteeApiPaginationParams(

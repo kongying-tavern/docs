@@ -1,12 +1,17 @@
-import { computed, ref } from 'vue'
+import type { Ref } from 'vue'
+import { computed, ref, unref } from 'vue'
 
-export function useTextCollapse(contentRaw: string, maxLength: number = 180) {
+export function useTextCollapse(contentRaw: string | Ref<string>, maxLength: number = 180) {
   const isExpanded = ref(false)
   const hasOverflow = computed(() => {
-    return contentRaw.replace(/!\[.*?\]\(.*?\)/g, '').length > maxLength
+    const content = unref(contentRaw)
+    return content && typeof content === 'string' ? content.replace(/!\[.*?\]\(.*?\)/g, '').length > maxLength : false
   })
   const collapseText = computed(() => {
-    return isExpanded.value ? contentRaw : contentRaw.slice(0, maxLength)
+    const content = unref(contentRaw)
+    if (!content || typeof content !== 'string')
+      return ''
+    return isExpanded.value ? content : content.slice(0, maxLength)
   })
 
   const toggleExpand = () => {

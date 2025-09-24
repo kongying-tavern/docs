@@ -10,7 +10,7 @@ export interface UploadContext {
 export const uploadContextKey: InjectionKey<UploadContext>
   = Symbol('uploadContextKey')
 
-export const definePropType = <T>(val: any): PropType<T> => val
+export const definePropType = <T>(val: unknown): PropType<T> => val as PropType<T>
 
 export type UploadStatus = 'ready' | 'uploading' | 'success' | 'fail'
 
@@ -43,7 +43,7 @@ export interface UploadHooks {
   onExceed: (files: File[], uploadFiles: UploadUserFile[]) => void
 }
 
-export type UploadData = Record<string, any>
+export type UploadData = Record<string, string | number | boolean | File>
 
 export const uploadBaseProps = {
   /**

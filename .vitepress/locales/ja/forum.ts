@@ -198,6 +198,12 @@ const forum: CustomConfig['forum'] = {
         fail: '%filename アップロード失敗',
         violation:
           '不適切な画像！関連のない画像はアップロードしないでください。',
+        paste: {
+          hint: '画像を直接貼り付けることができます',
+          formatNotSupported: 'クリップボードの画像形式はサポートされていません',
+          sizeExceed: '画像サイズ %size MB が制限 %maxSize MB を超えています',
+          formatError: 'サポートされていない画像形式: %format',
+        },
       },
     },
   },

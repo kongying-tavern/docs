@@ -62,23 +62,25 @@ function concatLink(link: string, base: string): string {
   return `/${base}/${link}`.replace(/\/+/gu, '/')
 }
 
-function modifyLink(obj: Record<string, any>, base: string): any {
+function modifyLink(obj: unknown, base: string): unknown {
   if (Array.isArray(obj)) {
     return obj.map(item => modifyLink(item, base))
   }
   if (isObject(obj)) {
-    const newObj: Record<string, any> = {}
-    for (const key in obj) {
-      if (Array.isArray(obj[key]) || typeof obj[key] === 'object') {
-        newObj[key] = modifyLink(obj[key], base)
+    const objRecord = obj as Record<string, unknown>
+    const newObj: Record<string, unknown> = {}
+    for (const key in objRecord) {
+      const value = objRecord[key]
+      if (Array.isArray(value) || typeof value === 'object') {
+        newObj[key] = modifyLink(value, base)
       }
-      else if (key === 'link' && isRelativeLink(obj[key])) {
-        newObj[key] = concatLink(obj[key], base)
-        if (isLinkExternal(obj[key]))
+      else if (key === 'link' && typeof value === 'string' && isRelativeLink(value)) {
+        newObj[key] = concatLink(value, base)
+        if (isLinkExternal(value))
           newObj.target = '_blank'
       }
       else {
-        newObj[key] = obj[key]
+        newObj[key] = value
       }
     }
     return newObj
@@ -86,8 +88,8 @@ function modifyLink(obj: Record<string, any>, base: string): any {
   return obj
 }
 
-function modifyKey(obj: any, base: string) {
-  const newObj: Record<string, any> = {}
+function modifyKey(obj: Record<string, unknown>, base: string) {
+  const newObj: Record<string, unknown> = {}
   for (const key in obj) {
     if (key.startsWith('/') && base !== '') {
       const newKey = concatLink(key, base)
@@ -101,7 +103,11 @@ function modifyKey(obj: any, base: string) {
 }
 
 export function baseHelper<T extends Record<string, unknown> | unknown[]>(obj: T, base: string): T {
-  return modifyKey(modifyLink(obj, base), base) as T
+  const modifiedLink = modifyLink(obj, base)
+  if (Array.isArray(modifiedLink)) {
+    return modifiedLink as T
+  }
+  return modifyKey(modifiedLink as Record<string, unknown>, base) as T
 }
 
 export function hash(str: string): number {

@@ -91,7 +91,7 @@ export function treatAsHtml(filename: string): boolean {
     const extraExts
       // eslint-disable-next-line node/prefer-global/process
       = (typeof process === 'object' && process.env?.VITE_EXTRA_EXTENSIONS)
-        || (import.meta as any).env?.VITE_EXTRA_EXTENSIONS
+        || (import.meta as ImportMeta & { env?: Record<string, string> }).env?.VITE_EXTRA_EXTENSIONS
         || ''
 
     // md, html? are intentionally omitted

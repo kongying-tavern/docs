@@ -4,7 +4,7 @@ import { isError } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 import { usePagination, useRequestProvider } from 'vue-request'
 
-export function useLoadMore<R extends any[], P extends unknown[] = any>(
+export function useLoadMore<R extends unknown[], P extends unknown[] = unknown[]>(
   service: Service<ForumAPI.PaginatedResult<R>, P>,
   options?: PaginationOptions<ForumAPI.PaginatedResult<R>, P>,
 ) {
@@ -70,11 +70,11 @@ export function useLoadMore<R extends any[], P extends unknown[] = any>(
       }
     })
 
-  watch(paginationData as unknown as GITEE.PaginationParams<R>, (newValue) => {
+  watch(paginationData, (newValue) => {
     if (newValue && Array.isArray(newValue.data)) {
       data.value = [...data.value, ...newValue.data]
     }
-  })
+  }, { deep: true })
 
   return {
     data,

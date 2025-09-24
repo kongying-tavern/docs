@@ -1,6 +1,4 @@
-import type { UploadedUserFile } from '~/composables/useImageUpload'
-import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
-import { FORM_HASH } from './publish-topic-form/config'
+import { FORM_HASH } from './form/publish-topic-form/config'
 
 export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   const arr: string[] = []
@@ -89,46 +87,6 @@ export function getPageHeight() {
     document.body.clientHeight,
     document.documentElement.clientHeight,
   )
-}
-
-export function convertMultipleToMarkdown(uploadedImages: UploadedUserFile[]) {
-  return `\n${uploadedImages
-    .map(({ url, thumbHash, alt }) => {
-      return `![${alt}](${url})${thumbHash ? `{thumbhash:"${thumbHash.dataBase64}",width:"${thumbHash.width}",height:"${thumbHash.height}"}` : ''}`
-    })
-    .join('\n')}`
-}
-
-export function extractPlainText(input: string): string {
-  if (!input)
-    return ''
-
-  // Step 1: Remove HTML tags but preserve line breaks (e.g., <br>, <p>, <div>)
-  const htmlToNewline = input
-    .replace(/<\s*(br|p|div|li|tr)[^>]*>/gi, '\n') // Replace specific tags with newline
-    .replace(/<[^>]+>/g, '') // Remove other HTML tags
-    .replace(/\n{2,}/g, '\n') // Normalize multiple newlines
-
-  // Step 2: Decode HTML entities (e.g., &amp;, &lt;, &gt;)
-  const htmlEntityDecode = htmlToNewline.replace(
-    /&(#\d+|#x[\da-f]+|[a-z]+);/gi,
-    (entity) => {
-      const textarea = document.createElement('textarea')
-      textarea.innerHTML = entity
-      return textarea.value
-    },
-  )
-
-  // Step 3: Remove Markdown syntax while preserving line breaks
-  const markdownToPlainText = htmlEntityDecode
-    .replace(/([*_]{1,3}|~{2}|`{1,3}|#+|!\[|[\][()>])/g, '') // Remove Markdown special characters
-    .replace(/\s*[-+*] /g, '') // Remove list markers
-    .replace(/\n{2,}/g, '\n') // Normalize multiple newlines
-
-  // Step 4: Sanitize to remove markdown plugin syntax
-  const plaintextSanitized = sanitizeMarkdown(markdownToPlainText)
-
-  return plaintextSanitized.trim()
 }
 
 export function publishTopic() {

@@ -196,6 +196,12 @@ const forum: CustomConfig['forum'] = {
         tip: 'Upload up to %range images, max %size MB each',
         fail: '%filename Upload Failed',
         violation: 'Image Violation! Do not upload unrelated images.',
+        paste: {
+          hint: 'You can paste images directly',
+          formatNotSupported: 'Image format in clipboard not supported',
+          sizeExceed: 'Image size %size MB exceeds limit %maxSize MB',
+          formatError: 'Unsupported image format: %format',
+        },
       },
     },
   },

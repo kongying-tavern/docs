@@ -3,9 +3,9 @@ import type { Ref } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { simpleEventManager } from '~/services/events/SimpleEventManager'
 
-import { executeWithAuth } from './executeWithAuth'
 import { handleError } from './handleError'
 
 export function useTopicComments() {
@@ -61,26 +61,6 @@ export function useTopicComments() {
     userSubmittedComment.value.push(submittedComment.value)
   }
 
-  const deleteComment = async (
-    repo: string,
-    id: string | number,
-  ): Promise<boolean> => {
-    comments.value = comments.value.filter(comment => comment.id !== id)
-    userSubmittedComment.value = userSubmittedComment.value.filter(
-      comment => comment.id !== id,
-    )
-
-    const result = await executeWithAuth(
-      issues.deleteTopicComment,
-      [id, repo],
-      message.value.forum.topic.menu.deleteComment.success,
-      message.value.forum.topic.menu.deleteComment.fail,
-      message,
-    )
-
-    return !!result
-  }
-
   const loadStateMessage = computed(() => {
     if (commentLoadError.value)
       return message.value.forum.loadError
@@ -109,6 +89,26 @@ export function useTopicComments() {
     handleError(commentLoadError.value, message)
   })
 
+  // Listen for comment deletion events
+  const handleCommentDeleted = (event: { commentId: string | number, topicId: string | number }) => {
+    comments.value = comments.value.filter(comment => comment.id !== event.commentId)
+    userSubmittedComment.value = userSubmittedComment.value.filter(
+      comment => comment.id !== event.commentId,
+    )
+  }
+
+  let unsubscribeCommentDeleted: (() => void) | null = null
+
+  onMounted(() => {
+    unsubscribeCommentDeleted = simpleEventManager.subscribe('comment:deleted', handleCommentDeleted)
+  })
+
+  onUnmounted(() => {
+    if (unsubscribeCommentDeleted) {
+      unsubscribeCommentDeleted()
+    }
+  })
+
   return {
     comments,
     noMoreComment,
@@ -121,7 +121,6 @@ export function useTopicComments() {
     noComment,
 
     submitComment,
-    deleteComment,
     initComments,
     loadMoreComment,
     initialCommentData,

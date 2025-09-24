@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { getLangPath } from '@/utils'
+import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
-import ForumTopicTypeBadge from './ForumTopicTypeBadge.vue'
+import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
 
 const { searchQuery, topicData, limit = 6 } = defineProps<{
   searchQuery: string
@@ -12,6 +14,14 @@ const { searchQuery, topicData, limit = 6 } = defineProps<{
 const emits = defineEmits([
   'select',
 ])
+
+// Get locale information for proper link generation
+const { localeIndex } = useData()
+
+// Generate correct topic link with locale and base
+function getTopicLink(topicId: string | number): string {
+  return withBase(`${getLangPath(localeIndex.value)}feedback/topic/${topicId}`)
+}
 
 function highlightText(text: string, keyword: string, scope: number = 20) {
   if (!keyword)
@@ -32,15 +42,42 @@ function highlightText(text: string, keyword: string, scope: number = 20) {
   return excerpt.replace(regex, `<span class="font-[--vp-font-family-subtitle] c-[#06c]">$1</span>`)
 }
 
-const filteredItems = computed(() =>
-  topicData
-    .filter(item => item.title.includes(searchQuery) || item.content.text.includes(searchQuery))
+const filteredItems = computed(() => {
+  console.log('🔍 ForumSearchSuggestions computed:', {
+    searchQuery,
+    searchQueryLength: searchQuery.length,
+    topicDataLength: topicData?.length || 0,
+    topicDataType: Array.isArray(topicData) ? 'array' : typeof topicData,
+  })
+
+  if (!topicData || !Array.isArray(topicData)) {
+    console.log('🔍 No data or not array')
+    return []
+  }
+
+  if (searchQuery.length < 1) {
+    console.log('🔍 Query too short')
+    return []
+  }
+
+  const filtered = topicData
+    .filter((item) => {
+      if (!item || !item.title)
+        return false
+      const titleMatch = item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      const contentMatch = item.content?.text && item.content.text.toLowerCase().includes(searchQuery.toLowerCase())
+      return titleMatch || contentMatch
+    })
+    .slice(0, limit) // Apply limit directly here
     .map(item => ({
       ...item,
-      highlightedTitle: highlightText(item.title, searchQuery),
-      highlightedContent: highlightText(item.content.text, searchQuery),
-    })),
-)
+      highlightedTitle: highlightText(item.title || '', searchQuery),
+      highlightedContent: highlightText(item.content?.text || '', searchQuery),
+    }))
+
+  console.log('🔍 Filtered suggestions:', filtered.length)
+  return filtered
+})
 </script>
 
 <template>
@@ -51,10 +88,10 @@ const filteredItems = computed(() =>
     <ul
       class="grid grid-row-auto grid-flow-col grid-flow-row grid-cols-1 gap-y-4"
     >
-      <li v-for="item in filteredItems.slice(0, limit)" :key="item.id" class="search-term w-full flex cursor-pointer items-center gap-4">
+      <li v-for="item in filteredItems" :key="item.id" class="search-term w-full flex cursor-pointer items-center gap-4">
         <span class="vp-icon DocSearch-Search-Icon inline-block size-4 important:bg-[--vp-c-text-3]" aria-hidden="true" />
         <VPLink
-          :no-icon="true" :href="`./topic/${item.id}`" class="search-term w-full overflow-hidden text-ellipsis break-all"
+          :no-icon="true" :href="getTopicLink(item.id)" class="search-term w-full overflow-hidden text-ellipsis break-all"
           @click="emits('select')"
         >
           <div class="flex items-center">

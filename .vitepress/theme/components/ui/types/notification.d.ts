@@ -1,5 +1,5 @@
 export interface NotificationAction {
-  click?: (...args: any[]) => void
+  click?: (...args: unknown[]) => void
   label?: string
 }
 
@@ -14,5 +14,5 @@ export interface Notification {
   click?: (...args: unknown[]) => void
   callback?: (...args: unknown[]) => void
   color?: string
-  ui?: any
+  ui?: Record<string, unknown>
 }

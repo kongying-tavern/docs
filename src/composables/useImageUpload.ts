@@ -5,7 +5,7 @@ import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFi
 import { computed, nextTick, ref } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
-import { convertMultipleToMarkdown } from '~/components/forum/utils'
+import { formatMarkdownImages } from '~/components/forum/utils/formatting'
 
 export interface UploadedUserFile extends UploadUserFile {
   thumbHash?: ThumbHashCalculated
@@ -71,7 +71,7 @@ export function useImageUpload(options = {
     return { ...uploadFile, size: uploadFile.size ?? uploadFile.raw.size } as Required<UploadFile>
   }
 
-  const markdownFormatImages = computed(() => convertMultipleToMarkdown(uploadedImages.value))
+  const markdownFormatImages = computed(() => formatMarkdownImages(uploadedImages.value))
 
   function resetImageList() {
     imageList.value = []

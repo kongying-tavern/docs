@@ -24,6 +24,7 @@ export default function openInEditorPlugin(): Plugin {
           res.statusCode = 204
         }
         catch (err) {
+          // eslint-disable-next-line no-console
           console.error('Failed to open in editor:', err)
           res.statusCode = 500
           res.end('Failed to open in editor')

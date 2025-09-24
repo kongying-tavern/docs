@@ -11,4 +11,5 @@ export const FORUM_TOPIC_VIEW_MODE_KEY = Symbol('FORUM-TOPIC-VIEW-MODE') as Inje
 export const FORUM_TOPIC_SORT_KEY = Symbol('FORUM-TOPIC-SORT') as InjectionKey<Ref<ForumAPI.SortMethod>>
 export const FORUM_TOPIC_FILTER_KEY = Symbol('FORUM-TOPIC-FILTER') as InjectionKey<Ref<ForumAPI.FilterBy>>
 export const FORUM_TOPIC_LOADING_KEY = Symbol('FORUM-TOPIC-LOADING') as InjectionKey<Ref<boolean>>
-export const FORUM_TOPIC_CAN_LOAD_MORE = Symbol('FORUM-TOPIC-CAN-LOAD-MORE') as InjectionKey<ComputedRef<boolean>>
+export const FORUM_TOPIC_CAN_LOAD_MORE = Symbol('FORUM-TOPIC-CAN-LOAD-MORE') as InjectionKey<ComputedRef<boolean> | Ref<boolean>>
+export const FORUM_STORE_KEY = Symbol('FORUM-STORE') as InjectionKey<{ triggerPreload?: () => void }>

@@ -13,14 +13,13 @@ const { theme } = useData()
 const reaction = useReactionStore()
 const feedbackForm = useTemplateRef('feedbackForm')
 
+// @unocss-include
 const feedbackStateClass = computed(() => {
   if (!reaction.setReactionResponse)
     return 'hide'
-  if (reaction.setReactionResponse?.statusCode !== 200 || feedbackForm.value?.isEditing)
-    return 'feedback-state text-color-[var(--vp-c-red-2)] i-custom-badge-x w-5 h-5'
-  if (reaction.setReactionResponse?.statusCode === 200 || feedbackForm.value?.isEditing)
-    return 'feedback-state text-color-[var(--vp-c-green-2)] i-custom-badge-check w-5 h-5'
-  return 'hide'
+
+  const isSuccess = reaction.setReactionResponse?.statusCode === 200
+  return isSuccess ? 'doc-reaction-feedback-state-success' : 'doc-reaction-feedback-state-error'
 })
 
 const feedbackMessage = computed(() => {
@@ -28,15 +27,20 @@ const feedbackMessage = computed(() => {
     return theme.value.docReaction.feedbackSuccessMsg
   if (!reaction.setReactionResponse)
     return theme.value.docReaction.feedbackMsg
-  if (reaction.setReactionResponse?.statusCode !== 200)
-    return theme.value.docReaction.feedbackFailMsg
-  return theme.value.docReaction.feedbackSuccessMsg
+
+  const isSuccess = reaction.setReactionResponse?.statusCode === 200
+  return isSuccess
+    ? theme.value.docReaction.feedbackSuccessMsg
+    : theme.value.docReaction.feedbackFailMsg
 })
 
 const additionalMessage = computed(() => {
-  if ((feedbackForm.value?.isEditing || reaction.setReactionResponse?.statusCode === 200) && reaction.reactionState === 'dislike')
-    return theme.value.docReaction.badFeedbackSuccessMsg
-  return ''
+  const isFormEditingOrSuccess = feedbackForm.value?.isEditing || reaction.setReactionResponse?.statusCode === 200
+  const isDislikeState = reaction.reactionState === 'dislike'
+
+  return (isFormEditingOrSuccess && isDislikeState)
+    ? theme.value.docReaction.badFeedbackSuccessMsg
+    : ''
 })
 
 // @unocss-include
@@ -101,15 +105,6 @@ const styles = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.feedback-state {
-  display: inline-block;
-  fill: currentColor;
-  flex-basis: 20px;
-  flex-shrink: 0;
-  font-size: 18px;
-  margin-right: 8px;
-}
-
 @media (min-width: 640px) {
   .feedback {
     grid-template-columns: repeat(1, 2fr);

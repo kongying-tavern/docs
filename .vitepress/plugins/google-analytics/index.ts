@@ -1,3 +1,4 @@
+/* eslint-disable ts/no-explicit-any */
 declare const dataLayer: any[]
 declare const gtag: (...args: any[]) => void
 declare global {

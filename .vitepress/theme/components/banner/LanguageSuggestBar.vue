@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
+import CloseButton from '@/components/ui/CloseButton.vue'
 import {
   Command,
   CommandGroup,
@@ -141,20 +142,11 @@ function normalizeLink(
           {{ languageSuggestBarTranslate[suggestLocale.key].continue }}
         </Button>
 
-        <button
+        <CloseButton
           class="ml-8px icon-btn size-28px max-md:absolute max-md-right-17px max-md:top-17px"
+          size="28px"
           @click="emit('close')"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-            />
-          </svg>
-        </button>
+        />
       </div>
     </div>
   </aside>

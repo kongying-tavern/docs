@@ -3,7 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import { issues } from '@/apis/forum/gitee'
 import { computed } from 'vue'
-import { useForumData } from '~/stores/useForumData'
+import { forumEvents } from '~/services/events/SimpleEventManager'
 import { composeTopicBody } from './composeTopicBody'
 import { executeWithAuth } from './executeWithAuth'
 
@@ -13,7 +13,6 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
   if (!targetTopic && !targetTopicId) {
     throw new Error(`Not found target${targetTopic}`)
   }
-  const { removeTopic, changeTopicType, changeTopicPinState, replaceTopicTags: replaceLocaleTopicTags } = useForumData()
 
   const toggleCloseTopic = (): [ComputedRef<boolean>, () => void] => {
     const closeState = computed(() => targetTopic?.state === 'closed')
@@ -23,6 +22,8 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
     )
 
     async function toggleClose() {
+      console.log('🔥 Toggle Close START - topicId:', targetTopic.id, 'currentState:', targetTopic.state, 'closeState:', closeState.value, 'targetState:', targetState.value)
+
       const result = await executeWithAuth(
         issues.putTopic,
         [
@@ -37,10 +38,25 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
         message,
       )
 
-      if (targetState.value === 'open')
-        removeTopic(targetTopic.id)
+      if (result) {
+        // Calculate new state before updating
+        const oldState = targetTopic.state
+        const newState = targetState.value
+        const isClosed = newState === 'closed'
 
-      return !result
+        // Update local topic state
+        targetTopic.state = newState
+
+        console.log('🔥 Toggle Close SUCCESS - topicId:', targetTopic.id, 'oldState:', oldState, 'newState:', newState, 'isClosed:', isClosed)
+
+        // Emit close event
+        forumEvents.topicClosed(targetTopic.id, isClosed)
+      }
+      else {
+        console.log('🔥 Toggle Close FAILED - topicId:', targetTopic.id)
+      }
+
+      return result
     }
 
     return [closeState, toggleClose]
@@ -58,8 +74,16 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
         message,
       )
 
-      if (!hideState.value)
-        removeTopic(targetTopic.id)
+      if (result) {
+        // Update local topic state
+        const newState = hideState.value ? 'open' : 'progressing'
+        targetTopic.state = newState
+
+        // Emit hide event - isHidden should be true when state becomes 'progressing'
+        const isHidden = newState === 'progressing'
+        console.log('🔥 Toggle Hide - topicId:', targetTopic.id, 'oldState:', hideState.value ? 'progressing' : 'open', 'newState:', newState, 'isHidden:', isHidden)
+        forumEvents.topicHidden(targetTopic.id, isHidden)
+      }
 
       return result
     }
@@ -84,7 +108,13 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
       message,
     )
 
-    changeTopicType(targetTopic.id, newTopicType)
+    if (result) {
+      // Update local topic state
+      targetTopic.type = newTopicType
+
+      // Emit topic type changed event
+      forumEvents.topicTypeChanged(targetTopic.id, newTopicType)
+    }
 
     return result
   }
@@ -105,28 +135,51 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
       message,
     )
 
-    changeTopicPinState(targetTopic.id, !targetTopic.pinned)
+    if (result) {
+      const newPinnedState = !targetTopic.pinned
+      // Update local topic state
+      targetTopic.pinned = newPinnedState
+
+      // Emit topic pinned event
+      forumEvents.topicPinned(targetTopic.id, newPinnedState)
+    }
 
     return result
   }
 
   const toggleTopicCommentArea = async () => {
-    console.log(removeLabel('COMMENT-CLOSED'))
+    const isCurrentlyClosed = targetTopic.commentCount === -1
+    const willBeClosed = !isCurrentlyClosed
+
+    console.log('🔥 Toggle Comment Area - topicId:', targetTopicId, 'currentlyClosed:', isCurrentlyClosed, 'willBeClosed:', willBeClosed)
+
     const result = await executeWithAuth(
       issues.putTopic,
       [
         targetTopicId,
         {
-          labels:
-            targetTopic.commentCount !== -1
-              ? addLabel('COMMENT-CLOSED')
-              : removeLabel('COMMENT-CLOSED'),
+          labels: willBeClosed
+            ? addLabel('COMMENT-CLOSED')
+            : removeLabel('COMMENT-CLOSED'),
         },
       ],
       'Toggle topic comment area success',
       'Toggle topic comment area fail',
       message,
     )
+
+    if (result) {
+      // Update local topic state
+      targetTopic.commentCount = willBeClosed ? -1 : 0
+
+      console.log('🔥 Toggle Comment Area SUCCESS - topicId:', targetTopicId, 'commentsClosed:', willBeClosed)
+
+      // Emit comment toggle event
+      forumEvents.topicCommentToggled(targetTopic.id, willBeClosed)
+    }
+    else {
+      console.log('🔥 Toggle Comment Area FAILED - topicId:', targetTopicId)
+    }
 
     return result
   }
@@ -147,7 +200,13 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
       message,
     )
 
-    replaceLocaleTopicTags(targetTopic.id, newTags)
+    if (result) {
+      // Update local topic state
+      targetTopic.tags = newTags
+
+      // Emit topic tags updated event
+      forumEvents.topicTagsUpdated(targetTopic.id, newTags)
+    }
 
     return result
   }

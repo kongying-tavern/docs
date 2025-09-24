@@ -1,0 +1,31 @@
+.action-bar > :not(:first-child) {
+  margin-top: 0.75rem;
+}
+
+.form-action-btn {
+  transition: all 0.3s ease;
+  width: fit-content;
+  border-radius: 0 9999px 9999px 0;
+  margin-left: -0.375rem;
+}
+
+.form-action-btn > :first-child {
+  transition: all 0.3s ease;
+  display: inline-block;
+  overflow: hidden;
+  margin-left: 0.375rem;
+  max-width: 0;
+}
+
+.form-action-btn:hover > :first-child {
+  max-width: 100px;
+}
+
+.animate-switching {
+  animation: switching 0.3s ease-in-out;
+}
+
+@keyframes switching {
+  0%, 100% { opacity: 1; transform: rotate(-1.4deg); }
+  50% { opacity: 0.8; transform: rotate(-1.4deg) translateX(10px); }
+}

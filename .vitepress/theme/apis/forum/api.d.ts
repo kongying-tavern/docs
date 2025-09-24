@@ -95,6 +95,30 @@ export namespace ForumAPI {
 
   export type SortMethod = 'created' | 'updated_at'
 
+  export type FilterBy = 'feat' | 'bug' | 'all' | 'closed'
+
+  export interface GetTopicsParams {
+    current: number
+    pageSize: number
+    sort: SortMethod
+    filter?: FilterBy | string | null
+    creator?: string | null
+    q?: string
+  }
+
+  export interface GetCommentsParams {
+    repo: Repo
+    issueId: string | number
+    page?: number
+    pageSize?: number
+  }
+
+  export interface ApiError extends Error {
+    status?: number
+    statusText?: string
+    data?: unknown
+  }
+
   type PaginatedResult<T> = PaginationParams & {
     data: T
   }
@@ -120,6 +144,12 @@ export namespace ForumAPI {
     title: string
     tags: string[]
     text: string
+  }
+
+  interface FormSubmitData {
+    body: string
+    title: string
+    labels?: string
   }
 
   type Post = {

@@ -1,34 +1,26 @@
 <script setup lang="ts">
-import type { FORUM } from './types'
-import { useLocalStorage } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import { computed, onMounted, onUnmounted, provide } from 'vue'
-import { useForumData } from '~/stores/useForumData'
+import type ForumAPI from '@/apis/forum/api'
+import { computed, onMounted, onUnmounted } from 'vue'
+import { useForumHomeStore } from '~/stores/forum/useForumHomeStore'
 import BlogPosts from '../../_data/posts.json'
-import ForumAside from './ForumAside.vue'
+import BaseForumPage from './base/BaseForumPage.vue'
 import ForumCarouselBento from './ForumCarouselBento.vue'
-import ForumLayout from './ForumLayout.vue'
-import ForumLoadState from './ForumLoadState.vue'
-import ForumTopicMenubar from './ForumTopicMenubar.vue'
 import ForumTopicSearchInfo from './ForumTopicSearchInfo.vue'
-import ForumTopicsList from './ForumTopicsList.vue'
-import { FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from './shared'
 
-const forumData = useForumData()
+const forumHomeStore = useForumHomeStore()
 
-const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
-
-const { loadMore, loadForumData, resetState } = forumData
-const { sort, filter, pinnedTopicData, loading, isSearching, canLoadMore, userSubmittedTopic, topics } = storeToRefs(forumData)
+const {
+  loadForumData,
+  resetState,
+  setupEventListeners,
+  cleanup,
+} = forumHomeStore
 
 const renderData = computed(() => {
-  // if (import.meta.env.SSR)
-  //   return []
-
-  const shouldShowBlogPosts = !filter.value || filter.value === 'all'
+  const shouldShowBlogPosts = !forumHomeStore.filter.value || forumHomeStore.filter.value === 'all'
   const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000
 
-  const recentBlogPosts = shouldShowBlogPosts
+  const recentBlogPosts = shouldShowBlogPosts && !forumHomeStore.isSearching.value
     ? BlogPosts.filter(post => new Date(post.updatedAt).getTime() > oneDayAgo)
         .map(post => ({
           ...post,
@@ -37,13 +29,17 @@ const renderData = computed(() => {
         }))
     : []
 
-  const userTopics = isSearching.value
+  const userTopics = forumHomeStore.isSearching.value
     ? []
-    : (userSubmittedTopic.value || [])
-        .filter(topic => topic && topic.id)
+    : (forumHomeStore.userSubmittedTopics.value || [])
+        .filter((topic: ForumAPI.Topic) => topic && topic.id)
 
-  const allTopics = (topics.value || [])
-    .filter(topic => topic && topic.id)
+  const allTopics = (forumHomeStore.data || [])
+    .filter((topic: ForumAPI.Topic) => topic && topic.id)
+
+  if (forumHomeStore.isSearching.value) {
+    return allTopics
+  }
 
   return [
     ...userTopics,
@@ -52,40 +48,34 @@ const renderData = computed(() => {
   ]
 })
 
-onMounted(loadForumData)
-onUnmounted(resetState)
+onMounted(async () => {
+  setupEventListeners()
+  await loadForumData()
 
-provide(FORUM_TOPIC_VIEW_MODE_KEY, viewMode)
-provide(FORUM_TOPIC_SORT_KEY, sort)
-provide(FORUM_TOPIC_FILTER_KEY, filter)
-provide(FORUM_TOPIC_LOADING_KEY, loading)
-provide(FORUM_TOPIC_CAN_LOAD_MORE, canLoadMore)
+  const searchParams = new URLSearchParams(window.location.search)
+  if (searchParams.has('q')) {
+    const query = searchParams.get('q')
+    if (query) {
+      console.log(`🔍 [ForumHome] Auto-triggering search from URL: "${query}"`)
+      await forumHomeStore.searchTopics(query)
+    }
+  }
+})
+
+onUnmounted(() => {
+  cleanup()
+  resetState()
+})
 </script>
 
 <template>
-  <ClientOnly>
-    <ForumLayout>
-      <template #header>
-        <ForumCarouselBento class="forum-header" :list="pinnedTopicData || []" />
-      </template>
+  <BaseForumPage :store="forumHomeStore" :render-data="renderData">
+    <template #header>
+      <ForumCarouselBento class="forum-header" :list="forumHomeStore.pinnedTopicsData || []" />
+    </template>
 
-      <template #content>
-        <ForumTopicSearchInfo />
-        <ForumTopicMenubar />
-        <div class="mt-2 vp-divider" />
-        <ForumTopicsList
-          :view-mode="viewMode"
-          :data="renderData"
-          :loading="loading"
-          :load-more="loadMore"
-        />
-
-        <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />
-      </template>
-
-      <template #aside>
-        <ForumAside />
-      </template>
-    </ForumLayout>
-  </ClientOnly>
+    <template #content-before>
+      <ForumTopicSearchInfo />
+    </template>
+  </BaseForumPage>
 </template>

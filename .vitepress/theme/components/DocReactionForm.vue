@@ -104,8 +104,8 @@ defineExpose({
     </form>
     <div v-else h-80 w-full flex items-center justify-center>
       <div flex flex-wrap items-center justify-center>
-        <span v-if="data?.id" class="feedback-state mr-2 text-color-[var(--vp-c-green-2)]" i-custom-badge-check />
-        <span v-if="!data?.id" class="feedback-state mr-2 text-color-[var(--vp-c-red-2)]" i-custom-badge-x />
+        <span v-if="data?.id" class="doc-reaction-feedback-state-success" />
+        <span v-if="!data?.id" class="doc-reaction-feedback-state-error" />
         {{
           data?.id
             ? theme.docReaction.feedbackSuccessMsg
@@ -127,15 +127,6 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.feedback-state {
-  display: inline-block;
-  fill: currentColor;
-  flex-basis: 20px;
-  flex-shrink: 0;
-  font-size: 18px;
-  margin-right: 8px;
-}
-
 .feedback-question-submit {
   button {
     transition:

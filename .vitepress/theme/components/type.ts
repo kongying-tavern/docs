@@ -1,4 +1,4 @@
-export function mutable<T extends readonly any[] | Record<string, unknown>>(
+export function mutable<T extends readonly unknown[] | Record<string, unknown>>(
   val: T,
 ) {
   return val as Mutable<typeof val>

@@ -27,7 +27,7 @@ export async function getAuthorizedUser(access_token: string): Promise<ForumAPI.
 
 export async function getUserOrgs(
   username: string,
-  accessToken: string,
+  _accessToken: string,
   useCache = true,
 ): Promise<ForumAPI.User> {
   return normalizeUser(
@@ -85,7 +85,7 @@ export async function getFollowStatus(user: string, targetUser: string, accessTo
   let state = null
   await apiCall('get', `users/${user}/following/${targetUser}`, {
     params: {
-      access_token: accessToken,
+      ...(accessToken ? { access_token: accessToken } : {}),
     },
     hooks: {
       afterResponse: [

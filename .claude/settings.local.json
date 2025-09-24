@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(find:*)",
+      "Bash(pnpm add:*)",
+      "Bash(npx tsc:*)",
+      "Bash(pnpm run lint:*)",
+      "Bash(pnpm run:*)",
+      "Bash(timeout 30 pnpm run lint:eslint-fix)",
+      "mcp__Context7__get-library-docs",
+      "Bash(timeout 10000 pnpm run typecheck)",
+      "Bash(timeout 5000 pnpm run typecheck)",
+      "Bash(node)",
+      "mcp__Context7__resolve-library-id",
+      "Bash(awk:*)"
+    ],
+    "deny": []
+  }
+}

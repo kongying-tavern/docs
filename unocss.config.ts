@@ -51,6 +51,19 @@ export default defineConfig({
       'char-count',
       'before:content-[attr(data-valuelength)/attr(data-maxlength)] before:absolute before:left-0 before:bottom--0 before:c-[var(--vp-c-text-3)] before:font-size-[12px]',
     ],
+    // Doc reaction feedback states
+    [
+      'doc-reaction-feedback-state-base',
+      'inline-block fill-current-color flex-basis-20px flex-shrink-0 font-size-18px mr-2',
+    ],
+    [
+      'doc-reaction-feedback-state-success',
+      'doc-reaction-feedback-state-base text-color-[var(--vp-c-green-2)] i-custom-badge-check w-5 h-5',
+    ],
+    [
+      'doc-reaction-feedback-state-error',
+      'doc-reaction-feedback-state-base text-color-[var(--vp-c-red-2)] i-custom-badge-x w-5 h-5',
+    ],
   ],
   presets: [
     presetWind3({

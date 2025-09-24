@@ -10,7 +10,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useMediaQuery, useTitle, useUrlSearchParams } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import ForumPublishTopicForm from '~/components/forum/publish-topic-form/ForumPublishTopicForm.vue'
+import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
 import { publishTopic } from './utils'
 
 const open = defineModel<boolean>('open-search-curtain', {

@@ -1,86 +1,34 @@
 <script setup lang="ts">
-import { user } from '@/apis/forum/gitee'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import { getLangPath } from '@/utils'
-import { useData, useRouter, withBase } from 'vitepress'
-import { computed, ref, watch } from 'vue'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
-import { useRuleChecks } from '~/composables/useRuleChecks'
-import ForumRoleBadge from '../ForumRoleBadge.vue'
-import { setPageTitle } from '../utils'
+import { onMounted } from 'vue'
+import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
+import { useUserProfile } from './composables/useUserProfile'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
 
-const { username } = defineProps<{
+const props = defineProps<{
   username: string
   topicCount: number
 }>()
 
 const modelValue = defineModel('activeTab', { default: 'feedback' })
 
-const { go } = useRouter()
-const { localeIndex } = useData()
-
-const userInfo = useUserInfoStore()
-const userAuth = useUserAuthStore()
-const menuRef = ref<HTMLElement | null>(null)
-
-const { runAsync: getUser, data: userData } = useRequest(user.getUser, {
-  manual: true,
-  onError: (err) => {
-    toast.error(`拉取用户资料失败 (${err})`)
-
-    if (err.message.includes('404 Not Found')) {
-      return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
-    }
-  },
+// Use user profile composable
+const {
+  menuRef,
+  renderedUser,
+  role,
+  menu,
+  loadUserData,
+  sendMessage,
+} = useUserProfile({
+  username: props.username,
+  topicCount: props.topicCount,
 })
 
-if (!userInfo.info || userInfo?.info.username !== username || userInfo?.info.login !== username) {
-  await getUser(username, userAuth.isTokenValid ? userAuth.auth.accessToken : undefined)
-}
-
-const { isOfficial } = useRuleChecks()
-
-const renderedUser = computed(() => {
-  if (userInfo.info && userInfo.info.username === username) {
-    return userInfo.info
-  }
-  else {
-    return userData.value
-  }
-})
-
-const role = computed(() => (isOfficial(renderedUser.value?.id || 0).value ? 'official' : null))
-const isAuthorizedUser = computed(() => username === userInfo.info?.username || username === userInfo.info?.login)
-
-const menu = computed<{
-  id: string
-  label: string
-  icon: string
-}[]>(() => {
-  return [
-    {
-      id: 'feedback',
-      label: isAuthorizedUser.value ? '我的反馈' : '提交的反馈',
-      icon: 'i-lucide-file-text',
-    },
-  ]
-})
-
-function sendMessage() {
-  window.open(`https://gitee.com/notifications/messages/${renderedUser.value?.id}`, String(renderedUser.value?.id))
-}
-
-watch(renderedUser, (newVal) => {
-  if (!newVal)
-    return
-  setPageTitle(`${newVal.username} 的个人主页`)
-}, {
-  immediate: true,
+// Load user data on mount
+onMounted(async () => {
+  await loadUserData()
 })
 </script>
 

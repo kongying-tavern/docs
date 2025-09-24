@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { computed } from 'vue'
 import ForumTopicReactionButton from './ForumTopicReactionButton.vue'
-import ForumTopicTypeBadge from './ForumTopicTypeBadge.vue'
+import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
 
 const { topicData } = defineProps<{
   topicData: ForumAPI.Topic
@@ -45,7 +45,6 @@ function handleCommentClick() {
         {{ displayText }}
       </Button>
     </div>
-
     <ForumTopicTypeBadge v-if="viewMode === 'Compact'" :type="topicData.type" />
   </div>
 </template>

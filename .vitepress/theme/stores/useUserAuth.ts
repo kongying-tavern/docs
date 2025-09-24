@@ -1,14 +1,14 @@
-/* eslint-disable no-console */
 import type ForumAPI from '@/apis/forum/api'
 import { toCamelCaseObject } from '@/utils'
-import { useLocalStorage } from '@vueuse/core'
-
 import { isObject } from 'lodash-es'
-
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, readonly, ref } from 'vue'
 import { oauth } from '../apis/forum/gitee'
-import { oauth as interKnotOauth } from '../apis/inter-knot.site/'
+import { useAuthRefresh } from '../composables/useAuthRefresh'
+import { useSSOAuth } from '../composables/useSSOAuth'
+import { useTokenManager } from '../composables/useTokenManager'
+import { AuthError, createAuthError } from '../utils/auth-errors'
+import { log, LogGroup } from '../utils/auth-logger'
 
 export interface LocalAuth {
   accessToken: string
@@ -31,260 +31,221 @@ export interface SSOLocaleAuth {
   interKnot: SSOAuth
 }
 
-const USERAUTH_KEY = 'USER-AUTH'
-const SSO_USERAUTH_KEY = 'SSO-USER-AUTH'
-
-/** 刷新的阈值时间 */
-const TOKEN_REFRESH_REST_TIME = 1000
-
-/** 计算到期时间 */
-const getExpiressTime = (expiressIn: number) => Date.now() + expiressIn * 1000
-
-/** 计算剩余有效时间 */
-function getRestTime(expiressTime: number) {
-  return new Date(expiressTime).getTime() - Date.now()
-}
-
-/** 计算剩余有效时间与设定刷新阈值时间的差 */
-function differenceTokenTime(expiressTime: number) {
-  return getRestTime(expiressTime) - TOKEN_REFRESH_REST_TIME
-}
-
-const DEFAULT_SSO_AUTH: SSOLocaleAuth = {
-  interKnot: {},
-}
-
 export const useUserAuthStore = defineStore('user-auth', () => {
-  const auth = useLocalStorage<Partial<LocalAuth>>(USERAUTH_KEY, {})
-  const ssoAuth = useLocalStorage<SSOLocaleAuth>(SSO_USERAUTH_KEY, DEFAULT_SSO_AUTH)
+  // Initialize composables
+  const tokenManager = useTokenManager()
+  const ssoAuth = useSSOAuth(tokenManager)
+  const authRefresh = useAuthRefresh(tokenManager)
 
+  // State
+  const loginStatus = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
+  const lastError = ref<AuthError | null>(null)
+
+  // Computed
+  const auth = computed<LocalAuth | null>(() => tokenManager.localAuth.value || null)
+  const ssoLocalAuth = computed(() => tokenManager.ssoAuth.value)
+  const isTokenValid = computed(() => tokenManager.isTokenValid.value)
+  const isLoggedIn = computed(() => !!tokenManager.localAuth.value?.accessToken && tokenManager.isTokenValid.value)
+
+  // Actions
   const setAuth = (newAuth: ForumAPI.Auth) => {
-    const { refreshToken, expiresIn, tokenType, accessToken }
-      = toCamelCaseObject(newAuth as unknown as Record<string, string>) as unknown as LocalAuth
-    auth.value = {
-      refreshToken,
-      expiresIn,
-      expiresTime: getExpiressTime(expiresIn),
-      accessToken,
-      tokenType,
-    }
-  }
+    log.info(LogGroup.AUTH, 'Setting authentication data')
 
-  const setSSOAuth = (target: keyof SSOLocaleAuth, newAuth: SSOAuth) => {
-    if (!isObject(ssoAuth.value[target]))
-      throw new Error('SSO 鉴权平台不存在')
-
-    ssoAuth.value[target] = newAuth
-  }
-
-  /** 刷新计时器 */
-  const intervalRefreshTimer = ref<number>()
-
-  const stopAutoRefresh = () => {
-    window.clearTimeout(intervalRefreshTimer.value)
-    intervalRefreshTimer.value = undefined
-  }
-
-  const isTokenValid = computed(() => {
-    if (!auth.value.accessToken)
-      return false
-    const { expiresTime = 0 } = auth.value
-    return expiresTime > Date.now()
-  })
-
-  const isSSOTokenValid = (target: keyof SSOLocaleAuth) => {
-    return computed(() => {
-      if (!ssoAuth.value[target])
-        return false
-      const { expiresTime = 0 } = ssoAuth.value[target]
-      return expiresTime > Date.now()
-    })
-  }
-
-  const deregisterSSO = async (target: keyof SSOLocaleAuth) => {
-    if (!isSSOTokenValid(target) || !ssoAuth.value[target])
-      return
-    switch (target) {
-      case 'interKnot':
-        console.log(ssoAuth.value[target].accessToken)
-        await interKnotOauth.logout(ssoAuth.value[target].accessToken)
-        break
-      default:
-        break
-    }
-  }
-
-  const clearAuth = () => {
-    stopAutoRefresh()
-    auth.value = {}
-  }
-
-  const clearSSOAuth = async (target: keyof SSOLocaleAuth) => {
-    ssoAuth.value[target] = {}
-  }
-
-  const clearAllSSOAuth = async () => {
-    await Promise.all(
-      Object.keys(ssoAuth.value).map(async (target) => {
-        await deregisterSSO(target as keyof SSOLocaleAuth)
-      }),
-    )
-    ssoAuth.value = DEFAULT_SSO_AUTH
-  }
-
-  const logout = async () => {
-    clearAuth()
-    await clearAllSSOAuth()
-  }
-
-  const refreshSSOAuth = async (target: keyof SSOLocaleAuth) => {
-    return new Promise<void>((resolve, reject) => {
-      const refresh = async () => {
-        if (!isObject(ssoAuth.value[target]))
-          return reject(new Error('SSO 鉴权平台不存在'))
-
-        const { accessToken: mainAccessToken } = auth.value
-
-        if (!mainAccessToken || !isTokenValid.value)
-          return reject(new Error('中心鉴权信息为空或过期'))
-
-        let result: [Error, null] | [null, SSOAuth]
-        switch (target) {
-          case 'interKnot':
-            result = await interKnotOauth.refreshToken(mainAccessToken)
-            break
-          default:
-            return reject(new Error('SSO 鉴权平台不存在'))
-        }
-
-        if (result[0]) {
-          console.error(result[0])
-          return reject(result[0])
-        }
-
-        ssoAuth.value[target] = result[1]
-        resolve()
-      }
-      refresh()
-    })
-  }
-
-  const refreshAllSSOAuth = async () => {
-    await Promise.all(
-      Object.keys(ssoAuth.value).map(target => refreshSSOAuth(target as keyof SSOLocaleAuth)),
-    )
-  }
-
-  const refreshAuth = () =>
-    new Promise<void>((resolve, reject) => {
-      const refresh = async () => {
-        const { refreshToken } = auth.value
-        if (!refreshToken) {
-          logout()
-          return reject(new Error('鉴权信息为空'))
-        }
-
-        const [error, newAuth] = await oauth.refreshToken(refreshToken)
-
-        if (error || !newAuth) {
-          logout()
-          return reject(new Error('Token 刷新失败'))
-        }
-
-        auth.value = newAuth
-        refreshAllSSOAuth()
-        resolve()
-      }
-      refresh()
-    })
-
-  /** 确认自动刷新 token 任务存在 */
-  const ensureTokenRefreshMission = async () => {
     try {
-      const { expiresTime = 0 } = auth.value
-      const refreshInterval = differenceTokenTime(expiresTime)
-      const seconds = (refreshInterval / 1000).toFixed(0)
+      const { refreshToken, expiresIn, tokenType, accessToken }
+        = toCamelCaseObject(newAuth as unknown as Record<string, string>) as unknown as LocalAuth
 
-      if (intervalRefreshTimer.value !== undefined) {
-        console.info(
-          `已存在定时刷新任务，将在 ${new Date(Date.now() + 1000 * Number(seconds)).toLocaleString()} 刷新`,
-        )
-        return
+      if (!accessToken || !expiresIn) {
+        throw createAuthError.tokenInvalid()
       }
 
-      const commitRefresh = async () => {
-        stopAutoRefresh()
-        if (!auth.value.refreshToken)
-          return
-        await refreshAuth()
-        ensureTokenRefreshMission()
-      }
+      tokenManager.setTokens({
+        accessToken,
+        refreshToken: refreshToken || '',
+        expiresIn: Number(expiresIn),
+        tokenType: tokenType || 'bearer',
+        scope: 'user_info',
+        createdAt: Date.now(),
+      })
 
-      if (refreshInterval <= 0) {
-        console.info('Token 已过期，立即刷新...')
-        await commitRefresh()
-        return
-      }
+      loginStatus.value = 'success'
+      lastError.value = null
+      log.success(LogGroup.AUTH, 'Authentication data set successfully')
 
-      console.info(
-        `token 将在 ${new Date(Date.now() + 1000 * Number(seconds)).toLocaleString()} 刷新`,
-      )
-      intervalRefreshTimer.value = window.setTimeout(async () => {
-        await commitRefresh()
-      }, refreshInterval)
+      // Start auto refresh
+      authRefresh.startAutoRefresh()
     }
-    catch (err) {
-      stopAutoRefresh()
-      auth.value = {}
-      console.error(err)
+    catch (error) {
+      log.error(LogGroup.AUTH, 'Failed to set authentication data', error)
+      lastError.value = error instanceof AuthError ? error : createAuthError.networkError(error as Error)
+      loginStatus.value = 'error'
+      throw error
     }
   }
 
-  const accessToken = computed(() => {
-    if (!isTokenValid.value)
-      return null
+  const setSSOAuth = (platform: keyof SSOLocaleAuth, authData: Partial<SSOAuth>) => {
+    log.info(LogGroup.SSO, `Setting SSO auth for ${platform}`)
 
-    return auth.value.accessToken
-  })
+    try {
+      tokenManager.setSSOToken(platform, authData)
+      log.success(LogGroup.SSO, `SSO auth set for ${platform}`)
+    }
+    catch (error) {
+      log.error(LogGroup.SSO, `Failed to set SSO auth for ${platform}`, error)
+      throw error
+    }
+  }
 
-  watch(isTokenValid, async (valid) => {
-    if (!valid)
-      return
+  const refreshToken = async (): Promise<void> => {
+    try {
+      loginStatus.value = 'pending'
+      await authRefresh.refreshToken()
+      loginStatus.value = 'success'
+      lastError.value = null
+    }
+    catch (error) {
+      loginStatus.value = 'error'
+      lastError.value = error instanceof AuthError ? error : createAuthError.tokenRefreshFailed(error as Error)
+      throw error
+    }
+  }
 
-    console.info('[Token]: token changed', valid)
-    await refreshAllSSOAuth()
-  }, {
-    immediate: true,
-  })
+  const login = async (credentials: Record<string, unknown>): Promise<void> => {
+    log.info(LogGroup.AUTH, 'Starting login process')
+    loginStatus.value = 'pending'
 
-  Object.keys(ssoAuth.value).forEach((target) => {
-    watch(isSSOTokenValid(target as keyof SSOLocaleAuth), async (valid) => {
-      console.info(`[SSO]: ${target} token changed`, valid)
-      if (!valid) {
-        await clearSSOAuth(target as keyof SSOLocaleAuth)
-        if (isTokenValid.value)
-          await refreshSSOAuth(target as keyof SSOLocaleAuth)
+    try {
+      const result = await oauth.getToken(credentials.code as string)
+
+      if (!isObject(result)) {
+        throw createAuthError.networkError(new Error('Invalid login response'))
       }
-    })
+
+      const camelResult = toCamelCaseObject(result as unknown as Record<string, unknown>)
+
+      if (!camelResult.accessToken || !camelResult.expiresIn) {
+        throw createAuthError.tokenInvalid(new Error('Invalid login response format'))
+      }
+
+      setAuth(camelResult as unknown as ForumAPI.Auth)
+      log.success(LogGroup.AUTH, 'Login successful')
+    }
+    catch (error) {
+      loginStatus.value = 'error'
+      lastError.value = error instanceof AuthError ? error : createAuthError.networkError(error as Error)
+      log.error(LogGroup.AUTH, 'Login failed', error)
+      throw lastError.value
+    }
+  }
+
+  const logout = (): void => {
+    log.info(LogGroup.AUTH, 'Starting logout process')
+
+    try {
+      // Stop auto refresh
+      authRefresh.stopAutoRefresh()
+
+      // Clear all tokens
+      tokenManager.clearAllTokens()
+
+      // Reset state
+      loginStatus.value = 'idle'
+      lastError.value = null
+
+      log.success(LogGroup.AUTH, 'Logout successful')
+    }
+    catch (error) {
+      log.error(LogGroup.AUTH, 'Logout failed', error)
+      throw createAuthError.networkError(error as Error)
+    }
+  }
+
+  const validateSession = (): boolean => {
+    return tokenManager.validateToken()
+  }
+
+  // SSO methods delegation
+  const loginWithInterKnot = async (credentials: { username: string, password: string }) => {
+    return ssoAuth.loginWithInterKnot(credentials)
+  }
+
+  const logoutFromInterKnot = async () => {
+    return ssoAuth.logoutFromInterKnot()
+  }
+
+  const refreshInterKnotToken = async () => {
+    return ssoAuth.refreshInterKnotToken()
+  }
+
+  // Debug helpers
+  const getDebugInfo = () => {
+    return {
+      ...tokenManager.getTokenDebugInfo(),
+      loginStatus: loginStatus.value,
+      lastError: lastError.value?.message,
+      ssoTokens: Object.keys(tokenManager.ssoAuth.value).reduce((acc, key) => {
+        acc[key] = !!tokenManager.ssoAuth.value[key as keyof SSOLocaleAuth]?.accessToken
+        return acc
+      }, {} as Record<string, boolean>),
+    }
+  }
+
+  // Initialize auto refresh if token exists
+  if (tokenManager.localAuth.value?.accessToken) {
+    authRefresh.startAutoRefresh()
+  }
+
+  // Cleanup on unmount
+  onBeforeUnmount(() => {
+    authRefresh.cleanup()
   })
 
   return {
-    // states
+    // State
     auth,
-    ssoAuth,
-    // getters
-    isTokenValid,
-    accessToken,
-    isSSOTokenValid,
+    ssoAuth: ssoLocalAuth,
+    loginStatus: readonly(loginStatus),
+    lastError: readonly(lastError),
 
-    // actions
+    // Computed
+    isTokenValid,
+    isLoggedIn,
+
+    // Actions
     setAuth,
     setSSOAuth,
-    clearAuth,
-    refreshAuth,
-    refreshSSOAuth,
-    ensureTokenRefreshMission,
+    refreshToken,
+    login,
     logout,
-    refreshAllSSOAuth,
+    validateSession,
+
+    // SSO Actions
+    loginWithInterKnot,
+    logoutFromInterKnot,
+    refreshInterKnotToken,
+    isInterKnotTokenValid: () => ssoAuth.isInterKnotTokenValid(),
+    isSSOTokenValid: (platform: string) => {
+      if (platform === 'interKnot') {
+        return { value: ssoAuth.isInterKnotTokenValid() }
+      }
+      throw createAuthError.networkError(new Error(`SSO platform ${platform} not supported`))
+    },
+    refreshSSOAuth: async (platform: string) => {
+      if (platform === 'interKnot') {
+        return refreshInterKnotToken()
+      }
+      throw createAuthError.networkError(new Error(`SSO platform ${platform} not supported`))
+    },
+
+    // Token management
+    ensureTokenRefreshMission: () => authRefresh.startAutoRefresh(),
+
+    // Debug
+    getDebugInfo,
+
+    // Internal (for testing)
+    _tokenManager: tokenManager,
+    _authRefresh: authRefresh,
+    _ssoAuth: ssoAuth,
   }
 })

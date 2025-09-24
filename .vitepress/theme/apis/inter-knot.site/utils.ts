@@ -37,11 +37,28 @@ export async function signToken(token: string, nonce: string): Promise<string> {
 }
 
 export function normalizeSSOAuth(auth: INTER_KNOT.AuthResponse): SSOAuth {
+  const createdAt = new Date(auth.data.createdAt).getTime()
+  const expiresAt = new Date(auth.data.expiresAt).getTime()
+  const now = Date.now()
+  const expiresIn = Math.max(0, expiresAt - now) // 确保不为负数
+
+  console.debug('[SSO Auth]: 解析SSO认证数据', {
+    token: auth.data.token ? '存在' : '缺失',
+    createdAt: new Date(createdAt).toLocaleString(),
+    expiresAt: new Date(expiresAt).toLocaleString(),
+    expiresIn: `${Math.round(expiresIn / 1000 / 60)}分钟`,
+    isValid: expiresAt > now,
+  })
+
+  if (expiresAt <= now) {
+    console.warn('[SSO Auth]: SSO token已过期，即将返回的数据可能无效')
+  }
+
   return {
     accessToken: auth.data.token,
-    createdAt: new Date(auth.data.createdAt).getTime(),
-    expiresIn: new Date(auth.data.expiresAt).getTime() - new Date().getTime(),
-    expiresTime: new Date(auth.data.expiresAt).getTime(),
+    createdAt,
+    expiresIn: Math.round(expiresIn / 1000), // 转为秒
+    expiresTime: expiresAt,
   }
 }
 

@@ -48,7 +48,7 @@ export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
  * @param mode
  * @param options
  */
-export function useQueryState<T extends Record<string, any> = UrlParams>(
+export function useQueryState<T extends Record<string, unknown> = UrlParams>(
   mode: 'history' | 'hash' | 'hash-params' = 'history',
   options: UseUrlSearchParamsOptions<T> = {},
 ): T {
@@ -65,7 +65,7 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
   if (!window)
     return reactive(initialValue) as T
 
-  const state: Record<string, any> = reactive({}) as T
+  const state: Record<string, unknown> = reactive({}) as T
 
   function getRawParams() {
     if (mode === 'history') {
@@ -139,7 +139,7 @@ export function useQueryState<T extends Record<string, any> = UrlParams>(
           params.delete(key)
         }
         else {
-          params.set(key, mapEntry)
+          params.set(key, String(mapEntry))
         }
       })
       write(params, false)

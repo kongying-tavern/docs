@@ -188,6 +188,12 @@ const forum: CustomConfig['forum'] = {
         tip: '请上传相关错误截图或报错信息最多 %range 张，最大不超过 %size MB',
         fail: '%filename 上传失败',
         violation: '图片违规！请勿上传任何与反馈无关的图片',
+        paste: {
+          hint: '可直接粘贴图片',
+          formatNotSupported: '剪贴板中的图片格式不受支持',
+          sizeExceed: '图片大小 %size MB 超出限制 %maxSize MB',
+          formatError: '不支持的图片格式: %format',
+        },
       },
     },
   },

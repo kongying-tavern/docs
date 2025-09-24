@@ -1,5 +1,3 @@
-/* eslint-disable unused-imports/no-unused-vars */
-
 import type { ShallowRef } from 'vue'
 import type {
   UploadFile,
@@ -22,7 +20,7 @@ function revokeFileObjectURL(file: UploadFile) {
 
 export function useHandlers(
   props: UploadProps,
-  uploadRef: ShallowRef<UploadPhotoInstance | undefined>,
+  _uploadRef: ShallowRef<UploadPhotoInstance | undefined>,
 ) {
   const uploadFiles = useVModel(
     props as Omit<UploadProps, 'fileList'> & { fileList: UploadFiles },

@@ -33,3 +33,12 @@ export async function saveJsonToFile(filename: string, data: unknown) {
     console.error('Error saving data:', error)
   }
 }
+
+export async function saveMemberDataWithTimestamp(filename: string, memberData: unknown) {
+  const dataWithTimestamp = {
+    data: memberData,
+    lastUpdated: Date.now(),
+  }
+
+  await saveJsonToFile(filename, dataWithTimestamp)
+}

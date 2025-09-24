@@ -14,7 +14,7 @@ import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import ForumRoleBadge from '../ForumRoleBadge.vue'
+import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
 
 const { user, userId } = defineProps<{

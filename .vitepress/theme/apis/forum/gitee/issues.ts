@@ -29,22 +29,28 @@ export async function getTopics(
   if (search)
     return searchTopics(query, search)
 
-  const [[issues, paginationParams], [comments]] = await Promise.all([
-    apiCall<GITEE.IssueList>(
-      'get',
-      `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues`,
-      {
-        params: {
-          state: state || 'open',
-          page: query.current,
-          sort: query.sort || 'created',
-          per_page: query.pageSize,
-          ...(query.creator ? { creator: query.creator } : {}),
-          ...processLabels(query.filter),
-        },
-      },
-    ),
-    apiCall<GITEE.CommentList>(
+  const apiParams = {
+    state: state || 'open',
+    page: query.current,
+    sort: query.sort || 'created',
+    per_page: query.pageSize,
+    ...(query.creator ? { creator: query.creator } : {}),
+    ...processLabels(query.filter),
+  }
+
+  // Separate the requests to prevent comments timeout from affecting issues
+  const [issues, paginationParams] = await apiCall<GITEE.IssueList>(
+    'get',
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues`,
+    {
+      params: apiParams,
+    },
+  )
+
+  // Try to fetch comments, but don't let it fail the main request
+  let comments: GITEE.CommentList = []
+  try {
+    ;[comments] = await apiCall<GITEE.CommentList>(
       'get',
       `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues/comments`,
       {
@@ -55,8 +61,13 @@ export async function getTopics(
         },
         useCache: true,
       },
-    ),
-  ])
+    )
+  }
+  catch (error) {
+    console.warn('Failed to fetch comments, continuing without them:', error)
+    comments = [] // Use empty array if comments fail
+  }
+
   const data: ForumAPI.Topic[] = []
 
   issues.forEach((val) => {
@@ -164,11 +175,7 @@ export async function searchTopics(
   }
 }
 
-export async function postTopic(data: {
-  body: string
-  title: string
-  labels?: string
-}): Promise<ForumAPI.Topic> {
+export async function postTopic(data: ForumAPI.FormSubmitData): Promise<ForumAPI.Topic> {
   const form = buildFormData({
     owner: GITEE_API_CONFIG.OWNER,
     repo: GITEE_API_CONFIG.FEEDBACK_REPO,

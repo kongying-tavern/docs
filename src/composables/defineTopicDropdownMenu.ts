@@ -6,15 +6,13 @@ import { issues } from '@/apis/forum/gitee'
 import { computed, ref } from 'vue'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicManger } from '~/composables/useTopicManger'
-import { useForumData } from '~/stores/useForumData'
+import { forumEvents } from '~/services/events/SimpleEventManager'
 import { useTopicTagsEditor } from './useTopicTagsEditor'
 
 // @unocss-include
 export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
   if (!topicData)
     return computed(() => [])
-
-  const { removeTopic } = useForumData()
 
   const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManger(topicData, message)
   const { hasAnyPermissions } = useRuleChecks(topicData.user.id)
@@ -34,16 +32,12 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
 
   function handleToggleCloseTopic() {
     toggleClose()
-
-    if (closeState && topicData)
-      removeTopic(topicData.id)
+    // The events are now emitted directly from useTopicManger
   }
 
   function handleToggleHideTopic() {
     toggleHide()
-
-    if (hideState && topicData)
-      removeTopic(topicData.id)
+    // The events are now emitted directly from useTopicManger
   }
 
   const noAnyPermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {
@@ -76,7 +70,10 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
             id: `change-topic-${val}`,
             type: 'item',
             label: val,
-            action: () => toggleTopicType(val),
+            action: () => {
+              toggleTopicType(val)
+              forumEvents.topicTypeChanged(topicData.id, val)
+            },
           }),
         ),
       },
@@ -92,7 +89,10 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
         type: 'item',
         label: topicData.pinned ? '取消固定' : '固定话题',
         icon: topicData.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
-        action: togglePinedTopic,
+        action: () => {
+          togglePinedTopic()
+          forumEvents.topicPinned(topicData.id, !topicData.pinned)
+        },
       },
       {
         id: 'close-comment-topic',

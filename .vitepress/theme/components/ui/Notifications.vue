@@ -10,7 +10,7 @@ import { UI } from './config'
 
 const props = defineProps({
   class: {
-    type: [String, Object, Array] as PropType<any>,
+    type: [String, Object, Array] as PropType<string | Record<string, boolean> | string[]>,
     default: () => '',
   },
 })

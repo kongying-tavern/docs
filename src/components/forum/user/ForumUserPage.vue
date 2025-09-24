@@ -4,36 +4,54 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useLocalStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useData } from 'vitepress'
-import { computed, onMounted, onUnmounted, provide, ref } from 'vue'
-import { useForumData } from '~/stores/useForumData'
-import ForumAside from '../ForumAside.vue'
-import ForumLayout from '../ForumLayout.vue'
-import ForumLoadState from '../ForumLoadState.vue'
-import ForumTopicMenubar from '../ForumTopicMenubar.vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useForumUserStore } from '~/stores/forum/useForumUserStore'
+import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
-import { FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
+import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
+import ForumLoadState from '../ui/ForumLoadState.vue'
 import { updateLastPathSegment } from '../utils'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
-const forumData = useForumData()
+const forumUserStore = useForumUserStore()
 const userInfo = useUserInfoStore()
-const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
 const activeTab = ref<'feedback' | ''>('feedback')
+const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
 
 const { params } = useData()
-const { loadMore, loadForumData, resetState } = forumData
-const { sort, filter, loading, isSearching, canLoadMore, userSubmittedTopic, topics, creator } = storeToRefs(forumData)
+
+// Use storeToRefs to access reactive properties (now that UserStore uses toRef)
+const {
+  isSearching,
+  userSubmittedTopics,
+  data: topics,
+  loading,
+  loadStateMessage,
+} = storeToRefs(forumUserStore)
+
+// Actions can be destructured normally
+const {
+  loadUserData,
+  resetState,
+  setupEventListeners,
+  cleanup,
+  loadMoreTopics,
+} = forumUserStore
 
 const username = String(params.value?.id) || userInfo.info?.login
 
-creator.value = username!
-
 const renderData = computed(() => {
+  // When searching, show only search results
+  if (isSearching.value) {
+    return topics.value || []
+  }
+
+  // When not searching, show user submitted topics and regular topics
   return [
-    ...(isSearching.value ? [] : userSubmittedTopic.value),
-    ...topics.value,
+    ...(userSubmittedTopics.value || []),
+    ...(topics.value || []),
   ]
 })
 
@@ -41,49 +59,50 @@ onMounted(() => {
   if (!params.value?.id && userInfo.info?.login) {
     updateLastPathSegment(userInfo.info.login, true)
   }
+
+  // Setup event listeners and load user data
+  setupEventListeners()
+  if (username) {
+    loadUserData(username)
+  }
 })
 
-onMounted(loadForumData)
-onUnmounted(resetState)
-
-provide(FORUM_TOPIC_VIEW_MODE_KEY, viewMode)
-provide(FORUM_TOPIC_SORT_KEY, sort)
-provide(FORUM_TOPIC_FILTER_KEY, filter)
-provide(FORUM_TOPIC_LOADING_KEY, loading)
-provide(FORUM_TOPIC_CAN_LOAD_MORE, canLoadMore)
+onUnmounted(() => {
+  cleanup()
+  resetState()
+})
 </script>
 
 <template>
-  <ClientOnly>
-    <ForumLayout>
-      <template #header>
-        <Suspense>
-          <ForumUserProfileHeader v-model:active-tab="activeTab" :username="username!" :topic-count="renderData.length" />
+  <BaseForumPage :store="forumUserStore" :render-data="renderData">
+    <template #header>
+      <Suspense>
+        <ForumUserProfileHeader v-model:active-tab="activeTab" :username="username!" :topic-count="renderData.length" />
 
-          <template #fallback>
-            <ForumUserProfileHeaderSkeleton />
-          </template>
-        </Suspense>
-      </template>
+        <template #fallback>
+          <ForumUserProfileHeaderSkeleton />
+        </template>
+      </Suspense>
+    </template>
 
-      <template #content>
-        <div v-show="activeTab === 'feedback'">
-          <ForumTopicMenubar />
-          <div class="mt-2" />
-          <ForumTopicsList
-            :view-mode="viewMode" :data="renderData" :loading="forumData.loading" :load-more="loadMore"
-          />
+    <template #content-main>
+      <div v-show="activeTab === 'feedback'">
+        <!-- Use the default content from BaseForumPage -->
+        <ForumTopicsList
+          :view-mode="viewMode"
+          :data="renderData"
+          :loading="loading"
+          :load-more="loadMoreTopics"
+        />
 
-          <ForumLoadState :loading="forumData.loading" :text="forumData.loadStateMessage" />
-        </div>
-      </template>
+        <ForumLoadState :loading="loading" :text="loadStateMessage" />
+      </div>
+    </template>
 
-      <template #aside>
-        <ForumAside />
-      </template>
-    </ForumLayout>
-    <Teleport to="body">
-      <ForumTopicTagsEditorDialog />
-    </Teleport>
-  </ClientOnly>
+    <template #teleport>
+      <Teleport to="body">
+        <ForumTopicTagsEditorDialog />
+      </Teleport>
+    </template>
+  </BaseForumPage>
 </template>

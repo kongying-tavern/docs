@@ -1,8 +1,6 @@
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { computed } from 'vue'
-import blogMemberList from '~/_data/blogMemberList.json'
-import feedbackMemberList from '~/_data/feedbackMemberList.json'
-import teamMemberList from '~/_data/teamMemberList.json'
+import { usePermissionData } from './usePermissionData'
 
 const rolesPermissions = {
   teamMember: ['edit_feedback', 'manage_feedback', 'write_blog', 'manage_blog'],
@@ -11,23 +9,25 @@ const rolesPermissions = {
   author: ['edit_feedback'],
 } as const
 
-const userRolesMap = {
-  teamMember: new Set(teamMemberList.map(val => Number(val.id))),
-  feedbackMember: new Set(feedbackMemberList.map(val => Number(val.id))),
-  blogMember: new Set(blogMemberList.map(val => Number(val.id))),
-} as const
-
 type Role = keyof typeof rolesPermissions
 type Permission = (typeof rolesPermissions)[Role][number]
 
 export function useRuleChecks(inputId: string | number = '') {
   const userInfo = useUserInfoStore()
+  const { getTeamMemberIds, getFeedbackMemberIds, getBlogMemberIds } = usePermissionData()
+
   const id = computed(() => userInfo.info?.id || 0)
+
+  const userRolesMap = computed(() => ({
+    teamMember: getTeamMemberIds.value,
+    feedbackMember: getFeedbackMemberIds.value,
+    blogMember: getBlogMemberIds.value,
+  }))
 
   const staticRoles = computed(() => {
     return (
-      Object.keys(userRolesMap) as Array<keyof typeof userRolesMap>
-    ).filter(role => userRolesMap[role].has(Number(id.value)))
+      Object.keys(userRolesMap.value) as Array<keyof typeof userRolesMap.value>
+    ).filter(role => userRolesMap.value[role].has(Number(id.value)))
   })
 
   const userRoles = computed((): Array<Role> => {
@@ -66,8 +66,8 @@ export function useRuleChecks(inputId: string | number = '') {
     return computed(() => {
       userId ??= id.value
       return (
-        userRolesMap.feedbackMember.has(Number(userId))
-        || userRolesMap.teamMember.has(Number(userId))
+        userRolesMap.value.feedbackMember.has(Number(userId))
+        || userRolesMap.value.teamMember.has(Number(userId))
       )
     })
   }

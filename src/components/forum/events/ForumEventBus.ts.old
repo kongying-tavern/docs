@@ -1,0 +1,121 @@
+import type ForumAPI from '@/apis/forum/api'
+import mitt from 'mitt'
+
+export interface ForumEventMap extends Record<string | symbol, unknown> {
+  // Topic events
+  'topic:created': { topicId: string | number, topic: ForumAPI.Topic }
+  'topic:updated': { topicId: string | number, updates: Partial<ForumAPI.Topic> }
+  'topic:deleted': { topicId: string | number }
+  'topic:pinned': { topicId: string | number, pinned: boolean }
+  'topic:type-changed': { topicId: string | number, newType: ForumAPI.TopicType }
+  'topic:tags-updated': { topicId: string | number, tags: string[] }
+  'topic:hidden': { topicId: string | number, hidden: boolean }
+  'topic:closed': { topicId: string | number, closed: boolean }
+  'topic:comment-toggled': { topicId: string | number, commentsClosed: boolean }
+
+  // Comment events
+  'comment:created': { commentId: string | number, topicId: string | number, comment: ForumAPI.Comment }
+  'comment:updated': { commentId: string | number, updates: Partial<ForumAPI.Comment> }
+  'comment:deleted': { commentId: string | number, topicId: string | number }
+  'comment:hidden': { commentId: string | number, topicId: string | number, hidden: boolean }
+
+  // UI events
+  'ui:topic-expand': { topicId: string | number, expanded: boolean }
+  'ui:comment-reply': { topicId: string | number, targetUser: string }
+  'ui:search': { query: string }
+  'ui:filter-change': { filter: ForumAPI.FilterBy }
+  'ui:sort-change': { sort: ForumAPI.SortMethod }
+  'ui:topic-action': { topicId: string | number, action: string, payload?: unknown }
+  'ui:comment-action': { commentId: string | number, topicId: string | number, action: string, payload?: unknown }
+
+  // Form events
+  'form:validation-error': { field: string, message: string }
+  'form:submit-start': { formType: string }
+  'form:submit-success': { formType: string, data: ForumAPI.FormSubmitData }
+  'form:submit-error': { formType: string, error: Error }
+
+  // Navigation events
+  'nav:topic-detail': { topicId: string | number }
+  'nav:user-profile': { username: string }
+  'nav:back': void
+}
+
+// Create the event bus using mitt
+export const forumEventBus = mitt<ForumEventMap>()
+
+// Helper functions for type-safe event emission
+export const forumEvents = {
+  // Topic events
+  topicCreated: (topicId: string | number, topic: ForumAPI.Topic) =>
+    forumEventBus.emit('topic:created', { topicId, topic }),
+
+  topicUpdated: (topicId: string | number, updates: Partial<ForumAPI.Topic>) =>
+    forumEventBus.emit('topic:updated', { topicId, updates }),
+
+  topicDeleted: (topicId: string | number) =>
+    forumEventBus.emit('topic:deleted', { topicId }),
+
+  topicPinned: (topicId: string | number, pinned: boolean) =>
+    forumEventBus.emit('topic:pinned', { topicId, pinned }),
+
+  topicTypeChanged: (topicId: string | number, newType: ForumAPI.TopicType) =>
+    forumEventBus.emit('topic:type-changed', { topicId, newType }),
+
+  topicTagsUpdated: (topicId: string | number, tags: string[]) =>
+    forumEventBus.emit('topic:tags-updated', { topicId, tags }),
+
+  topicHidden: (topicId: string | number, hidden: boolean) =>
+    forumEventBus.emit('topic:hidden', { topicId, hidden }),
+
+  topicClosed: (topicId: string | number, closed: boolean) =>
+    forumEventBus.emit('topic:closed', { topicId, closed }),
+
+  topicCommentToggled: (topicId: string | number, commentsClosed: boolean) =>
+    forumEventBus.emit('topic:comment-toggled', { topicId, commentsClosed }),
+
+  // Comment events
+  commentCreated: (commentId: string | number, topicId: string | number, comment: ForumAPI.Comment) =>
+    forumEventBus.emit('comment:created', { commentId, topicId, comment }),
+
+  commentUpdated: (commentId: string | number, updates: Partial<ForumAPI.Comment>) =>
+    forumEventBus.emit('comment:updated', { commentId, updates }),
+
+  commentDeleted: (commentId: string | number, topicId: string | number) =>
+    forumEventBus.emit('comment:deleted', { commentId, topicId }),
+
+  commentHidden: (commentId: string | number, topicId: string | number, hidden: boolean) =>
+    forumEventBus.emit('comment:hidden', { commentId, topicId, hidden }),
+
+  // UI events
+  topicExpand: (topicId: string | number, expanded: boolean) =>
+    forumEventBus.emit('ui:topic-expand', { topicId, expanded }),
+
+  commentReply: (topicId: string | number, targetUser: string) =>
+    forumEventBus.emit('ui:comment-reply', { topicId, targetUser }),
+
+  search: (query: string) =>
+    forumEventBus.emit('ui:search', { query }),
+
+  filterChange: (filter: ForumAPI.FilterBy) =>
+    forumEventBus.emit('ui:filter-change', { filter }),
+
+  sortChange: (sort: ForumAPI.SortMethod) =>
+    forumEventBus.emit('ui:sort-change', { sort }),
+
+  // UI action events for DOM updates
+  topicAction: (topicId: string | number, action: string, payload?: unknown) =>
+    forumEventBus.emit('ui:topic-action', { topicId, action, payload }),
+
+  commentAction: (commentId: string | number, topicId: string | number, action: string, payload?: unknown) =>
+    forumEventBus.emit('ui:comment-action', { commentId, topicId, action, payload }),
+
+  // Navigation events
+  navigateToTopic: (topicId: string | number) =>
+    forumEventBus.emit('nav:topic-detail', { topicId }),
+
+  navigateToUser: (username: string) =>
+    forumEventBus.emit('nav:user-profile', { username }),
+
+  navigateBack: () =>
+    forumEventBus.emit('nav:back'),
+} as const

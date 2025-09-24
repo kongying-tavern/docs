@@ -1,23 +1,46 @@
 <script setup lang="ts">
 import { useLocalized } from '@/hooks/useLocalized'
-import { watch } from 'vue'
+import { inject, watch } from 'vue'
 import { useSearchInput } from '~/composables/useSearchInput'
-import { useForumData } from '~/stores/useForumData'
 
 const emits = defineEmits(['search'])
 const modelValue = defineModel<string>('query')
 const { message } = useLocalized()
-const { searchInput, searchQuery } = useSearchInput()
 
-const { searchTopics } = useForumData()
+// Get search function from the parent component context
+const searchTopics = inject('searchTopics', () => {
+  console.warn('ForumSearchbox: searchTopics not provided, using default')
+  return async (query: string) => {
+    console.log('Default searchTopics called with:', query)
+  }
+})
+
+const { searchInput, searchQuery } = useSearchInput({
+  autoSearch: searchTopics,
+})
 
 async function handleSearch() {
   emits('search')
-  searchTopics(searchQuery.value)
+  if (searchQuery.value.trim()) {
+    searchTopics(searchQuery.value)
+  }
+  else {
+    // Clear search when query is empty
+    searchTopics('')
+  }
 }
 
+// Two-way sync between internal searchQuery and external modelValue
 watch(searchQuery, (newVal) => {
   modelValue.value = newVal
+}, {
+  immediate: true,
+})
+
+watch(modelValue, (newVal) => {
+  if (newVal !== searchQuery.value) {
+    searchQuery.value = newVal || ''
+  }
 }, {
   immediate: true,
 })

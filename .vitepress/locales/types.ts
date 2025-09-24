@@ -293,6 +293,12 @@ export interface CustomConfig {
           tip: string
           fail: string
           violation: string
+          paste: {
+            hint: string
+            formatNotSupported: string
+            sizeExceed: string
+            formatError: string
+          }
         }
       }
     }

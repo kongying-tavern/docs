@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import Time from '@/components/ui/Time/Time.vue'
-import User from '@/components/ui/User.vue'
 import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
+import Time from '@/components/ui/Time/Time.vue'
+import User from '@/components/ui/User.vue'
 
 const { title } = defineProps<{
   title: string

@@ -44,7 +44,7 @@ const props = defineProps({
     default: () => 'green',
   },
   class: {
-    type: [String, Object, Array] as PropType<any>,
+    type: [String, Object, Array] as PropType<string | Record<string, boolean> | string[]>,
     default: () => '',
   },
 })

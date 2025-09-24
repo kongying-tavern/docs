@@ -1,112 +1,33 @@
 <script setup lang="ts">
-import { issues } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import Image from '@/components/ui/image/Image.vue'
-import { useLocalized } from '@/hooks/useLocalized'
-import { getLangPath } from '@/utils'
-import { watchOnce } from '@vueuse/core'
-import markdownIt from 'markdown-it'
-import { useData, useRouter, withBase } from 'vitepress'
-import { computed, watchEffect } from 'vue'
-import { useRequest } from 'vue-request'
-import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
-import { handleError } from '~/composables/handleError'
-import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
-import { useForumData } from '~/stores/useForumData'
+import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumAside from '../ForumAside.vue'
-import ForumCommentArea from '../ForumCommentArea.vue'
 import ForumLayout from '../ForumLayout.vue'
-import ForumRoleBadge from '../ForumRoleBadge.vue'
-import ForumTagList from '../ForumTagList.vue'
-
-import ForumTime from '../ForumTime.vue'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
-import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
+import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
+import ForumTagList from '../ui/ForumTagList.vue'
+import ForumTime from '../ui/ForumTime.vue'
+import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
-import { setPageTitle } from '../utils'
+import { useTopicImageGrid } from './composables/useTopicImageGrid'
+import { useTopicPageState } from './composables/useTopicPageState'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 
-const topicTypeMap = getTopicTypeMap()
+// Topic page state management
+const {
+  topic,
+  loading,
+  renderedContent,
+  params,
+  message,
+  backToPreviousPage,
+} = useTopicPageState()
 
-const forumData = useForumData()
-
-const { params, localeIndex } = useData()
-const { go } = useRouter()
-const { message } = useLocalized()
-
-const { data: topic, run, loading, mutate, error } = useRequest(issues.getTopic, {
-  defaultParams: [params.value?.id],
-  manual: true,
-  onError: (err) => {
-    if (err.message.includes('404 Not Found')) {
-      return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
-    }
-  },
-})
-
-const targetTopicData = forumData.topics.find(val => val.id === params.value?.id)
-
-const renderedContent = computed(() =>
-  sanitizeMarkdown(
-    markdownIt().render(sanitizeMarkdown(topic?.value?.content.text)),
-  ),
-)
-
-if (targetTopicData) {
-  mutate(targetTopicData)
-}
-else if (!import.meta.env.SSR) {
-  run(params.value?.id)
-}
-
-const gridClass = computed(() => {
-  if (!topic.value)
-    return ''
-  const count = topic.value.content.images?.length || 0
-  if (count === 1)
-    return 'grid-cols-1'
-  if (count === 2)
-    return 'grid-cols-2'
-  if (count === 3 || count >= 4)
-    return 'grid-cols-2'
-  return 'grid-cols-1'
-})
-
-function imageClass(index: number) {
-  if (!topic.value)
-    return ''
-  const count = topic.value.content.images?.length || 0
-  if (count === 3 && index === 2)
-    return 'col-span-2 aspect-video'
-  return 'aspect-square'
-}
-
-function backToPreviousPage() {
-  if (window.history.state?.idx === 1) {
-    return go(withBase(`${getLangPath(localeIndex.value)}feedback/`))
-  }
-
-  window.history.back()
-}
-
-watchEffect(() => {
-  if (loading.value)
-    return
-  setPageTitle(topic.value?.type === 'BUG'
-    ? `${topic.value
-      .content
-      .text
-      .substring(0, 6)}...`
-    : topic.value?.title || '', topicTypeMap.get(topic.value?.type || ''))
-})
-
-watchOnce(error, () => {
-  handleError(error.value, message, {
-    errorMessage: message.value.forum.loadError + error?.value?.message,
-  })
-})
+// Image grid functionality
+const { gridClass, imageClass } = useTopicImageGrid(topic)
 </script>
 
 <template>

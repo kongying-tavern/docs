@@ -7,8 +7,9 @@ import { getAuthToken, saveJsonToFile } from './utils'
 export async function refreshBlogData() {
   const auth = await getAuthToken()
 
-  if (!auth)
-    return
+  if (!auth) {
+    console.warn('登录失败，将尝试以匿名方式刷新博客数据')
+  }
 
   let posts: ForumAPI.Post[] = []
   let currentPage = 1

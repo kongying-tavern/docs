@@ -1,20 +1,39 @@
 <script setup lang="ts">
 import { useScrollLock, useWindowScroll } from '@vueuse/core'
 import { useData } from 'vitepress'
-import { computed, onUnmounted, ref, watchPostEffect } from 'vue'
-import { useForumData } from '~/stores/useForumData'
+import { computed, onMounted, onUnmounted, provide, ref, watchPostEffect } from 'vue'
+import { useForumData } from '~/composables/useForumData'
+import { useForumHomeStore } from '~/stores/forum/useForumHomeStore'
 import ForumSearchbox from './ForumSearchbox.vue'
 import ForumSearchSuggestions from './ForumSearchSuggestions.vue'
 import { flattenWithTags } from './utils'
 
 const emits = defineEmits(['close'])
-const forumData = useForumData()
+const forumStore = useForumHomeStore()
+
+// Separate data source for search suggestions - always maintain complete dataset
+const suggestionForumData = useForumData({ manual: true, autoLoadPinned: false })
+
+const {
+  searchTopics: searchTopicsFunc,
+} = forumStore
 const isLocked = useScrollLock(import.meta.env.SSR ? null : document.body, true)
 const { y } = useWindowScroll()
 const { theme } = useData()
 const isTop = computed(() => y.value === 0)
 const searchQuery = ref('')
 const quickLinkList = flattenWithTags(theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1))
+
+// Provide searchTopics for ForumSearchbox
+provide('searchTopics', searchTopicsFunc)
+
+// Load complete dataset for search suggestions
+onMounted(async () => {
+  console.log('🔍 Loading complete data for search suggestions...')
+  // Load complete dataset for suggestions, independent of main forum data
+  await suggestionForumData.refreshData()
+  console.log('🔍 Suggestion data loaded:', suggestionForumData.data.value?.length || 0, 'topics')
+})
 
 onUnmounted(() => {
   isLocked.value = false
@@ -41,7 +60,20 @@ watchPostEffect(() => {
     <div class="wrapper relative h-fit min-h-100% bg-[var(--vp-c-bg)] transition-height md:min-h-30%">
       <div class="curtain-content h-auto w-full pt-8 container">
         <ForumSearchbox v-model:query="searchQuery" @search="emits('close')" />
-        <ForumSearchSuggestions v-if="searchQuery.length !== 0" v-motion-slide-visible-top class="pb-64px pt-40px" :search-query="searchQuery" :topic-data="forumData.topics" @select="emits('close')" />
+        <!-- Debug: Always show for testing -->
+        <div v-if="searchQuery.length > 0" class="debug-info">
+          <p>Query: "{{ searchQuery }}" (length: {{ searchQuery.length }})</p>
+          <p>Topics count: {{ suggestionForumData.data.value?.length || 0 }}</p>
+        </div>
+
+        <ForumSearchSuggestions
+          v-if="searchQuery.length > 0"
+          v-motion-slide-visible-top
+          class="pb-64px pt-40px"
+          :search-query="searchQuery"
+          :topic-data="suggestionForumData.data.value || []"
+          @select="emits('close')"
+        />
 
         <div
           v-else

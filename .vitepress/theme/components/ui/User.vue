@@ -22,7 +22,7 @@ interface Props {
   orientation?: 'horizontal' | 'vertical'
   to?: string
   target?: '_blank' | '_parent' | '_self' | '_top' | string
-  as?: any
+  as?: string | Component
   ui?: {
     root?: string
     wrapper?: string

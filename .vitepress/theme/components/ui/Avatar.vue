@@ -42,7 +42,7 @@ const props = defineProps({
     default: '',
   },
   class: {
-    type: [String, Object, Array] as PropType<any>,
+    type: [String, Object, Array] as PropType<string | Record<string, boolean> | string[]>,
     default: () => '',
   },
 })

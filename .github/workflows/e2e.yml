@@ -5,23 +5,62 @@ on:
     inputs:
       url:
         required: false
-        description: The URL to run the test suite against. If omitted, it runs against all.
+        description: The URL to run the test suite against. If omitted, it runs against production.
         type: string
   deployment_status:
+    types: [success]
 
 jobs:
   lighthouse:
     environment:
       name: ${{ github.event.deployment.environment || 'Production' }}
-      url: ${{ github.event.inputs.url || github.event.deployment.payload.web_url || github.event.deployment_status.target_url || 'https://yuanshen.site/doc/' }}
+      url: ${{ steps.get-url.outputs.test_url }}
     if: github.event.deployment_status.state == 'success' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Determine test URL
+        id: get-url
+        run: |
+          # Default production URL
+          DEFAULT_URL="https://yuanshen.site/docs/"
+
+          # Get URL from various sources
+          MANUAL_URL="${{ github.event.inputs.url }}"
+          DEPLOYMENT_URL="${{ github.event.deployment_status.target_url }}"
+
+          # Determine which URL to use
+          if [[ -n "$MANUAL_URL" ]]; then
+            TEST_URL="$MANUAL_URL"
+            echo "Using manual input URL: $TEST_URL"
+          elif [[ -n "$DEPLOYMENT_URL" ]]; then
+            # Only use deployment URL if it's from the correct domain
+            if [[ "$DEPLOYMENT_URL" =~ ^https://yuanshen\.site ]]; then
+              TEST_URL="$DEPLOYMENT_URL"
+              echo "Using deployment URL: $TEST_URL"
+            else
+              TEST_URL="$DEFAULT_URL"
+              echo "Deployment URL not from yuanshen.site domain, using default: $TEST_URL"
+            fi
+          else
+            TEST_URL="$DEFAULT_URL"
+            echo "No specific URL provided, using default: $TEST_URL"
+          fi
+
+          # Validate URL format
+          if [[ ! "$TEST_URL" =~ ^https?:// ]]; then
+            echo "Invalid URL format: $TEST_URL"
+            exit 1
+          fi
+
+          echo "test_url=$TEST_URL" >> $GITHUB_OUTPUT
+          echo "Final test URL: $TEST_URL"
+
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: ${{ github.event.inputs.url || github.event.deployment.payload.web_url || github.event.deployment_status.target_url || 'https://yuanshen.site/doc/' }}
+          urls: ${{ steps.get-url.outputs.test_url }}
           uploadArtifacts: true
           temporaryPublicStorage: true
         env:

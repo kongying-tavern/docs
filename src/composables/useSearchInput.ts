@@ -1,7 +1,9 @@
 import { useDebounce } from '@vueuse/core'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
-export function useSearchInput() {
+export function useSearchInput(options?: {
+  autoSearch?: (query: string) => void | Promise<void>
+}) {
   const searchInput = ref()
   const searchQuery = ref<string>('')
   const searchQueryDebounced = useDebounce<string>(
@@ -25,12 +27,17 @@ export function useSearchInput() {
   onMounted(() => {
     if (import.meta.env.SSR)
       return
-    const searchParams = new URLSearchParams(window.location.search)
 
+    const searchParams = new URLSearchParams(window.location.search)
     if (searchParams.has('q')) {
       const query = searchParams.get('q')
       if (query) {
         searchQuery.value = query
+        // Auto-trigger search if autoSearch callback is provided
+        if (options?.autoSearch) {
+          console.log(`🔍 [useSearchInput] Auto-triggering search from URL: "${query}"`)
+          options.autoSearch(query)
+        }
       }
     }
 

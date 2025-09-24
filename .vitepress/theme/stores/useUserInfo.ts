@@ -35,8 +35,9 @@ export const useUserInfoStore = defineStore('user-info', () => {
   }
 
   const refreshUserInfo = async () => {
-    if (userAuthStore.isTokenValid && userAuthStore.auth.accessToken) {
-      info.value = await getAuthorizedUser(userAuthStore.auth.accessToken)
+    const accessToken = userAuthStore.auth?.accessToken
+    if (userAuthStore.isTokenValid && accessToken) {
+      info.value = await getAuthorizedUser(accessToken)
     }
   }
 

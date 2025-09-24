@@ -11,8 +11,8 @@ export enum GiteeApiErrorType {
 export type HttpMethod = 'get' | 'post' | 'patch' | 'delete' | 'put'
 
 export interface ApiCallParams {
-  params?: Record<string, any>
-  body?: Record<string, any>
+  params?: Record<string, string | number | boolean | string[]>
+  body?: Record<string, unknown> | FormData
   hooks?: Hooks
   useCache?: boolean
 }

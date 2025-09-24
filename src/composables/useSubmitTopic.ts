@@ -1,15 +1,16 @@
 import type ForumAPI from '@/apis/forum/api'
 import { issues } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useUserAuthStore } from '@/stores/useUserAuth'
+import { authGuards } from '@/utils/auth-helpers'
 import { useData } from 'vitepress'
-import { toRefs, watch } from 'vue'
+import { watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import { composeTopicBody } from '~/composables/composeTopicBody'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
-import { useForumData } from '~/stores/useForumData'
+import { useRuleChecks } from '~/composables/useRuleChecks'
+import { forumEvents } from '~/services/events/SimpleEventManager'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -23,10 +24,6 @@ export function useSubmitTopic() {
   } = useRequest(issues.postTopic, {
     manual: true,
   })
-  const forumData = useForumData()
-  const userAuth = useUserAuthStore()
-
-  const { userSubmittedTopic } = toRefs(forumData)
   const { message } = useLocalized()
   const { lang } = useData()
 
@@ -34,10 +31,21 @@ export function useSubmitTopic() {
   let userSelectedTags: string[] | null = null
 
   const submitData = async (options: ForumAPI.CreateTopicOption) => {
-    if (!userAuth.isTokenValid)
-      return location.hash = 'login-alert'
+    if (!authGuards.requireLogin(message.value.forum.auth.loginTips))
+      return
 
     const { text, title, tags, type } = options
+
+    // 权限验证：检查ANN类型topic的权限
+    if (type === 'ANN') {
+      const { hasAnyPermissions } = useRuleChecks()
+      const hasPermission = hasAnyPermissions('manage_feedback')
+
+      if (!hasPermission.value) {
+        toast.error('权限不足：只有管理员可以发布公告类型的内容')
+        return
+      }
+    }
 
     userSelectedTags = tags
 
@@ -55,7 +63,14 @@ export function useSubmitTopic() {
     }
 
     try {
+      // Emit form submit start event
+      forumEvents.formSubmitStart('topic')
+
       const result = await asyncSubmit(newTopic)
+
+      // Emit form submit success event
+      forumEvents.formSubmitSuccess('topic', newTopic)
+
       toast.promise(Promise.resolve(result), {
         loading: message.value.forum.publish.publishLoading,
         success: (data: ForumAPI.Topic) =>
@@ -67,6 +82,10 @@ export function useSubmitTopic() {
     }
     catch (err) {
       const error = err as Error
+
+      // Emit form submit error event
+      forumEvents.formSubmitError('topic', error)
+
       toast.error(`${message.value.forum.publish.publishFail} (${error.message})`)
       return null
     }
@@ -75,13 +94,14 @@ export function useSubmitTopic() {
   watch(submittedTopic, () => {
     if (!submittedTopic.value)
       return
-    userSubmittedTopic.value = [
-      {
-        ...submittedTopic.value,
-        ...(userSelectedTags ? { tags: userSelectedTags } : {}),
-      },
-      ...userSubmittedTopic.value,
-    ]
+
+    const newTopic = {
+      ...submittedTopic.value,
+      ...(userSelectedTags ? { tags: userSelectedTags } : {}),
+    }
+
+    // Only emit topic created event - let the stores handle adding it to their lists
+    forumEvents.topicCreated(newTopic)
   })
 
   return {

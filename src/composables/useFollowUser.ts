@@ -1,6 +1,6 @@
 import { user } from '@/apis/forum/gitee'
-import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { authGuards } from '@/utils/auth-helpers'
 import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
@@ -8,7 +8,6 @@ import { toast } from 'vue-sonner'
 export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const followState = ref<boolean | null>(null)
 
-  const userAuth = useUserAuthStore()
   const userInfo = useUserInfoStore()
 
   const currentUser = computed(() => authorizedUser || userInfo?.info?.login)
@@ -42,10 +41,7 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
     manual: true,
     defaultParams: [true, targetUser],
     onBefore: () => {
-      if (!userAuth.isTokenValid) {
-        location.hash = 'login-alert'
-        return false
-      }
+      return authGuards.requireLogin()
 
       if (currentUser.value === targetUser) {
         toast.warning('不能对自己进行该操作')

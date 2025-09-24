@@ -1,4 +1,4 @@
-import type { EmojiAttrs } from '@/components/ui/Emoji.vue'
+import type { EmojiAttrs } from '@/components/ui/types'
 import EmojiWrapper from '@/components/ui/EmojiWrapper.vue'
 import { InputRule, mergeAttributes, Node } from '@tiptap/core'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
@@ -35,6 +35,7 @@ export const EmojiNode = Node.create({
   },
 
   addNodeView() {
+    // @ts-expect-error TipTap Vue 3 type compatibility issue
     return VueNodeViewRenderer(EmojiWrapper)
   },
 

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import { catchError } from '@/apis/utils'
-import { useUserAuthStore } from '@/stores/useUserAuth'
+import { withAuth } from '@/utils/auth-helpers'
 import { toast } from 'vue-sonner'
 
 type ActionFunction<T extends unknown[], R = unknown> = (...args: T) => Promise<R>
@@ -13,21 +13,24 @@ export async function executeWithAuth<T extends unknown[], R>(
   errorMsg: string,
   message: Ref<CustomConfig>,
 ): Promise<R | false> {
-  const userAuth = useUserAuthStore()
+  const result = await withAuth.execute(
+    async () => {
+      const [error, state] = await catchError<R>(action(...argument))
 
-  if (!userAuth.isTokenValid) {
-    toast.info(message.value.forum.auth.loginTips)
-    return false
-  }
+      if (state !== undefined && !error) {
+        toast.success(successMsg)
+        return state
+      }
+      else {
+        toast.error(errorMsg)
+        throw new Error('Operation failed')
+      }
+    },
+    {
+      loginMessage: message.value.forum.auth.loginTips,
+      errorMessage: errorMsg,
+    },
+  )
 
-  const [error, state] = await catchError<R>(action(...argument))
-
-  if (state !== undefined && !error) {
-    toast.success(successMsg)
-    return state
-  }
-  else {
-    toast.error(errorMsg)
-    return false
-  }
+  return result || false
 }

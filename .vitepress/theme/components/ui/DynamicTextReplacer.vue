@@ -13,11 +13,11 @@ const { tag = 'p', data } = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
-const slots = useSlots() as Record<string, () => any>
+const slots = useSlots() as Record<string, () => VNode[]>
 
 const placeholderRegex = /%(\w+)/g
 
-function renderVNodeToHTML(vnode: any): string {
+function renderVNodeToHTML(vnode: VNode | VNode[] | string): string {
   if (!vnode)
     return ''
 
