@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useData } from 'vitepress'
+import { ref } from 'vue'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,8 +14,6 @@ import {
 import { useHashChecker } from '@/hooks/useHashChecker'
 import useLogin from '@/hooks/useLogin'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useData } from 'vitepress'
-import { ref } from 'vue'
 
 const userAuth = useUserAuthStore()
 

@@ -1,0 +1,803 @@
+{
+  "title": "Kongying Tavern",
+  "titleTemplate": ":title | Kongying Tavern",
+  "description": "A Genshin interactive map by Kongying Tavern for completionists",
+  "head": [
+    [
+      "meta",
+      {
+        "property": "og:site_name",
+        "content": "Kongying Tavern"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "og:locale",
+        "content": "en-US"
+      }
+    ]
+  ],
+  "siteTitle": "Kongying Tavern",
+  "keyword": "Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map",
+  "image": "https://yuanshen.site/docs/imgs/common/cover.jpg",
+  "logo": "/imgs/common/logo/logo_256.png",
+  "outlineTitle": "On This Page",
+  "lastUpdatedText": "Update Date",
+  "returnToTopLabel": "Back to Top",
+  "langMenuLabel": "Change language",
+  "notFound": {
+    "title": "PAGE NOT FOUND",
+    "quote": "But if you don't change your direction, and if you keep looking, you may end up where you are heading.",
+    "linkLabel": "Take me home"
+  },
+  "ui": {
+    "title": {
+      "templateMappings": [
+        {
+          "test": {
+            "__regex__": "(^|\\/?)manual\\/client\\/?",
+            "__flags__": ""
+          },
+          "template": ":title - Client Manuals | Kongying Tavern"
+        }
+      ]
+    },
+    "banner": {
+      "wip": "Sorry, this page translation is still in progress."
+    },
+    "button": {
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "loading": "Loading",
+      "search": "Search",
+      "close": "Close",
+      "all": "All"
+    },
+    "sitemap": {
+      "blog": "Blog Posts",
+      "manual": "User Manual",
+      "general": "General Pages",
+      "api": "API Documentation",
+      "guide": "Guides",
+      "community": "Community",
+      "about": "About Us"
+    }
+  },
+  "asideLinks": {
+    "title": "Links",
+    "starOnGitHub": "Star on GitHub",
+    "contactUsText": "Chat on Discord",
+    "contactUsLink": "https://discord.gg/SWz6RTWNkm",
+    "sponsor": "Become a Sponsor",
+    "editLink": "Edit this page",
+    "translateThisPage": "Translate this page"
+  },
+  "docReaction": {
+    "feedbackMsg": "Was this document helpful?",
+    "good": "Yes",
+    "bad": "No",
+    "feedbackFailMsg": "Feedback failed, please retry or contact admin (QQ: 1961266616)!",
+    "feedbackSuccessMsg": "Feedback submitted successfully, thank you!",
+    "badFeedbackSuccessMsg": "Please specify any issues below~",
+    "form": {
+      "chooseIssues": "Did you encounter these issues?",
+      "translationIssue": "Translation",
+      "typosIssue": "Typos/Punctuation",
+      "contentImgLinkIssue": "Inaccurate Content, Image or Link",
+      "feedbackDetail": "Details/Suggestions",
+      "feedbackTip": "Describe issues or suggestions here",
+      "otherIssue": "Other (specify below)",
+      "contactWay": "Contact (optional)",
+      "issueOptions": [
+        {
+          "label": "Page Display Error",
+          "value": "pagedisplay-issue"
+        },
+        {
+          "label": "Typos, Punctuation",
+          "value": "typos-issue"
+        },
+        {
+          "label": "Content, Image, Link Error",
+          "value": "content-issue"
+        },
+        {
+          "label": "Other Issues",
+          "value": "other-issue"
+        }
+      ]
+    }
+  },
+  "docFooter": {
+    "prev": "Previous page",
+    "next": "Next page"
+  },
+  "staff": {
+    "title": "Staff",
+    "desc": "空荧酒馆『原神地图』项目参与制作",
+    "communityStaff": {
+      "title": "社区运营"
+    },
+    "clientStaff": {
+      "title": "客户端开发"
+    },
+    "webStaff": {
+      "title": "网页端开发"
+    },
+    "translateStaff": {
+      "title": "本地化翻译"
+    },
+    "pinStaff": {
+      "title": "地图点位标记"
+    }
+  },
+  "team": {
+    "title": "关于团队",
+    "desc": "地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。",
+    "coreMember": {
+      "title": "核心团队成员",
+      "desc": "核心团队成员是那些积极长期参与维护一个或多个核心项目的人。 他们对空荧酒馆的生态系统做出了重大贡献。"
+    },
+    "emeritiMember": {
+      "title": "名誉核心团队",
+      "desc": "我们在此致敬过去曾做出过突出贡献的不再活跃的团队成员。"
+    },
+    "partnerMember": {
+      "title": "社区伙伴",
+      "desc": "我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。"
+    }
+  },
+  "payment": {
+    "wechatpay": {
+      "name": "WeChat Pay",
+      "address": "wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp"
+    },
+    "alipay": {
+      "name": "Alipay",
+      "address": "https://qr.alipay.com/tsx11609thmpw9odmvdlxd6"
+    },
+    "qqpay": {
+      "name": "QQ Pay",
+      "address": "https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet"
+    },
+    "paypal": {
+      "name": "PayPal",
+      "address": "https://www.paypal.com/paypalme/yuanshenditu"
+    },
+    "bilibili": {
+      "name": "bilibili",
+      "address": "https://space.bilibili.com/518076785"
+    }
+  },
+  "forum": {
+    "loadMore": "Load More",
+    "noMore": "No More",
+    "loadError": "Load Error",
+    "exceededRateLimitWarning": "Reached the maximum request rate limit of Gitee API. Please login and try again",
+    "translate": {
+      "translateText": "Translate",
+      "translateInfo": "Translation is supported by Meta Seq2Seq model",
+      "error": "Translation failed",
+      "limit": "Maximum request limit reached",
+      "loading": "Translating..."
+    },
+    "topic": {
+      "official": "Official",
+      "author": "Author",
+      "showMore": "Show More",
+      "backToFeedbackForum": "Back to forum",
+      "menu": {
+        "giteeLink": "Gitee Link",
+        "toOriginal": "Go To Original",
+        "hideFeedback": {
+          "text": "Hide Feedback",
+          "success": "Feedback Hidden",
+          "fail": "Failed to Hide Feedback"
+        },
+        "deleteComment": {
+          "text": "Delete Comment",
+          "success": "Comment Deleted",
+          "fail": "Failed to Delete Comment"
+        },
+        "closeFeedback": {
+          "text": "Close Feedback",
+          "success": "Feedback Closed",
+          "fail": "Failed to Close Feedback"
+        },
+        "copyLink": {
+          "text": "Copy Link",
+          "success": "Copied",
+          "fail": "Copy Failed"
+        },
+        "changeType": {
+          "text": "Change Type",
+          "to": "Change to"
+        },
+        "modifyTags": {
+          "text": "Modify Tags"
+        },
+        "pinTopic": {
+          "pin": "Pin Topic",
+          "unpin": "Unpin Topic"
+        },
+        "commentArea": {
+          "open": "Open Comments",
+          "close": "Close Comments"
+        },
+        "reopenFeedback": {
+          "text": "Reopen Feedback"
+        },
+        "cancelTopic": {
+          "text": "Cancel Topic"
+        }
+      },
+      "type": {
+        "sug": "Suggestion",
+        "bug": "Bug",
+        "feat": "Feature",
+        "ann": "Announcement"
+      },
+      "state": {
+        "open": "Open",
+        "closed": "Closed",
+        "rejected": "Rejected",
+        "progressing": "In Progress"
+      },
+      "backToTeamBlog": "Back To Blog",
+      "backToPrevPage": "Back To Prev Page"
+    },
+    "auth": {
+      "login": "Login",
+      "logout": "Logout",
+      "loginMsg": "Login with Gitee",
+      "logoutMsg": "Logout from Gitee",
+      "loginTips": "Please login and try again",
+      "loginToCheck": "Please %login to view (・ω・)",
+      "jumpToGiteeTips": "Redirecting to Gitee for login",
+      "loginSuccess": "Login Successful",
+      "logoutSuccess": "Logged Out",
+      "loginFail": "Login Failed",
+      "logoutFail": "Logout Failed",
+      "loginAlert": "Login Alert",
+      "loginAlertMsg": "Redirecting to Gitee for login",
+      "notGiteeAccountMsg": "No Gitee Account? %signup",
+      "clickToGiteeSignup": "Sign up for Gitee",
+      "callback": {
+        "title": "Logging in via Gitee authorization...",
+        "description": "Please wait a moment, you will be redirected to the original page",
+        "steps": {
+          "init": "Parse auth params",
+          "token": "Obtain Access Token",
+          "session": "Establish User Session",
+          "sso": "Sync SSO Status",
+          "redirect": "Prepare Page Redirect"
+        },
+        "status": {
+          "pending": "Pending",
+          "processing": "Processing",
+          "completed": "Completed",
+          "failed": "Failed"
+        },
+        "error": {
+          "title": "Authorization Failed",
+          "retry": "Retry"
+        }
+      }
+    },
+    "aside": {
+      "contactUs": {
+        "title": "Contact Us",
+        "desc": "Join the QQ group for urgent issues or map problems",
+        "qrcodeLink": "https://jq.qq.com/?_wv=1027&k=nbveGrfQ"
+      },
+      "teamBlog": {
+        "text": "Team Blog",
+        "items": [
+          {
+            "text": "Genshin Map Client Update Log",
+            "link": "/blog/hotupdatelog-client"
+          },
+          {
+            "text": "Genshin Map Web Update Log",
+            "link": "/blog/changelog-web"
+          }
+        ]
+      },
+      "suggest": {
+        "text": "Recommended",
+        "items": []
+      },
+      "info": [
+        {
+          "text": "Feedback powered by Gitee",
+          "link": "https://gitee.com"
+        }
+      ]
+    },
+    "comment": {
+      "comment": "Comment",
+      "commentSuccess": "Comment Posted:",
+      "commentFail": "Failed to Post Comment:",
+      "commentAfterLogin": "Please %login to comment (・ω・)",
+      "commentCount": "Comments",
+      "placeholder": "Share your thoughts~",
+      "loadMoreComment": "Load More Comments",
+      "noComment": "No Comments",
+      "noMoreComment": "No More Comments",
+      "loadingComment": "Loading Comments...",
+      "reply": "Reply",
+      "commentsClosed": "Comments Closed"
+    },
+    "header": {
+      "sort": {
+        "created": "Creation Date",
+        "updated": "Recently Updated",
+        "notesCount": "Comments Count"
+      },
+      "search": {
+        "placeholder": "Search",
+        "allRelatedContentCount": "Feedback Found"
+      },
+      "navigation": {
+        "allFeedback": "All Feedback",
+        "bugFeedback": "Bug Repoort",
+        "featFeedback": "Feature Request",
+        "closedFeedback": "Closed Feedback",
+        "faq": {
+          "title": "FAQ",
+          "items": [
+            {
+              "text": "Alert Dialog",
+              "link": "/docs/components/alert-dialog",
+              "desc": "A modal dialog for important content requiring a response."
+            }
+          ]
+        }
+      }
+    },
+    "publish": {
+      "tags": {
+        "issue": {
+          "typos": "Typos",
+          "display": "Display Issue",
+          "login": "Login Issue",
+          "performance": "Performance Issue",
+          "translation": "Translation Issue",
+          "other": "Other Issues",
+          "pin": "Pin Issue",
+          "docs": "Documentation Issue"
+        },
+        "platforms": {
+          "all": "Reproducible on All Platforms",
+          "web": "Web Issue",
+          "client": "Client Issue"
+        }
+      },
+      "title": "Submit Feedback",
+      "type": {
+        "sug": "Suggestion",
+        "bug": "Bug",
+        "feat": "Feature",
+        "ann": "Announcement"
+      },
+      "tagsInput": {
+        "searchTags": "Search Tags",
+        "maxTagsLimit": "Tag Limit Reached",
+        "noResultsFound": "No Results Found"
+      },
+      "publishSuccess": "Feedback Uploaded:",
+      "publishFail": "Feedback Upload Failed:",
+      "publishLoading": "Submitting Feedback",
+      "form": {
+        "title": {
+          "text": "Title",
+          "placeholder": ""
+        },
+        "type": {
+          "text": "Label",
+          "placeholder": ""
+        },
+        "content": {
+          "text": "Feedback Content",
+          "placeholder": ""
+        },
+        "upload": {
+          "text": "Upload Image",
+          "tip": "Upload up to %range images, max %size MB each",
+          "fail": "%filename Upload Failed",
+          "violation": "Image Violation! Do not upload unrelated images.",
+          "paste": {
+            "hint": "You can paste images directly",
+            "formatNotSupported": "Image format in clipboard not supported",
+            "sizeExceed": "Image size %size MB exceeds limit %maxSize MB",
+            "formatError": "Unsupported image format: %format"
+          }
+        }
+      }
+    },
+    "user": {
+      "menu": {
+        "giteePage": "Gitee Profile",
+        "giteeAccountInfo": "Gitee Account Info"
+      },
+      "myFeedback": {
+        "title": "My Feedback"
+      }
+    },
+    "readMore": "Read More",
+    "labels": {
+      "resolved": "Resolved",
+      "submitBug": "Report Bug",
+      "submitSuggestion": "Suggest",
+      "teamBlog": "Team Blog",
+      "userManual": "User Manual",
+      "joinCommunity": "Join Community",
+      "writeThoughts": "Write your thoughts...",
+      "shareExperience": "Share your experience...",
+      "askQuestion": "Ask your question...",
+      "pasteError": "Error processing pasted files",
+      "lazyPerson": "This person is lazy and wrote nothing~",
+      "unknown": "Unknown",
+      "fetchUserFailed": "Failed to fetch user profile",
+      "myFeedback": "My Feedback",
+      "submittedFeedback": "Submitted Feedback",
+      "personalHomepage": "'s Personal Homepage",
+      "imageLoadFailed": "Image load failed",
+      "follow": "Follow",
+      "following": "Following",
+      "unfollow": "Unfollow",
+      "posts": "Posts",
+      "joinTime": "Joined",
+      "privateMessage": "Message",
+      "commentLabelSuccess": "Comment label updated successfully",
+      "login": "Login",
+      "openInEditor": "Open in Editor"
+    },
+    "validation": {
+      "errors": {
+        "titleRequired": "Topic title is required",
+        "contentRequired": "Topic content is required",
+        "authorRequired": "Topic author is required",
+        "tooManyTags": "Too many tags (max 10)",
+        "contentTooShort": "Content must be at least {min} characters",
+        "contentTooLong": "Content must be no more than {max} characters",
+        "tagsRequired": "At least {min} tag is required",
+        "tooManyTagsLimit": "No more than {max} tags allowed",
+        "tagTooLong": "Tag \"{tag}\" exceeds maximum length of {maxLength} characters",
+        "commentEmpty": "Comment cannot be empty",
+        "invalidImageFormat": "Only JPEG, PNG, GIF, and WebP images are allowed",
+        "validationError": "Validation error occurred",
+        "invalidFile": "Invalid file",
+        "fileValidationFailed": "File validation failed"
+      }
+    },
+    "errors": {
+      "tooManyRequests": "Too many requests, please try again later",
+      "serverError": "Server error, please try again",
+      "notFound": "Resource not found",
+      "operationFailed": "{operation} failed: {message}",
+      "unknownError": "Unknown error",
+      "networkError": "Network connection failed",
+      "permissionDenied": "Permission denied",
+      "operationFailedRetry": "Operation failed, please try again later",
+      "serverNoResponse": "Server not responding, please try again later",
+      "noResponse": "No response, please try again later",
+      "networkRequestFailed": "Network request failed, showing local data",
+      "cannotLoadData": "Unable to load data",
+      "sortDataLoadFailed": "Failed to load sort data",
+      "cannotDoToSelf": "Cannot perform this operation on yourself",
+      "followFailed": "Follow failed, please try again later",
+      "unfollowSuccess": "Unfollowed successfully",
+      "followSuccess": "Followed successfully",
+      "permissionInsufficientAnnouncement": "Insufficient permissions: only administrators can publish announcement content",
+      "ssoRefreshTokenFailed": "inter-knot.site: Token refresh failed, incomplete data returned"
+    }
+  },
+  "changelog": {
+    "title": "Changelog",
+    "reportIssues": "Report issues on %feedback.",
+    "feedbackPage": "Feedback",
+    "changeType": {
+      "features": "Features",
+      "fixed": "Fixes",
+      "breaking": "Breaking Changes",
+      "optimized": "Optimized"
+    },
+    "action": {
+      "download": "Download",
+      "community": "Join Community"
+    }
+  },
+  "nav": [
+    {
+      "text": "Community",
+      "link": "/en/community"
+    },
+    {
+      "text": "Support us",
+      "link": "/en/support-us"
+    },
+    {
+      "text": "Map Utilities",
+      "items": [
+        {
+          "text": "Download",
+          "link": "/en/download-client"
+        },
+        {
+          "text": "Windows Client",
+          "items": [
+            {
+              "text": "Manual",
+              "link": "/en/manual/client/"
+            },
+            {
+              "text": "Release Notes",
+              "link": "/en/blog/hotupdatelog-client"
+            }
+          ]
+        },
+        {
+          "text": "Web Version",
+          "items": [
+            {
+              "text": "Try Now",
+              "link": "https://v3.yuanshen.site"
+            },
+            {
+              "text": "Release Notes",
+              "link": "/en/blog/changelog-web"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Support",
+      "items": [
+        {
+          "text": "Feedback",
+          "link": "/en/feedback/"
+        },
+        {
+          "text": "Feature Requests",
+          "link": "/en/feedback/feat"
+        }
+      ]
+    },
+    {
+      "text": "About",
+      "items": [
+        {
+          "text": "About Us",
+          "items": [
+            {
+              "text": "Join Us",
+              "link": "/en/join"
+            },
+            {
+              "text": "Our Team",
+              "link": "/en/team"
+            },
+            {
+              "text": "Team Blog",
+              "link": "/en/blog"
+            }
+          ]
+        },
+        {
+          "text": "Acknowledgements",
+          "items": [
+            {
+              "text": "Contributors",
+              "link": "/en/staff"
+            },
+            {
+              "text": "Sponsors",
+              "link": "/en/support-us#sponsor-acknowledgement"
+            },
+            {
+              "text": "Credits",
+              "link": "/en/credits"
+            }
+          ]
+        },
+        {
+          "text": "Legal (Chinese)",
+          "items": [
+            {
+              "text": "Disclaimer",
+              "link": "/en/disclaimer"
+            },
+            {
+              "text": "Privacy",
+              "link": "/en/privacy"
+            },
+            {
+              "text": "Agreement",
+              "link": "/en/agreement"
+            }
+          ]
+        },
+        {
+          "text": "Other",
+          "items": [
+            {
+              "text": "Translate for Us",
+              "link": "/en/translations"
+            },
+            {
+              "text": "Friend-links",
+              "link": "/en/friends-links"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sidebar": {
+    "/en/manual": [
+      {
+        "text": "Table of Contents",
+        "link": "/en/manual/client/"
+      },
+      {
+        "text": "Handbook",
+        "collapsed": false,
+        "items": [
+          {
+            "text": "Marking Multiple Pins",
+            "link": "/en/manual/client/batch-selection"
+          },
+          {
+            "text": "Change Pin Visibility",
+            "link": "/en/manual/client/hide-show-done"
+          },
+          {
+            "text": "Overlay Mode",
+            "link": "/en/manual/client/overlay-mode"
+          },
+          {
+            "text": "Position Tracker",
+            "link": "/en/manual/client/position-tracking"
+          },
+          {
+            "text": "Custom Path Planner (Canvas)",
+            "link": "/en/manual/client/canvas"
+          },
+          {
+            "text": "Launching The Game in Windowed Fullscreen",
+            "link": "/en/manual/client/fullscreen-windowed"
+          },
+          {
+            "text": "Framerate/Tracking Control",
+            "link": "/en/manual/client/framerate"
+          },
+          {
+            "text": "Progress Recovery",
+            "link": "/en/manual/client/save-restore"
+          },
+          {
+            "text": "Easter Eggs",
+            "link": "/en/manual/client/easter-egg"
+          }
+        ]
+      },
+      {
+        "text": "FAQ",
+        "collapsed": false,
+        "items": [
+          {
+            "text": "Account safety",
+            "link": "/en/manual/faq/accountsafety/acntban"
+          },
+          {
+            "text": "Auto Update",
+            "link": "/en/manual/faq/autoupdate/updater"
+          },
+          {
+            "text": "Installation Error",
+            "items": [
+              {
+                "text": "Code 2503",
+                "link": "/en/manual/faq/instlerror/code2503"
+              },
+              {
+                "text": "Missing .dll file",
+                "link": "/en/manual/faq/instlerror/missingdll"
+              }
+            ]
+          },
+          {
+            "text": "Launch Error",
+            "items": [
+              {
+                "text": "Stuck/No Progress",
+                "link": "/en/manual/faq/launcherror/emptydialog"
+              },
+              {
+                "text": "Version Check Failed",
+                "link": "/en/manual/faq/launcherror/versioncheck"
+              }
+            ]
+          },
+          {
+            "text": "About Login",
+            "items": [
+              {
+                "text": "Login Problems",
+                "link": "/en/manual/faq/login/accountlogin"
+              },
+              {
+                "text": "Repeated Login Requests",
+                "link": "/en/manual/faq/login/clientrepeatedly"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "qrcodeTitle": "Discord Server",
+    "qrcodeMessage": "Contact us on discord",
+    "qrcodeLink": "https://discord.gg/aFe57AKZUF",
+    "navigation": [
+      {
+        "title": "About",
+        "items": [
+          {
+            "text": "Join Us",
+            "link": "/en/join"
+          },
+          {
+            "text": "Our team",
+            "link": "/en/team"
+          },
+          {
+            "text": "Sponsors",
+            "link": "/en/support-us"
+          }
+        ]
+      },
+      {
+        "title": "Legal (Chinese)",
+        "items": [
+          {
+            "text": "Disclaimer",
+            "link": "/en/disclaimer"
+          },
+          {
+            "text": "Privacy",
+            "link": "/en/privacy"
+          },
+          {
+            "text": "Agreement",
+            "link": "/en/agreement"
+          }
+        ]
+      },
+      {
+        "title": "Support",
+        "items": [
+          {
+            "text": "Client User Manual",
+            "link": "/en/manual/client/"
+          },
+          {
+            "text": "Feedback",
+            "link": "/en/feedback/"
+          }
+        ]
+      }
+    ]
+  },
+  "META_URL": "https://yuanshen.site/docs/en/",
+  "META_TITLE": "Kongying Tavern",
+  "META_KEYWORDS": "Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map",
+  "META_DESCRIPTION": "A Genshin interactive map by Kongying Tavern for completionists",
+  "META_IMAGE": "https://yuanshen.site/docs/imgs/common/cover.jpg",
+  "LOCAL_CODE": "en-US",
+  "LOCAL_BASE": "/en"
+}

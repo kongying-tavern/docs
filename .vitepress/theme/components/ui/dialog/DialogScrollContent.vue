@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DialogContentEmits, DialogContentProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
 import {
   DialogContent,
   DialogOverlay,
@@ -9,6 +8,7 @@ import {
   useForwardPropsEmits,
 } from 'radix-vue'
 import { computed } from 'vue'
+import { cn } from '@/lib/utils'
 
 const props = defineProps<
   DialogContentProps & { class?: HTMLAttributes['class'] }
@@ -27,7 +27,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 <template>
   <DialogPortal>
     <DialogOverlay
-      class="fixed inset-0 z-50 grid data-[state=closed]:animate-out data-[state=open]:animate-in place-items-center overflow-y-auto bg-black/80 data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
+      class="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-black/80 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
     >
       <DialogContent
         :class="

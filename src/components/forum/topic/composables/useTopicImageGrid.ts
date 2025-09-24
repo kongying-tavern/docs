@@ -1,5 +1,5 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { Ref } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 
 export function useTopicImageGrid(topic: Ref<ForumAPI.Topic | undefined>) {

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { useData, withBase } from 'vitepress'
+import { computed, ref, watch } from 'vue'
+import { useRequest } from 'vue-request'
+import { toast } from 'vue-sonner'
 import { user as userAPI } from '@/apis/forum/gitee'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
@@ -8,11 +12,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
-import { useData, withBase } from 'vitepress'
-import { computed, ref, watch } from 'vue'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
@@ -26,11 +27,12 @@ if (!user && !userId)
   throw new Error('Must contain any of the two parameters')
 
 const { localeIndex } = useData()
+const { message } = useLocalized()
 
 const { run: getUser, data: userData, loading: getUserLoading } = useRequest(userAPI.getUser, {
   manual: true,
   onError: (error) => {
-    toast.error(`拉取用户资料失败 (${error})`)
+    toast.error(`${message.value.forum.labels.fetchUserFailed} (${error})`)
   },
 })
 
@@ -85,7 +87,7 @@ function sendMessage() {
             </div>
 
             <p class="line-clamp-2 mt-1 text-xs text-gray-600 dark:text-gray-400">
-              {{ userInfo?.bio || '这个人很懒，什么都没写~' }}
+              {{ userInfo?.bio || message.forum.labels.lazyPerson }}
             </p>
           </div>
         </div>
@@ -93,7 +95,7 @@ function sendMessage() {
         <div class="mt-1 flex justify-end gap-2">
           <Button variant="outline" size="sm" class="border border-[var(--vp-c-divider)] rounded-full border-solid" :disabled="getUserLoading" @click="sendMessage">
             <span class="i-lucide-mail mr-1 text-sm" />
-            <span>私信</span>
+            <span>{{ message.forum.labels.privateMessage }}</span>
           </Button>
           <ForumFollowUserButton v-if="userInfo?.login" size="sm" class="border border-[var(--vp-c-divider)] rounded-full border-solid" :user="userInfo?.login" />
         </div>

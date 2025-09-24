@@ -237,6 +237,14 @@ theme: medium
 
 :::: demo
 输入!!xxx!!显示彩蛋
+
+测试智能宽度：!!短文本!! !!这是一段较长的隐藏内容!!
+
+测试自定义宽度：!!自定义宽度!!{width=200} !!更长的内容!!{w=300}
+
+测试文字对齐：!!居中对齐!!{align=center} !!右对齐!!{a=right}
+
+测试组合属性：!!宽度和对齐!!{width=250,align=center}
 ::::
 
 ### Custom Color 文字颜色 {#custom-color}
@@ -317,6 +325,52 @@ paragraph *style me*{.vp-link} more text
 大家好~**[:1.小黄脸/呲牙.png:]**
 :1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
 演出，开始~:2.原神/芙宁娜-乐.png:)
+::::
+
+
+### [Task list](https://mdit-plugins.github.io/zh/tasklist.html#%E9%80%89%E9%A1%B9)
+
+#### 语法
+
+使用 - [ ] 一些文字 渲染一个未勾选的任务项
+使用 - [x] 一些文字 渲染一个勾选了的任务项 (我们也支持大写的 X)
+
+#### 示例
+
+:::: demo
+- [ ] 计划 A
+- [x] 计划 B
+::::
+
+### Ruby
+
+#### 语法
+
+通过 *{ruby base:ruby text1|ruby text2|...} 来添加 ruby 声明。
+
+#### 示例
+
+:::: demo
+*{中国:zhōng|guó}
+::::
+
+### [Abbr](https://mdit-plugins.github.io/zh/abbr.html)
+
+#### 语法
+
+通过此插件，你可以通过以额外 * 开头的链接声明来声明缩略词。
+
+```markdown
+*[缩略词]: 内容
+```
+
+#### 示例
+
+:::: demo
+*[HTML]: Hyper Text Markup Language
+*[W3C]: World Wide Web Consortium
+
+The HTML specificationis maintained by the W3C.
 ::::
 
 ## Frontmatter 配置 {#frontmatter}

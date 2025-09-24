@@ -6,6 +6,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { Editor } from '@tiptap/vue-3'
 import { computed, onBeforeUnmount, onMounted, readonly, ref, watch } from 'vue'
 import { EmojiNode } from '~/composables/tiptap/emojiNode'
+import { createLinkExtension } from '~/composables/tiptap/linkConfig'
 import { MentionNode } from '~/composables/tiptap/mentionNode'
 
 export function useRichTextEditor(options: {
@@ -52,9 +53,8 @@ export function useRichTextEditor(options: {
     editor.value = new Editor({
       extensions: [
         StarterKit.configure({
-          history: {
-            depth: 10,
-          },
+          // 禁用默认的 Link 扩展，使用自定义的 Link 扩展
+          link: false,
         }),
         CharacterCount.configure({
           limit: maxTextLength,
@@ -68,6 +68,7 @@ export function useRichTextEditor(options: {
             class: 'mention',
           },
         }),
+        createLinkExtension({ openOnClick: false, editable: true }),
       ],
       content: editorContent.value,
       editable: !disabled,

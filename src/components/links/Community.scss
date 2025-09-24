@@ -1,23 +1,22 @@
 @mixin main {
   // 推荐群
-  @include set-badge(1, 'suggest');
-  @include set-badge(2, 'suggest');
-  @include set-badge(3, 'suggest');
+  .qq-group--suggest > a strong::after {
+    @include badge-style('suggest');
+  }
 
   // 已满群
-  @include set-badge(6, 'warning');
-  @include set-badge(7, 'warning');
-  @include set-badge(11, 'warning');
-  // 被封禁的群
-  @include set-badge(4, 'baned');
-  @include set-badge(8, 'baned');
+  .qq-group--warning > a strong::after {
+    @include badge-style('warning');
+  }
 
-  ul > li:nth-child(4),
-  ul > li:nth-child(8),
-  ul > li:nth-child(4) > a strong,
-  ul > li:nth-child(4) > a,
-  ul > li:nth-child(8) > a strong,
-  ul > li:nth-child(8) > a {
+  // 被封禁的群
+  .qq-group--banned > a strong::after {
+    @include badge-style('banned');
+  }
+
+  .qq-group--banned,
+  .qq-group--banned > a strong,
+  .qq-group--banned > a {
     cursor: no-drop;
     color: var(--vp-c-text-2);
     box-shadow: none !important;
@@ -25,18 +24,19 @@
     border: none !important;
   }
 
-  ul {
+  ul,
+  .qq-groups-list {
     display: inherit;
     padding: 0;
-    /* max-height: 475px; */
     display: flex;
     flex-direction: column;
-    /* overflow-y: scroll; */
+
     li {
       cursor: pointer;
       display: inline-block;
       margin: 10px 0;
       width: 100%;
+      height: 52px;
       font-size: 16px;
       border-radius: 8px;
       transition: border 0.1s;
@@ -72,34 +72,32 @@
   }
 }
 
-@mixin set-badge($number, $type) {
-  ul > li:nth-child(#{$number}) > a strong::after {
-    display: inline-block;
-    margin-left: 6px;
-    border-radius: 12px;
-    padding: 0 6px;
-    line-height: 22px;
-    font-size: 12px;
-    font-weight: 500;
-    border-color: var(--vp-badge-tip-border);
-    transform: translateY(-2px);
+@mixin badge-style($type) {
+  display: inline-block;
+  margin-left: 6px;
+  border-radius: 12px;
+  padding: 0 6px;
+  line-height: 22px;
+  font-size: 12px;
+  font-weight: 500;
+  border-color: var(--vp-badge-tip-border);
+  transform: translateY(-2px);
 
-    @if $type == 'suggest' {
-      color: rgb(235, 235, 235);
-      background-color: #60bf90bd;
-      content: '推荐';
-    }
+  @if $type == 'suggest' {
+    color: rgb(235, 235, 235);
+    background-color: #60bf90bd;
+    content: '推荐';
+  }
 
-    @if $type == 'baned' {
-      color: var(--vp-badge-info-text);
-      background-color: var(--vp-badge-info-bg);
-      content: '被封禁';
-    }
+  @if $type == 'banned' {
+    color: var(--vp-badge-info-text);
+    background-color: var(--vp-badge-info-bg);
+    content: '被封禁';
+  }
 
-    @if $type == 'warning' {
-      color: var(--vp-badge-warning-text);
-      background-color: var(--vp-badge-warning-bg);
-      content: '已满';
-    }
+  @if $type == 'warning' {
+    color: var(--vp-badge-warning-text);
+    background-color: var(--vp-badge-warning-bg);
+    content: '已满';
   }
 }

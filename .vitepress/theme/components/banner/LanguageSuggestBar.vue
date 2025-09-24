@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useData, useRouter, withBase } from 'vitepress'
+import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import CloseButton from '@/components/ui/CloseButton.vue'
 import {
@@ -13,10 +15,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import { ensureStartingSlash, getLangPath } from '@/utils'
-import { useData, useRouter, withBase } from 'vitepress'
 
-import { computed, ref } from 'vue'
+import { ensureStartingSlash, getLangPath } from '@/utils'
 
 import { languageSuggestBarTranslate } from '../../../locales/common/LanguageSuggestBar'
 import { LOCALE_CONFIG } from './configs'

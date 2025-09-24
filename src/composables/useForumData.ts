@@ -1,9 +1,9 @@
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumQueryParams, ForumServiceOptions } from '~/services/forumService'
-import { useLoadMore } from '@/hooks/useLoadMore'
-import { useLocalized } from '@/hooks/useLocalized'
 import { computed, ref } from 'vue'
 import { useRequest } from 'vue-request'
+import { useLoadMore } from '@/hooks/useLoadMore'
+import { useLocalized } from '@/hooks/useLocalized'
 import { handleError } from '~/composables/handleError'
 import { ForumService } from '~/services/forumService'
 

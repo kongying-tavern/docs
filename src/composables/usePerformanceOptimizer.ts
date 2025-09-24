@@ -92,7 +92,7 @@ export function useThrottledRef<T>(initialValue: T, delay: number = 100) {
 }
 
 // Memoized computation with dependency tracking
-// Using any[] for maximum compatibility with different dependency types
+// Using any[] for maximum compatibility with different dependency types (performance utility)
 export function useMemoizedComputed<T>(
   computation: (...deps: any[]) => T,
   dependencies: () => any[],
@@ -166,18 +166,6 @@ export function useBatchUpdates() {
   const updates = new Map<string, () => void>()
   const isScheduled = ref(false)
 
-  const scheduleUpdate = (key: string, updateFn: () => void) => {
-    updates.set(key, updateFn)
-
-    if (!isScheduled.value) {
-      isScheduled.value = true
-      // Use microtask for batching
-      queueMicrotask(() => {
-        flushUpdates()
-      })
-    }
-  }
-
   const flushUpdates = () => {
     const pendingUpdates = Array.from(updates.values())
     updates.clear()
@@ -192,6 +180,18 @@ export function useBatchUpdates() {
         console.error('Batch update failed:', error)
       }
     })
+  }
+
+  const scheduleUpdate = (key: string, updateFn: () => void) => {
+    updates.set(key, updateFn)
+
+    if (!isScheduled.value) {
+      isScheduled.value = true
+      // Use microtask for batching
+      queueMicrotask(() => {
+        flushUpdates()
+      })
+    }
   }
 
   return {

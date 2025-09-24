@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useLocalized } from '@/hooks/useLocalized'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
+import { shuffle, take } from 'lodash-es'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
-import { flattenWithTags, getPageHeight, getRandomElements } from './utils'
+import { useLocalized } from '@/hooks/useLocalized'
+import { flattenWithTags, getPageHeight } from './utils'
 
 const { contactUs = false } = defineProps<{
   showButton?: boolean
@@ -15,12 +16,11 @@ const { theme } = useData()
 
 const qrcode = useQRCode(message.value.forum.aside.contactUs.qrcodeLink)
 
-const randomSuggest = getRandomElements(
+const randomSuggest = take(shuffle(
   flattenWithTags(
     theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1),
   ),
-  Math.max(Math.ceil(getPageHeight() / 400), 8),
-)
+), Math.max(Math.ceil(getPageHeight() / 400), 8))
 
 const suggestList = computed(() => {
   return [...message.value.forum.aside.suggest.items, ...randomSuggest].sort(
@@ -57,7 +57,7 @@ const suggestList = computed(() => {
         <p class="color-[var(--vp-c-text-1)]">
           {{ message.forum.aside.teamBlog.text }}
         </p>
-        <VPLink class="font-size-14px vp-link" href="../blog">
+        <VPLink class="vp-link font-size-14px" href="../blog">
           {{ message.ui.button.all }}
         </VPLink>
       </div>

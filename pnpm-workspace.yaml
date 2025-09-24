@@ -137,9 +137,35 @@ catalogs:
     vite-plugin-vue-devtools: ^7.7.
   conflicts_conflicts_vite-plugin-vue-devtools_h_0_2_h7_7_7:
     vite-plugin-vue-devtools: ^7.7.7
+  conflicts_editor_h3_4_4:
+    '@tiptap/core': ^3.4.4
+    '@tiptap/extension-character-count': ^3.4.4
+    '@tiptap/extension-mention': ^3.4.4
+    '@tiptap/extension-placeholder': ^3.4.4
+    '@tiptap/starter-kit': ^3.4.4
+    '@tiptap/vue-3': ^3.4.4
+  conflicts_frontend_h1_7_1:
+    motion-v: ^1.7.1
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
   - vue-demi
 catalog:
+  '@atlaskit/pragmatic-drag-and-drop': ^1.7.7
+  '@atlaskit/pragmatic-drag-and-drop-hitbox': ^1.1.0
+  '@floating-ui/dom': ^1.7.4
+  '@mdit/plugin-abbr': ^0.22.1
+  '@mdit/plugin-icon': ^0.22.1
+  '@mdit/plugin-ruby': ^0.22.1
+  '@mdit/plugin-tasklist': ^0.22.1
+  '@number-flow/vue': ^0.4.8
+  '@tanstack/vue-table': ^8.21.3
+  '@tiptap/extension-link': ^3.4.4
+  '@tiptap/pm': ^3.4.4
+  '@tiptap/static-renderer': ^3.4.4
+  '@tiptap/suggestion': ^3.4.4
+  '@types/sortablejs': ^1.15.8
+  dexie: ^4.2.0
+  sortablejs: ^1.15.6
+  tiptap-markdown: ^0.9.0
   vite-plugin-vue-devtools: ^8.0.2

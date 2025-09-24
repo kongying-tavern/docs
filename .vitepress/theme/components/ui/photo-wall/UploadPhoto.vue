@@ -34,8 +34,9 @@ function uploadFiles(files: File[]) {
     const rawFile = file as UploadRawFile
     rawFile.uid = genFileId()
     onStart(rawFile)
-    inputRef.value!.value = ''
   }
+
+  inputRef.value!.value = ''
 }
 
 function handleChange(e: Event) {
@@ -77,7 +78,7 @@ function handleKeydown() {
       ref="inputRef"
       class="hidden"
       :name="name"
-      :disabled="disabled || fileList.length === limit"
+      :disabled="disabled"
       :maxlength="limit"
       :multiple="multiple"
       :accept="accept"

@@ -1,14 +1,16 @@
 import type { LocalAuth } from '@/stores/useUserAuth'
-import { oauth } from '@/apis/forum/gitee'
-import { oauth as interKnotOauth } from '@/apis/inter-knot.site'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import { removeQueryParam } from '@/utils'
-import { AuthError } from '@/utils/auth-errors'
 import { refAutoReset, useStorage } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
+import { oauth } from '@/apis/forum/gitee'
+import { oauth as interKnotOauth } from '@/apis/inter-knot.site'
+import { useAuthProgress } from '@/composables/useAuthProgress'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { removeQueryParam } from '@/utils'
+import { AuthError, AuthErrorType } from '@/utils/auth-errors'
+import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
 const HISTORY_LENGTH_KEY = 'auth-history-length'
@@ -16,8 +18,11 @@ const HISTORY_LENGTH_KEY = 'auth-history-length'
 function useLogin() {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
+  const { message } = useLocalized()
   const authCode = getAuthCodeFromURL()
   const isAuthenticating = ref(false)
+
+  const authProgress = useAuthProgress()
 
   const redirectUrl = refAutoReset(withBase('/'), 1000 * 60 * 5)
   const storedRedirectUrl = useStorage(REDIRECT_LINK_KEY, redirectUrl, sessionStorage)
@@ -43,50 +48,63 @@ function useLogin() {
     isAuthenticating.value = true
 
     try {
-      const result = await oauth.getToken(authCode, localeIndex.value)
-
-      if (!result.success) {
-        const errorMsg = AuthError.isAuthError(result.error)
-          ? result.error.getUserMessage()
-          : theme.value.forum.auth.loginFail
-        toast.error(errorMsg)
-        return
-      }
-
-      // Convert ForumAPI.Auth to LocalAuth by adding expiresTime
-      const authWithExpiresTime: LocalAuth = {
-        ...result.data,
-        expiresTime: Date.now() + result.data.expiresIn * 1000,
-      }
-      await storeUserSession(authWithExpiresTime)
-      await refreshInterKnotSSOToken()
-
+      await performOAuthSteps()
       handlePostLogin()
       await redirectToOriginalPage()
     }
     catch (error) {
-      console.error('[Login]: OAuth流程失败', error)
-      toast.error(theme.value.forum.auth.loginFail)
+      console.error('[Login]: OAuth flow failed', error)
     }
     finally {
       isAuthenticating.value = false
     }
   }
 
+  async function performOAuthSteps() {
+    authProgress.setStep('init')
+    await new Promise(resolve => setTimeout(resolve, 300))
+    authProgress.completeStep('init')
+
+    authProgress.setStep('token')
+    if (!authCode) {
+      authProgress.setError('token')
+      throw new AuthError(AuthErrorType.OAUTH_CODE_MISSING, 'Authorization code not found')
+    }
+
+    const result = await oauth.getToken(authCode, localeIndex.value)
+    if (!result.success) {
+      authProgress.setError('token')
+      throw result.error
+    }
+    authProgress.completeStep('token')
+
+    authProgress.setStep('session')
+    const authWithExpiresTime: LocalAuth = {
+      ...result.data,
+      expiresTime: Date.now() + result.data.expiresIn * 1000,
+    }
+    await storeUserSession(authWithExpiresTime)
+    authProgress.completeStep('session')
+
+    authProgress.setStep('sso')
+    await refreshInterKnotSSOToken()
+    authProgress.completeStep('sso')
+
+    authProgress.setStep('redirect')
+    return 'success'
+  }
+
   async function redirectToOriginalPage() {
     try {
       const redirectUrl = storedRedirectUrl.value || withBase('')
 
-      // 使用简单的replace方式跳转，避免复杂的history操作
       window.history.replaceState({}, '', redirectUrl)
       await go(redirectUrl)
-
-      // 清理存储的状态
       sessionStorage.removeItem(HISTORY_LENGTH_KEY)
       storedRedirectUrl.value = withBase('/')
     }
     catch (error) {
-      console.warn('[Login]: 重定向失败，回退到首页', error)
+      console.warn('[Login]: Redirect failed, falling back to home', error)
       await go(withBase('/'))
     }
   }
@@ -122,7 +140,7 @@ function useLogin() {
         // 验证返回数据的完整性
         const { accessToken: newAccessToken, expiresTime, createdAt, expiresIn } = result.data
         if (!newAccessToken) {
-          toast.error('inter-knot.site: 刷新token失败，返回数据不完整')
+          toast.error(message.value.forum.errors.ssoRefreshTokenFailed)
           return
         }
 
@@ -135,7 +153,7 @@ function useLogin() {
       }
     }
     catch (error) {
-      console.warn('[Login]: InterKnot SSO刷新失败，主认证仍有效', error)
+      console.warn('[Login]: InterKnot SSO refresh failed, main auth still valid', error)
     }
   }
 
@@ -174,7 +192,6 @@ function useLogin() {
     const code = new URLSearchParams(location.search).get('code')
     if (code) {
       removeQueryParam('code')
-      // OAuth流程开始时，清理之前的redirect URL缓存
       localStorage.removeItem('oauth-redirect-url')
     }
     return code
@@ -200,6 +217,7 @@ function useLogin() {
     getUserInfo,
     redirectAuth: handleOAuthLoginStart,
     isAuthenticating,
+    authProgress,
   }
 }
 

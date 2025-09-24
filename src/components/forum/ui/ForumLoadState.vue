@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Button } from '@/components/ui/button'
 import { ReloadIcon } from '@radix-icons/vue'
+import { Button } from '@/components/ui/button'
 
 defineProps({
   loading: {

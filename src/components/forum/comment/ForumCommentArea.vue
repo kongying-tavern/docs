@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
+import { nextTick, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
-import { nextTick, onMounted, onUnmounted, useTemplateRef } from 'vue'
 import { scrollTo } from '~/composables/scrollTo'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import { useCommentAreaState } from './composables/useCommentAreaState'
@@ -21,7 +21,7 @@ const { message } = useLocalized()
 
 // Comment area state management
 const {
-  replyCommentID,
+  replyCommentID: _replyCommentID,
   commentInputBoxIsVisible,
   isMobile,
   renderComments,
@@ -43,6 +43,17 @@ const commentArea = useTemplateRef('commentArea')
 const commentInputBox = useTemplateRef('commentInputBox')
 const { right, left, width } = useElementBounding(commentArea)
 const [CommentAreaCommentInputBox, UseCommentAreaCommentInputBox] = createReusableTemplate()
+
+// Watch for commentCount changes and initialize comments when available
+watch(
+  () => props.commentCount,
+  async (newCommentCount) => {
+    if (newCommentCount !== undefined && newCommentCount !== -1) {
+      await initialize()
+    }
+  },
+  { immediate: false },
+)
 
 // Lifecycle hooks
 onMounted(async () => {

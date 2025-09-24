@@ -1,5 +1,5 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { Ref } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
 import { useImageUpload } from '~/composables/useImageUpload'
 import { useSubmitTopic } from '~/composables/useSubmitTopic'
 

@@ -1,9 +1,9 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { ComputedRef, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
+import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
-import { issues } from '@/apis/forum/gitee'
 import { computed, ref } from 'vue'
+import { issues } from '@/apis/forum/gitee'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicManger } from '~/composables/useTopicManger'
 import { forumEvents } from '~/services/events/SimpleEventManager'
@@ -63,13 +63,13 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
       },
       {
         type: 'submenu',
-        label: '更改类型',
+        label: menuLabels.value.changeType.text,
         icon: 'i-lucide:settings',
         items: topicTypeEnum.filter(val => val !== topicData.type).map(
           val => ({
             id: `change-topic-${val}`,
             type: 'item',
-            label: val,
+            label: `${menuLabels.value.changeType.to} ${message.value.forum.topic.type[val.toLowerCase() as keyof typeof message.value.forum.topic.type] || val}`,
             action: () => {
               toggleTopicType(val)
               forumEvents.topicTypeChanged(topicData.id, val)
@@ -80,14 +80,14 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
       {
         id: 'tags-topic',
         type: 'item',
-        label: '修改 Tags',
+        label: menuLabels.value.modifyTags.text,
         icon: 'i-lucide-tags',
         action: () => openTopicTagsEditorDialog(topicData),
       },
       {
         id: 'pinned-topic',
         type: 'item',
-        label: topicData.pinned ? '取消固定' : '固定话题',
+        label: topicData.pinned ? menuLabels.value.pinTopic.unpin : menuLabels.value.pinTopic.pin,
         icon: topicData.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
         action: () => {
           togglePinedTopic()
@@ -97,14 +97,14 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
       {
         id: 'close-comment-topic',
         type: 'item',
-        label: topicData.commentCount === -1 ? '打开评论' : '关闭评论',
+        label: topicData.commentCount === -1 ? menuLabels.value.commentArea.open : menuLabels.value.commentArea.close,
         icon: topicData.commentCount === -1 ? 'i-lucide:message-circle' : 'i-lucide:message-circle-off',
         action: toggleTopicCommentArea,
       },
       {
         id: 'hide-topic',
         type: 'item',
-        label: hideState ? menuLabels.value.hideFeedback.text : '取消话题',
+        label: hideState ? menuLabels.value.hideFeedback.text : menuLabels.value.cancelTopic.text,
         icon: hideState ? 'i-lucide:eye-off' : 'i-lucide:eye',
         action: handleToggleHideTopic,
       },
@@ -122,7 +122,7 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
       {
         type: 'item',
         id: 'close-feedback',
-        label: closeState ? menuLabels.value.closeFeedback.text : '打开反馈',
+        label: closeState ? menuLabels.value.closeFeedback.text : menuLabels.value.reopenFeedback.text,
         icon: closeState ? 'i-lucide:square-x' : 'i-lucide:undo',
         action: handleToggleCloseTopic,
         class: 'c-red opacity-90 hover:c-red hover:opacity-100',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Time from '@/components/ui/Time/Time.vue'
 import { useData } from 'vitepress'
+import Time from '@/components/ui/Time/Time.vue'
 
 const { date = new Date(), relative = true } = defineProps<{
   date?: string | number | Date

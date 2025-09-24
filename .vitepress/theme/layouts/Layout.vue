@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { useIntersectionObserver } from '@vueuse/core'
+import mediumZoom from 'medium-zoom'
+import { useData, useRouter } from 'vitepress'
+import DefaultTheme from 'vitepress/theme-without-fonts'
+import { computed, nextTick, onMounted, provide, shallowRef, useTemplateRef, watch } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import DocAside from '@/components/DocAside.vue'
 import DocHeader from '@/components/DocHeader.vue'
@@ -9,11 +14,6 @@ import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
 import { loadFonts } from '@/composables/loadFonts'
 import { enableTransitions } from '@/shared'
-import { useIntersectionObserver } from '@vueuse/core'
-import mediumZoom from 'medium-zoom'
-import { useData, useRouter } from 'vitepress'
-import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, nextTick, onMounted, provide, shallowRef, useTemplateRef, watch } from 'vue'
 
 import '@/styles/vars.css'
 import '@/styles/main.css'
@@ -151,6 +151,9 @@ router.onAfterRouteChange = setupMediumZoom
 
 .medium-zoom-overlay,
 .medium-zoom-image--opened {
+  object-fit: contain !important;
+  border-radius: 0 !important;
+  border: none !important;
   z-index: 999;
 }
 

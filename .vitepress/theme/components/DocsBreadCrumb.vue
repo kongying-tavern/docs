@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useData, useRouter } from 'vitepress'
+import { computed } from 'vue'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,8 +8,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { useData, useRouter } from 'vitepress'
-import { computed } from 'vue'
 
 const { frontmatter, theme } = useData()
 const { go } = useRouter()

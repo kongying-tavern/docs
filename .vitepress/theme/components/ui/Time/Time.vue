@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useData } from 'vitepress'
 import {
   computed,
   onBeforeUnmount,
@@ -36,6 +37,9 @@ const props = withDefaults(defineProps<{
   hour12: undefined,
 })
 
+// Get current VitePress locale
+const { lang } = useData()
+
 const date = computed(() => {
   const rawDate = props.datetime
   if (!rawDate)
@@ -62,7 +66,8 @@ onBeforeUnmount(() => {
 
 const formatter = computed(() => {
   const { locale: propsLocale, relative, ...rest } = props
-  const locale = propsLocale || import.meta.env.SSR ? 'zh-CN' : navigator.language
+  // Use VitePress locale first, then fallback to prop locale, then browser/SSR default
+  const locale = propsLocale || lang.value || (import.meta.env.SSR ? 'zh-CN' : navigator.language)
   if (relative) {
     return new Intl.RelativeTimeFormat(locale, rest)
   }

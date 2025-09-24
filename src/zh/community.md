@@ -11,7 +11,7 @@ layout: doc
 
 推荐加入人数较少的群，申请入群即代表你已同意接受下方《QQ 社群公约》
 
-> 请勿重复加群，由于群人数均衡原因，若重复加群将踢出“群人数较多的群”！
+> 请勿重复加群，由于群人数均衡原因，若重复加群将踢出"群人数较多的群"！
 
 :::details QQ 社群公约
 
@@ -22,40 +22,21 @@ layout: doc
 5. 请勿传播未经证实的信息，转发信息前请验明真实性。不传谣不信谣。一切以官方信息为准。
 6. 请勿谈论个人隐私信息。保护个人信息财产安全，个人账号安全。
 7. 禁止发送各种广告、二维码、不相关链接 (包括但不限于代肝、游戏推广、拼单刷单、私服外挂等)
-8. 请勿恶意刷屏 (1分钟内“相同内容”或“图片”超过 3 次则视为刷屏)
+8. 请勿恶意刷屏 (1分钟内"相同内容"或"图片"超过 3 次则视为刷屏)
 9. 请勿发起或发送：群通话、小额群红包 (低于 0.5/10 人)、语音/口令红包、群投票等对群员影响大的功能。
 10. 若违反群规，会视情况与次数，给予：警告禁言10分钟/禁言 1 小时/禁言 12 小时/踢出群聊等处理。
 
 :::
-- [**原神地图 08 群** 1012554070](https://qm.qq.com/q/pT6SMOn0EE '点击一键加入原神地图08群')
-- [**原神地图 10 群** 781455797](https://qm.qq.com/q/8DngyPRcl2 '点击一键加入原神地图10群')
-- [**原神地图 14 群** 468263682](https://qm.qq.com/q/To2IVMTfqi '点击一键加入原神地图14群')
-- [**原神地图 01 群** 765302904](# '被封禁')
-- [**原神地图 02 群** 853210278](https://qm.qq.com/q/IAxw3ZTByS '点击一键加入原神地图02群')
-- [**原神地图 03 群** 932683801](https://qm.qq.com/q/Gp8JpzKHWG '点击一键加入原神地图03群')
-- [**原神地图 04 群** 1139510554](https://qm.qq.com/q/GpOcTaFnyO '点击一键加入原神地图04群')
-- [**原神地图 05 群** 1012554070](# '被封禁')
-- [**原神地图 06 群** 1168337427](https://qm.qq.com/q/eKrX4NJi82 '点击一键加入原神地图06群')
-- [**原神地图 07 群** 726524364](https://qm.qq.com/q/VFt6rNHKWC '点击一键加入原神地图07群')
-- [**原神地图 09 群** 902221505](https://qm.qq.com/q/4KPqq9oH44 '点击一键加入原神地图09群')
-- [**原神地图 11 群** 675165437](https://qm.qq.com/q/yHYleN16vu '点击一键加入原神地图11群')
-- [**原神地图 12 群** 657416377](https://qm.qq.com/q/mKD0P4bsCk '点击一键加入原神地图12群')
-- [**原神地图 13 群** 670338986](https://qm.qq.com/q/4qt8156JLq '点击一键加入原神地图13群')
-- [**原神地图 15 群** 668424173](https://qm.qq.com/q/7rUA47LtCw '点击一键加入原神地图15群')
-- [**原神地图 16 群** 965207278](https://qm.qq.com/q/QDSOtAeqok '点击一键加入原神地图16群')
-- [**原神地图 17 群** 942420580](https://qm.qq.com/q/IhvL6FOne2 '点击一键加入原神地图17群')
+
+<QQGroupList />
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { serverLink } from '../components/links/Community'
+import QQGroupList from '~/components/ui/QQGroupList.vue'
 
 const server = [
   serverLink('discord', 'Discord'),
   serverLink('qq', 'QQ 频道'),
 ]
 </script>
-
-<style lang="scss" scoped>
-@use '../components/links/Community.scss';
-@include Community.main;
-</style>

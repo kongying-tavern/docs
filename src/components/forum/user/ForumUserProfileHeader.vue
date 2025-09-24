@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
-import { onMounted } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import { useUserProfile } from './composables/useUserProfile'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
@@ -12,6 +13,7 @@ const props = defineProps<{
 }>()
 
 const modelValue = defineModel('activeTab', { default: 'feedback' })
+const { message } = useLocalized()
 
 // Use user profile composable
 const {
@@ -67,7 +69,7 @@ onMounted(async () => {
               </div>
 
               <p class="mt-1.5 text-sm text-gray-600 sm:mt-2 sm:text-base dark:text-gray-400">
-                {{ renderedUser?.bio || '这个人很懒，什么都没写~' }}
+                {{ renderedUser?.bio || message.forum.labels.lazyPerson }}
               </p>
 
               <!-- 统计信息 -->
@@ -75,12 +77,12 @@ onMounted(async () => {
                 <div class="flex items-center gap-2">
                   <i class="i-lucide-file-text" />
                   <span>{{ topicCount }}</span>
-                  <span>帖子</span>
+                  <span>{{ message.forum.labels.posts }}</span>
                 </div>
                 <div class="flex items-center gap-2">
                   <i class="i-lucide-calendar-days" />
-                  <span>{{ renderedUser?.createAt?.toLocaleDateString() || '未知' }}</span>
-                  <span>加入时间</span>
+                  <span>{{ renderedUser?.createAt?.toLocaleDateString() || message.forum.labels.unknown }}</span>
+                  <span>{{ message.forum.labels.joinTime }}</span>
                 </div>
               </div>
             </div>

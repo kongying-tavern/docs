@@ -13,6 +13,30 @@ import { presetShadcn } from 'unocss-preset-shadcn'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
 
 export default defineConfig({
+  rules: [
+    [
+      'custom-scrollbar',
+      {
+        'scrollbar-width': 'thin',
+        'scrollbar-color': 'hsl(var(--muted-foreground) / 0.2) transparent',
+      },
+      {
+        '&::-webkit-scrollbar': {
+          width: '4px',
+        },
+        '&::-webkit-scrollbar-track': {
+          background: 'transparent',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          'background': 'hsl(var(--muted-foreground) / 0.2)',
+          'border-radius': '2px',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          background: 'hsl(var(--muted-foreground) / 0.4)',
+        },
+      },
+    ],
+  ],
   shortcuts: [
     [
       'icon-btn',
@@ -54,7 +78,7 @@ export default defineConfig({
     // Doc reaction feedback states
     [
       'doc-reaction-feedback-state-base',
-      'inline-block fill-current-color flex-basis-20px flex-shrink-0 font-size-18px mr-2',
+      'inline-block fill-current flex-basis-20px flex-shrink-0 font-size-18px mr-2',
     ],
     [
       'doc-reaction-feedback-state-success',

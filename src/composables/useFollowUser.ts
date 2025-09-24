@@ -1,9 +1,9 @@
-import { user } from '@/apis/forum/gitee'
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import { authGuards } from '@/utils/auth-helpers'
 import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
+import { user } from '@/apis/forum/gitee'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { authGuards } from '@/utils/auth-helpers'
 
 export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const followState = ref<boolean | null>(null)

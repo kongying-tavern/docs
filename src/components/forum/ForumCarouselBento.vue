@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
-import { getLangPath } from '@/utils'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import { useLocalized } from '@/hooks/useLocalized'
+import { getLangPath } from '@/utils'
 import BentoGridItem from './ForumBento.vue'
 
 const props = defineProps<{
@@ -11,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const { localeIndex } = useData()
+const { message } = useLocalized()
 
 const presetUser = {
   avatar: 'https://yuanshen.site/docs/imgs/common/logo/logo_256.png',
@@ -18,39 +20,29 @@ const presetUser = {
   login: 'kongying-tavern',
 }
 
-const presetList: {
-  id: string
-  icon: string
-  title: string
-  relativeLink: string
-  user: {
-    avatar: string
-    username: string
-    login: string
-  }
-}[] = [
+const presetList = computed(() => [
   {
     id: 'team-blog',
     icon: 'i-lucide-rss',
-    title: '团队博客',
+    title: message.value.forum.labels.teamBlog,
     relativeLink: 'blog',
     user: presetUser,
   },
   {
     id: 'manuel',
     icon: 'i-lucide-book-text',
-    title: '使用手册',
+    title: message.value.forum.labels.userManual,
     relativeLink: 'manual/client/',
     user: presetUser,
   },
   {
     id: 'community',
     icon: 'i-lucide-aperture',
-    title: '加入社区',
+    title: message.value.forum.labels.joinCommunity,
     relativeLink: 'community',
     user: presetUser,
   },
-]
+])
 
 const sortedList = computed(() => {
   return [...props.list].sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))

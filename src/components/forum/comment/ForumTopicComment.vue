@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { Image } from '@/components/ui/image'
 import { EditorContent } from '@tiptap/vue-3'
 import { onBeforeUnmount, onMounted } from 'vue'
+import { Image } from '@/components/ui/image'
+import { parseContentText } from '~/composables/tiptapJsonToText'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicComment } from './composables/useTopicComment'
@@ -33,8 +34,10 @@ const {
   editor,
   richTextData,
   role,
+  isResolved: _isResolved,
   initializeEditor,
   destroyEditor,
+  toggleResolvedTag,
 } = useTopicComment({
   commentData: props.commentData,
   topicAuthorId: props.topicAuthorId,
@@ -92,22 +95,24 @@ onBeforeUnmount(() => {
 
       <article
         v-else
-        class="content"
+        class="content whitespace-pre-wrap"
         :class="COMMENT_STYLES[props.size].content"
-        v-html="props.commentData.content.text"
-      />
+      >
+        {{ parseContentText(props.commentData.content.text) }}
+      </article>
 
-      <div v-if="props.commentData.content.images && props.size !== 'small'" class="topic-content-img mt-4 flex">
+      <div v-if="props.commentData.content.images && props.size !== 'small'" class="topic-content-img mt-4 flex flex-wrap gap-2">
         <Image
-          v-for="img in props.commentData.content.images" :key="img.src" :src="img.src" :alt="img.alt"
-          :thumbhash="img.thumbHash" :width="img.width" :height="img.height" class="mr-4 max-h-24 rounded-sm"
+          v-for="img in props.commentData.content.images" :key="img.src" :image="img.src" :alt="img.alt"
+          :thumbhash="img.thumbHash" :width="img.width" :height="img.height"
+          class="max-h-24 cursor-zoom-in rounded-sm transition-colors duration-200"
         />
       </div>
 
       <div v-if="props.size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
           :repo="props.repo" :comment-data="props.commentData" :comment-click-handler="props.commentClickHandler"
-          :topic-id="props.topicId"
+          :topic-id="props.topicId" :toggle-resolved-tag="toggleResolvedTag"
           @comment:click="handleCommentClick"
         />
       </div>
@@ -117,9 +122,24 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .topic-comment-item:hover>div>.comment-info>div>.topic-info-list>.topic-btn-more {
   opacity: 1 !important;
   word-break: break-word;
+}
+
+/* 评论图片样式优化 */
+.topic-content-img {
+  max-width: 100%;
+}
+
+/* 错误图片样式 */
+.topic-content-img :deep(.VPImage) {
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+}
+
+.topic-content-img :deep(.VPImage:hover:not(.no-hover)) {
+  border-color: var(--vp-c-brand);
 }
 </style>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { FormTabConfig } from './publish-topic-form/types'
+import { ReloadIcon } from '@radix-icons/vue'
+import { useMediaQuery } from '@vueuse/core'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { DrawerClose, DrawerFooter } from '@/components/ui/drawer'
 import { useLocalized } from '@/hooks/useLocalized'
-import { ReloadIcon } from '@radix-icons/vue'
-import { useMediaQuery } from '@vueuse/core'
 
 interface Props {
   loading: boolean

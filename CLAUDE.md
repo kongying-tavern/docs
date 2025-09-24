@@ -30,10 +30,37 @@ pnpm run build-emoji      # Build emoji data
 pnpm run lint             # Run ESLint + Chinese text linting
 pnpm run lint:eslint-fix  # Auto-fix ESLint issues
 pnpm run lint:zh-fix      # Auto-fix Chinese text issues
+pnpm run typecheck        # TypeScript type checking
+
+# Testing and Quality
+pnpm run changelog        # Generate conventional changelog
+pnpm run commit           # Interactive conventional commits
 
 # Specialized builds
 pnpm run build-mpa        # Build as Multi-Page Application
 ```
+
+## Import Path Configuration
+
+The project uses the following TypeScript path mapping configuration:
+
+```json
+{
+  "@/*": ["./.vitepress/theme/*"],
+  "#theme/*": ["./.vitepress/theme/*"],
+  "~/*": ["./src/*"],
+  "vite": ["./node_modules/vite"]
+}
+```
+
+**Important Import Rules:**
+- Use `@/` for theme-related imports (components, stores, utils in `.vitepress/theme/`)
+- Use `~/` for source content imports (components, services, types in `src/`)
+- Common mistakes to avoid:
+  - ❌ `import { useUserAuthStore } from '@/.vitepress/theme/stores/useUserAuth'`
+  - ✅ `import { useUserAuthStore } from '@/stores/useUserAuth'`
+  - ❌ `import { BlogDraft } from 'src/services/blogDraftDB'`
+  - ✅ `import { BlogDraft } from '~/services/blogDraftDB'`
 
 ## Architecture
 
@@ -69,6 +96,27 @@ pnpm run build-mpa        # Build as Multi-Page Application
 - Emoji data is processed from `/src/public/emojis/` directory structure
 - Static assets organized by language in `/src/public/imgs/`
 - Translation management with Lunaria integration
+
+### Modern Forum Architecture (2024 Refactoring)
+The forum system underwent a major architectural refactoring from factory pattern to composition-based architecture:
+
+#### New Store Architecture
+- **Page-specific stores**: Each page has isolated state (`useForumHomeStore`, `useForumUserStore`)
+- **Core functional stores**: Modular stores by domain (`useForumSearchState`, `useForumViewState`, `useForumRouteState`)
+- **Composition over inheritance**: Replaced complex factory patterns with composables
+- **Performance optimization**: Intelligent caching, batch updates, debounced operations
+
+#### Service Layer
+- **`ForumBusinessLogic`** - Unified business logic service
+- **`UnifiedCacheLayer`** - LRU + TTL dual-layer caching system
+- **`SimpleEventManager`** - Event-driven state synchronization
+- **`SimpleCrossPageSync`** - Cross-page and cross-tab state sync via localStorage
+
+#### Key Patterns
+- Event-driven updates with deduplication (1000ms global, 500ms store-level)
+- Three synchronized data arrays per store: `data`, `userSubmittedTopic`, `pinnedTopicsData`
+- Hidden vs closed topic state management with different removal behaviors
+- Performance monitoring with `useForumPerformanceMonitor`
 
 ## Authentication & Authorization Architecture
 
@@ -296,6 +344,28 @@ function updateTopicState(id: string, updates: any) {
 }
 ```
 
-## Lint and Build Requirements
+## Development Workflow
 
-Always run `pnpm run lint` before committing changes to ensure code quality and proper Chinese text formatting.
+### Pre-commit Requirements
+- Always run `pnpm run lint` before committing changes to ensure code quality and proper Chinese text formatting
+- Run `pnpm run typecheck` to catch TypeScript errors
+- Use `pnpm run commit` for conventional commit messages
+
+### Testing and Quality Assurance
+- **E2E Testing**: Lighthouse CI runs automatically on deployments for performance monitoring
+- **Code Quality**: ESLint with Antfu config + UnoCSS linting
+- **Chinese Text**: `zhlint` for proper Chinese typography and formatting
+- **Git Hooks**: Husky pre-commit hooks ensure lint-staged runs ESLint fixes
+
+### File Organization Principles
+- Keep TypeScript files under 200 lines (250 for static languages)
+- Maximum 8 files per directory level (create subdirectories if exceeded)
+- Avoid code smells: rigidity, redundancy, circular dependencies, fragility, obscurity
+- Follow composition over inheritance patterns
+
+### Architectural Guidelines
+- Use event-driven patterns for forum state updates
+- Implement proper error boundaries and loading states
+- Follow the established service layer patterns
+- Maintain separation of concerns between UI, business logic, and data layers
+- Use TypeScript strictly (avoid `any` unless absolutely necessary)

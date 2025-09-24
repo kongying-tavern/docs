@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useLocalized } from '@/hooks/useLocalized'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import DocReaction from './DocReaction.vue'
 
 const { showReaction = true } = defineProps<{
@@ -22,7 +22,7 @@ const editLink = computed(() => !import.meta.env.DEV
 const items = computed(() => {
   return [
     {
-      label: import.meta.env.DEV ? '在你的编辑器打开' : message.value.asideLinks.editLink,
+      label: import.meta.env.DEV ? message.value.forum.labels.openInEditor : message.value.asideLinks.editLink,
       icon: 'i-lucide:square-pen',
       href: editLink.value,
     },
@@ -51,7 +51,7 @@ const items = computed(() => {
         <VPLink
           v-for="item in items"
           :key="item.label"
-          class="flex items-center gap-1.5 underline-offset-2 transition-200 vp-link [&:not(:first-child)]:pt-1 hover:underline"
+          class="flex vp-link items-center gap-1.5 underline-offset-2 transition-200 [&:not(:first-child)]:pt-1 hover:underline"
           :href="item.href"
           rel="noopener noreferrer"
           target="_blank"

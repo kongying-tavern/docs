@@ -1,10 +1,10 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { Ref } from 'vue'
 import type { FORUM } from '../types'
-import { getLangPath } from '@/utils'
+import type ForumAPI from '@/apis/forum/api'
 import { useToggle } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, nextTick, readonly, ref } from 'vue'
+import { getLangPath } from '@/utils'
 import { useTopicComments } from '~/composables/useTopicComment'
 import { forumEvents } from '~/services/events/SimpleEventManager'
 
@@ -92,7 +92,7 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post, viewM
   }
 
   // Menu actions
-  function handleMenuAction(actionId: string, payload?: unknown): void {
+  function handleMenuAction(actionId: string, payload?: ForumAPI.TopicType | string[] | null): void {
     switch (actionId) {
       case 'translator':
         // Translator action will be handled by the translator component

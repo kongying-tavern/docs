@@ -1,17 +1,17 @@
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumStore, ForumStoreConfig, ForumQueryParams } from '~/types/forum/simplified'
+import type { ForumQueryParams, ForumStore, ForumStoreConfig } from '~/types/forum/simplified'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
+import { useForumCacheManager } from '~/composables/useForumCacheManager'
 // 基础功能
 import { useForumData } from '~/composables/useForumData'
 import { useOptimizedTopicList } from '~/composables/useStorePerformanceOptimizer'
 import { useUrlFilterSync } from '~/composables/useUrlFilterSync'
-import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { globalCacheLayer } from '~/services/cache/UnifiedCacheLayer'
 
 import { simpleCrossPageSync } from '~/services/events/SimpleCrossPageSync'
-import { SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
+import { simpleEventManager, SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 // 业务逻辑和服务
 import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 import { forumPreloader } from '~/services/forum/ForumPreloader'
@@ -41,7 +41,7 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
   const cacheManager = useForumCacheManager(forumData, filter, sort, {
     pageType: 'home',
     preloader: forumPreloader,
-    getCacheKey: (filter: ForumAPI.FilterBy) => `filter-${filter}`
+    getCacheKey: (filter: ForumAPI.FilterBy) => `${filter}-${sort.value}`,
   })
 
   // 从缓存管理器获取状态和功能
@@ -52,10 +52,8 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     autoTriggerPreload,
     setupFilterWatcher,
     startCacheCleanup,
-    cleanup: cleanupCacheManager
+    cleanup: cleanupCacheManager,
   } = cacheManager
-
-
 
   // === 单一数据源计算属性 ===
   const mergedData = computed(() => {
@@ -75,10 +73,18 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
 
   const displayTopics = computed(() => {
     const topics = mergedData.value
-    return ForumBusinessLogic.sortTopics(topics, sort.value)
+    // 过滤掉关闭的topics
+    const filtered = ForumBusinessLogic.filterTopics(topics, filter.value)
+    return ForumBusinessLogic.sortTopics(filtered, sort.value)
   })
 
   const pinnedTopicsData = computed(() => {
+    // 优先使用API专门获取的置顶主题数据
+    if (forumData.pinnedTopicsData.value && forumData.pinnedTopicsData.value.length > 0) {
+      return forumData.pinnedTopicsData.value
+    }
+
+    // 如果API数据不可用，从合并数据中筛选置顶主题作为备选
     const { pinnedTopics } = ForumBusinessLogic.separatePinnedTopics(mergedData.value)
     return pinnedTopics
   })
@@ -153,6 +159,33 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     pageType: 'home',
   })
 
+  // === 自定义事件处理 ===
+  const customEventHandlers = {
+    handleCommentCreated: (payload: { topicId: string | number, comment: ForumAPI.Comment }) => {
+      // 更新对应话题的评论数
+      const targetTopic = forumData.data.value?.find(t => t.id === payload.topicId)
+        || userSubmittedTopics.value.find(t => t.id === payload.topicId)
+
+      if (targetTopic && typeof targetTopic.commentCount === 'number' && targetTopic.commentCount >= 0) {
+        topicOperations.updateTopic(payload.topicId, {
+          commentCount: targetTopic.commentCount + 1,
+        })
+      }
+    },
+
+    handleCommentDeleted: (payload: { commentId: string | number, topicId: string | number }) => {
+      // 减少对应话题的评论数
+      const targetTopic = forumData.data.value?.find(t => t.id === payload.topicId)
+        || userSubmittedTopics.value.find(t => t.id === payload.topicId)
+
+      if (targetTopic && typeof targetTopic.commentCount === 'number' && targetTopic.commentCount > 0) {
+        topicOperations.updateTopic(payload.topicId, {
+          commentCount: targetTopic.commentCount - 1,
+        })
+      }
+    },
+  }
+
   // === 数据加载操作 ===
   const loadForumData = async (queryParams?: ForumQueryParams): Promise<void> => {
     const params = ForumBusinessLogic.buildSearchParams(
@@ -164,7 +197,14 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
       queryParams,
     )
 
-    await forumData.refreshData(params)
+    // 如果是首次加载，使用 loadForumData 确保置顶主题也被加载
+    if (!forumData.isInitialized.value) {
+      await forumData.loadForumData(params)
+    }
+    else {
+      // 后续刷新使用 refreshData
+      await forumData.refreshData(params)
+    }
 
     // 保存加载的数据到缓存
     if (forumData.data.value && forumData.data.value.length > 0) {
@@ -230,7 +270,13 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
   }
 
   // === 状态管理操作 ===
-  const resetState = (options?: { reloadData?: boolean, clearUserTopics?: boolean }): void => {
+  const resetState = (options?: { reloadData?: boolean, clearUserTopics?: boolean, preserveForBfcache?: boolean }): void => {
+    // If preserving for bfcache, only do minimal cleanup
+    if (options?.preserveForBfcache) {
+      eventHandlers.cleanup()
+      return
+    }
+
     if (options?.clearUserTopics !== false) {
       userSubmittedTopics.value = []
     }
@@ -301,6 +347,12 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     // 事件管理
     setupEventListeners: () => {
       eventHandlers.setupEventListeners()
+
+      // 注册自定义事件处理器
+      const eventManager = simpleEventManager
+      eventManager.subscribe('comment:created', customEventHandlers.handleCommentCreated)
+      eventManager.subscribe('comment:deleted', customEventHandlers.handleCommentDeleted)
+
       // 启用跨页面同步
       simpleCrossPageSync.enable()
     },
@@ -330,7 +382,7 @@ export function useForumHomeStoreWithMonitoring() {
   }
 
   const originalSearchTopics = store.searchTopics
-  store.searchTopics = async (query: string | string[], params?: any) => {
+  store.searchTopics = async (query: string | string[], params?: Omit<ForumQueryParams, 'searchQuery'>) => {
     const start = performance.now()
     try {
       await originalSearchTopics(query, params)

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from './types'
+import type ForumAPI from '@/apis/forum/api'
+import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed } from 'vue'
 import ForumTopicReactionButton from './ForumTopicReactionButton.vue'
 import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
 

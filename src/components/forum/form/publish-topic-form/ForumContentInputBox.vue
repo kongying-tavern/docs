@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
 import { useFocus, useTextareaAutosize, useVModel } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
+import { cn } from '@/lib/utils'
 import { useClipboardPaste } from '~/composables/useClipboardPaste'
 
 const props = defineProps<{
@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
   <div ref="container" class="flex">
     <div class="comment-area w-full">
       <div
-        class="body border border-input rounded-md border-style-solid bg-transparent px-2 py-1 shadow-sm transition-colors placeholder:text-muted-foreground vp-border-input"
+        class="body border vp-border-input border-input rounded-md border-style-solid bg-transparent px-2 py-1 shadow-sm transition-colors placeholder:text-muted-foreground"
         :class="
           cn(
             focused

@@ -1,4 +1,5 @@
 import type ForumAPI from '../api'
+import { buildFormData } from '@/apis/utils'
 import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
 import { normalizeComment, normalizeIssueToBlog, processLabels } from './utils'
@@ -75,4 +76,85 @@ export async function getPostComments(
     data: commentList.map(val => normalizeComment(val)),
     ...paginationParams!,
   }
+}
+
+export async function createBlogPost(data: {
+  title: string
+  body: string
+  labels?: string[]
+}): Promise<ForumAPI.Post> {
+  const form = buildFormData({
+    owner: GITEE_API_CONFIG.OWNER,
+    repo: GITEE_API_CONFIG.BLOG_REPO,
+    ...data,
+  })
+
+  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+    'post',
+    `repos/${GITEE_API_CONFIG.OWNER}/issues`,
+    {
+      body: form,
+    },
+  )
+
+  return normalizeIssueToBlog(issueInfo)
+}
+
+export async function updateBlogPost(
+  number: string | number,
+  data: {
+    title?: string
+    body?: string
+    labels?: string
+    state?: ForumAPI.TopicState
+  },
+): Promise<ForumAPI.Post> {
+  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+    'patch',
+    `repos/${GITEE_API_CONFIG.OWNER}/issues/${number}`,
+    {
+      params: {
+        repo: GITEE_API_CONFIG.BLOG_REPO,
+        owner: GITEE_API_CONFIG.OWNER,
+        ...data,
+      },
+    },
+  )
+
+  return normalizeIssueToBlog(issueInfo)
+}
+
+export async function getPost(
+  number: string | number,
+  accessToken?: string,
+): Promise<ForumAPI.Post> {
+  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+    'get',
+    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${number}`,
+    {
+      params: {
+        ...(accessToken ? { access_token: accessToken } : {}),
+      },
+    },
+  )
+
+  return normalizeIssueToBlog(issueInfo)
+}
+
+export async function deleteBlogPost(
+  number: string | number,
+): Promise<boolean> {
+  try {
+    await updateBlogPost(number, { state: 'closed' })
+    return true
+  }
+  catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('删除博客失败:', error)
+    return false
+  }
+}
+
+export function openInGitee(id: string | number) {
+  return window.open(`https://gitee.com/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${id}`, '_black')
 }

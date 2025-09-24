@@ -13,7 +13,7 @@ export function replaceAtMentions(text: string): string {
   if (regex.exec(text) == null)
     return text
 
-  return text.replaceAll(regex, (match, p1) => {
+  return text.replaceAll(regex, (_match, p1) => {
     return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
   })
 }
@@ -57,23 +57,6 @@ export function flattenWithTags(
       result.push(...flattenWithTags(node.items, currentTopLevelText))
     }
   })
-
-  return result
-}
-
-export function getRandomElements<T>(arr: T[], count: number): T[] {
-  if (count >= arr.length) {
-    return [...arr]
-  }
-
-  const copyArr = [...arr]
-  const result: T[] = []
-
-  for (let i = 0; i < count; i++) {
-    const randomIndex = Math.floor(Math.random() * copyArr.length)
-    result.push(copyArr[randomIndex])
-    copyArr.splice(randomIndex, 1)
-  }
 
   return result
 }

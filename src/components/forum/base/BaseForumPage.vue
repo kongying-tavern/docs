@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { Component } from 'vue'
 import type { FORUM } from '../types'
+import type ForumAPI from '@/apis/forum/api'
 import type { ForumStore } from '~/types/forum/simplified'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, provide, toRef } from 'vue'
@@ -9,7 +9,7 @@ import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
-import { FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, FORUM_STORE_KEY } from '../shared'
+import { FORUM_STORE_KEY, FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
 interface ForumAsideProps {

@@ -70,6 +70,7 @@ export namespace ForumAPI {
     updatedAt: string
     reactions?: ForumAPI.Reactions | null
     replyID?: string | number | null
+    tags?: string[] // Tags extracted from rich text data
     // replyCommets?: Omit<ForumAPI.Comment, replyCommets>
   }
 
@@ -93,7 +94,7 @@ export namespace ForumAPI {
     creator: string | null
   }
 
-  export type SortMethod = 'created' | 'updated_at'
+  export type SortMethod = 'created' | 'updated'
 
   export type FilterBy = 'feat' | 'bug' | 'all' | 'closed'
 

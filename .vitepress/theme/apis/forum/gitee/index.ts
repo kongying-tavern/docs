@@ -5,11 +5,11 @@ import type {
   HttpMethod,
 } from './types'
 
-import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useMemoize } from '@vueuse/core'
 import ky from 'ky'
-
 import { isPlainObject } from 'lodash-es'
+
+import { useUserAuthStore } from '@/stores/useUserAuth'
 import { catchError, isNodeEnvironment } from '../../utils'
 import * as blog from './blog'
 import { GITEE_API_CONFIG } from './config'
@@ -36,7 +36,7 @@ const cachedApiCall = useMemoize(
   async <T>(
     method: HttpMethod,
     endpoint: string,
-    { params = {}, hooks = {}, body }: ApiCallParams,
+    { params = {}, hooks = {}, body, throwHttpErrors }: ApiCallParams,
   ): ApiCallResult<T> => {
     const url = `${GITEE_API_CONFIG.ENDPOINT_PREFIX}${endpoint}`
 
@@ -73,6 +73,7 @@ const cachedApiCall = useMemoize(
       hooks,
       ...(searchParams.toString() ? { searchParams } : {}),
       ...(body && (body instanceof FormData ? { body } : { json: body })),
+      ...(throwHttpErrors !== undefined ? { throwHttpErrors } : {}),
     }
 
     const [error, response] = await catchError(
@@ -105,8 +106,8 @@ const cachedApiCall = useMemoize(
     getKey: (
       method: HttpMethod,
       endpoint: string,
-      { params, body }: ApiCallParams,
-    ) => JSON.stringify({ method, endpoint, params, body }),
+      { params, body, throwHttpErrors }: ApiCallParams,
+    ) => JSON.stringify({ method, endpoint, params, body, throwHttpErrors }),
   },
 )
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { getLangPath } from '@/utils'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
+import { getLangPath } from '@/utils'
 import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
 
 const { searchQuery, topicData, limit = 6 } = defineProps<{

@@ -1,14 +1,11 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 import { isObject } from 'lodash-es'
 
-export function escapeHtml(unsafeHTML: string): string {
-  return unsafeHTML
-    .replace(/&/gu, '&amp;')
-    .replace(/</gu, '&lt;')
-    .replace(/>/gu, '&gt;')
-    .replace(/"/gu, '&quot;')
-    .replace(/'/gu, '&#039;')
-}
+// Import from centralized text utils
+import { camelCase } from './utils/text'
+
+// Re-export from centralized text utils
+export { escapeHtml } from './utils/text'
 
 const markdownLinkRegexp = /.md((\?|#).*)?$/
 
@@ -110,18 +107,8 @@ export function baseHelper<T extends Record<string, unknown> | unknown[]>(obj: T
   return modifyKey(modifiedLink as Record<string, unknown>, base) as T
 }
 
-export function hash(str: string): number {
-  let hash = 0
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i)
-    hash &= hash // Convert to 32bit integer
-  }
-  return hash
-}
-
-export function camelCase(str: string): string {
-  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
-}
+// Re-export from centralized text utils
+export { hash } from './utils/text'
 
 export function removeQueryParam(param: string) {
   const urlObj = new URL(location.href)

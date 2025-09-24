@@ -1,5 +1,5 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { Ref } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
 
 /**
  * Composable for syncing forum filter state with URL path

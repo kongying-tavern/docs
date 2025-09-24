@@ -1,54 +1,93 @@
+import type { Ref } from 'vue'
+import type { CustomConfig } from '../../../../.vitepress/locales/types'
+import { ref } from 'vue'
 import { z } from 'zod'
 import { VALIDATION_LIMITS } from '../constants'
 
-// Zod schemas for form validation
-export const topicFormSchema = z.object({
-  title: z.string()
-    .min(VALIDATION_LIMITS.TITLE.MIN_LENGTH, `Title must be at least ${VALIDATION_LIMITS.TITLE.MIN_LENGTH} characters`)
-    .max(VALIDATION_LIMITS.TITLE.MAX_LENGTH, `Title must be no more than ${VALIDATION_LIMITS.TITLE.MAX_LENGTH} characters`)
-    .trim(),
+// Dynamic Zod schemas for form validation - pass message ref from component
+export function createTopicFormSchema(message: Ref<CustomConfig>) {
+  return z.object({
+    title: z.string()
+      .min(VALIDATION_LIMITS.TITLE.MIN_LENGTH, message.value.forum.validation.errors.contentTooShort.replace('{min}', String(VALIDATION_LIMITS.TITLE.MIN_LENGTH)))
+      .max(VALIDATION_LIMITS.TITLE.MAX_LENGTH, message.value.forum.validation.errors.contentTooLong.replace('{max}', String(VALIDATION_LIMITS.TITLE.MAX_LENGTH)))
+      .trim(),
 
-  content: z.string()
-    .min(VALIDATION_LIMITS.CONTENT.MIN_LENGTH, `Content must be at least ${VALIDATION_LIMITS.CONTENT.MIN_LENGTH} characters`)
-    .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, `Content must be no more than ${VALIDATION_LIMITS.CONTENT.MAX_LENGTH} characters`)
-    .trim(),
+    content: z.string()
+      .min(VALIDATION_LIMITS.CONTENT.MIN_LENGTH, message.value.forum.validation.errors.contentTooShort.replace('{min}', String(VALIDATION_LIMITS.CONTENT.MIN_LENGTH)))
+      .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, message.value.forum.validation.errors.contentTooLong.replace('{max}', String(VALIDATION_LIMITS.CONTENT.MAX_LENGTH)))
+      .trim(),
 
-  tags: z.array(z.string().max(VALIDATION_LIMITS.TAGS.MAX_TAG_LENGTH))
-    .min(VALIDATION_LIMITS.TAGS.MIN_COUNT, `At least ${VALIDATION_LIMITS.TAGS.MIN_COUNT} tag is required`)
-    .max(VALIDATION_LIMITS.TAGS.MAX_COUNT, `No more than ${VALIDATION_LIMITS.TAGS.MAX_COUNT} tags allowed`),
+    tags: z.array(z.string().max(VALIDATION_LIMITS.TAGS.MAX_TAG_LENGTH))
+      .min(VALIDATION_LIMITS.TAGS.MIN_COUNT, message.value.forum.validation.errors.tagsRequired.replace('{min}', String(VALIDATION_LIMITS.TAGS.MIN_COUNT)))
+      .max(VALIDATION_LIMITS.TAGS.MAX_COUNT, message.value.forum.validation.errors.tooManyTagsLimit.replace('{max}', String(VALIDATION_LIMITS.TAGS.MAX_COUNT))),
 
-  type: z.enum(['FEAT', 'BUG', 'ANN']),
+    type: z.enum(['FEAT', 'BUG', 'ANN']),
 
-  images: z.array(z.object({
-    src: z.string().url(),
-    alt: z.string().optional(),
-    title: z.string().optional(),
-    thumbHash: z.string().optional(),
-    width: z.number().optional(),
-    height: z.number().optional(),
-  })).max(VALIDATION_LIMITS.IMAGES.MAX_COUNT).optional(),
-})
+    images: z.array(z.object({
+      src: z.string().url(),
+      alt: z.string().optional(),
+      title: z.string().optional(),
+      thumbHash: z.string().optional(),
+      width: z.number().optional(),
+      height: z.number().optional(),
+    })).max(VALIDATION_LIMITS.IMAGES.MAX_COUNT).optional(),
+  })
+}
 
-export const commentFormSchema = z.object({
-  content: z.string()
-    .min(1, 'Comment cannot be empty')
-    .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, `Comment must be no more than ${VALIDATION_LIMITS.CONTENT.MAX_LENGTH} characters`)
-    .trim(),
+export function createCommentFormSchema(message: Ref<CustomConfig>) {
+  return z.object({
+    content: z.string()
+      .min(1, message.value.forum.validation.errors.commentEmpty)
+      .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, message.value.forum.validation.errors.contentTooLong.replace('{max}', String(VALIDATION_LIMITS.CONTENT.MAX_LENGTH)))
+      .trim(),
 
-  replyTarget: z.string().optional(),
-})
+    replyTarget: z.string().optional(),
+  })
+}
 
-export const imageUploadSchema = z.object({
-  file: z.instanceof(File)
-    .refine(
-      (file: File) => file.size <= VALIDATION_LIMITS.IMAGES.MAX_SIZE_MB * 1024 * 1024,
-      `File size must be less than ${VALIDATION_LIMITS.IMAGES.MAX_SIZE_MB}MB`,
-    )
-    .refine(
-      (file: File) => VALIDATION_LIMITS.IMAGES.ALLOWED_TYPES.includes(file.type as (typeof VALIDATION_LIMITS.IMAGES.ALLOWED_TYPES)[number]),
-      'Only JPEG, PNG, GIF, and WebP images are allowed',
-    ),
-})
+export function createImageUploadSchema(message: Ref<CustomConfig>) {
+  return z.object({
+    file: z.instanceof(File)
+      .refine(
+        (file: File) => file.size <= VALIDATION_LIMITS.IMAGES.MAX_SIZE_MB * 1024 * 1024,
+        `File size must be less than ${VALIDATION_LIMITS.IMAGES.MAX_SIZE_MB}MB`,
+      )
+      .refine(
+        (file: File) => VALIDATION_LIMITS.IMAGES.ALLOWED_TYPES.includes(file.type as (typeof VALIDATION_LIMITS.IMAGES.ALLOWED_TYPES)[number]),
+        message.value.forum.validation.errors.invalidImageFormat,
+      ),
+  })
+}
+
+// Legacy schemas for backward compatibility - using fallback English messages
+const fallbackMessages: CustomConfig = {
+  forum: {
+    validation: {
+      errors: {
+        titleRequired: 'Topic title is required',
+        contentRequired: 'Topic content is required',
+        authorRequired: 'Topic author is required',
+        tooManyTags: 'Too many tags (max 10)',
+        contentTooShort: 'Content must be at least {min} characters',
+        contentTooLong: 'Content must be no more than {max} characters',
+        tagsRequired: 'At least {min} tag is required',
+        tooManyTagsLimit: 'No more than {max} tags allowed',
+        tagTooLong: 'Tag "{tag}" exceeds maximum length of {maxLength} characters',
+        commentEmpty: 'Comment cannot be empty',
+        invalidImageFormat: 'Only JPEG, PNG, GIF, and WebP images are allowed',
+        validationError: 'Validation error occurred',
+        invalidFile: 'Invalid file',
+        fileValidationFailed: 'File validation failed',
+      },
+    },
+  },
+} as CustomConfig
+
+const fallbackMessagesRef = ref(fallbackMessages)
+
+export const topicFormSchema = createTopicFormSchema(fallbackMessagesRef)
+export const commentFormSchema = createCommentFormSchema(fallbackMessagesRef)
+export const imageUploadSchema = createImageUploadSchema(fallbackMessagesRef)
 
 export type TopicFormData = z.infer<typeof topicFormSchema>
 export type CommentFormData = z.infer<typeof commentFormSchema>
@@ -138,15 +177,16 @@ export function validateImageFile(file: File): { isValid: boolean, errors: strin
   }
 }
 
-export function validateContent(content: string): { isValid: boolean, errors: string[] } {
+export function validateContent(content: string, message?: Ref<CustomConfig>): { isValid: boolean, errors: string[] } {
+  const msg = message?.value || fallbackMessages
   const errors: string[] = []
 
   if (content.length < VALIDATION_LIMITS.CONTENT.MIN_LENGTH) {
-    errors.push(`Content must be at least ${VALIDATION_LIMITS.CONTENT.MIN_LENGTH} characters`)
+    errors.push(msg.forum.validation.errors.contentTooShort.replace('{min}', String(VALIDATION_LIMITS.CONTENT.MIN_LENGTH)))
   }
 
   if (content.length > VALIDATION_LIMITS.CONTENT.MAX_LENGTH) {
-    errors.push(`Content must be no more than ${VALIDATION_LIMITS.CONTENT.MAX_LENGTH} characters`)
+    errors.push(msg.forum.validation.errors.contentTooLong.replace('{max}', String(VALIDATION_LIMITS.CONTENT.MAX_LENGTH)))
   }
 
   return {
@@ -155,20 +195,21 @@ export function validateContent(content: string): { isValid: boolean, errors: st
   }
 }
 
-export function validateTags(tags: string[]): { isValid: boolean, errors: string[] } {
+export function validateTags(tags: string[], message?: Ref<CustomConfig>): { isValid: boolean, errors: string[] } {
+  const msg = message?.value || fallbackMessages
   const errors: string[] = []
 
   if (tags.length < VALIDATION_LIMITS.TAGS.MIN_COUNT) {
-    errors.push(`At least ${VALIDATION_LIMITS.TAGS.MIN_COUNT} tag is required`)
+    errors.push(msg.forum.validation.errors.tagsRequired.replace('{min}', String(VALIDATION_LIMITS.TAGS.MIN_COUNT)))
   }
 
   if (tags.length > VALIDATION_LIMITS.TAGS.MAX_COUNT) {
-    errors.push(`No more than ${VALIDATION_LIMITS.TAGS.MAX_COUNT} tags allowed`)
+    errors.push(msg.forum.validation.errors.tooManyTagsLimit.replace('{max}', String(VALIDATION_LIMITS.TAGS.MAX_COUNT)))
   }
 
   for (const tag of tags) {
     if (tag.length > VALIDATION_LIMITS.TAGS.MAX_TAG_LENGTH) {
-      errors.push(`Tag "${tag}" exceeds maximum length of ${VALIDATION_LIMITS.TAGS.MAX_TAG_LENGTH} characters`)
+      errors.push(msg.forum.validation.errors.tagTooLong.replace('{tag}', tag).replace('{maxLength}', String(VALIDATION_LIMITS.TAGS.MAX_TAG_LENGTH)))
     }
   }
 
@@ -212,14 +253,5 @@ export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/.test(email)
 }
 
-export function sanitizeHtml(html: string): string {
-  const div = document.createElement('div')
-  div.textContent = html
-  return div.innerHTML
-}
-
-export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength)
-    return text
-  return `${text.slice(0, maxLength - 3)}...`
-}
+// Re-export from centralized text utils
+export { sanitizeHtml, truncateText } from '../../../../.vitepress/theme/utils/text'

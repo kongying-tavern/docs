@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
+import { toast } from 'vue-sonner'
 import { catchError } from '@/apis/utils'
 import { withAuth } from '@/utils/auth-helpers'
-import { toast } from 'vue-sonner'
 
 type ActionFunction<T extends unknown[], R = unknown> = (...args: T) => Promise<R>
 

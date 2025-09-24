@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { FormTabConfig } from './publish-topic-form/types'
-import { DialogHeader } from '@/components/ui/dialog'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
+import { DialogHeader } from '@/components/ui/dialog'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface Props {
   modelValue: string
@@ -30,7 +30,7 @@ const visibleTabs = computed(() =>
   props.tabs.filter(tab => tab?.condition),
 )
 
-const currentTab = computed(() =>
+const _currentTab = computed(() =>
   props.tabs.find(tab => tab.value === props.modelValue),
 )
 </script>

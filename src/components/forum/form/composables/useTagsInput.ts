@@ -1,5 +1,5 @@
-import { labels } from '@/apis/forum/gitee'
 import { computed, onMounted, ref } from 'vue'
+import { labels } from '@/apis/forum/gitee'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/composables/getTopicTagMap'
 

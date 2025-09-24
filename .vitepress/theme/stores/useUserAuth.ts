@@ -1,11 +1,12 @@
 import type ForumAPI from '@/apis/forum/api'
-import { toCamelCaseObject } from '@/utils'
 import { isObject } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { computed, onBeforeUnmount, readonly, ref } from 'vue'
+import { toCamelCaseObject } from '@/utils'
 import { oauth } from '../apis/forum/gitee'
 import { useAuthRefresh } from '../composables/useAuthRefresh'
 import { useSSOAuth } from '../composables/useSSOAuth'
+import { useSSORefreshManager } from '../composables/useSSORefreshManager'
 import { useTokenManager } from '../composables/useTokenManager'
 import { AuthError, createAuthError } from '../utils/auth-errors'
 import { log, LogGroup } from '../utils/auth-logger'
@@ -36,6 +37,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
   const tokenManager = useTokenManager()
   const ssoAuth = useSSOAuth(tokenManager)
   const authRefresh = useAuthRefresh(tokenManager)
+  const ssoRefreshManager = useSSORefreshManager(tokenManager, ssoAuth)
 
   // State
   const loginStatus = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
@@ -74,6 +76,13 @@ export const useUserAuthStore = defineStore('user-auth', () => {
 
       // Start auto refresh
       authRefresh.startAutoRefresh()
+
+      try {
+        ssoRefreshManager.startSSOAutoRefresh()
+      }
+      catch (error) {
+        log.warn(LogGroup.SSO, 'Failed to start SSO auto refresh, but main auth is still working', error)
+      }
     }
     catch (error) {
       log.error(LogGroup.AUTH, 'Failed to set authentication data', error)
@@ -145,6 +154,13 @@ export const useUserAuthStore = defineStore('user-auth', () => {
       // Stop auto refresh
       authRefresh.stopAutoRefresh()
 
+      try {
+        ssoRefreshManager.stopAllSSORefresh()
+      }
+      catch (error) {
+        log.warn(LogGroup.SSO, 'Failed to stop SSO auto refresh, but logout continues', error)
+      }
+
       // Clear all tokens
       tokenManager.clearAllTokens()
 
@@ -193,11 +209,19 @@ export const useUserAuthStore = defineStore('user-auth', () => {
   // Initialize auto refresh if token exists
   if (tokenManager.localAuth.value?.accessToken) {
     authRefresh.startAutoRefresh()
+
+    try {
+      ssoRefreshManager.startSSOAutoRefresh()
+    }
+    catch (error) {
+      log.warn(LogGroup.SSO, 'Failed to initialize SSO auto refresh, but main auth is working', error)
+    }
   }
 
   // Cleanup on unmount
   onBeforeUnmount(() => {
     authRefresh.cleanup()
+    ssoRefreshManager.cleanup()
   })
 
   return {
@@ -243,9 +267,15 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     // Debug
     getDebugInfo,
 
+    // SSO Refresh Management
+    startSSOAutoRefresh: () => ssoRefreshManager.startSSOAutoRefresh(),
+    stopSSOAutoRefresh: () => ssoRefreshManager.stopAllSSORefresh(),
+    getSSORefreshDebugInfo: () => ssoRefreshManager.getDebugInfo(),
+
     // Internal (for testing)
     _tokenManager: tokenManager,
     _authRefresh: authRefresh,
     _ssoAuth: ssoAuth,
+    _ssoRefreshManager: ssoRefreshManager,
   }
 })

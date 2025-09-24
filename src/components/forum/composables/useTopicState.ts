@@ -1,10 +1,11 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '../types'
-import { useLanguage } from '@/composables/useLanguage'
-import { useUserAuthStore } from '@/stores/useUserAuth'
+import type ForumAPI from '@/apis/forum/api'
 import { useCached } from '@vueuse/core'
 import { isArray } from 'lodash-es'
 import { computed, useTemplateRef } from 'vue'
+import { useLanguage } from '@/composables/useLanguage'
+import { useLocalized } from '@/hooks/useLocalized'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 
 interface TranslatorComponent {
   startTranslate: () => void
@@ -14,6 +15,7 @@ export function useTopicState(topic: ForumAPI.Topic | ForumAPI.Post) {
   const userAuth = useUserAuthStore()
   const translator = useTemplateRef<TranslatorComponent>('translator')
   const { isNoTranslationRequirement } = useLanguage()
+  const { message } = useLocalized()
 
   // Hash management
   const hash = computed({
@@ -38,7 +40,7 @@ export function useTopicState(topic: ForumAPI.Topic | ForumAPI.Post) {
       {
         type: 'item',
         id: 'translator',
-        label: '翻译贴子',
+        label: message.value.forum.translate.translateText,
         icon: 'vpi-languages option-icon',
         order: 2,
         action: () => {

@@ -7,6 +7,6 @@ export function getTopicTypeMap() {
     ['FEAT', message.value.forum.topic.type.feat],
     ['ANN', message.value.forum.topic.type.ann],
     ['BUG', message.value.forum.topic.type.bug],
-    ['POST', '团队博客'],
+    ['POST', message.value.forum.labels.teamBlog],
   ])
 }

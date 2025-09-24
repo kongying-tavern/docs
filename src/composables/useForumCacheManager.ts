@@ -1,11 +1,13 @@
+import type { Ref } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
+import type { ForumPreloader } from '~/services/forum/ForumPreloader'
 import type { ForumQueryParams } from '~/types/forum/simplified'
 import { nextTick, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { ForumPreloader } from '~/services/forum/ForumPreloader'
+import { useForumImagePreloader } from './useImagePreloader'
 
-export interface CacheData<T = any> {
+export interface CacheData<T = string | null> {
   data: ForumAPI.Topic[]
   timestamp: number
   filter: ForumAPI.FilterBy
@@ -15,8 +17,8 @@ export interface CacheData<T = any> {
 export interface CacheManagerOptions {
   pageType: 'home' | 'user'
   preloader: ForumPreloader
-  getCacheKey: (filter: ForumAPI.FilterBy, metadata?: any) => string
-  getMetadata?: () => any // 获取额外的缓存元数据（如 creator）
+  getCacheKey: (filter: ForumAPI.FilterBy, metadata?: string | null) => string
+  getMetadata?: () => string | null // 获取额外的缓存元数据（如 creator）
 }
 
 export interface LoadDataFunction {
@@ -24,25 +26,40 @@ export interface LoadDataFunction {
 }
 
 export function useForumCacheManager(
-  forumData: any, // forumData 实例
-  filter: any, // filter ref
-  sort: any, // sort ref
-  options: CacheManagerOptions
+  forumData: ReturnType<typeof import('./useForumData').useForumData>,
+  filter: Ref<ForumAPI.FilterBy>,
+  sort: Ref<ForumAPI.SortMethod>,
+  options: CacheManagerOptions,
 ) {
   const userAuthStore = useUserAuthStore()
 
   // === 缓存管理 ===
   const filterCache = ref<Map<string, CacheData>>(new Map())
-  const CACHE_TTL = 2 * 60 * 1000 // 2分钟过期
-  const MAX_CACHE_SIZE = 5
+  // Extend cache TTL for bfcache compatibility - users may return after several minutes
+  const CACHE_TTL = 10 * 60 * 1000 // 10分钟过期 (increased from 2 minutes for bfcache)
+  const MAX_CACHE_SIZE = 8 // Slightly increased cache size
 
   // === 自动预加载状态 ===
   const hasTriggeredAutoPreload = ref(false)
   const isFilterChanging = ref(false)
 
+  // === 图片预加载 ===
+  const imagePreloader = useForumImagePreloader({ maxPreloadCount: 10 })
+
   // === 缓存辅助函数 ===
   function isCacheValid(cached: CacheData): boolean {
-    return Date.now() - cached.timestamp < CACHE_TTL
+    const age = Date.now() - cached.timestamp
+
+    // Check if restored from bfcache using navigation API
+    const isBackForward = typeof window !== 'undefined'
+      && window.performance?.navigation?.type === window.performance?.navigation?.TYPE_BACK_FORWARD
+
+    // If restored from bfcache, be more lenient with cache age
+    if (isBackForward) {
+      return age < (15 * 60 * 1000) // 15 minutes for bfcache scenarios
+    }
+
+    return age < CACHE_TTL
   }
 
   function getCachedData(filter: ForumAPI.FilterBy): ForumAPI.Topic[] | null {
@@ -51,6 +68,8 @@ export function useForumCacheManager(
     // 1. 首先检查预加载器的缓存
     const preloaderCache = options.preloader.getCachedData(filter, metadata)
     if (preloaderCache) {
+      // 为缓存的反馈数据预加载图片
+      imagePreloader.preloadCachedFeedbackImages(preloaderCache, sort.value)
       return preloaderCache
     }
 
@@ -59,6 +78,8 @@ export function useForumCacheManager(
     const cached = filterCache.value.get(cacheKey)
 
     if (cached && isCacheValid(cached)) {
+      // 为缓存的反馈数据预加载图片
+      imagePreloader.preloadCachedFeedbackImages(cached.data, sort.value)
       return cached.data
     }
 
@@ -81,14 +102,17 @@ export function useForumCacheManager(
       }
     }
 
-    // 重置该 filter 的缓存到期时间（从现在开始计算2分钟）
+    // 重置该 filter 的缓存到期时间（从现在开始计算10分钟）
     const now = Date.now()
     filterCache.value.set(cacheKey, {
       data: [...data], // 深拷贝避免引用问题
       timestamp: now, // 每次数据更新都重置时间戳
       filter,
-      metadata
+      metadata,
     })
+
+    // 为新缓存的数据预加载图片
+    imagePreloader.preloadCachedFeedbackImages(data, sort.value)
   }
 
   // === 降级处理：前端过滤 ===
@@ -101,6 +125,7 @@ export function useForumCacheManager(
       case 'feat':
         return topics.filter(t => t.state === 'open' && t.tags?.includes('TYP-FEAT'))
       case 'all':
+        return topics.filter(t => t.state === 'open')
       default:
         return topics.filter(t => t.state === 'open')
     }
@@ -133,11 +158,11 @@ export function useForumCacheManager(
       isLoggedIn: userAuthStore.isLoggedIn,
       currentFilter: filter.value,
       currentSort: sort.value,
-      creator: metadata
+      creator: metadata,
     }
 
-    options.preloader.preloadAllOtherFilters(preloadOptions).catch(error => {
-      console.error(`${options.pageType} preload error:`, error)
+    options.preloader.preloadAllOtherFilters(preloadOptions).catch((error) => {
+      console.error('Preload error:', error)
     })
   }
 
@@ -165,30 +190,26 @@ export function useForumCacheManager(
   // === Filter变化监听 ===
   function setupFilterWatcher(loadDataFunction: LoadDataFunction): void {
     watch(() => filter.value, async (newFilter, oldFilter) => {
-      if (oldFilter === undefined) return // 跳过初始化
+      if (oldFilter === undefined)
+        return // 跳过初始化
 
       // 对于 user 页面，还需要检查是否有 creator
-      if (options.pageType === 'user' && !options.getMetadata?.()) return
+      if (options.pageType === 'user' && !options.getMetadata?.())
+        return
 
       const metadata = options.getMetadata?.()
 
-      console.group(`🔄 [${options.pageType}] Filter: ${oldFilter} → ${newFilter}${metadata ? ` (${metadata})` : ''}`)
-
-      // 检查是否有缓存数据
       const cachedData = getCachedData(newFilter)
 
       if (cachedData) {
-        // 有缓存数据，直接使用
-        console.log(`⚡ Using cached data (${cachedData.length} items)`)
         forumData.data.value = cachedData
-      } else {
-        // 没有缓存，设置加载状态并请求数据
+        await nextTick()
+      }
+      else {
         isFilterChanging.value = true
         forumData.initialData()
 
         try {
-          console.log(`🔄 Loading fresh data...`)
-
           const queryParams: ForumQueryParams = { filter: newFilter }
           if (metadata) {
             queryParams.creator = metadata
@@ -196,16 +217,12 @@ export function useForumCacheManager(
 
           await loadDataFunction(queryParams)
 
-          // 缓存新数据
           if (forumData.data.value && forumData.data.value.length > 0) {
             setCachedData(newFilter, forumData.data.value)
-            console.log(`✅ Loaded ${forumData.data.value.length} items`)
           }
-
-        } catch (error) {
-          console.error(`Failed to load data:`, error)
-
-          // 降级处理：使用前端过滤
+        }
+        catch (error) {
+          console.error('Failed to load data:', error)
           const allData = getAllCachedData()
           if (allData.length > 0) {
             const filtered = clientSideFilter(allData, newFilter)
@@ -213,34 +230,81 @@ export function useForumCacheManager(
 
             toast.warning('网络请求失败，显示本地数据', {
               description: '数据可能不是最新的，请稍后重试',
-              duration: 3000
+              duration: 3000,
             })
-          } else {
+          }
+          else {
             forumData.data.value = []
 
             toast.error('无法加载数据', {
               description: '请检查网络连接后重试',
-              duration: 5000
+              duration: 5000,
             })
           }
-        } finally {
+        }
+        finally {
           isFilterChanging.value = false
         }
       }
+    }, { immediate: false })
 
-      console.groupEnd()
+    // 监听Sort变化
+    watch(() => sort.value, async (newSort, oldSort) => {
+      if (oldSort === undefined)
+        return // 跳过初始化
+
+      // 对于 user 页面，还需要检查是否有 creator
+      if (options.pageType === 'user' && !options.getMetadata?.())
+        return
+
+      const metadata = options.getMetadata?.()
+
+      const cachedData = getCachedData(filter.value)
+
+      if (cachedData) {
+        forumData.data.value = cachedData
+        await nextTick()
+      }
+      else {
+        isFilterChanging.value = true
+        forumData.initialData()
+
+        try {
+          const queryParams: ForumQueryParams = {
+            filter: filter.value,
+            sort: newSort,
+          }
+          if (metadata) {
+            queryParams.creator = metadata
+          }
+
+          await loadDataFunction(queryParams)
+
+          if (forumData.data.value && forumData.data.value.length > 0) {
+            setCachedData(filter.value, forumData.data.value)
+          }
+        }
+        catch (error) {
+          console.error('Failed to load data for sort change:', error)
+          toast.error('排序数据加载失败', {
+            description: '请稍后重试',
+            duration: 3000,
+          })
+        }
+        finally {
+          isFilterChanging.value = false
+        }
+      }
     }, { immediate: false })
   }
 
   // === 定期清理过期缓存 ===
   function cleanExpiredCache(): void {
     const now = Date.now()
-    let cleanedCount = 0
 
     for (const [key, cached] of filterCache.value.entries()) {
       if (now - cached.timestamp > CACHE_TTL) {
         filterCache.value.delete(key)
-        cleanedCount++
       }
     }
   }
@@ -249,7 +313,8 @@ export function useForumCacheManager(
   let cleanupInterval: NodeJS.Timeout | null = null
 
   function startCacheCleanup(): void {
-    if (cleanupInterval) return
+    if (cleanupInterval)
+      return
 
     cleanupInterval = setInterval(() => {
       cleanExpiredCache()
@@ -268,6 +333,7 @@ export function useForumCacheManager(
   function cleanup(): void {
     stopCacheCleanup()
     options.preloader.cleanExpiredCache()
+    imagePreloader.cleanupPreloads()
   }
 
   return {
@@ -291,7 +357,10 @@ export function useForumCacheManager(
     stopCacheCleanup,
     cleanExpiredCache,
 
+    // 图片预加载
+    imagePreloader,
+
     // 清理
-    cleanup
+    cleanup,
   }
 }

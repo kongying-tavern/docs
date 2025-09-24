@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,7 +10,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useLocalized } from '@/hooks/useLocalized'
-import { ref, watch } from 'vue'
 import { useTopicManger } from '~/composables/useTopicManger'
 import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
 import ForumTagsInput from './form/publish-topic-form/ForumTagsInput.vue'

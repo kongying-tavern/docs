@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from './types'
+import type ForumAPI from '@/apis/forum/api'
+import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed } from 'vue'
 import { defineCommentDropdownMenu } from '~/composables/defineCommentDropdownMenu'
 import ForumTopicCommentDropdownMenu from '../ForumTopicCommentDropdownMenu.vue'
 import ForumTime from '../ui/ForumTime.vue'
@@ -14,6 +14,7 @@ const {
   commentClickHandler = () => {},
   repo = 'Feedback',
   topicId,
+  toggleResolvedTag,
 } = defineProps<{
   repo?: string
   commentCount?: number
@@ -21,11 +22,12 @@ const {
   commentClickHandler?: (event: Event) => void
   menus?: FORUM.TopicDropdownMenu[]
   topicId?: string | number
+  toggleResolvedTag?: () => boolean
 }>()
 
 const emit = defineEmits(['comment:delete', 'comment:click'])
 
-const dropdownMenus = defineCommentDropdownMenu(repo, commentData, topicId)
+const dropdownMenus = defineCommentDropdownMenu(repo, commentData, topicId, toggleResolvedTag)
 
 const { message } = useLocalized()
 

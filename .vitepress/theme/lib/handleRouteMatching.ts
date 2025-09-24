@@ -1,10 +1,10 @@
 import type { LocaleConfig, Router } from 'vitepress'
 import type { LocaleRoute } from '../../routes'
-import { getLangPath, stripTrailingSlashInPath } from '@/utils'
 import { merge } from 'lodash-es'
 import { match } from 'path-to-regexp'
 import { withBase } from 'vitepress'
 import { markRaw } from 'vue'
+import { getLangPath, stripTrailingSlashInPath } from '@/utils'
 
 export default function handleRouteMatching(
   to: string,

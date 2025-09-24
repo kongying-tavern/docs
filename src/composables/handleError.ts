@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
-import { GiteeAPIError } from '@/apis/forum/gitee'
 import { toast } from 'vue-sonner'
+import { GiteeAPIError } from '@/apis/forum/gitee'
 
 export function handleError(
   error: Error | undefined,

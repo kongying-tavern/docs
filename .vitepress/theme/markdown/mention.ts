@@ -1,6 +1,6 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { PluginSimple } from 'markdown-it'
 import type MarkdownIt from 'markdown-it'
+import type ForumAPI from '@/apis/forum/api'
 import blogMember from '../../../src/_data/blogMemberList.json'
 import feedbackRepoMember from '../../../src/_data/feedbackMemberList.json'
 import teamMember from '../../../src/_data/teamMemberList.json'

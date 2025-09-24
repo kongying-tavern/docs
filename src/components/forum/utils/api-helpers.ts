@@ -191,7 +191,7 @@ export async function retryApiCall<T>(
   maxRetries: number = 3,
   baseDelay: number = 1000,
 ): Promise<T> {
-  let lastError: Error
+  let lastError: Error | undefined
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -210,5 +210,5 @@ export async function retryApiCall<T>(
     }
   }
 
-  throw lastError!
+  throw new Error(lastError?.message || 'All retry attempts failed')
 }

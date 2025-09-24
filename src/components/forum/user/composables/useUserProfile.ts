@@ -1,11 +1,12 @@
-import { user } from '@/apis/forum/gitee'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
-import { getLangPath } from '@/utils'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
+import { user } from '@/apis/forum/gitee'
+import { useLocalized } from '@/hooks/useLocalized'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { getLangPath } from '@/utils'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { setPageTitle } from '../../utils'
 
@@ -20,6 +21,7 @@ export function useUserProfile(options: UseUserProfileOptions) {
   // Composables
   const { go } = useRouter()
   const { localeIndex } = useData()
+  const { message } = useLocalized()
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
   const { isOfficial } = useRuleChecks()
@@ -31,7 +33,7 @@ export function useUserProfile(options: UseUserProfileOptions) {
   const { runAsync: getUser, data: userData } = useRequest(user.getUser, {
     manual: true,
     onError: (err) => {
-      toast.error(`拉取用户资料失败 (${err})`)
+      toast.error(`${message.value.forum.labels.fetchUserFailed} (${err})`)
 
       if (err.message.includes('404 Not Found')) {
         return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
@@ -67,7 +69,7 @@ export function useUserProfile(options: UseUserProfileOptions) {
     return [
       {
         id: 'feedback',
-        label: isAuthorizedUser.value ? '我的反馈' : '提交的反馈',
+        label: isAuthorizedUser.value ? message.value.forum.labels.myFeedback : message.value.forum.labels.submittedFeedback,
         icon: 'i-lucide-file-text',
       },
     ]

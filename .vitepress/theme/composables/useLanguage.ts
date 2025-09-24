@@ -1,6 +1,6 @@
-import { equalLangCode, getLangPath } from '@/utils'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
+import { equalLangCode, getLangPath } from '@/utils'
 import { matchLanguages } from './matchLanguages'
 
 const DEFAULT_LANG = 'zh'

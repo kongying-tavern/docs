@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import {
+  createReusableTemplate,
+  useMediaQuery,
+} from '@vueuse/core'
+import { last } from 'lodash-es'
+import { VisuallyHidden } from 'radix-vue'
+import { computed } from 'vue'
+import {
   Dialog,
   DialogScrollContent,
   DialogTitle,
@@ -12,13 +19,6 @@ import {
 import { useHashChecker } from '@/hooks/useHashChecker'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import {
-  createReusableTemplate,
-  useMediaQuery,
-} from '@vueuse/core'
-import { last } from 'lodash-es'
-import { VisuallyHidden } from 'radix-vue'
-import { computed } from 'vue'
 import ForumImageUpload from '~/components/forum/form/ForumImageUpload.vue'
 import { useFormState } from '../composables/useFormState'
 import { useFormSubmit } from '../composables/useFormSubmit'

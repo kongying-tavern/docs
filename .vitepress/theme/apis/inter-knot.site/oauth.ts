@@ -1,6 +1,6 @@
-import type { SSOAuth } from '@/stores/useUserAuth'
 import type { AuthResult } from '../../utils/auth-errors'
 import type { INTER_KNOT } from './api'
+import type { SSOAuth } from '@/stores/useUserAuth'
 import { fetcher } from '.'
 import { createAuthError } from '../../utils/auth-errors'
 import { catchError } from '../utils'

@@ -3,4 +3,8 @@ title: Site Map
 aside: false
 ---
 
-## 网站地图
+# Site Map
+
+This page lists all pages of the Kongying Tavern documentation website to help you quickly find the content you need.
+
+<SitemapPage />

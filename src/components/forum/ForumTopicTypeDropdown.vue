@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ForumAPI } from '@/apis/forum/api'
+import { computed, inject, watch } from 'vue'
 import {
   Select,
   SelectContent,
@@ -8,8 +9,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed, inject, watch } from 'vue'
-import { FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_STORE_KEY } from './shared'
+import { FORUM_STORE_KEY, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY } from './shared'
 
 const { message } = useLocalized()
 
@@ -45,7 +45,7 @@ const currentLabel = computed(() => {
 })
 
 // Hover预加载功能
-const handleHoverPreload = () => {
+function handleHoverPreload() {
   if (forumStore?.triggerPreload) {
     forumStore.triggerPreload()
   }

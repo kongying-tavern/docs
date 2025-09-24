@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
+import { useVModel } from '@vueuse/core'
+import { ComboboxRoot, PopoverPortal } from 'radix-vue'
 import {
   Command,
   CommandEmpty,
@@ -22,8 +24,6 @@ import {
   TagsInputItemText,
 } from '@/components/ui/tags-input'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useVModel } from '@vueuse/core'
-import { ComboboxRoot, PopoverPortal } from 'radix-vue'
 import { useTagsInput } from '../composables/useTagsInput'
 
 const props = withDefaults(
@@ -65,7 +65,7 @@ const {
   <Popover>
     <PopoverTrigger class="w-full">
       <TagsInput
-        class="min-h-42px w-full gap-0 border px-0 vp-border-input"
+        class="min-h-42px w-full gap-0 border vp-border-input px-0"
         v-bind="$attrs"
         :model-value="modelValue"
         :placeholder="placeholder"
@@ -86,7 +86,7 @@ const {
     </PopoverTrigger>
     <PopoverPortal>
       <PopoverContent
-        class="mt-2 w-[--radix-popper-anchor-width] data-[state=closed]:animate-out data-[state=open]:animate-in border rounded-md bg-popover text-popover-foreground shadow-md outline-none data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+        class="mt-2 w-[--radix-popper-anchor-width] border rounded-md bg-popover text-popover-foreground shadow-md outline-none data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
       >
         <ComboboxRoot>
           <Command>

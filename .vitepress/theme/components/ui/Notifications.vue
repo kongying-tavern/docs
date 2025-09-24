@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue'
 import type { Notification } from './types/notification.d'
-import { useNotificationStore } from '@/stores/useNotification'
 import { twJoin, twMerge } from 'tailwind-merge'
-
 import { computed, ref, watchEffect } from 'vue'
+
+import { useNotificationStore } from '@/stores/useNotification'
 
 import { UI } from './config'
 

@@ -1,9 +1,9 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { Ref } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { simpleEventManager } from '~/services/events/SimpleEventManager'
 
 import { handleError } from './handleError'
@@ -31,27 +31,33 @@ export function useTopicComments() {
 
   const userSubmittedComment = ref<ForumAPI.Comment[]>([])
   const allCommentCount = computed(() =>
-    isLoaded.value
+    (isLoaded.value
       ? comments.value.length
       : commentCount.value
         ? commentCount.value
-        : 0 + userSubmittedComment.value.length,
+        : 0) + userSubmittedComment.value.length,
   )
-  const noComment = computed(() => commentCount.value === 0)
+  const noComment = computed(() => commentCount.value === 0 || commentCount.value === null)
 
   const initComments = async (
     topicId: string,
     repo: ForumAPI.Repo,
     topicCommentCount: number | null,
   ) => {
-    if (import.meta.env.SSR || topicCommentCount === 0)
+    if (import.meta.env.SSR || topicCommentCount === null || topicCommentCount === -1)
       return null
+
     commentCount.value = topicCommentCount
-    await refreshComment(
-      repo,
-      { current: 1, pageSize: 20, sort: 'created', filter: null, creator: null },
-      topicId,
-    )
+
+    // 只有当评论数大于0时才实际加载评论数据
+    if (topicCommentCount > 0) {
+      await refreshComment(
+        repo,
+        { current: 1, pageSize: 20, sort: 'created', filter: null, creator: null },
+        topicId,
+      )
+    }
+
     isLoaded.value = true
   }
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useUrlSearchParams } from '@vueuse/core'
 import { computed } from 'vue'
+import { Button } from '@/components/ui/button'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useForumHomeStore } from '~/stores/forum/useForumHomeStore'
 
 const forumData = useForumHomeStore()

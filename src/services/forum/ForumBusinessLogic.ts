@@ -1,5 +1,33 @@
+import type { Ref } from 'vue'
+import type { CustomConfig } from '../../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumQueryParams } from '~/services/forumService'
+
+/**
+ * API 响应类型定义
+ */
+interface ApiResponse {
+  topics?: ForumAPI.Topic[]
+  data?: ForumAPI.Topic[]
+  total?: number
+  totalPage?: number
+  totalPages?: number
+}
+
+interface ApiErrorResponse {
+  response?: {
+    status?: number
+    data?: unknown
+  }
+  message?: string
+}
+
+/**
+ * 类型守卫：检查是否为 API 错误响应
+ */
+function isApiErrorResponse(error: unknown): error is ApiErrorResponse {
+  return error !== null && typeof error === 'object'
+}
 
 /**
  * Forum Business Logic Service
@@ -83,7 +111,7 @@ export class ForumBusinessLogic {
         return topics.sort((a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         )
-      case 'updated_at':
+      case 'updated':
         return topics.sort((a, b) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
         )
@@ -107,7 +135,7 @@ export class ForumBusinessLogic {
    * 话题状态更新业务逻辑
    */
   static updateTopicVisibility(
-    topic: ForumAPI.Topic,
+    _topic: ForumAPI.Topic,
     updates: { hidden?: boolean, closed?: boolean },
   ): Partial<ForumAPI.Topic> {
     const stateUpdate: Partial<ForumAPI.Topic> = {}
@@ -154,26 +182,43 @@ export class ForumBusinessLogic {
   /**
    * 话题数据验证
    */
-  static validateTopic(topic: Partial<ForumAPI.Topic>): {
+  static validateTopic(
+    topic: Partial<ForumAPI.Topic>,
+    message?: Ref<CustomConfig>,
+  ): {
     isValid: boolean
     errors: string[]
   } {
     const errors: string[] = []
 
+    // Fallback messages if not provided
+    const msg = message?.value || {
+      forum: {
+        validation: {
+          errors: {
+            titleRequired: 'Topic title is required',
+            contentRequired: 'Topic content is required',
+            authorRequired: 'Topic author is required',
+            tooManyTags: 'Too many tags (max 10)',
+          },
+        },
+      },
+    } as CustomConfig
+
     if (!topic.title || topic.title.trim().length === 0) {
-      errors.push('Topic title is required')
+      errors.push(msg.forum.validation.errors.titleRequired)
     }
 
     if (!topic.content || !topic.content.text || topic.content.text.trim().length === 0) {
-      errors.push('Topic content is required')
+      errors.push(msg.forum.validation.errors.contentRequired)
     }
 
     if (!topic.user || !topic.user.login) {
-      errors.push('Topic author is required')
+      errors.push(msg.forum.validation.errors.authorRequired)
     }
 
     if (topic.tags && topic.tags.length > 10) {
-      errors.push('Too many tags (max 10)')
+      errors.push(msg.forum.validation.errors.tooManyTags)
     }
 
     return {
@@ -186,7 +231,7 @@ export class ForumBusinessLogic {
    * 数据转换：API响应到内部格式
    */
   static transformApiResponse(
-    response: any,
+    response: ApiResponse,
   ): { topics: ForumAPI.Topic[], total: number, totalPage: number } {
     // 这里可以添加数据转换逻辑
     // 例如：格式化日期、处理嵌套数据等
@@ -219,21 +264,42 @@ export class ForumBusinessLogic {
    * 错误处理业务逻辑
    */
   static handleForumError(
-    error: any,
+    error: unknown,
     operation: string,
+    message?: Ref<CustomConfig>,
   ): { message: string, shouldRetry: boolean, errorCode?: string } {
+    if (!isApiErrorResponse(error)) {
+      return {
+        message: `${operation} failed: Unknown error`,
+        shouldRetry: false,
+        errorCode: 'UNKNOWN_ERROR',
+      }
+    }
+    // Fallback messages if not provided
+    const msg = message?.value || {
+      forum: {
+        errors: {
+          tooManyRequests: 'Too many requests, please try again later',
+          serverError: 'Server error, please try again',
+          notFound: 'Resource not found',
+          operationFailed: '{operation} failed: {message}',
+          unknownError: 'Unknown error',
+        },
+      },
+    } as CustomConfig
+
     // 标准化错误处理
     if (error?.response?.status === 429) {
       return {
-        message: 'Too many requests, please try again later',
+        message: msg.forum.errors.tooManyRequests,
         shouldRetry: true,
         errorCode: 'RATE_LIMIT',
       }
     }
 
-    if (error?.response?.status >= 500) {
+    if (error.response?.status && error.response.status >= 500) {
       return {
-        message: 'Server error, please try again',
+        message: msg.forum.errors.serverError,
         shouldRetry: true,
         errorCode: 'SERVER_ERROR',
       }
@@ -241,14 +307,14 @@ export class ForumBusinessLogic {
 
     if (error?.response?.status === 404) {
       return {
-        message: 'Resource not found',
+        message: msg.forum.errors.notFound,
         shouldRetry: false,
         errorCode: 'NOT_FOUND',
       }
     }
 
     return {
-      message: `${operation} failed: ${error.message || 'Unknown error'}`,
+      message: msg.forum.errors.operationFailed.replace('{operation}', operation).replace('{message}', error.message || msg.forum.errors.unknownError),
       shouldRetry: false,
       errorCode: 'UNKNOWN',
     }
@@ -282,8 +348,8 @@ export class ForumOperationFactory {
    */
   static createTopicOperation(
     topic: Partial<ForumAPI.Topic>,
-    onSuccess?: (topic: ForumAPI.Topic) => void,
-    onError?: (error: any) => void,
+    _onSuccess?: (topic: ForumAPI.Topic) => void,
+    onError?: (error: unknown) => void,
   ) {
     return async () => {
       try {
@@ -295,8 +361,6 @@ export class ForumOperationFactory {
         // 这里调用实际的API
         // const result = await ForumService.createTopic(topic)
         // onSuccess?.(result)
-
-        console.log('Topic operation prepared:', topic)
       }
       catch (error) {
         const errorInfo = ForumBusinessLogic.handleForumError(error, 'Create Topic')
@@ -311,12 +375,11 @@ export class ForumOperationFactory {
   static createBatchUpdateOperation(
     updates: Array<{ id: string | number, changes: Partial<ForumAPI.Topic> }>,
     onSuccess?: (updatedCount: number) => void,
-    onError?: (error: any) => void,
+    onError?: (error: unknown) => void,
   ) {
     return async () => {
       try {
         // 这里可以添加批量更新的API调用
-        console.log('Batch update operation prepared:', updates.length, 'items')
         onSuccess?.(updates.length)
       }
       catch (error) {

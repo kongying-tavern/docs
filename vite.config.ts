@@ -3,8 +3,8 @@ import { FontaineTransform } from 'fontaine'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import Inspect from 'vite-plugin-inspect'
-import openInEditor from './.vitepress/plugins/open-in-editor'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import openInEditor from './.vitepress/plugins/open-in-editor'
 
 export default defineConfig({
   server: {

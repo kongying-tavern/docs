@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from './types'
-import { computed } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { simpleEventManager } from '../../services/events/SimpleEventManager'
 import ForumCommentInputBox from './comment/ForumCommentInputBox.vue'
 import ForumTopicComment from './comment/ForumTopicComment.vue'
 import { useTopicInteraction } from './composables/useTopicInteraction'
@@ -19,6 +20,9 @@ const { topic, viewMode } = defineProps<{
   viewMode: FORUM.TopicViewMode
 }>()
 
+// Local state for topic data
+const localRelatedComments = ref<ForumAPI.Comment[]>(topic.relatedComments || [])
+
 // Topic state management
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
 
@@ -29,7 +33,7 @@ const isCompactMode = computed(() => viewMode === 'Compact')
 // Filter menu based on view mode - translator only available in Card mode
 const menu = computed(() => {
   if (!isCardMode.value) {
-    return baseMenu.value.filter(item => item.id !== 'translator')
+    return baseMenu.value.filter(item => 'id' in item && item.id !== 'translator')
   }
   return baseMenu.value
 })
@@ -37,9 +41,7 @@ const menu = computed(() => {
 // Topic interaction logic
 const {
   replyTarget,
-  userSubmittedComment,
   inReply,
-  isPost,
   toPostDetailPage,
   handleCommentSubmit,
   handleToggleCommentInput,
@@ -55,12 +57,43 @@ function handleContentClick(): void {
 function handleReadMoreClick(): void {
   toPostDetailPage()
 }
+
+// Event listener cleanup function
+let unsubscribeCommentCreated: (() => void) | null = null
+
+// Setup event listeners
+onMounted(() => {
+  // Listen for comment:created events to add new comments to relatedComments
+  unsubscribeCommentCreated = simpleEventManager.subscribe('comment:created', ({ topicId, comment }) => {
+    // Only handle comments for this specific topic
+    if (topicId === topic.id) {
+      // Check if the comment already exists to avoid duplicates
+      const existingComment = localRelatedComments.value.find(c => c.id === comment.id)
+      if (!existingComment) {
+        // Add the new comment to the beginning of localRelatedComments array
+        localRelatedComments.value.unshift(comment)
+
+        // Keep only the latest 3 comments to avoid UI clutter
+        if (localRelatedComments.value.length > 3) {
+          localRelatedComments.value = localRelatedComments.value.slice(0, 3)
+        }
+      }
+    }
+  })
+})
+
+// Cleanup event listeners
+onUnmounted(() => {
+  if (unsubscribeCommentCreated) {
+    unsubscribeCommentCreated()
+  }
+})
 </script>
 
 <template>
   <div
     :id="`topic-${topic.id}`"
-    class="forum-topic-item my-1 w-full rounded-xl px-4 py-2 hover:bg-[var(--vp-c-bg-soft)]"
+    class="forum-topic-item my-1 w-full rounded-xl px-4 py-2 hover:bg-[var(--vp-c-default-soft)]"
     :class="[topic.type]"
   >
     <div class="topic-content">
@@ -130,12 +163,9 @@ function handleReadMoreClick(): void {
     />
 
     <!-- Related Comments -->
-    <div v-if="showComment && topic.relatedComments && viewMode !== 'Compact'" class="topic-comment">
+    <div v-if="showComment && localRelatedComments.length && viewMode !== 'Compact'" class="topic-comment">
       <ForumTopicComment
-        v-for="(commentItem, index) in [
-          ...topic.relatedComments,
-          ...userSubmittedComment,
-        ]"
+        v-for="(commentItem, index) in localRelatedComments"
         :key="commentItem.id"
         v-motion-slide-top
         class="bg-[var(--vp-c-bg-soft)] px-4 first:mt-4"
@@ -155,10 +185,10 @@ function handleReadMoreClick(): void {
       v-if="inReply && viewMode !== 'Compact'"
       :id="`reply-${topic.id}`"
       repo="Feedback"
-      class="rounded-md bg-[var(--vp-c-bg-soft)] px-8 pb-4"
+      class="mt-2 rounded-md bg-[var(--vp-c-bg-soft)] px-8 pb-4"
       :class="{
-        'rounded-t-none': showComment && topic.relatedComments,
-        'important:py-4': !topic.relatedComments,
+        'rounded-t-none': showComment && localRelatedComments.length,
+        'important:py-4': !localRelatedComments.length,
       }"
       :topic-id="String(topic.id)"
       :reply-target="replyTarget"

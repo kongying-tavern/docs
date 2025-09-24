@@ -6,8 +6,8 @@ import type {
   UploadHooks,
   UploadStatus,
 } from './upload'
-import { mutable, NOOP } from '@/components/type'
 import { ref } from 'vue'
+import { mutable, NOOP } from '@/components/type'
 import { definePropType } from './upload'
 
 defineOptions({

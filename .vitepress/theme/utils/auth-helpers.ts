@@ -3,10 +3,10 @@
  */
 
 import type { ComputedRef } from 'vue'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { computed } from 'vue'
 import { toast } from 'vue-sonner'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 import { AuthError, AuthErrorType } from './auth-errors'
 
 /**

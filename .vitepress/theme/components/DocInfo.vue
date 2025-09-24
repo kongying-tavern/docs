@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useReactionStore } from '@/stores/useReaction'
 import dayjs from 'dayjs'
 import { useData } from 'vitepress'
+import { useReactionStore } from '@/stores/useReaction'
 
 const { page, theme, frontmatter } = useData()
 const reaction = useReactionStore()

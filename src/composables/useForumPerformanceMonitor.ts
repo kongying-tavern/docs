@@ -69,8 +69,8 @@ export function useForumPerformanceMonitor(
   const memoryUsage = ref(0)
   const updateMemoryUsage = () => {
     if (typeof window !== 'undefined' && 'memory' in performance) {
-      const memory = (performance as any).memory
-      memoryUsage.value = memory.usedJSHeapSize
+      const memory = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory
+      memoryUsage.value = memory?.usedJSHeapSize || 0
     }
   }
 
@@ -175,32 +175,7 @@ export function useForumPerformanceMonitor(
     extendedMetrics.value.cacheMisses++
   }
 
-  // Reporting
-  const generateReport = () => {
-    const metrics = performanceSummary.value
-    const report = {
-      timestamp: new Date().toISOString(),
-      component: componentName,
-      metrics,
-      alerts: [...alerts.value],
-      recommendations: generateRecommendations(metrics),
-    }
-
-    if (enableDetailedLogging) {
-      console.group(`🔍 Performance Report: ${componentName}`)
-      console.table(metrics)
-      if (alerts.value.length > 0) {
-        console.warn('Performance Alerts:', alerts.value)
-      }
-      if (report.recommendations.length > 0) {
-        console.info('Recommendations:', report.recommendations)
-      }
-      console.groupEnd()
-    }
-
-    return report
-  }
-
+  // Helper function for generating recommendations
   const generateRecommendations = (metrics: PerformanceMetrics): string[] => {
     const recommendations: string[] = []
 
@@ -225,6 +200,32 @@ export function useForumPerformanceMonitor(
     }
 
     return recommendations
+  }
+
+  // Reporting
+  const generateReport = () => {
+    const metrics = performanceSummary.value
+    const report = {
+      timestamp: new Date().toISOString(),
+      component: componentName,
+      metrics,
+      alerts: [...alerts.value],
+      recommendations: generateRecommendations(metrics),
+    }
+
+    if (enableDetailedLogging) {
+      console.group(`🔍 Performance Report: ${componentName}`)
+      console.table(metrics)
+      if (alerts.value.length > 0) {
+        console.warn('Performance Alerts:', alerts.value)
+      }
+      if (report.recommendations.length > 0) {
+        console.info('Recommendations:', report.recommendations)
+      }
+      console.groupEnd()
+    }
+
+    return report
   }
 
   // Periodic reporting

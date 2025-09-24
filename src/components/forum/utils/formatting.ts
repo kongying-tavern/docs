@@ -90,7 +90,7 @@ export function formatMarkdownImages(uploadedImages: UploadedUserFile[]): string
 }
 
 export function formatAtMentions(text: string): string {
-  return text.replaceAll(PATTERNS.AT_MENTION, (match, username) => {
+  return text.replaceAll(PATTERNS.AT_MENTION, (_match, username) => {
     const encodedUsername = encodeURIComponent(username)
     return `<a class="vp-link" href="https://gitee.com/${encodedUsername}" target="${username}">@${username}</a>`
   })

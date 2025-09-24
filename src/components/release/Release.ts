@@ -1,10 +1,10 @@
-export type VersionType =
-  | 'Beta'
-  | 'Alpha'
-  | 'RC'
-  | 'Stable'
-  | 'Test'
-  | 'Release'
+export type VersionType
+  = | 'Beta'
+    | 'Alpha'
+    | 'RC'
+    | 'Stable'
+    | 'Test'
+    | 'Release'
 
 export interface ReleaseActions {
   text: string

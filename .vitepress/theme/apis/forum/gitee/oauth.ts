@@ -10,16 +10,21 @@ import { normalizeAuth } from './utils'
 const LAST_OAUTH_REDIRECT_URL_KEY = 'oauth-redirect-url'
 
 export function getRedirectUrl(localeIndex?: string): string {
-  const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
-  if (lastRedirectUrl)
-    return lastRedirectUrl
-
+  // Generate URL based on current locale
   const localeStr = localeIndex === 'root' ? '/' : `/${localeIndex}/`
-  const result = import.meta.env.DEV
+  const expectedUrl = import.meta.env.DEV
     ? `${location.protocol}//${location.host}${localeStr}callback`
     : `https://yuanshen.site/docs${localeStr}callback`
-  localStorage.setItem(LAST_OAUTH_REDIRECT_URL_KEY, result)
-  return result
+
+  // Check if cached URL matches current locale, if not regenerate
+  const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
+  if (lastRedirectUrl && lastRedirectUrl === expectedUrl) {
+    return lastRedirectUrl
+  }
+
+  // Store new URL for current locale
+  localStorage.setItem(LAST_OAUTH_REDIRECT_URL_KEY, expectedUrl)
+  return expectedUrl
 }
 
 export async function getToken(

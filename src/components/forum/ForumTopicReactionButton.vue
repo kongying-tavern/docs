@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TopicReaction } from '~/composables/useTopicsReaction'
-import { Button } from '@/components/ui/button'
 import { ReloadIcon } from '@radix-icons/vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
+import { Button } from '@/components/ui/button'
 import { useTopicsReaction } from '~/composables/useTopicsReaction'
 
 const { topicId } = defineProps<{

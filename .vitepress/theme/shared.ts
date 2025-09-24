@@ -121,6 +121,7 @@ export function escapeRegExp(str: string) {
 
 /**
  * @internal
+ * @deprecated Use escapeHtmlBasic from @/utils/text instead
  */
 export function escapeHtml(str: string): string {
   return str
@@ -135,4 +136,59 @@ export function enableTransitions() {
     'startViewTransition' in document
     && window.matchMedia('(prefers-reduced-motion: no-preference)').matches
   )
+}
+
+export class LRUCache<K, V> {
+  private max: number
+  private cache: Map<K, V>
+
+  constructor(max: number = 10) {
+    this.max = max
+    this.cache = new Map<K, V>()
+  }
+
+  get(key: K): V | undefined {
+    const item = this.cache.get(key)
+    if (item !== undefined) {
+      // refresh key
+      this.cache.delete(key)
+      this.cache.set(key, item)
+    }
+    return item
+  }
+
+  set(key: K, val: V): void {
+    // refresh key
+    if (this.cache.has(key))
+      this.cache.delete(key)
+    // evict oldest
+    else if (this.cache.size === this.max)
+      this.cache.delete(this.first()!)
+    this.cache.set(key, val)
+  }
+
+  first(): K | undefined {
+    return this.cache.keys().next().value
+  }
+
+  find(fn: (v: V, k: K, self: LRUCache<K, V>) => boolean): V | undefined {
+    for (const [key, value] of this.cache.entries()) {
+      if (fn(value, key, this)) {
+        return value
+      }
+    }
+    return undefined
+  }
+
+  delete(key: K): boolean {
+    if (this.cache.has(key)) {
+      const deleted = this.cache.delete(key)
+      return deleted
+    }
+    return false
+  }
+
+  clear(): void {
+    this.cache.clear()
+  }
 }

@@ -94,7 +94,7 @@ export function getScrollParent(element: Element): Element | null {
     return null
 
   const style = window.getComputedStyle(element)
-  const isScrollable = /(auto|scroll)/.test(
+  const isScrollable = /auto|scroll/.test(
     style.overflow + style.overflowX + style.overflowY,
   )
 
@@ -185,32 +185,8 @@ export function addGlobalEventListener(
   }
 }
 
-export function throttle<T extends (...args: Parameters<T>) => ReturnType<T>>(
-  func: T,
-  limit: number,
-): T {
-  let inThrottle: boolean
-
-  return (function (this: ThisParameterType<T>, ...args: Parameters<T>) {
-    if (!inThrottle) {
-      func.apply(this, args)
-      inThrottle = true
-      setTimeout(() => inThrottle = false, limit)
-    }
-  }) as T
-}
-
-export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(
-  func: T,
-  delay: number,
-): T {
-  let timeoutId: NodeJS.Timeout
-
-  return (function (this: ThisParameterType<T>, ...args: Parameters<T>) {
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => func.apply(this, args), delay)
-  }) as T
-}
+// Re-export from lodash-es to avoid duplication
+export { debounce, throttle } from 'lodash-es'
 
 // URL utilities
 export function updateUrlPath(newSegment: string, replace: boolean = true): void {

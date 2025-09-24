@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useReactionStore } from '@/stores/useReaction'
 import { useData } from 'vitepress'
 import { computed, useTemplateRef } from 'vue'
+import { useReactionStore } from '@/stores/useReaction'
 import DocFeedbackForm from './DocReactionForm.vue'
 
 const { variant = 'default', showForm = true } = defineProps<{

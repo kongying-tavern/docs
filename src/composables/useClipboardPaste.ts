@@ -1,7 +1,7 @@
 import type { UploadRawFile } from '@/components/ui/photo-wall/upload'
-import { genFileId } from '@/components/ui/photo-wall/upload'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
+import { genFileId } from '@/components/ui/photo-wall/upload'
 
 interface MessageValue {
   forum?: {

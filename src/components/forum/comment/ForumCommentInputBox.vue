@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { HTMLAttributes } from 'vue'
-import { issues } from '@/apis/forum/gitee'
-import UserAvatar from '@/components/UserAvatar.vue'
-import { useLocalized } from '@/hooks/useLocalized'
-import { cn } from '@/lib/utils'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
+import type ForumAPI from '@/apis/forum/api'
 import {
   onClickOutside,
 } from '@vueuse/core'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
+import { issues } from '@/apis/forum/gitee'
+import UserAvatar from '@/components/UserAvatar.vue'
+import { useLocalized } from '@/hooks/useLocalized'
+import { cn } from '@/lib/utils'
+import { useUserAuthStore } from '@/stores/useUserAuth'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 import ForumRichTextarea from '../form/ForumRichTextarea.vue'
 
 const {

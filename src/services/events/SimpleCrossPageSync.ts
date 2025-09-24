@@ -1,4 +1,21 @@
+import type ForumAPI from '@/apis/forum/api'
 import { SimpleEventManager } from './SimpleEventManager'
+
+/**
+ * 跨页面广播数据的标准结构
+ */
+interface CrossPageEventData {
+  topicId: string | number
+  timestamp: number
+  topic?: ForumAPI.Topic
+  updates?: Partial<ForumAPI.Topic>
+  pinned?: boolean
+  tags?: string[]
+  newType?: ForumAPI.TopicType
+  hidden?: boolean
+  closed?: boolean
+  comment?: ForumAPI.Comment
+}
 
 /**
  * 跨页面事件同步 - 修复版本
@@ -45,7 +62,7 @@ export class SimpleCrossPageSync {
 
     // 1. 监听storage事件（只处理跨tab事件，避免循环）
     this.storageEventListener = (e: StorageEvent) => {
-      if (!e.key?.startsWith('forum:topic:') || !e.newValue) {
+      if ((!e.key?.startsWith('forum:topic:') && !e.key?.startsWith('forum:comment:')) || !e.newValue) {
         return
       }
 
@@ -61,6 +78,9 @@ export class SimpleCrossPageSync {
 
         // 根据key分发事件
         switch (e.key) {
+          case 'forum:topic:created':
+            this.eventManager.emit('topic:created', { topic: data.topic })
+            break
           case 'forum:topic:deleted':
             this.eventManager.emit('topic:deleted', { id: topicId })
             break
@@ -78,9 +98,18 @@ export class SimpleCrossPageSync {
             break
           case 'forum:topic:hidden':
             this.eventManager.emit('topic:visibility-changed', { id: topicId, hidden: data.hidden })
+            this.eventManager.emit('topic:hidden', { id: topicId, hidden: data.hidden })
             break
           case 'forum:topic:closed':
             this.eventManager.emit('topic:visibility-changed', { id: topicId, closed: data.closed })
+            this.eventManager.emit('topic:closed', { id: topicId, closed: data.closed })
+            break
+          case 'forum:comment:created':
+            this.eventManager.emit('comment:created', {
+              commentId: data.comment?.id || data.commentId,
+              topicId: data.topicId,
+              comment: data.comment,
+            })
             break
         }
       }
@@ -114,11 +143,19 @@ export class SimpleCrossPageSync {
     // 监听SimpleEventManager的事件并广播到localStorage
     // 注意：这里我们直接广播事件数据，而不是重新emit
 
-    this.eventManager.subscribe('topic:deleted', (payload: any) => {
+    this.eventManager.subscribe('topic:created', (payload) => {
+      this.broadcastToStorage('forum:topic:created', {
+        topicId: payload.topic.id,
+        topic: payload.topic,
+        timestamp: Date.now(),
+      })
+    })
+
+    this.eventManager.subscribe('topic:deleted', (payload) => {
       this.broadcastToStorage('forum:topic:deleted', { topicId: payload.id, timestamp: Date.now() })
     })
 
-    this.eventManager.subscribe('topic:updated', (payload: any) => {
+    this.eventManager.subscribe('topic:updated', (payload) => {
       this.broadcastToStorage('forum:topic:updated', {
         topicId: payload.id,
         updates: payload.updates,
@@ -126,7 +163,7 @@ export class SimpleCrossPageSync {
       })
     })
 
-    this.eventManager.subscribe('topic:pinned', (payload: any) => {
+    this.eventManager.subscribe('topic:pinned', (payload) => {
       this.broadcastToStorage('forum:topic:pinned', {
         topicId: payload.id,
         pinned: payload.pinned,
@@ -134,7 +171,7 @@ export class SimpleCrossPageSync {
       })
     })
 
-    this.eventManager.subscribe('topic:tags-updated', (payload: any) => {
+    this.eventManager.subscribe('topic:tags-updated', (payload) => {
       this.broadcastToStorage('forum:topic:tags-updated', {
         topicId: payload.id,
         tags: payload.tags,
@@ -142,7 +179,7 @@ export class SimpleCrossPageSync {
       })
     })
 
-    this.eventManager.subscribe('topic:type-changed', (payload: any) => {
+    this.eventManager.subscribe('topic:type-changed', (payload) => {
       this.broadcastToStorage('forum:topic:type-changed', {
         topicId: payload.id,
         newType: payload.type,
@@ -150,7 +187,7 @@ export class SimpleCrossPageSync {
       })
     })
 
-    this.eventManager.subscribe('topic:visibility-changed', (payload: any) => {
+    this.eventManager.subscribe('topic:visibility-changed', (payload) => {
       if (payload.hidden !== undefined) {
         this.broadcastToStorage('forum:topic:hidden', {
           topicId: payload.id,
@@ -166,12 +203,20 @@ export class SimpleCrossPageSync {
         })
       }
     })
+
+    this.eventManager.subscribe('comment:created', (payload) => {
+      this.broadcastToStorage('forum:comment:created', {
+        topicId: payload.topicId,
+        comment: payload.comment,
+        timestamp: Date.now(),
+      })
+    })
   }
 
   /**
    * 广播到localStorage
    */
-  private broadcastToStorage(key: string, data: any): void {
+  private broadcastToStorage(key: string, data: CrossPageEventData): void {
     try {
       localStorage.setItem(key, JSON.stringify(data))
       // 自动清理

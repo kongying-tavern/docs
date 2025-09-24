@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useLocalized } from '@/hooks/useLocalized'
 import { computed } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { isAuthor } from '~/composables/isAuthor'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 

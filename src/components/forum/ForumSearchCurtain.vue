@@ -58,7 +58,7 @@ watchPostEffect(() => {
       @click="emits('close')"
     />
     <div class="wrapper relative h-fit min-h-100% bg-[var(--vp-c-bg)] transition-height md:min-h-30%">
-      <div class="curtain-content h-auto w-full pt-8 container">
+      <div class="curtain-content container h-auto w-full pt-8">
         <ForumSearchbox v-model:query="searchQuery" @search="emits('close')" />
         <!-- Debug: Always show for testing -->
         <div v-if="searchQuery.length > 0" class="debug-info">
@@ -87,7 +87,7 @@ watchPostEffect(() => {
             <li v-for="item in quickLinkList" :key="item.text">
               <VPLink
                 :href="item.link"
-                class="line-clamp-2 overflow-hidden text-ellipsis break-all font-size-3.5 color-[--vp-c-text-1] vp-link"
+                class="line-clamp-2 vp-link overflow-hidden text-ellipsis break-all font-size-3.5 color-[--vp-c-text-1]"
               >
                 {{ item.text?.replace(/【|】|\[|\]/g, ' ').trim() }}
               </VPLink>

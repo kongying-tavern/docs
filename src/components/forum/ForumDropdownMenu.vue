@@ -21,6 +21,8 @@ function getKey(item: FORUM.TopicDropdownMenu, index: number) {
     return `separator-${index}`
   if (item.type === 'group')
     return `group-${index}`
+  if (item.type === 'info')
+    return `info-${index}`
   return item.id
 }
 
@@ -52,6 +54,10 @@ function sortByOrder(items: FORUM.TopicDropdownMenu[]): FORUM.TopicDropdownMenu[
       <span v-if="item.icon" class="mr-2 icon-btn" :class="item.icon" />
       {{ item.label }}
     </DropdownMenuLabel>
+
+    <div v-else-if="item.type === 'info'" :id="item.id" class="px-2 py-1 text-xs text-muted-foreground leading-none" :class="[item.class]">
+      {{ item.label }}
+    </div>
 
     <DropdownMenuGroup v-else-if="item.type === 'group'" :id="getKey(item, index)">
       <ForumDropdownMenu :items="item.items" />

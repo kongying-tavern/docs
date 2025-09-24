@@ -20,6 +20,15 @@ const ui: CustomConfig['ui'] = {
     close: '关闭',
     all: '全部',
   },
+  sitemap: {
+    blog: '博客文章',
+    manual: '使用手册',
+    general: '常规页面',
+    api: 'API 文档',
+    guide: '指南文档',
+    community: '社区相关',
+    about: '关于我们',
+  },
 }
 
 export default ui

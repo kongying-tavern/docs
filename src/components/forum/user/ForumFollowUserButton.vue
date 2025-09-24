@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { Button } from '@/components/ui/button'
 import { ref } from 'vue'
+import { Button } from '@/components/ui/button'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useFollowUser } from '~/composables/useFollowUser'
 
 const { user } = defineProps<{
@@ -10,6 +11,7 @@ const { user } = defineProps<{
 }>()
 
 const { followState, toggleFollowThisUser, following, disabled } = useFollowUser(user)
+const { message } = useLocalized()
 const isHovered = ref(false)
 </script>
 
@@ -31,7 +33,7 @@ const isHovered = ref(false)
       ]"
     />
     <span :class="textClass">
-      {{ followState ? (isHovered ? '取消关注' : '正在关注中') : '关注' }}
+      {{ followState ? (isHovered ? message.forum.labels.unfollow : message.forum.labels.following) : message.forum.labels.follow }}
     </span>
   </Button>
 </template>

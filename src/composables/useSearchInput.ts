@@ -35,7 +35,6 @@ export function useSearchInput(options?: {
         searchQuery.value = query
         // Auto-trigger search if autoSearch callback is provided
         if (options?.autoSearch) {
-          console.log(`🔍 [useSearchInput] Auto-triggering search from URL: "${query}"`)
           options.autoSearch(query)
         }
       }

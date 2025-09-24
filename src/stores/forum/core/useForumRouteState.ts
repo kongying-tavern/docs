@@ -97,15 +97,16 @@ export const useForumRouteState = defineStore('forum-route-state', () => {
   }
 
   // Build query parameters for API calls
-  const buildQueryParams = (additionalParams?: Record<string, any>) => {
-    const params: Record<string, any> = {
+  const buildQueryParams = (additionalParams?: Record<string, string | number | boolean | null>) => {
+    const params: Record<string, string | number | boolean | null> = {
       filter: routeFilter.value,
       sort: currentSort.value,
       page: currentPage.value,
     }
 
-    if (currentCreator.value || routeCreator.value) {
-      params.creator = currentCreator.value || routeCreator.value
+    const creator = currentCreator.value || routeCreator.value
+    if (creator) {
+      params.creator = creator
     }
 
     return { ...params, ...additionalParams }

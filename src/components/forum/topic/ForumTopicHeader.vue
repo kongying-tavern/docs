@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from './types'
-import User from '@/components/ui/User.vue'
+import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
+import User from '@/components/ui/User.vue'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'

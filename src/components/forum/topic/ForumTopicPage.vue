@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
-import Image from '@/components/ui/image/Image.vue'
+import { Images } from '@/components/ui/image'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
@@ -11,12 +12,17 @@ import ForumTagList from '../ui/ForumTagList.vue'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
-import { useTopicImageGrid } from './composables/useTopicImageGrid'
 import { useTopicPageState } from './composables/useTopicPageState'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 
-// Topic page state management
+// 组件元数据配置
+defineOptions({
+  meta: {
+    i18n: true,
+  },
+})
+
 const {
   topic,
   loading,
@@ -26,8 +32,18 @@ const {
   backToPreviousPage,
 } = useTopicPageState()
 
-// Image grid functionality
-const { gridClass, imageClass } = useTopicImageGrid(topic)
+const topicImages = computed(() => {
+  if (!topic.value?.content?.images)
+    return []
+
+  return topic.value.content.images.map(img => ({
+    src: img.src,
+    alt: img.alt || '',
+    thumbHash: img.thumbHash,
+    width: img.width,
+    height: img.height,
+  }))
+})
 </script>
 
 <template>
@@ -74,12 +90,12 @@ const { gridClass, imageClass } = useTopicImageGrid(topic)
 
           <ForumTagList class="my-2" :data="topic?.tags" />
 
-          <div v-if="topic?.content.images" class="topic-content-img grid mt-6 w-full gap-1 overflow-hidden rounded-sm" :class="gridClass">
-            <Image
-              v-for="(img, index) in topic?.content.images" :key="index" :src="img.src" :alt="img.alt"
-              :thumb-hash="img?.thumbHash" :width="img?.width" :height="img?.height" class="size-full" :class="imageClass(index)"
-            />
-          </div>
+          <!-- 智能图片布局 -->
+          <Images
+            v-if="topicImages.length > 0"
+            :images="topicImages"
+            class="mt-6"
+          />
 
           <ForumTopicFooter prev-page-link="./" :topic-id="String(topic.id)" :text="message.forum.topic.backToFeedbackForum" />
         </div>

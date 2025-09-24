@@ -1,5 +1,5 @@
-import type { SSOAuth } from '@/stores/useUserAuth'
 import type { INTER_KNOT } from './api'
+import type { SSOAuth } from '@/stores/useUserAuth'
 
 export const ASSETS_URL_PREFIX = 'https://assets.webp.inter-knot.site/'
 

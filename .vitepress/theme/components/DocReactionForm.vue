@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { Button } from '@/components/ui/button/'
-import { Textarea } from '@/components/ui/textarea/'
 import { useSessionStorage } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
+import { Button } from '@/components/ui/button/'
+import { Textarea } from '@/components/ui/textarea/'
 import { useSubmitTopic } from '~/composables/useSubmitTopic'
 import BlurFade from './ui/BlurFade.vue'
 
@@ -118,7 +118,7 @@ defineExpose({
           </code>
         </pre>
 
-        <a class="mt-1 inline-block w-full text-center vp-link" :href="withBase(`/feedback/topic/${data?.id}`)" target="_blank" rel="noopener noreferrer">
+        <a class="mt-1 inline-block w-full vp-link text-center" :href="withBase(`/feedback/topic/${data?.id}`)" target="_blank" rel="noopener noreferrer">
           {{ data?.id ? `Feedback ID: ${data?.id}` : '' }}
         </a>
       </div>

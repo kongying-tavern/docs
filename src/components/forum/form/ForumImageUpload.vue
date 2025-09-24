@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from 'vue'
 import type {
   UploadFile,
   UploadRawFile,
   UploadUserFile,
 } from '@/components/ui/photo-wall/upload'
-import type { HTMLAttributes } from 'vue'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
-import { PhotoWall } from '@/components/ui/photo-wall'
 import { useVModel } from '@vueuse/core'
 import { isArray } from 'lodash-es'
 import { useTemplateRef } from 'vue'
+import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
+import { PhotoWall } from '@/components/ui/photo-wall'
 
 const props = defineProps<{
   modelValue: UploadUserFile[]

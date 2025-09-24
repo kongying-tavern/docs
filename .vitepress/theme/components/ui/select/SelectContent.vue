@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { SelectContentEmits, SelectContentProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
 import {
   SelectContent,
   SelectPortal,
@@ -9,6 +8,7 @@ import {
   useForwardPropsEmits,
 } from 'radix-vue'
 import { computed } from 'vue'
+import { cn } from '@/lib/utils'
 
 import { SelectScrollDownButton, SelectScrollUpButton } from '.'
 

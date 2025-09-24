@@ -1,12 +1,13 @@
 import type { INTER_KNOT } from '@/apis/inter-knot.site/api'
-import { reactions } from '@/apis/inter-knot.site'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { createGlobalState, useArrayFind, useDebounceFn } from '@vueuse/core'
-
 import { withBase } from 'vitepress'
 import { computed, ref } from 'vue'
+
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
+import { reactions } from '@/apis/inter-knot.site'
+import { useLocalized } from '@/hooks/useLocalized'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 
 export interface TopicReaction {
   id: string
@@ -17,6 +18,7 @@ export interface TopicReaction {
 export const useTopicsReaction = createGlobalState(() => {
   const useTopicsReaction = ref<TopicReaction[]>([])
   const userInfo = useUserInfoStore()
+  const { message } = useLocalized()
   const pendingRequests = ref<Set<string>>(new Set())
   const isUpdating = ref(false)
 
@@ -61,7 +63,7 @@ export const useTopicsReaction = createGlobalState(() => {
     {
       manual: true,
       onError: () => {
-        toast.info('操作失败，请稍后重试')
+        toast.info(message.value.forum.errors.operationFailedRetry)
       },
     },
   )
@@ -109,7 +111,7 @@ export const useTopicsReaction = createGlobalState(() => {
   const revokeReaction = async (topicId: string) => {
     const reactionState = await getTopicReaction(topicId)
     if (reactionState.value?.state !== null && !reactionState.value?.data) {
-      toast.error('服务器无响应，请稍后重试')
+      toast.error(message.value.forum.errors.serverNoResponse)
       return
     }
     if (reactionState.value?.state === 'like') {
@@ -142,7 +144,7 @@ export const useTopicsReaction = createGlobalState(() => {
       return
     }
     if (!reactionState.value) {
-      toast.error('无响应，请稍后重试')
+      toast.error(message.value.forum.errors.noResponse)
       return
     }
     if (state === 'like') {

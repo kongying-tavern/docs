@@ -27,8 +27,8 @@ export interface UploadFile {
   status?: UploadStatus
 }
 
-export type UploadUserFile = Omit<UploadFile, 'uid'> &
-  Partial<Pick<UploadFile, 'uid'>>
+export type UploadUserFile = Omit<UploadFile, 'uid'>
+  & Partial<Pick<UploadFile, 'uid'>>
 
 export type UploadFiles = UploadFile[]
 

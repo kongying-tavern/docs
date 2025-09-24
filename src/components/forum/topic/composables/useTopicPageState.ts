@@ -1,11 +1,11 @@
-import { issues } from '@/apis/forum/gitee'
-import { useLocalized } from '@/hooks/useLocalized'
-import { getLangPath } from '@/utils'
 import { watchOnce } from '@vueuse/core'
 import markdownIt from 'markdown-it'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, onUnmounted, watchEffect } from 'vue'
 import { useRequest } from 'vue-request'
+import { issues } from '@/apis/forum/gitee'
+import { useLocalized } from '@/hooks/useLocalized'
+import { getLangPath } from '@/utils'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
@@ -23,9 +23,9 @@ export function useTopicPageState() {
   // Setup topic page specific event listeners using new architecture
   function setupTopicPageEvents() {
     // Listen for topic deletion, close, or hide events
-    const handleTopicRemoval = ({ topicId }: { topicId: string | number }) => {
+    const handleTopicRemoval = ({ id }: { id: string | number }) => {
       // If current topic is removed, navigate back
-      if (String(topicId) === String(params.value?.id)) {
+      if (String(id) === String(params.value?.id)) {
         backToPreviousPage()
       }
     }
@@ -63,11 +63,22 @@ export function useTopicPageState() {
   }
 
   // Rendered content
-  const renderedContent = computed(() =>
-    sanitizeMarkdown(
-      markdownIt().render(sanitizeMarkdown(topic?.value?.content.text)),
-    ),
-  )
+  const renderedContent = computed(() => {
+    if (!topic?.value?.content.text)
+      return ''
+
+    // First sanitize to clean up the raw content
+    const cleanedText = sanitizeMarkdown(topic.value.content.text)
+
+    // Configure markdown-it to preserve line breaks
+    const md = markdownIt({
+      breaks: true, // Convert '\n' in paragraphs into <br>
+      linkify: true, // Autoconvert URL-like text to links
+    })
+
+    // Render and sanitize again
+    return sanitizeMarkdown(md.render(cleanedText))
+  })
 
   // Navigation
   function backToPreviousPage() {

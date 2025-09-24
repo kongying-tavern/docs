@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { inject } from 'vue'
 import {
   Select,
   SelectContent,
@@ -6,7 +7,6 @@ import {
   SelectLabel,
   SelectTrigger,
 } from '@/components/ui/select'
-import { inject } from 'vue'
 import { FORUM_TOPIC_VIEW_MODE_KEY } from './shared'
 
 const viewMode = inject(FORUM_TOPIC_VIEW_MODE_KEY)

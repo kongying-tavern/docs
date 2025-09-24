@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useMediaQuery, useTitle, useUrlSearchParams } from '@vueuse/core'
+import { useData } from 'vitepress'
+import { computed } from 'vue'
 import LocalNav from '@/components/LocalNav.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -7,9 +10,6 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useMediaQuery, useTitle, useUrlSearchParams } from '@vueuse/core'
-import { useData } from 'vitepress'
-import { computed } from 'vue'
 import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
 import { publishTopic } from './utils'
 
@@ -29,14 +29,14 @@ const title = computed(() => frontmatter.value.title || pageTitle.value?.split('
 const selectPublishTopicMenu = computed(() => {
   return [
     {
-      label: '提 BUG',
+      label: message.value.forum.labels.submitBug,
       icon: 'i-lucide-bug',
       action: () => {
         location.hash = 'PUBLISH-TOPIC-BUG'
       },
     },
     {
-      label: '提建议',
+      label: message.value.forum.labels.submitSuggestion,
       icon: 'i-lucide-file-text',
       action: () => {
         location.hash = 'PUBLISH-TOPIC-FEAT'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useLocalized } from '@/hooks/useLocalized'
 import { inject, watch } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useSearchInput } from '~/composables/useSearchInput'
 
 const emits = defineEmits(['search'])

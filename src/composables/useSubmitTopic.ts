@@ -1,11 +1,11 @@
 import type ForumAPI from '@/apis/forum/api'
-import { issues } from '@/apis/forum/gitee'
-import { useLocalized } from '@/hooks/useLocalized'
-import { authGuards } from '@/utils/auth-helpers'
 import { useData } from 'vitepress'
 import { watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
+import { issues } from '@/apis/forum/gitee'
+import { useLocalized } from '@/hooks/useLocalized'
+import { authGuards } from '@/utils/auth-helpers'
 import { composeTopicBody } from '~/composables/composeTopicBody'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
@@ -58,7 +58,7 @@ export function useSubmitTopic() {
 
     const newTopic = {
       body: composeTopicBody(text, { labels }),
-      title: `${type}:${title}`,
+      title: `${type}:${title.length === 0 ? `${text.substring(0, 12)}...` : title}`,
       labels: labels.join(','),
     }
 
@@ -69,7 +69,7 @@ export function useSubmitTopic() {
       const result = await asyncSubmit(newTopic)
 
       // Emit form submit success event
-      forumEvents.formSubmitSuccess('topic', newTopic)
+      forumEvents.formSubmitSuccess('topic', result)
 
       toast.promise(Promise.resolve(result), {
         loading: message.value.forum.publish.publishLoading,

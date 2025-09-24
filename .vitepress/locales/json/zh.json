@@ -1,0 +1,807 @@
+{
+  "title": "空荧酒馆",
+  "titleTemplate": ":title | 空荧酒馆",
+  "description": "空荧酒馆制作的原神全资源攻略地图。",
+  "head": [
+    [
+      "meta",
+      {
+        "property": "og:site_name",
+        "content": "空荧酒馆"
+      }
+    ],
+    [
+      "meta",
+      {
+        "property": "og:locale",
+        "content": "zh-CN"
+      }
+    ]
+  ],
+  "siteTitle": "空荧酒馆",
+  "keyword": "原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern",
+  "image": "https://yuanshen.site/docs/imgs/common/cover.jpg",
+  "logo": "/imgs/common/logo/logo_256.png",
+  "outlineTitle": "本页目录",
+  "lastUpdatedText": "更新日期",
+  "returnToTopLabel": "回到顶部",
+  "langMenuLabel": "更改语言",
+  "notFound": {
+    "title": "这个页面找不到了",
+    "quote": "可能跟温迪一起出游了吧",
+    "linkLabel": "回到首页"
+  },
+  "ui": {
+    "title": {
+      "templateMappings": [
+        {
+          "test": {
+            "__regex__": "(^|\\/?)manual\\/client\\/?",
+            "__flags__": ""
+          },
+          "template": ":title - 客户端使用手册 | 空荧酒馆"
+        }
+      ]
+    },
+    "banner": {
+      "wip": "此页面正在施工中，不代表最终效果。"
+    },
+    "button": {
+      "search": "搜索",
+      "submit": "提交",
+      "cancel": "取消",
+      "loading": "加载中",
+      "close": "关闭",
+      "all": "全部"
+    },
+    "sitemap": {
+      "blog": "博客文章",
+      "manual": "使用手册",
+      "general": "常规页面",
+      "api": "API 文档",
+      "guide": "指南文档",
+      "community": "社区相关",
+      "about": "关于我们"
+    }
+  },
+  "asideLinks": {
+    "title": "快捷链接",
+    "starOnGitHub": "Star on GitHub",
+    "contactUsText": "加入Discord服务器",
+    "contactUsLink": "https://discord.gg/SWz6RTWNkm",
+    "sponsor": "支持我们",
+    "editLink": "在 GitHub 上编辑该页",
+    "translateThisPage": "帮助我们完善该页翻译"
+  },
+  "docReaction": {
+    "feedbackMsg": "本页对您有帮助吗？",
+    "good": "有帮助",
+    "bad": "无帮助",
+    "feedbackFailMsg": "反馈失败，请重试或联系管理员（QQ：1961266616）！",
+    "feedbackSuccessMsg": "提交成功，感谢你的反馈！",
+    "badFeedbackSuccessMsg": "希望你能在下方告知我们具体问题~",
+    "form": {
+      "chooseIssues": "是否遇到以下问题？",
+      "translationIssue": "翻译问题",
+      "typosIssue": "错别字/标点符号",
+      "contentImgLinkIssue": "文案表达不准确、图片加载失败或链接错误",
+      "feedbackDetail": "反馈内容/更多建议",
+      "feedbackTip": "请详细描述你在使用文档过程中遇到的问题或优化建议",
+      "otherIssue": "其他问题（请在反馈内容中具体描述）",
+      "contactWay": "联系方式（可选）",
+      "issueOptions": [
+        {
+          "label": "页面显示错误",
+          "value": "CATA-DISPLAY"
+        },
+        {
+          "label": "错别字、标点符号错误",
+          "value": "CATA-TYPOS"
+        },
+        {
+          "label": "内容表达有误、图片/文字链接错误",
+          "value": "CATA-DOCS"
+        },
+        {
+          "label": "其他问题",
+          "value": "CATA-OTHER"
+        }
+      ]
+    }
+  },
+  "docFooter": {
+    "prev": "上一页",
+    "next": "下一页"
+  },
+  "staff": {
+    "title": "Staff",
+    "desc": "空荧酒馆『原神地图』项目参与制作",
+    "communityStaff": {
+      "title": "社区运营"
+    },
+    "clientStaff": {
+      "title": "客户端开发"
+    },
+    "webStaff": {
+      "title": "网页端开发"
+    },
+    "translateStaff": {
+      "title": "本地化翻译"
+    },
+    "pinStaff": {
+      "title": "地图点位标记"
+    }
+  },
+  "team": {
+    "title": "关于团队",
+    "desc": "地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。",
+    "coreMember": {
+      "title": "核心团队成员",
+      "desc": "核心团队成员是那些积极长期参与维护一个或多个核心项目的人。 他们对空荧酒馆的生态系统做出了重大贡献。"
+    },
+    "emeritiMember": {
+      "title": "名誉核心团队",
+      "desc": "我们在此致敬过去曾做出过突出贡献的不再活跃的团队成员。"
+    },
+    "partnerMember": {
+      "title": "社区伙伴",
+      "desc": "我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。"
+    }
+  },
+  "payment": {
+    "wechatpay": {
+      "name": "微信支付",
+      "address": "wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp"
+    },
+    "alipay": {
+      "name": "支付宝",
+      "address": "https://qr.alipay.com/tsx11609thmpw9odmvdlxd6"
+    },
+    "qqpay": {
+      "name": "QQ 支付",
+      "address": "https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet"
+    },
+    "paypal": {
+      "name": "PayPal",
+      "address": "https://www.paypal.com/paypalme/yuanshenditu"
+    },
+    "bilibili": {
+      "name": "bilibili",
+      "address": "https://space.bilibili.com/518076785"
+    }
+  },
+  "forum": {
+    "loadMore": "加载更多",
+    "noMore": "没有更多",
+    "loadError": "加载失败",
+    "exceededRateLimitWarning": "已达到 Gitee 接口的最大请求频率限制，请登录后重试",
+    "topic": {
+      "official": "官方",
+      "author": "作者",
+      "showMore": "显示更多",
+      "backToFeedbackForum": "返回反馈",
+      "menu": {
+        "giteeLink": "在Gitee查看",
+        "toOriginal": "转到原文",
+        "hideFeedback": {
+          "text": "隐藏反馈",
+          "success": "反馈隐藏成功",
+          "fail": "反馈隐藏失败"
+        },
+        "deleteComment": {
+          "text": "删除评论",
+          "success": "评论删除成功",
+          "fail": "评论删除失败"
+        },
+        "closeFeedback": {
+          "text": "关闭反馈",
+          "success": "反馈关闭成功",
+          "fail": "反馈关闭失败"
+        },
+        "copyLink": {
+          "text": "复制链接",
+          "success": "已复制",
+          "fail": "复制失败"
+        },
+        "changeType": {
+          "text": "更改类型",
+          "to": "更改为"
+        },
+        "modifyTags": {
+          "text": "修改 Tags"
+        },
+        "pinTopic": {
+          "pin": "固定话题",
+          "unpin": "取消固定"
+        },
+        "commentArea": {
+          "open": "打开评论",
+          "close": "关闭评论"
+        },
+        "reopenFeedback": {
+          "text": "打开反馈"
+        },
+        "cancelTopic": {
+          "text": "取消话题"
+        }
+      },
+      "type": {
+        "sug": "提建议",
+        "bug": "提漏洞",
+        "feat": "我想要",
+        "ann": "公告"
+      },
+      "state": {
+        "open": "已开启",
+        "closed": "已关闭",
+        "rejected": "已拒绝",
+        "progressing": "进行中"
+      },
+      "backToTeamBlog": "返回团队博客",
+      "backToPrevPage": "返回上一页"
+    },
+    "auth": {
+      "login": "登录",
+      "logout": "登出",
+      "loginMsg": "登录 Gitee 账号",
+      "logoutMsg": "登出 Gitee 账号",
+      "loginTips": "请登录后重试",
+      "loginToCheck": "请 %login 后查看 (・ω・)",
+      "jumpToGiteeTips": "即将跳转到 Gitee 进行授权登录",
+      "loginSuccess": "登录成功",
+      "logoutSuccess": "已登出",
+      "loginFail": "登录失败",
+      "logoutFail": "登出失败",
+      "loginAlert": "登录提示",
+      "loginAlertMsg": "即将跳转到 Gitee 进行授权登录",
+      "notGiteeAccountMsg": "没有 Gitee 账号？%signup",
+      "clickToGiteeSignup": "点击注册 Gitee 账号",
+      "callback": {
+        "title": "正在通过 Gitee 授权登录中...",
+        "description": "请稍等片刻，即将为您重定向到原页面",
+        "steps": {
+          "init": "解析授权参数",
+          "token": "获取访问令牌",
+          "session": "建立用户会话",
+          "sso": "同步SSO状态",
+          "redirect": "准备页面跳转"
+        },
+        "status": {
+          "pending": "等待中",
+          "processing": "处理中",
+          "completed": "已完成",
+          "failed": "失败"
+        },
+        "error": {
+          "title": "授权失败",
+          "retry": "重试"
+        }
+      }
+    },
+    "aside": {
+      "contactUs": {
+        "title": "联系我们",
+        "desc": "地图功能异常、紧急问题请加入QQ反馈群处理",
+        "qrcodeLink": "https://jq.qq.com/?_wv=1027&k=nbveGrfQ"
+      },
+      "teamBlog": {
+        "text": "团队博客",
+        "items": [
+          {
+            "text": "原神地图客户端更新日志",
+            "link": "/blog/hotupdatelog-client"
+          },
+          {
+            "text": "原神地图网页版更新日志",
+            "link": "/blog/changelog-web"
+          }
+        ]
+      },
+      "suggest": {
+        "text": "相关推荐",
+        "items": []
+      },
+      "info": [
+        {
+          "text": "反馈由 Gitee 提供技术支持",
+          "link": "https://gitee.com"
+        }
+      ]
+    },
+    "comment": {
+      "comment": "评论",
+      "commentSuccess": "评论成功：",
+      "commentFail": "评论失败：",
+      "commentAfterLogin": "请 %login 后发表评论 (・ω・)",
+      "commentCount": "评论",
+      "placeholder": "发表你的评论吧~",
+      "loadMoreComment": "加载更多评论",
+      "noComment": "暂无评论",
+      "noMoreComment": "没有更多评论",
+      "loadingComment": "评论加载中...",
+      "reply": "回复",
+      "commentsClosed": "评论关闭"
+    },
+    "header": {
+      "sort": {
+        "created": "最近创建",
+        "updated": "最近更新",
+        "notesCount": "评论数正序"
+      },
+      "search": {
+        "placeholder": "搜索反馈",
+        "allRelatedContentCount": "搜索到相关反馈数"
+      },
+      "navigation": {
+        "allFeedback": "全部反馈",
+        "bugFeedback": "问题反馈",
+        "featFeedback": "功能建议",
+        "closedFeedback": "已结反馈",
+        "faq": {
+          "title": "常见问题",
+          "items": [
+            {
+              "text": "Alert Dialog",
+              "link": "/docs/components/alert-dialog",
+              "desc": "A modal dialog that interrupts the user with important content and expects a response."
+            }
+          ]
+        }
+      }
+    },
+    "publish": {
+      "tags": {
+        "issue": {
+          "typos": "错别字",
+          "display": "显示问题",
+          "login": "登录问题",
+          "performance": "性能问题",
+          "translation": "翻译问题",
+          "other": "其他问题",
+          "pin": "点位问题",
+          "docs": "文档问题"
+        },
+        "platforms": {
+          "all": "全平台可复现",
+          "web": "网页端问题",
+          "client": "客户端问题"
+        }
+      },
+      "title": "提交反馈",
+      "type": {
+        "sug": "提建议",
+        "bug": "提缺陷",
+        "feat": "我想要",
+        "ann": "发公告"
+      },
+      "tagsInput": {
+        "searchTags": "搜索符合的标签",
+        "maxTagsLimit": "已达到最大可选标签数量",
+        "noResultsFound": "没有符合的结果"
+      },
+      "publishSuccess": "反馈上传成功：",
+      "publishFail": "反馈上传失败：",
+      "publishLoading": "反馈提交中",
+      "form": {
+        "title": {
+          "text": "标题",
+          "placeholder": "请输入标题（5-50个字）"
+        },
+        "type": {
+          "text": "标签",
+          "placeholder": "请选择反馈类型（需至少选择一个）"
+        },
+        "content": {
+          "text": "反馈内容",
+          "placeholder": "请详细描述你的反馈内容（5-2000字）"
+        },
+        "upload": {
+          "text": "上传错误截图",
+          "tip": "请上传相关错误截图或报错信息最多 %range 张，最大不超过 %size MB",
+          "fail": "%filename 上传失败",
+          "violation": "图片违规！请勿上传任何与反馈无关的图片",
+          "paste": {
+            "hint": "可直接粘贴图片",
+            "formatNotSupported": "剪贴板中的图片格式不受支持",
+            "sizeExceed": "图片大小 %size MB 超出限制 %maxSize MB",
+            "formatError": "不支持的图片格式: %format"
+          }
+        }
+      }
+    },
+    "user": {
+      "menu": {
+        "giteePage": "Gitee 个人主页",
+        "giteeAccountInfo": "Gitee 账号信息"
+      },
+      "myFeedback": {
+        "title": "我的反馈"
+      }
+    },
+    "readMore": "了解更多",
+    "translate": {
+      "translateText": "翻译贴子",
+      "translateInfo": "翻译由 Meta Seq2Seq 模型提供支持",
+      "error": "翻译失败",
+      "limit": "已达到最大请求次数，请稍后再试",
+      "loading": "翻译中..."
+    },
+    "labels": {
+      "resolved": "已解决",
+      "submitBug": "提 BUG",
+      "submitSuggestion": "提建议",
+      "teamBlog": "团队博客",
+      "userManual": "使用手册",
+      "joinCommunity": "加入社区",
+      "writeThoughts": "写下你的想法...",
+      "shareExperience": "分享你的经验...",
+      "askQuestion": "提出你的问题...",
+      "pasteError": "处理粘贴文件时出错",
+      "lazyPerson": "这个人很懒，什么都没写~",
+      "unknown": "未知",
+      "fetchUserFailed": "拉取用户资料失败",
+      "myFeedback": "我的反馈",
+      "submittedFeedback": "提交的反馈",
+      "personalHomepage": "的个人主页",
+      "imageLoadFailed": "图片加载失败",
+      "follow": "关注",
+      "following": "正在关注中",
+      "unfollow": "取消关注",
+      "posts": "帖子",
+      "joinTime": "加入时间",
+      "privateMessage": "私信",
+      "commentLabelSuccess": "评论标签成功",
+      "login": "登录",
+      "openInEditor": "在你的编辑器打开"
+    },
+    "validation": {
+      "errors": {
+        "titleRequired": "标题不能为空",
+        "contentRequired": "内容不能为空",
+        "authorRequired": "作者不能为空",
+        "tooManyTags": "标签过多（最多10个）",
+        "contentTooShort": "内容至少需要 {min} 个字符",
+        "contentTooLong": "内容不能超过 {max} 个字符",
+        "tagsRequired": "至少需要 {min} 个标签",
+        "tooManyTagsLimit": "标签不能超过 {max} 个",
+        "tagTooLong": "标签 \"{tag}\" 超过最大长度 {maxLength} 个字符",
+        "commentEmpty": "评论内容不能为空",
+        "invalidImageFormat": "只允许 JPEG、PNG、GIF 和 WebP 图片格式",
+        "validationError": "验证错误",
+        "invalidFile": "无效文件",
+        "fileValidationFailed": "文件验证失败"
+      }
+    },
+    "errors": {
+      "tooManyRequests": "请求过于频繁，请稍后重试",
+      "serverError": "服务器错误，请重试",
+      "notFound": "资源未找到",
+      "operationFailed": "{operation} 失败：{message}",
+      "unknownError": "未知错误",
+      "networkError": "网络连接失败",
+      "permissionDenied": "权限不足",
+      "operationFailedRetry": "操作失败，请稍后重试",
+      "serverNoResponse": "服务器无响应，请稍后重试",
+      "noResponse": "无响应，请稍后重试",
+      "networkRequestFailed": "网络请求失败，显示本地数据",
+      "cannotLoadData": "无法加载数据",
+      "sortDataLoadFailed": "排序数据加载失败",
+      "cannotDoToSelf": "不能对自己进行该操作",
+      "followFailed": "关注失败，请稍后重试",
+      "unfollowSuccess": "取关成功",
+      "followSuccess": "关注成功",
+      "permissionInsufficientAnnouncement": "权限不足：只有管理员可以发布公告类型的内容",
+      "ssoRefreshTokenFailed": "inter-knot.site: 刷新token失败，返回数据不完整"
+    }
+  },
+  "changelog": {
+    "title": "更新日志",
+    "reportIssues": "如果您遇到任何问题，请在 %feedback 上提交报告。",
+    "feedbackPage": "反馈页面",
+    "changeType": {
+      "features": "新增功能",
+      "fixed": "修复问题",
+      "breaking": "重大变更",
+      "optimized": "体验优化"
+    },
+    "action": {
+      "download": "下载客户端",
+      "community": "加入社区"
+    }
+  },
+  "nav": [
+    {
+      "text": "加入社区",
+      "link": "/community"
+    },
+    {
+      "text": "支持我们",
+      "link": "/support-us"
+    },
+    {
+      "text": "地图工具",
+      "items": [
+        {
+          "text": "Windows客户端",
+          "items": [
+            {
+              "text": "前往下载",
+              "link": "/download-client"
+            },
+            {
+              "text": "使用手册",
+              "link": "/manual/client/"
+            },
+            {
+              "text": "更新日志",
+              "link": "/blog/hotupdatelog-client"
+            }
+          ]
+        },
+        {
+          "text": "地图网页版",
+          "items": [
+            {
+              "text": "立即体验",
+              "link": "https://v3.yuanshen.site"
+            },
+            {
+              "text": "更新日志",
+              "link": "/blog/changelog-web"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "帮助和反馈",
+      "items": [
+        {
+          "text": "问题反馈",
+          "link": "/feedback/"
+        },
+        {
+          "text": "功能建议",
+          "link": "/feedback/feat"
+        }
+      ]
+    },
+    {
+      "text": "了解更多",
+      "items": [
+        {
+          "text": "了解我们",
+          "items": [
+            {
+              "text": "加入我们",
+              "link": "/join"
+            },
+            {
+              "text": "了解团队",
+              "link": "/team"
+            },
+            {
+              "text": "团队博客",
+              "link": "/./blog"
+            }
+          ]
+        },
+        {
+          "text": "鸣谢",
+          "items": [
+            {
+              "text": "制作人员",
+              "link": "/staff"
+            },
+            {
+              "text": "赞助鸣谢",
+              "link": "/support-us#sponsor-acknowledgement"
+            },
+            {
+              "text": "技术鸣谢",
+              "link": "/credits"
+            }
+          ]
+        },
+        {
+          "text": "其他",
+          "items": [
+            {
+              "text": "参与翻译",
+              "link": "/translations"
+            },
+            {
+              "text": "友情链接",
+              "link": "/friends-links"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sidebar": {
+    "/manual": [
+      {
+        "text": "目录",
+        "link": "/manual/client/"
+      },
+      {
+        "text": "使用手册",
+        "collapsed": false,
+        "items": [
+          {
+            "text": "批量选择",
+            "link": "/manual/client/batch-selection"
+          },
+          {
+            "text": "隐藏/显示标记",
+            "link": "/manual/client/hide-show-done"
+          },
+          {
+            "text": "覆盖模式",
+            "link": "/manual/client/overlay-mode"
+          },
+          {
+            "text": "位置追踪",
+            "link": "/manual/client/position-tracking"
+          },
+          {
+            "text": "画板/路线功能",
+            "link": "/manual/client/canvas"
+          },
+          {
+            "text": "窗口全屏/无边框窗口模式",
+            "link": "/manual/client/fullscreen-windowed"
+          },
+          {
+            "text": "帧率设置",
+            "link": "/manual/client/framerate"
+          },
+          {
+            "text": "存档恢复",
+            "link": "/manual/client/save-restore"
+          },
+          {
+            "text": "彩蛋",
+            "link": "/manual/client/easter-egg"
+          }
+        ]
+      },
+      {
+        "text": "常见问题",
+        "collapsed": false,
+        "items": [
+          {
+            "text": "使用地图客户端会被封号吗？",
+            "link": "/manual/faq/accountsafety/acntban"
+          },
+          {
+            "text": "【自动更新】没有反应",
+            "link": "/manual/faq/autoupdate/updater"
+          },
+          {
+            "text": "安装错误",
+            "items": [
+              {
+                "text": "错误码 2503",
+                "link": "/manual/faq/instlerror/code2503"
+              },
+              {
+                "text": "【无法安装】提示缺乏 dll 文件",
+                "link": "/manual/faq/instlerror/missingdll"
+              }
+            ]
+          },
+          {
+            "text": "【无法打开】",
+            "items": [
+              {
+                "text": "空窗提示或卡进度条",
+                "link": "/manual/faq/launcherror/emptydialog"
+              },
+              {
+                "text": "“数据查询失败”、“版本查询失败”",
+                "link": "/manual/faq/launcherror/versioncheck"
+              }
+            ]
+          },
+          {
+            "text": "登录",
+            "items": [
+              {
+                "text": "【不能登录】如何登录",
+                "link": "/manual/faq/login/accountlogin"
+              },
+              {
+                "text": "【每次打开都需重新登陆】",
+                "link": "/manual/faq/login/clientrepeatedly"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "qrcodeTitle": "开发反馈群",
+    "qrcodeMessage": "欢迎QQ扫码联系我们",
+    "qrcodeLink": "https://jq.qq.com/?_wv=1027&k=nbveGrfQ",
+    "navigation": [
+      {
+        "title": "产品",
+        "items": [
+          {
+            "text": "客户端使用手册",
+            "link": "/manual/client/"
+          },
+          {
+            "text": "客户端更新日志",
+            "link": "/blog/hotupdatelog-client"
+          },
+          {
+            "text": "网页版更新日志",
+            "link": "/blog/changelog-web"
+          }
+        ]
+      },
+      {
+        "title": "关于",
+        "items": [
+          {
+            "text": "加入我们",
+            "link": "/join"
+          },
+          {
+            "text": "团队博客",
+            "link": "/./blog"
+          },
+          {
+            "text": "赞助鸣谢",
+            "link": "/support-us"
+          }
+        ]
+      },
+      {
+        "title": "政策",
+        "items": [
+          {
+            "text": "免责声明",
+            "link": "/disclaimer"
+          },
+          {
+            "text": "隐私政策",
+            "link": "/privacy"
+          },
+          {
+            "text": "用户协议",
+            "link": "/agreement"
+          }
+        ]
+      },
+      {
+        "title": "更多",
+        "items": [
+          {
+            "text": "问题反馈",
+            "link": "/feedback/"
+          },
+          {
+            "text": "参与翻译",
+            "link": "/translations"
+          },
+          {
+            "text": "友情链接",
+            "link": "/friends-links"
+          }
+        ]
+      }
+    ]
+  },
+  "META_URL": "https://yuanshen.site/docs/",
+  "META_TITLE": "空荧酒馆",
+  "META_DESCRIPTION": "空荧酒馆制作的原神全资源攻略地图。",
+  "META_KEYWORDS": "原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern",
+  "META_IMAGE": "https://yuanshen.site/docs/imgs/common/cover.jpg",
+  "LOCAL_CODE": "zh-CN",
+  "LOCAL_BASE": "/"
+}

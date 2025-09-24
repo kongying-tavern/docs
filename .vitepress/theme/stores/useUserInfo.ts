@@ -14,8 +14,8 @@ interface FingerprintAgain {
   }
   components: {
     [key: string]:
-      { value: unknown, duration: number } |
-      { error: object, duration: number }
+      { value: unknown, duration: number }
+      | { error: object, duration: number }
   }
   version: string
 }

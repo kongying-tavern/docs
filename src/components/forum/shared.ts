@@ -1,7 +1,7 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { RemovableRef } from '@vueuse/core'
 import type { ComputedRef, InjectionKey, Ref } from 'vue'
 import type { FORUM } from './types'
+import type ForumAPI from '@/apis/forum/api'
 
 export const emojiRegex = /\[([^[\]]*)\]/g
 export const extractEmojiRegex = /<img\s[^>]*data-emoji="\[([^[\]][^/[\]]*\/[^[\]]+)\]"[^>]*>/g

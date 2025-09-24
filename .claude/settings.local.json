@@ -14,7 +14,12 @@
       "Bash(timeout 5000 pnpm run typecheck)",
       "Bash(node)",
       "mcp__Context7__resolve-library-id",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "WebSearch",
+      "mcp__Deepwiki__ask_question",
+      "Bash(sort:*)",
+      "Bash(cat:*)",
+      "Read(//d/Download/zen_download/liquid-glass-main/liquid-glass-main/**)"
     ],
     "deny": []
   }

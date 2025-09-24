@@ -1,8 +1,8 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { ComputedRef, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
-import { issues } from '@/apis/forum/gitee'
+import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
+import { issues } from '@/apis/forum/gitee'
 import { forumEvents } from '~/services/events/SimpleEventManager'
 import { composeTopicBody } from './composeTopicBody'
 import { executeWithAuth } from './executeWithAuth'
@@ -22,8 +22,6 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
     )
 
     async function toggleClose() {
-      console.log('🔥 Toggle Close START - topicId:', targetTopic.id, 'currentState:', targetTopic.state, 'closeState:', closeState.value, 'targetState:', targetState.value)
-
       const result = await executeWithAuth(
         issues.putTopic,
         [
@@ -40,20 +38,14 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
 
       if (result) {
         // Calculate new state before updating
-        const oldState = targetTopic.state
         const newState = targetState.value
         const isClosed = newState === 'closed'
 
         // Update local topic state
         targetTopic.state = newState
 
-        console.log('🔥 Toggle Close SUCCESS - topicId:', targetTopic.id, 'oldState:', oldState, 'newState:', newState, 'isClosed:', isClosed)
-
         // Emit close event
         forumEvents.topicClosed(targetTopic.id, isClosed)
-      }
-      else {
-        console.log('🔥 Toggle Close FAILED - topicId:', targetTopic.id)
       }
 
       return result
@@ -81,7 +73,6 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
 
         // Emit hide event - isHidden should be true when state becomes 'progressing'
         const isHidden = newState === 'progressing'
-        console.log('🔥 Toggle Hide - topicId:', targetTopic.id, 'oldState:', hideState.value ? 'progressing' : 'open', 'newState:', newState, 'isHidden:', isHidden)
         forumEvents.topicHidden(targetTopic.id, isHidden)
       }
 
@@ -151,8 +142,6 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
     const isCurrentlyClosed = targetTopic.commentCount === -1
     const willBeClosed = !isCurrentlyClosed
 
-    console.log('🔥 Toggle Comment Area - topicId:', targetTopicId, 'currentlyClosed:', isCurrentlyClosed, 'willBeClosed:', willBeClosed)
-
     const result = await executeWithAuth(
       issues.putTopic,
       [
@@ -172,13 +161,8 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
       // Update local topic state
       targetTopic.commentCount = willBeClosed ? -1 : 0
 
-      console.log('🔥 Toggle Comment Area SUCCESS - topicId:', targetTopicId, 'commentsClosed:', willBeClosed)
-
       // Emit comment toggle event
       forumEvents.topicCommentToggled(targetTopic.id, willBeClosed)
-    }
-    else {
-      console.log('🔥 Toggle Comment Area FAILED - topicId:', targetTopicId)
     }
 
     return result

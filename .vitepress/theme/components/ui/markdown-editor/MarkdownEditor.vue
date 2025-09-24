@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import { cardPlugin } from '@/markdown/card'
-import { colorPreviewPlugin } from '@/markdown/colorPreview'
-import customColor from '@/markdown/customColor'
-import lightbox from '@/markdown/lightbox'
-import { timeline } from '@/markdown/timeline'
-import variableInject from '@/markdown/variableInject'
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
@@ -15,6 +9,12 @@ import MarkdownIt from 'markdown-it'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import { computed, withDefaults } from 'vue'
+import { cardPlugin } from '@/markdown/card'
+import { colorPreviewPlugin } from '@/markdown/colorPreview'
+import customColor from '@/markdown/customColor'
+import lightbox from '@/markdown/lightbox'
+import { timeline } from '@/markdown/timeline'
+import variableInject from '@/markdown/variableInject'
 
 withDefaults(
   defineProps<{

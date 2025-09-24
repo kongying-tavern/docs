@@ -15,6 +15,7 @@ export interface ApiCallParams {
   body?: Record<string, unknown> | FormData
   hooks?: Hooks
   useCache?: boolean
+  throwHttpErrors?: boolean
 }
 
 export type ApiCallResult<T> = Promise<

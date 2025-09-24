@@ -1,6 +1,6 @@
+import ky, { HTTPError } from 'ky'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import ky, { HTTPError } from 'ky'
 import * as oauth from './oauth'
 import * as reactions from './reactions'
 import * as translate from './translate'

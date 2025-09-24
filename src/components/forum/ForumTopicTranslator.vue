@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
+import { useToggle } from '@vueuse/core'
+import { isFunction } from 'lodash-es'
+import { computed, watch } from 'vue'
+import { useRequest } from 'vue-request'
+import { toast } from 'vue-sonner'
 import { translate } from '@/apis/inter-knot.site'
 import BlurFade from '@/components/ui/BlurFade.vue'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -7,11 +12,6 @@ import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { getLangCode } from '@/utils'
-import { useToggle } from '@vueuse/core'
-import { isFunction } from 'lodash-es'
-import { computed, watch } from 'vue'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
 import supportedLanguages from '~/_data/supportedLanguages.json'
 
 interface Props {
@@ -82,7 +82,7 @@ defineExpose({
 <template>
   <BlurFade v-if="_targetLanguage !== getLangCode(sourceLanguage || currentPageLang)" class="mt-2 w-full">
     <slot v-if="!showDefaultTrigger" name="trigger" @click="startTranslate" />
-    <a v-if="showDefaultTrigger" class="font-size-4 vp-link" variant="link" @click="startTranslate">
+    <a v-if="showDefaultTrigger" class="vp-link font-size-4" variant="link" @click="startTranslate">
       {{ showTranslation ? `> ${message.forum.translate.translateInfo}` : loading ? message.forum.translate.loading : message.forum.translate.translateText }}
     </a>
     <div v-if="!loading && showTranslation" :class="cn('mt-2 w-full whitespace-pre-wrap', props.class)" v-html="displayText" />

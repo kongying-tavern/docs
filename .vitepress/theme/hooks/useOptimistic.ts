@@ -7,7 +7,7 @@ export function useOptimistic<TState, TOptimisticValue>(
 ): [
   optimisticState: ComputedRef<TState>,
   addOptimistic: (value: TOptimisticValue) => { rollback: () => void },
-  ] {
+] {
   const pendingQueue = shallowRef<
     Array<{
       value: TOptimisticValue

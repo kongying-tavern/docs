@@ -1,5 +1,5 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { Ref } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll, useMediaQuery } from '@vueuse/core'
 import { computed, readonly, ref } from 'vue'
 import { useTopicComments } from '~/composables/useTopicComment'
@@ -15,7 +15,6 @@ export function useCommentAreaState(props: {
   const {
     userSubmittedComment,
     comments,
-    noComment,
     loadMoreComment,
     canLoadMoreComment,
     loadStateMessage,
@@ -25,6 +24,10 @@ export function useCommentAreaState(props: {
     currentCommentPage,
     initComments,
   } = useTopicComments()
+
+  // Use props-based noComment logic instead of internal state
+  // Only consider it "no comment" if commentCount is null (uninitialized) or -1 (closed)
+  const noComment = computed(() => props.commentCount === null || props.commentCount === undefined)
 
   // State
   const replyCommentID = ref<number | string | null>(null)

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
+import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -8,8 +10,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import { useLocalStorage } from '@vueuse/core'
-import { computed, ref } from 'vue'
 
 import EmojiData from '~/_data/emojis.json'
 

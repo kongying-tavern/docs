@@ -1,13 +1,13 @@
 import type { MarkdownOptions } from 'vitepress'
 
+import { abbr } from '@mdit/plugin-abbr'
 import { demo } from '@mdit/plugin-demo'
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
-import { spoiler } from '@mdit/plugin-spoiler'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-
+import { tasklist } from '@mdit/plugin-tasklist'
 import markdownItAttrs from 'markdown-it-attrs'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
@@ -17,6 +17,8 @@ import MarkdownItCustomColor from '../theme/markdown/customColor'
 import MarkdownItEmoji from '../theme/markdown/emoji'
 import MarkdownItLightbox from '../theme/markdown/lightbox'
 import MarkdownItMention from '../theme/markdown/mention'
+import { ruby } from '../theme/markdown/ruby'
+import { spoiler } from '../theme/markdown/spoiler'
 import MarkdownItTimeline from '../theme/markdown/timeline'
 import MarkdownItVariableInject from '../theme/markdown/variableInject'
 
@@ -35,12 +37,15 @@ export const markdownConfig: MarkdownOptions = {
     md.use(obsidianImageSize)
     md.use(figure)
     md.use(...MarkdownItTimeline('timeline', md))
-    md.use(spoiler)
+    md.use(spoiler) // Custom spoiler plugin with ScratchToReveal
     md.use(MarkdownItLightbox)
     md.use(MarkdownItVariableInject)
     md.use(MarkdownItCustomColor)
     md.use(MarkdownItMention)
     md.use(MarkdownItEmoji)
+    md.use(tasklist)
+    md.use(abbr)
+    md.use(ruby)
     md.use(markdownItAttrs, {
       allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', /^regex.*$/],
     })

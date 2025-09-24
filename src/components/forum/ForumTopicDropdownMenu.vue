@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { DropdownMenuContentProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
 import type { FORUM } from './types'
+import type ForumAPI from '@/apis/forum/api'
+import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -11,7 +12,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
-import { computed } from 'vue'
 import { defineTopicDropdownMenu } from '~/composables/defineTopicDropdownMenu'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'
 

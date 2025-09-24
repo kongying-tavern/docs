@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { ReleaseItem } from './Release'
+import markdownIt from 'markdown-it'
+import { computed, ref } from 'vue'
 import {
   Accordion,
   AccordionContent,
@@ -7,10 +9,8 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
-import { useLocalized } from '@/hooks/useLocalized'
-import markdownIt from 'markdown-it'
 
-import { computed, ref } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 
 const {
   version,
@@ -98,7 +98,7 @@ const list = ref<string[]>([])
         <p v-for="(action, index) in renderedActions" :key="action.text">
           <a
             rel="noopener noreferrer"
-            class="whitespace-nowrap text-sm vp-link"
+            class="vp-link whitespace-nowrap text-sm"
             target="_blank"
             :href="action.link"
           >

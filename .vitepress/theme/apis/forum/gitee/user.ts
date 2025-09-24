@@ -81,23 +81,45 @@ export async function getRepoMembers(
 }
 
 export async function getFollowStatus(user: string, targetUser: string, accessToken?: string): Promise<boolean | null> {
-  console.log(user, targetUser)
-  let state = null
-  await apiCall('get', `users/${user}/following/${targetUser}`, {
-    params: {
-      ...(accessToken ? { access_token: accessToken } : {}),
-    },
-    hooks: {
-      afterResponse: [
-        async (_input, _options, response) => {
-          if (response.status === 204)
-            state = true
-          return Promise.resolve()
-        },
-      ],
-    },
-  })
-  return state
+  let followStatus = false
+
+  try {
+    await apiCall('get', `users/${user}/following/${targetUser}`, {
+      params: {
+        ...(accessToken ? { access_token: accessToken } : {}),
+      },
+      hooks: {
+        afterResponse: [
+          async (_input, _options, response) => {
+            if (response.status === 204) {
+              followStatus = true
+            }
+            return Promise.resolve()
+          },
+        ],
+      },
+    })
+    return followStatus
+  }
+  catch (error: unknown) {
+    // 404 means not following, other errors should be handled differently
+    const hasStatus404 = error
+      && typeof error === 'object'
+      && 'cause' in error
+      && error.cause
+      && typeof error.cause === 'object'
+      && 'response' in error.cause
+      && error.cause.response
+      && typeof error.cause.response === 'object'
+      && 'status' in error.cause.response
+      && error.cause.response.status === 404
+
+    if (hasStatus404) {
+      return false
+    }
+    // For other errors, return null to indicate error state
+    return null
+  }
 }
 
 export async function toggleFollowUser(toggle: boolean, targetUser: string): Promise<boolean | null> {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
 import { isArray } from 'lodash-es'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { cn } from '@/lib/utils'
 
 interface Props {
   text: string

@@ -1,5 +1,5 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { ComputedRef, Ref } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
 
 /**
  * 简化的Forum Store类型定义
@@ -87,7 +87,7 @@ export interface ForumQueryParams {
   filter?: ForumAPI.FilterBy
   creator?: string
   searchQuery?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // 完整的Store类型
@@ -151,14 +151,14 @@ export interface TopicEventPayload {
   closed?: boolean
 }
 
-export type TopicEventType =
-  | 'created'
-  | 'updated'
-  | 'deleted'
-  | 'pinned'
-  | 'visibility-changed'
-  | 'tags-updated'
-  | 'type-changed'
+export type TopicEventType
+  = | 'created'
+    | 'updated'
+    | 'deleted'
+    | 'pinned'
+    | 'visibility-changed'
+    | 'tags-updated'
+    | 'type-changed'
 
 // 组合式函数返回类型
 export interface UseForumDataReturn {
@@ -200,15 +200,15 @@ export type StoreFactory<T = ForumStore> = (
 ) => () => T
 
 // 中间件类型
-export interface StoreMiddleware<T = any> {
+export interface StoreMiddleware<T = unknown> {
   beforeAction?: (actionName: string, payload: T) => T | Promise<T>
-  afterAction?: (actionName: string, payload: T, result: any) => void
+  afterAction?: (actionName: string, payload: T, result: unknown) => void
   onError?: (actionName: string, error: Error) => void
 }
 
 // 插件类型
 export interface StorePlugin {
-  install: (store: ForumStore, options?: any) => void
+  install: (store: ForumStore, options?: unknown) => void
   uninstall?: (store: ForumStore) => void
 }
 
@@ -223,24 +223,39 @@ export interface PerformanceMetrics {
 }
 
 // 导出常用的联合类型
-export type ForumEventHandler<T = any> = (payload: T) => void | Promise<void>
+export type ForumEventHandler<T = unknown> = (payload: T) => void | Promise<void>
 export type EventUnsubscribe = () => void
 export type AsyncOperation<T = void> = () => Promise<T>
 export type SyncOperation<T = void> = () => T
 
+// 辅助类型守卫函数
+function hasProperty<T extends PropertyKey>(obj: unknown, prop: T): obj is Record<T, unknown> {
+  return obj !== null && typeof obj === 'object' && prop in obj
+}
+
+function isObject(obj: unknown): obj is Record<PropertyKey, unknown> {
+  return obj !== null && typeof obj === 'object'
+}
+
 // 类型守卫函数
-export function isValidTopic(obj: any): obj is ForumAPI.Topic {
-  return obj
+export function isValidTopic(obj: unknown): obj is ForumAPI.Topic {
+  return isObject(obj)
+    && hasProperty(obj, 'id')
     && typeof obj.id !== 'undefined'
+    && hasProperty(obj, 'title')
     && typeof obj.title === 'string'
-    && obj.content
+    && hasProperty(obj, 'content')
+    && isObject(obj.content)
+    && hasProperty(obj.content, 'text')
     && typeof obj.content.text === 'string'
-    && obj.user
+    && hasProperty(obj, 'user')
+    && isObject(obj.user)
+    && hasProperty(obj.user, 'login')
     && typeof obj.user.login === 'string'
 }
 
-export function isValidForumQueryParams(obj: any): obj is ForumQueryParams {
-  return obj && typeof obj === 'object'
+export function isValidForumQueryParams(obj: unknown): obj is ForumQueryParams {
+  return isObject(obj)
 }
 
 // 实用工具类型
@@ -254,7 +269,7 @@ export type OptionalFields<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, 
 
 // 响应式类型扩展
 export type ReactiveForumStore = {
-  [K in keyof ForumStore]: ForumStore[K] extends (...args: any[]) => any
+  [K in keyof ForumStore]: ForumStore[K] extends (...args: unknown[]) => unknown
     ? ForumStore[K]
     : ForumStore[K] extends Ref<infer U>
       ? Ref<U>

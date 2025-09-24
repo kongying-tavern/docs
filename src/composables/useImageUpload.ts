@@ -1,10 +1,10 @@
 import type { UploadFile, UploadStatus, UploadUserFile } from '@/components/ui/photo-wall/upload'
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
-import { uploadImg } from '@/apis/inter-knot.site/upload'
-import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
 import { computed, nextTick, ref } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
+import { uploadImg } from '@/apis/inter-knot.site/upload'
+import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
 import { formatMarkdownImages } from '~/components/forum/utils/formatting'
 
 export interface UploadedUserFile extends UploadUserFile {

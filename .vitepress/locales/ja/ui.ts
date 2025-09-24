@@ -20,6 +20,15 @@ const ui: CustomConfig['ui'] = {
     close: '閉鎖',
     all: '全て',
   },
+  sitemap: {
+    blog: 'ブログ記事',
+    manual: 'ユーザーマニュアル',
+    general: '一般ページ',
+    api: 'API ドキュメント',
+    guide: 'ガイド',
+    community: 'コミュニティ',
+    about: '私たちについて',
+  },
 }
 
 export default ui

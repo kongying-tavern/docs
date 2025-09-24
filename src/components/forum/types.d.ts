@@ -26,6 +26,14 @@ export namespace FORUM {
     order?: MenuOrder
   }
 
+  interface MenuInfo {
+    type: 'info'
+    label: string
+    class?: HTMLAttributes['class']
+    id?: string
+    order?: MenuOrder
+  }
+
   interface MenuSeparator {
     type: 'separator'
     order?: MenuOrder
@@ -43,7 +51,7 @@ export namespace FORUM {
     order?: MenuOrder
   }
 
-  type MenuElement = MenuItemBase | MenuLabel | MenuSeparator | MenuGroup | MenuSubmenu
+  type MenuElement = MenuItemBase | MenuLabel | MenuInfo | MenuSeparator | MenuGroup | MenuSubmenu
 
   export type TopicDropdownMenu = MenuElement
 }

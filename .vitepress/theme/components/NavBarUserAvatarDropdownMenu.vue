@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useData, withBase } from 'vitepress'
+import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import { NavigationMenuLink } from '@/components/ui/navigation-menu'
 import useLogin from '@/hooks/useLogin'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useData, withBase } from 'vitepress'
+import ForumRoleBadge from '~/components/forum/ui/ForumRoleBadge.vue'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import UserAvatar from './UserAvatar.vue'
 
 defineProps<{
@@ -13,8 +16,11 @@ defineProps<{
 
 const userInfo = useUserInfoStore()
 
+const { hasAnyRoles } = useRuleChecks(userInfo.info?.id)
 const { theme } = useData()
 const { login, logout } = useLogin()
+
+const isOfficial = computed(() => hasAnyRoles('blogMember', 'teamMember', 'feedbackMember').value)
 </script>
 
 <template>
@@ -32,6 +38,7 @@ const { login, logout } = useLogin()
           <div class="ml-4 lg:ml-0 lg:text-align-center">
             <div class="mt-1 text-xl color-[var(--vp-c-text-1)] font-medium">
               {{ userInfo.info?.username || 'Unknown' }}
+              <ForumRoleBadge v-if="isOfficial" type="official" />
             </div>
             <p
               class="text-sm color-[var(--vp-c-text-3)] leading-tight font-[var(--vp-font-family-content)]"
@@ -88,7 +95,7 @@ const { login, logout } = useLogin()
           <template #signup>
             <a
               href="https://gitee.com/signup"
-              class="font-[var(--vp-font-family-content)] vp-link"
+              class="vp-link font-[var(--vp-font-family-content)]"
               target="_blank"
               rel="noopener noreferrer"
             >

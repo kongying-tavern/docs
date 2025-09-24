@@ -1,7 +1,7 @@
 import type { EmojiAttrs } from '@/components/ui/types'
-import EmojiWrapper from '@/components/ui/EmojiWrapper.vue'
 import { InputRule, mergeAttributes, Node } from '@tiptap/core'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
+import EmojiWrapper from '@/components/ui/EmojiWrapper.vue'
 
 export const EmojiNode = Node.create({
   name: 'emoji',

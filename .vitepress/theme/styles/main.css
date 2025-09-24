@@ -208,27 +208,33 @@ textarea {
   display: none !important;
 }
 
-.spoiler {
-  background-color: currentColor;
-  border-radius: 0.2em;
-  transition: background ease 0.5s;
+/* CSS Variables for spoiler colors */
+:root {
+  --vp-spoiler-color-1: var(--vp-c-text-1);
+  --vp-spoiler-color-2: var(--vp-c-text-2);
+  --vp-spoiler-color-3: var(--vp-c-text-3);
+}
+
+/* Inline spoiler styles for ScratchToReveal component */
+.inline-spoiler {
+  display: inline-block;
+  vertical-align: baseline;
+  margin: 0 2px;
+  border-radius: 4px;
   cursor: help;
-  padding: 0 0.1em;
 }
 
-.spoiler * {
-  visibility: hidden;
+.inline-spoiler canvas {
+  border-radius: 4px;
+  vertical-align: top;
 }
 
-.spoiler:hover,
-.spoiler:focus {
-  background-color: transparent;
+/* Focus styles for accessibility - no outline */
+.inline-spoiler:focus {
+  outline: none;
 }
 
-.spoiler:hover *,
-.spoiler:focus * {
-  visibility: visible;
-}
+/* Text alignment classes for spoiler - removed since we now use inline styles */
 
 .VPDocAsideOutline.has-outline > .content {
   border: none;

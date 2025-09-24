@@ -1,9 +1,15 @@
-interface Info {
-  title: string
-  desc?: string
-}
+// 重新导出自动推断的类型，保持向后兼容
+export type { CustomConfig } from './inferred-types'
 
-export interface CustomConfig {
+// 保留原有接口用于内部引用（已被注释掉的 LegacyCustomConfig 使用）
+// interface Info {
+//   title: string
+//   desc?: string
+// }
+
+// 原有手动定义的类型作为参考，现在已被自动推断替代，保留此处仅作文档用途
+/*
+interface LegacyCustomConfig {
   keyword: string
   description: string
   image: string
@@ -68,6 +74,15 @@ export interface CustomConfig {
       loading: string
       close: string
       all: string
+    }
+    sitemap: {
+      blog: string
+      manual: string
+      general: string
+      api: string
+      guide: string
+      community: string
+      about: string
     }
   }
   docReaction: {
@@ -156,6 +171,27 @@ export interface CustomConfig {
           success: string
           fail: string
         }
+        changeType: {
+          text: string
+          to: string
+        }
+        modifyTags: {
+          text: string
+        }
+        pinTopic: {
+          pin: string
+          unpin: string
+        }
+        commentArea: {
+          open: string
+          close: string
+        }
+        reopenFeedback: {
+          text: string
+        }
+        cancelTopic: {
+          text: string
+        }
       }
     }
     auth: {
@@ -174,6 +210,27 @@ export interface CustomConfig {
       loginAlertMsg: string
       notGiteeAccountMsg: string
       clickToGiteeSignup: string
+      callback: {
+        title: string
+        description: string
+        steps: {
+          init: string
+          token: string
+          session: string
+          sso: string
+          redirect: string
+        }
+        status: {
+          pending: string
+          processing: string
+          completed: string
+          failed: string
+        }
+        error: {
+          title: string
+          retry: string
+        }
+      }
     }
     aside: {
       contactUs: {
@@ -302,6 +359,73 @@ export interface CustomConfig {
         }
       }
     }
+    validation: {
+      errors: {
+        titleRequired: string
+        contentRequired: string
+        authorRequired: string
+        tooManyTags: string
+        contentTooShort: string
+        contentTooLong: string
+        tagsRequired: string
+        tooManyTagsLimit: string
+        tagTooLong: string
+        commentEmpty: string
+        invalidImageFormat: string
+        validationError: string
+        invalidFile: string
+        fileValidationFailed: string
+      }
+    }
+    errors: {
+      tooManyRequests: string
+      serverError: string
+      notFound: string
+      operationFailed: string
+      unknownError: string
+      networkError: string
+      permissionDenied: string
+      operationFailedRetry: string
+      serverNoResponse: string
+      noResponse: string
+      networkRequestFailed: string
+      cannotLoadData: string
+      sortDataLoadFailed: string
+      cannotDoToSelf: string
+      followFailed: string
+      unfollowSuccess: string
+      followSuccess: string
+      permissionInsufficientAnnouncement: string
+      ssoRefreshTokenFailed: string
+    }
+    labels: {
+      resolved: string
+      submitBug: string
+      submitSuggestion: string
+      teamBlog: string
+      userManual: string
+      joinCommunity: string
+      writeThoughts: string
+      shareExperience: string
+      askQuestion: string
+      pasteError: string
+      lazyPerson: string
+      unknown: string
+      fetchUserFailed: string
+      myFeedback: string
+      submittedFeedback: string
+      personalHomepage: string
+      imageLoadFailed: string
+      follow: string
+      following: string
+      unfollow: string
+      posts: string
+      joinTime: string
+      privateMessage: string
+      commentLabelSuccess: string
+      login: string
+      openInEditor: string
+    }
   }
   changelog: {
     title: string
@@ -319,6 +443,7 @@ export interface CustomConfig {
     }
   }
 }
+*/
 
 export interface CustomConstant {
   META_URL: string

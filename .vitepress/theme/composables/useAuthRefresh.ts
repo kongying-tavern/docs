@@ -1,6 +1,6 @@
 import type { useTokenManager } from './useTokenManager'
-import { toCamelCaseObject } from '@/utils'
 import { ref, watch } from 'vue'
+import { toCamelCaseObject } from '@/utils'
 import { oauth } from '../apis/forum/gitee'
 import { createAuthError } from '../utils/auth-errors'
 import { log, LogGroup } from '../utils/auth-logger'

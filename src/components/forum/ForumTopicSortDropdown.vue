@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, inject } from 'vue'
 import {
   Select,
   SelectContent,
@@ -7,7 +8,6 @@ import {
   SelectTrigger,
 } from '@/components/ui/select'
 import { useLocalized } from '@/hooks/useLocalized'
-import { computed, inject } from 'vue'
 import { FORUM_TOPIC_SORT_KEY } from './shared'
 
 const { message } = useLocalized()
@@ -15,7 +15,6 @@ const { message } = useLocalized()
 const sortLabel = computed(() => [
   ['created', message.value.forum.header.sort.created],
   ['updated', message.value.forum.header.sort.updated],
-  ['notes_count', message.value.forum.header.sort.notesCount],
 ])
 
 const sort = inject(FORUM_TOPIC_SORT_KEY)!

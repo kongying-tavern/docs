@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { FORUM } from './types'
-import { Skeleton } from '@/components/ui/skeleton'
 import { createReusableTemplate, useWindowSize } from '@vueuse/core'
 import { computed } from 'vue'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const props = defineProps<{
   viewMode: FORUM.TopicViewMode

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { EmojiItem, EmojiPickerProps } from './types'
 
-const props = withDefaults(defineProps<EmojiPickerProps>(), {
-  searchPlaceholder: 'Search emojis...',
-  noResults: 'No emojis found',
-})
+const {
+  noResults = 'No emojis found',
+  categories,
+} = defineProps<EmojiPickerProps>()
 
 const emit = defineEmits<{
   select: [emoji: EmojiItem]

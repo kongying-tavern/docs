@@ -50,5 +50,5 @@ export function writeTopicBodyComment(
       }, {})
     : {}
 
-  return `<!-- ${JSON.stringify({ ...chunksJson, ...params })} -->${chunksContents.join('').trim()}`
+  return `<!-- ${JSON.stringify({ ...chunksJson, ...params })} -->${chunksContents.join('')}`
 }

@@ -20,6 +20,15 @@ const ui: CustomConfig['ui'] = {
     close: 'Close',
     all: 'All',
   },
+  sitemap: {
+    blog: 'Blog Posts',
+    manual: 'User Manual',
+    general: 'General Pages',
+    api: 'API Documentation',
+    guide: 'Guides',
+    community: 'Community',
+    about: 'About Us',
+  },
 }
 
 export default ui

@@ -1,56 +1,43 @@
 import type { DefaultTheme, LocaleSpecificConfig } from 'vitepress'
-import type { CustomConfig } from '../types'
+import type { CustomConfig } from '../inferred-types'
 import { baseHelper } from '../../theme/utils'
-import _404 from './404'
-import AsideLinks from './aside-links'
-import Changelog from './changelog'
-import C from './constants'
-import docReaction from './docs-feedback'
-import Footer from './footer'
-import Forum from './forum'
-import Head from './head'
-import Nav from './nav'
-import Payment from './payment'
-import Sidebar from './sidebar'
-import Staff from './staff'
+import jsonData from '../json/zh.json'
+import { convertRegexObjects } from '../utils/regexConverter'
+import { extractLocaleConfig } from '../utils/vitepressTypes'
 
-import Team from './team'
-import UI from './ui'
+// 将 JSON 数据转换后推断出正确的类型，并处理 VitePress 特定字段
+const rawData = convertRegexObjects(jsonData)
+const data = extractLocaleConfig(rawData)
 
-export const zhConfig: LocaleSpecificConfig<
-  CustomConfig & DefaultTheme.Config
-> = {
-  title: '空荧酒馆',
-  titleTemplate: ':title | 空荧酒馆',
-  description: C.META_DESCRIPTION,
-  head: Head,
+// 从顶层提取 LOCAL_BASE
+const localBase = data.LOCAL_BASE || '/'
+
+export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> = {
+  title: data.title,
+  titleTemplate: data.titleTemplate,
+  description: data.description,
+  head: data.head,
   themeConfig: {
-    siteTitle: C.META_TITLE,
-    keyword: C.META_KEYWORDS,
-    description: C.META_DESCRIPTION,
-    image: C.META_IMAGE,
-    logo: '/imgs/common/logo/logo_256.png',
-
-    outlineTitle: '本页目录',
-    lastUpdatedText: '更新日期',
-    returnToTopLabel: '回到顶部',
-    langMenuLabel: '更改语言',
-    notFound: _404,
-    ui: UI,
-    asideLinks: AsideLinks,
-    docReaction,
-    docFooter: {
-      prev: '上一页',
-      next: '下一页',
-    },
-
-    staff: Staff,
-    team: Team,
-    payment: Payment,
-    forum: Forum,
-    changelog: Changelog,
-    nav: baseHelper(Nav, C.LOCAL_BASE),
-    sidebar: baseHelper(Sidebar, C.LOCAL_BASE),
-    footer: baseHelper(Footer, C.LOCAL_BASE),
+    siteTitle: data.siteTitle,
+    keyword: data.keyword,
+    image: data.image,
+    logo: data.logo,
+    outlineTitle: data.outlineTitle,
+    lastUpdatedText: data.lastUpdatedText,
+    returnToTopLabel: data.returnToTopLabel,
+    langMenuLabel: data.langMenuLabel,
+    notFound: data.notFound,
+    ui: data.ui,
+    asideLinks: data.asideLinks,
+    docReaction: data.docReaction,
+    docFooter: data.docFooter,
+    staff: data.staff,
+    team: data.team,
+    payment: data.payment,
+    forum: data.forum,
+    changelog: data.changelog,
+    nav: baseHelper(data.nav, localBase),
+    sidebar: baseHelper(data.sidebar, localBase),
+    footer: baseHelper(data.footer, localBase),
   },
 }

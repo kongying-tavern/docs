@@ -1,13 +1,13 @@
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumQueryParams } from '~/types/forum/simplified'
-import type { UserForumStore } from '~/types/forum/simplified'
+import type { ForumQueryParams, UserForumStore } from '~/types/forum/simplified'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { useForumData } from '~/composables/useForumData'
 import { useTopicCache } from '~/composables/useTopicCache'
-import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { simpleCrossPageSync } from '~/services/events/SimpleCrossPageSync'
 import { SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
+import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 import { userPreloader } from '~/services/forum/ForumPreloader'
 
 /**
@@ -37,8 +37,8 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
   const cacheManager = useForumCacheManager(forumData, filter, sort, {
     pageType: 'user',
     preloader: userPreloader,
-    getCacheKey: (filter: ForumAPI.FilterBy, metadata?: any) => `user-${metadata}-${filter}`,
-    getMetadata: () => creator.value
+    getCacheKey: (filter: ForumAPI.FilterBy, metadata?: string | null) => `user-${metadata}-${filter}-${sort.value}`,
+    getMetadata: () => creator.value,
   })
 
   // 从缓存管理器获取状态和功能
@@ -49,9 +49,8 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
     autoTriggerPreload,
     setupFilterWatcher,
     startCacheCleanup,
-    cleanup: cleanupCacheManager
+    cleanup: cleanupCacheManager,
   } = cacheManager
-
 
   // 单一数据源的计算属性
   const userTopicData = computed(() => {
@@ -85,15 +84,9 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
   const displayTopics = computed(() => {
     const topics = userTopicData.value
 
-    // 应用排序
-    switch (sort.value) {
-      case 'created':
-        return topics.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      case 'updated_at':
-        return topics.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-      default:
-        return topics
-    }
+    // 使用统一的过滤逻辑（与主页保持一致）
+    const filtered = ForumBusinessLogic.filterTopics(topics, filter.value)
+    return ForumBusinessLogic.sortTopics(filtered, sort.value)
   })
 
   // 简化的topic操作方法（兼容原有接口）

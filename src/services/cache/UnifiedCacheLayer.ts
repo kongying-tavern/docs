@@ -86,11 +86,11 @@ export class UnifiedCacheLayer {
   }
 
   // 元数据缓存（分页信息、统计信息等）
-  getCachedMetadata(key: string): any {
+  getCachedMetadata<T = unknown>(key: string): T | undefined {
     return this.metadataCache.get(key)
   }
 
-  setCachedMetadata(key: string, value: any): void {
+  setCachedMetadata<T>(key: string, value: T): void {
     this.metadataCache.set(key, value)
   }
 
@@ -158,7 +158,6 @@ export class UnifiedCacheLayer {
   optimizeCaches(): void {
     // 清理过期的缓存项会自动进行
     // 这里可以添加额外的优化逻辑
-    console.log('Cache optimization completed', this.getCacheStats())
   }
 
   // 导出/导入缓存（用于持久化）
@@ -172,9 +171,8 @@ export class UnifiedCacheLayer {
     }
   }
 
-  importCache(cacheData: any): void {
+  importCache(cacheData: Record<string, unknown>): void {
     // 实际实现时需要考虑如何反序列化和验证数据
-    console.log('Cache import completed', cacheData.timestamp)
   }
 }
 
@@ -230,7 +228,7 @@ export class CacheManager {
   }
 
   // 智能缓存决策
-  shouldInvalidateOnUpdate(operation: string, data: any): string[] {
+  shouldInvalidateOnUpdate(operation: string, data: Record<string, unknown>): string[] {
     const invalidationRules: Record<string, string[]> = {
       'createTopic': ['search', 'metadata'],
       'updateTopic': ['topic', 'search'],

@@ -176,6 +176,19 @@ export function useTokenManager() {
     return restTime > 0
   }
 
+  // SSO token utilities
+  function getSSOTimeUntilRefresh(platform: keyof SSOLocaleAuth, thresholdMs: number = 30000): number {
+    const ssoToken = ssoAuth.value[platform]
+    if (!ssoToken?.expiresTime)
+      return -1
+
+    return ssoToken.expiresTime - Date.now() - thresholdMs
+  }
+
+  function isSSOTokenNearExpiry(platform: keyof SSOLocaleAuth, thresholdMs: number = 30000): boolean {
+    return getSSOTimeUntilRefresh(platform, thresholdMs) <= 0
+  }
+
   // Debug helpers
   function getTokenDebugInfo() {
     return {
@@ -186,6 +199,27 @@ export function useTokenManager() {
       isRefreshing: isTokenRefreshing.value,
       lastRefreshAttempt: lastRefreshAttempt.value,
     }
+  }
+
+  function getSSODebugInfo() {
+    const platforms = Object.keys(ssoAuth.value) as (keyof SSOLocaleAuth)[]
+    return platforms.reduce((acc, platform) => {
+      const token = ssoAuth.value[platform]
+      acc[platform] = {
+        hasToken: !!token?.accessToken,
+        isValid: validateSSOToken(platform),
+        timeUntilExpiry: token?.expiresTime ? token.expiresTime - Date.now() : -1,
+        timeUntilRefresh: getSSOTimeUntilRefresh(platform),
+        isNearExpiry: isSSOTokenNearExpiry(platform),
+      }
+      return acc
+    }, {} as Record<keyof SSOLocaleAuth, {
+      hasToken: boolean
+      isValid: boolean
+      timeUntilExpiry: number
+      timeUntilRefresh: number
+      isNearExpiry: boolean
+    }>)
   }
 
   // Watch for token changes to update refresh state
@@ -219,6 +253,11 @@ export function useTokenManager() {
 
     // Debug
     getTokenDebugInfo,
+    getSSODebugInfo,
+
+    // SSO utilities
+    getSSOTimeUntilRefresh,
+    isSSOTokenNearExpiry,
 
     // Internal utilities (for refresh composable)
     getTimeUntilRefresh,

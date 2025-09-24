@@ -37,5 +37,8 @@
   },
   "vue.server.includeLanguages": ["vue", "markdown"],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "scss.lint.unknownAtRules": "ignore"
+  "scss.lint.unknownAtRules": "ignore",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    { "file": ".github/commit-convention.md" }
+  ]
 }

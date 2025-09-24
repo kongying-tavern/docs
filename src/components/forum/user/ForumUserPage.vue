@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useLocalStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useData } from 'vitepress'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumUserStore } from '~/stores/forum/useForumUserStore'
 import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
@@ -14,6 +14,16 @@ import ForumLoadState from '../ui/ForumLoadState.vue'
 import { updateLastPathSegment } from '../utils'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
+
+// 组件元数据配置
+defineOptions({
+  meta: {
+    routeOptions: {
+      type: ['feat', 'closed', 'bug'],
+    },
+    i18n: true,
+  },
+})
 
 const forumUserStore = useForumUserStore()
 const userInfo = useUserInfoStore()

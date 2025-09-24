@@ -110,11 +110,20 @@ export const PATTERNS = {
   URL: /https?:\/\/(www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-\w()@:%+.~#?&/=]*)/g,
 } as const
 
-// Error messages
+// Error message keys - use with useLocalized().message.forum.errors
+export const ERROR_MESSAGE_KEYS = {
+  NETWORK_ERROR: 'networkError',
+  VALIDATION_ERROR: 'validationError',
+  PERMISSION_DENIED: 'permissionDenied',
+  NOT_FOUND: 'notFound',
+  SERVER_ERROR: 'serverError',
+} as const
+
+// Legacy error messages - DEPRECATED: Use translation keys instead
 export const ERROR_MESSAGES = {
-  NETWORK_ERROR: 'Network connection failed',
-  VALIDATION_ERROR: 'Please check your input',
-  PERMISSION_DENIED: 'Permission denied',
-  NOT_FOUND: 'Resource not found',
-  SERVER_ERROR: 'Server error occurred',
+  NETWORK_ERROR: 'Network connection failed', // Use message.forum.errors.networkError
+  VALIDATION_ERROR: 'Please check your input', // Use message.forum.errors.validationError
+  PERMISSION_DENIED: 'Permission denied', // Use message.forum.errors.permissionDenied
+  NOT_FOUND: 'Resource not found', // Use message.forum.errors.notFound
+  SERVER_ERROR: 'Server error occurred', // Use message.forum.errors.serverError
 } as const

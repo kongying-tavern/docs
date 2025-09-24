@@ -137,6 +137,7 @@ export function useOptimizedSearch() {
 // Optimized view state management
 export function useOptimizedViewState<T extends Record<string, any>>(initialState: T) {
   const batchUpdater = useBatchUpdates()
+  const { flushUpdates } = batchUpdater
   const viewState = ref({ ...initialState })
 
   // Batch view updates to reduce re-renders
@@ -175,7 +176,7 @@ export function useOptimizedViewState<T extends Record<string, any>>(initialStat
     updateViewState,
     createMemoizedViewComputed,
     resetViewState,
-    flushViewUpdates: batchUpdater.flushUpdates,
+    flushViewUpdates: flushUpdates,
   }
 }
 
@@ -278,9 +279,9 @@ export function enhanceStoreWithPerformance<T extends Record<string, any>>(store
   })
 
   // Wrap store actions with performance tracking
-  // Using any[] for compatibility with different action signatures
-  const wrapAction = <A extends (...args: any[]) => any>(action: A, name: string): A => {
-    return ((...args: any[]) => {
+  // Using precise generic constraints for better type safety
+  const wrapAction = <A extends (...args: readonly unknown[]) => unknown>(action: A, name: string): A => {
+    return ((...args: Parameters<A>) => {
       const start = performance.now()
       const result = action(...args)
       const duration = performance.now() - start

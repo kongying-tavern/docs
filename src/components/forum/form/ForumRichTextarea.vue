@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
-import type { EmojiItem } from '@/components/ui/EmojiPicker.vue'
 import type { Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
+import type { EmojiItem } from '@/components/ui/EmojiPicker.vue'
+import { ReloadIcon } from '@radix-icons/vue'
+import CharacterCount from '@tiptap/extension-character-count'
+import StarterKit from '@tiptap/starter-kit'
+import { Editor, EditorContent } from '@tiptap/vue-3'
+import { onClickOutside, useFileDialog } from '@vueuse/core'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import EmojiPicker from '@/components/ui/EmojiPicker.vue'
@@ -11,13 +17,8 @@ import MentionPicker from '@/components/ui/MentionPicker.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { ReloadIcon } from '@radix-icons/vue'
-import CharacterCount from '@tiptap/extension-character-count'
-import StarterKit from '@tiptap/starter-kit'
-import { Editor, EditorContent } from '@tiptap/vue-3'
-import { onClickOutside, useFileDialog } from '@vueuse/core'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { EmojiNode } from '~/composables/tiptap/emojiNode'
+import { createLinkExtension } from '~/composables/tiptap/linkConfig'
 import { MentionNode } from '~/composables/tiptap/mentionNode'
 import { useClipboardPaste } from '~/composables/useClipboardPaste'
 import { useImageUpload } from '~/composables/useImageUpload'
@@ -118,8 +119,7 @@ const { startListening, createUploadRawFile } = useClipboardPaste({
     }
     catch (error) {
       console.error('Error processing pasted files:', error)
-      const errorText = message.value?.forum?.publish?.form?.upload?.paste?.processingError
-        || '处理粘贴文件时出错'
+      const errorText = message.value.forum.labels.pasteError
       toast.error(errorText)
     }
   },
@@ -136,7 +136,7 @@ onMounted(() => {
   if (editor.value)
     return
   editor.value = new Editor({
-    extensions: [StarterKit, EmojiNode, MentionNode, CharacterCount.configure({ limit: props.maxTextLength })],
+    extensions: [StarterKit, EmojiNode, MentionNode, createLinkExtension({ openOnClick: false, editable: true }), CharacterCount.configure({ limit: props.maxTextLength })],
     content: modelValue.value || '',
     autofocus: true,
     coreExtensionOptions: {
@@ -281,7 +281,7 @@ function clearImages() {
 }
 
 function handleSubmit() {
-  if (charCount.value === 0 || !isCompleted.value)
+  if (props.disabled || props.loading || charCount.value === 0 || !isCompleted.value)
     return
 
   const content = JSON.stringify(editor.value?.getJSON()) + markdownFormatImages.value
@@ -380,7 +380,7 @@ defineExpose({
         </div>
 
         <div v-if="features.includes('Submit')" class="btn flex">
-          <Button :disabled="charCount === 0 || !isCompleted" @click="handleSubmit">
+          <Button :disabled="disabled || loading || charCount === 0 || !isCompleted" @click="handleSubmit">
             <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />
             {{ message.ui.button.submit }}
           </Button>
@@ -408,6 +408,70 @@ textarea::-webkit-scrollbar {
   &--warning,
   &--warning svg {
     color: var(--vp-c-red-3);
+  }
+}
+
+// 智能链接样式
+:deep(.smart-link) {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 2px 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+
+  &.bilibili-link {
+    background-color: rgba(0, 161, 214, 0.1);
+    color: var(--vp-c-text-1);
+    border: 1px solid rgba(0, 161, 214, 0.2);
+
+    &:hover {
+      background-color: rgba(0, 161, 214, 0.15);
+      border-color: rgba(0, 161, 214, 0.3);
+      text-decoration: none;
+    }
+  }
+
+  &.youtube-link {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: var(--vp-c-text-1);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+
+    &:hover {
+      background-color: rgba(255, 0, 0, 0.15);
+      border-color: rgba(255, 0, 0, 0.3);
+      text-decoration: none;
+    }
+  }
+
+  &.qq-link {
+    background-color: var(--vp-c-brand-soft);
+    color: var(--vp-c-text-1);
+    border: 1px solid var(--vp-c-brand);
+
+    &:hover {
+      background-color: var(--vp-c-brand-softer);
+      border-color: var(--vp-c-brand-2);
+      text-decoration: none;
+    }
+  }
+
+  &.url-link, &.domain-link {
+    background-color: var(--vp-c-bg-alt);
+    color: var(--vp-c-brand-1);
+    border: 1px solid var(--vp-c-divider);
+
+    &:hover {
+      background-color: var(--vp-c-brand-soft);
+      border-color: var(--vp-c-brand-1);
+      text-decoration: none;
+    }
+  }
+
+  // 图标间距
+  .mr-1 {
+    margin-right: 4px;
   }
 }
 </style>

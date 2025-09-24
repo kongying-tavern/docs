@@ -1,5 +1,5 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { PaginationOptions, Service } from 'vue-request'
+import type ForumAPI from '@/apis/forum/api'
 import { isError } from 'lodash-es'
 import { computed, ref, watch } from 'vue'
 import { usePagination, useRequestProvider } from 'vue-request'

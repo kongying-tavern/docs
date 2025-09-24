@@ -1,5 +1,5 @@
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { computed } from 'vue'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 import { usePermissionData } from './usePermissionData'
 
 const rolesPermissions = {
@@ -57,7 +57,22 @@ export function useRuleChecks(inputId: string | number = '') {
     )
 
   const hasAnyRoles = (...roles: Role[]) =>
-    computed(() => roles.some(role => userRoles.value.includes(role)))
+    computed(() => {
+      const result = roles.some(role => userRoles.value.includes(role))
+
+      // 简洁的权限调试信息（仅在权限检查失败时显示）
+      if (!result && id.value) {
+        console.warn('权限检查失败:', {
+          userId: id.value,
+          requiredRoles: roles,
+          userRoles: userRoles.value,
+          teamMember: userRolesMap.value.teamMember.has(Number(id.value)),
+          blogMember: userRolesMap.value.blogMember.has(Number(id.value)),
+        })
+      }
+
+      return result
+    })
 
   const hasAllRoles = (...roles: Role[]) =>
     computed(() => roles.every(role => userRoles.value.includes(role)))

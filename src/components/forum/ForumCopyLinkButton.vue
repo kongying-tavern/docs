@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { refAutoReset, useClipboard } from '@vueuse/core'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
-import { refAutoReset, useClipboard } from '@vueuse/core'
 
 const { message } = useLocalized()
 

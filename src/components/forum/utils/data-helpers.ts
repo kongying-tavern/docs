@@ -1,21 +1,14 @@
 // Data manipulation and utility functions
 
-// Array utilities
+import { shuffle, take } from 'lodash-es'
+
+// Array utilities - using lodash for better performance
 export function getRandomElements<T>(arr: T[], count: number): T[] {
   if (count >= arr.length) {
     return [...arr]
   }
 
-  const copyArr = [...arr]
-  const result: T[] = []
-
-  for (let i = 0; i < count; i++) {
-    const randomIndex = Math.floor(Math.random() * copyArr.length)
-    result.push(copyArr[randomIndex])
-    copyArr.splice(randomIndex, 1)
-  }
-
-  return result
+  return take(shuffle(arr), count)
 }
 
 // Tree/Navigation utilities

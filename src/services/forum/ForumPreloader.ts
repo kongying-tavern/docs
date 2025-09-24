@@ -56,7 +56,6 @@ export class ForumPreloader {
     return null
   }
 
-
   /**
    * 设置缓存数据
    */
@@ -75,7 +74,7 @@ export class ForumPreloader {
       data: [...data], // 深拷贝避免引用问题
       timestamp: Date.now(),
       filter,
-      creator: creator || undefined
+      creator: creator || undefined,
     })
   }
 
@@ -103,7 +102,7 @@ export class ForumPreloader {
         sort: options.currentSort,
         creator: options.creator || undefined,
         page: 1,
-        pageSize: 20
+        pageSize: 20,
       }
 
       // 直接使用 ForumService，避免 VitePress 上下文依赖
@@ -112,9 +111,11 @@ export class ForumPreloader {
       if (result.topics && result.topics.length > 0) {
         this.setCachedData(targetFilter, result.topics, options.creator)
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error(`[Preloader] Failed to preload ${targetFilter}:`, error)
-    } finally {
+    }
+    finally {
       this.preloadingFilters.value.delete(preloadKey)
     }
   }
@@ -130,8 +131,9 @@ export class ForumPreloader {
     }
 
     const currentFilter = options.currentFilter
-    const filtersToPreload = this.ALL_FILTERS.filter(f => {
-      if (f === currentFilter) return false
+    const filtersToPreload = this.ALL_FILTERS.filter((f) => {
+      if (f === currentFilter)
+        return false
       return !this.getCachedData(f, options.creator)
     })
 
@@ -143,9 +145,9 @@ export class ForumPreloader {
 
     // 并发预加载所有其他filter
     const preloadPromises = filtersToPreload.map(targetFilter =>
-      this.preloadFilterData(targetFilter, options).catch(error => {
+      this.preloadFilterData(targetFilter, options).catch((error) => {
         console.error(`Failed to preload ${targetFilter}:`, error)
-      })
+      }),
     )
 
     await Promise.all(preloadPromises)
@@ -157,17 +159,13 @@ export class ForumPreloader {
    */
   cleanExpiredCache(): void {
     const now = Date.now()
-    let cleanedCount = 0
 
     for (const [key, cached] of this.cache.value.entries()) {
       if (now - cached.timestamp > this.CACHE_TTL) {
         this.cache.value.delete(key)
         this.preloadedFilters.value.delete(key)
-        cleanedCount++
       }
     }
-
-    // 清理完成，不需要日志
   }
 
   /**
@@ -188,7 +186,7 @@ export class ForumPreloader {
       preloadedCount: this.preloadedFilters.value.size,
       preloadingCount: this.preloadingFilters.value.size,
       maxCacheSize: this.MAX_CACHE_SIZE,
-      cacheTTL: this.CACHE_TTL
+      cacheTTL: this.CACHE_TTL,
     }
   }
 }

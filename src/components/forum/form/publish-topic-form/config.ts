@@ -1,7 +1,7 @@
-import type ForumAPI from '@/apis/forum/api'
 import type { TabsConfig } from './types'
-import { useLocalized } from '@/hooks/useLocalized'
+import type ForumAPI from '@/apis/forum/api'
 import { readonly } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 
 export const MAX_UPLOAD_FILE_SIZE = 6
@@ -77,7 +77,7 @@ export function getFormTabsConfig() {
     },
     {
       value: 'ANN',
-      label: '📌发公告',
+      label: `📌${message.value.forum.publish.type.ann}`,
       condition: hasPermission,
       fields: {
         title: {

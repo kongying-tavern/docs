@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ImgHTMLAttributes } from 'vue'
 import { autoSizes as _autoSizes, lazyLoad, loadImage } from 'unlazy'
-import { onBeforeUnmount, ref, watchEffect } from 'vue'
+import { nextTick, onBeforeUnmount, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
   /** Image source URL to be lazy-loaded. */
@@ -29,6 +29,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
+  (event: 'load-start'): void
   (event: 'loaded', image: HTMLImageElement): void
   (event: 'error', error: Event): void
 }>()
@@ -36,16 +37,46 @@ const emit = defineEmits<{
 const target = ref<HTMLImageElement | undefined>()
 let cleanup: (() => void) | undefined
 
-watchEffect(() => {
+function handleImageLoadStart() {
+  emit('load-start')
+}
+
+function handleImageLoaded(image: HTMLImageElement) {
+  emit('loaded', image)
+}
+
+function handleImageError(error: Event) {
+  emit('error', error)
+}
+
+watchEffect(async () => {
   cleanup?.()
 
   if (!target.value)
     return
 
+  // Validate that we have a valid src before setting up lazy loading
+  if (!props.src && !props.srcSet) {
+    // eslint-disable-next-line no-console
+    console.warn('[LazyImage] Missing src or srcSet prop', { src: props.src, srcSet: props.srcSet })
+    return
+  }
+
+  // Wait for DOM to update with data attributes
+  await nextTick()
+
+  // Emit load start event when lazy loading begins
+  handleImageLoadStart()
+
   if (props.preload) {
-    if (props.autoSizes)
+    if (props.autoSizes) {
       _autoSizes(target.value)
-    loadImage(target.value, image => emit('loaded', image))
+    }
+
+    loadImage(target.value, {
+      onImageLoad: handleImageLoaded,
+      onImageError: handleImageError,
+    })
     return
   }
 
@@ -53,7 +84,8 @@ watchEffect(() => {
     hash: props.thumbhash || props.blurhash,
     hashType: props.thumbhash ? 'thumbhash' : 'blurhash',
     placeholderSize: props.placeholderSize,
-    onImageLoad: image => emit('loaded', image),
+    onImageLoad: handleImageLoaded,
+    onImageError: handleImageError,
   })
 })
 
@@ -66,10 +98,12 @@ onBeforeUnmount(() => {
   <img
     ref="target"
     :src="placeholderSrc"
-    :data-src="src"
-    :data-srcset="srcSet"
-    :data-sizes="autoSizes ? 'auto' : undefined"
+    v-bind="{
+      ...(src && { 'data-src': src }),
+      ...(srcSet && { 'data-srcset': srcSet }),
+      ...(autoSizes && { 'data-sizes': 'auto' }),
+    }"
     loading="lazy"
-    @error="emit('error', $event)"
+    @error="handleImageError"
   >
 </template>

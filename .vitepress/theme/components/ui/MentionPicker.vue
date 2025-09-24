@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
 import type { PopoverContentProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
+import { useLocalStorage } from '@vueuse/core'
+import { shuffle } from 'lodash-es'
+import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -18,9 +21,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import { useLocalStorage } from '@vueuse/core'
-import { shuffle } from 'lodash-es'
-import { computed, ref } from 'vue'
 
 import feedbackRepoMember from '~/_data/feedbackMemberList.json'
 import TeamMember from '~/_data/teamMemberList.json'
