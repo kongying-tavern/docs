@@ -185,250 +185,252 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-dashboard">
-    <!-- 权限检查 -->
-    <template v-if="false">
-      <div class="min-h-[400px] flex items-center justify-center">
-        <Card class="w-[420px]">
-          <CardHeader class="text-center">
-            <CardTitle class="text-xl text-destructive">
-              权限不足
-            </CardTitle>
-            <CardDescription>
-              此页面仅对管理员开放
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    </template>
-
-    <!-- 加载状态 -->
-    <template v-else-if="loading">
-      <div class="admin-container">
-        <div class="mb-6 border-b pb-6">
-          <Skeleton class="mb-2 h-10 w-48" />
-          <Skeleton class="h-6 w-64" />
+  <ClientOnly>
+    <div class="admin-dashboard">
+      <!-- 权限检查 -->
+      <template v-if="false">
+        <div class="min-h-[400px] flex items-center justify-center">
+          <Card class="w-[420px]">
+            <CardHeader class="text-center">
+              <CardTitle class="text-xl text-destructive">
+                权限不足
+              </CardTitle>
+              <CardDescription>
+                此页面仅对管理员开放
+              </CardDescription>
+            </CardHeader>
+          </Card>
         </div>
+      </template>
 
-        <div class="space-y-6">
-          <div class="flex space-x-2">
-            <Skeleton v-for="i in 4" :key="i" class="h-10 w-24" />
+      <!-- 加载状态 -->
+      <template v-else-if="loading">
+        <div class="admin-container">
+          <div class="mb-6 border-b pb-6">
+            <Skeleton class="mb-2 h-10 w-48" />
+            <Skeleton class="h-6 w-64" />
           </div>
 
-          <div class="grid gap-4 lg:grid-cols-4 md:grid-cols-2">
-            <Skeleton v-for="i in 4" :key="i" class="h-32" />
-          </div>
-        </div>
-      </div>
-    </template>
+          <div class="space-y-6">
+            <div class="flex space-x-2">
+              <Skeleton v-for="i in 4" :key="i" class="h-10 w-24" />
+            </div>
 
-    <!-- Dashboard界面 -->
-    <template v-else>
-      <div class="admin-container">
-        <!-- 页面标题 -->
-        <div class="mb-6 border-b pb-6">
-          <div>
-            <h1 class="text-3xl font-bold tracking-tight lg:text-4xl sm:text-3xl">
-              管理后台
-            </h1>
-            <p class="mt-2 text-lg text-muted-foreground">
-              站点管理控制面板
-            </p>
-          </div>
-        </div>
-
-        <!-- Tab导航 -->
-        <Tabs v-model="activeTab" class="space-y-6">
-          <TabsList>
-            <TabsTrigger value="overview">
-              概览
-            </TabsTrigger>
-            <TabsTrigger value="translations">
-              翻译管理
-            </TabsTrigger>
-            <TabsTrigger value="qq-groups">
-              QQ群管理
-            </TabsTrigger>
-            <TabsTrigger value="users" disabled>
-              用户管理
-            </TabsTrigger>
-            <TabsTrigger value="logs" disabled>
-              操作日志
-            </TabsTrigger>
-          </TabsList>
-
-          <!-- 概览Tab -->
-          <TabsContent
-            v-motion
-            value="overview"
-            class="space-y-6"
-            :initial="{ opacity: 0, y: 20 }"
-            :enter="{ opacity: 1, y: 0, transition: { duration: 300 } }"
-          >
-            <!-- 统计卡片 -->
             <div class="grid gap-4 lg:grid-cols-4 md:grid-cols-2">
-              <Card
-                v-motion
-                :initial="{ opacity: 0, y: 20 }"
-                :enter="{ opacity: 1, y: 0, transition: { delay: 100 } }"
-                class="transition-shadow duration-300 hover:shadow-md"
-              >
-                <CardHeader>
-                  <CardTitle class="text-sm font-medium">
-                    翻译条目总数
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div class="text-2xl font-bold">
-                    {{ stats.totalTranslations }}
-                  </div>
-                  <p class="text-xs text-muted-foreground">
-                    跨 {{ stats.totalCategories }} 个分类
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card
-                v-motion
-                :initial="{ opacity: 0, y: 20 }"
-                :enter="{ opacity: 1, y: 0, transition: { delay: 200 } }"
-                class="transition-shadow duration-300 hover:shadow-md"
-              >
-                <CardHeader>
-                  <CardTitle class="text-sm font-medium">
-                    支持语言
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div class="text-2xl font-bold">
-                    {{ stats.totalLocales }}
-                  </div>
-                  <p class="text-xs text-muted-foreground">
-                    {{ availableLocales.join(', ') }}
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card
-                v-motion
-                :initial="{ opacity: 0, y: 20 }"
-                :enter="{ opacity: 1, y: 0, transition: { delay: 300 } }"
-                class="transition-shadow duration-300 hover:shadow-md"
-              >
-                <CardHeader>
-                  <CardTitle class="text-sm font-medium">
-                    配置分类
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div class="text-2xl font-bold">
-                    {{ stats.totalCategories }}
-                  </div>
-                  <p class="text-xs text-muted-foreground">
-                    UI、论坛、导航等
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card
-                v-motion
-                :initial="{ opacity: 0, y: 20 }"
-                :enter="{ opacity: 1, y: 0, transition: { delay: 400 } }"
-                class="transition-shadow duration-300 hover:shadow-md"
-              >
-                <CardHeader>
-                  <CardTitle class="text-sm font-medium">
-                    系统状态
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div class="text-2xl font-bold">
-                    正常
-                  </div>
-                  <p class="text-xs text-muted-foreground">
-                    所有功能运行正常
-                  </p>
-                </CardContent>
-              </Card>
+              <Skeleton v-for="i in 4" :key="i" class="h-32" />
             </div>
+          </div>
+        </div>
+      </template>
 
-            <!-- 快速操作 -->
-            <div class="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>快速操作</CardTitle>
-                </CardHeader>
-                <CardContent class="space-y-3">
-                  <Button class="w-full" @click="activeTab = 'translations'">
-                    <i class="i-lucide-edit mr-2 h-4 w-4" />
-                    管理翻译
-                  </Button>
-                  <Button class="w-full" @click="activeTab = 'qq-groups'">
-                    <i class="i-lucide-users mr-2 h-4 w-4" />
-                    管理QQ群
-                  </Button>
-                  <Button
-                    variant="outline"
-                    class="w-full"
-                    :disabled="loading"
-                    @click="exportAllTranslations"
-                  >
-                    <i class="i-lucide-download mr-2 h-4 w-4" />
-                    导出全部翻译
-                  </Button>
-                </CardContent>
-              </Card>
+      <!-- Dashboard界面 -->
+      <template v-else>
+        <div class="admin-container">
+          <!-- 页面标题 -->
+          <div class="mb-6 border-b pb-6">
+            <div>
+              <h1 class="text-3xl font-bold tracking-tight lg:text-4xl sm:text-3xl">
+                管理后台
+              </h1>
+              <p class="mt-2 text-lg text-muted-foreground">
+                站点管理控制面板
+              </p>
+            </div>
+          </div>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>分类统计</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div class="space-y-2">
-                    <div
-                      v-for="category in categoryStats"
-                      :key="category.name"
-                      class="flex justify-between text-sm"
-                    >
-                      <span>{{ category.name }}</span>
-                      <span class="font-medium">{{ category.count }}</span>
+          <!-- Tab导航 -->
+          <Tabs v-model="activeTab" class="space-y-6">
+            <TabsList>
+              <TabsTrigger value="overview">
+                概览
+              </TabsTrigger>
+              <TabsTrigger value="translations">
+                翻译管理
+              </TabsTrigger>
+              <TabsTrigger value="qq-groups">
+                QQ群管理
+              </TabsTrigger>
+              <TabsTrigger value="users" disabled>
+                用户管理
+              </TabsTrigger>
+              <TabsTrigger value="logs" disabled>
+                操作日志
+              </TabsTrigger>
+            </TabsList>
+
+            <!-- 概览Tab -->
+            <TabsContent
+              v-motion
+              value="overview"
+              class="space-y-6"
+              :initial="{ opacity: 0, y: 20 }"
+              :enter="{ opacity: 1, y: 0, transition: { duration: 300 } }"
+            >
+              <!-- 统计卡片 -->
+              <div class="grid gap-4 lg:grid-cols-4 md:grid-cols-2">
+                <Card
+                  v-motion
+                  :initial="{ opacity: 0, y: 20 }"
+                  :enter="{ opacity: 1, y: 0, transition: { delay: 100 } }"
+                  class="transition-shadow duration-300 hover:shadow-md"
+                >
+                  <CardHeader>
+                    <CardTitle class="text-sm font-medium">
+                      翻译条目总数
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div class="text-2xl font-bold">
+                      {{ stats.totalTranslations }}
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+                    <p class="text-xs text-muted-foreground">
+                      跨 {{ stats.totalCategories }} 个分类
+                    </p>
+                  </CardContent>
+                </Card>
 
-          <!-- 翻译管理Tab -->
-          <TabsContent
-            v-motion
-            value="translations"
-            class="space-y-4"
-            :initial="{ opacity: 0, y: 20 }"
-            :enter="{ opacity: 1, y: 0, transition: { duration: 300 } }"
-          >
-            <TranslationManagementTab
-              :available-locales="availableLocales"
-              :translation-entries="translationEntries"
-              :categories="categories"
-              @entries-updated="handleEntriesUpdated"
-            />
-          </TabsContent>
+                <Card
+                  v-motion
+                  :initial="{ opacity: 0, y: 20 }"
+                  :enter="{ opacity: 1, y: 0, transition: { delay: 200 } }"
+                  class="transition-shadow duration-300 hover:shadow-md"
+                >
+                  <CardHeader>
+                    <CardTitle class="text-sm font-medium">
+                      支持语言
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div class="text-2xl font-bold">
+                      {{ stats.totalLocales }}
+                    </div>
+                    <p class="text-xs text-muted-foreground">
+                      {{ availableLocales.join(', ') }}
+                    </p>
+                  </CardContent>
+                </Card>
 
-          <!-- QQ群管理Tab -->
-          <TabsContent
-            v-motion
-            value="qq-groups"
-            class="space-y-4"
-            :initial="{ opacity: 0, y: 20 }"
-            :enter="{ opacity: 1, y: 0, transition: { duration: 300 } }"
-          >
-            <QQGroupManagementTab />
-          </TabsContent>
-        </Tabs>
-      </div>
-    </template>
-  </div>
+                <Card
+                  v-motion
+                  :initial="{ opacity: 0, y: 20 }"
+                  :enter="{ opacity: 1, y: 0, transition: { delay: 300 } }"
+                  class="transition-shadow duration-300 hover:shadow-md"
+                >
+                  <CardHeader>
+                    <CardTitle class="text-sm font-medium">
+                      配置分类
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div class="text-2xl font-bold">
+                      {{ stats.totalCategories }}
+                    </div>
+                    <p class="text-xs text-muted-foreground">
+                      UI、论坛、导航等
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card
+                  v-motion
+                  :initial="{ opacity: 0, y: 20 }"
+                  :enter="{ opacity: 1, y: 0, transition: { delay: 400 } }"
+                  class="transition-shadow duration-300 hover:shadow-md"
+                >
+                  <CardHeader>
+                    <CardTitle class="text-sm font-medium">
+                      系统状态
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div class="text-2xl font-bold">
+                      正常
+                    </div>
+                    <p class="text-xs text-muted-foreground">
+                      所有功能运行正常
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <!-- 快速操作 -->
+              <div class="grid gap-4 md:grid-cols-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>快速操作</CardTitle>
+                  </CardHeader>
+                  <CardContent class="space-y-3">
+                    <Button class="w-full" @click="activeTab = 'translations'">
+                      <i class="i-lucide-edit mr-2 h-4 w-4" />
+                      管理翻译
+                    </Button>
+                    <Button class="w-full" @click="activeTab = 'qq-groups'">
+                      <i class="i-lucide-users mr-2 h-4 w-4" />
+                      管理QQ群
+                    </Button>
+                    <Button
+                      variant="outline"
+                      class="w-full"
+                      :disabled="loading"
+                      @click="exportAllTranslations"
+                    >
+                      <i class="i-lucide-download mr-2 h-4 w-4" />
+                      导出全部翻译
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>分类统计</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div class="space-y-2">
+                      <div
+                        v-for="category in categoryStats"
+                        :key="category.name"
+                        class="flex justify-between text-sm"
+                      >
+                        <span>{{ category.name }}</span>
+                        <span class="font-medium">{{ category.count }}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <!-- 翻译管理Tab -->
+            <TabsContent
+              v-motion
+              value="translations"
+              class="space-y-4"
+              :initial="{ opacity: 0, y: 20 }"
+              :enter="{ opacity: 1, y: 0, transition: { duration: 300 } }"
+            >
+              <TranslationManagementTab
+                :available-locales="availableLocales"
+                :translation-entries="translationEntries"
+                :categories="categories"
+                @entries-updated="handleEntriesUpdated"
+              />
+            </TabsContent>
+
+            <!-- QQ群管理Tab -->
+            <TabsContent
+              v-motion
+              value="qq-groups"
+              class="space-y-4"
+              :initial="{ opacity: 0, y: 20 }"
+              :enter="{ opacity: 1, y: 0, transition: { duration: 300 } }"
+            >
+              <QQGroupManagementTab />
+            </TabsContent>
+          </Tabs>
+        </div>
+      </template>
+    </div>
+  </ClientOnly>
 </template>
 
 <style scoped>
