@@ -5,7 +5,6 @@ import ForumTopicPage from '~/components/forum/topic/ForumTopicPage.vue'
 import ForumUserPage from '~/components/forum/user/ForumUserPage.vue'
 import { createRouteFromComponent } from './utils'
 
-// 重新导出类型供其他地方使用
 export type { LocaleRoute } from './types'
 
 export const routes: LocaleRoute[] = [

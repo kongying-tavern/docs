@@ -2,7 +2,6 @@
 import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useBlogOperations } from '~/components/blog/composables/useBlogOperations'
 import LoginAlertDialog from './LoginAlertDialog.vue'
 import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
 import UserAvatar from './UserAvatar.vue'
@@ -10,20 +9,10 @@ import UserAvatar from './UserAvatar.vue'
 const { theme } = useData()
 
 const userInfo = useUserInfoStore()
-const { canManageBlog } = useBlogOperations()
 const open = ref(false)
 const el = ref<HTMLElement>()
 
 const list = computed<{ title: string, href: string, icon: string }[]>(() => [
-  ...(canManageBlog.value
-    ? [
-        {
-          title: '编辑博客',
-          href: '/blog/editor',
-          icon: 'i-lucide-plus',
-        },
-      ]
-    : []),
   {
     title: theme.value.forum.user.myFeedback.title,
     href: `/feedback/user/${userInfo.info?.login}`,

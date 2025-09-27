@@ -14,8 +14,8 @@ const pageName = computed(() =>
   route.path.replace(/[./]+/g, '_').replace(/_html$/, ''),
 )
 
-if (params?.value?.title === 'Redirect Page' && !import.meta.env.SSR) {
-  location.replace(`./${params?.value.id}`)
+if (params?.value?.title && !import.meta.env.SSR) {
+  location.replace(`./posts/${params?.value.path}`)
 }
 
 if (params?.value) {
@@ -62,12 +62,7 @@ if (params?.value) {
         <div class="post-content-container">
           <slot name="doc-before" />
 
-          <ForumBlogPostHeader
-            :title="params?.title"
-            :date="params?.updatedAt"
-            :author="params?.author"
-            :description="params?.description"
-          />
+          <ForumBlogPostHeader />
 
           <main class="main">
             <Content

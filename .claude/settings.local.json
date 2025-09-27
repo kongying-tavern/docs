@@ -19,7 +19,9 @@
       "mcp__Deepwiki__ask_question",
       "Bash(sort:*)",
       "Bash(cat:*)",
-      "Read(//d/Download/zen_download/liquid-glass-main/liquid-glass-main/**)"
+      "Read(//d/Download/zen_download/liquid-glass-main/liquid-glass-main/**)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

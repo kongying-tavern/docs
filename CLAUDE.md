@@ -22,7 +22,6 @@ pnpm run serve            # Preview production build
 
 # Data and Content
 pnpm run build-data       # Refresh all data (blog + member lists)
-pnpm run build-blog       # Refresh blog data only
 pnpm run build-member     # Refresh member list data only
 pnpm run build-emoji      # Build emoji data
 
@@ -166,7 +165,7 @@ The forum implements a comprehensive event-driven architecture for real-time sta
 User Action → API Call → Success → Event Emission → Local Store Update → UI Update
 ```
 
-#### 2. **Cross-Page Synchronization** 
+#### 2. **Cross-Page Synchronization**
 ```
 Page A: Event Emission → localStorage Write → Storage Event
 Page B: Storage Event → Event Re-emission → Store Update → UI Update
@@ -183,7 +182,7 @@ Tab 2: Storage Event Listener → Synthetic Event → Store Update
 #### Topic Events
 - **`topic:created`** - New topic submission
 - **`topic:deleted`** - Topic deletion
-- **`topic:pinned`** - Pin/unpin operations  
+- **`topic:pinned`** - Pin/unpin operations
 - **`topic:hidden`** - Hide/unhide operations (state: 'progressing'/'open')
 - **`topic:closed`** - Close/reopen operations (state: 'closed'/'open')
 - **`topic:type-changed`** - Topic type modifications
@@ -201,7 +200,7 @@ Tab 2: Storage Event Listener → Synthetic Event → Store Update
 #### Multi-Store Architecture
 Each page maintains independent stores to prevent state pollution:
 - **Home Page**: `useForumHomeStore` with `useForumData`
-- **User Page**: `useForumUserStore` with `useForumData` 
+- **User Page**: `useForumUserStore` with `useForumData`
 - **Topic Page**: Topic-specific state management
 
 #### Data Synchronization Points
@@ -239,7 +238,7 @@ function isRecentStoreEvent(eventType: string, topicId: string | number): boolea
 
 #### localStorage Event Keys
 - `forum:topic:deleted` - Topic deletion events
-- `forum:topic:closed` - Topic close/open events  
+- `forum:topic:closed` - Topic close/open events
 - `forum:topic:hidden` - Topic hide/unhide events
 - `forum:topic:pinned` - Pin state changes
 - `forum:topic:tags-updated` - Tag modifications
@@ -264,19 +263,19 @@ function checkPendingEvents() {
 ### Topic State Management
 
 #### Hidden vs Closed Logic
-- **Hidden Topics**: 
+- **Hidden Topics**:
   - Removed from active lists (userSubmittedTopic)
-  - Kept in main data with state='progressing' 
+  - Kept in main data with state='progressing'
   - Available in "已结反馈" filter
   - pinnedTopicsData state updated but not removed
 
-- **Closed Topics**: 
+- **Closed Topics**:
   - Completely removed from all lists
   - Not available in any filter
   - Removed from pinnedTopicsData
 
 #### Pin State Management
-- **Pin**: Add to pinnedTopicsData.unshift() 
+- **Pin**: Add to pinnedTopicsData.unshift()
 - **Unpin**: Remove from pinnedTopicsData
 - All other operations sync pinnedTopicsData state
 
@@ -291,7 +290,7 @@ if (result) {
 }
 ```
 
-#### Event Listening Pattern  
+#### Event Listening Pattern
 ```typescript
 // In stores (e.g., useForumHomeStore.ts)
 onTopicClosed: ({ topicId, closed }) => {
@@ -333,11 +332,11 @@ function updateTopicState(id: string, updates: any) {
   // Update main data
   const topic = data.value?.find(t => t.id === id)
   if (topic) Object.assign(topic, updates)
-  
-  // Update user submitted topics  
+
+  // Update user submitted topics
   const userTopic = userSubmittedTopic.value.find(t => t.id === id)
   if (userTopic) Object.assign(userTopic, updates)
-  
+
   // Update pinned topics data
   const pinnedTopic = pinnedTopicsData.value?.find(t => t.id === id)
   if (pinnedTopic) Object.assign(pinnedTopic, updates)

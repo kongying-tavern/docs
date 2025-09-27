@@ -30,7 +30,7 @@ const isEditorReady = computed(() => {
 })
 
 // TipTap 3: 优化的 isActive 检查，使用防抖减少频繁调用
-const debouncedIsActive = useDebounceFn((type: string, attributes = {}) => {
+const _debouncedIsActive = useDebounceFn((type: string, attributes = {}) => {
   if (!isEditorReady.value)
     return false
 

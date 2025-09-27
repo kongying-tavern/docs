@@ -8,6 +8,27 @@ export function useLoadMore<R extends unknown[], P extends unknown[] = unknown[]
   service: Service<ForumAPI.PaginatedResult<R>, P>,
   options?: PaginationOptions<ForumAPI.PaginatedResult<R>, P>,
 ) {
+  // SSR guard - return mock implementation to avoid vue-request issues
+  if (import.meta.env.SSR) {
+    return {
+      data: ref([]),
+      loading: ref(false),
+      mutate: () => {},
+      total: ref(0),
+      totalPage: ref(0),
+      current: ref(1),
+      pageSize: ref(10),
+      error: ref(undefined),
+      runAsync: async () => ({ data: [], total: 0, totalPage: 0 }),
+      noMore: computed(() => true),
+      loadMore: () => {},
+      initialData: () => {},
+      isFirstLoad: computed(() => false),
+      canLoadMore: computed(() => false),
+      loadingMore: computed(() => false),
+    }
+  }
+
   useRequestProvider({
     loadingDelay: 400,
     loadingKeep: 1000,

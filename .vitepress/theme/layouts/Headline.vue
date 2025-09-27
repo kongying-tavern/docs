@@ -2,12 +2,8 @@
 import { useData } from 'vitepress'
 import { computed, resolveComponent } from 'vue'
 import { Button } from '@/components/ui/button'
-import { useBlogOperations } from '~/components/blog/composables/useBlogOperations'
 
 const { frontmatter } = useData()
-
-// 博客权限检查
-const { canManageBlog } = useBlogOperations()
 
 // 检查是否有按钮配置并且有权限
 const hasButton = computed(() => {
@@ -22,10 +18,6 @@ const hasButton = computed(() => {
   // 如果是简单按钮配置，检查文本和权限
   if (!buttonConfig.text)
     return false
-
-  // 如果是博客编辑器链接，需要检查权限
-  if (buttonConfig.link === '/blog/editor')
-    return canManageBlog.value
 
   return true
 })

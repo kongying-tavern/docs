@@ -2,8 +2,8 @@ import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'nod
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const _filename = fileURLToPath(import.meta.url)
+const _dirname = dirname(_filename)
 
 // 动态导入函数
 async function importLocaleConfig(locale: string) {
@@ -64,7 +64,7 @@ function getFileName(filePath: string): string {
 
 async function main() {
   const locales = ['zh', 'en', 'ja']
-  const outputDir = resolve(__dirname, '../.vitepress/locales/json')
+  const outputDir = resolve(_dirname, '../.vitepress/locales/json')
 
   // 确保输出目录存在
   if (!existsSync(outputDir)) {
@@ -75,7 +75,7 @@ async function main() {
     try {
       console.log(`🔄 处理 ${locale} 语言...`)
 
-      const localeDir = resolve(__dirname, `../.vitepress/locales/${locale}`)
+      const localeDir = resolve(_dirname, `../.vitepress/locales/${locale}`)
       const tsFiles = readTSFiles(localeDir)
 
       const localeData: Record<string, any> = {}
@@ -108,7 +108,7 @@ async function main() {
 
         // 写入 JSON 文件
         const outputPath = resolve(outputDir, `${locale}.json`)
-        writeFileSync(outputPath, JSON.stringify(mergedData, (key, value) => {
+        writeFileSync(outputPath, JSON.stringify(mergedData, (_key, value) => {
           // Convert RegExp objects to string representation
           if (value instanceof RegExp) {
             return {

@@ -41,12 +41,6 @@ jobs:
           GITEE_USERNAME: ${{ secrets.GITEE_USERNAME }}
           GITEE_PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
-      - name: Refresh Blog Data
-        run: pnpm build-blog
-        env:
-          GITEE_USERNAME: ${{ secrets.GITEE_USERNAME }}
-          GITEE_PASSWORD: ${{ secrets.GITEE_PASSWORD }}
-
       - name: Refresh Emoji Data
         run: pnpm build-emoji
 
