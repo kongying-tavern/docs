@@ -15,7 +15,7 @@ export function parseAuthors(frontmatter: Record<string, unknown>): ForumAPI.Use
   const postAuthors: ForumAPI.User[] = []
 
   for (const authorId of authorIdentifiers) {
-    const foundAuthor = [...TeamMember, ...BlogRepoMember].find(member =>
+    const foundAuthor = [...TeamMember.data, ...BlogRepoMember.data].find(member =>
       member.id === authorId || member.login === authorId || member.username === authorId,
     )
     if (foundAuthor) {

@@ -5,7 +5,7 @@ import blogMember from '../../../src/_data/blogMemberList.json'
 import feedbackRepoMember from '../../../src/_data/feedbackMemberList.json'
 import teamMember from '../../../src/_data/teamMemberList.json'
 
-const WHITE_LIST: ForumAPI.User[] = [...feedbackRepoMember, ...teamMember, ...blogMember]
+const WHITE_LIST: ForumAPI.User[] = [...feedbackRepoMember.data, ...teamMember.data, ...blogMember.data]
 
 const MarkdownItMention: PluginSimple = (md: MarkdownIt) => {
   md.inline.ruler.push('mention', (state, silent) => {

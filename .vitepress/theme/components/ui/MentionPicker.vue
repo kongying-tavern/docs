@@ -48,7 +48,7 @@ const emit = defineEmits<{
 
 const isOpen = ref(props.open)
 
-const officialMember = shuffle(props.items ? props.items : [...feedbackRepoMember, ...TeamMember])
+const officialMember = shuffle(props.items ? props.items : [...feedbackRepoMember.data, ...TeamMember.data])
 
 const recentMention = useLocalStorage<ForumAPI.User[]>('RECENT_MENTION', [])
 const OfficialMemberFiltered = computed(() => officialMember.filter(val => !recentMention.value.map(val => val.id).includes(val.id)))

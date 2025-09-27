@@ -21,7 +21,8 @@
       "Bash(cat:*)",
       "Read(//d/Download/zen_download/liquid-glass-main/liquid-glass-main/**)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git -c commit.gpgsign=false commit -m \"fix: resolve hash-based component triggering issues\n\n- Fix useHashChecker to read actual hash value instead of stale computed value\n- Remove LoginAlertDialog from ForumLocalNav as it''s now in Layout\n- Ensure hash-based triggers work immediately for both login alerts and forum forms\n- Clean up debug logging after successful troubleshooting\")"
     ],
     "deny": []
   }

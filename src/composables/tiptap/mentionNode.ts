@@ -3,7 +3,7 @@ import Mention from '@tiptap/extension-mention'
 import feedbackRepoMember from '~/_data/feedbackMemberList.json'
 import TeamMember from '~/_data/teamMemberList.json'
 
-const officialMember = [...feedbackRepoMember, ...TeamMember]
+const officialMember = [...feedbackRepoMember.data, ...TeamMember.data]
 
 export const MentionNode = Mention.configure({
   HTMLAttributes: { class: 'mention' },
