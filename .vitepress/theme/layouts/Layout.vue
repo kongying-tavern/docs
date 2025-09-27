@@ -9,6 +9,7 @@ import DocAside from '@/components/DocAside.vue'
 import DocHeader from '@/components/DocHeader.vue'
 import DocReaction from '@/components/DocReaction.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
+import LoginAlertDialog from '@/components/LoginAlertDialog.vue'
 import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
 import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
@@ -140,6 +141,7 @@ router.onAfterRouteChange = setupMediumZoom
     <template #layout-bottom>
       <HighlightTargetedHeading />
       <Notifications />
+      <LoginAlertDialog />
     </template>
   </Layout>
 </template>

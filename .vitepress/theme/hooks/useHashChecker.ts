@@ -34,17 +34,20 @@ export function useHashChecker(
   let matchedHash = null
 
   const checkHash = () => {
+    // 直接读取当前hash，不依赖computed
+    const actualCurrentHash = import.meta.env.SSR ? '' : window.location.hash.slice(1)
+
     if (isArray(targetHash)) {
-      isMatch.value = targetHash.includes(currentHash.value)
+      isMatch.value = targetHash.includes(actualCurrentHash)
     }
     else {
-      isMatch.value = currentHash.value === targetHash
+      isMatch.value = actualCurrentHash === targetHash
     }
 
     if (!isMatch.value)
       return
 
-    matchedHash = currentHash.value
+    matchedHash = actualCurrentHash
 
     if (clearHash && !import.meta.env.SSR)
       history.replaceState(null, '', window.location.href.split('#')[0])

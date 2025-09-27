@@ -3,7 +3,6 @@ import { useMediaQuery, useTitle, useUrlSearchParams } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import LocalNav from '@/components/LocalNav.vue'
-import LoginAlertDialog from '@/components/LoginAlertDialog.vue'
 import { Button } from '@/components/ui/button'
 import {
   HoverCard,
@@ -13,8 +12,8 @@ import {
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
-import { publishTopic } from './utils'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { publishTopic } from './utils'
 
 const open = defineModel<boolean>('open-search-curtain', {
   default: false,
@@ -54,14 +53,16 @@ const selectPublishTopicMenu = computed(() => {
       label: message.value.forum.labels.submitBug,
       icon: 'i-lucide-bug',
       action: () => {
-        location.hash = 'PUBLISH-TOPIC-BUG'
+        location.hash = 'BUG'
+        publishTopic()
       },
     },
     {
       label: message.value.forum.labels.submitSuggestion,
       icon: 'i-lucide-file-text',
       action: () => {
-        location.hash = 'PUBLISH-TOPIC-FEAT'
+        location.hash = 'FEAT'
+        publishTopic()
       },
     },
   ]
@@ -72,7 +73,8 @@ const selectPublishTopicMenu = computed(() => {
       label: '发公告',
       icon: 'i-lucide-megaphone',
       action: () => {
-        location.hash = 'PUBLISH-TOPIC-ANN'
+        location.hash = 'ANN'
+        publishTopic()
       },
     })
   }
@@ -128,7 +130,6 @@ const selectPublishTopicMenu = computed(() => {
         <span class="i-lucide-plus z-9999 inline-block size-[1.75rem] shadow-[var(--vp-shadow-1)]" />
       </Button>
       <ForumPublishTopicForm />
-      <LoginAlertDialog />
     </template>
   </Teleport>
 </template>
