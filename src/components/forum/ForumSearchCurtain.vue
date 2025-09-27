@@ -29,10 +29,8 @@ provide('searchTopics', searchTopicsFunc)
 
 // Load complete dataset for search suggestions
 onMounted(async () => {
-  console.log('🔍 Loading complete data for search suggestions...')
   // Load complete dataset for suggestions, independent of main forum data
   await suggestionForumData.refreshData()
-  console.log('🔍 Suggestion data loaded:', suggestionForumData.data.value?.length || 0, 'topics')
 })
 
 onUnmounted(() => {
@@ -61,10 +59,10 @@ watchPostEffect(() => {
       <div class="curtain-content container h-auto w-full pt-8">
         <ForumSearchbox v-model:query="searchQuery" @search="emits('close')" />
         <!-- Debug: Always show for testing -->
-        <div v-if="searchQuery.length > 0" class="debug-info">
+        <!-- <div v-if="searchQuery.length > 0" class="debug-info">
           <p>Query: "{{ searchQuery }}" (length: {{ searchQuery.length }})</p>
           <p>Topics count: {{ suggestionForumData.data.value?.length || 0 }}</p>
-        </div>
+        </div> -->
 
         <ForumSearchSuggestions
           v-if="searchQuery.length > 0"

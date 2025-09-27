@@ -11,7 +11,6 @@ const { message } = useLocalized()
 const searchTopics = inject('searchTopics', () => {
   console.warn('ForumSearchbox: searchTopics not provided, using default')
   return async (query: string) => {
-    console.log('Default searchTopics called with:', query)
   }
 })
 

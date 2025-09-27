@@ -47,6 +47,7 @@ const {
   hasPermission,
   switchTab,
   initFormData,
+  setFormType,
   closeForm,
 } = useFormState()
 
@@ -76,11 +77,12 @@ useHashChecker(
     if (!userAuth.isTokenValid)
       return true
     const targetTab = last(hash.split('-'))
-    if (
-      targetTab
-      && tabList.value.includes(targetTab as ForumAPI.CreateTopicOption['type'])
-    ) {
-      formData.value.type = targetTab as ForumAPI.CreateTopicOption['type']
+    const targetType = targetTab && tabList.value.includes(targetTab as ForumAPI.CreateTopicOption['type'])
+      ? targetTab as ForumAPI.CreateTopicOption['type']
+      : undefined
+
+    if (targetType) {
+      setFormType(targetType)
     }
     isOpen.value = true
   },

@@ -19,7 +19,7 @@ defineProps<{
       <Button
         variant="ghost"
         size="icon"
-        class="topic-btn-more h-auto align-mid opacity-0 important:clear-bg"
+        class="topic-btn-more h-auto align-mid important:clear-bg"
       >
         <span class="i-custom-ellipsis-vertical icon-btn" />
       </Button>

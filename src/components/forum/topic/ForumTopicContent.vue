@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from './types'
+import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -82,10 +82,13 @@ function handleExpandClick(): void {
         v-if="isCardMode"
         class="mt-1 overflow-hidden whitespace-pre-wrap pr-4 font-size-3.5 opacity-99 transition-all duration-300"
       >
-        <div :class="{ 'line-clamp-4': !(isExpanded || isAnn) }">
+        <div v-if="topic.type !== 'POST'" :class="{ 'line-clamp-4': !(isExpanded || isAnn) }">
           {{ displayContent }}
         </div>
 
+        <div v-else>
+          {{ displayContent }}
+        </div>
         <!-- Read More Button for Posts -->
         <Button
           v-if="isPost"
@@ -112,7 +115,11 @@ function handleExpandClick(): void {
         v-if="isCompactMode"
         class="mt-1 overflow-hidden whitespace-pre-wrap font-size-3.5 opacity-99"
       >
-        <div class="line-clamp-2">
+        <div v-if="topic.type !== 'POST'" class="line-clamp-2">
+          {{ displayContent }}
+        </div>
+
+        <div v-else>
           {{ displayContent }}
         </div>
       </div>

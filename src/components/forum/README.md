@@ -1041,18 +1041,3 @@ const metrics = {
   }
 }
 ```
-
----
-
-## 📚 相关文档
-
-- [API文档](./api/README.md) - API接口详细说明
-- [组件库文档](./components/README.md) - UI组件使用指南
-- [事件系统文档](./events/README.md) - 事件系统详细说明
-- [性能优化指南](./performance/README.md) - 性能优化最佳实践
-- [部署指南](./deployment/README.md) - 部署和运维说明
-
----
-
-*最后更新: 2024-12-*
-*维护者: Forum开发团队*

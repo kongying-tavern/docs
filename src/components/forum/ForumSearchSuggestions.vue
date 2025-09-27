@@ -43,20 +43,12 @@ function highlightText(text: string, keyword: string, scope: number = 20) {
 }
 
 const filteredItems = computed(() => {
-  console.log('🔍 ForumSearchSuggestions computed:', {
-    searchQuery,
-    searchQueryLength: searchQuery.length,
-    topicDataLength: topicData?.length || 0,
-    topicDataType: Array.isArray(topicData) ? 'array' : typeof topicData,
-  })
 
   if (!topicData || !Array.isArray(topicData)) {
-    console.log('🔍 No data or not array')
     return []
   }
 
   if (searchQuery.length < 1) {
-    console.log('🔍 Query too short')
     return []
   }
 
@@ -75,7 +67,6 @@ const filteredItems = computed(() => {
       highlightedContent: highlightText(item.content?.text || '', searchQuery),
     }))
 
-  console.log('🔍 Filtered suggestions:', filtered.length)
   return filtered
 })
 </script>

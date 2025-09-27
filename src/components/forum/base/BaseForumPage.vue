@@ -3,6 +3,7 @@ import type { Component } from 'vue'
 import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumStore } from '~/types/forum/simplified'
+import type { StoreGeneric } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, provide, toRef } from 'vue'
 import ForumAside from '../ForumAside.vue'
@@ -18,7 +19,7 @@ interface ForumAsideProps {
 }
 
 interface Props {
-  store: ForumStore
+  store: ForumStore | StoreGeneric
   renderData: ForumAPI.Topic[] | ForumAPI.Post[]
   showMenubar?: boolean
   showAside?: boolean

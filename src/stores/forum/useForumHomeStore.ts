@@ -132,6 +132,12 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
         Object.assign(mainTopic, updates)
       }
 
+      // 更新置顶主题数据
+      const pinnedTopic = forumData.pinnedTopicsData.value?.find(t => t.id === id)
+      if (pinnedTopic) {
+        Object.assign(pinnedTopic, updates)
+      }
+
       // 性能优化的更新
       optimizedTopicList.updateTopic(String(id), updates)
     },
@@ -162,25 +168,43 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
   // === 自定义事件处理 ===
   const customEventHandlers = {
     handleCommentCreated: (payload: { topicId: string | number, comment: ForumAPI.Comment }) => {
-      // 更新对应话题的评论数
-      const targetTopic = forumData.data.value?.find(t => t.id === payload.topicId)
-        || userSubmittedTopics.value.find(t => t.id === payload.topicId)
+      // 更新对应话题的评论数和relatedComments
+      // 优先查找用户提交数据，保持与UI数据源一致（mergeTopicsData中用户数据优先）
+      const targetTopic = userSubmittedTopics.value.find(t => t.id === payload.topicId)
+        || forumData.data.value?.find(t => t.id === payload.topicId)
 
       if (targetTopic && typeof targetTopic.commentCount === 'number' && targetTopic.commentCount >= 0) {
+        // 更新评论数
+        const newCommentCount = targetTopic.commentCount + 1
+
+        // 更新relatedComments - 添加新评论到开头，保持最新3条
+        const currentRelatedComments = targetTopic.relatedComments || []
+        const newRelatedComments = [payload.comment, ...currentRelatedComments].slice(0, 3)
+
         topicOperations.updateTopic(payload.topicId, {
-          commentCount: targetTopic.commentCount + 1,
+          commentCount: newCommentCount,
+          relatedComments: newRelatedComments,
         })
       }
     },
 
     handleCommentDeleted: (payload: { commentId: string | number, topicId: string | number }) => {
-      // 减少对应话题的评论数
-      const targetTopic = forumData.data.value?.find(t => t.id === payload.topicId)
-        || userSubmittedTopics.value.find(t => t.id === payload.topicId)
+      // 减少对应话题的评论数和更新relatedComments
+      // 优先查找用户提交数据，保持与UI数据源一致（mergeTopicsData中用户数据优先）
+      const targetTopic = userSubmittedTopics.value.find(t => t.id === payload.topicId)
+        || forumData.data.value?.find(t => t.id === payload.topicId)
 
       if (targetTopic && typeof targetTopic.commentCount === 'number' && targetTopic.commentCount > 0) {
+        // 更新评论数
+        const newCommentCount = targetTopic.commentCount - 1
+
+        // 从relatedComments中移除被删除的评论
+        const currentRelatedComments = targetTopic.relatedComments || []
+        const newRelatedComments = currentRelatedComments.filter(c => c.id !== payload.commentId)
+
         topicOperations.updateTopic(payload.topicId, {
-          commentCount: targetTopic.commentCount - 1,
+          commentCount: newCommentCount,
+          relatedComments: newRelatedComments,
         })
       }
     },

@@ -73,6 +73,7 @@ export type PageType = 'home' | 'user' | 'topic'
 export interface ResetOptions {
   reloadData?: boolean
   clearUserTopics?: boolean
+  preserveForBfcache?: boolean // Back/Forward Cache optimization
 }
 
 export interface VisibilityUpdates {

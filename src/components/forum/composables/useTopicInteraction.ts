@@ -28,7 +28,7 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post, viewM
   // Navigation functions
   async function toPostDetailPage(hash?: string): Promise<void> {
     const path = isPost.value
-      ? `blog/${(topic as ForumAPI.Post).path}`
+      ? `blog/posts/${(topic as ForumAPI.Post).path}`
       : `feedback/topic/${topic.id}`
 
     const fullPath = withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`)

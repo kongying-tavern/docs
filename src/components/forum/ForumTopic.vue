@@ -185,7 +185,7 @@ onUnmounted(() => {
       v-if="inReply && viewMode !== 'Compact'"
       :id="`reply-${topic.id}`"
       repo="Feedback"
-      class="mt-2 rounded-md bg-[var(--vp-c-bg-soft)] px-8 pb-4"
+      class="mt-2 rounded-md bg-[var(--vp-c-bg-soft)] px-8 pb-4 pt-4"
       :class="{
         'rounded-t-none': showComment && localRelatedComments.length,
         'important:py-4': !localRelatedComments.length,

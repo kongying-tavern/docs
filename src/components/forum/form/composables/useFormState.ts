@@ -96,7 +96,20 @@ export function useFormState() {
     formData.value = FORM_DEFAULT_DATA
   }
 
-  function openForm(): void {
+  function setFormType(type: ForumAPI.CreateTopicOption['type']): void {
+    formData.value.type = type
+    // Also update the currentTabIndex to match the type
+    const typeIndex = tabList.value.indexOf(type)
+    if (typeIndex !== -1) {
+      currentTabIndex.value = typeIndex
+    }
+  }
+
+  function openForm(typeFromUrl?: ForumAPI.CreateTopicOption['type']): void {
+    // If a type is specified from URL, override the localStorage value
+    if (typeFromUrl && tabList.value.includes(typeFromUrl)) {
+      setFormType(typeFromUrl)
+    }
     isOpen.value = true
   }
 
@@ -121,6 +134,7 @@ export function useFormState() {
     // Actions
     switchTab,
     initFormData,
+    setFormType,
     openForm,
     closeForm,
   }
