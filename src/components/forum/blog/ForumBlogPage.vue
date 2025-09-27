@@ -21,6 +21,10 @@ const posts = computed(() => {
     return allPosts
   return result
 })
+
+function buildPostLink(url: string) {
+  return `./posts/${url.slice(url.lastIndexOf('/') + 1)}`
+}
 </script>
 
 <template>
@@ -46,7 +50,7 @@ const posts = computed(() => {
               <h2 class="text-2xl font-bold leading-8 tracking-tight">
                 <a
                   class="c-[var(--vp-c-text-1)] hover:underline"
-                  :href="post.url"
+                  :href="buildPostLink(post.url)"
                 >
                   {{ post.title }}
                 </a>
@@ -58,7 +62,7 @@ const posts = computed(() => {
               />
             </div>
             <div class="text-base font-medium leading-6">
-              <VPLink class="vp-link" :href="post.url">
+              <VPLink class="vp-link" :href="buildPostLink(post.url)">
                 {{ message.forum.readMore }} →
               </VPLink>
             </div>

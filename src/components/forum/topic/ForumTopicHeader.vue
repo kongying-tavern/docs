@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from './types'
+import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import User from '@/components/ui/User.vue'

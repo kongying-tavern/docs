@@ -25,7 +25,7 @@ function useLogin() {
   const authProgress = useAuthProgress()
 
   const redirectUrl = refAutoReset(withBase('/'), 1000 * 60 * 5)
-  const storedRedirectUrl = useStorage(REDIRECT_LINK_KEY, redirectUrl, sessionStorage)
+  const storedRedirectUrl = useStorage(REDIRECT_LINK_KEY, redirectUrl, import.meta.env.SSR ? undefined : sessionStorage)
 
   const { go } = useRouter()
   const { theme, localeIndex } = useData()
@@ -189,6 +189,10 @@ function useLogin() {
   }
 
   function getAuthCodeFromURL(): string | null {
+    if (import.meta.env.SSR) {
+      return null
+    }
+
     const code = new URLSearchParams(location.search).get('code')
     if (code) {
       removeQueryParam('code')
