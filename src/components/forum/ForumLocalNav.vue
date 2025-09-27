@@ -3,6 +3,7 @@ import { useMediaQuery, useTitle, useUrlSearchParams } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import LocalNav from '@/components/LocalNav.vue'
+import LoginAlertDialog from '@/components/LoginAlertDialog.vue'
 import { Button } from '@/components/ui/button'
 import {
   HoverCard,
@@ -13,6 +14,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
 import { publishTopic } from './utils'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 
 const open = defineModel<boolean>('open-search-curtain', {
   default: false,
@@ -24,10 +26,12 @@ const params = useUrlSearchParams()
 const pageTitle = useTitle()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 const userAuth = useUserAuthStore()
+const { hasAnyRoles } = useRuleChecks()
 
 const title = computed(() => frontmatter.value.title || pageTitle.value?.split('|')[0])
 
 const isLoggedIn = computed(() => userAuth.isTokenValid)
+const isAdmin = hasAnyRoles('teamMember', 'feedbackMember')
 
 const buttonText = computed(() => {
   return isLoggedIn.value ? message.value.forum.publish.title : '登录反馈'
@@ -37,14 +41,15 @@ const buttonText = computed(() => {
 function handleButtonClick() {
   if (isLoggedIn.value) {
     publishTopic()
-  } else {
+  }
+  else {
     location.hash = 'login-alert'
   }
 }
 
 // @unocss-includes
 const selectPublishTopicMenu = computed(() => {
-  return [
+  const baseItems = [
     {
       label: message.value.forum.labels.submitBug,
       icon: 'i-lucide-bug',
@@ -60,6 +65,19 @@ const selectPublishTopicMenu = computed(() => {
       },
     },
   ]
+
+  // 为管理员添加发公告选项
+  if (isAdmin.value) {
+    baseItems.push({
+      label: message.value.forum.labels.ann,
+      icon: 'i-lucide-megaphone',
+      action: () => {
+        location.hash = 'PUBLISH-TOPIC-ANN'
+      },
+    })
+  }
+
+  return baseItems
 })
 </script>
 
@@ -110,6 +128,7 @@ const selectPublishTopicMenu = computed(() => {
         <span class="i-lucide-plus z-9999 inline-block size-[1.75rem] shadow-[var(--vp-shadow-1)]" />
       </Button>
       <ForumPublishTopicForm />
+      <LoginAlertDialog />
     </template>
   </Teleport>
 </template>
