@@ -1,3 +1,5 @@
+packages: []
+
 catalogs:
   build:
     '@lunariajs/core': ^0.1.1
