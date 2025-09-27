@@ -223,7 +223,7 @@ function getLocaleDisplayName(locale: string): string {
 }
 
 // 验证 JSON 格式
-function isValidJson(value: string): boolean {
+function _isValidJson(value: string): boolean {
   if (!value || value.trim() === '')
     return true
 

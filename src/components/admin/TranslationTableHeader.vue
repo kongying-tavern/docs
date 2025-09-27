@@ -12,7 +12,7 @@ interface Emits {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const _emit = defineEmits<Emits>()
 
 function getLocaleDisplayName(locale: string): string {
   const localeNames: Record<string, string> = {

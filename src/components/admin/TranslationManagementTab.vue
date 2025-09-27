@@ -2,14 +2,6 @@
 import type { TranslationEntry } from '~/services/jsonTranslationService'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +13,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { useTranslationExport } from '~/composables/useTranslationExport'
 import { useTranslationTableLogic } from '~/composables/useTranslationTableLogic'
 import { jsonTranslationService } from '~/services/jsonTranslationService'
@@ -76,7 +76,7 @@ function handleAutoSaveTranslation(entry: TranslationEntry) {
     const originalEntry = props.translationEntries[index]
 
     // 检查每个语言字段的变更并自动保存
-    props.availableLocales.forEach(locale => {
+    props.availableLocales.forEach((locale) => {
       const oldValue = originalEntry.translations[locale]
       const newValue = entry.translations[locale]
 
@@ -177,9 +177,9 @@ function handleInitializeData() {
                   <AlertDialogTitle>确认初始化数据</AlertDialogTitle>
                   <AlertDialogDescription>
                     此操作将清除所有本地保存的修改和删除记录，恢复到原始状态。
-                    <br />
+                    <br>
                     当前有 <strong>{{ exportLogic.changedLocales.value.length }}</strong> 个语言包含未导出的变更。
-                    <br />
+                    <br>
                     <strong>此操作不可逆，请确认是否继续？</strong>
                   </AlertDialogDescription>
                 </AlertDialogHeader>

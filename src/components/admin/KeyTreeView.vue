@@ -15,7 +15,7 @@ interface Emits {
   (e: 'select', path: string): void
 }
 
-const props = defineProps<Props>()
+const _props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 function handleSelect(path: string) {

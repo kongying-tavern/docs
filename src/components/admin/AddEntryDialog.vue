@@ -361,7 +361,7 @@ watch(() => arrayFieldConfig.value.fields, (newFields) => {
 }, { deep: true })
 
 // 解析特殊数据类型
-function parseSpecialValue(value: string, dataType: string): any {
+function _parseSpecialValue(value: string, dataType: string): any {
   if (dataType === 'text')
     return value
 
@@ -456,7 +456,7 @@ function updateRegexField(locale: string, field: 'pattern' | 'flags', value: str
 }
 
 // 切换正则表达式标志
-function toggleRegexFlag(locale: string, flag: string, enabled: boolean) {
+function _toggleRegexFlag(locale: string, flag: string, enabled: boolean) {
   if (!parsedTranslations.value[locale]) {
     parsedTranslations.value[locale] = { __regex__: '', __flags__: '' }
   }
