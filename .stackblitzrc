@@ -1,0 +1,8 @@
+{
+  "installDependencies": true,
+  "startCommand": "pnpm dev",
+  "env": {
+    "NODE_VERSION": "24.3.0",
+    "PNPM_VERSION": "10.17.1"
+  }
+}
