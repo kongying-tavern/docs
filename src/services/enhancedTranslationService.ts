@@ -261,7 +261,7 @@ class EnhancedTranslationService {
           try {
             const parsed = JSON.parse(value)
             if (this.isRegexObject(parsed)) {
-              new RegExp(parsed.__regex__, parsed.__flags__)
+              void new RegExp(parsed.__regex__, parsed.__flags__)
             }
           }
           catch (error) {

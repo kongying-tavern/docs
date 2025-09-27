@@ -242,7 +242,7 @@ class JSONTranslationService {
     return {
       modified: modifiedCount,
       deleted: deletedCount,
-      total: modifiedCount + deletedCount
+      total: modifiedCount + deletedCount,
     }
   }
 

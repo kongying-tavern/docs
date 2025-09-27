@@ -1,5 +1,5 @@
 import type ForumAPI from '@/apis/forum/api'
-import type { EnhancedBlogPost } from '~/components/blog/composables/useBlogData'
+// import type { EnhancedBlogPost } from '~/components/blog/composables/useBlogData'
 
 /**
  * 便捷的事件发布函数定义
@@ -18,14 +18,14 @@ const eventDefinitions = {
   topicTypeChanged: (id: string | number, type: ForumAPI.TopicType) => ({ id, type }),
   topicCommentToggled: (id: string | number, commentsClosed: boolean) => ({ id, commentsClosed }),
 
-  // Blog events
-  blogCreated: (blog: EnhancedBlogPost) => ({ blog }),
-  blogUpdated: (id: string | number, updates: Partial<EnhancedBlogPost>) => ({ id, updates }),
-  blogDeleted: (id: string | number, source: 'api' | 'draft') => ({ id, source }),
-  blogPublished: (id: string | number, published: boolean) => ({ id, published }),
-  blogDraftCreated: (draft: EnhancedBlogPost) => ({ draft }),
-  blogDraftUpdated: (draftId: string, updates: Partial<EnhancedBlogPost>) => ({ draftId, updates }),
-  blogDraftDeleted: (draftId: string) => ({ draftId }),
+  // Blog events (commented out)
+  // blogCreated: (blog: EnhancedBlogPost) => ({ blog }),
+  // blogUpdated: (id: string | number, updates: Partial<EnhancedBlogPost>) => ({ id, updates }),
+  // blogDeleted: (id: string | number, source: 'api' | 'draft') => ({ id, source }),
+  // blogPublished: (id: string | number, published: boolean) => ({ id, published }),
+  // blogDraftCreated: (draft: EnhancedBlogPost) => ({ draft }),
+  // blogDraftUpdated: (draftId: string, updates: Partial<EnhancedBlogPost>) => ({ draftId, updates }),
+  // blogDraftDeleted: (draftId: string) => ({ draftId }),
 
   // Comment events
   commentCreated: (commentId: string | number, topicId: string | number, comment: ForumAPI.Comment) => ({ commentId, topicId, comment }),
@@ -45,7 +45,7 @@ const eventDefinitions = {
   // Form events
   formValidationError: (field: string, message: string) => ({ field, message }),
   formSubmitStart: (formType: string) => ({ formType }),
-  formSubmitSuccess: (formType: string, data: ForumAPI.Topic | ForumAPI.Comment | EnhancedBlogPost) => ({ formType, data }),
+  formSubmitSuccess: (formType: string, data: ForumAPI.Topic | ForumAPI.Comment) => ({ formType, data }),
   formSubmitError: (formType: string, error: Error) => ({ formType, error }),
 
   // Navigation events
@@ -87,28 +87,28 @@ export const forumEvents = {
     SimpleEventManager.getInstance().emit('topic:comment-toggled', eventDefinitions.topicCommentToggled(id, commentsClosed))
   },
 
-  // Blog events - 实际发出事件
-  blogCreated: (blog: EnhancedBlogPost) => {
-    SimpleEventManager.getInstance().emit('blog:created', eventDefinitions.blogCreated(blog))
-  },
-  blogUpdated: (id: string | number, updates: Partial<EnhancedBlogPost>) => {
-    SimpleEventManager.getInstance().emit('blog:updated', eventDefinitions.blogUpdated(id, updates))
-  },
-  blogDeleted: (id: string | number, source: 'api' | 'draft') => {
-    SimpleEventManager.getInstance().emit('blog:deleted', eventDefinitions.blogDeleted(id, source))
-  },
-  blogPublished: (id: string | number, published: boolean) => {
-    SimpleEventManager.getInstance().emit('blog:published', eventDefinitions.blogPublished(id, published))
-  },
-  blogDraftCreated: (draft: EnhancedBlogPost) => {
-    SimpleEventManager.getInstance().emit('blog:draft-created', eventDefinitions.blogDraftCreated(draft))
-  },
-  blogDraftUpdated: (draftId: string, updates: Partial<EnhancedBlogPost>) => {
-    SimpleEventManager.getInstance().emit('blog:draft-updated', eventDefinitions.blogDraftUpdated(draftId, updates))
-  },
-  blogDraftDeleted: (draftId: string) => {
-    SimpleEventManager.getInstance().emit('blog:draft-deleted', eventDefinitions.blogDraftDeleted(draftId))
-  },
+  // Blog events - 实际发出事件 (commented out)
+  // blogCreated: (blog: EnhancedBlogPost) => {
+  //   SimpleEventManager.getInstance().emit('blog:created', eventDefinitions.blogCreated(blog))
+  // },
+  // blogUpdated: (id: string | number, updates: Partial<EnhancedBlogPost>) => {
+  //   SimpleEventManager.getInstance().emit('blog:updated', eventDefinitions.blogUpdated(id, updates))
+  // },
+  // blogDeleted: (id: string | number, source: 'api' | 'draft') => {
+  //   SimpleEventManager.getInstance().emit('blog:deleted', eventDefinitions.blogDeleted(id, source))
+  // },
+  // blogPublished: (id: string | number, published: boolean) => {
+  //   SimpleEventManager.getInstance().emit('blog:published', eventDefinitions.blogPublished(id, published))
+  // },
+  // blogDraftCreated: (draft: EnhancedBlogPost) => {
+  //   SimpleEventManager.getInstance().emit('blog:draft-created', eventDefinitions.blogDraftCreated(draft))
+  // },
+  // blogDraftUpdated: (draftId: string, updates: Partial<EnhancedBlogPost>) => {
+  //   SimpleEventManager.getInstance().emit('blog:draft-updated', eventDefinitions.blogDraftUpdated(draftId, updates))
+  // },
+  // blogDraftDeleted: (draftId: string) => {
+  //   SimpleEventManager.getInstance().emit('blog:draft-deleted', eventDefinitions.blogDraftDeleted(draftId))
+  // },
 
   // Comment events - 实际发出事件
   commentCreated: (commentId: string | number, topicId: string | number, comment: ForumAPI.Comment) => {
@@ -154,7 +154,7 @@ export const forumEvents = {
   formSubmitStart: (formType: string) => {
     SimpleEventManager.getInstance().emit('form:submit-start', eventDefinitions.formSubmitStart(formType))
   },
-  formSubmitSuccess: (formType: string, data: ForumAPI.Topic | ForumAPI.Comment | EnhancedBlogPost) => {
+  formSubmitSuccess: (formType: string, data: ForumAPI.Topic | ForumAPI.Comment) => {
     SimpleEventManager.getInstance().emit('form:submit-success', eventDefinitions.formSubmitSuccess(formType, data))
   },
   formSubmitError: (formType: string, error: Error) => {
@@ -222,14 +222,14 @@ export interface EventMap {
   'topic:type-changed': ReturnType<typeof eventDefinitions.topicTypeChanged>
   'topic:comment-toggled': ReturnType<typeof eventDefinitions.topicCommentToggled>
 
-  // Blog events (从 eventDefinitions 函数推断)
-  'blog:created': ReturnType<typeof eventDefinitions.blogCreated>
-  'blog:updated': ReturnType<typeof eventDefinitions.blogUpdated>
-  'blog:deleted': ReturnType<typeof eventDefinitions.blogDeleted>
-  'blog:published': ReturnType<typeof eventDefinitions.blogPublished>
-  'blog:draft-created': ReturnType<typeof eventDefinitions.blogDraftCreated>
-  'blog:draft-updated': ReturnType<typeof eventDefinitions.blogDraftUpdated>
-  'blog:draft-deleted': ReturnType<typeof eventDefinitions.blogDraftDeleted>
+  // Blog events (commented out)
+  // 'blog:created': ReturnType<typeof eventDefinitions.blogCreated>
+  // 'blog:updated': ReturnType<typeof eventDefinitions.blogUpdated>
+  // 'blog:deleted': ReturnType<typeof eventDefinitions.blogDeleted>
+  // 'blog:published': ReturnType<typeof eventDefinitions.blogPublished>
+  // 'blog:draft-created': ReturnType<typeof eventDefinitions.blogDraftCreated>
+  // 'blog:draft-updated': ReturnType<typeof eventDefinitions.blogDraftUpdated>
+  // 'blog:draft-deleted': ReturnType<typeof eventDefinitions.blogDraftDeleted>
 
   // Comment events (从 eventDefinitions 函数推断)
   'comment:created': ReturnType<typeof eventDefinitions.commentCreated>

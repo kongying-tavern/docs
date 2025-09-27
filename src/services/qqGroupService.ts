@@ -159,7 +159,7 @@ class QQGroupService {
   exportJSON(): string {
     const sortedGroups = this.getGroups()
     // 移除order字段，保持与原始JSON格式一致
-    const exportData = sortedGroups.map(({ order, ...group }) => group)
+    const exportData = sortedGroups.map(({ order: _order, ...group }) => group)
     return JSON.stringify(exportData, null, 2)
   }
 
