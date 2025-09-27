@@ -46,17 +46,23 @@ catalogs:
     stylelint-order: 6.0.4
     taze: 0.16.9
     tsconfig-paths: 4.2.0
+    vite-plugin-vue-devtools: ^8.0.2
     zhlint: 0.8.2
 
   # Frontend runtime libraries and Vue ecosystem
   frontend:
+    '@atlaskit/pragmatic-drag-and-drop': ^1.7.7
+    '@atlaskit/pragmatic-drag-and-drop-hitbox': ^1.1.0
     '@fingerprintjs/fingerprintjs': 3.4.2
+    '@floating-ui/dom': ^1.7.4
     '@iconify-json/ic': ^1.2.2
     '@iconify-json/logos': ^1.2.4
     '@iconify-json/lucide': ^1.2.38
     '@iconify-json/mdi': ^1.2.3
     '@iconify-json/ph': ^1.2.2
+    '@number-flow/vue': ^0.4.8
     '@radix-icons/vue': ^1.0.0
+    '@tanstack/vue-table': ^8.21.3
     '@vueuse/core': ^13.1.0
     '@vueuse/integrations': ^13.1.0
     '@vueuse/motion': ^3.0.3
@@ -65,6 +71,7 @@ catalogs:
     clsx: ^2.1.1
     date-fns: ^4.1.0
     dayjs: ^1.11.13
+    dexie: ^4.2.0
     embla-carousel-vue: ^8.6.0
     feed: ^4.2.2
     ky: ^1.8.1
@@ -77,6 +84,7 @@ catalogs:
     qrcode: ^1.5.4
     radix-vue: ^1.9.17
     reka-ui: ^2.2.0
+    sortablejs: ^1.15.6
     tailwind-merge: ^3.2.0
     thumbhash: ^0.1.1
     vaul-vue: ^0.4.1
@@ -87,15 +95,19 @@ catalogs:
 
   # Markdown processing and content plugins
   markdown:
+    '@mdit/plugin-abbr': ^0.22.1
     '@mdit/plugin-container': ^0.16.0
     '@mdit/plugin-demo': ^0.18.0
     '@mdit/plugin-figure': ^0.16.0
+    '@mdit/plugin-icon': ^0.22.1
     '@mdit/plugin-img-mark': ^0.16.0
     '@mdit/plugin-img-size': ^0.16.0
     '@mdit/plugin-mark': ^0.16.0
+    '@mdit/plugin-ruby': ^0.22.1
     '@mdit/plugin-spoiler': ^0.16.0
     '@mdit/plugin-sub': ^0.16.0
     '@mdit/plugin-sup': ^0.16.0
+    '@mdit/plugin-tasklist': ^0.22.1
     markdown-it: 14.1.0
     markdown-it-attrs: ^4.3.1
     markdown-it-container: 4.0.0
@@ -106,10 +118,15 @@ catalogs:
   editor:
     '@tiptap/core': ^2.11.7
     '@tiptap/extension-character-count': ^2.11.7
+    '@tiptap/extension-link': ^3.4.4
     '@tiptap/extension-mention': ^2.11.7
     '@tiptap/extension-placeholder': ^3.4.2
+    '@tiptap/pm': ^3.4.4
     '@tiptap/starter-kit': ^2.11.7
+    '@tiptap/static-renderer': ^3.4.4
+    '@tiptap/suggestion': ^3.4.4
     '@tiptap/vue-3': ^2.11.7
+    tiptap-markdown: ^0.9.0
 
   # Type definitions
   types:
@@ -120,6 +137,7 @@ catalogs:
     '@types/markdown-it-container': ^2.0.10
     '@types/markdown-it-footnote': 3.0.4
     '@types/node': 22.10.2
+    '@types/sortablejs': ^1.15.8
 
   # Utilities
   utils:
@@ -150,22 +168,3 @@ ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
   - vue-demi
-catalog:
-  '@atlaskit/pragmatic-drag-and-drop': ^1.7.7
-  '@atlaskit/pragmatic-drag-and-drop-hitbox': ^1.1.0
-  '@floating-ui/dom': ^1.7.4
-  '@mdit/plugin-abbr': ^0.22.1
-  '@mdit/plugin-icon': ^0.22.1
-  '@mdit/plugin-ruby': ^0.22.1
-  '@mdit/plugin-tasklist': ^0.22.1
-  '@number-flow/vue': ^0.4.8
-  '@tanstack/vue-table': ^8.21.3
-  '@tiptap/extension-link': ^3.4.4
-  '@tiptap/pm': ^3.4.4
-  '@tiptap/static-renderer': ^3.4.4
-  '@tiptap/suggestion': ^3.4.4
-  '@types/sortablejs': ^1.15.8
-  dexie: ^4.2.0
-  sortablejs: ^1.15.6
-  tiptap-markdown: ^0.9.0
-  vite-plugin-vue-devtools: ^8.0.2
