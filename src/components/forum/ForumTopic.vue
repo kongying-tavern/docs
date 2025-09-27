@@ -198,4 +198,28 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style lang="scss" src="./ForumTopic.scss"></style>
+<style lang="scss" scoped>
+.forum-topic-item:not(.ANN):hover .cursor-pointer h4 p {
+  text-decoration: underline;
+}
+
+.forum-topic-item:not(.ANN) .cursor-pointer {
+  cursor: pointer;
+}
+
+.forum-topic-item:has(.ANN) .cursor-pointer {
+  cursor: default;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+</style>
