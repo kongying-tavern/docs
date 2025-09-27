@@ -10,6 +10,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
 import { publishTopic } from './utils'
 
@@ -22,8 +23,24 @@ const { message } = useLocalized()
 const params = useUrlSearchParams()
 const pageTitle = useTitle()
 const isDesktop = useMediaQuery('(min-width: 768px)')
+const userAuth = useUserAuthStore()
 
 const title = computed(() => frontmatter.value.title || pageTitle.value?.split('|')[0])
+
+const isLoggedIn = computed(() => userAuth.isTokenValid)
+
+const buttonText = computed(() => {
+  return isLoggedIn.value ? message.value.forum.publish.title : '登录反馈'
+})
+
+// 按钮点击处理
+function handleButtonClick() {
+  if (isLoggedIn.value) {
+    publishTopic()
+  } else {
+    location.hash = 'login-alert'
+  }
+}
 
 // @unocss-includes
 const selectPublishTopicMenu = computed(() => {
@@ -63,10 +80,10 @@ const selectPublishTopicMenu = computed(() => {
         </span>
       </Button>
 
-      <HoverCard>
+      <HoverCard v-if="isLoggedIn">
         <HoverCardTrigger as-child>
-          <Button v-if="frontmatter.publishTopic ?? true" variant="default" class="vp-btn max-sm:hidden" @click="() => { open = false; publishTopic() }">
-            {{ message.forum.publish.title }}
+          <Button v-if="frontmatter.publishTopic ?? true" variant="default" class="vp-btn max-sm:hidden" @click="() => { open = false; handleButtonClick() }">
+            {{ buttonText }}
           </Button>
         </HoverCardTrigger>
         <HoverCardContent align="end" side="bottom" class="w-fit flex p-2">
@@ -76,6 +93,11 @@ const selectPublishTopicMenu = computed(() => {
           </Button>
         </HoverCardContent>
       </HoverCard>
+
+      <!-- 未登录用户的简单按钮 -->
+      <Button v-if="!isLoggedIn && (frontmatter.publishTopic ?? true)" variant="default" class="vp-btn max-sm:hidden" @click="() => { open = false; handleButtonClick() }">
+        {{ buttonText }}
+      </Button>
     </div>
   </LocalNav>
   <Teleport to="body">
@@ -83,7 +105,7 @@ const selectPublishTopicMenu = computed(() => {
       <Button
         variant="outline" size="icon"
         class="fixed bottom-4 right-4 size-[3.5rem] flex items-center justify-center rounded-full md:hidden important:vp-button"
-        @click="publishTopic()"
+        @click="handleButtonClick()"
       >
         <span class="i-lucide-plus z-9999 inline-block size-[1.75rem] shadow-[var(--vp-shadow-1)]" />
       </Button>
