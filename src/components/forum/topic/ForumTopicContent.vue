@@ -6,7 +6,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import { useTopicContent } from './composables/useTopicContent'
 
-const props = defineProps<{
+const { topic, viewMode } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
   viewMode: FORUM.TopicViewMode
 }>()
@@ -33,13 +33,13 @@ const {
   displayTitle,
   displayContent,
 } = useTopicContent({
-  topic: props.topic,
-  viewMode: props.viewMode,
+  topic,
+  viewMode: () => viewMode,
 })
 
 // Event handlers
 function handleContentClick(): void {
-  if (props.topic.type !== 'ANN') {
+  if (topic.type !== 'ANN') {
     emit('content:click')
   }
 }
@@ -75,7 +75,7 @@ function handleExpandClick(): void {
       </h4>
 
       <!-- Type Badge -->
-      <ForumTopicTypeBadge v-if="isCardMode" :type="props.topic.type" />
+      <ForumTopicTypeBadge v-if="isCardMode" :type="topic.type" />
 
       <!-- Content Article -->
       <article

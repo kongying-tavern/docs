@@ -1,24 +1,24 @@
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
-import { computed } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import { computed, toValue } from 'vue'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 
 export interface UseTopicContentOptions {
   topic: ForumAPI.Topic | ForumAPI.Post
-  viewMode: FORUM.TopicViewMode
+  viewMode: MaybeRefOrGetter<FORUM.TopicViewMode>
 }
 
 export function useTopicContent(options: UseTopicContentOptions) {
-  // Don't destructure to maintain reactivity
-  const topic = options.topic
+  const { topic } = options
 
   // Computed properties
   const renderedText = computed(() => sanitizeMarkdown(topic.content.text))
   const isPost = computed(() => topic.type === 'POST')
   const isAnn = computed(() => topic.type === 'ANN')
-  const isCardMode = computed(() => options.viewMode === 'Card')
-  const isCompactMode = computed(() => options.viewMode === 'Compact')
+  const isCardMode = computed(() => toValue(options.viewMode) === 'Card')
+  const isCompactMode = computed(() => toValue(options.viewMode) === 'Compact')
 
   // Text collapse functionality
   const { isExpanded, hasOverflow, collapseText, toggleExpand } = useTextCollapse(renderedText)
@@ -34,7 +34,7 @@ export function useTopicContent(options: UseTopicContentOptions) {
   })
 
   const displayTitle = computed(() => {
-    if (options.viewMode === 'Compact') {
+    if (toValue(options.viewMode) === 'Compact') {
       // In compact mode, display content as title (since title is hidden)
       return topic.type === 'BUG'
         ? renderedText.value
