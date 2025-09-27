@@ -1,6 +1,6 @@
+import type { MaybeRefOrGetter } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
-import type { MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { useTextCollapse } from '~/composables/useTextCollapse'

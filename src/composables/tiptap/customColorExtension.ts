@@ -53,7 +53,7 @@ export const CustomColorNode = Node.create({
     ]
   },
 
-  renderHTML({ HTMLAttributes, node }) {
+  renderHTML({ HTMLAttributes }) {
     const color = HTMLAttributes.color || HTMLAttributes['data-color']
     return ['span', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
       'style': `color: ${color}`,

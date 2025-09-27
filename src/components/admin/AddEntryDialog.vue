@@ -262,7 +262,7 @@ const jsonPreview = computed(() => {
 // 生成预设值根据数据类型
 function generatePresetValue(dataType: string, locale: string): string {
   switch (dataType) {
-    case 'array':
+    case 'array': {
       // 使用当前字段配置生成示例数据
       const sampleItems = []
       for (let i = 0; i < 2; i++) {
@@ -284,6 +284,7 @@ function generatePresetValue(dataType: string, locale: string): string {
         sampleItems.push(item)
       }
       return JSON.stringify(sampleItems, null, 2)
+    }
     case 'regex':
       return JSON.stringify({
         __regex__: '.*',

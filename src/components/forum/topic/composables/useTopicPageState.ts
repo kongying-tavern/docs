@@ -20,6 +20,17 @@ export function useTopicPageState() {
   const { go } = useRouter()
   const { message } = useLocalized()
 
+  // Topic data request - 需要先定义，因为后面的事件处理器会用到
+  const { data: topic, run, loading, mutate, error } = useRequest(issues.getTopic, {
+    defaultParams: [params.value?.id],
+    manual: true,
+    onError: (err) => {
+      if (err.message.includes('404 Not Found')) {
+        return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
+      }
+    },
+  })
+
   // Setup topic page specific event listeners using new architecture
   function setupTopicPageEvents() {
     // Listen for topic deletion, close, or hide events
@@ -81,17 +92,6 @@ export function useTopicPageState() {
       unsubscribeCommentDeleted()
     }
   }
-
-  // Topic data request
-  const { data: topic, run, loading, mutate, error } = useRequest(issues.getTopic, {
-    defaultParams: [params.value?.id],
-    manual: true,
-    onError: (err) => {
-      if (err.message.includes('404 Not Found')) {
-        return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
-      }
-    },
-  })
 
   // Pre-fill with cached data if available from topic store
   const targetTopicData = forumTopicStore.topicDetail

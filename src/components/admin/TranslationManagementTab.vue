@@ -86,11 +86,11 @@ function handleAutoSaveTranslation(entry: TranslationEntry) {
       }
     })
 
-    // 更新条目状态
-    Object.assign(props.translationEntries[index], entry)
-
     // 重新标记修改状态（这会保存所有变更到本地存储）
-    jsonTranslationService.markEntryAsModified(props.translationEntries[index])
+    jsonTranslationService.markEntryAsModified(entry)
+
+    // 通知父组件数据已更新
+    emit('entries-updated')
   }
 }
 

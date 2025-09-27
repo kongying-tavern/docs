@@ -1,3 +1,4 @@
+<!-- eslint-disable regexp/no-super-linear-backtracking -->
 <script setup lang="ts">
 import type { FieldMetadata } from '~/services/enhancedTranslationService'
 import type { TranslationEntry } from '~/services/jsonTranslationService'
@@ -33,7 +34,8 @@ const emit = defineEmits<Emits>()
 const editingLocale = ref('zh')
 
 // 解析后的字段数据
-const parsedFields = ref<Record<string, any>>({})
+const parsedFields = ref<Record<string, Record<string, string>>>({})
+const localTranslations = ref<Record<string, string>>({})
 
 // 安全的字段访问器
 function getFieldValue(locale: string, field: string): string {
@@ -125,7 +127,7 @@ function parseJsonFields(value: string, type: FieldMetadata['type']) {
 }
 
 // 重新组装 JSON
-function buildJsonFromFields(fields: any, type: FieldMetadata['type']): string {
+function buildJsonFromFields(fields: Record<string, unknown>, type: FieldMetadata['type']): string {
   try {
     if (type === 'regex' && fields.pattern) {
       return JSON.stringify({
@@ -152,7 +154,7 @@ function buildJsonFromFields(fields: any, type: FieldMetadata['type']): string {
 
       // Handle head array with multiple meta tags
       if (fields.metaTags && Array.isArray(fields.metaTags)) {
-        const metaArray = fields.metaTags.map((metaTag: any) => {
+        const metaArray = fields.metaTags.map((metaTag: Record<string, unknown>) => {
           const attrs: Record<string, string> = {}
           if (metaTag.property)
             attrs.property = metaTag.property
@@ -170,9 +172,9 @@ function buildJsonFromFields(fields: any, type: FieldMetadata['type']): string {
     }
 
     if (type === 'array' && fields.arrayItems && Array.isArray(fields.arrayItems)) {
-      const arrayData = fields.arrayItems.map((item: any) => {
-        const { id, ...itemData } = item
-        const processedItem: any = {}
+      const arrayData = fields.arrayItems.map((item: Record<string, unknown>) => {
+        const { id: _id, ...itemData } = item
+        const processedItem: Record<string, unknown> = {}
 
         // 处理每个字段，如果是正则表达式格式则转换回对象
         for (const [key, value] of Object.entries(itemData)) {
@@ -247,7 +249,10 @@ function initializeParsedFields() {
     return
 
   const metadata = getFieldMetadata(props.entry)
-  const newParsedFields: Record<string, any> = {}
+  const newParsedFields: Record<string, Record<string, string>> = {}
+
+  // 初始化本地编辑状态
+  localTranslations.value = { ...props.entry.translations }
 
   for (const locale of props.availableLocales) {
     const value = props.entry.translations[locale]
@@ -274,8 +279,8 @@ watch(parsedFields, () => {
   for (const locale of props.availableLocales) {
     if (parsedFields.value[locale]) {
       const newValue = buildJsonFromFields(parsedFields.value[locale], metadata.type)
-      if (newValue !== props.entry.translations[locale]) {
-        props.entry.translations[locale] = newValue
+      if (newValue !== localTranslations.value[locale]) {
+        localTranslations.value[locale] = newValue
       }
     }
   }
@@ -284,7 +289,12 @@ watch(parsedFields, () => {
 // 保存编辑
 function saveEditor() {
   if (props.entry) {
-    emit('save', props.entry)
+    // 创建更新后的entry副本
+    const updatedEntry = {
+      ...props.entry,
+      translations: { ...localTranslations.value },
+    }
+    emit('save', updatedEntry)
   }
   closeEditor()
 }
@@ -298,7 +308,7 @@ function addMetaTag(locale: string) {
     parsedFields.value[locale].metaTags = []
   }
 
-  const newId = Math.max(0, ...parsedFields.value[locale].metaTags.map((tag: any) => tag.id)) + 1
+  const newId = Math.max(0, ...parsedFields.value[locale].metaTags.map((tag: Record<string, unknown>) => tag.id as number)) + 1
   parsedFields.value[locale].metaTags.push({
     id: newId,
     tag: 'meta',
@@ -330,7 +340,7 @@ function addArrayItem(locale: string) {
     parsedFields.value[locale].arrayItems = []
   }
 
-  const newId = Math.max(0, ...parsedFields.value[locale].arrayItems.map((item: any) => item.id)) + 1
+  const newId = Math.max(0, ...parsedFields.value[locale].arrayItems.map((item: Record<string, unknown>) => item.id as number)) + 1
   parsedFields.value[locale].arrayItems.push({
     id: newId,
     label: '',
@@ -431,7 +441,7 @@ function getDisplayValue(value: any): string {
           <div v-if="getFieldMetadata(entry).type === 'text'" class="space-y-2">
             <Label>{{ getLocaleDisplayName(editingLocale) }}</Label>
             <Input
-              v-model="entry.translations[editingLocale]"
+              v-model="localTranslations[editingLocale]"
               placeholder="输入文本内容..."
             />
           </div>
@@ -670,7 +680,7 @@ function getDisplayValue(value: any): string {
             </div>
             <div v-else class="space-y-2">
               <Textarea
-                v-model="entry.translations[editingLocale]"
+                v-model="localTranslations[editingLocale]"
                 rows="6"
                 class="text-sm font-mono"
                 placeholder="输入 JSON 数据..."

@@ -109,6 +109,7 @@ export const SpoilerExtension = Extension.create({
             const fullText = beforeText + text
 
             // 隐藏内容语法: !!content!! 或 !!content!!{width=200,align=center}
+            // eslint-disable-next-line regexp/no-super-linear-backtracking
             const spoilerMatch = fullText.match(/!!(.*?)!!\{?([^}]*)\}?$/)
             if (spoilerMatch) {
               const [fullMatch, content, attributesStr] = spoilerMatch

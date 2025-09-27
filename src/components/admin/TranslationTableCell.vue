@@ -41,15 +41,18 @@ function saveEdit() {
   if (!isEditing.value)
     return
 
-  // 更新翻译
-  props.entry.translations[props.locale] = editingValue.value
-
   // 自动保存到翻译服务
   jsonTranslationService.updateTranslation(props.entry.path, props.locale, editingValue.value)
-  jsonTranslationService.markEntryAsModified(props.entry)
+
+  // 创建更新后的条目副本
+  const updatedEntry = { ...props.entry }
+  updatedEntry.translations = { ...props.entry.translations }
+  updatedEntry.translations[props.locale] = editingValue.value
+
+  jsonTranslationService.markEntryAsModified(updatedEntry)
 
   // 通知父组件
-  emit('edit', props.entry)
+  emit('edit', updatedEntry)
 
   cancelEditing()
 }

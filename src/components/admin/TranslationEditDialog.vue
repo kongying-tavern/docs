@@ -36,7 +36,7 @@ const editForm = reactive<TranslationEntry>({
 })
 
 // 计算属性
-const hasChanges = computed(() => {
+const _hasChanges = computed(() => {
   if (!props.entry)
     return false
 

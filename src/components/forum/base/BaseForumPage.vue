@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { StoreGeneric } from 'pinia'
 import type { Component } from 'vue'
 import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumStore } from '~/types/forum/simplified'
-import type { StoreGeneric } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, provide, toRef } from 'vue'
 import ForumAside from '../ForumAside.vue'

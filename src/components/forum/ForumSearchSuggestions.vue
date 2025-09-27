@@ -43,7 +43,6 @@ function highlightText(text: string, keyword: string, scope: number = 20) {
 }
 
 const filteredItems = computed(() => {
-
   if (!topicData || !Array.isArray(topicData)) {
     return []
   }

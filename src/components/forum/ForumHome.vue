@@ -64,7 +64,7 @@ defineOptions({
 const { lang } = useData()
 
 // 根据当前语言过滤博客数据
-const postsData = computed<BlogPost[]>(() => {
+const _postsData = computed<BlogPost[]>(() => {
   const currentLang = lang.value || 'zh'
   const baseLang = currentLang.split('-')[0]
   return allPosts.filter((post: BlogPost): post is BlogPost => {
@@ -86,7 +86,7 @@ const {
 const bfcacheOptimization = useBfcacheOptimization()
 
 // 辅助函数：安全地转换博客文章为 Topic 格式
-function transformBlogPostToTopic(post: BlogPost): BlogPostAsTopic {
+function _transformBlogPostToTopic(post: BlogPost): BlogPostAsTopic {
   const primaryAuthor = post.authors?.[0]
 
   return {
@@ -117,9 +117,9 @@ function filterValidTopics(topics: (ForumAPI.Topic | null | undefined)[]): Forum
 }
 
 const renderData = computed<(ForumAPI.Topic | BlogPostAsTopic)[]>(() => {
-  const isSearching = forumHomeStore.isSearching.value
-  const currentFilter = forumHomeStore.filter.value
-  const shouldShowBlogPosts = !currentFilter || currentFilter === 'all'
+  const _isSearching = forumHomeStore.isSearching.value
+  const _currentFilter = forumHomeStore.filter.value
+  const _shouldShowBlogPosts = !_currentFilter || _currentFilter === 'all'
 
   // 获取最新的博客文章（仅在非搜索且显示所有内容时）
   // 暂时禁用博客数据加载

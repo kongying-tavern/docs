@@ -30,7 +30,6 @@ function onClickHandler() {
 
 <template>
   <button
-    ref="fileRef"
     type="button"
     :disabled="!isSelectable"
     :class="[

@@ -96,7 +96,6 @@ onMounted(() => {
 <template>
   <div :class="cn('size-full', $props.class)">
     <div
-      ref="rootRef"
       class="relative h-full overflow-auto px-2"
       :dir="direction"
     >

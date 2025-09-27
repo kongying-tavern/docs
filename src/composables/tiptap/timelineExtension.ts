@@ -64,6 +64,7 @@ export const TimelineNode = Node.create({
   addPasteRules() {
     return [
       {
+        // eslint-disable-next-line regexp/no-super-linear-backtracking
         find: /:::timeline\s+([^\n]+)\n([\s\S]*?)\n:::/g,
         handler: ({ match, commands, range }) => {
           const [, title, content] = match

@@ -42,7 +42,7 @@ catalogs:
     stylelint-order: 6.0.4
     taze: 0.16.9
     tsconfig-paths: 4.2.0
-    vite-plugin-vue-devtools: ^8.0.2
+    vite-plugin-vue-devtools:  7.7.7
     zhlint: 0.8.2
   frontend:
     '@atlaskit/pragmatic-drag-and-drop': ^1.7.7
@@ -129,18 +129,6 @@ catalogs:
   utils:
     js-yaml: ^4.1.0
     pnpm: 10.6.3
-  conflicts_vite-plugin-vue-devtools_h_0_2:
-    vite-plugin-vue-devtools: ^.0.2
-  conflicts_vite-plugin-vue-devtools_h7_0_2:
-    vite-plugin-vue-devtools: ^8.0.2
-  conflicts_conflicts_vite-plugin-vue-devtools_h_0_2_h7__2:
-    vite-plugin-vue-devtools: ^7..2
-  conflicts_conflicts_vite-plugin-vue-devtools_h_0_2_h7_7_2:
-    vite-plugin-vue-devtools: ^8.0.2
-  conflicts_conflicts_vite-plugin-vue-devtools_h_0_2_h7_7_:
-    vite-plugin-vue-devtools: ^7.7.
-  conflicts_conflicts_vite-plugin-vue-devtools_h_0_2_h7_7_7:
-    vite-plugin-vue-devtools: ^8.0.2
   conflicts_editor_h3_4_4:
     '@tiptap/core': ^3.6.1
     '@tiptap/extension-character-count': ^3.6.1

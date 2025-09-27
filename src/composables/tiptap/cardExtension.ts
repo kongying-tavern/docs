@@ -155,7 +155,8 @@ export const CardExtension = Extension.create({
             const fullText = beforeText + text
 
             // 匹配card代码块: ```card\n配置内容\n```
-            const cardMatch = fullText.match(/```card\s*\n([^]*?)\n```$/)
+            // eslint-disable-next-line regexp/no-super-linear-backtracking
+            const cardMatch = fullText.match(/```card\s*\n([\s\S]*?)\n```$/)
             if (cardMatch) {
               const [fullMatch, configContent] = cardMatch
               const start = from - (fullMatch.length - text.length)
