@@ -101,11 +101,11 @@ onBeforeUnmount(() => {
         {{ parseContentText(props.commentData.content.text) }}
       </article>
 
-      <div v-if="props.commentData.content.images && props.size !== 'small'" class="topic-content-img mt-4 flex flex-wrap gap-2">
+      <div v-if="props.commentData.content.images && props.size !== 'small'" class="topic-content-img mt-4 flex flex-row flex-wrap gap-2">
         <Image
           v-for="img in props.commentData.content.images" :key="img.src" :image="img.src" :alt="img.alt"
-          :thumbhash="img.thumbHash" :width="img.width" :height="img.height"
-          class="max-h-24 cursor-zoom-in rounded-sm transition-colors duration-200"
+          :thumbhash="img.thumbHash" :width="img.width" :height="img.height" container-class="size-auto"
+          class="max-h-24 flex-shrink-0 cursor-zoom-in rounded-sm transition-colors duration-200"
         />
       </div>
 
