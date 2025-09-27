@@ -123,9 +123,24 @@ export function useTopicPageState() {
 
   // Navigation
   function backToPreviousPage() {
-    if (window.history.state?.idx === 1) {
-      return go(withBase(`${getLangPath(localeIndex.value)}feedback/`))
+    const feedbackPath = withBase(`${getLangPath(localeIndex.value)}feedback/`)
+
+    // Check if we can go back in history
+    // If history length is 1, we're the first page, so go to feedback
+    if (window.history.length <= 1) {
+      return go(feedbackPath)
     }
+
+    // Check if document.referrer exists and is from the same origin
+    const referrer = document.referrer
+    const currentOrigin = window.location.origin
+
+    // If no referrer or referrer is from external site, go to feedback
+    if (!referrer || !referrer.startsWith(currentOrigin)) {
+      return go(feedbackPath)
+    }
+
+    // If referrer exists and is from same origin, go back
     window.history.back()
   }
 
