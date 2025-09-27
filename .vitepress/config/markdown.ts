@@ -3,7 +3,7 @@ import type { MarkdownOptions } from 'vitepress'
 import { abbr } from '@mdit/plugin-abbr'
 import { demo } from '@mdit/plugin-demo'
 import { figure } from '@mdit/plugin-figure'
-import { imgSize, obsidianImageSize } from '@mdit/plugin-img-size'
+import { imgSize, obsidianImgSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
@@ -34,7 +34,7 @@ export const markdownConfig: MarkdownOptions = {
     md.use(sup)
     md.use(mark)
     md.use(imgSize)
-    md.use(obsidianImageSize)
+    md.use(obsidianImgSize)
     md.use(figure)
     md.use(...MarkdownItTimeline('timeline', md))
     md.use(spoiler) // Custom spoiler plugin with ScratchToReveal
