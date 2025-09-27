@@ -69,7 +69,7 @@ const selectPublishTopicMenu = computed(() => {
   // 为管理员添加发公告选项
   if (isAdmin.value) {
     baseItems.push({
-      label: message.value.forum.labels.ann,
+      label: '发公告',
       icon: 'i-lucide-megaphone',
       action: () => {
         location.hash = 'PUBLISH-TOPIC-ANN'
