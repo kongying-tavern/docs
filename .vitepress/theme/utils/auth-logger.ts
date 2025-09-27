@@ -31,8 +31,8 @@ interface LogConfig {
 
 class AuthLogger {
   private config: LogConfig = {
-    enabled: import.meta.env.DEV,
-    level: import.meta.env.DEV ? LogLevel.DEBUG : LogLevel.WARN,
+    enabled: (typeof import.meta !== 'undefined' && import.meta.env?.DEV) || true,
+    level: (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ? LogLevel.DEBUG : LogLevel.WARN,
     groupColors: {
       [LogGroup.TOKEN]: '#4CAF50',
       [LogGroup.SSO]: '#2196F3',

@@ -1,23 +1,33 @@
-[
-  {
-    "username": "serakukuru",
-    "avatar": "https://assets.yuanshen.site/res_ext/avatar/UI_AvatarIcon_Baizhuer_Circle.png",
-    "homepage": "https://gitee.com/serakukuru",
-    "id": 12014134,
-    "login": "serakukuru"
-  },
-  {
-    "username": "idangoi",
-    "avatar": "https://foruda.gitee.com/avatar/1737012389471283368/15375175_idangoi_1737012389.png",
-    "homepage": "https://gitee.com/idangoi",
-    "id": 15375175,
-    "login": "idangoi"
-  },
-  {
-    "username": "zengjias",
-    "avatar": "https://foruda.gitee.com/avatar/1677155062348192382/8901509_zengjias_1617527194.png",
-    "homepage": "https://gitee.com/zengjias",
-    "id": 8901509,
-    "login": "zengjias"
-  }
-]
+{
+  "data": [
+    {
+      "username": "iDangoi",
+      "avatar": "https://foruda.gitee.com/avatar/1737012389471283368/15375175_idangoi_1737012389.png",
+      "homepage": "https://gitee.com/idangoi",
+      "id": 15375175,
+      "login": "idangoi"
+    },
+    {
+      "username": "SeraKukuru",
+      "avatar": "https://assets.yuanshen.site/res_ext/avatar/UI_AvatarIcon_Baizhuer_Circle.png",
+      "homepage": "https://gitee.com/serakukuru",
+      "id": 12014134,
+      "login": "serakukuru"
+    },
+    {
+      "username": "Sallee",
+      "avatar": "https://assets.yuanshen.site/res_ext/avatar/UI_AvatarIcon_Xinyan_Circle.png",
+      "homepage": "https://gitee.com/Sallee_admin",
+      "id": 11296762,
+      "login": "Sallee_admin"
+    },
+    {
+      "username": "(^_^)",
+      "avatar": "https://foruda.gitee.com/avatar/1677155062348192382/8901509_zengjias_1617527194.png",
+      "homepage": "https://gitee.com/zengjias",
+      "id": 8901509,
+      "login": "zengjias"
+    }
+  ],
+  "lastUpdated": 1758971858235
+}
