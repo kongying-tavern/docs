@@ -10,14 +10,15 @@ export interface UseTopicContentOptions {
 }
 
 export function useTopicContent(options: UseTopicContentOptions) {
-  const { topic, viewMode } = options
+  // Don't destructure to maintain reactivity
+  const topic = options.topic
 
   // Computed properties
   const renderedText = computed(() => sanitizeMarkdown(topic.content.text))
   const isPost = computed(() => topic.type === 'POST')
   const isAnn = computed(() => topic.type === 'ANN')
-  const isCardMode = computed(() => viewMode === 'Card')
-  const isCompactMode = computed(() => viewMode === 'Compact')
+  const isCardMode = computed(() => options.viewMode === 'Card')
+  const isCompactMode = computed(() => options.viewMode === 'Compact')
 
   // Text collapse functionality
   const { isExpanded, hasOverflow, collapseText, toggleExpand } = useTextCollapse(renderedText)
@@ -33,7 +34,7 @@ export function useTopicContent(options: UseTopicContentOptions) {
   })
 
   const displayTitle = computed(() => {
-    if (isCompactMode.value) {
+    if (options.viewMode === 'Compact') {
       // In compact mode, display content as title (since title is hidden)
       return topic.type === 'BUG'
         ? renderedText.value
