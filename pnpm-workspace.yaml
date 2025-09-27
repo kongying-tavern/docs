@@ -12,7 +12,7 @@ catalogs:
     unocss-preset-animations: ^1.2.1
     unocss-preset-shadcn: ^0.5.0
     vite: ^7.1.7
-    vite-plugin-inspect: 0.8.9
+    vite-plugin-inspect: 11.3.3
     vitepress: 1.6.3
     vitepress-plugin-llms: ^1.7.5
   dev:
@@ -44,7 +44,7 @@ catalogs:
     stylelint-order: 6.0.4
     taze: 0.16.9
     tsconfig-paths: 4.2.0
-    vite-plugin-vue-devtools:  7.7.7
+    vite-plugin-vue-devtools: 7.7.7
     zhlint: 0.8.2
   frontend:
     '@atlaskit/pragmatic-drag-and-drop': ^1.7.7
@@ -126,7 +126,7 @@ catalogs:
     '@types/markdown-it-attrs': ^4.1.3
     '@types/markdown-it-container': ^2.0.10
     '@types/markdown-it-footnote': 3.0.4
-    '@types/node': 22.10.2
+    '@types/node': 22.12.0
     '@types/sortablejs': ^1.15.8
   utils:
     js-yaml: ^4.1.0
