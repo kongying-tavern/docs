@@ -8,16 +8,21 @@ const officialMember = [...feedbackRepoMember.data, ...TeamMember.data]
 export const MentionNode = Mention.configure({
   HTMLAttributes: { class: 'mention' },
   renderHTML({ options, node }) {
+    const displayName = node.attrs.label || node.attrs.id || 'Unknown'
+    const char = options.suggestion?.char || '@'
     return [
       'a',
       mergeAttributes({ href: node.attrs.homepage, class: 'vp-link' }, options.HTMLAttributes),
-      `${options.suggestion.char}${node.attrs.label ?? node.attrs.id}`,
+      `${char}${displayName}`,
     ]
   },
   renderText({ options, node }) {
-    return `${options.suggestion.char}${node.attrs.label ?? node.attrs.id}`
+    const displayName = node.attrs.label || node.attrs.id || 'Unknown'
+    const char = options.suggestion?.char || '@'
+    return `${char}${displayName}`
   },
   suggestion: {
+    char: '@',
     items: ({ query }) => {
       return officialMember
         .filter(user => user.username.toLowerCase().startsWith(query.toLowerCase()))
