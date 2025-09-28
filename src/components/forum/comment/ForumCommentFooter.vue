@@ -14,7 +14,6 @@ const {
   commentClickHandler = () => {},
   repo = 'Feedback',
   topicId,
-  toggleResolvedTag,
 } = defineProps<{
   repo?: string
   commentCount?: number
@@ -22,12 +21,11 @@ const {
   commentClickHandler?: (event: Event) => void
   menus?: FORUM.TopicDropdownMenu[]
   topicId?: string | number
-  toggleResolvedTag?: () => boolean
 }>()
 
 const emit = defineEmits(['comment:delete', 'comment:click'])
 
-const dropdownMenus = defineCommentDropdownMenu(repo, commentData, topicId, toggleResolvedTag)
+const dropdownMenus = defineCommentDropdownMenu(repo, commentData, topicId)
 
 const { message } = useLocalized()
 
