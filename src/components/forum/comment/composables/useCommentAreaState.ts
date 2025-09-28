@@ -25,8 +25,6 @@ export function useCommentAreaState(props: {
     initComments,
   } = useTopicComments()
 
-  // Use props-based noComment logic instead of internal state
-  // Only consider it "no comment" if commentCount is null (uninitialized) or -1 (closed)
   const noComment = computed(() => props.commentCount === null || props.commentCount === undefined)
 
   // State
@@ -53,28 +51,33 @@ export function useCommentAreaState(props: {
     submitComment(submittedComment)
   }
 
-  // Initialization
   async function initialize(): Promise<void> {
     if (import.meta.env.SSR || noComment.value)
       return
 
+    replyCommentID.value = null
+    commentInputBoxIsVisible.value = true
+
     await initComments(props.topicId, props.repo, props.commentCount ?? null)
 
-    useInfiniteScroll(
-      window,
-      () => {
-        loadMoreComment()
-      },
-      {
-        distance: 10,
-        interval: 1500,
-        canLoadMore: () => canLoadMoreComment.value,
-      },
-    )
+    if (!noComment.value) {
+      useInfiniteScroll(
+        window,
+        () => {
+          loadMoreComment()
+        },
+        {
+          distance: 10,
+          interval: 1500,
+          canLoadMore: () => canLoadMoreComment.value,
+        },
+      )
+    }
   }
 
-  // Cleanup
   function cleanup(): void {
+    replyCommentID.value = null
+    commentInputBoxIsVisible.value = true
     userSubmittedComment.value = []
   }
 

@@ -44,20 +44,37 @@ const commentInputBox = useTemplateRef('commentInputBox')
 const { right, left, width } = useElementBounding(commentArea)
 const [CommentAreaCommentInputBox, UseCommentAreaCommentInputBox] = createReusableTemplate()
 
-// Watch for commentCount changes and initialize comments when available
+let isInitializing = false
+
 watch(
   () => props.commentCount,
   async (newCommentCount) => {
+    if (isInitializing)
+      return
+
     if (newCommentCount !== undefined && newCommentCount !== -1) {
-      await initialize()
+      isInitializing = true
+      try {
+        await initialize()
+      }
+      finally {
+        isInitializing = false
+      }
     }
   },
-  { immediate: false },
+  { immediate: true },
 )
 
-// Lifecycle hooks
 onMounted(async () => {
-  await initialize()
+  if (!isInitializing && (props.commentCount === undefined || props.commentCount === null)) {
+    isInitializing = true
+    try {
+      await initialize()
+    }
+    finally {
+      isInitializing = false
+    }
+  }
 
   if (renderComments.value.length < 5)
     return

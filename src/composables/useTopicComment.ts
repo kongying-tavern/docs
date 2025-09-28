@@ -30,14 +30,14 @@ export function useTopicComments() {
   const { message } = useLocalized()
 
   const userSubmittedComment = ref<ForumAPI.Comment[]>([])
-  const allCommentCount = computed(() =>
-    (isLoaded.value
+  const allCommentCount = computed(() => {
+    const baseCount = isLoaded.value && !commentLoadError.value
       ? comments.value.length
-      : commentCount.value
-        ? commentCount.value
-        : 0) + userSubmittedComment.value.length,
-  )
-  const noComment = computed(() => commentCount.value === 0 || commentCount.value === null)
+      : (commentCount.value ?? 0)
+
+    return baseCount + userSubmittedComment.value.length
+  })
+  const noComment = computed(() => commentCount.value === null || commentCount.value === undefined)
 
   const initComments = async (
     topicId: string,
@@ -47,9 +47,11 @@ export function useTopicComments() {
     if (import.meta.env.SSR || topicCommentCount === null || topicCommentCount === -1)
       return null
 
+    isLoaded.value = false
+    comments.value = []
+    userSubmittedComment.value = []
     commentCount.value = topicCommentCount
 
-    // 只有当评论数大于0时才实际加载评论数据
     if (topicCommentCount > 0) {
       await refreshComment(
         repo,
