@@ -2,7 +2,6 @@ import type { ComputedRef } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
 import { computed, ref } from 'vue'
-import { toast } from 'vue-sonner'
 import { issues } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
 import { executeWithAuth } from '~/composables/executeWithAuth'
@@ -14,7 +13,6 @@ export function defineCommentDropdownMenu(
   repo: string,
   commentData?: ForumAPI.Comment,
   topicId?: string | number,
-  toggleResolvedTag?: () => boolean,
 ): ComputedRef<FORUM.TopicDropdownMenu[]> {
   if (!commentData)
     return computed(() => [])
@@ -27,23 +25,6 @@ export function defineCommentDropdownMenu(
   const hasEditPermission = hasAnyPermissions('manage_feedback', 'edit_feedback')
 
   const menuLabels = ref(message.value.forum.topic.menu)
-
-  // Check if comment is resolved
-  const isResolved = computed(() => {
-    // Check from tags array first
-    if (commentData.tags && Array.isArray(commentData.tags)) {
-      return commentData.tags.includes('已解决')
-    }
-
-    // Fallback to parsing from JSON content
-    try {
-      const richTextData = JSON.parse(commentData.content.text)
-      return richTextData?.attrs?.resolved === true
-    }
-    catch {
-      return false
-    }
-  })
 
   async function handleDeleteComment() {
     if (!commentData)
@@ -72,29 +53,7 @@ export function defineCommentDropdownMenu(
       return []
 
     return [
-      {
-        id: 'toggle-resolved-tag',
-        type: 'item',
-        label: isResolved.value ? '移除"已解决"' : '标记"已解决"',
-        icon: isResolved.value ? 'i-lucide-undo-2' : 'i-lucide-check',
-        action: () => {
-          if (toggleResolvedTag && commentData) {
-            try {
-              const wasResolved = isResolved.value
-              const success = toggleResolvedTag()
-              if (success) {
-                const action = wasResolved ? '移除' : '添加'
-                toast.success(`${action}评论标签成功: 已解决`)
-                forumEvents.commentUpdated(commentData.id, commentData)
-              }
-            }
-            catch (error) {
-              console.error('Error toggling resolved tag:', error)
-              toast.error('操作失败，请稍后重试')
-            }
-          }
-        },
-      },
+      // Removed resolved option - no longer needed
     ]
   })
 
