@@ -6,6 +6,7 @@ import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
+import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
@@ -114,5 +115,8 @@ const topicImages = computed(() => {
         <ForumAside :show-button="false" :contact-us="true" />
       </template>
     </ForumLayout>
+
+    <!-- Tags Editor Dialog -->
+    <ForumTopicTagsEditorDialog />
   </ClientOnly>
 </template>
