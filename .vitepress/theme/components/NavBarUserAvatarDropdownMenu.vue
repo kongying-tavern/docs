@@ -18,7 +18,7 @@ const userInfo = useUserInfoStore()
 
 const { hasAnyRoles } = useRuleChecks(userInfo.info?.id)
 const { theme } = useData()
-const { login, logout } = useLogin()
+const { showOAuthLoginAlert, logout } = useLogin()
 
 const isOfficial = computed(() => hasAnyRoles('blogMember', 'teamMember', 'feedbackMember').value)
 </script>
@@ -85,7 +85,7 @@ const isOfficial = computed(() => hasAnyRoles('blogMember', 'teamMember', 'feedb
     class="grid w-[300px] border border-[var(--vp-c-divider)] border-rd-12px bg-[var(--vp-c-bg-elv)] p-3 c-[var(--vp-c-text-2)] opacity-100 shadow-[var(--vp-shadow-3)] md:min-w-[128px]"
   >
     <li>
-      <Button class="mt-2 w-full vp-button" @click="login({ method: 'Oauth' })">
+      <Button class="mt-2 w-full vp-button" @click="showOAuthLoginAlert">
         {{ theme.forum.auth.loginMsg }}
       </Button>
     </li>
