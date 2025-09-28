@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes, VNode, VNodeNormalizedChildren } from 'vue'
-import { computed, shallowRef, Text, toRaw, useSlots, watchEffect } from 'vue'
+import { computed, Text, toRaw, useSlots } from 'vue'
 import { cn } from '@/lib/utils'
 
 defineOptions({
@@ -34,8 +34,8 @@ function renderVNodeToHTML(vnode: VNode | VNode[] | string | number | boolean | 
   if (typeof vnode === 'object' && vnode !== null) {
     const rawVNode = toRaw(vnode)
 
-    // Handle text nodes
-    if (rawVNode.type === Text || typeof rawVNode.children === 'string') {
+    // Handle text nodes - check for reactive text content
+    if (rawVNode.type === Text) {
       return String(rawVNode.children || '')
     }
 
@@ -61,8 +61,8 @@ function renderVNodeToHTML(vnode: VNode | VNode[] | string | number | boolean | 
       return `<${type}${propsString}>${childrenContent}</${type}>`
     }
 
-    // Handle component VNodes
-    if (typeof rawVNode.type === 'object' || typeof rawVNode.type === 'function') {
+    // Handle component VNodes or fragments
+    if (typeof rawVNode.type === 'object' || typeof rawVNode.type === 'function' || rawVNode.type === Symbol.for('v-fgt')) {
       return renderVNodeChildren(rawVNode.children)
     }
   }
@@ -92,6 +92,7 @@ function renderVNodeChildren(children: VNodeNormalizedChildren): string {
         }
         return renderVNodeToHTML(child)
       })
+      .filter(Boolean)
       .join('')
   }
 
@@ -102,13 +103,13 @@ function renderVNodeChildren(children: VNodeNormalizedChildren): string {
       const defaultSlot = children.default()
       return Array.isArray(defaultSlot) ? defaultSlot.map(renderVNodeToHTML).join('') : ''
     }
+
+    // Handle the case where children is a single VNode object
+    return renderVNodeToHTML(children as VNode)
   }
 
   return ''
 }
-
-// Cache for rendered slot content to avoid re-rendering unchanged slots
-const slotCache = shallowRef<Record<string, string>>({})
 
 const formattedString = computed(() => {
   const result = data || ''
@@ -117,16 +118,9 @@ const formattedString = computed(() => {
     try {
       const slotFunction = slots[slotName]
       if (slotFunction && typeof slotFunction === 'function') {
-        // Check cache first
-        if (slotCache.value[slotName]) {
-          return slotCache.value[slotName]
-        }
-
         const slotContent = slotFunction()
         if (slotContent && slotContent.length > 0) {
           const rendered = renderVNodeToHTML(slotContent[0])
-          // Cache the rendered content
-          slotCache.value = { ...slotCache.value, [slotName]: rendered }
           return rendered
         }
       }
@@ -139,11 +133,6 @@ const formattedString = computed(() => {
     }
     return match
   })
-})
-
-// Clear cache when slots change
-watchEffect(() => {
-  slotCache.value = {}
 })
 </script>
 
