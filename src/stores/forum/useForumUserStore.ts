@@ -5,7 +5,6 @@ import { computed, ref } from 'vue'
 import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { useForumData } from '~/composables/useForumData'
 import { useTopicCache } from '~/composables/useTopicCache'
-import { simpleCrossPageSync } from '~/services/events/SimpleCrossPageSync'
 import { SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 import { userPreloader } from '~/services/forum/ForumPreloader'
@@ -319,8 +318,7 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
     // 事件管理
     setupEventListeners: () => {
       eventHandlers.setupEventListeners()
-      // 启用跨页面同步
-      simpleCrossPageSync.enable()
+      // 跨页面同步已自动启用
     },
   }
 })

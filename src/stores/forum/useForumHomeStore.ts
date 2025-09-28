@@ -10,7 +10,6 @@ import { useOptimizedTopicList } from '~/composables/useStorePerformanceOptimize
 import { useUrlFilterSync } from '~/composables/useUrlFilterSync'
 import { globalCacheLayer } from '~/services/cache/UnifiedCacheLayer'
 
-import { simpleCrossPageSync } from '~/services/events/SimpleCrossPageSync'
 import { simpleEventManager, SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 // 业务逻辑和服务
 import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
@@ -377,8 +376,7 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
       eventManager.subscribe('comment:created', customEventHandlers.handleCommentCreated)
       eventManager.subscribe('comment:deleted', customEventHandlers.handleCommentDeleted)
 
-      // 启用跨页面同步
-      simpleCrossPageSync.enable()
+      // 跨页面同步已自动启用
     },
   }
 })

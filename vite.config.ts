@@ -2,8 +2,8 @@ import { fileURLToPath } from 'node:url'
 import { FontaineTransform } from 'fontaine'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
-import Inspect from 'vite-plugin-inspect'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import llmstxt from 'vitepress-plugin-llms'
 import openInEditor from './.vitepress/plugins/open-in-editor'
 
 export default defineConfig({
@@ -49,11 +49,10 @@ export default defineConfig({
       resolvePath: id => new URL(`./public/fonts/${id}`, import.meta.url),
     }),
     openInEditor(),
-    Inspect(),
     vueDevTools(),
-    // llmstxt({
-    //   workDir: 'zh',
-    // }),
+    llmstxt({
+      workDir: 'zh',
+    }),
   ],
   css: {
     preprocessorOptions: {

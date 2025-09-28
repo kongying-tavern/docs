@@ -63,9 +63,6 @@ export function defineCommentDropdownMenu(
 
     return [
       {
-        type: 'separator',
-      },
-      {
         type: 'item',
         id: 'delete-comment',
         label: menuLabels.value.deleteComment.text,

@@ -18,18 +18,30 @@ const { open, topic } = useTopicTagsEditor()
 const { message } = useLocalized()
 
 const tags = ref<string[]>(topic.value?.tags ?? [])
+const tagsInputRef = ref<InstanceType<typeof ForumTagsInput>>()
 
 function handleSubmit() {
   if (!topic.value)
     return
+
+  // Commit the local tags to the v-model
+  tagsInputRef.value?.commitTags()
+
   const { replaceTopicTags } = useTopicManger(topic.value, message)
   replaceTopicTags(tags.value)
   open.value = false
 }
 
+function handleCancel() {
+  // Reset local tags to original values
+  tagsInputRef.value?.resetTags()
+}
+
 watch(topic, (newVal) => {
-  if (newVal?.tags)
+  if (newVal?.tags) {
     tags.value = newVal?.tags
+    // localTags will be automatically synced via useTagsInput watch
+  }
 })
 </script>
 
@@ -40,15 +52,15 @@ watch(topic, (newVal) => {
         <DialogTitle>编辑 Topic Tags (#{{ topic.id }})</DialogTitle>
       </DialogHeader>
       <div class="flex items-center space-x-2">
-        <ForumTagsInput v-model="tags" :max="10" />
+        <ForumTagsInput ref="tagsInputRef" v-model="tags" :max="10" />
       </div>
       <DialogFooter class="sm:justify-start">
         <DialogClose as-child>
           <Button type="button" variant="default" @click="handleSubmit">
             提交
           </Button>
-          <Button type="button" variant="secondary" @click="tags = []">
-            清空
+          <Button type="button" variant="secondary" class="mt-8" @click="handleCancel">
+            取消
           </Button>
         </DialogClose>
       </DialogFooter>

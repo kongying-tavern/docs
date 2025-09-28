@@ -20,6 +20,12 @@ class JSONTranslationService {
     if (this.isInitialized)
       return
 
+    // Skip initialization in SSR environment
+    if (import.meta.env.SSR) {
+      this.isInitialized = true
+      return
+    }
+
     await this.loadTranslationsFromJSON()
     this.applyStoredModifications()
     this.isInitialized = true
@@ -156,6 +162,9 @@ class JSONTranslationService {
   }
 
   private getStoredModifications(): Record<string, Record<string, string>> {
+    if (import.meta.env.SSR || typeof localStorage === 'undefined') {
+      return {}
+    }
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY)
       return stored ? JSON.parse(stored) : {}
@@ -166,6 +175,9 @@ class JSONTranslationService {
   }
 
   private getStoredDeletedEntries(): Set<string> {
+    if (import.meta.env.SSR || typeof localStorage === 'undefined') {
+      return new Set()
+    }
     try {
       const stored = localStorage.getItem(this.DELETED_STORAGE_KEY)
       return stored ? new Set(JSON.parse(stored)) : new Set()
@@ -176,6 +188,9 @@ class JSONTranslationService {
   }
 
   private saveDeletedStateToStorage(path: string, isDeleted: boolean): void {
+    if (import.meta.env.SSR || typeof localStorage === 'undefined') {
+      return
+    }
     try {
       const deletedEntries = this.getStoredDeletedEntries()
       isDeleted ? deletedEntries.add(path) : deletedEntries.delete(path)
@@ -185,6 +200,9 @@ class JSONTranslationService {
   }
 
   private saveModificationToStorage(path: string, locale: string, value: string): void {
+    if (import.meta.env.SSR || typeof localStorage === 'undefined') {
+      return
+    }
     try {
       const modifications = this.getStoredModifications()
       if (!modifications[path])
@@ -302,6 +320,9 @@ class JSONTranslationService {
   }
 
   clearStoredModifications(): void {
+    if (import.meta.env.SSR || typeof localStorage === 'undefined') {
+      return
+    }
     try {
       localStorage.removeItem(this.STORAGE_KEY)
       localStorage.removeItem(this.DELETED_STORAGE_KEY)
@@ -311,6 +332,9 @@ class JSONTranslationService {
   }
 
   clearStoredDeletedEntries(): void {
+    if (import.meta.env.SSR || typeof localStorage === 'undefined') {
+      return
+    }
     try {
       localStorage.removeItem(this.DELETED_STORAGE_KEY)
       // 重新加载数据以恢复已删除的条目

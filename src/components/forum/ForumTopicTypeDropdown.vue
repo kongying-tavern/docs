@@ -78,7 +78,7 @@ watch(() => filter?.value, (newFilter, oldFilter) => {
 
   const newPath = `/${pathSegments.join('/')}`
   if (newPath !== currentPath) {
-    window.history.replaceState({}, '', newPath)
+    window.history.pushState({}, '', newPath)
   }
 })
 </script>

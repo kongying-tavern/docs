@@ -1,7 +1,8 @@
+// 导出 BroadcastChannel 同步
 export {
-  SimpleCrossPageSync,
-  simpleCrossPageSync,
-} from './SimpleCrossPageSync'
+  BroadcastChannelSync,
+  broadcastChannelSync,
+} from './BroadcastChannelSync'
 
 // 导出事件管理器
 export {

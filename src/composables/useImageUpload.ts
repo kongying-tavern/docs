@@ -1,6 +1,6 @@
 import type { UploadFile, UploadStatus, UploadUserFile } from '@/components/ui/photo-wall/upload'
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import { uploadImg } from '@/apis/inter-knot.site/upload'
@@ -27,6 +27,14 @@ export function useImageUpload(options = {
   const isUploading = computed(() => imageList.value.some(val => val.status === 'uploading'))
   const isCompleted = computed(() => !isUploading.value && !isProcessing.value && !loading.value)
   const uploadedImages = ref<UploadedUserFile[]>([])
+
+  // Watch for image list changes to reset processing state when all uploading files are removed
+  watch(imageList, (newList, oldList) => {
+    // If we were processing and now there are no uploading files, reset processing state
+    if (isProcessing.value && !newList.some(file => file.status === 'uploading')) {
+      isProcessing.value = false
+    }
+  }, { deep: true })
 
   async function upload(uploadFile: UploadFile) {
     const _uploadFile = ensureUploadImage(uploadFile)

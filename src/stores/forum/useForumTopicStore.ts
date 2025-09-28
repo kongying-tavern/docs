@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useForumData } from '~/composables/useForumData'
 import { useTopicCache } from '~/composables/useTopicCache'
-import { simpleCrossPageSync } from '~/services/events/SimpleCrossPageSync'
 import { SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 
 /**
@@ -182,8 +181,7 @@ export const useForumTopicStore = defineStore('forum-topic', () => {
     // 事件管理
     setupEventListeners: () => {
       eventHandlers.setupEventListeners()
-      // 启用跨页面同步
-      simpleCrossPageSync.enable()
+      // 跨页面同步已自动启用
     },
   }
 })

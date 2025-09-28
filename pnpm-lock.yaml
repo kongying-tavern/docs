@@ -36,9 +36,6 @@ catalogs:
     vite:
       specifier: ^7.1.7
       version: 7.1.7
-    vite-plugin-inspect:
-      specifier: 11.3.3
-      version: 11.3.3
     vitepress:
       specifier: 1.6.3
       version: 1.6.3
@@ -740,9 +737,6 @@ importers:
       vite:
         specifier: catalog:build
         version: 7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)
-      vite-plugin-inspect:
-        specifier: catalog:build
-        version: 11.3.3(@nuxt/kit@3.19.2(magicast@0.3.5))(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))
       vite-plugin-vue-devtools:
         specifier: catalog:dev
         version: 7.7.7(rollup@4.52.3)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.2))

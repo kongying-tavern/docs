@@ -150,7 +150,6 @@
     "tsx": "catalog:build",
     "unlazy": "catalog:build",
     "vite": "catalog:build",
-    "vite-plugin-inspect": "catalog:build",
     "vite-plugin-vue-devtools": "catalog:dev",
     "vitepress-plugin-llms": "catalog:build",
     "zhlint": "catalog:dev"
