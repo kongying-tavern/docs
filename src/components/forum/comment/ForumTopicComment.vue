@@ -34,10 +34,8 @@ const {
   editor,
   richTextData,
   role,
-  isResolved: _isResolved,
   initializeEditor,
   destroyEditor,
-  toggleResolvedTag,
 } = useTopicComment({
   commentData: props.commentData,
   topicAuthorId: props.topicAuthorId,
@@ -112,7 +110,7 @@ onBeforeUnmount(() => {
       <div v-if="props.size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
           :repo="props.repo" :comment-data="props.commentData" :comment-click-handler="props.commentClickHandler"
-          :topic-id="props.topicId" :toggle-resolved-tag="toggleResolvedTag"
+          :topic-id="props.topicId"
           @comment:click="handleCommentClick"
         />
       </div>
