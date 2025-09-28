@@ -163,6 +163,11 @@ function useLogin() {
     }
   }
 
+  function showOAuthLoginAlert() {
+    if (location.hash !== 'login-alert')
+      return location.hash = 'login-alert'
+  }
+
   function handleOAuthLoginStart() {
     isAuthenticating.value = true
     redirectUrl.value = location.href
@@ -222,6 +227,7 @@ function useLogin() {
     redirectAuth: handleOAuthLoginStart,
     isAuthenticating,
     authProgress,
+    showOAuthLoginAlert,
   }
 }
 
