@@ -13,6 +13,9 @@ import ForumTopicsList from '../ForumTopicsList.vue'
 import { FORUM_STORE_KEY, FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
+// 导入BroadcastChannelSync以确保模块初始化
+import '~/services/events/BroadcastChannelSync'
+
 interface ForumAsideProps {
   showButton?: boolean
   contactUs?: boolean
