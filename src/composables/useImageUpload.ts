@@ -29,7 +29,7 @@ export function useImageUpload(options = {
   const uploadedImages = ref<UploadedUserFile[]>([])
 
   // Watch for image list changes to reset processing state when all uploading files are removed
-  watch(imageList, (newList, oldList) => {
+  watch(imageList, (newList, _oldList) => {
     // If we were processing and now there are no uploading files, reset processing state
     if (isProcessing.value && !newList.some(file => file.status === 'uploading')) {
       isProcessing.value = false
