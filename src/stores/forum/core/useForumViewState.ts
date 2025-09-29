@@ -1,35 +1,42 @@
-import type { FORUM } from '~/components/forum/types'
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { STORAGE_KEYS } from '~/components/forum/constants'
+import { useForumViewMode } from '~/composables/useForumViewMode'
 
-/**
- * Forum View State Management
- * Manages UI view modes, layout preferences and display options
- */
 export const useForumViewState = defineStore('forum-view-state', () => {
-  // View mode with persistence
-  const viewMode = useLocalStorage<FORUM.TopicViewMode>(
-    STORAGE_KEYS.FORUM_VIEW_MODE,
-    'Card',
-  )
-
-  // Layout preferences
+  const { viewMode, toggleViewMode, setViewMode } = useForumViewMode()
   const showSidebar = ref(true)
   const compactMode = ref(false)
   const showTopicPreviews = ref(true)
   const showAuthorAvatars = ref(true)
 
-  // Display options
-  const itemsPerPage = useLocalStorage('forum-items-per-page', 20)
-  const autoRefresh = ref(false)
-  const autoRefreshInterval = ref(30000) // 30 seconds
+  const VALID_ITEMS_PER_PAGE = [10, 20, 30, 50, 100]
+  const DEFAULT_ITEMS_PER_PAGE = 20
 
-  // Computed properties
-  const isCardView = computed(() => viewMode.value === 'Card')
-  const isCompactView = computed(() => viewMode.value === 'Compact')
-  const isTableView = computed(() => false) // Table view not implemented
+  const rawItemsPerPage = useLocalStorage('forum-items-per-page', DEFAULT_ITEMS_PER_PAGE)
+
+  // 创建带验证的computed属性
+  const itemsPerPage = computed({
+    get: () => {
+      return VALID_ITEMS_PER_PAGE.includes(rawItemsPerPage.value) ? rawItemsPerPage.value : DEFAULT_ITEMS_PER_PAGE
+    },
+    set: (value: number) => {
+      if (VALID_ITEMS_PER_PAGE.includes(value)) {
+        rawItemsPerPage.value = value
+      }
+    },
+  })
+
+  // 立即修复无效的初始值
+  if (!import.meta.env.SSR && !VALID_ITEMS_PER_PAGE.includes(rawItemsPerPage.value)) {
+    rawItemsPerPage.value = DEFAULT_ITEMS_PER_PAGE
+  }
+  const autoRefresh = ref(false)
+  const autoRefreshInterval = ref(30000)
+
+  const isCardView = computed(() => viewMode.value === 'card')
+  const isCompactView = computed(() => viewMode.value === 'compact')
+  const isTableView = computed(() => false)
 
   const layoutConfig = computed(() => ({
     viewMode: viewMode.value,
@@ -39,18 +46,6 @@ export const useForumViewState = defineStore('forum-view-state', () => {
     showAvatars: showAuthorAvatars.value,
     itemsPerPage: itemsPerPage.value,
   }))
-
-  // Actions
-  const setViewMode = (mode: FORUM.TopicViewMode): void => {
-    viewMode.value = mode
-  }
-
-  const toggleViewMode = (): void => {
-    const modes: FORUM.TopicViewMode[] = ['Card', 'Compact']
-    const currentIndex = modes.indexOf(viewMode.value)
-    const nextIndex = (currentIndex + 1) % modes.length
-    viewMode.value = modes[nextIndex]
-  }
 
   const toggleSidebar = (): void => {
     showSidebar.value = !showSidebar.value
@@ -90,7 +85,7 @@ export const useForumViewState = defineStore('forum-view-state', () => {
 
   // Reset to defaults
   const resetToDefaults = (): void => {
-    viewMode.value = 'Card'
+    viewMode.value = 'card'
     showSidebar.value = true
     compactMode.value = false
     showTopicPreviews.value = true

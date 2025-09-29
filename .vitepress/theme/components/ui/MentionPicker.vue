@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import { useLocalStorage } from '@vueuse/core'
 import { shuffle } from 'lodash-es'
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -51,7 +51,22 @@ const isOpen = ref(props.open)
 const officialMember = shuffle(props.items ? props.items : [...feedbackRepoMember.data, ...TeamMember.data])
 
 const recentMention = useLocalStorage<ForumAPI.User[]>('RECENT_MENTION', [])
-const OfficialMemberFiltered = computed(() => officialMember.filter(val => !recentMention.value.map(val => val.id).includes(val.id)))
+
+// 立即修复无效的初始值
+if (!import.meta.env.SSR && !Array.isArray(recentMention.value)) {
+  recentMention.value = []
+}
+
+// 验证并自动重置数组类型
+watchEffect(() => {
+  if (!Array.isArray(recentMention.value)) {
+    recentMention.value = []
+  }
+})
+const OfficialMemberFiltered = computed(() => officialMember.filter((val): val is ForumAPI.User => {
+  const valAsUser = val as ForumAPI.User
+  return valAsUser.id !== undefined && !recentMention.value.map(val => val.id).includes(valAsUser.id)
+}))
 
 const recentMentionFiltered = computed(() => {
   return recentMention.value

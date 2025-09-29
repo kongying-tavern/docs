@@ -1,6 +1,6 @@
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 
 /**
  * Forum Search History Management
@@ -10,6 +10,26 @@ export const useForumSearchHistory = defineStore('forum-search-history', () => {
   // Persistent storage
   const searchHistory = useLocalStorage<string[]>('forum-search-history', [])
   const searchSuggestions = useLocalStorage<string[]>('forum-search-suggestions', [])
+
+  // 立即修复无效的初始值
+  if (!import.meta.env.SSR) {
+    if (!Array.isArray(searchHistory.value)) {
+      searchHistory.value = []
+    }
+    if (!Array.isArray(searchSuggestions.value)) {
+      searchSuggestions.value = []
+    }
+  }
+
+  // 验证并自动重置数组类型
+  watchEffect(() => {
+    if (!Array.isArray(searchHistory.value)) {
+      searchHistory.value = []
+    }
+    if (!Array.isArray(searchSuggestions.value)) {
+      searchSuggestions.value = []
+    }
+  })
 
   // Configuration
   const historyConfig = {
