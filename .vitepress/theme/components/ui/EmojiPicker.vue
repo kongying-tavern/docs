@@ -2,7 +2,7 @@
 import type { PopoverContentProps } from 'radix-vue'
 import type { HTMLAttributes } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, watch, watchEffect } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -10,8 +10,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-
 import EmojiData from '~/_data/emojis.json'
+
+import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 
 export interface EmojiItem {
   preset: string
@@ -42,8 +43,30 @@ const emit = defineEmits<{
 
 const recentEmojis = useLocalStorage<Record<string, string[]>>('RECENT_EMOJIS', {})
 
+// 立即修复无效的初始值
+if (!import.meta.env.SSR) {
+  if (typeof recentEmojis.value !== 'object' || recentEmojis.value === null || Array.isArray(recentEmojis.value)) {
+    recentEmojis.value = {}
+  }
+}
+
+// 验证并自动重置对象类型
+watchEffect(() => {
+  if (typeof recentEmojis.value !== 'object' || recentEmojis.value === null || Array.isArray(recentEmojis.value)) {
+    recentEmojis.value = {}
+  }
+})
+
 const isOpen = ref(false)
 const activePresetIndex = ref(0)
+
+const emojiPreloader = useEmojiPreload()
+
+function handleTriggerHover() {
+  emojiPreloader.smartPreload()
+}
+
+watch(isOpen, opened => opened && emojiPreloader.preloadAllGroupsTop(30))
 const currentPreset = computed(() => EmojiData[activePresetIndex.value] || null)
 const currentEmojiList = computed<Record<string, string>>(() => {
   const list = EmojiData[activePresetIndex.value]?.list || []
@@ -129,6 +152,7 @@ function deleteRecentEmoji(emoji: string) {
         <Button
           variant="ghost"
           :class="cn('h-8 w-6 border border-[var(--vp-c-gutter)] border-solid bg-transparent', $props.class)"
+          @mouseenter="handleTriggerHover"
         >
           <span class="i-custom:emoji icon-btn size-4 c-[var(--vp-c-text-2)]" />
         </Button>
