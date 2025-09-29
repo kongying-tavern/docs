@@ -9,6 +9,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { onClickOutside, useFileDialog } from '@vueuse/core'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { toast } from 'vue-sonner'
 import { Button } from '@/components/ui/button'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import EmojiPicker from '@/components/ui/EmojiPicker.vue'
@@ -21,6 +22,7 @@ import { EmojiNode } from '~/composables/tiptap/emojiNode'
 import { createLinkExtension } from '~/composables/tiptap/linkConfig'
 import { MentionNode } from '~/composables/tiptap/mentionNode'
 import { useClipboardPaste } from '~/composables/useClipboardPaste'
+import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import { useImageUpload } from '~/composables/useImageUpload'
 import ForumImageUpload from './ForumImageUpload.vue'
 
@@ -98,6 +100,8 @@ const { open, onChange } = useFileDialog({
 const { isCompleted, markdownFormatImages, resetImageList, imageList, upload }
   = useImageUpload()
 
+const emojiPreload = useEmojiPreload()
+
 const photoWallRef = useTemplateRef('photoWallRef')
 
 const { startListening, createUploadRawFile } = useClipboardPaste({
@@ -117,8 +121,7 @@ const { startListening, createUploadRawFile } = useClipboardPaste({
         photoWallRef.value.handleStart(uploadRawFile)
       }
     }
-    catch (error) {
-      console.error('Error processing pasted files:', error)
+    catch {
       const errorText = message.value.forum.labels.pasteError
       toast.error(errorText)
     }
@@ -306,7 +309,9 @@ defineExpose({
         <div
           v-if="userAuth.isTokenValid || !loginRequired"
           class="h-fit min-h-48px w-full border border-color-[var(--vp-c-gutter)] rounded-md bg-[var(--vp-c-bg-soft)] px-2 pt-2 focus:border-style-solid focus:bg-transparent"
-          :class="{ 'pb-2': hasSelectedFile }" @click="hideFooter = false"
+          :class="{ 'pb-2': hasSelectedFile }"
+          @click="hideFooter = false"
+          @focus="emojiPreload.smartPreload"
         >
           <div v-if="toolbarPosition === 'inner'" class="absolute right-12px">
             <EmojiPicker v-if="features.includes('Emoji')" class="border-none" :reference="container" @select="handleEmojiSelect" />
@@ -317,8 +322,9 @@ defineExpose({
               ? [`${message.forum.comment.reply} @${replyTarget}:`] : placeholders"
           />
           <EditorContent
+            v-if="editor"
             class="editor h-auto min-h-32px w-full cursor-text bg-transparent font-size-3.5 line-height-[32px]"
-            :editor="editor"
+            :editor="(editor as InstanceType<typeof Editor>)"
           />
 
           <ForumImageUpload
