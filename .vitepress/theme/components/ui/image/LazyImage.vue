@@ -73,10 +73,7 @@ watchEffect(async () => {
       _autoSizes(target.value)
     }
 
-    loadImage(target.value, {
-      onImageLoad: handleImageLoaded,
-      onImageError: handleImageError,
-    })
+    loadImage(target.value, handleImageLoaded)
     return
   }
 
@@ -85,7 +82,6 @@ watchEffect(async () => {
     hashType: props.thumbhash ? 'thumbhash' : 'blurhash',
     placeholderSize: props.placeholderSize,
     onImageLoad: handleImageLoaded,
-    onImageError: handleImageError,
   })
 })
 

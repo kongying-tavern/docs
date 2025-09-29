@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
+
 interface AvatarProps {
   src?: string
   icon?: string

@@ -124,10 +124,24 @@ async function initZoom() {
 
   await nextTick()
 
-  const target = document.getElementById(imgId) as HTMLImageElement | undefined
-  if (!target)
-    return
-  zoom?.attach(target)
+  let retries = 0
+  const maxRetries = 10
+  const retryDelay = 50
+
+  const attemptAttach = () => {
+    const target = document.getElementById(imgId) as HTMLImageElement | undefined
+    if (target && target.complete) {
+      zoom?.attach(target)
+      return
+    }
+
+    if (retries < maxRetries) {
+      retries++
+      setTimeout(attemptAttach, retryDelay)
+    }
+  }
+
+  attemptAttach()
 }
 
 function handleImageLoadStart() {
@@ -147,21 +161,26 @@ function handleLoaded(_image?: HTMLImageElement) {
         realImg.decode()
           .finally(() => {
             toggleRealImageReady(true)
-            setTimeout(initZoom, 50)
+            nextTick(() => {
+              setTimeout(initZoom, 100)
+            })
           })
       }
       else {
-        // 兼容不支持 decode() 的浏览器
         setTimeout(() => {
           toggleRealImageReady(true)
-          setTimeout(initZoom, 50)
+          nextTick(() => {
+            setTimeout(initZoom, 100)
+          })
         }, 100)
       }
     }
 
     realImg.onerror = () => {
       toggleRealImageReady(true)
-      setTimeout(initZoom, 50)
+      nextTick(() => {
+        setTimeout(initZoom, 100)
+      })
     }
 
     realImg.src = imgSrc.value
