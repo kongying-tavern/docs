@@ -48,7 +48,7 @@ catalogs:
   frontend:
     '@atlaskit/pragmatic-drag-and-drop': ^1.7.7
     '@atlaskit/pragmatic-drag-and-drop-hitbox': ^1.1.0
-    '@fingerprintjs/fingerprintjs': 3.4.2
+    '@fingerprintjs/fingerprintjs': 4.6.2
     '@floating-ui/dom': ^1.7.4
     '@iconify-json/ic': ^1.2.4
     '@iconify-json/logos': ^1.2.9
