@@ -29,4 +29,8 @@ This project requires Node.js to be `v18.0.0` or higher, because we use new Java
 
 ## License
 
-[MIT](https://github.com/kongying-tavern/docs/blob/main/LICENSE)
+This project uses separate licenses for different components. See [COPYING.md](./COPYING.md) for detailed information:
+
+- Code: [MIT License](https://github.com/kongying-tavern/docs/blob/main/LICENSE)
+- Articles: [CC BY-NC-SA 4.0 License](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+- Branding: All rights reserved by Kongying Tavern Team
