@@ -30,6 +30,14 @@ title: 位置追踪
 
 ![image](https://github.com/Sallee1/docs/assets/99392726/e23d5c97-9951-4f37-a33b-f39b4ba01521)
 
+## 窗口黄框说明
+
+在较新的Windows版本中，通过WGC(Windows Graphics Capture)，对应酒馆选项是DirectX，抓屏会强制在被抓取画面外围标记黄框。
+
+由于酒馆客户端是Win32应用，黄框需要宿主应用是UWP应用且声明抓屏权限才能去除，所以目前无法去除。
+
+可以尝试使用bitblt，但目前发现部分系统（尤其是Win11）使用bitblt抓取画面会黑屏，如果不能使用就只能使用DirectX(WGC)。
+
 ## 云原神客户端使用说明
 
 之前有一段时间是可以使用的，但目前已无任何已知方法可以稳定抓取到云原神的画面。
