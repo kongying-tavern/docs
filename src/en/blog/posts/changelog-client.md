@@ -598,7 +598,7 @@ Fix a {%= L_RARE %} issue that may cause the filter can not update pin data when
 - Fix a {%= L_NORMAL %} issue where pins can not be reset when they are not displayed.
 - Fix a {%= L_NORMAL %} issue that may cause incorrect auto-save progress display on exit (does not affect progress actually).
 - Fix a {%= L_NORMAL %} issue that may cause the Position Tracker icon to appear abnormally small.
-- Update underground areas of desert areas of Sumeru.
+- Update layered map of Sumeru desert areas.
 - Add Pinned Window.
 - Add customized shortcut for Overlay Mode.
 - Optimize the display layer of the Oculus, so they won't be covered by other pins.
