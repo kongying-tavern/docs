@@ -20,8 +20,7 @@ authors:
 > - Chinatelecom Cloud (Access code：exn0)：<https://cloud.189.cn/t/YF7Fj2zIRVbi>
 > - Automatic update window does not appear? <https://yuanshen.site/docs/manual/faq/autoupdate/updater>
 
-``` java
-/*
+```
                    _ooOoo_
                   o8888888o
                   88" . "88
@@ -42,7 +41,6 @@ authors:
                    `=---='
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
           May no bug be with you.
-*/
 ```
 
 > For Hot Update Logs, please check ***[Release Notes](https://yuanshen.site/docs/en/blog/changelog-client)***.
@@ -50,6 +48,54 @@ authors:
 ----
 
 ::: timeline Rc1.0.1: 2025-01-15
+
+## 2025-09-10-35
+
+- Update map and resources for Hiisi Island, Lempo Isle, Paha Isle.
+- Fix a {%= L_NORMAL %} issue that item refresh time error may cause item count 0/0.
+
+<!-- more -->
+
+## 2025-08-04-800
+
+- Update filtering logic for chest pins.
+
+## 2025-07-30-707
+
+- Fix a {%= L_NORMAL %} issue where default zoom area may incorrectly display.
+
+## 2025-07-29-848
+
+- Update map and resources for Easybreeze Holiday Resort.
+- Add a control bar for layered map scaling.
+- Adjust default scaling range to approach the in-game performance.
+
+## 2025-05-24-797
+
+- Attempted to fix an {%= L_EPIC %} issue which may cause an automatic login failure when launching map, resulted in item count 0/0.
+
+## 2025-05-24-797
+
+- Fix a {%= L_NORMAL %} issue where the opacity of Teleport Waypoints may incorrect after a data update.
+
+## 2025-05-24-797
+
+- Fix a {%= L_NORMAL %} issue where the layer status of pins outside the view may incorrect after switching layers.
+- Fix a {%= L_NORMAL %} issue where the credit text may not be displayed.
+
+## 2025-05-19-587
+
+- Fix a {%= L_NORMAL %} issue that may cause incorrect display order of layered maps in some areas in Sumeru desert.
+- Re-enable the mode selection for Position Tracker to ensure compatibility with some specific system versions.
+
+## 2025-05-19-64
+
+- Optimize the display hierarchy of all pins. The hierarchy is now sorted in ascending order as follows: Teleport Waypoints > Cave Entrances/Non-current Layer Pins > Current Layer Pins > Oculus Pins, and is prioritized by Y-axis depth.
+
+## 2025-05-19-23
+
+- Fix a {%= L_NORMAL %} issue where some automatically respawning items may respawn immediately after data update.
+- Optimize the display hierarchy of cave entrances. They are now positioned beneath other pins by default.
 
 ## 2025-05-13-854
 
