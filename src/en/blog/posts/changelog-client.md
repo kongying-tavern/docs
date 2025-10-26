@@ -247,7 +247,7 @@ authors:
 - Fix a {%= L_RARE %} issue which may cause Run in Offline Mode and Exit button malfunctions after three download failures.
 - Fix a {%= L_NORMAL %} issue which may cause Position Tracker update detection error.
 - Fix a {%= L_NORMAL %} issue which may cause tooltip text to detach from prompt window.
-- Optimize [Location Tracker]'s version selection UI. Moreover, a marker is added to the downloaded version.
+- Optimize the version selection UI of Position Tracker. Moreover, a marker is added to the downloaded version.
 - Optimize UI tips for some long text.
 
 :::
@@ -525,7 +525,7 @@ authors:
 - {color:#e13636}**This version has an issue with automatic updates. Please update the version manually!**{/color}
 - !!Update the independent auto-update for Position Tracker (Postponed).!!
 - Update Layered Map for Desert of Hadramaveth (Thanks to "Teyvat Map Institute" for providing Layered Map of underground areas)
-- Update DLL of Location Tracker.
+- Update DLL of Position Tracker.
 - Fix a {%= L_RARE %} issue where Teleport Waypoints may display abnormally after data update.
 - Fix a {%= L_RARE %} issue where icon may display as \[?\].
 - Fix a {%= L_NORMAL %} issue that may cause incorrect scaling of Teleport Waypoints when scaling UI.
