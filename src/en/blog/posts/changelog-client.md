@@ -670,9 +670,9 @@ Fix a {%= L_RARE %} issue that may cause the filter can not update pin data when
 - Fix a {%= L_RARE %} issue where item count may incorrect.
 - Pin descriptions are now available for Teleport Waypoint.
 
-!!:::
+:::
 
-::: timeline Beta2.9: Postponed…**
+::: timeline !!Beta2.9: Postponed…!!
 
 :::
 
@@ -750,7 +750,7 @@ Fix a {%= L_RARE %} issue that may cause the filter can not update pin data when
 - Certain pins is now related to multiple items, selecting one will select all.
 - Increase the startup speed by 200%! Pin loading speed is now 1000% faster, completing in an instant!
 - !!Add a new feature that may encounter Geo purgatory while launching Map.!!
-- !!Add a bunch of issues.!!
+- !!Add a bunch of bugs.!!
 
 :::
 
@@ -768,7 +768,6 @@ Fix a {%= L_RARE %} issue that may cause the filter can not update pin data when
 - Fix a {%= L_NORMAL %} issue that may cause an initialization error when double-clicking "Click to Enter". !!(not fixed yet, but will definitely be fixed next time (well, actually it's fixed now; if not, please run the updater to update manually))!!
 - Fix a {%= L_NORMAL %} issue where a continuos "Failed to obtain server version" state may prevent entry. Now, clicking on "Retry" will switch resource server and try again.
 - Known a {%= L_RARE %} issue that prevents this version from running auto-update. Please update manually.
-*
 
 :::
 
