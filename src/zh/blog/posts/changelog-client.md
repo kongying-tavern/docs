@@ -43,7 +43,7 @@ author: aaaaaaa8
 
 > 热更新日志请查看 ***[热更新日志](https://yuanshen.site/docs/blog/hotupdatelog-client)***。
 
-----
+---
 
 ::: timeline Rc1.0.1：2025-01-15
 
@@ -664,7 +664,6 @@ author: aaaaaaa8
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致数据更新后无法标记点位。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致物品计数错误。
 - 现在传送点位可以点击查看详细信息了。
-
 
 :::
 

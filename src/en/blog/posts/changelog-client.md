@@ -20,8 +20,7 @@ authors:
 > - Chinatelecom Cloud (Access code: exn0): <https://cloud.189.cn/t/YF7Fj2zIRVbi>
 > - Automatic update window does not appear? <https://yuanshen.site/docs/en/manual/faq/autoupdate/updater>
 
-``` java
-/*
+```
                    _ooOoo_
                   o8888888o
                   88" . "88
@@ -41,13 +40,12 @@ authors:
 ======`-.____`-.___\_____/___.-`____.-'======
                    `=---='
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-          May no bug be with you.
-*/
+           May no bug be with you.
 ```
 
 > For Hot Update Logs, please check ***[Hot Update Log](https://yuanshen.site/docs/en/blog/hotupdatelog-client)***.
 
-----
+---
 
 ::: timeline Rc1.0.1: 2025-01-15
 
