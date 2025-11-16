@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
+import Image from './image/Image.vue'
 
 interface Props {
   images: string[]
@@ -17,11 +18,11 @@ const props = defineProps<Props>()
       :key="image"
       class="relative h-full flex flex-1 cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-in-out hover:flex-[3]"
     >
-      <img
+      <Image
         class="relative h-full object-cover"
         :src="image"
         :alt="image"
-      >
+      />
     </div>
   </div>
 </template>

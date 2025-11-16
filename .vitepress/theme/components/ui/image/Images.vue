@@ -2,6 +2,7 @@
 import type { DefaultTheme } from 'vitepress/theme-without-fonts'
 
 import { computed } from 'vue'
+import ExpandableGallery from '../ExpandableGallery.vue'
 import Image from './Image.vue'
 
 interface Props {
@@ -84,12 +85,18 @@ const gridClass = computed(() => {
       return 'grid-cols-2 grid-rows-2'
     case 'quad':
       return 'grid-cols-2 grid-rows-2'
-    case 'gallery':
-      return 'grid-cols-2 grid-rows-2'
     default:
       return 'grid-cols-1'
   }
 })
+
+const imgsUrl = computed(() => props.images.map(i =>
+  typeof i === 'string'
+    ? i
+    : 'src' in i
+      ? i.src
+      : i.light),
+)
 
 // 获取图片的样式类
 function getImageClass(index: number): string {
@@ -132,18 +139,6 @@ function getImageClass(index: number): string {
     if (index === 3)
       baseClass += ' rounded-br-lg'
   }
-  else {
-    // gallery 模式
-    baseClass += ' aspect-square'
-    if (index === 0)
-      baseClass += ' rounded-tl-lg'
-    if (index === 1)
-      baseClass += ' rounded-tr-lg'
-    if (index === 2)
-      baseClass += ' rounded-bl-lg'
-    if (index === 3)
-      baseClass += ' rounded-br-lg'
-  }
 
   // 展开按钮位置的特殊样式
   if (isLastSlot) {
@@ -166,6 +161,7 @@ function handleExpand() {
 
 <template>
   <div
+    v-if="actualLayout !== 'gallery'"
     :class="`images-container grid gap-0 max-h-[400px] ${gridClass}`"
     :data-layout="actualLayout"
     :data-count="images.length"
@@ -197,6 +193,7 @@ function handleExpand() {
       </div>
     </div>
   </div>
+  <ExpandableGallery v-else :images="imgsUrl" />
 </template>
 
 <style scoped>
