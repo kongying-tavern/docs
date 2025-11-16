@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
-import { nextTick, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, useTemplateRef, watchEffect } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
@@ -43,39 +43,21 @@ const commentArea = useTemplateRef('commentArea')
 const commentInputBox = useTemplateRef('commentInputBox')
 const { right, left, width } = useElementBounding(commentArea)
 const [CommentAreaCommentInputBox, UseCommentAreaCommentInputBox] = createReusableTemplate()
+const isInitialized = ref(false)
 
-let isInitializing = false
-
-watch(
-  () => props.commentCount,
-  async (newCommentCount) => {
-    if (isInitializing)
-      return
-
-    if (newCommentCount !== undefined && newCommentCount !== -1) {
-      isInitializing = true
-      try {
-        await initialize()
-      }
-      finally {
-        isInitializing = false
-      }
+watchEffect(
+  async () => {
+    if (!isInitialized.value
+      && props.commentCount !== undefined
+      && props.commentCount !== null
+      && props.commentCount !== -1) {
+      isInitialized.value = true
+      await initialize()
     }
   },
-  { immediate: true },
 )
 
 onMounted(async () => {
-  if (!isInitializing && (props.commentCount === undefined || props.commentCount === null)) {
-    isInitializing = true
-    try {
-      await initialize()
-    }
-    finally {
-      isInitializing = false
-    }
-  }
-
   if (renderComments.value.length < 5)
     return
 
