@@ -1,6 +1,5 @@
 import type { TabsConfig } from './types'
 import type ForumAPI from '@/apis/forum/api'
-import { readonly } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 
@@ -15,13 +14,13 @@ export const FORM_DEFAULT_DATA: ForumAPI.CreateTopicOption = {
   text: '',
 }
 
-export function getFormTabsConfig() {
+export function getFormTabsConfig(): TabsConfig[] {
   const { message } = useLocalized()
   const { hasAnyPermissions } = useRuleChecks()
 
   const hasPermission = hasAnyPermissions('manage_feedback')
 
-  return readonly<TabsConfig>([
+  return [
     {
       value: 'BUG',
       label: `🐛${message.value.forum.publish.type.bug}`,
@@ -99,5 +98,5 @@ export function getFormTabsConfig() {
         },
       },
     },
-  ])
+  ]
 }

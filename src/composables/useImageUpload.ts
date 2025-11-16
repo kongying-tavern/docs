@@ -83,6 +83,7 @@ export function useImageUpload(options = {
 
   function resetImageList() {
     imageList.value = []
+    uploadedImages.value = []
   }
 
   async function updateImage(

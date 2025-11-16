@@ -72,7 +72,7 @@ const finalIsDisabled = computed(() =>
 
 // Hash checker for form activation
 useHashChecker(
-  [FORM_HASH, ...tabList.value.map(val => `${FORM_HASH}-${val}`)],
+  [FORM_HASH, ...tabList.value.map((val: string) => `${FORM_HASH}-${val}`)],
   (hash: string) => {
     if (!userAuth.isTokenValid)
       return true
