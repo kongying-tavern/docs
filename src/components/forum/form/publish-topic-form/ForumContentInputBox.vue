@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
             class="pos-absolute bottom-[-104px] right-0 font-size-[12px] c-[var(--vp-c-text-3)] md:bottom-0"
           >
             <span :class="input?.length >= (textLimit || -1) ? 'c-red' : ''">
-              {{ input?.length || 0 }}
+              {{ modelValue?.length || 0 }}
             </span>
             / {{ textLimit }}
           </span>

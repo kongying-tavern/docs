@@ -8,7 +8,7 @@ export interface FieldConfig {
   minLength?: number
 }
 
-export type TabsConfig = {
+export interface TabsConfig {
   value: Exclude<ForumAPI.TopicType, null>
   label: string
   condition: boolean | ComputedRef<boolean>
@@ -19,4 +19,4 @@ export type TabsConfig = {
     tags?: FieldConfig
     permissions?: FieldConfig
   }
-}[]
+}

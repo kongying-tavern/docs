@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FormTabConfig } from './publish-topic-form/types'
+import type { TabsConfig } from './publish-topic-form/types'
 import type ForumAPI from '@/apis/forum/api'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
@@ -13,7 +13,7 @@ import ForumTagsInput from './publish-topic-form/ForumTagsInput.vue'
 
 interface Props {
   modelValue: ForumAPI.CreateTopicOption
-  tabs: FormTabConfig[]
+  tabs: TabsConfig[]
 }
 
 interface Emits {
@@ -33,7 +33,7 @@ const formData = computed({
 </script>
 
 <template>
-  <div class="form-fields">
+  <div class="form-fields min-h-200px">
     <TabsContent v-for="tab in tabs" :key="tab.value" :value="tab.value">
       <div class="grid w-[100%] items-center gap-6">
         <!-- Title Field -->
@@ -116,9 +116,3 @@ const formData = computed({
     </TabsContent>
   </div>
 </template>
-
-<style scoped>
-.form-fields {
-  min-height: 200px;
-}
-</style>

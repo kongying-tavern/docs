@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FormTabConfig } from './publish-topic-form/types'
+import type { TabsConfig } from './publish-topic-form/types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { DialogHeader } from '@/components/ui/dialog'
@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface Props {
   modelValue: string
-  tabs: FormTabConfig[]
+  tabs: TabsConfig[]
   hasPermission: boolean
   inTransition: boolean
 }
