@@ -20,7 +20,7 @@ const { localeIndex } = useData()
 
 // Generate correct topic link with locale and base
 function getTopicLink(topicId: string | number): string {
-  return withBase(`${getLangPath(localeIndex.value)}feedback/topic/${topicId}`)
+  return `.${withBase(`${getLangPath(localeIndex.value)}feedback/topic/${topicId}`)}`
 }
 
 function highlightText(text: string, keyword: string, scope: number = 20) {
