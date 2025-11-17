@@ -8,6 +8,7 @@ import { useClipboardPaste } from '~/composables/useClipboardPaste'
 const props = defineProps<{
   modelValue: string
   textLimit: number
+  textMinLimit?: number
   class?: HTMLAttributes['class']
   defaultValue?: string
   placeholder?: string
@@ -27,7 +28,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
 })
 
-const { textarea, input } = useTextareaAutosize()
+const { textarea } = useTextareaAutosize()
 const { focused } = useFocus(textarea)
 
 const container = useTemplateRef('container')
@@ -57,7 +58,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="container" class="flex">
+  <div
+    ref="container"
+    class="flex"
+  >
     <div class="comment-area w-full">
       <div
         class="body border vp-border-input border-input rounded-md border-style-solid bg-transparent px-2 py-1 shadow-sm transition-colors placeholder:text-muted-foreground"
@@ -78,10 +82,8 @@ onBeforeUnmount(() => {
             :maxlength="textLimit"
             :placeholder="placeholder"
           />
-          <span
-            class="pos-absolute bottom-[-104px] right-0 font-size-[12px] c-[var(--vp-c-text-3)] md:bottom-0"
-          >
-            <span :class="input?.length >= (textLimit || -1) ? 'c-red' : ''">
+          <span class="pos-absolute bottom-[-104px] right-0 font-size-[12px] c-[var(--vp-c-text-3)] md:bottom-0">
+            <span :class="modelValue?.length < (textMinLimit || -1) || modelValue?.length > (textLimit || -1) ? 'c-red' : ''">
               {{ modelValue?.length || 0 }}
             </span>
             / {{ textLimit }}

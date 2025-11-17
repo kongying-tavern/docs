@@ -79,6 +79,7 @@ const formData = computed({
             id="content"
             v-model="formData.text"
             :text-limit="tab.fields.content.maxLength"
+            :text-min-limit="tab.fields.content.minLength"
             :class="isDesktop ? 'min-h-128px' : 'min-h-100px'"
             :placeholder="tab.fields.content.placeholder"
           >
