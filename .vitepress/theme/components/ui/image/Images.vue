@@ -107,7 +107,7 @@ function getImageClass(index: number): string {
 
   // 根据布局添加特殊样式和圆角
   if (layout === 'single') {
-    baseClass += ' col-span-1 aspect-auto rounded-lg'
+    baseClass += ' col-span-1 aspect-auto rounded-lg max-h-[400px]'
   }
   else if (layout === 'double') {
     // 两张图片：左右布局
