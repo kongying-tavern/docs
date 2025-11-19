@@ -48,7 +48,7 @@ provide(FORUM_TOPIC_SORT_KEY, toRef(store, 'sort'))
 provide(FORUM_TOPIC_FILTER_KEY, toRef(store, 'filter'))
 provide(FORUM_TOPIC_LOADING_KEY, toRef(store, 'loading'))
 provide(FORUM_TOPIC_CAN_LOAD_MORE, toRef(store, 'canLoadMore'))
-provide(FORUM_STORE_KEY, store)
+provide(FORUM_STORE_KEY, store as ForumStore)
 provide('searchTopics', store.searchTopics)
 
 // Loading state for topics list

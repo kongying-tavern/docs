@@ -117,8 +117,8 @@ function filterValidTopics(topics: (ForumAPI.Topic | null | undefined)[]): Forum
 }
 
 const renderData = computed<(ForumAPI.Topic | BlogPostAsTopic)[]>(() => {
-  const _isSearching = forumHomeStore.isSearching.value
-  const _currentFilter = forumHomeStore.filter.value
+  const _isSearching = forumHomeStore.isSearching
+  const _currentFilter = forumHomeStore.filter
   const _shouldShowBlogPosts = !_currentFilter || _currentFilter === 'all'
 
   // 获取最新的博客文章（仅在非搜索且显示所有内容时）

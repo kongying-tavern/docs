@@ -8,10 +8,9 @@ const modelValue = defineModel<string>('query')
 const { message } = useLocalized()
 
 // Get search function from the parent component context
-const searchTopics = inject('searchTopics', () => {
+const searchTopics = inject<(query: string) => void | Promise<void>>('searchTopics', async () => {
   console.warn('ForumSearchbox: searchTopics not provided, using default')
-  return async (_query: string) => {
-  }
+  // no-op fallback
 })
 
 const { searchInput, searchQuery } = useSearchInput({
