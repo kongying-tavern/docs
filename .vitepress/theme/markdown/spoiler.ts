@@ -85,25 +85,6 @@ function extractAttributesFromContent(content: string): SpoilerContent {
   return result
 }
 
-/**
- * Calculate optimal width based on content
- */
-function calculateWidth(content: string): number {
-  // Count Chinese characters (wider) and other characters
-  const chineseChars = (content.match(/[\u4E00-\u9FA5]/g) || []).length
-  const otherChars = content.length - chineseChars
-
-  // More accurate character width calculation
-  const estimatedWidth = (chineseChars * 16) + (otherChars * 9)
-
-  // Adaptive boundaries
-  const minWidth = Math.max(60, content.length * 6) // Adaptive minimum
-  const maxWidth = 500 // Increased maximum for longer content
-  const padding = 30 // Reduced padding for better text fit
-
-  return Math.max(minWidth, Math.min(estimatedWidth + padding, maxWidth))
-}
-
 /*
  * Insert each marker as a separate text token, and add it to delimiter list
  *
@@ -238,12 +219,10 @@ export const spoiler: PluginWithOptions<MarkdownItSpoilerOptions> = (
   // Custom rendering rules for ScratchToReveal component
   md.renderer.rules.spoiler_open = (tokens, idx) => {
     const content = extractSpoilerContent(tokens, idx)
-    const { content: cleanContent, width: customWidth, align } = extractAttributesFromContent(content)
-
-    const finalWidth = customWidth || calculateWidth(cleanContent)
+    const { align } = extractAttributesFromContent(content)
     const alignStyle = align ? ` style="text-align: ${align};"` : ''
 
-    return `<ScratchToReveal :width="${finalWidth}" :height="32" spoiler class="inline-spoiler"${alignStyle}>`
+    return `<ScratchToReveal spoiler class="inline-spoiler"${alignStyle}>`
   }
 
   md.renderer.rules.spoiler_close = () => {

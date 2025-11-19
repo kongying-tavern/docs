@@ -1,73 +1,52 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
+import { useResizeObserver, watchOnce } from '@vueuse/core'
 import { Motion, useAnimate } from 'motion-v'
-import { useData } from 'vitepress'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { cn } from '@/lib/utils'
 
+interface Props {
+  class?: string
+  width?: number
+  height?: number
+  minScratchPercentage?: number
+  gradientColors?: [string, string, string]
+}
+
 const props = withDefaults(defineProps<Props>(), {
-  gradientColors: () => ['#A97CF8', '#F38CB8', '#FDCC92'],
+  gradientColors: () => ['#cfd9df', '#e2ebf0', '#f5f9fc'],
   minScratchPercentage: 50,
-  spoiler: false,
 })
 
 const emit = defineEmits<{
   complete: []
 }>()
 
-const { isDark } = useData()
-
 const cursorImg
   = 'url(\'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4KICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgc3R5bGU9ImZpbGw6I2ZmZjtzdHJva2U6IzAwMDtzdHJva2Utd2lkdGg6MXB4OyIgLz4KPC9zdmc+\'), auto'
 
-interface Props {
-  class?: string
-  width: number
-  height: number
-  minScratchPercentage?: number
-  gradientColors?: [string, string, string]
-  spoiler?: boolean // New: spoiler mode for inline text
-}
-
 const canvasRef = ref<HTMLCanvasElement>()
+const slot = useTemplateRef('slot')
 
-const containerWidth = computed(() => `${props.width}px`)
-const containerHeight = computed(() => `${props.height}px`)
-
-// Computed properties for spoiler mode optimization
-const effectiveGradientColors = computed(() => {
-  if (!props.spoiler)
-    return props.gradientColors
-
-  // Use VitePress spoiler colors defined in CSS
-  try {
-    const rootStyle = getComputedStyle(document.documentElement)
-    const color1 = rootStyle.getPropertyValue('--vp-spoiler-color-1').trim()
-    const color2 = rootStyle.getPropertyValue('--vp-spoiler-color-2').trim()
-    const color3 = rootStyle.getPropertyValue('--vp-spoiler-color-3').trim()
-
-    return [
-      color1 || (isDark.value ? '#333' : '#666'),
-      color2 || (isDark.value ? '#555' : '#888'),
-      color3 || (isDark.value ? '#777' : '#aaa'),
-    ]
-  }
-  catch {
-    // Fallback colors if CSS variables fail
-    return isDark.value
-      ? ['#333', '#555', '#777'] // Darker for dark mode
-      : ['#666', '#888', '#aaa'] // Darker for light mode
-  }
-})
-
-const effectiveMinScratchPercentage = computed(() =>
-  props.spoiler ? 30 : props.minScratchPercentage,
-)
-
-const context = ref<CanvasRenderingContext2D>()
+const autoHeight = ref(0)
+const autoWidth = ref(0)
 
 const isScratching = ref(false)
 const isComplete = ref(false)
+
+useResizeObserver(slot, (entries) => {
+  const entry = entries[0]
+  const { width, height } = entry.contentRect
+
+  autoWidth.value = Math.ceil(width) + 12
+  autoHeight.value = Math.ceil(height) + 8
+})
+
+const context = ref<CanvasRenderingContext2D>()
+
+const cursorStyle = computed(() =>
+  isComplete.value ? 'auto' : cursorImg,
+)
 
 function handleMouseDown() {
   isScratching.value = true
@@ -76,17 +55,17 @@ function handleTouchStart() {
   isScratching.value = true
 }
 
-const canvasWidth = computed(() => canvasRef.value?.width || props.width)
-const canvasHeight = computed(() => canvasRef.value?.height || props.height)
+const canvasWidth = computed(() => canvasRef.value?.width || autoWidth.value || props.width!)
+const canvasHeight = computed(() => canvasRef.value?.height || autoHeight.value || props.height!)
 
 function drawCanvas(canvasRef: Ref<HTMLCanvasElement>) {
   context.value = canvasRef.value.getContext('2d')!
   context.value.fillStyle = '#ccc'
   context.value.fillRect(0, 0, canvasWidth.value, canvasHeight.value)
   const gradient = context.value.createLinearGradient(0, 0, canvasWidth.value, canvasHeight.value)
-  gradient.addColorStop(0, effectiveGradientColors.value[0])
-  gradient.addColorStop(0.5, effectiveGradientColors.value[1])
-  gradient.addColorStop(1, effectiveGradientColors.value[2])
+  gradient.addColorStop(0, props.gradientColors[0])
+  gradient.addColorStop(0.5, props.gradientColors[1])
+  gradient.addColorStop(1, props.gradientColors[2])
   context.value.fillStyle = gradient
   context.value.fillRect(0, 0, canvasWidth.value, canvasHeight.value)
 }
@@ -126,20 +105,6 @@ function handleDocumentTouchEnd() {
   checkCompletion()
 }
 
-function handleKeydown(event: KeyboardEvent) {
-  // Support keyboard reveal for spoiler mode (accessibility)
-  if (props.spoiler && (event.key === 'Enter' || event.key === ' ')) {
-    event.preventDefault()
-    if (!isComplete.value) {
-      isComplete.value = true
-      if (context.value) {
-        context.value.clearRect(0, 0, canvasWidth.value, canvasHeight.value)
-      }
-      startAnimation()
-    }
-  }
-}
-
 function addEventListeners() {
   document.addEventListener('mousedown', handleDocumentMouseMove)
   document.addEventListener('mousemove', handleDocumentMouseMove)
@@ -168,7 +133,7 @@ function checkCompletion() {
 
     const percentage = (clearPixels / totalPixels) * 100
 
-    if (percentage >= effectiveMinScratchPercentage.value) {
+    if (percentage >= props.minScratchPercentage) {
       isComplete.value = true
       context.value.clearRect(0, 0, canvasWidth.value, canvasHeight.value)
 
@@ -180,30 +145,29 @@ function checkCompletion() {
   }
 }
 
-const [containerRef, animate] = useAnimate()
+const [containerRef] = useAnimate()
+
 async function startAnimation() {
   if (!containerRef.value)
     return
-
-  // Disable shake animation for spoiler mode
-  if (!props.spoiler) {
-    animate(containerRef.value, {
-      scale: 1,
-      rotate: [0, 10, -10, 10, -10, 0],
-    })
-  }
 
   emit('complete')
 }
 
 onMounted(() => {
-  if (!canvasRef.value)
-    return
-
-  drawCanvas(canvasRef as Ref<HTMLCanvasElement>)
-
   addEventListeners()
 })
+
+watchOnce(
+  () => autoWidth.value > 0 && autoHeight.value > 0,
+  async () => {
+    if (!canvasRef.value)
+      return
+    canvasRef.value.width = autoWidth.value
+    canvasRef.value.height = autoHeight.value
+    drawCanvas(canvasRef as Ref<HTMLCanvasElement>)
+  },
+)
 
 function removeEventListeners() {
   document.removeEventListener('mousedown', handleDocumentMouseMove)
@@ -220,30 +184,33 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Motion
-    ref="containerRef"
-    :class="cn('relative select-none', props.class)"
-    :style="{
-      width: containerWidth,
-      height: containerHeight,
-      cursor: cursorImg,
-    }"
-    :initial="{ scale: 1 }"
-    :transition="{ duration: 0.5 }"
-    :tabindex="spoiler ? 0 : -1"
-    @keydown="handleKeydown"
-  >
-    <canvas
-      ref="canvasRef"
-      :width="width"
-      :height="height"
-      class="absolute left-0 top-0"
-      @mousedown="handleMouseDown"
-      @touchstart="handleTouchStart"
-    />
-
-    <slot />
-  </Motion>
+  <ClientOnly>
+    <Motion
+      ref="containerRef"
+      :class="cn('relative inline-flex', props.class)"
+      :style="{
+        width: '100%',
+        height: '100%',
+        cursor: cursorStyle,
+        opacity: slot ? 1 : 0,
+        userSelect: isComplete ? 'auto' : 'none',
+      }"
+      :transition="{ duration: 0.5 }"
+    >
+      <canvas
+        v-show="!isComplete"
+        ref="canvasRef"
+        class="absolute left-0 top-0"
+        :style="{ width: `${autoWidth}px`, height: `${autoHeight}px`, pointerEvents: isComplete ? 'none' : 'auto' }"
+        @mousedown="handleMouseDown"
+        @touchstart="handleTouchStart"
+      />
+      <div
+        ref="slot"
+        class="inline-block h-auto max-w-full py-2"
+      >
+        <slot />
+      </div>
+    </Motion>
+  </ClientOnly>
 </template>
-
-<style></style>
