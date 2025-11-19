@@ -1,27 +1,27 @@
 [
   {
-    "id": "group08",
-    "name": "原神地图 08 群",
-    "number": "1012554070",
-    "link": "https://qm.qq.com/q/pT6SMOn0EE",
+    "id": "group06",
+    "name": "原神地图 06 群",
+    "number": "1168337427",
+    "link": "https://qm.qq.com/q/eKrX4NJi82",
     "status": "suggest",
-    "tooltip": "点击一键加入原神地图08群"
+    "tooltip": "点击一键加入原神地图06群"
   },
   {
-    "id": "group10",
-    "name": "原神地图 10 群",
-    "number": "781455797",
-    "link": "https://qm.qq.com/q/8DngyPRcl2",
+    "id": "group11",
+    "name": "原神地图 11 群",
+    "number": "675165437",
+    "link": "https://qm.qq.com/q/yHYleN16vu",
     "status": "suggest",
-    "tooltip": "点击一键加入原神地图10群"
+    "tooltip": "点击一键加入原神地图11群"
   },
   {
-    "id": "group14",
-    "name": "原神地图 14 群",
-    "number": "468263682",
-    "link": "https://qm.qq.com/q/To2IVMTfqi",
+    "id": "group12",
+    "name": "原神地图 12 群",
+    "number": "657416377",
+    "link": "https://qm.qq.com/q/mKD0P4bsCk",
     "status": "suggest",
-    "tooltip": "点击一键加入原神地图14群"
+    "tooltip": "点击一键加入原神地图12群"
   },
   {
     "id": "group01",
@@ -64,20 +64,20 @@
     "tooltip": "被封禁"
   },
   {
-    "id": "group06",
-    "name": "原神地图 06 群",
-    "number": "1168337427",
-    "link": "https://qm.qq.com/q/eKrX4NJi82",
-    "status": "warning",
-    "tooltip": "点击一键加入原神地图06群"
-  },
-  {
     "id": "group07",
     "name": "原神地图 07 群",
     "number": "726524364",
     "link": "https://qm.qq.com/q/VFt6rNHKWC",
     "status": "warning",
     "tooltip": "点击一键加入原神地图07群"
+  },
+  {
+    "id": "group08",
+    "name": "原神地图 08 群",
+    "number": "1012554070",
+    "link": "https://qm.qq.com/q/pT6SMOn0EE",
+    "status": "warning",
+    "tooltip": "点击一键加入原神地图08群"
   },
   {
     "id": "group09",
@@ -88,20 +88,12 @@
     "tooltip": "点击一键加入原神地图09群"
   },
   {
-    "id": "group11",
-    "name": "原神地图 11 群",
-    "number": "675165437",
-    "link": "https://qm.qq.com/q/yHYleN16vu",
-    "status": "warning",
-    "tooltip": "点击一键加入原神地图11群"
-  },
-  {
-    "id": "group12",
-    "name": "原神地图 12 群",
-    "number": "657416377",
-    "link": "https://qm.qq.com/q/mKD0P4bsCk",
+    "id": "group10",
+    "name": "原神地图 10 群",
+    "number": "781455797",
+    "link": "https://qm.qq.com/q/8DngyPRcl2",
     "status": "normal",
-    "tooltip": "点击一键加入原神地图12群"
+    "tooltip": "点击一键加入原神地图10群"
   },
   {
     "id": "group13",
@@ -110,6 +102,14 @@
     "link": "https://qm.qq.com/q/4qt8156JLq",
     "status": "normal",
     "tooltip": "点击一键加入原神地图13群"
+  },
+  {
+    "id": "group14",
+    "name": "原神地图 14 群",
+    "number": "468263682",
+    "link": "https://qm.qq.com/q/To2IVMTfqi",
+    "status": "normal",
+    "tooltip": "点击一键加入原神地图14群"
   },
   {
     "id": "group15",
