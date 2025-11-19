@@ -14,9 +14,9 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "commit": "git-cz",
     "dev": "vitepress",
-    "lint": "eslint --cache . && pnpm lint:zh",
-    "lint:eslint": "eslint --cache .",
-    "lint:eslint-fix": "eslint --cache --fix .",
+    "lint": "eslint --concurrency=auto --cache . && pnpm lint:zh",
+    "lint:eslint": "eslint --concurrency=auto --cache .",
+    "lint:eslint-fix": "eslint --concurrency=auto --cache --fix .",
     "lint:md": "markdownlint **/*.md",
     "lint:zh": "zhlint **/zh/**/*.md",
     "lint:zh-fix": "zhlint **/zh/**/*.md --fix",
@@ -155,7 +155,7 @@
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
-    "*": "eslint --fix"
+    "*": "pnpm lint:eslint-fix"
   },
   "config": {
     "commitizen": {
