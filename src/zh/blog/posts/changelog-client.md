@@ -12,6 +12,7 @@ author: aaaaaaa8
 
 > **客户端下载方式（除了自动更新外的方式）**
 >
+> - 在线安装器：<https://steambird.pub/-/kyjg/KongYingMap.OnlineInst.exe>
 > - 夸克云盘：<https://pan.quark.cn/s/fe8bb34c77bc>
 > - 加入讨论组：<https://yuanshen.site/docs/community.html>
 > - 百度网盘（提取码：KYJG）：<https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg>
