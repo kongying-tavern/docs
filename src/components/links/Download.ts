@@ -8,6 +8,13 @@ const clientMap: Record<string, Record<string, unknown>> = {
     link: './community',
     icon: '/imgs/common/logo/logo_256.png',
   },
+  online: {
+    id: 'online',
+    name: '',
+    target: '_blank',
+    link: 'https://steambird.pub/-/kyjg/KongYingMap.OnlineInst.exe',
+    icon: '/imgs/common/logo/logo_ol_inst.png',
+  },
   bd: {
     id: 'bd',
     name: '',

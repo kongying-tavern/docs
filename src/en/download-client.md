@@ -4,7 +4,7 @@ layout: doc
 aside: false
 ---
 
-## Windows Client <Badge type="warning" text="Beta" />
+## Windows Client <VPBadge type="tip" text="Rc" />
 
 Currently we only offer the Windows Version of our map client, versions in other OS are in progress.
 

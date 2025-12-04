@@ -4,7 +4,7 @@ layout: doc
 comment: true
 ---
 
-## **Windows 客户端** <VPBadge type="warning" text="Beta" />
+## **Windows 客户端** <VPBadge type="tip" text="Rc" />
 
 可选择下方任意方式下载
 
@@ -46,6 +46,7 @@ import { clientLink, downloadJump } from '../components/links/Download.ts'
 const params = useUrlSearchParams('history')
 const downloadMethod = [
   clientLink('sq', '加入社区'),
+  clientLink('online', '在线安装器'),
   clientLink('bd', '百度网盘'),
   clientLink('kk', '夸克网盘'),
   clientLink('ty', '天翼云盘', '访问码：exn0'),

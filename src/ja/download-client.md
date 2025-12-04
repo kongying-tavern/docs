@@ -6,7 +6,7 @@ comment: true
 pageClass: download-client
 ---
 
-## **Windows クライアント** <VPBadge type="warning" text="Beta" />
+## **Windows クライアント** <VPBadge type="tip" text="Rc" />
 
 以下のいずれかの方法でダウンロードできます
 
