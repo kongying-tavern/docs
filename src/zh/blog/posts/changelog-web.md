@@ -4,6 +4,7 @@ layout: Post
 authors:
  - aaaaaaa8
  - zengjias
+ - boxsnake
 ---
 
 {define:T_REFACTOR}:recycle: 功能重构{/define}
@@ -24,6 +25,16 @@ authors:
 
 ----
 
+::: timeline 2025-12-05
+
+### {%= T_ENHANCE %}
+
+- 更新图标获取逻辑，支持新图标实现。
+
+:::
+
+<!-- more -->
+
 ::: timeline 2025-09-10
 
 ### {%= T_RES %}
@@ -36,8 +47,6 @@ authors:
 - 调整地区选择器样式，缩小地区图标间距以支持更多地区显示。
 
 :::
-
-<!-- more -->
 
 ::: timeline 2025-05-15
 
