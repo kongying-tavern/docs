@@ -53,7 +53,7 @@ jobs:
       # 创建 GitHub Deployment 记录
       - name: Create GitHub Deployment
         id: create_deployment
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -99,7 +99,7 @@ jobs:
       # 部署成功:更新状态为 success
       - name: Update Deployment Status (Success)
         if: success()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -117,7 +117,7 @@ jobs:
       # 部署失败:更新状态为 failure
       - name: Update Deployment Status (Failure)
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
