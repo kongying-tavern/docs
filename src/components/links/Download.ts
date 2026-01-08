@@ -13,7 +13,7 @@ const clientMap: Record<string, Record<string, unknown>> = {
     name: '',
     target: '_blank',
     link: 'https://steambird.pub/-/kyjg/KongYingMap.OnlineInst.exe',
-    icon: '/imgs/common/logo/logo_ol_inst.png',
+    icon: '/imgs/common/logo/logo_ol_inst_256.png',
   },
   bd: {
     id: 'bd',
