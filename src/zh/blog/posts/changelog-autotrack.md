@@ -14,7 +14,7 @@ author: Sallee_admin
 
 :::
 
-::: timeline 【已撤回】<del>Beta-6.3.1<del/>
+::: timeline 【已撤回】<del>Beta-6.3.1</del>
 
 * 适配月之四版本位置追踪
 * 修复在小地图不可见的情况下的瞬移问题
