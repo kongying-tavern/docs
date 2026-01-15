@@ -4,6 +4,7 @@ import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll } from '@vueuse/core'
 import { inject, onMounted } from 'vue'
 import ForumTopic from './ForumTopic.vue'
+import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
 import { FORUM_TOPIC_CAN_LOAD_MORE } from './shared'
 
@@ -15,6 +16,7 @@ const {
   data: ForumAPI.Topic[]
   viewMode?: FORUM.TopicViewMode
   loadMore?: () => Promise<unknown> | unknown
+  refreshData?: () => Promise<unknown> | unknown
   loading?: boolean
 }>()
 
@@ -40,15 +42,32 @@ onMounted(() => {
 <template>
   <div>
     <KeepAlive>
-      <TransitionGroup tag="ul" name="fade">
-        <li v-for="item in data" :key="item.id">
-          <ForumTopic :topic="item" :view-mode="viewMode" />
-          <div class="vp-divider" />
+      <TransitionGroup
+        tag="ul"
+        name="fade"
+      >
+        <li
+          v-for="item in data"
+          :key="item.id"
+        >
+          <ForumTopic
+            :topic="item"
+            :view-mode="viewMode"
+          />
+          <Separator class="h-1px" />
         </li>
       </TransitionGroup>
     </KeepAlive>
 
-    <ForumTopicListSkeletons v-if="loading" :view-mode="viewMode" />
+    <ForumTopicListSkeletons
+      v-if="loading"
+      :view-mode="viewMode"
+    />
+
+    <ForumTopicListEmpty
+      v-else-if="data.length === 0"
+      :refresh-data="refreshData"
+    />
   </div>
 </template>
 
