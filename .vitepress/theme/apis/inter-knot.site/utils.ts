@@ -1,7 +1,7 @@
 import type { INTER_KNOT } from './api'
 import type { SSOAuth } from '@/stores/useUserAuth'
 
-export const ASSETS_URL_PREFIX = 'https://assets.webp.inter-knot.site/'
+export const ASSETS_URL_PREFIX = 'https://webp.assets.interknot.site/'
 
 export function normalizeImage(image: INTER_KNOT.ImageResponse) {
   return {
