@@ -1,46 +1,38 @@
 <script setup lang="ts">
-import type {
-  DropdownMenuRadioItemEmits,
-  DropdownMenuRadioItemProps,
-} from 'radix-vue'
+import type { DropdownMenuRadioItemEmits, DropdownMenuRadioItemProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { DotFilledIcon } from '@radix-icons/vue'
+import { reactiveOmit } from '@vueuse/core'
+import { Circle } from 'lucide-vue-next'
 import {
   DropdownMenuItemIndicator,
   DropdownMenuRadioItem,
   useForwardPropsEmits,
-} from 'radix-vue'
-import { computed } from 'vue'
+} from 'reka-ui'
 import { cn } from '@/lib/utils'
 
-const props = defineProps<
-  DropdownMenuRadioItemProps & { class?: HTMLAttributes['class'] }
->()
+const props = defineProps<DropdownMenuRadioItemProps & { class?: HTMLAttributes['class'] }>()
 
 const emits = defineEmits<DropdownMenuRadioItemEmits>()
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
-
-  return delegated
-})
+const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
   <DropdownMenuRadioItem
+    data-slot="dropdown-menu-radio-item"
     v-bind="forwarded"
-    :class="
-      cn(
-        'relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-        props.class,
-      )
-    "
+    :class="cn(
+      'focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4',
+      props.class,
+    )"
   >
-    <span class="absolute left-2 h-3.5 w-3.5 flex items-center justify-center">
+    <span class="flex size-3.5 pointer-events-none items-center left-2 justify-center absolute">
       <DropdownMenuItemIndicator>
-        <DotFilledIcon class="h-4 w-4 fill-current" />
+        <slot name="indicator-icon">
+          <Circle class="size-2 fill-current" />
+        </slot>
       </DropdownMenuItemIndicator>
     </span>
     <slot />

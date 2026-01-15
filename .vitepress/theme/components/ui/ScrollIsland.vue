@@ -136,9 +136,9 @@ onUnmounted(() => {
           height: open && isSlotAvailable ? 'auto' : props.height,
           width: open && isSlotAvailable ? 320 : 260,
         }"
-        class="scroll-island-inner border-radius relative cursor-pointer overflow-hidden"
+        class="scroll-island-inner border-radius cursor-pointer relative overflow-hidden"
       >
-        <header class="scroll-island-header h-11 flex cursor-pointer items-center gap-2 px-4">
+        <header class="scroll-island-header px-4 flex gap-2 h-11 cursor-pointer items-center">
           <AnimatedCircularProgressBar
             :value="displayProgress"
             :min="0"
@@ -150,7 +150,7 @@ onUnmounted(() => {
             :gauge-secondary-color="isDark ? 'rgba(107, 114, 128, 0.33)' : 'rgba(107, 114, 128, 0.6)'"
             :gauge-primary-color="errorState ? 'var(--vp-c-danger-1)' : 'var(--vp-c-brand)'"
           />
-          <h1 class="scroll-island-title grow text-center font-bold">
+          <h1 class="scroll-island-title font-bold text-center grow">
             {{ title }}
           </h1>
           <NumberFlow
@@ -161,14 +161,14 @@ onUnmounted(() => {
         </header>
         <motion.div
           v-if="isSlotAvailable"
-          class="scroll-island-content mb-2 h-full max-h-60 flex flex-col gap-1 overflow-y-auto px-4 text-sm"
+          class="scroll-island-content text-sm mb-2 px-4 py-2 flex flex-col gap-1 h-full max-h-60 overflow-y-auto"
         >
           <!-- Steps display for custom mode -->
           <div v-if="steps.length > 0" class="space-y-2">
             <div
               v-for="step in steps"
               :key="step.key"
-              class="flex items-center gap-2 py-1"
+              class="py-1 flex gap-2 items-center"
             >
               <span
                 class="h-4 w-4"
@@ -180,11 +180,11 @@ onUnmounted(() => {
             </div>
 
             <!-- Error state with retry button -->
-            <div v-if="errorState" class="scroll-island-error flex items-center justify-between pt-2">
+            <div v-if="errorState" class="scroll-island-error pt-2 flex items-center justify-between">
               <span class="text-xs">{{ $props.title }}</span>
               <button
                 v-if="onRetry"
-                class="scroll-island-retry-btn rounded px-2 py-1 text-xs transition-colors"
+                class="scroll-island-retry-btn text-xs px-2 py-1 rounded transition-colors"
                 @click="handleRetry"
               >
                 Retry
@@ -205,35 +205,30 @@ onUnmounted(() => {
   border-radius: v-bind(borderRadius);
 }
 
-/* ScrollIsland Wrapper - Following original bg-primary/90 style */
-.scroll-island-wrapper {
-  background: rgba(0, 0, 0, 0.9);
-}
-
 /* ScrollIsland Inner - Following original bg-natural-900 style */
 .scroll-island-inner {
-  background: #0f0f23;
-  color: rgba(255, 255, 255, 0.8);
+  background: var(--vp-c-bg-alt);
+  color: var(--vp-c-text-1);
 }
 
 /* Header - Following original gray- style */
 .scroll-island-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--vp-c-divider);
 }
 
 .scroll-island-title {
-  color: white;
+  color: var(--vp-c-text-1);
   font-size: 0.875rem;
 }
 
 /* Content Area */
 .scroll-island-content {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--vp-c-text-2);
 }
 
 /* Step Labels */
 .scroll-island-step-label {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--vp-c-text-2);
   transition: color 0.2s ease;
 }
 
@@ -273,32 +268,6 @@ onUnmounted(() => {
 }
 
 .text-gray-400 {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* Dark mode adjustments - Keep same style for consistency */
-.dark .scroll-island-wrapper {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-.dark .scroll-island-inner {
-  background: #0f0f23;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.dark .scroll-island-title {
-  color: white;
-}
-
-.dark .scroll-island-step-label {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.dark .scroll-island-error {
-  border-top-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark .text-gray-400 {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--vp-c-text-3);
 }
 </style>

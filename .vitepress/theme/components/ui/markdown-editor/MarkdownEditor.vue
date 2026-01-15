@@ -55,8 +55,8 @@ const rendered = computed(() => {
 </script>
 
 <template>
-  <div class="flex items-start gap-3" :style="{ height }">
-    <textarea v-model="modelValue" class="h-full flex-1 p-2" />
-    <div class="h-full flex-1 overflow-y-auto" v-html="rendered" />
+  <div class="flex gap-3 items-start" :style="{ height }">
+    <textarea v-model="modelValue" class="p-2 flex-1 h-full" />
+    <div class="flex-1 h-full overflow-y-auto" v-html="rendered" />
   </div>
 </template>
