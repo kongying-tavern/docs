@@ -143,3 +143,6 @@ ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
   - vue-demi
+catalog:
+  '@unocss/preset-wind4': ^0.0.0
+  lucide-vue-next: ^0.0.0

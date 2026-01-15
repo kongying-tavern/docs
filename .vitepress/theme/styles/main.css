@@ -1,3 +1,16 @@
+@import './theme.css';
+@import './vp-vars.css';
+@import './ui/tooltip.css';
+@import './ui/timeline.css';
+@import './ui/kbd.css';
+@import './ui/demo.css';
+@import './animation.css';
+@import './fonts.css';
+
+:root {
+  text-autospace: normal;
+}
+
 html.dark {
   color-scheme: dark;
 }

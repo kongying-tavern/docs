@@ -16,15 +16,7 @@ import { Sonner } from '@/components/ui/sonner'
 import { loadFonts } from '@/composables/loadFonts'
 import { enableTransitions } from '@/shared'
 
-import '@/styles/vars.css'
 import '@/styles/main.css'
-import '@/styles/ui.css'
-import '@/styles/timeline.css'
-import '@/styles/kbd.css'
-import '@/styles/demo.css'
-import '@/styles/animation.css'
-import '@/styles/shadcn.css'
-import '@/styles/fonts.css'
 
 const { Layout } = DefaultTheme
 const { isDark, frontmatter } = useData()

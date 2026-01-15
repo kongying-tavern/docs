@@ -1,10 +1,8 @@
-import type { Preset } from 'unocss'
 import {
   defineConfig,
   presetAttributify,
   presetIcons,
-  presetTypography,
-  presetWind3,
+  presetWind4,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
@@ -20,21 +18,6 @@ export default defineConfig({
         'scrollbar-width': 'thin',
         'scrollbar-color': 'hsl(var(--muted-foreground) / 0.2) transparent',
       },
-      {
-        '&::-webkit-scrollbar': {
-          width: '4px',
-        },
-        '&::-webkit-scrollbar-track': {
-          background: 'transparent',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          'background': 'hsl(var(--muted-foreground) / 0.2)',
-          'border-radius': '2px',
-        },
-        '&::-webkit-scrollbar-thumb:hover': {
-          background: 'hsl(var(--muted-foreground) / 0.4)',
-        },
-      },
     ],
   ],
   shortcuts: [
@@ -45,7 +28,7 @@ export default defineConfig({
     ['card-grid', 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8'],
     [
       'vp-divider',
-      'border-b-[var(--vp-c-gutter)] border-b-1px box-border w-full',
+      'border-b-[var(--vp-c-gutter)] border-solid border-b-1px box-border w-full',
     ],
     [
       'vp-link',
@@ -88,15 +71,33 @@ export default defineConfig({
       'doc-reaction-feedback-state-error',
       'doc-reaction-feedback-state-base text-color-[var(--vp-c-red-2)] i-custom-badge-x w-5 h-5',
     ],
+    [
+      'custom-scrollbar',
+      `[&::-webkit-scrollbar]:w-4px
+       [&::-webkit-scrollbar-track]:bg-transparent
+       [&::-webkit-scrollbar-thumb]:bg-[hsl(var(--muted-foreground)/0.2)]
+       [&::-webkit-scrollbar-thumb]:rounded-2px
+       [&::-webkit-scrollbar-thumb:hover]:bg-[hsl(var(--muted-foreground)/0.4)]
+      `,
+    ],
   ],
   presets: [
-    presetWind3({
+    presetWind4({
       container: false,
+      preflights: {
+        reset: false,
+      },
     }),
     presetAttributify(),
-    presetTypography(),
-    presetAnimations() as Preset<object>,
-    presetShadcn(),
+    presetAnimations(),
+    presetShadcn(
+      {
+        color: false,
+      },
+      {
+        componentLibrary: 'reka',
+      },
+    ),
     presetIcons({
       scale: 1.2,
       warn: true,
@@ -105,80 +106,6 @@ export default defineConfig({
       },
     }),
   ],
-  theme: {
-    container: {
-      center: true,
-      padding: false,
-      screens: {
-        '2xl': '1440px',
-      },
-    },
-    colors: {
-      border: 'var(--vp-c-border)',
-      input: 'var(--vp-c-gutter)',
-      ring: 'var(--vp-c-divider)',
-      background: 'var(--vp-c-bg)',
-      foreground: 'var(--vp-c-text-1)',
-      primary: {
-        DEFAULT: 'hsl(153.22, 47.83, 50.39)',
-        foreground: 'var(--vp-c-white)',
-      },
-      secondary: {
-        DEFAULT: 'var(--vp-button-alt-bg)',
-        foreground: 'var(--vp-button-alt-text)',
-      },
-      destructive: {
-        DEFAULT: 'hsl(var(--destructive))',
-        foreground: 'hsl(var(--destructive-foreground))',
-      },
-      muted: {
-        DEFAULT: 'hsl(var(--muted))',
-        foreground: 'hsl(var(--muted-foreground))',
-      },
-      accent: {
-        DEFAULT: 'hsl(var(--accent))',
-        foreground: 'hsl(var(--accent-foreground))',
-      },
-      popover: {
-        DEFAULT: 'var(--vp-c-bg-elv)',
-        foreground: 'var(--vp-c-text-1)',
-      },
-      card: {
-        DEFAULT: 'var(--vp-c-bg-soft)',
-        foreground: 'var(--vp-c-text-2)',
-      },
-    },
-    borderRadius: {
-      xl: 'calc(var(--radius) + 4px)',
-      lg: 'var(--radius)',
-      md: 'calc(var(--radius) - 2px)',
-      sm: 'calc(var(--radius) - 4px)',
-    },
-    keyframes: {
-      'accordion-down': {
-        from: { height: 0 },
-        to: { height: 'var(--radix-accordion-content-height)' },
-      },
-      'accordion-up': {
-        from: { height: 'var(--radix-accordion-content-height)' },
-        to: { height: 0 },
-      },
-      'collapsible-down': {
-        from: { height: 0 },
-        to: { height: 'var(--radix-collapsible-content-height)' },
-      },
-      'collapsible-up': {
-        from: { height: 'var(--radix-collapsible-content-height)' },
-        to: { height: 0 },
-      },
-    },
-    animation: {
-      'accordion-down': 'accordion-down 0.2s ease-out',
-      'accordion-up': 'accordion-up 0.2s ease-out',
-      'collapsible-down': 'collapsible-down 0.2s ease-in-out',
-      'collapsible-up': 'collapsible-up 0.2s ease-in-out',
-    },
-  },
   content: {
     pipeline: {
       include: [

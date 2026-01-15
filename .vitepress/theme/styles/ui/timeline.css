@@ -1,15 +1,12 @@
 :root {
-  --timeline-title-text: #000;
+  --timeline-title-text: var(--vp-c-text-1);
 }
 
-html.dark {
-  --timeline-title-text: #fff;
-}
 
 .timeline-dot {
   position: relative;
   padding: 0 0 18px 24px;
-  color: #adadad;
+  color: var(--vp-c-text-2);
   box-sizing: border-box;
 }
 
