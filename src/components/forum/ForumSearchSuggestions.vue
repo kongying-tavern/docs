@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { useData, withBase } from 'vitepress'
+import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { getLangPath } from '@/utils'
 import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
@@ -20,7 +20,7 @@ const { localeIndex } = useData()
 
 // Generate correct topic link with locale and base
 function getTopicLink(topicId: string | number): string {
-  return `.${withBase(`${getLangPath(localeIndex.value)}feedback/topic/${topicId}`)}`
+  return `.${`${getLangPath(localeIndex.value)}feedback/topic/${topicId}`}`
 }
 
 function highlightText(text: string, keyword: string, scope: number = 20) {
@@ -71,21 +71,21 @@ const filteredItems = computed(() => {
 </script>
 
 <template>
-  <div class="w-full pb-8">
+  <div class="pb-8 w-full">
     <h2 v-if="filteredItems.length > 0" class="mb-5">
       Suggested Searches
     </h2>
     <ul
-      class="grid grid-row-auto grid-flow-col grid-flow-row grid-cols-1 gap-y-4"
+      class="gap-y-4 grid grid-row-auto grid-flow-col grid-flow-row grid-cols-1"
     >
-      <li v-for="item in filteredItems" :key="item.id" class="search-term w-full flex cursor-pointer items-center gap-4">
-        <span class="vp-icon DocSearch-Search-Icon inline-block size-4 important:bg-[--vp-c-text-3]" aria-hidden="true" />
+      <li v-for="item in filteredItems" :key="item.id" class="search-term flex gap-4 w-full cursor-pointer items-center">
+        <span class="vp-icon DocSearch-Search-Icon size-4 inline-block important:bg-[--vp-c-text-3]" aria-hidden="true" />
         <VPLink
-          :no-icon="true" :href="getTopicLink(item.id)" class="search-term w-full overflow-hidden text-ellipsis break-all"
+          :no-icon="true" :href="getTopicLink(item.id)" class="search-term w-full break-all text-ellipsis overflow-hidden"
           @click="emits('select')"
         >
           <div class="flex items-center">
-            <h4 class="line-clamp-1 mr-4" v-html="item.type === 'BUG' ? item.highlightedContent : item.highlightedTitle" />
+            <h4 class="mr-4 line-clamp-1" v-html="item.type === 'BUG' ? item.highlightedContent : item.highlightedTitle" />
             <ForumTopicTypeBadge :type="item.type" />
           </div>
         </VPLink>
