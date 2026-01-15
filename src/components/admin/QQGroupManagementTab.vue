@@ -308,13 +308,13 @@ function moveDown(index: number) {
 <template>
   <div class="space-y-6">
     <!-- 统计卡片 -->
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+    <div class="gap-4 grid grid-cols-1 md:grid-cols-4">
       <Card
         v-for="card in statsCards"
         :key="card.key"
       >
         <CardHeader class="pb-2">
-          <CardTitle class="flex items-center gap-2 text-sm">
+          <CardTitle class="text-sm flex gap-2 items-center">
             <i class="h-4 w-4" :class="[card.icon]" />
             {{ card.label }}
           </CardTitle>
@@ -379,15 +379,15 @@ function moveDown(index: number) {
             >
               <!-- 拖拽手柄 -->
               <TableCell>
-                <div class="flex items-center gap-1">
-                  <div class="drag-handle cursor-move text-gray-400 hover:text-gray-600">
+                <div class="flex gap-1 items-center">
+                  <div class="drag-handle text-gray-400 cursor-move hover:text-gray-600">
                     ⋮⋮
                   </div>
                   <div class="flex flex-col gap-1">
                     <Button
                       size="sm"
                       variant="ghost"
-                      class="h-4 px-1 text-xs"
+                      class="text-xs px-1 h-4"
                       :disabled="index === 0"
                       @click="moveUp(index)"
                     >
@@ -396,7 +396,7 @@ function moveDown(index: number) {
                     <Button
                       size="sm"
                       variant="ghost"
-                      class="h-4 px-1 text-xs"
+                      class="text-xs px-1 h-4"
                       :disabled="index === groups.length - 1"
                       @click="moveDown(index)"
                     >
@@ -419,7 +419,7 @@ function moveDown(index: number) {
                 </div>
                 <div
                   v-else
-                  class="cursor-pointer rounded p-1 hover:bg-muted/50"
+                  class="p-1 rounded cursor-pointer hover:bg-muted/50"
                   @click="startEdit(group, 'name')"
                 >
                   {{ group.name }}
@@ -439,7 +439,7 @@ function moveDown(index: number) {
                 </div>
                 <div
                   v-else
-                  class="cursor-pointer rounded p-1 text-sm font-mono hover:bg-muted/50"
+                  class="text-sm font-mono p-1 rounded cursor-pointer hover:bg-muted/50"
                   @click="startEdit(group, 'number')"
                 >
                   {{ group.number }}
@@ -452,10 +452,10 @@ function moveDown(index: number) {
                   :model-value="group.status"
                   @update:model-value="updateStatus(group, $event)"
                 >
-                  <SelectTrigger class="h-8 text-xs">
+                  <SelectTrigger class="text-xs h-8">
                     <SelectValue>
                       <span
-                        class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
+                        class="text-xs font-medium px-2 py-1 rounded-full inline-flex items-center"
                         :class="getStatusOption(group.status).color"
                       >
                         {{ getStatusOption(group.status).label }}
@@ -469,7 +469,7 @@ function moveDown(index: number) {
                       :value="option.value"
                     >
                       <span
-                        class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
+                        class="text-xs font-medium px-2 py-1 rounded-full inline-flex items-center"
                         :class="option.color"
                       >
                         {{ option.label }}
@@ -492,10 +492,10 @@ function moveDown(index: number) {
                 </div>
                 <div
                   v-else
-                  class="cursor-pointer rounded p-1 hover:bg-muted/50"
+                  class="p-1 rounded cursor-pointer hover:bg-muted/50"
                   @click="startEdit(group, 'link')"
                 >
-                  <span class="break-all text-blue-600 hover:underline">
+                  <span class="text-blue-600 break-all hover:underline">
                     {{ group.link }}
                   </span>
                 </div>
@@ -514,7 +514,7 @@ function moveDown(index: number) {
                 </div>
                 <div
                   v-else
-                  class="max-w-[200px] cursor-pointer truncate rounded p-1 text-sm text-gray-600 hover:bg-muted/50"
+                  class="text-sm text-gray-600 p-1 rounded max-w-[200px] cursor-pointer truncate hover:bg-muted/50"
                   @click="startEdit(group, 'tooltip')"
                 >
                   {{ group.tooltip }}
@@ -523,7 +523,7 @@ function moveDown(index: number) {
 
               <!-- 操作 -->
               <TableCell>
-                <div class="flex items-center gap-1">
+                <div class="flex gap-1 items-center">
                   <Button
                     size="sm"
                     variant="ghost"
@@ -545,12 +545,12 @@ function moveDown(index: number) {
         </Table>
 
         <!-- 空状态 -->
-        <div v-if="groups.length === 0 && !loading" class="flex flex-col items-center justify-center py-12">
+        <div v-if="groups.length === 0 && !loading" class="py-12 flex flex-col items-center justify-center">
           <div class="text-center">
             <h3 class="text-lg font-medium">
               没有QQ群数据
             </h3>
-            <p class="mb-4 text-sm text-muted-foreground">
+            <p class="text-sm text-muted-foreground mb-4">
               开始添加第一个QQ群
             </p>
             <Button @click="openAddDialog">
@@ -561,7 +561,7 @@ function moveDown(index: number) {
         </div>
 
         <!-- 加载状态 -->
-        <div v-if="loading" class="flex items-center justify-center py-12">
+        <div v-if="loading" class="py-12 flex items-center justify-center">
           <div class="text-sm text-muted-foreground">
             加载中...
           </div>
@@ -638,7 +638,7 @@ function moveDown(index: number) {
           </div>
         </div>
 
-        <div class="mt-6 flex justify-end gap-2">
+        <div class="mt-6 flex gap-2 justify-end">
           <Button variant="outline" @click="closeDialog">
             <i class="i-lucide-x mr-2 h-4 w-4" />
             取消
@@ -660,7 +660,7 @@ function moveDown(index: number) {
             确定要删除群组"{{ deletingGroup?.name }}"吗？此操作无法撤销。
           </DialogDescription>
         </DialogHeader>
-        <div class="mt-6 flex justify-end gap-2">
+        <div class="mt-6 flex gap-2 justify-end">
           <Button variant="outline" @click="cancelDelete">
             <i class="i-lucide-x mr-2 h-4 w-4" />
             取消
@@ -682,7 +682,7 @@ function moveDown(index: number) {
             确定要重置到原始数据吗？这将清除所有本地修改，包括顺序调整、编辑内容等。此操作无法撤销。
           </DialogDescription>
         </DialogHeader>
-        <div class="mt-6 flex justify-end gap-2">
+        <div class="mt-6 flex gap-2 justify-end">
           <Button variant="outline" @click="cancelReset">
             <i class="i-lucide-x mr-2 h-4 w-4" />
             取消

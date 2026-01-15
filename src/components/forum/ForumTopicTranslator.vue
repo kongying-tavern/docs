@@ -82,11 +82,11 @@ defineExpose({
 <template>
   <BlurFade v-if="_targetLanguage !== getLangCode(sourceLanguage || currentPageLang)" class="mt-2 w-full">
     <slot v-if="!showDefaultTrigger" name="trigger" @click="startTranslate" />
-    <a v-if="showDefaultTrigger" class="vp-link font-size-4" variant="link" @click="startTranslate">
+    <a v-if="showDefaultTrigger" class="font-size-4 vp-link" variant="link" @click="startTranslate">
       {{ showTranslation ? `> ${message.forum.translate.translateInfo}` : loading ? message.forum.translate.loading : message.forum.translate.translateText }}
     </a>
     <div v-if="!loading && showTranslation" :class="cn('mt-2 w-full whitespace-pre-wrap', props.class)" v-html="displayText" />
-    <p v-if="!showDefaultTrigger && showTranslation" class="mt-2 w-full cursor-pointer text-center text-right text-sm color-[var(--vp-c-text-3)] hover:underline" @click="startTranslate">
+    <p v-if="!showDefaultTrigger && showTranslation" class="text-sm color-[var(--vp-c-text-3)] mt-2 text-center text-right w-full cursor-pointer hover:underline" @click="startTranslate">
       * {{ loading ? message.forum.translate.loading : message.forum.translate.translateInfo }}
     </p>
     <div v-if="loading && !hideTranslation" class="slide-enter mt-2 w-full">

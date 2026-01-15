@@ -189,7 +189,7 @@ onMounted(() => {
     <div class="admin-dashboard">
       <!-- 权限检查 -->
       <template v-if="false">
-        <div class="min-h-[400px] flex items-center justify-center">
+        <div class="flex min-h-[400px] items-center justify-center">
           <Card class="w-[420px]">
             <CardHeader class="text-center">
               <CardTitle class="text-xl text-destructive">
@@ -206,7 +206,7 @@ onMounted(() => {
       <!-- 加载状态 -->
       <template v-else-if="loading">
         <div class="admin-container">
-          <div class="mb-6 border-b pb-6">
+          <div class="mb-6 pb-6 border-b">
             <Skeleton class="mb-2 h-10 w-48" />
             <Skeleton class="h-6 w-64" />
           </div>
@@ -216,7 +216,7 @@ onMounted(() => {
               <Skeleton v-for="i in 4" :key="i" class="h-10 w-24" />
             </div>
 
-            <div class="grid gap-4 lg:grid-cols-4 md:grid-cols-2">
+            <div class="gap-4 grid lg:grid-cols-4 md:grid-cols-2">
               <Skeleton v-for="i in 4" :key="i" class="h-32" />
             </div>
           </div>
@@ -227,12 +227,12 @@ onMounted(() => {
       <template v-else>
         <div class="admin-container">
           <!-- 页面标题 -->
-          <div class="mb-6 border-b pb-6">
+          <div class="mb-6 pb-6 border-b">
             <div>
-              <h1 class="text-3xl font-bold tracking-tight lg:text-4xl sm:text-3xl">
+              <h1 class="text-3xl tracking-tight font-bold lg:text-4xl sm:text-3xl">
                 管理后台
               </h1>
-              <p class="mt-2 text-lg text-muted-foreground">
+              <p class="text-lg text-muted-foreground mt-2">
                 站点管理控制面板
               </p>
             </div>
@@ -267,7 +267,7 @@ onMounted(() => {
               :enter="{ opacity: 1, y: 0, transition: { duration: 300 } }"
             >
               <!-- 统计卡片 -->
-              <div class="grid gap-4 lg:grid-cols-4 md:grid-cols-2">
+              <div class="gap-4 grid lg:grid-cols-4 md:grid-cols-2">
                 <Card
                   v-motion
                   :initial="{ opacity: 0, y: 20 }"
@@ -354,7 +354,7 @@ onMounted(() => {
               </div>
 
               <!-- 快速操作 -->
-              <div class="grid gap-4 md:grid-cols-2">
+              <div class="gap-4 grid md:grid-cols-2">
                 <Card>
                   <CardHeader>
                     <CardTitle>快速操作</CardTitle>
@@ -389,7 +389,7 @@ onMounted(() => {
                       <div
                         v-for="category in categoryStats"
                         :key="category.name"
-                        class="flex justify-between text-sm"
+                        class="text-sm flex justify-between"
                       >
                         <span>{{ category.name }}</span>
                         <span class="font-medium">{{ category.count }}</span>

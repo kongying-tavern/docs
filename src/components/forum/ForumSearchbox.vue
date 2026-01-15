@@ -45,16 +45,16 @@ watch(modelValue, (newVal) => {
 </script>
 
 <template>
-  <form class="w-full p-r-4">
+  <form class="p-r-4 w-full">
     <label
       for="default-search"
-      class="sr-only mb-2 text-sm text-gray-900 font-medium dark:text-white"
+      class="text-sm text-gray-900 font-medium mb-2 sr-only dark:text-white"
     >
       {{ message.ui.button.search }}
     </label>
     <div class="relative">
       <div
-        class="pointer-events-none absolute start-0 inset-y-0 mr-2 flex items-center pr-2"
+        class="mr-2 pr-2 flex pointer-events-none items-center start-0 inset-y-0 absolute"
       >
         <span class="vp-icon DocSearch-Search-Icon size-5" aria-hidden="true" />
       </div>
@@ -63,7 +63,7 @@ watch(modelValue, (newVal) => {
         ref="searchInput"
         v-model.trim="searchQuery"
         type="search"
-        class="block w-full rounded-full py-4 pl-8 text-4 c-[var(--vp-c-text-1)]"
+        class="text-4 c-[var(--vp-c-text-1)] py-4 pl-8 rounded-full w-full block"
         :placeholder="message.forum.header.search.placeholder"
         maxlength="50"
         required

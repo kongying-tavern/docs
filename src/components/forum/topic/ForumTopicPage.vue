@@ -51,45 +51,73 @@ const topicImages = computed(() => {
   <ClientOnly>
     <ForumLayout>
       <template #content>
-        <div v-if="!loading && topic" class="slide-enter mb-4">
-          <div class="w-full flex items-center justify-between">
-            <div class="relative min-w-0 flex flex-wrap items-center gap-[0.25rem] text-14">
-              <Button variant="ghost" class="mr-1 w-36px flex items-center rounded-full bg-[var(--vp-c-bg-alt)] max-sm:hidden" @click="backToPreviousPage()">
+        <div
+          v-if="!loading && topic"
+          class="slide-enter mb-4"
+        >
+          <div class="flex w-full items-center justify-between">
+            <div class="text-14 flex flex-wrap gap-[0.25rem] min-w-0 items-center relative">
+              <Button
+                variant="ghost"
+                class="mr-1 rounded-full bg-[var(--vp-c-bg-alt)] flex w-36px items-center max-sm:hidden"
+                @click="backToPreviousPage()"
+              >
                 <span class="i-lucide-arrow-left icon-btn" />
               </Button>
               <ForumUserHoverCard :user="topic.user">
                 <template #trigger>
-                  <User size="sm" :name="topic.user.username" :to="`../user/${topic.user.login}`" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
+                  <User
+                    size="sm"
+                    :name="topic.user.username"
+                    :to="`../user/${topic.user.login}`"
+                    :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
+                  />
                 </template>
               </ForumUserHoverCard>
               <ForumRoleBadge :author-id="topic.user.id" />
-              <span class="my-0 inline-block text-xs color-[--vp-c-text-3]">•</span>
+              <span class="text-xs color-[--vp-c-text-3] my-0 inline-block">•</span>
               <ForumTime
                 class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)]"
                 :date="topic.createdAt"
               />
             </div>
 
-            <ForumTopicDropdownMenu side="bottom" :topic-data="topic" @topic:close="backToPreviousPage" />
+            <ForumTopicDropdownMenu
+              side="bottom"
+              :topic-data="topic"
+              @topic:close="backToPreviousPage"
+            />
           </div>
 
-          <h3 v-if="topic.type !== 'BUG'" id="title" class="m-0 mb-xs mt-2 overflow-hidden break-words text-xl font-semibold md:mb-1 md:text-1.5rem">
+          <h3
+            v-if="topic.type !== 'BUG'"
+            id="title"
+            class="text-xl font-semibold m-0 mb-xs mt-2 break-words overflow-hidden md:text-1.5rem md:mb-1"
+          >
             {{ topic.title }}
           </h3>
 
-          <ForumTopicTypeBadge class="mt-3" :type="topic.type" />
+          <ForumTopicTypeBadge
+            class="mt-3"
+            :type="topic.type"
+          />
 
           <article
-            id="content" class="mt-3.5 overflow-hidden whitespace-pre-wrap font-size-4 line-height-6 opacity-99"
+            id="content"
+            class="font-size-4 line-height-6 mt-3.5 opacity-99 whitespace-pre-wrap overflow-hidden"
             v-html="renderedContent"
           />
 
           <ForumTopicTranslator
-            class="font-size-4 line-height-6" :content="renderedContent"
+            class="font-size-4 line-height-6"
+            :content="renderedContent"
             :source-language="topic?.language"
           />
 
-          <ForumTagList class="my-2" :data="topic?.tags" />
+          <ForumTagList
+            class="my-2"
+            :data="topic?.tags"
+          />
 
           <!-- 智能图片布局 -->
           <Images
@@ -98,21 +126,31 @@ const topicImages = computed(() => {
             class="mt-6"
           />
 
-          <ForumTopicFooter prev-page-link="./" :topic-id="String(topic.id)" :text="message.forum.topic.backToFeedbackForum" />
+          <ForumTopicFooter
+            prev-page-link="./"
+            :topic-id="String(topic.id)"
+            :text="message.forum.topic.backToFeedbackForum"
+          />
         </div>
 
         <ForumTopicSkeletonPage v-else />
 
-        <div class="vp-divider" />
+        <Separator />
 
         <ForumCommentArea
-          class="mt-8" repo="Feedback" :topic-id="params?.id" :topic-author-id="topic?.user.id || -1"
+          class="mt-8"
+          repo="Feedback"
+          :topic-id="params?.id"
+          :topic-author-id="topic?.user.id || -1"
           :comment-count="topic?.commentCount"
         />
       </template>
 
       <template #aside>
-        <ForumAside :show-button="false" :contact-us="true" />
+        <ForumAside
+          :show-button="false"
+          :contact-us="true"
+        />
       </template>
     </ForumLayout>
 

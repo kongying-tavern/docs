@@ -1,7 +1,7 @@
 import type { useTokenManager } from './useTokenManager'
 import { isObject } from 'lodash-es'
 import { toCamelCaseObject } from '@/utils'
-import { oauth as interKnotOauth } from '../apis/inter-knot.site/'
+import { oauth as interKnotOauth } from '../apis/inter-knot.site'
 import { createAuthError } from '../utils/auth-errors'
 import { log, LogGroup } from '../utils/auth-logger'
 

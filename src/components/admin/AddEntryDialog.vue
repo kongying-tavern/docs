@@ -641,15 +641,15 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
         <!-- 键名树状结构 -->
         <div v-if="formData.category || newCategory" class="space-y-2">
           <Label>现有键名结构</Label>
-          <div v-if="availableKeysTree.length > 0" class="max-h-[200px] overflow-auto border rounded p-3">
+          <div v-if="availableKeysTree.length > 0" class="p-3 border rounded max-h-[200px] overflow-auto">
             <KeyTreeView
               :tree="availableKeysTree"
               :selected="formData.key"
               @select="handleKeySelect"
             />
           </div>
-          <div v-else class="border rounded p-3 text-center text-muted-foreground">
-            <i class="i-lucide-folder-open mx-auto mb-2 h-6 w-6 opacity-50" />
+          <div v-else class="text-muted-foreground p-3 text-center border rounded">
+            <i class="i-lucide-folder-open mx-auto mb-2 opacity-50 h-6 w-6" />
             <p class="text-sm">
               该分类下暂无现有键名
             </p>
@@ -662,7 +662,7 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
         <!-- 数据类型选择 -->
         <div class="space-y-2">
           <Label>数据类型</Label>
-          <div class="mb-2 text-xs text-muted-foreground">
+          <div class="text-xs text-muted-foreground mb-2">
             当前选择: {{ formData.dataType }}
           </div>
           <Tabs :model-value="formData.dataType" class="w-full" @update:model-value="formData.dataType = $event">
@@ -709,8 +709,8 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
         </div>
 
         <!-- 重复警告 -->
-        <div v-if="duplicateWarning" class="rounded bg-destructive/10 p-3 text-sm text-destructive">
-          <i class="i-lucide-alert-triangle mr-2 inline h-4 w-4" />
+        <div v-if="duplicateWarning" class="text-sm text-destructive p-3 rounded bg-destructive/10">
+          <i class="i-lucide-alert-triangle mr-2 h-4 w-4 inline" />
           {{ duplicateWarning }}
         </div>
 
@@ -719,7 +719,7 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
           <Label>翻译内容</Label>
 
           <!-- 语言切换标签页 -->
-          <div class="flex gap-2 border-b">
+          <div class="border-b flex gap-2">
             <Button
               v-for="locale in availableLocales"
               :key="locale"
@@ -746,7 +746,7 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
 
             <!-- 正则表达式编辑器 -->
             <div v-else-if="formData.dataType === 'regex'" class="space-y-3">
-              <div class="grid grid-cols-2 gap-4">
+              <div class="gap-4 grid grid-cols-2">
                 <div class="space-y-2">
                   <Label>正则表达式模式</Label>
                   <Input
@@ -770,7 +770,7 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
             <!-- 对象数组编辑器 -->
             <div v-else-if="formData.dataType === 'array'" class="space-y-4">
               <!-- 字段配置 -->
-              <div class="border rounded p-3 space-y-3">
+              <div class="p-3 border rounded space-y-3">
                 <div class="flex items-center justify-between">
                   <Label class="text-sm font-medium">字段配置</Label>
                   <Button
@@ -786,7 +786,7 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
                 <div
                   v-for="(field, index) in arrayFieldConfig.fields"
                   :key="index"
-                  class="grid grid-cols-4 items-end gap-2"
+                  class="gap-2 grid grid-cols-4 items-end"
                 >
                   <div class="space-y-1">
                     <Label class="text-xs">字段名</Label>
@@ -839,11 +839,11 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
               <div
                 v-for="(arrayItem, index) in parsedTranslations[editingLocale] || []"
                 :key="index"
-                class="border rounded-lg p-4 space-y-3"
+                class="p-4 border rounded-lg space-y-3"
               >
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-muted-foreground font-medium">项目 #{{ index + 1 }}</span>
-                  <div class="flex items-center gap-2">
+                  <div class="flex gap-2 items-center">
                     <Button
                       v-if="index > 0"
                       size="sm"
@@ -872,7 +872,7 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
                   </div>
                 </div>
 
-                <div class="grid gap-3" :style="{ gridTemplateColumns: `repeat(${arrayFieldConfig.fields.length}, 1fr)` }">
+                <div class="gap-3 grid" :style="{ gridTemplateColumns: `repeat(${arrayFieldConfig.fields.length}, 1fr)` }">
                   <div
                     v-for="field in arrayFieldConfig.fields"
                     :key="field.name"
@@ -882,14 +882,14 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
                     <Input
                       :model-value="arrayItem[field.name] || ''"
                       :placeholder="field.placeholder"
-                      class="bg-background text-xs font-mono focus:bg-background hover:bg-background"
+                      class="text-xs font-mono bg-background focus:bg-background hover:bg-background"
                       @update:model-value="updateArrayItem(editingLocale, index, field.name, $event)"
                     />
                   </div>
                 </div>
               </div>
 
-              <div v-if="!(parsedTranslations[editingLocale] || []).length" class="py-4 text-center text-muted-foreground">
+              <div v-if="!(parsedTranslations[editingLocale] || []).length" class="text-muted-foreground py-4 text-center">
                 暂无数组项，点击上方"添加项目"按钮开始添加
               </div>
             </div>
@@ -899,8 +899,8 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
         <!-- JSON数据预览 -->
         <div v-if="jsonPreview" class="space-y-2">
           <Label>JSON数据预览</Label>
-          <div class="max-h-[200px] overflow-auto border rounded bg-muted/30 p-3">
-            <pre class="whitespace-pre-wrap text-xs font-mono">{{ jsonPreview }}</pre>
+          <div class="p-3 border rounded bg-muted/30 max-h-[200px] overflow-auto">
+            <pre class="text-xs font-mono whitespace-pre-wrap">{{ jsonPreview }}</pre>
           </div>
         </div>
       </div>

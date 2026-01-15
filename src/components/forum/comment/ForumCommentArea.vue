@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
-import { nextTick, onMounted, onUnmounted, ref, useTemplateRef, watchEffect } from 'vue'
+import { nextTick, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
@@ -44,38 +44,42 @@ const commentInputBox = useTemplateRef('commentInputBox')
 const { right, left, width } = useElementBounding(commentArea)
 const [CommentAreaCommentInputBox, UseCommentAreaCommentInputBox] = createReusableTemplate()
 const isInitialized = ref(false)
+let stopObserver: (() => void) | null = null
 
-watchEffect(
-  async () => {
-    if (!isInitialized.value
-      && props.commentCount !== undefined
-      && props.commentCount !== null
-      && props.commentCount !== -1) {
+watch(
+  () => props.commentCount,
+  async (count) => {
+    if (!isInitialized.value && count && count > 0) {
       isInitialized.value = true
       await initialize()
     }
   },
+  { immediate: true },
 )
 
-onMounted(async () => {
-  if (renderComments.value.length < 5)
-    return
-
-  useIntersectionObserver(
-    commentInputBox,
-    ([entry]) => {
-      setCommentInputBoxVisible(entry?.isIntersecting || false)
-    },
-  )
-})
-
-onUnmounted(cleanup)
+watch(
+  renderComments,
+  async (list) => {
+    if (!stopObserver && list.length >= 5 && commentInputBox.value) {
+      const { stop } = useIntersectionObserver(
+        commentInputBox,
+        ([entry]) => {
+          setCommentInputBoxVisible(!!entry?.isIntersecting)
+        },
+      )
+      stopObserver = stop
+    }
+  },
+  { flush: 'post' },
+)
 
 // Scroll to comments when loading completes
 watchOnce(commentLoading, async () => {
   await nextTick()
   scrollTo()
 })
+
+onUnmounted(cleanup)
 </script>
 
 <template>
@@ -87,9 +91,9 @@ watchOnce(commentLoading, async () => {
       />
     </CommentAreaCommentInputBox>
     <div v-if="!isClosedComment" ref="commentArea" class="pb-24">
-      <p id="reply" class="mb-5.5 mt-4 font-size-5 line-height-[21px] font-[var(--vp-font-family-subtitle)]">
+      <p id="reply" class="font-size-5 line-height-[21px] font-[var(--vp-font-family-subtitle)] mb-5.5 mt-4">
         {{ message.forum.comment.commentCount }}
-        <span class="vertical-text-top font-size-3.5 color-[var(--vp-c-text-3)]">
+        <span class="font-size-3.5 color-[var(--vp-c-text-3)] vertical-text-top">
           {{ allCommentCount }}
         </span>
       </p>
@@ -113,11 +117,11 @@ watchOnce(commentLoading, async () => {
 
       <Separator
         v-if="currentCommentPage === 1 && commentLoading"
-        class="my-8 inline-block w-full text-center font-size-3 c-[var(--vp-c-text-3)]"
+        class="font-size-3 c-[var(--vp-c-text-3)] my-8 text-center w-full inline-block"
         :label="message.forum.comment.loadingComment"
       />
       <Teleport to="body">
-        <div v-if="!commentInputBoxIsVisible" class="fixed bottom-0 z-2 border-t bg-[--vp-c-bg] pt-8" :style="{ left: `${left}px`, right: `${right}px`, width: isMobile ? '100vw' : `${width}px` }">
+        <div v-if="!commentInputBoxIsVisible" class="pt-8 border-t bg-[--vp-c-bg] bottom-0 fixed z-2" :style="{ left: `${left}px`, right: `${right}px`, width: isMobile ? '100vw' : `${width}px` }">
           <UseCommentAreaCommentInputBox class="pb-6" />
         </div>
       </Teleport>

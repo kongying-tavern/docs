@@ -399,7 +399,7 @@ function getDisplayValue(value: any): string {
         </DialogTitle>
         <DialogDescription>
           <div v-if="entry" class="space-y-2">
-            <p>字段路径: <code class="rounded bg-muted px-1 text-sm">{{ entry.path }}</code></p>
+            <p>字段路径: <code class="text-sm px-1 rounded bg-muted">{{ entry.path }}</code></p>
             <p>类型: <span class="font-medium">{{ getFieldMetadata(entry).type.toUpperCase() }}</span></p>
             <p class="text-xs text-muted-foreground">
               {{ getFieldMetadata(entry).description }}
@@ -410,11 +410,11 @@ function getDisplayValue(value: any): string {
 
       <div v-if="entry" class="space-y-6">
         <!-- 提示信息 -->
-        <div v-if="getEditorHints(entry).length > 0" class="rounded-lg bg-muted/50 p-4">
-          <h4 class="mb-2 text-sm font-medium">
+        <div v-if="getEditorHints(entry).length > 0" class="p-4 rounded-lg bg-muted/50">
+          <h4 class="text-sm font-medium mb-2">
             编辑提示:
           </h4>
-          <ul class="list-disc list-inside text-sm space-y-1">
+          <ul class="text-sm list-disc list-inside space-y-1">
             <li v-for="hint in getEditorHints(entry)" :key="hint" class="text-muted-foreground">
               {{ hint }}
             </li>
@@ -423,7 +423,7 @@ function getDisplayValue(value: any): string {
 
         <!-- 多语言编辑标签页 -->
         <div class="space-y-4">
-          <div class="flex gap-2 border-b">
+          <div class="border-b flex gap-2">
             <Button
               v-for="locale in availableLocales"
               :key="locale"
@@ -448,7 +448,7 @@ function getDisplayValue(value: any): string {
 
           <!-- 正则表达式字段 -->
           <div v-else-if="getFieldMetadata(entry).type === 'regex'" class="space-y-3">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="gap-4 grid grid-cols-2">
               <div class="space-y-2">
                 <Label>正则表达式模式</Label>
                 <Input
@@ -472,7 +472,7 @@ function getDisplayValue(value: any): string {
           <div v-else-if="getFieldMetadata(entry).type === 'meta'" class="space-y-3">
             <!-- 单个 Meta 标签编辑 -->
             <div v-if="parsedFields[editingLocale]?.tag" class="space-y-3">
-              <div class="grid grid-cols-2 gap-4">
+              <div class="gap-4 grid grid-cols-2">
                 <div class="space-y-2">
                   <Label>标签类型</Label>
                   <Input
@@ -490,7 +490,7 @@ function getDisplayValue(value: any): string {
                   />
                 </div>
               </div>
-              <div class="grid grid-cols-2 gap-4">
+              <div class="gap-4 grid grid-cols-2">
                 <div class="space-y-2">
                   <Label>Content</Label>
                   <Input
@@ -527,7 +527,7 @@ function getDisplayValue(value: any): string {
               <div
                 v-for="(metaTag, index) in parsedFields[editingLocale]?.metaTags"
                 :key="metaTag.id"
-                class="border rounded-lg p-4 space-y-3"
+                class="p-4 border rounded-lg space-y-3"
               >
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-muted-foreground font-medium">Meta 标签 #{{ index + 1 }}</span>
@@ -540,7 +540,7 @@ function getDisplayValue(value: any): string {
                   </Button>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="gap-3 grid grid-cols-2">
                   <div class="space-y-1">
                     <Label class="text-xs">Property</Label>
                     <Input
@@ -561,7 +561,7 @@ function getDisplayValue(value: any): string {
                   </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="gap-3 grid grid-cols-2">
                   <div class="space-y-1">
                     <Label class="text-xs">Name (可选)</Label>
                     <Input
@@ -603,11 +603,11 @@ function getDisplayValue(value: any): string {
               <div
                 v-for="(arrayItem, index) in parsedFields[editingLocale]?.arrayItems"
                 :key="arrayItem.id"
-                class="border rounded-lg p-4 space-y-3"
+                class="p-4 border rounded-lg space-y-3"
               >
                 <div class="flex items-center justify-between">
                   <span class="text-sm text-muted-foreground font-medium">项目 #{{ index + 1 }}</span>
-                  <div class="flex items-center gap-2">
+                  <div class="flex gap-2 items-center">
                     <Button
                       size="sm"
                       variant="ghost"
@@ -625,25 +625,25 @@ function getDisplayValue(value: any): string {
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 gap-3">
+                <div class="gap-3 grid grid-cols-1">
                   <div
                     v-for="(value, fieldKey) in arrayItem"
                     :key="fieldKey"
-                    class="flex items-center gap-2"
+                    class="flex gap-2 items-center"
                   >
                     <template v-if="fieldKey !== 'id'">
-                      <Label class="min-w-[80px] flex items-center gap-1 text-xs">
+                      <Label class="text-xs flex gap-1 min-w-[80px] items-center">
                         {{ fieldKey }}
                         <i
                           v-if="isRegexField(value)"
-                          class="i-lucide-code h-3 w-3 text-blue-500"
+                          class="i-lucide-code text-blue-500 h-3 w-3"
                           title="正则表达式"
                         />
                       </Label>
                       <Input
                         :model-value="getDisplayValue(value)"
                         :placeholder="isRegexField(value) ? '例如: /pattern/flags' : `输入 ${fieldKey}...`"
-                        class="flex-1 text-xs"
+                        class="text-xs flex-1"
                         :class="isRegexField(value) ? 'font-mono' : ''"
                         @update:model-value="updateArrayItem(editingLocale, index, fieldKey as string, $event)"
                       />
@@ -668,7 +668,7 @@ function getDisplayValue(value: any): string {
               <div
                 v-for="(value, key) in parsedFields[editingLocale]"
                 :key="key"
-                class="grid grid-cols-3 items-center gap-2"
+                class="gap-2 grid grid-cols-3 items-center"
               >
                 <Label class="text-sm">{{ key }}</Label>
                 <Input
@@ -693,18 +693,18 @@ function getDisplayValue(value: any): string {
             <Label class="text-muted-foreground">{{ getLocaleDisplayName(editingLocale) }} (只读)</Label>
             <Input
               :value="entry.translations[editingLocale]"
-              class="bg-muted font-mono"
+              class="font-mono bg-muted"
               readonly
             />
             <p class="text-xs text-amber-600">
-              <i class="i-lucide-alert-triangle mr-1 inline h-3 w-3" />
+              <i class="i-lucide-alert-triangle mr-1 h-3 w-3 inline" />
               此字段为系统配置，修改可能影响应用功能
             </p>
           </div>
         </div>
 
         <!-- 操作按钮 -->
-        <div class="flex justify-end gap-2">
+        <div class="flex gap-2 justify-end">
           <Button variant="outline" @click="closeEditor">
             取消
           </Button>

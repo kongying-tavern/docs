@@ -46,15 +46,15 @@ function handleButtonClick() {
 
 <template>
   <div class="slide-enter Headline">
-    <div class="border-b pb-6">
+    <div class="pb-6 border-b">
       <div class="headline-header flex items-start justify-between">
         <div class="headline-content">
           <h1
-            class="title text-3xl font-bold tracking-tight lg:text-5xl sm:text-4xl"
+            class="title text-3xl tracking-tight font-bold lg:text-5xl sm:text-4xl"
           >
             {{ frontmatter.title }}
           </h1>
-          <p class="lead mt-4 text-lg">
+          <p class="lead text-lg mt-4">
             {{ frontmatter.subtext }}
           </p>
           <p v-if="frontmatter.action" class="action">

@@ -161,7 +161,7 @@ function handleInitializeData() {
             <CardTitle>翻译条目</CardTitle>
             <CardDescription>管理和编辑多语言翻译内容</CardDescription>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex gap-2 items-center">
             <AlertDialog>
               <AlertDialogTrigger as-child>
                 <Button
@@ -198,7 +198,7 @@ function handleInitializeData() {
             >
               <i class="i-lucide-download mr-2 h-4 w-4" />
               导出变更
-              <span v-if="exportLogic.changedLocales.value.length > 0" class="ml-1 rounded bg-primary px-1 text-xs text-primary-foreground">
+              <span v-if="exportLogic.changedLocales.value.length > 0" class="text-xs text-primary-foreground ml-1 px-1 rounded bg-primary">
                 {{ exportLogic.changedLocales.value.length }}
               </span>
             </Button>

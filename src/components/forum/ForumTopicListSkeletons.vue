@@ -21,12 +21,12 @@ const skeletonCount = computed(() => {
 
 <template>
   <TopicCardSkeleton>
-    <div class="forum-topic-item my-1 w-full rounded-xl px-4 py-2">
+    <div class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full">
       <div class="topic-content">
         <!-- 头部用户信息和时间 -->
-        <div class="flex justify-between break-words font-size-5">
-          <div class="flex items-center gap-2">
-            <Skeleton class="h-6 w-6 rounded-full" />
+        <div class="font-size-5 flex break-words justify-between">
+          <div class="flex gap-2 items-center">
+            <Skeleton class="rounded-full h-6 w-6" />
             <Skeleton class="h-4 w-20" />
             <Skeleton class="h-4 w-16" />
           </div>
@@ -41,26 +41,26 @@ const skeletonCount = computed(() => {
 
         <!-- 标签 -->
         <div class="mt-2 flex gap-2">
-          <Skeleton class="h-6 w-20 rounded-full" />
-          <Skeleton class="h-6 w-20 rounded-full" />
+          <Skeleton class="rounded-full h-6 w-20" />
+          <Skeleton class="rounded-full h-6 w-20" />
         </div>
 
         <!-- 底部操作栏 -->
         <div class="mt-4 flex justify-between">
-          <Skeleton class="h-8 w-24 rounded-full" />
+          <Skeleton class="rounded-full h-8 w-24" />
         </div>
       </div>
     </div>
   </TopicCardSkeleton>
 
   <TopicCompactViewSkeleton>
-    <div class="forum-topic-item my-1 w-full rounded-xl px-4 py-2">
+    <div class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full">
       <div class="topic-content">
         <!-- 头部用户信息和时间 -->
-        <div class="flex justify-between break-words font-size-5">
-          <div class="flex flex-wrap items-center gap-[0.25rem]">
-            <div class="flex items-center gap-1.5">
-              <Skeleton class="h-6 w-6 rounded-full" />
+        <div class="font-size-5 flex break-words justify-between">
+          <div class="flex flex-wrap gap-[0.25rem] items-center">
+            <div class="flex gap-1.5 items-center">
+              <Skeleton class="rounded-full h-6 w-6" />
               <div class="flex flex-col">
                 <Skeleton class="h-4 w-16" />
               </div>
@@ -71,19 +71,19 @@ const skeletonCount = computed(() => {
         </div>
 
         <!-- 主题内容和图片 -->
-        <div class="w-full flex items-center justify-between">
+        <div class="flex w-full items-center justify-between">
           <div class="w-full overflow-hidden">
             <Skeleton class="h-6 w-85%" />
             <Skeleton class="mt-2 h-5 w-70%" />
           </div>
-          <div class="relative ml-2 mt-2 h-75px min-w-100px border rounded-sm">
+          <div class="ml-2 mt-2 border rounded-sm h-75px min-w-100px relative">
             <Skeleton class="h-full w-full" />
           </div>
         </div>
 
         <!-- 底部操作栏 -->
-        <div class="mr-2 mt-2 w-full flex items-center justify-between">
-          <Skeleton class="h-8 w-24 rounded-full" />
+        <div class="mr-2 mt-2 flex w-full items-center justify-between">
+          <Skeleton class="rounded-full h-8 w-24" />
           <Skeleton class="h-4 w-16" />
         </div>
       </div>
@@ -102,13 +102,13 @@ const skeletonCount = computed(() => {
     <template v-if="viewMode === 'Card'">
       <div v-for="i in skeletonCount" :key="`card-${i}`">
         <UseTopicCardSkeleton />
-        <div class="vp-divider" />
+        <Separator />
       </div>
     </template>
     <template v-else>
       <div v-for="i in skeletonCount" :key="`compact-${i}`">
         <UseTopicCompactViewSkeleton />
-        <div class="vp-divider" />
+        <Separator />
       </div>
     </template>
   </TransitionGroup>

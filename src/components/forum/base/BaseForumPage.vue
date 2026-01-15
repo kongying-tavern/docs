@@ -62,7 +62,11 @@ const isTopicsLoading = computed(() => {
   <ClientOnly>
     <ForumLayout>
       <template #header>
-        <component :is="headerComponent" v-if="headerComponent" v-bind="$attrs" />
+        <component
+          :is="headerComponent"
+          v-if="headerComponent"
+          v-bind="$attrs"
+        />
         <slot name="header" />
       </template>
 
@@ -70,7 +74,11 @@ const isTopicsLoading = computed(() => {
         <slot name="content-before" />
 
         <ForumTopicMenubar v-if="showMenubar" />
-        <div v-if="showMenubar" class="mt-2 vp-divider" />
+        <Separator
+          v-if="showMenubar"
+          div
+          class="mt-2"
+        />
 
         <slot name="content-main">
           <ForumTopicsList
@@ -78,9 +86,13 @@ const isTopicsLoading = computed(() => {
             :data="renderData"
             :loading="isTopicsLoading"
             :load-more="store.loadMoreTopics"
+            :refresh-data="store.loadForumData"
           />
 
-          <ForumLoadState :loading="isTopicsLoading" :text="store.loadStateMessage" />
+          <ForumLoadState
+            :loading="isTopicsLoading"
+            :text="store.loadStateMessage"
+          />
         </slot>
 
         <slot name="content-after" />
@@ -88,7 +100,10 @@ const isTopicsLoading = computed(() => {
 
       <template #aside>
         <slot name="aside">
-          <ForumAside v-if="showAside" v-bind="asideProps" />
+          <ForumAside
+            v-if="showAside"
+            v-bind="asideProps"
+          />
         </slot>
       </template>
     </ForumLayout>

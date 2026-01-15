@@ -115,7 +115,7 @@ async function copyFieldValue() {
     >
       <Input
         v-model="editingValue"
-        class="h-8 border border-border border-solid text-sm"
+        class="text-sm border border-border border-solid h-8"
         autofocus
         @keydown="handleKeydown"
         @blur="saveEdit"
@@ -123,7 +123,7 @@ async function copyFieldValue() {
     </div>
     <div
       v-else
-      class="group relative max-w-[160px] truncate rounded px-2 py-1 text-sm transition-all duration-200 -mx-2 -my-1 hover:bg-muted/50"
+      class="group text-sm px-2 py-1 rounded max-w-[160px] truncate transition-all duration-200 relative -mx-2 -my-1 hover:bg-muted/50"
       :title="entry.translations[locale]"
       @click="startEditing"
     >
@@ -145,12 +145,12 @@ async function copyFieldValue() {
         v-if="entry.translations[locale]"
         variant="ghost"
         size="sm"
-        class="absolute right-0 top-0 h-full w-6 opacity-0 transition-opacity group-hover:opacity-100"
+        class="opacity-0 h-full w-6 transition-opacity right-0 top-0 absolute group-hover:opacity-100"
         @click.stop="copyFieldValue"
       >
         <i
           v-if="copyingField"
-          class="i-lucide-check h-3 w-3 text-green-600"
+          class="i-lucide-check text-green-600 h-3 w-3"
         />
         <i
           v-else

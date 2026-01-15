@@ -58,10 +58,20 @@ const sortedList = computed(() => {
     }"
   >
     <CarouselContent class="-ml-1">
-      <CarouselItem v-for="topic in [...sortedList, ...presetList]" :key="topic.id" class="pl-4 lg:basis-1/4 md:basis-1/2">
-        <BentoGridItem class="border border-[var(--vp-c-divider)]" :to="withBase(getLangPath(localeIndex) + ('relativeLink' in topic ? topic.relativeLink : `feedback/topic/${topic.id}`))">
+      <CarouselItem
+        v-for="topic in [...sortedList, ...presetList]"
+        :key="topic.id"
+        class="pl-4 lg:basis-1/4 md:basis-1/2"
+      >
+        <BentoGridItem
+          class="border border-[var(--vp-c-divider)] border-solid"
+          :to="withBase(getLangPath(localeIndex) + ('relativeLink' in topic ? topic.relativeLink : `feedback/topic/${topic.id}`))"
+        >
           <template #icon>
-            <span class="icon-btn size-6" :class="'icon' in topic ? topic.icon : 'i-lucide-pin'" />
+            <span
+              class="icon-btn size-6"
+              :class="'icon' in topic ? topic.icon : 'i-lucide-pin'"
+            />
           </template>
 
           <template #title>
@@ -71,12 +81,22 @@ const sortedList = computed(() => {
           </template>
 
           <template #description>
-            <User size="xs" :name="topic.user.username" :avatar="{ src: topic.user.avatar, alt: topic.user.login }" />
+            <User
+              size="xs"
+              :name="topic.user.username"
+              :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
+            />
           </template>
         </BentoGridItem>
       </CarouselItem>
     </CarouselContent>
-    <CarouselPrevious v-if="canScrollPrev" class="left-1rem" />
-    <CarouselNext v-if="canScrollNext" class="right-1rem" />
+    <CarouselPrevious
+      v-if="canScrollPrev"
+      class="left-1rem"
+    />
+    <CarouselNext
+      v-if="canScrollNext"
+      class="right-1rem"
+    />
   </Carousel>
 </template>

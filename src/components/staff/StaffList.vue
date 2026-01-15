@@ -1,7 +1,7 @@
 // @unocss-includes
 <script setup lang="ts">
 import type { StaffListItem } from './types'
-import Timeline from '@/components/ui/Timeline.vue'
+import Timeline from '@/components/ui/timeline.vue'
 
 const { list, title, desc } = defineProps<{
   list: StaffListItem[]
@@ -23,21 +23,21 @@ const { list, title, desc } = defineProps<{
       #[item.id]
     >
       <div
-        class="grid grid-cols-[repeat(auto-fit,minmax(150px,3fr))] ml-0 h-fit w-full justify-items-center md:mt-62px md:justify-items-stretch"
+        class="ml-0 grid grid-cols-[repeat(auto-fit,minmax(150px,3fr))] h-fit w-full justify-items-center md:mt-62px md:justify-items-stretch"
       >
-        <h3 :id="item.id" class="col-span-full mb-4 mt-1 w-full text-center text-2xl c-[var(--vp-c-text-1)] font-medium md:hidden md:text-left">
+        <h3 :id="item.id" class="text-2xl c-[var(--vp-c-text-1)] font-medium mb-4 mt-1 text-center col-span-full w-full md:text-left md:hidden">
           {{ item.label }}
         </h3>
 
         <div
           v-for="(member, index) in item.members"
           :key="member.name"
-          class="member mb-8 text-xs text-neutral-800 font-normal md:text-sm"
+          class="member text-xs text-neutral-800 font-normal mb-8 md:text-sm"
         >
-          <p class="view-fade-y member-name w-full text-center c-[var(--vp-c-text-1)] font-[var(--vp-font-family-subtitle)] md:text-left">
+          <p class="view-fade-y member-name c-[var(--vp-c-text-1)] font-[var(--vp-font-family-subtitle)] text-center w-full md:text-left">
             {{ member.name }}
           </p>
-          <p v-if="member?.title" class="view-fade-y member-title w-full text-center c-[var(--vp-c-text-2)] md:text-right">
+          <p v-if="member?.title" class="view-fade-y member-title c-[var(--vp-c-text-2)] text-center w-full md:text-right">
             {{ member.title }}
           </p>
           <div

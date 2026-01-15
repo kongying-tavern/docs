@@ -7,6 +7,7 @@ export interface CommentStyleConfig {
   content: string
 }
 
+// @unocss-include
 export const COMMENT_STYLES: Record<'small' | 'normal', CommentStyleConfig> = {
   small: {
     container: 'py-2',
@@ -18,7 +19,7 @@ export const COMMENT_STYLES: Record<'small' | 'normal', CommentStyleConfig> = {
   },
   normal: {
     container: 'mt-.5',
-    contentContainer: 'border-b-1 border-[var(--vp-c-divider)] pb-3 flex-col',
+    contentContainer: 'b-1 border-[var(--vp-c-divider)] border-b-solid pb-3 flex-col',
     avatarSize: 'md',
     leftWidth: 'w-[64px] mr-2',
     header: 'mt-2',

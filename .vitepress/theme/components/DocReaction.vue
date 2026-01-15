@@ -34,7 +34,7 @@ const feedbackMessage = computed(() => {
     : theme.value.docReaction.feedbackFailMsg
 })
 
-const additionalMessage = computed(() => {
+const additionalMessage = computed((): string => {
   const isFormEditingOrSuccess = feedbackForm.value?.isEditing || reaction.setReactionResponse?.statusCode === 200
   const isDislikeState = reaction.reactionState === 'dislike'
 
@@ -54,7 +54,7 @@ const styles = computed(() => {
     }
   }
   return {
-    container: 'border-t border-[var(--vp-c-divider)] border-t pt-36px mt-24px grid gap-row-8px',
+    container: 'border-t border-[var(--vp-c-divider)] border-t-solid border-t pt-36px mt-24px grid gap-row-8px',
     message: 'inline-block fill-current-color flex-basis-20px flex-shrink-0 font-size-1rem mr-2 font-[var(--vp-font-family-subtitle)]',
     buttonContainer: 'flex mt-3',
     button: 'font-size-20px h-36px line-height-36px mr-12px text-center w-60px rounded-4px bg-[var(--vp-c-bg-soft)]',

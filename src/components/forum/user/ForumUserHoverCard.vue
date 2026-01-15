@@ -62,42 +62,68 @@ function sendMessage() {
 
 <template>
   <HoverCard>
-    <HoverCardTrigger as-child @click="openUserProfilePage">
+    <HoverCardTrigger
+      as-child
+      @click="openUserProfilePage"
+    >
       <slot name="trigger" />
     </HoverCardTrigger>
-    <HoverCardContent align="end" class="w-72 p-4">
+    <HoverCardContent
+      align="end"
+      class="p-4 w-72"
+    >
       <div class="flex flex-col gap-3">
         <!-- 用户信息头部 -->
-        <div class="flex items-start gap-3">
+        <div class="flex gap-3 items-start">
           <Avatar
-            :src="userInfo?.avatar" :alt="userInfo?.username" class="h-12 w-12"
+            :src="userInfo?.avatar"
+            :alt="userInfo?.username"
+            class="h-12 w-12"
             img-class="size-full rounded-full object-cover"
           />
 
           <div class="flex-1">
-            <div class="flex items-center gap-2">
-              <a :href="href" :target="userInfo?.username" :alt="userInfo?.username">
+            <div class="flex gap-2 items-center">
+              <a
+                :href="href"
+                :target="userInfo?.username"
+                :alt="userInfo?.username"
+              >
                 <h3 class="text-base text-gray-900 font-bold dark:text-white">
                   {{ userInfo?.username || 'Unknown' }}
                 </h3>
               </a>
-              <span v-if="role" class="rounded-full">
+              <span
+                v-if="role"
+                class="rounded-full"
+              >
                 <ForumRoleBadge :type="role" />
               </span>
             </div>
 
-            <p class="line-clamp-2 mt-1 text-xs text-gray-600 dark:text-gray-400">
+            <p class="text-xs text-gray-600 mt-1 line-clamp-2 dark:text-gray-400">
               {{ userInfo?.bio || message.forum.labels.lazyPerson }}
             </p>
           </div>
         </div>
 
-        <div class="mt-1 flex justify-end gap-2">
-          <Button variant="outline" size="sm" class="border border-[var(--vp-c-divider)] rounded-full border-solid" :disabled="getUserLoading" @click="sendMessage">
-            <span class="i-lucide-mail mr-1 text-sm" />
+        <div class="mt-1 flex gap-2 justify-end">
+          <Button
+            variant="outline"
+            size="sm"
+            class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+            :disabled="getUserLoading"
+            @click="sendMessage"
+          >
+            <span class="i-lucide-mail text-sm mr-1" />
             <span>{{ message.forum.labels.privateMessage }}</span>
           </Button>
-          <ForumFollowUserButton v-if="userInfo?.login" size="sm" class="border border-[var(--vp-c-divider)] rounded-full border-solid" :user="userInfo?.login" />
+          <ForumFollowUserButton
+            v-if="userInfo?.login"
+            size="sm"
+            class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+            :user="userInfo?.login"
+          />
         </div>
       </div>
     </HoverCardContent>

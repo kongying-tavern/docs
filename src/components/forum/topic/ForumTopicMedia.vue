@@ -30,11 +30,14 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
 </script>
 
 <template>
-  <div v-if="(isCardMode && hasImages) || shouldShowInCompact" class="topic-media">
+  <div
+    v-if="(isCardMode && hasImages) || shouldShowInCompact"
+    class="topic-media"
+  >
     <!-- Compact Mode - Single Image Preview or Placeholder -->
     <div
       v-if="isCompactMode"
-      class="relative ml-2 mt-1 h-75px min-w-100px flex items-center overflow-hidden border border-[var(--vp-c-divider)] rounded-sm transition"
+      class="ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px transition items-center relative overflow-hidden"
     >
       <Image
         v-if="primaryImage"
@@ -45,7 +48,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
       <!-- Placeholder for topics without images -->
       <div
         v-else
-        class="size-full flex items-center justify-center bg-[--vp-c-bg-soft] transition-colors duration-200 hover:bg-[--vp-c-bg-alt]"
+        class="bg-[--vp-c-bg-soft] flex size-full transition-colors duration-200 items-center justify-center hover:bg-[--vp-c-bg-alt]"
       >
         <span class="i-lucide-image text-[var(--vp-c-text-3)] opacity-60" />
       </div>
@@ -53,9 +56,9 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
       <!-- Multiple Images Indicator for Compact Mode -->
       <span
         v-if="hasMultipleImages"
-        class="absolute right-1 top-1 h-18px flex items-center justify-center rounded-2px bg-[rgba(0,0,0,.5)] p-1 font-size-xs c-white"
+        class="font-size-xs c-white p-1 rounded-2px bg-[rgba(0,0,0,.5)] flex h-18px items-center right-1 top-1 justify-center absolute"
       >
-        <span class="i-lucide-image mr-1 size-3 bg-white" />
+        <span class="i-lucide-image mr-1 bg-white size-3" />
         {{ imageCount }}
       </span>
     </div>
@@ -73,7 +76,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
         :width="image.width"
         :height="image.height"
         container-class="!w-auto"
-        class="h-100px border border-[var(--vp-c-divider)] rounded object-cover"
+        class="border border-[var(--vp-c-divider)] rounded border-solid h-100px object-cover"
       />
     </div>
   </div>
