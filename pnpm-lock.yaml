@@ -31,8 +31,8 @@ catalogs:
       specifier: ^1.2.1
       version: 1.2.1
     unocss-preset-shadcn:
-      specifier: ^1.0.1
-      version: 1.0.1
+      specifier: ^0.5.0
+      version: 0.5.0
     vite:
       specifier: ^7.1.7
       version: 7.1.7
@@ -123,6 +123,9 @@ catalogs:
     lint-staged:
       specifier: 15.3.0
       version: 15.3.0
+    lucide-vue-next:
+      specifier: 0.562.0
+      version: 0.562.0
     markdownlint-cli:
       specifier: 0.41.0
       version: 0.41.0
@@ -533,7 +536,7 @@ importers:
         specifier: catalog:frontend
         version: 1.10.0
       lucide-vue-next:
-        specifier: ^0.562.0
+        specifier: catalog:dev
         version: 0.562.0(vue@3.5.22(typescript@5.9.2))
       markdown-it-attrs:
         specifier: catalog:markdown
@@ -591,7 +594,7 @@ importers:
         version: 1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
       unocss-preset-shadcn:
         specifier: catalog:build
-        version: 1.0.1(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
+        version: 0.5.0(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
       vaul-vue:
         specifier: catalog:frontend
         version: 0.4.1(reka-ui@2.5.1(typescript@5.9.2)(vue@3.5.22(typescript@5.9.2)))(vue@3.5.22(typescript@5.9.2))
@@ -662,9 +665,6 @@ importers:
       '@unocss/preset-tagify':
         specifier: catalog:dev
         version: 0.64.1
-      '@unocss/preset-wind4':
-        specifier: ^66.5.12
-        version: 66.5.12
       conventional-changelog-cli:
         specifier: catalog:dev
         version: 5.0.0(conventional-commits-filter@5.0.0)
@@ -3123,9 +3123,6 @@ packages:
   '@unocss/core@0.64.1':
     resolution: {integrity: sha512-D1ULd70a24/k6kGyHCIijbrrIn9UjFUEBg2R4xKX2/ViQb1k2MIgOs4VS20MkJX6kbZXqqm/zAFHzDhsQGIhBA==}
 
-  '@unocss/core@66.5.12':
-    resolution: {integrity: sha512-/m6su0OXcCYRwIMf8sobBjZTC25iBLUnQVcfyvHOJwLJzOMr8dtNmZbqTs7+Kouz40jlPF7pR+ufFrN+s5ZD7g==}
-
   '@unocss/core@66.5.2':
     resolution: {integrity: sha512-POSEpwj2FJtrDgzSq6nVhAJbnGIYPqtEMTpzQXfeFqPDMidAXjaH/xZUeTdHDbI9Jg700smrRXJtFJrJFXkmiQ==}
 
@@ -3136,9 +3133,6 @@ packages:
   '@unocss/eslint-plugin@66.5.2':
     resolution: {integrity: sha512-e44HkFSWCecAnTU813/+aN7UNpxJHkwM4rUYDBvYi2ZVIPb5UdfH9y+i0M1Vc40qtACDbwKbDecN0DND5EnusA==}
     engines: {node: '>=14'}
-
-  '@unocss/extractor-arbitrary-variants@66.5.12':
-    resolution: {integrity: sha512-UGzHhLaaSu/YT0rmXtdoE1ttLvwWsI/RVTwNNy3QnL/y4Hvmo7T1MtG5Ri5btfqfDWPzrQLQiTvI8loGCD8lFQ==}
 
   '@unocss/extractor-arbitrary-variants@66.5.2':
     resolution: {integrity: sha512-MNHzhA4RKJJVo6D5Uc+SkPfeugO1KXDt0GFg0FkOUKTTnahxyXNvd9BG9HHYlKSiaYCgUhFmysNhv04Gza+CNg==}
@@ -3182,9 +3176,6 @@ packages:
   '@unocss/preset-wind3@66.5.2':
     resolution: {integrity: sha512-qgzLiPd6CkepLLssBod7ejQ4sKKqAvCOyjqpp0eFmHVUKGBEGPzOI1/WnbrAzvTHDonbSc52kB/XEWlgWmDhhA==}
 
-  '@unocss/preset-wind4@66.5.12':
-    resolution: {integrity: sha512-JVddnLJ6NOk7hOXA0Y8SYbQEu+JpURbE9o/IHVCkRClVRkE81b9KgJf7WQa/8KIr1O20wRRFdt9QRH4m3pZJ/A==}
-
   '@unocss/preset-wind4@66.5.2':
     resolution: {integrity: sha512-493Vb1do+05+3tdE0kU+SUKAPG9Spd+hItKfc09OL276T1DMj7AZzIq5q+rj9e+bOAjWAAutjw94RPNjKlU3fA==}
 
@@ -3193,10 +3184,6 @@ packages:
 
   '@unocss/reset@66.5.2':
     resolution: {integrity: sha512-DirXdqrkSp3fThRGOz0s0ehsYBpLb72Vh4QlPfMFuwHHFC9P9IDTLMUj5kD51A9fdy07Wrmhs7T5CQ//DlfOdQ==}
-
-  '@unocss/rule-utils@66.5.12':
-    resolution: {integrity: sha512-2UQvdjS6nD3QHLEwcXlDhXFNiOUQDuOC+itX4tjqvnjP/hj5A99WEUHemb8WEHAlHAt7khe9591+BkHHo3BX/w==}
-    engines: {node: '>=14'}
 
   '@unocss/rule-utils@66.5.2':
     resolution: {integrity: sha512-2eR5TBTO+cmPY9ahFjyEu8qP/NFPI02dVpI0rgGKdyDMv/PnO9+yS/9rKgrmXsN3nPYHjOrLutRXkF/xxm/t3w==}
@@ -5629,9 +5616,6 @@ packages:
   magic-string@0.30.19:
     resolution: {integrity: sha512-2N21sPY9Ws53PZvsEpVtNuSW+ScYbQdp4b9qUaL+9QkHUrGFKo56Lg9Emg5s9V/qrtNBmiR01sYhUOwu3H+VOw==}
 
-  magic-string@0.30.21:
-    resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
-
   magicast@0.3.5:
     resolution: {integrity: sha512-L0WhttDl+2BOsybvEOLK7fW3UA0OQ0IQ2d6Zl2x/a6vVRs3bAY0ECOSHHeL5jD+SbOpOCUEi0y1DgHEn9Qn1AQ==}
 
@@ -7627,8 +7611,8 @@ packages:
       '@unocss/preset-wind3':
         optional: true
 
-  unocss-preset-shadcn@1.0.1:
-    resolution: {integrity: sha512-/I39ZO2ntPyRHz+VA8pa+E/empR4sJU//zMjgI0ph5c5LttRs84gcm74pz/wO+sfqMjjN4SbSScD2n+TfE4FHw==}
+  unocss-preset-shadcn@0.5.0:
+    resolution: {integrity: sha512-e/bF/+b5adcolHio3kst3WVF+f09+BiDkyTshUVqcWXB0RabQ0T8lzqfM3KAegTTi1iJo1jjCZoE88cUzaVDmQ==}
     peerDependencies:
       unocss: '>=0.56.0 < 101'
       unocss-preset-animations: ^1.1.1
@@ -10550,8 +10534,6 @@ snapshots:
 
   '@unocss/core@0.64.1': {}
 
-  '@unocss/core@66.5.12': {}
-
   '@unocss/core@66.5.2': {}
 
   '@unocss/eslint-config@66.5.2(eslint@9.36.0(jiti@2.6.0))(typescript@5.9.2)':
@@ -10574,10 +10556,6 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-
-  '@unocss/extractor-arbitrary-variants@66.5.12':
-    dependencies:
-      '@unocss/core': 66.5.12
 
   '@unocss/extractor-arbitrary-variants@66.5.2':
     dependencies:
@@ -10650,12 +10628,6 @@ snapshots:
       '@unocss/preset-mini': 66.5.2
       '@unocss/rule-utils': 66.5.2
 
-  '@unocss/preset-wind4@66.5.12':
-    dependencies:
-      '@unocss/core': 66.5.12
-      '@unocss/extractor-arbitrary-variants': 66.5.12
-      '@unocss/rule-utils': 66.5.12
-
   '@unocss/preset-wind4@66.5.2':
     dependencies:
       '@unocss/core': 66.5.2
@@ -10668,11 +10640,6 @@ snapshots:
       '@unocss/preset-wind3': 66.5.2
 
   '@unocss/reset@66.5.2': {}
-
-  '@unocss/rule-utils@66.5.12':
-    dependencies:
-      '@unocss/core': 66.5.12
-      magic-string: 0.30.21
 
   '@unocss/rule-utils@66.5.2':
     dependencies:
@@ -13298,10 +13265,6 @@ snapshots:
       magic-string: 0.30.19
 
   magic-string@0.30.19:
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.5
-
-  magic-string@0.30.21:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
@@ -16063,7 +16026,7 @@ snapshots:
     optionalDependencies:
       '@unocss/preset-wind3': 66.5.2
 
-  unocss-preset-shadcn@1.0.1(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))):
+  unocss-preset-shadcn@0.5.0(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))):
     dependencies:
       unocss: 66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))
       unocss-preset-animations: 1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
