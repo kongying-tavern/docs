@@ -35,7 +35,7 @@ const formData = computed({
 <template>
   <div class="form-fields min-h-200px">
     <TabsContent v-for="tab in tabs" :key="tab.value" :value="tab.value">
-      <div class="grid w-[100%] items-center gap-6">
+      <div class="gap-6 grid w-full items-center">
         <!-- Title Field -->
         <ForumPublishTopicFormField
           v-if="tab.fields?.title"
@@ -100,7 +100,7 @@ const formData = computed({
           :title="tab.fields.upload.label"
         >
           <p
-            class="ml-1 text-sm c-[var(--vp-c-text-3)] leading-normal"
+            class="text-sm c-[var(--vp-c-text-3)] leading-normal ml-1"
             v-text="
               message.forum.publish.form?.upload?.tip
                 ?.replace('%size', String(MAX_UPLOAD_FILE_SIZE))

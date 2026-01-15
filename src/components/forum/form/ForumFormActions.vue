@@ -49,7 +49,7 @@ function handleClose(): void {
   <template v-if="isDesktop">
     <!-- Action Bar (Desktop) -->
     <div
-      class="action-bar absolute top-[-70px] flex flex-col items-start md:rotate--1.4deg"
+      class="action-bar flex flex-col items-start top-[-70px] absolute md:rotate--1.4deg"
       style="left: calc(0px - (100vw - 780px) / 2)"
     >
       <DialogClose class="form-close-btn" @click="handleClose">
@@ -76,11 +76,11 @@ function handleClose(): void {
 
     <!-- Submit Footer (Desktop) -->
     <DialogFooter
-      class="form-footer-container sticky bottom-0 mt-8 w-full flex flex-wrap py-4 md:rotate--1.4deg"
+      class="form-footer-container mt-8 py-4 flex flex-wrap w-full bottom-0 sticky md:rotate--1.4deg"
       :class="{ 'animate-switching': inTransition }"
     >
       <Button
-        class="min-w-96px font-size-1.1em"
+        class="font-size-1.1em min-w-96px"
         variant="link"
         :disabled="disabled || loading"
         @click="handleSubmit"

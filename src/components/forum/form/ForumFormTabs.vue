@@ -4,6 +4,7 @@ import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { DialogHeader } from '@/components/ui/dialog'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 
 interface Props {
   modelValue: string
@@ -19,6 +20,7 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
+const userInfoStore = useUserInfoStore()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const activeTab = computed({
@@ -33,12 +35,20 @@ const visibleTabs = computed(() =>
 const _currentTab = computed(() =>
   props.tabs.find(tab => tab.value === props.modelValue),
 )
+
+function formatDateEN(date = new Date()) {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short', // short | long
+    day: 'numeric',
+  }).format(date)
+}
 </script>
 
 <template>
   <Tabs
     v-model="activeTab"
-    class="form-content w-full px-4 md:rotate--1.4deg"
+    class="form-content px-4 w-full md:rotate--1.4deg md:hover:rotate-0"
     :class="{ 'animate-switching': inTransition }"
   >
     <DialogHeader>
@@ -48,9 +58,24 @@ const _currentTab = computed(() =>
           v-for="tab in visibleTabs"
           v-show="modelValue === tab.value"
           :key="tab.value"
+          class="important:font-serif md:mt-4"
         >
-          <h2 class="mb-3 mt-18px font-size-28px">
-            {{ tab.label }}
+          <div class="mb-1 w-full hidden justify-between md:flex">
+            <time>
+              {{ formatDateEN() }}
+            </time>
+            <p>
+              Reported by {{ userInfoStore.info?.login || 'Guest' }}
+            </p>
+          </div>
+          <div class="mb-6 vp-divider md:border-width-2px md:border-color-[var(--vp-v-text-1)] md:border-style-solid" />
+          <h2 class="font-size-28px font-extrabold mb-6 mt-8 text-center">
+            原神地图工具反馈表单
+            <span
+              class="rounder-full font-size-24px c-[var(--vp-c-bg)] ml-1 p-1px rounded-md bg-[var(--vp-c-text-1)]"
+            >{{
+              tab.label
+            }}</span>
           </h2>
         </div>
       </template>
@@ -58,7 +83,7 @@ const _currentTab = computed(() =>
       <!-- Mobile: Show tab switcher -->
       <TabsList
         v-else
-        class="grid mb-3 w-full"
+        class="mb-3 border-solid grid w-full"
         :class="hasPermission ? 'grid-cols-3' : 'grid-cols-2'"
       >
         <TabsTrigger
@@ -70,9 +95,6 @@ const _currentTab = computed(() =>
         </TabsTrigger>
       </TabsList>
     </DialogHeader>
-
-    <div class="mb-6 vp-divider md:border-width-2px md:border-style-dashed" />
-
     <slot />
   </Tabs>
 </template>

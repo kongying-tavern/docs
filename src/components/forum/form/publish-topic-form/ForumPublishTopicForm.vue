@@ -152,7 +152,8 @@ function handleClose(): void {
   <!-- Desktop Dialog -->
   <Dialog v-if="isDesktop" v-model:open="isOpen">
     <DialogScrollContent
-      class="form-container paper mx-auto mb-70px mt-110px h-fit max-h-[1200px] min-h-100vh min-w-800px flex flex-col shadow-[var(--vp-shadow-3)] before:pos-absolute"
+      class="form-container paper mx-auto mb-70px mt-110px flex flex-col h-fit max-h-[1200px] min-h-100vh min-w-800px shadow-[var(--vp-shadow-3)] before:pos-absolute"
+      :hide-default-close-button="true"
       :class="{ 'animate-switching': inSwitchTabTransition }"
     >
       <VisuallyHidden>

@@ -23,7 +23,7 @@ export function getFormTabsConfig(): TabsConfig[] {
   return [
     {
       value: 'BUG',
-      label: `🐛${message.value.forum.publish.type.bug}`,
+      label: `${message.value.forum.publish.type.bug}`,
       condition: true,
       fields: {
         tags: {
@@ -47,7 +47,7 @@ export function getFormTabsConfig(): TabsConfig[] {
     },
     {
       value: 'FEAT',
-      label: `💡${message.value.forum.publish.type.feat}`,
+      label: `${message.value.forum.publish.type.feat}`,
       condition: true,
       fields: {
         title: {
@@ -76,7 +76,7 @@ export function getFormTabsConfig(): TabsConfig[] {
     },
     {
       value: 'ANN',
-      label: `📌${message.value.forum.publish.type.ann}`,
+      label: `${message.value.forum.publish.type.ann}`,
       condition: hasPermission,
       fields: {
         title: {
