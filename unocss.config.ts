@@ -93,6 +93,7 @@ export default defineConfig({
     presetShadcn(
       {
         color: false,
+        darkSelector: '.dark',
       },
       {
         componentLibrary: 'reka',

@@ -31,8 +31,8 @@ catalogs:
       specifier: ^1.2.1
       version: 1.2.1
     unocss-preset-shadcn:
-      specifier: ^0.5.0
-      version: 0.5.0
+      specifier: ^1.0.1
+      version: 1.0.1
     vite:
       specifier: ^7.1.7
       version: 7.1.7
@@ -594,7 +594,7 @@ importers:
         version: 1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
       unocss-preset-shadcn:
         specifier: catalog:build
-        version: 0.5.0(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
+        version: 1.0.1(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
       vaul-vue:
         specifier: catalog:frontend
         version: 0.4.1(reka-ui@2.5.1(typescript@5.9.2)(vue@3.5.22(typescript@5.9.2)))(vue@3.5.22(typescript@5.9.2))
@@ -7611,8 +7611,8 @@ packages:
       '@unocss/preset-wind3':
         optional: true
 
-  unocss-preset-shadcn@0.5.0:
-    resolution: {integrity: sha512-e/bF/+b5adcolHio3kst3WVF+f09+BiDkyTshUVqcWXB0RabQ0T8lzqfM3KAegTTi1iJo1jjCZoE88cUzaVDmQ==}
+  unocss-preset-shadcn@1.0.1:
+    resolution: {integrity: sha512-/I39ZO2ntPyRHz+VA8pa+E/empR4sJU//zMjgI0ph5c5LttRs84gcm74pz/wO+sfqMjjN4SbSScD2n+TfE4FHw==}
     peerDependencies:
       unocss: '>=0.56.0 < 101'
       unocss-preset-animations: ^1.1.1
@@ -16026,7 +16026,7 @@ snapshots:
     optionalDependencies:
       '@unocss/preset-wind3': 66.5.2
 
-  unocss-preset-shadcn@0.5.0(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))):
+  unocss-preset-shadcn@1.0.1(unocss-preset-animations@1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))))(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))):
     dependencies:
       unocss: 66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1))
       unocss-preset-animations: 1.2.1(@unocss/preset-wind3@66.5.2)(unocss@66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@22.12.0)(jiti@2.6.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.19.2)(yaml@2.8.1)))
