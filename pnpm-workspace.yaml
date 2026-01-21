@@ -71,7 +71,7 @@ catalogs:
     embla-carousel-vue: ^8.6.0
     feed: ^5.1.0
     ky: ^1.10.0
-    lodash-es: 4.17.21
+    lodash-es: 4.17.23
     medium-zoom: ^1.1.0
     mitt: ^3.0.1
     motion-v: ^1.7.1
