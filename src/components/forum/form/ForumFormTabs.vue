@@ -28,9 +28,7 @@ const activeTab = computed({
   set: value => emit('update:modelValue', value),
 })
 
-const visibleTabs = computed(() =>
-  props.tabs.filter(tab => tab?.condition),
-)
+const visibleTabs = computed(() => props.tabs.filter(tab => tab?.condition))
 
 const _currentTab = computed(() =>
   props.tabs.find(tab => tab.value === props.modelValue),
@@ -64,18 +62,13 @@ function formatDateEN(date = new Date()) {
             <time>
               {{ formatDateEN() }}
             </time>
-            <p>
-              Reported by {{ userInfoStore.info?.login || 'Guest' }}
-            </p>
+            <p>Reported by {{ userInfoStore.info?.login || "Guest" }}</p>
           </div>
-          <div class="mb-6 vp-divider md:border-width-2px md:border-color-[var(--vp-v-text-1)] md:border-style-solid" />
+          <div
+            class="mb-6 vp-divider md:border-width-2px md:border-color-[var(--vp-v-text-1)] md:border-style-solid"
+          />
           <h2 class="font-size-28px font-extrabold mb-6 mt-8 text-center">
-            原神地图工具反馈表单
-            <span
-              class="rounder-full font-size-24px c-[var(--vp-c-bg)] ml-1 p-1px rounded-md bg-[var(--vp-c-text-1)]"
-            >{{
-              tab.label
-            }}</span>
+            原神地图工具反馈表单 - {{ tab.label }}
           </h2>
         </div>
       </template>
@@ -105,7 +98,14 @@ function formatDateEN(date = new Date()) {
 }
 
 @keyframes form-switch {
-  0%, 100% { opacity: 1; transform: translateX(0); }
-  50% { opacity: 0.8; transform: translateX(10px); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(10px);
+  }
 }
 </style>
