@@ -1,5 +1,6 @@
 /* eslint-disable ts/ban-ts-comment */
 import CanvasKitInit from 'canvaskit-wasm'
+import CanvasKitWasm from 'canvaskit-wasm/bin/canvaskit.wasm?url'
 import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
 import { binaryToBase64 } from '../utils'
 
@@ -52,7 +53,7 @@ export async function calculateThumbHashForFile(
   imageData: Uint8Array,
 ): Promise<ThumbHashCalculated> {
   const canvasKit = await CanvasKitInit({
-    locateFile: file => `https://unpkg.com/canvaskit-wasm@latest/bin/${file}`,
+    locateFile: () => CanvasKitWasm,
   })
   const image = canvasKit.MakeImageFromEncoded(imageData)
   if (!image)
