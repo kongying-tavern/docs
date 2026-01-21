@@ -33,7 +33,7 @@ function buildPostLink(url: string) {
       <li
         v-for="post in posts"
         :key="post.url"
-        class="py-12 border-b border-b-[var(--vp-c-divider)]"
+        class="py-12 border-b-1px border-b-[var(--vp-c-gutter)] border-b-solid"
       >
         <article
           class="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0"

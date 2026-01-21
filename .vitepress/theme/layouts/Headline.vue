@@ -29,7 +29,10 @@ const buttonComponent = computed(() => {
       return resolveComponent(frontmatter.value.button.component)
     }
     catch (error) {
-      console.warn(`无法解析组件: ${frontmatter.value.button.component}`, error)
+      console.warn(
+        `无法解析组件: ${frontmatter.value.button.component}`,
+        error,
+      )
       return null
     }
   }
@@ -46,8 +49,10 @@ function handleButtonClick() {
 
 <template>
   <div class="slide-enter Headline">
-    <div class="pb-6 border-b">
-      <div class="headline-header flex items-start justify-between">
+    <div
+      class="pb-6 border-b-1px border-b-[var(--vp-c-divider)] border-b-solid"
+    >
+      <div class="headline-ader fl-bex items-start justify-between">
         <div class="headline-content">
           <h1
             class="title text-3xl tracking-tight font-bold lg:text-5xl sm:text-4xl"
@@ -73,7 +78,10 @@ function handleButtonClick() {
             :size="frontmatter.button.size || 'default'"
             @click="handleButtonClick"
           >
-            <span v-if="frontmatter.button.icon" :class="frontmatter.button.icon" />
+            <span
+              v-if="frontmatter.button.icon"
+              :class="frontmatter.button.icon"
+            />
             {{ frontmatter.button.text }}
           </Button>
         </div>

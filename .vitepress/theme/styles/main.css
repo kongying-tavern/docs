@@ -1,11 +1,11 @@
-@import './theme.css';
-@import './vp-vars.css';
-@import './ui/tooltip.css';
-@import './ui/timeline.css';
-@import './ui/kbd.css';
-@import './ui/demo.css';
-@import './animation.css';
-@import './fonts.css';
+@import "./theme.css";
+@import "./vp-vars.css";
+@import "./ui/tooltip.css";
+@import "./ui/timeline.css";
+@import "./ui/kbd.css";
+@import "./ui/demo.css";
+@import "./animation.css";
+@import "./fonts.css";
 
 :root {
   text-autospace: normal;
@@ -92,7 +92,7 @@ html.dark .vp-doc figure figcaption {
 
 .VPMenu .items > :not(.VPMenuLink).title {
   font-weight: bold;
-  color: var(--vp-c-brand-1)
+  color: var(--vp-c-brand-1);
 }
 
 .VPSidebarGroup .link {
@@ -134,7 +134,7 @@ textarea {
 
 #app a:focus-visible,
 #app button:focus-visible,
-#app input[type='checkbox']:focus-visible {
+#app input[type="checkbox"]:focus-visible {
   --at-apply: outline-1 outline-primary ring-2 ring-primary;
 }
 
@@ -181,7 +181,15 @@ textarea {
   background-color: var(--vp-c-bg);
 }
 
-#VPContent > div > div > div.aside > div.aside-container > div > div > nav > div {
+#VPContent
+  > div
+  > div
+  > div.aside
+  > div.aside-container
+  > div
+  > div
+  > nav
+  > div {
   padding-left: 0;
 }
 
@@ -206,7 +214,7 @@ textarea {
 }
 
 .load-error::after {
-  content: '图片被派蒙吃掉了！' !important;
+  content: "图片被派蒙吃掉了！" !important;
   text-align: center;
   line-height: 10;
   background-color: var(--vp-c-bg-alt) !important;
