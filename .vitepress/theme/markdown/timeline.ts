@@ -5,10 +5,7 @@ import container from 'markdown-it-container'
 
 type ContainerArgs = [typeof container, string, { render: RenderRule }]
 
-function MarkdownItTimeline(
-  klass: string,
-  md: MarkdownIt,
-): ContainerArgs {
+function MarkdownItTimeline(klass: string, md: MarkdownIt): ContainerArgs {
   return [
     container,
     klass,
@@ -19,7 +16,7 @@ function MarkdownItTimeline(
         if (token.nesting === 1) {
           // opening tag
           const title = md.renderInline(info)
-          return `<div class='timeline-dot'><span class='timeline-dot-title'>${
+          return `<div class='timeline-dot'><span class='timeline-dot-title title'>${
             title
           }</span>\n`
         }
