@@ -49,7 +49,7 @@ let stopObserver: (() => void) | null = null
 watch(
   () => props.commentCount,
   async (count) => {
-    if (!isInitialized.value && count && count > 0) {
+    if (!isInitialized.value && count !== undefined && count !== null && count !== -1) {
       isInitialized.value = true
       await initialize()
     }
@@ -100,7 +100,7 @@ onUnmounted(cleanup)
       <UseCommentAreaCommentInputBox ref="commentInputBox" />
       <div class="slide-enter comment-list mt-8">
         <ForumTopicComment
-          v-for="comment in renderComments" :id="`reply-${comment.id}`" :key="comment.id" :repo="repo"
+          v-for="(comment, index) in renderComments" :id="`reply-${comment.id}`" :key="comment.id" :class="{ 'last-comment': index === renderComments.length - 1 }" :repo="repo"
           :topic-author-id="topicAuthorId" :topic-id="topicId" :comment-data="comment"
           :comment-click-handler="() => toggleCommentReply(comment.id)"
         >
