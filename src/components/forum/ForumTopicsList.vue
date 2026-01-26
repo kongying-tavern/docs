@@ -47,14 +47,14 @@ onMounted(() => {
         name="fade"
       >
         <li
-          v-for="item in data"
+          v-for="(item, index) in data"
           :key="item.id"
         >
           <ForumTopic
             :topic="item"
             :view-mode="viewMode"
           />
-          <Separator class="h-1px" />
+          <Separator v-if="index < data.length - 1" class="h-1px" />
         </li>
       </TransitionGroup>
     </KeepAlive>
