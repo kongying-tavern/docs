@@ -1,5 +1,6 @@
 export { default as Avatar } from './Avatar.vue'
 export { default as Button } from './button/Button.vue'
+export { default as Divider } from './divider/Divider.vue'
 export { default as DynamicTextReplacer } from './DynamicTextReplacer.vue'
 export { default as Emoji } from './Emoji.vue'
 export { default as EmojiPicker } from './EmojiPicker.vue'
