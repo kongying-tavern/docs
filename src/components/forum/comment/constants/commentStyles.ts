@@ -19,7 +19,7 @@ export const COMMENT_STYLES: Record<'small' | 'normal', CommentStyleConfig> = {
   },
   normal: {
     container: 'mt-.5',
-    contentContainer: 'b-1 border-[var(--vp-c-divider)] border-b-solid pb-3 flex-col',
+    contentContainer: 'pb-3 flex-col  b-b-1 border-b-[var(--vp-c-divider)] border-b-solid',
     avatarSize: 'md',
     leftWidth: 'w-[64px] mr-2',
     header: 'mt-2',

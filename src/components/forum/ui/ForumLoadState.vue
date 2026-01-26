@@ -15,13 +15,24 @@ defineProps({
 </script>
 
 <template>
-  <div class="my-8 w-full flex justify-center">
-    <Button v-if="loading" class="vp-link" variant="link">
-      <ReloadIcon class="mr-2 h-4 w-4" :class="loading ? 'animate-spin' : ''" />
+  <div class="mb-8 flex w-full justify-center">
+    <Button
+      v-if="loading"
+      class="vp-link mt-8"
+      variant="link"
+    >
+      <ReloadIcon
+        class="mr-2 h-4 w-4"
+        :class="loading ? 'animate-spin' : ''"
+      />
       {{ text }}
     </Button>
-    <p v-else class="font-size-3 c-[var(--vp-c-text-3)]" variant="link">
+    <Divider
+      v-else
+      variant="center"
+      class="font-size-3 c-[var(--vp-c-text-3)] w-full"
+    >
       {{ text }}
-    </p>
+    </Divider>
   </div>
 </template>

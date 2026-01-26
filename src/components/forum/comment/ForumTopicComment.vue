@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="topic-comment-item flex rounded-md" :class="COMMENT_STYLES[props.size].container">
+  <div class="topic-comment-item rounded-md flex" :class="COMMENT_STYLES[props.size].container">
     <div v-if="props.size !== 'small'" class="mr-2 w-[64px]">
       <ForumUserHoverCard :user="props.commentData.author">
         <template #trigger>
@@ -67,7 +67,7 @@ onBeforeUnmount(() => {
         </template>
       </ForumUserHoverCard>
     </div>
-    <div class="w-[calc(100%-40px)] flex" :class="COMMENT_STYLES[props.size].contentContainer">
+    <div class="comment-info flex w-[calc(100%-40px)]" :class="COMMENT_STYLES[props.size].contentContainer">
       <div v-if="props.size !== 'small'" class="title flex" :class="COMMENT_STYLES[props.size].header">
         <ForumUserHoverCard :user="props.commentData.author">
           <template #trigger>
@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
 
         <ForumRoleBadge class="mb-2" :type="role" />
       </div>
-      <span v-else class="title flex whitespace-nowrap font-size-xs">
+      <span v-else class="title font-size-xs flex whitespace-nowrap">
         {{ props.commentData.author.username }}
         <ForumRoleBadge class="important:mb-0" :type="role" />
         :
@@ -103,7 +103,7 @@ onBeforeUnmount(() => {
         <Image
           v-for="img in props.commentData.content.images" :key="img.src" :image="img.src" :alt="img.alt"
           :thumbhash="img.thumbHash" :width="img.width" :height="img.height" container-class="size-auto"
-          class="max-h-24 flex-shrink-0 cursor-zoom-in rounded-sm transition-colors duration-200"
+          class="rounded-sm flex-shrink-0 max-h-24 cursor-zoom-in transition-colors duration-200"
         />
       </div>
 
@@ -139,5 +139,9 @@ onBeforeUnmount(() => {
 
 .topic-content-img :deep(.VPImage:hover:not(.no-hover)) {
   border-color: var(--vp-c-brand);
+}
+
+.last-comment > .comment-info {
+  border: none !important;
 }
 </style>
