@@ -15,7 +15,7 @@ catalogs:
     vitepress: 1.6.3
     vitepress-plugin-llms: ^1.7.5
   dev:
-    '@actions/core': ^1.11.1
+    '@actions/core': ^2.0.0
     '@antfu/eslint-config': ^5.4.1
     '@commitlint/cli': 19.6.1
     '@commitlint/config-conventional': 19.6.0
