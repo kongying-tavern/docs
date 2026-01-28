@@ -93,14 +93,14 @@ catalogs:
     '@mdit/plugin-container': ^0.22.1
     '@mdit/plugin-demo': ^0.22.2
     '@mdit/plugin-figure': ^0.22.1
-    '@mdit/plugin-icon': ^0.22.1
+    '@mdit/plugin-icon': ^0.23.0
     '@mdit/plugin-img-mark': ^0.22.1
     '@mdit/plugin-img-size': ^0.22.2
     '@mdit/plugin-mark': ^0.22.1
     '@mdit/plugin-ruby': ^0.22.1
     '@mdit/plugin-spoiler': ^0.22.1
-    '@mdit/plugin-sub': ^0.22.1
-    '@mdit/plugin-sup': ^0.22.1
+    '@mdit/plugin-sub': ^0.23.0
+    '@mdit/plugin-sup': ^0.23.0
     '@mdit/plugin-tasklist': ^0.22.1
     markdown-it: 14.1.0
     markdown-it-attrs: ^4.3.1
