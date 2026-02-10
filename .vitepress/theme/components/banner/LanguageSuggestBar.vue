@@ -77,13 +77,13 @@ function normalizeLink(
 
 <template>
   <aside
-    class="w-full py-8px"
+    class="py-8px w-full"
     :lang="suggestLang"
     dir="ltr"
     aria-label="Choose country or region"
   >
-    <div class="w-full flex flex-wrap items-center">
-      <div class="text-align-left font-size-14px max-md:w-85%">
+    <div class="flex flex-wrap w-full items-center">
+      <div class="font-size-14px text-align-left max-md:w-85%">
         {{ languageSuggestBarTranslate[suggestLocale.key].changeLanguage }}
       </div>
       <div class="mt-4 flex flex-1 items-center justify-end md:mt-0">
@@ -94,26 +94,26 @@ function normalizeLink(
                 variant="outline"
                 role="combobox"
                 :aria-expanded="open"
-                class="w-full justify-between bg-[var(--suggest-language-bar-bg)] md:w-[300px] hover:bg-[var(--suggest-language-bar-hover-bg)] hover:c-#ffff"
+                class="bg-[var(--suggest-language-bar-bg)] w-full justify-between hover:text-white hover:bg-[var(--suggest-language-bar-hover-bg)] md:w-[300px]"
               >
                 <span class="vpi-languages option-icon icon-btn" />
                 {{ suggestLocale?.label }}
                 <span
-                  class="i-lucide:chevron-down ml-2 h-4 w-4 shrink-0 opacity-50"
+                  class="i-lucide:chevron-down ml-2 opacity-50 shrink-0 h-4 w-4"
                 />
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              class="w-[--radix-popper-anchor-width] border-none bg-[var(--banner-bg)] p-0"
+              class="p-0 border-none bg-[var(--banner-bg)] w-[--radix-popper-anchor-width]"
             >
               <Command>
                 <CommandList>
-                  <CommandGroup class="bg-[var(--banner-bg)] c-#fff">
+                  <CommandGroup class="c-#fff bg-[var(--banner-bg)]">
                     <CommandItem
                       v-for="locale in LOCALE_CONFIG"
                       :key="locale.key"
                       :value="locale.key"
-                      class="focus:bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-bg)] hover:c-#fff"
+                      class="c- c-#ffffffaa hover:text-white focus:bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-bg)]"
                       @select="handleLanguageSelect"
                     >
                       {{ locale.label }}
@@ -136,14 +136,14 @@ function normalizeLink(
         </div>
 
         <Button
-          class="mx-12px bg-#f5f5f7 c-#222 hover:bg-#fff"
+          class="c-#222 mx-12px bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-hover-bg)]"
           @click="toSuggestLanguagePage(suggestLocale.key)"
         >
           {{ languageSuggestBarTranslate[suggestLocale.key].continue }}
         </Button>
 
         <CloseButton
-          class="ml-8px icon-btn size-28px max-md:absolute max-md-right-17px max-md:top-17px"
+          class="ml-8px icon-btn size-28px max-md-right-17px max-md:top-17px max-md:absolute"
           size="28px"
           @click="emit('close')"
         />
