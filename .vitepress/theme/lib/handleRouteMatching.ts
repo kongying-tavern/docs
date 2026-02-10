@@ -26,7 +26,8 @@ export default function handleRouteMatching(
   router.route.path = route.path || normalizePath
   router.route.component = markRaw(route.component)
   router.route.data = buildRouteData(normalizePath, route, locale, params)
-  stripTrailingSlashInPath()
+  if (typeof window !== 'undefined')
+    stripTrailingSlashInPath()
   return false
 }
 

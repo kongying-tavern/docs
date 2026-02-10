@@ -168,6 +168,8 @@ export function getCountryCode(lang: string) {
 }
 
 export function stripTrailingSlashInPath() {
+  if (typeof window === 'undefined')
+    return
   const { pathname, search, hash } = window.location
   if (pathname !== '/' && pathname.endsWith('/')) {
     const newPath = pathname.replace(/\/$/, '')
