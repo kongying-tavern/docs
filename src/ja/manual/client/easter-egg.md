@@ -2,21 +2,18 @@
 aside: false
 layout: doc
 title: イースターエッグ
-wip: true
 ---
 
 [文：【彩蛋】查看历史版本内容]: # 'https://support.qq.com/products/321980/faqs/97056'
 
-1.6 版本、2.8 版本已经过去，海岛将会作为彩蛋保存在客户端内。
+バージョン1.6、2.5、2.8、3.8、4.8は過去のものですが、期間限定マップはイースターエッグとしてマップに存在します。
 
-键入某神秘代码即可开启海岛地区地图
+【Web】、【クライアント】にエクステリアコードを入力すると、タイムゾーンを表示/非表示にすることができます。
 
-Mysterious code
+タイムマップを表示するには、次の神秘的なコードを入力します。
 
-> ↑↑↓↓←→←→BABA
+[[arrUp]][[arrUp]][[arrDown]][[arrDown]][[arrLeft]][[arrRight]][[arrLeft]][[arrRight]][[B]][[A]][[B]][[A]]
 
-键入反向神秘代码即可关闭彩蛋~
+イースターエッグを閉じるには、リバースミステリーコードを入力します~
 
-Mysterious code
-
-> ↓↓↑↑→←→←ABAB
+[[arrDown]][[arrDown]][[arrUp]][[arrUp]][[arrRight]][[arrLeft]][[arrRight]][[arrLeft]][[A]][[B]][[A]][[B]]
