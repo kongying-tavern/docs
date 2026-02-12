@@ -44,7 +44,7 @@ catalogs:
     stylelint-order: 6.0.4
     taze: 0.16.9
     tsconfig-paths: 4.2.0
-    vite-plugin-vue-devtools: 7.7.7
+    vite-plugin-vue-devtools: 7.7.9
     zhlint: 0.8.2
   frontend:
     '@atlaskit/pragmatic-drag-and-drop': ^1.7.7
