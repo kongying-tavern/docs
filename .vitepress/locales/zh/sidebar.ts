@@ -99,6 +99,15 @@ const sidebar: DefaultTheme.SidebarMulti = {
             },
           ],
         },
+        {
+          text: '云存档',
+          items: [
+            {
+              text: '海外用戶雲存檔驗證問題說明',
+              link: '/manual/faq/cloudsave/verificationissueforoverseasuser',
+            },
+          ],
+        },
       ],
     },
   ],
