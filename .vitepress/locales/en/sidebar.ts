@@ -99,6 +99,15 @@ const sidebar: DefaultTheme.SidebarMulti = {
             },
           ],
         },
+        {
+          text: 'Cloud Save',
+          items: [
+            {
+              text: 'Cloud Save Verification Issue for Overseas Users',
+              link: '/manual/faq/cloudsave/verificationissueforoverseasuser',
+            },
+          ],
+        },
       ],
     },
   ],
