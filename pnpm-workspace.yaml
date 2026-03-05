@@ -5,7 +5,7 @@ catalogs:
     '@lunariajs/core': ^0.1.1
     autoprefixer: ^10.4.21
     sass: ^1.93.2
-    tsx: 4.19.2
+    tsx: 4.21.0
     typescript: ^5.9.2
     unlazy: ^0.12.4
     unocss: ^66.5.2
