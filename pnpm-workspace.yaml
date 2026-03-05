@@ -74,7 +74,7 @@ catalogs:
     lodash-es: 4.17.21
     medium-zoom: ^1.1.0
     mitt: ^3.0.1
-    motion-v: ^1.7.1
+    motion-v: ^2.0.0
     path-to-regexp: ^8.3.0
     pinia: ^3.0.3
     qrcode: ^1.5.4
@@ -139,7 +139,7 @@ catalogs:
     '@tiptap/starter-kit': ^3.6.1
     '@tiptap/vue-3': ^3.6.1
   conflicts_frontend_h1_7_1:
-    motion-v: ^1.7.1
+    motion-v: ^2.0.0
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
