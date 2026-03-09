@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
-import mediumZoom from 'medium-zoom'
-import { useData, useRouter } from 'vitepress'
+import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, nextTick, onMounted, provide, shallowRef, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, provide, shallowRef, useTemplateRef, watch } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import DocAside from '@/components/DocAside.vue'
 import DocHeader from '@/components/DocHeader.vue'
 import DocReaction from '@/components/DocReaction.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import LoginAlertDialog from '@/components/LoginAlertDialog.vue'
+import MediumZoom from '@/components/MediumZoom.vue'
 import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
 import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
@@ -21,7 +21,6 @@ import '@/styles/main.css'
 const { Layout } = DefaultTheme
 const { isDark, frontmatter } = useData()
 
-const router = useRouter()
 const target = useTemplateRef<HTMLDivElement>('target')
 const targetIsVisible = shallowRef(false)
 const showAside = computed(
@@ -30,14 +29,6 @@ const showAside = computed(
     && frontmatter.value.aside === true
     && frontmatter.value.outline !== false,
 )
-
-function setupMediumZoom() {
-  if (import.meta.env.SSR)
-    return
-  mediumZoom('[data-zoomable="true"]', {
-    background: 'transparent',
-  })
-}
 
 loadFonts([
   {
@@ -53,10 +44,6 @@ loadFonts([
     fontPath: '/fonts/HYWenHei-45W.woff2',
   },
 ])
-
-onMounted(() => {
-  setupMediumZoom()
-})
 
 watch(showAside, (value) => {
   if (value) {
@@ -99,8 +86,6 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     },
   )
 })
-
-router.onAfterRouteChange = setupMediumZoom
 </script>
 
 <template>
@@ -123,7 +108,10 @@ router.onAfterRouteChange = setupMediumZoom
     </template> -->
 
     <template #aside-outline-after>
-      <DocAside v-if="showAside" :show-reaction="!targetIsVisible" />
+      <DocAside
+        v-if="showAside"
+        :show-reaction="!targetIsVisible"
+      />
     </template>
 
     <template #nav-bar-content-after>
@@ -136,21 +124,10 @@ router.onAfterRouteChange = setupMediumZoom
       <LoginAlertDialog />
     </template>
   </Layout>
+  <MediumZoom />
 </template>
 
 <style>
-.medium-zoom-overlay {
-  backdrop-filter: blur(5rem);
-}
-
-.medium-zoom-overlay,
-.medium-zoom-image--opened {
-  object-fit: contain !important;
-  border-radius: 0 !important;
-  border: none !important;
-  z-index: 999;
-}
-
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
