@@ -86,6 +86,7 @@ export function useCommentAreaState(props: {
     replyCommentID: readonly(replyCommentID),
     commentInputBoxIsVisible: readonly(commentInputBoxIsVisible),
     isMobile,
+    canLoadMoreComment,
 
     // Data
     renderComments,

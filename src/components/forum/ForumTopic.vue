@@ -3,7 +3,7 @@ import type { FORUM } from './types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { simpleEventManager } from '../../services/events/SimpleEventManager'
-import ForumCommentInputBox from './comment/ForumCommentInputBox.vue'
+import ForumCommentArea from './comment/ForumCommentArea.vue'
 import ForumTopicComment from './comment/ForumTopicComment.vue'
 import { useTopicInteraction } from './composables/useTopicInteraction'
 import { useTopicState } from './composables/useTopicState'
@@ -40,10 +40,8 @@ const menu = computed(() => {
 
 // Topic interaction logic
 const {
-  replyTarget,
   inReply,
   toPostDetailPage,
-  handleCommentSubmit,
   handleToggleCommentInput,
   handleTopicClick,
   handleMenuAction,
@@ -93,7 +91,7 @@ onUnmounted(() => {
 <template>
   <div
     :id="`topic-${topic.id}`"
-    class="forum-topic-item my-1 w-full rounded-xl px-4 py-2 hover:bg-[var(--vp-c-default-soft)]"
+    class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full hover:bg-[var(--vp-c-default-soft)]"
     :class="[topic.type]"
   >
     <div class="topic-content">
@@ -106,9 +104,7 @@ onUnmounted(() => {
       />
 
       <!-- Topic Content and Media -->
-      <div
-        :class="isCompactMode ? 'flex w-full justify-between items-start flex-nowrap' : 'block'"
-      >
+      <div :class="isCompactMode ? 'flex w-full justify-between items-start flex-nowrap' : 'block'">
         <!-- Content Section -->
         <div
           class="cursor-pointer"
@@ -135,7 +131,7 @@ onUnmounted(() => {
         <!-- Media for Compact Mode (right side) -->
         <ForumTopicMedia
           v-if="isCompactMode"
-          class="w-100px flex-shrink-0"
+          class="shrink-0 w-100px"
           :topic="topic"
           :view-mode="viewMode"
         />
@@ -150,7 +146,11 @@ onUnmounted(() => {
     </div>
 
     <!-- Tags -->
-    <ForumTagList v-if="isCardMode" class="mt-2" :data="topic.tags" />
+    <ForumTagList
+      v-if="isCardMode"
+      class="mt-2"
+      :data="topic.tags"
+    />
 
     <!-- Topic Footer -->
     <ForumTopicFooter
@@ -163,12 +163,15 @@ onUnmounted(() => {
     />
 
     <!-- Related Comments -->
-    <div v-if="showComment && localRelatedComments.length && viewMode !== 'Compact'" class="topic-comment">
+    <div
+      v-if="showComment && localRelatedComments.length && viewMode !== 'Compact' && !inReply"
+      class="topic-comment"
+    >
       <ForumTopicComment
         v-for="(commentItem, index) in localRelatedComments"
         :key="commentItem.id"
         v-motion-slide-top
-        class="bg-[var(--vp-c-bg-soft)] px-4 first:mt-4"
+        class="bg---vp-c-bg-soft px-4 first:mt-4"
         :class="{ 'rounded-b-none': inReply && index > 0, 'rounded-t-none': index > 0 }"
         repo="Feedback"
         size="small"
@@ -181,19 +184,14 @@ onUnmounted(() => {
     </div>
 
     <!-- Comment Input -->
-    <ForumCommentInputBox
+    <ForumCommentArea
       v-if="inReply && viewMode !== 'Compact'"
-      :id="`reply-${topic.id}`"
+      class="mt-4"
+      :inline="true"
       repo="Feedback"
-      class="mt-2 rounded-md bg-[var(--vp-c-bg-soft)] px-8 pb-4 pt-4"
-      :class="{
-        'rounded-t-none': showComment && localRelatedComments.length,
-        'important:py-4': !localRelatedComments.length,
-      }"
-      :topic-id="String(topic.id)"
-      :reply-target="replyTarget"
-      :collapse="false"
-      @comment:submit="handleCommentSubmit"
+      :topic-id="topic.id!"
+      :topic-author-id="topic.user.id"
+      :comment-count="topic.commentCount"
     />
   </div>
 </template>

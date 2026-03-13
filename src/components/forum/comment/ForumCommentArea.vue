@@ -14,6 +14,7 @@ const props = defineProps<{
   repo: ForumAPI.Repo
   topicId: string
   topicAuthorId: string | number
+  inline?: boolean
   commentCount?: number
 }>()
 
@@ -36,6 +37,7 @@ const {
   initialize,
   cleanup,
   setCommentInputBoxVisible,
+  canLoadMoreComment,
 } = useCommentAreaState(props)
 
 // Template refs and UI state
@@ -60,7 +62,7 @@ watch(
 watch(
   renderComments,
   async (list) => {
-    if (!stopObserver && list.length >= 5 && commentInputBox.value) {
+    if (!stopObserver && list.length >= 5 && commentInputBox.value && !props.inline) {
       const { stop } = useIntersectionObserver(
         commentInputBox,
         ([entry]) => {
@@ -75,6 +77,8 @@ watch(
 
 // Scroll to comments when loading completes
 watchOnce(commentLoading, async () => {
+  if (props.inline)
+    return
   await nextTick()
   scrollTo()
 })
@@ -86,12 +90,22 @@ onUnmounted(cleanup)
   <div>
     <CommentAreaCommentInputBox>
       <ForumCommentInputBox
-        :repo="repo" :placeholder="message.forum.comment.placeholder" :topic-id="topicId"
+        :repo="repo"
+        :placeholder="message.forum.comment.placeholder"
+        :topic-id="topicId"
         @comment:submit="handleCommentSubmit"
       />
     </CommentAreaCommentInputBox>
-    <div v-if="!isClosedComment" ref="commentArea" class="pb-24">
-      <p id="reply" class="font-size-5 line-height-[21px] font-[var(--vp-font-family-subtitle)] mb-5.5 mt-4">
+    <div
+      v-if="!isClosedComment"
+      ref="commentArea"
+      :class="{ 'pb-24': !inline }"
+    >
+      <p
+        v-if="!inline"
+        id="reply"
+        class="font-(size-5 --vp-font-family-subtitle) line-height-[21px] mb-5.5 mt-4"
+      >
         {{ message.forum.comment.commentCount }}
         <span class="font-size-3.5 color-[var(--vp-c-text-3)] vertical-text-top">
           {{ allCommentCount }}
@@ -100,28 +114,51 @@ onUnmounted(cleanup)
       <UseCommentAreaCommentInputBox ref="commentInputBox" />
       <div class="slide-enter comment-list mt-8">
         <ForumTopicComment
-          v-for="(comment, index) in renderComments" :id="`reply-${comment.id}`" :key="comment.id" :class="{ 'last-comment': index === renderComments.length - 1 }" :repo="repo"
-          :topic-author-id="topicAuthorId" :topic-id="topicId" :comment-data="comment"
+          v-for="(comment, index) in renderComments"
+          :id="`reply-${comment.id}`"
+          :key="comment.id"
+          :class="{ 'last-comment': index === renderComments.length - 1 }"
+          :repo="repo"
+          :topic-author-id="topicAuthorId"
+          :topic-id="topicId"
+          :comment-data="comment"
           :comment-click-handler="() => toggleCommentReply(comment.id)"
         >
           <ForumCommentInputBox
-            v-if="isReplyingTo(comment.id)" class="mt-4" :repo="repo" :topic-id="topicId"
+            v-if="isReplyingTo(comment.id)"
+            class="mt-4"
+            :repo="repo"
+            :topic-id="topicId"
             :reply-target="comment.author.login"
             :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
             @comment:submit="handleCommentSubmit"
           />
         </ForumTopicComment>
 
-        <ForumLoadState :loading="commentLoading" :text="loadStateMessage" />
-      </div>
+        <ForumLoadState
+          v-if="!inline"
+          :loading="commentLoading"
+          :text="loadStateMessage"
+        />
 
+        <p
+          v-if="canLoadMoreComment && inline"
+          class="font-size-3 c-[var(--vp-c-text-3)] vp-link text-center w-full cursor-pointer"
+        >
+          查看更多评论
+        </p>
+      </div>
       <Separator
-        v-if="currentCommentPage === 1 && commentLoading"
+        v-if="(currentCommentPage === 1 && commentLoading) && !inline"
         class="font-size-3 c-[var(--vp-c-text-3)] my-8 text-center w-full inline-block"
         :label="message.forum.comment.loadingComment"
       />
       <Teleport to="body">
-        <div v-if="!commentInputBoxIsVisible" class="pt-8 border-t bg-[--vp-c-bg] bottom-0 fixed z-2" :style="{ left: `${left}px`, right: `${right}px`, width: isMobile ? '100vw' : `${width}px` }">
+        <div
+          v-if="!commentInputBoxIsVisible"
+          class="pt-8 border-t bg-[--vp-c-bg] bottom-0 fixed z-2"
+          :style="{ left: `${left}px`, right: `${right}px`, width: isMobile ? '100vw' : `${width}px` }"
+        >
           <UseCommentAreaCommentInputBox class="pb-6" />
         </div>
       </Teleport>

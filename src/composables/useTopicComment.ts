@@ -9,11 +9,10 @@ import { simpleEventManager } from '~/services/events/SimpleEventManager'
 import { handleError } from './handleError'
 
 export function useTopicComments() {
-  const comments = ref<ForumAPI.Comment[]>([])
   const commentCount = ref<number | null>(null)
   const isLoaded = ref(false)
   const {
-    data,
+    data: comments,
     loadMore: loadMoreComment,
     noMore: noMoreComment,
     loading: commentLoading,
@@ -48,9 +47,11 @@ export function useTopicComments() {
       return null
 
     isLoaded.value = false
-    comments.value = []
     userSubmittedComment.value = []
     commentCount.value = topicCommentCount
+
+    // 重置 useLoadMore 内部的累积数据状态
+    initialCommentData()
 
     if (topicCommentCount > 0) {
       await refreshComment(
@@ -82,16 +83,6 @@ export function useTopicComments() {
     }
     return message.value.forum.comment.noMoreComment
   })
-
-  watch(
-    commentLoading,
-    () => {
-      comments.value = data.value
-    },
-    {
-      immediate: true,
-    },
-  )
 
   watch(commentLoadError, () => {
     handleError(commentLoadError.value, message)
