@@ -113,7 +113,7 @@ export const useForumTopicStore = defineStore('forum-topic', () => {
   })
 
   // 话题页面专用的数据加载方法
-  const loadTopicData = async (topicId: string | number): Promise<void> => {
+  const loadTopicData = async (topicId: string): Promise<void> => {
     currentTopicId.value = topicId
 
     // 检查缓存

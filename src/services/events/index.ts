@@ -1,8 +1,5 @@
 // 导出 BroadcastChannel 同步
-export {
-  BroadcastChannelSync,
-  broadcastChannelSync,
-} from './BroadcastChannelSync'
+export { BroadcastChannelSync } from './BroadcastChannelSync'
 
 // 导出事件管理器
 export {

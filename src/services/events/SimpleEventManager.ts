@@ -8,15 +8,15 @@ import type ForumAPI from '@/apis/forum/api'
 const eventDefinitions = {
   // Topic events
   topicCreated: (topic: ForumAPI.Topic) => ({ topic }),
-  topicUpdated: (id: string | number, updates: Partial<ForumAPI.Topic>) => ({ id, updates }),
-  topicDeleted: (id: string | number) => ({ id }),
-  topicPinned: (id: string | number, pinned: boolean) => ({ id, pinned }),
-  topicVisibilityChanged: (id: string | number, updates: { hidden?: boolean, closed?: boolean }) => ({ id, ...updates }),
-  topicClosed: (id: string | number, closed: boolean) => ({ id, closed }),
-  topicHidden: (id: string | number, hidden: boolean) => ({ id, hidden }),
-  topicTagsUpdated: (id: string | number, tags: string[]) => ({ id, tags }),
-  topicTypeChanged: (id: string | number, type: ForumAPI.TopicType) => ({ id, type }),
-  topicCommentToggled: (id: string | number, commentsClosed: boolean) => ({ id, commentsClosed }),
+  topicUpdated: (id: string, updates: Partial<ForumAPI.Topic>) => ({ id, updates }),
+  topicDeleted: (id: string) => ({ id }),
+  topicPinned: (id: string, pinned: boolean) => ({ id, pinned }),
+  topicVisibilityChanged: (id: string, updates: { hidden?: boolean, closed?: boolean }) => ({ id, ...updates }),
+  topicClosed: (id: string, closed: boolean) => ({ id, closed }),
+  topicHidden: (id: string, hidden: boolean) => ({ id, hidden }),
+  topicTagsUpdated: (id: string, tags: string[]) => ({ id, tags }),
+  topicTypeChanged: (id: string, type: ForumAPI.TopicType) => ({ id, type }),
+  topicCommentToggled: (id: string, commentsClosed: boolean) => ({ id, commentsClosed }),
 
   // Blog events (commented out)
   // blogCreated: (blog: EnhancedBlogPost) => ({ blog }),
@@ -28,19 +28,19 @@ const eventDefinitions = {
   // blogDraftDeleted: (draftId: string) => ({ draftId }),
 
   // Comment events
-  commentCreated: (commentId: string | number, topicId: string | number, comment: ForumAPI.Comment) => ({ commentId, topicId, comment }),
+  commentCreated: (commentId: string | number, topicId: string, comment: ForumAPI.Comment) => ({ commentId, topicId, comment }),
   commentUpdated: (commentId: string | number, updates: Partial<ForumAPI.Comment>) => ({ commentId, updates }),
-  commentDeleted: (commentId: string | number, topicId: string | number) => ({ commentId, topicId }),
-  commentHidden: (commentId: string | number, topicId: string | number, hidden: boolean) => ({ commentId, topicId, hidden }),
+  commentDeleted: (commentId: string | number, topicId: string) => ({ commentId, topicId }),
+  commentHidden: (commentId: string | number, topicId: string, hidden: boolean) => ({ commentId, topicId, hidden }),
 
   // UI events
-  uiTopicExpand: (topicId: string | number, expanded: boolean) => ({ topicId, expanded }),
-  uiCommentReply: (topicId: string | number, targetUser: string) => ({ topicId, targetUser }),
+  uiTopicExpand: (topicId: string, expanded: boolean) => ({ topicId, expanded }),
+  uiCommentReply: (topicId: string, targetUser: string) => ({ topicId, targetUser }),
   uiSearch: (query: string) => ({ query }),
   uiFilterChange: (filter: ForumAPI.FilterBy) => ({ filter }),
   uiSortChange: (sort: ForumAPI.SortMethod) => ({ sort }),
-  uiTopicAction: (topicId: string | number, action: string, payload?: ForumAPI.TopicType | string[] | null) => ({ topicId, action, payload }),
-  uiCommentAction: (commentId: string | number, topicId: string | number, action: string, payload?: string | null) => ({ commentId, topicId, action, payload }),
+  uiTopicAction: (topicId: string, action: string, payload?: ForumAPI.TopicType | string[] | null) => ({ topicId, action, payload }),
+  uiCommentAction: (commentId: string | number, topicId: string, action: string, payload?: string | null) => ({ commentId, topicId, action, payload }),
 
   // Form events
   formValidationError: (field: string, message: string) => ({ field, message }),
@@ -49,7 +49,7 @@ const eventDefinitions = {
   formSubmitError: (formType: string, error: Error) => ({ formType, error }),
 
   // Navigation events
-  navTopicDetail: (topicId: string | number) => ({ topicId }),
+  navTopicDetail: (topicId: string) => ({ topicId }),
   navUserProfile: (username: string) => ({ username }),
   navBack: () => ({} as const),
 } as const
@@ -59,31 +59,31 @@ export const forumEvents = {
   topicCreated: (topic: ForumAPI.Topic) => {
     SimpleEventManager.getInstance().emit('topic:created', eventDefinitions.topicCreated(topic))
   },
-  topicUpdated: (id: string | number, updates: Partial<ForumAPI.Topic>) => {
+  topicUpdated: (id: string, updates: Partial<ForumAPI.Topic>) => {
     SimpleEventManager.getInstance().emit('topic:updated', eventDefinitions.topicUpdated(id, updates))
   },
-  topicDeleted: (id: string | number) => {
+  topicDeleted: (id: string) => {
     SimpleEventManager.getInstance().emit('topic:deleted', eventDefinitions.topicDeleted(id))
   },
-  topicPinned: (id: string | number, pinned: boolean) => {
+  topicPinned: (id: string, pinned: boolean) => {
     SimpleEventManager.getInstance().emit('topic:pinned', eventDefinitions.topicPinned(id, pinned))
   },
-  topicVisibilityChanged: (id: string | number, updates: { hidden?: boolean, closed?: boolean }) => {
+  topicVisibilityChanged: (id: string, updates: { hidden?: boolean, closed?: boolean }) => {
     SimpleEventManager.getInstance().emit('topic:visibility-changed', eventDefinitions.topicVisibilityChanged(id, updates))
   },
-  topicClosed: (id: string | number, closed: boolean) => {
+  topicClosed: (id: string, closed: boolean) => {
     SimpleEventManager.getInstance().emit('topic:closed', eventDefinitions.topicClosed(id, closed))
   },
-  topicHidden: (id: string | number, hidden: boolean) => {
+  topicHidden: (id: string, hidden: boolean) => {
     SimpleEventManager.getInstance().emit('topic:hidden', eventDefinitions.topicHidden(id, hidden))
   },
-  topicTagsUpdated: (id: string | number, tags: string[]) => {
+  topicTagsUpdated: (id: string, tags: string[]) => {
     SimpleEventManager.getInstance().emit('topic:tags-updated', eventDefinitions.topicTagsUpdated(id, tags))
   },
-  topicTypeChanged: (id: string | number, type: ForumAPI.TopicType) => {
+  topicTypeChanged: (id: string, type: ForumAPI.TopicType) => {
     SimpleEventManager.getInstance().emit('topic:type-changed', eventDefinitions.topicTypeChanged(id, type))
   },
-  topicCommentToggled: (id: string | number, commentsClosed: boolean) => {
+  topicCommentToggled: (id: string, commentsClosed: boolean) => {
     SimpleEventManager.getInstance().emit('topic:comment-toggled', eventDefinitions.topicCommentToggled(id, commentsClosed))
   },
 
@@ -111,24 +111,24 @@ export const forumEvents = {
   // },
 
   // Comment events - 实际发出事件
-  commentCreated: (commentId: string | number, topicId: string | number, comment: ForumAPI.Comment) => {
+  commentCreated: (commentId: string | number, topicId: string, comment: ForumAPI.Comment) => {
     SimpleEventManager.getInstance().emit('comment:created', eventDefinitions.commentCreated(commentId, topicId, comment))
   },
   commentUpdated: (commentId: string | number, updates: Partial<ForumAPI.Comment>) => {
     SimpleEventManager.getInstance().emit('comment:updated', eventDefinitions.commentUpdated(commentId, updates))
   },
-  commentDeleted: (commentId: string | number, topicId: string | number) => {
+  commentDeleted: (commentId: string | number, topicId: string) => {
     SimpleEventManager.getInstance().emit('comment:deleted', eventDefinitions.commentDeleted(commentId, topicId))
   },
-  commentHidden: (commentId: string | number, topicId: string | number, hidden: boolean) => {
+  commentHidden: (commentId: string | number, topicId: string, hidden: boolean) => {
     SimpleEventManager.getInstance().emit('comment:hidden', eventDefinitions.commentHidden(commentId, topicId, hidden))
   },
 
   // UI events - 实际发出事件
-  uiTopicExpand: (topicId: string | number, expanded: boolean) => {
+  uiTopicExpand: (topicId: string, expanded: boolean) => {
     SimpleEventManager.getInstance().emit('ui:topic-expand', eventDefinitions.uiTopicExpand(topicId, expanded))
   },
-  uiCommentReply: (topicId: string | number, targetUser: string) => {
+  uiCommentReply: (topicId: string, targetUser: string) => {
     SimpleEventManager.getInstance().emit('ui:comment-reply', eventDefinitions.uiCommentReply(topicId, targetUser))
   },
   uiSearch: (query: string) => {
@@ -140,10 +140,10 @@ export const forumEvents = {
   uiSortChange: (sort: ForumAPI.SortMethod) => {
     SimpleEventManager.getInstance().emit('ui:sort-change', eventDefinitions.uiSortChange(sort))
   },
-  uiTopicAction: (topicId: string | number, action: string, payload?: ForumAPI.TopicType | string[] | null) => {
+  uiTopicAction: (topicId: string, action: string, payload?: ForumAPI.TopicType | string[] | null) => {
     SimpleEventManager.getInstance().emit('ui:topic-action', eventDefinitions.uiTopicAction(topicId, action, payload))
   },
-  uiCommentAction: (commentId: string | number, topicId: string | number, action: string, payload?: string | null) => {
+  uiCommentAction: (commentId: string | number, topicId: string, action: string, payload?: string | null) => {
     SimpleEventManager.getInstance().emit('ui:comment-action', eventDefinitions.uiCommentAction(commentId, topicId, action, payload))
   },
 
@@ -162,7 +162,7 @@ export const forumEvents = {
   },
 
   // Navigation events - 实际发出事件
-  navTopicDetail: (topicId: string | number) => {
+  navTopicDetail: (topicId: string) => {
     SimpleEventManager.getInstance().emit('nav:topic-detail', eventDefinitions.navTopicDetail(topicId))
   },
   navUserProfile: (username: string) => {
@@ -173,10 +173,10 @@ export const forumEvents = {
   },
 
   // 向后兼容的别名
-  topicExpand: (topicId: string | number, expanded: boolean) => {
+  topicExpand: (topicId: string, expanded: boolean) => {
     SimpleEventManager.getInstance().emit('ui:topic-expand', eventDefinitions.uiTopicExpand(topicId, expanded))
   },
-  commentReply: (topicId: string | number, targetUser: string) => {
+  commentReply: (topicId: string, targetUser: string) => {
     SimpleEventManager.getInstance().emit('ui:comment-reply', eventDefinitions.uiCommentReply(topicId, targetUser))
   },
   search: (query: string) => {
@@ -188,13 +188,13 @@ export const forumEvents = {
   sortChange: (sort: ForumAPI.SortMethod) => {
     SimpleEventManager.getInstance().emit('ui:sort-change', eventDefinitions.uiSortChange(sort))
   },
-  topicAction: (topicId: string | number, action: string, payload?: ForumAPI.TopicType | string[] | null) => {
+  topicAction: (topicId: string, action: string, payload?: ForumAPI.TopicType | string[] | null) => {
     SimpleEventManager.getInstance().emit('ui:topic-action', eventDefinitions.uiTopicAction(topicId, action, payload))
   },
-  commentAction: (commentId: string | number, topicId: string | number, action: string, payload?: string | null) => {
+  commentAction: (commentId: string | number, topicId: string, action: string, payload?: string | null) => {
     SimpleEventManager.getInstance().emit('ui:comment-action', eventDefinitions.uiCommentAction(commentId, topicId, action, payload))
   },
-  navigateToTopic: (topicId: string | number) => {
+  navigateToTopic: (topicId: string) => {
     SimpleEventManager.getInstance().emit('nav:topic-detail', eventDefinitions.navTopicDetail(topicId))
   },
   navigateToUser: (username: string) => {
@@ -355,12 +355,12 @@ export class SimpleStoreEventHandler {
   constructor(
     private topicOperations: {
       addTopic: (topic: ForumAPI.Topic) => void
-      removeTopic: (id: string | number) => void
-      updateTopic: (id: string | number, updates: Partial<ForumAPI.Topic>) => void
-      replaceTopicTags: (id: string | number, tags: string[]) => void
-      changeTopicType: (id: string | number, type: ForumAPI.TopicType) => void
-      changeTopicPinState: (id: string | number, pinned: boolean) => void
-      updateTopicVisibility: (id: string | number, updates: { hidden?: boolean, closed?: boolean }) => void
+      removeTopic: (id: string) => void
+      updateTopic: (id: string, updates: Partial<ForumAPI.Topic>) => void
+      replaceTopicTags: (id: string, tags: string[]) => void
+      changeTopicType: (id: string, type: ForumAPI.TopicType) => void
+      changeTopicPinState: (id: string, pinned: boolean) => void
+      updateTopicVisibility: (id: string, updates: { hidden?: boolean, closed?: boolean }) => void
     },
     _options: {
       pageType: 'home' | 'user' | 'topic'

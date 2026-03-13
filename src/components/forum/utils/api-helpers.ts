@@ -55,7 +55,7 @@ export function buildTopicsQueryParams(options: {
 }
 
 export function buildCommentsQueryParams(options: {
-  topicId: string | number
+  topicId: string
   page?: number
   pageSize?: number
 }): ForumAPI.GetCommentsParams {

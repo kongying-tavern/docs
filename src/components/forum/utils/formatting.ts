@@ -119,7 +119,7 @@ export function formatFileSize(bytes: number): string {
 }
 
 // URL formatting utilities
-export function formatTopicUrl(topicId: string | number, topicType: string = ''): string {
+export function formatTopicUrl(topicId: string, topicType: string = ''): string {
   const baseUrl = location.origin + location.pathname.replace(/\/[^/]*$/, '')
 
   if (topicType === 'POST') {

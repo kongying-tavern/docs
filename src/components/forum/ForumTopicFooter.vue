@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import type { FORUM } from './types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useForumViewMode } from '~/composables/useForumViewMode'
 import ForumTopicReactionButton from './ForumTopicReactionButton.vue'
 import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
 
 const { topicData } = defineProps<{
   topicData: ForumAPI.Topic
-  viewMode: FORUM.TopicViewMode
 }>()
 
 const emit = defineEmits(['comment:click'])
 
 const { message } = useLocalized()
+const { isCompactMode } = useForumViewMode()
 
 const isClosedComment = computed(() => topicData.commentCount === -1)
 const displayText = computed(() => {
@@ -31,7 +31,7 @@ function handleCommentClick() {
 </script>
 
 <template>
-  <div class="mr-2 w-full flex justify-between font-size-3">
+  <div class="font-size-3 mr-2 flex w-full justify-between">
     <div class="topic-info-list flex cursor-default items-center">
       <ForumTopicReactionButton class="mr-2 important:h-32px" :topic-id="String(topicData.id)" />
       <Button
@@ -45,6 +45,6 @@ function handleCommentClick() {
         {{ displayText }}
       </Button>
     </div>
-    <ForumTopicTypeBadge v-if="viewMode === 'Compact'" :type="topicData.type" />
+    <ForumTopicTypeBadge v-if="isCompactMode" :type="topicData.type" />
   </div>
 </template>

@@ -42,7 +42,7 @@ export function useTopicPageState() {
     }
 
     // Listen for comment events to update topic data
-    const handleCommentCreated = ({ topicId, comment }: { topicId: string | number, comment: any }) => {
+    const handleCommentCreated = ({ topicId, comment }: { topicId: string, comment: any }) => {
       if (String(topicId) === String(params.value?.id) && topic.value) {
         // Update comment count
         const newCommentCount = (topic.value.commentCount || 0) + 1
@@ -60,7 +60,7 @@ export function useTopicPageState() {
       }
     }
 
-    const handleCommentDeleted = ({ topicId, commentId }: { topicId: string | number, commentId: string | number }) => {
+    const handleCommentDeleted = ({ topicId, commentId }: { topicId: string, commentId: string | number }) => {
       if (String(topicId) === String(params.value?.id) && topic.value) {
         // Update comment count
         const newCommentCount = Math.max((topic.value.commentCount || 0) - 1, 0)

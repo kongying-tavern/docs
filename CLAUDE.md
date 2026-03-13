@@ -225,7 +225,7 @@ function isRecentEvent(key: string): boolean {
 #### Store Events (500ms window)
 ```typescript
 const recentStoreEvents = new Set<string>()
-function isRecentStoreEvent(eventType: string, topicId: string | number): boolean {
+function isRecentStoreEvent(eventType: string, topicId: string): boolean {
   const key = `${eventType}-${topicId}`
   if (recentStoreEvents.has(key)) return true
   recentStoreEvents.add(key)

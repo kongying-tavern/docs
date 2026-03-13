@@ -109,9 +109,9 @@ export type UserForumStore = UserForumStoreState & UserForumStoreActions
 
 // 性能优化相关类型
 export interface TopicIndexer {
-  findById: (id: string | number) => ForumAPI.Topic | undefined
+  findById: (id: string) => ForumAPI.Topic | undefined
   findByUser: (username: string) => ForumAPI.Topic[]
-  has: (id: string | number) => boolean
+  has: (id: string) => boolean
   size: number
 }
 
@@ -182,11 +182,11 @@ export interface UseForumDataReturn {
 }
 
 export interface UseTopicCacheReturn {
-  getCachedTopic: (id: string | number) => ForumAPI.Topic | undefined
+  getCachedTopic: (id: string) => ForumAPI.Topic | undefined
   setCachedTopic: (topic: ForumAPI.Topic) => void
-  removeCachedTopic: (id: string | number) => void
+  removeCachedTopic: (id: string) => void
   clearCache: () => void
-  hasCachedTopic: (id: string | number) => boolean
+  hasCachedTopic: (id: string) => boolean
 }
 
 export interface UseEventHandlersReturn {

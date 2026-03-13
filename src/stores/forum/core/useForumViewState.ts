@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useForumViewMode } from '~/composables/useForumViewMode'
+import { DEFAULT_FORUM_VIEW_MODE, isCardModeValue, isCompactModeValue, useForumViewMode } from '~/composables/useForumViewMode'
 
 export const useForumViewState = defineStore('forum-view-state', () => {
   const { viewMode, toggleViewMode, setViewMode } = useForumViewMode()
@@ -34,8 +34,8 @@ export const useForumViewState = defineStore('forum-view-state', () => {
   const autoRefresh = ref(false)
   const autoRefreshInterval = ref(30000)
 
-  const isCardView = computed(() => viewMode.value === 'card')
-  const isCompactView = computed(() => viewMode.value === 'compact')
+  const isCardView = computed(() => isCardModeValue(viewMode.value))
+  const isCompactView = computed(() => isCompactModeValue(viewMode.value))
   const isTableView = computed(() => false)
 
   const layoutConfig = computed(() => ({
@@ -85,7 +85,7 @@ export const useForumViewState = defineStore('forum-view-state', () => {
 
   // Reset to defaults
   const resetToDefaults = (): void => {
-    viewMode.value = 'card'
+    viewMode.value = DEFAULT_FORUM_VIEW_MODE
     showSidebar.value = true
     compactMode.value = false
     showTopicPreviews.value = true

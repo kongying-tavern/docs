@@ -1,43 +1,22 @@
 import type { Ref } from 'vue'
-import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { useToggle } from '@vueuse/core'
-import { useData, useRouter, withBase } from 'vitepress'
-import { computed, nextTick, readonly, ref } from 'vue'
-import { getLangPath } from '@/utils'
+import { nextTick, readonly, ref } from 'vue'
+import { useForumViewMode } from '~/composables/useForumViewMode'
 import { useTopicComments } from '~/composables/useTopicComment'
 import { forumEvents } from '~/services/events/SimpleEventManager'
-
 import { updateUrlHash } from '../utils/dom-utils'
+import { useNavigateToTopic } from './useNavigateToTopic'
 
-export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post, viewMode: FORUM.TopicViewMode) {
-  const router = useRouter()
-  const { localeIndex } = useData()
+export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
   const { submitComment } = useTopicComments()
+  const { isPost, toPostDetailPage } = useNavigateToTopic(topic)
+  const { isCompactMode } = useForumViewMode()
 
   // State
   const replyTarget = ref('')
   const userSubmittedComment = ref<ForumAPI.Comment[]>([])
   const [inReply, toggleReply] = useToggle()
-
-  // Computed properties
-  const isPost = computed(() => topic.type === 'POST')
-  const isCompactMode = computed(() => viewMode === 'Compact')
-  const isCardMode = computed(() => viewMode === 'Card')
-
-  // Navigation functions
-  async function toPostDetailPage(hash?: string): Promise<void> {
-    const path = isPost.value
-      ? `blog/posts/${(topic as ForumAPI.Post).path}`
-      : `feedback/topic/${topic.id}`
-
-    const fullPath = withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`)
-
-    // Emit navigation event
-    forumEvents.navigateToTopic(topic.id)
-
-    return await router.go(fullPath)
-  }
 
   // Comment interaction functions
   function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>): void {
@@ -140,8 +119,6 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post, viewM
 
     // Computed
     isPost,
-    isCompactMode,
-    isCardMode,
 
     // Actions
     toPostDetailPage,

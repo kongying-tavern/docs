@@ -36,12 +36,12 @@ export class UnifiedCacheLayer {
     }
   }
 
-  removeCachedTopic(id: string | number): boolean {
-    return this.topicCache.delete(String(id))
+  removeCachedTopic(id: string): boolean {
+    return this.topicCache.delete(id)
   }
 
-  hasCachedTopic(id: string | number): boolean {
-    return this.topicCache.has(String(id))
+  hasCachedTopic(id: string): boolean {
+    return this.topicCache.has(id)
   }
 
   // 批量Topic缓存操作
@@ -134,7 +134,7 @@ export class UnifiedCacheLayer {
   }
 
   // 智能缓存更新
-  updateTopicInCache(id: string | number, updates: Partial<ForumAPI.Topic>): ForumAPI.Topic | null {
+  updateTopicInCache(id: string, updates: Partial<ForumAPI.Topic>): ForumAPI.Topic | null {
     const cachedTopic = this.getCachedTopic(id)
     if (cachedTopic) {
       const updatedTopic = { ...cachedTopic, ...updates }

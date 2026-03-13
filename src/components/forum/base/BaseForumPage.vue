@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import type { StoreGeneric } from 'pinia'
 import type { Component } from 'vue'
-import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumStore } from '~/types/forum/simplified'
-import { useLocalStorage } from '@vueuse/core'
 import { computed, provide, toRef } from 'vue'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
-import { FORUM_STORE_KEY, FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY, FORUM_TOPIC_VIEW_MODE_KEY, FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
+import { FORUM_STORE_KEY, FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY } from '../shared'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
 // 导入BroadcastChannelSync以确保模块初始化
@@ -36,14 +34,10 @@ const props = withDefaults(defineProps<Props>(), {
   asideProps: () => ({}),
 })
 
-// View mode with localStorage persistence
-const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
-
 // Access store properties directly (don't destructure to maintain reactivity)
 const store = props.store
 
 // Provide context for child components using toRef to maintain reactivity
-provide(FORUM_TOPIC_VIEW_MODE_KEY, viewMode)
 provide(FORUM_TOPIC_SORT_KEY, toRef(store, 'sort'))
 provide(FORUM_TOPIC_FILTER_KEY, toRef(store, 'filter'))
 provide(FORUM_TOPIC_LOADING_KEY, toRef(store, 'loading'))
@@ -82,7 +76,6 @@ const isTopicsLoading = computed(() => {
 
         <slot name="content-main">
           <ForumTopicsList
-            :view-mode="viewMode"
             :data="renderData"
             :loading="isTopicsLoading"
             :load-more="store.loadMoreTopics"

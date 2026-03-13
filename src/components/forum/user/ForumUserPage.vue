@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
-import { useLocalStorage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useData } from 'vitepress'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
@@ -9,7 +7,6 @@ import { useForumUserStore } from '~/stores/forum/useForumUserStore'
 import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
-import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '../shared'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import { updateLastPathSegment } from '../utils'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
@@ -21,6 +18,11 @@ defineOptions({
     routeOptions: {
       type: ['feat', 'closed', 'bug'],
     },
+    data: {
+      frontmatter: {
+        layout: 'Forum',
+      },
+    },
     i18n: true,
   },
 })
@@ -28,7 +30,6 @@ defineOptions({
 const forumUserStore = useForumUserStore()
 const userInfo = useUserInfoStore()
 const activeTab = ref<'feedback' | ''>('feedback')
-const viewMode = useLocalStorage<FORUM.TopicViewMode>(FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY, 'Card')
 
 const { params } = useData()
 
@@ -53,14 +54,9 @@ const {
 const username = String(params.value?.id) || userInfo.info?.login
 
 const renderData = computed(() => {
-  // When searching, show only search results
-  if (isSearching.value) {
-    return topics.value || []
-  }
-
   // When not searching, show user submitted topics and regular topics
   return [
-    ...(userSubmittedTopics.value || []),
+    ...(isSearching.value ? [] : userSubmittedTopics.value || []),
     ...(topics.value || []),
   ]
 })
@@ -99,7 +95,6 @@ onUnmounted(() => {
       <div v-show="activeTab === 'feedback'">
         <!-- Use the default content from BaseForumPage -->
         <ForumTopicsList
-          :view-mode="viewMode"
           :data="renderData"
           :loading="loading"
           :load-more="loadMoreTopics"

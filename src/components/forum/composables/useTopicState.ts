@@ -1,6 +1,5 @@
 import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
-import { useCached } from '@vueuse/core'
 import { isArray } from 'lodash-es'
 import { computed, useTemplateRef } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
@@ -16,14 +15,6 @@ export function useTopicState(topic: ForumAPI.Topic | ForumAPI.Post) {
   const translator = useTemplateRef<TranslatorComponent>('translator')
   const { isNoTranslationRequirement } = useLanguage()
   const { message } = useLocalized()
-
-  // Hash management
-  const hash = computed({
-    get: () => location.hash.slice(1),
-    set: val => (location.hash = val),
-  })
-
-  const cachedHash = useCached(hash, (_a, b) => !b.includes('reply'))
 
   // Menu configuration
   const menu = computed<FORUM.TopicDropdownMenu[]>(() => {
@@ -58,8 +49,6 @@ export function useTopicState(topic: ForumAPI.Topic | ForumAPI.Post) {
   return {
     translator,
     menu,
-    hash,
-    cachedHash,
     showComment,
   }
 }

@@ -3,13 +3,37 @@ import { useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
 import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '~/components/forum/shared'
 
+// 导出常量供外部使用
+export const FORUM_VIEW_MODES = ['CARD', 'COMPACT'] as const
+export const DEFAULT_FORUM_VIEW_MODE = 'CARD' as const
+export const COMPACT_MODE = 'COMPACT' as const
+
+export function isCardModeValue(mode: FORUM.TopicViewMode): boolean {
+  return mode === DEFAULT_FORUM_VIEW_MODE
+}
+
+export function isCompactModeValue(mode: FORUM.TopicViewMode): boolean {
+  return mode === COMPACT_MODE
+}
+
+export function getViewModeIconClass(mode: FORUM.TopicViewMode): string {
+  return isCardModeValue(mode) ? 'i-custom-card' : 'i-custom-compact'
+}
+
+export function getViewModeDisplayLabel(mode: FORUM.TopicViewMode): string {
+  return isCardModeValue(mode) ? 'Card' : 'Compact'
+}
+
 export function useForumViewMode() {
-  const VALID_MODES: FORUM.TopicViewMode[] = ['card', 'compact']
-  const DEFAULT_MODE: FORUM.TopicViewMode = 'card'
+  const VALID_MODES = FORUM_VIEW_MODES
+  const DEFAULT_MODE = DEFAULT_FORUM_VIEW_MODE
 
   const rawViewMode = useLocalStorage<FORUM.TopicViewMode>(
     FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY,
     DEFAULT_MODE,
+    {
+      mergeDefaults: true,
+    },
   )
 
   // 创建带验证的computed属性
@@ -29,8 +53,8 @@ export function useForumViewMode() {
     rawViewMode.value = DEFAULT_MODE
   }
 
-  const isCardMode = computed(() => viewMode.value === 'card')
-  const isCompactMode = computed(() => viewMode.value === 'compact')
+  const isCardMode = computed(() => isCardModeValue(viewMode.value))
+  const isCompactMode = computed(() => isCompactModeValue(viewMode.value))
 
   const toggleViewMode = (): void => {
     const currentIndex = VALID_MODES.indexOf(viewMode.value)
@@ -44,13 +68,9 @@ export function useForumViewMode() {
     }
   }
 
-  const getViewModeLabel = computed(() => {
-    return viewMode.value === 'card' ? 'Card' : 'Compact'
-  })
+  const getViewModeLabel = computed(() => viewMode.value)
 
-  const getViewModeIcon = computed(() => {
-    return viewMode.value === 'card' ? 'i-custom-card' : 'i-custom-compact'
-  })
+  const getViewModeIcon = computed(() => getViewModeIconClass(viewMode.value))
 
   return {
     viewMode,

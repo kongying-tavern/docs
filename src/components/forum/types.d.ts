@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 export namespace FORUM {
   type MenuOrder = number | 'last'
 
-  type TopicViewMode = 'Card' | 'Compact'
+  type TopicViewMode = 'CARD' | 'COMPACT'
 
   interface MenuItemBase {
     type: 'item'

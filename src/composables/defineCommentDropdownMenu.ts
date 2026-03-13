@@ -12,7 +12,7 @@ import { forumEvents } from '~/services/events/SimpleEventManager'
 export function defineCommentDropdownMenu(
   repo: string,
   commentData?: ForumAPI.Comment,
-  topicId?: string | number,
+  topicId?: string,
 ): ComputedRef<FORUM.TopicDropdownMenu[]> {
   if (!commentData)
     return computed(() => [])

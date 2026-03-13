@@ -20,7 +20,7 @@ const {
   commentData: ForumAPI.Comment
   commentClickHandler?: (event: Event) => void
   menus?: FORUM.TopicDropdownMenu[]
-  topicId?: string | number
+  topicId?: string
 }>()
 
 const emit = defineEmits(['comment:delete', 'comment:click'])
@@ -42,7 +42,7 @@ function handleCommentClick(event: Event) {
 </script>
 
 <template>
-  <div class="mr-2 flex justify-between font-size-3">
+  <div class="font-size-3 mr-2 flex justify-between">
     <ForumTime
       class="color-[--vp-c-text-3] lh-[36px] font-[var(--vp-font-family-subtitle)]"
       :date="commentData.createdAt"

@@ -1,20 +1,17 @@
 <script lang="ts" setup>
-import type { FORUM } from './types'
 import { createReusableTemplate, useWindowSize } from '@vueuse/core'
 import { computed } from 'vue'
 import { Skeleton } from '@/components/ui/skeleton'
-
-const props = defineProps<{
-  viewMode: FORUM.TopicViewMode
-}>()
+import { useForumViewMode } from '~/composables/useForumViewMode'
 
 const [TopicCardSkeleton, UseTopicCardSkeleton] = createReusableTemplate()
 const [TopicCompactViewSkeleton, UseTopicCompactViewSkeleton] = createReusableTemplate()
 
 const { height } = useWindowSize()
+const { isCardMode } = useForumViewMode()
 
 const skeletonCount = computed(() => {
-  const itemHeight = props.viewMode === 'Card' ? 200 : 120
+  const itemHeight = isCardMode.value ? 200 : 120
   return Math.ceil(height.value / itemHeight) + 2
 })
 </script>
@@ -99,7 +96,7 @@ const skeletonCount = computed(() => {
     leave-from-class="opacity-100 translate-y-0"
     leave-to-class="opacity-0 translate-y-4"
   >
-    <template v-if="viewMode === 'Card'">
+    <template v-if="isCardMode">
       <div v-for="i in skeletonCount" :key="`card-${i}`">
         <UseTopicCardSkeleton />
         <Separator />

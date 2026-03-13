@@ -70,7 +70,7 @@ export const useForumRouteState = defineStore('forum-route-state', () => {
     go(`/forum/user/${encodeURIComponent(username)}`)
   }
 
-  const navigateToTopic = (topicId: string | number): void => {
+  const navigateToTopic = (topicId: string): void => {
     go(`/forum/topic/${topicId}`)
   }
 

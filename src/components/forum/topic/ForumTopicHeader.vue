@@ -50,8 +50,8 @@ function handleMenuAction(actionId: string): void {
 </script>
 
 <template>
-  <div class="topic-header flex justify-between break-words font-size-5 font-[var(--vp-font-family-title)]">
-    <div class="relative min-w-0 flex flex-wrap items-center gap-[0.25rem] text-12">
+  <div class="topic-header font-size-5 font-[var(--vp-font-family-title)] flex break-words justify-between">
+    <div class="text-12 flex flex-wrap gap-[0.25rem] min-w-0 items-center relative">
       <ForumUserHoverCard :user="topic.user">
         <template #trigger>
           <User
@@ -67,7 +67,7 @@ function handleMenuAction(actionId: string): void {
 
       <ForumRoleBadge v-if="role === 'official'" :type="role" />
 
-      <span class="my-0 inline-block text-xs color-[--vp-c-text-3]">•</span>
+      <span class="text-xs color-[--vp-c-text-3] my-0 inline-block">•</span>
 
       <ForumTime
         class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)]"

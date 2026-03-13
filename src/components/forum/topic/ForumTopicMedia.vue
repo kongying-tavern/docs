@@ -1,23 +1,19 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import { Image } from '@/components/ui/image'
+import { useForumViewMode } from '~/composables/useForumViewMode'
 
-interface Props {
+const props = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
-  viewMode: FORUM.TopicViewMode
-}
+}>()
 
-const props = defineProps<Props>()
+const { isCardMode, isCompactMode } = useForumViewMode()
 
 // Computed properties
 const hasImages = computed(() =>
   props.topic.content?.images && props.topic.content.images.length > 0,
 )
-
-const isCompactMode = computed(() => props.viewMode === 'Compact')
-const isCardMode = computed(() => props.viewMode === 'Card')
 
 const images = computed(() => props.topic.content?.images || [])
 const primaryImage = computed(() => images.value[0])

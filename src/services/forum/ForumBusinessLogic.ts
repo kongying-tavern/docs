@@ -248,14 +248,14 @@ export class ForumBusinessLogic {
    */
   static prepareBatchUpdates(
     topics: ForumAPI.Topic[],
-    updates: Array<{ id: string | number, changes: Partial<ForumAPI.Topic> }>,
+    updates: Array<{ id: string, changes: Partial<ForumAPI.Topic> }>,
   ): ForumAPI.Topic[] {
     const updateMap = new Map(
-      updates.map(update => [String(update.id), update.changes]),
+      updates.map(update => [update.id, update.changes]),
     )
 
     return topics.map((topic) => {
-      const changes = updateMap.get(String(topic.id))
+      const changes = updateMap.get(topic.id)
       return changes ? { ...topic, ...changes } : topic
     })
   }
@@ -373,7 +373,7 @@ export class ForumOperationFactory {
    * 批量更新操作
    */
   static createBatchUpdateOperation(
-    updates: Array<{ id: string | number, changes: Partial<ForumAPI.Topic> }>,
+    updates: Array<{ id: string, changes: Partial<ForumAPI.Topic> }>,
     onSuccess?: (updatedCount: number) => void,
     onError?: (error: unknown) => void,
   ) {

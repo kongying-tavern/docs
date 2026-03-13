@@ -19,7 +19,7 @@ const emits = defineEmits([
 const { localeIndex } = useData()
 
 // Generate correct topic link with locale and base
-function getTopicLink(topicId: string | number): string {
+function getTopicLink(topicId: string): string {
   return `.${`${getLangPath(localeIndex.value)}feedback/topic/${topicId}`}`
 }
 

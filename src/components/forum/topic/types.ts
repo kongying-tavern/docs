@@ -25,7 +25,7 @@ export interface TopicPageState {
   topic: ForumAPI.Topic | null
 }
 
-export type TopicViewMode = 'card' | 'compact' | 'detail'
+export type TopicViewMode = 'CARD' | 'COMPACT' | 'detail'
 
 export interface TopicInteractionState {
   isExpanded: boolean

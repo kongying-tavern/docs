@@ -7,8 +7,8 @@ export interface TopicCacheConfig {
 }
 
 export interface TopicCache {
-  topics: Map<string | number, ForumAPI.Topic>
-  lastAccess: Map<string | number, number>
+  topics: Map<string, ForumAPI.Topic>
+  lastAccess: Map<string, number>
   maxSize: number
   ttl: number
 }
@@ -28,7 +28,7 @@ export function useTopicCache(config: Partial<TopicCacheConfig> = {}) {
     ttl: cacheConfig.ttl,
   })
 
-  function getCachedTopic(id: string | number): ForumAPI.Topic | undefined {
+  function getCachedTopic(id: string): ForumAPI.Topic | undefined {
     const topic = cache.value.topics.get(id)
     if (topic) {
       cache.value.lastAccess.set(id, Date.now())
@@ -56,7 +56,7 @@ export function useTopicCache(config: Partial<TopicCacheConfig> = {}) {
 
   function cleanupExpiredEntries(): void {
     const now = Date.now()
-    const expiredKeys: (string | number)[] = []
+    const expiredKeys: string[] = []
 
     cache.value.lastAccess.forEach((lastAccess, key) => {
       if (now - lastAccess > cache.value.ttl) {
@@ -81,7 +81,7 @@ export function useTopicCache(config: Partial<TopicCacheConfig> = {}) {
     })
   }
 
-  function removeCachedTopic(id: string | number): void {
+  function removeCachedTopic(id: string): void {
     cache.value.topics.delete(id)
     cache.value.lastAccess.delete(id)
   }

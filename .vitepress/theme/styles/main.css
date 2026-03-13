@@ -7,6 +7,10 @@
 @import "./animation.css";
 @import "./fonts.css";
 
+@view-transition {
+  navigation: auto;
+}
+
 :root {
   text-autospace: normal;
 }

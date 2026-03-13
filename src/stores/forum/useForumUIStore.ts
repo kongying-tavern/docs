@@ -1,10 +1,9 @@
 import type ForumAPI from '@/apis/forum/api'
-import type { FORUM } from '~/components/forum/types'
-import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { useData, useRouter } from 'vitepress'
 import { computed, readonly, ref } from 'vue'
-import { FILTER_SETS, FORUM_CONFIG, STORAGE_KEYS } from '~/components/forum/constants'
+import { FILTER_SETS, FORUM_CONFIG } from '~/components/forum/constants'
+import { useForumViewMode } from '~/composables/useForumViewMode'
 import { forumEvents } from '~/services/events/SimpleEventManager'
 
 export const useForumUIStore = defineStore('forum-ui', () => {
@@ -17,11 +16,8 @@ export const useForumUIStore = defineStore('forum-ui', () => {
   const page = ref<number>(FORUM_CONFIG.DEFAULT_PAGE)
   const creator = ref<string | null>(FORUM_CONFIG.DEFAULT_CREATOR)
 
-  // View mode with localStorage persistence
-  const viewMode = useLocalStorage<FORUM.TopicViewMode>(
-    STORAGE_KEYS.FORUM_VIEW_MODE,
-    'Card',
-  )
+  // View mode from centralized hook
+  const { viewMode, isCardMode, isCompactMode, setViewMode } = useForumViewMode()
 
   // Computed filter based on route
   const filter = computed<ForumAPI.FilterBy>({
@@ -58,9 +54,6 @@ export const useForumUIStore = defineStore('forum-ui', () => {
   const totalCount = ref(0)
 
   // Getters
-  const isCardMode = computed(() => viewMode.value === 'Card')
-  const isCompactMode = computed(() => viewMode.value === 'Compact')
-
   const paginationInfo = computed(() => ({
     current: currentPage.value,
     total: totalPages.value,
@@ -73,10 +66,6 @@ export const useForumUIStore = defineStore('forum-ui', () => {
   function setSort(newSort: ForumAPI.SortMethod): void {
     sort.value = newSort
     forumEvents.sortChange(newSort)
-  }
-
-  function setViewMode(newViewMode: FORUM.TopicViewMode): void {
-    viewMode.value = newViewMode
   }
 
   function setCreator(newCreator: string | null): void {

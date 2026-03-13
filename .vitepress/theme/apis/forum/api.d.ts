@@ -40,7 +40,7 @@ export namespace ForumAPI {
   }
 
   export interface Topic {
-    id: string | number
+    id: string
     title: string
     content: ForumAPI.Content
     contentRaw: string

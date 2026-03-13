@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { FORUM } from './types'
 import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll } from '@vueuse/core'
-import { inject, onMounted } from 'vue'
+import { inject } from 'vue'
 import ForumTopic from './ForumTopic.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
@@ -11,10 +10,8 @@ import { FORUM_TOPIC_CAN_LOAD_MORE } from './shared'
 const {
   data,
   loadMore,
-  viewMode = 'Card',
 } = defineProps<{
   data: ForumAPI.Topic[]
-  viewMode?: FORUM.TopicViewMode
   loadMore?: () => Promise<unknown> | unknown
   refreshData?: () => Promise<unknown> | unknown
   loading?: boolean
@@ -22,21 +19,20 @@ const {
 
 const canLoadMore = inject(FORUM_TOPIC_CAN_LOAD_MORE)
 
-onMounted(() => {
-  if (loadMore) {
-    useInfiniteScroll(
-      window,
-      () => {
-        loadMore()
-      },
-      {
-        distance: 10,
-        interval: 1500,
-        canLoadMore: () => canLoadMore?.value || false,
-      },
-    )
-  }
-})
+// useInfiniteScroll should be called at setup top level, not inside onMounted
+if (loadMore) {
+  useInfiniteScroll(
+    window,
+    () => {
+      loadMore()
+    },
+    {
+      distance: 10,
+      interval: 1500,
+      canLoadMore: () => canLoadMore?.value || false,
+    },
+  )
+}
 </script>
 
 <template>
@@ -50,19 +46,13 @@ onMounted(() => {
           v-for="(item, index) in data"
           :key="item.id"
         >
-          <ForumTopic
-            :topic="item"
-            :view-mode="viewMode"
-          />
+          <ForumTopic :topic="item" />
           <Separator v-if="index < data.length - 1" class="h-1px" />
         </li>
       </TransitionGroup>
     </KeepAlive>
 
-    <ForumTopicListSkeletons
-      v-if="loading"
-      :view-mode="viewMode"
-    />
+    <ForumTopicListSkeletons v-if="loading" />
 
     <ForumTopicListEmpty
       v-else-if="data.length === 0"

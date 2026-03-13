@@ -89,7 +89,7 @@ export function useTopicComments() {
   })
 
   // Listen for comment deletion events
-  const handleCommentDeleted = (event: { commentId: string | number, topicId: string | number }) => {
+  const handleCommentDeleted = (event: { commentId: string | number, topicId: string }) => {
     comments.value = comments.value.filter(comment => comment.id !== event.commentId)
     userSubmittedComment.value = userSubmittedComment.value.filter(
       comment => comment.id !== event.commentId,

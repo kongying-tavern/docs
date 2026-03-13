@@ -166,7 +166,7 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
 
   // === 自定义事件处理 ===
   const customEventHandlers = {
-    handleCommentCreated: (payload: { topicId: string | number, comment: ForumAPI.Comment }) => {
+    handleCommentCreated: (payload: { topicId: string, comment: ForumAPI.Comment }) => {
       // 更新对应话题的评论数和relatedComments
       // 优先查找用户提交数据，保持与UI数据源一致（mergeTopicsData中用户数据优先）
       const targetTopic = userSubmittedTopics.value.find(t => t.id === payload.topicId)
@@ -187,7 +187,7 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
       }
     },
 
-    handleCommentDeleted: (payload: { commentId: string | number, topicId: string | number }) => {
+    handleCommentDeleted: (payload: { commentId: string | number, topicId: string }) => {
       // 减少对应话题的评论数和更新relatedComments
       // 优先查找用户提交数据，保持与UI数据源一致（mergeTopicsData中用户数据优先）
       const targetTopic = userSubmittedTopics.value.find(t => t.id === payload.topicId)

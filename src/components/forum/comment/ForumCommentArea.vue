@@ -5,6 +5,7 @@ import { nextTick, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
+import { useNavigateToTopic } from '../composables/useNavigateToTopic'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import { useCommentAreaState } from './composables/useCommentAreaState'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
@@ -39,6 +40,8 @@ const {
   setCommentInputBoxVisible,
   canLoadMoreComment,
 } = useCommentAreaState(props)
+
+const { toPostDetailPage } = useNavigateToTopic(props.topicId)
 
 // Template refs and UI state
 const commentArea = useTemplateRef('commentArea')
@@ -144,6 +147,7 @@ onUnmounted(cleanup)
         <p
           v-if="canLoadMoreComment && inline"
           class="font-size-3 c-[var(--vp-c-text-3)] vp-link text-center w-full cursor-pointer"
+          @click="toPostDetailPage()"
         >
           查看更多评论
         </p>

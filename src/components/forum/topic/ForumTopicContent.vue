@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import { useTopicContent } from './composables/useTopicContent'
 
-const { topic, viewMode } = defineProps<{
+const { topic } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
-  viewMode: FORUM.TopicViewMode
 }>()
 
 const emit = defineEmits<{
@@ -21,7 +19,6 @@ const { message } = useLocalized()
 
 // Use topic content composable
 const {
-  renderedText: _renderedText,
   isPost,
   isAnn,
   isCardMode,
@@ -32,10 +29,7 @@ const {
   shouldShowTitle,
   displayTitle,
   displayContent,
-} = useTopicContent({
-  topic,
-  viewMode: () => viewMode,
-})
+} = useTopicContent({ topic })
 
 // Event handlers
 function handleContentClick(): void {
@@ -57,13 +51,13 @@ function handleExpandClick(): void {
 <template>
   <div class="topic-content">
     <div
-      class="content-main"
+      class="content-main mt-1"
       @click="handleContentClick"
     >
       <!-- Title -->
       <h4
         v-if="shouldShowTitle"
-        class="line-clamp-2 mt-2 flex break-words"
+        class="mt-2 flex break-words line-clamp-2"
         :class="{
           'font-size-4.5 font-[--vp-font-family-title]': isCardMode,
           'font-size-3.5 font-[--vp-font-family-subtitle]': isCompactMode,
@@ -80,7 +74,7 @@ function handleExpandClick(): void {
       <!-- Content Article -->
       <article
         v-if="isCardMode"
-        class="mt-1 overflow-hidden whitespace-pre-wrap pr-4 font-size-3.5 opacity-99 transition-all duration-300"
+        class="font-size-3.5 mt-1 pr-4 opacity-99 whitespace-pre-wrap transition-all duration-300 overflow-hidden"
       >
         <div v-if="topic.type !== 'POST'" :class="{ 'line-clamp-4': !(isExpanded || isAnn) }">
           {{ displayContent }}
@@ -92,7 +86,7 @@ function handleExpandClick(): void {
         <!-- Read More Button for Posts -->
         <Button
           v-if="isPost"
-          class="px-0 font-size-4"
+          class="font-size-4 px-0"
           variant="link"
           @click.stop="handleReadMoreClick"
         >
@@ -102,7 +96,7 @@ function handleExpandClick(): void {
         <!-- Expand Button for Topics -->
         <Button
           v-else-if="!isAnn && hasOverflow && !isExpanded"
-          class="px-0 font-size-4"
+          class="font-size-4 px-0"
           variant="link"
           @click.stop="handleExpandClick"
         >
@@ -113,7 +107,7 @@ function handleExpandClick(): void {
       <!-- Compact Mode Content -->
       <div
         v-if="isCompactMode"
-        class="mt-1 overflow-hidden whitespace-pre-wrap font-size-3.5 opacity-99"
+        class="font-size-3.5 mt-1 opacity-99 whitespace-pre-wrap overflow-hidden"
       >
         <div v-if="topic.type !== 'POST'" class="line-clamp-2">
           {{ displayContent }}

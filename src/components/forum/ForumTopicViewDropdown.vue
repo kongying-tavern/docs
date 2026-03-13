@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import {
   Select,
   SelectContent,
@@ -7,28 +6,23 @@ import {
   SelectLabel,
   SelectTrigger,
 } from '@/components/ui/select'
-import { FORUM_TOPIC_VIEW_MODE_KEY } from './shared'
+import { FORUM_VIEW_MODES, getViewModeDisplayLabel, getViewModeIconClass, useForumViewMode } from '~/composables/useForumViewMode'
 
-const viewMode = inject(FORUM_TOPIC_VIEW_MODE_KEY)
+const { viewMode, getViewModeIcon } = useForumViewMode()
 </script>
 
 <template>
   <Select v-model="viewMode">
     <SelectTrigger
-      class="mt-2 w-fit whitespace-break-spaces rounded-full font-size-3 shadow-none hover:bg-[--vp-c-bg-soft]"
+      class="font-size-3 mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
     >
-      <span v-if="viewMode === 'Card'" class="i-custom-card icon-btn size-4 bg-[--vp-c-text-2]" />
-      <span v-else class="i-custom-compact icon-btn size-4 bg-[--vp-c-text-2]" />
+      <span :class="getViewModeIcon" class="icon-btn bg-[--vp-c-text-2] size-4" />
     </SelectTrigger>
     <SelectContent>
       <SelectLabel>View Mode</SelectLabel>
-      <SelectItem value="Card">
-        <span class="i-custom-card icon-btn size-4 bg-[--vp-c-text-2]" />
-        Card
-      </SelectItem>
-      <SelectItem value="Compact">
-        <span class="i-custom-compact icon-btn size-4 bg-[--vp-c-text-2]" />
-        Compact
+      <SelectItem v-for="mode in FORUM_VIEW_MODES" :key="mode" :value="mode">
+        <span :class="getViewModeIconClass(mode)" class="icon-btn bg-[--vp-c-text-2] size-4" />
+        {{ getViewModeDisplayLabel(mode) }}
       </SelectItem>
     </SelectContent>
   </Select>

@@ -13,7 +13,7 @@ import ForumCommentFooter from './ForumCommentFooter.vue'
 const props = withDefaults(
   defineProps<{
     repo?: string
-    topicId: string | number
+    topicId: string
     topicAuthorId: string | number
     commentData: ForumAPI.Comment
     size?: 'small' | 'normal'

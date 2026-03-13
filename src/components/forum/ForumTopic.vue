@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { FORUM } from './types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useForumViewMode } from '~/composables/useForumViewMode'
 import { simpleEventManager } from '../../services/events/SimpleEventManager'
 import ForumCommentArea from './comment/ForumCommentArea.vue'
 import ForumTopicComment from './comment/ForumTopicComment.vue'
@@ -14,10 +14,9 @@ import ForumTopicHeader from './topic/ForumTopicHeader.vue'
 import ForumTopicMedia from './topic/ForumTopicMedia.vue'
 import ForumTagList from './ui/ForumTagList.vue'
 
-const { topic, viewMode } = defineProps<{
+const { topic } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
   comment?: ForumAPI.Comment
-  viewMode: FORUM.TopicViewMode
 }>()
 
 // Local state for topic data
@@ -26,9 +25,8 @@ const localRelatedComments = ref<ForumAPI.Comment[]>(topic.relatedComments || []
 // Topic state management
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
 
-// View mode computed properties
-const isCardMode = computed(() => viewMode === 'Card')
-const isCompactMode = computed(() => viewMode === 'Compact')
+// View mode from hook
+const { isCardMode, isCompactMode } = useForumViewMode()
 
 // Filter menu based on view mode - translator only available in Card mode
 const menu = computed(() => {
@@ -45,7 +43,7 @@ const {
   handleToggleCommentInput,
   handleTopicClick,
   handleMenuAction,
-} = useTopicInteraction(topic, viewMode)
+} = useTopicInteraction(topic)
 
 // Event handlers
 function handleContentClick(): void {
@@ -113,7 +111,6 @@ onUnmounted(() => {
         >
           <ForumTopicContent
             :topic="topic"
-            :view-mode="viewMode"
             @content:click="handleContentClick"
             @read-more:click="handleReadMoreClick"
           />
@@ -133,7 +130,6 @@ onUnmounted(() => {
           v-if="isCompactMode"
           class="shrink-0 w-100px"
           :topic="topic"
-          :view-mode="viewMode"
         />
       </div>
 
@@ -141,7 +137,6 @@ onUnmounted(() => {
       <ForumTopicMedia
         v-if="isCardMode"
         :topic="topic"
-        :view-mode="viewMode"
       />
     </div>
 
@@ -158,13 +153,12 @@ onUnmounted(() => {
       :class="{ 'mt-4': isCardMode, 'mt-2': isCompactMode }"
       :topic-data="topic"
       :comment-id="topic.type === 'ANN' ? -1 : 1"
-      :view-mode="viewMode"
       @comment:click="handleToggleCommentInput"
     />
 
     <!-- Related Comments -->
     <div
-      v-if="showComment && localRelatedComments.length && viewMode !== 'Compact' && !inReply"
+      v-if="showComment && localRelatedComments.length && !isCompactMode && !inReply"
       class="topic-comment"
     >
       <ForumTopicComment
@@ -185,7 +179,7 @@ onUnmounted(() => {
 
     <!-- Comment Input -->
     <ForumCommentArea
-      v-if="inReply && viewMode !== 'Compact'"
+      v-if="inReply && !isCompactMode"
       class="mt-4"
       :inline="true"
       repo="Feedback"

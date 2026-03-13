@@ -170,7 +170,7 @@ const chipColorClasses: Record<NonNullable<ChipProps['color']>, string> = {
           >
           <div
             v-else-if="avatar.icon"
-            class="flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800" :class="[
+            class="rounded-full bg-gray-100 flex items-center justify-center dark:bg-gray-800" :class="[
               avatar.icon,
               size === '3xs' && 'w-4 h-4 text-xs',
               size === '2xs' && 'w-5 h-5 text-xs',
@@ -188,7 +188,7 @@ const chipColorClasses: Record<NonNullable<ChipProps['color']>, string> = {
 
       <div
         v-if="chip"
-        class="absolute h-2.5 w-2.5 border-2 border-white rounded-full" :class="[
+        class="border-2 border-white rounded-full h-2.5 w-2.5 absolute" :class="[
           typeof chip === 'object' && chip.position && chipPositionClasses[chip.position],
           typeof chip === 'object' && chip.color && chipColorClasses[chip.color],
           typeof chip === 'boolean' && 'bg-primary-500 top-0 right-0',
@@ -200,7 +200,7 @@ const chipColorClasses: Record<NonNullable<ChipProps['color']>, string> = {
       <slot name="name">
         <span
           v-if="name"
-          class="c-[var(--vp-c-text-1)] font-medium font-[var(--vp-font-family-title)] dark:text-gray-100" :class="[
+          class="c-[var(--vp-c-text-1)] font-[var(--vp-font-family-title)] font-medium dark:text-gray-100" :class="[
             sizeClasses[size].name,
             props.ui?.name,
             to && 'vp-link',

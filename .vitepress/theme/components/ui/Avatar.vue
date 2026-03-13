@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import type { PropType, StyleValue } from 'vue'
 
 import { twJoin, twMerge } from 'tailwind-merge'
 import { computed, ref, watch } from 'vue'
@@ -44,6 +44,10 @@ const props = defineProps({
   class: {
     type: [String, Object, Array] as PropType<string | Record<string, boolean> | string[]>,
     default: () => '',
+  },
+  style: {
+    type: [String, Object, Array] as PropType<StyleValue>,
+    default: () => ({}),
   },
 })
 
@@ -102,7 +106,7 @@ const placeholder = computed(() => {
 </script>
 
 <template>
-  <div class="Avatar" :class="wrapperClass">
+  <div class="Avatar" :class="wrapperClass" :style="style">
     <component
       :is="as"
       v-if="url && !error"
