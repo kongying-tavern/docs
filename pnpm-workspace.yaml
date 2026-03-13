@@ -59,8 +59,8 @@ catalogs:
     '@number-flow/vue': ^0.4.8
     '@radix-icons/vue': ^1.0.0
     '@tanstack/vue-table': ^8.21.3
-    '@vueuse/core': ^13.9.0
-    '@vueuse/integrations': ^13.9.0
+    '@vueuse/core': ^14.0.0
+    '@vueuse/integrations': ^14.0.0
     '@vueuse/motion': ^3.0.3
     canvaskit-wasm: ^0.40.0
     class-variance-authority: ^0.7.1
