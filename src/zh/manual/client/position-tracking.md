@@ -30,6 +30,18 @@ title: 位置追踪
 
 ![image](https://github.com/Sallee1/docs/assets/99392726/e23d5c97-9951-4f37-a33b-f39b4ba01521)
 
+## 关于画面遮挡的说明
+
+部分玩家反馈之前能正常使用位置追踪，有一天突然不能使用，可能是游戏内UI界面被遮挡
+
+最常见的情况是「提升指南」提示遮挡左上角UI界面
+
+<img width="530" height="312" alt="image" src="https://github.com/user-attachments/assets/8af882e1-c522-4b3c-b70d-193e5f52e014" />
+
+遇到这种情况，开启对应的功能（比如打开「提升指南」再关闭），以消除提示遮挡
+
+目前该问题仅在游戏内UI遮挡出现，来自其他软件的悬浮窗遮挡不会影响到追踪使用。
+
 ## 窗口黄框说明
 
 在较新的Windows版本中，通过WGC(Windows Graphics Capture)，对应酒馆选项是DirectX，抓屏会强制在被抓取画面外围标记黄框。
