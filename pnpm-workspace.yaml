@@ -11,7 +11,7 @@ catalogs:
     unocss: ^66.5.2
     unocss-preset-animations: ^1.2.1
     unocss-preset-shadcn: ^1.0.1
-    vite: ^7.1.7
+    vite: ^8.0.0
     vitepress: 1.6.3
     vitepress-plugin-llms: ^1.7.5
   dev:
