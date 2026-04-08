@@ -85,7 +85,7 @@ const formattedDate = computed(() => {
       { unit: 'month', value: diffInSeconds / 2592000 },
       { unit: 'year', value: diffInSeconds / 31536000 },
     ]
-    const { unit, value } = units.find(({ value }) => Math.abs(value) < 60) || units[units.length - 1]!
+    const { unit, value } = units.find(({ value }) => Math.abs(value) < 60) || units.at(-1)!
     return formatter.value.format(Math.round(value), unit)
   }
 

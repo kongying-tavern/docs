@@ -31,7 +31,7 @@ useHashChecker('login-alert', () => {
 
 <template>
   <AlertDialog v-model:open="open">
-    <AlertDialogContent class="max-w-[clamp(30vw,400px,90vw)] rounded-md">
+    <AlertDialogContent class="rounded-md max-w-[clamp(30vw,400px,90vw)]">
       <AlertDialogHeader>
         <AlertDialogTitle>{{ theme.forum.auth.loginAlert }}</AlertDialogTitle>
         <AlertDialogDescription>

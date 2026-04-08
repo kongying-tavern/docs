@@ -43,7 +43,7 @@ function handleChange(e: Event) {
   const files = (e.target as HTMLInputElement).files
   if (!files)
     return
-  uploadFiles(Array.from(files))
+  uploadFiles([...files])
 }
 
 function handleClick() {
@@ -60,7 +60,7 @@ function handleKeydown() {
 
 <template>
   <div
-    class="relative size-full flex items-center justify-center overflow-hidden border rounded-sm border-dashed"
+    class="border rounded-sm border-dashed flex size-full items-center justify-center relative overflow-hidden"
     :class="uploadVariants.size[size]"
     :tabindex="disabled ? '-1' : '0'"
     @click="handleClick"

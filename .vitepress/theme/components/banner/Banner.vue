@@ -23,7 +23,7 @@ const {
       class="banner py-8px pl-24px pr-8px md:px-32px"
     >
       <div
-        class="mx-auto max-w-[calc(var(--vp-layout-max-width)-64px)] flex justify-center text-center"
+        class="mx-auto text-center flex max-w-[calc(var(--vp-layout-max-width)-64px)] justify-center"
       >
         <template v-if="!isShowLanguageSuggestBar">
           <div

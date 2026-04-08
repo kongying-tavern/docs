@@ -105,7 +105,7 @@ onMounted(() => {
 
     <div
       v-else
-      class="tiptap-editor-placeholder h-full w-full flex items-center justify-center text-sm text-muted-foreground italic"
+      class="tiptap-editor-placeholder text-sm text-muted-foreground flex h-full w-full italic items-center justify-center"
       aria-live="polite"
     >
       {{ placeholder || 'Loading editor...' }}

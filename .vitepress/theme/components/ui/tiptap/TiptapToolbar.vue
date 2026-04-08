@@ -78,7 +78,7 @@ const wordCount = computed(() => {
     data-slot="tiptap-toolbar"
   >
     <!-- History controls -->
-    <div class="flex items-center gap-1">
+    <div class="flex gap-1 items-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
@@ -113,7 +113,7 @@ const wordCount = computed(() => {
     <Separator orientation="vertical" class="h-6" />
 
     <!-- Basic Text Formatting -->
-    <div class="flex items-center gap-1">
+    <div class="flex gap-1 items-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
@@ -180,7 +180,7 @@ const wordCount = computed(() => {
     <Separator orientation="vertical" class="h-6" />
 
     <!-- Headings -->
-    <div class="flex items-center gap-1">
+    <div class="flex gap-1 items-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
@@ -247,7 +247,7 @@ const wordCount = computed(() => {
     <Separator orientation="vertical" class="h-6" />
 
     <!-- Lists -->
-    <div class="flex items-center gap-1">
+    <div class="flex gap-1 items-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
@@ -284,7 +284,7 @@ const wordCount = computed(() => {
     <Separator orientation="vertical" class="h-6" />
 
     <!-- Special Elements -->
-    <div class="flex items-center gap-1">
+    <div class="flex gap-1 items-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
@@ -335,7 +335,7 @@ const wordCount = computed(() => {
     <Separator orientation="vertical" class="h-6" />
 
     <!-- Word count -->
-    <div class="ml-auto flex items-center text-xs text-muted-foreground">
+    <div class="text-xs text-muted-foreground ml-auto flex items-center">
       <span>{{ wordCount.words }} words</span>
       <Separator orientation="vertical" class="mx-2 h-4" />
       <span>{{ wordCount.characters }} characters</span>

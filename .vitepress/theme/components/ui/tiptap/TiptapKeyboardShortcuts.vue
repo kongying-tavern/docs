@@ -13,16 +13,16 @@ const props = defineProps<{
     :class="cn('tiptap-keyboard-shortcuts p-4', props.class)"
     data-slot="tiptap-keyboard-shortcuts"
   >
-    <h3 class="mb-2 text-lg font-medium">
+    <h3 class="text-lg font-medium mb-2">
       Keyboard Shortcuts
     </h3>
-    <div class="grid gap-2">
+    <div class="gap-2 grid">
       <div v-for="(shortcut, index) in shortcuts" :key="index" class="flex items-center justify-between">
         <div class="flex gap-1">
           <kbd
             v-for="(key, kIndex) in shortcut.keys"
             :key="kIndex"
-            class="border border-gray-200 rounded-lg bg-gray-100 px-2 py-1 text-xs text-gray-800 font-semibold dark:border-gray-500 dark:bg-gray-600 dark:text-gray-100"
+            class="text-xs text-gray-800 font-semibold px-2 py-1 border border-gray-200 rounded-lg bg-gray-100 dark:text-gray-100 dark:border-gray-500 dark:bg-gray-600"
           >
             {{ key }}
           </kbd>

@@ -21,7 +21,7 @@ const props = defineProps<Props>()
     <slot name="header" />
     <div class="transition duration-200 group-hover/bento:translate-x-2">
       <slot name="icon" />
-      <div class="my-2 c-[var(--vp-c-text-1)] font-bold font-sans">
+      <div class="c-[var(--vp-c-text-1)] font-bold font-sans my-2">
         <slot name="title" />
       </div>
       <div class="text-xs c-[var(--vp-c-text-2)] font-normal font-sans">

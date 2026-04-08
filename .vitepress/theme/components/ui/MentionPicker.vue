@@ -95,12 +95,12 @@ function selectMention(member: ForumAPI.User) {
           variant="ghost"
           :class="cn('h-8 w-6 border border-[var(--vp-c-gutter)] border-solid bg-transparent', $props.class)"
         >
-          <span class="i-custom:mention icon-btn size-4 c-[var(--vp-c-text-2)]" />
+          <span class="i-custom:mention c-[var(--vp-c-text-2)] icon-btn size-4" />
         </Button>
       </slot>
     </PopoverTrigger>
-    <PopoverContent v-bind="{ ...$props }" class="size-fit p-0">
-      <Command class="max-w-[250px] border rounded-lg shadow-md">
+    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit">
+      <Command class="border rounded-lg max-w-[250px] shadow-md">
         <CommandInput v-if="showSearch" :auto-focus="false" placeholder="Search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>

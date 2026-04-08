@@ -48,11 +48,11 @@ function handleRemove(file: UploadFile) {
 </script>
 
 <template>
-  <TransitionGroup name="list" tag="ul" class="w-[fit-content] flex">
+  <TransitionGroup name="list" tag="ul" class="flex w-[fit-content]">
     <li
       v-for="(file, index) in files"
       :key="file.uid || file.name"
-      class="relative size-18 overflow-hidden rounded-sm"
+      class="rounded-sm size-18 relative overflow-hidden"
       :class="[{ focusing }, stateStyle[file.status!]]"
       tabindex="0"
       v-bind="$attrs"
@@ -64,18 +64,18 @@ function handleRemove(file: UploadFile) {
       <slot :file="file" :index="index">
         <button
           v-if="!disabled && file.status !== 'uploading'"
-          class="absolute right-0 top-0 size-5 flex items-center justify-center rounded-bl-sm bg-[#0003]"
+          class="rounded-bl-sm bg-[#0003] flex size-5 items-center right-0 top-0 justify-center absolute"
           @click="handleRemove(file)"
         >
-          <span class="i-lucide-x size-3.5 bg-white" />
+          <span class="i-lucide-x bg-white size-3.5" />
         </button>
         <button
           v-if="!disabled && file.status === 'uploading'"
-          class="absolute right-0 top-0 size-5 flex items-center justify-center rounded-bl-sm bg-[#0003]"
+          class="rounded-bl-sm bg-[#0003] flex size-5 items-center right-0 top-0 justify-center absolute"
           @click="handleRemove(file)"
         >
           <span
-            class="i-lucide-loader-circle size-3.5 animate-spin bg-white hover-animate-none"
+            class="i-lucide-loader-circle bg-white size-3.5 animate-spin hover-animate-none"
           />
         </button>
         <img

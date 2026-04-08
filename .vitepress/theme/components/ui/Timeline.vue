@@ -47,41 +47,41 @@ watch(height, (newHeight) => {
 <template>
   <div
     ref="timelineContainerRef"
-    class="w-full font-sans md:px-10"
+    class="font-sans w-full md:px-10"
   >
     <div
       v-if="title || description"
-      class="mx-auto max-w-7xl px-4 py-20 lg:px-10 md:px-8"
+      class="mx-auto px-4 py-20 max-w-7xl lg:px-10 md:px-8"
     >
-      <h2 class="mb-4 max-w-4xl text-center text-4xl c-[var(--vp-c-text-1)] md:text-left md:text-6xl">
+      <h2 class="text-4xl c-[var(--vp-c-text-1)] mb-4 text-center max-w-4xl md:text-6xl md:text-left">
         {{ title }}
       </h2>
-      <p class="subtitle inline-block w-full text-center text-sm c-[var(--vp-c-text-2)] md:max-w-sm md:text-left md:text-base">
+      <p class="subtitle text-sm c-[var(--vp-c-text-2)] text-center w-full inline-block md:text-base md:text-left md:max-w-sm">
         {{ description }}
       </p>
     </div>
 
     <div
       ref="timelineRef"
-      class="relative mx-auto max-w-7xl pb-20"
+      class="mx-auto pb-20 max-w-7xl relative"
     >
       <div
         v-for="(item, index) in props.items"
         :key="item.id + index"
-        class="relative z-1 flex justify-start pt-10 md:gap-10 md:pt-40"
+        class="pt-10 flex justify-start relative z-1 md:pt-40 md:gap-10"
       >
         <div
-          class="sticky top-40 z-0 z-40 hidden max-w-xs flex-col items-center self-start lg:max-w-sm md:w-full md:flex md:flex-row"
+          class="flex-col max-w-xs hidden items-center self-start top-40 sticky z-0 z-40 md:flex md:flex-row lg:max-w-sm md:w-full"
         >
           <div
-            class="absolute left-3 h-10 w-10 flex items-center justify-center rounded-full bg-white md:left-3 dark:bg-black"
+            class="rounded-full bg-white flex h-10 w-10 items-center left-3 justify-center absolute dark:bg-black md:left-3"
           >
             <div
-              class="h-4 w-4 border border-neutral-300 rounded-full bg-neutral-200 p-2 dark:border-neutral-700 dark:bg-neutral-800"
+              class="p-2 border border-neutral-300 rounded-full bg-neutral-200 h-4 w-4 dark:border-neutral-700 dark:bg-neutral-800"
             />
           </div>
           <h3
-            class="hidden text-xl c-[var(--vp-c-text-1)] font-bold md:block md:pl-20 md:text-2.25rem"
+            class="text-xl c-[var(--vp-c-text-1)] font-bold hidden md:text-2.25rem md:pl-20 md:block"
           >
             {{ item.label }}
           </h3>
@@ -92,7 +92,7 @@ watch(height, (newHeight) => {
         :style="{
           height: `${height}px`,
         }"
-        class="[mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] absolute left-8 top-0 hidden w-[2px] overflow-hidden bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent via-neutral-200 to-transparent from-0% to-99% md:left-8 md:block md:block dark:via-neutral-700"
+        class="bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] w-[2px] hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] left-8 top-0 absolute overflow-hidden from-transparent to-transparent via-neutral-200 from-0% to-99% md:block md:block md:left-8 dark:via-neutral-700"
       >
         <Motion
           as="div"
@@ -100,7 +100,7 @@ watch(height, (newHeight) => {
             height: heightTransform as unknown as string,
             opacity: opacityTransform,
           }"
-          class="absolute inset-x-0 top-0 w-[2px] rounded-full from-green-500 via-blue-500 to-transparent from-0% via-10% bg-gradient-to-t"
+          class="rounded-full w-[2px] inset-x-0 top-0 absolute from-green-500 to-transparent via-blue-500 from-0% via-10% bg-gradient-to-t"
         />
       </div>
     </div>

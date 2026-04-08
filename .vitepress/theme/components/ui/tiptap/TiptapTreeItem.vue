@@ -161,7 +161,7 @@ function handleDelete(event) {
     ref="elRef"
     :value="item.value"
     :level="item.level"
-    class="group outline-node relative w-full cursor-pointer rounded-md border-none px-3 py-2"
+    class="group outline-node px-3 py-2 rounded-md border-none w-full cursor-pointer relative"
     :class="{
       'opacity-50': isDragging,
       'bg-accent text-accent-foreground font-medium': node.selected,
@@ -171,18 +171,18 @@ function handleDelete(event) {
     @click="handleClick"
     @select.prevent
   >
-    <div class="w-full flex items-center gap-2">
+    <div class="flex gap-2 w-full items-center">
       <!-- Icon and name -->
-      <div class="flex flex-1 items-center gap-2 overflow-hidden">
-        <Icon :name="node.icon" class="h-4 w-4 flex-shrink-0" />
+      <div class="flex flex-1 gap-2 items-center overflow-hidden">
+        <Icon :name="node.icon" class="flex-shrink-0 h-4 w-4" />
         <span class="truncate">{{ node.name }}</span>
-        <span v-if="node.content" class="truncate text-xs text-muted-foreground">
+        <span v-if="node.content" class="text-xs text-muted-foreground truncate">
           {{ node.content }}
         </span>
       </div>
 
       <!-- Actions -->
-      <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100">
+      <div class="opacity-0 flex gap-1 items-center group-hover:opacity-100">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger as-child>
@@ -203,7 +203,7 @@ function handleDelete(event) {
               <Button
                 size="icon"
                 variant="ghost"
-                class="h-6 w-6 text-destructive hover:text-destructive"
+                class="text-destructive h-6 w-6 hover:text-destructive"
                 @click.stop="handleDelete"
               >
                 <Icon name="i-mdi:delete" class="h-3.5 w-3.5" />
@@ -217,7 +217,7 @@ function handleDelete(event) {
 
     <!-- Drag indicator -->
     <div
-      v-if="instruction" class="absolute top-0 h-full w-full border-primary" :style="{
+      v-if="instruction" class="border-primary h-full w-full top-0 absolute" :style="{
         left: `${instruction?.currentLevel * instruction?.indentPerLevel}px`,
         width: `calc(100% - ${instruction?.currentLevel * instruction?.indentPerLevel}px)`,
       }" :class="{

@@ -14,7 +14,7 @@ const reaction = useReactionStore()
       {{ dayjs(page.lastUpdated).format('YYYY-MM-DD') }}
     </div>
     <ClientOnly>
-      <div class="doc-info-right flex justify-end text-right font-[var(--vp-font-family-subtitle)]">
+      <div class="doc-info-right font-[var(--vp-font-family-subtitle)] text-right flex justify-end">
         <i i-custom-thumb />
         <div v-if="reaction.loading" class="loader mr-4" />
         <span v-else>

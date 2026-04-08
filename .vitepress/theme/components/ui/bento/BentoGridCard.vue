@@ -31,37 +31,37 @@ const props = defineProps<Props>()
     <slot name="background" />
 
     <div
-      class="pointer-events-none z-10 flex flex-col transform-gpu gap-1 p-6 transition-all duration-300 group-hover:-translate-y-10"
+      class="p-6 flex flex-col gap-1 pointer-events-none transform-gpu transition-all duration-300 z-10 group-hover:-translate-y-10"
     >
       <component
         :is="icon"
         v-if="icon"
-        class="size-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75"
+        class="text-neutral-700 size-12 origin-left transform-gpu transition-all duration-300 ease-in-out group-hover:scale-75"
       />
       <div
         v-else
-        class="size-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75"
+        class="text-neutral-700 size-12 origin-left transform-gpu transition-all duration-300 ease-in-out group-hover:scale-75"
       />
       <h3 class="text-xl text-neutral-700 font-semibold dark:text-neutral-300">
         {{ name }}
       </h3>
-      <p class="max-w-lg text-neutral-400">
+      <p class="text-neutral-400 max-w-lg">
         {{ description }}
       </p>
     </div>
 
     <div
-      class="pointer-events-none absolute bottom-0 w-full flex flex-row translate-y-10 transform-gpu items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+      class="p-4 opacity-0 flex flex-row w-full pointer-events-none translate-y-10 transform-gpu transition-all duration-300 items-center bottom-0 absolute group-hover:opacity-100 group-hover:translate-y-0"
     >
       <a
         :href="href"
-        class="pointer-events-auto inline-flex items-center rounded-md px-3 py-1.5 text-sm text-neutral-700 font-medium transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+        class="text-sm text-neutral-700 font-medium px-3 py-1.5 rounded-md inline-flex pointer-events-auto transition-colors items-center dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800"
       >
         {{ cta }} →
       </a>
     </div>
     <div
-      class="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10"
+      class="pointer-events-none transform-gpu transition-all duration-300 inset-0 absolute group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10"
     />
   </div>
 </template>

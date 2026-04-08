@@ -81,15 +81,15 @@ function handleMouseMove(event: MouseEvent) {
           translateX: `${translation}px`,
           rotate: `${rotation}deg`,
         }"
-        class="absolute left-1/2 z-50 flex flex-col items-center justify-center whitespace-nowrap rounded-md bg-black px-4 py-2 text-xs shadow-xl -top-16 -translate-x-1/2"
+        class="text-xs px-4 py-2 rounded-md bg-black flex flex-col whitespace-nowrap shadow-xl items-center left-1/2 justify-center absolute z-50 -translate-x-1/2 -top-16"
       >
         <div
-          class="absolute right-1/2 z-30 me-1 h-px w-2/5 translate-x-1/2 from-transparent via-emerald-500 to-transparent bg-gradient-to-r -bottom-px"
+          class="me-1 h-px w-2/5 translate-x-1/2 right-1/2 absolute z-30 from-transparent to-transparent via-emerald-500 bg-gradient-to-r -bottom-px"
         />
         <div
-          class="absolute left-1/2 z-30 ms-1 h-px w-2/5 from-transparent via-sky-500 to-transparent bg-gradient-to-r -bottom-px -translate-x-1/2"
+          class="ms-1 h-px w-2/5 left-1/2 absolute z-30 from-transparent to-transparent via-sky-500 bg-gradient-to-r -translate-x-1/2 -bottom-px"
         />
-        <div class="relative z-30 text-base text-white font-bold">
+        <div class="text-base text-white font-bold relative z-30">
           {{ item.name }}
         </div>
         <div class="text-xs text-white">
@@ -101,7 +101,7 @@ function handleMouseMove(event: MouseEvent) {
       <img
         :src="item.image"
         :alt="item.name"
-        class="relative size-14 border-2 border-white rounded-full object-cover object-top transition duration-500 group-hover:z-30 !m-0 group-hover:scale-105 !p-0"
+        class="border-2 border-white rounded-full size-14 transition duration-500 relative object-cover object-top !m-0 !p-0 group-hover:scale-105 group-hover:z-30"
       >
     </div>
   </div>

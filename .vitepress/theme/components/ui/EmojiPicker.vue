@@ -154,25 +154,25 @@ function deleteRecentEmoji(emoji: string) {
           :class="cn('h-8 w-6 border border-[var(--vp-c-gutter)] border-solid bg-transparent', $props.class)"
           @mouseenter="handleTriggerHover"
         >
-          <span class="i-custom:emoji icon-btn size-4 c-[var(--vp-c-text-2)]" />
+          <span class="i-custom:emoji c-[var(--vp-c-text-2)] icon-btn size-4" />
         </Button>
       </slot>
     </PopoverTrigger>
-    <PopoverContent v-bind="{ ...$props }" class="size-fit p-0">
+    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit">
       <div
-        class="h-[270px] w-[360px] flex flex-col border rounded-lg bg-[var(--vp-c-bg-elv)] c-[var(--vp-c-text-1)] shadow"
+        class="c-[var(--vp-c-text-1)] border rounded-lg bg-[var(--vp-c-bg-elv)] flex flex-col h-[270px] w-[360px] shadow"
       >
-        <div class="flex flex-1 flex-col overflow-hidden p-2">
+        <div class="p-2 flex flex-1 flex-col overflow-hidden">
           <div v-if="recentEmojisFiltered.length > 0" class="mb-2">
             <p class="text-sm font-bold">
               最近使用
             </p>
             <TransitionGroup
               name="emoji-shift" tag="div"
-              class="emoji-grid-inner grid grid-cols-8 grid-rows-1 max-h-32px gap-1 overflow-hidden"
+              class="emoji-grid-inner gap-1 grid grid-cols-8 grid-rows-1 max-h-32px overflow-hidden"
             >
               <Button
-                v-for="emoji in recentEmojisFiltered" :key="emoji" variant="ghost" class="h-8 w-8 p-0 text-lg"
+                v-for="emoji in recentEmojisFiltered" :key="emoji" variant="ghost" class="text-lg p-0 h-8 w-8"
                 @click="selectEmoji(emoji)" @dblclick="deleteRecentEmoji(emoji)"
               >
                 <Emoji :emoji="emoji" :width="currentPreset.width" :height="currentPreset.height" />
@@ -182,19 +182,19 @@ function deleteRecentEmoji(emoji: string) {
           <p class="text-sm font-bold">
             {{ currentPreset.presets }}
           </p>
-          <div class="emoji-list grid grid-cols-8 gap-1 overflow-auto">
+          <div class="emoji-list gap-1 grid grid-cols-8 overflow-auto">
             <Button
-              v-for="(emoji, key) in currentEmojiList" :key="key" variant="ghost" class="size-fit p-1 text-lg"
+              v-for="(emoji, key) in currentEmojiList" :key="key" variant="ghost" class="text-lg p-1 size-fit"
               @click="selectEmoji(emoji)"
             >
               <Emoji :emoji="emoji" :width="currentPreset.width" :height="currentPreset.height" />
             </Button>
           </div>
         </div>
-        <div class="h-10 w-full flex items-center justify-between bg-[var(--vp-c-bg-alt)] p-2">
+        <div class="p-2 bg-[var(--vp-c-bg-alt)] flex h-10 w-full items-center justify-between">
           <div class="flex gap-2 overflow-auto">
             <Button
-              v-for="(preset, index) in EmojiData" :key="preset.presets" variant="ghost" class="size-fit p-1"
+              v-for="(preset, index) in EmojiData" :key="preset.presets" variant="ghost" class="p-1 size-fit"
               @click="() => { activePresetIndex = index; }"
             >
               <Emoji :emoji="preset.logo" :height="25" :width="25" />

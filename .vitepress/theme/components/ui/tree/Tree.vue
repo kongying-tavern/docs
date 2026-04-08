@@ -96,7 +96,7 @@ onMounted(() => {
 <template>
   <div :class="cn('size-full', $props.class)">
     <div
-      class="relative h-full overflow-auto px-2"
+      class="px-2 h-full relative overflow-auto"
       :dir="direction"
     >
       <div class="flex flex-col gap-1">

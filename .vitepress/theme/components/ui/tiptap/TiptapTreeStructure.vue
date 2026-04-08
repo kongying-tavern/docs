@@ -139,13 +139,13 @@ watchEffect((onCleanup) => {
     :class="cn('tiptap-tree-structure', props.class)"
     data-slot="tiptap-structure"
   >
-    <div v-if="!nodes || nodes.length === 0" class="p-2 text-sm text-muted-foreground italic">
+    <div v-if="!nodes || nodes.length === 0" class="text-sm text-muted-foreground p-2 italic">
       No content yet. Start writing to see document structure.
     </div>
     <div v-else>
       <TreeRoot
         v-slot="{ flattenItems }"
-        class="w-full select-none list-none"
+        class="list-none w-full select-none"
         :items="nodes"
         :get-key="(item) => item.title"
         multiple

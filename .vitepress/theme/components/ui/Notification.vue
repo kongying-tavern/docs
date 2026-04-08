@@ -184,7 +184,7 @@ onUnmounted(() => {
         >
           <span v-if="icon" :class="`${iconClass} ${icon}`" />
 
-          <div class="w-0 flex-1">
+          <div class="flex-1 w-0">
             <p v-if="title || $slots.title" :class="UI.Notification.title">
               <slot name="title" :title="title">
                 {{ title }}
@@ -211,7 +211,7 @@ onUnmounted(() => {
                 v-for="(action, index) of actions"
                 :key="index"
                 v-bind="{ ...action }"
-                class="focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 mt-2 inline-flex flex-shrink-0 items-center gap-x-1.5 rounded-md bg-white px-2.5 py-1.5 text-xs text-gray-900 font-medium shadow-sm ring-1 ring-gray-300 ring-inset aria-disabled:cursor-not-allowed disabled:cursor-not-allowed aria-disabled:bg-white dark:bg-gray-900 disabled:bg-white hover:bg-gray-50 dark:text-white aria-disabled:opacity-75 disabled:opacity-75 focus-visible:outline-0 focus:outline-none focus-visible:ring-2 dark:ring-gray-700 dark:aria-disabled:bg-gray-900 dark:disabled:bg-gray-900 dark:hover:bg-gray-800/50"
+                class="focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 text-xs text-gray-900 font-medium mt-2 px-2.5 py-1.5 rounded-md bg-white inline-flex flex-shrink-0 gap-x-1.5 ring-1 ring-gray-300 ring-inset shadow-sm items-center dark:text-white focus-visible:outline-0 focus:outline-none aria-disabled:bg-white dark:bg-gray-900 disabled:bg-white hover:bg-gray-50 aria-disabled:opacity-75 disabled:opacity-75 aria-disabled:cursor-not-allowed disabled:cursor-not-allowed focus-visible:ring-2 dark:ring-gray-700 dark:aria-disabled:bg-gray-900 dark:disabled:bg-gray-900 dark:hover:bg-gray-800/50"
                 @click.stop="onAction(action)"
               >
                 <label :for="action.label">{{ action.label }}</label>
@@ -234,7 +234,7 @@ onUnmounted(() => {
                 v-for="(action, index) of actions"
                 :key="index"
                 v-bind="{ ...action }"
-                class="focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 mr-2 inline-flex flex-shrink-0 items-center gap-x-1.5 rounded-md bg-white px-2.5 py-1.5 text-xs text-gray-900 font-medium shadow-sm ring-1 ring-gray-300 ring-inset aria-disabled:cursor-not-allowed disabled:cursor-not-allowed aria-disabled:bg-white dark:bg-gray-900 disabled:bg-white hover:bg-gray-50 dark:text-white aria-disabled:opacity-75 disabled:opacity-75 focus-visible:outline-0 focus:outline-none focus-visible:ring-2 dark:ring-gray-700 dark:aria-disabled:bg-gray-900 dark:disabled:bg-gray-900 dark:hover:bg-gray-800/50"
+                class="focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 text-xs text-gray-900 font-medium mr-2 px-2.5 py-1.5 rounded-md bg-white inline-flex flex-shrink-0 gap-x-1.5 ring-1 ring-gray-300 ring-inset shadow-sm items-center dark:text-white focus-visible:outline-0 focus:outline-none aria-disabled:bg-white dark:bg-gray-900 disabled:bg-white hover:bg-gray-50 aria-disabled:opacity-75 disabled:opacity-75 aria-disabled:cursor-not-allowed disabled:cursor-not-allowed focus-visible:ring-2 dark:ring-gray-700 dark:aria-disabled:bg-gray-900 dark:disabled:bg-gray-900 dark:hover:bg-gray-800/50"
                 @click.stop="onAction(action)"
               >
                 <label :for="action.label">{{ action.label }}</label>
@@ -243,7 +243,7 @@ onUnmounted(() => {
 
             <button
               v-if="closeButton"
-              class="a inline-flex items-center aria-disabled:cursor-not-allowed disabled:cursor-not-allowed disabled:opacity-75 focus-visible:outline-0 focus:outline-none"
+              class="a inline-flex items-center focus-visible:outline-0 focus:outline-none disabled:opacity-75 aria-disabled:cursor-not-allowed disabled:cursor-not-allowed"
               aria-label="Close"
               @click.stop="onClose"
             >

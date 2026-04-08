@@ -200,14 +200,14 @@ onUnmounted(() => {
       <canvas
         v-show="!isComplete"
         ref="canvasRef"
-        class="absolute left-0 top-0"
+        class="left-0 top-0 absolute"
         :style="{ width: `${autoWidth}px`, height: `${autoHeight}px`, pointerEvents: isComplete ? 'none' : 'auto' }"
         @mousedown="handleMouseDown"
         @touchstart="handleTouchStart"
       />
       <div
         ref="slot"
-        class="inline-block h-auto max-w-full py-2"
+        class="py-2 h-auto max-w-full inline-block"
       >
         <slot />
       </div>

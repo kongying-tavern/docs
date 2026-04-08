@@ -54,8 +54,8 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
           MIT Licensed<br>Made with ❤ by Kongying Tavern
         </p>
       </div>
-      <div class="md:place-self-center md:justify-self-end">
-        <div class="grid grid-flow-col gap-4">
+      <div class="md:justify-self-end md:place-self-center">
+        <div class="gap-4 grid grid-flow-col">
           <a
             v-for="item in socialList"
             :key="item.title"

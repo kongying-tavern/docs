@@ -56,7 +56,7 @@ function isActive(type: string, attributes = {}) {
     data-slot="tiptap-mobile-toolbar"
   >
     <!-- Main toolbar buttons -->
-    <div class="flex items-center justify-around p-2">
+    <div class="p-2 flex items-center justify-around">
       <Button
         size="sm"
         variant="ghost"
@@ -64,7 +64,7 @@ function isActive(type: string, attributes = {}) {
         @click="toggleMenu('text')"
       >
         <Icon name="i-mdi:format-bold" class="h-5 w-5" />
-        <span class="ml-1 text-xs">Text</span>
+        <span class="text-xs ml-1">Text</span>
       </Button>
 
       <Button
@@ -74,7 +74,7 @@ function isActive(type: string, attributes = {}) {
         @click="toggleMenu('paragraph')"
       >
         <Icon name="i-mdi:format-paragraph" class="h-5 w-5" />
-        <span class="ml-1 text-xs">Style</span>
+        <span class="text-xs ml-1">Style</span>
       </Button>
 
       <Button
@@ -84,7 +84,7 @@ function isActive(type: string, attributes = {}) {
         @click="toggleMenu('list')"
       >
         <Icon name="i-mdi:format-list-bulleted" class="h-5 w-5" />
-        <span class="ml-1 text-xs">List</span>
+        <span class="text-xs ml-1">List</span>
       </Button>
 
       <Button
@@ -94,12 +94,12 @@ function isActive(type: string, attributes = {}) {
         @click="toggleMenu('insert')"
       >
         <Icon name="i-mdi:plus" class="h-5 w-5" />
-        <span class="ml-1 text-xs">Insert</span>
+        <span class="text-xs ml-1">Insert</span>
       </Button>
     </div>
 
     <!-- Expandable submenus -->
-    <div v-if="activeMenu" class="pb-safe flex gap-1 overflow-x-auto border-t p-2">
+    <div v-if="activeMenu" class="pb-safe p-2 border-t flex gap-1 overflow-x-auto">
       <!-- Text formatting submenu -->
       <template v-if="activeMenu === 'text'">
         <Button

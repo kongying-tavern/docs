@@ -17,25 +17,25 @@ const title = computed(
 <template>
   <div
     v-if="frontmatter.docHeader !== false && frontmatter.layout === 'doc'"
-    class="slide-enter docs-header relative border-b border-b-color-[var(--vp-c-divider)] border-b-solid pb-6"
+    class="slide-enter docs-header pb-6 border-b border-b-color-[var(--vp-c-divider)] border-b-solid relative"
   >
     <DocsBreadCrumb
-      class="mb-3 flex items-center gap-1.5 text-sm/6 text-primary font-semibold"
+      class="text-sm/6 text-primary font-semibold mb-3 flex gap-1.5 items-center"
     />
-    <div class="flex flex-col items-start gap-6 lg:flex-row">
+    <div class="flex flex-col gap-6 items-start lg:flex-row">
       <div class="flex-1">
         <div
           class="flex flex-col lg:flex-row lg:items-center lg:justify-between"
         >
           <h1
-            class="text-3xl text-gray-900 font-bold tracking-tight sm:text-4xl dark:text-white"
+            class="text-3xl text-gray-900 tracking-tight font-bold sm:text-4xl dark:text-white"
           >
             {{ title }}
           </h1>
         </div>
         <p
           v-if="frontmatter.description"
-          class="mt-4 text-lg text-gray-500 dark:text-gray-400"
+          class="text-lg text-gray-500 mt-4 dark:text-gray-400"
           v-html="frontmatter.description"
         />
       </div>

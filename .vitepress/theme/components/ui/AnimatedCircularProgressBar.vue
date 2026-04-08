@@ -69,7 +69,7 @@ const durationInSeconds = computed(() => `${props.duration}s`)
     <span
       v-if="showPercentage"
       :data-current-value="currentPercent"
-      class="absolute inset-0 m-auto size-fit animate-in duration-1000 delay-0 ease-linear fade-in"
+      class="m-auto size-fit duration-1000 delay-0 ease-linear inset-0 absolute animate-in fade-in"
     >
       {{ currentPercent }}
     </span>

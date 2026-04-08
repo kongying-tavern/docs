@@ -61,15 +61,15 @@ defineExpose({
       <div class="mb-4 mt-2 flex flex-wrap items-center">
         <div
           v-for="(item, index) in theme.docReaction.form.issueOptions" :key="index"
-          class="mb-4 mt-2 w-full flex items-center"
+          class="mb-4 mt-2 flex w-full items-center"
         >
           <input
             :id="`feedback-question-checkbox-${index}`" v-model="formData.tags" type="checkbox" :value="item.value"
-            class="h-4 w-4 border-gray-300 rounded bg-gray-100 text-color-[var(--vp-c-brand-1)] dark:border-gray-600 dark:bg-[var(--vp-local-search-bg)] focus:color-[var(--vp-c-brand-1)] focus:ring-2 dark:ring-offset-gray-800 dark:focus:ring-green-600"
+            class="text-color-[var(--vp-c-brand-1)] border-gray-300 rounded bg-gray-100 h-4 w-4 focus:color-[var(--vp-c-brand-1)] dark:border-gray-600 dark:bg-[var(--vp-local-search-bg)] focus:ring-2 dark:ring-offset-gray-800 dark:focus:ring-green-600"
           >
           <label
             :for="`feedback-question-checkbox-${index}`"
-            class="ms-2 text-sm text-color-[var(--vp-c-text-1)] font-medium"
+            class="text-sm text-color-[var(--vp-c-text-1)] font-medium ms-2"
           >{{ item.label }}</label>
         </div>
       </div>
@@ -82,7 +82,7 @@ defineExpose({
         rows="4"
         :placeholder="theme.docReaction.form.feedbackTip"
         maxlength="2000"
-        class="mt-4 block w-full border border-gray-300 rounded-lg border-solid bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-[var(--vp-c-bg-alt)] dark:text-white"
+        class="text-sm text-gray-900 mt-4 p-2.5 border border-gray-300 rounded-lg border-solid bg-gray-50 w-full block dark:text-white dark:border-gray-600 dark:bg-[var(--vp-c-bg-alt)]"
       />
 
       <div class="feedback-question-submit" mt-8>
@@ -102,7 +102,7 @@ defineExpose({
         </Button>
       </div>
     </form>
-    <div v-else h-80 w-full flex items-center justify-center>
+    <div v-else flex h-80 w-full items-center justify-center>
       <div flex flex-wrap items-center justify-center>
         <span v-if="data?.id" class="doc-reaction-feedback-state-success" />
         <span v-if="!data?.id" class="doc-reaction-feedback-state-error" />
@@ -118,7 +118,7 @@ defineExpose({
           </code>
         </pre>
 
-        <a class="mt-1 inline-block w-full vp-link text-center" :href="withBase(`/feedback/topic/${data?.id}`)" target="_blank" rel="noopener noreferrer">
+        <a class="vp-link mt-1 text-center w-full inline-block" :href="withBase(`/feedback/topic/${data?.id}`)" target="_blank" rel="noopener noreferrer">
           {{ data?.id ? `Feedback ID: ${data?.id}` : '' }}
         </a>
       </div>

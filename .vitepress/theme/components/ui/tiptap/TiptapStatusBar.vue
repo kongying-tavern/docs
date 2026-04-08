@@ -94,7 +94,7 @@ watch(() => editor.value, (newEditor) => {
     data-slot="tiptap-status-bar"
   >
     <!-- Document stats -->
-    <div class="flex items-center gap-3">
+    <div class="flex gap-3 items-center">
       <span v-if="props.showWordCount" class="text-muted-foreground">
         {{ wordCount }} words
       </span>
@@ -109,7 +109,7 @@ watch(() => editor.value, (newEditor) => {
     </div>
 
     <!-- Editor mode -->
-    <div class="flex items-center gap-2">
+    <div class="flex gap-2 items-center">
       <Badge v-if="isEditorReady" variant="outline">
         {{ editor?.isEditable ? 'Editing' : 'Reading' }}
       </Badge>

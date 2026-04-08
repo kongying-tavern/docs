@@ -4,14 +4,16 @@ import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon
 import { Toaster as Sonner } from 'vue-sonner'
 import { cn } from '@/lib/utils'
 
-const props = defineProps<ToasterProps>()
+const props = withDefaults(defineProps<ToasterProps>(), {
+  position: 'top-center',
+})
 </script>
 
 <template>
   <Sonner
     :class="cn('toaster group', props.class)"
     :style="{
-      '--normal-bg': 'var(--popover)',
+      '--normal-bg': 'var(--vp-c-bg-elv)',
       '--normal-text': 'var(--popover-foreground)',
       '--normal-border': 'var(--border)',
       '--border-radius': 'var(--radius)',

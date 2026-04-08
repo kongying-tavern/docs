@@ -22,7 +22,7 @@ interface Integration {
       :href="item.link"
       :target="item.target"
       :title="withBase(item.link)"
-      class="Link h-30 w-30 flex flex-col items-center justify-center text-center text-inherit"
+      class="Link text-inherit text-center flex flex-col h-30 w-30 items-center justify-center"
     >
       <div
         v-if="item.icon.startsWith('i')"

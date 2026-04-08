@@ -29,9 +29,9 @@ function onTriggerClick() {
 </script>
 
 <template>
-  <div class="relative h-full overflow-hidden">
+  <div class="h-full relative overflow-hidden">
     <div
-      class="flex cursor-pointer items-center gap-1 rounded-md text-sm transition-all duration-200"
+      class="text-sm rounded-md flex gap-1 cursor-pointer transition-all duration-200 items-center"
       :class="[
         cn(
           'flex cursor-pointer items-center gap-1 rounded-md text-sm',
@@ -59,14 +59,14 @@ function onTriggerClick() {
 
     <div
       v-if="isExpanded"
-      class="relative text-sm"
+      class="text-sm relative"
     >
       <TreeIndicator
         v-if="name && indicator"
         aria-hidden="true"
       />
       <div
-        class="ml-5 flex flex-col gap-1 py-1 rtl:mr-5"
+        class="ml-5 py-1 flex flex-col gap-1 rtl:mr-5"
         :dir="direction"
       >
         <slot />

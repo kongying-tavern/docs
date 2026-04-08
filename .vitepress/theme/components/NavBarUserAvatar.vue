@@ -37,7 +37,7 @@ const list = computed<{ title: string, href: string, icon: string }[]>(() => [
     >
       <button
         type="button"
-        class="button avatar ring-offset-background focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-ring"
+        class="button avatar ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-0"
         aria-haspopup="true"
         :aria-expanded="open"
         @click="open = !open"

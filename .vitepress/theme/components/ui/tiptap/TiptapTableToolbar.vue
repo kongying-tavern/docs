@@ -86,7 +86,7 @@ function createTable() {
     </TooltipProvider>
 
     <!-- Table manipulation (only shown when a table is selected) -->
-    <div v-if="isTableSelected" class="flex items-center gap-1">
+    <div v-if="isTableSelected" class="flex gap-1 items-center">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
@@ -231,8 +231,8 @@ function createTable() {
           </DialogDescription>
         </DialogHeader>
 
-        <div class="grid gap-4 py-4">
-          <div class="grid grid-cols-2 gap-4">
+        <div class="py-4 gap-4 grid">
+          <div class="gap-4 grid grid-cols-2">
             <div class="flex flex-col gap-2">
               <Label for="rows">Rows</Label>
               <Input

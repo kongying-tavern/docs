@@ -30,7 +30,7 @@ function onDrop(e: DragEvent) {
 
   e.stopPropagation()
 
-  const files = Array.from(e.dataTransfer!.files)
+  const files = [...e.dataTransfer!.files]
   emit('file', files)
 }
 

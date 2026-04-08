@@ -108,7 +108,7 @@ function updateSlotContent(slotName: string, content: string) {
 
           <div class="text-xs text-muted-foreground">
             <p>You can use HTML in slots. Examples:</p>
-            <pre class="mt-1 rounded bg-muted p-1">&lt;p&gt;Text content&lt;/p&gt;</pre>
+            <pre class="mt-1 p-1 rounded bg-muted">&lt;p&gt;Text content&lt;/p&gt;</pre>
           </div>
         </div>
       </div>

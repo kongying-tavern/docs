@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
 <template>
   <ClientOnly>
     <!-- Placeholder Text -->
-    <div v-if="props.text.length === 0" class="pointer-events-none absolute inset-0 flex items-center rounded-full">
+    <div v-if="props.text.length === 0" class="rounded-full flex pointer-events-none items-center inset-0 absolute">
       <Transition
         v-show="!vanishingText"
         mode="out-in"
