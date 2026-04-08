@@ -321,7 +321,7 @@ const forum: CustomConfig['forum'] = {
     unfollowSuccess: '取关成功',
     followSuccess: '关注成功',
     permissionInsufficientAnnouncement: '权限不足：只有管理员可以发布公告类型的内容',
-    ssoRefreshTokenFailed: 'inter-knot.site: 刷新token失败，返回数据不完整',
+    ssoRefreshTokenFailed: 'interknot.site: 刷新token失败，返回数据不完整',
   },
 }
 

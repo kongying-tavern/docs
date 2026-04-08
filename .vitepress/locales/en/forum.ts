@@ -322,7 +322,7 @@ const forum: CustomConfig['forum'] = {
     unfollowSuccess: 'Unfollowed successfully',
     followSuccess: 'Followed successfully',
     permissionInsufficientAnnouncement: 'Insufficient permissions: only administrators can publish announcement content',
-    ssoRefreshTokenFailed: 'inter-knot.site: Token refresh failed, incomplete data returned',
+    ssoRefreshTokenFailed: 'interknot.site: Token refresh failed, incomplete data returned',
   },
 }
 

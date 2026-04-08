@@ -519,7 +519,7 @@
       "unfollowSuccess": "フォロー解除が成功しました",
       "followSuccess": "フォローが成功しました",
       "permissionInsufficientAnnouncement": "権限不足：管理者のみがアナウンスメント型のコンテンツを投稿できます",
-      "ssoRefreshTokenFailed": "inter-knot.site: トークンの更新に失敗しました。不完全なデータが返されました"
+      "ssoRefreshTokenFailed": "interknot.site: トークンの更新に失敗しました。不完全なデータが返されました"
     },
     "labels": {
       "resolved": "解決済み",
