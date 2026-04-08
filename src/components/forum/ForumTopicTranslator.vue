@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
+import { useMutation } from '@pinia/colada'
 import { useToggle } from '@vueuse/core'
 import { isFunction } from 'lodash-es'
 import { computed, watch } from 'vue'
-import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
-import { translate } from '@/apis/inter-knot.site'
+import { translate } from '@/apis/interknot.site'
 import BlurFade from '@/components/ui/BlurFade.vue'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useLanguage } from '@/composables/useLanguage'
@@ -46,8 +46,9 @@ const { currentPageLang, matchedLang } = useLanguage(supportedLanguages, props.d
 const _targetLanguage = computed(() => getLangCode((props.targetLanguage ?? matchedLang ?? currentPageLang.value ?? props.defaultTargetLanguage ?? props.defaultTargetLanguage)))
 const _sourceLanguage = computed(() => getLangCode(props.sourceLanguage))
 
-const { data, loading, error, runAsync } = useRequest(translate.translate, {
-  manual: !props.autoTranslate,
+const { data, isLoading: loading, error, mutateAsync: runAsync } = useMutation({
+  mutation: (params: { content: string, targetLanguage: string, sourceLanguage: string }) =>
+    translate.translate(params.content, params.targetLanguage, params.sourceLanguage),
 })
 
 const translatedContent = computed(() => data.value?.data.translatedText ?? '')
@@ -58,7 +59,11 @@ async function startTranslate() {
   if (!loading.value) {
     toggleHideTranslation()
     if (!hideTranslation.value) {
-      await runAsync(props.content, _targetLanguage.value, _sourceLanguage.value)
+      await runAsync({
+        content: props.content,
+        targetLanguage: _targetLanguage.value,
+        sourceLanguage: _sourceLanguage.value,
+      })
       emit('translated', translatedContent.value)
     }
   }

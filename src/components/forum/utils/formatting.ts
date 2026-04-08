@@ -136,7 +136,7 @@ export function formatUserProfileUrl(username: string): string {
 
 // Content processing utilities
 export function extractEmojiFromHtml(html: string): string[] {
-  const matches = Array.from(html.matchAll(PATTERNS.EXTRACT_EMOJI))
+  const matches = [...html.matchAll(PATTERNS.EXTRACT_EMOJI)]
   return matches.map(match => match[1])
 }
 

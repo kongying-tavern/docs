@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { useQuery } from '@pinia/colada'
 import { useData, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
 import { user as userAPI } from '@/apis/forum/gitee'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
@@ -29,23 +28,19 @@ if (!user && !userId)
 const { localeIndex } = useData()
 const { message } = useLocalized()
 
-const { run: getUser, data: userData, loading: getUserLoading } = useRequest(userAPI.getUser, {
-  manual: true,
-  onError: (error) => {
-    toast.error(`${message.value.forum.labels.fetchUserFailed} (${error})`)
-  },
-})
-
 const userInfo = ref<ForumAPI.User | null>(user || null)
 
-if (!user && userId) {
-  getUser(userId)
-}
+const { data: userData, isLoading: getUserLoading, refetch: getUser } = useQuery({
+  key: () => ['user-hover', userId ?? user?.login ?? ''] as const,
+  query: () => userAPI.getUser(userId!),
+  enabled: () => !user && !!userId,
+})
 
+// 错误处理通过 watch
 watch(userData, (newVal) => {
   if (newVal)
     userInfo.value = newVal
-})
+}, { immediate: true })
 
 const { isOfficial } = useRuleChecks()
 const role = computed(() => (isOfficial(userInfo.value?.id || 0).value ? 'official' : null))

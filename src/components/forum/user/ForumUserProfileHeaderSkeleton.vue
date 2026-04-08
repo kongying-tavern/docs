@@ -4,26 +4,26 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 <template>
   <div class="w-full">
-    <div class="w-full rounded-lg">
+    <div class="rounded-lg w-full">
       <div class="mx-auto w-full">
-        <div class="w-full rounded-lg p-4 sm:p-6">
-          <div class="flex flex-col items-start gap-4 sm:flex-row sm:gap-6">
+        <div class="p-4 rounded-lg w-full sm:p-6">
+          <div class="flex flex-col gap-4 items-start sm:flex-row sm:gap-6">
             <!-- 头像骨架 -->
-            <div class="w-full flex items-start justify-between sm:w-auto">
+            <div class="flex w-full items-start justify-between sm:w-auto">
               <div class="relative">
-                <Skeleton class="h-20 w-20 rounded-full sm:h-24 sm:w-24" />
+                <Skeleton class="rounded-full h-20 w-20 sm:h-24 sm:w-24" />
               </div>
               <div class="flex gap-2 sm:hidden">
-                <Skeleton class="h-9 w-20 rounded-full" />
-                <Skeleton class="h-9 w-20 rounded-full" />
+                <Skeleton class="rounded-full h-9 w-20" />
+                <Skeleton class="rounded-full h-9 w-20" />
               </div>
             </div>
 
             <!-- 用户信息骨架 -->
-            <div class="w-full flex-1">
-              <div class="flex items-center gap-2">
+            <div class="flex-1 w-full">
+              <div class="flex gap-2 items-center">
                 <Skeleton class="h-7 w-32 sm:h-8" />
-                <Skeleton class="h-5 w-16 rounded-full" />
+                <Skeleton class="rounded-full h-5 w-16" />
               </div>
 
               <Skeleton class="mt-1.5 h-5 max-w-md w-full sm:mt-2" />
@@ -36,9 +36,9 @@ import { Skeleton } from '@/components/ui/skeleton'
             </div>
 
             <!-- PC端操作按钮骨架 -->
-            <div class="hidden gap-2 sm:flex">
-              <Skeleton class="h-9 w-9 rounded-full" />
-              <Skeleton class="h-9 w-24 rounded-full" />
+            <div class="gap-2 hidden sm:flex">
+              <Skeleton class="rounded-full h-9 w-9" />
+              <Skeleton class="rounded-full h-9 w-24" />
             </div>
           </div>
         </div>
@@ -46,9 +46,9 @@ import { Skeleton } from '@/components/ui/skeleton'
     </div>
 
     <!-- 菜单骨架 -->
-    <div class="relative w-full border-b">
+    <div class="border-b w-full relative">
       <div class="mx-auto">
-        <div class="relative h-12 flex items-center gap-3">
+        <div class="flex gap-3 h-12 items-center relative">
           <Skeleton class="h-6 w-24" />
           <Skeleton class="h-6 w-24" />
           <Skeleton class="h-6 w-24" />

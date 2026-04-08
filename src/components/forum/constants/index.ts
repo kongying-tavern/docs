@@ -16,14 +16,14 @@ export const FORUM_CONFIG = {
   TRANSITION_DURATION: 300,
 } as const
 
-// Form validation constants
+// Form validation constants - 单一验证限制来源
 export const VALIDATION_LIMITS = {
   TITLE: {
-    MIN_LENGTH: 5,
-    MAX_LENGTH: 100,
+    MIN_LENGTH: 1,
+    MAX_LENGTH: 50,
   },
   CONTENT: {
-    MIN_LENGTH: 10,
+    MIN_LENGTH: 5,
     MAX_LENGTH: 2000,
   },
   TAGS: {
@@ -32,8 +32,8 @@ export const VALIDATION_LIMITS = {
     MAX_TAG_LENGTH: 20,
   },
   IMAGES: {
-    MAX_COUNT: 9,
-    MAX_SIZE_MB: 5,
+    MAX_COUNT: 3,
+    MAX_SIZE_MB: 6,
     ALLOWED_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
   },
 } as const

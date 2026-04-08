@@ -2,14 +2,14 @@
   <div class="forum-container relative overflow-auto">
     <slot name="header" />
     <div
-      class="forum-content float-left mt-4 min-h-[calc(100vh-64px)] w-[clamp(calc(100%-276px),660px,55vw)]"
+      class="forum-content mt-4 min-h-[calc(100vh-64px)] w-[clamp(calc(100%-276px),660px,55vw)] float-left"
     >
       <slot name="content" />
 
       <slot />
     </div>
 
-    <div class="forum-aside sticky top-64px mt-4">
+    <div class="forum-aside mt-4 top-64px sticky">
       <slot name="aside" />
     </div>
   </div>

@@ -1,6 +1,9 @@
 // Data manipulation and utility functions
 
 import { shuffle, take } from 'lodash-es'
+import { randomString, slugify } from '@/utils/text'
+
+export { slugify }
 
 // Array utilities - using lodash for better performance
 export function getRandomElements<T>(arr: T[], count: number): T[] {
@@ -105,7 +108,7 @@ export function groupBy<T, K extends string | number | symbol>(
 }
 
 export function sortBy<T, K = unknown>(array: T[], keyGetter: (item: T) => K, reverse = false): T[] {
-  const sortedArray = [...array].sort((a, b) => {
+  const sortedArray = array.toSorted((a, b) => {
     const aVal = keyGetter(a)
     const bVal = keyGetter(b)
 
@@ -120,17 +123,8 @@ export function sortBy<T, K = unknown>(array: T[], keyGetter: (item: T) => K, re
 }
 
 // String utilities
-export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
-
 export function generateId(prefix: string = ''): string {
   const timestamp = Date.now().toString(36)
-  const randomStr = Math.random().toString(36).substring(2, 8)
+  const randomStr = randomString(6)
   return `${prefix}${prefix ? '-' : ''}${timestamp}-${randomStr}`
 }

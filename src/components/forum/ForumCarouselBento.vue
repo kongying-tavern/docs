@@ -45,7 +45,7 @@ const presetList = computed(() => [
 ])
 
 const sortedList = computed(() => {
-  return [...props.list].sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
+  return props.list.toSorted((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
 })
 </script>
 

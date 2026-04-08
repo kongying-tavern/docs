@@ -2,7 +2,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import { EditorContent } from '@tiptap/vue-3'
 import { onBeforeUnmount, onMounted } from 'vue'
-import { Image } from '@/components/ui/image'
+import { PhotoSwipe } from '@/components/ui/photoswipe'
 import { parseContentText } from '~/composables/tiptapJsonToText'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
@@ -99,13 +99,32 @@ onBeforeUnmount(() => {
         {{ parseContentText(props.commentData.content.text) }}
       </article>
 
-      <div v-if="props.commentData.content.images && props.size !== 'small'" class="topic-content-img mt-4 flex flex-row flex-wrap gap-2">
-        <Image
-          v-for="img in props.commentData.content.images" :key="img.src" :image="img.src" :alt="img.alt"
-          :thumbhash="img.thumbHash" :width="img.width" :height="img.height" container-class="size-auto"
-          class="rounded-sm flex-shrink-0 max-h-24 cursor-zoom-in transition-colors duration-200"
-        />
-      </div>
+      <PhotoSwipe
+        v-if="props.commentData.content.images && props.size !== 'small'"
+        :images="props.commentData.content.images.map(img => ({
+          src: img.src,
+          width: img.width || 1920,
+          height: img.height || 1080,
+          alt: img.alt || '',
+        }))"
+        class="topic-content-img mt-4"
+      >
+        <template #default="{ openAt }">
+          <div class="flex flex-row flex-wrap gap-2">
+            <img
+              v-for="(img, index) in props.commentData.content.images"
+              :key="img.src"
+              :src="img.src"
+              :alt="img.alt || ''"
+              :width="img.width"
+              :height="img.height"
+              class="border border-[var(--vp-c-divider)] rounded-sm flex-shrink-0 max-h-24 cursor-zoom-in transition-colors duration-200 hover:border-[var(--vp-c-brand)]"
+              loading="lazy"
+              @click="openAt(index)"
+            >
+          </div>
+        </template>
+      </PhotoSwipe>
 
       <div v-if="props.size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
@@ -131,13 +150,14 @@ onBeforeUnmount(() => {
   max-width: 100%;
 }
 
-/* 错误图片样式 */
-.topic-content-img :deep(.VPImage) {
+/* 图片样式 */
+.topic-content-img img {
   border: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg-soft);
+  transition: border-color 0.2s ease;
 }
 
-.topic-content-img :deep(.VPImage:hover:not(.no-hover)) {
+.topic-content-img img:hover {
   border-color: var(--vp-c-brand);
 }
 

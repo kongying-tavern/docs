@@ -80,7 +80,7 @@ const list = ref<string[]>([])
 <template>
   <section
     :id="version"
-    class="slide-enter header-anchor relative w-full flex flex-col border-t py-24 lg:flex-row"
+    class="slide-enter header-anchor py-24 border-t flex flex-col w-full relative lg:flex-row"
   >
     <div class="w-full md:px-5">
       <h1 class="text-3xl font-bold">
@@ -94,27 +94,27 @@ const list = ref<string[]>([])
         {{ formatDate(date, 'LL') }}
       </time>
 
-      <div class="mt-2 flex opacity-70">
+      <div class="mt-2 opacity-70 flex">
         <p v-for="(action, index) in renderedActions" :key="action.text">
           <a
             rel="noopener noreferrer"
-            class="vp-link whitespace-nowrap text-sm"
+            class="text-sm vp-link whitespace-nowrap"
             target="_blank"
             :href="action.link"
           >
             {{ action.text }}
           </a>
-          <span class="mx-auto px-1 align-mid text-muted-foreground">
+          <span class="text-muted-foreground mx-auto px-1 align-mid">
             {{ index < renderedActions.length - 1 ? '•' : '' }}
           </span>
         </p>
       </div>
 
-      <div class="mt-4 flex font-size-14px lh-24px opacity-70">
+      <div class="font-size-14px lh-24px mt-4 opacity-70 flex">
         <div class="m-0">
           <p v-if="warning" class="inline-block">
             <span
-              class="i-lucide-circle-alert mr-1 inline-block size-6 bg-[var(--vp-c-warning-2)] vertical-bottom opacity-100"
+              class="i-lucide-circle-alert mr-1 vertical-bottom bg-[var(--vp-c-warning-2)] opacity-100 size-6 inline-block"
             />
             {{ warning }}
           </p>
@@ -132,7 +132,7 @@ const list = ref<string[]>([])
       </div>
 
       <p
-        class="text-md mt-2 c-[var(--vp-c-text-1)]"
+        class="text-md c-[var(--vp-c-text-1)] mt-2"
         v-html="renderedDescription"
       />
 
@@ -140,7 +140,7 @@ const list = ref<string[]>([])
         <Accordion
           v-model:model-value="list"
           type="multiple"
-          class="w-full font-size-4.5"
+          class="font-size-4.5 w-full"
           collapsible
         >
           <AccordionItem
@@ -154,7 +154,7 @@ const list = ref<string[]>([])
             </AccordionTrigger>
             <AccordionContent>
               <ul
-                class="list-disc pl-5 font-size-4 c-[var(--vp-c-text-2)] lh-6"
+                class="font-size-4 c-[var(--vp-c-text-2)] lh-6 pl-5 list-disc"
               >
                 <li
                   v-for="(contentItem, index) in item.content"

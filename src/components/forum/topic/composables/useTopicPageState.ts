@@ -1,8 +1,8 @@
+import { useQuery, useQueryCache } from '@pinia/colada'
 import { watchOnce } from '@vueuse/core'
 import markdownIt from 'markdown-it'
 import { useData, useRouter, withBase } from 'vitepress'
-import { computed, onMounted, onUnmounted, watchEffect } from 'vue'
-import { useRequest } from 'vue-request'
+import { computed, onMounted, onUnmounted, watch, watchEffect } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
@@ -19,16 +19,26 @@ export function useTopicPageState() {
   const { params, localeIndex } = useData()
   const { go } = useRouter()
   const { message } = useLocalized()
+  const queryCache = useQueryCache()
 
-  // Topic data request - 需要先定义，因为后面的事件处理器会用到
-  const { data: topic, run, loading, mutate, error } = useRequest(issues.getTopic, {
-    defaultParams: [params.value?.id],
-    manual: true,
-    onError: (err) => {
-      if (err.message.includes('404 Not Found')) {
-        return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
-      }
-    },
+  // Topic data request
+  const {
+    data: topic,
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    key: () => ['topic', params.value?.id ?? ''] as const,
+    query: () => issues.getTopic(params.value?.id),
+    enabled: () => !!params.value?.id,
+    staleTime: 1000 * 60, // 1分钟内不重新请求
+  })
+
+  // Handle errors via watch
+  watch(error, (err) => {
+    if (err?.message.includes('404 Not Found')) {
+      go(withBase(`${getLangPath(localeIndex.value)}404.html`))
+    }
   })
 
   // Setup topic page specific event listeners using new architecture
@@ -51,8 +61,8 @@ export function useTopicPageState() {
         const currentRelatedComments = topic.value.relatedComments || []
         const newRelatedComments = [comment, ...currentRelatedComments].slice(0, 3)
 
-        // Update the topic data
-        mutate({
+        // Update the topic data via cache
+        queryCache.setQueryData(['topic', params.value?.id ?? ''], {
           ...topic.value,
           commentCount: newCommentCount,
           relatedComments: newRelatedComments,
@@ -69,8 +79,8 @@ export function useTopicPageState() {
         const currentRelatedComments = topic.value.relatedComments || []
         const newRelatedComments = currentRelatedComments.filter(c => c.id !== commentId)
 
-        // Update the topic data
-        mutate({
+        // Update the topic data via cache
+        queryCache.setQueryData(['topic', params.value?.id ?? ''], {
           ...topic.value,
           commentCount: newCommentCount,
           relatedComments: newRelatedComments,
@@ -97,10 +107,10 @@ export function useTopicPageState() {
   const targetTopicData = forumTopicStore.topicDetail
 
   if (targetTopicData && targetTopicData.id === params.value?.id) {
-    mutate(targetTopicData)
+    queryCache.setQueryData(['topic', params.value?.id ?? ''], targetTopicData)
   }
   else if (!import.meta.env.SSR) {
-    run(params.value?.id)
+    refetch()
   }
 
   // Rendered content
@@ -166,9 +176,11 @@ export function useTopicPageState() {
   })
 
   watchOnce(error, () => {
-    handleError(error.value, message, {
-      errorMessage: message.value.forum.loadError + error?.value?.message,
-    })
+    if (error.value) {
+      handleError(error.value, message, {
+        errorMessage: message.value.forum.loadError + error.value?.message,
+      })
+    }
   })
 
   return {

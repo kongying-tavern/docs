@@ -50,13 +50,13 @@ watchPostEffect(() => {
 </script>
 
 <template>
-  <div class="fixed bottom-0 left-0 z-2 w-full overflow-x-hidden" :class="classes">
+  <div class="w-full bottom-0 left-0 fixed z-2 overflow-x-hidden" :class="classes">
     <div
       class="bg-transparent"
       @click="emits('close')"
     />
-    <div class="wrapper relative h-fit min-h-100% bg-[var(--vp-c-bg)] transition-height md:min-h-30%">
-      <div class="curtain-content container h-auto w-full pt-8">
+    <div class="wrapper bg-[var(--vp-c-bg)] h-fit min-h-100% transition-height relative md:min-h-30%">
+      <div class="curtain-content pt-8 container h-auto w-full">
         <ForumSearchbox v-model:query="searchQuery" @search="emits('close')" />
         <!-- Debug: Always show for testing -->
         <!-- <div v-if="searchQuery.length > 0" class="debug-info">
@@ -76,16 +76,16 @@ watchPostEffect(() => {
         <div
           v-else
           v-motion-slide-visible-top
-          class="h-auto w-full flex flex-col pb-64px pt-40px"
+          class="pb-64px pt-40px flex flex-col h-auto w-full"
         >
           <h2 class="mb-5">
             Quick Links
           </h2>
-          <ul class="grid grid-row-auto grid-flow-col grid-flow-row grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-4 md:grid-rows-5">
+          <ul class="gap-x-6 gap-y-4 grid grid-row-auto grid-flow-col grid-flow-row grid-cols-1 md:grid-cols-4 md:grid-rows-5">
             <li v-for="item in quickLinkList" :key="item.text">
               <VPLink
                 :href="item.link"
-                class="line-clamp-2 vp-link overflow-hidden text-ellipsis break-all font-size-3.5 color-[--vp-c-text-1]"
+                class="font-size-3.5 color-[--vp-c-text-1] vp-link break-all text-ellipsis overflow-hidden line-clamp-2"
               >
                 {{ item.text?.replace(/【|】|\[|\]/g, ' ').trim() }}
               </VPLink>

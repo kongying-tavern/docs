@@ -23,8 +23,8 @@ function color() {
 </script>
 
 <template>
-  <span v-if="type" class="flex items-center font-size-xs">
-    <span class="mr-1 inline-block size-12px" :style="{ 'background-color': color() }" />
+  <span v-if="type" class="font-size-xs flex items-center">
+    <span class="mr-1 size-12px inline-block" :style="{ 'background-color': color() }" />
     {{ topicTypeMap.get(type) }}
   </span>
 </template>

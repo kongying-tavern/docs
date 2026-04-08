@@ -55,7 +55,7 @@ function sortByOrder(items: FORUM.TopicDropdownMenu[]): FORUM.TopicDropdownMenu[
       {{ item.label }}
     </DropdownMenuLabel>
 
-    <div v-else-if="item.type === 'info'" :id="item.id" class="px-2 py-1 text-xs text-muted-foreground leading-none" :class="[item.class]">
+    <div v-else-if="item.type === 'info'" :id="item.id" class="text-xs text-muted-foreground leading-none px-2 py-1" :class="[item.class]">
       {{ item.label }}
     </div>
 

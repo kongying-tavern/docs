@@ -34,15 +34,15 @@ async function handleUndo() {
 </script>
 
 <template>
-  <div v-if="isSearching && !forumData.loading && currentSearchQuery" class="w-fit flex items-center rounded-full pl-4 font-size-3.5 hover:bg-[--vp-c-bg-soft]">
-    <p class="mr-2 color-[var(--vp-c-text-3)]">
+  <div v-if="isSearching && !forumData.loading && currentSearchQuery" class="font-size-3.5 pl-4 rounded-full flex w-fit items-center hover:bg-[--vp-c-bg-soft]">
+    <p class="color-[var(--vp-c-text-3)] mr-2">
       {{ message.forum.header.search.placeholder }}
       ⌈{{ currentSearchQuery }}⌋ -
       {{ message.forum.header.search.allRelatedContentCount }}
     </p>
     <span>{{ topics.length }}</span>
 
-    <Button class="ml-1 rounded-full color-[var(--vp-c-text-3)] hover:bg-transparent" variant="ghost" @click="handleUndo">
+    <Button class="color-[var(--vp-c-text-3)] ml-1 rounded-full hover:bg-transparent" variant="ghost" @click="handleUndo">
       <span class="i-lucide-x icon-btn size-4.5" />
     </Button>
   </div>

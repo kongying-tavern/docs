@@ -16,9 +16,9 @@ function handleClick() {
 <template>
   <Button variant="ghost" @click="handleClick">
     <Avatar size="sm" :src="user.avatar" />
-    <div class="w-fit text-left">
+    <div class="text-left w-fit">
       <span
-        class="block c-[var(--vp-c-text-1)] font-medium lh-4 font-[var(--vp-font-family-subtitle)]"
+        class="c-[var(--vp-c-text-1)] lh-4 font-[var(--vp-font-family-subtitle)] font-medium block"
       >
         {{ user.username }}
       </span>

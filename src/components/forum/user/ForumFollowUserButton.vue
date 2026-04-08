@@ -21,7 +21,7 @@ const isHovered = ref(false)
     :loading="following"
     :disabled="following"
     :variant="followState ? 'ghost' : 'default'"
-    class="flex items-center gap-1 rounded-full transition"
+    class="rounded-full flex gap-1 transition items-center"
     :class="{ 'hover:c-red hover:border-red': followState }"
     @click="toggleFollowThisUser"
     @mouseenter="isHovered = true"

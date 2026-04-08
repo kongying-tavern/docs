@@ -5,7 +5,7 @@ import ForumTopicViewDropdown from './ForumTopicViewDropdown.vue'
 </script>
 
 <template>
-  <div class="h-32px flex">
+  <div class="flex h-32px">
     <div class="flex items-center">
       <ForumTopicTypeDropdown />
       <ForumTopicSortDropdown />

@@ -64,7 +64,7 @@ onBeforeUnmount(() => {
   >
     <div class="comment-area w-full">
       <div
-        class="body border vp-border-input border-input rounded-md border-style-solid bg-transparent px-2 py-1 shadow-sm transition-colors placeholder:text-muted-foreground"
+        class="body px-2 py-1 border vp-border-input border-input rounded-md border-style-solid bg-transparent shadow-sm transition-colors placeholder:text-muted-foreground"
         :class="
           cn(
             focused
@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
             :maxlength="textLimit"
             :placeholder="placeholder"
           />
-          <span class="pos-absolute bottom-[-104px] right-0 font-size-[12px] c-[var(--vp-c-text-3)] md:bottom-0">
+          <span class="font-size-[12px] c-[var(--vp-c-text-3)] bottom-[-104px] right-0 pos-absolute md:bottom-0">
             <span :class="modelValue?.length < (textMinLimit || -1) || modelValue?.length > (textLimit || -1) ? 'c-red' : ''">
               {{ modelValue?.length || 0 }}
             </span>

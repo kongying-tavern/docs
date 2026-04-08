@@ -6,7 +6,7 @@ const { data } = defineProps<{
   data: ReleasesData
 }>()
 
-const releaseData = [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+const releaseData = data.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 </script>
 
 <template>

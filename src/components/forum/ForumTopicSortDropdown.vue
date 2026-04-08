@@ -23,7 +23,7 @@ const sort = inject(FORUM_TOPIC_SORT_KEY)!
 <template>
   <Select v-model="sort">
     <SelectTrigger
-      class="mt-2 w-fit whitespace-break-spaces rounded-full font-size-3 c-[--vp-c-text-2] shadow-none hover:bg-[--vp-c-bg-soft]"
+      class="font-size-3 c-[--vp-c-text-2] mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
     >
       {{ sortLabel.find(([key]) => key === sort)?.[1] || '' }}
     </SelectTrigger>

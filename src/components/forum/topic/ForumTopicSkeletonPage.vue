@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton'
     <Skeleton class="h-[clamp(1rem,10vw,2rem)] w-200px" />
 
     <div class="mt-4 flex items-center">
-      <Skeleton class="h-32px w-32px rounded-full" />
+      <Skeleton class="rounded-full h-32px w-32px" />
       <Skeleton class="mx-2 h-3.5 w-[60px]" />
 
       <span class="color-[--vp-c-text-3]">·</span>
@@ -22,13 +22,13 @@ import { Skeleton } from '@/components/ui/skeleton'
     </div>
 
     <div class="my-6 flex space-x-2">
-      <Skeleton class="mr-2 h-28px w-80px rounded-full" />
-      <Skeleton class="mr-2 h-28px w-80px rounded-full" />
+      <Skeleton class="mr-2 rounded-full h-28px w-80px" />
+      <Skeleton class="mr-2 rounded-full h-28px w-80px" />
     </div>
 
     <div class="mt-6 flex space-x-2">
-      <Skeleton class="h-[75px] w-[75px] rounded-xl" />
-      <Skeleton class="h-[75px] w-[75px] rounded-xl" />
+      <Skeleton class="rounded-xl h-[75px] w-[75px]" />
+      <Skeleton class="rounded-xl h-[75px] w-[75px]" />
     </div>
   </div>
 </template>

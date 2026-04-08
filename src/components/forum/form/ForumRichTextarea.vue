@@ -308,12 +308,12 @@ defineExpose({
       <div class="body relative">
         <div
           v-if="userAuth.isTokenValid || !loginRequired"
-          class="h-fit min-h-48px w-full border border-color-[var(--vp-c-gutter)] rounded-md bg-[var(--vp-c-bg-soft)] px-2 pt-2 focus:border-style-solid focus:bg-transparent"
+          class="px-2 pt-2 border border-color-[var(--vp-c-gutter)] rounded-md bg-[var(--vp-c-bg-soft)] h-fit min-h-48px w-full focus:border-style-solid focus:bg-transparent"
           :class="{ 'pb-2': hasSelectedFile }"
           @click="hideFooter = false"
           @focus="emojiPreload.smartPreload"
         >
-          <div v-if="toolbarPosition === 'inner'" class="absolute right-12px">
+          <div v-if="toolbarPosition === 'inner'" class="right-12px absolute">
             <EmojiPicker v-if="features.includes('Emoji')" class="border-none" :reference="container" @select="handleEmojiSelect" />
           </div>
 
@@ -323,7 +323,7 @@ defineExpose({
           />
           <EditorContent
             v-if="editor"
-            class="editor h-auto min-h-32px w-full cursor-text bg-transparent font-size-3.5 line-height-[32px]"
+            class="editor font-size-3.5 line-height-[32px] bg-transparent h-auto min-h-32px w-full cursor-text"
             :editor="(editor as InstanceType<typeof Editor>)"
           />
 
@@ -337,7 +337,7 @@ defineExpose({
 
           <div
             v-if="showCharacterCounter"
-            class="character-count absolute bottom-0 right-0 flex scale-80 items-center font-size-sm"
+            class="character-count font-size-sm flex scale-80 items-center bottom-0 right-0 absolute"
             :class="{ 'character-count--warning': charCount === maxTextLength }"
           >
             <svg height="20" width="20" viewBox="0 0 20 20" class="mr-6px">
@@ -354,11 +354,11 @@ defineExpose({
         </div>
         <div
           v-else
-          class="h-8 h-auto min-h-48px w-full cursor-text rounded-md bg-[var(--vp-c-bg-soft)] p-2 text-center font-size-3.5 line-height-[32px]"
+          class="font-size-3.5 line-height-[32px] p-2 text-center rounded-md bg-[var(--vp-c-bg-soft)] h-8 h-auto min-h-48px w-full cursor-text"
         >
           <DynamicTextReplacer
             :data="message.forum.comment.commentAfterLogin"
-            class="important:m-0 important:line-height-[32px]"
+            class="important:line-height-[32px] important:m-0"
           >
             <template #login>
               <a class="vp-link" href="#login-alert">
@@ -370,7 +370,7 @@ defineExpose({
       </div>
       <div
         v-if="userAuth.isTokenValid && features.length !== 0 && toolbarPosition === 'bottom'" v-show="!collapse || !hideFooter" v-motion-slide-top
-        class="footer mt-2.5 w-full flex items-center justify-between"
+        class="footer mt-2.5 flex w-full items-center justify-between"
       >
         <div class="tool">
           <EmojiPicker v-if="features.includes('Emoji')" :reference="container" @select="handleEmojiSelect" />
@@ -378,10 +378,10 @@ defineExpose({
           <MentionPicker v-if="features.includes('Mention')" v-model:open="showMentionPicker" class="ml-2" @select="handleMentionSelect" />
 
           <Button
-            v-if="features.includes('Upload')" variant="ghost" class="ml-2 h-8 w-6 border border-[var(--vp-c-gutter)] border-solid bg-transparent"
+            v-if="features.includes('Upload')" variant="ghost" class="ml-2 border border-[var(--vp-c-gutter)] border-solid bg-transparent h-8 w-6"
             @click="open"
           >
-            <span class="i-lucide:image icon-btn size-4 c-[var(--vp-c-text-2)]" />
+            <span class="i-lucide:image c-[var(--vp-c-text-2)] icon-btn size-4" />
           </Button>
         </div>
 

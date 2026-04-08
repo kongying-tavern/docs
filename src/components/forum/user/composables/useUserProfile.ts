@@ -1,12 +1,9 @@
-import { useData, useRouter, withBase } from 'vitepress'
+import { useQuery } from '@pinia/colada'
 import { computed, ref, watch } from 'vue'
-import { useRequest } from 'vue-request'
-import { toast } from 'vue-sonner'
 import { user } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { getLangPath } from '@/utils'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { setPageTitle } from '../../utils'
 
@@ -19,8 +16,6 @@ export function useUserProfile(options: UseUserProfileOptions) {
   const { username } = options
 
   // Composables
-  const { go } = useRouter()
-  const { localeIndex } = useData()
   const { message } = useLocalized()
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
@@ -29,22 +24,18 @@ export function useUserProfile(options: UseUserProfileOptions) {
   // State
   const menuRef = ref<HTMLElement | null>(null)
 
-  // User data request
-  const { runAsync: getUser, data: userData } = useRequest(user.getUser, {
-    manual: true,
-    onError: (err) => {
-      toast.error(`${message.value.forum.labels.fetchUserFailed} (${err})`)
-
-      if (err.message.includes('404 Not Found')) {
-        return go(withBase(`${getLangPath(localeIndex.value)}404.html`))
-      }
-    },
+  // User data request - useQuery
+  const { data: userData, refetch: getUser } = useQuery({
+    key: () => ['user', username] as const,
+    query: () => user.getUser(username, userAuth.isTokenValid ? userAuth.auth?.accessToken : undefined),
+    enabled: () => !userInfo.info || userInfo.info.username !== username || userInfo.info.login !== username,
+    staleTime: 1000 * 60 * 5, // 5分钟内不重新请求
   })
 
   // Load user data if needed
   async function loadUserData(): Promise<void> {
     if (!userInfo.info || userInfo?.info.username !== username || userInfo?.info.login !== username) {
-      await getUser(username, userAuth.isTokenValid ? userAuth.auth?.accessToken : undefined)
+      await getUser()
     }
   }
 

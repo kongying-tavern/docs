@@ -56,6 +56,7 @@ if (loadMore) {
 
     <ForumTopicListEmpty
       v-else-if="data.length === 0"
+      class="my-8"
       :refresh-data="refreshData"
     />
   </div>

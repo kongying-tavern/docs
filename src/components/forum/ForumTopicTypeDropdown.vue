@@ -62,13 +62,13 @@ watch(() => filter?.value, (newFilter, oldFilter) => {
 
   if (newFilter === 'all') {
     // Remove filter from path - go to base forum path
-    if (pathSegments.length > 1 && ['bug', 'feat', 'closed'].includes(pathSegments[pathSegments.length - 1])) {
+    if (pathSegments.length > 1 && ['bug', 'feat', 'closed'].includes(pathSegments.at(-1))) {
       pathSegments.pop()
     }
   }
   else {
     // Add or replace filter in path
-    if (pathSegments.length > 1 && ['bug', 'feat', 'closed'].includes(pathSegments[pathSegments.length - 1])) {
+    if (pathSegments.length > 1 && ['bug', 'feat', 'closed'].includes(pathSegments.at(-1))) {
       pathSegments[pathSegments.length - 1] = newFilter
     }
     else {
@@ -84,11 +84,11 @@ watch(() => filter?.value, (newFilter, oldFilter) => {
 </script>
 
 <template>
-  <div class="flex items-center gap-4">
+  <div class="flex gap-4 items-center">
     <Select v-model="filter" :disabled="loading?.value">
       <SelectTrigger
         variant="ghost"
-        class="mt-2 w-fit whitespace-break-spaces rounded-full font-size-3 shadow-none hover:bg-[--vp-c-bg-soft]"
+        class="font-size-3 mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
         @mouseenter="handleHoverPreload"
       >
         {{ currentLabel }}

@@ -52,10 +52,6 @@ export * from './validation'
 
 // Re-export commonly used functions for convenience
 export {
-  validateCommentForm,
-  validateContent,
   validateImageFile,
-  validateImageUpload,
-  validateTags,
-  validateTopicForm,
+  validateMultipleFiles,
 } from './validation'
