@@ -1,9 +1,9 @@
 import type { UploadFile, UploadStatus, UploadUserFile } from '@/components/ui/photo-wall/upload'
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
+import { useMutation } from '@pinia/colada'
 import { computed, nextTick, ref, watch } from 'vue'
-import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
-import { uploadImg } from '@/apis/inter-knot.site/upload'
+import { uploadImg } from '@/apis/interknot.site/upload'
 import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
 import { formatMarkdownImages } from '~/components/forum/utils/formatting'
 
@@ -19,18 +19,19 @@ export function useImageUpload(options = {
 }) {
   const { maximumSingleFileSize, fileLimit, fileAccept } = options
 
-  const { data, runAsync, error, loading } = useRequest(uploadImg, { manual: true })
-
   const isProcessing = ref(false)
   const imageList = ref<UploadUserFile[]>([])
   const canUploadMore = computed(() => imageList.value.length < fileLimit)
   const isUploading = computed(() => imageList.value.some(val => val.status === 'uploading'))
-  const isCompleted = computed(() => !isUploading.value && !isProcessing.value && !loading.value)
   const uploadedImages = ref<UploadedUserFile[]>([])
 
-  // Watch for image list changes to reset processing state when all uploading files are removed
-  watch(imageList, (newList, _oldList) => {
-    // If we were processing and now there are no uploading files, reset processing state
+  const { mutateAsync: runUpload, isLoading } = useMutation({
+    mutation: uploadImg,
+  })
+
+  const isCompleted = computed(() => !isUploading.value && !isProcessing.value && !isLoading.value)
+
+  watch(imageList, (newList) => {
     if (isProcessing.value && !newList.some(file => file.status === 'uploading')) {
       isProcessing.value = false
     }
@@ -44,15 +45,22 @@ export function useImageUpload(options = {
 
     await updateImage(uploadFile.uid, undefined, 'uploading')
 
-    await runAsync(_uploadFile.raw)
-    await nextTick()
+    try {
+      // 使用 mutateAsync 的返回值，而不是共享的 data.value
+      const result = await runUpload(_uploadFile.raw)
+      await nextTick()
 
-    if (data.value?.state && data.value?.data) {
-      await updateImage(uploadFile.uid, data.value.data.link, 'ready')
+      if (result?.state && result?.data) {
+        await updateImage(uploadFile.uid, result.data.link, 'ready')
+      }
+      else {
+        await updateImage(uploadFile.uid, undefined, 'fail')
+        toast.error(`[${uploadFile.name}] Upload failed`)
+      }
     }
-    else {
+    catch (err) {
       await updateImage(uploadFile.uid, undefined, 'fail')
-      toast.error(`[${uploadFile.name}] ${error.value?.message || 'Upload failed'}`)
+      toast.error(`[${uploadFile.name}] ${err instanceof Error ? err.message : 'Upload failed'}`)
     }
 
     isProcessing.value = false
@@ -106,8 +114,8 @@ export function useImageUpload(options = {
       try {
         thumbHash = await calculateThumbHashForFile(new Uint8Array(await imageList.value![index].raw!.arrayBuffer()))
       }
-      catch (error) {
-        toast.error(`[${imageList.value![index].name}] calculate thumb hash failed (${error})`)
+      catch (err) {
+        toast.error(`[${imageList.value![index].name}] calculate thumb hash failed (${err})`)
       }
 
       imageList.value![index].status = 'success'

@@ -106,7 +106,7 @@ class QQGroupService {
   }
 
   getGroups(): QQGroup[] {
-    return [...this.groups.value].sort((a, b) => (a.order || 0) - (b.order || 0))
+    return this.groups.value.toSorted((a, b) => (a.order || 0) - (b.order || 0))
   }
 
   addGroup(groupData: Omit<QQGroup, 'id' | 'order'>): QQGroup {

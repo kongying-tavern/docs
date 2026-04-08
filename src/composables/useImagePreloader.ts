@@ -18,7 +18,7 @@ export function useImagePreloader(options: ImagePreloadOptions = {}) {
 
   // 对 topics 进行排序，优先显示最新或最重要的内容
   function sortTopicsForDisplay(topics: ForumAPI.Topic[], sortMethod: ForumAPI.SortMethod = 'updated'): ForumAPI.Topic[] {
-    return [...topics].sort((a, b) => {
+    return topics.toSorted((a, b) => {
       // 置顶的优先显示
       if (a.pinned && !b.pinned)
         return -1
@@ -147,7 +147,7 @@ export function useImagePreloader(options: ImagePreloadOptions = {}) {
     clearAllCaches,
 
     // 状态信息
-    getPreloadedUrls: () => Array.from(preloadedUrls),
+    getPreloadedUrls: () => [...preloadedUrls],
     getPreloadCount: () => preloadedUrls.size,
   }
 }

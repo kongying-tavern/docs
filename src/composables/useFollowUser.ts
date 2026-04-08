@@ -1,5 +1,5 @@
+import { useMutation, useQuery } from '@pinia/colada'
 import { computed, ref, watch } from 'vue'
-import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import { user } from '@/apis/forum/gitee'
 import { useUserInfoStore } from '@/stores/useUserInfo'
@@ -18,34 +18,32 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
     throw new Error('目标用户不能为空')
   }
 
-  const { data: alreadyFollowed, error: getFollowStatusError, run: getFollowStatus } = useRequest(
-    user.getFollowStatus,
-    {
-      manual: true,
-      onError: (error) => {
-        console.error('获取关注状态失败:', error)
-      },
-    },
-  )
-
-  // 只在已登录状态下获取关注状态
-  if (!disabled.value && currentUser.value) {
-    getFollowStatus(currentUser.value, targetUser)
-  }
-
+  // 获取关注状态 - useQuery
   const {
-    runAsync,
-    loading: following,
-    error: followError,
-  } = useRequest(user.toggleFollowUser, {
-    manual: true,
-    defaultParams: [true, targetUser],
-    onBefore: () => {
-      return authGuards.requireLogin()
+    data: alreadyFollowed,
+    error: getFollowStatusError,
+  } = useQuery({
+    key: () => ['follow-status', currentUser.value ?? '', targetUser] as const,
+    query: () => user.getFollowStatus(currentUser.value!, targetUser),
+    enabled: () => !disabled.value && !!currentUser.value,
+    staleTime: 1000 * 60 * 5, // 5分钟内不重新请求
+  })
 
+  // 切换关注 - useMutation
+  const {
+    mutate: runToggleFollow,
+    isLoading: following,
+    error: followError,
+  } = useMutation({
+    mutation: (params: { follow: boolean, targetUser: string }) =>
+      user.toggleFollowUser(params.follow, params.targetUser),
+    onMutate: () => {
+      if (!authGuards.requireLogin()) {
+        throw new Error('需要登录')
+      }
       if (currentUser.value === targetUser) {
         toast.warning('不能对自己进行该操作')
-        return false
+        throw new Error('不能对自己进行该操作')
       }
     },
     onError: (error) => {
@@ -55,14 +53,14 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
   })
 
   const cancelFollowThisUser = async () => {
-    const result = await runAsync(false, targetUser)
+    const result = await runToggleFollow({ follow: false, targetUser })
     toast.success('取关成功')
     followState.value = false
     return result
   }
 
   const followThisUser = async () => {
-    const result = await runAsync(true, targetUser)
+    const result = await runToggleFollow({ follow: true, targetUser })
     toast.success('关注成功')
     followState.value = true
     return result
@@ -76,15 +74,17 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
     await followThisUser()
   }
 
-  watch(currentUser, () => {
-    if (!disabled.value && currentUser.value && !alreadyFollowed) {
-      getFollowStatus(currentUser.value, targetUser)
+  watch(alreadyFollowed, (val) => {
+    if (val !== undefined) {
+      followState.value = val
     }
-  })
+  }, { immediate: true })
 
   watch(followError, (error) => {
-    console.error('关注用户时发生错误:', error)
-    toast.error('关注失败，请稍后重试')
+    if (error) {
+      console.error('关注用户时发生错误:', error)
+      toast.error('关注失败，请稍后重试')
+    }
   })
 
   return {

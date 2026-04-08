@@ -1,7 +1,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumQueryParams, ForumServiceOptions } from '~/services/forumService'
+import { useQuery } from '@pinia/colada'
 import { computed, ref } from 'vue'
-import { useRequest } from 'vue-request'
 import { useLoadMore } from '@/hooks/useLoadMore'
 import { useLocalized } from '@/hooks/useLocalized'
 import { handleError } from '~/composables/handleError'
@@ -21,6 +21,7 @@ export function useForumData(options: UseForumDataOptions = {}) {
   const lastError = ref<Error | null>(null)
 
   // Load more hook for main topics
+  // service 签名: (current: number, queryParams: ForumAPI.Query, state: string, searchQuery?: string)
   const {
     data,
     runAsync,
@@ -32,7 +33,9 @@ export function useForumData(options: UseForumDataOptions = {}) {
     total,
     isFirstLoad,
     canLoadMore,
-  } = useLoadMore(async (queryParams: ForumAPI.Query, _state: string, searchQuery?: string) => {
+    current,
+    loadingMore,
+  } = useLoadMore(async (current: number, queryParams: ForumAPI.Query, _state: string, searchQuery?: string) => {
     const serviceOptions: ForumServiceOptions = {
       onError: (error) => {
         lastError.value = error
@@ -41,7 +44,7 @@ export function useForumData(options: UseForumDataOptions = {}) {
 
     // Convert useLoadMore params to ForumService params
     const forumParams: ForumQueryParams = {
-      page: queryParams.current,
+      page: current, // 使用 useLoadMore 传入的 current
       pageSize: queryParams.pageSize,
       sort: queryParams.sort as ForumAPI.SortMethod,
       filter: queryParams.filter as ForumAPI.FilterBy,
@@ -59,20 +62,23 @@ export function useForumData(options: UseForumDataOptions = {}) {
     manual,
   })
 
-  // Pinned topics request
+  // Pinned topics request - 使用 useQuery 替代 useRequest
   const {
     data: pinnedTopicsData,
-    loading: pinnedTopicsLoading,
-    runAsync: loadPinnedTopics,
-  } = useRequest(async () => {
-    const serviceOptions: ForumServiceOptions = {
-      onError: (error) => {
-        lastError.value = error
-      },
-    }
-    return ForumService.getPinnedTopics(serviceOptions)
-  }, {
-    manual: true,
+    isLoading: pinnedTopicsLoading,
+    refetch: loadPinnedTopics,
+  } = useQuery({
+    key: () => ['pinned-topics'] as const,
+    query: async () => {
+      const serviceOptions: ForumServiceOptions = {
+        onError: (error) => {
+          lastError.value = error
+        },
+      }
+      return ForumService.getPinnedTopics(serviceOptions)
+    },
+    enabled: () => autoLoadPinned && isInitialized.value,
+    staleTime: 1000 * 60 * 5, // 5分钟内不重新请求
   })
 
   // Computed
@@ -197,10 +203,12 @@ export function useForumData(options: UseForumDataOptions = {}) {
     loading,
     pinnedTopicsLoading,
     isDataLoading,
+    loadingMore,
 
     // Pagination
     totalPage,
     total,
+    current,
     canLoadMore,
     noMore,
     isFirstLoad,

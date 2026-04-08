@@ -1,11 +1,10 @@
-import type { INTER_KNOT } from '@/apis/inter-knot.site/api'
+import type { INTER_KNOT } from '@/apis/interknot.site/api'
+import { useMutation } from '@pinia/colada'
 import { createGlobalState, useArrayFind, useDebounceFn } from '@vueuse/core'
 import { withBase } from 'vitepress'
 import { computed, ref } from 'vue'
-
-import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
-import { reactions } from '@/apis/inter-knot.site'
+import { reactions } from '@/apis/interknot.site'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 
@@ -54,19 +53,16 @@ export const useTopicsReaction = createGlobalState(() => {
   }
 
   const {
-    runAsync: setReaction,
+    mutate: setReaction,
     data: setReactionResponse,
-    loading: reactionSubmitLoading,
+    isLoading: reactionSubmitLoading,
     error: reactionSubmitError,
-  } = useRequest<INTER_KNOT.ReactionResponse | null>(
-    reactions.setPageReaction,
-    {
-      manual: true,
-      onError: () => {
-        toast.info(message.value.forum.errors.operationFailedRetry)
-      },
+  } = useMutation<INTER_KNOT.ReactionResponse | null, { state: INTER_KNOT.ReactionState | 'revoke', options: { url: string, userId?: string } }>({
+    mutation: ({ state, options }) => reactions.setPageReaction(state, options),
+    onError: () => {
+      toast.info(message.value.forum.errors.operationFailedRetry)
     },
-  )
+  })
 
   const getTopicReaction = async (topicId: string, autoLoad = true) => {
     const result = useArrayFind(useTopicsReaction, val => val.id === topicId)
@@ -83,13 +79,13 @@ export const useTopicsReaction = createGlobalState(() => {
       return
 
     isUpdating.value = true
-    const requests = Array.from(pendingRequests.value)
+    const requests = [...pendingRequests.value]
     pendingRequests.value.clear()
 
     try {
       await Promise.all(
         requests.map(async (topicId) => {
-          await requestTopicReaction(getTopicUrl(topicId))
+          await requestTopicReaction(topicId) // 修复：传入 topicId 而不是 url
         }),
       )
     }
@@ -127,9 +123,12 @@ export const useTopicsReaction = createGlobalState(() => {
       )
     }
     reactionState.value.state = null
-    await setReaction('revoke', {
-      url: getTopicUrl(topicId),
-      ...(userInfo.info?.id ? { userId: userInfo.info?.id } : {}),
+    await setReaction({
+      state: 'revoke',
+      options: {
+        url: getTopicUrl(topicId),
+        ...(userInfo.info?.id ? { userId: String(userInfo.info?.id) } : {}),
+      },
     })
   }
 
@@ -169,9 +168,12 @@ export const useTopicsReaction = createGlobalState(() => {
     }
 
     reactionState.value.state = state
-    return await setReaction(state, {
-      url: getTopicUrl(topicId),
-      ...(userInfo.info?.id ? { userId: userInfo.info?.id } : {}),
+    return await setReaction({
+      state,
+      options: {
+        url: getTopicUrl(topicId),
+        ...(userInfo.info?.id ? { userId: String(userInfo.info?.id) } : {}),
+      },
     })
   }
 

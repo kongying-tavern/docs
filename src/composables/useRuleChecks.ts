@@ -38,7 +38,7 @@ export function useRuleChecks(inputId: string | number = '') {
 
   const userPermissions = computed(() => {
     return userRoles.value.reduce<string[]>((perms, role) => {
-      return perms.concat(rolesPermissions[role] || [])
+      return [...perms, ...rolesPermissions[role] || []]
     }, [])
   })
 

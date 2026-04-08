@@ -46,7 +46,7 @@ function unflattenObject(flattened: Record<string, string>): Record<string, stri
       current = current[k] as Record<string, string | number | boolean | object>
     }
 
-    const lastKey = keys[keys.length - 1]
+    const lastKey = keys.at(-1)
     try {
       const parsed = JSON.parse(value)
       current[lastKey] = typeof parsed === 'string' ? value : parsed
@@ -235,7 +235,7 @@ export class TranslationService {
 
   getCategories(): string[] {
     const categories = new Set(this.translationEntries.map(entry => entry.category))
-    return ['all', ...Array.from(categories).sort()]
+    return ['all', ...categories.toSorted()]
   }
 
   updateTranslation(path: string, locale: string, value: string): void {

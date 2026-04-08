@@ -17,7 +17,7 @@ export function useUrlFilterSync(filter: Ref<ForumAPI.FilterBy>, _logPrefix = 'ð
 
     const currentPath = window.location.pathname
     const pathSegments = currentPath.split('/').filter(Boolean)
-    const lastSegment = pathSegments[pathSegments.length - 1]
+    const lastSegment = pathSegments.at(-1)
 
     if (lastSegment === 'bug' || lastSegment === 'feat' || lastSegment === 'closed') {
       filter.value = lastSegment as ForumAPI.FilterBy
@@ -36,7 +36,7 @@ export function useUrlFilterSync(filter: Ref<ForumAPI.FilterBy>, _logPrefix = 'ð
     handleUrlChange = () => {
       const currentPath = window.location.pathname
       const pathSegments = currentPath.split('/').filter(Boolean)
-      const lastSegment = pathSegments[pathSegments.length - 1]
+      const lastSegment = pathSegments.at(-1)
 
       let newFilter: ForumAPI.FilterBy = 'all'
       if (lastSegment === 'bug' || lastSegment === 'feat' || lastSegment === 'closed') {

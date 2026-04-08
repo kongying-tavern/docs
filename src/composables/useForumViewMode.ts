@@ -16,6 +16,7 @@ export function isCompactModeValue(mode: FORUM.TopicViewMode): boolean {
   return mode === COMPACT_MODE
 }
 
+// @unocss-include
 export function getViewModeIconClass(mode: FORUM.TopicViewMode): string {
   return isCardModeValue(mode) ? 'i-custom-card' : 'i-custom-compact'
 }

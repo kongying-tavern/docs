@@ -47,7 +47,7 @@ export function useTranslationExport({
       }
     })
 
-    return Array.from(localesWithChanges)
+    return [...localesWithChanges]
   })
 
   // 是否有变更
@@ -130,7 +130,7 @@ export function useTranslationExport({
         }
 
         // 设置最终值
-        const finalKey = keys[keys.length - 1]
+        const finalKey = keys.at(-1)
         let value = entry.translations[locale]
 
         // 处理特殊类型的值

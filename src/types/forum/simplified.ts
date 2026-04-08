@@ -197,7 +197,7 @@ export interface UseEventHandlersReturn {
 // 工厂函数类型
 export type StoreFactory<T = ForumStore> = (
   storeId: string,
-  config: ForumStoreConfig
+  config: ForumStoreConfig,
 ) => () => T
 
 // 中间件类型

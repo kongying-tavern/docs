@@ -212,7 +212,7 @@ class TranslationExportService {
       current = current[key] as Record<string, unknown>
     }
 
-    current[keys[keys.length - 1]] = value
+    current[keys.at(-1)] = value
   }
 
   /**

@@ -63,7 +63,7 @@ export class ForumBusinessLogic {
       const topicMap = new Map<string | number, ForumAPI.Topic>()
       api.forEach(topic => topicMap.set(topic.id, topic))
       user.forEach(topic => topicMap.set(topic.id, topic))
-      result = Array.from(topicMap.values())
+      result = [...topicMap.values()]
     }
     else {
       // 简单合并
@@ -101,23 +101,22 @@ export class ForumBusinessLogic {
 
   /**
    * 数据排序业务逻辑
+   * 使用 Schwartzian transform 避免重复创建 Date 对象
    */
   static sortTopics(
     topics: ForumAPI.Topic[],
     sort: ForumAPI.SortMethod,
   ): ForumAPI.Topic[] {
-    switch (sort) {
-      case 'created':
-        return topics.sort((a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        )
-      case 'updated':
-        return topics.sort((a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-        )
-      default:
-        return topics
+    if (sort === 'created' || sort === 'updated') {
+      const dateKey = sort === 'created' ? 'createdAt' : 'updatedAt' as const
+      const withTimestamps = topics.map(t => ({
+        topic: t,
+        timestamp: new Date(t[dateKey]).getTime(),
+      }))
+      withTimestamps.sort((a, b) => b.timestamp - a.timestamp)
+      return withTimestamps.map(item => item.topic)
     }
+    return topics
   }
 
   /**
@@ -135,7 +134,7 @@ export class ForumBusinessLogic {
    * 话题状态更新业务逻辑
    */
   static updateTopicVisibility(
-    _topic: ForumAPI.Topic,
+    _topic: ForumAPI.Topic | null,
     updates: { hidden?: boolean, closed?: boolean },
   ): Partial<ForumAPI.Topic> {
     const stateUpdate: Partial<ForumAPI.Topic> = {}

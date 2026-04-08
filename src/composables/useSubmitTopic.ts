@@ -1,7 +1,7 @@
 import type ForumAPI from '@/apis/forum/api'
+import { useMutation } from '@pinia/colada'
 import { useData } from 'vitepress'
 import { watch } from 'vue'
-import { useRequest } from 'vue-request'
 import { toast } from 'vue-sonner'
 import { issues } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -16,19 +16,14 @@ const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
 
 export function useSubmitTopic() {
-  const {
-    data: submittedTopic,
-    runAsync: asyncSubmit,
-    loading: submitLoading,
-    error: submitError,
-  } = useRequest(issues.postTopic, {
-    manual: true,
-  })
   const { message } = useLocalized()
   const { lang } = useData()
 
-  // 因为 Gitee 接口不识别普通用户上传的 tags(labels)，为了前端预览正常这里手动缓存并在后面与接口返回值合并
   let userSelectedTags: string[] | null = null
+
+  const { data: submittedTopic, mutateAsync: asyncSubmit, isLoading: submitLoading, error: submitError } = useMutation({
+    mutation: issues.postTopic,
+  })
 
   const submitData = async (options: ForumAPI.CreateTopicOption) => {
     if (!authGuards.requireLogin(message.value.forum.auth.loginTips))
@@ -36,7 +31,6 @@ export function useSubmitTopic() {
 
     const { text, title, tags, type } = options
 
-    // 权限验证：检查ANN类型topic的权限
     if (type === 'ANN') {
       const { hasAnyPermissions } = useRuleChecks()
       const hasPermission = hasAnyPermissions('manage_feedback')
@@ -63,12 +57,10 @@ export function useSubmitTopic() {
     }
 
     try {
-      // Emit form submit start event
       forumEvents.formSubmitStart('topic')
 
       const result = await asyncSubmit(newTopic)
 
-      // Emit form submit success event
       forumEvents.formSubmitSuccess('topic', result)
 
       toast.promise(Promise.resolve(result), {
@@ -83,7 +75,6 @@ export function useSubmitTopic() {
     catch (err) {
       const error = err as Error
 
-      // Emit form submit error event
       forumEvents.formSubmitError('topic', error)
 
       toast.error(`${message.value.forum.publish.publishFail} (${error.message})`)
@@ -100,7 +91,6 @@ export function useSubmitTopic() {
       ...(userSelectedTags ? { tags: userSelectedTags } : {}),
     }
 
-    // Only emit topic created event - let the stores handle adding it to their lists
     forumEvents.topicCreated(newTopic)
   })
 

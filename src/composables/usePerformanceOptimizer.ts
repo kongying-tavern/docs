@@ -167,7 +167,7 @@ export function useBatchUpdates() {
   const isScheduled = ref(false)
 
   const flushUpdates = () => {
-    const pendingUpdates = Array.from(updates.values())
+    const pendingUpdates = [...updates.values()]
     updates.clear()
     isScheduled.value = false
 

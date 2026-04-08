@@ -96,7 +96,7 @@ export function useClipboardPaste(options: ClipboardPasteOptions = {}) {
 
       // Prefer clipboard items (modern approach) over direct files to avoid duplicates
       if (event.clipboardData.items && event.clipboardData.items.length > 0) {
-        const items = Array.from(event.clipboardData.items)
+        const items = [...event.clipboardData.items]
 
         for (const item of items) {
           if (enabledTypes.includes('image') && item.type.startsWith('image/')) {
@@ -109,7 +109,7 @@ export function useClipboardPaste(options: ClipboardPasteOptions = {}) {
       }
       // Only fall back to files if no items were processed
       else if (event.clipboardData.files && event.clipboardData.files.length > 0) {
-        const files = Array.from(event.clipboardData.files)
+        const files = [...event.clipboardData.files]
 
         for (const file of files) {
           if (enabledTypes.includes('image') && file.type.startsWith('image/')) {
@@ -125,7 +125,7 @@ export function useClipboardPaste(options: ClipboardPasteOptions = {}) {
       }
       else if (event.clipboardData?.items?.length > 0) {
         // Show hint if clipboard has items but no valid images
-        const hasImages = Array.from(event.clipboardData.items).some(item => item.type.startsWith('image/'))
+        const hasImages = [...event.clipboardData.items].some(item => item.type.startsWith('image/'))
         if (hasImages) {
           const hintText = message?.value?.forum?.publish?.form?.upload?.paste?.formatNotSupported
             || '剪贴板中的图片格式不受支持'
@@ -171,7 +171,7 @@ export function useClipboardPaste(options: ClipboardPasteOptions = {}) {
     isDragOver.value = false
 
     try {
-      const files = Array.from(event.dataTransfer?.files || [])
+      const files = [...event.dataTransfer?.files || []]
       const validFiles: File[] = []
 
       for (const file of files) {

@@ -87,7 +87,7 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
 
     // 第一个是最新提交，最后一个是最早提交
     const lastModified = commits[0]
-    const firstCommit = commits[commits.length - 1]
+    const firstCommit = commits.at(-1)
 
     return {
       firstCommit,

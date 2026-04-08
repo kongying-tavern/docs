@@ -174,7 +174,7 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
       [
         targetTopicId,
         {
-          labels: Array.from(new Set([...getStateTags(), ...newTags])).join(
+          labels: [...new Set([...getStateTags(), ...newTags])].join(
             ',',
           ),
         },
@@ -205,15 +205,11 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
   }
 
   function addLabel(newLabel: string) {
-    return Array.from(
-      new Set([...targetTopic.tags, ...getStateTags(), newLabel]),
-    ).join(',')
+    return [...new Set([...targetTopic.tags, ...getStateTags(), newLabel])].join(',')
   }
 
   function removeLabel(targetLabel: string) {
-    return Array.from(
-      new Set([...targetTopic.tags, ...getStateTags(), targetLabel]),
-    )
+    return [...new Set([...targetTopic.tags, ...getStateTags(), targetLabel])]
       .filter(val => val !== targetLabel)
       .join(',')
   }

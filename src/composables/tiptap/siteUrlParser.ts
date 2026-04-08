@@ -162,7 +162,7 @@ function getPageDisplayText(path: string): string {
   }
 
   // 使用最后一个路径段作为显示文本
-  const lastSegment = segments[segments.length - 1]
+  const lastSegment = segments.at(-1)
 
   // 转换为友好的显示格式
   return lastSegment

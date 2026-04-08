@@ -22,7 +22,13 @@ export function useTopicComments() {
     error: commentLoadError,
     runAsync: refreshComment,
     initialData: initialCommentData,
-  } = useLoadMore(issues.getTopicComments, {
+  } = useLoadMore(async (current: number, repo: ForumAPI.Repo, query: ForumAPI.Query, topicId: string) => {
+    // useLoadMore 的 service 签名期望第一个参数是 current (页码)
+    // 但 getTopicComments 签名是 (repo, query, number)
+    // 所以需要在这里适配参数顺序
+    const queryWithCurrent = { ...query, current }
+    return issues.getTopicComments(repo, queryWithCurrent, topicId)
+  }, {
     manual: true,
   })
 

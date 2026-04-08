@@ -84,7 +84,7 @@ class JSONTranslationService {
         current = current[keys[i]] as Record<string, unknown>
       }
 
-      const lastKey = keys[keys.length - 1]
+      const lastKey = keys.at(-1)
 
       // 尝试解析 JSON 值
       try {
@@ -130,7 +130,7 @@ class JSONTranslationService {
       })
 
       // 生成翻译条目
-      this.translationEntries = Array.from(allKeys).map((key) => {
+      this.translationEntries = Array.from(allKeys, (key) => {
         const [category, ...keyParts] = key.split('.')
         const translations: Record<string, string> = {}
 
@@ -274,7 +274,7 @@ class JSONTranslationService {
 
   getCategories(): string[] {
     const categories = new Set(this.translationEntries.map(entry => entry.category))
-    return ['all', ...Array.from(categories).sort()]
+    return ['all', ...categories.toSorted()]
   }
 
   updateTranslation(path: string, locale: string, value: string): void {

@@ -148,7 +148,7 @@ export function useForumCacheManager(
       forumData.data.value.forEach((topic: ForumAPI.Topic) => dataMap.set(topic.id, topic))
     }
 
-    return Array.from(dataMap.values())
+    return [...dataMap.values()]
   }
 
   // === 智能预加载功能 ===
