@@ -173,7 +173,7 @@ function handleExpand() {
       @click="handleImageClick(image, index)"
     >
       <Image
-        class="size-full cursor-pointer object-cover transition-transform duration-200 hover:scale-105"
+        class="size-full cursor-pointer transition-transform duration-200 object-cover hover:scale-105"
         :image="image"
         :preload="index === 0"
       />
@@ -181,7 +181,7 @@ function handleExpand() {
       <!-- 展开更多按钮 -->
       <div
         v-if="needsExpansion && index === displayImages.length - 1"
-        class="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/60 text-white transition-opacity duration-200 hover:bg-black/70"
+        class="text-white bg-black/60 flex cursor-pointer transition-opacity duration-200 items-center inset-0 justify-center absolute hover:bg-black/70"
         @click.stop="handleExpand"
       >
         <div class="text-center">

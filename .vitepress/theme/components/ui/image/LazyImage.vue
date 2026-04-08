@@ -82,6 +82,9 @@ watchEffect(async () => {
     hashType: props.thumbhash ? 'thumbhash' : 'blurhash',
     placeholderSize: props.placeholderSize,
     onImageLoad: handleImageLoaded,
+    onImageError: (_image: HTMLImageElement, error: Event) => {
+      handleImageError(error)
+    },
   })
 })
 
