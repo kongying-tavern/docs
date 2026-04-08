@@ -1,7 +1,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import { getAuthorizedUser } from '../apis/forum/gitee/user'
 import { useUserAuthStore } from './useUserAuth'
@@ -24,6 +24,7 @@ export const useUserInfoStore = defineStore('user-info', () => {
   const userAuthStore = useUserAuthStore()
 
   const info = ref<ForumAPI.User>()
+  const isInitialized = ref(false)
 
   const fingerprint = ref<FingerprintAgain>()
 
@@ -43,12 +44,30 @@ export const useUserInfoStore = defineStore('user-info', () => {
 
   const clearUserInfo = () => (info.value = undefined)
 
-  refreshUserInfo()
+  // 监听 token 有效状态变化，自动获取用户信息
+  watch(
+    () => userAuthStore.isTokenValid,
+    async (isValid) => {
+      if (isValid && !isInitialized.value) {
+        isInitialized.value = true
+        await refreshUserInfo()
+      }
+    },
+    { immediate: true },
+  )
+
+  // 组件挂载时再次检查（处理 SSR hydration 后的情况）
+  onMounted(async () => {
+    if (userAuthStore.isTokenValid && !info.value) {
+      await refreshUserInfo()
+    }
+  })
 
   return {
     // states
     info,
     fingerprint,
+    isInitialized,
 
     // actions
     refreshUserInfo,

@@ -8,7 +8,7 @@ export const useNotificationStore = defineStore('notifications', () => {
 
   function add(notification: Partial<Notification>) {
     const body = {
-      id: new Date().getTime().toString(),
+      id: Date.now().toString(),
       ...notification,
     }
 

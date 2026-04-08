@@ -1,14 +1,14 @@
 import type { useTokenManager } from './useTokenManager'
 import { isObject } from 'lodash-es'
 import { toCamelCaseObject } from '@/utils'
-import { oauth as interKnotOauth } from '../apis/inter-knot.site'
+import { oauth as interKnotOauth } from '../apis/interknot.site'
 import { createAuthError } from '../utils/auth-errors'
 import { log, LogGroup } from '../utils/auth-logger'
 
 export function useSSOAuth(tokenManager: ReturnType<typeof useTokenManager>) {
   async function refreshInterKnotToken(): Promise<void> {
     try {
-      log.info(LogGroup.SSO, 'Starting Inter-knot token refresh')
+      log.info(LogGroup.SSO, 'Starting interknot token refresh')
 
       const currentAccessToken = tokenManager.localAuth.value?.accessToken
       if (!currentAccessToken) {
@@ -30,26 +30,26 @@ export function useSSOAuth(tokenManager: ReturnType<typeof useTokenManager>) {
         }
 
         tokenManager.setSSOToken('interKnot', authData)
-        log.success(LogGroup.SSO, 'Inter-knot token refreshed successfully')
+        log.success(LogGroup.SSO, 'interknot token refreshed successfully')
       }
       else {
-        throw createAuthError.ssoRefreshFailed(undefined, 'Inter-knot')
+        throw createAuthError.ssoRefreshFailed(undefined, 'interknot')
       }
     }
     catch (error) {
-      log.error(LogGroup.SSO, 'Inter-knot token refresh failed', error)
-      throw createAuthError.ssoRefreshFailed(error as Error, 'Inter-knot')
+      log.error(LogGroup.SSO, 'interknot token refresh failed', error)
+      throw createAuthError.ssoRefreshFailed(error as Error, 'interknot')
     }
   }
 
   async function loginWithInterKnot(_credentials: { username: string, password: string }): Promise<void> {
-    log.warn(LogGroup.SSO, 'Inter-knot direct login is not implemented yet')
-    throw createAuthError.networkError(new Error('Inter-knot direct login is not implemented yet'))
+    log.warn(LogGroup.SSO, 'interknot direct login is not implemented yet')
+    throw createAuthError.networkError(new Error('interknot direct login is not implemented yet'))
   }
 
   async function logoutFromInterKnot(): Promise<void> {
     try {
-      log.info(LogGroup.SSO, 'Starting Inter-knot logout')
+      log.info(LogGroup.SSO, 'Starting interknot logout')
 
       // Clear local SSO token first
       tokenManager.clearSSOTokens()
@@ -57,14 +57,14 @@ export function useSSOAuth(tokenManager: ReturnType<typeof useTokenManager>) {
       // Attempt to logout from server (optional, don't fail if this fails)
       try {
         await interKnotOauth.logout()
-        log.success(LogGroup.SSO, 'Inter-knot logout successful')
+        log.success(LogGroup.SSO, 'interknot logout successful')
       }
       catch (error) {
-        log.warn(LogGroup.SSO, 'Inter-knot server logout failed, but local tokens cleared', error)
+        log.warn(LogGroup.SSO, 'interknot server logout failed, but local tokens cleared', error)
       }
     }
     catch (error) {
-      log.error(LogGroup.SSO, 'Inter-knot logout failed', error)
+      log.error(LogGroup.SSO, 'interknot logout failed', error)
       throw createAuthError.networkError(error as Error)
     }
   }
@@ -98,7 +98,7 @@ export function useSSOAuth(tokenManager: ReturnType<typeof useTokenManager>) {
   }
 
   return {
-    // Inter-knot specific methods
+    // interknot specific methods
     refreshInterKnotToken,
     loginWithInterKnot,
     logoutFromInterKnot,

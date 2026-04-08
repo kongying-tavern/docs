@@ -25,7 +25,7 @@ onUnmounted(unload)
   >
     <div
       v-if="openSearchCurtain"
-      class="fixed inset-0 z-1 backdrop-blur-lg saturate-180 transition-filter duration-800"
+      class="transition-filter duration-800 inset-0 fixed z-1 backdrop-blur-lg saturate-180"
     />
   </Transition>
   <div class="slide-enter Forum">

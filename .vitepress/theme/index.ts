@@ -1,4 +1,5 @@
 import type { Theme } from 'vitepress'
+import { PiniaColada } from '@pinia/colada'
 import { MotionPlugin } from '@vueuse/motion'
 import { createPinia } from 'pinia'
 import DefaultTheme, {
@@ -35,6 +36,7 @@ export default {
 
     app.use(pinia)
     app.use(MotionPlugin)
+    app.use(PiniaColada)
 
     app.component('Coins', Coins)
     app.component('Card', Card)

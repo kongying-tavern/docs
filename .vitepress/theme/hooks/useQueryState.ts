@@ -114,7 +114,7 @@ export function useQueryState<T extends Record<string, unknown> = UrlParams>(
       }
     })
 
-    Array.from(unusedKeys).forEach(key => delete state[key])
+    ;[...unusedKeys].forEach(key => delete state[key])
   }
 
   const { pause, resume } = pausableWatch(

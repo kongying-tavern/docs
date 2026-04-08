@@ -66,19 +66,12 @@ theme: medium
 
 ```card
 title: 椰羊
-link: https://cocogoat.work/
+link: https://gi.cocogoat.cn/static/favicon.ico
 logo: https://cocogoat.cn/static/favicon.png
 desc: 纯网页圣遗物管理，成就扫描
 theme: medium
-```
+```/'
 
-```card
-title: 胡桃工具箱
-link: https://hut.ao/zh/
-logo: https://img.alicdn.com/imgextra/i1/1797064093/O1CN01ybZ68o1g6e7nwgiKI_!!1797064093.png
-desc: 祈愿抽卡数据查询，实现服务器切换、画面设置的高级启动器
-theme: medium
-```
 
 ```card
 title: 非小酋

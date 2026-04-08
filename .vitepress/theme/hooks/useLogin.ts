@@ -4,7 +4,7 @@ import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { oauth } from '@/apis/forum/gitee'
-import { oauth as interKnotOauth } from '@/apis/inter-knot.site'
+import { oauth as interKnotOauth } from '@/apis/interknot.site'
 import { useAuthProgress } from '@/composables/useAuthProgress'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
@@ -133,7 +133,7 @@ function useLogin() {
           const errorMsg = AuthError.isAuthError(result.error)
             ? result.error.getUserMessage()
             : theme.value.forum.auth.loginFail
-          toast.error(`inter-knot.site: ${errorMsg}`)
+          toast.error(`interknot.site: ${errorMsg}`)
           return
         }
 
