@@ -26,9 +26,7 @@ export function extractOfficialAndAuthorComments(
     comments.push(normalizeComment(officialComment))
 
   // 根据 comment.id 去重
-  const uniqueComments = Array.from(
-    new Map(comments.map(comment => [comment.id, comment])).values(),
-  )
+  const uniqueComments = [...new Map(comments.map(comment => [comment.id, comment])).values()]
 
   return uniqueComments.length > 0 ? uniqueComments : null
 }

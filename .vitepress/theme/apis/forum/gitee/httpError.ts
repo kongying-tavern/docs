@@ -26,7 +26,7 @@ export class HTTPError extends Error {
     this.state = options?.state
     this.method = options?.method
     this.endpoint = options?.endpoint
-    this.date = new Date().getTime()
+    this.date = Date.now()
 
     Object.setPrototypeOf(this, HTTPError.prototype)
 

@@ -292,7 +292,7 @@ export async function getUserCreatedTopics(
         sort: query.sort || 'created',
         per_page: query.pageSize,
         filter: 'created',
-        lables: setFilterTags(Array.from(query.filter || [])),
+        lables: setFilterTags([...query.filter || []]),
         state: 'all',
       },
     },

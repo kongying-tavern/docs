@@ -231,8 +231,14 @@ function markdownToTextWithImages(markdown?: string): {
       })
     }
 
+    // 修正图片URL：将错误的域名替换为正确的域名
+    const normalizedSrc = src.replace(
+      'webp.assets.inter-knot.site',
+      'webp.assets.interknot.site',
+    )
+
     images.push({
-      src,
+      src: normalizedSrc,
       alt: altText || undefined,
       thumbHash,
       width,
@@ -245,10 +251,10 @@ function markdownToTextWithImages(markdown?: string): {
   // 移除 HTML 注释（如 <!-- -->）
   text = text.replace(/<!--.*?-->/gs, '').trim()
 
-  // 清理多余空格和换行，替换为单个空格
-  text = text.replace(/\s+/g, ' ').trim()
+  text = text
+    .replace(/\r\n/g, '\n') // 统一换行符
+    .trim()
 
-  // 返回处理后的文本和图片信息（如果有）
   return {
     text,
     images: images.length > 0 ? images : undefined,
