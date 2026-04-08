@@ -6,6 +6,7 @@
 @import "./ui/demo.css";
 @import "./animation.css";
 @import "./fonts.css";
+@import "vue-sonner/style.css";
 
 @view-transition {
   navigation: auto;

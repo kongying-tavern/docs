@@ -51,9 +51,9 @@ export function emojiLoader() {
     console.error('Emojis data file could not be saved', error)
   }
 
-  return Object.assign({}, ...emojis.map(emoji => ({
+  return { ...emojis.map(emoji => ({
     [`emoji-${emoji.presets}`]: emoji.list,
-  })))
+  })) }
 }
 
 emojiLoader()

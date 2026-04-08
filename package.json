@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": "true",
-  "packageManager": "pnpm@10.17.1",
+  "packageManager": "pnpm@10.32.1",
   "license": "MIT",
   "scripts": {
     "build": "pnpm build-vitepress",
@@ -14,6 +14,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "commit": "git-cz",
     "dev": "vitepress",
+    "dev:portless:": "npx portless kydocs vitepress",
     "lint": "eslint --cache . && pnpm lint:zh",
     "lint:eslint": "eslint --cache .",
     "lint:eslint-fix": "eslint --cache --fix .",
@@ -26,7 +27,7 @@
     "serve": "vitepress serve --base /docs/",
     "site:preview": "vitepress build --base /",
     "typecheck": "tsc --noEmit",
-    "up": "taze major -I",
+    "u p": "taze major -I",
     "use-data-env": "dotenv -e .env.data -c --"
   },
   "dependencies": {
@@ -55,6 +56,7 @@
     "@mdit/plugin-sup": "catalog:markdown",
     "@mdit/plugin-tasklist": "catalog:markdown",
     "@number-flow/vue": "catalog:frontend",
+    "@pinia/colada": "^1.0.0",
     "@radix-icons/vue": "catalog:frontend",
     "@tanstack/vue-table": "catalog:frontend",
     "@tiptap/core": "catalog:conflicts_editor_h3_4_4",
@@ -67,6 +69,7 @@
     "@tiptap/static-renderer": "catalog:editor",
     "@tiptap/suggestion": "catalog:editor",
     "@tiptap/vue-3": "catalog:conflicts_editor_h3_4_4",
+    "@vee-validate/zod": "^4.15.1",
     "@vueuse/core": "catalog:frontend",
     "@vueuse/integrations": "catalog:frontend",
     "@vueuse/motion": "catalog:frontend",
@@ -87,6 +90,7 @@
     "mitt": "catalog:frontend",
     "motion-v": "catalog:conflicts_frontend_h1_7_1",
     "path-to-regexp": "catalog:frontend",
+    "photoswipe": "^5.4.4",
     "pinia": "catalog:frontend",
     "qrcode": "catalog:frontend",
     "radix-vue": "catalog:frontend",
@@ -101,9 +105,9 @@
     "unocss-preset-animations": "catalog:build",
     "unocss-preset-shadcn": "catalog:build",
     "vaul-vue": "catalog:frontend",
+    "vee-validate": "^4.15.1",
     "vitepress": "catalog:build",
     "vue": "catalog:frontend",
-    "vue-request": "catalog:frontend",
     "vue-sonner": "catalog:frontend",
     "zod": "catalog:frontend"
   },
@@ -141,6 +145,7 @@
     "markdown-it-kbd-better": "catalog:markdown",
     "markdownlint-cli": "catalog:dev",
     "open-editor": "catalog:dev",
+    "shadcn-vue": "^2.4.3",
     "sort-package-json": "catalog:dev",
     "stylelint": "catalog:dev",
     "stylelint-config-standard": "catalog:dev",
