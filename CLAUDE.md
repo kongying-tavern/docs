@@ -53,6 +53,7 @@ The project uses the following TypeScript path mapping configuration:
 ```
 
 **Important Import Rules:**
+
 - Use `@/` for theme-related imports (components, stores, utils in `.vitepress/theme/`)
 - Use `~/` for source content imports (components, services, types in `src/`)
 - Common mistakes to avoid:
@@ -64,6 +65,7 @@ The project uses the following TypeScript path mapping configuration:
 ## Architecture
 
 ### Core Structure
+
 - **`.vitepress/`** - VitePress configuration and theme customization
   - `config.ts` - Main VitePress configuration
   - `theme/` - Custom theme components and styles
@@ -75,6 +77,7 @@ The project uses the following TypeScript path mapping configuration:
   - `_data/` - JSON data files
 
 ### Key Features
+
 - **Multi-language support** with locale-specific routing
 - **Forum system** with Vue components for community interaction
 - **Custom emoji system** with categorized emoji collections
@@ -82,6 +85,7 @@ The project uses the following TypeScript path mapping configuration:
 - **VitePress-based documentation** with custom markdown extensions
 
 ### Development Notes
+
 - Uses **pnpm** as package manager with workspace configuration
 - **UnoCSS** for utility-first styling
 - **TypeScript** throughout the codebase
@@ -91,27 +95,31 @@ The project uses the following TypeScript path mapping configuration:
 - Chinese text linting with `zhlint`
 
 ### Content Management
+
 - Blog posts and member data are refreshed via build scripts
 - Emoji data is processed from `/src/public/emojis/` directory structure
 - Static assets organized by language in `/src/public/imgs/`
 - Translation management with Lunaria integration
 
 ### Modern Forum Architecture (2024 Refactoring)
+
 The forum system underwent a major architectural refactoring from factory pattern to composition-based architecture:
 
 #### New Store Architecture
+
 - **Page-specific stores**: Each page has isolated state (`useForumHomeStore`, `useForumUserStore`)
 - **Core functional stores**: Modular stores by domain (`useForumSearchState`, `useForumViewState`, `useForumRouteState`)
 - **Composition over inheritance**: Replaced complex factory patterns with composables
 - **Performance optimization**: Intelligent caching, batch updates, debounced operations
 
 #### Service Layer
+
 - **`ForumBusinessLogic`** - Unified business logic service
-- **`UnifiedCacheLayer`** - LRU + TTL dual-layer caching system
 - **`SimpleEventManager`** - Event-driven state synchronization
 - **`SimpleCrossPageSync`** - Cross-page and cross-tab state sync via localStorage
 
 #### Key Patterns
+
 - Event-driven updates with deduplication (1000ms global, 500ms store-level)
 - Three synchronized data arrays per store: `data`, `userSubmittedTopic`, `pinnedTopicsData`
 - Hidden vs closed topic state management with different removal behaviors
@@ -122,6 +130,7 @@ The forum system underwent a major architectural refactoring from factory patter
 The project implements a comprehensive authentication system with the following components:
 
 ### Core Authentication Files
+
 - **`.vitepress/theme/stores/useUserAuth.ts`** - Main Pinia store for authentication state management
 - **`.vitepress/theme/hooks/useLogin.ts`** - Login flow management and OAuth integration
 - **`.vitepress/theme/utils/auth-helpers.ts`** - Unified authentication utility functions
@@ -129,12 +138,14 @@ The project implements a comprehensive authentication system with the following 
 - **`.vitepress/theme/utils/auth-errors.ts`** - Standardized error handling for auth operations
 
 ### Authentication Flow
+
 1. **OAuth Integration**: Gitee OAuth for primary authentication
-2. **SSO Support**: Inter-knot.site single sign-on integration
+2. **SSO Support**: interknot.site single sign-on integration
 3. **Token Management**: Automatic token refresh with background timers
 4. **State Persistence**: LocalStorage-based authentication state persistence
 
 ### Key Features
+
 - **Automatic Token Refresh**: Background refresh 1 second before expiration
 - **SSO Token Management**: Separate handling for multiple SSO platforms
 - **Error Recovery**: Intelligent retry logic with exponential backoff
@@ -142,17 +153,18 @@ The project implements a comprehensive authentication system with the following 
 - **Vue Reactivity**: Proper integration with Vue 3 reactive system
 
 ### Authentication Patterns
+
 - Use `authGuards.requireLogin()` for login-protected operations
 - Use `withAuth.execute()` for authenticated API calls
 - Use `useAuthHelper()` for accessing authentication utilities
 - Use `log.info(LogGroup.*, message)` for consistent logging
-
 
 ## Forum Event System Architecture
 
 The forum implements a comprehensive event-driven architecture for real-time state synchronization across pages and browser tabs.
 
 ### Core Event System Files
+
 - **`src/components/forum/events/ForumEventBus.ts`** - Central event bus using mitt library with typed event definitions
 - **`src/composables/useGlobalForumEvents.ts`** - Global cross-page synchronization using localStorage and storage events
 - **`src/composables/useForumEvents.ts`** - Local event listener setup and management
@@ -161,17 +173,20 @@ The forum implements a comprehensive event-driven architecture for real-time sta
 ### Event Flow Architecture
 
 #### 1. **Local Operations**
+
 ```
 User Action → API Call → Success → Event Emission → Local Store Update → UI Update
 ```
 
 #### 2. **Cross-Page Synchronization**
+
 ```
 Page A: Event Emission → localStorage Write → Storage Event
 Page B: Storage Event → Event Re-emission → Store Update → UI Update
 ```
 
 #### 3. **Cross-Tab Synchronization**
+
 ```
 Tab 1: Topic Operation → localStorage Update
 Tab 2: Storage Event Listener → Synthetic Event → Store Update
@@ -180,6 +195,7 @@ Tab 2: Storage Event Listener → Synthetic Event → Store Update
 ### Event Types and Operations
 
 #### Topic Events
+
 - **`topic:created`** - New topic submission
 - **`topic:deleted`** - Topic deletion
 - **`topic:pinned`** - Pin/unpin operations
@@ -191,6 +207,7 @@ Tab 2: Storage Event Listener → Synthetic Event → Store Update
 - **`topic:updated`** - General topic updates
 
 #### Comment Events
+
 - **`comment:created`** - New comment submission
 - **`comment:deleted`** - Comment deletion
 - **`comment:updated`** - Comment modifications
@@ -198,13 +215,17 @@ Tab 2: Storage Event Listener → Synthetic Event → Store Update
 ### State Management Strategy
 
 #### Multi-Store Architecture
+
 Each page maintains independent stores to prevent state pollution:
+
 - **Home Page**: `useForumHomeStore` with `useForumData`
 - **User Page**: `useForumUserStore` with `useForumData`
 - **Topic Page**: Topic-specific state management
 
 #### Data Synchronization Points
+
 All stores maintain three data arrays that must stay synchronized:
+
 - **`data`** - Main topic list from API
 - **`userSubmittedTopic`** - User's recently submitted topics
 - **`pinnedTopicsData`** - Pinned topics list
@@ -212,31 +233,34 @@ All stores maintain three data arrays that must stay synchronized:
 ### Event Deduplication System
 
 #### Global Events (1000ms window)
+
 ```typescript
-const recentEvents = new Set<string>()
+const recentEvents = new Set<string>();
 function isRecentEvent(key: string): boolean {
-  if (recentEvents.has(key)) return true
-  recentEvents.add(key)
-  setTimeout(() => recentEvents.delete(key), 1000)
-  return false
+  if (recentEvents.has(key)) return true;
+  recentEvents.add(key);
+  setTimeout(() => recentEvents.delete(key), 1000);
+  return false;
 }
 ```
 
 #### Store Events (500ms window)
+
 ```typescript
-const recentStoreEvents = new Set<string>()
+const recentStoreEvents = new Set<string>();
 function isRecentStoreEvent(eventType: string, topicId: string): boolean {
-  const key = `${eventType}-${topicId}`
-  if (recentStoreEvents.has(key)) return true
-  recentStoreEvents.add(key)
-  setTimeout(() => recentStoreEvents.delete(key), 500)
-  return false
+  const key = `${eventType}-${topicId}`;
+  if (recentStoreEvents.has(key)) return true;
+  recentStoreEvents.add(key);
+  setTimeout(() => recentStoreEvents.delete(key), 500);
+  return false;
 }
 ```
 
 ### Cross-Page Communication
 
 #### localStorage Event Keys
+
 - `forum:topic:deleted` - Topic deletion events
 - `forum:topic:closed` - Topic close/open events
 - `forum:topic:hidden` - Topic hide/unhide events
@@ -247,22 +271,29 @@ function isRecentStoreEvent(eventType: string, topicId: string): boolean {
 - `forum:topic:updated` - General updates
 
 #### Pending Events Processing
+
 On page mount, checks localStorage for pending cross-page events:
+
 ```typescript
 function checkPendingEvents() {
-  eventKeys.forEach(key => {
-    const storedValue = localStorage.getItem(key)
+  eventKeys.forEach((key) => {
+    const storedValue = localStorage.getItem(key);
     if (storedValue) {
-      handleStorageChanges({ key, newValue: storedValue, storageArea: localStorage })
-      localStorage.removeItem(key)
+      handleStorageChanges({
+        key,
+        newValue: storedValue,
+        storageArea: localStorage,
+      });
+      localStorage.removeItem(key);
     }
-  })
+  });
 }
 ```
 
 ### Topic State Management
 
 #### Hidden vs Closed Logic
+
 - **Hidden Topics**:
   - Removed from active lists (userSubmittedTopic)
   - Kept in main data with state='progressing'
@@ -275,6 +306,7 @@ function checkPendingEvents() {
   - Removed from pinnedTopicsData
 
 #### Pin State Management
+
 - **Pin**: Add to pinnedTopicsData.unshift()
 - **Unpin**: Remove from pinnedTopicsData
 - All other operations sync pinnedTopicsData state
@@ -282,34 +314,37 @@ function checkPendingEvents() {
 ### Event System Patterns
 
 #### Event Emission Pattern
+
 ```typescript
 // In composables (e.g., useTopicManger.ts)
 if (result) {
-  targetTopic.state = newState
-  forumEvents.topicClosed(targetTopic.id, isClosed)
+  targetTopic.state = newState;
+  forumEvents.topicClosed(targetTopic.id, isClosed);
 }
 ```
 
 #### Event Listening Pattern
+
 ```typescript
 // In stores (e.g., useForumHomeStore.ts)
 onTopicClosed: ({ topicId, closed }) => {
-  if (isRecentStoreEvent('closed', topicId)) return
+  if (isRecentStoreEvent("closed", topicId)) return;
   if (closed) {
-    removeTopic(topicId) // Removes from all lists including pinnedTopicsData
+    removeTopic(topicId); // Removes from all lists including pinnedTopicsData
   } else {
-    updateTopicVisibility(topicId, { closed })
+    updateTopicVisibility(topicId, { closed });
   }
-}
+};
 ```
 
 #### Global Event Registration Pattern
+
 ```typescript
 // In useGlobalForumEvents.ts (singleton pattern)
-let globalEventListenersSetup = false
+let globalEventListenersSetup = false;
 export function useGlobalForumEvents() {
   if (globalEventListenersSetup) {
-    return { setupGlobalListeners: () => {}, cleanup: cleanupFunction }
+    return { setupGlobalListeners: () => {}, cleanup: cleanupFunction };
   }
   // ... setup global listeners
 }
@@ -318,6 +353,7 @@ export function useGlobalForumEvents() {
 ### Usage Guidelines
 
 #### For New Topic Operations
+
 1. Add event type to `ForumEventMap` interface
 2. Add helper function to `forumEvents` object
 3. Emit event after successful API call in operation composable
@@ -326,43 +362,49 @@ export function useGlobalForumEvents() {
 6. Add to `pendingEvents` check list for cross-page sync
 
 #### For Store Updates
+
 Always update all three data sources:
+
 ```typescript
 function updateTopicState(id: string, updates: any) {
   // Update main data
-  const topic = data.value?.find(t => t.id === id)
-  if (topic) Object.assign(topic, updates)
+  const topic = data.value?.find((t) => t.id === id);
+  if (topic) Object.assign(topic, updates);
 
   // Update user submitted topics
-  const userTopic = userSubmittedTopic.value.find(t => t.id === id)
-  if (userTopic) Object.assign(userTopic, updates)
+  const userTopic = userSubmittedTopic.value.find((t) => t.id === id);
+  if (userTopic) Object.assign(userTopic, updates);
 
   // Update pinned topics data
-  const pinnedTopic = pinnedTopicsData.value?.find(t => t.id === id)
-  if (pinnedTopic) Object.assign(pinnedTopic, updates)
+  const pinnedTopic = pinnedTopicsData.value?.find((t) => t.id === id);
+  if (pinnedTopic) Object.assign(pinnedTopic, updates);
 }
 ```
 
 ## Development Workflow
 
 ### Pre-commit Requirements
+
 - Always run `pnpm run lint` before committing changes to ensure code quality and proper Chinese text formatting
 - Run `pnpm run typecheck` to catch TypeScript errors
 - Use `pnpm run commit` for conventional commit messages
 
 ### Testing and Quality Assurance
+
 - **E2E Testing**: Lighthouse CI runs automatically on deployments for performance monitoring
 - **Code Quality**: ESLint with Antfu config + UnoCSS linting
 - **Chinese Text**: `zhlint` for proper Chinese typography and formatting
 - **Git Hooks**: Husky pre-commit hooks ensure lint-staged runs ESLint fixes
 
 ### File Organization Principles
+
 - Keep TypeScript files under 200 lines (250 for static languages)
 - Maximum 8 files per directory level (create subdirectories if exceeded)
 - Avoid code smells: rigidity, redundancy, circular dependencies, fragility, obscurity
 - Follow composition over inheritance patterns
 
 ### Architectural Guidelines
+
 - Use event-driven patterns for forum state updates
 - Implement proper error boundaries and loading states
 - Follow the established service layer patterns
