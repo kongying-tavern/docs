@@ -4,14 +4,13 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { useForumData } from '~/composables/useForumData'
-import { useTopicCache } from '~/composables/useTopicCache'
+import { useTopicOperations } from '~/composables/useTopicOperations'
 import { SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 import { userPreloader } from '~/services/forum/ForumPreloader'
 
 /**
  * 优化的用户页面Store
- * 使用统一的缓存管理器
  */
 export const useForumUserStore = defineStore('forum-user', (): UserForumStore => {
   // 基础状态
@@ -29,8 +28,17 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
     autoLoadPinned: false,
   })
 
-  // 缓存管理
-  const topicCache = useTopicCache()
+  // === 统一的 Topic 操作 ===
+  const topicOperations = useTopicOperations(
+    {
+      data: forumData.data,
+      userSubmittedTopics,
+    },
+    {
+      pageType: 'user',
+      currentUser: creator,
+    },
+  )
 
   // === 通用缓存管理器 ===
   const cacheManager = useForumCacheManager(forumData, filter, sort, {
@@ -57,27 +65,15 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
       return forumData.data.value || []
     }
 
-    // 统一数据源：合并API数据和用户提交数据
-    const apiTopics = forumData.data.value || []
-    const userTopics = userSubmittedTopics.value || []
-
-    // 使用Map去重和过滤
-    const topicMap = new Map<string | number, ForumAPI.Topic>()
-
-    // 先添加API数据，只保留当前用户的
-    apiTopics.forEach((topic) => {
-      if (creator.value && topic.user?.login === creator.value) {
-        topicMap.set(topic.id, topic)
-      }
-    })
-    // 再添加用户提交数据（会覆盖重复的）
-    userTopics.forEach((topic) => {
-      if (creator.value && topic.user?.login === creator.value) {
-        topicMap.set(topic.id, topic)
-      }
-    })
-
-    return Array.from(topicMap.values())
+    return ForumBusinessLogic.mergeTopicsData(
+      forumData.data.value,
+      userSubmittedTopics.value,
+      {
+        deduplication: true,
+        enableUserFilter: true,
+        currentUser: creator.value,
+      },
+    )
   })
 
   const displayTopics = computed(() => {
@@ -87,103 +83,6 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
     const filtered = ForumBusinessLogic.filterTopics(topics, filter.value)
     return ForumBusinessLogic.sortTopics(filtered, sort.value)
   })
-
-  // 简化的topic操作方法（兼容原有接口）
-  const topicOperations = {
-    // 兼容方法：查找方法
-    findTopicInLists: (id: ForumAPI.Topic['id']) => {
-      const cachedTopic = topicCache.getCachedTopic(id)
-      if (cachedTopic) {
-        return { topic: cachedTopic, location: 'cache' as const }
-      }
-
-      const mainTopic = forumData.data.value?.find(t => t.id === id)
-      if (mainTopic) {
-        return { topic: mainTopic, location: 'main' as const }
-      }
-
-      const userTopic = userSubmittedTopics.value.find(t => t.id === id)
-      if (userTopic) {
-        return { topic: userTopic, location: 'userSubmitted' as const }
-      }
-
-      return { topic: undefined, location: null }
-    },
-
-    // 兼容方法：更新所有列表（符合原有接口）
-    updateTopicInAllLists: (id: ForumAPI.Topic['id'], updater: (topic: ForumAPI.Topic) => void): boolean => {
-      let updated = false
-
-      // 更新用户数据
-      const userTopic = userSubmittedTopics.value.find(t => t.id === id)
-      if (userTopic) {
-        updater(userTopic)
-        topicCache.setCachedTopic(userTopic)
-        updated = true
-      }
-
-      // 更新主数据
-      const mainTopic = forumData.data.value?.find(t => t.id === id)
-      if (mainTopic) {
-        updater(mainTopic)
-        topicCache.setCachedTopic(mainTopic)
-        updated = true
-      }
-
-      return updated
-    },
-    addTopic: (topic: ForumAPI.Topic) => {
-      // 只有当前用户的topic才添加到用户提交列表
-      if (creator.value && topic.user?.login === creator.value) {
-        topicCache.setCachedTopic(topic)
-
-        const existsInUserSubmitted = userSubmittedTopics.value.some(t => t.id === topic.id)
-        if (!existsInUserSubmitted) {
-          userSubmittedTopics.value.unshift(topic)
-        }
-
-        // 单一数据源模式：通过computed属性自动处理数据合并
-      }
-    },
-
-    removeTopic: (id: ForumAPI.Topic['id']) => {
-      topicCache.removeCachedTopic(id)
-      userSubmittedTopics.value = userSubmittedTopics.value.filter(t => t.id !== id)
-      // 单一数据源模式：通过computed属性自动更新显示
-    },
-
-    updateTopic: (id: ForumAPI.Topic['id'], updates: Partial<ForumAPI.Topic>) => {
-      // 使用兼容方法（符合原有接口）
-      topicOperations.updateTopicInAllLists(id, (topic) => {
-        Object.assign(topic, updates)
-      })
-    },
-
-    replaceTopicTags: (id: ForumAPI.Topic['id'], tags: ForumAPI.Topic['tags']) => {
-      topicOperations.updateTopic(id, { tags })
-    },
-
-    changeTopicType: (id: ForumAPI.Topic['id'], type: ForumAPI.TopicType) => {
-      topicOperations.updateTopic(id, { type })
-    },
-
-    changeTopicPinState: (id: ForumAPI.Topic['id'], pinned: boolean) => {
-      topicOperations.updateTopic(id, { pinned })
-    },
-
-    updateTopicVisibility: (id: ForumAPI.Topic['id'], updates: { hidden?: boolean, closed?: boolean }) => {
-      const stateUpdate: Partial<ForumAPI.Topic> = {}
-
-      if (updates.hidden !== undefined) {
-        stateUpdate.state = updates.hidden ? 'progressing' : 'open'
-      }
-      if (updates.closed !== undefined) {
-        stateUpdate.state = updates.closed ? 'closed' : 'open'
-      }
-
-      topicOperations.updateTopic(id, stateUpdate)
-    },
-  }
 
   // 事件处理（传入creator引用，使用新的类型安全实现）
   const eventHandlers = new SimpleStoreEventHandler(topicOperations, {
@@ -196,7 +95,6 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
     // 重置状态（内联避免use before define）
     userSubmittedTopics.value = []
     isSearching.value = false
-    topicCache.clearCache()
     eventHandlers.cleanup()
     forumData.resetState()
 
@@ -263,14 +161,12 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
       userSubmittedTopics.value = []
     }
     isSearching.value = false
-    topicCache.clearCache()
     eventHandlers.cleanup()
     forumData.resetState(options)
   }
 
   const cleanup = (): void => {
     eventHandlers.cleanup()
-    topicCache.clearCache()
     cleanupCacheManager()
   }
 

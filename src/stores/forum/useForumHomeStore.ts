@@ -7,8 +7,8 @@ import { useForumCacheManager } from '~/composables/useForumCacheManager'
 // 基础功能
 import { useForumData } from '~/composables/useForumData'
 import { useOptimizedTopicList } from '~/composables/useStorePerformanceOptimizer'
+import { useTopicOperations } from '~/composables/useTopicOperations'
 import { useUrlFilterSync } from '~/composables/useUrlFilterSync'
-import { globalCacheLayer } from '~/services/cache/UnifiedCacheLayer'
 
 import { simpleEventManager, SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 // 业务逻辑和服务
@@ -88,76 +88,18 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     return pinnedTopics
   })
 
-  // === 优化的Topic操作 ===
-  const topicOperations = {
-    addTopic: (topic: ForumAPI.Topic) => {
-      // 缓存优先
-      globalCacheLayer.setCachedTopic(topic)
-
-      // 去重添加到用户数据
-      const exists = userSubmittedTopics.value.some(t => t.id === topic.id)
-      if (!exists) {
-        userSubmittedTopics.value.unshift(topic)
-      }
-
-      // 性能优化的批量操作
-      optimizedTopicList.addTopics([topic], 'start')
+  // === 统一的 Topic 操作 ===
+  const topicOperations = useTopicOperations(
+    {
+      data: forumData.data,
+      userSubmittedTopics,
+      pinnedTopicsData: forumData.pinnedTopicsData,
     },
-
-    removeTopic: (id: ForumAPI.Topic['id']) => {
-      // 清理缓存
-      globalCacheLayer.removeCachedTopic(id)
-
-      // 移除用户数据
-      userSubmittedTopics.value = userSubmittedTopics.value.filter(t => t.id !== id)
-
-      // 性能优化的移除
-      optimizedTopicList.removeTopics([id])
+    {
+      pageType: 'home',
+      optimizer: optimizedTopicList,
     },
-
-    updateTopic: (id: ForumAPI.Topic['id'], updates: Partial<ForumAPI.Topic>) => {
-      // 智能缓存更新
-      globalCacheLayer.updateTopicInCache(id, updates)
-
-      // 更新用户数据
-      const userTopic = userSubmittedTopics.value.find(t => t.id === id)
-      if (userTopic) {
-        Object.assign(userTopic, updates)
-      }
-
-      // 更新主数据
-      const mainTopic = forumData.data.value?.find(t => t.id === id)
-      if (mainTopic) {
-        Object.assign(mainTopic, updates)
-      }
-
-      // 更新置顶主题数据
-      const pinnedTopic = forumData.pinnedTopicsData.value?.find(t => t.id === id)
-      if (pinnedTopic) {
-        Object.assign(pinnedTopic, updates)
-      }
-
-      // 性能优化的更新
-      optimizedTopicList.updateTopic(String(id), updates)
-    },
-
-    replaceTopicTags: (id: ForumAPI.Topic['id'], tags: ForumAPI.Topic['tags']) => {
-      topicOperations.updateTopic(id, { tags })
-    },
-
-    changeTopicType: (id: ForumAPI.Topic['id'], type: ForumAPI.TopicType) => {
-      topicOperations.updateTopic(id, { type })
-    },
-
-    changeTopicPinState: (id: ForumAPI.Topic['id'], pinned: boolean) => {
-      topicOperations.updateTopic(id, { pinned })
-    },
-
-    updateTopicVisibility: (id: ForumAPI.Topic['id'], updates: { hidden?: boolean, closed?: boolean }) => {
-      const stateUpdate = ForumBusinessLogic.updateTopicVisibility({} as ForumAPI.Topic, updates)
-      topicOperations.updateTopic(id, stateUpdate)
-    },
-  }
+  )
 
   // === 简化事件处理 ===
   const eventHandlers = new SimpleStoreEventHandler(topicOperations, {
@@ -167,16 +109,10 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
   // === 自定义事件处理 ===
   const customEventHandlers = {
     handleCommentCreated: (payload: { topicId: string, comment: ForumAPI.Comment }) => {
-      // 更新对应话题的评论数和relatedComments
-      // 优先查找用户提交数据，保持与UI数据源一致（mergeTopicsData中用户数据优先）
-      const targetTopic = userSubmittedTopics.value.find(t => t.id === payload.topicId)
-        || forumData.data.value?.find(t => t.id === payload.topicId)
+      const { topic: targetTopic } = topicOperations.findTopicInLists(payload.topicId)
 
       if (targetTopic && typeof targetTopic.commentCount === 'number' && targetTopic.commentCount >= 0) {
-        // 更新评论数
         const newCommentCount = targetTopic.commentCount + 1
-
-        // 更新relatedComments - 添加新评论到开头，保持最新3条
         const currentRelatedComments = targetTopic.relatedComments || []
         const newRelatedComments = [payload.comment, ...currentRelatedComments].slice(0, 3)
 
@@ -188,16 +124,10 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     },
 
     handleCommentDeleted: (payload: { commentId: string | number, topicId: string }) => {
-      // 减少对应话题的评论数和更新relatedComments
-      // 优先查找用户提交数据，保持与UI数据源一致（mergeTopicsData中用户数据优先）
-      const targetTopic = userSubmittedTopics.value.find(t => t.id === payload.topicId)
-        || forumData.data.value?.find(t => t.id === payload.topicId)
+      const { topic: targetTopic } = topicOperations.findTopicInLists(payload.topicId)
 
       if (targetTopic && typeof targetTopic.commentCount === 'number' && targetTopic.commentCount > 0) {
-        // 更新评论数
         const newCommentCount = targetTopic.commentCount - 1
-
-        // 从relatedComments中移除被删除的评论
         const currentRelatedComments = targetTopic.relatedComments || []
         const newRelatedComments = currentRelatedComments.filter(c => c.id !== payload.commentId)
 
@@ -255,16 +185,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     isSearching.value = true
 
     try {
-      // 检查搜索缓存
-      const cacheKey = Array.isArray(query) ? query.join(' ') : query
-      const cachedResults = globalCacheLayer.getCachedSearchResults(cacheKey, additionalParams)
-
-      if (cachedResults) {
-        // 使用缓存结果
-        forumData.initialData()
-        return
-      }
-
       // 执行搜索
       forumData.initialData()
 
@@ -278,11 +198,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
       )
 
       await forumData.searchTopics(query, params)
-
-      // 缓存搜索结果
-      if (forumData.data.value) {
-        globalCacheLayer.setCachedSearchResults(cacheKey, forumData.data.value, additionalParams)
-      }
     }
     catch (error) {
       isSearching.value = false
@@ -305,11 +220,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     }
     isSearching.value = false
 
-    // 清理缓存
-    if (options?.clearUserTopics) {
-      globalCacheLayer.invalidateAllCaches()
-    }
-
     // 清理事件
     eventHandlers.cleanup()
 
@@ -323,7 +233,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
   const cleanup = (): void => {
     eventHandlers.cleanup()
     urlFilterSync?.cleanup()
-    globalCacheLayer.optimizeCaches()
     cleanupCacheManager()
   }
 
