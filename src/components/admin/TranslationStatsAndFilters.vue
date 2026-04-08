@@ -42,7 +42,7 @@ defineEmits<Emits>()
 <template>
   <div class="space-y-6">
     <!-- 统计信息卡片 -->
-    <div class="grid gap-4 md:grid-cols-3">
+    <div class="gap-4 grid md:grid-cols-3">
       <Card>
         <CardHeader>
           <CardTitle class="text-sm font-medium">
@@ -97,11 +97,11 @@ defineEmits<Emits>()
     <div class="flex flex-col gap-4 sm:flex-row">
       <div class="flex-1">
         <div class="relative">
-          <i class="i-lucide-search absolute left-3 top-1/2 h-4 w-4 transform text-muted-foreground -translate-y-1/2" />
+          <i class="i-lucide-search text-muted-foreground h-4 w-4 transform left-3 top-1/2 absolute -translate-y-1/2" />
           <Input
             :model-value="searchQuery"
             placeholder="搜索翻译键或内容..."
-            class="border border-border border-solid pl-10"
+            class="pl-10 border border-border border-solid"
             @update:model-value="$emit('update:search', $event)"
           />
         </div>

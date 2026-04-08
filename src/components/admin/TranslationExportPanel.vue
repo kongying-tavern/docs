@@ -63,11 +63,11 @@ watch(() => props.availableLocales, (locales) => {
       <CardDescription>将翻译内容导出为 TypeScript 文件</CardDescription>
     </CardHeader>
     <CardContent>
-      <div class="flex flex-wrap items-end gap-4">
+      <div class="flex flex-wrap gap-4 items-end">
         <div class="space-y-2">
           <Label for="export-locale" class="text-sm font-medium">语言</Label>
           <Select v-model="selectedLocale">
-            <SelectTrigger id="export-locale" class="w-32 border border-border border-solid">
+            <SelectTrigger id="export-locale" class="border border-border border-solid w-32">
               <SelectValue placeholder="选择语言" />
             </SelectTrigger>
             <SelectContent>
@@ -84,7 +84,7 @@ watch(() => props.availableLocales, (locales) => {
         <div class="space-y-2">
           <Label for="export-category" class="text-sm font-medium">分类</Label>
           <Select v-model="selectedCategory">
-            <SelectTrigger id="export-category" class="w-40 border border-border border-solid">
+            <SelectTrigger id="export-category" class="border border-border border-solid w-40">
               <SelectValue placeholder="选择分类" />
             </SelectTrigger>
             <SelectContent>

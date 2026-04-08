@@ -47,7 +47,7 @@ function getSortIcon(column: string): string {
         class="w-[80px] cursor-pointer select-none transition-colors duration-200 hover:bg-muted/50"
         @click="$emit('sort', 'status')"
       >
-        <div class="flex items-center gap-1">
+        <div class="flex gap-1 items-center">
           状态
           <i :class="getSortIcon('status')" class="h-3 w-3 transition-transform duration-200" />
         </div>
@@ -58,7 +58,7 @@ function getSortIcon(column: string): string {
         class="w-[120px] cursor-pointer select-none hover:bg-muted/50"
         @click="$emit('sort', 'category')"
       >
-        <div class="flex items-center gap-1">
+        <div class="flex gap-1 items-center">
           分类
           <i :class="getSortIcon('category')" class="h-3 w-3" />
         </div>
@@ -69,7 +69,7 @@ function getSortIcon(column: string): string {
         class="w-[200px] cursor-pointer select-none hover:bg-muted/50"
         @click="$emit('sort', 'key')"
       >
-        <div class="flex items-center gap-1">
+        <div class="flex gap-1 items-center">
           翻译键
           <i :class="getSortIcon('key')" class="h-3 w-3" />
         </div>
@@ -82,7 +82,7 @@ function getSortIcon(column: string): string {
         class="min-w-[180px] cursor-pointer select-none hover:bg-muted/50"
         @click="$emit('sort', locale)"
       >
-        <div class="flex items-center gap-1">
+        <div class="flex gap-1 items-center">
           {{ getLocaleDisplayName(locale) }}
           <i :class="getSortIcon(locale)" class="h-3 w-3" />
         </div>

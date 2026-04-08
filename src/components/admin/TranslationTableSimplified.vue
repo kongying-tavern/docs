@@ -50,7 +50,7 @@ const sortedEntries = computed(() => {
     return props.entries
   }
 
-  return [...props.entries].sort((a, b) => {
+  return props.entries.toSorted((a, b) => {
     let valueA: string | number
     let valueB: string | number
 
@@ -156,7 +156,7 @@ function handleSpecialEditorSave(entry: TranslationEntry) {
               class="w-[80px] cursor-pointer select-none transition-colors duration-200 hover:bg-muted/50"
               @click="handleSort('status')"
             >
-              <div class="flex items-center gap-1">
+              <div class="flex gap-1 items-center">
                 状态
                 <i :class="getSortIcon('status')" class="h-3 w-3 transition-transform duration-200" />
               </div>
@@ -167,7 +167,7 @@ function handleSpecialEditorSave(entry: TranslationEntry) {
               class="w-[120px] cursor-pointer select-none hover:bg-muted/50"
               @click="handleSort('category')"
             >
-              <div class="flex items-center gap-1">
+              <div class="flex gap-1 items-center">
                 分类
                 <i :class="getSortIcon('category')" class="h-3 w-3" />
               </div>
@@ -178,7 +178,7 @@ function handleSpecialEditorSave(entry: TranslationEntry) {
               class="w-[200px] cursor-pointer select-none hover:bg-muted/50"
               @click="handleSort('key')"
             >
-              <div class="flex items-center gap-1">
+              <div class="flex gap-1 items-center">
                 翻译键
                 <i :class="getSortIcon('key')" class="h-3 w-3" />
               </div>
@@ -191,7 +191,7 @@ function handleSpecialEditorSave(entry: TranslationEntry) {
               class="min-w-[180px] cursor-pointer select-none hover:bg-muted/50"
               @click="handleSort(locale)"
             >
-              <div class="flex items-center gap-1">
+              <div class="flex gap-1 items-center">
                 {{ getLocaleDisplayName(locale) }}
                 <i :class="getSortIcon(locale)" class="h-3 w-3" />
               </div>
@@ -221,8 +221,8 @@ function handleSpecialEditorSave(entry: TranslationEntry) {
       </Table>
 
       <!-- 空状态 -->
-      <div v-if="entries.length === 0" class="flex flex-col items-center justify-center py-12">
-        <i class="i-lucide-search mb-4 h-12 w-12 text-muted-foreground" />
+      <div v-if="entries.length === 0" class="py-12 flex flex-col items-center justify-center">
+        <i class="i-lucide-search text-muted-foreground mb-4 h-12 w-12" />
         <h3 class="text-lg font-medium">
           没有找到翻译条目
         </h3>
@@ -248,7 +248,7 @@ function handleSpecialEditorSave(entry: TranslationEntry) {
         >
           <i class="i-lucide-chevron-left h-4 w-4" />
         </Button>
-        <span class="px-2 text-sm">
+        <span class="text-sm px-2">
           {{ currentPage }} / {{ totalPages }}
         </span>
         <Button

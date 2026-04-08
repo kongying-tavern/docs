@@ -126,19 +126,19 @@ function handleNextPage() {
             <TableCell>
               <span
                 v-if="entry.isDeleted"
-                class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs text-red-800 font-medium"
+                class="text-xs text-red-800 font-medium px-2 py-1 rounded-full bg-red-100 inline-flex items-center"
               >
                 已删除
               </span>
               <span
                 v-else-if="entry.isModified"
-                class="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 font-medium"
+                class="text-xs text-blue-800 font-medium px-2 py-1 rounded-full bg-blue-100 inline-flex items-center"
               >
                 已修改
               </span>
               <span
                 v-else
-                class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs text-green-800 font-medium"
+                class="text-xs text-green-800 font-medium px-2 py-1 rounded-full bg-green-100 inline-flex items-center"
               >
                 正常
               </span>
@@ -146,7 +146,7 @@ function handleNextPage() {
 
             <!-- 分类列 -->
             <TableCell>
-              <span class="rounded bg-muted px-2 py-1 text-xs font-medium">
+              <span class="text-xs font-medium px-2 py-1 rounded bg-muted">
                 {{ entry.category }}
               </span>
             </TableCell>
@@ -174,7 +174,7 @@ function handleNextPage() {
               </div>
               <div
                 v-else
-                class="cursor-pointer truncate rounded p-1 text-xs hover:bg-muted/50"
+                class="text-xs p-1 rounded cursor-pointer truncate hover:bg-muted/50"
                 :class="{ 'text-muted-foreground': entry.isDeleted }"
                 @click="!entry.isDeleted && startEdit(entry, locale)"
               >
@@ -184,7 +184,7 @@ function handleNextPage() {
 
             <!-- 操作列 -->
             <TableCell>
-              <div class="flex items-center gap-1">
+              <div class="flex gap-1 items-center">
                 <Button
                   v-if="entry.isDeleted"
                   variant="ghost"
@@ -219,7 +219,7 @@ function handleNextPage() {
       </Table>
 
       <!-- 空状态 -->
-      <div v-if="entries.length === 0" class="flex flex-col items-center justify-center py-12">
+      <div v-if="entries.length === 0" class="py-12 flex flex-col items-center justify-center">
         <div class="text-center">
           <h3 class="text-lg font-medium">
             没有找到翻译条目
@@ -247,7 +247,7 @@ function handleNextPage() {
         >
           上一页
         </Button>
-        <span class="px-2 text-sm">
+        <span class="text-sm px-2">
           {{ currentPage }} / {{ totalPages }}
         </span>
         <Button

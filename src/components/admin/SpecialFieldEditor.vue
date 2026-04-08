@@ -178,7 +178,7 @@ function buildJsonFromFields(fields: Record<string, unknown>, type: FieldMetadat
 
         // 处理每个字段，如果是正则表达式格式则转换回对象
         for (const [key, value] of Object.entries(itemData)) {
-          if (typeof value === 'string' && value.match(/^\/.*\/[gimuy]*$/)) {
+          if (typeof value === 'string' && /^\/.*\/[gimuy]*$/.test(value)) {
             // 正则表达式格式，转换回 __regex__ 对象
             const match = value.match(/^\/(.*)\/([gimuy]*)$/)
             if (match) {

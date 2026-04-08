@@ -44,7 +44,7 @@ const sortedEntries = computed(() => {
     return props.entries
   }
 
-  return [...props.entries].sort((a, b) => {
+  return props.entries.toSorted((a, b) => {
     let valueA: string | number
     let valueB: string | number
 
@@ -140,8 +140,8 @@ function handleSpecialEditorSave(entry: TranslationEntry) {
       </Table>
 
       <!-- 空状态 -->
-      <div v-if="entries.length === 0" class="flex flex-col items-center justify-center py-12">
-        <i class="i-lucide-search mb-4 h-12 w-12 text-muted-foreground" />
+      <div v-if="entries.length === 0" class="py-12 flex flex-col items-center justify-center">
+        <i class="i-lucide-search text-muted-foreground mb-4 h-12 w-12" />
         <h3 class="text-lg font-medium">
           没有找到翻译条目
         </h3>

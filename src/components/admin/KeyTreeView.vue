@@ -32,7 +32,7 @@ function handleSelect(path: string) {
     >
       <!-- 节点本身 -->
       <div
-        class="flex cursor-pointer items-center gap-1 rounded p-1 text-sm hover:bg-muted/50"
+        class="text-sm p-1 rounded flex gap-1 cursor-pointer items-center hover:bg-muted/50"
         :class="{
           'bg-primary/10 text-primary': selected === node.fullPath,
           'font-medium': node.children.length > 0,
@@ -41,11 +41,11 @@ function handleSelect(path: string) {
       >
         <i
           v-if="node.children.length > 0"
-          class="i-lucide-folder h-3 w-3 text-amber-500"
+          class="i-lucide-folder text-amber-500 h-3 w-3"
         />
         <i
           v-else
-          class="i-lucide-file-text h-3 w-3 text-blue-500"
+          class="i-lucide-file-text text-blue-500 h-3 w-3"
         />
         <span>{{ node.name }}</span>
         <span
@@ -59,7 +59,7 @@ function handleSelect(path: string) {
       <!-- 子节点 -->
       <div
         v-if="node.children.length > 0"
-        class="ml-4 border-l border-border pl-2 space-y-1"
+        class="ml-4 pl-2 border-l border-border space-y-1"
       >
         <KeyTreeView
           :tree="node.children"

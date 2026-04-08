@@ -84,7 +84,7 @@ function handleCellEdit() {
           v-motion
           :initial="{ opacity: 0, scale: 0.8 }"
           :enter="{ opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 400 } }"
-          class="inline-flex items-center text-xs text-red-600 font-medium"
+          class="text-xs text-red-600 font-medium inline-flex items-center"
         >
           <i class="i-lucide-trash-2 mr-1 h-3 w-3" />
           已删除
@@ -94,7 +94,7 @@ function handleCellEdit() {
           v-motion
           :initial="{ opacity: 0, scale: 0.8 }"
           :enter="{ opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 400 } }"
-          class="inline-flex items-center text-xs text-green-600 font-medium"
+          class="text-xs text-green-600 font-medium inline-flex items-center"
         >
           <i class="i-lucide-circle-dot mr-1 h-3 w-3 animate-pulse" />
           已修改
@@ -107,14 +107,14 @@ function handleCellEdit() {
 
     <!-- 分类列 -->
     <TableCell>
-      <span class="rounded bg-muted px-2 py-1 text-xs font-medium">
+      <span class="text-xs font-medium px-2 py-1 rounded bg-muted">
         {{ entry.category }}
       </span>
     </TableCell>
 
     <!-- 键名列 -->
     <TableCell class="text-xs font-mono">
-      <div class="flex items-center gap-2">
+      <div class="flex gap-2 items-center">
         <FieldTypeIndicator
           :metadata="getFieldMetadata(entry)"
           :hints="getEditorHints(entry)"
@@ -137,7 +137,7 @@ function handleCellEdit() {
 
     <!-- 操作列 -->
     <TableCell>
-      <div class="flex items-center gap-1">
+      <div class="flex gap-1 items-center">
         <!-- 特殊编辑器按钮 -->
         <TooltipProvider v-if="needsSpecialEditor(getFieldMetadata(entry))">
           <Tooltip>
@@ -177,7 +177,7 @@ function handleCellEdit() {
           v-if="!entry.isDeleted"
           variant="ghost"
           size="sm"
-          class="text-red-600 transition-all duration-200 hover:scale-105 hover:text-red-700"
+          class="text-red-600 transition-all duration-200 hover:text-red-700 hover:scale-105"
           @click="$emit('delete', entry)"
         >
           <i class="i-lucide-trash-2 h-4 w-4" />
@@ -187,7 +187,7 @@ function handleCellEdit() {
           v-else
           variant="ghost"
           size="sm"
-          class="text-green-600 transition-all duration-200 hover:scale-105 hover:text-green-700"
+          class="text-green-600 transition-all duration-200 hover:text-green-700 hover:scale-105"
           @click="$emit('restore', entry)"
         >
           <i class="i-lucide-undo-2 h-4 w-4" />

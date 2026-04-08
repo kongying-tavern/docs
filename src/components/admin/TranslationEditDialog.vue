@@ -99,8 +99,8 @@ watch(
 
 <template>
   <Dialog :open="open" @update:open="$emit('update:open', $event)">
-    <DialogContent class="max-h-[80vh] max-w-4xl flex flex-col overflow-hidden">
-      <DialogTitle class="flex items-center gap-2">
+    <DialogContent class="flex flex-col max-h-[80vh] max-w-4xl overflow-hidden">
+      <DialogTitle class="flex gap-2 items-center">
         <i class="i-lucide-edit h-5 w-5" />
         编辑翻译
       </DialogTitle>
@@ -110,17 +110,17 @@ watch(
 
       <div v-if="entry" class="flex-1 overflow-auto space-y-4">
         <!-- 翻译键信息 -->
-        <div class="border rounded-lg p-4">
-          <div class="grid grid-cols-2 gap-4 text-sm">
+        <div class="p-4 border rounded-lg">
+          <div class="text-sm gap-4 grid grid-cols-2">
             <div>
               <span class="font-medium">分类:</span>
-              <span class="ml-2 rounded bg-muted px-2 py-1 text-xs font-medium">
+              <span class="text-xs font-medium ml-2 px-2 py-1 rounded bg-muted">
                 {{ entry.category }}
               </span>
             </div>
             <div>
               <span class="font-medium">翻译键:</span>
-              <span class="ml-2 text-sm font-mono">
+              <span class="text-sm font-mono ml-2">
                 {{ entry.key }}
               </span>
             </div>
@@ -142,36 +142,36 @@ watch(
               v-model="editForm.translations[locale]"
               :placeholder="`输入 ${getLocaleDisplayName(locale)} 翻译...`"
               rows="3"
-              class="w-full border border-border border-solid"
+              class="border border-border border-solid w-full"
               @input="handleTranslationChange(locale, ($event.target as HTMLTextAreaElement).value)"
             />
           </div>
         </div>
 
         <!-- 预览对比 -->
-        <div class="border-t pt-4">
-          <h4 class="mb-3 text-sm font-medium">
+        <div class="pt-4 border-t">
+          <h4 class="text-sm font-medium mb-3">
             变更预览
           </h4>
           <div class="space-y-3">
             <div
               v-for="locale in availableLocales"
               :key="locale"
-              class="grid grid-cols-2 gap-4 text-sm"
+              class="text-sm gap-4 grid grid-cols-2"
             >
               <div>
-                <div class="mb-1 text-xs text-muted-foreground">
+                <div class="text-xs text-muted-foreground mb-1">
                   {{ getLocaleDisplayName(locale) }} (原文)
                 </div>
-                <div class="min-h-[48px] border rounded p-3 text-sm">
+                <div class="text-sm p-3 border rounded min-h-[48px]">
                   {{ entry.translations[locale] || '(空)' }}
                 </div>
               </div>
               <div>
-                <div class="mb-1 text-xs text-muted-foreground">
+                <div class="text-xs text-muted-foreground mb-1">
                   {{ getLocaleDisplayName(locale) }} (新文)
                 </div>
-                <div class="min-h-[48px] border rounded p-3 text-sm">
+                <div class="text-sm p-3 border rounded min-h-[48px]">
                   {{ editForm.translations[locale] || '(空)' }}
                 </div>
               </div>
@@ -181,7 +181,7 @@ watch(
       </div>
 
       <!-- 操作按钮 -->
-      <div class="flex justify-end border-t pt-4 space-x-2">
+      <div class="pt-4 border-t flex justify-end space-x-2">
         <Button
           variant="outline"
           @click="resetForm"

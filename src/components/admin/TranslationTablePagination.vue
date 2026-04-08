@@ -44,7 +44,7 @@ function handleNextPage() {
       >
         <i class="i-lucide-chevron-left h-4 w-4" />
       </Button>
-      <span class="px-2 text-sm">
+      <span class="text-sm px-2">
         {{ currentPage }} / {{ totalPages }}
       </span>
       <Button

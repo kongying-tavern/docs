@@ -303,7 +303,7 @@ function closeSpecialEditor() {
     <!-- 主表格 -->
     <Card>
       <CardHeader class="pb-4">
-        <CardTitle class="flex items-center gap-2 text-base font-semibold">
+        <CardTitle class="text-base font-semibold flex gap-2 items-center">
           <i class="i-lucide-languages h-5 w-5" />
           翻译条目
         </CardTitle>
@@ -319,12 +319,12 @@ function closeSpecialEditor() {
                 :class="header.width"
               >
                 <div
-                  class="flex cursor-pointer items-center gap-1 rounded p-1 transition-colors hover:bg-muted/50"
+                  class="p-1 rounded flex gap-1 cursor-pointer transition-colors items-center hover:bg-muted/50"
                   @click="handleSort(header.key)"
                 >
                   <i class="h-4 w-4" :class="[header.icon]" />
                   {{ header.label }}
-                  <i class="ml-auto h-3 w-3 opacity-60" :class="[getSortIcon(header.key)]" />
+                  <i class="ml-auto opacity-60 h-3 w-3" :class="[getSortIcon(header.key)]" />
                 </div>
               </TableHead>
 
@@ -335,18 +335,18 @@ function closeSpecialEditor() {
                 class="min-w-[180px]"
               >
                 <div
-                  class="flex cursor-pointer items-center gap-1 rounded p-1 transition-colors hover:bg-muted/50"
+                  class="p-1 rounded flex gap-1 cursor-pointer transition-colors items-center hover:bg-muted/50"
                   @click="handleSort(`translation_${locale}`)"
                 >
                   <i class="i-lucide-globe h-4 w-4" />
                   {{ getLocaleDisplayName(locale) }}
-                  <i class="ml-auto h-3 w-3 opacity-60" :class="[getSortIcon(`translation_${locale}`)]" />
+                  <i class="ml-auto opacity-60 h-3 w-3" :class="[getSortIcon(`translation_${locale}`)]" />
                 </div>
               </TableHead>
 
               <!-- 操作列 -->
               <TableHead :class="tableHeaders[3].width">
-                <div class="flex items-center gap-1">
+                <div class="flex gap-1 items-center">
                   <i class="h-4 w-4" :class="[tableHeaders[3].icon]" />
                   {{ tableHeaders[3].label }}
                 </div>
@@ -365,19 +365,19 @@ function closeSpecialEditor() {
               <TableCell>
                 <span
                   v-if="entry.isDeleted"
-                  class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs text-red-800 font-medium"
+                  class="text-xs text-red-800 font-medium px-2 py-1 rounded-full bg-red-100 inline-flex items-center"
                 >
                   已删除
                 </span>
                 <span
                   v-else-if="entry.isModified"
-                  class="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800 font-medium"
+                  class="text-xs text-blue-800 font-medium px-2 py-1 rounded-full bg-blue-100 inline-flex items-center"
                 >
                   已修改
                 </span>
                 <span
                   v-else
-                  class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs text-green-800 font-medium"
+                  class="text-xs text-green-800 font-medium px-2 py-1 rounded-full bg-green-100 inline-flex items-center"
                 >
                   正常
                 </span>
@@ -385,7 +385,7 @@ function closeSpecialEditor() {
 
               <!-- 分类列 -->
               <TableCell>
-                <span class="rounded bg-muted px-2 py-1 text-xs font-medium">
+                <span class="text-xs font-medium px-2 py-1 rounded bg-muted">
                   {{ entry.category }}
                 </span>
               </TableCell>
@@ -404,11 +404,11 @@ function closeSpecialEditor() {
                 <!-- 特殊数据类型 -->
                 <div v-if="isSpecialDataType(entry.translations[locale], entry.path)">
                   <div
-                    class="flex cursor-pointer items-center gap-2 truncate rounded p-1 text-xs hover:bg-muted/50"
+                    class="text-xs p-1 rounded flex gap-2 cursor-pointer truncate items-center hover:bg-muted/50"
                     :class="{ 'text-muted-foreground': entry.isDeleted }"
                     @click="!entry.isDeleted && startSpecialEdit(entry)"
                   >
-                    <i class="i-lucide-settings h-3 w-3 flex-shrink-0 text-blue-500" />
+                    <i class="i-lucide-settings text-blue-500 flex-shrink-0 h-3 w-3" />
                     <span class="truncate">{{ getSpecialDataPreview(entry.translations[locale]) }}</span>
                   </div>
                 </div>
@@ -428,7 +428,7 @@ function closeSpecialEditor() {
                 <!-- 普通文本显示 -->
                 <div
                   v-else
-                  class="cursor-pointer truncate rounded p-1 text-xs hover:bg-muted/50"
+                  class="text-xs p-1 rounded cursor-pointer truncate hover:bg-muted/50"
                   :class="{ 'text-muted-foreground': entry.isDeleted }"
                   @click="!entry.isDeleted && startEdit(entry, locale)"
                 >
@@ -438,7 +438,7 @@ function closeSpecialEditor() {
 
               <!-- 操作列 -->
               <TableCell>
-                <div class="flex items-center gap-1">
+                <div class="flex gap-1 items-center">
                   <Button
                     v-if="entry.isDeleted"
                     variant="ghost"
@@ -474,10 +474,10 @@ function closeSpecialEditor() {
         </Table>
 
         <!-- 空状态 -->
-        <div v-if="entries.length === 0" class="flex flex-col items-center justify-center py-12">
+        <div v-if="entries.length === 0" class="py-12 flex flex-col items-center justify-center">
           <div class="text-center">
-            <div class="mx-auto mb-4 h-16 w-16 flex items-center justify-center rounded-full bg-muted">
-              <i class="i-lucide-search h-8 w-8 text-muted-foreground" />
+            <div class="mx-auto mb-4 rounded-full bg-muted flex h-16 w-16 items-center justify-center">
+              <i class="i-lucide-search text-muted-foreground h-8 w-8" />
             </div>
             <h3 class="text-lg font-medium">
               没有找到翻译条目
@@ -506,7 +506,7 @@ function closeSpecialEditor() {
         >
           上一页
         </Button>
-        <span class="px-2 text-sm">
+        <span class="text-sm px-2">
           {{ currentPage }} / {{ totalPages }}
         </span>
         <Button
