@@ -31,8 +31,7 @@ export async function signToken(token: string, nonce: string): Promise<string> {
 
   const signature = await crypto.subtle.sign('HMAC', key, data)
 
-  return Array.from(new Uint8Array(signature))
-    .map(byte => byte.toString(16).padStart(2, '0'))
+  return Array.from(new Uint8Array(signature), byte => byte.toString(16).padStart(2, '0'))
     .join('')
 }
 
@@ -67,7 +66,6 @@ export function generateRandomString(length: number) {
   const array = new Uint8Array(length)
   crypto.getRandomValues(array)
 
-  return Array.from(array)
-    .map(byte => charset[byte % charset.length])
+  return Array.from(array, byte => charset[byte % charset.length])
     .join('')
 }

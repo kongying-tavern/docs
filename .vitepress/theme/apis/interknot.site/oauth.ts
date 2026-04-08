@@ -15,7 +15,7 @@ export async function refreshToken(accessToken: string): Promise<AuthResult<SSOA
   if (error) {
     return {
       success: false,
-      error: createAuthError.ssoRefreshFailed(error, 'inter-knot'),
+      error: createAuthError.ssoRefreshFailed(error, 'interknot'),
     }
   }
 
@@ -35,7 +35,7 @@ export async function logout(accessToken?: string): Promise<AuthResult<INTER_KNO
   if (error) {
     return {
       success: false,
-      error: createAuthError.ssoRefreshFailed(error, 'inter-knot-logout'),
+      error: createAuthError.ssoRefreshFailed(error, 'interknot-logout'),
     }
   }
 
