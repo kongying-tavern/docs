@@ -66,12 +66,11 @@ theme: medium
 
 ```card
 title: 椰羊
-link: https://gi.cocogoat.cn/static/favicon.ico
-logo: https://cocogoat.cn/static/favicon.png
+link: https://cocogoat.work/
+logo: https://gi.cocogoat.cn/static/favicon.ico
 desc: 纯网页圣遗物管理，成就扫描
 theme: medium
-```/'
-
+```
 
 ```card
 title: 非小酋
@@ -83,16 +82,16 @@ theme: medium
 
 ```card
 title: 莫娜占卜铺
-link: https://mona-uranai.com
-logo: https://mona-uranai.com/favicon.ico
+link: https://github.com/wormtql/genshin_artifact
+logo: https://raw.githubusercontent.com/wormtql/genshin_artifact/refs/heads/main/public/favicon.ico
 theme: medium
 desc: 圣遗物搭配，圣遗物潜力多方向圣遗物自动搭配，多方向圣遗物潜力与评分
 ```
 
 ```card
 title: 维系天理
-link: https://www.weixitianlizhi.ren/
-logo: https://www.weixitianli.com/images/hero_tianli.png
+link: https://github.com/WeiXiTianLi
+logo: https://avatars.githubusercontent.com/u/86880185?s=200&v=4
 desc: 原神地图位置追踪、天理启动器
 theme: medium
 ```
