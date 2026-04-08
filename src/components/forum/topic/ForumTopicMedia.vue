@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import { Image } from '@/components/ui/image'
 import { useForumViewMode } from '~/composables/useForumViewMode'
+import ForumImage from '../ui/ForumImage.vue'
 
 const props = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
@@ -15,7 +15,17 @@ const hasImages = computed(() =>
   props.topic.content?.images && props.topic.content.images.length > 0,
 )
 
-const images = computed(() => props.topic.content?.images || [])
+const images = computed(() => {
+  const imgs = props.topic.content?.images || []
+  return imgs.map(img => ({
+    src: img.src,
+    alt: img.alt || '',
+    width: img.width,
+    height: img.height,
+    thumbHash: img.thumbHash,
+  }))
+})
+
 const primaryImage = computed(() => images.value[0])
 
 const imageCount = computed(() => images.value.length)
@@ -35,11 +45,13 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
       v-if="isCompactMode"
       class="ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px transition items-center relative overflow-hidden"
     >
-      <Image
+      <img
         v-if="primaryImage"
-        :image="primaryImage"
+        :src="primaryImage.src"
+        :alt="primaryImage.alt || ''"
         class="h-75px w-100px object-cover"
-      />
+        loading="lazy"
+      >
 
       <!-- Placeholder for topics without images -->
       <div
@@ -59,22 +71,14 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
       </span>
     </div>
 
-    <!-- Card Mode - Natural Image Layout -->
-    <div
+    <!-- Card Mode - Use ForumImage with row layout -->
+    <ForumImage
       v-else-if="isCardMode && hasImages"
-      class="topic-content-img mt-2 flex gap-2"
-    >
-      <Image
-        v-for="(image, index) in images"
-        :key="index"
-        :image="image"
-        :thumb-hash="image.thumbHash"
-        :width="image.width"
-        :height="image.height"
-        container-class="!w-auto"
-        class="border border-[var(--vp-c-divider)] rounded border-solid h-100px object-cover"
-      />
-    </div>
+      layout="row"
+      :images="images"
+      :max-display="3"
+      class="mt-2"
+    />
   </div>
 </template>
 
@@ -83,36 +87,15 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
   margin-top: 0.5rem;
 }
 
-.topic-content-img {
-  max-height: 120px;
-  overflow: visible;
-}
-
-/* 图片缩放效果 */
-.topic-content-img :deep(.VPImage) {
-  cursor: zoom-in;
-  border: 1px solid var(--vp-c-divider);
-  background: var(--vp-c-bg-soft);
-}
-
-.topic-content-img :deep(.VPImage:hover:not(.no-hover)) {
-  border-color: var(--vp-c-brand);
-}
-
 /* Compact mode image container */
-.relative.ml-2 {
+.ml-2 {
   border-radius: 4px;
   transition: all 0.2s ease;
   border: 1px solid var(--vp-c-divider);
 }
 
-.relative.ml-2:hover {
+.ml-2:hover {
   border-color: var(--vp-c-brand);
-}
-
-/* 紧凑模式图片样式 */
-.relative.ml-2 :deep(.VPImage) {
-  border: none;
 }
 
 /* Multiple images indicator animation */
@@ -130,21 +113,5 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
     opacity: 1;
     transform: scale(1);
   }
-}
-
-/* 错误状态样式优化 */
-:deep(.VPImage.bg-\[var\(--vp-c-bg-alt\)\]) {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-:deep(.VPImage.bg-\[var\(--vp-c-bg-alt\)\])::before {
-  content: '图片加载失败';
-  position: absolute;
-  font-size: 12px;
-  color: var(--vp-c-text-3);
-  pointer-events: none;
 }
 </style>

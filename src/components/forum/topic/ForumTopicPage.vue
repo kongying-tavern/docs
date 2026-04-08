@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
-import { Images } from '@/components/ui/image'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
 import ForumTopicTranslator from '../ForumTopicTranslator.vue'
+import ForumImage from '../ui/ForumImage.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
 import ForumTime from '../ui/ForumTime.vue'
@@ -120,7 +120,7 @@ const topicImages = computed(() => {
           />
 
           <!-- 智能图片布局 -->
-          <Images
+          <ForumImage
             v-if="topicImages.length > 0"
             :images="topicImages"
             class="mt-6"
