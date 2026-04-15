@@ -1,4 +1,5 @@
 import type ForumAPI from '@/apis/forum/api'
+import { LRUCacheWithTTL } from '~/utils/LRUCacheWithTTL'
 // import type { EnhancedBlogPost } from '~/components/blog/composables/useBlogData'
 
 /**
@@ -325,8 +326,8 @@ export class SimpleEventManager {
         try {
           handler(payload)
         }
-        catch (error) {
-          console.error(`Event handler error for ${eventType}:`, error)
+        catch {
+          // Event handler error - silent fail
         }
       })
     }
@@ -345,12 +346,11 @@ export class SimpleEventManager {
   }
 }
 
-/**
- * 类型安全的Store事件处理器
- */
 export class SimpleStoreEventHandler {
   private unsubscribers: EventUnsubscribe[] = []
   private eventManager = SimpleEventManager.getInstance()
+  /** 500ms 去重窗口，防止快速重复事件 */
+  private recentEvents = new LRUCacheWithTTL<string, boolean>(100, 500)
 
   constructor(
     private topicOperations: {
@@ -368,13 +368,21 @@ export class SimpleStoreEventHandler {
     },
   ) {}
 
-  /**
-   * 设置事件监听器
-   */
+  private isRecentStoreEvent(eventType: string, topicId: string): boolean {
+    const key = `${eventType}-${topicId}`
+    if (this.recentEvents.has(key)) {
+      return true
+    }
+    this.recentEvents.set(key, true)
+    return false
+  }
+
   setupEventListeners(): void {
     // Topic创建事件
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:created', (payload) => {
+        if (this.isRecentStoreEvent('created', payload.topic.id))
+          return
         this.topicOperations.addTopic(payload.topic)
       }),
     )
@@ -382,6 +390,8 @@ export class SimpleStoreEventHandler {
     // Topic更新事件
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:updated', (payload) => {
+        if (this.isRecentStoreEvent('updated', payload.id))
+          return
         this.topicOperations.updateTopic(payload.id, payload.updates)
       }),
     )
@@ -389,6 +399,8 @@ export class SimpleStoreEventHandler {
     // Topic删除事件
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:deleted', (payload) => {
+        if (this.isRecentStoreEvent('deleted', payload.id))
+          return
         this.topicOperations.removeTopic(payload.id)
       }),
     )
@@ -396,6 +408,8 @@ export class SimpleStoreEventHandler {
     // Topic置顶事件
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:pinned', (payload) => {
+        if (this.isRecentStoreEvent('pinned', payload.id))
+          return
         this.topicOperations.changeTopicPinState(payload.id, payload.pinned)
       }),
     )
@@ -403,6 +417,8 @@ export class SimpleStoreEventHandler {
     // Topic可见性变更事件
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:visibility-changed', (payload) => {
+        if (this.isRecentStoreEvent('visibility-changed', payload.id))
+          return
         this.topicOperations.updateTopicVisibility(payload.id, { hidden: payload.hidden, closed: payload.closed })
       }),
     )
@@ -410,6 +426,8 @@ export class SimpleStoreEventHandler {
     // Topic关闭事件 - 单独监听
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:closed', (payload) => {
+        if (this.isRecentStoreEvent('closed', payload.id))
+          return
         this.topicOperations.updateTopicVisibility(payload.id, { closed: payload.closed })
       }),
     )
@@ -417,6 +435,8 @@ export class SimpleStoreEventHandler {
     // Topic隐藏事件 - 单独监听
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:hidden', (payload) => {
+        if (this.isRecentStoreEvent('hidden', payload.id))
+          return
         this.topicOperations.updateTopicVisibility(payload.id, { hidden: payload.hidden })
       }),
     )
@@ -424,6 +444,8 @@ export class SimpleStoreEventHandler {
     // Topic标签更新事件
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:tags-updated', (payload) => {
+        if (this.isRecentStoreEvent('tags-updated', payload.id))
+          return
         this.topicOperations.replaceTopicTags(payload.id, payload.tags)
       }),
     )
@@ -431,17 +453,17 @@ export class SimpleStoreEventHandler {
     // Topic类型变更事件
     this.unsubscribers.push(
       this.eventManager.subscribe('topic:type-changed', (payload) => {
+        if (this.isRecentStoreEvent('type-changed', payload.id))
+          return
         this.topicOperations.changeTopicType(payload.id, payload.type)
       }),
     )
   }
 
-  /**
-   * 清理事件监听器
-   */
   cleanup(): void {
     this.unsubscribers.forEach(unsubscribe => unsubscribe())
     this.unsubscribers = []
+    this.recentEvents.clear()
   }
 }
 

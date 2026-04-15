@@ -2,6 +2,7 @@ import type { EventMap } from './SimpleEventManager'
 import { useBroadcastChannel } from '@vueuse/core'
 import { cloneDeep } from 'lodash-es'
 import { toRaw, watch } from 'vue'
+import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
 import { ForumEventPersistence } from '~/utils/forumEventPersistence'
 import { LRUCacheWithTTL } from '~/utils/LRUCacheWithTTL'
 import { SimpleEventManager } from './SimpleEventManager'
@@ -30,17 +31,17 @@ export class BroadcastChannelSync {
   private broadcastChannel: ReturnType<typeof useBroadcastChannel> | null = null
 
   private readonly CHANNEL_NAME = 'forum-events'
-  private readonly DEDUP_WINDOW = 2000 // ms
-  private readonly BROADCAST_THROTTLE = 100 // ms
-  private readonly CLEAN_INTERVAL = 30_000 // ms
+  private readonly DEDUP_WINDOW = 2000
+  private readonly BROADCAST_THROTTLE = 100
+  private readonly CLEAN_INTERVAL = 30_000
 
   private readonly pageId = `page-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
 
   private isSetup = false
   private isProcessingCrossPageEvent = false
+  private processingEventIds = new Set<string>()
   private cleanupTimer: NodeJS.Timeout | null = null
 
-  // 去重缓存
   private recentEvents = new LRUCacheWithTTL<string, boolean>(1000, this.DEDUP_WINDOW)
   private broadcastThrottles = new LRUCacheWithTTL<string, number>(100, 1000)
 
@@ -76,7 +77,7 @@ export class BroadcastChannelSync {
       this.isSetup = true
     }
     catch (e) {
-      console.warn('[BroadcastChannelSync] 启用失败:', e)
+      forumLog.warn(ForumLogGroup.BROADCAST, '启用失败', e)
     }
   }
 
@@ -106,7 +107,10 @@ export class BroadcastChannelSync {
       return
     if (this.recentEvents.has(id) || Date.now() - timestamp > this.DEDUP_WINDOW)
       return
+    if (this.processingEventIds.has(id))
+      return // 已在处理此事件
 
+    this.processingEventIds.add(id)
     this.isProcessingCrossPageEvent = true
 
     try {
@@ -114,10 +118,12 @@ export class BroadcastChannelSync {
       this.getEventManager().emit(type, cleanPayload)
     }
     catch (e) {
-      console.error('[BroadcastChannelSync] 处理消息失败:', e)
+      forumLog.error(ForumLogGroup.BROADCAST, '处理消息失败', e)
     }
     finally {
-      this.isProcessingCrossPageEvent = false
+      this.processingEventIds.delete(id)
+      // 只有在没有其他事件在处理时才重置标志
+      this.isProcessingCrossPageEvent = this.processingEventIds.size > 0
     }
   }
 
@@ -175,7 +181,7 @@ export class BroadcastChannelSync {
       this.broadcastChannel.post(eventData)
     }
     catch (error) {
-      console.warn(`[BroadcastChannelSync] 广播事件失败 (${type}):`, error)
+      forumLog.warn(ForumLogGroup.BROADCAST, `广播事件失败 (${type})`, error)
     }
 
     try {
