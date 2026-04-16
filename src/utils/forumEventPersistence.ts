@@ -7,15 +7,38 @@ interface PersistentForumEvent {
   timestamp: number
 }
 
+const SKIP_PERSISTENCE = new Set([
+  'ui:topic-expand',
+  'ui:comment-reply',
+  'ui:search',
+  'ui:filter-change',
+  'ui:sort-change',
+  'ui:topic-action',
+  'ui:comment-action',
+  'form:validation-error',
+  'form:submit-start',
+  'nav:topic-detail',
+  'nav:user-profile',
+  'nav:back',
+])
+
 export class ForumEventPersistence {
   private static readonly PREFIX = 'forum:event:'
   private static readonly TTL = 5 * 60 * 1000
   private static readonly MAX_EVENTS = 50
   private static readonly CLEANUP_INTERVAL = 2 * 60 * 1000
+  private static readonly FLUSH_DELAY = 100
+  private static readonly MAX_BATCH_SIZE = 10
 
+  private static pendingEvents: PersistentForumEvent[] = []
+  private static flushTimer: NodeJS.Timeout | null = null
   private static cleanupTimer: NodeJS.Timeout | null = null
 
   static saveEvent<K extends keyof EventMap>(type: K, payload: EventMap[K]): void {
+    // 跳过不需要持久化的事件
+    if (SKIP_PERSISTENCE.has(type))
+      return
+
     try {
       if (typeof localStorage === 'undefined')
         return
@@ -28,11 +51,52 @@ export class ForumEventPersistence {
         timestamp: Date.now(),
       }
 
-      localStorage.setItem(this.PREFIX + eventId, JSON.stringify(event))
-      this.cleanup()
+      this.pendingEvents.push(event)
+
+      // 达到批处理大小时立即刷新
+      if (this.pendingEvents.length >= this.MAX_BATCH_SIZE) {
+        this.flushPendingEvents()
+        return
+      }
+
+      // 否则调度延迟刷新
+      this.scheduleFlush()
     }
-    catch (error) {
-      console.warn('[ForumEventPersistence] 保存事件失败:', error)
+    catch {
+      // 保存事件失败 - silent fail
+    }
+  }
+
+  private static scheduleFlush(): void {
+    if (this.flushTimer)
+      return
+
+    this.flushTimer = setTimeout(() => {
+      this.flushPendingEvents()
+      this.flushTimer = null
+    }, this.FLUSH_DELAY)
+  }
+
+  private static flushPendingEvents(): void {
+    if (this.pendingEvents.length === 0)
+      return
+
+    const eventsToFlush = [...this.pendingEvents]
+    this.pendingEvents = []
+
+    try {
+      // 批量写入
+      eventsToFlush.forEach((event) => {
+        localStorage.setItem(this.PREFIX + event.id, JSON.stringify(event))
+      })
+
+      // 批量写入后清理
+      if (eventsToFlush.length > 5) {
+        this.cleanup()
+      }
+    }
+    catch {
+      // 批量保存失败 - silent fail
     }
   }
 
@@ -139,6 +203,10 @@ export class ForumEventPersistence {
       clearInterval(this.cleanupTimer)
       this.cleanupTimer = null
     }
+    if (this.flushTimer) {
+      clearTimeout(this.flushTimer)
+      this.flushTimer = null
+    }
   }
 
   static forceCleanup(): void {
@@ -164,6 +232,7 @@ export class ForumEventPersistence {
 if (typeof window !== 'undefined') {
   ForumEventPersistence.startPeriodicCleanup()
   window.addEventListener('beforeunload', () => {
+    // 页面卸载前刷新待处理事件
     ForumEventPersistence.stopPeriodicCleanup()
   })
 }
