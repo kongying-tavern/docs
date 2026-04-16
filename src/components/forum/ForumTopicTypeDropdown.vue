@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ForumAPI } from '@/apis/forum/api'
-import { computed, inject, watch } from 'vue'
+import { computed, inject } from 'vue'
 import {
   Select,
   SelectContent,
@@ -50,42 +50,11 @@ function handleHoverPreload() {
     forumStore.triggerPreload()
   }
 }
-
-// Watch filter changes and update URL path
-watch(() => filter?.value, (newFilter, oldFilter) => {
-  if (oldFilter === undefined)
-    return // Skip initial setup
-
-  // Update URL path when filter changes
-  const currentPath = window.location.pathname
-  const pathSegments = currentPath.split('/').filter(Boolean)
-
-  if (newFilter === 'all') {
-    // Remove filter from path - go to base forum path
-    if (pathSegments.length > 1 && ['bug', 'feat', 'closed'].includes(pathSegments.at(-1))) {
-      pathSegments.pop()
-    }
-  }
-  else {
-    // Add or replace filter in path
-    if (pathSegments.length > 1 && ['bug', 'feat', 'closed'].includes(pathSegments.at(-1))) {
-      pathSegments[pathSegments.length - 1] = newFilter
-    }
-    else {
-      pathSegments.push(newFilter)
-    }
-  }
-
-  const newPath = `/${pathSegments.join('/')}`
-  if (newPath !== currentPath) {
-    window.history.pushState({}, '', newPath)
-  }
-})
 </script>
 
 <template>
   <div class="flex gap-4 items-center">
-    <Select v-model="filter" :disabled="loading?.value">
+    <Select v-model="filter" :disabled="loading">
       <SelectTrigger
         variant="ghost"
         class="font-size-3 mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
@@ -102,5 +71,3 @@ watch(() => filter?.value, (newFilter, oldFilter) => {
     </Select>
   </div>
 </template>
-
-<style scoped></style>

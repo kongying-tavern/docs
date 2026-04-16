@@ -6,9 +6,9 @@ import { computed, ref } from 'vue'
 import { useForumCacheManager } from '~/composables/useForumCacheManager'
 // 基础功能
 import { useForumData } from '~/composables/useForumData'
+import { usePathParam } from '~/composables/usePathParam'
 import { useOptimizedTopicList } from '~/composables/useStorePerformanceOptimizer'
 import { useTopicOperations } from '~/composables/useTopicOperations'
-import { useUrlFilterSync } from '~/composables/useUrlFilterSync'
 
 import { simpleEventManager, SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 // 业务逻辑和服务
@@ -18,14 +18,16 @@ import { forumPreloader } from '~/services/forum/ForumPreloader'
 export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
   // === 基础状态管理 ===
   const sort = ref<ForumAPI.SortMethod>('created')
-  const filter = ref<ForumAPI.FilterBy>('all')
+  // URL-State 双向同步
+  const filter = usePathParam<ForumAPI.FilterBy>('type', {
+    defaultValue: 'all',
+    validValues: ['all', 'bug', 'feat', 'closed'],
+    history: 'push',
+  })
   const isSearching = ref(false)
 
   // === 数据管理 ===
   const userSubmittedTopics = ref<ForumAPI.Topic[]>([])
-
-  // URL同步
-  const urlFilterSync = useUrlFilterSync(filter, '🏠')
 
   // 数据层
   const forumData = useForumData({
@@ -201,8 +203,7 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     }
     catch (error) {
       isSearching.value = false
-      const errorInfo = ForumBusinessLogic.handleForumError(error, 'Search Topics')
-      console.error('Search error:', errorInfo)
+      ForumBusinessLogic.handleForumError(error, 'Search Topics')
       throw error
     }
   }
@@ -232,7 +233,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
 
   const cleanup = (): void => {
     eventHandlers.cleanup()
-    urlFilterSync?.cleanup()
     cleanupCacheManager()
   }
 
@@ -306,9 +306,8 @@ export function useForumHomeStoreWithMonitoring() {
     }
     finally {
       const duration = performance.now() - start
-      if (duration > 1000) {
-        console.warn(`loadForumData took ${duration.toFixed(2)}ms`)
-      }
+      // Performance warning removed for cleaner code
+      void duration
     }
   }
 
@@ -320,9 +319,8 @@ export function useForumHomeStoreWithMonitoring() {
     }
     finally {
       const duration = performance.now() - start
-      if (duration > 800) {
-        console.warn(`searchTopics took ${duration.toFixed(2)}ms`)
-      }
+      // Performance warning removed for cleaner code
+      void duration
     }
   }
 
