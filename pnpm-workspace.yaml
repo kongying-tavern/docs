@@ -61,7 +61,7 @@ catalogs:
     "@vueuse/core": ^14.2.1
     "@vueuse/integrations": ^14.2.1
     "@vueuse/motion": ^3.0.3
-    canvaskit-wasm: ^0.40.0
+    canvaskit-wasm: ^0.41.0
     class-variance-authority: ^0.7.1
     clsx: ^2.1.1
     date-fns: ^4.1.0
