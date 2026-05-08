@@ -60,17 +60,6 @@ export function useRuleChecks(inputId: string | number = '') {
     computed(() => {
       const result = roles.some(role => userRoles.value.includes(role))
 
-      // 简洁的权限调试信息（仅在权限检查失败时显示）
-      if (!result && id.value) {
-        console.warn('权限检查失败:', {
-          userId: id.value,
-          requiredRoles: roles,
-          userRoles: userRoles.value,
-          teamMember: userRolesMap.value.teamMember.has(Number(id.value)),
-          blogMember: userRolesMap.value.blogMember.has(Number(id.value)),
-        })
-      }
-
       return result
     })
 

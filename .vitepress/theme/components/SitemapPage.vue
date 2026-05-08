@@ -29,6 +29,12 @@ interface NavItem {
 
 const { localeIndex, theme, site } = useData()
 
+/** Matches leading dots and slashes in paths */
+const LEADING_DOT_SLASH_REGEX = /^\.?\//
+
+/** Matches trailing slash in paths */
+const TRAILING_SLASH_PATH_REGEX = /\/$/
+
 // Get current language using VitePress APIs
 const currentLang = computed(() => {
   return localeIndex.value || 'root'
@@ -90,7 +96,7 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
 
   // Add page if not duplicate
   function addPage(path: string, title: string) {
-    const cleanPath = path.replace(/^\.?\//, '/').replace(/\/$/, '') || '/'
+    const cleanPath = path.replace(LEADING_DOT_SLASH_REGEX, '/').replace(TRAILING_SLASH_PATH_REGEX, '') || '/'
     if (!seenPaths.has(cleanPath)) {
       seenPaths.add(cleanPath)
       pages.push({

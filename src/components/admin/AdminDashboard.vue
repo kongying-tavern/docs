@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/tabs'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { jsonTranslationService } from '~/services/jsonTranslationService'
+import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
 import QQGroupManagementTab from './QQGroupManagementTab.vue'
 import TranslationManagementTab from './TranslationManagementTab.vue'
 
@@ -111,18 +112,18 @@ watch(activeTab, (newTab) => {
 
 // 方法
 async function loadData() {
-  console.log('loadData called')
+  forumLog.debug(ForumLogGroup.ADMIN, 'loadData called')
   loading.value = true
   try {
-    console.log('Initializing JSON translation service...')
+    forumLog.debug(ForumLogGroup.ADMIN, 'Initializing JSON translation service...')
     await jsonTranslationService.initialize()
-    console.log('JSON translation service initialized')
+    forumLog.debug(ForumLogGroup.ADMIN, 'JSON translation service initialized')
 
     translationEntries.value = jsonTranslationService.getTranslationEntries()
     availableLocales.value = jsonTranslationService.getAvailableLocales()
     categories.value = jsonTranslationService.getCategories()
 
-    console.log('Data loaded:', {
+    forumLog.info(ForumLogGroup.ADMIN, 'Data loaded', {
       entries: translationEntries.value.length,
       locales: availableLocales.value,
       categories: categories.value,
@@ -130,10 +131,10 @@ async function loadData() {
 
     // 调试：查看 head 相关的条目
     const headEntries = translationEntries.value.filter(entry => entry.path.includes('head'))
-    console.log('Head entries:', headEntries.slice(0, 3))
+    forumLog.debug(ForumLogGroup.ADMIN, 'Head entries', headEntries.slice(0, 3))
   }
   catch (error) {
-    console.error('Data loading failed:', error)
+    forumLog.error(ForumLogGroup.ADMIN, 'Data loading failed', error)
     toast.error('数据加载失败')
   }
   finally {
@@ -178,7 +179,7 @@ function downloadFile(filename: string, content: string) {
 
 // 生命周期
 onMounted(() => {
-  console.log('AdminDashboard mounted, hasManagePermission:', hasManagePermission.value)
+  forumLog.debug(ForumLogGroup.ADMIN, 'AdminDashboard mounted', { hasManagePermission: hasManagePermission.value })
   // 暂时绕过权限检查进行测试
   loadData()
 })

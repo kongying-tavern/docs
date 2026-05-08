@@ -2,6 +2,9 @@ import { execSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import process from 'node:process'
 
+/** Matches backslash in file paths */
+const BACKSLASH_PATH_REGEX = /\\/g
+
 export interface GitCommit {
   hash: string
   date: string
@@ -64,7 +67,7 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
     }
 
     // 获取文件的Git历史 - 使用相对路径
-    const relativePath = filePath.replace(`${process.cwd()}/`, '').replace(/\\/g, '/')
+    const relativePath = filePath.replace(`${process.cwd()}/`, '').replace(BACKSLASH_PATH_REGEX, '/')
 
     const gitLogCommand = [
       'git log',
@@ -90,7 +93,7 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
     const firstCommit = commits.at(-1)
 
     return {
-      firstCommit,
+      firstCommit: firstCommit!,
       lastModified,
       commits,
     }

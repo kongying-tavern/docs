@@ -3,16 +3,45 @@
  * 统一处理HTML转义、文本格式化、字符串操作等
  */
 
+// HTML转义正则表达式
+const HTML_ESCAPE_AMP_REGEX = /&/gu
+const HTML_ESCAPE_LT_REGEX = /</gu
+const HTML_ESCAPE_GT_REGEX = />/gu
+const HTML_ESCAPE_QUOT_REGEX = /"/gu
+const HTML_ESCAPE_APOS_REGEX = /'/gu
+
+// 简化版HTML转义正则表达式
+const HTML_BASIC_LT_REGEX = /</g
+const HTML_BASIC_GT_REGEX = />/g
+const HTML_BASIC_QUOT_REGEX = /"/g
+const HTML_BASIC_AMP_REGEX = /&(?![\w#]+;)/g
+
+// HTML清理正则表达式
+const HTML_TAG_REGEX = /<[^>]*>/g
+
+// 命名转换正则表达式
+const UNDERSCORE_LOWER_REGEX = /_([a-z])/g
+const CAMEL_CASE_REGEX = /[A-Z]/g
+const KEBAB_LOWER_REGEX = /-([a-z])/g
+
+// Slug生成正则表达式
+const SLUG_SPECIAL_CHARS_REGEX = /[^\w\s-]/g
+const SLUG_SPACES_REGEX = /[\s_-]+/g
+const SLUG_TRIM_DASHES_REGEX = /^-+|-+$/g
+
+// 文本处理正则表达式
+const TITLE_CASE_REGEX = /\w\S*/g
+
 /**
  * HTML字符转义 - 防止XSS攻击
  */
 export function escapeHtml(unsafeHTML: string): string {
   return unsafeHTML
-    .replace(/&/gu, '&amp;')
-    .replace(/</gu, '&lt;')
-    .replace(/>/gu, '&gt;')
-    .replace(/"/gu, '&quot;')
-    .replace(/'/gu, '&#039;')
+    .replace(HTML_ESCAPE_AMP_REGEX, '&amp;')
+    .replace(HTML_ESCAPE_LT_REGEX, '&lt;')
+    .replace(HTML_ESCAPE_GT_REGEX, '&gt;')
+    .replace(HTML_ESCAPE_QUOT_REGEX, '&quot;')
+    .replace(HTML_ESCAPE_APOS_REGEX, '&#039;')
 }
 
 /**
@@ -20,10 +49,10 @@ export function escapeHtml(unsafeHTML: string): string {
  */
 export function escapeHtmlBasic(str: string): string {
   return str
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/&(?![\w#]+;)/g, '&amp;')
+    .replace(HTML_BASIC_LT_REGEX, '&lt;')
+    .replace(HTML_BASIC_GT_REGEX, '&gt;')
+    .replace(HTML_BASIC_QUOT_REGEX, '&quot;')
+    .replace(HTML_BASIC_AMP_REGEX, '&amp;')
 }
 
 /**
@@ -32,7 +61,7 @@ export function escapeHtmlBasic(str: string): string {
 export function sanitizeHtml(html: string): string {
   if (typeof document === 'undefined') {
     // SSR环境下的简单清理
-    return html.replace(/<[^>]*>/g, '')
+    return html.replace(HTML_TAG_REGEX, '')
   }
 
   const div = document.createElement('div')
@@ -72,35 +101,35 @@ export function truncateAtWord(text: string, maxLength: number, suffix = '...'):
  * 驼峰命名转换
  */
 export function camelCase(str: string): string {
-  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+  return str.replace(UNDERSCORE_LOWER_REGEX, (_, letter) => letter.toUpperCase())
 }
 
 /**
  * 蛇形命名转驼峰
  */
 export function snakeToCamel(str: string): string {
-  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+  return str.replace(UNDERSCORE_LOWER_REGEX, (_, letter) => letter.toUpperCase())
 }
 
 /**
  * 驼峰转蛇形命名
  */
 export function camelToSnake(str: string): string {
-  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)
+  return str.replace(CAMEL_CASE_REGEX, letter => `_${letter.toLowerCase()}`)
 }
 
 /**
  * 驼峰转短横线命名
  */
 export function camelToKebab(str: string): string {
-  return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)
+  return str.replace(CAMEL_CASE_REGEX, letter => `-${letter.toLowerCase()}`)
 }
 
 /**
  * 短横线转驼峰命名
  */
 export function kebabToCamel(str: string): string {
-  return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
+  return str.replace(KEBAB_LOWER_REGEX, (_, letter) => letter.toUpperCase())
 }
 
 /**
@@ -110,9 +139,9 @@ export function slugify(text: string): string {
   return text
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, '') // 移除特殊字符
-    .replace(/[\s_-]+/g, '-') // 空格和下划线转为短横线
-    .replace(/^-+|-+$/g, '') // 移除首尾的短横线
+    .replace(SLUG_SPECIAL_CHARS_REGEX, '') // 移除特殊字符
+    .replace(SLUG_SPACES_REGEX, '-') // 空格和下划线转为短横线
+    .replace(SLUG_TRIM_DASHES_REGEX, '') // 移除首尾的短横线
 }
 
 /**
@@ -126,7 +155,7 @@ export function capitalize(str: string): string {
  * 每个单词首字母大写
  */
 export function titleCase(str: string): string {
-  return str.replace(/\w\S*/g, txt =>
+  return str.replace(TITLE_CASE_REGEX, txt =>
     txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
 }
 
@@ -134,7 +163,7 @@ export function titleCase(str: string): string {
  * 移除HTML标签
  */
 export function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '')
+  return html.replace(HTML_TAG_REGEX, '')
 }
 
 /**

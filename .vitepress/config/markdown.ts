@@ -22,6 +22,9 @@ import { spoiler } from '../theme/markdown/spoiler'
 import MarkdownItTimeline from '../theme/markdown/timeline'
 import MarkdownItVariableInject from '../theme/markdown/variableInject'
 
+/** Matches regex attributes in markdown */
+const REGEX_ATTR_REGEX = /^regex.*$/
+
 export const markdownConfig: MarkdownOptions = {
   image: {
     lazyLoading: true,
@@ -47,7 +50,7 @@ export const markdownConfig: MarkdownOptions = {
     md.use(abbr)
     md.use(ruby)
     md.use(markdownItAttrs, {
-      allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', /^regex.*$/],
+      allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', REGEX_ATTR_REGEX],
     })
     md.use(MarkdownItKbd, {
       presets: [

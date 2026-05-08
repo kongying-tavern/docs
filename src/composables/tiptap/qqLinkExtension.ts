@@ -2,6 +2,12 @@ import type { QQAutoLinkConfig } from './qqLinkConfig'
 import { Extension, Mark, markInputRule, markPasteRule, mergeAttributes } from '@tiptap/core'
 import { defaultQQAutoLinkConfig, mergeQQAutoLinkConfig } from './qqLinkConfig'
 
+/** Matches QQ pattern at end of input */
+const QQ_INPUT_PATTERN_REGEX = /QQ( )?([1-9]\d{4,10})$/
+
+/** Matches QQ pattern in pasted text */
+const QQ_PASTE_PATTERN_REGEX = /QQ( )?([1-9]\d{4,10})/g
+
 // QQ号链接标记扩展
 export const QQLinkMark = Mark.create({
   name: 'qqLink',
@@ -72,11 +78,9 @@ export const QQLinkMark = Mark.create({
 
   // 添加输入规则（实时输入识别）
   addInputRules() {
-    const qqPattern = /QQ( )?([1-9]\d{4,10})$/
-
     return [
       markInputRule({
-        find: qqPattern,
+        find: QQ_INPUT_PATTERN_REGEX,
         type: this.type,
         getAttributes: (match) => {
           const qqNumber = match[2] // QQ号码部分
@@ -92,11 +96,9 @@ export const QQLinkMark = Mark.create({
 
   // 添加粘贴规则（粘贴时识别）
   addPasteRules() {
-    const qqPattern = /QQ( )?([1-9]\d{4,10})/g
-
     return [
       markPasteRule({
-        find: qqPattern,
+        find: QQ_PASTE_PATTERN_REGEX,
         type: this.type,
         getAttributes: (match) => {
           const qqNumber = match[2] // QQ号码部分

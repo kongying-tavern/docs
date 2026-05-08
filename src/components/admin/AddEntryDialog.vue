@@ -51,7 +51,15 @@ const translations = ref<Record<string, string>>({})
 // 键名相关 - 移除不再需要的newKey和isCreatingNewKey
 
 // 特殊数据类型的解析内容（用于复杂编辑器）
-const parsedTranslations = ref<Record<string, any>>({})
+interface ParsedTranslationValue {
+  __regex__?: string
+  __flags__?: string
+  [key: string]: string | undefined
+}
+
+type ParsedTranslation = ParsedTranslationValue | ParsedTranslationValue[] | null
+
+const parsedTranslations = ref<Record<string, ParsedTranslation>>({})
 
 // 数组字段配置
 const arrayFieldConfig = ref({
@@ -82,9 +90,17 @@ interface TreeNode {
   isLeaf: boolean
 }
 
+// 内部树节点接口
+interface InternalTreeNode {
+  fullPath: string
+  name: string
+  children: Record<string, InternalTreeNode>
+  isLeaf: boolean
+}
+
 // 构建键名树状结构
 function buildKeyTree(keyPaths: string[]): TreeNode[] {
-  const tree: any = {}
+  const tree: Record<string, InternalTreeNode> = {}
 
   keyPaths.forEach((path) => {
     const parts = path.split('.')
@@ -104,8 +120,8 @@ function buildKeyTree(keyPaths: string[]): TreeNode[] {
   })
 
   // 转换为TreeNode数组格式
-  function treeToArray(obj: any): TreeNode[] {
-    return Object.values(obj).map((item: any) => ({
+  function treeToArray(obj: Record<string, InternalTreeNode>): TreeNode[] {
+    return Object.values(obj).map(item => ({
       name: item.name,
       fullPath: item.fullPath,
       isLeaf: Object.keys(item.children).length === 0,
@@ -149,9 +165,9 @@ watch(() => props.open, (isOpen) => {
         }
         else if (formData.value.dataType === 'array') {
           // 使用当前字段配置生成初始内容
-          const sampleItems = []
+          const sampleItems: ParsedTranslationValue[] = []
           for (let i = 0; i < 2; i++) {
-            const item: any = {}
+            const item: ParsedTranslationValue = {}
             arrayFieldConfig.value.fields.forEach((field, index) => {
               if (field.name === 'label') {
                 item[field.name] = `选项${i + 1}`
@@ -237,7 +253,7 @@ const jsonPreview = computed(() => {
   if (!category || !key)
     return ''
 
-  const preview: any = {}
+  const preview: Record<string, string | ParsedTranslationValue | ParsedTranslationValue[]> = {}
   props.availableLocales.forEach((locale) => {
     const translationValue = translations.value[locale]
     if (translationValue) {
@@ -264,9 +280,9 @@ function generatePresetValue(dataType: string, locale: string): string {
   switch (dataType) {
     case 'array': {
       // 使用当前字段配置生成示例数据
-      const sampleItems = []
+      const sampleItems: ParsedTranslationValue[] = []
       for (let i = 0; i < 2; i++) {
-        const item: any = {}
+        const item: ParsedTranslationValue = {}
         arrayFieldConfig.value.fields.forEach((field, index) => {
           if (field.name === 'label') {
             item[field.name] = `选项${i + 1}`
@@ -307,9 +323,9 @@ watch(() => formData.value.dataType, (newType) => {
     }
     else if (newType === 'array') {
       // 使用当前字段配置生成解析后的内容
-      const sampleItems = []
+      const sampleItems: ParsedTranslationValue[] = []
       for (let i = 0; i < 2; i++) {
-        const item: any = {}
+        const item: ParsedTranslationValue = {}
         arrayFieldConfig.value.fields.forEach((field, index) => {
           if (field.name === 'label') {
             item[field.name] = `选项${i + 1}`
@@ -338,8 +354,9 @@ watch(() => formData.value.dataType, (newType) => {
 watch(() => arrayFieldConfig.value.fields, (newFields) => {
   if (formData.value.dataType === 'array') {
     Object.keys(parsedTranslations.value).forEach((locale) => {
-      if (Array.isArray(parsedTranslations.value[locale])) {
-        parsedTranslations.value[locale].forEach((item: any) => {
+      const parsed = parsedTranslations.value[locale]
+      if (Array.isArray(parsed)) {
+        parsed.forEach((item) => {
           // 添加新字段
           newFields.forEach((field) => {
             if (!(field.name in item)) {
@@ -362,17 +379,17 @@ watch(() => arrayFieldConfig.value.fields, (newFields) => {
 }, { deep: true })
 
 // 解析特殊数据类型
-function _parseSpecialValue(value: string, dataType: string): any {
+function _parseSpecialValue(value: string, dataType: string): ParsedTranslation {
   if (dataType === 'text')
-    return value
+    return null
 
   try {
-    return JSON.parse(value)
+    return JSON.parse(value) as ParsedTranslation
   }
   catch {
     if (dataType === 'array') {
       // 使用当前字段配置生成默认项
-      const defaultItem: any = {}
+      const defaultItem: ParsedTranslationValue = {}
       arrayFieldConfig.value.fields.forEach((field) => {
         defaultItem[field.name] = ''
       })
@@ -385,9 +402,9 @@ function _parseSpecialValue(value: string, dataType: string): any {
 }
 
 // 序列化特殊数据类型
-function stringifySpecialValue(value: any, dataType: string): string {
+function stringifySpecialValue(value: ParsedTranslation, dataType: string): string {
   if (dataType === 'text')
-    return String(value)
+    return String(value ?? '')
   return JSON.stringify(value, null, 2)
 }
 
@@ -430,8 +447,7 @@ function handleSubmit() {
     emit('entry-added')
     emit('update:open', false)
   }
-  catch (error) {
-    console.error('添加条目失败:', error)
+  catch {
     toast.error('添加条目失败')
   }
 }
@@ -479,16 +495,17 @@ function _toggleRegexFlag(locale: string, flag: string, enabled: boolean) {
 
 // 添加数组项
 function addArrayItem(locale: string) {
-  if (!parsedTranslations.value[locale]) {
+  const current = parsedTranslations.value[locale]
+  if (!Array.isArray(current)) {
     parsedTranslations.value[locale] = []
   }
 
-  const newItem: any = {}
+  const newItem: ParsedTranslationValue = {}
   arrayFieldConfig.value.fields.forEach((field) => {
     newItem[field.name] = ''
   })
 
-  parsedTranslations.value[locale].push(newItem)
+  ;(parsedTranslations.value[locale] as ParsedTranslationValue[]).push(newItem)
   syncParsedToString(locale)
 }
 
@@ -552,8 +569,9 @@ function removeArrayField(index: number) {
 
     // 更新现有数组项，移除对应字段
     Object.keys(parsedTranslations.value).forEach((locale) => {
-      if (Array.isArray(parsedTranslations.value[locale])) {
-        parsedTranslations.value[locale].forEach((item: any) => {
+      const parsed = parsedTranslations.value[locale]
+      if (Array.isArray(parsed)) {
+        parsed.forEach((item) => {
           if (fieldToRemove?.name && item[fieldToRemove.name] !== undefined) {
             delete item[fieldToRemove.name]
           }
@@ -571,8 +589,9 @@ function updateArrayFieldConfig(index: number, field: 'name' | 'displayName' | '
   // 如果修改的是字段名，需要更新所有数组项中的对应字段
   if (field === 'name' && oldName !== value) {
     Object.keys(parsedTranslations.value).forEach((locale) => {
-      if (Array.isArray(parsedTranslations.value[locale])) {
-        parsedTranslations.value[locale].forEach((item: any) => {
+      const parsed = parsedTranslations.value[locale]
+      if (Array.isArray(parsed)) {
+        parsed.forEach((item) => {
           if (item[oldName] !== undefined) {
             item[value] = item[oldName]
             delete item[oldName]

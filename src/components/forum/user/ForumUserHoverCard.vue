@@ -30,7 +30,7 @@ const { message } = useLocalized()
 
 const userInfo = ref<ForumAPI.User | null>(user || null)
 
-const { data: userData, isLoading: getUserLoading, refetch: getUser } = useQuery({
+const { data: userData, isLoading: getUserLoading } = useQuery({
   key: () => ['user-hover', userId ?? user?.login ?? ''] as const,
   query: () => userAPI.getUser(userId!),
   enabled: () => !user && !!userId,

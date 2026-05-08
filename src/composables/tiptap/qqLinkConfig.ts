@@ -1,6 +1,13 @@
 /**
  * QQ自动链接扩展配置选项
  */
+
+/** Matches valid QQ number format */
+const QQ_NUMBER_FORMAT_REGEX = /^[1-9]\d{4,10}$/
+
+/** Matches non-digit characters */
+const NON_DIGIT_REGEX = /\D/g
+
 export interface QQAutoLinkConfig {
   /** 是否启用QQ号自动识别 */
   enabled?: boolean
@@ -77,8 +84,7 @@ export const qqLinkPresets = {
  * 验证QQ号格式
  */
 export function validateQQNumber(qq: string): boolean {
-  const qqPattern = /^[1-9]\d{4,10}$/
-  return qqPattern.test(qq)
+  return QQ_NUMBER_FORMAT_REGEX.test(qq)
 }
 
 /**
@@ -90,7 +96,7 @@ export function extractQQNumber(text: string, pattern?: RegExp): string | null {
 
   if (match) {
     // 返回匹配到的数字部分
-    const digits = match[0].replace(/\D/g, '')
+    const digits = match[0].replace(NON_DIGIT_REGEX, '')
     return validateQQNumber(digits) ? digits : null
   }
 

@@ -62,8 +62,8 @@ export function useImagePreloader(options: ImagePreloadOptions = {}) {
 
       return link
     }
-    catch (error) {
-      console.warn('Failed to preload image:', imageUrl, error)
+    catch {
+      // Failed to preload image - silent fail
       return null
     }
   }

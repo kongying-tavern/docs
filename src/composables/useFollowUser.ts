@@ -46,8 +46,7 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
         throw new Error('不能对自己进行该操作')
       }
     },
-    onError: (error) => {
-      console.error('关注用户操作失败:', error)
+    onError: () => {
       toast.error('关注失败，请稍后重试')
     },
   })
@@ -82,7 +81,6 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
 
   watch(followError, (error) => {
     if (error) {
-      console.error('关注用户时发生错误:', error)
       toast.error('关注失败，请稍后重试')
     }
   })

@@ -47,12 +47,14 @@ function unflattenObject(flattened: Record<string, string>): Record<string, stri
     }
 
     const lastKey = keys.at(-1)
-    try {
-      const parsed = JSON.parse(value)
-      current[lastKey] = typeof parsed === 'string' ? value : parsed
-    }
-    catch {
-      current[lastKey] = value
+    if (lastKey) {
+      try {
+        const parsed = JSON.parse(value)
+        current[lastKey] = typeof parsed === 'string' ? value : parsed
+      }
+      catch {
+        current[lastKey] = value
+      }
     }
   }
 

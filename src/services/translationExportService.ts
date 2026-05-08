@@ -67,8 +67,7 @@ class TranslationExportService {
         return this.fallbackCopyToClipboard(content)
       }
     }
-    catch (error) {
-      console.error('复制到剪贴板失败:', error)
+    catch {
       return false
     }
   }
@@ -90,8 +89,7 @@ class TranslationExportService {
       document.body.removeChild(textArea)
       return success
     }
-    catch (error) {
-      console.error('降级复制方案失败:', error)
+    catch {
       return false
     }
   }
@@ -139,8 +137,8 @@ class TranslationExportService {
         // 合并元数据，保持翻译数据优先
         this.mergeMetadata(data, originalData)
       }
-      catch (error) {
-        console.warn(`无法加载 ${locale} 的原始数据:`, error)
+      catch {
+        // 无法加载原始数据，使用当前数据
       }
     }
 
@@ -212,7 +210,10 @@ class TranslationExportService {
       current = current[key] as Record<string, unknown>
     }
 
-    current[keys.at(-1)] = value
+    const lastKey = keys.at(-1)
+    if (lastKey) {
+      current[lastKey] = value
+    }
   }
 
   /**

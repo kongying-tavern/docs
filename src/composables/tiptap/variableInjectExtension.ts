@@ -1,6 +1,12 @@
 import { Extension, mergeAttributes, Node } from '@tiptap/core'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 
+/** Matches variable define syntax */
+const VARIABLE_DEFINE_SYNTAX_REGEX = /\{define:\s*(\w+)\s*\}([^{]*)\{\/define\}$/
+
+/** Matches variable usage syntax */
+const VARIABLE_USAGE_SYNTAX_REGEX = /\{%=\s*(\w+)\s*%\}$/
+
 /**
  * 变量定义节点
  * 语法: {define:变量名}内容{/define}
@@ -134,7 +140,7 @@ export const VariableInjectExtension = Extension.create({
             const fullText = beforeText + text
 
             // 变量定义语法: {define:变量名}内容{/define}
-            const defineMatch = fullText.match(/\{define:\s*(\w+)\s*\}([^{]*)\{\/define\}$/)
+            const defineMatch = fullText.match(VARIABLE_DEFINE_SYNTAX_REGEX)
             if (defineMatch) {
               const [fullMatch, variableName, content] = defineMatch
               const start = from - (fullMatch.length - text.length)
@@ -154,7 +160,7 @@ export const VariableInjectExtension = Extension.create({
             }
 
             // 变量调用语法: {%=变量名%}
-            const callMatch = fullText.match(/\{%=\s*(\w+)\s*%\}$/)
+            const callMatch = fullText.match(VARIABLE_USAGE_SYNTAX_REGEX)
             if (callMatch) {
               const [fullMatch, variableName] = callMatch
               const start = from - (fullMatch.length - text.length)

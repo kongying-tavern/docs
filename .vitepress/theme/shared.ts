@@ -67,6 +67,9 @@ export function getLocaleForPath(
 const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g
 const DRIVE_LETTER_REGEX = /^[a-z]:/i
 
+const SANITIZE_TRAILING_UNDERSCORE_REGEX = /(^|\/)_+(?=[^/]*$)/
+const SLASH_REGEX = /\\/g
+
 export function sanitizeFileName(name: string): string {
   const match = DRIVE_LETTER_REGEX.exec(name)
   const driveLetter = match ? match[0] : ''
@@ -76,12 +79,12 @@ export function sanitizeFileName(name: string): string {
     + name
       .slice(driveLetter.length)
       .replace(INVALID_CHAR_REGEX, '_')
-      .replace(/(^|\/)_+(?=[^/]*$)/, '$1')
+      .replace(SANITIZE_TRAILING_UNDERSCORE_REGEX, '$1')
   )
 }
 
 export function slash(p: string): string {
-  return p.replace(/\\/g, '/')
+  return p.replace(SLASH_REGEX, '/')
 }
 
 const KNOWN_EXTENSIONS = new Set()
@@ -114,9 +117,19 @@ export function treatAsHtml(filename: string): boolean {
   return ext == null || !KNOWN_EXTENSIONS.has(ext.toLowerCase())
 }
 
+// Escape string regexp patterns
+const ESCAPE_REGEXP_CHARS_REGEX = /[|\\{}()[\]^$+*?.]/g
+const ESCAPE_REGEXP_DASH_REGEX = /-/g
+
+// HTML escape patterns (deprecated, use escapeHtmlBasic from @/utils/text instead)
+const HTML_LT_REGEX = /</g
+const HTML_GT_REGEX = />/g
+const HTML_QUOT_REGEX = /"/g
+const HTML_AMP_REGEX = /&(?![\w#]+;)/g
+
 // https://github.com/sindresorhus/escape-string-regexp/blob/ba9a4473850cb367936417e97f1f2191b7cc67dd/index.js
 export function escapeRegExp(str: string) {
-  return str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d')
+  return str.replace(ESCAPE_REGEXP_CHARS_REGEX, '\\$&').replace(ESCAPE_REGEXP_DASH_REGEX, '\\x2d')
 }
 
 /**
@@ -125,10 +138,10 @@ export function escapeRegExp(str: string) {
  */
 export function escapeHtml(str: string): string {
   return str
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/&(?![\w#]+;)/g, '&amp;')
+    .replace(HTML_LT_REGEX, '&lt;')
+    .replace(HTML_GT_REGEX, '&gt;')
+    .replace(HTML_QUOT_REGEX, '&quot;')
+    .replace(HTML_AMP_REGEX, '&amp;')
 }
 
 export function enableTransitions() {

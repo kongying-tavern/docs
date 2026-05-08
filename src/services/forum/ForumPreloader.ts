@@ -2,6 +2,7 @@ import type ForumAPI from '@/apis/forum/api'
 import type { ForumQueryParams } from '~/services/forumService'
 import { ref } from 'vue'
 import { ForumService } from '~/services/forumService'
+import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
 
 export interface PreloaderOptions {
   isLoggedIn: boolean
@@ -113,7 +114,7 @@ export class ForumPreloader {
       }
     }
     catch (error) {
-      console.error(`[Preloader] Failed to preload ${targetFilter}:`, error)
+      forumLog.error(ForumLogGroup.PRELOADER, `Failed to preload ${targetFilter}`, error)
     }
     finally {
       this.preloadingFilters.value.delete(preloadKey)
@@ -141,17 +142,16 @@ export class ForumPreloader {
       return
     }
 
-    console.group(`🎯 [Preloader] Preloading filters: ${filtersToPreload.join(', ')}${options.creator ? ` (${options.creator})` : ''}`)
+    forumLog.info(ForumLogGroup.PRELOADER, `🎯 Preloading filters: ${filtersToPreload.join(', ')}${options.creator ? ` (${options.creator})` : ''}`)
 
     // 并发预加载所有其他filter
     const preloadPromises = filtersToPreload.map(targetFilter =>
       this.preloadFilterData(targetFilter, options).catch((error) => {
-        console.error(`Failed to preload ${targetFilter}:`, error)
+        forumLog.error(ForumLogGroup.PRELOADER, `Failed to preload ${targetFilter}`, error)
       }),
     )
 
     await Promise.all(preloadPromises)
-    console.groupEnd()
   }
 
   /**

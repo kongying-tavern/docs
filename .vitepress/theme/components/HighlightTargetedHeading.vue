@@ -18,8 +18,8 @@ function handleHighlight() {
   try {
     elem = document.querySelector(targetedHashId)
   }
-  catch (e) {
-    console.error(e)
+  catch {
+    // Invalid selector, silently return
     return
   }
   if (!elem)

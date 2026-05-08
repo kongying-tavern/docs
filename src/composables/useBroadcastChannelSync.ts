@@ -1,6 +1,7 @@
 import { createGlobalState } from '@vueuse/core'
 import { onMounted, readonly, ref } from 'vue'
 import { BroadcastChannelSync } from '~/services/events/BroadcastChannelSync'
+import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
 
 const useGlobalBroadcastChannelSync = createGlobalState(() => {
   const instance = ref<BroadcastChannelSync | null>(null)
@@ -14,7 +15,7 @@ const useGlobalBroadcastChannelSync = createGlobalState(() => {
         isEnabled.value = true
       }
       catch (error) {
-        console.warn('[BroadcastChannelSync] 初始化失败:', error)
+        forumLog.warn(ForumLogGroup.BROADCAST, '初始化失败', error)
       }
     }
   }
@@ -47,8 +48,7 @@ export function enableBroadcastChannelSync() {
       instance.enable()
       return instance
     }
-    catch (error) {
-      console.warn('[useBroadcastChannelSync] 无法在当前环境启用:', error)
+    catch {
       return null
     }
   }

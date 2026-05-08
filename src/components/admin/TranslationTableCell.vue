@@ -82,16 +82,10 @@ async function copyFieldValue() {
   copyingField.value = true
 
   try {
-    const success = await translationExportService.copyToClipboard(value)
-    if (success) {
-      console.log('复制成功')
-    }
-    else {
-      console.error('复制失败')
-    }
+    await translationExportService.copyToClipboard(value)
   }
-  catch (error) {
-    console.error('复制出错:', error)
+  catch {
+    // Copy failed - silent error handling
   }
   finally {
     setTimeout(() => {

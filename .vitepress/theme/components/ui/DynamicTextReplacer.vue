@@ -13,6 +13,9 @@ const { tag = 'p', data } = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
+/** Matches HTML entities that need escaping */
+const HTML_ENTITY_REGEX = /["&<>]/g
+
 const slots = useSlots()
 
 const placeholderRegex = /%(\w+)/g
@@ -46,7 +49,7 @@ function renderVNodeToHTML(vnode: VNode | VNode[] | string | number | boolean | 
         ? Object.fromEntries(
             Object.entries(props)
               .filter(([key, value]) => value != null && key !== 'innerHTML' && key !== 'textContent')
-              .map(([key, value]) => [key, String(value).replace(/["&<>]/g, (char) => {
+              .map(([key, value]) => [key, String(value).replace(HTML_ENTITY_REGEX, (char) => {
                 const entities: Record<string, string> = { '"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;' }
                 return entities[char] || char
               })]),

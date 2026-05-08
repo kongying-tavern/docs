@@ -63,8 +63,8 @@ export async function getTopics(
       },
     )
   }
-  catch (error) {
-    console.warn('Failed to fetch comments, continuing without them:', error)
+  catch {
+    // Failed to fetch comments, continuing without them
     comments = [] // Use empty array if comments fail
   }
 

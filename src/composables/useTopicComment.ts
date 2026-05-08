@@ -91,7 +91,7 @@ export function useTopicComments() {
   })
 
   watch(commentLoadError, () => {
-    handleError(commentLoadError.value, message)
+    handleError(commentLoadError.value ?? undefined, message)
   })
 
   // Listen for comment deletion events

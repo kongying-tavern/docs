@@ -111,8 +111,8 @@ export function deleteNodeById(editor: Editor, id: string): boolean {
     editor.view.dispatch(tr)
     return true
   }
-  catch (error) {
-    console.error('Error deleting node:', error)
+  catch {
+    // Error deleting node
     return false
   }
 }
@@ -131,8 +131,8 @@ export function duplicateNodeById(editor: Editor, id: string): boolean {
     editor.view.dispatch(tr)
     return true
   }
-  catch (error) {
-    console.error('Error duplicating node:', error)
+  catch {
+    // Error duplicating node
     return false
   }
 }
@@ -145,7 +145,7 @@ export function reorderNodes(
   const targetPos = findNodePositionById(editor, targetId)
 
   if (!sourcePos || !targetPos) {
-    console.error('Could not find source or target node')
+    // Could not find source or target node
     return false
   }
 
@@ -162,8 +162,8 @@ export function reorderNodes(
     editor.view.dispatch(tr)
     return true
   }
-  catch (error) {
-    console.error('Error reordering nodes:', error)
+  catch {
+    // Error reordering nodes
     return false
   }
 }

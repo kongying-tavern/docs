@@ -10,6 +10,7 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { removeQueryParam } from '@/utils'
 import { AuthError, AuthErrorType } from '@/utils/auth-errors'
+import { log, LogGroup } from '@/utils/auth-logger'
 import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
@@ -53,7 +54,7 @@ function useLogin() {
       await redirectToOriginalPage()
     }
     catch (error) {
-      console.error('[Login]: OAuth flow failed', error)
+      log.error(LogGroup.LOGIN, 'OAuth flow failed', error)
     }
     finally {
       isAuthenticating.value = false
@@ -104,7 +105,7 @@ function useLogin() {
       storedRedirectUrl.value = withBase('/')
     }
     catch (error) {
-      console.warn('[Login]: Redirect failed, falling back to home', error)
+      log.warn(LogGroup.LOGIN, 'Redirect failed, falling back to home', error)
       await go(withBase('/'))
     }
   }
@@ -153,7 +154,7 @@ function useLogin() {
       }
     }
     catch (error) {
-      console.warn('[Login]: InterKnot SSO refresh failed, main auth still valid', error)
+      log.warn(LogGroup.LOGIN, 'InterKnot SSO refresh failed, main auth still valid', error)
     }
   }
 

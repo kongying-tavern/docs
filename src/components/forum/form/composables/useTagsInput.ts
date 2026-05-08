@@ -63,8 +63,8 @@ export function useTagsInput(options: UseTagsInputOptions) {
       const data = await labels.getAllLabelsName()
       tags.value = data.filter(label => topicTagLabelGetter.isLabel(label))
     }
-    catch (error) {
-      console.error('Failed to load tags:', error)
+    catch {
+      // Failed to load tags - use empty array
     }
   }
 

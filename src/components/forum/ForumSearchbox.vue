@@ -9,7 +9,6 @@ const { message } = useLocalized()
 
 // Get search function from the parent component context
 const searchTopics = inject<(query: string) => void | Promise<void>>('searchTopics', async () => {
-  console.warn('ForumSearchbox: searchTopics not provided, using default')
   // no-op fallback
 })
 

@@ -37,6 +37,9 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { qqGroupService } from '~/services/qqGroupService'
 
+/** Matches digits only for QQ group number validation */
+const DIGITS_ONLY_REGEX = /^\d+$/
+
 const loading = ref(false)
 const groups = ref<QQGroup[]>([])
 const showDialog = ref(false)
@@ -90,8 +93,7 @@ async function loadGroups() {
     await qqGroupService.loadGroups()
     groups.value = qqGroupService.getGroups()
   }
-  catch (error) {
-    console.error('Failed to load groups:', error)
+  catch {
     toast.error('加载群组数据失败')
   }
   finally {
@@ -148,8 +150,7 @@ async function saveGroup() {
     groups.value = qqGroupService.getGroups()
     closeDialog()
   }
-  catch (error) {
-    console.error('Failed to save group:', error)
+  catch {
     toast.error('保存失败')
   }
 }
@@ -202,7 +203,7 @@ function saveEdit() {
   if (!group)
     return
 
-  if (field === 'number' && !/^\d+$/.test(editingValue.value)) {
+  if (field === 'number' && !DIGITS_ONLY_REGEX.test(editingValue.value)) {
     toast.error('群号必须是数字')
     return
   }
@@ -235,7 +236,7 @@ function getStatusOption(status: QQGroup['status']) {
 
 async function exportJSON() {
   try {
-    const exportData = groups.value.map(({ order, ...group }) => group)
+    const exportData = groups.value.map(({ order: _order, ...group }) => group)
     const jsonData = JSON.stringify(exportData, null, 2)
     await navigator.clipboard.writeText(jsonData)
 
@@ -248,8 +249,7 @@ async function exportJSON() {
       },
     })
   }
-  catch (error) {
-    console.error('Failed to copy to clipboard:', error)
+  catch {
     toast.error('复制到剪贴板失败')
   }
 }
@@ -264,8 +264,7 @@ async function confirmReset() {
     await qqGroupService.resetToOriginalData()
     groups.value = qqGroupService.getGroups()
   }
-  catch (error) {
-    console.error('Reset failed:', error)
+  catch {
     toast.error('重置失败')
   }
   finally {

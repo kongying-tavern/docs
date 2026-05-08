@@ -1,6 +1,12 @@
 import type MarkdownIt from 'markdown-it'
 import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 
+/** Matches variable definition tags */
+const VARIABLE_DEF_REGEX = /^\{define:\s*(\w+)\s*\}(.*?)\{\/define\}/
+
+/** Matches variable usage tags */
+const VARIABLE_USAGE_REGEX = /^\{%=\s*(\w+)\s*%\}/
+
 function MarkdownItVariableInject(md: MarkdownIt): void {
   const variables: Record<string, string> = {}
 
@@ -11,7 +17,7 @@ function MarkdownItVariableInject(md: MarkdownIt): void {
       const start = state.pos
       const src = state.src.slice(start)
 
-      const match = src.match(/^\{define:\s*(\w+)\s*\}(.*?)\{\/define\}/)
+      const match = src.match(VARIABLE_DEF_REGEX)
 
       if (!match)
         return false
@@ -36,7 +42,7 @@ function MarkdownItVariableInject(md: MarkdownIt): void {
       const start = state.pos
       const src = state.src.slice(start)
 
-      const match = src.match(/^\{%=\s*(\w+)\s*%\}/)
+      const match = src.match(VARIABLE_USAGE_REGEX)
 
       if (!match)
         return false

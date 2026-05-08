@@ -1,6 +1,9 @@
 import { Extension, mergeAttributes, Node } from '@tiptap/core'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const CARD_BLOCK_REGEX = /```card\s*\n([\s\S]*?)\n```$/
+
 export interface CardOptions {
   title: string
   desc?: string
@@ -155,8 +158,7 @@ export const CardExtension = Extension.create({
             const fullText = beforeText + text
 
             // 匹配card代码块: ```card\n配置内容\n```
-            // eslint-disable-next-line regexp/no-super-linear-backtracking
-            const cardMatch = fullText.match(/```card\s*\n([\s\S]*?)\n```$/)
+            const cardMatch = fullText.match(CARD_BLOCK_REGEX)
             if (cardMatch) {
               const [fullMatch, configContent] = cardMatch
               const start = from - (fullMatch.length - text.length)
@@ -167,7 +169,7 @@ export const CardExtension = Extension.create({
                 try {
                   // 尝试解析YAML格式的配置
                   const lines = configContent.trim().split('\n')
-                  const config: any = {}
+                  const config: Partial<CardOptions> = {}
 
                   for (const line of lines) {
                     const [key, ...valueParts] = line.split(':')
@@ -175,7 +177,7 @@ export const CardExtension = Extension.create({
                       const value = valueParts.join(':').trim()
                       const cleanKey = key.trim()
                       if (CARD_PROPS.includes(cleanKey)) {
-                        config[cleanKey] = value
+                        (config as Record<string, string>)[cleanKey] = value
                       }
                     }
                   }

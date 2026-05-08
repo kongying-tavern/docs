@@ -4,6 +4,9 @@ import { useRouter } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { FILTER_SETS, FORUM_CONFIG } from '~/components/forum/constants'
 
+/** Matches user page route pattern */
+const USER_ROUTE_PATTERN_REGEX = /\/forum\/user\/([^/]+)/
+
 /**
  * Forum Route State Management
  * Handles route-based filters, navigation and URL synchronization
@@ -55,7 +58,7 @@ export const useForumRouteState = defineStore('forum-route-state', () => {
   // Extract creator from user page routes
   const routeCreator = computed(() => {
     if (pageType.value === 'user') {
-      const userMatch = route.path.match(/\/forum\/user\/([^/]+)/)
+      const userMatch = route.path.match(USER_ROUTE_PATTERN_REGEX)
       return userMatch ? decodeURIComponent(userMatch[1]) : null
     }
     return null

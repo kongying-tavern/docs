@@ -3,6 +3,18 @@ import type { Mark } from '@tiptap/pm/model'
 import Link from '@tiptap/extension-link'
 import { convertSiteUrl, fetchPageTitle, generateTopicUrl, isSiteUrl, isValidTopicId, parseTopicId } from './siteUrlParser'
 
+/** Matches IP addresses */
+const IP_ADDRESS_REGEX = /^\d+\.\d+\.\d+\.\d+$/
+
+/** Matches #XXXXXX format topic IDs with trailing space in input rules */
+const TOPIC_ID_INPUT_REGEX = /(?:^|\s)(#[A-Z0-9]{6}) $/
+
+/** Matches URLs for paste rules */
+const URL_PASTE_REGEX = /(https?:\/\/\S*)/gi
+
+/** Matches #XXXXXX format topic IDs in paste rules */
+const TOPIC_ID_PASTE_REGEX = /(#[A-Z0-9]{6})/g
+
 /**
  * 常见网站白名单
  */
@@ -99,7 +111,7 @@ export function isAllowedUri(uri: string): boolean {
     const hostname = url.hostname.toLowerCase()
 
     // 检查是否是 localhost 或 IP 地址
-    if (hostname === 'localhost' || /^\d+\.\d+\.\d+\.\d+$/.test(hostname)) {
+    if (hostname === 'localhost' || IP_ADDRESS_REGEX.test(hostname)) {
       return true
     }
 
@@ -128,7 +140,8 @@ export const defaultLinkConfig = {
     rel: 'noopener noreferrer',
   },
   // 为本站链接添加特殊样式
-  renderHTML({ HTMLAttributes, mark }: { HTMLAttributes: any, mark: any }) {
+  // eslint-disable-next-line ts/no-explicit-any
+  renderHTML({ HTMLAttributes, mark }: any) {
     const isSiteLink = mark.attrs['data-site-link'] === 'true'
     const siteClass = isSiteLink ? 'site-link' : ''
 
@@ -266,7 +279,7 @@ export function createLinkExtension(options: {
       return [
         // 添加 #XXXXXX 格式的题目 ID 识别
         {
-          find: /(?:^|\s)(#[A-Z0-9]{6}) $/,
+          find: TOPIC_ID_INPUT_REGEX,
           handler: ({ range, match, commands }: { range: Range, match: RegExpMatchArray, commands: ChainedCommands }) => {
             const [, topicIdText] = match
             const topicId = parseTopicId(topicIdText)
@@ -309,7 +322,7 @@ export function createLinkExtension(options: {
       return [
         // 本站链接识别
         {
-          find: /(https?:\/\/\S*)/gi,
+          find: URL_PASTE_REGEX,
           handler: ({ match, commands, range }: { match: RegExpMatchArray, commands: ChainedCommands, range: Range }) => {
             const url = match[1]
 
@@ -350,7 +363,7 @@ export function createLinkExtension(options: {
         },
         // #XXXXXX 格式的题目 ID 识别
         {
-          find: /(#[A-Z0-9]{6})/g,
+          find: TOPIC_ID_PASTE_REGEX,
           handler: ({ match, commands, range }: { match: RegExpMatchArray, commands: ChainedCommands, range: Range }) => {
             const topicIdText = match[1]
             const topicId = parseTopicId(topicIdText)

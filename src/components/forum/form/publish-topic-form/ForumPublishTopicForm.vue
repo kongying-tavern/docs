@@ -100,8 +100,8 @@ async function handleFormSubmit(): Promise<void> {
       resetForm()
     })
   }
-  catch (error) {
-    console.error('Form submission failed:', error)
+  catch {
+    // Form submission failed - error already handled by toast
   }
 }
 

@@ -2,13 +2,19 @@
  * TipTap 扩展共用工具函数
  */
 
+/** Matches Chinese characters */
+const CHINESE_CHAR_REGEX = /[\u4E00-\u9FA5]/g
+
+/** Matches content with attributes */
+const CONTENT_WITH_ATTRS_REGEX = /^([^{]*)\{([^}]+)\}$/
+
 /**
  * 计算隐藏内容的最佳宽度
  * 复用自 .vitepress/theme/markdown/spoiler.ts
  */
 export function calculateWidth(content: string): number {
   // 计算中文字符（更宽）和其他字符
-  const chineseChars = (content.match(/[\u4E00-\u9FA5]/g) || []).length
+  const chineseChars = (content.match(CHINESE_CHAR_REGEX) || []).length
   const otherChars = content.length - chineseChars
 
   // 更精确的字符宽度计算
@@ -34,7 +40,7 @@ export interface ExtractedAttributes {
 
 export function extractAttributesFromContent(content: string): ExtractedAttributes {
   // 匹配模式: text{width=200,align=center} 或 text{w=150,a=right}
-  const match = content.match(/^([^{]*)\{([^}]+)\}$/)
+  const match = content.match(CONTENT_WITH_ATTRS_REGEX)
   if (!match)
     return { content }
 

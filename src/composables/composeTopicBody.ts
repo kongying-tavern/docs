@@ -1,6 +1,12 @@
 import type ForumAPI from '@/apis/forum/api'
 import { endsWith, startsWith, uniq } from 'lodash-es'
 
+/** Matches HTML comments in topic body */
+const HTML_COMMENT_SPLIT_REGEX = /(<!--.*(?=-->)-->)/gu
+
+/** Matches HTML comment start/end tags */
+const HTML_COMMENT_TAGS_REGEX = /^<!--|-->$/gu
+
 export function composeTopicBody(
   body: string,
   options: {
@@ -25,7 +31,7 @@ export function writeTopicBodyComment(
   if (!body)
     return ''
 
-  const chunks = body.split(/(<!--.*(?=-->)-->)/gu)
+  const chunks = body.split(HTML_COMMENT_SPLIT_REGEX)
   const chunksComments = chunks.filter(
     v => startsWith(v, '<!--') && endsWith(v, '-->'),
   )
@@ -36,7 +42,7 @@ export function writeTopicBodyComment(
   const chunksJson = chunksComments
     ? chunksComments.reduce((json, comment) => {
         const commentContent = (comment || '')
-          .replace(/^<!--|-->$/gu, '')
+          .replace(HTML_COMMENT_TAGS_REGEX, '')
           .trim()
         let newJson = json
 

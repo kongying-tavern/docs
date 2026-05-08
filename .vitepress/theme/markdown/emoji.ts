@@ -23,15 +23,16 @@ function initEmojiCache() {
   })
 }
 
+/** Matches emoji paths in markdown */
+const EMOJI_PATH_REGEX: RegExp = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/
+
 const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
   // 初始化缓存
   initEmojiCache()
 
   // 匹配 emoji 的正则表达式
   // 匹配 :数字.中文或英文/中文或英文-中文或英文.png: 格式
-  const emojiRegex = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/
-
-  // 添加内联规则
+  const EMOJI_REGEX: RegExp = EMOJI_PATH_REGEX
   md.inline.ruler.push('customEmoji', (state, silent) => {
     const pos = state.pos
     const ch = state.src.charCodeAt(pos)
@@ -40,7 +41,7 @@ const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
     if (ch !== 0x3A/* : */)
       return false
 
-    const match = emojiRegex.exec(state.src.slice(pos))
+    const match = EMOJI_REGEX.exec(state.src.slice(pos))
     if (!match)
       return false
 
@@ -50,7 +51,7 @@ const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
     // 检查是否在白名单中
     const emojiData = emojiCache.get(emojiPath)
     if (!emojiData) {
-      console.log(`Emoji not found in cache: ${emojiPath}`)
+      // Debug only - skip unknown emojis silently
       return false
     }
 

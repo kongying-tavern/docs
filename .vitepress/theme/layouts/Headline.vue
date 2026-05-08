@@ -28,11 +28,8 @@ const buttonComponent = computed(() => {
     try {
       return resolveComponent(frontmatter.value.button.component)
     }
-    catch (error) {
-      console.warn(
-        `无法解析组件: ${frontmatter.value.button.component}`,
-        error,
-      )
+    catch {
+      // 无法解析组件，静默返回 null
       return null
     }
   }

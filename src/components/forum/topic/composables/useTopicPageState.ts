@@ -1,3 +1,4 @@
+import type { ForumAPI } from '@/apis/forum/api'
 import { useQuery, useQueryCache } from '@pinia/colada'
 import { watchOnce } from '@vueuse/core'
 import markdownIt from 'markdown-it'
@@ -52,7 +53,7 @@ export function useTopicPageState() {
     }
 
     // Listen for comment events to update topic data
-    const handleCommentCreated = ({ topicId, comment }: { topicId: string, comment: any }) => {
+    const handleCommentCreated = ({ topicId, comment }: { topicId: string, comment: ForumAPI.Comment }) => {
       if (String(topicId) === String(params.value?.id) && topic.value) {
         // Update comment count
         const newCommentCount = (topic.value.commentCount || 0) + 1
@@ -138,7 +139,7 @@ export function useTopicPageState() {
 
     // Only redirect to feedback page if clearly external access or no referrer
     if (!referrer || !referrer.startsWith(currentOrigin)) {
-      const feedbackPath = withBase(`${getLangPath(localeIndex.value)}feedback/`)
+      const feedbackPath = withBase(`${getLangPath(localeIndex.value)}feedback`)
       return go(feedbackPath)
     }
 
