@@ -18,8 +18,8 @@ export function scrollTo(options: ScrollToOptions = {}) {
   try {
     target = el || document.getElementById(decodeURIComponent(hash).slice(1))
   }
-  catch (e) {
-    console.warn(e)
+  catch {
+    // Invalid hash/selector, ignore
   }
 
   if (target) {

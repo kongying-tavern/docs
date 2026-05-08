@@ -8,12 +8,15 @@ const { showReaction = true } = defineProps<{
   showReaction?: boolean
 }>()
 
+/** Matches :path placeholder in URL templates */
+const PATH_PLACEHOLDER_REGEX = /:path/g
+
 const { theme, page } = useData()
 const { formatDate, message } = useLocalized()
 
 const editLink = computed(() => !import.meta.env.DEV
   ? 'https://github.com/kongying-tavern/docs/edit/main/src/:path'.replace(
-      /:path/g,
+      PATH_PLACEHOLDER_REGEX,
       page.value.filePath,
     )
   : `${window.location.origin}/__open-in-editor?file=${encodeURIComponent(`./src/${page.value.filePath}`)}`,

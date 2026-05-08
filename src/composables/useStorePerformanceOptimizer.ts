@@ -15,8 +15,8 @@ export function useOptimizedTopicList(initialTopics: ForumAPI.Topic[] = []) {
   // Memoized filtering with smart dependency tracking
   const createMemoizedFilter = (filterFn: (topics: ForumAPI.Topic[]) => ForumAPI.Topic[]) => {
     return useMemoizedComputed(
-      topicList => filterFn(topicList),
-      () => [topics.value] as [ForumAPI.Topic[]],
+      topicList => filterFn(topicList as ForumAPI.Topic[]),
+      () => [topics.value],
       ([a], [b]) => a === b, // Reference equality check for shallow updates
     )
   }
@@ -90,14 +90,14 @@ export function useOptimizedSearch() {
     (query, results) => {
       if (!query)
         return []
-      const lowerQuery = query.toLowerCase()
-      return results.filter((topic: ForumAPI.Topic) =>
+      const lowerQuery = (query as string).toLowerCase()
+      return (results as ForumAPI.Topic[]).filter((topic: ForumAPI.Topic) =>
         topic.title.toLowerCase().includes(lowerQuery)
         || topic.content.text.toLowerCase().includes(lowerQuery)
         || topic.tags.some((tag: string) => tag.toLowerCase().includes(lowerQuery)),
       )
     },
-    () => [debouncedQuery.value.value, searchResults.value] as [string | undefined, ForumAPI.Topic[]],
+    () => [debouncedQuery.value.value, searchResults.value],
   )
 
   // Search state management
@@ -135,7 +135,7 @@ export function useOptimizedSearch() {
 }
 
 // Optimized view state management
-export function useOptimizedViewState<T extends Record<string, any>>(initialState: T) {
+export function useOptimizedViewState<T extends Record<string, unknown>>(initialState: T) {
   const batchUpdater = useBatchUpdates()
   const { flushUpdates } = batchUpdater
   const viewState = ref({ ...initialState })
@@ -150,15 +150,15 @@ export function useOptimizedViewState<T extends Record<string, any>>(initialStat
   // Optimized computed properties with memoization
   const createMemoizedViewComputed = <R>(
     computation: (state: T) => R,
-    dependencies?: (state: T) => any[],
+    dependencies?: (state: T) => unknown[],
   ) => {
     return useMemoizedComputed(
-      state => computation(state),
-      () => [viewState.value] as [T],
+      state => computation(state as T),
+      () => [viewState.value],
       ([a], [b]) => {
         if (dependencies) {
-          const aDeps = dependencies(a)
-          const bDeps = dependencies(b)
+          const aDeps = dependencies(a as T)
+          const bDeps = dependencies(b as T)
           return JSON.stringify(aDeps) === JSON.stringify(bDeps)
         }
         return a === b
@@ -270,7 +270,7 @@ export function useOptimizedCache<K, V>(
 }
 
 // Integration helper for existing stores
-export function enhanceStoreWithPerformance<T extends Record<string, any>>(store: T) {
+export function enhanceStoreWithPerformance<T extends Record<string, unknown>>(store: T) {
   const performanceMetrics = ref({
     renderCount: 0,
     updateCount: 0,
@@ -280,7 +280,7 @@ export function enhanceStoreWithPerformance<T extends Record<string, any>>(store
 
   // Wrap store actions with performance tracking
   // Using precise generic constraints for better type safety
-  const wrapAction = <A extends (...args: readonly unknown[]) => unknown>(action: A, name: string): A => {
+  const wrapAction = <A extends (...args: readonly unknown[]) => unknown>(action: A, _name: string): A => {
     return ((...args: Parameters<A>) => {
       const start = performance.now()
       const result = action(...args)
@@ -292,9 +292,7 @@ export function enhanceStoreWithPerformance<T extends Record<string, any>>(store
         = (performanceMetrics.value.averageUpdateTime * (performanceMetrics.value.updateCount - 1) + duration)
           / performanceMetrics.value.updateCount
 
-      if (duration > 5) {
-        console.warn(`Store action ${name} took ${duration.toFixed(2)}ms`)
-      }
+      // Performance threshold warning removed
 
       return result
     }) as A

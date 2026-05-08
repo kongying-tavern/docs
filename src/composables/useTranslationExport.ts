@@ -113,8 +113,8 @@ export function useTranslationExport({
   }
 
   // 构建完整的语言翻译对象
-  function buildLanguageTranslations(locale: string): Record<string, any> {
-    const translations: Record<string, any> = {}
+  function buildLanguageTranslations(locale: string): Record<string, unknown> {
+    const translations: Record<string, unknown> = {}
 
     translationEntries().forEach((entry) => {
       if (!entry.isDeleted && entry.translations[locale]) {
@@ -126,12 +126,12 @@ export function useTranslationExport({
           if (!current[keys[i]]) {
             current[keys[i]] = {}
           }
-          current = current[keys[i]]
+          current = current[keys[i]] as Record<string, unknown>
         }
 
         // 设置最终值
         const finalKey = keys.at(-1)
-        let value = entry.translations[locale]
+        let value: string | unknown = entry.translations[locale]
 
         // 处理特殊类型的值
         if (typeof value === 'string') {
@@ -147,7 +147,7 @@ export function useTranslationExport({
           }
         }
 
-        current[finalKey] = value
+        current[finalKey!] = value
       }
     })
 
@@ -175,8 +175,8 @@ export function useTranslationExport({
           downloadFile(`${localeCode}.json`, content)
           exportedCount++
         }
-        catch (error) {
-          console.error(`导出 ${locale} 失败:`, error)
+        catch {
+          // 导出失败 - silent fail, toast will show error
         }
       }
     })

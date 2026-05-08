@@ -2,6 +2,12 @@ import type { ConfigurableWindow } from '@vueuse/core'
 import { defaultWindow, pausableWatch, useEventListener } from '@vueuse/core'
 import { reactive } from 'vue'
 
+/** Matches leading hash symbol */
+const LEADING_HASH_REGEX = /^#/
+
+/** Matches Safari version in user agent */
+const SAFARI_VERSION_REGEX = /version\/([\d.]+) safari/i
+
 export type UrlParams = Record<string, string[] | string>
 
 export interface UseUrlSearchParamsOptions<T> extends ConfigurableWindow {
@@ -77,7 +83,7 @@ export function useQueryState<T extends Record<string, unknown> = UrlParams>(
       return index > 0 ? hash.slice(index) : ''
     }
     else {
-      return (window.location.hash || '').replace(/^#/, '')
+      return (window.location.hash || '').replace(LEADING_HASH_REGEX, '')
     }
   }
 
@@ -204,7 +210,7 @@ export function getDefaultThrottle() {
     return 50
   }
   try {
-    const match = navigator.userAgent?.match(/version\/([\d.]+) safari/i)
+    const match = navigator.userAgent?.match(SAFARI_VERSION_REGEX)
     return Number.parseFloat(match![1]!) >= 17 ? 120 : 320
   }
   catch {

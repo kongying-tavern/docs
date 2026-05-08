@@ -5,12 +5,18 @@ import { computed } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
 
+/** Matches dots and slashes in route paths */
+const DOT_SLASH_REGEX = /[./]+/g
+
+/** Matches .html extension suffix */
+const HTML_SUFFIX_REGEX = /_html$/
+
 const { params, theme } = useData()
 const { hasSidebar, hasAside, leftAside } = useSidebar()
 const route = useRoute()
 
 const pageName = computed(() =>
-  route.path.replace(/[./]+/g, '_').replace(/_html$/, ''),
+  route.path.replace(DOT_SLASH_REGEX, '_').replace(HTML_SUFFIX_REGEX, ''),
 )
 
 if (params?.value?.title && !import.meta.env.SSR) {

@@ -1,5 +1,11 @@
 import { FORM_HASH } from './form/publish-topic-form/config'
 
+/** Matches @username mentions in text */
+const AT_MENTION_USERNAME_REGEX = /@([a-z0-9]+)(?=\s|$)/gi
+
+/** Matches trailing slashes in paths */
+const TRAILING_SLASHES_REGEX = /\/+$/
+
 export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   const arr: string[] = []
   labels.map(val => arr.push(val.name))
@@ -8,12 +14,10 @@ export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
 }
 
 export function replaceAtMentions(text: string): string {
-  const regex = /@([a-z0-9]+)(?=\s|$)/gi
-
-  if (regex.exec(text) == null)
+  if (AT_MENTION_USERNAME_REGEX.exec(text) == null)
     return text
 
-  return text.replaceAll(regex, (_match, p1) => {
+  return text.replaceAll(AT_MENTION_USERNAME_REGEX, (_match, p1) => {
     return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
   })
 }
@@ -88,7 +92,7 @@ export function updateLastPathSegment(newSegment: string, replace = true) {
     return
 
   const { pathname, search, hash } = window.location
-  const segments = pathname.replace(/\/+$/, '').split('/')
+  const segments = pathname.replace(TRAILING_SLASHES_REGEX, '').split('/')
 
   if (segments.length === 0 || (segments.length === 1 && segments[0] === ''))
     segments[0] = newSegment

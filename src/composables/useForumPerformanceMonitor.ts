@@ -1,4 +1,5 @@
 import { computed, onUnmounted, ref, watch } from 'vue'
+import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
 import { usePerformanceMonitor } from './usePerformanceOptimizer'
 
 /**
@@ -214,15 +215,11 @@ export function useForumPerformanceMonitor(
     }
 
     if (enableDetailedLogging) {
-      console.group(`🔍 Performance Report: ${componentName}`)
-      console.table(metrics)
-      if (alerts.value.length > 0) {
-        console.warn('Performance Alerts:', alerts.value)
-      }
-      if (report.recommendations.length > 0) {
-        console.info('Recommendations:', report.recommendations)
-      }
-      console.groupEnd()
+      forumLog.info(ForumLogGroup.PERFORMANCE, `🔍 Performance Report: ${componentName}`, {
+        metrics,
+        alerts: alerts.value.length > 0 ? alerts.value : undefined,
+        recommendations: report.recommendations.length > 0 ? report.recommendations : undefined,
+      })
     }
 
     return report

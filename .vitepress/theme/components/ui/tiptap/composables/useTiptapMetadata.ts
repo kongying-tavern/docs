@@ -3,6 +3,9 @@ import type { ComputedRef } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 
+/** Matches whitespace for word counting */
+const WHITESPACE_WORD_COUNT_REGEX = /\s+/
+
 export interface TiptapMetadata {
   lastSaved: Date | null
   wordCount: number
@@ -38,7 +41,7 @@ export function useTiptapMetadata(editor: ComputedRef<Editor | undefined>) {
       // 后备方案：直接计算（性能较低）
       const text = editor.value.state.doc.textContent
       metadata.value.charCount = text.length
-      metadata.value.wordCount = text.split(/\s+/).filter(word => word.length > 0).length
+      metadata.value.wordCount = text.split(WHITESPACE_WORD_COUNT_REGEX).filter(word => word.length > 0).length
     }
 
     // 计算阅读时间 (平均阅读速度: 200 words per minute)

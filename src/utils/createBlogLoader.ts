@@ -5,6 +5,9 @@ import { createContentLoader } from 'vitepress'
 import { parseAuthors } from './frontmatter'
 import { getGitFileInfo } from './git'
 
+/** Matches language path in blog URLs */
+const BLOG_LANGUAGE_PATH_REGEX = /^\/([^/]+)\/blog\/posts\//
+
 export interface BlogPost {
   title: string
   url: string
@@ -23,7 +26,7 @@ export interface BlogPost {
  * 提取URL路径中的语言信息
  */
 function extractLanguageFromUrl(url: string): string {
-  const pathMatch = url.match(/^\/([^/]+)\/blog\/posts\//)
+  const pathMatch = url.match(BLOG_LANGUAGE_PATH_REGEX)
   return pathMatch ? pathMatch[1] : 'zh'
 }
 

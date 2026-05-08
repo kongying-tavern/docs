@@ -31,8 +31,8 @@ export function loadFonts(options: FontItem[]) {
         document.fonts.add(font)
         // fontsLoadState.value = [...fontsLoadState.value, fontName]
       })
-      .catch((error) => {
-        console.error(`Font load error (${fontName}):`, error)
+      .catch(() => {
+        // Font load error - silent fail
       })
   }
 
@@ -40,7 +40,7 @@ export function loadFonts(options: FontItem[]) {
     .then(() => {
       document.documentElement.classList.add(FONT_LOAD_COMPLETE_CLASS)
     })
-    .catch((error) => {
-      console.error(`Font load error:`, error)
+    .catch(() => {
+      // Font load error - silent fail
     })
 }

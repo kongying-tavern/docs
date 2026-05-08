@@ -1,5 +1,9 @@
 import { Extension, mergeAttributes, Node } from '@tiptap/core'
 
+/** Matches timeline blocks in markdown */
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const TIMELINE_BLOCK_REGEX = /:::timeline\s+([^\n]+)\n([\s\S]*?)\n:::/g
+
 /**
  * 时间线节点
  * 语法: :::timeline 标题
@@ -64,8 +68,7 @@ export const TimelineNode = Node.create({
   addPasteRules() {
     return [
       {
-        // eslint-disable-next-line regexp/no-super-linear-backtracking
-        find: /:::timeline\s+([^\n]+)\n([\s\S]*?)\n:::/g,
+        find: TIMELINE_BLOCK_REGEX,
         handler: ({ match, commands, range }) => {
           const [, title, content] = match
 

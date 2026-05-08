@@ -133,8 +133,7 @@ export function useClipboardPaste(options: ClipboardPasteOptions = {}) {
         }
       }
     }
-    catch (error) {
-      console.error('Error handling clipboard paste:', error)
+    catch {
       const errorText = message?.value?.forum?.publish?.form?.upload?.paste?.clipboardError
         || '处理剪贴板内容时出错'
       toast.error(errorText)
@@ -186,8 +185,7 @@ export function useClipboardPaste(options: ClipboardPasteOptions = {}) {
         onPaste?.(validFiles)
       }
     }
-    catch (error) {
-      console.error('Error handling drag drop:', error)
+    catch {
       const errorText = message?.value?.forum?.publish?.form?.upload?.paste?.dragDropError
         || '处理拖放文件时出错'
       toast.error(errorText)

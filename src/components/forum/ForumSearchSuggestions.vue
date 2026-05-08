@@ -15,19 +15,22 @@ const emits = defineEmits([
   'select',
 ])
 
+/** Matches special regex characters for escaping */
+const SPECIAL_CHARS_REGEX = /[-/\\^$*+?.()|[\]{}]/g
+
 // Get locale information for proper link generation
 const { localeIndex } = useData()
 
 // Generate correct topic link with locale and base
 function getTopicLink(topicId: string): string {
-  return `.${`${getLangPath(localeIndex.value)}feedback/topic/${topicId}`}`
+  return `.${getLangPath(localeIndex.value)}feedback/topic/${topicId}`
 }
 
 function highlightText(text: string, keyword: string, scope: number = 20) {
   if (!keyword)
     return text
 
-  const keywordEscaped = keyword.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+  const keywordEscaped = keyword.replace(SPECIAL_CHARS_REGEX, '\\$&')
   const regex = new RegExp(`(${keywordEscaped})`, 'gi')
   const match = text.match(regex)
 

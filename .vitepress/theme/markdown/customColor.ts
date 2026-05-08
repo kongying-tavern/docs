@@ -1,6 +1,9 @@
 import type MarkdownIt from 'markdown-it'
 import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 
+/** Matches custom color tags in markdown */
+const CUSTOM_COLOR_TAG_REGEX = /^\{color:([^}]+)\}(.*?)\{\/color\}/
+
 function MarkdownItCustomColor(md: MarkdownIt): void {
   md.inline.ruler.before(
     'emphasis',
@@ -9,7 +12,7 @@ function MarkdownItCustomColor(md: MarkdownIt): void {
       const start = state.pos
       const src = state.src.slice(start)
 
-      const match = src.match(/^\{color:([^}]+)\}(.*?)\{\/color\}/)
+      const match = src.match(CUSTOM_COLOR_TAG_REGEX)
 
       if (!match)
         return false

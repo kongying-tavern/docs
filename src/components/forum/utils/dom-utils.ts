@@ -1,5 +1,11 @@
 import { nextTick } from 'vue'
 
+/** Matches auto or scroll overflow values */
+const AUTO_SCROLL_REGEX = /auto|scroll/
+
+/** Matches trailing slashes in paths */
+const TRAILING_SLASHES_PATH_REGEX = /\/+$/
+
 // Scroll utilities
 export interface ScrollToOptions {
   element?: Element | string
@@ -94,7 +100,7 @@ export function getScrollParent(element: Element): Element | null {
     return null
 
   const style = window.getComputedStyle(element)
-  const isScrollable = /auto|scroll/.test(
+  const isScrollable = AUTO_SCROLL_REGEX.test(
     style.overflow + style.overflowX + style.overflowY,
   )
 
@@ -166,8 +172,8 @@ export async function copyToClipboard(text: string): Promise<boolean> {
       return success
     }
   }
-  catch (error) {
-    console.error('Failed to copy text to clipboard:', error)
+  catch {
+    // Failed to copy text to clipboard
     return false
   }
 }
@@ -194,7 +200,7 @@ export function updateUrlPath(newSegment: string, replace: boolean = true): void
     return
 
   const { pathname, search, hash } = window.location
-  const segments = pathname.replace(/\/+$/, '').split('/')
+  const segments = pathname.replace(TRAILING_SLASHES_PATH_REGEX, '').split('/')
 
   if (segments.length === 0 || (segments.length === 1 && segments[0] === '')) {
     segments[0] = newSegment

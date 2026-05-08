@@ -1,5 +1,6 @@
 import type { INTER_KNOT } from './api'
 import type { SSOAuth } from '@/stores/useUserAuth'
+import { log, LogGroup } from '@/utils/auth-logger'
 
 export const ASSETS_URL_PREFIX = 'https://webp.assets.interknot.site/'
 
@@ -41,7 +42,7 @@ export function normalizeSSOAuth(auth: INTER_KNOT.AuthResponse): SSOAuth {
   const now = Date.now()
   const expiresIn = Math.max(0, expiresAt - now) // 确保不为负数
 
-  console.debug('[SSO Auth]: 解析SSO认证数据', {
+  log.debug(LogGroup.SSO, '解析SSO认证数据', {
     token: auth.data.token ? '存在' : '缺失',
     createdAt: new Date(createdAt).toLocaleString(),
     expiresAt: new Date(expiresAt).toLocaleString(),
@@ -50,7 +51,7 @@ export function normalizeSSOAuth(auth: INTER_KNOT.AuthResponse): SSOAuth {
   })
 
   if (expiresAt <= now) {
-    console.warn('[SSO Auth]: SSO token已过期，即将返回的数据可能无效')
+    log.warn(LogGroup.SSO, 'SSO token已过期，即将返回的数据可能无效')
   }
 
   return {

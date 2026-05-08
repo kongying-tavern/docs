@@ -106,8 +106,6 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
       case 'update-tags':
         forumEvents.topicAction(topic.id, 'update-tags', payload)
         break
-      default:
-        console.warn(`Unknown menu action: ${actionId}`)
     }
   }
 

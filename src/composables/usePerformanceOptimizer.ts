@@ -92,13 +92,13 @@ export function useThrottledRef<T>(initialValue: T, delay: number = 100) {
 }
 
 // Memoized computation with dependency tracking
-// Using any[] for maximum compatibility with different dependency types (performance utility)
+// Using unknown[] for type safety while maintaining flexibility with different dependency types
 export function useMemoizedComputed<T>(
-  computation: (...deps: any[]) => T,
-  dependencies: () => any[],
-  isEqual: (a: any[], b: any[]) => boolean = (a, b) => JSON.stringify(a) === JSON.stringify(b),
+  computation: (...deps: unknown[]) => T,
+  dependencies: () => unknown[],
+  isEqual: (a: unknown[], b: unknown[]) => boolean = (a, b) => JSON.stringify(a) === JSON.stringify(b),
 ) {
-  const cache = ref<{ deps: any[], result: T } | null>(null)
+  const cache = ref<{ deps: unknown[], result: T } | null>(null)
 
   return computed(() => {
     const currentDeps = dependencies()
@@ -176,8 +176,8 @@ export function useBatchUpdates() {
       try {
         update()
       }
-      catch (error) {
-        console.error('Batch update failed:', error)
+      catch {
+        // Batch update failed - silent fail
       }
     })
   }
@@ -202,7 +202,7 @@ export function useBatchUpdates() {
 }
 
 // Performance monitoring hook
-export function usePerformanceMonitor(name: string) {
+export function usePerformanceMonitor(_name: string) {
   const metrics = ref({
     renderCount: 0,
     lastRenderTime: 0,
@@ -221,9 +221,7 @@ export function usePerformanceMonitor(name: string) {
     metrics.value.totalRenderTime += duration
     metrics.value.averageRenderTime = metrics.value.totalRenderTime / metrics.value.renderCount
 
-    if (duration > 16) { // 16ms is 60fps threshold
-      console.warn(`Performance: ${name} took ${duration.toFixed(2)}ms to render`)
-    }
+    // Performance threshold check removed
   }
 
   const resetMetrics = () => {

@@ -38,6 +38,7 @@ export function getHeader(
   for (const headerName of headerNameList) {
     const val = response.headers.get(headerName)
     if (!val || Number.isNaN(Number(val))) {
+      // eslint-disable-next-line no-console
       console.warn(`Invalid or missing header: ${headerName}`)
       return [undefined, new Error(`Invalid or missing header: ${headerName}`)]
     }

@@ -1,11 +1,14 @@
 import type { Ref } from 'vue'
 import { computed, ref, unref } from 'vue'
 
+/** Matches markdown image syntax for removal */
+const MARKDOWN_IMAGE_REMOVE_REGEX = /!\[.*?\]\(.*?\)/g
+
 export function useTextCollapse(contentRaw: string | Ref<string>, maxLength: number = 180) {
   const isExpanded = ref(false)
   const hasOverflow = computed(() => {
     const content = unref(contentRaw)
-    return content && typeof content === 'string' ? content.replace(/!\[.*?\]\(.*?\)/g, '').length > maxLength : false
+    return content && typeof content === 'string' ? content.replace(MARKDOWN_IMAGE_REMOVE_REGEX, '').length > maxLength : false
   })
   const collapseText = computed(() => {
     const content = unref(contentRaw)

@@ -21,6 +21,9 @@ import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 defineOptions({
   meta: {
     i18n: true,
+    routeOptions: {
+      type: ['feat', 'closed', 'bug'],
+    },
   },
 })
 

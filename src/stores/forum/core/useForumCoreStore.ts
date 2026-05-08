@@ -38,8 +38,7 @@ export const useForumCoreStore = defineStore('forum-core', () => {
       // The actual search API call would be handled by data stores
       // This store only manages UI state
     }
-    catch (error) {
-      console.error('Search failed:', error)
+    catch {
       searchState.setSearching(false)
     }
   }

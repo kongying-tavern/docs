@@ -10,6 +10,17 @@ const LOCALE_MAP = {
   'ja': ja,
 } as const
 
+// Text formatting regex patterns
+const HTML_TO_NEWLINE_TAGS_REGEX = /<\s*(br|p|div|li|tr)[^>]*>/gi
+const HTML_TAG_REGEX = /<[^>]+>/g
+const MULTIPLE_NEWLINES_REGEX = /\n{2,}/g
+const HTML_ENTITY_REGEX = /&(#\d+|#x[\da-f]+|[a-z]+);/gi
+const MARKDOWN_SYNTAX_REGEX = /([*_]{1,3}|~{2}|`{1,3}|#+|!\[|[\][()>])/g
+const MARKDOWN_LIST_REGEX = /\s*[-+*] /g
+const KEBAB_TO_CAMEL_REGEX = /-([a-z])/g
+const CAMEL_TO_KEBAB_REGEX = /([A-Z])/g
+const URL_PATH_REPLACE_REGEX = /\/[^/]*$/
+
 export function formatForumDate(
   date: string | Date,
   locale: keyof typeof LOCALE_MAP = 'zh-CN',
@@ -52,13 +63,13 @@ export function formatPlainText(text: string): string {
 
   // Remove HTML tags but preserve line breaks
   const htmlToNewline = text
-    .replace(/<\s*(br|p|div|li|tr)[^>]*>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/\n{2,}/g, '\n')
+    .replace(HTML_TO_NEWLINE_TAGS_REGEX, '\n')
+    .replace(HTML_TAG_REGEX, '')
+    .replace(MULTIPLE_NEWLINES_REGEX, '\n')
 
   // Decode HTML entities
   const htmlEntityDecode = htmlToNewline.replace(
-    /&(#\d+|#x[\da-f]+|[a-z]+);/gi,
+    HTML_ENTITY_REGEX,
     (entity) => {
       const textarea = document.createElement('textarea')
       textarea.innerHTML = entity
@@ -68,9 +79,9 @@ export function formatPlainText(text: string): string {
 
   // Remove Markdown syntax
   const markdownToPlainText = htmlEntityDecode
-    .replace(/([*_]{1,3}|~{2}|`{1,3}|#+|!\[|[\][()>])/g, '')
-    .replace(/\s*[-+*] /g, '')
-    .replace(/\n{2,}/g, '\n')
+    .replace(MARKDOWN_SYNTAX_REGEX, '')
+    .replace(MARKDOWN_LIST_REGEX, '')
+    .replace(MULTIPLE_NEWLINES_REGEX, '\n')
 
   return markdownToPlainText.trim()
 }
@@ -120,7 +131,7 @@ export function formatFileSize(bytes: number): string {
 
 // URL formatting utilities
 export function formatTopicUrl(topicId: string, topicType: string = ''): string {
-  const baseUrl = location.origin + location.pathname.replace(/\/[^/]*$/, '')
+  const baseUrl = location.origin + location.pathname.replace(URL_PATH_REPLACE_REGEX, '')
 
   if (topicType === 'POST') {
     return `${baseUrl}/blog/${topicId}`
@@ -130,7 +141,7 @@ export function formatTopicUrl(topicId: string, topicType: string = ''): string 
 }
 
 export function formatUserProfileUrl(username: string): string {
-  const baseUrl = location.origin + location.pathname.replace(/\/[^/]*$/, '')
+  const baseUrl = location.origin + location.pathname.replace(URL_PATH_REPLACE_REGEX, '')
   return `${baseUrl}/feedback/user/${username}`
 }
 
@@ -158,9 +169,9 @@ export function capitalizeFirst(str: string): string {
 }
 
 export function kebabToCamelCase(str: string): string {
-  return str.replace(/-([a-z])/g, (_, char) => char.toUpperCase())
+  return str.replace(KEBAB_TO_CAMEL_REGEX, (_, char) => char.toUpperCase())
 }
 
 export function camelToKebabCase(str: string): string {
-  return str.replace(/([A-Z])/g, '-$1').toLowerCase()
+  return str.replace(CAMEL_TO_KEBAB_REGEX, '-$1').toLowerCase()
 }

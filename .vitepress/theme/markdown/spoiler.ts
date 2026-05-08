@@ -8,6 +8,9 @@ import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 import type { Delimiter } from 'markdown-it/lib/rules_inline/state_inline.mjs'
 import type Token from 'markdown-it/lib/token.mjs'
 
+/** Matches spoiler content with attributes */
+const SPOILER_CONTENT_REGEX = /^([^{]*)\{([^}]+)\}$/
+
 export interface MarkdownItSpoilerOptions {
   /**
    * @default "span"
@@ -54,7 +57,7 @@ function extractSpoilerContent(tokens: Token[], startIdx: number): string {
  */
 function extractAttributesFromContent(content: string): SpoilerContent {
   // Match pattern: text{width=200,align=center} or text{w=150,a=right}
-  const match = content.match(/^([^{]*)\{([^}]+)\}$/)
+  const match = content.match(SPOILER_CONTENT_REGEX)
   if (!match)
     return { content }
 

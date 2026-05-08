@@ -86,7 +86,6 @@ export function useHandlers(
         if (file.uid)
           return
         file.uid ||= genFileId()
-        console.log(file.status)
         file.status ||= 'success'
       }
     },

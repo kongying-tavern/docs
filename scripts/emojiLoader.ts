@@ -2,6 +2,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+/** Matches image file extensions */
+const IMAGE_FILE_REGEX = /\.(?:png|jpg|jpeg|gif|webp)$/
+
 const filename = fileURLToPath(import.meta.url)
 const baseDir = path.join(filename, '../../src/public/emojis')
 const dataDir = path.join(filename, '../../src/_data')
@@ -16,7 +19,7 @@ function getImagesFromFolder(folderPath: string, folderName: string) {
   console.log(`正在导入 [${folderName}] 表情包...`)
   const files = fs.readdirSync(folderPath)
 
-  const imageList = files.filter(file => /\.(?:png|jpg|jpeg|gif|webp)$/.test(file))
+  const imageList = files.filter(file => IMAGE_FILE_REGEX.test(file))
     .map((file) => {
       const emojiPath = `/${path.posix.join(folderName, file)}`
 

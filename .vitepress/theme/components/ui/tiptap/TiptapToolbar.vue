@@ -20,6 +20,9 @@ const props = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
+/** Matches whitespace for word counting */
+const WHITESPACE_WORD_REGEX = /\s+/
+
 // Get editor from context if not provided directly
 const { editor: contextEditor } = useTiptapContext()
 const editor = computed(() => props.editor ?? contextEditor.value)
@@ -64,7 +67,7 @@ const wordCount = computed(() => {
   const text = editor.value?.state.doc.textContent || ''
   return {
     characters: text.length,
-    words: text.split(/\s+/).filter(word => word.length > 0).length,
+    words: text.split(WHITESPACE_WORD_REGEX).filter(word => word.length > 0).length,
   }
 })
 </script>

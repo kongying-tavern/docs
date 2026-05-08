@@ -95,9 +95,7 @@ function handleAutoSaveTranslation(entry: TranslationEntry) {
 }
 
 function openAddEntryDialog() {
-  console.log('Opening add entry dialog')
   addEntryDialogOpen.value = true
-  console.log('addEntryDialogOpen.value:', addEntryDialogOpen.value)
 }
 
 function handleEntryAdded() {

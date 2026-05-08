@@ -62,6 +62,7 @@ function cardRender(
       config = load(content)
     }
     catch (err) {
+      // eslint-disable-next-line no-console
       console.error(`Parsing card YAML config failed:`, err)
     }
   }
@@ -71,10 +72,12 @@ function cardRender(
     }
     catch (err) {
       // do nothing
+      // eslint-disable-next-line no-console
       console.error(`Parsing card JSON config failed:`, err)
     }
   }
   else {
+    // eslint-disable-next-line no-console
     console.error(
       `Can not parse card config ${language}${
         relativePath ? `, found in ${relativePath}` : ''
@@ -87,6 +90,7 @@ function cardRender(
   if (cardData)
     return `<Card v-bind='${stringifyProp(cardData)}' />`
 
+  // eslint-disable-next-line no-console
   console.error(
     `Invalid card config${relativePath ? ` found in ${relativePath}` : ''}:
 ${content}

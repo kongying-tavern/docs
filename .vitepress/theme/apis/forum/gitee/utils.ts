@@ -13,6 +13,21 @@ import { GiteeApiErrorType } from './types'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
+/** Matches @username mentions in text */
+const AT_MENTION_REGEX = /@([a-z0-9]+)(?=\s|$)/gi
+
+/** Matches Markdown image syntax with optional metadata */
+const MARKDOWN_IMAGE_REGEX = /!\[(.*?)\]\((.*?)\)\s*(\{[^}]*\})?/g
+
+/** Matches HTML comments */
+const HTML_COMMENT_REGEX = /<!--.*?-->/gs
+
+/** Matches CRLF line endings */
+const CRLF_LINE_ENDING_REGEX = /\r\n/g
+
+/** Matches leading and trailing quotes */
+const LEADING_TRAILING_QUOTE_REGEX = /^"|"$/g
+
 const forumLocaleLabelGetter = getForumLocaleLabelGetter()
 const topicTypeLabelGetter = getTopicTypeLabelGetter()
 const topicTagLabelGetter = getTopicTagLabelGetter()
@@ -130,12 +145,10 @@ export function isUpperCase(str: string) {
 }
 
 export function replaceAtMentions(text: string): string {
-  const regex = /@([a-z0-9]+)(?=\s|$)/gi
-
-  if (regex.exec(text) == null)
+  if (AT_MENTION_REGEX.exec(text) == null)
     return text
 
-  return text.replaceAll(regex, (_match, p1) => {
+  return text.replaceAll(AT_MENTION_REGEX, (_match, p1) => {
     return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
   })
 }
@@ -197,11 +210,8 @@ function markdownToTextWithImages(markdown?: string): {
 
   const images: ForumAPI.ImageInfo[] = []
 
-  // 匹配 Markdown 图片语法，包括可选的 {} 元数据
-  const imageRegex = /!\[(.*?)\]\((.*?)\)\s*(\{[^}]*\})?/g
-
   // 替换图片语法为空字符串，并提取图片信息
-  let text = markdown.replace(imageRegex, (_match, altText, src, meta) => {
+  let text = markdown.replace(MARKDOWN_IMAGE_REGEX, (_match, altText, src, meta) => {
     let thumbHash: string | undefined
     let width: number | undefined
     let height: number | undefined
@@ -215,7 +225,7 @@ function markdownToTextWithImages(markdown?: string): {
         if (!value)
           return
 
-        const cleanValue = value.replace(/^"|"$/g, '')
+        const cleanValue = value.replace(LEADING_TRAILING_QUOTE_REGEX, '')
 
         switch (key) {
           case 'thumbhash':
@@ -249,10 +259,10 @@ function markdownToTextWithImages(markdown?: string): {
   })
 
   // 移除 HTML 注释（如 <!-- -->）
-  text = text.replace(/<!--.*?-->/gs, '').trim()
+  text = text.replace(HTML_COMMENT_REGEX, '').trim()
 
   text = text
-    .replace(/\r\n/g, '\n') // 统一换行符
+    .replace(CRLF_LINE_ENDING_REGEX, '\n') // 统一换行符
     .trim()
 
   return {
@@ -359,7 +369,7 @@ export async function parseErrorMessage(
     return await response.text()
   }
   catch {
-    console.error('Failed to parse error response')
+    // Failed to parse error response
     return null
   }
 }

@@ -4,48 +4,38 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
 import { useForumCacheManager } from '~/composables/useForumCacheManager'
-// 基础功能
 import { useForumData } from '~/composables/useForumData'
 import { usePathParam } from '~/composables/usePathParam'
 import { useOptimizedTopicList } from '~/composables/useStorePerformanceOptimizer'
 import { useTopicOperations } from '~/composables/useTopicOperations'
 
 import { simpleEventManager, SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
-// 业务逻辑和服务
 import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 import { forumPreloader } from '~/services/forum/ForumPreloader'
 
 export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
-  // === 基础状态管理 ===
   const sort = ref<ForumAPI.SortMethod>('created')
-  // URL-State 双向同步
   const filter = usePathParam<ForumAPI.FilterBy>('type', {
     defaultValue: 'all',
     validValues: ['all', 'bug', 'feat', 'closed'],
     history: 'push',
   })
   const isSearching = ref(false)
-
-  // === 数据管理 ===
   const userSubmittedTopics = ref<ForumAPI.Topic[]>([])
 
-  // 数据层
   const forumData = useForumData({
     manual: true,
     autoLoadPinned: true,
   })
 
-  // 性能优化的topic管理
   const optimizedTopicList = useOptimizedTopicList()
 
-  // === 通用缓存管理器 ===
   const cacheManager = useForumCacheManager(forumData, filter, sort, {
     pageType: 'home',
     preloader: forumPreloader,
     getCacheKey: (filter: ForumAPI.FilterBy) => `${filter}-${sort.value}`,
   })
 
-  // 从缓存管理器获取状态和功能
   const {
     isFilterChanging,
     setCachedData,
@@ -74,23 +64,18 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
 
   const displayTopics = computed(() => {
     const topics = mergedData.value
-    // 过滤掉关闭的topics
     const filtered = ForumBusinessLogic.filterTopics(topics, filter.value)
     return ForumBusinessLogic.sortTopics(filtered, sort.value)
   })
 
   const pinnedTopicsData = computed(() => {
-    // 优先使用API专门获取的置顶主题数据
     if (forumData.pinnedTopicsData.value && forumData.pinnedTopicsData.value.length > 0) {
       return forumData.pinnedTopicsData.value
     }
-
-    // 如果API数据不可用，从合并数据中筛选置顶主题作为备选
     const { pinnedTopics } = ForumBusinessLogic.separatePinnedTopics(mergedData.value)
     return pinnedTopics
   })
 
-  // === 统一的 Topic 操作 ===
   const topicOperations = useTopicOperations(
     {
       data: forumData.data,
@@ -103,12 +88,10 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     },
   )
 
-  // === 简化事件处理 ===
   const eventHandlers = new SimpleStoreEventHandler(topicOperations, {
     pageType: 'home',
   })
 
-  // === 自定义事件处理 ===
   const customEventHandlers = {
     handleCommentCreated: (payload: { topicId: string, comment: ForumAPI.Comment }) => {
       const { topic: targetTopic } = topicOperations.findTopicInLists(payload.topicId)
@@ -141,7 +124,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     },
   }
 
-  // === 数据加载操作 ===
   const loadForumData = async (queryParams?: ForumQueryParams): Promise<void> => {
     const params = ForumBusinessLogic.buildSearchParams(
       {
@@ -152,22 +134,18 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
       queryParams,
     )
 
-    // 如果是首次加载，使用 loadForumData 确保置顶主题也被加载
     if (!forumData.isInitialized.value) {
       await forumData.loadForumData(params)
     }
     else {
-      // 后续刷新使用 refreshData
       await forumData.refreshData(params)
     }
 
-    // 保存加载的数据到缓存
     if (forumData.data.value && forumData.data.value.length > 0) {
       const targetFilter = queryParams?.filter || filter.value
       setCachedData(targetFilter, forumData.data.value)
     }
 
-    // 初始数据加载完成后自动触发预加载（仅一次）
     autoTriggerPreload()
   }
 
@@ -175,7 +153,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     query: string | string[],
     additionalParams?: Omit<ForumQueryParams, 'searchQuery'>,
   ): Promise<void> => {
-    // 空查询处理
     if (!query || (Array.isArray(query) && query.length === 0)
       || (typeof query === 'string' && query.trim() === '')) {
       isSearching.value = false
@@ -208,9 +185,7 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     }
   }
 
-  // === 状态管理操作 ===
   const resetState = (options?: { reloadData?: boolean, clearUserTopics?: boolean, preserveForBfcache?: boolean }): void => {
-    // If preserving for bfcache, only do minimal cleanup
     if (options?.preserveForBfcache) {
       eventHandlers.cleanup()
       return
@@ -220,14 +195,8 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
       userSubmittedTopics.value = []
     }
     isSearching.value = false
-
-    // 清理事件
     eventHandlers.cleanup()
-
-    // 重置数据层
     forumData.resetState(options)
-
-    // 清理性能优化组件
     optimizedTopicList.setTopics([])
   }
 
@@ -240,20 +209,16 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
   setupFilterWatcher(loadForumData)
   startCacheCleanup()
 
-  // === 返回Store接口 ===
   return {
-    // 状态
     sort,
     filter,
     isSearching,
     isFilterChanging,
     userSubmittedTopics,
 
-    // 数据视图
     data: displayTopics,
     pinnedTopicsData,
 
-    // 从forumData继承的状态
     loading: forumData.loading,
     isDataLoading: forumData.isDataLoading,
     totalPage: forumData.totalPage,
@@ -263,7 +228,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     isFirstLoad: forumData.isFirstLoad,
     loadStateMessage: forumData.loadStateMessage,
 
-    // 操作方法
     loadForumData,
     searchTopics,
     loadMoreTopics: forumData.loadMoreTopics,
@@ -280,66 +244,13 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     setupEventListeners: () => {
       eventHandlers.setupEventListeners()
 
-      // 注册自定义事件处理器
       const eventManager = simpleEventManager
       eventManager.subscribe('comment:created', customEventHandlers.handleCommentCreated)
       eventManager.subscribe('comment:deleted', customEventHandlers.handleCommentDeleted)
-
-      // 跨页面同步已自动启用
     },
   }
 })
 
-/**
- * 性能监控装饰器
- * 为关键操作添加性能监控
- */
-export function useForumHomeStoreWithMonitoring() {
-  const store = useForumHomeStore()
-
-  // 包装关键操作以添加性能监控
-  const originalLoadForumData = store.loadForumData
-  store.loadForumData = async (params?: ForumQueryParams) => {
-    const start = performance.now()
-    try {
-      await originalLoadForumData(params)
-    }
-    finally {
-      const duration = performance.now() - start
-      // Performance warning removed for cleaner code
-      void duration
-    }
-  }
-
-  const originalSearchTopics = store.searchTopics
-  store.searchTopics = async (query: string | string[], params?: Omit<ForumQueryParams, 'searchQuery'>) => {
-    const start = performance.now()
-    try {
-      await originalSearchTopics(query, params)
-    }
-    finally {
-      const duration = performance.now() - start
-      // Performance warning removed for cleaner code
-      void duration
-    }
-  }
-
-  return store
-}
-
-// 导出配置化版本
-export function createForumHomeStore(config?: Partial<ForumStoreConfig>) {
-  const finalConfig: ForumStoreConfig = {
-    pageType: 'home',
-    autoLoadPinned: true,
-    manual: true,
-    ...config,
-  }
-
-  if (finalConfig.manual) {
-    return useForumHomeStore
-  }
-  else {
-    return useForumHomeStoreWithMonitoring
-  }
+export function createForumHomeStore(_config?: Partial<ForumStoreConfig>) {
+  return useForumHomeStore
 }

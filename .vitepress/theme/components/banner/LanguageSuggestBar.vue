@@ -27,6 +27,15 @@ const { suggestLang } = defineProps<{
 
 const emit = defineEmits(['close'])
 
+/** Matches trailing slash */
+const TRAILING_SLASH_REGEX = /\/$/
+
+/** Matches index.md in paths */
+const INDEX_MD_REGEX = /(^|\/)index\.md$/
+
+/** Matches .md extension */
+const MD_EXTENSION_REGEX = /\.md$/
+
 const { localeIndex, page, theme, site, hash } = useData()
 const { go } = useRouter()
 
@@ -65,11 +74,11 @@ function normalizeLink(
   addExt: boolean,
 ) {
   return addPath
-    ? link.replace(/\/$/, '')
+    ? link.replace(TRAILING_SLASH_REGEX, '')
     + ensureStartingSlash(
       path
-        .replace(/(^|\/)index\.md$/, '$1')
-        .replace(/\.md$/, addExt ? '.html' : ''),
+        .replace(INDEX_MD_REGEX, '$1')
+        .replace(MD_EXTENSION_REGEX, addExt ? '.html' : ''),
     )
     : link
 }

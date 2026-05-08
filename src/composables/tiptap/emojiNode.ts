@@ -4,6 +4,9 @@ import { InputRule, mergeAttributes, Node } from '@tiptap/core'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 import EmojiWrapper from '@/components/ui/EmojiWrapper.vue'
 
+/** Matches emoji syntax in text */
+const EMOJI_SYNTAX_REGEX = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/g
+
 export const EmojiNode = Node.create({
   name: 'emoji',
 
@@ -42,7 +45,7 @@ export const EmojiNode = Node.create({
   addInputRules() {
     return [
       new InputRule({
-        find: /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/g,
+        find: EMOJI_SYNTAX_REGEX,
         handler: ({ state, range, match }) => {
           const { tr } = state
           const emoji = match[1]

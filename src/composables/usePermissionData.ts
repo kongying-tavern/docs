@@ -6,6 +6,7 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import blogMemberListRaw from '~/_data/blogMemberList.json'
 import feedbackMemberListRaw from '~/_data/feedbackMemberList.json'
 import teamMemberListRaw from '~/_data/teamMemberList.json'
+import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
 
 export interface MemberData {
   id: number
@@ -99,7 +100,7 @@ export function usePermissionData() {
 
     const accessToken = userAuth.auth?.accessToken
     if (!accessToken) {
-      console.warn('无访问令牌，使用本地权限数据')
+      forumLog.warn(ForumLogGroup.PERMISSION, '无访问令牌，使用本地权限数据')
       return
     }
 
@@ -144,14 +145,14 @@ export function usePermissionData() {
         hasApiData: true,
       }
 
-      console.info('权限数据更新完成', {
+      forumLog.info(ForumLogGroup.PERMISSION, '权限数据更新完成', {
         teamMembers: useTeamApi ? 'API数据' : '本地数据',
         feedbackMembers: useFeedbackApi ? 'API数据' : '本地数据',
         blogMembers: useBlogApi ? 'API数据' : '本地数据',
       })
     }
     catch (error) {
-      console.warn('获取权限数据失败，使用本地数据:', error)
+      forumLog.warn(ForumLogGroup.PERMISSION, '获取权限数据失败，使用本地数据', error)
       permissionDataState.value.loading = false
     }
   }
@@ -189,7 +190,7 @@ export function usePermissionData() {
     watch(isLoggedIn, async (newValue, oldValue) => {
       // 从未登录变为登录时，立即刷新权限数据
       if (newValue && !oldValue) {
-        console.info('用户登录，刷新权限数据')
+        forumLog.info(ForumLogGroup.PERMISSION, '用户登录，刷新权限数据')
         await refreshPermissionData()
       }
     }, { immediate: false })
@@ -197,7 +198,7 @@ export function usePermissionData() {
     // 定时检查是否需要刷新（每10分钟检查一次）
     setInterval(() => {
       if (shouldRefreshData.value) {
-        console.info('权限数据已过期，自动刷新')
+        forumLog.info(ForumLogGroup.PERMISSION, '权限数据已过期，自动刷新')
         refreshPermissionData()
       }
     }, 10 * 60 * 1000) // 10分钟检查间隔

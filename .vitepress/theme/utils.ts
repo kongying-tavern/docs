@@ -9,9 +9,21 @@ export { escapeHtml } from './utils/text'
 
 const markdownLinkRegexp = /.md((\?|#).*)?$/
 
+/** Matches single quotes in JSON strings */
+const SINGLE_QUOTE_REGEX = /'/g
+
+/** Matches HTTP/HTTPS protocol links */
+const HTTP_LINK_REGEX = /^(https?:)?\/\//
+
+/** Matches relative links */
+const RELATIVE_LINK_REGEX = /^(?!www\.|https?:\/\/|[A-Za-z]:\\|\/\/).*/
+
+/** Matches trailing slash at the end of a path */
+const TRAILING_SLASH_PATH_REGEX = /\/$/
+
 // single quote will break @vue/compiler-sfc
 export function stringifyProp(data: unknown): string {
-  return JSON.stringify(data).replace(/'/g, '&#39')
+  return JSON.stringify(data).replace(SINGLE_QUOTE_REGEX, '&#39')
 }
 
 /**
@@ -22,7 +34,7 @@ export function stringifyProp(data: unknown): string {
  * - //github.com
  */
 export function isLinkHttp(link: string): boolean {
-  return /^(https?:)?\/\//.test(link)
+  return HTTP_LINK_REGEX.test(link)
 }
 
 /**
@@ -52,11 +64,14 @@ export function isLinkExternal(link: string, base = '/'): boolean {
 }
 
 export function isRelativeLink(link: string) {
-  return /^(?!www\.|https?:\/\/|[A-Za-z]:\\|\/\/).*/.test(link)
+  return RELATIVE_LINK_REGEX.test(link)
 }
 
+/** Matches multiple consecutive slashes */
+const MULTIPLE_SLASH_REGEX = /\/+/gu
+
 function concatLink(link: string, base: string): string {
-  return `/${base}/${link}`.replace(/\/+/gu, '/')
+  return `/${base}/${link}`.replace(MULTIPLE_SLASH_REGEX, '/')
 }
 
 function modifyLink(obj: unknown, base: string): unknown {
@@ -172,7 +187,7 @@ export function stripTrailingSlashInPath() {
     return
   const { pathname, search, hash } = window.location
   if (pathname !== '/' && pathname.endsWith('/')) {
-    const newPath = pathname.replace(/\/$/, '')
+    const newPath = pathname.replace(TRAILING_SLASH_PATH_REGEX, '')
     const newUrl = newPath + search + hash
     history.replaceState(history.state, '', newUrl)
   }

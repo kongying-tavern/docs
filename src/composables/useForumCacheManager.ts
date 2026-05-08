@@ -161,8 +161,8 @@ export function useForumCacheManager(
       creator: metadata,
     }
 
-    options.preloader.preloadAllOtherFilters(preloadOptions).catch((error) => {
-      console.error('Preload error:', error)
+    options.preloader.preloadAllOtherFilters(preloadOptions).catch(() => {
+      // Preload error - silent fail
     })
   }
 
@@ -221,8 +221,7 @@ export function useForumCacheManager(
             setCachedData(newFilter, forumData.data.value)
           }
         }
-        catch (error) {
-          console.error('Failed to load data:', error)
+        catch {
           const allData = getAllCachedData()
           if (allData.length > 0) {
             const filtered = clientSideFilter(allData, newFilter)
@@ -284,8 +283,7 @@ export function useForumCacheManager(
             setCachedData(filter.value, forumData.data.value)
           }
         }
-        catch (error) {
-          console.error('Failed to load data for sort change:', error)
+        catch {
           toast.error('排序数据加载失败', {
             description: '请稍后重试',
             duration: 3000,

@@ -15,6 +15,9 @@ const props = defineProps<{
   showSelection?: boolean
 }>()
 
+/** Matches whitespace for word counting */
+const WHITESPACE_REGEX = /\s+/
+
 // Get editor from context if not provided directly
 const { editor: contextEditor } = useTiptapContext()
 const editor = computed(() => props.editor ?? contextEditor.value)
@@ -44,7 +47,7 @@ function updateCounts() {
     // 后备方案：直接计算
     const text = editor.value!.state.doc.textContent
     charCount.value = text.length
-    wordCount.value = text.split(/\s+/).filter(word => word.length > 0).length
+    wordCount.value = text.split(WHITESPACE_REGEX).filter(word => word.length > 0).length
   }
 
   // Get selection info

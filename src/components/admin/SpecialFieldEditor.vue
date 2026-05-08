@@ -17,6 +17,16 @@ import { Textarea } from '@/components/ui/textarea'
 import { enhancedTranslationService } from '~/services/enhancedTranslationService'
 import { localesConfig } from '../../../.vitepress/config/locales'
 
+const props = defineProps<Props>()
+
+const emit = defineEmits<Emits>()
+
+/** Matches regex pattern string format */
+const REGEX_PATTERN_STRING_REGEX = /^\/.*\/[gimuy]*$/
+
+/** Matches regex pattern with flags */
+const REGEX_WITH_FLAGS_REGEX = /^\/(.*)\/([gimuy]*)$/
+
 interface Props {
   entry: TranslationEntry | null
   open: boolean
@@ -27,9 +37,6 @@ interface Emits {
   (e: 'update:open', open: boolean): void
   (e: 'save', entry: TranslationEntry): void
 }
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
 
 const editingLocale = ref('zh')
 
@@ -178,9 +185,9 @@ function buildJsonFromFields(fields: Record<string, unknown>, type: FieldMetadat
 
         // 处理每个字段，如果是正则表达式格式则转换回对象
         for (const [key, value] of Object.entries(itemData)) {
-          if (typeof value === 'string' && /^\/.*\/[gimuy]*$/.test(value)) {
+          if (typeof value === 'string' && REGEX_PATTERN_STRING_REGEX.test(value)) {
             // 正则表达式格式，转换回 __regex__ 对象
-            const match = value.match(/^\/(.*)\/([gimuy]*)$/)
+            const match = value.match(REGEX_WITH_FLAGS_REGEX)
             if (match) {
               processedItem[key] = {
                 __regex__: match[1],
@@ -374,12 +381,12 @@ function removeArrayField(locale: string, itemIndex: number, fieldName: string) 
 }
 
 // 检测是否为正则表达式字段
-function isRegexField(value: any): boolean {
-  return typeof value === 'string' && /^\/.*\/[gimuy]*$/.test(value)
+function isRegexField(value: unknown): boolean {
+  return typeof value === 'string' && REGEX_PATTERN_STRING_REGEX.test(value)
 }
 
 // 获取字段显示值，处理 [object Object] 问题
-function getDisplayValue(value: any): string {
+function getDisplayValue(value: unknown): string {
   if (value === null || value === undefined) {
     return ''
   }

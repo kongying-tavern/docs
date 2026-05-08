@@ -18,8 +18,8 @@ function createProjectMarkdownRenderer() {
     try {
       markdownConfig.config(md)
     }
-    catch (error) {
-      console.warn('应用markdown配置时出错，使用默认配置:', error)
+    catch {
+      // 应用markdown配置时出错，使用默认配置
     }
   }
 
@@ -60,7 +60,6 @@ export function useMarkdownRenderer() {
     }
     catch (err) {
       error.value = err instanceof Error ? err.message : '渲染失败'
-      console.error('Markdown渲染失败:', err)
       // 降级处理：返回纯文本
       const sanitized = sanitizeMarkdown(content)
       return sanitized.length > maxLength
@@ -87,7 +86,6 @@ export function useMarkdownRenderer() {
     }
     catch (err) {
       error.value = err instanceof Error ? err.message : '渲染失败'
-      console.error('Markdown渲染失败:', err)
       // 降级处理：返回纯文本
       return sanitizeMarkdown(content)
     }

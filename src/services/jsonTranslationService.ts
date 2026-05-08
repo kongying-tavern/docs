@@ -89,11 +89,15 @@ class JSONTranslationService {
       // 尝试解析 JSON 值
       try {
         const parsed = JSON.parse(value)
-        current[lastKey] = parsed
+        if (lastKey) {
+          current[lastKey] = parsed
+        }
       }
       catch {
         // 不是 JSON，直接使用字符串值
-        current[lastKey] = value
+        if (lastKey) {
+          current[lastKey] = value
+        }
       }
     }
 
@@ -155,8 +159,7 @@ class JSONTranslationService {
         a.category !== b.category ? a.category.localeCompare(b.category) : a.key.localeCompare(b.key),
       )
     }
-    catch (error) {
-      console.error('Failed to load JSON translations:', error)
+    catch {
       throw new Error('翻译文件加载失败')
     }
   }

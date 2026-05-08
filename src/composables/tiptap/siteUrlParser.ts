@@ -4,6 +4,27 @@ import { computed } from 'vue'
 import { getLangPath } from '@/utils'
 import { routes } from '../../../.vitepress/routes'
 
+/** Matches trailing slash at the end of a path */
+const TRAILING_SLASH_REGEX = /\/$/
+
+/** Matches hyphens or underscores in strings */
+const HYPHEN_UNDERSCORE_REGEX = /[-_]/g
+
+/** Matches the first character of each word for capitalization */
+const WORD_BOUNDARY_REGEX = /\b\w/g
+
+/** Matches valid topic IDs (6 uppercase alphanumeric characters) */
+const TOPIC_ID_REGEX = /^[A-Z0-9]{6}$/
+
+/** Matches #XXXXXX format topic IDs */
+const TOPIC_ID_WITH_HASH_REGEX = /^#([A-Z0-9]{6})$/
+
+/** Matches HTML title tags for extracting page titles */
+const HTML_TITLE_REGEX = /<title>([^<]+)<\/title>/i
+
+/** Matches .md file extension */
+const MD_EXTENSION_FILE_REGEX = /\.md$/
+
 function useSiteInfo() {
   const { site, page, localeIndex } = useData()
 
@@ -43,7 +64,7 @@ function createUrlPatterns() {
   const base = siteInfo.site.value.base || '/'
 
   // 移除末尾的斜杠并确保以斜杠开始
-  const normalizedBase = base === '/' ? '' : base.replace(/\/$/, '')
+  const normalizedBase = base === '/' ? '' : base.replace(TRAILING_SLASH_REGEX, '')
 
   // 从路由配置中提取匹配模式
   const topicRoute = routes.find((route: LocaleRoute) => route.match === 'feedback/topic/:id')
@@ -147,7 +168,7 @@ export function generateDisplayText(urlInfo: ParsedUrlInfo): string {
  * 生成基于路径的友好显示文本，对于根路径使用 VitePress 站点标题
  */
 function getPageDisplayText(path: string): string {
-  const normalizedPath = path.replace(/\/$/, '')
+  const normalizedPath = path.replace(TRAILING_SLASH_REGEX, '')
 
   // 如果是根路径，从 VitePress 获取站点标题
   const segments = normalizedPath.split('/').filter(Boolean)
@@ -165,9 +186,9 @@ function getPageDisplayText(path: string): string {
   const lastSegment = segments.at(-1)
 
   // 转换为友好的显示格式
-  return lastSegment
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, l => l.toUpperCase())
+  return (lastSegment || '')
+    .replace(HYPHEN_UNDERSCORE_REGEX, ' ')
+    .replace(WORD_BOUNDARY_REGEX, l => l.toUpperCase())
 }
 
 /**
@@ -192,14 +213,14 @@ export function convertSiteUrl(url: string): { displayText: string, href: string
  * 检查是否是有效的题目 ID
  */
 export function isValidTopicId(id: string): boolean {
-  return /^[A-Z0-9]{6}$/.test(id)
+  return TOPIC_ID_REGEX.test(id)
 }
 
 /**
  * 解析 #XXXXXX 格式的题目 ID
  */
 export function parseTopicId(text: string): string | null {
-  const match = text.match(/^#([A-Z0-9]{6})$/)
+  const match = text.match(TOPIC_ID_WITH_HASH_REGEX)
   return match ? match[1] : null
 }
 
@@ -221,7 +242,7 @@ export function generateTopicUrl(topicId: string): string {
 export async function fetchPageTitle(url: string): Promise<string> {
   try {
     const siteInfo = useSiteInfo()
-    const currentPagePath = siteInfo.page.value.relativePath.replace(/\.md$/, '.html')
+    const currentPagePath = siteInfo.page.value.relativePath.replace(MD_EXTENSION_FILE_REGEX, '.html')
     const currentPageUrl = siteInfo.buildUrl.value(`/${currentPagePath}`)
 
     // 如果是当前页面，直接返回页面标题
@@ -239,7 +260,7 @@ export async function fetchPageTitle(url: string): Promise<string> {
       throw new Error('Failed to fetch page')
 
     const html = await response.text()
-    const titleMatch = html.match(/<title>([^<]+)<\/title>/i)
+    const titleMatch = html.match(HTML_TITLE_REGEX)
 
     if (titleMatch) {
       return titleMatch[1].trim()

@@ -1,6 +1,9 @@
 import { useDebounce } from '@vueuse/core'
 import { nextTick, onMounted, ref, watch } from 'vue'
 
+/** Matches Safari version in user agent */
+const SAFARI_VERSION_SEARCH_REGEX = /version\/([\d.]+) safari/i
+
 export function useSearchInput(options?: {
   autoSearch?: (query: string) => void | Promise<void>
 }) {
@@ -62,7 +65,7 @@ export function getDefaultThrottle() {
     return 50
   }
   try {
-    const match = navigator.userAgent?.match(/version\/([\d.]+) safari/i)
+    const match = navigator.userAgent?.match(SAFARI_VERSION_SEARCH_REGEX)
     return Number.parseFloat(match![1]!) >= 17 ? 120 : 320
   }
   catch {

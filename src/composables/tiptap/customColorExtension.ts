@@ -1,6 +1,9 @@
 import { Extension, mergeAttributes, Node } from '@tiptap/core'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 
+/** Matches custom color syntax in text */
+const CUSTOM_COLOR_SYNTAX_REGEX = /\{color:([^}]+)\}([^{]*)\{\/color\}$/
+
 /**
  * 自定义颜色节点
  * 语法: {color:颜色值}文字内容{/color}
@@ -90,7 +93,7 @@ export const CustomColorExtension = Extension.create({
             const fullText = beforeText + text
 
             // 自定义颜色语法: {color:颜色值}文字内容{/color}
-            const colorMatch = fullText.match(/\{color:([^}]+)\}([^{]*)\{\/color\}$/)
+            const colorMatch = fullText.match(CUSTOM_COLOR_SYNTAX_REGEX)
             if (colorMatch) {
               const [fullMatch, color, content] = colorMatch
               const start = from - (fullMatch.length - text.length)

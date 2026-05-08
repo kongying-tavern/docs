@@ -2,6 +2,12 @@ import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'nod
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+/** Matches path separators (forward slash or backslash) */
+const PATH_SEPARATOR_REGEX = /[/\\]/
+
+/** Matches backslash in file paths */
+const BACKSLASH_REGEX = /\\/g
+
 const _filename = fileURLToPath(import.meta.url)
 const _dirname = dirname(_filename)
 
@@ -47,7 +53,7 @@ function readTSFiles(dir: string): string[] {
 async function extractTSFileContent(filePath: string) {
   try {
     // Convert Windows path to file URL for dynamic import
-    const fileUrl = new URL(`file:///${filePath.replace(/\\/g, '/')}`).href
+    const fileUrl = new URL(`file:///${filePath.replace(BACKSLASH_REGEX, '/')}`).href
     const module = await import(fileUrl)
     return module.default || module
   }
@@ -59,7 +65,7 @@ async function extractTSFileContent(filePath: string) {
 
 // 从文件路径提取文件名（不含扩展名）
 function getFileName(filePath: string): string {
-  return filePath.split(/[/\\]/).pop()?.replace('.ts', '') || ''
+  return filePath.split(PATH_SEPARATOR_REGEX).pop()?.replace('.ts', '') || ''
 }
 
 async function main() {
@@ -78,7 +84,7 @@ async function main() {
       const localeDir = resolve(_dirname, `../.vitepress/locales/${locale}`)
       const tsFiles = readTSFiles(localeDir)
 
-      const localeData: Record<string, any> = {}
+      const localeData: Record<string, unknown> = {}
 
       // 读取每个 TypeScript 文件的内容
       for (const filePath of tsFiles) {
@@ -98,7 +104,7 @@ async function main() {
         const { themeConfig, ...topLevel } = config
 
         // 将 constants 内容提升到顶层
-        const constants = localeData.constants || {}
+        const constants = (localeData.constants as Record<string, unknown>) || {}
 
         const mergedData = {
           ...topLevel,

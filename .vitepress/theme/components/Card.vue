@@ -4,6 +4,23 @@ import { computed } from 'vue'
 
 import { isLinkExternal, isRelativeLink } from '../utils'
 
+const props = withDefaults(defineProps<CardProps>(), {
+  desc: '',
+  logo: '',
+  color: '',
+  link: '',
+  cover: '',
+  theme: 'normal',
+  hoverShadow: false,
+  shadow: false,
+})
+
+/** Matches domain from URL */
+const DOMAIN_FROM_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?([^/]+)\//
+
+/** Matches leading dot or slash */
+const LEADING_DOT_SLASH_REGEX = /(\.\/|\/)/g
+
 interface CardProps {
   /** Card title */
   title: string
@@ -24,17 +41,6 @@ interface CardProps {
   /** Card theme, defaults to normal */
   theme?: 'medium' | 'normal'
 }
-
-const props = withDefaults(defineProps<CardProps>(), {
-  desc: '',
-  logo: '',
-  color: '',
-  link: '',
-  cover: '',
-  theme: 'normal',
-  hoverShadow: false,
-  shadow: false,
-})
 
 const iconMap: Record<string, string> = {
   'bilibili.com': 'i-custom-bilibili',
@@ -63,7 +69,7 @@ function imgErrorHandler(e: Event) {
 const iconLink = computed(() => {
   let icon = ''
   if (props.logo === '' && props.link) {
-    const linkDomain = props.link.match(/(?:https?:\/\/)?(?:www\.)?([^/]+)\//)
+    const linkDomain = props.link.match(DOMAIN_FROM_URL_REGEX)
     if (linkDomain && linkDomain[1]) {
       const domain = linkDomain[1]
       for (const key in iconMap) {
@@ -103,7 +109,7 @@ const descText = computed(() => {
     return props.desc
   }
   if (isRelativeLink(props.link)) {
-    const prefix: string = props.link.substring(0, 3).replace(/(\.\/|\/)/g, '')
+    const prefix: string = props.link.substring(0, 3).replace(LEADING_DOT_SLASH_REGEX, '')
     const suffix: string = props.link.substring(3)
     return location.origin + withBase(`/${prefix}${suffix}`)
   }

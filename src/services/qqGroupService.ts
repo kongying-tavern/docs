@@ -1,12 +1,32 @@
 import { ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
 
+/** Matches digits only for QQ group number validation */
+const DIGITS_ONLY_SERVICE_REGEX = /^\d+$/
+
 export interface QQGroup {
   id: string
   name: string
   number: string
   link: string
   status: 'suggest' | 'warning' | 'banned' | 'normal'
+  tooltip: string
+  order?: number
+}
+
+/** Raw QQ group data from JSON file */
+interface RawQQGroupData {
+  groups?: QQGroup[]
+  [key: string]: unknown
+}
+
+/** Raw QQ group item from JSON (status may be string, not literal type) */
+interface RawQQGroupItem {
+  id: string
+  name: string
+  number: string
+  link: string
+  status: string
   tooltip: string
   order?: number
 }
@@ -29,7 +49,9 @@ class QQGroupService {
       // 动态导入原始JSON文件
       const module = await import('~/_data/qq-groups.json')
       const originalData = module.default || module
-      const originalArray = Array.isArray(originalData) ? originalData : (originalData as any).groups || []
+      const originalArray = Array.isArray(originalData)
+        ? (originalData as RawQQGroupItem[])
+        : (originalData as RawQQGroupData).groups || []
 
       // 检查是否有本地保存的数据
       const localChanges = localStorage.getItem('qq-groups-local-changes')
@@ -37,13 +59,13 @@ class QQGroupService {
       if (localChanges) {
         // 如果有本地数据，合并原始数据和本地数据，本地数据优先
         try {
-          const localData = JSON.parse(localChanges)
+          const localData: QQGroup[] = JSON.parse(localChanges)
 
           // 创建合并后的数据列表
           const mergedGroups: QQGroup[] = []
 
           // 首先添加本地数据中的所有群组（保持本地的顺序和修改）
-          localData.forEach((localGroup: any, index: number) => {
+          localData.forEach((localGroup, index: number) => {
             mergedGroups.push({
               ...localGroup,
               order: index,
@@ -51,11 +73,12 @@ class QQGroupService {
           })
 
           // 然后添加原始数据中存在但本地数据中不存在的新群组
-          originalArray.forEach((originalGroup: any) => {
-            const existsInLocal = localData.some((localGroup: any) => localGroup.id === originalGroup.id)
+          originalArray.forEach((originalGroup: RawQQGroupItem) => {
+            const existsInLocal = localData.some((localGroup: QQGroup) => localGroup.id === originalGroup.id)
             if (!existsInLocal) {
               mergedGroups.push({
                 ...originalGroup,
+                status: originalGroup.status as QQGroup['status'],
                 order: mergedGroups.length,
               })
             }
@@ -63,43 +86,32 @@ class QQGroupService {
 
           this.groups.value = mergedGroups
           this.isLoaded = true
-
-          const newGroupsCount = mergedGroups.length - localData.length
-          if (newGroupsCount > 0) {
-            console.log(`加载本地数据：${localData.length} 个QQ群（已修改）+ ${newGroupsCount} 个新群组`)
-          }
-          else {
-            console.log(`加载本地数据：${this.groups.value.length} 个QQ群（已修改）`)
-          }
           return this.groups.value
         }
-        catch (parseError) {
-          console.warn('Failed to parse local changes, falling back to original data:', parseError)
+        catch {
           // 如果本地数据解析失败，清除并继续使用原始数据
           localStorage.removeItem('qq-groups-local-changes')
         }
       }
 
       // 如果没有本地数据或解析失败，使用原始数据
-      const validGroups = originalArray.filter((group: any) => {
+      const validGroups = originalArray.filter((group: RawQQGroupItem) => {
         if (!group.id || !group.name || !group.number) {
-          console.warn('Invalid group data found:', group)
           return false
         }
         return true
       })
 
-      this.groups.value = validGroups.map((group: any, index: number) => ({
+      this.groups.value = validGroups.map((group: RawQQGroupItem, index: number) => ({
         ...group,
+        status: group.status as QQGroup['status'],
         order: group.order ?? index,
       }))
 
       this.isLoaded = true
-      console.log(`成功加载原始数据：${this.groups.value.length} 个QQ群`)
       return this.groups.value
     }
-    catch (error) {
-      console.error('Failed to load QQ groups:', error)
+    catch {
       toast.error('加载QQ群数据失败，请检查数据文件是否存在')
       return []
     }
@@ -170,8 +182,7 @@ class QQGroupService {
       toast.success('JSON已复制到剪贴板')
       return true
     }
-    catch (error) {
-      console.error('Failed to copy to clipboard:', error)
+    catch {
       toast.error('复制到剪贴板失败')
       return false
     }
@@ -188,7 +199,7 @@ class QQGroupService {
     if (!group.number?.trim()) {
       errors.push('群号不能为空')
     }
-    else if (!/^\d+$/.test(group.number.trim())) {
+    else if (!DIGITS_ONLY_SERVICE_REGEX.test(group.number.trim())) {
       errors.push('群号必须是数字')
     }
 
@@ -239,10 +250,9 @@ class QQGroupService {
       // 保存到 localStorage 作为临时存储
       const dataToSave = this.getGroups()
       localStorage.setItem('qq-groups-local-changes', JSON.stringify(dataToSave))
-      console.log('Auto-saving QQ groups data to localStorage...')
     }
-    catch (error) {
-      console.error('Failed to save QQ groups data:', error)
+    catch {
+      // Silent fail - save to localStorage is optional
     }
   }
 
@@ -255,8 +265,7 @@ class QQGroupService {
       // 重新加载原始数据
       await this.loadGroups()
     }
-    catch (error) {
-      console.error('Failed to reset to original data:', error)
+    catch {
       toast.error('重置失败')
     }
   }

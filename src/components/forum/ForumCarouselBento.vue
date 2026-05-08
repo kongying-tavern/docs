@@ -14,6 +14,11 @@ const props = defineProps<{
 const { localeIndex } = useData()
 const { message } = useLocalized()
 
+// Generate link for topics
+function generateTopicLink(topic: ForumAPI.Topic) {
+  return `feedback/topic/${topic.id}`
+}
+
 const presetUser = {
   avatar: 'https://yuanshen.site/docs/imgs/common/logo/logo_256.png',
   username: 'Kongying Tavern',
@@ -65,7 +70,7 @@ const sortedList = computed(() => {
       >
         <BentoGridItem
           class="border border-[var(--vp-c-divider)] border-solid"
-          :to="withBase(getLangPath(localeIndex) + ('relativeLink' in topic ? topic.relativeLink : `feedback/topic/${topic.id}`))"
+          :to="withBase(getLangPath(localeIndex) + ('relativeLink' in topic ? topic.relativeLink : generateTopicLink(topic)))"
         >
           <template #icon>
             <span

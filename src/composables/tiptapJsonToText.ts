@@ -1,5 +1,8 @@
 import type { JSONContent } from '@tiptap/core'
 
+/** Matches 3 or more consecutive newlines at the end */
+const MULTIPLE_NEWLINES_END_REGEX = /\n{3,}$/
+
 /**
  * 将TipTap JSON内容转换为纯文本，保留换行符
  */
@@ -51,7 +54,7 @@ export function parseContentText(text: string): string {
     // 保留换行符，只移除过多的末尾空行（保留段落间的双换行符）
     const result = tiptapJsonToText(jsonContent)
     // 移除3个或更多连续的末尾换行符，保留最多2个（段落分隔）
-    return result.replace(/\n{3,}$/, '\n\n')
+    return result.replace(MULTIPLE_NEWLINES_END_REGEX, '\n\n')
   }
   catch {
     // 如果解析失败，说明是纯文本，直接返回

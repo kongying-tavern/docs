@@ -2,6 +2,10 @@ import { Extension, mergeAttributes, Node } from '@tiptap/core'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { calculateWidth } from './utils'
 
+/** Matches spoiler syntax with optional attributes */
+// eslint-disable-next-line regexp/no-super-linear-backtracking
+const SPOILER_WITH_ATTRS_REGEX = /!!(.*?)!!\{?([^}]*)\}?$/
+
 /**
  * 隐藏内容节点
  * 语法: !!隐藏内容!! 或 !!隐藏内容!!{width=200,align=center}
@@ -109,8 +113,7 @@ export const SpoilerExtension = Extension.create({
             const fullText = beforeText + text
 
             // 隐藏内容语法: !!content!! 或 !!content!!{width=200,align=center}
-            // eslint-disable-next-line regexp/no-super-linear-backtracking
-            const spoilerMatch = fullText.match(/!!(.*?)!!\{?([^}]*)\}?$/)
+            const spoilerMatch = fullText.match(SPOILER_WITH_ATTRS_REGEX)
             if (spoilerMatch) {
               const [fullMatch, content, attributesStr] = spoilerMatch
               const start = from - (fullMatch.length - text.length)
