@@ -158,6 +158,7 @@
     "vite": "catalog:build",
     "vite-plugin-vue-devtools": "catalog:dev",
     "vitepress-plugin-llms": "catalog:build",
+    "why-is-node-running": "^3.2.2",
     "zhlint": "catalog:dev"
   },
   "lint-staged": {

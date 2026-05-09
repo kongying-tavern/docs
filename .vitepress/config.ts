@@ -38,4 +38,7 @@ export default defineConfig({
   transformPageData(pageData, context) {
     generateBreadcrumbsData(pageData, context)
   },
+  buildEnd() {
+    import('why-is-node-running').then(m => m.default())
+  },
 })
