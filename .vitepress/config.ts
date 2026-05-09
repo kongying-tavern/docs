@@ -1,3 +1,4 @@
+import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
@@ -39,6 +40,6 @@ export default defineConfig({
     generateBreadcrumbsData(pageData, context)
   },
   buildEnd() {
-    import('why-is-node-running').then(m => m.default())
+    exit(0)
   },
 })
