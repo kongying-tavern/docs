@@ -758,6 +758,9 @@ importers:
       vitepress-plugin-llms:
         specifier: catalog:build
         version: 1.11.0
+      why-is-node-running:
+        specifier: ^3.2.2
+        version: 3.2.2
       zhlint:
         specifier: catalog:dev
         version: 0.8.2
@@ -8839,6 +8842,11 @@ packages:
   which@5.0.0:
     resolution: {integrity: sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
+    hasBin: true
+
+  why-is-node-running@3.2.2:
+    resolution: {integrity: sha512-NKUzAelcoCXhXL4dJzKIwXeR8iEVqsA0Lq6Vnd0UXvgaKbzVo4ZTHROF2Jidrv+SgxOQ03fMinnNhzZATxOD3A==}
+    engines: {node: '>=20.11'}
     hasBin: true
 
   word-wrap@1.2.5:
@@ -18435,6 +18443,8 @@ snapshots:
     dependencies:
       isexe: 3.1.1
     optional: true
+
+  why-is-node-running@3.2.2: {}
 
   word-wrap@1.2.5: {}
 

@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         node_version:
-          - 22
+          - 24
 
     steps:
       - name: Checkout

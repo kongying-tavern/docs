@@ -1,3 +1,4 @@
+import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
@@ -37,5 +38,8 @@ export default defineConfig({
   ...createConfigureFunction(),
   transformPageData(pageData, context) {
     generateBreadcrumbsData(pageData, context)
+  },
+  buildEnd() {
+    exit(0)
   },
 })
