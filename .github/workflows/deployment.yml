@@ -36,16 +36,16 @@ jobs:
         run: pnpm install
 
       - name: Refresh Members Data
-        run: pnpm build-member
+        run: pnpm build:member
         env:
           GITEE_USERNAME: ${{ secrets.GITEE_USERNAME }}
           GITEE_PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
       - name: Refresh Emoji Data
-        run: pnpm build-emoji
+        run: pnpm build:emoji
 
       - name: Build Site
-        run: pnpm build-vitepress
+        run: pnpm build:vitepress
 
       - name: Build lunaria
         run: pnpm lunaria:build
