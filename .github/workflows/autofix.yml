@@ -26,9 +26,9 @@ jobs:
       - run: pnpm install
 
       - name: Run eslint
-        run: pnpm lint:eslint-fix
+        run: pnpm lint:eslint:fix
 
       - name: Run Zhlint fix
-        run: pnpm lint:zh-fix
+        run: pnpm lint:zh:fix
 
       - uses: autofix-ci/action@7a166d7532b277f34e16238930461bf77f9d7ed8
