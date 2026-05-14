@@ -7,7 +7,7 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "dev": "vitepress",
-    "dev:portless": "npx portless kydocs vitepress",
+    "dev:portless": "npx portless --app-port 5173 kydocs vitepress",
     "serve": "vitepress serve --base /docs/",
     "clean": "node -e \"require('node:fs').rmSync('./dist',{recursive:true,force:true,maxRetries:10})\"",
     "build": "pnpm build:vitepress",
