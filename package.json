@@ -162,7 +162,7 @@
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
-    "*": "pnpm lint:eslint:fix"
+    "*.{js,ts,vue,mjs,cjs,mts,cts}": "pnpm lint:eslint:fix"
   },
   "config": {
     "commitizen": {
