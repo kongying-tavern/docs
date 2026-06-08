@@ -145,7 +145,7 @@
     "markdown-it-kbd-better": "catalog:markdown",
     "markdownlint-cli": "catalog:dev",
     "open-editor": "catalog:dev",
-    "shadcn-vue": "^2.4.3",
+    "shadcn-vue": "2.4.3",
     "sort-package-json": "catalog:dev",
     "stylelint": "catalog:dev",
     "stylelint-config-standard": "catalog:dev",
@@ -158,7 +158,7 @@
     "vite": "catalog:build",
     "vite-plugin-vue-devtools": "catalog:dev",
     "vitepress-plugin-llms": "catalog:build",
-    "why-is-node-running": "^3.2.2",
+    "why-is-node-running": "3.2.2",
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
