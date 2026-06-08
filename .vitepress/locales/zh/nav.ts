@@ -42,6 +42,10 @@ const nav: DefaultTheme.NavItem[] = [
           },
         ],
       },
+       {
+        text: '游戏文字翻译',
+        link: 'https://kongying-tavern.github.io/elysia-typewriter/'
+      },
     ],
   },
   {
