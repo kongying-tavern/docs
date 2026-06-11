@@ -100,7 +100,7 @@ catalogs:
     "@mdit/plugin-sub": ^0.24.1
     "@mdit/plugin-sup": ^0.24.1
     "@mdit/plugin-tasklist": ^0.23.1
-    markdown-it: 14.1.0
+    markdown-it: 14.1.1
     markdown-it-attrs: ^4.3.1
     markdown-it-container: 4.0.0
     markdown-it-footnote: ^4.0.0
