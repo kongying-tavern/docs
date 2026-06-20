@@ -127,7 +127,7 @@ catalogs:
     "@types/node": 22.12.0
     "@types/sortablejs": ^1.15.9
   utils:
-    js-yaml: ^4.1.1
+    js-yaml: ^5.0.0
     pnpm: 10.6.3
   conflicts_editor_h3_4_4:
     "@tiptap/core": ^3.20.1
