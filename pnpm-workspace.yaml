@@ -47,7 +47,7 @@ catalogs:
     zhlint: 0.8.2
   frontend:
     "@atlaskit/pragmatic-drag-and-drop": ^1.7.9
-    "@atlaskit/pragmatic-drag-and-drop-hitbox": ^1.1.0
+    "@atlaskit/pragmatic-drag-and-drop-hitbox": ^2.0.0
     "@fingerprintjs/fingerprintjs": 3.4.2
     "@floating-ui/dom": ^1.7.6
     "@iconify-json/ic": ^1.2.4
