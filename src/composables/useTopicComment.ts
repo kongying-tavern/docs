@@ -79,7 +79,7 @@ export function useTopicComments() {
   const loadStateMessage = computed(() => {
     if (commentLoadError.value)
       return message.value.forum.loadError
-    if (!noMoreComment && comments.value.length !== 0)
+    if (!noMoreComment.value && comments.value.length !== 0)
       return message.value.forum.comment.loadMoreComment
     if (
       (comments.value.length === 0 && !commentLoading.value)

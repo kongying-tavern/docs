@@ -7,9 +7,17 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  canLoadMore: {
+    type: Boolean,
+    default: false,
+  },
   text: {
     type: String,
     default: 'Loading...',
+  },
+  loadMore: {
+    type: Function,
+    default: undefined,
   },
 })
 </script>
@@ -17,13 +25,16 @@ defineProps({
 <template>
   <div class="mb-8 flex w-full justify-center">
     <Button
-      v-if="loading"
+      v-if="loading || canLoadMore"
       class="vp-link mt-8"
       variant="link"
+      :disabled="loading"
+      @click="loadMore?.()"
     >
       <ReloadIcon
+        v-if="loading"
         class="mr-2 h-4 w-4"
-        :class="loading ? 'animate-spin' : ''"
+        :class="{ 'animate-spin': loading }"
       />
       {{ text }}
     </Button>
