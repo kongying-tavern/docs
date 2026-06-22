@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll } from '@vueuse/core'
-import { inject } from 'vue'
+import { inject, onBeforeUpdate, shallowRef } from 'vue'
 import ForumTopic from './ForumTopic.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
@@ -18,6 +18,18 @@ const {
 }>()
 
 const canLoadMore = inject(FORUM_TOPIC_CAN_LOAD_MORE)
+
+const itemStaggers = shallowRef(new Map<string, number>())
+
+onBeforeUpdate(() => {
+  const map = new Map(itemStaggers.value)
+  let stagger = map.size
+  for (const item of data) {
+    if (!map.has(item.id))
+      map.set(item.id, stagger++)
+  }
+  itemStaggers.value = map
+})
 
 // useInfiniteScroll should be called at setup top level, not inside onMounted
 if (loadMore) {
@@ -44,7 +56,7 @@ if (loadMore) {
       <li
         v-for="(item, index) in data"
         :key="item.id"
-        :style="{ '--i': index }"
+        :style="{ '--i': itemStaggers.get(item.id) ?? index }"
       >
         <ForumTopic :topic="item" />
         <Separator v-if="index < data.length - 1" class="h-1px" />
