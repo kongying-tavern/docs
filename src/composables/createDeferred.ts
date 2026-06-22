@@ -1,17 +1,17 @@
 import { once } from 'lodash-es'
 
-interface Deferred<T> {
+export interface Deferred<T = void> {
   promise: Promise<T>
-  resolve: (value: T | PromiseLike<T>) => void
+  resolve: T extends void ? () => void : (value: T | PromiseLike<T>) => void
   reject: (reason?: unknown) => void
 }
 
 export function createDeferred<T = void>(): Deferred<T> {
-  let resolve!: (value: T | PromiseLike<T>) => void
+  let resolve!: Deferred<T>['resolve']
   let reject!: (reason?: unknown) => void
 
   const promise = new Promise<T>((res, rej) => {
-    resolve = once(res)
+    resolve = once(res) as unknown as Deferred<T>['resolve']
     reject = once(rej)
   })
 

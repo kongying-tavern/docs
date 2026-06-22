@@ -52,6 +52,7 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
 
     tokenManager.isTokenRefreshing.value = true
     tokenManager.lastRefreshAttempt.value = Date.now()
+    tokenManager.startRefreshTracking()
 
     try {
       log.info(LogGroup.REFRESH, 'Starting token refresh', {
@@ -87,6 +88,9 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
 
       log.success(LogGroup.REFRESH, 'Token refresh successful')
 
+      tokenManager.isTokenRefreshing.value = false
+      tokenManager.completeRefreshTracking(true)
+
       // Schedule next refresh
       scheduleTokenRefresh()
     }
@@ -113,11 +117,11 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
         tokenManager.clearTokens()
         retryCount.value = 0
 
+        tokenManager.isTokenRefreshing.value = false
+        tokenManager.completeRefreshTracking(false, error)
+
         throw createAuthError.tokenRefreshFailed(error instanceof Error ? error : new Error(String(error)))
       }
-    }
-    finally {
-      tokenManager.isTokenRefreshing.value = false
     }
   }
 
