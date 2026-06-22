@@ -34,6 +34,7 @@ export function useLoadMore<T, P extends unknown[] = unknown[]>(
       noMore: computed(() => true),
       loadMore: async () => {},
       initialData: () => {},
+      restoreData: () => {},
       isFirstLoad: computed(() => false),
       canLoadMore: computed(() => false),
       loadingMore: computed(() => false),
@@ -46,6 +47,7 @@ export function useLoadMore<T, P extends unknown[] = unknown[]>(
   const accumulatedData = shallowRef<T[]>([])
   const baseParams = shallowRef<P | null>(null) // 基础参数（不含页码）
   const isLoadingMore = ref(false)
+  const isFetchingMore = ref(false) // 跟踪"翻页 fetch 进行中"（覆盖 current++ 到 paginationData 更新之间的间隙）
   const hasLoaded = ref(false)
   const queryCache = useQueryCache()
 
@@ -73,13 +75,25 @@ export function useLoadMore<T, P extends unknown[] = unknown[]>(
 
   // Computed
   const total = computed(() => paginationData.value?.total ?? 0)
-  const totalPage = computed(() => paginationData.value?.totalPage ?? 0)
+  const totalPage = computed(() => {
+    const value = paginationData.value?.totalPage ?? 0
+    return Number.isFinite(value) ? value : 0
+  })
 
-  // 只有加载完成后才判断是否有更多
   const noMore = computed(() => {
     if (!hasLoaded.value)
       return false
-    return current.value >= totalPage.value
+    // 翻页 fetch 进行中时 paginationData 可能仍是旧页数据，不应判断 noMore
+    if (isFetchingMore.value)
+      return false
+    // 无活跃查询时（缓存路径），旧 paginationData 不可信
+    if (!baseParams.value)
+      return false
+    if (totalPage.value > 0)
+      return current.value >= totalPage.value
+
+    const pageData = paginationData.value
+    return Array.isArray(pageData?.data) && pageData.data.length < pageSize
   })
 
   const isFirstLoad = computed(() =>
@@ -96,6 +110,7 @@ export function useLoadMore<T, P extends unknown[] = unknown[]>(
   watch(paginationData, (newValue) => {
     if (newValue && Array.isArray(newValue.data)) {
       hasLoaded.value = true
+      isFetchingMore.value = false
 
       if (current.value === 1) {
         accumulatedData.value = [...newValue.data]
@@ -113,8 +128,20 @@ export function useLoadMore<T, P extends unknown[] = unknown[]>(
     current.value = 1
     accumulatedData.value = []
     hasLoaded.value = false
+    isFetchingMore.value = false
 
     const result = await refetch()
+
+    // 确保 hasLoaded 在 refetch 完成后立即设置，
+    // 不完全依赖 paginationData watcher（@pinia/colada 缓存可能导致 watcher 不触发）
+    if (result.data && Array.isArray(result.data.data)) {
+      hasLoaded.value = true
+      if (current.value === 1) {
+        accumulatedData.value = [...result.data.data]
+      }
+      isLoadingMore.value = false
+    }
+
     return {
       data: result.data?.data ?? [],
       total: result.data?.total ?? 0,
@@ -127,16 +154,45 @@ export function useLoadMore<T, P extends unknown[] = unknown[]>(
       return
 
     isLoadingMore.value = true
+    isFetchingMore.value = true
     current.value++
     // key 变化后会自动触发新的查询
   }
 
-  function initialData() {
+  function initialData(options?: { preserveLoaded?: boolean, silent?: boolean }) {
     accumulatedData.value = []
     current.value = 1
     baseParams.value = null
     isLoadingMore.value = false
-    hasLoaded.value = false
+    isFetchingMore.value = false
+    if (!options?.preserveLoaded) {
+      hasLoaded.value = false
+    }
+    // silent 模式不清理查询缓存，避免触发 paginationData watcher 覆盖后续设置的数据
+    if (!options?.silent) {
+      const key = queryKey()
+      queryCache.setQueryData(key, { data: [] as T[], total: 0, totalPage: 0 })
+    }
+  }
+
+  function restoreData(data: T[], ...args: P) {
+    const restoredPage = Math.max(1, Math.ceil(data.length / pageSize))
+    const lastPageStart = (restoredPage - 1) * pageSize
+    const lastPageData = data.slice(lastPageStart)
+
+    baseParams.value = args as P
+    current.value = restoredPage
+    accumulatedData.value = [...data]
+    hasLoaded.value = true
+    isLoadingMore.value = false
+    isFetchingMore.value = false
+
+    const key = queryKey()
+    queryCache.setQueryData(key, {
+      data: lastPageData,
+      total: 0,
+      totalPage: 0,
+    })
   }
 
   function mutate(newData: ForumAPI.PaginatedResult<T[]>) {
@@ -161,6 +217,7 @@ export function useLoadMore<T, P extends unknown[] = unknown[]>(
     loadMore,
     runAsync,
     initialData,
+    restoreData,
     noMore,
     isFirstLoad,
     canLoadMore,
