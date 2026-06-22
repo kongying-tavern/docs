@@ -2,6 +2,7 @@
 extend-exclude = [
   "**/*.json",
   "**/*.svg",
+  "**/llms.txt",
   "pnpm-lock.yaml",
   ".markdownlintignore",
   ".prettierignore",
