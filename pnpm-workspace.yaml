@@ -128,7 +128,7 @@ catalogs:
     "@types/sortablejs": ^1.15.9
   utils:
     js-yaml: ^4.1.1
-    pnpm: 10.6.3
+    pnpm: 11.9.0
   conflicts_editor_h3_4_4:
     "@tiptap/core": ^3.20.1
     "@tiptap/extension-character-count": ^3.20.1
