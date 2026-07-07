@@ -766,7 +766,7 @@ Fix a {%= L_RARE %} issue that may cause the filter can not update pin data when
 
 - !!Add unexpected new features to the code.!!
 - Fix a {%= L_NORMAL %} issue that may cause an initialization error when double-clicking "Click to Enter". !!(not fixed yet, but will definitely be fixed next time (well, actually it's fixed now; if not, please run the updater to update manually))!!
-- Fix a {%= L_NORMAL %} issue where a continuos "Failed to obtain server version" state may prevent entry. Now, clicking on "Retry" will switch resource server and try again.
+- Fix a {%= L_NORMAL %} issue where a continuous "Failed to obtain server version" state may prevent entry. Now, clicking on "Retry" will switch resource server and try again.
 - Known a {%= L_RARE %} issue that prevents this version from running auto-update. Please update manually.
 
 :::
