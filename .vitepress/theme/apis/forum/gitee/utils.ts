@@ -1,7 +1,6 @@
 import type { KyResponse } from 'ky'
 import type ForumAPI from '../api'
 import { isArray, uniq } from 'lodash-es'
-import { getHeader } from '@/apis/utils'
 import { avatarBaseURl, avatarList } from '@/composables/avatarList'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
@@ -27,6 +26,12 @@ const CRLF_LINE_ENDING_REGEX = /\r\n/g
 
 /** Matches leading and trailing quotes */
 const LEADING_TRAILING_QUOTE_REGEX = /^"|"$/g
+
+/** Matches a page number in API pagination links */
+const PAGE_QUERY_PARAM_REGEX = /[?&](?:page|current)=([^&>]+)/
+
+/** Matches the last-page relation in API pagination links */
+const LAST_PAGE_REL_REGEX = /rel="?last"?/
 
 const forumLocaleLabelGetter = getForumLocaleLabelGetter()
 const topicTypeLabelGetter = getTopicTypeLabelGetter()
@@ -318,30 +323,24 @@ export function hasPagination(
 export function getGiteeApiPaginationParams(
   response: KyResponse,
 ): [ForumAPI.PaginationParams, undefined] | [undefined, Error] {
-  const [pagination, error] = getHeader(response, ['Total_count', 'Total_page'])
-
-  if (error) {
-    return [
-      undefined,
-      new GiteeAPIError(GiteeApiErrorType.MissingPaginationParams),
-    ]
-  }
-
-  return [
-    {
-      total: Number(pagination[0]),
-      totalPage: Number(pagination[1]),
-    },
-    undefined,
-  ]
+  return getPaginationParamsFromHeaders(response)
 }
 
 export async function handlePagination(
   response: KyResponse,
 ): Promise<[ForumAPI.PaginationParams, undefined] | [undefined, Error]> {
-  const [pagination, error] = getHeader(response, ['Total_count', 'Total_page'])
+  return getPaginationParamsFromHeaders(response)
+}
 
-  if (error && !pagination) {
+function getPaginationParamsFromHeaders(
+  response: KyResponse,
+): [ForumAPI.PaginationParams, undefined] | [undefined, Error] {
+  const total = getNumericHeader(response, ['Total_count', 'X-Total-Count'])
+  const totalPage
+    = getNumericHeader(response, ['Total_page', 'X-Total-Page', 'X-Total-Pages'])
+      ?? getLastPageFromLinkHeader(response.headers.get('Link'))
+
+  if (total === undefined && totalPage === undefined) {
     return [
       undefined,
       new GiteeAPIError(GiteeApiErrorType.MissingPaginationParams),
@@ -350,11 +349,39 @@ export async function handlePagination(
 
   return [
     {
-      total: Number(pagination[0]),
-      totalPage: Number(pagination[1]),
+      total: total ?? 0,
+      totalPage: totalPage ?? 0,
     },
     undefined,
   ]
+}
+
+function getNumericHeader(response: KyResponse, headerNames: string[]): number | undefined {
+  for (const headerName of headerNames) {
+    const value = response.headers.get(headerName)
+    if (!value)
+      continue
+
+    const numericValue = Number(value)
+    if (Number.isFinite(numericValue))
+      return numericValue
+  }
+}
+
+function getLastPageFromLinkHeader(linkHeader: string | null): number | undefined {
+  if (!linkHeader)
+    return undefined
+
+  const lastLink = linkHeader
+    .split(',')
+    .find(link => LAST_PAGE_REL_REGEX.test(link))
+
+  const page = lastLink?.match(PAGE_QUERY_PARAM_REGEX)?.[1]
+  if (!page)
+    return undefined
+
+  const numericPage = Number(page)
+  return Number.isFinite(numericPage) ? numericPage : undefined
 }
 
 export async function parseErrorMessage(

@@ -254,9 +254,6 @@ catalogs:
     medium-zoom:
       specifier: ^1.1.0
       version: 1.1.0
-    mitt:
-      specifier: ^3.0.1
-      version: 3.0.1
     path-to-regexp:
       specifier: ^8.3.0
       version: 8.3.0
@@ -295,44 +292,44 @@ catalogs:
       version: 4.3.6
   markdown:
     '@mdit/plugin-abbr':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-container':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-demo':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-figure':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-icon':
-      specifier: ^0.24.1
-      version: 0.24.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-img-mark':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-img-size':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-mark':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-ruby':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-spoiler':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-sub':
-      specifier: ^0.24.1
-      version: 0.24.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-sup':
-      specifier: ^0.24.1
-      version: 0.24.1
+      specifier: ^1.0.0
+      version: 1.0.1
     '@mdit/plugin-tasklist':
-      specifier: ^0.23.1
-      version: 0.23.1
+      specifier: ^1.0.0
+      version: 1.0.1
     markdown-it:
       specifier: 14.1.0
       version: 14.1.0
@@ -417,43 +414,43 @@ importers:
         version: 0.1.1
       '@mdit/plugin-abbr':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-container':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-demo':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-figure':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-icon':
         specifier: catalog:markdown
-        version: 0.24.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-img-mark':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-img-size':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-mark':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-ruby':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-spoiler':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-sub':
         specifier: catalog:markdown
-        version: 0.24.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-sup':
         specifier: catalog:markdown
-        version: 0.24.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@mdit/plugin-tasklist':
         specifier: catalog:markdown
-        version: 0.23.1(markdown-it@14.1.0)
+        version: 1.0.1(markdown-it@14.1.0)
       '@number-flow/vue':
         specifier: catalog:frontend
         version: 0.5.0(vue@3.5.30(typescript@5.9.3))
@@ -550,9 +547,6 @@ importers:
       medium-zoom:
         specifier: catalog:frontend
         version: 1.1.0
-      mitt:
-        specifier: catalog:frontend
-        version: 3.0.1
       motion-v:
         specifier: catalog:conflicts_frontend_h1_7_1
         version: 2.0.0(@vueuse/core@14.2.1(vue@3.5.30(typescript@5.9.3)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vue@3.5.30(typescript@5.9.3))
@@ -758,9 +752,6 @@ importers:
       vitepress-plugin-llms:
         specifier: catalog:build
         version: 1.11.0
-      why-is-node-running:
-        specifier: ^3.2.2
-        version: 3.2.2
       zhlint:
         specifier: catalog:dev
         version: 0.8.2
@@ -1963,137 +1954,137 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@mdit/helper@0.23.1':
-    resolution: {integrity: sha512-ifWDG3VbUAx1ia7eBWEHm5vpv5QFUPY3kFLPPZzYBr15A7/d5w7D+8ZBg8xxqkvyC73Ys+zF14EQCq7eQAXYxg==}
-    engines: {node: '>= 20'}
+  '@mdit/helper@1.0.1':
+    resolution: {integrity: sha512-zAzShsRZmkqjuoOFg6/zTCYVpvghj9a30Cl/eOGkE0xzRJJJG8T18eqb2lgceQhjVLWHK02HNVkzyfNHc429lQ==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-abbr@0.23.1':
-    resolution: {integrity: sha512-wHhU25hXoQh4M+WY294YQp9StDoH5sSd7UkgCJK3rJtsUFb+du9drFRc2W+1DJ2Ngmwld6q2teU0QNsRi7bkow==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-abbr@1.0.1':
+    resolution: {integrity: sha512-IvkY/Fp8vDBqSajoHFSHtXjp6JhVtzcsbGxf/Ai4VBab9eL7smIDxY9+ubEYVGSCRhPsnSijEE6cSnMoz5TKkQ==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-container@0.23.1':
-    resolution: {integrity: sha512-mHTp4+zvuE6uqhG6honfR6F5wLgAIcLlGVCu8xHIoO6H8Oc23lrjl+8Ieyr+PKLH3Lz0QFQf0fWdwNi44EsYSg==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-container@1.0.1':
+    resolution: {integrity: sha512-dT6eoqKxpWcsIHYPTNjIOq/pIzhv6LJTNXjfLSk847goQtlvMZ/Y+kRKH+wQGqDKmNwxDbEQfDbcoqhNXEjuhA==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-demo@0.23.1':
-    resolution: {integrity: sha512-yyU/VxkLxw/qz/zpnNGWEBCRZmFl3hsIx03VUeBhWU9gWr2px7SCmWqeN+nhdbhTzlC/84c1caCWc+uSx2babA==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-demo@1.0.1':
+    resolution: {integrity: sha512-z/NDKvZI1KYi/9h4fOU0H9BGot5AEWHiwIcSh2y8Ei5i1jkwXxYw/trhyTst1RbrCeog8lW+BO8wHrnsOA/3DA==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-figure@0.23.1':
-    resolution: {integrity: sha512-gdEnVk1IW9qZD8QSIs4jZhgdwk/BymKn+5GsVux4Pa7j/+sIkoR76dD6kJI/Q7qStI1sFrmTou1s/sQf7/NRwg==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-figure@1.0.1':
+    resolution: {integrity: sha512-HPaa/fijJJ8csHO3/ybCjrlEVLDzeEC90ctYpsyLjgSi6v+ovLmpWO6S3OL/ba7vV2P2ByX4vCNeYrYSc/u5rg==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-icon@0.24.1':
-    resolution: {integrity: sha512-nFkdGpVajAzXKN8KHUVIfH5qfABCQWuH52+Yl3r+OKOFUmFVjGu62CIEoNnlkFjHLIUD4QhvmuncoNW4zEDhEg==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-icon@1.0.1':
+    resolution: {integrity: sha512-As0tCXUJbO1j/f2I2czlko8WQjZGQDyFKY6aR+eHB01Sye/gXL0YVuTKoKt7qTsZQCt7u52C8l55zQiqdOsKzg==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-img-mark@0.23.1':
-    resolution: {integrity: sha512-pOZ9m6wkn+mLKXByejKWLIW0HMr2AgkSdTrmwsQ0y8s9/XWckP+9r3alpPQCoqhcRas5NHmg6FR+CDOAXb9rpA==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-img-mark@1.0.1':
+    resolution: {integrity: sha512-CNBvL+6BSHGKY4uxhCFG49LO3ZOjWyXE1LO6cakGHZaD+dCWAoqhJQbqr/Oz9/yIT9gA1T+2vHutTgBM/FzQnw==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-img-size@0.23.1':
-    resolution: {integrity: sha512-cpnXRpLWGBhBAxuIqq4YTeqcF5wLdmSFlKiEr4dBCKI/pj9Gsjd6WY40OzvpXyamSMoyAjYj4Fo+JO1ghwvarg==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-img-size@1.0.1':
+    resolution: {integrity: sha512-9NBklpT1DZqcdQ9vL3bveA/XN9GxDwaFpXp8Udy6i2i1dctydLSzvxFOIuO3X5kAym3/XpZfXSTen15mj35tHQ==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-inline-rule@0.23.1':
-    resolution: {integrity: sha512-ShT+quzVWGxJXb7fo64F/9o05srhL75dspcLF0VbxlFKLQABFW0EI+lrzRortV5RlXhVY42ezpp4UgOnLSQ85A==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-inline-rule@1.0.1':
+    resolution: {integrity: sha512-SdCbSS+f43j9tB0LzYCmgoXusDEiyWQKs3lrWa0dI5aJRZDqqa7w95ZyzeazcbGviFUP5NHZUHI2AsC5mSBGgQ==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-mark@0.23.1':
-    resolution: {integrity: sha512-ks/RRTzuDjxvclsNsMMOo2f9vfnKkIF+9sqpfScw7kxfUWPkfAnGQVv1AQHlfv/OlCyyLUQm2rXYEMr1t/XxGA==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-mark@1.0.1':
+    resolution: {integrity: sha512-7a3UFjTM7ov5awj302crbj0IGpzPB0ofueaouMCsFJLmOfbrq07XR2USDruks3EmGWWhYoiOo+6ZFVHjmleGTw==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-ruby@0.23.1':
-    resolution: {integrity: sha512-cAQU3m13SrIwEEiqK7rdVrbxAZ50LkzNQBekoFQZyBYphGcCLS3CQpkNXaZ6a6kTBqNgfzqZSfxbSksvTUXYFw==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-ruby@1.0.1':
+    resolution: {integrity: sha512-kozbK7fjbQropAvh6tk+ilIxYfiYGnYjSRk2lbJpd/4Htrp8IoES2HWSHxaw9CJiKspTVxRcmEG2aannJ+vfKA==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-spoiler@0.23.1':
-    resolution: {integrity: sha512-xfodFv8B5vHihKXeKDNeCKwxIi/rZOb4H2apEwB4BUqQMIQ9jl3Iv4CZMDaO5IpPxFz73H3+6zDRJ/noRLcMjQ==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-spoiler@1.0.1':
+    resolution: {integrity: sha512-8aGi1iMDrDw6o2onimo/+eRAbGv+iqvNhj0bGYD3sCUpW9bdQ4GN8hiTEkeWM6Mn09l0HrbpRib1I9UhQGHSHg==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-sub@0.24.1':
-    resolution: {integrity: sha512-NqkwVlN6GVRNT+6klexUrfS5oyYvaBJUGND7SWYmlmY31TptpDpLWH9cW2UhWmGUKIKoL64Kk4Efd1VMyh2Mkg==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-sub@1.0.1':
+    resolution: {integrity: sha512-c5vMkL6mFfqtAyRmdMrueE5bYisdk4PJg0hHZ7UZYRcGK3FT0E4IUBd7x8lhzHM0jmsSO7Yg24ofoBK0Cth65w==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-sup@0.24.1':
-    resolution: {integrity: sha512-yG/zI29K2bxaYXuQxWmaMtTG8gUrCZDNQpiVVurT2fOCD1WoKbdk7ICdjrdU4hvZzig1vECF2AsNP5kCynf0ZQ==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-sup@1.0.1':
+    resolution: {integrity: sha512-FdLLLrwHY21IhfidfmtQHa+f17Mu78MbepDVyp89nqmtjKhO0EU4Kktd7KvFf5ARN09lizsfT/O5cFkf74AsCw==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-tasklist@0.23.1':
-    resolution: {integrity: sha512-BNhTESurLLQxydlsfdsXf+e9U746UlHFl0l/rHQH225b6aaOdo/TH0H6PIAZIjx0oV97wg72s/WHKGMejps3Rg==}
-    engines: {node: '>= 20'}
+  '@mdit/plugin-tasklist@1.0.1':
+    resolution: {integrity: sha512-Ks/Tihw5ibbkP2qOZzltkbiTk8RfpxDRvqdn4hl1wIs3VmeKITIQ36gN4DsuotSauA9SBe/mL0QJIfuSCrXqrw==}
+    engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^14.1.0
+      markdown-it: ^14.2.0
     peerDependenciesMeta:
       markdown-it:
         optional: true
@@ -3362,6 +3353,7 @@ packages:
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
+    deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
   '@unhead/vue@2.0.17':
     resolution: {integrity: sha512-jzmGZYeMAhETV6qfetmLbZzUjjx1TjdNvFSobeFZb73D7dwD9wl/nOAx36qq+TvjZsLJdF5PQWToz2oDGAUqCg==}
@@ -4304,15 +4296,18 @@ packages:
   conventional-changelog-atom@5.0.0:
     resolution: {integrity: sha512-WfzCaAvSCFPkznnLgLnfacRAzjgqjLUjvf3MftfsJzQdDICqkOOpcMtdJF3wTerxSpv2IAAjX8doM3Vozqle3g==}
     engines: {node: '>=18'}
+    deprecated: This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.
 
   conventional-changelog-cli@5.0.0:
     resolution: {integrity: sha512-9Y8fucJe18/6ef6ZlyIlT2YQUbczvoQZZuYmDLaGvcSBP+M6h+LAvf7ON7waRxKJemcCII8Yqu5/8HEfskTxJQ==}
     engines: {node: '>=18'}
+    deprecated: This package is no longer maintained. Please use the conventional-changelog package instead.
     hasBin: true
 
   conventional-changelog-codemirror@5.0.0:
     resolution: {integrity: sha512-8gsBDI5Y3vrKUCxN6Ue8xr6occZ5nsDEc4C7jO/EovFGozx8uttCAyfhRrvoUAWi2WMm3OmYs+0mPJU7kQdYWQ==}
     engines: {node: '>=18'}
+    deprecated: This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.
 
   conventional-changelog-conventionalcommits@7.0.2:
     resolution: {integrity: sha512-NKXYmMR/Hr1DevQegFB4MwfM5Vv0m4UIxKZTTYuD98lpTknaZlSRrDOG4X7wIXpGkfsYxZTghUN+Qq+T0YQI7w==}
@@ -4325,26 +4320,32 @@ packages:
   conventional-changelog-core@8.0.0:
     resolution: {integrity: sha512-EATUx5y9xewpEe10UEGNpbSHRC6cVZgO+hXQjofMqpy+gFIrcGvH3Fl6yk2VFKh7m+ffenup2N7SZJYpyD9evw==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Please use conventional-changelog instead.
 
   conventional-changelog-ember@5.0.0:
     resolution: {integrity: sha512-RPflVfm5s4cSO33GH/Ey26oxhiC67akcxSKL8CLRT3kQX2W3dbE19sSOM56iFqUJYEwv9mD9r6k79weWe1urfg==}
     engines: {node: '>=18'}
+    deprecated: This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.
 
   conventional-changelog-eslint@6.0.0:
     resolution: {integrity: sha512-eiUyULWjzq+ybPjXwU6NNRflApDWlPEQEHvI8UAItYW/h22RKkMnOAtfCZxMmrcMO1OKUWtcf2MxKYMWe9zJuw==}
     engines: {node: '>=18'}
+    deprecated: This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.
 
   conventional-changelog-express@5.0.0:
     resolution: {integrity: sha512-D8Q6WctPkQpvr2HNCCmwU5GkX22BVHM0r4EW8vN0230TSyS/d6VQJDAxGb84lbg0dFjpO22MwmsikKL++Oo/oQ==}
     engines: {node: '>=18'}
+    deprecated: This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.
 
   conventional-changelog-jquery@6.0.0:
     resolution: {integrity: sha512-2kxmVakyehgyrho2ZHBi90v4AHswkGzHuTaoH40bmeNqUt20yEkDOSpw8HlPBfvEQBwGtbE+5HpRwzj6ac2UfA==}
     engines: {node: '>=18'}
+    deprecated: This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.
 
   conventional-changelog-jshint@5.0.0:
     resolution: {integrity: sha512-gGNphSb/opc76n2eWaO6ma4/Wqu3tpa2w7i9WYqI6Cs2fncDSI2/ihOfMvXveeTTeld0oFvwMVNV+IYQIk3F3g==}
     engines: {node: '>=18'}
+    deprecated: This preset is deprecated. Please use conventional-changelog-conventionalcommits or conventional-changelog-angular instead.
 
   conventional-changelog-preset-loader@5.0.0:
     resolution: {integrity: sha512-SetDSntXLk8Jh1NOAl1Gu5uLiCNSYenB5tm0YVeZKePRIgDW9lQImromTwLa3c/Gae298tsgOM+/CYT9XAl0NA==}
@@ -5432,16 +5433,19 @@ packages:
   git-raw-commits@4.0.0:
     resolution: {integrity: sha512-ICsMM1Wk8xSGMowkOmPrzo2Fgmfo4bMHLNX6ytHjajRJUqvHOw/TFapQ+QG75c3X/tTDDhOSRPGC52dDbNM8FQ==}
     engines: {node: '>=16'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-raw-commits@5.0.0:
     resolution: {integrity: sha512-I2ZXrXeOc0KrCvC7swqtIFXFN+rbjnC7b2T943tvemIOVNl+XP8YnA9UVwqFhzzLClnSA60KR/qEjLpXzs73Qg==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-semver-tags@8.0.0:
     resolution: {integrity: sha512-N7YRIklvPH3wYWAR2vysaqGLPRcpwQ0GKdlqTiVN5w1UmCdaeY3K8s6DMKRCh54DDdzyt/OAB6C8jgVtb7Y2Fg==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-up@8.1.1:
@@ -5463,16 +5467,18 @@ packages:
 
   glob@10.4.5:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@11.1.0:
     resolution: {integrity: sha512-vuNwKSaKiqm7g0THUBu2x7ckSs3XJLXE+2ssL7/MfTGPLLcrJQ/4Uq1CjPTtO5cCIiRxqvN6Twy1qOwhL0Xjcw==}
     engines: {node: 20 || >=22}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   global-directory@4.0.1:
     resolution: {integrity: sha512-wHTUcDUoZ1H5/0iVqEudYW4/kAlN5cZ3j/bXn0Dpbizl9iaUVeWSHqiOjsgk6OW2bkLclbBjzewBz6weQ1zA2Q==}
@@ -6175,6 +6181,7 @@ packages:
 
   lucide-vue-next@0.562.0:
     resolution: {integrity: sha512-LN0BLGKMFulv0lnfK29r14DcngRUhIqdcaL0zXTt2o0oS9odlrjCGaU3/X9hIihOjjN8l8e+Y9G/famcNYaI7Q==}
+    deprecated: Package deprecated. Please use @lucide/vue instead.
     peerDependencies:
       vue: '>=3.0.1'
 
@@ -8119,6 +8126,7 @@ packages:
   tar@7.5.1:
     resolution: {integrity: sha512-nlGpxf+hv0v7GkWBK2V9spgactGOp0qvfWRxUMjqHyzrt3SgwE48DIv/FhqPHJYLHpgW1opq3nERbz5Anq7n1g==}
     engines: {node: '>=18'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   taze@0.16.9:
     resolution: {integrity: sha512-5dROtuXIaP3HOHy7f2jTvnfHbHO8ubCoqfv1At3UOo7QB63y8oLNwpuj7w/4IdVY+lkzQSDV6f5L5Bhl3kq9QQ==}
@@ -8437,6 +8445,7 @@ packages:
 
   unplugin-vue-router@0.15.0:
     resolution: {integrity: sha512-PyGehCjd9Ny9h+Uer4McbBjjib3lHihcyUEILa7pHKl6+rh8N7sFyw4ZkV+N30Oq2zmIUG7iKs3qpL0r+gXAaQ==}
+    deprecated: 'Merged into vuejs/router. Migrate: https://router.vuejs.org/guide/migration/v4-to-v5.html'
     peerDependencies:
       '@vue/compiler-sfc': ^3.5.17
       vue-router: ^4.5.1
@@ -8842,11 +8851,6 @@ packages:
   which@5.0.0:
     resolution: {integrity: sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
-    hasBin: true
-
-  why-is-node-running@3.2.2:
-    resolution: {integrity: sha512-NKUzAelcoCXhXL4dJzKIwXeR8iEVqsA0Lq6Vnd0UXvgaKbzVo4ZTHROF2Jidrv+SgxOQ03fMinnNhzZATxOD3A==}
-    engines: {node: '>=20.11'}
     hasBin: true
 
   word-wrap@1.2.5:
@@ -10211,97 +10215,97 @@ snapshots:
       - supports-color
     optional: true
 
-  '@mdit/helper@0.23.1(markdown-it@14.1.0)':
+  '@mdit/helper@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-abbr@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-abbr@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-container@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-container@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-demo@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-demo@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-figure@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-figure@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-icon@0.24.1(markdown-it@14.1.0)':
+  '@mdit/plugin-icon@1.0.1(markdown-it@14.1.0)':
     dependencies:
-      '@mdit/helper': 0.23.1(markdown-it@14.1.0)
+      '@mdit/helper': 1.0.1(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-img-mark@0.23.1(markdown-it@14.1.0)':
-    dependencies:
-      '@types/markdown-it': 14.1.2
-    optionalDependencies:
-      markdown-it: 14.1.0
-
-  '@mdit/plugin-img-size@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-img-mark@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-inline-rule@0.23.1(markdown-it@14.1.0)':
-    dependencies:
-      '@mdit/helper': 0.23.1(markdown-it@14.1.0)
-      '@types/markdown-it': 14.1.2
-    optionalDependencies:
-      markdown-it: 14.1.0
-
-  '@mdit/plugin-mark@0.23.1(markdown-it@14.1.0)':
-    dependencies:
-      '@mdit/plugin-inline-rule': 0.23.1(markdown-it@14.1.0)
-      '@types/markdown-it': 14.1.2
-    optionalDependencies:
-      markdown-it: 14.1.0
-
-  '@mdit/plugin-ruby@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-img-size@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-spoiler@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-inline-rule@1.0.1(markdown-it@14.1.0)':
     dependencies:
-      '@mdit/plugin-inline-rule': 0.23.1(markdown-it@14.1.0)
+      '@mdit/helper': 1.0.1(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-sub@0.24.1(markdown-it@14.1.0)':
+  '@mdit/plugin-mark@1.0.1(markdown-it@14.1.0)':
     dependencies:
-      '@mdit/plugin-inline-rule': 0.23.1(markdown-it@14.1.0)
+      '@mdit/plugin-inline-rule': 1.0.1(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-sup@0.24.1(markdown-it@14.1.0)':
+  '@mdit/plugin-ruby@1.0.1(markdown-it@14.1.0)':
     dependencies:
-      '@mdit/plugin-inline-rule': 0.23.1(markdown-it@14.1.0)
       '@types/markdown-it': 14.1.2
     optionalDependencies:
       markdown-it: 14.1.0
 
-  '@mdit/plugin-tasklist@0.23.1(markdown-it@14.1.0)':
+  '@mdit/plugin-spoiler@1.0.1(markdown-it@14.1.0)':
+    dependencies:
+      '@mdit/plugin-inline-rule': 1.0.1(markdown-it@14.1.0)
+      '@types/markdown-it': 14.1.2
+    optionalDependencies:
+      markdown-it: 14.1.0
+
+  '@mdit/plugin-sub@1.0.1(markdown-it@14.1.0)':
+    dependencies:
+      '@mdit/plugin-inline-rule': 1.0.1(markdown-it@14.1.0)
+      '@types/markdown-it': 14.1.2
+    optionalDependencies:
+      markdown-it: 14.1.0
+
+  '@mdit/plugin-sup@1.0.1(markdown-it@14.1.0)':
+    dependencies:
+      '@mdit/plugin-inline-rule': 1.0.1(markdown-it@14.1.0)
+      '@types/markdown-it': 14.1.2
+    optionalDependencies:
+      markdown-it: 14.1.0
+
+  '@mdit/plugin-tasklist@1.0.1(markdown-it@14.1.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
     optionalDependencies:
@@ -18443,8 +18447,6 @@ snapshots:
     dependencies:
       isexe: 3.1.1
     optional: true
-
-  why-is-node-running@3.2.2: {}
 
   word-wrap@1.2.5: {}
 

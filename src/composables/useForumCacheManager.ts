@@ -202,7 +202,12 @@ export function useForumCacheManager(
       const cachedData = getCachedData(newFilter)
 
       if (cachedData) {
-        forumData.data.value = cachedData
+        const queryParams: ForumQueryParams = { filter: newFilter }
+        if (metadata) {
+          queryParams.creator = metadata
+        }
+
+        forumData.restoreCachedData(cachedData, queryParams)
         await nextTick()
       }
       else {
@@ -225,6 +230,7 @@ export function useForumCacheManager(
           const allData = getAllCachedData()
           if (allData.length > 0) {
             const filtered = clientSideFilter(allData, newFilter)
+            forumData.initialData({ preserveLoaded: true, silent: true })
             forumData.data.value = filtered
 
             toast.warning('网络请求失败，显示本地数据', {
@@ -233,7 +239,7 @@ export function useForumCacheManager(
             })
           }
           else {
-            forumData.data.value = []
+            forumData.initialData()
 
             toast.error('无法加载数据', {
               description: '请检查网络连接后重试',
@@ -261,7 +267,15 @@ export function useForumCacheManager(
       const cachedData = getCachedData(filter.value)
 
       if (cachedData) {
-        forumData.data.value = cachedData
+        const queryParams: ForumQueryParams = {
+          filter: filter.value,
+          sort: newSort,
+        }
+        if (metadata) {
+          queryParams.creator = metadata
+        }
+
+        forumData.restoreCachedData(cachedData, queryParams)
         await nextTick()
       }
       else {

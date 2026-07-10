@@ -2,8 +2,17 @@
 extend-exclude = [
   "**/*.json",
   "**/*.svg",
+  "**/llms.txt",
   "pnpm-lock.yaml",
   ".markdownlintignore",
   ".prettierignore",
   ".eslintrc.yml"
 ]
+
+[default.extend-identifiers]
+# Acronym for SimpleEventHandler / SimpleEventManager
+SEH = "SEH"
+# canva.com is a legitimate domain name
+canva = "canva"
+# Japanese proper name (e.g. "Kanbaru rin")
+rin = "rin"

@@ -35,6 +35,7 @@ export function useForumData(options: UseForumDataOptions = {}) {
     canLoadMore,
     current,
     loadingMore,
+    restoreData,
   } = useLoadMore(async (current: number, queryParams: ForumAPI.Query, _state: string, searchQuery?: string) => {
     const serviceOptions: ForumServiceOptions = {
       onError: (error) => {
@@ -83,7 +84,7 @@ export function useForumData(options: UseForumDataOptions = {}) {
 
   // Computed
   const loadStateMessage = computed(() => {
-    if (loading.value)
+    if (loading.value || loadingMore.value)
       return message.value.forum.loadMore
     if (lastError.value)
       return `${message.value.forum.loadError}: ${ForumService.buildErrorMessage(lastError.value)}`
@@ -91,6 +92,8 @@ export function useForumData(options: UseForumDataOptions = {}) {
       return 'No topics found'
     if (noMore.value)
       return message.value.forum.noMore
+    if (canLoadMore.value)
+      return message.value.forum.loadMore
     return ''
   })
 
@@ -126,6 +129,23 @@ export function useForumData(options: UseForumDataOptions = {}) {
         errorMessage: `${message.value.forum.loadError}: ${ForumService.buildErrorMessage(lastError.value)}`,
       })
     }
+  }
+
+  function restoreCachedData(cachedData: ForumAPI.Topic[], queryParams?: ForumQueryParams): void {
+    const loadMoreParams: ForumAPI.Query = {
+      current: queryParams?.page || 1,
+      pageSize: queryParams?.pageSize || 20,
+      sort: queryParams?.sort || 'created',
+      creator: queryParams?.creator || null,
+      filter: queryParams?.filter || 'all',
+    }
+
+    restoreData(
+      cachedData,
+      loadMoreParams,
+      'open',
+      queryParams?.searchQuery ? String(queryParams.searchQuery) : undefined,
+    )
   }
 
   async function loadForumData(queryParams?: ForumQueryParams): Promise<void> {
@@ -223,6 +243,7 @@ export function useForumData(options: UseForumDataOptions = {}) {
     loadMoreTopics,
     resetState,
     initialData,
+    restoreCachedData,
     loadPinnedTopics,
   }
 }
