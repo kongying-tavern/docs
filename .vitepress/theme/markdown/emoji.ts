@@ -30,10 +30,9 @@ const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
   // 初始化缓存
   initEmojiCache()
 
-  // 匹配 emoji 的正则表达式
   // 匹配 :数字.中文或英文/中文或英文-中文或英文.png: 格式
   const EMOJI_REGEX: RegExp = EMOJI_PATH_REGEX
-  md.inline.ruler.push('customEmoji', (state, silent) => {
+  md.inline.ruler.before('entity', 'customEmoji', (state, silent) => {
     const pos = state.pos
     const ch = state.src.charCodeAt(pos)
 
