@@ -160,6 +160,7 @@
     "vite": "catalog:build",
     "vite-plugin-vue-devtools": "catalog:dev",
     "vitepress-plugin-llms": "catalog:build",
+    "vue-component-meta": "catalog:build",
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
