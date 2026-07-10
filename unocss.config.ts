@@ -61,7 +61,7 @@ export default defineConfig({
     // Doc reaction feedback states
     [
       'doc-reaction-feedback-state-base',
-      'inline-block fill-current flex-basis-20px flex-shrink-0 font-size-18px mr-2',
+      'inline-block fill-current flex-basis-20px flex-shrink-0 font-size-18px mr-2 align-text-top',
     ],
     [
       'doc-reaction-feedback-state-success',
