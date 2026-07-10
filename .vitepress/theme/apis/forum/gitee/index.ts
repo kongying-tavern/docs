@@ -42,6 +42,17 @@ const cachedApiCall = useMemoize(
 
     if (!isNodeEnvironment() && !endpoint.includes('oauth')) {
       const userAuth = useUserAuthStore()
+
+      // 如果 token 已过期但无刷新进行中，触发刷新
+      // refreshToken() 内部有 isTokenRefreshing 防重入保护
+      // 错误通过 waitForTokenReady() 的 rejection 传播
+      if (!userAuth.isTokenValid && userAuth.auth?.accessToken) {
+        userAuth.refreshToken().catch(() => {})
+      }
+
+      // 等待进行中的 token 刷新完成
+      await userAuth.waitForTokenReady()
+
       const accessToken = userAuth.auth?.accessToken
 
       if (accessToken) {

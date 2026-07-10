@@ -12,6 +12,7 @@ import { handleError } from '~/composables/handleError'
 import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { simpleEventManager } from '~/services/events/SimpleEventManager'
 import { useForumTopicStore } from '~/stores/forum/useForumTopicStore'
+import { PREVIOUS_ROUTE_KEY } from '../../composables/useNavigateToTopic'
 import { setPageTitle } from '../../utils'
 
 export function useTopicPageState() {
@@ -134,17 +135,15 @@ export function useTopicPageState() {
 
   // Navigation
   function backToPreviousPage() {
-    const referrer = document.referrer
-    const currentOrigin = window.location.origin
-
-    // Only redirect to feedback page if clearly external access or no referrer
-    if (!referrer || !referrer.startsWith(currentOrigin)) {
-      const feedbackPath = withBase(`${getLangPath(localeIndex.value)}feedback`)
-      return go(feedbackPath)
+    if (typeof sessionStorage !== 'undefined') {
+      const previousHref = sessionStorage.getItem(PREVIOUS_ROUTE_KEY)
+      if (previousHref) {
+        sessionStorage.removeItem(PREVIOUS_ROUTE_KEY)
+        return go(previousHref)
+      }
     }
 
-    // For internal navigation, use browser back
-    window.history.back()
+    go(withBase(`${getLangPath(localeIndex.value)}feedback`))
   }
 
   // Setup lifecycle events

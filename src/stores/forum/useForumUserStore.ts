@@ -189,6 +189,7 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
 
     // 从forumData继承的状态
     loading: forumData.loading,
+    loadingMore: forumData.loadingMore,
     isDataLoading: forumData.isDataLoading,
     totalPage: forumData.totalPage,
     total: forumData.total,

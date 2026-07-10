@@ -37,7 +37,7 @@ jobs:
         run: pnpm install
 
       - name: Refresh Emoji Data
-        run: pnpm build-emoji
+        run: pnpm build:emoji
 
       - name: Build
         run: pnpm site:preview

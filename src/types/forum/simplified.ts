@@ -21,6 +21,7 @@ export interface ForumStoreState {
 
   // 加载状态
   loading: Ref<boolean>
+  loadingMore: Ref<boolean>
   isDataLoading: Ref<boolean>
 
   // 分页状态
@@ -166,6 +167,7 @@ export interface UseForumDataReturn {
   data: Ref<ForumAPI.Topic[] | null>
   pinnedTopicsData: Ref<ForumAPI.Topic[] | null>
   loading: Ref<boolean>
+  loadingMore: Ref<boolean>
   isDataLoading: Ref<boolean>
   totalPage: Ref<number>
   total: Ref<number>

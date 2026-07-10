@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Check spelling
         uses: crate-ci/typos@master
         with: { config: ./.github/_typos.toml }

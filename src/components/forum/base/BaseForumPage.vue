@@ -48,7 +48,9 @@ provide('searchTopics', store.searchTopics)
 // Loading state for topics list
 const isTopicsLoading = computed(() => {
   // store.loading is already a reactive value, don't use .value
-  return typeof store.loading === 'boolean' ? store.loading : store.loading?.value || false
+  const loading = typeof store.loading === 'boolean' ? store.loading : store.loading?.value || false
+  const loadingMore = typeof store.loadingMore === 'boolean' ? store.loadingMore : store.loadingMore?.value || false
+  return loading || loadingMore
 })
 </script>
 
@@ -84,6 +86,8 @@ const isTopicsLoading = computed(() => {
 
           <ForumLoadState
             :loading="isTopicsLoading"
+            :can-load-more="store.canLoadMore"
+            :load-more="store.loadMoreTopics"
             :text="store.loadStateMessage"
           />
         </slot>

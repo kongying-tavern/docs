@@ -263,6 +263,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
 
     // Token management
     ensureTokenRefreshMission: () => authRefresh.startAutoRefresh(),
+    waitForTokenReady: tokenManager.waitForRefreshComplete,
 
     // Debug
     getDebugInfo,

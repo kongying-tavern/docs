@@ -1,6 +1,8 @@
 import type { LocalAuth, SSOAuth, SSOLocaleAuth } from '../stores/useUserAuth'
+import type { Deferred } from '~/composables/createDeferred'
 import { useLocalStorage } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
+import { createDeferred } from '~/composables/createDeferred'
 import { log, LogGroup } from '../utils/auth-logger'
 
 const USERAUTH_KEY = 'USER-AUTH'
@@ -56,6 +58,9 @@ export function useTokenManager() {
   // Reactive state
   const isTokenRefreshing = ref(false)
   const lastRefreshAttempt = ref<number>(0)
+
+  // Promise-based refresh tracking
+  let refreshDeferred: Deferred<void> | null = null
 
   // Computed properties
   const isTokenValid = computed(() => {
@@ -135,6 +140,10 @@ export function useTokenManager() {
     localAuth.value = null
     lastRefreshAttempt.value = 0
     isTokenRefreshing.value = false
+    if (refreshDeferred) {
+      refreshDeferred.reject(new Error('Tokens cleared'))
+      refreshDeferred = null
+    }
   }
 
   function clearSSOTokens(): void {
@@ -145,6 +154,27 @@ export function useTokenManager() {
   function clearAllTokens(): void {
     clearTokens()
     clearSSOTokens()
+  }
+
+  function waitForRefreshComplete(): Promise<void> {
+    if (!isTokenRefreshing.value || !refreshDeferred) {
+      return Promise.resolve()
+    }
+    return refreshDeferred.promise
+  }
+
+  function startRefreshTracking(): void {
+    refreshDeferred = createDeferred<void>()
+  }
+
+  function completeRefreshTracking(success: boolean, error?: unknown): void {
+    if (success) {
+      refreshDeferred?.resolve()
+    }
+    else {
+      refreshDeferred?.reject(error)
+    }
+    refreshDeferred = null
   }
 
   // Token validation
@@ -222,14 +252,6 @@ export function useTokenManager() {
     }>)
   }
 
-  // Watch for token changes to update refresh state
-  watch(localAuth, (newAuth) => {
-    if (newAuth?.accessToken) {
-      // Reset refresh state when new token is set
-      isTokenRefreshing.value = false
-    }
-  })
-
   return {
     // State
     localAuth,
@@ -263,5 +285,10 @@ export function useTokenManager() {
     getTimeUntilRefresh,
     TOKEN_REFRESH_THRESHOLD_MS,
     MIN_REFRESH_INTERVAL_MS,
+
+    // Promise-based refresh tracking
+    waitForRefreshComplete,
+    startRefreshTracking,
+    completeRefreshTracking,
   }
 }

@@ -220,6 +220,7 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     pinnedTopicsData,
 
     loading: forumData.loading,
+    loadingMore: forumData.loadingMore,
     isDataLoading: forumData.isDataLoading,
     totalPage: forumData.totalPage,
     total: forumData.total,
