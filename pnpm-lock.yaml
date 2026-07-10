@@ -388,6 +388,9 @@ importers:
       '@atlaskit/pragmatic-drag-and-drop-hitbox':
         specifier: catalog:frontend
         version: 1.1.0
+      '@comark/markdown-it':
+        specifier: ~0.3.4
+        version: 0.3.4(@types/markdown-it@14.1.2)(markdown-it@14.1.0)
       '@fingerprintjs/fingerprintjs':
         specifier: catalog:frontend
         version: 3.4.2
@@ -1132,6 +1135,12 @@ packages:
   '@cloudflare/kv-asset-handler@0.4.0':
     resolution: {integrity: sha512-+tv3z+SPp+gqTIcImN9o0hqE9xyfQjI1XD9pL6NuKjua9B1y7mNYv0S9cP+QEbA4ppVgGZEmKOvHX5G5Ei1CVA==}
     engines: {node: '>=18.0.0'}
+
+  '@comark/markdown-it@0.3.4':
+    resolution: {integrity: sha512-btB+klvBi08qRZGeSLbykfD2ROxhLLQJ4+uDI7FjL560ztlzTtBlGmqe6zP49mW/Yp9y39kSWeRS46iEFpGa0w==}
+    peerDependencies:
+      '@types/markdown-it': '*'
+      markdown-it: ^14.0.0
 
   '@commitlint/cli@19.6.1':
     resolution: {integrity: sha512-8hcyA6ZoHwWXC76BoC8qVOSr8xHy00LZhZpauiD0iO0VYbVhMnED0da85lTfIULxl7Lj4c6vZgF0Wu/ed1+jlQ==}
@@ -9503,6 +9512,12 @@ snapshots:
     dependencies:
       mime: 3.0.0
     optional: true
+
+  '@comark/markdown-it@0.3.4(@types/markdown-it@14.1.2)(markdown-it@14.1.0)':
+    dependencies:
+      '@types/markdown-it': 14.1.2
+      js-yaml: 4.1.1
+      markdown-it: 14.1.0
 
   '@commitlint/cli@19.6.1(@types/node@22.12.0)(typescript@5.9.3)':
     dependencies:

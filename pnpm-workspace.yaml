@@ -87,6 +87,7 @@ catalogs:
     vue-sonner: ^2.0.9
     zod: ^4.3.6
   markdown:
+    "@comark/markdown-it": ~0.3.4
     "@mdit/plugin-abbr": ^1.0.0
     "@mdit/plugin-container": ^1.0.0
     "@mdit/plugin-demo": ^1.0.0

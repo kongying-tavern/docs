@@ -36,6 +36,7 @@
     "@actions/core": "catalog:dev",
     "@atlaskit/pragmatic-drag-and-drop": "catalog:frontend",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "catalog:frontend",
+    "@comark/markdown-it": "catalog:markdown",
     "@fingerprintjs/fingerprintjs": "catalog:frontend",
     "@floating-ui/dom": "catalog:frontend",
     "@iconify-json/ic": "catalog:frontend",
