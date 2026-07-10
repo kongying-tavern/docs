@@ -5,13 +5,15 @@ layout: doc
 aside: true
 outline: [2, 3]
 search: false
+
 prev:
-  text: "Markdown 增强语法指南"
-  link: "/md-enhance-guide"
+  text: Markdown 增强语法指南
+  link: /md-enhance-guide
+
 head:
   - - meta
     - name: robots
-      content: noindex, nofollow
+      content: "noindex, nofollow"
 ---
 
 <!-- 该页面无需翻译 -->

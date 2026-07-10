@@ -4,13 +4,15 @@ layout: doc
 aside: true
 outline: [2, 3]
 search: false
+
 next:
-  text: "Frontmatter"
-  link: "/frontmatter"
+  text: Frontmatter
+  link: /frontmatter
+
 head:
   - - meta
     - name: robots
-      content: noindex, nofollow
+      content: "noindex, nofollow"
 ---
 
 <!-- 该页面无需翻译 -->
@@ -100,8 +102,7 @@ MDC 形式（YAML props 使用 `---` 包裹）：
 
 > 基础主题
 
-:::: demo
-
+::: demo
 ::Card
 ---
 logo: self
@@ -220,7 +221,7 @@ theme: medium
 
 [^first]: 脚注**可以包含特殊标记**
 
-    也可以由多个段落组成
+也可以由多个段落组成
 
 [^second]: 脚注文字。
 
@@ -259,7 +260,7 @@ theme: medium
 
 - 变量名前后可加空格。
 - 变量名仅可包含字母数字与下划线。
-  :::
+:::
 
 声明变量后，可使用以下语法调用变量。
 
@@ -312,7 +313,7 @@ theme: medium
 
 - 文字颜色可为 CSS 支持的颜色表示方式。
 - 文字颜色前后可添加空格。
-  :::
+:::
 
 #### 示例
 
@@ -372,7 +373,7 @@ paragraph _style me_{.vp-link} more text
 - “预设文件名”与预设文件夹中的文件一一对应。
 - 若需要添加预设或预设文件，只需在 `src/public/emojis` 目录下添加目录或文件即可。
 - 由于此语法与 GitHub 格式的 Markdown (GFM) emoji 语法一致，当预设文件不存在时，会回退为 GFM 语法的 emoji 表示。
-  :::
+:::
 
 #### 示例
 
