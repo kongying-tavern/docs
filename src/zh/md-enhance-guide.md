@@ -409,7 +409,7 @@ paragraph _style me_{.vp-link} more text
 #### 示例
 
 :::: demo
-\*{中国:zhōng|guó}
+*{中国:zhōng|guó}
 ::::
 
 ### [Abbr](https://mdit-plugins.github.io/zh/abbr.html)
