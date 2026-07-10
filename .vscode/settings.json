@@ -25,7 +25,6 @@
     "wxtl",
     "zhlint"
   ],
-  "vue.codeActions.enabled": false,
   "files.trimTrailingWhitespace": true,
   "markdown.validate.enabled": true,
   "search.exclude": {
@@ -37,7 +36,7 @@
     "packages/*/lib/**": true
   },
   "vue.server.includeLanguages": ["vue", "markdown"],
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "scss.lint.unknownAtRules": "ignore",
   "github.copilot.chat.commitMessageGeneration.instructions": [
     { "file": ".github/commit-convention.md" }
