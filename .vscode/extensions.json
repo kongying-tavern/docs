@@ -8,6 +8,7 @@
 		"antfu.iconify",
 		"bierner.markdown-yaml-preamble",
 		"mrmlnc.vscode-scss",
-		"redhat.vscode-yaml"
+		"redhat.vscode-yaml",
+    "Nuxt.mdc",
 	]
 }
