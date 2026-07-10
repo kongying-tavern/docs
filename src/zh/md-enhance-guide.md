@@ -55,19 +55,20 @@ head:
 
 #### 语法
 
-MDC 形式：
+MDC 形式（YAML props 使用 `---` 包裹）：
 
 ````markdown
 ::Card
-
-```yaml [props]
+---
 <属性名1>: <属性值1>
 <属性名2>: <属性值2>
 ...
-```
+---
 
 ::
 ````
+
+> YAML props 也支持用 ` ```yaml [props] ` 包裹，效果与 `---` 相同。
 
 代码块形式：
 
@@ -102,13 +103,12 @@ MDC 形式：
 :::: demo
 
 ::Card
-
-```yaml [props]
+---
 logo: self
 title: That normal theme card
 desc: This is description
-cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace,1/format,jpg
-```
+cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace/1,format/jpg
+---
 
 ::
 ::::
@@ -116,13 +116,12 @@ cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1ad
 :::: demo
 
 ::Card
-
-```yaml [props]
+---
 logo: self
 title: That normal theme card
 desc: No cover
 hoverShadow: true
-```
+---
 
 ::
 ::::
@@ -144,13 +143,12 @@ desc: This demo keeps the old fenced syntax
 :::: demo
 
 ::Card
-
-```yaml [props]
+---
 title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
 shadow: true
-```
+---
 
 ::
 ::::
@@ -158,14 +156,13 @@ shadow: true
 :::: demo
 
 ::Card
-
-```yaml [props]
+---
 title: 网页版地图
 link: https://yuanshen.site/
 logo: self
 desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
-```
+---
 
 ::
 ::::
@@ -428,8 +425,8 @@ paragraph _style me_{.vp-link} more text
 #### 示例
 
 :::: demo
-_[HTML]: Hyper Text Markup Language
-_[W3C]: World Wide Web Consortium
+*[HTML]: Hyper Text Markup Language
+*[W3C]: World Wide Web Consortium
 
 The HTML specificationis maintained by the W3C.
 ::::
@@ -446,8 +443,7 @@ The HTML specificationis maintained by the W3C.
 
 :::: demo
 ::link-grid{.mt-4}
-
-```yaml [props]
+---
 items:
   - icon: i-custom-bilibili
     name: Bilibili
@@ -457,7 +453,7 @@ items:
     name: Gitee
     link: https://gitee.com
     secondary: 码云
-```
+---
 
 ::
 ::::
@@ -466,8 +462,7 @@ items:
 
 :::: demo
 ::accordion-panels
-
-```yaml [props]
+---
 type: multiple
 defaultValue:
   - overview
@@ -478,7 +473,7 @@ items:
     slot: default
   - value: details
     title: 命名 Slot：Markdown 内容
-```
+---
 
 #default
 这里是默认 slot 的内容。
@@ -499,7 +494,7 @@ items:
 ::::
 
 > 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
-> `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；如果同时写 YAML `props`，它必须紧跟在组件起始行之后。
+> `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props（`---` 块）必须紧跟在组件起始行之后。
 
 #### Props 语法
 
