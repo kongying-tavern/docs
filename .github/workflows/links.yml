@@ -27,6 +27,23 @@ jobs:
       - name: Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --root-dir src
+            --fallback-extensions md
+            --remap '^(file://.*)/src/(imgs|emojis|fonts|llms|common)/(.*) $1/src/public/$2/$3'
+            --remap '^(file://.*)/src/index\.md$ $1/src/zh/index.md'
+            --exclude 'https://download.yuanshen.site/.*'
+            --exclude 'https://github.com/kongying-tavern/docs/tree/next/.*'
+            --exclude 'https://www.npmjs.com/.*'
+            --exclude 'https://www.pixiv.net/.*'
+            --exclude 'https://github.com/([^/]+/docs/assets|user-attachments/assets)/.*'
+            --exclude 'email.*support@yuanshen'
+            './**/*.md'
+            './**/*.html'
+            './**/*.rst'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
