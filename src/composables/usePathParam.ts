@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
 import { useData, useRouter } from 'vitepress'
 import { nextTick, ref, watch } from 'vue'
 
@@ -44,13 +45,24 @@ export function usePathParam<T extends string>(
   let isSyncingToUrl = false
   const validSet = new Set(validValues)
 
+  // route.path may not yet be updated after router.go(), so read from the real URL
+  function getContentSegments(): string[] {
+    const base = site.value.base
+    const isRoot = localeIndex.value === 'root'
+    const segments = window.location.pathname.replace(base, '').split('/').filter(Boolean)
+    return isRoot ? segments : segments.slice(1)
+  }
+
+  function readCurrentParam(): T {
+    const last = getContentSegments().at(-1)
+    return last && validSet.has(last as T) ? (last as T) : defaultValue
+  }
+
   function buildPath(newValue: T): string {
     const base = site.value.base
     const isRoot = localeIndex.value === 'root'
 
-    // Split path and remove site base + lang prefix
-    const segments = route.path.replace(base, '').split('/').filter(Boolean)
-    const contentSegments = isRoot ? segments : segments.slice(1)
+    const contentSegments = getContentSegments()
 
     // If last segment is a current parameter value, remove it
     if (validSet.has(contentSegments.at(-1) as T))
@@ -95,7 +107,8 @@ export function usePathParam<T extends string>(
     isSyncingToUrl = true
 
     const newPath = buildPath(newValue)
-    if (newPath !== route.path) {
+    const currentPath = window.location.pathname
+    if (newPath !== currentPath) {
       if (history === 'replace')
         window.history.replaceState({}, '', newPath)
       else
@@ -106,6 +119,23 @@ export function usePathParam<T extends string>(
       isSyncingToUrl = false
     })
   })
+
+  // Sync browser back/forward → State
+  function syncFromPopstate() {
+    if (isSyncingToUrl)
+      return
+
+    const value = readCurrentParam()
+    if (value !== internalState.value) {
+      isSyncingFromUrl = true
+      internalState.value = value
+      nextTick(() => {
+        isSyncingFromUrl = false
+      })
+    }
+  }
+
+  useEventListener(window, 'popstate', syncFromPopstate)
 
   return internalState
 }

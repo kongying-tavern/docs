@@ -5,6 +5,8 @@ import { computed } from 'vue'
 import { getLangPath } from '@/utils'
 import { forumEvents } from '~/services/events/SimpleEventManager'
 
+export const PREVIOUS_ROUTE_KEY = 'forum:previousRoute'
+
 export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | string) {
   const router = useRouter()
   const { localeIndex } = useData()
@@ -17,6 +19,11 @@ export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | strin
       : `feedback/topic/${isString(topic) ? topic : topic.id}`
 
     const fullPath = withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`)
+
+    // Save current URL for back navigation
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem(PREVIOUS_ROUTE_KEY, window.location.href)
+    }
 
     // Emit navigation event
     forumEvents.navigateToTopic(isString(topic) ? topic : topic.id)

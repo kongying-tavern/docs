@@ -39,7 +39,9 @@ const {
   userSubmittedTopics,
   data: topics,
   loading,
+  loadingMore,
   loadStateMessage,
+  canLoadMore,
 } = storeToRefs(forumUserStore)
 
 // Actions can be destructured normally
@@ -60,6 +62,8 @@ const renderData = computed(() => {
     ...(topics.value || []),
   ]
 })
+
+const isTopicsLoading = computed(() => loading.value || loadingMore.value)
 
 onMounted(() => {
   if (!params.value?.id && userInfo.info?.login) {
@@ -96,11 +100,16 @@ onUnmounted(() => {
         <!-- Use the default content from BaseForumPage -->
         <ForumTopicsList
           :data="renderData"
-          :loading="loading"
+          :loading="isTopicsLoading"
           :load-more="loadMoreTopics"
         />
 
-        <ForumLoadState :loading="loading" :text="loadStateMessage" />
+        <ForumLoadState
+          :loading="isTopicsLoading"
+          :can-load-more="canLoadMore"
+          :load-more="loadMoreTopics"
+          :text="loadStateMessage"
+        />
       </div>
     </template>
 

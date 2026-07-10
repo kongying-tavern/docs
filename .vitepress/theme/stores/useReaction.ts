@@ -1,7 +1,7 @@
 import type { INTER_KNOT } from '@/apis/interknot.site/api'
 import { useMutation, useQuery } from '@pinia/colada'
 import { defineStore } from 'pinia'
-import { useRoute } from 'vitepress'
+import { useRoute, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { reactions } from '@/apis/interknot.site'
 import { useUserInfoStore } from './useUserInfo'
@@ -12,6 +12,7 @@ export const useReactionStore = defineStore('reaction', () => {
 
   const route = useRoute()
   const reactionState = ref<INTER_KNOT.ReactionState | null>(null)
+  const key = computed(() => ['products', `yuanshen.site${withBase(route.path)}`])
 
   // 获取页面反应 - useQuery
   const {
@@ -20,9 +21,9 @@ export const useReactionStore = defineStore('reaction', () => {
     error,
     refetch: updateReaction,
   } = useQuery({
-    key: () => ['reaction', route.path] as const,
+    key,
     query: () => reactions.getPageReaction({
-      url: route.path, // 添加 url 参数
+      url: key.value[1], // 添加 url 参数
       ...(userInfo.info?.id ? { userId: String(userInfo.info?.id) } : {}),
     }),
     enabled: () => !import.meta.env.SSR,
@@ -36,7 +37,7 @@ export const useReactionStore = defineStore('reaction', () => {
     isLoading: reactionSubmitLoading,
     error: reactionSubmitError,
   } = useMutation({
-    mutation: (params: { state: INTER_KNOT.ReactionState | 'revoke', options: { userId?: string } }) =>
+    mutation: (params: { state: INTER_KNOT.ReactionState | 'revoke', options: { userId?: string, url: string } }) =>
       reactions.setPageReaction(params.state, params.options),
   })
 
@@ -50,7 +51,7 @@ export const useReactionStore = defineStore('reaction', () => {
     reactionState.value = null
     await setReaction({
       state: 'revoke',
-      options: { ...(userInfo.info?.id ? { userId: String(userInfo.info?.id) } : {}) },
+      options: { ...(userInfo.info?.id ? { userId: String(userInfo.info?.id) } : {}), url: key.value[1] },
     })
   }
 
@@ -76,7 +77,7 @@ export const useReactionStore = defineStore('reaction', () => {
     reactionState.value = state
     return await setReaction({
       state,
-      options: { ...(userInfo.info?.id ? { userId: String(userInfo.info?.id) } : {}) },
+      options: { ...(userInfo.info?.id ? { userId: String(userInfo.info?.id) } : {}), url: key.value[1] },
     })
   }
 
