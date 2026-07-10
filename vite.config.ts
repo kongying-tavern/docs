@@ -5,6 +5,7 @@ import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
 import openInEditor from './.vitepress/plugins/open-in-editor'
+import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata'
 
 export default defineConfig({
   server: {
@@ -53,6 +54,7 @@ export default defineConfig({
     llmstxt({
       workDir: 'zh',
     }),
+    mdcMetadataPlugin(),
   ],
   css: {
     preprocessorOptions: {
