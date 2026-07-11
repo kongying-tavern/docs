@@ -11,7 +11,7 @@ import {
   writeTopicDraft,
 } from '~/forum/services/form/topicDraft'
 import { createTopicFormSchema, getAllowedTopicTypes } from '~/forum/services/form/validation'
-import { getFormTabsConfig } from '../publish-topic-form/config'
+import { getFormTabsConfig } from '../publish-topic-form/form-config'
 
 export function useFormState(draftsEnabled: () => boolean = () => true) {
   const loadDraft = (type: TopicFormData['type']) => draftsEnabled()

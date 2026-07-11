@@ -17,7 +17,6 @@ export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   srcDir: 'src',
   outDir: './dist',
   srcExclude: [],
-  scrollOffset: 'header',
   cleanUrls: true,
   lastUpdated: true,
   locales: await createLocalesConfig(),

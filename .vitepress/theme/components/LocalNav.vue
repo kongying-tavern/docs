@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { useSidebar } from 'vitepress/theme-without-fonts'
+import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { cn } from '@/lib/utils'
 
@@ -8,7 +8,7 @@ defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
-const { hasSidebar } = useSidebar()
+const { hasSidebar } = useLayout()
 
 const classes = computed(() => {
   return {
@@ -37,7 +37,7 @@ const classes = computed(() => {
   /*rtl:ignore*/
   left: 0;
   z-index: var(--vp-z-index-local-nav);
-  border-bottom: 1px solid var(--vp-c-gutter);
+  border-bottom: 1px solid var(--vp-local-nav-divider-color);
   width: 100%;
   background-color: var(--vp-local-nav-bg-color);
   margin-top: 0px;
