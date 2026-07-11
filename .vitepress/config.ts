@@ -16,7 +16,6 @@ export default defineConfig({
   srcDir: 'src',
   outDir: './dist',
   srcExclude: [],
-  scrollOffset: 'header',
   cleanUrls: true,
   lastUpdated: true,
   locales: localesConfig,

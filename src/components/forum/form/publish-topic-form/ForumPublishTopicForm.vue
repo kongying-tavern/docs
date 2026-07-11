@@ -28,7 +28,7 @@ import ForumFormTabs from '../ForumFormTabs.vue'
 import {
   FORM_HASH,
   MAX_UPLOAD_FILE_SIZE,
-} from './config'
+} from './form-config'
 
 // Composables
 const userAuth = useUserAuthStore()

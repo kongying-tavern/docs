@@ -7,7 +7,7 @@ import {
   FORM_DEFAULT_DATA,
   getFormTabsConfig,
   TRANSITION_DURATION,
-} from '../publish-topic-form/config'
+} from '../publish-topic-form/form-config'
 
 export function useFormState() {
   const formTabs = getFormTabsConfig()

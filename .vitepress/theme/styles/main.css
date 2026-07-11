@@ -26,6 +26,7 @@ html.light {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--vp-nav-height) + 1rem);
 }
 
 h1,
