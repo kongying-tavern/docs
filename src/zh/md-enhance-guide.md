@@ -72,16 +72,6 @@ MDC 形式（YAML props 使用 `---` 包裹）：
 
 > YAML props 也支持用 ` ```yaml [props] ` 包裹，效果与 `---` 相同。
 
-代码块形式：
-
-````markdown
-```card
-<属性名1>: <属性值1>
-<属性名2>: <属性值2>
-...
-```
-````
-
 #### 卡片属性
 
 | 属性名      | 描述                                                    | 默认值 |       类型        |
@@ -125,18 +115,6 @@ hoverShadow: true
 ---
 
 ::
-::::
-
-> 兼容旧语法示例
-
-:::: demo
-
-```card
-logo: self
-title: Legacy card syntax
-desc: This demo keeps the old fenced syntax
-```
-
 ::::
 
 > 中等主题
