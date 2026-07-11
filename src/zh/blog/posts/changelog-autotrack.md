@@ -4,6 +4,8 @@ layout: Post
 author: Sallee_admin
 ---
 
+> 热更新日志（地图更新日志）请查看 ***[更新日志](https://yuanshen.site/docs/blog/hotupdatelog-autotrack)***。
+
 > 位置追踪测试群：870585305
 > 不定期发布测试版本，新功能和bug修复会第一时间发布出来测试
 
