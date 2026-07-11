@@ -1,11 +1,15 @@
-import type MarkdownIt from 'markdown-it'
 import type { RenderRule } from 'markdown-it/lib/renderer.mjs'
 import type Token from 'markdown-it/lib/token.mjs'
 import container from 'markdown-it-container'
 
 type ContainerArgs = [typeof container, string, { render: RenderRule }]
 
-function MarkdownItTimeline(klass: string, md: MarkdownIt): ContainerArgs {
+/** MarkdownIt or MarkdownItAsync (used by VitePress 2.0) */
+interface MarkdownInstance {
+  renderInline: (src: string) => string
+}
+
+function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs {
   return [
     container,
     klass,

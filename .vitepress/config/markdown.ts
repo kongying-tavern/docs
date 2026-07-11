@@ -1,3 +1,4 @@
+import type MarkdownIt from 'markdown-it'
 import type { MarkdownOptions } from 'vitepress'
 
 import comark from '@comark/markdown-it'
@@ -81,7 +82,8 @@ export const markdownConfig: MarkdownOptions = {
         inlineSpan: false,
       },
     })
-    applyComarkPatches(md)
+    // VitePress 2.0 passes MarkdownItAsync which extends MarkdownIt
+    applyComarkPatches(md as unknown as MarkdownIt)
 
     // Both attrs and kbd reuse `{...}` / `:`-adjacent syntax, so they need
     // to run after Comark has finished turning MDC into Vue-friendly tokens.

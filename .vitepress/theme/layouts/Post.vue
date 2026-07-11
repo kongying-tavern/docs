@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
-import VPDocAside, { useSidebar } from 'vitepress/theme-without-fonts'
+import VPDocAside, { useLayout } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
@@ -12,7 +12,7 @@ const DOT_SLASH_REGEX = /[./]+/g
 const HTML_SUFFIX_REGEX = /_html$/
 
 const { params, theme } = useData()
-const { hasSidebar, hasAside, leftAside } = useSidebar()
+const { hasSidebar, hasAside, leftAside } = useLayout()
 const route = useRoute()
 
 const pageName = computed(() =>

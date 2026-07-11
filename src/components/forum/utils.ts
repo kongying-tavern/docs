@@ -1,4 +1,4 @@
-import { FORM_HASH } from './form/publish-topic-form/config'
+import { FORM_HASH } from './form/publish-topic-form/form-config'
 
 /** Matches @username mentions in text */
 const AT_MENTION_USERNAME_REGEX = /@([a-z0-9]+)(?=\s|$)/gi

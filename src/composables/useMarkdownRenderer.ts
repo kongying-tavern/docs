@@ -16,7 +16,9 @@ function createProjectMarkdownRenderer() {
   // 应用项目的markdown配置（但跳过可能不安全的插件）
   if (markdownConfig.config) {
     try {
-      markdownConfig.config(md)
+      // VitePress 2.0 passes MarkdownItAsync, but standalone MarkdownIt is
+      // structurally compatible for our plugins (timeline, comark-patches)
+      ;(markdownConfig.config as (md: MarkdownIt) => void)(md)
     }
     catch {
       // 应用markdown配置时出错，使用默认配置
