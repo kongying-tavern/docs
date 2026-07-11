@@ -94,9 +94,9 @@ catalogs:
     "@mdit/plugin-icon": ^1.0.0
     "@mdit/plugin-img-mark": ^1.0.0
     "@mdit/plugin-img-size": ^1.0.0
-    "@mdit/plugin-mark": ^1.0.0
+    "@mdit/plugin-mark": ^2.0.0
     "@mdit/plugin-ruby": ^1.0.0
-    "@mdit/plugin-spoiler": ^1.0.0
+    "@mdit/plugin-spoiler": ^2.0.0
     "@mdit/plugin-sub": ^1.0.0
     "@mdit/plugin-sup": ^1.0.0
     "@mdit/plugin-tasklist": ^1.0.0
