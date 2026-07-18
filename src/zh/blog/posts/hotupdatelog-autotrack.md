@@ -4,7 +4,7 @@ layout: Post
 author: Sallee_admin
 ---
 
-> 版本更新日志请查看 ***[更新日志](https://yuanshen.site/docs/blog/posts/changelog-autotrack)***。
+> 版本更新日志请查看 ***[更新日志](changelog-autotrack)***。
 
 ----
 
