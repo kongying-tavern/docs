@@ -1,3 +1,4 @@
+export { default as AccordionPanels } from './AccordionPanels.vue'
 export { default as Avatar } from './Avatar.vue'
 export { default as Button } from './button/Button.vue'
 export { default as Divider } from './divider/Divider.vue'

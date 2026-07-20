@@ -16,8 +16,10 @@ function MarkdownItCustomColor(md: MarkdownIt): void {
 
       if (!match)
         return false
-      if (silent)
+      if (silent) {
+        state.pos += match[0].length
         return true
+      }
 
       // Extract color and content
       const color = match[1]
@@ -25,7 +27,7 @@ function MarkdownItCustomColor(md: MarkdownIt): void {
 
       // Create opening tag token
       const tokenOpen = state.push('html_inline', '', 0)
-      tokenOpen.content = `<span style="color:${color}">`
+      tokenOpen.content = `<span style="color: ${md.utils.escapeHtml(color)};">`
 
       // Create content token
       const tokenContent = state.push('html_inline', '', 0)

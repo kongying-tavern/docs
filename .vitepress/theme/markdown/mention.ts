@@ -42,8 +42,10 @@ const MarkdownItMention: PluginSimple = (md: MarkdownIt) => {
     if (!user)
       return false
 
-    if (silent)
+    if (silent) {
+      state.pos = pos
       return true
+    }
 
     const token = state.push('html_inline', '', 0)
     token.content = `<a class="vp-link mention" href="${user.homepage}" target="_blank" rel="noreferrer">@${username}</a>`

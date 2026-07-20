@@ -25,7 +25,6 @@
     "wxtl",
     "zhlint"
   ],
-  "vue.codeActions.enabled": false,
   "files.trimTrailingWhitespace": true,
   "markdown.validate.enabled": true,
   "search.exclude": {
@@ -37,9 +36,20 @@
     "packages/*/lib/**": true
   },
   "vue.server.includeLanguages": ["vue", "markdown"],
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "scss.lint.unknownAtRules": "ignore",
   "github.copilot.chat.commitMessageGeneration.instructions": [
     { "file": ".github/commit-convention.md" }
-  ]
+  ],
+  // Required for the extension
+  "mdc.enableFormatting": true,
+  // Recommended (for `mdc` and `md`, depending on your usage)
+  "[mdc]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.formatOnPaste": true
+  },
+  "mdc.enableComponentMetadataCompletions": true,
+  "mdc.componentMetadataLocalFilePattern": ".vitepress/theme/mdc-components.mjs"
 }

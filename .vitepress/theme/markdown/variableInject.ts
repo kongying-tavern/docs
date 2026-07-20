@@ -4,6 +4,9 @@ import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 /** Matches variable definition tags */
 const VARIABLE_DEF_REGEX = /^\{define:\s*(\w+)\s*\}(.*?)\{\/define\}/
 
+/** Matches leading :emoji: pattern to escape from inlineComponent */
+const LEADING_COLON_WORD_REGEX = /^(:[\w$\-]+:)/
+
 /** Matches variable usage tags */
 const VARIABLE_USAGE_REGEX = /^\{%=\s*(\w+)\s*%\}/
 
@@ -21,12 +24,17 @@ function MarkdownItVariableInject(md: MarkdownIt): void {
 
       if (!match)
         return false
-      if (silent)
+      if (silent) {
+        state.pos += match[0].length
         return true
+      }
 
       // Extract key and value
       const key = (match[1] ?? '').trim()
-      const value = match[2]
+      let value = match[2]
+      // Escape leading :name: pattern (e.g. :recycle:) so that comark's
+      // inlineComponent parser won't consume it during md.renderInline()
+      value = value.replace(LEADING_COLON_WORD_REGEX, '\\$1')
 
       variables[key] = value
       state.pos += match[0].length
@@ -46,8 +54,10 @@ function MarkdownItVariableInject(md: MarkdownIt): void {
 
       if (!match)
         return false
-      if (silent)
+      if (silent) {
+        state.pos += match[0].length
         return true
+      }
 
       // Extract key and get value
       const key = (match[1] ?? '').trim()

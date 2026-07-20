@@ -4,6 +4,7 @@ import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
+import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata'
 import openInEditor from './.vitepress/plugins/open-in-editor'
 
 export default defineConfig({
@@ -53,6 +54,7 @@ export default defineConfig({
     llmstxt({
       workDir: 'zh',
     }),
+    mdcMetadataPlugin(),
   ],
   css: {
     preprocessorOptions: {

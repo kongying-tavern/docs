@@ -4,6 +4,15 @@ layout: doc
 aside: true
 outline: [2, 3]
 search: false
+
+next:
+  text: Frontmatter
+  link: /frontmatter
+
+head:
+  - - meta
+    - name: robots
+      content: "noindex, nofollow"
 ---
 
 <!-- 该页面无需翻译 -->
@@ -18,7 +27,7 @@ search: false
 
 #### 语法
 
-``` markdown
+```markdown
 ::: timeline <标题>
 <内容>
 :::
@@ -48,29 +57,34 @@ search: false
 
 #### 语法
 
-```` markdown
-``` card
+MDC 形式（YAML props 使用 `---` 包裹）：
+
+````markdown
+::Card
+---
 <属性名1>: <属性值1>
 <属性名2>: <属性值2>
 ...
-```
+---
+
+::
 ````
 
-> 卡片属性会按照 YAML 语法进行解析。
+> YAML props 也支持用 ` ```yaml [props] ` 包裹，效果与 `---` 相同。
 
 #### 卡片属性
 
-| 属性名      | 描述                                             | 默认值 |       类型        |
-| ----------- | :----------------------------------------------- | :----: | :---------------: |
-| title       | 卡片标题，必填项                                 |   -    |     `String`      |
-| desc        | 卡片描述，为空时默认显示为 link                  |  link  |     `String`      |
-| link        | 卡片跳转链接，非必填                             |   -    |     `String`      |
-| logo        | 卡片下方Logo的链接，非比填。填self默认为空荧logo |   -    |     `String`      |
-| theme       | 卡片主题，非必填                                 | normal | `normal`or`media` |
-| color       | 卡片链颜色，非必填                               | normal |     `String`      |
-| cover       | 卡片封面链接，非必填。仅在normal主题生效         |   -    |     `String`      |
-| hoverShadow | 是否启用卡片 hover 时阴影效果，默认不启用        | false  |     `Boolean`     |
-| shadow      | 是否启用卡片阴影效果，默认启用                   |  true  |     `Boolean`     |
+| 属性名      | 描述                                                    | 默认值 |       类型        |
+| ----------- | :------------------------------------------------------ | :----: | :---------------: |
+| title       | 卡片标题，必填项                                        |   -    |     `String`      |
+| desc        | 卡片描述，为空时默认显示为 link                         |  link  |     `String`      |
+| link        | 卡片跳转链接，非必填                                    |   -    |     `String`      |
+| logo        | 卡片下方 Logo 的链接，非必填。填 `self` 默认为空荧 Logo |   -    |     `String`      |
+| theme       | 卡片主题，非必填                                        | normal | `normal`or`media` |
+| color       | 卡片链颜色，非必填                                      | normal |     `String`      |
+| cover       | 卡片封面链接，非必填。仅在normal主题生效                |   -    |     `String`      |
+| hoverShadow | 是否启用卡片 hover 时阴影效果，默认不启用               | false  |     `Boolean`     |
+| shadow      | 是否启用卡片阴影效果，默认不启用                        | false  |     `Boolean`     |
 
 > B 站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写 logo
 
@@ -78,41 +92,58 @@ search: false
 
 > 基础主题
 
-:::: demo
-``` card
+::: demo
+::Card
+---
 logo: self
 title: That normal theme card
 desc: This is description
-cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace,1/format,jpg
-```
+cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace/1,format/jpg
+---
+
+::
 ::::
 
 :::: demo
-``` card
+
+::Card
+---
 logo: self
 title: That normal theme card
 desc: No cover
-```
+hoverShadow: true
+---
+
+::
 ::::
 
 > 中等主题
 
 :::: demo
-``` card
+
+::Card
+---
 title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
-```
+shadow: true
+---
+
+::
 ::::
 
 :::: demo
-``` card
+
+::Card
+---
 title: 网页版地图
 link: https://yuanshen.site/
 logo: self
 desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
-```
+---
+
+::
 ::::
 
 ## Markdown 语法扩展 {#section-markdown-syntax}
@@ -123,7 +154,7 @@ theme: medium
 
 #### 语法
 
-``` markdown
+```markdown
 [[<快捷键>]]
 ```
 
@@ -141,13 +172,13 @@ theme: medium
 
 在 Markdown 中使用以下语法定义脚注。
 
-``` markdown
+```markdown
 [^<脚注锚点名>]
 ```
 
 在后续任意位置，使用以下语法对脚注进行描述。
 
-``` markdown
+```markdown
 [^<脚注锚点名>]: <脚注说明>
 ```
 
@@ -168,16 +199,17 @@ theme: medium
 
 [^first]: 脚注**可以包含特殊标记**
 
-    也可以由多个段落组成
+也可以由多个段落组成
 
 [^second]: 脚注文字。
+
 ::::
 
 ### Mark 标记 {#mark}
 
 #### 语法
 
-``` markdown
+```markdown
 ==<标记文本>==
 ```
 
@@ -197,7 +229,7 @@ theme: medium
 
 在 Markdown 中使用以下语法定义变量。此语法仅声明变量，但不会渲染任何内容。
 
-``` markdown
+```markdown
 {define:<变量名>}<被声明的内容>{/define}
 ```
 
@@ -210,7 +242,7 @@ theme: medium
 
 声明变量后，可使用以下语法调用变量。
 
-``` markdown
+```markdown
 {%=<变量名>%}
 ```
 
@@ -229,7 +261,7 @@ theme: medium
 
 #### 语法
 
-``` markdown
+```markdown
 !!<被隐藏的内容>!!
 ```
 
@@ -238,7 +270,7 @@ theme: medium
 :::: demo
 输入!!xxx!!显示彩蛋
 
-测试智能宽度：!!短文本!! !!这是一段较长的隐藏内容!!
+测试自适应宽度：!!短文本!! !!这是一段较长的隐藏内容!!
 
 测试自定义宽度：!!自定义宽度!!{width=200} !!更长的内容!!{w=300}
 
@@ -251,11 +283,12 @@ theme: medium
 
 #### 语法
 
-``` markdown
+```markdown
 {color:<文字颜色>}<文字内容>{/color}
 ```
 
 ::: warning 提示
+
 - 文字颜色可为 CSS 支持的颜色表示方式。
 - 文字颜色前后可添加空格。
 :::
@@ -281,7 +314,7 @@ theme: medium
 #### 示例
 
 :::: demo
-paragraph *style me*{.vp-link} more text
+paragraph _style me_{.vp-link} more text
 ::::
 
 ### Mention 提及
@@ -290,7 +323,7 @@ paragraph *style me*{.vp-link} more text
 
 #### 语法
 
-``` markdown
+```markdown
 @<被提及的人或者团队>
 ```
 
@@ -308,11 +341,12 @@ paragraph *style me*{.vp-link} more text
 
 #### 语法
 
-``` markdown
+```markdown
 :<预设名>/<预设文件名>.<文件扩展名>:
 ```
 
 ::: warning 说明
+
 - “预设名”对应 `src/public/emojis` 目录下的子目录名。
 - “预设文件名”与预设文件夹中的文件一一对应。
 - 若需要添加预设或预设文件，只需在 `src/public/emojis` 目录下添加目录或文件即可。
@@ -327,7 +361,6 @@ paragraph *style me*{.vp-link} more text
 演出，开始~:2.原神/芙宁娜-乐.png:)
 ::::
 
-
 ### [Task list](https://mdit-plugins.github.io/zh/tasklist.html#%E9%80%89%E9%A1%B9)
 
 #### 语法
@@ -338,15 +371,19 @@ paragraph *style me*{.vp-link} more text
 #### 示例
 
 :::: demo
+
 - [ ] 计划 A
 - [x] 计划 B
+
 ::::
 
 ### Ruby
 
 #### 语法
 
-通过 *{ruby base:ruby text1|ruby text2|...} 来添加 ruby 声明。
+```markdown
+\*{ruby base:ruby text1|ruby text2|...}
+```
 
 #### 示例
 
@@ -358,10 +395,10 @@ paragraph *style me*{.vp-link} more text
 
 #### 语法
 
-通过此插件，你可以通过以额外 * 开头的链接声明来声明缩略词。
+通过此插件，你可以通过以额外 \* 开头的链接声明来声明缩略词。
 
 ```markdown
-*[缩略词]: 内容
+\*[缩略词]: 内容
 ```
 
 #### 示例
@@ -373,95 +410,79 @@ paragraph *style me*{.vp-link} more text
 The HTML specificationis maintained by the W3C.
 ::::
 
-## Frontmatter 配置 {#frontmatter}
+### MDC
 
-Frontmatter 是 Vitepress 框架中一种书写于 Markdown 文档顶部，用于调节页面布局或行为的一种配置。Frontmatter 内容由 YAML 语法写成。
+#### Inline Component Demo
 
-### footer {#fm-footer}
+:::: demo
+:scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
+::::
 
-- 类型：`Boolean`
-- 默认：`true`
-- 描述：是否显示页面的页脚。
+#### Block Component Demo
 
-``` yml
+:::: demo
+::link-grid{.mt-4}
 ---
-footer: false # 隐藏该页面的页脚
+items:
+  - icon: i-custom-bilibili
+    name: Bilibili
+    link: https://bilibili.com
+    secondary: 小电视
+  - icon: i-custom-gitee
+    name: Gitee
+    link: https://gitee.com
+    secondary: 码云
 ---
-```
 
-### aside {#fm-aside}
+::
+::::
 
-- 类型：`Boolean`
-- 默认：`true`
-- 描述：是否显示页面的侧边栏。
+#### Slot Demo
 
-> 仅会在 `layout: doc` 时自动启用
-
-``` yml
+:::: demo
+::accordion-panels
 ---
-aside: false # 隐藏该页面的侧比栏
+type: multiple
+defaultValue:
+  - overview
+  - details
+items:
+  - value: overview
+    title: 默认 Slot：Markdown 内容
+    slot: default
+  - value: details
+    title: 命名 Slot：Markdown 内容
 ---
-```
 
-### outline {#fm-outline}
+#default
+这里是默认 slot 的内容。
 
-当 `aside` 为 `true` 时，侧边栏默认显示 2 - 4 级目录。此时，可通过配置 `outline` 配置设置当前文档侧边栏显示的层级。
+- 支持无序列表
+- 支持 **粗体** 和 `inline code`
+- 支持 [普通链接](https://gitee.com)
 
-- 类型：`[Integer, Integer]`
-- 默认：`[2, 4]`
+#details
+这里是命名 slot 的内容。
 
-``` yml
----
-aside: true
-outline: [2, 3] # 仅显示 2 - 3 级目录
----
-```
+> 这个区块来自 `#details`。
 
-### wip {#fm-wip}
+1. 支持有序列表
+2. 支持 ==高亮==
 
-- 类型：`Boolean`
-- 默认：`false`
-- 描述：页面顶部是否显示“施工中”的横幅，此配置会覆盖 `banner` 配置。
+::
+::::
 
-``` yml
----
-wip: true # 显示施工中横幅
----
-```
+> 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
+> `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props（`---` 块）必须紧跟在组件起始行之后。
 
-### banner {#fm-banner}
+#### Props 语法
 
-- 类型：`String`
-- 描述：页面的顶部的横幅文本，支持输入 HTML，不支持 Markdown。配置文本为空或者未配置时隐藏。
+行内组件的 props 需要写在同一个 `{...}` 中，不支持连续声明多个 props block。
 
-``` yml
----
-banner: 我是Banner
----
-```
-
-### bannerExpiryDate {#fm-banner-expiry-date}
-
-- 类型：`Date`
-- 描述：页面顶部的横幅的失效日期，需配合 `banner` 配置使用。不设置时横幅文本永久显示。
-
-``` yml
----
-banner: 服务器维护公告
-bannerExpiryDate: 2024-2-1
----
-```
-
-### docHeader {#fm-doc-header}
-
-- 类型：`Boolean`
-- 默认：`true`
-- 描述：是否使用 docHeader 展示标题。
-
-> 仅会在 `layout: doc` 时自动启用
-
-``` yml
----
-docHeader: false # 隐藏该页面的 docHeader
----
-```
+| 语法            | 含义                  | 示例          |
+| --------------- | --------------------- | ------------- |
+| `{key="value"}` | 字符串 prop（引号）   | `{.text-red}` |
+| `{key=value}`   | 字符串 prop（无引号） | `{name=foo}`  |
+| `{.class-name}` | class 简写            | `{.vp-link}`  |
+| `{#id-name}`    | id 简写               | `{#main}`     |
+| `{flag}`        | 布尔 prop（仅键名）   | `{disabled}`  |

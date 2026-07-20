@@ -13,6 +13,7 @@ catalogs:
     vite: ^7.1.7
     vitepress: 1.6.3
     vitepress-plugin-llms: ^1.11.0
+    vue-component-meta: ^3.3.7
   dev:
     "@actions/core": ^3.0.0
     "@antfu/eslint-config": ^7.7.2
@@ -87,6 +88,7 @@ catalogs:
     vue-sonner: ^2.0.9
     zod: ^4.3.6
   markdown:
+    "@comark/markdown-it": ~0.3.4
     "@mdit/plugin-abbr": ^1.0.0
     "@mdit/plugin-container": ^1.0.0
     "@mdit/plugin-demo": ^1.0.0

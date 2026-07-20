@@ -11,8 +11,13 @@ const rubyRule: RuleInline = (state, silent) => {
   const start = state.pos
   const max = state.posMax
 
-  if (silent || state.src.charCodeAt(start) !== 42 /* * */ || state.src.charCodeAt(start + 1) !== 123 /* { */ || start + 5 >= max)
+  if (state.src.charCodeAt(start) !== 42 /* * */ || state.src.charCodeAt(start + 1) !== 123 /* { */ || start + 5 >= max)
     return false
+
+  // Signal to the 'text' rule (and other silent-scanning rules) that we
+  // would match here, preventing them from consuming the leading '*'.
+  if (silent)
+    return true
 
   state.pos = start + 2
 
@@ -101,5 +106,8 @@ const rubyRule: RuleInline = (state, silent) => {
 }
 
 export const ruby: PluginSimple = (md) => {
+  // Must run before emphasis & comark's mdc_inline_props; otherwise '*'
+  // is consumed by emphasis or '{…}' is consumed as inline props.
+  // Also: return true in silent mode so the 'text' rule stops before '*'.
   md.inline.ruler.before('text', 'ruby', rubyRule)
 }

@@ -1,5 +1,6 @@
 import type { MarkdownOptions } from 'vitepress'
 
+import comark from '@comark/markdown-it'
 import { abbr } from '@mdit/plugin-abbr'
 import { demo } from '@mdit/plugin-demo'
 import { figure } from '@mdit/plugin-figure'
@@ -13,6 +14,7 @@ import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import MarkdownItCard from '../theme/markdown/card'
 import MarkdownItColorPreview from '../theme/markdown/colorPreview'
+import { applyComarkPatches } from '../theme/markdown/comark-patches'
 import MarkdownItCustomColor from '../theme/markdown/customColor'
 import MarkdownItEmoji from '../theme/markdown/emoji'
 import MarkdownItLightbox from '../theme/markdown/lightbox'
@@ -49,16 +51,8 @@ export const markdownConfig: MarkdownOptions = {
     md.use(tasklist)
     md.use(abbr)
     md.use(ruby)
-    md.use(markdownItAttrs, {
-      allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', REGEX_ATTR_REGEX],
-    })
-    md.use(MarkdownItKbd, {
-      presets: [
-        {
-          name: 'icons',
-        },
-      ],
-    })
+    // `demo` must run before Comark, otherwise `:::: demo` is parsed as
+    // an MDC block component and never reaches the demo container plugin.
     md.use(demo, {
       openRender: () => {
         return '<details class="vp-container vp-md-demo">'
@@ -81,6 +75,25 @@ export const markdownConfig: MarkdownOptions = {
           '</summary>',
         ].join('')
       },
+    })
+    md.use(comark, {
+      syntax: {
+        inlineSpan: false,
+      },
+    })
+    applyComarkPatches(md)
+
+    // Both attrs and kbd reuse `{...}` / `:`-adjacent syntax, so they need
+    // to run after Comark has finished turning MDC into Vue-friendly tokens.
+    md.use(markdownItAttrs, {
+      allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', REGEX_ATTR_REGEX],
+    })
+    md.use(MarkdownItKbd, {
+      presets: [
+        {
+          name: 'icons',
+        },
+      ],
     })
   },
 }

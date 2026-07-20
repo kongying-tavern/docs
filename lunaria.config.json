@@ -26,6 +26,7 @@
       "ignore": [
         "public/",
         "fr/",
+        "src/zh/frontmatter.md",
         "src/zh/staff.md",
         "src/zh/md-enhance-guide.md",
         "src/zh/team.md",
