@@ -76,7 +76,7 @@ catalogs:
     mitt: ^3.0.1
     motion-v: ^2.0.0
     path-to-regexp: ^8.3.0
-    pinia: ^3.0.4
+    pinia: ^4.0.0
     qrcode: ^1.5.4
     radix-vue: ^1.9.17
     reka-ui: ^2.9.2
