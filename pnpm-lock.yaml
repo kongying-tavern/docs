@@ -37,8 +37,8 @@ catalogs:
       specifier: ^7.1.7
       version: 7.1.7
     vitepress:
-      specifier: 1.6.3
-      version: 1.6.3
+      specifier: 1.6.4
+      version: 1.6.4
     vitepress-plugin-llms:
       specifier: ^1.11.0
       version: 1.11.0
@@ -612,7 +612,7 @@ importers:
         version: 4.15.1(vue@3.5.30(typescript@5.9.3))
       vitepress:
         specifier: catalog:build
-        version: 1.6.3(@algolia/client-search@5.39.0)(@types/node@22.12.0)(change-case@5.4.4)(fuse.js@7.1.0)(postcss@8.5.8)(qrcode@1.5.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)(search-insights@2.17.3)(sortablejs@1.15.7)(stylus@0.57.0)(terser@5.44.0)(typescript@5.9.3)
+        version: 1.6.4(@algolia/client-search@5.39.0)(@types/node@22.12.0)(change-case@5.4.4)(fuse.js@7.1.0)(postcss@8.5.8)(qrcode@1.5.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)(search-insights@2.17.3)(sortablejs@1.15.7)(stylus@0.57.0)(terser@5.44.0)(typescript@5.9.3)
       vue:
         specifier: catalog:frontend
         version: 3.5.30(typescript@5.9.3)
@@ -8767,8 +8767,8 @@ packages:
   vitepress-plugin-llms@1.11.0:
     resolution: {integrity: sha512-n6fjWzBNKy40p8cij+d2cHiC2asNW1eQKdmc06gX9VAv7vWppIoVLH/f7Ht1bK0vSpGzzW2QimvNfbfv1oCdJw==}
 
-  vitepress@1.6.3:
-    resolution: {integrity: sha512-fCkfdOk8yRZT8GD9BFqusW3+GggWYZ/rYncOfmgcDtP3ualNHCAg+Robxp2/6xfH1WwPHtGpPwv7mbA3qomtBw==}
+  vitepress@1.6.4:
+    resolution: {integrity: sha512-+2ym1/+0VVrbhNyRoFFesVvBvHAVMZMK0rw60E3X/5349M1GuVdKeazuksqopEdvkKwKGs21Q729jX81/bkBJg==}
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4
@@ -18327,7 +18327,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vitepress@1.6.3(@algolia/client-search@5.39.0)(@types/node@22.12.0)(change-case@5.4.4)(fuse.js@7.1.0)(postcss@8.5.8)(qrcode@1.5.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)(search-insights@2.17.3)(sortablejs@1.15.7)(stylus@0.57.0)(terser@5.44.0)(typescript@5.9.3):
+  vitepress@1.6.4(@algolia/client-search@5.39.0)(@types/node@22.12.0)(change-case@5.4.4)(fuse.js@7.1.0)(postcss@8.5.8)(qrcode@1.5.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.98.0)(search-insights@2.17.3)(sortablejs@1.15.7)(stylus@0.57.0)(terser@5.44.0)(typescript@5.9.3):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(search-insights@2.17.3)
@@ -18338,7 +18338,7 @@ snapshots:
       '@types/markdown-it': 14.1.2
       '@vitejs/plugin-vue': 5.2.4(vite@5.4.20(@types/node@22.12.0)(sass@1.98.0)(stylus@0.57.0)(terser@5.44.0))(vue@3.5.30(typescript@5.9.3))
       '@vue/devtools-api': 7.7.7
-      '@vue/shared': 3.5.22
+      '@vue/shared': 3.5.30
       '@vueuse/core': 12.8.2(typescript@5.9.3)
       '@vueuse/integrations': 12.8.2(change-case@5.4.4)(focus-trap@7.6.5)(fuse.js@7.1.0)(qrcode@1.5.4)(sortablejs@1.15.7)(typescript@5.9.3)
       focus-trap: 7.6.5
