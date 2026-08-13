@@ -183,8 +183,8 @@ catalogs:
       specifier: ^2.0.0
       version: 2.0.2
     '@atlaskit/pragmatic-drag-and-drop-hitbox':
-      specifier: ^1.1.0
-      version: 1.1.0
+      specifier: ^2.0.0
+      version: 2.0.0
     '@fingerprintjs/fingerprintjs':
       specifier: 5.2.0
       version: 5.2.0
@@ -393,7 +393,7 @@ importers:
         version: 2.0.2
       '@atlaskit/pragmatic-drag-and-drop-hitbox':
         specifier: catalog:frontend
-        version: 1.1.0
+        version: 2.0.0
       '@comark/markdown-it':
         specifier: catalog:markdown
         version: 0.3.4(@types/markdown-it@14.1.2)(markdown-it@14.1.1)
@@ -932,11 +932,8 @@ packages:
   '@antfu/utils@0.7.10':
     resolution: {integrity: sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==}
 
-  '@atlaskit/pragmatic-drag-and-drop-hitbox@1.1.0':
-    resolution: {integrity: sha512-JWt6eVp6Br2FPHRM8s0dUIHQk/jFInGP1f3ti5CdtM1Ji5/pt8Akm44wDC063Gv2i5RGseixtbW0z/t6RYtbdg==}
-
-  '@atlaskit/pragmatic-drag-and-drop@1.7.9':
-    resolution: {integrity: sha512-m/bcw5flyjfcF/rdX4JeomtIBrWuDNOwcQieiywHv7zkfIRmUC34Q9ZLeNGVoz73UiGsRqxysMuw4tC7lSJ89g==}
+  '@atlaskit/pragmatic-drag-and-drop-hitbox@2.0.0':
+    resolution: {integrity: sha512-vkXCB/23pT8YgYU8biGmR9uu0fr9oWoaq2GMSKyiNPk3reA12XVrCdgB2SLBoB24Ic1FOm9PdaQJ9ZSUQdCVpw==}
 
   '@atlaskit/pragmatic-drag-and-drop@2.0.2':
     resolution: {integrity: sha512-ou1j+lBqutK7p2S80lMresJeKu9qAL1zr1K+N0OyCTzbMpD6pXRHray8VkRoHgJICI7Wp1fk5ScJh6EctyAuPw==}
@@ -9228,16 +9225,10 @@ snapshots:
 
   '@antfu/utils@0.7.10': {}
 
-  '@atlaskit/pragmatic-drag-and-drop-hitbox@1.1.0':
+  '@atlaskit/pragmatic-drag-and-drop-hitbox@2.0.0':
     dependencies:
-      '@atlaskit/pragmatic-drag-and-drop': 1.7.9
+      '@atlaskit/pragmatic-drag-and-drop': 2.0.2
       '@babel/runtime': 7.28.4
-
-  '@atlaskit/pragmatic-drag-and-drop@1.7.9':
-    dependencies:
-      '@babel/runtime': 7.28.4
-      bind-event-listener: 3.0.0
-      raf-schd: 4.0.3
 
   '@atlaskit/pragmatic-drag-and-drop@2.0.2':
     dependencies:
