@@ -20,7 +20,7 @@ catalogs:
     "@commitlint/cli": 21.2.1
     "@commitlint/config-conventional": 21.2.0
     "@commitlint/types": 21.2.0
-    "@unlazy/vue": ^1.1.0
+    "@unlazy/vue": ^2.0.0
     "@unocss/eslint-config": ^66.6.6
     "@unocss/eslint-plugin": ^66.6.6
     "@unocss/extractor-mdc": 66.7.5
