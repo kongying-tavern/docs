@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": "true",
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@10.34.5",
   "license": "MIT",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -147,7 +147,7 @@
     "markdown-it-kbd-better": "catalog:markdown",
     "markdownlint-cli": "catalog:dev",
     "open-editor": "catalog:dev",
-    "shadcn-vue": "^2.4.3",
+    "shadcn-vue": "^2.8.2",
     "sort-package-json": "catalog:dev",
     "stylelint": "catalog:dev",
     "stylelint-config-standard": "catalog:dev",
