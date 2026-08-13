@@ -109,8 +109,8 @@ catalogs:
       specifier: ^1.4.7
       version: 1.4.7
     dotenv-cli:
-      specifier: 8.0.0
-      version: 8.0.0
+      specifier: 11.0.0
+      version: 11.0.0
     eslint:
       specifier: ^10.0.3
       version: 10.0.3
@@ -685,7 +685,7 @@ importers:
         version: 1.4.7
       dotenv-cli:
         specifier: catalog:dev
-        version: 8.0.0
+        version: 11.0.0
       eslint:
         specifier: catalog:dev
         version: 10.0.3(jiti@2.6.1)
@@ -4785,12 +4785,12 @@ packages:
     resolution: {integrity: sha512-1gxPBJpI/pcjQhKgIU91II6Wkay+dLcN3M6rf2uwP8hRur3HtQXjVrdAK3sjC0piaEuxzMwjXChcETiJl47lAQ==}
     engines: {node: '>=18'}
 
-  dotenv-cli@8.0.0:
-    resolution: {integrity: sha512-aLqYbK7xKOiTMIRf1lDPbI+Y+Ip/wo5k3eyp6ePysVaSqbyxjyK3dK35BTxG+rmd7djf5q2UPs4noPNH+cj0Qw==}
+  dotenv-cli@11.0.0:
+    resolution: {integrity: sha512-r5pA8idbk7GFWuHEU7trSTflWcdBpQEK+Aw17UrSHjS6CReuhrrPcyC3zcQBPQvhArRHnBo/h6eLH1fkCvNlww==}
     hasBin: true
 
-  dotenv-expand@10.0.0:
-    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+  dotenv-expand@12.0.3:
+    resolution: {integrity: sha512-uc47g4b+4k/M/SeaW1y4OApx+mtLWl92l5LMPP0GNXctZqELk+YGgOPIIC5elYmUH4OuoK3JLhuRUYegeySiFA==}
     engines: {node: '>=12'}
 
   dotenv@16.6.1:
@@ -13146,14 +13146,16 @@ snapshots:
       type-fest: 4.41.0
     optional: true
 
-  dotenv-cli@8.0.0:
+  dotenv-cli@11.0.0:
     dependencies:
       cross-spawn: 7.0.6
-      dotenv: 16.6.1
-      dotenv-expand: 10.0.0
+      dotenv: 17.3.1
+      dotenv-expand: 12.0.3
       minimist: 1.2.8
 
-  dotenv-expand@10.0.0: {}
+  dotenv-expand@12.0.3:
+    dependencies:
+      dotenv: 16.6.1
 
   dotenv@16.6.1: {}
 
