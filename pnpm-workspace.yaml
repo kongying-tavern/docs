@@ -2,7 +2,6 @@ packages: []
 catalogs:
   build:
     "@lunariajs/core": ^0.1.1
-    autoprefixer: ^10.4.27
     sass: ^1.98.0
     tsx: 4.23.12
     typescript: ^5.9.3

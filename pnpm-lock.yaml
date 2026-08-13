@@ -9,9 +9,6 @@ catalogs:
     '@lunariajs/core':
       specifier: ^0.1.1
       version: 0.1.1
-    autoprefixer:
-      specifier: ^10.4.27
-      version: 10.4.27
     sass:
       specifier: ^1.98.0
       version: 1.98.0
@@ -514,9 +511,6 @@ importers:
       '@vueuse/motion':
         specifier: catalog:frontend
         version: 3.0.3(magicast@0.5.4)(vue@3.5.41(typescript@5.9.3))
-      autoprefixer:
-        specifier: catalog:build
-        version: 10.4.27(postcss@8.5.26)
       canvaskit-wasm:
         specifier: catalog:frontend
         version: 0.41.1
@@ -4532,13 +4526,6 @@ packages:
     resolution: {integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==}
     engines: {node: '>= 4.5.0'}
     hasBin: true
-
-  autoprefixer@10.4.27:
-    resolution: {integrity: sha512-NP9APE+tO+LuJGn7/9+cohklunJsXWiaWEfV3si4Gi/XHDwVNgkwr1J3RQYFIvPy76GmJ9/bW8vyoU1LcxwKHA==}
-    engines: {node: ^10 || ^12 || >=14}
-    hasBin: true
-    peerDependencies:
-      postcss: ^8.1.0
 
   autoprefixer@10.5.4:
     resolution: {integrity: sha512-MaU0U/za7N3r6brxD4YB/l4NSrFzLPlANv6wEuQVaIPlD3L4W9rFcQPbL/EilY9BHhHvhfcz3gInDLrEtWT4EA==}
@@ -13858,15 +13845,6 @@ snapshots:
 
   atob@2.1.2: {}
 
-  autoprefixer@10.4.27(postcss@8.5.26):
-    dependencies:
-      browserslist: 4.28.1
-      caniuse-lite: 1.0.30001778
-      fraction.js: 5.3.4
-      picocolors: 1.1.1
-      postcss: 8.5.26
-      postcss-value-parser: 4.2.0
-
   autoprefixer@10.5.4(postcss@8.5.26):
     dependencies:
       browserslist: 4.28.8
@@ -15540,7 +15518,8 @@ snapshots:
 
   forwarded@0.2.0: {}
 
-  fraction.js@5.3.4: {}
+  fraction.js@5.3.4:
+    optional: true
 
   framer-motion@12.36.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

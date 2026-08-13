@@ -66,7 +66,6 @@
     "@vueuse/core": "catalog:frontend",
     "@vueuse/integrations": "catalog:frontend",
     "@vueuse/motion": "catalog:frontend",
-    "autoprefixer": "catalog:build",
     "canvaskit-wasm": "catalog:frontend",
     "class-variance-authority": "catalog:frontend",
     "clsx": "catalog:frontend",
