@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": "true",
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@10.34.5",
   "license": "MIT",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
