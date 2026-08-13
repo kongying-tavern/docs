@@ -225,8 +225,8 @@ catalogs:
       specifier: ^3.0.3
       version: 3.0.3
     canvaskit-wasm:
-      specifier: ^0.40.0
-      version: 0.40.0
+      specifier: ^0.41.0
+      version: 0.41.1
     class-variance-authority:
       specifier: ^0.7.1
       version: 0.7.1
@@ -519,7 +519,7 @@ importers:
         version: 10.4.27(postcss@8.5.8)
       canvaskit-wasm:
         specifier: catalog:frontend
-        version: 0.40.0
+        version: 0.41.1
       class-variance-authority:
         specifier: catalog:frontend
         version: 0.7.1
@@ -4120,8 +4120,8 @@ packages:
   caniuse-lite@1.0.30001778:
     resolution: {integrity: sha512-PN7uxFL+ExFJO61aVmP1aIEG4i9whQd4eoSCebav62UwDyp5OHh06zN4jqKSMePVgxHifCw1QJxdRkA1Pisekg==}
 
-  canvaskit-wasm@0.40.0:
-    resolution: {integrity: sha512-Od2o+ZmoEw9PBdN/yCGvzfu0WVqlufBPEWNG452wY7E9aT8RBE+ChpZF526doOlg7zumO4iCS+RAeht4P0Gbpw==}
+  canvaskit-wasm@0.41.1:
+    resolution: {integrity: sha512-gO2rNMIE0lOQ8MaarM4qNeq2zZAEknAObKP2XAKidMSAY8P5sURGdFkrx1TSdHuBFqTf5w35JqjuUzjibqkD5g==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -12475,7 +12475,7 @@ snapshots:
 
   caniuse-lite@1.0.30001778: {}
 
-  canvaskit-wasm@0.40.0:
+  canvaskit-wasm@0.41.1:
     dependencies:
       '@webgpu/types': 0.1.21
 
