@@ -58,7 +58,7 @@ catalogs:
     "@iconify-json/ph": ^1.2.2
     "@number-flow/vue": ^0.5.0
     "@radix-icons/vue": ^1.0.0
-    "@tanstack/vue-table": ^8.21.3
+    "@tanstack/vue-table": ^9.0.0
     "@vueuse/core": ^14.2.1
     "@vueuse/integrations": ^14.2.1
     "@vueuse/motion": ^3.0.3
