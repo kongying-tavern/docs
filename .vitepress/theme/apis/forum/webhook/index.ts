@@ -6,7 +6,7 @@ import { GITEE_API_CONFIG } from '../gitee/config'
 export const PREFIX_URL = 'https://api.yuanshen.site/webhook/'
 export const WEBHOOK_TOKEN = '4c0001c8-dec1-4c13-a689-4cbcd7d156ae'
 export const fetcher = ky.create({
-  prefixUrl: PREFIX_URL,
+  prefix: PREFIX_URL,
   timeout: 8000,
   retry: 2,
 })

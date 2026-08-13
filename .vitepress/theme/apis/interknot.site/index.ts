@@ -1,4 +1,4 @@
-import ky, { HTTPError } from 'ky'
+import ky, { isHTTPError } from 'ky'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import * as oauth from './oauth'
@@ -9,12 +9,12 @@ import * as upload from './upload'
 export const PREFIX_URL = 'https://hub.interknot.site/api/'
 
 export const fetcher = ky.create({
-  prefixUrl: PREFIX_URL,
+  prefix: PREFIX_URL,
   timeout: 10000,
   retry: 2,
   hooks: {
     beforeRequest: [
-      async (request) => {
+      async ({ request }) => {
         if (import.meta.env.SSR)
           return
         const userInfo = useUserInfoStore()
@@ -33,7 +33,7 @@ export const fetcher = ky.create({
         if (import.meta.env.SSR)
           return
 
-        if (error instanceof HTTPError && error.response.status === 401) {
+        if (isHTTPError(error) && error.response.status === 401) {
           const userAuth = useUserAuthStore()
           if (userAuth.isTokenValid && !userAuth.isSSOTokenValid('interKnot').value) {
             await userAuth.refreshSSOAuth('interKnot')

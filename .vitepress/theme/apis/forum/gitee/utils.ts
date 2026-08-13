@@ -1,6 +1,6 @@
 import type { KyResponse } from 'ky'
 import type ForumAPI from '../api'
-import { isArray, uniq } from 'lodash-es'
+import { isArray, isPlainObject, uniq } from 'lodash-es'
 import { avatarBaseURl, avatarList } from '@/composables/avatarList'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
@@ -384,21 +384,21 @@ function getLastPageFromLinkHeader(linkHeader: string | null): number | undefine
   return Number.isFinite(numericPage) ? numericPage : undefined
 }
 
-export async function parseErrorMessage(
-  response: Response,
-): Promise<string | null> {
-  try {
-    const contentType = response.headers.get('content-type')
-    if (contentType?.includes('application/json')) {
-      const { message } = (await response.json()) as { message?: string }
-      return message || 'Unknown error'
-    }
-    return await response.text()
+/**
+ * Extract a readable message from ky v2's `HTTPError.data`, which holds the
+ * pre-parsed response body (JSON object for JSON content, plain text otherwise).
+ */
+export function extractErrorMessage(data: unknown): string | null {
+  if (typeof data === 'string')
+    return data
+
+  if (isPlainObject(data)) {
+    const { message } = data as { message?: unknown }
+    if (typeof message === 'string')
+      return message
   }
-  catch {
-    // Failed to parse error response
-    return null
-  }
+
+  return null
 }
 
 export default {

@@ -1,7 +1,8 @@
 import type { BeforeErrorHook } from 'ky'
 import type { ErrorHandler } from './types'
+import { isHTTPError } from 'ky'
 import { GiteeApiErrorType } from './types'
-import { parseErrorMessage } from './utils'
+import { extractErrorMessage } from './utils'
 
 const errorHandlers: ErrorHandler[] = [
   {
@@ -18,23 +19,27 @@ const errorHandlers: ErrorHandler[] = [
   },
 ]
 
-const handleApiErrors: BeforeErrorHook = async (error) => {
-  const { response } = error
-  if (!response)
+const handleApiErrors: BeforeErrorHook = async ({ error }) => {
+  // ky v2 fires beforeError for every error type; only HTTP errors carry a
+  // parsed body (error.data) and a response to inspect.
+  if (!isHTTPError(error))
     return error
 
-  const errorText = await parseErrorMessage(response)
+  const errorText = extractErrorMessage(error.data)
   if (!errorText)
     return error
 
   const [errorType, errorMessage = ''] = errorText.split(':')
   const handler = errorHandlers.find(
-    h => h.state.includes(response.status) && errorType.includes(h.match),
+    h => h.state.includes(error.response.status) && errorType.includes(h.match),
   )
 
   if (handler) {
-    error.name = handler.errorName
     error.message = handler.getErrorMessage(errorMessage)
+    // ky v2 types HTTPError.name as the literal 'HTTPError'; the property is
+    // still writable at runtime and carries the error type for the wrapper
+    // in index.ts, so cast to the base Error to reassign it.
+    ;(error as Error).name = handler.errorName
   }
 
   return error

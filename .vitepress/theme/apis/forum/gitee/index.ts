@@ -24,7 +24,7 @@ import * as user from './user'
 import { handlePagination, hasPagination } from './utils'
 
 export const fetcher = ky.extend({
-  prefixUrl: GITEE_API_CONFIG.PREFIX_URL,
+  prefix: GITEE_API_CONFIG.PREFIX_URL,
   timeout: 5000,
   retry: 1,
   hooks: {

@@ -227,7 +227,7 @@ export async function deleteTopicComment(
       },
       hooks: {
         afterResponse: [
-          async (_input, _options, response) => {
+          async ({ response }) => {
             if (response.status === 204)
               state = true
             return Promise.resolve()

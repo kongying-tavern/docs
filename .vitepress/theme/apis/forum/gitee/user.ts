@@ -90,7 +90,7 @@ export async function getFollowStatus(user: string, targetUser: string, accessTo
       },
       hooks: {
         afterResponse: [
-          async (_input, _options, response) => {
+          async ({ response }) => {
             if (response.status === 204) {
               followStatus = true
             }
@@ -127,7 +127,7 @@ export async function toggleFollowUser(toggle: boolean, targetUser: string): Pro
   await apiCall<boolean>(toggle ? 'put' : 'delete', `user/following/${targetUser}`, {
     hooks: {
       afterResponse: [
-        async (_input, _options, response) => {
+        async ({ response }) => {
           if (response.status === 204)
             state = true
           return Promise.resolve()
