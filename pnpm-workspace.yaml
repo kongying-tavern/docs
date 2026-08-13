@@ -139,7 +139,7 @@ catalogs:
     "@types/sortablejs": ^1.15.9
   utils:
     js-yaml: ^5.0.0
-    pnpm: 10.34.5
+    pnpm: 11.21.0
 ignoredBuiltDependencies:
   - "@parcel/watcher"
   - esbuild
