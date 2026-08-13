@@ -22,8 +22,8 @@ catalogs:
       specifier: ^5.9.3
       version: 5.9.3
     unlazy:
-      specifier: ^1.1.0
-      version: 1.1.0
+      specifier: ^2.0.0
+      version: 2.0.1
     unocss:
       specifier: ^66.6.6
       version: 66.6.6
@@ -751,7 +751,7 @@ importers:
         version: 4.23.12
       unlazy:
         specifier: catalog:build
-        version: 1.1.0
+        version: 2.0.1
       vite:
         specifier: catalog:build
         version: 7.3.6(@types/node@24.13.3)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.98.0)(stylus@0.57.0)(terser@5.44.0)(tsx@4.23.12)(yaml@2.9.0)
@@ -3897,9 +3897,6 @@ packages:
     resolution: {integrity: sha512-pnC8x9HLV3qQXdvWfylUEU25uhfCAy3ly9nmpQz84j9py818DRfU8jOsQ5wjdWtxyU1vX/fW2udfm4jtxUK8Bg==}
     peerDependencies:
       vue: '>=3.5.18'
-
-  '@unlazy/core@1.1.0':
-    resolution: {integrity: sha512-ezCESX729KqtP2hud3i0ucepMx5/tz4V9Z4KKHInIgcoqOz/vP9LpEDVl3hkkRfPuuv33C2YUOApMJECEai1Dw==}
 
   '@unlazy/core@2.0.1':
     resolution: {integrity: sha512-zARfhkFhALS5EGdym22E8OrNSEbHDhG8XBUFHr8I435U7JnM8r4Y8g6I+utdKMrxJARcAJx7WGDUo/h9CntWCg==}
@@ -9271,9 +9268,6 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  unlazy@1.1.0:
-    resolution: {integrity: sha512-uF2b6FL74e+EiUKywBWW+6ExLlZ0YrLEQFXromG1/eY1EfUh+AL1onEDv8WxRcDpDpOZyvtryQU4Unxhpb4Hvg==}
-
   unlazy@2.0.1:
     resolution: {integrity: sha512-BihVSf6XpmWzcXfkDFih+R2s2sbiyi5oJiH7ed3CzMZqXBmdbal5iTz77bglCL9jZJZ0i/7NP6oPU/JHx63mZA==}
 
@@ -12986,8 +12980,6 @@ snapshots:
       unhead: 2.1.17
       vue: 3.5.41(typescript@5.9.3)
     optional: true
-
-  '@unlazy/core@1.1.0': {}
 
   '@unlazy/core@2.0.1': {}
 
@@ -19940,10 +19932,6 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   universalify@2.0.1: {}
-
-  unlazy@1.1.0:
-    dependencies:
-      '@unlazy/core': 1.1.0
 
   unlazy@2.0.1:
     dependencies:
