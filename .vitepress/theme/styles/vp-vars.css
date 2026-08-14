@@ -59,13 +59,6 @@
   --vp-local-nav-bg-color: rgba(27, 27, 31, 0.7)
 }
 
-html.font-loaded {
-  --vp-font-family-base: 'HYWenHei-45W', 'HYWenHei-45W override';
-  --vp-font-family-title: 'HYWenHei-85W', var(--vp-font-family-base);
-  --vp-font-family-subtitle: 'HYWenHei-65W', var(--vp-font-family-base);
-  --vp-font-family-content: var(--vp-font-family-base);
-}
-
 .dark {
   --vp-code-block-bg: rgba(0, 0, 0, 0.4);
   --vp-c-text-code: #aac8e4;

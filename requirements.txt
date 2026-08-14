@@ -1,0 +1,4 @@
+# Python dependencies for scripts/subsetFonts.py.
+# Keep exact versions so committed WOFF2 output stays reproducible across CI and local builds.
+fonttools==4.63.0
+brotli==1.2.0

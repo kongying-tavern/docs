@@ -94,3 +94,10 @@ lib-cov
 
 # Claude Code files
 .claude/
+
+# Python (font subsetting toolchain)
+__pycache__/
+*.py[cod]
+
+# Font subsetting generated artifacts (regenerated at build time)
+src/public/fonts/*_min_*.woff2

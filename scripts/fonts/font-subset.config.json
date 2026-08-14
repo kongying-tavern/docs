@@ -1,0 +1,260 @@
+{
+  "version": 1,
+  "paths": {
+    "fontsDir": "src/public/fonts",
+    "siteCssFile": ".vitepress/theme/styles/fonts-subset.css",
+    "standardCssFile": ".vitepress/theme/styles/fonts-standard.css",
+    "sourceDir": "scripts/fonts/source",
+    "pythonEntry": "scripts/subsetFonts.py",
+    "pythonPackage": "scripts/font_subset",
+    "requirements": "requirements.txt"
+  },
+  "scan": [
+    {
+      "path": "src",
+      "extensions": [
+        ".js",
+        ".json",
+        ".md",
+        ".mjs",
+        ".ts",
+        ".tsx",
+        ".vue"
+      ]
+    },
+    {
+      "path": ".vitepress/theme",
+      "extensions": [
+        ".js",
+        ".mjs",
+        ".ts",
+        ".tsx",
+        ".vue"
+      ]
+    },
+    {
+      "path": ".vitepress/config",
+      "extensions": [
+        ".js",
+        ".mjs",
+        ".ts"
+      ]
+    },
+    {
+      "path": ".vitepress/locales",
+      "extensions": [
+        ".js",
+        ".mjs",
+        ".ts"
+      ]
+    }
+  ],
+  "siteExtraction": {
+    "roles": [
+      "content",
+      "subtitle",
+      "title",
+      "shared"
+    ],
+    "defaultRole": "content",
+    "sharedRole": "shared",
+    "extensions": {
+      "markdown": [
+        ".md"
+      ],
+      "vue": [
+        ".vue"
+      ],
+      "script": [
+        ".js",
+        ".mjs",
+        ".ts",
+        ".tsx"
+      ],
+      "json": [
+        ".json"
+      ]
+    },
+    "tagRoles": {
+      "h1": "title",
+      "button": "subtitle",
+      "summary": "subtitle",
+      "strong": "subtitle",
+      "h2": "subtitle",
+      "h3": "subtitle",
+      "h4": "subtitle",
+      "h5": "subtitle",
+      "h6": "subtitle",
+      "kbd": "subtitle",
+      "thead": "subtitle"
+    },
+    "classRoles": {
+      "outline-title": "title",
+      "title": "title",
+      "VPNav": "subtitle",
+      "VPButton": "subtitle",
+      "custom-block-title": "subtitle",
+      "VPLocalNavOutlineDropdown": "subtitle",
+      "doc-info-left": "subtitle",
+      "subtitle": "subtitle",
+      "vp-link": "subtitle",
+      "lead": "subtitle",
+      "timeline-dot-title": "subtitle"
+    },
+    "fontVariableRoles": {
+      "--vp-font-family-base": "content",
+      "--vp-font-family-content": "content",
+      "--vp-font-family-subtitle": "subtitle",
+      "--vp-font-family-title": "title"
+    },
+    "frontmatterRoles": {
+      "title": "title",
+      "hero.name": "title",
+      "hero.text": "title",
+      "hero.tagline": "subtitle",
+      "description": "content"
+    },
+    "textAttributes": [
+      "alt",
+      "aria-label",
+      "placeholder",
+      "title"
+    ]
+  },
+  "python": {
+    "requiredModules": [
+      "fontTools",
+      "brotli"
+    ],
+    "candidates": [
+      {
+        "command": "python3",
+        "args": []
+      },
+      {
+        "command": "python",
+        "args": []
+      },
+      {
+        "command": "py",
+        "args": [
+          "-3"
+        ]
+      }
+    ]
+  },
+  "hashing": {
+    "algorithm": "sha256",
+    "fileNameLength": 12,
+    "standardNamespace": "font-subset-standard-v2",
+    "siteNamespace": "font-subset-site-v2"
+  },
+  "chunking": {
+    "siteTargetBytes": 56320,
+    "estimatedBytesPerCharacter": 140,
+    "standardCharactersPerChunk": 460
+  },
+  "output": {
+    "extension": "woff2",
+    "format": "woff2"
+  },
+  "css": {
+    "publicFontPath": "/fonts",
+    "fontStyle": "normal",
+    "fontWeight": 100,
+    "fontDisplay": "swap",
+    "localFallback": "☺"
+  },
+  "fontaine": {
+    "cssEntry": ".vitepress/theme/styles/main.css",
+    "fallbackNameSuffix": "override",
+    "fallbacks": [
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Helvetica Neue",
+      "Arial",
+      "Noto Sans"
+    ]
+  },
+  "siteCharacters": {
+    "minimumCodepoint": 32,
+    "excludedRanges": [
+      [
+        127,
+        159
+      ]
+    ],
+    "extraRanges": [
+      [
+        32,
+        126
+      ],
+      [
+        12288,
+        12351
+      ],
+      [
+        65281,
+        65374
+      ]
+    ],
+    "extraCodepoints": [
+      160,
+      183,
+      8211,
+      8212,
+      8213,
+      8216,
+      8217,
+      8220,
+      8221,
+      8230
+    ]
+  },
+  "fonts": [
+    {
+      "family": "HYWenHei-45W",
+      "cssFamily": "HYWenHei-45W-min",
+      "fileStem": "hywenhei_45w",
+      "sourceFile": "HYWenHei-45W.ttf",
+      "standardTiers": [
+        "l1",
+        "l2l3"
+      ],
+      "siteRoles": [
+        "content",
+        "subtitle",
+        "title",
+        "shared"
+      ]
+    },
+    {
+      "family": "HYWenHei-65W",
+      "cssFamily": "HYWenHei-65W-min",
+      "fileStem": "hywenhei_65w",
+      "sourceFile": "HYWenHei-65W.ttf",
+      "standardTiers": [
+        "l1",
+        "l2l3"
+      ],
+      "siteRoles": [
+        "subtitle",
+        "title",
+        "shared"
+      ]
+    },
+    {
+      "family": "HYWenHei-85W",
+      "cssFamily": "HYWenHei-85W-min",
+      "fileStem": "hywenhei_85w",
+      "sourceFile": "HYWenHei-85W-zh-full.ttf",
+      "standardTiers": [
+        "l1"
+      ],
+      "siteRoles": [
+        "title"
+      ]
+    }
+  ],
+  "charactersFile": "scripts/fonts/font-characters.config.json"
+}
