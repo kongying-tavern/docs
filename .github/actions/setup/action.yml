@@ -1,0 +1,34 @@
+name: Setup Docs Project
+description: >-
+  Install Node.js + pnpm, install JS dependencies, and set up the Python
+  fonttools + brotli toolchain required by the font subsetting pipeline.
+  Versions are read from project files: .nvmrc (Node.js), package.json
+  packageManager field (pnpm) and .python-version (Python). The repository
+  must be checked out before using this action (local composite actions are
+  resolved from the runner workspace).
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v6
+      name: Install pnpm
+      with:
+        run_install: false
+
+    - name: Install Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version-file: .nvmrc
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install
+      shell: bash
+
+    - name: Setup Python (font subsetting)
+      uses: actions/setup-python@v7
+      with:
+        python-version-file: .python-version
+
+    - name: Install Python dependencies
+      run: pip install -r requirements.txt
+      shell: bash

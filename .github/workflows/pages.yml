@@ -1,75 +1,73 @@
-# @See https://pages.github.com/
 name: GITHUB_PAGE
 
 on:
-  # trigger deployment on every push to main branch
   push:
     branches:
-      - main
-      - next
       - dev
-    # @See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
-    paths-ignore:
-      - '**/__tests__/**'
-      - './README.md'
-  # trigger deployment manually
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# 串行排队，但不取消在跑任务，避免中断进行中的 Pages 部署
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  # 变更门禁（黑名单见 .github/filters.yml）
+  changes:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
-    name: Cache and install Deps
-
+    outputs:
+      pages: ${{ steps.filter.outputs.deploy }}
     steps:
-      - uses: actions/checkout@v7
-        with:
-          # fetch all commits to get last updated time or other git log info
-          fetch-depth: 0
-
       - name: Checkout
         uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v6
-        name: Install pnpm
+      - name: Check pages-relevant changes
+        uses: dorny/paths-filter@v4
+        id: filter
         with:
-          run_install: false
+          filters: .github/filters.yml
+          base: ${{ github.event.before }}
+          predicate-quantifier: some-with-excludes
 
-      - name: Install Node.js
-        uses: actions/setup-node@v7
+  build:
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.pages == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
         with:
-          node-version: 24
-          cache: 'pnpm'
+          # 需要完整 git 历史（“最近更新时间”等）
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: Setup Node.js, pnpm and Python toolchain
+        uses: ./.github/actions/setup
 
       - name: Build site
         run: pnpm build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist/
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     needs: build
     runs-on: ubuntu-latest
-    name: Deploy
+    timeout-minutes: 30
 
     steps:
       - name: Deploy to GitHub Pages

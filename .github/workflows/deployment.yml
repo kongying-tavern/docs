@@ -4,36 +4,54 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**/github/**'
-      - './README.md'
-      - './.pages.yml'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+# 串行部署：新提交取消旧部署，避免 rsync --delete 互相覆盖
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
 jobs:
-  build:
+  # 变更门禁（黑名单见 .github/filters.yml）
+  changes:
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.filter.outputs.deploy }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check deploy-relevant changes
+        uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: .github/filters.yml
+          base: ${{ github.event.before }}
+          predicate-quantifier: some-with-excludes
+
+  build:
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    environment:
+      name: Production
+      url: https://yuanshen.site/docs/
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          # 需要完整 git 历史（“最近更新时间”等）
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v6
-        name: Install pnpm
-        with:
-          run_install: false
-
-      - name: Install Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
+      - name: Setup Node.js, pnpm and Python toolchain
+        uses: ./.github/actions/setup
 
       - name: Refresh Members Data
         run: pnpm build:member
@@ -47,86 +65,18 @@ jobs:
       - name: Build Site
         run: pnpm build:vitepress
 
-      - name: Build lunaria
+      - name: Build Lunaria
         run: pnpm lunaria:build
 
-      # 创建 GitHub Deployment 记录
-      - name: Create GitHub Deployment
-        id: create_deployment
-        uses: actions/github-script@v9
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const deploymentResponse = await github.rest.repos.createDeployment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "${{ github.ref_name }}",
-              auto_merge: false,
-              required_contexts: [],
-              environment: "Production",
-              payload: { web_url: "https://yuanshen.site/docs/" }
-            });
-
-            const deployment = deploymentResponse.data;
-            console.log("Deployment created:", deployment);
-            core.setOutput('deployment_id', deployment.id);
-
-            // 设置状态为 in_progress
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: deployment.id,
-              state: "in_progress",
-              log_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              description: "Deployment in progress"
-            });
-
-      # 部署
       - name: Deploy
         id: deploy
         uses: easingthemes/ssh-deploy@v6.0.3
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
-          # 删除服务器上目录里所有文件
+          # rsync --delete：全量同步
           ARGS: '-avz --delete'
-          # 项目 build 后静态文件位置
           SOURCE: './dist/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
-
-      # 部署成功:更新状态为 success
-      - name: Update Deployment Status (Success)
-        if: success()
-        uses: actions/github-script@v9
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: "${{ steps.create_deployment.outputs.deployment_id }}",
-              state: "success",
-              log_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              description: "Deployment completed successfully",
-              environment_url: "https://yuanshen.site/docs/"
-            });
-            console.log("Deployment status updated to success");
-
-      # 部署失败:更新状态为 failure
-      - name: Update Deployment Status (Failure)
-        if: failure()
-        uses: actions/github-script@v9
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: "${{ steps.create_deployment.outputs.deployment_id }}",
-              state: "failure",
-              log_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              description: "Deployment failed"
-            });
-            console.log("Deployment status updated to failure");
