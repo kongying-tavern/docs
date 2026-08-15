@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue'
 import type { Notification } from './types/notification.d'
-import { twJoin, twMerge } from 'tailwind-merge'
 import { computed, ref, watchEffect } from 'vue'
+
+import { cn } from '@/lib/utils'
 
 import { useNotificationStore } from '@/stores/useNotification'
 
@@ -23,12 +24,10 @@ watchEffect(() => {
 })
 
 const wrapperClass = computed(() => {
-  return twMerge(
-    twJoin(
-      UI.Notifications.wrapper,
-      UI.Notifications.position,
-      UI.Notifications.width,
-    ),
+  return cn(
+    UI.Notifications.wrapper,
+    UI.Notifications.position,
+    UI.Notifications.width,
     props.class,
   )
 })
