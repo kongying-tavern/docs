@@ -61,7 +61,6 @@
     "@tiptap/starter-kit": "catalog:conflicts_editor_h3_4_4",
     "@tiptap/suggestion": "catalog:editor",
     "@tiptap/vue-3": "catalog:conflicts_editor_h3_4_4",
-    "@vee-validate/zod": "^4.15.1",
     "@vueuse/core": "catalog:frontend",
     "@vueuse/integrations": "catalog:frontend",
     "@vueuse/motion": "catalog:frontend",
@@ -90,11 +89,9 @@
     "unocss-preset-animations": "catalog:build",
     "unocss-preset-shadcn": "catalog:build",
     "vaul-vue": "catalog:frontend",
-    "vee-validate": "^4.15.1",
     "vitepress": "catalog:build",
     "vue": "catalog:frontend",
-    "vue-sonner": "catalog:frontend",
-    "zod": "catalog:frontend"
+    "vue-sonner": "catalog:frontend"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:dev",
@@ -110,7 +107,6 @@
     "@types/node": "catalog:types",
     "@unocss/eslint-plugin": "catalog:dev",
     "conventional-changelog-cli": "catalog:dev",
-    "depcheck": "catalog:dev",
     "dotenv-cli": "catalog:dev",
     "eslint": "catalog:dev",
     "fontaine": "catalog:dev",
