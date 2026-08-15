@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData } from 'vitepress'
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import BlurFade from './ui/BlurFade.vue'
 
 const { theme } = useData()
-const qrcode = ref()
-
-const icon = ref()
-const selectedPayment = ref()
 const coins = ref(theme.value.payment)
+
+const selectedPayment = ref<string>()
+const qrcodeText = computed(
+  () => (selectedPayment.value ? coins.value[selectedPayment.value]?.address : ''),
+)
+const qrcode = useQRCode(qrcodeText)
+const icon = ref()
 
 function updatePaymentType() {
   const hash = window.location.hash.slice(1)
   if (hash && coins.value[hash]?.address) {
     selectedPayment.value = hash
-    qrcode.value = useQRCode(coins.value[hash].address)
     nextTick(() => {
       icon.value.className = `i-custom-${hash}`
     })
@@ -65,15 +67,6 @@ onBeforeUnmount(() => {
       </p>
       <img :src="qrcode.value" alt="QR Code">
     </BlurFade>
-  </div>
-
-  <!-- 在这里显式声明Pay Icon，给Unocss识别导入 -->
-  <div v-once hidden>
-    <span class="i-custom-qqpay" />
-    <span class="i-custom-wechatpay" />
-    <span class="i-custom-bilibili" />
-    <span class="i-custom-alipay" />
-    <span class="i-custom-paypal" />
   </div>
 </template>
 

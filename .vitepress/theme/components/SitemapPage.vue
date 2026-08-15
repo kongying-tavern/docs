@@ -210,14 +210,12 @@ const sitemapData = computed((): SitemapGroup[] => {
 
   return groups
 })
-
-const currentGroup = computed(() => sitemapData.value)
 </script>
 
 <template>
   <div class="VPSitemapPage" style="user-select: none;">
     <!-- Render groups dynamically -->
-    <div v-for="group in currentGroup" :key="group.type">
+    <div v-for="group in sitemapData" :key="group.type">
       <h2>{{ group.title }}</h2>
       <div v-for="item in group.items" :key="item.path" class="item">
         <VPLink :href="item.path" class="item-link" :no-icon="true">

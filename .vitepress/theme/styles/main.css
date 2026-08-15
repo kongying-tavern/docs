@@ -206,18 +206,6 @@ textarea {
   font-family: var(--vp-font-family-subtitle);
 }
 
-#VPContent
-  > div
-  > div
-  > div.aside
-  > div.aside-container
-  > div
-  > div
-  > div.VPDocAsideOutline.has-outline
-  > div {
-  border: none;
-}
-
 .load-error::after {
   content: "图片被派蒙吃掉了！" !important;
   text-align: center;
@@ -264,10 +252,4 @@ textarea {
 
 .VPDocAsideOutline.has-outline > .content {
   border: none;
-}
-
-.VPDocAsideOutline.has-outline > .content > .outline-marker {
-  border-radius: 4px;
-  width: 4px;
-  left: 0px;
 }

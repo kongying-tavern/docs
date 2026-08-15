@@ -2,7 +2,7 @@
 import { useIntersectionObserver } from '@vueuse/core'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, nextTick, provide, shallowRef, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, provide, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import DocAside from '@/components/DocAside.vue'
 import DocHeader from '@/components/DocHeader.vue'
@@ -45,17 +45,8 @@ loadFonts([
   },
 ])
 
-watch(showAside, (value) => {
-  if (value) {
-    useIntersectionObserver(
-      target,
-      ([entry]) => {
-        targetIsVisible.value = entry?.isIntersecting || false
-      },
-    )
-  }
-}, {
-  immediate: true,
+useIntersectionObserver(target, ([entry]) => {
+  targetIsVisible.value = entry?.isIntersecting || false
 })
 
 provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {

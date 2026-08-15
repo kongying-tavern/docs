@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { useSidebar } from 'vitepress/theme'
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { cn } from '@/lib/utils'
 
 defineProps<{
@@ -9,16 +9,6 @@ defineProps<{
 }>()
 
 const { hasSidebar } = useSidebar()
-
-const navHeight = ref(0)
-
-onMounted(() => {
-  navHeight.value = Number.parseInt(
-    getComputedStyle(document.documentElement).getPropertyValue(
-      '--vp-nav-height',
-    ),
-  )
-})
 
 const classes = computed(() => {
   return {
