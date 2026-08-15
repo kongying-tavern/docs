@@ -20,6 +20,11 @@ const eventDefinitions = {
   // Comment events
   commentCreated: (commentId: string | number, topicId: string, comment: ForumAPI.Comment) => ({ commentId, topicId, comment }),
   commentDeleted: (commentId: string | number, topicId: string) => ({ commentId, topicId }),
+
+  // Form events - 发布表单生命周期,供埋点/分析订阅
+  formSubmitStart: (formType: string) => ({ formType }),
+  formSubmitSuccess: (formType: string, data: ForumAPI.Topic | ForumAPI.Comment) => ({ formType, data }),
+  formSubmitError: (formType: string, error: Error) => ({ formType, error }),
 } as const
 
 export const forumEvents = {
@@ -59,6 +64,17 @@ export const forumEvents = {
   commentDeleted: (commentId: string | number, topicId: string) => {
     SimpleEventManager.getInstance().emit('comment:deleted', eventDefinitions.commentDeleted(commentId, topicId))
   },
+
+  // Form events - 发布表单生命周期
+  formSubmitStart: (formType: string) => {
+    SimpleEventManager.getInstance().emit('form:submit-start', eventDefinitions.formSubmitStart(formType))
+  },
+  formSubmitSuccess: (formType: string, data: ForumAPI.Topic | ForumAPI.Comment) => {
+    SimpleEventManager.getInstance().emit('form:submit-success', eventDefinitions.formSubmitSuccess(formType, data))
+  },
+  formSubmitError: (formType: string, error: Error) => {
+    SimpleEventManager.getInstance().emit('form:submit-error', eventDefinitions.formSubmitError(formType, error))
+  },
 }
 
 /**
@@ -80,6 +96,11 @@ export interface EventMap {
   // Comment events (从 eventDefinitions 函数推断)
   'comment:created': ReturnType<typeof eventDefinitions.commentCreated>
   'comment:deleted': ReturnType<typeof eventDefinitions.commentDeleted>
+
+  // Form events (从 eventDefinitions 函数推断)
+  'form:submit-start': ReturnType<typeof eventDefinitions.formSubmitStart>
+  'form:submit-success': ReturnType<typeof eventDefinitions.formSubmitSuccess>
+  'form:submit-error': ReturnType<typeof eventDefinitions.formSubmitError>
 }
 
 export type EventHandler<T> = (payload: T) => void
