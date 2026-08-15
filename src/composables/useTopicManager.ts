@@ -34,7 +34,7 @@ async function withOperationLock<T>(
   }
 }
 
-export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomConfig>) {
+export function useTopicManager(targetTopic: ForumAPI.Topic, message: Ref<CustomConfig>) {
   const targetTopicId = targetTopic.id
 
   if (!targetTopic && !targetTopicId) {

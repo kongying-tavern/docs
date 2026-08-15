@@ -5,7 +5,7 @@ import type { FORUM } from '~/components/forum/types'
 import { computed, ref } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { useTopicManger } from '~/composables/useTopicManger'
+import { useTopicManager } from '~/composables/useTopicManager'
 import { forumEvents } from '~/services/events/SimpleEventManager'
 import { useTopicTagsEditor } from './useTopicTagsEditor'
 
@@ -14,7 +14,7 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
   if (!topicData)
     return computed(() => [])
 
-  const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManger(topicData, message)
+  const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManager(topicData, message)
   const { hasAnyPermissions } = useRuleChecks(topicData.user.id)
 
   const [closeState, toggleClose] = toggleCloseTopic()
@@ -32,12 +32,12 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
 
   function handleToggleCloseTopic() {
     toggleClose()
-    // The events are now emitted directly from useTopicManger
+    // The events are now emitted directly from useTopicManager
   }
 
   function handleToggleHideTopic() {
     toggleHide()
-    // The events are now emitted directly from useTopicManger
+    // The events are now emitted directly from useTopicManager
   }
 
   const noAnyPermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {
