@@ -43,7 +43,6 @@ export function useTopicPageState() {
     }
   })
 
-  // Setup topic page specific event listeners using new architecture
   function setupTopicPageEvents() {
     // Listen for topic deletion, close, or hide events
     const handleTopicRemoval = ({ id }: { id: string | number }) => {

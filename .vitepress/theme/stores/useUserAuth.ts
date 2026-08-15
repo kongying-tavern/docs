@@ -1,7 +1,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import { isObject } from 'lodash-es'
 import { defineStore } from 'pinia'
-import { computed, onBeforeUnmount, readonly, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { toCamelCaseObject } from '@/utils'
 import { oauth } from '../apis/forum/gitee'
 import { useAuthRefresh } from '../composables/useAuthRefresh'
@@ -176,36 +176,6 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     }
   }
 
-  const validateSession = (): boolean => {
-    return tokenManager.validateToken()
-  }
-
-  // SSO methods delegation
-  const loginWithInterKnot = async (credentials: { username: string, password: string }) => {
-    return ssoAuth.loginWithInterKnot(credentials)
-  }
-
-  const logoutFromInterKnot = async () => {
-    return ssoAuth.logoutFromInterKnot()
-  }
-
-  const refreshInterKnotToken = async () => {
-    return ssoAuth.refreshInterKnotToken()
-  }
-
-  // Debug helpers
-  const getDebugInfo = () => {
-    return {
-      ...tokenManager.getTokenDebugInfo(),
-      loginStatus: loginStatus.value,
-      lastError: lastError.value?.message,
-      ssoTokens: Object.keys(tokenManager.ssoAuth.value).reduce((acc, key) => {
-        acc[key] = !!tokenManager.ssoAuth.value[key as keyof SSOLocaleAuth]?.accessToken
-        return acc
-      }, {} as Record<string, boolean>),
-    }
-  }
-
   // Initialize auto refresh if token exists
   if (tokenManager.localAuth.value?.accessToken) {
     authRefresh.startAutoRefresh()
@@ -228,8 +198,6 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     // State
     auth,
     ssoAuth: ssoLocalAuth,
-    loginStatus: readonly(loginStatus),
-    lastError: readonly(lastError),
 
     // Computed
     isTokenValid,
@@ -241,13 +209,8 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     refreshToken,
     login,
     logout,
-    validateSession,
 
     // SSO Actions
-    loginWithInterKnot,
-    logoutFromInterKnot,
-    refreshInterKnotToken,
-    isInterKnotTokenValid: () => ssoAuth.isInterKnotTokenValid(),
     isSSOTokenValid: (platform: string) => {
       if (platform === 'interKnot') {
         return { value: ssoAuth.isInterKnotTokenValid() }
@@ -256,7 +219,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     },
     refreshSSOAuth: async (platform: string) => {
       if (platform === 'interKnot') {
-        return refreshInterKnotToken()
+        return ssoAuth.refreshInterKnotToken()
       }
       throw createAuthError.networkError(new Error(`SSO platform ${platform} not supported`))
     },
@@ -264,19 +227,5 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     // Token management
     ensureTokenRefreshMission: () => authRefresh.startAutoRefresh(),
     waitForTokenReady: tokenManager.waitForRefreshComplete,
-
-    // Debug
-    getDebugInfo,
-
-    // SSO Refresh Management
-    startSSOAutoRefresh: () => ssoRefreshManager.startSSOAutoRefresh(),
-    stopSSOAutoRefresh: () => ssoRefreshManager.stopAllSSORefresh(),
-    getSSORefreshDebugInfo: () => ssoRefreshManager.getDebugInfo(),
-
-    // Internal (for testing)
-    _tokenManager: tokenManager,
-    _authRefresh: authRefresh,
-    _ssoAuth: ssoAuth,
-    _ssoRefreshManager: ssoRefreshManager,
   }
 })

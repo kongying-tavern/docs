@@ -108,7 +108,3 @@ const isTopicsLoading = computed(() => {
     <slot name="teleport" />
   </ClientOnly>
 </template>
-
-<style scoped>
-/* Add any base page specific styles here */
-</style>

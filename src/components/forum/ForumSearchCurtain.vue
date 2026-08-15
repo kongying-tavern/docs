@@ -58,11 +58,6 @@ watchPostEffect(() => {
     <div class="wrapper bg-[var(--vp-c-bg)] h-fit min-h-100% transition-height relative md:min-h-30%">
       <div class="curtain-content pt-8 container h-auto w-full">
         <ForumSearchbox v-model:query="searchQuery" @search="emits('close')" />
-        <!-- Debug: Always show for testing -->
-        <!-- <div v-if="searchQuery.length > 0" class="debug-info">
-          <p>Query: "{{ searchQuery }}" (length: {{ searchQuery.length }})</p>
-          <p>Topics count: {{ suggestionForumData.data.value?.length || 0 }}</p>
-        </div> -->
 
         <ForumSearchSuggestions
           v-if="searchQuery.length > 0"

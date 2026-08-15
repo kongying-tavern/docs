@@ -185,7 +185,6 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   }
 }
 
-// 这里逻辑还有点问题
 .footer-title:hover ~ ul,
 .footer-title ~ ul:hover {
   height: 100%;
