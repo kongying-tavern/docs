@@ -6,7 +6,7 @@
   --vp-c-indigo-1: #60bf90;
   --vp-c-indigo-2: #3aa374;
   --vp-c-indigo-3: #008858;
-  --vp-c-indigo-soft: rgba(0, 108, 69 0.16);
+  --vp-c-indigo-soft: rgba(0, 108, 69, 0.16);
   --vp-font-family-base: 'HYWenHei-45W-min', 'HYWenHei-45W-min override';
   --vp-font-family-title: 'HYWenHei-85W-min', 'HYWenHei-85W-min override';
   --vp-font-family-subtitle: 'HYWenHei-65W-min', 'HYWenHei-65W-min override';
@@ -28,8 +28,6 @@
 
   --vp-sidebar-width: 295px;
 
-  --nav-c-bg: rgba(255, 255, 255, 0.7);
-
   --vp-custom-block-tip-text: #003100;
   --vp-custom-block-tip-bg: #e6f6e6;
 
@@ -39,7 +37,6 @@
   --banner-bg: #383636;
   --suggest-language-bar-bg: rgba(255, 255, 255, 0.078);
   --suggest-language-bar-hover-bg: rgba(255, 255, 255, 0.161);
-  --vp-badge-tip-bg: --
   --radius: 0.5rem;
 
   --locale-nav-height: 52px;
@@ -71,7 +68,6 @@ html.font-loaded {
   --vp-c-text-code: #aac8e4;
   /* fix contrast on gray cards: check the same above (this is the default) */
   --vp-c-text-dark-2: rgba(235, 235, 235, 0.6);
-  --vp-c-tip-1: var(v--vp-c-tip-1) --nav-c-bg: rgba(30, 30, 32, 0.5);
 
   --skeleton-animation-gradient: rgba(255, 255, 255, 0.06);
 }

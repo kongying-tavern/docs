@@ -74,13 +74,6 @@ export const commonHead: HeadConfig[] = [
   [
     'meta',
     {
-      name: 'apple-mobile-web-app-status-bar-style',
-      content: 'lack-translucent',
-    },
-  ],
-  [
-    'meta',
-    {
       name: 'applicable-device',
       content: 'pc,mobile',
     },
@@ -122,32 +115,8 @@ export const commonHead: HeadConfig[] = [
     'link',
     {
       rel: 'alternate',
-      hreflang: 'fr',
-      href: 'https://yuanshen.site/docs/fr',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
       hreflang: 'ja',
       href: 'https://yuanshen.site/docs/ja',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
-      hreflang: 'kr',
-      href: 'https://yuanshen.site/docs/kr',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
-      href: `https://yuanshen.site/docs/feed.rss`,
-      type: 'application/rss',
     },
   ],
   [
@@ -159,10 +128,8 @@ export const commonHead: HeadConfig[] = [
     },
   ],
   ['meta', { name: 'referrer', content: 'no-referrer-when-downgrade' }],
-  ['meta', { property: 'og:site', content: 'website' }],
   ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
   ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
-  ['meta', { name: 'twitter:widgets:csp', content: 'on' }],
 ]
 
 export const headConfig = [...commonHead, ...(isProd ? productionHead : [])]
