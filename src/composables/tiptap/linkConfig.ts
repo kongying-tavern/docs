@@ -1,4 +1,4 @@
-import type { ChainedCommands, Editor, Range } from '@tiptap/core'
+import type { Editor, Range, SingleCommands } from '@tiptap/core'
 import type { Mark } from '@tiptap/pm/model'
 import Link from '@tiptap/extension-link'
 import { convertSiteUrl, fetchPageTitle, generateTopicUrl, isSiteUrl, isValidTopicId, parseTopicId } from './siteUrlParser'
@@ -245,7 +245,7 @@ export function createLinkExtension(options: {
     addCommands() {
       return {
         // 扩展 setLink 命令以支持本站链接转换
-        setLink: (attributes: { href: string }) => ({ commands }: { commands: ChainedCommands }) => {
+        setLink: (attributes: { href: string }) => ({ commands }: { commands: SingleCommands }) => {
           const { href } = attributes
 
           if (href && isSiteUrl(href)) {
@@ -280,7 +280,8 @@ export function createLinkExtension(options: {
         // 添加 #XXXXXX 格式的题目 ID 识别
         {
           find: TOPIC_ID_INPUT_REGEX,
-          handler: ({ range, match, commands }: { range: Range, match: RegExpMatchArray, commands: ChainedCommands }) => {
+          undoable: true,
+          handler: ({ range, match, commands }: { range: Range, match: RegExpMatchArray, commands: SingleCommands }) => {
             const [, topicIdText] = match
             const topicId = parseTopicId(topicIdText)
 
@@ -323,7 +324,7 @@ export function createLinkExtension(options: {
         // 本站链接识别
         {
           find: URL_PASTE_REGEX,
-          handler: ({ match, commands, range }: { match: RegExpMatchArray, commands: ChainedCommands, range: Range }) => {
+          handler: ({ match, commands, range }: { match: RegExpMatchArray, commands: SingleCommands, range: Range }) => {
             const url = match[1]
 
             // 只处理本站链接
@@ -364,7 +365,7 @@ export function createLinkExtension(options: {
         // #XXXXXX 格式的题目 ID 识别
         {
           find: TOPIC_ID_PASTE_REGEX,
-          handler: ({ match, commands, range }: { match: RegExpMatchArray, commands: ChainedCommands, range: Range }) => {
+          handler: ({ match, commands, range }: { match: RegExpMatchArray, commands: SingleCommands, range: Range }) => {
             const topicIdText = match[1]
             const topicId = parseTopicId(topicIdText)
 
