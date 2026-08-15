@@ -10,7 +10,7 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { removeQueryParam } from '@/utils'
 import { AuthError, AuthErrorType } from '@/utils/auth-errors'
-import { log, LogGroup } from '@/utils/auth-logger'
+import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
 import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'

@@ -1,9 +1,9 @@
 import type { useTokenManager } from './useTokenManager'
 import { ref, watch } from 'vue'
 import { toCamelCaseObject } from '@/utils'
+import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
 import { oauth } from '../apis/forum/gitee'
 import { createAuthError } from '../utils/auth-errors'
-import { log, LogGroup } from '../utils/auth-logger'
 
 const TOKEN_REFRESH_BASE_RETRY_INTERVAL_MS = 5000
 

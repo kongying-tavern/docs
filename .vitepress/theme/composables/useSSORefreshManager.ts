@@ -2,8 +2,8 @@ import type { SSOLocaleAuth } from '../stores/useUserAuth'
 import type { useSSOAuth } from './useSSOAuth'
 import type { useTokenManager } from './useTokenManager'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
 import { createAuthError } from '../utils/auth-errors'
-import { log, LogGroup } from '../utils/auth-logger'
 
 const SSO_REFRESH_THRESHOLD_MS = 5 * 60 * 1000
 const SSO_MIN_REFRESH_INTERVAL_MS = 30 * 1000

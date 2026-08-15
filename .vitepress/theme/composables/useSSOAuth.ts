@@ -1,7 +1,7 @@
 import type { useTokenManager } from './useTokenManager'
+import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
 import { oauth as interKnotOauth } from '../apis/interknot.site'
 import { createAuthError } from '../utils/auth-errors'
-import { log, LogGroup } from '../utils/auth-logger'
 
 export function useSSOAuth(tokenManager: ReturnType<typeof useTokenManager>) {
   async function refreshInterKnotToken(): Promise<void> {

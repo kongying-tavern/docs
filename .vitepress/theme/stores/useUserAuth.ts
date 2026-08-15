@@ -3,13 +3,13 @@ import { isObject } from 'lodash-es'
 import { defineStore } from 'pinia'
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { toCamelCaseObject } from '@/utils'
+import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
 import { oauth } from '../apis/forum/gitee'
 import { useAuthRefresh } from '../composables/useAuthRefresh'
 import { useSSOAuth } from '../composables/useSSOAuth'
 import { useSSORefreshManager } from '../composables/useSSORefreshManager'
 import { useTokenManager } from '../composables/useTokenManager'
 import { AuthError, createAuthError } from '../utils/auth-errors'
-import { log, LogGroup } from '../utils/auth-logger'
 
 export interface LocalAuth {
   accessToken: string
