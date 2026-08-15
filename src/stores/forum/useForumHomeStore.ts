@@ -6,7 +6,6 @@ import { computed, ref } from 'vue'
 import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { useForumData } from '~/composables/useForumData'
 import { usePathParam } from '~/composables/usePathParam'
-import { useOptimizedTopicList } from '~/composables/useStorePerformanceOptimizer'
 import { useTopicOperations } from '~/composables/useTopicOperations'
 
 import { simpleEventManager, SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
@@ -27,8 +26,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     manual: true,
     autoLoadPinned: true,
   })
-
-  const optimizedTopicList = useOptimizedTopicList()
 
   const cacheManager = useForumCacheManager(forumData, filter, sort, {
     pageType: 'home',
@@ -84,7 +81,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     },
     {
       pageType: 'home',
-      optimizer: optimizedTopicList,
     },
   )
 
@@ -197,7 +193,6 @@ export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
     isSearching.value = false
     eventHandlers.cleanup()
     forumData.resetState(options)
-    optimizedTopicList.setTopics([])
   }
 
   const cleanup = (): void => {

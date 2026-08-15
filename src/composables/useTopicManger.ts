@@ -181,7 +181,6 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
 
       if (result) {
         targetTopic.commentCount = willBeClosed ? -1 : 0
-        forumEvents.topicCommentToggled(targetTopic.id, willBeClosed)
       }
 
       return result

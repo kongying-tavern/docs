@@ -57,11 +57,7 @@ export function useSubmitTopic() {
     }
 
     try {
-      forumEvents.formSubmitStart('topic')
-
       const result = await asyncSubmit(newTopic)
-
-      forumEvents.formSubmitSuccess('topic', result)
 
       toast.promise(Promise.resolve(result), {
         loading: message.value.forum.publish.publishLoading,
@@ -74,8 +70,6 @@ export function useSubmitTopic() {
     }
     catch (err) {
       const error = err as Error
-
-      forumEvents.formSubmitError('topic', error)
 
       toast.error(`${message.value.forum.publish.publishFail} (${error.message})`)
       return null

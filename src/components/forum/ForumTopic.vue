@@ -42,7 +42,6 @@ const {
   toPostDetailPage,
   handleToggleCommentInput,
   handleTopicClick,
-  handleMenuAction,
 } = useTopicInteraction(topic)
 
 // Event handlers
@@ -98,7 +97,6 @@ onUnmounted(() => {
         :topic="topic"
         :topic-author-id="topic.user.id"
         :menu="menu"
-        @menu:action="handleMenuAction"
       />
 
       <!-- Topic Content and Media -->
