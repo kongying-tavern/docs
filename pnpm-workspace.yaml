@@ -51,7 +51,7 @@ catalogs:
     stylelint-order: 8.1.1
     taze: 20.0.1
     tsconfig-paths: 4.2.0
-    vite-plugin-vue-devtools: 8.2.1
+    vite-plugin-vue-devtools: 7.7.7
     zhlint: 0.8.2
   editor:
     "@tiptap/core": ^3.20.1
