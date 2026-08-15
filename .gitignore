@@ -10,6 +10,9 @@ jspm_packages/
 # Explorations files
 explorations
 
+# AI planning artifacts
+plans
+
 # Log files
 logs
 *.log
