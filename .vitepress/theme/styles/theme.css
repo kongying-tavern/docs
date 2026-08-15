@@ -18,14 +18,6 @@
   --border: 0.9131 0.0013 286.3700;
   --input: 1 0 0;
   --ring: 0.8147 0.0028 286.3400;
-  --sidebar: 0.9734 0.0013 286.3700;
-  --sidebar-foreground: 0.3588 0.0120 285.7800;
-  --sidebar-primary: 0.2050 0 0;
-  --sidebar-primary-foreground: 0.9850 0 0;
-  --sidebar-accent: 0.9700 0 0;
-  --sidebar-accent-foreground: 0.2050 0 0;
-  --sidebar-border: 0.9131 0.0013 286.3700;
-  --sidebar-ring: 0.7080 0 0;
   --font-sans: 'HYWenHei-45W-min', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --font-serif: 'HYWenHei-45W-min', sui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --radius: 0.625rem;
@@ -58,14 +50,6 @@
   --border: 0.3667 0.0095 260.7200;
   --input: 0.2238 0.0077 285.76;
   --ring: 0.3027 0.0071 285.9700;
-  --sidebar: 0.2011 0.0039 286.0400;
-  --sidebar-foreground: 0.9850 0 0;
-  --sidebar-primary: 0.7168 0.1343 160.5300;
-  --sidebar-primary-foreground: 0.9850 0 0;
-  --sidebar-accent: 0.2690 0 0;
-  --sidebar-accent-foreground: 0.9850 0 0;
-  --sidebar-border: 0.3027 0.0071 285.9700;
-  --sidebar-ring: 0.4390 0 0;
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }

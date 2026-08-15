@@ -2,7 +2,7 @@
 import NumberFlow from '@number-flow/vue'
 import { motion, MotionConfig } from 'motion-v'
 import { useData } from 'vitepress'
-import { computed, onMounted, onUnmounted, ref, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { cn } from '@/lib/utils'
 import AnimatedCircularProgressBar from './AnimatedCircularProgressBar.vue'
 
@@ -16,7 +16,6 @@ interface Props {
   class?: string
   title?: string
   height?: number
-  mode?: 'scroll' | 'custom'
   customProgress?: number
   steps?: ProgressStep[]
   errorState?: boolean
@@ -27,7 +26,6 @@ const props = withDefaults(defineProps<Props>(), {
   class: '',
   title: 'Progress',
   height: 44,
-  mode: 'scroll',
   customProgress: 0,
   steps: () => [],
   errorState: false,
@@ -38,36 +36,14 @@ const { isDark } = useData()
 const open = ref(false)
 const slots = useSlots()
 
-const scrollPercentage = ref(0)
-
 const isSlotAvailable = computed(() => !!slots.default || props.steps.length > 0)
 const borderRadius = computed(() => `${props.height / 2}px`)
 
-const displayProgress = computed(() => {
-  if (props.mode === 'custom') {
-    return Math.min(Math.max(props.customProgress, 0), 100)
-  }
-  return scrollPercentage.value * 100
-})
+const displayProgress = computed(() =>
+  Math.min(Math.max(props.customProgress, 0), 100),
+)
 
-const progressValue = computed(() => {
-  if (props.mode === 'custom') {
-    return props.customProgress / 100
-  }
-  return scrollPercentage.value
-})
-
-onMounted(() => {
-  if (window === undefined || props.mode === 'custom')
-    return
-
-  window.addEventListener('scroll', updatePageScroll)
-  updatePageScroll()
-})
-
-function updatePageScroll() {
-  scrollPercentage.value = window.scrollY / (document.body.scrollHeight - window.innerHeight)
-}
+const progressValue = computed(() => props.customProgress / 100)
 
 function handleRetry() {
   if (props.onRetry) {
@@ -100,12 +76,6 @@ function getStepStatusClass(status: ProgressStep['status']) {
       return 'text-gray-400'
   }
 }
-
-onUnmounted(() => {
-  if (props.mode !== 'custom') {
-    window.removeEventListener('scroll', updatePageScroll)
-  }
-})
 </script>
 
 <template>

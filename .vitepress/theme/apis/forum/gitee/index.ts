@@ -11,7 +11,6 @@ import { isPlainObject } from 'lodash-es'
 
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { catchError, isNodeEnvironment } from '../../utils'
-import * as blog from './blog'
 import { GITEE_API_CONFIG } from './config'
 import { beforeErrorHooks } from './hooks'
 import { HTTPError } from './httpError'
@@ -146,7 +145,6 @@ function deleteApiCache(
 
 export {
   apiCall,
-  blog,
   clearApiCache,
   deleteApiCache,
   HTTPError as GiteeAPIError,

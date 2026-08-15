@@ -1,8 +1,6 @@
 @import "./theme.css";
 @import "./vp-vars.css";
-@import "./ui/tooltip.css";
 @import "./ui/timeline.css";
-@import "./ui/kbd.css";
 @import "./ui/demo.css";
 @import "./animation.css";
 @import "./fonts.css";
