@@ -410,87 +410,6 @@ export default [
     }
   },
   {
-    "mdc_name": "image",
-    "component_meta": {
-      "meta": {
-        "props": [
-          {
-            "name": "image",
-            "type": "DefaultTheme.ThemeableImage | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "alt",
-            "type": "string | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "zoom",
-            "type": "false | ZoomOptions | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "preload",
-            "type": "boolean | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "thumbHash",
-            "type": "string | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "width",
-            "type": "number | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "height",
-            "type": "number | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "autoSizes",
-            "type": "boolean | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "placeholderSrc",
-            "type": "string | undefined",
-            "required": false,
-            "description": ""
-          },
-          {
-            "name": "showSkeleton",
-            "type": "boolean | undefined",
-            "required": false,
-            "description": "是否显示骨架屏加载状态"
-          },
-          {
-            "name": "skeletonClass",
-            "type": "string | undefined",
-            "required": false,
-            "description": "骨架屏样式类名"
-          },
-          {
-            "name": "containerClass",
-            "type": "string | undefined",
-            "required": false,
-            "description": "容器样式类名"
-          }
-        ]
-      }
-    }
-  },
-  {
     "mdc_name": "input-placeholders",
     "component_meta": {
       "meta": {
@@ -588,21 +507,6 @@ export default [
           {
             "name": "items",
             "type": "Integration[]",
-            "required": true,
-            "description": ""
-          }
-        ]
-      }
-    }
-  },
-  {
-    "mdc_name": "mention",
-    "component_meta": {
-      "meta": {
-        "props": [
-          {
-            "name": "mention",
-            "type": "string",
             "required": true,
             "description": ""
           }
