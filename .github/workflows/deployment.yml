@@ -50,6 +50,17 @@ jobs:
           # 需要完整 git 历史（“最近更新时间”等）
           fetch-depth: 0
 
+      - name: Cache font subsets
+        uses: actions/cache@v4
+        with:
+          path: |
+            src/public/fonts
+            .vitepress/theme/styles/fonts-subset.css
+            .vitepress/theme/styles/fonts-standard.css
+          # Standard-tier inputs only; the site tier depends on page text and
+          # is cheap to rebuild, so it is intentionally excluded from the key.
+          key: font-subset-${{ hashFiles('scripts/fonts/font-subset.config.json', 'scripts/fonts/font-characters.config.json', 'scripts/fonts/font-slicing.config.json', 'scripts/fonts/source/**', 'scripts/font_subset/**', 'scripts/buildFonts.ts', 'requirements.txt') }}
+
       - name: Setup Node.js, pnpm and Python toolchain
         uses: ./.github/actions/setup
 
