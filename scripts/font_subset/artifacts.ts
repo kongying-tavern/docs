@@ -19,7 +19,7 @@ export class FontArtifacts {
   private readonly managedFontPattern: RegExp
   private readonly siteFontPattern: RegExp
   private readonly standardFontPattern: RegExp
-  private readonly expectedStandardTiers: Set<string>
+  private readonly expectedStandardGroups: Set<string>
 
   constructor(
     private readonly config: FontSubsetConfig,
@@ -29,10 +29,12 @@ export class FontArtifacts {
     const legacyStems = config.fonts.map(font => (
       escapeRegExp(font.fileStem.replaceAll('_', '-'))
     )).join('|')
+    const scripts = config.scripts.sets.map(set => escapeRegExp(set.name)).join('|')
     const standardTiers = Array.from(
       new Set(config.fonts.flatMap(font => font.standardTiers)),
       escapeRegExp,
     ).join('|')
+    const standardGroups = `cjk\\.(?:${standardTiers})|${scripts}`
     const hashLength = config.hashing.fileNameLength
     const extension = escapeRegExp(config.output.extension)
     const publicPath = escapeRegExp(
@@ -40,22 +42,23 @@ export class FontArtifacts {
     )
 
     this.fontUrlPattern = new RegExp(
-      `url\\(['"]?${publicPath}/((?:${stems})_[^'")]+\\.${extension})['"]?\\)`,
+      `url\\(['"]?${publicPath}/((?:${stems})\\.[^'")]+\\.${extension})['"]?\\)`,
       'g',
     )
     this.managedFontPattern = new RegExp(
-      `^(?:(?:${stems})_.*|(?:${legacyStems})-.*)\\.${extension}$`,
+      `^(?:(?:${stems})[._].*|(?:${legacyStems})-.*)\\.${extension}$`,
     )
     this.siteFontPattern = new RegExp(
-      `^(?:${stems})_min_\\d{2}_[a-f0-9]{${hashLength}}\\.${extension}$`,
+      `^(?:${stems})\\.cjk\\.min\\.\\d{2}\\.[a-f0-9]{${hashLength}}\\.${extension}$`,
     )
     this.standardFontPattern = new RegExp(
-      `^(${stems})_(${standardTiers})_\\d{2}_[a-f0-9]{${hashLength}}\\.${extension}$`,
+      `^(${stems})\\.((?:${standardGroups}))\\.\\d{2}\\.[a-f0-9]{${hashLength}}\\.${extension}$`,
     )
-    this.expectedStandardTiers = new Set(
-      config.fonts.flatMap(font => (
-        font.standardTiers.map(tier => `${font.fileStem}:${tier}`)
-      )),
+    this.expectedStandardGroups = new Set(
+      config.fonts.flatMap(font => [
+        ...font.scriptTiers.map(script => `${font.fileStem}:${script}`),
+        ...font.standardTiers.map(tier => `${font.fileStem}:cjk.${tier}`),
+      ]),
     )
   }
 
@@ -90,14 +93,14 @@ export class FontArtifacts {
       return false
     }
 
-    const actualTiers = new Set(
+    const actualGroups = new Set(
       referenced.flatMap((file) => {
         const match = file.match(this.standardFontPattern)
         return match ? [`${match[1]}:${match[2]}`] : []
       }),
     )
-    return actualTiers.size === this.expectedStandardTiers.size
-      && [...this.expectedStandardTiers].every(tier => actualTiers.has(tier))
+    return actualGroups.size === this.expectedStandardGroups.size
+      && [...this.expectedStandardGroups].every(group => actualGroups.has(group))
   }
 
   private readCss(path: string): string {
@@ -132,10 +135,8 @@ export class FontArtifacts {
       return false
 
     const hashLength = this.config.hashing.fileNameLength
-    const expected = file.slice(
-      file.lastIndexOf('_') + 1,
-      -`.${this.config.output.extension}`.length,
-    )
+    const segments = file.split('.')
+    const expected = segments[segments.length - 2]!
     const actual = createHash(this.config.hashing.algorithm)
       .update(readFileSync(path))
       .digest('hex')

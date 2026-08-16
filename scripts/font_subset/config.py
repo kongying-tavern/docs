@@ -1,11 +1,30 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+_UNICODE_SET_PART = re.compile(r"^U\+([0-9A-Fa-f]+)(?:-([0-9A-Fa-f]+))?$")
+
+
+def parse_unicode_set(text: str) -> frozenset[int]:
+    """Parse VitePress-style range lists like "U+0000-00FF, U+0131"."""
+    codepoints: set[int] = set()
+    for part in text.split(","):
+        part = part.strip()
+        match = _UNICODE_SET_PART.match(part)
+        if not match:
+            raise ValueError(f"Invalid Unicode set entry: {part!r}")
+        start = int(match.group(1), 16)
+        end = int(match.group(2), 16) if match.group(2) else start
+        if start > end or end > 0x10FFFF:
+            raise ValueError(f"Invalid Unicode range: {part!r}")
+        codepoints.update(range(start, end + 1))
+    return frozenset(codepoints)
 
 
 @dataclass(frozen=True)
@@ -14,6 +33,7 @@ class FontSpec:
     css_family: str
     file_stem: str
     source_file: str
+    script_tiers: tuple[str, ...]
     standard_tiers: tuple[str, ...]
 
 
@@ -60,6 +80,7 @@ class FontSubsetConfig:
     site_characters: SiteCharacterConfig
     fonts: tuple[FontSpec, ...]
     characters: CharacterData
+    scripts: dict[str, frozenset[int]]
 
     def source_path(self, spec: FontSpec) -> Path:
         path = (self.source_dir / spec.source_file).resolve()
@@ -138,25 +159,51 @@ def _read_characters(value: dict[str, Any]) -> CharacterData:
     return CharacterData(levels, tuple(buckets))
 
 
+def _read_scripts(value: list[dict[str, str]]) -> dict[str, frozenset[int]]:
+    """Deduplicate overlapping sets: earlier sets win, matching CSS face order."""
+    scripts: dict[str, frozenset[int]] = {}
+    claimed: set[int] = set()
+    for entry in value:
+        name = entry["name"]
+        if name in scripts:
+            raise ValueError(f"Duplicate script set: {name}")
+        raw = parse_unicode_set(entry["ranges"])
+        unique = raw - claimed
+        if not unique:
+            raise ValueError(f"Script set {name} is fully covered by earlier sets")
+        claimed.update(raw)
+        scripts[name] = frozenset(unique)
+    return scripts
+
+
 def load_manifest(path: Path) -> FontSubsetConfig:
     document = json.loads(path.read_text(encoding="utf-8"))
-    if document.get("version") != 1:
-        raise ValueError("Font build manifest version must be 1")
+    if document.get("version") != 2:
+        raise ValueError("Font build manifest version must be 2")
 
     paths = document["paths"]
     chunking = document["chunking"]
     css = document["css"]
     site_characters = document["siteCharacters"]
+    scripts = _read_scripts(document["scripts"])
     fonts = tuple(
         FontSpec(
             family=value["family"],
             css_family=value["cssFamily"],
             file_stem=value["fileStem"],
             source_file=value["sourceFile"],
+            script_tiers=tuple(value["scriptTiers"]),
             standard_tiers=tuple(value["standardTiers"]),
         )
         for value in document["fonts"]
     )
+    for spec in fonts:
+        unknown = set(spec.script_tiers) - scripts.keys()
+        if unknown:
+            raise ValueError(
+                f"{spec.family} references unknown script sets: "
+                f"{', '.join(sorted(unknown))}"
+            )
 
     config = FontSubsetConfig(
         fonts_dir=_project_path(paths["fontsDir"]),
@@ -185,6 +232,7 @@ def load_manifest(path: Path) -> FontSubsetConfig:
         ),
         fonts=fonts,
         characters=_read_characters(document["characters"]),
+        scripts=scripts,
     )
     if config.fonts_dir == config.source_dir:
         raise ValueError("Font output and source directories must be different")

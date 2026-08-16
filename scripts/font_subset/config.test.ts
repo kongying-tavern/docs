@@ -19,13 +19,14 @@ test('loads character and slicing data from referenced JSON files', () => {
   assert.equal(config.charactersFile, document.charactersFile)
   assert.equal(config.characters.slicingFile, characters.slicingFile)
   assert.deepEqual(config.characters.slicing, slicing)
+  assert.deepEqual(config.scripts, document.scripts)
 })
 
 test('normalizes only font-build inputs for Python', () => {
   const config = loadFontSubsetConfig()
   const manifest = createFontBuildManifest(config)
 
-  assert.equal(manifest.version, 1)
+  assert.equal(manifest.version, 2)
   assert.equal(
     manifest.chunking.siteCharactersPerChunk,
     Math.floor(
@@ -36,6 +37,8 @@ test('normalizes only font-build inputs for Python', () => {
     manifest.characters.priorityBuckets,
     config.characters.slicing.priorityBuckets,
   )
+  assert.deepEqual(manifest.scripts, config.scripts.sets)
+  assert.deepEqual(manifest.fonts[0]!.scriptTiers, config.fonts[0]!.scriptTiers)
   assert.equal('siteExtraction' in manifest, false)
   assert.equal('siteRoles' in manifest.fonts[0]!, false)
 })

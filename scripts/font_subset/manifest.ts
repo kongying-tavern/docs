@@ -1,6 +1,6 @@
 import type { FontSubsetConfig } from './config'
 
-export const fontBuildManifestVersion = 1
+export const fontBuildManifestVersion = 2
 
 export function createFontBuildManifest(config: FontSubsetConfig) {
   return {
@@ -26,6 +26,7 @@ export function createFontBuildManifest(config: FontSubsetConfig) {
       family: font.family,
       fileStem: font.fileStem,
       sourceFile: font.sourceFile,
+      scriptTiers: font.scriptTiers,
       standardTiers: font.standardTiers,
     })),
     characters: {
@@ -33,5 +34,6 @@ export function createFontBuildManifest(config: FontSubsetConfig) {
       levels: config.characters.levels,
       priorityBuckets: config.characters.slicing.priorityBuckets,
     },
+    scripts: config.scripts.sets,
   }
 }

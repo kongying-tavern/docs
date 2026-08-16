@@ -49,6 +49,13 @@ const charactersSchema = z.object({
     l3: z.string().min(1),
   }),
 })
+const scriptsSchema = z.object({
+  source: z.string().min(1),
+  sets: z.array(z.object({
+    name: z.string().min(1),
+    ranges: z.string().min(1),
+  })).min(1),
+})
 
 const configSchema = z.object({
   version: z.literal(1),
@@ -118,11 +125,13 @@ const configSchema = z.object({
     extraRanges: z.array(codepointRange),
     extraCodepoints: z.array(codepoint),
   }),
+  scripts: scriptsSchema,
   fonts: z.array(z.object({
     family: z.string().min(1),
     cssFamily: z.string().min(1),
     fileStem: z.string().regex(/^[a-z0-9]+(?:_[a-z0-9]+)*$/),
     sourceFile: relativePath,
+    scriptTiers: z.array(z.string().min(1)).min(1),
     standardTiers: z.array(fontTier).min(1),
     siteRoles: z.array(fontRole).min(1),
   })).min(1),

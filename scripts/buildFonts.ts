@@ -70,6 +70,7 @@ function standardHash(): string {
       fonts: config.fonts.map(font => ({
         fileStem: font.fileStem,
         sourceFile: font.sourceFile,
+        scriptTiers: font.scriptTiers,
         standardTiers: font.standardTiers,
       })),
       characters: {
@@ -78,6 +79,7 @@ function standardHash(): string {
         slicing: config.characters.slicing,
         levels: config.characters.levels,
       },
+      scripts: config.scripts,
     },
   )
 }

@@ -13,16 +13,20 @@ from .unicode_ranges import expand_ranges, ranges_to_css, to_ranges
 
 
 def exposed_codepoints(faces: list[FontFace]) -> dict[str, set[int]]:
-    min_codepoints: defaultdict[str, set[int]] = defaultdict(set)
+    min_codepoints: defaultdict[tuple[str, str], set[int]] = defaultdict(set)
     for face in faces:
         if face.tier == "min":
-            min_codepoints[face.family].update(expand_ranges(face.ranges))
+            min_codepoints[(face.family, face.script)].update(
+                expand_ranges(face.ranges)
+            )
 
     exposed: dict[str, set[int]] = {}
     for face in faces:
         coverage = expand_ranges(face.ranges)
         codepoints = (
-            coverage if face.tier == "min" else coverage - min_codepoints[face.family]
+            coverage
+            if face.tier == "min"
+            else coverage - min_codepoints[(face.family, face.script)]
         )
         if not codepoints:
             raise ValueError(f"{face.file_name} has an empty CSS unicode-range")
@@ -70,7 +74,7 @@ def validate_outputs(
             raise ValueError(f"{face.file_name} CSS range exceeds its cmap")
 
         match = generated_font_pattern.fullmatch(face.file_name)
-        expected_hash = match.group(4) if match else ""
+        expected_hash = match.group("hash") if match else ""
         if expected_hash != content_hash(output, config.file_hash_length):
             raise ValueError(f"{face.file_name} content hash does not match its name")
 

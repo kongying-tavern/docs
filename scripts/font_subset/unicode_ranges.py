@@ -82,8 +82,32 @@ def _balanced_chunks(ordered: list[int], target_size: int) -> list[list[int]]:
 def chunk_site_codepoints(
     codepoints: set[int],
     config: ChunkingConfig,
+    character_data: CharacterData,
 ) -> list[list[int]]:
-    return _balanced_chunks(sorted(codepoints), config.site_characters_per_chunk)
+    """Order site characters by frequency so text with only common characters
+    fetches the earliest chunks: Google's slicing omits the ultra-common base
+    set from its buckets, then buckets run highest-to-lowest priority."""
+    bucket_union = set().union(*character_data.priority_buckets)
+    l1 = set(character_data.levels["l1"])
+    remaining = set(codepoints)
+    base = sorted((remaining & l1) - bucket_union)
+    ordered: list[int] = list(base)
+    remaining -= set(base)
+    for bucket in character_data.priority_buckets:
+        hit = sorted(bucket & remaining)
+        if hit:
+            ordered.extend(hit)
+            remaining -= bucket
+    ordered.extend(sorted(remaining))
+    return _balanced_chunks(ordered, config.site_characters_per_chunk)
+
+
+def chunk_full_codepoints(
+    codepoints: Iterable[int],
+    config: ChunkingConfig,
+) -> list[list[int]]:
+    """Chunk full-coverage script tiers that ignore Google slicing buckets."""
+    return _balanced_chunks(sorted(codepoints), config.standard_characters_per_chunk)
 
 
 def chunk_standard_codepoints(

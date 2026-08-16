@@ -146,8 +146,8 @@
   "hashing": {
     "algorithm": "sha256",
     "fileNameLength": 12,
-    "standardNamespace": "font-subset-standard-v2",
-    "siteNamespace": "font-subset-site-v2"
+    "standardNamespace": "font-subset-standard-v3",
+    "siteNamespace": "font-subset-site-v3"
   },
   "chunking": {
     "siteTargetBytes": 56320,
@@ -211,12 +211,44 @@
       8230
     ]
   },
+  "scripts": {
+    "source": "latin/latin-ext mirror VitePress scripts/fontSubsets.json (East Asian Ambiguous punctuation intentionally kept in latin: every page loads the latin tier anyway and all tiers share the same typeface); kana/cjk-punct/symbols follow Unicode block boundaries for Japanese and symbol coverage",
+    "sets": [
+      {
+        "name": "latin",
+        "ranges": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+21A9, U+2212, U+2215, U+2318, U+FEFF, U+FFFD"
+      },
+      {
+        "name": "latin-ext",
+        "ranges": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+        "name": "symbols",
+        "ranges": "U+0370-03FF, U+2070-209F, U+20D0-20FF, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+25A0-25FF, U+2600-26FF, U+2700-27BF"
+      },
+      {
+        "name": "kana",
+        "ranges": "U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+FF61-FF9F"
+      },
+      {
+        "name": "cjk-punct",
+        "ranges": "U+3000-303F, U+FF00-FF60, U+FFE0-FFEF"
+      }
+    ]
+  },
   "fonts": [
     {
       "family": "HYWenHei-45W",
       "cssFamily": "HYWenHei-45W-min",
       "fileStem": "hywenhei_45w",
       "sourceFile": "HYWenHei-45W.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
       "standardTiers": [
         "l1",
         "l2l3"
@@ -233,6 +265,13 @@
       "cssFamily": "HYWenHei-65W-min",
       "fileStem": "hywenhei_65w",
       "sourceFile": "HYWenHei-65W.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
       "standardTiers": [
         "l1",
         "l2l3"
@@ -248,6 +287,13 @@
       "cssFamily": "HYWenHei-85W-min",
       "fileStem": "hywenhei_85w",
       "sourceFile": "HYWenHei-85W-zh-full.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
       "standardTiers": [
         "l1"
       ],
