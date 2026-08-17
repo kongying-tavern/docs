@@ -19,7 +19,7 @@ author: Sallee_admin
 
 :::
 
-::: <del>timeline Beta-7.0.1</del>
+::: timeline <del>Beta-7.0.1</del>
 
 问题版本，已移除
 
