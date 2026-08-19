@@ -6,9 +6,7 @@ import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 
-import { GiteeAPIError } from '.'
 import { GITEE_API_CONFIG } from './config'
-import { GiteeApiErrorType } from './types'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
@@ -290,70 +288,25 @@ export function processLabels(
   }
 }
 
-export function extractPagination(
-  params?: Record<string, string | number | boolean | string[]>,
-  body?: Record<string, unknown> | FormData,
-): number | null {
-  // Check params first
-  if (params?.page && typeof params.page === 'number') {
-    return params.page
-  }
-
-  // Check body only if it's a plain object (not FormData)
-  if (body && typeof body === 'object' && !(body instanceof FormData)) {
-    const bodyObj = body as Record<string, unknown>
-    if ('page' in bodyObj && typeof bodyObj.page === 'number') {
-      return bodyObj.page
-    }
-  }
-
-  return null
-}
-
 /**
- * Helper to check if pagination is needed
+ * 从响应头解析分页参数（Gitee 的 Total_count/Total_page 头，
+ * 或 GitHub 风格 Link 头中的 last 页）。解析不到时返回 undefined。
  */
-export function hasPagination(
-  params?: Record<string, string | number | boolean | string[]>,
-  body?: Record<string, unknown> | FormData,
-): boolean {
-  return extractPagination(params, body) !== null
-}
-
-export function getGiteeApiPaginationParams(
+export function extractPaginationParams(
   response: KyResponse,
-): [ForumAPI.PaginationParams, undefined] | [undefined, Error] {
-  return getPaginationParamsFromHeaders(response)
-}
-
-export async function handlePagination(
-  response: KyResponse,
-): Promise<[ForumAPI.PaginationParams, undefined] | [undefined, Error]> {
-  return getPaginationParamsFromHeaders(response)
-}
-
-function getPaginationParamsFromHeaders(
-  response: KyResponse,
-): [ForumAPI.PaginationParams, undefined] | [undefined, Error] {
+): ForumAPI.PaginationParams | undefined {
   const total = getNumericHeader(response, ['Total_count', 'X-Total-Count'])
   const totalPage
     = getNumericHeader(response, ['Total_page', 'X-Total-Page', 'X-Total-Pages'])
       ?? getLastPageFromLinkHeader(response.headers.get('Link'))
 
-  if (total === undefined && totalPage === undefined) {
-    return [
-      undefined,
-      new GiteeAPIError(GiteeApiErrorType.MissingPaginationParams),
-    ]
-  }
+  if (total === undefined && totalPage === undefined)
+    return undefined
 
-  return [
-    {
-      total: total ?? 0,
-      totalPage: totalPage ?? 0,
-    },
-    undefined,
-  ]
+  return {
+    total: total ?? 0,
+    totalPage: totalPage ?? 0,
+  }
 }
 
 function getNumericHeader(response: KyResponse, headerNames: string[]): number | undefined {
@@ -382,28 +335,4 @@ function getLastPageFromLinkHeader(linkHeader: string | null): number | undefine
 
   const numericPage = Number(page)
   return Number.isFinite(numericPage) ? numericPage : undefined
-}
-
-export async function parseErrorMessage(
-  response: Response,
-): Promise<string | null> {
-  try {
-    const contentType = response.headers.get('content-type')
-    if (contentType?.includes('application/json')) {
-      const { message } = (await response.json()) as { message?: string }
-      return message || 'Unknown error'
-    }
-    return await response.text()
-  }
-  catch {
-    // Failed to parse error response
-    return null
-  }
-}
-
-export default {
-  normalizeUser,
-  normalizeIssue,
-  normalizeComment,
-  processLabels,
 }

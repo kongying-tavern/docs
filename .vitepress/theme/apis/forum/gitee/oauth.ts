@@ -1,9 +1,9 @@
 import type { AuthResult } from '../../../utils/auth-errors'
 import type ForumAPI from '../api'
 
-import { fetcher } from '.'
 import { createAuthError } from '../../../utils/auth-errors'
 import { catchError } from '../../utils'
+import { oauthFetcher } from './client'
 import { GITEE_API_CONFIG } from './config'
 import { normalizeAuth } from './utils'
 
@@ -27,24 +27,29 @@ export function getRedirectUrl(localeIndex?: string): string {
   return expectedUrl
 }
 
+/** 请求 oauth/token 端点；client_secret 通过 JSON body 传递 */
+function requestToken(searchParams: Record<string, string>): Promise<GITEE.Auth> {
+  return oauthFetcher
+    .post('oauth/token', {
+      searchParams,
+      json: {
+        client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
+      },
+    })
+    .json<GITEE.Auth>()
+}
+
 export async function getToken(
   code: string,
   localeIndex?: string,
 ): Promise<AuthResult<ForumAPI.Auth>> {
   const [error, data] = await catchError(
-    fetcher
-      .post<Promise<GITEE.Auth>>('oauth/token', {
-        searchParams: {
-          code,
-          grant_type: 'authorization_code',
-          client_id: GITEE_API_CONFIG.CLIENT_ID,
-          redirect_uri: getRedirectUrl(localeIndex),
-        },
-        json: {
-          client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
-        },
-      })
-      .json(),
+    requestToken({
+      code,
+      grant_type: 'authorization_code',
+      client_id: GITEE_API_CONFIG.CLIENT_ID,
+      redirect_uri: getRedirectUrl(localeIndex),
+    }),
   )
 
   if (error) {
@@ -56,7 +61,7 @@ export async function getToken(
 
   return {
     success: true,
-    data: normalizeAuth(await data),
+    data: normalizeAuth(data),
   }
 }
 
@@ -65,19 +70,12 @@ export async function refreshToken(
   localeIndex?: string,
 ): Promise<AuthResult<ForumAPI.Auth>> {
   const [error, data] = await catchError(
-    fetcher
-      .post<Promise<GITEE.Auth>>('oauth/token', {
-        searchParams: {
-          grant_type: 'refresh_token',
-          refresh_token: refreshToken,
-          client_id: GITEE_API_CONFIG.CLIENT_ID,
-          redirect_uri: getRedirectUrl(localeIndex),
-        },
-        json: {
-          client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
-        },
-      })
-      .json(),
+    requestToken({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      client_id: GITEE_API_CONFIG.CLIENT_ID,
+      redirect_uri: getRedirectUrl(localeIndex),
+    }),
   )
 
   if (error) {
@@ -89,12 +87,12 @@ export async function refreshToken(
 
   return {
     success: true,
-    data: normalizeAuth(await data),
+    data: normalizeAuth(data),
   }
 }
 
 export function redirectAuth(localeIndex: string) {
   // 获取redirect_uri，但不立即清除，callback时才清除
   const redirectUri = getRedirectUrl(localeIndex)
-  return (location.href = `https://gitee.com/oauth/authorize?client_id=${GITEE_API_CONFIG.CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code`)
+  return (location.href = `${GITEE_API_CONFIG.BASE_URL}/oauth/authorize?client_id=${GITEE_API_CONFIG.CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code`)
 }

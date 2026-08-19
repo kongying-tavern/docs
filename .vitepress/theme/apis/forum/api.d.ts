@@ -120,7 +120,8 @@ export namespace ForumAPI {
     data?: unknown
   }
 
-  type PaginatedResult<T> = PaginationParams & {
+  /** 响应可能缺失分页头，故分页字段可选；消费方以 `?? 0` 兜底 */
+  type PaginatedResult<T> = Partial<PaginationParams> & {
     data: T
   }
 
@@ -160,8 +161,6 @@ export namespace ForumAPI {
   } & ForumAPI.Topic
 
   type Repo = 'Feedback' | 'Blog'
-
-  type FilterBy = 'feat' | 'bug' | 'all' | 'closed'
 
 }
 
