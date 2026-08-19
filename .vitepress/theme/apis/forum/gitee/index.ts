@@ -1,5 +1,6 @@
 import type { KyResponse } from 'ky'
-import type { ApiCallOptions, ApiResult, HttpMethod, SearchParamValue } from './types'
+import type { ApiCallOptions, ApiResult, HttpMethod } from './types'
+import { useMemoize } from '@vueuse/core'
 import * as blog from './blog'
 import { fetcher, prepareRequest } from './client'
 import { toGiteeAPIError } from './errors'
@@ -26,17 +27,12 @@ async function parseResponseData<T>(
   return response.json<T>()
 }
 
-function hasPageParam(
-  searchParams?: Record<string, SearchParamValue>,
-  json?: Record<string, unknown>,
-): boolean {
-  return typeof searchParams?.page === 'number' || typeof json?.page === 'number'
-}
+type RequestOptions = Omit<ApiCallOptions, 'cache'>
 
 async function performRequest<T>(
   method: HttpMethod,
   endpoint: string,
-  options: Omit<ApiCallOptions, 'cache'>,
+  options: RequestOptions,
 ): Promise<ApiResult<T>> {
   const { searchParams, json, body } = await prepareRequest(endpoint, options)
 
@@ -54,7 +50,7 @@ async function performRequest<T>(
 
   return {
     data: await parseResponseData<T>(response, method),
-    pagination: hasPageParam(options.searchParams, json)
+    pagination: typeof options.searchParams?.page === 'number'
       ? extractPaginationParams(response)
       : undefined,
     response,
@@ -62,57 +58,39 @@ async function performRequest<T>(
 }
 
 /**
- * 会话级响应缓存：键为请求参数的稳定序列化，缓存进行中的 Promise 与成功结果；
- * 失败的请求会被移除，避免缓存住错误响应。
+ * 会话级响应缓存。useMemoize 缓存的是请求 Promise（含进行中请求的去重）；
+ * 注意 `load`（非缓存路径）也会写入缓存 —— 与原实现保持一致。
  */
-const responseCache = new Map<string, Promise<ApiResult<unknown>>>()
+const memoizedRequest = useMemoize(performRequest)
 
-function buildCacheKey(
-  method: HttpMethod,
-  endpoint: string,
-  options: Omit<ApiCallOptions, 'cache'>,
-): string {
-  return JSON.stringify({
-    method,
-    endpoint,
-    searchParams: options.searchParams,
-    json: options.json,
-    throwHttpErrors: options.throwHttpErrors,
-  })
-}
-
-export async function apiCall<T>(
+export function apiCall<T>(
   method: HttpMethod,
   endpoint: string,
   options: ApiCallOptions = {},
 ): Promise<ApiResult<T>> {
-  const { cache = false, ...requestOptions } = options
+  const { cache = false, ...payload } = options
 
-  if (!cache)
-    return performRequest<T>(method, endpoint, requestOptions)
+  const key = memoizedRequest.generateKey(method, endpoint, payload)
+  const result = cache
+    ? memoizedRequest(method, endpoint, payload)
+    : memoizedRequest.load(method, endpoint, payload)
 
-  const key = buildCacheKey(method, endpoint, requestOptions)
-  let pending = responseCache.get(key)
+  // 失败的请求不留缓存，避免后续请求反复命中同一个 rejected Promise
+  result.catch(() => memoizedRequest.cache.delete(key))
 
-  if (!pending) {
-    pending = performRequest(method, endpoint, requestOptions)
-    responseCache.set(key, pending)
-    pending.catch(() => responseCache.delete(key))
-  }
-
-  return pending as Promise<ApiResult<T>>
+  return result as Promise<ApiResult<T>>
 }
 
 export function clearApiCache(): void {
-  responseCache.clear()
+  memoizedRequest.clear()
 }
 
 export function deleteApiCache(
   method: HttpMethod,
   endpoint: string,
   options: Omit<ApiCallOptions, 'cache'>,
-): boolean {
-  return responseCache.delete(buildCacheKey(method, endpoint, options))
+): void {
+  memoizedRequest.delete(method, endpoint, options)
 }
 
 export { blog, issues, labels, oauth, password, user }

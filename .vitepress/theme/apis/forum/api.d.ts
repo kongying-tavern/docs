@@ -120,10 +120,7 @@ export namespace ForumAPI {
     data?: unknown
   }
 
-  /**
-   * 分页响应可能缺失分页头，故分页字段为可选；
-   * 消费方应使用 `?? 0` 等兜底（现有消费方均已如此处理）
-   */
+  /** 响应可能缺失分页头，故分页字段可选；消费方以 `?? 0` 兜底 */
   type PaginatedResult<T> = Partial<PaginationParams> & {
     data: T
   }

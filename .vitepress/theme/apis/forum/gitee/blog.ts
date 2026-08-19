@@ -156,5 +156,5 @@ export async function deleteBlogPost(
 }
 
 export function openInGitee(id: string | number) {
-  return window.open(`${GITEE_API_CONFIG.BASE_URL}/${OWNER}/${BLOG_REPO}/issues/${id}`, '_black')
+  return window.open(`${GITEE_API_CONFIG.BASE_URL}/${OWNER}/${BLOG_REPO}/issues/${id}`, '_blank')
 }

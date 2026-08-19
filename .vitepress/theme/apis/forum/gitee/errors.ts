@@ -1,11 +1,10 @@
 import type { HTTPError as KyHTTPError } from 'ky'
-import type { ErrorClassification, HttpMethod } from './types'
+import type { HttpMethod } from './types'
 import { isHTTPError } from 'ky'
 import { isPlainObject } from 'lodash-es'
 import { GiteeApiErrorType } from './types'
 
 export class GiteeAPIError extends Error {
-  cause?: unknown
   type?: GiteeApiErrorType
   endpoint?: string
   method?: HttpMethod
@@ -22,30 +21,17 @@ export class GiteeAPIError extends Error {
       message?: string
     },
   ) {
-    super(type)
+    super(options?.message || 'An error occurred', { cause: options?.cause })
+    this.name = 'GiteeAPIError'
     this.type = type
-    this.message = options?.message || 'An error occurred'
-    this.cause = options?.cause
     this.state = options?.state
     this.method = options?.method
     this.endpoint = options?.endpoint
     this.date = Date.now()
-
-    Object.setPrototypeOf(this, GiteeAPIError.prototype)
-
-    this.name = 'GiteeAPIError'
-
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, GiteeAPIError)
-    }
   }
 
   isExceededRateLimit(): boolean {
     return this.type === GiteeApiErrorType.RateLimitExceeded
-  }
-
-  isMissingPaginationParams(): boolean {
-    return this.type === GiteeApiErrorType.MissingPaginationParams
   }
 
   isUnauthorized(): boolean {
@@ -66,8 +52,13 @@ export class GiteeAPIError extends Error {
   }
 }
 
+interface ErrorClassification {
+  type: GiteeApiErrorType
+  message: string
+}
+
 interface ErrorClassifier {
-  /** 匹配错误文本的前缀（`message` 字段 `:` 前的部分） */
+  /** 匹配错误文本 `:` 前的部分 */
   match: string
   /** 匹配的 HTTP 状态码 */
   status: number[]
@@ -90,10 +81,7 @@ const errorClassifiers: ErrorClassifier[] = [
   },
 ]
 
-/**
- * 从 ky v2 `HTTPError.data`（预解析的响应体，JSON 响应为对象、其余为文本）
- * 中提取可读的错误信息。
- */
+/** ky v2 的 HTTPError.data 是预解析的响应体：JSON 响应为对象，其余为文本 */
 function extractErrorMessage(data: unknown): string | null {
   if (typeof data === 'string')
     return data
@@ -125,8 +113,8 @@ function classifyHttpError(error: KyHTTPError): ErrorClassification | undefined 
 }
 
 /**
- * 将请求过程中抛出的任意错误统一包装为 `GiteeAPIError`：
- * 可识别的 HTTP 错误按特征归类，其余错误归为 `ApiError`，原始错误保留在 `cause` 中。
+ * 将请求过程中抛出的任意错误统一包装为 GiteeAPIError：
+ * 可识别的 HTTP 错误按特征归类，其余归为 ApiError，原始错误保留在 cause 中。
  */
 export function toGiteeAPIError(
   error: unknown,
