@@ -237,7 +237,7 @@ export class TranslationService {
 
   getCategories(): string[] {
     const categories = new Set(this.translationEntries.map(entry => entry.category))
-    return ['all', ...categories.toSorted()]
+    return ['all', ...[...categories].toSorted()]
   }
 
   updateTranslation(path: string, locale: string, value: string): void {

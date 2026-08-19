@@ -7,12 +7,12 @@ title: Translations
 
 ## Available Languages {#available-languages}
 
-- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
-- [英文 / English](./index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
+- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/)]
+- [英文 / English](./index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/en)]
 
 ## Work in Progress Languages {#work-in-progress-languages}
 
-- [日本語 / Japanese](../ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
+- [日本語 / Japanese](../ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/ja)]
 
 ## Starting a new Translation {#starting-a-new-translation}
 

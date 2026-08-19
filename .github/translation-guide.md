@@ -59,13 +59,13 @@ These are custom markers we use to differentiate between Options-API-only and Co
 
 ## Complete Translations
 
-- [简体中文 / Simplified Chinese](index.md/) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
-- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
+- [简体中文 / Simplified Chinese](index.md/) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/)]
+- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/en)]
 
 ## Current Active Translations (in alphabetical order)
 
-- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
-- [韩语 / Korean](./kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
+- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/ja)]
+- [韩语 / Korean](./kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/kr)]
 
 ## Resources
 
