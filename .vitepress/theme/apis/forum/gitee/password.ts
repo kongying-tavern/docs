@@ -1,6 +1,6 @@
 import type ForumAPI from '../api'
 import { catchError } from '@/apis/utils'
-import { fetcher } from '.'
+import { oauthFetcher } from './client'
 import { GITEE_API_CONFIG } from './config'
 import { normalizeAuth } from './utils'
 
@@ -10,11 +10,8 @@ export async function getToken(
   scope: string[] = ['user_info', 'issues', 'notes'],
 ): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> {
   const [error, data] = await catchError(
-    fetcher
-      .post<Promise<GITEE.Auth>>('oauth/token', {
-        headers: {
-          ContentType: 'application/x-www-forum-urlencoded',
-        },
+    oauthFetcher
+      .post('oauth/token', {
         json: {
           grant_type: 'password',
           client_id: GITEE_API_CONFIG.CLIENT_ID,
@@ -24,11 +21,11 @@ export async function getToken(
           password,
         },
       })
-      .json(),
+      .json<GITEE.Auth>(),
   )
 
   if (error)
     return [new Error(`Can not get token: ${error.message}`), undefined]
 
-  return [undefined, normalizeAuth(await data)]
+  return [undefined, normalizeAuth(data)]
 }

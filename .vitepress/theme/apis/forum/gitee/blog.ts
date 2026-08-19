@@ -4,29 +4,29 @@ import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
 import { normalizeComment, normalizeIssueToBlog, processLabels } from './utils'
 
+const { OWNER, BLOG_REPO } = GITEE_API_CONFIG
+
 export async function getPosts(
   query: ForumAPI.Query,
   accessToken?: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Post[]>> {
-  const [issues, paginationParams] = await apiCall<GITEE.IssueList>(
+  const { data: issues, pagination } = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues`,
+    `repos/${OWNER}/${BLOG_REPO}/issues`,
     {
-      params: {
+      searchParams: {
         state: 'open',
         page: query.current,
         sort: query.sort || 'created',
         per_page: query.pageSize,
-        ...(accessToken ? { access_token: accessToken } : {}),
+        access_token: accessToken,
       },
     },
   )
 
-  const data: ForumAPI.Post[] = issues.map(val => normalizeIssueToBlog(val))
-
   return {
-    data,
-    ...paginationParams!,
+    data: issues.map(val => normalizeIssueToBlog(val)),
+    ...pagination,
   }
 }
 
@@ -34,12 +34,12 @@ export async function searchPosts(
   query: ForumAPI.Query,
   q: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Post[]>> {
-  const [issueList, paginationParams] = await apiCall<GITEE.IssueList>(
+  const { data: issueList, pagination } = await apiCall<GITEE.IssueList>(
     'get',
     `search/issues`,
     {
-      params: {
-        repo: `${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}`,
+      searchParams: {
+        repo: `${OWNER}/${BLOG_REPO}`,
         state: 'open',
         q,
         sort: `${query.sort}_at`,
@@ -52,7 +52,7 @@ export async function searchPosts(
 
   return {
     data: issueList.map(val => normalizeIssueToBlog(val)),
-    ...paginationParams!,
+    ...pagination,
   }
 }
 
@@ -60,11 +60,11 @@ export async function getPostComments(
   query: ForumAPI.Query,
   number: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Comment[]>> {
-  const [commentList, paginationParams] = await apiCall<GITEE.CommentList>(
+  const { data: commentList, pagination } = await apiCall<GITEE.CommentList>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${number}/comments`,
+    `repos/${OWNER}/${BLOG_REPO}/issues/${number}/comments`,
     {
-      params: {
+      searchParams: {
         number,
         page: query.current,
         sort: query.sort || 'created',
@@ -74,7 +74,7 @@ export async function getPostComments(
   )
   return {
     data: commentList.map(val => normalizeComment(val)),
-    ...paginationParams!,
+    ...pagination,
   }
 }
 
@@ -84,14 +84,14 @@ export async function createBlogPost(data: {
   labels?: string[]
 }): Promise<ForumAPI.Post> {
   const form = buildFormData({
-    owner: GITEE_API_CONFIG.OWNER,
-    repo: GITEE_API_CONFIG.BLOG_REPO,
+    owner: OWNER,
+    repo: BLOG_REPO,
     ...data,
   })
 
-  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+  const { data: issueInfo } = await apiCall<GITEE.IssueInfo>(
     'post',
-    `repos/${GITEE_API_CONFIG.OWNER}/issues`,
+    `repos/${OWNER}/issues`,
     {
       body: form,
     },
@@ -109,13 +109,13 @@ export async function updateBlogPost(
     state?: ForumAPI.TopicState
   },
 ): Promise<ForumAPI.Post> {
-  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+  const { data: issueInfo } = await apiCall<GITEE.IssueInfo>(
     'patch',
-    `repos/${GITEE_API_CONFIG.OWNER}/issues/${number}`,
+    `repos/${OWNER}/issues/${number}`,
     {
-      params: {
-        repo: GITEE_API_CONFIG.BLOG_REPO,
-        owner: GITEE_API_CONFIG.OWNER,
+      searchParams: {
+        repo: BLOG_REPO,
+        owner: OWNER,
         ...data,
       },
     },
@@ -128,12 +128,12 @@ export async function getPost(
   number: string | number,
   accessToken?: string,
 ): Promise<ForumAPI.Post> {
-  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+  const { data: issueInfo } = await apiCall<GITEE.IssueInfo>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${number}`,
+    `repos/${OWNER}/${BLOG_REPO}/issues/${number}`,
     {
-      params: {
-        ...(accessToken ? { access_token: accessToken } : {}),
+      searchParams: {
+        access_token: accessToken,
       },
     },
   )
@@ -156,5 +156,5 @@ export async function deleteBlogPost(
 }
 
 export function openInGitee(id: string | number) {
-  return window.open(`https://gitee.com/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.BLOG_REPO}/issues/${id}`, '_black')
+  return window.open(`${GITEE_API_CONFIG.BASE_URL}/${OWNER}/${BLOG_REPO}/issues/${id}`, '_black')
 }
