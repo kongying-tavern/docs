@@ -1,9 +1,9 @@
 import type { LocalAuth } from '@/stores/useUserAuth'
-import { refAutoReset, useStorage } from '@vueuse/core'
+import { createSharedComposable, refAutoReset, useStorage } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { oauth } from '@/apis/forum/gitee'
+import { clearApiCache, oauth } from '@/apis/forum/gitee'
 import { oauth as interKnotOauth } from '@/apis/interknot.site'
 import { useAuthProgress } from '@/composables/useAuthProgress'
 import { useUserAuthStore } from '@/stores/useUserAuth'
@@ -14,13 +14,33 @@ import { log, LogGroup } from '@/utils/auth-logger'
 import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
-const HISTORY_LENGTH_KEY = 'auth-history-length'
+
+/** 回调页路径形如 /docs/callback 或 /docs/en/callback */
+const CALLBACK_PATH_REGEX = /\/callback\/?$/
+
+function isCallbackUrl(url: string): boolean {
+  try {
+    return CALLBACK_PATH_REGEX.test(new URL(url, location.origin).pathname)
+  }
+  catch {
+    return false
+  }
+}
+
+interface OAuthCallbackParams {
+  code: string | null
+  error: string | null
+  stateValid: boolean
+}
 
 function useLogin() {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
   const { message } = useLocalized()
-  const authCode = getAuthCodeFromURL()
+  const oauthCallback = getOAuthCallbackParams()
+  const authCode = oauthCallback.code
+  /** 本次页面加载是否携带 OAuth 回调参数（授权码或授权错误） */
+  const hasOAuthCallback = !!(oauthCallback.code || oauthCallback.error)
   const isAuthenticating = ref(false)
 
   const authProgress = useAuthProgress()
@@ -43,8 +63,27 @@ function useLogin() {
   initOAuthFlow()
 
   async function initOAuthFlow() {
-    if (isLoggedIn() || !authCode)
+    if (isLoggedIn())
       return
+
+    // 授权失败回调（如用户拒绝授权）：?error=access_denied
+    if (oauthCallback.error) {
+      log.error(LogGroup.LOGIN, `OAuth callback returned error: ${oauthCallback.error}`)
+      authProgress.setError('token')
+      await handleOAuthFailure(theme.value.forum.auth.loginFail)
+      return
+    }
+
+    if (!authCode)
+      return
+
+    // state 不一致说明回调可能由第三方伪造（登录 CSRF），拒绝交换 token
+    if (!oauthCallback.stateValid) {
+      log.error(LogGroup.LOGIN, 'OAuth state mismatch, rejecting callback')
+      authProgress.setError('token')
+      await handleOAuthFailure(theme.value.forum.auth.loginFail)
+      return
+    }
 
     isAuthenticating.value = true
 
@@ -55,15 +94,31 @@ function useLogin() {
     }
     catch (error) {
       log.error(LogGroup.LOGIN, 'OAuth flow failed', error)
+      // 已知认证错误直接提示；未知错误清掉可能残留的半登录状态再提示
+      const authError = AuthError.isAuthError(error) ? error : null
+      await handleOAuthFailure(
+        authError ? authError.getUserMessage() : theme.value.forum.auth.loginFail,
+        !authError,
+      )
     }
     finally {
       isAuthenticating.value = false
     }
   }
 
+  /** 登录失败统一处理：跳回目标页提示错误；未知错误时先清空本地登录数据 */
+  async function handleOAuthFailure(message: string, clearLocalAuth = false) {
+    if (clearLocalAuth) {
+      userAuth.logout()
+      userInfo.clearUserInfo()
+      clearApiCache()
+    }
+    toast.error(message)
+    await redirectToOriginalPage()
+  }
+
   async function performOAuthSteps() {
     authProgress.setStep('init')
-    await new Promise(resolve => setTimeout(resolve, 300))
     authProgress.completeStep('init')
 
     authProgress.setStep('token')
@@ -92,16 +147,16 @@ function useLogin() {
     authProgress.completeStep('sso')
 
     authProgress.setStep('redirect')
-    return 'success'
   }
 
   async function redirectToOriginalPage() {
     try {
-      const redirectUrl = storedRedirectUrl.value || withBase('')
+      const storedUrl = storedRedirectUrl.value || withBase('')
+      // 回跳目标指向回调页自身时回退首页，否则登录后回到无参数的回调页卡死
+      const redirectUrl = isCallbackUrl(storedUrl) ? withBase('/') : storedUrl
 
       window.history.replaceState({}, '', redirectUrl)
       await go(redirectUrl)
-      sessionStorage.removeItem(HISTORY_LENGTH_KEY)
       storedRedirectUrl.value = withBase('/')
     }
     catch (error) {
@@ -121,12 +176,10 @@ function useLogin() {
       const { isSSOTokenValid, setSSOAuth } = userAuth
       const accessToken = userAuth.auth?.accessToken
 
-      // 检查主token是否有效且非空
       if (!accessToken || typeof accessToken !== 'string' || accessToken.trim() === '') {
         return
       }
 
-      // 检查SSO token是否需要刷新
       if (!isSSOTokenValid('interKnot').value) {
         const result = await interKnotOauth.refreshToken(accessToken)
 
@@ -138,8 +191,8 @@ function useLogin() {
           return
         }
 
-        // 验证返回数据的完整性
-        const { accessToken: newAccessToken, expiresTime, createdAt, expiresIn } = result.data
+        // 验证返回数据的完整性（setSSOToken 依据 expiresIn 重算 expiresTime）
+        const { accessToken: newAccessToken, createdAt, expiresIn } = result.data
         if (!newAccessToken) {
           toast.error(message.value.forum.errors.ssoRefreshTokenFailed)
           return
@@ -147,7 +200,6 @@ function useLogin() {
 
         setSSOAuth('interKnot', {
           accessToken: newAccessToken,
-          expiresTime,
           createdAt,
           expiresIn,
         })
@@ -171,40 +223,78 @@ function useLogin() {
 
   function handleOAuthLoginStart() {
     isAuthenticating.value = true
-    redirectUrl.value = location.href
-    sessionStorage.setItem(HISTORY_LENGTH_KEY, window.history.length.toString())
+    // 从回调页（如失败后重试）发起授权时，回跳目标存首页而非回调页自身
+    redirectUrl.value = isCallbackUrl(location.href) ? withBase('/') : location.href
     oauth.redirectAuth(localeIndex.value)
   }
 
   function handlePasswordLogin() {
-    // TODO: Implement password login
+    // TODO: Implement password login（预留，apis/forum/gitee/password.ts）
   }
 
   function login(credentials: CredentialsParams) {
     return LoginMethodsMap[credentials.method]()
   }
 
-  function logout() {
-    userAuth.logout()
-    userInfo.clearUserInfo()
-    toast.success(theme.value.forum.auth.logoutSuccess)
-  }
-
   function signup() {
     window.open('https://gitee.com/signup')
   }
 
-  function getAuthCodeFromURL(): string | null {
-    if (import.meta.env.SSR) {
-      return null
+  /** 回调页“重试”按钮：重跑登录流程（授权码仍在时）或重新发起授权 */
+  function retryOAuthFlow() {
+    authProgress.retry()
+
+    // 上次失败发生在会话建立之后（如 SSO 同步失败）：直接补跳转到原页面
+    if (isLoggedIn()) {
+      authProgress.setStep('redirect')
+      redirectToOriginalPage()
+      return
     }
 
-    const code = new URLSearchParams(location.search).get('code')
-    if (code) {
-      removeQueryParam('code')
-      localStorage.removeItem('oauth-redirect-url')
+    if (authCode && !isAuthenticating.value) {
+      initOAuthFlow()
     }
-    return code
+    else if (!authCode) {
+      handleOAuthLoginStart()
+    }
+  }
+
+  function logout() {
+    // 先携带 SSO token 通知服务端吊销（尽力而为），再清本地全部凭证
+    userAuth.logoutFromInterKnot().catch((error) => {
+      log.warn(LogGroup.LOGIN, 'InterKnot server logout failed', error)
+    })
+    userAuth.logout()
+    userInfo.clearUserInfo()
+    clearApiCache()
+    toast.success(theme.value.forum.auth.logoutSuccess)
+  }
+
+  function getOAuthCallbackParams(): OAuthCallbackParams {
+    const noCallback: OAuthCallbackParams = { code: null, error: null, stateValid: true }
+
+    if (import.meta.env.SSR) {
+      return noCallback
+    }
+
+    const params = new URLSearchParams(location.search)
+    const code = params.get('code')
+    const error = params.get('error')
+
+    if (!code && !error) {
+      return noCallback
+    }
+
+    const stateValid = oauth.validateOAuthState(params.get('state'))
+
+    // 清理 URL 中的敏感参数，避免授权码留在地址栏/历史记录里
+    removeQueryParam('code')
+    removeQueryParam('state')
+    removeQueryParam('error')
+    removeQueryParam('error_description')
+    localStorage.removeItem('oauth-redirect-url')
+
+    return { code, error, stateValid }
   }
 
   function isLoggedIn() {
@@ -225,11 +315,17 @@ function useLogin() {
     signup,
     getAccessToken,
     getUserInfo,
+    isLoggedIn,
+    hasOAuthCallback,
     redirectAuth: handleOAuthLoginStart,
     isAuthenticating,
-    authProgress,
+    authProgress: {
+      ...authProgress,
+      retry: retryOAuthFlow,
+    },
     showOAuthLoginAlert,
   }
 }
 
-export default useLogin
+/** 全局共享单例：OAuth 回调流程只执行一次，所有组件消费同一份进度状态 */
+export default createSharedComposable(useLogin)
