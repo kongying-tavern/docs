@@ -46,7 +46,7 @@ author: aaaaaaa8
 
 ----
 
-::: timeline Rc1.1.0：2025-12-03
+::: timeline Rc1.1.0：
 
 ## 2026-08-11-1143
 
@@ -159,7 +159,7 @@ author: aaaaaaa8
 
 <!-- more -->
 
-::: timeline Rc1.0.1：2025-01-15
+::: timeline Rc1.0.1：
 
 ## 2025-11-26-1329
 
@@ -281,7 +281,7 @@ author: aaaaaaa8
 
 :::
 
-::: timeline Rc1.0.0：2025-01-14
+::: timeline Rc1.0.0：
 
 ## 2025-01-14-1297
 
