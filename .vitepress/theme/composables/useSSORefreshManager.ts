@@ -1,7 +1,8 @@
+import type { WatchStopHandle } from 'vue'
 import type { SSOLocaleAuth } from '../stores/useUserAuth'
 import type { useSSOAuth } from './useSSOAuth'
 import type { useTokenManager } from './useTokenManager'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { createAuthError } from '../utils/auth-errors'
 import { log, LogGroup } from '../utils/auth-logger'
 
@@ -9,34 +10,20 @@ const SSO_REFRESH_THRESHOLD_MS = 5 * 60 * 1000
 const SSO_MIN_REFRESH_INTERVAL_MS = 30 * 1000
 const MAX_SSO_REFRESH_RETRIES = 3
 const SSO_RETRY_DELAY_MS = 60 * 1000
+/** setTimeout 上限（约 24.8 天），溢出会立即触发 */
+const MAX_TIMER_DELAY_MS = 2 ** 31 - 2
 
 export function useSSORefreshManager(
   tokenManager: ReturnType<typeof useTokenManager>,
   ssoAuth: ReturnType<typeof useSSOAuth>,
 ) {
-  const ssoRefreshTimers = ref<Record<string, NodeJS.Timeout | null>>({})
+  const ssoRefreshTimers = ref<Record<string, ReturnType<typeof setTimeout> | null>>({})
   const isRefreshingSSO = ref<Record<string, boolean>>({})
   const lastSSORefreshAttempt = ref<Record<string, number>>({})
   const ssoRefreshRetryCount = ref<Record<string, number>>({})
   const isManagerActive = ref(false)
-  function getSSOTimeUntilRefresh(platform: keyof SSOLocaleAuth): number {
-    const ssoToken = tokenManager.ssoAuth.value[platform]
-    if (!ssoToken?.expiresTime)
-      return -1
+  const watcherStopHandles: WatchStopHandle[] = []
 
-    const timeUntilRefresh = ssoToken.expiresTime - Date.now() - SSO_REFRESH_THRESHOLD_MS
-
-    if (timeUntilRefresh < 0 || timeUntilRefresh > 24 * 60 * 60 * 1000) {
-      log.warn(LogGroup.SSO, `Invalid SSO refresh time calculated for ${platform}`, {
-        expiresTime: ssoToken.expiresTime,
-        currentTime: Date.now(),
-        timeUntilRefresh,
-      })
-      return -1
-    }
-
-    return timeUntilRefresh
-  }
   const shouldRefreshSSOToken = computed(() => {
     return (platform: keyof SSOLocaleAuth): boolean => {
       if (!isManagerActive.value)
@@ -60,7 +47,7 @@ export function useSSORefreshManager(
         return false
       }
 
-      return getSSOTimeUntilRefresh(platform) <= 0
+      return tokenManager.getSSOTimeUntilRefresh(platform, SSO_REFRESH_THRESHOLD_MS) <= 0
     }
   })
 
@@ -85,9 +72,19 @@ export function useSSORefreshManager(
         return
       }
 
-      const timeUntilRefresh = getSSOTimeUntilRefresh(platform)
+      const timeUntilRefresh = tokenManager.getSSOTimeUntilRefresh(platform, SSO_REFRESH_THRESHOLD_MS)
 
       if (timeUntilRefresh <= 0) {
+        // 最小间隔保护：避免“立即刷新 → watcher → 再次立即刷新”的紧循环
+        const lastAttempt = lastSSORefreshAttempt.value[platform] || 0
+        const elapsed = Date.now() - lastAttempt
+        if (elapsed < SSO_MIN_REFRESH_INTERVAL_MS) {
+          ssoRefreshTimers.value[platform] = setTimeout(() => {
+            scheduleSSOTokenRefresh(platform)
+          }, SSO_MIN_REFRESH_INTERVAL_MS - elapsed)
+          return
+        }
+
         log.info(LogGroup.SSO, `${platform} SSO token needs immediate refresh`)
         refreshSSOToken(platform).catch(err =>
           log.warn(LogGroup.SSO, `Immediate SSO refresh failed for ${platform}`, err),
@@ -95,15 +92,20 @@ export function useSSORefreshManager(
         return
       }
 
-      if (timeUntilRefresh > 0) {
-        log.info(LogGroup.SSO, `Scheduling ${platform} SSO token refresh in ${Math.round(timeUntilRefresh / 1000)}s`)
+      log.info(LogGroup.SSO, `Scheduling ${platform} SSO token refresh in ${Math.round(timeUntilRefresh / 1000)}s`)
 
-        ssoRefreshTimers.value[platform] = setTimeout(() => {
+      // 超长延迟截断到上限，触发时重新评估
+      const delay = Math.min(timeUntilRefresh, MAX_TIMER_DELAY_MS)
+      ssoRefreshTimers.value[platform] = setTimeout(() => {
+        if (tokenManager.getSSOTimeUntilRefresh(platform, SSO_REFRESH_THRESHOLD_MS) <= 0) {
           refreshSSOToken(platform).catch(err =>
             log.warn(LogGroup.SSO, `Scheduled SSO refresh failed for ${platform}`, err),
           )
-        }, timeUntilRefresh)
-      }
+        }
+        else {
+          scheduleSSOTokenRefresh(platform)
+        }
+      }, delay)
     }
     catch (error) {
       log.warn(LogGroup.SSO, `Failed to schedule SSO refresh for ${platform}`, error)
@@ -189,27 +191,18 @@ export function useSSORefreshManager(
     }
   }
 
-  let cleanup = (): void => {
-    try {
-      stopAllSSORefresh()
-    }
-    catch (error) {
-      log.warn(LogGroup.SSO, 'SSO refresh manager cleanup failed', error)
-    }
-  }
-
   function startSSOAutoRefresh(): void {
-    try {
-      if (isManagerActive.value) {
-        return
-      }
+    // 幂等：重复调用不会叠加 watcher
+    if (isManagerActive.value)
+      return
 
+    try {
       log.info(LogGroup.SSO, 'Starting SSO auto refresh manager')
       isManagerActive.value = true
 
       checkAndRefreshAllSSOTokens()
 
-      const stopSSOWatcher = watch(
+      watcherStopHandles.push(watch(
         () => tokenManager.ssoAuth.value,
         (newSSOAuth) => {
           if (!isManagerActive.value)
@@ -230,9 +223,9 @@ export function useSSORefreshManager(
           }
         },
         { deep: true },
-      )
+      ))
 
-      const stopMainTokenWatcher = watch(
+      watcherStopHandles.push(watch(
         () => tokenManager.localAuth.value,
         (newAuth) => {
           if (!isManagerActive.value)
@@ -251,36 +244,11 @@ export function useSSORefreshManager(
             log.warn(LogGroup.SSO, 'Main token change handler failed', error)
           }
         },
-      )
-
-      const originalCleanupFn = cleanup
-
-      cleanup = () => {
-        try {
-          stopSSOWatcher()
-        }
-        catch (error) {
-          log.warn(LogGroup.SSO, 'SSO watcher cleanup failed', error)
-        }
-
-        try {
-          stopMainTokenWatcher()
-        }
-        catch (error) {
-          log.warn(LogGroup.SSO, 'Main token watcher cleanup failed', error)
-        }
-
-        try {
-          originalCleanupFn()
-        }
-        catch (error) {
-          log.warn(LogGroup.SSO, 'Original cleanup failed', error)
-        }
-      }
+      ))
     }
     catch (error) {
       log.error(LogGroup.SSO, 'Failed to start SSO auto refresh', error)
-      isManagerActive.value = false
+      stopAllSSORefresh()
     }
   }
 
@@ -300,6 +268,10 @@ export function useSSORefreshManager(
       Object.keys(ssoRefreshTimers.value).forEach((platform) => {
         stopSSORefresh(platform as keyof SSOLocaleAuth)
       })
+      // 连同 watcher 停止，防重复 start 叠加
+      while (watcherStopHandles.length > 0) {
+        watcherStopHandles.pop()?.()
+      }
       isManagerActive.value = false
       log.info(LogGroup.SSO, 'All SSO auto refresh stopped')
     }
@@ -308,9 +280,6 @@ export function useSSORefreshManager(
     }
   }
 
-  onBeforeUnmount(() => {
-    cleanup()
-  })
   function getDebugInfo() {
     return {
       isManagerActive: isManagerActive.value,
@@ -341,10 +310,8 @@ export function useSSORefreshManager(
     stopSSORefresh,
     stopAllSSORefresh,
     checkAndRefreshAllSSOTokens,
-    cleanup,
 
     // 工具函数
-    getSSOTimeUntilRefresh,
     getDebugInfo,
   }
 }
