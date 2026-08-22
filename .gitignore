@@ -106,3 +106,6 @@ __pycache__/
 src/public/fonts/*.woff2
 /.vitepress/theme/styles/fonts-subset.css
 /.vitepress/theme/styles/fonts-standard.css
+
+# Mimosa security scan local artifacts
+.mimosa/
