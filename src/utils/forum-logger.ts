@@ -33,7 +33,7 @@ interface ForumLogConfig {
 
 class ForumLogger {
   private config: ForumLogConfig = {
-    enabled: (typeof import.meta !== 'undefined' && import.meta.env?.DEV) || true,
+    enabled: typeof import.meta !== 'undefined' && !!import.meta.env?.DEV,
     level: (typeof import.meta !== 'undefined' && import.meta.env?.DEV) ? ForumLogLevel.DEBUG : ForumLogLevel.WARN,
     groupColors: {
       [ForumLogGroup.PRELOADER]: '#00BCD4',
