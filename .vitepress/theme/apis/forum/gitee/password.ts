@@ -12,14 +12,14 @@ export async function getToken(
   const [error, data] = await catchError(
     oauthFetcher
       .post('oauth/token', {
-        json: {
+        body: new URLSearchParams({
           grant_type: 'password',
           client_id: GITEE_API_CONFIG.CLIENT_ID,
           client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
           scope: scope.join(' '),
           username,
           password,
-        },
+        }),
       })
       .json<GITEE.Auth>(),
   )

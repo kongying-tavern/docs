@@ -8,6 +8,26 @@ import { GITEE_API_CONFIG } from './config'
 import { normalizeAuth } from './utils'
 
 const LAST_OAUTH_REDIRECT_URL_KEY = 'oauth-redirect-url'
+const OAUTH_STATE_KEY = 'gitee-oauth-state'
+
+/** 生成防 CSRF 的 OAuth state（16 字节随机数 hex），跳转前存入 sessionStorage */
+function generateOAuthState(): string {
+  const bytes = new Uint8Array(16)
+  crypto.getRandomValues(bytes)
+  return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')
+}
+
+/**
+ * 校验回调携带的 state，校验后立即移除以防重放。
+ * 本地无记录时（存储被清理或旧版本发起的登录）放行，保持向后兼容。
+ */
+export function validateOAuthState(callbackState: string | null): boolean {
+  const storedState = sessionStorage.getItem(OAUTH_STATE_KEY)
+  sessionStorage.removeItem(OAUTH_STATE_KEY)
+  if (!storedState)
+    return true
+  return storedState === callbackState
+}
 
 export function getRedirectUrl(localeIndex?: string): string {
   // Generate URL based on current locale
@@ -27,14 +47,14 @@ export function getRedirectUrl(localeIndex?: string): string {
   return expectedUrl
 }
 
-/** 请求 oauth/token 端点；client_secret 通过 JSON body 传递 */
-function requestToken(searchParams: Record<string, string>): Promise<GITEE.Auth> {
+/** 请求 oauth/token 端点；按 Gitee 文档以 form body 传参（含 client_secret） */
+function requestToken(params: Record<string, string>): Promise<GITEE.Auth> {
   return oauthFetcher
     .post('oauth/token', {
-      searchParams,
-      json: {
+      body: new URLSearchParams({
+        ...params,
         client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
-      },
+      }),
     })
     .json<GITEE.Auth>()
 }
@@ -67,14 +87,12 @@ export async function getToken(
 
 export async function refreshToken(
   refreshToken: string,
-  localeIndex?: string,
 ): Promise<AuthResult<ForumAPI.Auth>> {
   const [error, data] = await catchError(
     requestToken({
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
       client_id: GITEE_API_CONFIG.CLIENT_ID,
-      redirect_uri: getRedirectUrl(localeIndex),
     }),
   )
 
@@ -92,7 +110,16 @@ export async function refreshToken(
 }
 
 export function redirectAuth(localeIndex: string) {
-  // 获取redirect_uri，但不立即清除，callback时才清除
+  // 存 redirect_uri 供 callback 使用，不在此清除
   const redirectUri = getRedirectUrl(localeIndex)
-  return (location.href = `${GITEE_API_CONFIG.BASE_URL}/oauth/authorize?client_id=${GITEE_API_CONFIG.CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code`)
+  const state = generateOAuthState()
+  sessionStorage.setItem(OAUTH_STATE_KEY, state)
+
+  const searchParams = new URLSearchParams({
+    client_id: GITEE_API_CONFIG.CLIENT_ID,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    state,
+  })
+  return (location.href = `${GITEE_API_CONFIG.BASE_URL}/oauth/authorize?${searchParams.toString()}`)
 }

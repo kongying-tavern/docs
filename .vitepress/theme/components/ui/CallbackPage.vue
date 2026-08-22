@@ -1,11 +1,19 @@
 <script lang="ts" setup>
-import { useData } from 'vitepress'
-import { computed } from 'vue'
+import { useData, useRouter, withBase } from 'vitepress'
+import { computed, onMounted } from 'vue'
+import useLogin from '../../hooks/useLogin'
 import AuthProgressIsland from './AuthProgressIsland.vue'
 
 const { theme } = useData()
+const router = useRouter()
+const { hasOAuthCallback, isLoggedIn } = useLogin()
 
 const authTexts = computed(() => theme.value.forum.auth.callback)
+
+onMounted(() => {
+  if (!hasOAuthCallback || isLoggedIn())
+    router.go(withBase('/'))
+})
 </script>
 
 <template>
