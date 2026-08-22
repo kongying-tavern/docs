@@ -2,7 +2,6 @@
 import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import LoginAlertDialog from './LoginAlertDialog.vue'
 import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
 import UserAvatar from './UserAvatar.vue'
 
@@ -52,10 +51,6 @@ const list = computed<{ title: string, href: string, icon: string }[]>(() => [
       <div class="menu" @mouseout="open = false">
         <NavBarUserAvatarDropdownMenu :list="list" />
       </div>
-
-      <Teleport to="body">
-        <LoginAlertDialog />
-      </Teleport>
     </div>
   </ClientOnly>
 </template>
