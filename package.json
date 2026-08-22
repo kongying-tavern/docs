@@ -85,6 +85,7 @@
     "date-fns": "catalog:frontend",
     "dayjs": "catalog:frontend",
     "dexie": "catalog:frontend",
+    "dompurify": "^3.4.13",
     "embla-carousel-vue": "catalog:frontend",
     "feed": "catalog:frontend",
     "ky": "catalog:frontend",
