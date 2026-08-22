@@ -57,11 +57,28 @@ async function performRequest<T>(
   }
 }
 
+/** 浅拷贝请求选项并剔除显式携带的 access_token，用于生成缓存键 */
+function stripAccessToken(options: RequestOptions): RequestOptions {
+  const strip = <T extends Record<string, unknown>>(record: T): T => {
+    const { access_token: _token, ...rest } = record
+    return rest as T
+  }
+  return {
+    ...options,
+    ...(options.searchParams ? { searchParams: strip(options.searchParams) } : {}),
+    ...(options.json ? { json: strip(options.json) } : {}),
+  }
+}
+
 /**
  * 会话级响应缓存。useMemoize 缓存的是请求 Promise（含进行中请求的去重）；
  * 注意 `load`（非缓存路径）也会写入缓存 —— 与原实现保持一致。
+ * 缓存键剔除 access_token：token 轮换不应产生新缓存项，也避免 token 出现在键中。
  */
-const memoizedRequest = useMemoize(performRequest)
+const memoizedRequest = useMemoize(performRequest, {
+  getKey: (method, endpoint, options: RequestOptions) =>
+    JSON.stringify([method, endpoint, stripAccessToken(options)]),
+})
 
 export function apiCall<T>(
   method: HttpMethod,
