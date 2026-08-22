@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { useMutation } from '@pinia/colada'
 import { useToggle } from '@vueuse/core'
+import DOMPurify from 'dompurify'
 import { isFunction } from 'lodash-es'
 import { computed, watch } from 'vue'
 import { toast } from 'vue-sonner'
@@ -52,7 +53,11 @@ const { data, isLoading: loading, error, mutateAsync: runAsync } = useMutation({
 })
 
 const translatedContent = computed(() => data.value?.data.translatedText ?? '')
-const displayText = computed(() => (isFunction(props.serializer) ? props.serializer(translatedContent.value) : translatedContent.value))
+const displayText = computed(() => {
+  const raw = isFunction(props.serializer) ? props.serializer(translatedContent.value) : translatedContent.value
+  // 翻译结果来自服务端且源文本为用户内容，v-html 渲染前统一消毒
+  return DOMPurify.sanitize(raw)
+})
 const showTranslation = computed(() => displayText.value.length > 0 && !hideTranslation.value)
 
 async function startTranslate() {
