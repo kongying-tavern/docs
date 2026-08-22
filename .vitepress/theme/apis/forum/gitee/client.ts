@@ -1,6 +1,6 @@
 import type { RequestPayload, SearchParamValue } from './types'
 import ky from 'ky'
-import { useUserAuthStore } from '@/stores/useUserAuth'
+import { getAuthSession } from '../../auth-session'
 import { isNodeEnvironment } from '../../utils'
 import { GITEE_API_CONFIG } from './config'
 
@@ -33,7 +33,7 @@ export async function prepareRequest(
 
   if (accessToken) {
     if (body)
-      body.append('access_token', accessToken)
+      body = cloneFormDataWithToken(body, accessToken)
     else if (json)
       json = { ...json, access_token: accessToken }
     else
@@ -47,6 +47,14 @@ export async function prepareRequest(
   }
 }
 
+/** 克隆后注入 token，避免突变调用方持有的 FormData（调用方可能复用或重发） */
+function cloneFormDataWithToken(source: FormData, accessToken: string): FormData {
+  const cloned = new FormData()
+  source.forEach((value, key) => cloned.append(key, value))
+  cloned.append('access_token', accessToken)
+  return cloned
+}
+
 /**
  * 浏览器环境下取当前用户的 access_token；OAuth 接口与 Node（构建期）环境返回 undefined。
  * token 过期时会触发刷新（内部有防重入保护）并等待其完成，刷新错误通过 rejection 传播。
@@ -55,14 +63,16 @@ async function resolveAccessToken(endpoint: string): Promise<string | undefined>
   if (isNodeEnvironment() || endpoint.includes('oauth'))
     return undefined
 
-  const userAuth = useUserAuthStore()
+  const session = getAuthSession()
+  if (!session)
+    return undefined
 
-  if (!userAuth.isTokenValid && userAuth.auth?.accessToken)
-    userAuth.refreshToken().catch(() => {})
+  if (!session.isTokenValid() && session.getAccessToken())
+    session.refreshToken().catch(() => {})
 
-  await userAuth.waitForTokenReady()
+  await session.waitForTokenReady()
 
-  return userAuth.auth?.accessToken
+  return session.getAccessToken() ?? undefined
 }
 
 function toSearchParamsArray(
