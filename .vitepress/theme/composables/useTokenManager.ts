@@ -9,19 +9,16 @@ const USERAUTH_KEY = 'USER-AUTH'
 const SSO_USERAUTH_KEY = 'SSO-USER-AUTH'
 
 const TOKEN_REFRESH_THRESHOLD_MS = 30000
-const MIN_REFRESH_INTERVAL_MS = 10000
 
-/** 计算到期时间 */
-const getExpiressTime = (expiressIn: number) => Date.now() + expiressIn * 1000
+const getExpiresTime = (expiresIn: number) => Date.now() + expiresIn * 1000
 
-/** 计算剩余有效时间 */
-function getRestTime(expiressTime: number) {
-  return new Date(expiressTime).getTime() - Date.now()
+function getRestTime(expiresTime: number) {
+  return new Date(expiresTime).getTime() - Date.now()
 }
 
-/** 计算剩余有效时间与设定刷新阈值时间的差 */
-function getTimeUntilRefresh(expiressTime: number) {
-  return getRestTime(expiressTime) - TOKEN_REFRESH_THRESHOLD_MS
+/** 剩余有效期减去刷新阈值，即提前多少开始刷新 */
+function getTimeUntilRefresh(expiresTime: number) {
+  return getRestTime(expiresTime) - TOKEN_REFRESH_THRESHOLD_MS
 }
 
 export function useTokenManager() {
@@ -55,14 +52,12 @@ export function useTokenManager() {
     },
   })
 
-  // Reactive state
   const isTokenRefreshing = ref(false)
   const lastRefreshAttempt = ref<number>(0)
 
   // Promise-based refresh tracking
   let refreshDeferred: Deferred<void> | null = null
 
-  // Computed properties
   const isTokenValid = computed(() => {
     if (!localAuth.value?.accessToken)
       return false
@@ -77,28 +72,11 @@ export function useTokenManager() {
     return getRestTime(localAuth.value.expiresTime)
   })
 
-  const shouldRefreshToken = computed(() => {
-    if (!localAuth.value?.accessToken || isTokenRefreshing.value)
-      return false
-
-    const now = Date.now()
-    const timeSinceLastRefresh = now - lastRefreshAttempt.value
-
-    // Prevent too frequent refresh attempts
-    if (timeSinceLastRefresh < MIN_REFRESH_INTERVAL_MS) {
-      return false
-    }
-
-    const timeUntilRefresh = getTimeUntilRefresh(localAuth.value.expiresTime)
-    return timeUntilRefresh <= 0
-  })
-
-  // Token management functions
   function setTokens(authData: Partial<LocalAuth>): void {
     log.info(LogGroup.TOKEN, 'Setting new tokens', { hasAccessToken: !!authData.accessToken })
 
     if (authData.accessToken && authData.expiresIn) {
-      const expiresTime = getExpiressTime(authData.expiresIn)
+      const expiresTime = getExpiresTime(authData.expiresIn)
       localAuth.value = {
         accessToken: authData.accessToken,
         createdAt: authData.createdAt || Date.now(),
@@ -120,7 +98,7 @@ export function useTokenManager() {
     log.info(LogGroup.SSO, `Setting SSO token for ${platform}`, { hasToken: !!authData.accessToken })
 
     if (authData.accessToken && authData.expiresIn) {
-      const expiresTime = getExpiressTime(authData.expiresIn)
+      const expiresTime = getExpiresTime(authData.expiresIn)
       ssoAuth.value[platform] = {
         accessToken: authData.accessToken,
         createdAt: authData.createdAt || Date.now(),
@@ -177,7 +155,6 @@ export function useTokenManager() {
     refreshDeferred = null
   }
 
-  // Token validation
   function validateToken(): boolean {
     if (!localAuth.value?.accessToken) {
       log.warn(LogGroup.TOKEN, 'No access token found')
@@ -206,7 +183,6 @@ export function useTokenManager() {
     return restTime > 0
   }
 
-  // SSO token utilities
   function getSSOTimeUntilRefresh(platform: keyof SSOLocaleAuth, thresholdMs: number = 30000): number {
     const ssoToken = ssoAuth.value[platform]
     if (!ssoToken?.expiresTime)
@@ -219,13 +195,11 @@ export function useTokenManager() {
     return getSSOTimeUntilRefresh(platform, thresholdMs) <= 0
   }
 
-  // Debug helpers
   function getTokenDebugInfo() {
     return {
       hasToken: !!localAuth.value?.accessToken,
       isValid: isTokenValid.value,
       timeUntilExpiry: timeUntilExpiry.value,
-      shouldRefresh: shouldRefreshToken.value,
       isRefreshing: isTokenRefreshing.value,
       lastRefreshAttempt: lastRefreshAttempt.value,
     }
@@ -262,7 +236,6 @@ export function useTokenManager() {
     // Computed
     isTokenValid,
     timeUntilExpiry,
-    shouldRefreshToken,
 
     // Actions
     setTokens,
@@ -279,12 +252,10 @@ export function useTokenManager() {
 
     // SSO utilities
     getSSOTimeUntilRefresh,
-    isSSOTokenNearExpiry,
 
     // Internal utilities (for refresh composable)
     getTimeUntilRefresh,
     TOKEN_REFRESH_THRESHOLD_MS,
-    MIN_REFRESH_INTERVAL_MS,
 
     // Promise-based refresh tracking
     waitForRefreshComplete,
