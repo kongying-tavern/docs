@@ -89,7 +89,7 @@ catalogs:
     dexie: ^4.3.0
     embla-carousel-vue: ^8.6.0
     feed: ^6.0.0
-    ky: ^1.14.3
+    ky: ^2.0.2
     lodash-es: 4.18.1
     medium-zoom: ^1.1.0
     mitt: ^3.0.1
@@ -105,6 +105,7 @@ catalogs:
     vaul-vue: ^0.4.1
     vue: ^3.5.41
     vue-sonner: ^2.0.9
+    zod: ^4.3.6
   markdown:
     "@comark/markdown-it": ~0.3.4
     "@mdit/plugin-abbr": ^1.0.0
@@ -120,7 +121,7 @@ catalogs:
     "@mdit/plugin-sub": ^1.0.0
     "@mdit/plugin-sup": ^1.0.0
     "@mdit/plugin-tasklist": ^1.0.0
-    markdown-it: 14.1.1
+    markdown-it: 14.2.0
     markdown-it-attrs: ^5.0.0
     markdown-it-container: 4.0.0
     markdown-it-footnote: ^4.0.0

@@ -1,7 +1,4 @@
-name: CHECK-CHINESE-TEXT
-
-env:
-  NODE_OPTIONS: --max-old-space-size=6144
+name: CHECK_ZH
 
 on:
   push:
@@ -10,42 +7,44 @@ on:
       - '**/zh/**/*.md'
   pull_request:
     branches: [main]
-    types: [opened]
-
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**/zh/**/*.md'
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_OPTIONS: --max-old-space-size=6144
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  check:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node_version:
-          - 24
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          # 需要完整 git 历史（“最近更新时间”等）
           fetch-depth: 0
-      - uses: pnpm/action-setup@v6
-        name: Install pnpm
-        with:
-          run_install: false
 
-      - name: Install Node.js (${{ matrix.node_version }})
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Install Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version-file: .nvmrc
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Linter zh markdown
-        run: pnpm run lint:zh
+      - name: Lint zh markdown
+        run: pnpm lint:zh

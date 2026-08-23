@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { useSidebar } from 'vitepress/theme'
+import { useSidebar } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { cn } from '@/lib/utils'
 

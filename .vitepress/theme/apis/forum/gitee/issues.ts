@@ -12,10 +12,12 @@ import {
   setFilterTags,
 } from './utils'
 
+const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
+
 export async function getTopic(number: string): Promise<ForumAPI.Topic> {
-  const [data] = await apiCall<GITEE.IssueInfo>(
+  const { data } = await apiCall<GITEE.IssueInfo>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues/${number}`,
+    `repos/${OWNER}/${FEEDBACK_REPO}/issues/${number}`,
   )
 
   return normalizeIssue(data)
@@ -29,43 +31,40 @@ export async function getTopics(
   if (search)
     return searchTopics(query, search)
 
-  const apiParams = {
-    state: state || 'open',
-    page: query.current,
-    sort: query.sort || 'created',
-    per_page: query.pageSize,
-    ...(query.creator ? { creator: query.creator } : {}),
-    ...processLabels(query.filter),
-  }
-
   // Separate the requests to prevent comments timeout from affecting issues
-  const [issues, paginationParams] = await apiCall<GITEE.IssueList>(
+  const { data: issues, pagination } = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues`,
+    `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
     {
-      params: apiParams,
+      searchParams: {
+        state: state || 'open',
+        page: query.current,
+        sort: query.sort || 'created',
+        per_page: query.pageSize,
+        creator: query.creator ?? undefined,
+        ...processLabels(query.filter),
+      },
     },
   )
 
   // Try to fetch comments, but don't let it fail the main request
   let comments: GITEE.CommentList = []
   try {
-    ;[comments] = await apiCall<GITEE.CommentList>(
+    ;({ data: comments } = await apiCall<GITEE.CommentList>(
       'get',
-      `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues/comments`,
+      `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`,
       {
-        params: {
+        searchParams: {
           page: query.current,
           sort: query.sort || 'created',
           per_page: 100,
         },
-        useCache: true,
+        cache: true,
       },
-    )
+    ))
   }
   catch {
     // Failed to fetch comments, continuing without them
-    comments = [] // Use empty array if comments fail
   }
 
   const data: ForumAPI.Topic[] = []
@@ -88,20 +87,20 @@ export async function getTopics(
 
   return {
     data,
-    ...paginationParams!,
+    ...pagination,
   }
 }
 
 export async function getPinnedList(): Promise<ForumAPI.Topic[]> {
-  const [issues] = await apiCall<GITEE.IssueList>(
+  const { data: issues } = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues`,
+    `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
     {
-      params: {
+      searchParams: {
         state: 'open',
         labels: ['PINNED'],
       },
-      useCache: true,
+      cache: true,
     },
   )
 
@@ -109,15 +108,15 @@ export async function getPinnedList(): Promise<ForumAPI.Topic[]> {
 }
 
 export async function getAnnouncementList(): Promise<ForumAPI.Topic[]> {
-  const [issues] = await apiCall<GITEE.IssueList>(
+  const { data: issues } = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues`,
+    `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
     {
-      params: {
+      searchParams: {
         state: 'open',
         labels: ['TYP-ANN'],
       },
-      useCache: true,
+      cache: true,
     },
   )
 
@@ -131,11 +130,11 @@ export async function getTopicComments(
   query: ForumAPI.Query,
   number: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Comment[]>> {
-  const [commentList, paginationParams] = await apiCall<GITEE.CommentList>(
+  const { data: commentList, pagination } = await apiCall<GITEE.CommentList>(
     'get',
-    `repos/${GITEE_API_CONFIG.OWNER}/${repo}/issues/${number}/comments`,
+    `repos/${OWNER}/${repo}/issues/${number}/comments`,
     {
-      params: {
+      searchParams: {
         number,
         page: query.current,
         sort: query.sort || 'created',
@@ -145,7 +144,7 @@ export async function getTopicComments(
   )
   return {
     data: commentList.map(val => normalizeComment(val)),
-    ...paginationParams!,
+    ...pagination,
   }
 }
 
@@ -153,12 +152,12 @@ export async function searchTopics(
   query: ForumAPI.Query,
   q: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  const [issueList, paginationParams] = await apiCall<GITEE.IssueList>(
+  const { data: issueList, pagination } = await apiCall<GITEE.IssueList>(
     'get',
     `search/issues`,
     {
-      params: {
-        repo: `${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}`,
+      searchParams: {
+        repo: `${OWNER}/${FEEDBACK_REPO}`,
         state: 'open',
         q,
         sort: `${query.sort}_at`,
@@ -171,20 +170,20 @@ export async function searchTopics(
 
   return {
     data: issueList.map(val => normalizeIssue(val)),
-    ...paginationParams!,
+    ...pagination,
   }
 }
 
 export async function postTopic(data: ForumAPI.FormSubmitData): Promise<ForumAPI.Topic> {
   const form = buildFormData({
-    owner: GITEE_API_CONFIG.OWNER,
-    repo: GITEE_API_CONFIG.FEEDBACK_REPO,
+    owner: OWNER,
+    repo: FEEDBACK_REPO,
     ...data,
   })
 
-  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+  const { data: issueInfo } = await apiCall<GITEE.IssueInfo>(
     'post',
-    `repos/${GITEE_API_CONFIG.OWNER}/issues`,
+    `repos/${OWNER}/issues`,
     {
       body: form,
     },
@@ -198,11 +197,11 @@ export async function postTopicComment(
   number: string,
   body: string,
 ): Promise<ForumAPI.Comment> {
-  const [comment] = await apiCall<GITEE.Comment>(
+  const { data: comment } = await apiCall<GITEE.Comment>(
     'post',
-    `repos/${GITEE_API_CONFIG.OWNER}/${repo}/issues/${number}/comments`,
+    `repos/${OWNER}/${repo}/issues/${number}/comments`,
     {
-      params: {
+      searchParams: {
         number,
         body,
       },
@@ -214,30 +213,19 @@ export async function postTopicComment(
 
 export async function deleteTopicComment(
   id: number | string,
-  repo: string = GITEE_API_CONFIG.FEEDBACK_REPO,
+  repo: string = FEEDBACK_REPO,
 ): Promise<boolean> {
-  let state = false
-
-  await apiCall<GITEE.IssueList>(
+  const { response } = await apiCall<GITEE.IssueList>(
     'delete',
-    `repos/${GITEE_API_CONFIG.OWNER}/${repo}/issues/comments/${id}`,
+    `repos/${OWNER}/${repo}/issues/comments/${id}`,
     {
-      params: {
+      searchParams: {
         id,
-      },
-      hooks: {
-        afterResponse: [
-          async (_input, _options, response) => {
-            if (response.status === 204)
-              state = true
-            return Promise.resolve()
-          },
-        ],
       },
     },
   )
 
-  return state
+  return response.status === 204
 }
 
 export async function putTopic(
@@ -249,13 +237,13 @@ export async function putTopic(
     state?: ForumAPI.TopicState
   },
 ): Promise<ForumAPI.Topic> {
-  const [issueInfo] = await apiCall<GITEE.IssueInfo>(
+  const { data: issueInfo } = await apiCall<GITEE.IssueInfo>(
     'patch',
-    `repos/${GITEE_API_CONFIG.OWNER}/issues/${number}`,
+    `repos/${OWNER}/issues/${number}`,
     {
-      params: {
-        repo: GITEE_API_CONFIG.FEEDBACK_REPO,
-        owner: GITEE_API_CONFIG.OWNER,
+      searchParams: {
+        repo: FEEDBACK_REPO,
+        owner: OWNER,
         ...data,
       },
     },
@@ -272,10 +260,8 @@ export async function putTopic(
   if (hasAnyRoles('teamMember', 'feedbackMember').value)
     return result
 
-  const [reformatError] = await reformat({ number })
-
-  if (reformatError)
-    Promise.reject(result)
+  // 同步失败时向上抛错，由调用方提示
+  await reformat({ number })
 
   return result
 }
@@ -283,16 +269,16 @@ export async function putTopic(
 export async function getUserCreatedTopics(
   query: ForumAPI.Query,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  const [issueList, paginationParams] = await apiCall<GITEE.IssueList>(
+  const { data: issueList, pagination } = await apiCall<GITEE.IssueList>(
     'get',
-    `/orgs/${GITEE_API_CONFIG.OWNER}/issues`,
+    `orgs/${OWNER}/issues`,
     {
-      params: {
+      searchParams: {
         page: query.current,
         sort: query.sort || 'created',
         per_page: query.pageSize,
         filter: 'created',
-        lables: setFilterTags([...query.filter || []]),
+        labels: setFilterTags([...query.filter || []]),
         state: 'all',
       },
     },
@@ -303,15 +289,15 @@ export async function getUserCreatedTopics(
       .filter(
         val =>
           val.repository.full_name
-          === `${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}`,
+          === `${OWNER}/${FEEDBACK_REPO}`,
       )
       .map(val => normalizeIssue(val)),
-    ...paginationParams!,
+    ...pagination,
   }
 }
 
 export function openTopicOnGitee(number: string | number) {
   window.open(
-    `https://gitee.com/${GITEE_API_CONFIG.OWNER}/${GITEE_API_CONFIG.FEEDBACK_REPO}/issues/${number}`,
+    `${GITEE_API_CONFIG.BASE_URL}/${OWNER}/${FEEDBACK_REPO}/issues/${number}`,
   )
 }

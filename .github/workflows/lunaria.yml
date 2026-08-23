@@ -1,39 +1,35 @@
 name: LUNARIA
 
 on:
-  # Trigger the workflow every time a pull request is opened or synchronized at the target `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   pull_request_target:
     types: [opened, synchronize]
     branches: [main]
 
-# Allow this job to clone the repository and comment on the pull request
 permissions:
   contents: read
   pull-requests: write
 
 jobs:
   lunaria-overview:
-    name: Generate Lunaria Overview
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          # Necessary for Lunaria to work properly
-          # Makes the action clone the entire git history
+          # 需要完整 git 历史（Lunaria 依赖提交记录）
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v6
-        name: Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
         with:
           run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version-file: .nvmrc
           cache: 'pnpm'
 
       - name: Install dependencies

@@ -3,7 +3,8 @@
 @import "./ui/timeline.css";
 @import "./ui/demo.css";
 @import "./animation.css";
-@import "./fonts.css";
+@import "./fonts-subset.css";
+@import "./fonts-standard.css";
 @import "vue-sonner/style.css";
 
 @view-transition {

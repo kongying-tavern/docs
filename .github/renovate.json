@@ -1,19 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:js-lib",
+    "config:recommended",
     ":semanticPrefixChore",
-    ":prHourlyLimitNone",
-    ":prConcurrentLimitNone",
-    ":enableVulnerabilityAlerts",
     ":dependencyDashboard",
+    ":enableVulnerabilityAlerts",
     "schedule:weekends"
   ],
   "ignoreDeps": ["@fingerprintjs/**"],
+  "prConcurrentLimit": 5,
+  "minimumReleaseAge": "3 days",
   "packageRules": [
     {
       "groupName": "vitepress",
       "matchPackageNames": ["vitepress", "@vitepress/**", "vitepress-**"]
+    },
+    {
+      "groupName": "vite",
+      "matchPackageNames": ["vite"]
     },
     {
       "groupName": "mdit",
@@ -36,36 +40,27 @@
       "matchPackageNames": ["@iconify-json/**"]
     },
     {
-      "matchPackageNames": [
-        "!vite",
-        "!vitepress",
-        "!@vitepress/**",
-        "!vitepress-**"
-      ]
+      "groupName": "major upgrades",
+      "matchUpdateTypes": ["major"],
+      "excludePackageNames": ["vitepress", "@vitepress/**", "vitepress-**"],
+      "dependencyDashboardApproval": true
     },
     {
-      "matchPackageNames": ["vite"],
-      "matchUpdateTypes": ["patch"]
+      "groupName": "all other non-major",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "excludePackageNames": [
+        "vite",
+        "vitepress",
+        "@vitepress/**",
+        "vitepress-**"
+      ],
+      "automerge": true,
+      "platformAutomerge": true
     }
   ],
   "lockFileMaintenance": {
     "enabled": true,
     "commitMessageAction": "update lockfile",
-    "platformAutomerge": true,
-    "extends": ["group:allNonMajor", "schedule:weekly"],
-    "packageRules": [
-      {
-        "matchPackageNames": [
-          "!vite",
-          "!vitepress",
-          "!@vitepress/**",
-          "!vitepress-**"
-        ]
-      },
-      {
-        "matchPackageNames": ["vite"],
-        "matchUpdateTypes": ["patch"]
-      }
-    ]
+    "platformAutomerge": true
   }
 }

@@ -13,7 +13,6 @@ import MediumZoom from '@/components/MediumZoom.vue'
 import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
 import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
-import { loadFonts } from '@/composables/loadFonts'
 import { enableTransitions } from '@/shared'
 
 import '@/styles/main.css'
@@ -29,21 +28,6 @@ const showAside = computed(
     && frontmatter.value.aside === true
     && frontmatter.value.outline !== false,
 )
-
-loadFonts([
-  {
-    fontName: 'HYWenHei-85W',
-    fontPath: '/fonts/HYWenHei-85W-zh-full.woff2',
-  },
-  {
-    fontName: 'HYWenHei-65W',
-    fontPath: '/fonts/HYWenHei-65W.woff2',
-  },
-  {
-    fontName: 'HYWenHei-45W',
-    fontPath: '/fonts/HYWenHei-45W.woff2',
-  },
-])
 
 useIntersectionObserver(target, ([entry]) => {
   targetIsVisible.value = entry?.isIntersecting || false

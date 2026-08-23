@@ -1,0 +1,32 @@
+# 共享路径过滤器（dorny/paths-filter@v4），deployment.yml、pages.yml 共用
+# 注意：含 "!" 取反的过滤器必须搭配 predicate-quantifier: some-with-excludes
+# 语法为 minimatch（非 gitignore）：无斜杠模式只匹配根目录文件，目录用 '**/dir/**'
+
+# 部署 / Pages 重建黑名单：'**' 匹配一切，'!' 排除与构建产物无关的文件
+deploy:
+  - '**'
+  - '!**/.github/**'
+  - '!**/.husky/**'
+  - '!**/.vscode/**'
+  - '!**/__tests__/**'
+  - '!.editorconfig'
+  - '!.gitignore'
+  - '!.env.data'
+  - '!.markdownlint.json'
+  - '!.markdownlintignore'
+  - '!.stylelintrc.yml'
+  - '!.zhlintcaseignore'
+  - '!.zhlintrc'
+  - '!commitlint.config.mjs'
+  - '!eslint.config.ts'
+  - '!.nvmrc'
+  - '!.stackblitzrc'
+  - '!components.json'
+  - '!crowdin.yml'
+  - '!README.md'
+  - '!AGENTS.md'
+  - '!CLAUDE.md'
+  - '!COPYING.md'
+  - '!LICENSE'
+  - '!.pages.yml'
+  - '!vercel.json'

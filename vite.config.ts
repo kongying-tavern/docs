@@ -1,11 +1,12 @@
 import { fileURLToPath } from 'node:url'
-import { FontaineTransform } from 'fontaine'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
+import { fontSubsetPlugin } from './.vitepress/plugins/font-subset'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata'
 import openInEditor from './.vitepress/plugins/open-in-editor'
+import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine'
 
 export default defineConfig({
   server: {
@@ -35,20 +36,13 @@ export default defineConfig({
     ],
   },
   plugins: [
+    fontSubsetPlugin(),
+
     // https://github.com/antfu/unocss
     UnoCSS(),
 
     // https://github.com/unjs/fontaine
-    FontaineTransform.vite({
-      fallbacks: [
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica Neue',
-        'Arial',
-        'Noto Sans',
-      ],
-      resolvePath: id => new URL(`./public/fonts/${id}`, import.meta.url),
-    }),
+    fontaineFallbackPlugin(),
     openInEditor(),
     vueDevTools(),
     llmstxt({
