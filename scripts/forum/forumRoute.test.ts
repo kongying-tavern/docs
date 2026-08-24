@@ -60,6 +60,27 @@ test('round-trips localized Topic and encoded User routes', () => {
   assert.equal(user?.canonicalHref, '/docs/ja/feedback/user/%E7%A9%BA%20%E8%8D%A7/closed?q=test')
 })
 
+test('non-Forum locale transition drops the previous Forum list tuple', () => {
+  const stale = parseForumLocation('/docs/feedback/bug?q=stale&sort=updated', ROUTE_OPTIONS)
+  const current = parseForumLocation('/docs/en/community', ROUTE_OPTIONS)
+  const currentLocale = current?.route.locale ?? 'en'
+  const currentList = current?.route && 'list' in current.route
+    ? current.route.list
+    : { filter: 'all', sort: 'created', q: '', creator: 'alice' } as const
+
+  assert.equal(stale?.route.name, 'home')
+  assert.equal(current, null)
+  assert.equal(buildForumHref({
+    name: 'user',
+    locale: currentLocale,
+    username: 'alice',
+    list: currentList,
+  }, {
+    ...ROUTE_OPTIONS,
+    currentUrl: '/docs/en/community',
+  }), '/docs/en/feedback/user/alice')
+})
+
 test('matches reserved resources before filters and rejects invalid paths', () => {
   assert.equal(parseForumLocation('/docs/feedback/nope', ROUTE_OPTIONS), null)
   assert.equal(parseForumLocation('/docs/feedback/topic', ROUTE_OPTIONS), null)
@@ -121,6 +142,15 @@ test('canonicalization preserves the current History state object', () => {
   assert.deepEqual(calls, [[state, '', '/docs/feedback']])
   assert.equal(canonicalizeForumLocation(history, '/docs/feedback', '/docs/feedback'), false)
   assert.equal(calls.length, 1)
+})
+
+test('route boundary clears published Forum state before matching a non-Forum route', () => {
+  const source = readFileSync(new URL('../../.vitepress/theme/lib/handleRouteMatching.ts', import.meta.url), 'utf8')
+  const clearCall = source.indexOf('publishForumLocation(to, routeOptions)')
+  const genericMatch = source.indexOf('const normalizePath = stripConfiguredBase')
+
+  assert.ok(clearCall > 0)
+  assert.ok(genericMatch > clearCall)
 })
 
 test('ships exactly three scoped Vercel Forum rewrites and localized shells', () => {

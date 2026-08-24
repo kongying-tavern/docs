@@ -39,6 +39,9 @@ export default function handleRouteMatching(
     return false
   }
 
+  if (typeof window !== 'undefined')
+    publishForumLocation(to, routeOptions)
+
   const normalizePath = stripConfiguredBase(new URL(to, 'https://example.com').pathname, base)
   const matchResult = matchRoute(to, routes, localeConfig)
 
