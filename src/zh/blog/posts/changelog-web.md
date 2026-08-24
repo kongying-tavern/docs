@@ -1,10 +1,12 @@
 ---
 title: "【网页版】更新日志"
+type: changelog
 layout: Post
 authors:
  - aaaaaaa8
  - zengjias
  - boxsnake
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A更新日志"
 ---
 
 {define:T_REFACTOR}:recycle: 功能重构{/define}

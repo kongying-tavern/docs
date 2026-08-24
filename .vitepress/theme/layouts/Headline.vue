@@ -97,13 +97,13 @@ function handleButtonClick() {
 
 @media (min-width: 768px) {
   .Headline {
-    margin-bottom: 128px;
-    padding: 64px 32px 48px;
+    margin-bottom: 48px;
+    padding: 64px 32px 32px;
   }
 }
 
 .Headline {
-  padding: 48px 24px;
+  padding: 48px 24px 24px;
 }
 
 .title,

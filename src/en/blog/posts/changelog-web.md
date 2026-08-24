@@ -1,9 +1,11 @@
 ---
 title: "[Web] Change Log"
+type: changelog
 layout: Post
 authors:
   - aaaaaaa8
   - idangoi
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=[Web] Change Log"
 ---
 
 {define:T_REFACTOR}:recycle: Refactor{/define}

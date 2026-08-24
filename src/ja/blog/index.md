@@ -1,7 +1,6 @@
 ---
 title: チームブログ
-subtext: 地図関連のアップデート情報やチュートリアルについて詳しく学ぶ
-layout: Headline
+layout: Blog
 aside: false
 ---
 

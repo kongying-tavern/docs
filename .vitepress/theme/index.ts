@@ -15,6 +15,7 @@ import * as components from '@/components/ui/'
 import Layout from '@/layouts/Layout.vue'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
+import Blog from './layouts/Blog.vue'
 import Forum from './layouts/Forum.vue'
 import Headline from './layouts/Headline.vue'
 import Post from './layouts/Post.vue'
@@ -48,6 +49,7 @@ export default {
     app.component('Headline', Headline)
     app.component('Post', Post)
     app.component('Forum', Forum)
+    app.component('Blog', Blog)
 
     for (const component of Object.keys(
       components,

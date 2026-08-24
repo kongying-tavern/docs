@@ -1,9 +1,11 @@
 ---
 title: "[Client] Hot Update Log"
+type: hot update
 layout: Post
 authors:
   - aaaaaaa8
   - idangoi
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=[Client] Hot Update Log"
 ---
 
 {define:L_NORMAL}{color:#2bbc6e}**NORMAL**{/color}{/define}

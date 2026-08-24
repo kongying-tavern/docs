@@ -1,7 +1,9 @@
 ---
 title: 【客户端】热更新日志
+type: hot update
 layout: Post
 author: aaaaaaa8
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热更新日志"
 ---
 
 {define:L_NORMAL}{color:#2bbc6e}**普通级**{/color}{/define}

@@ -1,7 +1,9 @@
 ---
 title: 【位置追踪】更新日志
+type: changelog
 layout: Post
 author: Sallee_admin
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=1&title=位置追踪更新日志"
 ---
 
 > 热更新日志（地图更新日志）请查看 ***[更新日志](hotupdatelog-autotrack)***。
