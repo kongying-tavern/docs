@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
-import VPDocAside, { useSidebar } from 'vitepress/theme-without-fonts'
-import { computed } from 'vue'
+import { useSidebar } from 'vitepress/theme-without-fonts'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
 
@@ -11,9 +11,105 @@ const DOT_SLASH_REGEX = /[./]+/g
 /** Matches .html extension suffix */
 const HTML_SUFFIX_REGEX = /_html$/
 
-const { params, theme } = useData()
+const { params, theme, frontmatter } = useData()
 const { hasSidebar, hasAside, leftAside } = useSidebar()
 const route = useRoute()
+
+// 右侧大纲由 frontmatter 配置启用（outline: true / 'deep' 等），默认关闭
+const showOutline = computed(() => {
+  const outline = frontmatter.value.outline
+  return hasAside && outline != null && outline !== false
+})
+
+interface OutlineItem {
+  id: string
+  title: string
+  level: number
+}
+
+const outlineItems = ref<OutlineItem[]>([])
+
+/** 标题 slug：保留汉字与 \w，其余转为 - */
+const SLUG_RE = /[^\w\p{Script=Han}]+/gu
+const SLUG_EDGE_RE = /^-+|-+$/g
+
+/** 大纲只收集正文标题与 timeline 的 dot 标题，timeline 内容标题剔除 */
+function isOutlineHeading(heading: HTMLElement) {
+  return !heading.closest('.timeline-dot') || heading.classList.contains('timeline-dot-title')
+}
+
+/** 标题文本：dot 标题为空时（纯日期条目）回退取左侧日期 */
+function headingTitle(heading: HTMLElement) {
+  return (heading.textContent || '').trim()
+    || heading.closest('.timeline-dot')?.querySelector('.timeline-dot-date')?.textContent?.trim()
+    || ''
+}
+
+// 滚动时同步高亮与 URL hash（参考 VitePress useActiveAnchor，额外写入 hash）
+function syncActiveHeading() {
+  const links = document.querySelectorAll<HTMLAnchorElement>('.post-aside .outline a')
+  const headings = outlineItems.value.map(item => document.getElementById(item.id)).filter(Boolean)
+  const offset = 80
+  let currentId: string | null = null
+  const scrollY = window.scrollY
+  for (const heading of headings) {
+    if (heading!.getBoundingClientRect().top + scrollY <= scrollY + offset)
+      currentId = heading!.id
+    else
+      break
+  }
+  links.forEach((link) => {
+    const active = currentId != null && link.getAttribute('href') === `#${currentId}`
+    link.classList.toggle('active', active)
+  })
+  if (currentId && location.hash !== `#${currentId}`)
+    history.replaceState(null, '', `#${currentId}`)
+}
+
+onMounted(() => {
+  const root = document.querySelector('.post-content')
+  if (!root)
+    return
+  // 先补齐标题锚点：仅页面正文标题与 timeline 的 dot 标题；
+  // timeline 内容里的标题不补 id 并移除已有 id（避免进入 VitePress LocalNav/大纲）
+  const usedIds = new Set<string>()
+  root.querySelectorAll<HTMLElement>('.timeline-dot > :where(h2, h3, h4):not(.timeline-dot-title)').forEach((heading) => {
+    heading.removeAttribute('id')
+  })
+  const headingEls = [...root.querySelectorAll<HTMLElement>(':where(h2, h3, h4)')].filter(isOutlineHeading)
+  headingEls.forEach((heading, index) => {
+    if (!heading.id) {
+      let slug = headingTitle(heading).toLowerCase().replace(SLUG_RE, '-').replace(SLUG_EDGE_RE, '')
+      if (!slug)
+        slug = `_outline-${index + 1}`
+      let candidate = slug
+      let suffix = 2
+      while (usedIds.has(candidate))
+        candidate = `${slug}-${suffix++}`
+      usedIds.add(candidate)
+      heading.id = candidate
+      heading.setAttribute('tabindex', '-1')
+    }
+    else {
+      usedIds.add(heading.id)
+    }
+  })
+  // 大纲只识别 timeline 的 dot 标题；timeline 内容里的标题不纳入
+  outlineItems.value = [...root.querySelectorAll(':where(h2, h3, h4)')]
+    .filter(isOutlineHeading)
+    .map(heading => ({
+      id: heading.id,
+      title: headingTitle(heading),
+      level: Number(heading.tagName[1]),
+    }))
+    .filter(item => item.title)
+
+  window.addEventListener('scroll', syncActiveHeading, { passive: true })
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', syncActiveHeading)
+})
 
 const pageName = computed(() =>
   route.path.replace(DOT_SLASH_REGEX, '_').replace(HTML_SUFFIX_REGEX, ''),
@@ -35,30 +131,30 @@ if (params?.value) {
   >
     <slot name="doc-top" />
     <div class="post-container">
-      <div v-if="hasAside" class="post-aside" :class="{ 'left-aside': leftAside }">
+      <div v-if="showOutline" class="post-aside" :class="{ 'left-aside': leftAside }">
         <div class="aside-curtain" />
         <div class="aside-container">
           <div class="aside-content">
-            <VPDocAside>
-              <template #aside-top>
-                <slot name="aside-top" />
-              </template>
-              <template #aside-bottom>
-                <slot name="aside-bottom" />
-              </template>
-              <template #aside-outline-before>
-                <slot name="aside-outline-before" />
-              </template>
-              <template #aside-outline-after>
-                <slot name="aside-outline-after" />
-              </template>
-              <template #aside-ads-before>
-                <slot name="aside-ads-before" />
-              </template>
-              <template #aside-ads-after>
-                <slot name="aside-ads-after" />
-              </template>
-            </VPDocAside>
+            <p class="outline-title">
+              {{ theme.outline?.label || theme.outlineTitle || '本页目录' }}
+            </p>
+            <nav
+              v-if="outlineItems.length"
+              class="outline"
+            >
+              <ul>
+                <li
+                  v-for="item in outlineItems"
+                  :key="item.id"
+                  :style="{ paddingLeft: `${(item.level - 2) * 12}px` }"
+                >
+                  <a :href="`#${item.id}`">
+                    {{ item.title }}
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <slot name="aside-bottom" />
           </div>
         </div>
       </div>
@@ -71,7 +167,7 @@ if (params?.value) {
 
           <main class="main">
             <Content
-              class="vp-doc"
+              class="vp-doc VPDoc"
               :class="[
                 pageName,
                 theme.externalLinkIcon && 'external-link-icon-enabled',
@@ -86,6 +182,10 @@ if (params?.value) {
 </template>
 
 <style scoped>
+.post-aside .outline a.active {
+  color: var(--vp-c-brand-1);
+}
+
 .post-layout {
   padding: 32px 24px 96px;
   width: 100%;
@@ -211,7 +311,8 @@ if (params?.value) {
   margin: 0 auto;
 }
 
-.post-layout.has-aside .post-content-container {
+.post-layout.has-aside .post-content-container,
+.post-layout .post-container:has(.post-aside) .post-content-container {
   max-width: 688px;
 }
 </style>
