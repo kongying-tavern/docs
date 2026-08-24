@@ -1,7 +1,5 @@
-import type { UploadedUserFile } from '~/composables/useImageUpload'
 import { format, formatDistance, formatRelative, isToday, isYesterday, parseISO } from 'date-fns'
 import { enUS, ja, zhCN } from 'date-fns/locale'
-import { formatAttachmentMarkdownList } from '~/services/forum/forumContentCodec'
 import { PATTERNS } from '../constants'
 
 // Date formatting utilities
@@ -85,20 +83,6 @@ export function formatPlainText(text: string): string {
     .replace(MULTIPLE_NEWLINES_REGEX, '\n')
 
   return markdownToPlainText.trim()
-}
-
-export function formatMarkdownImages(uploadedImages: UploadedUserFile[]): string {
-  return formatAttachmentMarkdownList(uploadedImages.map(({ url, thumbHash, alt }) => ({
-    src: url || '',
-    alt,
-    ...(thumbHash
-      ? {
-          thumbHash: thumbHash.dataBase64,
-          width: thumbHash.width,
-          height: thumbHash.height,
-        }
-      : {}),
-  })))
 }
 
 export function formatAtMentions(text: string): string {

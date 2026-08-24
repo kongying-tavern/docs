@@ -1,8 +1,8 @@
-import type { Ref } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll, useMediaQuery } from '@vueuse/core'
 import { computed, readonly, ref } from 'vue'
 import { useTopicComments } from '~/composables/useTopicComment'
+import { forumEvents } from '~/services/events/SimpleEventManager'
 
 export function useCommentAreaState(props: {
   repo: ForumAPI.Repo
@@ -47,8 +47,10 @@ export function useCommentAreaState(props: {
   }
 
   // Comment submission
-  function handleCommentSubmit(submittedComment: Ref<ForumAPI.Comment>): void {
+  function handleCommentSubmit(submittedComment: ForumAPI.Comment): void {
     submitComment(submittedComment)
+    // Plan 005 replaces this compatibility event with query invalidation.
+    forumEvents.commentCreated(submittedComment.id, props.topicId, submittedComment)
   }
 
   async function initialize(): Promise<void> {

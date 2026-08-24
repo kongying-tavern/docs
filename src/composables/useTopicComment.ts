@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { issues } from '@/apis/forum/gitee'
@@ -70,10 +69,8 @@ export function useTopicComments() {
     isLoaded.value = true
   }
 
-  const submitComment = (submittedComment: Ref<ForumAPI.Comment>) => {
-    if (!submittedComment.value)
-      return
-    userSubmittedComment.value.push(submittedComment.value)
+  const submitComment = (submittedComment: ForumAPI.Comment) => {
+    userSubmittedComment.value.push(submittedComment)
   }
 
   const loadStateMessage = computed(() => {

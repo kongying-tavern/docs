@@ -102,9 +102,9 @@ export function createCommentFormSchema(message: Ref<CustomConfig>) {
 
   return z.object({
     content: z.string()
+      .trim()
       .min(1, errors.commentEmpty)
-      .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, errors.contentTooLong.replace('{max}', String(VALIDATION_LIMITS.CONTENT.MAX_LENGTH)))
-      .trim(),
+      .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, errors.contentTooLong.replace('{max}', String(VALIDATION_LIMITS.CONTENT.MAX_LENGTH))),
   })
 }
 

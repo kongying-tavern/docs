@@ -1,9 +1,7 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
-import type { UploadedUserFile } from '../../src/composables/useImageUpload'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import { normalizeComment, normalizeIssue } from '../../.vitepress/theme/apis/forum/gitee/utils'
-import { formatMarkdownImages } from '../../src/components/forum/utils/formatting'
 import { composeTopicBody, writeTopicBodyComment } from '../../src/composables/composeTopicBody'
 import {
   LEGACY_PLAIN_COMMENT,
@@ -111,20 +109,4 @@ test('normalizes Comment attachments without changing content order', () => {
     { src: 'https://assets.example/one.png', alt: 'one' },
     { src: 'https://assets.example/two.png', alt: 'two', thumbHash: 'h', width: 10, height: 20 },
   ])
-})
-
-test('existing image formatter delegates to the codec without wire changes', () => {
-  const uploaded = [{
-    uid: 1,
-    name: 'photo.webp',
-    status: 'success',
-    url: 'https://assets.example/photo.webp',
-    alt: 'photo.webp',
-    thumbHash: { dataBase64: 'hash', width: 640, height: 480 },
-  }] as UploadedUserFile[]
-
-  assert.equal(
-    formatMarkdownImages(uploaded),
-    '\n![photo.webp](https://assets.example/photo.webp){thumbhash:"hash",width:"640",height:"480"}',
-  )
 })

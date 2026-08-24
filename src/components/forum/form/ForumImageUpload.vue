@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { ImageAttachment } from '~/composables/useImageAttachmentQueue'
-import { computed } from 'vue'
+import { computed, useId, useTemplateRef } from 'vue'
 import { Button } from '@/components/ui/button'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../constants'
 
 const props = withDefaults(defineProps<{
   attachments: ImageAttachment[]
   disabled?: boolean
+  hideDefaultTrigger?: boolean
   class?: HTMLAttributes['class']
   size?: 'xl' | 'lg'
 }>(), {
   disabled: false,
+  hideDefaultTrigger: false,
   size: 'xl',
 })
 
@@ -23,6 +25,8 @@ const emit = defineEmits<{
 
 const atLimit = computed(() => props.attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT)
 const selectionDisabled = computed(() => props.disabled || atLimit.value)
+const inputId = `forum-image-picker-${useId()}`
+const input = useTemplateRef<HTMLInputElement>('input')
 
 function emitFiles(files: File[]): void {
   if (!selectionDisabled.value && files.length)
@@ -47,6 +51,13 @@ function handleDrop(event: DragEvent): void {
 function statusText(attachment: ImageAttachment): string {
   return attachment.error?.message || attachment.status
 }
+
+function open(): void {
+  if (!selectionDisabled.value)
+    input.value?.click()
+}
+
+defineExpose({ open })
 </script>
 
 <template>
@@ -54,13 +65,14 @@ function statusText(attachment: ImageAttachment): string {
     class="mt-2 p-3 border rounded-md border-dashed"
     :class="props.class"
     tabindex="0"
-    aria-label="Topic image attachments"
+    aria-label="Image attachments"
     @drop.prevent="handleDrop"
     @dragover.prevent
     @paste="handlePaste"
   >
     <input
-      id="topic-image-picker"
+      :id="inputId"
+      ref="input"
       class="sr-only"
       type="file"
       :accept="IMAGE_UPLOAD_ACCEPT"
@@ -69,7 +81,8 @@ function statusText(attachment: ImageAttachment): string {
       @change="handleInput"
     >
     <label
-      for="topic-image-picker"
+      v-if="!hideDefaultTrigger"
+      :for="inputId"
       class="px-3 py-2 border rounded-md inline-flex gap-2 cursor-pointer items-center"
       :class="selectionDisabled ? 'cursor-not-allowed opacity-50' : ''"
     >
@@ -121,7 +134,7 @@ function statusText(attachment: ImageAttachment): string {
     </ul>
 
     <p class="text-xs c-[var(--vp-c-text-3)] mt-2">
-      Pending local images are not restored after reload. Uploaded files may remain if publishing fails.
+      Pending local images are not restored after reload. Uploaded files may remain if submission fails.
     </p>
   </section>
 </template>

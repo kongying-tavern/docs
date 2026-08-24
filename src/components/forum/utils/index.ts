@@ -41,7 +41,6 @@ export {
   formatCount,
   formatFileSize,
   formatForumDate,
-  formatMarkdownImages,
   formatPlainText,
   formatRelativeDate,
   formatAtMentions as replaceAtMentions,
