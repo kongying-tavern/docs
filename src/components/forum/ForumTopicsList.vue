@@ -14,6 +14,7 @@ const {
   loadMore?: () => Promise<unknown> | unknown
   refreshData?: () => Promise<unknown> | unknown
   loading?: boolean
+  error?: Error | null
   canLoadMore?: boolean
 }>()
 
@@ -36,6 +37,7 @@ if (loadMore) {
 <template>
   <div>
     <TransitionGroup
+      v-if="data.length > 0"
       tag="ul"
       name="fade"
     >
@@ -48,11 +50,12 @@ if (loadMore) {
       </li>
     </TransitionGroup>
 
-    <ForumTopicListSkeletons v-if="loading" />
+    <ForumTopicListSkeletons v-else-if="loading" />
 
     <ForumTopicListEmpty
-      v-else-if="data.length === 0"
+      v-else
       class="my-8"
+      :error="Boolean(error)"
       :refresh-data="refreshData"
     />
   </div>

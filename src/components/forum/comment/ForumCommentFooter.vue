@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
-import { defineCommentDropdownMenu } from '~/composables/defineCommentDropdownMenu'
+import { executeWithAuth } from '~/composables/executeWithAuth'
+import { useForumMutations } from '~/composables/forum/useForumMutations'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumTopicCommentDropdownMenu from '../ForumTopicCommentDropdownMenu.vue'
 import ForumTime from '../ui/ForumTime.vue'
 
@@ -25,9 +36,22 @@ const {
 
 const emit = defineEmits(['comment:delete', 'comment:click'])
 
-const dropdownMenus = defineCommentDropdownMenu(repo, commentData, topicId)
-
 const { message } = useLocalized()
+const forumMutations = useForumMutations()
+const { hasAnyPermissions } = useRuleChecks(commentData.author.id)
+const canDelete = hasAnyPermissions('manage_feedback', 'edit_feedback')
+const deleteDialogOpen = ref(false)
+const deleteMenu = computed<FORUM.TopicDropdownMenu[]>(() => canDelete.value
+  ? [{
+      type: 'item',
+      id: 'delete-comment',
+      label: message.value.forum.topic.menu.deleteComment.text,
+      icon: 'i-lucide:trash-2',
+      class: 'c-red opacity-90 hover:c-red hover:opacity-100',
+      disabled: forumMutations.deletingComment.value,
+      action: () => deleteDialogOpen.value = true,
+    }]
+  : [])
 
 const commentMsg = computed(() => {
   if (commentCount > 0)
@@ -39,6 +63,18 @@ function handleCommentClick(event: Event) {
   commentClickHandler(event)
   emit('comment:click', commentData.author)
 }
+
+async function handleDeleteComment() {
+  const deleted = await executeWithAuth(
+    forumMutations.deleteComment,
+    [{ commentId: commentData.id, repo, topicId: topicId || 'unknown' }],
+    message.value.forum.topic.menu.deleteComment.success,
+    message.value.forum.topic.menu.deleteComment.fail,
+    message,
+  )
+  if (deleted)
+    deleteDialogOpen.value = false
+}
 </script>
 
 <template>
@@ -49,12 +85,38 @@ function handleCommentClick(event: Event) {
     />
 
     <div class="topic-info-list flex cursor-default items-center">
-      <ForumTopicCommentDropdownMenu :menus="[...(menus ?? []), ...dropdownMenus]" />
+      <ForumTopicCommentDropdownMenu :menus="[...(menus ?? []), ...deleteMenu]" />
 
-      <Button class="h-8" variant="ghost" @click="handleCommentClick">
-        <span class="i-lucide:message-circle icon-btn size-4" />
+      <Button type="button" class="h-8" variant="ghost" @click="handleCommentClick">
+        <span class="i-lucide:message-circle icon-btn size-4" aria-hidden="true" />
         {{ commentMsg }}
       </Button>
     </div>
+
+    <AlertDialog v-model:open="deleteDialogOpen">
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {{ message.forum.topic.menu.deleteComment.title }}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {{ message.forum.topic.menu.deleteComment.confirm }}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel :disabled="forumMutations.deletingComment.value">
+            {{ message.ui.button.cancel }}
+          </AlertDialogCancel>
+          <Button
+            type="button"
+            variant="destructive"
+            :disabled="forumMutations.deletingComment.value"
+            @click="handleDeleteComment"
+          >
+            {{ forumMutations.deletingComment.value ? message.ui.button.loading : message.forum.topic.menu.deleteComment.text }}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   </div>
 </template>

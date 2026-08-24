@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import BaseForumPage from '../base/BaseForumPage.vue'
@@ -18,10 +19,11 @@ const topics = useForumTopicsQuery(computed(() => ({
   q: list.value?.q ?? '',
   creator: username.value,
 })))
+const { message } = useLocalized()
 const loadStateMessage = computed(() => {
   if (topics.error.value)
-    return 'Failed to load topics. Retry'
-  return topics.canLoadMore.value ? 'Load more' : 'No more topics'
+    return message.value.forum.loadError
+  return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
 })
 </script>
 
@@ -30,6 +32,7 @@ const loadStateMessage = computed(() => {
     :render-data="topics.rows.value"
     :loading="topics.isLoading.value"
     :loading-more="topics.loadingMore.value"
+    :error="topics.error.value"
     :can-load-more="topics.canLoadMore.value"
     :load-more="topics.loadMore"
     :refresh-data="topics.refetch"
@@ -58,15 +61,19 @@ const loadStateMessage = computed(() => {
         <ForumTopicsList
           :data="topics.rows.value"
           :loading="topics.isLoading.value || topics.loadingMore.value"
+          :error="topics.error.value"
           :can-load-more="topics.canLoadMore.value"
           :load-more="topics.loadMore"
           :refresh-data="topics.refetch"
         />
 
         <ForumLoadState
+          v-if="topics.rows.value.length > 0"
           :loading="topics.isLoading.value || topics.loadingMore.value"
+          :error="Boolean(topics.error.value)"
           :can-load-more="topics.canLoadMore.value"
           :load-more="topics.loadMore"
+          :retry="topics.refetch"
           :text="loadStateMessage"
         />
       </div>

@@ -1,131 +1,46 @@
-# Forum 架构图
+# Forum architecture
 
-## 🏗️ 系统架构概览
+## 数据流
 
-```mermaid
-graph TB
-    User[用户] --> UI[UI层]
-    UI --> BL[业务逻辑层]
-    BL --> DL[数据层]
+```text
+URL (filter/sort/q/creator/topicId)
+  -> useForumRoute
+  -> useForumQueries (Pinia Colada)
+  -> ForumService / Gitee adapter
+  -> page components
 
-    subgraph "UI层 (Component Layer)"
-        UI --> Pages[页面组件]
-        UI --> Forms[表单组件]
-        UI --> Lists[列表组件]
-        UI --> Cards[卡片组件]
-    end
-
-    subgraph "业务逻辑层 (Business Logic)"
-        BL --> Events[事件系统]
-        BL --> Stores[状态管理]
-        BL --> Composables[业务逻辑]
-        BL --> Utils[工具函数]
-    end
-
-    subgraph "数据层 (Data Layer)"
-        DL --> API[API接口]
-        DL --> Cache[缓存系统]
-        DL --> Storage[本地存储]
-    end
-
-    Events --> CrossPage[跨页面同步]
-    API --> Gitee[Gitee API]
+user action
+  -> useForumMutations
+  -> provider
+  -> forumMutationPolicies
+  -> invalidate list/detail/comment query keys
+  -> active views refetch authoritative data
 ```
 
-## 🔄 事件系统架构
+URL 是导航状态的唯一来源，Colada query cache 是同一标签页内服务端状态的唯一来源。组件只保留草稿、对话框开关、回复目标等临时 UI 状态；不得再增加 Topic/Comment 镜像 store、事件总线或 localStorage 数据副本。
 
-```mermaid
-graph LR
-    A[用户操作] --> B[组件事件]
-    B --> C[SimpleEventManager]
-    C --> D[Store更新]
-    C --> E[SimpleCrossPageSync]
-    E --> F[localStorage]
-    F --> G[其他页面]
-    G --> H[Store同步]
-    D --> I[UI更新]
-    H --> J[其他页面UI更新]
-```
+## 所有权边界
 
-## 📊 数据流向
+| 责任 | 所有者 |
+| --- | --- |
+| Forum URL 解析、规范化与 href | `services/forum/forumRoute.ts`、`composables/useForumRoute.ts` |
+| 查询键、分页与 mutation policy | `services/forum/forumQueryContracts.ts` |
+| 列表、详情、评论查询 | `composables/forum/useForumQueries.ts` |
+| 创建、修改、评论与失效 | `composables/forum/useForumMutations.ts` |
+| provider HTTP/映射 | `.vitepress/theme/apis/forum/gitee/`、`services/forumService.ts` |
+| 页面加载/空/错误/重试反馈 | `components/forum/base/`、`ForumTopicsList.vue`、`ui/ForumLoadState.vue` |
 
-```mermaid
-sequenceDiagram
-    participant U as 用户
-    participant C as 组件
-    participant S as Store
-    participant E as 事件系统
-    participant A as API
-    participant CS as 跨页面同步
+## 一致性契约
 
-    U->>C: 用户操作
-    C->>A: API调用
-    A-->>C: 返回数据
-    C->>E: 发射事件
-    E->>S: 更新Store
-    E->>CS: 跨页面同步
-    S->>C: 响应式更新UI
-    CS->>S: 同步其他页面Store
-```
+- 创建或修改 Topic 后，按 `forumMutationPolicies` 失效所有受影响的 list key；详情能安全 patch 时先更新 detail，否则以 provider refetch 为准。
+- 创建或删除 Comment 后，同时失效 comments、Topic detail 和 Topic lists，使评论正文与计数从同一事实源收敛。
+- 查询失败时保留已有 rows；初次加载、空结果、错误和后台加载是四个不同 UI 状态。
+- 同标签页由 Colada 立即共享 cache。D6 不提供即时 cross-tab 广播；另一个标签页在 focus/reconnect/refetch 后收敛。
 
-## 🏪 Store关系图
+## Provider 与部署边界
 
-```mermaid
-graph TB
-    HST[useForumHomeStore] --> FD[useForumData]
-    UST[useForumUserStore] --> FD
-    TST[useForumTopicStore] --> TC[useTopicCache]
-
-    HST --> SEH[SimpleStoreEventHandler]
-    UST --> SEH
-    TST --> SEH
-
-    SEH --> SEM[SimpleEventManager]
-    SEM --> SCP[SimpleCrossPageSync]
-
-    FD --> API[Gitee API]
-    TC --> LS[LocalStorage]
-    SCP --> LS
-```
-
-## 📱 组件层次结构
-
-```mermaid
-graph TB
-    App[应用根组件] --> Forum[ForumLayout]
-
-    Forum --> Home[ForumHome]
-    Forum --> User[ForumUserPage]
-    Forum --> Topic[ForumTopicPage]
-
-    Home --> Base[BaseForumPage]
-    User --> Base
-
-    Base --> MenuBar[ForumTopicMenubar]
-    Base --> List[ForumTopicsList]
-    Base --> Load[ForumLoadState]
-    Base --> Aside[ForumAside]
-
-    Topic --> Header[ForumTopicHeader]
-    Topic --> Content[ForumTopicContent]
-    Topic --> Comments[ForumCommentArea]
-    Topic --> Footer[ForumTopicFooter]
-```
-
-## 💾 缓存层次结构
-
-```mermaid
-graph TB
-    Request[请求] --> L1[L1: 内存缓存]
-    L1 --> Hit1{命中?}
-    Hit1 -->|是| Return1[返回数据]
-    Hit1 -->|否| L2[L2: LocalStorage]
-
-    L2 --> Hit2{命中?}
-    Hit2 -->|是| Return2[返回数据]
-    Hit2 -->|否| L3[L3: 网络请求]
-
-    L3 --> API[API调用]
-    API --> Update[更新所有缓存]
-    Update --> Return3[返回数据]
-```
+- Gitee provider 不支持 Topic hard delete。Topic hide/close 是状态操作，不使用不可逆确认。
+- Comment delete 由 provider 支持，是当前唯一需要不可逆确认的 Forum 操作。
+- Topic list 的 `reactions` 为 `null`，provider 也没有 batch endpoint；reaction 只在 Topic detail 加载。
+- Plan001 的 browser credentials 是 deferred risk，当前架构不把凭据纳入 Forum cache 或跨页同步。
+- Nginx/Vercel 外部环境未验证。`build:mpa`、Forum route tests 与仓库 rewrite 文件不能替代真实部署验证。

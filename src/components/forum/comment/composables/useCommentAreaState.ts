@@ -70,11 +70,13 @@ export function useCommentAreaState(props: {
     currentCommentPage,
     loadStateMessage,
     commentLoading: comments.isLoading,
+    commentError: comments.error,
     isClosedComment,
     isReplyingTo: (id: number | string) => replyCommentID.value === id,
     toggleCommentReply,
     handleCommentSubmit,
     initialize,
+    retry: comments.refetch,
     cleanup,
     setCommentInputBoxVisible: (visible: boolean) => {
       commentInputBoxIsVisible.value = visible

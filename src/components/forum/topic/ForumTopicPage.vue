@@ -132,12 +132,12 @@ const topicImages = computed(() => {
           />
         </div>
 
-        <div v-else-if="error" class="py-12 text-center">
+        <div v-else-if="error" class="py-12 text-center" role="alert">
           <p class="c-[var(--vp-c-danger-1)]">
-            {{ error.message }}
+            {{ message.forum.errors.cannotLoadData }}
           </p>
-          <Button class="mt-4" @click="retry()">
-            Retry
+          <Button type="button" class="mt-4" @click="retry()">
+            {{ message.forum.auth.callback.error.retry }}
           </Button>
         </div>
 

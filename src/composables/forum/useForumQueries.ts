@@ -38,7 +38,7 @@ export function useForumTopicsQuery(params: MaybeRefOrGetter<ForumTopicListParam
     total,
     loadingMore,
     canLoadMore: query.hasNextPage,
-    loadMore: () => query.loadNextPage({ cancelRefetch: false, throwOnError: true }),
+    loadMore: () => query.loadNextPage({ cancelRefetch: false, throwOnError: false }),
   }
 }
 
@@ -108,7 +108,7 @@ export function useForumCommentsQuery(options: {
     total,
     loadingMore: computed(() => query.isLoading.value && rows.value.length > 0),
     canLoadMore: query.hasNextPage,
-    loadMore: () => query.loadNextPage({ cancelRefetch: false, throwOnError: true }),
+    loadMore: () => query.loadNextPage({ cancelRefetch: false, throwOnError: false }),
   }
 }
 

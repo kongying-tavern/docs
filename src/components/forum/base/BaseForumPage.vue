@@ -18,6 +18,7 @@ interface Props {
   renderData: ForumAPI.Topic[] | ForumAPI.Post[]
   loading?: boolean
   loadingMore?: boolean
+  error?: Error | null
   canLoadMore?: boolean
   loadMore?: () => Promise<unknown> | unknown
   refreshData?: () => Promise<unknown> | unknown
@@ -44,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
   sort: 'created',
 })
 
-const isTopicsLoading = computed(() => props.loading || props.loadingMore)
+const isInitialLoading = computed(() => props.loading && props.renderData.length === 0)
 </script>
 
 <template>
@@ -78,16 +79,20 @@ const isTopicsLoading = computed(() => props.loading || props.loadingMore)
         <slot name="content-main">
           <ForumTopicsList
             :data="renderData"
-            :loading="isTopicsLoading"
+            :loading="isInitialLoading"
+            :error="error"
             :load-more="loadMore"
             :refresh-data="refreshData"
             :can-load-more="canLoadMore"
           />
 
           <ForumLoadState
-            :loading="isTopicsLoading"
+            v-if="renderData.length > 0"
+            :loading="loadingMore"
+            :error="Boolean(error)"
             :can-load-more="canLoadMore"
             :load-more="loadMore"
+            :retry="refreshData"
             :text="loadStateMessage"
           />
         </slot>

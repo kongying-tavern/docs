@@ -31,11 +31,13 @@ const {
   currentCommentPage,
   loadStateMessage,
   commentLoading,
+  commentError,
   isClosedComment,
   isReplyingTo,
   toggleCommentReply,
   handleCommentSubmit,
   initialize,
+  retry,
   cleanup,
   setCommentInputBoxVisible,
   canLoadMoreComment,
@@ -141,6 +143,8 @@ onUnmounted(cleanup)
         <ForumLoadState
           v-if="!inline"
           :loading="commentLoading"
+          :error="Boolean(commentError)"
+          :retry="retry"
           :text="loadStateMessage"
         />
 

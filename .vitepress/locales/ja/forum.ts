@@ -4,6 +4,15 @@ const forum: CustomConfig['forum'] = {
   loadMore: 'もっと読む',
   noMore: 'これ以上ありません',
   loadError: '読み込み失敗',
+  empty: {
+    title: 'フィードバックはありません',
+    description: '絞り込み条件を変更するか、新しいフィードバックを投稿してください。',
+  },
+  reaction: {
+    label: 'フィードバック評価',
+    like: '賛成',
+    dislike: '反対',
+  },
   exceededRateLimitWarning:
     'Gitee APIの最大リクエストレート制限に達しました。ログインして再試行してください',
 
@@ -30,6 +39,8 @@ const forum: CustomConfig['forum'] = {
       },
       deleteComment: {
         text: 'コメントを削除',
+        title: 'コメントを削除しますか？',
+        confirm: '削除すると元に戻せません。このコメントを削除しますか？',
         success: '削除しました',
         fail: '削除に失敗しました',
       },
@@ -49,6 +60,7 @@ const forum: CustomConfig['forum'] = {
       },
       modifyTags: {
         text: 'タグを修正',
+        title: 'トピックタグを編集（#{id}）',
       },
       pinTopic: {
         pin: 'トピックを固定',
@@ -171,6 +183,7 @@ const forum: CustomConfig['forum'] = {
     search: {
       placeholder: 'Search',
       allRelatedContentCount: '件の関連フィードバック',
+      quickLinks: 'クイックリンク',
     },
     navigation: {
       allFeedback: '全フィードバック',

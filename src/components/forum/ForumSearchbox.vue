@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useLocalized } from '@/hooks/useLocalized'
 
+defineProps<{ autofocus?: boolean }>()
 const emit = defineEmits<{ submit: [query: string] }>()
 const modelValue = defineModel<string>('query', { required: true })
 const { message } = useLocalized()
@@ -31,6 +32,7 @@ function handleSearch() {
         class="text-4 c-[var(--vp-c-text-1)] py-4 pl-8 rounded-full w-full block"
         :placeholder="message.forum.header.search.placeholder"
         maxlength="50"
+        :autofocus="autofocus"
         @search="handleSearch"
       >
     </div>
@@ -49,14 +51,14 @@ input::-webkit-search-cancel-button {
   transition: all 0.3s;
 }
 
-input:focus {
-  outline: none;
-  box-shadow: none;
+input:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
 }
 
-input:focus-visible {
-  outline: none;
-  box-shadow: none;
-  border-color: transparent;
+@media (prefers-reduced-motion: reduce) {
+  input::-webkit-search-cancel-button {
+    transition: none;
+  }
 }
 </style>

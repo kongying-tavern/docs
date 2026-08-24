@@ -147,5 +147,6 @@ export function useTopicManger(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | nu
     toggleTopicType,
     replaceTopicTags,
     toggleTopicCommentArea,
+    updatingTopic: mutations.updatingTopic,
   }
 }

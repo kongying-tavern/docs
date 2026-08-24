@@ -46,7 +46,9 @@ function handleButtonClick() {
 
     <div class="flex w-fit items-center justify-between md:w-full">
       <Button
+        type="button"
         variant="ghost"
+        :aria-label="open ? message.ui.button.close : message.ui.button.search"
         class="c-[var(--vp-c-text-2)] mr-2 py-0 bg-transparent important:h-24px"
         @click="open = !open"
       >
@@ -76,12 +78,14 @@ function handleButtonClick() {
   <Teleport to="body">
     <template v-if="frontmatter.publishTopic ?? true">
       <Button
+        type="button"
         variant="outline"
         size="icon"
+        :aria-label="message.forum.publish.title"
         class="rounded-full flex size-[3.5rem] items-center bottom-4 right-4 justify-center fixed important:vp-button md:hidden"
         @click="handleButtonClick()"
       >
-        <span class="i-lucide-plus size-[1.75rem] inline-block shadow-[var(--vp-shadow-1)] z-9999" />
+        <span class="i-lucide-plus size-[1.75rem] inline-block shadow-[var(--vp-shadow-1)] z-9999" aria-hidden="true" />
       </Button>
       <ForumPublishTopicForm />
     </template>

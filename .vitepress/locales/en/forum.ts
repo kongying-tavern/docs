@@ -4,6 +4,15 @@ const forum: CustomConfig['forum'] = {
   loadMore: 'Load More',
   noMore: 'No More',
   loadError: 'Load Error',
+  empty: {
+    title: 'No feedback yet',
+    description: 'Adjust the filters or submit new feedback.',
+  },
+  reaction: {
+    label: 'Feedback rating',
+    like: 'Upvote',
+    dislike: 'Downvote',
+  },
   exceededRateLimitWarning:
     'Reached the maximum request rate limit of Gitee API. Please login and try again',
   translate: {
@@ -29,6 +38,8 @@ const forum: CustomConfig['forum'] = {
       },
       deleteComment: {
         text: 'Delete Comment',
+        title: 'Delete comment?',
+        confirm: 'This cannot be undone. Delete this comment?',
         success: 'Comment Deleted',
         fail: 'Failed to Delete Comment',
       },
@@ -48,6 +59,7 @@ const forum: CustomConfig['forum'] = {
       },
       modifyTags: {
         text: 'Modify Tags',
+        title: 'Edit topic tags (#{id})',
       },
       pinTopic: {
         pin: 'Pin Topic',
@@ -170,6 +182,7 @@ const forum: CustomConfig['forum'] = {
     search: {
       placeholder: 'Search',
       allRelatedContentCount: 'Feedback Found',
+      quickLinks: 'Quick links',
     },
     navigation: {
       allFeedback: 'All Feedback',

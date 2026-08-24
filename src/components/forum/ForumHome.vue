@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import BaseForumPage from './base/BaseForumPage.vue'
@@ -14,11 +15,12 @@ const topics = useForumTopicsQuery(computed(() => ({
   creator: null,
 })))
 const pinned = usePinnedTopicsQuery()
+const { message } = useLocalized()
 
 const loadStateMessage = computed(() => {
   if (topics.error.value)
-    return 'Failed to load topics. Retry'
-  return topics.canLoadMore.value ? 'Load more' : 'No more topics'
+    return message.value.forum.loadError
+  return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
 })
 </script>
 
@@ -27,6 +29,7 @@ const loadStateMessage = computed(() => {
     :render-data="topics.rows.value"
     :loading="topics.isLoading.value"
     :loading-more="topics.loadingMore.value"
+    :error="topics.error.value"
     :can-load-more="topics.canLoadMore.value"
     :load-more="topics.loadMore"
     :refresh-data="topics.refetch"

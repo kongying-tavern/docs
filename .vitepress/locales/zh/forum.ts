@@ -4,6 +4,15 @@ const forum: CustomConfig['forum'] = {
   loadMore: '加载更多',
   noMore: '没有更多',
   loadError: '加载失败',
+  empty: {
+    title: '暂无反馈',
+    description: '可以调整筛选条件，或者提交新的反馈。',
+  },
+  reaction: {
+    label: '反馈评价',
+    like: '赞同',
+    dislike: '不赞同',
+  },
   exceededRateLimitWarning: '已达到 Gitee 接口的最大请求频率限制，请登录后重试',
   topic: {
     official: '官方',
@@ -21,6 +30,8 @@ const forum: CustomConfig['forum'] = {
       },
       deleteComment: {
         text: '删除评论',
+        title: '确认删除评论',
+        confirm: '删除后无法恢复，确定要删除这条评论吗？',
         success: '评论删除成功',
         fail: '评论删除失败',
       },
@@ -40,6 +51,7 @@ const forum: CustomConfig['forum'] = {
       },
       modifyTags: {
         text: '修改 Tags',
+        title: '编辑话题标签（#{id}）',
       },
       pinTopic: {
         pin: '固定话题',
@@ -162,6 +174,7 @@ const forum: CustomConfig['forum'] = {
     search: {
       placeholder: '搜索反馈',
       allRelatedContentCount: '搜索到相关反馈数',
+      quickLinks: '快捷链接',
     },
     navigation: {
       allFeedback: '全部反馈',

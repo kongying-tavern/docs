@@ -16,7 +16,7 @@ import ForumTagsInput from './form/publish-topic-form/ForumTagsInput.vue'
 
 const { open, topic } = useTopicTagsEditor()
 const { message } = useLocalized()
-const { replaceTopicTags } = useTopicManger(topic, message)
+const { replaceTopicTags, updatingTopic } = useTopicManger(topic, message)
 
 const tags = ref<string[]>(topic.value?.tags ?? [])
 const tagsInputRef = ref<InstanceType<typeof ForumTagsInput>>()
@@ -40,7 +40,7 @@ function handleCancel() {
 
 watch(topic, (newVal) => {
   if (newVal?.tags) {
-    tags.value = newVal?.tags
+    tags.value = [...newVal.tags]
     // localTags will be automatically synced via useTagsInput watch
   }
 })
@@ -50,18 +50,20 @@ watch(topic, (newVal) => {
   <Dialog v-if="topic" v-model:open="open">
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>编辑 Topic Tags (#{{ topic.id }})</DialogTitle>
+        <DialogTitle>
+          {{ message.forum.topic.menu.modifyTags.title.replace('{id}', String(topic.id)) }}
+        </DialogTitle>
       </DialogHeader>
       <div class="flex items-center space-x-2">
         <ForumTagsInput ref="tagsInputRef" v-model="tags" :max="10" />
       </div>
       <DialogFooter class="sm:justify-start">
-        <Button type="button" variant="default" @click="handleSubmit">
-          提交
+        <Button type="button" variant="default" :disabled="updatingTopic" @click="handleSubmit">
+          {{ updatingTopic ? message.ui.button.loading : message.ui.button.submit }}
         </Button>
         <DialogClose as-child>
-          <Button type="button" variant="secondary" class="mt-8" @click="handleCancel">
-            取消
+          <Button type="button" variant="secondary" class="mt-8" :disabled="updatingTopic" @click="handleCancel">
+            {{ message.ui.button.cancel }}
           </Button>
         </DialogClose>
       </DialogFooter>
