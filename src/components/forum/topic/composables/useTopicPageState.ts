@@ -1,7 +1,6 @@
 import type { ForumAPI } from '@/apis/forum/api'
 import { useQuery, useQueryCache } from '@pinia/colada'
 import { watchOnce } from '@vueuse/core'
-import markdownIt from 'markdown-it'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, onUnmounted, watch, watchEffect } from 'vue'
 import { issues } from '@/apis/forum/gitee'
@@ -9,8 +8,8 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
-import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { simpleEventManager } from '~/services/events/SimpleEventManager'
+import { renderForumTopic } from '~/services/forum/forumContentRenderer'
 import { useForumTopicStore } from '~/stores/forum/useForumTopicStore'
 import { PREVIOUS_ROUTE_KEY } from '../../composables/useNavigateToTopic'
 import { setPageTitle } from '../../utils'
@@ -119,18 +118,7 @@ export function useTopicPageState() {
   const renderedContent = computed(() => {
     if (!topic?.value?.content.text)
       return ''
-
-    // First sanitize to clean up the raw content
-    const cleanedText = sanitizeMarkdown(topic.value.content.text)
-
-    // Configure markdown-it to preserve line breaks
-    const md = markdownIt({
-      breaks: true, // Convert '\n' in paragraphs into <br>
-      linkify: true, // Autoconvert URL-like text to links
-    })
-
-    // Render and sanitize again
-    return sanitizeMarkdown(md.render(cleanedText))
+    return renderForumTopic(topic.value.content.text)
   })
 
   // Navigation

@@ -39,6 +39,71 @@ export const TIPTAP_WITH_LITERAL_MENTION_TEXT = {
   ],
 } satisfies JSONContent
 
+export const RICH_TIPTAP_DOC = {
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'hello @alice', marks: [{ type: 'bold' }] },
+        { type: 'hardBreak' },
+        { type: 'mention', attrs: { id: 7, label: 'alice' } },
+        { type: 'text', text: ' ' },
+        { type: 'emoji', attrs: { emoji: 'emoji/happy.webp', width: 24, height: 24 } },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'italic', marks: [{ type: 'italic' }] },
+        { type: 'text', text: ' strike', marks: [{ type: 'strike' }] },
+        { type: 'text', text: ' code', marks: [{ type: 'code' }] },
+        { type: 'text', text: ' underline', marks: [{ type: 'underline' }] },
+        { type: 'text', text: ' link', marks: [{ type: 'link', attrs: { href: 'https://example.com/path?q=1' } }] },
+      ],
+    },
+    {
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [{ type: 'text', text: 'Heading' }],
+    },
+    {
+      type: 'blockquote',
+      content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Quote' }] }],
+    },
+    {
+      type: 'bulletList',
+      content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Bullet' }] }] }],
+    },
+    {
+      type: 'orderedList',
+      attrs: { start: 2 },
+      content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Numbered' }] }] }],
+    },
+    {
+      type: 'codeBlock',
+      attrs: { language: 'ts' },
+      content: [{ type: 'text', text: 'const x = 1' }],
+    },
+    { type: 'horizontalRule' },
+  ],
+} satisfies JSONContent
+
+export const RICH_TIPTAP_WITH_ATTACHMENT = `${JSON.stringify(RICH_TIPTAP_DOC)}
+![attachment](https://assets.example/attachment.webp){thumbhash:"rich",width:"800",height:"600"}`
+
+export const UNSAFE_LINK_TIPTAP_DOC = {
+  type: 'doc',
+  content: [{
+    type: 'paragraph',
+    content: [{
+      type: 'text',
+      text: 'unsafe link',
+      marks: [{ type: 'link', attrs: { href: 'javascript:alert(1)' } }],
+    }],
+  }],
+} satisfies JSONContent
+
 export const MALFORMED_COMMENT_JSON = '{"type":"doc","content":['
 
 export const TIPTAP_WITH_IMAGES = `${JSON.stringify(VALID_TIPTAP_DOC)}

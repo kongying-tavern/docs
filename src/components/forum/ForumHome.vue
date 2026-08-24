@@ -5,7 +5,6 @@ import { useData } from 'vitepress'
 import { computed, onMounted, onUnmounted } from 'vue'
 import { data as allPosts } from '~/_data/posts.data'
 import { useBfcacheOptimization } from '~/composables/useBfcacheOptimization'
-import { useMarkdownRenderer } from '~/composables/useMarkdownRenderer'
 import { fallbackUser } from '~/constants/forum'
 import { useForumHomeStore } from '~/stores/forum/useForumHomeStore'
 
@@ -73,7 +72,6 @@ const _postsData = computed<BlogPost[]>(() => {
 })
 
 const forumHomeStore = useForumHomeStore()
-const { renderMarkdownPreview } = useMarkdownRenderer()
 
 const {
   loadForumData,
@@ -103,7 +101,7 @@ function _transformBlogPostToTopic(post: BlogPost): BlogPostAsTopic {
       avatar: primaryAuthor?.avatar || fallbackUser.avatar,
     },
     content: {
-      text: renderMarkdownPreview(post.excerpt || ''),
+      text: post.excerpt || '',
       images: [],
     },
   }

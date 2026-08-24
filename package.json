@@ -105,7 +105,6 @@
     "sortablejs": "catalog:frontend",
     "tailwind-merge": "catalog:frontend",
     "thumbhash": "catalog:frontend",
-    "tiptap-markdown": "catalog:editor",
     "typescript": "catalog:build",
     "unocss": "catalog:build",
     "unocss-preset-animations": "catalog:build",

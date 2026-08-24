@@ -16,11 +16,17 @@ const HTML_COMMENT_REGEX = /<!--.*?-->/gs
 /** Matches CRLF line endings. */
 const CRLF_LINE_ENDING_REGEX = /\r\n/g
 
+/** Matches supported persisted emoji file extensions. */
+const EMOJI_FILE_EXTENSION_REGEX = /\.(?:gif|png|webp)$/i
+
 /** Matches a quoted metadata value. */
 const LEADING_TRAILING_QUOTE_REGEX = /^"|"$/g
 
 /** Matches excess trailing newlines from Tiptap block content. */
 const MULTIPLE_NEWLINES_END_REGEX = /\n{3,}$/
+
+/** Matches characters that cannot occur in a persisted emoji path segment. */
+const UNSAFE_EMOJI_SEGMENT_REGEX = /[\\?#<>"']/u
 
 const SUPPORTED_TIPTAP_NODES = new Set([
   'blockquote',
@@ -46,6 +52,18 @@ const SUPPORTED_TIPTAP_MARKS = new Set([
   'strike',
   'underline',
 ])
+
+const TIPTAP_BLOCK_NODES = new Set([
+  'blockquote',
+  'bulletList',
+  'codeBlock',
+  'heading',
+  'horizontalRule',
+  'orderedList',
+  'paragraph',
+])
+
+const TIPTAP_BLOCK_CONTAINERS = new Set(['blockquote', 'doc', 'listItem'])
 
 export type DecodedForumText
   = | { kind: 'plain', text: string }
@@ -248,36 +266,91 @@ function isSupportedTiptapDoc(value: unknown): value is JSONContent {
     && value.type === 'doc'
     && Array.isArray(value.content)
     && value.content.length > 0
-    && isSupportedTiptapNode(value)
+    && value.content.every(node => isSupportedTiptapNode(node, 'doc'))
 }
 
-function isSupportedTiptapNode(value: unknown): value is JSONContent {
+function isSupportedTiptapNode(value: unknown, parentType: string): value is JSONContent {
   if (!isRecord(value) || typeof value.type !== 'string' || !SUPPORTED_TIPTAP_NODES.has(value.type))
     return false
 
   if (value.attrs !== undefined && !isRecord(value.attrs))
     return false
 
-  if (value.type === 'text' && typeof value.text !== 'string')
-    return false
-
-  if (value.text !== undefined && typeof value.text !== 'string')
-    return false
-
-  if (value.marks !== undefined) {
-    if (!Array.isArray(value.marks) || !value.marks.every(isSupportedTiptapMark))
-      return false
+  if (value.type === 'text') {
+    return (parentType === 'paragraph' || parentType === 'codeBlock')
+      && typeof value.text === 'string'
+      && value.content === undefined
+      && (value.marks === undefined || (Array.isArray(value.marks) && value.marks.every(isSupportedTiptapMark)))
   }
 
-  return value.content === undefined
-    || (Array.isArray(value.content) && value.content.every(isSupportedTiptapNode))
+  if (value.text !== undefined || value.marks !== undefined)
+    return false
+
+  if (value.type === 'mention') {
+    return parentType === 'paragraph'
+      && value.content === undefined
+      && isRecord(value.attrs)
+      && (typeof value.attrs.id === 'string' || typeof value.attrs.id === 'number')
+      && typeof value.attrs.label === 'string'
+      && value.attrs.label.length > 0
+  }
+
+  if (value.type === 'emoji') {
+    return parentType === 'paragraph'
+      && value.content === undefined
+      && isRecord(value.attrs)
+      && isSafeEmojiPath(value.attrs.emoji)
+  }
+
+  if (value.type === 'hardBreak')
+    return parentType === 'paragraph' && value.content === undefined
+
+  if (value.type === 'horizontalRule')
+    return TIPTAP_BLOCK_CONTAINERS.has(parentType) && value.content === undefined
+
+  if (!Array.isArray(value.content) || value.content.length === 0)
+    return value.type === 'paragraph' && TIPTAP_BLOCK_CONTAINERS.has(parentType)
+
+  if (value.type === 'doc')
+    return false
+
+  if (value.type === 'paragraph' || value.type === 'heading') {
+    return TIPTAP_BLOCK_CONTAINERS.has(parentType)
+      && value.content.every(node => isSupportedTiptapNode(node, 'paragraph'))
+  }
+
+  if (value.type === 'bulletList' || value.type === 'orderedList') {
+    return TIPTAP_BLOCK_CONTAINERS.has(parentType)
+      && value.content.every(node => isSupportedTiptapNode(node, value.type as string))
+  }
+
+  if (value.type === 'listItem') {
+    return (parentType === 'bulletList' || parentType === 'orderedList')
+      && value.content.every(node => isSupportedTiptapNode(node, 'listItem'))
+  }
+
+  if (value.type === 'codeBlock') {
+    return TIPTAP_BLOCK_CONTAINERS.has(parentType)
+      && value.content.every(node => isSupportedTiptapNode(node, 'codeBlock') && node.type === 'text' && !node.marks)
+  }
+
+  if (value.type === 'blockquote') {
+    return TIPTAP_BLOCK_CONTAINERS.has(parentType)
+      && value.content.every(node => isRecord(node) && typeof node.type === 'string' && TIPTAP_BLOCK_NODES.has(node.type) && isSupportedTiptapNode(node, value.type as string))
+  }
+
+  return false
 }
 
 function isSupportedTiptapMark(value: unknown): boolean {
-  return isRecord(value)
-    && typeof value.type === 'string'
-    && SUPPORTED_TIPTAP_MARKS.has(value.type)
-    && (value.attrs === undefined || isRecord(value.attrs))
+  if (!isRecord(value) || typeof value.type !== 'string' || !SUPPORTED_TIPTAP_MARKS.has(value.type))
+    return false
+
+  if (value.attrs !== undefined && !isRecord(value.attrs))
+    return false
+
+  return value.type !== 'link'
+    || (isRecord(value.attrs) && typeof value.attrs.href === 'string' && value.attrs.href.length > 0)
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -288,10 +361,22 @@ function isValidDimension(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value) && value > 0
 }
 
+function isSafeEmojiPath(value: unknown): value is string {
+  if (typeof value !== 'string' || !EMOJI_FILE_EXTENSION_REGEX.test(value))
+    return false
+
+  const segments = value.split('/')
+  return segments.length > 1
+    && segments.every(segment => segment !== ''
+      && segment !== '.'
+      && segment !== '..'
+      && !UNSAFE_EMOJI_SEGMENT_REGEX.test(segment))
+}
+
 function tiptapDocToText(node: JSONContent): string {
   if (node.type === 'text')
     return node.text || ''
-  if (node.type === 'paragraph')
+  if (node.type === 'paragraph' || node.type === 'heading' || node.type === 'codeBlock')
     return `${node.content?.map(tiptapDocToText).join('') ?? ''}\n`
   if (node.type === 'hardBreak')
     return '\n'

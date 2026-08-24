@@ -113,7 +113,7 @@ const topicImages = computed(() => {
 
           <ForumTopicTranslator
             class="font-size-4 line-height-6"
-            :content="renderedContent"
+            :content="topic.content.text"
             :source-language="topic?.language"
           />
 

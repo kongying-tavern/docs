@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from 'vue'
 import { useMutation } from '@pinia/colada'
 import { useToggle } from '@vueuse/core'
-import DOMPurify from 'dompurify'
 import { isFunction } from 'lodash-es'
 import { computed, watch } from 'vue'
 import { toast } from 'vue-sonner'
@@ -54,9 +53,7 @@ const { data, isLoading: loading, error, mutateAsync: runAsync } = useMutation({
 
 const translatedContent = computed(() => data.value?.data.translatedText ?? '')
 const displayText = computed(() => {
-  const raw = isFunction(props.serializer) ? props.serializer(translatedContent.value) : translatedContent.value
-  // 翻译结果来自服务端且源文本为用户内容，v-html 渲染前统一消毒
-  return DOMPurify.sanitize(raw)
+  return isFunction(props.serializer) ? props.serializer(translatedContent.value) : translatedContent.value
 })
 const showTranslation = computed(() => displayText.value.length > 0 && !hideTranslation.value)
 
@@ -95,7 +92,9 @@ defineExpose({
     <a v-if="showDefaultTrigger" class="font-size-4 vp-link" variant="link" @click="startTranslate">
       {{ showTranslation ? `> ${message.forum.translate.translateInfo}` : loading ? message.forum.translate.loading : message.forum.translate.translateText }}
     </a>
-    <div v-if="!loading && showTranslation" :class="cn('mt-2 w-full whitespace-pre-wrap', props.class)" v-html="displayText" />
+    <div v-if="!loading && showTranslation" :class="cn('mt-2 w-full whitespace-pre-wrap', props.class)">
+      {{ displayText }}
+    </div>
     <p v-if="!showDefaultTrigger && showTranslation" class="text-sm color-[var(--vp-c-text-3)] mt-2 text-center text-right w-full cursor-pointer hover:underline" @click="startTranslate">
       * {{ loading ? message.forum.translate.loading : message.forum.translate.translateInfo }}
     </p>

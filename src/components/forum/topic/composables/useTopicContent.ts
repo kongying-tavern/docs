@@ -1,6 +1,5 @@
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { useForumViewMode } from '~/composables/useForumViewMode'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 
@@ -13,7 +12,7 @@ export function useTopicContent(options: UseTopicContentOptions) {
   const { isCardMode, isCompactMode } = useForumViewMode()
 
   // Computed properties
-  const renderedText = computed(() => sanitizeMarkdown(topic.content.text))
+  const renderedText = computed(() => topic.content.text)
   const isPost = computed(() => topic.type === 'POST')
   const isAnn = computed(() => topic.type === 'ANN')
 

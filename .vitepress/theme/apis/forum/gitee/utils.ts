@@ -11,9 +11,6 @@ import { GITEE_API_CONFIG } from './config'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
-/** Matches @username mentions in text */
-const AT_MENTION_REGEX = /@([a-z0-9]+)(?=\s|$)/gi
-
 /** Matches a page number in API pagination links */
 const PAGE_QUERY_PARAM_REGEX = /[?&](?:page|current)=([^&>]+)/
 
@@ -144,15 +141,6 @@ export function setFilterTags(arr: string[] = []) {
 
 export function isUpperCase(str: string) {
   return str.toLocaleUpperCase() === str
-}
-
-export function replaceAtMentions(text: string): string {
-  if (AT_MENTION_REGEX.exec(text) == null)
-    return text
-
-  return text.replaceAll(AT_MENTION_REGEX, (_match, p1) => {
-    return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
-  })
 }
 
 function getTopicTypeFromTitle(title: string): {

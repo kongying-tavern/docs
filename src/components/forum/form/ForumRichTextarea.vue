@@ -6,7 +6,6 @@ import type { EmojiItem } from '@/components/ui/EmojiPicker.vue'
 import type { ImageAttachment } from '~/composables/useImageAttachmentQueue'
 import { ReloadIcon } from '@radix-icons/vue'
 import CharacterCount from '@tiptap/extension-character-count'
-import StarterKit from '@tiptap/starter-kit'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { onClickOutside } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
@@ -17,10 +16,8 @@ import InputPlaceholders from '@/components/ui/InputPlaceholders.vue'
 import MentionPicker from '@/components/ui/MentionPicker.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
-import { EmojiNode } from '~/composables/tiptap/emojiNode'
-import { createLinkExtension } from '~/composables/tiptap/linkConfig'
-import { MentionNode } from '~/composables/tiptap/mentionNode'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
+import { createForumContentExtensions } from '~/services/forum/forumTiptapExtensions'
 import ForumImageUpload from './ForumImageUpload.vue'
 
 type SupportFeature = 'Upload' | 'Emoji' | 'Mention' | 'Submit'
@@ -92,7 +89,10 @@ function emptyDoc(): JSONContent {
 
 onMounted(() => {
   editor.value = new Editor({
-    extensions: [StarterKit, EmojiNode, MentionNode, createLinkExtension({ openOnClick: false, editable: true }), CharacterCount.configure({ limit: props.maxTextLength })],
+    extensions: [
+      ...createForumContentExtensions(),
+      CharacterCount.configure({ limit: props.maxTextLength }),
+    ],
     content: props.modelValue ?? emptyDoc(),
     editable: !props.disabled,
     autofocus: true,
@@ -147,7 +147,6 @@ function handleMentionSelect(user: ForumAPI.User): void {
     attrs: {
       id: user.id,
       label: user.login,
-      homepage: user.homepage,
     },
   }).run()
   emit('mention:select', user)

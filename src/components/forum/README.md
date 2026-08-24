@@ -625,7 +625,6 @@ export interface TextUtils {
   truncateText: (text: string, maxLength: number) => string;
   highlightKeywords: (text: string, keywords: string[]) => string;
   extractMentions: (text: string) => string[];
-  sanitizeMarkdown: (markdown: string) => string;
   parseMarkdown: (markdown: string) => string;
 }
 ```

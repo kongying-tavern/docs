@@ -1,7 +1,18 @@
 import MarkdownIt from 'markdown-it'
 import { ref } from 'vue'
 import { markdownConfig } from '../../.vitepress/config/markdown'
-import { sanitizeMarkdown } from './sanitizeMarkdown'
+
+/** Matches Markdown images with optional forum attachment metadata. */
+const MARKDOWN_IMAGE_REGEX = /!\[([^\]]*)\]\(([^)]+)\)(\{[^}]*\})?/g
+
+/** Matches HTML comments in trusted repository-authored Markdown previews. */
+const HTML_COMMENT_REGEX = /<!--.*?-->/gs
+
+/** Matches legacy define tags while retaining their inner text. */
+const DEFINE_TAG_REGEX = /\{define:[^}]*\}(.*?)\{\/define\}/gis
+
+/** Matches legacy color tags while retaining their inner text. */
+const COLOR_TAG_REGEX = /\{color:[^}]*\}(.*?)\{\/color\}/gis
 
 // 使用项目的markdown配置创建渲染器实例
 function createProjectMarkdownRenderer() {
@@ -47,11 +58,10 @@ export function useMarkdownRenderer() {
       isLoading.value = true
       error.value = null
 
-      // 先清理和截断内容
-      const sanitized = sanitizeMarkdown(content)
-      const truncated = sanitized.length > maxLength
-        ? `${sanitized.substring(0, maxLength)}...`
-        : sanitized
+      const preview = stripPreviewDecorators(content)
+      const truncated = preview.length > maxLength
+        ? `${preview.substring(0, maxLength)}...`
+        : preview
 
       // 渲染markdown
       const rendered = projectMarkdownRenderer!.render(truncated)
@@ -61,10 +71,10 @@ export function useMarkdownRenderer() {
     catch (err) {
       error.value = err instanceof Error ? err.message : '渲染失败'
       // 降级处理：返回纯文本
-      const sanitized = sanitizeMarkdown(content)
-      return sanitized.length > maxLength
-        ? `${sanitized.substring(0, maxLength)}...`
-        : sanitized
+      const preview = stripPreviewDecorators(content)
+      return preview.length > maxLength
+        ? `${preview.substring(0, maxLength)}...`
+        : preview
     }
     finally {
       isLoading.value = false
@@ -87,7 +97,7 @@ export function useMarkdownRenderer() {
     catch (err) {
       error.value = err instanceof Error ? err.message : '渲染失败'
       // 降级处理：返回纯文本
-      return sanitizeMarkdown(content)
+      return stripPreviewDecorators(content)
     }
     finally {
       isLoading.value = false
@@ -104,4 +114,12 @@ export function useMarkdownRenderer() {
     isLoading,
     error,
   }
+}
+
+function stripPreviewDecorators(markdown: string): string {
+  return markdown
+    .replace(MARKDOWN_IMAGE_REGEX, '')
+    .replace(HTML_COMMENT_REGEX, '')
+    .replace(DEFINE_TAG_REGEX, '$1')
+    .replace(COLOR_TAG_REGEX, '$1')
 }

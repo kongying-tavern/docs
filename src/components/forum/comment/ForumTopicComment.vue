@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { EditorContent } from '@tiptap/vue-3'
-import { onBeforeUnmount, onMounted } from 'vue'
 import { PhotoSwipe } from '@/components/ui/photoswipe'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
@@ -28,13 +26,9 @@ const emit = defineEmits<{
   'comment:click': [author: ForumAPI.User]
 }>()
 
-// Use topic comment composable
 const {
-  editor,
-  richTextData,
+  content,
   role,
-  initializeEditor,
-  destroyEditor,
 } = useTopicComment({
   commentData: props.commentData,
   topicAuthorId: props.topicAuthorId,
@@ -44,15 +38,6 @@ const {
 function handleCommentClick(author: ForumAPI.User): void {
   emit('comment:click', author)
 }
-
-// Lifecycle hooks
-onMounted(() => {
-  initializeEditor()
-})
-
-onBeforeUnmount(() => {
-  destroyEditor()
-})
 </script>
 
 <template>
@@ -84,10 +69,11 @@ onBeforeUnmount(() => {
         :
       </span>
 
-      <EditorContent
-        v-if="richTextData"
-        class="content" :class="COMMENT_STYLES[props.size].content"
-        :editor="editor"
+      <article
+        v-if="content.kind === 'html'"
+        class="content"
+        :class="COMMENT_STYLES[props.size].content"
+        v-html="content.html"
       />
 
       <article
@@ -95,7 +81,7 @@ onBeforeUnmount(() => {
         class="content whitespace-pre-wrap"
         :class="COMMENT_STYLES[props.size].content"
       >
-        {{ props.commentData.content.text }}
+        {{ content.text }}
       </article>
 
       <PhotoSwipe

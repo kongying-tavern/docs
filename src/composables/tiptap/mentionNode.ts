@@ -5,14 +5,22 @@ import TeamMember from '~/_data/teamMemberList.json'
 
 const officialMember = [...feedbackRepoMember.data, ...TeamMember.data]
 
+/** Matches a persisted Gitee login. */
+const MENTION_LOGIN_REGEX = /^[\dA-Z][\w-]{0,63}$/i
+
 export const MentionNode = Mention.configure({
   HTMLAttributes: { class: 'mention' },
   renderHTML({ options, node }) {
     const displayName = node.attrs.label || node.attrs.id || 'Unknown'
     const char = options.suggestion?.char || '@'
+    const login = MENTION_LOGIN_REGEX.test(String(displayName))
+      ? String(displayName)
+      : null
     return [
-      'a',
-      mergeAttributes({ href: node.attrs.homepage, class: 'vp-link' }, options.HTMLAttributes),
+      login ? 'a' : 'span',
+      mergeAttributes(login
+        ? { href: `https://gitee.com/${encodeURIComponent(login)}`, class: 'vp-link', rel: 'noopener noreferrer', target: '_blank' }
+        : { class: 'mention' }, options.HTMLAttributes),
       `${char}${displayName}`,
     ]
   },
@@ -26,7 +34,7 @@ export const MentionNode = Mention.configure({
     items: ({ query }) => {
       return officialMember
         .filter(user => user.username.toLowerCase().startsWith(query.toLowerCase()))
-        .map(user => ({ label: user.login, id: user.id, homepage: user.homepage }))
+        .map(user => ({ label: user.login, id: user.id }))
     },
   },
 })
