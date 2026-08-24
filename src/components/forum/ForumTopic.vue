@@ -38,7 +38,6 @@ const {
   toPostDetailPage,
   handleToggleCommentInput,
   handleTopicClick,
-  handleMenuAction,
 } = useTopicInteraction(topic)
 
 // Event handlers
@@ -63,7 +62,6 @@ function handleReadMoreClick(): void {
         :topic="topic"
         :topic-author-id="topic.user.id"
         :menu="menu"
-        @menu:action="handleMenuAction"
       />
 
       <!-- Topic Content and Media -->

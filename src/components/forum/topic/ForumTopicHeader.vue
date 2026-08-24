@@ -16,16 +16,9 @@ interface Props {
   menu?: FORUM.TopicDropdownMenu[]
 }
 
-interface Emits {
-  (e: 'user:click', user: ForumAPI.User): void
-  (e: 'menu:action', actionId: string): void
-}
-
 const props = withDefaults(defineProps<Props>(), {
   menu: () => [],
 })
-
-const emit = defineEmits<Emits>()
 
 const { isOfficial } = useRuleChecks()
 const { userHref } = useForumRoute()
@@ -40,15 +33,6 @@ const role = computed(() => {
   }
   return null
 })
-
-// Event handlers
-function handleUserClick(): void {
-  emit('user:click', props.topic.user)
-}
-
-function handleMenuAction(actionId: string): void {
-  emit('menu:action', actionId)
-}
 </script>
 
 <template>
@@ -62,7 +46,6 @@ function handleMenuAction(actionId: string): void {
             :name="topic.user.username"
             :to="userHref(topic.user.login)"
             :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
-            @click="handleUserClick"
           />
         </template>
       </ForumUserHoverCard>
@@ -80,7 +63,6 @@ function handleMenuAction(actionId: string): void {
     <ForumTopicDropdownMenu
       :topic-data="topic"
       :menu="menu"
-      @menu:action="handleMenuAction"
     />
   </div>
 </template>

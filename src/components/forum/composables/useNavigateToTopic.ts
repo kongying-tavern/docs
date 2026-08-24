@@ -4,7 +4,6 @@ import { useData, useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { getLangPath } from '@/utils'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { forumEvents } from '~/services/events/SimpleEventManager'
 
 export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | string) {
   const router = useRouter()
@@ -21,8 +20,6 @@ export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | strin
     }
 
     const topicId = String(isString(topic) ? topic : topic.id)
-    forumEvents.navigateToTopic(topicId)
-
     await navigate({ name: 'topic', locale: localeIndex.value, topicId }, hash ?? null)
   }
 

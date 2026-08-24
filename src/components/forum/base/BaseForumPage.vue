@@ -9,9 +9,6 @@ import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
-// 导入BroadcastChannelSync以确保模块初始化
-import '~/services/events/BroadcastChannelSync'
-
 interface ForumAsideProps {
   showButton?: boolean
   contactUs?: boolean
