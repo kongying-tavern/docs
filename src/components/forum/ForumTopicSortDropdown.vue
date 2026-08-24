@@ -12,7 +12,6 @@ import { useLocalized } from '@/hooks/useLocalized'
 
 const props = defineProps<{
   sort: ForumSort
-  loading?: boolean
 }>()
 const emit = defineEmits<{ change: [sort: ForumSort] }>()
 
@@ -33,7 +32,7 @@ const sort = computed<ForumSort>({
 </script>
 
 <template>
-  <Select v-model="sort" :disabled="props.loading">
+  <Select v-model="sort">
     <SelectTrigger
       class="font-size-3 c-[--vp-c-text-2] mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
     >

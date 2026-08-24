@@ -69,7 +69,6 @@ const isTopicsLoading = computed(() => props.loading || props.loadingMore)
           v-if="showMenubar"
           :filter="filter"
           :sort="sort"
-          :loading="isTopicsLoading"
           @filter-change="onFilterChange?.($event)"
           @sort-change="onSortChange?.($event)"
         />

@@ -7,7 +7,6 @@ import ForumTopicViewDropdown from './ForumTopicViewDropdown.vue'
 defineProps<{
   filter: ForumFilter
   sort: ForumSort
-  loading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -19,8 +18,8 @@ const emit = defineEmits<{
 <template>
   <div class="flex h-32px">
     <div class="flex items-center">
-      <ForumTopicTypeDropdown :filter="filter" :loading="loading" @change="emit('filter-change', $event)" />
-      <ForumTopicSortDropdown :sort="sort" :loading="loading" @change="emit('sort-change', $event)" />
+      <ForumTopicTypeDropdown :filter="filter" @change="emit('filter-change', $event)" />
+      <ForumTopicSortDropdown :sort="sort" @change="emit('sort-change', $event)" />
       <ForumTopicViewDropdown />
     </div>
   </div>

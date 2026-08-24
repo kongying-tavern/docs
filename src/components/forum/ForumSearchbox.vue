@@ -31,7 +31,6 @@ function handleSearch() {
         class="text-4 c-[var(--vp-c-text-1)] py-4 pl-8 rounded-full w-full block"
         :placeholder="message.forum.header.search.placeholder"
         maxlength="50"
-        required
         @search="handleSearch"
       >
     </div>

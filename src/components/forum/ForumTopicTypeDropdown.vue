@@ -12,7 +12,6 @@ import { useLocalized } from '@/hooks/useLocalized'
 
 const props = defineProps<{
   filter: ForumFilter
-  loading?: boolean
 }>()
 const emit = defineEmits<{ change: [filter: ForumFilter] }>()
 
@@ -56,7 +55,7 @@ const currentLabel = computed(() => {
 
 <template>
   <div class="flex gap-4 items-center">
-    <Select v-model="filter" :disabled="props.loading">
+    <Select v-model="filter">
       <SelectTrigger
         variant="ghost"
         class="font-size-3 mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
