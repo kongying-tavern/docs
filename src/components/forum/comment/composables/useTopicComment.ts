@@ -11,6 +11,7 @@ import { createLinkExtension } from '~/composables/tiptap/linkConfig'
 import { MentionNode } from '~/composables/tiptap/mentionNode'
 import { ResolvedTagExtension } from '~/composables/tiptap/tagsExtension'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { decodeForumText } from '~/services/forum/forumContentCodec'
 
 export interface UseTopicCommentOptions {
   commentData: ForumAPI.Comment
@@ -26,12 +27,8 @@ export function useTopicComment(options: UseTopicCommentOptions) {
   const richTextData = ref<null | JSONContent>(null)
 
   // Parse rich text data (compatible with legacy plain text comments)
-  try {
-    richTextData.value = JSON.parse(commentData.content.text)
-  }
-  catch {
-    // Keep as null for plain text comments
-  }
+  const decoded = decodeForumText(commentData.content.text)
+  richTextData.value = decoded.kind === 'tiptap' ? decoded.doc : null
 
   // Resolved state
   const isResolved = ref<boolean>(false)

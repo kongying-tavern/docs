@@ -1,6 +1,7 @@
 import type { UploadedUserFile } from '~/composables/useImageUpload'
 import { format, formatDistance, formatRelative, isToday, isYesterday, parseISO } from 'date-fns'
 import { enUS, ja, zhCN } from 'date-fns/locale'
+import { formatAttachmentMarkdownList } from '~/services/forum/forumContentCodec'
 import { PATTERNS } from '../constants'
 
 // Date formatting utilities
@@ -87,17 +88,17 @@ export function formatPlainText(text: string): string {
 }
 
 export function formatMarkdownImages(uploadedImages: UploadedUserFile[]): string {
-  if (!uploadedImages.length)
-    return ''
-
-  return `\n${uploadedImages
-    .map(({ url, thumbHash, alt }) => {
-      const thumbHashStr = thumbHash
-        ? `{thumbhash:"${thumbHash.dataBase64}",width:"${thumbHash.width}",height:"${thumbHash.height}"}`
-        : ''
-      return `![${alt || 'Uploaded image'}](${url})${thumbHashStr}`
-    })
-    .join('\n')}`
+  return formatAttachmentMarkdownList(uploadedImages.map(({ url, thumbHash, alt }) => ({
+    src: url || '',
+    alt,
+    ...(thumbHash
+      ? {
+          thumbHash: thumbHash.dataBase64,
+          width: thumbHash.width,
+          height: thumbHash.height,
+        }
+      : {}),
+  })))
 }
 
 export function formatAtMentions(text: string): string {

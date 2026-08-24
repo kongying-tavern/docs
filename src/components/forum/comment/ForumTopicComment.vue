@@ -3,7 +3,6 @@ import type ForumAPI from '@/apis/forum/api'
 import { EditorContent } from '@tiptap/vue-3'
 import { onBeforeUnmount, onMounted } from 'vue'
 import { PhotoSwipe } from '@/components/ui/photoswipe'
-import { parseContentText } from '~/composables/tiptapJsonToText'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicComment } from './composables/useTopicComment'
@@ -96,7 +95,7 @@ onBeforeUnmount(() => {
         class="content whitespace-pre-wrap"
         :class="COMMENT_STYLES[props.size].content"
       >
-        {{ parseContentText(props.commentData.content.text) }}
+        {{ props.commentData.content.text }}
       </article>
 
       <PhotoSwipe
