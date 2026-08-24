@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FormTabConfig } from './publish-topic-form/types'
+import type { TabsConfig } from './publish-topic-form/types'
 import { ReloadIcon } from '@radix-icons/vue'
 import { useMediaQuery } from '@vueuse/core'
 import { Button } from '@/components/ui/button'
@@ -10,30 +10,20 @@ import { useLocalized } from '@/hooks/useLocalized'
 interface Props {
   loading: boolean
   disabled: boolean
-  isDesktop?: boolean
-  nextTab?: FormTabConfig
+  nextTab?: TabsConfig
   inTransition: boolean
 }
 
 interface Emits {
-  (e: 'submit'): void
   (e: 'switch-tab'): void
   (e: 'close'): void
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  isDesktop: true,
-})
+defineProps<Props>()
 
 const emit = defineEmits<Emits>()
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
-
-function handleSubmit(): void {
-  if (!props.disabled && !props.loading) {
-    emit('submit')
-  }
-}
 
 function handleSwitchTab(): void {
   emit('switch-tab')
@@ -81,9 +71,9 @@ function handleClose(): void {
     >
       <Button
         class="font-size-1.1em min-w-96px"
+        type="submit"
         variant="link"
         :disabled="disabled || loading"
-        @click="handleSubmit"
       >
         <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />
         {{ loading ? message.forum.publish.publishLoading : message.ui.button.submit }}
@@ -97,9 +87,9 @@ function handleClose(): void {
     <DrawerFooter class="pt-4">
       <Button
         class="font-size-1.1em"
+        type="submit"
         variant="default"
         :disabled="disabled || loading"
-        @click="handleSubmit"
       >
         <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />
         {{ loading ? message.forum.publish.publishLoading : message.ui.button.submit }}

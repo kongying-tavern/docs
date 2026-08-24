@@ -2,9 +2,10 @@ import { computed, onMounted, ref } from 'vue'
 import { labels } from '@/apis/forum/gitee'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/composables/getTopicTagMap'
+import { addTagToModel, removeTagFromModel } from './topicTagModel'
 
 export interface UseTagsInputOptions {
-  modelValue: string[]
+  modelValue: import('vue').Ref<string[]>
   max: number
 }
 
@@ -20,10 +21,10 @@ export function useTagsInput(options: UseTagsInputOptions) {
   const searchTerm = ref('')
 
   // Computed properties
-  const isDisabled = computed(() => modelValue.length >= max)
+  const isDisabled = computed(() => modelValue.value.length >= max)
 
   const filteredTags = computed(() =>
-    tags.value.filter(i => !modelValue.includes(i)),
+    tags.value.filter(i => !modelValue.value.includes(i)),
   )
 
   const tagList = computed(() => [
@@ -47,15 +48,12 @@ export function useTagsInput(options: UseTagsInputOptions) {
   function handleSelect(tag: string): void {
     if (typeof tag === 'string') {
       searchTerm.value = ''
-      modelValue.push(tag)
+      addTagToModel(modelValue, tag, max)
     }
   }
 
   function handleDelete(tag: string): void {
-    const index = modelValue.indexOf(tag)
-    if (index > -1) {
-      modelValue.splice(index, 1)
-    }
+    removeTagFromModel(modelValue, tag)
   }
 
   async function loadTags(): Promise<void> {

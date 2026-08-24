@@ -18,13 +18,14 @@ import MentionPicker from '@/components/ui/MentionPicker.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
+import { IMAGE_UPLOAD_POLICY } from '~/components/forum/constants'
 import { EmojiNode } from '~/composables/tiptap/emojiNode'
 import { createLinkExtension } from '~/composables/tiptap/linkConfig'
 import { MentionNode } from '~/composables/tiptap/mentionNode'
 import { useClipboardPaste } from '~/composables/useClipboardPaste'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import { useImageUpload } from '~/composables/useImageUpload'
-import ForumImageUpload from './ForumImageUpload.vue'
+import ForumLegacyImageUpload from './ForumLegacyImageUpload.vue'
 
 type SupportFeature = 'Upload' | 'Emoji' | 'Mention' | 'Submit'
 
@@ -57,9 +58,9 @@ const props = withDefaults(defineProps<Props>(), {
   replyTarget: '',
   collapse: true,
   features: () => ['Upload', 'Emoji', 'Mention', 'Submit'],
-  uploadLimit: 3,
-  fileSizeLimit: 3,
-  accept: () => ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'],
+  uploadLimit: IMAGE_UPLOAD_POLICY.MAX_COUNT,
+  fileSizeLimit: IMAGE_UPLOAD_POLICY.MAX_BYTES / 1024 / 1024,
+  accept: () => [...IMAGE_UPLOAD_POLICY.MIME_TYPES],
   maxTextLength: 500,
   disabled: false,
   loginRequired: true,
@@ -327,7 +328,7 @@ defineExpose({
             :editor="(editor as InstanceType<typeof Editor>)"
           />
 
-          <ForumImageUpload
+          <ForumLegacyImageUpload
             v-if="features.includes('Upload')" ref="photoWallRef"
             v-model="imageList" size="xl" :file-limit="uploadLimit" :max-file-size="fileSizeLimit" :accept="accept"
             :auto-upload="true" :multiple="true" :hide-default-trigger="!showUploadDefaultTrigger"

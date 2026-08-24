@@ -7,14 +7,25 @@ export const FORUM_CONFIG = {
   DEFAULT_PAGE: 1,
   DEFAULT_FILTER: 'all' as ForumAPI.FilterBy,
   DEFAULT_CREATOR: null,
-  MAX_TITLE_LENGTH: 100,
-  MAX_CONTENT_LENGTH: 2000,
-  MAX_TAGS_COUNT: 5,
-  MAX_UPLOAD_FILE_SIZE: 5, // MB
   LOAD_MORE_DISTANCE: 10,
   INFINITE_SCROLL_INTERVAL: 1500,
   TRANSITION_DURATION: 300,
 } as const
+
+export const IMAGE_UPLOAD_POLICY = {
+  MAX_COUNT: 3,
+  MAX_BYTES: 6 * 1024 * 1024,
+  MAX_SIZE_LABEL: '6 MiB',
+  MIME_TYPES: [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/avif',
+  ],
+} as const
+
+export const IMAGE_UPLOAD_ACCEPT = IMAGE_UPLOAD_POLICY.MIME_TYPES.join(',')
 
 // Form validation constants - 单一验证限制来源
 export const VALIDATION_LIMITS = {
@@ -32,9 +43,10 @@ export const VALIDATION_LIMITS = {
     MAX_TAG_LENGTH: 20,
   },
   IMAGES: {
-    MAX_COUNT: 3,
-    MAX_SIZE_MB: 6,
-    ALLOWED_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+    MAX_COUNT: IMAGE_UPLOAD_POLICY.MAX_COUNT,
+    MAX_BYTES: IMAGE_UPLOAD_POLICY.MAX_BYTES,
+    MAX_SIZE_LABEL: IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL,
+    ALLOWED_TYPES: IMAGE_UPLOAD_POLICY.MIME_TYPES,
   },
 } as const
 
@@ -62,7 +74,6 @@ export const UI_CONSTANTS = {
 export const STORAGE_KEYS = {
   FORUM_VIEW_MODE: 'FORUM-TOPIC-VIEW-MODE',
   FORUM_FORM_DATA: 'forum-publish-form-data',
-  FORUM_DRAFT: 'forum-draft-',
 } as const
 
 // Route hashes

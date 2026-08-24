@@ -1,17 +1,18 @@
-import type ForumAPI from '@/apis/forum/api'
 import { refAutoReset, useLocalStorage } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { useForm } from 'vee-validate'
+import { computed, ref, watch } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import {
-  FORM_DATA_KEY,
-  FORM_DEFAULT_DATA,
-  getFormTabsConfig,
-  TRANSITION_DURATION,
-} from '../publish-topic-form/config'
+import { STORAGE_KEYS } from '../../constants'
+import { createTopicDraftSchema, createTopicFormSchema, getAllowedTopicTypes } from '../../utils/validation'
+import { getFormTabsConfig, TRANSITION_DURATION } from '../publish-topic-form/config'
+import { createDefaultTopicDraft, restoreTopicDraft } from './topicDraft'
 
 export function useFormState() {
-  const formTabs = getFormTabsConfig()
+  const { message } = useLocalized()
   const { hasAnyPermissions } = useRuleChecks()
+  const hasPermission = hasAnyPermissions('manage_feedback')
+  const formTabs = getFormTabsConfig(hasPermission)
 
   // Form state
   const isOpen = ref(false)
@@ -19,25 +20,38 @@ export function useFormState() {
   const inSwitchTabTransition = refAutoReset(false, TRANSITION_DURATION)
 
   // Form data with persistence
-  const formData = useLocalStorage<ForumAPI.CreateTopicOption>(
-    FORM_DATA_KEY,
-    FORM_DEFAULT_DATA,
+  const storedFormData = useLocalStorage<unknown>(
+    STORAGE_KEYS.FORUM_FORM_DATA,
+    createDefaultTopicDraft(),
     {
       deep: true,
       mergeDefaults: false,
     },
   )
 
-  // Permissions
-  const hasPermission = hasAnyPermissions('manage_feedback')
+  const validationSchema = computed(() => createTopicFormSchema(message, hasPermission.value))
+  const {
+    resetForm: resetValidationForm,
+    setFieldValue,
+    validate,
+    values,
+  } = useForm({
+    validationSchema,
+    initialValues: restoreTopicDraft(storedFormData.value),
+  })
+
+  const formData = computed(() => restoreTopicDraft(values))
+
+  watch(formData, (draft) => {
+    storedFormData.value = {
+      ...draft,
+      tags: [...draft.tags],
+    }
+  }, { deep: true })
 
   // Computed properties
   const tabList = computed(() => {
-    return formTabs.map(val => val.value).filter((val) => {
-      if (val === 'ANN' && !hasPermission)
-        return false
-      return true
-    })
+    return getAllowedTopicTypes(hasPermission.value)
   })
 
   const nextTabIndex = computed(() => {
@@ -49,55 +63,32 @@ export function useFormState() {
   })
 
   const isDisabled = computed(() => {
-    const currentTab = formTabs.find(tab => tab.value === formData.value.type)
-    if (!currentTab)
-      return true
-
-    if (currentTab.value === 'ANN' && !hasPermission)
-      return true
-
-    // Check title field
-    if (currentTab.fields.title) {
-      const titleLength = formData.value.title.length
-      if (titleLength < (currentTab.fields.title.minLength ?? 0))
-        return true
-    }
-
-    // Check tags field
-    if (currentTab.fields.tags) {
-      const tagsLength = formData.value.tags.length
-      if (tagsLength < (currentTab.fields.tags.minLength ?? 0))
-        return true
-    }
-
-    // Check content field
-    if (currentTab.fields.content) {
-      const contentLength = formData.value.text.length
-      if (contentLength < (currentTab.fields.content.minLength ?? 0))
-        return true
-    }
-
-    return false
+    return !createTopicDraftSchema({
+      canPublishAnnouncement: hasPermission.value,
+    }).safeParse(formData.value).success
   })
 
   // Actions
   function switchTab(): void {
-    currentTabIndex.value = nextTabIndex.value
-    if (formData.value.type === tabList.value[currentTabIndex.value])
-      return switchTab()
+    const targetIndex = nextTabIndex.value
+    const targetType = tabList.value[targetIndex]
+    if (!targetType)
+      return
+    currentTabIndex.value = targetIndex
     inSwitchTabTransition.value = true
-    setTimeout(
-      () => (formData.value.type = tabList.value[currentTabIndex.value]),
-      TRANSITION_DURATION / 2,
-    )
+    setTimeout(setFieldValue, TRANSITION_DURATION / 2, 'type', targetType)
   }
 
   function initFormData(): void {
-    formData.value = FORM_DEFAULT_DATA
+    const freshDraft = createDefaultTopicDraft()
+    storedFormData.value = freshDraft
+    resetValidationForm({ values: freshDraft })
   }
 
-  function setFormType(type: ForumAPI.CreateTopicOption['type']): void {
-    formData.value.type = type
+  function setFormType(type: (typeof tabList.value)[number]): void {
+    if (!tabList.value.includes(type))
+      return
+    setFieldValue('type', type)
     // Also update the currentTabIndex to match the type
     const typeIndex = tabList.value.indexOf(type)
     if (typeIndex !== -1) {
@@ -105,7 +96,13 @@ export function useFormState() {
     }
   }
 
-  function openForm(typeFromUrl?: ForumAPI.CreateTopicOption['type']): void {
+  watch([hasPermission, () => formData.value.type], ([, type]) => {
+    const allowedType = tabList.value.includes(type) ? type : tabList.value[0]
+    if (allowedType)
+      setFormType(allowedType)
+  }, { immediate: true })
+
+  function openForm(typeFromUrl?: (typeof tabList.value)[number]): void {
     // If a type is specified from URL, override the localStorage value
     if (typeFromUrl && tabList.value.includes(typeFromUrl)) {
       setFormType(typeFromUrl)
@@ -130,6 +127,7 @@ export function useFormState() {
     nextTab,
     isDisabled,
     hasPermission,
+    validate,
 
     // Actions
     switchTab,

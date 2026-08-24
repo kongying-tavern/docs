@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type { TopicFormData } from '../../utils/validation'
 import {
   createReusableTemplate,
   useMediaQuery,
@@ -7,6 +7,7 @@ import {
 import { last } from 'lodash-es'
 import { VisuallyHidden } from 'radix-vue'
 import { computed } from 'vue'
+import { toast } from 'vue-sonner'
 import {
   Dialog,
   DialogScrollContent,
@@ -25,10 +26,7 @@ import { useFormSubmit } from '../composables/useFormSubmit'
 import ForumFormActions from '../ForumFormActions.vue'
 import ForumFormContent from '../ForumFormContent.vue'
 import ForumFormTabs from '../ForumFormTabs.vue'
-import {
-  FORM_HASH,
-  MAX_UPLOAD_FILE_SIZE,
-} from './config'
+import { FORM_HASH } from './config'
 
 // Composables
 const userAuth = useUserAuthStore()
@@ -49,16 +47,20 @@ const {
   initFormData,
   setFormType,
   closeForm,
+  validate,
 } = useFormState()
 
 // Form submission
 const {
   submitLoading,
-  isCompleted,
-  imageList,
-  upload,
+  addFiles,
+  attachments,
+  canSelect,
+  isBusy,
+  remove,
+  retry,
   handleSubmit: submitForm,
-  resetForm,
+  reset,
 } = useFormSubmit()
 
 // Template refs
@@ -67,8 +69,9 @@ const [UseUploader, Uploader] = createReusableTemplate()
 
 // Combined disabled state
 const finalIsDisabled = computed(() =>
-  isDisabled.value || submitLoading.value || !isCompleted.value,
+  isDisabled.value || submitLoading.value || isBusy.value,
 )
+const imageSelectionDisabled = computed(() => submitLoading.value || isBusy.value || !canSelect.value)
 
 // Hash checker for form activation
 useHashChecker(
@@ -77,8 +80,8 @@ useHashChecker(
     if (!userAuth.isTokenValid)
       return true
     const targetTab = last(hash.split('-'))
-    const targetType = targetTab && tabList.value.includes(targetTab as ForumAPI.CreateTopicOption['type'])
-      ? targetTab as ForumAPI.CreateTopicOption['type']
+    const targetType = targetTab && tabList.value.includes(targetTab as TopicFormData['type'])
+      ? targetTab as TopicFormData['type']
       : undefined
 
     if (targetType) {
@@ -93,15 +96,36 @@ useHashChecker(
 
 // Event handlers
 async function handleFormSubmit(): Promise<void> {
-  try {
-    await submitForm(formData, () => {
+  const validation = await validate()
+  if (!validation.valid)
+    return
+
+  const result = await submitForm(
+    formData.value,
+    hasPermission.value,
+    () => {
       closeForm()
       initFormData()
-      resetForm()
-    })
+      reset()
+    },
+  )
+  if (!result.ok && result.stage !== 'topic')
+    toast.error(result.error.message)
+}
+
+async function handleFilesSelected(files: File[]): Promise<void> {
+  const result = await addFiles(files)
+  if (!result.ok) {
+    for (const error of result.errors)
+      toast.error(error.message)
   }
-  catch {
-    // Form submission failed - error already handled by toast
+}
+
+async function handleRetry(id: string): Promise<void> {
+  const result = await retry(id)
+  if (!result.ok) {
+    for (const error of result.errors)
+      toast.error(error.message)
   }
 }
 
@@ -112,38 +136,29 @@ function handleClose(): void {
 
 <template>
   <!-- Image Uploader Template -->
-  <UseUploader v-slot="{ fileLimit, size, uploadTips }">
+  <UseUploader v-slot="{ size }">
     <ForumImageUpload
-      id="upload"
-      v-model="imageList"
+      :attachments="attachments"
+      :disabled="imageSelectionDisabled"
       :size="size"
-      :file-limit="fileLimit"
-      :max-file-size="MAX_UPLOAD_FILE_SIZE"
-      :auto-upload="true"
-      :multiple="true"
-      :upload-tips="uploadTips"
-      @upload="upload"
+      @files-selected="handleFilesSelected"
+      @remove="remove"
+      @retry="handleRetry"
     />
   </UseUploader>
 
   <!-- Form Template -->
   <UseForm>
     <ForumFormTabs
-      v-model="formData.type"
+      :model-value="formData.type"
       :tabs="formTabs"
       :has-permission="hasPermission"
       :in-transition="inSwitchTabTransition"
+      @update:model-value="setFormType"
     >
-      <ForumFormContent
-        v-model="formData"
-        :tabs="formTabs"
-      >
-        <template #uploader="{ fileLimit, size }">
-          <Uploader
-            :file-limit="fileLimit"
-            :size="size"
-            :upload-tips="message.forum.publish.form.upload.tip"
-          />
+      <ForumFormContent :tabs="formTabs" @files-selected="handleFilesSelected">
+        <template #uploader="{ size }">
+          <Uploader :size="size" />
         </template>
       </ForumFormContent>
     </ForumFormTabs>
@@ -162,33 +177,33 @@ function handleClose(): void {
         </DialogTitle>
       </VisuallyHidden>
 
-      <Form />
+      <form @submit.prevent="handleFormSubmit">
+        <Form />
 
-      <ForumFormActions
-        :loading="submitLoading"
-        :disabled="finalIsDisabled"
-        :next-tab="nextTab"
-        :in-transition="inSwitchTabTransition"
-        :is-desktop="true"
-        @submit="handleFormSubmit"
-        @switch-tab="switchTab"
-        @close="handleClose"
-      />
+        <ForumFormActions
+          :loading="submitLoading"
+          :disabled="finalIsDisabled"
+          :next-tab="nextTab"
+          :in-transition="inSwitchTabTransition"
+          @switch-tab="switchTab"
+          @close="handleClose"
+        />
+      </form>
     </DialogScrollContent>
   </Dialog>
 
   <!-- Mobile Drawer -->
   <Drawer v-else v-model:open="isOpen">
     <DrawerContent>
-      <Form class="mt-4" />
-      <ForumFormActions
-        :loading="submitLoading"
-        :disabled="finalIsDisabled"
-        :in-transition="inSwitchTabTransition"
-        :is-desktop="false"
-        @submit="handleFormSubmit"
-        @close="handleClose"
-      />
+      <form @submit.prevent="handleFormSubmit">
+        <Form class="mt-4" />
+        <ForumFormActions
+          :loading="submitLoading"
+          :disabled="finalIsDisabled"
+          :in-transition="inSwitchTabTransition"
+          @close="handleClose"
+        />
+      </form>
     </DrawerContent>
   </Drawer>
 </template>

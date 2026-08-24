@@ -2,6 +2,7 @@ import type { UploadRawFile } from '@/components/ui/photo-wall/upload'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { genFileId } from '@/components/ui/photo-wall/upload'
+import { IMAGE_UPLOAD_POLICY } from '~/components/forum/constants'
 
 interface MessageValue {
   forum?: {
@@ -35,12 +36,12 @@ export interface ClipboardPasteOptions {
 
 export function useClipboardPaste(options: ClipboardPasteOptions = {}) {
   const {
-    accept = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'],
-    maxFileSize = 3 * 1024 * 1024, // 3MB
+    accept = [...IMAGE_UPLOAD_POLICY.MIME_TYPES],
+    maxFileSize = IMAGE_UPLOAD_POLICY.MAX_BYTES,
     onPaste,
     enabledTypes = ['image'],
     message,
-    uploadLimit = 3,
+    uploadLimit = IMAGE_UPLOAD_POLICY.MAX_COUNT,
     currentUploadCount,
   } = options
 

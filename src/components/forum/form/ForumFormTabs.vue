@@ -1,20 +1,21 @@
 <script setup lang="ts">
+import type { TopicFormData } from '../utils/validation'
 import type { TabsConfig } from './publish-topic-form/types'
 import { useMediaQuery } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 import { DialogHeader } from '@/components/ui/dialog'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 
 interface Props {
-  modelValue: string
+  modelValue: TopicFormData['type']
   tabs: TabsConfig[]
   hasPermission: boolean
   inTransition: boolean
 }
 
 interface Emits {
-  (e: 'update:modelValue', value: string): void
+  (e: 'update:modelValue', value: TopicFormData['type']): void
 }
 
 const props = defineProps<Props>()
@@ -28,7 +29,7 @@ const activeTab = computed({
   set: value => emit('update:modelValue', value),
 })
 
-const visibleTabs = computed(() => props.tabs.filter(tab => tab?.condition))
+const visibleTabs = computed(() => props.tabs.filter(tab => unref(tab.condition)))
 
 const _currentTab = computed(() =>
   props.tabs.find(tab => tab.value === props.modelValue),

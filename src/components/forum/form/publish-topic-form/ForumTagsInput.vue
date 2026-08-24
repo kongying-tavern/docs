@@ -24,6 +24,7 @@ import {
   TagsInputItemText,
 } from '@/components/ui/tags-input'
 import { useLocalized } from '@/hooks/useLocalized'
+import { VALIDATION_LIMITS } from '../../constants'
 import { useTagsInput } from '../composables/useTagsInput'
 
 const props = withDefaults(
@@ -34,7 +35,7 @@ const props = withDefaults(
     placeholder?: string
   }>(),
   {
-    max: 5,
+    max: VALIDATION_LIMITS.TAGS.MAX_COUNT,
   },
 )
 
@@ -56,7 +57,7 @@ const {
   handleSelect,
   handleDelete,
 } = useTagsInput({
-  modelValue: modelValue.value,
+  modelValue,
   max: props.max,
 })
 </script>

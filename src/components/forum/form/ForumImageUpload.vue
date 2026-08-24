@@ -1,90 +1,127 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type {
-  UploadFile,
-  UploadRawFile,
-  UploadUserFile,
-} from '@/components/ui/photo-wall/upload'
-import { useVModel } from '@vueuse/core'
-import { isArray } from 'lodash-es'
-import { useTemplateRef } from 'vue'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
-import { PhotoWall } from '@/components/ui/photo-wall'
+import type { ImageAttachment } from '~/composables/useImageAttachmentQueue'
+import { computed } from 'vue'
+import { Button } from '@/components/ui/button'
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../constants'
 
-const props = defineProps<{
-  modelValue: UploadUserFile[]
-  maxFileSize: number
-  fileLimit: number
-  placeholder?: string
-  multiple?: boolean
+const props = withDefaults(defineProps<{
+  attachments: ImageAttachment[]
+  disabled?: boolean
   class?: HTMLAttributes['class']
-  defaultValue?: UploadUserFile[]
-  accept?: string[] | string
-  uploadTips?: string
-  hideDefaultTrigger?: boolean
   size?: 'xl' | 'lg'
-}>()
-
-const emits = defineEmits<{
-  (e: 'update:modelValue', payload: string | number): void
-  (e: 'upload', file: UploadFile): void
-}>()
-
-const modelValue = useVModel(props, 'modelValue', emits, {
-  passive: true,
-  defaultValue: props.defaultValue,
+}>(), {
+  disabled: false,
+  size: 'xl',
 })
 
-const photoWallRef = useTemplateRef('photoWallRef')
+const emit = defineEmits<{
+  (e: 'files-selected', files: File[]): void
+  (e: 'remove', id: string): void
+  (e: 'retry', id: string): void
+}>()
 
-async function handleFileChange(file: UploadFile) {
-  emits('upload', file)
+const atLimit = computed(() => props.attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT)
+const selectionDisabled = computed(() => props.disabled || atLimit.value)
+
+function emitFiles(files: File[]): void {
+  if (!selectionDisabled.value && files.length)
+    emit('files-selected', files)
 }
 
-function handleStart(rawFile: UploadRawFile) {
-  if (!photoWallRef.value?.handleStart)
-    return
-  return photoWallRef.value.handleStart(rawFile)
+function handleInput(event: Event): void {
+  const target = event.target as HTMLInputElement
+  emitFiles([...target.files || []])
+  target.value = ''
 }
 
-defineExpose({
-  handleStart,
-})
+function handlePaste(event: ClipboardEvent): void {
+  if (event.clipboardData)
+    emitFiles([...event.clipboardData.files])
+}
+
+function handleDrop(event: DragEvent): void {
+  emitFiles([...event.dataTransfer?.files || []])
+}
+
+function statusText(attachment: ImageAttachment): string {
+  return attachment.error?.message || attachment.status
+}
 </script>
 
 <template>
-  <div class="mt-2">
-    <PhotoWall
-      ref="photoWallRef"
-      v-model:file-list="modelValue"
-      :limit="fileLimit"
-      :accept="isArray(accept) ? accept?.map(val => `.${val.split('/')[1]}`).join(',') : accept"
-      :multiple="multiple || true"
-      :hide-default-trigger="hideDefaultTrigger || false"
-      :on-change="handleFileChange"
-      :size="size"
-      default-state="uploading"
-      v-bind="$attrs"
+  <section
+    class="mt-2 p-3 border rounded-md border-dashed"
+    :class="props.class"
+    tabindex="0"
+    aria-label="Topic image attachments"
+    @drop.prevent="handleDrop"
+    @dragover.prevent
+    @paste="handlePaste"
+  >
+    <input
+      id="topic-image-picker"
+      class="sr-only"
+      type="file"
+      :accept="IMAGE_UPLOAD_ACCEPT"
+      :disabled="selectionDisabled"
+      multiple
+      @change="handleInput"
     >
-      <span v-if="modelValue.length < fileLimit" i-lucide-image-plus />
-      <span v-else i-lucide-image-off />
-      <template v-if="fileLimit || uploadTips" #tip>
-        <DynamicTextReplacer
-          v-if="uploadTips"
-          :data="uploadTips"
-          tag="p"
-          class="font-size-3 c-[var(--vp-c-text-2)]"
+    <label
+      for="topic-image-picker"
+      class="px-3 py-2 border rounded-md inline-flex gap-2 cursor-pointer items-center"
+      :class="selectionDisabled ? 'cursor-not-allowed opacity-50' : ''"
+    >
+      <span class="i-lucide:image-plus" aria-hidden="true" />
+      Add images
+    </label>
+    <p class="text-xs c-[var(--vp-c-text-3)] mt-2">
+      {{ attachments.length }} / {{ IMAGE_UPLOAD_POLICY.MAX_COUNT }} · {{ IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL }} each
+    </p>
+
+    <ul v-if="attachments.length" class="mt-3 flex flex-wrap gap-3" aria-live="polite">
+      <li
+        v-for="attachment in attachments"
+        :key="attachment.id"
+        class="p-2 border rounded-md flex flex-col gap-2"
+      >
+        <img
+          :src="attachment.previewUrl"
+          :alt="attachment.file.name"
+          class="rounded object-cover"
+          :class="size === 'lg' ? 'size-24' : 'size-18'"
         >
-          <template #range>
-            <span>
-              {{ fileLimit }}
-            </span>
-          </template>
-          <template v-if="maxFileSize" #size>
-            <span>{{ maxFileSize }}</span>
-          </template>
-        </DynamicTextReplacer>
-      </template>
-    </PhotoWall>
-  </div>
+        <span class="text-xs max-w-24 truncate">{{ attachment.file.name }}</span>
+        <span class="text-xs" role="status">{{ statusText(attachment) }}</span>
+        <div class="flex gap-2">
+          <Button
+            v-if="attachment.status === 'failed'"
+            type="button"
+            size="sm"
+            variant="outline"
+            :aria-label="`Retry ${attachment.file.name}`"
+            :disabled="disabled"
+            @click="emit('retry', attachment.id)"
+          >
+            Retry
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            :aria-label="`Remove ${attachment.file.name}`"
+            :disabled="disabled"
+            @click="emit('remove', attachment.id)"
+          >
+            Remove
+          </Button>
+        </div>
+      </li>
+    </ul>
+
+    <p class="text-xs c-[var(--vp-c-text-3)] mt-2">
+      Pending local images are not restored after reload. Uploaded files may remain if publishing fails.
+    </p>
+  </section>
 </template>

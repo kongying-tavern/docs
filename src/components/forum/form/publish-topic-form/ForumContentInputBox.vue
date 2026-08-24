@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { useFocus, useTextareaAutosize, useVModel } from '@vueuse/core'
-import { onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
+import { useTemplateRef } from 'vue'
 import { cn } from '@/lib/utils'
-import { useClipboardPaste } from '~/composables/useClipboardPaste'
 
 const props = defineProps<{
   modelValue: string
@@ -12,10 +11,7 @@ const props = defineProps<{
   class?: HTMLAttributes['class']
   defaultValue?: string
   placeholder?: string
-  isUploadDisabled?: boolean
   supportPaste?: boolean
-  accept?: string[]
-  maxFileSize?: number
 }>()
 
 const emits = defineEmits<{
@@ -32,35 +28,21 @@ const { textarea } = useTextareaAutosize()
 const { focused } = useFocus(textarea)
 
 const container = useTemplateRef('container')
-const stopClipboardListener = ref<(() => void) | null>(null)
 
-const { startListening } = useClipboardPaste({
-  accept: props.accept || ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'],
-  maxFileSize: (props.maxFileSize || 3) * 1024 * 1024,
-  onPaste: (files) => {
-    if (!props.isUploadDisabled) {
-      emits('paste-files', files)
-    }
-  },
-})
-
-onMounted(() => {
-  if (props.supportPaste && container.value && !props.isUploadDisabled) {
-    stopClipboardListener.value = startListening(container.value)
-  }
-})
-
-onBeforeUnmount(() => {
-  if (stopClipboardListener.value) {
-    stopClipboardListener.value()
-  }
-})
+function handlePaste(event: ClipboardEvent): void {
+  if (!props.supportPaste || !event.clipboardData)
+    return
+  const files = [...event.clipboardData.files]
+  if (files.length)
+    emits('paste-files', files)
+}
 </script>
 
 <template>
   <div
     ref="container"
     class="flex"
+    @paste="handlePaste"
   >
     <div class="comment-area w-full">
       <div

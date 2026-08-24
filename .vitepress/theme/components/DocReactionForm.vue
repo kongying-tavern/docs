@@ -32,10 +32,13 @@ const { loading, submitData, data, error } = useSubmitTopic()
 const isEditing = computed(() => !isEqual(formData.value, initFormData))
 
 async function submit() {
-  await submitData(formData.value)
-  if (data.value?.id) {
+  try {
+    const topic = await submitData(formData.value)
+    if (!topic.id)
+      return
     formData.value = initFormData
   }
+  catch {}
 }
 
 function cancel() {

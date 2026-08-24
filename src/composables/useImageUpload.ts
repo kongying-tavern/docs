@@ -5,6 +5,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
 import { uploadImg } from '@/apis/interknot.site/upload'
 import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
+import { IMAGE_UPLOAD_POLICY } from '~/components/forum/constants'
 import { formatMarkdownImages } from '~/components/forum/utils/formatting'
 
 export interface UploadedUserFile extends UploadUserFile {
@@ -13,9 +14,9 @@ export interface UploadedUserFile extends UploadUserFile {
 }
 
 export function useImageUpload(options = {
-  maximumSingleFileSize: 3,
-  fileLimit: 3,
-  fileAccept: ['image/png', 'image/jpeg', 'image/webp', 'image/avif', 'image/gif'],
+  maximumSingleFileSize: IMAGE_UPLOAD_POLICY.MAX_BYTES / 1024 / 1024,
+  fileLimit: IMAGE_UPLOAD_POLICY.MAX_COUNT,
+  fileAccept: [...IMAGE_UPLOAD_POLICY.MIME_TYPES],
 }) {
   const { maximumSingleFileSize, fileLimit, fileAccept } = options
 
@@ -80,7 +81,7 @@ export function useImageUpload(options = {
       return false
     }
 
-    if (!fileAccept.includes(uploadFile.raw!.type)) {
+    if (!fileAccept.includes(uploadFile.raw!.type as (typeof fileAccept)[number])) {
       toast.error(`[Upload Failed] ${uploadFile.name} (${uploadFile.raw!.type}) format not allowed`)
       return false
     }

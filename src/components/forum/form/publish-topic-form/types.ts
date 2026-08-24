@@ -8,12 +8,17 @@ export interface FieldConfig {
   minLength?: number
 }
 
+export interface UploadFieldConfig {
+  label: string
+  placeholder: string
+}
+
 export interface TabsConfig {
   value: Exclude<ForumAPI.TopicType, null>
   label: string
   condition: boolean | ComputedRef<boolean>
   fields: {
-    upload: FieldConfig
+    upload: UploadFieldConfig
     content: FieldConfig
     title?: FieldConfig
     tags?: FieldConfig
