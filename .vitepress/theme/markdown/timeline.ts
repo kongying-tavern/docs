@@ -9,6 +9,8 @@ type ContainerArgs = [typeof container, string, { render: RenderRule }]
 const ISO_DATE_RE = /\d{4}-\d{2}-\d{2}/
 const OPTS_SPLIT_RE = /,/
 const ICON_CLASS_RE = /^i-/
+const SLUG_RE = /[^\w\p{Script=Han}]+/gu
+const SLUG_EDGE_RE = /^-+|-+$/g
 
 interface TimelineInfo {
   title: string
@@ -70,9 +72,32 @@ function parseTimelineInfo(rawInfo: string, klass: string): TimelineInfo {
 /** 日期逐字符渲染以便两端对齐（月日以 / 分隔） */
 const splitChars = (text: string) => Array.from(text, c => `<span class='timeline-dot-date-char'>${c}</span>`).join('')
 
+/** 清除 timeline 容器内内容标题的 id（避免进入官方大纲/LocalNav），dot 标题由渲染器输出语义 id */
+function patchTimelineHeadingIds(md: MarkdownIt, klass: string) {
+  const openType = `container_${klass}_open`
+  const closeType = `container_${klass}_close`
+  md.core.ruler.push('timeline-heading-ids', (state) => {
+    let depth = 0
+    for (const token of state.tokens) {
+      if (token.type === openType) {
+        depth++
+        continue
+      }
+      if (token.type === closeType) {
+        depth--
+        continue
+      }
+      if (depth > 0 && token.type === 'heading_open')
+        token.attrSet('id', '')
+    }
+  })
+}
+
 function MarkdownItTimeline(klass: string, md: MarkdownIt): ContainerArgs {
+  patchTimelineHeadingIds(md, klass)
+
   /** 整组无日期判定按文档缓存，避免每个块重复扫描全部 token */
-  const memo: { tokens: Token[] | null, hasAnyDate: boolean } = { tokens: null, hasAnyDate: false }
+  const memo: { tokens: Token[] | null, hasAnyDate: boolean, dotIndex: number } = { tokens: null, hasAnyDate: false, dotIndex: 0 }
 
   return [
     container,
@@ -89,6 +114,9 @@ function MarkdownItTimeline(klass: string, md: MarkdownIt): ContainerArgs {
         }
 
         const parsed = parseTimelineInfo(tokens[idx].info, klass)
+        // dot 标题带语义 id（大纲/锚点用），无标题时回退日期、再回退序号
+        const slugBase = (parsed.title || parsed.date).toLowerCase().replace(SLUG_RE, '-').replace(SLUG_EDGE_RE, '')
+        const dotId = slugBase || `tl-${memo.dotIndex++}`
         const [year = '', month = '', day = ''] = parsed.date.split('-')
         const dateSpan = parsed.date
           ? `
@@ -104,10 +132,13 @@ function MarkdownItTimeline(klass: string, md: MarkdownIt): ContainerArgs {
           parsed.colorClass,
         ].filter(Boolean).join(' ')
 
+        const titleHtml = parsed.title
+          ? md.renderInline(parsed.title)
+          : parsed.date
+            ? `<span class='timeline-dot-sr'>${parsed.date}</span>`
+            : ''
         return `<div class='${classNames}'>${dateSpan}
-<h2 class='timeline-dot-title title'>${
-  parsed.title ? md.renderInline(parsed.title) : ''
-}</h2>${iconSpan}
+<h2 class='timeline-dot-title title' id='${dotId}'>${titleHtml}</h2>${iconSpan}
 `
       },
     },

@@ -29,10 +29,6 @@ interface OutlineItem {
 
 const outlineItems = ref<OutlineItem[]>([])
 
-/** 标题 slug：保留汉字与 \w，其余转为 - */
-const SLUG_RE = /[^\w\p{Script=Han}]+/gu
-const SLUG_EDGE_RE = /^-+|-+$/g
-
 /** 大纲只收集正文标题与 timeline 的 dot 标题，timeline 内容标题剔除 */
 function isOutlineHeading(heading: HTMLElement) {
   return !heading.closest('.timeline-dot') || heading.classList.contains('timeline-dot-title')
@@ -70,31 +66,6 @@ onMounted(() => {
   const root = document.querySelector('.post-content')
   if (!root)
     return
-  // 先补齐标题锚点：仅页面正文标题与 timeline 的 dot 标题；
-  // timeline 内容里的标题不补 id 并移除已有 id（避免进入 VitePress LocalNav/大纲）
-  const usedIds = new Set<string>()
-  root.querySelectorAll<HTMLElement>('.timeline-dot > :where(h2, h3, h4):not(.timeline-dot-title)').forEach((heading) => {
-    heading.removeAttribute('id')
-  })
-  const headingEls = [...root.querySelectorAll<HTMLElement>(':where(h2, h3, h4)')].filter(isOutlineHeading)
-  headingEls.forEach((heading, index) => {
-    if (!heading.id) {
-      let slug = headingTitle(heading).toLowerCase().replace(SLUG_RE, '-').replace(SLUG_EDGE_RE, '')
-      if (!slug)
-        slug = `_outline-${index + 1}`
-      let candidate = slug
-      let suffix = 2
-      while (usedIds.has(candidate))
-        candidate = `${slug}-${suffix++}`
-      usedIds.add(candidate)
-      heading.id = candidate
-      heading.setAttribute('tabindex', '-1')
-    }
-    else {
-      usedIds.add(heading.id)
-    }
-  })
-  // 大纲只识别 timeline 的 dot 标题；timeline 内容里的标题不纳入
   outlineItems.value = [...root.querySelectorAll(':where(h2, h3, h4)')]
     .filter(isOutlineHeading)
     .map(heading => ({

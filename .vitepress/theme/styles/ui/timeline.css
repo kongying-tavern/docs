@@ -144,6 +144,19 @@
   display: none;
 }
 
+/* 纯日期 dot 标题内的屏读兜底文本（大纲可读、视觉隐藏） */
+.timeline-dot-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .timeline-dot > h2:not(.timeline-dot-title) {
   font-family: var(--vp-font-family-subtitle) !important;
   font-size: 20px !important;
