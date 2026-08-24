@@ -10,7 +10,7 @@ import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
 const activeTab = ref<'feedback' | ''>('feedback')
-const { route, list } = useForumRoute()
+const { route, list, navigateFilter, navigateSort } = useForumRoute()
 const username = computed(() => route.value?.name === 'user' ? route.value.username : '')
 const topics = useForumTopicsQuery(computed(() => ({
   filter: list.value?.filter ?? 'all',
@@ -34,6 +34,10 @@ const loadStateMessage = computed(() => {
     :load-more="topics.loadMore"
     :refresh-data="topics.refetch"
     :load-state-message="loadStateMessage"
+    :filter="list?.filter ?? 'all'"
+    :sort="list?.sort ?? 'created'"
+    :on-filter-change="navigateFilter"
+    :on-sort-change="navigateSort"
   >
     <template #header>
       <Suspense>

@@ -114,7 +114,6 @@ test('Topic detail is the only forum surface that renders body HTML', () => {
   const topicPage = readSource('src/components/forum/topic/ForumTopicPage.vue')
   const translator = readSource('src/components/forum/ForumTopicTranslator.vue')
   const forumHome = readSource('src/components/forum/ForumHome.vue')
-  const searchSuggestions = readSource('src/components/forum/ForumSearchSuggestions.vue')
 
   assert.match(topicContent, /computed\(\(\) => topic\.content\.text\)/)
   assert.match(topicPageState, /renderForumTopic\(topic\.value\.content\.text\)/)
@@ -124,5 +123,4 @@ test('Topic detail is the only forum surface that renders body HTML', () => {
   assert.equal(forumHome.includes('v-html'), false)
   assert.equal(forumHome.includes('BlogPostAsTopic'), false)
   assert.equal(forumHome.includes('renderMarkdownPreview'), false)
-  assert.match(searchSuggestions, /item\.content\.text\.toLowerCase\(\)/)
 })

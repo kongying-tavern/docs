@@ -1,7 +1,6 @@
 export * from './api-helpers'
 export {
   buildCommentsQueryParams,
-  buildTopicsQueryParams,
   getErrorMessage,
   isNetworkError,
   isNotFoundError,

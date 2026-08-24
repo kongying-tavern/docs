@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
-import { computed, provide, toRef } from 'vue'
+import type { ForumFilter, ForumSort } from '~/services/forum/forumRoute'
+import { computed } from 'vue'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
-import { FORUM_TOPIC_LOADING_KEY } from '../shared'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
 // 导入BroadcastChannelSync以确保模块初始化
@@ -29,6 +29,10 @@ interface Props {
   showAside?: boolean
   headerComponent?: Component
   asideProps?: ForumAsideProps
+  filter?: ForumFilter
+  sort?: ForumSort
+  onFilterChange?: (filter: ForumFilter) => Promise<unknown> | unknown
+  onSortChange?: (sort: ForumSort) => Promise<unknown> | unknown
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,10 +43,11 @@ const props = withDefaults(defineProps<Props>(), {
   canLoadMore: false,
   loadStateMessage: 'Loading...',
   asideProps: () => ({}),
+  filter: 'all',
+  sort: 'created',
 })
 
 const isTopicsLoading = computed(() => props.loading || props.loadingMore)
-provide(FORUM_TOPIC_LOADING_KEY, toRef(props, 'loading'))
 </script>
 
 <template>
@@ -60,7 +65,14 @@ provide(FORUM_TOPIC_LOADING_KEY, toRef(props, 'loading'))
       <template #content>
         <slot name="content-before" />
 
-        <ForumTopicMenubar v-if="showMenubar" />
+        <ForumTopicMenubar
+          v-if="showMenubar"
+          :filter="filter"
+          :sort="sort"
+          :loading="isTopicsLoading"
+          @filter-change="onFilterChange?.($event)"
+          @sort-change="onSortChange?.($event)"
+        />
         <Separator
           v-if="showMenubar"
           div

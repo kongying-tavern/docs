@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type { ForumSort } from '~/services/forum/forumRoute'
 import { computed } from 'vue'
 import {
   Select,
@@ -9,7 +9,12 @@ import {
   SelectTrigger,
 } from '@/components/ui/select'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/composables/useForumRoute'
+
+const props = defineProps<{
+  sort: ForumSort
+  loading?: boolean
+}>()
+const emit = defineEmits<{ change: [sort: ForumSort] }>()
 
 const { message } = useLocalized()
 
@@ -18,15 +23,17 @@ const sortLabel = computed(() => [
   ['updated', message.value.forum.header.sort.updated],
 ])
 
-const { list, navigateSort } = useForumRoute()
-const sort = computed<ForumAPI.SortMethod>({
-  get: () => list.value?.sort ?? 'created',
-  set: value => void navigateSort(value),
+const sort = computed<ForumSort>({
+  get: () => props.sort,
+  set: (value) => {
+    if (value !== props.sort)
+      emit('change', value)
+  },
 })
 </script>
 
 <template>
-  <Select v-model="sort">
+  <Select v-model="sort" :disabled="props.loading">
     <SelectTrigger
       class="font-size-3 c-[--vp-c-text-2] mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
     >

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ForumAPI } from '@/apis/forum/api'
-import { computed, inject } from 'vue'
+import type { ForumFilter } from '~/services/forum/forumRoute'
+import { computed } from 'vue'
 import {
   Select,
   SelectContent,
@@ -9,13 +9,17 @@ import {
   SelectTrigger,
 } from '@/components/ui/select'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/composables/useForumRoute'
-import { FORUM_TOPIC_LOADING_KEY } from './shared'
+
+const props = defineProps<{
+  filter: ForumFilter
+  loading?: boolean
+}>()
+const emit = defineEmits<{ change: [filter: ForumFilter] }>()
 
 const { message } = useLocalized()
 
 const menuItems = computed<{
-  id: ForumAPI.FilterBy
+  id: ForumFilter
   label: string
 }[]>(() => [
   {
@@ -36,12 +40,13 @@ const menuItems = computed<{
   },
 ])
 
-const { list, navigateFilter } = useForumRoute()
-const filter = computed<ForumAPI.FilterBy>({
-  get: () => list.value?.filter ?? 'all',
-  set: value => void navigateFilter(value),
+const filter = computed<ForumFilter>({
+  get: () => props.filter,
+  set: (value) => {
+    if (value !== props.filter)
+      emit('change', value)
+  },
 })
-const loading = inject(FORUM_TOPIC_LOADING_KEY, computed(() => false))
 
 const currentLabel = computed(() => {
   const item = menuItems.value.find(i => i.id === filter.value)
@@ -51,7 +56,7 @@ const currentLabel = computed(() => {
 
 <template>
   <div class="flex gap-4 items-center">
-    <Select v-model="filter" :disabled="loading">
+    <Select v-model="filter" :disabled="props.loading">
       <SelectTrigger
         variant="ghost"
         class="font-size-3 mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"

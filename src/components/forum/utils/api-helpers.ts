@@ -16,27 +16,6 @@ export function processCommentsResponse(
   })
 }
 
-// Request parameter builders
-export function buildTopicsQueryParams(options: {
-  page?: number
-  pageSize?: number
-  sort?: ForumAPI.SortMethod
-  filter?: ForumAPI.FilterBy
-  creator?: string | null
-  searchQuery?: string
-}): ForumAPI.GetTopicsParams {
-  const { page = 1, pageSize = 20, sort = 'created', filter, creator, searchQuery } = options
-
-  return {
-    current: page || 1,
-    pageSize: pageSize || 20,
-    sort: sort || 'created',
-    creator: creator || null,
-    filter: ['closed', 'all'].includes(filter || '') ? null : filter || null,
-    q: searchQuery || undefined,
-  }
-}
-
 export function buildCommentsQueryParams(options: {
   topicId: string
   page?: number

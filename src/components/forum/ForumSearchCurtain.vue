@@ -1,24 +1,18 @@
 <script setup lang="ts">
 import { useScrollLock, useWindowScroll } from '@vueuse/core'
 import { useData } from 'vitepress'
-import { computed, onUnmounted, ref, watchPostEffect } from 'vue'
-import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
+import { computed, onUnmounted, ref, watch, watchPostEffect } from 'vue'
+import { useForumRoute } from '~/composables/useForumRoute'
 import ForumSearchbox from './ForumSearchbox.vue'
-import ForumSearchSuggestions from './ForumSearchSuggestions.vue'
 import { flattenWithTags } from './utils'
 
 const emits = defineEmits(['close'])
-const suggestionTopics = useForumTopicsQuery({
-  filter: 'all',
-  sort: 'created',
-  q: '',
-  creator: null,
-})
+const { list, submitSearch } = useForumRoute()
 const isLocked = useScrollLock(import.meta.env.SSR ? null : document.body, true)
 const { y } = useWindowScroll()
 const { theme } = useData()
 const isTop = computed(() => y.value === 0)
-const searchQuery = ref('')
+const searchQuery = ref(list.value?.q ?? '')
 const quickLinkList = flattenWithTags(theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1))
 
 onUnmounted(() => {
@@ -26,6 +20,13 @@ onUnmounted(() => {
 })
 
 const classes = ref<Record<string, boolean>>({})
+
+watch(() => list.value?.q ?? '', q => searchQuery.value = q)
+
+async function handleSearch(query: string) {
+  if (query === (list.value?.q ?? '') || await submitSearch(query))
+    emits('close')
+}
 
 watchPostEffect(() => {
   classes.value = {
@@ -45,24 +46,8 @@ watchPostEffect(() => {
     />
     <div class="wrapper bg-[var(--vp-c-bg)] h-fit min-h-100% transition-height relative md:min-h-30%">
       <div class="curtain-content pt-8 container h-auto w-full">
-        <ForumSearchbox v-model:query="searchQuery" @search="emits('close')" />
-        <!-- Debug: Always show for testing -->
-        <!-- <div v-if="searchQuery.length > 0" class="debug-info">
-          <p>Query: "{{ searchQuery }}" (length: {{ searchQuery.length }})</p>
-          <p>Topics count: {{ suggestionForumData.data.value?.length || 0 }}</p>
-        </div> -->
-
-        <ForumSearchSuggestions
-          v-if="searchQuery.length > 0"
-          v-motion-slide-visible-top
-          class="pb-64px pt-40px"
-          :search-query="searchQuery"
-          :topic-data="suggestionTopics.rows.value"
-          @select="emits('close')"
-        />
-
+        <ForumSearchbox v-model:query="searchQuery" @submit="handleSearch" />
         <div
-          v-else
           v-motion-slide-visible-top
           class="pb-64px pt-40px flex flex-col h-auto w-full"
         >

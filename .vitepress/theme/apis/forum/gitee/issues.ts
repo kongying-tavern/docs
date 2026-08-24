@@ -1,4 +1,5 @@
 import type ForumAPI from '../api'
+import type { SearchParamValue } from './types'
 import { buildFormData } from '@/apis/utils'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { apiCall } from '.'
@@ -16,6 +17,11 @@ export type TopicUpdateOutcome
     | { status: 'partial', topic: ForumAPI.Topic, error: Error }
     | { status: 'unknown', error: Error }
 
+export interface TopicListRequest {
+  endpoint: string
+  searchParams: Record<string, SearchParamValue>
+}
+
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 
 export async function getTopic(number: string): Promise<ForumAPI.Topic> {
@@ -32,24 +38,22 @@ export async function getTopics(
   state?: ForumAPI.TopicState,
   search?: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  if (search)
-    return searchTopics(query, search)
-
   // Separate the requests to prevent comments timeout from affecting issues
+  const request = buildTopicListRequest(query, state, search)
   const { data: issues, pagination } = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
+    request.endpoint,
     {
-      searchParams: {
-        state: state || 'open',
-        page: query.current,
-        sort: query.sort || 'created',
-        per_page: query.pageSize,
-        creator: query.creator ?? undefined,
-        ...processLabels(query.filter),
-      },
+      searchParams: request.searchParams,
     },
   )
+
+  if (search) {
+    return {
+      data: issues.map(val => normalizeIssue(val)),
+      ...pagination,
+    }
+  }
 
   // Try to fetch comments, but don't let it fail the main request
   let comments: GITEE.CommentList = []
@@ -152,29 +156,38 @@ export async function getTopicComments(
   }
 }
 
-export async function searchTopics(
+export function buildTopicListRequest(
   query: ForumAPI.Query,
-  q: string,
-): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  const { data: issueList, pagination } = await apiCall<GITEE.IssueList>(
-    'get',
-    `search/issues`,
-    {
+  state: ForumAPI.TopicState = 'open',
+  search?: string,
+): TopicListRequest {
+  const labels = processLabels(query.filter).labels
+  if (search) {
+    return {
+      endpoint: 'search/issues',
       searchParams: {
         repo: `${OWNER}/${FEEDBACK_REPO}`,
-        state: 'open',
-        q,
+        state,
+        q: search,
         sort: `${query.sort}_at`,
         page: query.current,
         per_page: query.pageSize,
-        ...processLabels(query.filter),
+        author: query.creator ?? undefined,
+        label: labels,
       },
-    },
-  )
+    }
+  }
 
   return {
-    data: issueList.map(val => normalizeIssue(val)),
-    ...pagination,
+    endpoint: `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
+    searchParams: {
+      state,
+      page: query.current,
+      sort: query.sort || 'created',
+      per_page: query.pageSize,
+      creator: query.creator ?? undefined,
+      ...processLabels(query.filter),
+    },
   }
 }
 

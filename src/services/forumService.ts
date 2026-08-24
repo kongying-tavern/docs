@@ -1,18 +1,11 @@
 import type ForumAPI from '@/apis/forum/api'
+import type { ForumTopicListParams } from '~/services/forum/forumQueryContracts'
 import { issues } from '@/apis/forum/gitee'
 import { FORUM_CONFIG } from '~/components/forum/constants'
-import {
-  buildTopicsQueryParams,
-} from '~/components/forum/utils/api-helpers'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 
-export interface ForumQueryParams {
+export interface ForumQueryParams extends ForumTopicListParams {
   page?: number
-  pageSize?: number
-  sort?: ForumAPI.SortMethod
-  filter?: ForumAPI.FilterBy
-  creator?: string | null
-  searchQuery?: string | string[]
 }
 
 export interface ForumLoadResult {
@@ -27,62 +20,43 @@ export interface ForumServiceOptions {
   onSuccess?: (result: ForumLoadResult) => void
 }
 
-export class ForumService {
-  private static typeLabelGetter = getTopicTypeLabelGetter()
+export interface ForumProviderRequest {
+  query: ForumAPI.Query
+  state: ForumAPI.TopicState
+  search?: string
+}
 
+const typeLabelGetter = getTopicTypeLabelGetter()
+
+export function buildForumProviderRequest(queryParams: ForumQueryParams): ForumProviderRequest {
+  const filter = queryParams.filter || 'all'
+  const query: ForumAPI.Query = {
+    current: queryParams.page || 1,
+    pageSize: queryParams.pageSize || FORUM_CONFIG.DEFAULT_PAGE_SIZE,
+    sort: queryParams.sort || 'created',
+    creator: queryParams.creator?.trim() || null,
+    filter: filter === 'bug'
+      ? typeLabelGetter.getLabel('bug') || 'TYP-BUG'
+      : filter === 'feat'
+        ? typeLabelGetter.getLabel('feat') || 'TYP-FEAT'
+        : null,
+  }
+
+  return {
+    query,
+    state: filter === 'closed' ? 'progressing' : 'open',
+    search: queryParams.q.trim() || undefined,
+  }
+}
+
+export class ForumService {
   static async getTopics(
     queryParams: ForumQueryParams,
     options: ForumServiceOptions = {},
   ): Promise<ForumLoadResult> {
     try {
-      const params = buildTopicsQueryParams({
-        page: queryParams.page || 1,
-        pageSize: queryParams.pageSize || FORUM_CONFIG.DEFAULT_PAGE_SIZE,
-        sort: queryParams.sort || 'created',
-        filter: queryParams.filter || 'all',
-        creator: queryParams.creator || null,
-        searchQuery: queryParams.searchQuery ? String(queryParams.searchQuery) : undefined,
-      })
-
-      const filterValue = queryParams.filter || 'all'
-      // Map filter to API state and filter parameters
-      let state: ForumAPI.TopicState = 'open'
-      let finalFilter: string | string[] | null = null
-
-      if (filterValue === 'closed') {
-        // Show progressing topics (已结反馈)
-        state = 'progressing'
-        finalFilter = null
-      }
-      else if (filterValue === 'bug') {
-        // Show open topics with BUG type
-        state = 'open'
-        finalFilter = this.typeLabelGetter.getLabel('bug') || 'TYP-BUG'
-      }
-      else if (filterValue === 'feat') {
-        // Show open topics with FEAT type
-        state = 'open'
-        finalFilter = this.typeLabelGetter.getLabel('feat') || 'TYP-FEAT'
-      }
-      else {
-        // Show all open topics (filterValue === 'all')
-        state = 'open'
-        finalFilter = null
-      }
-
-      const finalQueryParams: ForumAPI.Query = {
-        current: params.current,
-        pageSize: params.pageSize,
-        sort: params.sort,
-        creator: params.creator || null,
-        filter: finalFilter,
-      }
-
-      const response = await issues.getTopics(
-        finalQueryParams,
-        state,
-        queryParams.searchQuery ? String(queryParams.searchQuery) : undefined,
-      )
+      const request = buildForumProviderRequest(queryParams)
+      const response = await issues.getTopics(request.query, request.state, request.search)
 
       const result: ForumLoadResult = {
         topics: response.data || [],

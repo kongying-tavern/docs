@@ -1,28 +1,17 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/composables/useForumRoute'
 
-const emits = defineEmits(['search'])
-const modelValue = defineModel<string>('query')
+const emit = defineEmits<{ submit: [query: string] }>()
+const modelValue = defineModel<string>('query', { required: true })
 const { message } = useLocalized()
-const { list, submitSearch } = useForumRoute()
-const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
 
-async function handleSearch() {
-  const query = (modelValue.value || '').trim()
-  await submitSearch(query)
-  emits('search')
+function handleSearch() {
+  emit('submit', modelValue.value.trim())
 }
-
-onMounted(() => {
-  if (!modelValue.value && list.value?.q)
-    modelValue.value = list.value.q
-})
 </script>
 
 <template>
-  <form class="p-r-4 w-full">
+  <form class="p-r-4 w-full" @submit.prevent="handleSearch">
     <label
       for="default-search"
       class="text-sm text-gray-900 font-medium mb-2 sr-only dark:text-white"
@@ -37,14 +26,12 @@ onMounted(() => {
       </div>
       <input
         id="default-search"
-        ref="searchInput"
         v-model.trim="modelValue"
         type="search"
         class="text-4 c-[var(--vp-c-text-1)] py-4 pl-8 rounded-full w-full block"
         :placeholder="message.forum.header.search.placeholder"
         maxlength="50"
         required
-        @keydown.enter.prevent="handleSearch"
         @search="handleSearch"
       >
     </div>

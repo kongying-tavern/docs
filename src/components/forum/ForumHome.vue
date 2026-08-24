@@ -6,7 +6,7 @@ import BaseForumPage from './base/BaseForumPage.vue'
 import ForumCarouselBento from './ForumCarouselBento.vue'
 import ForumTopicSearchInfo from './ForumTopicSearchInfo.vue'
 
-const { list } = useForumRoute()
+const { list, navigateFilter, navigateSort } = useForumRoute()
 const topics = useForumTopicsQuery(computed(() => ({
   filter: list.value?.filter ?? 'all',
   sort: list.value?.sort ?? 'created',
@@ -31,6 +31,10 @@ const loadStateMessage = computed(() => {
     :load-more="topics.loadMore"
     :refresh-data="topics.refetch"
     :load-state-message="loadStateMessage"
+    :filter="list?.filter ?? 'all'"
+    :sort="list?.sort ?? 'created'"
+    :on-filter-change="navigateFilter"
+    :on-sort-change="navigateSort"
   >
     <template #header>
       <ForumCarouselBento class="forum-header" :list="pinned.data.value || []" />

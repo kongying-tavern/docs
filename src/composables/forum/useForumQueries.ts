@@ -21,7 +21,6 @@ export function useForumTopicsQuery(params: MaybeRefOrGetter<ForumTopicListParam
       const result = await ForumService.getTopics({
         ...normalized.value,
         page: pageParam,
-        searchQuery: normalized.value.q || undefined,
       })
       return { items: result.topics, total: result.total, totalPage: result.totalPage }
     },
