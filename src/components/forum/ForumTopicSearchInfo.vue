@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { useUrlSearchParams } from '@vueuse/core'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useForumHomeStore } from '~/stores/forum/useForumHomeStore'
 
 const forumData = useForumHomeStore()
-const params = computed(() => useUrlSearchParams('history', {
-  removeFalsyValues: true,
-  removeNullishValues: true,
-}))
+const { list, clearSearch } = useForumRoute()
 
 // 直接访问store属性
 const isSearching = computed(() => forumData.isSearching)
@@ -19,17 +16,14 @@ const { message } = useLocalized()
 
 // 获取当前搜索关键词，优先从URL参数获取
 const currentSearchQuery = computed(() => {
-  return params.value.q || ''
+  return list.value?.q || ''
 })
 
 async function handleUndo() {
   // 清除搜索状态并重新获取数据
   await forumData.searchTopics('')
 
-  // 清除URL参数
-  const newUrl = new URL(window.location.href)
-  newUrl.searchParams.delete('q')
-  window.history.replaceState({}, '', newUrl)
+  await clearSearch()
 }
 </script>
 

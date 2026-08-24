@@ -5,6 +5,7 @@ import { computed } from 'vue'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
+import { useForumRoute } from '~/composables/useForumRoute'
 import BentoGridItem from './ForumBento.vue'
 
 const props = defineProps<{
@@ -13,11 +14,7 @@ const props = defineProps<{
 
 const { localeIndex } = useData()
 const { message } = useLocalized()
-
-// Generate link for topics
-function generateTopicLink(topic: ForumAPI.Topic) {
-  return `feedback/topic/${topic.id}`
-}
+const { topicHref } = useForumRoute()
 
 const presetUser = {
   avatar: 'https://yuanshen.site/docs/imgs/common/logo/logo_256.png',
@@ -70,7 +67,7 @@ const sortedList = computed(() => {
       >
         <BentoGridItem
           class="border border-[var(--vp-c-divider)] border-solid"
-          :to="withBase(getLangPath(localeIndex) + ('relativeLink' in topic ? topic.relativeLink : generateTopicLink(topic)))"
+          :to="'relativeLink' in topic ? withBase(getLangPath(localeIndex) + topic.relativeLink) : topicHref(String(topic.id), null)"
         >
           <template #icon>
             <span

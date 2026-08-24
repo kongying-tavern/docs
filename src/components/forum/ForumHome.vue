@@ -5,6 +5,7 @@ import { useData } from 'vitepress'
 import { computed, onMounted, onUnmounted } from 'vue'
 import { data as allPosts } from '~/_data/posts.data'
 import { useBfcacheOptimization } from '~/composables/useBfcacheOptimization'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { fallbackUser } from '~/constants/forum'
 import { useForumHomeStore } from '~/stores/forum/useForumHomeStore'
 
@@ -34,32 +35,6 @@ interface BlogPostAsTopic extends Omit<BlogPost, 'id' | 'content'> {
   relatedComments?: ForumAPI.Comment[] | null
 }
 
-// 组件元数据配置
-defineOptions({
-  meta: {
-    locales: {
-      root: {
-        title: '社区反馈',
-      },
-      ja: {
-        title: 'フィードバック',
-      },
-      en: {
-        title: 'Feedback',
-      },
-    },
-    routeOptions: {
-      type: ['feat', 'closed', 'bug'],
-    },
-    data: {
-      frontmatter: {
-        layout: 'Forum',
-      },
-    },
-    i18n: true,
-  },
-})
-
 const { lang } = useData()
 
 // 根据当前语言过滤博客数据
@@ -72,6 +47,7 @@ const _postsData = computed<BlogPost[]>(() => {
 })
 
 const forumHomeStore = useForumHomeStore()
+const { list } = useForumRoute()
 
 const {
   loadForumData,
@@ -146,13 +122,8 @@ onMounted(async () => {
   setupEventListeners()
   await loadForumData()
 
-  const searchParams = new URLSearchParams(window.location.search)
-  if (searchParams.has('q')) {
-    const query = searchParams.get('q')
-    if (query) {
-      await forumHomeStore.searchTopics(query)
-    }
-  }
+  if (list.value?.q)
+    await forumHomeStore.searchTopics(list.value.q)
 })
 
 onUnmounted(() => {

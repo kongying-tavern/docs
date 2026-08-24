@@ -18,7 +18,6 @@ const MARKDOWN_SYNTAX_REGEX = /([*_]{1,3}|~{2}|`{1,3}|#+|!\[|[\][()>])/g
 const MARKDOWN_LIST_REGEX = /\s*[-+*] /g
 const KEBAB_TO_CAMEL_REGEX = /-([a-z])/g
 const CAMEL_TO_KEBAB_REGEX = /([A-Z])/g
-const URL_PATH_REPLACE_REGEX = /\/[^/]*$/
 
 export function formatForumDate(
   date: string | Date,
@@ -112,22 +111,6 @@ export function formatFileSize(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k))
 
   return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`
-}
-
-// URL formatting utilities
-export function formatTopicUrl(topicId: string, topicType: string = ''): string {
-  const baseUrl = location.origin + location.pathname.replace(URL_PATH_REPLACE_REGEX, '')
-
-  if (topicType === 'POST') {
-    return `${baseUrl}/blog/${topicId}`
-  }
-
-  return `${baseUrl}/feedback/topic/${topicId}`
-}
-
-export function formatUserProfileUrl(username: string): string {
-  const baseUrl = location.origin + location.pathname.replace(URL_PATH_REPLACE_REGEX, '')
-  return `${baseUrl}/feedback/user/${username}`
 }
 
 // Content processing utilities

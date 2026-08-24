@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { useForumData } from '~/composables/useForumData'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useTopicOperations } from '~/composables/useTopicOperations'
 import { SimpleStoreEventHandler } from '~/services/events/SimpleEventManager'
 import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
@@ -14,10 +15,17 @@ import { userPreloader } from '~/services/forum/ForumPreloader'
  */
 export const useForumUserStore = defineStore('forum-user', (): UserForumStore => {
   // 基础状态
-  const sort = ref<ForumAPI.SortMethod>('created')
-  const filter = ref<ForumAPI.FilterBy>('all')
+  const { list, navigateFilter, navigateSort } = useForumRoute()
+  const sort = computed<ForumAPI.SortMethod>({
+    get: () => list.value?.sort ?? 'created',
+    set: value => void navigateSort(value),
+  })
+  const filter = computed<ForumAPI.FilterBy>({
+    get: () => list.value?.filter ?? 'all',
+    set: value => void navigateFilter(value),
+  })
   const isSearching = ref(false)
-  const creator = ref<string | null>(null)
+  const creator = computed(() => list.value?.creator ?? null)
 
   // 用户提交的topics
   const userSubmittedTopics = ref<ForumAPI.Topic[]>([])
@@ -97,8 +105,6 @@ export const useForumUserStore = defineStore('forum-user', (): UserForumStore =>
     isSearching.value = false
     eventHandlers.cleanup()
     forumData.resetState()
-
-    creator.value = username
 
     // 加载用户数据，默认显示所有open状态的topics
     await forumData.refreshData({

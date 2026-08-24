@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMediaQuery, useTitle, useUrlSearchParams } from '@vueuse/core'
+import { useMediaQuery, useTitle } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import LocalNav from '@/components/LocalNav.vue'
@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
+import { useForumRoute } from '~/composables/useForumRoute'
 import OpenFeedbackFormButton from './OpenFeedbackFormButton.vue'
 import { publishTopic } from './utils'
 
@@ -16,7 +17,7 @@ const open = defineModel<boolean>('open-search-curtain', {
 
 const { frontmatter } = useData()
 const { message } = useLocalized()
-const params = useUrlSearchParams()
+const { list } = useForumRoute()
 const pageTitle = useTitle()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 const userAuth = useUserAuthStore()
@@ -65,7 +66,7 @@ function handleButtonClick() {
           v-if="isDesktop"
           class="font-size-12px"
         >
-          {{ open ? message.ui.button.close : params?.q ? params?.q : message.forum.header.search.placeholder }}
+          {{ open ? message.ui.button.close : list?.q || message.forum.header.search.placeholder }}
         </span>
       </Button>
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
+import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
@@ -17,24 +18,15 @@ import { useTopicPageState } from './composables/useTopicPageState'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 
-// 组件元数据配置
-defineOptions({
-  meta: {
-    i18n: true,
-    routeOptions: {
-      type: ['feat', 'closed', 'bug'],
-    },
-  },
-})
-
 const {
   topic,
   loading,
   renderedContent,
-  params,
-  message,
+  topicId,
   backToPreviousPage,
 } = useTopicPageState()
+
+const { userHref } = useForumRoute()
 
 const topicImages = computed(() => {
   if (!topic.value?.content?.images)
@@ -72,7 +64,7 @@ const topicImages = computed(() => {
                   <User
                     size="sm"
                     :name="topic.user.username"
-                    :to="`../user/${topic.user.login}`"
+                    :to="userHref(topic.user.login)"
                     :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
                   />
                 </template>
@@ -130,9 +122,7 @@ const topicImages = computed(() => {
           />
 
           <ForumTopicFooter
-            prev-page-link="./"
             :topic-id="String(topic.id)"
-            :text="message.forum.topic.backToFeedbackForum"
           />
         </div>
 
@@ -143,7 +133,7 @@ const topicImages = computed(() => {
         <ForumCommentArea
           class="mt-8"
           repo="Feedback"
-          :topic-id="params?.id"
+          :topic-id="topicId"
           :topic-author-id="topic?.user.id || -1"
           :comment-count="topic?.commentCount"
         />

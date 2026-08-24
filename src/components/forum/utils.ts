@@ -3,9 +3,6 @@ import { FORM_HASH } from './form/publish-topic-form/config'
 /** Matches @username mentions in text */
 const AT_MENTION_USERNAME_REGEX = /@([a-z0-9]+)(?=\s|$)/gi
 
-/** Matches trailing slashes in paths */
-const TRAILING_SLASHES_REGEX = /\/+$/
-
 export function transformLabelsToArray(labels: GITEE.IssueLabel[]) {
   const arr: string[] = []
   labels.map(val => arr.push(val.name))
@@ -85,23 +82,4 @@ export function publishTopic() {
   }
 
   location.hash = targetHash
-}
-
-export function updateLastPathSegment(newSegment: string, replace = true) {
-  if (!newSegment)
-    return
-
-  const { pathname, search, hash } = window.location
-  const segments = pathname.replace(TRAILING_SLASHES_REGEX, '').split('/')
-
-  if (segments.length === 0 || (segments.length === 1 && segments[0] === ''))
-    segments[0] = newSegment
-  else
-    segments[segments.length - 1] = newSegment
-
-  const newPath = `/${segments.filter(Boolean).join('/')}`
-  const newUrl = `${newPath}${search}${hash}`
-
-  const method = replace ? 'replaceState' : 'pushState'
-  history[method](null, '', newUrl)
 }

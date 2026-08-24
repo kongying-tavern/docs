@@ -3,9 +3,6 @@ import { nextTick } from 'vue'
 /** Matches auto or scroll overflow values */
 const AUTO_SCROLL_REGEX = /auto|scroll/
 
-/** Matches trailing slashes in paths */
-const TRAILING_SLASHES_PATH_REGEX = /\/+$/
-
 // Scroll utilities
 export interface ScrollToOptions {
   element?: Element | string
@@ -193,28 +190,6 @@ export function addGlobalEventListener(
 
 // Re-export from lodash-es to avoid duplication
 export { debounce, throttle } from 'lodash-es'
-
-// URL utilities
-export function updateUrlPath(newSegment: string, replace: boolean = true): void {
-  if (!newSegment)
-    return
-
-  const { pathname, search, hash } = window.location
-  const segments = pathname.replace(TRAILING_SLASHES_PATH_REGEX, '').split('/')
-
-  if (segments.length === 0 || (segments.length === 1 && segments[0] === '')) {
-    segments[0] = newSegment
-  }
-  else {
-    segments[segments.length - 1] = newSegment
-  }
-
-  const newPath = `/${segments.filter(Boolean).join('/')}`
-  const newUrl = `${newPath}${search}${hash}`
-
-  const method = replace ? 'replaceState' : 'pushState'
-  history[method](null, '', newUrl)
-}
 
 export function updateUrlHash(hash: string): void {
   const newHash = hash.startsWith('#') ? hash : `#${hash}`

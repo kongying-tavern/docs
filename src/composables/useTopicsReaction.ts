@@ -1,12 +1,12 @@
 import type { INTER_KNOT } from '@/apis/interknot.site/api'
 import { useMutation } from '@pinia/colada'
 import { createGlobalState, useArrayFind, useDebounceFn } from '@vueuse/core'
-import { withBase } from 'vitepress'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { reactions } from '@/apis/interknot.site'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useForumRoute } from '~/composables/useForumRoute'
 
 export interface TopicReaction {
   id: string
@@ -18,6 +18,7 @@ export const useTopicsReaction = createGlobalState(() => {
   const useTopicsReaction = ref<TopicReaction[]>([])
   const userInfo = useUserInfoStore()
   const { message } = useLocalized()
+  const { topicHref } = useForumRoute()
   const pendingRequests = ref<Set<string>>(new Set())
   const isUpdating = ref(false)
 
@@ -195,7 +196,7 @@ export const useTopicsReaction = createGlobalState(() => {
   }
 
   function getTopicUrl(topicId: string) {
-    return `${location.host}${withBase(`/feedback/topic/${topicId}`)}`
+    return new URL(topicHref(topicId, null), location.origin).href
   }
 
   const isSetReactionSuccess = computed(

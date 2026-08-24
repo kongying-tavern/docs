@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { getLangPath } from '@/utils'
+import { useForumRoute } from '~/composables/useForumRoute'
 import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
 
 const { searchQuery, topicData, limit = 6 } = defineProps<{
@@ -33,12 +32,11 @@ function escapeHtml(text: string): string {
   return text.replace(HTML_UNSAFE_CHARS_REGEX, char => HTML_ESCAPE_MAP[char])
 }
 
-// Get locale information for proper link generation
-const { localeIndex } = useData()
+const { topicHref } = useForumRoute()
 
 // Generate correct topic link with locale and base
 function getTopicLink(topicId: string): string {
-  return `.${getLangPath(localeIndex.value)}feedback/topic/${topicId}`
+  return topicHref(topicId, null)
 }
 
 function highlightText(text: string, keyword: string, scope: number = 20) {

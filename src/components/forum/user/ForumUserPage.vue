@@ -1,37 +1,18 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useData } from 'vitepress'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useForumUserStore } from '~/stores/forum/useForumUserStore'
 import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
-import { updateLastPathSegment } from '../utils'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
-// 组件元数据配置
-defineOptions({
-  meta: {
-    routeOptions: {
-      type: ['feat', 'closed', 'bug'],
-    },
-    data: {
-      frontmatter: {
-        layout: 'Forum',
-      },
-    },
-    i18n: true,
-  },
-})
-
 const forumUserStore = useForumUserStore()
-const userInfo = useUserInfoStore()
 const activeTab = ref<'feedback' | ''>('feedback')
-
-const { params } = useData()
+const { route } = useForumRoute()
 
 // Use storeToRefs to access reactive properties (now that UserStore uses toRef)
 const {
@@ -53,7 +34,7 @@ const {
   loadMoreTopics,
 } = forumUserStore
 
-const username = String(params.value?.id) || userInfo.info?.login
+const username = computed(() => route.value?.name === 'user' ? route.value.username : '')
 
 const renderData = computed(() => {
   // When not searching, show user submitted topics and regular topics
@@ -66,15 +47,10 @@ const renderData = computed(() => {
 const isTopicsLoading = computed(() => loading.value || loadingMore.value)
 
 onMounted(() => {
-  if (!params.value?.id && userInfo.info?.login) {
-    updateLastPathSegment(userInfo.info.login, true)
-  }
-
   // Setup event listeners and load user data
   setupEventListeners()
-  if (username) {
-    loadUserData(username)
-  }
+  if (username.value)
+    loadUserData(username.value)
 })
 
 onUnmounted(() => {

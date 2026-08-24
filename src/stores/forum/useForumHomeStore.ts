@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 
 import { useForumCacheManager } from '~/composables/useForumCacheManager'
 import { useForumData } from '~/composables/useForumData'
-import { usePathParam } from '~/composables/usePathParam'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useOptimizedTopicList } from '~/composables/useStorePerformanceOptimizer'
 import { useTopicOperations } from '~/composables/useTopicOperations'
 
@@ -14,11 +14,14 @@ import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 import { forumPreloader } from '~/services/forum/ForumPreloader'
 
 export const useForumHomeStore = defineStore('forum-home', (): ForumStore => {
-  const sort = ref<ForumAPI.SortMethod>('created')
-  const filter = usePathParam<ForumAPI.FilterBy>('type', {
-    defaultValue: 'all',
-    validValues: ['all', 'bug', 'feat', 'closed'],
-    history: 'push',
+  const { list, navigateFilter, navigateSort } = useForumRoute()
+  const sort = computed<ForumAPI.SortMethod>({
+    get: () => list.value?.sort ?? 'created',
+    set: value => void navigateSort(value),
+  })
+  const filter = computed<ForumAPI.FilterBy>({
+    get: () => list.value?.filter ?? 'all',
+    set: value => void navigateFilter(value),
   })
   const isSearching = ref(false)
   const userSubmittedTopics = ref<ForumAPI.Topic[]>([])

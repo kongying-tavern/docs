@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { PhotoSwipe } from '@/components/ui/photoswipe'
+import { useForumRoute } from '~/composables/useForumRoute'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicComment } from './composables/useTopicComment'
@@ -26,6 +27,8 @@ const emit = defineEmits<{
   'comment:click': [author: ForumAPI.User]
 }>()
 
+const { userHref } = useForumRoute()
+
 const {
   content,
   role,
@@ -45,7 +48,7 @@ function handleCommentClick(author: ForumAPI.User): void {
     <div v-if="props.size !== 'small'" class="mr-2 w-[64px]">
       <ForumUserHoverCard :user="props.commentData.author">
         <template #trigger>
-          <a class="cursor-pointer" :href="`../user/${props.commentData.author.login}`">
+          <a class="cursor-pointer" :href="userHref(props.commentData.author.login)">
             <Avatar :src="props.commentData.author.avatar" :alt="props.commentData.author.username" :size="COMMENT_STYLES[props.size].avatarSize" />
           </a>
         </template>
@@ -55,7 +58,7 @@ function handleCommentClick(author: ForumAPI.User): void {
       <div v-if="props.size !== 'small'" class="title flex" :class="COMMENT_STYLES[props.size].header">
         <ForumUserHoverCard :user="props.commentData.author">
           <template #trigger>
-            <a class="font-size-3.5" :href="`../user/${props.commentData.author.login}`">
+            <a class="font-size-3.5" :href="userHref(props.commentData.author.login)">
               {{ props.commentData.author.username }}
             </a>
           </template>

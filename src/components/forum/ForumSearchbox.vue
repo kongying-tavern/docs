@@ -1,45 +1,29 @@
 <script setup lang="ts">
-import { inject, watch } from 'vue'
+import { inject, onMounted, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useSearchInput } from '~/composables/useSearchInput'
+import { useForumRoute } from '~/composables/useForumRoute'
 
 const emits = defineEmits(['search'])
 const modelValue = defineModel<string>('query')
 const { message } = useLocalized()
+const { list, submitSearch } = useForumRoute()
+const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
 
 // Get search function from the parent component context
 const searchTopics = inject<(query: string) => void | Promise<void>>('searchTopics', async () => {
   // no-op fallback
 })
 
-const { searchInput, searchQuery } = useSearchInput({
-  autoSearch: searchTopics,
-})
-
 async function handleSearch() {
+  const query = (modelValue.value || '').trim()
+  await submitSearch(query)
   emits('search')
-  if (searchQuery.value.trim()) {
-    searchTopics(searchQuery.value)
-  }
-  else {
-    // Clear search when query is empty
-    searchTopics('')
-  }
+  await searchTopics(query)
 }
 
-// Two-way sync between internal searchQuery and external modelValue
-watch(searchQuery, (newVal) => {
-  modelValue.value = newVal
-}, {
-  immediate: true,
-})
-
-watch(modelValue, (newVal) => {
-  if (newVal !== searchQuery.value) {
-    searchQuery.value = newVal || ''
-  }
-}, {
-  immediate: true,
+onMounted(() => {
+  if (!modelValue.value && list.value?.q)
+    modelValue.value = list.value.q
 })
 </script>
 
@@ -60,7 +44,7 @@ watch(modelValue, (newVal) => {
       <input
         id="default-search"
         ref="searchInput"
-        v-model.trim="searchQuery"
+        v-model.trim="modelValue"
         type="search"
         class="text-4 c-[var(--vp-c-text-1)] py-4 pl-8 rounded-full w-full block"
         :placeholder="message.forum.header.search.placeholder"

@@ -8,16 +8,18 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { simpleEventManager } from '~/services/events/SimpleEventManager'
 import { renderForumTopic } from '~/services/forum/forumContentRenderer'
 import { useForumTopicStore } from '~/stores/forum/useForumTopicStore'
-import { PREVIOUS_ROUTE_KEY } from '../../composables/useNavigateToTopic'
 import { setPageTitle } from '../../utils'
 
 export function useTopicPageState() {
   const topicTypeMap = getTopicTypeMap()
   const forumTopicStore = useForumTopicStore()
-  const { params, localeIndex } = useData()
+  const { localeIndex } = useData()
+  const { route } = useForumRoute()
+  const topicId = computed(() => route.value?.name === 'topic' ? route.value.topicId : '')
   const { go } = useRouter()
   const { message } = useLocalized()
   const queryCache = useQueryCache()
@@ -29,9 +31,9 @@ export function useTopicPageState() {
     error,
     refetch,
   } = useQuery({
-    key: () => ['topic', params.value?.id ?? ''] as const,
-    query: () => issues.getTopic(params.value?.id),
-    enabled: () => !!params.value?.id,
+    key: () => ['topic', topicId.value] as const,
+    query: () => issues.getTopic(topicId.value),
+    enabled: () => !!topicId.value,
     staleTime: 1000 * 60, // 1分钟内不重新请求
   })
 
@@ -47,14 +49,14 @@ export function useTopicPageState() {
     // Listen for topic deletion, close, or hide events
     const handleTopicRemoval = ({ id }: { id: string | number }) => {
       // If current topic is removed, navigate back
-      if (String(id) === String(params.value?.id)) {
+      if (String(id) === topicId.value) {
         backToPreviousPage()
       }
     }
 
     // Listen for comment events to update topic data
-    const handleCommentCreated = ({ topicId, comment }: { topicId: string, comment: ForumAPI.Comment }) => {
-      if (String(topicId) === String(params.value?.id) && topic.value) {
+    const handleCommentCreated = ({ topicId: changedTopicId, comment }: { topicId: string, comment: ForumAPI.Comment }) => {
+      if (String(changedTopicId) === topicId.value && topic.value) {
         // Update comment count
         const newCommentCount = (topic.value.commentCount || 0) + 1
 
@@ -63,7 +65,7 @@ export function useTopicPageState() {
         const newRelatedComments = [comment, ...currentRelatedComments].slice(0, 3)
 
         // Update the topic data via cache
-        queryCache.setQueryData(['topic', params.value?.id ?? ''], {
+        queryCache.setQueryData(['topic', topicId.value], {
           ...topic.value,
           commentCount: newCommentCount,
           relatedComments: newRelatedComments,
@@ -71,8 +73,8 @@ export function useTopicPageState() {
       }
     }
 
-    const handleCommentDeleted = ({ topicId, commentId }: { topicId: string, commentId: string | number }) => {
-      if (String(topicId) === String(params.value?.id) && topic.value) {
+    const handleCommentDeleted = ({ topicId: changedTopicId, commentId }: { topicId: string, commentId: string | number }) => {
+      if (String(changedTopicId) === topicId.value && topic.value) {
         // Update comment count
         const newCommentCount = Math.max((topic.value.commentCount || 0) - 1, 0)
 
@@ -81,7 +83,7 @@ export function useTopicPageState() {
         const newRelatedComments = currentRelatedComments.filter(c => c.id !== commentId)
 
         // Update the topic data via cache
-        queryCache.setQueryData(['topic', params.value?.id ?? ''], {
+        queryCache.setQueryData(['topic', topicId.value], {
           ...topic.value,
           commentCount: newCommentCount,
           relatedComments: newRelatedComments,
@@ -107,8 +109,8 @@ export function useTopicPageState() {
   // Pre-fill with cached data if available from topic store
   const targetTopicData = forumTopicStore.topicDetail
 
-  if (targetTopicData && targetTopicData.id === params.value?.id) {
-    queryCache.setQueryData(['topic', params.value?.id ?? ''], targetTopicData)
+  if (targetTopicData && String(targetTopicData.id) === topicId.value) {
+    queryCache.setQueryData(['topic', topicId.value], targetTopicData)
   }
   else if (!import.meta.env.SSR) {
     refetch()
@@ -123,15 +125,7 @@ export function useTopicPageState() {
 
   // Navigation
   function backToPreviousPage() {
-    if (typeof sessionStorage !== 'undefined') {
-      const previousHref = sessionStorage.getItem(PREVIOUS_ROUTE_KEY)
-      if (previousHref) {
-        sessionStorage.removeItem(PREVIOUS_ROUTE_KEY)
-        return go(previousHref)
-      }
-    }
-
-    go(withBase(`${getLangPath(localeIndex.value)}feedback`))
+    window.history.back()
   }
 
   // Setup lifecycle events
@@ -175,8 +169,7 @@ export function useTopicPageState() {
     topic,
     loading,
     renderedContent,
-    params,
-    message,
+    topicId,
     backToPreviousPage,
   }
 }

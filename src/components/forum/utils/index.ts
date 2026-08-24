@@ -32,7 +32,6 @@ export {
   scrollTo,
   throttle,
   updateUrlHash,
-  updateUrlPath,
 } from './dom-utils'
 
 export * from './formatting'

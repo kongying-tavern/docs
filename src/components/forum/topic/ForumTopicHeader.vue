@@ -3,6 +3,7 @@ import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import User from '@/components/ui/User.vue'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>()
 
 const { isOfficial } = useRuleChecks()
+const { userHref } = useForumRoute()
 
 // Computed properties
 const role = computed(() => {
@@ -58,7 +60,7 @@ function handleMenuAction(actionId: string): void {
             class="cursor-pointer"
             size="xs"
             :name="topic.user.username"
-            :to="`./user/${topic.user.login}`"
+            :to="userHref(topic.user.login)"
             :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
             @click="handleUserClick"
           />

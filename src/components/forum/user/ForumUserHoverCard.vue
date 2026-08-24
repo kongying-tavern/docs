@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useQuery } from '@pinia/colada'
-import { useData, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { user as userAPI } from '@/apis/forum/gitee'
 import Avatar from '@/components/ui/Avatar.vue'
@@ -12,7 +11,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
-import { getLangPath } from '@/utils'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
@@ -25,8 +24,8 @@ const { user, userId } = defineProps<{
 if (!user && !userId)
   throw new Error('Must contain any of the two parameters')
 
-const { localeIndex } = useData()
 const { message } = useLocalized()
+const { userHref } = useForumRoute()
 
 const userInfo = ref<ForumAPI.User | null>(user || null)
 
@@ -44,7 +43,7 @@ watch(userData, (newVal) => {
 
 const { isOfficial } = useRuleChecks()
 const role = computed(() => (isOfficial(userInfo.value?.id || 0).value ? 'official' : null))
-const href = computed(() => withBase(`${getLangPath(localeIndex.value)}feedback/user/${userInfo.value?.login}`))
+const href = computed(() => userHref(userInfo.value?.login || ''))
 
 function openUserProfilePage() {
   window.open(href.value, userInfo.value?.login)
