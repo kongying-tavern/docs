@@ -4,7 +4,6 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumViewMode } from '~/composables/useForumViewMode'
-import ForumTopicReactionButton from './ForumTopicReactionButton.vue'
 import ForumTopicTypeBadge from './ui/ForumTopicTypeBadge.vue'
 
 const { topicData } = defineProps<{
@@ -33,8 +32,8 @@ function handleCommentClick() {
 <template>
   <div class="font-size-3 mr-2 flex w-full justify-between">
     <div class="topic-info-list flex cursor-default items-center">
-      <ForumTopicReactionButton class="mr-2 important:h-32px" :topic-id="String(topicData.id)" />
       <Button
+        type="button"
         variant="outline"
         :disabled="isClosedComment"
         :class="{ 'cursor-default': isClosedComment, 'important:bg-transparent': isClosedComment }"

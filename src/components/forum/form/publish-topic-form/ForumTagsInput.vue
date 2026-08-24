@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { useVModel } from '@vueuse/core'
-import { ComboboxRoot, PopoverPortal } from 'radix-vue'
 import {
   Command,
   CommandEmpty,
@@ -64,7 +63,7 @@ const {
 
 <template>
   <Popover>
-    <PopoverTrigger class="w-full">
+    <PopoverTrigger as-child>
       <TagsInput
         class="px-0 border vp-border-input gap-0 min-h-42px w-full"
         v-bind="$attrs"
@@ -85,45 +84,41 @@ const {
         <TagsInputInput class="px-3 w-full" @keydown.enter.prevent />
       </TagsInput>
     </PopoverTrigger>
-    <PopoverPortal>
-      <PopoverContent
-        class="text-popover-foreground mt-2 outline-none border rounded-md bg-popover w-[--radix-popper-anchor-width] shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
-      >
-        <ComboboxRoot>
-          <Command>
-            <CommandInput
-              :disabled="isDisabled"
-              :placeholder="
-                isDisabled
-                  ? message.forum.publish.tagsInput.maxTagsLimit
-                  : message.forum.publish.tagsInput.searchTags
-              "
-            />
-            <CommandSeparator />
-            <CommandList>
-              <CommandEmpty>
-                {{ message.forum.publish.tagsInput.noResultsFound }}
-              </CommandEmpty>
+    <PopoverContent
+      class="text-popover-foreground mt-2 outline-none border rounded-md bg-popover w-[--reka-popover-trigger-width] shadow-md"
+    >
+      <Command>
+        <CommandInput
+          :disabled="isDisabled"
+          :placeholder="
+            isDisabled
+              ? message.forum.publish.tagsInput.maxTagsLimit
+              : message.forum.publish.tagsInput.searchTags
+          "
+        />
+        <CommandSeparator />
+        <CommandList>
+          <CommandEmpty>
+            {{ message.forum.publish.tagsInput.noResultsFound }}
+          </CommandEmpty>
 
-              <CommandGroup
-                v-for="item in tagList"
-                :key="item.heading"
-                :heading="item.heading"
-              >
-                <CommandItem
-                  v-for="tag in item.list"
-                  :key="tag"
-                  :value="getLocalizedTagName(tag)"
-                  :disabled="isDisabled"
-                  @select.prevent="handleSelect(tag)"
-                >
-                  {{ getLocalizedTagName(tag) }}
-                </CommandItem>
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </ComboboxRoot>
-      </PopoverContent>
-    </PopoverPortal>
+          <CommandGroup
+            v-for="item in tagList"
+            :key="item.heading"
+            :heading="item.heading"
+          >
+            <CommandItem
+              v-for="tag in item.list"
+              :key="tag"
+              :value="getLocalizedTagName(tag)"
+              :disabled="isDisabled"
+              @select.prevent="handleSelect(tag)"
+            >
+              {{ getLocalizedTagName(tag) }}
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    </PopoverContent>
   </Popover>
 </template>

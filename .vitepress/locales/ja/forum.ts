@@ -20,6 +20,7 @@ const forum: CustomConfig['forum'] = {
     showMore: 'もっと見る',
     backToFeedbackForum: 'フォーラムに戻る',
     menu: {
+      moreActions: 'その他の操作',
       giteeLink: 'Giteeリンク',
       toOriginal: '元のテキストに移動',
       hideFeedback: {

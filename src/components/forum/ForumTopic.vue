@@ -35,19 +35,9 @@ const menu = computed(() => {
 // Topic interaction logic
 const {
   inReply,
-  toPostDetailPage,
+  detailHref,
   handleToggleCommentInput,
-  handleTopicClick,
 } = useTopicInteraction(topic)
-
-// Event handlers
-function handleContentClick(): void {
-  handleTopicClick()
-}
-
-function handleReadMoreClick(): void {
-  toPostDetailPage()
-}
 </script>
 
 <template>
@@ -67,15 +57,10 @@ function handleReadMoreClick(): void {
       <!-- Topic Content and Media -->
       <div :class="isCompactMode ? 'flex w-full justify-between items-start flex-nowrap' : 'block'">
         <!-- Content Section -->
-        <div
-          class="cursor-pointer"
-          :class="isCompactMode ? 'max-w-[calc(100%-100px)] overflow-hidden flex-1 min-w-0' : ''"
-          @click="handleContentClick"
-        >
+        <div :class="isCompactMode ? 'max-w-[calc(100%-100px)] overflow-hidden flex-1 min-w-0' : ''">
           <ForumTopicContent
             :topic="topic"
-            @content:click="handleContentClick"
-            @read-more:click="handleReadMoreClick"
+            :detail-href="detailHref()"
           />
 
           <!-- Translator (Card Mode Only) -->
@@ -154,16 +139,8 @@ function handleReadMoreClick(): void {
 </template>
 
 <style lang="scss" scoped>
-.forum-topic-item:not(.ANN):hover .cursor-pointer h4 p {
+.forum-topic-item:not(.ANN):hover .topic-detail-link {
   text-decoration: underline;
-}
-
-.forum-topic-item:not(.ANN) .cursor-pointer {
-  cursor: pointer;
-}
-
-.forum-topic-item:has(.ANN) .cursor-pointer {
-  cursor: default;
 }
 
 @keyframes fade-in {

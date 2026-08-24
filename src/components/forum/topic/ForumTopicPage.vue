@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumAside from '../ForumAside.vue'
@@ -28,6 +29,7 @@ const {
   backToPreviousPage,
 } = useTopicPageState()
 
+const { message } = useLocalized()
 const { userHref } = useForumRoute()
 
 const topicImages = computed(() => {
@@ -55,11 +57,13 @@ const topicImages = computed(() => {
           <div class="flex w-full items-center justify-between">
             <div class="text-14 flex flex-wrap gap-[0.25rem] min-w-0 items-center relative">
               <Button
+                type="button"
                 variant="ghost"
+                :aria-label="message.forum.topic.backToPrevPage"
                 class="mr-1 rounded-full bg-[var(--vp-c-bg-alt)] flex w-36px items-center max-sm:hidden"
                 @click="backToPreviousPage()"
               >
-                <span class="i-lucide-arrow-left icon-btn" />
+                <span class="i-lucide-arrow-left icon-btn" aria-hidden="true" />
               </Button>
               <ForumUserHoverCard :user="topic.user">
                 <template #trigger>

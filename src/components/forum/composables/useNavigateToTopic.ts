@@ -8,23 +8,27 @@ import { useForumRoute } from '~/composables/useForumRoute'
 export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | string) {
   const router = useRouter()
   const { localeIndex } = useData()
-  const { navigate } = useForumRoute()
+  const { topicHref } = useForumRoute()
 
   const isPost = computed(() => isString(topic) ? false : topic?.type === 'POST')
 
-  async function toPostDetailPage(hash?: string): Promise<void> {
+  function detailHref(hash?: string): string {
     if (isPost.value) {
       const path = `blog/posts/${(topic as ForumAPI.Post).path}`
-      await router.go(withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`))
-      return
+      return withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`)
     }
 
     const topicId = String(isString(topic) ? topic : topic.id)
-    await navigate({ name: 'topic', locale: localeIndex.value, topicId }, hash ?? null)
+    return topicHref(topicId, hash ?? null)
+  }
+
+  async function toPostDetailPage(hash?: string): Promise<void> {
+    await router.go(detailHref(hash))
   }
 
   return {
     isPost,
+    detailHref,
     toPostDetailPage,
   }
 }

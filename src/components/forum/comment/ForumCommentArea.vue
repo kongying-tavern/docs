@@ -41,7 +41,7 @@ const {
   canLoadMoreComment,
 } = useCommentAreaState(props)
 
-const { toPostDetailPage } = useNavigateToTopic(props.topicId)
+const { detailHref } = useNavigateToTopic(props.topicId)
 
 // Template refs and UI state
 const commentArea = useTemplateRef('commentArea')
@@ -144,13 +144,13 @@ onUnmounted(cleanup)
           :text="loadStateMessage"
         />
 
-        <p
+        <a
           v-if="canLoadMoreComment && inline"
           class="font-size-3 c-[var(--vp-c-text-3)] vp-link text-center w-full cursor-pointer"
-          @click="toPostDetailPage()"
+          :href="detailHref('reply')"
         >
-          查看更多评论
-        </p>
+          {{ message.forum.comment.loadMoreComment }}
+        </a>
       </div>
       <Separator
         v-if="(currentCommentPage === 1 && commentLoading) && !inline"

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll } from '@vueuse/core'
-import { onBeforeUpdate, shallowRef } from 'vue'
 import ForumTopic from './ForumTopic.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
@@ -17,18 +16,6 @@ const {
   loading?: boolean
   canLoadMore?: boolean
 }>()
-
-const itemStaggers = shallowRef(new Map<string, number>())
-
-onBeforeUpdate(() => {
-  const map = new Map(itemStaggers.value)
-  let stagger = map.size
-  for (const item of data) {
-    if (!map.has(item.id))
-      map.set(item.id, stagger++)
-  }
-  itemStaggers.value = map
-})
 
 // useInfiniteScroll should be called at setup top level, not inside onMounted
 if (loadMore) {
@@ -55,7 +42,6 @@ if (loadMore) {
       <li
         v-for="(item, index) in data"
         :key="item.id"
-        :style="{ '--i': itemStaggers.get(item.id) ?? index }"
       >
         <ForumTopic :topic="item" />
         <Separator v-if="index < data.length - 1" class="h-1px" />
@@ -75,9 +61,8 @@ if (loadMore) {
 <style scoped>
 .fade-enter-active {
   transition:
-    transform 1120ms cubic-bezier(0.23, 1, 0.32, 1),
-    opacity 1120ms cubic-bezier(0.23, 1, 0.32, 1);
-  transition-delay: calc(var(--i) * 64ms);
+    transform 200ms ease-out,
+    opacity 200ms ease-out;
 }
 
 .fade-leave-active {
@@ -107,20 +92,16 @@ if (loadMore) {
 }
 
 /* Text content: starts hidden, fades in after the card slides in */
-.fade-enter-from > *,
-.fade-enter-from > * * {
-  opacity: 0;
-  transition: opacity 600ms cubic-bezier(0.23, 1, 0.32, 1);
-  transition-delay: calc(220ms + var(--i) * 190ms);
-}
-
-.fade-enter-to > *,
-.fade-enter-to > * * {
-  opacity: 1;
-}
-
 /* Reordering transition */
 .fade-move {
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter-active,
+  .fade-leave-active,
+  .fade-move {
+    transition: none;
+  }
 }
 </style>

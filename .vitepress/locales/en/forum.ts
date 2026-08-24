@@ -19,6 +19,7 @@ const forum: CustomConfig['forum'] = {
     showMore: 'Show More',
     backToFeedbackForum: 'Back to forum',
     menu: {
+      moreActions: 'More actions',
       giteeLink: 'Gitee Link',
       toOriginal: 'Go To Original',
       hideFeedback: {

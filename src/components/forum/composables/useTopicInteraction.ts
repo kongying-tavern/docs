@@ -6,7 +6,7 @@ import { updateUrlHash } from '../utils/dom-utils'
 import { useNavigateToTopic } from './useNavigateToTopic'
 
 export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
-  const { isPost, toPostDetailPage } = useNavigateToTopic(topic)
+  const { isPost, detailHref, toPostDetailPage } = useNavigateToTopic(topic)
   const { isCompactMode } = useForumViewMode()
 
   // State
@@ -39,13 +39,6 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
     }
   }
 
-  // Content interaction functions
-  function handleTopicClick(): void {
-    if (topic.type !== 'ANN') {
-      toPostDetailPage()
-    }
-  }
-
   return {
     // State
     replyTarget: readonly(replyTarget),
@@ -55,9 +48,9 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
     isPost,
 
     // Actions
+    detailHref,
     toPostDetailPage,
     handleToggleCommentInput,
-    handleTopicClick,
     toggleReply,
   }
 }

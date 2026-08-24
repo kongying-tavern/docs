@@ -11,6 +11,7 @@ const forum: CustomConfig['forum'] = {
     showMore: '显示更多',
     backToFeedbackForum: '返回反馈',
     menu: {
+      moreActions: '更多操作',
       giteeLink: '在Gitee查看',
       toOriginal: '转到原文',
       hideFeedback: {

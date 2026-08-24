@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DropdownMenuContentProps } from 'radix-vue'
+import type { DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { FORUM } from './types'
 import type ForumAPI from '@/apis/forum/api'
@@ -39,12 +39,14 @@ const dropdownMenu = computed(() => providerMenu.value)
   <DropdownMenu v-if="[...menu, ...dropdownMenu].length > 0">
     <DropdownMenuTrigger as-child>
       <Button
+        type="button"
         variant="ghost"
         size="icon"
+        :aria-label="message.forum.topic.menu.moreActions"
         :class="cn('topic-btn-more align-mid h-auto', $props.class)"
       >
         <slot name="trigger">
-          <span class="i-lucide-ellipsis icon-btn bg-[var(--vp-c-text-3)]" />
+          <span class="i-lucide-ellipsis icon-btn bg-[var(--vp-c-text-3)]" aria-hidden="true" />
         </slot>
       </Button>
     </DropdownMenuTrigger>

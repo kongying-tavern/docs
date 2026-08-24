@@ -5,7 +5,6 @@ import {
   useMediaQuery,
 } from '@vueuse/core'
 import { last } from 'lodash-es'
-import { VisuallyHidden } from 'radix-vue'
 import { computed } from 'vue'
 import { toast } from 'vue-sonner'
 import {
@@ -171,11 +170,9 @@ function handleClose(): void {
       :hide-default-close-button="true"
       :class="{ 'animate-switching': inSwitchTabTransition }"
     >
-      <VisuallyHidden>
-        <DialogTitle>
-          {{ message.forum.publish.title }}
-        </DialogTitle>
-      </VisuallyHidden>
+      <DialogTitle class="sr-only">
+        {{ message.forum.publish.title }}
+      </DialogTitle>
 
       <form @submit.prevent="handleFormSubmit">
         <Form />
