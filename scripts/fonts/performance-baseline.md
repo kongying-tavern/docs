@@ -31,7 +31,7 @@ performance.getEntriesByType('resource')
   .filter(n => n.includes('/fonts/'))
 ```
 
-## Chunk inventory (68 chunks, 3 weights)
+## Chunk inventory (72 chunks, 3 weights)
 
 Per-group totals; all `*.woff2` chunks and both generated stylesheets
 (`fonts-subset.css`, `fonts-standard.css`) are gitignored and rebuilt
@@ -40,14 +40,14 @@ font-subset Vite plugin runs the pipeline automatically on dev/build start).
 
 | group | chunks | KiB | min-max KiB |
 | --- | --- | --- | --- |
-| hywenhei_45w.cjk.min | 5 | 263 | 45-62 |
-| hywenhei_45w.cjk.l1 | 9 | 548 | 47-76 |
-| hywenhei_45w.cjk.l2l3 | 8 | 557 | 54-80 |
-| hywenhei_45w.latin | 1 | 8 | 8-8 |
-| hywenhei_45w.latin-ext | 1 | 2 | 2-2 |
-| hywenhei_45w.symbols | 1 | 7 | 7-7 |
-| hywenhei_45w.kana | 1 | 16 | 16-16 |
-| hywenhei_45w.cjk-punct | 1 | 9 | 9-9 |
+| sarasa_gothic_sc.cjk.min | 5 | 265 | 39-63 |
+| sarasa_gothic_sc.cjk.l1 | 9 | 525 | 45-73 |
+| sarasa_gothic_sc.cjk.l2l3 | 11 | 758 | 63-77 |
+| sarasa_gothic_sc.latin | 1 | 20 | 20-20 |
+| sarasa_gothic_sc.latin-ext | 2 | 33 | 12-21 |
+| sarasa_gothic_sc.symbols | 1 | 27 | 27-27 |
+| sarasa_gothic_sc.kana | 1 | 46 | 46-46 |
+| sarasa_gothic_sc.cjk-punct | 1 | 11 | 11-11 |
 | hywenhei_65w.cjk.min | 4 | 203 | 46-58 |
 | hywenhei_65w.cjk.l1 | 9 | 555 | 48-78 |
 | hywenhei_65w.cjk.l2l3 | 8 | 565 | 55-81 |
@@ -64,18 +64,19 @@ font-subset Vite plugin runs the pipeline automatically on dev/build start).
 | hywenhei_85w.kana | 1 | 15 | 15-15 |
 | hywenhei_85w.cjk-punct | 1 | 12 | 12-12 |
 
-Site characters per font: 45w=2313, 65w=1872, 85w=527.
-Source cmap coverage: 45W/65W 10315 glyphs (latin 135/389, latin-ext 24/1162,
-kana 176/271, symbols 114/1312); 85W 33540 glyphs (latin 222, latin-ext 54,
-kana 176, symbols 116).
+Site characters per font: sarasa_gothic_sc=2283, 65w=1871, 85w=527.
+Source cmap coverage: Sarasa Gothic SC 46272 glyphs (latin 287/389,
+latin-ext 726/1162, kana 268/271, symbols 437/1408); 65W 10315 glyphs
+(latin 135, latin-ext 24, kana 176, symbols 114); 85W 33540 glyphs
+(latin 222, latin-ext 54, kana 176, symbols 116).
 
 ## Per-page averages (static, upper bound)
 
 | locale | pages | avg files/page | avg KiB/page | pages fetching cjk.* |
 | --- | --- | --- | --- | --- |
-| en | 40 | 11.3 | 368 | 23/40 |
-| ja | 36 | 22.1 | 881 | 34/36 |
-| zh | 46 | 22.1 | 947 | 45/46 |
+| en | 40 | 11.4 | 389 | 25/40 |
+| ja | 36 | 22.1 | 918 | 33/36 |
+| zh | 46 | 22.0 | 966 | 45/46 |
 
 ## Comparison with the pre-split scheme
 
@@ -86,15 +87,19 @@ byte-identical to the new `cjk.l1`/`cjk.l2l3` ones (content hashes unchanged).
 
 | locale | old avg KiB/page | new avg KiB/page | old cjk-touching pages | new |
 | --- | --- | --- | --- | --- |
-| en | ~590 | 368 | 29/40 | 23/40 |
-| ja | ~1039 | 881 | 34/36 | 34/36 |
-| zh | ~1133 | 947 | 45/46 | 45/46 |
+| en | ~590 | 389 | 29/40 | 25/40 |
+| ja | ~1039 | 918 | 34/36 | 33/36 |
+| zh | ~1133 | 966 | 45/46 | 45/46 |
 
 Spotlight: an English page containing no Han characters now fetches only the
-three `latin.01` chunks (32 KiB total); before, it fetched ~165 KiB of mixed
+three `latin.01` chunks (43 KiB total); before, it fetched ~165 KiB of mixed
 min chunks because Latin shared files with CJK.
 
 ## Browser measurements (Chrome, vitepress preview)
+
+> Measured on the pre-Sarasa baseline (HYWenHei-45W as the content font);
+> the 45w chunk numbers below are stale and kept only as a reference for the
+> measurement procedure and layout triggers.
 
 The language-suggest bar (`LanguageSuggestBar`) only renders when the browser's
 preferred language differs from the page language, and its text is in the

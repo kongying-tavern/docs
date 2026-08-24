@@ -50,9 +50,11 @@ test('assigns structured site text to configured font roles', async () => {
   const result = await collectSiteCodepoints(fixtureRoot, config, new MarkdownIt({ html: true }))
   const textFor = (font: string): string => String.fromCodePoint(...result[font])
 
-  const base = textFor('hywenhei_45w')
-  for (const character of '甲乙丙丁戊己庚辛壬癸子丑寅卯辰')
+  const base = textFor('sarasa_gothic_sc')
+  for (const character of '丙戊壬子辰丑寅')
     assert.match(base, new RegExp(character))
+  for (const character of '甲乙丁己庚辛癸卯')
+    assert.doesNotMatch(base, new RegExp(character))
 
   const subtitle = textFor('hywenhei_65w')
   for (const character of '甲乙丙丁己庚辛癸丑寅卯')

@@ -238,10 +238,10 @@
   },
   "fonts": [
     {
-      "family": "HYWenHei-45W",
-      "cssFamily": "HYWenHei-45W-min",
-      "fileStem": "hywenhei_45w",
-      "sourceFile": "HYWenHei-45W.ttf",
+      "family": "Sarasa Gothic SC",
+      "cssFamily": "SarasaGothicSC-min",
+      "fileStem": "sarasa_gothic_sc",
+      "sourceFile": "SarasaGothicSC-Regular.ttf",
       "scriptTiers": [
         "latin",
         "latin-ext",
@@ -255,8 +255,6 @@
       ],
       "siteRoles": [
         "content",
-        "subtitle",
-        "title",
         "shared"
       ]
     },
