@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed } from 'vue'
 import { useForumViewMode } from '~/composables/useForumViewMode'
-import { simpleEventManager } from '../../services/events/SimpleEventManager'
 import ForumCommentArea from './comment/ForumCommentArea.vue'
 import ForumTopicComment from './comment/ForumTopicComment.vue'
 import { useTopicInteraction } from './composables/useTopicInteraction'
@@ -18,9 +17,6 @@ const { topic } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
   comment?: ForumAPI.Comment
 }>()
-
-// Local state for topic data
-const localRelatedComments = ref<ForumAPI.Comment[]>(topic.relatedComments || [])
 
 // Topic state management
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
@@ -53,37 +49,6 @@ function handleContentClick(): void {
 function handleReadMoreClick(): void {
   toPostDetailPage()
 }
-
-// Event listener cleanup function
-let unsubscribeCommentCreated: (() => void) | null = null
-
-// Setup event listeners
-onMounted(() => {
-  // Listen for comment:created events to add new comments to relatedComments
-  unsubscribeCommentCreated = simpleEventManager.subscribe('comment:created', ({ topicId, comment }) => {
-    // Only handle comments for this specific topic
-    if (topicId === topic.id) {
-      // Check if the comment already exists to avoid duplicates
-      const existingComment = localRelatedComments.value.find(c => c.id === comment.id)
-      if (!existingComment) {
-        // Add the new comment to the beginning of localRelatedComments array
-        localRelatedComments.value.unshift(comment)
-
-        // Keep only the latest 3 comments to avoid UI clutter
-        if (localRelatedComments.value.length > 3) {
-          localRelatedComments.value = localRelatedComments.value.slice(0, 3)
-        }
-      }
-    }
-  })
-})
-
-// Cleanup event listeners
-onUnmounted(() => {
-  if (unsubscribeCommentCreated) {
-    unsubscribeCommentCreated()
-  }
-})
 </script>
 
 <template>
@@ -158,11 +123,11 @@ onUnmounted(() => {
 
     <!-- Related Comments -->
     <div
-      v-if="showComment && localRelatedComments.length && !isCompactMode && !inReply"
+      v-if="showComment && topic.relatedComments?.length && !isCompactMode && !inReply"
       class="topic-comment"
     >
       <ForumTopicComment
-        v-for="(commentItem, index) in localRelatedComments"
+        v-for="(commentItem, index) in topic.relatedComments"
         :key="commentItem.id"
         v-motion-slide-top
         class="bg---vp-c-bg-soft px-4 first:mt-4"

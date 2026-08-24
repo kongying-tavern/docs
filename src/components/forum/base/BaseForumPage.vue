@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import type { StoreGeneric } from 'pinia'
 import type { Component } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumStore } from '~/types/forum/simplified'
 import { computed, provide, toRef } from 'vue'
 import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumTopicMenubar from '../ForumTopicMenubar.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
-import { FORUM_STORE_KEY, FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY } from '../shared'
+import { FORUM_TOPIC_LOADING_KEY } from '../shared'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
 // 导入BroadcastChannelSync以确保模块初始化
@@ -20,8 +18,13 @@ interface ForumAsideProps {
 }
 
 interface Props {
-  store: ForumStore | StoreGeneric
   renderData: ForumAPI.Topic[] | ForumAPI.Post[]
+  loading?: boolean
+  loadingMore?: boolean
+  canLoadMore?: boolean
+  loadMore?: () => Promise<unknown> | unknown
+  refreshData?: () => Promise<unknown> | unknown
+  loadStateMessage?: string
   showMenubar?: boolean
   showAside?: boolean
   headerComponent?: Component
@@ -31,27 +34,15 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   showMenubar: true,
   showAside: true,
+  loading: false,
+  loadingMore: false,
+  canLoadMore: false,
+  loadStateMessage: 'Loading...',
   asideProps: () => ({}),
 })
 
-// Access store properties directly (don't destructure to maintain reactivity)
-const store = props.store
-
-// Provide context for child components using toRef to maintain reactivity
-provide(FORUM_TOPIC_SORT_KEY, toRef(store, 'sort'))
-provide(FORUM_TOPIC_FILTER_KEY, toRef(store, 'filter'))
-provide(FORUM_TOPIC_LOADING_KEY, toRef(store, 'loading'))
-provide(FORUM_TOPIC_CAN_LOAD_MORE, toRef(store, 'canLoadMore'))
-provide(FORUM_STORE_KEY, store as ForumStore)
-provide('searchTopics', store.searchTopics)
-
-// Loading state for topics list
-const isTopicsLoading = computed(() => {
-  // store.loading is already a reactive value, don't use .value
-  const loading = typeof store.loading === 'boolean' ? store.loading : store.loading?.value || false
-  const loadingMore = typeof store.loadingMore === 'boolean' ? store.loadingMore : store.loadingMore?.value || false
-  return loading || loadingMore
-})
+const isTopicsLoading = computed(() => props.loading || props.loadingMore)
+provide(FORUM_TOPIC_LOADING_KEY, toRef(props, 'loading'))
 </script>
 
 <template>
@@ -80,15 +71,16 @@ const isTopicsLoading = computed(() => {
           <ForumTopicsList
             :data="renderData"
             :loading="isTopicsLoading"
-            :load-more="store.loadMoreTopics"
-            :refresh-data="store.loadForumData"
+            :load-more="loadMore"
+            :refresh-data="refreshData"
+            :can-load-more="canLoadMore"
           />
 
           <ForumLoadState
             :loading="isTopicsLoading"
-            :can-load-more="store.canLoadMore"
-            :load-more="store.loadMoreTopics"
-            :text="store.loadStateMessage"
+            :can-load-more="canLoadMore"
+            :load-more="loadMore"
+            :text="loadStateMessage"
           />
         </slot>
 

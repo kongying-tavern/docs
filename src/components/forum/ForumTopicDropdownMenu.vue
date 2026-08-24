@@ -28,12 +28,8 @@ const { side = 'bottom', menu = [], topicData } = defineProps<
 >()
 
 const { message } = useLocalized()
-
-const dropdownMenu = computed(() => {
-  if (topicData)
-    return defineTopicDropdownMenu(topicData, message).value
-  return []
-})
+const providerMenu = defineTopicDropdownMenu(topicData, message)
+const dropdownMenu = computed(() => providerMenu.value)
 </script>
 
 <template>

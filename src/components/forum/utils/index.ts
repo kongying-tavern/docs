@@ -7,7 +7,6 @@ export {
   isNotFoundError,
   isPermissionError,
   processCommentsResponse,
-  processTopicsResponse,
 } from './api-helpers'
 export * from './data-helpers'
 export {

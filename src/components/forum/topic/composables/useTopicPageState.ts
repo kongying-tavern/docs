@@ -1,28 +1,22 @@
-import type { ForumAPI } from '@/apis/forum/api'
-import { useQuery, useQueryCache } from '@pinia/colada'
 import { watchOnce } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
-import { computed, onMounted, onUnmounted, watch, watchEffect } from 'vue'
-import { issues } from '@/apis/forum/gitee'
+import { computed, watch, watchEffect } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
+import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { simpleEventManager } from '~/services/events/SimpleEventManager'
 import { renderForumTopic } from '~/services/forum/forumContentRenderer'
-import { useForumTopicStore } from '~/stores/forum/useForumTopicStore'
 import { setPageTitle } from '../../utils'
 
 export function useTopicPageState() {
   const topicTypeMap = getTopicTypeMap()
-  const forumTopicStore = useForumTopicStore()
   const { localeIndex } = useData()
   const { route } = useForumRoute()
   const topicId = computed(() => route.value?.name === 'topic' ? route.value.topicId : '')
   const { go } = useRouter()
   const { message } = useLocalized()
-  const queryCache = useQueryCache()
 
   // Topic data request
   const {
@@ -30,12 +24,7 @@ export function useTopicPageState() {
     isLoading: loading,
     error,
     refetch,
-  } = useQuery({
-    key: () => ['topic', topicId.value] as const,
-    query: () => issues.getTopic(topicId.value),
-    enabled: () => !!topicId.value,
-    staleTime: 1000 * 60, // 1分钟内不重新请求
-  })
+  } = useForumTopicQuery(topicId)
 
   // Handle errors via watch
   watch(error, (err) => {
@@ -43,78 +32,6 @@ export function useTopicPageState() {
       go(withBase(`${getLangPath(localeIndex.value)}404.html`))
     }
   })
-
-  // Setup topic page specific event listeners using new architecture
-  function setupTopicPageEvents() {
-    // Listen for topic deletion, close, or hide events
-    const handleTopicRemoval = ({ id }: { id: string | number }) => {
-      // If current topic is removed, navigate back
-      if (String(id) === topicId.value) {
-        backToPreviousPage()
-      }
-    }
-
-    // Listen for comment events to update topic data
-    const handleCommentCreated = ({ topicId: changedTopicId, comment }: { topicId: string, comment: ForumAPI.Comment }) => {
-      if (String(changedTopicId) === topicId.value && topic.value) {
-        // Update comment count
-        const newCommentCount = (topic.value.commentCount || 0) + 1
-
-        // Update related comments
-        const currentRelatedComments = topic.value.relatedComments || []
-        const newRelatedComments = [comment, ...currentRelatedComments].slice(0, 3)
-
-        // Update the topic data via cache
-        queryCache.setQueryData(['topic', topicId.value], {
-          ...topic.value,
-          commentCount: newCommentCount,
-          relatedComments: newRelatedComments,
-        })
-      }
-    }
-
-    const handleCommentDeleted = ({ topicId: changedTopicId, commentId }: { topicId: string, commentId: string | number }) => {
-      if (String(changedTopicId) === topicId.value && topic.value) {
-        // Update comment count
-        const newCommentCount = Math.max((topic.value.commentCount || 0) - 1, 0)
-
-        // Update related comments
-        const currentRelatedComments = topic.value.relatedComments || []
-        const newRelatedComments = currentRelatedComments.filter(c => c.id !== commentId)
-
-        // Update the topic data via cache
-        queryCache.setQueryData(['topic', topicId.value], {
-          ...topic.value,
-          commentCount: newCommentCount,
-          relatedComments: newRelatedComments,
-        })
-      }
-    }
-
-    const unsubscribeTopicDeleted = simpleEventManager.subscribe('topic:deleted', handleTopicRemoval)
-    const unsubscribeTopicClosed = simpleEventManager.subscribe('topic:closed', handleTopicRemoval)
-    const unsubscribeTopicHidden = simpleEventManager.subscribe('topic:hidden', handleTopicRemoval)
-    const unsubscribeCommentCreated = simpleEventManager.subscribe('comment:created', handleCommentCreated)
-    const unsubscribeCommentDeleted = simpleEventManager.subscribe('comment:deleted', handleCommentDeleted)
-
-    return () => {
-      unsubscribeTopicDeleted()
-      unsubscribeTopicClosed()
-      unsubscribeTopicHidden()
-      unsubscribeCommentCreated()
-      unsubscribeCommentDeleted()
-    }
-  }
-
-  // Pre-fill with cached data if available from topic store
-  const targetTopicData = forumTopicStore.topicDetail
-
-  if (targetTopicData && String(targetTopicData.id) === topicId.value) {
-    queryCache.setQueryData(['topic', topicId.value], targetTopicData)
-  }
-  else if (!import.meta.env.SSR) {
-    refetch()
-  }
 
   // Rendered content
   const renderedContent = computed(() => {
@@ -127,23 +44,6 @@ export function useTopicPageState() {
   function backToPreviousPage() {
     window.history.back()
   }
-
-  // Setup lifecycle events
-  let cleanupFunction: (() => void) | null = null
-
-  onMounted(() => {
-    cleanupFunction = setupTopicPageEvents()
-    // Setup store event listeners
-    forumTopicStore.setupEventListeners()
-  })
-
-  onUnmounted(() => {
-    if (cleanupFunction) {
-      cleanupFunction()
-      cleanupFunction = null
-    }
-    forumTopicStore.cleanup()
-  })
 
   // Side effects
   watchEffect(() => {
@@ -168,6 +68,8 @@ export function useTopicPageState() {
   return {
     topic,
     loading,
+    error,
+    retry: refetch,
     renderedContent,
     topicId,
     backToPreviousPage,

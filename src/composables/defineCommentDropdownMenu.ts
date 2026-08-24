@@ -2,11 +2,10 @@ import type { ComputedRef } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
 import { computed, ref } from 'vue'
-import { issues } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
 import { executeWithAuth } from '~/composables/executeWithAuth'
+import { useForumMutations } from '~/composables/forum/useForumMutations'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { forumEvents } from '~/services/events/SimpleEventManager'
 
 // @unocss-include
 export function defineCommentDropdownMenu(
@@ -18,6 +17,7 @@ export function defineCommentDropdownMenu(
     return computed(() => [])
 
   const { message } = useLocalized()
+  const forumMutations = useForumMutations()
 
   const { hasAnyPermissions } = useRuleChecks(commentData.author.id)
 
@@ -30,18 +30,13 @@ export function defineCommentDropdownMenu(
     if (!commentData)
       return
 
-    const result = await executeWithAuth(
-      issues.deleteTopicComment,
-      [commentData.id, repo],
+    await executeWithAuth(
+      forumMutations.deleteComment,
+      [{ commentId: commentData.id, repo, topicId: topicId || 'unknown' }],
       message.value.forum.topic.menu.deleteComment.success,
       message.value.forum.topic.menu.deleteComment.fail,
       message,
     )
-
-    // Emit event if deletion was successful
-    if (result) {
-      forumEvents.commentDeleted(commentData.id, topicId || 'unknown')
-    }
   }
 
   const noAnyPermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {

@@ -4,9 +4,9 @@ import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
 import { computed, ref } from 'vue'
 import { issues } from '@/apis/forum/gitee'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicManger } from '~/composables/useTopicManger'
-import { forumEvents } from '~/services/events/SimpleEventManager'
 import { useTopicTagsEditor } from './useTopicTagsEditor'
 
 // @unocss-include
@@ -15,6 +15,7 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
     return computed(() => [])
 
   const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManger(topicData, message)
+  const { route } = useForumRoute()
   const { hasAnyPermissions } = useRuleChecks(topicData.user.id)
 
   const [closeState, toggleClose] = toggleCloseTopic()
@@ -30,14 +31,16 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
 
   const openOnGitee = () => issues.openTopicOnGitee(topicData.id)
 
-  function handleToggleCloseTopic() {
-    toggleClose()
-    // The events are now emitted directly from useTopicManger
+  async function handleToggleCloseTopic() {
+    const result = await toggleClose()
+    if (result && result.state === 'closed' && route.value?.name === 'topic' && route.value.topicId === String(topicData.id))
+      window.history.back()
   }
 
-  function handleToggleHideTopic() {
-    toggleHide()
-    // The events are now emitted directly from useTopicManger
+  async function handleToggleHideTopic() {
+    const result = await toggleHide()
+    if (result && result.state === 'progressing' && route.value?.name === 'topic' && route.value.topicId === String(topicData.id))
+      window.history.back()
   }
 
   const noAnyPermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {
@@ -70,10 +73,7 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
             id: `change-topic-${val}`,
             type: 'item',
             label: `${menuLabels.value.changeType.to} ${message.value.forum.topic.type[val.toLowerCase() as keyof typeof message.value.forum.topic.type] || val}`,
-            action: () => {
-              toggleTopicType(val)
-              forumEvents.topicTypeChanged(topicData.id, val)
-            },
+            action: () => toggleTopicType(val),
           }),
         ),
       },
@@ -89,10 +89,7 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
         type: 'item',
         label: topicData.pinned ? menuLabels.value.pinTopic.unpin : menuLabels.value.pinTopic.pin,
         icon: topicData.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
-        action: () => {
-          togglePinedTopic()
-          forumEvents.topicPinned(topicData.id, !topicData.pinned)
-        },
+        action: togglePinedTopic,
       },
       {
         id: 'close-comment-topic',

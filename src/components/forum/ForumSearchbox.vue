@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, useTemplateRef } from 'vue'
+import { onMounted, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
 
@@ -9,16 +9,10 @@ const { message } = useLocalized()
 const { list, submitSearch } = useForumRoute()
 const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
 
-// Get search function from the parent component context
-const searchTopics = inject<(query: string) => void | Promise<void>>('searchTopics', async () => {
-  // no-op fallback
-})
-
 async function handleSearch() {
   const query = (modelValue.value || '').trim()
   await submitSearch(query)
   emits('search')
-  await searchTopics(query)
 }
 
 onMounted(() => {

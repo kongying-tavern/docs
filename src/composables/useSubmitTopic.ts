@@ -1,15 +1,13 @@
 import type ForumAPI from '@/apis/forum/api'
-import { useMutation } from '@pinia/colada'
 import { useData } from 'vitepress'
 import { toast } from 'vue-sonner'
-import { issues } from '@/apis/forum/gitee'
 import { useLocalized } from '@/hooks/useLocalized'
 import { authGuards } from '@/utils/auth-helpers'
 import { composeTopicBody } from '~/composables/composeTopicBody'
+import { useForumMutations } from '~/composables/forum/useForumMutations'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { forumEvents } from '~/services/events/SimpleEventManager'
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
@@ -17,10 +15,7 @@ const localeLabelGetter = getForumLocaleLabelGetter()
 export function useSubmitTopic() {
   const { message } = useLocalized()
   const { lang } = useData()
-
-  const { data: submittedTopic, mutateAsync: asyncSubmit, isLoading: submitLoading, error: submitError } = useMutation({
-    mutation: issues.postTopic,
-  })
+  const forumMutations = useForumMutations()
 
   const submitData = async (options: ForumAPI.CreateTopicOption) => {
     if (!authGuards.requireLogin(message.value.forum.auth.loginTips))
@@ -52,22 +47,12 @@ export function useSubmitTopic() {
     }
 
     try {
-      forumEvents.formSubmitStart('topic')
-
-      const result = await asyncSubmit(newTopic)
-
-      forumEvents.formSubmitSuccess('topic', result)
-      forumEvents.topicCreated({
-        ...result,
-        tags,
-      })
+      const result = await forumMutations.createTopic(newTopic)
       toast.success(`${message.value.forum.publish.publishSuccess}${result.title}`)
       return result
     }
     catch (err) {
       const error = err as Error
-
-      forumEvents.formSubmitError('topic', error)
 
       toast.error(`${message.value.forum.publish.publishFail} (${error.message})`)
       throw error
@@ -75,9 +60,9 @@ export function useSubmitTopic() {
   }
 
   return {
-    data: submittedTopic,
-    loading: submitLoading,
-    error: submitError,
+    data: forumMutations.createdTopic,
+    loading: forumMutations.creatingTopic,
+    error: forumMutations.createTopicError,
     submitData,
   }
 }

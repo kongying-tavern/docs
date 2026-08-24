@@ -2,10 +2,8 @@
 import type { JSONContent } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
-import { useMutation } from '@pinia/colada'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { issues } from '@/apis/forum/gitee'
 import { uploadImg } from '@/apis/interknot.site/upload'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
@@ -14,6 +12,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useForumMutations } from '~/composables/forum/useForumMutations'
 import { useImageAttachmentQueue } from '~/composables/useImageAttachmentQueue'
 import { VALIDATION_LIMITS } from '../constants'
 import ForumRichTextarea from '../form/ForumRichTextarea.vue'
@@ -46,16 +45,13 @@ const content = ref<JSONContent>(emptyDoc())
 const plainText = ref('')
 const submitPending = ref(false)
 
-const { isLoading: mutationPending, mutateAsync: postComment } = useMutation({
-  mutation: (params: { repo: ForumAPI.Repo, topicId: string, text: string }) =>
-    issues.postTopicComment(params.repo, params.topicId, params.text),
-})
+const forumMutations = useForumMutations()
 
 const queue = useImageAttachmentQueue({
   upload: uploadImg,
   prepare: async file => calculateThumbHashForFile(new Uint8Array(await file.arrayBuffer())),
 })
-const loading = computed(() => submitPending.value || mutationPending.value || queue.isBusy.value)
+const loading = computed(() => submitPending.value || forumMutations.creatingComment.value || queue.isBusy.value)
 
 function emptyDoc(): JSONContent {
   return { type: 'doc', content: [{ type: 'paragraph' }] }
@@ -82,7 +78,7 @@ async function submit(): Promise<void> {
       validate: validateComment,
       uploadPending: queue.uploadPending,
       getUploadedAttachments: () => queue.serializedAttachments.value,
-      postComment: body => postComment({ repo, topicId, text: body }),
+      postComment: body => forumMutations.createComment({ repo, topicId, body }),
       onSuccess: (comment) => {
         emit('comment:submit', comment)
         content.value = emptyDoc()

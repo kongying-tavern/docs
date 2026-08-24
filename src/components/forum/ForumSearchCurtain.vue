@@ -1,37 +1,25 @@
 <script setup lang="ts">
 import { useScrollLock, useWindowScroll } from '@vueuse/core'
 import { useData } from 'vitepress'
-import { computed, onMounted, onUnmounted, provide, ref, watchPostEffect } from 'vue'
-import { useForumData } from '~/composables/useForumData'
-import { useForumHomeStore } from '~/stores/forum/useForumHomeStore'
+import { computed, onUnmounted, ref, watchPostEffect } from 'vue'
+import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import ForumSearchbox from './ForumSearchbox.vue'
 import ForumSearchSuggestions from './ForumSearchSuggestions.vue'
 import { flattenWithTags } from './utils'
 
 const emits = defineEmits(['close'])
-const forumStore = useForumHomeStore()
-
-// Separate data source for search suggestions - always maintain complete dataset
-const suggestionForumData = useForumData({ manual: true, autoLoadPinned: false })
-
-const {
-  searchTopics: searchTopicsFunc,
-} = forumStore
+const suggestionTopics = useForumTopicsQuery({
+  filter: 'all',
+  sort: 'created',
+  q: '',
+  creator: null,
+})
 const isLocked = useScrollLock(import.meta.env.SSR ? null : document.body, true)
 const { y } = useWindowScroll()
 const { theme } = useData()
 const isTop = computed(() => y.value === 0)
 const searchQuery = ref('')
 const quickLinkList = flattenWithTags(theme.value.sidebar[Object.keys(theme.value.sidebar)[0]].slice(1))
-
-// Provide searchTopics for ForumSearchbox
-provide('searchTopics', searchTopicsFunc)
-
-// Load complete dataset for search suggestions
-onMounted(async () => {
-  // Load complete dataset for suggestions, independent of main forum data
-  await suggestionForumData.refreshData()
-})
 
 onUnmounted(() => {
   isLocked.value = false
@@ -69,7 +57,7 @@ watchPostEffect(() => {
           v-motion-slide-visible-top
           class="pb-64px pt-40px"
           :search-query="searchQuery"
-          :topic-data="suggestionForumData.data.value || []"
+          :topic-data="suggestionTopics.rows.value"
           @select="emits('close')"
         />
 

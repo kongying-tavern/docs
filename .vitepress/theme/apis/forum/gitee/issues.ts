@@ -9,8 +9,12 @@ import {
   normalizeComment,
   normalizeIssue,
   processLabels,
-  setFilterTags,
 } from './utils'
+
+export type TopicUpdateOutcome
+  = | { status: 'success', topic: ForumAPI.Topic }
+    | { status: 'partial', topic: ForumAPI.Topic, error: Error }
+    | { status: 'unknown', error: Error }
 
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 
@@ -236,64 +240,48 @@ export async function putTopic(
     labels?: string
     state?: ForumAPI.TopicState
   },
-): Promise<ForumAPI.Topic> {
-  const { data: issueInfo } = await apiCall<GITEE.IssueInfo>(
-    'patch',
-    `repos/${OWNER}/issues/${number}`,
-    {
-      searchParams: {
-        repo: FEEDBACK_REPO,
-        owner: OWNER,
-        ...data,
+): Promise<TopicUpdateOutcome> {
+  let issueInfo: GITEE.IssueInfo
+  try {
+    ;({ data: issueInfo } = await apiCall<GITEE.IssueInfo>(
+      'patch',
+      `repos/${OWNER}/issues/${number}`,
+      {
+        searchParams: {
+          repo: FEEDBACK_REPO,
+          owner: OWNER,
+          ...data,
+        },
       },
-    },
-  )
+    ))
+  }
+  catch (error) {
+    return { status: 'unknown', error: toError(error) }
+  }
 
   const result = normalizeIssue(issueInfo)
 
   // 因为 Gitee 接口不识别无权限用户提交的 labels 和 state，所以这里手动通知 Webhook 同步数据
   if (!(data.labels || data.state))
-    return result
+    return { status: 'success', topic: result }
 
   // 团队成员的提交不需要通知 Webhook 同步
   const { hasAnyRoles } = useRuleChecks()
   if (hasAnyRoles('teamMember', 'feedbackMember').value)
-    return result
+    return { status: 'success', topic: result }
 
-  // 同步失败时向上抛错，由调用方提示
-  await reformat({ number })
+  try {
+    await reformat({ number })
+  }
+  catch (error) {
+    return { status: 'partial', topic: result, error: toError(error) }
+  }
 
-  return result
+  return { status: 'success', topic: result }
 }
 
-export async function getUserCreatedTopics(
-  query: ForumAPI.Query,
-): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  const { data: issueList, pagination } = await apiCall<GITEE.IssueList>(
-    'get',
-    `orgs/${OWNER}/issues`,
-    {
-      searchParams: {
-        page: query.current,
-        sort: query.sort || 'created',
-        per_page: query.pageSize,
-        filter: 'created',
-        labels: setFilterTags([...query.filter || []]),
-        state: 'all',
-      },
-    },
-  )
-
-  return {
-    data: issueList
-      .filter(
-        val =>
-          val.repository.full_name
-          === `${OWNER}/${FEEDBACK_REPO}`,
-      )
-      .map(val => normalizeIssue(val)),
-    ...pagination,
-  }
+function toError(error: unknown): Error {
+  return error instanceof Error ? error : new Error(String(error))
 }
 
 export function openTopicOnGitee(number: string | number) {

@@ -1,19 +1,18 @@
-import { useQuery } from '@pinia/colada'
-import { computed, ref, watch } from 'vue'
-import { user } from '@/apis/forum/gitee'
+import type { MaybeRefOrGetter } from 'vue'
+import { computed, ref, toValue, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { setPageTitle } from '../../utils'
 
 export interface UseUserProfileOptions {
-  username: string
-  topicCount: number
+  username: MaybeRefOrGetter<string>
 }
 
 export function useUserProfile(options: UseUserProfileOptions) {
-  const { username } = options
+  const username = computed(() => toValue(options.username))
 
   // Composables
   const { message } = useLocalized()
@@ -24,33 +23,16 @@ export function useUserProfile(options: UseUserProfileOptions) {
   // State
   const menuRef = ref<HTMLElement | null>(null)
 
-  // User data request - useQuery
-  const { data: userData, refetch: getUser } = useQuery({
-    key: () => ['user', username] as const,
-    query: () => user.getUser(username, userAuth.isTokenValid ? userAuth.auth?.accessToken : undefined),
-    enabled: () => !userInfo.info || userInfo.info.username !== username || userInfo.info.login !== username,
-    staleTime: 1000 * 60 * 5, // 5分钟内不重新请求
-  })
-
-  // Load user data if needed
-  async function loadUserData(): Promise<void> {
-    if (!userInfo.info || userInfo?.info.username !== username || userInfo?.info.login !== username) {
-      await getUser()
-    }
-  }
+  const profileQuery = useForumUserProfileQuery(
+    username,
+    computed(() => userAuth.isTokenValid ? userAuth.auth?.accessToken : undefined),
+  )
 
   // Computed properties
-  const renderedUser = computed(() => {
-    if (userInfo.info && userInfo.info.username === username) {
-      return userInfo.info
-    }
-    else {
-      return userData.value
-    }
-  })
+  const renderedUser = computed(() => profileQuery.data.value)
 
   const role = computed(() => (isOfficial(renderedUser.value?.id || 0).value ? 'official' : null))
-  const isAuthorizedUser = computed(() => username === userInfo.info?.username || username === userInfo.info?.login)
+  const isAuthorizedUser = computed(() => username.value === userInfo.info?.username || username.value === userInfo.info?.login)
 
   const menu = computed<{
     id: string
@@ -83,7 +65,9 @@ export function useUserProfile(options: UseUserProfileOptions) {
   return {
     // State
     menuRef,
-    userData,
+    userData: profileQuery.data,
+    loading: profileQuery.isLoading,
+    error: profileQuery.error,
 
     // Computed
     renderedUser,
@@ -92,7 +76,7 @@ export function useUserProfile(options: UseUserProfileOptions) {
     menu,
 
     // Actions
-    loadUserData,
+    retry: profileQuery.refetch,
     sendMessage,
   }
 }

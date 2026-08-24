@@ -1,8 +1,8 @@
 import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll, useMediaQuery } from '@vueuse/core'
 import { computed, readonly, ref } from 'vue'
-import { useTopicComments } from '~/composables/useTopicComment'
-import { forumEvents } from '~/services/events/SimpleEventManager'
+import { useLocalized } from '@/hooks/useLocalized'
+import { useForumCommentsQuery } from '~/composables/forum/useForumQueries'
 
 export function useCommentAreaState(props: {
   repo: ForumAPI.Repo
@@ -10,102 +10,72 @@ export function useCommentAreaState(props: {
   topicAuthorId: string | number
   commentCount?: number
 }) {
-  // Composables
+  const { message } = useLocalized()
   const isMobile = useMediaQuery('(max-width: 768px)')
-  const {
-    userSubmittedComment,
-    comments,
-    loadMoreComment,
-    canLoadMoreComment,
-    loadStateMessage,
-    submitComment,
-    commentLoading,
-    allCommentCount,
-    currentCommentPage,
-    initComments,
-  } = useTopicComments()
+  const enabled = computed(() => props.commentCount !== null && props.commentCount !== undefined && props.commentCount !== -1)
+  const comments = useForumCommentsQuery({
+    topicId: () => props.topicId,
+    repo: () => props.repo,
+    enabled,
+  })
 
-  const noComment = computed(() => props.commentCount === null || props.commentCount === undefined)
-
-  // State
   const replyCommentID = ref<number | string | null>(null)
   const commentInputBoxIsVisible = ref(true)
-
-  // Computed
-  const renderComments = computed(() => [
-    ...userSubmittedComment.value,
-    ...comments.value,
-  ])
-
   const isClosedComment = computed(() => props.commentCount === -1)
-
-  // Reply management
-  const isReplyingTo = (id: number | string) => replyCommentID.value === id
+  const currentCommentPage = computed(() => comments.data.value?.pages.length ?? 0)
+  const loadStateMessage = computed(() => {
+    if (comments.error.value)
+      return message.value.forum.loadError
+    if (comments.canLoadMore.value)
+      return message.value.forum.comment.loadMoreComment
+    if (comments.rows.value.length === 0)
+      return message.value.forum.comment.noComment
+    return message.value.forum.comment.noMoreComment
+  })
 
   function toggleCommentReply(id: number | string): void {
     replyCommentID.value = replyCommentID.value === id ? null : id
   }
 
-  // Comment submission
-  function handleCommentSubmit(submittedComment: ForumAPI.Comment): void {
-    submitComment(submittedComment)
-    // Plan 005 replaces this compatibility event with query invalidation.
-    forumEvents.commentCreated(submittedComment.id, props.topicId, submittedComment)
+  function handleCommentSubmit(): void {
+    replyCommentID.value = null
   }
 
   async function initialize(): Promise<void> {
-    if (import.meta.env.SSR || noComment.value)
-      return
-
     replyCommentID.value = null
     commentInputBoxIsVisible.value = true
-
-    await initComments(props.topicId, props.repo, props.commentCount ?? null)
-
-    if (!noComment.value) {
-      useInfiniteScroll(
-        window,
-        () => {
-          loadMoreComment()
-        },
-        {
-          distance: 10,
-          interval: 1500,
-          canLoadMore: () => canLoadMoreComment.value,
-        },
-      )
-    }
+    if (import.meta.env.SSR || !enabled.value)
+      return
+    useInfiniteScroll(window, async () => {
+      await comments.loadMore()
+    }, {
+      distance: 10,
+      interval: 1500,
+      canLoadMore: () => comments.canLoadMore.value,
+    })
   }
 
   function cleanup(): void {
     replyCommentID.value = null
     commentInputBoxIsVisible.value = true
-    userSubmittedComment.value = []
   }
 
   return {
-    // State
     replyCommentID: readonly(replyCommentID),
     commentInputBoxIsVisible: readonly(commentInputBoxIsVisible),
     isMobile,
-    canLoadMoreComment,
-
-    // Data
-    renderComments,
-    allCommentCount,
+    canLoadMoreComment: comments.canLoadMore,
+    renderComments: comments.rows,
+    allCommentCount: comments.total,
     currentCommentPage,
     loadStateMessage,
-    commentLoading,
+    commentLoading: comments.isLoading,
     isClosedComment,
-
-    // Actions
-    isReplyingTo,
+    isReplyingTo: (id: number | string) => replyCommentID.value === id,
     toggleCommentReply,
     handleCommentSubmit,
     initialize,
     cleanup,
-
-    // Refs for external use
     setCommentInputBoxVisible: (visible: boolean) => {
       commentInputBoxIsVisible.value = visible
     },

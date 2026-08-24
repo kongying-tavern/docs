@@ -148,17 +148,17 @@ test('success clears exactly once and exposes the direct mutation result', async
   assert.deepEqual(attachments.attachments.value, [])
 })
 
-test('create/delete compatibility covers current comments, Topic detail, and list counts', async () => {
+test('create/delete mutations invalidate comments, Topic detail, and list counts without shadow state', async () => {
   const commentState = await readFile(new URL('../../src/components/forum/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8')
   const deleteAction = await readFile(new URL('../../src/composables/defineCommentDropdownMenu.ts', import.meta.url), 'utf8')
-  const topicState = await readFile(new URL('../../src/components/forum/topic/composables/useTopicPageState.ts', import.meta.url), 'utf8')
-  const listState = await readFile(new URL('../../src/stores/forum/useForumHomeStore.ts', import.meta.url), 'utf8')
+  const mutations = await readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8')
 
-  assert.match(commentState, /submitComment\(submittedComment\)/)
-  assert.match(commentState, /forumEvents\.commentCreated/)
-  assert.match(deleteAction, /forumEvents\.commentDeleted/)
-  assert.match(topicState, /subscribe\('comment:created'/)
-  assert.match(topicState, /subscribe\('comment:deleted'/)
-  assert.match(listState, /subscribe\('comment:created'/)
-  assert.match(listState, /subscribe\('comment:deleted'/)
+  assert.match(commentState, /useForumCommentsQuery/)
+  assert.equal(commentState.includes('userSubmittedComment'), false)
+  assert.match(deleteAction, /forumMutations\.deleteComment/)
+  assert.match(mutations, /invalidate\('createComment'/)
+  assert.match(mutations, /invalidate\('deleteComment'/)
+  assert.match(mutations, /forumKeys\.topicLists\(\)/)
+  assert.match(mutations, /forumKeys\.topic\(topicId\)/)
+  assert.match(mutations, /forumKeys\.comments\(topicId\)/)
 })

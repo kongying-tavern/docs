@@ -9,7 +9,8 @@ import {
   SelectTrigger,
 } from '@/components/ui/select'
 import { useLocalized } from '@/hooks/useLocalized'
-import { FORUM_STORE_KEY, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY } from './shared'
+import { useForumRoute } from '~/composables/useForumRoute'
+import { FORUM_TOPIC_LOADING_KEY } from './shared'
 
 const { message } = useLocalized()
 
@@ -35,21 +36,17 @@ const menuItems = computed<{
   },
 ])
 
-const filter = inject(FORUM_TOPIC_FILTER_KEY)!
-const loading = inject(FORUM_TOPIC_LOADING_KEY)!
-const forumStore = inject(FORUM_STORE_KEY)!
+const { list, navigateFilter } = useForumRoute()
+const filter = computed<ForumAPI.FilterBy>({
+  get: () => list.value?.filter ?? 'all',
+  set: value => void navigateFilter(value),
+})
+const loading = inject(FORUM_TOPIC_LOADING_KEY, computed(() => false))
 
 const currentLabel = computed(() => {
   const item = menuItems.value.find(i => i.id === filter.value)
   return item?.label ?? ''
 })
-
-// Hover预加载功能
-function handleHoverPreload() {
-  if (forumStore?.triggerPreload) {
-    forumStore.triggerPreload()
-  }
-}
 </script>
 
 <template>
@@ -58,7 +55,6 @@ function handleHoverPreload() {
       <SelectTrigger
         variant="ghost"
         class="font-size-3 mt-2 rounded-full w-fit whitespace-break-spaces shadow-none hover:bg-[--vp-c-bg-soft]"
-        @mouseenter="handleHoverPreload"
       >
         {{ currentLabel }}
       </SelectTrigger>

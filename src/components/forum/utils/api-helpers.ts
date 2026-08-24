@@ -1,23 +1,6 @@
 import type ForumAPI from '@/apis/forum/api'
 import { uniqBy } from 'lodash-es'
 
-// API response processing utilities
-export function processTopicsResponse(
-  topics: ForumAPI.Topic[],
-  existingTopics: ForumAPI.Topic[] = [],
-): ForumAPI.Topic[] {
-  if (!Array.isArray(topics))
-    return existingTopics
-
-  // Merge and deduplicate topics
-  const mergedTopics = [...existingTopics, ...topics]
-  return uniqBy(mergedTopics, 'id').sort((a, b) => {
-    const dateA = new Date(a.createdAt).getTime()
-    const dateB = new Date(b.createdAt).getTime()
-    return dateB - dateA // Latest first
-  })
-}
-
 export function processCommentsResponse(
   comments: ForumAPI.Comment[],
   existingComments: ForumAPI.Comment[] = [],

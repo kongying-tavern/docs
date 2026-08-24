@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll } from '@vueuse/core'
-import { inject, onBeforeUpdate, shallowRef } from 'vue'
+import { onBeforeUpdate, shallowRef } from 'vue'
 import ForumTopic from './ForumTopic.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
-import { FORUM_TOPIC_CAN_LOAD_MORE } from './shared'
 
 const {
   data,
   loadMore,
+  canLoadMore = false,
 } = defineProps<{
   data: ForumAPI.Topic[]
   loadMore?: () => Promise<unknown> | unknown
   refreshData?: () => Promise<unknown> | unknown
   loading?: boolean
+  canLoadMore?: boolean
 }>()
-
-const canLoadMore = inject(FORUM_TOPIC_CAN_LOAD_MORE)
 
 const itemStaggers = shallowRef(new Map<string, number>())
 
@@ -41,7 +40,7 @@ if (loadMore) {
     {
       distance: 10,
       interval: 1500,
-      canLoadMore: () => canLoadMore?.value || false,
+      canLoadMore: () => canLoadMore || false,
     },
   )
 }

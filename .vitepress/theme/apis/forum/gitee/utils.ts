@@ -134,11 +134,6 @@ function getCommentAreaState(labels: GITEE.IssueLabel[]) {
   return labels.map(val => val.name).includes('COMMENT-CLOSED')
 }
 
-export function setFilterTags(arr: string[] = []) {
-  const tags = ['WEB-FEEDBACK', ...arr]
-  return tags.join(',')
-}
-
 export function isUpperCase(str: string) {
   return str.toLocaleUpperCase() === str
 }

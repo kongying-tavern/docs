@@ -3,8 +3,6 @@ import { issues } from '@/apis/forum/gitee'
 import { FORUM_CONFIG } from '~/components/forum/constants'
 import {
   buildTopicsQueryParams,
-  getErrorMessage,
-  processTopicsResponse,
 } from '~/components/forum/utils/api-helpers'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 
@@ -87,7 +85,7 @@ export class ForumService {
       )
 
       const result: ForumLoadResult = {
-        topics: processTopicsResponse(response.data || []),
+        topics: response.data || [],
         totalPage: response.totalPage || 0,
         total: response.total || 0,
         hasMore: (response.totalPage || 0) > 1,
@@ -107,56 +105,12 @@ export class ForumService {
   ): Promise<ForumAPI.Topic[]> {
     try {
       const response = await issues.getPinnedList()
-      const topics = processTopicsResponse(response || [])
-
-      return topics
+      return response || []
     }
     catch (error) {
       const err = error instanceof Error ? error : new Error('Failed to load pinned topics')
       options.onError?.(err)
       throw err
     }
-  }
-
-  static async searchTopics(
-    query: string | string[],
-    additionalParams: Omit<ForumQueryParams, 'searchQuery'> = {},
-    options: ForumServiceOptions = {},
-  ): Promise<ForumLoadResult> {
-    if (!query || (Array.isArray(query) && query.length === 0)) {
-      throw new Error('Search query is required')
-    }
-
-    return this.getTopics(
-      {
-        ...additionalParams,
-        searchQuery: query,
-      },
-      options,
-    )
-  }
-
-  static async loadMore(
-    currentData: ForumAPI.Topic[],
-    queryParams: ForumQueryParams,
-    currentPage: number,
-    options: ForumServiceOptions = {},
-  ): Promise<ForumLoadResult> {
-    const result = await this.getTopics(
-      {
-        ...queryParams,
-        page: currentPage + 1,
-      },
-      options,
-    )
-
-    return {
-      ...result,
-      topics: processTopicsResponse(result.topics, currentData),
-    }
-  }
-
-  static buildErrorMessage(error: Error): string {
-    return getErrorMessage(error)
   }
 }

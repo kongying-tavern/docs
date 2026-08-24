@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import type ForumAPI from '@/apis/forum/api'
+import { computed } from 'vue'
 import {
   Select,
   SelectContent,
@@ -8,7 +9,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select'
 import { useLocalized } from '@/hooks/useLocalized'
-import { FORUM_TOPIC_SORT_KEY } from './shared'
+import { useForumRoute } from '~/composables/useForumRoute'
 
 const { message } = useLocalized()
 
@@ -17,7 +18,11 @@ const sortLabel = computed(() => [
   ['updated', message.value.forum.header.sort.updated],
 ])
 
-const sort = inject(FORUM_TOPIC_SORT_KEY)!
+const { list, navigateSort } = useForumRoute()
+const sort = computed<ForumAPI.SortMethod>({
+  get: () => list.value?.sort ?? 'created',
+  set: value => void navigateSort(value),
+})
 </script>
 
 <template>

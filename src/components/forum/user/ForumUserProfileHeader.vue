@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -21,16 +20,9 @@ const {
   renderedUser,
   role,
   menu,
-  loadUserData,
   sendMessage,
 } = useUserProfile({
-  username: props.username,
-  topicCount: props.topicCount,
-})
-
-// Load user data on mount
-onMounted(async () => {
-  await loadUserData()
+  username: () => props.username,
 })
 </script>
 

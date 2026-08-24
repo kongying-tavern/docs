@@ -2,30 +2,18 @@ import type { ComputedRef, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import { issues } from '@/apis/forum/gitee'
-import { forumEvents } from '~/services/events/SimpleEventManager'
+import { toast } from 'vue-sonner'
+import { withAuth } from '@/utils/auth-helpers'
 import { composeTopicBody } from './composeTopicBody'
-import { executeWithAuth } from './executeWithAuth'
+import { useForumMutations } from './forum/useForumMutations'
 
 const pendingOperations = new Map<string, Promise<unknown>>()
 
-function getOperationKey(topicId: string | number, action: string): string {
-  return `${topicId}:${action}`
-}
-
-async function withOperationLock<T>(
-  topicId: string | number,
-  action: string,
-  operation: () => Promise<T>,
-): Promise<T | false> {
-  const key = getOperationKey(topicId, action)
-  if (pendingOperations.has(key)) {
+async function withOperationLock<T>(key: string, operation: () => Promise<T>): Promise<T | false> {
+  if (pendingOperations.has(key))
     return false
-  }
-
   const promise = operation()
   pendingOperations.set(key, promise)
-
   try {
     return await promise
   }
@@ -35,182 +23,98 @@ async function withOperationLock<T>(
 }
 
 export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomConfig>) {
+  if (!targetTopic?.id)
+    throw new Error('Topic is required.')
+
+  const mutations = useForumMutations()
   const targetTopicId = targetTopic.id
 
-  if (!targetTopic && !targetTopicId) {
-    throw new Error(`Not found target${targetTopic}`)
+  async function update(
+    action: string,
+    kind: Parameters<typeof mutations.updateTopic>[0],
+    patch: Parameters<typeof mutations.updateTopic>[2],
+    successMessage: string,
+    failureMessage: string,
+  ): Promise<ForumAPI.Topic | false> {
+    return withOperationLock(`${targetTopicId}:${action}`, async () => {
+      const outcome = await withAuth.execute(
+        () => mutations.updateTopic(kind, targetTopicId, patch),
+        { loginMessage: message.value.forum.auth.loginTips, errorMessage: failureMessage },
+      )
+      if (!outcome)
+        return false
+      if (outcome.status === 'unknown') {
+        toast.error(failureMessage)
+        throw outcome.error
+      }
+      if (outcome.status === 'partial') {
+        toast.warning(`${successMessage}，同步状态待确认`)
+        return outcome.topic
+      }
+      toast.success(successMessage)
+      return outcome.topic
+    })
   }
 
   const toggleCloseTopic = (): [ComputedRef<boolean>, () => Promise<ForumAPI.Topic | false>] => {
-    const closeState = computed(() => targetTopic?.state === 'closed')
-    const targetState = computed(() => (closeState.value ? 'open' : 'closed'))
-    const body = computed(() =>
-      composeTopicBody(targetTopic.contentRaw, { state: targetState.value }),
-    )
-
-    async function toggleClose() {
-      return withOperationLock(targetTopicId, 'close', async () => {
-        const result = await executeWithAuth(
-          issues.putTopic,
-          [
-            targetTopic.id,
-            {
-              body: body.value,
-              state: targetState.value,
-            },
-          ],
-          message.value.forum.topic.menu.closeFeedback.success,
-          message.value.forum.topic.menu.closeFeedback.fail,
-          message,
-        )
-
-        if (result) {
-          const newState = targetState.value
-          const isClosed = newState === 'closed'
-          targetTopic.state = newState
-          forumEvents.topicClosed(targetTopic.id, isClosed)
-        }
-
-        return result
-      })
-    }
-
-    return [closeState, toggleClose]
+    const closeState = computed(() => targetTopic.state === 'closed')
+    return [closeState, () => {
+      const state = closeState.value ? 'open' : 'closed'
+      return update(
+        'close',
+        'closeTopic',
+        { body: composeTopicBody(targetTopic.contentRaw, { state }), state },
+        message.value.forum.topic.menu.closeFeedback.success,
+        message.value.forum.topic.menu.closeFeedback.fail,
+      )
+    }]
   }
 
   const toggleHideTopic = (): [ComputedRef<boolean>, () => Promise<ForumAPI.Topic | false>] => {
-    const hideState = computed(() => targetTopic?.state === 'progressing')
-
-    async function toggleHide() {
-      return withOperationLock(targetTopicId, 'hide', async () => {
-        const result = await executeWithAuth(
-          issues.putTopic,
-          [targetTopicId, { state: hideState.value ? 'open' : 'progressing' }],
-          message.value.forum.topic.menu.hideFeedback.success,
-          message.value.forum.topic.menu.hideFeedback.fail,
-          message,
-        )
-
-        if (result) {
-          const newState = hideState.value ? 'open' : 'progressing'
-          targetTopic.state = newState
-          const isHidden = newState === 'progressing'
-          forumEvents.topicHidden(targetTopic.id, isHidden)
-        }
-
-        return result
-      })
-    }
-
-    return [hideState, toggleHide]
+    const hideState = computed(() => targetTopic.state === 'progressing')
+    return [hideState, () => update(
+      'hide',
+      'changeTopicMembership',
+      { state: hideState.value ? 'open' : 'progressing' },
+      message.value.forum.topic.menu.hideFeedback.success,
+      message.value.forum.topic.menu.hideFeedback.fail,
+    )]
   }
 
-  const toggleTopicType = async (newTopicType: Exclude<ForumAPI.TopicType, null>): Promise<ForumAPI.Topic | false> => {
-    return withOperationLock(targetTopicId, 'type', async () => {
-      const result = await executeWithAuth(
-        issues.putTopic,
-        [
-          targetTopicId,
-          {
-            labels:
-              targetTopic.type === newTopicType
-                ? removeLabel(`TYP-${newTopicType!}`)
-                : addLabel(`TYP-${newTopicType!}`),
-          },
-        ],
-        `Toggle topic type to ${newTopicType} success`,
-        `Toggle topic type to ${newTopicType} Fail`,
-        message,
-      )
+  const toggleTopicType = (newType: Exclude<ForumAPI.TopicType, null>) => update(
+    'type',
+    'changeTopicMembership',
+    { labels: targetTopic.type === newType ? removeLabel(`TYP-${newType}`) : addLabel(`TYP-${newType}`) },
+    `Toggle topic type to ${newType} success`,
+    `Toggle topic type to ${newType} fail`,
+  )
 
-      if (result) {
-        targetTopic.type = newTopicType
-        forumEvents.topicTypeChanged(targetTopic.id, newTopicType)
-      }
+  const togglePinedTopic = () => update(
+    'pin',
+    'pinTopic',
+    { labels: targetTopic.pinned ? removeLabel('PINNED') : addLabel('PINNED') },
+    'Pinned topic success',
+    'Pinned topic fail',
+  )
 
-      return result
-    })
+  const toggleTopicCommentArea = () => {
+    const willClose = targetTopic.commentCount !== -1
+    return update(
+      'comment',
+      'toggleCommentArea',
+      { labels: willClose ? addLabel('COMMENT-CLOSED') : removeLabel('COMMENT-CLOSED') },
+      'Toggle topic comment area success',
+      'Toggle topic comment area fail',
+    )
   }
 
-  const togglePinedTopic = async (): Promise<ForumAPI.Topic | false> => {
-    return withOperationLock(targetTopicId, 'pin', async () => {
-      const result = await executeWithAuth(
-        issues.putTopic,
-        [
-          targetTopicId,
-          {
-            labels: targetTopic.pinned
-              ? removeLabel('PINNED')
-              : addLabel('PINNED'),
-          },
-        ],
-        'Pinned topic success',
-        'Pinned topic fail',
-        message,
-      )
-
-      if (result) {
-        const newPinnedState = !targetTopic.pinned
-        targetTopic.pinned = newPinnedState
-        forumEvents.topicPinned(targetTopic.id, newPinnedState)
-      }
-
-      return result
-    })
-  }
-
-  const toggleTopicCommentArea = async (): Promise<ForumAPI.Topic | false> => {
-    return withOperationLock(targetTopicId, 'comment', async () => {
-      const isCurrentlyClosed = targetTopic.commentCount === -1
-      const willBeClosed = !isCurrentlyClosed
-
-      const result = await executeWithAuth(
-        issues.putTopic,
-        [
-          targetTopicId,
-          {
-            labels: willBeClosed
-              ? addLabel('COMMENT-CLOSED')
-              : removeLabel('COMMENT-CLOSED'),
-          },
-        ],
-        'Toggle topic comment area success',
-        'Toggle topic comment area fail',
-        message,
-      )
-
-      if (result) {
-        targetTopic.commentCount = willBeClosed ? -1 : 0
-        forumEvents.topicCommentToggled(targetTopic.id, willBeClosed)
-      }
-
-      return result
-    })
-  }
-
-  const replaceTopicTags = async (newTags: string[]): Promise<ForumAPI.Topic | false> => {
-    return withOperationLock(targetTopicId, 'tags', async () => {
-      const result = await executeWithAuth(
-        issues.putTopic,
-        [
-          targetTopicId,
-          {
-            labels: [...new Set([...getStateTags(), ...newTags])].join(','),
-          },
-        ],
-        'Tag edit success',
-        'Tag edit fail',
-        message,
-      )
-
-      if (result) {
-        targetTopic.tags = newTags
-        forumEvents.topicTagsUpdated(targetTopic.id, newTags)
-      }
-
-      return result
-    })
-  }
+  const replaceTopicTags = (newTags: string[]) => update(
+    'tags',
+    'changeTopicMembership',
+    { labels: [...new Set([...getStateTags(), ...newTags])].join(',') },
+    'Tag edit success',
+    'Tag edit fail',
+  )
 
   function getStateTags() {
     return [
@@ -218,17 +122,15 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
       targetTopic.commentCount === -1 ? 'COMMENT-CLOSED' : null,
       targetTopic.pinned ? 'PINNED' : null,
       import.meta.env.DEV ? 'DEV-TEST' : null,
-    ].filter(Boolean)
+    ].filter((label): label is string => Boolean(label))
   }
 
-  function addLabel(newLabel: string) {
-    return [...new Set([...targetTopic.tags, ...getStateTags(), newLabel])].join(',')
+  function addLabel(label: string) {
+    return [...new Set([...targetTopic.tags, ...getStateTags(), label])].join(',')
   }
 
-  function removeLabel(targetLabel: string) {
-    return [...new Set([...targetTopic.tags, ...getStateTags(), targetLabel])]
-      .filter(val => val !== targetLabel)
-      .join(',')
+  function removeLabel(label: string) {
+    return [...new Set([...targetTopic.tags, ...getStateTags()])].filter(value => value !== label).join(',')
   }
 
   return {

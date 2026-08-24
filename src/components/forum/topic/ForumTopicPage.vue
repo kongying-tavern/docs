@@ -21,6 +21,8 @@ import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 const {
   topic,
   loading,
+  error,
+  retry,
   renderedContent,
   topicId,
   backToPreviousPage,
@@ -126,11 +128,21 @@ const topicImages = computed(() => {
           />
         </div>
 
+        <div v-else-if="error" class="py-12 text-center">
+          <p class="c-[var(--vp-c-danger-1)]">
+            {{ error.message }}
+          </p>
+          <Button class="mt-4" @click="retry()">
+            Retry
+          </Button>
+        </div>
+
         <ForumTopicSkeletonPage v-else />
 
         <Separator />
 
         <ForumCommentArea
+          v-if="topic"
           class="mt-8"
           repo="Feedback"
           :topic-id="topicId"

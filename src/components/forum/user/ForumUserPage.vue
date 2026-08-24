@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { useForumUserStore } from '~/stores/forum/useForumUserStore'
 import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicsList from '../ForumTopicsList.vue'
 import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
@@ -10,60 +9,39 @@ import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
-const forumUserStore = useForumUserStore()
 const activeTab = ref<'feedback' | ''>('feedback')
-const { route } = useForumRoute()
-
-// Use storeToRefs to access reactive properties (now that UserStore uses toRef)
-const {
-  isSearching,
-  userSubmittedTopics,
-  data: topics,
-  loading,
-  loadingMore,
-  loadStateMessage,
-  canLoadMore,
-} = storeToRefs(forumUserStore)
-
-// Actions can be destructured normally
-const {
-  loadUserData,
-  resetState,
-  setupEventListeners,
-  cleanup,
-  loadMoreTopics,
-} = forumUserStore
-
+const { route, list } = useForumRoute()
 const username = computed(() => route.value?.name === 'user' ? route.value.username : '')
-
-const renderData = computed(() => {
-  // When not searching, show user submitted topics and regular topics
-  return [
-    ...(isSearching.value ? [] : userSubmittedTopics.value || []),
-    ...(topics.value || []),
-  ]
-})
-
-const isTopicsLoading = computed(() => loading.value || loadingMore.value)
-
-onMounted(() => {
-  // Setup event listeners and load user data
-  setupEventListeners()
-  if (username.value)
-    loadUserData(username.value)
-})
-
-onUnmounted(() => {
-  cleanup()
-  resetState()
+const topics = useForumTopicsQuery(computed(() => ({
+  filter: list.value?.filter ?? 'all',
+  sort: list.value?.sort ?? 'created',
+  q: list.value?.q ?? '',
+  creator: username.value,
+})))
+const loadStateMessage = computed(() => {
+  if (topics.error.value)
+    return 'Failed to load topics. Retry'
+  return topics.canLoadMore.value ? 'Load more' : 'No more topics'
 })
 </script>
 
 <template>
-  <BaseForumPage :store="forumUserStore" :render-data="renderData">
+  <BaseForumPage
+    :render-data="topics.rows.value"
+    :loading="topics.isLoading.value"
+    :loading-more="topics.loadingMore.value"
+    :can-load-more="topics.canLoadMore.value"
+    :load-more="topics.loadMore"
+    :refresh-data="topics.refetch"
+    :load-state-message="loadStateMessage"
+  >
     <template #header>
       <Suspense>
-        <ForumUserProfileHeader v-model:active-tab="activeTab" :username="username!" :topic-count="renderData.length" />
+        <ForumUserProfileHeader
+          v-model:active-tab="activeTab"
+          :username="username"
+          :topic-count="topics.total.value"
+        />
 
         <template #fallback>
           <ForumUserProfileHeaderSkeleton />
@@ -73,17 +51,18 @@ onUnmounted(() => {
 
     <template #content-main>
       <div v-show="activeTab === 'feedback'">
-        <!-- Use the default content from BaseForumPage -->
         <ForumTopicsList
-          :data="renderData"
-          :loading="isTopicsLoading"
-          :load-more="loadMoreTopics"
+          :data="topics.rows.value"
+          :loading="topics.isLoading.value || topics.loadingMore.value"
+          :can-load-more="topics.canLoadMore.value"
+          :load-more="topics.loadMore"
+          :refresh-data="topics.refetch"
         />
 
         <ForumLoadState
-          :loading="isTopicsLoading"
-          :can-load-more="canLoadMore"
-          :load-more="loadMoreTopics"
+          :loading="topics.isLoading.value || topics.loadingMore.value"
+          :can-load-more="topics.canLoadMore.value"
+          :load-more="topics.loadMore"
           :text="loadStateMessage"
         />
       </div>
