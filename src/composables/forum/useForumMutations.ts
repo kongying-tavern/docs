@@ -50,9 +50,10 @@ export function useForumMutations() {
 
   async function deleteComment(input: { repo: string, topicId: string, commentId: string | number }): Promise<boolean> {
     const deleted = await deleteCommentMutation.mutateAsync(input)
-    if (deleted)
-      await invalidate('deleteComment', input.topicId)
-    return deleted
+    if (!deleted)
+      throw new Error('Comment deletion was not confirmed.')
+    await invalidate('deleteComment', input.topicId)
+    return true
   }
 
   async function invalidate(kind: ForumMutationKind, topicId?: string | number, topic?: ForumAPI.Topic): Promise<void> {
@@ -70,17 +71,6 @@ export function useForumMutations() {
     if (topicId !== undefined && policy.invalidateComments)
       work.push(queryCache.invalidateQueries({ key: forumKeys.comments(topicId), exact: true }))
     await Promise.all(work)
-
-    if (topicId !== undefined && policy.removeDetail) {
-      const entry = queryCache.get(forumKeys.topic(topicId))
-      if (entry)
-        queryCache.remove(entry)
-    }
-    if (topicId !== undefined && policy.removeComments) {
-      const entry = queryCache.get(forumKeys.comments(topicId))
-      if (entry)
-        queryCache.remove(entry)
-    }
   }
 
   return {

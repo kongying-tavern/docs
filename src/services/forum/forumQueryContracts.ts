@@ -32,7 +32,6 @@ export type ForumMutationKind
     | 'changeTopicMembership'
     | 'pinTopic'
     | 'closeTopic'
-    | 'deleteTopic'
     | 'createComment'
     | 'deleteComment'
     | 'toggleCommentArea'
@@ -43,8 +42,6 @@ export interface ForumMutationPolicy {
   invalidateTopicLists: boolean
   invalidatePinned: boolean
   invalidateComments: boolean
-  removeDetail: boolean
-  removeComments: boolean
 }
 
 const BASE_TOPIC_POLICY: ForumMutationPolicy = {
@@ -53,8 +50,6 @@ const BASE_TOPIC_POLICY: ForumMutationPolicy = {
   invalidateTopicLists: true,
   invalidatePinned: false,
   invalidateComments: false,
-  removeDetail: false,
-  removeComments: false,
 }
 
 export const forumMutationPolicies: Record<ForumMutationKind, ForumMutationPolicy> = {
@@ -63,13 +58,6 @@ export const forumMutationPolicies: Record<ForumMutationKind, ForumMutationPolic
   changeTopicMembership: BASE_TOPIC_POLICY,
   pinTopic: { ...BASE_TOPIC_POLICY, invalidatePinned: true },
   closeTopic: BASE_TOPIC_POLICY,
-  deleteTopic: {
-    ...BASE_TOPIC_POLICY,
-    patchDetail: false,
-    invalidatePinned: true,
-    removeDetail: true,
-    removeComments: true,
-  },
   createComment: {
     ...BASE_TOPIC_POLICY,
     patchDetail: false,

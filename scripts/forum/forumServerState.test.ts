@@ -64,15 +64,6 @@ test('mutation matrix invalidates authoritative memberships exactly once', () =>
   assert.equal(forumMutationPolicies.changeTopicMembership.invalidateTopicLists, true)
   assert.equal(forumMutationPolicies.pinTopic.invalidatePinned, true)
   assert.equal(forumMutationPolicies.closeTopic.invalidateTopicLists, true)
-  assert.deepEqual(forumMutationPolicies.deleteTopic, {
-    patchDetail: false,
-    invalidateDetail: false,
-    invalidateTopicLists: true,
-    invalidatePinned: true,
-    invalidateComments: false,
-    removeDetail: true,
-    removeComments: true,
-  })
   assert.equal(forumMutationPolicies.createComment.invalidateComments, true)
   assert.equal(forumMutationPolicies.createComment.invalidateDetail, true)
   assert.equal(forumMutationPolicies.deleteComment.invalidateComments, true)

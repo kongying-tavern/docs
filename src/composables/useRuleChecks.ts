@@ -1,4 +1,5 @@
-import { computed } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import { computed, toValue } from 'vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { usePermissionData } from './usePermissionData'
 
@@ -12,7 +13,7 @@ const rolesPermissions = {
 type Role = keyof typeof rolesPermissions
 type Permission = (typeof rolesPermissions)[Role][number]
 
-export function useRuleChecks(inputId: string | number = '') {
+export function useRuleChecks(inputId: MaybeRefOrGetter<string | number> = '') {
   const userInfo = useUserInfoStore()
   const { getTeamMemberIds, getFeedbackMemberIds, getBlogMemberIds } = usePermissionData()
 
@@ -31,7 +32,7 @@ export function useRuleChecks(inputId: string | number = '') {
   })
 
   const userRoles = computed((): Array<Role> => {
-    return String(inputId) === String(userInfo.info?.id)
+    return String(toValue(inputId)) === String(userInfo.info?.id)
       ? [...staticRoles.value, 'author']
       : staticRoles.value
   })

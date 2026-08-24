@@ -1,7 +1,7 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
-import { computed } from 'vue'
+import { computed, toValue } from 'vue'
 import { toast } from 'vue-sonner'
 import { withAuth } from '@/utils/auth-helpers'
 import { composeTopicBody } from './composeTopicBody'
@@ -22,23 +22,27 @@ async function withOperationLock<T>(key: string, operation: () => Promise<T>): P
   }
 }
 
-export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomConfig>) {
-  if (!targetTopic?.id)
-    throw new Error('Topic is required.')
-
+export function useTopicManger(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | null | undefined>, message: Ref<CustomConfig>) {
   const mutations = useForumMutations()
-  const targetTopicId = targetTopic.id
+
+  function currentTopic(): ForumAPI.Topic {
+    const topic = toValue(targetTopic)
+    if (!topic?.id)
+      throw new Error('Topic is required.')
+    return topic
+  }
 
   async function update(
     action: string,
     kind: Parameters<typeof mutations.updateTopic>[0],
-    patch: Parameters<typeof mutations.updateTopic>[2],
+    createPatch: (topic: ForumAPI.Topic) => Parameters<typeof mutations.updateTopic>[2],
     successMessage: string,
     failureMessage: string,
   ): Promise<ForumAPI.Topic | false> {
-    return withOperationLock(`${targetTopicId}:${action}`, async () => {
+    const topic = currentTopic()
+    return withOperationLock(`${topic.id}:${action}`, async () => {
       const outcome = await withAuth.execute(
-        () => mutations.updateTopic(kind, targetTopicId, patch),
+        () => mutations.updateTopic(kind, topic.id, createPatch(topic)),
         { loginMessage: message.value.forum.auth.loginTips, errorMessage: failureMessage },
       )
       if (!outcome)
@@ -57,25 +61,25 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
   }
 
   const toggleCloseTopic = (): [ComputedRef<boolean>, () => Promise<ForumAPI.Topic | false>] => {
-    const closeState = computed(() => targetTopic.state === 'closed')
-    return [closeState, () => {
-      const state = closeState.value ? 'open' : 'closed'
-      return update(
-        'close',
-        'closeTopic',
-        { body: composeTopicBody(targetTopic.contentRaw, { state }), state },
-        message.value.forum.topic.menu.closeFeedback.success,
-        message.value.forum.topic.menu.closeFeedback.fail,
-      )
-    }]
+    const closeState = computed(() => toValue(targetTopic)?.state === 'closed')
+    return [closeState, () => update(
+      'close',
+      'closeTopic',
+      (topic) => {
+        const state = topic.state === 'closed' ? 'open' : 'closed'
+        return { body: composeTopicBody(topic.contentRaw, { state }), state }
+      },
+      message.value.forum.topic.menu.closeFeedback.success,
+      message.value.forum.topic.menu.closeFeedback.fail,
+    )]
   }
 
   const toggleHideTopic = (): [ComputedRef<boolean>, () => Promise<ForumAPI.Topic | false>] => {
-    const hideState = computed(() => targetTopic.state === 'progressing')
+    const hideState = computed(() => toValue(targetTopic)?.state === 'progressing')
     return [hideState, () => update(
       'hide',
       'changeTopicMembership',
-      { state: hideState.value ? 'open' : 'progressing' },
+      topic => ({ state: topic.state === 'progressing' ? 'open' : 'progressing' }),
       message.value.forum.topic.menu.hideFeedback.success,
       message.value.forum.topic.menu.hideFeedback.fail,
     )]
@@ -84,7 +88,7 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
   const toggleTopicType = (newType: Exclude<ForumAPI.TopicType, null>) => update(
     'type',
     'changeTopicMembership',
-    { labels: targetTopic.type === newType ? removeLabel(`TYP-${newType}`) : addLabel(`TYP-${newType}`) },
+    topic => ({ labels: topic.type === newType ? removeLabel(topic, `TYP-${newType}`) : addLabel(topic, `TYP-${newType}`) }),
     `Toggle topic type to ${newType} success`,
     `Toggle topic type to ${newType} fail`,
   )
@@ -92,17 +96,20 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
   const togglePinedTopic = () => update(
     'pin',
     'pinTopic',
-    { labels: targetTopic.pinned ? removeLabel('PINNED') : addLabel('PINNED') },
+    topic => ({ labels: topic.pinned ? removeLabel(topic, 'PINNED') : addLabel(topic, 'PINNED') }),
     'Pinned topic success',
     'Pinned topic fail',
   )
 
   const toggleTopicCommentArea = () => {
-    const willClose = targetTopic.commentCount !== -1
     return update(
       'comment',
       'toggleCommentArea',
-      { labels: willClose ? addLabel('COMMENT-CLOSED') : removeLabel('COMMENT-CLOSED') },
+      topic => ({
+        labels: topic.commentCount !== -1
+          ? addLabel(topic, 'COMMENT-CLOSED')
+          : removeLabel(topic, 'COMMENT-CLOSED'),
+      }),
       'Toggle topic comment area success',
       'Toggle topic comment area fail',
     )
@@ -111,26 +118,26 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
   const replaceTopicTags = (newTags: string[]) => update(
     'tags',
     'changeTopicMembership',
-    { labels: [...new Set([...getStateTags(), ...newTags])].join(',') },
+    topic => ({ labels: [...new Set([...getStateTags(topic), ...newTags])].join(',') }),
     'Tag edit success',
     'Tag edit fail',
   )
 
-  function getStateTags() {
+  function getStateTags(topic: ForumAPI.Topic) {
     return [
-      `TYP-${targetTopic.type}`,
-      targetTopic.commentCount === -1 ? 'COMMENT-CLOSED' : null,
-      targetTopic.pinned ? 'PINNED' : null,
+      `TYP-${topic.type}`,
+      topic.commentCount === -1 ? 'COMMENT-CLOSED' : null,
+      topic.pinned ? 'PINNED' : null,
       import.meta.env.DEV ? 'DEV-TEST' : null,
     ].filter((label): label is string => Boolean(label))
   }
 
-  function addLabel(label: string) {
-    return [...new Set([...targetTopic.tags, ...getStateTags(), label])].join(',')
+  function addLabel(topic: ForumAPI.Topic, label: string) {
+    return [...new Set([...topic.tags, ...getStateTags(topic), label])].join(',')
   }
 
-  function removeLabel(label: string) {
-    return [...new Set([...targetTopic.tags, ...getStateTags()])].filter(value => value !== label).join(',')
+  function removeLabel(topic: ForumAPI.Topic, label: string) {
+    return [...new Set([...topic.tags, ...getStateTags(topic)])].filter(value => value !== label).join(',')
   }
 
   return {

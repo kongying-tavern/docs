@@ -16,20 +16,21 @@ import ForumTagsInput from './form/publish-topic-form/ForumTagsInput.vue'
 
 const { open, topic } = useTopicTagsEditor()
 const { message } = useLocalized()
+const { replaceTopicTags } = useTopicManger(topic, message)
 
 const tags = ref<string[]>(topic.value?.tags ?? [])
 const tagsInputRef = ref<InstanceType<typeof ForumTagsInput>>()
 
-function handleSubmit() {
+async function handleSubmit() {
   if (!topic.value)
     return
 
   // Commit the local tags to the v-model
   tagsInputRef.value?.commitTags()
 
-  const { replaceTopicTags } = useTopicManger(topic.value, message)
-  replaceTopicTags(tags.value)
-  open.value = false
+  const result = await replaceTopicTags(tags.value)
+  if (result)
+    open.value = false
 }
 
 function handleCancel() {
@@ -55,10 +56,10 @@ watch(topic, (newVal) => {
         <ForumTagsInput ref="tagsInputRef" v-model="tags" :max="10" />
       </div>
       <DialogFooter class="sm:justify-start">
+        <Button type="button" variant="default" @click="handleSubmit">
+          提交
+        </Button>
         <DialogClose as-child>
-          <Button type="button" variant="default" @click="handleSubmit">
-            提交
-          </Button>
           <Button type="button" variant="secondary" class="mt-8" @click="handleCancel">
             取消
           </Button>

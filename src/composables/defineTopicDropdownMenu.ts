@@ -1,8 +1,8 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
-import { computed, ref } from 'vue'
+import { computed, ref, toValue } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
@@ -10,13 +10,11 @@ import { useTopicManger } from '~/composables/useTopicManger'
 import { useTopicTagsEditor } from './useTopicTagsEditor'
 
 // @unocss-include
-export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
-  if (!topicData)
-    return computed(() => [])
-
-  const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManger(topicData, message)
+export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
+  const currentTopic = computed(() => toValue(topicData))
+  const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManger(currentTopic, message)
   const { route } = useForumRoute()
-  const { hasAnyPermissions } = useRuleChecks(topicData.user.id)
+  const { hasAnyPermissions } = useRuleChecks(() => currentTopic.value.user.id)
 
   const [closeState, toggleClose] = toggleCloseTopic()
   const [hideState, toggleHide] = toggleHideTopic()
@@ -29,17 +27,17 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
   const hasEditPermission = hasAnyPermissions('edit_feedback')
   const topicTypeEnum: Exclude<ForumAPI.TopicType, null>[] = ['FEAT', 'BUG', 'ANN'] as const
 
-  const openOnGitee = () => issues.openTopicOnGitee(topicData.id)
+  const openOnGitee = () => issues.openTopicOnGitee(currentTopic.value.id)
 
   async function handleToggleCloseTopic() {
     const result = await toggleClose()
-    if (result && result.state === 'closed' && route.value?.name === 'topic' && route.value.topicId === String(topicData.id))
+    if (result && result.state === 'closed' && route.value?.name === 'topic' && route.value.topicId === String(result.id))
       window.history.back()
   }
 
   async function handleToggleHideTopic() {
     const result = await toggleHide()
-    if (result && result.state === 'progressing' && route.value?.name === 'topic' && route.value.topicId === String(topicData.id))
+    if (result && result.state === 'progressing' && route.value?.name === 'topic' && route.value.topicId === String(result.id))
       window.history.back()
   }
 
@@ -68,7 +66,7 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
         type: 'submenu',
         label: menuLabels.value.changeType.text,
         icon: 'i-lucide:settings',
-        items: topicTypeEnum.filter(val => val !== topicData.type).map(
+        items: topicTypeEnum.filter(val => val !== currentTopic.value.type).map(
           val => ({
             id: `change-topic-${val}`,
             type: 'item',
@@ -82,20 +80,20 @@ export function defineTopicDropdownMenu(topicData: ForumAPI.Topic, message: Ref<
         type: 'item',
         label: menuLabels.value.modifyTags.text,
         icon: 'i-lucide-tags',
-        action: () => openTopicTagsEditorDialog(topicData),
+        action: () => openTopicTagsEditorDialog(currentTopic.value),
       },
       {
         id: 'pinned-topic',
         type: 'item',
-        label: topicData.pinned ? menuLabels.value.pinTopic.unpin : menuLabels.value.pinTopic.pin,
-        icon: topicData.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
+        label: currentTopic.value.pinned ? menuLabels.value.pinTopic.unpin : menuLabels.value.pinTopic.pin,
+        icon: currentTopic.value.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
         action: togglePinedTopic,
       },
       {
         id: 'close-comment-topic',
         type: 'item',
-        label: topicData.commentCount === -1 ? menuLabels.value.commentArea.open : menuLabels.value.commentArea.close,
-        icon: topicData.commentCount === -1 ? 'i-lucide:message-circle' : 'i-lucide:message-circle-off',
+        label: currentTopic.value.commentCount === -1 ? menuLabels.value.commentArea.open : menuLabels.value.commentArea.close,
+        icon: currentTopic.value.commentCount === -1 ? 'i-lucide:message-circle' : 'i-lucide:message-circle-off',
         action: toggleTopicCommentArea,
       },
       {
