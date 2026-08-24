@@ -13,6 +13,7 @@
   --vp-font-family-content: var(--vp-font-family-base);
   --vp-c-accent: #35495e;
   --vp-c-brand: #44bd87;
+  --vp-c-brand-soft: rgba(0, 108, 69, 0.1);
   --vp-c-text-code: #476582;
 
   --vp-code-block-bg: rgba(125, 125, 125, 0.04);
@@ -56,6 +57,7 @@
   --vp-c-border: #3c3f44;
   --vp-c-divider: #2e2e32;
   --vp-c-gutter: #000000;
+  --vp-c-brand-soft: rgba(96, 191, 144, 0.14);
   --vp-local-nav-bg-color: rgba(27, 27, 31, 0.7)
 }
 
@@ -105,11 +107,11 @@
 :root {
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg,
-      #35495e -80%,
-      #41b883);
+      #60bf90,
+      #008858);
   --vp-home-hero-image-background-image: linear-gradient(-45deg,
-      #41b88380 30%,
-      #35495e80);
+      rgba(68, 189, 135, 0.28) 30%,
+      rgba(0, 136, 88, 0.12));
   --vp-home-hero-image-filter: blur(30px);
 
   --vp-layout-top-height: 0.1px;

@@ -103,3 +103,20 @@
   --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
+
+/* 功能卡片：白底 + 发丝线描边，与博客列表的分隔线语言一致 */
+.VPHomeFeatures .VPFeature {
+  border-color: var(--vp-c-divider);
+  background-color: var(--vp-c-bg);
+}
+
+.VPHomeFeatures .VPFeature:hover,
+.VPHomeFeatures .VPFeature.link:hover {
+  border-color: var(--vp-c-brand-2);
+}
+
+/* 图标底：品牌浅绿色，替代默认灰蓝 */
+.VPHomeFeatures .VPFeature .icon {
+  background-color: var(--vp-c-brand-soft);
+  border-radius: var(--radius);
+}
