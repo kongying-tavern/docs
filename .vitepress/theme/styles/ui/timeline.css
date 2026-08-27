@@ -49,7 +49,6 @@
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), 50% 100%, 0 calc(100% - 6px));
 }
 
-/* dot 左侧的日期栏 */
 .timeline-dot-date {
   position: absolute;
   left: 0;
@@ -170,18 +169,20 @@
 
 @media (max-width: 640px) {
   .timeline-dot {
-    padding-left: 88px;
+    padding-left: 96px;
   }
 
   .timeline-dot::before {
-    left: 60px;
+    left: 68px;
   }
 
   .timeline-dot::after {
-    left: 67px;
+    left: 75px;
   }
 
-
+  .timeline-dot-date {
+    width: 56px;
+  }
 
   .timeline-dot-concise {
     padding-left: 40px;
@@ -204,18 +205,18 @@
   }
 
   .timeline-dot-icon {
-    left: 63px;
+    left: 71px;
   }
 
   .timeline-dot:has(.timeline-dot-icon)::before {
-    left: 56px;
+    left: 64px;
     top: 30px;
     width: 24px;
     height: 24px;
   }
 
   .timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon {
-    left: 61.5px;
+    left: 69.5px;
     top: 35.5px;
     font-size: 13px;
   }
