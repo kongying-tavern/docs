@@ -2,6 +2,7 @@ import type { GitFileInfo } from './git'
 import type ForumAPI from '@/apis/forum/api'
 import { join } from 'node:path'
 import { createContentLoader } from 'vitepress'
+import { BLOG_POST_ORDER } from '../constants/blog'
 import { parseAuthors } from './frontmatter'
 import { getGitFileInfo } from './git'
 
@@ -67,6 +68,16 @@ function extractCustomExcerpt(content: string): string | undefined {
 }
 
 /**
+ * 按配置的固定顺序计算文章位置；未配置的文章排在其后
+ */
+function getConfiguredOrderIndex(lang: string, url: string): number {
+  const orderedSlugs = BLOG_POST_ORDER[lang] ?? []
+  const slug = url.slice(url.lastIndexOf('/') + 1)
+  const index = orderedSlugs.indexOf(slug)
+  return index === -1 ? orderedSlugs.length : index
+}
+
+/**
  * 创建博客数据加载器
  * @param pattern 文件路径模式，如 'src/zh/blog/posts/*.md'
  * @returns VitePress ContentLoader
@@ -119,12 +130,23 @@ export function createBlogLoader(pattern: string) {
 
       const results = await Promise.all(promises)
 
-      // 过滤掉失败的结果并按日期排序
+      // 过滤掉失败的结果并按配置的固定顺序（语言内）排序
       results
         .filter((post): post is BlogPost => post !== null)
         .forEach(post => blogPosts.push(post))
 
-      return blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      return blogPosts.toSorted((a, b) => {
+        const byLang = a.lang.localeCompare(b.lang)
+        if (byLang !== 0)
+          return byLang
+
+        const orderDiff = getConfiguredOrderIndex(a.lang, a.url) - getConfiguredOrderIndex(b.lang, b.url)
+        if (orderDiff !== 0)
+          return orderDiff
+
+        // 未配置的文章按发布日期倒序
+        return new Date(b.date).getTime() - new Date(a.date).getTime()
+      })
     },
   })
 }

@@ -110,6 +110,14 @@ export default [
     }
   },
   {
+    "mdc_name": "blog",
+    "component_meta": {
+      "meta": {
+        "props": []
+      }
+    }
+  },
+  {
     "mdc_name": "button",
     "component_meta": {
       "meta": {

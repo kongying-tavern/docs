@@ -1,15 +1,14 @@
 import type ForumAPI from '@/apis/forum/api'
-import { isObject } from 'lodash-es'
 import { defineStore } from 'pinia'
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, readonly, ref, watch } from 'vue'
 import { toCamelCaseObject } from '@/utils'
-import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
-import { oauth } from '../apis/forum/gitee'
+import { registerAuthSessionAccessor } from '../apis/auth-session'
 import { useAuthRefresh } from '../composables/useAuthRefresh'
 import { useSSOAuth } from '../composables/useSSOAuth'
 import { useSSORefreshManager } from '../composables/useSSORefreshManager'
 import { useTokenManager } from '../composables/useTokenManager'
 import { AuthError, createAuthError } from '../utils/auth-errors'
+import { log, LogGroup } from '../utils/auth-logger'
 
 export interface LocalAuth {
   accessToken: string
@@ -73,16 +72,6 @@ export const useUserAuthStore = defineStore('user-auth', () => {
       loginStatus.value = 'success'
       lastError.value = null
       log.success(LogGroup.AUTH, 'Authentication data set successfully')
-
-      // Start auto refresh
-      authRefresh.startAutoRefresh()
-
-      try {
-        ssoRefreshManager.startSSOAutoRefresh()
-      }
-      catch (error) {
-        log.warn(LogGroup.SSO, 'Failed to start SSO auto refresh, but main auth is still working', error)
-      }
     }
     catch (error) {
       log.error(LogGroup.AUTH, 'Failed to set authentication data', error)
@@ -119,39 +108,9 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     }
   }
 
-  const login = async (credentials: Record<string, unknown>): Promise<void> => {
-    log.info(LogGroup.AUTH, 'Starting login process')
-    loginStatus.value = 'pending'
-
-    try {
-      const result = await oauth.getToken(credentials.code as string)
-
-      if (!isObject(result)) {
-        throw createAuthError.networkError(new Error('Invalid login response'))
-      }
-
-      const camelResult = toCamelCaseObject(result as unknown as Record<string, unknown>)
-
-      if (!camelResult.accessToken || !camelResult.expiresIn) {
-        throw createAuthError.tokenInvalid(new Error('Invalid login response format'))
-      }
-
-      setAuth(camelResult as unknown as ForumAPI.Auth)
-      log.success(LogGroup.AUTH, 'Login successful')
-    }
-    catch (error) {
-      loginStatus.value = 'error'
-      lastError.value = error instanceof AuthError ? error : createAuthError.networkError(error as Error)
-      log.error(LogGroup.AUTH, 'Login failed', error)
-      throw lastError.value
-    }
-  }
-
   const logout = (): void => {
     log.info(LogGroup.AUTH, 'Starting logout process')
-
     try {
-      // Stop auto refresh
       authRefresh.stopAutoRefresh()
 
       try {
@@ -161,10 +120,8 @@ export const useUserAuthStore = defineStore('user-auth', () => {
         log.warn(LogGroup.SSO, 'Failed to stop SSO auto refresh, but logout continues', error)
       }
 
-      // Clear all tokens
       tokenManager.clearAllTokens()
 
-      // Reset state
       loginStatus.value = 'idle'
       lastError.value = null
 
@@ -176,28 +133,62 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     }
   }
 
-  // Initialize auto refresh if token exists
-  if (tokenManager.localAuth.value?.accessToken) {
-    authRefresh.startAutoRefresh()
+  const logoutFromInterKnot = async () => {
+    return ssoAuth.logoutFromInterKnot()
+  }
 
-    try {
-      ssoRefreshManager.startSSOAutoRefresh()
-    }
-    catch (error) {
-      log.warn(LogGroup.SSO, 'Failed to initialize SSO auto refresh, but main auth is working', error)
+  const refreshInterKnotToken = async () => {
+    return ssoAuth.refreshInterKnotToken()
+  }
+
+  const getDebugInfo = () => {
+    return {
+      ...tokenManager.getTokenDebugInfo(),
+      loginStatus: loginStatus.value,
+      lastError: lastError.value?.message,
+      ssoTokens: Object.keys(tokenManager.ssoAuth.value).reduce((acc, key) => {
+        acc[key] = !!tokenManager.ssoAuth.value[key as keyof SSOLocaleAuth]?.accessToken
+        return acc
+      }, {} as Record<string, boolean>),
     }
   }
 
-  // Cleanup on unmount
-  onBeforeUnmount(() => {
-    authRefresh.cleanup()
-    ssoRefreshManager.cleanup()
+  // token 出现（登录/跨标签页同步）时启动自动刷新；两个启动函数均为幂等
+  watch(
+    () => tokenManager.localAuth.value?.accessToken,
+    (accessToken) => {
+      if (!accessToken)
+        return
+
+      authRefresh.startAutoRefresh()
+
+      try {
+        ssoRefreshManager.startSSOAutoRefresh()
+      }
+      catch (error) {
+        log.warn(LogGroup.SSO, 'Failed to initialize SSO auto refresh, but main auth is working', error)
+      }
+    },
+    { immediate: true },
+  )
+
+  // 把认证状态注入给 API 层（gitee/interknot client），断开 client ↔ store 的模块环
+  registerAuthSessionAccessor({
+    isTokenValid: () => isTokenValid.value,
+    getAccessToken: () => auth.value?.accessToken ?? null,
+    refreshToken: () => refreshToken(),
+    waitForTokenReady: () => tokenManager.waitForRefreshComplete(),
+    isInterKnotTokenValid: () => ssoAuth.isInterKnotTokenValid(),
+    getInterKnotAccessToken: () => tokenManager.ssoAuth.value.interKnot?.accessToken ?? null,
+    refreshSSOAuth: () => ssoAuth.refreshInterKnotToken(),
   })
 
   return {
     // State
     auth,
     ssoAuth: ssoLocalAuth,
+    loginStatus: readonly(loginStatus),
+    lastError: readonly(lastError),
 
     // Computed
     isTokenValid,
@@ -207,19 +198,21 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     setAuth,
     setSSOAuth,
     refreshToken,
-    login,
     logout,
 
     // SSO Actions
+    logoutFromInterKnot,
+    refreshInterKnotToken,
+    isInterKnotTokenValid: () => ssoAuth.isInterKnotTokenValid(),
     isSSOTokenValid: (platform: string) => {
       if (platform === 'interKnot') {
-        return { value: ssoAuth.isInterKnotTokenValid() }
+        return computed(() => ssoAuth.isInterKnotTokenValid())
       }
       throw createAuthError.networkError(new Error(`SSO platform ${platform} not supported`))
     },
     refreshSSOAuth: async (platform: string) => {
       if (platform === 'interKnot') {
-        return ssoAuth.refreshInterKnotToken()
+        return refreshInterKnotToken()
       }
       throw createAuthError.networkError(new Error(`SSO platform ${platform} not supported`))
     },
@@ -227,5 +220,13 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     // Token management
     ensureTokenRefreshMission: () => authRefresh.startAutoRefresh(),
     waitForTokenReady: tokenManager.waitForRefreshComplete,
+
+    // Debug
+    getDebugInfo,
+
+    // SSO Refresh Management
+    startSSOAutoRefresh: () => ssoRefreshManager.startSSOAutoRefresh(),
+    stopSSOAutoRefresh: () => ssoRefreshManager.stopAllSSORefresh(),
+    getSSORefreshDebugInfo: () => ssoRefreshManager.getDebugInfo(),
   }
 })

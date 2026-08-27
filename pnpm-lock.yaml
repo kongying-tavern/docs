@@ -188,6 +188,9 @@ catalogs:
     dayjs:
       specifier: ^1.11.20
       version: 1.11.20
+    dexie:
+      specifier: ^4.3.0
+      version: 4.4.5
     embla-carousel-vue:
       specifier: ^8.6.0
       version: 8.6.0
@@ -270,6 +273,9 @@ catalogs:
     markdown-it-container:
       specifier: 4.0.0
       version: 4.0.0
+    markdown-it-emoji:
+      specifier: ^3.0.0
+      version: 3.1.0
     markdown-it-footnote:
       specifier: ^4.0.0
       version: 4.0.0
@@ -415,6 +421,12 @@ importers:
       dayjs:
         specifier: catalog:frontend
         version: 1.11.20
+      dexie:
+        specifier: catalog:frontend
+        version: 4.4.5
+      dompurify:
+        specifier: ^3.4.13
+        version: 3.4.13
       embla-carousel-vue:
         specifier: catalog:frontend
         version: 8.6.0(vue@3.5.41(typescript@5.9.3))
@@ -557,6 +569,9 @@ importers:
       markdown-it-container:
         specifier: catalog:markdown
         version: 4.0.0
+      markdown-it-emoji:
+        specifier: catalog:markdown
+        version: 3.1.0
       markdown-it-kbd-better:
         specifier: catalog:markdown
         version: 1.2.5
@@ -3307,6 +3322,9 @@ packages:
   '@types/semver@7.7.1':
     resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
 
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
 
@@ -4671,6 +4689,9 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
+  dexie@4.4.5:
+    resolution: {integrity: sha512-wWCHdihT3dmlUSuNhn5mMZDWSpG0suxjAni7YjjiZdzabZcKmy3uNZGZ7AeYYXBoLbpSXX35fikPLkPC44Osiw==}
+
   diff-sequences@29.6.3:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -4699,6 +4720,9 @@ packages:
   domhandler@5.0.3:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
+
+  dompurify@3.4.13:
+    resolution: {integrity: sha512-2vmYIoqjze2d+kakP8S/nS5shfsl587kzwEjcGlTdiksUVgFHnFCsLYDVj/JNqJVOQZGSYBTmuycv0PodwmnMQ==}
 
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
@@ -6142,6 +6166,9 @@ packages:
 
   markdown-it-container@4.0.0:
     resolution: {integrity: sha512-HaNccxUH0l7BNGYbFbjmGpf5aLHAMTinqRZQAEQbMr2cdD3z91Q6kIo1oUn1CQndkT03jat6ckrdRYuwwqLlQw==}
+
+  markdown-it-emoji@3.1.0:
+    resolution: {integrity: sha512-NhmMEH2ywduD4Nty1E8uB5NqfLhAT1VR0dyvoJyStKOqCzbZmVdn/+8wj7zpDsb/fLBikpCPsWwxqKlvMmbz4g==}
 
   markdown-it-footnote@4.0.0:
     resolution: {integrity: sha512-WYJ7urf+khJYl3DqofQpYfEYkZKbmXmwxQV8c8mO/hGIhgZ1wOe7R4HLFNwqx7TjILbnC98fuyeSsin19JdFcQ==}
@@ -11410,6 +11437,9 @@ snapshots:
 
   '@types/semver@7.7.1': {}
 
+  '@types/trusted-types@2.0.7':
+    optional: true
+
   '@types/unist@2.0.11': {}
 
   '@types/unist@3.0.3': {}
@@ -12998,6 +13028,8 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
+  dexie@4.4.5: {}
+
   diff-sequences@29.6.3: {}
 
   diff@5.2.0: {}
@@ -13020,6 +13052,10 @@ snapshots:
   domhandler@5.0.3:
     dependencies:
       domelementtype: 2.3.0
+
+  dompurify@3.4.13:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
 
   domutils@3.2.2:
     dependencies:
@@ -14596,6 +14632,8 @@ snapshots:
       markdown-it: 14.2.0
 
   markdown-it-container@4.0.0: {}
+
+  markdown-it-emoji@3.1.0: {}
 
   markdown-it-footnote@4.0.0: {}
 

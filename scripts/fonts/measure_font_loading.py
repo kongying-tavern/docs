@@ -60,7 +60,7 @@ def page_codepoints(path: Path) -> set[int]:
 
 
 def group_of(file_name: str) -> str:
-    # hywenhei_45w.cjk.l1.01.<hash>.woff2 -> hywenhei_45w.cjk.l1
+    # sarasa_gothic_sc.cjk.l1.01.<hash>.woff2 -> sarasa_gothic_sc.cjk.l1
     return ".".join(file_name.split(".")[:-3])
 
 

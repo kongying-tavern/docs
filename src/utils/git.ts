@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process'
+import { execFileSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import process from 'node:process'
 
@@ -57,7 +57,7 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
 
     // 检查是否在Git仓库中
     try {
-      execSync('git rev-parse --git-dir', {
+      execFileSync('git', ['rev-parse', '--git-dir'], {
         cwd: process.cwd(),
         stdio: 'pipe',
       })
@@ -66,21 +66,18 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
       return null
     }
 
-    // 获取文件的Git历史 - 使用相对路径
+    // 获取文件的Git历史 - 使用相对路径（经参数数组传参，不经 shell 拼接）
     const relativePath = filePath.replace(`${process.cwd()}/`, '').replace(BACKSLASH_PATH_REGEX, '/')
 
-    const gitLogCommand = [
-      'git log',
-      '--format="%H|||%ci|||%an|||%ae|||%s"',
-      '--follow',
-      `"${relativePath}"`,
-    ].join(' ')
-
-    const output = execSync(gitLogCommand, {
-      cwd: process.cwd(),
-      encoding: 'utf-8',
-      stdio: 'pipe',
-    })
+    const output = execFileSync(
+      'git',
+      ['log', '--format=%H|||%ci|||%an|||%ae|||%s', '--follow', '--', relativePath],
+      {
+        cwd: process.cwd(),
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      },
+    )
 
     const commits = parseGitLog(output)
 
@@ -110,7 +107,7 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
  */
 export function getGitRoot(): string | null {
   try {
-    const gitRoot = execSync('git rev-parse --show-toplevel', {
+    const gitRoot = execFileSync('git', ['rev-parse', '--show-toplevel'], {
       encoding: 'utf-8',
       stdio: 'pipe',
     }).trim()

@@ -1,9 +1,11 @@
 ---
 title: "[Client] Release Notes"
+type: changelog
 layout: Post
 authors:
   - aaaaaaa8
   - idangoi
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=[Client] Release Notes"
 ---
 
 {define:L_NORMAL}{color:#2bbc6e}**NORMAL**{/color}{/define}

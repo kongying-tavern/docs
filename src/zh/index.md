@@ -58,7 +58,7 @@ features:
 hero:
   name: 空荧酒馆
   text: 原神全资源攻略地图
-  tagline: Simple, powerful, and performant.
+  tagline: 免费 · 开源 · 无广告
   image:
     src: /imgs/common/logo/logo_256.png
     alt: 空荧酒馆

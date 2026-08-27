@@ -18,6 +18,21 @@ const emits = defineEmits([
 /** Matches special regex characters for escaping */
 const SPECIAL_CHARS_REGEX = /[-/\\^$*+?.()|[\]{}]/g
 
+/** Matches characters that are unsafe in raw HTML output */
+const HTML_UNSAFE_CHARS_REGEX = /[&<>"']/g
+
+const HTML_ESCAPE_MAP: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  '\'': '&#39;',
+}
+
+function escapeHtml(text: string): string {
+  return text.replace(HTML_UNSAFE_CHARS_REGEX, char => HTML_ESCAPE_MAP[char])
+}
+
 // Get locale information for proper link generation
 const { localeIndex } = useData()
 
@@ -27,22 +42,25 @@ function getTopicLink(topicId: string): string {
 }
 
 function highlightText(text: string, keyword: string, scope: number = 20) {
+  // 文本来自用户可编辑的 issue 标题/内容，输出到 v-html 前必须转义
   if (!keyword)
-    return text
+    return escapeHtml(text)
 
   const keywordEscaped = keyword.replace(SPECIAL_CHARS_REGEX, '\\$&')
   const regex = new RegExp(`(${keywordEscaped})`, 'gi')
   const match = text.match(regex)
 
   if (!match)
-    return text
+    return escapeHtml(text)
 
   const index = text.toLowerCase().indexOf(match[0].toLowerCase())
   const start = Math.max(0, index - scope)
   const end = Math.min(text.length, index + match[0].length + scope)
-  const excerpt = text.substring(start, end)
+  const excerpt = escapeHtml(text.substring(start, end))
 
-  return excerpt.replace(regex, `<span class="font-[--vp-font-family-subtitle] c-[#06c]">$1</span>`)
+  // 转义后再插入高亮标签，关键字需按转义后的形式重新匹配
+  const highlightRegex = new RegExp(`(${escapeHtml(match[0]).replace(SPECIAL_CHARS_REGEX, '\\$&')})`, 'gi')
+  return excerpt.replace(highlightRegex, `<span class="font-[--vp-font-family-subtitle] c-[#06c]">$1</span>`)
 }
 
 const filteredItems = computed(() => {

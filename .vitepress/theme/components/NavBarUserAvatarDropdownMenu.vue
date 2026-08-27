@@ -50,14 +50,14 @@ const isOfficial = computed(() => hasAnyRoles('blogMember', 'teamMember', 'feedb
               :src="userInfo.info.avatar"
             />
             <div class="ml-4 lg:ml-0 lg:text-align-center">
-              <div class="text-xl color-[var(--vp-c-text-1)] font-medium mt-1">
+              <div class="text-base color-[var(--vp-c-text-1)] font-medium mt-1">
                 {{ userInfo.info?.username || 'Unknown' }}
                 <ForumRoleBadge
                   v-if="isOfficial"
                   type="official"
                 />
               </div>
-              <p class="text-sm color-[var(--vp-c-text-3)] leading-tight font---vp-font-family-content">
+              <p class="text-xs color-[var(--vp-c-text-3)] leading-tight font---vp-font-family-content">
                 @{{ userInfo.info?.login || '00000' }}
               </p>
             </div>

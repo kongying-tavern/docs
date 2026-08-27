@@ -1,7 +1,6 @@
 ---
 title: Team Blog
-subtext: Learn more about map-related updates and tutorials
-layout: Headline
+layout: Blog
 aside: false
 ---
 
