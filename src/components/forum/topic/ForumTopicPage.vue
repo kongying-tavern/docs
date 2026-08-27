@@ -4,20 +4,20 @@ import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
-import ForumAside from '../ForumAside.vue'
 import ForumLayout from '../ForumLayout.vue'
-import ForumTopicDropdownMenu from '../ForumTopicDropdownMenu.vue'
-import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
-import ForumTopicTranslator from '../ForumTopicTranslator.vue'
+import ForumAside from '../sidebar/ForumAside.vue'
 import ForumImage from '../ui/ForumImage.vue'
-import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
+import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicPageState } from './composables/useTopicPageState'
+import ForumTopicDropdownMenu from './ForumTopicDropdownMenu.vue'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
+import ForumTopicTagsEditorDialog from './ForumTopicTagsEditorDialog.vue'
+import ForumTopicTranslator from './ForumTopicTranslator.vue'
 
 const {
   topic,
@@ -75,19 +75,20 @@ const topicImages = computed(() => {
                   />
                 </template>
               </ForumUserHoverCard>
-              <ForumRoleBadge :author-id="topic.user.id" />
-              <span class="text-xs color-[--vp-c-text-3] my-0 inline-block">•</span>
-              <ForumTime
-                class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)]"
-                :date="topic.createdAt"
-              />
+              <ForumUserAtTag :user="topic.user" />
             </div>
 
-            <ForumTopicDropdownMenu
-              side="bottom"
-              :topic-data="topic"
-              @topic:close="backToPreviousPage"
-            />
+            <div class="flex shrink-0 gap-2 items-center">
+              <ForumTime
+                class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)] whitespace-nowrap"
+                :date="topic.createdAt"
+              />
+              <ForumTopicDropdownMenu
+                side="bottom"
+                :topic-data="topic"
+                @topic:close="backToPreviousPage"
+              />
+            </div>
           </div>
 
           <h3
@@ -120,15 +121,20 @@ const topicImages = computed(() => {
             :data="topic?.tags"
           />
 
-          <!-- 智能图片布局 -->
           <ForumImage
             v-if="topicImages.length > 0"
             :images="topicImages"
             class="mt-6"
+            :context="topic ? {
+              kind: 'topic',
+              topic,
+              repo: topic.type === 'POST' ? 'Blog' : 'Feedback',
+              topicAuthorId: topic.user.id,
+            } : undefined"
           />
 
           <ForumTopicFooter
-            :topic-id="String(topic.id)"
+            :topic="topic"
           />
         </div>
 
@@ -150,6 +156,7 @@ const topicImages = computed(() => {
           class="mt-8"
           repo="Feedback"
           :topic-id="topicId"
+          :topic="topic"
           :topic-author-id="topic?.user.id || -1"
           :comment-count="topic?.commentCount"
         />
@@ -157,13 +164,12 @@ const topicImages = computed(() => {
 
       <template #aside>
         <ForumAside
-          :show-button="false"
           :contact-us="true"
+          :exclude-topic-ids="topic ? [topic.id] : []"
         />
       </template>
     </ForumLayout>
 
-    <!-- Tags Editor Dialog -->
     <ForumTopicTagsEditorDialog />
   </ClientOnly>
 </template>

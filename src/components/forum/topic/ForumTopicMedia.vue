@@ -10,7 +10,6 @@ const props = defineProps<{
 
 const { isCardMode, isCompactMode } = useForumViewMode()
 
-// Computed properties
 const hasImages = computed(() =>
   props.topic.content?.images && props.topic.content.images.length > 0,
 )
@@ -31,7 +30,6 @@ const primaryImage = computed(() => images.value[0])
 const imageCount = computed(() => images.value.length)
 const hasMultipleImages = computed(() => imageCount.value > 1)
 
-// Compact mode always shows media area
 const shouldShowInCompact = computed(() => isCompactMode.value)
 </script>
 
@@ -40,7 +38,6 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
     v-if="(isCardMode && hasImages) || shouldShowInCompact"
     class="topic-media"
   >
-    <!-- Compact Mode - Single Image Preview or Placeholder -->
     <div
       v-if="isCompactMode"
       class="ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px transition items-center relative overflow-hidden"
@@ -53,7 +50,6 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
         loading="lazy"
       >
 
-      <!-- Placeholder for topics without images -->
       <div
         v-else
         class="bg-[--vp-c-bg-soft] flex size-full transition-colors duration-200 items-center justify-center hover:bg-[--vp-c-bg-alt]"
@@ -61,23 +57,27 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
         <span class="i-lucide-image text-[var(--vp-c-text-3)] opacity-60" />
       </div>
 
-      <!-- Multiple Images Indicator for Compact Mode -->
       <span
         v-if="hasMultipleImages"
-        class="font-size-xs c-white p-1 rounded-2px bg-[rgba(0,0,0,.5)] flex h-18px items-center right-1 top-1 justify-center absolute"
+        class="font-size-xs text-[var(--forum-media-on-overlay)] p-1 rounded-2px bg-[var(--forum-media-overlay)] flex h-18px items-center right-1 top-1 justify-center absolute"
       >
-        <span class="i-lucide-image mr-1 bg-white size-3" />
+        <span class="i-lucide-image mr-1 bg-[var(--forum-media-on-overlay)] size-3" />
         {{ imageCount }}
       </span>
     </div>
 
-    <!-- Card Mode - Use ForumImage with row layout -->
     <ForumImage
       v-else-if="isCardMode && hasImages"
       layout="row"
       :images="images"
       :max-display="3"
       class="mt-2"
+      :context="{
+        kind: 'topic',
+        topic: props.topic,
+        repo: props.topic.type === 'POST' ? 'Blog' : 'Feedback',
+        topicAuthorId: props.topic.user.id,
+      }"
     />
   </div>
 </template>
@@ -87,7 +87,6 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
   margin-top: 0.5rem;
 }
 
-/* Compact mode image container */
 .ml-2 {
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -96,22 +95,5 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
 
 .ml-2:hover {
   border-color: var(--vp-c-brand);
-}
-
-/* Multiple images indicator animation */
-.absolute.bottom-1 {
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 </style>

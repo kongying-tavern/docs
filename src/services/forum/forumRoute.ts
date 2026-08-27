@@ -1,9 +1,8 @@
-export const FORUM_FILTERS = ['all', 'bug', 'feat', 'closed'] as const
-export const FORUM_SORTS = ['created', 'updated'] as const
-export const FORUM_SEARCH_MAX_LENGTH = 50
+const FORUM_FILTERS = ['all', 'bug', 'feat', 'closed'] as const
+const FORUM_SEARCH_MAX_LENGTH = 50
 
 export type ForumFilter = typeof FORUM_FILTERS[number]
-export type ForumSort = typeof FORUM_SORTS[number]
+export type ForumSort = 'created' | 'updated'
 
 export interface ForumListRouteState {
   filter: ForumFilter
@@ -22,7 +21,7 @@ export interface ForumRouteOptions {
   locales: readonly string[]
 }
 
-export interface ForumHrefOptions extends ForumRouteOptions {
+interface ForumHrefOptions extends ForumRouteOptions {
   currentUrl?: string | URL
   hash?: string | null
 }

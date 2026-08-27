@@ -14,16 +14,13 @@ const props = defineProps<{
 const modelValue = defineModel('activeTab', { default: 'feedback' })
 const { message } = useLocalized()
 
-// Use user profile composable
 const {
   menuRef,
   renderedUser,
   role,
   menu,
   sendMessage,
-} = useUserProfile({
-  username: () => props.username,
-})
+} = useUserProfile(() => props.username)
 </script>
 
 <template>
@@ -32,7 +29,6 @@ const {
       <div class="mx-auto w-full">
         <div class="p-4 rounded-lg w-full sm:p-6">
           <div class="flex flex-col gap-4 items-start sm:flex-row sm:gap-6">
-            <!-- 头像和按钮行 -->
             <div class="flex w-full items-start justify-between sm:w-auto">
               <div class="relative">
                 <Avatar
@@ -51,7 +47,7 @@ const {
                     class="i-lucide-mail text-base"
                     @click="sendMessage"
                   />
-                  <span class="max-sm:hidden">私信</span>
+                  <span class="max-sm:hidden">{{ message.forum.labels.privateMessage }}</span>
                 </Button>
                 <ForumFollowUserButton
                   v-if="renderedUser?.login"
@@ -61,10 +57,9 @@ const {
               </div>
             </div>
 
-            <!-- 用户信息 -->
             <div class="flex-1 w-full">
               <div class="flex gap-2 items-center">
-                <h1 class="text-xl text-gray-900 font-bold sm:text-2xl dark:text-white">
+                <h1 class="text-xl text-[var(--vp-c-text-1)] font-bold sm:text-2xl">
                   {{ renderedUser?.username || 'Unknown' }}
                 </h1>
                 <span class="rounded-full">
@@ -76,7 +71,6 @@ const {
                 {{ renderedUser?.bio || message.forum.labels.lazyPerson }}
               </p>
 
-              <!-- 统计信息 -->
               <div class="font-size-3.5 c-[--vp-c-text-3] mt-3 flex flex-wrap gap-4 sm:mt-4 sm:gap-6">
                 <div class="flex gap-2 items-center">
                   <i class="i-lucide-file-text" />
@@ -91,7 +85,6 @@ const {
               </div>
             </div>
 
-            <!-- PC端操作按钮 -->
             <div class="gap-2 hidden sm:flex">
               <Button
                 variant="outline"
@@ -134,7 +127,6 @@ const {
                 :class="item.icon"
               />
               {{ item.label }}
-              <!-- 使用内部相对定位元素实现内容宽度的指示器 -->
               <span
                 v-if="modelValue === item.id"
                 class="bg-[var(--vp-c-brand)] h-0.5 w-full transition-all duration-300 left-0 absolute -bottom-[15px]"

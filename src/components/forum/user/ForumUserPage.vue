@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch, watchEffect } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import BaseForumPage from '../base/BaseForumPage.vue'
-import ForumTopicsList from '../ForumTopicsList.vue'
-import ForumTopicTagsEditorDialog from '../ForumTopicTagsEditorDialog.vue'
+import ForumTopicList from '../list/ForumTopicList.vue'
+import ForumTopicTagsEditorDialog from '../topic/ForumTopicTagsEditorDialog.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
 const activeTab = ref<'feedback' | ''>('feedback')
-const { route, list, navigateFilter, navigateSort } = useForumRoute()
+const { route, list, navigateFilter, submitSearch } = useForumRoute()
 const username = computed(() => route.value?.name === 'user' ? route.value.username : '')
 const topics = useForumTopicsQuery(computed(() => ({
   filter: list.value?.filter ?? 'all',
@@ -24,6 +24,26 @@ const loadStateMessage = computed(() => {
   if (topics.error.value)
     return message.value.forum.loadError
   return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
+})
+
+// 进入用户页时「全部反馈」为空则自动切到「已结反馈」（仅一次，切换用户后重置）
+const autoSwitchedToClosed = ref(false)
+watch(() => username.value, () => {
+  autoSwitchedToClosed.value = false
+})
+watchEffect(() => {
+  if (autoSwitchedToClosed.value)
+    return
+  if (topics.isLoading.value || topics.error.value)
+    return
+  if ((list.value?.filter ?? 'all') !== 'all')
+    return
+  if (list.value?.q)
+    return
+  if (topics.total.value > 0)
+    return
+  autoSwitchedToClosed.value = true
+  navigateFilter('closed')
 })
 </script>
 
@@ -39,8 +59,9 @@ const loadStateMessage = computed(() => {
     :load-state-message="loadStateMessage"
     :filter="list?.filter ?? 'all'"
     :sort="list?.sort ?? 'created'"
+    :query="list?.q ?? ''"
     :on-filter-change="navigateFilter"
-    :on-sort-change="navigateSort"
+    :on-search="submitSearch"
   >
     <template #header>
       <Suspense>
@@ -58,11 +79,12 @@ const loadStateMessage = computed(() => {
 
     <template #content-main>
       <div v-show="activeTab === 'feedback'">
-        <ForumTopicsList
+        <ForumTopicList
           :data="topics.rows.value"
           :loading="topics.isLoading.value || topics.loadingMore.value"
           :error="topics.error.value"
           :can-load-more="topics.canLoadMore.value"
+          :sort="list?.sort ?? 'created'"
           :load-more="topics.loadMore"
           :refresh-data="topics.refetch"
         />

@@ -1,5 +1,6 @@
 import type ForumAPI from '../api'
 import type { SearchParamValue } from './types'
+import type { TopicStateFilter } from '~/services/forum/forumQueryContracts'
 import { buildFormData } from '@/apis/utils'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { apiCall } from '.'
@@ -35,7 +36,7 @@ export async function getTopic(number: string): Promise<ForumAPI.Topic> {
 
 export async function getTopics(
   query: ForumAPI.Query,
-  state?: ForumAPI.TopicState,
+  state?: TopicStateFilter,
   search?: string,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
   // Separate the requests to prevent comments timeout from affecting issues
@@ -55,7 +56,6 @@ export async function getTopics(
     }
   }
 
-  // Try to fetch comments, but don't let it fail the main request
   let comments: GITEE.CommentList = []
   try {
     ;({ data: comments } = await apiCall<GITEE.CommentList>(
@@ -72,7 +72,6 @@ export async function getTopics(
     ))
   }
   catch {
-    // Failed to fetch comments, continuing without them
   }
 
   const data: ForumAPI.Topic[] = []
@@ -158,7 +157,7 @@ export async function getTopicComments(
 
 export function buildTopicListRequest(
   query: ForumAPI.Query,
-  state: ForumAPI.TopicState = 'open',
+  state: TopicStateFilter = 'open',
   search?: string,
 ): TopicListRequest {
   const labels = processLabels(query.filter).labels
@@ -290,7 +289,12 @@ export async function putTopic(
     return { status: 'partial', topic: result, error: toError(error) }
   }
 
-  return { status: 'success', topic: result }
+  try {
+    return { status: 'success', topic: await getTopic(String(number)) }
+  }
+  catch (error) {
+    return { status: 'partial', topic: result, error: toError(error) }
+  }
 }
 
 function toError(error: unknown): Error {

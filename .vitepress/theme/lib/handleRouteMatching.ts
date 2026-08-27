@@ -126,7 +126,7 @@ function buildForumRouteData(path: string, locale: string, params: Record<string
     title: FORUM_TITLES[locale] || FORUM_TITLES.root,
     description: '',
     headers: [],
-    frontmatter: { sidebar: false, layout: 'Forum' },
+    frontmatter: { sidebar: true, layout: 'Forum' },
   }
 }
 

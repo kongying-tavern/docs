@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { PhotoSwipe } from '@/components/ui/photoswipe'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
+import ForumImagePreviewer from '../ui/image-previewer/ForumImagePreviewer.vue'
+import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicComment } from './composables/useTopicComment'
 import { COMMENT_STYLES } from './constants/commentStyles'
@@ -10,7 +11,7 @@ import ForumCommentFooter from './ForumCommentFooter.vue'
 
 const props = withDefaults(
   defineProps<{
-    repo?: string
+    repo?: ForumAPI.Repo
     topicId: string
     topicAuthorId: string | number
     commentData: ForumAPI.Comment
@@ -37,7 +38,6 @@ const {
   topicAuthorId: props.topicAuthorId,
 })
 
-// Event handlers
 function handleCommentClick(author: ForumAPI.User): void {
   emit('comment:click', author)
 }
@@ -64,7 +64,7 @@ function handleCommentClick(author: ForumAPI.User): void {
           </template>
         </ForumUserHoverCard>
 
-        <ForumRoleBadge class="mb-2" :type="role" />
+        <ForumUserAtTag :user="props.commentData.author" class="ml-2" />
       </div>
       <span v-else class="title font-size-xs flex whitespace-nowrap">
         {{ props.commentData.author.username }}
@@ -87,7 +87,7 @@ function handleCommentClick(author: ForumAPI.User): void {
         {{ content.text }}
       </article>
 
-      <PhotoSwipe
+      <ForumImagePreviewer
         v-if="props.commentData.content.images && props.size !== 'small'"
         :images="props.commentData.content.images.map(img => ({
           src: img.src,
@@ -95,6 +95,12 @@ function handleCommentClick(author: ForumAPI.User): void {
           height: img.height || 1080,
           alt: img.alt || '',
         }))"
+        :context="{
+          kind: 'comment',
+          comment: props.commentData,
+          repo: props.repo,
+          topicAuthorId: props.topicAuthorId,
+        }"
         class="topic-content-img mt-4"
       >
         <template #default="{ openAt }">
@@ -108,11 +114,11 @@ function handleCommentClick(author: ForumAPI.User): void {
               :height="img.height"
               class="border border-[var(--vp-c-divider)] rounded-sm flex-shrink-0 max-h-24 cursor-zoom-in transition-colors duration-200 hover:border-[var(--vp-c-brand)]"
               loading="lazy"
-              @click="openAt(index)"
+              @click="openAt(index, $event.currentTarget)"
             >
           </div>
         </template>
-      </PhotoSwipe>
+      </ForumImagePreviewer>
 
       <div v-if="props.size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
@@ -133,12 +139,10 @@ function handleCommentClick(author: ForumAPI.User): void {
   word-break: break-word;
 }
 
-/* 评论图片样式优化 */
 .topic-content-img {
   max-width: 100%;
 }
 
-/* 图片样式 */
 .topic-content-img img {
   border: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg-soft);

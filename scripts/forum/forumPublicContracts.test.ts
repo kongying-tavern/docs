@@ -1,5 +1,6 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import { strict as assert } from 'node:assert'
+import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
 import { normalizeComment, normalizeIssue } from '../../.vitepress/theme/apis/forum/gitee/utils'
 import { composeTopicBody, writeTopicBodyComment } from '../../src/composables/composeTopicBody'
@@ -68,6 +69,13 @@ test('normalizes Topics as plain text even when their content looks like Tiptap'
   assert.equal(topic.title, 'Codec contract')
 })
 
+test('normalizes pinned state from the authoritative Gitee label', () => {
+  const pinnedIssue = issue('Body')
+  pinnedIssue.labels = [{ name: 'PINNED' }] as GITEE.IssueLabel[]
+  assert.equal(normalizeIssue(pinnedIssue).pinned, true)
+  assert.equal(normalizeIssue(issue('Body')).pinned, false)
+})
+
 test('preserves legacy plain Topic and Comment bodies', () => {
   assert.equal(normalizeIssue(issue(LEGACY_PLAIN_TOPIC)).content.text, LEGACY_PLAIN_TOPIC)
   assert.equal(normalizeComment(comment(LEGACY_PLAIN_COMMENT)).content.text, LEGACY_PLAIN_COMMENT)
@@ -109,4 +117,104 @@ test('normalizes Comment attachments without changing content order', () => {
     { src: 'https://assets.example/one.png', alt: 'one' },
     { src: 'https://assets.example/two.png', alt: 'two', thumbHash: 'h', width: 10, height: 20 },
   ])
+})
+
+test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
+  const [issuesSource, userPageSource, topicContentSource] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/issues.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
+  assert.match(userPageSource, /if \(list\.value\?\.q\)\s+return/)
+  assert.match(topicContentSource, /event: MouseEvent \| KeyboardEvent/)
+  assert.match(topicContentSource, /event instanceof MouseEvent/)
+})
+
+test('both image entry points reuse the shared multi-file drop zone', async () => {
+  const [dropZoneSource, imageUploadSource, richTextareaSource] = await Promise.all([
+    readFile(new URL('../../src/composables/forum/useForumImageDropZone.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/form/ForumImageUpload.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(dropZoneSource, /useDropZone/)
+  assert.match(dropZoneSource, /multiple:\s*true/)
+  assert.match(imageUploadSource, /useForumImageDropZone\(dropZone/)
+  assert.match(imageUploadSource, /\n\s+multiple\n/)
+  assert.match(richTextareaSource, /useForumImageDropZone\(container/)
+  assert.match(richTextareaSource, /<ForumImageUpload[\s\S]*?size="sm"/)
+  assert.doesNotMatch(`${imageUploadSource}\n${richTextareaSource}`, /@(?:dragover|drop)\.prevent/)
+})
+
+test('image preview closing animates every chrome surface before unmount', async () => {
+  const [previewerSource, previewerStyleSource, flipSource, controlsSource, sidePanelSource, cardsSource, sheetSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/ui/image-previewer/ForumImagePreviewer.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/image-previewer/ForumImagePreviewer.scss', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/image-previewer/composables/usePreviewerFlip.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/image-previewer/components/PreviewerControls.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/image-previewer/components/PreviewerSidePanel.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/components/ui/cards/FeyCards.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/components/ui/sheet/SheetContent.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(previewerSource, /usePreviewerFlip/)
+  assert.match(flipSource, /const BASE_EXIT_MS = 320/)
+  assert.match(previewerStyleSource, /\.closing \.forum-preview-cards/)
+  assert.match(previewerStyleSource, /\.closing \.forum-preview-nav/)
+  assert.match(previewerStyleSource, /\.closing \.forum-preview-panel-toggle/)
+  assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-close\)/)
+  assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-dots\)/)
+  assert.match(controlsSource, /transition: opacity 200ms ease, transform 220ms ease/)
+  assert.match(sidePanelSource, /:force-mount="true"/)
+  assert.match(sidePanelSource, /const EXIT_MS = 320/)
+  assert.match(sidePanelSource, /animation-fill-mode: forwards/)
+  assert.match(sidePanelSource, /rendered\.value = false/)
+  assert.match(cardsSource, /transition: opacity 220ms ease, transform 280ms/)
+  assert.match(sheetSource, /data-\[state=closed\]:\[animation-duration:300ms\]/)
+  assert.match(sheetSource, /data-\[state=open\]:\[animation-duration:500ms\]/)
+})
+
+test('authorization remains the default while password login is available only by its direct hash', async () => {
+  const [loginSource, authStoreSource, dialogSource, oauthDialogSource, layoutSource, passwordApiSource, zhForumSource] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/hooks/useLogin.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/stores/useUserAuth.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/components/LoginAlertDialog.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/components/OAuthLoginAlertDialog.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/layouts/Layout.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/password.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(loginSource, /passwordAuth\.getToken\(normalizedUsername, password\)/)
+  assert.match(loginSource, /await storeUserSession\(auth\)/)
+  assert.match(loginSource, /await refreshInterKnotSSOToken\(\)/)
+  assert.match(loginSource, /queryCache\.invalidateQueries\(\{ key: forumKeys\.all \}, 'all'\)/)
+  assert.match(loginSource, /loginWithPassword: handlePasswordLogin/)
+  assert.doesNotMatch(loginSource, /TODO: Implement password login/)
+
+  assert.match(dialogSource, /<form[\s\S]*?@submit\.prevent="submitPasswordLogin"/)
+  assert.match(dialogSource, /autocomplete="username"/)
+  assert.match(dialogSource, /autocomplete="current-password"/)
+  assert.match(dialogSource, /useHashChecker\('account-login-alert'/)
+  assert.match(dialogSource, /manual\/faq\/login\/accountlogin/)
+  assert.match(dialogSource, /<DialogTitle class="text-xl leading-tight">/)
+  assert.doesNotMatch(dialogSource, /FieldDescription|accountHint/)
+  assert.match(dialogSource, /variant="outline"[\s\S]*?@click="startOAuthLogin"/)
+  assert.match(dialogSource, /location\.hash = 'oauth-login-alert'/)
+  assert.match(dialogSource, /href="https:\/\/gitee\.com\/signup"/)
+  assert.doesNotMatch(dialogSource, /AlertDialog|Checkbox/)
+
+  assert.match(oauthDialogSource, /useHashChecker\(\['login-alert', 'oauth-login-alert'\]/)
+  assert.match(oauthDialogSource, /<AlertDialogAction @click="redirectAuth">/)
+  assert.match(loginSource, /location\.hash = 'login-alert'/)
+  assert.match(loginSource, /await storeUserSession\(result\.data\)/)
+  assert.match(authStoreSource, /authRefresh\.startAutoRefresh\(\)/)
+  assert.match(layoutSource, /<LoginAlertDialog \/>[\s\S]*?<OAuthLoginAlertDialog \/>/)
+
+  assert.match(passwordApiSource, /grant_type: 'password'/)
+  assert.match(passwordApiSource, /username,/)
+  assert.match(passwordApiSource, /password,/)
+  assert.match(zhForumSource, /accountPlaceholder: 'Gitee 登录名或邮箱（不支持手机号或游戏账号）'/)
 })

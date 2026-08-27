@@ -9,7 +9,6 @@ type ActionFunction<T extends unknown[], R = unknown> = (...args: T) => Promise<
 export async function executeWithAuth<T extends unknown[], R>(
   action: ActionFunction<T, R>,
   argument: T,
-  successMsg: string,
   errorMsg: string,
   message: Ref<CustomConfig>,
 ): Promise<R | false> {
@@ -18,7 +17,6 @@ export async function executeWithAuth<T extends unknown[], R>(
       const [error, state] = await catchError<R>(action(...argument))
 
       if (state !== undefined && !error) {
-        toast.success(successMsg)
         return state
       }
       else {

@@ -4,6 +4,7 @@ import { useMemoize } from '@vueuse/core'
 import * as blog from './blog'
 import { fetcher, prepareRequest } from './client'
 import { toGiteeAPIError } from './errors'
+import * as gists from './gists'
 import * as issues from './issues'
 import * as labels from './labels'
 import * as oauth from './oauth'
@@ -110,4 +111,4 @@ export function deleteApiCache(
   memoizedRequest.delete(method, endpoint, options)
 }
 
-export { blog, issues, labels, oauth, password, user }
+export { blog, gists, issues, labels, oauth, password, user }

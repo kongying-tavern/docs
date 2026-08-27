@@ -167,4 +167,8 @@ test('ships exactly three scoped Vercel Forum rewrites and localized shells', ()
     assert.match(shell, /layout: Forum/)
     assert.match(shell, /<ForumRouteView \/>/)
   }
+
+  const forumLayout = readSource('.vitepress/theme/layouts/Forum.vue')
+  assert.match(forumLayout, /import ForumPublishTopicForm/)
+  assert.match(forumLayout, /<ForumPublishTopicForm \/>/)
 })

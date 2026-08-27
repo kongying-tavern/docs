@@ -1,48 +1,15 @@
 import type { ComputedRef, Ref } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
+import type {
+  AddImageFilesResult,
+  ImageAttachment,
+  ImageUploadProgress,
+  UploadImageAttachmentsResult,
+} from '~/services/forum/form/imageAttachment'
 import { computed, ref } from 'vue'
-import { IMAGE_UPLOAD_POLICY } from '~/components/forum/constants'
-
-export type ImageAttachmentStatus
-  = | 'queued'
-    | 'processing'
-    | 'uploading'
-    | 'uploaded'
-    | 'failed'
-
-export type ImageAttachmentErrorCode
-  = | 'count-exceeded'
-    | 'empty-file'
-    | 'invalid-type'
-    | 'size-exceeded'
-    | 'preview-failed'
-    | 'upload-failed'
-
-export interface ImageAttachmentError {
-  code: ImageAttachmentErrorCode
-  fileName: string
-  message: string
-}
-
-export interface ImageAttachment {
-  id: string
-  selectionIndex: number
-  file: File
-  previewUrl: string
-  status: ImageAttachmentStatus
-  thumbHash?: ThumbHashCalculated
-  remote?: NonNullable<ForumAPI.Image['data']>
-  error?: ImageAttachmentError
-}
-
-export type AddImageFilesResult
-  = | { ok: true, attachments: ImageAttachment[] }
-    | { ok: false, errors: ImageAttachmentError[] }
-
-export type UploadImageAttachmentsResult
-  = | { ok: true }
-    | { ok: false, errors: ImageAttachmentError[] }
+import { serializeUploadedAttachments, validateImageBatch } from '~/services/forum/form/imageAttachment'
+import { IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
 
 export type ImageUploadFunction = (
   file: File,
@@ -63,64 +30,6 @@ function defaultCreateId(): string {
   return globalThis.crypto?.randomUUID?.() ?? `forum-image-${Date.now()}-${fallbackId++}`
 }
 
-export function validateImageBatch(
-  files: File[],
-  currentCount = 0,
-): ImageAttachmentError[] {
-  if (currentCount + files.length > IMAGE_UPLOAD_POLICY.MAX_COUNT) {
-    return [{
-      code: 'count-exceeded',
-      fileName: files[0]?.name || '',
-      message: `A maximum of ${IMAGE_UPLOAD_POLICY.MAX_COUNT} images is allowed.`,
-    }]
-  }
-
-  const errors: ImageAttachmentError[] = []
-  for (const file of files) {
-    if (file.size === 0) {
-      errors.push({
-        code: 'empty-file',
-        fileName: file.name,
-        message: `${file.name} is empty.`,
-      })
-    }
-    else if (file.size > IMAGE_UPLOAD_POLICY.MAX_BYTES) {
-      errors.push({
-        code: 'size-exceeded',
-        fileName: file.name,
-        message: `${file.name} exceeds ${IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL}.`,
-      })
-    }
-
-    if (!IMAGE_UPLOAD_POLICY.MIME_TYPES.includes(file.type as (typeof IMAGE_UPLOAD_POLICY.MIME_TYPES)[number])) {
-      errors.push({
-        code: 'invalid-type',
-        fileName: file.name,
-        message: `${file.name} has an unsupported image type.`,
-      })
-    }
-  }
-
-  return errors
-}
-
-export function serializeUploadedAttachments(attachments: ImageAttachment[]): ForumAPI.ImageInfo[] {
-  return attachments
-    .filter(attachment => attachment.status === 'uploaded' && attachment.remote)
-    .toSorted((left, right) => left.selectionIndex - right.selectionIndex)
-    .map(attachment => ({
-      src: attachment.remote!.link,
-      alt: attachment.file.name,
-      ...(attachment.thumbHash
-        ? {
-            thumbHash: attachment.thumbHash.dataBase64,
-            width: attachment.thumbHash.width,
-            height: attachment.thumbHash.height,
-          }
-        : {}),
-    }))
-}
-
 export function useImageAttachmentQueue(
   options: ImageAttachmentQueueOptions,
 ): {
@@ -128,8 +37,9 @@ export function useImageAttachmentQueue(
   canSelect: ComputedRef<boolean>
   isBusy: ComputedRef<boolean>
   hasFailures: ComputedRef<boolean>
+  progress: ComputedRef<ImageUploadProgress>
   addFiles: (files: File[]) => Promise<AddImageFilesResult>
-  uploadPending: () => Promise<UploadImageAttachmentsResult>
+  settleUploads: () => Promise<UploadImageAttachmentsResult>
   retry: (id: string) => Promise<UploadImageAttachmentsResult>
   remove: (id: string) => void
   reset: () => void
@@ -143,12 +53,86 @@ export function useImageAttachmentQueue(
 
   const attachments = ref<ImageAttachment[]>([])
   const controllers = new Map<string, AbortController>()
+  const tasks = new Map<string, Promise<void>>()
   let nextSelectionIndex = 0
 
   const canSelect = computed(() => attachments.value.length < IMAGE_UPLOAD_POLICY.MAX_COUNT)
   const isBusy = computed(() => attachments.value.some(item => item.status === 'processing' || item.status === 'uploading'))
   const hasFailures = computed(() => attachments.value.some(item => item.status === 'failed'))
+  const progress = computed<ImageUploadProgress>(() => ({
+    total: attachments.value.length,
+    settled: attachments.value.filter(item => item.status === 'uploaded' || item.status === 'failed').length,
+    failed: attachments.value.filter(item => item.status === 'failed').length,
+    uploading: attachments.value.filter(item => item.status === 'processing' || item.status === 'uploading').length,
+  }))
   const serializedAttachments = computed(() => serializeUploadedAttachments(attachments.value))
+
+  function startTask(id: string): Promise<void> {
+    const existing = tasks.get(id)
+    if (existing)
+      return existing
+
+    const task = prepareAndUpload(id)
+      .catch(() => {
+        // prepareAndUpload converts visible failures into attachment state.
+      })
+      .finally(() => {
+        tasks.delete(id)
+      })
+    tasks.set(id, task)
+    return task
+  }
+
+  async function prepareAndUpload(id: string): Promise<void> {
+    const initial = attachments.value.find(attachment => attachment.id === id)
+    if (!initial || !['processing', 'queued'].includes(initial.status))
+      return
+
+    if (!initial.thumbHash) {
+      try {
+        const thumbHash = await prepare(initial.file)
+        const current = attachments.value.find(attachment => attachment.id === id)
+        if (current && thumbHash)
+          current.thumbHash = thumbHash
+      }
+      catch {
+        // Thumbhash metadata is optional; the selected file remains uploadable.
+      }
+    }
+
+    const item = attachments.value.find(attachment => attachment.id === id)
+    if (!item)
+      return
+
+    const controller = new AbortController()
+    controllers.set(id, controller)
+    item.status = 'uploading'
+    item.error = undefined
+
+    try {
+      const result = await upload(item.file, { signal: controller.signal })
+      const current = attachments.value.find(attachment => attachment.id === id)
+      if (!current)
+        return
+      if (!result.state || !result.data)
+        throw new Error(result.message || 'Image upload failed.')
+      current.remote = result.data
+      current.status = 'uploaded'
+    }
+    catch {
+      const current = attachments.value.find(attachment => attachment.id === id)
+      if (!current)
+        return
+      current.status = 'failed'
+      current.error = {
+        code: 'upload-failed',
+        fileName: current.file.name,
+      }
+    }
+    finally {
+      controllers.delete(id)
+    }
+  }
 
   async function addFiles(files: File[]): Promise<AddImageFilesResult> {
     const errors = validateImageBatch(files, attachments.value.length)
@@ -177,27 +161,13 @@ export function useImageAttachmentQueue(
         errors: [{
           code: 'preview-failed',
           fileName: files[created.length]?.name || '',
-          message: 'The image preview could not be created.',
         }],
       }
     }
 
     attachments.value = [...attachments.value, ...created]
-    await Promise.all(created.map(async (createdAttachment) => {
-      let thumbHash: ThumbHashCalculated | undefined
-      try {
-        thumbHash = await prepare(createdAttachment.file)
-      }
-      catch {
-        // Thumbhash metadata is optional; the selected file remains uploadable.
-      }
-      const current = attachments.value.find(item => item.id === createdAttachment.id)
-      if (!current)
-        return
-      if (thumbHash)
-        current.thumbHash = thumbHash
-      current.status = 'queued'
-    }))
+    for (const item of created)
+      void startTask(item.id)
 
     return {
       ok: true,
@@ -207,53 +177,14 @@ export function useImageAttachmentQueue(
     }
   }
 
-  async function uploadIds(ids: string[]): Promise<UploadImageAttachmentsResult> {
-    await Promise.all(ids.map(async (id) => {
-      const item = attachments.value.find(attachment => attachment.id === id)
-      if (!item || item.status !== 'queued')
-        return
-
-      const controller = new AbortController()
-      controllers.set(id, controller)
-      item.status = 'uploading'
-      item.error = undefined
-
-      try {
-        const result = await upload(item.file, { signal: controller.signal })
-        const current = attachments.value.find(attachment => attachment.id === id)
-        if (!current)
-          return
-        if (!result.state || !result.data)
-          throw new Error(result.message || 'Image upload failed.')
-        current.remote = result.data
-        current.status = 'uploaded'
-      }
-      catch (error) {
-        const current = attachments.value.find(attachment => attachment.id === id)
-        if (!current)
-          return
-        current.status = 'failed'
-        current.error = {
-          code: 'upload-failed',
-          fileName: current.file.name,
-          message: error instanceof Error ? error.message : 'Image upload failed.',
-        }
-      }
-      finally {
-        controllers.delete(id)
-      }
-    }))
-
+  async function settleUploads(): Promise<UploadImageAttachmentsResult> {
+    for (const item of attachments.value) {
+      if (item.status === 'queued' || item.status === 'processing')
+        startTask(item.id)
+    }
+    await Promise.all([...tasks.values()])
     const errors = attachments.value.flatMap(item => item.status === 'failed' && item.error ? [item.error] : [])
     return errors.length ? { ok: false, errors } : { ok: true }
-  }
-
-  async function uploadPending(): Promise<UploadImageAttachmentsResult> {
-    return uploadIds(
-      attachments.value
-        .filter(item => item.status === 'queued')
-        .map(item => item.id),
-    )
   }
 
   async function retry(id: string): Promise<UploadImageAttachmentsResult> {
@@ -262,7 +193,11 @@ export function useImageAttachmentQueue(
       return { ok: true }
     item.status = 'queued'
     item.error = undefined
-    return uploadIds([id])
+    await startTask(id)
+    const settled = attachments.value.find(attachment => attachment.id === id)
+    return settled?.status === 'failed' && settled.error
+      ? { ok: false, errors: [settled.error] }
+      : { ok: true }
   }
 
   function remove(id: string): void {
@@ -290,8 +225,9 @@ export function useImageAttachmentQueue(
     canSelect,
     isBusy,
     hasFailures,
+    progress,
     addFiles,
-    uploadPending,
+    settleUploads,
     retry,
     remove,
     reset,

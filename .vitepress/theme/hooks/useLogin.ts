@@ -1,9 +1,10 @@
-import type { LocalAuth } from '@/stores/useUserAuth'
+import type ForumAPI from '@/apis/forum/api'
+import { useQueryCache } from '@pinia/colada'
 import { createSharedComposable, refAutoReset, useStorage } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { clearApiCache, oauth } from '@/apis/forum/gitee'
+import { clearApiCache, oauth, password as passwordAuth } from '@/apis/forum/gitee'
 import { oauth as interKnotOauth } from '@/apis/interknot.site'
 import { useAuthProgress } from '@/composables/useAuthProgress'
 import { useUserAuthStore } from '@/stores/useUserAuth'
@@ -11,6 +12,7 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { removeQueryParam } from '@/utils'
 import { AuthError, AuthErrorType } from '@/utils/auth-errors'
 import { log, LogGroup } from '@/utils/auth-logger'
+import { forumKeys } from '~/services/forum/forumQueryContracts'
 import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
@@ -36,6 +38,7 @@ interface OAuthCallbackParams {
 function useLogin() {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
+  const queryCache = useQueryCache()
   const { message } = useLocalized()
   const oauthCallback = getOAuthCallbackParams()
   const authCode = oauthCallback.code
@@ -50,15 +53,6 @@ function useLogin() {
 
   const { go } = useRouter()
   const { theme, localeIndex } = useData()
-
-  const LoginMethodsMap = {
-    Oauth: handleOAuthLoginStart,
-    Password: handlePasswordLogin,
-  } as const
-
-  interface CredentialsParams {
-    method: keyof typeof LoginMethodsMap
-  }
 
   initOAuthFlow()
 
@@ -135,16 +129,14 @@ function useLogin() {
     authProgress.completeStep('token')
 
     authProgress.setStep('session')
-    const authWithExpiresTime: LocalAuth = {
-      ...result.data,
-      expiresTime: Date.now() + result.data.expiresIn * 1000,
-    }
-    await storeUserSession(authWithExpiresTime)
+    await storeUserSession(result.data)
     authProgress.completeStep('session')
 
     authProgress.setStep('sso')
     await refreshInterKnotSSOToken()
     authProgress.completeStep('sso')
+
+    await refreshForumDataAfterLogin()
 
     authProgress.setStep('redirect')
   }
@@ -165,10 +157,20 @@ function useLogin() {
     }
   }
 
-  async function storeUserSession(auth: LocalAuth) {
+  async function storeUserSession(auth: ForumAPI.Auth) {
     userAuth.setAuth(auth)
+    clearApiCache()
     await userInfo.refreshUserInfo()
-    userAuth.ensureTokenRefreshMission()
+  }
+
+  /** 登录身份改变请求配额后，主动重拉当前页面中包括 error 状态在内的 Forum 查询。 */
+  async function refreshForumDataAfterLogin(): Promise<void> {
+    try {
+      await queryCache.invalidateQueries({ key: forumKeys.all }, 'all')
+    }
+    catch (error) {
+      log.warn(LogGroup.LOGIN, 'Forum refresh after login failed', error)
+    }
   }
 
   async function refreshInterKnotSSOToken() {
@@ -216,7 +218,7 @@ function useLogin() {
     }
   }
 
-  function showOAuthLoginAlert() {
+  function showLoginAlert() {
     if (location.hash !== 'login-alert')
       return location.hash = 'login-alert'
   }
@@ -228,16 +230,40 @@ function useLogin() {
     oauth.redirectAuth(localeIndex.value)
   }
 
-  function handlePasswordLogin() {
-    // TODO: Implement password login（预留，apis/forum/gitee/password.ts）
-  }
+  async function handlePasswordLogin(username: string, password: string): Promise<boolean> {
+    const normalizedUsername = username.trim()
+    if (!normalizedUsername || !password)
+      return false
 
-  function login(credentials: CredentialsParams) {
-    return LoginMethodsMap[credentials.method]()
-  }
+    isAuthenticating.value = true
+    let appliedAccessToken: string | undefined
 
-  function signup() {
-    window.open('https://gitee.com/signup')
+    try {
+      const [error, auth] = await passwordAuth.getToken(normalizedUsername, password)
+      if (error || !auth)
+        throw error ?? new Error('Gitee password login returned no authentication data')
+
+      appliedAccessToken = auth.accessToken
+      await storeUserSession(auth)
+      await refreshInterKnotSSOToken()
+      await refreshForumDataAfterLogin()
+      handlePostLogin()
+      return true
+    }
+    catch {
+      // 只有本次登录已经写入 token 时才回滚，避免误清其他标签页刚建立的会话。
+      if (appliedAccessToken && userAuth.auth?.accessToken === appliedAccessToken) {
+        userAuth.logout()
+        userInfo.clearUserInfo()
+        clearApiCache()
+      }
+      log.error(LogGroup.LOGIN, 'Password login failed')
+      toast.error(theme.value.forum.auth.passwordLoginFail)
+      return false
+    }
+    finally {
+      isAuthenticating.value = false
+    }
   }
 
   /** 回调页“重试”按钮：重跑登录流程（授权码仍在时）或重新发起授权 */
@@ -310,9 +336,8 @@ function useLogin() {
   }
 
   return {
-    login,
+    loginWithPassword: handlePasswordLogin,
     logout,
-    signup,
     getAccessToken,
     getUserInfo,
     isLoggedIn,
@@ -323,7 +348,7 @@ function useLogin() {
       ...authProgress,
       retry: retryOAuthFlow,
     },
-    showOAuthLoginAlert,
+    showLoginAlert,
   }
 }
 

@@ -1,6 +1,6 @@
 ---
 layout: Forum
-sidebar: false
+sidebar: true
 title: 社区反馈
 ---
 

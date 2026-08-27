@@ -3,18 +3,21 @@ import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
 import { computed, ref, toValue } from 'vue'
+import { toast } from 'vue-sonner'
 import { issues } from '@/apis/forum/gitee'
+import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { useTopicManger } from '~/composables/useTopicManger'
+import { useTopicManager } from '~/composables/useTopicManager'
 import { useTopicTagsEditor } from './useTopicTagsEditor'
 
 // @unocss-include
 export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
   const currentTopic = computed(() => toValue(topicData))
-  const { toggleCloseTopic, toggleHideTopic, togglePinedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManger(currentTopic, message)
+  const { toggleCloseTopic, toggleHideTopic, togglePinnedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManager(currentTopic, message)
   const { route } = useForumRoute()
   const { hasAnyPermissions } = useRuleChecks(() => currentTopic.value.user.id)
+  const personal = useForumPersonalState()
 
   const [closeState, toggleClose] = toggleCloseTopic()
   const [hideState, toggleHide] = toggleHideTopic()
@@ -25,7 +28,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
 
   const hasManagePermission = hasAnyPermissions('manage_feedback')
   const hasEditPermission = hasAnyPermissions('edit_feedback')
-  const topicTypeEnum: Exclude<ForumAPI.TopicType, null>[] = ['FEAT', 'BUG', 'ANN'] as const
+  const topicTypeEnum: ForumAPI.FeedbackTopicType[] = ['FEAT', 'BUG', 'ANN']
 
   const openOnGitee = () => issues.openTopicOnGitee(currentTopic.value.id)
 
@@ -41,6 +44,18 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       window.history.back()
   }
 
+  async function handleToggleFollow() {
+    const wasFollowing = personal.isFollowing(currentTopic.value.id)
+    try {
+      await personal.toggleFollow(currentTopic.value)
+      if (personal.isFollowing(currentTopic.value.id) === wasFollowing)
+        toast.error(message.value.forum.errors.followFailed)
+    }
+    catch {
+      toast.error(message.value.forum.errors.followFailed)
+    }
+  }
+
   const noAnyPermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {
     return [
       {
@@ -50,6 +65,17 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         label: menuLabels.value.giteeLink,
         icon: 'i-lucide:cable',
         action: openOnGitee,
+      },
+      {
+        type: 'item',
+        id: 'follow-topic',
+        order: 3,
+        label: personal.isFollowing(currentTopic.value.id)
+          ? message.value.forum.labels.unfollow
+          : message.value.forum.labels.follow,
+        icon: personal.isFollowing(currentTopic.value.id) ? 'i-lucide:bookmark-minus' : 'i-lucide:bookmark',
+        disabled: personal.saving.value,
+        action: handleToggleFollow,
       },
     ].filter(Boolean) as FORUM.TopicDropdownMenu[]
   })
@@ -87,7 +113,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         type: 'item',
         label: currentTopic.value.pinned ? menuLabels.value.pinTopic.unpin : menuLabels.value.pinTopic.pin,
         icon: currentTopic.value.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
-        action: togglePinedTopic,
+        action: togglePinnedTopic,
       },
       {
         id: 'close-comment-topic',

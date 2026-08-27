@@ -1,9 +1,7 @@
 import MarkdownIt from 'markdown-it'
 import { ref } from 'vue'
+import { stripMarkdownImages } from '~/services/forum/forumContentCodec'
 import { markdownConfig } from '../../.vitepress/config/markdown'
-
-/** Matches Markdown images with optional forum attachment metadata. */
-const MARKDOWN_IMAGE_REGEX = /!\[([^\]]*)\]\(([^)]+)\)(\{[^}]*\})?/g
 
 /** Matches HTML comments in trusted repository-authored Markdown previews. */
 const HTML_COMMENT_REGEX = /<!--.*?-->/gs
@@ -117,8 +115,7 @@ export function useMarkdownRenderer() {
 }
 
 function stripPreviewDecorators(markdown: string): string {
-  return markdown
-    .replace(MARKDOWN_IMAGE_REGEX, '')
+  return stripMarkdownImages(markdown)
     .replace(HTML_COMMENT_REGEX, '')
     .replace(DEFINE_TAG_REGEX, '$1')
     .replace(COLOR_TAG_REGEX, '$1')

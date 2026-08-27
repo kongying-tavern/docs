@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
+import { useForumRoute } from '~/composables/useForumRoute'
+import { renderForumTopicSummary } from '~/services/forum/forumContentRenderer'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import { useTopicContent } from './composables/useTopicContent'
 
@@ -11,11 +15,25 @@ const { topic, detailHref } = defineProps<{
 
 const emit = defineEmits<{
   'expand:click': []
+  'summary-click': []
 }>()
 
 const { message } = useLocalized()
+const { topicHref } = useForumRoute()
 
-// Use topic content composable
+/**
+ * 正文整体作为跳转入口：由父级决定是跳详情页还是打开预览；正文渲染出的内部 <a>/<button> 正常放行。
+ */
+function handleSummaryClick(event: MouseEvent | KeyboardEvent) {
+  const target = event.target as HTMLElement
+  if (target.closest('a, button'))
+    return
+  if (event instanceof MouseEvent && (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey))
+    return
+  event.preventDefault()
+  emit('summary-click')
+}
+
 const {
   isPost,
   isAnn,
@@ -27,7 +45,12 @@ const {
   shouldShowTitle,
   displayTitle,
   displayContent,
-} = useTopicContent({ topic })
+} = useTopicContent(topic)
+
+const renderedContent = computed(() => renderForumTopicSummary(displayContent.value, {
+  topicHref: id => topicHref(id, null),
+  documentLinks: forumDocumentLinks,
+}))
 
 function handleExpandClick(): void {
   toggleExpand()
@@ -38,7 +61,6 @@ function handleExpandClick(): void {
 <template>
   <div class="topic-content">
     <div class="content-main mt-1">
-      <!-- Title -->
       <h4
         v-if="shouldShowTitle"
         class="mt-2 flex break-words line-clamp-2"
@@ -47,7 +69,7 @@ function handleExpandClick(): void {
           'font-size-3.5 font-[--vp-font-family-subtitle]': isCompactMode,
         }"
       >
-        <a v-if="!isAnn" class="topic-detail-link vp-link line-clamp-2" :href="detailHref">
+        <a v-if="!isAnn" class="topic-title-link color-inherit no-underline line-clamp-2" :href="detailHref">
           {{ displayTitle }}
         </a>
         <p v-else class="line-clamp-2">
@@ -55,29 +77,31 @@ function handleExpandClick(): void {
         </p>
       </h4>
 
-      <!-- Type Badge -->
       <ForumTopicTypeBadge v-if="isCardMode" :type="topic.type" />
 
-      <!-- Content Article -->
       <article
         v-if="isCardMode"
         class="font-size-3.5 mt-1 pr-4 opacity-99 whitespace-pre-wrap transition-all duration-300 overflow-hidden"
       >
-        <a
-          v-if="topic.type !== 'POST' && !isAnn"
-          class="topic-detail-link color-inherit no-underline block"
+        <div
+          v-if="!isPost && !isAnn"
+          class="forum-topic-summary color-inherit block cursor-pointer"
           :class="{ 'line-clamp-4': !isExpanded }"
-          :href="detailHref"
-        >{{ displayContent }}</a>
+          role="link"
+          tabindex="0"
+          @click="handleSummaryClick($event)"
+          @keydown.enter="handleSummaryClick($event)"
+          v-html="renderedContent"
+        />
 
-        <div v-else-if="isAnn" :class="{ 'line-clamp-4': !isExpanded }">
-          {{ displayContent }}
-        </div>
+        <div
+          v-else-if="isAnn"
+          class="forum-topic-summary"
+          :class="{ 'line-clamp-4': !isExpanded }"
+          v-html="renderedContent"
+        />
 
-        <div v-else>
-          {{ displayContent }}
-        </div>
-        <!-- Read More Button for Posts -->
+        <div v-else class="forum-topic-summary" v-html="renderedContent" />
         <a
           v-if="isPost"
           class="font-size-4 vp-link py-2 inline-flex"
@@ -86,7 +110,6 @@ function handleExpandClick(): void {
           {{ message.forum.readMore }}
         </a>
 
-        <!-- Expand Button for Topics -->
         <button
           v-else-if="!isAnn && hasOverflow && !isExpanded"
           type="button"
@@ -97,24 +120,23 @@ function handleExpandClick(): void {
         </button>
       </article>
 
-      <!-- Compact Mode Content -->
       <div
         v-if="isCompactMode"
         class="font-size-3.5 mt-1 opacity-99 whitespace-pre-wrap overflow-hidden"
       >
-        <a
-          v-if="topic.type !== 'POST' && !isAnn"
-          class="topic-detail-link color-inherit no-underline block line-clamp-2"
-          :href="detailHref"
-        >{{ displayContent }}</a>
+        <div
+          v-if="!isPost && !isAnn"
+          class="forum-topic-summary color-inherit block cursor-pointer line-clamp-2"
+          role="link"
+          tabindex="0"
+          @click="handleSummaryClick($event)"
+          @keydown.enter="handleSummaryClick($event)"
+          v-html="renderedContent"
+        />
 
-        <div v-else-if="isAnn" class="line-clamp-2">
-          {{ displayContent }}
-        </div>
+        <div v-else-if="isAnn" class="forum-topic-summary line-clamp-2" v-html="renderedContent" />
 
-        <div v-else>
-          {{ displayContent }}
-        </div>
+        <div v-else class="forum-topic-summary" v-html="renderedContent" />
       </div>
     </div>
   </div>
@@ -123,5 +145,10 @@ function handleExpandClick(): void {
 <style scoped>
 .content-main {
   transition: all 0.2s ease;
+}
+
+.topic-title-link:hover {
+  color: inherit;
+  text-decoration: underline;
 }
 </style>

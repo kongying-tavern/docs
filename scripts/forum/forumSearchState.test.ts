@@ -4,7 +4,7 @@ import test from 'node:test'
 import { buildTopicListRequest } from '../../.vitepress/theme/apis/forum/gitee/issues'
 import { forumKeys } from '../../src/services/forum/forumQueryContracts'
 import { buildForumHref, parseForumLocation } from '../../src/services/forum/forumRoute'
-import { buildForumProviderRequest } from '../../src/services/forumService'
+import { buildForumProviderRequest } from '../../src/services/forum/forumTopics'
 
 const routeOptions = { base: '/docs/', locales: ['root', 'en', 'ja'] } as const
 

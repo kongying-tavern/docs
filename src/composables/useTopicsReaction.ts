@@ -1,116 +1,107 @@
+import type { MaybeRefOrGetter } from 'vue'
 import type { INTER_KNOT } from '@/apis/interknot.site/api'
-import { useMutation } from '@pinia/colada'
-import { createGlobalState } from '@vueuse/core'
-import { ref } from 'vue'
+import type { TopicReaction } from '~/services/forum/forumReaction'
+import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
+import { computed, reactive, toValue } from 'vue'
 import { toast } from 'vue-sonner'
 import { reactions } from '@/apis/interknot.site'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { forumKeys } from '~/services/forum/forumQueryContracts'
+import {
+  coordinateReactionMutation,
+  normalizeReactionResponse,
+  reactionCacheIdentity,
+  reactionEnvironmentForOrigin,
+  resolveReactionViewer,
+  topicReactionResource,
+} from '~/services/forum/forumReaction'
 
-export interface TopicReaction {
-  id: string
-  data: INTER_KNOT.ReactionResponse['data']['reaction']
-  state: INTER_KNOT.ReactionState | null
-}
+export type { TopicReaction } from '~/services/forum/forumReaction'
 
-export const useTopicsReaction = createGlobalState(() => {
-  const topicReactions = ref<TopicReaction[]>([])
+const pendingReactionKeys = reactive(new Set<string>())
+
+export function useTopicsReaction(
+  topicId: MaybeRefOrGetter<string>,
+  enabled: MaybeRefOrGetter<boolean> = true,
+) {
+  const userAuth = useUserAuthStore()
   const userInfo = useUserInfoStore()
+  const queryCache = useQueryCache()
   const { message } = useLocalized()
-  const { topicHref } = useForumRoute()
+  const resourceUrl = computed(() => topicReactionResource(
+    toValue(topicId),
+    reactionEnvironmentForOrigin(import.meta.env.SSR ? 'http://reaction.invalid' : location.origin),
+  ))
+  const viewer = computed(() => resolveReactionViewer(userAuth.isLoggedIn, userInfo.info?.id))
+  const userId = computed(() => viewer.value.userId)
+  const viewerIdentity = computed(() => viewer.value.identity)
+  const queryKey = computed(() => forumKeys.reaction(resourceUrl.value, viewerIdentity.value))
+  const pendingKey = computed(() => reactionCacheIdentity(resourceUrl.value, viewerIdentity.value))
 
-  const mutation = useMutation<
-    INTER_KNOT.ReactionResponse | null,
-    { state: INTER_KNOT.ReactionState | 'revoke', options: { url: string, userId?: string } }
-  >({
-    mutation: ({ state, options }) => reactions.setPageReaction(state, options),
+  const query = useQuery<TopicReaction>({
+    key: () => queryKey.value,
+    enabled: () => !import.meta.env.SSR && viewer.value.ready && Boolean(toValue(topicId)) && toValue(enabled),
+    staleTime: 60_000,
+    query: async () => {
+      const response = await reactions.getPageReaction({
+        url: resourceUrl.value,
+        ...(userId.value ? { userId: userId.value } : {}),
+      })
+      if (!response || response.statusCode !== 200)
+        throw new Error('Reaction response was empty.')
+      return normalizeReactionResponse(response, resourceUrl.value)
+    },
   })
 
-  function getTopicUrl(topicId: string) {
-    return new URL(topicHref(topicId, null), location.origin).href
-  }
+  const mutation = useMutation({
+    mutation: (input: { action: INTER_KNOT.ReactionState | 'revoke', url: string, userId?: string }) =>
+      reactions.setPageReaction(input.action, {
+        url: input.url,
+        ...(input.userId ? { userId: input.userId } : {}),
+      }),
+  })
 
-  function findTopicReaction(topicId: string) {
-    return topicReactions.value.find(item => item.id === topicId) ?? null
-  }
-
-  async function getTopicReaction(topicId: string, force = false): Promise<TopicReaction | null> {
-    const cached = findTopicReaction(topicId)
-    if (cached && !force)
-      return cached
-
-    const response = await reactions.getPageReaction({
-      url: getTopicUrl(topicId),
-      ...(userInfo.info?.id ? { userId: String(userInfo.info.id) } : {}),
-    })
-    if (!response)
-      return null
-
-    const next: TopicReaction = {
-      id: topicId,
-      data: response.data.reaction,
-      state: response.data.state,
-    }
-    const index = topicReactions.value.findIndex(item => item.id === topicId)
-    if (index === -1)
-      topicReactions.value.push(next)
-    else
-      topicReactions.value[index] = next
-    return topicReactions.value[index === -1 ? topicReactions.value.length - 1 : index]
-  }
-
-  async function setReactionState(state: INTER_KNOT.ReactionState, topicId: string): Promise<TopicReaction | null> {
-    const reaction = await getTopicReaction(topicId)
-    if (!reaction) {
-      toast.error(message.value.forum.errors.noResponse)
-      return null
-    }
-
-    const previous = {
-      state: reaction.state,
-      likeCount: reaction.data.likeCount,
-      dislikeCount: reaction.data.dislikeCount,
-    }
-    const nextState = reaction.state === state ? 'revoke' : state
-
-    if (previous.state === 'like')
-      reaction.data.likeCount = Math.max(reaction.data.likeCount - 1, 0)
-    if (previous.state === 'dislike')
-      reaction.data.dislikeCount = Math.max(reaction.data.dislikeCount - 1, 0)
-    if (nextState === 'like')
-      reaction.data.likeCount += 1
-    if (nextState === 'dislike')
-      reaction.data.dislikeCount += 1
-    reaction.state = nextState === 'revoke' ? null : nextState
+  async function setReactionState(requested: INTER_KNOT.ReactionState): Promise<boolean> {
+    const key = queryKey.value
+    const resource = resourceUrl.value
+    const mutationUserId = userId.value
+    queryCache.cancelQueries({ key, exact: true })
+    const current = queryCache.getQueryData<TopicReaction>(key)
+    if (!current)
+      return false
 
     try {
-      const response = await mutation.mutateAsync({
-        state: nextState,
-        options: {
-          url: getTopicUrl(topicId),
-          ...(userInfo.info?.id ? { userId: String(userInfo.info.id) } : {}),
+      return await coordinateReactionMutation({
+        pending: pendingReactionKeys,
+        key: reactionCacheIdentity(resource, viewerIdentity.value),
+        current,
+        requested,
+        update: value => queryCache.setQueryData(key, value),
+        write: async (action) => {
+          const response = await mutation.mutateAsync({
+            action,
+            url: resource,
+            userId: mutationUserId,
+          })
+          if (response?.statusCode !== 200)
+            throw new Error('Reaction request was not acknowledged.')
         },
       })
-      if (!response)
-        throw new Error('Reaction response was empty.')
-      reaction.data = response.data.reaction
-      reaction.state = response.data.state
-      return reaction
     }
     catch {
-      reaction.state = previous.state
-      reaction.data.likeCount = previous.likeCount
-      reaction.data.dislikeCount = previous.dislikeCount
       toast.info(message.value.forum.errors.operationFailedRetry)
-      return null
+      return false
     }
   }
 
   return {
-    getTopicReaction,
+    ...query,
+    resourceUrl,
+    viewerIdentity,
+    viewerReady: computed(() => viewer.value.ready),
     setReactionState,
-    reactionSubmitLoading: mutation.isLoading,
-    reactionSubmitError: mutation.error,
+    reactionSubmitLoading: computed(() => pendingReactionKeys.has(pendingKey.value)),
   }
-})
+}

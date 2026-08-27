@@ -16,7 +16,6 @@ export function useTopicState(topic: ForumAPI.Topic | ForumAPI.Post) {
   const { isNoTranslationRequirement } = useLanguage()
   const { message } = useLocalized()
 
-  // Menu configuration
   const menu = computed<FORUM.TopicDropdownMenu[]>(() => {
     if (
       topic.type === 'ANN'
@@ -43,7 +42,6 @@ export function useTopicState(topic: ForumAPI.Topic | ForumAPI.Post) {
     ]
   })
 
-  // Display conditions
   const showComment = computed(() => isArray(topic.relatedComments) && topic.type !== 'ANN')
 
   return {

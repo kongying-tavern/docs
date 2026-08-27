@@ -1,26 +1,20 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { computed, ref, toValue, watch } from 'vue'
+import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { setPageTitle } from '../../utils'
 
-export interface UseUserProfileOptions {
-  username: MaybeRefOrGetter<string>
-}
+export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
+  const username = computed(() => toValue(usernameSource))
 
-export function useUserProfile(options: UseUserProfileOptions) {
-  const username = computed(() => toValue(options.username))
-
-  // Composables
   const { message } = useLocalized()
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
   const { isOfficial } = useRuleChecks()
 
-  // State
   const menuRef = ref<HTMLElement | null>(null)
 
   const profileQuery = useForumUserProfileQuery(
@@ -28,7 +22,6 @@ export function useUserProfile(options: UseUserProfileOptions) {
     computed(() => userAuth.isTokenValid ? userAuth.auth?.accessToken : undefined),
   )
 
-  // Computed properties
   const renderedUser = computed(() => profileQuery.data.value)
 
   const role = computed(() => (isOfficial(renderedUser.value?.id || 0).value ? 'official' : null))
@@ -48,34 +41,29 @@ export function useUserProfile(options: UseUserProfileOptions) {
     ]
   })
 
-  // Actions
   function sendMessage(): void {
     window.open(`https://gitee.com/notifications/messages/${renderedUser.value?.id}`, String(renderedUser.value?.id))
   }
 
-  // Watch for user changes to update page title
   watch(renderedUser, (newVal) => {
     if (!newVal)
       return
-    setPageTitle(`${newVal.username} 的个人主页`)
+    replaceTitle(`${newVal.username}${message.value.forum.labels.personalHomepage}`)
   }, {
     immediate: true,
   })
 
   return {
-    // State
     menuRef,
     userData: profileQuery.data,
     loading: profileQuery.isLoading,
     error: profileQuery.error,
 
-    // Computed
     renderedUser,
     role,
     isAuthorizedUser,
     menu,
 
-    // Actions
     retry: profileQuery.refetch,
     sendMessage,
   }

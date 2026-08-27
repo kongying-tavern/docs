@@ -35,7 +35,6 @@ const { data: userData, isLoading: getUserLoading } = useQuery({
   enabled: () => !user && !!userId,
 })
 
-// 错误处理通过 watch
 watch(userData, (newVal) => {
   if (newVal)
     userInfo.value = newVal
@@ -67,7 +66,6 @@ function sendMessage() {
       class="p-4 w-72"
     >
       <div class="flex flex-col gap-3">
-        <!-- 用户信息头部 -->
         <div class="flex gap-3 items-start">
           <Avatar
             :src="userInfo?.avatar"
@@ -83,7 +81,7 @@ function sendMessage() {
                 :target="userInfo?.username"
                 :alt="userInfo?.username"
               >
-                <h3 class="text-base text-gray-900 font-bold dark:text-white">
+                <h3 class="text-base text-[var(--vp-c-text-1)] font-bold">
                   {{ userInfo?.username || 'Unknown' }}
                 </h3>
               </a>

@@ -30,19 +30,16 @@ export function validateOAuthState(callbackState: string | null): boolean {
 }
 
 export function getRedirectUrl(localeIndex?: string): string {
-  // Generate URL based on current locale
   const localeStr = localeIndex === 'root' ? '/' : `/${localeIndex}/`
   const expectedUrl = import.meta.env.DEV
     ? `${location.protocol}//${location.host}${localeStr}callback`
     : `https://yuanshen.site/docs${localeStr}callback`
 
-  // Check if cached URL matches current locale, if not regenerate
   const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
   if (lastRedirectUrl && lastRedirectUrl === expectedUrl) {
     return lastRedirectUrl
   }
 
-  // Store new URL for current locale
   localStorage.setItem(LAST_OAUTH_REDIRECT_URL_KEY, expectedUrl)
   return expectedUrl
 }

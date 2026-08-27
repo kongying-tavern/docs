@@ -4,10 +4,10 @@ import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import { strict as assert } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
+import { useImageAttachmentQueue } from '../../src/composables/useImageAttachmentQueue'
 import {
   submitCommentTransaction,
-} from '../../src/components/forum/comment/composables/commentComposerTransaction'
-import { useImageAttachmentQueue } from '../../src/composables/useImageAttachmentQueue'
+} from '../../src/services/forum/commentTransaction'
 import { decodeCommentBody, encodeCommentBody } from '../../src/services/forum/forumContentCodec'
 
 function doc(text: string): JSONContent {
@@ -77,7 +77,7 @@ test('upload failure prevents the Comment API call', async () => {
     content: doc('hello'),
     plainText: 'hello',
     validate: () => undefined,
-    uploadPending: async () => ({ ok: false, errors: [{ message: 'upload failed' }] }),
+    settleUploads: async () => ({ ok: false, errors: [{ code: 'upload-failed', fileName: 'image.png' }] }),
     getUploadedAttachments: () => [],
     postComment: async () => {
       apiCalls++
@@ -85,7 +85,11 @@ test('upload failure prevents the Comment API call', async () => {
     },
   })
 
-  assert.deepEqual(result, { ok: false, stage: 'upload', error: new Error('upload failed') })
+  assert.deepEqual(result, {
+    ok: false,
+    stage: 'upload',
+    errors: [{ code: 'upload-failed', fileName: 'image.png' }],
+  })
   assert.equal(apiCalls, 0)
 })
 
@@ -99,7 +103,7 @@ test('Comment API failure retains editor content and uploaded attachments', asyn
     content: editor,
     plainText: 'retain me',
     validate: () => undefined,
-    uploadPending: attachments.uploadPending,
+    settleUploads: attachments.settleUploads,
     getUploadedAttachments: () => attachments.serializedAttachments.value,
     postComment: async () => {
       throw new Error('comment failed')
@@ -127,7 +131,7 @@ test('success clears exactly once and exposes the direct mutation result', async
     content: editor,
     plainText: 'clear me',
     validate: () => undefined,
-    uploadPending: attachments.uploadPending,
+    settleUploads: attachments.settleUploads,
     getUploadedAttachments: () => attachments.serializedAttachments.value,
     postComment: async (body) => {
       assert.equal(decodeCommentBody(body).attachments?.[0]?.alt, 'clear.png')

@@ -22,7 +22,7 @@ const userInfo = useUserInfoStore()
 
 const { hasAnyRoles } = useRuleChecks(userInfo.info?.id)
 const { theme } = useData()
-const { showOAuthLoginAlert, logout } = useLogin()
+const { showLoginAlert, logout } = useLogin()
 
 const isOfficial = computed(() => hasAnyRoles('blogMember', 'teamMember', 'feedbackMember').value)
 </script>
@@ -109,7 +109,7 @@ const isOfficial = computed(() => hasAnyRoles('blogMember', 'teamMember', 'feedb
       <NavigationMenuItem>
         <NavigationMenuLink
           class="vp-button mt-2 text-center w-full cursor-pointer"
-          @click="showOAuthLoginAlert"
+          @click="showLoginAlert"
         >
           {{ theme.forum.auth.loginMsg }}
         </NavigationMenuLink>

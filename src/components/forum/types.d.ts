@@ -12,7 +12,7 @@ export namespace FORUM {
     shortcut?: string
     disabled?: boolean
     class?: HTMLAttributes['class']
-    action?: (() => void | Promise<void>) | (() => unknown)
+    action?: () => unknown
     id?: string
     order?: MenuOrder
   }

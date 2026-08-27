@@ -4,21 +4,25 @@ import type { ForumPage, ForumTopicListParams } from '~/services/forum/forumQuer
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { computed, toValue } from 'vue'
 import { issues, user } from '@/apis/forum/gitee'
-import { FORUM_CONFIG } from '~/components/forum/constants'
+import { FORUM_CONFIG } from '~/services/forum/forumConfig'
 import {
   flattenForumPages,
   forumKeys,
   normalizeTopicListParams,
 } from '~/services/forum/forumQueryContracts'
-import { ForumService } from '~/services/forumService'
+import { getForumTopics, getPinnedForumTopics } from '~/services/forum/forumTopics'
 
-export function useForumTopicsQuery(params: MaybeRefOrGetter<ForumTopicListParams>) {
+export function useForumTopicsQuery(
+  params: MaybeRefOrGetter<ForumTopicListParams>,
+  enabled: MaybeRefOrGetter<boolean> = true,
+) {
   const normalized = computed(() => normalizeTopicListParams(toValue(params)))
   const query = useInfiniteQuery<ForumPage<ForumAPI.Topic>, Error, number>({
     key: () => forumKeys.topicList(normalized.value),
     initialPageParam: 1,
+    enabled: () => toValue(enabled),
     query: async ({ pageParam }) => {
-      const result = await ForumService.getTopics({
+      const result = await getForumTopics({
         ...normalized.value,
         page: pageParam,
       })
@@ -45,7 +49,7 @@ export function useForumTopicsQuery(params: MaybeRefOrGetter<ForumTopicListParam
 export function usePinnedTopicsQuery() {
   return useQuery({
     key: forumKeys.pinned,
-    query: () => ForumService.getPinnedTopics(),
+    query: getPinnedForumTopics,
     staleTime: 5 * 60_000,
   })
 }

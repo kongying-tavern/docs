@@ -17,11 +17,12 @@ const props = defineProps<{
   topicAuthorId: string | number
   inline?: boolean
   commentCount?: number
+  topic?: ForumAPI.Topic
+  autofocusInput?: boolean
 }>()
 
 const { message } = useLocalized()
 
-// Comment area state management
 const {
   replyCommentID: _replyCommentID,
   commentInputBoxIsVisible,
@@ -45,7 +46,6 @@ const {
 
 const { detailHref } = useNavigateToTopic(props.topicId)
 
-// Template refs and UI state
 const commentArea = useTemplateRef('commentArea')
 const commentInputBox = useTemplateRef('commentInputBox')
 const { right, left, width } = useElementBounding(commentArea)
@@ -80,7 +80,6 @@ watch(
   { flush: 'post' },
 )
 
-// Scroll to comments when loading completes
 watchOnce(commentLoading, async () => {
   if (props.inline)
     return
@@ -96,8 +95,10 @@ onUnmounted(cleanup)
     <CommentAreaCommentInputBox>
       <ForumCommentInputBox
         :repo="repo"
+        :autofocus="autofocusInput"
         :placeholder="message.forum.comment.placeholder"
         :topic-id="topicId"
+        :topic="topic"
         @comment:submit="handleCommentSubmit"
       />
     </CommentAreaCommentInputBox>
@@ -134,6 +135,7 @@ onUnmounted(cleanup)
             class="mt-4"
             :repo="repo"
             :topic-id="topicId"
+            :topic="topic"
             :reply-target="comment.author.login"
             :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
             @comment:submit="handleCommentSubmit"

@@ -1,13 +1,14 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import { strict as assert } from 'node:assert'
+import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 import { ref } from 'vue'
-import { createDefaultTopicDraft, restoreTopicDraft } from '../../src/components/forum/form/composables/topicDraft'
-import { submitTopicFormTransaction } from '../../src/components/forum/form/composables/topicFormTransaction'
-import { addTagToModel, removeTagFromModel } from '../../src/components/forum/form/composables/topicTagModel'
-import { createTopicDraftSchema, getAllowedTopicTypes } from '../../src/components/forum/utils/validation'
 import { useImageAttachmentQueue } from '../../src/composables/useImageAttachmentQueue'
+import { createDefaultTopicDraft, restoreTopicDraft } from '../../src/services/forum/form/topicDraft'
+import { submitTopicFormTransaction } from '../../src/services/forum/form/topicFormTransaction'
+import { addTagToModel, removeTagFromModel } from '../../src/services/forum/form/topicTagModel'
+import { createTopicDraftSchema, getAllowedTopicTypes } from '../../src/services/forum/form/validation'
 
 function validDraft(type: 'BUG' | 'FEAT' | 'ANN' = 'BUG') {
   return {
@@ -34,6 +35,22 @@ test('schema matches BUG, FEAT, and permission-gated ANN semantics', () => {
   assert.equal(manager.safeParse(validDraft('ANN')).success, true)
   assert.deepEqual(getAllowedTopicTypes(false), ['BUG', 'FEAT'])
   assert.deepEqual(getAllowedTopicTypes(true), ['BUG', 'FEAT', 'ANN'])
+})
+
+test('schema normalizes untouched fields before reporting localized business errors', () => {
+  const result = createTopicDraftSchema({
+    canPublishAnnouncement: false,
+    messages: {
+      contentRequired: 'localized content',
+      tagsRequired: 'localized tags',
+    },
+  }).safeParse({ type: 'BUG' })
+
+  assert.equal(result.success, false)
+  assert.deepEqual(result.success ? [] : result.error.issues.map(issue => issue.message), [
+    'localized content',
+    'localized tags',
+  ])
 })
 
 test('default/reset drafts and tag arrays are fresh and storage restore ignores attachments', () => {
@@ -74,7 +91,7 @@ test('upload failure prevents Topic mutation and preserves draft state', async (
   const result = await submitTopicFormTransaction({
     draft,
     canPublishAnnouncement: false,
-    uploadPending: async () => ({ ok: false, errors: [{ message: 'upload failed' }] }),
+    settleUploads: async () => ({ ok: false, errors: [{ code: 'upload-failed', fileName: 'image.png' }] }),
     getUploadedAttachments: () => [],
     submitTopic: async () => {
       mutationCalls++
@@ -82,7 +99,11 @@ test('upload failure prevents Topic mutation and preserves draft state', async (
     },
   })
 
-  assert.deepEqual(result, { ok: false, stage: 'upload', error: new Error('upload failed') })
+  assert.deepEqual(result, {
+    ok: false,
+    stage: 'upload',
+    errors: [{ code: 'upload-failed', fileName: 'image.png' }],
+  })
   assert.equal(mutationCalls, 0)
   assert.deepEqual(draft, before)
 })
@@ -115,7 +136,7 @@ test('failed Topic creation retains uploaded metadata and retry does not upload 
   const options = {
     draft: validDraft('BUG'),
     canPublishAnnouncement: false,
-    uploadPending: queue.uploadPending,
+    settleUploads: queue.settleUploads,
     getUploadedAttachments: () => queue.serializedAttachments.value,
     submitTopic: async () => {
       submitCalls++
@@ -139,4 +160,56 @@ test('failed Topic creation retains uploaded metadata and retry does not upload 
   assert.equal(uploadCalls, 1)
   assert.equal(submitCalls, 2)
   assert.equal(successCalls, 1)
+})
+
+test('transaction reports upload before publishing and never publishes after upload failure', async () => {
+  const stages: string[] = []
+  const result = await submitTopicFormTransaction({
+    draft: validDraft('BUG'),
+    canPublishAnnouncement: false,
+    settleUploads: async () => ({ ok: true }),
+    getUploadedAttachments: () => [],
+    submitTopic: async () => topic(),
+    onStage: stage => stages.push(stage),
+  })
+
+  assert.equal(result.ok, true)
+  assert.deepEqual(stages, ['uploading', 'publishing'])
+
+  stages.length = 0
+  await submitTopicFormTransaction({
+    draft: validDraft('BUG'),
+    canPublishAnnouncement: false,
+    settleUploads: async () => ({ ok: false, errors: [{ code: 'upload-failed', fileName: 'offline.png' }] }),
+    getUploadedAttachments: () => [],
+    submitTopic: async () => topic(),
+    onStage: stage => stages.push(stage),
+  })
+  assert.deepEqual(stages, ['uploading'])
+})
+
+test('form wiring keeps one submission and starts bounded closing before awaiting the network', () => {
+  const submitSource = readFileSync(new URL('../../src/components/forum/form/composables/useFormSubmit.ts', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+  const styleSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.scss', import.meta.url), 'utf8')
+
+  assert.match(submitSource, /if \(activeSubmission\)\s+return activeSubmission/)
+  assert.match(formSource, /const closeCompletion = closeAfterSend\(\)\s+const result = await submitForm/)
+  assert.match(formSource, /const SEND_MOTION_MS = 260/)
+  assert.match(styleSource, /prefers-reduced-motion: reduce/)
+})
+
+test('drafts persist only after confirmation or an unexpected page exit', () => {
+  const stateSource = readFileSync(new URL('../../src/components/forum/form/composables/useFormState.ts', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+
+  assert.doesNotMatch(stateSource, /watch\(formData/)
+  assert.match(stateSource, /function saveDraft\(\)[\s\S]*writeTopicDraft\(type, draft\)/)
+  assert.match(formSource, /if \(!isDirty\.value\) \{\s+closeForm\(\)/)
+  assert.match(formSource, /draftPromptOpen\.value = true/)
+  assert.match(formSource, /function keepDraft\(\)[\s\S]*saveDraft\(\)[\s\S]*closeForm\(\)/)
+  assert.match(formSource, /function discardCurrentDraft\(\)[\s\S]*discardDraft\(\)[\s\S]*closeForm\(\)/)
+  assert.match(formSource, /useEventListener\('pagehide', saveDirtyDraft\)/)
+  assert.match(formSource, /@click="discardCurrentDraft"/)
+  assert.match(formSource, /@click="keepDraft"/)
 })

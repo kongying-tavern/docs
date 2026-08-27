@@ -53,7 +53,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     log.info(LogGroup.AUTH, 'Setting authentication data')
 
     try {
-      const { refreshToken, expiresIn, tokenType, accessToken }
+      const { refreshToken, expiresIn, tokenType, accessToken, scope }
         = toCamelCaseObject(newAuth as unknown as Record<string, string>) as unknown as LocalAuth
 
       if (!accessToken || !expiresIn) {
@@ -65,7 +65,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
         refreshToken: refreshToken || '',
         expiresIn: Number(expiresIn),
         tokenType: tokenType || 'bearer',
-        scope: 'user_info',
+        scope: scope || 'user_info',
         createdAt: Date.now(),
       })
 

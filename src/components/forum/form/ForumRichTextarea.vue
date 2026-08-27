@@ -3,19 +3,20 @@ import type { JSONContent, Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import type { EmojiItem } from '@/components/ui/EmojiPicker.vue'
-import type { ImageAttachment } from '~/composables/useImageAttachmentQueue'
+import type { ImageAttachment } from '~/services/forum/form/imageAttachment'
 import { ReloadIcon } from '@radix-icons/vue'
 import CharacterCount from '@tiptap/extension-character-count'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { onClickOutside } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import EmojiPicker from '@/components/ui/EmojiPicker.vue'
 import InputPlaceholders from '@/components/ui/InputPlaceholders.vue'
 import MentionPicker from '@/components/ui/MentionPicker.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
+import { useForumImageDropZone } from '~/composables/forum/useForumImageDropZone'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import { createForumContentExtensions } from '~/services/forum/forumTiptapExtensions'
 import ForumImageUpload from './ForumImageUpload.vue'
@@ -36,6 +37,7 @@ interface Props {
   loading?: boolean
   showCharacterCounter?: boolean
   autoHideFooter?: boolean
+  autofocus?: boolean
   modelValue?: JSONContent | null
 }
 
@@ -95,7 +97,9 @@ onMounted(() => {
     ],
     content: props.modelValue ?? emptyDoc(),
     editable: !props.disabled,
-    autofocus: true,
+    autofocus: false,
+    enableInputRules: false,
+    enablePasteRules: false,
     coreExtensionOptions: {
       clipboardTextSerializer: {
         blockSeparator: '\n',
@@ -120,6 +124,16 @@ onMounted(() => {
       },
     },
   })
+
+  // 按需聚焦输入框（不触发浏览器滚动到该元素；延迟避开 Dialog 打开动画的焦点接管）
+  if (props.autofocus) {
+    nextTick(() => {
+      const timer = setTimeout(() => {
+        editor.value?.view.focus({ preventScroll: true })
+      }, 160)
+      onBeforeUnmount(() => clearTimeout(timer))
+    })
+  }
 })
 
 onClickOutside(container, () => {
@@ -162,9 +176,10 @@ function handlePaste(event: ClipboardEvent): void {
     emitFiles([...event.clipboardData.files])
 }
 
-function handleDrop(event: DragEvent): void {
-  emitFiles([...event.dataTransfer?.files || []])
-}
+const { isOverDropZone } = useForumImageDropZone(container, {
+  disabled: computed(() => props.disabled || props.loading || !props.features.includes('Upload')),
+  onFiles: emitFiles,
+})
 
 function handleSubmit(): void {
   if (!props.disabled && !props.loading && charCount.value > 0)
@@ -192,10 +207,8 @@ onBeforeUnmount(() => {
   <div
     ref="textarea-container"
     v-motion-slide-top
-    class="flex"
+    class="forum-rich-textarea flex relative"
     :class="cn('w-full flex', containerClass)"
-    @drop.prevent="handleDrop"
-    @dragover.prevent
     @paste="handlePaste"
   >
     <div class="comment-area w-full">
@@ -230,11 +243,11 @@ onBeforeUnmount(() => {
             :attachments="attachments"
             :disabled="disabled || loading"
             :hide-default-trigger="true"
+            size="sm"
             :class="{ hidden: attachments.length === 0 }"
             @files-selected="emitFiles"
             @remove="$emit('remove-attachment', $event)"
             @retry="$emit('retry-attachment', $event)"
-            @drop.stop
             @paste.stop
           />
 
@@ -244,7 +257,7 @@ onBeforeUnmount(() => {
             :class="{ 'character-count--warning': charCount === maxTextLength }"
           >
             <svg height="20" width="20" viewBox="0 0 20 20" class="mr-6px">
-              <circle r="10" cx="10" cy="10" fill="#e9ecef" />
+              <circle r="10" cx="10" cy="10" fill="var(--vp-c-bg-soft)" />
               <circle
                 r="5"
                 cx="10"
@@ -259,6 +272,11 @@ onBeforeUnmount(() => {
             </svg>
 
             {{ charCount }} / {{ maxTextLength }}
+          </div>
+
+          <div v-if="isOverDropZone" class="comment-drop-overlay" aria-hidden="true">
+            <span class="i-lucide-images size-5" />
+            <span>{{ message.forum.publish.feedbackForm.addImages }}</span>
           </div>
         </div>
       </div>
@@ -279,7 +297,7 @@ onBeforeUnmount(() => {
             variant="ghost"
             class="ml-2 border border-[var(--vp-c-gutter)] border-solid bg-transparent h-8 w-6"
             :disabled="disabled || loading"
-            aria-label="Add images"
+            :aria-label="message.forum.publish.feedbackForm.addImages"
             @click="imageUpload?.open()"
           >
             <span class="i-lucide:image c-[var(--vp-c-text-2)] icon-btn size-4" />
@@ -298,6 +316,23 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
+.comment-drop-overlay {
+  position: absolute;
+  z-index: 20;
+  border: 2px dashed var(--vp-c-brand-1);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--vp-c-bg-elv) 86%, transparent);
+  color: var(--vp-c-brand-1);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
 .character-count {
   svg {
     color: var(--vp-c-green-3);
@@ -309,7 +344,6 @@ onBeforeUnmount(() => {
   }
 }
 
-// 智能链接样式
 :deep(.smart-link) {
   display: inline-flex;
   align-items: center;
@@ -320,25 +354,25 @@ onBeforeUnmount(() => {
   font-weight: 500;
 
   &.bilibili-link {
-    background-color: rgba(0, 161, 214, 0.1);
+    background-color: color-mix(in srgb, var(--forum-c-bilibili) 10%, transparent);
     color: var(--vp-c-text-1);
-    border: 1px solid rgba(0, 161, 214, 0.2);
+    border: 1px solid color-mix(in srgb, var(--forum-c-bilibili) 20%, transparent);
 
     &:hover {
-      background-color: rgba(0, 161, 214, 0.15);
-      border-color: rgba(0, 161, 214, 0.3);
+      background-color: color-mix(in srgb, var(--forum-c-bilibili) 15%, transparent);
+      border-color: color-mix(in srgb, var(--forum-c-bilibili) 30%, transparent);
       text-decoration: none;
     }
   }
 
   &.youtube-link {
-    background-color: rgba(255, 0, 0, 0.1);
+    background-color: color-mix(in srgb, var(--forum-c-youtube) 10%, transparent);
     color: var(--vp-c-text-1);
-    border: 1px solid rgba(255, 0, 0, 0.2);
+    border: 1px solid color-mix(in srgb, var(--forum-c-youtube) 20%, transparent);
 
     &:hover {
-      background-color: rgba(255, 0, 0, 0.15);
-      border-color: rgba(255, 0, 0, 0.3);
+      background-color: color-mix(in srgb, var(--forum-c-youtube) 15%, transparent);
+      border-color: color-mix(in srgb, var(--forum-c-youtube) 30%, transparent);
       text-decoration: none;
     }
   }
@@ -367,7 +401,6 @@ onBeforeUnmount(() => {
     }
   }
 
-  // 图标间距
   .mr-1 {
     margin-right: 4px;
   }

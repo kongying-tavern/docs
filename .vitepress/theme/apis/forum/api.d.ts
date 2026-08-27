@@ -22,7 +22,9 @@ export namespace ForumAPI {
     updateAt?: Date
   }
 
-  export type TopicType = 'ANN' | 'BUG' | 'FEAT' | 'POST' | null
+  export type FeedbackTopicType = 'ANN' | 'BUG' | 'FEAT'
+  export type TopicKind = FeedbackTopicType | 'POST'
+  export type TopicType = TopicKind | null
 
   export interface ImageInfo {
     src: string
@@ -49,7 +51,7 @@ export namespace ForumAPI {
     commentCount: number
     user: ForumAPI.User
     state: ForumAPI.TopicState
-    type: ForumAPI.TopicType
+    type: ForumAPI.TopicKind
     pinned?: boolean
     relatedComments?: Comment[] | null
     createdAt: string
@@ -71,7 +73,6 @@ export namespace ForumAPI {
     reactions?: ForumAPI.Reactions | null
     replyID?: string | number | null
     tags?: string[] // Tags extracted from rich text data
-    // replyCommets?: Omit<ForumAPI.Comment, replyCommets>
   }
 
   export interface Comments {
@@ -142,7 +143,7 @@ export namespace ForumAPI {
   }
 
   interface CreateTopicOption {
-    type: Exclude<ForumAPI.TopicType, null>
+    type: ForumAPI.FeedbackTopicType
     title: string
     tags: string[]
     text: string

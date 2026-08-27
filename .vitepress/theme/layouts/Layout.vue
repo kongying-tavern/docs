@@ -11,9 +11,11 @@ import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import LoginAlertDialog from '@/components/LoginAlertDialog.vue'
 import MediumZoom from '@/components/MediumZoom.vue'
 import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
+import OAuthLoginAlertDialog from '@/components/OAuthLoginAlertDialog.vue'
 import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
 import { enableTransitions } from '@/shared'
+import ForumSidebar from '~/components/forum/sidebar/ForumSidebar.vue'
 
 import '@/styles/main.css'
 
@@ -102,10 +104,15 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
       <NavBarUserAvatar />
     </template>
 
+    <template #sidebar-nav-before>
+      <ForumSidebar v-if="frontmatter.layout === 'Forum'" />
+    </template>
+
     <template #layout-bottom>
       <HighlightTargetedHeading />
       <Notifications />
       <LoginAlertDialog />
+      <OAuthLoginAlertDialog />
     </template>
   </Layout>
   <MediumZoom />
@@ -134,5 +141,10 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 
 .VPSwitchAppearance .check {
   transform: none !important;
+}
+
+/* 论坛页二级导航隐藏“回到顶部”，该区域留给移动端创建反馈按钮 */
+.Layout.Forum .VPLocalNav .VPLocalNavOutlineDropdown {
+  display: none;
 }
 </style>

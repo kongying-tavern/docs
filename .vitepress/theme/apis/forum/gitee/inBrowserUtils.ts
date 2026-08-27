@@ -10,22 +10,19 @@ export function extractOfficialAndAuthorComments(
   const relatedComments = commentList.filter(
     comment => comment.target.issue.id === issue.id,
   )
-  // 查找作者的评论
   const authorComment = relatedComments.find(
     comment => comment.user.id === issue.user.id,
   )
-  // 查找官方团队的评论
-  const officialComment = relatedComments.find((comment) => {
-    const { hasAnyRoles } = useRuleChecks(comment.user.id)
-    return hasAnyRoles('teamMember', 'feedbackMember').value
-  })
+  const { isOfficial } = useRuleChecks()
+  const officialComment = relatedComments.find(
+    comment => isOfficial(comment.user.id).value,
+  )
 
   if (authorComment)
     comments.push(normalizeComment(authorComment))
   if (officialComment)
     comments.push(normalizeComment(officialComment))
 
-  // 根据 comment.id 去重
   const uniqueComments = [...new Map(comments.map(comment => [comment.id, comment])).values()]
 
   return uniqueComments.length > 0 ? uniqueComments : null

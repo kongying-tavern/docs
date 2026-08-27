@@ -109,79 +109,53 @@
       ]
     }
   },
-  "docFooter": {
-    "prev": "Previous page",
-    "next": "Next page"
-  },
-  "staff": {
-    "title": "Staff",
-    "desc": "空荧酒馆『原神地图』项目参与制作",
-    "communityStaff": {
-      "title": "社区运营"
-    },
-    "clientStaff": {
-      "title": "客户端开发"
-    },
-    "webStaff": {
-      "title": "网页端开发"
-    },
-    "translateStaff": {
-      "title": "本地化翻译"
-    },
-    "pinStaff": {
-      "title": "地图点位标记"
-    }
-  },
-  "team": {
-    "title": "关于团队",
-    "desc": "地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。",
-    "coreMember": {
-      "title": "核心团队成员",
-      "desc": "核心团队成员是那些积极长期参与维护一个或多个核心项目的人。 他们对空荧酒馆的生态系统做出了重大贡献。"
-    },
-    "emeritiMember": {
-      "title": "名誉核心团队",
-      "desc": "我们在此致敬过去曾做出过突出贡献的不再活跃的团队成员。"
-    },
-    "partnerMember": {
-      "title": "社区伙伴",
-      "desc": "我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。"
-    }
-  },
-  "payment": {
-    "wechatpay": {
-      "name": "WeChat Pay",
-      "address": "wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp"
-    },
-    "alipay": {
-      "name": "Alipay",
-      "address": "https://qr.alipay.com/tsx11609thmpw9odmvdlxd6"
-    },
-    "qqpay": {
-      "name": "QQ Pay",
-      "address": "https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet"
-    },
-    "paypal": {
-      "name": "PayPal",
-      "address": "https://www.paypal.com/paypalme/yuanshenditu"
-    },
-    "bilibili": {
-      "name": "bilibili",
-      "address": "https://space.bilibili.com/518076785"
-    }
-  },
   "forum": {
     "loadMore": "Load More",
     "noMore": "No More",
     "loadError": "Load Error",
+    "lastVisited": "Last visited",
     "empty": {
       "title": "No feedback yet",
-      "description": "Adjust the filters or submit new feedback."
+      "description": "Adjust the filters or submit new feedback.",
+      "searchTitle": "Search “{query}”",
+      "searchDescription": "No related feedback was found."
     },
     "reaction": {
       "label": "Feedback rating",
-      "like": "Upvote",
-      "dislike": "Downvote"
+      "like": "Agree",
+      "dislike": "Disagree"
+    },
+    "imagePreview": {
+      "previous": "Previous image",
+      "next": "Next image",
+      "expandPanel": "Expand preview panel",
+      "collapsePanel": "Collapse preview panel",
+      "showImage": "Show image {index}"
+    },
+    "sidebar": {
+      "home": "Feedback forum",
+      "manual": "User manual",
+      "download": "Download client",
+      "myProfile": "My profile",
+      "faq": "FAQ",
+      "createFeedback": "Create feedback",
+      "loginToCreate": "Sign in to submit",
+      "recentSubmitted": "My feedback",
+      "followedTopics": "Following",
+      "recentParticipated": "Participated",
+      "emptySubmitted": "No feedback submitted yet",
+      "emptyFollowed": "No followed feedback yet",
+      "emptyParticipated": "No participated feedback yet",
+      "loginToView": "Sign in to view",
+      "loginNow": "Sign in",
+      "syncFailed": "Comment posted, but participation could not be synced",
+      "newComments": "{count} new comments",
+      "totalComments": "{count} comments total",
+      "information": "More information",
+      "listSort": "List sorting",
+      "opensource": "Open Source",
+      "userAgreement": "User Agreement",
+      "privacyPolicy": "Privacy policy"
     },
     "exceededRateLimitWarning": "Reached the maximum request rate limit of Gitee API. Please login and try again",
     "translate": {
@@ -194,10 +168,13 @@
     "topic": {
       "official": "Official",
       "author": "Author",
+      "officialAt": "@Kongying-Tavern",
       "showMore": "Show More",
+      "previewTitle": "Topic Preview",
       "backToFeedbackForum": "Back to forum",
       "menu": {
         "moreActions": "More actions",
+        "syncPending": "{action}; sync status is pending",
         "giteeLink": "Gitee Link",
         "toOriginal": "Go To Original",
         "hideFeedback": {
@@ -224,19 +201,27 @@
         },
         "changeType": {
           "text": "Change Type",
-          "to": "Change to"
+          "to": "Change to",
+          "success": "Feedback type updated",
+          "fail": "Failed to update feedback type"
         },
         "modifyTags": {
           "text": "Modify Tags",
-          "title": "Edit topic tags (#{id})"
+          "title": "Edit topic tags (#{id})",
+          "success": "Feedback tags updated",
+          "fail": "Failed to update feedback tags"
         },
         "pinTopic": {
           "pin": "Pin Topic",
-          "unpin": "Unpin Topic"
+          "unpin": "Unpin Topic",
+          "success": "Feedback pin state updated",
+          "fail": "Failed to update feedback pin state"
         },
         "commentArea": {
           "open": "Open Comments",
-          "close": "Close Comments"
+          "close": "Close Comments",
+          "success": "Comment state updated",
+          "fail": "Failed to update comment state"
         },
         "reopenFeedback": {
           "text": "Reopen Feedback"
@@ -258,7 +243,7 @@
         "progressing": "In Progress"
       },
       "backToTeamBlog": "Back To Blog",
-      "backToPrevPage": "Back To Prev Page"
+      "backToPrevPage": "Back to Previous Page"
     },
     "auth": {
       "login": "Login",
@@ -272,8 +257,19 @@
       "logoutSuccess": "Logged Out",
       "loginFail": "Login Failed",
       "logoutFail": "Logout Failed",
-      "loginAlert": "Login Alert",
-      "loginAlertMsg": "Redirecting to Gitee for login",
+      "loginAlert": "Account sign-in",
+      "loginAlertMsg": "Continue with your Gitee account",
+      "oauthLoginAlert": "Continue to Gitee authorization",
+      "oauthLoginAlertMsg": "You will leave this page and return automatically after authorization.",
+      "account": "Account",
+      "accountPlaceholder": "Gitee login or email (not phone or game account)",
+      "loginHelp": "Having trouble signing in?",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "passwordLogin": "Sign in",
+      "passwordLoginFail": "Sign-in failed. Check your account, password, or network and try again.",
+      "oauthLogin": "Use authorization instead",
+      "or": "Or",
       "notGiteeAccountMsg": "No Gitee Account? %signup",
       "clickToGiteeSignup": "Sign up for Gitee",
       "callback": {
@@ -308,18 +304,28 @@
         "text": "Team Blog",
         "items": [
           {
-            "text": "Genshin Map Client Update Log",
-            "link": "/blog/hotupdatelog-client"
+            "text": "[Client] Hot Update Log",
+            "link": "/blog/hotupdatelog-client",
+            "cover": "/imgs/common/client-updatelog_cover.png"
           },
           {
-            "text": "Genshin Map Web Update Log",
-            "link": "/blog/changelog-web"
+            "text": "Web Map Update Log",
+            "link": "/blog/changelog-web",
+            "cover": "/imgs/common/web-updatelog_cover.png"
+          },
+          {
+            "text": "[Position Tracking] Hot Update Log",
+            "link": "/blog/posts/hotupdatelog-autotrack"
           }
         ]
       },
       "suggest": {
-        "text": "Recommended",
+        "text": "Recommended Docs",
         "items": []
+      },
+      "recentTopics": {
+        "text": "Recent Topics",
+        "empty": "No recent topics"
       },
       "info": [
         {
@@ -343,6 +349,11 @@
       "commentsClosed": "Comments Closed"
     },
     "header": {
+      "view": {
+        "label": "View mode",
+        "card": "Card",
+        "compact": "Compact"
+      },
       "sort": {
         "created": "Creation Date",
         "updated": "Recently Updated",
@@ -351,11 +362,12 @@
       "search": {
         "placeholder": "Search",
         "allRelatedContentCount": "Feedback Found",
+        "resultSummary": "Search “{query}” found {count} related feedback items",
         "quickLinks": "Quick links"
       },
       "navigation": {
         "allFeedback": "All Feedback",
-        "bugFeedback": "Bug Repoort",
+        "bugFeedback": "Bug Report",
         "featFeedback": "Feature Request",
         "closedFeedback": "Closed Feedback",
         "faq": {
@@ -388,7 +400,7 @@
           "client": "Client Issue"
         }
       },
-      "title": "Submit Feedback",
+      "title": "Feedback Form",
       "type": {
         "sug": "Suggestion",
         "bug": "Bug",
@@ -398,7 +410,34 @@
       "tagsInput": {
         "searchTags": "Search Tags",
         "maxTagsLimit": "Tag Limit Reached",
-        "noResultsFound": "No Results Found"
+        "noResultsFound": "No Results Found",
+        "loadFailed": "Could not load tags. Try again.",
+        "retry": "Reload"
+      },
+      "feedbackForm": {
+        "submit": "Submit Feedback",
+        "keepDraftTitle": "Keep these edits?",
+        "keepDraftDescription": "Keep them to continue editing the next time you open the feedback form.",
+        "discardDraft": "Discard",
+        "keepDraft": "Keep edits",
+        "fieldsNeedAttention": "{count} fields still need attention",
+        "uploadingImages": "Uploading images {settled}/{total}",
+        "publishing": "Publishing feedback…",
+        "success": "Feedback published",
+        "uploadFailed": "An image could not be uploaded. Review it and retry.",
+        "publishFailed": "Feedback could not be published. Your draft is preserved.",
+        "returnToForm": "Return to form",
+        "retryImage": "Retry {filename}",
+        "removeImage": "Remove {filename}",
+        "addImages": "Add images",
+        "attachmentsLabel": "Feedback images",
+        "attachmentsLimit": "{count}/{max} images · {size} each",
+        "localFilesWarning": "Pending local images are not preserved after a page reload.",
+        "imageEmpty": "{filename} is empty",
+        "imageInvalidType": "{filename} uses an unsupported image format",
+        "imageTooLarge": "{filename} exceeds {size}",
+        "imageCountExceeded": "You can add up to {max} images",
+        "previewFailed": "Could not preview {filename}"
       },
       "publishSuccess": "Feedback Uploaded:",
       "publishFail": "Feedback Upload Failed:",
@@ -417,8 +456,8 @@
           "placeholder": ""
         },
         "upload": {
-          "text": "Upload Image",
-          "tip": "Upload up to %range images, max %size MB each",
+          "text": "Upload Error Screenshot",
+          "tip": "Upload up to %range images, max %size each",
           "fail": "%filename Upload Failed",
           "violation": "Image Violation! Do not upload unrelated images.",
           "paste": {
@@ -483,7 +522,8 @@
         "invalidImageFormat": "Only JPEG, PNG, GIF, and WebP images are allowed",
         "validationError": "Validation error occurred",
         "invalidFile": "Invalid file",
-        "fileValidationFailed": "File validation failed"
+        "fileValidationFailed": "File validation failed",
+        "announcementPermission": "Only administrators can publish announcements"
       }
     },
     "errors": {
@@ -506,6 +546,67 @@
       "followSuccess": "Followed successfully",
       "permissionInsufficientAnnouncement": "Insufficient permissions: only administrators can publish announcement content",
       "ssoRefreshTokenFailed": "interknot.site: Token refresh failed, incomplete data returned"
+    }
+  },
+  "docFooter": {
+    "prev": "Previous page",
+    "next": "Next page"
+  },
+  "staff": {
+    "title": "Staff",
+    "desc": "空荧酒馆『原神地图』项目参与制作",
+    "communityStaff": {
+      "title": "社区运营"
+    },
+    "clientStaff": {
+      "title": "客户端开发"
+    },
+    "webStaff": {
+      "title": "网页端开发"
+    },
+    "translateStaff": {
+      "title": "本地化翻译"
+    },
+    "pinStaff": {
+      "title": "地图点位标记"
+    }
+  },
+  "team": {
+    "title": "关于团队",
+    "desc": "地图的背后是一个基本来自中国的团队，以下是部分成员的个人信息。",
+    "coreMember": {
+      "title": "核心团队成员",
+      "desc": "核心团队成员是那些积极长期参与维护一个或多个核心项目的人。 他们对空荧酒馆的生态系统做出了重大贡献。"
+    },
+    "emeritiMember": {
+      "title": "名誉核心团队",
+      "desc": "我们在此致敬过去曾做出过突出贡献的不再活跃的团队成员。"
+    },
+    "partnerMember": {
+      "title": "社区伙伴",
+      "desc": "我们与这些主要合作伙伴建立了更加亲密的关系，经常与他们就即将到来的功能展开合作。"
+    }
+  },
+  "payment": {
+    "wechatpay": {
+      "name": "WeChat Pay",
+      "address": "wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp"
+    },
+    "alipay": {
+      "name": "Alipay",
+      "address": "https://qr.alipay.com/tsx11609thmpw9odmvdlxd6"
+    },
+    "qqpay": {
+      "name": "QQ Pay",
+      "address": "https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&a=1&u=790489566&ac=CAEQ3tP3-AIY0v2k_AU%3D_xxx_sign&n=AAAAAAAA&f=wallet"
+    },
+    "paypal": {
+      "name": "PayPal",
+      "address": "https://www.paypal.com/paypalme/yuanshenditu"
+    },
+    "bilibili": {
+      "name": "bilibili",
+      "address": "https://space.bilibili.com/518076785"
     }
   },
   "changelog": {
@@ -651,6 +752,11 @@
     }
   ],
   "sidebar": {
+    "/en/feedback": [
+      {
+        "text": ""
+      }
+    ],
     "/en/manual": [
       {
         "text": "Table of Contents",
@@ -746,6 +852,15 @@
               {
                 "text": "Repeated Login Requests",
                 "link": "/en/manual/faq/login/clientrepeatedly"
+              }
+            ]
+          },
+          {
+            "text": "Cloud Save",
+            "items": [
+              {
+                "text": "Cloud Save Verification Issue for Overseas Users",
+                "link": "/en/manual/faq/cloudsave/verificationissueforoverseasuser"
               }
             ]
           }

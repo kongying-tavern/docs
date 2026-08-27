@@ -23,18 +23,19 @@ import {
   TagsInputItemText,
 } from '@/components/ui/tags-input'
 import { useLocalized } from '@/hooks/useLocalized'
-import { VALIDATION_LIMITS } from '../../constants'
+import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
 import { useTagsInput } from '../composables/useTagsInput'
 
 const props = withDefaults(
   defineProps<{
     class?: HTMLAttributes['class']
     max?: number
-    modelValue: string[]
+    modelValue?: string[]
     placeholder?: string
   }>(),
   {
     max: VALIDATION_LIMITS.TAGS.MAX_COUNT,
+    modelValue: () => [],
   },
 )
 
@@ -48,13 +49,15 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 const { message } = useLocalized()
 
-// Use tags input composable
 const {
   isDisabled,
+  isLoading,
+  loadError,
   tagList,
   getLocalizedTagName,
   handleSelect,
   handleDelete,
+  loadTags,
 } = useTagsInput({
   modelValue,
   max: props.max,
@@ -65,7 +68,7 @@ const {
   <Popover>
     <PopoverTrigger as-child>
       <TagsInput
-        class="px-0 border vp-border-input gap-0 min-h-42px w-full"
+        class="letter-tags-input px-0 border vp-border-input gap-0 min-h-42px w-full"
         v-bind="$attrs"
         :model-value="modelValue"
         :placeholder="placeholder"
@@ -98,25 +101,37 @@ const {
         />
         <CommandSeparator />
         <CommandList>
-          <CommandEmpty>
+          <div v-if="isLoading" class="text-sm c-[var(--vp-c-text-2)] px-3 py-5 flex gap-2 items-center justify-center">
+            <span class="i-lucide-loader-circle size-4 animate-spin" aria-hidden="true" />
+            {{ message.forum.publish.publishLoading }}
+          </div>
+          <div v-else-if="loadError" class="text-sm px-3 py-4 flex flex-col gap-2 items-center" role="alert">
+            <span>{{ message.forum.publish.tagsInput.loadFailed }}</span>
+            <button type="button" class="text-[var(--vp-c-brand-1)] hover:underline" @click="loadTags">
+              {{ message.forum.publish.tagsInput.retry }}
+            </button>
+          </div>
+          <CommandEmpty v-else>
             {{ message.forum.publish.tagsInput.noResultsFound }}
           </CommandEmpty>
 
-          <CommandGroup
-            v-for="item in tagList"
-            :key="item.heading"
-            :heading="item.heading"
-          >
-            <CommandItem
-              v-for="tag in item.list"
-              :key="tag"
-              :value="getLocalizedTagName(tag)"
-              :disabled="isDisabled"
-              @select.prevent="handleSelect(tag)"
+          <template v-if="!isLoading && !loadError">
+            <CommandGroup
+              v-for="item in tagList"
+              :key="item.heading"
+              :heading="item.heading"
             >
-              {{ getLocalizedTagName(tag) }}
-            </CommandItem>
-          </CommandGroup>
+              <CommandItem
+                v-for="tag in item.list"
+                :key="tag"
+                :value="getLocalizedTagName(tag)"
+                :disabled="isDisabled"
+                @select.prevent="handleSelect(tag)"
+              >
+                {{ getLocalizedTagName(tag) }}
+              </CommandItem>
+            </CommandGroup>
+          </template>
         </CommandList>
       </Command>
     </PopoverContent>

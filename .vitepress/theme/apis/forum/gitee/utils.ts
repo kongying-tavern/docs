@@ -5,7 +5,7 @@ import { avatarBaseURl, avatarList } from '@/composables/avatarList'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
-import { decodeCommentBody, decodeTopicBody } from '~/services/forum/forumContentCodec'
+import { decodeCommentBody, decodeTopicBody, stripMarkdownImages } from '~/services/forum/forumContentCodec'
 
 import { GITEE_API_CONFIG } from './config'
 
@@ -68,7 +68,7 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
   return {
     type: 'POST',
     id: issue.number,
-    title: issue.title.split('%%')[0]?.trim(),
+    title: stripMarkdownImages(issue.title.split('%%')[0]?.trim() ?? ''),
     path: issue.title.split('%%')[1]?.trim() || issue.number,
     link: issue.html_url,
     content: {
@@ -103,6 +103,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     contentRaw: issue.body,
     link: issue.html_url,
     commentCount: getCommentAreaState(issue.labels) ? -1 : issue.comments,
+    pinned: issue.labels.some(label => label.name === 'PINNED'),
     user: normalizeUser(issue.user),
     state: issue.state,
     createdAt: issue.created_at,
@@ -149,10 +150,10 @@ function getTopicTypeFromTitle(title: string): {
   if (match) {
     const prefix = match[0].replace(':', '') as ForumAPI.TopicType
     if (prefix)
-      return { type: prefix, title: title.slice(prefix.length + 1) }
+      return { type: prefix, title: stripMarkdownImages(title.slice(prefix.length + 1)) }
   }
 
-  return { type: null, title }
+  return { type: null, title: stripMarkdownImages(title) }
 }
 
 export function getLanguageFromLabel(label: GITEE.IssueLabel[]): string | undefined {

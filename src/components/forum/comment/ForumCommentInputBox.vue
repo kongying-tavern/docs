@@ -13,11 +13,13 @@ import { cn } from '@/lib/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumMutations } from '~/composables/forum/useForumMutations'
+import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useImageAttachmentQueue } from '~/composables/useImageAttachmentQueue'
-import { VALIDATION_LIMITS } from '../constants'
+import { submitCommentTransaction } from '~/services/forum/commentTransaction'
+import { createCommentFormSchema } from '~/services/forum/form/validation'
+import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
 import ForumRichTextarea from '../form/ForumRichTextarea.vue'
-import { createCommentFormSchema } from '../utils/validation'
-import { submitCommentTransaction } from './composables/commentComposerTransaction'
+import { formatImageAttachmentError } from '../utils/forumUi'
 
 const {
   topicId,
@@ -25,6 +27,8 @@ const {
   placeholder = [''],
   repo = 'Feedback',
   collapse = true,
+  topic,
+  autofocus = false,
 } = defineProps<{
   topicId: string
   placeholder?: string[] | string
@@ -32,6 +36,8 @@ const {
   collapse?: boolean
   repo?: ForumAPI.Repo
   class?: HTMLAttributes['class']
+  topic?: ForumAPI.Topic
+  autofocus?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -46,6 +52,7 @@ const plainText = ref('')
 const submitPending = ref(false)
 
 const forumMutations = useForumMutations()
+const personal = useForumPersonalState()
 
 const queue = useImageAttachmentQueue({
   upload: uploadImg,
@@ -76,7 +83,7 @@ async function submit(): Promise<void> {
       content: content.value,
       plainText: plainText.value,
       validate: validateComment,
-      uploadPending: queue.uploadPending,
+      settleUploads: queue.settleUploads,
       getUploadedAttachments: () => queue.serializedAttachments.value,
       postComment: body => forumMutations.createComment({ repo, topicId, body }),
       onSuccess: (comment) => {
@@ -84,12 +91,23 @@ async function submit(): Promise<void> {
         content.value = emptyDoc()
         plainText.value = ''
         queue.reset()
-        toast.success(message.value.forum.comment.commentSuccess)
+        if (topic) {
+          personal.recordParticipation(topic).catch(() => {
+            toast.warning(message.value.forum.sidebar.syncFailed)
+          })
+        }
       },
     })
 
-    if (!result.ok)
-      toast.error(`${message.value.forum.comment.commentFail}${result.error.message}`)
+    if (!result.ok) {
+      if (result.stage === 'upload') {
+        for (const error of result.errors)
+          toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm))
+      }
+      else {
+        toast.error(`${message.value.forum.comment.commentFail}${result.error.message}`)
+      }
+    }
   }
   finally {
     submitPending.value = false
@@ -100,7 +118,7 @@ async function addFiles(files: File[]): Promise<void> {
   const result = await queue.addFiles(files)
   if (!result.ok) {
     for (const error of result.errors)
-      toast.error(error.message)
+      toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm))
   }
 }
 
@@ -108,16 +126,16 @@ async function retryAttachment(id: string): Promise<void> {
   const result = await queue.retry(id)
   if (!result.ok) {
     for (const error of result.errors)
-      toast.error(error.message)
+      toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm))
   }
 }
 </script>
 
 <template>
   <div v-motion-slide-top class="flex" :class="cn('flex', $props.class)">
-    <div class="user-avatar mr-2 flex">
+    <div class="user-avatar mr-2 flex w-[64px]">
       <UserAvatar
-        size="md"
+        size="lg"
         :src="userInfo.info?.avatar"
         :alt="userInfo.info?.username"
       />
@@ -126,12 +144,13 @@ async function retryAttachment(id: string): Promise<void> {
     <ForumRichTextarea
       v-if="userAuth.isTokenValid"
       v-model="content"
-      container-class="w-[calc(100%-80px)] ml-4"
+      container-class="w-[calc(100%-72px)]"
       :attachments="queue.attachments.value"
       :disabled="loading"
       :loading="loading"
       :collapse="collapse"
       :max-text-length="VALIDATION_LIMITS.CONTENT.MAX_LENGTH"
+      :autofocus="autofocus"
       :placeholders="placeholder"
       :reply-target="replyTarget"
       @input="plainText = $event"

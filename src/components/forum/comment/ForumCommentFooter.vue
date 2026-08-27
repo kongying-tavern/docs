@@ -16,8 +16,8 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { executeWithAuth } from '~/composables/executeWithAuth'
 import { useForumMutations } from '~/composables/forum/useForumMutations'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import ForumTopicCommentDropdownMenu from '../ForumTopicCommentDropdownMenu.vue'
 import ForumTime from '../ui/ForumTime.vue'
+import ForumTopicCommentDropdownMenu from './ForumTopicCommentDropdownMenu.vue'
 
 const {
   commentData,
@@ -68,7 +68,6 @@ async function handleDeleteComment() {
   const deleted = await executeWithAuth(
     forumMutations.deleteComment,
     [{ commentId: commentData.id, repo, topicId: topicId || 'unknown' }],
-    message.value.forum.topic.menu.deleteComment.success,
     message.value.forum.topic.menu.deleteComment.fail,
     message,
   )

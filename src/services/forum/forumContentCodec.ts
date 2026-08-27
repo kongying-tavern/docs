@@ -1,31 +1,22 @@
 import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '@/apis/forum/api'
 
-/** Matches the legacy Topic metadata comments used by composeTopicBody. */
 const TOPIC_COMMENT_SPLIT_REGEX = /(<!--.*(?=-->)-->)/gu
 
-/** Matches HTML comment start/end tags. */
 const HTML_COMMENT_TAGS_REGEX = /^<!--|-->$/gu
 
-/** Matches Markdown image syntax with the existing optional metadata grammar. */
 const MARKDOWN_IMAGE_REGEX = /!\[(.*?)\]\((.*?)\)\s*(\{[^}]*\})?/g
 
-/** Matches HTML comments removed by provider normalization. */
 const HTML_COMMENT_REGEX = /<!--.*?-->/gs
 
-/** Matches CRLF line endings. */
 const CRLF_LINE_ENDING_REGEX = /\r\n/g
 
-/** Matches supported persisted emoji file extensions. */
 const EMOJI_FILE_EXTENSION_REGEX = /\.(?:gif|png|webp)$/i
 
-/** Matches a quoted metadata value. */
 const LEADING_TRAILING_QUOTE_REGEX = /^"|"$/g
 
-/** Matches excess trailing newlines from Tiptap block content. */
 const MULTIPLE_NEWLINES_END_REGEX = /\n{3,}$/
 
-/** Matches characters that cannot occur in a persisted emoji path segment. */
 const UNSAFE_EMOJI_SEGMENT_REGEX = /[\\?#<>"']/u
 
 const SUPPORTED_TIPTAP_NODES = new Set([
@@ -69,20 +60,20 @@ export type DecodedForumText
   = | { kind: 'plain', text: string }
     | { kind: 'tiptap', doc: JSONContent, text: string }
 
-export interface ForumAttachment extends ForumAPI.ImageInfo {}
+interface ForumAttachment extends ForumAPI.ImageInfo {}
 
-export interface TopicMetadata {
+interface TopicMetadata {
   labels?: string[]
   state?: ForumAPI.TopicState
   [key: string]: unknown
 }
 
-export interface DecodedForumBody {
+interface DecodedForumBody {
   content: DecodedForumText
   attachments?: ForumAttachment[]
 }
 
-export interface DecodedTopicBody extends DecodedForumBody {
+interface DecodedTopicBody extends DecodedForumBody {
   content: Extract<DecodedForumText, { kind: 'plain' }>
   metadata: TopicMetadata
 }
@@ -103,10 +94,6 @@ export function updateTopicMetadata(
   const metadata = mergeJsonComments(comments)
 
   return `<!-- ${JSON.stringify({ ...metadata, ...patch })} -->${content}`
-}
-
-export function encodeTopicBody(body: string, metadata: TopicMetadata): string {
-  return updateTopicMetadata(body, metadata)
 }
 
 export function decodeTopicBody(body?: string): DecodedTopicBody {
@@ -173,6 +160,11 @@ export function formatAttachmentMarkdownList(attachments: ForumAttachment[]): st
     return ''
 
   return `\n${attachments.map(formatAttachmentMarkdown).join('\n')}`
+}
+
+/** Removes Markdown image syntax (including cover images) from a raw text. */
+export function stripMarkdownImages(text: string): string {
+  return text.replace(MARKDOWN_IMAGE_REGEX, '').trim()
 }
 
 export function parseAttachmentMarkdown(markdown?: string): {

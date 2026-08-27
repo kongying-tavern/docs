@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useForumRoute } from '~/composables/useForumRoute'
-import ForumHome from './ForumHome.vue'
+import ForumHome from './home/ForumHome.vue'
 import ForumTopicPage from './topic/ForumTopicPage.vue'
 import ForumUserPage from './user/ForumUserPage.vue'
 

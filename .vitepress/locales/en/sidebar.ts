@@ -1,6 +1,7 @@
 import type { DefaultTheme } from 'vitepress'
 
 const sidebar: DefaultTheme.SidebarMulti = {
+  '/feedback': [{ text: '' }],
   '/manual': [
     {
       text: 'Table of Contents',
