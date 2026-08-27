@@ -125,6 +125,7 @@ catalogs:
     "@mdit/plugin-tasklist": ^1.0.0
     markdown-it: 14.2.0
     markdown-it-attrs: ^5.0.0
+    markdown-it-emoji: ^3.0.0
     markdown-it-container: 4.0.0
     markdown-it-footnote: ^4.0.0
     markdown-it-kbd-better: 1.2.5

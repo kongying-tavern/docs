@@ -147,6 +147,7 @@
     "lodash-es": "catalog:frontend",
     "markdown-it": "catalog:markdown",
     "markdown-it-container": "catalog:markdown",
+    "markdown-it-emoji": "catalog:markdown",
     "markdown-it-kbd-better": "catalog:markdown",
     "markdownlint-cli": "catalog:dev",
     "open-editor": "catalog:dev",
