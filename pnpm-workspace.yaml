@@ -43,7 +43,6 @@ catalogs:
     git-cz: 4.9.0
     husky: 9.1.7
     lint-staged: 17.3.0
-    lucide-vue-next: 1.0.0
     markdownlint-cli: 0.49.1
     open-editor: ^6.0.0
     sort-package-json: 4.0.0
@@ -60,6 +59,7 @@ catalogs:
     "@tiptap/extension-character-count": ^3.20.1
     "@tiptap/extension-link": ^3.20.1
     "@tiptap/extension-mention": ^3.20.1
+    "@tiptap/markdown": 3.20.1
     "@tiptap/extension-placeholder": ^3.20.1
     "@tiptap/pm": ^3.20.1
     "@tiptap/starter-kit": ^3.20.1
@@ -76,6 +76,7 @@ catalogs:
     "@iconify-json/lucide": ^1.2.97
     "@iconify-json/mdi": ^1.2.3
     "@iconify-json/ph": ^1.2.2
+    "@lucide/vue": ^1.34.0
     "@number-flow/vue": ^0.5.0
     "@radix-icons/vue": ^1.0.0
     "@tanstack/vue-table": ^9.0.0
@@ -85,7 +86,6 @@ catalogs:
     canvaskit-wasm: ^0.41.0
     class-variance-authority: ^0.7.1
     clsx: ^2.1.1
-    date-fns: ^4.1.0
     dayjs: ^1.11.20
     dexie: ^4.3.0
     embla-carousel-vue: ^8.6.0
@@ -99,7 +99,7 @@ catalogs:
     pinia: ^4.0.0
     qrcode: ^1.5.4
     radix-vue: ^1.9.17
-    reka-ui: ^2.9.2
+    reka-ui: ^2.10.4
     sortablejs: ^1.15.7
     tailwind-merge: ^3.5.0
     thumbhash: ^0.1.1

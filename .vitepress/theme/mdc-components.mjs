@@ -122,7 +122,7 @@ export default [
           },
           {
             "name": "size",
-            "type": "\"default\" | \"sm\" | \"lg\" | \"icon\" | \"icon-sm\" | \"icon-lg\" | null | undefined",
+            "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null | undefined",
             "required": false,
             "description": ""
           },

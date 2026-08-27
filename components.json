@@ -1,8 +1,7 @@
 {
   "$schema": "https://shadcn-vue.com/schema.json",
-  "style": "new-york",
+  "style": "new-york-v4",
   "typescript": true,
-  "tsConfigPath": "./tsconfig.json",
   "tailwind": {
     "config": "tailwind.config.js",
     "css": ".vitepress/theme/styles/shadcn.css",
@@ -10,7 +9,6 @@
     "cssVariables": true,
     "prefix": ""
   },
-  "framework": "vite",
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
@@ -18,5 +16,5 @@
     "lib": "@/lib",
     "composables": "@/composables"
   },
-   "iconLibrary": "lucide"
+  "iconLibrary": "lucide"
 }
