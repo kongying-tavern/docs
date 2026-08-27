@@ -52,9 +52,6 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
           top: (document.querySelector(`#${replyHash}`)?.getBoundingClientRect().top ?? 0) + window.pageYOffset - 300,
           behavior: 'smooth',
         })
-
-        // Emit comment reply event
-        forumEvents.commentReply(topic.id, user.username)
       })
     }
   }
@@ -63,49 +60,6 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
   function handleTopicClick(): void {
     if (topic.type !== 'ANN') {
       toPostDetailPage()
-    }
-  }
-
-  function handleUserClick(user: ForumAPI.User): void {
-    forumEvents.navigateToUser(user.login)
-  }
-
-  // Menu actions
-  function handleMenuAction(actionId: string, payload?: ForumAPI.TopicType | string[] | null): void {
-    switch (actionId) {
-      case 'translator':
-        // Translator action will be handled by the translator component
-        break
-      case 'edit':
-        forumEvents.topicAction(topic.id, 'edit', payload)
-        break
-      case 'delete':
-        forumEvents.topicAction(topic.id, 'delete', payload)
-        break
-      case 'pin':
-        forumEvents.topicAction(topic.id, 'pin', payload)
-        break
-      case 'unpin':
-        forumEvents.topicAction(topic.id, 'unpin', payload)
-        break
-      case 'hide':
-        forumEvents.topicAction(topic.id, 'hide', payload)
-        break
-      case 'unhide':
-        forumEvents.topicAction(topic.id, 'unhide', payload)
-        break
-      case 'close':
-        forumEvents.topicAction(topic.id, 'close', payload)
-        break
-      case 'reopen':
-        forumEvents.topicAction(topic.id, 'reopen', payload)
-        break
-      case 'change-type':
-        forumEvents.topicAction(topic.id, 'change-type', payload)
-        break
-      case 'update-tags':
-        forumEvents.topicAction(topic.id, 'update-tags', payload)
-        break
     }
   }
 
@@ -123,8 +77,6 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
     handleCommentSubmit,
     handleToggleCommentInput,
     handleTopicClick,
-    handleUserClick,
-    handleMenuAction,
     toggleReply,
   }
 }

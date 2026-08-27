@@ -63,7 +63,7 @@ export function useForumData(options: UseForumDataOptions = {}) {
     manual,
   })
 
-  // Pinned topics request - 使用 useQuery 替代 useRequest
+  // Pinned topics request
   const {
     data: pinnedTopicsData,
     isLoading: pinnedTopicsLoading,

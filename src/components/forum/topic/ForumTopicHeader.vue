@@ -17,7 +17,6 @@ interface Props {
 
 interface Emits {
   (e: 'user:click', user: ForumAPI.User): void
-  (e: 'menu:action', actionId: string): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -42,10 +41,6 @@ const role = computed(() => {
 // Event handlers
 function handleUserClick(): void {
   emit('user:click', props.topic.user)
-}
-
-function handleMenuAction(actionId: string): void {
-  emit('menu:action', actionId)
 }
 </script>
 
@@ -78,7 +73,6 @@ function handleMenuAction(actionId: string): void {
     <ForumTopicDropdownMenu
       :topic-data="topic"
       :menu="menu"
-      @menu:action="handleMenuAction"
     />
   </div>
 </template>

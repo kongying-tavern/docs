@@ -23,6 +23,15 @@ export enum ForumLogGroup {
   COMMENT = 'Comment',
   ADMIN = 'Admin',
   SERVICE = 'Service',
+  TOKEN = 'Token',
+  SSO = 'SSO',
+  AUTH = 'Auth',
+  REFRESH = 'Refresh',
+  LOGIN = 'Login',
+  OAUTH = 'OAuth',
+  AUTH_HELPER = 'Auth Helper',
+  TOKEN_MANAGER = 'Token Manager',
+  SSO_MANAGER = 'SSO Manager',
 }
 
 interface ForumLogConfig {
@@ -47,6 +56,15 @@ class ForumLogger {
       [ForumLogGroup.COMMENT]: '#009688',
       [ForumLogGroup.ADMIN]: '#607D8B',
       [ForumLogGroup.SERVICE]: '#FF5722',
+      [ForumLogGroup.TOKEN]: '#00ACC1',
+      [ForumLogGroup.SSO]: '#8E24AA',
+      [ForumLogGroup.AUTH]: '#43A047',
+      [ForumLogGroup.REFRESH]: '#FB8C00',
+      [ForumLogGroup.LOGIN]: '#3949AB',
+      [ForumLogGroup.OAUTH]: '#D81B60',
+      [ForumLogGroup.AUTH_HELPER]: '#6D4C41',
+      [ForumLogGroup.TOKEN_MANAGER]: '#00897B',
+      [ForumLogGroup.SSO_MANAGER]: '#7B1FA2',
     },
   }
 

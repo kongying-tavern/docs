@@ -4,11 +4,6 @@ import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 
 export interface TopicOperationsConfig {
   pageType: 'home' | 'user' | 'topic'
-  optimizer?: {
-    addTopics: (topics: ForumAPI.Topic[], position: 'start' | 'end') => void
-    removeTopics: (ids: (string | number)[]) => void
-    updateTopic: (id: string, updates: Partial<ForumAPI.Topic>) => void
-  }
   currentUser?: Ref<string | null>
 }
 
@@ -41,7 +36,7 @@ export function useTopicOperations(
   config: TopicOperationsConfig,
 ) {
   const { data, userSubmittedTopics, pinnedTopicsData } = sources
-  const { optimizer, currentUser, pageType } = config
+  const { currentUser, pageType } = config
 
   function getAllTopicLists() {
     return [
@@ -90,13 +85,10 @@ export function useTopicOperations(
     if (!existsInUserSubmitted) {
       userSubmittedTopics.value = [topic, ...userSubmittedTopics.value]
     }
-
-    optimizer?.addTopics([topic], 'start')
   }
 
   function removeTopic(id: ForumAPI.Topic['id']): void {
     userSubmittedTopics.value = userSubmittedTopics.value.filter(t => t.id !== id)
-    optimizer?.removeTopics([id])
   }
 
   function updateTopicInAllLists(
@@ -123,8 +115,6 @@ export function useTopicOperations(
     updateTopicInAllLists(id, (topic) => {
       Object.assign(topic, updates)
     })
-
-    optimizer?.updateTopic(String(id), updates)
   }
 
   function replaceTopicTags(

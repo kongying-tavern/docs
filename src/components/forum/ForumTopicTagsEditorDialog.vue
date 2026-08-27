@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useTopicManger } from '~/composables/useTopicManger'
+import { useTopicManager } from '~/composables/useTopicManager'
 import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
 import ForumTagsInput from './form/publish-topic-form/ForumTagsInput.vue'
 
@@ -27,7 +27,7 @@ function handleSubmit() {
   // Commit the local tags to the v-model
   tagsInputRef.value?.commitTags()
 
-  const { replaceTopicTags } = useTopicManger(topic.value, message)
+  const { replaceTopicTags } = useTopicManager(topic.value, message)
   replaceTopicTags(tags.value)
   open.value = false
 }

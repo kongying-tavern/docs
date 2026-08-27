@@ -3,7 +3,6 @@ import { useBroadcastChannel } from '@vueuse/core'
 import { cloneDeep } from 'lodash-es'
 import { toRaw, watch } from 'vue'
 import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
-import { ForumEventPersistence } from '~/utils/forumEventPersistence'
 import { LRUCacheWithTTL } from '~/utils/LRUCacheWithTTL'
 import { SimpleEventManager } from './SimpleEventManager'
 
@@ -139,11 +138,8 @@ export class BroadcastChannelSync {
         'topic:hidden',
         'topic:tags-updated',
         'topic:type-changed',
-        'topic:comment-toggled',
         'comment:created',
-        'comment:updated',
         'comment:deleted',
-        'comment:hidden',
       ] as (keyof EventMap)[]
     ).forEach(e => this.subscribeAndBroadcast(e))
   }
@@ -182,13 +178,6 @@ export class BroadcastChannelSync {
     }
     catch (error) {
       forumLog.warn(ForumLogGroup.BROADCAST, `广播事件失败 (${type})`, error)
-    }
-
-    try {
-      ForumEventPersistence.saveEvent(type, payload)
-    }
-    catch {
-      // Silent fail
     }
   }
 

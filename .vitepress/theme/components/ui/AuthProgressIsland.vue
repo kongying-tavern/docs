@@ -18,7 +18,6 @@ const progressSteps = computed((): ProgressStep[] => {
 
 <template>
   <ScrollIsland
-    mode="custom"
     :custom-progress="authProgress.progress.value"
     :title="authProgress.title.value"
     :steps="progressSteps"

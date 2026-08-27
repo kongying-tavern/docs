@@ -34,7 +34,7 @@ async function withOperationLock<T>(
   }
 }
 
-export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomConfig>) {
+export function useTopicManager(targetTopic: ForumAPI.Topic, message: Ref<CustomConfig>) {
   const targetTopicId = targetTopic.id
 
   if (!targetTopic && !targetTopicId) {
@@ -181,7 +181,6 @@ export function useTopicManger(targetTopic: ForumAPI.Topic, message: Ref<CustomC
 
       if (result) {
         targetTopic.commentCount = willBeClosed ? -1 : 0
-        forumEvents.topicCommentToggled(targetTopic.id, willBeClosed)
       }
 
       return result

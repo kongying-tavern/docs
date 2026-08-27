@@ -2,8 +2,6 @@
  * 认证相关的工具函数，消除重复的验证逻辑
  */
 
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
 import { toast } from 'vue-sonner'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
@@ -47,13 +45,6 @@ export class AuthHelper {
     return this.userInfoStore.info
   }
 
-  /**
-   * 检查SSO token是否有效
-   */
-  isSSOTokenValid(target: 'interKnot'): boolean {
-    return this.userAuth.isSSOTokenValid(target).value
-  }
-
   requireLogin(message?: string): void {
     if (message) {
       toast.info(message)
@@ -87,41 +78,11 @@ export class AuthHelper {
   }
 
   /**
-   * 获取带认证的API参数
-   */
-  getAuthenticatedParams(): { accessToken: string } | Record<string, never> {
-    return this.accessToken ? { accessToken: this.accessToken } : {}
-  }
-
-  /**
    * 检查当前用户是否为指定用户
    */
   isCurrentUser(username: string): boolean {
     const user = this.userInfoStore.info
     return user?.login === username || user?.username === username
-  }
-
-  /**
-   * 创建响应式的登录状态computed
-   */
-  createLoginStatusComputed(): ComputedRef<boolean> {
-    return computed(() => this.userAuth.isTokenValid)
-  }
-
-  /**
-   * 创建响应式的用户信息computed
-   */
-  createUserInfoComputed() {
-    return computed(() => this.userInfoStore.info)
-  }
-
-  /**
-   * 创建响应式的访问令牌computed
-   */
-  createAccessTokenComputed(): ComputedRef<string | null> {
-    return computed(() => {
-      return this.userAuth.auth?.accessToken ?? null
-    })
   }
 }
 
@@ -140,38 +101,6 @@ export const authGuards = {
   requireLogin: (message?: string): boolean => {
     return useAuthHelper().ensureLoggedIn(message)
   },
-
-  /**
-   * Token守卫 - 检查是否有有效token
-   */
-  requireToken: (): string | null => {
-    return useAuthHelper().ensureAccessToken()
-  },
-
-  /**
-   * 用户身份守卫 - 检查是否为指定用户
-   */
-  requireUser: (username: string, message?: string): boolean => {
-    const helper = useAuthHelper()
-    if (!helper.ensureLoggedIn(message)) {
-      return false
-    }
-    return helper.isCurrentUser(username)
-  },
-}
-
-/**
- * 响应式认证状态hooks
- */
-export function useAuthState() {
-  const helper = useAuthHelper()
-
-  return {
-    isLoggedIn: helper.createLoginStatusComputed(),
-    userInfo: helper.createUserInfoComputed(),
-    accessToken: helper.createAccessTokenComputed(),
-    helper,
-  }
 }
 
 /**
@@ -208,13 +137,5 @@ export const withAuth = {
       }
       throw error
     }
-  },
-
-  /**
-   * 条件执行 - 仅在登录状态下执行
-   */
-  ifLoggedIn<T>(operation: () => T): T | undefined {
-    const helper = useAuthHelper()
-    return helper.isLoggedIn ? operation() : undefined
   },
 }

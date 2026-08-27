@@ -5,6 +5,7 @@ import type { ForumQueryParams } from '~/types/forum/simplified'
 import { nextTick, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
 import { useUserAuthStore } from '@/stores/useUserAuth'
+import { ForumBusinessLogic } from '~/services/forum/ForumBusinessLogic'
 import { useForumImagePreloader } from './useImagePreloader'
 
 export interface CacheData<T = string | null> {
@@ -115,22 +116,6 @@ export function useForumCacheManager(
     imagePreloader.preloadCachedFeedbackImages(data, sort.value)
   }
 
-  // === 降级处理：前端过滤 ===
-  function clientSideFilter(topics: ForumAPI.Topic[], targetFilter: ForumAPI.FilterBy): ForumAPI.Topic[] {
-    switch (targetFilter) {
-      case 'closed':
-        return topics.filter(t => t.state === 'progressing')
-      case 'bug':
-        return topics.filter(t => t.state === 'open' && t.tags?.includes('TYP-BUG'))
-      case 'feat':
-        return topics.filter(t => t.state === 'open' && t.tags?.includes('TYP-FEAT'))
-      case 'all':
-        return topics.filter(t => t.state === 'open')
-      default:
-        return topics.filter(t => t.state === 'open')
-    }
-  }
-
   function getAllCachedData(): ForumAPI.Topic[] {
     // 获取所有缓存的数据，用于降级过滤
     const allData: ForumAPI.Topic[] = []
@@ -229,7 +214,7 @@ export function useForumCacheManager(
         catch {
           const allData = getAllCachedData()
           if (allData.length > 0) {
-            const filtered = clientSideFilter(allData, newFilter)
+            const filtered = ForumBusinessLogic.filterTopics(allData, newFilter)
             forumData.initialData({ preserveLoaded: true, silent: true })
             forumData.data.value = filtered
 

@@ -3,17 +3,6 @@ import type { CustomConfig } from '../../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumQueryParams } from '~/services/forumService'
 
-/**
- * API 响应类型定义
- */
-interface ApiResponse {
-  topics?: ForumAPI.Topic[]
-  data?: ForumAPI.Topic[]
-  total?: number
-  totalPage?: number
-  totalPages?: number
-}
-
 interface ApiErrorResponse {
   response?: {
     status?: number
@@ -179,87 +168,6 @@ export class ForumBusinessLogic {
   }
 
   /**
-   * 话题数据验证
-   */
-  static validateTopic(
-    topic: Partial<ForumAPI.Topic>,
-    message?: Ref<CustomConfig>,
-  ): {
-    isValid: boolean
-    errors: string[]
-  } {
-    const errors: string[] = []
-
-    // Fallback messages if not provided
-    const msg = message?.value || {
-      forum: {
-        validation: {
-          errors: {
-            titleRequired: 'Topic title is required',
-            contentRequired: 'Topic content is required',
-            authorRequired: 'Topic author is required',
-            tooManyTags: 'Too many tags (max 10)',
-          },
-        },
-      },
-    } as CustomConfig
-
-    if (!topic.title || topic.title.trim().length === 0) {
-      errors.push(msg.forum.validation.errors.titleRequired)
-    }
-
-    if (!topic.content || !topic.content.text || topic.content.text.trim().length === 0) {
-      errors.push(msg.forum.validation.errors.contentRequired)
-    }
-
-    if (!topic.user || !topic.user.login) {
-      errors.push(msg.forum.validation.errors.authorRequired)
-    }
-
-    if (topic.tags && topic.tags.length > 10) {
-      errors.push(msg.forum.validation.errors.tooManyTags)
-    }
-
-    return {
-      isValid: errors.length === 0,
-      errors,
-    }
-  }
-
-  /**
-   * 数据转换：API响应到内部格式
-   */
-  static transformApiResponse(
-    response: ApiResponse,
-  ): { topics: ForumAPI.Topic[], total: number, totalPage: number } {
-    // 这里可以添加数据转换逻辑
-    // 例如：格式化日期、处理嵌套数据等
-
-    return {
-      topics: response.topics || response.data || [],
-      total: response.total || 0,
-      totalPage: response.totalPage || response.totalPages || 0,
-    }
-  }
-
-  /**
-   * 批量操作业务逻辑
-   */
-  static prepareBatchUpdates(
-    topics: ForumAPI.Topic[],
-    updates: Array<{ id: string, changes: Partial<ForumAPI.Topic> }>,
-  ): ForumAPI.Topic[] {
-    const updateMap = new Map(
-      updates.map(update => [update.id, update.changes]),
-    )
-
-    return topics.map((topic) => {
-      const changes = updateMap.get(topic.id)
-      return changes ? { ...topic, ...changes } : topic
-    })
-  }
-
-  /**
    * 错误处理业务逻辑
    */
   static handleForumError(
@@ -316,75 +224,6 @@ export class ForumBusinessLogic {
       message: msg.forum.errors.operationFailed.replace('{operation}', operation).replace('{message}', error.message || msg.forum.errors.unknownError),
       shouldRetry: false,
       errorCode: 'UNKNOWN',
-    }
-  }
-
-  /**
-   * 性能优化：数据预处理
-   */
-  static preprocessTopicsForRendering(topics: ForumAPI.Topic[]): ForumAPI.Topic[] {
-    return topics.map(topic => ({
-      ...topic,
-      // 预计算显示需要的字段
-      displayTitle: topic.title.length > 50 ? `${topic.title.slice(0, 47)}...` : topic.title,
-      displayContent: topic.content.text.length > 200
-        ? `${topic.content.text.slice(0, 197)}...`
-        : topic.content.text,
-      formattedCreatedAt: new Date(topic.createdAt).toLocaleDateString(),
-      formattedUpdatedAt: new Date(topic.updatedAt).toLocaleDateString(),
-      tagString: topic.tags.join(', '),
-    }))
-  }
-}
-
-/**
- * Forum操作工厂
- * 提供标准化的操作方法
- */
-export class ForumOperationFactory {
-  /**
-   * 创建话题操作
-   */
-  static createTopicOperation(
-    topic: Partial<ForumAPI.Topic>,
-    _onSuccess?: (topic: ForumAPI.Topic) => void,
-    onError?: (error: unknown) => void,
-  ) {
-    return async () => {
-      try {
-        const validation = ForumBusinessLogic.validateTopic(topic)
-        if (!validation.isValid) {
-          throw new Error(`Validation failed: ${validation.errors.join(', ')}`)
-        }
-
-        // 这里调用实际的API
-        // const result = await ForumService.createTopic(topic)
-        // onSuccess?.(result)
-      }
-      catch (error) {
-        const errorInfo = ForumBusinessLogic.handleForumError(error, 'Create Topic')
-        onError?.(errorInfo)
-      }
-    }
-  }
-
-  /**
-   * 批量更新操作
-   */
-  static createBatchUpdateOperation(
-    updates: Array<{ id: string, changes: Partial<ForumAPI.Topic> }>,
-    onSuccess?: (updatedCount: number) => void,
-    onError?: (error: unknown) => void,
-  ) {
-    return async () => {
-      try {
-        // 这里可以添加批量更新的API调用
-        onSuccess?.(updates.length)
-      }
-      catch (error) {
-        const errorInfo = ForumBusinessLogic.handleForumError(error, 'Batch Update')
-        onError?.(errorInfo)
-      }
     }
   }
 }

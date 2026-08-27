@@ -73,7 +73,7 @@ const iconLink = computed(() => {
     if (linkDomain && linkDomain[1]) {
       const domain = linkDomain[1]
       for (const key in iconMap) {
-        if (new RegExp(key).test(domain)) {
+        if (domain.includes(key)) {
           icon = iconMap[key]
           break
         }
@@ -161,15 +161,6 @@ const descText = computed(() => {
       </div>
     </div>
   </a>
-
-  <!-- 提前声明Logo，以便Unocss识别导入 -->
-  <div v-once hidden>
-    <span class="i-logos-youtube-icon" />
-    <span class="i-logos-twitter" />
-    <span class="i-logos-discord-icon" />
-    <span class="i-logos-reddit-icon" />
-    <span class="i-logos-google-drive" />
-  </div>
 </template>
 
 <style lang="scss">

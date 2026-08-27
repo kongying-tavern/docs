@@ -10,7 +10,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
 <template>
   <div
-    v-if="frontmatter.footer !== false || frontmatter.showWithSidebar !== false"
+    v-if="frontmatter.footer !== false"
     class="slide-enter footer-container"
   >
     <footer class="footer">

@@ -154,7 +154,7 @@ const { list, title, desc } = defineProps<{
 .member {
   flex-basis: calc(25% - 26px); /* 25% width with 16px gutter between items */
   box-sizing: border-box;
-  text-align: left; /* Adjust text alignment as needed */
+  text-align: left;
   padding: 16px;
   display: flex;
   max-width: 140px;
@@ -167,14 +167,14 @@ const { list, title, desc } = defineProps<{
 }
 
 .member-name {
-  font-size: 16px; /* Adjust the font size as needed */
+  font-size: 16px;
   font-weight: bold;
   word-break: keep-all;
   white-space: nowrap;
 }
 
 .member-title {
-  font-size: 14px; /* Adjust the font size as needed */
+  font-size: 14px;
   color: var(--vp-c-text-2);
   align-self: flex-end; /* Align title to the end (bottom) of the flex container */
 }

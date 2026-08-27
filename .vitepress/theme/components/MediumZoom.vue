@@ -3,7 +3,7 @@ import type { Zoom, ZoomOptions, ZoomSelector } from 'medium-zoom'
 import mediumZoom from 'medium-zoom'
 import { useRouter } from 'vitepress'
 
-import { nextTick, onBeforeUnmount, onMounted } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -20,7 +20,12 @@ let zoom: Zoom | undefined
 let timeoutId: ReturnType<typeof setTimeout> | undefined
 
 const router = useRouter()
-router.onAfterRouteChange = setupMediumZoom
+watch(
+  () => router.route.path,
+  () => {
+    void setupMediumZoom()
+  },
+)
 
 onMounted(setupMediumZoom)
 onBeforeUnmount(() => {

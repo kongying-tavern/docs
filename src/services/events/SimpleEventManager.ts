@@ -1,6 +1,5 @@
 import type ForumAPI from '@/apis/forum/api'
 import { LRUCacheWithTTL } from '~/utils/LRUCacheWithTTL'
-// import type { EnhancedBlogPost } from '~/components/blog/composables/useBlogData'
 
 /**
  * 便捷的事件发布函数定义
@@ -17,42 +16,15 @@ const eventDefinitions = {
   topicHidden: (id: string, hidden: boolean) => ({ id, hidden }),
   topicTagsUpdated: (id: string, tags: string[]) => ({ id, tags }),
   topicTypeChanged: (id: string, type: ForumAPI.TopicType) => ({ id, type }),
-  topicCommentToggled: (id: string, commentsClosed: boolean) => ({ id, commentsClosed }),
-
-  // Blog events (commented out)
-  // blogCreated: (blog: EnhancedBlogPost) => ({ blog }),
-  // blogUpdated: (id: string | number, updates: Partial<EnhancedBlogPost>) => ({ id, updates }),
-  // blogDeleted: (id: string | number, source: 'api' | 'draft') => ({ id, source }),
-  // blogPublished: (id: string | number, published: boolean) => ({ id, published }),
-  // blogDraftCreated: (draft: EnhancedBlogPost) => ({ draft }),
-  // blogDraftUpdated: (draftId: string, updates: Partial<EnhancedBlogPost>) => ({ draftId, updates }),
-  // blogDraftDeleted: (draftId: string) => ({ draftId }),
 
   // Comment events
   commentCreated: (commentId: string | number, topicId: string, comment: ForumAPI.Comment) => ({ commentId, topicId, comment }),
-  commentUpdated: (commentId: string | number, updates: Partial<ForumAPI.Comment>) => ({ commentId, updates }),
   commentDeleted: (commentId: string | number, topicId: string) => ({ commentId, topicId }),
-  commentHidden: (commentId: string | number, topicId: string, hidden: boolean) => ({ commentId, topicId, hidden }),
 
-  // UI events
-  uiTopicExpand: (topicId: string, expanded: boolean) => ({ topicId, expanded }),
-  uiCommentReply: (topicId: string, targetUser: string) => ({ topicId, targetUser }),
-  uiSearch: (query: string) => ({ query }),
-  uiFilterChange: (filter: ForumAPI.FilterBy) => ({ filter }),
-  uiSortChange: (sort: ForumAPI.SortMethod) => ({ sort }),
-  uiTopicAction: (topicId: string, action: string, payload?: ForumAPI.TopicType | string[] | null) => ({ topicId, action, payload }),
-  uiCommentAction: (commentId: string | number, topicId: string, action: string, payload?: string | null) => ({ commentId, topicId, action, payload }),
-
-  // Form events
-  formValidationError: (field: string, message: string) => ({ field, message }),
+  // Form events - 发布表单生命周期,供埋点/分析订阅
   formSubmitStart: (formType: string) => ({ formType }),
   formSubmitSuccess: (formType: string, data: ForumAPI.Topic | ForumAPI.Comment) => ({ formType, data }),
   formSubmitError: (formType: string, error: Error) => ({ formType, error }),
-
-  // Navigation events
-  navTopicDetail: (topicId: string) => ({ topicId }),
-  navUserProfile: (username: string) => ({ username }),
-  navBack: () => ({} as const),
 } as const
 
 export const forumEvents = {
@@ -84,74 +56,16 @@ export const forumEvents = {
   topicTypeChanged: (id: string, type: ForumAPI.TopicType) => {
     SimpleEventManager.getInstance().emit('topic:type-changed', eventDefinitions.topicTypeChanged(id, type))
   },
-  topicCommentToggled: (id: string, commentsClosed: boolean) => {
-    SimpleEventManager.getInstance().emit('topic:comment-toggled', eventDefinitions.topicCommentToggled(id, commentsClosed))
-  },
-
-  // Blog events - 实际发出事件 (commented out)
-  // blogCreated: (blog: EnhancedBlogPost) => {
-  //   SimpleEventManager.getInstance().emit('blog:created', eventDefinitions.blogCreated(blog))
-  // },
-  // blogUpdated: (id: string | number, updates: Partial<EnhancedBlogPost>) => {
-  //   SimpleEventManager.getInstance().emit('blog:updated', eventDefinitions.blogUpdated(id, updates))
-  // },
-  // blogDeleted: (id: string | number, source: 'api' | 'draft') => {
-  //   SimpleEventManager.getInstance().emit('blog:deleted', eventDefinitions.blogDeleted(id, source))
-  // },
-  // blogPublished: (id: string | number, published: boolean) => {
-  //   SimpleEventManager.getInstance().emit('blog:published', eventDefinitions.blogPublished(id, published))
-  // },
-  // blogDraftCreated: (draft: EnhancedBlogPost) => {
-  //   SimpleEventManager.getInstance().emit('blog:draft-created', eventDefinitions.blogDraftCreated(draft))
-  // },
-  // blogDraftUpdated: (draftId: string, updates: Partial<EnhancedBlogPost>) => {
-  //   SimpleEventManager.getInstance().emit('blog:draft-updated', eventDefinitions.blogDraftUpdated(draftId, updates))
-  // },
-  // blogDraftDeleted: (draftId: string) => {
-  //   SimpleEventManager.getInstance().emit('blog:draft-deleted', eventDefinitions.blogDraftDeleted(draftId))
-  // },
 
   // Comment events - 实际发出事件
   commentCreated: (commentId: string | number, topicId: string, comment: ForumAPI.Comment) => {
     SimpleEventManager.getInstance().emit('comment:created', eventDefinitions.commentCreated(commentId, topicId, comment))
   },
-  commentUpdated: (commentId: string | number, updates: Partial<ForumAPI.Comment>) => {
-    SimpleEventManager.getInstance().emit('comment:updated', eventDefinitions.commentUpdated(commentId, updates))
-  },
   commentDeleted: (commentId: string | number, topicId: string) => {
     SimpleEventManager.getInstance().emit('comment:deleted', eventDefinitions.commentDeleted(commentId, topicId))
   },
-  commentHidden: (commentId: string | number, topicId: string, hidden: boolean) => {
-    SimpleEventManager.getInstance().emit('comment:hidden', eventDefinitions.commentHidden(commentId, topicId, hidden))
-  },
 
-  // UI events - 实际发出事件
-  uiTopicExpand: (topicId: string, expanded: boolean) => {
-    SimpleEventManager.getInstance().emit('ui:topic-expand', eventDefinitions.uiTopicExpand(topicId, expanded))
-  },
-  uiCommentReply: (topicId: string, targetUser: string) => {
-    SimpleEventManager.getInstance().emit('ui:comment-reply', eventDefinitions.uiCommentReply(topicId, targetUser))
-  },
-  uiSearch: (query: string) => {
-    SimpleEventManager.getInstance().emit('ui:search', eventDefinitions.uiSearch(query))
-  },
-  uiFilterChange: (filter: ForumAPI.FilterBy) => {
-    SimpleEventManager.getInstance().emit('ui:filter-change', eventDefinitions.uiFilterChange(filter))
-  },
-  uiSortChange: (sort: ForumAPI.SortMethod) => {
-    SimpleEventManager.getInstance().emit('ui:sort-change', eventDefinitions.uiSortChange(sort))
-  },
-  uiTopicAction: (topicId: string, action: string, payload?: ForumAPI.TopicType | string[] | null) => {
-    SimpleEventManager.getInstance().emit('ui:topic-action', eventDefinitions.uiTopicAction(topicId, action, payload))
-  },
-  uiCommentAction: (commentId: string | number, topicId: string, action: string, payload?: string | null) => {
-    SimpleEventManager.getInstance().emit('ui:comment-action', eventDefinitions.uiCommentAction(commentId, topicId, action, payload))
-  },
-
-  // Form events - 实际发出事件
-  formValidationError: (field: string, message: string) => {
-    SimpleEventManager.getInstance().emit('form:validation-error', eventDefinitions.formValidationError(field, message))
-  },
+  // Form events - 发布表单生命周期
   formSubmitStart: (formType: string) => {
     SimpleEventManager.getInstance().emit('form:submit-start', eventDefinitions.formSubmitStart(formType))
   },
@@ -160,49 +74,6 @@ export const forumEvents = {
   },
   formSubmitError: (formType: string, error: Error) => {
     SimpleEventManager.getInstance().emit('form:submit-error', eventDefinitions.formSubmitError(formType, error))
-  },
-
-  // Navigation events - 实际发出事件
-  navTopicDetail: (topicId: string) => {
-    SimpleEventManager.getInstance().emit('nav:topic-detail', eventDefinitions.navTopicDetail(topicId))
-  },
-  navUserProfile: (username: string) => {
-    SimpleEventManager.getInstance().emit('nav:user-profile', eventDefinitions.navUserProfile(username))
-  },
-  navBack: () => {
-    SimpleEventManager.getInstance().emit('nav:back', eventDefinitions.navBack())
-  },
-
-  // 向后兼容的别名
-  topicExpand: (topicId: string, expanded: boolean) => {
-    SimpleEventManager.getInstance().emit('ui:topic-expand', eventDefinitions.uiTopicExpand(topicId, expanded))
-  },
-  commentReply: (topicId: string, targetUser: string) => {
-    SimpleEventManager.getInstance().emit('ui:comment-reply', eventDefinitions.uiCommentReply(topicId, targetUser))
-  },
-  search: (query: string) => {
-    SimpleEventManager.getInstance().emit('ui:search', eventDefinitions.uiSearch(query))
-  },
-  filterChange: (filter: ForumAPI.FilterBy) => {
-    SimpleEventManager.getInstance().emit('ui:filter-change', eventDefinitions.uiFilterChange(filter))
-  },
-  sortChange: (sort: ForumAPI.SortMethod) => {
-    SimpleEventManager.getInstance().emit('ui:sort-change', eventDefinitions.uiSortChange(sort))
-  },
-  topicAction: (topicId: string, action: string, payload?: ForumAPI.TopicType | string[] | null) => {
-    SimpleEventManager.getInstance().emit('ui:topic-action', eventDefinitions.uiTopicAction(topicId, action, payload))
-  },
-  commentAction: (commentId: string | number, topicId: string, action: string, payload?: string | null) => {
-    SimpleEventManager.getInstance().emit('ui:comment-action', eventDefinitions.uiCommentAction(commentId, topicId, action, payload))
-  },
-  navigateToTopic: (topicId: string) => {
-    SimpleEventManager.getInstance().emit('nav:topic-detail', eventDefinitions.navTopicDetail(topicId))
-  },
-  navigateToUser: (username: string) => {
-    SimpleEventManager.getInstance().emit('nav:user-profile', eventDefinitions.navUserProfile(username))
-  },
-  navigateBack: () => {
-    SimpleEventManager.getInstance().emit('nav:back', eventDefinitions.navBack())
   },
 }
 
@@ -221,42 +92,15 @@ export interface EventMap {
   'topic:hidden': ReturnType<typeof eventDefinitions.topicHidden>
   'topic:tags-updated': ReturnType<typeof eventDefinitions.topicTagsUpdated>
   'topic:type-changed': ReturnType<typeof eventDefinitions.topicTypeChanged>
-  'topic:comment-toggled': ReturnType<typeof eventDefinitions.topicCommentToggled>
-
-  // Blog events (commented out)
-  // 'blog:created': ReturnType<typeof eventDefinitions.blogCreated>
-  // 'blog:updated': ReturnType<typeof eventDefinitions.blogUpdated>
-  // 'blog:deleted': ReturnType<typeof eventDefinitions.blogDeleted>
-  // 'blog:published': ReturnType<typeof eventDefinitions.blogPublished>
-  // 'blog:draft-created': ReturnType<typeof eventDefinitions.blogDraftCreated>
-  // 'blog:draft-updated': ReturnType<typeof eventDefinitions.blogDraftUpdated>
-  // 'blog:draft-deleted': ReturnType<typeof eventDefinitions.blogDraftDeleted>
 
   // Comment events (从 eventDefinitions 函数推断)
   'comment:created': ReturnType<typeof eventDefinitions.commentCreated>
-  'comment:updated': ReturnType<typeof eventDefinitions.commentUpdated>
   'comment:deleted': ReturnType<typeof eventDefinitions.commentDeleted>
-  'comment:hidden': ReturnType<typeof eventDefinitions.commentHidden>
-
-  // UI events (从 eventDefinitions 函数推断)
-  'ui:topic-expand': ReturnType<typeof eventDefinitions.uiTopicExpand>
-  'ui:comment-reply': ReturnType<typeof eventDefinitions.uiCommentReply>
-  'ui:search': ReturnType<typeof eventDefinitions.uiSearch>
-  'ui:filter-change': ReturnType<typeof eventDefinitions.uiFilterChange>
-  'ui:sort-change': ReturnType<typeof eventDefinitions.uiSortChange>
-  'ui:topic-action': ReturnType<typeof eventDefinitions.uiTopicAction>
-  'ui:comment-action': ReturnType<typeof eventDefinitions.uiCommentAction>
 
   // Form events (从 eventDefinitions 函数推断)
-  'form:validation-error': ReturnType<typeof eventDefinitions.formValidationError>
   'form:submit-start': ReturnType<typeof eventDefinitions.formSubmitStart>
   'form:submit-success': ReturnType<typeof eventDefinitions.formSubmitSuccess>
   'form:submit-error': ReturnType<typeof eventDefinitions.formSubmitError>
-
-  // Navigation events (从 eventDefinitions 函数推断)
-  'nav:topic-detail': ReturnType<typeof eventDefinitions.navTopicDetail>
-  'nav:user-profile': ReturnType<typeof eventDefinitions.navUserProfile>
-  'nav:back': ReturnType<typeof eventDefinitions.navBack>
 }
 
 export type EventHandler<T> = (payload: T) => void

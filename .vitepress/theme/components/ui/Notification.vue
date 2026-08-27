@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { PropType } from 'vue'
 import type { NotificationAction } from './types/notification'
-import { twJoin, twMerge } from 'tailwind-merge'
 import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
+import { cn } from '@/lib/utils'
 import { useTimer } from '../../hooks/useTimer'
 import { UI } from './config'
 
@@ -55,23 +55,21 @@ let timer: null | ReturnType<typeof useTimer> = null
 const remaining = ref(props.timeout)
 
 const wrapperClass = computed(() => {
-  return twMerge(
-    twJoin(
-      UI.Notification.wrapper,
-      UI.Notification.background.replaceAll(
-        '[var(--vp-c-bg-elv))]',
-        props.color,
-      ),
-      UI.Notification.rounded,
-      UI.Notification.shadow,
-      UI.Notification.ring.replaceAll('{color}', props.color),
+  return cn(
+    UI.Notification.wrapper,
+    UI.Notification.background.replaceAll(
+      '[var(--vp-c-bg-elv))]',
+      props.color,
     ),
+    UI.Notification.rounded,
+    UI.Notification.shadow,
+    UI.Notification.ring.replaceAll('{color}', props.color),
     props.class,
   )
 })
 
 const progressClass = computed(() => {
-  return twJoin(
+  return cn(
     UI.Notification.progress.base,
     UI.Notification.progress.background.replaceAll('bg-{color}', props.color),
   )
@@ -83,7 +81,7 @@ const progressStyle = computed(() => {
 })
 
 const iconClass = computed(() => {
-  return twJoin(
+  return cn(
     UI.Notification.icon.base,
     UI.Notification.icon.color.replaceAll('{color}', props.color),
   )
@@ -193,7 +191,7 @@ onUnmounted(() => {
             <div
               v-if="description || $slots.description"
               :class="
-                twMerge(
+                cn(
                   UI.Notification.description,
                   !title && !$slots.title && 'mt-0 leading-5',
                 )
@@ -221,7 +219,7 @@ onUnmounted(() => {
           <div
             v-if="closeButton || (!description && !$slots.description)"
             :class="
-              twMerge(
+              cn(
                 Object.values(UI.Notification.default.actionButton),
                 'mt-0',
               )
