@@ -11,6 +11,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
@@ -26,6 +27,7 @@ if (!user && !userId)
 
 const { message } = useLocalized()
 const { userHref } = useForumRoute()
+const currentUser = useUserInfoStore()
 
 const userInfo = ref<ForumAPI.User | null>(user || null)
 
@@ -42,6 +44,10 @@ watch(userData, (newVal) => {
 
 const { isOfficial } = useRuleChecks()
 const role = computed(() => (isOfficial(userInfo.value?.id || 0).value ? 'official' : null))
+const isAuthorizedUser = computed(() => Boolean(
+  userInfo.value?.id
+  && String(userInfo.value.id) === String(currentUser.info?.id),
+))
 const href = computed(() => userHref(userInfo.value?.login || ''))
 
 function openUserProfilePage() {
@@ -99,7 +105,7 @@ function sendMessage() {
           </div>
         </div>
 
-        <div class="mt-1 flex gap-2 justify-end">
+        <div v-if="!isAuthorizedUser" class="mt-1 flex gap-2 justify-end">
           <Button
             variant="outline"
             size="sm"

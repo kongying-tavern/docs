@@ -25,7 +25,10 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   const renderedUser = computed(() => profileQuery.data.value)
 
   const role = computed(() => (isOfficial(renderedUser.value?.id || 0).value ? 'official' : null))
-  const isAuthorizedUser = computed(() => username.value === userInfo.info?.username || username.value === userInfo.info?.login)
+  const isAuthorizedUser = computed(() => Boolean(
+    renderedUser.value?.id
+    && String(renderedUser.value.id) === String(userInfo.info?.id),
+  ))
 
   const menu = computed<{
     id: string

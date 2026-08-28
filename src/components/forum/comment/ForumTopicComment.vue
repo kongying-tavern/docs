@@ -153,6 +153,16 @@ function handleCommentClick(author: ForumAPI.User): void {
   border-color: var(--vp-c-brand);
 }
 
+.content :deep(img[data-emoji]) {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  max-width: 20px;
+  margin-inline: 1px;
+  object-fit: contain;
+  vertical-align: text-bottom;
+}
+
 .last-comment > .comment-info {
   border: none !important;
 }

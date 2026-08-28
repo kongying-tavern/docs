@@ -27,6 +27,21 @@ test('shared class merging preserves component override semantics', () => {
   assert.equal(cn('justify-center rounded-md h-8 w-8', 'justify-start rounded-full h-20 w-20'), 'justify-start rounded-full h-20 w-20')
 })
 
+test('comment emoji and self-profile actions keep their display contracts', async () => {
+  const [commentSource, profileSource, profileStateSource, hoverCardSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/composables/useUserProfile.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/ForumUserHoverCard.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(commentSource, /\.content :deep\(img\[data-emoji\]\)/)
+  assert.match(commentSource, /width: 20px;[\s\S]*height: 20px;/)
+  assert.equal(profileSource.match(/v-if="!isAuthorizedUser"/g)?.length, 2)
+  assert.match(profileStateSource, /String\(renderedUser\.value\.id\) === String\(userInfo\.info\?\.id\)/)
+  assert.match(hoverCardSource, /v-if="!isAuthorizedUser"/)
+})
+
 function issue(body: string): GITEE.IssueInfo {
   return {
     number: 'I12345',

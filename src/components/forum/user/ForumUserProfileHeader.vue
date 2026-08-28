@@ -18,6 +18,7 @@ const {
   menuRef,
   renderedUser,
   role,
+  isAuthorizedUser,
   menu,
   sendMessage,
 } = useUserProfile(() => props.username)
@@ -38,7 +39,7 @@ const {
                   img-class="size-full rounded-full object-cover ring-4"
                 />
               </div>
-              <div class="flex gap-2 sm:hidden">
+              <div v-if="!isAuthorizedUser" class="flex gap-2 sm:hidden">
                 <Button
                   variant="outline"
                   class="border border-[var(--vp-c-divider)] border-solid"
@@ -85,7 +86,7 @@ const {
               </div>
             </div>
 
-            <div class="gap-2 hidden sm:flex">
+            <div v-if="!isAuthorizedUser" class="gap-2 hidden sm:flex">
               <Button
                 variant="outline"
                 class="border border-[var(--vp-c-divider)] border-solid"
