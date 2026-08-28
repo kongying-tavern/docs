@@ -11,7 +11,7 @@ function zoomFlipTransform(from: DOMRect, to: DOMRect): { scale: number, dx: num
   return { scale, dx, dy }
 }
 
-function stackTransform(dx: number, dy: number, scale: number): string {
+export function stackTransform(dx: number, dy: number, scale: number): string {
   return `translate(${dx}px, ${dy}px) scale(${scale})`
 }
 

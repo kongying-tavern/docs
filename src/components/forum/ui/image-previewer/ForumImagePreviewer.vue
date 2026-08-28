@@ -7,7 +7,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import PreviewerControls from './components/PreviewerControls.vue'
 import PreviewerSidePanel from './components/PreviewerSidePanel.vue'
 import { useActivePreviewer } from './composables/useActivePreviewer'
-import { usePreviewerFlip } from './composables/usePreviewerFlip'
+import { stackTransform, usePreviewerFlip } from './composables/usePreviewerFlip'
 import { usePreviewerTransform } from './composables/usePreviewerTransform'
 
 export interface PreviewImage {

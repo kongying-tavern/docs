@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import { useRouter } from 'vitepress'
-import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useId, useTemplateRef, watch } from 'vue'
 import { Input } from '@/components/ui/input'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
@@ -27,7 +27,7 @@ const isOpen = ref(false)
 const expanded = ref(false)
 const activeIndex = ref(-1)
 
-const inputEl = ref<HTMLInputElement>()
+const inputEl = useTemplateRef<InstanceType<typeof Input>>('inputEl')
 const triggerEl = ref<HTMLButtonElement>()
 /** 触发器自然宽度：用于展开过渡起点（纯视觉，裁切风险由内容流+可溢出承担） */
 const collapsedWidth = ref(96)
