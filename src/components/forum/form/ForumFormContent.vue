@@ -44,7 +44,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
               v-bind="componentField"
               type="text"
               :placeholder="tab.fields.title.placeholder"
-              class="desktop-letter-input vp-border-input"
+              class="letter-title-input vp-border-input"
               :maxlength="tab.fields.title.maxLength"
               autocomplete="off"
             />

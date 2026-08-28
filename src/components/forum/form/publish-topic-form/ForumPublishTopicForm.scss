@@ -12,13 +12,38 @@
   color: var(--vp-c-text-1);
 }
 
+.letter-title-input,
+.letter-tags-input,
+.letter-content-input {
+  border: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--vp-c-text-1) 30%, transparent) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.letter-title-input:hover,
+.letter-tags-input:hover,
+.letter-content-input:hover {
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 72%, transparent) !important;
+}
+
+.letter-title-input:focus-visible,
+.letter-tags-input:focus-within,
+.letter-content-input:focus-within {
+  border-bottom-color: var(--vp-c-brand-1) !important;
+  background: var(--vp-c-bg-soft) !important;
+  box-shadow: none !important;
+}
+
 @media (min-width: 768px) {
   .form-container {
     width: min(800px, calc(100vw - 32px)) !important;
     min-height: 100dvh;
     margin-top: 90px !important;
     margin-bottom: 70px !important;
-    /* 覆盖 overlay 的 place-items: center——顶部固定，切换类型只向下延伸 */
+    /* 固定顶部：覆盖 overlay 的居中定位 */
     align-self: start;
   }
 
@@ -62,31 +87,6 @@
 
   .form-footer-container {
     margin-top: auto;
-  }
-
-  .desktop-letter-input,
-  .letter-tags-input,
-  .letter-content-input {
-    border: 0 !important;
-    border-bottom: 1px solid color-mix(in srgb, var(--vp-c-text-1) 30%, transparent) !important;
-    border-radius: 0;
-    background: transparent !important;
-    box-shadow: none;
-    transition: background-color 160ms ease, border-color 160ms ease;
-  }
-
-  .desktop-letter-input:hover,
-  .letter-tags-input:hover,
-  .letter-content-input:hover {
-    background: color-mix(in srgb, var(--vp-c-bg-soft) 72%, transparent) !important;
-  }
-
-  .desktop-letter-input:focus-visible,
-  .letter-tags-input:focus-within,
-  .letter-content-input:focus-within {
-    border-bottom-color: var(--vp-c-brand-1) !important;
-    background: var(--vp-c-bg-soft) !important;
-    box-shadow: none;
   }
 
   .desktop-upload-field {

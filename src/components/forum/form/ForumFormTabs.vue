@@ -63,7 +63,7 @@ function formatDate(date = new Date()): string {
         {{ message.forum.publish.title }}
       </h2>
       <TabsList
-        class="mt-3 border-solid grid h-10 w-full"
+        class="mt-3 border-solid grid h-10 w-fit"
         :class="hasPermission ? 'grid-cols-3' : 'grid-cols-2'"
       >
         <TabsTrigger
