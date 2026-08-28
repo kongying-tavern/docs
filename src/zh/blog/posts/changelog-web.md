@@ -29,6 +29,14 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A�
 
 <!-- more -->
 
+::: timeline 2026-08-28
+
+### {%= T_BUG %}
+
+- 修改存档有差异时，本地和远程时间解析显示失败导致出现“未知时间”的问题。
+
+:::
+
 ::: timeline 2026-08-26
 
 ### {%= T_ENHANCE %}
