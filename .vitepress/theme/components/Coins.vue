@@ -65,7 +65,7 @@ onBeforeUnmount(() => {
           rel="noopener noreferrer"
         >{{ coins[selectedPayment].address }}</a>
       </p>
-      <img :src="qrcode.value" alt="QR Code">
+      <img :src="qrcode" alt="QR Code">
     </BlurFade>
   </div>
 </template>
