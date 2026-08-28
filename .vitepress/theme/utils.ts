@@ -1,10 +1,8 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 import { isObject } from 'lodash-es'
 
-// Import from centralized text utils
 import { camelCase } from './utils/text'
 
-// Re-export from centralized text utils
 export { escapeHtml } from './utils/text'
 
 const markdownLinkRegexp = /.md((\?|#).*)?$/
@@ -122,7 +120,6 @@ export function baseHelper<T extends Record<string, unknown> | unknown[]>(obj: T
   return modifyKey(modifiedLink as Record<string, unknown>, base) as T
 }
 
-// Re-export from centralized text utils
 export { hash } from './utils/text'
 
 export function removeQueryParam(param: string) {

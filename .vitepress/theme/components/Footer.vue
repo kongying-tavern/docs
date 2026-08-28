@@ -9,14 +9,24 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 </script>
 
 <template>
-  <div v-if="frontmatter.footer !== false || frontmatter.showWithSidebar !== false" class="slide-enter footer-container">
+  <div
+    v-if="frontmatter.footer !== false"
+    class="slide-enter footer-container"
+  >
     <footer class="footer">
-      <div v-for="item in theme.footer.navigation" :key="item.title" class="footer-navigation">
+      <div
+        v-for="item in theme.footer.navigation"
+        :key="item.title"
+        class="footer-navigation"
+      >
         <h3 class="footer-title">
           {{ item.title }}
         </h3>
         <ul>
-          <li v-for="ic in item.items" :key="ic.text">
+          <li
+            v-for="ic in item.items"
+            :key="ic.text"
+          >
             <VPLink
               :href="ic.link"
               :title="`${ic.text}（${withBase(ic.link)}）`"
@@ -27,7 +37,10 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
         </ul>
       </div>
       <div class="footer-qrcode justify-self-end">
-        <img :src="qrcode" alt="QR Code">
+        <img
+          :src="qrcode"
+          alt="QR Code"
+        >
         <h4>{{ theme.footer.qrcodeTitle }}</h4>
         <p text-center>
           {{ theme.footer.qrcodeMessage }}
@@ -83,7 +96,9 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   background-color: var(--vp-c-bg-alt);
 }
 
-.is-home ~ .footer-container .footer, .Headline > .footer-container .footer {
+.is-home~.footer-container .footer,
+.Headline>.footer-container .footer,
+.Blog .footer-container .footer {
   max-width: 1152px;
 }
 
@@ -107,7 +122,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   margin: 0 auto;
 }
 
-.footer > * {
+.footer>* {
   display: grid;
   place-items: start;
   gap: 0.5rem;
@@ -142,7 +157,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     }
   }
 
-  ul > li > a {
+  ul>li>a {
     display: inline-block;
     transition: color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     color: var(--vp-c-text-1);
@@ -186,8 +201,8 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 }
 
 // 这里逻辑还有点问题
-.footer-title:hover ~ ul,
-.footer-title ~ ul:hover {
+.footer-title:hover~ul,
+.footer-title~ul:hover {
   height: 100%;
 }
 
@@ -220,12 +235,14 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
 @media (min-width: 1440px) {
   .footer-container .footer {
-    max-width: 945px;
+    max-width: calc(var(--vp-layout-max-width) - 64px);
+    padding-left: 48px;
+    padding-right: 48px;
   }
 }
 
 @media (min-width: 960px) {
-  .VPSidebar ~ .footer-container {
+  .VPSidebar~.footer-container {
     width: calc(100% - var(--vp-sidebar-width));
     left: var(--vp-sidebar-width);
   }
@@ -254,7 +271,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
       height: 100%;
     }
 
-    ul > li > a {
+    ul>li>a {
       padding: 0;
     }
   }
@@ -295,7 +312,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     border-radius: 25%;
   }
 
-  & ~ svg {
+  &~svg {
     width: 24px;
     height: 24px;
     fill: currentColor;

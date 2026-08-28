@@ -26,7 +26,6 @@ export async function executeWithAuth<T extends unknown[], R>(
     },
     {
       loginMessage: message.value.forum.auth.loginTips,
-      errorMessage: errorMsg,
     },
   )
 

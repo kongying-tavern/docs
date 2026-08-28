@@ -68,7 +68,7 @@ features:
 hero:
   name: Kongying Tavern
   text: A Completionist's Interactive Genshin Map
-  tagline: Simple, powerful, and performant.
+  tagline: Free · Open source · No ads
   image:
     src: /imgs/common/logo/logo_256.png
     alt: Kongying Tavern

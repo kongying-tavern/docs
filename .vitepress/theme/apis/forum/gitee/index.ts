@@ -1,7 +1,6 @@
 import type { KyResponse } from 'ky'
 import type { ApiCallOptions, ApiResult, HttpMethod } from './types'
 import { useMemoize } from '@vueuse/core'
-import * as blog from './blog'
 import { fetcher, prepareRequest } from './client'
 import { toGiteeAPIError } from './errors'
 import * as gists from './gists'
@@ -111,4 +110,4 @@ export function deleteApiCache(
   memoizedRequest.delete(method, endpoint, options)
 }
 
-export { blog, gists, issues, labels, oauth, password, user }
+export { gists, issues, labels, oauth, password, user }

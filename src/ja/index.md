@@ -44,7 +44,7 @@ features:
 hero:
   name: 空蛍酒場
   text: 原神全資源攻略マップ
-  tagline: Simple, powerful, and performant.
+  tagline: 無料 · オープンソース · 広告なし
   image:
     src: /imgs/common/logo/logo_256.png
     alt: 空蛍酒場

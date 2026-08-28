@@ -1,7 +1,9 @@
 ---
 title: 【客户端】热更新日志
+type: hot update
 layout: Post
 author: aaaaaaa8
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热更新日志"
 ---
 
 {define:L_NORMAL}{color:#2bbc6e}**普通级**{/color}{/define}
@@ -46,7 +48,19 @@ author: aaaaaaa8
 
 ----
 
-::: timeline Rc1.1.0：2025-12-03
+::: timeline Rc1.1.0：
+
+## 2026-08-26-1413
+
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致某些语言的搜索栏有异常字体溢出。
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致某些语言的某些翻译文本不生效。
+
+## 2026-08-26-1155
+
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致数据更新后点位图标仍显示旧缓存。
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致弹窗文本高度与实际渲染行数不符。
+- 存档时间改为时间戳存储，并兼容旧格式存档数据。
+- AutoMap 默认捕获模式改为 DirectX。
 
 ## 2026-08-11-1143
 
@@ -159,7 +173,7 @@ author: aaaaaaa8
 
 <!-- more -->
 
-::: timeline Rc1.0.1：2025-01-15
+::: timeline Rc1.0.1：
 
 ## 2025-11-26-1329
 
@@ -281,7 +295,7 @@ author: aaaaaaa8
 
 :::
 
-::: timeline Rc1.0.0：2025-01-14
+::: timeline Rc1.0.0：
 
 ## 2025-01-14-1297
 

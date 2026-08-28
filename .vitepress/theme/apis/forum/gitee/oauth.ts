@@ -46,12 +46,16 @@ export function getRedirectUrl(localeIndex?: string): string {
 
 /** 请求 oauth/token 端点；按 Gitee 文档以 form body 传参（含 client_secret） */
 function requestToken(params: Record<string, string>): Promise<GITEE.Auth> {
+  const { redirect_uri, ...rest } = params
+  // Gitee 对 redirect_uri 按注册值做字面比对，须与授权阶段保持相同的明文（不百分号转义）
+  const body = `${new URLSearchParams({
+    ...rest,
+    client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
+  }).toString()}${redirect_uri ? `&redirect_uri=${encodeURI(redirect_uri)}` : ''}`
   return oauthFetcher
     .post('oauth/token', {
-      body: new URLSearchParams({
-        ...params,
-        client_secret: GITEE_API_CONFIG.CLIENT_SECRET,
-      }),
+      body,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     })
     .json<GITEE.Auth>()
 }
@@ -114,9 +118,9 @@ export function redirectAuth(localeIndex: string) {
 
   const searchParams = new URLSearchParams({
     client_id: GITEE_API_CONFIG.CLIENT_ID,
-    redirect_uri: redirectUri,
     response_type: 'code',
     state,
   })
-  return (location.href = `${GITEE_API_CONFIG.BASE_URL}/oauth/authorize?${searchParams.toString()}`)
+  // Gitee 按注册值对 redirect_uri 做字面比对，URLSearchParams 的百分号转义会使其无法识别，保持明文
+  return (location.href = `${GITEE_API_CONFIG.BASE_URL}/oauth/authorize?${searchParams.toString()}&redirect_uri=${encodeURI(redirectUri)}`)
 }

@@ -1,7 +1,9 @@
 ---
 title: 【位置追踪】热更新日志
+type: hot update
 layout: Post
 author: Sallee_admin
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=位置追踪%0A热更新日志"
 ---
 > 使用位置追踪Beta 6.7.1以上版本即可支持热更新
 > 

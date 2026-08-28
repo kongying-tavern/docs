@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType, StyleValue } from 'vue'
 
-import { twJoin, twMerge } from 'tailwind-merge'
 import { computed, ref, watch } from 'vue'
+import { cn } from '@/lib/utils'
 import { UI } from './config'
 
 const props = defineProps({
@@ -52,14 +52,11 @@ const props = defineProps({
 })
 
 const imgClass = computed(() => {
-  return twMerge(
-    twJoin(UI.Avatar.rounded, UI.Avatar.size[props.size]),
-    props.imgClass,
-  )
+  return cn(UI.Avatar.rounded, UI.Avatar.size[props.size], props.imgClass)
 })
 
 const iconClass = computed(() => {
-  return twJoin(UI.Avatar.icon.base, UI.Avatar.icon.size[props.size])
+  return cn(UI.Avatar.icon.base, UI.Avatar.icon.size[props.size])
 })
 
 const url = computed(() => {
@@ -72,13 +69,11 @@ const url = computed(() => {
 const error = ref(false)
 
 const wrapperClass = computed(() => {
-  return twMerge(
-    twJoin(
-      UI.Avatar.wrapper,
-      (error.value || !url.value) && UI.Avatar.background,
-      UI.Avatar.rounded,
-      UI.Avatar.size[props.size],
-    ),
+  return cn(
+    UI.Avatar.wrapper,
+    (error.value || !url.value) && UI.Avatar.background,
+    UI.Avatar.rounded,
+    UI.Avatar.size[props.size],
     props.class,
   )
 })

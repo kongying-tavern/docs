@@ -44,6 +44,11 @@ declare module '@theme/index' {
   export default theme
 }
 
+declare module 'markdown-it-emoji/lib/data/full.mjs' {
+  const full: Record<string, string>
+  export default full
+}
+
 type SnakeCaseToCamelCase<S> = S extends `${infer Prefix}_${infer Rest}`
   ? `${SnakeCaseToCamelCase<Prefix>}${Capitalize<SnakeCaseToCamelCase<Rest>>}`
   : S

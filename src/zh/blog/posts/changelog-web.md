@@ -1,10 +1,12 @@
 ---
 title: "【网页版】更新日志"
+type: changelog
 layout: Post
 authors:
  - aaaaaaa8
  - zengjias
  - boxsnake
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A更新日志"
 ---
 
 {define:T_REFACTOR}:recycle: 功能重构{/define}
@@ -26,6 +28,14 @@ authors:
 ----
 
 <!-- more -->
+
+::: timeline 2026-08-26
+
+### {%= T_ENHANCE %}
+
+- 存档时间修改为时间戳判定，防止因不同格式的转换造成的时区错乱和月日混淆等问题。
+
+:::
 
 ::: timeline 2026-08-12
 

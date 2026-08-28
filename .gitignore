@@ -109,3 +109,7 @@ src/public/fonts/*.woff2
 
 # Mimosa security scan local artifacts
 .mimosa/
+
+# Local dev/testing artifacts (never commit)
+.playwright-mcp/
+advisor-plans/
