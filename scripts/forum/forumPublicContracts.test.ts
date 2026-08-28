@@ -3,6 +3,7 @@ import { strict as assert } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
 import { normalizeComment, normalizeIssue } from '../../.vitepress/theme/apis/forum/gitee/utils'
+import { cn } from '../../.vitepress/theme/lib/utils'
 import { composeTopicBody, writeTopicBodyComment } from '../../src/composables/composeTopicBody'
 import {
   LEGACY_PLAIN_COMMENT,
@@ -20,6 +21,11 @@ const user = {
   avatar_url: 'https://assets.example/alice.png',
   html_url: 'https://gitee.com/alice',
 } as GITEE.User
+
+test('shared class merging preserves component override semantics', () => {
+  assert.equal(cn('border border-transparent', 'border-divider'), 'border border-divider')
+  assert.equal(cn('justify-center rounded-md h-8 w-8', 'justify-start rounded-full h-20 w-20'), 'justify-start rounded-full h-20 w-20')
+})
 
 function issue(body: string): GITEE.IssueInfo {
   return {
@@ -155,8 +161,8 @@ test('both image entry points reuse the shared multi-file drop zone', async () =
   assert.doesNotMatch(`${imageUploadSource}\n${richTextareaSource}`, /@(?:dragover|drop)\.prevent/)
 })
 
-test('image preview closing animates every chrome surface before unmount', async () => {
-  const [previewerSource, previewerStyleSource, flipSource, controlsSource, sidePanelSource, cardsSource, sheetSource] = await Promise.all([
+test('image preview waits for real images and animates every chrome surface before unmount', async () => {
+  const [previewerSource, previewerStyleSource, flipSource, controlsSource, sidePanelSource, cardsSource, sheetSource, imageSource, imageItemSource] = await Promise.all([
     readFile(new URL('../../src/components/forum/ui/image-previewer/ForumImagePreviewer.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/ui/image-previewer/ForumImagePreviewer.scss', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/ui/image-previewer/composables/usePreviewerFlip.ts', import.meta.url), 'utf8'),
@@ -164,6 +170,8 @@ test('image preview closing animates every chrome surface before unmount', async
     readFile(new URL('../../src/components/forum/ui/image-previewer/components/PreviewerSidePanel.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/components/ui/cards/FeyCards.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/components/ui/sheet/SheetContent.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumImage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumImageItem.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(previewerSource, /usePreviewerFlip/)
@@ -183,6 +191,10 @@ test('image preview closing animates every chrome surface before unmount', async
   assert.match(cardsSource, /transition: opacity 220ms ease, transform 280ms/)
   assert.match(sheetSource, /data-\[state=closed\]:\[animation-duration:300ms\]/)
   assert.match(sheetSource, /data-\[state=open\]:\[animation-duration:500ms\]/)
+  assert.match(imageSource, /:disabled="!isPreviewReady\(image, sourceIndex\)"/)
+  assert.match(imageSource, /@ready="handleReady\(sourceIndex\)"/)
+  assert.match(imageItemSource, /img\.decode\?\.\(\)\?\.finally\(markRealImageReady\)/)
+  assert.match(imageItemSource, /emit\('ready'\)/)
 })
 
 test('authorization remains the default while password login is available only by its direct hash', async () => {

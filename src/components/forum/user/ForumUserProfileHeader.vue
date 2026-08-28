@@ -41,7 +41,7 @@ const {
               <div class="flex gap-2 sm:hidden">
                 <Button
                   variant="outline"
-                  class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                  class="border border-[var(--vp-c-divider)] border-solid"
                 >
                   <span
                     class="i-lucide-mail text-base"
@@ -51,7 +51,7 @@ const {
                 </Button>
                 <ForumFollowUserButton
                   v-if="renderedUser?.login"
-                  class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                  class="border border-[var(--vp-c-divider)] rounded-md border-solid"
                   :user="renderedUser?.login"
                 />
               </div>
@@ -88,7 +88,7 @@ const {
             <div class="gap-2 hidden sm:flex">
               <Button
                 variant="outline"
-                class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                class="border border-[var(--vp-c-divider)] border-solid"
               >
                 <span
                   class="i-lucide-mail text-base"
@@ -97,7 +97,7 @@ const {
               </Button>
               <ForumFollowUserButton
                 v-if="renderedUser?.login"
-                class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                class="border border-[var(--vp-c-divider)] rounded-md border-solid"
                 text-class="max-sm:hidden"
                 :user="renderedUser?.login"
               />

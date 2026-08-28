@@ -103,7 +103,7 @@ function sendMessage() {
           <Button
             variant="outline"
             size="sm"
-            class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+            class="border border-[var(--vp-c-divider)] border-solid"
             :disabled="getUserLoading"
             @click="sendMessage"
           >
@@ -113,7 +113,7 @@ function sendMessage() {
           <ForumFollowUserButton
             v-if="userInfo?.login"
             size="sm"
-            class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+            class="border border-[var(--vp-c-divider)] rounded-md border-solid"
             :user="userInfo?.login"
           />
         </div>

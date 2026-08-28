@@ -35,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { message } = useLocalized()
 const errorMap = ref(new Set<number>())
+const readyMap = ref(new Set<number>())
 const availableImages = computed(() => props.images
   .map((image, sourceIndex) => ({ image, sourceIndex }))
   .filter(({ sourceIndex }) => !errorMap.value.has(sourceIndex)))
@@ -114,6 +115,14 @@ function handleError(index: number) {
   errorMap.value.add(index)
 }
 
+function isPreviewReady(image: ImageItem, index: number): boolean {
+  return !(image.thumbHash || image.thumbhash) || readyMap.value.has(index)
+}
+
+function handleReady(index: number) {
+  readyMap.value = new Set(readyMap.value).add(index)
+}
+
 // @unocss-include
 const layoutConfig = computed(() => {
   const layout = actualLayout.value
@@ -188,8 +197,13 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
           v-for="({ image, sourceIndex }, index) in displayImages"
           :key="`${sourceIndex}:${image.src}`"
           type="button"
-          class="p-0 border border-[var(--vp-c-divider)] bg-transparent cursor-zoom-in transition-colors relative overflow-hidden hover:border-[var(--vp-c-brand)]"
-          :class="[layoutConfig.getItemStyle(index), !isRail && actualLayout === 'triple' ? tripleGridClasses[index] : '']"
+          class="p-0 border border-[var(--vp-c-divider)] bg-transparent transition-colors relative overflow-hidden hover:border-[var(--vp-c-brand)]"
+          :class="[
+            layoutConfig.getItemStyle(index),
+            !isRail && actualLayout === 'triple' ? tripleGridClasses[index] : '',
+            isPreviewReady(image, sourceIndex) ? 'cursor-zoom-in' : 'cursor-wait',
+          ]"
+          :disabled="!isPreviewReady(image, sourceIndex)"
           :aria-label="message.forum.imagePreview.showImage.replace('{index}', String(index + 1))"
           @click="openAt(index, $event.currentTarget)"
         >
@@ -198,6 +212,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
             :fill-container="true"
             :class="imageClass"
             @error="handleError(sourceIndex)"
+            @ready="handleReady(sourceIndex)"
           />
 
           <div

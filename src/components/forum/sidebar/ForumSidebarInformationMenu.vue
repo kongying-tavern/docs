@@ -60,16 +60,16 @@ const { message } = useLocalized()
             v-for="sort in (['created', 'updated'] as const)"
             :key="sort"
             variant="ghost"
-            class="forum-sidebar-menu-item"
+            class="forum-sidebar-menu-item justify-start"
             :aria-pressed="currentSort === sort"
             @click="$emit('selectSort', sort)"
           >
+            <span class="text-left flex-1">{{ message.forum.header.sort[sort] }}</span>
             <span
               class="i-lucide-check forum-sidebar-menu-icon icon-btn"
               :class="{ invisible: currentSort !== sort }"
               aria-hidden="true"
             />
-            {{ message.forum.header.sort[sort] }}
           </Button>
         </div>
       </div>

@@ -11,8 +11,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  click: []
   error: []
+  ready: []
 }>()
 
 const isRealImageReady = ref(false)
@@ -29,6 +29,13 @@ const imageClass = computed(() =>
   props.fillContainer ? 'object-cover' : 'object-contain',
 )
 
+function markRealImageReady() {
+  if (isRealImageReady.value)
+    return
+  isRealImageReady.value = true
+  emit('ready')
+}
+
 const aspectStyle = computed(() => {
   if (props.fillContainer || !props.image.width || !props.image.height)
     return {}
@@ -38,9 +45,7 @@ const aspectStyle = computed(() => {
 function preloadRealImage() {
   const img = new Image()
   img.onload = () => {
-    img.decode?.()?.finally(() => {
-      isRealImageReady.value = true
-    }) ?? (isRealImageReady.value = true)
+    img.decode?.()?.finally(markRealImageReady) ?? markRealImageReady()
   }
   img.onerror = () => {
     hasError.value = true
@@ -53,18 +58,12 @@ function onLazyError() {
   hasError.value = true
   emit('error')
 }
-
-function onClick() {
-  if (!hasError.value)
-    emit('click')
-}
 </script>
 
 <template>
   <div
     class="size-full transition-all duration-200 relative overflow-hidden"
-    :class="[hasError ? 'cursor-not-allowed' : 'cursor-zoom-in', props.class]"
-    @click="onClick"
+    :class="[hasError || (useLazyLoad() && !isRealImageReady) ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
   >
     <template v-if="useLazyLoad()">
       <img
