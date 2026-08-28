@@ -56,6 +56,7 @@ export namespace ForumAPI {
     relatedComments?: Comment[] | null
     createdAt: string
     updatedAt: string
+    closedAt?: string
     language?: string
   }
 

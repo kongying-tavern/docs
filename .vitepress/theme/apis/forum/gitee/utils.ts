@@ -108,6 +108,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,
+    ...(issue.finished_at ? { closedAt: issue.finished_at } : {}),
     language: getLanguageFromLabel(issue.labels),
   }
 }

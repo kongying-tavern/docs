@@ -5,6 +5,7 @@ import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicList from '../list/ForumTopicList.vue'
+import ForumTopicSearchInfo from '../search/ForumTopicSearchInfo.vue'
 import ForumTopicTagsEditorDialog from '../topic/ForumTopicTagsEditorDialog.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
@@ -75,6 +76,13 @@ watchEffect(() => {
           <ForumUserProfileHeaderSkeleton />
         </template>
       </Suspense>
+    </template>
+
+    <template #content-before>
+      <ForumTopicSearchInfo
+        :loading="topics.isLoading.value"
+        :total="topics.total.value"
+      />
     </template>
 
     <template #content-main>

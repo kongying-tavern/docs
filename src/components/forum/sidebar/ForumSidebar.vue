@@ -10,7 +10,7 @@ import { getLangPath } from '@/utils'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useForumTopicQuery, useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { getNewCommentCount } from '~/services/forum/forumPersonalState'
+import { getNewCommentCount, isRecentClosedTopic } from '~/services/forum/forumPersonalState'
 import { publishTopic } from '../utils/forumUi'
 import ForumSidebarCreateButton from './ForumSidebarCreateButton.vue'
 import ForumSidebarInformationMenu from './ForumSidebarInformationMenu.vue'
@@ -50,6 +50,14 @@ const followedTopicQueries = Array.from({ length: 20 }, (_, index) => useForumTo
 ))))
 const currentFollowedTopics = computed(() => new Map(
   followedTopicQueries.flatMap(query => query.data.value ? [[String(query.data.value.id), query.data.value] as const] : []),
+))
+const participatedTopicQueries = Array.from({ length: 20 }, (_, index) => useForumTopicQuery(computed(() => (
+  isLoggedIn.value && participatedOpen.value
+    ? personal.state.value.recentParticipated[index]?.topicId ?? ''
+    : ''
+))))
+const currentParticipatedTopics = computed(() => new Map(
+  participatedTopicQueries.flatMap(query => query.data.value ? [[String(query.data.value.id), query.data.value] as const] : []),
 ))
 
 // 移动端（<960px）收藏创建按钮从 sidebar 移入 VPLocalNav 的返回顶部右侧。
@@ -127,7 +135,7 @@ const navItems = computed(() => {
 })
 
 const submittedItems = computed(() => submitted.rows.value
-  .filter(topic => topic.state !== 'closed')
+  .filter(topic => isRecentClosedTopic(topic))
   .slice(0, 20)
   .map(topic => ({
     id: String(topic.id),
@@ -140,7 +148,7 @@ const submittedItems = computed(() => submitted.rows.value
   })))
 const followedItems = computed(() => personal.state.value.followedTopics
   .map(topic => ({ topic, current: currentFollowedTopics.value.get(topic.topicId) }))
-  .filter(({ topic, current }) => (current?.state ?? topic.state) !== 'closed')
+  .filter(({ topic, current }) => isRecentClosedTopic(current ?? topic))
   .slice(0, 20)
   .map(({ topic, current }) => {
     return {
@@ -155,15 +163,16 @@ const followedItems = computed(() => personal.state.value.followedTopics
     }
   }))
 const participatedItems = computed(() => personal.state.value.recentParticipated
-  .filter(topic => topic.state !== 'closed')
+  .map(topic => ({ topic, current: currentParticipatedTopics.value.get(topic.topicId) }))
+  .filter(({ topic, current }) => isRecentClosedTopic(current ?? topic))
   .slice(0, 20)
-  .map(topic => ({
+  .map(({ topic, current }) => ({
     id: topic.topicId,
-    title: topic.title,
+    title: current?.title ?? topic.title,
     href: topicHref(topic.topicId, null),
-    type: topic.type,
-    commentCount: Math.max(0, topic.commentCount ?? 0),
-    state: topic.state,
+    type: current?.type ?? topic.type,
+    commentCount: Math.max(0, current?.commentCount ?? topic.commentCount ?? 0),
+    state: current?.state ?? topic.state,
   })))
 const submittedSectionOpen = computed({
   get: () => (isLoggedIn.value ? submittedItems.value.length > 0 : true) && submittedOpen.value,

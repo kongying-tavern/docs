@@ -12,6 +12,7 @@ interface ForumPersonalTopic {
   recordedAt: string
   commentCount?: number
   state?: ForumAPI.TopicState
+  closedAt?: string
 }
 
 export interface ForumPersonalState {
@@ -44,6 +45,7 @@ function normalizeTopic(value: unknown): ForumPersonalTopic | null {
     recordedAt: String(topic.recordedAt),
     ...(typeof topic.commentCount === 'number' ? { commentCount: topic.commentCount } : {}),
     ...(['open', 'closed', 'progressing'].includes(String(topic.state)) ? { state: topic.state as ForumAPI.TopicState } : {}),
+    ...(typeof topic.closedAt === 'string' ? { closedAt: topic.closedAt } : {}),
   }
 }
 
@@ -124,7 +126,20 @@ export function summarizePersonalTopic(topic: ForumAPI.Topic, recordedAt = new D
     recordedAt,
     commentCount: topic.commentCount,
     state: topic.state,
+    ...(topic.closedAt ? { closedAt: topic.closedAt } : {}),
   }
+}
+
+const CLOSED_TOPIC_RETENTION_MS = 7 * 24 * 60 * 60 * 1000
+
+export function isRecentClosedTopic(
+  topic: { state?: ForumAPI.TopicState, closedAt?: string },
+  now = Date.now(),
+): boolean {
+  if (topic.state !== 'closed' || !topic.closedAt)
+    return true
+  const closedAt = Date.parse(topic.closedAt)
+  return Number.isNaN(closedAt) || now - closedAt <= CLOSED_TOPIC_RETENTION_MS
 }
 
 export function getNewCommentCount(recordedCount: number | undefined, currentCount: number | undefined): number {

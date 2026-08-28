@@ -76,6 +76,13 @@ test('normalizes pinned state from the authoritative Gitee label', () => {
   assert.equal(normalizeIssue(issue('Body')).pinned, false)
 })
 
+test('normalizes the authoritative Gitee close time', () => {
+  const closedIssue = issue('Body')
+  closedIssue.state = 'closed'
+  closedIssue.finished_at = '2026-08-25T12:00:00Z'
+  assert.equal(normalizeIssue(closedIssue).closedAt, closedIssue.finished_at)
+})
+
 test('preserves legacy plain Topic and Comment bodies', () => {
   assert.equal(normalizeIssue(issue(LEGACY_PLAIN_TOPIC)).content.text, LEGACY_PLAIN_TOPIC)
   assert.equal(normalizeComment(comment(LEGACY_PLAIN_COMMENT)).content.text, LEGACY_PLAIN_COMMENT)
@@ -160,6 +167,8 @@ test('image preview closing animates every chrome surface before unmount', async
   ])
 
   assert.match(previewerSource, /usePreviewerFlip/)
+  assert.match(previewerSource, /import \{ stackTransform, usePreviewerFlip \}/)
+  assert.match(flipSource, /export function stackTransform/)
   assert.match(flipSource, /const BASE_EXIT_MS = 320/)
   assert.match(previewerStyleSource, /\.closing \.forum-preview-cards/)
   assert.match(previewerStyleSource, /\.closing \.forum-preview-nav/)
