@@ -182,6 +182,27 @@ export function mapTopicInForumPages<T extends { id: string | number }, TPagePar
   return changed ? { ...data, pages } : data
 }
 
+export function prependTopicToForumPages<T extends { id: string | number }, TPageParam>(
+  data: { pages: ForumPage<T>[], pageParams: TPageParam[] },
+  topic: T,
+) {
+  const id = String(topic.id)
+  if (data.pages.some(page => page.items.some(item => String(item.id) === id)))
+    return mapTopicInForumPages(data, topic.id, cached => ({ ...cached, ...topic }))
+
+  const [firstPage, ...remainingPages] = data.pages
+  if (!firstPage)
+    return data
+
+  return {
+    ...data,
+    pages: [
+      { ...firstPage, items: [topic, ...firstPage.items], total: firstPage.total + 1 },
+      ...remainingPages.map(page => ({ ...page, total: page.total + 1 })),
+    ],
+  }
+}
+
 export function forumTopicBelongsToList(topic: ForumAPI.Topic, params: ForumTopicListParams): boolean {
   const expectedState = params.state ?? forumStateForFilter(params.filter)
   const stateMatches = expectedState === 'all' || topic.state === expectedState

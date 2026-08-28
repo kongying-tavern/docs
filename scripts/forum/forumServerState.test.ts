@@ -10,6 +10,7 @@ import {
   forumMutationPolicies,
   forumTopicBelongsToList,
   mapTopicInForumPages,
+  prependTopicToForumPages,
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
 } from '../../src/services/forum/forumQueryContracts'
@@ -125,6 +126,20 @@ test('list membership follows the same state, type, creator, and full-text tuple
   assert.equal(forumTopicBelongsToList(topic, { ...params, q: 'TRACKING' }), true)
   assert.equal(forumTopicBelongsToList({ ...topic, state: 'closed' }, params), false)
   assert.equal(forumTopicBelongsToList({ ...topic, state: 'progressing' }, { ...params, filter: 'closed' }), true)
+})
+
+test('reopening a missing Topic restores it at the start of cached lists', () => {
+  const cached = {
+    pages: [
+      { items: [{ id: 'B', title: 'second' }], total: 2, totalPage: 1 },
+      { items: [{ id: 'C', title: 'third' }], total: 2, totalPage: 1 },
+    ],
+    pageParams: [1, 2],
+  }
+
+  const restored = prependTopicToForumPages(cached, { id: 'A', title: 'reopened' })
+  assert.deepEqual(restored.pages[0].items.map(topic => topic.id), ['A', 'B'])
+  assert.deepEqual(restored.pages.map(page => page.total), [3, 3])
 })
 
 test('mutation matrix invalidates authoritative memberships exactly once', () => {

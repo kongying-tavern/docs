@@ -143,10 +143,10 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       {
         type: 'item',
         id: 'close-feedback',
-        label: closeState ? menuLabels.value.closeFeedback.text : menuLabels.value.reopenFeedback.text,
-        icon: closeState ? 'i-lucide:square-x' : 'i-lucide:undo',
+        label: closeState.value ? menuLabels.value.reopenFeedback.text : menuLabels.value.closeFeedback.text,
+        icon: closeState.value ? 'i-lucide:lock-open' : 'i-lucide:lock',
         action: handleToggleCloseTopic,
-        class: 'c-red opacity-90 hover:c-red hover:opacity-100',
+        class: closeState.value ? undefined : 'c-red opacity-90 hover:c-red hover:opacity-100',
       },
     ]
   })

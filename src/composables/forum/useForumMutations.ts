@@ -11,6 +11,7 @@ import {
   forumTopicBelongsToList,
   isForumTopicListParams,
   mapTopicInForumPages,
+  prependTopicToForumPages,
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
 } from '~/services/forum/forumQueryContracts'
@@ -66,7 +67,8 @@ export function useForumMutations() {
   ): Promise<TopicUpdateOutcome> {
     const snapshot = captureTopicCache(topicId)
     const optimisticTopic = applyOptimisticTopicPatch(currentTopic, patch)
-    reconcileUpdatedTopic(optimisticTopic)
+    const restoreToListStart = kind === 'closeTopic' && optimisticTopic.state === 'open'
+    reconcileUpdatedTopic(optimisticTopic, restoreToListStart)
     queryCache.setQueryData(forumKeys.topic(topicId), optimisticTopic)
 
     try {
@@ -74,7 +76,7 @@ export function useForumMutations() {
       if (outcome.status === 'unknown')
         restoreTopicCache(snapshot)
       else
-        reconcileUpdatedTopic(outcome.topic)
+        reconcileUpdatedTopic(outcome.topic, restoreToListStart && outcome.topic.state === 'open')
       await invalidate(kind, topicId, outcome.status === 'unknown' ? undefined : outcome.topic)
       if (requiresAuthoritativeRefetch(outcome.status))
         await queryCache.invalidateQueries({ key: forumKeys.topic(topicId), exact: true })
@@ -171,9 +173,11 @@ export function useForumMutations() {
     }
   }
 
-  function reconcileUpdatedTopic(topic: ForumAPI.Topic): void {
+  function reconcileUpdatedTopic(topic: ForumAPI.Topic, insertMissing = false): void {
     updateCachedTopicPages((data, params) => forumTopicBelongsToList(topic, params)
-      ? mapTopicInForumPages(data, topic.id, cached => ({ ...cached, ...topic }))
+      ? insertMissing
+        ? prependTopicToForumPages(data, topic)
+        : mapTopicInForumPages(data, topic.id, cached => ({ ...cached, ...topic }))
       : removeTopicFromForumPages(data, topic.id))
 
     const pinned = queryCache.getQueryData<ForumAPI.Topic[]>(forumKeys.pinned())

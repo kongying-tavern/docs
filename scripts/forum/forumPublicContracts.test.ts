@@ -42,6 +42,17 @@ test('comment emoji and self-profile actions keep their display contracts', asyn
   assert.match(hoverCardSource, /v-if="!isAuthorizedUser"/)
 })
 
+test('topic authors can close their own feedback from the topic menu', async () => {
+  const [permissionsSource, menuSource] = await Promise.all([
+    readFile(new URL('../../src/composables/useRuleChecks.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(permissionsSource, /author: \['edit_feedback'\]/)
+  assert.match(menuSource, /label: closeState\.value \? menuLabels\.value\.reopenFeedback\.text : menuLabels\.value\.closeFeedback\.text/)
+  assert.match(menuSource, /action: handleToggleCloseTopic/)
+})
+
 function issue(body: string): GITEE.IssueInfo {
   return {
     number: 'I12345',
