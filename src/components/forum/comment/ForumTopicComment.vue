@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { ref } from 'vue'
 import { useForumRoute } from '~/composables/useForumRoute'
+import ForumTopicTranslator from '../topic/ForumTopicTranslator.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumImagePreviewer from '../ui/image-previewer/ForumImagePreviewer.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'
@@ -38,6 +40,14 @@ const {
   topicAuthorId: props.topicAuthorId,
 })
 
+const translatedText = ref('')
+const showingTranslation = ref(false)
+
+function showTranslatedContent(text: string): void {
+  translatedText.value = text
+  showingTranslation.value = true
+}
+
 function handleCommentClick(author: ForumAPI.User): void {
   emit('comment:click', author)
 }
@@ -72,11 +82,17 @@ function handleCommentClick(author: ForumAPI.User): void {
         :
       </span>
 
+      <ForumTopicTranslator
+        :content="content.text"
+        @translated="showTranslatedContent"
+        @close="showingTranslation = false"
+      />
+
       <article
         v-if="content.kind === 'html'"
         class="content"
         :class="COMMENT_STYLES[props.size].content"
-        v-html="content.html"
+        v-html="showingTranslation ? translatedText : content.html"
       />
 
       <article
@@ -84,7 +100,7 @@ function handleCommentClick(author: ForumAPI.User): void {
         class="content whitespace-pre-wrap"
         :class="COMMENT_STYLES[props.size].content"
       >
-        {{ content.text }}
+        {{ showingTranslation ? translatedText : content.text }}
       </article>
 
       <ForumImagePreviewer

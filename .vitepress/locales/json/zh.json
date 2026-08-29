@@ -194,7 +194,7 @@
       "showImage": "显示第 {index} 张图片"
     },
     "sidebar": {
-      "home": "反馈论坛",
+      "home": "社区反馈",
       "manual": "用户手册",
       "download": "下载客户端",
       "myProfile": "个人主页",
@@ -491,7 +491,10 @@
         "imageInvalidType": "{filename} 的图片格式不受支持",
         "imageTooLarge": "{filename} 超过 {size}",
         "imageCountExceeded": "最多只能添加 {max} 张图片",
-        "previewFailed": "无法预览 {filename}"
+        "previewFailed": "无法预览 {filename}",
+        "formatBold": "切换粗体",
+        "formatItalic": "切换斜体",
+        "formatStrike": "切换删除线"
       },
       "publishSuccess": "反馈上传成功：",
       "publishFail": "反馈上传失败：",
@@ -535,7 +538,14 @@
     "readMore": "了解更多",
     "translate": {
       "translateText": "翻译贴子",
-      "translateInfo": "翻译由 Meta Seq2Seq 模型提供支持",
+      "translatedFrom": "翻译自 {language}",
+      "settings": "翻译设置",
+      "settingsDescription": "调整当前设备上的翻译方式",
+      "autoTranslate": "自动翻译",
+      "autoTranslateDescription": "自动翻译与当前语言不同的反馈",
+      "viewOriginal": "查看原文",
+      "showTranslation": "显示译文",
+      "conservativeSkip": "内容过短或无法可靠识别语言，未进行翻译",
       "error": "翻译失败",
       "limit": "已达到最大请求次数，请稍后再试",
       "loading": "翻译中..."

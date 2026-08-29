@@ -87,6 +87,7 @@ catalogs:
     dayjs: ^1.11.20
     dexie: ^4.3.0
     embla-carousel-vue: ^8.6.0
+    fast-fuzzy: ^1.12.0
     feed: ^6.0.0
     ky: ^2.0.2
     lodash-es: 4.18.1

@@ -1,107 +1,193 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { useMutation } from '@pinia/colada'
-import { useToggle } from '@vueuse/core'
-import { isFunction } from 'lodash-es'
-import { computed, watch } from 'vue'
+import type { TranslationResult } from '~/services/forum/forumTranslation'
+import { useElementVisibility } from '@vueuse/core'
+import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { toast } from 'vue-sonner'
-import { translate } from '@/apis/interknot.site'
 import BlurFade from '@/components/ui/BlurFade.vue'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
-import { getLangCode } from '@/utils'
-import supportedLanguages from '~/_data/supportedLanguages.json'
+import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
+import { translate, translateAuto } from '~/services/forum/forumTranslation'
+import ForumTranslationSettingsMenu from './ForumTranslationSettingsMenu.vue'
 
-interface Props {
+const props = withDefaults(defineProps<{
   content: string
-  sourceLanguage?: string
+  title?: string
+  sourceLanguage?: string | null
   targetLanguage?: string
   autoTranslate?: boolean
-  serializer?: (content: string) => string
-  defaultTargetLanguage?: string
-  showDefaultTrigger?: boolean
   class?: HTMLAttributes['class']
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  autoTranslate: false,
-  sourceLanguage: 'zh',
-  defaultTargetLanguage: 'en',
-  targetLanguage: 'en',
-  showDefaultTrigger: false,
+}>(), {
+  autoTranslate: true,
 })
+
 const emit = defineEmits<{
-  (e: 'translated', content: string): void
-  (e: 'close'): void
+  'translated': [content: string]
+  'title-translated': [title: string]
+  'close': []
 }>()
 
 const { message } = useLocalized()
+const { currentPageLang } = useLanguage()
+const {
+  autoTranslateEnabled,
+  targetLanguage: preferredTargetLanguage,
+} = useForumTranslationPreferences()
+const root = useTemplateRef<HTMLElement>('root')
+const visible = useElementVisibility(root)
+const translation = ref<TranslationResult>()
+const loading = ref(false)
+const showingOriginal = ref(false)
+let autoAttemptedFor = ''
+let request: AbortController | undefined
 
-const [hideTranslation, toggleHideTranslation] = useToggle(!props.autoTranslate)
-
-const { currentPageLang, matchedLang } = useLanguage(supportedLanguages, props.defaultTargetLanguage)
-
-const _targetLanguage = computed(() => getLangCode((props.targetLanguage ?? matchedLang ?? currentPageLang.value ?? props.defaultTargetLanguage ?? props.defaultTargetLanguage)))
-const _sourceLanguage = computed(() => getLangCode(props.sourceLanguage))
-
-const { data, isLoading: loading, error, mutateAsync: runAsync } = useMutation({
-  mutation: (params: { content: string, targetLanguage: string, sourceLanguage: string }) =>
-    translate.translate(params.content, params.targetLanguage, params.sourceLanguage),
+const targetLanguage = computed(() => props.targetLanguage ?? preferredTargetLanguage.value)
+const translatedFrom = computed(() => {
+  const sourceLanguage = translation.value?.sourceLanguage
+  if (!sourceLanguage)
+    return ''
+  try {
+    return new Intl.DisplayNames([currentPageLang.value], { type: 'language', style: 'long' }).of(sourceLanguage) ?? sourceLanguage
+  }
+  catch {
+    return sourceLanguage
+  }
 })
+const translationLabel = computed(() => message.value.forum.translate.translatedFrom.replace(
+  '{language}',
+  translatedFrom.value,
+))
 
-const translatedContent = computed(() => data.value?.data.translatedText ?? '')
-const displayText = computed(() => {
-  return isFunction(props.serializer) ? props.serializer(translatedContent.value) : translatedContent.value
-})
-const showTranslation = computed(() => displayText.value.length > 0 && !hideTranslation.value)
+async function startTranslate(manual = true): Promise<void> {
+  if (translation.value) {
+    showingOriginal.value = false
+    emit('translated', translation.value.text)
+    return
+  }
+  if (loading.value)
+    return
 
-async function startTranslate() {
-  if (!loading.value) {
-    toggleHideTranslation()
-    if (!hideTranslation.value) {
-      await runAsync({
-        content: props.content,
-        targetLanguage: _targetLanguage.value,
-        sourceLanguage: _sourceLanguage.value,
-      })
-      emit('translated', translatedContent.value)
+  request?.abort()
+  const controller = new AbortController()
+  request = controller
+  loading.value = true
+  try {
+    const result = await translateAuto(props.content, {
+      sourceLanguage: props.sourceLanguage,
+      targetLanguage: targetLanguage.value,
+      signal: controller.signal,
+    })
+    if (request !== controller)
+      return
+    if (result.status === 'translated') {
+      translation.value = result
+      showingOriginal.value = false
+      emit('translated', result.text)
+      if (props.title) {
+        try {
+          const titleResult = await translate(props.title, {
+            sourceLanguage: result.sourceLanguage,
+            targetLanguage: targetLanguage.value,
+            signal: controller.signal,
+          })
+          if (request === controller && titleResult.provider !== 'passthrough')
+            emit('title-translated', titleResult.text)
+        }
+        catch {
+          // The translated body remains useful when the title model is unavailable.
+        }
+      }
+    }
+    else if (manual && result.reason !== 'same-language') {
+      toast.info(message.value.forum.translate.conservativeSkip)
     }
   }
-  if (hideTranslation.value)
-    emit('close')
+  catch (error) {
+    if (!(error instanceof DOMException && error.name === 'AbortError'))
+      toast.error(message.value.forum.translate.error)
+  }
+  finally {
+    if (request === controller) {
+      request = undefined
+      loading.value = false
+    }
+  }
 }
 
-watch(error, (err) => {
-  if (err) {
-    toast.error(`${message.value.forum.translate.error} (${err.message})`)
-    hideTranslation.value = true
+function reset(): void {
+  request?.abort()
+  request = undefined
+  translation.value = undefined
+  showingOriginal.value = false
+  autoAttemptedFor = ''
+  emit('close')
+}
+
+function toggleOriginal(): void {
+  if (!translation.value)
+    return
+  showingOriginal.value = !showingOriginal.value
+  if (showingOriginal.value)
     emit('close')
-  }
+  else
+    emit('translated', translation.value.text)
+}
+
+watch(
+  [visible, () => props.autoTranslate, autoTranslateEnabled, () => props.content],
+  ([isVisible, autoTranslateProp, autoEnabled, content]) => {
+    if (!isVisible || !autoEnabled || !autoTranslateProp || autoAttemptedFor === content)
+      return
+    autoAttemptedFor = content
+    void startTranslate(false)
+  },
+  { immediate: true },
+)
+
+watch(autoTranslateEnabled, (enabled) => {
+  if (!enabled && translation.value)
+    reset()
 })
 
-defineExpose({
-  startTranslate,
-})
+watch(
+  [() => props.content, () => props.sourceLanguage, targetLanguage],
+  () => {
+    reset()
+  },
+  { flush: 'sync' },
+)
+
+onBeforeUnmount(() => request?.abort())
+
+defineExpose({ startTranslate })
 </script>
 
 <template>
-  <BlurFade v-if="_targetLanguage !== getLangCode(sourceLanguage || currentPageLang)" class="mt-2 w-full">
-    <slot v-if="!showDefaultTrigger" name="trigger" @click="startTranslate" />
-    <a v-if="showDefaultTrigger" class="font-size-4 vp-link" variant="link" @click="startTranslate">
-      {{ showTranslation ? `> ${message.forum.translate.translateInfo}` : loading ? message.forum.translate.loading : message.forum.translate.translateText }}
-    </a>
-    <div v-if="!loading && showTranslation" :class="cn('mt-2 w-full whitespace-pre-wrap', props.class)">
-      {{ displayText }}
+  <div ref="root" :class="cn('min-h-px w-full', props.class)">
+    <BlurFade v-if="loading" class="my-2 w-full space-y-2" aria-live="polite">
+      <Skeleton class="h-4 w-full" />
+      <Skeleton class="h-4 w-4/5" />
+    </BlurFade>
+
+    <div
+      v-else-if="translation"
+      class="group text-sm c-[var(--vp-c-text-3)] leading-none mb-0 mt-0.5 flex gap-1.5 items-center"
+    >
+      <button
+        type="button"
+        class="flex gap-1.5 min-w-0 items-center hover:c-[var(--vp-c-text-1)]"
+        :aria-pressed="showingOriginal"
+        @click.stop.prevent="toggleOriginal"
+      >
+        <span class="i-lucide-languages shrink-0 size-4" aria-hidden="true" />
+        <span class="truncate">{{ showingOriginal ? message.forum.translate.showTranslation : translationLabel }}</span>
+      </button>
+      <span class="opacity-0 transition-opacity group-hover:opacity-100 max-mobile:opacity-100">
+        <ForumTranslationSettingsMenu />
+      </span>
     </div>
-    <p v-if="!showDefaultTrigger && showTranslation" class="text-sm color-[var(--vp-c-text-3)] mt-2 text-center text-right w-full cursor-pointer hover:underline" @click="startTranslate">
-      * {{ loading ? message.forum.translate.loading : message.forum.translate.translateInfo }}
-    </p>
-    <div v-if="loading && !hideTranslation" class="slide-enter mt-2 w-full">
-      <Skeleton class="h-4 w-[100%]" />
-      <Skeleton v-for="i in Math.max(content.split('\n').length, Math.ceil(content.length / 100))" :key="i" class="mt-2 h-4 w-[100%]" />
-      <Skeleton class="mt-2 h-4 w-[80%]" />
-    </div>
-  </BlurFade>
+  </div>
 </template>

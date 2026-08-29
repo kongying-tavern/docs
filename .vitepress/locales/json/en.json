@@ -160,7 +160,14 @@
     "exceededRateLimitWarning": "Reached the maximum request rate limit of Gitee API. Please login and try again",
     "translate": {
       "translateText": "Translate",
-      "translateInfo": "Translation is supported by Meta Seq2Seq model",
+      "translatedFrom": "Translated from {language}",
+      "settings": "Translation settings",
+      "settingsDescription": "Choose how translations work on this device",
+      "autoTranslate": "Translate automatically",
+      "autoTranslateDescription": "Translate feedback written in another language",
+      "viewOriginal": "View original",
+      "showTranslation": "Show translation",
+      "conservativeSkip": "This text is too short or its language is uncertain",
       "error": "Translation failed",
       "limit": "Maximum request limit reached",
       "loading": "Translating..."
@@ -437,7 +444,10 @@
         "imageInvalidType": "{filename} uses an unsupported image format",
         "imageTooLarge": "{filename} exceeds {size}",
         "imageCountExceeded": "You can add up to {max} images",
-        "previewFailed": "Could not preview {filename}"
+        "previewFailed": "Could not preview {filename}",
+        "formatBold": "Toggle bold",
+        "formatItalic": "Toggle italic",
+        "formatStrike": "Toggle strikethrough"
       },
       "publishSuccess": "Feedback Uploaded:",
       "publishFail": "Feedback Upload Failed:",

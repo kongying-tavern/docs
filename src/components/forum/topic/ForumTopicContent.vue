@@ -8,9 +8,11 @@ import { renderForumTopicSummary } from '~/services/forum/forumContentRenderer'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import { useTopicContent } from './composables/useTopicContent'
 
-const { topic, detailHref } = defineProps<{
+const { topic, detailHref, contentOverride, titleOverride } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
   detailHref: string
+  contentOverride?: string
+  titleOverride?: string
 }>()
 
 const emit = defineEmits<{
@@ -47,7 +49,7 @@ const {
   displayContent,
 } = useTopicContent(topic)
 
-const renderedContent = computed(() => renderForumTopicSummary(displayContent.value, {
+const renderedContent = computed(() => renderForumTopicSummary(contentOverride ?? displayContent.value, {
   topicHref: id => topicHref(id, null),
   documentLinks: forumDocumentLinks,
 }))
@@ -70,14 +72,16 @@ function handleExpandClick(): void {
         }"
       >
         <a v-if="!isAnn" class="topic-title-link color-inherit no-underline line-clamp-2" :href="detailHref">
-          {{ displayTitle }}
+          {{ titleOverride ?? displayTitle }}
         </a>
         <p v-else class="line-clamp-2">
-          {{ displayTitle }}
+          {{ titleOverride ?? displayTitle }}
         </p>
       </h4>
 
       <ForumTopicTypeBadge v-if="isCardMode" :type="topic.type" />
+
+      <slot name="translation" />
 
       <article
         v-if="isCardMode"
@@ -97,7 +101,6 @@ function handleExpandClick(): void {
         <div
           v-else-if="isAnn"
           class="forum-topic-summary"
-          :class="{ 'line-clamp-4': !isExpanded }"
           v-html="renderedContent"
         />
 
@@ -134,7 +137,7 @@ function handleExpandClick(): void {
           v-html="renderedContent"
         />
 
-        <div v-else-if="isAnn" class="forum-topic-summary line-clamp-2" v-html="renderedContent" />
+        <div v-else-if="isAnn" class="forum-topic-summary" v-html="renderedContent" />
 
         <div v-else class="forum-topic-summary" v-html="renderedContent" />
       </div>

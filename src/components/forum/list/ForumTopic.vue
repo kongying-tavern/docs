@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useRouter } from 'vitepress'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useForumViewMode } from '~/composables/useForumViewMode'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicComment from '../comment/ForumTopicComment.vue'
@@ -27,6 +27,9 @@ const router = useRouter()
 
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode()
+const translatedContent = ref<string>()
+const translatedTitle = ref('')
+const showingTranslation = ref(false)
 
 const menu = computed(() => {
   return isCardMode.value
@@ -55,6 +58,11 @@ function handleRowClick(event: MouseEvent) {
     return
   emit('preview', topic, false)
 }
+
+function showTranslatedContent(content: string): void {
+  translatedContent.value = content
+  showingTranslation.value = true
+}
 </script>
 
 <template>
@@ -75,16 +83,23 @@ function handleRowClick(event: MouseEvent) {
           <ForumTopicContent
             :topic="topic"
             :detail-href="detailHref()"
+            :content-override="showingTranslation ? translatedContent : undefined"
+            :title-override="showingTranslation ? translatedTitle : undefined"
             @summary-click="handleSummaryClick"
-          />
-
-          <ForumTopicTranslator
-            v-if="isCardMode"
-            :key="`translator-${topic.id}`"
-            ref="translator"
-            :content="topic.content.text"
-            :source-language="topic.language"
-          />
+          >
+            <template #translation>
+              <ForumTopicTranslator
+                :key="`translator-${topic.id}`"
+                ref="translator"
+                :content="topic.content.text"
+                :title="topic.title"
+                :source-language="topic.language"
+                @translated="showTranslatedContent"
+                @title-translated="translatedTitle = $event"
+                @close="showingTranslation = false"
+              />
+            </template>
+          </ForumTopicContent>
         </div>
 
         <ForumTopicMedia

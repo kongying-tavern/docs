@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { ForumSort } from '~/services/forum/forumRoute'
+import { ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
+import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
+import ForumTranslationSettings from '../topic/ForumTranslationSettings.vue'
 
-defineProps<{
+const props = defineProps<{
   open: boolean
   sortOpen: boolean
   hasList: boolean
@@ -12,13 +15,29 @@ defineProps<{
   agreementHref: string
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   'update:open': [open: boolean]
   'update:sortOpen': [open: boolean]
   'selectSort': [sort: ForumSort]
 }>()
 
 const { message } = useLocalized()
+const translationOpen = ref(false)
+
+function toggleSort(): void {
+  translationOpen.value = false
+  emit('update:sortOpen', !props.sortOpen)
+}
+
+function toggleTranslation(): void {
+  emit('update:sortOpen', false)
+  translationOpen.value = !translationOpen.value
+}
+
+watch(() => props.open, (open) => {
+  if (!open)
+    translationOpen.value = false
+})
 </script>
 
 <template>
@@ -44,7 +63,7 @@ const { message } = useLocalized()
           variant="ghost"
           class="forum-sidebar-menu-item"
           :aria-expanded="sortOpen"
-          @click="$emit('update:sortOpen', !sortOpen)"
+          @click="toggleSort"
         >
           <span class="i-lucide-list-filter forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
           <span class="text-left flex-1">{{ message.forum.sidebar.listSort }}</span>
@@ -71,6 +90,26 @@ const { message } = useLocalized()
               aria-hidden="true"
             />
           </Button>
+        </div>
+      </div>
+      <div v-if="isBrowserTranslationSupported()" class="my-1 pt-1 border-t border-[var(--vp-c-divider)] relative">
+        <Button
+          variant="ghost"
+          class="forum-sidebar-menu-item"
+          :aria-expanded="translationOpen"
+          @click="toggleTranslation"
+        >
+          <span class="i-lucide-languages forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
+          <span class="text-left flex-1">{{ message.forum.translate.settings }}</span>
+          <span class="i-lucide-chevron-right forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
+        </Button>
+        <div
+          v-if="translationOpen"
+          class="forum-sort-popover"
+          role="dialog"
+          :aria-label="message.forum.translate.settings"
+        >
+          <ForumTranslationSettings />
         </div>
       </div>
       <a class="forum-sidebar-menu-item" :href="privacyHref">
