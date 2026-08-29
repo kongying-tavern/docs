@@ -12,6 +12,8 @@ import { useForumTopicQuery, useForumTopicsQuery } from '~/composables/forum/use
 import { useForumRoute } from '~/composables/useForumRoute'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import { getNewCommentCount, isRecentClosedTopic } from '~/services/forum/forumPersonalState'
+import { rememberLoginIntent } from '~/services/forum/loginIntent'
+import { FORM_HASH } from '../form/publish-topic-form/config'
 import { publishTopic } from '../utils/forumUi'
 import ForumSidebarCreateButton from './ForumSidebarCreateButton.vue'
 import ForumSidebarInformationMenu from './ForumSidebarInformationMenu.vue'
@@ -196,10 +198,13 @@ function pageHref(path: string): string {
 }
 
 function handleCreate() {
-  if (isLoggedIn.value)
+  if (isLoggedIn.value) {
     publishTopic()
-  else
+  }
+  else {
+    rememberLoginIntent(FORM_HASH)
     location.hash = 'login-alert'
+  }
 }
 
 async function selectSort(sort: ForumSort) {

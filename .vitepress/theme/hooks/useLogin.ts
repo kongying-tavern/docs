@@ -1,6 +1,6 @@
 import type ForumAPI from '@/apis/forum/api'
 import { useQueryCache } from '@pinia/colada'
-import { createSharedComposable, refAutoReset, useStorage } from '@vueuse/core'
+import { createSharedComposable } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
@@ -13,11 +13,12 @@ import { removeQueryParam } from '@/utils'
 import { AuthError, AuthErrorType } from '@/utils/auth-errors'
 import { log, LogGroup } from '@/utils/auth-logger'
 import { forumKeys } from '~/services/forum/forumQueryContracts'
+import { clearLoginIntent, takeLoginIntent } from '~/services/forum/loginIntent'
 import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
 
-/** 回调页路径形如 /docs/callback 或 /docs/en/callback */
+/** 回调路径形如 /docs/callback 或 /docs/en/callback */
 const CALLBACK_PATH_REGEX = /\/callback\/?$/
 
 function isCallbackUrl(url: string): boolean {
@@ -27,6 +28,26 @@ function isCallbackUrl(url: string): boolean {
   catch {
     return false
   }
+}
+
+/**
+ * 回跳目标在发起授权跳转前同步落库：靠 watcher 异步写会在页面卸载前丢失，
+ * 导致回调后读不到目标而回首页。
+ */
+function getStoredRedirectUrl(): string {
+  if (import.meta.env.SSR)
+    return withBase('/')
+  return sessionStorage.getItem(REDIRECT_LINK_KEY) ?? withBase('/')
+}
+
+function storeRedirectUrl(url: string): void {
+  if (!import.meta.env.SSR)
+    sessionStorage.setItem(REDIRECT_LINK_KEY, url)
+}
+
+function clearStoredRedirectUrl(): void {
+  if (!import.meta.env.SSR)
+    sessionStorage.removeItem(REDIRECT_LINK_KEY)
 }
 
 interface OAuthCallbackParams {
@@ -48,18 +69,12 @@ function useLogin() {
 
   const authProgress = useAuthProgress()
 
-  const redirectUrl = refAutoReset(withBase('/'), 1000 * 60 * 5)
-  const storedRedirectUrl = useStorage(REDIRECT_LINK_KEY, redirectUrl, import.meta.env.SSR ? undefined : sessionStorage)
-
   const { go } = useRouter()
   const { theme, localeIndex } = useData()
 
   initOAuthFlow()
 
   async function initOAuthFlow() {
-    if (isLoggedIn())
-      return
-
     // 授权失败回调（如用户拒绝授权）：?error=access_denied
     if (oauthCallback.error) {
       log.error(LogGroup.LOGIN, `OAuth callback returned error: ${oauthCallback.error}`)
@@ -70,6 +85,13 @@ function useLogin() {
 
     if (!authCode)
       return
+
+    // 回调到达时已有有效会话（如另一标签页刚完成登录）：跳过换发，直接回跳
+    if (isLoggedIn()) {
+      await redirectToOriginalPage()
+      await replayLoginIntent()
+      return
+    }
 
     // state 不一致说明回调可能由第三方伪造（登录 CSRF），拒绝交换 token
     if (!oauthCallback.stateValid) {
@@ -85,6 +107,7 @@ function useLogin() {
       await performOAuthSteps()
       handlePostLogin()
       await redirectToOriginalPage()
+      await replayLoginIntent()
     }
     catch (error) {
       log.error(LogGroup.LOGIN, 'OAuth flow failed', error)
@@ -109,6 +132,11 @@ function useLogin() {
     }
     toast.error(message)
     await redirectToOriginalPage()
+    // 会话已建立（如 SSO 失败）按登录成功回放意图；未登录则丢弃防止误回放
+    if (isLoggedIn())
+      await replayLoginIntent()
+    else
+      clearLoginIntent()
   }
 
   async function performOAuthSteps() {
@@ -143,17 +171,25 @@ function useLogin() {
 
   async function redirectToOriginalPage() {
     try {
-      const storedUrl = storedRedirectUrl.value || withBase('')
+      const storedUrl = getStoredRedirectUrl()
       // 回跳目标指向回调页自身时回退首页，否则登录后回到无参数的回调页卡死
-      const redirectUrl = isCallbackUrl(storedUrl) ? withBase('/') : storedUrl
+      const target = isCallbackUrl(storedUrl) ? withBase('/') : storedUrl
 
-      window.history.replaceState({}, '', redirectUrl)
-      await go(redirectUrl)
-      storedRedirectUrl.value = withBase('/')
+      window.history.replaceState({}, '', target)
+      await go(target)
+      clearStoredRedirectUrl()
     }
     catch (error) {
       log.warn(LogGroup.LOGIN, 'Redirect failed, falling back to home', error)
       await go(withBase('/'))
+    }
+  }
+
+  /** 回放发起登录时记录的意图（如自动打开反馈表单） */
+  async function replayLoginIntent(): Promise<void> {
+    const intent = takeLoginIntent()
+    if (intent) {
+      location.hash = intent
     }
   }
 
@@ -226,7 +262,7 @@ function useLogin() {
   function handleOAuthLoginStart() {
     isAuthenticating.value = true
     // 从回调页（如失败后重试）发起授权时，回跳目标存首页而非回调页自身
-    redirectUrl.value = isCallbackUrl(location.href) ? withBase('/') : location.href
+    storeRedirectUrl(isCallbackUrl(location.href) ? withBase('/') : location.href)
     oauth.redirectAuth(localeIndex.value)
   }
 
@@ -266,14 +302,15 @@ function useLogin() {
     }
   }
 
-  /** 回调页“重试”按钮：重跑登录流程（授权码仍在时）或重新发起授权 */
-  function retryOAuthFlow() {
+  /** 回调页”重试”按钮：重跑登录流程（授权码仍在时）或重新发起授权 */
+  async function retryOAuthFlow() {
     authProgress.retry()
 
     // 上次失败发生在会话建立之后（如 SSO 同步失败）：直接补跳转到原页面
     if (isLoggedIn()) {
       authProgress.setStep('redirect')
-      redirectToOriginalPage()
+      await redirectToOriginalPage()
+      await replayLoginIntent()
       return
     }
 

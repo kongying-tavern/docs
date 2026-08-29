@@ -14,6 +14,7 @@ import {
 import { useHashChecker } from '@/hooks/useHashChecker'
 import useLogin from '@/hooks/useLogin'
 import { useUserAuthStore } from '@/stores/useUserAuth'
+import { clearLoginIntent } from '~/services/forum/loginIntent'
 
 const userAuth = useUserAuthStore()
 const { theme } = useData()
@@ -36,7 +37,7 @@ useHashChecker(['login-alert', 'oauth-login-alert'], () => {
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>
+        <AlertDialogCancel @click="clearLoginIntent">
           {{ theme.ui.button.cancel }}
         </AlertDialogCancel>
         <AlertDialogAction @click="redirectAuth">

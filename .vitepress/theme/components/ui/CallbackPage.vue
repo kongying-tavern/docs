@@ -6,12 +6,13 @@ import AuthProgressIsland from './AuthProgressIsland.vue'
 
 const { theme } = useData()
 const router = useRouter()
-const { hasOAuthCallback, isLoggedIn } = useLogin()
+const { hasOAuthCallback } = useLogin()
 
 const authTexts = computed(() => theme.value.forum.auth.callback)
 
 onMounted(() => {
-  if (!hasOAuthCallback || isLoggedIn())
+  // 无回调参数只是误入；正常回调（含到达时已登录）由 useLogin 负责回跳
+  if (!hasOAuthCallback)
     router.go(withBase('/'))
 })
 </script>

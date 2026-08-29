@@ -10,7 +10,9 @@ import {
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { publishTopic } from '../utils/forumUi'
+import { FORM_HASH } from './publish-topic-form/config'
 
 const { frontmatter } = useData()
 const { message } = useLocalized()
@@ -31,6 +33,7 @@ function handleButtonClick() {
     publishTopic()
   }
   else {
+    rememberLoginIntent(FORM_HASH)
     location.hash = 'login-alert'
   }
 }

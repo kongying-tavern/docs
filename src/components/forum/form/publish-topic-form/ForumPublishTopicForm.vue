@@ -37,6 +37,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumImageUpload from '~/components/forum/form/ForumImageUpload.vue'
 import { formatImageAttachmentError, formatMessage } from '~/components/forum/utils/forumUi'
+import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { useFormState } from '../composables/useFormState'
 import { useFormSubmit } from '../composables/useFormSubmit'
 import ForumFormActionBar from '../ForumFormActionBar.vue'
@@ -143,8 +144,10 @@ function reopenFailedForm(stage: 'upload' | 'topic'): void {
 useHashChecker(
   [FORM_HASH, ...tabList.value.map((val: string) => `${FORM_HASH}-${val}`)],
   (hash: string) => {
-    if (!userAuth.isTokenValid)
+    if (!userAuth.isTokenValid) {
+      rememberLoginIntent(hash)
       return true
+    }
     const targetTab = last(hash.split('-'))
     const targetType = targetTab && tabList.value.includes(targetTab as TopicFormData['type'])
       ? targetTab as TopicFormData['type']
