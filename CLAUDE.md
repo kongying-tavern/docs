@@ -159,9 +159,9 @@ The project implements a comprehensive authentication system with the following 
 - Use `useAuthHelper()` for accessing authentication utilities
 - Use `log.info(LogGroup.*, message)` for consistent logging
 
-## Forum Event System Architecture
+## Forum State Architecture
 
-> 已废弃：论坛不再使用事件总线 / 跨页 localStorage 事件 / 多 Store 三份数据数组。
+> 旧版事件总线 / 跨页 localStorage 事件 / 多 Store 三份数据数组已废弃。
 > 当前实现：数据流式查询（@pinia/colada + 单一查询缓存，见 `src/composables/forum/`、`src/services/forum/`）与
 > 本地状态由 `useForumPersonalState` 等组合式持有；API 层在 `.vitepress/theme/apis/forum/`。
 > 新建功能请复用现有查询/组合式，不要重建事件总线。
