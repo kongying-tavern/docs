@@ -4,7 +4,7 @@ import { useMediaQuery } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
-import Time from '@/components/ui/time/Time.vue'
+import Time from '@/components/ui/Time/Time.vue'
 import { data as allPosts } from '~/_data/posts.data'
 import { useMarkdownRenderer } from '~/composables/useMarkdownRenderer'
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import Time from '@/components/ui/time/Time.vue'
+import Time from '@/components/ui/Time/Time.vue'
 
 const { date = new Date(), relative = true } = defineProps<{
   date?: string | number | Date
