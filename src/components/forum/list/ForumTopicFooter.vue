@@ -12,7 +12,9 @@ const { topicData } = defineProps<{
   topicData: ForumAPI.Topic
 }>()
 
-const emit = defineEmits(['comment:click'])
+const emit = defineEmits<{
+  'comment:click': [user: ForumAPI.User]
+}>()
 
 const { message } = useLocalized()
 const { isCompactMode } = useForumViewMode()
@@ -52,10 +54,10 @@ function handleCommentClick() {
         data-action="comment"
         :disabled="isClosedComment"
         :class="{ 'cursor-default': isClosedComment, 'important:bg-transparent': isClosedComment }"
-        class="rounded-full bg-[--vp-c-bg-alt] important:h-32px"
+        class="rounded-full bg-[--vp-c-bg-alt] important:h-32px max-mobile:important:h-44px"
         @click="handleCommentClick"
       >
-        <span class="i-lucide:message-circle icon-btn" />
+        <span class="i-lucide:message-circle icon-btn max-mobile:size-6" />
         {{ displayText }}
       </Button>
     </div>

@@ -3,6 +3,8 @@ import type { PreviewerContext } from './image-previewer/ForumImagePreviewer.vue
 import { useMediaQuery } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useBounceScroll } from '~/composables/useBounceScroll'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import ForumImageItem from './ForumImageItem.vue'
 import ForumImagePreviewer from './image-previewer/ForumImagePreviewer.vue'
 
@@ -54,7 +56,7 @@ const actualLayout = computed<Exclude<LayoutMode, 'auto'>>(() => {
   return layoutMap[count] ?? 'gallery'
 })
 
-const isMobile = useMediaQuery('(max-width: 959px)')
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const isRail = computed(() => isMobile.value)
 
 const railRef = useTemplateRef<HTMLElement>('railRef')
@@ -62,6 +64,50 @@ const railIndex = ref(0)
 const railCount = computed(() => availableImages.value.length)
 const showPrevArrow = computed(() => isRail.value && railIndex.value > 0)
 const showNextArrow = computed(() => isRail.value && railIndex.value < railCount.value - 1)
+
+useBounceScroll(railRef, { axis: 'x' })
+
+const displayImages = computed(() => {
+  if (isRail.value)
+    return availableImages.value
+  const layout = actualLayout.value
+  if (layout === 'row')
+    return availableImages.value.slice(0, props.maxDisplay)
+  if (layout === 'gallery')
+    return availableImages.value.slice(0, 4)
+  return availableImages.value
+})
+
+const railItemWidth = computed(() => {
+  if (typeof window === 'undefined')
+    return 420
+  return Math.min(window.innerWidth * 0.78, 420)
+})
+
+const railHeight = computed(() => {
+  if (!isRail.value)
+    return 400
+  const sized = displayImages.value
+    .map(({ image }) => image)
+    .filter(image => Number(image.width) > 0 && Number(image.height) > 0)
+  if (sized.length === 0)
+    return 400
+  const largest = sized.reduce((a, b) =>
+    Number(a.width) * Number(a.height) >= Number(b.width) * Number(b.height) ? a : b)
+  const ratio = Number(largest.height) / Number(largest.width)
+  if (!Number.isFinite(ratio) || ratio <= 0)
+    return 400
+  const maxByViewport = typeof window === 'undefined'
+    ? 560
+    : Math.min(560, window.innerHeight * 0.75)
+  return Math.min(Math.max(railItemWidth.value * ratio, 200), maxByViewport)
+})
+
+function railItemStyle(): Record<string, string> | undefined {
+  if (!isRail.value)
+    return undefined
+  return { height: `${railHeight.value}px` }
+}
 
 function railStep(): number {
   const first = railRef.value?.firstElementChild as HTMLElement | null
@@ -86,17 +132,6 @@ function scrollRailTo(index: number) {
   const target = Math.min(Math.max(index, 0), railCount.value - 1)
   el.scrollTo({ left: target * step, behavior: 'smooth' })
 }
-
-const displayImages = computed(() => {
-  if (isRail.value)
-    return availableImages.value
-  const layout = actualLayout.value
-  if (layout === 'row')
-    return availableImages.value.slice(0, props.maxDisplay)
-  if (layout === 'gallery')
-    return availableImages.value.slice(0, 4)
-  return availableImages.value
-})
 
 const remainingCount = computed(() => {
   if (isRail.value)
@@ -150,7 +185,7 @@ const layoutConfig = computed(() => {
 
   const getItemStyle = (index: number): string => {
     if (isRail.value)
-      return 'w-[78vw] max-w-[420px] h-[400px] shrink-0 snap-start rounded-xl'
+      return 'w-[78vw] max-w-[420px] shrink-0 snap-start rounded-xl'
     if (layout === 'row')
       return 'h-100px w-[30%] rounded'
 
@@ -203,6 +238,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
             !isRail && actualLayout === 'triple' ? tripleGridClasses[index] : '',
             isPreviewReady(image, sourceIndex) ? 'cursor-zoom-in' : 'cursor-wait',
           ]"
+          :style="railItemStyle()"
           :disabled="!isPreviewReady(image, sourceIndex)"
           :aria-label="message.forum.imagePreview.showImage.replace('{index}', String(index + 1))"
           @click="openAt(index, $event.currentTarget)"
@@ -276,6 +312,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 
 .forum-image-rail {
   position: relative;
+  padding-bottom: 10px;
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-snap-type: x proximity;

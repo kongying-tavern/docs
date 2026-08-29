@@ -86,8 +86,8 @@ async function handleDeleteComment() {
     <div class="topic-info-list flex cursor-default items-center">
       <ForumTopicCommentDropdownMenu :menus="[...(menus ?? []), ...deleteMenu]" />
 
-      <Button type="button" class="h-8" variant="ghost" @click="handleCommentClick">
-        <span class="i-lucide:message-circle icon-btn size-4" aria-hidden="true" />
+      <Button type="button" class="h-8 max-mobile:h-11" variant="ghost" @click="handleCommentClick">
+        <span class="i-lucide:message-circle icon-btn max-mobile:size-6" aria-hidden="true" />
         {{ commentMsg }}
       </Button>
     </div>

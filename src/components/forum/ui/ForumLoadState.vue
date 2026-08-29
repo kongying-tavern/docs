@@ -3,31 +3,18 @@ import { ReloadIcon } from '@radix-icons/vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 
-defineProps({
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-  canLoadMore: {
-    type: Boolean,
-    default: false,
-  },
-  error: {
-    type: Boolean,
-    default: false,
-  },
-  text: {
-    type: String,
-    default: 'Loading...',
-  },
-  loadMore: {
-    type: Function,
-    default: undefined,
-  },
-  retry: {
-    type: Function,
-    default: undefined,
-  },
+withDefaults(defineProps<{
+  loading?: boolean
+  canLoadMore?: boolean
+  error?: boolean
+  text?: string
+  loadMore?: () => unknown
+  retry?: () => unknown
+}>(), {
+  loading: false,
+  canLoadMore: false,
+  error: false,
+  text: '',
 })
 
 const { message } = useLocalized()

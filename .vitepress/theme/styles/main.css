@@ -284,15 +284,13 @@ textarea {
   --forum-media-dot-hover: color-mix(in srgb, var(--vp-c-white) 60%, transparent);
   --forum-role-official-text: var(--vp-c-danger-1);
   --forum-role-official-bg: var(--vp-c-danger-soft);
-  --forum-role-author-text: var(--vp-c-info-1);
-  --forum-role-author-bg: var(--vp-c-info-soft);
+  --forum-role-author-text: var(--vp-c-purple-1);
+  --forum-role-author-bg: var(--vp-c-purple-soft);
   --forum-role-official-at: var(--vp-c-warning-1);
   --forum-topic-type-bug: var(--vp-c-warning-1);
   --forum-topic-type-feat: var(--vp-c-brand-1);
-  --forum-topic-type-ann: var(--vp-c-info-1);
+  --forum-topic-type-ann: var(--vp-c-purple-1);
   --forum-topic-type-post: var(--vp-c-purple-1);
-  --forum-c-bilibili: #00a1d6;
-  --forum-c-youtube: #f00;
 }
 
 /* Inline spoiler styles for ScratchToReveal component */

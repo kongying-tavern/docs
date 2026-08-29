@@ -130,8 +130,6 @@ function badgeText(count: number): string {
   padding: 8px 0;
 }
 
-/* 最多平铺 5 行（48px/行），更多项在本容器内滚动。
-   scrollbar-gutter: stable 恒久预留滚动条槽位（内容零位移），槽位透明不可见，仅 hover 显示柱体 */
 .forum-sidebar-topic-list {
   max-height: 240px;
   overflow-y: auto;

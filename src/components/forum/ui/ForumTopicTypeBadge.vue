@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
+import { computed } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 
 const { type, iconOnly = false } = defineProps<{
   type: ForumAPI.TopicType
   iconOnly?: boolean
 }>()
 
-const topicTypeMap = getTopicTypeMap()
+const { message } = useLocalized()
+
+const topicTypeMap = computed(() => new Map<ForumAPI.TopicKind, string>([
+  ['FEAT', message.value.forum.topic.type.feat],
+  ['ANN', message.value.forum.topic.type.ann],
+  ['BUG', message.value.forum.topic.type.bug],
+  ['POST', message.value.forum.labels.teamBlog],
+]))
 
 const typeColorClass: Record<ForumAPI.TopicKind, string> = {
   BUG: 'bg-[var(--forum-topic-type-bug)]',

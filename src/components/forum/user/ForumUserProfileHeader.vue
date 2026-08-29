@@ -43,11 +43,9 @@ const {
                 <Button
                   variant="outline"
                   class="border border-[var(--vp-c-divider)] border-solid"
+                  @click="sendMessage"
                 >
-                  <span
-                    class="i-lucide-mail text-base"
-                    @click="sendMessage"
-                  />
+                  <span class="i-lucide-mail text-base" />
                   <span class="max-sm:hidden">{{ message.forum.labels.privateMessage }}</span>
                 </Button>
                 <ForumFollowUserButton
@@ -61,7 +59,7 @@ const {
             <div class="flex-1 w-full">
               <div class="flex gap-2 items-center">
                 <h1 class="text-xl text-[var(--vp-c-text-1)] font-bold sm:text-2xl">
-                  {{ renderedUser?.username || 'Unknown' }}
+                  {{ renderedUser?.username || message.forum.labels.unknown }}
                 </h1>
                 <span class="rounded-full">
                   <ForumRoleBadge :type="role" />
@@ -90,11 +88,9 @@ const {
               <Button
                 variant="outline"
                 class="border border-[var(--vp-c-divider)] border-solid"
+                @click="sendMessage"
               >
-                <span
-                  class="i-lucide-mail text-base"
-                  @click="sendMessage"
-                />
+                <span class="i-lucide-mail text-base" />
               </Button>
               <ForumFollowUserButton
                 v-if="renderedUser?.login"

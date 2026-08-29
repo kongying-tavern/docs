@@ -14,7 +14,7 @@ const { message } = useLocalized()
 </script>
 
 <template>
-  <Button class="mb-4 w-full justify-start max-[959px]:hidden" @click="$emit('create')">
+  <Button class="mb-4 w-full justify-start max-mobile:hidden" @click="$emit('create')">
     <span :class="isLoggedIn ? 'i-lucide-square-pen' : 'i-lucide-log-in'" aria-hidden="true" />
     {{ isLoggedIn ? message.forum.sidebar.createFeedback : message.forum.sidebar.loginToCreate }}
   </Button>
