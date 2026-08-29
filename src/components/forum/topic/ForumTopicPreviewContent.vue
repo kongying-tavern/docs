@@ -24,7 +24,7 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
     <ForumTopicHeader :topic="topic" />
     <ForumTopicContent :topic="topic" :detail-href="detailHref" />
     <ForumTopicMedia :topic="topic" />
-    <ForumTopicFooter :topic-data="topic" />
+    <ForumTopicFooter :topic-data="topic" hide-comment-button />
     <ForumCommentArea
       repo="Feedback"
       :topic-id="String(topic.id)"
