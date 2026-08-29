@@ -19,13 +19,13 @@ function generateOAuthState(): string {
 
 /**
  * 校验回调携带的 state，校验后立即移除以防重放。
- * 本地无记录时（存储被清理或旧版本发起的登录）放行，保持向后兼容。
+ * 无预期 state（存储被清理、伪造回调）时失败关闭。
  */
 export function validateOAuthState(callbackState: string | null): boolean {
   const storedState = sessionStorage.getItem(OAUTH_STATE_KEY)
   sessionStorage.removeItem(OAUTH_STATE_KEY)
-  if (!storedState)
-    return true
+  if (!storedState || !callbackState)
+    return false
   return storedState === callbackState
 }
 
