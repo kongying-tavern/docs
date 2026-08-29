@@ -148,7 +148,7 @@
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,cjs,mts,cts}": "pnpm lint:eslint:fix"
+    "*.{js,ts,vue,mjs,cjs,mts,cts}": "eslint --cache --fix"
   },
   "config": {
     "commitizen": {
