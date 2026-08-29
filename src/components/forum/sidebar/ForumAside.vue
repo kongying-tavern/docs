@@ -91,12 +91,12 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         <p class="color-[var(--vp-c-text-1)]">
           {{ message.forum.aside.teamBlog.text }}
         </p>
-        <VPLink class="font-size-14px vp-link" href="../blog">
+        <a class="font-size-14px vp-link" :href="withBase('/blog')">
           {{ message.ui.button.all }}
-        </VPLink>
+        </a>
       </div>
 
-      <VPLink
+      <a
         v-for="post in teamBlogPosts"
         :key="post.link"
         :href="withBase(post.link)"
@@ -112,7 +112,7 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         >
           {{ post.title }}
         </span>
-      </VPLink>
+      </a>
     </div>
     <div class="selected-articles mb-4">
       <p
@@ -120,10 +120,10 @@ const closedSuggestions = computed(() => closedTopics.rows.value
       >
         {{ message.forum.aside.suggest.text }}
       </p>
-      <VPLink
+      <a
         v-for="item in suggestList"
         :key="`${item.tag}-${item.link}`"
-        :href="item.link"
+        :href="withBase(item.link)"
         class="forum-aside-list-item forum-aside-document-item"
       >
         <span
@@ -137,7 +137,7 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         >
           {{ item.text?.replace(/【|】|\[|\]/g, ' ').trim() }}
         </span>
-      </VPLink>
+      </a>
     </div>
     <div class="selected-articles mb-4">
       <p
@@ -155,7 +155,7 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         {{ message.forum.aside.recentTopics.empty }}
       </p>
       <template v-else>
-        <VPLink
+        <a
           v-for="topic in closedSuggestions"
           :key="topic.id"
           :href="topicHref(String(topic.id), null)"
@@ -165,7 +165,7 @@ const closedSuggestions = computed(() => closedTopics.rows.value
             {{ topic.title }}
           </span>
           <ForumTopicTypeBadge class="color-[var(--vp-c-text-3)] mt-1" :type="topic.type" />
-        </VPLink>
+        </a>
       </template>
     </div>
   </div>
