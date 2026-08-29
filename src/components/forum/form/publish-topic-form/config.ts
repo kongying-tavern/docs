@@ -1,14 +1,15 @@
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import type { CustomConfig } from '../../../../../.vitepress/locales/types'
 import type { TabsConfig } from './types'
-import { useLocalized } from '@/hooks/useLocalized'
 import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
 
 export const TRANSITION_DURATION = 800
 export const FORM_HASH = 'PUBLISH-TOPIC'
 
-export function getFormTabsConfig(hasPermission: ComputedRef<boolean>): TabsConfig[] {
-  const { message } = useLocalized()
-
+export function getFormTabsConfig(
+  message: Ref<CustomConfig>,
+  hasPermission: ComputedRef<boolean>,
+): TabsConfig[] {
   return [
     {
       value: 'BUG',

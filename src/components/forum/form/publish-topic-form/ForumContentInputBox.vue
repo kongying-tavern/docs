@@ -5,8 +5,11 @@ import type ForumAPI from '@/apis/forum/api'
 import { useQueryCache } from '@pinia/colada'
 import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'
+import { BubbleMenu } from '@tiptap/vue-3/menus'
 import { useVModel } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { createForumSuggestionRenderer } from '~/composables/tiptap/forumSuggestionRenderer'
@@ -41,7 +44,37 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 const editor = shallowRef<TiptapEditor | null>(null)
 const focused = ref(false)
+const activeFormats = ref<TextFormat[]>([])
 const queryCache = useQueryCache()
+const { message } = useLocalized()
+
+type TextFormat = 'bold' | 'italic' | 'strike'
+
+function syncActiveFormats(currentEditor: TiptapEditor): void {
+  activeFormats.value = (['bold', 'italic', 'strike'] as const).filter(format => currentEditor.isActive(format))
+}
+
+function toggleFormat(format: TextFormat): void {
+  const chain = editor.value?.chain().focus()
+  if (!chain)
+    return
+  if (format === 'bold')
+    chain.toggleBold().run()
+  else if (format === 'italic')
+    chain.toggleItalic().run()
+  else
+    chain.toggleStrike().run()
+}
+
+function shouldShowFormatMenu({ editor: currentEditor, from, to }: {
+  editor: TiptapEditor
+  from: number
+  to: number
+}): boolean {
+  return from !== to
+    && !currentEditor.isActive('code')
+    && currentEditor.state.doc.textBetween(from, to).trim().length > 0
+}
 
 function getLoadedTopics(): ForumAPI.Topic[] {
   return collectForumTopics(
@@ -69,13 +102,15 @@ onMounted(() => {
     ],
     content: modelValue.value || '',
     contentType: 'markdown',
-    enableInputRules: ['blockquote', 'bold', 'bulletList', 'code', 'codeBlock', 'italic', 'orderedList', 'strike'],
+    enableInputRules: ['blockquote', 'bold', 'bulletList', 'code', 'italic', 'orderedList', 'strike'],
     onUpdate: ({ editor: currentEditor }) => {
       modelValue.value = currentEditor.getMarkdown()
     },
     onFocus: () => {
       focused.value = true
     },
+    onSelectionUpdate: ({ editor: currentEditor }) => syncActiveFormats(currentEditor),
+    onTransaction: ({ editor: currentEditor }) => syncActiveFormats(currentEditor),
     onBlur: ({ event }) => {
       focused.value = false
       emits('blur', event)
@@ -115,6 +150,50 @@ onBeforeUnmount(() => editor.value?.destroy())
         "
       >
         <div class="editor min-h-inherit relative">
+          <BubbleMenu
+            v-if="editor"
+            :editor="editor"
+            :should-show="shouldShowFormatMenu"
+            :options="{ placement: 'top', offset: 8 }"
+          >
+            <ToggleGroup
+              type="multiple"
+              size="sm"
+              :model-value="activeFormats"
+              class="p-1 border border-[var(--vp-c-divider)] border-solid bg-[var(--vp-c-bg-elv)] shadow-lg"
+            >
+              <ToggleGroupItem
+                value="bold"
+                class="px-0 size-8"
+                :aria-label="message.forum.publish.feedbackForm.formatBold"
+                :title="message.forum.publish.feedbackForm.formatBold"
+                @mousedown.prevent
+                @click="toggleFormat('bold')"
+              >
+                <span class="i-lucide-bold size-4" />
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value="italic"
+                class="px-0 size-8"
+                :aria-label="message.forum.publish.feedbackForm.formatItalic"
+                :title="message.forum.publish.feedbackForm.formatItalic"
+                @mousedown.prevent
+                @click="toggleFormat('italic')"
+              >
+                <span class="i-lucide-italic size-4" />
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value="strike"
+                class="px-0 size-8"
+                :aria-label="message.forum.publish.feedbackForm.formatStrike"
+                :title="message.forum.publish.feedbackForm.formatStrike"
+                @mousedown.prevent
+                @click="toggleFormat('strike')"
+              >
+                <span class="i-lucide-strikethrough size-4" />
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </BubbleMenu>
           <EditorContent
             v-if="editor"
             :editor="(editor as InstanceType<typeof Editor>)"

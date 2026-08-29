@@ -68,7 +68,7 @@ export function createForumTopicEditorExtensions(
   })
 
   return [
-    StarterKit.configure({ heading: false, link: false }),
+    StarterKit.configure({ codeBlock: false, heading: false, link: false }),
     topicLink,
     topicMention,
     createTopicReferenceNode(options.getTopics ?? (() => []), options.suggestionRender),

@@ -31,6 +31,8 @@ const AUTO_LINK_PROTOCOL_REGEX = /^https?:\/\//i
 
 const JSON_LIKE_TEXT_REGEX = /^\s*[[{]/u
 
+const TOPIC_CODE_FENCE_MARKER_REGEX = /^( {0,3})(`{3,}|~{3,})/gm
+
 const TOPIC_MARKDOWN = new MarkdownIt({
   breaks: true,
   html: false,
@@ -39,7 +41,7 @@ const TOPIC_MARKDOWN = new MarkdownIt({
 
 TOPIC_MARKDOWN.core.ruler.before('linkify', 'forum-schemeless-links', normalizeSchemelessLinkTokens)
 TOPIC_MARKDOWN.core.ruler.after('linkify', 'forum-special-text', transformForumSpecialText)
-TOPIC_MARKDOWN.disable(['autolink', 'heading', 'image', 'link'])
+TOPIC_MARKDOWN.disable(['autolink', 'code', 'fence', 'heading', 'image', 'link'])
 
 const FORUM_HTML_SANITIZE_CONFIG = {
   ALLOWED_ATTR: [
@@ -217,11 +219,17 @@ function linkForumReferences(text: string, options: ForumTopicRenderOptions): st
 }
 
 export function renderForumTopic(text: string, options: ForumTopicRenderOptions = {}): string {
-  return sanitizeForumHtml(TOPIC_MARKDOWN.render(text, options))
+  return sanitizeForumHtml(TOPIC_MARKDOWN.render(escapeTopicCodeFenceMarkers(text), options))
 }
 
 export function renderForumTopicSummary(text: string, options: ForumTopicRenderOptions = {}): string {
-  return sanitizeForumHtml(TOPIC_MARKDOWN.renderInline(text, options))
+  return sanitizeForumHtml(TOPIC_MARKDOWN.renderInline(escapeTopicCodeFenceMarkers(text), options))
+}
+
+function escapeTopicCodeFenceMarkers(text: string): string {
+  return text.replace(TOPIC_CODE_FENCE_MARKER_REGEX, (_match, indent: string, marker: string) => (
+    `${indent}${Array.from(marker, character => `\\${character}`).join('')}`
+  ))
 }
 
 function sanitizeForumHtml(html: string): string {

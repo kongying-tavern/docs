@@ -17,7 +17,7 @@ export function useFormState() {
   const { message } = useLocalized()
   const { hasAnyPermissions } = useRuleChecks()
   const hasPermission = hasAnyPermissions('manage_feedback')
-  const formTabs = getFormTabsConfig(hasPermission)
+  const formTabs = computed(() => getFormTabsConfig(message, hasPermission))
 
   const isOpen = ref(false)
   const currentTabIndex = ref<number>(0)
@@ -57,7 +57,7 @@ export function useFormState() {
   })
 
   const nextTab = computed(() => {
-    return formTabs.find(val => val.value === tabList.value[nextTabIndex.value])
+    return formTabs.value.find(val => val.value === tabList.value[nextTabIndex.value])
   })
 
   function snapshotDraft(type: TopicFormData['type']): void {
