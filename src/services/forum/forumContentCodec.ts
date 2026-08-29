@@ -1,13 +1,14 @@
 import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '@/apis/forum/api'
 
-const TOPIC_COMMENT_SPLIT_REGEX = /(<!--.*(?=-->)-->)/gu
+// HTML 注释以 --> 或 --!> 结束；未闭合的注释按规范延伸到输入末尾
+const TOPIC_COMMENT_SPLIT_REGEX = /(<!--[\s\S]*?(?:-->|--!>|$))/gu
 
-const HTML_COMMENT_TAGS_REGEX = /^<!--|-->$/gu
+const HTML_COMMENT_TAGS_REGEX = /^<!--|--!?>$/gu
 
 const MARKDOWN_IMAGE_REGEX = /!\[(.*?)\]\((.*?)\)\s*(\{[^}]*\})?/g
 
-const HTML_COMMENT_REGEX = /<!--.*?-->/gs
+const HTML_COMMENT_REGEX = /<!--[\s\S]*?(?:-->|--!>|$)/g
 
 const CRLF_LINE_ENDING_REGEX = /\r\n/g
 

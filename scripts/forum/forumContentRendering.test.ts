@@ -136,7 +136,7 @@ test('Topic bodies and summaries share safe topic references and shortened auto-
     assert.match(rendered, /target="_blank"/)
     assert.match(rendered, /rel="noopener noreferrer"/)
     assert.match(rendered, /gitee\.com\/KYJGYSDT\/a\/very\/long\/path\/that\/keeps\/?…/)
-    assert.match(rendered, new RegExp(`href="${longUrl.replace(/\?/g, '\\?')}"`))
+    assert.match(rendered, new RegExp(`href="${longUrl.replace(/[\\?]/g, '\\$&')}"`))
   }
 })
 
