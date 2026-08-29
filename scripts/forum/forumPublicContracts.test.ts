@@ -2,6 +2,7 @@
 import { strict as assert } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
+import { extractOfficialAndAuthorComments } from '../../.vitepress/theme/apis/forum/gitee/inBrowserUtils'
 import { normalizeComment, normalizeIssue } from '../../.vitepress/theme/apis/forum/gitee/utils'
 import { cn } from '../../.vitepress/theme/lib/utils'
 import { composeTopicBody, writeTopicBodyComment } from '../../src/composables/composeTopicBody'
@@ -40,6 +41,46 @@ test('comment emoji and self-profile actions keep their display contracts', asyn
   assert.equal(profileSource.match(/v-if="!isAuthorizedUser"/g)?.length, 2)
   assert.match(profileStateSource, /String\(renderedUser\.value\.id\) === String\(userInfo\.info\?\.id\)/)
   assert.match(hoverCardSource, /v-if="!isAuthorizedUser"/)
+  assert.match(hoverCardSource, /useForumUserProfileQuery/)
+  assert.doesNotMatch(hoverCardSource, /user-hover|userAPI\.getUser/)
+})
+
+test('official comment extraction receives permission state from its caller', () => {
+  const authorComment = { ...comment('author'), id: 1, user, target: { issue: { id: 101 } } }
+  const officialComment = {
+    ...comment('official'),
+    id: 2,
+    user: { ...user, id: 8, login: 'moderator' },
+    target: { issue: { id: 101 } },
+  }
+  const sourceIssue = { ...issue('body'), id: 101 } as GITEE.IssueInfo
+  const result = extractOfficialAndAuthorComments(
+    sourceIssue,
+    [authorComment, officialComment] as unknown as GITEE.CommentList,
+    userId => Number(userId) === 8,
+  )
+
+  assert.deepEqual(result?.map(item => item.id), [1, 2])
+})
+
+test('comment scrolling hooks register during component setup', async () => {
+  const [stateSource, areaSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/comment/ForumCommentArea.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.doesNotMatch(stateSource, /function initialize/)
+  assert.match(stateSource, /if \(!import\.meta\.env\.SSR\) \{\s+useInfiniteScroll/)
+  assert.match(areaSource, /const inputObservationTarget = computed/)
+  assert.doesNotMatch(areaSource, /stopObserver|onUnmounted\(cleanup\)/)
+})
+
+test('expanded personal sidebar sections bound live detail hydration', async () => {
+  const sidebarSource = await readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8')
+
+  assert.match(sidebarSource, /const SIDEBAR_DETAIL_QUERY_LIMIT = 5/)
+  assert.equal(sidebarSource.match(/Array\.from\(\{ length: SIDEBAR_DETAIL_QUERY_LIMIT \}/g)?.length, 2)
+  assert.equal(sidebarSource.match(/\.slice\(0, 20\)/g)?.length, 3)
 })
 
 test('topic authors can close their own feedback from the topic menu', async () => {
@@ -159,13 +200,17 @@ test('normalizes Comment attachments without changing content order', () => {
 })
 
 test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
-  const [issuesSource, userPageSource, topicContentSource] = await Promise.all([
+  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/issues.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/inBrowserUtils.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
+  assert.doesNotMatch(`${issuesSource}\n${browserUtilsSource}`, /useRuleChecks/)
+  assert.match(mutationsSource, /skipReformat: canSkipTopicReformat\.value/)
   assert.match(userPageSource, /if \(list\.value\?\.q\)\s+return/)
   assert.match(topicContentSource, /event: MouseEvent \| KeyboardEvent/)
   assert.match(topicContentSource, /event instanceof MouseEvent/)

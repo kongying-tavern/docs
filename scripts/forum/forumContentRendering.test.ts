@@ -296,6 +296,21 @@ test('Topic editor previews supported Markdown but keeps authored links and head
   editor.destroy()
 })
 
+test('Topic bodies keep code blocks as literal text instead of editor or rendered nodes', () => {
+  const markdown = 'Before\n\n```js\nalert(1)\n```\n\nAfter'
+  const extensions = createForumTopicEditorExtensions()
+  const editor = new Editor({ extensions, content: markdown, contentType: 'markdown' })
+  const extensionNames = resolveExtensions(extensions).map(extension => extension.name)
+  const rendered = renderForumTopic(markdown)
+
+  assert.equal(extensionNames.includes('codeBlock'), false)
+  assert.equal(JSON.stringify(editor.getJSON()).includes('codeBlock'), false)
+  assert.equal(rendered.includes('<pre'), false)
+  assert.equal(rendered.includes('<code'), false)
+  assert.match(rendered, /```js/)
+  editor.destroy()
+})
+
 test('Topic detail and summary are the only forum surfaces that render body HTML', () => {
   const readSource = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')
   const topicContent = readSource('src/components/forum/topic/ForumTopicContent.vue')
@@ -304,11 +319,12 @@ test('Topic detail and summary are the only forum surfaces that render body HTML
   const translator = readSource('src/components/forum/topic/ForumTopicTranslator.vue')
   const forumHome = readSource('src/components/forum/home/ForumHome.vue')
 
-  assert.match(topicContent, /renderForumTopicSummary\(displayContent\.value/)
+  assert.match(topicContent, /renderForumTopicSummary\(contentOverride \?\? displayContent\.value/)
   assert.match(topicPageState, /renderForumTopic\(topic\.value\.content\.text/)
+  assert.match(topicPage, /<ForumTopicTranslator\s+ref="translator"/)
   assert.match(topicPage, /:content="topic\.content\.text"/)
-  assert.match(translator, /\{\{ displayText \}\}/)
-  assert.equal(translator.includes('v-html="displayText"'), false)
+  assert.match(topicPage, /\{\{ translatedContent \}\}/)
+  assert.equal(translator.includes('v-html'), false)
   assert.equal(forumHome.includes('v-html'), false)
   assert.equal(forumHome.includes('BlogPostAsTopic'), false)
   assert.equal(forumHome.includes('renderMarkdownPreview'), false)
