@@ -27,6 +27,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html:has(.Forum) {
+  scroll-behavior: auto;
+}
+
 h1,
 .outline-title,
 div.VPHomeHero > div > div.main > p.text,
@@ -56,6 +60,49 @@ thead,
 .timeline-dot-title,
 div.VPHomeHero > div > div.main > p.tagline {
   font-family: var(--vp-font-family-subtitle);
+}
+
+.forum-document-link,
+.forum-external-link,
+.forum-topic-reference,
+.mention {
+  text-decoration: none;
+}
+
+.forum-document-link {
+  display: inline-flex;
+  gap: 0.25em;
+  align-items: center;
+  vertical-align: -0.25em;
+}
+
+.forum-document-link {
+  transition: background-color 160ms ease;
+}
+
+.forum-document-link:hover {
+  background-color: var(--vp-c-brand-soft);
+}
+
+.forum-document-link-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+  line-height: 0;
+}
+
+.forum-topic-reference {
+  border-radius: 0.25rem;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+  padding-inline: 0.15em;
+  text-decoration: none;
+}
+
+.forum-external-link {
+  overflow-wrap: anywhere;
 }
 
 .vp-doc h2 {
@@ -226,6 +273,24 @@ textarea {
   --vp-spoiler-color-1: var(--vp-c-text-1);
   --vp-spoiler-color-2: var(--vp-c-text-2);
   --vp-spoiler-color-3: var(--vp-c-text-3);
+  --forum-media-on-overlay: var(--vp-c-white);
+  --forum-media-overlay-soft: color-mix(in srgb, var(--vp-c-black) 35%, transparent);
+  --forum-media-backdrop: color-mix(in srgb, var(--vp-c-black) 45%, transparent);
+  --forum-media-overlay: color-mix(in srgb, var(--vp-c-black) 55%, transparent);
+  --forum-media-overlay-strong: color-mix(in srgb, var(--vp-c-black) 75%, transparent);
+  --forum-media-glass: color-mix(in srgb, var(--vp-c-white) 8%, transparent);
+  --forum-media-glass-hover: color-mix(in srgb, var(--vp-c-white) 16%, transparent);
+  --forum-media-dot: color-mix(in srgb, var(--vp-c-white) 35%, transparent);
+  --forum-media-dot-hover: color-mix(in srgb, var(--vp-c-white) 60%, transparent);
+  --forum-role-official-text: var(--vp-c-danger-1);
+  --forum-role-official-bg: var(--vp-c-danger-soft);
+  --forum-role-author-text: var(--vp-c-purple-1);
+  --forum-role-author-bg: var(--vp-c-purple-soft);
+  --forum-role-official-at: var(--vp-c-warning-1);
+  --forum-topic-type-bug: var(--vp-c-warning-1);
+  --forum-topic-type-feat: var(--vp-c-brand-1);
+  --forum-topic-type-ann: var(--vp-c-purple-1);
+  --forum-topic-type-post: var(--vp-c-purple-1);
 }
 
 /* Inline spoiler styles for ScratchToReveal component */

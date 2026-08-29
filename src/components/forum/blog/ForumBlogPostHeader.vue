@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import Avatar from '@/components/ui/Avatar.vue'
-import Time from '@/components/ui/time/Time.vue'
+import Time from '@/components/ui/Time/Time.vue'
 import { parseAuthors } from '~/utils/frontmatter'
 
 const { frontmatter, lang, page } = useData()

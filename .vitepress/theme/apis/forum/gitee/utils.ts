@@ -5,25 +5,11 @@ import { avatarBaseURl, avatarList } from '@/composables/avatarList'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
+import { decodeCommentBody, decodeTopicBody, stripMarkdownImages } from '~/services/forum/forumContentCodec'
 
 import { GITEE_API_CONFIG } from './config'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
-
-/** Matches @username mentions in text */
-const AT_MENTION_REGEX = /@([a-z0-9]+)(?=\s|$)/gi
-
-/** Matches Markdown image syntax with optional metadata */
-const MARKDOWN_IMAGE_REGEX = /!\[(.*?)\]\((.*?)\)\s*(\{[^}]*\})?/g
-
-/** Matches HTML comments */
-const HTML_COMMENT_REGEX = /<!--.*?-->/gs
-
-/** Matches CRLF line endings */
-const CRLF_LINE_ENDING_REGEX = /\r\n/g
-
-/** Matches leading and trailing quotes */
-const LEADING_TRAILING_QUOTE_REGEX = /^"|"$/g
 
 /** Matches a page number in API pagination links */
 const PAGE_QUERY_PARAM_REGEX = /[?&](?:page|current)=([^&>]+)/
@@ -78,13 +64,17 @@ function getUniqueIndexById(id: number, range: number): number {
 }
 
 export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
+  const decoded = decodeTopicBody(issue.body)
   return {
     type: 'POST',
     id: issue.number,
-    title: issue.title.split('%%')[0]?.trim(),
+    title: stripMarkdownImages(issue.title.split('%%')[0]?.trim() ?? ''),
     path: issue.title.split('%%')[1]?.trim() || issue.number,
     link: issue.html_url,
-    content: markdownToTextWithImages(issue.body),
+    content: {
+      text: decoded.content.text,
+      ...(decoded.attachments ? { images: decoded.attachments } : {}),
+    },
     contentRaw: issue.body,
     commentCount: issue.comments,
     user: normalizeUser(issue.assignee || issue.user),
@@ -99,31 +89,39 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
 export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
   const { type, title } = getTopicTypeFromTitle(issue.title)
   const tags = filterWhitelistTags(issue.labels)
+  const decoded = decodeTopicBody(issue.body)
 
   return {
     tags,
     title,
     id: issue.number,
     type: type || 'BUG',
-    content: markdownToTextWithImages(issue.body),
+    content: {
+      text: decoded.content.text,
+      ...(decoded.attachments ? { images: decoded.attachments } : {}),
+    },
     contentRaw: issue.body,
     link: issue.html_url,
     commentCount: getCommentAreaState(issue.labels) ? -1 : issue.comments,
+    pinned: issue.labels.some(label => label.name === 'PINNED'),
     user: normalizeUser(issue.user),
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,
+    ...(issue.finished_at ? { closedAt: issue.finished_at } : {}),
     language: getLanguageFromLabel(issue.labels),
   }
 }
 
 export function normalizeComment(comment: GITEE.Comment): ForumAPI.Comment {
-  const { text, images } = markdownToTextWithImages(comment.body)
+  const decoded = decodeCommentBody(comment.body)
   return {
     id: comment.id,
     content: {
-      text: replaceAtMentions(text),
-      images,
+      text: decoded.content.kind === 'tiptap'
+        ? JSON.stringify(decoded.content.doc)
+        : decoded.content.text,
+      ...(decoded.attachments ? { images: decoded.attachments } : {}),
     },
     contentRaw: comment.body,
     author: normalizeUser(comment.user),
@@ -138,22 +136,8 @@ function getCommentAreaState(labels: GITEE.IssueLabel[]) {
   return labels.map(val => val.name).includes('COMMENT-CLOSED')
 }
 
-export function setFilterTags(arr: string[] = []) {
-  const tags = ['WEB-FEEDBACK', ...arr]
-  return tags.join(',')
-}
-
 export function isUpperCase(str: string) {
   return str.toLocaleUpperCase() === str
-}
-
-export function replaceAtMentions(text: string): string {
-  if (AT_MENTION_REGEX.exec(text) == null)
-    return text
-
-  return text.replaceAll(AT_MENTION_REGEX, (_match, p1) => {
-    return `<a class="vp-link" href="https://gitee.com/${encodeURIComponent(p1)}" target="${p1}">@${p1}</a>`
-  })
 }
 
 function getTopicTypeFromTitle(title: string): {
@@ -167,10 +151,10 @@ function getTopicTypeFromTitle(title: string): {
   if (match) {
     const prefix = match[0].replace(':', '') as ForumAPI.TopicType
     if (prefix)
-      return { type: prefix, title: title.slice(prefix.length + 1) }
+      return { type: prefix, title: stripMarkdownImages(title.slice(prefix.length + 1)) }
   }
 
-  return { type: null, title }
+  return { type: null, title: stripMarkdownImages(title) }
 }
 
 export function getLanguageFromLabel(label: GITEE.IssueLabel[]): string | undefined {
@@ -200,78 +184,6 @@ export function filterWhitelistTags(labels: GITEE.IssueLabel[]) {
         || topicTypeLabelGetter.isLabel(val)
         || topicTagLabelGetter.isLabel(val),
     )
-}
-
-function markdownToTextWithImages(markdown?: string): {
-  text: string
-  images?: ForumAPI.ImageInfo[]
-} {
-  // 如果输入为空，返回默认值
-  if (!markdown) {
-    return { text: '' }
-  }
-
-  const images: ForumAPI.ImageInfo[] = []
-
-  // 替换图片语法为空字符串，并提取图片信息
-  let text = markdown.replace(MARKDOWN_IMAGE_REGEX, (_match, altText, src, meta) => {
-    let thumbHash: string | undefined
-    let width: number | undefined
-    let height: number | undefined
-
-    if (meta) {
-      const metaContent = meta.slice(1, -1).trim()
-      const metaPairs = metaContent.split(',').map((pair: string) => pair.trim())
-
-      metaPairs.forEach((pair: string) => {
-        const [key, value] = pair.split(':').map((item: string) => item.trim())
-        if (!value)
-          return
-
-        const cleanValue = value.replace(LEADING_TRAILING_QUOTE_REGEX, '')
-
-        switch (key) {
-          case 'thumbhash':
-            thumbHash = cleanValue
-            break
-          case 'width':
-            width = Number(cleanValue)
-            break
-          case 'height':
-            height = Number(cleanValue)
-            break
-        }
-      })
-    }
-
-    // 修正图片URL：将错误的域名替换为正确的域名
-    const normalizedSrc = src.replace(
-      'webp.assets.inter-knot.site',
-      'webp.assets.interknot.site',
-    )
-
-    images.push({
-      src: normalizedSrc,
-      alt: altText || undefined,
-      thumbHash,
-      width,
-      height,
-    })
-
-    return ''
-  })
-
-  // 移除 HTML 注释（如 <!-- -->）
-  text = text.replace(HTML_COMMENT_REGEX, '').trim()
-
-  text = text
-    .replace(CRLF_LINE_ENDING_REGEX, '\n') // 统一换行符
-    .trim()
-
-  return {
-    text,
-    images: images.length > 0 ? images : undefined,
-  }
 }
 
 export function processLabels(

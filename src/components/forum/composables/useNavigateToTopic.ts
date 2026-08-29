@@ -3,32 +3,32 @@ import { isString } from 'lodash-es'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { getLangPath } from '@/utils'
-
-export const PREVIOUS_ROUTE_KEY = 'forum:previousRoute'
+import { useForumRoute } from '~/composables/useForumRoute'
 
 export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | string) {
   const router = useRouter()
   const { localeIndex } = useData()
+  const { topicHref } = useForumRoute()
 
   const isPost = computed(() => isString(topic) ? false : topic?.type === 'POST')
 
-  async function toPostDetailPage(hash?: string): Promise<void> {
-    const path = isPost.value
-      ? `blog/posts/${(topic as ForumAPI.Post).path}`
-      : `feedback/topic/${isString(topic) ? topic : topic.id}`
-
-    const fullPath = withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`)
-
-    // Save current URL for back navigation
-    if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.setItem(PREVIOUS_ROUTE_KEY, window.location.href)
+  function detailHref(hash?: string): string {
+    if (isPost.value) {
+      const path = `blog/posts/${(topic as ForumAPI.Post).path}`
+      return withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`)
     }
 
-    return await router.go(fullPath)
+    const topicId = String(isString(topic) ? topic : topic.id)
+    return topicHref(topicId, hash ?? null)
+  }
+
+  async function toPostDetailPage(hash?: string): Promise<void> {
+    await router.go(detailHref(hash))
   }
 
   return {
     isPost,
+    detailHref,
     toPostDetailPage,
   }
 }

@@ -3,7 +3,7 @@ import type { Deferred } from '~/composables/createDeferred'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { createDeferred } from '~/composables/createDeferred'
-import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
+import { log, LogGroup } from '../utils/auth-logger'
 
 const USERAUTH_KEY = 'USER-AUTH'
 const SSO_USERAUTH_KEY = 'SSO-USER-AUTH'

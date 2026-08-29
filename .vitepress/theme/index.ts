@@ -13,6 +13,7 @@ import QQGroupList from '@/components/QQGroupList.vue'
 import SitemapPage from '@/components/SitemapPage.vue'
 import * as components from '@/components/ui/'
 import Layout from '@/layouts/Layout.vue'
+import ForumRouteView from '~/components/forum/ForumRouteView.vue'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
 import Blog from './layouts/Blog.vue'
@@ -49,6 +50,7 @@ export default {
     app.component('Headline', Headline)
     app.component('Post', Post)
     app.component('Forum', Forum)
+    app.component('ForumRouteView', ForumRouteView)
     app.component('Blog', Blog)
 
     for (const component of Object.keys(

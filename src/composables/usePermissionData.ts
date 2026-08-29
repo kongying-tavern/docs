@@ -195,13 +195,15 @@ export function usePermissionData() {
       }
     }, { immediate: false })
 
-    // 定时检查是否需要刷新（每10分钟检查一次）
-    setInterval(() => {
-      if (shouldRefreshData.value) {
-        forumLog.info(ForumLogGroup.PERMISSION, '权限数据已过期，自动刷新')
-        refreshPermissionData()
-      }
-    }, 10 * 60 * 1000) // 10分钟检查间隔
+    // 定时检查是否需要刷新（每10分钟检查一次）；SSR 下不启动，避免构建进程不退出的定时器
+    if (!import.meta.env.SSR) {
+      setInterval(() => {
+        if (shouldRefreshData.value) {
+          forumLog.info(ForumLogGroup.PERMISSION, '权限数据已过期，自动刷新')
+          refreshPermissionData()
+        }
+      }, 10 * 60 * 1000) // 10分钟检查间隔
+    }
   }
 
   return {

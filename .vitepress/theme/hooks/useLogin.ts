@@ -1,21 +1,24 @@
-import type { LocalAuth } from '@/stores/useUserAuth'
-import { createSharedComposable, refAutoReset, useStorage } from '@vueuse/core'
+import type ForumAPI from '@/apis/forum/api'
+import { useQueryCache } from '@pinia/colada'
+import { createSharedComposable } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { clearApiCache, oauth } from '@/apis/forum/gitee'
+import { clearApiCache, oauth, password as passwordAuth } from '@/apis/forum/gitee'
 import { oauth as interKnotOauth } from '@/apis/interknot.site'
 import { useAuthProgress } from '@/composables/useAuthProgress'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { removeQueryParam } from '@/utils'
 import { AuthError, AuthErrorType } from '@/utils/auth-errors'
-import { forumLog as log, ForumLogGroup as LogGroup } from '~/utils/forum-logger'
+import { log, LogGroup } from '@/utils/auth-logger'
+import { forumKeys } from '~/services/forum/forumQueryContracts'
+import { clearLoginIntent, takeLoginIntent } from '~/services/forum/loginIntent'
 import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
 
-/** 回调页路径形如 /docs/callback 或 /docs/en/callback */
+/** 回调路径形如 /docs/callback 或 /docs/en/callback */
 const CALLBACK_PATH_REGEX = /\/callback\/?$/
 
 function isCallbackUrl(url: string): boolean {
@@ -27,6 +30,26 @@ function isCallbackUrl(url: string): boolean {
   }
 }
 
+/**
+ * 回跳目标在发起授权跳转前同步落库：靠 watcher 异步写会在页面卸载前丢失，
+ * 导致回调后读不到目标而回首页。
+ */
+function getStoredRedirectUrl(): string {
+  if (import.meta.env.SSR)
+    return withBase('/')
+  return sessionStorage.getItem(REDIRECT_LINK_KEY) ?? withBase('/')
+}
+
+function storeRedirectUrl(url: string): void {
+  if (!import.meta.env.SSR)
+    sessionStorage.setItem(REDIRECT_LINK_KEY, url)
+}
+
+function clearStoredRedirectUrl(): void {
+  if (!import.meta.env.SSR)
+    sessionStorage.removeItem(REDIRECT_LINK_KEY)
+}
+
 interface OAuthCallbackParams {
   code: string | null
   error: string | null
@@ -36,6 +59,7 @@ interface OAuthCallbackParams {
 function useLogin() {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
+  const queryCache = useQueryCache()
   const { message } = useLocalized()
   const oauthCallback = getOAuthCallbackParams()
   const authCode = oauthCallback.code
@@ -45,27 +69,12 @@ function useLogin() {
 
   const authProgress = useAuthProgress()
 
-  const redirectUrl = refAutoReset(withBase('/'), 1000 * 60 * 5)
-  const storedRedirectUrl = useStorage(REDIRECT_LINK_KEY, redirectUrl, import.meta.env.SSR ? undefined : sessionStorage)
-
   const { go } = useRouter()
   const { theme, localeIndex } = useData()
-
-  const LoginMethodsMap = {
-    Oauth: handleOAuthLoginStart,
-    Password: handlePasswordLogin,
-  } as const
-
-  interface CredentialsParams {
-    method: keyof typeof LoginMethodsMap
-  }
 
   initOAuthFlow()
 
   async function initOAuthFlow() {
-    if (isLoggedIn())
-      return
-
     // 授权失败回调（如用户拒绝授权）：?error=access_denied
     if (oauthCallback.error) {
       log.error(LogGroup.LOGIN, `OAuth callback returned error: ${oauthCallback.error}`)
@@ -76,6 +85,13 @@ function useLogin() {
 
     if (!authCode)
       return
+
+    // 回调到达时已有有效会话（如另一标签页刚完成登录）：跳过换发，直接回跳
+    if (isLoggedIn()) {
+      await redirectToOriginalPage()
+      await replayLoginIntent()
+      return
+    }
 
     // state 不一致说明回调可能由第三方伪造（登录 CSRF），拒绝交换 token
     if (!oauthCallback.stateValid) {
@@ -91,6 +107,7 @@ function useLogin() {
       await performOAuthSteps()
       handlePostLogin()
       await redirectToOriginalPage()
+      await replayLoginIntent()
     }
     catch (error) {
       log.error(LogGroup.LOGIN, 'OAuth flow failed', error)
@@ -115,6 +132,11 @@ function useLogin() {
     }
     toast.error(message)
     await redirectToOriginalPage()
+    // 会话已建立（如 SSO 失败）按登录成功回放意图；未登录则丢弃防止误回放
+    if (isLoggedIn())
+      await replayLoginIntent()
+    else
+      clearLoginIntent()
   }
 
   async function performOAuthSteps() {
@@ -135,29 +157,27 @@ function useLogin() {
     authProgress.completeStep('token')
 
     authProgress.setStep('session')
-    const authWithExpiresTime: LocalAuth = {
-      ...result.data,
-      expiresTime: Date.now() + result.data.expiresIn * 1000,
-    }
-    await storeUserSession(authWithExpiresTime)
+    await storeUserSession(result.data)
     authProgress.completeStep('session')
 
     authProgress.setStep('sso')
     await refreshInterKnotSSOToken()
     authProgress.completeStep('sso')
 
+    await refreshForumDataAfterLogin()
+
     authProgress.setStep('redirect')
   }
 
   async function redirectToOriginalPage() {
     try {
-      const storedUrl = storedRedirectUrl.value || withBase('')
+      const storedUrl = getStoredRedirectUrl()
       // 回跳目标指向回调页自身时回退首页，否则登录后回到无参数的回调页卡死
-      const redirectUrl = isCallbackUrl(storedUrl) ? withBase('/') : storedUrl
+      const target = isCallbackUrl(storedUrl) ? withBase('/') : storedUrl
 
-      window.history.replaceState({}, '', redirectUrl)
-      await go(redirectUrl)
-      storedRedirectUrl.value = withBase('/')
+      window.history.replaceState({}, '', target)
+      await go(target)
+      clearStoredRedirectUrl()
     }
     catch (error) {
       log.warn(LogGroup.LOGIN, 'Redirect failed, falling back to home', error)
@@ -165,10 +185,28 @@ function useLogin() {
     }
   }
 
-  async function storeUserSession(auth: LocalAuth) {
+  /** 回放发起登录时记录的意图（如自动打开反馈表单） */
+  async function replayLoginIntent(): Promise<void> {
+    const intent = takeLoginIntent()
+    if (intent) {
+      location.hash = intent
+    }
+  }
+
+  async function storeUserSession(auth: ForumAPI.Auth) {
     userAuth.setAuth(auth)
+    clearApiCache()
     await userInfo.refreshUserInfo()
-    userAuth.ensureTokenRefreshMission()
+  }
+
+  /** 登录身份改变请求配额后，主动重拉当前页面中包括 error 状态在内的 Forum 查询。 */
+  async function refreshForumDataAfterLogin(): Promise<void> {
+    try {
+      await queryCache.invalidateQueries({ key: forumKeys.all }, 'all')
+    }
+    catch (error) {
+      log.warn(LogGroup.LOGIN, 'Forum refresh after login failed', error)
+    }
   }
 
   async function refreshInterKnotSSOToken() {
@@ -216,7 +254,7 @@ function useLogin() {
     }
   }
 
-  function showOAuthLoginAlert() {
+  function showLoginAlert() {
     if (location.hash !== 'login-alert')
       return location.hash = 'login-alert'
   }
@@ -224,30 +262,55 @@ function useLogin() {
   function handleOAuthLoginStart() {
     isAuthenticating.value = true
     // 从回调页（如失败后重试）发起授权时，回跳目标存首页而非回调页自身
-    redirectUrl.value = isCallbackUrl(location.href) ? withBase('/') : location.href
+    storeRedirectUrl(isCallbackUrl(location.href) ? withBase('/') : location.href)
     oauth.redirectAuth(localeIndex.value)
   }
 
-  function handlePasswordLogin() {
-    // TODO: Implement password login（预留，apis/forum/gitee/password.ts）
+  async function handlePasswordLogin(username: string, password: string): Promise<boolean> {
+    const normalizedUsername = username.trim()
+    if (!normalizedUsername || !password)
+      return false
+
+    isAuthenticating.value = true
+    let appliedAccessToken: string | undefined
+
+    try {
+      const [error, auth] = await passwordAuth.getToken(normalizedUsername, password)
+      if (error || !auth)
+        throw error ?? new Error('Gitee password login returned no authentication data')
+
+      appliedAccessToken = auth.accessToken
+      await storeUserSession(auth)
+      await refreshInterKnotSSOToken()
+      await refreshForumDataAfterLogin()
+      handlePostLogin()
+      return true
+    }
+    catch {
+      // 只有本次登录已经写入 token 时才回滚，避免误清其他标签页刚建立的会话。
+      if (appliedAccessToken && userAuth.auth?.accessToken === appliedAccessToken) {
+        userAuth.logout()
+        userInfo.clearUserInfo()
+        clearApiCache()
+      }
+      log.error(LogGroup.LOGIN, 'Password login failed')
+      toast.error(theme.value.forum.auth.passwordLoginFail)
+      return false
+    }
+    finally {
+      isAuthenticating.value = false
+    }
   }
 
-  function login(credentials: CredentialsParams) {
-    return LoginMethodsMap[credentials.method]()
-  }
-
-  function signup() {
-    window.open('https://gitee.com/signup')
-  }
-
-  /** 回调页“重试”按钮：重跑登录流程（授权码仍在时）或重新发起授权 */
-  function retryOAuthFlow() {
+  /** 回调页”重试”按钮：重跑登录流程（授权码仍在时）或重新发起授权 */
+  async function retryOAuthFlow() {
     authProgress.retry()
 
     // 上次失败发生在会话建立之后（如 SSO 同步失败）：直接补跳转到原页面
     if (isLoggedIn()) {
       authProgress.setStep('redirect')
-      redirectToOriginalPage()
+      await redirectToOriginalPage()
+      await replayLoginIntent()
       return
     }
 
@@ -310,9 +373,8 @@ function useLogin() {
   }
 
   return {
-    login,
+    loginWithPassword: handlePasswordLogin,
     logout,
-    signup,
     getAccessToken,
     getUserInfo,
     isLoggedIn,
@@ -323,7 +385,7 @@ function useLogin() {
       ...authProgress,
       retry: retryOAuthFlow,
     },
-    showOAuthLoginAlert,
+    showLoginAlert,
   }
 }
 

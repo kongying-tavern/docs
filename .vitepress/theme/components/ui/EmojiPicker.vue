@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PopoverContentProps } from 'radix-vue'
+import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
@@ -158,7 +158,7 @@ function deleteRecentEmoji(emoji: string) {
         </Button>
       </slot>
     </PopoverTrigger>
-    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit">
+    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit !z-[1100]">
       <div
         class="c-[var(--vp-c-text-1)] border rounded-lg bg-[var(--vp-c-bg-elv)] flex flex-col h-[270px] w-[360px] shadow"
       >

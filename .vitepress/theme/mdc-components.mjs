@@ -130,7 +130,7 @@ export default [
           },
           {
             "name": "size",
-            "type": "\"default\" | \"sm\" | \"lg\" | \"icon\" | \"icon-sm\" | \"icon-lg\" | null | undefined",
+            "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null | undefined",
             "required": false,
             "description": ""
           },
@@ -296,10 +296,10 @@ export default [
             "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with Vue animation libraries."
           },
           {
-            "name": "trapFocus",
-            "type": "boolean | undefined",
+            "name": "memoDependencies",
+            "type": "unknown[] | undefined",
             "required": false,
-            "description": "Whether focus should be trapped within the `MenuContent`"
+            "description": "Reactive dependencies that should invalidate the memoized content subtree."
           },
           {
             "name": "side",
@@ -314,6 +314,12 @@ export default [
             "description": "The distance in pixels from the trigger."
           },
           {
+            "name": "sideFlip",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "Flip to the opposite side when colliding with boundary."
+          },
+          {
             "name": "align",
             "type": "\"center\" | \"start\" | \"end\" | undefined",
             "required": false,
@@ -326,10 +332,16 @@ export default [
             "description": "An offset in pixels from the `start` or `end` alignment options."
           },
           {
+            "name": "alignFlip",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "Flip alignment when colliding with boundary.\nMay only occur when `prioritizePosition` is true."
+          },
+          {
             "name": "avoidCollisions",
             "type": "boolean | undefined",
             "required": false,
-            "description": "When `true`, overrides the side andalign preferences\nto prevent collisions with boundary edges."
+            "description": "When `true`, overrides the side and align preferences\nto prevent collisions with boundary edges."
           },
           {
             "name": "collisionBoundary",
@@ -350,6 +362,12 @@ export default [
             "description": "The padding between the arrow and the edges of the content.\nIf your content has border-radius, this will prevent it from\noverflowing the corners."
           },
           {
+            "name": "hideShiftedArrow",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "When `true`, hides the arrow when it cannot be centered\nto the reference element."
+          },
+          {
             "name": "sticky",
             "type": "\"partial\" | \"always\" | undefined",
             "required": false,
@@ -362,10 +380,22 @@ export default [
             "description": "Whether to hide the content when the trigger becomes fully occluded."
           },
           {
+            "name": "positionStrategy",
+            "type": "\"fixed\" | \"absolute\" | undefined",
+            "required": false,
+            "description": "The type of CSS position property to use."
+          },
+          {
             "name": "updatePositionStrategy",
             "type": "\"always\" | \"optimized\" | undefined",
             "required": false,
             "description": "Strategy to update the position of the floating element on every animation frame."
+          },
+          {
+            "name": "disableUpdateOnLayoutShift",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "Whether to disable the update position for the content when the layout shifted."
           },
           {
             "name": "prioritizePosition",
@@ -374,14 +404,26 @@ export default [
             "description": "Force content to be position within the viewport.\n\nMight overlap the reference element, which may not be desired."
           },
           {
+            "name": "reference",
+            "type": "ReferenceElement | undefined",
+            "required": false,
+            "description": "The custom element or virtual element that will be set as the reference\nto position the floating element.\n\nIf provided, it will replace the default anchor element."
+          },
+          {
+            "name": "dir",
+            "type": "Direction | undefined",
+            "required": false,
+            "description": "The reading direction of the popper content when applicable. <br> If omitted, inherits globally from `ConfigProvider` or assumes LTR (left-to-right) reading mode."
+          },
+          {
             "name": "asChild",
             "type": "boolean | undefined",
             "required": false,
-            "description": "Change the default rendered element for the one passed as a child, merging their props and behavior.\n\nRead our [Composition](https://www.radix-vue.com/guides/composition.html) guide for more details."
+            "description": "Change the default rendered element for the one passed as a child, merging their props and behavior.\n\nRead our [Composition](https://www.reka-ui.com/docs/guides/composition) guide for more details."
           },
           {
             "name": "as",
-            "type": "Component | AsTag | undefined",
+            "type": "AsTag | Component | undefined",
             "required": false,
             "description": "The element or component this component should render as. Can be overwritten by `asChild`."
           },
@@ -534,10 +576,10 @@ export default [
             "description": "Used to force mounting when more control is needed. Useful when\ncontrolling animation with Vue animation libraries."
           },
           {
-            "name": "trapFocus",
-            "type": "boolean | undefined",
+            "name": "memoDependencies",
+            "type": "unknown[] | undefined",
             "required": false,
-            "description": "Whether focus should be trapped within the `MenuContent`"
+            "description": "Reactive dependencies that should invalidate the memoized content subtree."
           },
           {
             "name": "side",
@@ -552,6 +594,12 @@ export default [
             "description": "The distance in pixels from the trigger."
           },
           {
+            "name": "sideFlip",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "Flip to the opposite side when colliding with boundary."
+          },
+          {
             "name": "align",
             "type": "\"center\" | \"start\" | \"end\" | undefined",
             "required": false,
@@ -564,10 +612,16 @@ export default [
             "description": "An offset in pixels from the `start` or `end` alignment options."
           },
           {
+            "name": "alignFlip",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "Flip alignment when colliding with boundary.\nMay only occur when `prioritizePosition` is true."
+          },
+          {
             "name": "avoidCollisions",
             "type": "boolean | undefined",
             "required": false,
-            "description": "When `true`, overrides the side andalign preferences\nto prevent collisions with boundary edges."
+            "description": "When `true`, overrides the side and align preferences\nto prevent collisions with boundary edges."
           },
           {
             "name": "collisionBoundary",
@@ -588,6 +642,12 @@ export default [
             "description": "The padding between the arrow and the edges of the content.\nIf your content has border-radius, this will prevent it from\noverflowing the corners."
           },
           {
+            "name": "hideShiftedArrow",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "When `true`, hides the arrow when it cannot be centered\nto the reference element."
+          },
+          {
             "name": "sticky",
             "type": "\"partial\" | \"always\" | undefined",
             "required": false,
@@ -600,10 +660,22 @@ export default [
             "description": "Whether to hide the content when the trigger becomes fully occluded."
           },
           {
+            "name": "positionStrategy",
+            "type": "\"fixed\" | \"absolute\" | undefined",
+            "required": false,
+            "description": "The type of CSS position property to use."
+          },
+          {
             "name": "updatePositionStrategy",
             "type": "\"always\" | \"optimized\" | undefined",
             "required": false,
             "description": "Strategy to update the position of the floating element on every animation frame."
+          },
+          {
+            "name": "disableUpdateOnLayoutShift",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "Whether to disable the update position for the content when the layout shifted."
           },
           {
             "name": "prioritizePosition",
@@ -612,14 +684,26 @@ export default [
             "description": "Force content to be position within the viewport.\n\nMight overlap the reference element, which may not be desired."
           },
           {
+            "name": "reference",
+            "type": "ReferenceElement | undefined",
+            "required": false,
+            "description": "The custom element or virtual element that will be set as the reference\nto position the floating element.\n\nIf provided, it will replace the default anchor element."
+          },
+          {
+            "name": "dir",
+            "type": "Direction | undefined",
+            "required": false,
+            "description": "The reading direction of the popper content when applicable. <br> If omitted, inherits globally from `ConfigProvider` or assumes LTR (left-to-right) reading mode."
+          },
+          {
             "name": "asChild",
             "type": "boolean | undefined",
             "required": false,
-            "description": "Change the default rendered element for the one passed as a child, merging their props and behavior.\n\nRead our [Composition](https://www.radix-vue.com/guides/composition.html) guide for more details."
+            "description": "Change the default rendered element for the one passed as a child, merging their props and behavior.\n\nRead our [Composition](https://www.reka-ui.com/docs/guides/composition) guide for more details."
           },
           {
             "name": "as",
-            "type": "Component | AsTag | undefined",
+            "type": "AsTag | Component | undefined",
             "required": false,
             "description": "The element or component this component should render as. Can be overwritten by `asChild`."
           },

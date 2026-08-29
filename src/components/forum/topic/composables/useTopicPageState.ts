@@ -1,177 +1,58 @@
-import type { ForumAPI } from '@/apis/forum/api'
-import { useQuery, useQueryCache } from '@pinia/colada'
 import { watchOnce } from '@vueuse/core'
-import markdownIt from 'markdown-it'
 import { useData, useRouter, withBase } from 'vitepress'
-import { computed, onMounted, onUnmounted, watch, watchEffect } from 'vue'
-import { issues } from '@/apis/forum/gitee'
+import { computed, watch, watchEffect } from 'vue'
+import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
+import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
+import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
-import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
-import { simpleEventManager } from '~/services/events/SimpleEventManager'
-import { useForumTopicStore } from '~/stores/forum/useForumTopicStore'
-import { PREVIOUS_ROUTE_KEY } from '../../composables/useNavigateToTopic'
-import { setPageTitle } from '../../utils'
+import { useForumRoute } from '~/composables/useForumRoute'
+import { renderForumTopic } from '~/services/forum/forumContentRenderer'
 
 export function useTopicPageState() {
   const topicTypeMap = getTopicTypeMap()
-  const forumTopicStore = useForumTopicStore()
-  const { params, localeIndex } = useData()
+  const { localeIndex } = useData()
+  const { route, topicHref } = useForumRoute()
+  const topicId = computed(() => route.value?.name === 'topic' ? route.value.topicId : '')
   const { go } = useRouter()
   const { message } = useLocalized()
-  const queryCache = useQueryCache()
 
-  // Topic data request
   const {
     data: topic,
     isLoading: loading,
     error,
     refetch,
-  } = useQuery({
-    key: () => ['topic', params.value?.id ?? ''] as const,
-    query: () => issues.getTopic(params.value?.id),
-    enabled: () => !!params.value?.id,
-    staleTime: 1000 * 60, // 1分钟内不重新请求
-  })
+  } = useForumTopicQuery(topicId)
 
-  // Handle errors via watch
   watch(error, (err) => {
     if (err?.message.includes('404 Not Found')) {
       go(withBase(`${getLangPath(localeIndex.value)}404.html`))
     }
   })
 
-  function setupTopicPageEvents() {
-    // Listen for topic deletion, close, or hide events
-    const handleTopicRemoval = ({ id }: { id: string | number }) => {
-      // If current topic is removed, navigate back
-      if (String(id) === String(params.value?.id)) {
-        backToPreviousPage()
-      }
-    }
-
-    // Listen for comment events to update topic data
-    const handleCommentCreated = ({ topicId, comment }: { topicId: string, comment: ForumAPI.Comment }) => {
-      if (String(topicId) === String(params.value?.id) && topic.value) {
-        // Update comment count
-        const newCommentCount = (topic.value.commentCount || 0) + 1
-
-        // Update related comments
-        const currentRelatedComments = topic.value.relatedComments || []
-        const newRelatedComments = [comment, ...currentRelatedComments].slice(0, 3)
-
-        // Update the topic data via cache
-        queryCache.setQueryData(['topic', params.value?.id ?? ''], {
-          ...topic.value,
-          commentCount: newCommentCount,
-          relatedComments: newRelatedComments,
-        })
-      }
-    }
-
-    const handleCommentDeleted = ({ topicId, commentId }: { topicId: string, commentId: string | number }) => {
-      if (String(topicId) === String(params.value?.id) && topic.value) {
-        // Update comment count
-        const newCommentCount = Math.max((topic.value.commentCount || 0) - 1, 0)
-
-        // Update related comments
-        const currentRelatedComments = topic.value.relatedComments || []
-        const newRelatedComments = currentRelatedComments.filter(c => c.id !== commentId)
-
-        // Update the topic data via cache
-        queryCache.setQueryData(['topic', params.value?.id ?? ''], {
-          ...topic.value,
-          commentCount: newCommentCount,
-          relatedComments: newRelatedComments,
-        })
-      }
-    }
-
-    const unsubscribeTopicDeleted = simpleEventManager.subscribe('topic:deleted', handleTopicRemoval)
-    const unsubscribeTopicClosed = simpleEventManager.subscribe('topic:closed', handleTopicRemoval)
-    const unsubscribeTopicHidden = simpleEventManager.subscribe('topic:hidden', handleTopicRemoval)
-    const unsubscribeCommentCreated = simpleEventManager.subscribe('comment:created', handleCommentCreated)
-    const unsubscribeCommentDeleted = simpleEventManager.subscribe('comment:deleted', handleCommentDeleted)
-
-    return () => {
-      unsubscribeTopicDeleted()
-      unsubscribeTopicClosed()
-      unsubscribeTopicHidden()
-      unsubscribeCommentCreated()
-      unsubscribeCommentDeleted()
-    }
-  }
-
-  // Pre-fill with cached data if available from topic store
-  const targetTopicData = forumTopicStore.topicDetail
-
-  if (targetTopicData && targetTopicData.id === params.value?.id) {
-    queryCache.setQueryData(['topic', params.value?.id ?? ''], targetTopicData)
-  }
-  else if (!import.meta.env.SSR) {
-    refetch()
-  }
-
-  // Rendered content
   const renderedContent = computed(() => {
     if (!topic?.value?.content.text)
       return ''
-
-    // First sanitize to clean up the raw content
-    const cleanedText = sanitizeMarkdown(topic.value.content.text)
-
-    // Configure markdown-it to preserve line breaks
-    const md = markdownIt({
-      breaks: true, // Convert '\n' in paragraphs into <br>
-      linkify: true, // Autoconvert URL-like text to links
+    return renderForumTopic(topic.value.content.text, {
+      topicHref: id => topicHref(id, null),
+      documentLinks: forumDocumentLinks,
     })
-
-    // Render and sanitize again
-    return sanitizeMarkdown(md.render(cleanedText))
   })
 
-  // Navigation
   function backToPreviousPage() {
-    if (typeof sessionStorage !== 'undefined') {
-      const previousHref = sessionStorage.getItem(PREVIOUS_ROUTE_KEY)
-      if (previousHref) {
-        sessionStorage.removeItem(PREVIOUS_ROUTE_KEY)
-        return go(previousHref)
-      }
-    }
-
-    go(withBase(`${getLangPath(localeIndex.value)}feedback`))
+    window.history.back()
   }
 
-  // Setup lifecycle events
-  let cleanupFunction: (() => void) | null = null
-
-  onMounted(() => {
-    cleanupFunction = setupTopicPageEvents()
-    // Setup store event listeners
-    forumTopicStore.setupEventListeners()
-  })
-
-  onUnmounted(() => {
-    if (cleanupFunction) {
-      cleanupFunction()
-      cleanupFunction = null
-    }
-    forumTopicStore.cleanup()
-  })
-
-  // Side effects
   watchEffect(() => {
     if (loading.value)
       return
-    setPageTitle(
-      topic.value?.type === 'BUG'
-        ? `${topic.value.content.text.substring(0, 6)}...`
-        : topic.value?.title || '',
-      topicTypeMap.get(topic.value?.type || ''),
-    )
+    const title = topic.value?.type === 'BUG'
+      ? `${topic.value.content.text.substring(0, 6)}...`
+      : topic.value?.title || ''
+    const type = topicTypeMap.get(topic.value?.type || '')
+    replaceTitle(type ? `${type} - ${title}` : title)
   })
 
   watchOnce(error, () => {
@@ -185,9 +66,10 @@ export function useTopicPageState() {
   return {
     topic,
     loading,
+    error,
+    retry: refetch,
     renderedContent,
-    params,
-    message,
+    topicId,
     backToPreviousPage,
   }
 }

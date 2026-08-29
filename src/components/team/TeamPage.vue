@@ -24,7 +24,7 @@ function shuffleMembers(members: Member[], pinTheFirstMember = false): void {
       members[offset + j],
       members[offset + i - 1],
     ]
-    i--
+    i -= 1
   }
 }
 

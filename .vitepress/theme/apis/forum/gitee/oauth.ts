@@ -19,30 +19,27 @@ function generateOAuthState(): string {
 
 /**
  * 校验回调携带的 state，校验后立即移除以防重放。
- * 本地无记录时（存储被清理或旧版本发起的登录）放行，保持向后兼容。
+ * 无预期 state（存储被清理、伪造回调）时失败关闭。
  */
 export function validateOAuthState(callbackState: string | null): boolean {
   const storedState = sessionStorage.getItem(OAUTH_STATE_KEY)
   sessionStorage.removeItem(OAUTH_STATE_KEY)
-  if (!storedState)
-    return true
+  if (!storedState || !callbackState)
+    return false
   return storedState === callbackState
 }
 
 export function getRedirectUrl(localeIndex?: string): string {
-  // Generate URL based on current locale
   const localeStr = localeIndex === 'root' ? '/' : `/${localeIndex}/`
   const expectedUrl = import.meta.env.DEV
     ? `${location.protocol}//${location.host}${localeStr}callback`
     : `https://yuanshen.site/docs${localeStr}callback`
 
-  // Check if cached URL matches current locale, if not regenerate
   const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
   if (lastRedirectUrl && lastRedirectUrl === expectedUrl) {
     return lastRedirectUrl
   }
 
-  // Store new URL for current locale
   localStorage.setItem(LAST_OAUTH_REDIRECT_URL_KEY, expectedUrl)
   return expectedUrl
 }

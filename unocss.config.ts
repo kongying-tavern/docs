@@ -1,3 +1,4 @@
+import type { Variant } from 'unocss'
 import {
   defineConfig,
   presetAttributify,
@@ -9,8 +10,24 @@ import {
 import presetAnimations from 'unocss-preset-animations'
 import { presetShadcn } from 'unocss-preset-shadcn'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
+import { FORUM_MOBILE_BREAKPOINT_PX } from './src/services/forum/forumConfig'
 
 export default defineConfig({
+  theme: {
+    breakpoints: {
+      mobile: FORUM_MOBILE_BREAKPOINT_PX,
+    },
+  },
+  variants: [
+    ((matcher) => {
+      if (!matcher.startsWith('max-mobile:'))
+        return matcher
+      return {
+        matcher: matcher.slice('max-mobile:'.length),
+        parent: `@media (max-width: ${FORUM_MOBILE_BREAKPOINT_PX}px)`,
+      }
+    }) as Variant,
+  ],
   rules: [
     [
       'custom-scrollbar',

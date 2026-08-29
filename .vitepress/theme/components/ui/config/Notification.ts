@@ -38,7 +38,7 @@ export const Notification = {
     icon: null,
     timeout: 5000,
     closeButton: {
-      icon: 'i-mdi:close',
+      icon: 'i-lucide-x',
       color: 'gray',
       base: 'flex-shrink-0 h-5 w-5',
     },

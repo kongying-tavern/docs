@@ -1,0 +1,290 @@
+/* 模态 Sheet 打开时会给 body 设 pointer-events: none，预览根需恢复 */
+.forum-preview-root {
+  --preview-panel-w: min(560px, 90vw);
+  --preview-gap: 32px;
+  user-select: none;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.forum-preview-root.closing {
+  pointer-events: none;
+}
+
+/* 光标状态：图片上随缩放态切换（未缩放可放大/放大后可拖拽），
+   实际拖动中全局显示抓手，避免指针滑出图片范围时光标跳变 */
+.forum-preview-stack.can-zoom-in {
+  cursor: zoom-in;
+}
+
+.forum-preview-stack.can-grab {
+  cursor: grab;
+}
+
+.forum-preview-root.is-dragging {
+  cursor: grabbing;
+}
+
+.forum-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--forum-media-backdrop);
+  backdrop-filter: blur(24px);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.forum-preview-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--preview-gap);
+}
+
+.forum-preview-root.has-panel .forum-preview-stage {
+  padding-right: calc(var(--preview-panel-w) + var(--preview-gap));
+  transition: padding-right 240ms ease;
+}
+
+.forum-preview-root:not(.has-panel) .forum-preview-stage {
+  padding-top: max(var(--preview-gap), 6vh);
+  padding-bottom: max(var(--preview-gap), 6vh);
+}
+
+.forum-preview-cards {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  z-index: 4;
+}
+
+.forum-preview-root.has-panel :deep(.forum-preview-close) {
+  right: calc(var(--preview-panel-w) + 20px);
+}
+
+.forum-preview-root.has-panel :deep(.forum-preview-dots) {
+  left: calc((100% - var(--preview-panel-w)) / 2);
+}
+
+.forum-preview-panel-toggle {
+  position: absolute;
+  top: 64px;
+  right: 20px;
+  z-index: 2;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: var(--forum-media-glass);
+  backdrop-filter: blur(12px);
+  color: var(--forum-media-on-overlay);
+  font-size: 18px;
+  cursor: pointer;
+  transition: opacity 200ms ease, transform 220ms ease, background-color 160ms ease, right 240ms ease;
+}
+
+.forum-preview-panel-toggle:hover {
+  background: var(--forum-media-glass-hover);
+}
+
+.forum-preview-root.has-panel .forum-preview-panel-toggle {
+  right: calc(var(--preview-panel-w) + 20px);
+}
+
+.forum-preview-stack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.forum-preview-stack.flipping {
+  transition: transform 360ms cubic-bezier(0.2, 0, 0.2, 1);
+}
+.forum-preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform-origin: center center;
+}
+
+.forum-preview-exit {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+.forum-preview-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--forum-media-backdrop);
+  backdrop-filter: blur(12px);
+  color: var(--forum-media-on-overlay);
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 220ms ease, background-color 160ms ease;
+}
+
+.forum-preview-stage:hover .forum-preview-nav {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.forum-preview-nav:hover {
+  background: var(--forum-media-overlay-strong);
+}
+
+.forum-preview-nav.prev {
+  left: 24px;
+}
+
+.forum-preview-nav.next {
+  right: 24px;
+}
+
+.forum-preview-root.has-panel .forum-preview-nav.next {
+  right: calc(var(--preview-panel-w) + 24px);
+}
+
+.forum-preview-root:not(.closing) .forum-preview-overlay {
+  opacity: 1;
+}
+
+.forum-preview-root:not(.closing) .forum-preview-image {
+  opacity: 1;
+  /* transform 直接由手势驱动，不做 CSS 过渡避免拖拽拖尾 */
+  transition: opacity 250ms ease;
+}
+
+.forum-preview-enter.enter-scale {
+  animation: preview-image-in 260ms cubic-bezier(0.2, 0, 0.2, 1) backwards;
+}
+
+.forum-preview-enter.enter-right {
+  animation: preview-slide-in-right 240ms cubic-bezier(0.2, 0, 0.2, 1) backwards;
+}
+
+.forum-preview-enter.enter-left {
+  animation: preview-slide-in-left 240ms cubic-bezier(0.2, 0, 0.2, 1) backwards;
+}
+
+.forum-preview-exit.exit-left {
+  animation: preview-slide-out-left 240ms cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+.forum-preview-exit.exit-right {
+  animation: preview-slide-out-right 240ms cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+.forum-preview-root.closing .forum-preview-image,
+.forum-preview-root.closing .forum-preview-overlay {
+  transition: opacity 240ms ease;
+}
+
+.forum-preview-root.closing .forum-preview-cards {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.86);
+}
+
+.forum-preview-root.closing .forum-preview-nav {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.82);
+}
+
+.forum-preview-root.closing .forum-preview-panel-toggle,
+.forum-preview-root.closing :deep(.forum-preview-close) {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.86);
+}
+
+.forum-preview-root.closing :deep(.forum-preview-dots) {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px) scale(0.92);
+}
+
+@keyframes preview-image-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes preview-slide-in-right {
+  from {
+    opacity: 0.5;
+    transform: translate(80px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes preview-slide-in-left {
+  from {
+    opacity: 0.5;
+    transform: translate(-80px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes preview-slide-out-left {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-80px, 0) scale(0.98);
+  }
+}
+
+@keyframes preview-slide-out-right {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(80px, 0) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .forum-preview-overlay,
+  .forum-preview-image,
+  .forum-preview-nav,
+  .forum-preview-cards,
+  .forum-preview-panel-toggle,
+  :deep(.forum-preview-close),
+  :deep(.forum-preview-dots) {
+    transition: none !important;
+    animation: none !important;
+  }
+}

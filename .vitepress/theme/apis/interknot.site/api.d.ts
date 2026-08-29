@@ -13,8 +13,8 @@ export namespace INTER_KNOT {
         clickCount: number
         createdAt: string
         lastUpdatedAt: string
-      }
-      state: ReactionState
+      } | null
+      state: ReactionState | null
     }
   }
 

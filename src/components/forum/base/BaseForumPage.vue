@@ -1,94 +1,80 @@
 <script setup lang="ts">
-import type { StoreGeneric } from 'pinia'
-import type { Component } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumStore } from '~/types/forum/simplified'
-import { computed, provide, toRef } from 'vue'
-import ForumAside from '../ForumAside.vue'
+import type { ForumFilter, ForumSort } from '~/services/forum/forumRoute'
+import { computed } from 'vue'
 import ForumLayout from '../ForumLayout.vue'
-import ForumTopicMenubar from '../ForumTopicMenubar.vue'
-import ForumTopicsList from '../ForumTopicsList.vue'
-import { FORUM_STORE_KEY, FORUM_TOPIC_CAN_LOAD_MORE, FORUM_TOPIC_FILTER_KEY, FORUM_TOPIC_LOADING_KEY, FORUM_TOPIC_SORT_KEY } from '../shared'
+import ForumTopicList from '../list/ForumTopicList.vue'
+import ForumTopicToolbar from '../list/ForumTopicToolbar.vue'
+import ForumAside from '../sidebar/ForumAside.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
-// 导入BroadcastChannelSync以确保模块初始化
-import '~/services/events/BroadcastChannelSync'
-
-interface ForumAsideProps {
-  showButton?: boolean
-  contactUs?: boolean
-}
-
 interface Props {
-  store: ForumStore | StoreGeneric
   renderData: ForumAPI.Topic[] | ForumAPI.Post[]
-  showMenubar?: boolean
-  showAside?: boolean
-  headerComponent?: Component
-  asideProps?: ForumAsideProps
+  loading?: boolean
+  loadingMore?: boolean
+  error?: Error | null
+  canLoadMore?: boolean
+  loadMore?: () => Promise<unknown> | unknown
+  refreshData?: () => Promise<unknown> | unknown
+  loadStateMessage?: string
+  filter?: ForumFilter
+  sort?: ForumSort
+  query?: string
+  onFilterChange?: (filter: ForumFilter) => Promise<unknown> | unknown
+  onSearch?: (query: string) => Promise<unknown> | unknown
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  showMenubar: true,
-  showAside: true,
-  asideProps: () => ({}),
+  loading: false,
+  loadingMore: false,
+  canLoadMore: false,
+  loadStateMessage: 'Loading...',
+  filter: 'all',
+  sort: 'created',
 })
 
-// Access store properties directly (don't destructure to maintain reactivity)
-const store = props.store
-
-// Provide context for child components using toRef to maintain reactivity
-provide(FORUM_TOPIC_SORT_KEY, toRef(store, 'sort'))
-provide(FORUM_TOPIC_FILTER_KEY, toRef(store, 'filter'))
-provide(FORUM_TOPIC_LOADING_KEY, toRef(store, 'loading'))
-provide(FORUM_TOPIC_CAN_LOAD_MORE, toRef(store, 'canLoadMore'))
-provide(FORUM_STORE_KEY, store as ForumStore)
-provide('searchTopics', store.searchTopics)
-
-// Loading state for topics list
-const isTopicsLoading = computed(() => {
-  // store.loading is already a reactive value, don't use .value
-  const loading = typeof store.loading === 'boolean' ? store.loading : store.loading?.value || false
-  const loadingMore = typeof store.loadingMore === 'boolean' ? store.loadingMore : store.loadingMore?.value || false
-  return loading || loadingMore
-})
+const isInitialLoading = computed(() => props.loading && props.renderData.length === 0)
 </script>
 
 <template>
   <ClientOnly>
     <ForumLayout>
       <template #header>
-        <component
-          :is="headerComponent"
-          v-if="headerComponent"
-          v-bind="$attrs"
-        />
         <slot name="header" />
       </template>
 
       <template #content>
+        <ForumTopicToolbar
+          :filter="filter"
+          :query="query"
+          :suggestions="renderData"
+          @filter-change="onFilterChange?.($event)"
+          @search="onSearch?.($event)"
+        />
+        <Separator div class="mt-2" />
+
         <slot name="content-before" />
 
-        <ForumTopicMenubar v-if="showMenubar" />
-        <Separator
-          v-if="showMenubar"
-          div
-          class="mt-2"
-        />
-
         <slot name="content-main">
-          <ForumTopicsList
+          <ForumTopicList
             :data="renderData"
-            :loading="isTopicsLoading"
-            :load-more="store.loadMoreTopics"
-            :refresh-data="store.loadForumData"
+            :loading="isInitialLoading"
+            :error="error"
+            :query="query"
+            :sort="sort"
+            :load-more="loadMore"
+            :refresh-data="refreshData"
+            :can-load-more="canLoadMore"
           />
 
           <ForumLoadState
-            :loading="isTopicsLoading"
-            :can-load-more="store.canLoadMore"
-            :load-more="store.loadMoreTopics"
-            :text="store.loadStateMessage"
+            v-if="renderData.length > 0"
+            :loading="loadingMore"
+            :error="Boolean(error)"
+            :can-load-more="canLoadMore"
+            :load-more="loadMore"
+            :retry="refreshData"
+            :text="loadStateMessage"
           />
         </slot>
 
@@ -98,8 +84,7 @@ const isTopicsLoading = computed(() => {
       <template #aside>
         <slot name="aside">
           <ForumAside
-            v-if="showAside"
-            v-bind="asideProps"
+            :exclude-topic-ids="renderData.map(item => item.id)"
           />
         </slot>
       </template>

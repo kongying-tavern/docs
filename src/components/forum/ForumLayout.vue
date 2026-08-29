@@ -1,33 +1,53 @@
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted } from 'vue'
+
+// 论坛页内容动态插入（评论/回复区展开）会触发浏览器滚动锚定自动调整滚动位置，
+// 导致页面无意义跳动；论坛页挂载期间禁用，离开时恢复
+onMounted(() => {
+  document.documentElement.style.overflowAnchor = 'none'
+})
+
+onBeforeUnmount(() => {
+  document.documentElement.style.overflowAnchor = ''
+})
+</script>
+
 <template>
-  <div class="forum-container relative overflow-auto">
+  <div class="forum-container relative">
     <slot name="header" />
-    <div
-      class="forum-content mt-4 min-h-[calc(100vh-64px)] w-[clamp(calc(100%-276px),660px,55vw)] float-left"
-    >
-      <slot name="content" />
+    <div class="forum-columns mt-4">
+      <main class="forum-content min-h-[calc(100vh-64px)]">
+        <slot name="content" />
 
-      <slot />
-    </div>
+        <slot />
+      </main>
 
-    <div class="forum-aside mt-4 top-64px sticky">
-      <slot name="aside" />
+      <aside class="forum-aside top-64px sticky">
+        <slot name="aside" />
+      </aside>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-$ForumAsideWidth: 274px;
-
 .forum-container {
   margin: 0 auto;
   padding: 0 16px;
 }
 
-.forum-aside {
-  float: right;
-  width: 250px;
-  height: 100%;
+.forum-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: start;
+  gap: 24px;
+}
 
+.forum-content {
+  min-width: 0;
+}
+
+.forum-aside {
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: none;
@@ -35,44 +55,32 @@ $ForumAsideWidth: 274px;
 
 @media (min-width: 1440px) {
   .forum-container {
-    max-width: 945px;
+    width: min(1013px, 100%);
+    max-width: none;
+    margin-right: auto;
+    margin-left: max(0px, calc((100% - 945px) / 2));
     padding: 0;
   }
 }
 
-@media (min-width: 768px) {
-  .Forum {
-    padding-bottom: 96px;
+@media (min-width: 1280px) and (max-width: 1439px) {
+  .forum-columns {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 16px;
   }
 }
 
-@media (max-width: (768 + $ForumAsideWidth)) {
-  .Forum {
-    margin: 36px auto 0;
+@media (max-width: 1279px) {
+  .forum-columns {
+    display: block;
   }
 
-  .forum-content {
-    width: calc(100% - $ForumAsideWidth);
-    margin-right: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .forum-content {
-    width: calc(100%);
-    margin-right: 1.5rem;
-  }
-}
-
-@media (max-width: 767px) {
-  .forum-aside {
-    display: none;
-  }
-}
-
-@media (max-width: 468px) {
   .forum-content {
     width: 100%;
+  }
+
+  .forum-aside {
+    display: none;
   }
 }
 </style>

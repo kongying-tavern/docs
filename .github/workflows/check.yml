@@ -75,6 +75,12 @@ jobs:
       - name: ESLint
         run: pnpm lint:eslint
 
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Forum unit tests
+        run: pnpm test:forum
+
       - name: Font subset unit tests
         run: pnpm test:fonts
 

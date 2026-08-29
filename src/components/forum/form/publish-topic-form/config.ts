@@ -1,25 +1,15 @@
+import type { ComputedRef, Ref } from 'vue'
+import type { CustomConfig } from '../../../../../.vitepress/locales/types'
 import type { TabsConfig } from './types'
-import type ForumAPI from '@/apis/forum/api'
-import { useLocalized } from '@/hooks/useLocalized'
-import { useRuleChecks } from '~/composables/useRuleChecks'
+import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
 
-export const MAX_UPLOAD_FILE_SIZE = 6
-export const TRANSITION_DURATION = 800
-export const FORM_DATA_KEY = 'PUBLISH-TOPIC-FORM-DATA-KEY'
+export const TRANSITION_DURATION = 480
 export const FORM_HASH = 'PUBLISH-TOPIC'
-export const FORM_DEFAULT_DATA: ForumAPI.CreateTopicOption = {
-  type: 'BUG',
-  title: '',
-  tags: [],
-  text: '',
-}
 
-export function getFormTabsConfig(): TabsConfig[] {
-  const { message } = useLocalized()
-  const { hasAnyPermissions } = useRuleChecks()
-
-  const hasPermission = hasAnyPermissions('manage_feedback')
-
+export function getFormTabsConfig(
+  message: Ref<CustomConfig>,
+  hasPermission: ComputedRef<boolean>,
+): TabsConfig[] {
   return [
     {
       value: 'BUG',
@@ -29,19 +19,18 @@ export function getFormTabsConfig(): TabsConfig[] {
         tags: {
           label: message.value.forum.publish.form.type.text,
           placeholder: message.value.forum.publish.form.type.placeholder,
-          maxLength: 5,
-          minLength: 1,
+          maxLength: VALIDATION_LIMITS.TAGS.MAX_COUNT,
+          minLength: VALIDATION_LIMITS.TAGS.MIN_COUNT,
         },
         content: {
           label: message.value.forum.publish.form.content.text,
           placeholder: message.value.forum.publish.form.content.placeholder,
-          maxLength: 2000,
-          minLength: 5,
+          maxLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH,
+          minLength: VALIDATION_LIMITS.CONTENT.MIN_LENGTH,
         },
         upload: {
           label: message.value.forum.publish.form.upload.text,
           placeholder: message.value.forum.publish.form.content.placeholder,
-          maxLength: 3,
         },
       },
     },
@@ -53,24 +42,23 @@ export function getFormTabsConfig(): TabsConfig[] {
         title: {
           label: message.value.forum.publish.form.title.text,
           placeholder: message.value.forum.publish.form.title.placeholder,
-          maxLength: 50,
-          minLength: 1,
+          maxLength: VALIDATION_LIMITS.TITLE.MAX_LENGTH,
+          minLength: VALIDATION_LIMITS.TITLE.MIN_LENGTH,
         },
         tags: {
           label: message.value.forum.publish.form.type.text,
           placeholder: message.value.forum.publish.form.type.placeholder,
-          maxLength: 5,
+          maxLength: VALIDATION_LIMITS.TAGS.MAX_COUNT,
         },
         content: {
           label: message.value.forum.publish.form.content.text,
           placeholder: message.value.forum.publish.form.content.placeholder,
-          maxLength: 2000,
-          minLength: 5,
+          maxLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH,
+          minLength: VALIDATION_LIMITS.CONTENT.MIN_LENGTH,
         },
         upload: {
           label: message.value.forum.publish.form.upload.text,
           placeholder: message.value.forum.publish.form.content.placeholder,
-          maxLength: 3,
         },
       },
     },
@@ -82,19 +70,18 @@ export function getFormTabsConfig(): TabsConfig[] {
         title: {
           label: message.value.forum.publish.form.title.text,
           placeholder: message.value.forum.publish.form.title.placeholder,
-          maxLength: 50,
-          minLength: 1,
+          maxLength: VALIDATION_LIMITS.TITLE.MAX_LENGTH,
+          minLength: VALIDATION_LIMITS.TITLE.MIN_LENGTH,
         },
         content: {
           label: message.value.forum.publish.form.content.text,
           placeholder: message.value.forum.publish.form.content.placeholder,
-          maxLength: 2000,
-          minLength: 5,
+          maxLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH,
+          minLength: VALIDATION_LIMITS.CONTENT.MIN_LENGTH,
         },
         upload: {
           label: message.value.forum.publish.form.upload.text,
           placeholder: message.value.forum.publish.form.content.placeholder,
-          maxLength: 3,
         },
       },
     },

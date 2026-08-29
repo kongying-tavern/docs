@@ -1,6 +1,8 @@
 import type ForumAPI from '../api'
+import type { OfficialUserPredicate } from './inBrowserUtils'
+import type { SearchParamValue } from './types'
+import type { TopicStateFilter } from '~/services/forum/forumQueryContracts'
 import { buildFormData } from '@/apis/utils'
-import { useRuleChecks } from '~/composables/useRuleChecks'
 import { apiCall } from '.'
 import { reformat } from '../webhook'
 import { GITEE_API_CONFIG } from './config'
@@ -9,8 +11,21 @@ import {
   normalizeComment,
   normalizeIssue,
   processLabels,
-  setFilterTags,
 } from './utils'
+
+export type TopicUpdateOutcome
+  = | { status: 'success', topic: ForumAPI.Topic }
+    | { status: 'partial', topic: ForumAPI.Topic, error: Error }
+    | { status: 'unknown', error: Error }
+
+export interface TopicListRequest {
+  endpoint: string
+  searchParams: Record<string, SearchParamValue>
+}
+
+export interface TopicUpdateOptions {
+  skipReformat?: boolean
+}
 
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 
@@ -25,29 +40,27 @@ export async function getTopic(number: string): Promise<ForumAPI.Topic> {
 
 export async function getTopics(
   query: ForumAPI.Query,
-  state?: ForumAPI.TopicState,
-  search?: string,
+  state: TopicStateFilter | undefined,
+  search: string | undefined,
+  isOfficialUser: OfficialUserPredicate,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  if (search)
-    return searchTopics(query, search)
-
   // Separate the requests to prevent comments timeout from affecting issues
+  const request = buildTopicListRequest(query, state, search)
   const { data: issues, pagination } = await apiCall<GITEE.IssueList>(
     'get',
-    `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
+    request.endpoint,
     {
-      searchParams: {
-        state: state || 'open',
-        page: query.current,
-        sort: query.sort || 'created',
-        per_page: query.pageSize,
-        creator: query.creator ?? undefined,
-        ...processLabels(query.filter),
-      },
+      searchParams: request.searchParams,
     },
   )
 
-  // Try to fetch comments, but don't let it fail the main request
+  if (search) {
+    return {
+      data: issues.map(val => normalizeIssue(val)),
+      ...pagination,
+    }
+  }
+
   let comments: GITEE.CommentList = []
   try {
     ;({ data: comments } = await apiCall<GITEE.CommentList>(
@@ -64,7 +77,6 @@ export async function getTopics(
     ))
   }
   catch {
-    // Failed to fetch comments, continuing without them
   }
 
   const data: ForumAPI.Topic[] = []
@@ -80,7 +92,7 @@ export async function getTopics(
     }
 
     data.push({
-      relatedComments: extractOfficialAndAuthorComments(val, comments),
+      relatedComments: extractOfficialAndAuthorComments(val, comments, isOfficialUser),
       ...topic,
     })
   })
@@ -148,29 +160,38 @@ export async function getTopicComments(
   }
 }
 
-export async function searchTopics(
+export function buildTopicListRequest(
   query: ForumAPI.Query,
-  q: string,
-): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  const { data: issueList, pagination } = await apiCall<GITEE.IssueList>(
-    'get',
-    `search/issues`,
-    {
+  state: TopicStateFilter = 'open',
+  search?: string,
+): TopicListRequest {
+  const labels = processLabels(query.filter).labels
+  if (search) {
+    return {
+      endpoint: 'search/issues',
       searchParams: {
         repo: `${OWNER}/${FEEDBACK_REPO}`,
-        state: 'open',
-        q,
+        state,
+        q: search,
         sort: `${query.sort}_at`,
         page: query.current,
         per_page: query.pageSize,
-        ...processLabels(query.filter),
+        author: query.creator ?? undefined,
+        label: labels,
       },
-    },
-  )
+    }
+  }
 
   return {
-    data: issueList.map(val => normalizeIssue(val)),
-    ...pagination,
+    endpoint: `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
+    searchParams: {
+      state,
+      page: query.current,
+      sort: query.sort || 'created',
+      per_page: query.pageSize,
+      creator: query.creator ?? undefined,
+      ...processLabels(query.filter),
+    },
   }
 }
 
@@ -236,64 +257,52 @@ export async function putTopic(
     labels?: string
     state?: ForumAPI.TopicState
   },
-): Promise<ForumAPI.Topic> {
-  const { data: issueInfo } = await apiCall<GITEE.IssueInfo>(
-    'patch',
-    `repos/${OWNER}/issues/${number}`,
-    {
-      searchParams: {
-        repo: FEEDBACK_REPO,
-        owner: OWNER,
-        ...data,
+  options: TopicUpdateOptions = {},
+): Promise<TopicUpdateOutcome> {
+  let issueInfo: GITEE.IssueInfo
+  try {
+    ;({ data: issueInfo } = await apiCall<GITEE.IssueInfo>(
+      'patch',
+      `repos/${OWNER}/issues/${number}`,
+      {
+        searchParams: {
+          repo: FEEDBACK_REPO,
+          owner: OWNER,
+          ...data,
+        },
       },
-    },
-  )
+    ))
+  }
+  catch (error) {
+    return { status: 'unknown', error: toError(error) }
+  }
 
   const result = normalizeIssue(issueInfo)
 
   // 因为 Gitee 接口不识别无权限用户提交的 labels 和 state，所以这里手动通知 Webhook 同步数据
   if (!(data.labels || data.state))
-    return result
+    return { status: 'success', topic: result }
 
-  // 团队成员的提交不需要通知 Webhook 同步
-  const { hasAnyRoles } = useRuleChecks()
-  if (hasAnyRoles('teamMember', 'feedbackMember').value)
-    return result
+  if (options.skipReformat)
+    return { status: 'success', topic: result }
 
-  // 同步失败时向上抛错，由调用方提示
-  await reformat({ number })
+  try {
+    await reformat({ number })
+  }
+  catch (error) {
+    return { status: 'partial', topic: result, error: toError(error) }
+  }
 
-  return result
+  try {
+    return { status: 'success', topic: await getTopic(String(number)) }
+  }
+  catch (error) {
+    return { status: 'partial', topic: result, error: toError(error) }
+  }
 }
 
-export async function getUserCreatedTopics(
-  query: ForumAPI.Query,
-): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  const { data: issueList, pagination } = await apiCall<GITEE.IssueList>(
-    'get',
-    `orgs/${OWNER}/issues`,
-    {
-      searchParams: {
-        page: query.current,
-        sort: query.sort || 'created',
-        per_page: query.pageSize,
-        filter: 'created',
-        labels: setFilterTags([...query.filter || []]),
-        state: 'all',
-      },
-    },
-  )
-
-  return {
-    data: issueList
-      .filter(
-        val =>
-          val.repository.full_name
-          === `${OWNER}/${FEEDBACK_REPO}`,
-      )
-      .map(val => normalizeIssue(val)),
-    ...pagination,
-  }
+function toError(error: unknown): Error {
+  return error instanceof Error ? error : new Error(String(error))
 }
 
 export function openTopicOnGitee(number: string | number) {

@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { PhotoSwipe } from '@/components/ui/photoswipe'
+import type { PreviewerContext } from './image-previewer/ForumImagePreviewer.vue'
+import { useMediaQuery } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
+import { useBounceScroll } from '~/composables/useBounceScroll'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import ForumImageItem from './ForumImageItem.vue'
+import ForumImagePreviewer from './image-previewer/ForumImagePreviewer.vue'
 
-/** 图片项接口 */
 export interface ImageItem {
   src: string
   alt?: string
@@ -18,10 +22,10 @@ type LayoutMode = 'auto' | 'single' | 'double' | 'triple' | 'quad' | 'gallery' |
 interface Props {
   images: ImageItem[]
   layout?: LayoutMode
-  /** row 布局下最多显示几张图片 */
   maxDisplay?: number
   containerClass?: string
   imageClass?: string
+  context?: PreviewerContext
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,15 +35,18 @@ const props = withDefaults(defineProps<Props>(), {
   imageClass: '',
 })
 
-/** 错误状态追踪 */
+const { message } = useLocalized()
 const errorMap = ref(new Set<number>())
+const readyMap = ref(new Set<number>())
+const availableImages = computed(() => props.images
+  .map((image, sourceIndex) => ({ image, sourceIndex }))
+  .filter(({ sourceIndex }) => !errorMap.value.has(sourceIndex)))
 
-/** 计算实际布局模式 */
 const actualLayout = computed<Exclude<LayoutMode, 'auto'>>(() => {
   if (props.layout !== 'auto')
     return props.layout
 
-  const count = props.images.length
+  const count = availableImages.value.length
   const layoutMap: Record<number, Exclude<LayoutMode, 'auto'>> = {
     1: 'single',
     2: 'double',
@@ -49,55 +56,112 @@ const actualLayout = computed<Exclude<LayoutMode, 'auto'>>(() => {
   return layoutMap[count] ?? 'gallery'
 })
 
-/** 是否为填充模式（所有布局都使用 object-cover） */
-const isFillMode = computed(() => true)
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+const isRail = computed(() => isMobile.value)
 
-/** 显示的图片列表 */
+const railRef = useTemplateRef<HTMLElement>('railRef')
+const railIndex = ref(0)
+const railCount = computed(() => availableImages.value.length)
+const showPrevArrow = computed(() => isRail.value && railIndex.value > 0)
+const showNextArrow = computed(() => isRail.value && railIndex.value < railCount.value - 1)
+
+useBounceScroll(railRef, { axis: 'x' })
+
 const displayImages = computed(() => {
+  if (isRail.value)
+    return availableImages.value
   const layout = actualLayout.value
   if (layout === 'row')
-    return props.images.slice(0, props.maxDisplay)
+    return availableImages.value.slice(0, props.maxDisplay)
   if (layout === 'gallery')
-    return props.images.slice(0, 4)
-  return props.images
+    return availableImages.value.slice(0, 4)
+  return availableImages.value
 })
 
-/** 剩余图片数量 */
+const railItemWidth = computed(() => {
+  if (typeof window === 'undefined')
+    return 420
+  return Math.min(window.innerWidth * 0.78, 420)
+})
+
+const railHeight = computed(() => {
+  if (!isRail.value)
+    return 400
+  const sized = displayImages.value
+    .map(({ image }) => image)
+    .filter(image => Number(image.width) > 0 && Number(image.height) > 0)
+  if (sized.length === 0)
+    return 400
+  const largest = sized.reduce((a, b) =>
+    Number(a.width) * Number(a.height) >= Number(b.width) * Number(b.height) ? a : b)
+  const ratio = Number(largest.height) / Number(largest.width)
+  if (!Number.isFinite(ratio) || ratio <= 0)
+    return 400
+  const maxByViewport = typeof window === 'undefined'
+    ? 560
+    : Math.min(560, window.innerHeight * 0.75)
+  return Math.min(Math.max(railItemWidth.value * ratio, 200), maxByViewport)
+})
+
+function railItemStyle(): Record<string, string> | undefined {
+  if (!isRail.value)
+    return undefined
+  return { height: `${railHeight.value}px` }
+}
+
+function railStep(): number {
+  const first = railRef.value?.firstElementChild as HTMLElement | null
+  return first ? first.offsetWidth + 8 : 0 // gap-2
+}
+
+function onRailScroll() {
+  const el = railRef.value
+  const step = railStep()
+  if (!el || step <= 0)
+    return
+  const index = Math.round(el.scrollLeft / step)
+  if (index !== railIndex.value)
+    railIndex.value = Math.min(Math.max(index, 0), railCount.value - 1)
+}
+
+function scrollRailTo(index: number) {
+  const el = railRef.value
+  const step = railStep()
+  if (!el || step <= 0)
+    return
+  const target = Math.min(Math.max(index, 0), railCount.value - 1)
+  el.scrollTo({ left: target * step, behavior: 'smooth' })
+}
+
 const remainingCount = computed(() => {
+  if (isRail.value)
+    return 0
   const layout = actualLayout.value
   if (layout === 'row')
-    return props.images.length - props.maxDisplay
+    return availableImages.value.length - props.maxDisplay
   if (layout === 'gallery')
-    return props.images.length - 4
+    return availableImages.value.length - 4
   return 0
 })
 
-/** 有效图片列表（用于 PhotoSwipe） */
-const validImages = computed(() =>
-  props.images.filter((_, i) => !errorMap.value.has(i)),
-)
+const validImages = computed(() => availableImages.value.map(({ image }) => image))
 
-/** 获取有效图片索引 */
-function getValidIndex(index: number): number {
-  let count = 0
-  for (let i = 0; i < index; i++) {
-    if (!errorMap.value.has(i))
-      count++
-  }
-  return count
-}
-
-/** 处理图片加载错误 */
 function handleError(index: number) {
   errorMap.value.add(index)
 }
 
-/** 布局配置 */
+function isPreviewReady(image: ImageItem, index: number): boolean {
+  return !(image.thumbHash || image.thumbhash) || readyMap.value.has(index)
+}
+
+function handleReady(index: number) {
+  readyMap.value = new Set(readyMap.value).add(index)
+}
+
 // @unocss-include
 const layoutConfig = computed(() => {
   const layout = actualLayout.value
 
-  // 容器样式
   // @unocss-include
   const containerStyles: Record<string, string> = {
     row: 'flex gap-4 max-w-[80%]',
@@ -108,7 +172,6 @@ const layoutConfig = computed(() => {
     quad: 'grid grid-cols-2 grid-rows-2 max-h-[400px] rounded-lg overflow-hidden',
   }
 
-  // 图片项样式（圆角配置）- 所有类名静态声明以便 UnoCSS 扫描
   // @unocss-include
   const baseStyles = 'w-full h-full'
   // @unocss-include
@@ -121,6 +184,8 @@ const layoutConfig = computed(() => {
   }
 
   const getItemStyle = (index: number): string => {
+    if (isRail.value)
+      return 'w-[78vw] max-w-[420px] shrink-0 snap-start rounded-xl'
     if (layout === 'row')
       return 'h-100px w-[30%] rounded'
 
@@ -129,59 +194,91 @@ const layoutConfig = computed(() => {
   }
 
   return {
-    containerStyle: containerStyles[layout] ?? '',
+    containerStyle: isRail.value
+      ? 'forum-image-rail flex gap-2 overflow-x-auto'
+      : containerStyles[layout] ?? '',
     getItemStyle,
   }
 })
 
-/** Triple 布局的 grid 位置类 - 按索引对应 */
 // @unocss-include
 const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2 row-start-2']
 </script>
 
 <template>
-  <PhotoSwipe
-    v-if="images.length > 0"
+  <ForumImagePreviewer
+    v-if="validImages.length > 0"
     :images="validImages"
-    :class="containerClass"
+    :context="context"
+    class="forum-image-previewer"
   >
     <template #default="{ openAt }">
-      <div :class="[layoutConfig.containerStyle, containerClass]">
-        <div
-          v-for="(image, index) in displayImages"
-          :key="image.src"
-          class="border border-[var(--vp-c-divider)] transition-colors relative overflow-hidden hover:border-[var(--vp-c-brand)]"
-          :class="[layoutConfig.getItemStyle(index), actualLayout === 'triple' ? tripleGridClasses[index] : '']"
+      <div
+        ref="railRef"
+        :class="[layoutConfig.containerStyle, containerClass]"
+        @scroll.passive="onRailScroll"
+      >
+        <button
+          v-if="showPrevArrow"
+          type="button"
+          class="forum-image-rail-btn forum-image-rail-prev"
+          :aria-label="message.forum.imagePreview.previous"
+          @click="scrollRailTo(railIndex - 1)"
+        >
+          <span class="i-lucide-chevron-left" aria-hidden="true" />
+        </button>
+
+        <button
+          v-for="({ image, sourceIndex }, index) in displayImages"
+          :key="`${sourceIndex}:${image.src}`"
+          type="button"
+          class="p-0 border border-[var(--vp-c-divider)] bg-transparent transition-colors relative overflow-hidden hover:border-[var(--vp-c-brand)]"
+          :class="[
+            layoutConfig.getItemStyle(index),
+            !isRail && actualLayout === 'triple' ? tripleGridClasses[index] : '',
+            isPreviewReady(image, sourceIndex) ? 'cursor-zoom-in' : 'cursor-wait',
+          ]"
+          :style="railItemStyle()"
+          :disabled="!isPreviewReady(image, sourceIndex)"
+          :aria-label="message.forum.imagePreview.showImage.replace('{index}', String(index + 1))"
+          @click="openAt(index, $event.currentTarget)"
         >
           <ForumImageItem
             :image="image"
-            :fill-container="isFillMode"
+            :fill-container="true"
             :class="imageClass"
-            @click="openAt(getValidIndex(index))"
-            @error="handleError(index)"
+            @error="handleError(sourceIndex)"
+            @ready="handleReady(sourceIndex)"
           />
 
-          <!-- 剩余图片数量标记 -->
           <div
             v-if="index === displayImages.length - 1 && remainingCount > 0"
-            class="text-xs text-white px-1.5 py-0.5 rounded bg-black/60 right-1 top-1 absolute backdrop-blur-sm"
+            class="text-xs text-[var(--forum-media-on-overlay)] px-1.5 py-0.5 rounded bg-[var(--forum-media-overlay)] right-1 top-1 absolute backdrop-blur-sm"
           >
             +{{ remainingCount }}
           </div>
-        </div>
+        </button>
+
+        <button
+          v-if="showNextArrow"
+          type="button"
+          class="forum-image-rail-btn forum-image-rail-next"
+          :aria-label="message.forum.imagePreview.next"
+          @click="scrollRailTo(railIndex + 1)"
+        >
+          <span class="i-lucide-chevron-right" aria-hidden="true" />
+        </button>
       </div>
     </template>
-  </PhotoSwipe>
+  </ForumImagePreviewer>
 </template>
 
 <style scoped>
-/* 三张图片布局 - 第一张图片占两行 */
 .grid:has(.row-span-2) {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
 
-/* 四宫格布局 - 固定高度 */
 .grid-cols-2.grid-rows-2 {
   height: 400px;
 }
@@ -198,7 +295,6 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
   z-index: 2;
 }
 
-/* 响应式：小屏幕下单列布局 */
 @container (max-width: 500px) {
   .grid-cols-2 {
     grid-template-columns: 1fr !important;
@@ -212,5 +308,57 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
   .grid-rows-2 {
     height: auto !important;
   }
+}
+
+.forum-image-rail {
+  position: relative;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
+}
+
+.forum-image-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.forum-image-rail-btn {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 4;
+  display: flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--forum-media-overlay);
+  color: var(--forum-media-on-overlay);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.forum-image-rail-btn span {
+  width: 18px;
+  height: 18px;
+}
+
+.forum-image-rail-prev {
+  left: 10px;
+}
+
+.forum-image-rail-next {
+  right: 10px;
+}
+
+.forum-image-rail:hover .forum-image-rail-btn {
+  opacity: 1;
+}
+
+.forum-image-rail-btn:hover {
+  background: var(--forum-media-overlay-strong);
 }
 </style>

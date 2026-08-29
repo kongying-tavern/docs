@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { useQuery } from '@pinia/colada'
-import { useData, withBase } from 'vitepress'
-import { computed, ref, watch } from 'vue'
-import { user as userAPI } from '@/apis/forum/gitee'
+import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,7 +9,9 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
-import { getLangPath } from '@/utils'
+import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
@@ -25,26 +24,22 @@ const { user, userId } = defineProps<{
 if (!user && !userId)
   throw new Error('Must contain any of the two parameters')
 
-const { localeIndex } = useData()
 const { message } = useLocalized()
+const { userHref } = useForumRoute()
+const currentUser = useUserInfoStore()
 
-const userInfo = ref<ForumAPI.User | null>(user || null)
-
-const { data: userData, isLoading: getUserLoading } = useQuery({
-  key: () => ['user-hover', userId ?? user?.login ?? ''] as const,
-  query: () => userAPI.getUser(userId!),
-  enabled: () => !user && !!userId,
-})
-
-// 错误处理通过 watch
-watch(userData, (newVal) => {
-  if (newVal)
-    userInfo.value = newVal
-}, { immediate: true })
+const { data: userData, isLoading: getUserLoading } = useForumUserProfileQuery(
+  computed(() => user ? '' : userId ?? ''),
+)
+const userInfo = computed(() => user ?? userData.value ?? null)
 
 const { isOfficial } = useRuleChecks()
 const role = computed(() => (isOfficial(userInfo.value?.id || 0).value ? 'official' : null))
-const href = computed(() => withBase(`${getLangPath(localeIndex.value)}feedback/user/${userInfo.value?.login}`))
+const isAuthorizedUser = computed(() => Boolean(
+  userInfo.value?.id
+  && String(userInfo.value.id) === String(currentUser.info?.id),
+))
+const href = computed(() => userHref(userInfo.value?.login || ''))
 
 function openUserProfilePage() {
   window.open(href.value, userInfo.value?.login)
@@ -68,7 +63,6 @@ function sendMessage() {
       class="p-4 w-72"
     >
       <div class="flex flex-col gap-3">
-        <!-- 用户信息头部 -->
         <div class="flex gap-3 items-start">
           <Avatar
             :src="userInfo?.avatar"
@@ -84,7 +78,7 @@ function sendMessage() {
                 :target="userInfo?.username"
                 :alt="userInfo?.username"
               >
-                <h3 class="text-base text-gray-900 font-bold dark:text-white">
+                <h3 class="text-base text-[var(--vp-c-text-1)] font-bold">
                   {{ userInfo?.username || 'Unknown' }}
                 </h3>
               </a>
@@ -102,11 +96,11 @@ function sendMessage() {
           </div>
         </div>
 
-        <div class="mt-1 flex gap-2 justify-end">
+        <div v-if="!isAuthorizedUser" class="mt-1 flex gap-2 justify-end">
           <Button
             variant="outline"
             size="sm"
-            class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+            class="border border-[var(--vp-c-divider)] border-solid"
             :disabled="getUserLoading"
             @click="sendMessage"
           >
@@ -116,7 +110,7 @@ function sendMessage() {
           <ForumFollowUserButton
             v-if="userInfo?.login"
             size="sm"
-            class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+            class="border border-[var(--vp-c-divider)] rounded-md border-solid"
             :user="userInfo?.login"
           />
         </div>

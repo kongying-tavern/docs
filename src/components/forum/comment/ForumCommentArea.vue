@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
-import { nextTick, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, useTemplateRef } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
@@ -17,11 +17,12 @@ const props = defineProps<{
   topicAuthorId: string | number
   inline?: boolean
   commentCount?: number
+  topic?: ForumAPI.Topic
+  autofocusInput?: boolean
 }>()
 
 const { message } = useLocalized()
 
-// Comment area state management
 const {
   replyCommentID: _replyCommentID,
   commentInputBoxIsVisible,
@@ -31,62 +32,38 @@ const {
   currentCommentPage,
   loadStateMessage,
   commentLoading,
+  commentError,
   isClosedComment,
   isReplyingTo,
   toggleCommentReply,
   handleCommentSubmit,
-  initialize,
-  cleanup,
+  retry,
   setCommentInputBoxVisible,
   canLoadMoreComment,
 } = useCommentAreaState(props)
 
-const { toPostDetailPage } = useNavigateToTopic(props.topicId)
+const { detailHref } = useNavigateToTopic(props.topicId)
 
-// Template refs and UI state
 const commentArea = useTemplateRef('commentArea')
 const commentInputBox = useTemplateRef('commentInputBox')
 const { right, left, width } = useElementBounding(commentArea)
 const [CommentAreaCommentInputBox, UseCommentAreaCommentInputBox] = createReusableTemplate()
-const isInitialized = ref(false)
-let stopObserver: (() => void) | null = null
-
-watch(
-  () => props.commentCount,
-  async (count) => {
-    if (!isInitialized.value && count !== undefined && count !== null && count !== -1) {
-      isInitialized.value = true
-      await initialize()
-    }
+const inputObservationTarget = computed(() => (
+  !props.inline && renderComments.value.length >= 5 ? commentInputBox.value : null
+))
+useIntersectionObserver(
+  inputObservationTarget,
+  ([entry]) => {
+    setCommentInputBoxVisible(!!entry?.isIntersecting)
   },
-  { immediate: true },
 )
 
-watch(
-  renderComments,
-  async (list) => {
-    if (!stopObserver && list.length >= 5 && commentInputBox.value && !props.inline) {
-      const { stop } = useIntersectionObserver(
-        commentInputBox,
-        ([entry]) => {
-          setCommentInputBoxVisible(!!entry?.isIntersecting)
-        },
-      )
-      stopObserver = stop
-    }
-  },
-  { flush: 'post' },
-)
-
-// Scroll to comments when loading completes
 watchOnce(commentLoading, async () => {
   if (props.inline)
     return
   await nextTick()
   scrollTo()
 })
-
-onUnmounted(cleanup)
 </script>
 
 <template>
@@ -94,8 +71,10 @@ onUnmounted(cleanup)
     <CommentAreaCommentInputBox>
       <ForumCommentInputBox
         :repo="repo"
+        :autofocus="autofocusInput"
         :placeholder="message.forum.comment.placeholder"
         :topic-id="topicId"
+        :topic="topic"
         @comment:submit="handleCommentSubmit"
       />
     </CommentAreaCommentInputBox>
@@ -132,6 +111,7 @@ onUnmounted(cleanup)
             class="mt-4"
             :repo="repo"
             :topic-id="topicId"
+            :topic="topic"
             :reply-target="comment.author.login"
             :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
             @comment:submit="handleCommentSubmit"
@@ -141,16 +121,18 @@ onUnmounted(cleanup)
         <ForumLoadState
           v-if="!inline"
           :loading="commentLoading"
+          :error="Boolean(commentError)"
+          :retry="retry"
           :text="loadStateMessage"
         />
 
-        <p
+        <a
           v-if="canLoadMoreComment && inline"
           class="font-size-3 c-[var(--vp-c-text-3)] vp-link text-center w-full cursor-pointer"
-          @click="toPostDetailPage()"
+          :href="detailHref('reply')"
         >
-          查看更多评论
-        </p>
+          {{ message.forum.comment.loadMoreComment }}
+        </a>
       </div>
       <Separator
         v-if="(currentCommentPage === 1 && commentLoading) && !inline"
