@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { useQuery } from '@pinia/colada'
-import { computed, ref, watch } from 'vue'
-import { user as userAPI } from '@/apis/forum/gitee'
+import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,6 +10,7 @@ import {
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
@@ -29,18 +28,10 @@ const { message } = useLocalized()
 const { userHref } = useForumRoute()
 const currentUser = useUserInfoStore()
 
-const userInfo = ref<ForumAPI.User | null>(user || null)
-
-const { data: userData, isLoading: getUserLoading } = useQuery({
-  key: () => ['user-hover', userId ?? user?.login ?? ''] as const,
-  query: () => userAPI.getUser(userId!),
-  enabled: () => !user && !!userId,
-})
-
-watch(userData, (newVal) => {
-  if (newVal)
-    userInfo.value = newVal
-}, { immediate: true })
+const { data: userData, isLoading: getUserLoading } = useForumUserProfileQuery(
+  computed(() => user ? '' : userId ?? ''),
+)
+const userInfo = computed(() => user ?? userData.value ?? null)
 
 const { isOfficial } = useRuleChecks()
 const role = computed(() => (isOfficial(userInfo.value?.id || 0).value ? 'official' : null))

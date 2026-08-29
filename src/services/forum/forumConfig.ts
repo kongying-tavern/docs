@@ -2,6 +2,10 @@ export const FORUM_CONFIG = {
   DEFAULT_PAGE_SIZE: 20,
 } as const
 
+export const FORUM_MOBILE_BREAKPOINT_PX = 959
+
+export const FORUM_MOBILE_MEDIA_QUERY = `(max-width: ${FORUM_MOBILE_BREAKPOINT_PX}px)`
+
 export const IMAGE_UPLOAD_POLICY = {
   MAX_COUNT: 4,
   MAX_BYTES: 6 * 1024 * 1024,

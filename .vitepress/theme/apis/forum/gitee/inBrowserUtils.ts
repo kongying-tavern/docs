@@ -1,10 +1,12 @@
 import type ForumAPI from '../api'
-import { useRuleChecks } from '~/composables/useRuleChecks'
 import { normalizeComment } from './utils'
+
+export type OfficialUserPredicate = (userId: string | number) => boolean
 
 export function extractOfficialAndAuthorComments(
   issue: GITEE.IssueInfo,
   commentList: GITEE.CommentList,
+  isOfficialUser: OfficialUserPredicate,
 ): ForumAPI.Comment[] | null {
   const comments: ForumAPI.Comment[] = []
   const relatedComments = commentList.filter(
@@ -13,9 +15,8 @@ export function extractOfficialAndAuthorComments(
   const authorComment = relatedComments.find(
     comment => comment.user.id === issue.user.id,
   )
-  const { isOfficial } = useRuleChecks()
   const officialComment = relatedComments.find(
-    comment => isOfficial(comment.user.id).value,
+    comment => isOfficialUser(comment.user.id),
   )
 
   if (authorComment)

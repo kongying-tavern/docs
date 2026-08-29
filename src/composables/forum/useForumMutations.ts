@@ -5,6 +5,7 @@ import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '~/servi
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { computed } from 'vue'
 import { issues } from '@/apis/forum/gitee'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import {
   forumKeys,
   forumMutationPolicies,
@@ -39,10 +40,12 @@ export async function serializeTopicCommentMutation<T>(topicId: string | number,
 
 export function useForumMutations() {
   const queryCache = useQueryCache()
+  const { hasAnyRoles } = useRuleChecks()
+  const canSkipTopicReformat = hasAnyRoles('teamMember', 'feedbackMember')
   const createTopicMutation = useMutation({ mutation: issues.postTopic })
   const updateTopicMutation = useMutation({
     mutation: (input: { topicId: string | number, patch: TopicPatch }) =>
-      issues.putTopic(input.topicId, input.patch),
+      issues.putTopic(input.topicId, input.patch, { skipReformat: canSkipTopicReformat.value }),
   })
   const createCommentMutation = useMutation({
     mutation: (input: { repo: ForumAPI.Repo, topicId: string, body: string }) =>

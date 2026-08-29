@@ -10,6 +10,7 @@ import { getLangPath } from '@/utils'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useForumTopicQuery, useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import { getNewCommentCount, isRecentClosedTopic } from '~/services/forum/forumPersonalState'
 import { publishTopic } from '../utils/forumUi'
 import ForumSidebarCreateButton from './ForumSidebarCreateButton.vue'
@@ -36,23 +37,38 @@ const submitted = useForumTopicsQuery(computed(() => ({
   state: 'all',
 })), computed(() => isLoggedIn.value && Boolean(username.value)))
 
-const submittedOpen = useLocalStorage('forum-sidebar-submitted-open', true)
-const followedOpen = useLocalStorage('forum-sidebar-followed-open', true)
-const participatedOpen = useLocalStorage('forum-sidebar-participated-open', false)
+// null = 用户未主动设置过：默认跟随登录态（未登录收起 / 登录后展开）
+const submittedOpen = useLocalStorage<boolean | null>('forum-sidebar-submitted-open', null)
+const followedOpen = useLocalStorage<boolean | null>('forum-sidebar-followed-open', null)
+const participatedOpen = useLocalStorage<boolean | null>('forum-sidebar-participated-open', null)
+
+const submittedSectionOpen = computed({
+  get: () => Boolean(submittedOpen.value ?? isLoggedIn.value),
+  set: value => submittedOpen.value = value,
+})
+const followedSectionOpen = computed({
+  get: () => Boolean(followedOpen.value ?? isLoggedIn.value),
+  set: value => followedOpen.value = value,
+})
+const participatedSectionOpen = computed({
+  get: () => Boolean(participatedOpen.value ?? isLoggedIn.value),
+  set: value => participatedOpen.value = value,
+})
 const informationOpen = ref(false)
 const sortOpen = ref(false)
 const informationMenu = useTemplateRef('informationMenu')
+const SIDEBAR_DETAIL_QUERY_LIMIT = 5
 
-const followedTopicQueries = Array.from({ length: 20 }, (_, index) => useForumTopicQuery(computed(() => (
-  isLoggedIn.value && followedOpen.value
+const followedTopicQueries = Array.from({ length: SIDEBAR_DETAIL_QUERY_LIMIT }, (_, index) => useForumTopicQuery(computed(() => (
+  isLoggedIn.value && followedSectionOpen.value
     ? personal.state.value.followedTopics[index]?.topicId ?? ''
     : ''
 ))))
 const currentFollowedTopics = computed(() => new Map(
   followedTopicQueries.flatMap(query => query.data.value ? [[String(query.data.value.id), query.data.value] as const] : []),
 ))
-const participatedTopicQueries = Array.from({ length: 20 }, (_, index) => useForumTopicQuery(computed(() => (
-  isLoggedIn.value && participatedOpen.value
+const participatedTopicQueries = Array.from({ length: SIDEBAR_DETAIL_QUERY_LIMIT }, (_, index) => useForumTopicQuery(computed(() => (
+  isLoggedIn.value && participatedSectionOpen.value
     ? personal.state.value.recentParticipated[index]?.topicId ?? ''
     : ''
 ))))
@@ -62,7 +78,7 @@ const currentParticipatedTopics = computed(() => new Map(
 
 // 移动端（<960px）收藏创建按钮从 sidebar 移入 VPLocalNav 的返回顶部右侧。
 // VPLocalNav 由默认主题渲染且晚于本组件挂载，故用原生 DOM 手动挂载（Teleport 时序不可靠）。
-const isMobile = useMediaQuery('(max-width: 959px)')
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 let localNavCreateBtn: HTMLButtonElement | null = null
 
 function renderLocalNavCreateBtn() {
@@ -174,18 +190,6 @@ const participatedItems = computed(() => personal.state.value.recentParticipated
     commentCount: Math.max(0, current?.commentCount ?? topic.commentCount ?? 0),
     state: current?.state ?? topic.state,
   })))
-const submittedSectionOpen = computed({
-  get: () => (isLoggedIn.value ? submittedItems.value.length > 0 : true) && submittedOpen.value,
-  set: value => submittedOpen.value = value,
-})
-const followedSectionOpen = computed({
-  get: () => (isLoggedIn.value ? followedItems.value.length > 0 : true) && followedOpen.value,
-  set: value => followedOpen.value = value,
-})
-const participatedSectionOpen = computed({
-  get: () => (isLoggedIn.value ? participatedItems.value.length > 0 : true) && participatedOpen.value,
-  set: value => participatedOpen.value = value,
-})
 
 function pageHref(path: string): string {
   return withBase(`${getLangPath(localeIndex.value)}${path}`)

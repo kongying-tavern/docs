@@ -20,6 +20,15 @@ const topics = useForumTopicsQuery(computed(() => ({
   q: list.value?.q ?? '',
   creator: username.value,
 })))
+// 主页头部数量：该用户的全部反馈（不分类型/状态），不跟随下方筛选
+const allTopicsCount = useForumTopicsQuery(computed(() => ({
+  filter: 'all',
+  sort: 'created',
+  q: '',
+  creator: username.value,
+  state: 'all',
+  pageSize: 1,
+})), computed(() => Boolean(username.value)))
 const { message } = useLocalized()
 const loadStateMessage = computed(() => {
   if (topics.error.value)
@@ -69,7 +78,7 @@ watchEffect(() => {
         <ForumUserProfileHeader
           v-model:active-tab="activeTab"
           :username="username"
-          :topic-count="topics.total.value"
+          :topic-count="allTopicsCount.total.value"
         />
 
         <template #fallback>

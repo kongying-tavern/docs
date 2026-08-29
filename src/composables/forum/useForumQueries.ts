@@ -4,6 +4,7 @@ import type { ForumPage, ForumTopicListParams } from '~/services/forum/forumQuer
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { computed, toValue } from 'vue'
 import { issues, user } from '@/apis/forum/gitee'
+import { usePermissionData } from '~/composables/usePermissionData'
 import { FORUM_CONFIG } from '~/services/forum/forumConfig'
 import {
   flattenForumPages,
@@ -16,6 +17,7 @@ export function useForumTopicsQuery(
   params: MaybeRefOrGetter<ForumTopicListParams>,
   enabled: MaybeRefOrGetter<boolean> = true,
 ) {
+  const { getTeamMemberIds, getFeedbackMemberIds } = usePermissionData()
   const normalized = computed(() => normalizeTopicListParams(toValue(params)))
   const query = useInfiniteQuery<ForumPage<ForumAPI.Topic>, Error, number>({
     key: () => forumKeys.topicList(normalized.value),
@@ -25,7 +27,7 @@ export function useForumTopicsQuery(
       const result = await getForumTopics({
         ...normalized.value,
         page: pageParam,
-      })
+      }, userId => getTeamMemberIds.value.has(Number(userId)) || getFeedbackMemberIds.value.has(Number(userId)))
       return { items: result.topics, total: result.total, totalPage: result.totalPage }
     },
     getNextPageParam: (lastPage, _pages, page) => nextPage(lastPage, page, normalized.value.pageSize),

@@ -1,4 +1,5 @@
 import type ForumAPI from '@/apis/forum/api'
+import type { OfficialUserPredicate } from '@/apis/forum/gitee/inBrowserUtils'
 import type { ForumTopicListParams, TopicStateFilter } from '~/services/forum/forumQueryContracts'
 import { issues } from '@/apis/forum/gitee'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
@@ -44,9 +45,12 @@ export function buildForumProviderRequest(queryParams: ForumQueryParams): ForumP
   }
 }
 
-export async function getForumTopics(queryParams: ForumQueryParams): Promise<ForumLoadResult> {
+export async function getForumTopics(
+  queryParams: ForumQueryParams,
+  isOfficialUser: OfficialUserPredicate,
+): Promise<ForumLoadResult> {
   const request = buildForumProviderRequest(queryParams)
-  const response = await issues.getTopics(request.query, request.state, request.search)
+  const response = await issues.getTopics(request.query, request.state, request.search, isOfficialUser)
   return {
     topics: response.data || [],
     totalPage: response.totalPage || 0,

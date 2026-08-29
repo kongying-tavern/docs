@@ -1,8 +1,8 @@
 import type ForumAPI from '../api'
+import type { OfficialUserPredicate } from './inBrowserUtils'
 import type { SearchParamValue } from './types'
 import type { TopicStateFilter } from '~/services/forum/forumQueryContracts'
 import { buildFormData } from '@/apis/utils'
-import { useRuleChecks } from '~/composables/useRuleChecks'
 import { apiCall } from '.'
 import { reformat } from '../webhook'
 import { GITEE_API_CONFIG } from './config'
@@ -23,6 +23,10 @@ export interface TopicListRequest {
   searchParams: Record<string, SearchParamValue>
 }
 
+export interface TopicUpdateOptions {
+  skipReformat?: boolean
+}
+
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 
 export async function getTopic(number: string): Promise<ForumAPI.Topic> {
@@ -36,8 +40,9 @@ export async function getTopic(number: string): Promise<ForumAPI.Topic> {
 
 export async function getTopics(
   query: ForumAPI.Query,
-  state?: TopicStateFilter,
-  search?: string,
+  state: TopicStateFilter | undefined,
+  search: string | undefined,
+  isOfficialUser: OfficialUserPredicate,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
   // Separate the requests to prevent comments timeout from affecting issues
   const request = buildTopicListRequest(query, state, search)
@@ -87,7 +92,7 @@ export async function getTopics(
     }
 
     data.push({
-      relatedComments: extractOfficialAndAuthorComments(val, comments),
+      relatedComments: extractOfficialAndAuthorComments(val, comments, isOfficialUser),
       ...topic,
     })
   })
@@ -252,6 +257,7 @@ export async function putTopic(
     labels?: string
     state?: ForumAPI.TopicState
   },
+  options: TopicUpdateOptions = {},
 ): Promise<TopicUpdateOutcome> {
   let issueInfo: GITEE.IssueInfo
   try {
@@ -277,9 +283,7 @@ export async function putTopic(
   if (!(data.labels || data.state))
     return { status: 'success', topic: result }
 
-  // 团队成员的提交不需要通知 Webhook 同步
-  const { hasAnyRoles } = useRuleChecks()
-  if (hasAnyRoles('teamMember', 'feedbackMember').value)
+  if (options.skipReformat)
     return { status: 'success', topic: result }
 
   try {

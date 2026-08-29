@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
-import { nextTick, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, useTemplateRef } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
@@ -37,9 +37,7 @@ const {
   isReplyingTo,
   toggleCommentReply,
   handleCommentSubmit,
-  initialize,
   retry,
-  cleanup,
   setCommentInputBoxVisible,
   canLoadMoreComment,
 } = useCommentAreaState(props)
@@ -50,34 +48,14 @@ const commentArea = useTemplateRef('commentArea')
 const commentInputBox = useTemplateRef('commentInputBox')
 const { right, left, width } = useElementBounding(commentArea)
 const [CommentAreaCommentInputBox, UseCommentAreaCommentInputBox] = createReusableTemplate()
-const isInitialized = ref(false)
-let stopObserver: (() => void) | null = null
-
-watch(
-  () => props.commentCount,
-  async (count) => {
-    if (!isInitialized.value && count !== undefined && count !== null && count !== -1) {
-      isInitialized.value = true
-      await initialize()
-    }
+const inputObservationTarget = computed(() => (
+  !props.inline && renderComments.value.length >= 5 ? commentInputBox.value : null
+))
+useIntersectionObserver(
+  inputObservationTarget,
+  ([entry]) => {
+    setCommentInputBoxVisible(!!entry?.isIntersecting)
   },
-  { immediate: true },
-)
-
-watch(
-  renderComments,
-  async (list) => {
-    if (!stopObserver && list.length >= 5 && commentInputBox.value && !props.inline) {
-      const { stop } = useIntersectionObserver(
-        commentInputBox,
-        ([entry]) => {
-          setCommentInputBoxVisible(!!entry?.isIntersecting)
-        },
-      )
-      stopObserver = stop
-    }
-  },
-  { flush: 'post' },
 )
 
 watchOnce(commentLoading, async () => {
@@ -86,8 +64,6 @@ watchOnce(commentLoading, async () => {
   await nextTick()
   scrollTo()
 })
-
-onUnmounted(cleanup)
 </script>
 
 <template>

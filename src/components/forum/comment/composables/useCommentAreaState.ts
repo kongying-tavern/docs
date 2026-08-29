@@ -41,23 +41,14 @@ export function useCommentAreaState(props: {
     replyCommentID.value = null
   }
 
-  async function initialize(): Promise<void> {
-    replyCommentID.value = null
-    commentInputBoxIsVisible.value = true
-    if (import.meta.env.SSR || !enabled.value)
-      return
+  if (!import.meta.env.SSR) {
     useInfiniteScroll(window, async () => {
       await comments.loadMore()
     }, {
       distance: 10,
       interval: 1500,
-      canLoadMore: () => comments.canLoadMore.value,
+      canLoadMore: () => enabled.value && comments.canLoadMore.value,
     })
-  }
-
-  function cleanup(): void {
-    replyCommentID.value = null
-    commentInputBoxIsVisible.value = true
   }
 
   return {
@@ -75,9 +66,7 @@ export function useCommentAreaState(props: {
     isReplyingTo: (id: number | string) => replyCommentID.value === id,
     toggleCommentReply,
     handleCommentSubmit,
-    initialize,
     retry: comments.refetch,
-    cleanup,
     setCommentInputBoxVisible: (visible: boolean) => {
       commentInputBoxIsVisible.value = visible
     },
