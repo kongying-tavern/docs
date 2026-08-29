@@ -1,6 +1,13 @@
 .form-container {
   --forum-send-duration: 260ms;
   --forum-send-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --forum-form-enter-duration: 380ms;
+  --forum-form-exit-duration: 280ms;
+  --forum-form-switch-duration: 480ms;
+  --forum-form-enter-offset: 48px;
+  --forum-form-switch-offset: 24px;
+  --forum-form-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --forum-form-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --letter-paper-color: var(--vp-c-bg);
   --letter-paper-texture:
     radial-gradient(color-mix(in srgb, var(--vp-c-text-1) 7%, transparent) 10%, transparent 20%),
@@ -47,33 +54,31 @@
     align-self: start;
   }
 
-  .paper {
+  .form-container.paper {
     isolation: isolate;
-    transition: border-color 180ms ease;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
   }
 
-  .paper::before,
-  .paper::after {
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    border: 1px solid color-mix(in srgb, var(--vp-c-text-1) 20%, transparent);
+  .form-motion-surface {
+    min-height: 100dvh;
+    border: 1px solid var(--vp-c-divider);
     border-radius: 8px;
-    background: var(--vp-c-bg-soft);
+    background-color: var(--letter-paper-color);
+    background-image: var(--letter-paper-texture);
+    background-position: 0 0, 1px 1px;
+    background-size: 4px 4px, 3px 3px;
     box-shadow: var(--vp-shadow-3);
-    content: '';
-    pointer-events: none;
+    color: var(--vp-c-text-1);
+    transform: translateY(0);
+    transition: transform var(--forum-form-enter-duration) var(--forum-form-ease-out);
   }
 
-  .paper::before {
-    top: 6px;
-    left: 6px;
-  }
-
-  .paper::after {
-    top: 12px;
-    left: 12px;
+  .form-motion-surface .form-content,
+  .form-motion-surface .form-footer-container {
+    opacity: 1;
+    transition: opacity var(--forum-form-enter-duration) var(--forum-form-ease-out);
   }
 
   .form-content {
@@ -93,14 +98,15 @@
     border-bottom: 1px solid color-mix(in srgb, var(--vp-c-text-1) 30%, transparent);
   }
 
-  .animate-switching.paper::before {
-    animation: forum-paper-enter 800ms ease-in-out;
-  }
+  @starting-style {
+    .form-container.paper[data-state='open'] .form-motion-surface {
+      transform: translateY(var(--forum-form-enter-offset));
+    }
 
-  .animate-switching.paper::after,
-  .animate-switching.form-content,
-  .animate-switching.form-footer-container {
-    animation: forum-paper-leave 800ms ease-in-out;
+    .form-container.paper[data-state='open'] .form-content,
+    .form-container.paper[data-state='open'] .form-footer-container {
+      opacity: 0.65;
+    }
   }
 }
 
@@ -130,58 +136,70 @@
   isolation: isolate;
 }
 
-.form-container[data-phase='closing'] .form-content {
+.form-container.paper[data-state='closed'] .form-motion-surface {
+  transform: translateY(var(--forum-form-enter-offset));
+  transition-duration: var(--forum-form-exit-duration);
+  transition-timing-function: var(--forum-form-ease-in-out);
+}
+
+.form-container.paper[data-state='closed'] .form-content,
+.form-container.paper[data-state='closed'] .form-footer-container {
+  opacity: 0.65;
+  transition-duration: var(--forum-form-exit-duration);
+}
+
+.form-container.paper[data-state='closed'] {
+  animation: forum-form-presence-exit var(--forum-form-exit-duration) linear both;
+}
+
+.form-container.paper.animate-switching .form-motion-surface {
+  animation: forum-form-switch var(--forum-form-switch-duration) var(--forum-form-ease-in-out) both;
+}
+
+.form-container.paper.animate-switching .form-content,
+.form-container.paper.animate-switching .form-footer-container {
+  animation: forum-form-content-switch var(--forum-form-switch-duration) var(--forum-form-ease-in-out) both;
+}
+
+.form-container.paper[data-phase='closing'] .form-motion-surface,
+.form-container:not(.paper)[data-phase='closing'] .form-content {
   animation: forum-letter-send var(--forum-send-duration) var(--forum-send-ease) both;
+}
+
+@keyframes forum-form-presence-exit {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes forum-form-switch {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  48%,
+  52% {
+    transform: translateY(var(--forum-form-switch-offset));
+  }
+}
+
+@keyframes forum-form-content-switch {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  48%,
+  52% {
+    opacity: 0.65;
+  }
 }
 
 @keyframes forum-letter-send {
   to {
-    opacity: 0;
-    transform: translateY(24px) scale(0.975);
-  }
-}
-
-@keyframes forum-paper-leave {
-  0% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  50% {
-    opacity: 0;
-    transform: translateX(100px);
-  }
-
-  51% {
-    opacity: 0;
-    transform: translate(0, 150px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-}
-
-@keyframes forum-paper-enter {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-
-  50% {
-    opacity: 0;
-    transform: translateY(150px);
-  }
-
-  51% {
-    opacity: 0;
-    transform: translateX(-100px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
+    transform: translateY(24px);
   }
 }
 
@@ -199,16 +217,24 @@
     --forum-send-duration: 0ms;
   }
 
-  .form-container[data-phase='closing'] .form-content {
+  .form-container.paper[data-phase='closing'] .form-motion-surface,
+  .form-container:not(.paper)[data-phase='closing'] .form-content {
     animation: none;
   }
 
-  .paper,
-  .paper::before,
-  .paper::after,
-  .animate-switching.form-content,
-  .animate-switching.form-footer-container {
+  .form-container.paper .form-motion-surface {
     animation: none;
     transition: none;
+  }
+
+  .form-container.paper .form-content,
+  .form-container.paper .form-footer-container {
+    animation: none;
+    opacity: 1;
+    transition: none;
+  }
+
+  .form-container.paper[data-state='closed'] {
+    animation-duration: 0ms;
   }
 }

@@ -199,6 +199,24 @@ test('form wiring keeps one submission and starts bounded closing before awaitin
   assert.match(styleSource, /prefers-reduced-motion: reduce/)
 })
 
+test('desktop form motion moves the content surface without moving the action bar', () => {
+  const configSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/config.ts', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+  const styleSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.scss', import.meta.url), 'utf8')
+
+  assert.match(configSource, /TRANSITION_DURATION = 480/)
+  assert.match(formSource, /:class="\{ 'animate-switching': inSwitchTabTransition \}"/)
+  assert.match(formSource, /<div class="form-motion-surface flex flex-col">[\s\S]*<ForumFormActions/)
+  assert.match(formSource, /<\/div>\s+<ForumFormActionBar/)
+  assert.match(styleSource, /--forum-form-enter-offset: 48px/)
+  assert.match(styleSource, /--forum-form-switch-offset: 24px/)
+  assert.match(styleSource, /@starting-style[\s\S]*\.form-container\.paper\[data-state='open'\] \.form-motion-surface/)
+  assert.match(styleSource, /\.form-container\.paper\[data-state='closed'\] \{\s+animation: forum-form-presence-exit/)
+  assert.match(styleSource, /\.form-container\.paper\.animate-switching \.form-motion-surface/)
+  assert.match(styleSource, /@keyframes forum-form-content-switch[\s\S]*opacity: 0\.65/)
+  assert.doesNotMatch(styleSource, /animate-switching[^,{]*\.action-bar/)
+})
+
 test('drafts persist only after confirmation or an unexpected page exit', () => {
   const stateSource = readFileSync(new URL('../../src/components/forum/form/composables/useFormState.ts', import.meta.url), 'utf8')
   const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')

@@ -39,6 +39,7 @@ import ForumImageUpload from '~/components/forum/form/ForumImageUpload.vue'
 import { formatImageAttachmentError, formatMessage } from '~/components/forum/utils/forumUi'
 import { useFormState } from '../composables/useFormState'
 import { useFormSubmit } from '../composables/useFormSubmit'
+import ForumFormActionBar from '../ForumFormActionBar.vue'
 import ForumFormActions from '../ForumFormActions.vue'
 import ForumFormContent from '../ForumFormContent.vue'
 import ForumFormTabs from '../ForumFormTabs.vue'
@@ -310,7 +311,6 @@ watch(isOpen, (open) => {
       :model-value="formData.type"
       :tabs="formTabs"
       :has-permission="hasPermission"
-      :in-transition="inSwitchTabTransition"
       @update:model-value="setFormType"
     >
       <ForumFormContent :tabs="formTabs" @files-selected="handleFilesSelected">
@@ -336,16 +336,22 @@ watch(isOpen, (open) => {
       </DialogDescription>
 
       <form class="letter-form flex flex-col" @submit.prevent="handleFormSubmit">
-        <Form />
+        <div class="form-motion-surface flex flex-col">
+          <Form />
 
-        <ForumFormActions
-          :loading="submitLoading"
-          :disabled="finalIsDisabled"
-          :error-count="validationErrorCount"
+          <ForumFormActions
+            :loading="submitLoading"
+            :disabled="finalIsDisabled"
+            :error-count="validationErrorCount"
+            @close="handleClose"
+            @review-errors="focusFirstInvalid"
+          />
+        </div>
+
+        <ForumFormActionBar
           :next-tab="nextTab"
           :in-transition="inSwitchTabTransition"
           @close="handleClose"
-          @review-errors="focusFirstInvalid"
           @switch-tab="switchTab"
         />
       </form>

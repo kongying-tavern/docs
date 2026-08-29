@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { TabsConfig } from './publish-topic-form/types'
 import { ReloadIcon } from '@radix-icons/vue'
 import { useMediaQuery } from '@vueuse/core'
 import { Button, InteractiveHoverButton } from '@/components/ui/button'
@@ -11,14 +10,11 @@ interface Props {
   loading: boolean
   disabled: boolean
   errorCount?: number
-  nextTab?: TabsConfig
-  inTransition?: boolean
 }
 
 interface Emits {
   (e: 'close'): void
   (e: 'review-errors'): void
-  (e: 'switch-tab'): void
 }
 
 defineProps<Props>()
@@ -29,27 +25,8 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 
 <template>
   <template v-if="isDesktop">
-    <div class="action-bar flex flex-col items-start absolute">
-      <Button class="form-action-btn" type="button" variant="secondary" @click="emit('close')">
-        <span>{{ message.ui.button.close }}</span>
-        <span class="i-lucide-x icon-btn" aria-hidden="true" />
-      </Button>
-
-      <Button
-        v-if="nextTab"
-        class="form-action-btn"
-        type="button"
-        variant="secondary"
-        @click="emit('switch-tab')"
-      >
-        <span>{{ nextTab.label }}</span>
-        <span class="i-lucide-refresh-cw icon-btn" :class="{ 'animate-spin': inTransition }" aria-hidden="true" />
-      </Button>
-    </div>
-
     <DialogFooter
       class="form-footer-container py-4 flex flex-wrap w-full bottom-0 sticky z-10"
-      :class="{ 'animate-switching': inTransition }"
     >
       <button
         v-if="errorCount"
@@ -93,40 +70,6 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 </template>
 
 <style scoped>
-.action-bar {
-  top: -12px;
-  left: calc((min(800px, calc(100vw - 32px)) - 100vw) / 2);
-}
-
-.action-bar > :not(:first-child) {
-  margin-top: 0.75rem;
-}
-
-.form-action-btn {
-  width: fit-content;
-  margin-left: -0.375rem;
-  border-radius: 0 9999px 9999px 0;
-  transition: transform 180ms ease, background-color 180ms ease;
-}
-
-.form-action-btn > :first-child {
-  display: inline-block;
-  max-width: 0;
-  margin-left: 0;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.form-action-btn:hover {
-  transform: translateX(4px);
-}
-
-.form-action-btn:hover > :first-child,
-.form-action-btn:focus-visible > :first-child {
-  max-width: 7rem;
-  margin-left: 0.375rem;
-}
-
 .form-footer-container {
   position: relative;
 }
@@ -151,15 +94,5 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
   background: var(--vp-c-brand-2) !important;
   border-color: var(--vp-c-brand-2) !important;
   transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-spin {
-    animation: none;
-  }
-
-  .form-action-btn {
-    transition: none;
-  }
 }
 </style>

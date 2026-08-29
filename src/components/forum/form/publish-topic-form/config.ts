@@ -3,7 +3,7 @@ import type { CustomConfig } from '../../../../../.vitepress/locales/types'
 import type { TabsConfig } from './types'
 import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
 
-export const TRANSITION_DURATION = 800
+export const TRANSITION_DURATION = 480
 export const FORM_HASH = 'PUBLISH-TOPIC'
 
 export function getFormTabsConfig(

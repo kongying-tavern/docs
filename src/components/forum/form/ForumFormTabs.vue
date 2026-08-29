@@ -12,7 +12,6 @@ interface Props {
   modelValue: TopicFormData['type']
   tabs: TabsConfig[]
   hasPermission: boolean
-  inTransition: boolean
 }
 
 interface Emits {
@@ -44,7 +43,6 @@ function formatDate(date = new Date()): string {
   <Tabs
     v-model="activeTab"
     class="form-content w-full md:px-4"
-    :class="{ 'animate-switching': inTransition }"
   >
     <DialogHeader v-if="isDesktop" class="desktop-paper-header font-serif pt-6">
       <div class="text-base c-[var(--vp-c-text-2)] leading-none flex w-full justify-between">
@@ -82,10 +80,6 @@ function formatDate(date = new Date()): string {
 </template>
 
 <style scoped>
-.form-content {
-  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
 .desktop-paper-header {
   gap: 0;
   padding-bottom: 0.25rem;
@@ -108,12 +102,5 @@ function formatDate(date = new Date()): string {
 
 .desktop-title-divider {
   border-top: 2px solid color-mix(in srgb, var(--vp-c-text-1) 72%, transparent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .form-content {
-    transition: none;
-  }
-
 }
 </style>
