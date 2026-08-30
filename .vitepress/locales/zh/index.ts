@@ -30,8 +30,8 @@ export const zhConfig: LocaleSpecificConfig<
     image: C.META_IMAGE,
     logo: '/imgs/common/logo/logo_256.png',
 
-    outlineTitle: '本页目录',
-    lastUpdatedText: '更新日期',
+    outline: { label: '本页目录' },
+    lastUpdated: { text: '更新日期' },
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
     notFound: _404,

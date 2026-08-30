@@ -53,14 +53,12 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
 
   const cancelFollowThisUser = async () => {
     const result = await runToggleFollow({ follow: false, targetUser })
-    toast.success('取关成功')
     followState.value = false
     return result
   }
 
   const followThisUser = async () => {
     const result = await runToggleFollow({ follow: true, targetUser })
-    toast.success('关注成功')
     followState.value = true
     return result
   }

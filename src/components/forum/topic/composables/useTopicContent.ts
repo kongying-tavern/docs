@@ -1,38 +1,25 @@
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import { sanitizeMarkdown } from '~/composables/sanitizeMarkdown'
 import { useForumViewMode } from '~/composables/useForumViewMode'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 
-export interface UseTopicContentOptions {
-  topic: ForumAPI.Topic | ForumAPI.Post
-}
-
-export function useTopicContent(options: UseTopicContentOptions) {
-  const { topic } = options
+export function useTopicContent(topic: ForumAPI.Topic | ForumAPI.Post) {
   const { isCardMode, isCompactMode } = useForumViewMode()
 
-  // Computed properties
-  const renderedText = computed(() => sanitizeMarkdown(topic.content.text))
+  const renderedText = computed(() => topic.content.text)
   const isPost = computed(() => topic.type === 'POST')
   const isAnn = computed(() => topic.type === 'ANN')
 
-  // Text collapse functionality
   const { isExpanded, hasOverflow, collapseText, toggleExpand } = useTextCollapse(renderedText)
 
-  // Display logic
   const shouldShowTitle = computed(() => {
-    if (isCompactMode.value) {
-      // In compact mode, never show title (only content)
+    if (isCompactMode.value)
       return false
-    }
-    // In card mode, don't show title for BUG type
     return topic.type !== 'BUG'
   })
 
   const displayTitle = computed(() => {
     if (isCompactMode.value) {
-      // In compact mode, display content as title (since title is hidden)
       return topic.type === 'BUG'
         ? renderedText.value
         : (topic.title.length < 10 ? renderedText.value : topic.title)
@@ -41,28 +28,22 @@ export function useTopicContent(options: UseTopicContentOptions) {
   })
 
   const displayContent = computed(() => {
-    // BUG type always shows rendered text (both compact and card mode)
-    if (topic.type === 'BUG') {
+    if (topic.type === 'BUG')
       return renderedText.value
-    }
-    // ANN type shows rendered text, others show collapsed text
     return isAnn.value ? renderedText.value : collapseText.value
   })
 
   return {
-    // State
     renderedText,
     isPost,
     isAnn,
     isCardMode,
     isCompactMode,
 
-    // Text collapse
     isExpanded,
     hasOverflow,
     toggleExpand,
 
-    // Display logic
     shouldShowTitle,
     displayTitle,
     displayContent,

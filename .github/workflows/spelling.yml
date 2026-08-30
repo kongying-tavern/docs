@@ -1,12 +1,20 @@
-name: PRSPELLCHECK
-on: [pull_request]
+name: SPELL_CHECK
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
 jobs:
-  run:
-    name: Spell Check with Typos
+  spell-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v7
 
       - name: Check spelling
-        uses: crate-ci/typos@master
-        with: { config: ./.github/_typos.toml }
+        uses: crate-ci/typos@v1.49.0
+        with:
+          config: ./.github/_typos.toml

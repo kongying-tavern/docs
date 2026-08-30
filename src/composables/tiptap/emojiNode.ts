@@ -1,11 +1,11 @@
-import type { Component } from 'vue'
 import type { EmojiAttrs } from '@/components/ui/types'
 import { InputRule, mergeAttributes, Node } from '@tiptap/core'
-import { VueNodeViewRenderer } from '@tiptap/vue-3'
-import EmojiWrapper from '@/components/ui/EmojiWrapper.vue'
 
 /** Matches emoji syntax in text */
 const EMOJI_SYNTAX_REGEX = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/g
+
+/** Matches an emoji filename extension. */
+const EMOJI_FILE_EXTENSION_REGEX = /\.[^.]+$/
 
 export const EmojiNode = Node.create({
   name: 'emoji',
@@ -35,11 +35,16 @@ export const EmojiNode = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['EmojiWrapper', mergeAttributes(HTMLAttributes)]
-  },
-
-  addNodeView() {
-    return VueNodeViewRenderer(EmojiWrapper as Component)
+    const emoji = String(HTMLAttributes.emoji || '')
+    const base = typeof import.meta.env?.BASE_URL === 'string' ? import.meta.env.BASE_URL : '/'
+    const src = `${base.endsWith('/') ? base : `${base}/`}emojis/${emoji.split('/').map(encodeURIComponent).join('/')}`
+    const alt = emoji.split('/').at(-1)?.replace(EMOJI_FILE_EXTENSION_REGEX, '') || 'emoji'
+    return ['img', mergeAttributes(HTMLAttributes, {
+      'src': src,
+      'alt': alt,
+      'title': alt,
+      'data-emoji': emoji,
+    })]
   },
 
   addInputRules() {

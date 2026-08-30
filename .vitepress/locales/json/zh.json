@@ -174,13 +174,61 @@
     "loadMore": "加载更多",
     "noMore": "没有更多",
     "loadError": "加载失败",
+    "lastVisited": "上次浏览到这里",
+    "empty": {
+      "title": "暂无反馈",
+      "description": "可以调整筛选条件，或者提交新的反馈。",
+      "searchTitle": "搜索“{query}”",
+      "searchDescription": "没有搜索到任何相关反馈内容。"
+    },
+    "reaction": {
+      "label": "反馈评价",
+      "like": "赞同",
+      "dislike": "不赞同"
+    },
+    "imagePreview": {
+      "previous": "上一张图片",
+      "next": "下一张图片",
+      "expandPanel": "展开预览面板",
+      "collapsePanel": "收起预览面板",
+      "showImage": "显示第 {index} 张图片"
+    },
+    "sidebar": {
+      "home": "社区反馈",
+      "manual": "用户手册",
+      "download": "下载客户端",
+      "myProfile": "个人主页",
+      "faq": "常见问题",
+      "createFeedback": "创建反馈",
+      "loginToCreate": "登录后提交反馈",
+      "recentSubmitted": "我的反馈",
+      "followedTopics": "我关注的",
+      "recentParticipated": "我参与的",
+      "emptySubmitted": "还没有发布过反馈",
+      "emptyFollowed": "还没有关注反馈",
+      "emptyParticipated": "还没有参与过反馈",
+      "loginToView": "登录后查看",
+      "loginNow": "去登录",
+      "syncFailed": "评论已发布，但参与记录同步失败",
+      "newComments": "新增 {count} 条评论",
+      "totalComments": "共 {count} 条评论",
+      "information": "更多信息",
+      "listSort": "列表排序",
+      "opensource": "开源代码",
+      "userAgreement": "用户协议",
+      "privacyPolicy": "隐私协议"
+    },
     "exceededRateLimitWarning": "已达到 Gitee 接口的最大请求频率限制，请登录后重试",
     "topic": {
       "official": "官方",
       "author": "作者",
+      "officialAt": "@空荧酒馆",
       "showMore": "显示更多",
+      "previewTitle": "话题预览",
       "backToFeedbackForum": "返回反馈",
       "menu": {
+        "moreActions": "更多操作",
+        "syncPending": "{action}，同步状态待确认",
         "giteeLink": "在Gitee查看",
         "toOriginal": "转到原文",
         "hideFeedback": {
@@ -190,6 +238,8 @@
         },
         "deleteComment": {
           "text": "删除评论",
+          "title": "确认删除评论",
+          "confirm": "删除后无法恢复，确定要删除这条评论吗？",
           "success": "评论删除成功",
           "fail": "评论删除失败"
         },
@@ -205,18 +255,27 @@
         },
         "changeType": {
           "text": "更改类型",
-          "to": "更改为"
+          "to": "更改为",
+          "success": "反馈类型修改成功",
+          "fail": "反馈类型修改失败"
         },
         "modifyTags": {
-          "text": "修改 Tags"
+          "text": "修改 Tags",
+          "title": "编辑话题标签（#{id}）",
+          "success": "反馈标签修改成功",
+          "fail": "反馈标签修改失败"
         },
         "pinTopic": {
           "pin": "固定话题",
-          "unpin": "取消固定"
+          "unpin": "取消固定",
+          "success": "反馈固定状态修改成功",
+          "fail": "反馈固定状态修改失败"
         },
         "commentArea": {
           "open": "打开评论",
-          "close": "关闭评论"
+          "close": "关闭评论",
+          "success": "评论区状态修改成功",
+          "fail": "评论区状态修改失败"
         },
         "reopenFeedback": {
           "text": "打开反馈"
@@ -252,8 +311,19 @@
       "logoutSuccess": "已登出",
       "loginFail": "登录失败",
       "logoutFail": "登出失败",
-      "loginAlert": "登录提示",
-      "loginAlertMsg": "即将跳转到 Gitee 进行授权登录",
+      "loginAlert": "账号登录",
+      "loginAlertMsg": "使用 Gitee 账号继续",
+      "oauthLoginAlert": "前往 Gitee 授权登录",
+      "oauthLoginAlertMsg": "将离开当前页面，授权完成后会自动返回。",
+      "account": "账号",
+      "accountPlaceholder": "Gitee 登录名或邮箱（不支持手机号或游戏账号）",
+      "loginHelp": "登录遇到问题？",
+      "password": "密码",
+      "passwordPlaceholder": "请输入密码",
+      "passwordLogin": "登录",
+      "passwordLoginFail": "登录失败，请检查账号、密码或网络后重试",
+      "oauthLogin": "使用授权登录",
+      "or": "或者",
       "notGiteeAccountMsg": "没有 Gitee 账号？%signup",
       "clickToGiteeSignup": "点击注册 Gitee 账号",
       "callback": {
@@ -288,18 +358,28 @@
         "text": "团队博客",
         "items": [
           {
-            "text": "原神地图客户端更新日志",
-            "link": "/blog/hotupdatelog-client"
+            "text": "【客户端】热更新日志",
+            "link": "/blog/hotupdatelog-client",
+            "cover": "/imgs/common/client-updatelog_cover.png"
           },
           {
-            "text": "原神地图网页版更新日志",
-            "link": "/blog/changelog-web"
+            "text": "【网页版】更新日志",
+            "link": "/blog/changelog-web",
+            "cover": "/imgs/common/web-updatelog_cover.png"
+          },
+          {
+            "text": "【位置追踪】热更新日志",
+            "link": "/blog/posts/hotupdatelog-autotrack"
           }
         ]
       },
       "suggest": {
-        "text": "相关推荐",
+        "text": "文档推荐",
         "items": []
+      },
+      "recentTopics": {
+        "text": "最近话题",
+        "empty": "暂无最近话题"
       },
       "info": [
         {
@@ -323,6 +403,11 @@
       "commentsClosed": "评论关闭"
     },
     "header": {
+      "view": {
+        "label": "显示方式",
+        "card": "卡片",
+        "compact": "紧凑"
+      },
       "sort": {
         "created": "最近创建",
         "updated": "最近更新",
@@ -330,7 +415,9 @@
       },
       "search": {
         "placeholder": "搜索反馈",
-        "allRelatedContentCount": "搜索到相关反馈数"
+        "allRelatedContentCount": "搜索到相关反馈数",
+        "resultSummary": "搜索“{query}”，找到 {count} 条相关反馈",
+        "quickLinks": "快捷链接"
       },
       "navigation": {
         "allFeedback": "全部反馈",
@@ -367,7 +454,7 @@
           "client": "客户端问题"
         }
       },
-      "title": "提交反馈",
+      "title": "反馈表单",
       "type": {
         "sug": "提建议",
         "bug": "提缺陷",
@@ -377,7 +464,37 @@
       "tagsInput": {
         "searchTags": "搜索符合的标签",
         "maxTagsLimit": "已达到最大可选标签数量",
-        "noResultsFound": "没有符合的结果"
+        "noResultsFound": "没有符合的结果",
+        "loadFailed": "标签加载失败，请重试",
+        "retry": "重新加载"
+      },
+      "feedbackForm": {
+        "submit": "提交反馈",
+        "keepDraftTitle": "要保留本次编辑吗？",
+        "keepDraftDescription": "保留后，下次打开反馈表单可以继续编辑。",
+        "discardDraft": "不保留",
+        "keepDraft": "保留编辑",
+        "fieldsNeedAttention": "还有 {count} 个字段需要检查",
+        "uploadingImages": "正在上传图片 {settled}/{total}",
+        "publishing": "正在发布反馈…",
+        "success": "反馈已发布",
+        "uploadFailed": "图片上传失败，请检查后重试",
+        "publishFailed": "反馈发布失败，你的内容已保留",
+        "returnToForm": "返回表单",
+        "retryImage": "重新上传 {filename}",
+        "removeImage": "移除 {filename}",
+        "addImages": "添加图片",
+        "attachmentsLabel": "反馈图片",
+        "attachmentsLimit": "已添加 {count}/{max} 张，每张最大 {size}",
+        "localFilesWarning": "刷新页面后，尚未完成的本地图片不会保留。",
+        "imageEmpty": "{filename} 是空文件",
+        "imageInvalidType": "{filename} 的图片格式不受支持",
+        "imageTooLarge": "{filename} 超过 {size}",
+        "imageCountExceeded": "最多只能添加 {max} 张图片",
+        "previewFailed": "无法预览 {filename}",
+        "formatBold": "切换粗体",
+        "formatItalic": "切换斜体",
+        "formatStrike": "切换删除线"
       },
       "publishSuccess": "反馈上传成功：",
       "publishFail": "反馈上传失败：",
@@ -397,7 +514,7 @@
         },
         "upload": {
           "text": "上传错误截图",
-          "tip": "请上传相关错误截图或报错信息最多 %range 张，最大不超过 %size MB",
+          "tip": "请上传相关错误截图或报错信息，最多 %range 张，每张不超过 %size",
           "fail": "%filename 上传失败",
           "violation": "图片违规！请勿上传任何与反馈无关的图片",
           "paste": {
@@ -421,7 +538,14 @@
     "readMore": "了解更多",
     "translate": {
       "translateText": "翻译贴子",
-      "translateInfo": "翻译由 Meta Seq2Seq 模型提供支持",
+      "translatedFrom": "翻译自 {language}",
+      "settings": "翻译设置",
+      "settingsDescription": "调整当前设备上的翻译方式",
+      "autoTranslate": "自动翻译",
+      "autoTranslateDescription": "自动翻译与当前语言不同的反馈",
+      "viewOriginal": "查看原文",
+      "showTranslation": "显示译文",
+      "conservativeSkip": "内容过短或无法可靠识别语言，未进行翻译",
       "error": "翻译失败",
       "limit": "已达到最大请求次数，请稍后再试",
       "loading": "翻译中..."
@@ -469,7 +593,8 @@
         "invalidImageFormat": "只允许 JPEG、PNG、GIF 和 WebP 图片格式",
         "validationError": "验证错误",
         "invalidFile": "无效文件",
-        "fileValidationFailed": "文件验证失败"
+        "fileValidationFailed": "文件验证失败",
+        "announcementPermission": "只有管理员可以发布公告"
       }
     },
     "errors": {
@@ -488,7 +613,7 @@
       "sortDataLoadFailed": "排序数据加载失败",
       "cannotDoToSelf": "不能对自己进行该操作",
       "followFailed": "关注失败，请稍后重试",
-      "unfollowSuccess": "取关成功",
+      "unfollowSuccess": "取消关注成功",
       "followSuccess": "关注成功",
       "permissionInsufficientAnnouncement": "权限不足：只有管理员可以发布公告类型的内容",
       "ssoRefreshTokenFailed": "interknot.site: 刷新token失败，返回数据不完整"
@@ -550,6 +675,10 @@
               "link": "/blog/changelog-web"
             }
           ]
+        },
+        {
+          "text": "游戏文字翻译",
+          "link": "https://hoyofan.yuanshen.site/"
         }
       ]
     },
@@ -620,6 +749,11 @@
     }
   ],
   "sidebar": {
+    "/feedback": [
+      {
+        "text": ""
+      }
+    ],
     "/manual": [
       {
         "text": "目录",
@@ -717,14 +851,23 @@
                 "link": "/manual/faq/login/clientrepeatedly"
               }
             ]
+          },
+          {
+            "text": "云存档",
+            "items": [
+              {
+                "text": "海外用戶雲存檔驗證問題說明",
+                "link": "/manual/faq/cloudsave/verificationissueforoverseasuser"
+              }
+            ]
           }
         ]
       }
     ]
   },
   "footer": {
-    "qrcodeTitle": "开发反馈群",
-    "qrcodeMessage": "欢迎QQ扫码联系我们",
+    "qrcodeTitle": "反馈QQ群",
+    "qrcodeMessage": "如遇问题欢迎联系我们",
     "qrcodeLink": "https://jq.qq.com/?_wv=1027&k=nbveGrfQ",
     "navigation": [
       {

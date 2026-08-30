@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PopoverContentProps } from 'radix-vue'
+import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import { useLocalStorage } from '@vueuse/core'
@@ -99,7 +99,7 @@ function selectMention(member: ForumAPI.User) {
         </Button>
       </slot>
     </PopoverTrigger>
-    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit">
+    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit !z-[1100]">
       <Command class="border rounded-lg max-w-[250px] shadow-md">
         <CommandInput v-if="showSearch" :auto-focus="false" placeholder="Search..." />
         <CommandList>

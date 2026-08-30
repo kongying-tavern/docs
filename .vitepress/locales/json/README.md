@@ -15,5 +15,5 @@
 
 运行以下命令重新生成 JSON 文件：
 ```bash
-pnpm run build-locales
+pnpm run build:locales
 ```

@@ -1,4 +1,3 @@
-import { exit } from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 
@@ -11,6 +10,7 @@ import { markdownConfig } from './config/markdown'
 import { rewritesConfig } from './config/rewrites'
 import { localeSearchConfig } from './config/search'
 import { sitemapConfig } from './config/sitemap'
+import { cfgDynamicTitleTemplate } from './config/title'
 
 export default defineConfig({
   srcDir: 'src',
@@ -37,8 +37,7 @@ export default defineConfig({
   ...createConfigureFunction(),
   transformPageData(pageData, context) {
     generateBreadcrumbsData(pageData, context)
-  },
-  buildEnd() {
-    exit(0)
+    const { siteConfig } = context
+    cfgDynamicTitleTemplate(pageData, siteConfig)
   },
 })

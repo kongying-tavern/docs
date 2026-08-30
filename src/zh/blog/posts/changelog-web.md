@@ -1,10 +1,12 @@
 ---
 title: "【网页版】更新日志"
+type: changelog
 layout: Post
 authors:
  - aaaaaaa8
  - zengjias
  - boxsnake
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A更新日志"
 ---
 
 {define:T_REFACTOR}:recycle: 功能重构{/define}
@@ -26,6 +28,39 @@ authors:
 ----
 
 <!-- more -->
+
+::: timeline 2026-08-28
+
+### {%= T_BUG %}
+
+- 修改存档有差异时，本地和远程时间解析显示失败导致出现“未知时间”的问题。
+
+:::
+
+::: timeline 2026-08-26
+
+### {%= T_ENHANCE %}
+
+- 存档时间修改为时间戳判定，防止因不同格式的转换造成的时区错乱和月日混淆等问题。
+
+:::
+
+::: timeline 2026-08-12
+
+### {%= T_RES %}
+
+- 更新地区、物品类型图标。
+- 添加至冬图标。
+
+:::
+
+::: timeline 2026-07-17
+
+### {%= T_BUG %}
+
+- 修复物品选择面板中，不显示计数为 0 物品的问题。
+
+:::
 
 ::: timeline 2026-01-13
 

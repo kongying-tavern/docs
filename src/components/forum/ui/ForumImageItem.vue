@@ -11,44 +11,41 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  click: []
   error: []
+  ready: []
 }>()
 
-/** 真实图片加载状态 */
 const isRealImageReady = ref(false)
 
-/** 加载错误状态 */
 const hasError = ref(false)
 
-/** 错误图片地址 */
 const ERROR_IMAGE = 'https://assets.yuanshen.site/images/noImage.png'
 
-/** 获取 thumbhash 值 */
 const thumbHash = () => props.image.thumbHash || props.image.thumbhash
 
-/** 是否使用懒加载 */
 const useLazyLoad = () => !!thumbHash()
 
-/** 图片样式 */
 const imageClass = computed(() =>
   props.fillContainer ? 'object-cover' : 'object-contain',
 )
 
-/** 图片宽高比样式 */
+function markRealImageReady() {
+  if (isRealImageReady.value)
+    return
+  isRealImageReady.value = true
+  emit('ready')
+}
+
 const aspectStyle = computed(() => {
   if (props.fillContainer || !props.image.width || !props.image.height)
     return {}
   return { aspectRatio: `${props.image.width} / ${props.image.height}` }
 })
 
-/** 预加载真实图片 */
 function preloadRealImage() {
   const img = new Image()
   img.onload = () => {
-    img.decode?.()?.finally(() => {
-      isRealImageReady.value = true
-    }) ?? (isRealImageReady.value = true)
+    img.decode?.()?.finally(markRealImageReady) ?? markRealImageReady()
   }
   img.onerror = () => {
     hasError.value = true
@@ -57,27 +54,18 @@ function preloadRealImage() {
   img.src = props.image.src
 }
 
-/** LazyImage 加载错误 */
 function onLazyError() {
   hasError.value = true
   emit('error')
-}
-
-function onClick() {
-  if (!hasError.value)
-    emit('click')
 }
 </script>
 
 <template>
   <div
     class="size-full transition-all duration-200 relative overflow-hidden"
-    :class="[hasError ? 'cursor-not-allowed' : 'cursor-zoom-in', props.class]"
-    @click="onClick"
+    :class="[hasError || (useLazyLoad() && !isRealImageReady) ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
   >
-    <!-- 懒加载模式 -->
     <template v-if="useLazyLoad()">
-      <!-- 错误状态 -->
       <img
         v-if="hasError"
         :src="ERROR_IMAGE"
@@ -87,7 +75,6 @@ function onClick() {
         :style="aspectStyle"
       >
 
-      <!-- Thumbhash 占位符 -->
       <Transition
         v-else-if="!isRealImageReady"
         name="fade"
@@ -106,7 +93,6 @@ function onClick() {
         />
       </Transition>
 
-      <!-- 真实图片 -->
       <Transition
         v-else
         name="reveal"
@@ -123,7 +109,6 @@ function onClick() {
       </Transition>
     </template>
 
-    <!-- 直接加载模式 -->
     <img
       v-else
       :src="image.src"
@@ -137,12 +122,10 @@ function onClick() {
 </template>
 
 <style scoped>
-/* 悬停缩放 */
 .cursor-zoom-in:hover img {
   transform: scale(1.05);
 }
 
-/* 淡入淡出 */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease;
@@ -153,7 +136,6 @@ function onClick() {
   opacity: 0;
 }
 
-/* 图片显示动画 */
 .reveal-enter-active {
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }

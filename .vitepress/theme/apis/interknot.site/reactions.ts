@@ -1,29 +1,39 @@
 import type { INTER_KNOT } from './api'
 import { fetcher } from '.'
 
-export async function getPageReaction(options?: { userId?: string, url?: string }): Promise<INTER_KNOT.ReactionResponse | null> {
+export interface ReactionQuery {
+  userId?: string
+  url: string
+}
+
+export async function getPageReaction(query: ReactionQuery): Promise<INTER_KNOT.ReactionResponse | null> {
   if (import.meta.env.SSR)
     return null
+
   return fetcher
     .get('reactions', {
       searchParams: {
-        ...(options?.userId ? { userId: options.userId } : {}),
-        ...(options?.url ? { url: options.url } : {}),
+        userId: query.userId,
+        url: query.url,
       },
+      cache: 'no-store',
     })
-    .json()
+    .json<INTER_KNOT.ReactionResponse>()
 }
 
-export async function setPageReaction(action: 'like' | 'dislike' | 'revoke', options?: { userId?: string, url?: string }): Promise<INTER_KNOT.ReactionResponse | null> {
+export async function setPageReaction(action: 'like' | 'dislike' | 'revoke', query: ReactionQuery): Promise<INTER_KNOT.ReactionResponse | null> {
   if (import.meta.env.SSR)
     return null
+
   return fetcher
     .get('reactions/add', {
       searchParams: {
         action,
-        ...(options?.userId ? { userId: options.userId } : {}),
-        ...(options?.url ? { url: options.url } : {}),
+        userId: query.userId,
+        url: query.url,
       },
+      cache: 'no-store',
+      retry: 0,
     })
-    .json()
+    .json<INTER_KNOT.ReactionResponse>()
 }

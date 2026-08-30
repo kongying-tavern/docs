@@ -3,38 +3,37 @@ name: TEST_BUILD
 on:
   workflow_call:
   pull_request:
-    branches: [next, main]
+    branches: [dev, main]
     types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
-    strategy:
-      matrix:
-        node_version:
-          - 20
-
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@v7
         with:
-          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          # 需要完整 git 历史（“最近更新时间”等）
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Cache font subsets
+        uses: actions/cache@v4
         with:
-          run_install: false
+          path: |
+            src/public/fonts
+            .vitepress/theme/styles/fonts-subset.css
+            .vitepress/theme/styles/fonts-standard.css
+          # Standard-tier inputs only; the site tier depends on page text and
+          # is cheap to rebuild, so it is intentionally excluded from the key.
+          key: font-subset-${{ hashFiles('scripts/fonts/font-subset.config.json', 'scripts/fonts/font-characters.config.json', 'scripts/fonts/font-slicing.config.json', 'scripts/fonts/source/**', 'scripts/font_subset/**', 'scripts/buildFonts.ts', 'requirements.txt') }}
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install
+      - name: Setup Node.js, pnpm and Python toolchain
+        uses: ./.github/actions/setup
 
       - name: Refresh Emoji Data
         run: pnpm build:emoji
@@ -42,14 +41,15 @@ jobs:
       - name: Build
         run: pnpm site:preview
 
-      - name: Build lunaria
+      - name: Build Lunaria
         run: pnpm lunaria:build
 
-      - run: |
+      - name: Zip site artifact
+        run: |
           zip -r _site.zip ./dist
 
-      - name: upload _site artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload _site artifact
+        uses: actions/upload-artifact@v7
         with:
           name: _site
           path: _site.zip
@@ -61,7 +61,7 @@ jobs:
 
       - name: Upload PR number
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pr
           path: ./pr-id.txt

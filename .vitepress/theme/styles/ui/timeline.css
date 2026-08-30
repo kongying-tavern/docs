@@ -4,43 +4,220 @@
 
 .timeline-dot {
   position: relative;
-  padding: 0 0 18px 24px;
+  padding: 28px 0 20px 120px;
   color: var(--vp-c-text-2);
+  /* dot 默认颜色，可通过 [...] 传入 border-* 类覆盖 */
+  border-color: var(--vp-c-brand);
   box-sizing: border-box;
 }
 
 .timeline-dot::before {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 92px;
+  top: 35px;
   content: "";
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: solid 3px var(--vp-c-brand);
-  transform: translate(0, 18%);
+  border: solid 3px;
+  border-color: inherit;
+  background-color: var(--vp-c-bg);
+  z-index: 1;
+  box-sizing: border-box;
 }
 
+/* 竖线：品牌绿贯穿，相邻块首尾相接连续 */
 .timeline-dot::after {
   position: absolute;
-  left: 7px;
-  top: 19px;
+  left: 99px;
+  top: 0;
   content: "";
   width: 2px;
-  height: calc(100% - 18px);
-  background-color: #e9e9e9;
+  height: 100%;
+  background-color: var(--vp-c-brand);
+}
+
+/* 整条时间线首尾：渐隐并逐渐变细 */
+
+.timeline-dot:not(.timeline-dot + .timeline-dot)::after {
+  background: linear-gradient(180deg, transparent, var(--vp-c-brand) 24px);
+  clip-path: polygon(50% 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
+}
+
+.timeline-dot:not(:has(+ .timeline-dot))::after {
+  background: linear-gradient(180deg, var(--vp-c-brand) calc(100% - 24px), transparent);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), 50% 100%, 0 calc(100% - 6px));
+}
+
+.timeline-dot-date {
+  position: absolute;
+  left: 0;
+  top: 22px;
+  width: 64px;
+  color: var(--vp-c-text-2);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  font-family: var(--vp-font-family-subtitle);
+}
+
+/* 两行（年 / 月日），逐字符两端对齐；年份加大以匹配月日行宽度 */
+.timeline-dot-date-year,
+.timeline-dot-date-md {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timeline-dot-date-year {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* 字符等宽栅格：各行字符均匀分栏，两端与上下行对正 */
+.timeline-dot-date-char {
+  flex: 1 1 0;
+  text-align: center;
+}
+
+/* dot 中心的自定义图标（[...] 中的 i-* 类），有图标时圆点放大以容纳 */
+.timeline-dot-icon {
+  position: absolute;
+  left: 95px;
+  top: 37px;
+  font-size: 10px;
+  line-height: 1;
+  color: inherit;
+  z-index: 2;
+}
+
+.timeline-dot:has(.timeline-dot-icon)::before {
+  left: 88px;
+  top: 30px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: var(--vp-c-brand);
+}
+
+.timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon {
+  left: 93.5px;
+  top: 35.5px;
+  font-size: 13px;
+  color: var(--vp-c-white);
 }
 
 .timeline-dot .timeline-dot-title {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding-top: 0;
+  top: 0;
   color: var(--timeline-title-text);
   font-size: 24px;
+  line-height: 32px;
   font-weight: bold;
+}
+
+/* 整组无日期时：左侧收窄（dot/线/图标相应内移） */
+.timeline-dot-concise {
+  padding-left: 56px;
+}
+
+.timeline-dot-concise::before {
+  left: 28px;
+}
+
+.timeline-dot-concise::after {
+  left: 35px;
+}
+
+.timeline-dot-concise:has(.timeline-dot-icon)::before {
+  left: 24px;
+}
+
+.timeline-dot-concise:has(.timeline-dot-icon) .timeline-dot-icon {
+  left: 29.5px;
 }
 
 .timeline-dot .header-anchor {
   display: none;
 }
 
-.timeline-dot > h2 {
+/* 纯日期 dot 标题内的屏读兜底文本（大纲可读、视觉隐藏） */
+.timeline-dot-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.timeline-dot > h2:not(.timeline-dot-title) {
   font-family: var(--vp-font-family-subtitle) !important;
+  font-size: 20px !important;
+  line-height: 30px;
+}
+
+.timeline-dot > h3 {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+@media (max-width: 640px) {
+  .timeline-dot {
+    padding-left: 96px;
+  }
+
+  .timeline-dot::before {
+    left: 68px;
+  }
+
+  .timeline-dot::after {
+    left: 75px;
+  }
+
+  .timeline-dot-date {
+    width: 56px;
+  }
+
+  .timeline-dot-concise {
+    padding-left: 40px;
+  }
+
+  .timeline-dot-concise::before {
+    left: 16px;
+  }
+
+  .timeline-dot-concise::after {
+    left: 23px;
+  }
+
+  .timeline-dot-concise:has(.timeline-dot-icon)::before {
+    left: 12px;
+  }
+
+  .timeline-dot-concise:has(.timeline-dot-icon) .timeline-dot-icon {
+    left: 17.5px;
+  }
+
+  .timeline-dot-icon {
+    left: 71px;
+  }
+
+  .timeline-dot:has(.timeline-dot-icon)::before {
+    left: 64px;
+    top: 30px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon {
+    left: 69.5px;
+    top: 35.5px;
+    font-size: 13px;
+  }
 }

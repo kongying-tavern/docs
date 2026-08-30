@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -15,23 +14,14 @@ const props = defineProps<{
 const modelValue = defineModel('activeTab', { default: 'feedback' })
 const { message } = useLocalized()
 
-// Use user profile composable
 const {
   menuRef,
   renderedUser,
   role,
+  isAuthorizedUser,
   menu,
-  loadUserData,
   sendMessage,
-} = useUserProfile({
-  username: props.username,
-  topicCount: props.topicCount,
-})
-
-// Load user data on mount
-onMounted(async () => {
-  await loadUserData()
-})
+} = useUserProfile(() => props.username)
 </script>
 
 <template>
@@ -40,7 +30,6 @@ onMounted(async () => {
       <div class="mx-auto w-full">
         <div class="p-4 rounded-lg w-full sm:p-6">
           <div class="flex flex-col gap-4 items-start sm:flex-row sm:gap-6">
-            <!-- 头像和按钮行 -->
             <div class="flex w-full items-start justify-between sm:w-auto">
               <div class="relative">
                 <Avatar
@@ -50,30 +39,27 @@ onMounted(async () => {
                   img-class="size-full rounded-full object-cover ring-4"
                 />
               </div>
-              <div class="flex gap-2 sm:hidden">
+              <div v-if="!isAuthorizedUser" class="flex gap-2 sm:hidden">
                 <Button
                   variant="outline"
-                  class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                  class="border border-[var(--vp-c-divider)] border-solid"
+                  @click="sendMessage"
                 >
-                  <span
-                    class="i-lucide-mail text-base"
-                    @click="sendMessage"
-                  />
-                  <span class="max-sm:hidden">私信</span>
+                  <span class="i-lucide-mail text-base" />
+                  <span class="max-sm:hidden">{{ message.forum.labels.privateMessage }}</span>
                 </Button>
                 <ForumFollowUserButton
                   v-if="renderedUser?.login"
-                  class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                  class="border border-[var(--vp-c-divider)] rounded-md border-solid"
                   :user="renderedUser?.login"
                 />
               </div>
             </div>
 
-            <!-- 用户信息 -->
             <div class="flex-1 w-full">
               <div class="flex gap-2 items-center">
-                <h1 class="text-xl text-gray-900 font-bold sm:text-2xl dark:text-white">
-                  {{ renderedUser?.username || 'Unknown' }}
+                <h1 class="text-xl text-[var(--vp-c-text-1)] font-bold sm:text-2xl">
+                  {{ renderedUser?.username || message.forum.labels.unknown }}
                 </h1>
                 <span class="rounded-full">
                   <ForumRoleBadge :type="role" />
@@ -84,7 +70,6 @@ onMounted(async () => {
                 {{ renderedUser?.bio || message.forum.labels.lazyPerson }}
               </p>
 
-              <!-- 统计信息 -->
               <div class="font-size-3.5 c-[--vp-c-text-3] mt-3 flex flex-wrap gap-4 sm:mt-4 sm:gap-6">
                 <div class="flex gap-2 items-center">
                   <i class="i-lucide-file-text" />
@@ -99,20 +84,17 @@ onMounted(async () => {
               </div>
             </div>
 
-            <!-- PC端操作按钮 -->
-            <div class="gap-2 hidden sm:flex">
+            <div v-if="!isAuthorizedUser" class="gap-2 hidden sm:flex">
               <Button
                 variant="outline"
-                class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                class="border border-[var(--vp-c-divider)] border-solid"
+                @click="sendMessage"
               >
-                <span
-                  class="i-lucide-mail text-base"
-                  @click="sendMessage"
-                />
+                <span class="i-lucide-mail text-base" />
               </Button>
               <ForumFollowUserButton
                 v-if="renderedUser?.login"
-                class="border border-[var(--vp-c-divider)] rounded-full border-solid border-solid"
+                class="border border-[var(--vp-c-divider)] rounded-md border-solid"
                 text-class="max-sm:hidden"
                 :user="renderedUser?.login"
               />
@@ -142,7 +124,6 @@ onMounted(async () => {
                 :class="item.icon"
               />
               {{ item.label }}
-              <!-- 使用内部相对定位元素实现内容宽度的指示器 -->
               <span
                 v-if="modelValue === item.id"
                 class="bg-[var(--vp-c-brand)] h-0.5 w-full transition-all duration-300 left-0 absolute -bottom-[15px]"

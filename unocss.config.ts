@@ -1,3 +1,4 @@
+import type { Variant } from 'unocss'
 import {
   defineConfig,
   presetAttributify,
@@ -9,8 +10,24 @@ import {
 import presetAnimations from 'unocss-preset-animations'
 import { presetShadcn } from 'unocss-preset-shadcn'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
+import { FORUM_MOBILE_BREAKPOINT_PX } from './src/services/forum/forumConfig'
 
 export default defineConfig({
+  theme: {
+    breakpoints: {
+      mobile: FORUM_MOBILE_BREAKPOINT_PX,
+    },
+  },
+  variants: [
+    ((matcher) => {
+      if (!matcher.startsWith('max-mobile:'))
+        return matcher
+      return {
+        matcher: matcher.slice('max-mobile:'.length),
+        parent: `@media (max-width: ${FORUM_MOBILE_BREAKPOINT_PX}px)`,
+      }
+    }) as Variant,
+  ],
   rules: [
     [
       'custom-scrollbar',
@@ -118,5 +135,22 @@ export default defineConfig({
     },
   },
   transformers: [transformerDirectives(), transformerVariantGroup()],
-  safelist: 'prose prose-sm m-auto text-left'.split(' '),
+  // 动态拼接的图标类名无法被提取器扫描,显式声明
+  safelist: [
+    'prose',
+    'prose-sm',
+    'm-auto',
+    'text-left',
+    // Coins.vue 支付方式图标(`i-custom-${key}` 动态类)
+    'i-custom-qqpay',
+    'i-custom-wechatpay',
+    'i-custom-bilibili',
+    'i-custom-alipay',
+    'i-custom-paypal',
+    // Card.vue 外链域名图标(iconMap 动态类)
+    'i-logos-youtube-icon',
+    'i-logos-twitter',
+    'i-logos-discord-icon',
+    'i-logos-reddit-icon',
+  ],
 })

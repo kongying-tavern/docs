@@ -32,22 +32,6 @@ export const localeSearchConfig: DefaultTheme.LocalSearchOptions = {
         },
       },
     },
-    fr: {
-      translations: {
-        button: {
-          buttonText: 'Recherche',
-          buttonAriaLabel: 'Recherche',
-        },
-        modal: {
-          noResultsText: 'Aucun résultat pour',
-          resetButtonTitle: 'Réinitialiser la recherche',
-          footer: {
-            selectText: 'pour sélectionner',
-            navigateText: 'naviguer',
-          },
-        },
-      },
-    },
     ja: {
       translations: {
         button: {

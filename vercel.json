@@ -1,5 +1,19 @@
 {
   "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/docs/feedback/:path*",
+      "destination": "/docs/feedback"
+    },
+    {
+      "source": "/docs/en/feedback/:path*",
+      "destination": "/docs/en/feedback"
+    },
+    {
+      "source": "/docs/ja/feedback/:path*",
+      "destination": "/docs/ja/feedback"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

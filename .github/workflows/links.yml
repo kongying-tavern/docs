@@ -4,35 +4,59 @@ on:
   push:
     branches:
       - dev
-      - next
       - main
     paths-ignore:
       - '**.md'
   pull_request:
     branches:
       - dev
-      - next
       - main
+    paths-ignore:
+      - '**/.github/**'
   workflow_dispatch:
   repository_dispatch:
   schedule:
     - cron: '00 18 * * *'
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
-  linkChecker:
+  link-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v7
 
       - name: Link Checker
         id: lychee
-        uses: lycheeverse/lychee-action@v1
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --root-dir src
+            --fallback-extensions md
+            --remap '^(file://.*)/src/(imgs|emojis|fonts|llms|common)/(.*) $1/src/public/$2/$3'
+            --remap '^(file://.*)/src/index\.md$ $1/src/zh/index.md'
+            --exclude 'https://download.yuanshen.site/.*'
+            --exclude 'https://github.com/kongying-tavern/docs/tree/dev/.*'
+            --exclude 'https://www.npmjs.com/.*'
+            --exclude 'https://www.pixiv.net/.*'
+            --exclude 'https://tongji\.baidu\.com/web/help/article.*'
+            --exclude 'https://github.com/([^/]+/docs/assets|user-attachments/assets)/.*'
+            --exclude 'email.*support@yuanshen'
+            './**/*.md'
+            './**/*.html'
+            './**/*.rst'
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: Link Checker Report
           content-filepath: ./lychee/out.md

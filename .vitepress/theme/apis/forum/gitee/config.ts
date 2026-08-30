@@ -1,6 +1,5 @@
 export const GITEE_API_CONFIG = {
-  PREFIX_URL: 'https://gitee.com/',
-  ENDPOINT_PREFIX: 'api/v5/',
+  BASE_URL: 'https://gitee.com',
   CLIENT_ID: '46b7428ff4cbeea6bde978240479c56dd51ef5220fb7574d1c9715b16217c1d2',
   CLIENT_SECRET:
     'f29771984bc886244ddbad55e319dc7adbd973139e133569fea3799a5b631695',
@@ -8,5 +7,5 @@ export const GITEE_API_CONFIG = {
   FEEDBACK_REPO: 'Feedback',
   BLOG_REPO: 'Blog',
   TOPIC_TYPE: ['BUG', 'FEAT', 'ANN'],
-  STATE_TAGS: new Set(['DEV-TEST', 'WEB-FEEDBACK', 'GOOD-ISSUE', 'PINNED', 'COMMENT-CONSED']),
-}
+  STATE_TAGS: new Set(['DEV-TEST', 'WEB-FEEDBACK', 'GOOD-ISSUE', 'PINNED', 'COMMENT-CLOSED']),
+} as const

@@ -1,61 +1,58 @@
 import type ForumAPI from '../api'
 import { apiCall } from '.'
-
 import { GITEE_API_CONFIG } from './config'
 import { normalizeUser } from './utils'
 
-export async function getUser(username: string, access_token?: string): Promise<ForumAPI.User> {
-  return normalizeUser(
-    (
-      await apiCall<GITEE.UserInfo>('get', `users/${username}`, {
-        params: {
-          ...(access_token ? { access_token } : {}),
-        },
-        useCache: true,
-      })
-    )[0],
-  )
+const { OWNER } = GITEE_API_CONFIG
+
+export async function getUser(username: string, accessToken?: string): Promise<ForumAPI.User> {
+  const { data } = await apiCall<GITEE.UserInfo>('get', `users/${username}`, {
+    searchParams: {
+      access_token: accessToken,
+    },
+    cache: true,
+  })
+
+  return normalizeUser(data)
 }
 
-export async function getAuthorizedUser(access_token: string): Promise<ForumAPI.User> {
-  return normalizeUser(
-    (
-      await apiCall<GITEE.UserInfo>('get', 'user', { params: { access_token } })
-    )[0],
-  )
+export async function getAuthorizedUser(accessToken: string): Promise<ForumAPI.User> {
+  const { data } = await apiCall<GITEE.UserInfo>('get', 'user', {
+    searchParams: { access_token: accessToken },
+  })
+
+  return normalizeUser(data)
 }
 
 export async function getUserOrgs(
   username: string,
   _accessToken: string,
-  useCache = true,
+  cache = true,
 ): Promise<ForumAPI.User> {
-  return normalizeUser(
-    (
-      await apiCall<GITEE.UserInfo>('get', `users/${username}/orgs`, {
-        useCache,
-      })
-    )[0],
-  )
+  const { data } = await apiCall<GITEE.UserInfo>('get', `users/${username}/orgs`, {
+    cache,
+  })
+
+  return normalizeUser(data)
 }
 
 export async function getOrgMembers(
   accessToken?: string,
-  useCache = true,
+  cache = true,
 ): Promise<ForumAPI.User[]> {
-  return (
-    await apiCall<GITEE.User[]>(
-      'get',
-      `orgs/${GITEE_API_CONFIG.OWNER}/members`,
-      {
-        params: {
-          per_page: 100,
-          ...(accessToken ? { access_token: accessToken } : {}),
-        },
-        useCache,
+  const { data } = await apiCall<GITEE.User[]>(
+    'get',
+    `orgs/${OWNER}/members`,
+    {
+      searchParams: {
+        per_page: 100,
+        access_token: accessToken,
       },
-    )
-  )[0].map(val => normalizeUser(val))
+      cache,
+    },
+  )
+
+  return data.map(val => normalizeUser(val))
 }
 
 export async function getRepoMembers(
@@ -63,77 +60,47 @@ export async function getRepoMembers(
     | typeof GITEE_API_CONFIG.FEEDBACK_REPO
     | typeof GITEE_API_CONFIG.BLOG_REPO,
   accessToken?: string,
-  useCache = true,
+  cache = true,
 ): Promise<ForumAPI.User[]> {
-  return (
-    await apiCall<GITEE.User[]>(
-      'get',
-      `repos/${GITEE_API_CONFIG.OWNER}/${repo}/collaborators`,
-      {
-        params: {
-          per_page: 100,
-          ...(accessToken ? { access_token: accessToken } : {}),
-        },
-        useCache,
+  const { data } = await apiCall<GITEE.User[]>(
+    'get',
+    `repos/${OWNER}/${repo}/collaborators`,
+    {
+      searchParams: {
+        per_page: 100,
+        access_token: accessToken,
       },
-    )
-  )[0].map(val => normalizeUser(val))
+      cache,
+    },
+  )
+
+  return data.map(val => normalizeUser(val))
 }
 
 export async function getFollowStatus(user: string, targetUser: string, accessToken?: string): Promise<boolean | null> {
-  let followStatus = false
-
   try {
-    await apiCall('get', `users/${user}/following/${targetUser}`, {
-      params: {
-        ...(accessToken ? { access_token: accessToken } : {}),
+    const { response } = await apiCall('get', `users/${user}/following/${targetUser}`, {
+      searchParams: {
+        access_token: accessToken,
       },
-      hooks: {
-        afterResponse: [
-          async (_input, _options, response) => {
-            if (response.status === 204) {
-              followStatus = true
-            }
-            return Promise.resolve()
-          },
-        ],
-      },
+      throwHttpErrors: false,
     })
-    return followStatus
-  }
-  catch (error: unknown) {
-    // 404 means not following, other errors should be handled differently
-    const hasStatus404 = error
-      && typeof error === 'object'
-      && 'cause' in error
-      && error.cause
-      && typeof error.cause === 'object'
-      && 'response' in error.cause
-      && error.cause.response
-      && typeof error.cause.response === 'object'
-      && 'status' in error.cause.response
-      && error.cause.response.status === 404
 
-    if (hasStatus404) {
+    // 204: 已关注；404: 未关注；其余状态视为未知
+    if (response.status === 204)
+      return true
+    if (response.status === 404)
       return false
-    }
-    // For other errors, return null to indicate error state
+    return null
+  }
+  catch {
+    // 网络错误等异常视为未知状态
     return null
   }
 }
 
 export async function toggleFollowUser(toggle: boolean, targetUser: string): Promise<boolean | null> {
-  let state = null
-  await apiCall<boolean>(toggle ? 'put' : 'delete', `user/following/${targetUser}`, {
-    hooks: {
-      afterResponse: [
-        async (_input, _options, response) => {
-          if (response.status === 204)
-            state = true
-          return Promise.resolve()
-        },
-      ],
-    },
-  })
-  return state
+  const { response } = await apiCall<boolean>(toggle ? 'put' : 'delete', `user/following/${targetUser}`)
+
+  return response.status === 204
 }

@@ -1,120 +1,98 @@
 <script setup lang="ts">
-import type { FormTabConfig } from './publish-topic-form/types'
 import { ReloadIcon } from '@radix-icons/vue'
 import { useMediaQuery } from '@vueuse/core'
-import { Button } from '@/components/ui/button'
-import { DialogClose, DialogFooter } from '@/components/ui/dialog'
-import { DrawerClose, DrawerFooter } from '@/components/ui/drawer'
+import { Button, InteractiveHoverButton } from '@/components/ui/button'
+import { DialogFooter } from '@/components/ui/dialog'
+import { DrawerFooter } from '@/components/ui/drawer'
 import { useLocalized } from '@/hooks/useLocalized'
 
 interface Props {
   loading: boolean
   disabled: boolean
-  isDesktop?: boolean
-  nextTab?: FormTabConfig
-  inTransition: boolean
+  errorCount?: number
 }
 
 interface Emits {
-  (e: 'submit'): void
-  (e: 'switch-tab'): void
   (e: 'close'): void
+  (e: 'review-errors'): void
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  isDesktop: true,
-})
-
+defineProps<Props>()
 const emit = defineEmits<Emits>()
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
-
-function handleSubmit(): void {
-  if (!props.disabled && !props.loading) {
-    emit('submit')
-  }
-}
-
-function handleSwitchTab(): void {
-  emit('switch-tab')
-}
-
-function handleClose(): void {
-  emit('close')
-}
 </script>
 
 <template>
-  <!-- Desktop Actions -->
   <template v-if="isDesktop">
-    <!-- Action Bar (Desktop) -->
-    <div
-      class="action-bar flex flex-col items-start top-[-70px] absolute md:rotate--1.4deg"
-      style="left: calc(0px - (100vw - 780px) / 2)"
-    >
-      <DialogClose class="form-close-btn" @click="handleClose">
-        <Button class="form-action-btn" type="button" variant="secondary">
-          <span>{{ message.ui.button.close }}</span>
-          <span class="i-lucide:x icon-btn" />
-        </Button>
-      </DialogClose>
-
-      <Button
-        v-if="nextTab"
-        class="form-close-btn form-action-btn"
-        type="button"
-        variant="secondary"
-        @click="handleSwitchTab"
-      >
-        <span>{{ nextTab.label }}</span>
-        <span
-          class="i-lucide:refresh-cw icon-btn"
-          :class="{ 'animate-spin': inTransition }"
-        />
-      </Button>
-    </div>
-
-    <!-- Submit Footer (Desktop) -->
     <DialogFooter
-      class="form-footer-container mt-8 py-4 flex flex-wrap w-full bottom-0 sticky md:rotate--1.4deg"
-      :class="{ 'animate-switching': inTransition }"
+      class="form-footer-container py-4 flex flex-wrap w-full bottom-0 sticky z-10"
     >
-      <Button
-        class="font-size-1.1em min-w-96px"
-        variant="link"
-        :disabled="disabled || loading"
-        @click="handleSubmit"
+      <button
+        v-if="errorCount"
+        type="button"
+        class="validation-summary text-xs text-[var(--vp-c-danger-1)] flex gap-2 items-center"
+        @click="emit('review-errors')"
       >
-        <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />
-        {{ loading ? message.forum.publish.publishLoading : message.ui.button.submit }}
-        »
-      </Button>
+        <span class="i-lucide-circle-alert size-4" aria-hidden="true" />
+        {{ message.forum.publish.feedbackForm.fieldsNeedAttention.replace('{count}', String(errorCount)) }}
+      </button>
+      <InteractiveHoverButton
+        class="text-base ml--1.5 mr-8 mt--2 px-8 py-3 border-2 border-[var(--vp-c-divider)] rounded-md border-dashed bg-transparent hover:border-solid"
+        :disabled="disabled || loading"
+        :loading="loading"
+        :text="loading ? message.forum.publish.publishLoading : message.forum.publish.feedbackForm.submit"
+      />
     </DialogFooter>
   </template>
 
-  <!-- Mobile Actions -->
-  <template v-else>
-    <DrawerFooter class="pt-4">
-      <Button
-        class="font-size-1.1em"
-        variant="default"
-        :disabled="disabled || loading"
-        @click="handleSubmit"
-      >
+  <div v-else class="form-footer-container bottom-0 sticky z-10">
+    <button
+      v-if="errorCount"
+      type="button"
+      class="validation-summary text-xs text-[var(--vp-c-danger-1)] px-5 pt-3 flex gap-2 items-center"
+      @click="emit('review-errors')"
+    >
+      <span class="i-lucide-circle-alert size-4" aria-hidden="true" />
+      {{ message.forum.publish.feedbackForm.fieldsNeedAttention.replace('{count}', String(errorCount)) }}
+    </button>
+    <DrawerFooter class="px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+      <Button type="submit" :disabled="disabled || loading">
         <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />
-        {{ loading ? message.forum.publish.publishLoading : message.ui.button.submit }}
+        <span v-else class="i-lucide-send size-4" aria-hidden="true" />
+        {{ loading ? message.forum.publish.publishLoading : message.forum.publish.feedbackForm.submit }}
       </Button>
-
-      <DrawerClose as-child @click="handleClose">
-        <Button
-          variant="outline"
-          class="border border-color-[var(--vp-c-gutter)] border-solid"
-        >
-          {{ message.ui.button.cancel }}
-        </Button>
-      </DrawerClose>
+      <Button type="button" variant="outline" @click="emit('close')">
+        {{ message.ui.button.cancel }}
+      </Button>
     </DrawerFooter>
-  </template>
+  </div>
 </template>
 
-<style lang="scss" scoped src="./ForumFormActions.scss"></style>
+<style scoped>
+.form-footer-container {
+  position: relative;
+}
+
+.validation-summary:hover {
+  text-decoration: underline;
+}
+
+.submit-letter-action {
+  width: fit-content;
+  min-width: fit-content;
+  background: var(--vp-c-brand-1) !important;
+  border: 1px solid var(--vp-c-brand-1) !important;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  color: var(--vp-c-white) !important;
+  padding-inline: 1.25rem;
+  transform: none;
+}
+
+.submit-letter-action:hover {
+  background: var(--vp-c-brand-2) !important;
+  border-color: var(--vp-c-brand-2) !important;
+  transform: none;
+}
+</style>

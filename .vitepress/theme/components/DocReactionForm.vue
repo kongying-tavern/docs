@@ -2,10 +2,11 @@
 import type ForumAPI from '@/apis/forum/api'
 import { useSessionStorage } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
-import { useData, withBase } from 'vitepress'
+import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button/'
 import { Textarea } from '@/components/ui/textarea/'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useSubmitTopic } from '~/composables/useSubmitTopic'
 import BlurFade from './ui/BlurFade.vue'
 
@@ -14,6 +15,7 @@ const { showForm } = defineProps<{
 }>()
 
 const { theme, page } = useData()
+const { topicHref } = useForumRoute()
 
 const initFormData: ForumAPI.CreateTopicOption = {
   title: 'DOC FEEDBACK',
@@ -32,10 +34,13 @@ const { loading, submitData, data, error } = useSubmitTopic()
 const isEditing = computed(() => !isEqual(formData.value, initFormData))
 
 async function submit() {
-  await submitData(formData.value)
-  if (data.value?.id) {
+  try {
+    const topic = await submitData(formData.value)
+    if (!topic.id)
+      return
     formData.value = initFormData
   }
+  catch {}
 }
 
 function cancel() {
@@ -118,7 +123,7 @@ defineExpose({
           </code>
         </pre>
 
-        <a class="vp-link mt-1 text-center w-full inline-block" :href="withBase(`/feedback/topic/${data?.id}`)" target="_blank" rel="noopener noreferrer">
+        <a class="vp-link mt-1 text-center w-full inline-block" :href="topicHref(String(data?.id || ''), null)" target="_blank" rel="noopener noreferrer">
           {{ data?.id ? `Feedback ID: ${data?.id}` : '' }}
         </a>
       </div>

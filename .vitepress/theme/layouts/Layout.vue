@@ -2,7 +2,7 @@
 import { useIntersectionObserver } from '@vueuse/core'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, nextTick, provide, shallowRef, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, provide, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import DocAside from '@/components/DocAside.vue'
 import DocHeader from '@/components/DocHeader.vue'
@@ -11,10 +11,11 @@ import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import LoginAlertDialog from '@/components/LoginAlertDialog.vue'
 import MediumZoom from '@/components/MediumZoom.vue'
 import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
+import OAuthLoginAlertDialog from '@/components/OAuthLoginAlertDialog.vue'
 import { Notifications } from '@/components/ui'
 import { Sonner } from '@/components/ui/sonner'
-import { loadFonts } from '@/composables/loadFonts'
 import { enableTransitions } from '@/shared'
+import ForumSidebar from '~/components/forum/sidebar/ForumSidebar.vue'
 
 import '@/styles/main.css'
 
@@ -30,32 +31,8 @@ const showAside = computed(
     && frontmatter.value.outline !== false,
 )
 
-loadFonts([
-  {
-    fontName: 'HYWenHei-85W',
-    fontPath: '/fonts/HYWenHei-85W-zh-full.woff2',
-  },
-  {
-    fontName: 'HYWenHei-65W',
-    fontPath: '/fonts/HYWenHei-65W.woff2',
-  },
-  {
-    fontName: 'HYWenHei-45W',
-    fontPath: '/fonts/HYWenHei-45W.woff2',
-  },
-])
-
-watch(showAside, (value) => {
-  if (value) {
-    useIntersectionObserver(
-      target,
-      ([entry]) => {
-        targetIsVisible.value = entry?.isIntersecting || false
-      },
-    )
-  }
-}, {
-  immediate: true,
+useIntersectionObserver(target, ([entry]) => {
+  targetIsVisible.value = entry?.isIntersecting || false
 })
 
 provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
@@ -118,10 +95,15 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
       <NavBarUserAvatar />
     </template>
 
+    <template #sidebar-nav-before>
+      <ForumSidebar v-if="frontmatter.layout === 'Forum'" />
+    </template>
+
     <template #layout-bottom>
       <HighlightTargetedHeading />
       <Notifications />
       <LoginAlertDialog />
+      <OAuthLoginAlertDialog />
     </template>
   </Layout>
   <MediumZoom />
@@ -150,5 +132,10 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 
 .VPSwitchAppearance .check {
   transform: none !important;
+}
+
+/* 论坛页二级导航隐藏“回到顶部”，该区域留给移动端创建反馈按钮 */
+.Layout.Forum .VPLocalNav .VPLocalNavOutlineDropdown {
+  display: none;
 }
 </style>

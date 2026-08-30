@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { EditorContent } from '@tiptap/vue-3'
-import { onBeforeUnmount, onMounted } from 'vue'
-import { PhotoSwipe } from '@/components/ui/photoswipe'
-import { parseContentText } from '~/composables/tiptapJsonToText'
+import { ref } from 'vue'
+import { useForumRoute } from '~/composables/useForumRoute'
+import ForumTopicTranslator from '../topic/ForumTopicTranslator.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
+import ForumImagePreviewer from '../ui/image-previewer/ForumImagePreviewer.vue'
+import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicComment } from './composables/useTopicComment'
 import { COMMENT_STYLES } from './constants/commentStyles'
@@ -12,7 +13,7 @@ import ForumCommentFooter from './ForumCommentFooter.vue'
 
 const props = withDefaults(
   defineProps<{
-    repo?: string
+    repo?: ForumAPI.Repo
     topicId: string
     topicAuthorId: string | number
     commentData: ForumAPI.Comment
@@ -29,31 +30,27 @@ const emit = defineEmits<{
   'comment:click': [author: ForumAPI.User]
 }>()
 
-// Use topic comment composable
+const { userHref } = useForumRoute()
+
 const {
-  editor,
-  richTextData,
+  content,
   role,
-  initializeEditor,
-  destroyEditor,
 } = useTopicComment({
   commentData: props.commentData,
   topicAuthorId: props.topicAuthorId,
 })
 
-// Event handlers
+const translatedText = ref('')
+const showingTranslation = ref(false)
+
+function showTranslatedContent(text: string): void {
+  translatedText.value = text
+  showingTranslation.value = true
+}
+
 function handleCommentClick(author: ForumAPI.User): void {
   emit('comment:click', author)
 }
-
-// Lifecycle hooks
-onMounted(() => {
-  initializeEditor()
-})
-
-onBeforeUnmount(() => {
-  destroyEditor()
-})
 </script>
 
 <template>
@@ -61,7 +58,7 @@ onBeforeUnmount(() => {
     <div v-if="props.size !== 'small'" class="mr-2 w-[64px]">
       <ForumUserHoverCard :user="props.commentData.author">
         <template #trigger>
-          <a class="cursor-pointer" :href="`../user/${props.commentData.author.login}`">
+          <a class="cursor-pointer" :href="userHref(props.commentData.author.login)">
             <Avatar :src="props.commentData.author.avatar" :alt="props.commentData.author.username" :size="COMMENT_STYLES[props.size].avatarSize" />
           </a>
         </template>
@@ -71,13 +68,13 @@ onBeforeUnmount(() => {
       <div v-if="props.size !== 'small'" class="title flex" :class="COMMENT_STYLES[props.size].header">
         <ForumUserHoverCard :user="props.commentData.author">
           <template #trigger>
-            <a class="font-size-3.5" :href="`../user/${props.commentData.author.login}`">
+            <a class="font-size-3.5" :href="userHref(props.commentData.author.login)">
               {{ props.commentData.author.username }}
             </a>
           </template>
         </ForumUserHoverCard>
 
-        <ForumRoleBadge class="mb-2" :type="role" />
+        <ForumUserAtTag :user="props.commentData.author" class="ml-2" />
       </div>
       <span v-else class="title font-size-xs flex whitespace-nowrap">
         {{ props.commentData.author.username }}
@@ -85,10 +82,17 @@ onBeforeUnmount(() => {
         :
       </span>
 
-      <EditorContent
-        v-if="richTextData"
-        class="content" :class="COMMENT_STYLES[props.size].content"
-        :editor="editor"
+      <ForumTopicTranslator
+        :content="content.text"
+        @translated="showTranslatedContent"
+        @close="showingTranslation = false"
+      />
+
+      <article
+        v-if="content.kind === 'html'"
+        class="content"
+        :class="COMMENT_STYLES[props.size].content"
+        v-html="showingTranslation ? translatedText : content.html"
       />
 
       <article
@@ -96,10 +100,10 @@ onBeforeUnmount(() => {
         class="content whitespace-pre-wrap"
         :class="COMMENT_STYLES[props.size].content"
       >
-        {{ parseContentText(props.commentData.content.text) }}
+        {{ showingTranslation ? translatedText : content.text }}
       </article>
 
-      <PhotoSwipe
+      <ForumImagePreviewer
         v-if="props.commentData.content.images && props.size !== 'small'"
         :images="props.commentData.content.images.map(img => ({
           src: img.src,
@@ -107,6 +111,12 @@ onBeforeUnmount(() => {
           height: img.height || 1080,
           alt: img.alt || '',
         }))"
+        :context="{
+          kind: 'comment',
+          comment: props.commentData,
+          repo: props.repo,
+          topicAuthorId: props.topicAuthorId,
+        }"
         class="topic-content-img mt-4"
       >
         <template #default="{ openAt }">
@@ -120,11 +130,11 @@ onBeforeUnmount(() => {
               :height="img.height"
               class="border border-[var(--vp-c-divider)] rounded-sm flex-shrink-0 max-h-24 cursor-zoom-in transition-colors duration-200 hover:border-[var(--vp-c-brand)]"
               loading="lazy"
-              @click="openAt(index)"
+              @click="openAt(index, $event.currentTarget)"
             >
           </div>
         </template>
-      </PhotoSwipe>
+      </ForumImagePreviewer>
 
       <div v-if="props.size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
@@ -145,12 +155,10 @@ onBeforeUnmount(() => {
   word-break: break-word;
 }
 
-/* 评论图片样式优化 */
 .topic-content-img {
   max-width: 100%;
 }
 
-/* 图片样式 */
 .topic-content-img img {
   border: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg-soft);
@@ -159,6 +167,16 @@ onBeforeUnmount(() => {
 
 .topic-content-img img:hover {
   border-color: var(--vp-c-brand);
+}
+
+.content :deep(img[data-emoji]) {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  max-width: 20px;
+  margin-inline: 1px;
+  object-fit: contain;
+  vertical-align: text-bottom;
 }
 
 .last-comment > .comment-info {

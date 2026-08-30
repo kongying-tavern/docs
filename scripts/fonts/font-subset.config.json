@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "paths": {
+    "fontsDir": "src/public/fonts",
+    "siteCssFile": ".vitepress/theme/styles/fonts-subset.css",
+    "standardCssFile": ".vitepress/theme/styles/fonts-standard.css",
+    "sourceDir": "scripts/fonts/source",
+    "pythonEntry": "scripts/subsetFonts.py",
+    "pythonPackage": "scripts/font_subset",
+    "requirements": "requirements.txt"
+  },
+  "scan": [
+    {
+      "path": "src",
+      "extensions": [
+        ".js",
+        ".json",
+        ".md",
+        ".mjs",
+        ".ts",
+        ".tsx",
+        ".vue"
+      ]
+    },
+    {
+      "path": ".vitepress/theme",
+      "extensions": [
+        ".js",
+        ".mjs",
+        ".ts",
+        ".tsx",
+        ".vue"
+      ]
+    },
+    {
+      "path": ".vitepress/config",
+      "extensions": [
+        ".js",
+        ".mjs",
+        ".ts"
+      ]
+    },
+    {
+      "path": ".vitepress/locales",
+      "extensions": [
+        ".js",
+        ".mjs",
+        ".ts"
+      ]
+    }
+  ],
+  "siteExtraction": {
+    "roles": [
+      "content",
+      "subtitle",
+      "title",
+      "shared"
+    ],
+    "defaultRole": "content",
+    "sharedRole": "shared",
+    "extensions": {
+      "markdown": [
+        ".md"
+      ],
+      "vue": [
+        ".vue"
+      ],
+      "script": [
+        ".js",
+        ".mjs",
+        ".ts",
+        ".tsx"
+      ],
+      "json": [
+        ".json"
+      ]
+    },
+    "tagRoles": {
+      "h1": "title",
+      "button": "subtitle",
+      "summary": "subtitle",
+      "strong": "subtitle",
+      "h2": "subtitle",
+      "h3": "subtitle",
+      "h4": "subtitle",
+      "h5": "subtitle",
+      "h6": "subtitle",
+      "kbd": "subtitle",
+      "thead": "subtitle"
+    },
+    "classRoles": {
+      "outline-title": "title",
+      "title": "title",
+      "VPNav": "subtitle",
+      "VPButton": "subtitle",
+      "custom-block-title": "subtitle",
+      "VPLocalNavOutlineDropdown": "subtitle",
+      "doc-info-left": "subtitle",
+      "subtitle": "subtitle",
+      "vp-link": "subtitle",
+      "lead": "subtitle",
+      "timeline-dot-title": "subtitle"
+    },
+    "fontVariableRoles": {
+      "--vp-font-family-base": "content",
+      "--vp-font-family-content": "content",
+      "--vp-font-family-subtitle": "subtitle",
+      "--vp-font-family-title": "title"
+    },
+    "frontmatterRoles": {
+      "title": "title",
+      "hero.name": "title",
+      "hero.text": "title",
+      "hero.tagline": "subtitle",
+      "description": "content"
+    },
+    "textAttributes": [
+      "alt",
+      "aria-label",
+      "placeholder",
+      "title"
+    ]
+  },
+  "python": {
+    "requiredModules": [
+      "fontTools",
+      "brotli"
+    ],
+    "candidates": [
+      {
+        "command": "python3",
+        "args": []
+      },
+      {
+        "command": "python",
+        "args": []
+      },
+      {
+        "command": "py",
+        "args": [
+          "-3"
+        ]
+      }
+    ]
+  },
+  "hashing": {
+    "algorithm": "sha256",
+    "fileNameLength": 12,
+    "standardNamespace": "font-subset-standard-v3",
+    "siteNamespace": "font-subset-site-v3"
+  },
+  "chunking": {
+    "siteTargetBytes": 56320,
+    "estimatedBytesPerCharacter": 140,
+    "standardCharactersPerChunk": 460
+  },
+  "output": {
+    "extension": "woff2",
+    "format": "woff2"
+  },
+  "css": {
+    "publicFontPath": "/fonts",
+    "fontStyle": "normal",
+    "fontWeight": 100,
+    "fontDisplay": "swap",
+    "localFallback": "☺"
+  },
+  "fontaine": {
+    "cssEntry": ".vitepress/theme/styles/main.css",
+    "fallbackNameSuffix": "override",
+    "fallbacks": [
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Helvetica Neue",
+      "Arial",
+      "Noto Sans"
+    ]
+  },
+  "siteCharacters": {
+    "minimumCodepoint": 32,
+    "excludedRanges": [
+      [
+        127,
+        159
+      ]
+    ],
+    "extraRanges": [
+      [
+        32,
+        126
+      ],
+      [
+        12288,
+        12351
+      ],
+      [
+        65281,
+        65374
+      ]
+    ],
+    "extraCodepoints": [
+      160,
+      183,
+      8211,
+      8212,
+      8213,
+      8216,
+      8217,
+      8220,
+      8221,
+      8230
+    ]
+  },
+  "scripts": {
+    "source": "latin/latin-ext mirror VitePress scripts/fontSubsets.json (East Asian Ambiguous punctuation intentionally kept in latin: every page loads the latin tier anyway and all tiers share the same typeface); kana/cjk-punct/symbols follow Unicode block boundaries for Japanese and symbol coverage",
+    "sets": [
+      {
+        "name": "latin",
+        "ranges": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+21A9, U+2212, U+2215, U+2318, U+FEFF, U+FFFD"
+      },
+      {
+        "name": "latin-ext",
+        "ranges": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+        "name": "symbols",
+        "ranges": "U+0370-03FF, U+2070-209F, U+20D0-20FF, U+2190-21FF, U+2200-22FF, U+2300-23FF, U+25A0-25FF, U+2600-26FF, U+2700-27BF"
+      },
+      {
+        "name": "kana",
+        "ranges": "U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+FF61-FF9F"
+      },
+      {
+        "name": "cjk-punct",
+        "ranges": "U+3000-303F, U+FF00-FF60, U+FFE0-FFEF"
+      }
+    ]
+  },
+  "fonts": [
+    {
+      "family": "Sarasa Gothic SC",
+      "cssFamily": "SarasaGothicSC-min",
+      "fileStem": "sarasa_gothic_sc",
+      "sourceFile": "SarasaGothicSC-Regular.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
+      "standardTiers": [
+        "l1",
+        "l2l3"
+      ],
+      "siteRoles": [
+        "content",
+        "shared"
+      ]
+    },
+    {
+      "family": "HYWenHei-65W",
+      "cssFamily": "HYWenHei-65W-min",
+      "fileStem": "hywenhei_65w",
+      "sourceFile": "HYWenHei-65W.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
+      "standardTiers": [
+        "l1",
+        "l2l3"
+      ],
+      "siteRoles": [
+        "subtitle",
+        "title",
+        "shared"
+      ]
+    },
+    {
+      "family": "HYWenHei-85W",
+      "cssFamily": "HYWenHei-85W-min",
+      "fileStem": "hywenhei_85w",
+      "sourceFile": "HYWenHei-85W-zh-full.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
+      "standardTiers": [
+        "l1"
+      ],
+      "siteRoles": [
+        "title"
+      ]
+    }
+  ],
+  "charactersFile": "scripts/fonts/font-characters.config.json"
+}

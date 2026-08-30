@@ -28,12 +28,16 @@ head:
 #### 语法
 
 ```markdown
-::: timeline <标题>
+::: timeline <日期|[标题]>[dot class]
 <内容>
 :::
 ```
 
 > 该语法生成一条时间线条目。连续使用多次时间线条目时，连续的时间线条目会连成时间线。
+>
+> - **日期与标题**：用 `|` 分割——`|` 前的内容显示在圆点左侧（通常为日期），`|` 后为圆点右侧标题。不写 `|` 时兼容旧写法：标题中的 `YYYY-MM-DD` 日期会自动提取到圆点左侧。
+> - **dot 配置**：末尾 `[...]` 内为圆点配置项，逗号分隔：`border-*` 颜色类改圆点颜色（如 `border-red-500`）、`i-*` 图标类在圆点中心显示图标（如 `i-lucide-flag`）。
+> - 注：配置用方括号而非大括号，因为站点的 Markdown 增强语法（MDC/attrs）会消耗大括号内容。
 
 #### 示例
 
@@ -45,10 +49,16 @@ head:
 
 :::
 
-::: timeline 2023-05-23
+::: timeline 2023-05-23|[border-red-500]
 
 - do some thing3
 - do some thing4
+
+:::
+
+::: timeline 2023-05-22|[i-lucide-flag]
+
+- do some thing5
 
 :::
 ::::
@@ -98,7 +108,7 @@ MDC 形式（YAML props 使用 `---` 包裹）：
 logo: self
 title: That normal theme card
 desc: This is description
-cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png?x-oss-process=image/resize,s_500/quality,q_80/auto-orient,0/interlace/1,format/jpg
+cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png
 ---
 
 ::

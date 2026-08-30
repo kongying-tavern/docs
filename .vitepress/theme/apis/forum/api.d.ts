@@ -22,7 +22,9 @@ export namespace ForumAPI {
     updateAt?: Date
   }
 
-  export type TopicType = 'ANN' | 'BUG' | 'FEAT' | 'POST' | null
+  export type FeedbackTopicType = 'ANN' | 'BUG' | 'FEAT'
+  export type TopicKind = FeedbackTopicType | 'POST'
+  export type TopicType = TopicKind | null
 
   export interface ImageInfo {
     src: string
@@ -49,11 +51,12 @@ export namespace ForumAPI {
     commentCount: number
     user: ForumAPI.User
     state: ForumAPI.TopicState
-    type: ForumAPI.TopicType
+    type: ForumAPI.TopicKind
     pinned?: boolean
     relatedComments?: Comment[] | null
     createdAt: string
     updatedAt: string
+    closedAt?: string
     language?: string
   }
 
@@ -71,7 +74,6 @@ export namespace ForumAPI {
     reactions?: ForumAPI.Reactions | null
     replyID?: string | number | null
     tags?: string[] // Tags extracted from rich text data
-    // replyCommets?: Omit<ForumAPI.Comment, replyCommets>
   }
 
   export interface Comments {
@@ -120,7 +122,8 @@ export namespace ForumAPI {
     data?: unknown
   }
 
-  type PaginatedResult<T> = PaginationParams & {
+  /** 响应可能缺失分页头，故分页字段可选；消费方以 `?? 0` 兜底 */
+  type PaginatedResult<T> = Partial<PaginationParams> & {
     data: T
   }
 
@@ -141,7 +144,7 @@ export namespace ForumAPI {
   }
 
   interface CreateTopicOption {
-    type: Exclude<ForumAPI.TopicType, null>
+    type: ForumAPI.FeedbackTopicType
     title: string
     tags: string[]
     text: string
@@ -160,8 +163,6 @@ export namespace ForumAPI {
   } & ForumAPI.Topic
 
   type Repo = 'Feedback' | 'Blog'
-
-  type FilterBy = 'feat' | 'bug' | 'all' | 'closed'
 
 }
 

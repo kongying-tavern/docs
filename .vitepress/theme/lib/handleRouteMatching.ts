@@ -4,7 +4,18 @@ import { merge } from 'lodash-es'
 import { match } from 'path-to-regexp'
 import { withBase } from 'vitepress'
 import { markRaw } from 'vue'
-import { getLangPath, stripTrailingSlashInPath } from '@/utils'
+import { getLangPath } from '@/utils'
+import ForumRouteView from '~/components/forum/ForumRouteView.vue'
+import { publishForumLocation } from '~/composables/useForumRoute'
+import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '~/services/forum/forumRoute'
+
+const FORUM_TITLES: Record<string, string> = {
+  root: '社区反馈',
+  en: 'Feedback',
+  ja: 'フィードバック',
+}
+
+const LEADING_SLASH_REGEX = /^\//
 
 export default function handleRouteMatching(
   to: string,
@@ -13,7 +24,25 @@ export default function handleRouteMatching(
   router: Router,
   localeConfig: LocaleConfig,
 ): boolean {
-  const normalizePath = new URL(to, 'https://example.com').pathname.replace(base, '')
+  const routeOptions = { base, locales: Object.keys(localeConfig) }
+  const forumLocation = parseForumLocation(to, routeOptions)
+  if (forumLocation) {
+    if (typeof window !== 'undefined') {
+      const currentHref = `${window.location.pathname}${window.location.search}${window.location.hash}`
+      canonicalizeForumLocation(window.history, currentHref, forumLocation.canonicalHref)
+      publishForumLocation(forumLocation.canonicalHref, routeOptions)
+    }
+
+    router.route.path = stripConfiguredBase(new URL(forumLocation.canonicalHref, 'https://example.com').pathname, base)
+    router.route.component = markRaw(ForumRouteView)
+    router.route.data = buildForumRouteData(router.route.path, forumLocation.route.locale, forumRouteParams(forumLocation.route))
+    return false
+  }
+
+  if (typeof window !== 'undefined')
+    publishForumLocation(to, routeOptions)
+
+  const normalizePath = stripConfiguredBase(new URL(to, 'https://example.com').pathname, base)
   const matchResult = matchRoute(to, routes, localeConfig)
 
   if (!matchResult)
@@ -26,8 +55,6 @@ export default function handleRouteMatching(
   router.route.path = route.path || normalizePath
   router.route.component = markRaw(route.component)
   router.route.data = buildRouteData(normalizePath, route, locale, params)
-  if (typeof window !== 'undefined')
-    stripTrailingSlashInPath()
   return false
 }
 
@@ -89,4 +116,29 @@ function buildRouteData(
     headers: [],
     frontmatter: { sidebar: false, layout: 'page' },
   }, route.data)
+}
+
+function buildForumRouteData(path: string, locale: string, params: Record<string, string>) {
+  return {
+    params,
+    relativePath: path.replace(LEADING_SLASH_REGEX, ''),
+    filePath: path.replace(LEADING_SLASH_REGEX, ''),
+    title: FORUM_TITLES[locale] || FORUM_TITLES.root,
+    description: '',
+    headers: [],
+    frontmatter: { sidebar: true, layout: 'Forum' },
+  }
+}
+
+function stripConfiguredBase(pathname: string, base: string): string {
+  const normalizedBase = `/${base.split('/').filter(Boolean).join('/')}/`
+  if (normalizedBase === '//')
+    return pathname
+
+  const baseWithoutSlash = normalizedBase.slice(0, -1)
+  if (pathname === baseWithoutSlash)
+    return '/'
+  return pathname.startsWith(normalizedBase)
+    ? `/${pathname.slice(normalizedBase.length)}`
+    : pathname
 }

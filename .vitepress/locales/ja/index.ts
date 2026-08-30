@@ -30,8 +30,8 @@ export const jaConfig: LocaleSpecificConfig<
     image: C.META_IMAGE,
     logo: '/imgs/common/logo/logo_256.png',
 
-    outlineTitle: 'このページでは',
-    lastUpdatedText: '更新日時',
+    outline: { label: 'このページでは' },
+    lastUpdated: { text: '更新日時' },
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
     notFound: _404,

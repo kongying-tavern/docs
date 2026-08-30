@@ -30,7 +30,7 @@ const REGEX_ATTR_REGEX = /^regex.*$/
 
 export const markdownConfig: MarkdownOptions = {
   image: {
-    lazyLoading: true,
+    lazyLoad: true,
   },
   config(md) {
     md.use(MarkdownItFootnote)
@@ -82,7 +82,7 @@ export const markdownConfig: MarkdownOptions = {
         inlineSpan: false,
       },
     })
-    // VitePress 2.0 passes MarkdownItAsync which extends MarkdownIt
+    // VitePress 2 passes MarkdownItAsync, which extends MarkdownIt.
     applyComarkPatches(md as unknown as MarkdownIt)
 
     // Both attrs and kbd reuse `{...}` / `:`-adjacent syntax, so they need

@@ -34,6 +34,8 @@ It's recommended to manage the workload using issues and pull requests. Create a
 
 When working as a team, make sure to use consistent translations for common terminologies to avoid confusion. It's best to have a place to document the conventions and consensus generated from reviews. You can use GitHub wiki, team discussions thread, or directly as a markdown file in the repo itself. If a term is particularly tricky to concisely translate in your language, consider leaving it untranslated.
 
+For the feedback forum UI copy, the [Forum Glossary](./forum-glossary.md) is the source of truth — keep every translation consistent with its key terms and style rules.
+
 ### Translating Non-Content Text
 
 Some text are part of the VitePress theme instead of markdown content. You can translate these in `.vitepress/config/[langCode].ts`. In addition to navigation and sidebar items, you can also customize most of the theme text by providing the `themeConfig.i18n` option. [Example usage in English translation](https://github.com/kongying-tavern/docs/blob/main/.vitepress/config/en.ts)
@@ -59,13 +61,13 @@ These are custom markers we use to differentiate between Options-API-only and Co
 
 ## Complete Translations
 
-- [简体中文 / Simplified Chinese](index.md/) [[source](https://github.com/kongying-tavern/docs/tree/next/src/)]
-- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/en)]
+- [简体中文 / Simplified Chinese](index.md/) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/)]
+- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/en)]
 
 ## Current Active Translations (in alphabetical order)
 
-- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/ja)]
-- [韩语 / Korean](./kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/next/src/kr)]
+- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/ja)]
+- [韩语 / Korean](./kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/kr)]
 
 ## Resources
 

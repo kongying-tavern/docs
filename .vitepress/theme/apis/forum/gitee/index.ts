@@ -1,158 +1,113 @@
-import type {
-  ApiCallParams,
-  ApiCallResult,
-  GiteeApiErrorType,
-  HttpMethod,
-} from './types'
-
+import type { KyResponse } from 'ky'
+import type { ApiCallOptions, ApiResult, HttpMethod } from './types'
 import { useMemoize } from '@vueuse/core'
-import ky from 'ky'
-import { isPlainObject } from 'lodash-es'
-
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { catchError, isNodeEnvironment } from '../../utils'
-import * as blog from './blog'
-import { GITEE_API_CONFIG } from './config'
-import { beforeErrorHooks } from './hooks'
-import { HTTPError } from './httpError'
+import { fetcher, prepareRequest } from './client'
+import { toGiteeAPIError } from './errors'
+import * as gists from './gists'
 import * as issues from './issues'
 import * as labels from './labels'
 import * as oauth from './oauth'
 import * as password from './password'
 import * as user from './user'
+import { extractPaginationParams } from './utils'
 
-import { handlePagination, hasPagination } from './utils'
+export { GiteeAPIError } from './errors'
 
-export const fetcher = ky.extend({
-  prefixUrl: GITEE_API_CONFIG.PREFIX_URL,
-  timeout: 5000,
-  retry: 1,
-  hooks: {
-    beforeError: beforeErrorHooks,
-  },
+/** DELETE/PUT 接口无响应体，统一返回空对象 */
+const EMPTY_DATA = {} as const
+
+async function parseResponseData<T>(
+  response: KyResponse<T>,
+  method: HttpMethod,
+): Promise<T> {
+  // DELETE/PUT 接口以及 204、非 2xx（throwHttpErrors: false 时）响应无需解析 body
+  if (method === 'delete' || method === 'put' || response.status === 204 || !response.ok)
+    return EMPTY_DATA as T
+
+  return response.json<T>()
+}
+
+type RequestOptions = Omit<ApiCallOptions, 'cache'>
+
+async function performRequest<T>(
+  method: HttpMethod,
+  endpoint: string,
+  options: RequestOptions,
+): Promise<ApiResult<T>> {
+  const { searchParams, json, body } = await prepareRequest(endpoint, options)
+
+  let response: KyResponse<T>
+  try {
+    response = await fetcher[method]<T>(endpoint, {
+      searchParams,
+      ...(body ? { body } : json ? { json } : {}),
+      throwHttpErrors: options.throwHttpErrors,
+    })
+  }
+  catch (error) {
+    throw toGiteeAPIError(error, { method, endpoint })
+  }
+
+  return {
+    data: await parseResponseData<T>(response, method),
+    pagination: typeof options.searchParams?.page === 'number'
+      ? extractPaginationParams(response)
+      : undefined,
+    response,
+  }
+}
+
+/** 浅拷贝请求选项并剔除显式携带的 access_token，用于生成缓存键 */
+function stripAccessToken(options: RequestOptions): RequestOptions {
+  const strip = <T extends Record<string, unknown>>(record: T): T => {
+    const { access_token: _token, ...rest } = record
+    return rest as T
+  }
+  return {
+    ...options,
+    ...(options.searchParams ? { searchParams: strip(options.searchParams) } : {}),
+    ...(options.json ? { json: strip(options.json) } : {}),
+  }
+}
+
+/**
+ * 会话级响应缓存。useMemoize 缓存的是请求 Promise（含进行中请求的去重）；
+ * 注意 `load`（非缓存路径）也会写入缓存 —— 与原实现保持一致。
+ * 缓存键剔除 access_token：token 轮换不应产生新缓存项，也避免 token 出现在键中。
+ */
+const memoizedRequest = useMemoize(performRequest, {
+  getKey: (method, endpoint, options: RequestOptions) =>
+    JSON.stringify([method, endpoint, stripAccessToken(options)]),
 })
 
-const cachedApiCall = useMemoize(
-  async <T>(
-    method: HttpMethod,
-    endpoint: string,
-    { params = {}, hooks = {}, body, throwHttpErrors }: ApiCallParams,
-  ): ApiCallResult<T> => {
-    const url = `${GITEE_API_CONFIG.ENDPOINT_PREFIX}${endpoint}`
-
-    if (!isNodeEnvironment() && !endpoint.includes('oauth')) {
-      const userAuth = useUserAuthStore()
-
-      // 如果 token 已过期但无刷新进行中，触发刷新
-      // refreshToken() 内部有 isTokenRefreshing 防重入保护
-      // 错误通过 waitForTokenReady() 的 rejection 传播
-      if (!userAuth.isTokenValid && userAuth.auth?.accessToken) {
-        userAuth.refreshToken().catch(() => {})
-      }
-
-      // 等待进行中的 token 刷新完成
-      await userAuth.waitForTokenReady()
-
-      const accessToken = userAuth.auth?.accessToken
-
-      if (accessToken) {
-        if (body) {
-          if (body instanceof FormData)
-            body.append('access_token', accessToken)
-          else if (isPlainObject(body))
-            body.access_token = accessToken
-          else params.access_token = accessToken
-        }
-        else {
-          params.access_token = accessToken
-        }
-      }
-    }
-
-    // Convert params to URLSearchParams for ky compatibility
-    const searchParams = new URLSearchParams()
-    Object.entries(params).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach(item => searchParams.append(key, String(item)))
-      }
-      else if (value != null) {
-        searchParams.set(key, String(value))
-      }
-    })
-
-    const options = {
-      hooks,
-      ...(searchParams.toString() ? { searchParams } : {}),
-      ...(body && (body instanceof FormData ? { body } : { json: body })),
-      ...(throwHttpErrors !== undefined ? { throwHttpErrors } : {}),
-    }
-
-    const [error, response] = await catchError(
-      fetcher[method]<Promise<T>>(url, options),
-    )
-
-    if (error) {
-      return Promise.reject(
-        new HTTPError(error.name as GiteeApiErrorType, {
-          cause: error,
-          method,
-          endpoint,
-          message: error.message,
-        }),
-      )
-    }
-
-    if (hasPagination(params, body)) {
-      const pagination = await handlePagination(response)
-      return [await response.json(), pagination ? pagination[0] : undefined]
-    }
-
-    if (['delete', 'put'].includes(method)) {
-      return [{} as T, undefined]
-    }
-
-    return [await response.json(), undefined]
-  },
-  {
-    getKey: (
-      method: HttpMethod,
-      endpoint: string,
-      { params, body, throwHttpErrors }: ApiCallParams,
-    ) => JSON.stringify({ method, endpoint, params, body, throwHttpErrors }),
-  },
-)
-
-async function apiCall<T>(
+export function apiCall<T>(
   method: HttpMethod,
   endpoint: string,
-  options: ApiCallParams = {},
-): ApiCallResult<T> {
-  const { useCache = false, ...rest } = options
+  options: ApiCallOptions = {},
+): Promise<ApiResult<T>> {
+  const { cache = false, ...payload } = options
 
-  return useCache
-    ? (cachedApiCall(method, endpoint, rest) as ApiCallResult<T>)
-    : (cachedApiCall.load(method, endpoint, rest) as ApiCallResult<T>)
+  const key = memoizedRequest.generateKey(method, endpoint, payload)
+  const result = cache
+    ? memoizedRequest(method, endpoint, payload)
+    : memoizedRequest.load(method, endpoint, payload)
+
+  // 失败的请求不留缓存，避免后续请求反复命中同一个 rejected Promise
+  result.catch(() => memoizedRequest.cache.delete(key))
+
+  return result as Promise<ApiResult<T>>
 }
 
-const clearApiCache = () => cachedApiCall.clear()
+export function clearApiCache(): void {
+  memoizedRequest.clear()
+}
 
-function deleteApiCache(
+export function deleteApiCache(
   method: HttpMethod,
   endpoint: string,
-  options: Omit<ApiCallParams, 'useCache'>,
-) {
-  return cachedApiCall.delete(method, endpoint, options)
+  options: Omit<ApiCallOptions, 'cache'>,
+): void {
+  memoizedRequest.delete(method, endpoint, options)
 }
 
-export {
-  apiCall,
-  blog,
-  clearApiCache,
-  deleteApiCache,
-  HTTPError as GiteeAPIError,
-  issues,
-  labels,
-  oauth,
-  password,
-  user,
-}
+export { gists, issues, labels, oauth, password, user }

@@ -1,118 +1,120 @@
 <script setup lang="ts">
 import type { TabsConfig } from './publish-topic-form/types'
-import type ForumAPI from '@/apis/forum/api'
 import { useMediaQuery } from '@vueuse/core'
-import { computed } from 'vue'
+import { FormField } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TabsContent } from '@/components/ui/tabs'
 import { useLocalized } from '@/hooks/useLocalized'
-import { MAX_UPLOAD_FILE_SIZE } from './publish-topic-form/form-config'
+import { IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
 import ForumContentInputBox from './publish-topic-form/ForumContentInputBox.vue'
 import ForumPublishTopicFormField from './publish-topic-form/ForumPublishTopicFormField.vue'
 import ForumTagsInput from './publish-topic-form/ForumTagsInput.vue'
 
 interface Props {
-  modelValue: ForumAPI.CreateTopicOption
   tabs: TabsConfig[]
 }
 
 interface Emits {
-  (e: 'update:modelValue', value: ForumAPI.CreateTopicOption): void
+  (e: 'files-selected', files: File[]): void
 }
 
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+defineProps<Props>()
+defineEmits<Emits>()
 
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
-
-const formData = computed({
-  get: () => props.modelValue,
-  set: value => emit('update:modelValue', value),
-})
 </script>
 
 <template>
-  <div class="form-fields min-h-200px">
-    <TabsContent v-for="tab in tabs" :key="tab.value" :value="tab.value">
-      <div class="gap-6 grid w-full items-center">
-        <!-- Title Field -->
-        <ForumPublishTopicFormField
+  <div class="form-fields px-5 pb-5 md:px-4 sm:px-6">
+    <TabsContent v-for="tab in tabs" :key="tab.value" :value="tab.value" class="mt-0">
+      <div class="gap-5 grid w-full items-center md:gap-6">
+        <FormField
           v-if="tab.fields?.title"
-          for="title"
-          :title="tab.fields.title?.label"
-          :required="true"
+          v-slot="{ componentField }"
+          name="title"
         >
-          <Input
-            id="title"
-            v-model="formData.title"
-            type="text"
-            :placeholder="tab.fields.title.placeholder"
-            class="vp-border-input"
-            :maxlength="tab.fields.title.maxLength"
-            autocomplete="off"
-          />
-        </ForumPublishTopicFormField>
-
-        <!-- Tags Field -->
-        <ForumPublishTopicFormField
-          v-if="tab.fields?.tags"
-          for="tags"
-          :title="tab.fields.tags.label"
-          :required="true"
-        >
-          <ForumTagsInput
-            id="tags"
-            v-model="formData.tags"
-            class="w-full"
-            :placeholder="tab.fields.tags.placeholder"
-          />
-        </ForumPublishTopicFormField>
-
-        <!-- Content Field -->
-        <ForumPublishTopicFormField
-          v-if="tab.fields.content"
-          for="content"
-          :title="tab.fields.content.label"
-        >
-          <ForumContentInputBox
-            id="content"
-            v-model="formData.text"
-            :text-limit="tab.fields.content.maxLength"
-            :text-min-limit="tab.fields.content.minLength"
-            :class="isDesktop ? 'min-h-128px' : 'min-h-100px'"
-            :placeholder="tab.fields.content.placeholder"
+          <ForumPublishTopicFormField
+            for="title"
+            :title="tab.fields.title?.label"
+            :required="true"
           >
-            <template v-if="!isDesktop" #uploader>
-              <slot
-                name="uploader"
-                :file-limit="tab.fields.upload.maxLength"
-                size="xl"
-              />
-            </template>
-          </ForumContentInputBox>
-        </ForumPublishTopicFormField>
+            <Input
+              id="title"
+              v-bind="componentField"
+              type="text"
+              :placeholder="tab.fields.title.placeholder"
+              class="letter-title-input vp-border-input"
+              :maxlength="tab.fields.title.maxLength"
+              autocomplete="off"
+            />
+          </ForumPublishTopicFormField>
+        </FormField>
 
-        <!-- Upload Field (Desktop Only) -->
-        <ForumPublishTopicFormField
-          v-if="isDesktop && tab.fields.upload"
-          for="upload"
-          :title="tab.fields.upload.label"
+        <FormField
+          v-if="tab.fields?.tags"
+          v-slot="{ componentField }"
+          name="tags"
         >
+          <ForumPublishTopicFormField
+            for="tags"
+            :title="tab.fields.tags.label"
+            :required="tab.value === 'BUG'"
+          >
+            <ForumTagsInput
+              id="tags"
+              v-bind="componentField"
+              :model-value="Array.isArray(componentField.modelValue) ? componentField.modelValue : []"
+              class="w-full"
+              :placeholder="tab.fields.tags.placeholder"
+            />
+          </ForumPublishTopicFormField>
+        </FormField>
+
+        <FormField
+          v-if="tab.fields.content"
+          v-slot="{ componentField }"
+          name="text"
+        >
+          <ForumPublishTopicFormField
+            for="content"
+            :title="tab.fields.content.label"
+            :required="true"
+          >
+            <ForumContentInputBox
+              id="content"
+              v-bind="componentField"
+              :text-limit="tab.fields.content.maxLength"
+              :text-min-limit="tab.fields.content.minLength"
+              :class="isDesktop ? 'min-h-36' : 'min-h-28'"
+              :placeholder="tab.fields.content.placeholder"
+              :support-paste="true"
+              @paste-files="$emit('files-selected', $event)"
+            >
+              <template v-if="!isDesktop" #uploader>
+                <slot name="uploader" size="xl" />
+              </template>
+            </ForumContentInputBox>
+          </ForumPublishTopicFormField>
+        </FormField>
+
+        <div
+          v-if="isDesktop && tab.fields.upload"
+          class="desktop-upload-field w-full md:pb-5"
+        >
+          <p class="text-sm leading-none font-medium mb-2">
+            {{ tab.fields.upload.label }}
+          </p>
           <p
-            class="text-sm c-[var(--vp-c-text-3)] leading-normal ml-1"
+            class="text-xs c-[var(--vp-c-text-3)] leading-normal"
             v-text="
               message.forum.publish.form?.upload?.tip
-                ?.replace('%size', String(MAX_UPLOAD_FILE_SIZE))
-                ?.replace('%range', String(tab.fields.upload.maxLength)) || ''
+                ?.replace('%size', IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL)
+                ?.replace('%range', String(IMAGE_UPLOAD_POLICY.MAX_COUNT)) || ''
             "
           />
-          <slot
-            name="uploader"
-            :file-limit="tab.fields.upload.maxLength"
-            size="lg"
-          />
-        </ForumPublishTopicFormField>
+          <slot name="uploader" size="lg" />
+        </div>
       </div>
     </TabsContent>
   </div>

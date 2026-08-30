@@ -2,20 +2,21 @@
 import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import LoginAlertDialog from './LoginAlertDialog.vue'
+import { useForumRoute } from '~/composables/useForumRoute'
 import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
 import UserAvatar from './UserAvatar.vue'
 
 const { theme } = useData()
 
 const userInfo = useUserInfoStore()
+const { homeHref, userHref } = useForumRoute()
 const open = ref(false)
 const el = ref<HTMLElement>()
 
 const list = computed<{ title: string, href: string, icon: string }[]>(() => [
   {
     title: theme.value.forum.user.myFeedback.title,
-    href: `/feedback/user/${userInfo.info?.login}`,
+    href: userInfo.info?.login ? userHref(userInfo.info.login) : homeHref(),
     icon: 'i-lucide-message-square-text',
   },
   {
@@ -52,10 +53,6 @@ const list = computed<{ title: string, href: string, icon: string }[]>(() => [
       <div class="menu" @mouseout="open = false">
         <NavBarUserAvatarDropdownMenu :list="list" />
       </div>
-
-      <Teleport to="body">
-        <LoginAlertDialog />
-      </Teleport>
     </div>
   </ClientOnly>
 </template>
