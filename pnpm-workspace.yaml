@@ -1,4 +1,20 @@
 packages: []
+# vue-sonner 等包的 Nuxt optional peer 会被自动安装并拖入整棵 Nuxt DevTools
+# 依赖树（含 Critical 告警且完全未被使用），关闭自动安装。
+autoInstallPeers: false
+overrides:
+  # 收敛 2026-08 audit 的 Critical/High 依赖告警（全部为同主版本修补升级）
+  "@lunariajs/core>simple-git": ^3.36.0
+  "@comark/markdown-it>js-yaml": ^4.3.2
+  "@vueuse/motion>defu": ^6.1.7
+  "sass>immutable": ^5.1.9
+  "vite>rollup": ^4.63.1
+  "vite>postcss": ^8.5.26
+  "glob>minimatch": ^3.1.5
+  "minimatch>brace-expansion": ^1.1.18
+  "micromatch>picomatch": ^2.3.2
+  "unconfig>defu": ^6.1.7
+  "hast-util-to-html>mdast-util-to-hast": ^13.2.1
 catalogs:
   build:
     "@lunariajs/core": ^0.1.1
