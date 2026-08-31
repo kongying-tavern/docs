@@ -8,12 +8,12 @@ description: 我们希望通过社区的共同努力提供所有原神支持的�
 
 ## 多语言版本 {#available-languages}
 
-- [简体中文 / Simplified Chinese](index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/)]
-- [英文 / English](/en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/en)]
+- [简体中文 / Simplified Chinese](index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/)]
+- [英文 / English](/en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/en)]
 
 ## 翻译中的语言 {#work-in-progress-languages}
 
-- [日本語 / Japanese](/ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/ja)]
+- [日本語 / Japanese](/ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/ja)]
 
 ## 参与地图客户端的翻译 {#translations-client}
 

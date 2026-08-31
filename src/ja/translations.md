@@ -7,12 +7,12 @@ title: 多言語と翻訳
 
 ## 多言語版 {#available-languages}
 
-- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/)]
-- [英文 / English](../en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/en)]
+- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/)]
+- [英文 / English](../en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/en)]
 
 ## 翻訳中の言語 {#work-in-progress-languages}
 
-- [日本語 / Japanese](#) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/ja)]
+- [日本語 / Japanese](#) [[source](https://github.com/kongying-tavern/docs/tree/main/src/ja)]
 
 ## 新しい翻訳を開始する {#starting-a-new-translation}
 

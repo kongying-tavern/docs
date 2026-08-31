@@ -21,7 +21,7 @@ pnpm i
 pnpm run dev
 ```
 
-This project requires Node.js to be `v18.0.0` or higher, because we use new JavaScript features in our code, such as optional chaining.
+This project requires Node.js `^20.19.0` or `>=22.12.0` (what Vite itself requires); the repo pins a newer toolchain in `.nvmrc`.
 
 ## Working on the content
 
