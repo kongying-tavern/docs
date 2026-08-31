@@ -30,8 +30,8 @@ export const enConfig: LocaleSpecificConfig<
     image: C.META_IMAGE,
     logo: '/imgs/common/logo/logo_256.png',
 
-    outlineTitle: 'On This Page',
-    lastUpdatedText: 'Update Date',
+    outline: { label: 'On This Page' },
+    lastUpdated: { text: 'Update Date' },
     returnToTopLabel: 'Back to Top',
     langMenuLabel: 'Change language',
     notFound: _404,

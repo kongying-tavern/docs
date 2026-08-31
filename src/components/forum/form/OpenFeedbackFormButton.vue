@@ -12,7 +12,7 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { publishTopic } from '../utils/forumUi'
-import { FORM_HASH } from './publish-topic-form/config'
+import { FORM_HASH } from './publish-topic-form/form-config'
 
 const { frontmatter } = useData()
 const { message } = useLocalized()

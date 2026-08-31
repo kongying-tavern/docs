@@ -13,7 +13,7 @@ import { useForumRoute } from '~/composables/useForumRoute'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import { getNewCommentCount, isRecentClosedTopic } from '~/services/forum/forumPersonalState'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
-import { FORM_HASH } from '../form/publish-topic-form/config'
+import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import { publishTopic } from '../utils/forumUi'
 import ForumSidebarCreateButton from './ForumSidebarCreateButton.vue'
 import ForumSidebarInformationMenu from './ForumSidebarInformationMenu.vue'
@@ -143,12 +143,12 @@ useEventListener('keydown', (event) => {
 const navItems = computed(() => {
   const items = [
     { label: message.value.forum.sidebar.home, icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
-    { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
+    { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/'), active: false },
   ]
   if (isLoggedIn.value && username.value) {
-    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value) })
+    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), active: false })
   }
-  items.push({ label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') })
+  items.push({ label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban'), active: false })
   return items
 })
 

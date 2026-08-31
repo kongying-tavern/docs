@@ -130,7 +130,7 @@ function handleCommentClick(author: ForumAPI.User): void {
               :height="img.height"
               class="border border-[var(--vp-c-divider)] rounded-sm flex-shrink-0 max-h-24 cursor-zoom-in transition-colors duration-200 hover:border-[var(--vp-c-brand)]"
               loading="lazy"
-              @click="openAt(index, $event.currentTarget)"
+              @click="openAt(index, $event.currentTarget as Element)"
             >
           </div>
         </template>

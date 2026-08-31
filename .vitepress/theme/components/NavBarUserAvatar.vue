@@ -11,7 +11,6 @@ const { theme } = useData()
 const userInfo = useUserInfoStore()
 const { homeHref, userHref } = useForumRoute()
 const open = ref(false)
-const el = ref<HTMLElement>()
 
 const list = computed<{ title: string, href: string, icon: string }[]>(() => [
   {
@@ -30,7 +29,6 @@ const list = computed<{ title: string, href: string, icon: string }[]>(() => [
 <template>
   <ClientOnly>
     <div
-      ref="el"
       class="VPFlyout"
       @mouseenter="open = true"
       @focusin="open = true"

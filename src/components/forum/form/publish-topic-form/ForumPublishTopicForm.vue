@@ -44,7 +44,7 @@ import ForumFormActionBar from '../ForumFormActionBar.vue'
 import ForumFormActions from '../ForumFormActions.vue'
 import ForumFormContent from '../ForumFormContent.vue'
 import ForumFormTabs from '../ForumFormTabs.vue'
-import { FORM_HASH } from './config'
+import { FORM_HASH } from './form-config'
 
 const userAuth = useUserAuthStore()
 const { message } = useLocalized()

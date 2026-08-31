@@ -1,4 +1,22 @@
-import { getScrollOffset } from 'vitepress'
+/**
+ * Get the current header offset from CSS custom properties.
+ * Replaces the removed `getScrollOffset()` from VitePress 1.x.
+ */
+function getScrollOffset(): number {
+  if (typeof document === 'undefined')
+    return 0
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue('scroll-padding-top')
+  // Parse value like "64px" or "calc(64px + 1rem)" → number in px
+  const el = document.createElement('div')
+  el.style.position = 'absolute'
+  el.style.visibility = 'hidden'
+  el.style.height = value || '0px'
+  document.body.appendChild(el)
+  const px = el.offsetHeight
+  document.body.removeChild(el)
+  return px
+}
 
 interface ScrollToOptions {
   offset?: number

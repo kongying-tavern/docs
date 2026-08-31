@@ -6,7 +6,7 @@ interface QQGroup {
   name: string
   number: string
   link: string
-  status: 'suggest' | 'warning' | 'banned' | 'normal'
+  status: string
   tooltip: string
 }
 

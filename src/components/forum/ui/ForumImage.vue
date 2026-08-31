@@ -241,7 +241,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
           :style="railItemStyle()"
           :disabled="!isPreviewReady(image, sourceIndex)"
           :aria-label="message.forum.imagePreview.showImage.replace('{index}', String(index + 1))"
-          @click="openAt(index, $event.currentTarget)"
+          @click="openAt(index, $event.currentTarget as Element)"
         >
           <ForumImageItem
             :image="image"

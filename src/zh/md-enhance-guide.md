@@ -319,7 +319,7 @@ theme: medium
 
 #### 语法
 
-自定义属性由 `markdown-it-attrs` 插件实现，具体语法请参见 [markdown-it-attrs 文档](https://www.npmjs.com/package/markdown-it-attrs)。
+自定义属性由 VitePress 内置的 `@mdit/plugin-attrs` 实现，具体语法请参见 [Attrs 文档](https://mdit-plugins.github.io/attrs.html)。
 
 #### 示例
 
