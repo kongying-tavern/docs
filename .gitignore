@@ -113,3 +113,5 @@ src/public/fonts/*.woff2
 # Local dev/testing artifacts (never commit)
 .playwright-mcp/
 advisor-plans/
+test-results/
+playwright-report/

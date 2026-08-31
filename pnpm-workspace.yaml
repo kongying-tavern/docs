@@ -10,8 +10,6 @@ overrides:
   "sass>immutable": ^5.1.9
   "vite>rollup": ^4.63.1
   "vite>postcss": ^8.5.26
-  "glob>minimatch": ^3.1.5
-  "minimatch>brace-expansion": ^1.1.18
   "micromatch>picomatch": ^2.3.2
   "unconfig>defu": ^6.1.7
   "hast-util-to-html>mdast-util-to-hast": ^13.2.1

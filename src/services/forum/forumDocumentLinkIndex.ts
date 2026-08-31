@@ -1,4 +1,4 @@
-import { SITE_BASE, SITE_ORIGIN } from '~/constants/site'
+import { SITE_BASE, SITE_ORIGIN } from '../../constants/site'
 
 interface ForumDocumentPage {
   url: string

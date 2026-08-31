@@ -47,6 +47,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  forum-smoke:
+    # 论坛真实浏览器冒烟测试复用 E2E 工作流的 playwright job
+    uses: ./.github/workflows/e2e.yml
+
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 30
