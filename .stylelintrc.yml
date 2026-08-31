@@ -63,6 +63,15 @@ rules:
 
   no-missing-end-of-source-newline: true
 
+  selector-pseudo-class-no-unknown:
+    - true
+    - ignorePseudoClasses:
+        - deep
+        - global
+        - slotted
+
+
+
   number-leading-zero: always
 
   number-no-trailing-zeros: true

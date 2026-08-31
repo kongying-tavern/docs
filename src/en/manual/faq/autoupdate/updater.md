@@ -9,7 +9,7 @@ description: Between version updates, some setups will encounter a bug that prev
 Between version updates, some setups will encounter a bug that prevents the auto-updater from launching, which will require you to run the updater manually.
 
 > If there is no auto-updater, or if the updater is not sufficiently recent, please visit the link below to download the latest updater:
-> https://download.yuanshen.site/d_0/YuanshendtUpdater.exe
+> <https://download.yuanshen.site/d_0/YuanshendtUpdater.exe>
 
 Updater directory:
 

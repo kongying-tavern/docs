@@ -5,11 +5,11 @@ layout: Post
 author: Sallee_admin
 cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=位置追踪%0A热更新日志"
 ---
-> 使用位置追踪Beta 6.7.1以上版本即可支持热更新
-> 
+> 使用位置追踪 Beta 6.7.1 以上版本即可支持热更新
+>
 > 版本号仅用于记录版本更新和热更新的先后顺序，不代表必须要使用对应版本
-> 
-> 版本更新日志请查看 ***[更新日志](changelog-autotrack)***。
+>
+> 版本更新日志请查看***[更新日志](changelog-autotrack)***。
 
 ----
 
@@ -17,11 +17,11 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=位置追踪%
 
 ## 2026-8-16 06:49
 
-* 修正至冬1追踪的缩放问题
+* 修正至冬 1 追踪的缩放问题
 
 ## 2026-8-14 06:21
 
-* 适配原神7.0 **至冬1**的追踪
+* 适配原神 7.0 **至冬 1** 的追踪
 
 :::
 
@@ -33,6 +33,6 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=位置追踪%
 
 ## 2026-7-11 23:33
 
-* 适配原神6.7 **杜兰纳深坑** 和 **霜月** 的追踪
+* 适配原神 6.7 **杜兰纳深坑**和**霜月**的追踪
 
 :::

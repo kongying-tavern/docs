@@ -19,7 +19,7 @@ If you don’t have a +86 Mainland China phone number, we recommend registering 
 2. It’s recommended to use the [Edge browser](https://www.microsoft.com/zh-cn/edge/download). Other browsers have not been fully tested, so success is not guaranteed.
 
 3. You can optionally switch to the English version of Gitee using this link:
-   https://gitee.com/language/en
+   <https://gitee.com/language/en>
 
 4. Click “Sign Up” in the top-right corner of the homepage to go to the registration page.
 

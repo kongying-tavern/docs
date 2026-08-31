@@ -740,7 +740,6 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=[Web]%0AChang
 
 ::: timeline 2021-08-14
 
-
 ### {%= T_FEAT %}
 
 - Add a changelog shortcut link to the footer of the homepage.

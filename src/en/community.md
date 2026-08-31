@@ -38,4 +38,3 @@ const server = [
   serverLink('discord', 'Discord')
 ]
 </script>
-

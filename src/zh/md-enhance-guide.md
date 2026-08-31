@@ -35,9 +35,9 @@ head:
 
 > 该语法生成一条时间线条目。连续使用多次时间线条目时，连续的时间线条目会连成时间线。
 >
-> - **日期与标题**：用 `|` 分割——`|` 前的内容显示在圆点左侧（通常为日期），`|` 后为圆点右侧标题。不写 `|` 时兼容旧写法：标题中的 `YYYY-MM-DD` 日期会自动提取到圆点左侧。
-> - **dot 配置**：末尾 `[...]` 内为圆点配置项，逗号分隔：`border-*` 颜色类改圆点颜色（如 `border-red-500`）、`i-*` 图标类在圆点中心显示图标（如 `i-lucide-flag`）。
-> - 注：配置用方括号而非大括号，因为站点的 Markdown 增强语法（MDC/attrs）会消耗大括号内容。
+> - **日期与标题**：用 `|` 分割——`|` 前的内容显示在圆点左侧(通常为日期)，`|` 后为圆点右侧标题。不写 `|` 时兼容旧写法：标题中的 `YYYY-MM-DD` 日期会自动提取到圆点左侧。
+> - **dot 配置**：末尾 `[...]` 内为圆点配置项，逗号分隔：`border-*` 颜色类改圆点颜色(如 `border-red-500`)、`i-*` 图标类在圆点中心显示图标(如 `i-lucide-flag`)。
+> - 注：配置用方括号而非大括号，因为站点的 Markdown 增强语法(MDC/attrs)会消耗大括号内容。
 
 #### 示例
 
@@ -67,9 +67,9 @@ head:
 
 #### 语法
 
-MDC 形式（YAML props 使用 `---` 包裹）：
+MDC 形式(YAML props 使用 `---` 包裹)：
 
-````markdown
+```markdown
 ::Card
 ---
 <属性名1>: <属性值1>
@@ -78,7 +78,7 @@ MDC 形式（YAML props 使用 `---` 包裹）：
 ---
 
 ::
-````
+```
 
 > YAML props 也支持用 ` ```yaml [props] ` 包裹，效果与 `---` 相同。
 
@@ -105,10 +105,11 @@ MDC 形式（YAML props 使用 `---` 包裹）：
 ::: demo
 ::Card
 ---
+
 logo: self
 title: That normal theme card
 desc: This is description
-cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png
+cover: <https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png>
 ---
 
 ::
@@ -118,6 +119,7 @@ cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1ad
 
 ::Card
 ---
+
 logo: self
 title: That normal theme card
 desc: No cover
@@ -133,10 +135,11 @@ hoverShadow: true
 
 ::Card
 ---
-title: 观看客户端基础使用教程
-link: https://www.bilibili.com/video/BV1uU4y157Te
-theme: medium
-shadow: true
+
+title：观看客户端基础使用教程
+link：<https://www.bilibili.com/video/BV1uU4y157Te>
+theme：medium
+shadow：true
 ---
 
 ::
@@ -146,11 +149,12 @@ shadow: true
 
 ::Card
 ---
-title: 网页版地图
-link: https://yuanshen.site/
-logo: self
-desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-theme: medium
+
+title：网页版地图
+link：<https://yuanshen.site/>
+logo：self
+desc：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+theme：medium
 ---
 
 ::
@@ -223,12 +227,12 @@ theme: medium
 ==<标记文本>==
 ```
 
-> 请注意，`==`外侧需要添加空格（详见示例）。
+> 请注意，`==` 外侧需要添加空格(详见示例)。
 
 #### 示例
 
 :::: demo
-对于习惯了传统吟游诗人的蒙德来说， ==“偶像”== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
+对于习惯了传统吟游诗人的蒙德来说， ==「偶像」== 是还不习惯的新生事物。但在蒙德，人人都爱芭芭拉。
 ::::
 
 ### 变量声明 {#variable}
@@ -263,7 +267,7 @@ theme: medium
 #### 示例
 
 :::: demo
-{define:CONTENT}我是被定义的 **_变量_**{/define}
+{define:CONTENT}我是被定义的**_变量_**{/define}
 {%= CONTENT %}
 ::::
 
@@ -310,9 +314,9 @@ theme: medium
 
 {color:red}红色文字{/color}
 
-{color: var(--vp-c-purple-3)}_使用CSS Var的紫色文字_{/color}
+{color: var(--vp-c-purple-3)}_使用 CSS Var 的紫色文字_{/color}
 
-{color: rgba(44,195,184,1)}**使用RGBA的青色文字**{/color}
+{color: rgba(44,195,184,1)}**使用 RGBA 的青色文字**{/color}
 ::::
 
 ### Attrs 自定义属性 {#attrs}
@@ -338,7 +342,7 @@ paragraph _style me_{.vp-link} more text
 ```
 
 ::: warning 说明
-“被提及的人或团队”会根据 `src/_data` 目录下团队成员的 Gitee 账号数据，通过 `username` 或 `login` 字段转换成 Gitee 地址链接。
+「被提及的人或团队」会根据 `src/_data` 目录下团队成员的 Gitee 账号数据，通过 `username` 或 `login` 字段转换成 Gitee 地址链接。
 :::
 
 #### 示例
@@ -357,8 +361,8 @@ paragraph _style me_{.vp-link} more text
 
 ::: warning 说明
 
-- “预设名”对应 `src/public/emojis` 目录下的子目录名。
-- “预设文件名”与预设文件夹中的文件一一对应。
+- 「预设名」对应 `src/public/emojis` 目录下的子目录名。
+- 「预设文件名」与预设文件夹中的文件一一对应。
 - 若需要添加预设或预设文件，只需在 `src/public/emojis` 目录下添加目录或文件即可。
 - 由于此语法与 GitHub 格式的 Markdown (GFM) emoji 语法一致，当预设文件不存在时，会回退为 GFM 语法的 emoji 表示。
 :::
@@ -366,17 +370,17 @@ paragraph _style me_{.vp-link} more text
 #### 示例
 
 :::: demo
-大家好~**[:1.小黄脸/呲牙.png:]**
-:1.小黄脸/呲牙.png::1.小黄脸/呲牙.png:
-演出，开始~:2.原神/芙宁娜-乐.png:)
+大家好~**`:1。小黄脸/呲牙。png:`**
+`:1。小黄脸/呲牙。png:`
+演出，开始~`:2。原神/芙宁娜-乐。png:`
 ::::
 
 ### [Task list](https://mdit-plugins.github.io/zh/tasklist.html#%E9%80%89%E9%A1%B9)
 
 #### 语法
 
-使用 - [ ] 一些文字 渲染一个未勾选的任务项
-使用 - [x] 一些文字 渲染一个勾选了的任务项 (我们也支持大写的 X)
+使用 - [] 一些文字渲染一个未勾选的任务项
+使用 - [x] 一些文字渲染一个勾选了的任务项 (我们也支持大写的 X)
 
 #### 示例
 
@@ -425,7 +429,7 @@ The HTML specificationis maintained by the W3C.
 #### Inline Component Demo
 
 :::: demo
-:scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
+：scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
 ::::
 
 #### Block Component Demo
@@ -434,14 +438,16 @@ The HTML specificationis maintained by the W3C.
 ::link-grid{.mt-4}
 ---
 items:
-  - icon: i-custom-bilibili
-    name: Bilibili
-    link: https://bilibili.com
-    secondary: 小电视
-  - icon: i-custom-gitee
-    name: Gitee
-    link: https://gitee.com
-    secondary: 码云
+
+- icon：i-custom-bilibili
+    name：Bilibili
+    link：<https://bilibili.com>
+    secondary：小电视
+- icon：i-custom-gitee
+    name：Gitee
+    link：<https://gitee.com>
+    secondary：码云
+
 ---
 
 ::
@@ -454,24 +460,26 @@ items:
 ---
 type: multiple
 defaultValue:
-  - overview
-  - details
+
+- overview
+- details
 items:
-  - value: overview
-    title: 默认 Slot：Markdown 内容
-    slot: default
-  - value: details
-    title: 命名 Slot：Markdown 内容
+- value：overview
+    title：默认 Slot：Markdown 内容
+    slot：default
+- value：details
+    title：命名 Slot：Markdown 内容
+
 ---
 
-#default
+# default
 这里是默认 slot 的内容。
 
 - 支持无序列表
-- 支持 **粗体** 和 `inline code`
-- 支持 [普通链接](https://gitee.com)
+- 支持**粗体**和 `inline code`
+- 支持[普通链接](https://gitee.com)
 
-#details
+# details
 这里是命名 slot 的内容。
 
 > 这个区块来自 `#details`。
@@ -483,7 +491,7 @@ items:
 ::::
 
 > 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
-> `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props（`---` 块）必须紧跟在组件起始行之后。
+> `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props(`---` 块)必须紧跟在组件起始行之后。
 
 #### Props 语法
 
