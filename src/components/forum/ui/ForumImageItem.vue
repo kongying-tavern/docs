@@ -2,6 +2,7 @@
 import type { ImageItem } from './ForumImage.vue'
 import { computed, ref } from 'vue'
 import LazyImage from '@/components/ui/image/LazyImage.vue'
+import { ASSET_ORIGIN } from '~/constants/site'
 
 const props = defineProps<{
   image: ImageItem
@@ -19,7 +20,7 @@ const isRealImageReady = ref(false)
 
 const hasError = ref(false)
 
-const ERROR_IMAGE = 'https://assets.yuanshen.site/images/noImage.png'
+const ERROR_IMAGE = `${ASSET_ORIGIN}/images/noImage.png`
 
 const thumbHash = () => props.image.thumbHash || props.image.thumbhash
 

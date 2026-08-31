@@ -1,6 +1,7 @@
 import type { AuthResult } from '../../../utils/auth-errors'
 import type ForumAPI from '../api'
 
+import { getSiteHref } from '~/constants/site'
 import { createAuthError } from '../../../utils/auth-errors'
 import { catchError } from '../../utils'
 import { oauthFetcher } from './client'
@@ -33,7 +34,7 @@ export function getRedirectUrl(localeIndex?: string): string {
   const localeStr = localeIndex === 'root' ? '/' : `/${localeIndex}/`
   const expectedUrl = import.meta.env.DEV
     ? `${location.protocol}//${location.host}${localeStr}callback`
-    : `https://yuanshen.site/docs${localeStr}callback`
+    : `${getSiteHref(localeStr)}callback`
 
   const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
   if (lastRedirectUrl && lastRedirectUrl === expectedUrl) {

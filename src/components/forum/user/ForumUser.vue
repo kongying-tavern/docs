@@ -3,13 +3,14 @@ import type ForumAPI from '@/apis/forum/api'
 
 import Avatar from '@/components/ui/Avatar.vue'
 import Button from '@/components/ui/button/Button.vue'
+import { getGiteeProfileHref } from '~/constants/site'
 
 const { user } = defineProps<{
   user: ForumAPI.User
 }>()
 
 function handleClick() {
-  window.open(`https://gitee.com/${user.login}`)
+  window.open(getGiteeProfileHref(user.login))
 }
 </script>
 

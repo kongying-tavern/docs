@@ -1,7 +1,8 @@
 import type ForumAPI from '@/apis/forum/api'
+import { getSiteHref } from '~/constants/site'
 
 export const fallbackUser = {
   id: 'kongying Tavern',
   username: 'KYJGYSDT',
-  avatar: 'https://yuanshen.site/docs/imgs/common/logo/logo_256.png',
+  avatar: getSiteHref('/imgs/common/logo/logo_256.png'),
 } as ForumAPI.User

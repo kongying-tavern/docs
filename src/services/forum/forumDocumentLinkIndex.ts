@@ -1,3 +1,5 @@
+import { SITE_BASE, SITE_ORIGIN } from '~/constants/site'
+
 interface ForumDocumentPage {
   url: string
   src?: string
@@ -7,8 +9,6 @@ interface ForumDocumentPage {
 export type ForumDocumentLinks = Record<string, string>
 
 const HTML_SUFFIX = /(?:\.html)?\/?$/
-const DOCUMENT_SITE_ORIGIN = 'https://yuanshen.site'
-const DOCUMENT_SITE_BASE = '/docs'
 
 export function buildForumDocumentLinks(pages: ForumDocumentPage[]): ForumDocumentLinks {
   return Object.fromEntries(pages.flatMap((page) => {
@@ -28,10 +28,10 @@ export function getForumDocumentTitle(
   links: Readonly<ForumDocumentLinks>,
 ): string | undefined {
   try {
-    const url = new URL(href, DOCUMENT_SITE_ORIGIN)
-    if (url.origin !== DOCUMENT_SITE_ORIGIN || !url.pathname.startsWith(`${DOCUMENT_SITE_BASE}/`))
+    const url = new URL(href, SITE_ORIGIN)
+    if (url.origin !== SITE_ORIGIN || !url.pathname.startsWith(`${SITE_BASE}/`))
       return
-    const path = decodeURIComponent(url.pathname.slice(DOCUMENT_SITE_BASE.length)).replace(HTML_SUFFIX, '')
+    const path = decodeURIComponent(url.pathname.slice(SITE_BASE.length)).replace(HTML_SUFFIX, '')
     return links[path]
   }
   catch {

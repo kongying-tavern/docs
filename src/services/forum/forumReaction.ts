@@ -1,4 +1,5 @@
 import type { INTER_KNOT } from '@/apis/interknot.site/api'
+import { SITE_BASE, SITE_ORIGIN } from '~/constants/site'
 
 export type ReactionState = INTER_KNOT.ReactionState | null
 type ReactionData = NonNullable<INTER_KNOT.ReactionResponse['data']['reaction']>
@@ -22,7 +23,7 @@ interface ReactionViewer {
 export function reactionEnvironmentForOrigin(origin: string): ReactionEnvironment {
   const url = new URL(origin)
   return {
-    production: url.protocol === 'https:' && url.hostname === 'yuanshen.site',
+    production: url.protocol === 'https:' && url.hostname === new URL(SITE_ORIGIN).hostname,
     origin: url.origin,
   }
 }
@@ -61,8 +62,8 @@ export function applyReactionIntent(current: TopicReaction, requested: INTER_KNO
 }
 
 export function topicReactionResource(topicId: string, environment: ReactionEnvironment): string {
-  const path = `${environment.production ? '/docs' : ''}/feedback/topic/${encodeURIComponent(topicId)}`
-  return new URL(path, environment.production ? 'https://yuanshen.site' : environment.origin).href
+  const path = `${environment.production ? SITE_BASE : ''}/feedback/topic/${encodeURIComponent(topicId)}`
+  return new URL(path, environment.production ? SITE_ORIGIN : environment.origin).href
 }
 
 export function resolveReactionViewer(authenticated: boolean, userId?: string | number): ReactionViewer {

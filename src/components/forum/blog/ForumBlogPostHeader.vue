@@ -3,6 +3,7 @@ import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
+import { getGiteeProfileHref } from '~/constants/site'
 import { parseAuthors } from '~/utils/frontmatter'
 
 const { frontmatter, lang, page } = useData()
@@ -33,7 +34,7 @@ const authors = parseAuthors(frontmatter.value)
       <template v-if="authors.length === 1">
         <VPLink
           class="c-[var(--vp-c-text-2)] flex gap-1.5 items-center hover:underline"
-          :href="`https://gitee.com/${authors[0].login}`"
+          :href="getGiteeProfileHref(authors[0].login)"
         >
           <Avatar
             size="xs"
@@ -52,7 +53,7 @@ const authors = parseAuthors(frontmatter.value)
           v-for="author in authors"
           :key="author.id"
           class="flex"
-          :href="`https://gitee.com/${author.login}`"
+          :href="getGiteeProfileHref(author.login)"
         >
           <Avatar
             size="xs"

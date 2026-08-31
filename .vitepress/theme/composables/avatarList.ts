@@ -1,3 +1,5 @@
+import { ASSET_ORIGIN } from '~/constants/site'
+
 export const avatarList = [
   'UI_AvatarIcon_Zhongli_Circle.png',
   'UI_AvatarIcon_Yunjin_Circle.png',
@@ -130,4 +132,4 @@ export const avatarList = [
   'UI_AvatarIcon_71045_Circle.png',
 ]
 
-export const avatarBaseURl = 'https://assets.yuanshen.site/res_ext/avatar/'
+export const avatarBaseURl = `${ASSET_ORIGIN}/res_ext/avatar/`

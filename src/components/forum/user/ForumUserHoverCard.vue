@@ -14,6 +14,7 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { getGiteeMessagesHref } from '~/constants/site'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
 
@@ -48,7 +49,7 @@ function openUserProfilePage() {
 }
 
 function sendMessage() {
-  window.open(`https://gitee.com/notifications/messages/${userInfo.value?.id}`, String(userInfo.value?.id))
+  window.open(getGiteeMessagesHref(userInfo.value!.id), String(userInfo.value?.id))
 }
 </script>
 

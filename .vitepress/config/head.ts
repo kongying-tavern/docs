@@ -1,4 +1,5 @@
 import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
+import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site'
 import {
   cfgGetPageCover,
   cfgGetPageDesc,
@@ -91,7 +92,7 @@ export const commonHead: HeadConfig[] = [
     'link',
     {
       rel: 'icon',
-      href: `https://yuanshen.site/docs/imgs/common/favicon/favicon-32x32.png`,
+      href: `${SITE_ORIGIN}${SITE_BASE}/imgs/common/favicon/favicon-32x32.png`,
       type: 'image/png',
     },
   ],
@@ -100,7 +101,7 @@ export const commonHead: HeadConfig[] = [
     {
       rel: 'alternate',
       hreflang: 'zh',
-      href: 'https://yuanshen.site/docs',
+      href: `${SITE_ORIGIN}${SITE_BASE}`,
     },
   ],
   [
@@ -108,7 +109,7 @@ export const commonHead: HeadConfig[] = [
     {
       rel: 'alternate',
       hreflang: 'en',
-      href: 'https://yuanshen.site/docs/en',
+      href: `${SITE_ORIGIN}${SITE_BASE}/en`,
     },
   ],
   [
@@ -116,14 +117,14 @@ export const commonHead: HeadConfig[] = [
     {
       rel: 'alternate',
       hreflang: 'ja',
-      href: 'https://yuanshen.site/docs/ja',
+      href: `${SITE_ORIGIN}${SITE_BASE}/ja`,
     },
   ],
   [
     'link',
     {
       rel: 'alternate',
-      href: `https://yuanshen.site/docs/imgs/common/favicon/favicon.ico`,
+      href: `${SITE_ORIGIN}${SITE_BASE}/imgs/common/favicon/favicon.ico`,
       type: 'image/x-icon',
     },
   ],
