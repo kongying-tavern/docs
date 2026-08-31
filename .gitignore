@@ -115,3 +115,5 @@ src/public/fonts/*.woff2
 advisor-plans/
 test-results/
 playwright-report/
+playwright.config.ts
+e2e/

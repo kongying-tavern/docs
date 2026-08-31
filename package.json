@@ -33,8 +33,7 @@
     "lunaria:build": "lunaria build",
     "lunaria:preview": "lunaria preview",
     "up": "taze major -I",
-    "use-data-env": "dotenv -e .env.data -c --",
-    "test:forum-e2e": "playwright test"
+    "use-data-env": "dotenv -e .env.data -c --"
   },
   "dependencies": {
     "@comark/markdown-it": "catalog:markdown",
