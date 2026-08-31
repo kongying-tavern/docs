@@ -1,28 +1,28 @@
+import type { DefaultTheme, UserConfig } from 'vitepress'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitepress'
 
 import { generateBreadcrumbsData } from './config/breadcrumbsDataGenerator'
 import { createConfigureFunction } from './config/common'
-import { headConfig } from './config/head'
+import { createHeadConfig } from './config/head'
 import { ignoreDeadLinksConfig } from './config/ignoreDeadLinks'
-import { localesConfig } from './config/locales'
+import { createLocalesConfig } from './config/locales'
 import { markdownConfig } from './config/markdown'
 import { rewritesConfig } from './config/rewrites'
 import { localeSearchConfig } from './config/search'
 import { sitemapConfig } from './config/sitemap'
 import { cfgDynamicTitleTemplate } from './config/title'
 
-export default defineConfig({
+export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   srcDir: 'src',
   outDir: './dist',
   srcExclude: [],
   scrollOffset: 'header',
   cleanUrls: true,
   lastUpdated: true,
-  locales: localesConfig,
+  locales: await createLocalesConfig(),
   sitemap: sitemapConfig,
   markdown: markdownConfig,
-  head: headConfig,
+  head: await createHeadConfig(),
   rewrites: rewritesConfig,
   ignoreDeadLinks: ignoreDeadLinksConfig,
   themeConfig: {
