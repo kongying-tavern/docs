@@ -9,7 +9,14 @@ function handleHighlight() {
   if (!window.location.hash)
     return
 
-  const targetedHashId = decodeURIComponent(window.location.hash)
+  let targetedHashId: string
+  try {
+    targetedHashId = decodeURIComponent(window.location.hash)
+  }
+  catch {
+    // Malformed percent-encoding in the hash, ignore
+    return
+  }
   if (!targetedHashId)
     return
 
