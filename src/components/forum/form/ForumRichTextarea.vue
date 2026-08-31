@@ -129,7 +129,7 @@ onMounted(() => {
   if (props.autofocus) {
     nextTick(() => {
       const timer = setTimeout(() => {
-        editor.value?.view.focus({ preventScroll: true })
+        editor.value?.view.dom.focus({ preventScroll: true })
       }, 160)
       onBeforeUnmount(() => clearTimeout(timer))
     })
@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
           @focus="emojiPreload.smartPreload"
         >
           <div v-if="toolbarPosition === 'inner'" class="right-12px absolute">
-            <EmojiPicker v-if="features.includes('Emoji')" class="border-none" :reference="container" @select="handleEmojiSelect" />
+            <EmojiPicker v-if="features.includes('Emoji')" class="border-none" :reference="container || undefined" @select="handleEmojiSelect" />
           </div>
 
           <InputPlaceholders
@@ -287,7 +287,7 @@ onBeforeUnmount(() => {
         class="footer mt-2.5 flex w-full items-center justify-between"
       >
         <div class="tool">
-          <EmojiPicker v-if="features.includes('Emoji')" :reference="container" @select="handleEmojiSelect" />
+          <EmojiPicker v-if="features.includes('Emoji')" :reference="container || undefined" @select="handleEmojiSelect" />
 
           <MentionPicker v-if="features.includes('Mention')" v-model:open="showMentionPicker" class="ml-2" @select="handleMentionSelect" />
 

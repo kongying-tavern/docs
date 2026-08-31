@@ -42,6 +42,9 @@ catalogs:
     vue-component-meta:
       specifier: ^3.3.7
       version: 3.3.7
+    vue-tsc:
+      specifier: 3.3.11
+      version: 3.3.11
   conflicts_editor_h3_4_4:
     '@tiptap/core':
       specifier: ^3.20.1
@@ -611,6 +614,9 @@ importers:
       vue-component-meta:
         specifier: catalog:build
         version: 3.3.7(typescript@5.9.3)
+      vue-tsc:
+        specifier: catalog:build
+        version: 3.3.11(typescript@5.9.3)
       zhlint:
         specifier: catalog:dev
         version: 0.8.2
@@ -11944,7 +11950,6 @@ snapshots:
       muggle-string: 0.4.1
       path-browserify: 1.0.1
       picomatch: 4.0.5
-    optional: true
 
   '@vue/language-core@3.3.7':
     dependencies:
@@ -18430,7 +18435,6 @@ snapshots:
       '@volar/typescript': 2.4.28
       '@vue/language-core': 3.3.11
       typescript: 5.9.3
-    optional: true
 
   vue@3.5.41(typescript@5.9.3):
     dependencies:

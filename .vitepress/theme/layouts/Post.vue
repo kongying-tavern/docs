@@ -66,7 +66,7 @@ onMounted(() => {
   const root = document.querySelector('.post-content')
   if (!root)
     return
-  outlineItems.value = [...root.querySelectorAll(':where(h2, h3, h4)')]
+  outlineItems.value = [...root.querySelectorAll<HTMLElement>(':where(h2, h3, h4)')]
     .filter(isOutlineHeading)
     .map(heading => ({
       id: heading.id,

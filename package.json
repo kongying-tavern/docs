@@ -25,7 +25,7 @@
     "lint:md": "markdownlint **/*.md",
     "lint:zh": "zhlint **/zh/**/*.md",
     "lint:zh:fix": "zhlint **/zh/**/*.md --fix",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "vue-tsc --noEmit",
     "test:fonts": "tsx --test scripts/font_subset/*.test.ts",
     "test:forum": "tsx --test scripts/forum/*.test.ts",
     "test:markdown": "tsx --test scripts/markdown/*.test.ts",
@@ -141,6 +141,7 @@
     "vite-plugin-vue-devtools": "catalog:dev",
     "vitepress-plugin-llms": "catalog:build",
     "vue-component-meta": "catalog:build",
+    "vue-tsc": "catalog:build",
     "zhlint": "catalog:dev"
   },
   "lint-staged": {

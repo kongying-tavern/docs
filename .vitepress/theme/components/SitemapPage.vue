@@ -64,6 +64,8 @@ const blogPosts = computed((): ForumAPI.Post[] => {
   const locale = lang === 'root' ? 'zh' : lang
   const localeLabelGetter = getForumLocaleLabelGetter()
   const languageTag = localeLabelGetter.getLabel(locale.toUpperCase())
+  if (!languageTag)
+    return []
 
   // 过滤当前语言的博客文章，取前20篇
   return (postsData as ForumAPI.Post[])
@@ -122,7 +124,7 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
   extractFromNavItems(nav)
 
   // Extract from sidebar
-  const sidebar = theme.value.sidebar || {}
+  const sidebar = (theme.value.sidebar || {}) as Record<string, NavItem[] | NavItem>
   const extractFromSidebarItems = (items: NavItem[]): void => {
     items.forEach((item: NavItem) => {
       if (item.link && item.text) {

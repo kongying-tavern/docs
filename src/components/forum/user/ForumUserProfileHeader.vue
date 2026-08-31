@@ -11,11 +11,10 @@ const props = defineProps<{
   topicCount: number
 }>()
 
-const modelValue = defineModel('activeTab', { default: 'feedback' })
+const modelValue = defineModel<string>('activeTab', { default: 'feedback' })
 const { message } = useLocalized()
 
 const {
-  menuRef,
   renderedUser,
   role,
   isAuthorizedUser,
@@ -107,7 +106,6 @@ const {
     <div class="border-b w-full relative">
       <div class="mx-auto">
         <div
-          ref="menuRef"
           class="flex gap-3 h-12 items-center relative"
         >
           <Button

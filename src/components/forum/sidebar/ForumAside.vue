@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { DataNode } from '../utils/forumUi'
 import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { shuffle, take } from 'lodash-es'
 import { useData, withBase } from 'vitepress'
@@ -39,9 +40,8 @@ const teamBlogPosts = [
   },
 ]
 
-const randomSuggest = take(shuffle(
-  flattenWithTags(Object.values(theme.value.sidebar).flat().filter(item => item.text)),
-), 6)
+const sidebarItems = Object.values(theme.value.sidebar ?? {}).flat() as DataNode[]
+const randomSuggest = take(shuffle(flattenWithTags(sidebarItems.filter(item => item.text))), 6)
 
 const suggestList = computed(() => {
   return [...message.value.forum.aside.suggest.items, ...randomSuggest].sort(
@@ -176,7 +176,6 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         :key="item.text"
         :href="item.link"
         :target="item.text"
-        :alt="item?.alt"
         class="font-size-[13px] color-[var(--vp-c-text-2)] line-height-4 mr-3 px-[2px] overflow-unset"
       >
         {{ item.text }}

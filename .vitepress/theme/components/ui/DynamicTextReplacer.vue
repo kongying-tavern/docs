@@ -108,7 +108,7 @@ function renderVNodeChildren(children: VNodeNormalizedChildren): string {
     }
 
     // Handle the case where children is a single VNode object
-    return renderVNodeToHTML(children as VNode)
+    return renderVNodeToHTML(children as unknown as VNode)
   }
 
   return ''

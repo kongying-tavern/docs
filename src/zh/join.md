@@ -156,7 +156,7 @@ outline: 2
 <script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { linkMap, linkJump } from '../components/links/Join.ts'
+import { linkMap, linkJump } from '../components/links/Join'
 
 const params = useUrlSearchParams('history')
 const links = [linkMap.dd, linkMap.kf]

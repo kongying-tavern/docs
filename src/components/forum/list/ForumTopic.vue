@@ -25,7 +25,7 @@ const emit = defineEmits<{
 
 const router = useRouter()
 
-const { translator, menu: baseMenu, showComment } = useTopicState(topic)
+const { menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode()
 const translatedContent = ref<string>()
 const translatedTitle = ref('')
@@ -90,7 +90,6 @@ function showTranslatedContent(content: string): void {
             <template #translation>
               <ForumTopicTranslator
                 :key="`translator-${topic.id}`"
-                ref="translator"
                 :content="topic.content.text"
                 :title="topic.title"
                 :source-language="topic.language"
