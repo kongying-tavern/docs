@@ -57,9 +57,7 @@ onBeforeUnmount(() => {
 @media (min-width: 1440px) {
   .forum-container {
     width: min(1013px, 100%);
-    max-width: none;
-    margin-right: auto;
-    margin-left: max(0px, calc((100% - 945px) / 2));
+    margin: 0 auto;
     padding: 0;
   }
 }
