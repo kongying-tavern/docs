@@ -203,3 +203,11 @@ function handleTitleTranslated(title: string): void {
     <ForumTopicTagsEditorDialog />
   </ClientOnly>
 </template>
+
+<style scoped>
+:deep(.forum-topic-paragraph-break) {
+  display: block;
+  content: '';
+  margin-top: 0.75rem;
+}
+</style>

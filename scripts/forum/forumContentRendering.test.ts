@@ -106,12 +106,19 @@ test('malformed or unsupported rich roots fall back to exact interpolated plain 
 test('Topic Markdown disables raw HTML, allowlists links, and preserves JSON-looking text', () => {
   const rendered = renderForumTopic('123\nhttps://gitee.com/KYJGYSDT\nhttps://example.com\n<script>alert(1)</script>')
 
-  assert.match(rendered, /^<p>123<br>/)
+  assert.match(rendered, /^<p>123<br class="forum-topic-paragraph-break">/)
   assert.match(rendered, /href="https:\/\/gitee\.com\/KYJGYSDT"/)
   assert.equal(rendered.includes('href="https://example.com"'), false)
   assert.match(rendered, /https:\/\/example\.com/)
   assert.equal(rendered.includes('<script>'), false)
   assert.match(rendered, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/)
+})
+
+test('Topic paragraph breaks keep inline Markdown nesting valid', () => {
+  assert.equal(
+    renderForumTopic('**first\nsecond**'),
+    '<p><strong>first<br class="forum-topic-paragraph-break">second</strong></p>\n',
+  )
 })
 
 test('link allowlist validates normalized origins before accepting relative URLs', () => {
