@@ -216,11 +216,12 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
   assert.match(topicContentSource, /event instanceof MouseEvent/)
 })
 
-test('both image entry points reuse the shared multi-file drop zone', async () => {
-  const [dropZoneSource, imageUploadSource, richTextareaSource] = await Promise.all([
+test('all image entry points reuse the shared multi-file drop zone', async () => {
+  const [dropZoneSource, imageUploadSource, richTextareaSource, topicContentInputSource] = await Promise.all([
     readFile(new URL('../../src/composables/forum/useForumImageDropZone.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/form/ForumImageUpload.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(dropZoneSource, /useDropZone/)
@@ -229,7 +230,9 @@ test('both image entry points reuse the shared multi-file drop zone', async () =
   assert.match(imageUploadSource, /\n\s+multiple\n/)
   assert.match(richTextareaSource, /useForumImageDropZone\(container/)
   assert.match(richTextareaSource, /<ForumImageUpload[\s\S]*?size="sm"/)
-  assert.doesNotMatch(`${imageUploadSource}\n${richTextareaSource}`, /@(?:dragover|drop)\.prevent/)
+  assert.match(topicContentInputSource, /useForumImageDropZone\(dropZone/)
+  assert.match(topicContentInputSource, /disabled: \(\) => !props\.supportPaste/)
+  assert.doesNotMatch(`${imageUploadSource}\n${richTextareaSource}\n${topicContentInputSource}`, /@(?:dragover|drop)\.prevent/)
 })
 
 test('image preview waits for real images and animates every chrome surface before unmount', async () => {

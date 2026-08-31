@@ -179,15 +179,15 @@ catalogs:
     '@vueuse/motion':
       specifier: ^3.0.3
       version: 3.0.3
-    canvaskit-wasm:
-      specifier: ^0.41.0
-      version: 0.41.1
     class-variance-authority:
       specifier: ^0.7.1
       version: 0.7.1
     clsx:
       specifier: ^2.1.1
       version: 2.1.1
+    compressorjs:
+      specifier: ^1.3.0
+      version: 1.3.0
     dayjs:
       specifier: ^1.11.20
       version: 1.11.20
@@ -424,15 +424,15 @@ importers:
       '@vueuse/motion':
         specifier: catalog:frontend
         version: 3.0.3(magicast@0.5.4)(vue@3.5.41(typescript@5.9.3))
-      canvaskit-wasm:
-        specifier: catalog:frontend
-        version: 0.41.1
       class-variance-authority:
         specifier: catalog:frontend
         version: 0.7.1
       clsx:
         specifier: catalog:frontend
         version: 2.1.1
+      compressorjs:
+        specifier: catalog:frontend
+        version: 1.3.0
       dayjs:
         specifier: catalog:frontend
         version: 1.11.20
@@ -4056,9 +4056,6 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
-  '@webgpu/types@0.1.21':
-    resolution: {integrity: sha512-pUrWq3V5PiSGFLeLxoGqReTZmiiXwY3jRkIG5sLLKjyqNxrwm/04b4nw7LSmGWJcKk59XOM/YRTUwOzo4MMlow==}
-
   abbrev@3.0.1:
     resolution: {integrity: sha512-AO2ac6pjRB3SJmGJo+v5/aK6Omggp6fsLrs6wN9bd35ulu4cCwaAU9+7ZhXjeqHVkaHThLuzH0nZr0YpCDhygg==}
     engines: {node: ^18.17.0 || >=20.5.0}
@@ -4302,6 +4299,9 @@ packages:
   birpc@4.1.0:
     resolution: {integrity: sha512-O8L9vALWGqdEe0cG4HJckauw3WeJETlJnDRPUYpgwB7wrU43b/5NGMdVjdVcRo+4ROgd3ih2wha1glDe4HRVgw==}
 
+  blueimp-canvas-to-blob@3.29.0:
+    resolution: {integrity: sha512-0pcSSGxC0QxT+yVkivxIqW0Y4VlO2XSDPofBAqoJ1qJxgH9eiUDLv50Rixij2cDuEfx4M6DpD9UGZpRhT5Q8qg==}
+
   body-parser@2.2.2:
     resolution: {integrity: sha512-oP5VkATKlNwcgvxi0vM0p/D3n2C3EReYVX+DNYs5TjZFn/oQt2j+4sVJtSMr18pdRr8wjTcBl6LoV+FUwzPmNA==}
     engines: {node: '>=18'}
@@ -4413,9 +4413,6 @@ packages:
 
   caniuse-lite@1.0.30001809:
     resolution: {integrity: sha512-xxWVywk6a6Arlk+hymeycyn/VgqEfLDxupvhH/xiY5SJ/18kmi9o6MiO320DCUzypORHLtvh0I4i04tUhCNHNQ==}
-
-  canvaskit-wasm@0.41.1:
-    resolution: {integrity: sha512-gO2rNMIE0lOQ8MaarM4qNeq2zZAEknAObKP2XAKidMSAY8P5sURGdFkrx1TSdHuBFqTf5w35JqjuUzjibqkD5g==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -4561,6 +4558,9 @@ packages:
   compress-commons@6.0.2:
     resolution: {integrity: sha512-6FqVXeETqWPoGcfzrXb37E50NP0LXT8kAMu5ooZayhWWdgEY4lBEEcbQNXtkuKQsGduxiIcI4gOTsxTmuq/bSg==}
     engines: {node: '>= 14'}
+
+  compressorjs@1.3.0:
+    resolution: {integrity: sha512-TsvzkRgDm/6mIRUdxJbrTH7kfSW3oJzOw8b1xU60fziQSosTML5TczpO6Z4H1LGF0yRmTotk6r5UNhuRxEwA1A==}
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
@@ -5975,6 +5975,10 @@ packages:
 
   is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
+
+  is-blob@2.1.0:
+    resolution: {integrity: sha512-SZ/fTft5eUhQM6oF/ZaASFDEdbFVe89Imltn9uZr03wdKMcWNVYSMjQPFtg05QuNkt5l5c135ElvXEQG0rk4tw==}
+    engines: {node: '>=6'}
 
   is-buffer@2.0.5:
     resolution: {integrity: sha512-i2R6zNFDwgEHJyQUtJEk0XFi1i0dPFn/oqjK3/vPCcDeJvW5NQ83V8QbicfF1SupOaB0h8ntgBC2YiE7dfyctQ==}
@@ -12782,8 +12786,6 @@ snapshots:
     dependencies:
       vue: 3.5.41(typescript@5.9.3)
 
-  '@webgpu/types@0.1.21': {}
-
   abbrev@3.0.1:
     optional: true
 
@@ -13030,6 +13032,8 @@ snapshots:
   birpc@4.1.0:
     optional: true
 
+  blueimp-canvas-to-blob@3.29.0: {}
+
   body-parser@2.2.2:
     dependencies:
       bytes: 3.1.2
@@ -13199,10 +13203,6 @@ snapshots:
 
   caniuse-lite@1.0.30001809: {}
 
-  canvaskit-wasm@0.41.1:
-    dependencies:
-      '@webgpu/types': 0.1.21
-
   ccount@2.0.1: {}
 
   chalk@3.0.0:
@@ -13332,6 +13332,11 @@ snapshots:
       normalize-path: 3.0.0
       readable-stream: 4.7.0
     optional: true
+
+  compressorjs@1.3.0:
+    dependencies:
+      blueimp-canvas-to-blob: 3.29.0
+      is-blob: 2.1.0
 
   concat-map@0.0.1: {}
 
@@ -14909,6 +14914,8 @@ snapshots:
       is-decimal: 2.0.1
 
   is-arrayish@0.2.1: {}
+
+  is-blob@2.1.0: {}
 
   is-buffer@2.0.5: {}
 

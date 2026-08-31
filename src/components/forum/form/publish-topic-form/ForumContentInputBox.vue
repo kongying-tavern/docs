@@ -7,11 +7,12 @@ import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { BubbleMenu } from '@tiptap/vue-3/menus'
 import { useVModel } from '@vueuse/core'
-import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
+import { useForumImageDropZone } from '~/composables/forum/useForumImageDropZone'
 import { createForumSuggestionRenderer } from '~/composables/tiptap/forumSuggestionRenderer'
 import { collectForumTopics, forumKeys } from '~/services/forum/forumQueryContracts'
 import { createForumTopicEditorExtensions } from '~/services/forum/forumTiptapExtensions'
@@ -90,6 +91,12 @@ function handlePaste(event: ClipboardEvent): void {
     emits('paste-files', files)
 }
 
+const dropZone = useTemplateRef<HTMLElement>('drop-zone')
+const { isOverDropZone } = useForumImageDropZone(dropZone, {
+  disabled: () => !props.supportPaste,
+  onFiles: files => emits('paste-files', files),
+})
+
 onMounted(() => {
   editor.value = new Editor({
     extensions: [
@@ -140,7 +147,8 @@ onBeforeUnmount(() => editor.value?.destroy())
   >
     <div class="comment-area w-full">
       <div
-        class="body letter-content-input px-3 py-2 border vp-border-input border-input rounded-md border-style-solid bg-transparent shadow-sm transition-colors placeholder:text-muted-foreground"
+        ref="drop-zone"
+        class="body letter-content-input px-3 py-2 border vp-border-input border-input rounded-md border-style-solid bg-transparent shadow-sm transition-colors relative placeholder:text-muted-foreground"
         :class="
           cn(
             focused
@@ -207,12 +215,34 @@ onBeforeUnmount(() => editor.value?.destroy())
           </span>
         </div>
         <slot name="uploader" />
+
+        <div v-if="isOverDropZone" class="drop-overlay" aria-hidden="true">
+          <span class="i-lucide-images size-5" />
+          <span>{{ message.forum.publish.feedbackForm.addImages }}</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.drop-overlay {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px dashed var(--vp-c-brand-1);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--vp-c-bg-elv) 86%, transparent);
+  color: var(--vp-c-brand-1);
+  font-size: 0.875rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
 :deep(.tiptap) {
   min-height: inherit;
   white-space: pre-wrap;

@@ -38,6 +38,7 @@ function queueOptions(upload: (selected: File) => Promise<ForumAPI.Image> = sele
     revoked,
     options: {
       upload,
+      optimize: async (selected: File) => selected,
       prepare: async () => undefined,
       createId: () => `image-${nextId++}`,
       createPreviewUrl: (selected: File) => `blob:${selected.name}`,
@@ -158,6 +159,34 @@ test('explicit retry starts exactly one new request', async () => {
   assert.deepEqual(await queue.retry(id), { ok: true })
   assert.equal(uploadCalls, 2)
   assert.equal(queue.attachments.value[0]?.status, 'uploaded')
+})
+
+test('optimizes once and reuses the prepared file when an upload is retried', async () => {
+  const original = file('large.jpg', 'image/jpeg', 32)
+  const compressed = file('large.jpg', 'image/jpeg', 16)
+  const uploadedFiles: File[] = []
+  let optimizeCalls = 0
+  const setup = queueOptions(async (selected) => {
+    uploadedFiles.push(selected)
+    if (uploadedFiles.length === 1)
+      throw new Error('offline')
+    return uploaded(selected.name)
+  })
+  const queue = useImageAttachmentQueue({
+    ...setup.options,
+    optimize: async (selected) => {
+      optimizeCalls++
+      assert.equal(selected, original)
+      return compressed
+    },
+  })
+
+  await queue.addFiles([original])
+  assert.equal((await queue.settleUploads()).ok, false)
+  await queue.retry(queue.attachments.value[0]!.id)
+
+  assert.equal(optimizeCalls, 1)
+  assert.deepEqual(uploadedFiles, [compressed, compressed])
 })
 
 test('remove excludes an uploaded item from serialization and revokes once', async () => {
