@@ -109,7 +109,6 @@
     "@commitlint/cli": "catalog:dev",
     "@commitlint/config-conventional": "catalog:dev",
     "@commitlint/types": "catalog:dev",
-    "@playwright/test": "^1.62.1",
     "@types/js-yaml": "catalog:types",
     "@types/lodash-es": "catalog:types",
     "@types/markdown-it": "catalog:types",
