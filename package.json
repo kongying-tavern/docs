@@ -32,7 +32,8 @@
     "lunaria:build": "lunaria build",
     "lunaria:preview": "lunaria preview",
     "up": "taze major -I",
-    "use-data-env": "dotenv -e .env.data -c --"
+    "use-data-env": "dotenv -e .env.data -c --",
+    "init:locale": "tsx ./scripts/initLocale.ts"
   },
   "dependencies": {
     "@comark/markdown-it": "catalog:markdown",
@@ -116,6 +117,7 @@
     "@types/markdown-it-footnote": "catalog:types",
     "@types/node": "catalog:types",
     "@unocss/eslint-plugin": "catalog:dev",
+    "cac": "^7.0.0",
     "conventional-changelog-cli": "catalog:dev",
     "dotenv-cli": "catalog:dev",
     "eslint": "catalog:dev",
