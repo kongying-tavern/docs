@@ -5,7 +5,6 @@ import DefaultTheme from 'vitepress/theme-without-fonts'
 import { computed, defineAsyncComponent, nextTick, provide, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
-import Notifications from '@/components/ui/Notifications.vue'
 import { Sonner } from '@/components/ui/sonner'
 import { enableTransitions } from '@/shared'
 
@@ -101,7 +100,6 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 
     <template #layout-bottom>
       <HighlightTargetedHeading />
-      <Notifications />
       <LoginAlertDialog />
       <OAuthLoginAlertDialog />
     </template>
