@@ -90,10 +90,10 @@ function handleCommentClick(author: ForumAPI.User): void {
       />
 
       <article
-        v-if="content.kind === 'html'"
+        v-if="content.kind === 'html' && !showingTranslation"
         class="content"
         :class="COMMENT_STYLES[props.size].content"
-        v-html="showingTranslation ? translatedText : content.html"
+        v-html="content.html"
       />
 
       <article

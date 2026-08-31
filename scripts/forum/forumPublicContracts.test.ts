@@ -63,6 +63,13 @@ test('official comment extraction receives permission state from its caller', ()
   assert.deepEqual(result?.map(item => item.id), [1, 2])
 })
 
+test('translated comment text is never interpolated as HTML', async () => {
+  const source = await readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8')
+  assert.doesNotMatch(source, /v-html="[^"]*translatedText/)
+  assert.match(source, /\{\{\s*showingTranslation \? translatedText : content\.text\s*\}\}/)
+  assert.match(source, /v-html="content\.html"/)
+})
+
 test('comment scrolling hooks register during component setup', async () => {
   const [stateSource, areaSource] = await Promise.all([
     readFile(new URL('../../src/components/forum/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8'),
