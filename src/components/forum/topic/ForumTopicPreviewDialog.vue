@@ -21,25 +21,17 @@ const router = useRouter()
 const { topicHref } = useForumRoute()
 
 /**
- * 预览窗口内点击进入详情页：标题/正文链接（原生 <a>）、
- * 评论按钮（data-action="comment"）以及空白区域；
- * 其余控件（展开按钮/图片等）正常放行。
+ * 预览窗口内点击进入详情页：标题/正文链接（原生 <a>）以及空白区域；
+ * 其余控件（展开按钮/图片/评论输入框等）正常放行。
  */
 function handlePreviewClick(event: MouseEvent) {
   const topic = props.topic
   if (!topic)
     return
   const target = event.target as HTMLElement
-  const goDetail = () => router.go(topicHref(String(topic.id), null))
-  if (target.closest('a'))
-    return // 原生链接跳转
-  if (target.closest('[data-action="comment"]')) {
-    goDetail()
+  if (target.closest('a, button, img, input, [data-comment-input]'))
     return
-  }
-  if (target.closest('button, img, input'))
-    return
-  goDetail()
+  router.go(topicHref(String(topic.id), null))
 }
 </script>
 

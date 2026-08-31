@@ -22,7 +22,7 @@ onBeforeUnmount(() => {
         <slot />
       </main>
 
-      <aside class="forum-aside top-64px sticky">
+      <aside class="forum-aside">
         <slot name="aside" />
       </aside>
     </div>
@@ -46,11 +46,12 @@ onBeforeUnmount(() => {
   min-width: 0;
 }
 
+/* align-self: end 提供列内上移余量，sticky bottom 才有吸附行程 */
 .forum-aside {
-  height: 100%;
+  position: sticky;
+  bottom: 20dvh;
+  align-self: end;
   overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-width: none;
 }
 
 @media (min-width: 1440px) {

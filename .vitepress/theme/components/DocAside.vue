@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData, withBase } from 'vitepress'
+import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import DocReaction from './DocReaction.vue'
@@ -32,7 +32,7 @@ const items = computed(() => {
     {
       label: message.value.asideLinks.translateThisPage,
       icon: 'i-lucide:languages',
-      href: withBase('_translations'),
+      href: '/translations',
     },
   ]
 })

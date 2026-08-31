@@ -132,7 +132,7 @@ async function retryAttachment(id: string): Promise<void> {
 </script>
 
 <template>
-  <div v-motion-slide-top class="flex" :class="cn('flex', $props.class)">
+  <div v-motion-slide-top data-comment-input class="flex" :class="cn('flex', $props.class)">
     <div class="user-avatar mr-2 flex w-[64px]">
       <UserAvatar
         size="lg"

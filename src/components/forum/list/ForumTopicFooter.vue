@@ -10,6 +10,8 @@ import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 
 const { topicData } = defineProps<{
   topicData: ForumAPI.Topic
+  /** 预览窗口等自带评论输入框的场景下隐藏评论按钮 */
+  hideCommentButton?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -49,6 +51,7 @@ function handleCommentClick() {
         <ForumTopicReactionButton :topic-id="topicData.id" :autoload="reactionEnabled" />
       </div>
       <Button
+        v-if="!hideCommentButton"
         type="button"
         variant="outline"
         data-action="comment"
