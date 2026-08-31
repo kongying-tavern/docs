@@ -91,15 +91,15 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         <p class="color-[var(--vp-c-text-1)]">
           {{ message.forum.aside.teamBlog.text }}
         </p>
-        <a class="font-size-14px vp-link" :href="withBase('/blog')">
+        <VPLink class="font-size-14px vp-link" href="/blog">
           {{ message.ui.button.all }}
-        </a>
+        </VPLink>
       </div>
 
-      <a
+      <VPLink
         v-for="post in teamBlogPosts"
         :key="post.link"
-        :href="withBase(post.link)"
+        :href="post.link"
         class="forum-aside-list-item font-[var(--vp-font-family-subtitle)]"
       >
         <img
@@ -112,7 +112,7 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         >
           {{ post.title }}
         </span>
-      </a>
+      </VPLink>
     </div>
     <div class="selected-articles mb-4">
       <p
@@ -120,10 +120,10 @@ const closedSuggestions = computed(() => closedTopics.rows.value
       >
         {{ message.forum.aside.suggest.text }}
       </p>
-      <a
+      <VPLink
         v-for="item in suggestList"
         :key="`${item.tag}-${item.link}`"
-        :href="withBase(item.link)"
+        :href="item.link"
         class="forum-aside-list-item forum-aside-document-item"
       >
         <span
@@ -137,7 +137,7 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         >
           {{ item.text?.replace(/【|】|\[|\]/g, ' ').trim() }}
         </span>
-      </a>
+      </VPLink>
     </div>
     <div class="selected-articles mb-4">
       <p
