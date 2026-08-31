@@ -76,6 +76,9 @@ export function useTokenManager() {
     log.info(LogGroup.TOKEN, 'Setting new tokens', { hasAccessToken: !!authData.accessToken })
 
     if (authData.accessToken && authData.expiresIn) {
+      if (localAuth.value?.accessToken && localAuth.value.accessToken !== authData.accessToken)
+        clearSSOTokens()
+
       const expiresTime = getExpiresTime(authData.expiresIn)
       localAuth.value = {
         accessToken: authData.accessToken,
