@@ -3,11 +3,14 @@ import type { PageData, SiteConfig } from 'vitepress'
 // eslint-disable-next-line node/prefer-global/process
 export const isProd = process.env.NODE_ENV === 'production'
 
+const LEADING_SLASHES_RE = /^\/+/
+
 export function cfgGetPageUrl(
   pageData: PageData,
   siteConfig: SiteConfig,
 ): string {
-  return `https://yuanshen.site/${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
+  const path = `${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
+  return `https://yuanshen.site/${path.replace(LEADING_SLASHES_RE, '')}`
 }
 
 export function cfgGetPageTitle(pageData: PageData, _siteConfig?: SiteConfig<unknown>): string {
