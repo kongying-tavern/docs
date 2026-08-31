@@ -95,8 +95,8 @@ export function serializeUploadedAttachments(attachments: ImageAttachment[]): Fo
       ...(attachment.thumbHash
         ? {
             thumbHash: attachment.thumbHash.dataBase64,
-            width: attachment.thumbHash.width,
-            height: attachment.thumbHash.height,
+            width: attachment.thumbHash.originalWidth,
+            height: attachment.thumbHash.originalHeight,
           }
         : {}),
     }))

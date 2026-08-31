@@ -1,6 +1,3 @@
-/* eslint-disable ts/ban-ts-comment */
-import CanvasKitInit from 'canvaskit-wasm'
-import CanvasKitWasm from 'canvaskit-wasm/bin/canvaskit.wasm?url'
 import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
 import { binaryToBase64 } from '../utils'
 
@@ -46,58 +43,39 @@ export interface ThumbHashCalculated {
  * vite-plugin-thumbhash/packages/core/index.ts at main · cijiugechu/vite-plugin-thumbhash
  * https://github.com/cijiugechu/vite-plugin-thumbhash/blob/main/packages/core/index.ts
  *
- * @param {Uint8Array} imageData - The image data to be calculated
+ * @param {Blob} imageFile - The image file to be calculated
  * @returns {Promise<Omit<ThumbHash, 'fileName' | 'assetUrl' | 'assetUrlWithBase'>>} - The thumbhash data of the image
  */
 export async function calculateThumbHashForFile(
-  imageData: Uint8Array,
+  imageFile: Blob,
 ): Promise<ThumbHashCalculated> {
-  const canvasKit = await CanvasKitInit({
-    locateFile: () => CanvasKitWasm,
-  })
-  const image = canvasKit.MakeImageFromEncoded(imageData)
-  if (!image)
-    throw new Error('Failed to make image from encoded data.')
+  const image = await createImageBitmap(imageFile)
+  try {
+    const scale = 100 / Math.max(image.width, image.height)
+    const width = Math.round(image.width * scale)
+    const height = Math.round(image.height * scale)
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
 
-  const width = image.width()
-  const height = image.height()
+    const context = canvas.getContext('2d', { willReadFrequently: true })
+    if (!context)
+      throw new Error('Canvas 2D is unavailable.')
 
-  const scale = 100 / Math.max(width, height)
-  const resizedWidth = Math.round(width * scale)
-  const resizedHeight = Math.round(height * scale)
+    context.drawImage(image, 0, 0, width, height)
+    const pixels = context.getImageData(0, 0, width, height)
+    const thumbHashBinary = rgbaToThumbHash(width, height, pixels.data)
 
-  // Paint the image to the canvas.
-  const canvas = canvasKit.MakeCanvas(resizedWidth, resizedHeight)
-  const context = canvas.getContext('2d')!
-  // @ts-ignore
-  context.drawImage(
-    image as unknown as CanvasImageSource,
-    0,
-    0,
-    resizedWidth,
-    resizedHeight,
-  )
-  // Retrieve back the image data for thumbhash calculation as the
-  // form of RGBA matrix.
-  // @ts-ignore
-  const pixels = context.getImageData(0, 0, resizedWidth, resizedHeight)
-
-  // Easy calculation of thumbhash data.
-  const thumbHashBinary = rgbaToThumbHash(
-    pixels.width,
-    pixels.height,
-    pixels.data,
-  )
-  // Encode the thumbhash data to base64 and data URL.
-  const thumbHashBase64 = binaryToBase64(thumbHashBinary)
-  const thumbHashDataURL = await thumbHashToDataURL(thumbHashBinary)
-
-  return {
-    dataBase64: thumbHashBase64,
-    dataUrl: thumbHashDataURL,
-    width: resizedWidth,
-    height: resizedHeight,
-    originalWidth: width,
-    originalHeight: height,
+    return {
+      dataBase64: binaryToBase64(thumbHashBinary),
+      dataUrl: thumbHashToDataURL(thumbHashBinary),
+      width,
+      height,
+      originalWidth: image.width,
+      originalHeight: image.height,
+    }
+  }
+  finally {
+    image.close()
   }
 }

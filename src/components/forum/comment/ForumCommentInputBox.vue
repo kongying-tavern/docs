@@ -56,7 +56,7 @@ const personal = useForumPersonalState()
 
 const queue = useImageAttachmentQueue({
   upload: uploadImg,
-  prepare: async file => calculateThumbHashForFile(new Uint8Array(await file.arrayBuffer())),
+  prepare: calculateThumbHashForFile,
 })
 const loading = computed(() => submitPending.value || forumMutations.creatingComment.value || queue.isBusy.value)
 

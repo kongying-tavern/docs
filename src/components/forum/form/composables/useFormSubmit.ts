@@ -12,7 +12,7 @@ export function useFormSubmit() {
   const { submitData } = useSubmitTopic()
   const queue = useImageAttachmentQueue({
     upload: uploadImg,
-    prepare: async file => calculateThumbHashForFile(new Uint8Array(await file.arrayBuffer())),
+    prepare: calculateThumbHashForFile,
   })
   const submitLoading = ref(false)
   let activeSubmission: Promise<TopicFormTransactionResult> | undefined

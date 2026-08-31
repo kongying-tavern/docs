@@ -175,6 +175,29 @@ test('remove excludes an uploaded item from serialization and revokes once', asy
   assert.deepEqual(setup.revoked, ['blob:remove.png'])
 })
 
+test('serialization keeps original dimensions, not the thumbhash canvas size', async () => {
+  const setup = queueOptions()
+  const queue = useImageAttachmentQueue({
+    ...setup.options,
+    prepare: async () => ({
+      dataBase64: 'dGVzdA==',
+      dataUrl: 'data:image/png;base64,dGVzdA==',
+      width: 100,
+      height: 50,
+      originalWidth: 4000,
+      originalHeight: 2000,
+    }),
+  })
+  await queue.addFiles([file('poster.png')])
+  await queue.settleUploads()
+
+  const [serialized] = serializeUploadedAttachments(queue.attachments.value)
+  assert.deepEqual(
+    { width: serialized?.width, height: serialized?.height },
+    { width: 4000, height: 2000 },
+  )
+})
+
 test('async upload completion cannot change selection order', async () => {
   const uploads = new Map<string, ReturnType<typeof deferred<ForumAPI.Image>>>()
   const setup = queueOptions((selected) => {
