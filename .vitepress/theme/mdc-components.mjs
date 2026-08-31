@@ -110,14 +110,6 @@ export default [
     }
   },
   {
-    "mdc_name": "blog",
-    "component_meta": {
-      "meta": {
-        "props": []
-      }
-    }
-  },
-  {
     "mdc_name": "button",
     "component_meta": {
       "meta": {
@@ -147,77 +139,6 @@ export default [
             "description": "The element or component this component should render as. Can be overwritten by `asChild`."
           }
         ]
-      }
-    }
-  },
-  {
-    "mdc_name": "card",
-    "component_meta": {
-      "meta": {
-        "props": [
-          {
-            "name": "title",
-            "type": "string",
-            "required": true,
-            "description": "Card title"
-          },
-          {
-            "name": "desc",
-            "type": "string | undefined",
-            "required": false,
-            "description": "Card description, default is link when empty"
-          },
-          {
-            "name": "logo",
-            "type": "string | undefined",
-            "required": false,
-            "description": "Card icon, defaults to project Logo"
-          },
-          {
-            "name": "link",
-            "type": "string | undefined",
-            "required": false,
-            "description": "Card link"
-          },
-          {
-            "name": "color",
-            "type": "string | undefined",
-            "required": false,
-            "description": "Card background color"
-          },
-          {
-            "name": "cover",
-            "type": "string | undefined",
-            "required": false,
-            "description": "Card cover image, Only NormalTheme"
-          },
-          {
-            "name": "hoverShadow",
-            "type": "boolean | undefined",
-            "required": false,
-            "description": "Enable hover shadow effect, defaults to false"
-          },
-          {
-            "name": "shadow",
-            "type": "boolean | undefined",
-            "required": false,
-            "description": "Enable card shadow effect, defaults to false"
-          },
-          {
-            "name": "theme",
-            "type": "\"normal\" | \"medium\" | undefined",
-            "required": false,
-            "description": "Card theme, defaults to normal"
-          }
-        ]
-      }
-    }
-  },
-  {
-    "mdc_name": "coins",
-    "component_meta": {
-      "meta": {
-        "props": []
       }
     }
   },
@@ -440,22 +361,6 @@ export default [
             "description": ""
           }
         ]
-      }
-    }
-  },
-  {
-    "mdc_name": "forum",
-    "component_meta": {
-      "meta": {
-        "props": []
-      }
-    }
-  },
-  {
-    "mdc_name": "headline",
-    "component_meta": {
-      "meta": {
-        "props": []
       }
     }
   },
@@ -834,22 +739,6 @@ export default [
     }
   },
   {
-    "mdc_name": "post",
-    "component_meta": {
-      "meta": {
-        "props": []
-      }
-    }
-  },
-  {
-    "mdc_name": "qqgroup-list",
-    "component_meta": {
-      "meta": {
-        "props": []
-      }
-    }
-  },
-  {
     "mdc_name": "scratch-to-reveal",
     "component_meta": {
       "meta": {
@@ -912,14 +801,6 @@ export default [
             "description": "The element or component this component should render as. Can be overwritten by `asChild`."
           }
         ]
-      }
-    }
-  },
-  {
-    "mdc_name": "sitemap-page",
-    "component_meta": {
-      "meta": {
-        "props": []
       }
     }
   },

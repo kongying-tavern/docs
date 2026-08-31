@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
+import Emoji from './Emoji.vue'
 
 const props = defineProps(nodeViewProps)
 </script>

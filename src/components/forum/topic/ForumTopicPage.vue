@@ -2,6 +2,8 @@
 import type { ForumTranslatorRef } from '../composables/useTopicTranslationMenu'
 import { computed, ref, useTemplateRef } from 'vue'
 import { Button } from '@/components/ui/button'
+import Separator from '@/components/ui/separator/Separator.vue'
+import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'

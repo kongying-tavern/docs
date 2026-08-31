@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
-import ForumTopicTagsEditorDialog from '~/components/forum/topic/ForumTopicTagsEditorDialog.vue'
+import { defineAsyncComponent } from 'vue'
+
+const ForumPublishTopicForm = defineAsyncComponent(
+  () => import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'),
+)
 </script>
 
 <template>
@@ -8,10 +11,9 @@ import ForumTopicTagsEditorDialog from '~/components/forum/topic/ForumTopicTagsE
     <slot />
     <Content />
   </div>
-  <ForumPublishTopicForm />
-  <Teleport to="body">
-    <ForumTopicTagsEditorDialog />
-  </Teleport>
+  <ClientOnly>
+    <ForumPublishTopicForm />
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>

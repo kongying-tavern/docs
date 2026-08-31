@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { useNotificationStore } from '@/stores/useNotification'
 
 import { UI } from './config'
+import NotificationItem from './Notification.vue'
 
 const props = defineProps({
   class: {
@@ -38,7 +39,7 @@ const wrapperClass = computed(() => {
     <div :class="wrapperClass" role="region">
       <div v-if="notifications.length" :class="UI.Notifications.container">
         <div v-for="notification in notifications" :key="notification.id">
-          <Notification
+          <NotificationItem
             v-bind="notification"
             :class="notification.click && 'cursor-pointer'"
             @click="notification.click && notification.click(notification)"
@@ -47,7 +48,7 @@ const wrapperClass = computed(() => {
             <!-- <template v-for="(_, name) in $slots" #[name]="slotData">
               <slot :name="name" v-bind="slotData" />
             </template> -->
-          </Notification>
+          </NotificationItem>
         </div>
       </div>
     </div>

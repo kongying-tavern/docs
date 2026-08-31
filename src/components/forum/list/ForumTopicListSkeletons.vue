@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { createReusableTemplate, useWindowSize } from '@vueuse/core'
 import { computed } from 'vue'
+import Separator from '@/components/ui/separator/Separator.vue'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useForumViewMode } from '~/composables/useForumViewMode'
 

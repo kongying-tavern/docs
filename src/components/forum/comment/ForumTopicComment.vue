@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { ref } from 'vue'
+import Avatar from '@/components/ui/Avatar.vue'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumTopicTranslator from '../topic/ForumTopicTranslator.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'

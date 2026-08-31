@@ -2,24 +2,24 @@
 import { useIntersectionObserver } from '@vueuse/core'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, nextTick, provide, shallowRef, useTemplateRef } from 'vue'
+import { computed, defineAsyncComponent, nextTick, provide, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
-import DocAside from '@/components/DocAside.vue'
-import DocHeader from '@/components/DocHeader.vue'
-import DocReaction from '@/components/DocReaction.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
-import LoginAlertDialog from '@/components/LoginAlertDialog.vue'
-import MediumZoom from '@/components/MediumZoom.vue'
-import NavBarUserAvatar from '@/components/NavBarUserAvatar.vue'
-import OAuthLoginAlertDialog from '@/components/OAuthLoginAlertDialog.vue'
-import { Notifications } from '@/components/ui'
+import Notifications from '@/components/ui/Notifications.vue'
 import { Sonner } from '@/components/ui/sonner'
 import { enableTransitions } from '@/shared'
-import ForumSidebar from '~/components/forum/sidebar/ForumSidebar.vue'
 
 import '@/styles/main.css'
 
 const { Layout } = DefaultTheme
+const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
+const DocHeader = defineAsyncComponent(() => import('@/components/DocHeader.vue'))
+const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
+const ForumSidebar = defineAsyncComponent(() => import('~/components/forum/sidebar/ForumSidebar.vue'))
+const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))
+const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
+const NavBarUserAvatar = defineAsyncComponent(() => import('@/components/NavBarUserAvatar.vue'))
+const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const { isDark, frontmatter } = useData()
 
 const target = useTemplateRef<HTMLDivElement>('target')

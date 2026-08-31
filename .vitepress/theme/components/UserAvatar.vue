@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import Avatar from '@/components/ui/Avatar.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 
 const {

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ReloadIcon } from '@radix-icons/vue'
 import { Button } from '@/components/ui/button'
+import Divider from '@/components/ui/divider/Divider.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 
 withDefaults(defineProps<{

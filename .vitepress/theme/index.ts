@@ -7,24 +7,27 @@ import DefaultTheme, {
   VPImage,
   VPLink,
 } from 'vitepress/theme-without-fonts'
-import Card from '@/components/Card.vue'
-import Coins from '@/components/Coins.vue'
-import QQGroupList from '@/components/QQGroupList.vue'
-import SitemapPage from '@/components/SitemapPage.vue'
-import * as components from '@/components/ui/'
+import { defineAsyncComponent } from 'vue'
 import Layout from '@/layouts/Layout.vue'
-import ForumRouteView from '~/components/forum/ForumRouteView.vue'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
-import Blog from './layouts/Blog.vue'
-import Forum from './layouts/Forum.vue'
-import Headline from './layouts/Headline.vue'
-import Post from './layouts/Post.vue'
+import { AsyncForumRouteView } from './components/AsyncForumRouteView'
 import handleRouteMatching from './lib/handleRouteMatching'
 
 import 'uno.css'
 
 const pinia = createPinia()
+const Blog = defineAsyncComponent(() => import('./layouts/Blog.vue'))
+const Card = defineAsyncComponent(() => import('@/components/Card.vue'))
+const Coins = defineAsyncComponent(() => import('@/components/Coins.vue'))
+const Emoji = defineAsyncComponent(() => import('@/components/ui/Emoji.vue'))
+const Forum = defineAsyncComponent(() => import('./layouts/Forum.vue'))
+const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
+const LinkGrid = defineAsyncComponent(() => import('@/components/ui/LinkGrid.vue'))
+const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
+const QQGroupList = defineAsyncComponent(() => import('@/components/QQGroupList.vue'))
+const ScratchToReveal = defineAsyncComponent(() => import('@/components/ui/ScratchToReveal.vue'))
+const SitemapPage = defineAsyncComponent(() => import('@/components/SitemapPage.vue'))
 
 export default {
   ...DefaultTheme,
@@ -42,7 +45,9 @@ export default {
 
     app.component('Coins', Coins)
     app.component('Card', Card)
+    app.component('Emoji', Emoji)
     app.component('QQGroupList', QQGroupList)
+    app.component('ScratchToReveal', ScratchToReveal)
     app.component('SitemapPage', SitemapPage)
     app.component('VPBadge', VPBadge)
     app.component('VPImage', VPImage)
@@ -50,13 +55,9 @@ export default {
     app.component('Headline', Headline)
     app.component('Post', Post)
     app.component('Forum', Forum)
-    app.component('ForumRouteView', ForumRouteView)
+    app.component('ForumRouteView', AsyncForumRouteView)
     app.component('Blog', Blog)
-
-    for (const component of Object.keys(
-      components,
-    ) as (keyof typeof components)[])
-      app.component(component, components[component])
+    app.component('LinkGrid', LinkGrid)
 
     router.onBeforePageLoad = async to => handleRouteMatching(to, siteData.value.base, routes, router, siteData.value.locales)
   },

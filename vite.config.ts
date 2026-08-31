@@ -9,6 +9,10 @@ import openInEditor from './.vitepress/plugins/open-in-editor'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine'
 
 export default defineConfig({
+  build: {
+    // The route-local Forum editor is ~572 kB raw (~154 kB Brotli).
+    chunkSizeWarningLimit: 600,
+  },
   server: {
     host: true,
     fs: {
@@ -46,6 +50,7 @@ export default defineConfig({
     openInEditor(),
     vueDevTools(),
     llmstxt({
+      ignoreFiles: ['feedback.md'],
       workDir: 'zh',
     }),
     mdcMetadataPlugin(),

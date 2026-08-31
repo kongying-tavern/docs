@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils'
 import EmojiData from '~/_data/emojis.json'
 
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
+import Emoji from './Emoji.vue'
 
 export interface EmojiItem {
   preset: string

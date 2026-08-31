@@ -2,6 +2,8 @@
 import type ForumAPI from '@/apis/forum/api'
 import { useInfiniteScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
+import Divider from '@/components/ui/divider/Divider.vue'
+import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { beginForumVisit, findLastVisitedDividerIndex } from '~/services/forum/forumLastVisit'
 import ForumTopicPreviewDialog from '../topic/ForumTopicPreviewDialog.vue'
