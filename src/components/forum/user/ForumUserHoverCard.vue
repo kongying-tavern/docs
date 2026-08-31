@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { useRouter } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
@@ -25,6 +26,7 @@ if (!user && !userId)
   throw new Error('Must contain any of the two parameters')
 
 const { message } = useLocalized()
+const router = useRouter()
 const { userHref } = useForumRoute()
 const currentUser = useUserInfoStore()
 
@@ -42,7 +44,7 @@ const isAuthorizedUser = computed(() => Boolean(
 const href = computed(() => userHref(userInfo.value?.login || ''))
 
 function openUserProfilePage() {
-  window.open(href.value, userInfo.value?.login)
+  router.go(href.value)
 }
 
 function sendMessage() {
@@ -65,6 +67,7 @@ function sendMessage() {
       <div class="flex flex-col gap-3">
         <div class="flex gap-3 items-start">
           <Avatar
+            :data-forum-user="userInfo?.login"
             :src="userInfo?.avatar"
             :alt="userInfo?.username"
             class="h-12 w-12"
@@ -75,7 +78,7 @@ function sendMessage() {
             <div class="flex gap-2 items-center">
               <a
                 :href="href"
-                :target="userInfo?.username"
+                :data-forum-user="userInfo?.login"
                 :alt="userInfo?.username"
               >
                 <h3 class="text-base text-[var(--vp-c-text-1)] font-bold">

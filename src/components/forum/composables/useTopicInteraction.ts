@@ -6,7 +6,7 @@ import { updateUrlHash } from '../utils/dom-utils'
 import { useNavigateToTopic } from './useNavigateToTopic'
 
 export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
-  const { isPost, detailHref, toPostDetailPage } = useNavigateToTopic(topic)
+  const { isPost, detailHref, prepareTopicDetail, toPostDetailPage } = useNavigateToTopic(topic)
   const { isCompactMode } = useForumViewMode()
 
   const replyTarget = ref('')
@@ -37,6 +37,7 @@ export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
     isPost,
 
     detailHref,
+    prepareTopicDetail,
     toPostDetailPage,
     handleToggleCommentInput,
     toggleReply,

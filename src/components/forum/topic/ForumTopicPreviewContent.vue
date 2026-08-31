@@ -14,6 +14,10 @@ const props = defineProps<{
   focusComment?: boolean
 }>()
 
+const emit = defineEmits<{
+  'detail-click': []
+}>()
+
 const { topicHref } = useForumRoute()
 
 const detailHref = computed(() => topicHref(String(props.topic.id), null))
@@ -22,7 +26,11 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
 <template>
   <div class="flex flex-col gap-4">
     <ForumTopicHeader :topic="topic" />
-    <ForumTopicContent :topic="topic" :detail-href="detailHref" />
+    <ForumTopicContent
+      :topic="topic"
+      :detail-href="detailHref"
+      @summary-click="emit('detail-click')"
+    />
     <ForumTopicMedia :topic="topic" />
     <ForumTopicFooter :topic-data="topic" hide-comment-button />
     <ForumCommentArea

@@ -5,9 +5,10 @@ import { match } from 'path-to-regexp'
 import { withBase } from 'vitepress'
 import { markRaw } from 'vue'
 import { getLangPath } from '@/utils'
-import ForumRouteView from '~/components/forum/ForumRouteView.vue'
 import { publishForumLocation } from '~/composables/useForumRoute'
 import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '~/services/forum/forumRoute'
+import { AsyncForumRouteView } from '../components/AsyncForumRouteView'
+import { transitionForumRoute } from './forumViewTransition'
 
 const FORUM_TITLES: Record<string, string> = {
   root: '社区反馈',
@@ -17,25 +18,36 @@ const FORUM_TITLES: Record<string, string> = {
 
 const LEADING_SLASH_REGEX = /^\//
 
-export default function handleRouteMatching(
+export default async function handleRouteMatching(
   to: string,
   base: string,
   routes: LocaleRoute[],
   router: Router,
   localeConfig: LocaleConfig,
-): boolean {
+): Promise<boolean> {
   const routeOptions = { base, locales: Object.keys(localeConfig) }
   const forumLocation = parseForumLocation(to, routeOptions)
   if (forumLocation) {
-    if (typeof window !== 'undefined') {
-      const currentHref = `${window.location.pathname}${window.location.search}${window.location.hash}`
-      canonicalizeForumLocation(window.history, currentHref, forumLocation.canonicalHref)
-      publishForumLocation(forumLocation.canonicalHref, routeOptions)
+    const currentForumRoute = parseForumLocation(router.route.path, {
+      base: '/',
+      locales: routeOptions.locales,
+    })?.route ?? null
+    const updateRoute = () => {
+      if (typeof window !== 'undefined') {
+        const currentHref = `${window.location.pathname}${window.location.search}${window.location.hash}`
+        canonicalizeForumLocation(window.history, currentHref, forumLocation.canonicalHref)
+        publishForumLocation(forumLocation.canonicalHref, routeOptions)
+      }
+
+      router.route.path = stripConfiguredBase(new URL(forumLocation.canonicalHref, 'https://example.com').pathname, base)
+      router.route.component = markRaw(AsyncForumRouteView)
+      router.route.data = buildForumRouteData(router.route.path, forumLocation.route.locale, forumRouteParams(forumLocation.route))
     }
 
-    router.route.path = stripConfiguredBase(new URL(forumLocation.canonicalHref, 'https://example.com').pathname, base)
-    router.route.component = markRaw(ForumRouteView)
-    router.route.data = buildForumRouteData(router.route.path, forumLocation.route.locale, forumRouteParams(forumLocation.route))
+    if (typeof window === 'undefined')
+      updateRoute()
+    else
+      await transitionForumRoute(currentForumRoute, forumLocation.route, updateRoute)
     return false
   }
 

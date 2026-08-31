@@ -65,6 +65,7 @@ function handleExpandClick(): void {
     <div class="content-main mt-1">
       <h4
         v-if="shouldShowTitle"
+        data-forum-shared-topic="title"
         class="mt-2 flex break-words line-clamp-2"
         :class="{
           'font-size-4.5 font-[--vp-font-family-title]': isCardMode,
@@ -79,12 +80,13 @@ function handleExpandClick(): void {
         </p>
       </h4>
 
-      <ForumTopicTypeBadge v-if="isCardMode" :type="topic.type" />
+      <ForumTopicTypeBadge v-if="isCardMode" data-forum-shared-topic="type" :type="topic.type" />
 
       <slot name="translation" />
 
       <article
         v-if="isCardMode"
+        data-forum-shared-topic="content"
         class="font-size-3.5 mt-1 pr-4 opacity-99 whitespace-pre-wrap transition-all duration-300 overflow-hidden"
       >
         <div
@@ -125,6 +127,7 @@ function handleExpandClick(): void {
 
       <div
         v-if="isCompactMode"
+        data-forum-shared-topic="content"
         class="font-size-3.5 mt-1 opacity-99 whitespace-pre-wrap overflow-hidden"
       >
         <div

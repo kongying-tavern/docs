@@ -25,5 +25,11 @@ const viewKey = computed(() => {
 </script>
 
 <template>
-  <component :is="view" v-if="view" :key="viewKey" />
+  <div
+    v-if="view"
+    class="forum-route-view"
+    :data-forum-route-topic="route?.name === 'topic' ? route.topicId : undefined"
+  >
+    <component :is="view" :key="viewKey" />
+  </div>
 </template>

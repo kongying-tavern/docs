@@ -27,6 +27,8 @@ const { userHref } = useForumRoute()
         <template #trigger>
           <User
             class="cursor-pointer"
+            :data-forum-user="topic.user.login"
+            data-forum-shared-topic="author"
             size="xs"
             :name="topic.user.username"
             :to="userHref(topic.user.login)"

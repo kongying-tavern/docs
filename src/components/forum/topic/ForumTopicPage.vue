@@ -86,6 +86,8 @@ function handleTitleTranslated(title: string): void {
               <ForumUserHoverCard :user="topic.user">
                 <template #trigger>
                   <User
+                    :data-forum-user="topic.user.login"
+                    data-forum-shared-topic="author"
                     size="sm"
                     :name="topic.user.username"
                     :to="userHref(topic.user.login)"
@@ -113,6 +115,7 @@ function handleTitleTranslated(title: string): void {
           <h3
             v-if="topic.type !== 'BUG'"
             id="title"
+            data-forum-shared-topic="title"
             class="text-xl font-semibold m-0 mb-xs mt-2 break-words overflow-hidden md:text-1.5rem md:mb-1"
           >
             {{ showingTranslation && translatedTitle ? translatedTitle : topic.title }}
@@ -120,6 +123,7 @@ function handleTitleTranslated(title: string): void {
 
           <ForumTopicTypeBadge
             class="mt-3"
+            data-forum-shared-topic="type"
             :type="topic.type"
           />
 
@@ -137,12 +141,14 @@ function handleTitleTranslated(title: string): void {
           <article
             v-if="!showingTranslation"
             id="content"
+            data-forum-shared-topic="content"
             class="font-size-4 line-height-6 mt-3.5 opacity-99 whitespace-pre-wrap overflow-hidden"
             v-html="renderedContent"
           />
           <article
             v-else
             id="content"
+            data-forum-shared-topic="content"
             class="font-size-4 line-height-6 mt-3.5 opacity-99 whitespace-pre-wrap overflow-hidden"
           >
             {{ translatedContent }}
@@ -153,17 +159,18 @@ function handleTitleTranslated(title: string): void {
             :data="topic?.tags"
           />
 
-          <ForumImage
-            v-if="topicImages.length > 0"
-            :images="topicImages"
-            class="mt-6"
-            :context="topic ? {
-              kind: 'topic',
-              topic,
-              repo: topic.type === 'POST' ? 'Blog' : 'Feedback',
-              topicAuthorId: topic.user.id,
-            } : undefined"
-          />
+          <div v-if="topicImages.length > 0" data-forum-shared-topic="image">
+            <ForumImage
+              :images="topicImages"
+              class="mt-6"
+              :context="topic ? {
+                kind: 'topic',
+                topic,
+                repo: topic.type === 'POST' ? 'Blog' : 'Feedback',
+                topicAuthorId: topic.user.id,
+              } : undefined"
+            />
+          </div>
 
           <ForumTopicFooter
             :topic="topic"

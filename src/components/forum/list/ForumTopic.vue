@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { useRouter } from 'vitepress'
 import { computed, ref } from 'vue'
 import { useForumViewMode } from '~/composables/useForumViewMode'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
@@ -23,8 +22,6 @@ const emit = defineEmits<{
   preview: [topic: ForumAPI.Topic, focusComment: boolean]
 }>()
 
-const router = useRouter()
-
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode()
 const translatedContent = ref<string>()
@@ -40,10 +37,12 @@ const menu = computed(() => {
 const {
   inReply,
   detailHref,
+  prepareTopicDetail,
+  toPostDetailPage,
 } = useTopicInteraction(topic)
 
 function handleSummaryClick() {
-  router.go(detailHref())
+  toPostDetailPage()
 }
 
 function handleCommentClick() {
@@ -68,8 +67,11 @@ function showTranslatedContent(content: string): void {
 <template>
   <div
     :id="`topic-${topic.id}`"
+    :data-forum-topic="String(topic.id)"
     class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full hover:bg-[var(--vp-c-default-soft)]"
     :class="[topic.type]"
+    @pointerdown="prepareTopicDetail"
+    @keydown.enter="prepareTopicDetail"
     @click="handleRowClick"
   >
     <div class="topic-content">

@@ -2,6 +2,7 @@
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
+import { resolveForumSharedRoute } from '../../.vitepress/theme/lib/forumViewTransition'
 import {
   buildForumHref,
   canonicalizeForumLocation,
@@ -144,6 +145,17 @@ test('canonicalization preserves the current History state object', () => {
   assert.equal(calls.length, 1)
 })
 
+test('Forum transitions follow the element that explains the navigation', () => {
+  const home = { name: 'home', locale: 'root', list: { filter: 'all', sort: 'created', q: '', creator: null } } as const
+  const topic = { name: 'topic', locale: 'root', topicId: 'I123' } as const
+  const user = { name: 'user', locale: 'root', username: 'alice', list: { ...home.list, creator: 'alice' } } as const
+
+  assert.equal(resolveForumSharedRoute(home, topic), topic)
+  assert.equal(resolveForumSharedRoute(topic, user), user)
+  assert.equal(resolveForumSharedRoute(topic, home), topic)
+  assert.equal(resolveForumSharedRoute(home, home), null)
+})
+
 test('route boundary clears published Forum state before matching a non-Forum route', () => {
   const source = readFileSync(new URL('../../.vitepress/theme/lib/handleRouteMatching.ts', import.meta.url), 'utf8')
   const clearCall = source.indexOf('publishForumLocation(to, routeOptions)')
@@ -169,6 +181,6 @@ test('ships exactly three scoped Vercel Forum rewrites and localized shells', ()
   }
 
   const forumLayout = readSource('.vitepress/theme/layouts/Forum.vue')
-  assert.match(forumLayout, /import ForumPublishTopicForm/)
+  assert.match(forumLayout, /import\('~\/components\/forum\/form\/publish-topic-form\/ForumPublishTopicForm\.vue'\)/)
   assert.match(forumLayout, /<ForumPublishTopicForm \/>/)
 })

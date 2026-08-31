@@ -184,3 +184,110 @@
     opacity: 1;
   }
 }
+
+html[data-forum-transition] {
+  view-transition-name: none;
+}
+
+::view-transition-group(forum-topic-author),
+::view-transition-group(forum-topic-login),
+::view-transition-group(forum-topic-title),
+::view-transition-group(forum-topic-type),
+::view-transition-group(forum-topic-content),
+::view-transition-group(forum-topic-image),
+::view-transition-group(forum-user-avatar),
+::view-transition-group(forum-user-name) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-forum-transition="forward"]::view-transition-group(forum-topic-login),
+html[data-forum-transition="forward"]::view-transition-group(forum-user-name),
+html[data-forum-transition="back"]::view-transition-group(forum-topic-content),
+html[data-forum-transition="back"]::view-transition-group(forum-user-avatar) {
+  animation-delay: 20ms;
+}
+
+html[data-forum-transition="forward"]::view-transition-group(forum-topic-type),
+html[data-forum-transition="back"]::view-transition-group(forum-topic-title) {
+  animation-delay: 40ms;
+}
+
+html[data-forum-transition="forward"]::view-transition-group(forum-topic-title),
+html[data-forum-transition="back"]::view-transition-group(forum-topic-type) {
+  animation-delay: 60ms;
+}
+
+html[data-forum-transition="forward"]::view-transition-group(forum-topic-content),
+html[data-forum-transition="back"]::view-transition-group(forum-topic-login) {
+  animation-delay: 80ms;
+}
+
+html[data-forum-transition="forward"]::view-transition-group(forum-topic-image),
+html[data-forum-transition="back"]::view-transition-group(forum-topic-author) {
+  animation-delay: 100ms;
+}
+
+::view-transition-old(forum-topic-author),
+::view-transition-new(forum-topic-author),
+::view-transition-old(forum-topic-login),
+::view-transition-new(forum-topic-login),
+::view-transition-old(forum-topic-title),
+::view-transition-new(forum-topic-title),
+::view-transition-old(forum-topic-type),
+::view-transition-new(forum-topic-type),
+::view-transition-old(forum-topic-content),
+::view-transition-new(forum-topic-content),
+::view-transition-old(forum-topic-image),
+::view-transition-new(forum-topic-image),
+::view-transition-old(forum-user-avatar),
+::view-transition-new(forum-user-avatar),
+::view-transition-old(forum-user-name),
+::view-transition-new(forum-user-name) {
+  height: 100%;
+  overflow: clip;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(forum-topic-author),
+::view-transition-old(forum-topic-login),
+::view-transition-old(forum-topic-title),
+::view-transition-old(forum-topic-type),
+::view-transition-old(forum-topic-content),
+::view-transition-old(forum-topic-image),
+::view-transition-old(forum-user-avatar),
+::view-transition-old(forum-user-name) {
+  animation: forum-shared-fade-out 280ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+::view-transition-new(forum-topic-author),
+::view-transition-new(forum-topic-login),
+::view-transition-new(forum-topic-title),
+::view-transition-new(forum-topic-type),
+::view-transition-new(forum-topic-content),
+::view-transition-new(forum-topic-image),
+::view-transition-new(forum-user-avatar),
+::view-transition-new(forum-user-name) {
+  animation: forum-shared-fade-in 380ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes forum-shared-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes forum-shared-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-forum-transition]::view-transition-group(*),
+  html[data-forum-transition]::view-transition-old(*),
+  html[data-forum-transition]::view-transition-new(*) {
+    animation-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

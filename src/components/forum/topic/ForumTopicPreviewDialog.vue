@@ -20,16 +20,9 @@ const { message } = useLocalized()
 const router = useRouter()
 const { topicHref } = useForumRoute()
 
-/**
- * 预览窗口内点击进入详情页：标题/正文链接（原生 <a>）以及空白区域；
- * 其余控件（展开按钮/图片/评论输入框等）正常放行。
- */
-function handlePreviewClick(event: MouseEvent) {
+function goToTopicDetail(): void {
   const topic = props.topic
   if (!topic)
-    return
-  const target = event.target as HTMLElement
-  if (target.closest('a, button, img, input, [data-comment-input]'))
     return
   router.go(topicHref(String(topic.id), null))
 }
@@ -59,11 +52,12 @@ function handlePreviewClick(event: MouseEvent) {
 
       <div
         class="preview-body p-6 pt-2 flex flex-col gap-4 max-h-[calc(85vh-53px)] overflow-y-auto"
-        @click="handlePreviewClick"
+        @click.self="goToTopicDetail"
       >
         <ForumTopicPreviewContent
           :topic="topic"
           :focus-comment="focusComment"
+          @detail-click="goToTopicDetail"
         />
       </div>
     </DialogContent>

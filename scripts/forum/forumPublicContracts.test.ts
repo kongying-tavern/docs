@@ -200,12 +200,14 @@ test('normalizes Comment attachments without changing content order', () => {
 })
 
 test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
-  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource] = await Promise.all([
+  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource, navigateSource, transitionSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/issues.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/inBrowserUtils.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
@@ -214,6 +216,8 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
   assert.match(userPageSource, /if \(list\.value\?\.q\)\s+return/)
   assert.match(topicContentSource, /event: MouseEvent \| KeyboardEvent/)
   assert.match(topicContentSource, /event instanceof MouseEvent/)
+  assert.match(navigateSource, /queryCache\.setQueryData\(forumKeys\.topic\(topic\.id\), topic\)/)
+  assert.doesNotMatch(transitionSource, /requestAnimationFrame|waitForSharedElements/)
 })
 
 test('all image entry points reuse the shared multi-file drop zone', async () => {
