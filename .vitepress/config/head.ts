@@ -1,5 +1,7 @@
 import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
 import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site'
+import { DEFAULT_LOCALE } from '../locales/common/site'
+import { getLocaleDirs } from './localeDirs'
 import {
   cfgGetPageCover,
   cfgGetPageDesc,
@@ -100,30 +102,6 @@ export const commonHead: HeadConfig[] = [
     'link',
     {
       rel: 'alternate',
-      hreflang: 'zh',
-      href: `${SITE_ORIGIN}${SITE_BASE}`,
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
-      hreflang: 'en',
-      href: `${SITE_ORIGIN}${SITE_BASE}/en`,
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
-      hreflang: 'ja',
-      href: `${SITE_ORIGIN}${SITE_BASE}/ja`,
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
       href: `${SITE_ORIGIN}${SITE_BASE}/imgs/common/favicon/favicon.ico`,
       type: 'image/x-icon',
     },
@@ -133,4 +111,23 @@ export const commonHead: HeadConfig[] = [
   ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
 ]
 
-export const headConfig = [...commonHead, ...(isProd ? productionHead : [])]
+async function createHreflangHead(): Promise<HeadConfig[]> {
+  return getLocaleDirs().map(lang => [
+    'link',
+    {
+      rel: 'alternate',
+      hreflang: lang,
+      href: lang === DEFAULT_LOCALE
+        ? `${SITE_ORIGIN}${SITE_BASE}`
+        : `${SITE_ORIGIN}${SITE_BASE}/${lang}`,
+    },
+  ])
+}
+
+export async function createHeadConfig(): Promise<HeadConfig[]> {
+  return [
+    ...commonHead,
+    ...await createHreflangHead(),
+    ...(isProd ? productionHead : []),
+  ]
+}

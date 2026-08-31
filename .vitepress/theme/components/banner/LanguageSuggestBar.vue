@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils'
 import { ensureStartingSlash, getLangPath } from '@/utils'
 
 import { languageSuggestBarTranslate } from '../../../locales/common/LanguageSuggestBar'
-import { LOCALE_CONFIG } from './configs'
+import { useLocaleConfig } from './configs'
 
 const { suggestLang } = defineProps<{
   suggestLang: string
@@ -41,10 +41,16 @@ const { go } = useRouter()
 
 const open = ref(false)
 const currentLangPath = computed(() => getLangPath(localeIndex.value))
+const localeConfig = useLocaleConfig()
 const suggestLocale = computed(
   () =>
-    LOCALE_CONFIG.find(val => val?.lang.includes(suggestLang))
-    ?? LOCALE_CONFIG[0],
+    localeConfig.value.find(val => val.lang.includes(suggestLang))
+    ?? localeConfig.value[0],
+)
+const suggestTranslate = computed(
+  () =>
+    languageSuggestBarTranslate[suggestLocale.value.key as keyof typeof languageSuggestBarTranslate]
+    ?? languageSuggestBarTranslate.root,
 )
 
 function handleLanguageSelect(ev: CustomEvent) {
@@ -93,7 +99,7 @@ function normalizeLink(
   >
     <div class="flex flex-wrap w-full items-center">
       <div class="font-size-14px text-align-left max-md:w-85%">
-        {{ languageSuggestBarTranslate[suggestLocale.key].changeLanguage }}
+        {{ suggestTranslate.changeLanguage }}
       </div>
       <div class="mt-4 flex flex-1 items-center justify-end md:mt-0">
         <div class="w-full md:flex md:justify-end">
