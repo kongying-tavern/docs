@@ -60,6 +60,7 @@ catalogs:
     vitepress: 2.0.0-alpha.20
     vitepress-plugin-llms: ^1.14.0
     vue-component-meta: ^3.3.7
+    vue-tsc: 3.3.11
   conflicts_editor_h3_4_4:
     '@tiptap/core': ^3.20.1
     '@tiptap/extension-character-count': ^3.20.1

@@ -4,5 +4,6 @@ import { createBlogLoader } from '../utils/createBlogLoader'
 export declare const data: BlogPost[]
 
 export type { BlogPost } from '../utils/createBlogLoader'
+export declare const data: BlogPost[]
 
 export default createBlogLoader('*/blog/posts/*.md')

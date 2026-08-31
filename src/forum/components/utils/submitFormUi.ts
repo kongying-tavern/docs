@@ -23,7 +23,7 @@ export function formatImageAttachmentError(
   }
 }
 
-interface DataNode {
+export interface DataNode {
   text: string
   link?: string
   items?: DataNode[]

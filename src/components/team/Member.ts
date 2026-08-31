@@ -22,6 +22,7 @@ export interface Link {
 export interface Socials {
   [x: string]: string | undefined
   github?: string
+  gitee?: string
   twitter?: string
   bilibili?: string
 }
