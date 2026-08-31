@@ -5,7 +5,7 @@ layout: Post
 authors:
   - aaaaaaa8
   - idangoi
-cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=[Web] Change Log"
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=[Web]%0AChange Log"
 ---
 
 {define:T_REFACTOR}:recycle: Refactor{/define}

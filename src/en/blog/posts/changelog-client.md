@@ -5,7 +5,7 @@ layout: Post
 authors:
   - aaaaaaa8
   - idangoi
-cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=[Client] Release Notes"
+cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=[Client]%0AUpdate Log"
 ---
 
 {define:L_NORMAL}{color:#2bbc6e}**NORMAL**{/color}{/define}
