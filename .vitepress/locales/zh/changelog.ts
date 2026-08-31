@@ -1,6 +1,4 @@
-import type { CustomConfig } from '../types'
-
-const Changelog: CustomConfig['changelog'] = {
+const Changelog = {
   title: '更新日志',
   reportIssues: '如果您遇到任何问题，请在 %feedback 上提交报告。',
   feedbackPage: '反馈页面',

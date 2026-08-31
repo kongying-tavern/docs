@@ -1,6 +1,4 @@
-import type { CustomConfig } from '../types'
-
-const payment: CustomConfig['payment'] = {
+const payment = {
   wechatpay: {
     name: '微信支付',
     address: 'wxp://f2f0dd1rszrnqJc_gnlwV_lRX5dlZ1Dtn9rp',

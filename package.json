@@ -17,7 +17,6 @@
     "build:data": "pnpm use-data-env && pnpm use-data-env pnpm build:member",
     "build:member": "tsx ./scripts/refreshMemberListData.ts",
     "build:emoji": "tsx ./scripts/emojiLoader.ts",
-    "build:locales": "tsx ./scripts/mergeLocales.ts",
     "site:preview": "vitepress build --base /",
     "lint": "eslint --cache . && pnpm lint:zh",
     "lint:eslint": "eslint --cache .",

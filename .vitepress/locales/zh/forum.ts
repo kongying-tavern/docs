@@ -1,6 +1,4 @@
-import type { CustomConfig } from '../types'
-
-const forum: CustomConfig['forum'] = {
+const forum = {
   loadMore: '加载更多',
   noMore: '没有更多',
   loadError: '加载失败',
