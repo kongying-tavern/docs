@@ -29,6 +29,10 @@ interface OutlineItem {
 
 const outlineItems = ref<OutlineItem[]>([])
 
+// 元素在挂载后不变，滚动时只读布局而不重复查询 DOM
+let outlineLinks: HTMLAnchorElement[] = []
+let outlineHeadingElements: HTMLElement[] = []
+
 /** 大纲只收集正文标题与 timeline 的 dot 标题，timeline 内容标题剔除 */
 function isOutlineHeading(heading: HTMLElement) {
   return !heading.closest('.timeline-dot') || heading.classList.contains('timeline-dot-title')
@@ -43,23 +47,21 @@ function headingTitle(heading: HTMLElement) {
 
 // 滚动时同步高亮与 URL hash（参考 VitePress useActiveAnchor，额外写入 hash）
 function syncActiveHeading() {
-  const links = document.querySelectorAll<HTMLAnchorElement>('.post-aside .outline a')
-  const headings = outlineItems.value.map(item => document.getElementById(item.id)).filter(Boolean)
   const offset = 80
   let currentId: string | null = null
   const scrollY = window.scrollY
-  for (const heading of headings) {
-    if (heading!.getBoundingClientRect().top + scrollY <= scrollY + offset)
-      currentId = heading!.id
+  for (const heading of outlineHeadingElements) {
+    if (heading.getBoundingClientRect().top + scrollY <= scrollY + offset)
+      currentId = heading.id
     else
       break
   }
-  links.forEach((link) => {
+  outlineLinks.forEach((link) => {
     const active = currentId != null && link.getAttribute('href') === `#${currentId}`
     link.classList.toggle('active', active)
   })
   if (currentId && location.hash !== `#${currentId}`)
-    history.replaceState(null, '', `#${currentId}`)
+    history.replaceState(history.state, '', `#${currentId}`)
 }
 
 onMounted(() => {
@@ -74,6 +76,10 @@ onMounted(() => {
       level: Number(heading.tagName[1]),
     }))
     .filter(item => item.title)
+  outlineLinks = [...document.querySelectorAll('.post-aside .outline a')]
+  outlineHeadingElements = outlineItems.value
+    .map(item => document.getElementById(item.id))
+    .filter((element): element is HTMLElement => Boolean(element))
 
   window.addEventListener('scroll', syncActiveHeading, { passive: true })
 })
