@@ -58,7 +58,7 @@ function handleCommentClick() {
 
 function handleRowClick(event: MouseEvent) {
   const target = event.target as HTMLElement
-  if (target.closest('a, button, img, input, .forum-topic-summary'))
+  if (target.closest('a, button, img, input, .forum-topic-summary, [data-forum-shared-topic="author"]'))
     return
   if (topic.type === 'POST')
     return
