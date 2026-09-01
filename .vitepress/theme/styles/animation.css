@@ -38,7 +38,7 @@
     opacity: 0;
   }
 
-  to {
+  100% {
     transform: translateY(0);
     opacity: 100;
   }
@@ -62,60 +62,79 @@
   .main > div > *:nth-child(1) {
     --enter-stage: 1;
   }
+
   .main > div > *:nth-child(2) {
     --enter-stage: 2;
   }
+
   .main > div > *:nth-child(3) {
     --enter-stage: 3;
   }
+
   .main > div > *:nth-child(4) {
     --enter-stage: 4;
   }
+
   .main > div > *:nth-child(5) {
     --enter-stage: 5;
   }
+
   .main > div > *:nth-child(6) {
     --enter-stage: 6;
   }
+
   .main > div > *:nth-child(7) {
     --enter-stage: 7;
   }
+
   .main > div > *:nth-child(8) {
     --enter-stage: 8;
   }
+
   .main > div > *:nth-child(9) {
     --enter-stage: 9;
   }
+
   .main > div > *:nth-child(10) {
     --enter-stage: 10;
   }
+
   .main > div > *:nth-child(11) {
     --enter-stage: 11;
   }
+
   .main > div > *:nth-child(12) {
     --enter-stage: 12;
   }
+
   .main > div > *:nth-child(13) {
     --enter-stage: 13;
   }
+
   .main > div > *:nth-child(14) {
     --enter-stage: 14;
   }
+
   .main > div > *:nth-child(15) {
     --enter-stage: 15;
   }
+
   .main > div > *:nth-child(16) {
     --enter-stage: 16;
   }
+
   .main > div > *:nth-child(17) {
     --enter-stage: 17;
   }
+
   .main > div > *:nth-child(18) {
     --enter-stage: 18;
   }
+
   .main > div > *:nth-child(19) {
     --enter-stage: 19;
   }
+
   .main > div > *:nth-child(20) {
     --enter-stage: 20;
   }
@@ -126,11 +145,12 @@
       opacity: 0;
     }
 
-    to {
+    100% {
       transform: translateX(0);
       opacity: 100;
     }
   }
+
   @media (min-width: 960px) {
     .VPSidebar {
       animation: slide-enter-left 1s both 1;
@@ -144,7 +164,7 @@
     transform: translate(-100%) skew(-15deg);
   }
 
-  to {
+  100% {
     transform: translate(100%) skew(-15deg);
   }
 }
@@ -153,6 +173,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -162,6 +183,7 @@
   from {
     background-position-x: 200%;
   }
+
   to {
     background-position-x: 0%;
   }
@@ -177,7 +199,7 @@
     opacity: 0.3;
   }
 
-  to {
+  100% {
     opacity: 1;
   }
 }
