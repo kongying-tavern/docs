@@ -68,7 +68,7 @@ function handleExpandClick(): void {
         data-forum-shared-topic="title"
         class="mt-2 flex break-words line-clamp-2"
         :class="{
-          'font-size-4.5 font-[--vp-font-family-title]': isCardMode,
+          'font-size-4.5 font-[--vp-font-family-subtitle]': isCardMode,
           'font-size-3.5 font-[--vp-font-family-subtitle]': isCompactMode,
         }"
       >

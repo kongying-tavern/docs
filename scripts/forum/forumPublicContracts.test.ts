@@ -237,7 +237,7 @@ test('normalizes Comment attachments without changing content order', () => {
 })
 
 test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
-  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource, navigateSource, transitionSource, sidebarSource, asideSource, blogHeaderSource, themeSource, sidebarLayoutSource, routeViewSource, profileHeaderSource] = await Promise.all([
+  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource, navigateSource, transitionSource, sidebarSource, asideSource, blogHeaderSource, themeSource, sidebarLayoutSource, routeViewSource, profileHeaderSource, animationSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/issues.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/inBrowserUtils.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8'),
@@ -252,6 +252,7 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
     readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/ForumRouteView.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/styles/animation.css', import.meta.url), 'utf8'),
   ])
 
   assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
@@ -274,6 +275,12 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
   assert.match(themeSource, /router\.onBeforeRouteChange/)
   assert.match(asideSource, /data-forum-shared-blog="cover"/)
   assert.match(blogHeaderSource, /data-forum-shared-blog="title"/)
+  assert.match(transitionSource, /matchMedia\(FORUM_MOBILE_MEDIA_QUERY\)/)
+  assert.match(transitionSource, /dataset\.forumNavigated = ''/)
+  assert.match(animationSource, /@media \(max-width: 959px\)[\s\S]*#VPContent \{[\s\S]*view-transition-name: forum-page/)
+  assert.match(animationSource, /html\[data-forum-navigated\] \.Forum\.slide-enter[\s\S]*animation: none/)
+  assert.match(animationSource, /forum-page-enter-right/)
+  assert.match(animationSource, /forum-page-exit-left/)
 })
 
 test('all image entry points reuse the shared multi-file drop zone', async () => {

@@ -2,7 +2,7 @@
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
-import { resolveForumScroll, resolveForumSharedRoute } from '../../.vitepress/theme/lib/forumViewTransition'
+import { resolveForumDirection, resolveForumScroll, resolveForumSharedRoute } from '../../.vitepress/theme/lib/forumViewTransition'
 import {
   buildForumHref,
   canonicalizeForumLocation,
@@ -161,6 +161,15 @@ test('Forum navigation restores saved scroll only for history entries', () => {
   assert.deepEqual(resolveForumScroll({ scrollPosition: 420 }), { isBack: true, top: 420 })
   assert.deepEqual(resolveForumScroll({ scrollPosition: -1 }), { isBack: true, top: 0 })
   assert.deepEqual(resolveForumScroll({ scrollPosition: 'invalid' }), { isBack: true, top: 0 })
+})
+
+test('Topic return links use the same back direction as browser history', () => {
+  const home = { name: 'home', locale: 'root', list: { filter: 'all', sort: 'created', q: '', creator: null } } as const
+  const topic = { name: 'topic', locale: 'root', topicId: 'I123' } as const
+
+  assert.equal(resolveForumDirection(topic, home, false), 'back')
+  assert.equal(resolveForumDirection(home, topic, false), 'forward')
+  assert.equal(resolveForumDirection(topic, home, true), 'back')
 })
 
 test('route boundary clears published Forum state before matching a non-Forum route', () => {

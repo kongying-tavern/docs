@@ -1,5 +1,6 @@
 import type { ForumRoute } from '~/services/forum/forumRoute'
 import { nextTick } from 'vue'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import { enableTransitions } from '../shared'
 
 type SharedRoute = Extract<ForumRoute, { name: 'topic' } | { name: 'user' }>
@@ -25,6 +26,14 @@ export function resolveForumScroll(state: unknown): { isBack: boolean, top: numb
   return { isBack: true, top: Number.isFinite(top) ? Math.max(0, top) : 0 }
 }
 
+export function resolveForumDirection(
+  current: ForumRoute,
+  target: ForumRoute,
+  isHistoryBack: boolean,
+): 'back' | 'forward' {
+  return isHistoryBack || (target.name === 'home' && current.name !== 'home') ? 'back' : 'forward'
+}
+
 export async function transitionForumRoute(
   current: ForumRoute | null,
   target: ForumRoute,
@@ -46,11 +55,12 @@ export async function transitionForumRoute(
     await import('~/components/forum/topic/ForumTopicPage.vue')
 
   const sharedRoute = resolveForumSharedRoute(current, target)
-  const sharedElements = sharedRoute ? findSharedElements(sharedRoute, current) : []
+  const sharedElements = shouldAnimateSharedElements() && sharedRoute ? findSharedElements(sharedRoute, current) : []
   const newElements: HTMLElement[] = []
   for (const { element, name } of sharedElements)
     element.style.setProperty('view-transition-name', name)
-  document.documentElement.dataset.forumTransition = scroll.isBack ? 'back' : 'forward'
+  document.documentElement.dataset.forumNavigated = ''
+  document.documentElement.dataset.forumTransition = resolveForumDirection(current, target, scroll.isBack)
 
   const transition = document.startViewTransition(async () => {
     update()
@@ -102,10 +112,11 @@ export async function transitionForumBlog(
     return
   }
 
-  const source = findBlogElements(slug, Boolean(currentSlug))
+  const source = shouldAnimateSharedElements() ? findBlogElements(slug, Boolean(currentSlug)) : []
   const targetElements: HTMLElement[] = []
   for (const { element, name } of source)
     element.style.setProperty('view-transition-name', name)
+  document.documentElement.dataset.forumNavigated = ''
   document.documentElement.dataset.forumTransition = targetSlug ? 'forward' : 'back'
 
   const transition = document.startViewTransition(async () => {
@@ -133,6 +144,10 @@ export async function transitionForumBlog(
 
 export function isForumToBlogNavigation(currentPath: string, targetPath: string): boolean {
   return isForumPath(currentPath) && Boolean(blogPostSlug(targetPath))
+}
+
+function shouldAnimateSharedElements(): boolean {
+  return !window.matchMedia(FORUM_MOBILE_MEDIA_QUERY).matches
 }
 
 function findSharedElements(shared: SharedRoute, page: ForumRoute): { element: HTMLElement, name: string }[] {
