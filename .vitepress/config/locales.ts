@@ -4,8 +4,7 @@ import { DEFAULT_LOCALE, SITE_LOGO } from '../locales/common/site'
 import { baseHelper } from '../theme/utils'
 import { getLocaleDirs } from './localeDirs'
 
-// 约定:locales 目录下含 index.ts 的子目录即一门语言(导出 <lang>Config/label/lang),zh 为默认语言(root);
-// 站点标识与主题接线由注册层按目录约定统一装配,index.ts 只声明翻译文案
+// 约定:locales 目录下含 index.ts 的子目录即一门语言,导出 <lang>Config/label/lang;zh 为默认语言(root)
 const STATIC_FIELDS = [
   ['notFound', '404'],
   ['ui', 'ui'],
