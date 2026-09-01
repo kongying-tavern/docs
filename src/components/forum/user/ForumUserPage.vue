@@ -6,7 +6,6 @@ import { useForumRoute } from '~/composables/useForumRoute'
 import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicList from '../list/ForumTopicList.vue'
 import ForumTopicSearchInfo from '../search/ForumTopicSearchInfo.vue'
-import ForumTopicTagsEditorDialog from '../topic/ForumTopicTagsEditorDialog.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
@@ -116,12 +115,6 @@ watchEffect(() => {
           :text="loadStateMessage"
         />
       </div>
-    </template>
-
-    <template #teleport>
-      <Teleport to="body">
-        <ForumTopicTagsEditorDialog />
-      </Teleport>
     </template>
   </BaseForumPage>
 </template>

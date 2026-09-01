@@ -90,7 +90,5 @@ const isInitialLoading = computed(() => props.loading && props.renderData.length
         </slot>
       </template>
     </ForumLayout>
-
-    <slot name="teleport" />
   </ClientOnly>
 </template>

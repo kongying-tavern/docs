@@ -93,6 +93,19 @@ test('Forum hash changes preserve VitePress History state', async () => {
   assert.doesNotMatch(`${hashCheckerSource}\n${domUtilsSource}`, /replaceState\(null/)
 })
 
+test('Topic Tags editor has one Forum-wide lazy host', async () => {
+  const [forumLayout, topicPage, userPage, basePage] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/layouts/Forum.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/topic/ForumTopicPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/base/BaseForumPage.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(forumLayout, /import\('~\/components\/forum\/topic\/ForumTopicTagsEditorDialog\.vue'\)/)
+  assert.match(forumLayout, /<ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" \/>/)
+  assert.doesNotMatch(`${topicPage}\n${userPage}\n${basePage}`, /ForumTopicTagsEditorDialog|name="teleport"/)
+})
+
 test('expanded personal sidebar sections bound live detail hydration', async () => {
   const sidebarSource = await readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8')
 

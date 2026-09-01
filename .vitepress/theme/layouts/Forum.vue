@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { FORM_HASH } from '~/components/forum/form/publish-topic-form/config'
+import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
 
 const loadForumPublishTopicForm = () => import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue')
 const ForumPublishTopicForm = defineAsyncComponent(
   loadForumPublishTopicForm,
 )
+const ForumTopicTagsEditorDialog = defineAsyncComponent(
+  () => import('~/components/forum/topic/ForumTopicTagsEditorDialog.vue'),
+)
 const shouldMountPublishForm = ref(false)
+const { open: shouldMountTopicTagsEditor } = useTopicTagsEditor()
 
 function mountPublishFormWhenRequested(): void {
   if (location.hash.slice(1).startsWith(FORM_HASH))
@@ -33,6 +38,7 @@ onBeforeUnmount(() => {
     <template v-if="shouldMountPublishForm">
       <ForumPublishTopicForm />
     </template>
+    <ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" />
   </ClientOnly>
 </template>
 

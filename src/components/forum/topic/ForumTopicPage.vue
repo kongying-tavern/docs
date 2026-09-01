@@ -20,7 +20,6 @@ import { useTopicPageState } from './composables/useTopicPageState'
 import ForumTopicDropdownMenu from './ForumTopicDropdownMenu.vue'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
-import ForumTopicTagsEditorDialog from './ForumTopicTagsEditorDialog.vue'
 import ForumTopicTranslator from './ForumTopicTranslator.vue'
 
 const {
@@ -208,8 +207,6 @@ function handleTitleTranslated(title: string): void {
         />
       </template>
     </ForumLayout>
-
-    <ForumTopicTagsEditorDialog />
   </ClientOnly>
 </template>
 
