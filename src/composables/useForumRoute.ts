@@ -9,9 +9,16 @@ import {
 } from '~/services/forum/forumRoute'
 
 const forumLocation = shallowRef<ParsedForumLocation | null>(null)
+let canReturnToForumRoute = false
 
 export function publishForumLocation(input: string | URL, options: ForumRouteOptions): ParsedForumLocation | null {
-  forumLocation.value = parseForumLocation(input, options)
+  const previous = forumLocation.value
+  const next = parseForumLocation(input, options)
+  if (!next || next.route.name !== 'topic')
+    canReturnToForumRoute = false
+  else if (previous && previous.canonicalHref !== next.canonicalHref)
+    canReturnToForumRoute = true
+  forumLocation.value = next
   return forumLocation.value
 }
 
@@ -90,6 +97,14 @@ export function useForumRoute() {
     }, null)
   }
 
+  async function leaveTopic(): Promise<void> {
+    if (!import.meta.env.SSR && canReturnToForumRoute) {
+      window.history.back()
+      return
+    }
+    await router.go(homeHref())
+  }
+
   async function navigateFilter(filter: ForumFilter): Promise<boolean> {
     const current = route.value
     if (!current || !('list' in current) || current.list.filter === filter)
@@ -119,6 +134,7 @@ export function useForumRoute() {
     homeHref,
     topicHref,
     userHref,
+    leaveTopic,
     navigate,
     navigateFilter,
     navigateSort,

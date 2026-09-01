@@ -2,7 +2,7 @@
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
-import { resolveForumSharedRoute } from '../../.vitepress/theme/lib/forumViewTransition'
+import { resolveForumScroll, resolveForumSharedRoute } from '../../.vitepress/theme/lib/forumViewTransition'
 import {
   buildForumHref,
   canonicalizeForumLocation,
@@ -154,6 +154,13 @@ test('Forum transitions follow the element that explains the navigation', () => 
   assert.equal(resolveForumSharedRoute(topic, user), user)
   assert.equal(resolveForumSharedRoute(topic, home), topic)
   assert.equal(resolveForumSharedRoute(home, home), null)
+})
+
+test('Forum navigation restores saved scroll only for history entries', () => {
+  assert.deepEqual(resolveForumScroll({}), { isBack: false, top: 0 })
+  assert.deepEqual(resolveForumScroll({ scrollPosition: 420 }), { isBack: true, top: 420 })
+  assert.deepEqual(resolveForumScroll({ scrollPosition: -1 }), { isBack: true, top: 0 })
+  assert.deepEqual(resolveForumScroll({ scrollPosition: 'invalid' }), { isBack: true, top: 0 })
 })
 
 test('route boundary clears published Forum state before matching a non-Forum route', () => {

@@ -115,14 +115,20 @@ test('expanded personal sidebar sections bound live detail hydration', async () 
 })
 
 test('topic authors can close their own feedback from the topic menu', async () => {
-  const [permissionsSource, menuSource] = await Promise.all([
+  const [permissionsSource, menuSource, routeSource, topicStateSource] = await Promise.all([
     readFile(new URL('../../src/composables/useRuleChecks.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/useForumRoute.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/topic/composables/useTopicPageState.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(permissionsSource, /author: \['edit_feedback'\]/)
   assert.match(menuSource, /label: closeState\.value \? menuLabels\.value\.reopenFeedback\.text : menuLabels\.value\.closeFeedback\.text/)
   assert.match(menuSource, /action: handleToggleCloseTopic/)
+  assert.match(routeSource, /window\.history\.back\(\)[\s\S]*router\.go\(homeHref\(\)\)/)
+  assert.match(menuSource, /await leaveTopic\(\)/)
+  assert.match(topicStateSource, /backToPreviousPage: leaveTopic/)
+  assert.doesNotMatch(`${menuSource}\n${topicStateSource}`, /window\.history\.back\(\)/)
 })
 
 function issue(body: string): GITEE.IssueInfo {
@@ -311,12 +317,12 @@ test('image preview waits for real images and animates every chrome surface befo
   assert.match(previewerStyleSource, /\.closing \.forum-preview-panel-toggle/)
   assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-close\)/)
   assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-dots\)/)
-  assert.match(controlsSource, /transition: opacity 200ms ease, transform 220ms ease/)
+  assert.match(controlsSource, /transition:\s*opacity 200ms ease,\s*transform 220ms ease/)
   assert.match(sidePanelSource, /:force-mount="true"/)
   assert.match(sidePanelSource, /const EXIT_MS = 320/)
   assert.match(sidePanelSource, /animation-fill-mode: forwards/)
   assert.match(sidePanelSource, /rendered\.value = false/)
-  assert.match(cardsSource, /transition: opacity 220ms ease, transform 280ms/)
+  assert.match(cardsSource, /transition:\s*opacity 220ms ease,\s*transform 280ms/)
   assert.match(sheetSource, /data-\[state=closed\]:\[animation-duration:300ms\]/)
   assert.match(sheetSource, /data-\[state=open\]:\[animation-duration:500ms\]/)
   assert.match(imageSource, /:disabled="!isPreviewReady\(image, sourceIndex\)"/)

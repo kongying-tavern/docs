@@ -15,7 +15,7 @@ import { useTopicTagsEditor } from './useTopicTagsEditor'
 export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
   const currentTopic = computed(() => toValue(topicData))
   const { toggleCloseTopic, toggleHideTopic, togglePinnedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManager(currentTopic, message)
-  const { route } = useForumRoute()
+  const { route, leaveTopic } = useForumRoute()
   const { hasAnyPermissions } = useRuleChecks(() => currentTopic.value.user.id)
   const personal = useForumPersonalState()
 
@@ -35,13 +35,13 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
   async function handleToggleCloseTopic() {
     const result = await toggleClose()
     if (result && result.state === 'closed' && route.value?.name === 'topic' && route.value.topicId === String(result.id))
-      window.history.back()
+      await leaveTopic()
   }
 
   async function handleToggleHideTopic() {
     const result = await toggleHide()
     if (result && result.state === 'progressing' && route.value?.name === 'topic' && route.value.topicId === String(result.id))
-      window.history.back()
+      await leaveTopic()
   }
 
   async function handleToggleFollow() {

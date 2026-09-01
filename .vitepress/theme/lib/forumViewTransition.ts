@@ -17,16 +17,28 @@ export function resolveForumSharedRoute(current: ForumRoute, target: ForumRoute)
   return null
 }
 
+export function resolveForumScroll(state: unknown): { isBack: boolean, top: number } {
+  if (!state || typeof state !== 'object' || !Object.hasOwn(state, 'scrollPosition'))
+    return { isBack: false, top: 0 }
+
+  const top = Number((state as { scrollPosition?: unknown }).scrollPosition)
+  return { isBack: true, top: Number.isFinite(top) ? Math.max(0, top) : 0 }
+}
+
 export async function transitionForumRoute(
   current: ForumRoute | null,
   target: ForumRoute,
   update: () => void,
 ): Promise<void> {
+  const scroll = resolveForumScroll(window.history.state)
   const staysOnUser = current?.name === 'user'
     && target.name === 'user'
     && current.username === target.username
   if (!current || staysOnUser || !enableTransitions()) {
     update()
+    await nextTick()
+    await nextTick()
+    window.scrollTo(0, scroll.top)
     return
   }
 
@@ -34,12 +46,11 @@ export async function transitionForumRoute(
     await import('~/components/forum/topic/ForumTopicPage.vue')
 
   const sharedRoute = resolveForumSharedRoute(current, target)
-  const isBack = Object.hasOwn(window.history.state ?? {}, 'scrollPosition')
   const sharedElements = sharedRoute ? findSharedElements(sharedRoute, current) : []
   const newElements: HTMLElement[] = []
   for (const { element, name } of sharedElements)
     element.style.setProperty('view-transition-name', name)
-  document.documentElement.dataset.forumTransition = isBack ? 'back' : 'forward'
+  document.documentElement.dataset.forumTransition = scroll.isBack ? 'back' : 'forward'
 
   const transition = document.startViewTransition(async () => {
     update()
@@ -49,7 +60,7 @@ export async function transitionForumRoute(
     for (const { element } of sharedElements)
       element.style.removeProperty('view-transition-name')
 
-    window.scrollTo(0, isBack ? Number(window.history.state?.scrollPosition ?? 0) : 0)
+    window.scrollTo(0, scroll.top)
     if (sharedRoute && sharedElements.length) {
       for (const { element, name } of findSharedElements(sharedRoute, target)) {
         if (!sharedElements.some(source => source.name === name))
@@ -76,6 +87,7 @@ export async function transitionForumBlog(
   targetPath: string,
   update: () => void | Promise<void>,
 ): Promise<void> {
+  const scroll = resolveForumScroll(window.history.state)
   const currentSlug = blogPostSlug(currentPath)
   const targetSlug = blogPostSlug(targetPath)
   const slug = targetSlug ?? currentSlug
@@ -85,6 +97,8 @@ export async function transitionForumBlog(
     || !enableTransitions()
   ) {
     await update()
+    await nextTick()
+    window.scrollTo(0, scroll.top)
     return
   }
 
@@ -97,7 +111,7 @@ export async function transitionForumBlog(
   const transition = document.startViewTransition(async () => {
     await update()
     await nextTick()
-    window.scrollTo(0, targetSlug ? 0 : Number(window.history.state?.scrollPosition ?? 0))
+    window.scrollTo(0, scroll.top)
     for (const { element, name } of findBlogElements(slug, Boolean(targetSlug))) {
       if (!source.some(item => item.name === name))
         continue
