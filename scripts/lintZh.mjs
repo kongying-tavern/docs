@@ -36,6 +36,26 @@ options.hyperParse.push((data) => {
   return data
 })
 
+// MDC 组件的 `---` 属性块是 YAML；半角冒号是语法，不能按中文标点改写。
+const MDC_YAML_PROPS_REGEX = /(^|\n)(::[^\r\n]*\r?\n)(---\r?\n[\s\S]*?\r?\n---)(?=\r?\n)/g
+options.hyperParse.unshift((data) => {
+  data.modifiedValue = data.modifiedValue.replace(
+    MDC_YAML_PROPS_REGEX,
+    (originValue, leading, component, yaml, index) => {
+      const yamlIndex = index + leading.length + component.length
+      data.ignoredByParsers.push({
+        name: 'mdc-yaml-props',
+        meta: 'mdc-yaml-props',
+        index: yamlIndex,
+        length: yaml.length,
+        originValue: yaml,
+      })
+      return `${leading}${component}${'@'.repeat(yaml.length)}`
+    },
+  )
+  return data
+})
+
 const resultList = globSync('src/zh/**/*.md').map((file) => {
   console.log(`[start] ${file}`)
   const origin = readFileSync(file, { encoding: 'utf8' })

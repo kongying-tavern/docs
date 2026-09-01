@@ -136,10 +136,10 @@ hoverShadow: true
 ::Card
 ---
 
-title：观看客户端基础使用教程
-link：<https://www.bilibili.com/video/BV1uU4y157Te>
-theme：medium
-shadow：true
+title: 观看客户端基础使用教程
+link: <https://www.bilibili.com/video/BV1uU4y157Te>
+theme: medium
+shadow: true
 ---
 
 ::
@@ -150,11 +150,11 @@ shadow：true
 ::Card
 ---
 
-title：网页版地图
-link：<https://yuanshen.site/>
-logo：self
-desc：xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-theme：medium
+title: 网页版地图
+link: <https://yuanshen.site/>
+logo: self
+desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+theme: medium
 ---
 
 ::
@@ -439,14 +439,14 @@ The HTML specificationis maintained by the W3C.
 ---
 items:
 
-- icon：i-custom-bilibili
-    name：Bilibili
-    link：<https://bilibili.com>
-    secondary：小电视
-- icon：i-custom-gitee
-    name：Gitee
-    link：<https://gitee.com>
-    secondary：码云
+- icon: i-custom-bilibili
+  name: Bilibili
+  link: <https://bilibili.com>
+  secondary: 小电视
+- icon: i-custom-gitee
+  name: Gitee
+  link: <https://gitee.com>
+  secondary: 码云
 
 ---
 
@@ -464,11 +464,11 @@ defaultValue:
 - overview
 - details
 items:
-- value：overview
-    title：默认 Slot：Markdown 内容
-    slot：default
-- value：details
-    title：命名 Slot：Markdown 内容
+- value: overview
+  title: 默认 Slot：Markdown 内容
+  slot: default
+- value: details
+  title: 命名 Slot：Markdown 内容
 
 ---
 
