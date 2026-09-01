@@ -195,6 +195,8 @@ html[data-forum-transition] {
 ::view-transition-group(forum-topic-type),
 ::view-transition-group(forum-topic-content),
 ::view-transition-group(forum-topic-image),
+::view-transition-group(forum-blog-cover),
+::view-transition-group(forum-blog-title),
 ::view-transition-group(forum-user-avatar),
 ::view-transition-group(forum-user-name) {
   animation-duration: 420ms;
@@ -214,6 +216,8 @@ html[data-forum-transition="back"]::view-transition-group(forum-topic-title) {
 }
 
 html[data-forum-transition="forward"]::view-transition-group(forum-topic-title),
+html[data-forum-transition="forward"]::view-transition-group(forum-blog-title),
+html[data-forum-transition="back"]::view-transition-group(forum-blog-title),
 html[data-forum-transition="back"]::view-transition-group(forum-topic-type) {
   animation-delay: 60ms;
 }
@@ -224,6 +228,8 @@ html[data-forum-transition="back"]::view-transition-group(forum-topic-login) {
 }
 
 html[data-forum-transition="forward"]::view-transition-group(forum-topic-image),
+html[data-forum-transition="forward"]::view-transition-group(forum-blog-cover),
+html[data-forum-transition="back"]::view-transition-group(forum-blog-cover),
 html[data-forum-transition="back"]::view-transition-group(forum-topic-author) {
   animation-delay: 100ms;
 }
@@ -240,6 +246,10 @@ html[data-forum-transition="back"]::view-transition-group(forum-topic-author) {
 ::view-transition-new(forum-topic-content),
 ::view-transition-old(forum-topic-image),
 ::view-transition-new(forum-topic-image),
+::view-transition-old(forum-blog-cover),
+::view-transition-new(forum-blog-cover),
+::view-transition-old(forum-blog-title),
+::view-transition-new(forum-blog-title),
 ::view-transition-old(forum-user-avatar),
 ::view-transition-new(forum-user-avatar),
 ::view-transition-old(forum-user-name),
@@ -255,6 +265,8 @@ html[data-forum-transition="back"]::view-transition-group(forum-topic-author) {
 ::view-transition-old(forum-topic-type),
 ::view-transition-old(forum-topic-content),
 ::view-transition-old(forum-topic-image),
+::view-transition-old(forum-blog-cover),
+::view-transition-old(forum-blog-title),
 ::view-transition-old(forum-user-avatar),
 ::view-transition-old(forum-user-name) {
   animation: forum-shared-fade-out 280ms cubic-bezier(0.4, 0, 0.2, 1) both;
@@ -266,6 +278,8 @@ html[data-forum-transition="back"]::view-transition-group(forum-topic-author) {
 ::view-transition-new(forum-topic-type),
 ::view-transition-new(forum-topic-content),
 ::view-transition-new(forum-topic-image),
+::view-transition-new(forum-blog-cover),
+::view-transition-new(forum-blog-title),
 ::view-transition-new(forum-user-avatar),
 ::view-transition-new(forum-user-name) {
   animation: forum-shared-fade-in 380ms cubic-bezier(0.4, 0, 0.2, 1) both;

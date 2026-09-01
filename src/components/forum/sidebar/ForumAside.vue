@@ -23,16 +23,19 @@ const qrcode = useQRCode(message.value.forum.aside.contactUs.qrcodeLink)
 /** 团队博客 3 篇固定文章，cover/title/link 参考真实博客文章的 frontmatter 配置 */
 const teamBlogPosts = [
   {
+    id: 'hotupdatelog-client',
     title: '【客户端】热更新日志',
     cover: 'https://genshin.og.interknot.site/apis/v1/og?cover=3&title=%E5%9C%B0%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF/n%E7%83%AD%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97',
     link: '/blog/posts/hotupdatelog-client/',
   },
   {
+    id: 'changelog-web',
     title: '【网页版】更新日志',
     cover: 'https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A更新日志',
     link: '/blog/posts/changelog-web/',
   },
   {
+    id: 'changelog-autotrack',
     title: '【位置追踪】更新日志',
     cover: 'https://genshin.og.interknot.site/apis/v1/og?cover=1&title=位置追踪更新日志',
     link: '/blog/posts/changelog-autotrack/',
@@ -100,14 +103,17 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         v-for="post in teamBlogPosts"
         :key="post.link"
         :href="post.link"
+        :data-forum-blog="post.id"
         class="forum-aside-list-item font-[var(--vp-font-family-subtitle)]"
       >
         <img
           class="rounded shrink-0 h-13 w-23 object-cover"
           :src="post.cover || withBase('/imgs/common/selectArtilcs.png')"
           :alt="post.title"
+          data-forum-shared-blog="cover"
         >
         <span
+          data-forum-shared-blog="title"
           class="forum-aside-blog-title font-size-3.5 color-[--vp-c-text-2] lh-6 min-w-0 overflow-hidden line-clamp-2"
         >
           {{ post.title }}

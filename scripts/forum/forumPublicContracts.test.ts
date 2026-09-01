@@ -218,7 +218,7 @@ test('normalizes Comment attachments without changing content order', () => {
 })
 
 test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
-  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource, navigateSource, transitionSource] = await Promise.all([
+  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource, navigateSource, transitionSource, sidebarSource, asideSource, blogHeaderSource, themeSource, sidebarLayoutSource, routeViewSource, profileHeaderSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/issues.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/inBrowserUtils.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8'),
@@ -226,6 +226,13 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
     readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarNav.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumAside.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/blog/ForumBlogPostHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/index.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ForumRouteView.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
@@ -236,6 +243,18 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
   assert.match(topicContentSource, /event instanceof MouseEvent/)
   assert.match(navigateSource, /queryCache\.setQueryData\(forumKeys\.topic\(topic\.id\), topic\)/)
   assert.doesNotMatch(transitionSource, /requestAnimationFrame|waitForSharedElements/)
+  assert.match(sidebarSource, /data-forum-user-avatar/)
+  assert.match(transitionSource, /findUserElement\(shared\.username, root, '\.avatar-image, \[data-forum-user-avatar\], img'\)/)
+  assert.match(profileHeaderSource, /<Avatar\s+data-forum-user-avatar/)
+  assert.match(sidebarLayoutSource, /queryCache\.setQueryData\(forumKeys\.user\(info\.login\), info\)/)
+  assert.match(routeViewSource, /defineAsyncComponent/)
+  assert.match(transitionSource, /transitionForumBlog/)
+  assert.match(transitionSource, /current\.username === target\.username/)
+  assert.match(transitionSource, /for \(const \{ element \} of sharedElements\)[\s\S]*removeProperty\('view-transition-name'\)/)
+  assert.match(transitionSource, /transition\.finished\.then\(cleanup, cleanup\)/)
+  assert.match(themeSource, /router\.onBeforeRouteChange/)
+  assert.match(asideSource, /data-forum-shared-blog="cover"/)
+  assert.match(blogHeaderSource, /data-forum-shared-blog="title"/)
 })
 
 test('all image entry points reuse the shared multi-file drop zone', async () => {

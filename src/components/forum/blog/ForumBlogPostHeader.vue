@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
+import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
 import { getGiteeProfileHref } from '~/constants/site'
 import { parseAuthors } from '~/utils/frontmatter'
 
+const BLOG_POST_PATH_REGEX = /\/blog\/posts\/([^/?#]+)/
+
 const { frontmatter, lang, page } = useData()
+const route = useRoute()
 const authors = parseAuthors(frontmatter.value)
+const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
 </script>
 
 <template>
-  <div class="slide-enter mb-12 pb-2 text-center text-left flex flex-col w-full items-center">
+  <div :data-forum-blog-post="blogSlug" class="slide-enter mb-12 pb-2 text-center text-left flex flex-col w-full items-center">
     <!-- 面包屑 -->
     <nav class="text-sm c-[var(--vp-c-text-2)] flex gap-2 items-center">
       <VPLink class="hover:underline" href="../../">
@@ -24,6 +29,7 @@ const authors = parseAuthors(frontmatter.value)
     </nav>
 
     <h1
+      data-forum-shared-blog="title"
       class="font-size-[clamp(28px,4vw,42px)] c-[var(--vp-c-text-1)] lh-[1.2] tracking-[2px] font-bold mt-4"
     >
       {{ frontmatter?.title || 'Untitled' }}
@@ -89,6 +95,7 @@ const authors = parseAuthors(frontmatter.value)
     <img
       v-if="frontmatter.cover"
       class="post-cover rounded-xl aspect-[1200/630] object-cover"
+      data-forum-shared-blog="cover"
       :src="frontmatter.cover"
       :alt="frontmatter?.title || 'cover'"
       width="1200"

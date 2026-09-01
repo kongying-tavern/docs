@@ -8,7 +8,7 @@ import { getLangPath } from '@/utils'
 import { publishForumLocation } from '~/composables/useForumRoute'
 import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '~/services/forum/forumRoute'
 import { AsyncForumRouteView } from '../components/AsyncForumRouteView'
-import { transitionForumRoute } from './forumViewTransition'
+import { transitionForumBlog, transitionForumRoute } from './forumViewTransition'
 
 const FORUM_TITLES: Record<string, string> = {
   root: '社区反馈',
@@ -27,8 +27,9 @@ export default async function handleRouteMatching(
 ): Promise<boolean> {
   const routeOptions = { base, locales: Object.keys(localeConfig) }
   const forumLocation = parseForumLocation(to, routeOptions)
+  const currentPath = router.route.path
   if (forumLocation) {
-    const currentForumRoute = parseForumLocation(router.route.path, {
+    const currentForumRoute = parseForumLocation(currentPath, {
       base: '/',
       locales: routeOptions.locales,
     })?.route ?? null
@@ -46,8 +47,10 @@ export default async function handleRouteMatching(
 
     if (typeof window === 'undefined')
       updateRoute()
-    else
+    else if (currentForumRoute)
       await transitionForumRoute(currentForumRoute, forumLocation.route, updateRoute)
+    else
+      await transitionForumBlog(currentPath, forumLocation.canonicalHref, updateRoute)
     return false
   }
 
@@ -64,9 +67,12 @@ export default async function handleRouteMatching(
 
   if (!isOptionValid(route, params))
     return true
-  router.route.path = route.path || normalizePath
-  router.route.component = markRaw(route.component)
-  router.route.data = buildRouteData(normalizePath, route, locale, params)
+  const updateRoute = () => {
+    router.route.path = route.path || normalizePath
+    router.route.component = markRaw(route.component)
+    router.route.data = buildRouteData(normalizePath, route, locale, params)
+  }
+  updateRoute()
   return false
 }
 

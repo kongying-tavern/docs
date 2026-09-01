@@ -59,8 +59,8 @@ function handleCommentClick(author: ForumAPI.User): void {
     <div v-if="props.size !== 'small'" class="mr-2 w-[64px]">
       <ForumUserHoverCard :user="props.commentData.author">
         <template #trigger>
-          <a class="cursor-pointer" :href="userHref(props.commentData.author.login)">
-            <Avatar :src="props.commentData.author.avatar" :alt="props.commentData.author.username" :size="COMMENT_STYLES[props.size].avatarSize" />
+          <a class="cursor-pointer" :href="userHref(props.commentData.author.login)" :data-forum-user="props.commentData.author.login">
+            <Avatar data-forum-user-avatar :src="props.commentData.author.avatar" :alt="props.commentData.author.username" :size="COMMENT_STYLES[props.size].avatarSize" />
           </a>
         </template>
       </ForumUserHoverCard>

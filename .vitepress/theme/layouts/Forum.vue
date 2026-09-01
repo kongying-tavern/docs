@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
+import { FORM_HASH } from '~/components/forum/form/publish-topic-form/config'
 
+const loadForumPublishTopicForm = () => import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue')
 const ForumPublishTopicForm = defineAsyncComponent(
-  () => import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'),
+  loadForumPublishTopicForm,
 )
+const shouldMountPublishForm = ref(false)
+
+function mountPublishFormWhenRequested(): void {
+  if (location.hash.slice(1).startsWith(FORM_HASH))
+    shouldMountPublishForm.value = true
+}
+
+onMounted(() => {
+  void loadForumPublishTopicForm().catch(() => undefined)
+  mountPublishFormWhenRequested()
+  window.addEventListener('hashchange', mountPublishFormWhenRequested)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', mountPublishFormWhenRequested)
+})
 </script>
 
 <template>
@@ -12,7 +30,9 @@ const ForumPublishTopicForm = defineAsyncComponent(
     <Content />
   </div>
   <ClientOnly>
-    <ForumPublishTopicForm />
+    <template v-if="shouldMountPublishForm">
+      <ForumPublishTopicForm />
+    </template>
   </ClientOnly>
 </template>
 

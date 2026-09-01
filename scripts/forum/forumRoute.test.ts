@@ -182,5 +182,18 @@ test('ships exactly three scoped Vercel Forum rewrites and localized shells', ()
 
   const forumLayout = readSource('.vitepress/theme/layouts/Forum.vue')
   assert.match(forumLayout, /import\('~\/components\/forum\/form\/publish-topic-form\/ForumPublishTopicForm\.vue'\)/)
+  assert.match(forumLayout, /loadForumPublishTopicForm\(\)\.catch/)
+  assert.match(forumLayout, /v-if="shouldMountPublishForm"/)
+  assert.match(forumLayout, /addEventListener\('hashchange', mountPublishFormWhenRequested\)/)
   assert.match(forumLayout, /<ForumPublishTopicForm \/>/)
+
+  const theme = readSource('.vitepress/theme/index.ts')
+  assert.match(theme, /requestIdleCallback\(preload, \{ timeout: 3000 \}\)/)
+  assert.match(theme, /preloadForumRouteView\(\)/)
+  assert.match(theme, /import\('~\/components\/forum\/topic\/ForumTopicPage\.vue'\)/)
+  assert.match(theme, /import\('~\/components\/forum\/sidebar\/ForumSidebar\.vue'\)/)
+
+  const routeView = readSource('src/components/forum/ForumRouteView.vue')
+  assert.match(routeView, /defineAsyncComponent\(\(\) => import\('\.\/topic\/ForumTopicPage\.vue'\)\)/)
+  assert.match(routeView, /import ForumUserPage from '\.\/user\/ForumUserPage\.vue'/)
 })

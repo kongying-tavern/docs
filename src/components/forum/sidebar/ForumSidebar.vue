@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ForumSort } from '~/services/forum/forumRoute'
+import { useQueryCache } from '@pinia/colada'
 import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
@@ -12,6 +13,7 @@ import { useForumTopicQuery, useForumTopicsQuery } from '~/composables/forum/use
 import { useForumRoute } from '~/composables/useForumRoute'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import { getNewCommentCount, isRecentClosedTopic } from '~/services/forum/forumPersonalState'
+import { forumKeys } from '~/services/forum/forumQueryContracts'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { FORM_HASH } from '../form/publish-topic-form/config'
 import { publishTopic } from '../utils/forumUi'
@@ -24,11 +26,16 @@ const { localeIndex } = useData()
 const { message } = useLocalized()
 const auth = useUserAuthStore()
 const userInfo = useUserInfoStore()
+const queryCache = useQueryCache()
 const { route, list, topicHref, userHref, navigateSort } = useForumRoute()
 const personal = useForumPersonalState()
 
 const isLoggedIn = computed(() => auth.isTokenValid)
 const username = computed(() => userInfo.info?.login ?? '')
+watch(() => userInfo.info, (info) => {
+  if (info)
+    queryCache.setQueryData(forumKeys.user(info.login), info)
+}, { immediate: true })
 const submitted = useForumTopicsQuery(computed(() => ({
   filter: 'all',
   sort: 'created',
@@ -146,7 +153,7 @@ const navItems = computed(() => {
     { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
   ]
   if (isLoggedIn.value && username.value) {
-    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value) })
+    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), username: username.value })
   }
   items.push({ label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') })
   return items

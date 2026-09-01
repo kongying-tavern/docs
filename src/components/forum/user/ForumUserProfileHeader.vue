@@ -33,6 +33,7 @@ const {
             <div class="flex w-full items-start justify-between sm:w-auto">
               <div class="relative">
                 <Avatar
+                  data-forum-user-avatar
                   :src="renderedUser?.avatar"
                   :alt="renderedUser?.username"
                   class="h-20 w-20 sm:h-24 sm:w-24"
