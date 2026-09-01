@@ -112,9 +112,9 @@ async function main() {
           ...constants, // 将 constants 内容直接合并到顶层
         }
 
-        // 写入 JSON 文件
+        // 写入 JSON 文件，补末尾换行与 .editorconfig 的 insert_final_newline 保持一致
         const outputPath = resolve(outputDir, `${locale}.json`)
-        writeFileSync(outputPath, JSON.stringify(mergedData, (_key, value) => {
+        writeFileSync(outputPath, `${JSON.stringify(mergedData, (_key, value) => {
           // Convert RegExp objects to string representation
           if (value instanceof RegExp) {
             return {
@@ -123,7 +123,7 @@ async function main() {
             }
           }
           return value
-        }, 2))
+        }, 2)}\n`)
 
         console.log(`   💾 已保存到 ${locale}.json`)
       }
@@ -154,7 +154,7 @@ async function main() {
 
 运行以下命令重新生成 JSON 文件：
 \`\`\`bash
-pnpm run build-locales
+pnpm run build:locales
 \`\`\`
 `
 

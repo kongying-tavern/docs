@@ -13,8 +13,7 @@ withDefaults(defineProps<{
     href: string
     type: ForumAPI.TopicType
     commentCount?: number
-    newCommentCount?: number
-    state?: ForumAPI.TopicState
+    closedUnseen?: boolean
     canUnfollow?: boolean
     menuTopic?: ForumAPI.Topic
   }>
@@ -39,16 +38,8 @@ function handleToggle(event: Event) {
   emit('update:open', (event.currentTarget as HTMLDetailsElement).open)
 }
 
-function commentLabel(item: { commentCount?: number, newCommentCount?: number }): string {
-  const newCount = item.newCommentCount ?? 0
-  const template = newCount > 0
-    ? message.value.forum.sidebar.newComments
-    : message.value.forum.sidebar.totalComments
-  return template.replace('{count}', String(newCount || item.commentCount || 0))
-}
-
-function badgeText(count: number): string {
-  return count > 99 ? '99+' : String(count)
+function commentLabel(item: { commentCount?: number }): string {
+  return message.value.forum.sidebar.totalComments.replace('{count}', String(item.commentCount || 0))
 }
 </script>
 
@@ -75,23 +66,16 @@ function badgeText(count: number): string {
               <span
                 v-if="(item.commentCount ?? 0) > 0"
                 class="forum-sidebar-comments"
-                :class="{ closed: item.state === 'closed' }"
+                :class="{ closed: item.closedUnseen }"
                 role="img"
                 :aria-label="commentLabel(item)"
               >
                 <span
                   class="size-4"
-                  :class="item.state === 'closed' ? 'i-lucide-message-circle-check' : 'i-lucide-message-circle'"
+                  :class="item.closedUnseen ? 'i-lucide-message-circle-check' : 'i-lucide-message-circle'"
                   aria-hidden="true"
                 />
-                <span
-                  v-if="(item.newCommentCount ?? 0) > 0"
-                  class="forum-sidebar-comment-badge"
-                  aria-hidden="true"
-                >
-                  {{ badgeText(item.newCommentCount ?? 0) }}
-                </span>
-                <span v-else class="forum-sidebar-comment-count" aria-hidden="true">
+                <span class="forum-sidebar-comment-count" aria-hidden="true">
                   {{ item.commentCount }}
                 </span>
               </span>
@@ -219,7 +203,6 @@ details[open] .chevron {
 }
 
 .forum-sidebar-comments {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -239,25 +222,6 @@ details[open] .chevron {
 .forum-sidebar-comment-count {
   font-size: 11px;
   line-height: 16px;
-  font-variant-numeric: tabular-nums;
-}
-
-.forum-sidebar-comment-badge {
-  position: absolute;
-  top: -2px;
-  right: -3px;
-  display: inline-flex;
-  min-width: 15px;
-  height: 15px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  padding: 0 3px;
-  background: var(--vp-c-danger-1);
-  color: var(--vp-c-white);
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 15px;
   font-variant-numeric: tabular-nums;
 }
 

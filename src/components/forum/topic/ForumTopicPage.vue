@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { ForumTranslatorRef } from '../composables/useTopicTranslationMenu'
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import Separator from '@/components/ui/separator/Separator.vue'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useForumTopicSeenState } from '~/composables/forum/useForumTopicSeenState'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import { useTopicTranslationMenu } from '../composables/useTopicTranslationMenu'
@@ -34,6 +35,11 @@ const {
 
 const { message } = useLocalized()
 const { userHref } = useForumRoute()
+const topicSeen = useForumTopicSeenState()
+watch(topic, (value) => {
+  if (value)
+    topicSeen.markSeen(value.id)
+})
 const translator = useTemplateRef<ForumTranslatorRef>('translator')
 const translationMenu = useTopicTranslationMenu(topic, translator)
 const translatedContent = ref('')

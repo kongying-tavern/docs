@@ -142,12 +142,6 @@ export function isRecentClosedTopic(
   return Number.isNaN(closedAt) || now - closedAt <= CLOSED_TOPIC_RETENTION_MS
 }
 
-export function getNewCommentCount(recordedCount: number | undefined, currentCount: number | undefined): number {
-  if (recordedCount === undefined || currentCount === undefined || recordedCount < 0 || currentCount < 0)
-    return 0
-  return Math.max(0, currentCount - recordedCount)
-}
-
 function prependTopic(list: ForumPersonalTopic[], topic: ForumPersonalTopic, limit: number): ForumPersonalTopic[] {
   return [topic, ...list.filter(item => item.topicId !== topic.topicId)].slice(0, limit)
 }

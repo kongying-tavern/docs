@@ -40,7 +40,6 @@ const forum: CustomConfig['forum'] = {
     loginToView: '登录后查看',
     loginNow: '去登录',
     syncFailed: '评论已发布，但参与记录同步失败',
-    newComments: '新增 {count} 条评论',
     totalComments: '共 {count} 条评论',
     information: '更多信息',
     listSort: '列表排序',

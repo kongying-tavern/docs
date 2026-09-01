@@ -40,7 +40,6 @@ const forum: CustomConfig['forum'] = {
     loginToView: 'ログインして表示',
     loginNow: 'ログイン',
     syncFailed: 'コメントは投稿されましたが、参加履歴を同期できませんでした',
-    newComments: '新しいコメント {count} 件',
     totalComments: 'コメント全 {count} 件',
     information: '詳細情報',
     listSort: '一覧の並び順',
