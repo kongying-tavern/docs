@@ -18,7 +18,8 @@ const { message } = useLocalized()
 const { theme } = useData()
 const { topicHref } = useForumRoute()
 
-const qrcode = useQRCode(message.value.forum.aside.contactUs.qrcodeLink)
+const contactUsConfig = computed(() => message.value.forum.aside.contactUs)
+const qrcode = useQRCode(computed(() => contactUsConfig.value.qrcodeLink))
 
 /** 团队博客 3 篇固定文章，cover/title/link 参考真实博客文章的 frontmatter 配置 */
 const teamBlogPosts = [
@@ -72,20 +73,23 @@ const closedSuggestions = computed(() => closedTopics.rows.value
   >
     <div v-if="contactUs" class="selected-articles mb-4">
       <p
-        class="color-[var(--vp-c-text-1)] lh-14 font-[var(--vp-font-family-subtitle)] mb-6 vp-border-divider h-14"
+        class="color-[var(--vp-c-text-1)] lh-14 font-[var(--vp-font-family-subtitle)] mb-4 vp-border-divider h-14"
       >
-        {{ message.forum.aside.contactUs.title }}
+        {{ contactUsConfig.title }}
       </p>
-      <div
-        class="mb-2 p-1 border border-color-[var(--vp-c-gutter)] rounded-md border-solid flex justify-between"
+      <a
+        :href="contactUsConfig.qrcodeLink"
+        target="_blank"
+        rel="noopener"
+        class="forum-aside-list-item border border-color-[var(--vp-c-gutter)] rounded-lg border-solid"
       >
-        <img class="mr-2 h-23 w-23" :src="qrcode" alt="QR Code">
-        <p
-          class="font-size-3.5 color-[--vp-c-text-1] mt-2.75 pr-2.5 text-center h-[fit-content] break-all text-ellipsis overflow-hidden"
+        <img class="rounded-lg shrink-0 h-18 w-18" :src="qrcode" alt="QR Code">
+        <span
+          class="font-size-3.5 color-[--vp-c-text-1] lh-5 min-w-0 break-words overflow-hidden line-clamp-2"
         >
-          {{ message.forum.aside.contactUs.desc }}
-        </p>
-      </div>
+          {{ contactUsConfig.desc }}
+        </span>
+      </a>
     </div>
     <div>
       <div
