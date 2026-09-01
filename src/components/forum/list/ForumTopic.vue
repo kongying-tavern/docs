@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useForumViewMode } from '~/composables/useForumViewMode'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicComment from '../comment/ForumTopicComment.vue'
 import { useTopicInteraction } from '../composables/useTopicInteraction'
@@ -24,6 +26,7 @@ const emit = defineEmits<{
 
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode()
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const translatedContent = ref<string>()
 const translatedTitle = ref('')
 const showingTranslation = ref(false)
@@ -46,6 +49,10 @@ function handleSummaryClick() {
 }
 
 function handleCommentClick() {
+  if (isMobile.value) {
+    toPostDetailPage('reply')
+    return
+  }
   emit('preview', topic, true)
 }
 
@@ -55,6 +62,10 @@ function handleRowClick(event: MouseEvent) {
     return
   if (topic.type === 'POST')
     return
+  if (isMobile.value) {
+    toPostDetailPage()
+    return
+  }
   emit('preview', topic, false)
 }
 
