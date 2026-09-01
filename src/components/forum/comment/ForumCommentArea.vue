@@ -11,7 +11,7 @@ import { useCommentAreaState } from './composables/useCommentAreaState'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
 import ForumTopicComment from './ForumTopicComment.vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   repo: ForumAPI.Repo
   topicId: string
   topicAuthorId: string | number
@@ -19,7 +19,11 @@ const props = defineProps<{
   commentCount?: number
   topic?: ForumAPI.Topic
   autofocusInput?: boolean
-}>()
+  /** 数据加载后替换骨架屏的内容传 false,避免重复播放入场动画 */
+  entryAnimation?: boolean
+}>(), {
+  entryAnimation: true,
+})
 
 const { message } = useLocalized()
 
@@ -111,7 +115,7 @@ watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
         </span>
       </p>
       <UseCommentAreaCommentInputBox ref="commentInputBox" />
-      <div class="slide-enter comment-list mt-8">
+      <div class="comment-list mt-8" :class="entryAnimation && 'slide-enter'">
         <ForumTopicComment
           v-for="(comment, index) in renderComments"
           :id="`reply-${comment.id}`"

@@ -12,7 +12,7 @@ const { height } = useWindowSize()
 const { isCardMode } = useForumViewMode()
 
 const skeletonCount = computed(() => {
-  const itemHeight = isCardMode.value ? 200 : 120
+  const itemHeight = isCardMode.value ? 280 : 160
   return Math.ceil(height.value / itemHeight) + 2
 })
 </script>
@@ -21,27 +21,44 @@ const skeletonCount = computed(() => {
   <TopicCardSkeleton>
     <div class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full">
       <div class="topic-content">
-        <div class="font-size-5 flex break-words justify-between">
-          <div class="flex gap-2 items-center">
-            <Skeleton class="rounded-full h-6 w-6" />
-            <Skeleton class="h-4 w-20" />
-            <Skeleton class="h-4 w-16" />
+        <div class="flex gap-2 justify-between">
+          <div class="flex flex-wrap gap-[0.25rem] min-w-0 items-center">
+            <div class="flex gap-1.5 items-center">
+              <Skeleton class="rounded-full size-6" />
+              <Skeleton class="h-4 w-12" />
+            </div>
+            <Skeleton class="h-4 w-14" />
           </div>
-          <Skeleton class="h-8 w-8" />
+          <div class="flex shrink-0 gap-2 items-center">
+            <Skeleton class="h-4 w-12" />
+            <Skeleton class="rounded-md h-5 w-9" />
+          </div>
         </div>
 
-        <div class="mt-2">
-          <Skeleton class="mb-2 h-4 w-20" />
-          <Skeleton class="h-16 w-full" />
-        </div>
+        <div class="mt-1">
+          <div class="mt-2 space-y-1.5">
+            <Skeleton class="h-6 w-1/2" />
+            <Skeleton class="h-6 w-1/4" />
+          </div>
 
-        <div class="mt-2 flex gap-2">
-          <Skeleton class="rounded-full h-6 w-20" />
-          <Skeleton class="rounded-full h-6 w-20" />
-        </div>
+          <div class="mt-2 flex gap-1 items-center">
+            <Skeleton class="size-3 !rounded-none" />
+            <Skeleton class="h-4 w-10" />
+          </div>
 
-        <div class="mt-4 flex justify-between">
-          <Skeleton class="rounded-full h-8 w-24" />
+          <div class="mt-1 pr-4 space-y-2">
+            <Skeleton class="h-4 w-full" />
+            <Skeleton class="h-4 w-[92%]" />
+            <Skeleton class="h-4 w-full" />
+            <Skeleton class="h-4 w-2/3" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mr-2 mt-4 flex justify-between">
+        <div class="flex gap-2 items-center">
+          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-11 max-mobile:w-30" />
+          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-11 max-mobile:w-24" />
         </div>
       </div>
     </div>
@@ -50,32 +67,41 @@ const skeletonCount = computed(() => {
   <TopicCompactViewSkeleton>
     <div class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full">
       <div class="topic-content">
-        <div class="font-size-5 flex break-words justify-between">
-          <div class="flex flex-wrap gap-[0.25rem] items-center">
+        <div class="flex gap-2 justify-between">
+          <div class="flex flex-wrap gap-[0.25rem] min-w-0 items-center">
             <div class="flex gap-1.5 items-center">
-              <Skeleton class="rounded-full h-6 w-6" />
-              <div class="flex flex-col">
-                <Skeleton class="h-4 w-16" />
-              </div>
+              <Skeleton class="rounded-full size-6" />
+              <Skeleton class="h-4 w-12" />
             </div>
-            <Skeleton class="h-4 w-20" />
+            <Skeleton class="h-4 w-14" />
           </div>
-          <Skeleton class="h-8 w-8" />
+          <div class="flex shrink-0 gap-2 items-center">
+            <Skeleton class="h-4 w-12" />
+            <Skeleton class="rounded-md h-5 w-9" />
+          </div>
         </div>
 
-        <div class="flex w-full items-center justify-between">
-          <div class="w-full overflow-hidden">
-            <Skeleton class="h-6 w-85%" />
-            <Skeleton class="mt-2 h-5 w-70%" />
+        <div class="mt-1 flex flex-nowrap w-full items-start justify-between">
+          <div class="flex-1 max-w-[calc(100%-100px)] min-w-0 overflow-hidden">
+            <div class="space-y-2">
+              <Skeleton class="h-4 w-[92%]" />
+              <Skeleton class="h-4 w-[55%]" />
+            </div>
           </div>
-          <div class="ml-2 mt-2 border rounded-sm h-75px min-w-100px relative">
+          <div class="ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px relative overflow-hidden">
             <Skeleton class="h-full w-full" />
           </div>
         </div>
+      </div>
 
-        <div class="mr-2 mt-2 flex w-full items-center justify-between">
-          <Skeleton class="rounded-full h-8 w-24" />
-          <Skeleton class="h-4 w-16" />
+      <div class="mr-2 mt-2 flex w-full items-center justify-between">
+        <div class="flex gap-2 items-center">
+          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-11 max-mobile:w-30" />
+          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-11 max-mobile:w-24" />
+        </div>
+        <div class="flex gap-1 items-center">
+          <Skeleton class="size-3 !rounded-none" />
+          <Skeleton class="h-4 w-10" />
         </div>
       </div>
     </div>

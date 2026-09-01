@@ -69,7 +69,7 @@ function handleTitleTranslated(title: string): void {
       <template #content>
         <div
           v-if="!loading && topic"
-          class="slide-enter mb-4"
+          class="mb-4"
         >
           <div class="flex w-full items-center justify-between">
             <div class="text-14 flex flex-wrap gap-[0.25rem] min-w-0 items-center relative">
@@ -193,6 +193,7 @@ function handleTitleTranslated(title: string): void {
           v-if="topic"
           class="mt-8"
           repo="Feedback"
+          :entry-animation="false"
           :topic-id="topicId"
           :topic="topic"
           :topic-author-id="topic?.user.id || -1"

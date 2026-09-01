@@ -4,31 +4,42 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 <template>
   <div class="mb-4">
-    <Skeleton class="h-[clamp(1rem,10vw,2rem)] w-200px" />
+    <div class="flex w-full items-center justify-between">
+      <div class="flex flex-wrap gap-[0.25rem] min-w-0 items-center">
+        <Skeleton class="mr-1 rounded-full h-9 w-36px max-sm:hidden" />
+        <div class="flex gap-2 items-center">
+          <Skeleton class="rounded-full size-8" />
+          <Skeleton class="h-4 w-12" />
+        </div>
+        <Skeleton class="h-4 w-14" />
+      </div>
 
-    <div class="mt-4 flex items-center">
-      <Skeleton class="rounded-full h-32px w-32px" />
-      <Skeleton class="mx-2 h-3.5 w-[60px]" />
-
-      <span class="color-[--vp-c-text-3]">·</span>
-      <Skeleton class="mx-2 h-3 w-[100px]" />
+      <div class="flex shrink-0 gap-2 items-center">
+        <Skeleton class="h-4 w-12" />
+        <Skeleton class="rounded-md h-5 w-9" />
+      </div>
     </div>
 
-    <div class="mt-4 space-y-4">
-      <Skeleton class="h-4 w-[100%]" />
-      <Skeleton class="h-4 w-[90%]" />
-      <Skeleton class="h-4 w-[80%]" />
+    <Skeleton class="mt-2 h-9 w-3/5 md:h-10 md:w-2/5" />
+
+    <div class="mt-3 flex gap-1 items-center">
+      <Skeleton class="size-3 !rounded-none" />
+      <Skeleton class="h-4 w-10" />
+    </div>
+
+    <div class="mt-3.5 space-y-2">
+      <Skeleton class="h-4 w-full" />
+      <Skeleton class="h-4 w-full" />
+      <Skeleton class="h-4 w-[92%]" />
       <Skeleton class="h-4 w-[70%]" />
     </div>
 
-    <div class="my-6 flex space-x-2">
-      <Skeleton class="mr-2 rounded-full h-28px w-80px" />
-      <Skeleton class="mr-2 rounded-full h-28px w-80px" />
-    </div>
-
-    <div class="mt-6 flex space-x-2">
-      <Skeleton class="rounded-xl h-[75px] w-[75px]" />
-      <Skeleton class="rounded-xl h-[75px] w-[75px]" />
+    <div class="mt-12 flex items-center justify-between">
+      <div class="flex gap-1.5 items-center">
+        <Skeleton class="rounded-full h-8 w-22 max-mobile:h-11 max-mobile:w-30" />
+        <Skeleton class="rounded-full h-8 w-18 max-mobile:h-11 max-mobile:w-20" />
+      </div>
+      <Skeleton class="h-4 w-24" />
     </div>
   </div>
 </template>

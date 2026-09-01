@@ -13,28 +13,27 @@ import { Skeleton } from '@/components/ui/skeleton'
                 <Skeleton class="rounded-full h-20 w-20 sm:h-24 sm:w-24" />
               </div>
               <div class="flex gap-2 sm:hidden">
-                <Skeleton class="rounded-full h-9 w-20" />
+                <Skeleton class="rounded-md h-9 w-14" />
                 <Skeleton class="rounded-full h-9 w-20" />
               </div>
             </div>
 
             <div class="flex-1 w-full">
               <div class="flex gap-2 items-center">
-                <Skeleton class="h-7 w-32 sm:h-8" />
-                <Skeleton class="rounded-full h-5 w-16" />
+                <Skeleton class="h-7 w-24 sm:h-8" />
               </div>
 
               <Skeleton class="mt-1.5 h-5 max-w-md w-full sm:mt-2" />
 
               <div class="mt-3 flex flex-wrap gap-4 sm:mt-4 sm:gap-6">
                 <Skeleton class="h-5 w-20" />
-                <Skeleton class="h-5 w-32" />
+                <Skeleton class="h-5 w-28" />
               </div>
             </div>
 
             <div class="gap-2 hidden sm:flex">
-              <Skeleton class="rounded-full h-9 w-9" />
-              <Skeleton class="rounded-full h-9 w-24" />
+              <Skeleton class="rounded-md h-9 w-9" />
+              <Skeleton class="rounded-full h-9 w-20" />
             </div>
           </div>
         </div>
@@ -44,10 +43,7 @@ import { Skeleton } from '@/components/ui/skeleton'
     <div class="border-b w-full relative">
       <div class="mx-auto">
         <div class="flex gap-3 h-12 items-center relative">
-          <Skeleton class="h-6 w-24" />
-          <Skeleton class="h-6 w-24" />
-          <Skeleton class="h-6 w-24" />
-          <Skeleton class="h-6 w-24" />
+          <Skeleton class="h-6 w-22" />
         </div>
       </div>
     </div>
