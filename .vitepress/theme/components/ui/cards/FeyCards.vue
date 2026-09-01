@@ -143,7 +143,9 @@ onMounted(() => {
   --fey-card-shadow-active: color-mix(in srgb, var(--vp-c-black) 40%, transparent);
   position: relative;
   transform-origin: top left;
-  transition: opacity 220ms ease, transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 220ms ease,
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .fey-cards::before {
@@ -193,7 +195,9 @@ onMounted(() => {
   box-shadow: -2px 6px 16px var(--fey-card-shadow);
   transform: perspective(1200px) rotateX(20deg) rotateY(-12deg);
   transform-style: preserve-3d;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .fey-card-surface::after {
@@ -201,7 +205,9 @@ onMounted(() => {
   inset: 0;
   border-radius: inherit;
   background: linear-gradient(115deg, var(--fey-card-highlight), transparent 34%);
-  box-shadow: inset 1px 1px 0 color-mix(in srgb, var(--vp-c-white) 24%, transparent), inset -1px -1px 0 color-mix(in srgb, var(--vp-c-black) 16%, transparent);
+  box-shadow:
+    inset 1px 1px 0 color-mix(in srgb, var(--vp-c-white) 24%, transparent),
+    inset -1px -1px 0 color-mix(in srgb, var(--vp-c-black) 16%, transparent);
   content: '';
   pointer-events: none;
 }

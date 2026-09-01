@@ -50,7 +50,9 @@ const { message } = useLocalized()
   width: fit-content;
   margin-left: -0.375rem;
   border-radius: 0 9999px 9999px 0;
-  transition: transform 180ms ease, background-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
 }
 
 .form-action-btn > :first-child {

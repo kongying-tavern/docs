@@ -242,7 +242,7 @@ function deleteRecentEmoji(emoji: string) {
   transition: all 0.3s ease;
 }
 
-.emoji-grid-inner>*:nth-child(n+9) {
+.emoji-grid-inner > *:nth-child(n + 9) {
   display: none;
 }
 </style>

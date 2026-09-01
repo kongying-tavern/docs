@@ -153,7 +153,7 @@ watchOnce(commentLoading, async () => {
 </template>
 
 <style>
-.comment-list.forum-topic-item:hover>.topic-info>div>.topic-info-list>.topic-btn-more {
+.comment-list.forum-topic-item:hover > .topic-info > div > .topic-info-list > .topic-btn-more {
   opacity: 1 !important;
 }
 </style>

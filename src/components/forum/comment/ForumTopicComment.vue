@@ -151,7 +151,7 @@ function handleCommentClick(author: ForumAPI.User): void {
 </template>
 
 <style scoped>
-.topic-comment-item:hover>div>.comment-info>div>.topic-info-list>.topic-btn-more {
+.topic-comment-item:hover > div > .comment-info > div > .topic-info-list > .topic-btn-more {
   opacity: 1 !important;
   word-break: break-word;
 }

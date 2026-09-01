@@ -48,7 +48,6 @@ const classes = computed(() => {
 }
 
 @media (min-width: 960px) {
-
   .VPLocalNav.has-sidebar {
     padding-left: var(--vp-sidebar-width);
   }

@@ -26,6 +26,13 @@
 }
 
 @keyframes switching {
-  0%, 100% { opacity: 1; transform: rotate(-1.4deg); }
-  50% { opacity: 0.8; transform: rotate(-1.4deg) translateX(10px); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: rotate(-1.4deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: rotate(-1.4deg) translateX(10px);
+  }
 }
