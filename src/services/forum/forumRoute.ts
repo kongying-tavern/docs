@@ -13,7 +13,7 @@ export interface ForumListRouteState {
 
 export type ForumRoute
   = | { name: 'home', locale: string, list: ForumListRouteState }
-    | { name: 'topic', locale: string, topicId: string }
+    | { name: 'topic', locale: string, topicId: string, commentPage: number }
     | { name: 'user', locale: string, username: string, list: ForumListRouteState }
 
 export interface ForumRouteOptions {
@@ -40,6 +40,22 @@ interface HistoryCanonicalizer {
 
 const URL_ORIGIN = 'https://forum.invalid'
 const LEADING_HASH_REGEX = /^#/
+const POSITIVE_INTEGER_REGEX = /^[1-9]\d*$/
+const COMMENT_PAGE_PARAM = 'comment-page'
+const COMMENT_HASH_PREFIX = '#reply-'
+
+export function readForumCommentId(input: string): string | null {
+  const hash = input.startsWith('#') ? input : toUrl(input).hash
+  if (!hash.startsWith(COMMENT_HASH_PREFIX) || hash.length === COMMENT_HASH_PREFIX.length)
+    return null
+
+  try {
+    return decodeURIComponent(hash.slice(COMMENT_HASH_PREFIX.length))
+  }
+  catch {
+    return null
+  }
+}
 
 export function parseForumLocation(input: string | URL, options: ForumRouteOptions): ParsedForumLocation | null {
   const url = toUrl(input)
@@ -69,7 +85,12 @@ export function parseForumLocation(input: string | URL, options: ForumRouteOptio
   else if (segments[1] === 'topic') {
     if (segments.length !== 3 || !segments[2])
       return null
-    route = { name: 'topic', locale, topicId: segments[2] }
+    route = {
+      name: 'topic',
+      locale,
+      topicId: segments[2],
+      commentPage: readCommentPage(url.searchParams),
+    }
   }
   else if (segments[1] === 'user') {
     if ((segments.length !== 3 && segments.length !== 4) || !segments[2])
@@ -110,8 +131,10 @@ export function buildForumHref(route: ForumRoute, options: ForumHrefOptions): st
     segments.push('topic', route.topicId)
     url.searchParams.delete('q')
     url.searchParams.delete('sort')
+    writeCommentPage(url.searchParams, route.commentPage)
   }
   else {
+    url.searchParams.delete(COMMENT_PAGE_PARAM)
     if (route.name === 'user')
       segments.push('user', route.username)
     if (route.list.filter !== 'all')
@@ -188,6 +211,22 @@ function writeListQuery(searchParams: URLSearchParams, list: ForumListRouteState
     searchParams.set('sort', list.sort)
   else
     searchParams.delete('sort')
+}
+
+function readCommentPage(searchParams: URLSearchParams): number {
+  const value = searchParams.get(COMMENT_PAGE_PARAM)
+  if (!value || !POSITIVE_INTEGER_REGEX.test(value))
+    return 1
+
+  const page = Number(value)
+  return Number.isSafeInteger(page) ? page : 1
+}
+
+function writeCommentPage(searchParams: URLSearchParams, page: number): void {
+  if (Number.isSafeInteger(page) && page > 1)
+    searchParams.set(COMMENT_PAGE_PARAM, String(page))
+  else
+    searchParams.delete(COMMENT_PAGE_PARAM)
 }
 
 function stripBase(pathname: string, base: string): string | null {

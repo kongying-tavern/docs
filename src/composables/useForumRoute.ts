@@ -85,7 +85,23 @@ export function useForumRoute() {
   }
 
   function topicHref(topicId: string, hash?: string | null): string {
-    return href({ name: 'topic', locale: currentLocale(), topicId }, hash)
+    return href({ name: 'topic', locale: currentLocale(), topicId, commentPage: 1 }, hash)
+  }
+
+  function commentHref(topicId: string, commentId: string | number, commentPage: number): string {
+    return href({ name: 'topic', locale: currentLocale(), topicId, commentPage }, `reply-${commentId}`)
+  }
+
+  function replaceCommentPage(commentPage: number): boolean {
+    const current = route.value
+    if (import.meta.env.SSR || current?.name !== 'topic')
+      return false
+
+    return canonicalizeForumLocation(
+      window.history,
+      currentHref(),
+      href({ ...current, commentPage }),
+    )
   }
 
   function userHref(username: string, filter: ForumFilter = 'all'): string {
@@ -133,7 +149,9 @@ export function useForumRoute() {
     href,
     homeHref,
     topicHref,
+    commentHref,
     userHref,
+    replaceCommentPage,
     leaveTopic,
     navigate,
     navigateFilter,

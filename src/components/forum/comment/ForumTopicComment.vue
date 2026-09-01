@@ -18,12 +18,14 @@ const props = withDefaults(
     topicId: string
     topicAuthorId: string | number
     commentData: ForumAPI.Comment
+    commentPage?: number
     size?: 'small' | 'normal'
     commentClickHandler?: () => void
   }>(),
   {
     size: 'normal',
     repo: 'Feedback',
+    commentPage: 1,
   },
 )
 
@@ -128,7 +130,7 @@ function handleCommentClick(author: ForumAPI.User): void {
       <div v-if="props.size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
           :repo="props.repo" :comment-data="props.commentData" :comment-click-handler="props.commentClickHandler"
-          :topic-id="props.topicId"
+          :topic-id="props.topicId" :comment-page="props.commentPage"
           @comment:click="handleCommentClick"
         />
       </div>
@@ -156,5 +158,22 @@ function handleCommentClick(author: ForumAPI.User): void {
 
 .last-comment > .comment-info {
   border: none !important;
+}
+
+.topic-comment-item:target {
+  animation: comment-highlight 2s ease-out;
+}
+
+@keyframes comment-highlight {
+  from {
+    background: var(--vp-c-brand-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-comment-item:target {
+    animation: none;
+    outline: 2px solid var(--vp-c-brand-1);
+  }
 }
 </style>

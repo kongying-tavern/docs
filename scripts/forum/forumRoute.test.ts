@@ -9,6 +9,7 @@ import {
   isSameForumDestination,
   navigateForumDestination,
   parseForumLocation,
+  readForumCommentId,
 } from '../../src/services/forum/forumRoute'
 
 const ROUTE_OPTIONS = {
@@ -50,7 +51,7 @@ test('round-trips localized Topic and encoded User routes', () => {
   const topic = parseForumLocation('/docs/en/feedback/topic/AB%20123', ROUTE_OPTIONS)
   const user = parseForumLocation('/docs/ja/feedback/user/%E7%A9%BA%20%E8%8D%A7/closed?q=test', ROUTE_OPTIONS)
 
-  assert.deepEqual(topic?.route, { name: 'topic', locale: 'en', topicId: 'AB 123' })
+  assert.deepEqual(topic?.route, { name: 'topic', locale: 'en', topicId: 'AB 123', commentPage: 1 })
   assert.equal(topic?.canonicalHref, '/docs/en/feedback/topic/AB%20123')
   assert.deepEqual(user?.route, {
     name: 'user',
@@ -114,6 +115,23 @@ test('builders preserve unrelated query and hash while replacing owned list stat
   assert.equal(href, '/docs/en/feedback/user/alice%2Fbob/feat?view=card&q=map&sort=updated#comments')
 })
 
+test('round-trips Topic comment loading state and canonicalizes invalid pages', () => {
+  const parsed = parseForumLocation('/docs/feedback/topic/123?comment-page=3#reply-456', ROUTE_OPTIONS)
+  const invalid = parseForumLocation('/docs/feedback/topic/123?comment-page=-2#reply-456', ROUTE_OPTIONS)
+
+  assert.deepEqual(parsed?.route, { name: 'topic', locale: 'root', topicId: '123', commentPage: 3 })
+  assert.equal(parsed?.canonicalHref, '/docs/feedback/topic/123?comment-page=3#reply-456')
+  assert.deepEqual(invalid?.route, { name: 'topic', locale: 'root', topicId: '123', commentPage: 1 })
+  assert.equal(invalid?.canonicalHref, '/docs/feedback/topic/123#reply-456')
+})
+
+test('reads numeric and encoded string comment IDs from reply hashes', () => {
+  assert.equal(readForumCommentId('#reply-456'), '456')
+  assert.equal(readForumCommentId('/docs/feedback/topic/123?comment-page=3#reply-review%2Fabc'), 'review/abc')
+  assert.equal(readForumCommentId('#reply-'), null)
+  assert.equal(readForumCommentId('#reply-%E0%A4%A'), null)
+})
+
 test('same destination navigation compares the complete URL', () => {
   assert.equal(isSameForumDestination('/docs/feedback?q=map#results', '/docs/feedback?q=map#results'), true)
   assert.equal(isSameForumDestination('/docs/feedback?q=map', '/docs/feedback?q=other'), false)
@@ -147,7 +165,7 @@ test('canonicalization preserves the current History state object', () => {
 
 test('Forum transitions follow the element that explains the navigation', () => {
   const home = { name: 'home', locale: 'root', list: { filter: 'all', sort: 'created', q: '', creator: null } } as const
-  const topic = { name: 'topic', locale: 'root', topicId: 'I123' } as const
+  const topic = { name: 'topic', locale: 'root', topicId: 'I123', commentPage: 1 } as const
   const user = { name: 'user', locale: 'root', username: 'alice', list: { ...home.list, creator: 'alice' } } as const
 
   assert.equal(resolveForumSharedRoute(home, topic), topic)
@@ -165,7 +183,7 @@ test('Forum navigation restores saved scroll only for history entries', () => {
 
 test('Topic return links use the same back direction as browser history', () => {
   const home = { name: 'home', locale: 'root', list: { filter: 'all', sort: 'created', q: '', creator: null } } as const
-  const topic = { name: 'topic', locale: 'root', topicId: 'I123' } as const
+  const topic = { name: 'topic', locale: 'root', topicId: 'I123', commentPage: 1 } as const
 
   assert.equal(resolveForumDirection(topic, home, false), 'back')
   assert.equal(resolveForumDirection(home, topic, false), 'forward')

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
-import { computed, nextTick, useTemplateRef } from 'vue'
+import { computed, nextTick, useTemplateRef, watch } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
@@ -28,8 +28,11 @@ const {
   commentInputBoxIsVisible,
   isMobile,
   renderComments,
+  commentPages,
   allCommentCount,
   currentCommentPage,
+  targetCommentId,
+  targetCommentReady,
   loadStateMessage,
   commentLoading,
   commentError,
@@ -59,11 +62,25 @@ useIntersectionObserver(
 )
 
 watchOnce(commentLoading, async () => {
-  if (props.inline)
+  if (props.inline || targetCommentId.value)
     return
   await nextTick()
   scrollTo()
 })
+
+let lastScrolledCommentId: string | null = null
+watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
+  if (!commentId) {
+    lastScrolledCommentId = null
+    return
+  }
+  if (!ready || commentId === lastScrolledCommentId)
+    return
+
+  lastScrolledCommentId = commentId
+  await nextTick()
+  scrollTo({ hash: `#reply-${commentId}` })
+}, { immediate: true })
 </script>
 
 <template>
@@ -104,6 +121,7 @@ watchOnce(commentLoading, async () => {
           :topic-author-id="topicAuthorId"
           :topic-id="topicId"
           :comment-data="comment"
+          :comment-page="commentPages.get(String(comment.id)) ?? 1"
           :comment-click-handler="() => toggleCommentReply(comment.id)"
         >
           <ForumCommentInputBox
