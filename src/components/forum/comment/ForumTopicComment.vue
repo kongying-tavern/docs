@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumTopicTranslator from '../topic/ForumTopicTranslator.vue'
+import ForumImage from '../ui/ForumImage.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
-import ForumImagePreviewer from '../ui/image-previewer/ForumImagePreviewer.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicComment } from './composables/useTopicComment'
@@ -104,38 +104,26 @@ function handleCommentClick(author: ForumAPI.User): void {
         {{ showingTranslation ? translatedText : content.text }}
       </article>
 
-      <ForumImagePreviewer
+      <ForumImage
         v-if="props.commentData.content.images && props.size !== 'small'"
         :images="props.commentData.content.images.map(img => ({
           src: img.src,
           width: img.width || 1920,
           height: img.height || 1080,
           alt: img.alt || '',
+          thumbHash: img.thumbHash,
         }))"
+        layout="row"
+        :max-display="3"
+        container-class="!max-w-[28rem]"
         :context="{
           kind: 'comment',
           comment: props.commentData,
           repo: props.repo,
           topicAuthorId: props.topicAuthorId,
         }"
-        class="topic-content-img mt-4"
-      >
-        <template #default="{ openAt }">
-          <div class="flex flex-row flex-wrap gap-2">
-            <img
-              v-for="(img, index) in props.commentData.content.images"
-              :key="img.src"
-              :src="img.src"
-              :alt="img.alt || ''"
-              :width="img.width"
-              :height="img.height"
-              class="border border-[var(--vp-c-divider)] rounded-sm flex-shrink-0 max-h-24 cursor-zoom-in transition-colors duration-200 hover:border-[var(--vp-c-brand)]"
-              loading="lazy"
-              @click="openAt(index, $event.currentTarget)"
-            >
-          </div>
-        </template>
-      </ForumImagePreviewer>
+        class="mt-4"
+      />
 
       <div v-if="props.size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
@@ -154,20 +142,6 @@ function handleCommentClick(author: ForumAPI.User): void {
 .topic-comment-item:hover > div > .comment-info > div > .topic-info-list > .topic-btn-more {
   opacity: 1 !important;
   word-break: break-word;
-}
-
-.topic-content-img {
-  max-width: 100%;
-}
-
-.topic-content-img img {
-  border: 1px solid var(--vp-c-divider);
-  background: var(--vp-c-bg-soft);
-  transition: border-color 0.2s ease;
-}
-
-.topic-content-img img:hover {
-  border-color: var(--vp-c-brand);
 }
 
 .content :deep(img[data-emoji]) {

@@ -45,6 +45,20 @@ test('comment emoji and self-profile actions keep their display contracts', asyn
   assert.doesNotMatch(hoverCardSource, /user-hover|userAPI\.getUser/)
 })
 
+test('comment attachments reuse the capped shared image row', async () => {
+  const [commentSource, imageSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumImage.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(commentSource, /<ForumImage[\s\S]*layout="row"[\s\S]*:max-display="3"/)
+  assert.doesNotMatch(commentSource, /v-for="\(img, index\) in props\.commentData\.content\.images"/)
+  assert.match(imageSource, /grid-template-columns: repeat\(var\(--forum-image-columns\), minmax\(0, 1fr\)\)/)
+  assert.match(imageSource, /index === displayImages\.length - 1 && remainingCount > 0/)
+  assert.match(imageSource, /<ForumImagePreviewer[\s\S]*:images="validImages"/)
+  assert.match(imageSource, /@click="openAt\(index, \$event\.currentTarget\)"/)
+})
+
 test('official comment extraction receives permission state from its caller', () => {
   const authorComment = { ...comment('author'), id: 1, user, target: { issue: { id: 101 } } }
   const officialComment = {
@@ -80,6 +94,35 @@ test('comment scrolling hooks register during component setup', async () => {
   assert.match(stateSource, /if \(!import\.meta\.env\.SSR\) \{\s+useInfiniteScroll/)
   assert.match(areaSource, /const inputObservationTarget = computed/)
   assert.doesNotMatch(areaSource, /stopObserver|onUnmounted\(cleanup\)/)
+})
+
+test('comment uploads stay editable and gist permission failures offer reauthorization', async () => {
+  const [source, richTextareaSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(source, /const loading = computed\(\(\) => submitPending\.value \|\| forumMutations\.creatingComment\.value\)/)
+  assert.match(source, /const busy = computed\(\(\) => loading\.value \|\| queue\.isBusy\.value\)/)
+  assert.match(source, /:disabled="loading"[\s\S]*:loading="busy"/)
+  assert.match(source, /error instanceof GiteeAPIError && error\.state === 403/)
+  assert.match(source, /logout\(\)[\s\S]*redirectAuth\(\)/)
+  assert.match(richTextareaSource, /editable: !props\.disabled/)
+  assert.match(richTextareaSource, /watch\(\(\) => props\.disabled,[\s\S]*setEditable\(!disabled\)/)
+  assert.doesNotMatch(richTextareaSource, /watch\(\(\) => props\.loading,[\s\S]*setEditable/)
+  assert.match(richTextareaSource, /:disabled="disabled \|\| loading \|\| charCount === 0"/)
+})
+
+test('every Gitee login flow requests gist permission', async () => {
+  const [configSource, oauthSource, passwordSource] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/config.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/oauth.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/password.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(configSource, /GITEE_AUTH_SCOPES = \[[^\]]*'gists'[^\]]*\] as const/)
+  assert.match(oauthSource, /scope: GITEE_AUTH_SCOPES\.join\(' '\)/)
+  assert.match(passwordSource, /scope: readonly string\[\] = GITEE_AUTH_SCOPES/)
 })
 
 test('Forum hash changes preserve VitePress History state', async () => {

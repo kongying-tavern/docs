@@ -61,22 +61,22 @@ const isRail = computed(() => isMobile.value)
 
 const railRef = useTemplateRef<HTMLElement>('railRef')
 const railIndex = ref(0)
-const railCount = computed(() => availableImages.value.length)
-const showPrevArrow = computed(() => isRail.value && railIndex.value > 0)
-const showNextArrow = computed(() => isRail.value && railIndex.value < railCount.value - 1)
 
 useBounceScroll(railRef, { axis: 'x' })
 
 const displayImages = computed(() => {
-  if (isRail.value)
-    return availableImages.value
   const layout = actualLayout.value
   if (layout === 'row')
     return availableImages.value.slice(0, props.maxDisplay)
+  if (isRail.value)
+    return availableImages.value
   if (layout === 'gallery')
     return availableImages.value.slice(0, 4)
   return availableImages.value
 })
+const railCount = computed(() => displayImages.value.length)
+const showPrevArrow = computed(() => isRail.value && railIndex.value > 0)
+const showNextArrow = computed(() => isRail.value && railIndex.value < railCount.value - 1)
 
 const railItemWidth = computed(() => {
   if (typeof window === 'undefined')
@@ -134,17 +134,22 @@ function scrollRailTo(index: number) {
 }
 
 const remainingCount = computed(() => {
-  if (isRail.value)
-    return 0
   const layout = actualLayout.value
   if (layout === 'row')
-    return availableImages.value.length - props.maxDisplay
+    return Math.max(0, availableImages.value.length - props.maxDisplay)
+  if (isRail.value)
+    return 0
   if (layout === 'gallery')
     return availableImages.value.length - 4
   return 0
 })
 
 const validImages = computed(() => availableImages.value.map(({ image }) => image))
+const rowContainerStyle = computed<Record<string, string> | undefined>(() =>
+  !isRail.value && actualLayout.value === 'row'
+    ? { '--forum-image-columns': String(Math.max(1, props.maxDisplay)) }
+    : undefined,
+)
 
 function handleError(index: number) {
   errorMap.value.add(index)
@@ -164,7 +169,7 @@ const layoutConfig = computed(() => {
 
   // @unocss-include
   const containerStyles: Record<string, string> = {
-    row: 'flex gap-4 max-w-[80%]',
+    row: 'forum-image-row grid gap-2 max-w-[80%]',
     gallery: 'grid grid-cols-2 grid-rows-2 gap-0 max-h-[400px] rounded-lg overflow-hidden',
     single: 'grid grid-cols-1 max-h-[500px] gap-0',
     double: 'grid grid-cols-2 gap-0 max-h-[400px]',
@@ -187,7 +192,7 @@ const layoutConfig = computed(() => {
     if (isRail.value)
       return 'w-[78vw] max-w-[420px] shrink-0 snap-start rounded-xl'
     if (layout === 'row')
-      return 'h-100px w-[30%] rounded'
+      return 'h-100px min-w-0 rounded'
 
     const cornerClass = cornerStyles[layout]?.[index] ?? ''
     return `${baseStyles} ${cornerClass}`
@@ -216,6 +221,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
       <div
         ref="railRef"
         :class="[layoutConfig.containerStyle, containerClass]"
+        :style="rowContainerStyle"
         @scroll.passive="onRailScroll"
       >
         <button
@@ -274,6 +280,10 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 </template>
 
 <style scoped>
+.forum-image-row {
+  grid-template-columns: repeat(var(--forum-image-columns), minmax(0, 1fr));
+}
+
 .grid:has(.row-span-2) {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;

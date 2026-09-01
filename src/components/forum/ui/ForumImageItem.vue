@@ -123,8 +123,10 @@ function onLazyError() {
 </template>
 
 <style scoped>
-.cursor-zoom-in:hover img {
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .cursor-zoom-in:hover img {
+    transform: scale(1.05);
+  }
 }
 
 .fade-enter-active,

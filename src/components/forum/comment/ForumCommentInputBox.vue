@@ -4,11 +4,13 @@ import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
+import { GiteeAPIError } from '@/apis/forum/gitee'
 import { uploadImg } from '@/apis/interknot.site/upload'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
 import { useLocalized } from '@/hooks/useLocalized'
+import useLogin from '@/hooks/useLogin'
 import { cn } from '@/lib/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
@@ -53,12 +55,14 @@ const submitPending = ref(false)
 
 const forumMutations = useForumMutations()
 const personal = useForumPersonalState()
+const { logout, redirectAuth } = useLogin()
 
 const queue = useImageAttachmentQueue({
   upload: uploadImg,
   prepare: calculateThumbHashForFile,
 })
-const loading = computed(() => submitPending.value || forumMutations.creatingComment.value || queue.isBusy.value)
+const loading = computed(() => submitPending.value || forumMutations.creatingComment.value)
+const busy = computed(() => loading.value || queue.isBusy.value)
 
 function emptyDoc(): JSONContent {
   return { type: 'doc', content: [{ type: 'paragraph' }] }
@@ -92,8 +96,20 @@ async function submit(): Promise<void> {
         plainText.value = ''
         queue.reset()
         if (topic) {
-          personal.recordParticipation(topic).catch(() => {
-            toast.warning(message.value.forum.sidebar.syncFailed)
+          personal.recordParticipation(topic).catch((error) => {
+            toast.warning(message.value.forum.sidebar.syncFailed, {
+              ...(error instanceof GiteeAPIError && error.state === 403
+                ? {
+                    action: {
+                      label: message.value.forum.auth.login,
+                      onClick: () => {
+                        logout()
+                        redirectAuth()
+                      },
+                    },
+                  }
+                : {}),
+            })
           })
         }
       },
@@ -147,7 +163,7 @@ async function retryAttachment(id: string): Promise<void> {
       container-class="w-[calc(100%-72px)]"
       :attachments="queue.attachments.value"
       :disabled="loading"
-      :loading="loading"
+      :loading="busy"
       :collapse="collapse"
       :max-text-length="VALIDATION_LIMITS.CONTENT.MAX_LENGTH"
       :autofocus="autofocus"

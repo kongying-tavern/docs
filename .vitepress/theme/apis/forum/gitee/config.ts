@@ -9,3 +9,5 @@ export const GITEE_API_CONFIG = {
   TOPIC_TYPE: ['BUG', 'FEAT', 'ANN'],
   STATE_TAGS: new Set(['DEV-TEST', 'WEB-FEEDBACK', 'GOOD-ISSUE', 'PINNED', 'COMMENT-CLOSED']),
 } as const
+
+export const GITEE_AUTH_SCOPES = ['user_info', 'issues', 'notes', 'gists'] as const
