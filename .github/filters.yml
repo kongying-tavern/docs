@@ -14,7 +14,6 @@ deploy:
   - '!.env.data'
   - '!.markdownlint.json'
   - '!.markdownlintignore'
-  - '!.stylelintrc.yml'
   - '!.zhlintcaseignore'
   - '!.zhlintrc'
   - '!commitlint.config.mjs'

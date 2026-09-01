@@ -120,6 +120,7 @@
     "conventional-changelog-cli": "catalog:dev",
     "dotenv-cli": "catalog:dev",
     "eslint": "catalog:dev",
+    "eslint-plugin-format": "catalog:dev",
     "fontaine": "catalog:dev",
     "git-cz": "catalog:dev",
     "husky": "catalog:dev",
@@ -132,12 +133,8 @@
     "markdown-it-kbd-better": "catalog:markdown",
     "markdownlint-cli": "catalog:dev",
     "open-editor": "catalog:dev",
+    "prettier": "catalog:dev",
     "shadcn-vue": "^2.8.2",
-    "stylelint": "catalog:dev",
-    "stylelint-config-prettier": "catalog:dev",
-    "stylelint-config-standard": "catalog:dev",
-    "stylelint-config-standard-scss": "catalog:dev",
-    "stylelint-order": "catalog:dev",
     "taze": "catalog:dev",
     "tsx": "catalog:build",
     "unlazy": "catalog:build",
@@ -148,7 +145,7 @@
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,cjs,mts,cts}": "eslint --cache --fix"
+    "*.{js,ts,vue,mjs,cjs,mts,cts,css,scss}": "eslint --cache --fix"
   },
   "config": {
     "commitizen": {
