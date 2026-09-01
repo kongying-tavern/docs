@@ -82,6 +82,17 @@ test('comment scrolling hooks register during component setup', async () => {
   assert.doesNotMatch(areaSource, /stopObserver|onUnmounted\(cleanup\)/)
 })
 
+test('Forum hash changes preserve VitePress History state', async () => {
+  const [hashCheckerSource, domUtilsSource] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/hooks/useHashChecker.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/utils/dom-utils.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(hashCheckerSource, /replaceState\(history\.state/)
+  assert.match(domUtilsSource, /replaceState\(history\.state/)
+  assert.doesNotMatch(`${hashCheckerSource}\n${domUtilsSource}`, /replaceState\(null/)
+})
+
 test('expanded personal sidebar sections bound live detail hydration', async () => {
   const sidebarSource = await readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8')
 

@@ -3,6 +3,6 @@ export function updateUrlHash(hash: string): void {
   if (window.location.hash === nextHash)
     return
 
-  history.replaceState(null, '', `${window.location.href.split('#')[0]}${nextHash}`)
+  history.replaceState(history.state, '', `${window.location.href.split('#')[0]}${nextHash}`)
   window.dispatchEvent(new Event('hashchange'))
 }
