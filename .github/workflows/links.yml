@@ -50,6 +50,7 @@ jobs:
             --exclude 'https://space\.bilibili\.com/.*'
             --exclude 'https://yuanshen\.site/.*'
             --exclude 'https://upload-bbs\.miyoushe\.com/.*'
+            --exclude 'https://github\.com/kongying-tavern/docs/blob/main/\.github/trans-guide-new-language\.md'
             --exclude 'https://github.com/([^/]+/docs/assets|user-attachments/assets)/.*'
             --exclude 'email.*support@yuanshen'
             './**/*.md'
