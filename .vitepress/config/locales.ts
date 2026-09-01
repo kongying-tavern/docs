@@ -48,7 +48,7 @@ export async function createLocalesConfig(): Promise<LocaleConfig<DefaultTheme.C
     Object.assign(themeConfig, config.themeConfig)
 
     const head = (await import(`../locales/${lang}/head.ts`)).default as HeadConfig[]
-    const key = mod.lang === DEFAULT_LOCALE ? 'root' : lang
+    const key = lang === DEFAULT_LOCALE ? 'root' : lang
     locales[key] = {
       label: mod.label,
       lang: mod.lang,
