@@ -440,6 +440,7 @@ const forum: CustomConfig['forum'] = {
     myFeedback: '私のフィードバック',
     submittedFeedback: '送信されたフィードバック',
     personalHomepage: 'の個人ホームページ',
+    goToProfile: 'プロフィールを見る',
     imageLoadFailed: '画像の読み込みに失敗しました',
     follow: 'フォロー',
     following: 'フォロー中',

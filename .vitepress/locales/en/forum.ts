@@ -398,6 +398,7 @@ const forum: CustomConfig['forum'] = {
     myFeedback: 'My Feedback',
     submittedFeedback: 'Submitted Feedback',
     personalHomepage: '\'s Personal Homepage',
+    goToProfile: 'View Profile',
     imageLoadFailed: 'Image load failed',
     follow: 'Follow',
     following: 'Following',

@@ -397,6 +397,7 @@ const forum: CustomConfig['forum'] = {
     myFeedback: '我的反馈',
     submittedFeedback: '提交的反馈',
     personalHomepage: '的个人主页',
+    goToProfile: '前往个人资料页',
     imageLoadFailed: '图片加载失败',
     follow: '关注',
     following: '正在关注中',

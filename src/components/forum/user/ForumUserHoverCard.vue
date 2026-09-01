@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
+import { useMediaQuery } from '@vueuse/core'
 import { useRouter } from 'vitepress'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,8 +16,10 @@ import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { getGiteeMessagesHref } from '~/constants/site'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
+import ForumUserMobileDrawer from './ForumUserMobileDrawer.vue'
 
 const { user, userId } = defineProps<{
   user?: ForumAPI.User
@@ -28,7 +31,7 @@ if (!user && !userId)
 
 const { message } = useLocalized()
 const router = useRouter()
-const { userHref } = useForumRoute()
+const { route, userHref } = useForumRoute()
 const currentUser = useUserInfoStore()
 
 const { data: userData, isLoading: getUserLoading } = useForumUserProfileQuery(
@@ -44,7 +47,22 @@ const isAuthorizedUser = computed(() => Boolean(
 ))
 const href = computed(() => userHref(userInfo.value?.login || ''))
 
-function openUserProfilePage() {
+const isOnProfilePage = computed(() => {
+  const current = route.value
+  return current?.name === 'user' && current.username === userInfo.value?.login
+})
+
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+const drawerOpen = ref(false)
+
+function onTriggerClick(event: MouseEvent) {
+  if (isMobile.value) {
+    event.preventDefault()
+    drawerOpen.value = true
+    return
+  }
+  if (isOnProfilePage.value)
+    return
   router.go(href.value)
 }
 
@@ -57,11 +75,12 @@ function sendMessage() {
   <HoverCard>
     <HoverCardTrigger
       as-child
-      @click="openUserProfilePage"
+      @click="onTriggerClick"
     >
       <slot name="trigger" />
     </HoverCardTrigger>
     <HoverCardContent
+      v-if="!isMobile"
       align="end"
       class="p-4 w-72"
     >
@@ -121,4 +140,11 @@ function sendMessage() {
       </div>
     </HoverCardContent>
   </HoverCard>
+
+  <ForumUserMobileDrawer
+    v-if="isMobile"
+    v-model:open="drawerOpen"
+    :user="userInfo"
+    :hide-profile-button="isOnProfilePage"
+  />
 </template>
