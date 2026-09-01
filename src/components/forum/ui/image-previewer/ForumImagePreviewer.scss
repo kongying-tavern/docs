@@ -7,6 +7,16 @@
   pointer-events: auto;
 }
 
+/* 面板内 reka 浮层(⋮菜单/hover-card/翻译 Popover)portal 到 body 且默认 z-50，
+   预览打开时会被预览根/右侧面板(z-1000/1001)盖住；统一抬升到面板之上 */
+:global(
+  body:has(.forum-preview-root) [data-slot='dropdown-menu-content'],
+  body:has(.forum-preview-root) [data-slot='hover-card-content'],
+  body:has(.forum-preview-root) [data-slot='popover-content']
+) {
+  z-index: 1002;
+}
+
 .forum-preview-root.closing {
   pointer-events: none;
 }
