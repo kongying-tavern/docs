@@ -1,0 +1,8 @@
+# lunaria-claim 认领看板配置
+issue:
+  title: '🙋 文档翻译认领'
+  # 灰度阶段用 test label，验收后改为 lunaria-claim 再重新 sync
+  label: 'lunaria-claim-test'
+ttlDays: 15                # 与既有「15 天内提交 PR」规则一致
+collapseThreshold: 30      # 单语言区块超过 30 条折叠
+# fileListStyle: tree      # 清单按目录树展示（默认）
