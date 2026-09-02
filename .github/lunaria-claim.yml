@@ -1,0 +1,7 @@
+# 翻译认领看板配置，由 lunaria-claim 维护（文档见 github.com/jiazengp/lunaria-claim）
+issue:
+  title: '🙋 文档社区翻译认领'
+  label: 'lunaria-claim' # bot 用它定位认领 issue，改名后已有 issue 不会自动迁移
+ttlDays: 15              # 认领后未提交 PR 的超期天数
+collapseThreshold: 30    # 单个语言区块超过该条数后折叠显示
+dashboardUrl: https://yuanshen.site/docs/_translations/
