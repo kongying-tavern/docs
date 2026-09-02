@@ -1,0 +1,34 @@
+name: Translation tracker sync
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: lunaria-claim-sync
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # Lunaria 需要完整 git 历史
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm lunaria:build
+      - uses: jiazengp/lunaria-claim@v1
+        with:
+          mode: sync
+          # 与 lunaria.config.json 的 outDir 对应
+          status-json: ./dist/_translations/status.json
