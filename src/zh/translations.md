@@ -12,7 +12,7 @@ description: 我们希望通过社区的共同努力提供所有原神支持的�
 
 ## 翻译中的语言 {#work-in-progress-languages}
 
-详见[「文档社区翻译需求」](https://github.com/kongying-tavern/docs/issues/242)
+详见[翻译认领看板](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim)
 
 ## 现有翻译更新进度 {#translation-progress}
 
@@ -31,4 +31,4 @@ description: 我们希望通过社区的共同努力提供所有原神支持的�
 
 ## 启动新的翻译 {#starting-a-new-translation}
 
-我们希望通过社区的努力提供所有原神支持的语言翻译。启动新翻译的流程见[启动新语言翻译教程](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)，认领请查看 [issue #242「文档社区翻译需求」](https://github.com/kongying-tavern/docs/issues/242)中的说明(在 issue 下回复你想参与的语言和文件名即可认领)。如果你对此感兴趣，也请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)。
+我们希望通过社区的努力提供所有原神支持的语言翻译。启动新翻译的流程见[启动新语言翻译教程](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)，认领请前往[翻译认领看板](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim)，按看板说明认领文件；目录也可一次认领，逾期自动释放。如果你对此感兴趣，也请查看[翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)。

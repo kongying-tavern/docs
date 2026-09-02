@@ -11,7 +11,7 @@ title: Translations
 
 ## Work in Progress Languages {#work-in-progress-languages}
 
-See [Document Community Translation Requests](https://github.com/kongying-tavern/docs/issues/242)
+See the [Translation Claim Board](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim)
 
 ## Current Translation Progress {#translation-progress}
 
@@ -30,4 +30,4 @@ Map client translations happen on our internal translation platform. If you woul
 
 ## Starting a new Translation {#starting-a-new-translation}
 
-We welcome community efforts to provide more translations. See the [New Language Translation Tutorial](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md) for the setup process, and refer to [issue #242](https://github.com/kongying-tavern/docs/issues/242) for claiming files (reply in the issue with the language and files you want to translate to claim them). If you are interested in contributing, please also check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) to get started.
+We welcome community efforts to provide more translations. See the [New Language Translation Tutorial](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md) for the setup process, and claim files on the [Translation Claim Board](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim) by commenting `/claim path/to/file`. If you are interested in contributing, please also check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) to get started.

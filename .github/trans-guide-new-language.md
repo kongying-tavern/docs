@@ -6,7 +6,7 @@
 
 - 该语言为原神官方所支持的语言
 - 计划翻译超过 50% 的内容，包括 `index.md`、`download-client.md`、`community.md`、`support-us.md`、`translations.md` 等重点页面及 `.vitepress/locales/zh/` 站点配置
-- 已在 [issue #242「文档社区翻译需求」](https://github.com/kongying-tavern/docs/issues/242) 下回复认领（**15 日内提交首个 PR**，逾期视为放弃）
+- 已在[翻译认领看板](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim) 评论 `/claim` 认领（**15 日内提交首个 PR**，逾期自动释放）
 - 不熟悉环境搭建？先看[翻译教程（无经验）](./trans-guide-no-exp.md)
 
 ## 第一步：初始化
@@ -21,7 +21,7 @@ pnpm install && pnpm init:locale
 
 1. 页面正文：按 `src/zh` 结构翻译 `src/<代码>/**/*.md`，从重点页面开始；标题锚点 `{#...}` 保留原文；在 `translations.md` 的语言列表加上自己
 2. 界面文案：翻译 `.vitepress/locales/<代码>/` 下的 TS 文件（`index.ts` 的标题与 `outlineTitle` 等、`constants.ts` 的 `META_*`、`nav`/`sidebar`/`footer`/`ui`/`forum` 等模块）及 `LanguageSuggestBar.ts` 中的新语言条目
-3. 在 `issue #242` 认领文件，方便协作
+3. 在[翻译认领看板](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim) 评论 `/claim 文件路径` 认领待翻译文件（可一次认领多个，也可整目录认领）
 
 > 文案字段由类型系统保证与默认语言结构一致（`pnpm typecheck` 会提示缺漏），放心改写。
 
@@ -39,4 +39,4 @@ pnpm dev                       # 预览 /docs/<代码>/
 - [翻译教程（无经验）](./trans-guide-no-exp.md) —— 环境搭建与 Git 入门
 - [Translation Guidelines](./translation-guide.md) —— 翻译规范（术语、锚点、PR 流程）
 - [多语言及翻译页面](https://yuanshen.site/docs/translations/) —— 站点语言列表与归档说明
-- [issue #242「文档社区翻译需求」](https://github.com/kongying-tavern/docs/issues/242) —— 认领与文件清单
+- [翻译认领看板](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim) —— 认领待翻译文件（评论 `/claim`）
