@@ -1,6 +1,6 @@
 ## 翻译认领
 
-简体中文 / English / 日本語 为官方翻译，下方是各语言**缺失或过期**的文件清单。认领方式：
+简体中文 / English / 日本語 为官方翻译，下方按语言列出**缺失或过期**的文件。认领方式：
 
 - 评论 `/claim 文件路径` 认领（可一次认领多个文件，也可认领整个目录，如 `/claim src/manual/`）
 - 放弃请评论 `/release 文件路径`
@@ -10,8 +10,16 @@
 
 > 韩语与法语已归档（暂时停止维护），如需恢复请联系维护者。
 
+### English
+
 <!-- LUNARIA-CLAIM:FILES -->
-{{files}}
+{{files_en}}
+<!-- /LUNARIA-CLAIM:FILES -->
+
+### 日本語
+
+<!-- LUNARIA-CLAIM:FILES -->
+{{files_ja}}
 <!-- /LUNARIA-CLAIM:FILES -->
 
 <!-- LUNARIA-CLAIM:STATE v1 -->
