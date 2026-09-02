@@ -28,7 +28,7 @@ catalogs:
     vitepress-plugin-llms: ^1.11.0
     vue-component-meta: ^3.3.7
   conflicts_editor_h3_4_4:
-    "@tiptap/core": ^3.20.1
+    "@tiptap/core": ^3.30.4
     "@tiptap/extension-character-count": ^3.20.1
     "@tiptap/extension-mention": ^3.20.1
     "@tiptap/extension-placeholder": ^3.20.1
@@ -65,7 +65,7 @@ catalogs:
     vite-plugin-vue-devtools: 7.7.7
     zhlint: 0.8.2
   editor:
-    "@tiptap/core": ^3.20.1
+    "@tiptap/core": ^3.30.4
     "@tiptap/extension-character-count": ^3.20.1
     "@tiptap/extension-link": ^3.20.1
     "@tiptap/extension-mention": ^3.20.1
