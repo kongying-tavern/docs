@@ -32,7 +32,13 @@ export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
   }
 }
 
-export function normalizeUser(user: GITEE.User): ForumAPI.User {
+/** 无权限账号的部分接口响应可能缺失 user/labels 等字段，统一兜底避免解析时抛错 */
+const EMPTY_USER: ForumAPI.User = { username: '', avatar: '', homepage: '', id: 0, login: '' }
+
+export function normalizeUser(user?: GITEE.User): ForumAPI.User {
+  if (!user)
+    return EMPTY_USER
+
   return {
     username: user.name,
     avatar:
@@ -103,7 +109,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     contentRaw: issue.body,
     link: issue.html_url,
     commentCount: getCommentAreaState(issue.labels) ? -1 : issue.comments,
-    pinned: issue.labels.some(label => label.name === 'PINNED'),
+    pinned: getLabelNames(issue.labels).includes('PINNED'),
     user: normalizeUser(issue.user),
     state: issue.state,
     createdAt: issue.created_at,
@@ -132,8 +138,12 @@ export function normalizeComment(comment: GITEE.Comment): ForumAPI.Comment {
   }
 }
 
-function getCommentAreaState(labels: GITEE.IssueLabel[]) {
-  return labels.map(val => val.name).includes('COMMENT-CLOSED')
+function getCommentAreaState(labels?: GITEE.IssueLabel[]) {
+  return getLabelNames(labels).includes('COMMENT-CLOSED')
+}
+
+function getLabelNames(labels?: GITEE.IssueLabel[]): string[] {
+  return (labels ?? []).flatMap(val => (val?.name ? [val.name] : []))
 }
 
 export function isUpperCase(str: string) {
@@ -144,7 +154,7 @@ function getTopicTypeFromTitle(title: string): {
   type: ForumAPI.TopicType
   title: string
 } {
-  const match = title
+  const match = (title ?? '')
     .toLocaleUpperCase()
     .match(new RegExp(`^(${GITEE_API_CONFIG.TOPIC_TYPE.join('|')}):`))
 
@@ -154,7 +164,7 @@ function getTopicTypeFromTitle(title: string): {
       return { type: prefix, title: stripMarkdownImages(title.slice(prefix.length + 1)) }
   }
 
-  return { type: null, title: stripMarkdownImages(title) }
+  return { type: null, title: stripMarkdownImages(title ?? '') }
 }
 
 export function getLanguageFromLabel(label: GITEE.IssueLabel[]): string | undefined {
@@ -173,9 +183,8 @@ export function getLanguageFromLabel(label: GITEE.IssueLabel[]): string | undefi
   return languageLabel.split('-')[1]?.toLowerCase() || undefined
 }
 
-export function filterWhitelistTags(labels: GITEE.IssueLabel[]) {
-  return labels
-    .map(val => val.name)
+export function filterWhitelistTags(labels?: GITEE.IssueLabel[]) {
+  return getLabelNames(labels)
     .filter(val => isUpperCase(val))
     .filter(
       val =>

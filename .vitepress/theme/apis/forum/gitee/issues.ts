@@ -88,7 +88,7 @@ export async function getTopics(
 
     if (
       !import.meta.env.DEV
-      && val.labels.map(val => val.name).includes('DEV-TEST')
+      && (val.labels ?? []).some(label => label?.name === 'DEV-TEST')
     ) {
       return
     }
