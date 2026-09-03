@@ -34,3 +34,5 @@ jobs:
           mode: sync
           # 与 lunaria.config.json 的 outDir 对应，status.json 就在其下
           status-json: ./dist/_translations/status.json
+        # 临时容错：修复 lunaria-claim#2（重复 sync 对已有 body 的占位符校验）后移除
+        continue-on-error: true
