@@ -178,7 +178,8 @@ const forum = {
   aside: {
     contactUs: {
       title: '联系我们',
-      desc: '地图功能异常、紧急问题请加入QQ反馈群处理',
+      join: '扫码加入QQ反馈群',
+      desc: '紧急问题 | 地图功能异常',
       qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
     },
     teamBlog: {

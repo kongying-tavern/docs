@@ -196,7 +196,8 @@ const forum: CustomConfig['forum'] = {
   aside: {
     contactUs: {
       title: 'お問い合わせ',
-      desc: '地図機能の不具合や緊急問題はQQグループにご連絡ください',
+      join: 'QRコードでDiscordへ',
+      desc: '緊急の問題 | 地図機能の異常',
       qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
     },
     teamBlog: {

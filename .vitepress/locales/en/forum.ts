@@ -195,7 +195,8 @@ const forum: CustomConfig['forum'] = {
   aside: {
     contactUs: {
       title: 'Contact Us',
-      desc: 'Join the QQ group for urgent issues or map problems',
+      join: 'Scan to join Discord',
+      desc: 'Urgent issues | Map malfunctions',
       qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
     },
     teamBlog: {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { shuffle, take } from 'lodash-es'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useQRCode } from '@/hooks/useQRCode'
 import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
@@ -83,11 +83,18 @@ const closedSuggestions = computed(() => closedTopics.rows.value
         rel="noopener"
         class="forum-aside-list-item border border-color-[var(--vp-c-gutter)] rounded-lg border-solid"
       >
-        <img class="rounded-lg shrink-0 h-18 w-18" :src="qrcode" alt="QR Code">
-        <span
-          class="font-size-3.5 color-[--vp-c-text-1] lh-5 min-w-0 break-words overflow-hidden line-clamp-2"
-        >
-          {{ contactUsConfig.desc }}
+        <img class="rounded-lg shrink-0 h-20 w-20" :src="qrcode" alt="QR Code">
+        <span class="flex flex-col gap-1 min-w-0">
+          <span
+            class="font-size-3.5 color-[--vp-c-text-1] lh-5 min-w-0 break-words overflow-hidden line-clamp-1"
+          >
+            {{ contactUsConfig.join }}
+          </span>
+          <span
+            class="font-size-3.5 color-[--vp-c-text-1] lh-5 min-w-0 break-words overflow-hidden line-clamp-2"
+          >
+            {{ contactUsConfig.desc }}
+          </span>
         </span>
       </a>
     </div>
