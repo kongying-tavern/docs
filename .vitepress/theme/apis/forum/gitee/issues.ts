@@ -6,7 +6,9 @@ import { buildFormData } from '@/apis/utils'
 import { apiCall } from '.'
 import { reformat } from '../webhook'
 import { GITEE_API_CONFIG } from './config'
+import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload } from './errors'
 import { extractOfficialAndAuthorComments } from './inBrowserUtils'
+import { GiteeApiErrorType } from './types'
 import {
   normalizeComment,
   normalizeIssue,
@@ -209,6 +211,17 @@ export async function postTopic(data: ForumAPI.FormSubmitData): Promise<ForumAPI
       body: form,
     },
   )
+
+  // Gitee 对未绑定手机号等创建失败返回 2xx + errors 对象而非 IssueInfo；
+  // 识别后按失败抛出，避免误报发布成功诱导重复发帖
+  const errorMessages = isErrorsOnlyPayload(issueInfo) ? extractErrorMessages(issueInfo) : []
+  if (errorMessages.length > 0) {
+    throw new GiteeAPIError(GiteeApiErrorType.ApiError, {
+      message: errorMessages.join('\n'),
+      method: 'post',
+      endpoint: `repos/${OWNER}/issues`,
+    })
+  }
 
   return normalizeIssue(issueInfo)
 }

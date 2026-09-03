@@ -11,7 +11,7 @@ import * as password from './password'
 import * as user from './user'
 import { extractPaginationParams } from './utils'
 
-export { GiteeAPIError } from './errors'
+export { GiteeAPIError, isPhoneBindingRequiredError } from './errors'
 
 /** DELETE/PUT 接口无响应体，统一返回空对象 */
 const EMPTY_DATA = {} as const
