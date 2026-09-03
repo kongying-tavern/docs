@@ -11,7 +11,7 @@ title: 多言語と翻訳
 
 ## 翻訳中の言語 {#work-in-progress-languages}
 
-詳しくは[翻訳認領ボード](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim)をご覧ください
+詳しくは[翻訳認領ボード](https://github.com/kongying-tavern/docs/issues/555)をご覧ください
 
 ## 現在の翻訳更新状況 {#translation-progress}
 
@@ -30,4 +30,4 @@ title: 多言語と翻訳
 
 ## 新しい翻訳を開始する {#starting-a-new-translation}
 
-新しい翻訳を開始する流れは[新言語翻訳チュートリアル](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)をご覧ください。要件と認領については、[翻訳認領ボード](https://github.com/kongying-tavern/docs/issues?q=label%3Alunaria-claim)で `/claim ファイルパス` とコメントしてください（期限切れは自動解放）。ご興味のある方は[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)もご覧ください。
+新しい翻訳を開始する流れは[新言語翻訳チュートリアル](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)をご覧ください。要件と認領については、[翻訳認領ボード](https://github.com/kongying-tavern/docs/issues/555)で `/claim ファイルパス` とコメントしてください（期限切れは自動解放）。ご興味のある方は[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)もご覧ください。
