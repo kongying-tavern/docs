@@ -562,6 +562,9 @@ importers:
       '@unocss/eslint-plugin':
         specifier: catalog:dev
         version: 66.6.6(eslint@10.0.3(jiti@2.6.1))(typescript@5.9.3)
+      cac:
+        specifier: ^7.0.0
+        version: 7.0.0
       conventional-changelog-cli:
         specifier: catalog:dev
         version: 5.0.0

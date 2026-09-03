@@ -6,14 +6,18 @@ import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue'
 import { isFromExternalPage } from '@/composables/isFromExternalPage'
 import { useLanguage } from '@/composables/useLanguage'
 import { getLangCode, hash } from '../../../utils'
-import { DEFAULT_LOCALE_CODE, LOCALE_CONFIG } from '../configs'
+import { DEFAULT_LOCALE_CODE, useLocaleConfig } from '../configs'
 import { BANNER_CONSTANTS, BANNER_SELECTORS } from '../constants'
 import { useBannerStorage } from './useBannerStorage'
 
 export function useBannerState(banner: Ref<HTMLElement | undefined>) {
   const { height } = useElementSize(banner)
   const { frontmatter, page, theme, lang, localeIndex } = useData()
-  const { matchedLang } = useLanguage(LOCALE_CONFIG.map(val => val.lang!), DEFAULT_LOCALE_CODE)
+  const localeConfig = useLocaleConfig()
+  const { matchedLang } = useLanguage(
+    localeConfig.value.map(val => val.lang),
+    DEFAULT_LOCALE_CODE,
+  )
   const { insertOrUpdateBannerData, isBannerDismissed } = useBannerStorage()
 
   const suggestLanguage = import.meta.env.SSR
