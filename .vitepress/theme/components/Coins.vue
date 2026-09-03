@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useQRCode } from '@vueuse/integrations/useQRCode'
 import { useData } from 'vitepress'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useQRCode } from '@/hooks/useQRCode'
 import BlurFade from './ui/BlurFade.vue'
 
 const { theme } = useData()

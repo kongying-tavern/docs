@@ -147,6 +147,7 @@ catalogs:
     "@types/markdown-it-container": ^4.0.0
     "@types/markdown-it-footnote": 3.0.4
     "@types/node": 24.13.3
+    "@types/qrcode": ^1.5.5
     "@types/sortablejs": ^1.15.9
   utils:
     js-yaml: ^5.0.0

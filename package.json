@@ -116,6 +116,7 @@
     "@types/markdown-it-container": "catalog:types",
     "@types/markdown-it-footnote": "catalog:types",
     "@types/node": "catalog:types",
+    "@types/qrcode": "catalog:types",
     "@unocss/eslint-plugin": "catalog:dev",
     "cac": "^7.0.0",
     "conventional-changelog-cli": "catalog:dev",

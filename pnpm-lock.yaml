@@ -301,6 +301,9 @@ catalogs:
     '@types/node':
       specifier: 24.13.3
       version: 24.13.3
+    '@types/qrcode':
+      specifier: ^1.5.5
+      version: 1.5.6
   utils:
     js-yaml:
       specifier: ^5.0.0
@@ -556,6 +559,9 @@ importers:
       '@types/node':
         specifier: catalog:types
         version: 24.13.3
+      '@types/qrcode':
+        specifier: catalog:types
+        version: 1.5.6
       '@unocss/eslint-plugin':
         specifier: catalog:dev
         version: 66.6.6(eslint@10.0.3(jiti@2.6.1))(typescript@5.9.3)
@@ -2720,6 +2726,9 @@ packages:
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
+
+  '@types/qrcode@1.5.6':
+    resolution: {integrity: sha512-te7NQcV2BOvdj2b1hCAHzAoMNuj65kNBMz0KBaxM6c3VGBOhU0dURQKOtH8CFNI/dsKkwlv32p26qYQTWoB5bw==}
 
   '@types/semver@7.7.1':
     resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
@@ -8778,6 +8787,10 @@ snapshots:
       undici-types: 7.18.2
 
   '@types/normalize-package-data@2.4.4': {}
+
+  '@types/qrcode@1.5.6':
+    dependencies:
+      '@types/node': 24.13.3
 
   '@types/semver@7.7.1': {}
 
