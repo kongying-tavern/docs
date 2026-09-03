@@ -327,6 +327,7 @@ const forum: CustomConfig['forum'] = {
       publishFailed: '投稿できませんでした。入力内容は保存されています。',
       phoneBindingRequired: 'Gitee アカウントに電話番号が登録されていません。登録後にフィードバックを再送信してください。',
       returnToForm: 'フォームに戻る',
+      copyError: 'エラー情報をコピー',
       retryImage: '{filename} を再アップロード',
       removeImage: '{filename} を削除',
       addImages: '画像を追加',

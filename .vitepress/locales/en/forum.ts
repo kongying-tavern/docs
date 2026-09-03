@@ -326,6 +326,7 @@ const forum: CustomConfig['forum'] = {
       publishFailed: 'Feedback could not be published. Your draft is preserved.',
       phoneBindingRequired: 'Your Gitee account has no phone number bound. Bind one and resubmit your feedback.',
       returnToForm: 'Return to form',
+      copyError: 'Copy error details',
       retryImage: 'Retry {filename}',
       removeImage: 'Remove {filename}',
       addImages: 'Add images',

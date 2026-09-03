@@ -309,6 +309,7 @@ const forum = {
       publishFailed: '反馈发布失败，你的内容已保留',
       phoneBindingRequired: '你的 Gitee 账号尚未绑定手机号，绑定后请重新提交反馈',
       returnToForm: '返回表单',
+      copyError: '复制错误信息',
       retryImage: '重新上传 {filename}',
       removeImage: '移除 {filename}',
       addImages: '添加图片',
