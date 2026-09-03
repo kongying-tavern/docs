@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/* eslint-disable no-console */
 import type { ImageAttachmentError } from '~/services/forum/form/imageAttachment'
 import type { TopicFormTransactionStage } from '~/services/forum/form/topicFormTransaction'
 import type { TopicFormData } from '~/services/forum/form/validation'
@@ -8,8 +9,9 @@ import {
   useMediaQuery,
 } from '@vueuse/core'
 import { last } from 'lodash-es'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, ref, watch } from 'vue'
 import { toast } from 'vue-sonner'
+import { isPhoneBindingRequiredError } from '@/apis/forum/gitee'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,6 +38,7 @@ import { useHashChecker } from '@/hooks/useHashChecker'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumImageUpload from '~/components/forum/form/ForumImageUpload.vue'
+import ToastErrorDescription from '~/components/forum/ui/ToastErrorDescription.vue'
 import { formatImageAttachmentError, formatMessage } from '~/components/forum/utils/forumUi'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { useFormState } from '../composables/useFormState'
@@ -213,16 +216,25 @@ async function handleFormSubmit(): Promise<void> {
 
   submissionPhase.value = 'failed'
   const stage = result.stage === 'upload' ? 'upload' : 'topic'
-  const description = result.stage === 'upload'
-    ? result.errors.map(imageErrorText).join('\n')
-    : result.error.message
+  console.error('[forum] 反馈发布失败:', result)
+  const isPhoneBinding = result.stage === 'topic' && isPhoneBindingRequiredError(result.error)
   toast.error(
     stage === 'upload'
       ? message.value.forum.publish.feedbackForm.uploadFailed
       : message.value.forum.publish.feedbackForm.publishFailed,
     {
       id: SUBMISSION_TOAST_ID,
-      description,
+      ...(stage === 'topic'
+        ? {
+            description: markRaw(ToastErrorDescription),
+            componentProps: {
+              error: result.error,
+              text: isPhoneBinding
+                ? message.value.forum.publish.feedbackForm.phoneBindingRequired
+                : undefined,
+            },
+          }
+        : { description: result.errors.map(imageErrorText).join('\n') }),
       action: {
         label: message.value.forum.publish.feedbackForm.returnToForm,
         onClick: () => reopenFailedForm(stage),
