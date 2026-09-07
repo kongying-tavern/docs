@@ -151,8 +151,10 @@ catalogs:
     "@types/sortablejs": ^1.15.9
   utils:
     js-yaml: ^5.0.0
-    pnpm: 10.34.5
-ignoredBuiltDependencies:
-  - "@parcel/watcher"
-  - esbuild
-  - vue-demi
+    pnpm: 12.3.4
+# pnpm 11+ 以 allowBuilds 取代 ignoredBuiltDependencies；
+# false = 保持 pnpm 10 时代显式忽略这些包构建脚本的行为
+allowBuilds:
+  "@parcel/watcher": false
+  esbuild: false
+  vue-demi: false
