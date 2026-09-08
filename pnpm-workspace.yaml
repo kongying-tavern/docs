@@ -94,7 +94,7 @@ catalogs:
     "@vueuse/integrations": ^14.2.1
     "@vueuse/motion": ^3.0.3
     class-variance-authority: ^0.7.1
-    clsx: ^2.1.1
+    cn: ^0.2.6
     compressorjs: ^1.3.0
     dayjs: ^1.11.20
     dexie: ^4.3.0
@@ -112,7 +112,6 @@ catalogs:
     radix-vue: ^1.9.17
     reka-ui: ^2.10.4
     sortablejs: ^1.15.7
-    tailwind-merge: ^3.5.0
     thumbhash: ^0.1.1
     vaul-vue: ^0.4.1
     vue: ^3.5.41
