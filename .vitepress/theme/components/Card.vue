@@ -2,6 +2,7 @@
 import { withBase } from 'vitepress'
 import { computed } from 'vue'
 
+import { ASSET_ORIGIN } from '~/constants/site'
 import { isLinkExternal, isRelativeLink } from '../utils'
 
 const props = withDefaults(defineProps<CardProps>(), {

@@ -12,8 +12,8 @@ export interface CustomConfig {
 }
 
 export interface LocaleTextConfig {
-  outlineTitle: string
-  lastUpdatedText: string
+  outline: { label: string }
+  lastUpdated: { text: string }
   returnToTopLabel: string
   langMenuLabel: string
   docFooter: {

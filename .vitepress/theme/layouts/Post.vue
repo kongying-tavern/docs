@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
-import { useSidebar } from 'vitepress/theme-without-fonts'
+import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
@@ -12,7 +12,7 @@ const DOT_SLASH_REGEX = /[./]+/g
 const HTML_SUFFIX_REGEX = /_html$/
 
 const { params, theme, frontmatter } = useData()
-const { hasSidebar, hasAside, leftAside } = useSidebar()
+const { hasSidebar, hasAside, leftAside } = useLayout()
 const route = useRoute()
 
 // 右侧大纲由 frontmatter 配置启用（outline: true / 'deep' 等），默认关闭
@@ -68,7 +68,7 @@ onMounted(() => {
   const root = document.querySelector('.post-content')
   if (!root)
     return
-  outlineItems.value = [...root.querySelectorAll(':where(h2, h3, h4)')]
+  outlineItems.value = [...root.querySelectorAll<HTMLElement>(':where(h2, h3, h4)')]
     .filter(isOutlineHeading)
     .map(heading => ({
       id: heading.id,
@@ -76,7 +76,7 @@ onMounted(() => {
       level: Number(heading.tagName[1]),
     }))
     .filter(item => item.title)
-  outlineLinks = [...document.querySelectorAll('.post-aside .outline a')]
+  outlineLinks = [...document.querySelectorAll<HTMLAnchorElement>('.post-aside .outline a')]
   outlineHeadingElements = outlineItems.value
     .map(item => document.getElementById(item.id))
     .filter((element): element is HTMLElement => Boolean(element))
@@ -113,7 +113,7 @@ if (params?.value) {
         <div class="aside-container">
           <div class="aside-content">
             <p class="outline-title">
-              {{ theme.outline?.label || theme.outlineTitle || '本页目录' }}
+              {{ theme.outline?.label || '本页目录' }}
             </p>
             <nav
               v-if="outlineItems.length"

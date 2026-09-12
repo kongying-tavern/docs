@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { BlogPost } from '~/utils/createBlogLoader'
-import { useMediaQuery } from '@vueuse/core'
+import { useMediaQuery, useMounted } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
-import { data as allPosts } from '~/_data/posts.data'
 import { useMarkdownRenderer } from '~/composables/useMarkdownRenderer'
+import { data as allPosts } from '../../../_data/posts.data.js'
 
 const { lang, frontmatter } = useData()
 const { renderMarkdownPreview } = useMarkdownRenderer()
@@ -23,10 +23,12 @@ const posts = computed(() => {
 
 // 移动端跳过 featured 大卡，全部文章以普通列表展示
 const isMediumUp = useMediaQuery('(min-width: 768px)')
+const isMounted = useMounted()
+const showDesktopLayout = computed(() => isMounted.value && isMediumUp.value)
 const featured = computed(() => posts.value.slice(0, 3))
 const restPosts = computed(() => posts.value.slice(3))
-const listPosts = computed(() => (isMediumUp.value ? restPosts.value : posts.value))
-const showSectionHeader = computed(() => (isMediumUp.value ? restPosts.value.length > 0 : posts.value.length > 0))
+const listPosts = computed(() => (showDesktopLayout.value ? restPosts.value : posts.value))
+const showSectionHeader = computed(() => (showDesktopLayout.value ? restPosts.value.length > 0 : posts.value.length > 0))
 
 function buildPostLink(url: string) {
   return `./posts/${url.slice(url.lastIndexOf('/') + 1)}`
@@ -83,7 +85,7 @@ function postExcerpt(post: BlogPost): string {
 
 <template>
   <section
-    v-if="featured.length && isMediumUp"
+    v-if="featured.length && showDesktopLayout"
     class="border-b-1px border-b-[var(--vp-c-divider)] border-b-solid md:grid md:grid-cols-3"
   >
     <!-- 主 featured：大卡（2/3 宽） -->

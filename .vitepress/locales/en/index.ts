@@ -5,8 +5,8 @@ export const enConfig = {
   title: 'Kongying Tavern',
   titleTemplate: ':title | Kongying Tavern',
   themeConfig: {
-    outlineTitle: 'On This Page',
-    lastUpdatedText: 'Update Date',
+    outline: { label: 'On This Page' },
+    lastUpdated: { text: 'Update Date' },
     returnToTopLabel: 'Back to Top',
     langMenuLabel: 'Change language',
     docFooter: {

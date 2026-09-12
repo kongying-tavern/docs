@@ -56,7 +56,7 @@ test('comment attachments reuse the capped shared image row', async () => {
   assert.match(imageSource, /grid-template-columns: repeat\(var\(--forum-image-columns\), minmax\(0, 1fr\)\)/)
   assert.match(imageSource, /index === displayImages\.length - 1 && remainingCount > 0/)
   assert.match(imageSource, /<ForumImagePreviewer[\s\S]*:images="validImages"/)
-  assert.match(imageSource, /@click="openAt\(index, \$event\.currentTarget\)"/)
+  assert.match(imageSource, /@click="openAt\(index, \$event\.currentTarget( as Element)?\)"/)
 })
 
 test('official comment extraction receives permission state from its caller', () => {

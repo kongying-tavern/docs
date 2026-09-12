@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
   items: () => [],
 })
 
-const timelineContainerRef = ref<HTMLElement | null>(null)
 const timelineRef = ref<HTMLElement | null>(null)
 const height = ref(0)
 
@@ -46,7 +45,6 @@ watch(height, (newHeight) => {
 
 <template>
   <div
-    ref="timelineContainerRef"
     class="font-sans w-full md:px-10"
   >
     <div

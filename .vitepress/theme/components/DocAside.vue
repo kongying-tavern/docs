@@ -47,7 +47,7 @@ const items = computed(() => {
         class="text-xs text-color-[var(--vp-c-text-2)] mb-12 flex shrink-0 flex-col gap-1 transition-10"
       >
         <p v-if="page?.lastUpdated">
-          {{ theme.lastUpdatedText }}
+          {{ theme.lastUpdated?.text }}
           {{ formatDate(page?.lastUpdated) }}
         </p>
 

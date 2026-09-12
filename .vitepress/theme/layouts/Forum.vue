@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
-import { FORM_HASH } from '~/components/forum/form/publish-topic-form/config'
+import { FORM_HASH } from '~/components/forum/form/publish-topic-form/form-config'
 import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
 
 const loadForumPublishTopicForm = () => import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue')

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { LoaderCircle } from '@lucide/vue'
-import { ref } from 'vue'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -17,13 +16,10 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   loading: false,
 })
-
-const buttonRef = ref<HTMLButtonElement>()
 </script>
 
 <template>
   <button
-    ref="buttonRef"
     type="submit"
     :disabled="props.disabled"
     :class="

@@ -1,3 +1,4 @@
+import type MarkdownIt from 'markdown-it'
 import type { MarkdownOptions } from 'vitepress'
 
 import comark from '@comark/markdown-it'
@@ -8,9 +9,6 @@ import { imgSize, obsidianImgSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import { tasklist } from '@mdit/plugin-tasklist'
-import markdownItAttrs from 'markdown-it-attrs'
-import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
 import MarkdownItCard from '../theme/markdown/card'
 import MarkdownItColorPreview from '../theme/markdown/colorPreview'
@@ -24,33 +22,12 @@ import { spoiler } from '../theme/markdown/spoiler'
 import MarkdownItTimeline from '../theme/markdown/timeline'
 import MarkdownItVariableInject from '../theme/markdown/variableInject'
 
-/** Matches regex attributes in markdown */
-const REGEX_ATTR_REGEX = /^regex.*$/
-
 export const markdownConfig: MarkdownOptions = {
+  attrs: true,
   image: {
-    lazyLoading: true,
+    lazyLoad: true,
   },
-  config(md) {
-    md.use(MarkdownItFootnote)
-    md.use(MarkdownItColorPreview)
-    md.use(MarkdownItCard)
-    md.use(sub)
-    md.use(sup)
-    md.use(mark)
-    md.use(imgSize)
-    md.use(obsidianImgSize)
-    md.use(figure)
-    md.use(...MarkdownItTimeline('timeline', md))
-    md.use(spoiler) // Custom spoiler plugin with ScratchToReveal
-    md.use(MarkdownItLightbox)
-    md.use(MarkdownItVariableInject)
-    md.use(MarkdownItCustomColor)
-    md.use(MarkdownItMention)
-    md.use(MarkdownItEmoji)
-    md.use(tasklist)
-    md.use(abbr)
-    md.use(ruby)
+  preConfig(md) {
     // `demo` must run before Comark, otherwise `:::: demo` is parsed as
     // an MDC block component and never reaches the demo container plugin.
     md.use(demo, {
@@ -78,16 +55,33 @@ export const markdownConfig: MarkdownOptions = {
     })
     md.use(comark, {
       syntax: {
+        inlineProps: false,
         inlineSpan: false,
       },
     })
-    applyComarkPatches(md)
+    // VitePress 2 passes MarkdownItAsync, which extends MarkdownIt.
+    applyComarkPatches(md as unknown as MarkdownIt)
+  },
+  config(md) {
+    md.use(MarkdownItColorPreview)
+    md.use(MarkdownItCard)
+    md.use(sub)
+    md.use(sup)
+    md.use(mark)
+    md.use(imgSize)
+    md.use(obsidianImgSize)
+    md.use(figure)
+    md.use(...MarkdownItTimeline('timeline', md))
+    md.use(spoiler) // Custom spoiler plugin with ScratchToReveal
+    md.use(MarkdownItLightbox)
+    md.use(MarkdownItVariableInject)
+    md.use(MarkdownItCustomColor)
+    md.use(MarkdownItMention)
+    md.use(MarkdownItEmoji)
+    md.use(abbr)
+    md.use(ruby)
 
-    // Both attrs and kbd reuse `{...}` / `:`-adjacent syntax, so they need
-    // to run after Comark has finished turning MDC into Vue-friendly tokens.
-    md.use(markdownItAttrs, {
-      allowedAttributes: ['id', 'class', 'thumbhash', 'width', 'height', REGEX_ATTR_REGEX],
-    })
+    // Kbd reuses `:`-adjacent syntax, so it runs after Comark.
     md.use(MarkdownItKbd, {
       presets: [
         {

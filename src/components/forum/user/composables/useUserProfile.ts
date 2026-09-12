@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { computed, ref, toValue, watch } from 'vue'
+import { computed, toValue, watch } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
@@ -15,8 +15,6 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
   const { isOfficial } = useRuleChecks()
-
-  const menuRef = ref<HTMLElement | null>(null)
 
   const profileQuery = useForumUserProfileQuery(
     username,
@@ -58,7 +56,6 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   })
 
   return {
-    menuRef,
     userData: profileQuery.data,
     loading: profileQuery.isLoading,
     error: profileQuery.error,

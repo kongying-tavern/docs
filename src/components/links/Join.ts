@@ -1,6 +1,6 @@
 import type { UrlParams } from '@vueuse/core'
 
-export const linkMap: Record<string, unknown> = {
+export const linkMap: Record<string, Record<string, unknown>> = {
   dd: {
     id: 'dd',
     link: 'http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=-HGS3II1no-AEcWHYdrhsJCN2IfKQeji&authKey=qbjuuv5VygEdFUAZSCCr2kim3V0lYvLvRjJwM7nv8KplMKjVAO4m2FuDovmcx%2FJP&noverify=0&group_code=522563995 ',

@@ -31,7 +31,6 @@ layout: doc
 <QQGroupList />
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { serverLink } from '../components/links/Community'
 import QQGroupList from '@/components/QQGroupList.vue'
 
