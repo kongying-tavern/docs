@@ -129,8 +129,11 @@ export default defineConfig({
       include: [
         // the default
         /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
-        // include js/ts files
-        'src/**/*.{js,ts}',
+        // include js/ts files under src/. Patterns are resolved against the Vite
+        // root, which VitePress sets to srcDir, and any pattern starting with
+        // "**" skips that resolution and matches the whole filesystem, so this
+        // has to be anchored with a regex.
+        /\/src\/[^?]*\.(js|ts)$/,
       ],
     },
   },
