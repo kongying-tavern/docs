@@ -1,13 +1,13 @@
 import type ForumAPI from '../api'
 import { catchError } from '@/apis/utils'
 import { oauthFetcher } from './client'
-import { GITEE_API_CONFIG } from './config'
+import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './config'
 import { normalizeAuth } from './utils'
 
 export async function getToken(
   username: string,
   password: string,
-  scope: string[] = ['user_info', 'issues', 'notes'],
+  scope: readonly string[] = GITEE_AUTH_SCOPES,
 ): Promise<[undefined, ForumAPI.Auth] | [Error, undefined]> {
   const [error, data] = await catchError(
     oauthFetcher

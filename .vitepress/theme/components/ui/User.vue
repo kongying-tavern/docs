@@ -200,6 +200,7 @@ const chipColorClasses: Record<NonNullable<ChipProps['color']>, string> = {
       <slot name="name">
         <span
           v-if="name"
+          data-forum-user-name
           class="c-[var(--vp-c-text-1)] font-[var(--vp-font-family-title)] font-medium dark:text-gray-100" :class="[
             sizeClasses[size].name,
             props.ui?.name,

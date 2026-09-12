@@ -28,3 +28,33 @@ note[^1]
   assert.match(html, /<em class="vp-link">attrs<\/em>/)
   assert.match(html, /<span[^>]*width="300"[^>]*class="mt-4"/)
 })
+
+test('reserved containers yield to VitePress and site plugins instead of Comark', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const html = await markdown.renderAsync(`
+::: tip
+handled tip
+:::
+
+::::raw
+
+raw content
+
+::::
+
+::: timeline 2026-1-1
+
+timeline entry
+
+:::
+
+::: my-widget
+mdc block content
+:::
+`)
+
+  assert.match(html, /<div class="tip custom-block">/)
+  assert.match(html, /<div class="vp-raw">/)
+  assert.match(html, /timeline-dot/)
+  assert.match(html, /<my-widget>/)
+})

@@ -1,34 +1,57 @@
 {
   "default": true,
-  "MD003": {
-    "style": "atx"
-  },
+  "MD003": false,
   "MD004": {
-    "style": "dash"
+    "style": "consistent"
   },
   "MD013": false,
-  "MD024": {
-    "allow_different_nesting": true
-  },
+  "MD024": false,
+  "MD025": false,
   "MD033": {
     "allowed_elements": [
       "br",
       "script",
       "Badge",
+      "CallbackPage",
+      "ClientOnly",
       "CodePen",
+      "Coins",
       "FontIcon",
-      "PDF",
-      "StackBlitz",
+      "ForumBlogPage",
+      "ForumRouteView",
       "IconDisplay",
       "KatexPlayground",
-      "CodeGroupItem",
-      "CodeGroup"
+      "LinkGrid",
+      "PDF",
+      "QQGroupList",
+      "SitemapPage",
+      "StackBlitz",
+      "StaffPage",
+      "TeamPage",
+      "VPBadge",
+      "b",
+      "del",
+      "div",
+      "h",
+      "img",
+      "p",
+      "span",
+      "style",
+      "time",
+      "h3"
     ]
   },
-  "MD035": {
-    "style": "---"
-  },
+  "MD035": false,
   "MD040": false,
+  "MD041": false,
+  "MD045": false,
   "MD046": false,
-  "MD049": false
+  "MD049": false,
+  "MD053": false,
+  "MD001": false,
+  "MD022": false,
+  "MD036": false,
+  "MD042": false,
+  "MD051": false,
+  "MD060": false
 }

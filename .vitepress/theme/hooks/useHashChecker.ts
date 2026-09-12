@@ -50,7 +50,7 @@ export function useHashChecker(
     matchedHash = actualCurrentHash
 
     if (clearHash && !import.meta.env.SSR)
-      history.replaceState(null, '', window.location.href.split('#')[0])
+      history.replaceState(history.state, '', window.location.href.split('#')[0])
     if (callback)
       callbackState.value = Boolean(callback(matchedHash))
     if ((callback === undefined || callbackState.value) && redirectHash)

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { ForumTranslatorRef } from '../composables/useTopicTranslationMenu'
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
+import Separator from '@/components/ui/separator/Separator.vue'
+import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useForumTopicSeenState } from '~/composables/forum/useForumTopicSeenState'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import { useTopicTranslationMenu } from '../composables/useTopicTranslationMenu'
@@ -18,7 +21,6 @@ import { useTopicPageState } from './composables/useTopicPageState'
 import ForumTopicDropdownMenu from './ForumTopicDropdownMenu.vue'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
-import ForumTopicTagsEditorDialog from './ForumTopicTagsEditorDialog.vue'
 import ForumTopicTranslator from './ForumTopicTranslator.vue'
 
 const {
@@ -33,6 +35,11 @@ const {
 
 const { message } = useLocalized()
 const { userHref } = useForumRoute()
+const topicSeen = useForumTopicSeenState()
+watch(topic, (value) => {
+  if (value)
+    topicSeen.markSeen(value.id)
+})
 const translator = useTemplateRef<ForumTranslatorRef>('translator')
 const translationMenu = useTopicTranslationMenu(topic, translator)
 const translatedContent = ref('')
@@ -68,7 +75,7 @@ function handleTitleTranslated(title: string): void {
       <template #content>
         <div
           v-if="!loading && topic"
-          class="slide-enter mb-4"
+          class="mb-4"
         >
           <div class="flex w-full items-center justify-between">
             <div class="text-14 flex flex-wrap gap-[0.25rem] min-w-0 items-center relative">
@@ -84,6 +91,8 @@ function handleTitleTranslated(title: string): void {
               <ForumUserHoverCard :user="topic.user">
                 <template #trigger>
                   <User
+                    :data-forum-user="topic.user.login"
+                    data-forum-shared-topic="author"
                     size="sm"
                     :name="topic.user.username"
                     :to="userHref(topic.user.login)"
@@ -111,6 +120,7 @@ function handleTitleTranslated(title: string): void {
           <h3
             v-if="topic.type !== 'BUG'"
             id="title"
+            data-forum-shared-topic="title"
             class="text-xl font-semibold m-0 mb-xs mt-2 break-words overflow-hidden md:text-1.5rem md:mb-1"
           >
             {{ showingTranslation && translatedTitle ? translatedTitle : topic.title }}
@@ -118,6 +128,7 @@ function handleTitleTranslated(title: string): void {
 
           <ForumTopicTypeBadge
             class="mt-3"
+            data-forum-shared-topic="type"
             :type="topic.type"
           />
 
@@ -135,12 +146,14 @@ function handleTitleTranslated(title: string): void {
           <article
             v-if="!showingTranslation"
             id="content"
+            data-forum-shared-topic="content"
             class="font-size-4 line-height-6 mt-3.5 opacity-99 whitespace-pre-wrap overflow-hidden"
             v-html="renderedContent"
           />
           <article
             v-else
             id="content"
+            data-forum-shared-topic="content"
             class="font-size-4 line-height-6 mt-3.5 opacity-99 whitespace-pre-wrap overflow-hidden"
           >
             {{ translatedContent }}
@@ -151,17 +164,18 @@ function handleTitleTranslated(title: string): void {
             :data="topic?.tags"
           />
 
-          <ForumImage
-            v-if="topicImages.length > 0"
-            :images="topicImages"
-            class="mt-6"
-            :context="topic ? {
-              kind: 'topic',
-              topic,
-              repo: topic.type === 'POST' ? 'Blog' : 'Feedback',
-              topicAuthorId: topic.user.id,
-            } : undefined"
-          />
+          <div v-if="topicImages.length > 0" data-forum-shared-topic="image">
+            <ForumImage
+              :images="topicImages"
+              class="mt-6"
+              :context="topic ? {
+                kind: 'topic',
+                topic,
+                repo: topic.type === 'POST' ? 'Blog' : 'Feedback',
+                topicAuthorId: topic.user.id,
+              } : undefined"
+            />
+          </div>
 
           <ForumTopicFooter
             :topic="topic"
@@ -185,6 +199,7 @@ function handleTitleTranslated(title: string): void {
           v-if="topic"
           class="mt-8"
           repo="Feedback"
+          :entry-animation="false"
           :topic-id="topicId"
           :topic="topic"
           :topic-author-id="topic?.user.id || -1"
@@ -199,7 +214,13 @@ function handleTitleTranslated(title: string): void {
         />
       </template>
     </ForumLayout>
-
-    <ForumTopicTagsEditorDialog />
   </ClientOnly>
 </template>
+
+<style scoped>
+:deep(.forum-topic-paragraph-break) {
+  display: block;
+  content: '';
+  margin-top: 0.75rem;
+}
+</style>

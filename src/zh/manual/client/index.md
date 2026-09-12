@@ -31,7 +31,7 @@ title: 目录
 - [安装错误，错误码 2503](../faq/instlerror/code2503)
 - [【无法安装】提示缺乏 dll 文件](../faq/instlerror/missingdll)
 - [【无法打开】空窗提示或卡进度条](../faq/launcherror/emptydialog)
-- [【无法打开】提示“数据查询失败”、“版本查询失败”](../faq/launcherror/versioncheck)
+- [【无法打开】提示「数据查询失败」、「版本查询失败」](../faq/launcherror/versioncheck)
 - [【不能登录】如何登录](../faq/login/accountlogin)
 - [【每次打开都需重新登陆】](../faq/login/clientrepeatedly)
 - [使用地图客户端会被封号吗？](../faq/accountsafety/acntban)

@@ -5,6 +5,42 @@ const RE_JSON_BOOL_NULL = /^\s*(?:true|false|null)\s*$/
 const RE_JSON_NUMBER = /^\s*-?\d+(?:\.\d+)?(?:e[+-]?\d+)?\s*$/i
 const RE_VALID_COMPONENT = /^[A-Z]/
 const RE_DOUBLE_QUOTE = /"/g
+const RE_CONTAINER_LINE = /^:{2,}\s*([A-Z][\w-]*)/i
+
+/**
+ * 容器名保留名单:这些名字由 VitePress 内置容器(tip/raw/…)或
+ * `config` 阶段的站点插件(timeline/card/…)处理,Comark 必须让出。
+ */
+const RESERVED_BLOCK_CONTAINERS = new Set([
+  'tip',
+  'info',
+  'warning',
+  'danger',
+  'details',
+  'note',
+  'important',
+  'caution',
+  'raw',
+  'v-pre',
+  'code-group',
+  'demo',
+  'timeline',
+  'card',
+])
+
+interface BlockState {
+  src: string
+  bMarks: number[]
+  tShift: number[]
+  eMarks: number[]
+}
+
+type BlockRule = (state: BlockState, startLine: number, endLine: number, silent: boolean) => boolean | void
+
+interface RuleEntry {
+  name: string
+  fn: BlockRule
+}
 
 function isJsonValue(value: string): boolean {
   return RE_JSON_BRACKET.test(value)
@@ -83,5 +119,26 @@ export function applyComarkPatches(md: MarkdownIt): void {
 
     html += '>'
     return html
+  }
+
+  // ── block rules: yield reserved container names ─────────────────────
+  // Comark 在 `preConfig` 中注册,先于 VitePress 内置容器(tip/raw/…)与
+  // `config` 阶段的站点插件(timeline/card/…)。其块规则匹配任意 `::: 名字`,
+  // 若不避让,`::: tip` 等会被当作 MDC 组件(<tip>)并在 Vue 编译时被丢弃。
+  const rules = (md.block.ruler as unknown as { __rules__?: RuleEntry[] }).__rules__
+  for (const name of ['mdc_block_shorthand', 'mdc_block']) {
+    const entry = rules?.find(rule => rule.name === name)
+    if (!entry) {
+      continue
+    }
+    const original = entry.fn
+    md.block.ruler.at(name, (state, startLine, endLine, silent) => {
+      const line = state.src.slice(state.bMarks[startLine] + state.tShift[startLine], state.eMarks[startLine])
+      const match = RE_CONTAINER_LINE.exec(line)
+      if (match && RESERVED_BLOCK_CONTAINERS.has(match[1].toLowerCase())) {
+        return false
+      }
+      return Boolean(original(state, startLine, endLine, silent))
+    })
   }
 }

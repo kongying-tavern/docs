@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils'
 import EmojiData from '~/_data/emojis.json'
 
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
+import Emoji from './Emoji.vue'
 
 export interface EmojiItem {
   preset: string
@@ -241,7 +242,7 @@ function deleteRecentEmoji(emoji: string) {
   transition: all 0.3s ease;
 }
 
-.emoji-grid-inner>*:nth-child(n+9) {
+.emoji-grid-inner > *:nth-child(n + 9) {
   display: none;
 }
 </style>

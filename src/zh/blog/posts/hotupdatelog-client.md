@@ -12,13 +12,13 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 {define:L_LEGEND}{color:#e1ab36}**传说级**{/color}{/define}
 {define:L_MYTH}{color:#f15e4e}**神话级**{/color}{/define}
 
-> **客户端下载方式（除了自动更新外的方式）**
+> **客户端下载方式(除了自动更新外的方式)**
 >
 > - 在线安装器：<https://steambird.pub/-/kyjg/KongYingMap.OnlineInst.exe>
 > - 夸克云盘：<https://pan.quark.cn/s/fe8bb34c77bc>
 > - 加入讨论组：<https://yuanshen.site/docs/community.html>
-> - 百度网盘（提取码：KYJG）：<https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg>
-> - 天翼云盘（访问码：exn0）：<https://cloud.189.cn/t/YF7Fj2zIRVbi>
+> - 百度网盘(提取码：KYJG)：<https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg>
+> - 天翼云盘(访问码：exn0)：<https://cloud.189.cn/t/YF7Fj2zIRVbi>
 > - 若没有出现自动更新窗口，请尝试：<https://yuanshen.site/docs/manual/faq/autoupdate/updater>
 
 ```
@@ -44,7 +44,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
            佛祖保佑       永无BUG
 ```
 
-> 版本更新日志请查看 ***[更新日志](https://yuanshen.site/docs/blog/changelog-client)***。
+> 版本更新日志请查看***[更新日志](https://yuanshen.site/docs/blog/changelog-client)***。
 
 ----
 
@@ -64,7 +64,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2026-08-11-1143
 
-- 更新了7.0版本相关资源
+- 更新了 7.0 版本相关资源
 
 ## 2026-07-21-930
 
@@ -82,8 +82,8 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 - 添加了霜月地图特效
 - 优化了默认点位大小
 - 优化了默认缩放层级，现在能缩放到更大了
-- 将地图缩放可选范围最大扩展到3X，此前为2X
-- 将叠层缩放可选范围最小扩展到0.2X，此前为0.3X
+- 将地图缩放可选范围最大扩展到 3X，此前为 2X
+- 将叠层缩放可选范围最小扩展到 0.2X，此前为 0.3X
 
 ## 2026-07-01-677
 
@@ -91,9 +91,9 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2026-06-30-1275
 
-- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致打开地图分辨率只有0x0啥都看不到
+- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致打开地图分辨率只有 0x0 啥都看不到
 - 优化了公告界面的底色
-- 更新了6.7版本相关资源
+- 更新了 6.7 版本相关资源
 
 ## 2026-04-13-911
 
@@ -101,11 +101,11 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2026-04-12-972
 
-- 优化了空之神殿地区GPU占用率过高的问题。
+- 优化了空之神殿地区 GPU 占用率过高的问题。
 
 ## 2026-04-10-919
 
-- 修改了默认前台帧率，从144改为60。
+- 修改了默认前台帧率，从 144 改为 60。
 
 ## 2026-04-09-1427
 
@@ -119,7 +119,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 ## 2026-04-07-1339
 
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致特殊点位显示层级错误。
-- 更新了6.5版本相关资源
+- 更新了 6.5 版本相关资源
 - 更新了部分底图资源
 - 修改了覆盖模式逻辑，现在不会隐藏程序了
 - 修改了快捷键排序
@@ -132,7 +132,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致地上层级渲染错误。
 - 优化了仙灵王座的层级筛选
-- 将后台帧率限制开放到最高60
+- 将后台帧率限制开放到最高 60
 
 ## 2026-01-14-188
 
@@ -145,7 +145,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2025-12-04-1269
 
-- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致物品状态异常（AI干的）。
+- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致物品状态异常(AI 干的)。
 
 ## 2025-12-04-160
 
@@ -157,19 +157,19 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致在关闭分层自动关闭洞口设置开启时在分层模式点击地面层级的洞口并标记该洞口时该洞口点位的状态未正确更新。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致点位弹窗关闭后当前点位渲染层级错误。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致初始化时宝箱中可能会有空的栏位需要手动滚动一下才出现物品。
-- 新增了6.2的一处地下层级
-- 新增了URLProtocol，以支持通过URL启动地图
-- 新增了RubyText支持，以支持可能的文本标记
-- 优化了网络图片读取的质量，添加了mip支持
+- 新增了 6.2 的一处地下层级
+- 新增了 URLProtocol，以支持通过 URL 启动地图
+- 新增了 RubyText 支持，以支持可能的文本标记
+- 优化了网络图片读取的质量，添加了 mip 支持
 - 优化了点位弹窗的文本拖拽，现在文本没有超出时将忽略拖拽事件
-- 优化了icon轮询机制，现在相同icon只会出现一次
+- 优化了 icon 轮询机制，现在相同 icon 只会出现一次
 - 优化了物品生成逻辑，提高效率
 - 优化了字体为静态+动态，提高了运行时效率，现在滚动物品不会卡顿了
-- 优化了部分GC，提高效率
+- 优化了部分 GC，提高效率
 - 优化网络请求，释放内存
-- 升级引擎版本到2021.3.45f2c1
+- 升级引擎版本到 2021.3.45f2c1
 
-::: 
+:::
 
 <!-- more -->
 
@@ -177,7 +177,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2025-11-26-1329
 
-- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致无法读取损坏的存档进而导致物品0/0。
+- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致无法读取损坏的存档进而导致物品 0/0。
 - 修复了一个{%= L_EPIC %} bug，该 bug 曾导致点位刷新时间异常，以致于数据更新后错误地刷新不应该刷新的点位。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致画板线段渲染错误。
 - 更新了字体文件以适配世界语
@@ -225,7 +225,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2025-05-19-64
 
-- 优化了所有点位的显示层级，现在层级会以【传送点——洞口/非当前层级点位——当前层级点位——神瞳点位】并按y轴进行深度排序。
+- 优化了所有点位的显示层级，现在层级会以【传送点——洞口/非当前层级点位——当前层级点位——神瞳点位】并按 y 轴进行深度排序。
 
 ## 2025-05-19-23
 
@@ -278,7 +278,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 - 修复了一个{%= L_EPIC %} bug，该 bug 曾导致数据更新失效。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致部分设置中的目录无法点击打开，例如程序日志。
-- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致部分文本显示异常，如繁体字的“鹮”。
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致部分文本显示异常，如繁体字的「鹮」。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致截图菜单中的分辨率下拉按钮音效丢失。
 - 更新了字体文件库
 - 给截图分辨率添加了 12288×12288

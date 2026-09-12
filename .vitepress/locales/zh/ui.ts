@@ -1,6 +1,4 @@
-import type { CustomConfig } from '../types'
-
-const ui: CustomConfig['ui'] = {
+const ui = {
   title: {
     templateMappings: [
       {

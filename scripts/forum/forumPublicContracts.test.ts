@@ -45,6 +45,20 @@ test('comment emoji and self-profile actions keep their display contracts', asyn
   assert.doesNotMatch(hoverCardSource, /user-hover|userAPI\.getUser/)
 })
 
+test('comment attachments reuse the capped shared image row', async () => {
+  const [commentSource, imageSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumImage.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(commentSource, /<ForumImage[\s\S]*layout="row"[\s\S]*:max-display="3"/)
+  assert.doesNotMatch(commentSource, /v-for="\(img, index\) in props\.commentData\.content\.images"/)
+  assert.match(imageSource, /grid-template-columns: repeat\(var\(--forum-image-columns\), minmax\(0, 1fr\)\)/)
+  assert.match(imageSource, /index === displayImages\.length - 1 && remainingCount > 0/)
+  assert.match(imageSource, /<ForumImagePreviewer[\s\S]*:images="validImages"/)
+  assert.match(imageSource, /@click="openAt\(index, \$event\.currentTarget( as Element)?\)"/)
+})
+
 test('official comment extraction receives permission state from its caller', () => {
   const authorComment = { ...comment('author'), id: 1, user, target: { issue: { id: 101 } } }
   const officialComment = {
@@ -63,6 +77,13 @@ test('official comment extraction receives permission state from its caller', ()
   assert.deepEqual(result?.map(item => item.id), [1, 2])
 })
 
+test('translated comment text is never interpolated as HTML', async () => {
+  const source = await readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8')
+  assert.doesNotMatch(source, /v-html="[^"]*translatedText/)
+  assert.match(source, /\{\{\s*showingTranslation \? translatedText : content\.text\s*\}\}/)
+  assert.match(source, /v-html="content\.html"/)
+})
+
 test('comment scrolling hooks register during component setup', async () => {
   const [stateSource, areaSource] = await Promise.all([
     readFile(new URL('../../src/components/forum/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8'),
@@ -75,6 +96,59 @@ test('comment scrolling hooks register during component setup', async () => {
   assert.doesNotMatch(areaSource, /stopObserver|onUnmounted\(cleanup\)/)
 })
 
+test('comment uploads stay editable and gist permission failures offer reauthorization', async () => {
+  const [source, richTextareaSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(source, /const loading = computed\(\(\) => submitPending\.value \|\| forumMutations\.creatingComment\.value\)/)
+  assert.match(source, /const busy = computed\(\(\) => loading\.value \|\| queue\.isBusy\.value\)/)
+  assert.match(source, /:disabled="loading"[\s\S]*:loading="busy"/)
+  assert.match(source, /error instanceof GiteeAPIError && error\.state === 403/)
+  assert.match(source, /logout\(\)[\s\S]*redirectAuth\(\)/)
+  assert.match(richTextareaSource, /editable: !props\.disabled/)
+  assert.match(richTextareaSource, /watch\(\(\) => props\.disabled,[\s\S]*setEditable\(!disabled\)/)
+  assert.doesNotMatch(richTextareaSource, /watch\(\(\) => props\.loading,[\s\S]*setEditable/)
+  assert.match(richTextareaSource, /:disabled="disabled \|\| loading \|\| charCount === 0"/)
+})
+
+test('every Gitee login flow requests gist permission', async () => {
+  const [configSource, oauthSource, passwordSource] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/config.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/oauth.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/apis/forum/gitee/password.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(configSource, /GITEE_AUTH_SCOPES = \[[^\]]*'gists'[^\]]*\] as const/)
+  assert.match(oauthSource, /scope: GITEE_AUTH_SCOPES\.join\(' '\)/)
+  assert.match(passwordSource, /scope: readonly string\[\] = GITEE_AUTH_SCOPES/)
+})
+
+test('Forum hash changes preserve VitePress History state', async () => {
+  const [hashCheckerSource, domUtilsSource] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/hooks/useHashChecker.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/utils/dom-utils.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(hashCheckerSource, /replaceState\(history\.state/)
+  assert.match(domUtilsSource, /replaceState\(history\.state/)
+  assert.doesNotMatch(`${hashCheckerSource}\n${domUtilsSource}`, /replaceState\(null/)
+})
+
+test('Topic Tags editor has one Forum-wide lazy host', async () => {
+  const [forumLayout, topicPage, userPage, basePage] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/layouts/Forum.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/topic/ForumTopicPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/base/BaseForumPage.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(forumLayout, /import\('~\/components\/forum\/topic\/ForumTopicTagsEditorDialog\.vue'\)/)
+  assert.match(forumLayout, /<ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" \/>/)
+  assert.doesNotMatch(`${topicPage}\n${userPage}\n${basePage}`, /ForumTopicTagsEditorDialog|name="teleport"/)
+})
+
 test('expanded personal sidebar sections bound live detail hydration', async () => {
   const sidebarSource = await readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8')
 
@@ -84,14 +158,20 @@ test('expanded personal sidebar sections bound live detail hydration', async () 
 })
 
 test('topic authors can close their own feedback from the topic menu', async () => {
-  const [permissionsSource, menuSource] = await Promise.all([
+  const [permissionsSource, menuSource, routeSource, topicStateSource] = await Promise.all([
     readFile(new URL('../../src/composables/useRuleChecks.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/useForumRoute.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/topic/composables/useTopicPageState.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(permissionsSource, /author: \['edit_feedback'\]/)
   assert.match(menuSource, /label: closeState\.value \? menuLabels\.value\.reopenFeedback\.text : menuLabels\.value\.closeFeedback\.text/)
   assert.match(menuSource, /action: handleToggleCloseTopic/)
+  assert.match(routeSource, /window\.history\.back\(\)[\s\S]*router\.go\(homeHref\(\)\)/)
+  assert.match(menuSource, /await leaveTopic\(\)/)
+  assert.match(topicStateSource, /backToPreviousPage: leaveTopic/)
+  assert.doesNotMatch(`${menuSource}\n${topicStateSource}`, /window\.history\.back\(\)/)
 })
 
 function issue(body: string): GITEE.IssueInfo {
@@ -200,12 +280,22 @@ test('normalizes Comment attachments without changing content order', () => {
 })
 
 test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
-  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource] = await Promise.all([
+  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource, navigateSource, transitionSource, sidebarSource, asideSource, blogHeaderSource, themeSource, sidebarLayoutSource, routeViewSource, profileHeaderSource, animationSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/issues.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/inBrowserUtils.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarNav.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumAside.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/blog/ForumBlogPostHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/index.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ForumRouteView.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/theme/styles/animation.css', import.meta.url), 'utf8'),
   ])
 
   assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
@@ -214,13 +304,34 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
   assert.match(userPageSource, /if \(list\.value\?\.q\)\s+return/)
   assert.match(topicContentSource, /event: MouseEvent \| KeyboardEvent/)
   assert.match(topicContentSource, /event instanceof MouseEvent/)
+  assert.match(navigateSource, /queryCache\.setQueryData\(forumKeys\.topic\(topic\.id\), topic\)/)
+  assert.doesNotMatch(transitionSource, /requestAnimationFrame|waitForSharedElements/)
+  assert.match(sidebarSource, /data-forum-user-avatar/)
+  assert.match(transitionSource, /findUserElement\(shared\.username, root, '\.avatar-image, \[data-forum-user-avatar\], img'\)/)
+  assert.match(profileHeaderSource, /<Avatar\s+data-forum-user-avatar/)
+  assert.match(sidebarLayoutSource, /queryCache\.setQueryData\(forumKeys\.user\(info\.login\), info\)/)
+  assert.match(routeViewSource, /defineAsyncComponent/)
+  assert.match(transitionSource, /transitionForumBlog/)
+  assert.match(transitionSource, /current\.username === target\.username/)
+  assert.match(transitionSource, /for \(const \{ element \} of sharedElements\)[\s\S]*removeProperty\('view-transition-name'\)/)
+  assert.match(transitionSource, /transition\.finished\.then\(cleanup, cleanup\)/)
+  assert.match(themeSource, /router\.onBeforeRouteChange/)
+  assert.match(asideSource, /data-forum-shared-blog="cover"/)
+  assert.match(blogHeaderSource, /data-forum-shared-blog="title"/)
+  assert.match(transitionSource, /matchMedia\(FORUM_MOBILE_MEDIA_QUERY\)/)
+  assert.match(transitionSource, /dataset\.forumNavigated = ''/)
+  assert.match(animationSource, /@media \(max-width: 959px\)[\s\S]*#VPContent \{[\s\S]*view-transition-name: forum-page/)
+  assert.match(animationSource, /html\[data-forum-navigated\] \.Forum\.slide-enter[\s\S]*animation: none/)
+  assert.match(animationSource, /forum-page-enter-right/)
+  assert.match(animationSource, /forum-page-exit-left/)
 })
 
-test('both image entry points reuse the shared multi-file drop zone', async () => {
-  const [dropZoneSource, imageUploadSource, richTextareaSource] = await Promise.all([
+test('all image entry points reuse the shared multi-file drop zone', async () => {
+  const [dropZoneSource, imageUploadSource, richTextareaSource, topicContentInputSource] = await Promise.all([
     readFile(new URL('../../src/composables/forum/useForumImageDropZone.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/form/ForumImageUpload.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(dropZoneSource, /useDropZone/)
@@ -229,7 +340,9 @@ test('both image entry points reuse the shared multi-file drop zone', async () =
   assert.match(imageUploadSource, /\n\s+multiple\n/)
   assert.match(richTextareaSource, /useForumImageDropZone\(container/)
   assert.match(richTextareaSource, /<ForumImageUpload[\s\S]*?size="sm"/)
-  assert.doesNotMatch(`${imageUploadSource}\n${richTextareaSource}`, /@(?:dragover|drop)\.prevent/)
+  assert.match(topicContentInputSource, /useForumImageDropZone\(dropZone/)
+  assert.match(topicContentInputSource, /disabled: \(\) => !props\.supportPaste/)
+  assert.doesNotMatch(`${imageUploadSource}\n${richTextareaSource}\n${topicContentInputSource}`, /@(?:dragover|drop)\.prevent/)
 })
 
 test('image preview waits for real images and animates every chrome surface before unmount', async () => {
@@ -254,12 +367,12 @@ test('image preview waits for real images and animates every chrome surface befo
   assert.match(previewerStyleSource, /\.closing \.forum-preview-panel-toggle/)
   assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-close\)/)
   assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-dots\)/)
-  assert.match(controlsSource, /transition: opacity 200ms ease, transform 220ms ease/)
+  assert.match(controlsSource, /transition:\s*opacity 200ms ease,\s*transform 220ms ease/)
   assert.match(sidePanelSource, /:force-mount="true"/)
   assert.match(sidePanelSource, /const EXIT_MS = 320/)
   assert.match(sidePanelSource, /animation-fill-mode: forwards/)
   assert.match(sidePanelSource, /rendered\.value = false/)
-  assert.match(cardsSource, /transition: opacity 220ms ease, transform 280ms/)
+  assert.match(cardsSource, /transition:\s*opacity 220ms ease,\s*transform 280ms/)
   assert.match(sheetSource, /data-\[state=closed\]:\[animation-duration:300ms\]/)
   assert.match(sheetSource, /data-\[state=open\]:\[animation-duration:500ms\]/)
   assert.match(imageSource, /:disabled="!isPreviewReady\(image, sourceIndex\)"/)

@@ -24,7 +24,7 @@ const {
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full" :data-forum-user-profile="username">
     <div class="rounded-lg w-full">
       <div class="mx-auto w-full">
         <div class="p-4 rounded-lg w-full sm:p-6">
@@ -32,6 +32,7 @@ const {
             <div class="flex w-full items-start justify-between sm:w-auto">
               <div class="relative">
                 <Avatar
+                  data-forum-user-avatar
                   :src="renderedUser?.avatar"
                   :alt="renderedUser?.username"
                   class="h-20 w-20 sm:h-24 sm:w-24"
@@ -57,7 +58,7 @@ const {
 
             <div class="flex-1 w-full">
               <div class="flex gap-2 items-center">
-                <h1 class="text-xl text-[var(--vp-c-text-1)] font-bold sm:text-2xl">
+                <h1 data-forum-user-name class="text-xl text-[var(--vp-c-text-1)] font-bold sm:text-2xl">
                   {{ renderedUser?.username || message.forum.labels.unknown }}
                 </h1>
                 <span class="rounded-full">

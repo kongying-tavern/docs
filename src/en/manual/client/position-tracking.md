@@ -108,7 +108,7 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-Please go through the [potential Issues](#Troubleshooting) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
+Please go through the [potential Issues](#troubleshooting) before posting in the [#feedback channel on Discord](https://discord.gg/8wgttNDwse). (you are welcomed ask any question in #chat)
 
 [文：位置追踪问题排查.docx]: # '以下为 问题排查 内容'
 
@@ -194,7 +194,7 @@ If the problem persists, use [Clear Tracking Module] under the **Position Tracke
 
 ## 7. Drifting player indicator {#issue7}
 
-When the player indicator is at the wrong location, but moves with your in-game movement, clear the **Position Tracker** cache from the settings and restart **Position Tracker** to rebuild it. (see [**_Issue 3._**](#_3-receiving-c-runtime-error-or-client-crashing-after-enabling-auto-tracking))
+When the player indicator is at the wrong location, but moves with your in-game movement, clear the **Position Tracker** cache from the settings and restart **Position Tracker** to rebuild it. (see [**_Issue 3._**](#issue3))
 
 ## 8. Player indicator teleports or updates player movement slowly {#issue8}
 

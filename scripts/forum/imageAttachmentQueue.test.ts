@@ -38,6 +38,7 @@ function queueOptions(upload: (selected: File) => Promise<ForumAPI.Image> = sele
     revoked,
     options: {
       upload,
+      optimize: async (selected: File) => selected,
       prepare: async () => undefined,
       createId: () => `image-${nextId++}`,
       createPreviewUrl: (selected: File) => `blob:${selected.name}`,
@@ -160,6 +161,34 @@ test('explicit retry starts exactly one new request', async () => {
   assert.equal(queue.attachments.value[0]?.status, 'uploaded')
 })
 
+test('optimizes once and reuses the prepared file when an upload is retried', async () => {
+  const original = file('large.jpg', 'image/jpeg', 32)
+  const compressed = file('large.jpg', 'image/jpeg', 16)
+  const uploadedFiles: File[] = []
+  let optimizeCalls = 0
+  const setup = queueOptions(async (selected) => {
+    uploadedFiles.push(selected)
+    if (uploadedFiles.length === 1)
+      throw new Error('offline')
+    return uploaded(selected.name)
+  })
+  const queue = useImageAttachmentQueue({
+    ...setup.options,
+    optimize: async (selected) => {
+      optimizeCalls++
+      assert.equal(selected, original)
+      return compressed
+    },
+  })
+
+  await queue.addFiles([original])
+  assert.equal((await queue.settleUploads()).ok, false)
+  await queue.retry(queue.attachments.value[0]!.id)
+
+  assert.equal(optimizeCalls, 1)
+  assert.deepEqual(uploadedFiles, [compressed, compressed])
+})
+
 test('remove excludes an uploaded item from serialization and revokes once', async () => {
   const setup = queueOptions()
   const queue = useImageAttachmentQueue(setup.options)
@@ -173,6 +202,29 @@ test('remove excludes an uploaded item from serialization and revokes once', asy
 
   assert.deepEqual(queue.serializedAttachments.value.map(item => item.alt), ['keep.png'])
   assert.deepEqual(setup.revoked, ['blob:remove.png'])
+})
+
+test('serialization keeps original dimensions, not the thumbhash canvas size', async () => {
+  const setup = queueOptions()
+  const queue = useImageAttachmentQueue({
+    ...setup.options,
+    prepare: async () => ({
+      dataBase64: 'dGVzdA==',
+      dataUrl: 'data:image/png;base64,dGVzdA==',
+      width: 100,
+      height: 50,
+      originalWidth: 4000,
+      originalHeight: 2000,
+    }),
+  })
+  await queue.addFiles([file('poster.png')])
+  await queue.settleUploads()
+
+  const [serialized] = serializeUploadedAttachments(queue.attachments.value)
+  assert.deepEqual(
+    { width: serialized?.width, height: serialized?.height },
+    { width: 4000, height: 2000 },
+  )
 })
 
 test('async upload completion cannot change selection order', async () => {

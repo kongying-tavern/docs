@@ -12,7 +12,7 @@ export interface ForumTranslatorRef {
 }
 
 /**
- * ⋮ 菜单里的「翻译贴子」项。话题语言与目标语言等价 / 公告 / 浏览器不支持翻译时不显示。
+ * ⋮ 菜单里的「翻译贴子」项。仅当目标语言与话题语言不同时显示。
  * 不要求登录：与自动翻译一致（翻译能力对未登录用户同样可用）。
  */
 export function useTopicTranslationMenu(
@@ -27,7 +27,7 @@ export function useTopicTranslationMenu(
     const translatorRef = toValue(translator)
     if (
       !current
-      || current.type === 'ANN'
+      || !translatorRef
       || !isBrowserTranslationSupported()
       || areLanguagesEquivalent(current.language, targetLanguage.value)
     ) {
@@ -41,7 +41,7 @@ export function useTopicTranslationMenu(
         label: message.value.forum.translate.translateText,
         icon: 'i-lucide-languages',
         order: 2,
-        action: () => translatorRef?.startTranslate(),
+        action: translatorRef.startTranslate,
       },
     ]
   })

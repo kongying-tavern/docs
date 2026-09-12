@@ -1,6 +1,4 @@
-import type { CustomConfig } from '../types'
-
-const docReaction: CustomConfig['docReaction'] = {
+const docReaction = {
   feedbackMsg: '本页对您有帮助吗？',
   good: '有帮助',
   bad: '无帮助',

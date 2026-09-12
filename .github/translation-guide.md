@@ -24,7 +24,7 @@ If you are here, you are likely interested in contributing to the translation of
 
 ### Setup
 
-Read the [Contributing Section](https://github.com/kongying-tavern/docs#contributing) of the docs. Make sure to use `pnpm` and Node.js v14+. Familiarize yourself with [VitePress' markdown extension features](https://vitepress.vuejs.org/guide/markdown.html).
+Read the [Contributing Section](https://github.com/kongying-tavern/docs#contributing) of the docs. Make sure to use `pnpm` and Node.js `^20.19.0` or `>=22.12.0`. Familiarize yourself with [VitePress' markdown extension features](https://vitepress.vuejs.org/guide/markdown.html).
 
 ### Use Issues and Pull Requests
 
@@ -61,13 +61,13 @@ These are custom markers we use to differentiate between Options-API-only and Co
 
 ## Complete Translations
 
-- [简体中文 / Simplified Chinese](index.md/) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/)]
-- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/en)]
+- [简体中文 / Simplified Chinese](index.md/) [[source](https://github.com/kongying-tavern/docs/tree/main/src/)]
+- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/en)]
 
 ## Current Active Translations (in alphabetical order)
 
-- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/ja)]
-- [韩语 / Korean](./kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/dev/src/kr)]
+- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/ja)]
+- [韩语 / Korean](./kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/kr)]
 
 ## Resources
 

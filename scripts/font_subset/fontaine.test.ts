@@ -15,8 +15,8 @@ test('generates one stable Fontaine fallback set per font family', async () => {
   const fontFaces = css.match(/@font-face\s*\{[^}]*\}/g) ?? []
   const cssEntry = readFileSync(resolve(projectRoot, config.fontaine.cssEntry), 'utf8')
 
-  assert.ok(cssEntry.includes('@import "./fonts-subset.css"'))
-  assert.ok(cssEntry.includes('@import "./fonts-standard.css"'))
+  assert.match(cssEntry, /@import ['"]\.\/fonts-subset\.css['"];/)
+  assert.match(cssEntry, /@import ['"]\.\/fonts-standard\.css['"];/)
   assert.equal(
     fontFaces.length,
     config.fonts.length * config.fontaine.fallbacks.length,

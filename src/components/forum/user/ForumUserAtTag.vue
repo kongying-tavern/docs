@@ -19,6 +19,7 @@ const officialHref = 'https://github.com/kongying-tavern/'
 
 <template>
   <span
+    data-forum-shared-topic="login"
     class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)] inline-flex gap-1 min-w-0 whitespace-nowrap items-center"
   >
     <a
@@ -30,7 +31,7 @@ const officialHref = 'https://github.com/kongying-tavern/'
     >
       {{ message.forum.topic.officialAt }}
     </a>
-    <a :href="userHref(user.login)" class="truncate hover:underline">
+    <a :href="userHref(user.login)" :data-forum-user="user.login" data-forum-user-name class="truncate hover:underline">
       @{{ user.login }}
     </a>
   </span>

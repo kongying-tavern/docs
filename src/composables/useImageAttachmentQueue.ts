@@ -8,6 +8,7 @@ import type {
   UploadImageAttachmentsResult,
 } from '~/services/forum/form/imageAttachment'
 import { computed, ref } from 'vue'
+import { compressImageForUpload } from '~/services/forum/form/compressImageForUpload'
 import { serializeUploadedAttachments, validateImageBatch } from '~/services/forum/form/imageAttachment'
 import { IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
 
@@ -18,6 +19,7 @@ export type ImageUploadFunction = (
 
 export interface ImageAttachmentQueueOptions {
   upload: ImageUploadFunction
+  optimize?: (file: File) => Promise<File>
   prepare?: (file: File) => Promise<ThumbHashCalculated | undefined>
   createPreviewUrl?: (file: File) => string
   revokePreviewUrl?: (url: string) => void
@@ -46,6 +48,7 @@ export function useImageAttachmentQueue(
   serializedAttachments: ComputedRef<ForumAPI.ImageInfo[]>
 } {
   const upload = options.upload
+  const optimize = options.optimize ?? compressImageForUpload
   const prepare = options.prepare ?? (async () => undefined)
   const createPreviewUrl = options.createPreviewUrl ?? (file => URL.createObjectURL(file))
   const revokePreviewUrl = options.revokePreviewUrl ?? (url => URL.revokeObjectURL(url))
@@ -53,6 +56,7 @@ export function useImageAttachmentQueue(
 
   const attachments = ref<ImageAttachment[]>([])
   const controllers = new Map<string, AbortController>()
+  const preparedFiles = new Map<string, File>()
   const tasks = new Map<string, Promise<void>>()
   let nextSelectionIndex = 0
 
@@ -88,9 +92,22 @@ export function useImageAttachmentQueue(
     if (!initial || !['processing', 'queued'].includes(initial.status))
       return
 
+    let uploadFile = preparedFiles.get(id)
+    if (!uploadFile) {
+      try {
+        uploadFile = await optimize(initial.file)
+      }
+      catch {
+        uploadFile = initial.file
+      }
+      if (!attachments.value.some(attachment => attachment.id === id))
+        return
+      preparedFiles.set(id, uploadFile)
+    }
+
     if (!initial.thumbHash) {
       try {
-        const thumbHash = await prepare(initial.file)
+        const thumbHash = await prepare(uploadFile)
         const current = attachments.value.find(attachment => attachment.id === id)
         if (current && thumbHash)
           current.thumbHash = thumbHash
@@ -110,7 +127,7 @@ export function useImageAttachmentQueue(
     item.error = undefined
 
     try {
-      const result = await upload(item.file, { signal: controller.signal })
+      const result = await upload(uploadFile, { signal: controller.signal })
       const current = attachments.value.find(attachment => attachment.id === id)
       if (!current)
         return
@@ -207,6 +224,7 @@ export function useImageAttachmentQueue(
     const [removed] = attachments.value.splice(index, 1)
     controllers.get(id)?.abort()
     controllers.delete(id)
+    preparedFiles.delete(id)
     revokePreviewUrl(removed.previewUrl)
   }
 
@@ -216,6 +234,7 @@ export function useImageAttachmentQueue(
       revokePreviewUrl(item.previewUrl)
     }
     controllers.clear()
+    preparedFiles.clear()
     attachments.value = []
     nextSelectionIndex = 0
   }

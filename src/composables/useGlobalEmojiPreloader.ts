@@ -1,3 +1,4 @@
+import { withBase } from 'vitepress'
 import { readonly, ref } from 'vue'
 import EmojiData from '~/_data/emojis.json'
 
@@ -14,7 +15,7 @@ export interface EmojiPreloadResult {
 
 export function useGlobalEmojiPreloader() {
   function buildEmojiUrl(emojiPath: string): string {
-    return `/imgs/emojis/${emojiPath}`
+    return withBase(`/emojis/${emojiPath}`)
   }
 
   function createPreloadLink(url: string): boolean {

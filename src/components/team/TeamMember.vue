@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Member } from './Member'
 import { computed } from 'vue'
+import { getGiteeProfileHref } from '~/constants/site'
 
 const props = defineProps<{
   member: Member
@@ -190,7 +191,7 @@ const avatarUrl = computed(() => {
           <li v-if="member.socials?.gitee" class="social-item">
             <VPLink
               class="social-link"
-              :href="`https://gitee.com/${member.socials?.gitee}`"
+              :href="getGiteeProfileHref(member.socials.gitee!)"
               :no-icon="true"
             >
               <svg

@@ -3,8 +3,6 @@
 Source of truth for the feedback forum UI copy (`forum` table in `.vitepress/locales/{zh,en,ja}/forum.ts`).
 Any translation change must stay consistent with this glossary. When in doubt, ask in the issue/PR with the exact key name.
 
-This glossary follows the structure used by the Apple Style Guide for key terms: the English term, its approved translations, and usage notes. The English column is the canonical key; UI copy should use the target-language column of the user's locale.
-
 ## Key Terms
 
 | Key | English (canonical) | 简体中文 | 日本語 | Notes |

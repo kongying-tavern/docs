@@ -1,6 +1,4 @@
-import type { CustomConfig } from '../types'
-
-const forum: CustomConfig['forum'] = {
+const forum = {
   loadMore: '加载更多',
   noMore: '没有更多',
   loadError: '加载失败',
@@ -40,7 +38,6 @@ const forum: CustomConfig['forum'] = {
     loginToView: '登录后查看',
     loginNow: '去登录',
     syncFailed: '评论已发布，但参与记录同步失败',
-    newComments: '新增 {count} 条评论',
     totalComments: '共 {count} 条评论',
     information: '更多信息',
     listSort: '列表排序',
@@ -397,6 +394,7 @@ const forum: CustomConfig['forum'] = {
     myFeedback: '我的反馈',
     submittedFeedback: '提交的反馈',
     personalHomepage: '的个人主页',
+    goToProfile: '前往个人资料页',
     imageLoadFailed: '图片加载失败',
     follow: '关注',
     following: '正在关注中',

@@ -104,7 +104,7 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 
 [反馈方式]: # '最适合目标语言用户的反馈方式'
 
-### 请确保问题排查的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题。
+### 请确保问题排查的措施都尝试过，依然没有解决问题后再尝试在[开发反馈 QQ 群：228382171](https://jq.qq.com/?_wv=1027&k=EqhYN9uI)反馈相关问题
 
 [文：位置追踪问题排查.docx]: # '以下为“问题排查”内容'
 

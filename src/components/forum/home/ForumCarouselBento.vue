@@ -3,9 +3,11 @@ import type ForumAPI from '@/apis/forum/api'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { useForumRoute } from '~/composables/useForumRoute'
+import { getSiteHref } from '~/constants/site'
 import BentoGridItem from './ForumBento.vue'
 
 const props = defineProps<{
@@ -17,7 +19,7 @@ const { message } = useLocalized()
 const { topicHref } = useForumRoute()
 
 const presetUser = {
-  avatar: 'https://yuanshen.site/docs/imgs/common/logo/logo_256.png',
+  avatar: getSiteHref('/imgs/common/logo/logo_256.png'),
   username: 'Kongying Tavern',
   login: 'kongying-tavern',
 }

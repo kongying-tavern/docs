@@ -1,4 +1,7 @@
 import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
+import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site'
+import { DEFAULT_LOCALE } from '../locales/common/site'
+import { getLocaleDirs } from './localeDirs'
 import {
   cfgGetPageCover,
   cfgGetPageDesc,
@@ -91,7 +94,7 @@ export const commonHead: HeadConfig[] = [
     'link',
     {
       rel: 'icon',
-      href: `https://yuanshen.site/docs/imgs/common/favicon/favicon-32x32.png`,
+      href: `${SITE_ORIGIN}${SITE_BASE}/imgs/common/favicon/favicon-32x32.png`,
       type: 'image/png',
     },
   ],
@@ -99,31 +102,7 @@ export const commonHead: HeadConfig[] = [
     'link',
     {
       rel: 'alternate',
-      hreflang: 'zh',
-      href: 'https://yuanshen.site/docs',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
-      hreflang: 'en',
-      href: 'https://yuanshen.site/docs/en',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
-      hreflang: 'ja',
-      href: 'https://yuanshen.site/docs/ja',
-    },
-  ],
-  [
-    'link',
-    {
-      rel: 'alternate',
-      href: `https://yuanshen.site/docs/imgs/common/favicon/favicon.ico`,
+      href: `${SITE_ORIGIN}${SITE_BASE}/imgs/common/favicon/favicon.ico`,
       type: 'image/x-icon',
     },
   ],
@@ -132,4 +111,23 @@ export const commonHead: HeadConfig[] = [
   ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
 ]
 
-export const headConfig = [...commonHead, ...(isProd ? productionHead : [])]
+async function createHreflangHead(): Promise<HeadConfig[]> {
+  return getLocaleDirs().map(lang => [
+    'link',
+    {
+      rel: 'alternate',
+      hreflang: lang,
+      href: lang === DEFAULT_LOCALE
+        ? `${SITE_ORIGIN}${SITE_BASE}`
+        : `${SITE_ORIGIN}${SITE_BASE}/${lang}`,
+    },
+  ])
+}
+
+export async function createHeadConfig(): Promise<HeadConfig[]> {
+  return [
+    ...commonHead,
+    ...await createHreflangHead(),
+    ...(isProd ? productionHead : []),
+  ]
+}

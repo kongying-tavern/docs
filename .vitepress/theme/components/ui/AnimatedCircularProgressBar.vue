@@ -96,9 +96,7 @@ const durationInSeconds = computed(() => `${props.duration}s`)
     v-bind(durationInSeconds) ease,
     stroke v-bind(durationInSeconds) ease;
   transition-property: stroke-dasharray, transform;
-  transform: rotate(
-    calc(-90deg + var(--gap-percent) * var(--offset-factor) * var(--percent-to-deg))
-  );
+  transform: rotate(calc(-90deg + var(--gap-percent) * var(--offset-factor) * var(--percent-to-deg)));
   transform-origin: calc(var(--circle-size) / 2) calc(var(--circle-size) / 2);
 }
 
@@ -107,12 +105,7 @@ const durationInSeconds = computed(() => `${props.duration}s`)
   --stroke-percent: 90 - v-bind(currentPercent);
   --offset-factor-secondary: calc(1 - var(--offset-factor));
   stroke-dasharray: calc(var(--stroke-percent) * var(--percent-to-px)) var(--circumference);
-  transform: rotate(
-      calc(
-        1turn - 90deg -
-          (var(--gap-percent) * var(--percent-to-deg) * var(--offset-factor-secondary))
-      )
-    )
+  transform: rotate(calc(1turn - 90deg - (var(--gap-percent) * var(--percent-to-deg) * var(--offset-factor-secondary))))
     scaleY(-1);
   transition: all v-bind(durationInSeconds) ease;
   transform-origin: calc(var(--circle-size) / 2) calc(var(--circle-size) / 2);

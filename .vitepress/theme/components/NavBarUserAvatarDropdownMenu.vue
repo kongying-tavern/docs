@@ -8,6 +8,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu'
+import Separator from '@/components/ui/separator/Separator.vue'
 import useLogin from '@/hooks/useLogin'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import ForumRoleBadge from '~/components/forum/ui/ForumRoleBadge.vue'

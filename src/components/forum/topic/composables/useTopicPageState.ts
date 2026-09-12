@@ -14,7 +14,7 @@ import { renderForumTopic } from '~/services/forum/forumContentRenderer'
 export function useTopicPageState() {
   const topicTypeMap = getTopicTypeMap()
   const { localeIndex } = useData()
-  const { route, topicHref } = useForumRoute()
+  const { route, topicHref, leaveTopic } = useForumRoute()
   const topicId = computed(() => route.value?.name === 'topic' ? route.value.topicId : '')
   const { go } = useRouter()
   const { message } = useLocalized()
@@ -41,10 +41,6 @@ export function useTopicPageState() {
     })
   })
 
-  function backToPreviousPage() {
-    window.history.back()
-  }
-
   watchEffect(() => {
     if (loading.value)
       return
@@ -70,6 +66,6 @@ export function useTopicPageState() {
     retry: refetch,
     renderedContent,
     topicId,
-    backToPreviousPage,
+    backToPreviousPage: leaveTopic,
   }
 }

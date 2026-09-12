@@ -56,7 +56,7 @@ watch([topic, open], ([newTopic, isOpen]) => {
           {{ updatingTopic ? message.ui.button.loading : message.ui.button.submit }}
         </Button>
         <DialogClose as-child>
-          <Button type="button" variant="secondary" class="mt-8" :disabled="updatingTopic" @click="handleCancel">
+          <Button type="button" variant="secondary" :disabled="updatingTopic" @click="handleCancel">
             {{ message.ui.button.cancel }}
           </Button>
         </DialogClose>

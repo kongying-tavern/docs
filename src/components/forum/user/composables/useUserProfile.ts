@@ -6,6 +6,7 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { getGiteeMessagesHref } from '~/constants/site'
 
 export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   const username = computed(() => toValue(usernameSource))
@@ -43,7 +44,7 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   })
 
   function sendMessage(): void {
-    window.open(`https://gitee.com/notifications/messages/${renderedUser.value?.id}`, String(renderedUser.value?.id))
+    window.open(getGiteeMessagesHref(renderedUser.value!.id), String(renderedUser.value?.id))
   }
 
   watch(renderedUser, (newVal) => {

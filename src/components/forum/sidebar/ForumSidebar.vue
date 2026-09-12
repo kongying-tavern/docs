@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ForumSort } from '~/services/forum/forumRoute'
+import { useQueryCache } from '@pinia/colada'
 import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
@@ -9,9 +10,12 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { getLangPath } from '@/utils'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useForumTopicQuery, useForumTopicsQuery } from '~/composables/forum/useForumQueries'
+import { useForumTopicSeenState } from '~/composables/forum/useForumTopicSeenState'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
-import { getNewCommentCount, isRecentClosedTopic } from '~/services/forum/forumPersonalState'
+import { isRecentClosedTopic } from '~/services/forum/forumPersonalState'
+import { forumKeys } from '~/services/forum/forumQueryContracts'
+import { isClosedUnseen } from '~/services/forum/forumTopicSeenState'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import { publishTopic } from '../utils/forumUi'
@@ -24,11 +28,17 @@ const { localeIndex } = useData()
 const { message } = useLocalized()
 const auth = useUserAuthStore()
 const userInfo = useUserInfoStore()
+const queryCache = useQueryCache()
 const { route, list, topicHref, userHref, navigateSort } = useForumRoute()
 const personal = useForumPersonalState()
+const topicSeen = useForumTopicSeenState()
 
 const isLoggedIn = computed(() => auth.isTokenValid)
 const username = computed(() => userInfo.info?.login ?? '')
+watch(() => userInfo.info, (info) => {
+  if (info)
+    queryCache.setQueryData(forumKeys.user(info.login), info)
+}, { immediate: true })
 const submitted = useForumTopicsQuery(computed(() => ({
   filter: 'all',
   sort: 'created',
@@ -141,12 +151,12 @@ useEventListener('keydown', (event) => {
 })
 
 const navItems = computed(() => {
-  const items = [
+  const items: Array<{ label: string, icon: string, href: string, active: boolean, username?: string }> = [
     { label: message.value.forum.sidebar.home, icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
     { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/'), active: false },
   ]
   if (isLoggedIn.value && username.value) {
-    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), active: false })
+    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), active: false, username: username.value })
   }
   items.push({ label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban'), active: false })
   return items
@@ -161,7 +171,7 @@ const submittedItems = computed(() => submitted.rows.value
     href: topicHref(String(topic.id), null),
     type: topic.type,
     commentCount: Math.max(0, topic.commentCount),
-    state: topic.state,
+    closedUnseen: isClosedUnseen(topic, topicSeen.seenAt(String(topic.id))),
     menuTopic: topic,
   })))
 const followedItems = computed(() => personal.state.value.followedTopics
@@ -175,8 +185,10 @@ const followedItems = computed(() => personal.state.value.followedTopics
       href: topicHref(topic.topicId, null),
       type: current?.type ?? topic.type,
       commentCount: Math.max(0, current?.commentCount ?? topic.commentCount ?? 0),
-      newCommentCount: getNewCommentCount(topic.commentCount, current?.commentCount),
-      state: current?.state ?? topic.state,
+      closedUnseen: isClosedUnseen(
+        { state: current?.state ?? topic.state, closedAt: current?.closedAt ?? topic.closedAt },
+        topicSeen.seenAt(topic.topicId),
+      ),
       canUnfollow: true,
     }
   }))
@@ -190,7 +202,10 @@ const participatedItems = computed(() => personal.state.value.recentParticipated
     href: topicHref(topic.topicId, null),
     type: current?.type ?? topic.type,
     commentCount: Math.max(0, current?.commentCount ?? topic.commentCount ?? 0),
-    state: current?.state ?? topic.state,
+    closedUnseen: isClosedUnseen(
+      { state: current?.state ?? topic.state, closedAt: current?.closedAt ?? topic.closedAt },
+      topicSeen.seenAt(topic.topicId),
+    ),
   })))
 
 function pageHref(path: string): string {

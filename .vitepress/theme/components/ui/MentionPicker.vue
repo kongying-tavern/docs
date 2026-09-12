@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils'
 
 import feedbackRepoMember from '~/_data/feedbackMemberList.json'
 import TeamMember from '~/_data/teamMemberList.json'
+import User from './User.vue'
 
 defineOptions({
   inheritAttrs: false,

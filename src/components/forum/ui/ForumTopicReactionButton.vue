@@ -65,11 +65,16 @@ function handleReaction(state: INTER_KNOT.ReactionState) {
     <Button
       v-else-if="loadFailed"
       type="button"
-      variant="link"
-      class="px-1 h-8"
+      variant="ghost"
+      size="icon"
+      class="rounded-full h-8 w-8 max-mobile:h-11 max-mobile:w-11"
+      :aria-label="message.forum.auth.callback.error.retry"
       @click="refetch()"
     >
-      {{ message.forum.auth.callback.error.retry }}
+      <span
+        class="i-lucide-rotate-ccw align-mid flex-shrink-0 h-5 w-5 inline-block max-mobile:h-6 max-mobile:w-6"
+        aria-hidden="true"
+      />
     </Button>
     <span v-else class="px-1 tabular-nums" aria-hidden="true">–</span>
 

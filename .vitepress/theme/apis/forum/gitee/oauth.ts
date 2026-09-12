@@ -1,10 +1,11 @@
 import type { AuthResult } from '../../../utils/auth-errors'
 import type ForumAPI from '../api'
 
+import { getSiteHref } from '~/constants/site'
 import { createAuthError } from '../../../utils/auth-errors'
 import { catchError } from '../../utils'
 import { oauthFetcher } from './client'
-import { GITEE_API_CONFIG } from './config'
+import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './config'
 import { normalizeAuth } from './utils'
 
 const LAST_OAUTH_REDIRECT_URL_KEY = 'oauth-redirect-url'
@@ -33,7 +34,7 @@ export function getRedirectUrl(localeIndex?: string): string {
   const localeStr = localeIndex === 'root' ? '/' : `/${localeIndex}/`
   const expectedUrl = import.meta.env.DEV
     ? `${location.protocol}//${location.host}${localeStr}callback`
-    : `https://yuanshen.site/docs${localeStr}callback`
+    : `${getSiteHref(localeStr)}callback`
 
   const lastRedirectUrl = localStorage.getItem(LAST_OAUTH_REDIRECT_URL_KEY)
   if (lastRedirectUrl && lastRedirectUrl === expectedUrl) {
@@ -119,6 +120,7 @@ export function redirectAuth(localeIndex: string) {
   const searchParams = new URLSearchParams({
     client_id: GITEE_API_CONFIG.CLIENT_ID,
     response_type: 'code',
+    scope: GITEE_AUTH_SCOPES.join(' '),
     state,
   })
   // Gitee 按注册值对 redirect_uri 做字面比对，URLSearchParams 的百分号转义会使其无法识别，保持明文

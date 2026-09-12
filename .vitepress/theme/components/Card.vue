@@ -2,6 +2,7 @@
 import { withBase } from 'vitepress'
 import { computed } from 'vue'
 
+import { ASSET_ORIGIN } from '~/constants/site'
 import { isLinkExternal, isRelativeLink } from '../utils'
 
 const props = withDefaults(defineProps<CardProps>(), {
@@ -63,7 +64,7 @@ function imgLoadHandler(e: Event) {
 function imgErrorHandler(e: Event) {
   const target = e.target as HTMLImageElement
   target.classList.add('load-error')
-  target.src = 'https://assets.yuanshen.site/images/noImage.png'
+  target.src = `${ASSET_ORIGIN}/images/noImage.png`
 }
 
 const iconLink = computed(() => {

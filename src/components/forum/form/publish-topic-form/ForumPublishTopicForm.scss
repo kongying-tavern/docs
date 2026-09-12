@@ -14,8 +14,12 @@
     radial-gradient(color-mix(in srgb, var(--vp-c-text-1) 5%, transparent) 15%, transparent 25%);
   background-color: var(--letter-paper-color);
   background-image: var(--letter-paper-texture);
-  background-position: 0 0, 1px 1px;
-  background-size: 4px 4px, 3px 3px;
+  background-position:
+    0 0,
+    1px 1px;
+  background-size:
+    4px 4px,
+    3px 3px;
   color: var(--vp-c-text-1);
 }
 
@@ -27,7 +31,9 @@
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  transition: background-color 160ms ease, border-color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
 .letter-title-input:hover,
@@ -67,8 +73,12 @@
     border-radius: 8px;
     background-color: var(--letter-paper-color);
     background-image: var(--letter-paper-texture);
-    background-position: 0 0, 1px 1px;
-    background-size: 4px 4px, 3px 3px;
+    background-position:
+      0 0,
+      1px 1px;
+    background-size:
+      4px 4px,
+      3px 3px;
     box-shadow: var(--vp-shadow-3);
     color: var(--vp-c-text-1);
     transform: translateY(0);

@@ -66,8 +66,12 @@ const prevSeq = ref(0)
 let prevClearTimer: number | undefined
 let closeTimer: number | undefined
 
-const total = computed(() => props.images.length)
-const imageAriaLabels = computed(() => props.images.map((_, index) =>
+/** 委托替换的图片列表（如预览打开后点击侧边面板中的评论图片）；置空则跟随 props */
+const imagesOverride = ref<PreviewImage[] | null>(null)
+const displayImages = computed(() => imagesOverride.value ?? props.images)
+
+const total = computed(() => displayImages.value.length)
+const imageAriaLabels = computed(() => displayImages.value.map((_, index) =>
   message.value.forum.imagePreview.showImage.replace('{index}', String(index + 1))))
 const zoomEnabled = computed(() => props.options.zoom !== false)
 const maxZoom = computed(() => props.options.maxZoom ?? 4)
@@ -121,9 +125,29 @@ function goTo(index: number, direction?: 1 | -1): void {
     const delta = (target - current.value + count) % count
     dir = delta > count / 2 ? -1 : 1
   }
-  const old = props.images[current.value]
+  const old = displayImages.value[current.value]
   current.value = target
   slideDir.value = dir
+  prevImg.value = old ? { src: old.src, alt: old.alt } : null
+  prevSeq.value += 1
+  resetTransform()
+  emit('change', target)
+  clearTimeout(prevClearTimer)
+  prevClearTimer = window.setTimeout(() => {
+    prevImg.value = null
+  }, 300)
+}
+
+/** 委托替换整份图片列表（活跃预览内容变化），保留预览与面板打开状态 */
+function setImages(images: PreviewImage[], index: number): void {
+  const count = images.length
+  if (count === 0)
+    return
+  const target = Math.min(Math.max(index, 0), count - 1)
+  const old = displayImages.value[current.value]
+  imagesOverride.value = images
+  current.value = target
+  slideDir.value = 1
   prevImg.value = old ? { src: old.src, alt: old.alt } : null
   prevSeq.value += 1
   resetTransform()
@@ -140,9 +164,15 @@ const enterAnimClass = computed(() => {
   return slideDir.value === 1 ? 'enter-right' : 'enter-left'
 })
 
-const self: { getImages: () => PreviewImage[], goTo: (index: number) => void, isOpen: () => boolean } = {
-  getImages: () => props.images,
+const self: {
+  getImages: () => PreviewImage[]
+  goTo: (index: number) => void
+  setImages: (images: PreviewImage[], index: number) => void
+  isOpen: () => boolean
+} = {
+  getImages: () => displayImages.value,
   goTo,
+  setImages,
   isOpen: () => visible.value && !closing.value,
 }
 
@@ -151,7 +181,7 @@ function preloadNeighbors(): void {
   if (count < 2)
     return
   for (const i of [(current.value - 1 + count) % count, (current.value + 1) % count]) {
-    const img = props.images[i]
+    const img = displayImages.value[i]
     if (img)
       new Image().src = img.src
   }
@@ -165,6 +195,7 @@ function openAt(index: number, sourceEl?: Element | null): void {
   setSource(sourceEl)
   clickState = null
   lastClickAt = 0
+  imagesOverride.value = null
   current.value = Math.min(Math.max(index, 0), total.value - 1)
   visible.value = true
   closing.value = false
@@ -193,6 +224,7 @@ function close(): void {
     visible.value = false
     closing.value = false
     flipping.value = false
+    imagesOverride.value = null
     clearSource()
     document.documentElement.style.overflow = prevOverflow
     restoreFocus()
@@ -349,8 +381,8 @@ defineExpose({ openAt, close })
               v-if="total > 0"
               :key="current"
               ref="imageEl"
-              :src="images[current].src"
-              :alt="images[current].alt || ''"
+              :src="displayImages[current].src"
+              :alt="displayImages[current].alt || ''"
               class="forum-preview-image forum-preview-enter"
               :class="enterAnimClass"
               draggable="false"
@@ -380,7 +412,7 @@ defineExpose({ openAt, close })
         <FeyCards
           v-if="options.counter !== false && total > 1"
           class="forum-preview-cards"
-          :img-src="images.map(i => i.src)"
+          :img-src="displayImages.map(i => i.src)"
           :aria-labels="imageAriaLabels"
           :active="current"
           :width="36"

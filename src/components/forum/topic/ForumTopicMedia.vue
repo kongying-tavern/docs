@@ -36,6 +36,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
 <template>
   <div
     v-if="(isCardMode && hasImages) || shouldShowInCompact"
+    data-forum-shared-topic="image"
     class="topic-media"
   >
     <div

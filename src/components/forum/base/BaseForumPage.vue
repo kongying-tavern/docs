@@ -2,6 +2,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumFilter, ForumSort } from '~/services/forum/forumRoute'
 import { computed } from 'vue'
+import Separator from '@/components/ui/separator/Separator.vue'
 import ForumLayout from '../ForumLayout.vue'
 import ForumTopicList from '../list/ForumTopicList.vue'
 import ForumTopicToolbar from '../list/ForumTopicToolbar.vue'
@@ -89,7 +90,5 @@ const isInitialLoading = computed(() => props.loading && props.renderData.length
         </slot>
       </template>
     </ForumLayout>
-
-    <slot name="teleport" />
   </ClientOnly>
 </template>

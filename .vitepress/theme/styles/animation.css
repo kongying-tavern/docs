@@ -38,7 +38,7 @@
     opacity: 0;
   }
 
-  to {
+  100% {
     transform: translateY(0);
     opacity: 100;
   }
@@ -55,70 +55,86 @@
     --enter-step: 90ms;
     --enter-initial: 0ms;
     animation: slide-enter 0.8s both 1;
-    animation-delay: calc(
-      var(--enter-initial) + var(--enter-stage) * var(--enter-step)
-    );
-    -webkit-animation-timing-function: cubic-bezier(0.333, 0, 0.667, 1), linear,
-      linear;
+    animation-delay: calc(var(--enter-initial) + var(--enter-stage) * var(--enter-step));
+    -webkit-animation-timing-function: cubic-bezier(0.333, 0, 0.667, 1), linear, linear;
   }
 
   .main > div > *:nth-child(1) {
     --enter-stage: 1;
   }
+
   .main > div > *:nth-child(2) {
     --enter-stage: 2;
   }
+
   .main > div > *:nth-child(3) {
     --enter-stage: 3;
   }
+
   .main > div > *:nth-child(4) {
     --enter-stage: 4;
   }
+
   .main > div > *:nth-child(5) {
     --enter-stage: 5;
   }
+
   .main > div > *:nth-child(6) {
     --enter-stage: 6;
   }
+
   .main > div > *:nth-child(7) {
     --enter-stage: 7;
   }
+
   .main > div > *:nth-child(8) {
     --enter-stage: 8;
   }
+
   .main > div > *:nth-child(9) {
     --enter-stage: 9;
   }
+
   .main > div > *:nth-child(10) {
     --enter-stage: 10;
   }
+
   .main > div > *:nth-child(11) {
     --enter-stage: 11;
   }
+
   .main > div > *:nth-child(12) {
     --enter-stage: 12;
   }
+
   .main > div > *:nth-child(13) {
     --enter-stage: 13;
   }
+
   .main > div > *:nth-child(14) {
     --enter-stage: 14;
   }
+
   .main > div > *:nth-child(15) {
     --enter-stage: 15;
   }
+
   .main > div > *:nth-child(16) {
     --enter-stage: 16;
   }
+
   .main > div > *:nth-child(17) {
     --enter-stage: 17;
   }
+
   .main > div > *:nth-child(18) {
     --enter-stage: 18;
   }
+
   .main > div > *:nth-child(19) {
     --enter-stage: 19;
   }
+
   .main > div > *:nth-child(20) {
     --enter-stage: 20;
   }
@@ -129,11 +145,12 @@
       opacity: 0;
     }
 
-    to {
+    100% {
       transform: translateX(0);
       opacity: 100;
     }
   }
+
   @media (min-width: 960px) {
     .VPSidebar {
       animation: slide-enter-left 1s both 1;
@@ -147,7 +164,7 @@
     transform: translate(-100%) skew(-15deg);
   }
 
-  to {
+  100% {
     transform: translate(100%) skew(-15deg);
   }
 }
@@ -156,6 +173,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -165,6 +183,7 @@
   from {
     background-position-x: 200%;
   }
+
   to {
     background-position-x: 0%;
   }
@@ -180,7 +199,196 @@
     opacity: 0.3;
   }
 
-  to {
+  100% {
     opacity: 1;
+  }
+}
+
+@media (min-width: 960px) {
+  html[data-forum-transition] {
+    view-transition-name: none;
+  }
+}
+
+@media (max-width: 959px) {
+  html[data-forum-transition] {
+    view-transition-name: none;
+  }
+
+  html[data-forum-transition] #VPContent {
+    view-transition-name: forum-page;
+  }
+
+  ::view-transition-group(forum-page) {
+    overflow: clip;
+  }
+
+  ::view-transition-old(forum-page),
+  ::view-transition-new(forum-page) {
+    mix-blend-mode: normal;
+  }
+
+  html[data-forum-transition='forward']::view-transition-old(forum-page) {
+    animation: forum-page-exit-left 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  html[data-forum-transition='forward']::view-transition-new(forum-page) {
+    animation: forum-page-enter-right 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  html[data-forum-transition='back']::view-transition-old(forum-page) {
+    animation: forum-page-exit-right 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  html[data-forum-transition='back']::view-transition-new(forum-page) {
+    animation: forum-page-enter-left 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+}
+
+html[data-forum-navigated] .Forum.slide-enter,
+html[data-forum-navigated] .Forum [slide-enter],
+html[data-forum-navigated] .Forum .slide-enter,
+html[data-forum-navigated] .Forum .main > div > * {
+  animation: none;
+}
+
+@keyframes forum-page-enter-right {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes forum-page-exit-left {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes forum-page-enter-left {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes forum-page-exit-right {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+::view-transition-group(forum-topic-author),
+::view-transition-group(forum-topic-login),
+::view-transition-group(forum-topic-title),
+::view-transition-group(forum-topic-type),
+::view-transition-group(forum-topic-content),
+::view-transition-group(forum-topic-image),
+::view-transition-group(forum-blog-cover),
+::view-transition-group(forum-blog-title),
+::view-transition-group(forum-user-avatar),
+::view-transition-group(forum-user-name) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-forum-transition='forward']::view-transition-group(forum-topic-login),
+html[data-forum-transition='forward']::view-transition-group(forum-user-name),
+html[data-forum-transition='back']::view-transition-group(forum-topic-content),
+html[data-forum-transition='back']::view-transition-group(forum-user-avatar) {
+  animation-delay: 20ms;
+}
+
+html[data-forum-transition='forward']::view-transition-group(forum-topic-type),
+html[data-forum-transition='back']::view-transition-group(forum-topic-title) {
+  animation-delay: 40ms;
+}
+
+html[data-forum-transition='forward']::view-transition-group(forum-topic-title),
+html[data-forum-transition='forward']::view-transition-group(forum-blog-title),
+html[data-forum-transition='back']::view-transition-group(forum-blog-title),
+html[data-forum-transition='back']::view-transition-group(forum-topic-type) {
+  animation-delay: 60ms;
+}
+
+html[data-forum-transition='forward']::view-transition-group(forum-topic-content),
+html[data-forum-transition='back']::view-transition-group(forum-topic-login) {
+  animation-delay: 80ms;
+}
+
+html[data-forum-transition='forward']::view-transition-group(forum-topic-image),
+html[data-forum-transition='forward']::view-transition-group(forum-blog-cover),
+html[data-forum-transition='back']::view-transition-group(forum-blog-cover),
+html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
+  animation-delay: 100ms;
+}
+
+::view-transition-old(forum-topic-author),
+::view-transition-new(forum-topic-author),
+::view-transition-old(forum-topic-login),
+::view-transition-new(forum-topic-login),
+::view-transition-old(forum-topic-title),
+::view-transition-new(forum-topic-title),
+::view-transition-old(forum-topic-type),
+::view-transition-new(forum-topic-type),
+::view-transition-old(forum-topic-content),
+::view-transition-new(forum-topic-content),
+::view-transition-old(forum-topic-image),
+::view-transition-new(forum-topic-image),
+::view-transition-old(forum-blog-cover),
+::view-transition-new(forum-blog-cover),
+::view-transition-old(forum-blog-title),
+::view-transition-new(forum-blog-title),
+::view-transition-old(forum-user-avatar),
+::view-transition-new(forum-user-avatar),
+::view-transition-old(forum-user-name),
+::view-transition-new(forum-user-name) {
+  height: 100%;
+  overflow: clip;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(forum-topic-author),
+::view-transition-old(forum-topic-login),
+::view-transition-old(forum-topic-title),
+::view-transition-old(forum-topic-type),
+::view-transition-old(forum-topic-content),
+::view-transition-old(forum-topic-image),
+::view-transition-old(forum-blog-cover),
+::view-transition-old(forum-blog-title),
+::view-transition-old(forum-user-avatar),
+::view-transition-old(forum-user-name) {
+  animation: forum-shared-fade-out 280ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+::view-transition-new(forum-topic-author),
+::view-transition-new(forum-topic-login),
+::view-transition-new(forum-topic-title),
+::view-transition-new(forum-topic-type),
+::view-transition-new(forum-topic-content),
+::view-transition-new(forum-topic-image),
+::view-transition-new(forum-blog-cover),
+::view-transition-new(forum-blog-title),
+::view-transition-new(forum-user-avatar),
+::view-transition-new(forum-user-name) {
+  animation: forum-shared-fade-in 380ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes forum-shared-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes forum-shared-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-forum-transition]::view-transition-group(*),
+  html[data-forum-transition]::view-transition-old(*),
+  html[data-forum-transition]::view-transition-new(*) {
+    animation-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

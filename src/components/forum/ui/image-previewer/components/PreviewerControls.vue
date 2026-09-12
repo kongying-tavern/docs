@@ -58,7 +58,10 @@ const { message } = useLocalized()
   backdrop-filter: blur(12px);
   color: var(--forum-media-on-overlay);
   cursor: pointer;
-  transition: opacity 200ms ease, transform 220ms ease, background-color 160ms ease;
+  transition:
+    opacity 200ms ease,
+    transform 220ms ease,
+    background-color 160ms ease;
 }
 
 .forum-preview-close:hover {
@@ -75,7 +78,9 @@ const { message } = useLocalized()
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  transition: opacity 200ms ease, transform 220ms ease;
+  transition:
+    opacity 200ms ease,
+    transform 220ms ease;
 }
 
 .forum-preview-dot {
@@ -88,7 +93,9 @@ const { message } = useLocalized()
   background: var(--forum-media-dot);
   background-clip: content-box;
   cursor: pointer;
-  transition: width 200ms ease, background-color 200ms ease;
+  transition:
+    width 200ms ease,
+    background-color 200ms ease;
 }
 
 .forum-preview-dot:hover {

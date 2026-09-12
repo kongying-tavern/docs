@@ -33,6 +33,12 @@ const JSON_LIKE_TEXT_REGEX = /^\s*[[{]/u
 
 const TOPIC_CODE_FENCE_MARKER_REGEX = /^( {0,3})(`{3,}|~{3,})/gm
 
+interface ForumTopicRenderOptions {
+  topicHref?: (topicId: string) => string
+  documentLinks?: Readonly<Record<string, string>>
+  paragraphBreaks?: boolean
+}
+
 const TOPIC_MARKDOWN = new MarkdownIt({
   breaks: true,
   html: false,
@@ -42,6 +48,10 @@ const TOPIC_MARKDOWN = new MarkdownIt({
 TOPIC_MARKDOWN.core.ruler.before('linkify', 'forum-schemeless-links', normalizeSchemelessLinkTokens)
 TOPIC_MARKDOWN.core.ruler.after('linkify', 'forum-special-text', transformForumSpecialText)
 TOPIC_MARKDOWN.disable(['autolink', 'code', 'fence', 'heading', 'image', 'link'])
+
+/** 编辑器把段落序列化成单个换行；详情页用 CSS 增加段落间距，避免在内联标记内拼接无效的 </p><p>。 */
+TOPIC_MARKDOWN.renderer.rules.softbreak = (_tokens, _idx, _options, env: ForumTopicRenderOptions) =>
+  env.paragraphBreaks ? '<br class="forum-topic-paragraph-break">' : '<br>\n'
 
 const FORUM_HTML_SANITIZE_CONFIG = {
   ALLOWED_ATTR: [
@@ -87,11 +97,6 @@ const FORUM_HTML_SANITIZE_CONFIG = {
 type RenderedForumComment
   = | { kind: 'plain', text: string }
     | { kind: 'html', html: string, text: string }
-
-interface ForumTopicRenderOptions {
-  topicHref?: (topicId: string) => string
-  documentLinks?: Readonly<Record<string, string>>
-}
 
 export function renderTiptapToHtml(doc: JSONContent, options: ForumTopicRenderOptions = {}): string {
   return renderToHTMLString({
@@ -219,7 +224,7 @@ function linkForumReferences(text: string, options: ForumTopicRenderOptions): st
 }
 
 export function renderForumTopic(text: string, options: ForumTopicRenderOptions = {}): string {
-  return sanitizeForumHtml(TOPIC_MARKDOWN.render(escapeTopicCodeFenceMarkers(text), options))
+  return sanitizeForumHtml(TOPIC_MARKDOWN.render(escapeTopicCodeFenceMarkers(text), { ...options, paragraphBreaks: true }))
 }
 
 export function renderForumTopicSummary(text: string, options: ForumTopicRenderOptions = {}): string {

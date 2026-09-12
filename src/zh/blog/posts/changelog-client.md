@@ -12,13 +12,13 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 {define:L_LEGEND}{color:#e1ab36}**传说级**{/color}{/define}
 {define:L_MYTH}{color:#f15e4e}**神话级**{/color}{/define}
 
-> **客户端下载方式（除了自动更新外的方式）**
+> **客户端下载方式(除了自动更新外的方式)**
 >
 > - 在线安装器：<https://steambird.pub/-/kyjg/KongYingMap.OnlineInst.exe>
 > - 夸克云盘：<https://pan.quark.cn/s/fe8bb34c77bc>
 > - 加入讨论组：<https://yuanshen.site/docs/community.html>
-> - 百度网盘（提取码：KYJG）：<https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg>
-> - 天翼云盘（访问码：exn0）：<https://cloud.189.cn/t/YF7Fj2zIRVbi>
+> - 百度网盘(提取码：KYJG)：<https://pan.baidu.com/s/1t_FRadAiGHGxw1YvvWt0bg>
+> - 天翼云盘(访问码：exn0)：<https://cloud.189.cn/t/YF7Fj2zIRVbi>
 > - 若没有出现自动更新窗口，请尝试：<https://yuanshen.site/docs/manual/faq/autoupdate/updater>
 
 ```
@@ -44,7 +44,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
            佛祖保佑       永无BUG
 ```
 
-> 热更新日志请查看 ***[热更新日志](https://yuanshen.site/docs/blog/hotupdatelog-client)***。
+> 热更新日志请查看***[热更新日志](https://yuanshen.site/docs/blog/hotupdatelog-client)***。
 
 ---
 
@@ -54,17 +54,17 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致在关闭分层自动关闭洞口设置开启时在分层模式点击地面层级的洞口并标记该洞口时该洞口点位的状态未正确更新。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致点位弹窗关闭后当前点位渲染层级错误。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致初始化时宝箱中可能会有空的栏位需要手动滚动一下才出现物品。
-- 新增了6.2的一处地下层级
-- 新增了URLProtocol，以支持通过URL启动地图
-- 新增了RubyText支持，以支持可能的文本标记
-- 优化了网络图片读取的质量，添加了mip支持
+- 新增了 6.2 的一处地下层级
+- 新增了 URLProtocol，以支持通过 URL 启动地图
+- 新增了 RubyText 支持，以支持可能的文本标记
+- 优化了网络图片读取的质量，添加了 mip 支持
 - 优化了点位弹窗的文本拖拽，现在文本没有超出时将忽略拖拽事件
-- 优化了icon轮询机制，现在相同icon只会出现一次
+- 优化了 icon 轮询机制，现在相同 icon 只会出现一次
 - 优化了物品生成逻辑，提高效率
 - 优化了字体为静态+动态，提高了运行时效率，现在滚动物品不会卡顿了
-- 优化了部分GC，提高效率
+- 优化了部分 GC，提高效率
 - 优化网络请求，释放内存
-- 升级引擎版本到2021.3.45f2c1
+- 升级引擎版本到 2021.3.45f2c1
 
 :::
 
@@ -97,7 +97,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致首次使用追踪快捷键开启追踪显示的永远是关闭。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致在搜索其他地区物品时切换地图显示文本与物品重叠。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致开机页面缩放错误。
-- 新增了已标记点位仅中键点击（即已标记点位锁定）开关。
+- 新增了已标记点位仅中键点击(即已标记点位锁定)开关。
 - 分离了 UI 缩放与地图缩放，并增加了放大的区间。
 - 优化了缩放 UI 时的底图元素的显示隐藏逻辑。
 
@@ -158,7 +158,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 优化了 GC 调用以优化效率。
 - 优化了地图切换时的特效表现。
 - 优化了点击 UI 镜头缩放的表现。
-- 优化了物品进度条的UI表现。
+- 优化了物品进度条的 UI 表现。
 - 修改了设置界面 UI 逻辑。
 - 修改了洞口判断逻辑。
 - 新增了一堆 bug 特性。
@@ -238,7 +238,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 新增了一个{%= L_EPIC %}功能——自动切换地下地区，开启该功能时点击点位会自动切换到对应地下/地上层级。
 - 添加了地上时关闭洞口的功能开关。
 - 优化了存档回溯功能，添加了数据清洗和日期选择，现在应该不会因为数据太多卡死了。
-- 优化了鼠标事件，现在鼠标中键（滚轮键）也能点开 POI 详情了，因此可以在画布编辑时按中键打开 POI 详情了。
+- 优化了鼠标事件，现在鼠标中键(滚轮键)也能点开 POI 详情了，因此可以在画布编辑时按中键打开 POI 详情了。
 
 :::
 
@@ -282,7 +282,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 添加了自体自身之塔开关。
 - 添加了隐藏的传送点透明度的设置滑条。
 - 添加了沉玉谷地下地图文本。
-- 添加了地下地图和已标记点位的快捷键设置（默认为空）。
+- 添加了地下地图和已标记点位的快捷键设置(默认为空)。
 - 添加了宝箱计数条。
 - 添加了大部分滚动条的聚焦显示 tip。
 - 优化了公告系统，添加了一个入口，现在支持超链接了。
@@ -320,7 +320,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 ::: timeline Beta4.2：2023-011-8
 
 - 更新了 4.2 地图及资源。
-- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致登入/登出时物品选择状态未被正确还原，同时导致“开启分层模式时打开洞口”功能关闭时重启地图，洞口会自动显示。
+- 修复了一个{%= L_EPIC %} bug，该 bug 曾导致登入/登出时物品选择状态未被正确还原，同时导致「开启分层模式时打开洞口」功能关闭时重启地图，洞口会自动显示。
 
 :::
 
@@ -351,7 +351,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致山中洞窟·二层位置偏移。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致枫丹地区没有浪船锚点。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致雨林两处旧版地下地区层级不正确。
-- 修复了一个{%= L_RARE %} bug，该 bug 曾导致某些点位被标记后会立即刷新 !!（不知道修没修好）。!!
+- 修复了一个{%= L_RARE %} bug，该 bug 曾导致某些点位被标记后会立即刷新 !!(不知道修没修好)。!!
 
 :::
 
@@ -478,7 +478,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 ::: timeline Beta3.4.7：2023-02-11
 
-- !!修复了一个{%= L_LEGEND %} bug，该 bug 曾导致点击点位弹出 popup 时若不等待图片加载完成就关闭 popup 会卡成 PPT（并没有完全修好，下次一定）。!!
+- !!修复了一个{%= L_LEGEND %} bug，该 bug 曾导致点击点位弹出 popup 时若不等待图片加载完成就关闭 popup 会卡成 PPT(并没有完全修好，下次一定)。!!
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致传送点位无法点出 popup。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致大伟丘在数据上存在自动刷新时间。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致网络状态不佳时无法退出程序。
@@ -492,12 +492,12 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 ::: timeline Beta3.4.6：2023-02-10
 
-- !!修复了一个{%= L_LEGEND %} bug，该 bug 曾导致运行一段时间后卡成 PPT（并没有修好，下次一定）。!!
+- !!修复了一个{%= L_LEGEND %} bug，该 bug 曾导致运行一段时间后卡成 PPT(并没有修好，下次一定)。!!
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致切换存档时点位状态未刷新。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致存档大于 6 个时无法向下滚动。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致位置追踪模块加载后退出会卡死。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致位置追踪锁定视角在关闭时呼出地图依然会切换视角。
-- !!修复了一个{%= L_NORMAL %} bug，该 bug 曾导致 popup 在加载图片时文字显示不全（并没有修好，下次一定）。!!
+- !!修复了一个{%= L_NORMAL %} bug，该 bug 曾导致 popup 在加载图片时文字显示不全(并没有修好，下次一定)。!!
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致其他地图上开启地下地区会错误地显示须弥的洞口点位。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致画布的删除按钮在非中文语言下是复制的行为。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致筛选器自动展开模式下切换地区有时候会自动收回。
@@ -543,8 +543,8 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 ::: timeline Beta3.4.2：2023-01-28
 
 - {color:#e13636}**该版本有无法自动更新的 bug，请手动进行版本更新！**{/color}。
-- !!更新了位置追踪的独立自动更新（咕咕咕）。!!
-- 新增千壑沙地地下地图（感谢由图研所提供的地下区域底图）。
+- !!更新了位置追踪的独立自动更新(咕咕咕)。!!
+- 新增千壑沙地地下地图(感谢由图研所提供的地下区域底图)。
 - 更新了位置追踪 DLL。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致数据更新后传送点显示不正常。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致图标为【？】。
@@ -552,7 +552,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致神的棋盘文字显示错误。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致存档读取失败，或修改存档时发生错误导致存档损坏。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致某些点位的地上/地下状态显示不正确。
-- !!新增全屏/窗口及一堆分辨率设置（有 bug 暂时用不了，下个版本修复）。!!
+- !!新增全屏/窗口及一堆分辨率设置(有 bug 暂时用不了，下个版本修复)。!!
 - 优化了地区子按钮的宽度，现在刚好为 4 个汉字宽度。
 - 优化了物品重置逻辑，现在不会重置一次性点位。
 - 新增了地上及地下点位的透明度配置项。
@@ -575,11 +575,11 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致须弥浪船锚点不显示。
 - 再次优化了 UI 缩放逻辑，现在 UI 缩放更合理了。
 - 优化了热更新资源下载，现在可以清除下载内容并重新下载了。
-- 优化了地下点位的显示，现在地下点位有特殊标记了（全地区通用，包括稻妻）。
+- 优化了地下点位的显示，现在地下点位有特殊标记了(全地区通用，包括稻妻)。
 - 优化了右侧缩放条的贴图让它变得清晰亿点。
 - 优化了右下角的设置按钮，使其与游戏内风格一致。
 - 更新了设置界面，添加了超多的设置项及路径及快捷键，详细内容请更新后点击右上角设置进行查看。
-- 更新了位置追踪，现在支持云·原神了。!!（也许）!!
+- 更新了位置追踪，现在支持云·原神了。!!(也许)!!
 
 :::
 
@@ -589,8 +589,8 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致退出时若不保存数据到本地，筛选器不会更新点位数据。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致选中多种类型的 item 时无法在其他类型中取消选择 item。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致传送点位异常出现在见闻中。
-- 优化了 UI 缩放逻辑，现在 UI 缩放合理了!!（虽然超小的分辨率根本看不清面板）。!!
-- !!更新了位置追踪，现在支持云·原神了（稳定性测试未通过，等待下次更新）。!!
+- 优化了 UI 缩放逻辑，现在 UI 缩放合理了!!(虽然超小的分辨率根本看不清面板)。!!
+- !!更新了位置追踪，现在支持云·原神了(稳定性测试未通过，等待下次更新)。!!
 - 优化了宝箱筛选栏高度，现在宝箱分类默认显示 3 行。
 - 优化了图标清晰度。
 - 添加了位置追踪 DLL 版本号显示。
@@ -614,7 +614,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致点位数据解压失败导致的无法进入关卡。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致重置点位操作在点位未显示时无效。
-- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致退出时自动保存的 UI 进度显示错误（不影响实际保存）。
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致退出时自动保存的 UI 进度显示错误(不影响实际保存)。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致位置追踪的 icon 异常变小。
 - 更新了沙漠的地下区域。
 - 添加了窗口置顶功能。
@@ -634,7 +634,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 优化了数据更新逻辑，现在将静默更新，手动加载。
 - 优化了数据存储格式，现在下载更新更快了。
 - 修复了标记可能有延迟的问题，现在最多延迟 1 秒。
-- 修复了 Alt+M 会导致鼠标异常到桌面点击的问题（也许修复了，不确定）。
+- 修复了 Alt+M 会导致鼠标异常到桌面点击的问题(也许修复了，不确定)。
 
 :::
 
@@ -664,7 +664,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致位置追踪区域外的箭头视角缩放后大小错误。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致第一次登陆时自动存档功能不会复制本地存档，现在新建存档时会询问是否复制未登录时的本地存档。
-- 修复了一个{%= L_RARE %} bug，该 bug 曾导致某些设备无法位置追踪（修复了，还不行请尝试更新显卡驱动然后重启客户端）。
+- 修复了一个{%= L_RARE %} bug，该 bug 曾导致某些设备无法位置追踪(修复了，还不行请尝试更新显卡驱动然后重启客户端)。
 - 优化了位置追踪，现在 2560×1080 的带鱼屏也可追踪了。
 - 优化了隐藏已标记点位的按钮文本可读性。
 - 优化了滚动条的滚动速度。
@@ -674,8 +674,8 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 ::: timeline Beta3.0.1：2022-09-02
 
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致位置追踪区域外的跳转按钮显示错误。
-- 添加了地下区域的开关（感谢由图研所提供的地下区域底图）。
-- 更新了全地区的位置追踪，包括须弥地区、地下矿区和渊下宫！（仅测试过 1920×1080）。
+- 添加了地下区域的开关(感谢由图研所提供的地下区域底图)。
+- 更新了全地区的位置追踪，包括须弥地区、地下矿区和渊下宫！(仅测试过 1920×1080)。
 - 优化了点位更新的取消时间，现在间隔时间将指数级上升。
 - 优化了存档覆盖弹窗的文本可读性。
 
@@ -725,7 +725,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 - 修复了一个{%= L_EPIC %} bug，该 bug 曾导致某些不同语言体系的系统的点位出现位置异常。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致受网络影响群岛的某些点位可能不会显示。
-- 修复了一个{%= L_RARE %} bug，该 bug 曾导致数据更新后异常卡死（与 2.7.2 的该 bug 相同但触发位置不同）。
+- 修复了一个{%= L_RARE %} bug，该 bug 曾导致数据更新后异常卡死(与 2.7.2 的该 bug 相同但触发位置不同)。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致日语的底图文字为白框。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致切换地区后翻译错乱。
 - 优化了下载数据的逻辑，现在会进行重试至多 5 次。
@@ -782,7 +782,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 ::: timeline Beta2.6：2022-03-11
 
 - !!代码上添加了意想不到的新东西。!!
-- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致双击点击开始会发生初始化异常错误。!!（并没有修好，下次一定（又修好了，如果没好请运行更新器手动更新一下））!!
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致双击点击开始会发生初始化异常错误。!!(并没有修好，下次一定(又修好了，如果没好请运行更新器手动更新一下))!!
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致一直处于获取服务器版本失败状态无法进入，现在点重试会更换资源服务器并重试。
 - 已知{%= L_RARE %} bug，该 bug 导致该版本无法运行自动更新，请手动更新~
 
@@ -790,9 +790,9 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 ::: timeline Beta2.5：2022-02-16
 
-- 更新稻妻第五部分（三界路飨祭）地图及资源。
+- 更新稻妻第五部分(三界路飨祭)地图及资源。
 - 更新鹤观位置追踪。
-- 添加资源热更新逻辑。!!（同时添加了大量未知 bug）!!
+- 添加资源热更新逻辑。!!(同时添加了大量未知 bug)!!
 - 也许修复了存档被顶替的 bug。
 - 优化了图片资源显示模式。
 - 优化了加载界面。
@@ -802,7 +802,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 ::: timeline Beta2.4：2022-01-05
 
-- 更新稻妻第四部分（渊下宫）地图及资源。
+- 更新稻妻第四部分(渊下宫)地图及资源。
 - 添加了全地图截图功能。
 - 添加了大量的鼠标提示与鼠标提示显示开关。
 - 添加了画板编辑 UI，改善了画板操作体验。
@@ -811,7 +811,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致画线功能删除点时产生异常。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致画线的线出现错误 log 输出。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致画板出现错误 log 输出。
-- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致画板功能的“添加画布”文字不显示。
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致画板功能的「添加画布」文字不显示。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致框选时松开 Ctrl 右键会标记滑过的点位。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致蒙德地区突发委托及世界任务标记后显示异常。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致某特殊状态下无法加载地图。
@@ -831,8 +831,8 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 
 ::: timeline Beta2.2：2021-10-13
 
-- 更新稻妻第三部分（鹤观）地图及资源。
-- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致世界语（Esperanto）字体错误。
+- 更新稻妻第三部分(鹤观)地图及资源。
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致世界语(Esperanto)字体错误。
 
 :::
 
@@ -849,7 +849,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端更�
 ::: timeline Beta2.1.2：2021-09-03
 
 - 更新了稻妻 2 的位置追踪。
-- 修复了一个{%= L_RARE %} bug，该 bug 曾导致切换应用程序（Alt+Tab）时会出现悬浮窗的小窗口。
+- 修复了一个{%= L_RARE %} bug，该 bug 曾导致切换应用程序(Alt+Tab)时会出现悬浮窗的小窗口。
 - 修复了一个{%= L_RARE %} bug，该 bug 曾导致悬浮窗异常闪烁不定及 Alt+M 关闭地图过后一定时间地图会异常再次弹出。
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致查看点位视频被穿透导致点到下方的点位。
 

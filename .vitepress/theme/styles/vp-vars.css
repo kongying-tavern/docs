@@ -40,8 +40,7 @@
   --banner-bg: #383636;
   --suggest-language-bar-bg: rgba(255, 255, 255, 0.078);
   --suggest-language-bar-hover-bg: rgba(255, 255, 255, 0.161);
-  --vp-badge-tip-bg: --
-  --radius: 0.5rem;
+  --vp-badge-tip-bg: -- --radius: 0.5rem;
 
   --locale-nav-height: 52px;
 }
@@ -58,7 +57,7 @@
   --vp-c-divider: #2e2e32;
   --vp-c-gutter: #000000;
   --vp-c-brand-soft: rgba(96, 191, 144, 0.14);
-  --vp-local-nav-bg-color: rgba(27, 27, 31, 0.7)
+  --vp-local-nav-bg-color: rgba(27, 27, 31, 0.7);
 }
 
 .dark {
@@ -106,12 +105,8 @@
 
 :root {
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg,
-      #60bf90,
-      #008858);
-  --vp-home-hero-image-background-image: linear-gradient(-45deg,
-      rgba(68, 189, 135, 0.28) 30%,
-      rgba(0, 136, 88, 0.12));
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #60bf90, #008858);
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, rgba(68, 189, 135, 0.28) 30%, rgba(0, 136, 88, 0.12));
   --vp-home-hero-image-filter: blur(30px);
 
   --vp-layout-top-height: 0.1px;

@@ -1,6 +1,32 @@
 <script setup lang="ts">
-import ForumPublishTopicForm from '~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue'
-import ForumTopicTagsEditorDialog from '~/components/forum/topic/ForumTopicTagsEditorDialog.vue'
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
+import { FORM_HASH } from '~/components/forum/form/publish-topic-form/form-config'
+import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
+
+const loadForumPublishTopicForm = () => import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue')
+const ForumPublishTopicForm = defineAsyncComponent(
+  loadForumPublishTopicForm,
+)
+const ForumTopicTagsEditorDialog = defineAsyncComponent(
+  () => import('~/components/forum/topic/ForumTopicTagsEditorDialog.vue'),
+)
+const shouldMountPublishForm = ref(false)
+const { open: shouldMountTopicTagsEditor } = useTopicTagsEditor()
+
+function mountPublishFormWhenRequested(): void {
+  if (location.hash.slice(1).startsWith(FORM_HASH))
+    shouldMountPublishForm.value = true
+}
+
+onMounted(() => {
+  void loadForumPublishTopicForm().catch(() => undefined)
+  mountPublishFormWhenRequested()
+  window.addEventListener('hashchange', mountPublishFormWhenRequested)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', mountPublishFormWhenRequested)
+})
 </script>
 
 <template>
@@ -8,10 +34,12 @@ import ForumTopicTagsEditorDialog from '~/components/forum/topic/ForumTopicTagsE
     <slot />
     <Content />
   </div>
-  <ForumPublishTopicForm />
-  <Teleport to="body">
-    <ForumTopicTagsEditorDialog />
-  </Teleport>
+  <ClientOnly>
+    <template v-if="shouldMountPublishForm">
+      <ForumPublishTopicForm />
+    </template>
+    <ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" />
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>

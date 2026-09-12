@@ -1,6 +1,4 @@
-import type { CustomConfig } from '../types'
-
-const asideLinks: CustomConfig['asideLinks'] = {
+const asideLinks = {
   title: '快捷链接',
   starOnGitHub: 'Star on GitHub',
   contactUsText: '加入Discord服务器',

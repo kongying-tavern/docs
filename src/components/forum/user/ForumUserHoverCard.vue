@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { computed } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
+import { useRouter } from 'vitepress'
+import { computed, ref } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,8 +15,11 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumUserProfileQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { getGiteeMessagesHref } from '~/constants/site'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
+import ForumUserMobileDrawer from './ForumUserMobileDrawer.vue'
 
 const { user, userId } = defineProps<{
   user?: ForumAPI.User
@@ -25,7 +30,8 @@ if (!user && !userId)
   throw new Error('Must contain any of the two parameters')
 
 const { message } = useLocalized()
-const { userHref } = useForumRoute()
+const router = useRouter()
+const { route, userHref } = useForumRoute()
 const currentUser = useUserInfoStore()
 
 const { data: userData, isLoading: getUserLoading } = useForumUserProfileQuery(
@@ -41,12 +47,27 @@ const isAuthorizedUser = computed(() => Boolean(
 ))
 const href = computed(() => userHref(userInfo.value?.login || ''))
 
-function openUserProfilePage() {
-  window.open(href.value, userInfo.value?.login)
+const isOnProfilePage = computed(() => {
+  const current = route.value
+  return current?.name === 'user' && current.username === userInfo.value?.login
+})
+
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+const drawerOpen = ref(false)
+
+function onTriggerClick(event: MouseEvent) {
+  if (isMobile.value) {
+    event.preventDefault()
+    drawerOpen.value = true
+    return
+  }
+  if (isOnProfilePage.value)
+    return
+  router.go(href.value)
 }
 
 function sendMessage() {
-  window.open(`https://gitee.com/notifications/messages/${userInfo.value?.id}`, String(userInfo.value?.id))
+  window.open(getGiteeMessagesHref(userInfo.value!.id), String(userInfo.value?.id))
 }
 </script>
 
@@ -54,17 +75,19 @@ function sendMessage() {
   <HoverCard>
     <HoverCardTrigger
       as-child
-      @click="openUserProfilePage"
+      @click="onTriggerClick"
     >
       <slot name="trigger" />
     </HoverCardTrigger>
     <HoverCardContent
+      v-if="!isMobile"
       align="end"
       class="p-4 w-72"
     >
       <div class="flex flex-col gap-3">
         <div class="flex gap-3 items-start">
           <Avatar
+            :data-forum-user="userInfo?.login"
             :src="userInfo?.avatar"
             :alt="userInfo?.username"
             class="h-12 w-12"
@@ -75,7 +98,7 @@ function sendMessage() {
             <div class="flex gap-2 items-center">
               <a
                 :href="href"
-                :target="userInfo?.username"
+                :data-forum-user="userInfo?.login"
                 :alt="userInfo?.username"
               >
                 <h3 class="text-base text-[var(--vp-c-text-1)] font-bold">
@@ -117,4 +140,11 @@ function sendMessage() {
       </div>
     </HoverCardContent>
   </HoverCard>
+
+  <ForumUserMobileDrawer
+    v-if="isMobile"
+    v-model:open="drawerOpen"
+    :user="userInfo"
+    :hide-profile-button="isOnProfilePage"
+  />
 </template>

@@ -96,8 +96,8 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   background-color: var(--vp-c-bg-alt);
 }
 
-.is-home~.footer-container .footer,
-.Headline>.footer-container .footer,
+.is-home ~ .footer-container .footer,
+.Headline > .footer-container .footer,
 .Blog .footer-container .footer {
   max-width: 1152px;
 }
@@ -122,7 +122,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   margin: 0 auto;
 }
 
-.footer>* {
+.footer > * {
   display: grid;
   place-items: start;
   gap: 0.5rem;
@@ -157,7 +157,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     }
   }
 
-  ul>li>a {
+  ul > li > a {
     display: inline-block;
     transition: color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     color: var(--vp-c-text-1);
@@ -201,8 +201,8 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 }
 
 // 这里逻辑还有点问题
-.footer-title:hover~ul,
-.footer-title~ul:hover {
+.footer-title:hover ~ ul,
+.footer-title ~ ul:hover {
   height: 100%;
 }
 
@@ -242,7 +242,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 }
 
 @media (min-width: 960px) {
-  .VPSidebar~.footer-container {
+  .VPSidebar ~ .footer-container {
     width: calc(100% - var(--vp-sidebar-width));
     left: var(--vp-sidebar-width);
   }
@@ -271,7 +271,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
       height: 100%;
     }
 
-    ul>li>a {
+    ul > li > a {
       padding: 0;
     }
   }
@@ -312,7 +312,7 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     border-radius: 25%;
   }
 
-  &~svg {
+  & ~ svg {
     width: 24px;
     height: 24px;
     fill: currentColor;

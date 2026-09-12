@@ -1,0 +1,49 @@
+# 认领交互：评论认领 / PR 关联 / 每日超期清扫，三个 job 按事件自动路由；手动运行 = 立即清扫
+name: Translation claim bot
+on:
+  issue_comment:
+    types: [created]
+  pull_request_target:
+    types: [opened, synchronize, closed]
+  schedule:
+    - cron: '0 21 * * *' # 每天 UTC 21:00；过期判定基于认领时间戳，触发延迟不影响正确性
+  workflow_dispatch:
+
+# 所有 bot 写操作经同一并发队列串行，防止 read-modify-write 互相覆盖
+concurrency:
+  group: lunaria-claim
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  claim:
+    if: github.event_name == 'issue_comment' && !github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jiazengp/lunaria-claim@v1
+        with:
+          mode: claim
+
+  link-pr:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    steps:
+      # 只用 API 读取配置与 PR 文件列表，不 checkout 不可信代码
+      - uses: actions/checkout@v4
+      - uses: jiazengp/lunaria-claim@v1
+        with:
+          mode: link-pr
+
+  expire:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jiazengp/lunaria-claim@v1
+        with:
+          mode: expire

@@ -4,7 +4,6 @@ import { test } from 'node:test'
 import {
   decodeForumPersonalState,
   emptyForumPersonalState,
-  getNewCommentCount,
   isRecentClosedTopic,
   parseForumPersonalState,
   recordParticipation,
@@ -81,14 +80,6 @@ test('following toggles and participation stays deduplicated and recent-first', 
   const participated = recordParticipation(recordParticipation(followed, first), second)
   assert.deepEqual(participated.recentParticipated, [second, first])
   assert.deepEqual(recordParticipation(participated, first).recentParticipated, [first, second])
-})
-
-test('new comment counts only include growth after following', () => {
-  assert.equal(getNewCommentCount(2, 5), 3)
-  assert.equal(getNewCommentCount(5, 2), 0)
-  assert.equal(getNewCommentCount(undefined, 5), 0)
-  assert.equal(getNewCommentCount(-1, 5), 0)
-  assert.equal(getNewCommentCount(2, -1), 0)
 })
 
 test('closed sidebar topics expire seven days after their authoritative close time', () => {

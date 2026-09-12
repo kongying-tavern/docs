@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import { useRouter } from 'vitepress'
+import { useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useForumViewMode } from '~/composables/useForumViewMode'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicComment from '../comment/ForumTopicComment.vue'
 import { useTopicInteraction } from '../composables/useTopicInteraction'
@@ -23,10 +24,9 @@ const emit = defineEmits<{
   preview: [topic: ForumAPI.Topic, focusComment: boolean]
 }>()
 
-const router = useRouter()
-
 const { menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode()
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const translatedContent = ref<string>()
 const translatedTitle = ref('')
 const showingTranslation = ref(false)
@@ -40,22 +40,32 @@ const menu = computed(() => {
 const {
   inReply,
   detailHref,
+  prepareTopicDetail,
+  toPostDetailPage,
 } = useTopicInteraction(topic)
 
 function handleSummaryClick() {
-  router.go(detailHref())
+  toPostDetailPage()
 }
 
 function handleCommentClick() {
+  if (isMobile.value) {
+    toPostDetailPage('reply')
+    return
+  }
   emit('preview', topic, true)
 }
 
 function handleRowClick(event: MouseEvent) {
   const target = event.target as HTMLElement
-  if (target.closest('a, button, img, input, .forum-topic-summary'))
+  if (target.closest('a, button, img, input, .forum-topic-summary, [data-forum-shared-topic="author"]'))
     return
   if (topic.type === 'POST')
     return
+  if (isMobile.value) {
+    toPostDetailPage()
+    return
+  }
   emit('preview', topic, false)
 }
 
@@ -68,8 +78,11 @@ function showTranslatedContent(content: string): void {
 <template>
   <div
     :id="`topic-${topic.id}`"
+    :data-forum-topic="String(topic.id)"
     class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full hover:bg-[var(--vp-c-default-soft)]"
     :class="[topic.type]"
+    @pointerdown="prepareTopicDetail"
+    @keydown.enter="prepareTopicDetail"
     @click="handleRowClick"
   >
     <div class="topic-content">
