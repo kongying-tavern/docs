@@ -4,7 +4,7 @@ import type { SearchParamValue } from './types'
 import type { TopicStateFilter } from '~/services/forum/forumQueryContracts'
 import { buildFormData } from '@/apis/utils'
 import { reportRequestFailure } from '~/services/telemetry/request'
-import { apiCall } from '.'
+import { apiCall, deleteApiCache } from '.'
 import { reformat } from '../webhook'
 import { GITEE_API_CONFIG } from './config'
 import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
@@ -37,6 +37,35 @@ const RELATED_COMMENT_PER_PAGE = 100
 
 function isDevTestIssue(issue: GITEE.IssueInfo): boolean {
   return (issue.labels ?? []).some(label => label?.name === 'DEV-TEST')
+}
+
+/** 失效相关评论预览窗口（page 1..MAX）的会话级缓存，键须与 fetchCommentsForIssueWindow 的请求字面量一致 */
+function invalidateRelatedCommentCache(): void {
+  for (let page = 1; page <= RELATED_COMMENT_MAX_PAGES; page++) {
+    deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`, {
+      searchParams: {
+        page,
+        sort: 'created',
+        per_page: RELATED_COMMENT_PER_PAGE,
+      },
+    })
+  }
+}
+
+/** 失效置顶与公告列表的会话级缓存，键须与 getPinnedList/getAnnouncementList 的请求字面量一致 */
+function invalidatePinnedAndAnnouncementCache(): void {
+  deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues`, {
+    searchParams: {
+      state: 'open',
+      labels: ['PINNED'],
+    },
+  })
+  deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues`, {
+    searchParams: {
+      state: 'open',
+      labels: ['TYP-ANN'],
+    },
+  })
 }
 
 /**
@@ -289,6 +318,9 @@ export async function postTopicComment(
     },
   )
 
+  // 评论流已变化，失效相关评论预览的会话级缓存
+  invalidateRelatedCommentCache()
+
   return normalizeComment(comment)
 }
 
@@ -306,7 +338,12 @@ export async function deleteTopicComment(
     },
   )
 
-  return response.status === 204
+  const deleted = response.status === 204
+
+  if (deleted)
+    invalidateRelatedCommentCache()
+
+  return deleted
 }
 
 export async function putTopic(
@@ -339,6 +376,9 @@ export async function putTopic(
   }
 
   const result = normalizeIssue(issueInfo)
+
+  // 标签/状态变更会影响置顶与公告列表，失效其会话级缓存
+  invalidatePinnedAndAnnouncementCache()
 
   // 因为 Gitee 接口不识别无权限用户提交的 labels 和 state，所以这里手动通知 Webhook 同步数据
   if (!(data.labels || data.state))
