@@ -19,6 +19,7 @@ const ui: CustomConfig['ui'] = {
     search: '検索',
     close: '閉鎖',
     all: '全て',
+    emoji: '絵文字',
   },
   sitemap: {
     blog: 'ブログ記事',

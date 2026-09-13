@@ -19,6 +19,7 @@ const ui: CustomConfig['ui'] = {
     search: 'Search',
     close: 'Close',
     all: 'All',
+    emoji: 'Emoji',
   },
   sitemap: {
     blog: 'Blog Posts',

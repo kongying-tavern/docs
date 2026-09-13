@@ -1,25 +1,34 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
+
 interface Props {
   /** 按钮大小 */
   size?: string
   /** 额外的 CSS 类 */
   class?: string
+  /** 无障碍标签（缺省回落到当前语言的「关闭」） */
+  label?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   size: '24px',
   class: '',
+  label: undefined,
 })
 
 const emit = defineEmits<{
   click: []
 }>()
+const { message } = useLocalized()
+const ariaLabel = computed(() => props.label ?? message.value.ui?.button?.close ?? 'Close')
 </script>
 
 <template>
   <button
     type="button"
     :class="$props.class"
+    :aria-label="ariaLabel"
     @click="emit('click')"
   >
     <svg

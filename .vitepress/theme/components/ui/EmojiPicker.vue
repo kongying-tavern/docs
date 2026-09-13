@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import EmojiData from '~/_data/emojis.json'
 
@@ -41,6 +42,9 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'select', arg1: EmojiItem): void
 }>()
+
+const { message } = useLocalized()
+const triggerLabel = computed(() => message.value.ui?.button?.emoji ?? 'Emoji')
 
 const recentEmojis = useLocalStorage<Record<string, string[]>>('RECENT_EMOJIS', {})
 
@@ -152,6 +156,8 @@ function deleteRecentEmoji(emoji: string) {
       <slot name="trigger">
         <Button
           variant="ghost"
+          :aria-label="triggerLabel"
+          aria-haspopup="dialog"
           :class="cn('h-8 w-6 border border-[var(--vp-c-gutter)] border-solid bg-transparent', $props.class)"
           @mouseenter="handleTriggerHover"
         >

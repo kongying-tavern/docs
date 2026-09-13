@@ -17,6 +17,7 @@ const ui = {
     loading: '加载中',
     close: '关闭',
     all: '全部',
+    emoji: '表情',
   },
   sitemap: {
     blog: '博客文章',
