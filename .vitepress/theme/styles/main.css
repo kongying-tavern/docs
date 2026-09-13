@@ -3,8 +3,7 @@
 @import './ui/timeline.css';
 @import './ui/demo.css';
 @import './animation.css';
-@import './fonts-subset.css';
-@import './fonts-standard.css';
+/* 字体声明改由 loadFontStylesheets.ts 异步加载，避免阻塞首屏 */
 @import 'vue-sonner/style.css';
 
 @view-transition {

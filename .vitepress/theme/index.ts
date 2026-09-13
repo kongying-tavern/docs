@@ -14,6 +14,7 @@ import { routes } from '../routes'
 import { AsyncForumRouteView, preloadForumRouteView } from './components/AsyncForumRouteView'
 import { isForumToBlogNavigation, transitionForumBlog } from './lib/forumViewTransition'
 import handleRouteMatching from './lib/handleRouteMatching'
+import { loadFontStylesheets } from './loadFontStylesheets'
 
 import 'uno.css'
 
@@ -82,8 +83,10 @@ export default {
     app.component('Blog', Blog)
     app.component('LinkGrid', LinkGrid)
 
-    if (!import.meta.env.SSR)
+    if (!import.meta.env.SSR) {
+      loadFontStylesheets()
       scheduleForumPreload()
+    }
 
     let resumingBlogNavigation = false
     router.onBeforeRouteChange = async (to) => {
