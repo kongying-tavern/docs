@@ -16,7 +16,16 @@
   ],
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/docs/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/docs/fonts/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
