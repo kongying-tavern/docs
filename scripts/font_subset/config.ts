@@ -108,7 +108,11 @@ const configSchema = z.object({
     format: z.literal('woff2'),
   }),
   css: z.object({
-    publicFontPath: z.string().startsWith('/'),
+    // 绝对路径（'/fonts'）或相对路径（'.'，url 相对生成的 CSS 文件所在目录，适配任意 base）
+    publicFontPath: z.string().refine(
+      value => value.startsWith('/') || value === '.',
+      'Must start with "/" (absolute) or be "." (relative to the generated CSS)',
+    ),
     fontStyle: z.string().min(1),
     fontWeight: z.number().int().positive(),
     fontDisplay: z.string().min(1),

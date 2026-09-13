@@ -1,11 +1,23 @@
+import { withBase } from 'vitepress'
+
 /**
  * 字体 @font-face 声明（约 180KB）不参与首屏阻塞 CSS：
- * 由 main.css 拆出后经此动态导入，Vite 会将其生成为独立异步样式 chunk，
- * 在客户端启动时并行加载；font-display: swap 保证声明到达前以回退字体渲染
+ * 两个样式表由字体管线生成到 public/fonts/（与 woff2 分块同目录，url 使用相对路径以适配任意 base）。
+ * 生产环境由 head.ts 以 preload + media="print" 静态注入；
+ * 此处仅服务开发环境（dev 无 isProd 的 head 注入，用运行时链接走本地 public 资源）
  */
 export function loadFontStylesheets(): void {
-  void Promise.all([
-    import('./styles/fonts-subset.css'),
-    import('./styles/fonts-standard.css'),
-  ]).catch(() => undefined)
+  if (!import.meta.env.DEV)
+    return
+
+  for (const href of ['/fonts/fonts-subset.css', '/fonts/fonts-standard.css']) {
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = withBase(href)
+    link.media = 'print'
+    link.addEventListener('load', () => {
+      link.media = 'all'
+    })
+    document.head.appendChild(link)
+  }
 }

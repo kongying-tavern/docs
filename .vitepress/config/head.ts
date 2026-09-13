@@ -11,7 +11,20 @@ import {
   isProd,
 } from './utils'
 
+/**
+ * 字体 @font-face 样式表（由字体管线生成到 public/fonts/，url 为相对路径）：
+ * preload 让预加载扫描器在 HTML 解析期即以高优先级拉取，
+ * media="print" 保证应用时不阻塞首屏渲染，加载完成后切换为全量生效；
+ * 开发环境由 loadFontStylesheets.ts 运行时注入（生产不在 dev 生效以走本地资源）
+ */
+const fontStylesheetHead: HeadConfig[] = ['/fonts/fonts-subset.css', '/fonts/fonts-standard.css']
+  .flatMap(href => [
+    ['link', { rel: 'preload', as: 'style', href: `${SITE_ORIGIN}${SITE_BASE}${href}` }],
+    ['link', { rel: 'stylesheet', href: `${SITE_ORIGIN}${SITE_BASE}${href}`, media: 'print', onload: 'this.media=\'all\'' }],
+  ])
+
 export const productionHead: HeadConfig[] = [
+  ...fontStylesheetHead,
   [
     'script',
     {

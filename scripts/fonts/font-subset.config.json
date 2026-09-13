@@ -2,8 +2,8 @@
   "version": 1,
   "paths": {
     "fontsDir": "src/public/fonts",
-    "siteCssFile": ".vitepress/theme/styles/fonts-subset.css",
-    "standardCssFile": ".vitepress/theme/styles/fonts-standard.css",
+    "siteCssFile": "src/public/fonts/fonts-subset.css",
+    "standardCssFile": "src/public/fonts/fonts-standard.css",
     "sourceDir": "scripts/fonts/source",
     "pythonEntry": "scripts/subsetFonts.py",
     "pythonPackage": "scripts/font_subset",
@@ -159,7 +159,7 @@
     "format": "woff2"
   },
   "css": {
-    "publicFontPath": "/fonts",
+    "publicFontPath": ".",
     "fontStyle": "normal",
     "fontWeight": 100,
     "fontDisplay": "swap",

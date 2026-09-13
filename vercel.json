@@ -25,7 +25,7 @@
       ]
     },
     {
-      "source": "/docs/fonts/(.*)",
+      "source": "/docs/fonts/(.*).woff2",
       "headers": [
         {
           "key": "Cache-Control",
