@@ -92,6 +92,8 @@ function syncEditorStats(ed: TiptapEditor): void {
   text.value = ed.getText({ blockSeparator: '\n' }) || ''
 }
 
+let autofocusTimer: ReturnType<typeof setTimeout> | undefined
+
 function emptyDoc(): JSONContent {
   return { type: 'doc', content: [{ type: 'paragraph' }] }
 }
@@ -138,10 +140,9 @@ onMounted(() => {
   // 按需聚焦输入框（不触发浏览器滚动到该元素；延迟避开 Dialog 打开动画的焦点接管）
   if (props.autofocus) {
     nextTick(() => {
-      const timer = setTimeout(() => {
+      autofocusTimer = setTimeout(() => {
         editor.value?.view.focus({ preventScroll: true })
       }, 160)
-      onBeforeUnmount(() => clearTimeout(timer))
     })
   }
 })
@@ -211,6 +212,7 @@ watch(() => props.disabled, (disabled) => {
 })
 
 onBeforeUnmount(() => {
+  clearTimeout(autofocusTimer)
   editor.value?.destroy()
 })
 </script>
