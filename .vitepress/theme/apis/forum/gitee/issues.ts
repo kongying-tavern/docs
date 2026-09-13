@@ -3,10 +3,11 @@ import type { OfficialUserPredicate } from './inBrowserUtils'
 import type { SearchParamValue } from './types'
 import type { TopicStateFilter } from '~/services/forum/forumQueryContracts'
 import { buildFormData } from '@/apis/utils'
+import { reportRequestFailure } from '~/services/telemetry/request'
 import { apiCall } from '.'
 import { reformat } from '../webhook'
 import { GITEE_API_CONFIG } from './config'
-import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload } from './errors'
+import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
 import { extractOfficialAndAuthorComments } from './inBrowserUtils'
 import { GiteeApiErrorType } from './types'
 import {
@@ -31,8 +32,65 @@ export interface TopicUpdateOptions {
 
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 
+const RELATED_COMMENT_MAX_PAGES = 3
+const RELATED_COMMENT_PER_PAGE = 100
+
 function isDevTestIssue(issue: GITEE.IssueInfo): boolean {
   return (issue.labels ?? []).some(label => label?.name === 'DEV-TEST')
+}
+
+/**
+ * 拉取可能属于当前 issue 窗口的评论：
+ * 每条评论必然晚于其所属 issue 的创建时间，因此以本页最早创建的 issue 为锚点，
+ * 按创建时间倒序翻页直到越过锚点（或达到页数上限），
+ * 保证本页 issue 的作者/官方评论可被 extractOfficialAndAuthorComments 匹配
+ */
+async function fetchCommentsForIssueWindow(issues: GITEE.IssueInfo[]): Promise<GITEE.CommentList> {
+  const anchorMs = issues
+    .map(val => Date.parse(val.created_at))
+    .filter(ts => !Number.isNaN(ts))
+    .reduce((min, ts) => Math.min(min, ts), Number.POSITIVE_INFINITY)
+
+  if (!Number.isFinite(anchorMs))
+    return []
+
+  const comments: GITEE.CommentList = []
+  for (let page = 1; page <= RELATED_COMMENT_MAX_PAGES; page++) {
+    let pageComments: GITEE.CommentList
+    try {
+      ;({ data: pageComments } = await apiCall<GITEE.CommentList>(
+        'get',
+        `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`,
+        {
+          searchParams: {
+            page,
+            sort: 'created',
+            per_page: RELATED_COMMENT_PER_PAGE,
+          },
+          cache: true,
+        },
+      ))
+    }
+    catch (error) {
+      reportRequestFailure(toGiteeAPIError(error, {
+        method: 'get',
+        endpoint: `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`,
+      }))
+      break
+    }
+
+    if (pageComments.length === 0)
+      break
+
+    comments.push(...pageComments)
+
+    const oldestComment = pageComments.at(-1)
+    const oldestMs = oldestComment ? Date.parse(oldestComment.created_at) : Number.NaN
+    if (Number.isNaN(oldestMs) || oldestMs < anchorMs)
+      break
+  }
+
+  return comments
 }
 
 export async function getTopic(number: string): Promise<ForumAPI.Topic> {
@@ -69,23 +127,7 @@ export async function getTopics(
     }
   }
 
-  let comments: GITEE.CommentList = []
-  try {
-    ;({ data: comments } = await apiCall<GITEE.CommentList>(
-      'get',
-      `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`,
-      {
-        searchParams: {
-          page: query.current,
-          sort: query.sort || 'created',
-          per_page: 100,
-        },
-        cache: true,
-      },
-    ))
-  }
-  catch {
-  }
+  const comments = await fetchCommentsForIssueWindow(issues)
 
   const data: ForumAPI.Topic[] = []
 
