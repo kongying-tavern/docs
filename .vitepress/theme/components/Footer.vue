@@ -1,11 +1,29 @@
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
+import { ref } from 'vue'
 import { useQRCode } from '@/hooks/useQRCode'
 
 import { socialList } from '../composables/socialList'
 
 const { frontmatter, theme } = useData()
 const qrcode = useQRCode(theme.value.footer.qrcodeLink)
+
+const isDesktop = useMediaQuery('(min-width: 48rem)')
+const openSections = ref(new Set<string>())
+
+function toggleSection(title: string) {
+  const next = new Set(openSections.value)
+  if (next.has(title))
+    next.delete(title)
+  else
+    next.add(title)
+  openSections.value = next
+}
+
+function isExpanded(title: string) {
+  return isDesktop.value || openSections.value.has(title)
+}
 </script>
 
 <template>
@@ -15,14 +33,22 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   >
     <footer class="footer">
       <div
-        v-for="item in theme.footer.navigation"
+        v-for="(item, idx) in theme.footer.navigation"
         :key="item.title"
         class="footer-navigation"
+        :class="{ open: isExpanded(item.title) }"
       >
         <h3 class="footer-title">
-          {{ item.title }}
+          <button
+            type="button"
+            :aria-expanded="isExpanded(item.title)"
+            :aria-controls="`footer-navigation-${idx}`"
+            @click="toggleSection(item.title)"
+          >
+            {{ item.title }}
+          </button>
         </h3>
-        <ul>
+        <ul :id="`footer-navigation-${idx}`">
           <li
             v-for="ic in item.items"
             :key="ic.text"
@@ -157,6 +183,10 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
     }
   }
 
+  &.open ul {
+    height: 100%;
+  }
+
   ul > li > a {
     display: inline-block;
     transition: color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -173,7 +203,6 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 .footer-title {
   cursor: pointer;
   width: 100%;
-  user-select: all;
   font-weight: 700;
   line-height: 1.33337;
   color: var(--vp-c-text-2);
@@ -181,6 +210,16 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   letter-spacing: -0.01em;
   padding: 1rem 0;
   opacity: 0.8;
+
+  button {
+    all: unset;
+    display: block;
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    user-select: none;
+  }
 
   &::after {
     content: '+';
@@ -194,16 +233,8 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
   }
 }
 
-.footer-title:hover {
-  &::after {
-    transform: rotate(45deg) scale(1.08);
-  }
-}
-
-// 这里逻辑还有点问题
-.footer-title:hover ~ ul,
-.footer-title ~ ul:hover {
-  height: 100%;
+.footer-navigation.open .footer-title::after {
+  transform: rotate(45deg) scale(1.08);
 }
 
 .footer-qrcode {
@@ -290,6 +321,10 @@ const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
   .footer-title {
     cursor: default;
+
+    button {
+      cursor: default;
+    }
 
     &::after {
       display: none;
