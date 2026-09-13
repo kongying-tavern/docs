@@ -31,6 +31,10 @@ export interface TopicUpdateOptions {
 
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 
+function isDevTestIssue(issue: GITEE.IssueInfo): boolean {
+  return (issue.labels ?? []).some(label => label?.name === 'DEV-TEST')
+}
+
 export async function getTopic(number: string): Promise<ForumAPI.Topic> {
   const { data } = await apiCall<GITEE.IssueInfo>(
     'get',
@@ -58,7 +62,9 @@ export async function getTopics(
 
   if (search) {
     return {
-      data: issues.map(val => normalizeIssue(val)),
+      data: issues
+        .filter(val => import.meta.env.DEV || !isDevTestIssue(val))
+        .map(val => normalizeIssue(val)),
       ...pagination,
     }
   }
@@ -88,7 +94,7 @@ export async function getTopics(
 
     if (
       !import.meta.env.DEV
-      && (val.labels ?? []).some(label => label?.name === 'DEV-TEST')
+      && isDevTestIssue(val)
     ) {
       return
     }
