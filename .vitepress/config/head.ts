@@ -70,7 +70,7 @@ export const commonHead: HeadConfig[] = [
     {
       name: 'viewport',
       content:
-        'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover',
+        'width=device-width,initial-scale=1,viewport-fit=cover',
     },
   ],
   [
@@ -88,6 +88,7 @@ export const commonHead: HeadConfig[] = [
     },
   ],
   ['meta', { name: 'theme-color', content: '#ffffff' }],
+  ['meta', { name: 'theme-color', content: '#1b1b1f', media: '(prefers-color-scheme: dark)' }],
   ['meta', { name: 'color-scheme', content: 'dark light' }],
   [
     'link',
@@ -100,7 +101,7 @@ export const commonHead: HeadConfig[] = [
   [
     'link',
     {
-      rel: 'alternate',
+      rel: 'icon',
       href: `${SITE_ORIGIN}${SITE_BASE}/imgs/common/favicon/favicon.ico`,
       type: 'image/x-icon',
     },
