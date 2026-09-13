@@ -43,6 +43,9 @@ catalogs:
       specifier: ^3.3.7
       version: 3.3.7
   conflicts_editor_h3_4_4:
+    '@tiptap/core':
+      specifier: ^3.20.1
+      version: 3.30.4
     '@tiptap/extension-character-count':
       specifier: ^3.20.1
       version: 3.20.1
@@ -301,10 +304,6 @@ catalogs:
     '@types/node':
       specifier: 24.13.3
       version: 24.13.3
-  utils:
-    js-yaml:
-      specifier: ^5.0.0
-      version: 5.2.3
 
 overrides:
   '@lunariajs/core>simple-git': ^3.36.0
@@ -585,7 +584,7 @@ importers:
         version: 9.1.7
       js-yaml:
         specifier: catalog:utils
-        version: 5.2.3
+        version: 3.15.2
       lint-staged:
         specifier: catalog:dev
         version: 17.3.0
@@ -4726,12 +4725,8 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
-  js-yaml@3.14.1:
-    resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
-    hasBin: true
-
-  js-yaml@4.1.1:
-    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
+  js-yaml@3.15.2:
+    resolution: {integrity: sha512-6EuL879VkRA+1Cz578mKMiKvjPNEuk6+r1JaFzoSWejZmtf7xWbIyw1e3KkxlkzTIt9Taw6JBhEppG7utc1P+w==}
     hasBin: true
 
   js-yaml@4.3.2:
@@ -9827,7 +9822,7 @@ snapshots:
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
-      js-yaml: 4.1.1
+      js-yaml: 4.3.2
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.9.3
@@ -10761,7 +10756,7 @@ snapshots:
 
   gray-matter@4.0.3:
     dependencies:
-      js-yaml: 3.14.1
+      js-yaml: 3.15.2
       kind-of: 6.0.3
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
@@ -10970,14 +10965,10 @@ snapshots:
   js-tokens@9.0.1:
     optional: true
 
-  js-yaml@3.14.1:
+  js-yaml@3.15.2:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
-
-  js-yaml@4.1.1:
-    dependencies:
-      argparse: 2.0.1
 
   js-yaml@4.3.2:
     dependencies:
