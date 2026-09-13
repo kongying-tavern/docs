@@ -22,7 +22,7 @@ export function cfgGetPageTitle(pageData: PageData, _siteConfig?: SiteConfig<unk
 export function cfgGetPageDesc(pageData: PageData, _siteConfig?: SiteConfig<unknown>): string {
   return pageData.frontmatter.description
     ? pageData.frontmatter.description
-    : `Genshin Interactive Map\nA Completionist's Interactive Map by Kongying Tavern`
+    : 'Genshin Interactive Map - A Completionist\'s Interactive Map by Kongying Tavern'
 }
 export function cfgGetPageKeywords(pageData: PageData, _siteConfig: SiteConfig<unknown>): string {
   return pageData.frontmatter.keywords

@@ -38,9 +38,9 @@ export const productionHead: HeadConfig[] = [
 export function cfgDynamicHead(
   pageData: PageData,
   siteConfig: SiteConfig,
-): void {
+): HeadConfig[] {
   if (!isProd)
-    return
+    return []
 
   const pageUrl = cfgGetPageUrl(pageData, siteConfig)
   const pageTitle = cfgGetPageTitle(pageData, siteConfig)
@@ -48,21 +48,20 @@ export function cfgDynamicHead(
   const pageKeywords = cfgGetPageKeywords(pageData, siteConfig)
   const pageCover = cfgGetPageCover(pageData, siteConfig)
 
-  const head: HeadConfig[] = [
-    ['meta', { name: 'og:url', content: pageUrl }],
-    ['meta', { name: 'twitter:url', content: pageUrl }],
-    ['meta', { name: 'og:title', content: pageTitle }],
-    ['meta', { name: 'twitter:title', content: pageTitle }],
-    ['meta', { name: 'og:description', content: pageDesc }],
-    ['meta', { name: 'twitter:description', content: pageDesc }],
+  // 返回值经 transformHead 合并进每页 <head>,mergeHead 会按首个 meta 属性去重
+  // (og:* 规范用 property,twitter:* 规范用 name)
+  return [
     ['meta', { name: 'description', content: pageDesc }],
     ['meta', { name: 'keywords', content: pageKeywords }],
-    ['meta', { name: 'og:image', content: pageCover }],
+    ['meta', { property: 'og:url', content: pageUrl }],
+    ['meta', { property: 'og:title', content: pageTitle }],
+    ['meta', { property: 'og:description', content: pageDesc }],
+    ['meta', { property: 'og:image', content: pageCover }],
+    ['meta', { name: 'twitter:url', content: pageUrl }],
+    ['meta', { name: 'twitter:title', content: pageTitle }],
+    ['meta', { name: 'twitter:description', content: pageDesc }],
     ['meta', { name: 'twitter:image', content: pageCover }],
   ]
-
-  pageData.frontmatter.head ??= []
-  pageData.frontmatter.head.splice(Number.POSITIVE_INFINITY, 0, ...head)
 }
 
 export const commonHead: HeadConfig[] = [
