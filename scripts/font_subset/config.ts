@@ -108,7 +108,7 @@ const configSchema = z.object({
     format: z.literal('woff2'),
   }),
   css: z.object({
-    // 绝对路径（'/fonts'）或相对路径（'.'，url 相对生成的 CSS 文件所在目录，适配任意 base）
+    // 相对路径 '.' 使 url 相对生成的 CSS 所在目录，适配任意站点 base
     publicFontPath: z.string().refine(
       value => value.startsWith('/') || value === '.',
       'Must start with "/" (absolute) or be "." (relative to the generated CSS)',

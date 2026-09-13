@@ -39,7 +39,7 @@ function isDevTestIssue(issue: GITEE.IssueInfo): boolean {
   return (issue.labels ?? []).some(label => label?.name === 'DEV-TEST')
 }
 
-/** 失效相关评论预览窗口（page 1..MAX）的会话级缓存，键须与 fetchCommentsForIssueWindow 的请求字面量一致 */
+/** 键须与 fetchCommentsForIssueWindow 的请求字面量一致 */
 function invalidateRelatedCommentCache(): void {
   for (let page = 1; page <= RELATED_COMMENT_MAX_PAGES; page++) {
     deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`, {
@@ -52,7 +52,7 @@ function invalidateRelatedCommentCache(): void {
   }
 }
 
-/** 失效置顶与公告列表的会话级缓存，键须与 getPinnedList/getAnnouncementList 的请求字面量一致 */
+/** 键须与 getPinnedList/getAnnouncementList 的请求字面量一致 */
 function invalidatePinnedAndAnnouncementCache(): void {
   deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues`, {
     searchParams: {
@@ -69,10 +69,8 @@ function invalidatePinnedAndAnnouncementCache(): void {
 }
 
 /**
- * 拉取可能属于当前 issue 窗口的评论：
- * 每条评论必然晚于其所属 issue 的创建时间，因此以本页最早创建的 issue 为锚点，
- * 按创建时间倒序翻页直到越过锚点（或达到页数上限），
- * 保证本页 issue 的作者/官方评论可被 extractOfficialAndAuthorComments 匹配
+ * 以本页最早创建的 issue 为锚点、按创建时间倒序翻页拉取评论：
+ * 每条评论必晚于其所属 issue 的创建时间，故此窗口可覆盖本页主题的作者/官方评论
  */
 async function fetchCommentsForIssueWindow(issues: GITEE.IssueInfo[]): Promise<GITEE.CommentList> {
   const anchorMs = issues
@@ -318,7 +316,6 @@ export async function postTopicComment(
     },
   )
 
-  // 评论流已变化，失效相关评论预览的会话级缓存
   invalidateRelatedCommentCache()
 
   return normalizeComment(comment)
@@ -366,7 +363,7 @@ export async function putTopic(
           repo: FEEDBACK_REPO,
           owner: OWNER,
         },
-        // 正文/标题等长内容走 JSON body，避免 URL 长度与编码问题
+        // 避免 URL 长度限制
         json: data,
       },
     ))
@@ -377,7 +374,6 @@ export async function putTopic(
 
   const result = normalizeIssue(issueInfo)
 
-  // 标签/状态变更会影响置顶与公告列表，失效其会话级缓存
   invalidatePinnedAndAnnouncementCache()
 
   // 因为 Gitee 接口不识别无权限用户提交的 labels 和 state，所以这里手动通知 Webhook 同步数据

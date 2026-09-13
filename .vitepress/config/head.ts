@@ -11,12 +11,7 @@ import {
   isProd,
 } from './utils'
 
-/**
- * 字体 @font-face 样式表（由字体管线生成到 public/fonts/，url 为相对路径）：
- * preload 让预加载扫描器在 HTML 解析期即以高优先级拉取，
- * media="print" 保证应用时不阻塞首屏渲染，加载完成后切换为全量生效；
- * 开发环境由 loadFontStylesheets.ts 运行时注入（生产不在 dev 生效以走本地资源）
- */
+/** 字体样式表（字体管线生成到 public/fonts/）非阻塞加载：preload 提前拉取，media="print" 应用不阻塞渲染；dev 由 loadFontStylesheets.ts 注入 */
 const fontStylesheetHead: HeadConfig[] = ['/fonts/fonts-subset.css', '/fonts/fonts-standard.css']
   .flatMap(href => [
     ['link', { rel: 'preload', as: 'style', href: `${SITE_ORIGIN}${SITE_BASE}${href}` }],
@@ -61,8 +56,7 @@ export function cfgDynamicHead(
   const pageKeywords = cfgGetPageKeywords(pageData, siteConfig)
   const pageCover = cfgGetPageCover(pageData, siteConfig)
 
-  // 返回值经 transformHead 合并进每页 <head>,mergeHead 会按首个 meta 属性去重
-  // (og:* 规范用 property,twitter:* 规范用 name)
+  // 返回值经 transformHead 合并进每页 <head>，mergeHead 按首个 meta 属性去重
   return [
     ['meta', { name: 'description', content: pageDesc }],
     ['meta', { name: 'keywords', content: pageKeywords }],

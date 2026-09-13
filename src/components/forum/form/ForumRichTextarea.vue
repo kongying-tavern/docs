@@ -81,8 +81,7 @@ const isEditorFocused = ref(false)
 const showMentionPicker = ref(false)
 const emojiPreload = useEmojiPreload()
 
-// 编辑器实例不做深响应式代理（ProseMirror 深代理是性能陷阱）；
-// 字数与纯文本统计在文档变更时显式同步
+// ProseMirror 深代理是性能陷阱，编辑器勿改回深响应式 ref；统计值在文档变更时显式同步
 const charCount = ref(0)
 const percentage = computed(() => Math.round((100 / props.maxTextLength) * charCount.value))
 const text = ref('')
