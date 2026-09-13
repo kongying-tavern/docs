@@ -9,7 +9,7 @@ import CharacterCount from '@tiptap/extension-character-count'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { onClickOutside } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import EmojiPicker from '@/components/ui/EmojiPicker.vue'
 import InputPlaceholders from '@/components/ui/InputPlaceholders.vue'
@@ -76,14 +76,21 @@ const { message } = useLocalized()
 const container = useTemplateRef('textarea-container')
 const imageUpload = useTemplateRef<InstanceType<typeof ForumImageUpload>>('imageUpload')
 const hideFooter = ref(props.collapse)
-const editor = ref<TiptapEditor | null>(null)
+const editor = shallowRef<TiptapEditor | null>(null)
 const isEditorFocused = ref(false)
 const showMentionPicker = ref(false)
 const emojiPreload = useEmojiPreload()
 
-const charCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0)
+// 编辑器实例不做深响应式代理（ProseMirror 深代理是性能陷阱）；
+// 字数与纯文本统计在文档变更时显式同步
+const charCount = ref(0)
 const percentage = computed(() => Math.round((100 / props.maxTextLength) * charCount.value))
-const text = computed(() => editor.value?.getText({ blockSeparator: '\n' }) || '')
+const text = ref('')
+
+function syncEditorStats(ed: TiptapEditor): void {
+  charCount.value = ed.storage.characterCount.characters()
+  text.value = ed.getText({ blockSeparator: '\n' }) || ''
+}
 
 function emptyDoc(): JSONContent {
   return { type: 'doc', content: [{ type: 'paragraph' }] }
@@ -106,6 +113,7 @@ onMounted(() => {
       },
     },
     onUpdate: ({ editor: currentEditor }) => {
+      syncEditorStats(currentEditor)
       emit('update:modelValue', currentEditor.getJSON())
       emit('input', currentEditor.getText({ blockSeparator: '\n' }))
     },
@@ -124,6 +132,8 @@ onMounted(() => {
       },
     },
   })
+
+  syncEditorStats(editor.value)
 
   // 按需聚焦输入框（不触发浏览器滚动到该元素；延迟避开 Dialog 打开动画的焦点接管）
   if (props.autofocus) {
@@ -190,8 +200,10 @@ watch(() => props.modelValue, (value) => {
   if (!editor.value)
     return
   const nextValue = value ?? emptyDoc()
-  if (!isEqual(editor.value.getJSON(), nextValue))
+  if (!isEqual(editor.value.getJSON(), nextValue)) {
     editor.value.commands.setContent(nextValue)
+    syncEditorStats(editor.value)
+  }
 }, { deep: true })
 
 watch(() => props.disabled, (disabled) => {
