@@ -241,8 +241,7 @@ export async function postTopicComment(
     'post',
     `repos/${OWNER}/${repo}/issues/${number}/comments`,
     {
-      searchParams: {
-        number,
+      json: {
         body,
       },
     },
@@ -287,8 +286,9 @@ export async function putTopic(
         searchParams: {
           repo: FEEDBACK_REPO,
           owner: OWNER,
-          ...data,
         },
+        // 正文/标题等长内容走 JSON body，避免 URL 长度与编码问题
+        json: data,
       },
     ))
   }
