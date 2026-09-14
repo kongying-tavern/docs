@@ -23,7 +23,7 @@
 | Brand Mint | `#60bf90` | `--vp-c-brand-1` | Link text, colored text on soft green, active nav, topic-type "feat" badge |
 | Brand Green | `#3aa374` | `--vp-c-brand-2` | Hover state for links and brand elements |
 | Brand Deep Green | `#008858` | `--vp-c-brand-3` | Solid brand fills that must carry white text, timeline accents |
-| Brand Green (legacy) | `#44bd87` | `--vp-c-brand` | Primary button background, `vp-link` color, timeline dots/lines, logo anchor |
+| Brand Green (legacy) | `#44bd87` | `--vp-c-brand` | Primary button background, `vp-link` color, topmost timeline dot, logo anchor |
 | Brand Light | `#34d399` | `--vp-c-brand-light` | Brand button hover background and border |
 | Brand Soft | `rgba(0, 108, 69, 0.16)` | `--vp-c-brand-soft` | Subtle green washes: home feature icon chips, doc-link hover, topic references (dark: `rgba(96, 191, 144, 0.14)`) |
 | Text 1 | `#3c3c43` | `--vp-c-text-1` | Primary text, headings (dark: `#dfdfd6`) |
@@ -55,7 +55,8 @@
 |------|-------|-------|------|
 | Hero Name Gradient | `-webkit-linear-gradient(120deg, #60bf90, #008858)` | `--vp-home-hero-name-background` | Home hero title text (brand-1 → brand-3) |
 | Hero Image Wash | `linear-gradient(-45deg, rgba(68, 189, 135, 0.28) 30%, rgba(0, 136, 88, 0.12))` | `--vp-home-hero-image-background-image` | Soft green halo behind hero logo |
-| Timeline Fade | `linear-gradient(180deg, transparent, var(--vp-c-brand) 24px)` | `.timeline-dot::after` | Timeline rail fade-in/out at first/last entries |
+| Timeline Fade | `linear-gradient(180deg, var(--vp-c-divider) calc(100% - 24px), transparent)` | `.timeline-dot::after` | Timeline rail fade-out at the last entry |
+| Timeline Dot Halo | `0 0 0 2px var(--vp-c-bg), 0 0 0 6px color-mix(in srgb, var(--vp-c-brand) 16%, transparent)` | `.timeline-dot::before` | Ring around the topmost timeline dot |
 
 ## Tokens — Typography
 
@@ -239,7 +240,7 @@ Links: Brand Mint `#60bf90`, hover Brand Green `#3aa374`, underline on hover. Fo
 
 **Role:** Changelog / update history rail
 
-Left rail at 92px; entries pad `28px 0 20px 120px`. Dot: 16px circle, 3px solid brand border on page background. Rail: 2px continuous Brand Green, fading in/out via gradient + clip-path at first/last entries. Date: 64px column left, 16px/500 Text 2. Title: subtitle family, Text 1. Non-interactive — no hover/focus states.
+Left rail at 92px; entries pad `28px 0 20px 120px`. Dot: 16px circle. The topmost dot is a **solid** Brand Green disc (drawn with an 8px border so `[border-*]` still recolours it), ringed by a 2px page-background gap and a 4px 16% Brand Green halo. Every later dot is a hollow 3px ring in Border `#c2c2c4` on the page background, no halo. Rail: 2px continuous Divider, beginning at the topmost dot's center (nothing above it) and fading out via gradient + clip-path at the last entry. Date: 64px column left, 16px/500 Text 2. Title: title family, Text 1; in-entry `h2`/`h3` headings (subtitle family) share that Text 1 so the entry reads as one column. Non-interactive — no hover/focus states.
 
 ### Code Blocks & Inline Code
 
@@ -274,7 +275,7 @@ One ring everywhere: 1px outline + 2px ring in primary green (`oklch(0.7168 0.13
 
 ### Do
 
-- Use the green scale as the single interactive color: links and text on brand-1 `#60bf90`, hovers on brand-2 `#3aa374`, solid fills on brand-3 `#008858`, legacy brand `#44bd87` for buttons and timeline rails.
+- Use the green scale as the single interactive color: links and text on brand-1 `#60bf90`, hovers on brand-2 `#3aa374`, solid fills on brand-3 `#008858`, legacy brand `#44bd87` for buttons and the topmost timeline dot.
 - Keep the three-family type hierarchy: Sarasa for reading, 85W for the one title per page, 65W for every other emphasized UI text.
 - Separate surfaces with hairline `--vp-c-divider` borders and translucent alpha washes — depth comes from alpha, not from hard shadows.
 - Always style hover **and** focus (`:focus-visible` ring) together on interactive elements; the ring color is primary green, nothing else.

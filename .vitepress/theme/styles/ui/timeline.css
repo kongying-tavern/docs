@@ -1,5 +1,7 @@
 :root {
   --timeline-title-text: var(--vp-c-text-1);
+  --timeline-rail: var(--vp-c-divider);
+  --timeline-dot-muted: var(--vp-c-border);
 }
 
 .timeline-dot {
@@ -9,6 +11,11 @@
   /* dot 默认颜色，可通过 [...] 传入 border-* 类覆盖 */
   border-color: var(--vp-c-brand);
   box-sizing: border-box;
+}
+
+/* :where() 不提升优先级，[border-*] 仍可覆盖 */
+.timeline-dot:where(.timeline-dot + .timeline-dot) {
+  border-color: var(--timeline-dot-muted);
 }
 
 .timeline-dot::before {
@@ -26,7 +33,14 @@
   box-sizing: border-box;
 }
 
-/* 竖线：品牌绿贯穿，相邻块首尾相接连续 */
+/* 用 8px 边框填满 16px 盒得到实心圆，颜色随 border-color 以便 [border-*] 覆盖 */
+.timeline-dot:not(.timeline-dot + .timeline-dot)::before {
+  border-width: 8px;
+  box-shadow:
+    0 0 0 2px var(--vp-c-bg),
+    0 0 0 6px color-mix(in srgb, var(--vp-c-brand) 16%, transparent);
+}
+
 .timeline-dot::after {
   position: absolute;
   left: 99px;
@@ -34,18 +48,16 @@
   content: '';
   width: 2px;
   height: 100%;
-  background-color: var(--vp-c-brand);
+  background-color: var(--timeline-rail);
 }
 
-/* 整条时间线首尾：渐隐并逐渐变细 */
-
 .timeline-dot:not(.timeline-dot + .timeline-dot)::after {
-  background: linear-gradient(180deg, transparent, var(--vp-c-brand) 24px);
-  clip-path: polygon(50% 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
+  top: 43px; /* 圆点中心：首段线不越出顶部 dot */
+  height: calc(100% - 43px);
 }
 
 .timeline-dot:not(:has(+ .timeline-dot))::after {
-  background: linear-gradient(180deg, var(--vp-c-brand) calc(100% - 24px), transparent);
+  background: linear-gradient(180deg, var(--timeline-rail) calc(100% - 24px), transparent);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), 50% 100%, 0 calc(100% - 6px));
 }
 
@@ -160,11 +172,13 @@
   font-family: var(--vp-font-family-subtitle) !important;
   font-size: 20px !important;
   line-height: 30px;
+  color: var(--timeline-title-text);
 }
 
 .timeline-dot > h3 {
   font-size: 16px;
   line-height: 26px;
+  color: var(--timeline-title-text);
 }
 
 @media (max-width: 640px) {
