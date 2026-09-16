@@ -282,6 +282,8 @@ textarea {
   --forum-topic-type-feat: var(--vp-c-brand-1);
   --forum-topic-type-ann: var(--vp-c-purple-1);
   --forum-topic-type-post: var(--vp-c-purple-1);
+  /* ForumLayout 与论坛页顶部告警区域共用 */
+  --forum-container-max-width: 1013px;
 }
 
 /* Inline spoiler styles for ScratchToReveal component */
