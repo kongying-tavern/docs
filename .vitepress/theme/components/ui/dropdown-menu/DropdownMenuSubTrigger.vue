@@ -18,6 +18,7 @@ const forwardedProps = useForwardProps(delegatedProps)
 <template>
   <DropdownMenuSubTrigger
     data-slot="dropdown-menu-sub-trigger"
+    data-fluid-hover-item
     v-bind="forwardedProps"
     :data-inset="inset ? '' : undefined"
     :class="cn(
