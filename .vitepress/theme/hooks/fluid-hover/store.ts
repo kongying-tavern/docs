@@ -104,6 +104,8 @@ export function createFluidHoverStore(container: HTMLElement): FluidHoverStore {
 
   // Tabbing through the items highlights the focused one and pauses pointer picking, so a parked
   // mouse cannot steal the highlight back; the pointer resumes after moving `resumeDistance` px.
+  // Pointer-driven libraries also focus items on hover (reka menus do exactly that); that focus
+  // never matches :focus-visible, so it neither highlights nor suspends — the pointer keeps control.
   const onFocusIn = (event: FocusEvent) => {
     const target = event.target as Element | null
     if (!target || target === container)
@@ -111,7 +113,7 @@ export function createFluidHoverStore(container: HTMLElement): FluidHoverStore {
     const item = target.closest(ITEM_SELECTOR)
     if (!item || !container.contains(item) || item.closest(CONTAINER_SELECTOR) !== container)
       return
-    if (!isEligibleItem(item))
+    if (!isEligibleItem(item) || !item.matches(':focus-visible'))
       return
     store.suspendPointer()
     store.highlight(item, 'focus')
