@@ -98,6 +98,13 @@ export function createProximityHover(
 
   container.setAttribute(CONTAINER_ATTR, '')
 
+  // A static container leaves the offset chain outside the container and measurement fails
+  // silently; this bit us once with reka's popper wrapper, whose content element is not positioned.
+  if (import.meta.env.DEV && getComputedStyle(container).position === 'static') {
+    // eslint-disable-next-line no-console
+    console.warn('[fluid-hover] container must be positioned (e.g. `relative`), measurement would fail')
+  }
+
   function invalidate() {
     stale = true
     if (hovering && !store.pointerSuspended()) {

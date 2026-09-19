@@ -313,7 +313,8 @@ textarea {
 
 /* Fluid hover：共享 indicator 接管 item 高亮后，压制 item 自身的 focus 背景。
    reka 菜单/选择项在 pointermove 时会 focus 当前项，:focus 背景会与滑动的
-   indicator 双重高亮；键盘焦点走 focusin(:focus-visible)，同样由 indicator 呈现。 */
+   indicator 双重高亮；键盘焦点走 focusin(:focus-visible)，同样由 indicator 呈现。
+   !important 用于盖过 uno.css（后于 main.css 导入，同特异性时后者胜）。 */
 [data-fluid-hover] [data-fluid-hover-item]:focus {
-  background-color: transparent;
+  background-color: transparent !important;
 }
