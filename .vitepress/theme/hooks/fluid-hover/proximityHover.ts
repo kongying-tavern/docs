@@ -192,12 +192,9 @@ export function createProximityHover(
       scroll: { x: container.scrollLeft, y: container.scrollTop },
       border: { x: container.clientLeft, y: container.clientTop },
       layoutSize: { width: container.offsetWidth, height: container.offsetHeight },
-      view: {
-        x: container.scrollLeft,
-        y: container.scrollTop,
-        width: container.clientWidth,
-        height: container.clientHeight,
-      },
+      // The container's viewport rect as the visible window: correct both when the container is
+      // the scroller and when it is nested inside one and moves with its scroll.
+      view: { x: box.left, y: box.top, width: box.width, height: box.height },
       isDisabled: isItemDisabled
         ? index => isItemDisabled(items[index]!)
         : undefined,
@@ -285,13 +282,16 @@ export function createProximityHover(
     ['pointerenter', onPointerEnter as EventListener],
     ['pointermove', onPointerMove as EventListener, { passive: true }],
     ['pointerleave', onPointerLeave as EventListener],
-    // Captured, so a descendant scroll container scrolling under a still pointer also re-picks.
-    ['scroll', onScroll as EventListener, { passive: true, capture: true }],
   ]
   if (gapClick)
     listeners.push(['click', onClick as EventListener])
   for (const [type, listener, listenerOptions] of listeners)
     container.addEventListener(type, listener, listenerOptions)
+
+  // Scroll is captured at the document: it covers the container itself, a scroller it is nested
+  // in, and every descendant scroller, so content moving under a still pointer always re-picks.
+  const scrollTarget: Document = container.ownerDocument
+  scrollTarget.addEventListener('scroll', onScroll as EventListener, { passive: true, capture: true })
 
   return {
     store,
@@ -306,6 +306,7 @@ export function createProximityHover(
       mutationObserver.disconnect()
       for (const [type, listener, listenerOptions] of listeners)
         container.removeEventListener(type, listener, listenerOptions)
+      scrollTarget.removeEventListener('scroll', onScroll as EventListener, { capture: true })
       container.removeAttribute(CONTAINER_ATTR)
     },
   }

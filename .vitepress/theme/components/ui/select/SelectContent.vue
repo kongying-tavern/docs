@@ -30,15 +30,11 @@ const delegatedProps = reactiveOmit(props, 'class', 'fluid')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
-// reka 暴露的组件实例带 $el；fluid 关闭时容器为 null，两个 composable 空转
-const contentRef = useTemplateRef<{ $el?: HTMLElement } | null>('content')
+// fluid 的容器是包住 slot 的自有元素：ref 一定指向真实 DOM，不依赖 reka 对 portal 根组件
+// 的 $el 解析（那会落到 teleport 占位元素上，导致测量静默失效）
+const containerRef = useTemplateRef<HTMLElement | null>('container')
 const indicatorRef = useTemplateRef<HTMLElement | null>('indicator')
-const container = computed<HTMLElement | null>(() => {
-  if (!props.fluid)
-    return null
-  const el = contentRef.value?.$el
-  return el instanceof HTMLElement ? el : null
-})
+const container = computed(() => (props.fluid ? containerRef.value : null))
 
 useFluidHover(container, { axis: 'y' })
 useFluidHoverIndicator(container, indicatorRef, { motion: 'fast' })
@@ -47,7 +43,6 @@ useFluidHoverIndicator(container, indicatorRef, { motion: 'fast' })
 <template>
   <SelectPortal>
     <SelectContent
-      ref="content"
       data-slot="select-content"
       v-bind="{ ...$attrs, ...forwarded }"
       :class="cn(
@@ -58,15 +53,21 @@ useFluidHoverIndicator(container, indicatorRef, { motion: 'fast' })
       )
       "
     >
-      <div
-        v-if="fluid"
-        ref="indicator"
-        aria-hidden="true"
-        class="rounded-sm bg-accent h-0 w-0 pointer-events-none left-0 top-0 absolute z-0"
-      />
       <SelectScrollUpButton />
       <SelectViewport :class="cn('p-1', position === 'popper' && 'h-(--reka-select-trigger-height) w-full min-w-(--reka-select-trigger-width) scroll-my-1')">
-        <slot />
+        <div
+          v-if="fluid"
+          ref="container"
+          class="relative"
+        >
+          <div
+            ref="indicator"
+            aria-hidden="true"
+            class="rounded-sm bg-accent h-0 w-0 pointer-events-none left-0 top-0 absolute z-0"
+          />
+          <slot />
+        </div>
+        <slot v-else />
       </SelectViewport>
       <SelectScrollDownButton />
     </SelectContent>

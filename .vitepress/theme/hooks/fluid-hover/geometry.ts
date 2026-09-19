@@ -20,8 +20,9 @@ export interface PickNearestInput {
   /** Layout size of the container, so a cumulative ancestor `transform: scale` factors out per axis. */
   layoutSize: { width: number, height: number }
   /**
-   * Container-space visible window (scrollLeft..scrollLeft+clientWidth): rects outside it are
-   * skipped, and mostly-clipped rects only win when no mostly-visible one exists.
+   * Viewport-space visible window: rects outside it are skipped, and mostly-clipped rects only
+   * win when no mostly-visible one exists. The container's bounding rect works for both a
+   * scrolling container and one nested inside a scroller.
    */
   view?: { x: number, y: number, width: number, height: number }
   /** Skips an item without removing it from the rect set. */
@@ -57,21 +58,21 @@ export function pickNearest({
     if (!rect || isDisabled?.(index))
       continue
 
-    let mostlyHidden = false
-    if (view) {
-      const visibleWidth = Math.min(rect.left + rect.width, view.x + view.width) - Math.max(rect.left, view.x)
-      const visibleHeight = Math.min(rect.top + rect.height, view.y + view.height) - Math.max(rect.top, view.y)
-      if (visibleWidth <= 0 || visibleHeight <= 0)
-        continue
-      mostlyHidden = visibleWidth < rect.width / 2 || visibleHeight < rect.height / 2
-    }
-
     const horizontal = axis === 'x'
     const vertical = axis === 'y'
     const left = containerRect.left + (border.x + rect.left - scroll.x) * scaleX
     const top = containerRect.top + (border.y + rect.top - scroll.y) * scaleY
     const width = rect.width * scaleX
     const height = rect.height * scaleY
+
+    let mostlyHidden = false
+    if (view) {
+      const visibleWidth = Math.min(left + width, view.x + view.width) - Math.max(left, view.x)
+      const visibleHeight = Math.min(top + height, view.y + view.height) - Math.max(top, view.y)
+      if (visibleWidth <= 0 || visibleHeight <= 0)
+        continue
+      mostlyHidden = visibleWidth < width / 2 || visibleHeight < height / 2
+    }
 
     // An item the pointer is inside wins over every distance; the first one keeps it.
     const containing = horizontal
