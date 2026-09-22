@@ -1,20 +1,9 @@
 import type { DefaultTheme } from 'vitepress'
-import settings from './settings'
 
 const sidebar: DefaultTheme.SidebarMulti = {
   '/feedback': [{ text: '' }],
-  '/settings': [
-    { text: settings.appearance.title, link: '/settings#appearance' },
-    { text: settings.notifications.title, link: '/settings#notifications' },
-    { text: settings.language.title, link: '/settings#language' },
-    { text: settings.privacy.title, link: '/settings#privacy' },
-  ],
-  '/settings-labels': [
-    { text: settings.appearance.title, link: '/settings#appearance' },
-    { text: settings.notifications.title, link: '/settings#notifications' },
-    { text: settings.language.title, link: '/settings#language' },
-    { text: settings.privacy.title, link: '/settings#privacy' },
-  ],
+  '/settings': [{ text: '' }],
+  '/settings-labels': [{ text: '' }],
   '/manual': [
     {
       text: 'Table of Contents',

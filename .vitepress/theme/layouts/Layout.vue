@@ -111,9 +111,6 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 
     <template #sidebar-nav-before>
       <ForumSidebar v-if="frontmatter.layout === 'Forum'" />
-    </template>
-
-    <template #sidebar-nav-after>
       <SettingsSidebarExtras v-if="frontmatter.layout === 'Settings'" />
     </template>
 
