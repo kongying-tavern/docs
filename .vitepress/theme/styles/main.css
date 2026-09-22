@@ -282,8 +282,16 @@ textarea {
   --forum-topic-type-feat: var(--vp-c-brand-1);
   --forum-topic-type-ann: var(--vp-c-purple-1);
   --forum-topic-type-post: var(--vp-c-purple-1);
+  /* 「已结」方块（display status `closed`）走 success 语义绿，与久未更新/暂不计划的灰阶拉开 */
+  --forum-topic-status-resolved: var(--vp-c-success-1);
   /* ForumLayout 与论坛页顶部告警区域共用 */
   --forum-container-max-width: 1013px;
+}
+
+/* 深色改取 green-3：与浅色的 success-1 彩度相当（≈0.11），明度贴合深色底，
+   也避开深色下更亮的品牌绿与 500 级状态色 */
+html.dark {
+  --forum-topic-status-resolved: var(--vp-c-green-3);
 }
 
 /* Inline spoiler styles for ScratchToReveal component */

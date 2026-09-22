@@ -248,7 +248,10 @@
 html[data-forum-navigated] .Forum.slide-enter,
 html[data-forum-navigated] .Forum [slide-enter],
 html[data-forum-navigated] .Forum .slide-enter,
-html[data-forum-navigated] .Forum .main > div > * {
+html[data-forum-navigated] .Forum .main > div > *,
+/* 博客文章页沿用论坛内部导航的约定：论坛组件（页头/评论区）不再重播入场 */
+html[data-forum-navigated] .post-layout .slide-enter,
+html[data-forum-navigated] .post-layout [slide-enter] {
   animation: none;
 }
 
@@ -282,6 +285,7 @@ html[data-forum-navigated] .Forum .main > div > * {
 ::view-transition-group(forum-topic-type),
 ::view-transition-group(forum-topic-content),
 ::view-transition-group(forum-topic-image),
+::view-transition-group(forum-topic-quote),
 ::view-transition-group(forum-blog-cover),
 ::view-transition-group(forum-blog-title),
 ::view-transition-group(forum-user-avatar),
@@ -315,6 +319,8 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-login) {
 }
 
 html[data-forum-transition='forward']::view-transition-group(forum-topic-image),
+html[data-forum-transition='forward']::view-transition-group(forum-topic-quote),
+html[data-forum-transition='back']::view-transition-group(forum-topic-quote),
 html[data-forum-transition='forward']::view-transition-group(forum-blog-cover),
 html[data-forum-transition='back']::view-transition-group(forum-blog-cover),
 html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
@@ -333,6 +339,8 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
 ::view-transition-new(forum-topic-content),
 ::view-transition-old(forum-topic-image),
 ::view-transition-new(forum-topic-image),
+::view-transition-old(forum-topic-quote),
+::view-transition-new(forum-topic-quote),
 ::view-transition-old(forum-blog-cover),
 ::view-transition-new(forum-blog-cover),
 ::view-transition-old(forum-blog-title),
@@ -352,6 +360,7 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
 ::view-transition-old(forum-topic-type),
 ::view-transition-old(forum-topic-content),
 ::view-transition-old(forum-topic-image),
+::view-transition-old(forum-topic-quote),
 ::view-transition-old(forum-blog-cover),
 ::view-transition-old(forum-blog-title),
 ::view-transition-old(forum-user-avatar),
@@ -365,6 +374,7 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
 ::view-transition-new(forum-topic-type),
 ::view-transition-new(forum-topic-content),
 ::view-transition-new(forum-topic-image),
+::view-transition-new(forum-topic-quote),
 ::view-transition-new(forum-blog-cover),
 ::view-transition-new(forum-blog-title),
 ::view-transition-new(forum-user-avatar),
@@ -390,5 +400,11 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
   html[data-forum-transition]::view-transition-new(*) {
     animation-delay: 0ms !important;
     animation-duration: 0.01ms !important;
+  }
+
+  /* 全局兜底：spinner 是无限循环动画，系统要求减动效时必须停。
+     各组件内的 scoped .animate-spin 覆盖与此等效，可逐步移除 */
+  .animate-spin {
+    animation: none !important;
   }
 }

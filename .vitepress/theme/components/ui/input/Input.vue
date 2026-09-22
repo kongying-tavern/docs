@@ -25,7 +25,11 @@ function focus(options?: FocusOptions): void {
   input.value?.focus(options)
 }
 
-defineExpose({ focus })
+function clear(): void {
+  modelValue.value = ''
+}
+
+defineExpose({ clear, focus })
 </script>
 
 <template>
