@@ -112,7 +112,15 @@ src/public/fonts/fonts-standard.css
 
 # Local dev/testing artifacts (never commit)
 .playwright-mcp/
+.playwright-cli/
 advisor-plans/
 test-results/
 playwright-report/
 e2e/
+/output/
+
+# Agent tooling pins and scratchpads
+skills-lock.json
+/TODO.md
+
+.agents/
