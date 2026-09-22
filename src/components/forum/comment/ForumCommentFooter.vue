@@ -44,7 +44,7 @@ const emit = defineEmits(['comment:delete', 'comment:click'])
 const { message } = useLocalized()
 const forumMutations = useForumMutations()
 const { commentHref } = useForumRoute()
-const { isSupported: clipboardSupported } = useClipboard()
+const { copy, isSupported: clipboardSupported } = useClipboard()
 const { hasAnyPermissions } = useRuleChecks(commentData.author.id)
 const canDelete = hasAnyPermissions('manage_feedback', 'edit_feedback')
 const deleteDialogOpen = ref(false)
@@ -56,7 +56,7 @@ const copyMenu = computed<FORUM.TopicDropdownMenu[]>(() => clipboardSupported.va
       icon: 'i-lucide:link',
       action: async () => {
         try {
-          await navigator.clipboard.writeText(new URL(commentHref(topicId, commentData.id, commentPage), location.href).href)
+          await copy(new URL(commentHref(topicId, commentData.id, commentPage), location.href).href)
           toast.success(message.value.forum.topic.menu.copyLink.success)
         }
         catch {
