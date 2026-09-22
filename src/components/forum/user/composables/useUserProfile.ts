@@ -32,15 +32,20 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   ))
 
   const menu = computed<{
-    id: string
+    id: 'all' | 'closed'
     label: string
     icon: string
   }[]>(() => {
     return [
       {
-        id: 'feedback',
-        label: isAuthorizedUser.value ? message.value.forum.labels.myFeedback : message.value.forum.labels.submittedFeedback,
+        id: 'all',
+        label: message.value.forum.header.navigation.allFeedback,
         icon: 'i-lucide-file-text',
+      },
+      {
+        id: 'closed',
+        label: message.value.forum.header.navigation.closedFeedback,
+        icon: 'i-lucide-circle-check',
       },
     ]
   })

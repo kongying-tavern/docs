@@ -2,8 +2,8 @@
 import type { JSONContent } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
+import { usePreferredReducedMotion } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { toast } from 'vue-sonner'
 import { GiteeAPIError } from '@/apis/forum/gitee'
 import { uploadImg } from '@/apis/interknot.site/upload'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
@@ -20,8 +20,11 @@ import { useImageAttachmentQueue } from '~/composables/useImageAttachmentQueue'
 import { submitCommentTransaction } from '~/services/forum/commentTransaction'
 import { createCommentFormSchema } from '~/services/forum/form/validation'
 import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
+import { OpsEvents, trackOp } from '~/services/telemetry'
+import { showPageAlert } from '~/services/telemetry/pageAlert'
+import { toast } from '~/services/telemetry/toast'
 import ForumRichTextarea from '../form/ForumRichTextarea.vue'
-import { formatImageAttachmentError } from '../utils/forumUi'
+import { formatImageAttachmentError, formatMessage } from '../utils/forumUi'
 
 const {
   topicId,
@@ -31,6 +34,7 @@ const {
   collapse = true,
   topic,
   autofocus = false,
+  entryAnimation = true,
 } = defineProps<{
   topicId: string
   placeholder?: string[] | string
@@ -40,6 +44,7 @@ const {
   class?: HTMLAttributes['class']
   topic?: ForumAPI.Topic
   autofocus?: boolean
+  entryAnimation?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -63,6 +68,10 @@ const queue = useImageAttachmentQueue({
 })
 const loading = computed(() => submitPending.value || forumMutations.creatingComment.value)
 const busy = computed(() => loading.value || queue.isBusy.value)
+const reducedMotion = usePreferredReducedMotion()
+const entryMotion = computed(() => (entryAnimation && reducedMotion.value !== 'reduce'
+  ? { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } }
+  : {}))
 
 function emptyDoc(): JSONContent {
   return { type: 'doc', content: [{ type: 'paragraph' }] }
@@ -92,12 +101,14 @@ async function submit(): Promise<void> {
       postComment: body => forumMutations.createComment({ repo, topicId, body }),
       onSuccess: (comment) => {
         emit('comment:submit', comment)
+        trackOp(OpsEvents.commentSubmit)
         content.value = emptyDoc()
         plainText.value = ''
         queue.reset()
         if (topic) {
           personal.recordParticipation(topic).catch((error) => {
             toast.warning(message.value.forum.sidebar.syncFailed, {
+              error,
               ...(error instanceof GiteeAPIError && error.state === 403
                 ? {
                     action: {
@@ -118,10 +129,17 @@ async function submit(): Promise<void> {
     if (!result.ok) {
       if (result.stage === 'upload') {
         for (const error of result.errors)
-          toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm))
+          toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm), { report: false })
       }
       else {
-        toast.error(`${message.value.forum.comment.commentFail}${result.error.message}`)
+        showPageAlert(message.value.forum.comment.commentFail, {
+          id: 'comment-submit',
+          scene: 'cm',
+          error: result.error,
+          description: formatMessage(message.value.forum.errors.traceIdWithMessage, {
+            message: result.error.message,
+          }),
+        })
       }
     }
   }
@@ -134,7 +152,7 @@ async function addFiles(files: File[]): Promise<void> {
   const result = await queue.addFiles(files)
   if (!result.ok) {
     for (const error of result.errors)
-      toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm))
+      toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm), { report: false })
   }
 }
 
@@ -142,13 +160,19 @@ async function retryAttachment(id: string): Promise<void> {
   const result = await queue.retry(id)
   if (!result.ok) {
     for (const error of result.errors)
-      toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm))
+      toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm), { report: false })
   }
 }
 </script>
 
 <template>
-  <div v-motion-slide-top class="flex" :class="cn('flex', $props.class)">
+  <div
+    v-motion
+    :initial="entryMotion.initial"
+    :enter="entryMotion.enter"
+    class="flex"
+    :class="cn('flex', $props.class)"
+  >
     <div class="user-avatar mr-2 flex w-[64px]">
       <UserAvatar
         size="lg"
@@ -167,6 +191,7 @@ async function retryAttachment(id: string): Promise<void> {
       :collapse="collapse"
       :max-text-length="VALIDATION_LIMITS.CONTENT.MAX_LENGTH"
       :autofocus="autofocus"
+      :entry-animation="entryAnimation"
       :placeholders="placeholder"
       :reply-target="replyTarget"
       @input="plainText = $event"

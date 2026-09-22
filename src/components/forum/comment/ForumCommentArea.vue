@@ -96,6 +96,7 @@ watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
         :placeholder="message.forum.comment.placeholder"
         :topic-id="topicId"
         :topic="topic"
+        :entry-animation="entryAnimation"
         @comment:submit="handleCommentSubmit"
       />
     </CommentAreaCommentInputBox>
@@ -136,6 +137,7 @@ watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
             :topic="topic"
             :reply-target="comment.author.login"
             :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
+            :entry-animation="entryAnimation"
             @comment:submit="handleCommentSubmit"
           />
         </ForumTopicComment>

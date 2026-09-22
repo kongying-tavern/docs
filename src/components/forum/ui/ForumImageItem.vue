@@ -8,6 +8,7 @@ const props = defineProps<{
   image: ImageItem
   /** 是否填充容器（grid 布局使用 object-cover） */
   fillContainer?: boolean
+  interactive?: boolean
   class?: string
 }>()
 
@@ -63,8 +64,8 @@ function onLazyError() {
 
 <template>
   <div
-    class="size-full transition-all duration-200 relative overflow-hidden"
-    :class="[hasError || (useLazyLoad() && !isRealImageReady) ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
+    class="size-full relative overflow-hidden"
+    :class="[hasError || (useLazyLoad() && !isRealImageReady) ? 'cursor-wait' : interactive === false ? 'cursor-default' : 'cursor-zoom-in', props.class]"
   >
     <template v-if="useLazyLoad()">
       <img
@@ -140,7 +141,9 @@ function onLazyError() {
 }
 
 .reveal-enter-active {
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition:
+    opacity 0.4s cubic-bezier(0.2, 0, 0, 1),
+    filter 0.4s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .reveal-leave-active {

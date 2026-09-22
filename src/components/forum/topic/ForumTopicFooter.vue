@@ -5,6 +5,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumTopicReactionButton from '../ui/ForumTopicReactionButton.vue'
 import ForumCopyLinkButton from './ForumCopyLinkButton.vue'
+import ForumQuoteTopicButton from './ForumQuoteTopicButton.vue'
 
 defineProps<{ topic: ForumAPI.Topic }>()
 
@@ -15,8 +16,9 @@ const forumHref = computed(() => homeHref())
 
 <template>
   <div class="mt-12 flex items-center justify-between">
-    <div class="flex gap-1.5">
-      <ForumTopicReactionButton :topic-id="String(topic.id)" />
+    <div class="flex gap-3">
+      <ForumTopicReactionButton :topic-id="String(topic.id)" refetch-on-mount="always" />
+      <ForumQuoteTopicButton :topic="topic" />
       <ForumCopyLinkButton />
     </div>
     <a class="text-sm vp-link" :href="forumHref">

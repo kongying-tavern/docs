@@ -1,6 +1,7 @@
 import type { KyResponse } from 'ky'
 import type { ApiCallOptions, ApiResult, HttpMethod } from './types'
 import { useMemoize } from '@vueuse/core'
+import { reportRequestFailure } from '~/services/telemetry/request'
 import { fetcher, prepareRequest } from './client'
 import { toGiteeAPIError } from './errors'
 import * as gists from './gists'
@@ -45,7 +46,9 @@ async function performRequest<T>(
     })
   }
   catch (error) {
-    throw toGiteeAPIError(error, { method, endpoint })
+    const mappedError = toGiteeAPIError(error, { method, endpoint })
+    reportRequestFailure(mappedError)
+    throw mappedError
   }
 
   return {

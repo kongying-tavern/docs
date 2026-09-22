@@ -147,6 +147,53 @@ test('Topic bodies and summaries share safe topic references and shortened auto-
   }
 })
 
+test('pasted site Topic URLs render as internal Topic references', () => {
+  const href = 'https://yuanshen.site/docs/feedback/topic/ID4TLH'
+  const localizedHref = 'https://yuanshen.site/docs/zh/feedback/topic/ICROD8/'
+  const options = { topicHref: (id: string) => `/feedback/topic/${id}` }
+
+  for (const rendered of [
+    renderForumTopic(`关联 ${href} 和 ${localizedHref}`, options),
+    renderForumTopicSummary(href, options),
+  ]) {
+    assert.match(rendered, /class="vp-link forum-topic-reference"/)
+    assert.match(rendered, /href="\/feedback\/topic\/ID4TLH"[^>]*>#ID4TLH<\/a>/)
+    if (rendered.includes('ICROD8'))
+      assert.match(rendered, /href="\/feedback\/topic\/ICROD8"[^>]*>#ICROD8<\/a>/)
+    assert.equal(rendered.includes('forum-external-link'), false)
+  }
+
+  const plain = renderForumComment(decodeForumText(href), options)
+  assert.equal(plain.kind, 'html')
+  if (plain.kind === 'html')
+    assert.match(plain.html, /href="\/feedback\/topic\/ID4TLH">#ID4TLH<\/a>/)
+
+  const rich = renderForumComment(decodeForumText(JSON.stringify({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [{ type: 'text', text: href, marks: [{ type: 'link', attrs: { href } }] }],
+    }],
+  })), options)
+  assert.equal(rich.kind, 'html')
+  if (rich.kind === 'html')
+    assert.match(rich.html, /href="\/feedback\/topic\/ID4TLH">#ID4TLH<\/a>/)
+
+  const customLabel = renderTiptapToHtml({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [{ type: 'text', text: '保留文案', marks: [{ type: 'link', attrs: { href } }] }],
+    }],
+  }, options)
+  assert.match(customLabel, />保留文案<\/a>/)
+  assert.equal(customLabel.includes('#ID4TLH'), false)
+
+  const authored = renderForumTopic(`[保留文案](${href})`, options)
+  assert.match(authored, /\[保留文案\]\(https:\/\/yuanshen\.site/)
+  assert.equal(authored.includes('forum-topic-reference'), false)
+})
+
 test('scheme-less links do not rewrite code or authored Markdown link syntax', () => {
   const rendered = renderForumTopic('`gitee.com/KYJGYSDT` [仓库](gitee.com/KYJGYSDT) gitee.com/KYJGYSDT')
 

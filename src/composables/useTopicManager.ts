@@ -2,13 +2,14 @@ import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed, toValue } from 'vue'
-import { toast } from 'vue-sonner'
 import { withAuth } from '@/utils/auth-helpers'
 import {
   replaceEditableTopicLabels,
   replaceTopicTypeLabel,
   toggleTopicLabel,
 } from '~/services/forum/forumTopicLabels'
+import { replaceTopicStatus, topicStatusHidesTopic } from '~/services/forum/forumTopicStatus'
+import { toast } from '~/services/telemetry/toast'
 import { composeTopicBody } from './composeTopicBody'
 import { useForumMutations } from './forum/useForumMutations'
 
@@ -37,6 +38,10 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     return topic
   }
 
+  function currentLabels(topic: ForumAPI.Topic): string[] {
+    return topic.labels ?? topic.tags
+  }
+
   async function update(
     kind: Parameters<typeof mutations.updateTopic>[0],
     createPatch: (topic: ForumAPI.Topic) => Parameters<typeof mutations.updateTopic>[2],
@@ -52,7 +57,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       if (!outcome)
         return false
       if (outcome.status === 'unknown') {
-        toast.error(failureMessage)
+        toast.error(failureMessage, { error: outcome.error, scene: 'op' })
         throw outcome.error
       }
       if (outcome.status === 'partial') {
@@ -63,13 +68,19 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     })
   }
 
-  const toggleCloseTopic = (): [ComputedRef<boolean>, () => Promise<ForumAPI.Topic | false>] => {
+  const toggleCloseTopic = (): [ComputedRef<boolean>, (status?: ForumAPI.TopicStatus) => Promise<ForumAPI.Topic | false>] => {
     const closeState = computed(() => toValue(targetTopic)?.state === 'closed')
-    return [closeState, () => update(
+    return [closeState, status => update(
       'closeTopic',
       (topic) => {
         const state = topic.state === 'closed' ? 'open' : 'closed'
-        return { body: composeTopicBody(topic.contentRaw, { state }), state }
+        return {
+          body: composeTopicBody(topic.contentRaw, { state }),
+          state,
+          ...(state === 'closed' && status
+            ? { labels: replaceTopicStatus(currentLabels(topic), status).join(',') }
+            : {}),
+        }
       },
       message.value.forum.topic.menu.closeFeedback.success,
       message.value.forum.topic.menu.closeFeedback.fail,
@@ -88,14 +99,14 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
 
   const toggleTopicType = (newType: ForumAPI.FeedbackTopicType) => update(
     'changeTopicMembership',
-    topic => ({ labels: replaceTopicTypeLabel(topic.tags, newType).join(',') }),
+    topic => ({ labels: replaceTopicTypeLabel(currentLabels(topic), newType).join(',') }),
     message.value.forum.topic.menu.changeType.success,
     message.value.forum.topic.menu.changeType.fail,
   )
 
   const togglePinnedTopic = () => update(
     'pinTopic',
-    topic => ({ labels: toggleTopicLabel(topic.tags, 'PINNED', !topic.pinned).join(',') }),
+    topic => ({ labels: toggleTopicLabel(currentLabels(topic), 'PINNED', !topic.pinned).join(',') }),
     message.value.forum.topic.menu.pinTopic.success,
     message.value.forum.topic.menu.pinTopic.fail,
   )
@@ -105,8 +116,8 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       'toggleCommentArea',
       topic => ({
         labels: topic.commentCount !== -1
-          ? toggleTopicLabel(topic.tags, 'COMMENT-CLOSED', true).join(',')
-          : toggleTopicLabel(topic.tags, 'COMMENT-CLOSED', false).join(','),
+          ? toggleTopicLabel(currentLabels(topic), 'COMMENT-CLOSED', true).join(',')
+          : toggleTopicLabel(currentLabels(topic), 'COMMENT-CLOSED', false).join(','),
       }),
       message.value.forum.topic.menu.commentArea.success,
       message.value.forum.topic.menu.commentArea.fail,
@@ -115,9 +126,31 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
 
   const replaceTopicTags = (newTags: string[]) => update(
     'changeTopicMembership',
-    topic => ({ labels: replaceEditableTopicLabels(topic.tags, newTags).join(',') }),
+    topic => ({ labels: replaceEditableTopicLabels(currentLabels(topic), newTags).join(',') }),
     message.value.forum.topic.menu.modifyTags.success,
     message.value.forum.topic.menu.modifyTags.fail,
+  )
+
+  const setTopicStatus = (status: ForumAPI.TopicStatus | null) => {
+    const shouldHide = status !== null
+      && topicStatusHidesTopic(status)
+      && currentTopic().state === 'open'
+    return update(
+      'changeTopicMembership',
+      topic => ({
+        labels: replaceTopicStatus(currentLabels(topic), status).join(','),
+        ...(shouldHide ? { state: 'progressing' as const } : {}),
+      }),
+      message.value.forum.topic.menu.modifyStatus.success,
+      message.value.forum.topic.menu.modifyStatus.fail,
+    )
+  }
+
+  const toggleGoodIssue = () => update(
+    'changeTopicMembership',
+    topic => ({ labels: toggleTopicLabel(currentLabels(topic), 'GOOD-ISSUE', !topic.goodIssue).join(',') }),
+    message.value.forum.topic.menu.goodIssue.success,
+    message.value.forum.topic.menu.goodIssue.fail,
   )
 
   return {
@@ -126,6 +159,8 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     togglePinnedTopic,
     toggleTopicType,
     replaceTopicTags,
+    setTopicStatus,
+    toggleGoodIssue,
     toggleTopicCommentArea,
     updatingTopic: mutations.updatingTopic,
   }

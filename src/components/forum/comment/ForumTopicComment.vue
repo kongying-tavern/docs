@@ -79,13 +79,15 @@ function handleCommentClick(author: ForumAPI.User): void {
 
         <ForumUserAtTag :user="props.commentData.author" class="ml-2" />
       </div>
-      <span v-else class="title font-size-xs flex whitespace-nowrap">
+      <span v-else class="title font-size-xs flex whitespace-nowrap items-baseline">
         {{ props.commentData.author.username }}
-        <ForumRoleBadge class="important:mb-0" :type="role" />
+        <!-- 视觉居中：pill 上移使其相对用户名正文对称，同时让 pill 内的文字自身居中（pt+pb 之和不变，pill 高度不变） -->
+        <ForumRoleBadge class="translate-y-[-0.75px] important:mb-0 [&>span]:pb-[1.2px] [&>span]:pt-[3.8px]" :type="role" />
         :
       </span>
 
       <ForumTopicTranslator
+        v-if="props.size !== 'small'"
         :content="content.text"
         @translated="showTranslatedContent"
         @close="showingTranslation = false"
@@ -137,15 +139,18 @@ function handleCommentClick(author: ForumAPI.User): void {
 
       <slot />
     </div>
+
+    <!-- small 的正文与用户名同行，译文状态行放到该行之外，避免整行宽度被它占满 -->
+    <ForumTopicTranslator
+      v-if="props.size === 'small'"
+      :content="content.text"
+      @translated="showTranslatedContent"
+      @close="showingTranslation = false"
+    />
   </div>
 </template>
 
 <style scoped>
-.topic-comment-item:hover > div > .comment-info > div > .topic-info-list > .topic-btn-more {
-  opacity: 1 !important;
-  word-break: break-word;
-}
-
 .content :deep(img[data-emoji]) {
   display: inline-block;
   width: 20px;

@@ -3,17 +3,24 @@ import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
+import { resolveForumListScope } from '~/services/forum/forumListSkeleton'
+import { parseForumSearchQuery } from '~/services/forum/forumSearchQuery'
 import BaseForumPage from '../base/BaseForumPage.vue'
 import ForumTopicSearchInfo from '../search/ForumTopicSearchInfo.vue'
+import ForumAside from '../sidebar/ForumAside.vue'
 import ForumCarouselBento from './ForumCarouselBento.vue'
 
-const { list, navigateFilter, submitSearch } = useForumRoute()
+const { route, list, navigateFilter, navigateType, navigateSort, submitSearch } = useForumRoute()
+const search = computed(() => parseForumSearchQuery(list.value?.q ?? ''))
 const topics = useForumTopicsQuery(computed(() => ({
   filter: list.value?.filter ?? 'all',
+  topicType: list.value?.topicType ?? 'all',
   sort: list.value?.sort ?? 'created',
-  q: list.value?.q ?? '',
-  creator: null,
-})))
+  q: search.value.text,
+  tags: search.value.tags,
+  statuses: search.value.states,
+  creator: search.value.author,
+})), true, computed(() => resolveForumListScope(route.value)))
 const pinned = usePinnedTopicsQuery()
 const { message } = useLocalized()
 
@@ -35,9 +42,12 @@ const loadStateMessage = computed(() => {
     :refresh-data="topics.refetch"
     :load-state-message="loadStateMessage"
     :filter="list?.filter ?? 'all'"
+    :topic-type="list?.topicType ?? 'all'"
     :sort="list?.sort ?? 'created'"
     :query="list?.q ?? ''"
     :on-filter-change="navigateFilter"
+    :on-type-change="navigateType"
+    :on-sort-change="navigateSort"
     :on-search="submitSearch"
   >
     <template #header>
@@ -49,6 +59,10 @@ const loadStateMessage = computed(() => {
         :loading="topics.isLoading.value"
         :total="topics.total.value"
       />
+    </template>
+
+    <template #aside>
+      <ForumAside recent-updates tag-filter />
     </template>
   </BaseForumPage>
 </template>

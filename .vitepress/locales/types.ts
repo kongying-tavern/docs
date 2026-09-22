@@ -8,6 +8,7 @@ export interface CustomConfig {
   team: typeof import('./zh/team').default
   payment: typeof import('./zh/payment').default
   forum: typeof import('./zh/forum').default
+  settings: typeof import('./zh/settings').default
   changelog: typeof import('./zh/changelog').default
 }
 

@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import type ForumAPI from '@/apis/forum/api'
+import { useMediaQuery } from '@vueuse/core'
+import { ref, watch } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useForumRoute } from '~/composables/useForumRoute'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
+import ForumSearchInput from '../search/ForumSearchInput.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import { useUserProfile } from './composables/useUserProfile'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
@@ -9,10 +15,16 @@ import ForumFollowUserButton from './ForumFollowUserButton.vue'
 const props = defineProps<{
   username: string
   topicCount: number
+  suggestions?: ForumAPI.Topic[]
 }>()
 
-const modelValue = defineModel('activeTab', { default: 'feedback' })
+const modelValue = defineModel<'all' | 'closed'>('activeTab', { default: 'all' })
 const { message } = useLocalized()
+const { list, openSearch, openSearchWithQuery } = useForumRoute()
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+const searchQuery = ref(list.value?.q ?? '')
+
+watch(() => list.value?.q ?? '', query => searchQuery.value = query)
 
 const {
   menuRef,
@@ -40,17 +52,29 @@ const {
                   img-class="size-full rounded-full object-cover ring-4"
                 />
               </div>
-              <div v-if="!isAuthorizedUser" class="flex gap-2 sm:hidden">
+              <div class="flex gap-2 sm:hidden">
                 <Button
+                  v-if="!isAuthorizedUser"
                   variant="outline"
+                  size="icon"
                   class="border border-[var(--vp-c-divider)] border-solid"
+                  :aria-label="message.forum.labels.privateMessage"
                   @click="sendMessage"
                 >
-                  <span class="i-lucide-mail text-base" />
-                  <span class="max-sm:hidden">{{ message.forum.labels.privateMessage }}</span>
+                  <span class="i-lucide-mail text-base" aria-hidden="true" />
+                </Button>
+                <Button
+                  v-if="isMobile"
+                  variant="outline"
+                  size="icon"
+                  class="border border-[var(--vp-c-divider)] border-solid"
+                  :aria-label="message.ui.button.search"
+                  @click="openSearch"
+                >
+                  <span class="i-lucide-search text-base" aria-hidden="true" />
                 </Button>
                 <ForumFollowUserButton
-                  v-if="renderedUser?.login"
+                  v-if="!isAuthorizedUser && renderedUser?.login"
                   class="border border-[var(--vp-c-divider)] rounded-md border-solid"
                   :user="renderedUser?.login"
                 />
@@ -67,7 +91,7 @@ const {
                 </span>
               </div>
 
-              <p class="text-sm text-gray-600 mt-1.5 sm:text-base dark:text-gray-400 sm:mt-2">
+              <p class="text-sm c-[var(--vp-c-text-2)] mt-1.5 sm:text-base sm:mt-2">
                 {{ renderedUser?.bio || message.forum.labels.lazyPerson }}
               </p>
 
@@ -85,16 +109,29 @@ const {
               </div>
             </div>
 
-            <div v-if="!isAuthorizedUser" class="gap-2 hidden sm:flex">
+            <div class="gap-2 hidden sm:flex">
               <Button
+                v-if="!isAuthorizedUser"
                 variant="outline"
+                size="icon"
                 class="border border-[var(--vp-c-divider)] border-solid"
+                :aria-label="message.forum.labels.privateMessage"
                 @click="sendMessage"
               >
-                <span class="i-lucide-mail text-base" />
+                <span class="i-lucide-mail text-base" aria-hidden="true" />
+              </Button>
+              <Button
+                v-if="isMobile"
+                variant="outline"
+                size="icon"
+                class="border border-[var(--vp-c-divider)] border-solid"
+                :aria-label="message.ui.button.search"
+                @click="openSearch"
+              >
+                <span class="i-lucide-search text-base" aria-hidden="true" />
               </Button>
               <ForumFollowUserButton
-                v-if="renderedUser?.login"
+                v-if="!isAuthorizedUser && renderedUser?.login"
                 class="border border-[var(--vp-c-divider)] rounded-md border-solid"
                 text-class="max-sm:hidden"
                 :user="renderedUser?.login"
@@ -105,32 +142,46 @@ const {
       </div>
     </div>
 
-    <div class="border-b w-full relative">
+    <div class="w-full relative" style="border-bottom: 1px solid var(--vp-c-divider)">
       <div class="mx-auto">
-        <div
-          ref="menuRef"
-          class="flex gap-3 h-12 items-center relative"
-        >
-          <Button
-            v-for="item in menu"
-            :key="item.id"
-            class="group whitespace-nowrap relative hover:c-[--vp-c-brand]"
-            :class="{ 'c-[--vp-c-brand]': modelValue === item.id }"
-            variant="ghost"
-            @click="modelValue = item.id"
+        <div class="flex gap-2 min-w-0 items-center">
+          <div
+            ref="menuRef"
+            role="group"
+            :aria-label="message.forum.header.navigation.groups.status"
+            class="flex shrink-0 gap-1 h-12 items-stretch"
           >
-            <div class="flex items-center relative">
-              <span
-                class="mr-2 inline-block"
-                :class="item.icon"
-              />
-              {{ item.label }}
+            <Button
+              v-for="item in menu"
+              :key="item.id"
+              class="group px-4 rounded-md h-full whitespace-nowrap relative hover:c-[--vp-c-brand]"
+              :class="{ 'c-[--vp-c-brand]': modelValue === item.id }"
+              variant="ghost"
+              :aria-pressed="modelValue === item.id"
+              @click="modelValue = item.id"
+            >
+              <div class="flex items-center">
+                <span
+                  class="mr-2 inline-block"
+                  :class="item.icon"
+                  aria-hidden="true"
+                />
+                {{ item.label }}
+              </div>
               <span
                 v-if="modelValue === item.id"
-                class="bg-[var(--vp-c-brand)] h-0.5 w-full transition-all duration-300 left-0 absolute -bottom-[15px]"
+                class="bg-[var(--vp-c-brand)] h-0.5 bottom-0 left-0 right-0 absolute"
+                aria-hidden="true"
               />
-            </div>
-          </Button>
+            </Button>
+          </div>
+          <ForumSearchInput
+            v-if="!isMobile"
+            v-model:query="searchQuery"
+            class="min-w-0"
+            :suggestions="suggestions"
+            @submit="openSearchWithQuery"
+          />
         </div>
       </div>
     </div>

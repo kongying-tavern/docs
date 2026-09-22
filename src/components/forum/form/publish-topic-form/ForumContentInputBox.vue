@@ -22,8 +22,6 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<{
   id?: string
   modelValue?: string
-  textLimit: number
-  textMinLimit?: number
   class?: HTMLAttributes['class']
   defaultValue?: string
   placeholder?: string
@@ -207,13 +205,8 @@ onBeforeUnmount(() => editor.value?.destroy())
             :editor="(editor as InstanceType<typeof Editor>)"
             :class="cn('forum-markdown-editor h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-sm leading-6', props.class)"
           />
-          <span class="text-xs c-[var(--vp-c-text-3)] mt-1 flex justify-end">
-            <span :class="modelValue?.length < (textMinLimit || -1) || modelValue?.length > (textLimit || -1) ? 'c-red' : ''">
-              {{ modelValue?.length || 0 }}
-            </span>
-            / {{ textLimit }}
-          </span>
         </div>
+        <slot name="after-editor" />
         <slot name="uploader" />
 
         <div v-if="isOverDropZone" class="drop-overlay" aria-hidden="true">

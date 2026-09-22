@@ -3,26 +3,49 @@ import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
 import { computed, ref, toValue } from 'vue'
-import { toast } from 'vue-sonner'
 import { issues } from '@/apis/forum/gitee'
+import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useTopicManager } from '~/composables/useTopicManager'
+import { useTopicStatusEditor } from '~/composables/useTopicStatusEditor'
+import {
+  getSelectableTopicStatuses,
+  groupTopicStatuses,
+  TOPIC_STATUS_LABEL,
+} from '~/services/forum/forumTopicStatus'
+import { toast } from '~/services/telemetry/toast'
+import { useReactionStats } from './useReactionStats'
+import { useTopicReactionState } from './useTopicsReaction'
 import { useTopicTagsEditor } from './useTopicTagsEditor'
 
 // @unocss-include
 export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
   const currentTopic = computed(() => toValue(topicData))
-  const { toggleCloseTopic, toggleHideTopic, togglePinnedTopic, toggleTopicType, toggleTopicCommentArea } = useTopicManager(currentTopic, message)
+  const {
+    toggleCloseTopic,
+    toggleGoodIssue,
+    toggleHideTopic,
+    togglePinnedTopic,
+    toggleTopicType,
+    toggleTopicCommentArea,
+    setTopicStatus,
+    updatingTopic,
+  } = useTopicManager(currentTopic, message)
   const { route, leaveTopic } = useForumRoute()
   const { hasAnyPermissions } = useRuleChecks(() => currentTopic.value.user.id)
   const personal = useForumPersonalState()
+  const auth = useUserAuthStore()
+  const isLoggedIn = computed(() => auth.isTokenValid)
 
   const [closeState, toggleClose] = toggleCloseTopic()
   const [hideState, toggleHide] = toggleHideTopic()
 
   const { openTopicTagsEditorDialog } = useTopicTagsEditor()
+  const { openCloseTopicDialog } = useTopicStatusEditor()
+  const { openReactionStatsDialog } = useReactionStats()
+  const reactionQueryFailed = useTopicReactionState(() => currentTopic.value.id).error
 
   const menuLabels = ref(message.value.forum.topic.menu)
 
@@ -33,6 +56,10 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
   const openOnGitee = () => issues.openTopicOnGitee(currentTopic.value.id)
 
   async function handleToggleCloseTopic() {
+    if (!closeState.value) {
+      openCloseTopicDialog(currentTopic.value)
+      return
+    }
     const result = await toggleClose()
     if (result && result.state === 'closed' && route.value?.name === 'topic' && route.value.topicId === String(result.id))
       await leaveTopic()
@@ -44,20 +71,34 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       await leaveTopic()
   }
 
+  /**
+   * 结论状态会把话题移出列表，此时留在详情页没有意义 —— 与隐藏/归档一致地退回上一页。
+   * 只看「未结 → 非未结」的跨越，避免在已隐藏话题上反复跳转。
+   */
+  async function handleSetTopicStatus(status: ForumAPI.TopicStatus | null) {
+    const topicId = String(currentTopic.value.id)
+    const wasOpen = currentTopic.value.state === 'open'
+    const result = await setTopicStatus(status)
+    if (!result)
+      return
+    if (wasOpen && result.state !== 'open' && route.value?.name === 'topic' && route.value.topicId === topicId)
+      await leaveTopic()
+  }
+
   async function handleToggleFollow() {
     const wasFollowing = personal.isFollowing(currentTopic.value.id)
     try {
       await personal.toggleFollow(currentTopic.value)
       if (personal.isFollowing(currentTopic.value.id) === wasFollowing)
-        toast.error(message.value.forum.errors.followFailed)
+        toast.error(message.value.forum.errors.followFailed, { scene: 'op' })
     }
-    catch {
-      toast.error(message.value.forum.errors.followFailed)
+    catch (error) {
+      toast.error(message.value.forum.errors.followFailed, { error, scene: 'op' })
     }
   }
 
   const noAnyPermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {
-    return [
+    const items: FORUM.TopicDropdownMenu[] = [
       {
         type: 'item',
         id: 'gitee-link',
@@ -66,18 +107,27 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         icon: 'i-lucide:cable',
         action: openOnGitee,
       },
+    ]
+
+    if (!isLoggedIn.value)
+      return items
+
+    const following = personal.isFollowing(currentTopic.value.id)
+
+    return [
+      ...items,
       {
         type: 'item',
         id: 'follow-topic',
         order: 3,
-        label: personal.isFollowing(currentTopic.value.id)
+        label: following
           ? message.value.forum.labels.unfollow
           : message.value.forum.labels.follow,
-        icon: personal.isFollowing(currentTopic.value.id) ? 'i-lucide:bookmark-minus' : 'i-lucide:bookmark',
+        icon: following ? 'i-lucide:bookmark-minus' : 'i-lucide:bookmark',
         disabled: personal.saving.value,
         action: handleToggleFollow,
       },
-    ].filter(Boolean) as FORUM.TopicDropdownMenu[]
+    ]
   })
 
   const needManagePermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {
@@ -88,8 +138,18 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       {
         type: 'separator',
       },
+      ...(!reactionQueryFailed.value
+        ? [{
+            id: 'reaction-stats',
+            type: 'item',
+            label: menuLabels.value.reactionStats.text,
+            icon: 'i-lucide:chart-column',
+            action: () => openReactionStatsDialog({ kind: 'topic', topicId: String(currentTopic.value.id) }),
+          } as const]
+        : []),
       {
         type: 'submenu',
+        id: 'change-type-topic',
         label: menuLabels.value.changeType.text,
         icon: 'i-lucide:settings',
         items: topicTypeEnum.filter(val => val !== currentTopic.value.type).map(
@@ -125,14 +185,109 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       {
         id: 'hide-topic',
         type: 'item',
-        label: hideState ? menuLabels.value.hideFeedback.text : menuLabels.value.cancelTopic.text,
-        icon: hideState ? 'i-lucide:eye-off' : 'i-lucide:eye',
+        // 文案与图标说的都是「点了会发生什么」（同归档/固定/评论区）：
+        // 已隐藏时给「取消隐藏」，否则给「隐藏反馈」。hideState 是 ref，
+        // 漏掉 .value 会永远为真（且照样过类型检查）
+        label: hideState.value ? menuLabels.value.unhideFeedback.text : menuLabels.value.hideFeedback.text,
+        icon: hideState.value ? 'i-lucide:eye' : 'i-lucide:eye-off',
         action: handleToggleHideTopic,
       },
     ]
   })
 
-  const needEditPermissionItems = computed<FORUM.TopicDropdownMenu[]>(() => {
+  const statusGroups = computed(() => groupTopicStatuses(
+    getSelectableTopicStatuses(currentTopic.value.type, currentTopic.value.status),
+  ))
+
+  const hasStatusConflict = computed(() => (currentTopic.value.labels ?? []).filter(label => TOPIC_STATUS_LABEL.test(label)).length > 1)
+
+  /**
+   * 状态直接选、不再经过弹窗。候选里不含话题当前状态 —— 它已经在话题上，
+   * 再选一次没有意义；要脱离当前状态就走「清除状态」，因此该行只在有状态时出现。
+   */
+  const statusSubmenuItems = computed<FORUM.MenuElement[]>(() => {
+    const currentStatus = currentTopic.value.status
+    const items: FORUM.MenuElement[] = []
+
+    if (currentStatus) {
+      items.push({
+        id: 'status-topic-none',
+        type: 'item',
+        label: menuLabels.value.modifyStatus.none,
+        status: null,
+        disabled: updatingTopic.value,
+        action: () => handleSetTopicStatus(null),
+      })
+    }
+
+    if (hasStatusConflict.value) {
+      items.push({
+        id: 'status-topic-conflict',
+        type: 'info',
+        label: menuLabels.value.modifyStatus.conflict,
+        class: 'important:c-[var(--vp-c-warning-1)] max-w-56',
+      })
+    }
+
+    for (const { group, definitions } of statusGroups.value) {
+      items.push({ type: 'separator' })
+      items.push({
+        type: 'group',
+        items: [
+          {
+            type: 'label',
+            label: message.value.forum.topic.statusGroups[group],
+            // 结论状态会把未结反馈带走，「已结」这件事不写出来用户看不出来
+            hint: definitions.some(definition => definition.hidesTopic)
+              ? menuLabels.value.modifyStatus.conclusiveHint
+              : undefined,
+          },
+          ...definitions.map(definition => ({
+            id: `status-topic-${definition.id}`,
+            type: 'item' as const,
+            label: message.value.forum.topic.status[definition.id],
+            status: definition.id,
+            disabled: updatingTopic.value,
+            action: () => handleSetTopicStatus(definition.id),
+          })),
+        ],
+      })
+    }
+
+    return items
+  })
+
+  const needEditStatusItems = computed<FORUM.TopicDropdownMenu[]>(() => {
+    if (!hasEditPermission.value)
+      return []
+
+    if (currentTopic.value.type === 'POST')
+      return []
+
+    return [
+      {
+        type: 'separator',
+      },
+      {
+        type: 'submenu',
+        id: 'status-topic',
+        label: menuLabels.value.modifyStatus.text,
+        icon: 'i-lucide:circle-dot-dashed',
+        items: statusSubmenuItems.value,
+      },
+      {
+        type: 'item',
+        id: 'good-issue-topic',
+        label: currentTopic.value.goodIssue
+          ? menuLabels.value.goodIssue.unmark
+          : menuLabels.value.goodIssue.mark,
+        icon: currentTopic.value.goodIssue ? 'i-lucide:badge-minus' : 'i-lucide:badge-check',
+        action: toggleGoodIssue,
+      },
+    ]
+  })
+
+  const closeTopicItems = computed<FORUM.TopicDropdownMenu[]>(() => {
     if (!hasEditPermission.value)
       return []
 
@@ -144,7 +299,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         type: 'item',
         id: 'close-feedback',
         label: closeState.value ? menuLabels.value.reopenFeedback.text : menuLabels.value.closeFeedback.text,
-        icon: closeState.value ? 'i-lucide:lock-open' : 'i-lucide:lock',
+        icon: closeState.value ? 'i-lucide:archive-restore' : 'i-lucide:archive',
         action: handleToggleCloseTopic,
         class: closeState.value ? undefined : 'c-red opacity-90 hover:c-red hover:opacity-100',
       },
@@ -153,7 +308,8 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
 
   return computed(() => [
     ...noAnyPermissionItems.value,
+    ...needEditStatusItems.value,
     ...needManagePermissionItems.value,
-    ...needEditPermissionItems.value,
+    ...closeTopicItems.value,
   ])
 }

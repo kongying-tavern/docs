@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
-import { toast } from 'vue-sonner'
 import { catchError } from '@/apis/utils'
 import { withAuth } from '@/utils/auth-helpers'
+import { toast } from '~/services/telemetry/toast'
 
 type ActionFunction<T extends unknown[], R = unknown> = (...args: T) => Promise<R>
 
@@ -20,7 +20,7 @@ export async function executeWithAuth<T extends unknown[], R>(
         return state
       }
       else {
-        toast.error(errorMsg)
+        toast.error(errorMsg, { error, scene: 'cd' })
         throw new Error('Operation failed')
       }
     },

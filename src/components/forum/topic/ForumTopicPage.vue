@@ -18,6 +18,7 @@ import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import { useTopicPageState } from './composables/useTopicPageState'
+import ForumQuotedTopic from './ForumQuotedTopic.vue'
 import ForumTopicDropdownMenu from './ForumTopicDropdownMenu.vue'
 import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
@@ -130,6 +131,10 @@ function handleTitleTranslated(title: string): void {
             class="mt-3"
             data-forum-shared-topic="type"
             :type="topic.type"
+            :state="topic.state"
+            :status="topic.status"
+            :good-issue="topic.goodIssue"
+            interactive
           />
 
           <ForumTopicTranslator
@@ -177,6 +182,12 @@ function handleTitleTranslated(title: string): void {
             />
           </div>
 
+          <ForumQuotedTopic
+            v-if="topic.quotedTopic"
+            class="mt-4"
+            :reference="topic.quotedTopic"
+          />
+
           <ForumTopicFooter
             :topic="topic"
           />
@@ -208,10 +219,7 @@ function handleTitleTranslated(title: string): void {
       </template>
 
       <template #aside>
-        <ForumAside
-          :contact-us="true"
-          :exclude-topic-ids="topic ? [topic.id] : []"
-        />
+        <ForumAside :topic="topic" />
       </template>
     </ForumLayout>
   </ClientOnly>

@@ -8,6 +8,7 @@ import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicComment from '../comment/ForumTopicComment.vue'
 import { useTopicInteraction } from '../composables/useTopicInteraction'
 import { useTopicState } from '../composables/useTopicState'
+import ForumQuotedTopic from '../topic/ForumQuotedTopic.vue'
 import ForumTopicContent from '../topic/ForumTopicContent.vue'
 import ForumTopicHeader from '../topic/ForumTopicHeader.vue'
 import ForumTopicMedia from '../topic/ForumTopicMedia.vue'
@@ -25,7 +26,7 @@ const emit = defineEmits<{
 }>()
 
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
-const { isCardMode, isCompactMode } = useForumViewMode()
+const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const translatedContent = ref<string>()
 const translatedTitle = ref('')
@@ -134,6 +135,13 @@ function showTranslatedContent(content: string): void {
       :data="topic.tags"
     />
 
+    <ForumQuotedTopic
+      v-if="topic.type !== 'POST' && topic.quotedTopic"
+      class="mt-2"
+      :reference="topic.quotedTopic"
+      :compact="isCompactMode"
+    />
+
     <ForumTopicFooter
       v-if="topic.type !== 'POST'"
       :class="{ 'mt-4': isCardMode, 'mt-2': isCompactMode }"
@@ -143,14 +151,12 @@ function showTranslatedContent(content: string): void {
 
     <div
       v-if="showComment && topic.relatedComments?.length && !isCompactMode && !inReply"
-      class="topic-comment"
+      class="topic-comment mt-4 px-4 py-2 rounded-md bg-[var(--vp-c-bg-soft)]"
     >
       <ForumTopicComment
-        v-for="(commentItem, index) in topic.relatedComments"
+        v-for="commentItem in topic.relatedComments"
         :key="commentItem.id"
         v-motion-slide-top
-        class="bg---vp-c-bg-soft px-4 first:mt-4"
-        :class="{ 'rounded-b-none': inReply && index > 0, 'rounded-t-none': index > 0 }"
         repo="Feedback"
         size="small"
         :comment-count="-1"

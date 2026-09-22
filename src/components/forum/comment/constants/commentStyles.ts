@@ -10,12 +10,14 @@ export interface CommentStyleConfig {
 // @unocss-include
 export const COMMENT_STYLES: Record<'small' | 'normal', CommentStyleConfig> = {
   small: {
-    container: 'py-2',
+    // flex-col：译文状态行排在「用户名: 正文」这一行之外，不参与该行的宽度分配
+    container: 'py-2 flex-col',
     avatarSize: 'xs',
     leftWidth: '',
     header: 'mt-1',
-    contentContainer: 'w-full',
-    content: 'line-clamp-3 overflow-hidden pr-4 font-size-xs c-[var(--vp-c-text-2)] whitespace-pre-wrap',
+    // items-baseline：标题行盒被身份 badge 撑到 21px，正文行盒 16px，按基线对齐两者首行
+    contentContainer: 'w-full items-baseline',
+    content: 'break-words line-clamp-3 overflow-hidden pr-4 font-size-xs c-[var(--vp-c-text-2)] whitespace-pre-wrap flex-1',
   },
   normal: {
     container: 'mt-.5',
@@ -23,6 +25,6 @@ export const COMMENT_STYLES: Record<'small' | 'normal', CommentStyleConfig> = {
     avatarSize: 'md',
     leftWidth: 'w-[64px] mr-2',
     header: 'mt-2',
-    content: 'break-words font-size-3.75 line-height-[24px] break-all mt-1.5 whitespace-pre-wrap',
+    content: 'break-words font-size-3.5 line-height-[24px] break-all mt-1.5 whitespace-pre-wrap',
   },
 }

@@ -8,7 +8,7 @@ const props = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
 }>()
 
-const { isCardMode, isCompactMode } = useForumViewMode()
+const { isCardMode, isCompactMode } = useForumViewMode(() => props.topic.type)
 
 const hasImages = computed(() =>
   props.topic.content?.images && props.topic.content.images.length > 0,
@@ -41,7 +41,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
   >
     <div
       v-if="isCompactMode"
-      class="ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px transition items-center relative overflow-hidden"
+      class="topic-compact-media ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px items-center relative overflow-hidden"
     >
       <img
         v-if="primaryImage"
@@ -88,13 +88,12 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
   margin-top: 0.5rem;
 }
 
-.ml-2 {
+.topic-compact-media {
   border-radius: 4px;
-  transition: all 0.2s ease;
-  border: 1px solid var(--vp-c-divider);
+  transition: border-color 160ms ease;
 }
 
-.ml-2:hover {
+.topic-compact-media:hover {
   border-color: var(--vp-c-brand);
 }
 </style>

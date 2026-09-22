@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { OctagonXIcon, XIcon } from '@lucide/vue'
 import { useData, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
+import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -24,7 +26,7 @@ import { getLangPath } from '@/utils'
 
 const userAuth = useUserAuthStore()
 const { localeIndex, theme } = useData()
-const { isAuthenticating, loginWithPassword } = useLogin()
+const { isAuthenticating, passwordLoginError, loginWithPassword } = useLogin()
 
 const open = ref(false)
 const username = ref('')
@@ -38,8 +40,10 @@ useHashChecker('account-login-alert', () => {
 })
 
 watch(open, (isOpen) => {
-  if (!isOpen)
+  if (!isOpen) {
     password.value = ''
+    passwordLoginError.value = null
+  }
 })
 
 async function submitPasswordLogin(): Promise<void> {
@@ -78,6 +82,19 @@ function startOAuthLogin(): void {
       </div>
 
       <div class="px-6 py-5 gap-5 grid">
+        <Alert v-if="passwordLoginError" variant="destructive" class="pr-9">
+          <OctagonXIcon />
+          <AlertTitle>{{ passwordLoginError }}</AlertTitle>
+          <button
+            type="button"
+            class="color-[var(--vp-c-text-2)] icon-btn right-1.5 top-1.5 absolute hover:color-[var(--vp-c-text-1)]"
+            :aria-label="theme.ui.button.close"
+            @click="passwordLoginError = null"
+          >
+            <XIcon class="size-3.5" />
+          </button>
+        </Alert>
+
         <form class="gap-4 grid" @submit.prevent="submitPasswordLogin">
           <FieldGroup class="gap-4">
             <Field>

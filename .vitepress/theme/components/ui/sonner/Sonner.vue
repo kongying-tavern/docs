@@ -40,3 +40,44 @@ const props = defineProps<ToasterProps>()
     </template>
   </Sonner>
 </template>
+
+<style>
+.toaster [data-sonner-toast][data-styled='true']:has([data-close-button]) {
+  padding-inline-end: 44px;
+}
+
+.toaster [data-sonner-toast][data-styled='true'] [data-close-button] {
+  inset: 8px 8px auto auto;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--vp-c-text-2);
+  background: transparent;
+  box-shadow: none;
+  opacity: 0.72;
+  transform: none;
+}
+
+.toaster [data-sonner-toast][data-styled='true'] [data-close-button]:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-default-soft);
+  opacity: 1;
+}
+
+.toaster[data-sonner-theme='dark'] [data-sonner-toast][data-styled='true'] [data-close-button] {
+  color: var(--vp-c-text-2);
+  background: transparent;
+}
+
+.toaster[data-sonner-theme='dark'] [data-sonner-toast][data-styled='true'] [data-close-button]:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-default-soft);
+}
+
+.toaster [data-sonner-toast][data-styled='true'] [data-close-button]:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 1px;
+  box-shadow: none;
+}
+</style>

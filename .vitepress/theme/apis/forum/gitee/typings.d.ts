@@ -96,6 +96,7 @@ declare namespace GITEE {
     issue_type: string
     program: null | Program
     security_hole: boolean
+    /** 状态显示名（如「已完成」「进行中」），非 `state` 的 token */
     issue_state: string
     branch: null | string
     issue_type_detail: IssueTypeDetail
@@ -242,6 +243,30 @@ declare namespace GITEE {
   type IssueState = 'open' | 'closed' | 'progressing'
 
   type CommentList = Comment[]
+
+  /**
+   * issue/pull request 操作日志（`GET repos/{owner}/issues/{number}/operate_logs`）。
+   * 除 id/created_at 外均为可选：老版本部署会缺 before/after 系列字段。
+   * 注意 `before_change_value` 在标签事件中恒为空串，标签名只出现在
+   * `after_change_value`，增删必须由 `action_type` 区分。
+   */
+  interface OperateLog {
+    id: number
+    created_at: string
+    icon?: string
+    user?: User
+    /** 含 `&nbsp;` 的 HTML 片段，不可直接展示 */
+    content?: string
+    link_target?: unknown
+    /** 实测取值：create / add_label / remove_label / change_issue_state / change_description */
+    action_type?: string
+    before_change_value?: string | null
+    after_change_value?: string | null
+    before_change_id?: number | null
+    after_change_id?: number | null
+  }
+
+  type OperateLogList = OperateLog[]
 
   interface PaginationParams<T> {
     data: T

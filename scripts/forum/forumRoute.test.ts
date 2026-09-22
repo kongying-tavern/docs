@@ -27,7 +27,8 @@ test('parses and canonically builds root Forum list routes', () => {
     name: 'home',
     locale: 'root',
     list: {
-      filter: 'bug',
+      filter: 'all',
+      topicType: 'bug',
       sort: 'updated',
       q: 'crash',
       creator: null,
@@ -42,9 +43,37 @@ test('omits default list values and canonicalizes legacy all and invalid sort', 
   assert.deepEqual(parsed?.route, {
     name: 'home',
     locale: 'root',
-    list: { filter: 'all', sort: 'created', q: '', creator: null },
+    list: { filter: 'all', topicType: 'all', sort: 'created', q: '', creator: null },
   })
   assert.equal(parsed?.canonicalHref, '/docs/feedback?view=compact')
+})
+
+test('round-trips archived and everything list filters', () => {
+  const archived = parseForumLocation('/docs/feedback/archived', ROUTE_OPTIONS)
+  const everything = parseForumLocation('/docs/feedback/everything', ROUTE_OPTIONS)
+
+  assert.equal(archived?.route.name === 'home' ? archived.route.list.filter : null, 'archived')
+  assert.equal(archived?.canonicalHref, '/docs/feedback/archived')
+  assert.equal(everything?.route.name === 'home' ? everything.route.list.filter : null, 'everything')
+  assert.equal(everything?.canonicalHref, '/docs/feedback/everything')
+})
+
+test('round-trips combined range and type paths for home and user lists', () => {
+  const home = parseForumLocation('/docs/feedback/closed/bug?q=crash&sort=updated', ROUTE_OPTIONS)
+  const user = parseForumLocation('/docs/en/feedback/user/alice/archived/feat', ROUTE_OPTIONS)
+
+  assert.equal(home?.route.name === 'home' ? home.route.list.filter : null, 'closed')
+  assert.equal(home?.route.name === 'home' ? home.route.list.topicType : null, 'bug')
+  assert.equal(home?.canonicalHref, '/docs/feedback/closed/bug?q=crash&sort=updated')
+  assert.equal(user?.route.name === 'user' ? user.route.list.filter : null, 'archived')
+  assert.equal(user?.route.name === 'user' ? user.route.list.topicType : null, 'feat')
+  assert.equal(user?.canonicalHref, '/docs/en/feedback/user/alice/archived/feat')
+
+  const legacy = parseForumLocation('/docs/feedback/feat', ROUTE_OPTIONS)
+  assert.equal(legacy?.route.name === 'home' ? legacy.route.list.filter : null, 'all')
+  assert.equal(legacy?.route.name === 'home' ? legacy.route.list.topicType : null, 'feat')
+  assert.equal(legacy?.canonicalHref, '/docs/feedback/feat')
+  assert.equal(parseForumLocation('/docs/feedback/bug/closed', ROUTE_OPTIONS), null)
 })
 
 test('round-trips localized Topic and encoded User routes', () => {
@@ -57,9 +86,30 @@ test('round-trips localized Topic and encoded User routes', () => {
     name: 'user',
     locale: 'ja',
     username: '空 荧',
-    list: { filter: 'closed', sort: 'created', q: 'test', creator: '空 荧' },
+    list: { filter: 'closed', topicType: 'all', sort: 'created', q: 'test', creator: '空 荧' },
   })
   assert.equal(user?.canonicalHref, '/docs/ja/feedback/user/%E7%A9%BA%20%E8%8D%A7/closed?q=test')
+})
+
+test('round-trips dedicated Search routes with list and user scopes', () => {
+  const home = parseForumLocation('/docs/feedback/search/closed/bug?q=map&sort=updated', ROUTE_OPTIONS)
+  const user = parseForumLocation('/docs/en/feedback/user/alice/search/feat?q=crash', ROUTE_OPTIONS)
+
+  assert.deepEqual(home?.route, {
+    name: 'search',
+    locale: 'root',
+    username: null,
+    list: { filter: 'closed', topicType: 'bug', sort: 'updated', q: 'map', creator: null },
+  })
+  assert.equal(home?.canonicalHref, '/docs/feedback/search/closed/bug?q=map&sort=updated')
+  assert.deepEqual(user?.route, {
+    name: 'search',
+    locale: 'en',
+    username: 'alice',
+    list: { filter: 'all', topicType: 'feat', sort: 'created', q: 'crash', creator: 'alice' },
+  })
+  assert.equal(user?.canonicalHref, '/docs/en/feedback/user/alice/search/feat?q=crash')
+  assert.equal(parseForumLocation('/docs/feedback/search/bug/closed', ROUTE_OPTIONS), null)
 })
 
 test('non-Forum locale transition drops the previous Forum list tuple', () => {
@@ -68,7 +118,7 @@ test('non-Forum locale transition drops the previous Forum list tuple', () => {
   const currentLocale = current?.route.locale ?? 'en'
   const currentList = current?.route && 'list' in current.route
     ? current.route.list
-    : { filter: 'all', sort: 'created', q: '', creator: 'alice' } as const
+    : { filter: 'all', topicType: 'all', sort: 'created', q: '', creator: 'alice' } as const
 
   assert.equal(stale?.route.name, 'home')
   assert.equal(current, null)
@@ -93,12 +143,12 @@ test('matches reserved resources before filters and rejects invalid paths', () =
   assert.equal(parseForumLocation('/docs/feedback/user/%E0%A4%A', ROUTE_OPTIONS), null)
 })
 
-test('caps search at the 50-character UI contract', () => {
-  const parsed = parseForumLocation(`/docs/feedback?q=${'x'.repeat(70)}`, ROUTE_OPTIONS)
+test('caps search at the structured-query contract', () => {
+  const parsed = parseForumLocation(`/docs/feedback?q=${'x'.repeat(300)}`, ROUTE_OPTIONS)
 
   assert.equal(parsed?.route.name, 'home')
-  assert.equal(parsed?.route.name === 'home' ? parsed.route.list.q.length : 0, 50)
-  assert.equal(parsed?.canonicalHref, `/docs/feedback?q=${'x'.repeat(50)}`)
+  assert.equal(parsed?.route.name === 'home' ? parsed.route.list.q.length : 0, 240)
+  assert.equal(parsed?.canonicalHref, `/docs/feedback?q=${'x'.repeat(240)}`)
 })
 
 test('builders preserve unrelated query and hash while replacing owned list state', () => {
@@ -106,7 +156,7 @@ test('builders preserve unrelated query and hash while replacing owned list stat
     name: 'user',
     locale: 'en',
     username: 'alice/bob',
-    list: { filter: 'feat', sort: 'updated', q: 'map', creator: 'ignored' },
+    list: { filter: 'all', topicType: 'feat', sort: 'updated', q: 'map', creator: 'ignored' },
   }, {
     ...ROUTE_OPTIONS,
     currentUrl: '/docs/feedback?view=card&q=old&sort=created#comments',
@@ -164,7 +214,7 @@ test('canonicalization preserves the current History state object', () => {
 })
 
 test('Forum transitions follow the element that explains the navigation', () => {
-  const home = { name: 'home', locale: 'root', list: { filter: 'all', sort: 'created', q: '', creator: null } } as const
+  const home = { name: 'home', locale: 'root', list: { filter: 'all', topicType: 'all', sort: 'created', q: '', creator: null } } as const
   const topic = { name: 'topic', locale: 'root', topicId: 'I123', commentPage: 1 } as const
   const user = { name: 'user', locale: 'root', username: 'alice', list: { ...home.list, creator: 'alice' } } as const
 
@@ -182,7 +232,7 @@ test('Forum navigation restores saved scroll only for history entries', () => {
 })
 
 test('Topic return links use the same back direction as browser history', () => {
-  const home = { name: 'home', locale: 'root', list: { filter: 'all', sort: 'created', q: '', creator: null } } as const
+  const home = { name: 'home', locale: 'root', list: { filter: 'all', topicType: 'all', sort: 'created', q: '', creator: null } } as const
   const topic = { name: 'topic', locale: 'root', topicId: 'I123', commentPage: 1 } as const
 
   assert.equal(resolveForumDirection(topic, home, false), 'back')

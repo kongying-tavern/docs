@@ -16,7 +16,7 @@ import {
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
 } from '~/services/forum/forumQueryContracts'
-import { applyOptimisticTopicPatch } from '~/services/forum/forumTopicOptimistic'
+import { applyOptimisticTopicPatch, mergeAcknowledgedTopicPatch } from '~/services/forum/forumTopicOptimistic'
 
 type TopicPatch = Parameters<typeof issues.putTopic>[1]
 const commentMutationQueues = new Map<string, Promise<unknown>>()
@@ -76,14 +76,17 @@ export function useForumMutations() {
 
     try {
       const outcome = await updateTopicMutation.mutateAsync({ topicId, patch })
-      if (outcome.status === 'unknown')
+      const settledOutcome: TopicUpdateOutcome = outcome.status === 'unknown'
+        ? outcome
+        : { ...outcome, topic: mergeAcknowledgedTopicPatch(outcome.topic, patch) }
+      if (settledOutcome.status === 'unknown')
         restoreTopicCache(snapshot)
       else
-        reconcileUpdatedTopic(outcome.topic, restoreToListStart && outcome.topic.state === 'open')
-      await invalidate(kind, topicId, outcome.status === 'unknown' ? undefined : outcome.topic)
-      if (requiresAuthoritativeRefetch(outcome.status))
+        reconcileUpdatedTopic(settledOutcome.topic, restoreToListStart && settledOutcome.topic.state === 'open')
+      await invalidate(kind, topicId, settledOutcome.status === 'unknown' ? undefined : settledOutcome.topic)
+      if (requiresAuthoritativeRefetch(settledOutcome.status))
         await queryCache.invalidateQueries({ key: forumKeys.topic(topicId), exact: true })
-      return outcome
+      return settledOutcome
     }
     catch (error) {
       restoreTopicCache(snapshot)
@@ -158,6 +161,8 @@ export function useForumMutations() {
       work.push(queryCache.invalidateQueries({ key: forumKeys.pinned(), exact: true }))
     if (topicId !== undefined && policy.invalidateComments)
       work.push(queryCache.invalidateQueries({ key: forumKeys.comments(topicId), exact: true }))
+    if (topicId !== undefined && policy.invalidateTimeline)
+      work.push(queryCache.invalidateQueries({ key: forumKeys.topicTimeline(topicId), exact: true }))
     await Promise.all(work)
   }
 

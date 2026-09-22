@@ -113,7 +113,7 @@ function sendMessage() {
               </span>
             </div>
 
-            <p class="text-xs text-gray-600 mt-1 line-clamp-2 dark:text-gray-400">
+            <p class="text-xs c-[var(--vp-c-text-2)] mt-1 line-clamp-2">
               {{ userInfo?.bio || message.forum.labels.lazyPerson }}
             </p>
           </div>

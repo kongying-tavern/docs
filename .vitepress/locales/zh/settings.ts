@@ -1,0 +1,52 @@
+const settings = {
+  title: '设置',
+  description: '调整网站在此浏览器上的显示和使用偏好。更改会自动保存。',
+  back: '返回上一页',
+  copyFailed: '复制失败，请重试或手动选择文本复制',
+  appearance: {
+    title: '外观',
+    description: '选择网站的主题显示方式。',
+    theme: '主题模式',
+    themeDescription: '应用到文档、反馈和其他网站页面。',
+    light: '亮色',
+    dark: '暗色',
+    auto: '跟随系统',
+  },
+  notifications: {
+    title: '通知',
+    description: '调整页面提示消息的显示方式。',
+    position: '显示位置',
+    positionDescription: '选择通知在页面中的出现位置。',
+    duration: '持续时间',
+    durationDescription: '选择通知自动关闭的速度，或保持显示直到手动关闭。',
+    fast: '快',
+    default: '默认',
+    slow: '慢',
+    persistent: '长显',
+    previewMessage: '这是一条测试通知',
+    positions: {
+      topLeft: '左上',
+      topCenter: '顶部居中',
+      topRight: '右上',
+      bottomLeft: '左下',
+      bottomCenter: '底部居中',
+      bottomRight: '右下',
+    },
+  },
+  language: {
+    title: '语言与翻译',
+    description: '调整跨语言内容的阅读方式。',
+    excludedSourceLanguages: '不自动翻译的原语言',
+    excludedSourceLanguagesDescription: '检测到这些语言时保留原文，仍可手动翻译。',
+    searchLanguages: '搜索并选择语言…',
+    chooseLanguages: '选择语言',
+    noLanguagesFound: '没有找到匹配的语言',
+    unavailable: '当前浏览器不支持反馈内容的本地翻译。',
+  },
+  privacy: {
+    title: '隐私与诊断',
+    description: '管理用于定位网站问题的诊断信息。',
+  },
+}
+
+export default settings

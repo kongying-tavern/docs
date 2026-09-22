@@ -31,6 +31,14 @@ test('metadata is canonicalized and same-language text is not translated', async
     }),
     { status: 'skipped', reason: 'same-language' },
   )
+  assert.deepEqual(
+    await translateAuto('This sentence should stay in its original language.', {
+      sourceLanguage: 'EN-us',
+      targetLanguage: 'ja',
+      excludedSourceLanguages: ['en'],
+    }),
+    { status: 'skipped', reason: 'excluded-language' },
+  )
   assert.equal(areLanguagesEquivalent('zh-CN', 'zh'), true)
   assert.equal(areLanguagesEquivalent('zh-TW', 'zh-Hans'), false)
 })
@@ -123,4 +131,34 @@ test('native detection and translation handle text without metadata', async () =
     Reflect.deleteProperty(scope, 'LanguageDetector')
     Reflect.deleteProperty(scope, 'window')
   }
+})
+
+test('与正文文字矛盾的元数据不会触发翻译', async () => {
+  const chineseBody = '这是一条中文反馈，用来验证被错误标注成英文时不会被当作英文翻译。'
+
+  // 中文正文 + LC-en 标签：探测不可用时不能仅凭标签判定为英语
+  assert.deepEqual(
+    await detectLanguage(chineseBody, { fallbackLanguage: 'en' }),
+    { status: 'unknown', reason: 'unavailable' },
+  )
+  assert.deepEqual(
+    await translateAuto(chineseBody, { sourceLanguage: 'en', targetLanguage: 'zh' }),
+    { status: 'skipped', reason: 'unavailable' },
+  )
+
+  // 元数据与正文文字一致时仍然照常生效
+  assert.deepEqual(
+    await detectLanguage('This feedback body is written in English.', { fallbackLanguage: 'en' }),
+    { status: 'detected', language: 'en', provider: 'metadata' },
+  )
+  assert.deepEqual(
+    await detectLanguage(chineseBody, { fallbackLanguage: 'zh' }),
+    { status: 'detected', language: 'zh', provider: 'metadata' },
+  )
+
+  // 短文本同样要过这道校验
+  assert.deepEqual(
+    await detectLanguage('Hi', { fallbackLanguage: 'zh' }),
+    { status: 'unknown', reason: 'short' },
+  )
 })

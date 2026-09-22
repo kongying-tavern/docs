@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@pinia/colada'
 import { computed, ref, watch } from 'vue'
-import { toast } from 'vue-sonner'
 import { user } from '@/apis/forum/gitee'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { authGuards } from '@/utils/auth-helpers'
+import { toast } from '~/services/telemetry/toast'
 
 export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const followState = ref<boolean | null>(null)
@@ -46,8 +46,8 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
         throw new Error('不能对自己进行该操作')
       }
     },
-    onError: () => {
-      toast.error('关注失败，请稍后重试')
+    onError: (error) => {
+      toast.error('关注失败，请稍后重试', { error })
     },
   })
 
@@ -76,12 +76,6 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
       followState.value = val
     }
   }, { immediate: true })
-
-  watch(followError, (error) => {
-    if (error) {
-      toast.error('关注失败，请稍后重试')
-    }
-  })
 
   return {
     followState,

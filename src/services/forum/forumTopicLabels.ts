@@ -10,6 +10,15 @@ export function replaceTopicTypeLabel(
   return uniqueLabels([...labels.filter(label => !TOPIC_TYPE_LABEL.test(label)), `TYP-${type}`])
 }
 
+export function buildTopicCreationLabels(
+  type: ForumAPI.FeedbackTopicType,
+  sourceLabel: string,
+  localeLabel: string | null | undefined,
+  tags: readonly string[],
+): string[] {
+  return replaceTopicTypeLabel([sourceLabel, ...(localeLabel ? [localeLabel] : []), ...tags], type)
+}
+
 export function replaceEditableTopicLabels(labels: readonly string[], editableLabels: readonly string[]): string[] {
   return uniqueLabels([
     ...labels.filter(label => !isCategoryLabel(label)),

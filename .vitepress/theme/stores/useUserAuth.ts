@@ -181,6 +181,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     isInterKnotTokenValid: () => ssoAuth.isInterKnotTokenValid(),
     getInterKnotAccessToken: () => tokenManager.ssoAuth.value.interKnot?.accessToken ?? null,
     refreshSSOAuth: () => ssoAuth.refreshInterKnotToken(),
+    invalidateInterKnotToken: () => tokenManager.invalidateSSOToken('interKnot'),
   })
 
   return {

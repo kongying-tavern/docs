@@ -1,6 +1,7 @@
+import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '~/components/forum/types'
 import { useLocalStorage } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, toValue } from 'vue'
 import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '~/components/forum/shared'
 
 export const FORUM_VIEW_MODES = ['CARD', 'COMPACT'] as const
@@ -19,7 +20,10 @@ export function getViewModeIconClass(mode: FORUM.TopicViewMode): string {
   return isCardModeValue(mode) ? 'i-custom-card' : 'i-custom-compact'
 }
 
-export function useForumViewMode() {
+/**
+ * @param topicType 传入话题类型后，公告（ANN）话题不随视图切换，始终以卡片模式渲染
+ */
+export function useForumViewMode(topicType?: MaybeRefOrGetter<string | undefined>) {
   const rawViewMode = useLocalStorage<FORUM.TopicViewMode>(
     FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY,
     DEFAULT_FORUM_VIEW_MODE,
@@ -43,8 +47,9 @@ export function useForumViewMode() {
     rawViewMode.value = DEFAULT_FORUM_VIEW_MODE
   }
 
-  const isCardMode = computed(() => isCardModeValue(viewMode.value))
-  const isCompactMode = computed(() => isCompactModeValue(viewMode.value))
+  const isAnnouncement = computed(() => toValue(topicType) === 'ANN')
+  const isCardMode = computed(() => isAnnouncement.value || isCardModeValue(viewMode.value))
+  const isCompactMode = computed(() => !isAnnouncement.value && isCompactModeValue(viewMode.value))
 
   const getViewModeIcon = computed(() => getViewModeIconClass(viewMode.value))
 

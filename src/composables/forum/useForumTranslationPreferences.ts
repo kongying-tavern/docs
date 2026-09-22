@@ -7,6 +7,14 @@ import supportedLanguages from '~/_data/supportedLanguages.json'
 export const useForumTranslationPreferences = createGlobalState(() => {
   const { currentPageLang } = useLanguage()
   const autoTranslateEnabled = useLocalStorage('forum-auto-translate-enabled', true)
+  const storedExcludedSourceLanguages = useLocalStorage<string[]>('forum-auto-translate-excluded-source-languages', [])
+  const supportedLanguageSet = new Set<string>(supportedLanguages)
+  const excludedSourceLanguages = computed<string[]>({
+    get: () => [...new Set(storedExcludedSourceLanguages.value.filter(language => supportedLanguageSet.has(language)))],
+    set: languages => storedExcludedSourceLanguages.value = [
+      ...new Set(languages.filter(language => supportedLanguageSet.has(language))),
+    ],
+  })
   const browserLanguage = import.meta.env.SSR
     ? null
     : matchLanguages(supportedLanguages, [navigator.languages[0]])
@@ -14,6 +22,7 @@ export const useForumTranslationPreferences = createGlobalState(() => {
 
   return {
     autoTranslateEnabled,
+    excludedSourceLanguages,
     targetLanguage,
   }
 })

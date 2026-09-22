@@ -7,6 +7,7 @@ import { useRuleChecks } from '~/composables/useRuleChecks'
 
 const props = defineProps<{
   user: ForumAPI.User
+  interactive?: boolean
 }>()
 
 const { message } = useLocalized()
@@ -23,7 +24,7 @@ const officialHref = 'https://github.com/kongying-tavern/'
     class="text-xs color-[--vp-c-text-3] font-[var(--vp-font-family-subtitle)] inline-flex gap-1 min-w-0 whitespace-nowrap items-center"
   >
     <a
-      v-if="official"
+      v-if="official && interactive !== false"
       :href="officialHref"
       target="_blank"
       rel="noopener"
@@ -31,8 +32,14 @@ const officialHref = 'https://github.com/kongying-tavern/'
     >
       {{ message.forum.topic.officialAt }}
     </a>
-    <a :href="userHref(user.login)" :data-forum-user="user.login" data-forum-user-name class="truncate hover:underline">
+    <span v-else-if="official" class="text-[var(--forum-role-official-at)] font-semibold shrink-0">
+      {{ message.forum.topic.officialAt }}
+    </span>
+    <a v-if="interactive !== false" :href="userHref(user.login)" :data-forum-user="user.login" data-forum-user-name class="truncate hover:underline">
       @{{ user.login }}
     </a>
+    <span v-else :data-forum-user="user.login" data-forum-user-name class="truncate">
+      @{{ user.login }}
+    </span>
   </span>
 </template>

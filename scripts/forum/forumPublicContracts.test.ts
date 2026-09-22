@@ -56,7 +56,7 @@ test('comment attachments reuse the capped shared image row', async () => {
   assert.match(imageSource, /grid-template-columns: repeat\(var\(--forum-image-columns\), minmax\(0, 1fr\)\)/)
   assert.match(imageSource, /index === displayImages\.length - 1 && remainingCount > 0/)
   assert.match(imageSource, /<ForumImagePreviewer[\s\S]*:images="validImages"/)
-  assert.match(imageSource, /@click="openAt\(index, \$event\.currentTarget\)"/)
+  assert.match(imageSource, /@click="previewEnabled && openAt\(previewIndexFor\(sourceIndex\), \$event\.currentTarget\)"/)
 })
 
 test('official comment extraction receives permission state from its caller', () => {
@@ -149,6 +149,109 @@ test('Topic Tags editor has one Forum-wide lazy host', async () => {
   assert.doesNotMatch(`${topicPage}\n${userPage}\n${basePage}`, /ForumTopicTagsEditorDialog|name="teleport"/)
 })
 
+test('Topic status is set from a grouped submenu instead of a dialog', async () => {
+  const [menuSource, statusSource, dropdownMenu, pickerSource, statusDialog] = await Promise.all([
+    readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/services/forum/forumTopicStatus.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/search/ForumSearchFilterPicker.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
+  ])
+
+  // 状态项本身就是二级菜单，直接点选提交，不再唤起弹窗
+  assert.match(menuSource, /type: 'submenu',\s*id: 'status-topic'/)
+  assert.doesNotMatch(menuSource, /openTopicStatusEditorDialog/)
+  // 弹窗只剩「归档时挑结论状态」这一条路径，状态文案随之退场
+  assert.match(statusDialog, /closeFeedback\.title/)
+  assert.doesNotMatch(statusDialog, /modifyStatus\.(title|description|placeholder)|isCloseMode/)
+  // 分组顺序只在服务层定义一次，菜单与筛选器共用
+  assert.match(statusSource, /export const TOPIC_STATUS_GROUP_ORDER/)
+  assert.match(statusSource, /export function groupTopicStatuses/)
+  assert.match(menuSource, /groupTopicStatuses\(\s*getSelectableTopicStatuses\(/)
+  assert.match(pickerSource, /TOPIC_STATUS_GROUP_ORDER\.map\(/)
+  assert.doesNotMatch(pickerSource, /\(\['planning', 'triage', 'maintenance', 'resolution'\] as const\)/)
+  // 候选里不含当前状态，「清除状态」只在真有状态时出现
+  assert.match(statusSource, /export function getSelectableTopicStatuses[\s\S]*?definition\.id !== currentStatus/)
+  assert.match(menuSource, /if \(currentStatus\) \{\s*items\.push\(\{\s*id: 'status-topic-none'/)
+  assert.match(menuSource, /disabled: updatingTopic\.value/)
+  assert.match(dropdownMenu, /<ForumTopicStatusBadge v-if="item\.status !== undefined" :status="item\.status \?\? undefined" \/>/)
+  // 会带走未结话题的分组标题要带说明：hint 由 hidesTopic 推导，不写死分组名
+  assert.match(menuSource, /hint: definitions\.some\(definition => definition\.hidesTopic\)/)
+  assert.match(menuSource, /menuLabels\.value\.modifyStatus\.conclusiveHint/)
+  assert.match(dropdownMenu, /<ForumHintIcon v-if="item\.hint" :label="item\.hint" \/>/)
+})
+
+test('toggle menu items name the action, never the current state', async () => {
+  const menuSource = await readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8')
+
+  // 已隐藏（state progressing，展示为「已结反馈」）时必须给「取消隐藏」+ eye，
+  // 未隐藏才给「隐藏反馈」+ eye-off。hideState 是 ComputedRef：
+  // 写成 `hideState ? ...` 漏掉 .value 会永远取到前一个分支，且照样过类型检查。
+  assert.match(menuSource, /label: hideState\.value \? menuLabels\.value\.unhideFeedback\.text : menuLabels\.value\.hideFeedback\.text/)
+  assert.match(menuSource, /icon: hideState\.value \? 'i-lucide:eye' : 'i-lucide:eye-off'/)
+  // 换 action 的同类项一律同构，新增时应照此写
+  assert.match(menuSource, /label: closeState\.value \? menuLabels\.value\.reopenFeedback\.text : menuLabels\.value\.closeFeedback\.text/)
+  assert.match(menuSource, /label: currentTopic\.value\.pinned \? menuLabels\.value\.pinTopic\.unpin : menuLabels\.value\.pinTopic\.pin/)
+  assert.match(menuSource, /label: currentTopic\.value\.commentCount === -1 \? menuLabels\.value\.commentArea\.open : menuLabels\.value\.commentArea\.close/)
+  assert.doesNotMatch(menuSource, /\b(hideState|closeState)\s*\?/)
+})
+
+test('Topic status management has one lazy host and shares edit permission', async () => {
+  const [forumLayout, menuSource, managerSource, statusDialog, typeBadge] = await Promise.all([
+    readFile(new URL('../../.vitepress/theme/layouts/Forum.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/useTopicManager.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumTopicTypeBadge.vue', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(forumLayout, /import\('~\/components\/forum\/topic\/ForumTopicStatusDialog\.vue'\)/)
+  assert.match(forumLayout, /<ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" \/>/)
+  assert.match(menuSource, /const hasEditPermission = hasAnyPermissions\('edit_feedback'\)/)
+  assert.match(menuSource, /id: 'status-topic'/)
+  assert.match(menuSource, /id: 'good-issue-topic'/)
+  assert.ok(menuSource.indexOf('...needEditStatusItems.value') > menuSource.indexOf('...noAnyPermissionItems.value'))
+  assert.ok(menuSource.indexOf('...needEditStatusItems.value') < menuSource.indexOf('...needManagePermissionItems.value'))
+  assert.ok(menuSource.indexOf('...closeTopicItems.value') > menuSource.indexOf('...needManagePermissionItems.value'))
+  assert.match(statusDialog, /getConclusiveTopicStatuses/)
+  // 弹窗内的状态选择改为响应式 select：选项行前缀仍渲染状态色块
+  assert.match(statusDialog, /<ForumResponsiveSelect/)
+  assert.match(statusDialog, /<ForumTopicStatusBadge :status="option\.id === KEEP \? undefined : option\.id" \/>/)
+  assert.match(typeBadge, /getTopicDisplayStatus\(status, state\)/)
+  assert.match(typeBadge, /v-if="displayStatus && interactive"/)
+  assert.match(typeBadge, /@click\.stop="filterByStatus\(displayStatus\)"/)
+  assert.match(typeBadge, /<ForumTopicStatusBadge v-else-if="displayStatus" :status="displayStatus" \/>/)
+  assert.match(typeBadge, /@click\.stop="filterByType"/)
+  assert.match(typeBadge, /navigateType\(typeFilter\.value, true\)/)
+  const statusMutationSource = managerSource.slice(
+    managerSource.indexOf('const setTopicStatus'),
+    managerSource.indexOf('const toggleGoodIssue'),
+  )
+  assert.match(statusMutationSource, /topicStatusHidesTopic\(status\)/)
+  assert.match(statusMutationSource, /state: 'progressing' as const/)
+  assert.doesNotMatch(statusMutationSource, /state: 'closed'|composeTopicBody/)
+})
+
+test('tag and state filter hover styles stay on the neutral color system', async () => {
+  const [tagList, typeBadge] = await Promise.all([
+    readFile(new URL('../../src/components/forum/ui/ForumTagList.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumTopicTypeBadge.vue', import.meta.url), 'utf8'),
+  ])
+  // 只取 hover 那一条规则：命中态（已筛选）另有品牌色样式，不能污染这条断言
+  const tagHover = tagList.slice(tagList.indexOf('.forum-tag-filter:hover'), tagList.indexOf('.forum-tag-filter-active'))
+  const tagActive = tagList.slice(tagList.indexOf('.forum-tag-filter-active'))
+  const stateHover = typeBadge.slice(typeBadge.indexOf('.forum-badge-state-square-filter:hover'))
+
+  assert.match(tagHover, /color: var\(--vp-c-text-1\)/)
+  assert.match(tagHover, /background: var\(--vp-c-default-3\)/)
+  assert.doesNotMatch(tagHover, /--vp-c-brand/)
+  assert.match(tagActive, /color: var\(--vp-c-brand-1\)/)
+  assert.match(tagActive, /background: var\(--vp-c-brand-soft\)/)
+  assert.match(stateHover, /outline-color: var\(--vp-c-border\)/)
+  assert.match(stateHover, /color: var\(--vp-c-text-1\)/)
+  assert.doesNotMatch(stateHover, /--vp-c-brand/)
+})
+
 test('expanded personal sidebar sections bound live detail hydration', async () => {
   const sidebarSource = await readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8')
 
@@ -222,11 +325,36 @@ test('normalizes Topics as plain text even when their content looks like Tiptap'
   assert.equal(topic.title, 'Codec contract')
 })
 
+test('normalizes only valid quoted Topic metadata into the public Topic contract', () => {
+  const valid = normalizeIssue(issue('<!-- {"quotedTopic":{"id":"ICROD8","type":"BUG"}} -->Body'))
+  const invalid = normalizeIssue(issue('<!-- {"quotedTopic":{"id":"../admin","type":"BUG"}} -->Body'))
+
+  assert.deepEqual(valid.quotedTopic, { id: 'ICROD8', type: 'BUG' })
+  assert.equal(invalid.quotedTopic, undefined)
+  assert.equal(valid.content.text, 'Body')
+})
+
 test('normalizes pinned state from the authoritative Gitee label', () => {
   const pinnedIssue = issue('Body')
   pinnedIssue.labels = [{ name: 'PINNED' }] as GITEE.IssueLabel[]
   assert.equal(normalizeIssue(pinnedIssue).pinned, true)
   assert.equal(normalizeIssue(issue('Body')).pinned, false)
+})
+
+test('normalizes provider labels separately from editable tags and status fields', () => {
+  const labeledIssue = issue('Body')
+  labeledIssue.labels = [
+    { name: 'TYP-BUG' },
+    { name: 'CATA-DOCS' },
+    { name: 'ST-CONFIRMED' },
+    { name: 'GOOD-ISSUE' },
+  ] as GITEE.IssueLabel[]
+
+  const topic = normalizeIssue(labeledIssue)
+  assert.deepEqual(topic.labels, ['TYP-BUG', 'CATA-DOCS', 'ST-CONFIRMED', 'GOOD-ISSUE'])
+  assert.deepEqual(topic.tags, ['CATA-DOCS'])
+  assert.equal(topic.status, 'confirmed')
+  assert.equal(topic.goodIssue, true)
 })
 
 test('normalizes the authoritative Gitee close time', () => {
@@ -280,16 +408,14 @@ test('normalizes Comment attachments without changing content order', () => {
 })
 
 test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
-  const [issuesSource, browserUtilsSource, mutationsSource, userPageSource, topicContentSource, navigateSource, transitionSource, sidebarSource, asideSource, blogHeaderSource, themeSource, sidebarLayoutSource, routeViewSource, profileHeaderSource, animationSource] = await Promise.all([
+  const [issuesSource, browserUtilsSource, mutationsSource, topicContentSource, navigateSource, transitionSource, sidebarSource, blogHeaderSource, themeSource, sidebarLayoutSource, routeViewSource, profileHeaderSource, animationSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/issues.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/apis/forum/gitee/inBrowserUtils.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/sidebar/ForumSidebarNav.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/sidebar/ForumAside.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/blog/ForumBlogPostHeader.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/index.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8'),
@@ -301,7 +427,6 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
   assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
   assert.doesNotMatch(`${issuesSource}\n${browserUtilsSource}`, /useRuleChecks/)
   assert.match(mutationsSource, /skipReformat: canSkipTopicReformat\.value/)
-  assert.match(userPageSource, /if \(list\.value\?\.q\)\s+return/)
   assert.match(topicContentSource, /event: MouseEvent \| KeyboardEvent/)
   assert.match(topicContentSource, /event instanceof MouseEvent/)
   assert.match(navigateSource, /queryCache\.setQueryData\(forumKeys\.topic\(topic\.id\), topic\)/)
@@ -316,7 +441,7 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
   assert.match(transitionSource, /for \(const \{ element \} of sharedElements\)[\s\S]*removeProperty\('view-transition-name'\)/)
   assert.match(transitionSource, /transition\.finished\.then\(cleanup, cleanup\)/)
   assert.match(themeSource, /router\.onBeforeRouteChange/)
-  assert.match(asideSource, /data-forum-shared-blog="cover"/)
+  assert.match(themeSource, /return shouldLoadPage/)
   assert.match(blogHeaderSource, /data-forum-shared-blog="title"/)
   assert.match(transitionSource, /matchMedia\(FORUM_MOBILE_MEDIA_QUERY\)/)
   assert.match(transitionSource, /dataset\.forumNavigated = ''/)
@@ -363,7 +488,7 @@ test('image preview waits for real images and animates every chrome surface befo
   assert.match(flipSource, /export function stackTransform/)
   assert.match(flipSource, /const BASE_EXIT_MS = 320/)
   assert.match(previewerStyleSource, /\.closing \.forum-preview-cards/)
-  assert.match(previewerStyleSource, /\.closing \.forum-preview-nav/)
+  assert.match(previewerStyleSource, /\.forum-preview-nav\.(prev|next)/)
   assert.match(previewerStyleSource, /\.closing \.forum-preview-panel-toggle/)
   assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-close\)/)
   assert.match(previewerStyleSource, /\.closing :deep\(\.forum-preview-dots\)/)
@@ -375,7 +500,7 @@ test('image preview waits for real images and animates every chrome surface befo
   assert.match(cardsSource, /transition:\s*opacity 220ms ease,\s*transform 280ms/)
   assert.match(sheetSource, /data-\[state=closed\]:\[animation-duration:300ms\]/)
   assert.match(sheetSource, /data-\[state=open\]:\[animation-duration:500ms\]/)
-  assert.match(imageSource, /:disabled="!isPreviewReady\(image, sourceIndex\)"/)
+  assert.match(imageSource, /:disabled="previewEnabled && !isPreviewReady\(image, sourceIndex\) \? true : undefined"/)
   assert.match(imageSource, /@ready="handleReady\(sourceIndex\)"/)
   assert.match(imageItemSource, /img\.decode\?\.\(\)\?\.finally\(markRealImageReady\)/)
   assert.match(imageItemSource, /emit\('ready'\)/)
@@ -422,4 +547,102 @@ test('authorization remains the default while password login is available only b
   assert.match(passwordApiSource, /username,/)
   assert.match(passwordApiSource, /password,/)
   assert.match(zhForumSource, /accountPlaceholder: 'Gitee 登录名或邮箱（不支持手机号或游戏账号）'/)
+})
+
+test('archived feedback is admin-only and the archive action swaps to archive icons', async () => {
+  const [dropdownSource, hintSource, menuSource, routeSource, zhForumSource, pillSource, desktopSelectSource, listControlOptionsSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/list/ForumTopicTypeDropdown.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumHintIcon.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/services/forum/forumRoute.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/list/ForumPillSelect.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/forum/useForumListControlOptions.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(routeSource, /\['all', 'closed', 'archived', 'everything'\]/)
+  assert.match(routeSource, /\['bug', 'feat'\]/)
+  // 选项契约已收敛到 useForumListControlOptions；dropdown 本身只是 ForumPillSelect 的薄封装
+  assert.match(listControlOptionsSource, /hasAnyRoles\('teamMember', 'feedbackMember'\)/)
+  assert.match(listControlOptionsSource, /if \(canViewArchived\.value\)/)
+  assert.match(listControlOptionsSource, /id: 'everything'/)
+  assert.match(listControlOptionsSource, /hint: navigation\.adminOnly/)
+  // 「已归档」排在状态组最后
+  assert.match(listControlOptionsSource, /const items: Array<\{[\s\S]*?everythingFeedback[\s\S]*?items\.push\(\{ id: 'archived'/)
+  // pill 只承载触发按钮；选项行渲染在响应式 select 的桌面分支里
+  assert.match(pillSource, /<ForumResponsiveSelect/)
+  assert.match(pillSource, /<ForumHintIcon v-if="current\?\.hint" :label="current\.hint" \/>/)
+  assert.match(desktopSelectSource, /<ForumHintIcon v-if="option\.hint" :label="option\.hint" \/>/)
+  // 文字与图标必须同处一个 inline-flex 行，否则块级 svg 会另起一行/错位
+  assert.equal(pillSource.match(/<span class="inline-flex gap-1 items-center">/g)?.length, 1)
+  assert.equal(desktopSelectSource.match(/<span class="inline-flex gap-1 items-center">/g)?.length, 1)
+  assert.match(desktopSelectSource, /<SelectGroup>/)
+  assert.match(dropdownSource, /navigation\.groups\.status/)
+  assert.doesNotMatch(dropdownSource, /navigation\.groups\.type/)
+  // 提示图标是共用件，文案由调用方传入
+  assert.match(hintSource, /import \{ Info \} from '@lucide\/vue'/)
+  assert.match(hintSource, /inline-flex/)
+  assert.match(hintSource, /HoverCardContent/)
+  assert.match(hintSource, /label: string/)
+  assert.doesNotMatch(hintSource, /adminOnly/)
+  assert.match(menuSource, /closeState\.value \? 'i-lucide:archive-restore' : 'i-lucide:archive'/)
+  assert.match(zhForumSource, /navigation: \{[\s\S]*?groups: \{[\s\S]*?status: '状态'[\s\S]*?adminOnly: '仅管理员可见'[\s\S]*?archivedFeedback: '已归档反馈'[\s\S]*?everythingFeedback: '全部反馈'/)
+})
+
+test('responsive select/menu hosts split desktop popper from mobile drawer chunks', async () => {
+  const [selectHost, selectDesktop, selectMobile, menuHost, menuDesktop, menuMobile, mobilePanel, dropdownRenderer, viewDropdownSource, typesSource, listControlOptionsSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumResponsiveSelect.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumSelectMobileDrawer.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumResponsiveMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumMenuDesktop.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumMenuMobileDrawer.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/responsive/ForumMenuMobilePanel.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/list/ForumTopicViewDropdown.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/types.d.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/composables/forum/useForumListControlOptions.ts', import.meta.url), 'utf8'),
+  ])
+
+  // host 只做环境判断与分支组装，自身不携带任何浮层/抽屉实现
+  assert.match(selectHost, /defineAsyncComponent\(\(\) => import\('\.\/ForumSelectDesktop\.vue'\)\)/)
+  assert.match(selectHost, /defineAsyncComponent\(\(\) => import\('\.\/ForumSelectMobileDrawer\.vue'\)\)/)
+  assert.match(menuHost, /defineAsyncComponent\(\(\) => import\('\.\/ForumMenuDesktop\.vue'\)\)/)
+  assert.match(menuHost, /defineAsyncComponent\(\(\) => import\('\.\/ForumMenuMobileDrawer\.vue'\)\)/)
+  assert.doesNotMatch(`${selectHost}\n${menuHost}`, /vaul-vue|@\/components\/ui\/drawer/)
+  assert.doesNotMatch(menuHost, /@\/components\/ui\/dropdown-menu/)
+  // 桌面分支只依赖 reka 浮层，移动端分支只依赖 vaul 抽屉
+  assert.doesNotMatch(`${selectDesktop}\n${menuDesktop}\n${dropdownRenderer}`, /vaul-vue|@\/components\/ui\/drawer/)
+  assert.match(`${selectMobile}\n${menuMobile}`, /@\/components\/ui\/drawer/)
+  assert.doesNotMatch(`${selectMobile}\n${menuMobile}`, /reka-ui/)
+  // 菜单模型是双端渲染器的单一来源：排序逻辑共用，radio 组两端都渲染
+  assert.match(dropdownRenderer, /sortMenuItems\(items\)/)
+  assert.match(mobilePanel, /sortMenuItems\(items\)/)
+  assert.match(dropdownRenderer, /item\.type === 'radio-group'/)
+  assert.match(mobilePanel, /item\.type === 'radio-group'/)
+  assert.match(typesSource, /type: 'radio-group'/)
+  assert.match(typesSource, /type: 'radio-item'/)
+  // 视图/排序菜单走声明式 radio 模型，不再各自写一套渲染
+  assert.match(viewDropdownSource, /type: 'radio-group'/)
+  assert.match(viewDropdownSource, /type: 'radio-item'/)
+  assert.match(listControlOptionsSource, /getViewModeIconClass\(mode\)/)
+  assert.doesNotMatch(viewDropdownSource, /<DropdownMenu/)
+})
+
+test('user profile empty state offers create and closed-feedback actions', async () => {
+  const [emptySource, feedbackButtonSource, zhForumSource] = await Promise.all([
+    readFile(new URL('../../src/components/forum/list/ForumTopicListEmpty.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/form/OpenFeedbackFormButton.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
+  ])
+
+  assert.match(emptySource, /route\.value\?\.name === 'user' && !props\.error && !isSearchEmpty\.value && !hasActiveFilters\.value/)
+  assert.match(emptySource, /const showUserEmptyActions = computed/)
+  assert.match(emptySource, /async function handleShowClosed\(\) \{\s+await navigateFilter\('closed'\)\s+\}/)
+  assert.match(emptySource, /<OpenFeedbackFormButton :label="message\.forum\.empty\.createFeedback" \/>/)
+  assert.match(emptySource, /message\.forum\.empty\.showClosed/)
+  assert.match(feedbackButtonSource, /defineProps<\{ label\?: string \}>/)
+  assert.match(feedbackButtonSource, /return props\.label \?\? message\.value\.forum\.publish\.title/)
+  assert.match(zhForumSource, /createFeedback: '新建反馈'[\s\S]*?showClosed: '查看已结反馈'/)
 })

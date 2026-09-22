@@ -1,12 +1,19 @@
 import type ForumAPI from '@/apis/forum/api'
+import type { ForumSearchState } from '~/services/forum/forumSearchQuery'
+import { FORUM_CONFIG } from '~/services/forum/forumConfig'
+import { getTopicDisplayStatus } from '~/services/forum/forumTopicStatus'
 
 export type TopicStateFilter = ForumAPI.TopicState | 'all'
 
 export interface ForumTopicListParams {
   filter: ForumAPI.FilterBy
+  topicType?: 'all' | 'bug' | 'feat'
   sort: ForumAPI.SortMethod
   creator: string | null
   q: string
+  labels?: string[]
+  tags?: string[]
+  statuses?: ForumSearchState[]
   pageSize?: number
   /** 话题状态过滤；缺省按 filter 推断（'closed'→progressing，其余 open） */
   state?: TopicStateFilter
@@ -24,13 +31,15 @@ export const forumKeys = {
   topicLists: () => ['forum', 'topics', 'list'] as const,
   topicList: (params: ForumTopicListParams) => ['forum', 'topics', 'list', normalizeTopicListParams(params)] as const,
   topic: (id: string | number) => ['forum', 'topics', 'detail', String(id)] as const,
+  topicTimeline: (id: string | number) => ['forum', 'topics', 'timeline', String(id)] as const,
   comments: (topicId: string | number) => ['forum', 'comments', String(topicId)] as const,
   user: (username: string) => ['forum', 'users', 'detail', username.trim()] as const,
   sessionUser: () => ['session', 'user'] as const,
   pinned: () => ['forum', 'topics', 'list', 'pinned'] as const,
   personalState: (userId: string | number) => ['forum', 'personal-state', String(userId)] as const,
+  reactionResource: (resourceIdentity: string) => ['forum', 'reactions', resourceIdentity] as const,
   reaction: (resourceIdentity: string, viewerIdentity: string) =>
-    ['forum', 'reactions', resourceIdentity, viewerIdentity] as const,
+    [...forumKeys.reactionResource(resourceIdentity), viewerIdentity] as const,
 }
 
 export type ForumMutationKind
@@ -49,6 +58,8 @@ interface ForumMutationPolicy {
   invalidateTopicLists: boolean
   invalidatePinned: boolean
   invalidateComments: boolean
+  /** 状态标签与 state 变更会写入操作日志，需刷新状态时间线 */
+  invalidateTimeline: boolean
 }
 
 const BASE_TOPIC_POLICY: ForumMutationPolicy = {
@@ -57,6 +68,7 @@ const BASE_TOPIC_POLICY: ForumMutationPolicy = {
   invalidateTopicLists: true,
   invalidatePinned: false,
   invalidateComments: false,
+  invalidateTimeline: true,
 }
 
 export const forumMutationPolicies: Record<ForumMutationKind, ForumMutationPolicy> = {
@@ -70,12 +82,14 @@ export const forumMutationPolicies: Record<ForumMutationKind, ForumMutationPolic
     patchDetail: false,
     invalidateDetail: true,
     invalidateComments: true,
+    invalidateTimeline: false,
   },
   deleteComment: {
     ...BASE_TOPIC_POLICY,
     patchDetail: false,
     invalidateDetail: true,
     invalidateComments: true,
+    invalidateTimeline: false,
   },
   toggleCommentArea: {
     ...BASE_TOPIC_POLICY,
@@ -84,14 +98,29 @@ export const forumMutationPolicies: Record<ForumMutationKind, ForumMutationPolic
 }
 
 export function normalizeTopicListParams(params: ForumTopicListParams) {
+  const labels = normalizeStrings(params.labels)
+  const tags = normalizeStrings(params.tags)
+  const statuses = normalizeStrings(params.statuses) as ForumSearchState[]
   return {
     filter: params.filter || 'all',
+    topicType: params.topicType ?? 'all',
     sort: params.sort || 'created',
     creator: params.creator?.trim() || null,
     q: params.q.trim(),
-    pageSize: params.pageSize || 20,
+    pageSize: params.pageSize || FORUM_CONFIG.DEFAULT_PAGE_SIZE,
+    ...(labels.length ? { labels } : {}),
+    ...(tags.length ? { tags } : {}),
+    ...(statuses.length ? { statuses } : {}),
     ...(params.state ? { state: params.state } : {}),
   } as const
+}
+
+export function normalizeStrings(values: readonly string[] | undefined): string[] {
+  return (values ?? [])
+    .map(value => value.trim())
+    .filter(Boolean)
+    .filter((value, index, all) => all.indexOf(value) === index)
+    .toSorted()
 }
 
 export function isForumTopicListParams(value: unknown): value is ForumTopicListParams {
@@ -104,8 +133,26 @@ export function isForumTopicListParams(value: unknown): value is ForumTopicListP
     && typeof params.q === 'string'
 }
 
-export function forumStateForFilter(filter: ForumAPI.FilterBy): ForumAPI.TopicState {
-  return filter === 'closed' ? 'progressing' : 'open'
+export function forumStateForFilter(filter: ForumAPI.FilterBy): TopicStateFilter {
+  switch (filter) {
+    case 'closed':
+      return 'progressing'
+    case 'archived':
+      return 'closed'
+    case 'everything':
+      return 'all'
+    default:
+      return 'open'
+  }
+}
+
+// Gitee 单次只能查一个 state，`everything` 在这里剔除归档
+const FILTER_EXCLUDED_STATES: Partial<Record<ForumAPI.FilterBy, readonly ForumAPI.TopicState[]>> = {
+  everything: ['closed'],
+}
+
+export function forumExcludedStatesForFilter(filter: ForumAPI.FilterBy): readonly ForumAPI.TopicState[] {
+  return FILTER_EXCLUDED_STATES[filter] ?? []
 }
 
 export function flattenForumPages<T extends { id: string | number }>(pages: readonly ForumPage<T>[]): T[] {
@@ -204,11 +251,22 @@ export function prependTopicToForumPages<T extends { id: string | number }, TPag
 }
 
 export function forumTopicBelongsToList(topic: ForumAPI.Topic, params: ForumTopicListParams): boolean {
+  return matchesForumTopicListQuery(topic, params)
+}
+
+// 状态分面存在时由 displayStatus 表达语义，不再叠加 filter 推导的 state 约束
+export function matchesForumTopicListQuery(topic: ForumAPI.Topic, params: ForumTopicListParams): boolean {
+  const statuses = params.statuses ?? []
   const expectedState = params.state ?? forumStateForFilter(params.filter)
-  const stateMatches = expectedState === 'all' || topic.state === expectedState
-  const typeMatches = params.filter === 'bug'
+  const stateMatches = statuses.length > 0
+    || (expectedState === 'all' || topic.state === expectedState)
+  const excludedStates = forumExcludedStatesForFilter(params.filter)
+  const exclusionMatches = statuses.length > 0
+    || (!topic.state || !excludedStates.includes(topic.state))
+  const topicType = params.topicType && params.topicType !== 'all' ? params.topicType : params.filter
+  const typeMatches = topicType === 'bug'
     ? topic.type === 'BUG'
-    : params.filter === 'feat'
+    : topicType === 'feat'
       ? topic.type === 'FEAT'
       : true
   const creatorMatches = !params.creator
@@ -217,8 +275,15 @@ export function forumTopicBelongsToList(topic: ForumAPI.Topic, params: ForumTopi
   const queryMatches = !query
     || topic.title.toLocaleLowerCase().includes(query)
     || topic.content.text.toLocaleLowerCase().includes(query)
+  const labelsMatch = !params.labels?.length
+    || params.labels.every(label => topic.labels.includes(label))
+  const tagsMatch = !params.tags?.length
+    || params.tags.some(tag => topic.tags.includes(tag))
+  const displayStatus = getTopicDisplayStatus(topic.status, topic.state)
+  const statusesMatch = !statuses.length
+    || statuses.some(status => status === 'good-issue' ? topic.goodIssue : status === displayStatus)
 
-  return stateMatches && typeMatches && creatorMatches && queryMatches
+  return stateMatches && exclusionMatches && typeMatches && creatorMatches && queryMatches && labelsMatch && tagsMatch && statusesMatch
 }
 
 export function requiresAuthoritativeRefetch(status: 'success' | 'partial' | 'unknown'): boolean {

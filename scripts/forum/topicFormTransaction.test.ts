@@ -37,6 +37,20 @@ test('schema matches BUG, FEAT, and permission-gated ANN semantics', () => {
   assert.deepEqual(getAllowedTopicTypes(true), ['BUG', 'FEAT', 'ANN'])
 })
 
+test('schema and draft restore keep one validated quoted Topic without locking the form type', () => {
+  const reference = { id: 'ICROD8', type: 'BUG' as const }
+  const schema = createTopicDraftSchema({ canPublishAnnouncement: false })
+
+  assert.equal(schema.safeParse({ ...validDraft('FEAT'), quotedTopic: reference }).success, true)
+  assert.equal(schema.safeParse({ ...validDraft('BUG'), quotedTopic: { id: '../bad', type: 'BUG' } }).success, false)
+  assert.equal(schema.safeParse({ ...validDraft('FEAT'), quotedTopic: { id: 'ICROD8', type: 'ANN' } }).success, false)
+  assert.deepEqual(restoreTopicDraft({ ...validDraft('FEAT'), quotedTopic: reference }), {
+    ...validDraft('FEAT'),
+    tags: [],
+    quotedTopic: reference,
+  })
+})
+
 test('schema normalizes untouched fields before reporting localized business errors', () => {
   const result = createTopicDraftSchema({
     canPublishAnnouncement: false,
@@ -188,6 +202,25 @@ test('transaction reports upload before publishing and never publishes after upl
   assert.deepEqual(stages, ['uploading'])
 })
 
+test('transaction passes the quoted Topic through independently of the selected form type', async () => {
+  const reference = { id: 'ICROD8', type: 'BUG' as const }
+  let submitted: ForumAPI.CreateTopicOption | undefined
+  const result = await submitTopicFormTransaction({
+    draft: { ...validDraft('FEAT'), quotedTopic: reference },
+    canPublishAnnouncement: false,
+    settleUploads: async () => ({ ok: true }),
+    getUploadedAttachments: () => [],
+    submitTopic: async (draft) => {
+      submitted = draft
+      return topic()
+    },
+  })
+
+  assert.equal(result.ok, true)
+  assert.equal(submitted?.type, 'FEAT')
+  assert.deepEqual(submitted?.quotedTopic, reference)
+})
+
 test('form wiring keeps one submission and starts bounded closing before awaiting the network', () => {
   const submitSource = readFileSync(new URL('../../src/components/forum/form/composables/useFormSubmit.ts', import.meta.url), 'utf8')
   const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
@@ -197,6 +230,70 @@ test('form wiring keeps one submission and starts bounded closing before awaitin
   assert.match(formSource, /const closeCompletion = closeAfterSend\(\)\s+const result = await submitForm/)
   assert.match(formSource, /const SEND_MOTION_MS = 260/)
   assert.match(styleSource, /prefers-reduced-motion: reduce/)
+})
+
+test('quote actions follow comments and the quote card lives inside the body input', () => {
+  const footerSource = readFileSync(new URL('../../src/components/forum/list/ForumTopicFooter.vue', import.meta.url), 'utf8')
+  const listTopicSource = readFileSync(new URL('../../src/components/forum/list/ForumTopic.vue', import.meta.url), 'utf8')
+  const contentSource = readFileSync(new URL('../../src/components/forum/form/ForumFormContent.vue', import.meta.url), 'utf8')
+  const inputSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+  const cardSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuotedTopicCard.vue', import.meta.url), 'utf8')
+  const quoteSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuotedTopic.vue', import.meta.url), 'utf8')
+  const quoteButtonSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuoteTopicButton.vue', import.meta.url), 'utf8')
+  const detailSource = readFileSync(new URL('../../src/components/forum/topic/ForumTopicPage.vue', import.meta.url), 'utf8')
+  const detailFooterSource = readFileSync(new URL('../../src/components/forum/topic/ForumTopicFooter.vue', import.meta.url), 'utf8')
+  const transitionSource = readFileSync(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8')
+  const animationSource = readFileSync(new URL('../../.vitepress/theme/styles/animation.css', import.meta.url), 'utf8')
+  const imageSource = readFileSync(new URL('../../src/components/forum/ui/ForumImage.vue', import.meta.url), 'utf8')
+
+  const commentActionIndex = footerSource.indexOf('@click="handleCommentClick"')
+  const quoteActionIndex = footerSource.indexOf('<ForumQuoteTopicButton')
+  assert.ok(commentActionIndex >= 0 && quoteActionIndex > commentActionIndex)
+
+  const bodyFieldIndex = contentSource.indexOf('name="text"')
+  const afterContentSlotIndex = contentSource.indexOf('<slot name="after-content"')
+  const desktopUploadIndex = contentSource.indexOf('class="desktop-upload-field')
+  assert.ok(bodyFieldIndex >= 0 && afterContentSlotIndex > bodyFieldIndex)
+  assert.ok(desktopUploadIndex < 0 || afterContentSlotIndex < desktopUploadIndex)
+  assert.match(contentSource, /<ForumContentInputBox[\s\S]*<template #after-editor>[\s\S]*<slot name="after-content"/)
+  assert.match(inputSource, /<div class="editor min-h-inherit relative">[\s\S]*<slot name="after-editor" \/>/)
+  assert.doesNotMatch(inputSource, /\{\{ textLimit \}\}/)
+  assert.match(formSource, /<template #after-content>[\s\S]*<ForumQuotedTopicCard/)
+  assert.match(formSource, /if \(!isQuotableTopicType\(quotedTopic\.type\)\) \{[\s\S]*setQuotedTopic\(undefined\)/)
+  assert.doesNotMatch(formSource, /removeQuotedTopic/)
+  assert.match(cardSource, /border: 1px solid transparent/)
+  assert.match(cardSource, /\.quoted-topic-card:hover,[\s\S]*border-color: var\(--vp-c-border\)/)
+  assert.match(cardSource, /background: var\(--vp-c-bg-soft\)/)
+  assert.match(cardSource, /\.quoted-topic-card--readonly \{[\s\S]*color-mix\(/)
+  assert.doesNotMatch(cardSource, /box-shadow:/)
+  assert.match(quoteSource, /data-forum-shared-topic="quote"/)
+  assert.match(quoteButtonSource, /v-if="isQuotableTopicType\(topic\.type\)"/)
+  assert.match(transitionSource, /'content', 'image', 'quote'/)
+  assert.match(animationSource, /::view-transition-group\(forum-topic-quote\)/)
+  assert.ok(detailFooterSource.indexOf('<ForumQuoteTopicButton') < detailFooterSource.indexOf('<ForumCopyLinkButton'))
+  assert.match(footerSource, /topic-info-list flex gap-3/)
+  assert.match(detailFooterSource, /class="flex gap-3"/)
+  assert.match(formSource, /:interactive="false"/)
+  assert.match(cardSource, /:preview-enabled="interactive"/)
+  assert.match(listTopicSource, /<ForumQuotedTopic[\s\S]*:compact="isCompactMode"/)
+  assert.match(quoteSource, /:compact="compact"/)
+  assert.match(cardSource, /compact \? 'line-clamp-2' : 'line-clamp-5'/)
+  assert.match(cardSource, /!props\.compact && shouldShowQuotedTopicImageBelow/)
+  assert.match(cardSource, /\.quoted-topic-card--compact \.quote-side-media \{\s+width: 72px/)
+  assert.doesNotMatch(cardSource, /message\.forum\.topic\.quote\.quoted|ForumTopicTypeBadge|message\.forum\.topic\.status|emit\('remove'\)/)
+  assert.match(cardSource, /line-clamp-5/)
+  assert.match(cardSource, /layout="thumbnail"/)
+  assert.match(cardSource, /:max-display="4"/)
+  assert.match(cardSource, /aspect-ratio: 1/)
+  assert.match(detailSource, /<ForumImage[\s\S]*:images="topicImages"/)
+  assert.match(imageSource, /planForumImageGrid\([\s\S]*adaptiveAspect\.value/)
+  assert.match(imageSource, /props\.layout === 'auto' && availableImages\.value\.length > 1/)
+  assert.match(imageSource, /!isAdaptiveGrid && actualLayout === 'triple' \? tripleGridClasses/)
+  assert.match(imageSource, /actualLayout === 'thumbnail' \? 'h-full'/)
+  assert.match(imageSource, /:is="previewEnabled \? 'button' : 'div'"/)
+  assert.doesNotMatch(imageSource, /\.grid > div:hover/)
+  assert.match(imageSource, /openAt\(previewIndexFor\(sourceIndex\)/)
 })
 
 test('desktop form motion moves the content surface without moving the action bar', () => {

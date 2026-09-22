@@ -2,10 +2,15 @@ import type { MaybeRefOrGetter } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import type { ForumPage, ForumTopicListParams } from '~/services/forum/forumQueryContracts'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
-import { computed, toValue } from 'vue'
+import { computed, toValue, watch } from 'vue'
 import { issues, user } from '@/apis/forum/gitee'
 import { usePermissionData } from '~/composables/usePermissionData'
+import { useRuleChecks } from '~/composables/useRuleChecks'
 import { FORUM_CONFIG } from '~/services/forum/forumConfig'
+import {
+  buildForumListCacheKey,
+  saveSkeletonListCount,
+} from '~/services/forum/forumListSkeleton'
 import {
   flattenForumPages,
   forumKeys,
@@ -13,12 +18,22 @@ import {
 } from '~/services/forum/forumQueryContracts'
 import { getForumTopics, getPinnedForumTopics } from '~/services/forum/forumTopics'
 
+// 列表页 scope：传入时首屏成功记录条数供骨架屏复用（见 forumListSkeleton）；pageSize=1 的计数查询不要传
 export function useForumTopicsQuery(
   params: MaybeRefOrGetter<ForumTopicListParams>,
   enabled: MaybeRefOrGetter<boolean> = true,
+  skeletonScope?: MaybeRefOrGetter<string | null>,
 ) {
   const { getTeamMemberIds, getFeedbackMemberIds } = usePermissionData()
-  const normalized = computed(() => normalizeTopicListParams(toValue(params)))
+  const { hasAnyRoles } = useRuleChecks()
+  const canViewArchived = hasAnyRoles('teamMember', 'feedbackMember')
+  const normalized = computed(() => {
+    const value = normalizeTopicListParams(toValue(params))
+    // Archived lists are admin-only; a hand-edited URL falls back to the default list.
+    return value.filter === 'archived' && !canViewArchived.value
+      ? { ...value, filter: 'all' as const }
+      : value
+  })
   const query = useInfiniteQuery<ForumPage<ForumAPI.Topic>, Error, number>({
     key: () => forumKeys.topicList(normalized.value),
     initialPageParam: 1,
@@ -37,6 +52,14 @@ export function useForumTopicsQuery(
   const rows = computed(() => flattenForumPages(query.data.value?.pages ?? []))
   const total = computed(() => query.data.value?.pages.at(-1)?.total ?? 0)
   const loadingMore = computed(() => query.isLoading.value && rows.value.length > 0)
+
+  // 只记录首屏第一页条数；追加加载不改动第一页，不会重复覆盖
+  const scope = computed(() => toValue(skeletonScope) ?? null)
+  watch([scope, () => query.data.value?.pages[0]?.items.length], ([currentScope, firstPageCount]) => {
+    if (!currentScope || !firstPageCount)
+      return
+    saveSkeletonListCount(buildForumListCacheKey(currentScope, normalized.value), firstPageCount)
+  })
 
   return {
     ...query,
@@ -60,6 +83,15 @@ export function useForumTopicQuery(topicId: MaybeRefOrGetter<string>) {
   return useQuery({
     key: () => forumKeys.topic(toValue(topicId)),
     query: () => issues.getTopic(toValue(topicId)),
+    enabled: () => Boolean(toValue(topicId)),
+    staleTime: 60_000,
+  })
+}
+
+export function useForumTopicTimelineQuery(topicId: MaybeRefOrGetter<string>) {
+  return useQuery({
+    key: () => forumKeys.topicTimeline(toValue(topicId)),
+    query: () => issues.getTopicTimeline(toValue(topicId)),
     enabled: () => Boolean(toValue(topicId)),
     staleTime: 60_000,
   })

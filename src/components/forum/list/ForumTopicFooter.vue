@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumViewMode } from '~/composables/useForumViewMode'
+import ForumQuoteTopicButton from '../topic/ForumQuoteTopicButton.vue'
 import ForumTopicReactionButton from '../ui/ForumTopicReactionButton.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 
@@ -19,7 +20,7 @@ const emit = defineEmits<{
 }>()
 
 const { message } = useLocalized()
-const { isCompactMode } = useForumViewMode()
+const { isCompactMode } = useForumViewMode(() => topicData.type)
 const reactionTarget = ref<HTMLElement | null>(null)
 const reactionEnabled = ref(false)
 
@@ -46,24 +47,32 @@ function handleCommentClick() {
 
 <template>
   <div class="font-size-3 mr-2 flex w-full justify-between">
-    <div class="topic-info-list flex gap-2 cursor-default items-center">
-      <div ref="reactionTarget" @focusin="reactionEnabled = true">
+    <div class="topic-info-list flex gap-3 cursor-default items-center">
+      <div v-if="topicData.type !== 'ANN'" ref="reactionTarget" @focusin="reactionEnabled = true">
         <ForumTopicReactionButton :topic-id="topicData.id" :autoload="reactionEnabled" />
       </div>
       <Button
         v-if="!hideCommentButton"
         type="button"
-        variant="outline"
+        variant="ghost"
+        size="sm"
         data-action="comment"
         :disabled="isClosedComment"
-        :class="{ 'cursor-default': isClosedComment, 'important:bg-transparent': isClosedComment }"
-        class="rounded-full bg-[--vp-c-bg-alt] important:h-32px max-mobile:important:h-44px"
+        class="rounded-full bg-[var(--vp-c-bg-alt)] h-8 max-mobile:h-11"
         @click="handleCommentClick"
       >
-        <span class="i-lucide:message-circle icon-btn max-mobile:size-6" />
+        <span class="i-lucide-message-circle h-5 w-5 max-mobile:size-6" aria-hidden="true" />
         {{ displayText }}
       </Button>
+      <ForumQuoteTopicButton :topic="topicData" :autoload="reactionEnabled" />
     </div>
-    <ForumTopicTypeBadge v-if="isCompactMode" :type="topicData.type" />
+    <ForumTopicTypeBadge
+      v-if="isCompactMode"
+      :type="topicData.type"
+      :state="topicData.state"
+      :status="topicData.status"
+      :good-issue="topicData.goodIssue"
+      interactive
+    />
   </div>
 </template>

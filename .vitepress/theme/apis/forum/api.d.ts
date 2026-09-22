@@ -25,6 +25,21 @@ export namespace ForumAPI {
   export type FeedbackTopicType = 'ANN' | 'BUG' | 'FEAT'
   export type TopicKind = FeedbackTopicType | 'POST'
   export type TopicType = TopicKind | null
+  export type TopicStatus
+    = | 'roadmap'
+      | 'rfc'
+      | 'not-planned'
+      | 'wontfix'
+      | 'fixed'
+      | 'not-reproducible'
+      | 'confirmed'
+      | 'needs-triage'
+      | 'blocked'
+      | 'needs-more-info'
+      | 'stale'
+      | 'duplicate'
+      | 'invalid'
+  export type TopicDisplayStatus = TopicStatus | 'closed'
 
   export interface ImageInfo {
     src: string
@@ -41,13 +56,21 @@ export namespace ForumAPI {
     images?: ImageInfo[]
   }
 
+  export interface QuotedTopicReference {
+    id: string
+    type: FeedbackTopicType
+  }
+
   export interface Topic {
     id: string
     title: string
     content: ForumAPI.Content
     contentRaw: string
     link: string
+    labels: string[]
     tags: TopicTags
+    status?: TopicStatus
+    goodIssue: boolean
     commentCount: number
     user: ForumAPI.User
     state: ForumAPI.TopicState
@@ -58,11 +81,31 @@ export namespace ForumAPI {
     updatedAt: string
     closedAt?: string
     language?: string
+    quotedTopic?: QuotedTopicReference
   }
 
   export type TopicTags = string[]
 
   export type TopicState = 'open' | 'closed' | 'progressing'
+
+  /** 时间线只承载状态语义：创建锚点、状态标签变更、状态流转 */
+  export type TopicTimelineEventKind = 'created' | 'status' | 'state'
+
+  export interface TopicTimelineEvent {
+    id: string
+    kind: TopicTimelineEventKind
+    /** 事件发生时间，保持 provider 原始时间串 */
+    at: string
+    actor?: ForumAPI.User
+    /** kind = 'status'：变更前状态；缺失表示此前无状态 */
+    from?: TopicStatus
+    /** kind = 'status'：变更后状态；缺失表示状态被清除 */
+    to?: TopicStatus
+    /** kind = 'state'：已识别的目标状态 */
+    state?: TopicState
+    /** kind = 'state'：无法识别时的原始状态名（如企业自定义状态） */
+    stateLabel?: string
+  }
 
   export interface Comment {
     id: string | number
@@ -98,7 +141,7 @@ export namespace ForumAPI {
 
   export type SortMethod = 'created' | 'updated'
 
-  export type FilterBy = 'feat' | 'bug' | 'all' | 'closed'
+  export type FilterBy = 'feat' | 'bug' | 'all' | 'closed' | 'archived' | 'everything'
 
   export interface GetTopicsParams {
     current: number
@@ -148,6 +191,7 @@ export namespace ForumAPI {
     title: string
     tags: string[]
     text: string
+    quotedTopic?: ForumAPI.QuotedTopicReference
   }
 
   interface FormSubmitData {

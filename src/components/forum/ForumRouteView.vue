@@ -5,6 +5,7 @@ import ForumHome from './home/ForumHome.vue'
 import ForumUserPage from './user/ForumUserPage.vue'
 
 const ForumTopicPage = defineAsyncComponent(() => import('./topic/ForumTopicPage.vue'))
+const ForumSearchPage = defineAsyncComponent(() => import('./search/ForumSearchPage.vue'))
 
 const { route } = useForumRoute()
 
@@ -13,6 +14,8 @@ const view = computed(() => {
     return ForumTopicPage
   if (route.value?.name === 'user')
     return ForumUserPage
+  if (route.value?.name === 'search')
+    return ForumSearchPage
   return route.value?.name === 'home' ? ForumHome : null
 })
 
@@ -21,6 +24,8 @@ const viewKey = computed(() => {
     return `topic:${route.value.topicId}`
   if (route.value?.name === 'user')
     return `user:${route.value.username}`
+  if (route.value?.name === 'search')
+    return `search:${route.value.username ?? 'home'}`
   return route.value?.name ?? 'forum'
 })
 </script>

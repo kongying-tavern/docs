@@ -7,7 +7,7 @@ import { useNavigateToTopic } from './useNavigateToTopic'
 
 export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
   const { isPost, detailHref, prepareTopicDetail, toPostDetailPage } = useNavigateToTopic(topic)
-  const { isCompactMode } = useForumViewMode()
+  const { isCompactMode } = useForumViewMode(() => topic.type)
 
   const replyTarget = ref('')
   const [inReply, toggleReply] = useToggle()

@@ -46,17 +46,15 @@ onBeforeUnmount(() => {
   min-width: 0;
 }
 
-/* align-self: end 提供列内上移余量，sticky bottom 才有吸附行程 */
+/* 右栏随文档流自然伸展：不设 max-height/overflow，也不用 sticky。
+   内容常高于视口，一旦吸顶就永远看不到底部；让整页滚动条统一承担滚动。 */
 .forum-aside {
-  position: sticky;
-  bottom: 20dvh;
-  align-self: end;
-  overflow-x: hidden;
+  min-width: 0;
 }
 
 @media (min-width: 1440px) {
   .forum-container {
-    width: min(1013px, 100%);
+    width: min(var(--forum-container-max-width), 100%);
     margin: 0 auto;
     padding: 0;
   }

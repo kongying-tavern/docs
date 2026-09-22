@@ -56,7 +56,7 @@ defineExpose({
   <BlurFade v-if="isEditing || showForm" class="slide-enter feedback-question" :duration="0.2" :delay="200">
     <div v-if="loading" class="loader mr-4" />
     <p v-if="loading">
-      Loading...
+      {{ theme.docReaction.loadingMsg }}
     </p>
     <form v-if="!(data || error)">
       <div class="feedback-title" mt-4>
@@ -119,12 +119,12 @@ defineExpose({
 
         <pre v-if="error" class="mt-4" tabindex="0">
           <code>
-            Error Message: {{ error?.message }}
+            {{ theme.docReaction.errorMessage }}{{ error?.message }}
           </code>
         </pre>
 
         <a class="vp-link mt-1 text-center w-full inline-block" :href="topicHref(String(data?.id || ''), null)" target="_blank" rel="noopener noreferrer">
-          {{ data?.id ? `Feedback ID: ${data?.id}` : '' }}
+          {{ data?.id ? theme.docReaction.viewFeedback.replace('{id}', String(data.id)) : '' }}
         </a>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { detectWithBrowser, translateWithBrowser } from './browserTranslation'
-import { areLanguagesEquivalent, canonicalizeLanguage } from './forumLanguage'
+import { areLanguagesEquivalent, canonicalizeLanguage, isTextPlausibleForLanguage } from './forumLanguage'
 import { prepareTerminology } from './forumTerminology'
 
 export type TranslationProvider = 'browser' | 'passthrough'
@@ -25,7 +25,7 @@ export interface TranslationResult {
 
 export type AutoTranslationResult
   = | ({ status: 'translated' } & TranslationResult)
-    | { status: 'skipped', reason: 'short' | 'unreliable' | 'unavailable' | 'same-language' }
+    | { status: 'skipped', reason: 'short' | 'unreliable' | 'unavailable' | 'same-language' | 'excluded-language' }
 
 interface DetectionOptions {
   expectedLanguages?: string[]
@@ -41,6 +41,7 @@ interface TranslationOptions {
 
 interface AutoTranslationOptions extends Omit<TranslationOptions, 'sourceLanguage'> {
   sourceLanguage?: string | null
+  excludedSourceLanguages?: readonly string[]
   expectedLanguages?: string[]
 }
 
@@ -55,16 +56,25 @@ function meaningfulLength(text: string): number {
   return text.match(MEANINGFUL_CHARACTER_RE)?.length ?? 0
 }
 
+function metadataDetection(
+  text: string,
+  fallbackLanguage: string | null,
+  reason: 'short' | 'unreliable' | 'unavailable',
+): LanguageDetectionResult {
+  // 元数据只是声明，不是证据：与正文文字自相矛盾的标签（如中文正文标成 LC-en）必须否决，
+  // 否则会给翻译器喂入错误源语言，产出乱码译文。
+  if (fallbackLanguage && isTextPlausibleForLanguage(text, fallbackLanguage))
+    return { status: 'detected', language: fallbackLanguage, provider: 'metadata' }
+  return { status: 'unknown', reason }
+}
+
 export async function detectLanguage(
   text: string,
   options: DetectionOptions = {},
 ): Promise<LanguageDetectionResult> {
   const fallbackLanguage = canonicalizeLanguage(options.fallbackLanguage)
-  if (meaningfulLength(text) < MIN_DETECTION_CHARACTERS) {
-    if (fallbackLanguage)
-      return { status: 'detected', language: fallbackLanguage, provider: 'metadata' }
-    return { status: 'unknown', reason: 'short' }
-  }
+  if (meaningfulLength(text) < MIN_DETECTION_CHARACTERS)
+    return metadataDetection(text, fallbackLanguage, 'short')
 
   let browserReason: 'unreliable' | 'unavailable' = 'unavailable'
   try {
@@ -88,9 +98,7 @@ export async function detectLanguage(
     // 浏览器检测模型不可用时回退到元数据/未知
   }
 
-  return fallbackLanguage
-    ? { status: 'detected', language: fallbackLanguage, provider: 'metadata' }
-    : { status: 'unknown', reason: browserReason }
+  return metadataDetection(text, fallbackLanguage, browserReason)
 }
 
 export async function translate(text: string, options: TranslationOptions): Promise<TranslationResult> {
@@ -137,6 +145,8 @@ export async function translateAuto(text: string, options: AutoTranslationOption
     return { status: 'skipped', reason: 'unavailable' }
   if (areLanguagesEquivalent(detection.language, targetLanguage))
     return { status: 'skipped', reason: 'same-language' }
+  if (options.excludedSourceLanguages?.some(language => areLanguagesEquivalent(detection.language, language)))
+    return { status: 'skipped', reason: 'excluded-language' }
 
   const translated = await translate(text, {
     sourceLanguage: detection.language,

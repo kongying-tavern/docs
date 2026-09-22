@@ -1,3 +1,4 @@
+import type ForumAPI from '@/apis/forum/api'
 import type { INTER_KNOT } from '@/apis/interknot.site/api'
 import { SITE_BASE, SITE_ORIGIN } from '~/constants/site'
 
@@ -64,6 +65,33 @@ export function applyReactionIntent(current: TopicReaction, requested: INTER_KNO
 export function topicReactionResource(topicId: string, environment: ReactionEnvironment): string {
   const path = `${environment.production ? SITE_BASE : ''}/feedback/topic/${encodeURIComponent(topicId)}`
   return new URL(path, environment.production ? SITE_ORIGIN : environment.origin).href
+}
+
+// Use a path segment rather than a fragment so API URL normalization keeps comments distinct.
+export function forumReactionResource(topicId: string, environment: ReactionEnvironment, commentId?: string): string {
+  const topicUrl = topicReactionResource(topicId, environment)
+  return commentId === undefined ? topicUrl : `${topicUrl}/comment/${encodeURIComponent(commentId)}`
+}
+
+/** Quote counts have their own resource, separate from the topic's votes. */
+export function quoteReactionResource(topicId: string, environment: ReactionEnvironment): string {
+  return `${topicReactionResource(topicId, environment)}/quotes`
+}
+
+/** One stable reaction identity per successfully created quoting topic. */
+export async function recordPublishedTopicQuote(
+  topic: Pick<ForumAPI.Topic, 'id' | 'quotedTopic'>,
+  environment: ReactionEnvironment,
+  write: (resourceUrl: string, userId: string) => Promise<INTER_KNOT.ReactionResponse | null>,
+): Promise<string | undefined> {
+  if (!topic.quotedTopic)
+    return undefined
+
+  const resourceUrl = quoteReactionResource(topic.quotedTopic.id, environment)
+  const response = await write(resourceUrl, `quote-topic:${topic.id}`)
+  if (response?.statusCode !== 200)
+    throw new Error('Quote reaction request was not acknowledged.')
+  return resourceUrl
 }
 
 export function resolveReactionViewer(authenticated: boolean, userId?: string | number): ReactionViewer {

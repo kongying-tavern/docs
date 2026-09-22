@@ -14,6 +14,8 @@ import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { publishTopic } from '../utils/forumUi'
 import { FORM_HASH } from './publish-topic-form/config'
 
+const props = defineProps<{ label?: string }>()
+
 const { frontmatter } = useData()
 const { message } = useLocalized()
 const userAuth = useUserAuthStore()
@@ -23,9 +25,9 @@ const isLoggedIn = computed(() => userAuth.isTokenValid)
 const isAdmin = hasAnyRoles('teamMember', 'feedbackMember')
 
 const buttonText = computed(() => {
-  return isLoggedIn.value
-    ? message.value.forum.publish.title
-    : message.value.forum.sidebar.loginToCreate
+  if (!isLoggedIn.value)
+    return message.value.forum.sidebar.loginToCreate
+  return props.label ?? message.value.forum.publish.title
 })
 
 function handleButtonClick() {
@@ -92,8 +94,8 @@ const selectPublishTopicMenu = computed(() => {
       class="p-2 flex w-fit"
     >
       <Button
-        v-for="{ label, icon, action } in selectPublishTopicMenu"
-        :key="label"
+        v-for="{ label: menuLabel, icon, action } in selectPublishTopicMenu"
+        :key="menuLabel"
         variant="ghost"
         class="flex flex-col h-fit w-64px"
         @click="action"
@@ -102,7 +104,7 @@ const selectPublishTopicMenu = computed(() => {
           class="icon-btn"
           :class="icon"
         />
-        {{ label }}
+        {{ menuLabel }}
       </Button>
     </HoverCardContent>
   </HoverCard>

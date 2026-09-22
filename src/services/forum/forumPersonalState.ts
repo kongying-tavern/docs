@@ -1,8 +1,10 @@
 import type ForumAPI from '@/apis/forum/api'
 import { stripMarkdownImages } from './forumContentCodec'
+import { TOPIC_STATUS_DEFINITIONS } from './forumTopicStatus'
 
 const FOLLOWED_TOPIC_LIMIT = 50
 const RECENT_PARTICIPATED_LIMIT = 20
+const TOPIC_STATUSES = new Set(TOPIC_STATUS_DEFINITIONS.map(definition => definition.id))
 
 interface ForumPersonalTopic {
   topicId: string
@@ -12,6 +14,8 @@ interface ForumPersonalTopic {
   recordedAt: string
   commentCount?: number
   state?: ForumAPI.TopicState
+  status?: ForumAPI.TopicStatus
+  goodIssue?: boolean
   closedAt?: string
 }
 
@@ -45,6 +49,8 @@ function normalizeTopic(value: unknown): ForumPersonalTopic | null {
     recordedAt: String(topic.recordedAt),
     ...(typeof topic.commentCount === 'number' ? { commentCount: topic.commentCount } : {}),
     ...(['open', 'closed', 'progressing'].includes(String(topic.state)) ? { state: topic.state as ForumAPI.TopicState } : {}),
+    ...(TOPIC_STATUSES.has(topic.status as ForumAPI.TopicStatus) ? { status: topic.status as ForumAPI.TopicStatus } : {}),
+    ...(typeof topic.goodIssue === 'boolean' ? { goodIssue: topic.goodIssue } : {}),
     ...(typeof topic.closedAt === 'string' ? { closedAt: topic.closedAt } : {}),
   }
 }
@@ -126,6 +132,8 @@ export function summarizePersonalTopic(topic: ForumAPI.Topic, recordedAt = new D
     recordedAt,
     commentCount: topic.commentCount,
     state: topic.state,
+    status: topic.status,
+    goodIssue: topic.goodIssue,
     ...(topic.closedAt ? { closedAt: topic.closedAt } : {}),
   }
 }

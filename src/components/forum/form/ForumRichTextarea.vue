@@ -7,7 +7,7 @@ import type { ImageAttachment } from '~/services/forum/form/imageAttachment'
 import { ReloadIcon } from '@radix-icons/vue'
 import CharacterCount from '@tiptap/extension-character-count'
 import { Editor, EditorContent } from '@tiptap/vue-3'
-import { onClickOutside } from '@vueuse/core'
+import { onClickOutside, usePreferredReducedMotion } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
@@ -38,6 +38,7 @@ interface Props {
   showCharacterCounter?: boolean
   autoHideFooter?: boolean
   autofocus?: boolean
+  entryAnimation?: boolean
   modelValue?: JSONContent | null
 }
 
@@ -56,6 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   showCharacterCounter: false,
   autoHideFooter: true,
+  entryAnimation: true,
   modelValue: null,
 })
 
@@ -85,6 +87,10 @@ const emojiPreload = useEmojiPreload()
 const charCount = ref(0)
 const percentage = computed(() => Math.round((100 / props.maxTextLength) * charCount.value))
 const text = ref('')
+const reducedMotion = usePreferredReducedMotion()
+const entryMotion = computed(() => (props.entryAnimation && reducedMotion.value !== 'reduce'
+  ? { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } }
+  : {}))
 
 function syncEditorStats(ed: TiptapEditor): void {
   charCount.value = ed.storage.characterCount.characters()
@@ -219,7 +225,9 @@ onBeforeUnmount(() => {
 <template>
   <div
     ref="textarea-container"
-    v-motion-slide-top
+    v-motion
+    :initial="entryMotion.initial"
+    :enter="entryMotion.enter"
     class="forum-rich-textarea flex relative"
     :class="cn('w-full flex', containerClass)"
     @paste="handlePaste"
@@ -281,7 +289,7 @@ onBeforeUnmount(() => {
                 :stroke-dasharray="`calc(${percentage} * 31.4 / 100) 31.4`"
                 transform="rotate(-90) translate(-20)"
               />
-              <circle r="6" cx="10" cy="10" fill="white" />
+              <circle r="6" cx="10" cy="10" fill="var(--vp-c-bg-soft)" />
             </svg>
 
             {{ charCount }} / {{ maxTextLength }}
@@ -296,7 +304,9 @@ onBeforeUnmount(() => {
       <div
         v-if="features.length !== 0 && toolbarPosition === 'bottom'"
         v-show="!collapse || !hideFooter"
-        v-motion-slide-top
+        v-motion
+        :initial="entryMotion.initial"
+        :enter="entryMotion.enter"
         class="footer mt-2.5 flex w-full items-center justify-between"
       >
         <div class="tool">

@@ -2,8 +2,7 @@ import type ForumAPI from '@/apis/forum/api'
 import { useQueryCache } from '@pinia/colada'
 import { createSharedComposable } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
-import { ref } from 'vue'
-import { toast } from 'vue-sonner'
+import { nextTick, ref } from 'vue'
 import { clearApiCache, oauth, password as passwordAuth } from '@/apis/forum/gitee'
 import { oauth as interKnotOauth } from '@/apis/interknot.site'
 import { useAuthProgress } from '@/composables/useAuthProgress'
@@ -14,6 +13,9 @@ import { AuthError, AuthErrorType } from '@/utils/auth-errors'
 import { log, LogGroup } from '@/utils/auth-logger'
 import { forumKeys } from '~/services/forum/forumQueryContracts'
 import { clearLoginIntent, takeLoginIntent } from '~/services/forum/loginIntent'
+import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
+import { showPageAlert } from '~/services/telemetry/pageAlert'
+import { toast } from '~/services/telemetry/toast'
 import { useLocalized } from './useLocalized'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
@@ -66,6 +68,8 @@ function useLogin() {
   /** 本次页面加载是否携带 OAuth 回调参数（授权码或授权错误） */
   const hasOAuthCallback = !!(oauthCallback.code || oauthCallback.error)
   const isAuthenticating = ref(false)
+  /** 密码登录失败的提示文案，由登录弹窗内联展示 */
+  const passwordLoginError = ref<string | null>(null)
 
   const authProgress = useAuthProgress()
 
@@ -116,6 +120,7 @@ function useLogin() {
       await handleOAuthFailure(
         authError ? authError.getUserMessage() : theme.value.forum.auth.loginFail,
         !authError,
+        error,
       )
     }
     finally {
@@ -124,14 +129,21 @@ function useLogin() {
   }
 
   /** 登录失败统一处理：跳回目标页提示错误；未知错误时先清空本地登录数据 */
-  async function handleOAuthFailure(message: string, clearLocalAuth = false) {
+  async function handleOAuthFailure(message: string, clearLocalAuth = false, error?: unknown) {
     if (clearLocalAuth) {
       userAuth.logout()
       userInfo.clearUserInfo()
       clearApiCache()
     }
-    toast.error(message)
     await redirectToOriginalPage()
+    // 等路由切换的清空 watcher 跑完，否则刚推入的告警会被清掉
+    await nextTick()
+    showPageAlert(message, {
+      id: 'oauth-login',
+      scene: 'oa',
+      error,
+      description: theme.value.forum.errors.traceIdOnly,
+    })
     // 会话已建立（如 SSO 失败）按登录成功回放意图；未登录则丢弃防止误回放
     if (isLoggedIn())
       await replayLoginIntent()
@@ -225,14 +237,14 @@ function useLogin() {
           const errorMsg = AuthError.isAuthError(result.error)
             ? result.error.getUserMessage()
             : theme.value.forum.auth.loginFail
-          toast.error(`interknot.site: ${errorMsg}`)
+          toast.error(`interknot.site: ${errorMsg}`, { scene: 'ss', error: result.error })
           return
         }
 
         // 验证返回数据的完整性（setSSOToken 依据 expiresIn 重算 expiresTime）
         const { accessToken: newAccessToken, createdAt, expiresIn } = result.data
         if (!newAccessToken) {
-          toast.error(message.value.forum.errors.ssoRefreshTokenFailed)
+          toast.error(message.value.forum.errors.ssoRefreshTokenFailed, { scene: 'ss' })
           return
         }
 
@@ -251,6 +263,7 @@ function useLogin() {
   function handlePostLogin() {
     if (isLoggedIn()) {
       toast.success(theme.value.forum.auth.loginSuccess)
+      trackOp(OpsEvents.loginSuccess)
     }
   }
 
@@ -272,6 +285,7 @@ function useLogin() {
       return false
 
     isAuthenticating.value = true
+    passwordLoginError.value = null
     let appliedAccessToken: string | undefined
 
     try {
@@ -286,7 +300,7 @@ function useLogin() {
       handlePostLogin()
       return true
     }
-    catch {
+    catch (error) {
       // 只有本次登录已经写入 token 时才回滚，避免误清其他标签页刚建立的会话。
       if (appliedAccessToken && userAuth.auth?.accessToken === appliedAccessToken) {
         userAuth.logout()
@@ -294,7 +308,8 @@ function useLogin() {
         clearApiCache()
       }
       log.error(LogGroup.LOGIN, 'Password login failed')
-      toast.error(theme.value.forum.auth.passwordLoginFail)
+      passwordLoginError.value = theme.value.forum.auth.passwordLoginFail
+      reportError({ scene: 'lg', error })
       return false
     }
     finally {
@@ -323,6 +338,7 @@ function useLogin() {
   }
 
   function logout() {
+    trackOp(OpsEvents.logout)
     // 先携带 SSO token 通知服务端吊销（尽力而为），再清本地全部凭证
     userAuth.logoutFromInterKnot().catch((error) => {
       log.warn(LogGroup.LOGIN, 'InterKnot server logout failed', error)
@@ -381,6 +397,7 @@ function useLogin() {
     hasOAuthCallback,
     redirectAuth: handleOAuthLoginStart,
     isAuthenticating,
+    passwordLoginError,
     authProgress: {
       ...authProgress,
       retry: retryOAuthFlow,

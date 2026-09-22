@@ -5,15 +5,10 @@ import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { defineTopicDropdownMenu } from '~/composables/defineTopicDropdownMenu'
-import ForumDropdownMenu from '../ui/ForumDropdownMenu.vue'
+import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 defineOptions({
   inheritAttrs: false,
@@ -33,11 +28,16 @@ const props = withDefaults(defineProps<
 const { message } = useLocalized()
 const providerMenu = defineTopicDropdownMenu(() => props.topicData, message)
 const dropdownMenu = computed(() => providerMenu.value)
+const items = computed(() => [...props.menu, ...dropdownMenu.value])
 </script>
 
 <template>
-  <DropdownMenu v-if="[...menu, ...dropdownMenu].length > 0">
-    <DropdownMenuTrigger as-child>
+  <ForumResponsiveMenu
+    :items="items"
+    :side="side"
+    align="start"
+  >
+    <template #trigger>
       <Button
         type="button"
         variant="ghost"
@@ -45,14 +45,8 @@ const dropdownMenu = computed(() => providerMenu.value)
         :aria-label="message.forum.topic.menu.moreActions"
         :class="cn('topic-btn-more align-mid h-auto', $props.class)"
       >
-        <slot name="trigger">
-          <span class="i-lucide-ellipsis icon-btn bg-[var(--vp-c-text-3)]" aria-hidden="true" />
-        </slot>
+        <span class="i-lucide-ellipsis icon-btn bg-[var(--vp-c-text-3)]" aria-hidden="true" />
       </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="start" :side="side" class="w-max text-nowrap">
-      <slot name="menu" />
-      <ForumDropdownMenu :items="[...menu, ...dropdownMenu]" />
-    </DropdownMenuContent>
-  </DropdownMenu>
+    </template>
+  </ForumResponsiveMenu>
 </template>

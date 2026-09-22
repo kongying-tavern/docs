@@ -4,7 +4,7 @@ import { useForumViewMode } from '~/composables/useForumViewMode'
 import { useTextCollapse } from '~/composables/useTextCollapse'
 
 export function useTopicContent(topic: ForumAPI.Topic | ForumAPI.Post) {
-  const { isCardMode, isCompactMode } = useForumViewMode()
+  const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)
 
   const renderedText = computed(() => topic.content.text)
   const isPost = computed(() => topic.type === 'POST')

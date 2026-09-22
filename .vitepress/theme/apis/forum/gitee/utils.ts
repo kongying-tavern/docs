@@ -3,11 +3,13 @@ import type ForumAPI from '../api'
 import { isArray, uniq } from 'lodash-es'
 import { avatarBaseURl, avatarList } from '@/composables/avatarList'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { decodeCommentBody, decodeTopicBody, stripMarkdownImages } from '~/services/forum/forumContentCodec'
+import { isCategoryLabel } from '~/services/forum/forumLabel'
+import { normalizeQuotedTopicReference } from '~/services/forum/forumTopicQuote'
+import { getTopicStatus, getTopicStatusFromLabel } from '~/services/forum/forumTopicStatus'
 
-import { GITEE_API_CONFIG } from './config'
+import { GITEE_API_CONFIG, GITEE_ISSUE_STATE_TITLES } from './config'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 
@@ -19,7 +21,6 @@ const LAST_PAGE_REL_REGEX = /rel="?last"?/
 
 const forumLocaleLabelGetter = getForumLocaleLabelGetter()
 const topicTypeLabelGetter = getTopicTypeLabelGetter()
-const topicTagLabelGetter = getTopicTagLabelGetter()
 
 export function normalizeAuth(auth: GITEE.Auth): ForumAPI.Auth {
   return {
@@ -71,6 +72,7 @@ function getUniqueIndexById(id: number, range: number): number {
 
 export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
   const decoded = decodeTopicBody(issue.body)
+  const labels = filterWhitelistTags(issue.labels)
   return {
     type: 'POST',
     id: issue.number,
@@ -85,7 +87,11 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
     commentCount: issue.comments,
     user: normalizeUser(issue.assignee || issue.user),
     author: normalizeUser(issue.assignee || issue.user),
-    tags: filterWhitelistTags(issue.labels),
+    labels,
+    // 反馈标签按前缀识别，不依赖静态映射表（管理页可动态增删 CATA- 标签）
+    tags: labels.filter(isCategoryLabel),
+    status: getTopicStatus(labels),
+    goodIssue: labels.includes('GOOD-ISSUE'),
     state: issue.state,
     createdAt: issue.created_at,
     updatedAt: issue.updated_at,
@@ -94,11 +100,15 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
 
 export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
   const { type, title } = getTopicTypeFromTitle(issue.title)
-  const tags = filterWhitelistTags(issue.labels)
+  const labels = filterWhitelistTags(issue.labels)
   const decoded = decodeTopicBody(issue.body)
+  const quotedTopic = normalizeQuotedTopicReference(decoded.metadata.quotedTopic)
 
   return {
-    tags,
+    labels,
+    tags: labels.filter(isCategoryLabel),
+    status: getTopicStatus(labels),
+    goodIssue: labels.includes('GOOD-ISSUE'),
     title,
     id: issue.number,
     type: type || 'BUG',
@@ -116,6 +126,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     updatedAt: issue.updated_at,
     ...(issue.finished_at ? { closedAt: issue.finished_at } : {}),
     language: getLanguageFromLabel(issue.labels),
+    ...(quotedTopic ? { quotedTopic } : {}),
   }
 }
 
@@ -136,6 +147,165 @@ export function normalizeComment(comment: GITEE.Comment): ForumAPI.Comment {
     replyID: comment.in_reply_to_id || null,
     reactions: null,
   }
+}
+
+interface TimelineCandidateBase {
+  at: string
+  logId: number
+  actor?: ForumAPI.User
+}
+
+type TimelineCandidate
+  = | (TimelineCandidateBase & { kind: 'created' })
+    | (TimelineCandidateBase & { kind: 'state', state?: ForumAPI.TopicState, stateLabel?: string })
+    | (TimelineCandidateBase & { kind: 'status', op: 'add' | 'remove', status: ForumAPI.TopicStatus })
+
+function toTimestamp(value: string): number {
+  const parsed = Date.parse(value)
+  return Number.isNaN(parsed) ? 0 : parsed
+}
+
+/** 老版本 operate_logs 只有 content、没有前后值，退回文本里找受管标签名 */
+const TOPIC_STATUS_LABEL_IN_TEXT = /ST-[A-Z0-9-]+/g
+
+function findStatusLabelInText(text: string | null | undefined): ForumAPI.TopicStatus | undefined {
+  // matchAll 内部复制正则，不会推进这里的 lastIndex
+  for (const match of (text ?? '').matchAll(TOPIC_STATUS_LABEL_IN_TEXT)) {
+    const status = getTopicStatusFromLabel(match[0])
+    if (status)
+      return status
+  }
+  return undefined
+}
+
+function toTimelineCandidate(log: GITEE.OperateLog | null | undefined): TimelineCandidate | undefined {
+  if (!log?.created_at)
+    return undefined
+
+  const base: TimelineCandidateBase = {
+    at: log.created_at,
+    logId: log.id,
+    ...(log.user ? { actor: normalizeUser(log.user) } : {}),
+  }
+  // 标签名只出现在 after_change_value：Gitee 对增删两种动作都不填 before_change_value，
+  // 因此增删只能由 action_type 区分
+  const value = (log.after_change_value ?? '').trim()
+
+  switch (log.action_type) {
+    case 'create':
+      return { ...base, kind: 'created' }
+    case 'add_label':
+    case 'remove_label': {
+      const status = getTopicStatusFromLabel(value) ?? findStatusLabelInText(log.content)
+      // 其余标签（CATA-/LC-/TYP-）在机器人整组重放 labels 时会产生大量抖动，不成节点
+      if (!status)
+        return undefined
+      return { ...base, kind: 'status', op: log.action_type === 'add_label' ? 'add' : 'remove', status }
+    }
+    case 'change_issue_state': {
+      if (!value)
+        return undefined
+      const state = GITEE_ISSUE_STATE_TITLES[value]
+      return state ? { ...base, kind: 'state', state } : { ...base, kind: 'state', stateLabel: value }
+    }
+    default:
+      // change_description 与状态流转重复（正文内嵌 {"state":...} 元数据），不单独成节点
+      return undefined
+  }
+}
+
+function actorOf(candidate: TimelineCandidate): { actor?: ForumAPI.User } {
+  return candidate.actor ? { actor: candidate.actor } : {}
+}
+
+/**
+ * 把 Gitee 操作日志收敛为状态时间线：创建锚点 + 状态标签变更 + 状态流转。
+ * 只有创建锚点时由 `hasTopicTimelineChanges` 判定区块是否渲染。
+ */
+export function normalizeTopicTimeline(logs: GITEE.OperateLogList): ForumAPI.TopicTimelineEvent[] {
+  // operate_logs 已按 sort=asc 返回，这里仍显式排序以免依赖服务端行为；
+  // Array#sort 自 ES2019 起稳定，同时间戳的条目保持 provider 原顺序
+  const candidates = (logs ?? [])
+    .map(log => toTimelineCandidate(log))
+    .filter((candidate): candidate is TimelineCandidate => Boolean(candidate))
+    .sort((a, b) => toTimestamp(a.at) - toTimestamp(b.at))
+
+  const events: ForumAPI.TopicTimelineEvent[] = []
+  let currentStatus: ForumAPI.TopicStatus | undefined
+  let previousStateKey: string | undefined
+  let hasCreated = false
+
+  for (let index = 0; index < candidates.length; index++) {
+    const candidate = candidates[index]
+    if (!candidate)
+      continue
+
+    if (candidate.kind === 'created') {
+      if (hasCreated)
+        continue
+      hasCreated = true
+      events.push({ id: String(candidate.logId), kind: 'created', at: candidate.at, ...actorOf(candidate) })
+      continue
+    }
+
+    if (candidate.kind === 'state') {
+      const key = candidate.state ?? candidate.stateLabel ?? ''
+      // 反复置为同一状态不产生额外节点
+      if (key === previousStateKey)
+        continue
+      previousStateKey = key
+      events.push({
+        id: String(candidate.logId),
+        kind: 'state',
+        at: candidate.at,
+        ...actorOf(candidate),
+        ...(candidate.state ? { state: candidate.state } : { stateLabel: key }),
+      })
+      continue
+    }
+
+    // 一次整组 labels 提交会同时产生 remove(旧) 与 add(新)，合并为一次状态迁移
+    const run: TimelineCandidate[] = []
+    while (index < candidates.length) {
+      const next = candidates[index]
+      if (!next || next.kind !== 'status' || next.at !== candidate.at)
+        break
+      run.push(next)
+      index += 1
+    }
+    // run 结束时 index 指向首个不属于本次 run 的条目，抵消外层自增以免跳过它
+    index -= 1
+
+    const lastOp = (direction: 'add' | 'remove') => {
+      for (let offset = run.length - 1; offset >= 0; offset--) {
+        const entry = run[offset]
+        if (entry?.kind === 'status' && entry.op === direction)
+          return entry
+      }
+      return undefined
+    }
+    const added = lastOp('add')
+    const removed = lastOp('remove')
+    // 仅 add 时此前状态即 from（同值会因 from === to 被丢弃）；仅 remove 时表示状态被清除
+    const from = removed?.status ?? currentStatus
+    const to = added?.status
+    currentStatus = to ?? (removed ? undefined : currentStatus)
+
+    if (from === to)
+      continue
+
+    const anchor = run[0] ?? candidate
+    events.push({
+      id: String(anchor.logId),
+      kind: 'status',
+      at: anchor.at,
+      ...actorOf(anchor),
+      ...(from ? { from } : {}),
+      ...(to ? { to } : {}),
+    })
+  }
+
+  return events
 }
 
 function getCommentAreaState(labels?: GITEE.IssueLabel[]) {
@@ -188,10 +358,12 @@ export function filterWhitelistTags(labels?: GITEE.IssueLabel[]) {
     .filter(val => isUpperCase(val))
     .filter(
       val =>
-        GITEE_API_CONFIG.STATE_TAGS.has(val)
+        val.startsWith('ST-')
+        || GITEE_API_CONFIG.STATE_TAGS.has(val)
         || forumLocaleLabelGetter.isLabel(val)
         || topicTypeLabelGetter.isLabel(val)
-        || topicTagLabelGetter.isLabel(val),
+        // 反馈标签按前缀放行，不依赖静态映射表
+        || isCategoryLabel(val),
     )
 }
 

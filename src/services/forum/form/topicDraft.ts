@@ -1,5 +1,6 @@
 import type { TopicFormData } from './validation'
 import { STORAGE_KEYS } from '../forumConfig'
+import { normalizeQuotedTopicReference } from '../forumTopicQuote'
 
 /**
  * Legacy single-key draft storage used before drafts were split per topic type.
@@ -22,6 +23,7 @@ export function restoreTopicDraft(value: unknown): TopicFormData {
     return fallback
 
   const stored = value as Partial<TopicFormData>
+  const quotedTopic = normalizeQuotedTopicReference(stored.quotedTopic)
   return {
     type: stored.type === 'FEAT' || stored.type === 'ANN' ? stored.type : 'BUG',
     title: typeof stored.title === 'string' ? stored.title : '',
@@ -29,6 +31,7 @@ export function restoreTopicDraft(value: unknown): TopicFormData {
     tags: Array.isArray(stored.tags)
       ? stored.tags.filter((tag): tag is string => typeof tag === 'string')
       : [],
+    ...(quotedTopic ? { quotedTopic } : {}),
   }
 }
 

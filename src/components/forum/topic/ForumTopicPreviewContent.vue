@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicFooter from '../list/ForumTopicFooter.vue'
+import ForumQuotedTopic from './ForumQuotedTopic.vue'
 import ForumTopicContent from './ForumTopicContent.vue'
 import ForumTopicHeader from './ForumTopicHeader.vue'
 import ForumTopicMedia from './ForumTopicMedia.vue'
@@ -32,6 +33,10 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
       @summary-click="emit('detail-click')"
     />
     <ForumTopicMedia :topic="topic" />
+    <ForumQuotedTopic
+      v-if="topic.quotedTopic"
+      :reference="topic.quotedTopic"
+    />
     <ForumTopicFooter :topic-data="topic" hide-comment-button />
     <ForumCommentArea
       repo="Feedback"
@@ -40,6 +45,7 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
       :comment-count="topic.commentCount"
       :topic="topic"
       :autofocus-input="focusComment"
+      :entry-animation="false"
     />
   </div>
 </template>

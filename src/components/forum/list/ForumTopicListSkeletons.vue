@@ -3,18 +3,47 @@ import { createReusableTemplate, useWindowSize } from '@vueuse/core'
 import { computed } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useForumRoute } from '~/composables/useForumRoute'
 import { useForumViewMode } from '~/composables/useForumViewMode'
+import {
+  buildForumListCacheKey,
+  MAX_SKELETON_COUNT,
+  MIN_SKELETON_COUNT,
+  readSkeletonListCount,
+  resolveForumListParams,
+  resolveForumListScope,
+  skeletonItemOpacity,
+} from '~/services/forum/forumListSkeleton'
 
 const [TopicCardSkeleton, UseTopicCardSkeleton] = createReusableTemplate()
 const [TopicCompactViewSkeleton, UseTopicCompactViewSkeleton] = createReusableTemplate()
 
 const { height } = useWindowSize()
 const { isCardMode } = useForumViewMode()
+const { route } = useForumRoute()
+
+// 上次加载条数优先（查询端写入同 key），缓存缺失时按视口估算
+const cachedCount = computed(() => {
+  const scope = resolveForumListScope(route.value)
+  const params = resolveForumListParams(route.value)
+  if (!scope || !params)
+    return null
+  return readSkeletonListCount(buildForumListCacheKey(scope, params))
+})
 
 const skeletonCount = computed(() => {
+  const cached = cachedCount.value
+  if (cached !== null)
+    return cached
   const itemHeight = isCardMode.value ? 280 : 160
-  return Math.ceil(height.value / itemHeight) + 2
+  const viewportCount = Math.ceil(height.value / itemHeight) + 2
+  return Math.min(MAX_SKELETON_COUNT, Math.max(MIN_SKELETON_COUNT, viewportCount))
 })
+
+// 条数已知（缓存命中）时不渐隐，仅视口估算时从上到下淡出
+function itemOpacity(index: number) {
+  return cachedCount.value !== null ? 1 : skeletonItemOpacity(index, skeletonCount.value)
+}
 </script>
 
 <template>
@@ -110,20 +139,28 @@ const skeletonCount = computed(() => {
   <TransitionGroup
     tag="div"
     enter-active-class="transition-all duration-300 ease-out"
-    enter-from-class="opacity-0 -translate-y-4"
-    enter-to-class="opacity-100 translate-y-0"
+    enter-from-class="-translate-y-4"
+    enter-to-class="translate-y-0"
     leave-active-class="transition-all duration-300 ease-in"
-    leave-from-class="opacity-100 translate-y-0"
+    leave-from-class="translate-y-0"
     leave-to-class="opacity-0 translate-y-4"
   >
     <template v-if="isCardMode">
-      <div v-for="i in skeletonCount" :key="`card-${i}`">
+      <div
+        v-for="i in skeletonCount"
+        :key="`card-${i}`"
+        :style="{ opacity: itemOpacity(i - 1) }"
+      >
         <UseTopicCardSkeleton />
         <Separator />
       </div>
     </template>
     <template v-else>
-      <div v-for="i in skeletonCount" :key="`compact-${i}`">
+      <div
+        v-for="i in skeletonCount"
+        :key="`compact-${i}`"
+        :style="{ opacity: itemOpacity(i - 1) }"
+      >
         <UseTopicCompactViewSkeleton />
         <Separator />
       </div>

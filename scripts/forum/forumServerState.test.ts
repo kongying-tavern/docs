@@ -27,6 +27,7 @@ test('every list membership dimension changes the stable key', () => {
   const base = JSON.stringify(forumKeys.topicList(home))
   for (const params of [
     { ...home, filter: 'bug' as const },
+    { ...home, filter: 'everything' as const },
     { ...home, sort: 'updated' as const },
     { ...home, creator: 'alice' },
     { ...home, q: 'map' },
@@ -126,6 +127,12 @@ test('list membership follows the same state, type, creator, and full-text tuple
   assert.equal(forumTopicBelongsToList(topic, { ...params, q: 'TRACKING' }), true)
   assert.equal(forumTopicBelongsToList({ ...topic, state: 'closed' }, params), false)
   assert.equal(forumTopicBelongsToList({ ...topic, state: 'progressing' }, { ...params, filter: 'closed' }), true)
+  assert.equal(forumTopicBelongsToList({ ...topic, state: 'progressing' }, { ...params, filter: 'closed', topicType: 'bug' }), true)
+  assert.equal(forumTopicBelongsToList({ ...topic, state: 'progressing' }, { ...params, filter: 'closed', topicType: 'feat' }), false)
+  assert.equal(forumTopicBelongsToList({ ...topic, state: 'closed' }, { ...params, filter: 'archived' }), true)
+  assert.equal(forumTopicBelongsToList({ ...topic, state: 'open' }, { ...params, filter: 'archived' }), false)
+  assert.equal(forumTopicBelongsToList({ ...topic, state: 'progressing' }, { ...params, filter: 'everything' }), true)
+  assert.equal(forumTopicBelongsToList({ ...topic, state: 'closed' }, { ...params, filter: 'everything' }), false)
 })
 
 test('reopening a missing Topic restores it at the start of cached lists', () => {

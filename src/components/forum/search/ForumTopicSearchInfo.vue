@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
+import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumSearchToken } from '~/composables/useForumSearchToken'
 
 const props = defineProps<{ loading: boolean, total: number }>()
 const { list, clearSearch } = useForumRoute()
+const { formatSearchQuery } = useForumSearchToken()
 const isSearching = computed(() => Boolean(list.value?.q))
 
 const { message } = useLocalized()
 
 const currentSearchQuery = computed(() => {
-  return list.value?.q || ''
+  return formatSearchQuery(list.value?.q || '')
 })
 const summary = computed(() => message.value.forum.header.search.resultSummary
   .replace('{query}', currentSearchQuery.value)
@@ -31,8 +34,8 @@ async function handleUndo() {
       class="i-lucide-chevron-right mr-1.5 icon-btn bg-[var(--vp-c-text-3)] shrink-0 size-4"
       aria-hidden="true"
     />
-    <p class="flex-1 min-w-0 truncate">
-      {{ summary }}
+    <p class="flex-1 min-w-0 line-clamp-2">
+      <TextMorph :text="summary" />
     </p>
     <Button
       type="button"

@@ -4,6 +4,30 @@ import { log, LogGroup } from '../../utils/auth-logger'
 
 export const ASSETS_URL_PREFIX = 'https://webp.assets.interknot.site/'
 
+/** hub 对失效 access token 的 500 响应体标记（区别于正常鉴权使用的 401） */
+export const EXPIRED_USER_ACCESS_TOKEN = 'Expired user access token'
+
+export function isExpiredUserAccessTokenBody(body: unknown): boolean {
+  if (!body || typeof body !== 'object')
+    return false
+
+  const { message, statusMessage } = body as Record<string, unknown>
+  return message === EXPIRED_USER_ACCESS_TOKEN || statusMessage === EXPIRED_USER_ACCESS_TOKEN
+}
+
+/**
+ * 「状态码 + 已解析 body」的统一判定入口。ky v2 的 beforeRetry 里 error.response
+ * 已被消费（预解析进了 error.data），只能走 error.data；afterResponse 阶段响应体
+ * 尚未消费，调用方先 clone().json() 再传入。
+ */
+export function isAccessTokenRejectionStatus(status: number, parsedBody: unknown): boolean {
+  if (status === 401)
+    return true
+  if (status !== 500)
+    return false
+  return isExpiredUserAccessTokenBody(parsedBody)
+}
+
 export function normalizeImage(image: INTER_KNOT.ImageResponse) {
   return {
     state: image.statusCode === 200,

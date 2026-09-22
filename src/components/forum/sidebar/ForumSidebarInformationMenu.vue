@@ -1,43 +1,20 @@
 <script setup lang="ts">
-import type { ForumSort } from '~/services/forum/forumRoute'
-import { ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
-import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
-import ForumTranslationSettings from '../topic/ForumTranslationSettings.vue'
+import { rememberSettingsReturnUrl } from '~/services/settingsNavigation'
 
-const props = defineProps<{
+defineProps<{
   open: boolean
-  sortOpen: boolean
-  hasList: boolean
-  currentSort: ForumSort
   privacyHref: string
   agreementHref: string
+  settingsHref: string
 }>()
 
-const emit = defineEmits<{
+defineEmits<{
   'update:open': [open: boolean]
-  'update:sortOpen': [open: boolean]
-  'selectSort': [sort: ForumSort]
 }>()
 
 const { message } = useLocalized()
-const translationOpen = ref(false)
-
-function toggleSort(): void {
-  translationOpen.value = false
-  emit('update:sortOpen', !props.sortOpen)
-}
-
-function toggleTranslation(): void {
-  emit('update:sortOpen', false)
-  translationOpen.value = !translationOpen.value
-}
-
-watch(() => props.open, (open) => {
-  if (!open)
-    translationOpen.value = false
-})
 </script>
 
 <template>
@@ -58,60 +35,14 @@ watch(() => props.open, (open) => {
       role="dialog"
       :aria-label="message.forum.sidebar.information"
     >
-      <div v-if="hasList" class="relative">
-        <Button
-          variant="ghost"
-          class="forum-sidebar-menu-item"
-          :aria-expanded="sortOpen"
-          @click="toggleSort"
-        >
-          <span class="i-lucide-list-filter forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
-          <span class="text-left flex-1">{{ message.forum.sidebar.listSort }}</span>
-          <span class="i-lucide-chevron-right forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
-        </Button>
-        <div
-          v-if="sortOpen"
-          class="forum-sort-popover"
-          role="dialog"
-          :aria-label="message.forum.sidebar.listSort"
-        >
-          <Button
-            v-for="sort in (['created', 'updated'] as const)"
-            :key="sort"
-            variant="ghost"
-            class="forum-sidebar-menu-item justify-start"
-            :aria-pressed="currentSort === sort"
-            @click="$emit('selectSort', sort)"
-          >
-            <span class="text-left flex-1">{{ message.forum.header.sort[sort] }}</span>
-            <span
-              class="i-lucide-check forum-sidebar-menu-icon icon-btn"
-              :class="{ invisible: currentSort !== sort }"
-              aria-hidden="true"
-            />
-          </Button>
-        </div>
-      </div>
-      <div v-if="isBrowserTranslationSupported()" class="my-1 pt-1 border-t border-[var(--vp-c-divider)] relative">
-        <Button
-          variant="ghost"
-          class="forum-sidebar-menu-item"
-          :aria-expanded="translationOpen"
-          @click="toggleTranslation"
-        >
-          <span class="i-lucide-languages forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
-          <span class="text-left flex-1">{{ message.forum.translate.settings }}</span>
-          <span class="i-lucide-chevron-right forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
-        </Button>
-        <div
-          v-if="translationOpen"
-          class="forum-sort-popover"
-          role="dialog"
-          :aria-label="message.forum.translate.settings"
-        >
-          <ForumTranslationSettings />
-        </div>
-      </div>
+      <a
+        class="forum-sidebar-menu-item"
+        :href="settingsHref"
+        @click="rememberSettingsReturnUrl()"
+      >
+        <span class="i-lucide-settings forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
+        {{ message.settings.title }}
+      </a>
       <a class="forum-sidebar-menu-item" :href="privacyHref">
         <span class="i-lucide-shield-check forum-sidebar-menu-icon icon-btn" aria-hidden="true" />
         {{ message.forum.sidebar.privacyPolicy }}
@@ -179,19 +110,6 @@ watch(() => props.open, (open) => {
   overflow: visible;
 }
 
-.forum-sort-popover {
-  position: absolute;
-  z-index: 12;
-  top: 0;
-  left: calc(100% + 12px);
-  width: 208px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  padding: 8px;
-  background: var(--vp-c-bg-elv);
-  box-shadow: var(--vp-shadow-3);
-}
-
 .forum-sidebar-menu-item {
   display: flex;
   align-items: center;
@@ -216,14 +134,5 @@ watch(() => props.open, (open) => {
   height: 16px;
   flex: 0 0 16px;
   background-color: currentcolor;
-}
-
-@media (max-width: 599px) {
-  .forum-sort-popover {
-    top: auto;
-    right: 0;
-    bottom: calc(100% + 8px);
-    left: auto;
-  }
 }
 </style>

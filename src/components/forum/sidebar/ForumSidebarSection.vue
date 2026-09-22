@@ -12,6 +12,9 @@ withDefaults(defineProps<{
     title: string
     href: string
     type: ForumAPI.TopicType
+    state?: ForumAPI.TopicState
+    status?: ForumAPI.TopicStatus
+    goodIssue?: boolean
     commentCount?: number
     closedUnseen?: boolean
     canUnfollow?: boolean
@@ -61,7 +64,14 @@ function commentLabel(item: { commentCount?: number }): string {
             class="forum-sidebar-topic-row"
           >
             <a :href="item.href" class="forum-sidebar-topic" :title="item.title">
-              <ForumTopicTypeBadge :type="item.type" icon-only class="forum-sidebar-topic-type" />
+              <ForumTopicTypeBadge
+                :type="item.type"
+                :state="item.state"
+                :status="item.status"
+                :good-issue="item.goodIssue"
+                icon-only
+                class="forum-sidebar-topic-type"
+              />
               <span class="flex-1 min-w-0 truncate">{{ item.title }}</span>
               <span
                 v-if="(item.commentCount ?? 0) > 0"

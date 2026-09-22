@@ -5,8 +5,10 @@ import DefaultTheme from 'vitepress/theme-without-fonts'
 import { computed, defineAsyncComponent, nextTick, provide, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
+import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
 import { enableTransitions } from '@/shared'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 
 import '@/styles/main.css'
 
@@ -15,11 +17,13 @@ const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
 const DocHeader = defineAsyncComponent(() => import('@/components/DocHeader.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('~/components/forum/sidebar/ForumSidebar.vue'))
+const SettingsSidebarExtras = defineAsyncComponent(() => import('~/components/settings/SettingsSidebarExtras.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const NavBarUserAvatar = defineAsyncComponent(() => import('@/components/NavBarUserAvatar.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const { isDark, frontmatter } = useData()
+const { theme: themePreference, toastDuration, toastPosition } = useSitePreferences()
 
 const target = useTemplateRef<HTMLDivElement>('target')
 const targetIsVisible = shallowRef(false)
@@ -35,8 +39,13 @@ useIntersectionObserver(target, ([entry]) => {
 })
 
 provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
+  const nextIsDark = !isDark.value
+  const setAppearance = () => {
+    isDark.value = nextIsDark
+    themePreference.value = nextIsDark ? 'dark' : 'light'
+  }
   if (!enableTransitions()) {
-    isDark.value = !isDark.value
+    setAppearance()
     return
   }
 
@@ -49,7 +58,7 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
   ]
 
   await document.startViewTransition(async () => {
-    isDark.value = !isDark.value
+    setAppearance()
     await nextTick()
   }).ready
 
@@ -58,7 +67,7 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     {
       duration: 300,
       easing: 'ease-in',
-      pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(root)`,
+      pseudoElement: `::view-transition-${nextIsDark ? 'old' : 'new'}(root)`,
     },
   )
 })
@@ -68,7 +77,12 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
   <Layout :class="{ [frontmatter.layout || '']: true, [frontmatter.class || '']: true }">
     <template #layout-top>
       <Banner />
-      <Sonner />
+      <Sonner
+        :theme="isDark ? 'dark' : 'light'"
+        :position="toastPosition"
+        :duration="toastDuration"
+        :close-button="toastDuration === Number.POSITIVE_INFINITY"
+      />
     </template>
 
     <template #doc-after>
@@ -76,6 +90,7 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     </template>
 
     <template #doc-before>
+      <PageAlertRegion class="mb-4" />
       <DocHeader />
     </template>
     <!--
@@ -96,6 +111,10 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 
     <template #sidebar-nav-before>
       <ForumSidebar v-if="frontmatter.layout === 'Forum'" />
+    </template>
+
+    <template #sidebar-nav-after>
+      <SettingsSidebarExtras v-if="frontmatter.layout === 'Settings'" />
     </template>
 
     <template #layout-bottom>

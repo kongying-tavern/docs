@@ -49,6 +49,10 @@ const {
   displayContent,
 } = useTopicContent(topic)
 
+const isPinned = computed(() => topic.pinned === true)
+/** 置顶标记优先跟随标题；无标题视图（紧凑模式、BUG 反馈）时落在正文开头 */
+const showPinInContent = computed(() => isPinned.value && !shouldShowTitle.value)
+
 const renderedContent = computed(() => renderForumTopicSummary(contentOverride ?? displayContent.value, {
   topicHref: id => topicHref(id, null),
   documentLinks: forumDocumentLinks,
@@ -73,14 +77,24 @@ function handleExpandClick(): void {
         }"
       >
         <a v-if="!isAnn" class="topic-title-link color-inherit no-underline line-clamp-2" :href="detailHref">
+          <span v-if="isPinned" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           {{ titleOverride ?? displayTitle }}
         </a>
         <p v-else class="line-clamp-2">
+          <span v-if="isPinned" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           {{ titleOverride ?? displayTitle }}
         </p>
       </h4>
 
-      <ForumTopicTypeBadge v-if="isCardMode" data-forum-shared-topic="type" :type="topic.type" />
+      <ForumTopicTypeBadge
+        v-if="isCardMode"
+        data-forum-shared-topic="type"
+        :type="topic.type"
+        :state="topic.state"
+        :status="topic.status"
+        :good-issue="topic.goodIssue"
+        interactive
+      />
 
       <slot name="translation" />
 
@@ -97,16 +111,20 @@ function handleExpandClick(): void {
           tabindex="0"
           @click="handleSummaryClick($event)"
           @keydown.enter="handleSummaryClick($event)"
-          v-html="renderedContent"
-        />
+        >
+          <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
+          <span v-html="renderedContent" />
+        </div>
 
-        <div
-          v-else-if="isAnn"
-          class="forum-topic-summary"
-          v-html="renderedContent"
-        />
+        <div v-else-if="isAnn" class="forum-topic-summary">
+          <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
+          <span v-html="renderedContent" />
+        </div>
 
-        <div v-else class="forum-topic-summary" v-html="renderedContent" />
+        <div v-else class="forum-topic-summary">
+          <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
+          <span v-html="renderedContent" />
+        </div>
         <a
           v-if="isPost"
           class="font-size-4 vp-link py-2 inline-flex"
@@ -137,24 +155,38 @@ function handleExpandClick(): void {
           tabindex="0"
           @click="handleSummaryClick($event)"
           @keydown.enter="handleSummaryClick($event)"
-          v-html="renderedContent"
-        />
+        >
+          <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
+          <span v-html="renderedContent" />
+        </div>
 
-        <div v-else-if="isAnn" class="forum-topic-summary" v-html="renderedContent" />
+        <div v-else-if="isAnn" class="forum-topic-summary">
+          <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
+          <span v-html="renderedContent" />
+        </div>
 
-        <div v-else class="forum-topic-summary" v-html="renderedContent" />
+        <div v-else class="forum-topic-summary">
+          <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
+          <span v-html="renderedContent" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.content-main {
-  transition: all 0.2s ease;
-}
-
 .topic-title-link:hover {
   color: inherit;
   text-decoration: underline;
+}
+
+.topic-pin-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.25rem;
+  vertical-align: -0.125em;
+  color: var(--vp-c-text-2);
+  transform: rotate(45deg);
 }
 </style>

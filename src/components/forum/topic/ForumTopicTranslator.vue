@@ -3,14 +3,12 @@ import type { HTMLAttributes } from 'vue'
 import type { TranslationResult } from '~/services/forum/forumTranslation'
 import { useElementVisibility } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
-import { toast } from 'vue-sonner'
-import BlurFade from '@/components/ui/BlurFade.vue'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
 import { translate, translateAuto } from '~/services/forum/forumTranslation'
+import { toast } from '~/services/telemetry/toast'
 import ForumTranslationSettingsMenu from './ForumTranslationSettingsMenu.vue'
 
 const props = withDefaults(defineProps<{
@@ -34,6 +32,7 @@ const { message } = useLocalized()
 const { currentPageLang } = useLanguage()
 const {
   autoTranslateEnabled,
+  excludedSourceLanguages,
   targetLanguage: preferredTargetLanguage,
 } = useForumTranslationPreferences()
 const root = useTemplateRef<HTMLElement>('root')
@@ -73,11 +72,14 @@ async function startTranslate(manual = true): Promise<void> {
   request?.abort()
   const controller = new AbortController()
   request = controller
-  loading.value = true
+  // 只有手动翻译才展示加载行。自动翻译是后台增强，且经常以「跳过/失败」收场，
+  // 若在正文上方插入再移除加载行，会让不需要翻译的话题滚入视窗时上下跳一下。
+  loading.value = manual
   try {
     const result = await translateAuto(props.content, {
       sourceLanguage: props.sourceLanguage,
       targetLanguage: targetLanguage.value,
+      excludedSourceLanguages: manual ? undefined : excludedSourceLanguages.value,
       signal: controller.signal,
     })
     if (request !== controller)
@@ -107,7 +109,7 @@ async function startTranslate(manual = true): Promise<void> {
   }
   catch (error) {
     if (!(error instanceof DOMException && error.name === 'AbortError'))
-      toast.error(message.value.forum.translate.error)
+      toast.error(message.value.forum.translate.error, { error })
   }
   finally {
     if (request === controller) {
@@ -136,12 +138,23 @@ function toggleOriginal(): void {
     emit('translated', translation.value.text)
 }
 
+const excludedSourceLanguagesKey = computed(() => excludedSourceLanguages.value.toSorted().join(','))
+
 watch(
-  [visible, () => props.autoTranslate, autoTranslateEnabled, () => props.content],
-  ([isVisible, autoTranslateProp, autoEnabled, content]) => {
-    if (!isVisible || !autoEnabled || !autoTranslateProp || autoAttemptedFor === content)
+  [
+    visible,
+    () => props.autoTranslate,
+    autoTranslateEnabled,
+    () => props.content,
+    () => props.sourceLanguage,
+    targetLanguage,
+    excludedSourceLanguagesKey,
+  ],
+  ([isVisible, autoTranslateProp, autoEnabled, content, sourceLanguage, target, excludedLanguages]) => {
+    const attemptKey = JSON.stringify([content, sourceLanguage, target, excludedLanguages])
+    if (!isVisible || !autoEnabled || !autoTranslateProp || autoAttemptedFor === attemptKey)
       return
-    autoAttemptedFor = content
+    autoAttemptedFor = attemptKey
     void startTranslate(false)
   },
   { immediate: true },
@@ -153,7 +166,7 @@ watch(autoTranslateEnabled, (enabled) => {
 })
 
 watch(
-  [() => props.content, () => props.sourceLanguage, targetLanguage],
+  [() => props.content, () => props.sourceLanguage, targetLanguage, excludedSourceLanguagesKey],
   () => {
     reset()
   },
@@ -167,14 +180,18 @@ defineExpose({ startTranslate })
 
 <template>
   <div ref="root" :class="cn('min-h-px w-full', props.class)">
-    <BlurFade v-if="loading" class="my-2 w-full space-y-2" aria-live="polite">
-      <Skeleton class="h-4 w-full" />
-      <Skeleton class="h-4 w-4/5" />
-    </BlurFade>
+    <div
+      v-if="loading"
+      class="forum-translation-status"
+      aria-live="polite"
+    >
+      <span class="i-lucide-loader-circle shrink-0 size-4 animate-spin" aria-hidden="true" />
+      <span class="truncate">{{ message.forum.translate.loading }}</span>
+    </div>
 
     <div
       v-else-if="translation"
-      class="group text-sm c-[var(--vp-c-text-3)] leading-none mb-0 mt-0.5 flex gap-1.5 items-center"
+      class="forum-translation-status group"
     >
       <button
         type="button"
@@ -191,3 +208,23 @@ defineExpose({ startTranslate })
     </div>
   </div>
 </template>
+
+<style scoped>
+/* 加载态与译文信息共用同一行盒，翻译状态切换时正文不产生位移 */
+.forum-translation-status {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.125rem;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  line-height: 1;
+  color: var(--vp-c-text-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin {
+    animation: none;
+  }
+}
+</style>

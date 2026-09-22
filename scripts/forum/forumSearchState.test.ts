@@ -9,14 +9,16 @@ import { buildForumProviderRequest } from '../../src/services/forum/forumTopics'
 const routeOptions = { base: '/docs/', locales: ['root', 'en', 'ja'] } as const
 
 const filters = [
-  ['all', 'open', null],
-  ['bug', 'open', 'TYP-BUG'],
-  ['feat', 'open', 'TYP-FEAT'],
-  ['closed', 'progressing', null],
+  ['all', 'open', null, []],
+  ['bug', 'open', 'TYP-BUG', []],
+  ['feat', 'open', 'TYP-FEAT', []],
+  ['closed', 'progressing', null, []],
+  ['archived', 'closed', null, []],
+  ['everything', 'all', null, ['closed']],
 ] as const
 
 test('provider mapping preserves filter, q, creator, sort, and page for every matrix row', () => {
-  for (const [filter, state, label] of filters) {
+  for (const [filter, state, label, excludedStates] of filters) {
     for (const q of ['', 'map crash']) {
       for (const creator of [null, 'alice']) {
         const provider = buildForumProviderRequest({
@@ -29,6 +31,7 @@ test('provider mapping preserves filter, q, creator, sort, and page for every ma
         })
 
         assert.equal(provider.state, state)
+        assert.deepEqual(provider.excludedStates, excludedStates)
         assert.deepEqual(provider.query, {
           current: 3,
           pageSize: 20,
@@ -39,7 +42,7 @@ test('provider mapping preserves filter, q, creator, sort, and page for every ma
         assert.equal(provider.search, q || undefined)
 
         const request = buildTopicListRequest(provider.query, provider.state, provider.search)
-        assert.equal(request.searchParams.state, state)
+        assert.equal(request.searchParams.state, q && state === 'all' ? undefined : state)
         assert.equal(request.searchParams.page, 3)
         assert.equal(request.searchParams.per_page, 20)
         if (q) {
@@ -69,6 +72,24 @@ test('equivalent defaults normalize to one page-free list key', () => {
   assert.equal(JSON.stringify(base).includes('"page"'), false)
 })
 
+test('contextual topic lists preserve normalized provider labels across every state', () => {
+  const provider = buildForumProviderRequest({
+    filter: 'all',
+    sort: 'created',
+    q: '',
+    creator: null,
+    labels: [' CATA-LOGIN ', 'CATA-WEB-PLATFORM', 'CATA-LOGIN'],
+    state: 'all',
+    pageSize: 5,
+  })
+
+  assert.equal(provider.state, 'all')
+  assert.deepEqual(provider.query.filter, ['CATA-LOGIN', 'CATA-WEB-PLATFORM'])
+  const request = buildTopicListRequest(provider.query, provider.state, provider.search)
+  assert.equal(request.searchParams.labels, 'CATA-LOGIN,CATA-WEB-PLATFORM')
+  assert.equal(request.searchParams.state, 'all')
+})
+
 test('load-more request changes only the page while retaining the committed tuple', () => {
   const first = buildForumProviderRequest({
     filter: 'closed',
@@ -92,6 +113,19 @@ test('load-more request changes only the page while retaining the committed tupl
   assert.equal(next.query.current, 2)
 })
 
+test('provider intersects concluded range with bug type and preserves sorting', () => {
+  const provider = buildForumProviderRequest({
+    filter: 'closed',
+    topicType: 'bug',
+    sort: 'updated',
+    q: '',
+    creator: null,
+  })
+  assert.equal(provider.state, 'progressing')
+  assert.equal(provider.query.filter, 'TYP-BUG')
+  assert.equal(provider.query.sort, 'updated')
+})
+
 test('User filter and clear-search transitions preserve the rest of the URL tuple', () => {
   const currentUrl = '/docs/ja/feedback/user/alice/feat?q=map&sort=updated&view=card#results'
   const parsed = parseForumLocation(currentUrl, routeOptions)
@@ -100,8 +134,8 @@ test('User filter and clear-search transitions preserve the rest of the URL tupl
     return
 
   const filtered = { ...parsed.route, list: { ...parsed.route.list, filter: 'closed' as const } }
-  assert.equal(buildForumHref(filtered, { ...routeOptions, currentUrl }), '/docs/ja/feedback/user/alice/closed?q=map&sort=updated&view=card#results')
+  assert.equal(buildForumHref(filtered, { ...routeOptions, currentUrl }), '/docs/ja/feedback/user/alice/closed/feat?q=map&sort=updated&view=card#results')
 
   const cleared = { ...filtered, list: { ...filtered.list, q: '' } }
-  assert.equal(buildForumHref(cleared, { ...routeOptions, currentUrl }), '/docs/ja/feedback/user/alice/closed?sort=updated&view=card#results')
+  assert.equal(buildForumHref(cleared, { ...routeOptions, currentUrl }), '/docs/ja/feedback/user/alice/closed/feat?sort=updated&view=card#results')
 })

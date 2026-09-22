@@ -11,6 +11,8 @@ export interface AuthSessionAccessor {
   isInterKnotTokenValid: () => boolean
   getInterKnotAccessToken: () => string | null
   refreshSSOAuth: () => Promise<void>
+  /** 服务端判定 SSO token 已失效时作废本地记录，促使后续请求先重取再发出 */
+  invalidateInterKnotToken: () => void
 }
 
 let accessor: AuthSessionAccessor | null = null

@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import type { FORUM } from '~/components/forum/types'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { useLocalized } from '@/hooks/useLocalized'
-import ForumDropdownMenu from '../ui/ForumDropdownMenu.vue'
+import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 defineProps<{
   menus: FORUM.TopicDropdownMenu[]
@@ -17,20 +12,21 @@ const { message } = useLocalized()
 </script>
 
 <template>
-  <DropdownMenu>
-    <DropdownMenuTrigger as-child>
+  <ForumResponsiveMenu
+    :items="menus"
+    side="top"
+    align="end"
+  >
+    <template #trigger>
       <Button
         type="button"
         variant="ghost"
         size="icon"
         :aria-label="message.forum.topic.menu.moreActions"
-        class="topic-btn-more align-mid h-auto important:clear-bg"
+        class="text-xs text-[var(--vp-c-text-2)] leading-none rounded-full h-7 w-7"
       >
-        <span class="i-custom-ellipsis-vertical icon-btn" aria-hidden="true" />
+        <span class="i-lucide-ellipsis h-4 w-4 block" aria-hidden="true" />
       </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent side="top" class="text-nowrap">
-      <ForumDropdownMenu :items="menus" />
-    </DropdownMenuContent>
-  </DropdownMenu>
+    </template>
+  </ForumResponsiveMenu>
 </template>

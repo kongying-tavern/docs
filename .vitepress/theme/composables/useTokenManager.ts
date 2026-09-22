@@ -132,6 +132,19 @@ export function useTokenManager() {
     ssoAuth.value = { interKnot: {} }
   }
 
+  /**
+   * 服务端判定 SSO token 失效时（如 hub 返回 "Expired user access token"）主动作废本地记录。
+   * 本地过期账本可能与服务端实际状态不一致，作废后下一次请求会先重取 token 再发出。
+   */
+  function invalidateSSOToken(platform: keyof SSOLocaleAuth): void {
+    const ssoToken = ssoAuth.value[platform]
+    if (!ssoToken?.accessToken) {
+      return
+    }
+    log.warn(LogGroup.SSO, `Server rejected ${platform} SSO token, expiring it locally`)
+    ssoAuth.value[platform] = { ...ssoToken, expiresTime: 0 }
+  }
+
   function clearAllTokens(): void {
     clearTokens()
     clearSSOTokens()
@@ -245,6 +258,7 @@ export function useTokenManager() {
     setSSOToken,
     clearTokens,
     clearSSOTokens,
+    invalidateSSOToken,
     clearAllTokens,
     validateToken,
     validateSSOToken,

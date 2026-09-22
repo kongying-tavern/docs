@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import type { ForumFilter } from '~/services/forum/forumRoute'
 import { computed } from 'vue'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-} from '@/components/ui/select'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useForumListControlOptions } from '~/composables/forum/useForumListControlOptions'
+import ForumPillSelect from './ForumPillSelect.vue'
 
 const props = defineProps<{
   filter: ForumFilter
@@ -16,59 +11,20 @@ const props = defineProps<{
 const emit = defineEmits<{ change: [filter: ForumFilter] }>()
 
 const { message } = useLocalized()
-
-const menuItems = computed<{
-  id: ForumFilter
-  label: string
-}[]>(() => [
-  {
-    id: 'all',
-    label: message.value.forum.header.navigation.allFeedback,
-  },
-  {
-    id: 'bug',
-    label: message.value.forum.header.navigation.bugFeedback,
-  },
-  {
-    id: 'feat',
-    label: message.value.forum.header.navigation.featFeedback,
-  },
-  {
-    id: 'closed',
-    label: message.value.forum.header.navigation.closedFeedback,
-  },
-])
+const { filters: options } = useForumListControlOptions()
 
 const filter = computed<ForumFilter>({
   get: () => props.filter,
-  set: (value) => {
-    if (value !== props.filter)
-      emit('change', value)
-  },
-})
-
-const currentLabel = computed(() => {
-  const item = menuItems.value.find(i => i.id === filter.value)
-  return item?.label ?? ''
+  set: next => emit('change', next),
 })
 </script>
 
 <template>
   <div class="flex gap-4 items-center">
-    <Select v-model="filter">
-      <SelectTrigger
-        size="sm"
-        variant="ghost"
-        class="font-size-3 rounded-full w-fit whitespace-nowrap shadow-none hover:bg-[--vp-c-bg-soft]"
-      >
-        {{ currentLabel }}
-      </SelectTrigger>
-      <SelectContent class="min-w-full">
-        <SelectLabel />
-        <SelectItem v-for="item in menuItems" :key="item.id" :value="item.id">
-          {{ item.label }}
-        </SelectItem>
-      </SelectContent>
-    </Select>
+    <ForumPillSelect
+      v-model="filter"
+      :label="message.forum.header.navigation.groups.status"
+      :options="options"
+    />
   </div>
 </template>

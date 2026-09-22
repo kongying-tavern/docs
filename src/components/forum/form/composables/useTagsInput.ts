@@ -1,7 +1,6 @@
 import { computed, onMounted, ref } from 'vue'
-import { labels } from '@/apis/forum/gitee'
-import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
-import { getTopicTagMap } from '~/composables/getTopicTagMap'
+import { useForumLabelStore } from '~/composables/useForumLabelStore'
+import { useTopicTagDisplay } from '~/composables/useTopicTagDisplay'
 import { addTagToModel, removeTagFromModel } from '~/services/forum/form/topicTagModel'
 
 export interface UseTagsInputOptions {
@@ -12,13 +11,16 @@ export interface UseTagsInputOptions {
 export function useTagsInput(options: UseTagsInputOptions) {
   const { modelValue, max } = options
 
-  const topicTagMap = getTopicTagMap()
-  const topicTagLabelGetter = getTopicTagLabelGetter()
+  const { getTagDisplay } = useTopicTagDisplay()
+  const labelStore = useForumLabelStore()
 
-  const tags = ref<string[]>([])
   const searchTerm = ref('')
-  const isLoading = ref(false)
   const loadError = ref<Error>()
+
+  // 候选标签来自仓库实时 label 列表（会话级共享缓存）：
+  // 管理页增删的 CATA- 标签会即时反映到这里，不再依赖静态映射表
+  const tags = computed(() => labelStore.categoryLabels.value.map(label => label.name))
+  const isLoading = computed(() => labelStore.isLoading.value)
 
   const isDisabled = computed(() => modelValue.value.length >= max)
 
@@ -38,9 +40,7 @@ export function useTagsInput(options: UseTagsInputOptions) {
   ])
 
   function getLocalizedTagName(key: string): string {
-    return topicTagMap.get(key)
-      || topicTagMap.get(topicTagLabelGetter.getTag(key) ?? '')
-      || key
+    return getTagDisplay(key)
   }
 
   function handleSelect(tag: string): void {
@@ -55,18 +55,10 @@ export function useTagsInput(options: UseTagsInputOptions) {
   }
 
   async function loadTags(): Promise<void> {
-    isLoading.value = true
     loadError.value = undefined
-    try {
-      const data = await labels.getAllLabelsName()
-      tags.value = data.filter(label => topicTagLabelGetter.isLabel(label))
-    }
-    catch (error) {
-      loadError.value = error instanceof Error ? error : new Error('Tag loading failed.')
-    }
-    finally {
-      isLoading.value = false
-    }
+    await labelStore.loadLabels()
+    if (labelStore.error.value)
+      loadError.value = labelStore.error.value
   }
 
   onMounted(loadTags)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumFilter, ForumSort } from '~/services/forum/forumRoute'
+import type { ForumFilter, ForumSort, ForumTopicType } from '~/services/forum/forumRoute'
 import { computed } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import ForumLayout from '../ForumLayout.vue'
@@ -19,10 +19,14 @@ interface Props {
   refreshData?: () => Promise<unknown> | unknown
   loadStateMessage?: string
   filter?: ForumFilter
+  topicType?: ForumTopicType
   sort?: ForumSort
   query?: string
   onFilterChange?: (filter: ForumFilter) => Promise<unknown> | unknown
+  onTypeChange?: (topicType: ForumTopicType) => Promise<unknown> | unknown
+  onSortChange?: (sort: ForumSort) => Promise<unknown> | unknown
   onSearch?: (query: string) => Promise<unknown> | unknown
+  showToolbar?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,7 +35,9 @@ const props = withDefaults(defineProps<Props>(), {
   canLoadMore: false,
   loadStateMessage: 'Loading...',
   filter: 'all',
+  topicType: 'all',
   sort: 'created',
+  showToolbar: true,
 })
 
 const isInitialLoading = computed(() => props.loading && props.renderData.length === 0)
@@ -45,14 +51,20 @@ const isInitialLoading = computed(() => props.loading && props.renderData.length
       </template>
 
       <template #content>
-        <ForumTopicToolbar
-          :filter="filter"
-          :query="query"
-          :suggestions="renderData"
-          @filter-change="onFilterChange?.($event)"
-          @search="onSearch?.($event)"
-        />
-        <Separator div class="mt-2" />
+        <template v-if="showToolbar">
+          <ForumTopicToolbar
+            :filter="filter"
+            :topic-type="topicType"
+            :sort="sort"
+            :query="query"
+            :suggestions="renderData"
+            @filter-change="onFilterChange?.($event)"
+            @type-change="onTypeChange?.($event)"
+            @sort-change="onSortChange?.($event)"
+            @search="onSearch?.($event)"
+          />
+          <Separator div class="mt-2" />
+        </template>
 
         <slot name="content-before" />
 
@@ -84,9 +96,7 @@ const isInitialLoading = computed(() => props.loading && props.renderData.length
 
       <template #aside>
         <slot name="aside">
-          <ForumAside
-            :exclude-topic-ids="renderData.map(item => item.id)"
-          />
+          <ForumAside />
         </slot>
       </template>
     </ForumLayout>

@@ -84,13 +84,14 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
             <ForumContentInputBox
               id="content"
               v-bind="componentField"
-              :text-limit="tab.fields.content.maxLength"
-              :text-min-limit="tab.fields.content.minLength"
               :class="isDesktop ? 'min-h-36' : 'min-h-28'"
               :placeholder="tab.fields.content.placeholder"
               :support-paste="true"
               @paste-files="$emit('files-selected', $event)"
             >
+              <template #after-editor>
+                <slot name="after-content" />
+              </template>
               <template v-if="!isDesktop" #uploader>
                 <slot name="uploader" size="xl" />
               </template>

@@ -71,10 +71,6 @@
   z-index: 4;
 }
 
-.forum-preview-root.has-panel :deep(.forum-preview-close) {
-  right: calc(var(--preview-panel-w) + 20px);
-}
-
 .forum-preview-root.has-panel :deep(.forum-preview-dots) {
   left: calc((100% - var(--preview-panel-w)) / 2);
 }
@@ -98,16 +94,26 @@
   transition:
     opacity 200ms ease,
     transform 220ms ease,
-    background-color 160ms ease,
-    right 240ms ease;
+    background-color 160ms ease;
 }
 
 .forum-preview-panel-toggle:hover {
   background: var(--forum-media-glass-hover);
 }
 
-.forum-preview-root.has-panel .forum-preview-panel-toggle {
-  right: calc(var(--preview-panel-w) + 20px);
+/* 面板开合用 transform 左移右上按钮（right 动画会逐帧 reflow 整个预览舞台）。
+   首帧位移仍由 animation 补出（挂载时 .has-panel 已就位，transition 无从过渡），
+   参数与 sheet 入场(500ms ease)一致 */
+.forum-preview-root.has-panel .forum-preview-panel-toggle,
+.forum-preview-root.has-panel :deep(.forum-preview-close) {
+  transform: translateX(calc(-1 * var(--preview-panel-w)));
+  animation: preview-panel-push-in 500ms ease;
+}
+
+@keyframes preview-panel-push-in {
+  from {
+    transform: translateX(0);
+  }
 }
 
 .forum-preview-stack {
@@ -139,35 +145,8 @@
 .forum-preview-nav {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  translate: 0 -50%;
   z-index: 3;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 0;
-  border-radius: 9999px;
-  background: var(--forum-media-backdrop);
-  backdrop-filter: blur(12px);
-  color: var(--forum-media-on-overlay);
-  font-size: 20px;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 160ms ease,
-    transform 220ms ease,
-    background-color 160ms ease;
-}
-
-.forum-preview-stage:hover .forum-preview-nav {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.forum-preview-nav:hover {
-  background: var(--forum-media-overlay-strong);
 }
 
 .forum-preview-nav.prev {
@@ -222,15 +201,16 @@
   transform: translateY(-8px) scale(0.86);
 }
 
-.forum-preview-root.closing .forum-preview-nav {
-  opacity: 0;
-  transform: translateY(-50%) scale(0.82);
-}
-
 .forum-preview-root.closing .forum-preview-panel-toggle,
 .forum-preview-root.closing :deep(.forum-preview-close) {
   opacity: 0;
   transform: translateY(-8px) scale(0.86);
+}
+
+/* has-panel 下收起时保留面板侧位移，避免按钮先跳回原位再淡出 */
+.forum-preview-root.has-panel.closing .forum-preview-panel-toggle,
+.forum-preview-root.has-panel.closing :deep(.forum-preview-close) {
+  transform: translateX(calc(-1 * var(--preview-panel-w))) translateY(-8px) scale(0.86);
 }
 
 .forum-preview-root.closing :deep(.forum-preview-dots) {
@@ -296,7 +276,6 @@
 @media (prefers-reduced-motion: reduce) {
   .forum-preview-overlay,
   .forum-preview-image,
-  .forum-preview-nav,
   .forum-preview-cards,
   .forum-preview-panel-toggle,
   :deep(.forum-preview-close),

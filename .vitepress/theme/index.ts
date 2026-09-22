@@ -9,6 +9,7 @@ import DefaultTheme, {
 } from 'vitepress/theme-without-fonts'
 import { defineAsyncComponent } from 'vue'
 import Layout from '@/layouts/Layout.vue'
+import { identifySessionIfEnabled, installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
 import { AsyncForumRouteView, preloadForumRouteView } from './components/AsyncForumRouteView'
@@ -28,6 +29,9 @@ const Forum = defineAsyncComponent(loadForumLayout)
 const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
 const LinkGrid = defineAsyncComponent(() => import('@/components/ui/LinkGrid.vue'))
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
+const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
+const SettingsPage = defineAsyncComponent(() => import('~/components/settings/SettingsPage.vue'))
+const ForumLabelAdminPage = defineAsyncComponent(() => import('~/components/forum/admin/ForumLabelAdminPage.vue'))
 const QQGroupList = defineAsyncComponent(() => import('@/components/QQGroupList.vue'))
 const ScratchToReveal = defineAsyncComponent(() => import('@/components/ui/ScratchToReveal.vue'))
 const SitemapPage = defineAsyncComponent(() => import('@/components/SitemapPage.vue'))
@@ -63,6 +67,8 @@ export default {
       debug: false,
     })
 
+    installTelemetry(app)
+
     app.use(pinia)
     app.use(MotionPlugin)
     app.use(PiniaColada)
@@ -78,6 +84,9 @@ export default {
     app.component('VPLink', VPLink)
     app.component('Headline', Headline)
     app.component('Post', Post)
+    app.component('Settings', Settings)
+    app.component('SettingsPage', SettingsPage)
+    app.component('ForumLabelAdminPage', ForumLabelAdminPage)
     app.component('Forum', Forum)
     app.component('ForumRouteView', AsyncForumRouteView)
     app.component('Blog', Blog)
@@ -103,6 +112,10 @@ export default {
       })
       return false
     }
-    router.onBeforePageLoad = async to => handleRouteMatching(to, siteData.value.base, routes, router, siteData.value.locales)
+    router.onBeforePageLoad = async (to) => {
+      const shouldLoadPage = await handleRouteMatching(to, siteData.value.base, routes, router, siteData.value.locales)
+      identifySessionIfEnabled()
+      return shouldLoadPage
+    }
   },
 } satisfies Theme

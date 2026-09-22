@@ -1,11 +1,16 @@
-const FORUM_FILTERS = ['all', 'bug', 'feat', 'closed'] as const
-const FORUM_SEARCH_MAX_LENGTH = 50
+// `all` is the implicit default and loads unresolved feedback only; `everything` is the
+// user-facing "all" and also includes concluded feedback. `archived` is admin-only.
+const FORUM_FILTERS = ['all', 'closed', 'archived', 'everything'] as const
+const FORUM_TOPIC_TYPES = ['bug', 'feat'] as const
+const FORUM_SEARCH_MAX_LENGTH = 240
 
 export type ForumFilter = typeof FORUM_FILTERS[number]
+export type ForumTopicType = typeof FORUM_TOPIC_TYPES[number] | 'all'
 export type ForumSort = 'created' | 'updated'
 
 export interface ForumListRouteState {
   filter: ForumFilter
+  topicType: ForumTopicType
   sort: ForumSort
   q: string
   creator: string | null
@@ -13,6 +18,7 @@ export interface ForumListRouteState {
 
 export type ForumRoute
   = | { name: 'home', locale: string, list: ForumListRouteState }
+    | { name: 'search', locale: string, username: string | null, list: ForumListRouteState }
     | { name: 'topic', locale: string, topicId: string, commentPage: number }
     | { name: 'user', locale: string, username: string, list: ForumListRouteState }
 
@@ -82,6 +88,12 @@ export function parseForumLocation(input: string | URL, options: ForumRouteOptio
   if (segments.length === 1) {
     route = { name: 'home', locale, list }
   }
+  else if (segments[1] === 'search') {
+    const listPath = readListPath(segments.slice(2))
+    if (!listPath)
+      return null
+    route = { name: 'search', locale, username: null, list: readListState(url, null, listPath.filter, listPath.topicType) }
+  }
   else if (segments[1] === 'topic') {
     if (segments.length !== 3 || !segments[2])
       return null
@@ -93,22 +105,21 @@ export function parseForumLocation(input: string | URL, options: ForumRouteOptio
     }
   }
   else if (segments[1] === 'user') {
-    if ((segments.length !== 3 && segments.length !== 4) || !segments[2])
+    if ((segments.length < 3 || segments.length > 6) || !segments[2])
       return null
-    const filter = segments[3] ?? 'all'
-    if (!isForumFilter(filter))
+    const isSearch = segments[3] === 'search'
+    const listPath = readListPath(segments.slice(isSearch ? 4 : 3))
+    if (!listPath)
       return null
-    route = {
-      name: 'user',
-      locale,
-      username: segments[2],
-      list: readListState(url, segments[2], filter),
-    }
+    route = isSearch
+      ? { name: 'search', locale, username: segments[2], list: readListState(url, segments[2], listPath.filter, listPath.topicType) }
+      : { name: 'user', locale, username: segments[2], list: readListState(url, segments[2], listPath.filter, listPath.topicType) }
   }
   else {
-    if (segments.length !== 2 || !isForumFilter(segments[1]))
+    const listPath = readListPath(segments.slice(1))
+    if (!listPath)
       return null
-    route = { name: 'home', locale, list: readListState(url, null, segments[1]) }
+    route = { name: 'home', locale, list: readListState(url, null, listPath.filter, listPath.topicType) }
   }
 
   return {
@@ -137,8 +148,15 @@ export function buildForumHref(route: ForumRoute, options: ForumHrefOptions): st
     url.searchParams.delete(COMMENT_PAGE_PARAM)
     if (route.name === 'user')
       segments.push('user', route.username)
+    if (route.name === 'search') {
+      if (route.username)
+        segments.push('user', route.username)
+      segments.push('search')
+    }
     if (route.list.filter !== 'all')
       segments.push(route.list.filter)
+    if (route.list.topicType !== 'all')
+      segments.push(route.list.topicType)
     writeListQuery(url.searchParams, route.list)
   }
 
@@ -181,19 +199,24 @@ export function canonicalizeForumLocation(
 export function forumRouteParams(route: ForumRoute): Record<string, string> {
   if (route.name === 'topic')
     return { id: route.topicId }
+  if (route.name === 'search')
+    return route.username ? { id: route.username } : {}
   if (route.name === 'user') {
     return {
       id: route.username,
-      ...(route.list.filter === 'all' ? {} : { type: route.list.filter }),
+      ...(route.list.filter === 'all' && route.list.topicType === 'all' ? {} : { type: [route.list.filter, route.list.topicType].filter(value => value !== 'all').join('/') }),
     }
   }
-  return route.list.filter === 'all' ? {} : { type: route.list.filter }
+  return route.list.filter === 'all' && route.list.topicType === 'all'
+    ? {}
+    : { type: [route.list.filter, route.list.topicType].filter(value => value !== 'all').join('/') }
 }
 
-function readListState(url: URL, creator: string | null, filter: ForumFilter = 'all'): ForumListRouteState {
+function readListState(url: URL, creator: string | null, filter: ForumFilter = 'all', topicType: ForumTopicType = 'all'): ForumListRouteState {
   const sort = url.searchParams.get('sort')
   return {
     filter,
+    topicType,
     sort: sort === 'updated' ? 'updated' : 'created',
     q: (url.searchParams.get('q') ?? '').trim().slice(0, FORUM_SEARCH_MAX_LENGTH),
     creator,
@@ -258,6 +281,24 @@ function decodeSegments(segments: string[]): string[] | null {
 
 function isForumFilter(value: string): value is ForumFilter {
   return FORUM_FILTERS.includes(value as ForumFilter)
+}
+
+function isForumTopicType(value: string): value is Exclude<ForumTopicType, 'all'> {
+  return FORUM_TOPIC_TYPES.includes(value as Exclude<ForumTopicType, 'all'>)
+}
+
+function readListPath(segments: string[]): Pick<ForumListRouteState, 'filter' | 'topicType'> | null {
+  if (segments.length === 0)
+    return { filter: 'all', topicType: 'all' }
+  if (segments.length === 1) {
+    if (isForumFilter(segments[0]))
+      return { filter: segments[0], topicType: 'all' }
+    if (isForumTopicType(segments[0]))
+      return { filter: 'all', topicType: segments[0] }
+  }
+  if (segments.length === 2 && isForumFilter(segments[0]) && isForumTopicType(segments[1]))
+    return { filter: segments[0], topicType: segments[1] }
+  return null
 }
 
 function toUrl(input: string | URL): URL {

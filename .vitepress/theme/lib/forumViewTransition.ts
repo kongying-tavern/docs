@@ -43,7 +43,8 @@ export async function transitionForumRoute(
   const staysOnUser = current?.name === 'user'
     && target.name === 'user'
     && current.username === target.username
-  if (!current || staysOnUser || !enableTransitions()) {
+  const staysOnSearch = current?.name === 'search' && target.name === 'search'
+  if (!current || staysOnUser || staysOnSearch || !enableTransitions()) {
     update()
     await nextTick()
     await nextTick()
@@ -164,7 +165,7 @@ function findSharedElements(shared: SharedRoute, page: ForumRoute): { element: H
   const root = findTopicRoot(shared.topicId, page)
   if (!root)
     return []
-  return ['author', 'login', 'type', 'title', 'content', 'image'].flatMap((role) => {
+  return ['author', 'login', 'type', 'title', 'content', 'image', 'quote'].flatMap((role) => {
     const element = root.querySelector<HTMLElement>(`[data-forum-shared-topic="${role}"]`)
     return element ? [{ element, name: `forum-topic-${role}` }] : []
   })

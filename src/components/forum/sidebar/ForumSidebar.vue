@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ForumSort } from '~/services/forum/forumRoute'
 import { useQueryCache } from '@pinia/colada'
 import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
@@ -19,7 +18,6 @@ import { isClosedUnseen } from '~/services/forum/forumTopicSeenState'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { FORM_HASH } from '../form/publish-topic-form/config'
 import { publishTopic } from '../utils/forumUi'
-import ForumSidebarCreateButton from './ForumSidebarCreateButton.vue'
 import ForumSidebarInformationMenu from './ForumSidebarInformationMenu.vue'
 import ForumSidebarNav from './ForumSidebarNav.vue'
 import ForumSidebarSection from './ForumSidebarSection.vue'
@@ -29,7 +27,7 @@ const { message } = useLocalized()
 const auth = useUserAuthStore()
 const userInfo = useUserInfoStore()
 const queryCache = useQueryCache()
-const { route, list, topicHref, userHref, navigateSort } = useForumRoute()
+const { route, topicHref, userHref } = useForumRoute()
 const personal = useForumPersonalState()
 const topicSeen = useForumTopicSeenState()
 
@@ -67,7 +65,6 @@ const participatedSectionOpen = computed({
   set: value => participatedOpen.value = value,
 })
 const informationOpen = ref(false)
-const sortOpen = ref(false)
 const informationMenu = useTemplateRef('informationMenu')
 const SIDEBAR_DETAIL_QUERY_LIMIT = 5
 
@@ -154,11 +151,16 @@ const navItems = computed(() => {
   const items = [
     { label: message.value.forum.sidebar.home, icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
     { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
+    { label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') },
   ]
   if (isLoggedIn.value && username.value) {
     items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), username: username.value })
   }
-  items.push({ label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') })
+  items.push({
+    label: isLoggedIn.value ? message.value.forum.sidebar.createFeedback : message.value.forum.sidebar.loginToCreate,
+    icon: isLoggedIn.value ? 'i-lucide-square-pen' : 'i-lucide-log-in',
+    action: true,
+  })
   return items
 })
 
@@ -170,6 +172,9 @@ const submittedItems = computed(() => submitted.rows.value
     title: topic.title,
     href: topicHref(String(topic.id), null),
     type: topic.type,
+    state: topic.state,
+    status: topic.status,
+    goodIssue: topic.goodIssue,
     commentCount: Math.max(0, topic.commentCount),
     closedUnseen: isClosedUnseen(topic, topicSeen.seenAt(String(topic.id))),
     menuTopic: topic,
@@ -184,6 +189,9 @@ const followedItems = computed(() => personal.state.value.followedTopics
       title: current?.title ?? topic.title,
       href: topicHref(topic.topicId, null),
       type: current?.type ?? topic.type,
+      state: current?.state ?? topic.state,
+      status: current?.status ?? topic.status,
+      goodIssue: current?.goodIssue ?? topic.goodIssue,
       commentCount: Math.max(0, current?.commentCount ?? topic.commentCount ?? 0),
       closedUnseen: isClosedUnseen(
         { state: current?.state ?? topic.state, closedAt: current?.closedAt ?? topic.closedAt },
@@ -201,6 +209,9 @@ const participatedItems = computed(() => personal.state.value.recentParticipated
     title: current?.title ?? topic.title,
     href: topicHref(topic.topicId, null),
     type: current?.type ?? topic.type,
+    state: current?.state ?? topic.state,
+    status: current?.status ?? topic.status,
+    goodIssue: current?.goodIssue ?? topic.goodIssue,
     commentCount: Math.max(0, current?.commentCount ?? topic.commentCount ?? 0),
     closedUnseen: isClosedUnseen(
       { state: current?.state ?? topic.state, closedAt: current?.closedAt ?? topic.closedAt },
@@ -221,24 +232,12 @@ function handleCreate() {
     location.hash = 'login-alert'
   }
 }
-
-async function selectSort(sort: ForumSort) {
-  await navigateSort(sort)
-  sortOpen.value = false
-}
-
-watch(informationOpen, (open) => {
-  if (!open)
-    sortOpen.value = false
-})
 </script>
 
 <template>
   <div class="forum-sidebar">
     <div class="forum-sidebar-scroll">
-      <ForumSidebarNav :items="navItems" />
-
-      <ForumSidebarCreateButton :is-logged-in="isLoggedIn" @create="handleCreate" />
+      <ForumSidebarNav :items="navItems" @create="handleCreate" />
 
       <ForumSidebarSection
         v-model:open="submittedSectionOpen"
@@ -271,14 +270,10 @@ watch(informationOpen, (open) => {
     <ForumSidebarInformationMenu
       ref="informationMenu"
       :open="informationOpen"
-      :sort-open="sortOpen"
-      :has-list="Boolean(list)"
-      :current-sort="list?.sort ?? 'created'"
       :privacy-href="pageHref('privacy')"
       :agreement-href="pageHref('agreement')"
+      :settings-href="pageHref('settings')"
       @update:open="informationOpen = $event"
-      @update:sort-open="sortOpen = $event"
-      @select-sort="selectSort"
     />
   </div>
 </template>

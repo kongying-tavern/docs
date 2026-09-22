@@ -2,6 +2,7 @@
 import { ReloadIcon } from '@radix-icons/vue'
 import { Button } from '@/components/ui/button'
 import Divider from '@/components/ui/divider/Divider.vue'
+import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 
 withDefaults(defineProps<{
@@ -35,7 +36,7 @@ const { message } = useLocalized()
         class="mr-2 h-4 w-4"
         :class="{ 'animate-spin': loading }"
       />
-      {{ error ? message.forum.auth.callback.error.retry : text }}
+      <TextMorph :text="error ? message.forum.auth.callback.error.retry : text" />
     </Button>
     <Divider
       v-else

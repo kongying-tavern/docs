@@ -60,7 +60,7 @@ function toggle() {
     :locale="lang"
     :relative="isRelative"
     :title="isRelative && mounted ? absoluteText : undefined"
-    :class="canToggle ? 'cursor-pointer' : 'cursor-default'"
+    :class="canToggle ? 'cursor-pointer hover:c-[var(--vp-c-text-2)] transition-colors' : 'cursor-default'"
     :role="canToggle ? 'button' : undefined"
     :tabindex="canToggle ? 0 : undefined"
     @click="toggle"

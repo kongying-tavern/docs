@@ -7,13 +7,15 @@ export function composeTopicBody(
   options: {
     labels?: (string | null | undefined)[]
     state?: ForumAPI.TopicState
+    quotedTopic?: ForumAPI.QuotedTopicReference
   },
 ): string {
-  const { labels, state } = options
+  const { labels, state, quotedTopic } = options
 
   const meta = {
     ...(labels ? { labels: uniq(labels.filter(v => v)) } : {}),
     ...(state ? { state } : {}),
+    ...(quotedTopic ? { quotedTopic } : {}),
   }
 
   return writeTopicBodyComment(body, meta)

@@ -4,6 +4,7 @@ import { useMediaQuery } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
+import ForumImageNavigationButton from '../ForumImageNavigationButton.vue'
 import PreviewerControls from './components/PreviewerControls.vue'
 import PreviewerSidePanel from './components/PreviewerSidePanel.vue'
 import { useActivePreviewer } from './composables/useActivePreviewer'
@@ -389,24 +390,22 @@ defineExpose({ openAt, close })
             >
           </div>
 
-          <button
+          <ForumImageNavigationButton
             v-if="total > 1"
-            type="button"
             class="forum-preview-nav prev"
-            :aria-label="message.forum.imagePreview.previous"
+            auto-hide
+            direction="previous"
+            :label="message.forum.imagePreview.previous"
             @click.stop="goTo(current - 1, -1)"
-          >
-            <span class="i-lucide-chevron-left" aria-hidden="true" />
-          </button>
-          <button
+          />
+          <ForumImageNavigationButton
             v-if="total > 1"
-            type="button"
             class="forum-preview-nav next"
-            :aria-label="message.forum.imagePreview.next"
+            auto-hide
+            direction="next"
+            :label="message.forum.imagePreview.next"
             @click.stop="goTo(current + 1, 1)"
-          >
-            <span class="i-lucide-chevron-right" aria-hidden="true" />
-          </button>
+          />
         </div>
 
         <FeyCards

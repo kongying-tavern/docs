@@ -63,7 +63,7 @@ function goToProfilePage() {
             </span>
           </div>
 
-          <p class="text-xs text-gray-600 mt-1 dark:text-gray-400">
+          <p class="text-xs c-[var(--vp-c-text-2)] mt-1">
             {{ user?.bio || message.forum.labels.lazyPerson }}
           </p>
 

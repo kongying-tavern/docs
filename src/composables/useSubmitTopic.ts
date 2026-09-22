@@ -1,26 +1,31 @@
 import type ForumAPI from '@/apis/forum/api'
+import { useQueryCache } from '@pinia/colada'
 import { useData } from 'vitepress'
+import { reactions } from '@/apis/interknot.site'
 import { useLocalized } from '@/hooks/useLocalized'
 import { authGuards } from '@/utils/auth-helpers'
 import { composeTopicBody } from '~/composables/composeTopicBody'
 import { useForumMutations } from '~/composables/forum/useForumMutations'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { forumKeys } from '~/services/forum/forumQueryContracts'
+import { reactionEnvironmentForOrigin, recordPublishedTopicQuote } from '~/services/forum/forumReaction'
+import { buildTopicCreationLabels } from '~/services/forum/forumTopicLabels'
+import { toast } from '~/services/telemetry/toast'
 
-const typeLabelGetter = getTopicTypeLabelGetter()
 const localeLabelGetter = getForumLocaleLabelGetter()
 
 export function useSubmitTopic() {
   const { message } = useLocalized()
   const { lang } = useData()
   const forumMutations = useForumMutations()
+  const queryCache = useQueryCache()
 
   const submitData = async (options: ForumAPI.CreateTopicOption) => {
     if (!authGuards.requireLogin(message.value.forum.auth.loginTips))
       throw new Error('Authentication is required to publish a Topic.')
 
-    const { text, title, tags, type } = options
+    const { text, title, tags, type, quotedTopic } = options
 
     if (type === 'ANN') {
       const { hasAnyPermissions } = useRuleChecks()
@@ -30,20 +35,38 @@ export function useSubmitTopic() {
         throw new Error('Announcement permission is required.')
     }
 
-    const labels = [
+    const labels = buildTopicCreationLabels(
+      type,
       import.meta.env.DEV ? 'DEV-TEST' : 'WEB-FEEDBACK',
-      typeLabelGetter.getLabel(type),
       localeLabelGetter.getLabel(lang.value.substring(0, 2).toUpperCase()),
-      ...tags,
-    ]
+      tags,
+    )
 
     const newTopic = {
-      body: composeTopicBody(text, { labels }),
+      body: composeTopicBody(text, { labels, quotedTopic }),
       title: `${type}:${title.length === 0 ? `${text.substring(0, 12)}...` : title}`,
       labels: labels.join(','),
     }
 
-    return forumMutations.createTopic(newTopic)
+    const topic = await forumMutations.createTopic(newTopic)
+
+    // This write is keyed by the newly published topic, never by opening the
+    // quote form. A count-sync failure must not turn a real publication into a
+    // form failure that encourages the user to submit the topic again.
+    try {
+      const resourceUrl = await recordPublishedTopicQuote(
+        topic,
+        reactionEnvironmentForOrigin(location.origin),
+        (url, userId) => reactions.setPageReaction('like', { url, userId }),
+      )
+      if (resourceUrl)
+        void queryCache.invalidateQueries({ key: forumKeys.reactionResource(resourceUrl) }).catch(() => {})
+    }
+    catch (error) {
+      toast.warning(message.value.forum.topic.quote.countSyncFailed, { error, scene: 'rc' })
+    }
+
+    return topic
   }
 
   return {

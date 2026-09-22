@@ -74,18 +74,21 @@ export function useFormState() {
     const targetType = tabList.value[nextTabIndex.value]
     if (!targetType)
       return
+    const quotedTopic = formData.value.quotedTopic
     snapshotDraft(formData.value.type)
     currentTabIndex.value = nextTabIndex.value
     inSwitchTabTransition.value = true
     setTimeout(() => {
       setFieldValue('type', targetType)
       applyDraft(targetType)
+      if (quotedTopic)
+        setFieldValue('quotedTopic', quotedTopic)
     }, TRANSITION_DURATION / 2)
   }
 
   function initFormData(): void {
     const type = formData.value.type
-    const freshDraft = createDefaultTopicDraft()
+    const freshDraft = { ...createDefaultTopicDraft(), type }
     draftSessions.set(type, freshDraft)
     writeTopicDraft(type, freshDraft)
     resetValidationForm({ values: freshDraft })
@@ -111,10 +114,17 @@ export function useFormState() {
       return
     const prevType = formData.value.type
     if (prevType !== type) {
+      const quotedTopic = formData.value.quotedTopic
       snapshotDraft(prevType)
       applyDraft(type)
+      if (quotedTopic)
+        setFieldValue('quotedTopic', quotedTopic)
     }
     currentTabIndex.value = tabList.value.indexOf(type)
+  }
+
+  function setQuotedTopic(quotedTopic?: TopicFormData['quotedTopic']): void {
+    setFieldValue('quotedTopic', quotedTopic)
   }
 
   watch([hasPermission, () => formData.value.type], ([, type]) => {
@@ -157,6 +167,7 @@ export function useFormState() {
     saveDraft,
     discardDraft,
     setFormType,
+    setQuotedTopic,
     openForm,
     closeForm,
   }

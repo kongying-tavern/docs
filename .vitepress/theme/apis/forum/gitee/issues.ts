@@ -13,6 +13,7 @@ import { GiteeApiErrorType } from './types'
 import {
   normalizeComment,
   normalizeIssue,
+  normalizeTopicTimeline,
   processLabels,
 } from './utils'
 
@@ -22,6 +23,11 @@ export type TopicUpdateOutcome
     | { status: 'unknown', error: Error }
 
 export interface TopicListRequest {
+  endpoint: string
+  searchParams: Record<string, SearchParamValue>
+}
+
+export interface TopicOperateLogsRequest {
   endpoint: string
   searchParams: Record<string, SearchParamValue>
 }
@@ -127,6 +133,34 @@ export async function getTopic(number: string): Promise<ForumAPI.Topic> {
   )
 
   return normalizeIssue(data)
+}
+
+/**
+ * `operate_logs` 只有 owner 级路径，`repo` 必须作为 query 参数；
+ * 写成 `repos/{owner}/{repo}/issues/{number}/operate_logs` 会 404。
+ */
+export function buildTopicOperateLogsRequest(number: string | number): TopicOperateLogsRequest {
+  return {
+    endpoint: `repos/${OWNER}/issues/${number}/operate_logs`,
+    searchParams: {
+      repo: FEEDBACK_REPO,
+      // 时间线按时间正序呈现；接口默认 desc
+      sort: 'asc',
+    },
+  }
+}
+
+/**
+ * 话题状态时间线。日志随变更持续增长，不走 apiCall 的会话级 memoize
+ * （`cache: true` 会在整个会话内固定住首个结果），复用交由上层查询的 staleTime 控制。
+ */
+export async function getTopicTimeline(number: string | number): Promise<ForumAPI.TopicTimelineEvent[]> {
+  const request = buildTopicOperateLogsRequest(number)
+  const { data } = await apiCall<GITEE.OperateLogList>('get', request.endpoint, {
+    searchParams: request.searchParams,
+  })
+
+  return normalizeTopicTimeline(Array.isArray(data) ? data : [])
 }
 
 export async function getTopics(
@@ -248,7 +282,8 @@ export function buildTopicListRequest(
       endpoint: 'search/issues',
       searchParams: {
         repo: `${OWNER}/${FEEDBACK_REPO}`,
-        state,
+        // Search API only accepts concrete states; omitting it searches every state.
+        state: state === 'all' ? undefined : state,
         q: search,
         sort: `${query.sort}_at`,
         page: query.current,

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { PreviewerContext } from './image-previewer/ForumImagePreviewer.vue'
-import { useMediaQuery } from '@vueuse/core'
-import { computed, ref, useTemplateRef } from 'vue'
+import { useElementSize, useMediaQuery } from '@vueuse/core'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useBounceScroll } from '~/composables/useBounceScroll'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
+import { planForumImageGrid } from '~/services/forum/forumImageLayout'
+import ForumImageIndicator from './ForumImageIndicator.vue'
 import ForumImageItem from './ForumImageItem.vue'
+import ForumImageNavigationButton from './ForumImageNavigationButton.vue'
 import ForumImagePreviewer from './image-previewer/ForumImagePreviewer.vue'
 
 export interface ImageItem {
@@ -17,7 +20,7 @@ export interface ImageItem {
   thumbhash?: string
 }
 
-type LayoutMode = 'auto' | 'single' | 'double' | 'triple' | 'quad' | 'gallery' | 'row'
+type LayoutMode = 'auto' | 'single' | 'double' | 'triple' | 'quad' | 'gallery' | 'row' | 'thumbnail'
 
 interface Props {
   images: ImageItem[]
@@ -26,6 +29,7 @@ interface Props {
   containerClass?: string
   imageClass?: string
   context?: PreviewerContext
+  previewEnabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,11 +37,17 @@ const props = withDefaults(defineProps<Props>(), {
   maxDisplay: 3,
   containerClass: '',
   imageClass: '',
+  previewEnabled: true,
 })
 
 const { message } = useLocalized()
 const errorMap = ref(new Set<number>())
 const readyMap = ref(new Set<number>())
+// errorMap/readyMap 以 images 下标为 key：列表被整体替换（如引用话题 refetch 重建）时，旧下标的记录必须作废
+watch(() => props.images, () => {
+  errorMap.value = new Set()
+  readyMap.value = new Set()
+})
 const availableImages = computed(() => props.images
   .map((image, sourceIndex) => ({ image, sourceIndex }))
   .filter(({ sourceIndex }) => !errorMap.value.has(sourceIndex)))
@@ -57,17 +67,40 @@ const actualLayout = computed<Exclude<LayoutMode, 'auto'>>(() => {
 })
 
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
-const isRail = computed(() => isMobile.value)
+
+const isRail = computed(() =>
+  actualLayout.value !== 'thumbnail' && isMobile.value,
+)
 
 const railRef = useTemplateRef<HTMLElement>('railRef')
+const { width: gridWidth } = useElementSize(railRef)
 const railIndex = ref(0)
+const railProgress = ref(0)
 
 useBounceScroll(railRef, { axis: 'x' })
+
+const isAdaptiveGrid = computed(() => !isRail.value && (
+  actualLayout.value === 'thumbnail'
+  || (props.layout === 'auto' && availableImages.value.length > 1)
+))
+const adaptiveImages = computed(() => availableImages.value.slice(
+  0,
+  actualLayout.value === 'thumbnail' ? Math.min(props.maxDisplay, 4) : 4,
+))
+const adaptiveAspect = computed(() => actualLayout.value === 'thumbnail'
+  ? 1
+  : Math.max(2, gridWidth.value / 400))
+const adaptivePlan = computed(() => planForumImageGrid(
+  adaptiveImages.value.map(({ image }) => image),
+  adaptiveAspect.value,
+))
 
 const displayImages = computed(() => {
   const layout = actualLayout.value
   if (layout === 'row')
     return availableImages.value.slice(0, props.maxDisplay)
+  if (isAdaptiveGrid.value)
+    return adaptivePlan.value.order.map(index => adaptiveImages.value[index])
   if (isRail.value)
     return availableImages.value
   if (layout === 'gallery')
@@ -110,7 +143,7 @@ function railItemStyle(): Record<string, string> | undefined {
 }
 
 function railStep(): number {
-  const first = railRef.value?.firstElementChild as HTMLElement | null
+  const first = railRef.value?.querySelector<HTMLElement>('[data-forum-image-rail-item]')
   return first ? first.offsetWidth + 8 : 0 // gap-2
 }
 
@@ -119,7 +152,11 @@ function onRailScroll() {
   const step = railStep()
   if (!el || step <= 0)
     return
-  const index = Math.round(el.scrollLeft / step)
+  railProgress.value = Math.min(
+    Math.max(el.scrollLeft / step, 0),
+    railCount.value - 1,
+  )
+  const index = Math.round(railProgress.value)
   if (index !== railIndex.value)
     railIndex.value = Math.min(Math.max(index, 0), railCount.value - 1)
 }
@@ -133,10 +170,18 @@ function scrollRailTo(index: number) {
   el.scrollTo({ left: target * step, behavior: 'smooth' })
 }
 
+watch([railCount, isRail], ([count, rail]) => {
+  const nextIndex = rail ? Math.min(railIndex.value, Math.max(0, count - 1)) : 0
+  railIndex.value = nextIndex
+  railProgress.value = nextIndex
+})
+
 const remainingCount = computed(() => {
   const layout = actualLayout.value
   if (layout === 'row')
     return Math.max(0, availableImages.value.length - props.maxDisplay)
+  if (isAdaptiveGrid.value)
+    return Math.max(0, availableImages.value.length - adaptiveImages.value.length)
   if (isRail.value)
     return 0
   if (layout === 'gallery')
@@ -147,12 +192,16 @@ const remainingCount = computed(() => {
 const validImages = computed(() => availableImages.value.map(({ image }) => image))
 const rowContainerStyle = computed<Record<string, string> | undefined>(() =>
   !isRail.value && actualLayout.value === 'row'
-    ? { '--forum-image-columns': String(Math.max(1, props.maxDisplay)) }
+    ? { '--forum-image-columns': String(Math.max(1, displayImages.value.length)) }
     : undefined,
 )
 
 function handleError(index: number) {
   errorMap.value.add(index)
+}
+
+function previewIndexFor(sourceIndex: number): number {
+  return availableImages.value.findIndex(image => image.sourceIndex === sourceIndex)
 }
 
 function isPreviewReady(image: ImageItem, index: number): boolean {
@@ -166,6 +215,13 @@ function handleReady(index: number) {
 // @unocss-include
 const layoutConfig = computed(() => {
   const layout = actualLayout.value
+
+  if (isAdaptiveGrid.value) {
+    return {
+      containerStyle: `forum-image-adaptive-grid grid w-full rounded-lg overflow-hidden${layout === 'thumbnail' ? ' forum-image-adaptive-grid--square size-full' : ''}`,
+      getItemStyle: () => 'size-full min-h-0 min-w-0',
+    }
+  }
 
   // @unocss-include
   const containerStyles: Record<string, string> = {
@@ -193,7 +249,6 @@ const layoutConfig = computed(() => {
       return 'w-[78vw] max-w-[420px] shrink-0 snap-start rounded-xl'
     if (layout === 'row')
       return 'h-100px min-w-0 rounded'
-
     const cornerClass = cornerStyles[layout]?.[index] ?? ''
     return `${baseStyles} ${cornerClass}`
   }
@@ -218,62 +273,89 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
     class="forum-image-previewer"
   >
     <template #default="{ openAt }">
-      <div
-        ref="railRef"
-        :class="[layoutConfig.containerStyle, containerClass]"
-        :style="rowContainerStyle"
-        @scroll.passive="onRailScroll"
-      >
-        <button
-          v-if="showPrevArrow"
-          type="button"
-          class="forum-image-rail-btn forum-image-rail-prev"
-          :aria-label="message.forum.imagePreview.previous"
-          @click="scrollRailTo(railIndex - 1)"
-        >
-          <span class="i-lucide-chevron-left" aria-hidden="true" />
-        </button>
+      <div class="forum-image-layout">
+        <ForumImageIndicator
+          v-if="isRail && railCount > 1"
+          class="forum-image-rail-indicator"
+          tone="surface"
+          continuous
+          :progress="railProgress"
+          :total="railCount"
+          :aria-label="`${railIndex + 1} / ${railCount}`"
+          :aria-labels="displayImages.map((_, index) => message.forum.imagePreview.showImage.replace('{index}', String(index + 1)))"
+          @select="scrollRailTo"
+        />
 
-        <button
-          v-for="({ image, sourceIndex }, index) in displayImages"
-          :key="`${sourceIndex}:${image.src}`"
-          type="button"
-          class="p-0 border border-[var(--vp-c-divider)] bg-transparent transition-colors relative overflow-hidden hover:border-[var(--vp-c-brand)]"
+        <div
           :class="[
-            layoutConfig.getItemStyle(index),
-            !isRail && actualLayout === 'triple' ? tripleGridClasses[index] : '',
-            isPreviewReady(image, sourceIndex) ? 'cursor-zoom-in' : 'cursor-wait',
+            isRail ? 'forum-image-rail-frame' : '',
+            isRail ? containerClass : '',
+            actualLayout === 'thumbnail' ? 'h-full' : '',
           ]"
-          :style="railItemStyle()"
-          :disabled="!isPreviewReady(image, sourceIndex)"
-          :aria-label="message.forum.imagePreview.showImage.replace('{index}', String(index + 1))"
-          @click="openAt(index, $event.currentTarget)"
         >
-          <ForumImageItem
-            :image="image"
-            :fill-container="true"
-            :class="imageClass"
-            @error="handleError(sourceIndex)"
-            @ready="handleReady(sourceIndex)"
+          <div
+            ref="railRef"
+            :class="[layoutConfig.containerStyle, isRail ? '' : containerClass]"
+            :data-forum-grid-layout="isAdaptiveGrid ? adaptivePlan.layout : undefined"
+            :style="rowContainerStyle"
+            @scroll.passive="onRailScroll"
+          >
+            <component
+              :is="previewEnabled ? 'button' : 'div'"
+              v-for="({ image, sourceIndex }, index) in displayImages"
+              :key="`${sourceIndex}:${image.src}`"
+              :type="previewEnabled ? 'button' : undefined"
+              data-forum-image-rail-item
+              class="p-0 border border-[var(--vp-c-divider)] bg-transparent relative overflow-hidden"
+              :class="[
+                layoutConfig.getItemStyle(index),
+                !isRail && !isAdaptiveGrid && actualLayout === 'triple' ? tripleGridClasses[index] : '',
+                previewEnabled ? 'transition-colors hover:border-[var(--vp-c-brand)]' : '',
+                previewEnabled ? (isPreviewReady(image, sourceIndex) ? 'cursor-zoom-in' : 'cursor-wait') : '',
+              ]"
+              :style="railItemStyle()"
+              :disabled="previewEnabled && !isPreviewReady(image, sourceIndex) ? true : undefined"
+              :aria-label="previewEnabled ? message.forum.imagePreview.showImage.replace('{index}', String(index + 1)) : undefined"
+              @click="previewEnabled && openAt(previewIndexFor(sourceIndex), $event.currentTarget)"
+            >
+              <ForumImageItem
+                :image="image"
+                :fill-container="true"
+                :interactive="previewEnabled"
+                :class="imageClass"
+                @error="handleError(sourceIndex)"
+                @ready="handleReady(sourceIndex)"
+              />
+
+              <div
+                v-if="index === displayImages.length - 1 && remainingCount > 0"
+                class="text-xs text-[var(--forum-media-on-overlay)] px-1.5 py-0.5 rounded bg-[var(--forum-media-overlay)] right-1 top-1 absolute backdrop-blur-sm"
+              >
+                +{{ remainingCount }}
+              </div>
+            </component>
+          </div>
+
+          <ForumImageNavigationButton
+            v-if="isRail"
+            class="forum-image-rail-btn forum-image-rail-prev"
+            direction="previous"
+            size="small"
+            :label="message.forum.imagePreview.previous"
+            :visible="showPrevArrow"
+            @click="scrollRailTo(railIndex - 1)"
           />
 
-          <div
-            v-if="index === displayImages.length - 1 && remainingCount > 0"
-            class="text-xs text-[var(--forum-media-on-overlay)] px-1.5 py-0.5 rounded bg-[var(--forum-media-overlay)] right-1 top-1 absolute backdrop-blur-sm"
-          >
-            +{{ remainingCount }}
-          </div>
-        </button>
-
-        <button
-          v-if="showNextArrow"
-          type="button"
-          class="forum-image-rail-btn forum-image-rail-next"
-          :aria-label="message.forum.imagePreview.next"
-          @click="scrollRailTo(railIndex + 1)"
-        >
-          <span class="i-lucide-chevron-right" aria-hidden="true" />
-        </button>
+          <ForumImageNavigationButton
+            v-if="isRail"
+            class="forum-image-rail-btn forum-image-rail-next"
+            direction="next"
+            size="small"
+            :label="message.forum.imagePreview.next"
+            :visible="showNextArrow"
+            @click="scrollRailTo(railIndex + 1)"
+          />
+        </div>
       </div>
     </template>
   </ForumImagePreviewer>
@@ -282,6 +364,50 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 <style scoped>
 .forum-image-row {
   grid-template-columns: repeat(var(--forum-image-columns), minmax(0, 1fr));
+}
+
+.forum-image-adaptive-grid {
+  aspect-ratio: 2;
+  max-height: 400px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.forum-image-adaptive-grid--square {
+  aspect-ratio: 1;
+  max-height: none;
+}
+
+.forum-image-adaptive-grid[data-forum-grid-layout='single'] {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.forum-image-adaptive-grid[data-forum-grid-layout='two-vertical'] {
+  grid-template-rows: 1fr;
+}
+
+.forum-image-adaptive-grid[data-forum-grid-layout='two-horizontal'] {
+  grid-template-columns: 1fr;
+}
+
+.forum-image-adaptive-grid[data-forum-grid-layout='three-left'] > :first-child {
+  grid-row: span 2;
+}
+
+.forum-image-adaptive-grid[data-forum-grid-layout='three-top'] > :first-child {
+  grid-column: span 2;
+}
+
+.forum-image-rail-indicator {
+  min-height: 20px;
+  justify-content: flex-start;
+  padding: 6px 0;
+  margin-bottom: 4px;
+}
+
+.forum-image-rail-frame {
+  position: relative;
 }
 
 .grid:has(.row-span-2) {
@@ -298,11 +424,6 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
   border: 1px solid var(--vp-c-divider);
   margin: -0.5px;
   z-index: 1;
-}
-
-.grid > div:hover {
-  border-color: var(--vp-c-brand);
-  z-index: 2;
 }
 
 @container (max-width: 500px) {
@@ -337,23 +458,6 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
   top: 50%;
   translate: 0 -50%;
   z-index: 4;
-  display: flex;
-  width: 34px;
-  height: 34px;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: 9999px;
-  background: var(--forum-media-overlay);
-  color: var(--forum-media-on-overlay);
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.forum-image-rail-btn span {
-  width: 18px;
-  height: 18px;
 }
 
 .forum-image-rail-prev {
@@ -362,13 +466,5 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 
 .forum-image-rail-next {
   right: 10px;
-}
-
-.forum-image-rail:hover .forum-image-rail-btn {
-  opacity: 1;
-}
-
-.forum-image-rail-btn:hover {
-  background: var(--forum-media-overlay-strong);
 }
 </style>

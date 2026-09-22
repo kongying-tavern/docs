@@ -14,6 +14,7 @@ const STATIC_FIELDS = [
   ['team', 'team'],
   ['payment', 'payment'],
   ['forum', 'forum'],
+  ['settings', 'settings'],
   ['changelog', 'changelog'],
 ] as const
 const LINKED_FIELDS = ['nav', 'sidebar', 'footer'] as const

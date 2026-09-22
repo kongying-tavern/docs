@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { X } from '@lucide/vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import ForumImageIndicator from '../../ForumImageIndicator.vue'
 
 defineProps<{
   index: number
@@ -26,20 +27,13 @@ const { message } = useLocalized()
     <X class="size-5" />
   </button>
 
-  <div
+  <ForumImageIndicator
     v-if="showDots !== false && total > 1"
     class="forum-preview-dots"
-  >
-    <button
-      v-for="(_, dotIndex) in total"
-      :key="dotIndex"
-      type="button"
-      class="forum-preview-dot"
-      :class="{ active: dotIndex === index }"
-      :aria-label="`${dotIndex + 1}`"
-      @click.stop="emit('select', dotIndex)"
-    />
-  </div>
+    :progress="index"
+    :total="total"
+    @select="emit('select', $event)"
+  />
 </template>
 
 <style scoped>
@@ -74,43 +68,14 @@ const { message } = useLocalized()
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
   transition:
     opacity 200ms ease,
     transform 220ms ease;
 }
 
-.forum-preview-dot {
-  box-sizing: content-box;
-  width: 8px;
-  height: 8px;
-  padding: 5px;
-  border: 0;
-  border-radius: 9999px;
-  background: var(--forum-media-dot);
-  background-clip: content-box;
-  cursor: pointer;
-  transition:
-    width 200ms ease,
-    background-color 200ms ease;
-}
-
-.forum-preview-dot:hover {
-  background-color: var(--forum-media-dot-hover);
-}
-
-.forum-preview-dot.active {
-  width: 22px;
-  background-color: var(--forum-media-on-overlay);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .forum-preview-close,
-  .forum-preview-dots,
-  .forum-preview-dot {
+  .forum-preview-dots {
     transition: none !important;
   }
 }

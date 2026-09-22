@@ -1,24 +1,45 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue'
+import { computed, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
+import { resolveForumListScope } from '~/services/forum/forumListSkeleton'
+import { parseForumSearchQuery } from '~/services/forum/forumSearchQuery'
 import BaseForumPage from '../base/BaseForumPage.vue'
+import ForumListQuickControls from '../list/ForumListQuickControls.vue'
 import ForumTopicList from '../list/ForumTopicList.vue'
 import ForumTopicSearchInfo from '../search/ForumTopicSearchInfo.vue'
+import ForumAside from '../sidebar/ForumAside.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
-const activeTab = ref<'feedback' | ''>('feedback')
-const { route, list, navigateFilter, submitSearch } = useForumRoute()
+const { route, list, navigateFilter, navigateType, navigateSort } = useForumRoute()
+const { message } = useLocalized()
+
 const username = computed(() => route.value?.name === 'user' ? route.value.username : '')
+const feedbackFilter = computed(() => list.value?.filter === 'closed' ? 'closed' : 'all')
+const activeTab = computed<'all' | 'closed'>({
+  get: () => feedbackFilter.value,
+  set: filter => void navigateFilter(filter),
+})
+
+// Existing links to former profile filters fall back to the two visible tabs.
+watch(() => list.value?.filter, (filter) => {
+  if (route.value?.name === 'user' && filter && filter !== 'all' && filter !== 'closed')
+    void navigateFilter('all')
+}, { immediate: true })
+
+const search = computed(() => parseForumSearchQuery(list.value?.q ?? ''))
 const topics = useForumTopicsQuery(computed(() => ({
-  filter: list.value?.filter ?? 'all',
+  filter: feedbackFilter.value,
+  topicType: list.value?.topicType ?? 'all',
   sort: list.value?.sort ?? 'created',
-  q: list.value?.q ?? '',
-  creator: username.value,
-})))
+  q: search.value.text,
+  tags: search.value.tags,
+  statuses: search.value.states,
+  creator: search.value.author ?? username.value,
+})), true, computed(() => resolveForumListScope(route.value)))
 // 主页头部数量：该用户的全部反馈（不分类型/状态），不跟随下方筛选
 const allTopicsCount = useForumTopicsQuery(computed(() => ({
   filter: 'all',
@@ -28,31 +49,10 @@ const allTopicsCount = useForumTopicsQuery(computed(() => ({
   state: 'all',
   pageSize: 1,
 })), computed(() => Boolean(username.value)))
-const { message } = useLocalized()
 const loadStateMessage = computed(() => {
   if (topics.error.value)
     return message.value.forum.loadError
   return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
-})
-
-// 进入用户页时「全部反馈」为空则自动切到「已结反馈」（仅一次，切换用户后重置）
-const autoSwitchedToClosed = ref(false)
-watch(() => username.value, () => {
-  autoSwitchedToClosed.value = false
-})
-watchEffect(() => {
-  if (autoSwitchedToClosed.value)
-    return
-  if (topics.isLoading.value || topics.error.value)
-    return
-  if ((list.value?.filter ?? 'all') !== 'all')
-    return
-  if (list.value?.q)
-    return
-  if (topics.total.value > 0)
-    return
-  autoSwitchedToClosed.value = true
-  navigateFilter('closed')
 })
 </script>
 
@@ -66,11 +66,7 @@ watchEffect(() => {
     :load-more="topics.loadMore"
     :refresh-data="topics.refetch"
     :load-state-message="loadStateMessage"
-    :filter="list?.filter ?? 'all'"
-    :sort="list?.sort ?? 'created'"
-    :query="list?.q ?? ''"
-    :on-filter-change="navigateFilter"
-    :on-search="submitSearch"
+    :show-toolbar="false"
   >
     <template #header>
       <Suspense>
@@ -78,6 +74,7 @@ watchEffect(() => {
           v-model:active-tab="activeTab"
           :username="username"
           :topic-count="allTopicsCount.total.value"
+          :suggestions="topics.rows.value"
         />
 
         <template #fallback>
@@ -87,6 +84,12 @@ watchEffect(() => {
     </template>
 
     <template #content-before>
+      <ForumListQuickControls
+        :sort="list?.sort ?? 'created'"
+        :topic-type="list?.topicType ?? 'all'"
+        @sort-change="navigateSort"
+        @type-change="navigateType"
+      />
       <ForumTopicSearchInfo
         :loading="topics.isLoading.value"
         :total="topics.total.value"
@@ -94,13 +97,14 @@ watchEffect(() => {
     </template>
 
     <template #content-main>
-      <div v-show="activeTab === 'feedback'">
+      <div>
         <ForumTopicList
           :data="topics.rows.value"
           :loading="topics.isLoading.value || topics.loadingMore.value"
           :error="topics.error.value"
           :can-load-more="topics.canLoadMore.value"
           :sort="list?.sort ?? 'created'"
+          :query="list?.q ?? ''"
           :load-more="topics.loadMore"
           :refresh-data="topics.refetch"
         />
@@ -115,6 +119,10 @@ watchEffect(() => {
           :text="loadStateMessage"
         />
       </div>
+    </template>
+
+    <template #aside>
+      <ForumAside :username="username" />
     </template>
   </BaseForumPage>
 </template>

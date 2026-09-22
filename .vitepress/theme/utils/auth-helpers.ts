@@ -2,9 +2,9 @@
  * 认证相关的工具函数，消除重复的验证逻辑
  */
 
-import { toast } from 'vue-sonner'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { toast } from '~/services/telemetry/toast'
 import { AuthError, AuthErrorType } from './auth-errors'
 
 /**
@@ -133,7 +133,7 @@ export const withAuth = {
     }
     catch (error) {
       if (options?.errorMessage) {
-        toast.error(options.errorMessage)
+        toast.error(options.errorMessage, { error })
       }
       throw error
     }

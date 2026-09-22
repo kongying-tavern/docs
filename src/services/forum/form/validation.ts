@@ -3,6 +3,7 @@ import type { CustomConfig } from '../../../../.vitepress/locales/types'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { VALIDATION_LIMITS } from '../forumConfig'
+import { TOPIC_ID_REGEX } from '../forumTopicQuote'
 
 interface TopicValidationMessages {
   announcementPermission: string
@@ -43,6 +44,10 @@ export function createTopicDraftSchema(options: {
         .max(VALIDATION_LIMITS.TAGS.MAX_COUNT, messages.tooManyTags(VALIDATION_LIMITS.TAGS.MAX_COUNT)),
     ),
     type: z.enum(['FEAT', 'BUG', 'ANN']),
+    quotedTopic: z.object({
+      id: z.string().trim().toUpperCase().regex(TOPIC_ID_REGEX),
+      type: z.enum(['FEAT', 'BUG']),
+    }).optional(),
   }).superRefine((draft, context) => {
     if (draft.text.trim().length < VALIDATION_LIMITS.CONTENT.MIN_LENGTH) {
       context.addIssue({

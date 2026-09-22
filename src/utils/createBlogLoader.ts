@@ -35,8 +35,9 @@ function extractLanguageFromUrl(url: string): string {
  * 构建文件路径
  */
 function buildFilePath(url: string): string {
+  const sourcePath = url.startsWith('/src/') ? url.slice(1) : `src${url}`
   // eslint-disable-next-line node/prefer-global/process
-  return join(process.cwd(), `${url.replace('/src/', 'src/')}.md`)
+  return join(process.cwd(), `${sourcePath}.md`)
 }
 
 /**

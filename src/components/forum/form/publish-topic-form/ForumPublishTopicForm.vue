@@ -1,17 +1,23 @@
 <script setup lang="ts">
 /* eslint-disable no-console */
+import type ForumAPI from '@/apis/forum/api'
 import type { ImageAttachmentError } from '~/services/forum/form/imageAttachment'
 import type { TopicFormTransactionStage } from '~/services/forum/form/topicFormTransaction'
 import type { TopicFormData } from '~/services/forum/form/validation'
+import { OctagonXIcon, XIcon } from '@lucide/vue'
 import {
   createReusableTemplate,
   useEventListener,
   useMediaQuery,
 } from '@vueuse/core'
 import { last } from 'lodash-es'
-import { computed, markRaw, nextTick, ref, watch } from 'vue'
-import { toast } from 'vue-sonner'
+import { computed, nextTick, ref, watch } from 'vue'
 import { isPhoneBindingRequiredError } from '@/apis/forum/gitee'
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,9 +44,19 @@ import { useHashChecker } from '@/hooks/useHashChecker'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumImageUpload from '~/components/forum/form/ForumImageUpload.vue'
-import ToastErrorDescription from '~/components/forum/ui/ToastErrorDescription.vue'
+import ForumQuotedTopicCard from '~/components/forum/topic/ForumQuotedTopicCard.vue'
 import { formatImageAttachmentError, formatMessage } from '~/components/forum/utils/forumUi'
+import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
+import {
+  clearQuotedTopicRequest,
+  isQuotableTopicType,
+  QUOTED_TOPIC_ID_PARAM,
+  QUOTED_TOPIC_TYPE_PARAM,
+  readQuotedTopicRequest,
+} from '~/services/forum/forumTopicQuote'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
+import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
+import { toast } from '~/services/telemetry/toast'
 import { useFormState } from '../composables/useFormState'
 import { useFormSubmit } from '../composables/useFormSubmit'
 import ForumFormActionBar from '../ForumFormActionBar.vue'
@@ -68,10 +84,17 @@ const {
   saveDraft,
   discardDraft,
   setFormType,
+  setQuotedTopic,
   openForm,
   closeForm,
   validate,
 } = useFormState()
+
+const quotedTopicQuery = useForumTopicQuery(computed(() => formData.value.quotedTopic?.id ?? ''))
+const quotedTopicData = computed(() => String(quotedTopicQuery.data.value?.id ?? '') === formData.value.quotedTopic?.id
+  ? quotedTopicQuery.data.value
+  : undefined)
+let pendingQuotedTopicDefaultType: TopicFormData['type'] | undefined
 
 const {
   submitLoading,
@@ -95,9 +118,20 @@ const submissionPhase = ref<SubmissionPhase>('idle')
 const draftPromptOpen = ref(false)
 const validationErrorCount = ref(0)
 const firstInvalidField = ref<string>()
+
+interface SubmissionAlert {
+  title: string
+  description: string
+}
+
+const submissionAlert = ref<SubmissionAlert | null>(null)
 let networkStage: TopicFormTransactionStage = 'uploading'
 
-const finalIsDisabled = computed(() => submitLoading.value || submissionPhase.value === 'closing')
+const quotedTopicPending = computed(() => Boolean(formData.value.quotedTopic)
+  && (quotedTopicQuery.isLoading.value
+    || Boolean(quotedTopicQuery.error.value)
+    || !quotedTopicData.value))
+const finalIsDisabled = computed(() => submitLoading.value || submissionPhase.value === 'closing' || quotedTopicPending.value)
 const imageSelectionDisabled = computed(() => submitLoading.value)
 
 function imageErrorText(error: ImageAttachmentError): string {
@@ -151,9 +185,23 @@ useHashChecker(
       rememberLoginIntent(hash)
       return true
     }
+    const hasQuotedTopicParams = new URL(window.location.href).searchParams.has(QUOTED_TOPIC_ID_PARAM)
+      || new URL(window.location.href).searchParams.has(QUOTED_TOPIC_TYPE_PARAM)
+    const quotedTopic = readQuotedTopicRequest(window.location.href)
+    if (quotedTopic) {
+      pendingQuotedTopicDefaultType = quotedTopic.type
+      setQuotedTopic(quotedTopic)
+    }
+    else if (hasQuotedTopicParams) {
+      toast.error(message.value.forum.topic.quote.invalid, { report: false })
+    }
+    if (hasQuotedTopicParams)
+      clearQuotedTopicRequest(window.history, window.location.href)
+
     const targetTab = last(hash.split('-'))
-    const targetType = targetTab && tabList.value.includes(targetTab as TopicFormData['type'])
-      ? targetTab as TopicFormData['type']
+    const requestedType = quotedTopic?.type ?? targetTab
+    const targetType = requestedType && tabList.value.includes(requestedType as TopicFormData['type'])
+      ? requestedType as TopicFormData['type']
       : undefined
 
     if (targetType) {
@@ -166,9 +214,52 @@ useHashChecker(
   },
 )
 
+watch(() => quotedTopicQuery.data.value, (quotedTopic) => {
+  const reference = formData.value.quotedTopic
+  if (!quotedTopic || !reference || String(quotedTopic.id) !== reference.id)
+    return
+
+  if (!isQuotableTopicType(quotedTopic.type)) {
+    setQuotedTopic(undefined)
+    pendingQuotedTopicDefaultType = undefined
+    toast.error(message.value.forum.topic.quote.invalid, { report: false })
+    return
+  }
+
+  const actualReference: ForumAPI.QuotedTopicReference = {
+    id: String(quotedTopic.id),
+    type: quotedTopic.type,
+  }
+  setQuotedTopic(actualReference)
+
+  if (pendingQuotedTopicDefaultType && formData.value.type === pendingQuotedTopicDefaultType) {
+    const allowedType = tabList.value.includes(actualReference.type)
+      ? actualReference.type
+      : undefined
+    if (allowedType)
+      setFormType(allowedType)
+  }
+  pendingQuotedTopicDefaultType = undefined
+})
+
 async function handleFormSubmit(): Promise<void> {
   if (submitLoading.value || submissionPhase.value === 'closing')
     return
+
+  if (formData.value.quotedTopic) {
+    await quotedTopicQuery.refetch()
+    const quotedTopic = quotedTopicQuery.data.value
+    if (quotedTopicQuery.error.value || !quotedTopic || String(quotedTopic.id) !== formData.value.quotedTopic.id)
+      return
+    if (!isQuotableTopicType(quotedTopic.type)) {
+      setQuotedTopic(undefined)
+      toast.error(message.value.forum.topic.quote.invalid, { report: false })
+      return
+    }
+    setQuotedTopic({ id: String(quotedTopic.id), type: quotedTopic.type })
+  }
+
+  submissionAlert.value = null
 
   const validation = await validate()
   if (!validation.valid) {
@@ -208,7 +299,9 @@ async function handleFormSubmit(): Promise<void> {
 
   if (result.ok) {
     submissionPhase.value = 'succeeded'
+    submissionAlert.value = null
     toast.success(message.value.forum.publish.feedbackForm.success, { id: SUBMISSION_TOAST_ID })
+    trackOp(OpsEvents.topicPublish)
     initFormData()
     reset()
     return
@@ -218,36 +311,24 @@ async function handleFormSubmit(): Promise<void> {
   const stage = result.stage === 'upload' ? 'upload' : 'topic'
   console.error('[forum] 反馈发布失败:', result)
   const isPhoneBinding = result.stage === 'topic' && isPhoneBindingRequiredError(result.error)
-  toast.error(
-    stage === 'upload'
-      ? message.value.forum.publish.feedbackForm.uploadFailed
-      : message.value.forum.publish.feedbackForm.publishFailed,
-    {
-      id: SUBMISSION_TOAST_ID,
-      ...(stage === 'topic'
-        ? {
-            description: markRaw(ToastErrorDescription),
-            componentProps: {
-              error: result.error,
-              text: isPhoneBinding
-                ? message.value.forum.publish.feedbackForm.phoneBindingRequired
-                : undefined,
-            },
-          }
-        : { description: result.errors.map(imageErrorText).join('\n') }),
-      action: {
-        label: message.value.forum.publish.feedbackForm.returnToForm,
-        onClick: () => reopenFailedForm(stage),
-      },
-    },
-  )
+  const copy = message.value.forum.publish.feedbackForm
+  submissionAlert.value = {
+    title: stage === 'upload' ? copy.uploadFailed : copy.publishFailed,
+    description: result.stage === 'upload'
+      ? result.errors.map(imageErrorText).join('\n')
+      : (isPhoneBinding ? copy.phoneBindingRequired : result.error.message),
+  }
+  // 与 toast 版一致的遥测口径：upload 阶段无 error 详情，topic 阶段上报原始错误
+  reportError(result.stage === 'upload' ? { scene: 'up' } : { scene: 'tp', error: result.error })
+  // 发送动画已关闭弹窗，失败时自动重开，让用户就地看到告警并重试
+  reopenFailedForm(stage)
 }
 
 async function handleFilesSelected(files: File[]): Promise<void> {
   const result = await addFiles(files)
   if (!result.ok) {
     for (const error of result.errors)
-      toast.error(imageErrorText(error))
+      toast.error(imageErrorText(error), { report: false })
   }
 }
 
@@ -255,7 +336,7 @@ async function handleRetry(id: string): Promise<void> {
   const result = await retry(id)
   if (!result.ok) {
     for (const error of result.errors)
-      toast.error(imageErrorText(error))
+      toast.error(imageErrorText(error), { report: false })
   }
 }
 
@@ -306,6 +387,9 @@ watch(isOpen, (open) => {
     submissionPhase.value = 'idle'
     validationErrorCount.value = 0
   }
+  else if (!open) {
+    submissionAlert.value = null
+  }
 })
 </script>
 
@@ -322,6 +406,22 @@ watch(isOpen, (open) => {
   </UseUploader>
 
   <UseForm>
+    <Alert v-if="submissionAlert" variant="destructive" class="mb-3 pr-9">
+      <OctagonXIcon />
+      <AlertTitle>{{ submissionAlert.title }}</AlertTitle>
+      <AlertDescription class="whitespace-pre-wrap break-all">
+        {{ submissionAlert.description }}
+      </AlertDescription>
+      <button
+        type="button"
+        class="color-[var(--vp-c-text-2)] icon-btn right-1.5 top-1.5 absolute hover:color-[var(--vp-c-text-1)]"
+        :aria-label="message.ui.button.close"
+        @click="submissionAlert = null"
+      >
+        <XIcon class="size-3.5" />
+      </button>
+    </Alert>
+
     <ForumFormTabs
       :model-value="formData.type"
       :tabs="formTabs"
@@ -331,6 +431,18 @@ watch(isOpen, (open) => {
       <ForumFormContent :tabs="formTabs" @files-selected="handleFilesSelected">
         <template #uploader="{ size }">
           <Uploader :size="size" />
+        </template>
+        <template #after-content>
+          <ForumQuotedTopicCard
+            v-if="formData.quotedTopic"
+            class="mt-3 w-full"
+            :reference="formData.quotedTopic"
+            :topic="quotedTopicData"
+            :loading="quotedTopicQuery.isLoading.value || (!quotedTopicData && !quotedTopicQuery.error.value)"
+            :unavailable="Boolean(quotedTopicQuery.error.value)"
+            :interactive="false"
+            @retry="quotedTopicQuery.refetch()"
+          />
         </template>
       </ForumFormContent>
     </ForumFormTabs>

@@ -20,7 +20,7 @@ function handleClick() {
   <div
     :class="
       cn(
-        'cursor-pointer row-span-1 rounded-xl group/bento transition duration-200 shadow-input dark:shadow-none p-4 border border-transparent justify-between flex flex-col space-y-4',
+        'cursor-pointer row-span-1 rounded-xl group/bento transition-[background-color,border-color] duration-200 shadow-input dark:shadow-none p-4 border border-transparent justify-between flex flex-col space-y-4 hover:bg-[var(--vp-c-bg-soft)] hover:border-[var(--vp-c-border)]',
         props.class,
       )
     "

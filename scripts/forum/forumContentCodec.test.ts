@@ -42,6 +42,18 @@ test('updates Topic metadata while preserving unknown keys and content', () => {
   }])
 })
 
+test('Topic metadata preserves a quoted Topic reference across later state updates', () => {
+  const withQuote = updateTopicMetadata('Body', {
+    quotedTopic: { id: 'ICROD8', type: 'BUG' },
+  })
+  const closed = updateTopicMetadata(withQuote, { state: 'closed' })
+
+  assert.deepEqual(decodeTopicBody(closed).metadata, {
+    quotedTopic: { id: 'ICROD8', type: 'BUG' },
+    state: 'closed',
+  })
+})
+
 test('preserves the existing Topic metadata bytes for the normal happy path', () => {
   assert.equal(
     updateTopicMetadata('Body', { labels: ['A'], state: 'open' }),

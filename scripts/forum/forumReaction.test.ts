@@ -1,13 +1,17 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type { TopicReaction } from '../../src/services/forum/forumReaction'
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
 import {
   applyReactionIntent,
   coordinateReactionMutation,
   createEmptyReaction,
+  forumReactionResource,
+  quoteReactionResource,
   reactionCacheIdentity,
   reactionEnvironmentForOrigin,
+  recordPublishedTopicQuote,
   resolveReactionViewer,
   topicReactionResource,
 } from '../../src/services/forum/forumReaction'
@@ -18,6 +22,58 @@ function reaction(state: TopicReaction['state'], likeCount = 0, dislikeCount = 0
     state,
   }
 }
+
+test('comment resources stay distinct from topics, sibling comments and other topics', () => {
+  for (const origin of ['https://yuanshen.site', 'http://localhost:5173']) {
+    const environment = reactionEnvironmentForOrigin(origin)
+    const topic = forumReactionResource('topic/1', environment)
+    const comment = forumReactionResource('topic/1', environment, 'comment/1')
+    assert.equal(topic, topicReactionResource('topic/1', environment))
+    assert.equal(comment, `${topic}/comment/comment%2F1`)
+    assert.equal(new URL(comment).hash, '')
+    assert.equal(new Set([
+      topic,
+      comment,
+      forumReactionResource('topic/1', environment, 'comment/2'),
+      forumReactionResource('topic/2', environment, 'comment/1'),
+    ]).size, 4)
+  }
+})
+
+test('quote counts use a separate resource and one identity per published quoting topic', async () => {
+  const environment = reactionEnvironmentForOrigin('https://yuanshen.site')
+  const quotedTopicId = 'ICROD8'
+  const resource = quoteReactionResource(quotedTopicId, environment)
+  const calls: Array<[string, string]> = []
+  const write = async (url: string, userId: string) => {
+    calls.push([url, userId])
+    return { statusCode: 200, data: { reaction: null, state: 'like' as const } }
+  }
+
+  assert.notEqual(resource, topicReactionResource(quotedTopicId, environment))
+  assert.notEqual(resource, forumReactionResource(quotedTopicId, environment, 'quotes'))
+  assert.equal(await recordPublishedTopicQuote({ id: 'INEW01' }, environment, write), undefined)
+  assert.deepEqual(calls, [])
+
+  const reference = { id: quotedTopicId, type: 'BUG' as const }
+  assert.equal(await recordPublishedTopicQuote({ id: 'INEW01', quotedTopic: reference }, environment, write), resource)
+  assert.equal(await recordPublishedTopicQuote({ id: 'INEW02', quotedTopic: reference }, environment, write), resource)
+  assert.deepEqual(calls, [[resource, 'quote-topic:INEW01'], [resource, 'quote-topic:INEW02']])
+
+  await assert.rejects(recordPublishedTopicQuote({ id: 'INEW03', quotedTopic: reference }, environment, async () => null))
+})
+
+test('quote count write is wired after topic creation, never to the quote button click', () => {
+  const submitSource = readFileSync(new URL('../../src/composables/useSubmitTopic.ts', import.meta.url), 'utf8')
+  const buttonSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuoteTopicButton.vue', import.meta.url), 'utf8')
+  const listSource = readFileSync(new URL('../../src/components/forum/list/ForumTopicFooter.vue', import.meta.url), 'utf8')
+  const createdIndex = submitSource.indexOf('await forumMutations.createTopic(newTopic)')
+  const countedIndex = submitSource.indexOf('await recordPublishedTopicQuote(')
+  assert.ok(createdIndex >= 0 && countedIndex > createdIndex)
+  assert.doesNotMatch(buttonSource, /setPageReaction|recordPublishedTopicQuote|setReactionState/)
+  assert.match(listSource, /<ForumQuoteTopicButton :topic="topicData" :autoload="reactionEnabled"/)
+  assert.match(listSource, /bg-\[var\(--vp-c-bg-alt\)\]/)
+})
 
 test('reaction intent toggles, switches, stays nonnegative, and does not mutate input', () => {
   const neutral = reaction(null)

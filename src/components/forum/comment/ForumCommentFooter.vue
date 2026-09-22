@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
-import { useClipboard } from '@vueuse/core'
+import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { toast } from 'vue-sonner'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -17,21 +16,23 @@ import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { executeWithAuth } from '~/composables/executeWithAuth'
 import { useForumMutations } from '~/composables/forum/useForumMutations'
+import { useForumReactionState } from '~/composables/useForumReaction'
 import { useForumRoute } from '~/composables/useForumRoute'
+import { useReactionStats } from '~/composables/useReactionStats'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { toast } from '~/services/telemetry/toast'
 import ForumTime from '../ui/ForumTime.vue'
+import ForumCommentReactionButtons from './ForumCommentReactionButtons.vue'
 import ForumTopicCommentDropdownMenu from './ForumTopicCommentDropdownMenu.vue'
 
 const {
   commentData,
-  commentCount = 0,
   commentClickHandler = () => {},
   repo = 'Feedback',
   topicId,
   commentPage = 1,
 } = defineProps<{
   repo?: string
-  commentCount?: number
   commentData: ForumAPI.Comment
   commentClickHandler?: (event: Event) => void
   menus?: FORUM.TopicDropdownMenu[]
@@ -47,6 +48,12 @@ const { commentHref } = useForumRoute()
 const { copy, isSupported: clipboardSupported } = useClipboard()
 const { hasAnyPermissions } = useRuleChecks(commentData.author.id)
 const canDelete = hasAnyPermissions('manage_feedback', 'edit_feedback')
+const canViewStats = hasAnyPermissions('manage_feedback')
+const { openReactionStatsDialog } = useReactionStats()
+const { error: reactionQueryError } = useForumReactionState(() => ({
+  topicId: topicId ?? '',
+  commentId: String(commentData.id),
+}))
 const deleteDialogOpen = ref(false)
 const copyMenu = computed<FORUM.TopicDropdownMenu[]>(() => clipboardSupported.value && topicId
   ? [{
@@ -60,7 +67,7 @@ const copyMenu = computed<FORUM.TopicDropdownMenu[]>(() => clipboardSupported.va
           toast.success(message.value.forum.topic.menu.copyLink.success)
         }
         catch {
-          toast.error(message.value.forum.topic.menu.copyLink.fail)
+          toast.error(message.value.forum.topic.menu.copyLink.fail, { report: false })
         }
       },
     }]
@@ -76,11 +83,23 @@ const deleteMenu = computed<FORUM.TopicDropdownMenu[]>(() => canDelete.value
       action: () => deleteDialogOpen.value = true,
     }]
   : [])
+const statsMenu = computed<FORUM.TopicDropdownMenu[]>(() => canViewStats.value && topicId && !reactionQueryError.value
+  ? [{
+      type: 'item',
+      id: 'comment-reaction-stats',
+      label: message.value.forum.topic.menu.reactionStats.text,
+      icon: 'i-lucide:chart-column',
+      action: () => openReactionStatsDialog({ kind: 'comment', topicId, commentId: String(commentData.id) }),
+    }]
+  : [])
 
-const commentMsg = computed(() => {
-  if (commentCount > 0)
-    return commentCount
-  return message.value.forum.comment.reply
+const reactionTarget = ref<HTMLElement | null>(null)
+const reactionEnabled = ref(false)
+const { stop: stopReactionObserver } = useIntersectionObserver(reactionTarget, ([entry]) => {
+  if (!entry?.isIntersecting)
+    return
+  reactionEnabled.value = true
+  stopReactionObserver()
 })
 
 function handleCommentClick(event: Event) {
@@ -101,19 +120,21 @@ async function handleDeleteComment() {
 </script>
 
 <template>
-  <div class="font-size-3 mr-2 flex justify-between">
-    <ForumTime
-      class="color-[--vp-c-text-3] lh-[36px] font-[var(--vp-font-family-subtitle)]"
-      :date="commentData.createdAt"
-    />
-
-    <div class="topic-info-list flex cursor-default items-center">
-      <ForumTopicCommentDropdownMenu :menus="[...(menus ?? []), ...copyMenu, ...deleteMenu]" />
-
-      <Button type="button" class="h-8 max-mobile:h-11" variant="ghost" @click="handleCommentClick">
-        <span class="i-lucide:message-circle icon-btn max-mobile:size-6" aria-hidden="true" />
-        {{ commentMsg }}
+  <div class="text-xs flex gap-2 items-center">
+    <div class="flex flex-wrap gap-1 items-center">
+      <ForumTime
+        class="text-[var(--vp-c-text-3)] font-[var(--vp-font-family-subtitle)] mr-1"
+        :date="commentData.createdAt"
+      />
+      <div v-if="topicId" ref="reactionTarget" @focusin="reactionEnabled = true">
+        <ForumCommentReactionButtons :topic-id="topicId" :comment-id="String(commentData.id)" :autoload="reactionEnabled" />
+      </div>
+      <Button type="button" size="sm" class="text-xs leading-none px-2 rounded-full h-7" variant="ghost" @click="handleCommentClick">
+        {{ message.forum.comment.reply }}
       </Button>
+    </div>
+    <div class="ml-auto flex shrink-0 items-center">
+      <ForumTopicCommentDropdownMenu :menus="[...(menus ?? []), ...copyMenu, ...statsMenu, ...deleteMenu]" />
     </div>
 
     <AlertDialog v-model:open="deleteDialogOpen">

@@ -1,6 +1,8 @@
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import Blog from '../_data/posts.json'
 import { getForumLocaleLabelGetter } from '../composables/getForumLocaleGetter'
+import { isCategoryLabel } from '../services/forum/forumLabel'
+import { getTopicStatus } from '../services/forum/forumTopicStatus'
 
 const localeLabelGetter = getForumLocaleLabelGetter()
 
@@ -16,13 +18,17 @@ export function usePostData(locale: string) {
               label === localeLabelGetter.getLabel(locale.toUpperCase()),
           ),
       ).flatMap((entry) => {
+        const labels = entry.tags.map(String)
         const baseItem = {
           params: {
             id: entry.id,
             path: entry.path,
             state: entry.state as ForumAPI.TopicState,
             title: entry.title,
-            tags: entry.tags,
+            labels,
+            tags: labels.filter(isCategoryLabel),
+            status: getTopicStatus(labels),
+            goodIssue: labels.includes('GOOD-ISSUE'),
             createdAt: entry.createdAt,
             updatedAt: entry.updatedAt,
             author: entry.author,

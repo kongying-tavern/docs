@@ -8,6 +8,7 @@ import {
 } from '@tiptap/static-renderer/pm/html-string'
 import DOMPurify from 'dompurify'
 import MarkdownIt from 'markdown-it'
+import { SITE_ORIGIN } from '~/constants/site'
 import { getForumDocumentTitle } from './forumDocumentLinkIndex'
 import {
   FORUM_LINK_HOST_ALLOWLIST,
@@ -18,6 +19,7 @@ import {
   shortenForumAutoLink,
 } from './forumLinkPolicy'
 import { createForumContentExtensions } from './forumTiptapExtensions'
+import { TOPIC_ID_PATTERN } from './forumTopicQuote'
 
 /** Matches an emoji filename extension. */
 const EMOJI_FILE_EXTENSION_REGEX = /\.[^.]+$/
@@ -28,6 +30,11 @@ const FORUM_REFERENCE_REGEX = /(?<![\p{L}\p{N}_.+-])(?:#(?<topic>I[A-Z0-9]{5,})|
 const MARKDOWN_LINK_PREFIX_REGEX = /!?\[[^\]]*\]\(\s*$/u
 
 const AUTO_LINK_PROTOCOL_REGEX = /^https?:\/\//i
+
+const FORUM_TOPIC_URL_PATH_REGEX = new RegExp(
+  `/(?:[a-z-]+/)?feedback/topic/(?<topic>${TOPIC_ID_PATTERN})(?:/)?$`,
+  'iu',
+)
 
 const JSON_LIKE_TEXT_REGEX = /^\s*[[{]/u
 
@@ -153,6 +160,11 @@ function renderTiptapLink(href: string, content: string, options: ForumTopicRend
     return content
 
   const escapedHref = escapeHtml(href)
+  const topicId = content === escapedHref ? getForumTopicIdFromUrl(href) : undefined
+  const topicReferenceHref = topicId && options.topicHref?.(topicId)
+  if (topicId && topicReferenceHref && isSafeForumHref(topicReferenceHref))
+    return renderForumTopicReference(topicId, topicReferenceHref)
+
   const documentTitle = options.documentLinks && getForumDocumentTitle(href, options.documentLinks)
   if (documentTitle && content === escapedHref) {
     return `<a class="vp-link forum-document-link" href="${escapeAttribute(href)}" title="${escapeAttribute(href)}"><span aria-hidden="true" class="forum-document-link-icon i-lucide-file-text"></span>${escapeHtml(documentTitle)}</a>`
@@ -336,6 +348,8 @@ function decorateAutoLinks(tokens: Token[], state: StateCore): void {
       deactivateLinkTokens(open, tokens[closeIndex])
       continue
     }
+    if (closeIndex > index && decorateTopicLink(tokens, index, closeIndex, href, state))
+      continue
     if (closeIndex > index && decorateDocumentLink(tokens, index, closeIndex, href, state))
       continue
 
@@ -353,6 +367,26 @@ function decorateAutoLinks(tokens: Token[], state: StateCore): void {
     if (label?.type === 'text')
       label.content = shortenForumAutoLink(label.content)
   }
+}
+
+function decorateTopicLink(
+  tokens: Token[],
+  openIndex: number,
+  closeIndex: number,
+  href: string,
+  state: StateCore,
+): boolean {
+  const topicId = getForumTopicIdFromUrl(href)
+  const topicHref = topicId && (state.env as ForumTopicRenderOptions).topicHref?.(topicId)
+  const open = tokens[openIndex]
+  const label = tokens.slice(openIndex + 1, closeIndex).map(token => token.content).join('')
+  if (!topicId || !topicHref || !isSafeForumHref(topicHref) || label !== href)
+    return false
+
+  open.attrSet('class', 'vp-link forum-topic-reference')
+  open.attrSet('href', topicHref)
+  tokens.splice(openIndex + 1, closeIndex - openIndex - 1, textToken(`#${topicId}`, state))
+  return true
 }
 
 function isMarkdownLinkSyntax(tokens: Token[], openIndex: number, closeIndex: number): boolean {
@@ -410,6 +444,22 @@ function textToken(content: string, state: StateCore): Token {
   const token = new state.Token('text', '', 0)
   token.content = content
   return token
+}
+
+function getForumTopicIdFromUrl(href: string): string | undefined {
+  try {
+    const url = new URL(href)
+    if (url.hostname.toLowerCase() !== new URL(SITE_ORIGIN).hostname)
+      return undefined
+    return FORUM_TOPIC_URL_PATH_REGEX.exec(url.pathname)?.groups?.topic
+  }
+  catch {
+    return undefined
+  }
+}
+
+function renderForumTopicReference(topicId: string, href: string): string {
+  return `<a class="vp-link forum-topic-reference" href="${escapeAttribute(href)}">#${escapeHtml(topicId)}</a>`
 }
 
 function renderEmoji(attrs: Readonly<Record<string, unknown>>): string {

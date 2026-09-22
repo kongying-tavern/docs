@@ -18,7 +18,8 @@ const route = useRoute()
 // 右侧大纲由 frontmatter 配置启用（outline: true / 'deep' 等），默认关闭
 const showOutline = computed(() => {
   const outline = frontmatter.value.outline
-  return hasAside && outline != null && outline !== false
+  // hasAside 是 computed，脚本里必须取 .value（模板会自动解包，不能照抄模板写法）
+  return hasAside.value && outline != null && outline !== false
 })
 
 interface OutlineItem {
