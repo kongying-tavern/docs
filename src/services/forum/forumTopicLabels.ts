@@ -1,7 +1,7 @@
 import type ForumAPI from '@/apis/forum/api'
+import { isCategoryLabel } from './forumLabel'
 
 const TOPIC_TYPE_LABEL = /^TYP-(?:ANN|BUG|FEAT)$/
-const EDITABLE_TOPIC_LABEL = /^CATA-/
 
 export function replaceTopicTypeLabel(
   labels: readonly string[],
@@ -12,13 +12,13 @@ export function replaceTopicTypeLabel(
 
 export function replaceEditableTopicLabels(labels: readonly string[], editableLabels: readonly string[]): string[] {
   return uniqueLabels([
-    ...labels.filter(label => !EDITABLE_TOPIC_LABEL.test(label)),
-    ...editableLabels.filter(label => EDITABLE_TOPIC_LABEL.test(label)),
+    ...labels.filter(label => !isCategoryLabel(label)),
+    ...editableLabels.filter(isCategoryLabel),
   ])
 }
 
 export function getEditableTopicLabels(labels: readonly string[]): string[] {
-  return labels.filter(label => EDITABLE_TOPIC_LABEL.test(label))
+  return labels.filter(isCategoryLabel)
 }
 
 export function toggleTopicLabel(labels: readonly string[], label: string, enabled: boolean): string[] {
