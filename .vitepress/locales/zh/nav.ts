@@ -13,7 +13,7 @@ const nav: DefaultTheme.NavItem[] = [
     text: '地图工具',
     items: [
       {
-        text: 'Windows客户端',
+        text: 'Windows 客户端',
         items: [
           {
             text: '前往下载',

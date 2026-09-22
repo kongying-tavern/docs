@@ -10,15 +10,15 @@ const ui: CustomConfig['ui'] = {
     ],
   },
   banner: {
-    wip: '申し訳ありませんが、このページの翻訳はまだ進行中です。',
+    wip: 'このページの翻訳は準備中です。',
   },
   button: {
-    submit: '提出する',
+    submit: '送信',
     cancel: 'キャンセル',
-    loading: 'Loading',
+    loading: '読み込み中',
     search: '検索',
-    close: '閉鎖',
-    all: '全て',
+    close: '閉じる',
+    all: 'すべて',
     emoji: '絵文字',
   },
   sitemap: {

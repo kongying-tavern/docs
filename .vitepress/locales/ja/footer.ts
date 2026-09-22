@@ -2,7 +2,7 @@ import type { CustomConfig } from '../types'
 
 const footer: CustomConfig['footer'] = {
   qrcodeTitle: 'Discordサーバー',
-  qrcodeMessage: 'Contact us on discord',
+  qrcodeMessage: 'お気軽にご連絡ください',
   qrcodeLink: 'https://discord.gg/aFe57AKZUF',
   navigation: [
     {
@@ -13,7 +13,7 @@ const footer: CustomConfig['footer'] = {
           link: '/join',
         },
         {
-          text: 'Our team',
+          text: 'チーム紹介',
           link: '/team',
         },
         {
@@ -43,7 +43,7 @@ const footer: CustomConfig['footer'] = {
       title: 'サポート',
       items: [
         {
-          text: 'ユーザマニュアル',
+          text: 'ユーザーマニュアル',
           link: '/manual/client/',
         },
         {

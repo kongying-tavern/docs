@@ -19,7 +19,7 @@ export const languageSuggestBarTranslate: LanguageSuggestBarTranslate = {
     continue: 'Continue',
   },
   ja: {
-    changeLanguage: 'このページの言語を変更したい: ',
+    changeLanguage: 'このページの言語を変更：',
     continue: '続ける',
   },
 }

@@ -48,7 +48,7 @@ const nav: DefaultTheme.NavItem[] = [
     text: 'フィードバック',
     items: [
       {
-        text: 'フィートバック',
+        text: 'フィードバック',
         link: '/feedback/',
       },
       // {

@@ -8,7 +8,7 @@ const Changelog: CustomConfig['changelog'] = {
     features: '新機能',
     fixed: '修正',
     breaking: '重大な変更',
-    optimized: '最適化された',
+    optimized: '改善',
   },
   action: {
     download: 'ダウンロード',

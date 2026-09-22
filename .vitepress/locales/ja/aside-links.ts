@@ -1,13 +1,13 @@
 import type { CustomConfig } from '../types'
 
 const asideLinks: CustomConfig['asideLinks'] = {
-  title: 'Links',
-  starOnGitHub: 'Star on GitHub',
-  contactUsText: 'Chat on Discord',
+  title: 'クイックリンク',
+  starOnGitHub: 'GitHub でスター',
+  contactUsText: 'Discord に参加',
   contactUsLink: 'https://discord.gg/SWz6RTWNkm',
   sponsor: 'スポンサーになる',
   editLink: 'このページを編集する',
-  translateThisPage: 'Translate this page',
+  translateThisPage: 'このページの翻訳に協力する',
 }
 
 export default asideLinks

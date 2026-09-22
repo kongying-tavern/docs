@@ -10,7 +10,7 @@ const ui: CustomConfig['ui'] = {
     ],
   },
   banner: {
-    wip: 'Sorry, this page translation is still in progress.',
+    wip: 'The translation for this page is still in progress.',
   },
   button: {
     submit: 'Submit',
