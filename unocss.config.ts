@@ -13,6 +13,9 @@ import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
 import { FORUM_MOBILE_BREAKPOINT_PX } from './src/services/forum/forumConfig'
 
 export default defineConfig({
+  blocklist: [
+    /^i-lucide-(?:log-in|x)-.+$/,
+  ],
   theme: {
     breakpoints: {
       mobile: FORUM_MOBILE_BREAKPOINT_PX,
@@ -127,14 +130,11 @@ export default defineConfig({
   content: {
     pipeline: {
       include: [
-        // the default
         /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
-        // include js/ts files under src/. Patterns are resolved against the Vite
-        // root, which VitePress sets to srcDir, and any pattern starting with
-        // "**" skips that resolution and matches the whole filesystem, so this
-        // has to be anchored with a regex.
         /\/src\/[^?]*\.(js|ts)$/,
+        /\/\.vitepress\/theme\/[^?]*\.(js|ts)$/,
       ],
+      exclude: [/node_modules\//],
     },
   },
   transformers: [transformerDirectives(), transformerVariantGroup()],
