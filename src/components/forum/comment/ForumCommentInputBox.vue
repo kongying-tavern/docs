@@ -14,7 +14,7 @@ import useLogin from '@/hooks/useLogin'
 import { cn } from '@/lib/utils'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useForumMutations } from '~/composables/forum/useForumMutations'
+import { useForumCommentMutations } from '~/composables/forum/useForumMutations'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useImageAttachmentQueue } from '~/composables/useImageAttachmentQueue'
 import { submitCommentTransaction } from '~/services/forum/commentTransaction'
@@ -58,7 +58,7 @@ const content = ref<JSONContent>(emptyDoc())
 const plainText = ref('')
 const submitPending = ref(false)
 
-const forumMutations = useForumMutations()
+const forumMutations = useForumCommentMutations()
 const personal = useForumPersonalState()
 const { logout, redirectAuth } = useLogin()
 

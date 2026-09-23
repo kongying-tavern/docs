@@ -5,7 +5,7 @@ import { reactions } from '@/apis/interknot.site'
 import { useLocalized } from '@/hooks/useLocalized'
 import { authGuards } from '@/utils/auth-helpers'
 import { composeTopicBody } from '~/composables/composeTopicBody'
-import { useForumMutations } from '~/composables/forum/useForumMutations'
+import { useForumTopicMutations } from '~/composables/forum/useForumMutations'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { forumKeys } from '~/services/forum/forumQueryContracts'
@@ -18,7 +18,7 @@ const localeLabelGetter = getForumLocaleLabelGetter()
 export function useSubmitTopic() {
   const { message } = useLocalized()
   const { lang } = useData()
-  const forumMutations = useForumMutations()
+  const forumMutations = useForumTopicMutations()
   const queryCache = useQueryCache()
 
   const submitData = async (options: ForumAPI.CreateTopicOption) => {

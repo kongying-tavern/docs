@@ -11,7 +11,7 @@ import {
 import { replaceTopicStatus, topicStatusHidesTopic } from '~/services/forum/forumTopicStatus'
 import { toast } from '~/services/telemetry/toast'
 import { composeTopicBody } from './composeTopicBody'
-import { useForumMutations } from './forum/useForumMutations'
+import { useForumTopicMutations } from './forum/useForumMutations'
 
 const pendingOperations = new Map<string, Promise<unknown>>()
 
@@ -29,7 +29,7 @@ async function withOperationLock<T>(key: string, operation: () => Promise<T>): P
 }
 
 export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | null | undefined>, message: Ref<CustomConfig>) {
-  const mutations = useForumMutations()
+  const mutations = useForumTopicMutations()
 
   function currentTopic(): ForumAPI.Topic {
     const topic = toValue(targetTopic)

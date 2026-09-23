@@ -3,7 +3,6 @@ import type ForumAPI from '@/apis/forum/api'
 import type { TopicUpdateOutcome } from '@/apis/forum/gitee/issues'
 import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '~/services/forum/forumQueryContracts'
 import { useMutation, useQueryCache } from '@pinia/colada'
-import { computed } from 'vue'
 import { issues } from '@/apis/forum/gitee'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import {
@@ -38,8 +37,8 @@ export async function serializeTopicCommentMutation<T>(topicId: string | number,
   }
 }
 
-export function useForumMutations() {
-  const queryCache = useQueryCache()
+export function useForumTopicMutations() {
+  const cache = useForumMutationCache()
   const { hasAnyRoles } = useRuleChecks()
   const canSkipTopicReformat = hasAnyRoles('teamMember', 'feedbackMember')
   const createTopicMutation = useMutation({ mutation: issues.postTopic })
@@ -47,18 +46,9 @@ export function useForumMutations() {
     mutation: (input: { topicId: string | number, patch: TopicPatch }) =>
       issues.putTopic(input.topicId, input.patch, { skipReformat: canSkipTopicReformat.value }),
   })
-  const createCommentMutation = useMutation({
-    mutation: (input: { repo: ForumAPI.Repo, topicId: string, body: string }) =>
-      issues.postTopicComment(input.repo, input.topicId, input.body),
-  })
-  const deleteCommentMutation = useMutation({
-    mutation: (input: { repo: string, topicId: string, commentId: string | number }) =>
-      issues.deleteTopicComment(input.commentId, input.repo),
-  })
-
   async function createTopic(input: ForumAPI.FormSubmitData): Promise<ForumAPI.Topic> {
     const topic = await createTopicMutation.mutateAsync(input)
-    await invalidate('createTopic', topic.id, topic)
+    await cache.invalidate('createTopic', topic.id, topic)
     return topic
   }
 
@@ -68,11 +58,11 @@ export function useForumMutations() {
     patch: TopicPatch,
     currentTopic: ForumAPI.Topic,
   ): Promise<TopicUpdateOutcome> {
-    const snapshot = captureTopicCache(topicId)
+    const snapshot = cache.captureTopicCache(topicId)
     const optimisticTopic = applyOptimisticTopicPatch(currentTopic, patch)
     const restoreToListStart = kind === 'closeTopic' && optimisticTopic.state === 'open'
-    reconcileUpdatedTopic(optimisticTopic, restoreToListStart)
-    queryCache.setQueryData(forumKeys.topic(topicId), optimisticTopic)
+    cache.reconcileUpdatedTopic(optimisticTopic, restoreToListStart)
+    cache.queryCache.setQueryData(forumKeys.topic(topicId), optimisticTopic)
 
     try {
       const outcome = await updateTopicMutation.mutateAsync({ topicId, patch })
@@ -80,31 +70,52 @@ export function useForumMutations() {
         ? outcome
         : { ...outcome, topic: mergeAcknowledgedTopicPatch(outcome.topic, patch) }
       if (settledOutcome.status === 'unknown')
-        restoreTopicCache(snapshot)
+        cache.restoreTopicCache(snapshot)
       else
-        reconcileUpdatedTopic(settledOutcome.topic, restoreToListStart && settledOutcome.topic.state === 'open')
-      await invalidate(kind, topicId, settledOutcome.status === 'unknown' ? undefined : settledOutcome.topic)
+        cache.reconcileUpdatedTopic(settledOutcome.topic, restoreToListStart && settledOutcome.topic.state === 'open')
+      await cache.invalidate(kind, topicId, settledOutcome.status === 'unknown' ? undefined : settledOutcome.topic)
       if (requiresAuthoritativeRefetch(settledOutcome.status))
-        await queryCache.invalidateQueries({ key: forumKeys.topic(topicId), exact: true })
+        await cache.queryCache.invalidateQueries({ key: forumKeys.topic(topicId), exact: true })
       return settledOutcome
     }
     catch (error) {
-      restoreTopicCache(snapshot)
+      cache.restoreTopicCache(snapshot)
       throw error
     }
   }
 
+  return {
+    createTopic,
+    updateTopic,
+    creatingTopic: createTopicMutation.isLoading,
+    createdTopic: createTopicMutation.data,
+    createTopicError: createTopicMutation.error,
+    updatingTopic: updateTopicMutation.isLoading,
+  }
+}
+
+export function useForumCommentMutations() {
+  const cache = useForumMutationCache()
+  const createCommentMutation = useMutation({
+    mutation: (input: { repo: ForumAPI.Repo, topicId: string, body: string }) =>
+      issues.postTopicComment(input.repo, input.topicId, input.body),
+  })
+  const deleteCommentMutation = useMutation({
+    mutation: (input: { repo: string, topicId: string, commentId: string | number }) =>
+      issues.deleteTopicComment(input.commentId, input.repo),
+  })
+
   async function createComment(input: { repo: ForumAPI.Repo, topicId: string, body: string }): Promise<ForumAPI.Comment> {
     return serializeTopicCommentMutation(input.topicId, async () => {
-      const snapshot = captureTopicCache(input.topicId)
-      adjustCachedCommentCount(input.topicId, 1)
+      const snapshot = cache.captureTopicCache(input.topicId)
+      cache.adjustCachedCommentCount(input.topicId, 1)
       try {
         const comment = await createCommentMutation.mutateAsync(input)
-        await invalidate('createComment', input.topicId)
+        await cache.invalidate('createComment', input.topicId)
         return comment
       }
       catch (error) {
-        restoreTopicCache(snapshot)
+        cache.restoreTopicCache(snapshot)
         throw error
       }
     })
@@ -112,21 +123,32 @@ export function useForumMutations() {
 
   async function deleteComment(input: { repo: string, topicId: string, commentId: string | number }): Promise<boolean> {
     return serializeTopicCommentMutation(input.topicId, async () => {
-      const snapshot = captureTopicCache(input.topicId)
-      adjustCachedCommentCount(input.topicId, -1)
+      const snapshot = cache.captureTopicCache(input.topicId)
+      cache.adjustCachedCommentCount(input.topicId, -1)
       try {
         const deleted = await deleteCommentMutation.mutateAsync(input)
         if (!deleted)
           throw new Error('Comment deletion was not confirmed.')
-        await invalidate('deleteComment', input.topicId)
+        await cache.invalidate('deleteComment', input.topicId)
         return true
       }
       catch (error) {
-        restoreTopicCache(snapshot)
+        cache.restoreTopicCache(snapshot)
         throw error
       }
     })
   }
+
+  return {
+    createComment,
+    deleteComment,
+    creatingComment: createCommentMutation.isLoading,
+    deletingComment: deleteCommentMutation.isLoading,
+  }
+}
+
+function useForumMutationCache() {
+  const queryCache = useQueryCache()
 
   function captureTopicCache(topicId: string | number) {
     return {
@@ -222,20 +244,11 @@ export function useForumMutations() {
   }
 
   return {
-    createTopic,
-    updateTopic,
-    createComment,
-    deleteComment,
-    creatingTopic: createTopicMutation.isLoading,
-    createdTopic: createTopicMutation.data,
-    createTopicError: createTopicMutation.error,
-    updatingTopic: updateTopicMutation.isLoading,
-    creatingComment: createCommentMutation.isLoading,
-    deletingComment: deleteCommentMutation.isLoading,
-    isLoading: computed(() =>
-      createTopicMutation.isLoading.value
-      || updateTopicMutation.isLoading.value
-      || createCommentMutation.isLoading.value
-      || deleteCommentMutation.isLoading.value),
+    queryCache,
+    captureTopicCache,
+    restoreTopicCache,
+    invalidate,
+    reconcileUpdatedTopic,
+    adjustCachedCommentCount,
   }
 }

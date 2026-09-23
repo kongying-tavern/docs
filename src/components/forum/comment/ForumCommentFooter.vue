@@ -15,7 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { executeWithAuth } from '~/composables/executeWithAuth'
-import { useForumMutations } from '~/composables/forum/useForumMutations'
+import { useForumCommentMutations } from '~/composables/forum/useForumMutations'
 import { useForumReactionState } from '~/composables/useForumReaction'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useReactionStats } from '~/composables/useReactionStats'
@@ -43,7 +43,7 @@ const {
 const emit = defineEmits(['comment:delete', 'comment:click'])
 
 const { message } = useLocalized()
-const forumMutations = useForumMutations()
+const forumMutations = useForumCommentMutations()
 const { commentHref } = useForumRoute()
 const { copy, isSupported: clipboardSupported } = useClipboard()
 const { hasAnyPermissions } = useRuleChecks(commentData.author.id)
