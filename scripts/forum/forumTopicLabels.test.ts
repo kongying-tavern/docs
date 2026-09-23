@@ -2,7 +2,7 @@
 import type ForumAPI from '../../src/services/forum/api'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildTopicTypeChangePatch, composeTopicBody } from '../../src/composables/composeTopicBody'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/composables/composeTopicBody'
 import { decodeTopicBody } from '../../src/services/forum/forumContentCodec'
 import {
   buildTopicCreationLabels,
@@ -68,6 +68,28 @@ test('type change writes label and body metadata without altering the title', ()
   assert.equal(decoded.content.text, 'Body')
   assert.deepEqual(decoded.metadata.labels, ['WEB-FEEDBACK', 'CATA-DOCS', 'TYP-FEAT'])
   assert.deepEqual(decoded.metadata.legacy, { keep: true })
+})
+
+test('membership changes keep request labels and state aligned with Webhook metadata', () => {
+  const topic = {
+    labels: ['WEB-FEEDBACK', 'TYP-BUG', 'CATA-DOCS'],
+    tags: ['CATA-DOCS'],
+    state: 'open',
+    contentRaw: '<!-- {"labels":["TYP-BUG"],"state":"closed","legacy":{"keep":true}} -->Body',
+  } as ForumAPI.Topic
+
+  for (const changes of [
+    { labels: ['WEB-FEEDBACK', 'TYP-BUG', 'CATA-LOGIN'] },
+    { labels: ['WEB-FEEDBACK', 'TYP-BUG', 'CATA-DOCS', 'PINNED'] },
+    { state: 'progressing' as const },
+    { labels: ['WEB-FEEDBACK', 'TYP-BUG', 'ST-FIXED'], state: 'closed' as const },
+  ]) {
+    const patch = buildTopicMembershipPatch(topic, changes)
+    const metadata = decodeTopicBody(patch.body).metadata
+    assert.deepEqual(metadata.labels, parseTopicLabels(patch.labels))
+    assert.equal(metadata.state, patch.state)
+    assert.deepEqual(metadata.legacy, { keep: true })
+  }
 })
 
 test('type label overrides the legacy title prefix, and read-back confirmation requires the new label', () => {

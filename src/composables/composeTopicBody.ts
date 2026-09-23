@@ -32,8 +32,19 @@ export function writeTopicBodyComment(
 /** 类型标签是主来源；正文元数据供 Webhook 同步，标题无需改变。 */
 export function buildTopicTypeChangePatch(topic: ForumAPI.Topic, type: ForumAPI.FeedbackTopicType) {
   const labels = replaceTopicTypeLabel(topic.labels ?? topic.tags, type)
+  return buildTopicMembershipPatch(topic, { labels })
+}
+
+/** 标签与状态的请求字段和 Webhook 正文元数据必须表示同一目标值。 */
+export function buildTopicMembershipPatch(
+  topic: ForumAPI.Topic,
+  changes: { labels?: readonly string[], state?: ForumAPI.TopicState },
+) {
+  const labels = uniq([...(changes.labels ?? topic.labels ?? topic.tags)])
+  const state = changes.state ?? topic.state
   return {
     labels: labels.join(','),
-    body: composeTopicBody(topic.contentRaw, { labels }),
+    state,
+    body: composeTopicBody(topic.contentRaw, { labels, state }),
   }
 }

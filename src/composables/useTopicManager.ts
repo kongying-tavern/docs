@@ -9,7 +9,7 @@ import {
 } from '~/services/forum/forumTopicLabels'
 import { replaceTopicStatus, topicStatusHidesTopic } from '~/services/forum/forumTopicStatus'
 import { toast } from '~/services/telemetry/toast'
-import { buildTopicTypeChangePatch, composeTopicBody } from './composeTopicBody'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from './composeTopicBody'
 import { useForumTopicMutations } from './forum/useForumMutations'
 
 const pendingOperations = new Map<string, Promise<unknown>>()
@@ -76,13 +76,12 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       'closeTopic',
       (topic) => {
         const state = topic.state === 'closed' ? 'open' : 'closed'
-        return {
-          body: composeTopicBody(topic.contentRaw, { state }),
+        return buildTopicMembershipPatch(topic, {
           state,
           ...(state === 'closed' && status
-            ? { labels: replaceTopicStatus(currentLabels(topic), status).join(',') }
+            ? { labels: replaceTopicStatus(currentLabels(topic), status) }
             : {}),
-        }
+        })
       },
       message.value.forum.topic.menu.closeFeedback.success,
       message.value.forum.topic.menu.closeFeedback.fail,
@@ -93,7 +92,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     const hideState = computed(() => toValue(targetTopic)?.state === 'progressing')
     return [hideState, () => update(
       'changeTopicMembership',
-      topic => ({ state: topic.state === 'progressing' ? 'open' : 'progressing' }),
+      topic => buildTopicMembershipPatch(topic, { state: topic.state === 'progressing' ? 'open' : 'progressing' }),
       message.value.forum.topic.menu.hideFeedback.success,
       message.value.forum.topic.menu.hideFeedback.fail,
     )]
@@ -117,7 +116,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
 
   const togglePinnedTopic = () => update(
     'pinTopic',
-    topic => ({ labels: toggleTopicLabel(currentLabels(topic), 'PINNED', !topic.pinned).join(',') }),
+    topic => buildTopicMembershipPatch(topic, { labels: toggleTopicLabel(currentLabels(topic), 'PINNED', !topic.pinned) }),
     message.value.forum.topic.menu.pinTopic.success,
     message.value.forum.topic.menu.pinTopic.fail,
   )
@@ -125,10 +124,8 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
   const toggleTopicCommentArea = () => {
     return update(
       'toggleCommentArea',
-      topic => ({
-        labels: topic.commentCount !== -1
-          ? toggleTopicLabel(currentLabels(topic), 'COMMENT-CLOSED', true).join(',')
-          : toggleTopicLabel(currentLabels(topic), 'COMMENT-CLOSED', false).join(','),
+      topic => buildTopicMembershipPatch(topic, {
+        labels: toggleTopicLabel(currentLabels(topic), 'COMMENT-CLOSED', topic.commentCount !== -1),
       }),
       message.value.forum.topic.menu.commentArea.success,
       message.value.forum.topic.menu.commentArea.fail,
@@ -137,7 +134,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
 
   const replaceTopicTags = (newTags: string[]) => update(
     'changeTopicMembership',
-    topic => ({ labels: replaceEditableTopicLabels(currentLabels(topic), newTags).join(',') }),
+    topic => buildTopicMembershipPatch(topic, { labels: replaceEditableTopicLabels(currentLabels(topic), newTags) }),
     message.value.forum.topic.menu.modifyTags.success,
     message.value.forum.topic.menu.modifyTags.fail,
   )
@@ -148,8 +145,8 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       && currentTopic().state === 'open'
     return update(
       'changeTopicMembership',
-      topic => ({
-        labels: replaceTopicStatus(currentLabels(topic), status).join(','),
+      topic => buildTopicMembershipPatch(topic, {
+        labels: replaceTopicStatus(currentLabels(topic), status),
         ...(shouldHide ? { state: 'progressing' as const } : {}),
       }),
       message.value.forum.topic.menu.modifyStatus.success,
@@ -159,7 +156,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
 
   const toggleGoodIssue = () => update(
     'changeTopicMembership',
-    topic => ({ labels: toggleTopicLabel(currentLabels(topic), 'GOOD-ISSUE', !topic.goodIssue).join(',') }),
+    topic => buildTopicMembershipPatch(topic, { labels: toggleTopicLabel(currentLabels(topic), 'GOOD-ISSUE', !topic.goodIssue) }),
     message.value.forum.topic.menu.goodIssue.success,
     message.value.forum.topic.menu.goodIssue.fail,
   )
