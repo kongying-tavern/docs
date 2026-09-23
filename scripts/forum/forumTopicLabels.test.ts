@@ -1,7 +1,8 @@
 /* eslint-disable test/no-import-node-test */
+import type ForumAPI from '../../src/services/forum/api'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { composeTopicBody } from '../../src/composables/composeTopicBody'
+import { buildTopicTypeChangePatch, composeTopicBody } from '../../src/composables/composeTopicBody'
 import { decodeTopicBody } from '../../src/services/forum/forumContentCodec'
 import {
   buildTopicCreationLabels,
@@ -19,6 +20,8 @@ import {
   replaceTopicStatus,
   topicStatusHidesTopic,
 } from '../../src/services/forum/forumTopicStatus'
+import { isTopicTypeChangeConfirmed } from '../../src/services/forum/gitee/issues'
+import { normalizeIssue } from '../../src/services/forum/gitee/utils'
 
 test('Topic label edits preserve provider labels and keep one type', () => {
   const labels = ['WEB-FEEDBACK', 'LC-ZH', 'TYP-BUG', 'CATA-DOCS', 'PINNED']
@@ -49,6 +52,41 @@ test('new Topic labels include the selected provider type in request and body me
     assert.equal(labels.join(',').includes(`TYP-${type}`), true)
     assert.deepEqual(decodeTopicBody(composeTopicBody('Feedback', { labels })).metadata.labels, labels)
   }
+})
+
+test('type change writes label and body metadata without altering the title', () => {
+  const topic = {
+    title: 'Existing title',
+    labels: ['WEB-FEEDBACK', 'TYP-BUG', 'CATA-DOCS'],
+    contentRaw: '<!-- {"labels":["WEB-FEEDBACK","TYP-BUG"],"legacy":{"keep":true}} -->Body',
+  } as ForumAPI.Topic
+  const patch = buildTopicTypeChangePatch(topic, 'FEAT')
+
+  assert.equal('title' in patch, false)
+  assert.equal(patch.labels, 'WEB-FEEDBACK,CATA-DOCS,TYP-FEAT')
+  const decoded = decodeTopicBody(patch.body)
+  assert.equal(decoded.content.text, 'Body')
+  assert.deepEqual(decoded.metadata.labels, ['WEB-FEEDBACK', 'CATA-DOCS', 'TYP-FEAT'])
+  assert.deepEqual(decoded.metadata.legacy, { keep: true })
+})
+
+test('type label overrides the legacy title prefix, and read-back confirmation requires the new label', () => {
+  const issue = {
+    number: 'I1',
+    title: 'BUG:Existing title',
+    body: 'Body',
+    labels: [{ name: 'TYP-FEAT' }],
+    comments: 0,
+    state: 'open',
+    created_at: '2026-01-01',
+    updated_at: '2026-01-01',
+  } as unknown as GITEE.IssueInfo
+  const updated = normalizeIssue(issue)
+  assert.equal(updated.type, 'FEAT')
+  assert.equal(updated.title, 'Existing title')
+  assert.equal(isTopicTypeChangeConfirmed(updated, 'FEAT'), true)
+  assert.equal(isTopicTypeChangeConfirmed(normalizeIssue({ ...issue, labels: [{ name: 'TYP-BUG' }] } as GITEE.IssueInfo), 'FEAT'), false)
+  assert.equal(normalizeIssue({ ...issue, labels: [] }).type, 'BUG')
 })
 
 test('Topic status labels are exclusive while preserving unrelated labels', () => {

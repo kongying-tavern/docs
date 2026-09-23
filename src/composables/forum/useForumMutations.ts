@@ -43,8 +43,8 @@ export function useForumTopicMutations() {
   const canSkipTopicReformat = hasAnyRoles('teamMember', 'feedbackMember')
   const createTopicMutation = useMutation({ mutation: issues.postTopic })
   const updateTopicMutation = useMutation({
-    mutation: (input: { topicId: string | number, patch: TopicPatch }) =>
-      issues.putTopic(input.topicId, input.patch, { skipReformat: canSkipTopicReformat.value }),
+    mutation: (input: { topicId: string | number, patch: TopicPatch, confirmType?: ForumAPI.FeedbackTopicType }) =>
+      issues.putTopic(input.topicId, input.patch, { skipReformat: canSkipTopicReformat.value, confirmType: input.confirmType }),
   })
   async function createTopic(input: ForumAPI.FormSubmitData): Promise<ForumAPI.Topic> {
     const topic = await createTopicMutation.mutateAsync(input)
@@ -57,6 +57,7 @@ export function useForumTopicMutations() {
     topicId: string | number,
     patch: TopicPatch,
     currentTopic: ForumAPI.Topic,
+    confirmType?: ForumAPI.FeedbackTopicType,
   ): Promise<TopicUpdateOutcome> {
     const snapshot = cache.captureTopicCache(topicId)
     const optimisticTopic = applyOptimisticTopicPatch(currentTopic, patch)
@@ -65,7 +66,7 @@ export function useForumTopicMutations() {
     cache.queryCache.setQueryData(forumKeys.topic(topicId), optimisticTopic)
 
     try {
-      const outcome = await updateTopicMutation.mutateAsync({ topicId, patch })
+      const outcome = await updateTopicMutation.mutateAsync({ topicId, patch, confirmType })
       const settledOutcome: TopicUpdateOutcome = outcome.status === 'unknown'
         ? outcome
         : { ...outcome, topic: mergeAcknowledgedTopicPatch(outcome.topic, patch) }

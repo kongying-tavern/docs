@@ -157,6 +157,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
             id: `change-topic-${val}`,
             type: 'item',
             label: `${menuLabels.value.changeType.to} ${message.value.forum.topic.type[val.toLowerCase() as keyof typeof message.value.forum.topic.type] || val}`,
+            disabled: updatingTopic.value,
             action: () => toggleTopicType(val),
           }),
         ),

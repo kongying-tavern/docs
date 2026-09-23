@@ -424,7 +424,8 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
     readFile(new URL('../../.vitepress/theme/styles/animation.css', import.meta.url), 'utf8'),
   ])
 
-  assert.match(issuesSource, /topic: await getTopic\(String\(number\)\)/)
+  assert.match(issuesSource, /const authoritative = await getTopic\(String\(number\)\)/)
+  assert.match(issuesSource, /isTopicTypeChangeConfirmed\(authoritative, requestedType\)/)
   assert.doesNotMatch(`${issuesSource}\n${browserUtilsSource}`, /useRuleChecks/)
   assert.match(mutationsSource, /skipReformat: canSkipTopicReformat\.value/)
   assert.match(topicContentSource, /event: MouseEvent \| KeyboardEvent/)

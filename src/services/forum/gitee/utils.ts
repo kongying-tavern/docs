@@ -12,6 +12,7 @@ import { getTopicStatus, getTopicStatusFromLabel } from '~/services/forum/forumT
 import { GITEE_API_CONFIG, GITEE_ISSUE_STATE_TITLES } from './config'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
+const TOPIC_TYPE_LABEL = /^TYP-(BUG|FEAT|ANN)$/
 
 /** Matches a page number in API pagination links */
 const PAGE_QUERY_PARAM_REGEX = /[?&](?:page|current)=([^&>]+)/
@@ -99,7 +100,8 @@ export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
 }
 
 export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
-  const { type, title } = getTopicTypeFromTitle(issue.title)
+  const { type: titleType, title } = getTopicTypeFromTitle(issue.title)
+  const type = getTopicTypeFromLabels(issue.labels) ?? titleType
   const labels = filterWhitelistTags(issue.labels)
   const decoded = decodeTopicBody(issue.body)
   const quotedTopic = normalizeQuotedTopicReference(decoded.metadata.quotedTopic)
@@ -128,6 +130,13 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     language: getLanguageFromLabel(issue.labels),
     ...(quotedTopic ? { quotedTopic } : {}),
   }
+}
+
+function getTopicTypeFromLabels(labels?: GITEE.IssueLabel[]): ForumAPI.FeedbackTopicType | null {
+  const types = new Set(getLabelNames(labels)
+    .map(label => TOPIC_TYPE_LABEL.exec(label)?.[1])
+    .filter((type): type is ForumAPI.FeedbackTopicType => Boolean(type)))
+  return types.size === 1 ? [...types][0] ?? null : null
 }
 
 export function normalizeComment(comment: GITEE.Comment): ForumAPI.Comment {

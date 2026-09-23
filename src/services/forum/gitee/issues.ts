@@ -35,12 +35,15 @@ export interface TopicOperateLogsRequest {
 
 export interface TopicUpdateOptions {
   skipReformat?: boolean
+  /** 类型变更必须在读回的服务端标签中得到确认。 */
+  confirmType?: ForumAPI.FeedbackTopicType
 }
 
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 
 const RELATED_COMMENT_MAX_PAGES = 3
 const RELATED_COMMENT_PER_PAGE = 100
+const TOPIC_TYPE_LABEL = /^TYP-(?:BUG|FEAT|ANN)$/
 
 function isDevTestIssue(issue: GITEE.IssueInfo): boolean {
   return (issue.labels ?? []).some(label => label?.name === 'DEV-TEST')
@@ -391,6 +394,7 @@ export async function putTopic(
   },
   options: TopicUpdateOptions = {},
 ): Promise<TopicUpdateOutcome> {
+  const requestedType = options.confirmType
   let issueInfo: GITEE.IssueInfo
   try {
     ;({ data: issueInfo } = await apiCall<GITEE.IssueInfo>(
@@ -414,26 +418,43 @@ export async function putTopic(
 
   invalidatePinnedAndAnnouncementCache()
 
-  // 因为 Gitee 接口不识别无权限用户提交的 labels 和 state，所以这里手动通知 Webhook 同步数据
-  if (!(data.labels || data.state))
+  // 类型更新必须读回确认；PATCH 响应并不保证标签已由 Gitee/Webhook 持久化。
+  const needsReformat = Boolean(data.labels || data.state) && !options.skipReformat
+  if (!needsReformat && !requestedType)
     return { status: 'success', topic: result }
 
-  if (options.skipReformat)
-    return { status: 'success', topic: result }
+  let syncError: Error | undefined
+  if (needsReformat) {
+    try {
+      await reformat({ number })
+    }
+    catch (error) {
+      syncError = toError(error)
+      if (!requestedType)
+        return { status: 'partial', topic: result, error: syncError }
+    }
+  }
 
   try {
-    await reformat({ number })
+    const authoritative = await getTopic(String(number))
+    if (requestedType && !isTopicTypeChangeConfirmed(authoritative, requestedType)) {
+      return {
+        status: 'unknown',
+        error: new Error(`Topic type ${requestedType} was not confirmed by Gitee.`),
+      }
+    }
+    return syncError
+      ? { status: 'partial', topic: authoritative, error: syncError }
+      : { status: 'success', topic: authoritative }
   }
   catch (error) {
     return { status: 'partial', topic: result, error: toError(error) }
   }
+}
 
-  try {
-    return { status: 'success', topic: await getTopic(String(number)) }
-  }
-  catch (error) {
-    return { status: 'partial', topic: result, error: toError(error) }
-  }
+export function isTopicTypeChangeConfirmed(topic: ForumAPI.Topic, type: ForumAPI.FeedbackTopicType): boolean {
+  const typeLabels = topic.labels.filter(label => TOPIC_TYPE_LABEL.test(label))
+  return topic.type === type && typeLabels.length === 1 && typeLabels[0] === `TYP-${type}`
 }
 
 function toError(error: unknown): Error {

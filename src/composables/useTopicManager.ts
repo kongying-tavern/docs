@@ -5,12 +5,11 @@ import { computed, toValue } from 'vue'
 import { withAuth } from '@/utils/auth-helpers'
 import {
   replaceEditableTopicLabels,
-  replaceTopicTypeLabel,
   toggleTopicLabel,
 } from '~/services/forum/forumTopicLabels'
 import { replaceTopicStatus, topicStatusHidesTopic } from '~/services/forum/forumTopicStatus'
 import { toast } from '~/services/telemetry/toast'
-import { composeTopicBody } from './composeTopicBody'
+import { buildTopicTypeChangePatch, composeTopicBody } from './composeTopicBody'
 import { useForumTopicMutations } from './forum/useForumMutations'
 
 const pendingOperations = new Map<string, Promise<unknown>>()
@@ -47,11 +46,12 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     createPatch: (topic: ForumAPI.Topic) => Parameters<typeof mutations.updateTopic>[2],
     successMessage: string,
     failureMessage: string,
+    options: { notifySuccess?: boolean, confirmType?: ForumAPI.FeedbackTopicType } = {},
   ): Promise<ForumAPI.Topic | false> {
     const topic = currentTopic()
     return withOperationLock(topic.id, async () => {
       const outcome = await withAuth.execute(
-        () => mutations.updateTopic(kind, topic.id, createPatch(topic), topic),
+        () => mutations.updateTopic(kind, topic.id, createPatch(topic), topic, options.confirmType),
         { loginMessage: message.value.forum.auth.loginTips, errorMessage: failureMessage },
       )
       if (!outcome)
@@ -64,6 +64,8 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
         toast.warning(message.value.forum.topic.menu.syncPending.replace('{action}', successMessage))
         return outcome.topic
       }
+      if (options.notifySuccess)
+        toast.success(successMessage)
       return outcome.topic
     })
   }
@@ -97,12 +99,21 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     )]
   }
 
-  const toggleTopicType = (newType: ForumAPI.FeedbackTopicType) => update(
-    'changeTopicMembership',
-    topic => ({ labels: replaceTopicTypeLabel(currentLabels(topic), newType).join(',') }),
-    message.value.forum.topic.menu.changeType.success,
-    message.value.forum.topic.menu.changeType.fail,
-  )
+  const toggleTopicType = async (newType: ForumAPI.FeedbackTopicType) => {
+    try {
+      return await update(
+        'changeTopicMembership',
+        topic => buildTopicTypeChangePatch(topic, newType),
+        message.value.forum.topic.menu.changeType.success,
+        message.value.forum.topic.menu.changeType.fail,
+        { notifySuccess: true, confirmType: newType },
+      )
+    }
+    catch {
+      // update 已向用户展示失败原因，菜单事件不再产生未处理的 Promise rejection。
+      return false
+    }
+  }
 
   const togglePinnedTopic = () => update(
     'pinTopic',
