@@ -10,13 +10,13 @@ export function extractOfficialAndAuthorComments(
 ): ForumAPI.Comment[] | null {
   const comments: ForumAPI.Comment[] = []
   const relatedComments = commentList.filter(
-    comment => comment.target.issue.id === issue.id,
+    comment => issue.id != null && comment.target?.issue?.id === issue.id,
   )
   const authorComment = relatedComments.find(
-    comment => comment.user.id === issue.user.id,
+    comment => comment.user?.id != null && comment.user.id === issue.user?.id,
   )
   const officialComment = relatedComments.find(
-    comment => isOfficialUser(comment.user.id),
+    comment => comment.user?.id != null && isOfficialUser(comment.user.id),
   )
 
   if (authorComment)

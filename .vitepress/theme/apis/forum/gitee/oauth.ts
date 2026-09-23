@@ -6,6 +6,7 @@ import { createAuthError } from '../../../utils/auth-errors'
 import { catchError } from '../../utils'
 import { oauthFetcher } from './client'
 import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './config'
+import { parseGiteeAuth } from './contracts'
 import { normalizeAuth } from './utils'
 
 const LAST_OAUTH_REDIRECT_URL_KEY = 'oauth-redirect-url'
@@ -58,7 +59,8 @@ function requestToken(params: Record<string, string>): Promise<GITEE.Auth> {
       body,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     })
-    .json<GITEE.Auth>()
+    .json<unknown>()
+    .then(parseGiteeAuth)
 }
 
 export async function getToken(

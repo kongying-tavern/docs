@@ -7,6 +7,7 @@ import { reportRequestFailure } from '~/services/telemetry/request'
 import { apiCall, deleteApiCache } from '.'
 import { reformat } from '../webhook'
 import { GITEE_API_CONFIG } from './config'
+import { parseGiteeComment, parseGiteeComments, parseGiteeIssue, parseGiteeIssues } from './contracts'
 import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
 import { extractOfficialAndAuthorComments } from './inBrowserUtils'
 import { GiteeApiErrorType } from './types'
@@ -112,6 +113,7 @@ async function fetchCommentsForIssueWindow(issues: GITEE.IssueInfo[]): Promise<G
       break
     }
 
+    pageComments = parseGiteeComments(pageComments, 'issues/comments')
     if (pageComments.length === 0)
       break
 
@@ -132,7 +134,7 @@ export async function getTopic(number: string): Promise<ForumAPI.Topic> {
     `repos/${OWNER}/${FEEDBACK_REPO}/issues/${number}`,
   )
 
-  return normalizeIssue(data)
+  return normalizeIssue(parseGiteeIssue(data, `issues/${number}`))
 }
 
 /**
@@ -179,20 +181,21 @@ export async function getTopics(
     },
   )
 
+  const validIssues = parseGiteeIssues(issues, request.endpoint)
   if (search) {
     return {
-      data: issues
+      data: validIssues
         .filter(val => import.meta.env.DEV || !isDevTestIssue(val))
         .map(val => normalizeIssue(val)),
       ...pagination,
     }
   }
 
-  const comments = await fetchCommentsForIssueWindow(issues)
+  const comments = await fetchCommentsForIssueWindow(validIssues)
 
   const data: ForumAPI.Topic[] = []
 
-  issues.forEach((val) => {
+  validIssues.forEach((val) => {
     const topic = normalizeIssue(val)
 
     if (
@@ -227,7 +230,7 @@ export async function getPinnedList(): Promise<ForumAPI.Topic[]> {
     },
   )
 
-  return issues.map(issue => Object.assign(normalizeIssue(issue), { pinned: true }))
+  return parseGiteeIssues(issues, 'issues/pinned').map(issue => Object.assign(normalizeIssue(issue), { pinned: true }))
 }
 
 export async function getAnnouncementList(): Promise<ForumAPI.Topic[]> {
@@ -243,7 +246,7 @@ export async function getAnnouncementList(): Promise<ForumAPI.Topic[]> {
     },
   )
 
-  return issues.map(issue => normalizeIssue(issue))
+  return parseGiteeIssues(issues, 'issues/announcements').map(issue => normalizeIssue(issue))
 }
 
 export async function getTopicComments(
@@ -266,7 +269,7 @@ export async function getTopicComments(
     },
   )
   return {
-    data: commentList.map(val => normalizeComment(val)),
+    data: parseGiteeComments(commentList, `issues/${number}/comments`).map(val => normalizeComment(val)),
     ...pagination,
   }
 }
@@ -333,7 +336,7 @@ export async function postTopic(data: ForumAPI.FormSubmitData): Promise<ForumAPI
     })
   }
 
-  return normalizeIssue(issueInfo)
+  return normalizeIssue(parseGiteeIssue(issueInfo, 'issues/create'))
 }
 
 export async function postTopicComment(
@@ -353,7 +356,7 @@ export async function postTopicComment(
 
   invalidateRelatedCommentCache()
 
-  return normalizeComment(comment)
+  return normalizeComment(parseGiteeComment(comment, `issues/${number}/comments`))
 }
 
 export async function deleteTopicComment(
@@ -407,7 +410,7 @@ export async function putTopic(
     return { status: 'unknown', error: toError(error) }
   }
 
-  const result = normalizeIssue(issueInfo)
+  const result = normalizeIssue(parseGiteeIssue(issueInfo, `issues/${number}/update`))
 
   invalidatePinnedAndAnnouncementCache()
 

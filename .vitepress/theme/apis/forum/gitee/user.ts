@@ -1,6 +1,7 @@
 import type ForumAPI from '../api'
 import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
+import { parseGiteeUser, parseGiteeUsers } from './contracts'
 import { normalizeUser } from './utils'
 
 const { OWNER } = GITEE_API_CONFIG
@@ -13,7 +14,7 @@ export async function getUser(username: string, accessToken?: string): Promise<F
     cache: true,
   })
 
-  return normalizeUser(data)
+  return normalizeUser(parseGiteeUser(data, `users/${username}`))
 }
 
 export async function getAuthorizedUser(accessToken: string): Promise<ForumAPI.User> {
@@ -21,7 +22,7 @@ export async function getAuthorizedUser(accessToken: string): Promise<ForumAPI.U
     searchParams: { access_token: accessToken },
   })
 
-  return normalizeUser(data)
+  return normalizeUser(parseGiteeUser(data, 'user'))
 }
 
 export async function getUserOrgs(
@@ -33,7 +34,7 @@ export async function getUserOrgs(
     cache,
   })
 
-  return normalizeUser(data)
+  return normalizeUser(parseGiteeUser(data, `users/${username}/orgs`))
 }
 
 export async function getOrgMembers(
@@ -52,7 +53,7 @@ export async function getOrgMembers(
     },
   )
 
-  return data.map(val => normalizeUser(val))
+  return parseGiteeUsers(data, `orgs/${OWNER}/members`).map(val => normalizeUser(val))
 }
 
 export async function getRepoMembers(
@@ -74,7 +75,7 @@ export async function getRepoMembers(
     },
   )
 
-  return data.map(val => normalizeUser(val))
+  return parseGiteeUsers(data, `repos/${OWNER}/${repo}/collaborators`).map(val => normalizeUser(val))
 }
 
 export async function getFollowStatus(user: string, targetUser: string, accessToken?: string): Promise<boolean | null> {
