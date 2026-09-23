@@ -48,7 +48,10 @@ function commentLabel(item: { commentCount?: number }): string {
 
 <template>
   <details class="forum-sidebar-section" :open="open" @toggle="handleToggle">
-    <summary class="forum-sidebar-summary">
+    <summary
+      data-fluid-hover-item
+      class="forum-sidebar-summary"
+    >
       <span :class="icon" aria-hidden="true" />
       <span class="flex-1 min-w-0 truncate">{{ title }}</span>
       <span class="chevron i-lucide-chevron-down" aria-hidden="true" />
@@ -61,6 +64,7 @@ function commentLabel(item: { commentCount?: number }): string {
           <div
             v-for="item in items"
             :key="item.id"
+            data-fluid-hover-item
             class="forum-sidebar-topic-row"
           >
             <a :href="item.href" class="forum-sidebar-topic" :title="item.title">
@@ -164,6 +168,7 @@ function commentLabel(item: { commentCount?: number }): string {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
   padding: 8px 10px;
   cursor: pointer;
   font-size: 12px;
@@ -175,10 +180,10 @@ function commentLabel(item: { commentCount?: number }): string {
   display: none;
 }
 
+/* 指针反馈交给 fluid indicator，行只保留文字提亮 */
 .forum-sidebar-summary:hover,
 .forum-sidebar-topic-row:hover,
 .forum-sidebar-topic-row:focus-within {
-  background: var(--vp-c-default-soft);
   color: var(--vp-c-text-1);
 }
 
@@ -193,6 +198,7 @@ details[open] .chevron {
 .forum-sidebar-topic-row {
   display: flex;
   align-items: center;
+  position: relative;
   min-height: 48px;
   padding: 5px 6px 5px 10px;
 }

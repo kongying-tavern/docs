@@ -3,6 +3,7 @@ import { useQueryCache } from '@pinia/colada'
 import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { useFluidHover, useFluidHoverIndicator } from '@/hooks/fluid-hover'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
@@ -138,6 +139,12 @@ watch(isMobile, (mobile) => {
 watch(isLoggedIn, renderLocalNavCreateBtn)
 onBeforeUnmount(unmountLocalNavCreateBtn)
 
+// 整个滚动列表是一个 fluid 列表：nav 行、分区头、话题行共享一个 indicator
+const containerSidebar = useTemplateRef<HTMLElement | null>('containerSidebar')
+const indicatorSidebar = useTemplateRef<HTMLElement | null>('indicatorSidebar')
+useFluidHover(containerSidebar, { axis: 'y' })
+useFluidHoverIndicator(containerSidebar, indicatorSidebar, { motion: 'fast' })
+
 useEventListener('pointerdown', (event) => {
   if (event.target instanceof Node && !informationMenu.value?.$el?.contains(event.target))
     informationOpen.value = false
@@ -236,7 +243,15 @@ function handleCreate() {
 
 <template>
   <div class="forum-sidebar">
-    <div class="forum-sidebar-scroll">
+    <div
+      ref="containerSidebar"
+      class="forum-sidebar-scroll relative"
+    >
+      <div
+        ref="indicatorSidebar"
+        aria-hidden="true"
+        class="rounded-lg bg-accent h-0 w-0 pointer-events-none left-0 top-0 absolute z-0"
+      />
       <ForumSidebarNav :items="navItems" @create="handleCreate" />
 
       <ForumSidebarSection

@@ -21,6 +21,7 @@ defineEmits<{
     <template v-for="item in items" :key="item.label">
       <a
         v-if="item.href"
+        data-fluid-hover-item
         :href="item.href"
         class="forum-sidebar-link"
         :class="{ active: item.active }"
@@ -32,6 +33,7 @@ defineEmits<{
       </a>
       <button
         v-else
+        data-fluid-hover-item
         type="button"
         class="forum-sidebar-link forum-sidebar-action"
         @click="$emit('create')"
@@ -48,6 +50,7 @@ defineEmits<{
   display: flex;
   align-items: center;
   gap: 12px;
+  position: relative;
   border-radius: 8px;
   padding: 9px 10px;
   color: var(--vp-c-text-1);
@@ -55,7 +58,7 @@ defineEmits<{
   line-height: 20px;
 }
 
-.forum-sidebar-link:hover,
+/* 指针反馈交给 fluid indicator，行只保留 active 态背景 */
 .forum-sidebar-link.active {
   background: var(--vp-c-default-soft);
 }
