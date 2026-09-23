@@ -1,9 +1,10 @@
 import type ForumAPI from '@/apis/forum/api'
-import { useInfiniteScroll, useMediaQuery } from '@vueuse/core'
+import { useEventListener, useInfiniteScroll, useMediaQuery } from '@vueuse/core'
 import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
+import { resolveCommentTargetState, resolveRestoredCommentPage } from '~/services/forum/commentNavigation'
 import { readForumCommentId } from '~/services/forum/forumRoute'
 
 export function useCommentAreaState(props: {
@@ -21,7 +22,7 @@ export function useCommentAreaState(props: {
     repo: () => props.repo,
     enabled,
   })
-  const { location, replaceCommentPage, route } = useForumRoute()
+  const { location: forumLocation, replaceCommentPage, route } = useForumRoute()
 
   const replyCommentID = ref<number | string | null>(null)
   const commentInputBoxIsVisible = ref(true)
@@ -30,7 +31,14 @@ export function useCommentAreaState(props: {
   const requestedCommentPage = computed(() => route.value?.name === 'topic' && route.value.topicId === props.topicId
     ? route.value.commentPage
     : 1)
-  const targetCommentId = computed(() => readForumCommentId(location.value?.href ?? ''))
+  const browserHref = ref(forumLocation.value?.href ?? '')
+  watch(() => forumLocation.value?.href, href => browserHref.value = href ?? '')
+  if (!import.meta.env.SSR) {
+    const syncBrowserHref = () => browserHref.value = window.location.href
+    syncBrowserHref()
+    useEventListener(window, 'hashchange', syncBrowserHref)
+  }
+  const targetCommentId = computed(() => readForumCommentId(browserHref.value))
   const commentPages = computed(() => {
     const pages = new Map<string, number>()
     comments.data.value?.pages.forEach((page, index) => {
@@ -39,14 +47,23 @@ export function useCommentAreaState(props: {
     })
     return pages
   })
-  const targetCommentReady = computed(() => Boolean(
-    targetCommentId.value
-    && commentPages.value.has(targetCommentId.value)
-    && (currentCommentPage.value >= requestedCommentPage.value || !comments.canLoadMore.value),
-  ))
+  const targetCommentState = computed(() => resolveCommentTargetState({
+    targetCommentId: targetCommentId.value,
+    hasTargetComment: Boolean(
+      targetCommentId.value
+      && commentPages.value.has(targetCommentId.value)
+      && (currentCommentPage.value >= requestedCommentPage.value || !comments.canLoadMore.value),
+    ),
+    loading: comments.isLoading.value,
+    canLoadMore: comments.canLoadMore.value,
+    hasError: Boolean(comments.error.value),
+  }))
+  const targetCommentReady = computed(() => targetCommentState.value === 'ready')
   const loadStateMessage = computed(() => {
     if (comments.error.value)
       return message.value.forum.loadError
+    if (targetCommentState.value === 'missing')
+      return message.value.forum.comment.targetNotFound
     if (comments.canLoadMore.value)
       return message.value.forum.comment.loadMoreComment
     if (comments.rows.value.length === 0)
@@ -98,12 +115,8 @@ export function useCommentAreaState(props: {
   )
 
   watch([currentCommentPage, requestedCommentPage, comments.canLoadMore], ([page, requestedPage, canLoadMore]) => {
-    if (page > 0) {
-      const restoredPage = !canLoadMore && page < requestedPage
-        ? page
-        : Math.max(page, requestedPage)
-      replaceCommentPage(restoredPage)
-    }
+    if (page > 0)
+      replaceCommentPage(resolveRestoredCommentPage(page, requestedPage, canLoadMore))
   }, { immediate: true })
 
   if (!import.meta.env.SSR && !props.inline) {
@@ -127,6 +140,7 @@ export function useCommentAreaState(props: {
     currentCommentPage,
     targetCommentId,
     targetCommentReady,
+    targetCommentState,
     loadStateMessage,
     commentLoading: comments.isLoading,
     commentError: comments.error,
@@ -135,6 +149,7 @@ export function useCommentAreaState(props: {
     toggleCommentReply,
     handleCommentSubmit,
     retry: comments.refetch,
+    loadMoreComment: comments.loadMore,
     setCommentInputBoxVisible: (visible: boolean) => {
       commentInputBoxIsVisible.value = visible
     },

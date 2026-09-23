@@ -37,6 +37,7 @@ const {
   currentCommentPage,
   targetCommentId,
   targetCommentReady,
+  targetCommentState,
   loadStateMessage,
   commentLoading,
   commentError,
@@ -45,6 +46,7 @@ const {
   toggleCommentReply,
   handleCommentSubmit,
   retry,
+  loadMoreComment,
   setCommentInputBoxVisible,
   canLoadMoreComment,
 } = useCommentAreaState(props)
@@ -84,6 +86,7 @@ watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
   lastScrolledCommentId = commentId
   await nextTick()
   scrollTo({ hash: `#reply-${commentId}` })
+  document.getElementById(`reply-${commentId}`)?.focus({ preventScroll: true })
 }, { immediate: true })
 </script>
 
@@ -121,6 +124,7 @@ watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
           v-for="(comment, index) in renderComments"
           :id="`reply-${comment.id}`"
           :key="comment.id"
+          tabindex="-1"
           :class="{ 'last-comment': index === renderComments.length - 1 }"
           :repo="repo"
           :topic-author-id="topicAuthorId"
@@ -146,8 +150,11 @@ watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
           v-if="!inline"
           :loading="commentLoading"
           :error="Boolean(commentError)"
+          :can-load-more="canLoadMoreComment"
+          :load-more="loadMoreComment"
           :retry="retry"
           :text="loadStateMessage"
+          :status="targetCommentState === 'missing' ? 'alert' : 'status'"
         />
 
         <a

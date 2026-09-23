@@ -359,6 +359,7 @@ const forum: CustomConfig['forum'] = {
     commentCount: 'コメント',
     placeholder: 'コメントを入力してください〜',
     loadMoreComment: 'さらに読み込む',
+    targetNotFound: 'リンク先のコメントが見つかりません。削除された可能性がありますが、このフィードバックは引き続き閲覧できます。',
     noComment: 'コメントがありません',
     noMoreComment: 'これ以上コメントはありません',
     loadingComment: 'コメント読み込み中…',

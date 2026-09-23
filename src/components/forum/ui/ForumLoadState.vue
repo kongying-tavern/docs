@@ -12,18 +12,20 @@ withDefaults(defineProps<{
   text?: string
   loadMore?: () => unknown
   retry?: () => unknown
+  status?: 'status' | 'alert'
 }>(), {
   loading: false,
   canLoadMore: false,
   error: false,
   text: '',
+  status: 'status',
 })
 
 const { message } = useLocalized()
 </script>
 
 <template>
-  <div class="mb-8 flex w-full justify-center">
+  <div class="mb-8 flex w-full justify-center" :role="status">
     <Button
       v-if="error || loading || canLoadMore"
       class="vp-link mt-8"
@@ -35,6 +37,7 @@ const { message } = useLocalized()
         v-if="loading || error"
         class="mr-2 h-4 w-4"
         :class="{ 'animate-spin': loading }"
+        aria-hidden="true"
       />
       <TextMorph :text="error ? message.forum.auth.callback.error.retry : text" />
     </Button>

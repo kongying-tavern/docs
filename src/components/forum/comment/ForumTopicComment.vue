@@ -167,6 +167,8 @@ function handleCommentClick(author: ForumAPI.User): void {
 
 .topic-comment-item:target {
   animation: comment-highlight 2s ease-out;
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 4px;
 }
 
 @keyframes comment-highlight {
@@ -178,7 +180,6 @@ function handleCommentClick(author: ForumAPI.User): void {
 @media (prefers-reduced-motion: reduce) {
   .topic-comment-item:target {
     animation: none;
-    outline: 2px solid var(--vp-c-brand-1);
   }
 }
 </style>

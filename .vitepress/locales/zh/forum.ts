@@ -342,6 +342,7 @@ const forum = {
     commentCount: '评论',
     placeholder: '发表你的评论吧~',
     loadMoreComment: '加载更多评论',
+    targetNotFound: '未找到链接中的评论；该评论可能已被删除，你仍可浏览当前反馈。',
     noComment: '暂无评论',
     noMoreComment: '没有更多评论',
     loadingComment: '评论加载中…',

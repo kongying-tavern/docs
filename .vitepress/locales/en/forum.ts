@@ -357,6 +357,7 @@ const forum: CustomConfig['forum'] = {
     commentCount: 'Comments',
     placeholder: 'Share your thoughts~',
     loadMoreComment: 'Load more comments',
+    targetNotFound: 'The linked comment could not be found. It may have been deleted; you can still browse this feedback.',
     noComment: 'No comments',
     noMoreComment: 'No more comments',
     loadingComment: 'Loading comments…',
