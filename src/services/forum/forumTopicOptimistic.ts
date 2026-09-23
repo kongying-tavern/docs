@@ -53,18 +53,3 @@ export function applyOptimisticTopicPatch(
 
   return next
 }
-
-/**
- * Gitee can acknowledge a write before its response reflects the updated
- * labels/state. Keep the acknowledged patch visible until the authoritative
- * list refresh completes, while retaining server-owned response fields.
- */
-export function mergeAcknowledgedTopicPatch(
-  topic: ForumAPI.Topic,
-  patch: OptimisticTopicPatch,
-): ForumAPI.Topic {
-  return {
-    ...applyOptimisticTopicPatch(topic, patch),
-    updatedAt: topic.updatedAt,
-  }
-}

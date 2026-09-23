@@ -14,7 +14,7 @@ import {
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
 } from '~/services/forum/forumQueryContracts'
-import { applyOptimisticTopicPatch, mergeAcknowledgedTopicPatch } from '~/services/forum/forumTopicOptimistic'
+import { applyOptimisticTopicPatch } from '~/services/forum/forumTopicOptimistic'
 import { issues } from '~/services/forum/gitee'
 
 type TopicPatch = Parameters<typeof issues.putTopic>[1]
@@ -66,10 +66,7 @@ export function useForumTopicMutations() {
     cache.queryCache.setQueryData(forumKeys.topic(topicId), optimisticTopic)
 
     try {
-      const outcome = await updateTopicMutation.mutateAsync({ topicId, patch, confirmType })
-      const settledOutcome: TopicUpdateOutcome = outcome.status === 'unknown'
-        ? outcome
-        : { ...outcome, topic: mergeAcknowledgedTopicPatch(outcome.topic, patch) }
+      const settledOutcome = await updateTopicMutation.mutateAsync({ topicId, patch, confirmType })
       if (settledOutcome.status === 'unknown')
         cache.restoreTopicCache(snapshot)
       else

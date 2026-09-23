@@ -3,6 +3,7 @@ import type { OfficialUserPredicate } from './inBrowserUtils'
 import type { SearchParamValue } from './types'
 import type { TopicStateFilter } from '~/services/forum/forumQueryContracts'
 import { buildFormData } from '~/services/apiUtils'
+import { parseTopicLabels } from '~/services/forum/forumTopicLabels'
 import { reportRequestFailure } from '~/services/telemetry/request'
 import { apiCall, deleteApiCache } from '.'
 import { reformat } from '../webhook'
@@ -418,9 +419,10 @@ export async function putTopic(
 
   invalidatePinnedAndAnnouncementCache()
 
-  // 类型更新必须读回确认；PATCH 响应并不保证标签已由 Gitee/Webhook 持久化。
-  const needsReformat = Boolean(data.labels || data.state) && !options.skipReformat
-  if (!needsReformat && !requestedType)
+  // 标签和状态必须读回确认；PATCH 响应并不保证 Gitee/Webhook 已持久化。
+  const hasMembershipChange = data.labels !== undefined || data.state !== undefined
+  const needsReformat = hasMembershipChange && !options.skipReformat
+  if (!hasMembershipChange && !requestedType)
     return { status: 'success', topic: result }
 
   let syncError: Error | undefined
@@ -430,17 +432,16 @@ export async function putTopic(
     }
     catch (error) {
       syncError = toError(error)
-      if (!requestedType)
-        return { status: 'partial', topic: result, error: syncError }
     }
   }
 
   try {
     const authoritative = await getTopic(String(number))
-    if (requestedType && !isTopicTypeChangeConfirmed(authoritative, requestedType)) {
+    if (!isTopicPatchConfirmed(authoritative, data)
+      || (requestedType && !isTopicTypeChangeConfirmed(authoritative, requestedType))) {
       return {
         status: 'unknown',
-        error: new Error(`Topic type ${requestedType} was not confirmed by Gitee.`),
+        error: new Error('Topic update was not confirmed by Gitee.'),
       }
     }
     return syncError
@@ -450,6 +451,16 @@ export async function putTopic(
   catch (error) {
     return { status: 'partial', topic: result, error: toError(error) }
   }
+}
+
+export function isTopicPatchConfirmed(topic: ForumAPI.Topic, patch: { labels?: string, state?: ForumAPI.TopicState }): boolean {
+  if (patch.state !== undefined && topic.state !== patch.state)
+    return false
+  if (patch.labels === undefined)
+    return true
+  const expected = parseTopicLabels(patch.labels)
+  return expected.length === topic.labels.length
+    && expected.every(label => topic.labels.includes(label))
 }
 
 export function isTopicTypeChangeConfirmed(topic: ForumAPI.Topic, type: ForumAPI.FeedbackTopicType): boolean {

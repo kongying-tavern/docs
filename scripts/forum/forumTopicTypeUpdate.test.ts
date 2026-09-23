@@ -98,3 +98,58 @@ test('type update waits for webhook synchronization before confirming the label'
     globalThis.fetch = originalFetch
   }
 })
+
+test('other label updates reject a 2xx response when the read-back label stayed unchanged', async () => {
+  const originalFetch = globalThis.fetch
+  globalThis.fetch = async (input, init) => {
+    const request = new Request(input, init)
+    if (request.method === 'PATCH' || request.method === 'GET')
+      return jsonResponse(issue)
+    throw new Error(`Unexpected request: ${request.method}`)
+  }
+  try {
+    const outcome = await putTopic('I1', { labels: 'TYP-BUG,PINNED' }, { skipReformat: true })
+    assert.equal(outcome.status, 'unknown')
+  }
+  finally {
+    globalThis.fetch = originalFetch
+  }
+})
+
+test('state updates reject a 2xx response when the read-back state stayed unchanged', async () => {
+  const originalFetch = globalThis.fetch
+  globalThis.fetch = async (input, init) => {
+    const request = new Request(input, init)
+    if (request.method === 'PATCH' || request.method === 'GET')
+      return jsonResponse(issue)
+    throw new Error(`Unexpected request: ${request.method}`)
+  }
+  try {
+    const outcome = await putTopic('I1', { state: 'closed' }, { skipReformat: true })
+    assert.equal(outcome.status, 'unknown')
+  }
+  finally {
+    globalThis.fetch = originalFetch
+  }
+})
+
+test('confirmed label update retains the authoritative topic instead of the stale PATCH response', async () => {
+  const originalFetch = globalThis.fetch
+  globalThis.fetch = async (input, init) => {
+    const request = new Request(input, init)
+    if (request.method === 'PATCH')
+      return jsonResponse(issue)
+    if (request.method === 'GET')
+      return jsonResponse({ ...issue, labels: [{ name: 'TYP-BUG' }, { name: 'PINNED' }] })
+    throw new Error(`Unexpected request: ${request.method}`)
+  }
+  try {
+    const outcome = await putTopic('I1', { labels: 'TYP-BUG,PINNED' }, { skipReformat: true })
+    assert.equal(outcome.status, 'success')
+    if (outcome.status === 'success')
+      assert.equal(outcome.topic.pinned, true)
+  }
+  finally {
+    globalThis.fetch = originalFetch
+  }
+})

@@ -2,7 +2,7 @@
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { applyOptimisticTopicPatch, mergeAcknowledgedTopicPatch } from '../../src/services/forum/forumTopicOptimistic'
+import { applyOptimisticTopicPatch } from '../../src/services/forum/forumTopicOptimistic'
 
 const topic = {
   id: '1',
@@ -41,15 +41,4 @@ test('optimistic Topic patch updates visible membership and content fields', () 
   assert.equal(next.status, 'fixed')
   assert.equal(next.goodIssue, true)
   assert.equal(topic.title, 'Old title')
-})
-
-test('acknowledged patch keeps submitted status when the provider response still has old labels', () => {
-  const acknowledged = mergeAcknowledgedTopicPatch(topic, {
-    labels: 'TYP-BUG,ST-CONFIRMED',
-  })
-
-  assert.equal(acknowledged.status, 'confirmed')
-  assert.deepEqual(acknowledged.labels, ['TYP-BUG', 'ST-CONFIRMED'])
-  assert.equal(acknowledged.updatedAt, topic.updatedAt)
-  assert.deepEqual(topic.labels, [])
 })
