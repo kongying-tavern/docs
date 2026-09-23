@@ -7,14 +7,10 @@ import { computed, nextTick, onMounted, ref, useId, useTemplateRef, watch } from
 import { Input } from '@/components/ui/input'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { useForumSearchToken } from '~/composables/useForumSearchToken'
-import {
-  parseForumSearchQuery,
-  stringifyForumSearchQuery,
-  toggleForumSearchFacet,
-} from '~/services/forum/forumSearchQuery'
+import { stringifyForumSearchQuery } from '~/services/forum/forumSearchQuery'
 import { getForumSearchSuggestions } from '~/services/forum/forumSearchSuggestions'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
+import { useForumSearchFilters } from './composables/useForumSearchFilters'
 import ForumSearchFilterPicker from './ForumSearchFilterPicker.vue'
 
 const props = withDefaults(defineProps<{
@@ -35,21 +31,20 @@ const modelValue = defineModel<string>('query', { required: true })
 const { message } = useLocalized()
 const router = useRouter()
 const { topicHref } = useForumRoute()
-const { findSearchFacet, formatSearchToken, parseSearchToken } = useForumSearchToken()
+const filters = useForumSearchFilters(modelValue, () => Boolean(props.page))
+const {
+  activeFacet,
+  editingFilter,
+  filterDraft,
+  filterToken,
+  parsedQuery,
+  textQuery,
+} = filters
 const inputId = `forum-search-${useId()}`
 const listboxId = `${inputId}-suggestions`
 const isOpen = ref(false)
 const expanded = ref(false)
 const activeIndex = ref(-1)
-const activeFacet = ref<ForumSearchFacet | null>(props.page ? 'state' : null)
-const parsedQuery = computed(() => parseForumSearchQuery(modelValue.value))
-const textQuery = computed({
-  get: () => parsedQuery.value.text,
-  set: text => modelValue.value = stringifyForumSearchQuery({ ...parsedQuery.value, text }),
-})
-const filterToken = computed(() => formatSearchToken(parsedQuery.value) || null)
-const filterDraft = ref('')
-const editingFilter = ref(false)
 const filterPicker = useTemplateRef<InstanceType<typeof ForumSearchFilterPicker>>('filterPicker')
 const formEl = useTemplateRef<HTMLFormElement>('formEl')
 const filterInputEl = useTemplateRef<HTMLInputElement>('filterInputEl')
@@ -75,10 +70,6 @@ const showSuggestions = computed(() => {
 const showFilterPicker = computed(() => !props.page && isOpen.value && !textQuery.value)
 
 watch(filteredSuggestions, () => activeIndex.value = -1)
-watch(filterToken, (token) => {
-  if (!editingFilter.value)
-    filterDraft.value = token ?? ''
-}, { immediate: true })
 
 const shouldExpand = computed(() => props.page || expanded.value || Boolean(modelValue.value.trim()))
 
@@ -93,12 +84,7 @@ function handleSearch() {
 }
 
 function removeStructuredFilter() {
-  const next = stringifyForumSearchQuery({ ...parsedQuery.value, tags: [], states: [], author: null })
-  modelValue.value = next
-  if (!props.page)
-    activeFacet.value = null
-  editingFilter.value = false
-  filterDraft.value = ''
+  const next = filters.clear()
   emit('submit', next)
 }
 
@@ -111,23 +97,12 @@ function handleBackspace(event: KeyboardEvent) {
 }
 
 function handleFilterFocus() {
-  filterDraft.value = activeFacet.value
-    ? formatFacetDraft(parsedQuery.value, activeFacet.value)
-    : filterToken.value ?? ''
-  editingFilter.value = true
+  filters.beginEdit()
   isOpen.value = true
 }
 
 function handleFilterInput() {
-  const nextFilters = parseSearchToken(filterDraft.value)
-  const next = stringifyForumSearchQuery({
-    text: textQuery.value,
-    tags: nextFilters.tags,
-    states: nextFilters.states,
-    author: nextFilters.author,
-  })
-  modelValue.value = next
-  return next
+  return filters.applyDraft()
 }
 
 function focusRemainsInSearch(event: FocusEvent): boolean {
@@ -137,27 +112,21 @@ function focusRemainsInSearch(event: FocusEvent): boolean {
 function handleFilterBlur(event: FocusEvent) {
   if (focusRemainsInSearch(event))
     return
-  const draft = filterDraft.value.trim()
-  const parsed = parseSearchToken(draft)
-  if (draft && findSearchFacet(draft) && !parsed.tags.length && !parsed.states.length && !parsed.author) {
+  if (filters.hasIncompleteFacetDraft()) {
     if (!props.page)
       activeFacet.value = null
     isOpen.value = false
     return
   }
   const next = stringifyForumSearchQuery(parsedQuery.value)
-  editingFilter.value = false
-  filterDraft.value = filterToken.value ?? ''
-  if (!props.page)
-    activeFacet.value = null
+  filters.resetDraft()
   isOpen.value = false
   emit('submit', next)
 }
 
 function handleFilterSubmit() {
   const next = handleFilterInput()
-  editingFilter.value = false
-  filterDraft.value = formatSearchToken(parseForumSearchQuery(next))
+  filters.finishDraft(next)
   isOpen.value = false
   emit('submit', next)
 }
@@ -173,24 +142,11 @@ function handleFilterEnter(event: KeyboardEvent) {
 
 function handleTextInput(event: Event) {
   const input = event.currentTarget as HTMLInputElement
-  const facet = findSearchFacet(input.value)
-  if (facet) {
-    const typedFilters = parseSearchToken(input.value)
-    const current = parseForumSearchQuery(modelValue.value)
-    const next = stringifyForumSearchQuery({
-      text: '',
-      tags: [...new Set([...current.tags, ...typedFilters.tags])],
-      states: [...new Set([...current.states, ...typedFilters.states])],
-      author: typedFilters.author ?? current.author,
-    })
-    modelValue.value = next
+  const consumed = filters.consumeTextFacet(input.value)
+  if (consumed) {
     inputEl.value?.clear()
-    const colonIndex = input.value.indexOf(':')
-    const remainder = colonIndex >= 0 ? input.value.slice(colonIndex + 1) : ''
-    chooseFacet(facet)
-    if (remainder)
-      filterDraft.value = `${facetPrefix(facet)}${remainder}`
-    emit('submit', next)
+    focusFacet(consumed.facet)
+    emit('submit', consumed.next)
     return
   }
 
@@ -233,14 +189,12 @@ function selectActive(event: KeyboardEvent) {
   router.go(topicHref(String(suggestion.topic.id), null))
 }
 
-function facetPrefix(facet: ForumSearchFacet): string {
-  return `${message.value.forum.topic.searchFacets[facet]}:`
+function chooseFacet(facet: ForumSearchFacet) {
+  filters.selectFacet(facet)
+  focusFacet(facet)
 }
 
-function chooseFacet(facet: ForumSearchFacet) {
-  activeFacet.value = facet
-  editingFilter.value = !props.page
-  filterDraft.value = formatFacetDraft(parsedQuery.value, facet)
+function focusFacet(facet: ForumSearchFacet) {
   if (!props.page && facet !== 'author') {
     nextTick(() => {
       const input = filterInputEl.value
@@ -253,33 +207,14 @@ function chooseFacet(facet: ForumSearchFacet) {
 function leaveFacet() {
   const next = stringifyForumSearchQuery(parsedQuery.value)
   modelValue.value = next
-  if (!props.page)
-    activeFacet.value = null
-  editingFilter.value = false
-  filterDraft.value = filterToken.value ?? ''
+  filters.resetDraft()
   emit('submit', next)
   nextTick(() => inputEl.value?.focus())
 }
 
 function toggleFacet(facet: ForumSearchFacet, value: string) {
-  const next = toggleForumSearchFacet(modelValue.value, facet, value)
-  modelValue.value = next
+  const next = filters.toggleFacet(facet, value)
   emit('submit', next)
-  nextTick(() => {
-    filterDraft.value = activeFacet.value
-      ? formatFacetDraft(parseForumSearchQuery(next), activeFacet.value)
-      : formatSearchToken(parseForumSearchQuery(next))
-  })
-}
-
-function formatFacetDraft(query: ReturnType<typeof parseForumSearchQuery>, facet: ForumSearchFacet): string {
-  const token = formatSearchToken(query)
-  const hasFacetValue = facet === 'tags'
-    ? query.tags.length > 0
-    : facet === 'state'
-      ? query.states.length > 0
-      : Boolean(query.author)
-  return hasFacetValue ? token : [token, facetPrefix(facet)].filter(Boolean).join(' ')
 }
 
 function handleEscape() {
@@ -293,10 +228,7 @@ function handleInputBlur(event: FocusEvent) {
   if (focusRemainsInSearch(event))
     return
   isOpen.value = false
-  if (!props.page)
-    activeFacet.value = null
-  editingFilter.value = false
-  filterDraft.value = filterToken.value ?? ''
+  filters.resetDraft()
   expanded.value = false
 }
 </script>

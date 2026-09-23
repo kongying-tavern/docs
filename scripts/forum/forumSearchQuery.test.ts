@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
+import { clearStructuredSearchFilters, mergeTypedSearchFacet } from '../../src/services/forum/forumSearchInput'
 import {
   appendForumSearchFacet,
   parseForumSearchQuery,
@@ -91,9 +92,20 @@ test('facet toggles share one query-level implementation', () => {
   assert.equal(toggleForumSearchFacet('map', 'state', 'unsupported'), 'map')
 })
 
-test('search uses one editable badge and Backspace from the keyword field removes all structured facets', async () => {
-  const [source, tokenSource, searchInfo, emptyState] = await Promise.all([
+test('input filter transitions preserve keywords and merge repeated facets', () => {
+  assert.equal(clearStructuredSearchFilters('tags:CATA-DOCS state:fixed author:alice map crash'), 'map crash')
+  assert.equal(mergeTypedSearchFacet('tags:CATA-DOCS state:fixed author:alice', {
+    tags: ['CATA-DOCS', 'CATA-TYPOS'],
+    states: ['closed'],
+    author: null,
+  }), 'tags:CATA-DOCS,CATA-TYPOS state:fixed,closed author:alice')
+  assert.equal(mergeTypedSearchFacet('author:alice', { tags: [], states: [], author: 'bob' }), 'author:bob')
+})
+
+test('search keeps one editable badge while filter state lives outside the view', async () => {
+  const [source, filterState, tokenSource, searchInfo, emptyState] = await Promise.all([
     readFile(new URL('../../src/components/forum/search/ForumSearchInput.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/search/composables/useForumSearchFilters.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/useForumSearchToken.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/search/ForumTopicSearchInfo.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/list/ForumTopicListEmpty.vue', import.meta.url), 'utf8'),
@@ -107,8 +119,8 @@ test('search uses one editable badge and Backspace from the keyword field remove
     source.indexOf('.forum-search-field'),
   )
 
-  assert.match(source, /formatSearchToken\(parsedQuery\.value\)/)
-  assert.match(source, /parseSearchToken\(filterDraft\.value\)/)
+  assert.match(filterState, /formatSearchToken\(parsedQuery\.value\)/)
+  assert.match(filterState, /parseSearchToken\(filterDraft\.value\)/)
   assert.match(tokenTemplate, /message\.forum\.topic\.searchFacets\.label/)
   assert.doesNotMatch(source, /getTopicTagMap|localizedTagLabels|localizedStateLabels/)
   assert.match(tokenSource, /message\.value\.forum\.topic\.searchFacets\.tags/)
@@ -118,9 +130,9 @@ test('search uses one editable badge and Backspace from the keyword field remove
   assert.match(searchInfo, /formatSearchQuery\(list\.value\?\.q \|\| ''\)/)
   assert.match(emptyState, /formatSearchQuery\(props\.query \|\| ''\)/)
   assert.match(source, /event\.key !== 'Backspace'/)
-  assert.match(source, /tags: \[\], states: \[\], author: null/)
-  assert.match(source, /filterDraft\.value = ''/)
-  assert.match(source, /findSearchFacet\(input\.value\)/)
+  assert.match(source, /filters\.clear\(\)/)
+  assert.match(filterState, /filterDraft\.value = ''/)
+  assert.match(filterState, /findSearchFacet\(value\)/)
   assert.match(source, /ForumSearchFilterPicker/)
   assert.match(source, /@keydown="handleBackspace"/)
   assert.match(tokenTemplate, /<input/)
