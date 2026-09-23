@@ -88,7 +88,8 @@ export function createProximityHover(
     subtree: true,
     childList: true,
     attributes: true,
-    attributeFilter: ['disabled', 'aria-disabled', 'data-disabled'],
+    // 'open' covers collapsible sections: toggling a <details> changes which rows have layout.
+    attributeFilter: ['disabled', 'aria-disabled', 'data-disabled', 'open'],
   })
   // Rects measured while an ancestor was scaled (a menu mid zoom-in) are off, and nothing mutates when it ends.
   const stopMotionEnd = onAncestorMotionEnd(container, () => {
@@ -118,44 +119,41 @@ export function createProximityHover(
       raf = requestAnimationFrame(pick)
   }
 
-  /** Publishes a rect for every eligible item. Returns false when the pass was incomplete. */
+  /**
+   * Publishes a rect for every eligible item that currently has a layout box. A boxless item is
+   * legitimately absent from layout — a closed `<details>` section hides its rows — so it is
+   * skipped instead of failing the pass; only a boxless container (a popup not laid out yet)
+   * keeps the last measurement and waits for the retry.
+   */
   function measure(): boolean {
+    if (!hasLayoutBox(container))
+      return false
     const next = collectItems(container)
     const nextRects: (ItemRect | undefined)[] = []
-    let complete = true
     for (let index = 0; index < next.length; index++) {
       const item = next[index]!
-      // An element inside a display:none / not-yet-laid-out popup reports every offset as 0:
-      // treat the whole pass as incomplete so the last complete measurement stands.
-      if (!hasLayoutBox(item)) {
-        complete = false
+      if (!hasLayoutBox(item))
         continue
-      }
       const rect = measureItemRect(item, container)
-      if (!rect) {
-        complete = false
-        continue
-      }
-      nextRects[index] = rect
+      if (rect)
+        nextRects[index] = rect
     }
-    if (complete) {
-      items = next
-      rects = nextRects
-      const current = new Set(items)
-      for (const item of current) {
-        if (!observed.has(item)) {
-          observed.add(item)
-          resizeObserver.observe(item)
-        }
-      }
-      for (const item of observed) {
-        if (!current.has(item)) {
-          observed.delete(item)
-          resizeObserver.unobserve(item)
-        }
+    items = next
+    rects = nextRects
+    const current = new Set(items)
+    for (const item of current) {
+      if (!observed.has(item)) {
+        observed.add(item)
+        resizeObserver.observe(item)
       }
     }
-    return complete
+    for (const item of observed) {
+      if (!current.has(item)) {
+        observed.delete(item)
+        resizeObserver.unobserve(item)
+      }
+    }
+    return true
   }
 
   function pick() {
