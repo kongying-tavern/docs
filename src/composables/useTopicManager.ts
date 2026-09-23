@@ -1,6 +1,7 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
+import type { TopicUpdateOutcome } from '~/services/forum/gitee/issues'
 import { computed, toValue } from 'vue'
 import { withAuth } from '@/utils/auth-helpers'
 import {
@@ -46,26 +47,32 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     createPatch: (topic: ForumAPI.Topic) => Parameters<typeof mutations.updateTopic>[2],
     successMessage: string,
     failureMessage: string,
-    options: { notifySuccess?: boolean, confirmType?: ForumAPI.FeedbackTopicType } = {},
+    options: { confirmType?: ForumAPI.FeedbackTopicType } = {},
   ): Promise<ForumAPI.Topic | false> {
     const topic = currentTopic()
     return withOperationLock(topic.id, async () => {
-      const outcome = await withAuth.execute(
-        () => mutations.updateTopic(kind, topic.id, createPatch(topic), topic, options.confirmType),
-        { loginMessage: message.value.forum.auth.loginTips, errorMessage: failureMessage },
-      )
+      let outcome: TopicUpdateOutcome | null
+      try {
+        outcome = await withAuth.execute(
+          () => mutations.updateTopic(kind, topic.id, createPatch(topic), topic, options.confirmType),
+          { loginMessage: message.value.forum.auth.loginTips, errorMessage: failureMessage },
+        )
+      }
+      catch {
+        // withAuth 已展示请求失败；菜单动作不能泄漏未处理的 Promise rejection。
+        return false
+      }
       if (!outcome)
         return false
       if (outcome.status === 'unknown') {
         toast.error(failureMessage, { error: outcome.error, scene: 'op' })
-        throw outcome.error
+        return false
       }
       if (outcome.status === 'partial') {
         toast.warning(message.value.forum.topic.menu.syncPending.replace('{action}', successMessage))
-        return outcome.topic
+        return false
       }
-      if (options.notifySuccess)
-        toast.success(successMessage)
+      toast.success(successMessage)
       return outcome.topic
     })
   }
@@ -98,21 +105,13 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     )]
   }
 
-  const toggleTopicType = async (newType: ForumAPI.FeedbackTopicType) => {
-    try {
-      return await update(
-        'changeTopicMembership',
-        topic => buildTopicTypeChangePatch(topic, newType),
-        message.value.forum.topic.menu.changeType.success,
-        message.value.forum.topic.menu.changeType.fail,
-        { notifySuccess: true, confirmType: newType },
-      )
-    }
-    catch {
-      // update 已向用户展示失败原因，菜单事件不再产生未处理的 Promise rejection。
-      return false
-    }
-  }
+  const toggleTopicType = (newType: ForumAPI.FeedbackTopicType) => update(
+    'changeTopicMembership',
+    topic => buildTopicTypeChangePatch(topic, newType),
+    message.value.forum.topic.menu.changeType.success,
+    message.value.forum.topic.menu.changeType.fail,
+    { confirmType: newType },
+  )
 
   const togglePinnedTopic = () => update(
     'pinTopic',
