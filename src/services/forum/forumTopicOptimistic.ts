@@ -48,7 +48,7 @@ export function applyOptimisticTopicPatch(
     next.status = getTopicStatus(labels)
     next.goodIssue = labels.includes('GOOD-ISSUE')
     if (type)
-      next.type = type as Exclude<ForumAPI.TopicType, null>
+      next.type = type as ForumAPI.FeedbackTopicType
   }
 
   return next

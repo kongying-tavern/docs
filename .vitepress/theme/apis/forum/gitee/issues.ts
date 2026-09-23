@@ -337,7 +337,7 @@ export async function postTopic(data: ForumAPI.FormSubmitData): Promise<ForumAPI
 }
 
 export async function postTopicComment(
-  repo: string,
+  repo: ForumAPI.Repo,
   number: string,
   body: string,
 ): Promise<ForumAPI.Comment> {
@@ -358,7 +358,7 @@ export async function postTopicComment(
 
 export async function deleteTopicComment(
   id: number | string,
-  repo: string = FEEDBACK_REPO,
+  repo: ForumAPI.Repo = FEEDBACK_REPO,
 ): Promise<boolean> {
   const { response } = await apiCall<GITEE.IssueList>(
     'delete',

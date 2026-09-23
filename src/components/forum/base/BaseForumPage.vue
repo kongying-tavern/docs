@@ -10,7 +10,7 @@ import ForumAside from '../sidebar/ForumAside.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 
 interface Props {
-  renderData: ForumAPI.Topic[] | ForumAPI.Post[]
+  renderData: ForumAPI.Topic[]
   loading?: boolean
   loadingMore?: boolean
   error?: Error | null

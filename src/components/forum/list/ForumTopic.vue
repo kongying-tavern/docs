@@ -172,7 +172,7 @@ function showTranslatedContent(content: string): void {
       class="mt-4"
       :inline="true"
       repo="Feedback"
-      :topic-id="topic.id!"
+      :topic-id="topic.id"
       :topic="topic.type === 'POST' ? undefined : topic"
       :topic-author-id="topic.user.id"
       :comment-count="topic.commentCount"

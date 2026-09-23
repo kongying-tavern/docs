@@ -16,8 +16,8 @@ export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | strin
   const isPost = computed(() => isString(topic) ? false : topic?.type === 'POST')
 
   function detailHref(hash?: string): string {
-    if (isPost.value) {
-      const path = `blog/posts/${(topic as ForumAPI.Post).path}`
+    if (!isString(topic) && topic.type === 'POST') {
+      const path = `blog/posts/${topic.path}`
       return withBase(`${getLangPath(localeIndex.value)}${path}${hash ? `#${hash}` : ''}`)
     }
 

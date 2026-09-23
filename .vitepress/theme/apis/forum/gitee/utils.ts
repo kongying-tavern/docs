@@ -321,7 +321,7 @@ export function isUpperCase(str: string) {
 }
 
 function getTopicTypeFromTitle(title: string): {
-  type: ForumAPI.TopicType
+  type: ForumAPI.FeedbackTopicType | null
   title: string
 } {
   const match = (title ?? '')
@@ -329,7 +329,7 @@ function getTopicTypeFromTitle(title: string): {
     .match(new RegExp(`^(${GITEE_API_CONFIG.TOPIC_TYPE.join('|')}):`))
 
   if (match) {
-    const prefix = match[0].replace(':', '') as ForumAPI.TopicType
+    const prefix = match[0].replace(':', '') as ForumAPI.FeedbackTopicType
     if (prefix)
       return { type: prefix, title: stripMarkdownImages(title.slice(prefix.length + 1)) }
   }

@@ -261,9 +261,6 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
     if (!hasEditPermission.value)
       return []
 
-    if (currentTopic.value.type === 'POST')
-      return []
-
     return [
       {
         type: 'separator',

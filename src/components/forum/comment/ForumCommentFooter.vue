@@ -32,7 +32,7 @@ const {
   topicId,
   commentPage = 1,
 } = defineProps<{
-  repo?: string
+  repo?: ForumAPI.Repo
   commentData: ForumAPI.Comment
   commentClickHandler?: (event: Event) => void
   menus?: FORUM.TopicDropdownMenu[]
@@ -40,7 +40,9 @@ const {
   commentPage?: number
 }>()
 
-const emit = defineEmits(['comment:delete', 'comment:click'])
+const emit = defineEmits<{
+  'comment:click': [author: ForumAPI.User]
+}>()
 
 const { message } = useLocalized()
 const forumMutations = useForumCommentMutations()

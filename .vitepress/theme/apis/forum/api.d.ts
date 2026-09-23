@@ -61,7 +61,7 @@ export namespace ForumAPI {
     type: FeedbackTopicType
   }
 
-  export interface Topic {
+  export interface ForumItemBase {
     id: string
     title: string
     content: ForumAPI.Content
@@ -74,7 +74,6 @@ export namespace ForumAPI {
     commentCount: number
     user: ForumAPI.User
     state: ForumAPI.TopicState
-    type: ForumAPI.TopicKind
     pinned?: boolean
     relatedComments?: Comment[] | null
     createdAt: string
@@ -82,6 +81,16 @@ export namespace ForumAPI {
     closedAt?: string
     language?: string
     quotedTopic?: QuotedTopicReference
+  }
+
+  export interface Topic extends ForumItemBase {
+    type: FeedbackTopicType
+  }
+
+  export interface Post extends ForumItemBase {
+    type: 'POST'
+    author: ForumAPI.User
+    path: string
   }
 
   export type TopicTags = string[]
@@ -119,12 +128,6 @@ export namespace ForumAPI {
     tags?: string[] // Tags extracted from rich text data
   }
 
-  export interface Comments {
-    total: number
-    totalPage: number
-    data: Array<ForumAPI.Comment>
-  }
-
   export interface Reactions {
     like?: number
     unlike?: number
@@ -142,22 +145,6 @@ export namespace ForumAPI {
   export type SortMethod = 'created' | 'updated'
 
   export type FilterBy = 'feat' | 'bug' | 'all' | 'closed' | 'archived' | 'everything'
-
-  export interface GetTopicsParams {
-    current: number
-    pageSize: number
-    sort: SortMethod
-    filter?: FilterBy | string | null
-    creator?: string | null
-    q?: string
-  }
-
-  export interface GetCommentsParams {
-    repo: Repo
-    issueId: string | number
-    page?: number
-    pageSize?: number
-  }
 
   export interface ApiError extends Error {
     status?: number
@@ -199,12 +186,6 @@ export namespace ForumAPI {
     title: string
     labels?: string
   }
-
-  type Post = {
-    author: ForumAPI.User
-    path: string
-
-  } & ForumAPI.Topic
 
   type Repo = 'Feedback' | 'Blog'
 

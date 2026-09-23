@@ -101,7 +101,7 @@ export function useForumCommentMutations() {
       issues.postTopicComment(input.repo, input.topicId, input.body),
   })
   const deleteCommentMutation = useMutation({
-    mutation: (input: { repo: string, topicId: string, commentId: string | number }) =>
+    mutation: (input: { repo: ForumAPI.Repo, topicId: string, commentId: string | number }) =>
       issues.deleteTopicComment(input.commentId, input.repo),
   })
 
@@ -121,7 +121,7 @@ export function useForumCommentMutations() {
     })
   }
 
-  async function deleteComment(input: { repo: string, topicId: string, commentId: string | number }): Promise<boolean> {
+  async function deleteComment(input: { repo: ForumAPI.Repo, topicId: string, commentId: string | number }): Promise<boolean> {
     return serializeTopicCommentMutation(input.topicId, async () => {
       const snapshot = cache.captureTopicCache(input.topicId)
       cache.adjustCachedCommentCount(input.topicId, -1)
