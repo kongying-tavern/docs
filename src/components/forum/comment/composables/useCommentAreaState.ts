@@ -10,6 +10,7 @@ export function useCommentAreaState(props: {
   repo: ForumAPI.Repo
   topicId: string
   topicAuthorId: string | number
+  inline?: boolean
   commentCount?: number
 }) {
   const { message } = useLocalized()
@@ -105,7 +106,7 @@ export function useCommentAreaState(props: {
     }
   }, { immediate: true })
 
-  if (!import.meta.env.SSR) {
+  if (!import.meta.env.SSR && !props.inline) {
     useInfiniteScroll(window, async () => {
       await comments.loadMore()
     }, {
