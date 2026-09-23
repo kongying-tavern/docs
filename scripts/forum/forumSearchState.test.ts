@@ -1,10 +1,10 @@
 /* eslint-disable test/no-import-node-test */
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildTopicListRequest } from '../../.vitepress/theme/apis/forum/gitee/issues'
 import { forumKeys } from '../../src/services/forum/forumQueryContracts'
 import { buildForumHref, parseForumLocation } from '../../src/services/forum/forumRoute'
 import { buildForumProviderRequest } from '../../src/services/forum/forumTopics'
+import { buildTopicListRequest } from '../../src/services/forum/gitee/issues'
 
 const routeOptions = { base: '/docs/', locales: ['root', 'en', 'ja'] } as const
 

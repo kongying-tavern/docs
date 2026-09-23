@@ -1,7 +1,7 @@
 import type { RequestPayload, SearchParamValue } from './types'
 import ky from 'ky'
-import { getAuthSession } from '../../auth-session'
-import { isNodeEnvironment } from '../../utils'
+import { isNodeEnvironment } from '~/services/apiUtils'
+import { getAuthSession } from '~/services/authSession'
 import { GITEE_API_CONFIG } from './config'
 
 // 错误分类不在 ky hooks 中进行：ky v2 的 HTTPError.data 在抛出时已预解析，

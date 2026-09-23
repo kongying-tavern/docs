@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/services/forum/api'
 import type { ForumSearchState } from '~/services/forum/forumSearchQuery'
 import { FORUM_CONFIG } from '~/services/forum/forumConfig'
 import { getTopicDisplayStatus } from '~/services/forum/forumTopicStatus'

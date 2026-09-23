@@ -1,9 +1,9 @@
-import type { AuthResult } from '../../utils/auth-errors'
 import type { INTER_KNOT } from './api'
 import type { SSOAuth } from '@/stores/useUserAuth'
+import type { AuthResult } from '~/services/authErrors'
+import { catchError } from '~/services/apiUtils'
+import { createAuthError } from '~/services/authErrors'
 import { fetcher, SSO_SESSION_CONTEXT } from '.'
-import { createAuthError } from '../../utils/auth-errors'
-import { catchError } from '../utils'
 import { generateRandomString, normalizeSSOAuth, signToken } from './utils'
 
 export async function refreshToken(accessToken: string): Promise<AuthResult<SSOAuth>> {

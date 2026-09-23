@@ -12,7 +12,6 @@ import {
 } from '@vueuse/core'
 import { last } from 'lodash-es'
 import { computed, nextTick, ref, watch } from 'vue'
-import { isPhoneBindingRequiredError } from '@/apis/forum/gitee'
 import {
   Alert,
   AlertDescription,
@@ -54,6 +53,7 @@ import {
   QUOTED_TOPIC_TYPE_PARAM,
   readQuotedTopicRequest,
 } from '~/services/forum/forumTopicQuote'
+import { isPhoneBindingRequiredError } from '~/services/forum/gitee'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'

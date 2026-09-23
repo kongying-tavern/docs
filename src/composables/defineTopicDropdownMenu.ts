@@ -3,7 +3,6 @@ import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
 import { computed, ref, toValue } from 'vue'
-import { issues } from '@/apis/forum/gitee'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useForumRoute } from '~/composables/useForumRoute'
@@ -15,6 +14,7 @@ import {
   groupTopicStatuses,
   TOPIC_STATUS_LABEL,
 } from '~/services/forum/forumTopicStatus'
+import { issues } from '~/services/forum/gitee'
 import { toast } from '~/services/telemetry/toast'
 import { useReactionStats } from './useReactionStats'
 import { useTopicReactionState } from './useTopicsReaction'

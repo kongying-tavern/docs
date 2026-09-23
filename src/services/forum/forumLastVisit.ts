@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/services/forum/api'
 
 const LAST_VISIT_KEY = 'forum:last-visited-at:v1'
 const PREVIOUS_VISIT_KEY = 'forum:previous-visit-at:v1'

@@ -1,7 +1,7 @@
 import type { Extensions } from '@tiptap/core'
 import type { SuggestionOptions } from '@tiptap/suggestion'
-import type ForumAPI from '@/apis/forum/api'
 import type { ForumEditorSuggestionItem } from '~/composables/tiptap/forumSuggestionRenderer'
+import type ForumAPI from '~/services/forum/api'
 import { Markdown } from '@tiptap/markdown'
 import StarterKit from '@tiptap/starter-kit'
 import { EmojiNode } from '~/composables/tiptap/emojiNode'

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Info, Search } from '@lucide/vue'
 import { computed } from 'vue'
-import { GiteeAPIError } from '@/apis/forum/gitee'
 import { Button } from '@/components/ui/button'
 import {
   Empty,
@@ -14,6 +13,7 @@ import {
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useForumSearchToken } from '~/composables/useForumSearchToken'
+import { GiteeAPIError } from '~/services/forum/gitee'
 import OpenFeedbackFormButton from '../form/OpenFeedbackFormButton.vue'
 
 const props = defineProps<{

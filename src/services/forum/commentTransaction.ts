@@ -1,5 +1,5 @@
 import type { JSONContent } from '@tiptap/core'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/services/forum/api'
 import type { ImageAttachmentError, UploadImageAttachmentsResult } from '~/services/forum/form/imageAttachment'
 import { encodeCommentBody } from '~/services/forum/forumContentCodec'
 

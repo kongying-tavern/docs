@@ -9,8 +9,8 @@ import {
   parseGiteeIssues,
   parseGiteeUser,
   parseGiteeUsers,
-} from '../../.vitepress/theme/apis/forum/gitee/contracts'
-import { extractOfficialAndAuthorComments } from '../../.vitepress/theme/apis/forum/gitee/inBrowserUtils'
+} from '../../src/services/forum/gitee/contracts'
+import { extractOfficialAndAuthorComments } from '../../src/services/forum/gitee/inBrowserUtils'
 
 const user = {
   id: 1,

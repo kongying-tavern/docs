@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { CustomConfig } from '../../.vitepress/locales/types'
-import { GiteeAPIError } from '@/apis/forum/gitee'
+import { GiteeAPIError } from '~/services/forum/gitee'
 import { toast } from '~/services/telemetry/toast'
 
 export function handleError(

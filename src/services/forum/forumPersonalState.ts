@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/services/forum/api'
 import { stripMarkdownImages } from './forumContentCodec'
 import { TOPIC_STATUS_DEFINITIONS } from './forumTopicStatus'
 

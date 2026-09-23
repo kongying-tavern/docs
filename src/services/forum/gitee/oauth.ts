@@ -1,9 +1,9 @@
-import type { AuthResult } from '../../../utils/auth-errors'
 import type ForumAPI from '../api'
+import type { AuthResult } from '~/services/authErrors'
 
 import { getSiteHref } from '~/constants/site'
-import { createAuthError } from '../../../utils/auth-errors'
-import { catchError } from '../../utils'
+import { catchError } from '~/services/apiUtils'
+import { createAuthError } from '~/services/authErrors'
 import { oauthFetcher } from './client'
 import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './config'
 import { parseGiteeAuth } from './contracts'

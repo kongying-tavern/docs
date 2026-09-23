@@ -1,5 +1,5 @@
-import { user } from '@/apis/forum/gitee'
-import { GITEE_API_CONFIG } from '@/apis/forum/gitee/config'
+import { user } from '~/services/forum/gitee'
+import { GITEE_API_CONFIG } from '~/services/forum/gitee/config'
 import { getAuthToken, saveMemberDataWithTimestamp } from './utils'
 
 export async function refreshMemberListData() {

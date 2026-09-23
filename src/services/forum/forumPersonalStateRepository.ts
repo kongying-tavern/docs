@@ -1,5 +1,5 @@
 import type { ForumPersonalState } from './forumPersonalState'
-import { gists, GiteeAPIError } from '@/apis/forum/gitee'
+import { gists, GiteeAPIError } from '~/services/forum/gitee'
 import { decodeForumPersonalState, emptyForumPersonalState, serializeForumPersonalState } from './forumPersonalState'
 
 const GIST_ID_KEY_PREFIX = 'forum-personal-gist:'

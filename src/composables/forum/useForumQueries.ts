@@ -3,7 +3,6 @@ import type ForumAPI from '@/apis/forum/api'
 import type { ForumPage, ForumTopicListParams } from '~/services/forum/forumQueryContracts'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { computed, toValue, watch } from 'vue'
-import { issues, user } from '@/apis/forum/gitee'
 import { usePermissionData } from '~/composables/usePermissionData'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { FORUM_CONFIG } from '~/services/forum/forumConfig'
@@ -17,6 +16,7 @@ import {
   normalizeTopicListParams,
 } from '~/services/forum/forumQueryContracts'
 import { getForumTopics, getPinnedForumTopics } from '~/services/forum/forumTopics'
+import { issues, user } from '~/services/forum/gitee'
 
 // 列表页 scope：传入时首屏成功记录条数供骨架屏复用（见 forumListSkeleton）；pageSize=1 的计数查询不要传
 export function useForumTopicsQuery(

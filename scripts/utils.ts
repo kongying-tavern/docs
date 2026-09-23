@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import process from 'node:process'
 import { URL } from 'node:url'
-import { password } from '@/apis/forum/gitee'
+import { password } from '~/services/forum/gitee'
 
 const USERNAME = process.env.GITEE_USERNAME
 const PASSWORD = process.env.GITEE_PASSWORD

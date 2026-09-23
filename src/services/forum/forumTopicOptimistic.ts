@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/services/forum/api'
 import { decodeTopicBody } from './forumContentCodec'
 import { isCategoryLabel } from './forumLabel'
 import { parseTopicLabels } from './forumTopicLabels'

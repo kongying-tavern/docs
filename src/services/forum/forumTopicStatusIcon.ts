@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/services/forum/api'
 import { TOPIC_EXTRA_STATUS_PRESENTATION, TOPIC_STATUS_DEFINITIONS } from './forumTopicStatus'
 
 export type TopicStatusIconKey = ForumAPI.TopicDisplayStatus | 'good-issue'

@@ -1,11 +1,11 @@
 import type ForumAPI from '@/apis/forum/api'
 import { computed, ref, watch } from 'vue'
-import { user } from '@/apis/forum/gitee'
-import { GITEE_API_CONFIG } from '@/apis/forum/gitee/config'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import blogMemberListRaw from '~/_data/blogMemberList.json'
 import feedbackMemberListRaw from '~/_data/feedbackMemberList.json'
 import teamMemberListRaw from '~/_data/teamMemberList.json'
+import { user } from '~/services/forum/gitee'
+import { GITEE_API_CONFIG } from '~/services/forum/gitee/config'
 import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
 
 export interface MemberData {

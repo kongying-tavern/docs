@@ -4,8 +4,8 @@
 
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { AuthError, AuthErrorType } from '~/services/authErrors'
 import { toast } from '~/services/telemetry/toast'
-import { AuthError, AuthErrorType } from './auth-errors'
 
 /**
  * 认证状态工具类
