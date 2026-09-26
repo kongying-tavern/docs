@@ -23,8 +23,9 @@ import { GiteeAPIError } from '~/services/forum/gitee'
 import { OpsEvents, trackOp } from '~/services/telemetry'
 import { showPageAlert } from '~/services/telemetry/pageAlert'
 import { toast } from '~/services/telemetry/toast'
+import { formatMessage } from '~/utils/formatMessage'
 import ForumRichTextarea from '../form/ForumRichTextarea.vue'
-import { formatImageAttachmentError, formatMessage } from '../utils/forumUi'
+import { formatImageAttachmentError } from '../utils/forumUi'
 
 const {
   topicId,
