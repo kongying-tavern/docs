@@ -360,7 +360,7 @@ defineExpose({ moveActive, selectActive })
   border-radius: 10px;
   background: transparent;
   color: var(--vp-c-text-2);
-  font-size: 13px;
+  font-size: calc(13px * var(--site-ui-scale));
   font-weight: 600;
   transition: background-color 160ms ease;
 }
@@ -379,7 +379,7 @@ defineExpose({ moveActive, selectActive })
 .forum-filter-picker-group {
   padding: 6px 10px 5px;
   color: var(--vp-c-text-3);
-  font-size: 11px;
+  font-size: calc(11px * var(--site-ui-scale));
   font-weight: 600;
 }
 
@@ -400,7 +400,7 @@ defineExpose({ moveActive, selectActive })
   align-items: center;
   margin-bottom: 3px;
   padding: 7px 10px;
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
 }
 
 .forum-filter-picker-root-option {
@@ -415,7 +415,7 @@ defineExpose({ moveActive, selectActive })
   align-items: center;
   min-height: 38px;
   padding: 7px 10px;
-  font-size: 13px;
+  font-size: calc(13px * var(--site-ui-scale));
 }
 
 .forum-filter-picker-back:hover,
@@ -441,15 +441,15 @@ defineExpose({ moveActive, selectActive })
 
 .forum-filter-picker-title {
   color: var(--vp-c-text-1);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: calc(14px * var(--site-ui-scale));
+  line-height: calc(20px * var(--site-ui-scale));
 }
 
 .forum-filter-picker-description,
 .forum-filter-picker-login {
   color: var(--vp-c-text-3);
-  font-size: 11px;
-  line-height: 16px;
+  font-size: calc(11px * var(--site-ui-scale));
+  line-height: calc(16px * var(--site-ui-scale));
 }
 
 .forum-filter-picker-option-icon {
@@ -496,7 +496,7 @@ defineExpose({ moveActive, selectActive })
   padding: 0 10px 0 32px;
   background: var(--vp-c-default-soft);
   color: var(--vp-c-text-1);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   outline: none;
 }
 
@@ -520,7 +520,7 @@ defineExpose({ moveActive, selectActive })
 .forum-filter-picker-empty {
   padding: 20px 10px;
   color: var(--vp-c-text-3);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   text-align: center;
 }
 </style>

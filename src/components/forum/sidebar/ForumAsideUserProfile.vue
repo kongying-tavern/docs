@@ -105,15 +105,15 @@ const profileRows = computed<ProfileRow[]>(() => {
 .user-verification-icon {
   flex: 0 0 auto;
   color: var(--vp-c-brand-1);
-  font-size: 16px;
+  font-size: calc(16px * var(--site-ui-scale));
   line-height: 1;
 }
 
 .user-verification-desc {
   margin: 0;
   color: var(--vp-c-text-1);
-  font-size: 13px;
-  line-height: 19px;
+  font-size: calc(13px * var(--site-ui-scale));
+  line-height: calc(19px * var(--site-ui-scale));
 }
 
 .user-profile-rows {
@@ -134,15 +134,15 @@ const profileRows = computed<ProfileRow[]>(() => {
 .user-profile-icon {
   flex: 0 0 auto;
   color: var(--vp-c-text-3);
-  font-size: 15px;
+  font-size: calc(15px * var(--site-ui-scale));
   line-height: 1;
 }
 
 .user-profile-value {
   overflow: hidden;
   color: var(--vp-c-text-1);
-  font-size: 13px;
-  line-height: 19px;
+  font-size: calc(13px * var(--site-ui-scale));
+  line-height: calc(19px * var(--site-ui-scale));
   text-overflow: ellipsis;
   white-space: nowrap;
 }

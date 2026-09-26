@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
     user-select: none;
     transition: transform 0.3s;
     display: inline-block;
-    font-size: 16px;
+    font-size: calc(16px * var(--site-ui-scale));
     text-align: center;
     font-weight: 600;
     text-indent: 8px;

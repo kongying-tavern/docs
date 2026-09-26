@@ -51,7 +51,7 @@ function postHref(slug: string): string {
 <style scoped>
 /* 小节标题跟随同卡片的其它小节；此处需比 .forum-context-aside :deep(h2) 更具体 */
 .aside-recent-updates .aside-recent-updates-title {
-  font-size: 16px;
+  font-size: calc(16px * var(--site-ui-scale));
   line-height: inherit;
 }
 
@@ -105,8 +105,8 @@ function postHref(slug: string): string {
 
 .aside-recent-updates-time {
   color: var(--vp-c-text-3);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
 }
 
 /* 留 3 行，直接引用原文时不必在句中截断 */
@@ -116,8 +116,8 @@ function postHref(slug: string): string {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   color: var(--vp-c-text-1);
-  font-size: 13px;
-  line-height: 19px;
+  font-size: calc(13px * var(--site-ui-scale));
+  line-height: calc(19px * var(--site-ui-scale));
   overflow-wrap: anywhere;
   text-wrap: pretty;
 }

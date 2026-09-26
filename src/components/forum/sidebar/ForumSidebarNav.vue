@@ -54,8 +54,8 @@ defineEmits<{
   border-radius: 8px;
   padding: 9px 10px;
   color: var(--vp-c-text-1);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: calc(14px * var(--site-ui-scale));
+  line-height: calc(20px * var(--site-ui-scale));
 }
 
 /* 指针反馈交给 fluid indicator，行只保留 active 态背景 */

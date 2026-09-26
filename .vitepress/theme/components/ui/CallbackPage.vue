@@ -57,7 +57,7 @@ onMounted(() => {
 }
 
 .callback-title {
-  font-size: 2.5rem;
+  font-size: calc(40px * var(--site-ui-scale));
   font-weight: 600;
   color: var(--vp-c-text-1);
   margin: 0 0 1.5rem 0;
@@ -68,7 +68,7 @@ onMounted(() => {
 }
 
 .callback-description {
-  font-size: 1.25rem;
+  font-size: calc(20px * var(--site-ui-scale));
   color: var(--vp-c-text-2);
   margin: 0;
   line-height: 1.5;
@@ -89,12 +89,12 @@ onMounted(() => {
   }
 
   .callback-title {
-    font-size: 1.875rem;
+    font-size: calc(30px * var(--site-ui-scale));
     line-height: 1.3;
   }
 
   .callback-description {
-    font-size: 1.125rem;
+    font-size: calc(18px * var(--site-ui-scale));
     line-height: 1.6;
   }
 
@@ -110,12 +110,12 @@ onMounted(() => {
   }
 
   .callback-title {
-    font-size: 1.5rem;
+    font-size: calc(24px * var(--site-ui-scale));
     line-height: 1.4;
   }
 
   .callback-description {
-    font-size: 1rem;
+    font-size: calc(16px * var(--site-ui-scale));
     line-height: 1.7;
   }
 }

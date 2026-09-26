@@ -36,21 +36,21 @@
 }
 
 .title {
-  line-height: 32px;
-  font-size: 32px;
+  line-height: calc(32px * var(--site-ui-scale));
+  font-size: calc(32px * var(--site-ui-scale));
   font-weight: 500;
 }
 
 @media (min-width: 768px) {
   .title {
-    line-height: 40px;
-    font-size: 40px;
+    line-height: calc(40px * var(--site-ui-scale));
+    font-size: calc(40px * var(--site-ui-scale));
   }
 }
 
 .lead {
   padding-top: 8px;
-  font-size: 16px;
+  font-size: calc(16px * var(--site-ui-scale));
   font-weight: 500;
   max-width: 512px;
   color: var(--vp-c-text-2);
@@ -62,8 +62,8 @@
 
 .action :deep(a) {
   display: inline-block;
-  line-height: 20px;
-  font-size: 14px;
+  line-height: calc(20px * var(--site-ui-scale));
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   color: var(--vp-c-brand);
   transition: color 0.25s;

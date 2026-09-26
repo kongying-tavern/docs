@@ -23,11 +23,11 @@ export const Avatar = {
       'bottom-left': 'bottom-0 left-0',
     },
     size: {
-      xs: 'h-1.5 min-w-[0.375rem] text-[6px] p-px',
-      sm: 'h-2 min-w-[0.5rem] text-[7px] p-0.5',
-      md: 'h-2.5 min-w-[0.625rem] text-[8px] p-0.5',
-      lg: 'h-3 min-w-[0.75rem] text-[10px] p-0.5',
-      xl: 'h-3.5 min-w-[0.875rem] text-[11px] p-1',
+      xs: 'h-1.5 min-w-[0.375rem] text-ui-6 p-px',
+      sm: 'h-2 min-w-[0.5rem] text-ui-7 p-0.5',
+      md: 'h-2.5 min-w-[0.625rem] text-ui-8 p-0.5',
+      lg: 'h-3 min-w-[0.75rem] text-ui-10 p-0.5',
+      xl: 'h-3.5 min-w-[0.875rem] text-ui-11 p-1',
     },
   },
   icon: {

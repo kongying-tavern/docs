@@ -225,7 +225,7 @@ function search(): void {
   padding: 0 12px;
   background: transparent;
   color: var(--vp-c-text-1);
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
 }
 .forum-search-settings-row:hover,
 .forum-search-settings-row:focus-visible {
@@ -235,7 +235,7 @@ function search(): void {
   overflow: hidden;
   max-width: 40%;
   color: var(--vp-c-text-3);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   text-overflow: ellipsis;
   white-space: nowrap;
 }

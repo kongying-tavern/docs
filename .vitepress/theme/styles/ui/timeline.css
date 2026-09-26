@@ -67,9 +67,9 @@
   top: 22px;
   width: 64px;
   color: var(--vp-c-text-2);
-  font-size: 16px;
+  font-size: calc(16px * var(--site-ui-scale));
   font-weight: 500;
-  line-height: 20px;
+  line-height: calc(20px * var(--site-ui-scale));
   font-family: var(--vp-font-family-subtitle);
 }
 
@@ -81,8 +81,8 @@
 }
 
 .timeline-dot-date-year {
-  font-size: 18px;
-  line-height: 22px;
+  font-size: calc(18px * var(--site-ui-scale));
+  line-height: calc(22px * var(--site-ui-scale));
 }
 
 /* 字符等宽栅格：各行字符均匀分栏，两端与上下行对正 */
@@ -96,7 +96,7 @@
   position: absolute;
   left: 95px;
   top: 37px;
-  font-size: 10px;
+  font-size: calc(10px * var(--site-ui-scale));
   line-height: 1;
   color: inherit;
   z-index: 2;
@@ -114,7 +114,7 @@
 .timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon {
   left: 93.5px;
   top: 35.5px;
-  font-size: 13px;
+  font-size: calc(13px * var(--site-ui-scale));
   color: var(--vp-c-white);
 }
 
@@ -125,8 +125,8 @@
   padding-top: 0;
   top: 0;
   color: var(--timeline-title-text);
-  font-size: 24px;
-  line-height: 32px;
+  font-size: calc(24px * var(--site-ui-scale));
+  line-height: calc(32px * var(--site-ui-scale));
   font-weight: bold;
 }
 
@@ -170,14 +170,14 @@
 
 .timeline-dot > h2:not(.timeline-dot-title) {
   font-family: var(--vp-font-family-subtitle) !important;
-  font-size: 20px !important;
-  line-height: 30px;
+  font-size: calc(20px * var(--site-ui-scale)) !important;
+  line-height: calc(30px * var(--site-ui-scale));
   color: var(--timeline-title-text);
 }
 
 .timeline-dot > h3 {
-  font-size: 16px;
-  line-height: 26px;
+  font-size: calc(16px * var(--site-ui-scale));
+  line-height: calc(26px * var(--site-ui-scale));
   color: var(--timeline-title-text);
 }
 
@@ -232,6 +232,6 @@
   .timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon {
     left: 69.5px;
     top: 35.5px;
-    font-size: 13px;
+    font-size: calc(13px * var(--site-ui-scale));
   }
 }

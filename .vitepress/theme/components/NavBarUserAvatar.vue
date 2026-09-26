@@ -128,7 +128,7 @@ $avatar: 32px;
   height: fit-content;
   border-radius: 50%;
   background-color: var(--vp-c-gray-soft);
-  font-size: 16px;
+  font-size: calc(16px * var(--site-ui-scale));
   color: var(--vp-c-brand-1);
   cursor: pointer;
   padding: 0;

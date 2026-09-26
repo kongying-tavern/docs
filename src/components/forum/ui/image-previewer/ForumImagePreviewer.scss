@@ -89,7 +89,7 @@
   background: var(--forum-media-glass);
   backdrop-filter: blur(12px);
   color: var(--forum-media-on-overlay);
-  font-size: 18px;
+  font-size: calc(18px * var(--site-ui-scale));
   cursor: pointer;
   transition:
     opacity 200ms ease,

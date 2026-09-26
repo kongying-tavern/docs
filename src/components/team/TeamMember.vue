@@ -248,7 +248,7 @@ const avatarUrl = computed(() => {
   border: 1px solid #fd1d7c;
   border-radius: 4px;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   font-weight: 500;
   color: #fd1d7c;
   transition:
@@ -312,15 +312,15 @@ const avatarUrl = computed(() => {
 }
 
 .name {
-  font-size: 20px;
+  font-size: calc(20px * var(--site-ui-scale));
   font-weight: 500;
 }
 
 .org {
   padding-top: 4px;
-  line-height: 20px;
+  line-height: calc(20px * var(--site-ui-scale));
   max-width: 320px;
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   color: var(--vp-c-text-2);
   transition: color 0.5s;
@@ -375,8 +375,8 @@ const avatarUrl = computed(() => {
 
 .desc-item {
   padding: 0 4px;
-  line-height: 20px;
-  font-size: 14px;
+  line-height: calc(20px * var(--site-ui-scale));
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   color: var(--vp-c-text-1);
   transition: color 0.5s;
@@ -394,16 +394,16 @@ const avatarUrl = computed(() => {
 }
 
 .desc-text {
-  line-height: 20px;
-  font-size: 14px;
+  line-height: calc(20px * var(--site-ui-scale));
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   color: var(--vp-c-text-1);
   transition: color 0.25s;
 }
 
 .desc-link {
-  line-height: 20px;
-  font-size: 14px;
+  line-height: calc(20px * var(--site-ui-scale));
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   color: var(--vp-c-brand);
   transition: color 0.25s;

@@ -142,9 +142,9 @@ function isExpanded(title: string) {
   grid-auto-flow: row;
   place-items: start;
   column-gap: 1rem;
-  font-size: 0.87rem;
+  font-size: calc(14px * var(--site-ui-scale));
   font-family: var(--vp-font-family-base);
-  line-height: 1.25rem;
+  line-height: calc(20px * var(--site-ui-scale));
   margin: 0 auto;
 }
 
@@ -164,8 +164,8 @@ function isExpanded(title: string) {
 
 .footer-navigation {
   width: 100%;
-  line-height: 32px;
-  font-size: 14px;
+  line-height: calc(32px * var(--site-ui-scale));
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   place-items: self-start;
   border-bottom: 1px solid var(--vp-c-divider);
@@ -247,8 +247,8 @@ function isExpanded(title: string) {
   display: none;
   flex-direction: column;
   align-items: center;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: calc(14px * var(--site-ui-scale));
+  line-height: calc(22px * var(--site-ui-scale));
   color: var(--vp-c-text-2);
 
   img {
@@ -257,8 +257,8 @@ function isExpanded(title: string) {
 
   h4 {
     margin: 4px 0 0;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: calc(16px * var(--site-ui-scale));
+    line-height: calc(24px * var(--site-ui-scale));
     font-weight: 700;
     color: var(--vp-c-text-1);
   }

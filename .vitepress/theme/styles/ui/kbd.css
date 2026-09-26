@@ -2,7 +2,7 @@ kbd {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   min-width: 20px;
   height: 1.25rem;
   vertical-align: text-top;

@@ -67,8 +67,8 @@ const copyText = computed(() => [
 
 <style scoped>
 .telemetry-detail {
-  font-size: 12px;
-  line-height: 18px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
   opacity: 0.75;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
@@ -86,8 +86,8 @@ const copyText = computed(() => [
   min-width: 0;
   overflow: hidden;
   font-family: var(--vp-font-family-mono);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
   opacity: 0.6;
   text-overflow: ellipsis;
   white-space: nowrap;

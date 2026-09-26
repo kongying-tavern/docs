@@ -39,7 +39,7 @@ const contactQRCode = useQRCode(computed(() => copy.value.qrcodeLink))
   border: 1px solid var(--vp-c-brand-3);
   border-radius: 999px;
   color: var(--vp-c-brand-1);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   font-weight: 500;
   line-height: 1;
 }
@@ -59,8 +59,8 @@ const contactQRCode = useQRCode(computed(() => copy.value.qrcodeLink))
 
 .contact-copy span {
   color: var(--vp-c-text-2);
-  font-size: 13px;
-  line-height: 19px;
+  font-size: calc(13px * var(--site-ui-scale));
+  line-height: calc(19px * var(--site-ui-scale));
 }
 
 .contact-body img {

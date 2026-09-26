@@ -402,7 +402,7 @@ function handleInputBlur(event: FocusEvent) {
   border-radius: 9999px;
   background: transparent;
   color: var(--vp-c-text-2);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   cursor: pointer;
   white-space: nowrap;
   transition: background-color 160ms ease;
@@ -455,8 +455,8 @@ function handleInputBlur(event: FocusEvent) {
   color: var(--vp-c-text-2);
   caret-color: var(--vp-c-brand-1);
   font-family: inherit;
-  font-size: 12px;
-  line-height: 20px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(20px * var(--site-ui-scale));
   outline: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -511,7 +511,7 @@ function handleInputBlur(event: FocusEvent) {
 
 .forum-search-box.page-mode :deep(.forum-search-input) {
   height: 46px;
-  font-size: 15px;
+  font-size: calc(15px * var(--site-ui-scale));
 }
 
 .forum-search-box.page-mode .forum-search-icon {
@@ -525,7 +525,7 @@ function handleInputBlur(event: FocusEvent) {
 }
 
 .forum-search-box.page-mode .forum-search-token {
-  font-size: 13px;
+  font-size: calc(13px * var(--site-ui-scale));
 }
 
 .forum-search-box.page-mode .forum-search-suggestions {
@@ -551,14 +551,14 @@ function handleInputBlur(event: FocusEvent) {
 }
 
 .forum-search-box.page-mode .forum-search-suggestion-title {
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
 }
 
 .forum-search-suggestion-state {
   width: var(--forum-search-content-width, 100%);
   padding: 24px 12px;
   color: var(--vp-c-text-3);
-  font-size: 13px;
+  font-size: calc(13px * var(--site-ui-scale));
   text-align: center;
 }
 
@@ -595,15 +595,15 @@ function handleInputBlur(event: FocusEvent) {
 
 .forum-search-suggestion-title {
   color: var(--vp-c-text-1);
-  font-size: 13px;
-  line-height: 20px;
+  font-size: calc(13px * var(--site-ui-scale));
+  line-height: calc(20px * var(--site-ui-scale));
 }
 
 .forum-search-suggestion-excerpt {
   margin-top: 1px;
   color: var(--vp-c-text-3);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
 }
 
 .forum-search-suggestion:hover,

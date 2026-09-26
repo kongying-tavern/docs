@@ -217,7 +217,7 @@ defineExpose({ startTranslate })
   gap: 0.375rem;
   margin-top: 0.125rem;
   margin-bottom: 0;
-  font-size: 0.875rem;
+  font-size: calc(14px * var(--site-ui-scale));
   line-height: 1;
   color: var(--vp-c-text-3);
 }

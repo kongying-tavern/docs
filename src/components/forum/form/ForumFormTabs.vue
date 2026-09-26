@@ -50,7 +50,7 @@ function formatDate(date = new Date()): string {
         <time class="c-[var(--vp-c-text-1)]">{{ formatDate() }}</time>
       </div>
       <div class="desktop-letter-rule mb-6" aria-hidden="true" />
-      <h2 class="desktop-form-title text-42px leading-tight tracking-[-0.025em] mb-6 mt-8 text-left">
+      <h2 class="desktop-form-title leading-tight tracking-[-0.025em] mb-6 mt-8 text-left text-ui-42">
         {{ message.forum.publish.title }} · {{ visibleTabs.find(tab => tab.value === modelValue)?.label }}
       </h2>
       <div class="desktop-title-divider mb-10 w-18" aria-hidden="true" />

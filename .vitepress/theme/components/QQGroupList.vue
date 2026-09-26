@@ -39,8 +39,8 @@ function getGroupClass(status: string): string {
   margin-left: 6px;
   border-radius: 12px;
   padding: 0 6px;
-  line-height: 22px;
-  font-size: 12px;
+  line-height: calc(22px * var(--site-ui-scale));
+  font-size: calc(12px * var(--site-ui-scale));
   font-weight: 500;
   border-color: var(--vp-badge-tip-border);
   transform: translateY(-2px);
@@ -55,8 +55,8 @@ function getGroupClass(status: string): string {
   margin-left: 6px;
   border-radius: 12px;
   padding: 0 6px;
-  line-height: 22px;
-  font-size: 12px;
+  line-height: calc(22px * var(--site-ui-scale));
+  font-size: calc(12px * var(--site-ui-scale));
   font-weight: 500;
   border-color: var(--vp-badge-tip-border);
   transform: translateY(-2px);
@@ -71,8 +71,8 @@ function getGroupClass(status: string): string {
   margin-left: 6px;
   border-radius: 12px;
   padding: 0 6px;
-  line-height: 22px;
-  font-size: 12px;
+  line-height: calc(22px * var(--site-ui-scale));
+  font-size: calc(12px * var(--site-ui-scale));
   font-weight: 500;
   border-color: var(--vp-badge-tip-border);
   transform: translateY(-2px);
@@ -104,11 +104,11 @@ ul,
     margin: 10px 0;
     width: 100%;
     height: 52px;
-    font-size: 16px;
+    font-size: calc(16px * var(--site-ui-scale));
     border-radius: 8px;
     transition: border 0.1s;
     text-align: right;
-    line-height: 24px;
+    line-height: calc(24px * var(--site-ui-scale));
     background-color: var(--vp-c-bg-soft);
     font-family: var(--vp-font-family-subtitle);
     border: 1px transparent solid;

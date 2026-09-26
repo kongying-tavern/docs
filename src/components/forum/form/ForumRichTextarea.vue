@@ -351,7 +351,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   inset: 0;
-  font-size: 0.875rem;
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 600;
   pointer-events: none;
 }

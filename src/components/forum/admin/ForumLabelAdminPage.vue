@@ -290,7 +290,7 @@ onMounted(() => {
                   >
                     <TableCell
                       colspan="3"
-                      class="text-[13px] text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5"
+                      class="text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5 text-ui-13"
                     >
                       <span class="flex gap-2 items-center">
                         <span
@@ -433,7 +433,7 @@ onMounted(() => {
                   >
                     <TableCell
                       colspan="3"
-                      class="text-[13px] text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5"
+                      class="text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5 text-ui-13"
                     >
                       <span class="flex gap-2 items-center">
                         <span

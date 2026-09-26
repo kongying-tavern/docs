@@ -132,7 +132,7 @@ const nodes = computed(() => events.value.map(event => ({
   >
     <div
       v-if="timeline.error.value"
-      class="text-13px color-[--vp-c-text-2] px-1 py-3.5 border-t border-t-[var(--vp-c-divider)] border-solid flex gap-3 items-center justify-between"
+      class="color-[--vp-c-text-2] px-1 py-3.5 border-t border-t-[var(--vp-c-divider)] border-solid flex gap-3 items-center justify-between text-ui-13"
       role="status"
     >
       <span>{{ copy.error }}</span>
@@ -215,7 +215,7 @@ const nodes = computed(() => events.value.map(event => ({
   width: 16px;
   height: 16px;
   color: var(--vp-c-text-3);
-  font-size: 16px;
+  font-size: calc(16px * var(--site-ui-scale));
   line-height: 1;
 }
 
@@ -226,8 +226,8 @@ const nodes = computed(() => events.value.map(event => ({
 .aside-timeline-text {
   margin: 0;
   color: var(--vp-c-text-1);
-  font-size: 13px;
-  line-height: 19px;
+  font-size: calc(13px * var(--site-ui-scale));
+  line-height: calc(19px * var(--site-ui-scale));
   overflow-wrap: anywhere;
 }
 
@@ -250,8 +250,8 @@ const nodes = computed(() => events.value.map(event => ({
   gap: 8px;
   margin-top: 3px;
   color: var(--vp-c-text-3);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
 }
 
 /* 触发 ForumUserHoverCard 的整块（头像+昵称）都可点，故给手型 */
@@ -274,7 +274,7 @@ const nodes = computed(() => events.value.map(event => ({
 /* 时间弱化，避免在 13px 的正文行里抢戏 */
 .aside-timeline-time {
   color: var(--vp-c-text-3);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
 }
 
 /* 长昵称不撑破窄栏 */

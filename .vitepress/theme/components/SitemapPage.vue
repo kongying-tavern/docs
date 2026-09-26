@@ -266,8 +266,8 @@ const sitemapData = computed((): SitemapGroup[] => {
   text-align: center;
   margin: 0;
   flex-shrink: 0;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(16px * var(--site-ui-scale));
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -336,7 +336,7 @@ const sitemapData = computed((): SitemapGroup[] => {
 /* Section headers */
 .VPSitemapPage h2 {
   margin: 24px 0 12px 0;
-  font-size: 20px;
+  font-size: calc(20px * var(--site-ui-scale));
   font-weight: 600;
   color: var(--vp-c-text-1);
   border-bottom: 1px solid var(--vp-c-divider);
@@ -356,12 +356,12 @@ const sitemapData = computed((): SitemapGroup[] => {
   .VPSitemapPage .badge {
     width: 18px;
     height: 18px;
-    font-size: 11px;
-    line-height: 14px;
+    font-size: calc(11px * var(--site-ui-scale));
+    line-height: calc(14px * var(--site-ui-scale));
   }
 
   .VPSitemapPage h2 {
-    font-size: 18px;
+    font-size: calc(18px * var(--site-ui-scale));
     margin: 20px 0 10px 0;
   }
 }

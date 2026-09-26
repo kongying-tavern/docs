@@ -260,7 +260,7 @@ const loadStateMessage = computed(() => {
   padding-bottom: 12px;
   border-bottom: 1px solid var(--vp-c-divider);
   color: var(--vp-c-text-1);
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 600;
 }
 
@@ -295,7 +295,7 @@ const loadStateMessage = computed(() => {
 .forum-search-history-empty {
   margin: 24px 0;
   color: var(--vp-c-text-2);
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   text-align: center;
 }
 

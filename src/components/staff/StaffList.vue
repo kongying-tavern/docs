@@ -93,7 +93,7 @@ const { list, title, desc } = defineProps<{
 .title {
   display: inline-block;
   width: max-content;
-  font-size: 24px;
+  font-size: calc(24px * var(--site-ui-scale));
   font-weight: 500;
   word-break: keep-all;
 }
@@ -111,8 +111,8 @@ const { list, title, desc } = defineProps<{
 
 .lead {
   padding-top: 8px;
-  line-height: 24px;
-  font-size: 14px;
+  line-height: calc(24px * var(--site-ui-scale));
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   color: var(--vp-c-text-2);
 }
@@ -167,14 +167,14 @@ const { list, title, desc } = defineProps<{
 }
 
 .member-name {
-  font-size: 16px;
+  font-size: calc(16px * var(--site-ui-scale));
   font-weight: bold;
   word-break: keep-all;
   white-space: nowrap;
 }
 
 .member-title {
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   color: var(--vp-c-text-2);
   align-self: flex-end; /* Align title to the end (bottom) of the flex container */
 }

@@ -98,7 +98,7 @@ function normalizeLink(
     aria-label="Choose country or region"
   >
     <div class="flex flex-wrap w-full items-center">
-      <div class="font-size-14px text-align-left max-md:w-85%">
+      <div class="text-align-left text-ui-14 max-md:w-85%">
         {{ suggestTranslate.changeLanguage }}
       </div>
       <div class="mt-4 flex flex-1 items-center justify-end md:mt-0">

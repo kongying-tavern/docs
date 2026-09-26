@@ -57,7 +57,7 @@ const styles = computed(() => {
     container: 'border-t border-[var(--vp-c-divider)] border-t-solid border-t pt-36px mt-24px grid gap-row-8px',
     message: 'inline-block fill-current-color flex-basis-20px flex-shrink-0 font-size-1rem mr-2 font-[var(--vp-font-family-subtitle)]',
     buttonContainer: 'flex mt-3',
-    button: 'font-size-20px h-36px line-height-36px mr-12px text-center w-60px rounded-4px bg-[var(--vp-c-bg-soft)]',
+    button: 'text-ui-20 h-36px leading-ui-36 mr-12px text-center w-60px rounded-4px bg-[var(--vp-c-bg-soft)]',
   }
 })
 </script>
@@ -117,8 +117,8 @@ const styles = computed(() => {
 }
 
 .title {
-  line-height: 20px;
-  font-size: 14px;
+  line-height: calc(20px * var(--site-ui-scale));
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   transition: color 0.25s;
 }

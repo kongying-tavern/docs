@@ -339,9 +339,9 @@ function handleCreate() {
   border: 0;
   background: transparent;
   color: var(--vp-c-text-1);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   font-weight: 500;
-  line-height: 24px;
+  line-height: calc(24px * var(--site-ui-scale));
   cursor: pointer;
 }
 

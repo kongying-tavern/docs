@@ -83,7 +83,7 @@ watch(() => route.path, () => pageAlert.clear())
   overflow: visible;
   -webkit-line-clamp: unset;
   color: var(--vp-c-text-1);
-  font-size: 0.875rem;
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: normal;
@@ -91,7 +91,7 @@ watch(() => route.path, () => pageAlert.clear())
 
 .page-alert-region :deep([data-slot='alert-description']) {
   color: var(--vp-c-text-2);
-  font-size: 0.8125rem;
+  font-size: calc(13px * var(--site-ui-scale));
   line-height: 1.6;
 }
 

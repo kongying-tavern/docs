@@ -79,7 +79,7 @@ const teamBlogItems = computed(() => {
 
 .forum-aside-all-link {
   color: var(--vp-c-text-3);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   line-height: inherit;
 }
 
@@ -93,9 +93,9 @@ const teamBlogItems = computed(() => {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   color: var(--vp-c-text-1);
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
-  line-height: 21px;
+  line-height: calc(21px * var(--site-ui-scale));
   overflow-wrap: anywhere;
   text-wrap: pretty;
 }
@@ -113,8 +113,8 @@ const teamBlogItems = computed(() => {
   align-items: center;
   gap: 6px;
   color: var(--vp-c-text-3);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
 }
 
 .forum-aside-blog-meta > span:first-child {
