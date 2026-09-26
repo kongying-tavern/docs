@@ -50,6 +50,12 @@ const forum: CustomConfig['forum'] = {
     opensource: 'Open Source',
     userAgreement: 'User Agreement',
     privacyPolicy: 'Privacy policy',
+    festival: {
+      christmasSnow: 'Let it snow',
+      newYearFireworks: 'Launch New Year fireworks',
+      springFestivalFireworks: 'Launch Spring Festival fireworks',
+      dismiss: 'Hide for this holiday',
+    },
   },
   exceededRateLimitWarning: 'Too many requests. Sign in and try again.',
   translate: {

@@ -49,6 +49,12 @@ const forum = {
     opensource: '开源代码',
     userAgreement: '用户协议',
     privacyPolicy: '隐私协议',
+    festival: {
+      christmasSnow: '下点雪吧',
+      newYearFireworks: '放场新年烟花',
+      springFestivalFireworks: '放场新春烟花',
+      dismiss: '本次节日不再显示',
+    },
   },
   exceededRateLimitWarning: '请求过于频繁，请登录后重试',
   topic: {

@@ -19,6 +19,7 @@ import { isClosedUnseen } from '~/services/forum/forumTopicSeenState'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { FORM_HASH } from '../form/publish-topic-form/config'
 import { publishTopic } from '../utils/forumUi'
+import ForumSidebarFestivalItem from './ForumSidebarFestivalItem.vue'
 import ForumSidebarInformationMenu from './ForumSidebarInformationMenu.vue'
 import ForumSidebarNav from './ForumSidebarNav.vue'
 import ForumSidebarSection from './ForumSidebarSection.vue'
@@ -282,6 +283,7 @@ function handleCreate() {
       />
     </div>
 
+    <ForumSidebarFestivalItem />
     <ForumSidebarInformationMenu
       ref="informationMenu"
       :open="informationOpen"

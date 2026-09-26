@@ -50,6 +50,12 @@ const forum: CustomConfig['forum'] = {
     opensource: 'オープンソース',
     userAgreement: '利用規約',
     privacyPolicy: 'プライバシーポリシー',
+    festival: {
+      christmasSnow: '雪を降らせよう',
+      newYearFireworks: '新年の花火を上げよう',
+      springFestivalFireworks: '春節の花火を上げよう',
+      dismiss: 'この期間は表示しない',
+    },
   },
   exceededRateLimitWarning:
     'リクエストが集中しています。ログインしてから再試行してください',
