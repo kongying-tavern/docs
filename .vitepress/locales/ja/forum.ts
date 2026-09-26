@@ -48,6 +48,7 @@ const forum: CustomConfig['forum'] = {
     information: '詳細',
     listSort: '一覧の並び順',
     opensource: 'オープンソース',
+    feedbackCommunity: 'Discord',
     userAgreement: '利用規約',
     privacyPolicy: 'プライバシーポリシー',
     festival: {

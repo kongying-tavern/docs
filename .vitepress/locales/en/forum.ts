@@ -48,6 +48,7 @@ const forum: CustomConfig['forum'] = {
     information: 'More',
     listSort: 'Sort by',
     opensource: 'Open Source',
+    feedbackCommunity: 'Discord',
     userAgreement: 'User Agreement',
     privacyPolicy: 'Privacy policy',
     festival: {

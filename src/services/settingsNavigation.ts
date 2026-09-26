@@ -1,11 +1,11 @@
-const SETTINGS_RETURN_URL_KEY = 'settings-return-url'
+let settingsReturnUrl: string | null = null
 
 export function rememberSettingsReturnUrl(url = location.href): void {
-  sessionStorage.setItem(SETTINGS_RETURN_URL_KEY, url)
+  settingsReturnUrl = url
 }
 
 export function consumeSettingsReturnUrl(): string | null {
-  const url = sessionStorage.getItem(SETTINGS_RETURN_URL_KEY)
-  sessionStorage.removeItem(SETTINGS_RETURN_URL_KEY)
+  const url = settingsReturnUrl
+  settingsReturnUrl = null
   return url
 }

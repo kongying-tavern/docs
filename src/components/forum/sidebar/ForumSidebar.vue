@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useQueryCache } from '@pinia/colada'
-import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
+import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
-import { useFluidHover, useFluidHoverIndicator } from '@/hooks/fluid-hover'
+import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
+import { FluidHoverList } from '@/components/ui/fluid-hover'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
@@ -19,8 +19,8 @@ import { isClosedUnseen } from '~/services/forum/forumTopicSeenState'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { FORM_HASH } from '../form/publish-topic-form/config'
 import { publishTopic } from '../utils/forumUi'
+import ForumSidebarAccountMenu from './ForumSidebarAccountMenu.vue'
 import ForumSidebarFestivalItem from './ForumSidebarFestivalItem.vue'
-import ForumSidebarInformationMenu from './ForumSidebarInformationMenu.vue'
 import ForumSidebarNav from './ForumSidebarNav.vue'
 import ForumSidebarSection from './ForumSidebarSection.vue'
 
@@ -66,8 +66,6 @@ const participatedSectionOpen = computed({
   get: () => Boolean(participatedOpen.value ?? isLoggedIn.value),
   set: value => participatedOpen.value = value,
 })
-const informationOpen = ref(false)
-const informationMenu = useTemplateRef('informationMenu')
 const SIDEBAR_DETAIL_QUERY_LIMIT = 5
 
 const followedTopicQueries = Array.from({ length: SIDEBAR_DETAIL_QUERY_LIMIT }, (_, index) => useForumTopicQuery(computed(() => (
@@ -140,30 +138,12 @@ watch(isMobile, (mobile) => {
 watch(isLoggedIn, renderLocalNavCreateBtn)
 onBeforeUnmount(unmountLocalNavCreateBtn)
 
-// 整个滚动列表是一个 fluid 列表：nav 行、分区头、话题行共享一个 indicator
-const containerSidebar = useTemplateRef<HTMLElement | null>('containerSidebar')
-const indicatorSidebar = useTemplateRef<HTMLElement | null>('indicatorSidebar')
-useFluidHover(containerSidebar, { axis: 'y' })
-useFluidHoverIndicator(containerSidebar, indicatorSidebar, { motion: 'fast' })
-
-useEventListener('pointerdown', (event) => {
-  if (event.target instanceof Node && !informationMenu.value?.$el?.contains(event.target))
-    informationOpen.value = false
-})
-useEventListener('keydown', (event) => {
-  if (event.key === 'Escape')
-    informationOpen.value = false
-})
-
 const navItems = computed(() => {
   const items = [
     { label: message.value.forum.sidebar.home, icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
     { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
     { label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') },
   ]
-  if (isLoggedIn.value && username.value) {
-    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), username: username.value })
-  }
   items.push({
     label: isLoggedIn.value ? message.value.forum.sidebar.createFeedback : message.value.forum.sidebar.loginToCreate,
     icon: isLoggedIn.value ? 'i-lucide-square-pen' : 'i-lucide-log-in',
@@ -244,53 +224,44 @@ function handleCreate() {
 
 <template>
   <div class="forum-sidebar">
-    <div
-      ref="containerSidebar"
-      class="forum-sidebar-scroll relative"
-    >
-      <div
-        ref="indicatorSidebar"
-        aria-hidden="true"
-        class="rounded-lg bg-accent h-0 w-0 pointer-events-none left-0 top-0 absolute z-0"
-      />
-      <ForumSidebarNav :items="navItems" @create="handleCreate" />
+    <div class="forum-sidebar-scroll">
+      <FluidHoverList>
+        <ForumSidebarNav :items="navItems" @create="handleCreate" />
 
-      <ForumSidebarSection
-        v-model:open="submittedSectionOpen"
-        :title="message.forum.sidebar.recentSubmitted"
-        icon="i-lucide-history"
-        :items="submittedItems"
-        :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
-        :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
-      />
-      <ForumSidebarSection
-        v-model:open="participatedSectionOpen"
-        :title="message.forum.sidebar.recentParticipated"
-        icon="i-lucide-message-circle-more"
-        :items="participatedItems"
-        :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
-        :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
-      />
-      <ForumSidebarSection
-        v-model:open="followedSectionOpen"
-        :title="message.forum.sidebar.followedTopics"
-        icon="i-lucide-bookmark"
-        :items="followedItems"
-        :action-disabled="personal.saving.value"
-        :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
-        :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
-        @unfollow="personal.unfollow"
-      />
+        <ForumSidebarSection
+          v-model:open="submittedSectionOpen"
+          :title="message.forum.sidebar.recentSubmitted"
+          icon="i-lucide-history"
+          :items="submittedItems"
+          :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
+          :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
+        />
+        <ForumSidebarSection
+          v-model:open="participatedSectionOpen"
+          :title="message.forum.sidebar.recentParticipated"
+          icon="i-lucide-message-circle-more"
+          :items="participatedItems"
+          :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
+          :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
+        />
+        <ForumSidebarSection
+          v-model:open="followedSectionOpen"
+          :title="message.forum.sidebar.followedTopics"
+          icon="i-lucide-bookmark"
+          :items="followedItems"
+          :action-disabled="personal.saving.value"
+          :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
+          :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
+          @unfollow="personal.unfollow"
+        />
+      </FluidHoverList>
     </div>
 
     <ForumSidebarFestivalItem />
-    <ForumSidebarInformationMenu
-      ref="informationMenu"
-      :open="informationOpen"
+    <ForumSidebarAccountMenu
       :privacy-href="pageHref('privacy')"
       :agreement-href="pageHref('agreement')"
-      :settings-href="pageHref('settings')"
-      @update:open="informationOpen = $event"
+      :profile-href="username ? userHref(username) : pageHref('feedback')"
     />
   </div>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SettingsNavigationItem, SettingsSectionId } from '~/composables/useSettingsNavigation'
+import { FluidHoverList } from '@/components/ui/fluid-hover'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import useLogin from '@/hooks/useLogin'
@@ -28,9 +29,13 @@ const { userHref } = useForumRoute()
 </script>
 
 <template>
-  <div class="settings-menu" :class="{ 'is-drilldown': drilldown }">
+  <FluidHoverList
+    class="settings-menu"
+    :class="{ 'is-drilldown': drilldown }"
+  >
     <a
       v-if="userInfo.info"
+      data-fluid-hover-item
       class="settings-user"
       :href="userHref(userInfo.info.login)"
     >
@@ -47,7 +52,13 @@ const { userHref } = useForumRoute()
         }"
       />
     </a>
-    <button v-else type="button" class="settings-user settings-user-login" @click="showLoginAlert">
+    <button
+      v-else
+      data-fluid-hover-item
+      type="button"
+      class="settings-user settings-user-login"
+      @click="showLoginAlert"
+    >
       <span class="settings-user-placeholder i-lucide-user-round icon-btn" aria-hidden="true" />
       <span>{{ message.forum.auth.loginMsg }}</span>
     </button>
@@ -81,7 +92,7 @@ const { userHref } = useForumRoute()
     </div>
 
     <slot />
-  </div>
+  </FluidHoverList>
 </template>
 
 <style scoped>
@@ -98,15 +109,17 @@ const { userHref } = useForumRoute()
   min-height: 52px;
   align-items: center;
   gap: 10px;
+  position: relative;
   border-radius: 9px;
   padding: 8px;
   color: var(--vp-c-text-1);
   text-decoration: none;
 }
 
-.settings-user:hover,
+/* 指针反馈交给 fluid indicator；focus-visible 的描边保留 */
 .settings-user:focus-visible {
-  background: var(--vp-c-default-soft);
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
 }
 
 .settings-user-login {

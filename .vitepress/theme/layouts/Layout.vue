@@ -9,10 +9,9 @@ import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
 import { enableTransitions } from '@/shared'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { isSettingsSectionId } from '~/config/settingsOptions'
 
 import '@/styles/main.css'
-
-const SETTINGS_DIALOG_HASH_RE = /^#settings(?:\/(?:appearance|notifications|language|privacy|labels))?$/
 
 const { Layout } = DefaultTheme
 const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
@@ -28,9 +27,16 @@ const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OA
 const { isDark, frontmatter } = useData()
 const { theme: themePreference, toastDuration, toastPosition } = useSitePreferences()
 const currentHash = ref('')
+const showSettingsHash = computed(() => {
+  if (currentHash.value === '#settings')
+    return true
+  const prefix = '#settings/'
+  return currentHash.value.startsWith(prefix)
+    && isSettingsSectionId(currentHash.value.slice(prefix.length))
+})
 const showSettingsDialog = computed(() =>
   frontmatter.value.layout !== 'Settings'
-  && SETTINGS_DIALOG_HASH_RE.test(currentHash.value),
+  && showSettingsHash.value,
 )
 
 function syncHash(): void {
@@ -121,7 +127,7 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     </template>
 
     <template #nav-bar-content-after>
-      <NavBarUserAvatar />
+      <NavBarUserAvatar v-if="frontmatter.layout !== 'Forum'" />
     </template>
 
     <template #sidebar-nav-before>

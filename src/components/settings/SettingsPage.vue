@@ -18,6 +18,7 @@ import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
+import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 import { reportingEnabled } from '~/services/telemetry'
 import SettingsMenu from './SettingsMenu.vue'
 import SettingsMobileView from './SettingsMobileView.vue'
@@ -180,6 +181,8 @@ onBeforeUnmount(() => {
   clearTimeout(saveStatusTimer)
   if (scrollFrame !== undefined)
     cancelAnimationFrame(scrollFrame)
+  if (props.dialogOnly)
+    consumeSettingsReturnUrl()
 })
 </script>
 

@@ -99,9 +99,6 @@ const { message } = useLocalized()
           @select="emit('select', $event)"
         />
         <div v-else :key="activeSection" class="settings-drawer-detail">
-          <header v-if="activeSection === 'labels'" class="settings-drawer-section-intro">
-            <h2>{{ activeItem.label }}</h2>
-          </header>
           <SettingsPanel
             :active-section="activeSection"
             :show-language="translationSupported"
@@ -189,18 +186,6 @@ const { message } = useLocalized()
 
 .settings-drawer-detail {
   min-width: 0;
-}
-
-.settings-drawer-section-intro {
-  margin-block-end: 20px;
-  padding-inline: 2px;
-}
-
-.settings-drawer-section-intro h2 {
-  color: var(--vp-c-text-1);
-  font-size: calc(18px * var(--site-ui-scale));
-  font-weight: 600;
-  line-height: calc(26px * var(--site-ui-scale));
 }
 
 .settings-mobile-save {

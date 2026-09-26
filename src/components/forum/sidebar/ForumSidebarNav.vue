@@ -5,7 +5,6 @@ defineProps<{
     icon: string
     href?: string
     active?: boolean
-    username?: string
     /** 无 href 的条目渲染为按钮，点击时触发 create */
     action?: boolean
   }>
@@ -26,10 +25,9 @@ defineEmits<{
         class="forum-sidebar-link"
         :class="{ active: item.active }"
         :aria-current="item.active ? 'page' : undefined"
-        :data-forum-user="item.username"
       >
-        <span :class="item.icon" :data-forum-user-avatar="item.username || undefined" aria-hidden="true" />
-        <span :data-forum-user-name="item.username || undefined" class="min-w-0 truncate">{{ item.label }}</span>
+        <span :class="item.icon" aria-hidden="true" />
+        <span class="min-w-0 truncate">{{ item.label }}</span>
       </a>
       <button
         v-else
@@ -58,11 +56,7 @@ defineEmits<{
   line-height: calc(20px * var(--site-ui-scale));
 }
 
-/* 指针反馈交给 fluid indicator，行只保留 active 态背景 */
-.forum-sidebar-link.active {
-  background: var(--vp-c-default-soft);
-}
-
+/* 指针反馈交给 fluid indicator；active 只保留字重 */
 .forum-sidebar-link.active {
   font-weight: 600;
 }

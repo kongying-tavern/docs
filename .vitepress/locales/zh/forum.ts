@@ -47,6 +47,7 @@ const forum = {
     information: '更多',
     listSort: '列表排序',
     opensource: '开源代码',
+    feedbackCommunity: '反馈 QQ 群',
     userAgreement: '用户协议',
     privacyPolicy: '隐私协议',
     festival: {
