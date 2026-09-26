@@ -1,26 +1,35 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
-import { useData, withBase } from 'vitepress'
+import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { SETTINGS_SECTION_DEFINITIONS } from '~/config/settingsOptions'
+import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
 import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 
 const { localeIndex, page } = useData()
+const router = useRouter()
 const { message } = useLocalized()
 const { hasAnyPermissions } = useRuleChecks()
 const canManageLabels = hasAnyPermissions('manage_feedback')
 const isLabelAdminPage = computed(() => page.value.relativePath.includes('settings-labels'))
 const activeSection = ref('appearance')
+const translationSupported = ref(false)
+const returnDepth = ref(1)
+const returnDepthStateKey = '__settingsReturnDepth'
 
-const settingsItems = computed(() => [
-  { id: 'appearance', label: message.value.settings.appearance.title, icon: 'i-lucide-palette' },
-  { id: 'notifications', label: message.value.settings.notifications.title, icon: 'i-lucide-bell' },
-  { id: 'language', label: message.value.settings.language.title, icon: 'i-lucide-languages' },
-  { id: 'privacy', label: message.value.settings.privacy.title, icon: 'i-lucide-shield-check' },
-])
+const settingsItems = computed(() => SETTINGS_SECTION_DEFINITIONS
+  .filter(section => section.group === 'website')
+  .filter(section => section.id !== 'language' || translationSupported.value)
+  .map(section => ({
+    ...section,
+    label: section.id === 'labels'
+      ? message.value.forum.labelAdmin.title
+      : message.value.settings[section.id].title,
+  })))
 
 function settingsHref(section: string): string {
   return withBase(`${getLangPath(localeIndex.value)}settings#${section}`)
@@ -30,8 +39,38 @@ function syncActiveSection(): void {
   activeSection.value = location.hash.slice(1) || 'appearance'
 }
 
-onMounted(syncActiveSection)
-useEventListener('hashchange', syncActiveSection)
+function syncReturnDepth(): void {
+  // VitePress 为页内锚点新增历史记录，返回按钮要跳过这些设置分区。
+  const depth = history.state?.[returnDepthStateKey]
+  if (Number.isInteger(depth) && depth > 0) {
+    returnDepth.value = depth
+    return
+  }
+
+  returnDepth.value += 1
+  history.replaceState({ ...history.state, [returnDepthStateKey]: returnDepth.value }, '')
+}
+
+onMounted(() => {
+  translationSupported.value = isBrowserTranslationSupported()
+  syncActiveSection()
+  const depth = history.state?.[returnDepthStateKey]
+  if (Number.isInteger(depth) && depth > 0) {
+    returnDepth.value = depth
+  }
+  else {
+    history.replaceState({ ...history.state, [returnDepthStateKey]: returnDepth.value }, '')
+  }
+})
+useEventListener('hashchange', () => {
+  syncActiveSection()
+  syncReturnDepth()
+})
+useEventListener('popstate', () => {
+  syncActiveSection()
+  const depth = history.state?.[returnDepthStateKey]
+  returnDepth.value = Number.isInteger(depth) && depth > 0 ? depth : 1
+})
 
 function fallbackHref(): string {
   return withBase(`${getLangPath(localeIndex.value)}feedback`)
@@ -39,15 +78,15 @@ function fallbackHref(): string {
 
 function goBack(): void {
   const saved = consumeSettingsReturnUrl()
-  if (saved) {
-    location.assign(saved)
+  if (saved && saved !== location.href && history.length > returnDepth.value) {
+    history.go(-returnDepth.value)
     return
   }
-  if (document.referrer && new URL(document.referrer).origin === location.origin) {
+  if (document.referrer && document.referrer !== location.href && new URL(document.referrer).origin === location.origin && history.length > 1) {
     history.back()
     return
   }
-  location.assign(fallbackHref())
+  void router.go(saved && saved !== location.href ? saved : fallbackHref())
 }
 
 function openLabelAdmin(): void {
@@ -106,9 +145,9 @@ function openLabelAdmin(): void {
   border-radius: 8px;
   padding: 8px 10px;
   color: var(--vp-c-text-2);
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 500;
-  line-height: 20px;
+  line-height: calc(20px * var(--site-ui-scale));
   text-align: start;
   text-decoration: none;
 }

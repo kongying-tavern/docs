@@ -1,6 +1,6 @@
 ---
 layout: Settings
-sidebar: true
+sidebar: false
 aside: false
 title: 设置
 docHeader: false

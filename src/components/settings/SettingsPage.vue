@@ -1,494 +1,442 @@
 <script setup lang="ts">
-import type { ThemePreference, ToastPosition } from '~/composables/useSitePreferences'
-import { useData, withBase } from 'vitepress'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import type { SettingsSectionId } from '~/composables/useSettingsNavigation'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { Button } from '@/components/ui/button'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  Drawer,
+  DrawerContent,
+} from '@/components/ui/drawer'
 import { useLocalized } from '@/hooks/useLocalized'
-import { getLangPath } from '@/utils'
-import ForumTranslationSettings from '~/components/forum/topic/ForumTranslationSettings.vue'
-import TelemetrySettings from '~/components/telemetry/TelemetrySettings.vue'
-import {
-  DEFAULT_TOAST_DURATION,
-  TOAST_DURATION_VALUES,
-  useSitePreferences,
-} from '~/composables/useSitePreferences'
+import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
+import { useRuleChecks } from '~/composables/useRuleChecks'
+import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
-import { toast } from '~/services/telemetry/toast'
-import SettingsRow from './SettingsRow.vue'
-import SettingsSection from './SettingsSection.vue'
+import { reportingEnabled } from '~/services/telemetry'
+import SettingsMenu from './SettingsMenu.vue'
+import SettingsMobileView from './SettingsMobileView.vue'
+import SettingsPanel from './SettingsPanel.vue'
 
-const { isDark, localeIndex } = useData()
+const props = withDefaults(defineProps<{
+  dialogOnly?: boolean
+  embeddedMobile?: boolean
+}>(), {
+  dialogOnly: false,
+  embeddedMobile: false,
+})
+
+const emit = defineEmits<{
+  close: []
+  leave: []
+}>()
+
 const { message } = useLocalized()
-const { theme, toastPosition, toastDuration, toastPositions } = useSitePreferences()
-const translationSupported = ref(false)
+const { hasAnyPermissions } = useRuleChecks()
+const {
+  theme,
+  usePointerCursor,
+  motionPreference,
+  uiFontSize,
+  desktopUi,
+  toastPosition,
+  toastDuration,
+} = useSitePreferences()
+const canManageLabels = hasAnyPermissions('manage_feedback')
+const labelManagementEnabled = computed(() => canManageLabels.value)
+const { autoTranslateEnabled, excludedSourceLanguages } = useForumTranslationPreferences()
+const translationSupported = ref(typeof window !== 'undefined' && isBrowserTranslationSupported())
+const desktopContent = useTemplateRef<HTMLElement>('desktopContent')
+const saveStatusVisible = ref(false)
+let saveStatusTimer: ReturnType<typeof setTimeout> | undefined
+let scrollFrame: number | undefined
 
-onMounted(() => {
-  translationSupported.value = isBrowserTranslationSupported()
+const {
+  sections,
+  activeSection,
+  activeItem,
+  sectionSelected,
+  selectSection,
+  showSectionList,
+  closeSettings,
+} = useSettingsNavigation(translationSupported, {
+  hashPrefix: props.dialogOnly && !props.embeddedMobile ? 'settings' : undefined,
+  labelManagementEnabled,
+  updateHash: !props.embeddedMobile,
+})
+const websiteSections = computed(() => sections.value.filter(section => section.group === 'website'))
+const applicationSections = computed(() => sections.value.filter(section => section.group === 'application'))
+const dialogTitle = computed(() => activeSection.value === 'labels'
+  ? message.value.settings.groups.application
+  : message.value.settings.title)
+const drawerTitle = computed(() => {
+  if (!sectionSelected.value)
+    return message.value.settings.title
+  return activeSection.value === 'labels'
+    ? message.value.settings.groups.application
+    : activeItem.value.label
 })
 
-const themeOptions = computed(() => [
-  { value: 'light' as const, label: message.value.settings.appearance.light, icon: 'i-lucide-sun' },
-  { value: 'dark' as const, label: message.value.settings.appearance.dark, icon: 'i-lucide-moon' },
-  { value: 'auto' as const, label: message.value.settings.appearance.auto, icon: 'i-lucide-monitor' },
-])
-const positionLabels = computed<Record<ToastPosition, string>>(() => ({
-  'top-left': message.value.settings.notifications.positions.topLeft,
-  'top-center': message.value.settings.notifications.positions.topCenter,
-  'top-right': message.value.settings.notifications.positions.topRight,
-  'bottom-left': message.value.settings.notifications.positions.bottomLeft,
-  'bottom-center': message.value.settings.notifications.positions.bottomCenter,
-  'bottom-right': message.value.settings.notifications.positions.bottomRight,
-}))
-const positionIcons: Record<ToastPosition, string> = {
-  'top-left': 'i-lucide-move-up-left',
-  'top-center': 'i-lucide-arrow-up-to-line',
-  'top-right': 'i-lucide-move-up-right',
-  'bottom-left': 'i-lucide-move-down-left',
-  'bottom-center': 'i-lucide-arrow-down-to-line',
-  'bottom-right': 'i-lucide-move-down-right',
+function showSaveStatus(): void {
+  saveStatusVisible.value = true
+  clearTimeout(saveStatusTimer)
+  saveStatusTimer = setTimeout(() => {
+    saveStatusVisible.value = false
+  }, 1800)
 }
-const durationLabels = computed(() => [
-  message.value.settings.notifications.fast,
-  message.value.settings.notifications.default,
-  message.value.settings.notifications.slow,
-  message.value.settings.notifications.persistent,
-])
-const durationOptions = computed(() =>
-  TOAST_DURATION_VALUES.map((value, index) => ({ value, label: durationLabels.value[index] })),
-)
-const durationStep = computed({
-  get: () => {
-    if (!Number.isFinite(toastDuration.value))
-      return TOAST_DURATION_VALUES.length - 1
-    const index = TOAST_DURATION_VALUES.findIndex(value => toastDuration.value <= value)
-    return index === -1 ? TOAST_DURATION_VALUES.length - 2 : index
-  },
-  set: (step: string | number) => toastDuration.value = durationOptions.value[Number(step)]?.value ?? DEFAULT_TOAST_DURATION,
-})
-const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}privacy`))
-let previewToastId: string | number | undefined
-let previewToastTimer: ReturnType<typeof setTimeout> | undefined
 
-function setTheme(value: unknown): void {
-  if (value !== 'light' && value !== 'dark' && value !== 'auto')
+watch([
+  theme,
+  usePointerCursor,
+  motionPreference,
+  uiFontSize,
+  toastPosition,
+  toastDuration,
+  autoTranslateEnabled,
+  () => excludedSourceLanguages.value.join(','),
+  reportingEnabled,
+], showSaveStatus, { flush: 'post' })
+
+function scrollToSection(section: SettingsSectionId, behavior: ScrollBehavior): void {
+  const container = desktopContent.value
+  const target = container?.querySelector<HTMLElement>(`#${section}`)
+  if (!container || !target)
     return
-  const next = value as ThemePreference
-  isDark.value = next === 'auto'
-    ? matchMedia('(prefers-color-scheme: dark)').matches
-    : next === 'dark'
-  theme.value = next
+
+  const containerRect = container.getBoundingClientRect()
+  const targetRect = target.getBoundingClientRect()
+  container.scrollTo({
+    top: container.scrollTop + targetRect.top - containerRect.top,
+    behavior,
+  })
 }
 
-function setToastPosition(value: unknown): void {
-  if (toastPositions.includes(value as ToastPosition)) {
-    toastPosition.value = value as ToastPosition
-    void nextTick(previewToast)
+async function changeSection(section: SettingsSectionId): Promise<void> {
+  selectSection(section)
+  await nextTick()
+  if (desktopUi.value) {
+    if (section === 'labels') {
+      desktopContent.value?.scrollTo({ top: 0, behavior: 'auto' })
+      return
+    }
+    const behavior = document.documentElement.dataset.reducedMotion === 'true' ? 'auto' : 'smooth'
+    scrollToSection(section, behavior)
   }
 }
 
-function previewToast(): void {
-  if (previewToastId !== undefined)
-    toast.dismiss(previewToastId)
+function syncSectionFromScroll(): void {
+  if (activeSection.value === 'labels')
+    return
+  if (scrollFrame !== undefined)
+    cancelAnimationFrame(scrollFrame)
+  scrollFrame = requestAnimationFrame(() => {
+    const container = desktopContent.value
+    if (!container)
+      return
 
-  clearTimeout(previewToastTimer)
-  previewToastTimer = setTimeout(() => {
-    previewToastId = toast.info(message.value.settings.notifications.previewMessage, {
-      duration: toastDuration.value,
-      position: toastPosition.value,
-      closeButton: !Number.isFinite(toastDuration.value),
-      report: false,
-    })
-  }, 210)
+    const scrollableSections = websiteSections.value
+    const threshold = container.getBoundingClientRect().top + 56
+    let current = scrollableSections[0]?.id
+    if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
+      current = scrollableSections.at(-1)?.id
+    }
+    else {
+      for (const section of scrollableSections) {
+        const element = container.querySelector<HTMLElement>(`#${section.id}`)
+        if (element && element.getBoundingClientRect().top <= threshold)
+          current = section.id
+      }
+    }
+    if (current && current !== activeSection.value)
+      selectSection(current)
+  })
 }
 
-function previewDuration(): void {
-  void nextTick(previewToast)
+function handleDialogOpen(open: boolean): void {
+  if (!open)
+    closeSettings()
 }
+
+async function focusActiveNavigation(event: Event): Promise<void> {
+  event.preventDefault()
+  await nextTick()
+  document
+    .querySelector<HTMLElement>('.settings-dialog .settings-navigation-item.active')
+    ?.focus()
+}
+
+onMounted(async () => {
+  await nextTick()
+  if (desktopUi.value)
+    scrollToSection(activeSection.value, 'auto')
+})
 
 onBeforeUnmount(() => {
-  clearTimeout(previewToastTimer)
-  if (previewToastId !== undefined)
-    toast.dismiss(previewToastId)
+  clearTimeout(saveStatusTimer)
+  if (scrollFrame !== undefined)
+    cancelAnimationFrame(scrollFrame)
 })
 </script>
 
 <template>
-  <main class="settings-page">
-    <header class="settings-page-header">
-      <h1>{{ message.settings.title }}</h1>
-      <p>{{ message.settings.description }}</p>
-    </header>
+  <SettingsMobileView
+    v-if="embeddedMobile"
+    :website-sections="websiteSections"
+    :application-sections="applicationSections"
+    :active-section="activeSection"
+    :active-item="activeItem"
+    :section-selected="sectionSelected"
+    :title="drawerTitle"
+    :save-status-visible="saveStatusVisible"
+    :label-management-enabled="labelManagementEnabled"
+    :translation-supported="translationSupported"
+    show-root-back
+    @select="changeSection"
+    @show-section-list="showSectionList"
+    @leave="emit('leave')"
+    @close="emit('close')"
+  />
 
-    <div class="settings-content">
-      <SettingsSection
-        id="appearance"
-        :title="message.settings.appearance.title"
-        :description="message.settings.appearance.description"
-      >
-        <SettingsRow
-          :title="message.settings.appearance.theme"
-          :description="message.settings.appearance.themeDescription"
-          align-start
+  <Dialog v-else-if="desktopUi" :open="true" @update:open="handleDialogOpen">
+    <DialogContent
+      :show-close-button="false"
+      class="settings-dialog"
+      overlay-class="settings-dialog-overlay"
+      @open-auto-focus="focusActiveNavigation"
+    >
+      <aside class="settings-dialog-sidebar">
+        <SettingsMenu
+          class="settings-dialog-menu"
+          :website-sections="websiteSections"
+          :application-sections="applicationSections"
+          :active-section="activeSection"
+          :hash-prefix="dialogOnly ? 'settings' : undefined"
+          @select="changeSection"
         >
-          <div class="theme-options-wrap">
-            <ToggleGroup
-              type="single"
-              variant="outline"
-              class="theme-options"
-              :model-value="theme"
-              @update:model-value="setTheme"
-            >
-              <ToggleGroupItem
-                v-for="option in themeOptions"
-                :key="option.value"
-                :value="option.value"
-                class="theme-option"
-                :aria-label="option.label"
-              >
-                <span class="theme-preview" :class="`theme-preview-${option.value}`" aria-hidden="true">
-                  <template v-if="option.value === 'auto'">
-                    <span class="theme-preview-half theme-preview-half-light">
-                      <span class="theme-preview-sidebar" />
-                      <span class="theme-preview-content"><span /><span /></span>
-                    </span>
-                    <span class="theme-preview-half theme-preview-half-dark">
-                      <span class="theme-preview-sidebar" />
-                      <span class="theme-preview-content"><span /><span /></span>
-                    </span>
-                  </template>
-                  <template v-else>
-                    <span class="theme-preview-sidebar" />
-                    <span class="theme-preview-content">
-                      <span />
-                      <span />
-                    </span>
-                  </template>
-                </span>
-                <span class="theme-option-label">
-                  <span class="icon-btn size-4" :class="option.icon" aria-hidden="true" />
-                  {{ option.label }}
-                </span>
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </div>
-        </SettingsRow>
-      </SettingsSection>
+          <Transition name="settings-save">
+            <p v-if="saveStatusVisible" class="settings-save-note" role="status">
+              <span class="i-lucide-cloud-check icon-btn" aria-hidden="true" />
+              {{ message.settings.autoSave }}
+            </p>
+          </Transition>
+        </SettingsMenu>
+      </aside>
 
-      <SettingsSection
-        id="notifications"
-        :title="message.settings.notifications.title"
-        :description="message.settings.notifications.description"
-      >
-        <SettingsRow
-          :title="message.settings.notifications.position"
-          :description="message.settings.notifications.positionDescription"
-        >
-          <div class="settings-select">
-            <Select :model-value="toastPosition" @update:model-value="setToastPosition">
-              <SelectTrigger class="w-full">
-                <span class="position-option-icon" :class="positionIcons[toastPosition]" aria-hidden="true" />
-                <SelectValue>{{ positionLabels[toastPosition] }}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem v-for="position in toastPositions" :key="position" :value="position">
-                  <template #prefix>
-                    <span class="position-option-icon" :class="positionIcons[position]" aria-hidden="true" />
-                  </template>
-                  {{ positionLabels[position] }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </SettingsRow>
-
-        <SettingsRow
-          :title="message.settings.notifications.duration"
-          :description="message.settings.notifications.durationDescription"
-        >
-          <div class="duration-control">
-            <input
-              v-model="durationStep"
-              type="range"
-              min="0"
-              :max="TOAST_DURATION_VALUES.length - 1"
-              step="1"
-              class="duration-slider"
-              :aria-label="message.settings.notifications.duration"
-              :aria-valuetext="durationOptions[durationStep]?.label"
-              @change="previewDuration"
-            >
-            <div class="duration-labels">
-              <button
-                v-for="(option, index) in durationOptions"
-                :key="option.label"
-                type="button"
-                :class="{ active: durationStep === index }"
-                @click="durationStep = index; previewDuration()"
-              >
-                {{ option.label }}
-              </button>
+      <section class="settings-dialog-main">
+        <header class="settings-dialog-panel-header">
+          <div class="settings-dialog-panel-title">
+            <div>
+              <DialogTitle class="settings-dialog-title">
+                {{ dialogTitle }}
+              </DialogTitle>
+              <DialogDescription class="sr-only">
+                {{ dialogTitle }}
+              </DialogDescription>
             </div>
           </div>
-        </SettingsRow>
-      </SettingsSection>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            class="settings-close-button"
+            :aria-label="message.settings.close"
+            @click="closeSettings"
+          >
+            <span class="i-lucide-x icon-btn" aria-hidden="true" />
+          </Button>
+        </header>
 
-      <SettingsSection
-        v-if="translationSupported"
-        id="language"
-        :title="message.settings.language.title"
-        :description="message.settings.language.description"
-      >
-        <ForumTranslationSettings />
-      </SettingsSection>
+        <div ref="desktopContent" class="settings-dialog-content" @scroll.passive="syncSectionFromScroll">
+          <SettingsPanel
+            :active-section="activeSection"
+            :show-language="translationSupported"
+            :show-label-admin="labelManagementEnabled"
+            :show-all="activeSection !== 'labels'"
+          />
+        </div>
+      </section>
+    </DialogContent>
+  </Dialog>
 
-      <SettingsSection
-        id="privacy"
-        :title="message.settings.privacy.title"
-        :description="message.settings.privacy.description"
-      >
-        <TelemetrySettings :privacy-href="privacyHref" />
-      </SettingsSection>
-    </div>
-  </main>
+  <Drawer v-else :open="true" @update:open="handleDialogOpen">
+    <DrawerContent class="settings-drawer">
+      <SettingsMobileView
+        :website-sections="websiteSections"
+        :application-sections="applicationSections"
+        :active-section="activeSection"
+        :active-item="activeItem"
+        :section-selected="sectionSelected"
+        :title="drawerTitle"
+        :save-status-visible="saveStatusVisible"
+        :hash-prefix="dialogOnly ? 'settings' : undefined"
+        :label-management-enabled="labelManagementEnabled"
+        :translation-supported="translationSupported"
+        @select="changeSection"
+        @show-section-list="showSectionList"
+        @close="closeSettings"
+      />
+    </DrawerContent>
+  </Drawer>
 </template>
 
-<style scoped>
-.settings-page {
-  width: min(920px, 100%);
+<style>
+.settings-dialog-overlay {
+  background: rgb(16 24 20 / 48%) !important;
+  backdrop-filter: blur(2px);
+}
+
+.settings-dialog {
+  display: grid !important;
+  width: min(1100px, calc(100vw - 64px)) !important;
+  max-width: none !important;
+  height: min(760px, calc(100dvh - 64px));
+  grid-template-columns: 248px minmax(0, 1fr);
+  gap: 0 !important;
+  overflow: hidden;
+  border-color: var(--vp-c-divider) !important;
+  border-radius: 14px !important;
+  padding: 0 !important;
+  background: var(--vp-c-bg) !important;
+  box-shadow: var(--vp-shadow-3) !important;
+}
+
+.settings-drawer {
+  width: min(100%, 760px) !important;
+  max-height: calc(100dvh - 24px) !important;
   margin-inline: auto;
-  padding: 48px 32px 96px;
+  overflow: hidden;
+  border-color: var(--vp-c-divider) !important;
+  background: var(--vp-c-bg) !important;
+  box-shadow: var(--vp-shadow-3) !important;
 }
 
-.settings-page-header {
-  padding-block-end: 28px;
-  border-block-end: 1px solid var(--vp-c-divider);
+[data-slot='drawer-overlay']:has(+ .settings-drawer) {
+  background: rgb(16 24 20 / 48%);
+  backdrop-filter: blur(2px);
+}
+</style>
+
+<style scoped>
+.settings-dialog-sidebar {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 20px;
+  border-inline-end: 1px solid var(--vp-c-divider);
+  padding: 28px 20px 20px;
+  background: var(--vp-c-bg-alt);
 }
 
-.settings-page-header h1 {
+.settings-dialog-menu {
+  height: 100%;
+}
+
+.settings-dialog-title {
   color: var(--vp-c-text-1);
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 40px;
+  font-family: var(--vp-font-family-title);
+  font-size: calc(24px * var(--site-ui-scale));
+  line-height: calc(32px * var(--site-ui-scale));
   letter-spacing: -0.02em;
 }
 
-.settings-page-header p {
-  max-width: 640px;
-  margin-block-start: 8px;
-  color: var(--vp-c-text-2);
-  font-size: 15px;
-  line-height: 24px;
-}
-
-.settings-content {
-  display: grid;
-  gap: 56px;
-  padding-block-start: 36px;
-}
-
-.theme-options-wrap {
-  width: min(456px, 100%);
-}
-
-.theme-options-wrap :deep(.theme-options) {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  box-shadow: none;
-}
-
-.theme-options-wrap :deep(.theme-option) {
+.settings-save-note {
   display: flex;
-  width: 100%;
-  height: 104px !important;
-  min-width: 0;
-  align-items: stretch;
-  flex-direction: column;
-  gap: 8px;
-  border: 1px solid var(--vp-c-divider) !important;
-  border-radius: 8px !important;
-  padding: 6px;
-  background: var(--vp-c-bg);
+  align-items: center;
+  gap: 7px;
+  margin-block-start: auto;
+  padding: 10px 8px 0;
+  color: var(--vp-c-text-3);
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
 }
 
-.theme-options-wrap :deep(.theme-option[data-state='on']) {
-  border-color: var(--vp-c-brand-1) !important;
-  box-shadow: 0 0 0 1px var(--vp-c-brand-1);
+.settings-save-enter-active,
+.settings-save-leave-active {
+  transition:
+    opacity 160ms ease-out,
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.theme-preview {
+.settings-save-enter-from,
+.settings-save-leave-to {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.settings-dialog-main {
   display: grid;
-  height: 58px;
-  grid-template-columns: 28% 1fr;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 5px;
-  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
-.theme-preview-light {
-  background: #fff;
+.settings-dialog-panel-header {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-block-end: 1px solid var(--vp-c-divider);
+  padding: 16px 24px 16px 28px;
 }
 
-.theme-preview-light .theme-preview-sidebar {
-  background: #f3f4f6;
+.settings-dialog-panel-title {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.theme-preview-dark {
-  border-color: #3f3f46;
-  background: #18181b;
+.settings-close-button {
+  flex: 0 0 auto;
+  border-radius: 8px;
+  color: var(--vp-c-text-2);
 }
 
-.theme-preview-dark .theme-preview-sidebar {
-  background: #27272a;
+.settings-dialog-content {
+  --settings-scrollbar: color-mix(in srgb, var(--vp-c-text-3) 42%, transparent);
+  --settings-scrollbar-hover: color-mix(in srgb, var(--vp-c-text-2) 64%, transparent);
+
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--settings-scrollbar) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
 }
 
-.theme-preview-auto {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.settings-dialog-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.settings-dialog-content::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.theme-preview-half {
-  display: grid;
-  min-width: 0;
-  grid-template-columns: 28% 1fr;
+.settings-dialog-content::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--settings-scrollbar);
+  background-clip: padding-box;
 }
 
-.theme-preview-half-dark {
-  border-inline-start: 1px solid #3f3f46;
-  background: #18181b;
+.settings-dialog-content::-webkit-scrollbar-thumb:hover {
+  background: var(--settings-scrollbar-hover);
+  background-clip: padding-box;
 }
 
-.theme-preview-half-light {
-  background: #fff;
+.settings-dialog-content :deep(.settings-section + .settings-section) {
+  margin-block-start: 52px;
 }
 
-.theme-preview-half-light .theme-preview-sidebar {
-  background: #f3f4f6;
-}
-
-.theme-preview-half-dark .theme-preview-sidebar {
-  background: #27272a;
-}
-
-.theme-preview-half .theme-preview-content {
-  gap: 5px;
-  padding: 5px;
-}
-
-.theme-preview-half .theme-preview-content span {
-  height: 4px;
-}
-
-.theme-preview-half-dark .theme-preview-content span {
-  background: #71717a;
-}
-
-.theme-preview-content {
-  display: grid;
-  align-content: center;
-  gap: 7px;
-  padding: 9px;
-}
-
-.theme-preview-content span {
-  display: block;
-  height: 5px;
-  border-radius: 3px;
-  background: #a1a1aa;
-}
-
-.theme-preview-content span:last-child {
-  width: 68%;
-}
-
-.theme-option-label {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: var(--vp-c-text-1);
-  font-size: 12px;
-  line-height: 18px;
-}
-
-.settings-select {
-  width: 180px;
-}
-
-.position-option-icon {
-  color: var(--vp-c-text-2);
-  font-size: 16px;
-}
-
-.duration-control {
-  width: 280px;
-}
-
-.duration-slider {
-  width: 100%;
-  height: 20px;
-  accent-color: var(--vp-c-brand-1);
-  cursor: pointer;
-}
-
-.duration-labels {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  margin-block-start: 3px;
-}
-
-.duration-labels button {
-  padding-block: 2px;
-  color: var(--vp-c-text-3);
-  font-size: 12px;
-  line-height: 18px;
-  text-align: center;
-}
-
-.duration-labels button:first-child {
-  text-align: start;
-}
-
-.duration-labels button:last-child {
-  text-align: end;
-}
-
-.duration-labels button.active {
-  color: var(--vp-c-brand-1);
-  font-weight: 600;
-}
-
-@media (max-width: 639px) {
-  .settings-page {
-    padding: 32px 16px 72px;
-  }
-
-  .settings-page-header h1 {
-    font-size: 28px;
-    line-height: 36px;
-  }
-
-  .settings-content {
-    gap: 44px;
-    padding-block-start: 28px;
-  }
-
-  .theme-options-wrap,
-  .settings-select {
-    width: 100%;
-  }
-
-  .duration-control {
-    width: 100%;
-  }
+html[data-reduced-motion='true'] .settings-save-enter-active,
+html[data-reduced-motion='true'] .settings-save-leave-active {
+  transition: none;
 }
 </style>

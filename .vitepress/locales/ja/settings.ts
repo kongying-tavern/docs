@@ -2,21 +2,35 @@ import type { CustomConfig } from '../types'
 
 const settings: CustomConfig['settings'] = {
   title: '設定',
-  description: 'このブラウザでのサイトの表示と動作を調整します。変更は自動的に保存されます。',
   back: '前のページに戻る',
+  close: '設定を閉じる',
+  autoSave: '変更はこのブラウザに自動保存されます',
+  groups: {
+    website: 'ウェブサイト設定',
+    application: 'アプリ設定',
+  },
   copyFailed: 'コピーに失敗しました。もう一度お試しいただくか、テキストを手動でコピーしてください',
   appearance: {
     title: '外観',
-    description: 'サイトのテーマ表示を選択します。',
     theme: 'テーマモード',
     themeDescription: 'ドキュメント、フィードバック、その他のページに適用されます。',
     light: 'ライト',
     dark: 'ダーク',
     auto: 'システム設定',
+    pointerCursor: 'ポインターカーソルを使用',
+    pointerCursorDescription: 'ボタン、リンク、その他の操作要素にポインターを合わせたとき、指のカーソルを表示します。',
+    motion: 'モーションを減らす',
+    motionDescription: '端末の設定に従うか、ページ遷移、スクロール、UI アニメーションの軽減を常に有効または無効にします。',
+    motionSystem: 'システム設定',
+    motionOn: 'オン',
+    motionOff: 'オフ',
+    uiFontSize: 'UI フォントサイズ',
+    uiFontSizeDescription: 'デスクトップ UI の基準サイズ（12～18 px）を設定します。他の文字サイズも比例して調整されます。',
+    decreaseUiFontSize: 'フォントサイズを小さくする',
+    increaseUiFontSize: 'フォントサイズを大きくする',
   },
   notifications: {
     title: '通知',
-    description: 'ページ内メッセージの表示方法を調整します。',
     position: '表示位置',
     positionDescription: '通知をページのどこに表示するか選択します。',
     duration: '表示時間',
@@ -37,7 +51,6 @@ const settings: CustomConfig['settings'] = {
   },
   language: {
     title: '言語と翻訳',
-    description: '他の言語のコンテンツの表示方法を調整します。',
     excludedSourceLanguages: '自動翻訳しない原文言語',
     excludedSourceLanguagesDescription: 'これらの言語が検出された場合は原文を保持します。手動翻訳は引き続き利用できます。',
     searchLanguages: '言語を検索して選択…',
@@ -47,7 +60,6 @@ const settings: CustomConfig['settings'] = {
   },
   privacy: {
     title: 'プライバシーと診断',
-    description: 'サイトの問題調査に使用する診断情報を管理します。',
   },
 }
 

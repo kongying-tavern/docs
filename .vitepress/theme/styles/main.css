@@ -12,6 +12,79 @@
 
 :root {
   text-autospace: normal;
+  --site-ui-scale: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-pointer-cursor='true'] {
+    --site-interaction-cursor: pointer;
+  }
+
+  html[data-pointer-cursor='false'] {
+    --site-interaction-cursor: default;
+  }
+
+  html[data-pointer-cursor]
+    :where(
+      a[href],
+      button:not(:disabled),
+      summary,
+      input[type='button']:not(:disabled),
+      input[type='checkbox']:not(:disabled),
+      input[type='radio']:not(:disabled),
+      input[type='range']:not(:disabled),
+      input[type='submit']:not(:disabled),
+      select:not(:disabled),
+      label[for],
+      label:has(input[type='checkbox'], input[type='radio']),
+      [role='button']:not([aria-disabled='true']),
+      [role='checkbox']:not([aria-disabled='true']),
+      [role='combobox']:not([aria-disabled='true']),
+      [role='link']:not([aria-disabled='true']),
+      [role='menuitem']:not([aria-disabled='true']),
+      [role='option']:not([aria-disabled='true']),
+      [role='radio']:not([aria-disabled='true']),
+      [role='tab']:not([aria-disabled='true']),
+      [role='switch']:not([aria-disabled='true'])
+    ) {
+    cursor: var(--site-interaction-cursor) !important;
+  }
+
+  html[data-pointer-cursor]
+    :where(
+      a[href],
+      button:not(:disabled),
+      summary,
+      label[for],
+      label:has(input[type='checkbox'], input[type='radio']),
+      [role='button']:not([aria-disabled='true']),
+      [role='checkbox']:not([aria-disabled='true']),
+      [role='combobox']:not([aria-disabled='true']),
+      [role='link']:not([aria-disabled='true']),
+      [role='menuitem']:not([aria-disabled='true']),
+      [role='option']:not([aria-disabled='true']),
+      [role='radio']:not([aria-disabled='true']),
+      [role='tab']:not([aria-disabled='true']),
+      [role='switch']:not([aria-disabled='true'])
+    )
+    * {
+    cursor: inherit !important;
+  }
+}
+
+html[data-reduced-motion='true'] {
+  scroll-behavior: auto;
+}
+
+html[data-reduced-motion='true'] :where(*:not(.animate-spin):not(.skeleton-animation)),
+html[data-reduced-motion='true'] :where(*:not(.animate-spin):not(.skeleton-animation))::before,
+html[data-reduced-motion='true'] :where(*:not(.animate-spin):not(.skeleton-animation))::after {
+  scroll-behavior: auto !important;
+  transition-delay: 0ms !important;
+  transition-duration: 0.01ms !important;
+  animation-delay: 0ms !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
 }
 
 html.dark {
@@ -20,6 +93,57 @@ html.dark {
 
 html.light {
   color-scheme: light;
+}
+
+#app {
+  font-size: calc(14px * var(--site-ui-scale));
+}
+
+/* VitePress 默认主题内部使用固定 px，站点 UI 缩放需要在主题边界统一接管。
+   正文排版和首页展示字号不在此列，避免把阅读内容误当成界面控件。 */
+#app
+  :where(
+    .VPNavBarMenuLink,
+    .VPMenuGroup .title,
+    .VPMenuLink .link,
+    .VPNavBarExtra .menu,
+    .VPNavBarTranslations,
+    .VPNavScreenMenuGroup .button,
+    .VPNavScreenMenuGroupLink,
+    .VPNavScreenMenuLink,
+    .VPNavScreenTranslations .title,
+    .VPSidebarItem .text,
+    .VPDocAsideOutline .outline-title,
+    .VPDocOutlineItem .outline-link,
+    .VPDocFooter .pager-link,
+    .VPDocFooterLastUpdated,
+    .VPFooter,
+    .VPButton.medium
+  ) {
+  font-size: calc(14px * var(--site-ui-scale));
+}
+
+#app
+  :where(
+    .DocSearch-Button-Placeholder,
+    .VPDocAsideOutline,
+    .VPNavScreenMenuGroupSection,
+    .VPNavScreenTranslations .items
+  ) {
+  font-size: calc(13px * var(--site-ui-scale));
+}
+
+#app
+  :where(
+    .DocSearch-Button-Key,
+    .DocSearch-Button-Key:first-child::after,
+    .VPMenu .title,
+    .VPNavScreenAppearance .text,
+    .VPLocalNav .menu,
+    .VPLocalNavOutlineDropdown .top-link,
+    .VPSkipLink
+  ) {
+  font-size: calc(12px * var(--site-ui-scale));
 }
 
 html {
@@ -137,7 +261,7 @@ html.dark .vp-doc figure figcaption {
 }
 
 .VPMenuLink .link {
-  line-height: 28px !important;
+  line-height: calc(28px * var(--site-ui-scale)) !important;
 }
 
 .VPMenu .items > :not(.VPMenuLink).title {

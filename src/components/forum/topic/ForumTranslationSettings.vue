@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Switch } from '@/components/ui/switch'
 import {
   TagsInput,
   TagsInputInput,
@@ -78,10 +79,10 @@ watch(searchTerm, (search) => {
       :title="message.forum.translate.autoTranslate"
       :description="message.forum.translate.autoTranslateDescription"
     >
-      <label class="translation-switch">
-        <input v-model="autoTranslateEnabled" type="checkbox" role="switch" class="accent-[var(--vp-c-brand-1)] size-4">
-        <span class="sr-only">{{ message.forum.translate.autoTranslate }}</span>
-      </label>
+      <Switch
+        v-model="autoTranslateEnabled"
+        :aria-label="message.forum.translate.autoTranslate"
+      />
     </SettingsRow>
 
     <SettingsRow
@@ -145,14 +146,7 @@ watch(searchTerm, (search) => {
 
 <style scoped>
 .translation-settings {
-  display: grid;
-  gap: 10px;
-}
-
-.translation-switch {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+  display: contents;
 }
 
 .language-tags-anchor {
@@ -207,7 +201,7 @@ watch(searchTerm, (search) => {
 .language-options-empty {
   padding: 24px 12px;
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   text-align: center;
 }
 
@@ -219,7 +213,7 @@ watch(searchTerm, (search) => {
   gap: 8px;
   border-radius: 4px;
   padding: 6px 8px;
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   outline: none;
 }
 
@@ -232,15 +226,11 @@ watch(searchTerm, (search) => {
   flex: none;
   color: var(--muted-foreground);
   font-family: var(--vp-font-family-mono);
-  font-size: 12px;
+  font-size: calc(12px * var(--site-ui-scale));
   text-transform: uppercase;
 }
 
 @media (max-width: 639px) {
-  .translation-switch {
-    justify-content: flex-end;
-  }
-
   .language-tags-anchor {
     width: 100%;
   }

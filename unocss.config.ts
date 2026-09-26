@@ -20,6 +20,16 @@ export default defineConfig({
     breakpoints: {
       mobile: FORUM_MOBILE_BREAKPOINT_PX,
     },
+    text: {
+      'xs': { fontSize: 'calc(12px * var(--site-ui-scale))', lineHeight: 'calc(16px * var(--site-ui-scale))' },
+      'sm': { fontSize: 'calc(14px * var(--site-ui-scale))', lineHeight: 'calc(20px * var(--site-ui-scale))' },
+      'base': { fontSize: 'calc(16px * var(--site-ui-scale))', lineHeight: 'calc(24px * var(--site-ui-scale))' },
+      'lg': { fontSize: 'calc(18px * var(--site-ui-scale))', lineHeight: 'calc(28px * var(--site-ui-scale))' },
+      'xl': { fontSize: 'calc(20px * var(--site-ui-scale))', lineHeight: 'calc(28px * var(--site-ui-scale))' },
+      '2xl': { fontSize: 'calc(24px * var(--site-ui-scale))', lineHeight: 'calc(32px * var(--site-ui-scale))' },
+      '3xl': { fontSize: 'calc(30px * var(--site-ui-scale))', lineHeight: 'calc(36px * var(--site-ui-scale))' },
+      '4xl': { fontSize: 'calc(36px * var(--site-ui-scale))', lineHeight: 'calc(40px * var(--site-ui-scale))' },
+    },
   },
   variants: [
     ((matcher) => {
@@ -32,6 +42,14 @@ export default defineConfig({
     }) as Variant,
   ],
   rules: [
+    [
+      /^text-ui-(\d+(?:\.\d+)?)$/,
+      ([, size]) => ({ 'font-size': `calc(${size}px * var(--site-ui-scale))` }),
+    ],
+    [
+      /^leading-ui-(\d+(?:\.\d+)?)$/,
+      ([, size]) => ({ 'line-height': `calc(${size}px * var(--site-ui-scale))` }),
+    ],
     [
       'custom-scrollbar',
       {
@@ -76,12 +94,12 @@ export default defineConfig({
     ],
     [
       'char-count',
-      'before:content-[attr(data-valuelength)/attr(data-maxlength)] before:absolute before:left-0 before:bottom--0 before:c-[var(--vp-c-text-3)] before:font-size-[12px]',
+      'before:content-[attr(data-valuelength)/attr(data-maxlength)] before:absolute before:left-0 before:bottom--0 before:c-[var(--vp-c-text-3)] before:text-ui-12',
     ],
     // Doc reaction feedback states
     [
       'doc-reaction-feedback-state-base',
-      'inline-block fill-current flex-basis-20px flex-shrink-0 font-size-18px mr-2 align-text-top',
+      'inline-block fill-current flex-basis-20px flex-shrink-0 text-ui-18 mr-2 align-text-top',
     ],
     [
       'doc-reaction-feedback-state-success',

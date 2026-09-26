@@ -1,20 +1,34 @@
 const settings = {
   title: '设置',
-  description: '调整网站在此浏览器上的显示和使用偏好。更改会自动保存。',
   back: '返回上一页',
+  close: '关闭设置',
+  autoSave: '更改会自动保存在此浏览器中',
+  groups: {
+    website: '网站设置',
+    application: '应用设置',
+  },
   copyFailed: '复制失败，请重试或手动选择文本复制',
   appearance: {
     title: '外观',
-    description: '选择网站的主题显示方式。',
     theme: '主题模式',
     themeDescription: '应用到文档、反馈和其他网站页面。',
     light: '亮色',
     dark: '暗色',
     auto: '跟随系统',
+    pointerCursor: '使用指针光标',
+    pointerCursorDescription: '悬停在按钮、链接等交互元素上时显示指针光标。',
+    motion: '减少动态效果',
+    motionDescription: '跟随系统偏好，或强制开启、关闭页面切换、滚动和界面动画的精简效果。',
+    motionSystem: '跟随系统',
+    motionOn: '开启',
+    motionOff: '关闭',
+    uiFontSize: 'UI 字号',
+    uiFontSizeDescription: '设置桌面端界面的基准字号（12–18 px），其他字号会按比例调整。',
+    decreaseUiFontSize: '减小字号',
+    increaseUiFontSize: '增大字号',
   },
   notifications: {
     title: '通知',
-    description: '调整页面提示消息的显示方式。',
     position: '显示位置',
     positionDescription: '选择通知在页面中的出现位置。',
     duration: '持续时间',
@@ -35,7 +49,6 @@ const settings = {
   },
   language: {
     title: '语言与翻译',
-    description: '调整跨语言内容的阅读方式。',
     excludedSourceLanguages: '不自动翻译的原语言',
     excludedSourceLanguagesDescription: '检测到这些语言时保留原文，仍可手动翻译。',
     searchLanguages: '搜索并选择语言…',
@@ -45,7 +58,6 @@ const settings = {
   },
   privacy: {
     title: '隐私与诊断',
-    description: '管理用于定位网站问题的诊断信息。',
   },
 }
 

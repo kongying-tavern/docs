@@ -2,19 +2,21 @@
 defineProps<{
   id: string
   title: string
-  description: string
+  showHeading?: boolean
 }>()
 </script>
 
 <template>
   <section :id="id" class="settings-section" tabindex="-1">
-    <header class="settings-section-header">
+    <header v-if="showHeading" class="settings-section-header">
       <h2>{{ title }}</h2>
-      <p>{{ description }}</p>
     </header>
     <div class="settings-section-body">
       <slot />
     </div>
+    <footer v-if="$slots.footer" class="settings-section-footer">
+      <slot name="footer" />
+    </footer>
   </section>
 </template>
 
@@ -30,20 +32,22 @@ defineProps<{
 
 .settings-section-header h2 {
   color: var(--vp-c-text-1);
-  font-size: 20px;
+  font-size: calc(20px * var(--site-ui-scale));
   font-weight: 600;
-  line-height: 28px;
-}
-
-.settings-section-header p {
-  margin-block-start: 4px;
-  color: var(--vp-c-text-2);
-  font-size: 14px;
-  line-height: 22px;
+  line-height: calc(28px * var(--site-ui-scale));
 }
 
 .settings-section-body {
   display: grid;
-  gap: 12px;
+  overflow: hidden;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
+}
+
+.settings-section-footer {
+  display: flex;
+  margin-block-start: 12px;
+  padding-inline: 16px;
 }
 </style>

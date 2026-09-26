@@ -1,5 +1,6 @@
 import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
 import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site'
+import { sitePreferencesBootScript } from '../../src/services/sitePreferences'
 import { DEFAULT_LOCALE } from '../locales/common/site'
 import { getLocaleDirs } from './localeDirs'
 import {
@@ -73,6 +74,7 @@ export function cfgDynamicHead(
 }
 
 export const commonHead: HeadConfig[] = [
+  ['script', { id: 'site-preferences-script' }, sitePreferencesBootScript],
   [
     'meta',
     {

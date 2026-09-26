@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useIntersectionObserver } from '@vueuse/core'
+import { useEventListener, useIntersectionObserver } from '@vueuse/core'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, defineAsyncComponent, nextTick, provide, shallowRef, useTemplateRef } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
@@ -12,18 +12,33 @@ import { useSitePreferences } from '~/composables/useSitePreferences'
 
 import '@/styles/main.css'
 
+const SETTINGS_DIALOG_HASH_RE = /^#settings(?:\/(?:appearance|notifications|language|privacy|labels))?$/
+
 const { Layout } = DefaultTheme
 const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
 const DocHeader = defineAsyncComponent(() => import('@/components/DocHeader.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('~/components/forum/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('~/components/settings/SettingsSidebarExtras.vue'))
+const SettingsPage = defineAsyncComponent(() => import('~/components/settings/SettingsPage.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const NavBarUserAvatar = defineAsyncComponent(() => import('@/components/NavBarUserAvatar.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const { isDark, frontmatter } = useData()
 const { theme: themePreference, toastDuration, toastPosition } = useSitePreferences()
+const currentHash = ref('')
+const showSettingsDialog = computed(() =>
+  frontmatter.value.layout !== 'Settings'
+  && SETTINGS_DIALOG_HASH_RE.test(currentHash.value),
+)
+
+function syncHash(): void {
+  currentHash.value = location.hash
+}
+
+onMounted(syncHash)
+useEventListener('hashchange', syncHash)
 
 const target = useTemplateRef<HTMLDivElement>('target')
 const targetIsVisible = shallowRef(false)
@@ -115,6 +130,7 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     </template>
 
     <template #layout-bottom>
+      <SettingsPage v-if="showSettingsDialog" dialog-only />
       <HighlightTargetedHeading />
       <LoginAlertDialog />
       <OAuthLoginAlertDialog />

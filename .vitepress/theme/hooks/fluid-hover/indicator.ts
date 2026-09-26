@@ -45,8 +45,8 @@ export function createHighlightIndicator(
 ): HighlightIndicator {
   const store = getFluidHoverStore(container)
   const duration = MOTION_TIERS[options.motion ?? 'fast']
-  const reducedMotionQuery = matchMedia('(prefers-reduced-motion: reduce)')
-  const reducedMotion = () => options.reducedMotion?.() ?? reducedMotionQuery.matches
+  const reducedMotion = () => options.reducedMotion?.()
+    ?? document.documentElement.dataset.reducedMotion === 'true'
 
   const pos = new Float64Array(4)
   const vel = new Float64Array(4)

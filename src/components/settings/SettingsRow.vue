@@ -26,15 +26,23 @@ defineProps<{
 
 <style scoped>
 .settings-row {
+  position: relative;
   display: flex;
   min-height: 72px;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
   padding: 16px;
-  background: var(--vp-c-bg-soft);
+  background: transparent;
+}
+
+.settings-row:not(:last-child)::after {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 16px;
+  height: 1px;
+  background: var(--vp-c-divider);
+  content: '';
 }
 
 .settings-row.items-start {
@@ -48,16 +56,16 @@ defineProps<{
 
 .settings-row-title {
   color: var(--vp-c-text-1);
-  font-size: 14px;
+  font-size: calc(14px * var(--site-ui-scale));
   font-weight: 600;
-  line-height: 20px;
+  line-height: calc(20px * var(--site-ui-scale));
 }
 
 .settings-row-description {
   margin-block-start: 3px;
   color: var(--vp-c-text-2);
-  font-size: 13px;
-  line-height: 20px;
+  font-size: calc(13px * var(--site-ui-scale));
+  line-height: calc(20px * var(--site-ui-scale));
 }
 
 .settings-row-control {

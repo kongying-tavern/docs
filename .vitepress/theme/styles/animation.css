@@ -45,12 +45,12 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html:not(.no-sliding) [slide-enter],
-  html:not(.no-sliding) .slide-enter,
-  html:not(.no-sliding) .main > div > *,
-  html:not(.no-sliding) #VPContent > div > div.VPFeatures.VPHomeFeatures > *,
-  html:not(.no-sliding) .TeamPage > *,
-  html:not(.no-sliding) .VPHomeHero > * {
+  html:not([data-reduced-motion='true']):not(.no-sliding) [slide-enter],
+  html:not([data-reduced-motion='true']):not(.no-sliding) .slide-enter,
+  html:not([data-reduced-motion='true']):not(.no-sliding) .main > div > *,
+  html:not([data-reduced-motion='true']):not(.no-sliding) #VPContent > div > div.VPFeatures.VPHomeFeatures > *,
+  html:not([data-reduced-motion='true']):not(.no-sliding) .TeamPage > *,
+  html:not([data-reduced-motion='true']):not(.no-sliding) .VPHomeHero > * {
     --enter-stage: 0;
     --enter-step: 90ms;
     --enter-initial: 0ms;
@@ -152,7 +152,7 @@
   }
 
   @media (min-width: 960px) {
-    .VPSidebar {
+    html:not([data-reduced-motion='true']) .VPSidebar {
       animation: slide-enter-left 1s both 1;
       -webkit-animation-timing-function: cubic-bezier(0.333, 0, 0.667, 1);
     }
@@ -400,11 +400,5 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
   html[data-forum-transition]::view-transition-new(*) {
     animation-delay: 0ms !important;
     animation-duration: 0.01ms !important;
-  }
-
-  /* 全局兜底：spinner 是无限循环动画，系统要求减动效时必须停。
-     各组件内的 scoped .animate-spin 覆盖与此等效，可逐步移除 */
-  .animate-spin {
-    animation: none !important;
   }
 }
