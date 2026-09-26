@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useData, withBase } from 'vitepress'
-import { computed, useTemplateRef } from 'vue'
+import { computed } from 'vue'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
+import { FluidHoverList } from '@/components/ui/fluid-hover'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -9,7 +10,6 @@ import {
   NavigationMenuList,
 } from '@/components/ui/navigation-menu'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useFluidHover, useFluidHoverIndicator } from '@/hooks/fluid-hover'
 import useLogin from '@/hooks/useLogin'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import ForumRoleBadge from '~/components/forum/ui/ForumRoleBadge.vue'
@@ -27,12 +27,6 @@ const { theme } = useData()
 const { showLoginAlert, logout } = useLogin()
 
 const isOfficial = computed(() => hasAnyRoles('blogMember', 'teamMember', 'feedbackMember').value)
-
-// 两列 grid（头像单元格 row-span-4）按 y 轴测距离会互相吞带，用 xy
-const containerAuth = useTemplateRef<HTMLElement | null>('containerAuth')
-const indicatorAuth = useTemplateRef<HTMLElement | null>('indicatorAuth')
-useFluidHover(containerAuth, { axis: 'xy' })
-useFluidHoverIndicator(containerAuth, indicatorAuth, { motion: 'fast' })
 </script>
 
 <template>
@@ -40,16 +34,11 @@ useFluidHoverIndicator(containerAuth, indicatorAuth, { motion: 'fast' })
     class="bg-[var(--vp-c-bg-elv)]"
     :viewport="false"
   >
-    <div
+    <FluidHoverList
       v-if="userInfo.info"
-      ref="containerAuth"
-      class="relative"
+      axis="xy"
+      indicator-class="rounded-md"
     >
-      <div
-        ref="indicatorAuth"
-        aria-hidden="true"
-        class="rounded-md bg-accent h-0 w-0 pointer-events-none left-0 top-0 absolute z-0"
-      />
       <NavigationMenuList
         class="c-[var(--vp-c-text-2)] font---vp-font-family-subtitle p-3 border border-(--vp-c-divider rd-12px) opacity-100 grid shadow---vp-shadow-3 lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)] lg:min-w-[450px] md:min-w-[128px]"
       >
@@ -122,7 +111,7 @@ useFluidHoverIndicator(containerAuth, indicatorAuth, { motion: 'fast' })
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
-    </div>
+    </FluidHoverList>
     <NavigationMenuList
       v-else
       class="bg---vp-c-bg-elv c-[var(--vp-c-text-2)] p-3 border border-(--vp-c-divider rd-12px) opacity-100 grid w-[300px] shadow-(--vp-shadow-3) md:min-w-[128px]"
