@@ -5,8 +5,8 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumListControlOptions } from '~/composables/forum/useForumListControlOptions'
-import { useForumViewMode } from '~/composables/useForumViewMode'
+import { useForumListControlOptions } from '~/forum/composables/useForumListControlOptions'
+import { useForumViewMode } from '~/forum/composables/useForumViewMode'
 
 interface ForumSearchSettings {
   query: string

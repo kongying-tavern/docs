@@ -6,8 +6,8 @@ import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button/'
 import { Textarea } from '@/components/ui/textarea/'
-import { useForumRoute } from '~/composables/useForumRoute'
-import { useSubmitTopic } from '~/composables/useSubmitTopic'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useSubmitTopic } from '~/forum/composables/useSubmitTopic'
 import BlurFade from './ui/BlurFade.vue'
 
 const { showForm } = defineProps<{

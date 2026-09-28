@@ -12,10 +12,10 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
-import { useForumImageDropZone } from '~/composables/forum/useForumImageDropZone'
-import { createForumSuggestionRenderer } from '~/composables/tiptap/forumSuggestionRenderer'
+import { useForumImageDropZone } from '~/forum/composables/useForumImageDropZone'
 import { collectForumTopics, forumKeys } from '~/forum/services/forumQueryContracts'
 import { createForumTopicEditorExtensions } from '~/forum/services/forumTiptapExtensions'
+import { createForumSuggestionRenderer } from '~/forum/tiptap/forumSuggestionRenderer'
 
 defineOptions({ inheritAttrs: false })
 

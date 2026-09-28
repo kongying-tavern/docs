@@ -45,9 +45,9 @@ import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumImageUpload from '~/components/forum/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/components/forum/topic/ForumQuotedTopicCard.vue'
 import { formatImageAttachmentError } from '~/components/forum/utils/forumUi'
-import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { isPhoneBindingRequiredError } from '~/forum/api/gitee'
+import { useForumTopicQuery } from '~/forum/composables/useForumQueries'
 import {
   clearQuotedTopicRequest,
   isQuotableTopicType,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/composables/forum/useForumQueries'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/forum/composables/useForumQueries'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import { resolveForumListScope } from '~/forum/services/forumListSkeleton'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
 import BaseForumPage from '../base/BaseForumPage.vue'

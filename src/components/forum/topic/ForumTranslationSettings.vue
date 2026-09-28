@@ -28,7 +28,7 @@ import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import supportedLanguages from '~/_data/supportedLanguages.json'
 import SettingsRow from '~/components/settings/SettingsRow.vue'
-import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
+import { useForumTranslationPreferences } from '~/forum/composables/useForumTranslationPreferences'
 
 const { message } = useLocalized()
 const { currentPageLang } = useLanguage()

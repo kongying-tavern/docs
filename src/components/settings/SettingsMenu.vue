@@ -5,7 +5,7 @@ import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import useLogin from '@/hooks/useLogin'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import SettingsNavigation from './SettingsNavigation.vue'
 
 withDefaults(defineProps<{

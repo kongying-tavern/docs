@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumLabelStore } from '~/composables/useForumLabelStore'
+import { useForumLabelStore } from '~/forum/composables/useForumLabelStore'
 import {
   getFallbackLabelDisplay,
   getForumLabelPrefix,

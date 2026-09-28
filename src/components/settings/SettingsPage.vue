@@ -13,10 +13,10 @@ import {
   DrawerContent,
 } from '@/components/ui/drawer'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
-import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useForumTranslationPreferences } from '~/forum/composables/useForumTranslationPreferences'
+import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
 import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 import { reportingEnabled } from '~/services/telemetry'

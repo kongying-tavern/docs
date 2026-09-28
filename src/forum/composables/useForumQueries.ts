@@ -3,9 +3,9 @@ import type ForumAPI from '@/apis/forum/api'
 import type { ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { computed, toValue, watch } from 'vue'
-import { usePermissionData } from '~/composables/usePermissionData'
-import { useRuleChecks } from '~/composables/useRuleChecks'
 import { issues, user } from '~/forum/api/gitee'
+import { usePermissionData } from '~/forum/composables/usePermissionData'
+import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 import { FORUM_CONFIG } from '~/forum/services/forumConfig'
 import {
   buildForumListCacheKey,

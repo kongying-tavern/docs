@@ -106,7 +106,7 @@ test('search keeps one editable badge while filter state lives outside the view'
   const [source, filterState, tokenSource, searchInfo, emptyState] = await Promise.all([
     readFile(new URL('../../src/components/forum/search/ForumSearchInput.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/search/composables/useForumSearchFilters.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/composables/useForumSearchToken.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/composables/useForumSearchToken.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/search/ForumTopicSearchInfo.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/list/ForumTopicListEmpty.vue', import.meta.url), 'utf8'),
   ])

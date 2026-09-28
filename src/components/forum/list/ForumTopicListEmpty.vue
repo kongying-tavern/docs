@@ -11,9 +11,9 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/composables/useForumRoute'
-import { useForumSearchToken } from '~/composables/useForumSearchToken'
 import { GiteeAPIError } from '~/forum/api/gitee'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumSearchToken } from '~/forum/composables/useForumSearchToken'
 import OpenFeedbackFormButton from '../form/OpenFeedbackFormButton.vue'
 
 const props = defineProps<{

@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
 import UserAvatar from './UserAvatar.vue'
 

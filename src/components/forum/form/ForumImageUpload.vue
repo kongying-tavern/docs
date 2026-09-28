@@ -4,7 +4,7 @@ import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
 import { computed, nextTick, useId, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { formatImageAttachmentError } from '~/components/forum/utils/forumUi'
-import { useForumImageDropZone } from '~/composables/forum/useForumImageDropZone'
+import { useForumImageDropZone } from '~/forum/composables/useForumImageDropZone'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import { formatMessage } from '~/utils/formatMessage'
 

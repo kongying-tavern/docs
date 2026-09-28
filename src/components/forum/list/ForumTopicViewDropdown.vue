@@ -3,8 +3,8 @@ import type { FORUM } from '~/components/forum/types'
 import type { ForumSort } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumListControlOptions } from '~/composables/forum/useForumListControlOptions'
-import { useForumViewMode } from '~/composables/useForumViewMode'
+import { useForumListControlOptions } from '~/forum/composables/useForumListControlOptions'
+import { useForumViewMode } from '~/forum/composables/useForumViewMode'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 const props = defineProps<{ sort: ForumSort }>()

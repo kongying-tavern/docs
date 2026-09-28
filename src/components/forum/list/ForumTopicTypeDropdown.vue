@@ -2,7 +2,7 @@
 import type { ForumFilter } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumListControlOptions } from '~/composables/forum/useForumListControlOptions'
+import { useForumListControlOptions } from '~/forum/composables/useForumListControlOptions'
 import ForumPillSelect from './ForumPillSelect.vue'
 
 const props = defineProps<{

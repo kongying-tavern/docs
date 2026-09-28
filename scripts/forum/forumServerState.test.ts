@@ -2,7 +2,7 @@
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { serializeTopicCommentMutation } from '../../src/composables/forum/useForumMutations'
+import { serializeTopicCommentMutation } from '../../src/forum/composables/useForumMutations'
 import {
   collectForumTopics,
   flattenForumPages,

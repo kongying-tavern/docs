@@ -11,11 +11,11 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { useLocalized } from '@/hooks/useLocalized'
-import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
-import { getTopicTagMap } from '~/composables/getTopicTagMap'
-import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { getFallbackLabelDisplay } from '~/forum/services/forumLabelTaxonomy'
 import { getTopicStatusFromLabel } from '~/forum/services/forumTopicStatus'
+import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
+import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
+import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
 import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 

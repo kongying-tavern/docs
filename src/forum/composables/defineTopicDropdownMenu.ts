@@ -5,12 +5,12 @@ import type { TopicStatusDefinition } from '~/forum/services/forumTopicStatus'
 import type { CustomConfig } from '~/types/locales'
 import { computed, ref, toValue } from 'vue'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
-import { useForumRoute } from '~/composables/useForumRoute'
-import { useRuleChecks } from '~/composables/useRuleChecks'
-import { useTopicManager } from '~/composables/useTopicManager'
-import { useTopicStatusEditor } from '~/composables/useTopicStatusEditor'
 import { issues } from '~/forum/api/gitee'
+import { useForumPersonalState } from '~/forum/composables/useForumPersonalState'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useTopicManager } from '~/forum/composables/useTopicManager'
+import { useTopicStatusEditor } from '~/forum/composables/useTopicStatusEditor'
 import {
   getSelectableTopicStatuses,
   groupTopicStatuses,

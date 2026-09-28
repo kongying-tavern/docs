@@ -4,7 +4,7 @@ import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import postsData from '../../../src/_data/posts.json'
-import { getForumLocaleLabelGetter } from '../../../src/composables/getForumLocaleGetter'
+import { getForumLocaleLabelGetter } from '../../../src/forum/services/getForumLocaleGetter'
 
 interface SitemapItem {
   type: 'blog' | 'manual' | 'general' | 'api' | 'guide'

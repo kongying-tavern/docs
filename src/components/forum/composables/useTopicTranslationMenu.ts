@@ -3,7 +3,7 @@ import type { FORUM } from '../types'
 import type ForumAPI from '@/apis/forum/api'
 import { computed, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
+import { useForumTranslationPreferences } from '~/forum/composables/useForumTranslationPreferences'
 import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
 import { areLanguagesEquivalent } from '~/forum/services/forumLanguage'
 

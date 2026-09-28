@@ -2,7 +2,7 @@
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { useImageAttachmentQueue } from '../../src/composables/useImageAttachmentQueue'
+import { useImageAttachmentQueue } from '../../src/forum/composables/useImageAttachmentQueue'
 import { serializeUploadedAttachments, validateImageBatch } from '../../src/forum/services/form/imageAttachment'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/forum/services/forumConfig'
 

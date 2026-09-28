@@ -10,8 +10,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useTopicManager } from '~/composables/useTopicManager'
-import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
+import { useTopicManager } from '~/forum/composables/useTopicManager'
+import { useTopicTagsEditor } from '~/forum/composables/useTopicTagsEditor'
 import { getEditableTopicLabels } from '~/forum/services/forumTopicLabels'
 import ForumTagsInput from '../form/publish-topic-form/ForumTagsInput.vue'
 

@@ -6,7 +6,7 @@ import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
 import { data as allPosts } from '~/_data/posts.data'
-import { useMarkdownRenderer } from '~/composables/useMarkdownRenderer'
+import { useMarkdownRenderer } from '~/forum/composables/useMarkdownRenderer'
 
 const { lang, frontmatter } = useData()
 const { renderMarkdownPreview } = useMarkdownRenderer()

@@ -2,7 +2,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import ForumTopicReactionButton from '../ui/ForumTopicReactionButton.vue'
 import ForumCopyLinkButton from './ForumCopyLinkButton.vue'
 import ForumQuoteTopicButton from './ForumQuoteTopicButton.vue'

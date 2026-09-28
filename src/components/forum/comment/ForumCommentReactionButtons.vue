@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumReaction } from '~/composables/useForumReaction'
+import { useForumReaction } from '~/forum/composables/useForumReaction'
 
 const props = withDefaults(defineProps<{
   topicId: string

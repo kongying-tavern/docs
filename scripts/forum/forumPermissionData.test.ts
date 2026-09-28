@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
 
 test('permission member data flows through colada without ad-hoc timers', async () => {
-  const source = await readFile(new URL('../../src/composables/usePermissionData.ts', import.meta.url), 'utf8')
+  const source = await readFile(new URL('../../src/forum/composables/usePermissionData.ts', import.meta.url), 'utf8')
 
   // 数据获取统一走 colada useQuery（缓存/失效/staleTime 归一）
   assert.match(source, /useQuery\(/)

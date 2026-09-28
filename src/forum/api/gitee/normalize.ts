@@ -1,13 +1,13 @@
 import type { KyResponse } from 'ky'
 import type ForumAPI from '../forum'
 import { isArray, uniq } from 'lodash-es'
-import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
-import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { avatarBaseUrl, avatarList } from '~/forum/services/avatarList'
 import { decodeCommentBody, decodeTopicBody, stripMarkdownImages } from '~/forum/services/forumContentCodec'
 import { isCategoryLabel } from '~/forum/services/forumLabel'
 import { normalizeQuotedTopicReference } from '~/forum/services/forumTopicQuote'
 import { getTopicStatus, getTopicStatusFromLabel } from '~/forum/services/forumTopicStatus'
+import { getForumLocaleLabelGetter } from '~/forum/services/getForumLocaleGetter'
+import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
 
 import { GITEE_API_CONFIG, GITEE_ISSUE_STATE_TITLES } from './config'
 

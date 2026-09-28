@@ -3,8 +3,8 @@ import type ForumAPI from '@/apis/forum/api'
 import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
 import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
 import { useMutation, useQueryCache } from '@pinia/colada'
-import { useRuleChecks } from '~/composables/useRuleChecks'
 import { issues } from '~/forum/api/gitee'
+import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 import {
   forumKeys,
   forumMutationPolicies,

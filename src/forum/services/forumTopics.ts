@@ -2,7 +2,6 @@ import type ForumAPI from '~/forum/api/forum'
 import type { OfficialUserPredicate } from '~/forum/api/gitee/officialComments'
 import type { ForumTopicListParams, TopicStateFilter } from '~/forum/services/forumQueryContracts'
 import type { ForumSearchState } from '~/forum/services/forumSearchQuery'
-import { getTopicTypeLabelGetter } from '~/composables/getTopicTypeLabelGetter'
 import { issues } from '~/forum/api/gitee'
 import { FORUM_CONFIG } from '~/forum/services/forumConfig'
 import {
@@ -12,6 +11,7 @@ import {
   normalizeStrings,
 } from '~/forum/services/forumQueryContracts'
 import { getTopicStatusDefinition } from '~/forum/services/forumTopicStatus'
+import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
 
 interface ForumQueryParams extends ForumTopicListParams {
   page?: number

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { FORM_HASH } from '~/components/forum/form/publish-topic-form/config'
-import { useReactionStats } from '~/composables/useReactionStats'
-import { useTopicStatusEditor } from '~/composables/useTopicStatusEditor'
-import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
+import { useReactionStats } from '~/forum/composables/useReactionStats'
+import { useTopicStatusEditor } from '~/forum/composables/useTopicStatusEditor'
+import { useTopicTagsEditor } from '~/forum/composables/useTopicTagsEditor'
 
 // 论坛全局对话框的唯一挂载点：平台层布局只渲染本组件，
 // 新增对话框在此追加异步组件与状态 composable，平台层零改动。

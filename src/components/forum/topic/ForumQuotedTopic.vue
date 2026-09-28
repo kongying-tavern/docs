@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
+import { useForumTopicQuery } from '~/forum/composables/useForumQueries'
 import ForumQuotedTopicCard from './ForumQuotedTopicCard.vue'
 
 const props = withDefaults(defineProps<{ reference: ForumAPI.QuotedTopicReference, compact?: boolean }>(), {

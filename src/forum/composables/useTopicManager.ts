@@ -11,7 +11,7 @@ import {
 import { replaceTopicStatus, topicStatusHidesTopic } from '~/forum/services/forumTopicStatus'
 import { toast } from '~/services/telemetry/toast'
 import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from './composeTopicBody'
-import { useForumTopicMutations } from './forum/useForumMutations'
+import { useForumTopicMutations } from './useForumMutations'
 
 const pendingOperations = new Map<string, Promise<unknown>>()
 

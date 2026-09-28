@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicItemFooter from '../list/ForumTopicItemFooter.vue'
 import ForumQuotedTopic from './ForumQuotedTopic.vue'

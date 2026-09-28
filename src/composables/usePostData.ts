@@ -1,6 +1,6 @@
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
+import { getForumLocaleLabelGetter } from '~/forum/services/getForumLocaleGetter'
 import Blog from '../_data/posts.json'
-import { getForumLocaleLabelGetter } from '../composables/getForumLocaleGetter'
 import { isCategoryLabel } from '../forum/services/forumLabel'
 import { getTopicStatus } from '../forum/services/forumTopicStatus'
 

@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/composables/useForumRoute'
-import { useForumSearchToken } from '~/composables/useForumSearchToken'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumSearchToken } from '~/forum/composables/useForumSearchToken'
 
 const props = defineProps<{ loading: boolean, total: number }>()
 const { list, clearSearch } = useForumRoute()

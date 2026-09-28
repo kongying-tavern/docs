@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SuggestionKeyDownProps } from '@tiptap/suggestion'
-import type { ForumEditorSuggestionItem } from '~/composables/tiptap/forumSuggestionRenderer'
+import type { ForumEditorSuggestionItem } from '~/forum/tiptap/forumSuggestionRenderer'
 import { ref, watch } from 'vue'
 import {
   Command,

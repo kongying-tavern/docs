@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
-import { getTopicTagMap } from '~/composables/getTopicTagMap'
-import { useForumLabelStore } from '~/composables/useForumLabelStore'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumLabelStore } from '~/forum/composables/useForumLabelStore'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
+import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
+import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
 import ForumTagList from '../ui/ForumTagList.vue'
 
 const { message } = useLocalized()

@@ -4,11 +4,11 @@ import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
-import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
-import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
-import { handleError } from '~/composables/handleError'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumTopicQuery } from '~/forum/composables/useForumQueries'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import { renderForumTopic } from '~/forum/services/forumContentRenderer'
+import { getTopicTypeMap } from '~/forum/services/getTopicTypeMap'
+import { handleError } from '~/forum/services/handleError'
 
 export function useTopicPageState() {
   const topicTypeMap = getTopicTypeMap()

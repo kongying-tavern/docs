@@ -7,7 +7,7 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
-import { defineTopicDropdownMenu } from '~/composables/defineTopicDropdownMenu'
+import { defineTopicDropdownMenu } from '~/forum/composables/defineTopicDropdownMenu'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 defineOptions({

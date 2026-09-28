@@ -5,7 +5,7 @@ import { useRouter } from 'vitepress'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/useForumRoute'
 import ForumTopicPreviewContent from './ForumTopicPreviewContent.vue'
 
 const props = defineProps<{

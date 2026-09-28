@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import { useRuleChecks } from '~/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 
 export type TopicUserRole = 'author' | 'official' | null
 

@@ -2,9 +2,9 @@
 import type ForumAPI from '../../src/forum/api/forum'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/composables/composeTopicBody'
 import { isTopicTypeChangeConfirmed } from '../../src/forum/api/gitee/issues'
 import { normalizeIssue } from '../../src/forum/api/gitee/normalize'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/forum/composables/composeTopicBody'
 import { decodeTopicBody } from '../../src/forum/services/forumContentCodec'
 import {
   buildTopicCreationLabels,

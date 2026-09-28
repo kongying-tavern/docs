@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useRuleChecks } from '~/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { preloadForumPublishForm, publishTopic } from '../utils/forumUi'
 import { FORM_HASH } from './publish-topic-form/config'

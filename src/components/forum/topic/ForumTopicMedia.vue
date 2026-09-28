@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
-import { useForumViewMode } from '~/composables/useForumViewMode'
+import { useForumViewMode } from '~/forum/composables/useForumViewMode'
 import ForumImage from '../ui/ForumImage.vue'
 
 const props = defineProps<{

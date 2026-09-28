@@ -5,7 +5,7 @@ import test from 'node:test'
 
 test('topic menu only reports confirmed updates as success and keeps pending dialogs open', async () => {
   const [manager, tagsDialog, statusDialog] = await Promise.all([
-    readFile(new URL('../../src/composables/useTopicManager.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/composables/useTopicManager.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicTagsEditorDialog.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
   ])

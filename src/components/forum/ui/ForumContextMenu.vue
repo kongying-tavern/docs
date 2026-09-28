@@ -6,7 +6,7 @@ import { computed } from 'vue'
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
-import { defineTopicDropdownMenu } from '~/composables/defineTopicDropdownMenu'
+import { defineTopicDropdownMenu } from '~/forum/composables/defineTopicDropdownMenu'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'
 
 const props = withDefaults(defineProps<{
