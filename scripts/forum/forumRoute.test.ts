@@ -2,7 +2,7 @@
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
-import { resolveForumDirection, resolveForumScroll, resolveForumSharedRoute } from '../../.vitepress/theme/lib/forumViewTransition'
+import { resolveForumDirection, resolveForumScroll, resolveForumSharedRoute } from '../../src/forum/router/forumViewTransition'
 import {
   buildForumHref,
   canonicalizeForumLocation,

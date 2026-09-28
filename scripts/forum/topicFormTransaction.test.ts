@@ -243,7 +243,7 @@ test('quote actions follow comments and the quote card lives inside the body inp
   const quoteButtonSource = readFileSync(new URL('../../src/forum/components/topic/ForumQuoteTopicButton.vue', import.meta.url), 'utf8')
   const detailSource = readFileSync(new URL('../../src/forum/components/topic/ForumTopicPage.vue', import.meta.url), 'utf8')
   const detailFooterSource = readFileSync(new URL('../../src/forum/components/topic/ForumTopicFooter.vue', import.meta.url), 'utf8')
-  const transitionSource = readFileSync(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8')
+  const transitionSource = readFileSync(new URL('../../src/forum/router/forumViewTransition.ts', import.meta.url), 'utf8')
   const animationSource = readFileSync(new URL('../../.vitepress/theme/styles/animation.css', import.meta.url), 'utf8')
   const imageSource = readFileSync(new URL('../../src/forum/components/ui/ForumImage.vue', import.meta.url), 'utf8')
 

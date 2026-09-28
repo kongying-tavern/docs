@@ -127,7 +127,7 @@ test('every Gitee login flow requests gist permission', async () => {
 
 test('Forum hash changes preserve VitePress History state', async () => {
   const [hashCheckerSource, domUtilsSource] = await Promise.all([
-    readFile(new URL('../../.vitepress/theme/hooks/useHashChecker.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/hooks/useHashChecker.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/utils/updateUrlHash.ts', import.meta.url), 'utf8'),
   ])
 
@@ -420,7 +420,7 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
     readFile(new URL('../../src/forum/composables/data/useForumMutations.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/router/forumViewTransition.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/sidebar/ForumSidebarAccountMenu.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/blog/ForumBlogPostHeader.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/index.ts', import.meta.url), 'utf8'),

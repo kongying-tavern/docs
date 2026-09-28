@@ -1,5 +1,5 @@
 import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
-import { binaryToBase64 } from '../utils'
+import { binaryToBase64 } from '@/utils'
 
 export interface ThumbHashCalculated {
   /**

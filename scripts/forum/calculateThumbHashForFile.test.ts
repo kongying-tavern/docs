@@ -1,7 +1,7 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { calculateThumbHashForFile } from '../../.vitepress/theme/composables/calculateThumbHashForFile'
+import { calculateThumbHashForFile } from '../../src/forum/composables/view/calculateThumbHashForFile'
 
 test('thumbhash preparation uses native image dimensions and releases the bitmap', async () => {
   const originalCreateImageBitmap = Object.getOwnPropertyDescriptor(globalThis, 'createImageBitmap')

@@ -39,7 +39,6 @@ import {
   DrawerDescription,
   DrawerTitle,
 } from '@/components/ui/drawer'
-import { useHashChecker } from '@/hooks/useHashChecker'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { isPhoneBindingRequiredError } from '~/forum/api/gitee'
@@ -47,6 +46,7 @@ import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
+import { useHashChecker } from '~/forum/hooks/useHashChecker'
 import {
   clearQuotedTopicRequest,
   isQuotableTopicType,

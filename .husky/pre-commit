@@ -11,6 +11,13 @@ git diff --cached --name-only --diff-filter=ACM | while IFS= read -r f; do
   esac
 done > /tmp/hook-files.txt
 if [ -s /tmp/hook-files.txt ]; then
-  xargs -n 60 < /tmp/hook-files.txt sh -c 'pnpm exec eslint --cache --fix "$@" || exit 255' sh || exit 1
+  # eslint occasionally dies without output on Windows (jiti/synckit); retry once
+  xargs -n 60 < /tmp/hook-files.txt sh -c 'pnpm exec eslint --cache --fix "$@" || exit 255' sh > /tmp/hook-eslint.log 2>&1
+  code=$?
+  if [ $code -ne 0 ] && ! grep -qE "error|warning" /tmp/hook-eslint.log 2>/dev/null; then
+    xargs -n 60 < /tmp/hook-files.txt sh -c 'pnpm exec eslint --cache --fix "$@" || exit 255' sh >> /tmp/hook-eslint.log 2>&1
+    code=$?
+  fi
+  [ $code -eq 0 ] || { tail -5 /tmp/hook-eslint.log; exit 1; }
   git add -u
 fi

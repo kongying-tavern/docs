@@ -1,5 +1,5 @@
-import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
 import type ForumAPI from '~/forum/api/types'
+import type { ThumbHashCalculated } from '~/forum/composables/view/calculateThumbHashForFile'
 import { IMAGE_UPLOAD_POLICY } from '../forumConfig'
 
 export type ImageAttachmentStatus

@@ -1,7 +1,7 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { matchLanguages } from '../../.vitepress/theme/composables/matchLanguages'
+import { matchLanguages } from '../../src/forum/composables/data/matchLanguages'
 import { areLanguagesEquivalent } from '../../src/forum/services/forumLanguage'
 import { prepareTerminology } from '../../src/forum/services/forumTerminology'
 import { detectLanguage, translate, translateAuto } from '../../src/forum/services/forumTranslation'

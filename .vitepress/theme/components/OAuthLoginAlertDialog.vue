@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { useHashChecker } from '@/hooks/useHashChecker'
+import { useHashChecker } from '~/forum/hooks/useHashChecker'
 import useLogin from '~/forum/hooks/useLogin'
 import { clearLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'

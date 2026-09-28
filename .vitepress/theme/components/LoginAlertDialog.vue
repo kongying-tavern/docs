@@ -19,8 +19,8 @@ import {
   FieldSeparator,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { useHashChecker } from '@/hooks/useHashChecker'
 import { getLangPath } from '@/utils'
+import { useHashChecker } from '~/forum/hooks/useHashChecker'
 import useLogin from '~/forum/hooks/useLogin'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 

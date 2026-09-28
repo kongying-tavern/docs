@@ -9,11 +9,11 @@ import DefaultTheme, {
 } from 'vitepress/theme-without-fonts'
 import { defineAsyncComponent } from 'vue'
 import Layout from '@/layouts/Layout.vue'
+import { isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/forumViewTransition'
 import { identifySessionIfEnabled, installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
 import { AsyncForumRouteView, preloadForumRouteView } from './components/AsyncForumRouteView'
-import { isForumToBlogNavigation, transitionForumBlog } from './lib/forumViewTransition'
 import handleRouteMatching from './lib/handleRouteMatching'
 import { loadFontStylesheets } from './loadFontStylesheets'
 
