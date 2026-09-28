@@ -101,14 +101,14 @@ function handleExpandClick(): void {
       <article
         v-if="isCardMode"
         data-forum-shared-topic="content"
-        class="font-size-3.5 mt-1 pr-4 opacity-99 whitespace-pre-wrap transition-all duration-300 overflow-hidden"
+        class="font-size-3.5 mt-1 pr-4 opacity-99 whitespace-pre-wrap overflow-hidden"
       >
         <div
           v-if="!isPost && !isAnn"
           class="forum-topic-summary color-inherit block cursor-pointer"
           :class="{ 'line-clamp-4': !isExpanded }"
-          role="link"
-          tabindex="0"
+          :role="shouldShowTitle ? undefined : 'link'"
+          :tabindex="shouldShowTitle ? undefined : 0"
           @click="handleSummaryClick($event)"
           @keydown.enter="handleSummaryClick($event)"
         >

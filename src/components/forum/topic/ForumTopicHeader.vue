@@ -73,7 +73,10 @@ const { userHref } = useForumRoute()
   transition: opacity 0.2s ease;
 }
 
-.topic-header .cursor-pointer:hover {
-  opacity: 0.8;
+/* 触屏点按后悬停态会残留，仅在真悬停设备生效 */
+@media (hover: hover) {
+  .topic-header .cursor-pointer:hover {
+    opacity: 0.8;
+  }
 }
 </style>
