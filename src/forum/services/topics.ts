@@ -1,9 +1,10 @@
-import type ForumAPI from '~/forum/api/types'
 import type { OfficialUserPredicate } from '~/forum/api/gitee/officialComments'
+import type ForumAPI from '~/forum/api/types'
 import type { ForumTopicListParams, TopicStateFilter } from '~/forum/services/queryContracts'
 import type { ForumSearchState } from '~/forum/services/searchQuery'
 import { issues } from '~/forum/api/gitee'
 import { FORUM_CONFIG } from '~/forum/services/config'
+import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
 import {
   forumExcludedStatesForFilter,
   forumStateForFilter,
@@ -11,7 +12,6 @@ import {
   normalizeStrings,
 } from '~/forum/services/queryContracts'
 import { getTopicStatusDefinition } from '~/forum/services/topicStatus'
-import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
 
 interface ForumQueryParams extends ForumTopicListParams {
   page?: number
