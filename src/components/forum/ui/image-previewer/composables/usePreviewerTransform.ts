@@ -1,10 +1,12 @@
 import type { Ref } from 'vue'
-import { ref } from 'vue'
+import { onScopeDispose, ref } from 'vue'
 
 export interface PreviewerTransform {
   scale: Ref<number>
   tx: Ref<number>
   ty: Ref<number>
+  dragRotate: Ref<number>
+  settling: Ref<boolean>
 }
 
 /**
@@ -16,7 +18,7 @@ export function usePreviewerTransform(options: {
   maxZoom: Ref<number>
   imageEl: Ref<HTMLImageElement | undefined>
   zoomEnabled: Ref<boolean>
-  onSwipe: (direction: 1 | -1) => void
+  onSwipe: (direction: 1 | -1, dx: number) => void
   onVerticalClose?: () => void
 }): PreviewerTransform & {
   zoomAt: (clientX: number, clientY: number, factor: number) => void
@@ -33,6 +35,9 @@ export function usePreviewerTransform(options: {
   const tx = ref(0)
   const ty = ref(0)
   const dragging = ref(false)
+  const dragRotate = ref(0)
+  const settling = ref(false)
+  let settleTimer: number | undefined
   let pressed = false
 
   const pointers = new Map<number, { x: number, y: number }>()
@@ -63,18 +68,31 @@ export function usePreviewerTransform(options: {
     const nx = (1 - k) * (clientX - cx) + tx.value * k
     const ny = (1 - k) * (clientY - cy) + ty.value * k
     const [ns, ptx, pty] = clampTransform(s, nx, ny)
+    dragRotate.value = 0
     scale.value = ns
     tx.value = ptx
     ty.value = pty
   }
 
   function reset(): void {
+    dragRotate.value = 0
     scale.value = 1
     tx.value = 0
     ty.value = 0
   }
 
+  function relax(): void {
+    dragging.value = false
+    settling.value = true
+    clearTimeout(settleTimer)
+    settleTimer = window.setTimeout(() => {
+      settling.value = false
+    }, 420)
+    reset()
+  }
+
   function setTransform(s: number, x: number, y: number): void {
+    dragRotate.value = 0
     scale.value = s
     tx.value = x
     ty.value = y
@@ -97,6 +115,9 @@ export function usePreviewerTransform(options: {
   }
 
   function handlePointerDown(event: PointerEvent): void {
+    // 回弹途中再次按下：立即中断过渡，避免跟随延迟
+    clearTimeout(settleTimer)
+    settling.value = false
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY })
     pressed = true
     if (pointers.size === 2) {
@@ -139,6 +160,7 @@ export function usePreviewerTransform(options: {
     }
     tx.value = dragStart.tx + dx
     ty.value = dragStart.ty + dy
+    dragRotate.value = Math.min(Math.max(dx * 0.05, -10), 10)
   }
 
   function handlePointerUp(event: PointerEvent): void {
@@ -160,21 +182,32 @@ export function usePreviewerTransform(options: {
       const horizontal = Math.abs(dx) > Math.abs(dy) * 1.3
       const quickSwipe = horizontal && Math.abs(dx) > 40 && dt < 300
       if (horizontal && (Math.abs(dx) > 80 || quickSwipe)) {
-        options.onSwipe(dx < 0 ? 1 : -1)
+        options.onSwipe(dx < 0 ? 1 : -1, dx)
         return
       }
       if (event.pointerType === 'touch' && Math.abs(dy) > 90 && Math.abs(dy) > Math.abs(dx) * 1.3) {
         options.onVerticalClose?.()
         return
       }
-      reset()
+      if (Math.abs(dx) + Math.abs(dy) < 6) {
+        // 纯点击不算拖拽，直接复位，不触发回弹过渡
+        reset()
+        return
+      }
+      relax()
     }
   }
+
+  onScopeDispose(() => {
+    clearTimeout(settleTimer)
+  })
 
   return {
     scale,
     tx,
     ty,
+    dragRotate,
+    settling,
     zoomAt,
     reset,
     setTransform,

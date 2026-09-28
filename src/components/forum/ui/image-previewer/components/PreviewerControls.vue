@@ -46,8 +46,8 @@ const { message } = useLocalized()
   width: 36px;
   height: 36px;
   place-items: center;
-  border-radius: 10px;
-  border: 0;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-white) 16%, transparent);
   background: var(--forum-media-glass);
   backdrop-filter: blur(12px);
   color: var(--forum-media-on-overlay);
@@ -55,28 +55,57 @@ const { message } = useLocalized()
   transition:
     opacity 200ms ease,
     transform 220ms ease,
-    background-color 160ms ease;
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
 .forum-preview-close:hover {
   background: var(--forum-media-glass-hover);
+  border-color: color-mix(in srgb, var(--vp-c-white) 28%, transparent);
 }
 
-.forum-preview-dots {
+.forum-preview-close svg {
+  transition: transform 260ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.forum-preview-close:hover svg {
+  transform: rotate(90deg) scale(1.1);
+}
+
+.forum-preview-close:active {
+  transform: scale(0.94);
+}
+
+.forum-preview-dots.forum-image-indicator {
   position: absolute;
   bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
+  padding: 6px 14px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-white) 14%, transparent);
+  border-radius: 9999px;
+  background: var(--forum-media-glass);
+  backdrop-filter: blur(12px);
   transition:
     opacity 200ms ease,
     transform 220ms ease;
+}
+
+.forum-preview-dots .forum-image-indicator-marker {
+  transition:
+    width 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .forum-preview-close,
   .forum-preview-dots {
     transition: none !important;
+  }
+
+  .forum-preview-close svg {
+    transition: none;
   }
 }
 </style>

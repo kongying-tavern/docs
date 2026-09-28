@@ -4,6 +4,7 @@ import { useElementSize, useMediaQuery } from '@vueuse/core'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useBounceScroll } from '~/composables/useBounceScroll'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import { planForumImageGrid } from '~/services/forum/forumImageLayout'
 import ForumImageIndicator from './ForumImageIndicator.vue'
@@ -41,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const { message } = useLocalized()
+const { reducedMotion } = useSitePreferences()
 const errorMap = ref(new Set<number>())
 const readyMap = ref(new Set<number>())
 // errorMap/readyMap 以 images 下标为 key：列表被整体替换（如引用话题 refetch 重建）时，旧下标的记录必须作废
@@ -167,7 +169,7 @@ function scrollRailTo(index: number) {
   if (!el || step <= 0)
     return
   const target = Math.min(Math.max(index, 0), railCount.value - 1)
-  el.scrollTo({ left: target * step, behavior: 'smooth' })
+  el.scrollTo({ left: target * step, behavior: reducedMotion.value ? 'auto' : 'smooth' })
 }
 
 watch([railCount, isRail], ([count, rail]) => {
@@ -306,7 +308,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
               :key="`${sourceIndex}:${image.src}`"
               :type="previewEnabled ? 'button' : undefined"
               data-forum-image-rail-item
-              class="p-0 border border-[var(--vp-c-divider)] bg-transparent relative overflow-hidden"
+              class="p-0 border border-[var(--forum-image-outline)] bg-transparent relative overflow-hidden"
               :class="[
                 layoutConfig.getItemStyle(index),
                 !isRail && !isAdaptiveGrid && actualLayout === 'triple' ? tripleGridClasses[index] : '',

@@ -11,8 +11,10 @@ function zoomFlipTransform(from: DOMRect, to: DOMRect): { scale: number, dx: num
   return { scale, dx, dy }
 }
 
-export function stackTransform(dx: number, dy: number, scale: number): string {
-  return `translate(${dx}px, ${dy}px) scale(${scale})`
+export function stackTransform(dx: number, dy: number, scale: number, rotate = 0): string {
+  if (rotate === 0)
+    return `translate(${dx}px, ${dy}px) scale(${scale})`
+  return `translate(${dx}px, ${dy}px) rotate(${rotate}deg) scale(${scale})`
 }
 
 export function usePreviewerFlip(

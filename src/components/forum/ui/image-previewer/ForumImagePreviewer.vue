@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
 import { useMediaQuery } from '@vueuse/core'
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumImageNavigationButton from '../ForumImageNavigationButton.vue'
@@ -64,6 +64,10 @@ const panelCollapsed = ref(false)
 const slideDir = ref<1 | -1 | 0>(0)
 const prevImg = ref<{ src: string, alt?: string } | null>(null)
 const prevSeq = ref(0)
+const carriedRef = ref(0)
+const sweeping = ref(false)
+const sweepDir = ref<0 | 1 | -1>(0)
+let sweepTimer: number | undefined
 let prevClearTimer: number | undefined
 let closeTimer: number | undefined
 
@@ -79,10 +83,41 @@ const maxZoom = computed(() => props.options.maxZoom ?? 4)
 const hasPanel = computed(() =>
   isDesktop.value && visible.value && Boolean(props.context) && !panelCollapsed.value)
 
+const imgReady = ref(false)
+const imgStyle = computed(() => {
+  const image = displayImages.value[current.value]
+  return image?.width && image?.height
+    ? { aspectRatio: `${image.width} / ${image.height}` }
+    : undefined
+})
+
+/** 与箭头切换同速 */
+const enterDur = computed(() => Math.max(
+  90,
+  Math.round((130 + Math.abs(carriedRef.value)) * 420 / 130),
+))
+const exitDur = computed(() => Math.max(
+  60,
+  Math.round((130 - Math.abs(carriedRef.value)) * 300 / 130),
+))
+
+/** 缓存命中时 load 事件可能已错过，需主动探测 */
+function syncImgReady(): void {
+  const img = imageEl.value
+  imgReady.value = Boolean(img?.complete && img.naturalWidth > 0)
+}
+
+watch([current, displayImages], () => {
+  imgReady.value = false
+  nextTick(syncImgReady)
+})
+
 const {
   scale,
   tx,
   ty,
+  dragRotate,
+  settling,
   dragging,
   zoomAt,
   setTransform,
@@ -96,7 +131,7 @@ const {
   maxZoom,
   imageEl,
   zoomEnabled,
-  onSwipe: direction => goTo(current.value + direction, direction),
+  onSwipe: (direction, dx) => goTo(current.value + direction, direction, { carried: dx }),
   onVerticalClose: () => close(),
 })
 
@@ -114,7 +149,58 @@ const {
   clearSource,
 } = usePreviewerFlip(imageEl, stackEl)
 
-function goTo(index: number, direction?: 1 | -1): void {
+interface SlideChangeOptions {
+  /** 拖拽松手位移（px） */
+  carried?: number
+  sweep?: boolean
+}
+
+function commitSlide(target: number, dir: 1 | -1, options: SlideChangeOptions = {}): void {
+  const old = displayImages.value[current.value]
+  current.value = target
+  slideDir.value = dir
+  carriedRef.value = options.sweep
+    ? 0
+    : Math.min(Math.max(options.carried ?? 0, -140), 140)
+  prevImg.value = options.sweep || !old ? null : { src: old.src, alt: old.alt }
+  prevSeq.value += 1
+  resetTransform()
+  emit('change', target)
+  clearTimeout(prevClearTimer)
+  prevClearTimer = window.setTimeout(() => {
+    prevImg.value = null
+  }, 300)
+}
+
+function startSweep(dir: 1 | -1): void {
+  const count = total.value
+  const start = current.value
+  const end = dir === -1 ? 0 : count - 1
+  const steps = (start - end + count) % count
+  if (steps === 0)
+    return
+  clearTimeout(sweepTimer)
+  sweeping.value = true
+  sweepDir.value = dir
+  let step = 0
+  const tick = (): void => {
+    const next = dir === -1
+      ? (start - step - 1 + count) % count
+      : (start + step + 1) % count
+    commitSlide(next, dir, { sweep: true })
+    step += 1
+    if (step < steps) {
+      sweepTimer = window.setTimeout(tick, 120)
+    }
+    else {
+      sweeping.value = false
+      sweepDir.value = 0
+    }
+  }
+  sweepTimer = window.setTimeout(tick, 50)
+}
+
+function goTo(index: number, direction?: 1 | -1, options: SlideChangeOptions = {}): void {
   const count = total.value
   if (count === 0)
     return
@@ -126,17 +212,19 @@ function goTo(index: number, direction?: 1 | -1): void {
     const delta = (target - current.value + count) % count
     dir = delta > count / 2 ? -1 : 1
   }
-  const old = displayImages.value[current.value]
-  current.value = target
-  slideDir.value = dir
-  prevImg.value = old ? { src: old.src, alt: old.alt } : null
-  prevSeq.value += 1
-  resetTransform()
-  emit('change', target)
-  clearTimeout(prevClearTimer)
-  prevClearTimer = window.setTimeout(() => {
-    prevImg.value = null
-  }, 300)
+  // 打断进行中的回卷扫描
+  clearTimeout(sweepTimer)
+  sweeping.value = false
+  sweepDir.value = 0
+  if ((options.carried ?? 0) !== 0) {
+    const wrapBack = dir === -1 && current.value === 0 && target === count - 1
+    const wrapForward = dir === 1 && current.value === count - 1 && target === 0
+    if (wrapBack || wrapForward) {
+      startSweep(wrapBack ? 1 : -1)
+      return
+    }
+  }
+  commitSlide(target, dir, options)
 }
 
 /** 委托替换整份图片列表（活跃预览内容变化），保留预览与面板打开状态 */
@@ -144,11 +232,15 @@ function setImages(images: PreviewImage[], index: number): void {
   const count = images.length
   if (count === 0)
     return
+  clearTimeout(sweepTimer)
+  sweeping.value = false
+  sweepDir.value = 0
   const target = Math.min(Math.max(index, 0), count - 1)
   const old = displayImages.value[current.value]
   imagesOverride.value = images
   current.value = target
   slideDir.value = 1
+  carriedRef.value = 0
   prevImg.value = old ? { src: old.src, alt: old.alt } : null
   prevSeq.value += 1
   resetTransform()
@@ -160,6 +252,8 @@ function setImages(images: PreviewImage[], index: number): void {
 }
 
 const enterAnimClass = computed(() => {
+  if (sweepDir.value !== 0)
+    return sweepDir.value === 1 ? 'sweep-right' : 'sweep-left'
   if (slideDir.value === 0)
     return usesSourceTransition.value ? '' : 'enter-scale'
   return slideDir.value === 1 ? 'enter-right' : 'enter-left'
@@ -196,6 +290,9 @@ function openAt(index: number, sourceEl?: Element | null): void {
   setSource(sourceEl)
   clickState = null
   lastClickAt = 0
+  clearTimeout(sweepTimer)
+  sweeping.value = false
+  sweepDir.value = 0
   imagesOverride.value = null
   current.value = Math.min(Math.max(index, 0), total.value - 1)
   visible.value = true
@@ -204,6 +301,8 @@ function openAt(index: number, sourceEl?: Element | null): void {
   panelCollapsed.value = false
   slideDir.value = 0
   prevImg.value = null
+  imgReady.value = false
+  nextTick(syncImgReady)
   resetTransform()
   prevActive = document.activeElement as HTMLElement | null
   prevOverflow = document.documentElement.style.overflow
@@ -218,6 +317,9 @@ function close(): void {
   if (closing.value)
     return
   unregister(self)
+  clearTimeout(sweepTimer)
+  sweeping.value = false
+  sweepDir.value = 0
   panelOpen.value = false
   closing.value = true
   const exitDelay = beginExit()
@@ -330,6 +432,7 @@ onBeforeUnmount(() => {
   clearTimeout(prevClearTimer)
   clearTimeout(smoothZoomTimer)
   clearTimeout(closeTimer)
+  clearTimeout(sweepTimer)
   unregister(self)
 })
 
@@ -345,7 +448,7 @@ defineExpose({ openAt, close })
         v-if="visible"
         ref="containerEl"
         class="forum-preview-root inset-0 fixed z-[1000]"
-        :class="{ closing, 'has-panel': hasPanel, 'is-dragging': dragging }"
+        :class="{ closing, 'has-panel': hasPanel, 'is-dragging': dragging, 'is-settling': settling }"
         role="dialog"
         aria-modal="true"
         :aria-label="message.forum.topic.previewTitle"
@@ -365,8 +468,14 @@ defineExpose({ openAt, close })
           <div
             ref="stackEl"
             class="forum-preview-stack"
-            :class="{ flipping, 'can-zoom-in': scale === 1, 'can-grab': scale > 1 && !dragging }"
-            :style="{ transform: stackTransform(tx, ty, scale) }"
+            :class="{
+              flipping,
+              settling,
+              'is-idle': scale === 1 && !dragging && !settling && !sweeping,
+              'can-zoom-in': scale === 1,
+              'can-grab': scale > 1 && !dragging,
+            }"
+            :style="{ transform: stackTransform(tx, ty, scale, dragRotate) }"
             @click="handleStackClick"
           >
             <img
@@ -376,6 +485,10 @@ defineExpose({ openAt, close })
               :alt="prevImg.alt || ''"
               class="forum-preview-image forum-preview-exit"
               :class="slideDir === 1 ? 'exit-left' : 'exit-right'"
+              :style="{
+                '--preview-carry': `${carriedRef}px`,
+                '--preview-exit-dur': `${exitDur}ms`,
+              }"
               draggable="false"
             >
             <img
@@ -385,8 +498,15 @@ defineExpose({ openAt, close })
               :src="displayImages[current].src"
               :alt="displayImages[current].alt || ''"
               class="forum-preview-image forum-preview-enter"
-              :class="enterAnimClass"
+              :class="[enterAnimClass, { 'is-loading': !imgReady }]"
+              :style="{
+                ...imgStyle,
+                '--preview-carry': `${carriedRef}px`,
+                '--preview-enter-dur': `${enterDur}ms`,
+              }"
               draggable="false"
+              @load="imgReady = true"
+              @error="imgReady = true"
             >
           </div>
 

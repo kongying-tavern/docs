@@ -47,6 +47,7 @@ onBeforeUnmount(() => clearTimeout(unmountTimer))
       :force-mount="true"
       side="right"
       :show-close-button="false"
+      :overlay="false"
       style="animation-fill-mode: forwards"
       class="p-4 overflow-y-auto !max-w-none !w-[min(560px,90vw)] !z-[1001]"
       @interact-outside="(event) => event.preventDefault()"

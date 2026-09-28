@@ -8,12 +8,13 @@
 }
 
 /* 面板内 reka 浮层(⋮菜单/hover-card/翻译 Popover)portal 到 body 且默认 z-50，
-   预览打开时会被预览根/右侧面板(z-1000/1001)盖住；统一抬升到面板之上 */
-:global(
-  body:has(.forum-preview-root) [data-slot='dropdown-menu-content'],
-  body:has(.forum-preview-root) [data-slot='hover-card-content'],
-  body:has(.forum-preview-root) [data-slot='popover-content']
-) {
+   预览打开时会被预览根/右侧面板(z-1000/1001)盖住；统一抬升到面板之上。
+   二级子菜单同样 portal 到 body，必须一并抬升，否则被预览根吞掉不可见不可点。
+   注意 :global() 内的多选择器列表只会编译出第一条，故逐条声明 */
+:global(body:has(.forum-preview-root) [data-slot='dropdown-menu-content']),
+:global(body:has(.forum-preview-root) [data-slot='dropdown-menu-sub-content']),
+:global(body:has(.forum-preview-root) [data-slot='hover-card-content']),
+:global(body:has(.forum-preview-root) [data-slot='popover-content']) {
   z-index: 1002;
 }
 
@@ -41,7 +42,7 @@
   background: var(--forum-media-backdrop);
   backdrop-filter: blur(24px);
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity 320ms ease-out;
 }
 
 .forum-preview-stage {
@@ -84,7 +85,7 @@
   width: 36px;
   height: 36px;
   place-items: center;
-  border: 0;
+  border: 1px solid color-mix(in srgb, var(--vp-c-white) 16%, transparent);
   border-radius: 10px;
   background: var(--forum-media-glass);
   backdrop-filter: blur(12px);
@@ -94,11 +95,21 @@
   transition:
     opacity 200ms ease,
     transform 220ms ease,
-    background-color 160ms ease;
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
 .forum-preview-panel-toggle:hover {
   background: var(--forum-media-glass-hover);
+  border-color: color-mix(in srgb, var(--vp-c-white) 28%, transparent);
+}
+
+.forum-preview-panel-toggle svg {
+  transition: transform 240ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.forum-preview-panel-toggle:hover svg {
+  transform: scale(1.15);
 }
 
 /* 面板开合用 transform 左移右上按钮（right 动画会逐帧 reflow 整个预览舞台）。
@@ -123,17 +134,74 @@
   justify-content: center;
   max-width: 100%;
   max-height: 100%;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--vp-c-white) 14%, transparent),
+    0 24px 56px -18px color-mix(in srgb, var(--vp-c-black) 60%, transparent);
+  will-change: transform;
+}
+
+.forum-preview-stack::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(120% 95% at 50% 40%, transparent 56%, rgba(0, 0, 0, 0.3) 100%);
+  content: '';
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.forum-preview-stack.is-idle::before {
+  opacity: 1;
 }
 
 .forum-preview-stack.flipping {
   transition: transform 360ms cubic-bezier(0.2, 0, 0.2, 1);
 }
+
+.forum-preview-root.is-settling .forum-preview-stack {
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .forum-preview-stack.is-idle {
+    transition: scale 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .forum-preview-stack.is-idle:hover {
+    scale: 1.02;
+  }
+}
+
 .forum-preview-image {
   max-width: 100%;
   max-height: 100%;
+  border-radius: inherit;
   object-fit: contain;
   opacity: 0;
   transform-origin: center center;
+}
+
+.forum-preview-image.is-loading {
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    color-mix(in srgb, var(--vp-c-white) 9%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: preview-shimmer 1.4s linear infinite;
+}
+
+@keyframes preview-shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
 }
 
 .forum-preview-exit {
@@ -167,28 +235,62 @@
 
 .forum-preview-root:not(.closing) .forum-preview-image {
   opacity: 1;
-  /* transform 直接由手势驱动，不做 CSS 过渡避免拖拽拖尾 */
-  transition: opacity 250ms ease;
+  /* transform 直接由手势驱动，不做 CSS 过渡避免拖拽拖尾；filter 留给 blur-up */
+  transition:
+    opacity 250ms ease,
+    filter 600ms ease;
 }
 
+.forum-preview-root:not(.closing) .forum-preview-image.is-loading {
+  opacity: 0.55;
+  filter: blur(14px);
+}
+
+/* 拆三通道动画：各属性各配缓动 */
 .forum-preview-enter.enter-scale {
-  animation: preview-image-in 260ms cubic-bezier(0.2, 0, 0.2, 1) backwards;
+  animation:
+    preview-stack-in 380ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards,
+    preview-blur-in 450ms ease backwards;
 }
 
 .forum-preview-enter.enter-right {
-  animation: preview-slide-in-right 240ms cubic-bezier(0.2, 0, 0.2, 1) backwards;
+  animation:
+    preview-slide-x-in-right 420ms cubic-bezier(0.16, 1, 0.3, 1) backwards,
+    preview-stack-in 420ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards,
+    preview-blur-in 420ms ease backwards;
+  animation-duration: var(--preview-enter-dur, 420ms);
 }
 
 .forum-preview-enter.enter-left {
-  animation: preview-slide-in-left 240ms cubic-bezier(0.2, 0, 0.2, 1) backwards;
+  animation:
+    preview-slide-x-in-left 420ms cubic-bezier(0.16, 1, 0.3, 1) backwards,
+    preview-stack-in 420ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards,
+    preview-blur-in 420ms ease backwards;
+  animation-duration: var(--preview-enter-dur, 420ms);
+}
+
+.forum-preview-enter.sweep-left {
+  animation: preview-sweep-in-left 130ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.forum-preview-enter.sweep-right {
+  animation: preview-sweep-in-right 130ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .forum-preview-exit.exit-left {
-  animation: preview-slide-out-left 240ms cubic-bezier(0.2, 0, 0.2, 1) both;
+  animation:
+    preview-slide-x-out-left 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
+    preview-stack-out 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
+    preview-blur-out 300ms ease both;
+  animation-duration: var(--preview-exit-dur, 300ms);
 }
 
 .forum-preview-exit.exit-right {
-  animation: preview-slide-out-right 240ms cubic-bezier(0.2, 0, 0.2, 1) both;
+  animation:
+    preview-slide-x-out-right 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
+    preview-stack-out 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
+    preview-blur-out 300ms ease both;
+  animation-duration: var(--preview-exit-dur, 300ms);
 }
 
 .forum-preview-root.closing .forum-preview-image,
@@ -218,7 +320,69 @@
   transform: translateX(-50%) translateY(10px) scale(0.92);
 }
 
-@keyframes preview-image-in {
+@keyframes preview-slide-x-in-right {
+  from {
+    translate: calc(130px + var(--preview-carry, 0px)) 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@keyframes preview-slide-x-in-left {
+  from {
+    translate: calc(-130px + var(--preview-carry, 0px)) 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@keyframes preview-slide-x-out-left {
+  from {
+    translate: var(--preview-carry, 0px) 0;
+  }
+  to {
+    translate: -130px 0;
+  }
+}
+
+@keyframes preview-slide-x-out-right {
+  from {
+    translate: var(--preview-carry, 0px) 0;
+  }
+  to {
+    translate: 130px 0;
+  }
+}
+
+@keyframes preview-sweep-in-left {
+  from {
+    translate: -110px 0;
+    opacity: 0.35;
+    filter: blur(6px);
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes preview-sweep-in-right {
+  from {
+    translate: 110px 0;
+    opacity: 0.35;
+    filter: blur(6px);
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes preview-stack-in {
   from {
     opacity: 0;
     transform: scale(0.94);
@@ -229,58 +393,48 @@
   }
 }
 
-@keyframes preview-slide-in-right {
-  from {
-    opacity: 0.5;
-    transform: translate(80px, 0) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-@keyframes preview-slide-in-left {
-  from {
-    opacity: 0.5;
-    transform: translate(-80px, 0) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-@keyframes preview-slide-out-left {
+@keyframes preview-stack-out {
   from {
     opacity: 1;
-    transform: translate(0, 0) scale(1);
+    transform: scale(1);
   }
   to {
     opacity: 0;
-    transform: translate(-80px, 0) scale(0.98);
+    transform: scale(0.94);
   }
 }
 
-@keyframes preview-slide-out-right {
+@keyframes preview-blur-in {
   from {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
+    filter: blur(12px);
   }
   to {
-    opacity: 0;
-    transform: translate(80px, 0) scale(0.98);
+    filter: blur(0);
+  }
+}
+
+@keyframes preview-blur-out {
+  from {
+    filter: blur(0);
+  }
+  to {
+    filter: blur(10px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .forum-preview-overlay,
   .forum-preview-image,
+  .forum-preview-stack,
   .forum-preview-cards,
   .forum-preview-panel-toggle,
   :deep(.forum-preview-close),
   :deep(.forum-preview-dots) {
     transition: none !important;
     animation: none !important;
+  }
+
+  .forum-preview-stack.is-idle:hover {
+    scale: 1;
   }
 }

@@ -52,6 +52,7 @@ onBeforeUnmount(() => {
     class="forum-image-navigation-button"
     :class="[
       `forum-image-navigation-button-${size}`,
+      `forum-image-navigation-button-${direction}`,
       { 'is-visible': animatedVisible, 'is-auto-hide': autoHide },
     ]"
     :aria-label="label"
@@ -71,7 +72,7 @@ onBeforeUnmount(() => {
   display: grid;
   padding: 0;
   place-items: center;
-  border: 0;
+  border: 1px solid color-mix(in srgb, var(--vp-c-white) 18%, transparent);
   border-radius: 9999px;
   background: var(--forum-media-overlay);
   backdrop-filter: blur(12px);
@@ -80,10 +81,24 @@ onBeforeUnmount(() => {
   opacity: 0;
   pointer-events: none;
   scale: 0.82;
+  will-change: transform;
   transition:
     opacity 160ms ease-out,
     scale 180ms cubic-bezier(0.2, 0, 0, 1),
-    background-color 120ms ease-out;
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.forum-image-navigation-button span {
+  transition: transform 220ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.forum-image-navigation-button-previous:hover span {
+  transform: translateX(-2px);
+}
+
+.forum-image-navigation-button-next:hover span {
+  transform: translateX(2px);
 }
 
 .forum-image-navigation-button-small {
@@ -118,14 +133,16 @@ onBeforeUnmount(() => {
   scale: 0.82;
 }
 
-:global(.forum-preview-stage:hover) .forum-image-navigation-button.is-auto-hide,
+/* 注意：:global() 处于选择器中段会编译成逗号拆分的独立选择器（首段命中的是
+   舞台自身而非按钮），故整条选择器整体包进 :global() */
+:global(.forum-preview-stage:hover .forum-image-navigation-button.is-auto-hide),
 .forum-image-navigation-button.is-auto-hide:focus-visible {
   opacity: 1;
   pointer-events: auto;
   scale: 1;
 }
 
-:global(.forum-preview-root.closing) .forum-image-navigation-button {
+:global(.forum-preview-root.closing .forum-image-navigation-button) {
   opacity: 0;
   pointer-events: none;
   scale: 0.82;
@@ -134,6 +151,7 @@ onBeforeUnmount(() => {
 @media (hover: hover) and (pointer: fine) {
   .forum-image-navigation-button:hover {
     background: var(--forum-media-overlay-strong);
+    border-color: color-mix(in srgb, var(--vp-c-white) 30%, transparent);
     scale: 1.06;
   }
 }
@@ -148,7 +166,8 @@ onBeforeUnmount(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .forum-image-navigation-button {
+  .forum-image-navigation-button,
+  .forum-image-navigation-button span {
     transition: none;
   }
 }

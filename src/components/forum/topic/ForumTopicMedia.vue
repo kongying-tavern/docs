@@ -41,7 +41,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
   >
     <div
       v-if="isCompactMode"
-      class="topic-compact-media ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px items-center relative overflow-hidden"
+      class="topic-compact-media ml-2 mt-1 border border-[var(--forum-image-outline)] rounded-sm flex h-75px min-w-100px items-center relative overflow-hidden"
     >
       <img
         v-if="primaryImage"

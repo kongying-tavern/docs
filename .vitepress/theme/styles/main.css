@@ -397,6 +397,8 @@ textarea {
   --forum-media-glass-hover: color-mix(in srgb, var(--vp-c-white) 16%, transparent);
   --forum-media-dot: color-mix(in srgb, var(--vp-c-white) 35%, transparent);
   --forum-media-dot-hover: color-mix(in srgb, var(--vp-c-white) 60%, transparent);
+  /* 图片描边用纯黑/白低透明度：调色板中性色会带上底色，在图片边缘读起来像脏边 */
+  --forum-image-outline: oklch(0 0 0 / 0.1);
   --forum-role-official-text: var(--vp-c-danger-1);
   --forum-role-official-bg: var(--vp-c-danger-soft);
   --forum-role-author-text: var(--vp-c-purple-1);
@@ -416,6 +418,7 @@ textarea {
    也避开深色下更亮的品牌绿与 500 级状态色 */
 html.dark {
   --forum-topic-status-resolved: var(--vp-c-green-3);
+  --forum-image-outline: oklch(1 0 0 / 0.1);
 }
 
 /* Inline spoiler styles for ScratchToReveal component */

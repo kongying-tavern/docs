@@ -117,7 +117,7 @@ function itemOpacity(index: number) {
               <Skeleton class="h-4 w-[55%]" />
             </div>
           </div>
-          <div class="ml-2 mt-1 border border-[var(--vp-c-divider)] rounded-sm flex h-75px min-w-100px relative overflow-hidden">
+          <div class="ml-2 mt-1 border border-[var(--forum-image-outline)] rounded-sm flex h-75px min-w-100px relative overflow-hidden">
             <Skeleton class="h-full w-full" />
           </div>
         </div>
