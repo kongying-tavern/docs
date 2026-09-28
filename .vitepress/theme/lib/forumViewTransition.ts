@@ -1,6 +1,6 @@
-import type { ForumRoute } from '~/forum/services/forumRoute'
+import type { ForumRoute } from '~/forum/services/route'
 import { nextTick } from 'vue'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/config'
 import { enableTransitions } from '../shared'
 
 type SharedRoute = Extract<ForumRoute, { name: 'topic' } | { name: 'user' }>

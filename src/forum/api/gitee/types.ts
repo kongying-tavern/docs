@@ -1,5 +1,5 @@
 import type { KyResponse } from 'ky'
-import type ForumAPI from '../forum'
+import type ForumAPI from '../types'
 
 export enum GiteeApiErrorType {
   RateLimitExceeded = 'Rate Limit Exceeded',

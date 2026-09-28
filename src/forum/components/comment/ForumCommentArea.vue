@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
 import { computed, nextTick, useTemplateRef, watch } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'

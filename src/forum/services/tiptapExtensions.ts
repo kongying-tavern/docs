@@ -1,6 +1,6 @@
 import type { Extensions } from '@tiptap/core'
 import type { SuggestionOptions } from '@tiptap/suggestion'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import type { ForumEditorSuggestionItem } from '~/forum/tiptap/forumSuggestionRenderer'
 import { Markdown } from '@tiptap/markdown'
 import StarterKit from '@tiptap/starter-kit'
@@ -8,8 +8,8 @@ import { EmojiNode } from '~/forum/tiptap/emojiNode'
 import { createLinkExtension } from '~/forum/tiptap/linkConfig'
 import { createMentionNode, MentionNode } from '~/forum/tiptap/mentionNode'
 import { createTopicReferenceNode } from '~/forum/tiptap/topicReferenceNode'
-import { getForumDocumentTitle } from './forumDocumentLinkIndex'
-import { isAllowedForumHref, shortenForumAutoLink } from './forumLinkPolicy'
+import { getForumDocumentTitle } from './documentLinkIndex'
+import { isAllowedForumHref, shortenForumAutoLink } from './linkPolicy'
 
 export function createForumContentExtensions(options: { openLinks?: boolean } = {}): Extensions {
   return [

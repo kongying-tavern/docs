@@ -1,11 +1,11 @@
 /* eslint-disable test/no-import-node-test */
-import type ForumAPI from '../../src/forum/api/forum'
+import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
   beginForumVisitWithStorage,
   findLastVisitedDividerIndex,
-} from '../../src/forum/services/forumLastVisit'
+} from '../../src/forum/services/lastVisit'
 
 function storage(initial: Record<string, string> = {}) {
   const values = new Map(Object.entries(initial))

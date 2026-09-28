@@ -1,13 +1,13 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { INTER_KNOT } from '~/apis/interknot.site/api'
-import type { TopicReaction } from '~/forum/services/forumReaction'
+import type { TopicReaction } from '~/forum/services/reaction'
 import { useMutation, useQuery, useQueryCache, useQueryState } from '@pinia/colada'
 import { computed, reactive, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { reactions } from '~/apis/interknot.site'
-import { forumKeys } from '~/forum/services/forumQueryContracts'
+import { forumKeys } from '~/forum/services/queryContracts'
 import {
   coordinateReactionMutation,
   forumReactionResource,
@@ -16,11 +16,11 @@ import {
   reactionCacheIdentity,
   reactionEnvironmentForOrigin,
   resolveReactionViewer,
-} from '~/forum/services/forumReaction'
+} from '~/forum/services/reaction'
 import { OpsEvents, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'
 
-export type { TopicReaction } from '~/forum/services/forumReaction'
+export type { TopicReaction } from '~/forum/services/reaction'
 
 const pendingReactionKeys = reactive(new Set<string>())
 

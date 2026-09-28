@@ -1,4 +1,4 @@
-import type ForumAPI from '../forum'
+import type ForumAPI from '../types'
 import { catchError } from '~/services/apiUtils'
 import { oauthFetcher } from './client'
 import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './config'

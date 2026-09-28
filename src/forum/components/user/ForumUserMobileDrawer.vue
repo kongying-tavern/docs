@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useRouter } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'

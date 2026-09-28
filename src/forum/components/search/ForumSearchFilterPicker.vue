@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
-import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/forum/services/forumSearchQuery'
+import type ForumAPI from '~/forum/api/types'
+import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/forum/services/searchQuery'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumLabelStore } from '~/forum/composables/useForumLabelStore'
 import { useForumSearchToken } from '~/forum/composables/useForumSearchToken'
 import { usePermissionData } from '~/forum/composables/usePermissionData'
 import { useTopicTagDisplay } from '~/forum/composables/useTopicTagDisplay'
-import { FORUM_SEARCH_STATES, getForumSearchStateGroup } from '~/forum/services/forumSearchQuery'
-import { getForumSearchUserGroups } from '~/forum/services/forumSearchUsers'
-import { TOPIC_STATUS_GROUP_ORDER } from '~/forum/services/forumTopicStatus'
 import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
+import { FORUM_SEARCH_STATES, getForumSearchStateGroup } from '~/forum/services/searchQuery'
+import { getForumSearchUserGroups } from '~/forum/services/searchUsers'
+import { TOPIC_STATUS_GROUP_ORDER } from '~/forum/services/topicStatus'
 import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
 
 const props = defineProps<{

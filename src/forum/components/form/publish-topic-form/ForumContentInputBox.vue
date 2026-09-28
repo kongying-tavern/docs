@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useQueryCache } from '@pinia/colada'
 import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'
@@ -13,8 +13,8 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumImageDropZone } from '~/forum/composables/useForumImageDropZone'
-import { collectForumTopics, forumKeys } from '~/forum/services/forumQueryContracts'
-import { createForumTopicEditorExtensions } from '~/forum/services/forumTiptapExtensions'
+import { collectForumTopics, forumKeys } from '~/forum/services/queryContracts'
+import { createForumTopicEditorExtensions } from '~/forum/services/tiptapExtensions'
 import { createForumSuggestionRenderer } from '~/forum/tiptap/forumSuggestionRenderer'
 
 defineOptions({ inheritAttrs: false })

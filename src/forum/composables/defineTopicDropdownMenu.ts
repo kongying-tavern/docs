@@ -1,7 +1,7 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import type { FORUM } from '~/forum/components/types'
-import type { TopicStatusDefinition } from '~/forum/services/forumTopicStatus'
+import type { TopicStatusDefinition } from '~/forum/services/topicStatus'
 import type { CustomConfig } from '~/forum/types'
 import { computed, ref, toValue } from 'vue'
 import { useUserAuthStore } from '@/stores/useUserAuth'
@@ -15,7 +15,7 @@ import {
   getSelectableTopicStatuses,
   groupTopicStatuses,
   TOPIC_STATUS_LABEL,
-} from '~/forum/services/forumTopicStatus'
+} from '~/forum/services/topicStatus'
 import { toast } from '~/services/telemetry/toast'
 import { useReactionStats } from './useReactionStats'
 import { useTopicReactionState } from './useTopicsReaction'

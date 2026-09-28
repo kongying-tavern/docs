@@ -1,5 +1,5 @@
-import type ForumAPI from '~/forum/api/forum'
 import type { INTER_KNOT } from './api'
+import type ForumAPI from '~/forum/api/types'
 import { fetcher } from '.'
 import { normalizeImage } from './utils'
 

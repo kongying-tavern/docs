@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import {

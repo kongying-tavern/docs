@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useSessionStorage } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { useData } from 'vitepress'

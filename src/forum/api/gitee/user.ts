@@ -1,4 +1,4 @@
-import type ForumAPI from '../forum'
+import type ForumAPI from '../types'
 import { apiCall } from '.'
 import { GITEE_API_CONFIG } from './config'
 import { parseGiteeUser, parseGiteeUsers } from './contracts'

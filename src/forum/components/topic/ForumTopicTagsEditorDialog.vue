@@ -12,7 +12,7 @@ import {
 import { useLocalized } from '@/hooks/useLocalized'
 import { useTopicManager } from '~/forum/composables/useTopicManager'
 import { useTopicTagsEditor } from '~/forum/composables/useTopicTagsEditor'
-import { getEditableTopicLabels } from '~/forum/services/forumTopicLabels'
+import { getEditableTopicLabels } from '~/forum/services/topicLabels'
 import ForumTagsInput from '../form/publish-topic-form/ForumTagsInput.vue'
 
 const { open, topic } = useTopicTagsEditor()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useIntersectionObserver } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'

@@ -1,4 +1,4 @@
-import type ForumAPI from '../forum'
+import type ForumAPI from '../types'
 import type { AuthResult } from '~/services/authErrors'
 
 import { getSiteHref } from '~/constants/site'

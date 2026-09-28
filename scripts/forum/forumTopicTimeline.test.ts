@@ -1,13 +1,13 @@
 /* eslint-disable test/no-import-node-test */
-import type ForumAPI from '../../src/forum/api/forum'
+import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 import { buildTopicOperateLogsRequest } from '../../src/forum/api/gitee/issues'
 import { normalizeTopicTimeline } from '../../src/forum/api/gitee/normalize'
-import { TOPIC_STATUS_DEFINITIONS } from '../../src/forum/services/forumTopicStatus'
-import { TOPIC_STATE_ICON, TOPIC_STATUS_ICON } from '../../src/forum/services/forumTopicStatusIcon'
-import { ensureTopicTimelineAnchor, hasTopicTimelineChanges } from '../../src/forum/services/forumTopicTimeline'
+import { TOPIC_STATUS_DEFINITIONS } from '../../src/forum/services/topicStatus'
+import { TOPIC_STATE_ICON, TOPIC_STATUS_ICON } from '../../src/forum/services/topicStatusIcon'
+import { ensureTopicTimelineAnchor, hasTopicTimelineChanges } from '../../src/forum/services/topicTimeline'
 
 // 取自已登录会话对 KYJGYSDT/Feedback 的真实响应
 const MEMBER = { id: 8901509, login: 'zengjias', name: '(^_^)', avatar_url: 'https://example.test/a.png', html_url: 'https://gitee.com/zengjias' } as unknown as GITEE.User

@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import type { TopicFormTransactionResult, TopicFormTransactionStage } from '~/forum/services/form/topicFormTransaction'
 import type { TopicFormData } from '~/forum/services/form/validation'
 import { ref } from 'vue'

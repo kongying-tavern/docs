@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useInfiniteScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import Divider from '@/components/ui/divider/Divider.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { beginForumVisit, findLastVisitedDividerIndex } from '~/forum/services/forumLastVisit'
+import { beginForumVisit, findLastVisitedDividerIndex } from '~/forum/services/lastVisit'
 import ForumTopicPreviewDialog from '../topic/ForumTopicPreviewDialog.vue'
 import ForumTopic from './ForumTopic.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'

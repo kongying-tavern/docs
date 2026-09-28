@@ -1,5 +1,5 @@
 import { GITEE_API_CONFIG } from '~/forum/api/gitee/config'
-import { CATEGORY_LABEL_PREFIX, isCategoryLabel } from './forumLabel'
+import { CATEGORY_LABEL_PREFIX, isCategoryLabel } from './label'
 
 export type ForumLabelGroup = 'type' | 'category' | 'status' | 'locale' | 'special' | 'other'
 

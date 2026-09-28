@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 
 interface ForumSearchSuggestion {
   topic: ForumAPI.Topic

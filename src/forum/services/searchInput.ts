@@ -1,5 +1,5 @@
-import type { ForumSearchQuery } from './forumSearchQuery'
-import { parseForumSearchQuery, stringifyForumSearchQuery } from './forumSearchQuery'
+import type { ForumSearchQuery } from './searchQuery'
+import { parseForumSearchQuery, stringifyForumSearchQuery } from './searchQuery'
 
 /** 编辑框的过滤徽标被清除时，普通关键词仍留在查询中。 */
 export function clearStructuredSearchFilters(value: string): string {

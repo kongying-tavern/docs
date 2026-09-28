@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
-import { getTopicDisplayStatus } from '~/forum/services/forumTopicStatus'
+import { getTopicDisplayStatus } from '~/forum/services/topicStatus'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
 
 const { type, state, status, goodIssue = false, iconOnly = false, interactive = false } = defineProps<{

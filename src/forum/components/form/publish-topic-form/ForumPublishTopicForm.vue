@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable no-console */
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
 import type { TopicFormTransactionStage } from '~/forum/services/form/topicFormTransaction'
 import type { TopicFormData } from '~/forum/services/form/validation'
@@ -48,14 +48,14 @@ import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumTopicQuery } from '~/forum/composables/useForumQueries'
+import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import {
   clearQuotedTopicRequest,
   isQuotableTopicType,
   QUOTED_TOPIC_ID_PARAM,
   QUOTED_TOPIC_TYPE_PARAM,
   readQuotedTopicRequest,
-} from '~/forum/services/forumTopicQuote'
-import { rememberLoginIntent } from '~/forum/services/loginIntent'
+} from '~/forum/services/topicQuote'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'
 import { formatMessage } from '~/utils/formatMessage'

@@ -1,8 +1,8 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
-import type ForumAPI from '../../src/forum/api/forum'
+import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { getForumSearchSuggestions } from '../../src/forum/services/forumSearchSuggestions'
+import { getForumSearchSuggestions } from '../../src/forum/services/searchSuggestions'
 
 function topic(id: string, title: string, text: string): ForumAPI.Topic {
   return { id, title, content: { text } } as ForumAPI.Topic

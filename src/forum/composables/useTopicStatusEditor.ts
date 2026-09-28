@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { createGlobalState } from '@vueuse/core'
 import { ref } from 'vue'
 

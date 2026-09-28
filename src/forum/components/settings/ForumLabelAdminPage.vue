@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumLabelGroup, ForumLabelRow } from '~/forum/services/forumLabelTaxonomy'
+import type { ForumLabelGroup, ForumLabelRow } from '~/forum/services/labelTaxonomy'
 import { useRouter } from 'vitepress'
 import { computed, onMounted, ref, watch } from 'vue'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'

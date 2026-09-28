@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumFilter } from '~/forum/services/forumRoute'
+import type { ForumFilter } from '~/forum/services/route'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumListControlOptions } from '~/forum/composables/useForumListControlOptions'

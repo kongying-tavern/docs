@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumTopicType } from '~/forum/services/forumRoute'
+import type { ForumTopicType } from '~/forum/services/route'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumListControlOptions } from '~/forum/composables/useForumListControlOptions'

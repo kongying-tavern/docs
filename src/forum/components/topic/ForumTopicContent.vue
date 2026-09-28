@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
-import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
+import { renderForumTopicSummary } from '~/forum/services/contentRenderer'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import { useTopicContent } from './composables/useTopicContent'
 

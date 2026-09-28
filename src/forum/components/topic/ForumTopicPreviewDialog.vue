@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { X } from '@lucide/vue'
 import { useRouter } from 'vitepress'
 import { Button } from '@/components/ui/button'

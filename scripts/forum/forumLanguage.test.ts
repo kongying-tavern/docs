@@ -1,7 +1,7 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { isTextPlausibleForLanguage } from '../../src/forum/services/forumLanguage'
+import { isTextPlausibleForLanguage } from '../../src/forum/services/language'
 
 test('与正文文字不符的声明语言会被否决', () => {
   // 中文正文里夹带英文词，仍应判定为中文正文，不能当作英语

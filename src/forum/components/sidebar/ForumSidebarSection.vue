@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicDropdownMenu from '../topic/ForumTopicDropdownMenu.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'

@@ -1,5 +1,5 @@
 import type { FORUM } from '~/forum/components/types'
-import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
+import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/route'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { FORUM_VIEW_MODES, getViewModeIconClass } from '~/forum/composables/useForumViewMode'

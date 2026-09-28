@@ -1,11 +1,11 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { computed, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTranslationPreferences } from '~/forum/composables/useForumTranslationPreferences'
 import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
-import { areLanguagesEquivalent } from '~/forum/services/forumLanguage'
+import { areLanguagesEquivalent } from '~/forum/services/language'
 
 export interface ForumTranslatorRef {
   startTranslate: () => void

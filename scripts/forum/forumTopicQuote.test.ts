@@ -8,7 +8,7 @@ import {
   normalizeQuotedTopicReference,
   readQuotedTopicRequest,
   shouldShowQuotedTopicImageBelow,
-} from '../../src/forum/services/forumTopicQuote'
+} from '../../src/forum/services/topicQuote'
 
 test('quoted Topic URLs round-trip a validated reference and preserve unrelated state', () => {
   const href = buildQuotedTopicFormHref(

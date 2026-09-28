@@ -1,6 +1,6 @@
 import type { TopicFormData } from './validation'
-import { STORAGE_KEYS } from '../forumConfig'
-import { normalizeQuotedTopicReference } from '../forumTopicQuote'
+import { STORAGE_KEYS } from '../config'
+import { normalizeQuotedTopicReference } from '../topicQuote'
 
 /**
  * Legacy single-key draft storage used before drafts were split per topic type.

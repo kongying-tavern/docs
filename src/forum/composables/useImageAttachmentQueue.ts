@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import type {
   AddImageFilesResult,
   ImageAttachment,
@@ -8,9 +8,9 @@ import type {
   UploadImageAttachmentsResult,
 } from '~/forum/services/form/imageAttachment'
 import { computed, ref } from 'vue'
+import { IMAGE_UPLOAD_POLICY } from '~/forum/services/config'
 import { compressImageForUpload } from '~/forum/services/form/compressImageForUpload'
 import { serializeUploadedAttachments, validateImageBatch } from '~/forum/services/form/imageAttachment'
-import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 
 export type ImageUploadFunction = (
   file: File,

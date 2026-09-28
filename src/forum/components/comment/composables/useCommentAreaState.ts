@@ -1,11 +1,11 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useEventListener, useInfiniteScroll, useMediaQuery } from '@vueuse/core'
 import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/forum/composables/useForumQueries'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
 import { resolveCommentTargetState, resolveRestoredCommentPage } from '~/forum/services/commentNavigation'
-import { readForumCommentId } from '~/forum/services/forumRoute'
+import { readForumCommentId } from '~/forum/services/route'
 
 export function useCommentAreaState(props: {
   repo: ForumAPI.Repo

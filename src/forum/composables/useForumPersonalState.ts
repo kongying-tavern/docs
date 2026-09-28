@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { createGlobalState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -10,9 +10,9 @@ import {
   removeFollowedTopic,
   summarizePersonalTopic,
   toggleFollowedTopic,
-} from '~/forum/services/forumPersonalState'
-import { loadForumPersonalState, updateForumPersonalState } from '~/forum/services/forumPersonalStateRepository'
-import { forumKeys } from '~/forum/services/forumQueryContracts'
+} from '~/forum/services/personalState'
+import { loadForumPersonalState, updateForumPersonalState } from '~/forum/services/personalStateRepository'
+import { forumKeys } from '~/forum/services/queryContracts'
 
 export const useForumPersonalState = createGlobalState(() => {
   const auth = useUserAuthStore()

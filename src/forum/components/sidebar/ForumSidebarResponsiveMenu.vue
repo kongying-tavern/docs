@@ -11,7 +11,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/config'
 
 withDefaults(defineProps<{
   title: string

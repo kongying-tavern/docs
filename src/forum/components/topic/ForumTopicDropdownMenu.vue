@@ -2,7 +2,7 @@
 import type { DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'

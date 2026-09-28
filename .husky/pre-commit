@@ -1,10 +1,12 @@
 #!/bin/sh
-# Stage-scoped eslint: same jobs as lint-staged (lint, autofix, re-stage, fail fast),
-# but runs eslint through bash so pnpm's Windows .cmd shims resolve reliably
-# (lint-staged v17 spawns tasks via tinyexec without a shell, which ENOENTs on
-# node_modules/.bin/*.cmd under Windows).
-files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|vue|mjs|cjs|mts|cts|css|scss)$' | tr '\n' ' ')
+# Stage-scoped eslint: lint, autofix, re-stage, fail fast.
+# Runs eslint through bash so pnpm's Windows .cmd shims resolve reliably
+# (lint-staged v17 spawns tasks via tinyexec without a shell -> ENOENT on
+# node_modules/.bin/*.cmd under Windows), and chunks the file list to stay
+# under the Windows CreateProcess command-line limit.
+files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|vue|mjs|cjs|mts|cts|css|scss)$')
 if [ -n "$files" ]; then
-  pnpm exec eslint --cache --fix $files || exit 1
+  echo "$files" | xargs -n 60 sh -c 'pnpm exec eslint --cache --fix "$@" || exit 255' sh
+  [ $? -eq 0 ] || exit 1
   git add -u
 fi

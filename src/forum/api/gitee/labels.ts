@@ -1,4 +1,4 @@
-import type ForumAPI from '../forum'
+import type ForumAPI from '../types'
 import { buildFormData } from '~/services/apiUtils'
 import { apiCall, deleteApiCache } from '.'
 import { GITEE_API_CONFIG } from './config'

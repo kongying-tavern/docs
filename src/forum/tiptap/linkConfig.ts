@@ -1,5 +1,5 @@
 import Link from '@tiptap/extension-link'
-import { isAllowedForumHref } from '~/forum/services/forumLinkPolicy'
+import { isAllowedForumHref } from '~/forum/services/linkPolicy'
 
 export function createLinkExtension(options: { openOnClick?: boolean } = {}) {
   return Link.configure({

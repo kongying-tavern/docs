@@ -1,5 +1,5 @@
-import type ForumAPI from '~/forum/api/forum'
-import { isCategoryLabel } from './forumLabel'
+import type ForumAPI from '~/forum/api/types'
+import { isCategoryLabel } from './label'
 
 const TOPIC_TYPE_LABEL = /^TYP-(?:ANN|BUG|FEAT)$/
 

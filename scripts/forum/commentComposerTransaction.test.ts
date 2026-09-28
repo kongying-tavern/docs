@@ -1,6 +1,6 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type { JSONContent } from '@tiptap/core'
-import type ForumAPI from '../../src/forum/api/forum'
+import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
@@ -8,7 +8,7 @@ import { useImageAttachmentQueue } from '../../src/forum/composables/useImageAtt
 import {
   submitCommentTransaction,
 } from '../../src/forum/services/commentTransaction'
-import { decodeCommentBody, encodeCommentBody } from '../../src/forum/services/forumContentCodec'
+import { decodeCommentBody, encodeCommentBody } from '../../src/forum/services/contentCodec'
 
 function doc(text: string): JSONContent {
   return {

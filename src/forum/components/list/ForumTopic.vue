@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useForumViewMode } from '~/forum/composables/useForumViewMode'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/config'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumCommentItem from '../comment/ForumCommentItem.vue'
 import { useTopicInteraction } from '../composables/useTopicInteraction'

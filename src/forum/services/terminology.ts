@@ -1,5 +1,5 @@
 import type { Searcher as FastSearcher, FullOptions, MatchData } from 'fast-fuzzy'
-import { canonicalizeLanguage } from './forumLanguage'
+import { canonicalizeLanguage } from './language'
 
 type GlossaryLanguage = 'en' | 'ja' | 'zhCN' | 'zhTW'
 

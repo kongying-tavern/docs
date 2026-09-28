@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 
 export interface TopicStatusDefinition {
   id: ForumAPI.TopicStatus

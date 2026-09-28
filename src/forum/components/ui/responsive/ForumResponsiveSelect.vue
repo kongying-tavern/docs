@@ -2,7 +2,7 @@
 import type { ForumSelectOption } from './shared'
 import { useMediaQuery } from '@vueuse/core'
 import { defineAsyncComponent, onMounted } from 'vue'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/config'
 import { prefetchForumUiBranch } from './shared'
 
 const props = defineProps<{

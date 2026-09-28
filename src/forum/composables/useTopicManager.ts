@@ -1,14 +1,14 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
-import type ForumAPI from '~/forum/api/forum'
 import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
+import type ForumAPI from '~/forum/api/types'
 import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'
 import { withAuth } from '@/utils/auth-helpers'
 import {
   replaceEditableTopicLabels,
   toggleTopicLabel,
-} from '~/forum/services/forumTopicLabels'
-import { replaceTopicStatus, topicStatusHidesTopic } from '~/forum/services/forumTopicStatus'
+} from '~/forum/services/topicLabels'
+import { replaceTopicStatus, topicStatusHidesTopic } from '~/forum/services/topicStatus'
 import { toast } from '~/services/telemetry/toast'
 import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from './composeTopicBody'
 import { useForumTopicMutations } from './useForumMutations'

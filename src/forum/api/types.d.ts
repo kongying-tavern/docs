@@ -153,16 +153,16 @@ export namespace ForumAPI {
   }
 
   /** 响应可能缺失分页头，故分页字段可选；消费方以 `?? 0` 兜底 */
-  type PaginatedResult<T> = Partial<PaginationParams> & {
+  export type PaginatedResult<T> = Partial<PaginationParams> & {
     data: T
   }
 
-  interface PaginationParams {
+  export interface PaginationParams {
     total: number
     totalPage: number
   }
 
-  interface Image {
+  export interface Image {
     state: boolean
     message: string
     data?: {
@@ -173,7 +173,7 @@ export namespace ForumAPI {
     }
   }
 
-  interface CreateTopicOption {
+  export interface CreateTopicOption {
     type: ForumAPI.FeedbackTopicType
     title: string
     tags: string[]
@@ -181,13 +181,13 @@ export namespace ForumAPI {
     quotedTopic?: ForumAPI.QuotedTopicReference
   }
 
-  interface FormSubmitData {
+  export interface FormSubmitData {
     body: string
     title: string
     labels?: string
   }
 
-  type Repo = 'Feedback' | 'Blog'
+  export type Repo = 'Feedback' | 'Blog'
 
 }
 

@@ -1,11 +1,11 @@
 /* eslint-disable test/no-import-node-test */
-import type ForumAPI from '../../src/forum/api/forum'
+import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { isTopicTypeChangeConfirmed } from '../../src/forum/api/gitee/issues'
 import { normalizeIssue } from '../../src/forum/api/gitee/normalize'
 import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/forum/composables/composeTopicBody'
-import { decodeTopicBody } from '../../src/forum/services/forumContentCodec'
+import { decodeTopicBody } from '../../src/forum/services/contentCodec'
 import {
   buildTopicCreationLabels,
   getEditableTopicLabels,
@@ -13,7 +13,7 @@ import {
   replaceEditableTopicLabels,
   replaceTopicTypeLabel,
   toggleTopicLabel,
-} from '../../src/forum/services/forumTopicLabels'
+} from '../../src/forum/services/topicLabels'
 import {
   getAvailableTopicStatuses,
   getConclusiveTopicStatuses,
@@ -21,7 +21,7 @@ import {
   getTopicStatus,
   replaceTopicStatus,
   topicStatusHidesTopic,
-} from '../../src/forum/services/forumTopicStatus'
+} from '../../src/forum/services/topicStatus'
 
 test('Topic label edits preserve provider labels and keep one type', () => {
   const labels = ['WEB-FEEDBACK', 'LC-ZH', 'TYP-BUG', 'CATA-DOCS', 'PINNED']

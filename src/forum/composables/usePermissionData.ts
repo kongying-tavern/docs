@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useQuery, useQueryCache } from '@pinia/colada'
 import { computed } from 'vue'
 import { useUserAuthStore } from '@/stores/useUserAuth'
@@ -7,7 +7,7 @@ import feedbackMemberListRaw from '~/_data/feedbackMemberList.json'
 import teamMemberListRaw from '~/_data/teamMemberList.json'
 import { user } from '~/forum/api/gitee'
 import { GITEE_API_CONFIG } from '~/forum/api/gitee/config'
-import { forumKeys } from '~/forum/services/forumQueryContracts'
+import { forumKeys } from '~/forum/services/queryContracts'
 import { forumLog, ForumLogGroup } from '~/forum/utils/forum-logger'
 
 export interface MemberData {

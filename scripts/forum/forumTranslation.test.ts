@@ -2,9 +2,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { matchLanguages } from '../../.vitepress/theme/composables/matchLanguages'
-import { areLanguagesEquivalent } from '../../src/forum/services/forumLanguage'
-import { prepareTerminology } from '../../src/forum/services/forumTerminology'
-import { detectLanguage, translate, translateAuto } from '../../src/forum/services/forumTranslation'
+import { areLanguagesEquivalent } from '../../src/forum/services/language'
+import { prepareTerminology } from '../../src/forum/services/terminology'
+import { detectLanguage, translate, translateAuto } from '../../src/forum/services/translation'
 
 test('automatic translation stays conservative without reliable language evidence', async () => {
   assert.deepEqual(

@@ -6,7 +6,7 @@ import { withBase } from 'vitepress'
 import { markRaw } from 'vue'
 import { getLangPath } from '@/utils'
 import { publishForumLocation } from '~/forum/composables/useForumRoute'
-import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '~/forum/services/forumRoute'
+import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '~/forum/services/route'
 import { AsyncForumRouteView } from '../components/AsyncForumRouteView'
 import { transitionForumBlog, transitionForumRoute } from './forumViewTransition'
 

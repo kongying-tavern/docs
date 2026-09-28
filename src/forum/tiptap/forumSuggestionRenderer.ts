@@ -1,5 +1,5 @@
 import type { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { VueRenderer } from '@tiptap/vue-3'
 import ForumEditorSuggestionList from '~/forum/components/form/ForumEditorSuggestionList.vue'
 

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useRouter } from 'vitepress'
 import { computed } from 'vue'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
-import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
-import { shouldShowQuotedTopicImageBelow } from '~/forum/services/forumTopicQuote'
+import { renderForumTopicSummary } from '~/forum/services/contentRenderer'
+import { shouldShowQuotedTopicImageBelow } from '~/forum/services/topicQuote'
 import ForumImage from '../ui/ForumImage.vue'
 import ForumTopicHeader from './ForumTopicHeader.vue'
 

@@ -1,11 +1,11 @@
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { useQueryCache } from '@pinia/colada'
 import { isString } from 'lodash-es'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { getLangPath } from '@/utils'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
-import { forumKeys } from '~/forum/services/forumQueryContracts'
+import { forumKeys } from '~/forum/services/queryContracts'
 
 export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | string) {
   const router = useRouter()

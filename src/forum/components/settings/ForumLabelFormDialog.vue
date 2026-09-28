@@ -20,7 +20,7 @@ import {
   usesReservedPrefix,
   validateForumLabelColor,
   validateForumLabelName,
-} from '~/forum/services/forumLabelTaxonomy'
+} from '~/forum/services/labelTaxonomy'
 import { toast } from '~/services/telemetry/toast'
 
 const props = defineProps<{

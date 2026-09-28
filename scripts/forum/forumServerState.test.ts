@@ -1,5 +1,5 @@
 /* eslint-disable test/no-import-node-test */
-import type ForumAPI from '../../src/forum/api/forum'
+import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { serializeTopicCommentMutation } from '../../src/forum/composables/useForumMutations'
@@ -13,7 +13,7 @@ import {
   prependTopicToForumPages,
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
-} from '../../src/forum/services/forumQueryContracts'
+} from '../../src/forum/services/queryContracts'
 
 const home = { filter: 'all', sort: 'created', creator: null, q: '', pageSize: 20 } as const
 

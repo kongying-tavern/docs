@@ -1,4 +1,4 @@
-import type ForumAPI from '../forum'
+import type ForumAPI from '../types'
 import { normalizeComment } from './normalize'
 
 export type OfficialUserPredicate = (userId: string | number) => boolean

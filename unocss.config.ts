@@ -11,7 +11,7 @@ import presetAnimations from 'unocss-preset-animations'
 import { presetShadcn } from 'unocss-preset-shadcn'
 import { shadcnPreflights, shadcnRules } from './.vitepress/theme/unocss/index.ts'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
-import { FORUM_MOBILE_BREAKPOINT_PX } from './src/forum/services/forumConfig'
+import { FORUM_MOBILE_BREAKPOINT_PX } from './src/forum/services/config'
 
 export default defineConfig({
   blocklist: [

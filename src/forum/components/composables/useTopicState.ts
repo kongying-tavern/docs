@@ -1,5 +1,5 @@
 import type { ForumTranslatorRef } from './useTopicTranslationMenu'
-import type ForumAPI from '~/forum/api/forum'
+import type ForumAPI from '~/forum/api/types'
 import { isArray } from 'lodash-es'
 import { computed, useTemplateRef } from 'vue'
 import { useTopicTranslationMenu } from './useTopicTranslationMenu'

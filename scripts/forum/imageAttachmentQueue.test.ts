@@ -1,10 +1,10 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
-import type ForumAPI from '../../src/forum/api/forum'
+import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import { useImageAttachmentQueue } from '../../src/forum/composables/useImageAttachmentQueue'
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/forum/services/config'
 import { serializeUploadedAttachments, validateImageBatch } from '../../src/forum/services/form/imageAttachment'
-import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/forum/services/forumConfig'
 
 function file(name: string, type = 'image/png', size = 16): File {
   return new File([new Uint8Array(size)], name, { type })

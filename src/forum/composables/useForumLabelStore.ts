@@ -6,7 +6,7 @@ import {
   classifyForumLabel,
   groupForumLabels,
   toForumLabelRow,
-} from '~/forum/services/forumLabelTaxonomy'
+} from '~/forum/services/labelTaxonomy'
 
 /**
  * Feedback 仓库标签的会话级共享状态：一次拉取全站复用（apiCall 自带
