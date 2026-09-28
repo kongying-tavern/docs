@@ -1,20 +1,30 @@
 <script setup lang="ts">
+import type { ButtonVariants } from '@/components/ui/button'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
-import { publishTopic } from '../utils/forumUi'
+import { preloadForumPublishForm, publishTopic } from '../utils/forumUi'
 import { FORM_HASH } from './publish-topic-form/config'
 
-const props = defineProps<{ label?: string }>()
+const props = withDefaults(defineProps<{
+  label?: string
+  variant?: ButtonVariants['variant']
+  /** 侧栏等紧凑场景默认在移动端隐藏；空态等整页场景需关闭 */
+  hideOnMobile?: boolean
+}>(), {
+  variant: 'default',
+  hideOnMobile: true,
+})
 
 const { frontmatter } = useData()
 const { message } = useLocalized()
@@ -77,42 +87,42 @@ const selectPublishTopicMenu = computed(() => {
 </script>
 
 <template>
-  <HoverCard v-if="isLoggedIn">
-    <HoverCardTrigger as-child>
+  <!-- 用 DropdownMenu 而非 HoverCard：菜单项必须键盘可达（HoverCard 失焦即关，内容永远拿不到焦点） -->
+  <DropdownMenu v-if="isLoggedIn && (frontmatter.publishTopic ?? true)">
+    <DropdownMenuTrigger as-child>
       <Button
-        v-if="frontmatter.publishTopic ?? true"
-        variant="default"
-        class="vp-btn max-sm:hidden"
-        @click="handleButtonClick"
+        :variant="variant"
+        class="vp-btn" :class="[{ 'max-sm:hidden': hideOnMobile }]"
+        @mouseenter="preloadForumPublishForm"
+        @focus="preloadForumPublishForm"
       >
         {{ buttonText }}
       </Button>
-    </HoverCardTrigger>
-    <HoverCardContent
+    </DropdownMenuTrigger>
+    <DropdownMenuContent
       align="end"
-      side="bottom"
-      class="p-2 flex w-fit"
+      :side-offset="8"
+      class="p-1 flex w-fit"
     >
-      <Button
+      <DropdownMenuItem
         v-for="{ label: menuLabel, icon, action } in selectPublishTopicMenu"
         :key="menuLabel"
-        variant="ghost"
-        class="flex flex-col h-fit w-64px"
-        @click="action"
+        class="px-0 py-2 flex-col gap-1 h-fit w-64px justify-center"
+        @select="action"
       >
         <span
           class="icon-btn"
           :class="icon"
         />
         {{ menuLabel }}
-      </Button>
-    </HoverCardContent>
-  </HoverCard>
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
 
   <Button
     v-if="!isLoggedIn && (frontmatter.publishTopic ?? true)"
-    variant="default"
-    class="vp-btn max-sm:hidden"
+    :variant="variant"
+    class="vp-btn" :class="[{ 'max-sm:hidden': hideOnMobile }]"
     @click="handleButtonClick"
   >
     {{ buttonText }}
