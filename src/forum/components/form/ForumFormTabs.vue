@@ -6,7 +6,7 @@ import { computed, unref } from 'vue'
 import { DialogHeader } from '@/components/ui/dialog'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
 interface Props {
   modelValue: TopicFormData['type']

@@ -1,7 +1,7 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { useTokenManager } from '../../.vitepress/theme/composables/useTokenManager'
+import { useTokenManager } from '../../src/forum/composables/auth/useTokenManager'
 
 test('replacing the main access token invalidates its SSO token', () => {
   const manager = useTokenManager()

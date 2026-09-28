@@ -11,12 +11,12 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { getGiteeMessagesHref } from '~/constants/site'
 import { useForumUserProfileQuery } from '~/forum/composables/useForumQueries'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
 import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/config'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
 import ForumUserMobileDrawer from './ForumUserMobileDrawer.vue'

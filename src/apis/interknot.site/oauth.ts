@@ -1,5 +1,5 @@
 import type { INTER_KNOT } from './api'
-import type { SSOAuth } from '@/stores/useUserAuth'
+import type { SSOAuth } from '~/forum/stores/auth/useUserAuth'
 import type { AuthResult } from '~/services/authErrors'
 import { catchError } from '~/services/apiUtils'
 import { createAuthError } from '~/services/authErrors'

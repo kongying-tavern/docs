@@ -3,7 +3,7 @@ import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
 import type ForumAPI from '~/forum/api/types'
 import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'
-import { withAuth } from '@/utils/auth-helpers'
+import { withAuth } from '~/forum/composables/auth/auth-helpers'
 import {
   replaceEditableTopicLabels,
   toggleTopicLabel,

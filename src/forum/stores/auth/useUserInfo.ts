@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { onMounted, ref, watch } from 'vue'
 
 import { getAuthorizedUser } from '~/forum/api/gitee/user'
-import { useUserAuthStore } from './useUserAuth'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 
 interface FingerprintAgain {
   visitorId: string

@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { useRoute, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { reactions } from '~/apis/interknot.site'
-import { useUserInfoStore } from './useUserInfo'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
 export const useReactionStore = defineStore('reaction', () => {
   const userInfo = useUserInfoStore()

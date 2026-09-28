@@ -3,9 +3,9 @@ import type { SettingsNavigationItem, SettingsSectionId } from '~/composables/us
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import useLogin from '@/hooks/useLogin'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
+import useLogin from '~/forum/hooks/useLogin'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import SettingsNavigation from './SettingsNavigation.vue'
 
 withDefaults(defineProps<{

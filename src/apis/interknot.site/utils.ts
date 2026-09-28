@@ -1,6 +1,6 @@
 import type { INTER_KNOT } from './api'
-import type { SSOAuth } from '@/stores/useUserAuth'
-import { log, LogGroup } from '@/utils/auth-logger'
+import type { SSOAuth } from '~/forum/stores/auth/useUserAuth'
+import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
 
 export const ASSETS_URL_PREFIX = 'https://webp.assets.interknot.site/'
 

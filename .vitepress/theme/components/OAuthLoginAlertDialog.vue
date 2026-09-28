@@ -12,9 +12,9 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { useHashChecker } from '@/hooks/useHashChecker'
-import useLogin from '@/hooks/useLogin'
-import { useUserAuthStore } from '@/stores/useUserAuth'
+import useLogin from '~/forum/hooks/useLogin'
 import { clearLoginIntent } from '~/forum/services/loginIntent'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 
 const userAuth = useUserAuthStore()
 const { theme } = useData()

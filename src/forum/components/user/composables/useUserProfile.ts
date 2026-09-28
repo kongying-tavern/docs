@@ -2,11 +2,11 @@ import type { MaybeRefOrGetter } from 'vue'
 import { computed, ref, toValue, watch } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { getGiteeMessagesHref } from '~/constants/site'
 import { useForumUserProfileQuery } from '~/forum/composables/useForumQueries'
 import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
 export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   const username = computed(() => toValue(usernameSource))

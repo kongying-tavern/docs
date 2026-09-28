@@ -4,7 +4,6 @@ import type { FORUM } from '~/forum/components/types'
 import type { TopicStatusDefinition } from '~/forum/services/topicStatus'
 import type { CustomConfig } from '~/forum/types'
 import { computed, ref, toValue } from 'vue'
-import { useUserAuthStore } from '@/stores/useUserAuth'
 import { issues } from '~/forum/api/gitee'
 import { useForumPersonalState } from '~/forum/composables/useForumPersonalState'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
@@ -16,6 +15,7 @@ import {
   groupTopicStatuses,
   TOPIC_STATUS_LABEL,
 } from '~/forum/services/topicStatus'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { toast } from '~/services/telemetry/toast'
 import { useReactionStats } from './useReactionStats'
 import { useTopicReactionState } from './useTopicsReaction'

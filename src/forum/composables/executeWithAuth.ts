@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import type { CustomConfig } from '~/forum/types'
-import { withAuth } from '@/utils/auth-helpers'
+import { withAuth } from '~/forum/composables/auth/auth-helpers'
 import { catchError } from '~/services/apiUtils'
 import { toast } from '~/services/telemetry/toast'
 

@@ -2,8 +2,6 @@ import type ForumAPI from '~/forum/api/types'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { createGlobalState } from '@vueuse/core'
 import { computed } from 'vue'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import {
   emptyForumPersonalState,
   recordParticipation as recordParticipationState,
@@ -13,6 +11,8 @@ import {
 } from '~/forum/services/personalState'
 import { loadForumPersonalState, updateForumPersonalState } from '~/forum/services/personalStateRepository'
 import { forumKeys } from '~/forum/services/queryContracts'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
 export const useForumPersonalState = createGlobalState(() => {
   const auth = useUserAuthStore()

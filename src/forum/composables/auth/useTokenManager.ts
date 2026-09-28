@@ -1,9 +1,9 @@
-import type { LocalAuth, SSOAuth, SSOLocaleAuth } from '../stores/useUserAuth'
 import type { Deferred } from '~/composables/createDeferred'
+import type { LocalAuth, SSOAuth, SSOLocaleAuth } from '~/forum/stores/auth/useUserAuth'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { createDeferred } from '~/composables/createDeferred'
-import { log, LogGroup } from '../utils/auth-logger'
+import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
 
 const USERAUTH_KEY = 'USER-AUTH'
 const SSO_USERAUTH_KEY = 'SSO-USER-AUTH'

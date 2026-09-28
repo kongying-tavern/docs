@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ProgressStep } from './ScrollIsland.vue'
 import { computed } from 'vue'
-import useLogin from '@/hooks/useLogin'
+import useLogin from '~/forum/hooks/useLogin'
 import ScrollIsland from './ScrollIsland.vue'
 
 const { authProgress } = useLogin()

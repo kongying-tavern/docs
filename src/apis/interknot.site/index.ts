@@ -1,6 +1,6 @@
 import type { AfterResponseHook, BeforeRequestHook, BeforeRetryHook } from 'ky'
 import ky, { isHTTPError } from 'ky'
-import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import { getAuthSession } from '~/services/authSession'
 import { reportRequestFailure } from '~/services/telemetry/request'
 import * as oauth from './oauth'

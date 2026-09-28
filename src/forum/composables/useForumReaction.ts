@@ -4,8 +4,6 @@ import type { TopicReaction } from '~/forum/services/reaction'
 import { useMutation, useQuery, useQueryCache, useQueryState } from '@pinia/colada'
 import { computed, reactive, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
 import { reactions } from '~/apis/interknot.site'
 import { forumKeys } from '~/forum/services/queryContracts'
 import {
@@ -17,6 +15,8 @@ import {
   reactionEnvironmentForOrigin,
   resolveReactionViewer,
 } from '~/forum/services/reaction'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import { OpsEvents, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'
 

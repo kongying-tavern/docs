@@ -41,7 +41,6 @@ import {
 } from '@/components/ui/drawer'
 import { useHashChecker } from '@/hooks/useHashChecker'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { isPhoneBindingRequiredError } from '~/forum/api/gitee'
 import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
@@ -56,6 +55,7 @@ import {
   QUOTED_TOPIC_TYPE_PARAM,
   readQuotedTopicRequest,
 } from '~/forum/services/topicQuote'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'
 import { formatMessage } from '~/utils/formatMessage'

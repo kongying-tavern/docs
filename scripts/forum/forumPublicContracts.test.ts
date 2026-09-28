@@ -515,8 +515,8 @@ test('image preview waits for real images and animates every chrome surface befo
 
 test('authorization remains the default while password login is available only by its direct hash', async () => {
   const [loginSource, authStoreSource, dialogSource, oauthDialogSource, layoutSource, passwordApiSource, zhForumSource] = await Promise.all([
-    readFile(new URL('../../.vitepress/theme/hooks/useLogin.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../.vitepress/theme/stores/useUserAuth.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/hooks/useLogin.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/stores/auth/useUserAuth.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/components/LoginAlertDialog.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/components/OAuthLoginAlertDialog.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/layouts/Layout.vue', import.meta.url), 'utf8'),

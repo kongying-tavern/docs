@@ -20,9 +20,9 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { useHashChecker } from '@/hooks/useHashChecker'
-import useLogin from '@/hooks/useLogin'
-import { useUserAuthStore } from '@/stores/useUserAuth'
 import { getLangPath } from '@/utils'
+import useLogin from '~/forum/hooks/useLogin'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 
 const userAuth = useUserAuthStore()
 const { localeIndex, theme } = useData()

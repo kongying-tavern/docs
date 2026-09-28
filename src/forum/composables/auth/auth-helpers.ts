@@ -2,8 +2,8 @@
  * 认证相关的工具函数，消除重复的验证逻辑
  */
 
-import { useUserAuthStore } from '@/stores/useUserAuth'
-import { useUserInfoStore } from '@/stores/useUserInfo'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import { AuthError, AuthErrorType } from '~/services/authErrors'
 import { toast } from '~/services/telemetry/toast'
 

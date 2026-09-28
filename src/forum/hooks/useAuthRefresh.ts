@@ -1,10 +1,10 @@
-import type { useTokenManager } from './useTokenManager'
+import type { useTokenManager } from '~/forum/composables/auth/useTokenManager'
 import { isHTTPError } from 'ky'
 import { ref, watch } from 'vue'
 import { toCamelCaseObject } from '@/utils'
 import { oauth } from '~/forum/api/gitee'
+import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
 import { AuthError, createAuthError } from '~/services/authErrors'
-import { log, LogGroup } from '../utils/auth-logger'
 
 const TOKEN_REFRESH_BASE_RETRY_INTERVAL_MS = 5000
 const TOKEN_REFRESH_MAX_RETRIES = 3
