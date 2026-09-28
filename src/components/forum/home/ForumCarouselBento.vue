@@ -8,6 +8,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { getSiteHref } from '~/constants/site'
+import ForumContextMenu from '../ui/ForumContextMenu.vue'
 import BentoGridItem from './ForumBento.vue'
 
 const props = defineProps<{
@@ -63,32 +64,59 @@ const sortedList = computed(() => {
   >
     <CarouselContent class="-ml-1">
       <CarouselItem
-        v-for="topic in [...sortedList, ...presetList]"
+        v-for="topic in sortedList"
         :key="topic.id"
+        class="pl-4 lg:basis-1/4 md:basis-1/2"
+      >
+        <ForumContextMenu :topic-data="topic">
+          <BentoGridItem
+            class="border border-[var(--vp-c-divider)] border-solid"
+            :to="topicHref(String(topic.id), null)"
+          >
+            <template #icon>
+              <span class="i-lucide-pin icon-btn size-6" />
+            </template>
+
+            <template #title>
+              <h4 class="line-clamp-1">
+                {{ topic.title }}
+              </h4>
+            </template>
+
+            <template #description>
+              <User
+                size="xs"
+                :name="topic.user.username"
+                :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
+              />
+            </template>
+          </BentoGridItem>
+        </ForumContextMenu>
+      </CarouselItem>
+      <CarouselItem
+        v-for="preset in presetList"
+        :key="preset.id"
         class="pl-4 lg:basis-1/4 md:basis-1/2"
       >
         <BentoGridItem
           class="border border-[var(--vp-c-divider)] border-solid"
-          :to="'relativeLink' in topic ? withBase(getLangPath(localeIndex) + topic.relativeLink) : topicHref(String(topic.id), null)"
+          :to="withBase(getLangPath(localeIndex) + preset.relativeLink)"
         >
           <template #icon>
-            <span
-              class="icon-btn size-6"
-              :class="'icon' in topic ? topic.icon : 'i-lucide-pin'"
-            />
+            <span class="icon-btn size-6" :class="preset.icon" />
           </template>
 
           <template #title>
             <h4 class="line-clamp-1">
-              {{ topic.title }}
+              {{ preset.title }}
             </h4>
           </template>
 
           <template #description>
             <User
               size="xs"
-              :name="topic.user.username"
-              :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
+              :name="preset.user.username"
+              :avatar="{ src: preset.user.avatar, alt: preset.user.login }"
             />
           </template>
         </BentoGridItem>
