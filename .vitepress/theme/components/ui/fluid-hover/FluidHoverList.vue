@@ -37,8 +37,7 @@ useFluidHoverIndicator(container, indicator, { motion: props.motion })
     <div
       ref="indicator"
       aria-hidden="true"
-      class="bg-accent h-0 w-0 pointer-events-none left-0 top-0 absolute z-0"
-      :class="indicatorClass"
+      :class="cn('pointer-events-none absolute left-0 top-0 z-0 h-0 w-0 rounded-lg bg-accent', props.indicatorClass)"
     />
     <slot />
   </div>
