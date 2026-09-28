@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
-import { useForumSearchToken } from '~/forum/composables/useForumSearchToken'
+import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 
 const props = defineProps<{ loading: boolean, total: number }>()
 const { list, clearSearch } = useForumRoute()

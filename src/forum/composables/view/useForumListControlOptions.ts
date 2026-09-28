@@ -2,8 +2,8 @@ import type { FORUM } from '~/forum/components/types'
 import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/route'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { FORUM_VIEW_MODES, getViewModeIconClass } from '~/forum/composables/useForumViewMode'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
+import { FORUM_VIEW_MODES, getViewModeIconClass } from '~/forum/composables/state/useForumViewMode'
 
 export function useForumListControlOptions() {
   const { message } = useLocalized()

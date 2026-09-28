@@ -5,11 +5,11 @@ import type { TopicStatusDefinition } from '~/forum/services/topicStatus'
 import type { CustomConfig } from '~/forum/types'
 import { computed, ref, toValue } from 'vue'
 import { issues } from '~/forum/api/gitee'
-import { useForumPersonalState } from '~/forum/composables/useForumPersonalState'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
+import { useForumPersonalState } from '~/forum/composables/data/useForumPersonalState'
+import { useTopicManager } from '~/forum/composables/state/useTopicManager'
+import { useTopicStatusEditor } from '~/forum/composables/state/useTopicStatusEditor'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
-import { useTopicManager } from '~/forum/composables/useTopicManager'
-import { useTopicStatusEditor } from '~/forum/composables/useTopicStatusEditor'
 import {
   getSelectableTopicStatuses,
   groupTopicStatuses,
@@ -17,9 +17,9 @@ import {
 } from '~/forum/services/topicStatus'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { toast } from '~/services/telemetry/toast'
-import { useReactionStats } from './useReactionStats'
-import { useTopicReactionState } from './useTopicsReaction'
-import { useTopicTagsEditor } from './useTopicTagsEditor'
+import { useReactionStats } from '../data/useReactionStats'
+import { useTopicReactionState } from '../data/useTopicsReaction'
+import { useTopicTagsEditor } from '../state/useTopicTagsEditor'
 
 // @unocss-include
 export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {

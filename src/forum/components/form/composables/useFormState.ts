@@ -3,7 +3,7 @@ import { refAutoReset } from '@vueuse/core'
 import { useForm } from 'vee-validate'
 import { computed, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import {
   createDefaultTopicDraft,
   readTopicDraft,

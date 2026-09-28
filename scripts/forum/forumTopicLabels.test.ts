@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { isTopicTypeChangeConfirmed } from '../../src/forum/api/gitee/issues'
 import { normalizeIssue } from '../../src/forum/api/gitee/normalize'
-import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/forum/composables/composeTopicBody'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/forum/composables/util/composeTopicBody'
 import { decodeTopicBody } from '../../src/forum/services/contentCodec'
 import {
   buildTopicCreationLabels,

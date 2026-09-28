@@ -4,7 +4,7 @@ import type ForumAPI from '~/forum/api/types'
 import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '~/forum/services/queryContracts'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { issues } from '~/forum/api/gitee'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import {
   forumKeys,
   forumMutationPolicies,

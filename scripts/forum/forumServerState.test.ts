@@ -2,7 +2,7 @@
 import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { serializeTopicCommentMutation } from '../../src/forum/composables/useForumMutations'
+import { serializeTopicCommentMutation } from '../../src/forum/composables/data/useForumMutations'
 import {
   collectForumTopics,
   flattenForumPages,

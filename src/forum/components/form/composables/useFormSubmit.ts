@@ -4,8 +4,8 @@ import type { TopicFormData } from '~/forum/services/form/validation'
 import { ref } from 'vue'
 import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
 import { uploadImg } from '~/apis/interknot.site/upload'
-import { useImageAttachmentQueue } from '~/forum/composables/useImageAttachmentQueue'
-import { useSubmitTopic } from '~/forum/composables/useSubmitTopic'
+import { useSubmitTopic } from '~/forum/composables/data/useSubmitTopic'
+import { useImageAttachmentQueue } from '~/forum/composables/view/useImageAttachmentQueue'
 import { submitTopicFormTransaction } from '~/forum/services/form/topicFormTransaction'
 
 export function useFormSubmit() {

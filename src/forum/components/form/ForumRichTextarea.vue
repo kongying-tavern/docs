@@ -18,7 +18,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import { useSitePreferences } from '~/composables/useSitePreferences'
-import { useForumImageDropZone } from '~/forum/composables/useForumImageDropZone'
+import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
 import { createForumContentExtensions } from '~/forum/services/tiptapExtensions'
 import ForumImageUpload from './ForumImageUpload.vue'
 

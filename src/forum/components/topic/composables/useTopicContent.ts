@@ -1,7 +1,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
-import { useForumViewMode } from '~/forum/composables/useForumViewMode'
-import { useTextCollapse } from '~/forum/composables/useTextCollapse'
+import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
+import { useTextCollapse } from '~/forum/composables/state/useTextCollapse'
 
 export function useTopicContent(topic: ForumAPI.Topic | ForumAPI.Post) {
   const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)

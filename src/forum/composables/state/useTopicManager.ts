@@ -10,8 +10,8 @@ import {
 } from '~/forum/services/topicLabels'
 import { replaceTopicStatus, topicStatusHidesTopic } from '~/forum/services/topicStatus'
 import { toast } from '~/services/telemetry/toast'
-import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from './composeTopicBody'
-import { useForumTopicMutations } from './useForumMutations'
+import { useForumTopicMutations } from '../data/useForumMutations'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from '../util/composeTopicBody'
 
 const pendingOperations = new Map<string, Promise<unknown>>()
 

@@ -46,7 +46,7 @@ import { isPhoneBindingRequiredError } from '~/forum/api/gitee'
 import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
-import { useForumTopicQuery } from '~/forum/composables/useForumQueries'
+import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import {
   clearQuotedTopicRequest,

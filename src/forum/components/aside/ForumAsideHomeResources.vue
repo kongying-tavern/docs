@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { data as allBlogPosts } from '~/_data/posts.data'
-import { useRecentBlogUpdates } from '~/forum/composables/useRecentBlogUpdates'
+import { useRecentBlogUpdates } from '~/forum/composables/data/useRecentBlogUpdates'
 import ForumAsideRecentUpdates from './ForumAsideRecentUpdates.vue'
 import ForumAsideRecommendedDocs from './ForumAsideRecommendedDocs.vue'
 import ForumAsideTagFilter from './ForumAsideTagFilter.vue'

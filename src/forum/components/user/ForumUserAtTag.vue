@@ -2,8 +2,8 @@
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 
 const props = defineProps<{
   user: ForumAPI.User

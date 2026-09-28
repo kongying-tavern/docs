@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/navigation-menu'
 import Separator from '@/components/ui/separator/Separator.vue'
 import ForumRoleBadge from '~/forum/components/ui/ForumRoleBadge.vue'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import useLogin from '~/forum/hooks/useLogin'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import UserAvatar from './UserAvatar.vue'

@@ -12,8 +12,8 @@ import {
 } from '@/components/ui/dialog'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumReaction } from '~/forum/composables/useForumReaction'
-import { useReactionStats } from '~/forum/composables/useReactionStats'
+import { useForumReaction } from '~/forum/composables/data/useForumReaction'
+import { useReactionStats } from '~/forum/composables/data/useReactionStats'
 
 const { open, target } = useReactionStats()
 const { message } = useLocalized()

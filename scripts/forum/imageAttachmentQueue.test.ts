@@ -2,7 +2,7 @@
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { useImageAttachmentQueue } from '../../src/forum/composables/useImageAttachmentQueue'
+import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/forum/services/config'
 import { serializeUploadedAttachments, validateImageBatch } from '../../src/forum/services/form/imageAttachment'
 

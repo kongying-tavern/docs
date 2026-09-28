@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useTopicsReaction } from '~/forum/composables/useTopicsReaction'
+import { useTopicsReaction } from '~/forum/composables/data/useTopicsReaction'
 
 const props = withDefaults(defineProps<{
   topicId: string

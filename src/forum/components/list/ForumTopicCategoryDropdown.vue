@@ -2,7 +2,7 @@
 import type { ForumTopicType } from '~/forum/services/route'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumListControlOptions } from '~/forum/composables/useForumListControlOptions'
+import { useForumListControlOptions } from '~/forum/composables/view/useForumListControlOptions'
 import ForumPillSelect from './ForumPillSelect.vue'
 
 const props = defineProps<{ topicType: ForumTopicType }>()

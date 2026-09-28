@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import type { ForumSearchFacet, ForumSearchQuery } from '~/forum/services/searchQuery'
 import { computed, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumSearchToken } from '~/forum/composables/useForumSearchToken'
+import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 import { clearStructuredSearchFilters, mergeTypedSearchFacet } from '~/forum/services/searchInput'
 import {
   parseForumSearchQuery,

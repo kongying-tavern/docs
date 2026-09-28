@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useFollowUser } from '~/forum/composables/useFollowUser'
+import { useFollowUser } from '~/forum/composables/data/useFollowUser'
 
 const { user } = defineProps<{
   user: string

@@ -4,7 +4,7 @@ import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
-import { useImageAttachmentQueue } from '../../src/forum/composables/useImageAttachmentQueue'
+import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
 import {
   submitCommentTransaction,
 } from '../../src/forum/services/commentTransaction'
@@ -155,7 +155,7 @@ test('success clears exactly once and exposes the direct mutation result', async
 test('create/delete mutations invalidate comments, Topic detail, and list counts without shadow state', async () => {
   const commentState = await readFile(new URL('../../src/forum/components/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8')
   const deleteAction = await readFile(new URL('../../src/forum/components/comment/ForumCommentFooter.vue', import.meta.url), 'utf8')
-  const mutations = await readFile(new URL('../../src/forum/composables/useForumMutations.ts', import.meta.url), 'utf8')
+  const mutations = await readFile(new URL('../../src/forum/composables/data/useForumMutations.ts', import.meta.url), 'utf8')
 
   assert.match(commentState, /useForumCommentsQuery/)
   assert.equal(commentState.includes('userSubmittedComment'), false)

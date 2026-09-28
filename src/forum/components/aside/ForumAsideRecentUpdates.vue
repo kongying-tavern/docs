@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { data as allBlogPosts } from '~/_data/posts.data'
-import { useRecentBlogUpdates } from '~/forum/composables/useRecentBlogUpdates'
+import { useRecentBlogUpdates } from '~/forum/composables/data/useRecentBlogUpdates'
 import { describeBlogUpdate } from '~/forum/services/blogUpdateFeed'
 import ForumTime from '../ui/ForumTime.vue'
 

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { SETTINGS_SECTION_DEFINITIONS } from '~/config/settingsOptions'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
 import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 

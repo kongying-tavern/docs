@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'

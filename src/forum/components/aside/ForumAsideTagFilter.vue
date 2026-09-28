@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumLabelStore } from '~/forum/composables/useForumLabelStore'
+import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useForumRoute } from '~/forum/composables/useForumRoute'
 import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/forum/services/getTopicTagMap'

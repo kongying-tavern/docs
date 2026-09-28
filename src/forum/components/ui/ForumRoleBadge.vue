@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useRuleChecks } from '~/forum/composables/useRuleChecks'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { isAuthor } from '~/forum/services/isAuthor'
 
 const { authorId = null, type = null } = defineProps<{

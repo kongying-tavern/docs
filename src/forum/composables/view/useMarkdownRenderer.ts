@@ -1,7 +1,7 @@
 import MarkdownIt from 'markdown-it'
 import { ref } from 'vue'
 import { stripMarkdownImages } from '~/forum/services/contentCodec'
-import { markdownConfig } from '../../../.vitepress/config/markdown'
+import { markdownConfig } from '../../../../.vitepress/config/markdown'
 
 /** Matches HTML comments in trusted repository-authored Markdown previews. */
 const HTML_COMMENT_REGEX = /<!--[\s\S]*?(?:-->|--!>|$)/g

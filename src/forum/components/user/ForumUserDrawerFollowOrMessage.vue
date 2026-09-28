@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeMessagesHref } from '~/constants/site'
-import { useFollowUser } from '~/forum/composables/useFollowUser'
+import { useFollowUser } from '~/forum/composables/data/useFollowUser'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
 const { user } = defineProps<{

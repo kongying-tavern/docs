@@ -1,6 +1,6 @@
 import { computed, onMounted, ref } from 'vue'
-import { useForumLabelStore } from '~/forum/composables/useForumLabelStore'
-import { useTopicTagDisplay } from '~/forum/composables/useTopicTagDisplay'
+import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
+import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
 import { addTagToModel, removeTagFromModel } from '~/forum/services/form/topicTagModel'
 
 export interface UseTagsInputOptions {
