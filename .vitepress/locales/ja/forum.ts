@@ -80,14 +80,14 @@ const forum: CustomConfig['forum'] = {
     author: '作成者',
     officialAt: '@空蛍酒場',
     showMore: 'もっと見る',
-    previewTitle: 'トピックプレビュー',
+    previewTitle: 'フィードバックプレビュー',
     backToFeedbackForum: 'フォーラムに戻る',
     quote: {
-      action: 'トピックを引用',
-      quoted: '引用トピック',
+      action: 'フィードバックを引用',
+      quoted: '引用フィードバック',
       remove: '引用を削除',
-      loading: '引用トピックを読み込み中',
-      unavailable: '引用トピックを表示できません',
+      loading: '引用フィードバックを読み込み中',
+      unavailable: '引用フィードバックを表示できません',
       invalid: '引用リンクが無効なため、通常のフィードバックフォームを開きました',
       retry: '再試行',
       countSyncFailed: 'フィードバックは公開されましたが、引用数を更新できませんでした',
@@ -132,7 +132,7 @@ const forum: CustomConfig['forum'] = {
       },
       modifyTags: {
         text: 'タグを編集',
-        title: 'トピックタグを編集（#{id}）',
+        title: 'フィードバックタグを編集（#{id}）',
         success: 'フィードバックのタグを変更しました',
         fail: 'フィードバックのタグを変更できませんでした',
       },
@@ -151,7 +151,7 @@ const forum: CustomConfig['forum'] = {
         fail: '注目マークを更新できませんでした',
       },
       pinTopic: {
-        pin: 'トピックを固定',
+        pin: 'フィードバックを固定',
         unpin: '固定を解除',
         success: 'フィードバックの固定状態を変更しました',
         fail: 'フィードバックの固定状態を変更できませんでした',
@@ -170,7 +170,7 @@ const forum: CustomConfig['forum'] = {
       },
       reactionStats: {
         text: '統計を見る',
-        title: 'トピック統計（#{id}）',
+        title: 'フィードバック統計（#{id}）',
         commentTitle: 'コメント統計（#{id}）',
         views: '閲覧数',
         loading: '統計を読み込み中…',
@@ -328,17 +328,17 @@ const forum: CustomConfig['forum'] = {
       noTags: '関連項目の検索に使えるタグがありません。',
       empty: '関連するフィードバックはまだありません。',
       error: '関連フィードバックを読み込めませんでした。',
-      retry: '再読み込み',
+      retry: '再試行',
     },
     timeline: {
       title: 'ステータス履歴',
-      created: 'トピックを作成',
+      created: 'フィードバックを作成',
       statusSet: '対応状況を {status} に設定',
       statusChanged: '対応状況を {from} から {to} に変更',
       statusCleared: '対応状況を解除',
       stateChanged: 'ステータスを {state} に変更',
       error: 'ステータス履歴を読み込めませんでした。',
-      retry: '再読み込み',
+      retry: '再試行',
     },
     meta: {
       links: [
@@ -361,7 +361,7 @@ const forum: CustomConfig['forum'] = {
   comment: {
     comment: 'コメント',
     commentSuccess: 'コメントを投稿しました',
-    commentFail: 'コメントを送信できませんでした',
+    commentFail: 'コメントを投稿できませんでした',
     commentAfterLogin: '%login してコメントしてください (・ω・)',
     commentCount: 'コメント',
     placeholder: 'コメントを入力してください〜',
@@ -443,13 +443,14 @@ const forum: CustomConfig['forum'] = {
     },
     tagsInput: {
       searchTags: 'タグを検索',
+      loading: 'タグを読み込み中…',
       maxTagsLimit: 'タグの上限に達しました',
       noResultsFound: '該当なし',
       loadFailed: 'タグを読み込めませんでした。もう一度お試しください。',
-      retry: '再読み込み',
+      retry: '再試行',
     },
     feedbackForm: {
-      submit: 'フィードバックを送信',
+      submit: 'フィードバックを投稿',
       keepDraftTitle: '今回の編集内容を保存しますか？',
       keepDraftDescription: '保存すると、次回フィードバックフォームを開いたときに編集を続けられます。',
       discardDraft: '保存しない',
@@ -459,6 +460,7 @@ const forum: CustomConfig['forum'] = {
       publishing: 'フィードバックを投稿中…',
       success: 'フィードバックを投稿しました',
       uploadFailed: '画像をアップロードできませんでした。確認して再試行してください。',
+      uploadFailedShort: 'アップロード失敗',
       publishFailed: '投稿できませんでした。入力内容は保存されています。',
       phoneBindingRequired: 'Gitee アカウントに電話番号が登録されていません。登録後にフィードバックを再送信してください。',
       returnToForm: 'フォームに戻る',
@@ -478,9 +480,9 @@ const forum: CustomConfig['forum'] = {
       formatItalic: '斜体を切り替え',
       formatStrike: '取り消し線を切り替え',
     },
-    publishSuccess: 'フィードバックを送信しました',
-    publishFail: 'フィードバックを送信できませんでした',
-    publishLoading: '送信中…',
+    publishSuccess: 'フィードバックを投稿しました',
+    publishFail: 'フィードバックを投稿できませんでした',
+    publishLoading: '投稿中…',
     form: {
       title: {
         text: 'タイトル',
@@ -497,7 +499,7 @@ const forum: CustomConfig['forum'] = {
       upload: {
         text: '画像をアップロード',
         tip: '%range 枚までのスクリーンショットをアップロード (最大 %size MB)',
-        fail: '%filename アップロード失敗',
+        fail: '%filename のアップロードに失敗しました',
         violation:
           'フィードバックに関連する画像のみアップロードしてください。',
         paste: {
@@ -542,7 +544,7 @@ const forum: CustomConfig['forum'] = {
     serverNoResponse: 'サーバーが応答していません。後でもう一度お試しください',
     noResponse: '応答がありません。後でもう一度お試しください',
     networkRequestFailed: 'ネットワークリクエストが失敗しました。ローカルデータを表示しています',
-    cannotLoadData: 'データを読み込めません',
+    loadFailedHint: 'しばらくしてから再試行するか、ネットワーク接続を確認してください。',
     sortDataLoadFailed: 'ソートデータの読み込みに失敗しました',
     cannotDoToSelf: '自分に対してはこの操作を実行できません',
     followFailed: 'フォローに失敗しました。後でもう一度お試しください',
@@ -554,16 +556,15 @@ const forum: CustomConfig['forum'] = {
     traceIdWithMessage: '{message}（エラーID：{traceId}）',
   },
   telemetry: {
-    description: '有効にすると、匿名のエラー・操作イベントがセッション録画とともに送信され、問題の調査に役立てられます（入力内容は送信されません）。無効にすると Clarity Cookie とこのサイトのカスタム診断イベントは停止しますが、Clarity による限定的な Cookie を使わない計測は継続する場合があります。',
+    description: 'オンにすると、エラーと利用状況を匿名で送信し、問題の発見と修正に役立てます。入力内容は含まれません。',
     enable: '診断情報の送信を有効にする',
-    stateDisabled: 'Cookie とこのサイトのカスタム診断イベントは無効ですが、Clarity による限定的な Cookie を使わない計測は継続する場合があります。',
+    stateDisabled: '診断情報の送信はオフです。',
     sessionId: 'セッションID',
     copySessionId: 'セッションIDをコピー',
     copySuccess: 'コピー済み',
     traceIdSuffix: '（エラーID：{traceId}）',
     copyErrorInfo: 'エラー情報をコピー',
     sessionHint: 'フィードバックにセッションIDを添えると、サポートが該当セッションを特定しやすくなります。',
-    unavailable: 'サービスに接続されていないため、カスタム診断イベントは送信されていません。',
   },
   labels: {
     resolved: '解決済み',
@@ -607,11 +608,11 @@ const forum: CustomConfig['forum'] = {
     backToList: 'フィードバック一覧に戻る',
     loading: 'ラベルを読み込み中…',
     loadFailed: 'ラベルの読み込みに失敗しました',
-    retry: '再読み込み',
+    retry: '再試行',
     empty: 'ラベルはまだありません',
     count: '{count} 件のラベル',
     groups: {
-      type: 'トピック種別',
+      type: 'フィードバック種別',
       category: 'カテゴリラベル',
       status: 'ステータス',
       locale: '言語',
@@ -644,6 +645,10 @@ const forum: CustomConfig['forum'] = {
     updateSuccess: 'ラベル「{name}」を更新しました',
     deleteSuccess: 'ラベル「{name}」を削除しました',
     operateFailed: '操作に失敗しました：{message}',
+  },
+  blog: {
+    breadcrumbHome: 'ホーム',
+    breadcrumbBlog: 'チームブログ',
   },
 }
 

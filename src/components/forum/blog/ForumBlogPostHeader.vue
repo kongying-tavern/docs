@@ -4,12 +4,14 @@ import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeProfileHref } from '~/constants/site'
 import { parseAuthors } from '~/utils/frontmatter'
 
 const BLOG_POST_PATH_REGEX = /\/blog\/posts\/([^/?#]+)/
 
 const { frontmatter, lang, page } = useData()
+const { message } = useLocalized()
 const route = useRoute()
 const authors = parseAuthors(frontmatter.value)
 const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
@@ -20,11 +22,11 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
     <!-- 面包屑 -->
     <nav class="text-sm c-[var(--vp-c-text-2)] flex gap-2 items-center">
       <VPLink class="hover:underline" href="../../">
-        首页
+        {{ message.forum.blog.breadcrumbHome }}
       </VPLink>
       <span class="c-[var(--vp-c-text-3)]">/</span>
       <VPLink class="hover:underline" href="../">
-        团队博客
+        {{ message.forum.blog.breadcrumbBlog }}
       </VPLink>
     </nav>
 
