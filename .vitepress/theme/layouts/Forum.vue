@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
-import ForumGlobalDialogs from '~/components/forum/ForumGlobalDialogs.vue'
+import ForumGlobalDialogs from '~/forum/components/layout/ForumGlobalDialogs.vue'
 </script>
 
 <template>

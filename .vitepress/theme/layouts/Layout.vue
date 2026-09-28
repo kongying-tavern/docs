@@ -17,7 +17,7 @@ const { Layout } = DefaultTheme
 const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
 const DocHeader = defineAsyncComponent(() => import('@/components/DocHeader.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
-const ForumSidebar = defineAsyncComponent(() => import('~/components/forum/sidebar/ForumSidebar.vue'))
+const ForumSidebar = defineAsyncComponent(() => import('~/forum/components/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('~/components/settings/SettingsSidebarExtras.vue'))
 const SettingsPage = defineAsyncComponent(() => import('~/components/settings/SettingsPage.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))

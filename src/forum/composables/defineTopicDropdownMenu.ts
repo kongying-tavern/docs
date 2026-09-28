@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
-import type { FORUM } from '~/components/forum/types'
+import type { FORUM } from '~/forum/components/types'
 import type { TopicStatusDefinition } from '~/forum/services/forumTopicStatus'
 import type { CustomConfig } from '~/types/locales'
 import { computed, ref, toValue } from 'vue'

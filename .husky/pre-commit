@@ -1,1 +1,10 @@
-pnpm lint-staged --max-arg-length 8000
+#!/bin/sh
+# Stage-scoped eslint: same jobs as lint-staged (lint, autofix, re-stage, fail fast),
+# but runs eslint through bash so pnpm's Windows .cmd shims resolve reliably
+# (lint-staged v17 spawns tasks via tinyexec without a shell, which ENOENTs on
+# node_modules/.bin/*.cmd under Windows).
+files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|vue|mjs|cjs|mts|cts|css|scss)$' | tr '\n' ' ')
+if [ -n "$files" ]; then
+  pnpm exec eslint --cache --fix $files || exit 1
+  git add -u
+fi

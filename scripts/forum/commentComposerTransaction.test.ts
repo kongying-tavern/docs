@@ -153,8 +153,8 @@ test('success clears exactly once and exposes the direct mutation result', async
 })
 
 test('create/delete mutations invalidate comments, Topic detail, and list counts without shadow state', async () => {
-  const commentState = await readFile(new URL('../../src/components/forum/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8')
-  const deleteAction = await readFile(new URL('../../src/components/forum/comment/ForumCommentFooter.vue', import.meta.url), 'utf8')
+  const commentState = await readFile(new URL('../../src/forum/components/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8')
+  const deleteAction = await readFile(new URL('../../src/forum/components/comment/ForumCommentFooter.vue', import.meta.url), 'utf8')
   const mutations = await readFile(new URL('../../src/forum/composables/useForumMutations.ts', import.meta.url), 'utf8')
 
   assert.match(commentState, /useForumCommentsQuery/)

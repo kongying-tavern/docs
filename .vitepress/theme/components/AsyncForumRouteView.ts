@@ -1,6 +1,6 @@
 import { defineAsyncComponent } from 'vue'
 
-const loadForumRouteView = () => import('~/components/forum/ForumRouteView.vue')
+const loadForumRouteView = () => import('~/forum/components/layout/ForumRouteView.vue')
 
 export const AsyncForumRouteView = defineAsyncComponent(
   loadForumRouteView,

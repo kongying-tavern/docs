@@ -65,8 +65,8 @@ test('quote counts use a separate resource and one identity per published quotin
 
 test('quote count write is wired after topic creation, never to the quote button click', () => {
   const submitSource = readFileSync(new URL('../../src/forum/composables/useSubmitTopic.ts', import.meta.url), 'utf8')
-  const buttonSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuoteTopicButton.vue', import.meta.url), 'utf8')
-  const listSource = readFileSync(new URL('../../src/components/forum/list/ForumTopicItemFooter.vue', import.meta.url), 'utf8')
+  const buttonSource = readFileSync(new URL('../../src/forum/components/topic/ForumQuoteTopicButton.vue', import.meta.url), 'utf8')
+  const listSource = readFileSync(new URL('../../src/forum/components/list/ForumTopicItemFooter.vue', import.meta.url), 'utf8')
   const createdIndex = submitSource.indexOf('await forumMutations.createTopic(newTopic)')
   const countedIndex = submitSource.indexOf('await recordPublishedTopicQuote(')
   assert.ok(createdIndex >= 0 && countedIndex > createdIndex)

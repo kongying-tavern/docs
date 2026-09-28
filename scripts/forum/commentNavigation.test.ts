@@ -50,8 +50,8 @@ test('restored comment pages keep a requested page while loading and canonicaliz
 
 test('comment UI keeps manual pagination and persistent deep-link focus contracts', async () => {
   const [areaSource, commentSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/comment/ForumCommentArea.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/ForumCommentArea.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/ForumCommentItem.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(areaSource, /:can-load-more="canLoadMoreComment"/)
@@ -59,7 +59,7 @@ test('comment UI keeps manual pagination and persistent deep-link focus contract
   assert.match(areaSource, /tabindex="-1"/)
   assert.match(areaSource, /\.focus\(\{ preventScroll: true \}\)/)
   assert.match(areaSource, /targetCommentState === 'missing'/)
-  const stateSource = await readFile(new URL('../../src/components/forum/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8')
+  const stateSource = await readFile(new URL('../../src/forum/components/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8')
   assert.match(stateSource, /useEventListener\(window, 'hashchange', syncBrowserHref\)/)
   assert.match(commentSource, /\.topic-comment-item:target \{[\s\S]*outline: 2px solid var\(--vp-c-brand-1\)/)
 })

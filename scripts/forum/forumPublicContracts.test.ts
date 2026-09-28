@@ -30,10 +30,10 @@ test('shared class merging preserves component override semantics', () => {
 
 test('comment emoji and self-profile actions keep their display contracts', async () => {
   const [commentSource, profileSource, profileStateSource, hoverCardSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/user/composables/useUserProfile.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/user/ForumUserHoverCard.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/ForumCommentItem.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/user/composables/useUserProfile.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/user/ForumUserHoverCard.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(commentSource, /\.content :deep\(img\[data-emoji\]\)/)
@@ -47,8 +47,8 @@ test('comment emoji and self-profile actions keep their display contracts', asyn
 
 test('comment attachments reuse the capped shared image row', async () => {
   const [commentSource, imageSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumImage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/ForumCommentItem.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumImage.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(commentSource, /<ForumImage[\s\S]*layout="row"[\s\S]*:max-display="3"/)
@@ -78,7 +78,7 @@ test('official comment extraction receives permission state from its caller', ()
 })
 
 test('translated comment text is never interpolated as HTML', async () => {
-  const source = await readFile(new URL('../../src/components/forum/comment/ForumTopicComment.vue', import.meta.url), 'utf8')
+  const source = await readFile(new URL('../../src/forum/components/comment/ForumCommentItem.vue', import.meta.url), 'utf8')
   assert.doesNotMatch(source, /v-html="[^"]*translatedText/)
   assert.match(source, /\{\{\s*showingTranslation \? translatedText : content\.text\s*\}\}/)
   assert.match(source, /v-html="content\.html"/)
@@ -86,8 +86,8 @@ test('translated comment text is never interpolated as HTML', async () => {
 
 test('comment scrolling hooks register during component setup', async () => {
   const [stateSource, areaSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/comment/ForumCommentArea.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/composables/useCommentAreaState.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/ForumCommentArea.vue', import.meta.url), 'utf8'),
   ])
 
   assert.doesNotMatch(stateSource, /function initialize/)
@@ -98,8 +98,8 @@ test('comment scrolling hooks register during component setup', async () => {
 
 test('comment uploads stay editable and gist permission failures offer reauthorization', async () => {
   const [source, richTextareaSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(source, /const loading = computed\(\(\) => submitPending\.value \|\| forumMutations\.creatingComment\.value\)/)
@@ -128,7 +128,7 @@ test('every Gitee login flow requests gist permission', async () => {
 test('Forum hash changes preserve VitePress History state', async () => {
   const [hashCheckerSource, domUtilsSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/hooks/useHashChecker.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/utils/dom-utils.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/utils/dom-utils.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(hashCheckerSource, /replaceState\(history\.state/)
@@ -138,14 +138,14 @@ test('Forum hash changes preserve VitePress History state', async () => {
 
 test('Topic Tags editor has one Forum-wide lazy host', async () => {
   const [globalDialogs, forumLayout, topicPage, userPage, basePage] = await Promise.all([
-    readFile(new URL('../../src/components/forum/ForumGlobalDialogs.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/layout/ForumGlobalDialogs.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/layouts/Forum.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/topic/ForumTopicPage.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/base/BaseForumPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/topic/ForumTopicPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/user/ForumUserPage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/layout/ForumListPage.vue', import.meta.url), 'utf8'),
   ])
 
-  assert.match(globalDialogs, /import\('~\/components\/forum\/topic\/ForumTopicTagsEditorDialog\.vue'\)/)
+  assert.match(globalDialogs, /import\('~\/forum\/components\/topic\/ForumTopicTagsEditorDialog\.vue'\)/)
   assert.match(globalDialogs, /<ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" \/>/)
   // 平台层布局只渲染单入口 ForumGlobalDialogs，不再感知具体对话框
   assert.doesNotMatch(`${forumLayout}\n${topicPage}\n${userPage}\n${basePage}`, /ForumTopicTagsEditorDialog|name="teleport"/)
@@ -155,9 +155,9 @@ test('Topic status is set from a grouped submenu instead of a dialog', async () 
   const [menuSource, statusSource, dropdownMenu, pickerSource, statusDialog] = await Promise.all([
     readFile(new URL('../../src/forum/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/services/forumTopicStatus.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/search/ForumSearchFilterPicker.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/search/ForumSearchFilterPicker.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
   ])
 
   // 状态项本身就是二级菜单，直接点选提交，不再唤起弹窗
@@ -204,14 +204,14 @@ test('toggle menu items name the action, never the current state', async () => {
 
 test('Topic status management has one lazy host and shares edit permission', async () => {
   const [globalDialogs, menuSource, managerSource, statusDialog, typeBadge] = await Promise.all([
-    readFile(new URL('../../src/components/forum/ForumGlobalDialogs.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/layout/ForumGlobalDialogs.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/useTopicManager.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumTopicTypeBadge.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumTopicTypeBadge.vue', import.meta.url), 'utf8'),
   ])
 
-  assert.match(globalDialogs, /import\('~\/components\/forum\/topic\/ForumTopicStatusDialog\.vue'\)/)
+  assert.match(globalDialogs, /import\('~\/forum\/components\/topic\/ForumTopicStatusDialog\.vue'\)/)
   assert.match(globalDialogs, /<ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" \/>/)
   assert.match(menuSource, /const hasEditPermission = hasAnyPermissions\('edit_feedback'\)/)
   assert.match(menuSource, /id: 'status-topic'/)
@@ -240,8 +240,8 @@ test('Topic status management has one lazy host and shares edit permission', asy
 
 test('tag and state filter hover styles stay on the neutral color system', async () => {
   const [tagList, typeBadge] = await Promise.all([
-    readFile(new URL('../../src/components/forum/ui/ForumTagList.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumTopicTypeBadge.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumTagList.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumTopicTypeBadge.vue', import.meta.url), 'utf8'),
   ])
   // 只取 hover 那一条规则：命中态（已筛选）另有品牌色样式，不能污染这条断言
   const tagHover = tagList.slice(tagList.indexOf('.forum-tag-filter:hover'), tagList.indexOf('.forum-tag-filter-active'))
@@ -259,7 +259,7 @@ test('tag and state filter hover styles stay on the neutral color system', async
 })
 
 test('expanded personal sidebar sections bound live detail hydration', async () => {
-  const sidebarSource = await readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8')
+  const sidebarSource = await readFile(new URL('../../src/forum/components/sidebar/ForumSidebar.vue', import.meta.url), 'utf8')
 
   assert.match(sidebarSource, /const SIDEBAR_DETAIL_QUERY_LIMIT = 5/)
   assert.equal(sidebarSource.match(/Array\.from\(\{ length: SIDEBAR_DETAIL_QUERY_LIMIT \}/g)?.length, 2)
@@ -271,7 +271,7 @@ test('topic authors can close their own feedback from the topic menu', async () 
     readFile(new URL('../../src/forum/composables/useRuleChecks.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/useForumRoute.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/topic/composables/useTopicPageState.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/topic/composables/useTopicPageState.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(permissionsSource, /author: \['edit_feedback'\]/)
@@ -418,15 +418,15 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
     readFile(new URL('../../src/forum/api/gitee/issues.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/api/gitee/officialComments.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/useForumMutations.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarAccountMenu.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/blog/ForumBlogPostHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/sidebar/ForumSidebarAccountMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/blog/ForumBlogPostHeader.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/index.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ForumRouteView.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/sidebar/ForumSidebar.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/layout/ForumRouteView.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/user/ForumUserProfileHeader.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/styles/animation.css', import.meta.url), 'utf8'),
   ])
 
@@ -461,9 +461,9 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
 test('all image entry points reuse the shared multi-file drop zone', async () => {
   const [dropZoneSource, imageUploadSource, richTextareaSource, topicContentInputSource] = await Promise.all([
     readFile(new URL('../../src/forum/composables/useForumImageDropZone.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/form/ForumImageUpload.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/form/ForumImageUpload.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/form/ForumRichTextarea.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(dropZoneSource, /useDropZone/)
@@ -479,15 +479,15 @@ test('all image entry points reuse the shared multi-file drop zone', async () =>
 
 test('image preview waits for real images and animates every chrome surface before unmount', async () => {
   const [previewerSource, previewerStyleSource, flipSource, controlsSource, sidePanelSource, cardsSource, sheetSource, imageSource, imageItemSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/ui/image-previewer/ForumImagePreviewer.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/image-previewer/ForumImagePreviewer.scss', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/image-previewer/composables/usePreviewerFlip.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/image-previewer/components/PreviewerControls.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/image-previewer/components/PreviewerSidePanel.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/image-previewer/ForumImagePreviewer.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/image-previewer/ForumImagePreviewer.scss', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/image-previewer/composables/usePreviewerFlip.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/image-previewer/components/PreviewerControls.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/image-previewer/components/PreviewerSidePanel.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/components/ui/cards/FeyCards.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/components/ui/sheet/SheetContent.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumImage.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumImageItem.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumImage.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumImageItem.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(previewerSource, /usePreviewerFlip/)
@@ -558,13 +558,13 @@ test('authorization remains the default while password login is available only b
 
 test('archived feedback is admin-only and the archive action swaps to archive icons', async () => {
   const [dropdownSource, hintSource, menuSource, routeSource, zhForumSource, pillSource, desktopSelectSource, listControlOptionsSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/list/ForumTopicTypeDropdown.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumHintIcon.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/list/ForumTopicTypeDropdown.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumHintIcon.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/services/forumRoute.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/list/ForumPillSelect.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/list/ForumPillSelect.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/useForumListControlOptions.ts', import.meta.url), 'utf8'),
   ])
 
@@ -599,16 +599,16 @@ test('archived feedback is admin-only and the archive action swaps to archive ic
 
 test('responsive select/menu hosts split desktop popper from mobile drawer chunks', async () => {
   const [selectHost, selectDesktop, selectMobile, menuHost, menuDesktop, menuMobile, mobilePanel, dropdownRenderer, viewDropdownSource, typesSource, listControlOptionsSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumResponsiveSelect.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumSelectMobileDrawer.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumResponsiveMenu.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumMenuDesktop.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumMenuMobileDrawer.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/responsive/ForumMenuMobilePanel.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/list/ForumTopicViewDropdown.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/types.d.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumResponsiveSelect.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumSelectMobileDrawer.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumResponsiveMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumMenuDesktop.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumMenuMobileDrawer.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/responsive/ForumMenuMobilePanel.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/list/ForumTopicViewDropdown.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/types.d.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/useForumListControlOptions.ts', import.meta.url), 'utf8'),
   ])
 
@@ -639,15 +639,15 @@ test('responsive select/menu hosts split desktop popper from mobile drawer chunk
 
 test('user profile empty state offers create and closed-feedback actions', async () => {
   const [emptySource, feedbackButtonSource, zhForumSource] = await Promise.all([
-    readFile(new URL('../../src/components/forum/list/ForumTopicListEmpty.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/form/OpenFeedbackFormButton.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/list/ForumTopicListEmpty.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/form/ForumOpenFeedbackFormButton.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(emptySource, /route\.value\?\.name === 'user' && !props\.error && !isSearchEmpty\.value && !hasActiveFilters\.value/)
   assert.match(emptySource, /const showUserEmptyActions = computed/)
   assert.match(emptySource, /async function handleShowClosed\(\) \{\s+await navigateFilter\('closed'\)\s+\}/)
-  assert.match(emptySource, /<OpenFeedbackFormButton/)
+  assert.match(emptySource, /<ForumOpenFeedbackFormButton/)
   assert.match(emptySource, /:hide-on-mobile="false"/)
   assert.match(emptySource, /message\.forum\.empty\.showClosed/)
   assert.match(feedbackButtonSource, /withDefaults\(defineProps<\{/)

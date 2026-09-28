@@ -12,7 +12,7 @@ import {
 import Separator from '@/components/ui/separator/Separator.vue'
 import useLogin from '@/hooks/useLogin'
 import { useUserInfoStore } from '@/stores/useUserInfo'
-import ForumRoleBadge from '~/components/forum/ui/ForumRoleBadge.vue'
+import ForumRoleBadge from '~/forum/components/ui/ForumRoleBadge.vue'
 import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 import UserAvatar from './UserAvatar.vue'
 

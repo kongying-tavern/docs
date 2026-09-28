@@ -3,7 +3,7 @@ import { useData, useRoute } from 'vitepress'
 import { useSidebar } from 'vitepress/theme-without-fonts'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
-import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
+import ForumBlogPostHeader from '~/forum/components/blog/ForumBlogPostHeader.vue'
 
 /** Matches dots and slashes in route paths */
 const DOT_SLASH_REGEX = /[./]+/g

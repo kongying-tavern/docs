@@ -222,9 +222,9 @@ test('transaction passes the quoted Topic through independently of the selected 
 })
 
 test('form wiring keeps one submission and starts bounded closing before awaiting the network', () => {
-  const submitSource = readFileSync(new URL('../../src/components/forum/form/composables/useFormSubmit.ts', import.meta.url), 'utf8')
-  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
-  const styleSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.scss', import.meta.url), 'utf8')
+  const submitSource = readFileSync(new URL('../../src/forum/components/form/composables/useFormSubmit.ts', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+  const styleSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.scss', import.meta.url), 'utf8')
 
   assert.match(submitSource, /if \(activeSubmission\)\s+return activeSubmission/)
   assert.match(formSource, /const closeCompletion = closeAfterSend\(\)\s+const result = await submitForm/)
@@ -233,19 +233,19 @@ test('form wiring keeps one submission and starts bounded closing before awaitin
 })
 
 test('quote actions follow comments and the quote card lives inside the body input', () => {
-  const footerSource = readFileSync(new URL('../../src/components/forum/list/ForumTopicItemFooter.vue', import.meta.url), 'utf8')
-  const listTopicSource = readFileSync(new URL('../../src/components/forum/list/ForumTopic.vue', import.meta.url), 'utf8')
-  const contentSource = readFileSync(new URL('../../src/components/forum/form/ForumFormContent.vue', import.meta.url), 'utf8')
-  const inputSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8')
-  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
-  const cardSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuotedTopicCard.vue', import.meta.url), 'utf8')
-  const quoteSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuotedTopic.vue', import.meta.url), 'utf8')
-  const quoteButtonSource = readFileSync(new URL('../../src/components/forum/topic/ForumQuoteTopicButton.vue', import.meta.url), 'utf8')
-  const detailSource = readFileSync(new URL('../../src/components/forum/topic/ForumTopicPage.vue', import.meta.url), 'utf8')
-  const detailFooterSource = readFileSync(new URL('../../src/components/forum/topic/ForumTopicFooter.vue', import.meta.url), 'utf8')
+  const footerSource = readFileSync(new URL('../../src/forum/components/list/ForumTopicItemFooter.vue', import.meta.url), 'utf8')
+  const listTopicSource = readFileSync(new URL('../../src/forum/components/list/ForumTopic.vue', import.meta.url), 'utf8')
+  const contentSource = readFileSync(new URL('../../src/forum/components/form/ForumFormContent.vue', import.meta.url), 'utf8')
+  const inputSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+  const cardSource = readFileSync(new URL('../../src/forum/components/topic/ForumQuotedTopicCard.vue', import.meta.url), 'utf8')
+  const quoteSource = readFileSync(new URL('../../src/forum/components/topic/ForumQuotedTopic.vue', import.meta.url), 'utf8')
+  const quoteButtonSource = readFileSync(new URL('../../src/forum/components/topic/ForumQuoteTopicButton.vue', import.meta.url), 'utf8')
+  const detailSource = readFileSync(new URL('../../src/forum/components/topic/ForumTopicPage.vue', import.meta.url), 'utf8')
+  const detailFooterSource = readFileSync(new URL('../../src/forum/components/topic/ForumTopicFooter.vue', import.meta.url), 'utf8')
   const transitionSource = readFileSync(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8')
   const animationSource = readFileSync(new URL('../../.vitepress/theme/styles/animation.css', import.meta.url), 'utf8')
-  const imageSource = readFileSync(new URL('../../src/components/forum/ui/ForumImage.vue', import.meta.url), 'utf8')
+  const imageSource = readFileSync(new URL('../../src/forum/components/ui/ForumImage.vue', import.meta.url), 'utf8')
 
   const commentActionIndex = footerSource.indexOf('@click="handleCommentClick"')
   const quoteActionIndex = footerSource.indexOf('<ForumQuoteTopicButton')
@@ -297,9 +297,9 @@ test('quote actions follow comments and the quote card lives inside the body inp
 })
 
 test('desktop form motion moves the content surface without moving the action bar', () => {
-  const configSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/config.ts', import.meta.url), 'utf8')
-  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
-  const styleSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.scss', import.meta.url), 'utf8')
+  const configSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/config.ts', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+  const styleSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.scss', import.meta.url), 'utf8')
 
   assert.match(configSource, /TRANSITION_DURATION = 480/)
   assert.match(formSource, /:class="\{ 'animate-switching': inSwitchTabTransition \}"/)
@@ -315,8 +315,8 @@ test('desktop form motion moves the content surface without moving the action ba
 })
 
 test('drafts persist only after confirmation or an unexpected page exit', () => {
-  const stateSource = readFileSync(new URL('../../src/components/forum/form/composables/useFormState.ts', import.meta.url), 'utf8')
-  const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
+  const stateSource = readFileSync(new URL('../../src/forum/components/form/composables/useFormState.ts', import.meta.url), 'utf8')
+  const formSource = readFileSync(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
 
   assert.doesNotMatch(stateSource, /watch\(formData/)
   assert.match(stateSource, /function saveDraft\(\)[\s\S]*writeTopicDraft\(type, draft\)/)

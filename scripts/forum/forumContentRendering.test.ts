@@ -367,11 +367,11 @@ test('Topic bodies keep code blocks as literal text instead of editor or rendere
 
 test('Topic detail and summary are the only forum surfaces that render body HTML', () => {
   const readSource = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')
-  const topicContent = readSource('src/components/forum/topic/ForumTopicContent.vue')
-  const topicPageState = readSource('src/components/forum/topic/composables/useTopicPageState.ts')
-  const topicPage = readSource('src/components/forum/topic/ForumTopicPage.vue')
-  const translator = readSource('src/components/forum/topic/ForumTopicTranslator.vue')
-  const forumHome = readSource('src/components/forum/home/ForumHome.vue')
+  const topicContent = readSource('src/forum/components/topic/ForumTopicContent.vue')
+  const topicPageState = readSource('src/forum/components/topic/composables/useTopicPageState.ts')
+  const topicPage = readSource('src/forum/components/topic/ForumTopicPage.vue')
+  const translator = readSource('src/forum/components/topic/ForumTopicTranslator.vue')
+  const forumHome = readSource('src/forum/components/home/ForumHome.vue')
 
   assert.match(topicContent, /renderForumTopicSummary\(contentOverride \?\? displayContent\.value/)
   assert.match(topicPageState, /renderForumTopic\(topic\.value\.content\.text/)

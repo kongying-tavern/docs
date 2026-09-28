@@ -11,10 +11,10 @@ test('telemetry keeps reporting, session, and settings boundaries intact', async
     readFile(new URL('../../src/components/telemetry/TelemetrySettings.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/apis/interknot.site/index.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/api/gitee/index.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/settings/SettingsPanel.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarAccountMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/sidebar/ForumSidebarAccountMenu.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(head, /dataset\.clarityLoaded="true"[\s\S]*clarity-ready/)

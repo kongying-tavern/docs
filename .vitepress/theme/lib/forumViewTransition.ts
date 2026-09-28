@@ -53,7 +53,7 @@ export async function transitionForumRoute(
   }
 
   if (target.name === 'topic')
-    await import('~/components/forum/topic/ForumTopicPage.vue')
+    await import('~/forum/components/topic/ForumTopicPage.vue')
 
   const sharedRoute = resolveForumSharedRoute(current, target)
   const sharedElements = shouldAnimateSharedElements() && sharedRoute ? findSharedElements(sharedRoute, current) : []

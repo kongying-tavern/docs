@@ -1,7 +1,7 @@
 import type { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion'
 import type ForumAPI from '@/apis/forum/api'
 import { VueRenderer } from '@tiptap/vue-3'
-import ForumEditorSuggestionList from '~/components/forum/form/ForumEditorSuggestionList.vue'
+import ForumEditorSuggestionList from '~/forum/components/form/ForumEditorSuggestionList.vue'
 
 interface ForumEditorSuggestionItemBase {
   id: string | number

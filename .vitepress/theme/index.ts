@@ -31,7 +31,7 @@ const LinkGrid = defineAsyncComponent(() => import('@/components/ui/LinkGrid.vue
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const SettingsPage = defineAsyncComponent(() => import('~/components/settings/SettingsPage.vue'))
-const ForumLabelAdminPage = defineAsyncComponent(() => import('~/components/forum/admin/ForumLabelAdminPage.vue'))
+const ForumLabelAdminPage = defineAsyncComponent(() => import('~/forum/components/settings/ForumLabelAdminPage.vue'))
 const QQGroupList = defineAsyncComponent(() => import('@/components/QQGroupList.vue'))
 const ScratchToReveal = defineAsyncComponent(() => import('@/components/ui/ScratchToReveal.vue'))
 const SitemapPage = defineAsyncComponent(() => import('@/components/SitemapPage.vue'))
@@ -57,8 +57,8 @@ function scheduleForumPreload(): void {
     void Promise.all([
       loadForumLayout(),
       preloadForumRouteView(),
-      import('~/components/forum/topic/ForumTopicPage.vue'),
-      import('~/components/forum/sidebar/ForumSidebar.vue'),
+      import('~/forum/components/topic/ForumTopicPage.vue'),
+      import('~/forum/components/sidebar/ForumSidebar.vue'),
     ]).catch(() => undefined)
   }
   if ('requestIdleCallback' in window)

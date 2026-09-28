@@ -1,4 +1,4 @@
-import type { FORUM } from '~/components/forum/types'
+import type { FORUM } from '~/forum/components/types'
 import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'

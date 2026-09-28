@@ -265,8 +265,8 @@ test('ships exactly three scoped Vercel Forum rewrites and localized shells', ()
   }
 
   // 全局对话框（含发布表单）收敛到内容层单入口；平台层布局只渲染该入口
-  const globalDialogs = readSource('src/components/forum/ForumGlobalDialogs.vue')
-  assert.match(globalDialogs, /import\('~\/components\/forum\/form\/publish-topic-form\/ForumPublishTopicForm\.vue'\)/)
+  const globalDialogs = readSource('src/forum/components/layout/ForumGlobalDialogs.vue')
+  assert.match(globalDialogs, /import\('~\/forum\/components\/form\/publish-topic-form\/ForumPublishTopicForm\.vue'\)/)
   assert.match(globalDialogs, /v-if="shouldMountPublishForm"/)
   assert.match(globalDialogs, /addEventListener\('hashchange', mountPublishFormWhenRequested\)/)
   assert.match(globalDialogs, /<ForumPublishTopicForm \/>/)
@@ -276,17 +276,17 @@ test('ships exactly three scoped Vercel Forum rewrites and localized shells', ()
   assert.doesNotMatch(forumLayout, /ForumPublishTopicForm|shouldMountPublishForm|hashchange/)
 
   // 编辑器 chunk 改为意图预热（入口 hover/聚焦/点击），布局挂载不再无条件预加载
-  const formButton = readSource('src/components/forum/form/OpenFeedbackFormButton.vue')
+  const formButton = readSource('src/forum/components/form/ForumOpenFeedbackFormButton.vue')
   assert.match(formButton, /preloadForumPublishForm/)
   assert.doesNotMatch(globalDialogs, /loadForumPublishTopicForm\(\)\.catch/)
 
   const theme = readSource('.vitepress/theme/index.ts')
   assert.match(theme, /requestIdleCallback\(preload, \{ timeout: 3000 \}\)/)
   assert.match(theme, /preloadForumRouteView\(\)/)
-  assert.match(theme, /import\('~\/components\/forum\/topic\/ForumTopicPage\.vue'\)/)
-  assert.match(theme, /import\('~\/components\/forum\/sidebar\/ForumSidebar\.vue'\)/)
+  assert.match(theme, /import\('~\/forum\/components\/topic\/ForumTopicPage\.vue'\)/)
+  assert.match(theme, /import\('~\/forum\/components\/sidebar\/ForumSidebar\.vue'\)/)
 
-  const routeView = readSource('src/components/forum/ForumRouteView.vue')
-  assert.match(routeView, /defineAsyncComponent\(\(\) => import\('\.\/topic\/ForumTopicPage\.vue'\)\)/)
-  assert.match(routeView, /import ForumUserPage from '\.\/user\/ForumUserPage\.vue'/)
+  const routeView = readSource('src/forum/components/layout/ForumRouteView.vue')
+  assert.match(routeView, /defineAsyncComponent\(\(\) => import\('\.\.\/topic\/ForumTopicPage\.vue'\)\)/)
+  assert.match(routeView, /import ForumUserPage from '\.\.\/user\/ForumUserPage\.vue'/)
 })
