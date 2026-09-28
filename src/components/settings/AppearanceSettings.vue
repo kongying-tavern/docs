@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldIncrement,
-  NumberFieldInput,
-} from '@/components/ui/number-field'
 import { Switch } from '@/components/ui/switch'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -19,6 +12,7 @@ import {
   THEME_OPTION_DEFINITIONS,
 } from '~/config/settingsOptions'
 import {
+  DEFAULT_UI_FONT_SIZE,
   MAX_UI_FONT_SIZE,
   MIN_UI_FONT_SIZE,
   normalizeUiFontSize,
@@ -45,6 +39,15 @@ const motionOptions = computed(() => MOTION_OPTION_DEFINITIONS.map(option => ({
   ...option,
   label: message.value.settings.appearance[option.labelKey],
 })))
+const fontSizeOptions = [
+  { value: MIN_UI_FONT_SIZE, iconSize: 14, labelKey: 'fontSizeSmall' },
+  { value: DEFAULT_UI_FONT_SIZE, iconSize: 17, labelKey: 'fontSizeStandard' },
+  { value: MAX_UI_FONT_SIZE, iconSize: 20, labelKey: 'fontSizeLarge' },
+] as const satisfies ReadonlyArray<{
+  value: number
+  iconSize: number
+  labelKey: 'fontSizeSmall' | 'fontSizeStandard' | 'fontSizeLarge'
+}>
 
 function setTheme(value: unknown): void {
   if (!isThemePreference(value))
@@ -61,9 +64,13 @@ function setMotionPreference(value: unknown): void {
     motionPreference.value = value
 }
 
-function setUiFontSize(value: number | undefined): void {
-  if (value !== undefined)
-    uiFontSize.value = normalizeUiFontSize(value)
+function setUiFontSize(value: unknown): void {
+  // ToggleGroup 取消选中会 emit 空串，忽略而不是归一化成最小档
+  if (typeof value !== 'string' || value === '')
+    return
+  const size = Number(value)
+  if (Number.isFinite(size))
+    uiFontSize.value = normalizeUiFontSize(size)
 }
 </script>
 
@@ -86,7 +93,7 @@ function setUiFontSize(value: number | undefined): void {
           v-for="option in themeOptions"
           :key="option.value"
           :value="option.value"
-          class="theme-option"
+          class="theme-option p-1.5 rounded-lg bg-card flex-col gap-2 h-26"
           :aria-label="option.label"
         >
           <SettingsThemePreview :theme="option.value" />
@@ -129,23 +136,27 @@ function setUiFontSize(value: number | undefined): void {
     :title="message.settings.appearance.uiFontSize"
     :description="message.settings.appearance.uiFontSizeDescription"
   >
-    <div class="font-size-control">
-      <NumberField
-        :model-value="uiFontSize"
-        :min="MIN_UI_FONT_SIZE"
-        :max="MAX_UI_FONT_SIZE"
-        :step="1"
-        class="font-size-field"
-        @update:model-value="setUiFontSize"
+    <ToggleGroup
+      type="single"
+      variant="outline"
+      :spacing="2"
+      :model-value="String(uiFontSize)"
+      @update:model-value="setUiFontSize"
+    >
+      <ToggleGroupItem
+        v-for="option in fontSizeOptions"
+        :key="option.value"
+        :value="String(option.value)"
+        :aria-label="message.settings.appearance[option.labelKey]"
+        :title="message.settings.appearance[option.labelKey]"
       >
-        <NumberFieldContent>
-          <NumberFieldDecrement :aria-label="message.settings.appearance.decreaseUiFontSize" />
-          <NumberFieldInput :aria-label="message.settings.appearance.uiFontSize" />
-          <NumberFieldIncrement :aria-label="message.settings.appearance.increaseUiFontSize" />
-        </NumberFieldContent>
-      </NumberField>
-      <span aria-hidden="true">px</span>
-    </div>
+        <span
+          class="i-lucide-case-sensitive"
+          :style="{ width: `${option.iconSize}px`, height: `${option.iconSize}px` }"
+          aria-hidden="true"
+        />
+      </ToggleGroupItem>
+    </ToggleGroup>
   </SettingsRow>
 </template>
 
@@ -165,19 +176,12 @@ function setUiFontSize(value: number | undefined): void {
 .theme-options :deep(.theme-option) {
   display: flex;
   width: 100%;
-  height: 104px !important;
   min-width: 0;
   align-items: stretch;
-  flex-direction: column;
-  gap: 8px;
-  border: 1px solid var(--vp-c-divider) !important;
-  border-radius: 8px !important;
-  padding: 6px;
-  background: var(--vp-c-bg);
 }
 
 .theme-options :deep(.theme-option[data-state='on']) {
-  border-color: var(--vp-c-brand-1) !important;
+  border-color: var(--vp-c-brand-1);
   box-shadow: 0 0 0 1px var(--vp-c-brand-1);
 }
 
@@ -194,18 +198,6 @@ function setUiFontSize(value: number | undefined): void {
 
 .settings-select {
   width: 180px;
-}
-
-.font-size-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--vp-c-text-2);
-  font-size: calc(13px * var(--site-ui-scale));
-}
-
-.font-size-field {
-  width: 120px;
 }
 
 @media (max-width: 639px) {

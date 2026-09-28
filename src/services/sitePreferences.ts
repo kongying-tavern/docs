@@ -9,13 +9,17 @@ export const UI_FONT_SIZE_STORAGE_KEY = 'site-ui-font-size'
 export const DEFAULT_UI_FONT_SIZE = 14
 export const MIN_UI_FONT_SIZE = 12
 export const MAX_UI_FONT_SIZE = 18
+export const UI_FONT_SIZE_STEPS = [MIN_UI_FONT_SIZE, DEFAULT_UI_FONT_SIZE, MAX_UI_FONT_SIZE] as const
 export const DESKTOP_UI_MEDIA_QUERY = '(min-width: 960px)'
 
 export function normalizeUiFontSize(value: unknown): number {
   const numericValue = Number(value)
   if (!Number.isFinite(numericValue))
     return DEFAULT_UI_FONT_SIZE
-  return Math.min(MAX_UI_FONT_SIZE, Math.max(MIN_UI_FONT_SIZE, Math.round(numericValue)))
+  const clamped = Math.min(MAX_UI_FONT_SIZE, Math.max(MIN_UI_FONT_SIZE, Math.round(numericValue)))
+  return UI_FONT_SIZE_STEPS.reduce((closest, step) =>
+    Math.abs(step - clamped) < Math.abs(closest - clamped) ? step : closest,
+  )
 }
 
 export function resolveReducedMotion(preference: MotionPreference, systemReduced: boolean): boolean {
@@ -55,7 +59,7 @@ export const sitePreferencesBootScript = `
   const desktop = matchMedia('${DESKTOP_UI_MEDIA_QUERY}').matches;
   const rawSize = Number(read('${UI_FONT_SIZE_STORAGE_KEY}', '${DEFAULT_UI_FONT_SIZE}'));
   const size = desktop && Number.isFinite(rawSize)
-    ? Math.min(${MAX_UI_FONT_SIZE}, Math.max(${MIN_UI_FONT_SIZE}, Math.round(rawSize)))
+    ? [${UI_FONT_SIZE_STEPS.join(',')}].reduce((closest, step) => Math.abs(step - rawSize) < Math.abs(closest - rawSize) ? step : closest)
     : ${DEFAULT_UI_FONT_SIZE};
   root.dataset.pointerCursor = String(pointer);
   root.dataset.reducedMotion = String(motion === 'reduce' || (motion === 'system' && systemReduced));

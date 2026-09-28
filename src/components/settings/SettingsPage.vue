@@ -103,6 +103,8 @@ watch([
   reportingEnabled,
 ], showSaveStatus, { flush: 'post' })
 
+const SECTION_SCROLL_GAP = 20
+
 function scrollToSection(section: SettingsSectionId, behavior: ScrollBehavior): void {
   const container = desktopContent.value
   const target = container?.querySelector<HTMLElement>(`#${section}`)
@@ -112,7 +114,7 @@ function scrollToSection(section: SettingsSectionId, behavior: ScrollBehavior): 
   const containerRect = container.getBoundingClientRect()
   const targetRect = target.getBoundingClientRect()
   container.scrollTo({
-    top: container.scrollTop + targetRect.top - containerRect.top,
+    top: container.scrollTop + targetRect.top - containerRect.top - SECTION_SCROLL_GAP,
     behavior,
   })
 }

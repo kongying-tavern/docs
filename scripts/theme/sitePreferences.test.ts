@@ -31,9 +31,11 @@ function createRoot(): HTMLElement {
   } as unknown as HTMLElement
 }
 
-test('normalizes UI font sizes to an integer in the supported range', () => {
-  assert.equal(normalizeUiFontSize('16'), 16)
-  assert.equal(normalizeUiFontSize(15.6), 16)
+test('normalizes UI font sizes to the closest supported step', () => {
+  assert.equal(normalizeUiFontSize('14'), DEFAULT_UI_FONT_SIZE)
+  assert.equal(normalizeUiFontSize(15.6), DEFAULT_UI_FONT_SIZE)
+  assert.equal(normalizeUiFontSize(13), MIN_UI_FONT_SIZE)
+  assert.equal(normalizeUiFontSize(17), MAX_UI_FONT_SIZE)
   assert.equal(normalizeUiFontSize(1), MIN_UI_FONT_SIZE)
   assert.equal(normalizeUiFontSize(99), MAX_UI_FONT_SIZE)
   assert.equal(normalizeUiFontSize('invalid'), DEFAULT_UI_FONT_SIZE)

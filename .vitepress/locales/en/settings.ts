@@ -25,9 +25,10 @@ const settings: CustomConfig['settings'] = {
     motionOn: 'On',
     motionOff: 'Off',
     uiFontSize: 'UI font size',
-    uiFontSizeDescription: 'Set the desktop interface base size (12–18 px). Other text sizes scale proportionally.',
-    decreaseUiFontSize: 'Decrease font size',
-    increaseUiFontSize: 'Increase font size',
+    uiFontSizeDescription: 'Adjust the base size of the desktop interface. Other text sizes scale proportionally.',
+    fontSizeSmall: 'Small',
+    fontSizeStandard: 'Default',
+    fontSizeLarge: 'Large',
   },
   notifications: {
     title: 'Notifications',

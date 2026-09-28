@@ -23,9 +23,10 @@ const settings = {
     motionOn: '开启',
     motionOff: '关闭',
     uiFontSize: 'UI 字号',
-    uiFontSizeDescription: '设置桌面端界面的基准字号（12–18 px），其他字号会按比例调整。',
-    decreaseUiFontSize: '减小字号',
-    increaseUiFontSize: '增大字号',
+    uiFontSizeDescription: '调整桌面端界面的基准字号，其他字号会按比例调整。',
+    fontSizeSmall: '小',
+    fontSizeStandard: '标准',
+    fontSizeLarge: '大',
   },
   notifications: {
     title: '通知',

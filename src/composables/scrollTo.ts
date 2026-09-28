@@ -35,7 +35,8 @@ export function scrollTo(options: ScrollToOptions = {}) {
         + offset
     function scrollToTarget() {
       // only smooth scroll if distance is smaller than screen height.
-      if (!smooth || Math.abs(targetTop - window.scrollY) > window.innerHeight)
+      const reducedMotion = document.documentElement.dataset.reducedMotion === 'true'
+      if (!smooth || reducedMotion || Math.abs(targetTop - window.scrollY) > window.innerHeight)
         window.scrollTo(0, targetTop)
       else window.scrollTo({ left: 0, top: targetTop, behavior: 'smooth' })
     }

@@ -80,13 +80,13 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
   min-height: 32px;
   align-items: center;
   gap: 6px;
-  color: var(--vp-c-brand-1);
+  color: var(--vp-c-text-3);
   font-size: calc(13px * var(--site-ui-scale));
   line-height: calc(20px * var(--site-ui-scale));
 }
 
 .privacy-policy-link:hover {
-  color: var(--vp-c-brand-2);
+  color: var(--vp-c-text-2);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

@@ -25,9 +25,10 @@ const settings: CustomConfig['settings'] = {
     motionOn: 'オン',
     motionOff: 'オフ',
     uiFontSize: 'UI フォントサイズ',
-    uiFontSizeDescription: 'デスクトップ UI の基準サイズ（12～18 px）を設定します。他の文字サイズも比例して調整されます。',
-    decreaseUiFontSize: 'フォントサイズを小さくする',
-    increaseUiFontSize: 'フォントサイズを大きくする',
+    uiFontSizeDescription: 'デスクトップ UI の基準サイズを調整します。他の文字サイズも比例して調整されます。',
+    fontSizeSmall: '小',
+    fontSizeStandard: '標準',
+    fontSizeLarge: '大',
   },
   notifications: {
     title: '通知',

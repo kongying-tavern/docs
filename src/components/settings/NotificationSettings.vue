@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount } from 'vue'
-import { Slider } from '@/components/ui/slider'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import {
@@ -33,10 +33,12 @@ const durationStep = computed({
   },
   set: (step: number) => toastDuration.value = durationOptions.value[step]?.value ?? DEFAULT_TOAST_DURATION,
 })
-const durationSliderValue = computed({
-  get: () => [durationStep.value],
-  set: (value: number[]) => durationStep.value = value[0] ?? 1,
-})
+
+function setDurationStepFromTabs(value: unknown): void {
+  const step = Number(value)
+  if (Number.isInteger(step) && step >= 0 && step < durationOptions.value.length)
+    setDurationStep(step)
+}
 
 let previewToastId: string | number | undefined
 let previewToastTimer: ReturnType<typeof setTimeout> | undefined
@@ -98,28 +100,30 @@ onBeforeUnmount(() => {
     :title="message.settings.notifications.duration"
     :description="message.settings.notifications.durationDescription"
   >
-    <div class="duration-control">
-      <Slider
-        v-model="durationSliderValue"
-        :min="0"
-        :max="durationOptions.length - 1"
-        :step="1"
+    <Tabs
+      :model-value="String(durationStep)"
+      class="duration-tabs"
+      @update:model-value="setDurationStepFromTabs"
+    >
+      <TabsList
+        class="duration-tabs-list"
         :aria-label="message.settings.notifications.duration"
-        :aria-valuetext="durationOptions[durationStep]?.label"
-        @value-commit="previewDuration"
-      />
-      <div class="duration-labels">
-        <button
+      >
+        <span
+          class="duration-tabs-indicator"
+          :style="{ '--duration-index': durationStep }"
+          aria-hidden="true"
+        />
+        <TabsTrigger
           v-for="(option, index) in durationOptions"
           :key="option.value"
-          type="button"
-          :class="{ active: durationStep === index }"
-          @click="setDurationStep(index)"
+          :value="String(index)"
+          class="duration-tab"
         >
           {{ option.label }}
-        </button>
-      </div>
-    </div>
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   </SettingsRow>
 </template>
 
@@ -128,40 +132,48 @@ onBeforeUnmount(() => {
   width: 180px;
 }
 
-.duration-control {
+.duration-tabs-list {
+  position: relative;
   width: 280px;
 }
 
-.duration-labels {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  margin-block-start: 6px;
-}
-
-.duration-labels button {
-  padding-block: 2px;
-  color: var(--vp-c-text-3);
+.duration-tabs-list :deep(.duration-tab) {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  color: var(--vp-c-text-2);
   font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
-  text-align: center;
 }
 
-.duration-labels button:first-child {
-  text-align: start;
-}
-
-.duration-labels button:last-child {
-  text-align: end;
-}
-
-.duration-labels button.active {
-  color: var(--vp-c-brand-1);
+.duration-tabs-list :deep(.duration-tab[data-state='active']) {
+  background: transparent;
+  box-shadow: none;
+  color: var(--vp-c-text-1);
   font-weight: 600;
+}
+
+.duration-tabs-indicator {
+  position: absolute;
+  inset-block: 3px;
+  inset-inline-start: 3px;
+  z-index: 0;
+  width: calc((100% - 6px) / 4);
+  border-radius: 6px;
+  background: var(--vp-c-bg);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 12%),
+    0 0 0 1px var(--vp-c-divider);
+  transform: translateX(calc(var(--duration-index) * 100%));
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html[data-reduced-motion='true'] .duration-tabs-indicator {
+  transition: none;
 }
 
 @media (max-width: 639px) {
   .settings-select,
-  .duration-control {
+  .duration-tabs-list {
     width: 100%;
   }
 }
