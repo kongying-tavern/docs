@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { flattenWithTags } from '../utils/forumUi'
+import { flattenWithTags } from '../utils/submitFormUi'
 
 const { theme } = useData()
 const { message } = useLocalized()

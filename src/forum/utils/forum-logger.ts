@@ -1,4 +1,4 @@
-import { createLogger } from './logger'
+import { createLogger } from '../../utils/logger'
 
 export enum ForumLogGroup {
   PRELOADER = 'Preloader',

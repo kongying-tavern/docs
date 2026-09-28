@@ -7,7 +7,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/forum/composables/useForumReaction'
 import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/forum/services/forumTopicQuote'
 import { FORM_HASH } from '../form/publish-topic-form/config'
-import { preloadForumPublishForm } from '../utils/forumUi'
+import { preloadForumPublishForm } from '../utils/submitFormUi'
 
 const props = withDefaults(defineProps<{ topic: ForumAPI.Topic, autoload?: boolean }>(), {
   autoload: true,

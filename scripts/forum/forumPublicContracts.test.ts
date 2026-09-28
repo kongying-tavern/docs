@@ -128,7 +128,7 @@ test('every Gitee login flow requests gist permission', async () => {
 test('Forum hash changes preserve VitePress History state', async () => {
   const [hashCheckerSource, domUtilsSource] = await Promise.all([
     readFile(new URL('../../.vitepress/theme/hooks/useHashChecker.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/forum/components/utils/dom-utils.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/components/utils/updateUrlHash.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(hashCheckerSource, /replaceState\(history\.state/)

@@ -42,11 +42,11 @@ import {
 import { useHashChecker } from '@/hooks/useHashChecker'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
-import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
-import { formatImageAttachmentError } from '~/forum/components/utils/forumUi'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { isPhoneBindingRequiredError } from '~/forum/api/gitee'
+import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
+import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
+import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumTopicQuery } from '~/forum/composables/useForumQueries'
 import {
   clearQuotedTopicRequest,

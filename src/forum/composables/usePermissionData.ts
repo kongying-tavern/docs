@@ -8,7 +8,7 @@ import teamMemberListRaw from '~/_data/teamMemberList.json'
 import { user } from '~/forum/api/gitee'
 import { GITEE_API_CONFIG } from '~/forum/api/gitee/config'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
-import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
+import { forumLog, ForumLogGroup } from '~/forum/utils/forum-logger'
 
 export interface MemberData {
   id: number

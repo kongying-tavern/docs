@@ -6,7 +6,7 @@ import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeProfileHref } from '~/constants/site'
-import { parseAuthors } from '~/utils/frontmatter'
+import { parseAuthors } from '~/forum/utils/frontmatter'
 
 const BLOG_POST_PATH_REGEX = /\/blog\/posts\/([^/?#]+)/
 

@@ -3,11 +3,11 @@ import type ForumAPI from '@/apis/forum/api'
 import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import ForumLayout from './ForumLayout.vue'
+import ForumAside from '../aside/ForumAside.vue'
 import ForumTopicList from '../list/ForumTopicList.vue'
 import ForumTopicToolbar from '../list/ForumTopicToolbar.vue'
-import ForumAside from '../aside/ForumAside.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
+import ForumLayout from './ForumLayout.vue'
 
 interface Props {
   renderData: ForumAPI.Topic[]

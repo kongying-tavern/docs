@@ -2,7 +2,7 @@
 import type { ForumFestivalDefinition } from '../../src/forum/services/forumFestival'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { forumFestivals } from '../../src/config/forumFestivals'
+import { forumFestivals } from '../../src/forum/config/forumFestivals'
 import {
   FESTIVAL_AUTO_TOLERANCE_MS,
   formatFestivalDate,

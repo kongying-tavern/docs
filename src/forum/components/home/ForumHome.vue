@@ -5,9 +5,9 @@ import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/forum/composables/u
 import { useForumRoute } from '~/forum/composables/useForumRoute'
 import { resolveForumListScope } from '~/forum/services/forumListSkeleton'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
+import ForumAside from '../aside/ForumAside.vue'
 import ForumListPage from '../layout/ForumListPage.vue'
 import ForumTopicSearchInfo from '../search/ForumTopicSearchInfo.vue'
-import ForumAside from '../aside/ForumAside.vue'
 import ForumCarouselBento from './ForumCarouselBento.vue'
 
 const { route, list, navigateFilter, navigateType, navigateSort, submitSearch } = useForumRoute()

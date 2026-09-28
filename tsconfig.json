@@ -41,7 +41,6 @@
     "**/components/**/*.tsx",
     "**/components/**/*.vue",
     "**/composables/**/*.ts",
-    "**/stores/**/*.ts",
     "**/scripts/**/*.ts",
     "**/src/**/*.ts"
   ],

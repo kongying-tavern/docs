@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { CustomConfig } from '~/types/locales'
+import type { CustomConfig } from '~/forum/types'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { VALIDATION_LIMITS } from '../forumConfig'

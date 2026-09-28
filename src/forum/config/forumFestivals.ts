@@ -62,7 +62,7 @@ export const forumFestivals = [
       fireworkStyle: 'spring-festival',
       palette: ['#ff1f3d', '#ff3d00', '#ffb300', '#ffd54f'],
     },
-    loadEffect: () => import('~/effects/forum-festival/fireworks'),
+    loadEffect: () => import('~/forum/effects/fireworks'),
   },
   {
     id: 'new-year',
@@ -76,7 +76,7 @@ export const forumFestivals = [
       fireworkStyle: 'new-year',
       palette: ['#38bdf8', '#f8fafc', '#facc15', '#fb7185'],
     },
-    loadEffect: () => import('~/effects/forum-festival/fireworks'),
+    loadEffect: () => import('~/forum/effects/fireworks'),
   },
   {
     id: 'christmas',
@@ -86,6 +86,6 @@ export const forumFestivals = [
     icon: 'i-lucide-snowflake',
     durationMs: 20_000,
     windows: fixedChristmasWindows(),
-    loadEffect: () => import('~/effects/forum-festival/snow'),
+    loadEffect: () => import('~/forum/effects/snow'),
   },
 ] as const satisfies readonly ForumFestivalDefinition[]

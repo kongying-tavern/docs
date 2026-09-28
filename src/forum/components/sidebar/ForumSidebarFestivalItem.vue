@@ -4,7 +4,7 @@ import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { forumFestivals } from '~/config/forumFestivals'
+import { forumFestivals } from '~/forum/config/forumFestivals'
 import {
   FESTIVAL_AUTOPLAYED_STORAGE_KEY,
   FESTIVAL_DISMISSALS_STORAGE_KEY,

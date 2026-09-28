@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { CustomConfig } from '~/types/locales'
+import type { CustomConfig } from '~/forum/types'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { toast } from '~/services/telemetry/toast'
 

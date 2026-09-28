@@ -13,7 +13,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useRuleChecks } from '~/forum/composables/useRuleChecks'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
-import { preloadForumPublishForm, publishTopic } from '../utils/forumUi'
+import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
 import { FORM_HASH } from './publish-topic-form/config'
 
 const props = withDefaults(defineProps<{

@@ -3,7 +3,7 @@ import type ForumAPI from '@/apis/forum/api'
 import { join } from 'node:path'
 import { createContentLoader } from 'vitepress'
 import { BLOG_POST_ORDER } from '../constants/blog'
-import { parseAuthors } from './frontmatter'
+import { parseAuthors } from '../forum/utils/frontmatter'
 import { getGitFileInfo } from './git'
 
 /** Matches language path in blog URLs */

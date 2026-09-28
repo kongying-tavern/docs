@@ -1,7 +1,7 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
 import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
-import type { CustomConfig } from '~/types/locales'
+import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'
 import { withAuth } from '@/utils/auth-helpers'
 import {

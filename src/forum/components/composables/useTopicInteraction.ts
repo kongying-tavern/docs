@@ -2,7 +2,7 @@ import type ForumAPI from '@/apis/forum/api'
 import { useToggle } from '@vueuse/core'
 import { nextTick, readonly, ref } from 'vue'
 import { useForumViewMode } from '~/forum/composables/useForumViewMode'
-import { updateUrlHash } from '../utils/dom-utils'
+import { updateUrlHash } from '../utils/updateUrlHash'
 import { useNavigateToTopic } from './useNavigateToTopic'
 
 export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {

@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { CustomConfig } from '~/types/locales'
+import type { CustomConfig } from '~/forum/types'
 import { toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 
