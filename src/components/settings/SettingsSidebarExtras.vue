@@ -7,7 +7,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { SETTINGS_SECTION_DEFINITIONS } from '~/config/settingsOptions'
-import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
+import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
 import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 
 const { localeIndex, page } = useData()

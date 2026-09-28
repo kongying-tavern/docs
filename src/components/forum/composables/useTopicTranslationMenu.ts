@@ -4,8 +4,8 @@ import type ForumAPI from '@/apis/forum/api'
 import { computed, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
-import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
-import { areLanguagesEquivalent } from '~/services/forum/forumLanguage'
+import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
+import { areLanguagesEquivalent } from '~/forum/services/forumLanguage'
 
 export interface ForumTranslatorRef {
   startTranslate: () => void

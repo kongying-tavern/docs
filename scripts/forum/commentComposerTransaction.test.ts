@@ -7,8 +7,8 @@ import { test } from 'node:test'
 import { useImageAttachmentQueue } from '../../src/composables/useImageAttachmentQueue'
 import {
   submitCommentTransaction,
-} from '../../src/services/forum/commentTransaction'
-import { decodeCommentBody, encodeCommentBody } from '../../src/services/forum/forumContentCodec'
+} from '../../src/forum/services/commentTransaction'
+import { decodeCommentBody, encodeCommentBody } from '../../src/forum/services/forumContentCodec'
 
 function doc(text: string): JSONContent {
   return {

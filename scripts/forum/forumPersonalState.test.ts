@@ -10,11 +10,11 @@ import {
   removeFollowedTopic,
   serializeForumPersonalState,
   toggleFollowedTopic,
-} from '../../src/services/forum/forumPersonalState'
+} from '../../src/forum/services/forumPersonalState'
 import {
   ForumPersonalStateCorruptionError,
   readForumStateGist,
-} from '../../src/services/forum/forumPersonalStateRepository'
+} from '../../src/forum/services/forumPersonalStateRepository'
 
 const first = {
   topicId: '1',

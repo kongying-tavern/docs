@@ -23,7 +23,7 @@ import {
   TagsInputItemText,
 } from '@/components/ui/tags-input'
 import { useLocalized } from '@/hooks/useLocalized'
-import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
+import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
 import { useTagsInput } from '../composables/useTagsInput'
 
 const props = withDefaults(

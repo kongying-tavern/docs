@@ -1,9 +1,10 @@
 import type { UseInfiniteQueryData } from '@pinia/colada'
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '~/services/forum/forumQueryContracts'
-import type { TopicUpdateOutcome } from '~/services/forum/gitee/issues'
+import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
+import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { useRuleChecks } from '~/composables/useRuleChecks'
+import { issues } from '~/forum/api/gitee'
 import {
   forumKeys,
   forumMutationPolicies,
@@ -13,9 +14,8 @@ import {
   prependTopicToForumPages,
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
-} from '~/services/forum/forumQueryContracts'
-import { applyOptimisticTopicPatch } from '~/services/forum/forumTopicOptimistic'
-import { issues } from '~/services/forum/gitee'
+} from '~/forum/services/forumQueryContracts'
+import { applyOptimisticTopicPatch } from '~/forum/services/forumTopicOptimistic'
 
 type TopicPatch = Parameters<typeof issues.putTopic>[1]
 const commentMutationQueues = new Map<string, Promise<unknown>>()

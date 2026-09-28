@@ -17,7 +17,7 @@ import { useForumTranslationPreferences } from '~/composables/forum/useForumTran
 import { useRuleChecks } from '~/composables/useRuleChecks'
 import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
 import { useSitePreferences } from '~/composables/useSitePreferences'
-import { isBrowserTranslationSupported } from '~/services/forum/browserTranslation'
+import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
 import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 import { reportingEnabled } from '~/services/telemetry'
 import SettingsMenu from './SettingsMenu.vue'

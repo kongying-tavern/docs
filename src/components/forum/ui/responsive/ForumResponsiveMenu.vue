@@ -4,7 +4,7 @@ import type { FORUM } from '../types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { prefetchForumUiBranch } from './shared'
 
 const props = withDefaults(defineProps<{

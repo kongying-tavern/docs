@@ -5,7 +5,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { data as allBlogPosts } from '~/_data/posts.data'
 import { useRecentBlogUpdates } from '~/composables/forum/useRecentBlogUpdates'
-import { describeBlogUpdate } from '~/services/forum/blogUpdateFeed'
+import { describeBlogUpdate } from '~/forum/services/blogUpdateFeed'
 import ForumTime from '../ui/ForumTime.vue'
 
 const { localeIndex } = useData()

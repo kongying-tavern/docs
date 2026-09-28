@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/composables/useForumReaction'
-import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/services/forum/forumTopicQuote'
+import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/forum/services/forumTopicQuote'
 import { FORM_HASH } from '../form/publish-topic-form/config'
 import { preloadForumPublishForm } from '../utils/forumUi'
 

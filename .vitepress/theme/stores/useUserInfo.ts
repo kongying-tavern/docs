@@ -3,7 +3,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { defineStore } from 'pinia'
 import { onMounted, ref, watch } from 'vue'
 
-import { getAuthorizedUser } from '~/services/forum/gitee/user'
+import { getAuthorizedUser } from '~/forum/api/gitee/user'
 import { useUserAuthStore } from './useUserAuth'
 
 interface FingerprintAgain {

@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { renderForumTopicSummary } from '~/services/forum/forumContentRenderer'
+import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import { useTopicContent } from './composables/useTopicContent'
 

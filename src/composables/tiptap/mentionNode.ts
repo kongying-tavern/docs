@@ -5,7 +5,7 @@ import Mention from '@tiptap/extension-mention'
 import { PluginKey } from '@tiptap/pm/state'
 import feedbackRepoMember from '~/_data/feedbackMemberList.json'
 import TeamMember from '~/_data/teamMemberList.json'
-import { getForumMentionHref } from '~/services/forum/forumLinkPolicy'
+import { getForumMentionHref } from '~/forum/services/forumLinkPolicy'
 
 const officialMember = [...new Map(
   [...feedbackRepoMember.data, ...TeamMember.data]

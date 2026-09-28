@@ -2,7 +2,7 @@
 import { strict as assert } from 'node:assert'
 import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
-import { resolveCommentTargetState, resolveRestoredCommentPage } from '../../src/services/forum/commentNavigation'
+import { resolveCommentTargetState, resolveRestoredCommentPage } from '../../src/forum/services/commentNavigation'
 
 test('comment targets distinguish loading, ready, missing, and ordinary browsing states', () => {
   assert.equal(resolveCommentTargetState({

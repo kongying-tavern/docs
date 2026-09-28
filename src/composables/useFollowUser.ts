@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@pinia/colada'
 import { computed, ref, watch } from 'vue'
 import { useUserInfoStore } from '@/stores/useUserInfo'
 import { authGuards } from '@/utils/auth-helpers'
-import { user } from '~/services/forum/gitee'
+import { user } from '~/forum/api/gitee'
 import { toast } from '~/services/telemetry/toast'
 
 export function useFollowUser(targetUser: string, authorizedUser?: string) {

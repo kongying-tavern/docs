@@ -13,7 +13,7 @@ import {
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useForumSearchToken } from '~/composables/useForumSearchToken'
-import { GiteeAPIError } from '~/services/forum/gitee'
+import { GiteeAPIError } from '~/forum/api/gitee'
 import OpenFeedbackFormButton from '../form/OpenFeedbackFormButton.vue'
 
 const props = defineProps<{

@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { TabsConfig } from './types'
 import type { CustomConfig } from '~/types/locales'
-import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
+import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
 
 export const TRANSITION_DURATION = 480
 export const FORM_HASH = 'PUBLISH-TOPIC'

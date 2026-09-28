@@ -13,7 +13,7 @@ import {
   prependTopicToForumPages,
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
-} from '../../src/services/forum/forumQueryContracts'
+} from '../../src/forum/services/forumQueryContracts'
 
 const home = { filter: 'all', sort: 'created', creator: null, q: '', pageSize: 20 } as const
 

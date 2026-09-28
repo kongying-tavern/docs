@@ -1,8 +1,8 @@
 import type { ComputedRef } from 'vue'
-import type { BlogUpdateItem, BlogUpdatePost } from '~/services/forum/blogUpdateFeed'
+import type { BlogUpdateItem, BlogUpdatePost } from '~/forum/services/blogUpdateFeed'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { selectRecentBlogUpdates } from '~/services/forum/blogUpdateFeed'
+import { selectRecentBlogUpdates } from '~/forum/services/blogUpdateFeed'
 
 /**
  * 首页 aside 的「最近更新」。

@@ -3,8 +3,8 @@ import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import { useImageAttachmentQueue } from '../../src/composables/useImageAttachmentQueue'
-import { serializeUploadedAttachments, validateImageBatch } from '../../src/services/forum/form/imageAttachment'
-import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/services/forum/forumConfig'
+import { serializeUploadedAttachments, validateImageBatch } from '../../src/forum/services/form/imageAttachment'
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/forum/services/forumConfig'
 
 function file(name: string, type = 'image/png', size = 16): File {
   return new File([new Uint8Array(size)], name, { type })

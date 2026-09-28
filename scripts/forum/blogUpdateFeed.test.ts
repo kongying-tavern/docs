@@ -8,7 +8,7 @@ import {
   RECENT_UPDATE_LIMIT,
   selectRecentBlogUpdates,
   toTimestamp,
-} from '../../src/services/forum/blogUpdateFeed'
+} from '../../src/forum/services/blogUpdateFeed'
 
 const COPY = {
   quoted: '{title}：{summary}',

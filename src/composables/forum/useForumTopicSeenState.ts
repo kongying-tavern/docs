@@ -1,6 +1,6 @@
 import { createGlobalState } from '@vueuse/core'
 import { shallowRef } from 'vue'
-import { markForumTopicSeen, readForumTopicSeenMap } from '~/services/forum/forumTopicSeenState'
+import { markForumTopicSeen, readForumTopicSeenMap } from '~/forum/services/forumTopicSeenState'
 
 export const useForumTopicSeenState = createGlobalState(() => {
   const seenAtById = shallowRef(readSeenMap())

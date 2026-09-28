@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumFilter, ForumSort, ForumTopicType } from '~/services/forum/forumRoute'
+import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import ForumLayout from '../ForumLayout.vue'

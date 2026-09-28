@@ -5,10 +5,10 @@ import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 import { ref } from 'vue'
 import { useImageAttachmentQueue } from '../../src/composables/useImageAttachmentQueue'
-import { createDefaultTopicDraft, restoreTopicDraft } from '../../src/services/forum/form/topicDraft'
-import { submitTopicFormTransaction } from '../../src/services/forum/form/topicFormTransaction'
-import { addTagToModel, removeTagFromModel } from '../../src/services/forum/form/topicTagModel'
-import { createTopicDraftSchema, getAllowedTopicTypes } from '../../src/services/forum/form/validation'
+import { createDefaultTopicDraft, restoreTopicDraft } from '../../src/forum/services/form/topicDraft'
+import { submitTopicFormTransaction } from '../../src/forum/services/form/topicFormTransaction'
+import { addTagToModel, removeTagFromModel } from '../../src/forum/services/form/topicTagModel'
+import { createTopicDraftSchema, getAllowedTopicTypes } from '../../src/forum/services/form/validation'
 
 function validDraft(type: 'BUG' | 'FEAT' | 'ANN' = 'BUG') {
   return {

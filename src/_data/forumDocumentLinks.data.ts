@@ -1,8 +1,8 @@
-import type { ForumDocumentLinks } from '../services/forum/forumDocumentLinkIndex'
+import type { ForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex'
 import { createContentLoader } from 'vitepress'
-import { buildForumDocumentLinks } from '../services/forum/forumDocumentLinkIndex'
+import { buildForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex'
 
-export type { ForumDocumentLinks } from '../services/forum/forumDocumentLinkIndex'
+export type { ForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex'
 
 declare const data: ForumDocumentLinks
 export { data }

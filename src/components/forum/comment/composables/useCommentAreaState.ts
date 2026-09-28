@@ -4,8 +4,8 @@ import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { resolveCommentTargetState, resolveRestoredCommentPage } from '~/services/forum/commentNavigation'
-import { readForumCommentId } from '~/services/forum/forumRoute'
+import { resolveCommentTargetState, resolveRestoredCommentPage } from '~/forum/services/commentNavigation'
+import { readForumCommentId } from '~/forum/services/forumRoute'
 
 export function useCommentAreaState(props: {
   repo: ForumAPI.Repo

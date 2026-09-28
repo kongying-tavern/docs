@@ -1,22 +1,22 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
-import type { ForumPage, ForumTopicListParams } from '~/services/forum/forumQueryContracts'
+import type { ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { computed, toValue, watch } from 'vue'
 import { usePermissionData } from '~/composables/usePermissionData'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { FORUM_CONFIG } from '~/services/forum/forumConfig'
+import { issues, user } from '~/forum/api/gitee'
+import { FORUM_CONFIG } from '~/forum/services/forumConfig'
 import {
   buildForumListCacheKey,
   saveSkeletonListCount,
-} from '~/services/forum/forumListSkeleton'
+} from '~/forum/services/forumListSkeleton'
 import {
   flattenForumPages,
   forumKeys,
   normalizeTopicListParams,
-} from '~/services/forum/forumQueryContracts'
-import { getForumTopics, getPinnedForumTopics } from '~/services/forum/forumTopics'
-import { issues, user } from '~/services/forum/gitee'
+} from '~/forum/services/forumQueryContracts'
+import { getForumTopics, getPinnedForumTopics } from '~/forum/services/forumTopics'
 
 // 列表页 scope：传入时首屏成功记录条数供骨架屏复用（见 forumListSkeleton）；pageSize=1 的计数查询不要传
 export function useForumTopicsQuery(

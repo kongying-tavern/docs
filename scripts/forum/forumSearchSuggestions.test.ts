@@ -2,7 +2,7 @@
 import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { getForumSearchSuggestions } from '../../src/services/forum/forumSearchSuggestions'
+import { getForumSearchSuggestions } from '../../src/forum/services/forumSearchSuggestions'
 
 function topic(id: string, title: string, text: string): ForumAPI.Topic {
   return { id, title, content: { text } } as ForumAPI.Topic

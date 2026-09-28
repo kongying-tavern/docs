@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { useLocalized } from '@/hooks/useLocalized'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import ForumTranslationSettings from './ForumTranslationSettings.vue'
 
 const { message } = useLocalized()

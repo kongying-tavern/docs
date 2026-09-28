@@ -1,7 +1,7 @@
 import type ForumAPI from '@/apis/forum/api'
 import { uniq } from 'lodash-es'
-import { updateTopicMetadata } from '~/services/forum/forumContentCodec'
-import { replaceTopicTypeLabel } from '~/services/forum/forumTopicLabels'
+import { updateTopicMetadata } from '~/forum/services/forumContentCodec'
+import { replaceTopicTypeLabel } from '~/forum/services/forumTopicLabels'
 
 export function composeTopicBody(
   body: string,

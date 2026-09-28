@@ -5,7 +5,7 @@ import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/composables/getTopicTagMap'
 import { useForumLabelStore } from '~/composables/useForumLabelStore'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { parseForumSearchQuery } from '~/services/forum/forumSearchQuery'
+import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
 import ForumTagList from '../ui/ForumTagList.vue'
 
 const { message } = useLocalized()

@@ -10,9 +10,9 @@ import {
   removeFollowedTopic,
   summarizePersonalTopic,
   toggleFollowedTopic,
-} from '~/services/forum/forumPersonalState'
-import { loadForumPersonalState, updateForumPersonalState } from '~/services/forum/forumPersonalStateRepository'
-import { forumKeys } from '~/services/forum/forumQueryContracts'
+} from '~/forum/services/forumPersonalState'
+import { loadForumPersonalState, updateForumPersonalState } from '~/forum/services/forumPersonalStateRepository'
+import { forumKeys } from '~/forum/services/forumQueryContracts'
 
 export const useForumPersonalState = createGlobalState(() => {
   const auth = useUserAuthStore()

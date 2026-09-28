@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { computed, ref, unref } from 'vue'
-import { stripMarkdownImages } from '~/services/forum/forumContentCodec'
+import { stripMarkdownImages } from '~/forum/services/forumContentCodec'
 
 export function useTextCollapse(contentRaw: string | Ref<string>, maxLength: number = 180) {
   const isExpanded = ref(false)

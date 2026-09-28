@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getTopicTagLabelGetter } from '~/composables/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/composables/getTopicTagMap'
-import { getFallbackLabelDisplay } from '~/services/forum/forumLabelTaxonomy'
+import { getFallbackLabelDisplay } from '~/forum/services/forumLabelTaxonomy'
 
 export function useTopicTagDisplay() {
   const { message } = useLocalized()

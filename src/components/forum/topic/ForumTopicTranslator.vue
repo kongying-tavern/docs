@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { TranslationResult } from '~/services/forum/forumTranslation'
+import type { TranslationResult } from '~/forum/services/forumTranslation'
 import { useElementVisibility } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useForumTranslationPreferences } from '~/composables/forum/useForumTranslationPreferences'
-import { translate, translateAuto } from '~/services/forum/forumTranslation'
+import { translate, translateAuto } from '~/forum/services/forumTranslation'
 import { toast } from '~/services/telemetry/toast'
 import ForumTranslationSettingsMenu from './ForumTranslationSettingsMenu.vue'
 

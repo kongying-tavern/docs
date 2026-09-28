@@ -5,7 +5,7 @@ import { useData, useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { getLangPath } from '@/utils'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { forumKeys } from '~/services/forum/forumQueryContracts'
+import { forumKeys } from '~/forum/services/forumQueryContracts'
 
 export function useNavigateToTopic(topic: ForumAPI.Topic | ForumAPI.Post | string) {
   const router = useRouter()

@@ -1,6 +1,6 @@
-import type { ImageAttachmentError } from '~/services/forum/form/imageAttachment'
+import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
 import type { CustomConfig } from '~/types/locales'
-import { IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
+import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import { formatMessage } from '~/utils/formatMessage'
 import { FORM_HASH } from '../form/publish-topic-form/config'
 

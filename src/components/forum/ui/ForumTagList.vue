@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useTopicTagDisplay } from '~/composables/useTopicTagDisplay'
-import { CATEGORY_LABEL_PREFIX } from '~/services/forum/forumLabel'
+import { CATEGORY_LABEL_PREFIX } from '~/forum/services/forumLabel'
 
 const props = defineProps<{
   data: string[]

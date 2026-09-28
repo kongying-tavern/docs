@@ -10,7 +10,7 @@ import {
   navigateForumDestination,
   parseForumLocation,
   readForumCommentId,
-} from '../../src/services/forum/forumRoute'
+} from '../../src/forum/services/forumRoute'
 
 const ROUTE_OPTIONS = {
   base: '/docs/',

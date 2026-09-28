@@ -1,10 +1,10 @@
 /* eslint-disable test/no-import-node-test */
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { forumKeys } from '../../src/services/forum/forumQueryContracts'
-import { buildForumHref, parseForumLocation } from '../../src/services/forum/forumRoute'
-import { buildForumProviderRequest } from '../../src/services/forum/forumTopics'
-import { buildTopicListRequest } from '../../src/services/forum/gitee/issues'
+import { buildTopicListRequest } from '../../src/forum/api/gitee/issues'
+import { forumKeys } from '../../src/forum/services/forumQueryContracts'
+import { buildForumHref, parseForumLocation } from '../../src/forum/services/forumRoute'
+import { buildForumProviderRequest } from '../../src/forum/services/forumTopics'
 
 const routeOptions = { base: '/docs/', locales: ['root', 'en', 'ja'] } as const
 

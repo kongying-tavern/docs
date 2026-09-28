@@ -6,11 +6,11 @@ import type {
   ImageAttachment,
   ImageUploadProgress,
   UploadImageAttachmentsResult,
-} from '~/services/forum/form/imageAttachment'
+} from '~/forum/services/form/imageAttachment'
 import { computed, ref } from 'vue'
-import { compressImageForUpload } from '~/services/forum/form/compressImageForUpload'
-import { serializeUploadedAttachments, validateImageBatch } from '~/services/forum/form/imageAttachment'
-import { IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
+import { compressImageForUpload } from '~/forum/services/form/compressImageForUpload'
+import { serializeUploadedAttachments, validateImageBatch } from '~/forum/services/form/imageAttachment'
+import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 
 export type ImageUploadFunction = (
   file: File,

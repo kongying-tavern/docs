@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import { ref } from 'vue'
-import { stripMarkdownImages } from '~/services/forum/forumContentCodec'
+import { stripMarkdownImages } from '~/forum/services/forumContentCodec'
 import { markdownConfig } from '../../.vitepress/config/markdown'
 
 /** Matches HTML comments in trusted repository-authored Markdown previews. */

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TabsConfig } from './publish-topic-form/types'
-import type { TopicFormData } from '~/services/forum/form/validation'
+import type { TopicFormData } from '~/forum/services/form/validation'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, unref } from 'vue'
 import { DialogHeader } from '@/components/ui/dialog'

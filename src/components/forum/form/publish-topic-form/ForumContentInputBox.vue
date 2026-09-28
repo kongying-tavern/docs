@@ -14,8 +14,8 @@ import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumImageDropZone } from '~/composables/forum/useForumImageDropZone'
 import { createForumSuggestionRenderer } from '~/composables/tiptap/forumSuggestionRenderer'
-import { collectForumTopics, forumKeys } from '~/services/forum/forumQueryContracts'
-import { createForumTopicEditorExtensions } from '~/services/forum/forumTiptapExtensions'
+import { collectForumTopics, forumKeys } from '~/forum/services/forumQueryContracts'
+import { createForumTopicEditorExtensions } from '~/forum/services/forumTiptapExtensions'
 
 defineOptions({ inheritAttrs: false })
 

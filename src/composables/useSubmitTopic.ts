@@ -8,9 +8,9 @@ import { composeTopicBody } from '~/composables/composeTopicBody'
 import { useForumTopicMutations } from '~/composables/forum/useForumMutations'
 import { getForumLocaleLabelGetter } from '~/composables/getForumLocaleGetter'
 import { useRuleChecks } from '~/composables/useRuleChecks'
-import { forumKeys } from '~/services/forum/forumQueryContracts'
-import { reactionEnvironmentForOrigin, recordPublishedTopicQuote } from '~/services/forum/forumReaction'
-import { buildTopicCreationLabels } from '~/services/forum/forumTopicLabels'
+import { forumKeys } from '~/forum/services/forumQueryContracts'
+import { reactionEnvironmentForOrigin, recordPublishedTopicQuote } from '~/forum/services/forumReaction'
+import { buildTopicCreationLabels } from '~/forum/services/forumTopicLabels'
 import { toast } from '~/services/telemetry/toast'
 
 const localeLabelGetter = getForumLocaleLabelGetter()

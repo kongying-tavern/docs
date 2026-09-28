@@ -1,12 +1,12 @@
 import type ForumAPI from '@/apis/forum/api'
-import type { TopicFormTransactionResult, TopicFormTransactionStage } from '~/services/forum/form/topicFormTransaction'
-import type { TopicFormData } from '~/services/forum/form/validation'
+import type { TopicFormTransactionResult, TopicFormTransactionStage } from '~/forum/services/form/topicFormTransaction'
+import type { TopicFormData } from '~/forum/services/form/validation'
 import { ref } from 'vue'
 import { uploadImg } from '@/apis/interknot.site/upload'
 import { calculateThumbHashForFile } from '@/composables/calculateThumbHashForFile'
 import { useImageAttachmentQueue } from '~/composables/useImageAttachmentQueue'
 import { useSubmitTopic } from '~/composables/useSubmitTopic'
-import { submitTopicFormTransaction } from '~/services/forum/form/topicFormTransaction'
+import { submitTopicFormTransaction } from '~/forum/services/form/topicFormTransaction'
 
 export function useFormSubmit() {
   const { submitData } = useSubmitTopic()

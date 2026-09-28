@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ActiveForumFestival, ForumFestivalEffectController } from '~/services/forum/forumFestival'
+import type { ActiveForumFestival, ForumFestivalEffectController } from '~/forum/services/forumFestival'
 import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
@@ -13,7 +13,7 @@ import {
   pruneOccurrenceList,
   resolveActiveForumFestival,
   resolveForumFestivalAutoStart,
-} from '~/services/forum/forumFestival'
+} from '~/forum/services/forumFestival'
 
 const { localeIndex } = useData()
 const { message } = useLocalized()

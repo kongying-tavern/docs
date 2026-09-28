@@ -3,11 +3,11 @@ import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
-import { TOPIC_STATUS_DEFINITIONS } from '../../src/services/forum/forumTopicStatus'
-import { TOPIC_STATE_ICON, TOPIC_STATUS_ICON } from '../../src/services/forum/forumTopicStatusIcon'
-import { ensureTopicTimelineAnchor, hasTopicTimelineChanges } from '../../src/services/forum/forumTopicTimeline'
-import { buildTopicOperateLogsRequest } from '../../src/services/forum/gitee/issues'
-import { normalizeTopicTimeline } from '../../src/services/forum/gitee/utils'
+import { buildTopicOperateLogsRequest } from '../../src/forum/api/gitee/issues'
+import { normalizeTopicTimeline } from '../../src/forum/api/gitee/normalize'
+import { TOPIC_STATUS_DEFINITIONS } from '../../src/forum/services/forumTopicStatus'
+import { TOPIC_STATE_ICON, TOPIC_STATUS_ICON } from '../../src/forum/services/forumTopicStatusIcon'
+import { ensureTopicTimelineAnchor, hasTopicTimelineChanges } from '../../src/forum/services/forumTopicTimeline'
 
 // 取自已登录会话对 KYJGYSDT/Feedback 的真实响应
 const MEMBER = { id: 8901509, login: 'zengjias', name: '(^_^)', avatar_url: 'https://example.test/a.png', html_url: 'https://gitee.com/zengjias' } as unknown as GITEE.User

@@ -10,7 +10,7 @@ import {
   formatAttachmentMarkdownList,
   parseAttachmentMarkdown,
   updateTopicMetadata,
-} from '../../src/services/forum/forumContentCodec'
+} from '../../src/forum/services/forumContentCodec'
 import {
   AMBIGUOUS_JSON_COMMENT,
   MALFORMED_AND_ORDINARY_COMMENTS,

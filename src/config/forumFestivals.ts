@@ -1,4 +1,4 @@
-import type { ForumFestivalDefinition, ForumFestivalWindow } from '~/services/forum/forumFestival'
+import type { ForumFestivalDefinition, ForumFestivalWindow } from '~/forum/services/forumFestival'
 
 const CONFIGURED_YEARS = [2025, 2026, 2027, 2028, 2029, 2030] as const
 

@@ -1,5 +1,5 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
-import type { ForumFestivalDefinition } from '../../src/services/forum/forumFestival'
+import type { ForumFestivalDefinition } from '../../src/forum/services/forumFestival'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { forumFestivals } from '../../src/config/forumFestivals'
@@ -10,7 +10,7 @@ import {
   pruneOccurrenceList,
   resolveActiveForumFestival,
   resolveForumFestivalAutoStart,
-} from '../../src/services/forum/forumFestival'
+} from '../../src/forum/services/forumFestival'
 
 function timestamp(value: string): number {
   return Date.parse(value)

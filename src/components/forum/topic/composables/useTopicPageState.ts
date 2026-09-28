@@ -8,7 +8,7 @@ import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
 import { getTopicTypeMap } from '~/composables/getTopicTypeMap'
 import { handleError } from '~/composables/handleError'
 import { useForumRoute } from '~/composables/useForumRoute'
-import { renderForumTopic } from '~/services/forum/forumContentRenderer'
+import { renderForumTopic } from '~/forum/services/forumContentRenderer'
 
 export function useTopicPageState() {
   const topicTypeMap = getTopicTypeMap()

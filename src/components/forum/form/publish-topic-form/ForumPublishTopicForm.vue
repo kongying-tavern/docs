@@ -1,9 +1,9 @@
 <script setup lang="ts">
 /* eslint-disable no-console */
 import type ForumAPI from '@/apis/forum/api'
-import type { ImageAttachmentError } from '~/services/forum/form/imageAttachment'
-import type { TopicFormTransactionStage } from '~/services/forum/form/topicFormTransaction'
-import type { TopicFormData } from '~/services/forum/form/validation'
+import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
+import type { TopicFormTransactionStage } from '~/forum/services/form/topicFormTransaction'
+import type { TopicFormData } from '~/forum/services/form/validation'
 import { OctagonXIcon, XIcon } from '@lucide/vue'
 import {
   createReusableTemplate,
@@ -47,15 +47,15 @@ import ForumQuotedTopicCard from '~/components/forum/topic/ForumQuotedTopicCard.
 import { formatImageAttachmentError } from '~/components/forum/utils/forumUi'
 import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { isPhoneBindingRequiredError } from '~/forum/api/gitee'
 import {
   clearQuotedTopicRequest,
   isQuotableTopicType,
   QUOTED_TOPIC_ID_PARAM,
   QUOTED_TOPIC_TYPE_PARAM,
   readQuotedTopicRequest,
-} from '~/services/forum/forumTopicQuote'
-import { isPhoneBindingRequiredError } from '~/services/forum/gitee'
-import { rememberLoginIntent } from '~/services/forum/loginIntent'
+} from '~/forum/services/forumTopicQuote'
+import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'
 import { formatMessage } from '~/utils/formatMessage'

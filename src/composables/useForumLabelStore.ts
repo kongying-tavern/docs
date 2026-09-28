@@ -1,12 +1,12 @@
 import { createGlobalState } from '@vueuse/core'
 import { computed, ref } from 'vue'
+import { labels } from '~/forum/api/gitee'
+import { invalidateLabelsCache } from '~/forum/api/gitee/labels'
 import {
   classifyForumLabel,
   groupForumLabels,
   toForumLabelRow,
-} from '~/services/forum/forumLabelTaxonomy'
-import { labels } from '~/services/forum/gitee'
-import { invalidateLabelsCache } from '~/services/forum/gitee/labels'
+} from '~/forum/services/forumLabelTaxonomy'
 
 /**
  * Feedback 仓库标签的会话级共享状态：一次拉取全站复用（apiCall 自带

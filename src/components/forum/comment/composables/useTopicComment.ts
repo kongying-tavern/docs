@@ -3,8 +3,8 @@ import { computed } from 'vue'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumRoute } from '~/composables/useForumRoute'
 import { useTopicUserRole } from '~/composables/useTopicUserRole'
-import { decodeForumText } from '~/services/forum/forumContentCodec'
-import { renderForumComment } from '~/services/forum/forumContentRenderer'
+import { decodeForumText } from '~/forum/services/forumContentCodec'
+import { renderForumComment } from '~/forum/services/forumContentRenderer'
 
 export interface UseTopicCommentOptions {
   commentData: ForumAPI.Comment

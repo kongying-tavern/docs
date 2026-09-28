@@ -4,8 +4,8 @@ import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
 import { cn } from '../../.vitepress/theme/lib/utils'
 import { composeTopicBody, writeTopicBodyComment } from '../../src/composables/composeTopicBody'
-import { extractOfficialAndAuthorComments } from '../../src/services/forum/gitee/inBrowserUtils'
-import { normalizeComment, normalizeIssue } from '../../src/services/forum/gitee/utils'
+import { normalizeComment, normalizeIssue } from '../../src/forum/api/gitee/normalize'
+import { extractOfficialAndAuthorComments } from '../../src/forum/api/gitee/officialComments'
 import {
   LEGACY_PLAIN_COMMENT,
   LEGACY_PLAIN_TOPIC,
@@ -115,9 +115,9 @@ test('comment uploads stay editable and gist permission failures offer reauthori
 
 test('every Gitee login flow requests gist permission', async () => {
   const [configSource, oauthSource, passwordSource] = await Promise.all([
-    readFile(new URL('../../src/services/forum/gitee/config.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/services/forum/gitee/oauth.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/services/forum/gitee/password.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/api/gitee/config.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/api/gitee/oauth.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/api/gitee/password.ts', import.meta.url), 'utf8'),
   ])
 
   assert.match(configSource, /GITEE_AUTH_SCOPES = \[[^\]]*'gists'[^\]]*\] as const/)
@@ -154,7 +154,7 @@ test('Topic Tags editor has one Forum-wide lazy host', async () => {
 test('Topic status is set from a grouped submenu instead of a dialog', async () => {
   const [menuSource, statusSource, dropdownMenu, pickerSource, statusDialog] = await Promise.all([
     readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/services/forum/forumTopicStatus.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/services/forumTopicStatus.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/search/ForumSearchFilterPicker.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
@@ -415,8 +415,8 @@ test('normalizes Comment attachments without changing content order', () => {
 
 test('mutation and navigation wiring keeps authoritative and keyboard contracts', async () => {
   const [issuesSource, browserUtilsSource, mutationsSource, topicContentSource, navigateSource, transitionSource, sidebarSource, blogHeaderSource, themeSource, sidebarLayoutSource, routeViewSource, profileHeaderSource, animationSource] = await Promise.all([
-    readFile(new URL('../../src/services/forum/gitee/issues.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/services/forum/gitee/inBrowserUtils.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/api/gitee/issues.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/api/gitee/officialComments.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/forum/useForumMutations.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
@@ -520,7 +520,7 @@ test('authorization remains the default while password login is available only b
     readFile(new URL('../../.vitepress/theme/components/LoginAlertDialog.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/components/OAuthLoginAlertDialog.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/layouts/Layout.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/services/forum/gitee/password.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/api/gitee/password.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
   ])
 
@@ -561,7 +561,7 @@ test('archived feedback is admin-only and the archive action swaps to archive ic
     readFile(new URL('../../src/components/forum/list/ForumTopicTypeDropdown.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/ui/ForumHintIcon.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/services/forum/forumRoute.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/services/forumRoute.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/list/ForumPillSelect.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),

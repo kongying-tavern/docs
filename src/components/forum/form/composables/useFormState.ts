@@ -1,4 +1,4 @@
-import type { TopicFormData } from '~/services/forum/form/validation'
+import type { TopicFormData } from '~/forum/services/form/validation'
 import { refAutoReset } from '@vueuse/core'
 import { useForm } from 'vee-validate'
 import { computed, ref, watch } from 'vue'
@@ -9,8 +9,8 @@ import {
   readTopicDraft,
   restoreTopicDraft,
   writeTopicDraft,
-} from '~/services/forum/form/topicDraft'
-import { createTopicFormSchema, getAllowedTopicTypes } from '~/services/forum/form/validation'
+} from '~/forum/services/form/topicDraft'
+import { createTopicFormSchema, getAllowedTopicTypes } from '~/forum/services/form/validation'
 import { getFormTabsConfig, TRANSITION_DURATION } from '../publish-topic-form/config'
 
 export function useFormState() {

@@ -151,7 +151,7 @@
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
-    "*.{js,ts,vue,mjs,cjs,mts,cts,css,scss}": "eslint --cache --fix"
+    "*.{js,ts,vue,mjs,cjs,mts,cts,css,scss}": "node node_modules/eslint/bin/eslint.js --cache --fix"
   },
   "config": {
     "commitizen": {

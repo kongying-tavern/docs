@@ -14,7 +14,7 @@ import {
 import { useHashChecker } from '@/hooks/useHashChecker'
 import useLogin from '@/hooks/useLogin'
 import { useUserAuthStore } from '@/stores/useUserAuth'
-import { clearLoginIntent } from '~/services/forum/loginIntent'
+import { clearLoginIntent } from '~/forum/services/loginIntent'
 
 const userAuth = useUserAuthStore()
 const { theme } = useData()

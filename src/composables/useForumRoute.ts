@@ -1,5 +1,5 @@
-import type { ForumFilter, ForumListRouteState, ForumRoute, ForumRouteOptions, ForumSort, ForumTopicType, ParsedForumLocation } from '~/services/forum/forumRoute'
-import type { ForumSearchFacet } from '~/services/forum/forumSearchQuery'
+import type { ForumFilter, ForumListRouteState, ForumRoute, ForumRouteOptions, ForumSort, ForumTopicType, ParsedForumLocation } from '~/forum/services/forumRoute'
+import type { ForumSearchFacet } from '~/forum/services/forumSearchQuery'
 import { useData, useRouter } from 'vitepress'
 import { computed, readonly, shallowRef } from 'vue'
 import {
@@ -8,8 +8,8 @@ import {
   isSameForumDestination,
   navigateForumDestination,
   parseForumLocation,
-} from '~/services/forum/forumRoute'
-import { appendForumSearchFacet, toggleForumSearchFacet } from '~/services/forum/forumSearchQuery'
+} from '~/forum/services/forumRoute'
+import { appendForumSearchFacet, toggleForumSearchFacet } from '~/forum/services/forumSearchQuery'
 
 const forumLocation = shallowRef<ParsedForumLocation | null>(null)
 let canReturnToForumRoute = false
