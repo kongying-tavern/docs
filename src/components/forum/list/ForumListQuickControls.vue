@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const { message } = useLocalized()
-const { viewMode } = useForumViewMode()
+const { viewMode, setViewMode } = useForumViewMode()
 const types = computed(() => [
   { id: 'all' as const, label: message.value.forum.header.navigation.allTypes },
   { id: 'bug' as const, label: message.value.forum.header.navigation.bugFeedback },
@@ -87,7 +87,7 @@ function changeSort(value: string): void {
       class="text-[var(--vp-c-text-2)] shrink-0"
       :aria-label="viewToggleLabel"
       :title="viewToggleLabel"
-      @click="viewMode = nextViewMode"
+      @click="setViewMode(nextViewMode)"
     >
       <span :class="getViewModeIconClass(nextViewMode)" class="size-4" aria-hidden="true" />
     </Button>

@@ -9,7 +9,7 @@ import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 const props = defineProps<{ sort: ForumSort }>()
 const emit = defineEmits<{ sortChange: [sort: ForumSort] }>()
-const { viewMode } = useForumViewMode()
+const { viewMode, setViewMode } = useForumViewMode()
 const { views, sorts } = useForumListControlOptions()
 const { message } = useLocalized()
 
@@ -27,7 +27,7 @@ const items = computed<FORUM.TopicDropdownMenu[]>(() => [
       label: mode.label,
       icon: mode.icon,
       checked: viewMode.value === mode.id,
-      onChange: next => viewMode.value = next as FORUM.TopicViewMode,
+      onChange: next => setViewMode(next as FORUM.TopicViewMode),
     })),
   },
   { type: 'separator', id: 'view-sort-separator' },

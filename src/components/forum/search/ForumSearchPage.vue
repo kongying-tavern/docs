@@ -22,7 +22,7 @@ import ForumTopicSearchInfo from './ForumTopicSearchInfo.vue'
 const { route, list, leaveSearch, navigate, submitSearch } = useForumRoute()
 const { message } = useLocalized()
 const { formatSearchQuery } = useForumSearchToken()
-const { viewMode } = useForumViewMode()
+const { setViewMode } = useForumViewMode()
 const queryDraft = ref(list.value?.q ?? '')
 const activeFacet = ref<ForumSearchFacet | null>(null)
 const recentSearches = useLocalStorage<string[]>('forum-recent-searches', [])
@@ -75,7 +75,7 @@ async function applySettings(settings: {
     recentSearches.value = [query, ...recentSearches.value.filter(item => item !== query)].slice(0, 12)
     historyCleared.value = false
   }
-  viewMode.value = settings.viewMode
+  await setViewMode(settings.viewMode)
   await navigate({
     ...current,
     list: { ...current.list, q: query, filter: settings.filter, topicType: settings.topicType, sort: settings.sort },
