@@ -5,7 +5,7 @@ import test from 'node:test'
 import {
   beginForumVisitWithStorage,
   findLastVisitedDividerIndex,
-} from '../../src/forum/services/lastVisit'
+} from '../../src/forum/services/forumLastVisit'
 
 function storage(initial: Record<string, string> = {}) {
   const values = new Map(Object.entries(initial))

@@ -7,8 +7,8 @@ import { withAuth } from '~/forum/composables/auth/auth-helpers'
 import {
   replaceEditableTopicLabels,
   toggleTopicLabel,
-} from '~/forum/services/topicLabels'
-import { replaceTopicStatus, topicStatusHidesTopic } from '~/forum/services/topicStatus'
+} from '~/forum/services/forumTopicLabels'
+import { replaceTopicStatus, topicStatusHidesTopic } from '~/forum/services/forumTopicStatus'
 import { toast } from '~/services/telemetry/toast'
 import { useForumTopicMutations } from '../data/useForumMutations'
 import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from '../util/composeTopicBody'

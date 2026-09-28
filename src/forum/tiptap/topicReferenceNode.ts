@@ -4,7 +4,7 @@ import type ForumAPI from '~/forum/api/types'
 import { mergeAttributes } from '@tiptap/core'
 import Mention from '@tiptap/extension-mention'
 import { PluginKey } from '@tiptap/pm/state'
-import { getForumSearchSuggestions } from '~/forum/services/searchSuggestions'
+import { getForumSearchSuggestions } from '~/forum/services/forumSearchSuggestions'
 
 const topicReferencePluginKey = new PluginKey('forumTopicReference')
 

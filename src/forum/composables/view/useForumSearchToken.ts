@@ -1,11 +1,11 @@
-import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/forum/services/searchQuery'
+import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/forum/services/forumSearchQuery'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
+import { FORUM_SEARCH_STATES, parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
 import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
-import { FORUM_SEARCH_STATES, parseForumSearchQuery } from '~/forum/services/searchQuery'
 
 const REGEXP_SPECIAL_CHARACTERS = /[.*+?^${}()|[\]\\]/gu
 

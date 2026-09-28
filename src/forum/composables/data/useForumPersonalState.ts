@@ -8,9 +8,9 @@ import {
   removeFollowedTopic,
   summarizePersonalTopic,
   toggleFollowedTopic,
-} from '~/forum/services/personalState'
-import { loadForumPersonalState, updateForumPersonalState } from '~/forum/services/personalStateRepository'
-import { forumKeys } from '~/forum/services/queryContracts'
+} from '~/forum/services/forumPersonalState'
+import { loadForumPersonalState, updateForumPersonalState } from '~/forum/services/forumPersonalStateRepository'
+import { forumKeys } from '~/forum/services/forumQueryContracts'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 

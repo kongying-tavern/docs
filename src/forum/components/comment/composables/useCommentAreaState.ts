@@ -5,7 +5,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { resolveCommentTargetState, resolveRestoredCommentPage } from '~/forum/services/commentNavigation'
-import { readForumCommentId } from '~/forum/services/route'
+import { readForumCommentId } from '~/forum/services/forumRoute'
 
 export function useCommentAreaState(props: {
   repo: ForumAPI.Repo

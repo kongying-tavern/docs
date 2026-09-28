@@ -115,7 +115,7 @@ export default antfu({
   // src must not reach into .vitepress via relative paths; use the sanctioned
   // src/forum/types.ts type outlet (or the markdown config import in useMarkdownRenderer).
   files: ['src/**/*.ts', 'src/**/*.vue'],
-  ignores: ['src/forum/types.ts', 'src/forum/composables/useMarkdownRenderer.ts', 'src/composables/usePostData.ts'],
+  ignores: ['src/forum/types.ts', 'src/forum/composables/view/useMarkdownRenderer.ts', 'src/composables/usePostData.ts'],
   rules: {
     'no-restricted-imports': ['error', {
       patterns: [

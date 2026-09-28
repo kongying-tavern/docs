@@ -1,6 +1,6 @@
 import type ForumAPI from '~/forum/api/types'
-import { stripMarkdownImages } from './contentCodec'
-import { TOPIC_STATUS_DEFINITIONS } from './topicStatus'
+import { stripMarkdownImages } from './forumContentCodec'
+import { TOPIC_STATUS_DEFINITIONS } from './forumTopicStatus'
 
 const FOLLOWED_TOPIC_LIMIT = 50
 const RECENT_PARTICIPATED_LIMIT = 20

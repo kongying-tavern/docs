@@ -4,16 +4,16 @@ import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 import { Editor, resolveExtensions } from '@tiptap/core'
 import { renderToHTMLString } from '@tiptap/static-renderer/pm/html-string'
-import { decodeCommentBody, decodeForumText, decodeTopicBody } from '../../src/forum/services/contentCodec'
+import { decodeCommentBody, decodeForumText, decodeTopicBody } from '../../src/forum/services/forumContentCodec'
 import {
   renderForumComment,
   renderForumTopic,
   renderForumTopicSummary,
   renderTiptapToHtml,
-} from '../../src/forum/services/contentRenderer'
-import { buildForumDocumentLinks } from '../../src/forum/services/documentLinkIndex'
-import { isAllowedForumHref } from '../../src/forum/services/linkPolicy'
-import { createForumContentExtensions, createForumTopicEditorExtensions } from '../../src/forum/services/tiptapExtensions'
+} from '../../src/forum/services/forumContentRenderer'
+import { buildForumDocumentLinks } from '../../src/forum/services/forumDocumentLinkIndex'
+import { isAllowedForumHref } from '../../src/forum/services/forumLinkPolicy'
+import { createForumContentExtensions, createForumTopicEditorExtensions } from '../../src/forum/services/forumTiptapExtensions'
 import {
   RICH_TIPTAP_DOC,
   RICH_TIPTAP_WITH_ATTACHMENT,

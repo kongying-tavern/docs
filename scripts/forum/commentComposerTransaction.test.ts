@@ -8,7 +8,7 @@ import { useImageAttachmentQueue } from '../../src/forum/composables/view/useIma
 import {
   submitCommentTransaction,
 } from '../../src/forum/services/commentTransaction'
-import { decodeCommentBody, encodeCommentBody } from '../../src/forum/services/contentCodec'
+import { decodeCommentBody, encodeCommentBody } from '../../src/forum/services/forumContentCodec'
 
 function doc(text: string): JSONContent {
   return {

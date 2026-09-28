@@ -154,7 +154,7 @@ test('Topic Tags editor has one Forum-wide lazy host', async () => {
 test('Topic status is set from a grouped submenu instead of a dialog', async () => {
   const [menuSource, statusSource, dropdownMenu, pickerSource, statusDialog] = await Promise.all([
     readFile(new URL('../../src/forum/composables/util/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/forum/services/topicStatus.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/services/forumTopicStatus.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/ui/ForumDropdownMenu.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/search/ForumSearchFilterPicker.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
@@ -561,7 +561,7 @@ test('archived feedback is admin-only and the archive action swaps to archive ic
     readFile(new URL('../../src/forum/components/list/ForumTopicTypeDropdown.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/ui/ForumHintIcon.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/util/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/forum/services/route.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/services/forumRoute.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/locales/zh/forum.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/list/ForumPillSelect.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/ui/responsive/ForumSelectDesktop.vue', import.meta.url), 'utf8'),

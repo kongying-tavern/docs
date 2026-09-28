@@ -1,9 +1,9 @@
 import type ForumAPI from '~/forum/api/types'
-import { decodeTopicBody } from './contentCodec'
-import { isCategoryLabel } from './label'
-import { parseTopicLabels } from './topicLabels'
-import { normalizeQuotedTopicReference } from './topicQuote'
-import { getTopicStatus } from './topicStatus'
+import { decodeTopicBody } from './forumContentCodec'
+import { isCategoryLabel } from './forumLabel'
+import { parseTopicLabels } from './forumTopicLabels'
+import { normalizeQuotedTopicReference } from './forumTopicQuote'
+import { getTopicStatus } from './forumTopicStatus'
 
 export interface OptimisticTopicPatch {
   title?: string

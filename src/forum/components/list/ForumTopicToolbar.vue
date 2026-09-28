@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/route'
+import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'

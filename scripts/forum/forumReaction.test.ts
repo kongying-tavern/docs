@@ -1,5 +1,5 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
-import type { TopicReaction } from '../../src/forum/services/reaction'
+import type { TopicReaction } from '../../src/forum/services/forumReaction'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
@@ -14,7 +14,7 @@ import {
   recordPublishedTopicQuote,
   resolveReactionViewer,
   topicReactionResource,
-} from '../../src/forum/services/reaction'
+} from '../../src/forum/services/forumReaction'
 
 function reaction(state: TopicReaction['state'], likeCount = 0, dislikeCount = 0): TopicReaction {
   return {

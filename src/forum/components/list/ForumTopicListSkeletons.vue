@@ -13,7 +13,7 @@ import {
   resolveForumListParams,
   resolveForumListScope,
   skeletonItemOpacity,
-} from '~/forum/services/listSkeleton'
+} from '~/forum/services/forumListSkeleton'
 
 const [TopicCardSkeleton, UseTopicCardSkeleton] = createReusableTemplate()
 const [TopicCompactViewSkeleton, UseTopicCompactViewSkeleton] = createReusableTemplate()

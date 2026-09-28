@@ -2,8 +2,8 @@ import type { Ref } from 'vue'
 import type { CustomConfig } from '~/forum/types'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
-import { VALIDATION_LIMITS } from '../config'
-import { TOPIC_ID_REGEX } from '../topicQuote'
+import { VALIDATION_LIMITS } from '../forumConfig'
+import { TOPIC_ID_REGEX } from '../forumTopicQuote'
 
 interface TopicValidationMessages {
   announcementPermission: string

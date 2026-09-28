@@ -1,7 +1,7 @@
 import type { ImageAttachmentError, UploadImageAttachmentsResult } from './imageAttachment'
 import type { TopicFormData } from './validation'
 import type ForumAPI from '~/forum/api/types'
-import { formatAttachmentMarkdownList } from '~/forum/services/contentCodec'
+import { formatAttachmentMarkdownList } from '~/forum/services/forumContentCodec'
 import { createTopicDraftSchema } from './validation'
 
 export type TopicFormTransactionResult

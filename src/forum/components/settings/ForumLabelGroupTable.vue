@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import type { ForumLabelGroup, ForumLabelRow } from '~/forum/services/labelTaxonomy'
+import type { ForumLabelGroup, ForumLabelRow } from '~/forum/services/forumLabelTaxonomy'
 import { computed, ref } from 'vue'
 import {
   Table,
@@ -11,11 +11,11 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { useLocalized } from '@/hooks/useLocalized'
+import { getFallbackLabelDisplay } from '~/forum/services/forumLabelTaxonomy'
+import { getTopicStatusFromLabel } from '~/forum/services/forumTopicStatus'
 import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
 import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
-import { getFallbackLabelDisplay } from '~/forum/services/labelTaxonomy'
-import { getTopicStatusFromLabel } from '~/forum/services/topicStatus'
 import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 

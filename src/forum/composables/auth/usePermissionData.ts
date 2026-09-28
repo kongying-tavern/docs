@@ -6,7 +6,7 @@ import feedbackMemberListRaw from '~/_data/feedbackMemberList.json'
 import teamMemberListRaw from '~/_data/teamMemberList.json'
 import { user } from '~/forum/api/gitee'
 import { GITEE_API_CONFIG } from '~/forum/api/gitee/config'
-import { forumKeys } from '~/forum/services/queryContracts'
+import { forumKeys } from '~/forum/services/forumQueryContracts'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { forumLog, ForumLogGroup } from '~/forum/utils/forum-logger'
 

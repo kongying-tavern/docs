@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumSort, ForumTopicType } from '~/forum/services/route'
+import type { ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { ChevronDown } from '@lucide/vue'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'

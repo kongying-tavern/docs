@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
-import { createForumContentExtensions } from '~/forum/services/tiptapExtensions'
+import { createForumContentExtensions } from '~/forum/services/forumTiptapExtensions'
 import ForumImageUpload from './ForumImageUpload.vue'
 
 type SupportFeature = 'Upload' | 'Emoji' | 'Mention' | 'Submit'

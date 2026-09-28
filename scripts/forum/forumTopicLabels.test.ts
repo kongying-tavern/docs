@@ -5,7 +5,7 @@ import test from 'node:test'
 import { isTopicTypeChangeConfirmed } from '../../src/forum/api/gitee/issues'
 import { normalizeIssue } from '../../src/forum/api/gitee/normalize'
 import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/forum/composables/util/composeTopicBody'
-import { decodeTopicBody } from '../../src/forum/services/contentCodec'
+import { decodeTopicBody } from '../../src/forum/services/forumContentCodec'
 import {
   buildTopicCreationLabels,
   getEditableTopicLabels,
@@ -13,7 +13,7 @@ import {
   replaceEditableTopicLabels,
   replaceTopicTypeLabel,
   toggleTopicLabel,
-} from '../../src/forum/services/topicLabels'
+} from '../../src/forum/services/forumTopicLabels'
 import {
   getAvailableTopicStatuses,
   getConclusiveTopicStatuses,
@@ -21,7 +21,7 @@ import {
   getTopicStatus,
   replaceTopicStatus,
   topicStatusHidesTopic,
-} from '../../src/forum/services/topicStatus'
+} from '../../src/forum/services/forumTopicStatus'
 
 test('Topic label edits preserve provider labels and keep one type', () => {
   const labels = ['WEB-FEEDBACK', 'LC-ZH', 'TYP-BUG', 'CATA-DOCS', 'PINNED']

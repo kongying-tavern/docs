@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FORUM } from '~/forum/components/types'
-import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/route'
+import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { computed, nextTick, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'

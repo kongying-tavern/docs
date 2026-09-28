@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { useEventListener, useMediaQuery } from '@vueuse/core'
 import { ref, toValue } from 'vue'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/config'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 
 // 用 touch 而非 pointer：滚动手势接管后 pointer 会中途取消；页面级滚动由浏览器原生处理
 export function useBounceScroll(

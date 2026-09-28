@@ -1,6 +1,6 @@
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
 import type ForumAPI from '~/forum/api/types'
-import { IMAGE_UPLOAD_POLICY } from '../config'
+import { IMAGE_UPLOAD_POLICY } from '../forumConfig'
 
 export type ImageAttachmentStatus
   = | 'queued'

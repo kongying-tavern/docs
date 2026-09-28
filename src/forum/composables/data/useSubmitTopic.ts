@@ -7,10 +7,10 @@ import { authGuards } from '~/forum/composables/auth/auth-helpers'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumTopicMutations } from '~/forum/composables/data/useForumMutations'
 import { composeTopicBody } from '~/forum/composables/util/composeTopicBody'
+import { forumKeys } from '~/forum/services/forumQueryContracts'
+import { reactionEnvironmentForOrigin, recordPublishedTopicQuote } from '~/forum/services/forumReaction'
+import { buildTopicCreationLabels } from '~/forum/services/forumTopicLabels'
 import { getForumLocaleLabelGetter } from '~/forum/services/getForumLocaleGetter'
-import { forumKeys } from '~/forum/services/queryContracts'
-import { reactionEnvironmentForOrigin, recordPublishedTopicQuote } from '~/forum/services/reaction'
-import { buildTopicCreationLabels } from '~/forum/services/topicLabels'
 import { toast } from '~/services/telemetry/toast'
 
 const localeLabelGetter = getForumLocaleLabelGetter()

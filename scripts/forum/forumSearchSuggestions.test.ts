@@ -2,7 +2,7 @@
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { getForumSearchSuggestions } from '../../src/forum/services/searchSuggestions'
+import { getForumSearchSuggestions } from '../../src/forum/services/forumSearchSuggestions'
 
 function topic(id: string, title: string, text: string): ForumAPI.Topic {
   return { id, title, content: { text } } as ForumAPI.Topic

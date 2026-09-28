@@ -13,8 +13,8 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
-import { collectForumTopics, forumKeys } from '~/forum/services/queryContracts'
-import { createForumTopicEditorExtensions } from '~/forum/services/tiptapExtensions'
+import { collectForumTopics, forumKeys } from '~/forum/services/forumQueryContracts'
+import { createForumTopicEditorExtensions } from '~/forum/services/forumTiptapExtensions'
 import { createForumSuggestionRenderer } from '~/forum/tiptap/forumSuggestionRenderer'
 
 defineOptions({ inheritAttrs: false })

@@ -47,14 +47,14 @@ import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
-import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import {
   clearQuotedTopicRequest,
   isQuotableTopicType,
   QUOTED_TOPIC_ID_PARAM,
   QUOTED_TOPIC_TYPE_PARAM,
   readQuotedTopicRequest,
-} from '~/forum/services/topicQuote'
+} from '~/forum/services/forumTopicQuote'
+import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ActiveForumFestival, ForumFestivalEffectController } from '~/forum/services/festival'
+import type { ActiveForumFestival, ForumFestivalEffectController } from '~/forum/services/forumFestival'
 import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { forumFestivals } from '~/forum/config/festivals'
+import { forumFestivals } from '~/forum/config/forumFestivals'
 import {
   FESTIVAL_AUTOPLAYED_STORAGE_KEY,
   FESTIVAL_DISMISSALS_STORAGE_KEY,
@@ -13,7 +13,7 @@ import {
   pruneOccurrenceList,
   resolveActiveForumFestival,
   resolveForumFestivalAutoStart,
-} from '~/forum/services/festival'
+} from '~/forum/services/forumFestival'
 
 const { localeIndex } = useData()
 const { message } = useLocalized()

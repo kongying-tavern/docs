@@ -1,7 +1,7 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { planForumImageGrid } from '../../src/forum/services/imageLayout'
+import { planForumImageGrid } from '../../src/forum/services/forumImageLayout'
 
 const wide = { width: 1600, height: 800 }
 const tall = { width: 800, height: 1600 }

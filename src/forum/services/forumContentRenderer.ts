@@ -1,7 +1,7 @@
 import type { JSONContent } from '@tiptap/core'
 import type StateCore from 'markdown-it/lib/rules_core/state_core.mjs'
 import type Token from 'markdown-it/lib/token.mjs'
-import type { DecodedForumText } from './contentCodec'
+import type { DecodedForumText } from './forumContentCodec'
 import {
   renderToHTMLString,
   serializeChildrenToHTMLString,
@@ -9,7 +9,7 @@ import {
 import DOMPurify from 'dompurify'
 import MarkdownIt from 'markdown-it'
 import { SITE_ORIGIN } from '~/constants/site'
-import { getForumDocumentTitle } from './documentLinkIndex'
+import { getForumDocumentTitle } from './forumDocumentLinkIndex'
 import {
   FORUM_LINK_HOST_ALLOWLIST,
   getForumMentionHref,
@@ -17,9 +17,9 @@ import {
   isSafeForumHref,
   SAFE_FORUM_URI_REGEX,
   shortenForumAutoLink,
-} from './linkPolicy'
-import { createForumContentExtensions } from './tiptapExtensions'
-import { TOPIC_ID_PATTERN } from './topicQuote'
+} from './forumLinkPolicy'
+import { createForumContentExtensions } from './forumTiptapExtensions'
+import { TOPIC_ID_PATTERN } from './forumTopicQuote'
 
 /** Matches an emoji filename extension. */
 const EMOJI_FILE_EXTENSION_REGEX = /\.[^.]+$/

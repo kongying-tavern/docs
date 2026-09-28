@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FORUM } from '~/forum/components/types'
-import type { ForumSort } from '~/forum/services/route'
+import type { ForumSort } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'

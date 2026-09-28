@@ -1,11 +1,11 @@
 /* eslint-disable test/no-import-node-test */
 import type ForumAPI from '../../src/forum/api/types'
-import type { TopicStateFilter } from '../../src/forum/services/queryContracts'
-import type { ForumSearchState } from '../../src/forum/services/searchQuery'
-import type { StructuredTopicFetcher } from '../../src/forum/services/topics'
+import type { TopicStateFilter } from '../../src/forum/services/forumQueryContracts'
+import type { ForumSearchState } from '../../src/forum/services/forumSearchQuery'
+import type { StructuredTopicFetcher } from '../../src/forum/services/forumTopics'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { getStructuredForumTopics } from '../../src/forum/services/topics'
+import { getStructuredForumTopics } from '../../src/forum/services/forumTopics'
 
 type Params = Parameters<typeof getStructuredForumTopics>[0]
 

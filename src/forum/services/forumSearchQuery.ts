@@ -1,5 +1,5 @@
 import type ForumAPI from '~/forum/api/types'
-import { TOPIC_STATUS_DEFINITIONS } from './topicStatus'
+import { TOPIC_STATUS_DEFINITIONS } from './forumTopicStatus'
 
 export type ForumSearchState = ForumAPI.TopicDisplayStatus | 'good-issue'
 export type ForumSearchFacet = 'tags' | 'state' | 'author'

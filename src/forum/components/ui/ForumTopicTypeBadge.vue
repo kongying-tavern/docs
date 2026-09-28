@@ -3,7 +3,7 @@ import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { getTopicDisplayStatus } from '~/forum/services/topicStatus'
+import { getTopicDisplayStatus } from '~/forum/services/forumTopicStatus'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
 
 const { type, state, status, goodIssue = false, iconOnly = false, interactive = false } = defineProps<{

@@ -6,7 +6,7 @@ import { getLangPath } from '@/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { renderForumTopic } from '~/forum/services/contentRenderer'
+import { renderForumTopic } from '~/forum/services/forumContentRenderer'
 import { getTopicTypeMap } from '~/forum/services/getTopicTypeMap'
 import { handleError } from '~/forum/services/handleError'
 

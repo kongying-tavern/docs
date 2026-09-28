@@ -5,7 +5,7 @@ import { computed, nextTick, useId, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
-import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '~/forum/services/config'
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import { formatMessage } from '~/utils/formatMessage'
 
 const props = withDefaults(defineProps<{

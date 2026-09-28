@@ -3,9 +3,9 @@ import { computed, onMounted } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
 import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
-import { parseForumSearchQuery } from '~/forum/services/searchQuery'
 import ForumTagList from '../ui/ForumTagList.vue'
 
 const { message } = useLocalized()

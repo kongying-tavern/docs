@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { getTopicStatusColorClass } from '~/forum/services/topicStatus'
+import { getTopicStatusColorClass } from '~/forum/services/forumTopicStatus'
 
 const { status } = defineProps<{
   status?: ForumAPI.TopicDisplayStatus | 'good-issue'

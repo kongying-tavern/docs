@@ -8,8 +8,8 @@ import { EmojiNode } from '~/forum/tiptap/emojiNode'
 import { createLinkExtension } from '~/forum/tiptap/linkConfig'
 import { createMentionNode, MentionNode } from '~/forum/tiptap/mentionNode'
 import { createTopicReferenceNode } from '~/forum/tiptap/topicReferenceNode'
-import { getForumDocumentTitle } from './documentLinkIndex'
-import { isAllowedForumHref, shortenForumAutoLink } from './linkPolicy'
+import { getForumDocumentTitle } from './forumDocumentLinkIndex'
+import { isAllowedForumHref, shortenForumAutoLink } from './forumLinkPolicy'
 
 export function createForumContentExtensions(options: { openLinks?: boolean } = {}): Extensions {
   return [
