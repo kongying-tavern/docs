@@ -103,7 +103,7 @@ const {
         <CommandList>
           <div v-if="isLoading" class="text-sm c-[var(--vp-c-text-2)] px-3 py-5 flex gap-2 items-center justify-center">
             <span class="i-lucide-loader-circle size-4 animate-spin" aria-hidden="true" />
-            {{ message.forum.publish.publishLoading }}
+            {{ message.forum.publish.tagsInput.loading }}
           </div>
           <div v-else-if="loadError" class="text-sm px-3 py-4 flex flex-col gap-2 items-center" role="alert">
             <span>{{ message.forum.publish.tagsInput.loadFailed }}</span>

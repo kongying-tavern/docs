@@ -26,6 +26,8 @@ const props = withDefaults(defineProps<{
   defaultValue?: string
   placeholder?: string
   supportPaste?: boolean
+  /** contenteditable 不是 labelable 元素，<label for> 关联不上，需显式可访问名称 */
+  ariaLabel?: string
 }>(), {
   modelValue: '',
 })
@@ -122,8 +124,11 @@ onMounted(() => {
     },
     editorProps: {
       attributes: {
-        class: 'outline-none min-h-inherit',
+        'class': 'outline-none min-h-inherit',
         ...(props.id ? { id: props.id } : {}),
+        'role': 'textbox',
+        'aria-multiline': 'true',
+        ...(props.ariaLabel ? { 'aria-label': props.ariaLabel } : {}),
       },
     },
   })
@@ -203,7 +208,7 @@ onBeforeUnmount(() => editor.value?.destroy())
           <EditorContent
             v-if="editor"
             :editor="(editor as InstanceType<typeof Editor>)"
-            :class="cn('forum-markdown-editor h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-sm leading-6', props.class)"
+            :class="cn('forum-markdown-editor h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', props.class)"
           />
         </div>
         <slot name="after-editor" />

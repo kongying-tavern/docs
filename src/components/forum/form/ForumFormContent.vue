@@ -86,6 +86,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
               v-bind="componentField"
               :class="isDesktop ? 'min-h-36' : 'min-h-28'"
               :placeholder="tab.fields.content.placeholder"
+              :aria-label="tab.fields.content.label"
               :support-paste="true"
               @paste-files="$emit('files-selected', $event)"
             >

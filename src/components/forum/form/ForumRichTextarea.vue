@@ -7,7 +7,7 @@ import type { ImageAttachment } from '~/services/forum/form/imageAttachment'
 import { ReloadIcon } from '@radix-icons/vue'
 import CharacterCount from '@tiptap/extension-character-count'
 import { Editor, EditorContent } from '@tiptap/vue-3'
-import { onClickOutside, usePreferredReducedMotion } from '@vueuse/core'
+import { onClickOutside } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
@@ -18,6 +18,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useForumImageDropZone } from '~/composables/forum/useForumImageDropZone'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { createForumContentExtensions } from '~/services/forum/forumTiptapExtensions'
 import ForumImageUpload from './ForumImageUpload.vue'
 
@@ -40,6 +41,8 @@ interface Props {
   autofocus?: boolean
   entryAnimation?: boolean
   modelValue?: JSONContent | null
+  /** 无可见标签场景（评论框）下的可访问名称 */
+  ariaLabel?: string
 }
 
 defineOptions({
@@ -87,8 +90,8 @@ const emojiPreload = useEmojiPreload()
 const charCount = ref(0)
 const percentage = computed(() => Math.round((100 / props.maxTextLength) * charCount.value))
 const text = ref('')
-const reducedMotion = usePreferredReducedMotion()
-const entryMotion = computed(() => (props.entryAnimation && reducedMotion.value !== 'reduce'
+const { reducedMotion } = useSitePreferences()
+const entryMotion = computed(() => (props.entryAnimation && !reducedMotion.value
   ? { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } }
   : {}))
 
@@ -135,7 +138,11 @@ onMounted(() => {
     },
     editorProps: {
       attributes: {
-        class: cn('outline-none', props.class),
+        'class': cn('outline-none', props.class),
+        // contenteditable div 不是 labelable 元素，<label for> 关联不上，需要显式补语义
+        'role': 'textbox',
+        'aria-multiline': 'true',
+        ...(props.ariaLabel ? { 'aria-label': props.ariaLabel } : {}),
       },
     },
   })

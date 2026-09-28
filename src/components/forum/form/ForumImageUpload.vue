@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { ImageAttachment } from '~/services/forum/form/imageAttachment'
-import { computed, useId, useTemplateRef } from 'vue'
+import { computed, nextTick, useId, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { formatImageAttachmentError, formatMessage } from '~/components/forum/utils/forumUi'
+import { formatImageAttachmentError } from '~/components/forum/utils/forumUi'
 import { useForumImageDropZone } from '~/composables/forum/useForumImageDropZone'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
+import { formatMessage } from '~/utils/formatMessage'
 
 const props = withDefaults(defineProps<{
   attachments: ImageAttachment[]
@@ -51,6 +52,16 @@ function handleInput(event: Event): void {
 function handlePaste(event: ClipboardEvent): void {
   if (event.clipboardData)
     emitFiles([...event.clipboardData.files])
+}
+
+async function removeAttachment(id: string, index: number): Promise<void> {
+  emit('remove', id)
+  await nextTick()
+
+  const removeButtons = dropZone.value?.querySelectorAll<HTMLButtonElement>('[data-remove-image]')
+  const nextButton = removeButtons?.[Math.min(index, Math.max(0, removeButtons.length - 1))]
+  const focusTarget = nextButton ?? dropZone.value
+  focusTarget?.focus({ preventScroll: true })
 }
 
 const { isOverDropZone } = useForumImageDropZone(dropZone, {
@@ -101,9 +112,14 @@ defineExpose({ open })
       multiple
       @change="handleInput"
     >
-    <ul class="mt-3 flex flex-wrap gap-3 items-start" aria-live="polite">
+    <TransitionGroup
+      tag="ul"
+      name="photo-grid"
+      class="image-preview-list mt-3 flex flex-wrap gap-3 items-start"
+      aria-live="polite"
+    >
       <li
-        v-for="attachment in attachments"
+        v-for="(attachment, index) in attachments"
         :key="attachment.id"
         class="image-preview rounded-md relative overflow-hidden"
         :class="previewSizeClass"
@@ -114,23 +130,28 @@ defineExpose({ open })
           :alt="attachment.file.name"
           class="size-full object-cover"
         >
-        <div v-if="attachment.status === 'failed'" class="bg-[var(--forum-media-overlay-soft)] flex items-center inset-0 justify-center absolute">
+        <div v-if="attachment.status === 'failed'" class="bg-[var(--forum-media-overlay-soft)] flex flex-col gap-1 items-center inset-0 justify-center absolute">
+          <span class="i-lucide-circle-alert bg-[var(--forum-media-on-overlay)] size-4" aria-hidden="true" />
+          <span class="leading-none font-medium bg-[var(--forum-media-on-overlay)] text-ui-10">
+            {{ message.forum.publish.feedbackForm.uploadFailedShort }}
+          </span>
           <button
             type="button"
-            class="rounded-full bg-[var(--forum-media-overlay)] flex size-8 items-center justify-center"
+            class="mt-0.5 rounded-full bg-[var(--forum-media-overlay)] flex size-6 items-center justify-center"
             :aria-label="formatMessage(message.forum.publish.feedbackForm.retryImage, { filename: attachment.file.name })"
             :disabled="disabled"
             @click="emit('retry', attachment.id)"
           >
-            <span class="i-lucide-rotate-ccw bg-[var(--forum-media-on-overlay)] size-4" aria-hidden="true" />
+            <span class="i-lucide-rotate-ccw bg-[var(--forum-media-on-overlay)] size-3.5" aria-hidden="true" />
           </button>
         </div>
         <button
           type="button"
+          data-remove-image
           class="image-action rounded-bl-md bg-[var(--forum-media-overlay)] flex size-7 items-center right-0 top-0 justify-center absolute focus-visible:outline-2 focus-visible:outline-[var(--forum-media-on-overlay)] hover:bg-[var(--forum-media-overlay-strong)]"
           :aria-label="formatMessage(message.forum.publish.feedbackForm.removeImage, { filename: attachment.file.name })"
           :disabled="disabled"
-          @click="emit('remove', attachment.id)"
+          @click="removeAttachment(attachment.id, index)"
         >
           <span
             class="bg-[var(--forum-media-on-overlay)] size-4"
@@ -143,7 +164,7 @@ defineExpose({ open })
         </span>
       </li>
 
-      <li v-if="!hideDefaultTrigger">
+      <li v-if="!hideDefaultTrigger" key="image-trigger">
         <label
           :for="inputId"
           class="image-trigger text-sm border-2 rounded-md border-dashed inline-flex flex-col gap-2 cursor-pointer transition-colors items-center justify-center"
@@ -156,7 +177,7 @@ defineExpose({ open })
           {{ message.forum.publish.feedbackForm.addImages }}
         </label>
       </li>
-    </ul>
+    </TransitionGroup>
 
     <p class="text-xs c-[var(--vp-c-text-3)] mt-2">
       {{ formatMessage(message.forum.publish.feedbackForm.attachmentsLimit, {
@@ -211,7 +232,28 @@ defineExpose({ open })
 
 .image-preview {
   background: var(--vp-c-bg-soft);
-  box-shadow: inset 0 0 0 1px var(--vp-c-divider);
+  box-shadow: inset 0 0 0 1px var(--forum-image-outline);
+}
+
+.photo-grid-move,
+.photo-grid-enter-active {
+  transition:
+    transform 300ms linear(0, 0.22 8%, 0.6 18%, 0.94 30%, 1.07 40%, 1.05 48%, 1 60%, 0.99 74%, 1),
+    opacity 210ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.photo-grid-leave-active {
+  position: absolute;
+  z-index: 1;
+  transition:
+    transform 200ms cubic-bezier(0.33, 1, 0.68, 1),
+    opacity 200ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.photo-grid-enter-from,
+.photo-grid-leave-to {
+  transform: scale(0.9);
+  opacity: 0;
 }
 
 .image-preview[data-status='failed'] {
@@ -219,10 +261,23 @@ defineExpose({ open })
 }
 
 .image-action {
-  transition: background-color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    transform 140ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.image-action:active:not(:disabled) {
+  transform: scale(0.88);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .photo-grid-move,
+  .photo-grid-enter-active,
+  .photo-grid-leave-active,
+  .image-action {
+    transition: none;
+  }
+
   .animate-spin {
     animation: none;
   }

@@ -44,8 +44,9 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumImageUpload from '~/components/forum/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/components/forum/topic/ForumQuotedTopicCard.vue'
-import { formatImageAttachmentError, formatMessage } from '~/components/forum/utils/forumUi'
+import { formatImageAttachmentError } from '~/components/forum/utils/forumUi'
 import { useForumTopicQuery } from '~/composables/forum/useForumQueries'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import {
   clearQuotedTopicRequest,
   isQuotableTopicType,
@@ -57,6 +58,7 @@ import { isPhoneBindingRequiredError } from '~/services/forum/gitee'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'
+import { formatMessage } from '~/utils/formatMessage'
 import { useFormState } from '../composables/useFormState'
 import { useFormSubmit } from '../composables/useFormSubmit'
 import ForumFormActionBar from '../ForumFormActionBar.vue'
@@ -68,7 +70,7 @@ import { FORM_HASH } from './config'
 const userAuth = useUserAuthStore()
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
-const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+const { reducedMotion: prefersReducedMotion } = useSitePreferences()
 
 const {
   isOpen,
@@ -409,7 +411,7 @@ watch(isOpen, (open) => {
     <Alert v-if="submissionAlert" variant="destructive" class="mb-3 pr-9">
       <OctagonXIcon />
       <AlertTitle>{{ submissionAlert.title }}</AlertTitle>
-      <AlertDescription class="whitespace-pre-wrap break-all">
+      <AlertDescription class="whitespace-pre-wrap break-words">
         {{ submissionAlert.description }}
       </AlertDescription>
       <button
@@ -515,7 +517,11 @@ watch(isOpen, (open) => {
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel @click="discardCurrentDraft">
+        <!-- 放弃草稿销毁用户内容，破坏性选项与保留选项需要视觉区分 -->
+        <AlertDialogCancel
+          class="text-destructive border-destructive/40 hover:bg-destructive/10"
+          @click="discardCurrentDraft"
+        >
           {{ message.forum.publish.feedbackForm.discardDraft }}
         </AlertDialogCancel>
         <AlertDialogAction @click="keepDraft">

@@ -2,7 +2,6 @@
 import type { JSONContent } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/apis/forum/api'
-import { usePreferredReducedMotion } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { uploadImg } from '@/apis/interknot.site/upload'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
@@ -16,6 +15,7 @@ import { useUserInfoStore } from '@/stores/useUserInfo'
 import { useForumCommentMutations } from '~/composables/forum/useForumMutations'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
 import { useImageAttachmentQueue } from '~/composables/useImageAttachmentQueue'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { submitCommentTransaction } from '~/services/forum/commentTransaction'
 import { createCommentFormSchema } from '~/services/forum/form/validation'
 import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
@@ -69,8 +69,8 @@ const queue = useImageAttachmentQueue({
 })
 const loading = computed(() => submitPending.value || forumMutations.creatingComment.value)
 const busy = computed(() => loading.value || queue.isBusy.value)
-const reducedMotion = usePreferredReducedMotion()
-const entryMotion = computed(() => (entryAnimation && reducedMotion.value !== 'reduce'
+const { reducedMotion } = useSitePreferences()
+const entryMotion = computed(() => (entryAnimation && !reducedMotion.value
   ? { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } }
   : {}))
 
@@ -195,6 +195,7 @@ async function retryAttachment(id: string): Promise<void> {
       :entry-animation="entryAnimation"
       :placeholders="placeholder"
       :reply-target="replyTarget"
+      :aria-label="message.forum.comment.comment"
       @input="plainText = $event"
       @files-selected="addFiles"
       @remove-attachment="queue.remove"
