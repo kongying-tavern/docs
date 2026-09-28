@@ -39,6 +39,14 @@ const displayText = computed(() => {
     return topicData.commentCount
   return message.value.forum.comment.comment
 })
+// 有评论时可见文本是裸数字，读屏需要带上下文的名称
+const commentAriaLabel = computed(() => {
+  if (isClosedComment.value)
+    return message.value.forum.comment.commentsClosed
+  if (topicData.commentCount > 0)
+    return `${message.value.forum.comment.comment} ${topicData.commentCount}`
+  return message.value.forum.comment.comment
+})
 
 function handleCommentClick() {
   emit('comment:click', topicData.user)
@@ -58,6 +66,7 @@ function handleCommentClick() {
         size="sm"
         data-action="comment"
         :disabled="isClosedComment"
+        :aria-label="commentAriaLabel"
         class="rounded-full bg-[var(--vp-c-bg-alt)] h-8 max-mobile:h-11"
         @click="handleCommentClick"
       >
@@ -68,6 +77,7 @@ function handleCommentClick() {
     </div>
     <ForumTopicTypeBadge
       v-if="isCompactMode"
+      data-forum-shared-topic="type"
       :type="topicData.type"
       :state="topicData.state"
       :status="topicData.status"

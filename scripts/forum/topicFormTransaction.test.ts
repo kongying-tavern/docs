@@ -233,7 +233,7 @@ test('form wiring keeps one submission and starts bounded closing before awaitin
 })
 
 test('quote actions follow comments and the quote card lives inside the body input', () => {
-  const footerSource = readFileSync(new URL('../../src/components/forum/list/ForumTopicFooter.vue', import.meta.url), 'utf8')
+  const footerSource = readFileSync(new URL('../../src/components/forum/list/ForumTopicItemFooter.vue', import.meta.url), 'utf8')
   const listTopicSource = readFileSync(new URL('../../src/components/forum/list/ForumTopic.vue', import.meta.url), 'utf8')
   const contentSource = readFileSync(new URL('../../src/components/forum/form/ForumFormContent.vue', import.meta.url), 'utf8')
   const inputSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumContentInputBox.vue', import.meta.url), 'utf8')

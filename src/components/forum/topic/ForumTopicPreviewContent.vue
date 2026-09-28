@@ -3,7 +3,7 @@ import type ForumAPI from '@/apis/forum/api'
 import { computed } from 'vue'
 import { useForumRoute } from '~/composables/useForumRoute'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
-import ForumTopicFooter from '../list/ForumTopicFooter.vue'
+import ForumTopicItemFooter from '../list/ForumTopicItemFooter.vue'
 import ForumQuotedTopic from './ForumQuotedTopic.vue'
 import ForumTopicContent from './ForumTopicContent.vue'
 import ForumTopicHeader from './ForumTopicHeader.vue'
@@ -37,7 +37,7 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
       v-if="topic.quotedTopic"
       :reference="topic.quotedTopic"
     />
-    <ForumTopicFooter :topic-data="topic" hide-comment-button />
+    <ForumTopicItemFooter :topic-data="topic" hide-comment-button />
     <ForumCommentArea
       repo="Feedback"
       :topic-id="String(topic.id)"

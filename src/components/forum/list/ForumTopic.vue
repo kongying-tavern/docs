@@ -3,6 +3,7 @@ import type ForumAPI from '@/apis/forum/api'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useForumViewMode } from '~/composables/useForumViewMode'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/services/forum/forumConfig'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicComment from '../comment/ForumTopicComment.vue'
@@ -14,7 +15,7 @@ import ForumTopicHeader from '../topic/ForumTopicHeader.vue'
 import ForumTopicMedia from '../topic/ForumTopicMedia.vue'
 import ForumTopicTranslator from '../topic/ForumTopicTranslator.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
-import ForumTopicFooter from './ForumTopicFooter.vue'
+import ForumTopicItemFooter from './ForumTopicItemFooter.vue'
 
 const { topic } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
@@ -28,6 +29,11 @@ const emit = defineEmits<{
 const { translator, menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+const { reducedMotion } = useSitePreferences()
+// 与 ForumCommentInputBox 的 entryMotion 同款守卫：reduced-motion 下不位移
+const commentEntryMotion = computed(() => (reducedMotion.value
+  ? {}
+  : { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } }))
 const translatedContent = ref<string>()
 const translatedTitle = ref('')
 const showingTranslation = ref(false)
@@ -142,7 +148,7 @@ function showTranslatedContent(content: string): void {
       :compact="isCompactMode"
     />
 
-    <ForumTopicFooter
+    <ForumTopicItemFooter
       v-if="topic.type !== 'POST'"
       :class="{ 'mt-4': isCardMode, 'mt-2': isCompactMode }"
       :topic-data="topic"
@@ -156,7 +162,9 @@ function showTranslatedContent(content: string): void {
       <ForumTopicComment
         v-for="commentItem in topic.relatedComments"
         :key="commentItem.id"
-        v-motion-slide-top
+        v-motion
+        :initial="commentEntryMotion.initial"
+        :enter="commentEntryMotion.enter"
         repo="Feedback"
         size="small"
         :comment-count="-1"
