@@ -32,6 +32,7 @@ const { userHref } = useForumRoute()
   <FluidHoverList
     class="settings-menu"
     :class="{ 'is-drilldown': drilldown }"
+    indicator-class="bg-muted"
   >
     <a
       v-if="userInfo.info"
@@ -116,7 +117,6 @@ const { userHref } = useForumRoute()
   text-decoration: none;
 }
 
-/* 指针反馈交给 fluid indicator；focus-visible 的描边保留 */
 .settings-user:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
   outline-offset: 2px;

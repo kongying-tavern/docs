@@ -180,7 +180,6 @@ function commentLabel(item: { commentCount?: number }): string {
   display: none;
 }
 
-/* 指针反馈交给 fluid indicator，行只保留文字提亮 */
 .forum-sidebar-summary:hover,
 .forum-sidebar-topic-row:hover,
 .forum-sidebar-topic-row:focus-within {

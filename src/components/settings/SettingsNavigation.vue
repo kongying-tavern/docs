@@ -62,13 +62,11 @@ const emit = defineEmits<{
     color 160ms ease-out;
 }
 
-/* 指针反馈交给 fluid indicator；active 态背景与 focus-visible 描边保留 */
 .settings-navigation-item:focus-visible {
   outline: 2px solid var(--vp-c-brand-1);
   outline-offset: 2px;
 }
 
-/* active 只保留文字品牌色，行背景统一由 fluid indicator 呈现 */
 .settings-navigation-item.active {
   color: var(--vp-c-brand-1);
 }

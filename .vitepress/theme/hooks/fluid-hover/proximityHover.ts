@@ -99,8 +99,7 @@ export function createProximityHover(
 
   container.setAttribute(CONTAINER_ATTR, '')
 
-  // A static container leaves the offset chain outside the container and measurement fails
-  // silently; this bit us once with reka's popper wrapper, whose content element is not positioned.
+  // 容器未定位时 offset 链离开容器，测量静默失败（reka popper 的内容元素默认不定位）
   if (import.meta.env.DEV && getComputedStyle(container).position === 'static') {
     // eslint-disable-next-line no-console
     console.warn('[fluid-hover] container must be positioned (e.g. `relative`), measurement would fail')
@@ -120,10 +119,8 @@ export function createProximityHover(
   }
 
   /**
-   * Publishes a rect for every eligible item that currently has a layout box. A boxless item is
-   * legitimately absent from layout — a closed `<details>` section hides its rows — so it is
-   * skipped instead of failing the pass; only a boxless container (a popup not laid out yet)
-   * keeps the last measurement and waits for the retry.
+   * 发布所有有布局盒的 item 的 rect。无盒 item 是合法缺位（折叠的 `<details>` 隐藏行）——跳过而非
+   * 整轮失败；仅当容器自身无盒（弹层未布局）时保留上次测量并等待重试。
    */
   function measure(): boolean {
     if (!hasLayoutBox(container))
@@ -260,7 +257,6 @@ export function createProximityHover(
     const target = event.target as Element | null
     if (!item || !target)
       return
-    // Inside an item, or on a control between the rows: the target owns the click.
     if (target.closest(`${ITEM_SELECTOR}, ${OWN_CLICK_SELECTOR}`))
       return
     // A row that unmounted while its own click was still bubbling already landed; it is not a gap.
@@ -286,8 +282,7 @@ export function createProximityHover(
   for (const [type, listener, listenerOptions] of listeners)
     container.addEventListener(type, listener, listenerOptions)
 
-  // Scroll is captured at the document: it covers the container itself, a scroller it is nested
-  // in, and every descendant scroller, so content moving under a still pointer always re-picks.
+  // 捕获到 document：容器本身、父级滚动容器、后代滚动容器任一滚动都会重选取
   const scrollTarget: Document = container.ownerDocument
   scrollTarget.addEventListener('scroll', onScroll as EventListener, { passive: true, capture: true })
 

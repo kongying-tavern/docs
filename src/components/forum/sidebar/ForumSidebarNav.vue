@@ -56,7 +56,6 @@ defineEmits<{
   line-height: calc(20px * var(--site-ui-scale));
 }
 
-/* 指针反馈交给 fluid indicator；active 只保留字重 */
 .forum-sidebar-link.active {
   font-weight: 600;
 }

@@ -70,8 +70,7 @@ export function createHighlightIndicator(
 
   const resizeObserver = new ResizeObserver(() => invalidate())
   resizeObserver.observe(container)
-  // The indicator's own style writes are attribute mutations it must not react to; framework
-  // patches of the content are coalesced into one sync that still runs before paint.
+  // 自身样式写入不会触发；内容补丁合并进一次同步，仍赶在绘制前
   const mutationObserver = new MutationObserver(() => {
     pending = true
     if (queued)
