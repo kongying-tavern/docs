@@ -1,5 +1,5 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
 import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'

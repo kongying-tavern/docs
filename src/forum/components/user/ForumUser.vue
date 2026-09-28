@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 
 import Avatar from '@/components/ui/Avatar.vue'
 import Button from '@/components/ui/button/Button.vue'

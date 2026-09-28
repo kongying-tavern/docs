@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'

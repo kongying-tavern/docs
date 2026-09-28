@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/useForumRoute'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ForumSelectOption } from '../ui/responsive/shared'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { ChevronDown } from '@lucide/vue'
 import { computed, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'

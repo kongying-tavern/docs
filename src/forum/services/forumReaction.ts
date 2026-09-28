@@ -1,4 +1,4 @@
-import type { INTER_KNOT } from '@/apis/interknot.site/api'
+import type { INTER_KNOT } from '~/apis/interknot.site/api'
 import type ForumAPI from '~/forum/api/forum'
 import { SITE_BASE, SITE_ORIGIN } from '~/constants/site'
 

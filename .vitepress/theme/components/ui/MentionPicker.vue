@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useLocalStorage } from '@vueuse/core'
 import { shuffle } from 'lodash-es'
 import { computed, ref, watchEffect } from 'vue'

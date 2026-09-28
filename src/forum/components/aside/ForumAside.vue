@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import ForumAsideContact from './ForumAsideContact.vue'
 import ForumAsideHomeResources from './ForumAsideHomeResources.vue'

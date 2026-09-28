@@ -9,7 +9,7 @@ test('telemetry keeps reporting, session, and settings boundaries intact', async
     readFile(new URL('../../src/services/telemetry/clarity.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/services/telemetry/session.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/telemetry/TelemetrySettings.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../.vitepress/theme/apis/interknot.site/index.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/apis/interknot.site/index.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/api/gitee/index.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8'),

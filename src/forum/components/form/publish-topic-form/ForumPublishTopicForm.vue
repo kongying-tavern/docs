@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable no-console */
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
 import type { TopicFormTransactionStage } from '~/forum/services/form/topicFormTransaction'
 import type { TopicFormData } from '~/forum/services/form/validation'

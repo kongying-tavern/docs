@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { defineStore } from 'pinia'
 import { computed, readonly, ref, watch } from 'vue'
 import { toCamelCaseObject } from '@/utils'

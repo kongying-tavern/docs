@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { ref } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { useForumRoute } from '~/forum/composables/useForumRoute'

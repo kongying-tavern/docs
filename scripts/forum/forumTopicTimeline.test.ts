@@ -1,5 +1,5 @@
 /* eslint-disable test/no-import-node-test */
-import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
+import type ForumAPI from '../../src/forum/api/forum'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'

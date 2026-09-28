@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { uniq } from 'lodash-es'
 import { updateTopicMetadata } from '~/forum/services/forumContentCodec'
 import { replaceTopicTypeLabel } from '~/forum/services/forumTopicLabels'

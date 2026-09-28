@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '../types'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { computed, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTranslationPreferences } from '~/forum/composables/useForumTranslationPreferences'

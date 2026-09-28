@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import type { ForumSearchFacet } from '~/forum/services/forumSearchQuery'
 import { useRouter } from 'vitepress'
 import { computed, nextTick, onMounted, ref, useId, useTemplateRef, watch } from 'vue'

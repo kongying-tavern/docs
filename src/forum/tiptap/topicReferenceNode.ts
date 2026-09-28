@@ -1,6 +1,6 @@
 import type { SuggestionOptions } from '@tiptap/suggestion'
 import type { ForumEditorSuggestionItem } from './forumSuggestionRenderer'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { mergeAttributes } from '@tiptap/core'
 import Mention from '@tiptap/extension-mention'
 import { PluginKey } from '@tiptap/pm/state'

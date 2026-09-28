@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/forum/services/forumSearchQuery'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'

@@ -1,9 +1,9 @@
-import type { INTER_KNOT } from '@/apis/interknot.site/api'
+import type { INTER_KNOT } from '~/apis/interknot.site/api'
 import { useMutation, useQuery } from '@pinia/colada'
 import { defineStore } from 'pinia'
 import { useRoute, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
-import { reactions } from '@/apis/interknot.site'
+import { reactions } from '~/apis/interknot.site'
 import { useUserInfoStore } from './useUserInfo'
 
 export const useReactionStore = defineStore('reaction', () => {

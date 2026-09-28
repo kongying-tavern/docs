@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useQueryCache } from '@pinia/colada'
 import { isString } from 'lodash-es'
 import { useData, useRouter, withBase } from 'vitepress'

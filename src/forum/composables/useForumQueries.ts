@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import type { ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
 import { useInfiniteQuery, useQuery } from '@pinia/colada'
 import { computed, toValue, watch } from 'vue'

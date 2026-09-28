@@ -1,9 +1,9 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
-import type { INTER_KNOT } from '../../.vitepress/theme/apis/interknot.site/api'
-import type { ImageUploadRequest } from '../../.vitepress/theme/apis/interknot.site/upload'
+import type { INTER_KNOT } from '../../src/apis/interknot.site/api'
+import type { ImageUploadRequest } from '../../src/apis/interknot.site/upload'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
-import { uploadImg } from '../../.vitepress/theme/apis/interknot.site/upload'
+import { uploadImg } from '../../src/apis/interknot.site/upload'
 
 const response: INTER_KNOT.ImageResponse = {
   statusCode: 200,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { ReloadIcon } from '@radix-icons/vue'
 import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'

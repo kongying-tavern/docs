@@ -1,6 +1,6 @@
 import type { useTokenManager } from './useTokenManager'
+import { oauth as interKnotOauth } from '~/apis/interknot.site'
 import { createAuthError } from '~/services/authErrors'
-import { oauth as interKnotOauth } from '../apis/interknot.site'
 import { log, LogGroup } from '../utils/auth-logger'
 
 export function useSSOAuth(tokenManager: ReturnType<typeof useTokenManager>) {

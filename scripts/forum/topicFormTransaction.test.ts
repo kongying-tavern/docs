@@ -1,5 +1,5 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
-import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
+import type ForumAPI from '../../src/forum/api/forum'
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'

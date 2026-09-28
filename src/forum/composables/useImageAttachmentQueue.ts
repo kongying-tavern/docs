@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue'
-import type ForumAPI from '@/apis/forum/api'
 import type { ThumbHashCalculated } from '@/composables/calculateThumbHashForFile'
+import type ForumAPI from '~/forum/api/forum'
 import type {
   AddImageFilesResult,
   ImageAttachment,

@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useQuery, useQueryCache } from '@pinia/colada'
 import { computed } from 'vue'
 import { useUserAuthStore } from '@/stores/useUserAuth'

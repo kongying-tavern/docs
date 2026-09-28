@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'

@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useEventListener, useInfiniteScroll, useMediaQuery } from '@vueuse/core'
 import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'

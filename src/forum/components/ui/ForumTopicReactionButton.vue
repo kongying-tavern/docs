@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { INTER_KNOT } from '@/apis/interknot.site/api'
+import type { INTER_KNOT } from '~/apis/interknot.site/api'
 import { ReloadIcon } from '@radix-icons/vue'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'

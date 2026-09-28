@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { computed } from 'vue'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumRoute } from '~/forum/composables/useForumRoute'

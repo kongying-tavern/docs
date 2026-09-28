@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useMediaQuery } from '@vueuse/core'
 import { ref, watch } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'

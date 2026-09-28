@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { defineStore } from 'pinia'
 import { onMounted, ref, watch } from 'vue'

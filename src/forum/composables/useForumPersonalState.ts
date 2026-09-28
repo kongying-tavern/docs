@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { createGlobalState } from '@vueuse/core'
 import { computed } from 'vue'

@@ -1,12 +1,12 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { INTER_KNOT } from '@/apis/interknot.site/api'
+import type { INTER_KNOT } from '~/apis/interknot.site/api'
 import type { TopicReaction } from '~/forum/services/forumReaction'
 import { useMutation, useQuery, useQueryCache, useQueryState } from '@pinia/colada'
 import { computed, reactive, toValue } from 'vue'
-import { reactions } from '@/apis/interknot.site'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useUserInfoStore } from '@/stores/useUserInfo'
+import { reactions } from '~/apis/interknot.site'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
 import {
   coordinateReactionMutation,

@@ -1,5 +1,5 @@
 import type { UseInfiniteQueryData } from '@pinia/colada'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
 import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
 import { useMutation, useQueryCache } from '@pinia/colada'

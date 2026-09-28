@@ -1,4 +1,4 @@
-import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
+import type ForumAPI from '../../src/forum/api/forum'
 import Blog from '../_data/posts.json'
 import { isCategoryLabel } from '../forum/services/forumLabel'
 import { getTopicStatus } from '../forum/services/forumTopicStatus'

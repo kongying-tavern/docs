@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { computed } from 'vue'
 import { useForumViewMode } from '~/forum/composables/useForumViewMode'
 import { useTextCollapse } from '~/forum/composables/useTextCollapse'

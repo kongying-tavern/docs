@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { JSONContent, Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
-import type ForumAPI from '@/apis/forum/api'
 import type { EmojiItem } from '@/components/ui/EmojiPicker.vue'
+import type ForumAPI from '~/forum/api/forum'
 import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
 import { ReloadIcon } from '@radix-icons/vue'
 import CharacterCount from '@tiptap/extension-character-count'

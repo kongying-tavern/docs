@@ -1,4 +1,4 @@
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useToggle } from '@vueuse/core'
 import { nextTick, readonly, ref } from 'vue'
 import { useForumViewMode } from '~/forum/composables/useForumViewMode'

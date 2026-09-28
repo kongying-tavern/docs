@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useMediaQuery } from '@vueuse/core'
 import { useRouter } from 'vitepress'
 import { computed, ref } from 'vue'

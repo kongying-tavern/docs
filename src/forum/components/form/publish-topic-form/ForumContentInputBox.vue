@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import { useQueryCache } from '@pinia/colada'
 import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'

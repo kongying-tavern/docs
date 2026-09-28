@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/apis/forum/api'
+import type ForumAPI from '~/forum/api/forum'
 import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'

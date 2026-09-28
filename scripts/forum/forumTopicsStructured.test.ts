@@ -1,5 +1,5 @@
 /* eslint-disable test/no-import-node-test */
-import type ForumAPI from '../../.vitepress/theme/apis/forum/api'
+import type ForumAPI from '../../src/forum/api/forum'
 import type { TopicStateFilter } from '../../src/forum/services/forumQueryContracts'
 import type { ForumSearchState } from '../../src/forum/services/forumSearchQuery'
 import type { StructuredTopicFetcher } from '../../src/forum/services/forumTopics'
