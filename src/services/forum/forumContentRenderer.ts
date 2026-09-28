@@ -250,9 +250,14 @@ function escapeTopicCodeFenceMarkers(text: string): string {
 }
 
 function sanitizeForumHtml(html: string): string {
-  return typeof DOMPurify.sanitize === 'function'
-    ? DOMPurify.sanitize(html, FORUM_HTML_SANITIZE_CONFIG)
-    : html
+  const sanitize = DOMPurify.sanitize
+  if (typeof sanitize === 'function')
+    return sanitize.call(DOMPurify, html, FORUM_HTML_SANITIZE_CONFIG)
+  // Node（SSG/单测）没有 DOM：渲染结果是序列化中间产物，保持原样供测试断言；
+  // 浏览器下 DOMPurify 不可用属异常状态，失败关闭退化为纯文本转义，绝不透传未消毒 HTML
+  if (typeof window !== 'undefined')
+    return escapeHtml(html)
+  return html
 }
 
 function transformForumSpecialText(state: StateCore): void {
