@@ -16,7 +16,7 @@
   --destructive: 0.704 0.191 22.216;
   --destructive-foreground: 1 0 0;
   --border: 0.9131 0.0013 286.37;
-  --input: 1 0 0;
+  --input: 0.9131 0.0013 286.37;
   --ring: 0.8147 0.0028 286.34;
   --chart-1: 0.81 0.1 252;
   --chart-2: 0.62 0.19 260;
@@ -66,14 +66,14 @@
   --primary-foreground: 0.985 0.001 106.423;
   --secondary: 0.3995 0.0207 259.4;
   --secondary-foreground: 0.9011 0.0121 106.64;
-  --muted: 0.2238 0.0077 285.76;
+  --muted: 0.2741 0.0055 286.03;
   --muted-foreground: 0.6819 0.0102 286.13;
   --accent: 0.2741 0.0055 286.03;
   --accent-foreground: 0 0% 98%;
   --destructive: 0.704 0.191 22.216;
   --destructive-foreground: 0.985 0 0;
   --border: 0.3667 0.0095 260.72;
-  --input: 0.2238 0.0077 285.76;
+  --input: 0.2741 0.0055 286.03;
   --ring: 0.3027 0.0071 285.97;
   --chart-1: 0.81 0.1 252;
   --chart-2: 0.62 0.19 260;
