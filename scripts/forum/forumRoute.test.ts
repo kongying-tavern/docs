@@ -264,12 +264,21 @@ test('ships exactly three scoped Vercel Forum rewrites and localized shells', ()
     assert.match(shell, /<ForumRouteView \/>/)
   }
 
+  // 全局对话框（含发布表单）收敛到内容层单入口；平台层布局只渲染该入口
+  const globalDialogs = readSource('src/components/forum/ForumGlobalDialogs.vue')
+  assert.match(globalDialogs, /import\('~\/components\/forum\/form\/publish-topic-form\/ForumPublishTopicForm\.vue'\)/)
+  assert.match(globalDialogs, /v-if="shouldMountPublishForm"/)
+  assert.match(globalDialogs, /addEventListener\('hashchange', mountPublishFormWhenRequested\)/)
+  assert.match(globalDialogs, /<ForumPublishTopicForm \/>/)
+
   const forumLayout = readSource('.vitepress/theme/layouts/Forum.vue')
-  assert.match(forumLayout, /import\('~\/components\/forum\/form\/publish-topic-form\/ForumPublishTopicForm\.vue'\)/)
-  assert.match(forumLayout, /loadForumPublishTopicForm\(\)\.catch/)
-  assert.match(forumLayout, /v-if="shouldMountPublishForm"/)
-  assert.match(forumLayout, /addEventListener\('hashchange', mountPublishFormWhenRequested\)/)
-  assert.match(forumLayout, /<ForumPublishTopicForm \/>/)
+  assert.match(forumLayout, /<ForumGlobalDialogs \/>/)
+  assert.doesNotMatch(forumLayout, /ForumPublishTopicForm|shouldMountPublishForm|hashchange/)
+
+  // 编辑器 chunk 改为意图预热（入口 hover/聚焦/点击），布局挂载不再无条件预加载
+  const formButton = readSource('src/components/forum/form/OpenFeedbackFormButton.vue')
+  assert.match(formButton, /preloadForumPublishForm/)
+  assert.doesNotMatch(globalDialogs, /loadForumPublishTopicForm\(\)\.catch/)
 
   const theme = readSource('.vitepress/theme/index.ts')
   assert.match(theme, /requestIdleCallback\(preload, \{ timeout: 3000 \}\)/)

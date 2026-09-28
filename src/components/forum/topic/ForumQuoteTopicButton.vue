@@ -7,6 +7,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/composables/useForumReaction'
 import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/services/forum/forumTopicQuote'
 import { FORM_HASH } from '../form/publish-topic-form/config'
+import { preloadForumPublishForm } from '../utils/forumUi'
 
 const props = withDefaults(defineProps<{ topic: ForumAPI.Topic, autoload?: boolean }>(), {
   autoload: true,
@@ -42,6 +43,8 @@ function openQuotedTopicForm(): void {
     class="rounded-full bg-[var(--vp-c-bg-alt)] h-8 max-mobile:h-9"
     :title="message.forum.topic.quote.action"
     :data-tooltip="message.forum.topic.quote.action"
+    @mouseenter="preloadForumPublishForm"
+    @focus="preloadForumPublishForm"
     @click="openQuotedTopicForm"
   >
     <span class="i-lucide-quote h-5 w-5 max-mobile:size-5" aria-hidden="true" />

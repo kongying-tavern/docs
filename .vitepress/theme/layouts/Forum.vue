@@ -1,43 +1,6 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
-import { FORM_HASH } from '~/components/forum/form/publish-topic-form/config'
-import { useReactionStats } from '~/composables/useReactionStats'
-import { useTopicStatusEditor } from '~/composables/useTopicStatusEditor'
-import { useTopicTagsEditor } from '~/composables/useTopicTagsEditor'
-
-const loadForumPublishTopicForm = () => import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue')
-const ForumPublishTopicForm = defineAsyncComponent(
-  loadForumPublishTopicForm,
-)
-const ForumTopicTagsEditorDialog = defineAsyncComponent(
-  () => import('~/components/forum/topic/ForumTopicTagsEditorDialog.vue'),
-)
-const ForumReactionStatsDialog = defineAsyncComponent(
-  () => import('~/components/forum/ui/ForumReactionStatsDialog.vue'),
-)
-const ForumTopicStatusDialog = defineAsyncComponent(
-  () => import('~/components/forum/topic/ForumTopicStatusDialog.vue'),
-)
-const shouldMountPublishForm = ref(false)
-const { open: shouldMountTopicTagsEditor } = useTopicTagsEditor()
-const { open: shouldMountReactionStats } = useReactionStats()
-const { open: shouldMountTopicStatusEditor } = useTopicStatusEditor()
-
-function mountPublishFormWhenRequested(): void {
-  if (location.hash.slice(1).startsWith(FORM_HASH))
-    shouldMountPublishForm.value = true
-}
-
-onMounted(() => {
-  void loadForumPublishTopicForm().catch(() => undefined)
-  mountPublishFormWhenRequested()
-  window.addEventListener('hashchange', mountPublishFormWhenRequested)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', mountPublishFormWhenRequested)
-})
+import ForumGlobalDialogs from '~/components/forum/ForumGlobalDialogs.vue'
 </script>
 
 <template>
@@ -48,14 +11,7 @@ onBeforeUnmount(() => {
     <slot />
     <Content />
   </div>
-  <ClientOnly>
-    <template v-if="shouldMountPublishForm">
-      <ForumPublishTopicForm />
-    </template>
-    <ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" />
-    <ForumReactionStatsDialog v-if="shouldMountReactionStats" />
-    <ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" />
-  </ClientOnly>
+  <ForumGlobalDialogs />
 </template>
 
 <style lang="scss" scoped>

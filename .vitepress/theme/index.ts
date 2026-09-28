@@ -36,7 +36,17 @@ const QQGroupList = defineAsyncComponent(() => import('@/components/QQGroupList.
 const ScratchToReveal = defineAsyncComponent(() => import('@/components/ui/ScratchToReveal.vue'))
 const SitemapPage = defineAsyncComponent(() => import('@/components/SitemapPage.vue'))
 
+/** 论坛页面路径：各语言的 /feedback 页与 SPA 子路由 /feedback/topic/... */
+const FORUM_PATH_REGEX = /(?:^|\/)feedback(?:[./?#]|$)/
+
+let forumPreloadScheduled = false
+
 function scheduleForumPreload(): void {
+  // SSG 渲染期同样会经 router 钩子走到这里；预加载只属于浏览器
+  if (forumPreloadScheduled || import.meta.env.SSR)
+    return
+  forumPreloadScheduled = true
+
   const connection = (navigator as Navigator & {
     connection?: { effectiveType?: string, saveData?: boolean }
   }).connection
@@ -55,6 +65,12 @@ function scheduleForumPreload(): void {
     window.requestIdleCallback(preload, { timeout: 3000 })
   else
     setTimeout(preload, 1500)
+}
+
+/** 纯文档页不再无条件预取论坛 chunk；仅在进入论坛页面/路由时预热 */
+function scheduleForumPreloadIfForumPath(path: string): void {
+  if (FORUM_PATH_REGEX.test(path))
+    scheduleForumPreload()
 }
 
 export default {
@@ -94,11 +110,12 @@ export default {
 
     if (!import.meta.env.SSR) {
       loadFontStylesheets()
-      scheduleForumPreload()
+      scheduleForumPreloadIfForumPath(location.pathname)
     }
 
     let resumingBlogNavigation = false
     router.onBeforeRouteChange = async (to) => {
+      scheduleForumPreloadIfForumPath(to)
       if (resumingBlogNavigation || !isForumToBlogNavigation(router.route.path, to))
         return
       await transitionForumBlog(router.route.path, to, async () => {

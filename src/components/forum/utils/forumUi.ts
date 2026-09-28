@@ -1,14 +1,8 @@
-import type { CustomConfig } from '../../../../.vitepress/locales/types'
 import type { ImageAttachmentError } from '~/services/forum/form/imageAttachment'
+import type { CustomConfig } from '~/types/locales'
 import { IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
+import { formatMessage } from '~/utils/formatMessage'
 import { FORM_HASH } from '../form/publish-topic-form/config'
-
-export function formatMessage(template: string, values: Record<string, string | number>): string {
-  return Object.entries(values).reduce(
-    (result, [key, value]) => result.replace(`{${key}}`, String(value)),
-    template,
-  )
-}
 
 export function formatImageAttachmentError(
   error: ImageAttachmentError,
@@ -65,7 +59,18 @@ export function flattenWithTags(
   return result
 }
 
+let publishFormPreloaded = false
+
+/** 发布表单含 tiptap 编辑器（~154kB Brotli）；入口 hover/聚焦/点击时预热，避免直达时可感知加载 */
+export function preloadForumPublishForm(): void {
+  if (publishFormPreloaded)
+    return
+  publishFormPreloaded = true
+  void import('~/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue').catch(() => undefined)
+}
+
 export function publishTopic() {
+  preloadForumPublishForm()
   const currentHash = location.hash.slice(1)
   let targetHash = FORM_HASH
 

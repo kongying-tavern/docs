@@ -137,16 +137,18 @@ test('Forum hash changes preserve VitePress History state', async () => {
 })
 
 test('Topic Tags editor has one Forum-wide lazy host', async () => {
-  const [forumLayout, topicPage, userPage, basePage] = await Promise.all([
+  const [globalDialogs, forumLayout, topicPage, userPage, basePage] = await Promise.all([
+    readFile(new URL('../../src/components/forum/ForumGlobalDialogs.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/layouts/Forum.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicPage.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/user/ForumUserPage.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/base/BaseForumPage.vue', import.meta.url), 'utf8'),
   ])
 
-  assert.match(forumLayout, /import\('~\/components\/forum\/topic\/ForumTopicTagsEditorDialog\.vue'\)/)
-  assert.match(forumLayout, /<ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" \/>/)
-  assert.doesNotMatch(`${topicPage}\n${userPage}\n${basePage}`, /ForumTopicTagsEditorDialog|name="teleport"/)
+  assert.match(globalDialogs, /import\('~\/components\/forum\/topic\/ForumTopicTagsEditorDialog\.vue'\)/)
+  assert.match(globalDialogs, /<ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" \/>/)
+  // 平台层布局只渲染单入口 ForumGlobalDialogs，不再感知具体对话框
+  assert.doesNotMatch(`${forumLayout}\n${topicPage}\n${userPage}\n${basePage}`, /ForumTopicTagsEditorDialog|name="teleport"/)
 })
 
 test('Topic status is set from a grouped submenu instead of a dialog', async () => {
@@ -167,7 +169,9 @@ test('Topic status is set from a grouped submenu instead of a dialog', async () 
   // 分组顺序只在服务层定义一次，菜单与筛选器共用
   assert.match(statusSource, /export const TOPIC_STATUS_GROUP_ORDER/)
   assert.match(statusSource, /export function groupTopicStatuses/)
-  assert.match(menuSource, /groupTopicStatuses\(\s*getSelectableTopicStatuses\(/)
+  assert.match(menuSource, /function buildStatusGroupItems\(/)
+  assert.match(menuSource, /groupTopicStatuses\(definitions\)/)
+  assert.match(menuSource, /buildStatusGroupItems\(\s*getSelectableTopicStatuses\(/)
   assert.match(pickerSource, /TOPIC_STATUS_GROUP_ORDER\.map\(/)
   assert.doesNotMatch(pickerSource, /\(\['planning', 'triage', 'maintenance', 'resolution'\] as const\)/)
   // 候选里不含当前状态，「清除状态」只在真有状态时出现
@@ -176,7 +180,7 @@ test('Topic status is set from a grouped submenu instead of a dialog', async () 
   assert.match(menuSource, /disabled: updatingTopic\.value/)
   assert.match(dropdownMenu, /<ForumTopicStatusBadge v-if="item\.status !== undefined" :status="item\.status \?\? undefined" \/>/)
   // 会带走未结话题的分组标题要带说明：hint 由 hidesTopic 推导，不写死分组名
-  assert.match(menuSource, /hint: definitions\.some\(definition => definition\.hidesTopic\)/)
+  assert.match(menuSource, /hint: grouped\.some\(definition => definition\.hidesTopic\)/)
   assert.match(menuSource, /menuLabels\.value\.modifyStatus\.conclusiveHint/)
   assert.match(dropdownMenu, /<ForumHintIcon v-if="item\.hint" :label="item\.hint" \/>/)
 })
@@ -184,11 +188,13 @@ test('Topic status is set from a grouped submenu instead of a dialog', async () 
 test('toggle menu items name the action, never the current state', async () => {
   const menuSource = await readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8')
 
-  // 已隐藏（state progressing，展示为「已结反馈」）时必须给「取消隐藏」+ eye，
-  // 未隐藏才给「隐藏反馈」+ eye-off。hideState 是 ComputedRef：
-  // 写成 `hideState ? ...` 漏掉 .value 会永远取到前一个分支，且照样过类型检查。
-  assert.match(menuSource, /label: hideState\.value \? menuLabels\.value\.unhideFeedback\.text : menuLabels\.value\.hideFeedback\.text/)
-  assert.match(menuSource, /icon: hideState\.value \? 'i-lucide:eye' : 'i-lucide:eye-off'/)
+  // 已隐藏（state progressing，展示为「已结反馈」）时必须给「取消隐藏」+ eye；
+  // 未隐藏且已有状态时直接给「隐藏反馈」+ eye-off；无状态则经二级菜单先挑状态。
+  // hideState 是 ComputedRef：写成 `hideState ? ...` 漏掉 .value 会永远取到前一个分支，
+  // 且照样过类型检查。
+  assert.match(menuSource, /hideState\.value\s*\?\s*\{\s*id: 'hide-topic',\s*type: 'item',\s*label: menuLabels\.value\.unhideFeedback\.text,\s*icon: 'i-lucide:eye'/)
+  assert.match(menuSource, /currentTopic\.value\.status\s*\?\s*\{\s*id: 'hide-topic',\s*type: 'item',\s*label: menuLabels\.value\.hideFeedback\.text,\s*icon: 'i-lucide:eye-off'/)
+  assert.match(menuSource, /type: 'submenu',\s*label: menuLabels\.value\.hideFeedback\.text,\s*icon: 'i-lucide:eye-off',\s*items: hideFeedbackSubmenuItems\.value/)
   // 换 action 的同类项一律同构，新增时应照此写
   assert.match(menuSource, /label: closeState\.value \? menuLabels\.value\.reopenFeedback\.text : menuLabels\.value\.closeFeedback\.text/)
   assert.match(menuSource, /label: currentTopic\.value\.pinned \? menuLabels\.value\.pinTopic\.unpin : menuLabels\.value\.pinTopic\.pin/)
@@ -197,16 +203,16 @@ test('toggle menu items name the action, never the current state', async () => {
 })
 
 test('Topic status management has one lazy host and shares edit permission', async () => {
-  const [forumLayout, menuSource, managerSource, statusDialog, typeBadge] = await Promise.all([
-    readFile(new URL('../../.vitepress/theme/layouts/Forum.vue', import.meta.url), 'utf8'),
+  const [globalDialogs, menuSource, managerSource, statusDialog, typeBadge] = await Promise.all([
+    readFile(new URL('../../src/components/forum/ForumGlobalDialogs.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/composables/useTopicManager.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/topic/ForumTopicStatusDialog.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/ui/ForumTopicTypeBadge.vue', import.meta.url), 'utf8'),
   ])
 
-  assert.match(forumLayout, /import\('~\/components\/forum\/topic\/ForumTopicStatusDialog\.vue'\)/)
-  assert.match(forumLayout, /<ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" \/>/)
+  assert.match(globalDialogs, /import\('~\/components\/forum\/topic\/ForumTopicStatusDialog\.vue'\)/)
+  assert.match(globalDialogs, /<ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" \/>/)
   assert.match(menuSource, /const hasEditPermission = hasAnyPermissions\('edit_feedback'\)/)
   assert.match(menuSource, /id: 'status-topic'/)
   assert.match(menuSource, /id: 'good-issue-topic'/)
@@ -415,7 +421,7 @@ test('mutation and navigation wiring keeps authoritative and keyboard contracts'
     readFile(new URL('../../src/components/forum/topic/ForumTopicContent.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/composables/useNavigateToTopic.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/lib/forumViewTransition.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarNav.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarAccountMenu.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/blog/ForumBlogPostHeader.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../.vitepress/theme/index.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/sidebar/ForumSidebar.vue', import.meta.url), 'utf8'),
@@ -641,9 +647,11 @@ test('user profile empty state offers create and closed-feedback actions', async
   assert.match(emptySource, /route\.value\?\.name === 'user' && !props\.error && !isSearchEmpty\.value && !hasActiveFilters\.value/)
   assert.match(emptySource, /const showUserEmptyActions = computed/)
   assert.match(emptySource, /async function handleShowClosed\(\) \{\s+await navigateFilter\('closed'\)\s+\}/)
-  assert.match(emptySource, /<OpenFeedbackFormButton :label="message\.forum\.empty\.createFeedback" \/>/)
+  assert.match(emptySource, /<OpenFeedbackFormButton/)
+  assert.match(emptySource, /:hide-on-mobile="false"/)
   assert.match(emptySource, /message\.forum\.empty\.showClosed/)
-  assert.match(feedbackButtonSource, /defineProps<\{ label\?: string \}>/)
+  assert.match(feedbackButtonSource, /withDefaults\(defineProps<\{/)
+  assert.match(feedbackButtonSource, /hideOnMobile\?: boolean/)
   assert.match(feedbackButtonSource, /return props\.label \?\? message\.value\.forum\.publish\.title/)
   assert.match(zhForumSource, /createFeedback: '新建反馈'[\s\S]*?showClosed: '查看已结反馈'/)
 })
