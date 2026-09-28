@@ -43,6 +43,7 @@
     "@iconify-json/logos": "catalog:frontend",
     "@iconify-json/lucide": "catalog:frontend",
     "@iconify-json/ph": "catalog:frontend",
+    "@iconify-json/simple-icons": "catalog:frontend",
     "@lucide/vue": "catalog:frontend",
     "@lunariajs/core": "catalog:build",
     "@mdit/plugin-abbr": "catalog:markdown",

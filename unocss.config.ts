@@ -9,6 +9,7 @@ import {
 } from 'unocss'
 import presetAnimations from 'unocss-preset-animations'
 import { presetShadcn } from 'unocss-preset-shadcn'
+import { shadcnPreflights, shadcnRules } from './.vitepress/theme/unocss/index.ts'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
 import { FORUM_MOBILE_BREAKPOINT_PX } from './src/services/forum/forumConfig'
 
@@ -41,6 +42,7 @@ export default defineConfig({
       }
     }) as Variant,
   ],
+  preflights: [...shadcnPreflights],
   rules: [
     [
       /^text-ui-(\d+(?:\.\d+)?)$/,
@@ -57,6 +59,7 @@ export default defineConfig({
         'scrollbar-color': 'hsl(var(--muted-foreground) / 0.2) transparent',
       },
     ],
+    ...shadcnRules,
   ],
   shortcuts: [
     [
@@ -173,5 +176,8 @@ export default defineConfig({
     'i-logos-twitter',
     'i-logos-discord-icon',
     'i-logos-reddit-icon',
+    // ForumSidebarAccountMenu.vue 的动态图标类
+    'i-simple-icons-qq',
+    'i-simple-icons-discord',
   ],
 })
