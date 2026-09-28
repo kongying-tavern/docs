@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue'
-import type { CustomConfig } from '../../../../../.vitepress/locales/types'
 import type { TabsConfig } from './types'
+import type { CustomConfig } from '~/types/locales'
 import { VALIDATION_LIMITS } from '~/services/forum/forumConfig'
 
 export const TRANSITION_DURATION = 480

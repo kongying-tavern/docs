@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { CustomConfig } from '../../.vitepress/locales/types'
+import type { CustomConfig } from '~/types/locales'
 import { withAuth } from '@/utils/auth-helpers'
 import { catchError } from '~/services/apiUtils'
 import { toast } from '~/services/telemetry/toast'
