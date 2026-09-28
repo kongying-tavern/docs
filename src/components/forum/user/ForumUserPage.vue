@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery } from '~/composables/forum/useForumQueries'
 import { useForumRoute } from '~/composables/useForumRoute'
@@ -22,6 +22,11 @@ const feedbackFilter = computed(() => list.value?.filter === 'closed' ? 'closed'
 const activeTab = computed<'all' | 'closed'>({
   get: () => feedbackFilter.value,
   set: filter => void navigateFilter(filter),
+})
+const tabDirection = ref<'back' | 'forward'>('forward')
+
+watch(activeTab, (next, previous) => {
+  tabDirection.value = next === 'closed' && previous === 'all' ? 'forward' : 'back'
 })
 
 // Existing links to former profile filters fall back to the two visible tabs.
@@ -97,27 +102,31 @@ const loadStateMessage = computed(() => {
     </template>
 
     <template #content-main>
-      <div>
-        <ForumTopicList
-          :data="topics.rows.value"
-          :loading="topics.isLoading.value || topics.loadingMore.value"
-          :error="topics.error.value"
-          :can-load-more="topics.canLoadMore.value"
-          :sort="list?.sort ?? 'created'"
-          :query="list?.q ?? ''"
-          :load-more="topics.loadMore"
-          :refresh-data="topics.refetch"
-        />
+      <div class="profile-tab-panel" :data-direction="tabDirection">
+        <Transition name="profile-tab">
+          <div :key="activeTab">
+            <ForumTopicList
+              :data="topics.rows.value"
+              :loading="topics.isLoading.value || topics.loadingMore.value"
+              :error="topics.error.value"
+              :can-load-more="topics.canLoadMore.value"
+              :sort="list?.sort ?? 'created'"
+              :query="list?.q ?? ''"
+              :load-more="topics.loadMore"
+              :refresh-data="topics.refetch"
+            />
 
-        <ForumLoadState
-          v-if="topics.rows.value.length > 0"
-          :loading="topics.isLoading.value || topics.loadingMore.value"
-          :error="Boolean(topics.error.value)"
-          :can-load-more="topics.canLoadMore.value"
-          :load-more="topics.loadMore"
-          :retry="topics.refetch"
-          :text="loadStateMessage"
-        />
+            <ForumLoadState
+              v-if="topics.rows.value.length > 0"
+              :loading="topics.isLoading.value || topics.loadingMore.value"
+              :error="Boolean(topics.error.value)"
+              :can-load-more="topics.canLoadMore.value"
+              :load-more="topics.loadMore"
+              :retry="topics.refetch"
+              :text="loadStateMessage"
+            />
+          </div>
+        </Transition>
       </div>
     </template>
 
@@ -126,3 +135,52 @@ const loadStateMessage = computed(() => {
     </template>
   </BaseForumPage>
 </template>
+
+<style scoped>
+.profile-tab-panel {
+  display: grid;
+  overflow: clip;
+}
+
+.profile-tab-panel > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.profile-tab-enter-active {
+  transition:
+    transform 300ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 210ms cubic-bezier(0.33, 1, 0.68, 1) 90ms;
+}
+
+.profile-tab-leave-active {
+  transition:
+    transform 300ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 150ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.profile-tab-panel[data-direction='forward'] .profile-tab-enter-from,
+.profile-tab-panel[data-direction='back'] .profile-tab-leave-to {
+  transform: translateX(48px);
+  opacity: 0;
+}
+
+.profile-tab-panel[data-direction='forward'] .profile-tab-leave-to,
+.profile-tab-panel[data-direction='back'] .profile-tab-enter-from {
+  transform: translateX(-48px);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-tab-enter-active,
+  .profile-tab-leave-active {
+    transition: opacity 120ms ease;
+  }
+
+  .profile-tab-enter-from,
+  .profile-tab-leave-to {
+    transform: none !important;
+    opacity: 0;
+  }
+}
+</style>

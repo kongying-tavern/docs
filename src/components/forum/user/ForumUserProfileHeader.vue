@@ -149,7 +149,8 @@ const {
             ref="menuRef"
             role="group"
             :aria-label="message.forum.header.navigation.groups.status"
-            class="flex shrink-0 gap-1 h-12 items-stretch"
+            class="profile-tabs shrink-0 gap-1 grid h-12 items-stretch relative"
+            :data-active-tab="modelValue"
           >
             <Button
               v-for="item in menu"
@@ -168,12 +169,8 @@ const {
                 />
                 {{ item.label }}
               </div>
-              <span
-                v-if="modelValue === item.id"
-                class="bg-[var(--vp-c-brand)] h-0.5 bottom-0 left-0 right-0 absolute"
-                aria-hidden="true"
-              />
             </Button>
+            <span class="profile-tab-indicator" aria-hidden="true" />
           </div>
           <ForumSearchInput
             v-if="!isMobile"
@@ -187,3 +184,32 @@ const {
     </div>
   </div>
 </template>
+
+<style scoped>
+.profile-tabs {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.profile-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc((100% - 0.25rem) / 2);
+  height: 0.125rem;
+  border-radius: 999px;
+  background: var(--vp-c-brand);
+  transform: translateX(0);
+  transition: transform 210ms cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: none;
+}
+
+.profile-tabs[data-active-tab='closed'] .profile-tab-indicator {
+  transform: translateX(calc(100% + 0.25rem));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-tab-indicator {
+    transition: none;
+  }
+}
+</style>
