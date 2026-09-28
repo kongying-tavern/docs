@@ -1,7 +1,7 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
-import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { TopicUpdateOutcome } from '~/services/forum/gitee/issues'
+import type { CustomConfig } from '~/types/locales'
 import { computed, toValue } from 'vue'
 import { withAuth } from '@/utils/auth-helpers'
 import {
@@ -153,6 +153,20 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     )
   }
 
+  /**
+   * 「隐藏反馈」子菜单的选择：状态与隐藏在同一次补丁里落库。隐藏在这里是显式意图，
+   * 不取决于所选状态是否结论型 —— 无状态话题必须借这一步补上隐藏的原因。
+   */
+  const hideTopicWithStatus = (status: ForumAPI.TopicStatus) => update(
+    'changeTopicMembership',
+    topic => buildTopicMembershipPatch(topic, {
+      labels: replaceTopicStatus(currentLabels(topic), status),
+      state: 'progressing' as const,
+    }),
+    message.value.forum.topic.menu.hideFeedback.success,
+    message.value.forum.topic.menu.hideFeedback.fail,
+  )
+
   const toggleGoodIssue = () => update(
     'changeTopicMembership',
     topic => buildTopicMembershipPatch(topic, { labels: toggleTopicLabel(currentLabels(topic), 'GOOD-ISSUE', !topic.goodIssue) }),
@@ -167,6 +181,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     toggleTopicType,
     replaceTopicTags,
     setTopicStatus,
+    hideTopicWithStatus,
     toggleGoodIssue,
     toggleTopicCommentArea,
     updatingTopic: mutations.updatingTopic,

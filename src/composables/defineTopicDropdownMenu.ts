@@ -1,7 +1,8 @@
 import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
-import type { CustomConfig } from '../../.vitepress/locales/types'
 import type ForumAPI from '@/apis/forum/api'
 import type { FORUM } from '~/components/forum/types'
+import type { TopicStatusDefinition } from '~/services/forum/forumTopicStatus'
+import type { CustomConfig } from '~/types/locales'
 import { computed, ref, toValue } from 'vue'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import { useForumPersonalState } from '~/composables/forum/useForumPersonalState'
@@ -31,6 +32,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
     toggleTopicType,
     toggleTopicCommentArea,
     setTopicStatus,
+    hideTopicWithStatus,
     updatingTopic,
   } = useTopicManager(currentTopic, message)
   const { route, leaveTopic } = useForumRoute()
@@ -82,6 +84,59 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
     if (!result)
       return
     if (wasOpen && result.state !== 'open' && route.value?.name === 'topic' && route.value.topicId === topicId)
+      await leaveTopic()
+  }
+
+  /** 把一组状态定义铺成分组菜单条目；idPrefix 用于区分同一状态在不同子菜单里的条目。 */
+  function buildStatusGroupItems(
+    definitions: readonly TopicStatusDefinition[],
+    idPrefix: string,
+    createAction: (status: ForumAPI.TopicStatus) => () => unknown,
+  ): FORUM.MenuElement[] {
+    const items: FORUM.MenuElement[] = []
+    for (const { group, definitions: grouped } of groupTopicStatuses(definitions)) {
+      items.push({ type: 'separator' })
+      items.push({
+        type: 'group',
+        items: [
+          {
+            type: 'label',
+            label: message.value.forum.topic.statusGroups[group],
+            // 结论状态会把未结反馈带走，「已结」这件事不写出来用户看不出来
+            hint: grouped.some(definition => definition.hidesTopic)
+              ? menuLabels.value.modifyStatus.conclusiveHint
+              : undefined,
+          },
+          ...grouped.map(definition => ({
+            id: `${idPrefix}-${definition.id}`,
+            type: 'item' as const,
+            label: message.value.forum.topic.status[definition.id],
+            status: definition.id,
+            disabled: updatingTopic.value,
+            action: createAction(definition.id),
+          })),
+        ],
+      })
+    }
+    return items
+  }
+
+  /**
+   * 无状态话题的「隐藏反馈」不出直接隐藏项：隐藏后列表里只剩一个没有原因的「已结」，
+   * 因此要求先挑一个状态，选中后状态与隐藏在同一次请求里落库。
+   */
+  const hideFeedbackSubmenuItems = computed<FORUM.MenuElement[]>(() =>
+    buildStatusGroupItems(
+      getSelectableTopicStatuses(currentTopic.value.type),
+      'hide-topic-status',
+      status => () => handleHideTopicWithStatus(status),
+    ))
+
+  /** 隐藏子菜单的选择：隐藏必然使话题离开列表，此时留在详情页没有意义，与直接隐藏一致地退回上一页。 */
+  async function handleHideTopicWithStatus(status: ForumAPI.TopicStatus) {
+    const topicId = String(currentTopic.value.id)
+    const result = await hideTopicWithStatus(status)
+    if (result && route.value?.name === 'topic' && route.value.topicId === topicId)
       await leaveTopic()
   }
 
@@ -183,22 +238,34 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         icon: currentTopic.value.commentCount === -1 ? 'i-lucide:message-circle' : 'i-lucide:message-circle-off',
         action: toggleTopicCommentArea,
       },
-      {
-        id: 'hide-topic',
-        type: 'item',
-        // 文案与图标说的都是「点了会发生什么」（同归档/固定/评论区）：
-        // 已隐藏时给「取消隐藏」，否则给「隐藏反馈」。hideState 是 ref，
-        // 漏掉 .value 会永远为真（且照样过类型检查）
-        label: hideState.value ? menuLabels.value.unhideFeedback.text : menuLabels.value.hideFeedback.text,
-        icon: hideState.value ? 'i-lucide:eye' : 'i-lucide:eye-off',
-        action: handleToggleHideTopic,
-      },
+      // 已隐藏给「取消隐藏」，有状态时「隐藏反馈」直接执行；无状态则先经二级菜单
+      // 挑一个状态再隐藏（见 hideFeedbackSubmenuItems）。hideState 是 ref，
+      // 漏掉 .value 会永远为真（且照样过类型检查）
+      hideState.value
+        ? {
+            id: 'hide-topic',
+            type: 'item',
+            label: menuLabels.value.unhideFeedback.text,
+            icon: 'i-lucide:eye',
+            action: handleToggleHideTopic,
+          }
+        : currentTopic.value.status
+          ? {
+              id: 'hide-topic',
+              type: 'item',
+              label: menuLabels.value.hideFeedback.text,
+              icon: 'i-lucide:eye-off',
+              action: handleToggleHideTopic,
+            }
+          : {
+              id: 'hide-topic',
+              type: 'submenu',
+              label: menuLabels.value.hideFeedback.text,
+              icon: 'i-lucide:eye-off',
+              items: hideFeedbackSubmenuItems.value,
+            },
     ]
   })
-
-  const statusGroups = computed(() => groupTopicStatuses(
-    getSelectableTopicStatuses(currentTopic.value.type, currentTopic.value.status),
-  ))
 
   const hasStatusConflict = computed(() => (currentTopic.value.labels ?? []).filter(label => TOPIC_STATUS_LABEL.test(label)).length > 1)
 
@@ -230,30 +297,11 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       })
     }
 
-    for (const { group, definitions } of statusGroups.value) {
-      items.push({ type: 'separator' })
-      items.push({
-        type: 'group',
-        items: [
-          {
-            type: 'label',
-            label: message.value.forum.topic.statusGroups[group],
-            // 结论状态会把未结反馈带走，「已结」这件事不写出来用户看不出来
-            hint: definitions.some(definition => definition.hidesTopic)
-              ? menuLabels.value.modifyStatus.conclusiveHint
-              : undefined,
-          },
-          ...definitions.map(definition => ({
-            id: `status-topic-${definition.id}`,
-            type: 'item' as const,
-            label: message.value.forum.topic.status[definition.id],
-            status: definition.id,
-            disabled: updatingTopic.value,
-            action: () => handleSetTopicStatus(definition.id),
-          })),
-        ],
-      })
-    }
+    items.push(...buildStatusGroupItems(
+      getSelectableTopicStatuses(currentTopic.value.type, currentStatus),
+      'status-topic',
+      status => () => handleSetTopicStatus(status),
+    ))
 
     return items
   })
