@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 import { computed, isVNode } from 'vue'
 import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { formatMessage } from '~/components/forum/utils/forumUi'
+import { formatMessage } from '~/utils/formatMessage'
 
 type DescriptionContent = (() => string | Component) | string | Component
 

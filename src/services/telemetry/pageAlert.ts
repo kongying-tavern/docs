@@ -1,7 +1,7 @@
 import type { Scene } from './capture'
 import type { PageAlertVariant } from '@/stores/usePageAlert'
 import { usePageAlertStore } from '@/stores/usePageAlert'
-import { formatMessage } from '~/components/forum/utils/forumUi'
+import { formatMessage } from '~/utils/formatMessage'
 import { reportError } from './capture'
 import { formatTraceId } from './describeError'
 import { toast } from './toast'
