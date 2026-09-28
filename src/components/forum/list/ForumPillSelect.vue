@@ -28,7 +28,7 @@ const current = computed(() => props.options.find(option => option.id === props.
 const currentLabel = computed(() => current.value?.label ?? props.options[0]?.label ?? '')
 const pillClasses = cn(
   FORUM_SELECT_TRIGGER_CLASSES,
-  'font-size-3 rounded-full w-fit whitespace-nowrap shadow-none hover:bg-[--vp-c-bg-soft]',
+  'font-size-3 rounded-full w-fit whitespace-nowrap bg-transparent shadow-none dark:bg-transparent hover:bg-[--vp-c-bg-soft]',
 )
 </script>
 

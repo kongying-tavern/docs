@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Info, Search } from '@lucide/vue'
+import { CircleAlert, Inbox, Search } from '@lucide/vue'
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Empty,
-  EmptyContent,
+  EmptyActions,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -61,7 +61,7 @@ const errorDescription = computed(() => {
     return message.value.forum.exceededRateLimitWarning
   if (unauthorizedError.value)
     return message.value.forum.auth.loginTips
-  return message.value.forum.errors.cannotLoadData
+  return message.value.forum.errors.loadFailedHint
 })
 
 function handleLogin() {
@@ -77,8 +77,9 @@ function handleRetry() {
   <Empty class="border-none">
     <EmptyHeader>
       <EmptyMedia variant="icon">
-        <Search v-if="isSearchEmpty" />
-        <Info v-else />
+        <CircleAlert v-if="error" />
+        <Search v-else-if="isSearchEmpty" />
+        <Inbox v-else />
       </EmptyMedia>
       <EmptyTitle>
         {{ error ? message.forum.loadError : isSearchEmpty ? searchTitle : message.forum.empty.title }}
@@ -87,41 +88,58 @@ function handleRetry() {
         {{ error ? errorDescription : isSearchEmpty ? message.forum.empty.searchDescription : message.forum.empty.description }}
       </EmptyDescription>
     </EmptyHeader>
-    <EmptyContent v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions">
-      <div class="flex gap-2">
-        <Button
-          v-if="!error && (isSearchEmpty || hasActiveFilters)"
-          variant="outline"
-          @click="handleClearFilters"
-        >
+
+    <!-- 主按钮：实心主题色；次按钮：描边 -->
+    <EmptyActions v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions">
+      <template v-if="!error && (isSearchEmpty || hasActiveFilters)">
+        <Button @click="handleClearFilters">
           <span class="i-lucide-x icon-btn" aria-hidden="true" />
           {{ message.forum.empty.clearFilters }}
         </Button>
+        <OpenFeedbackFormButton
+          :label="message.forum.empty.createFeedback"
+          variant="outline"
+          :hide-on-mobile="false"
+        />
+      </template>
 
-        <template v-if="showUserEmptyActions">
-          <OpenFeedbackFormButton :label="message.forum.empty.createFeedback" />
+      <template v-else-if="showUserEmptyActions">
+        <OpenFeedbackFormButton
+          :label="message.forum.empty.createFeedback"
+          :hide-on-mobile="false"
+        />
+        <Button variant="outline" @click="handleShowClosed">
+          <span class="i-lucide-circle-check icon-btn" aria-hidden="true" />
+          {{ message.forum.empty.showClosed }}
+        </Button>
+      </template>
 
-          <Button variant="outline" @click="handleShowClosed">
-            <span class="i-lucide-circle-check icon-btn" aria-hidden="true" />
-            {{ message.forum.empty.showClosed }}
-          </Button>
-        </template>
-
-        <Button
-          v-if="rateLimitError || unauthorizedError"
-          @click="handleLogin"
-        >
+      <template v-else-if="error">
+        <Button v-if="rateLimitError || unauthorizedError" @click="handleLogin">
           <span class="i-lucide-log-in icon-btn" aria-hidden="true" />
           {{ message.forum.auth.login }}
         </Button>
         <Button
-          v-if="error && refreshData && !rateLimitError && !unauthorizedError"
-          variant="ghost"
+          v-else-if="refreshData"
           @click="handleRetry"
         >
           {{ message.forum.auth.callback.error.retry }}
         </Button>
-      </div>
-    </EmptyContent>
+        <Button
+          v-if="unauthorizedError && refreshData"
+          variant="outline"
+          @click="handleRetry"
+        >
+          {{ message.forum.auth.callback.error.retry }}
+        </Button>
+      </template>
+    </EmptyActions>
+
+    <EmptyActions v-else>
+      <OpenFeedbackFormButton
+        :label="message.forum.empty.createFeedback"
+        :hide-on-mobile="false"
+      />
+    </EmptyActions>
   </Empty>
 </template>

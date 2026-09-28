@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import type { ForumTranslatorRef } from '../composables/useTopicTranslationMenu'
+import { CircleAlert } from '@lucide/vue'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
+import {
+  Empty,
+  EmptyActions,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import Separator from '@/components/ui/separator/Separator.vue'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -24,15 +33,7 @@ import ForumTopicFooter from './ForumTopicFooter.vue'
 import ForumTopicSkeletonPage from './ForumTopicSkeletonPage.vue'
 import ForumTopicTranslator from './ForumTopicTranslator.vue'
 
-const {
-  topic,
-  loading,
-  error,
-  retry,
-  renderedContent,
-  topicId,
-  backToPreviousPage,
-} = useTopicPageState()
+const { topic, loading, error, retry, renderedContent, topicId, backToPreviousPage } = useTopicPageState()
 
 const { message } = useLocalized()
 const { userHref } = useForumRoute()
@@ -193,13 +194,25 @@ function handleTitleTranslated(title: string): void {
           />
         </div>
 
-        <div v-else-if="error" class="py-12 text-center" role="alert">
-          <p class="c-[var(--vp-c-danger-1)]">
-            {{ message.forum.errors.cannotLoadData }}
-          </p>
-          <Button type="button" class="mt-4" @click="retry()">
-            {{ message.forum.auth.callback.error.retry }}
-          </Button>
+        <div v-else-if="error" class="py-12" role="alert">
+          <Empty class="border-none">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <CircleAlert />
+              </EmptyMedia>
+              <EmptyTitle>
+                {{ message.forum.loadError }}
+              </EmptyTitle>
+              <EmptyDescription>
+                {{ message.forum.errors.loadFailedHint }}
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyActions>
+              <Button @click="retry()">
+                {{ message.forum.auth.callback.error.retry }}
+              </Button>
+            </EmptyActions>
+          </Empty>
         </div>
 
         <ForumTopicSkeletonPage v-else />

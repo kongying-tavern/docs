@@ -63,12 +63,12 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
     <TransitionGroup
       v-if="data.length > 0"
       tag="ul"
-      name="fade"
+      name="topic-list"
+      class="topic-list"
     >
       <li
         v-for="(item, index) in data"
         :key="item.id"
-        :style="{ '--i': Math.min(index, 5) }"
       >
         <Divider
           v-if="index === lastVisitedDividerIndex"
@@ -111,50 +111,56 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
   color: var(--vp-c-text-3);
 }
 
-.fade-enter-active {
+.topic-list {
+  position: relative;
+}
+
+.topic-list-enter-active {
   transition:
-    transform 720ms cubic-bezier(0.23, 1, 0.32, 1),
-    opacity 720ms cubic-bezier(0.23, 1, 0.32, 1);
-  transition-delay: calc(var(--i) * 56ms);
+    transform 210ms cubic-bezier(0.33, 1, 0.68, 1) 90ms,
+    opacity 210ms cubic-bezier(0.33, 1, 0.68, 1) 90ms,
+    filter 210ms cubic-bezier(0.33, 1, 0.68, 1) 90ms;
 }
 
-.fade-leave-active {
+.topic-list-leave-active {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
   transition:
-    transform 0.25s cubic-bezier(0.4, 0, 1, 1),
-    opacity 0.25s cubic-bezier(0.4, 0, 1, 1);
+    opacity 150ms cubic-bezier(0.33, 1, 0.68, 1),
+    filter 150ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.fade-enter-from {
-  transform: translateX(148px);
+.topic-list-enter-from {
+  transform: translateY(8px);
   opacity: 0;
+  filter: blur(4px);
 }
 
-.fade-enter-to {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.fade-leave-from {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.fade-leave-to {
-  transform: translateX(-15px);
+.topic-list-leave-to {
   opacity: 0;
+  filter: blur(3px);
 }
 
-/* Text content: starts hidden, fades in after the card slides in */
-/* Reordering transition */
-.fade-move {
-  transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+.topic-list-move {
+  transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fade-enter-active,
-  .fade-leave-active,
-  .fade-move {
+  .topic-list-enter-active,
+  .topic-list-leave-active {
+    transition: opacity 120ms ease;
+  }
+
+  .topic-list-move {
     transition: none;
+  }
+
+  .topic-list-enter-from,
+  .topic-list-leave-to {
+    transform: none;
+    filter: none;
+    opacity: 0;
   }
 }
 </style>
