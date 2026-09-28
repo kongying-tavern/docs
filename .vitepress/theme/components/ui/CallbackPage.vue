@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted } from 'vue'
-import useLogin from '../../hooks/useLogin'
+import useLogin from '~/forum/hooks/useLogin'
 import AuthProgressIsland from './AuthProgressIsland.vue'
 
 const { theme } = useData()
