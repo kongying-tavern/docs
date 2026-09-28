@@ -16,6 +16,8 @@ interface SheetContentProps extends DialogContentProps {
   class?: HTMLAttributes['class']
   side?: 'top' | 'right' | 'bottom' | 'left'
   showCloseButton?: boolean
+  /** 是否渲染全屏压暗遮罩；叠加在自定义遮罩之上（如图片预览）时应关闭 */
+  overlay?: boolean
 }
 
 defineOptions({
@@ -25,17 +27,18 @@ defineOptions({
 const props = withDefaults(defineProps<SheetContentProps>(), {
   side: 'right',
   showCloseButton: true,
+  overlay: true,
 })
 const emits = defineEmits<DialogContentEmits>()
 
-const delegatedProps = reactiveOmit(props, 'class', 'side', 'showCloseButton')
+const delegatedProps = reactiveOmit(props, 'class', 'side', 'showCloseButton', 'overlay')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
   <DialogPortal>
-    <SheetOverlay />
+    <SheetOverlay v-if="overlay" />
     <DialogContent
       data-slot="sheet-content"
       :class="cn(

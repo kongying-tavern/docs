@@ -2,6 +2,7 @@ import type { VariantProps } from 'class-variance-authority'
 import { cva } from 'class-variance-authority'
 
 export { default as Empty } from './Empty.vue'
+export { default as EmptyActions } from './EmptyActions.vue'
 export { default as EmptyContent } from './EmptyContent.vue'
 export { default as EmptyDescription } from './EmptyDescription.vue'
 export { default as EmptyHeader } from './EmptyHeader.vue'
@@ -14,7 +15,7 @@ export const emptyMediaVariants = cva(
     variants: {
       variant: {
         default: 'bg-transparent',
-        icon: 'bg-muted text-foreground flex size-10 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*=\'size-\'])]:size-6',
+        icon: 'bg-muted text-muted-foreground flex size-10 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*=\'size-\'])]:size-6',
       },
     },
     defaultVariants: {

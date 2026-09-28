@@ -35,17 +35,17 @@ const buttonRef = ref<HTMLButtonElement>()
   >
     <div class="flex gap-2 items-center">
       <div
-        class="rounded-lg bg-primary size-2 scale-100 transition-all duration-300 group-hover:scale-[100.8]"
+        class="rounded-lg bg-primary size-2 scale-100 transition-[transform] duration-300 group-hover:scale-[100.8]"
       />
       <span
-        class="inline-block whitespace-nowrap transition-all duration-300 group-hover:opacity-0 group-hover:translate-x-12"
+        class="inline-block whitespace-nowrap transition-[transform,opacity] duration-300 group-hover:opacity-0 group-hover:translate-x-12"
       >
         {{ text }}
       </span>
     </div>
 
     <div
-      class="text-primary-foreground opacity-0 flex gap-2 size-full translate-x-12 transition-all duration-300 items-center top-0 justify-center absolute z-10 group-hover:opacity-100 group-hover:-translate-x-5"
+      class="text-primary-foreground opacity-0 flex gap-2 size-full translate-x-12 transition-[transform,opacity] duration-300 items-center top-0 justify-center absolute z-10 group-hover:opacity-100 group-hover:-translate-x-5"
     >
       <span class="whitespace-nowrap">{{ text }}</span>
       <LoaderCircle
