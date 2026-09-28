@@ -142,7 +142,7 @@ test('search keeps one editable badge while filter state lives outside the view'
   assert.doesNotMatch(tokenTemplate, /i-lucide-x|<button|disabled|readonly/)
   assert.match(inputBaseStyles, /background: transparent/)
   assert.match(source, /field-sizing: content/)
-  assert.match(source, /font-size: 12px/)
+  assert.match(source, /font-size: calc\(12px \* var\(--site-ui-scale\)\)/)
   assert.match(tokenSource, /value\.matchAll\(matcher\)/)
   assert.doesNotMatch(source, /\.forum-search-input:hover/)
 })

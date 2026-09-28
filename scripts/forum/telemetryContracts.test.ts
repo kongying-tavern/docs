@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { test } from 'node:test'
 
 test('telemetry keeps reporting, session, and settings boundaries intact', async () => {
-  const [head, clarity, session, telemetryPanel, hub, gitee, commentInput, publishForm, settingsPage, sidebar] = await Promise.all([
+  const [head, clarity, session, telemetryPanel, hub, gitee, commentInput, publishForm, settingsPanel, sidebar] = await Promise.all([
     readFile(new URL('../../.vitepress/config/head.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/services/telemetry/clarity.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/services/telemetry/session.ts', import.meta.url), 'utf8'),
@@ -13,8 +13,8 @@ test('telemetry keeps reporting, session, and settings boundaries intact', async
     readFile(new URL('../../src/services/forum/gitee/index.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/comment/ForumCommentInputBox.vue', import.meta.url), 'utf8'),
     readFile(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/settings/SettingsPage.vue', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarInformationMenu.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/settings/SettingsPanel.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/components/forum/sidebar/ForumSidebarAccountMenu.vue', import.meta.url), 'utf8'),
   ])
 
   assert.match(head, /dataset\.clarityLoaded="true"[\s\S]*clarity-ready/)
@@ -27,6 +27,6 @@ test('telemetry keeps reporting, session, and settings boundaries intact', async
   assert.match(telemetryPanel, /:display-label="sessionId"/)
   assert.match(commentInput, /formatImageAttachmentError[\s\S]*\{ report: false \}/)
   assert.match(publishForm, /imageErrorText\(error\), \{ report: false \}/)
-  assert.match(settingsPage, /<TelemetrySettings/)
+  assert.match(settingsPanel, /<TelemetrySettings/)
   assert.doesNotMatch(sidebar, /<TelemetrySettings/)
 })
