@@ -1,9 +1,11 @@
 import type ForumAPI from '@/apis/forum/api'
-import { computed, ref, watch } from 'vue'
+import { useQuery, useQueryCache } from '@pinia/colada'
+import { computed } from 'vue'
 import { useUserAuthStore } from '@/stores/useUserAuth'
 import blogMemberListRaw from '~/_data/blogMemberList.json'
 import feedbackMemberListRaw from '~/_data/feedbackMemberList.json'
 import teamMemberListRaw from '~/_data/teamMemberList.json'
+import { forumKeys } from '~/services/forum/forumQueryContracts'
 import { user } from '~/services/forum/gitee'
 import { GITEE_API_CONFIG } from '~/services/forum/gitee/config'
 import { forumLog, ForumLogGroup } from '~/utils/forum-logger'
@@ -27,10 +29,11 @@ export interface PermissionDataState {
   blogMembers: MemberData[]
   loading: boolean
   apiLastUpdated: number | null
-  hasApiData: boolean // 标记是否已经从API获取过数据
+  hasApiData: boolean
 }
 
-const CACHE_DURATION = 60 * 60 * 1000 // 1小时缓存
+const CACHE_DURATION = 60 * 60 * 1000 // 1小时缓存（query staleTime）
+const PERMISSION_CACHE_KEY = ['forum', 'permission']
 
 // 类型转换函数：将 ForumAPI.User 转换为 MemberData
 function convertUserToMemberData(users: ForumAPI.User[]): MemberData[] {
@@ -61,154 +64,143 @@ function getLocalDataTimestamp(rawData: MemberDataWithTimestamp | MemberData[]):
   return null
 }
 
-// 全局状态管理
-const permissionDataState = ref<PermissionDataState>({
-  teamMembers: parseLocalData(teamMemberListRaw),
-  feedbackMembers: parseLocalData(feedbackMemberListRaw),
-  blogMembers: parseLocalData(blogMemberListRaw),
-  loading: false,
-  apiLastUpdated: null,
-  hasApiData: false,
-})
+/** API 返回（Gitee 用户形状）与本地 JSON（已转换形状）二选一收敛为 MemberData[] */
+function toMemberData(raw: unknown): MemberData[] {
+  if (Array.isArray(raw) && raw.length > 0 && typeof raw[0] === 'object' && raw[0] !== null && 'avatar' in raw[0])
+    return convertUserToMemberData(raw as ForumAPI.User[])
+  return raw as MemberData[]
+}
 
-// 全局单例，确保只设置一次监听器
-let isWatcherSetup = false
+/**
+ * 拉取一组成员。无 token 或请求失败时降级到构建期本地 JSON；
+ * 本地 JSON 时间戳意外较新时同样让位本地数据（沿用原实现的择优语义）。
+ */
+async function fetchMembers(options: {
+  accessToken?: string
+  fetch: () => Promise<ForumAPI.User[]>
+  localRaw: MemberDataWithTimestamp | MemberData[]
+}): Promise<MemberData[]> {
+  const { accessToken, fetch, localRaw } = options
+  if (!accessToken) {
+    forumLog.warn(ForumLogGroup.PERMISSION, '无访问令牌，使用本地权限数据')
+    return parseLocalData(localRaw)
+  }
+
+  try {
+    const apiTimestamp = Date.now()
+    const localTimestamp = getLocalDataTimestamp(localRaw)
+    const useApi = !localTimestamp || apiTimestamp > localTimestamp
+    if (!useApi)
+      return parseLocalData(localRaw)
+
+    return toMemberData(await fetch())
+  }
+  catch (error) {
+    forumLog.warn(ForumLogGroup.PERMISSION, '获取权限数据失败，使用本地数据', error)
+    return parseLocalData(localRaw)
+  }
+}
 
 export function usePermissionData() {
   const userAuth = useUserAuthStore()
+  const queryCache = useQueryCache()
 
   const isLoggedIn = computed(() => userAuth.isTokenValid)
 
-  const shouldRefreshData = computed(() => {
-    // 只要用户已登录就可以尝试刷新
-    if (!isLoggedIn.value)
-      return false
-
-    // 如果从未通过API获取过数据，需要刷新
-    if (!permissionDataState.value.hasApiData)
-      return true
-
-    // 检查是否超过缓存时间
-    const now = Date.now()
-    const elapsed = now - (permissionDataState.value.apiLastUpdated || 0)
-    return elapsed > CACHE_DURATION
+  const teamQuery = useQuery({
+    key: forumKeys.permission('team'),
+    // 未登录不取数（本地 JSON 兜底渲染）；登录后 enabled 翻转，colada 自动发起取数，
+    // 单 key 单飞，无需手动 watch 登录事件
+    enabled: isLoggedIn,
+    query: () => fetchMembers({
+      accessToken: userAuth.auth?.accessToken,
+      fetch: () => user.getOrgMembers(userAuth.auth?.accessToken),
+      localRaw: teamMemberListRaw,
+    }),
+    staleTime: CACHE_DURATION,
   })
 
-  const fetchMemberData = async () => {
-    if (permissionDataState.value.loading)
-      return
+  const feedbackQuery = useQuery({
+    key: forumKeys.permission('feedback'),
+    enabled: isLoggedIn,
+    query: () => fetchMembers({
+      accessToken: userAuth.auth?.accessToken,
+      fetch: () => user.getRepoMembers(GITEE_API_CONFIG.FEEDBACK_REPO, userAuth.auth?.accessToken),
+      localRaw: feedbackMemberListRaw,
+    }),
+    staleTime: CACHE_DURATION,
+  })
 
-    const accessToken = userAuth.auth?.accessToken
-    if (!accessToken) {
-      forumLog.warn(ForumLogGroup.PERMISSION, '无访问令牌，使用本地权限数据')
-      return
-    }
+  const blogQuery = useQuery({
+    key: forumKeys.permission('blog'),
+    enabled: isLoggedIn,
+    query: () => fetchMembers({
+      accessToken: userAuth.auth?.accessToken,
+      fetch: () => user.getRepoMembers(GITEE_API_CONFIG.BLOG_REPO, userAuth.auth?.accessToken),
+      localRaw: blogMemberListRaw,
+    }),
+    staleTime: CACHE_DURATION,
+  })
 
-    permissionDataState.value.loading = true
-
-    try {
-      const [teamMembersRaw, feedbackMembersRaw, blogMembersRaw] = await Promise.all([
-        user.getOrgMembers(accessToken).catch(() => parseLocalData(teamMemberListRaw)),
-        user.getRepoMembers(GITEE_API_CONFIG.FEEDBACK_REPO, accessToken).catch(() => parseLocalData(feedbackMemberListRaw)),
-        user.getRepoMembers(GITEE_API_CONFIG.BLOG_REPO, accessToken).catch(() => parseLocalData(blogMemberListRaw)),
-      ])
-
-      const teamMembers = Array.isArray(teamMembersRaw) && teamMembersRaw.length > 0 && 'avatar' in teamMembersRaw[0]
-        ? convertUserToMemberData(teamMembersRaw as ForumAPI.User[])
-        : teamMembersRaw as MemberData[]
-
-      const feedbackMembers = Array.isArray(feedbackMembersRaw) && feedbackMembersRaw.length > 0 && 'avatar' in feedbackMembersRaw[0]
-        ? convertUserToMemberData(feedbackMembersRaw as ForumAPI.User[])
-        : feedbackMembersRaw as MemberData[]
-
-      const blogMembers = Array.isArray(blogMembersRaw) && blogMembersRaw.length > 0 && 'avatar' in blogMembersRaw[0]
-        ? convertUserToMemberData(blogMembersRaw as ForumAPI.User[])
-        : blogMembersRaw as MemberData[]
-
-      const apiTimestamp = Date.now()
-
-      // 分别处理每种数据类型
-      const teamTimestamp = getLocalDataTimestamp(teamMemberListRaw)
-      const feedbackTimestamp = getLocalDataTimestamp(feedbackMemberListRaw)
-      const blogTimestamp = getLocalDataTimestamp(blogMemberListRaw)
-
-      const useTeamApi = !teamTimestamp || apiTimestamp > teamTimestamp
-      const useFeedbackApi = !feedbackTimestamp || apiTimestamp > feedbackTimestamp
-      const useBlogApi = !blogTimestamp || apiTimestamp > blogTimestamp
-
-      permissionDataState.value = {
-        teamMembers: useTeamApi ? teamMembers : parseLocalData(teamMemberListRaw),
-        feedbackMembers: useFeedbackApi ? feedbackMembers : parseLocalData(feedbackMemberListRaw),
-        blogMembers: useBlogApi ? blogMembers : parseLocalData(blogMemberListRaw),
-        loading: false,
-        apiLastUpdated: apiTimestamp,
-        hasApiData: true,
-      }
-
-      forumLog.info(ForumLogGroup.PERMISSION, '权限数据更新完成', {
-        teamMembers: useTeamApi ? 'API数据' : '本地数据',
-        feedbackMembers: useFeedbackApi ? 'API数据' : '本地数据',
-        blogMembers: useBlogApi ? 'API数据' : '本地数据',
-      })
-    }
-    catch (error) {
-      forumLog.warn(ForumLogGroup.PERMISSION, '获取权限数据失败，使用本地数据', error)
-      permissionDataState.value.loading = false
-    }
-  }
-
-  const refreshPermissionData = async () => {
-    if (isLoggedIn.value) {
-      await fetchMemberData()
-    }
-  }
-
-  // 自动刷新逻辑
-  const ensureFreshData = async () => {
-    if (shouldRefreshData.value) {
-      await refreshPermissionData()
-    }
-  }
+  // 查询未就绪时以本地 JSON 兜底，保持首帧同步可用（原实现的初始状态语义）
+  const teamMembers = computed(() => teamQuery.data.value ?? parseLocalData(teamMemberListRaw))
+  const feedbackMembers = computed(() => feedbackQuery.data.value ?? parseLocalData(feedbackMemberListRaw))
+  const blogMembers = computed(() => blogQuery.data.value ?? parseLocalData(blogMemberListRaw))
 
   const getTeamMemberIds = computed(() =>
-    new Set(permissionDataState.value.teamMembers.map(member => member.id)),
+    new Set(teamMembers.value.map(member => member.id)),
   )
 
   const getFeedbackMemberIds = computed(() =>
-    new Set(permissionDataState.value.feedbackMembers.map(member => member.id)),
+    new Set(feedbackMembers.value.map(member => member.id)),
   )
 
   const getBlogMemberIds = computed(() =>
-    new Set(permissionDataState.value.blogMembers.map(member => member.id)),
+    new Set(blogMembers.value.map(member => member.id)),
   )
 
-  // 设置监听器，在用户登录时自动刷新权限数据
-  if (!isWatcherSetup) {
-    isWatcherSetup = true
-
-    // 监听登录状态变化
-    watch(isLoggedIn, async (newValue, oldValue) => {
-      // 从未登录变为登录时，立即刷新权限数据
-      if (newValue && !oldValue) {
-        forumLog.info(ForumLogGroup.PERMISSION, '用户登录，刷新权限数据')
-        await refreshPermissionData()
-      }
-    }, { immediate: false })
-
-    // 定时检查是否需要刷新（每10分钟检查一次）；SSR 下不启动，避免构建进程不退出的定时器
-    if (!import.meta.env.SSR) {
-      setInterval(() => {
-        if (shouldRefreshData.value) {
-          forumLog.info(ForumLogGroup.PERMISSION, '权限数据已过期，自动刷新')
-          refreshPermissionData()
-        }
-      }, 10 * 60 * 1000) // 10分钟检查间隔
+  // apiLastUpdated/hasApiData 为兼容旧形状保留；新代码请读各 query 状态
+  const permissionData = computed<PermissionDataState>(() => {
+    const entries = queryCache.getEntries({ key: PERMISSION_CACHE_KEY })
+    const apiLastUpdated = entries.reduce((latest, entry) => Math.max(latest, entry.when), 0)
+    return {
+      teamMembers: teamMembers.value,
+      feedbackMembers: feedbackMembers.value,
+      blogMembers: blogMembers.value,
+      loading: teamQuery.isLoading.value || feedbackQuery.isLoading.value || blogQuery.isLoading.value,
+      apiLastUpdated: apiLastUpdated || null,
+      hasApiData: apiLastUpdated > 0,
     }
+  })
+
+  async function refreshPermissionData(): Promise<void> {
+    if (!isLoggedIn.value)
+      return
+    await Promise.all([
+      teamQuery.refetch(),
+      feedbackQuery.refetch(),
+      blogQuery.refetch(),
+    ])
+  }
+
+  // 登录/登出由各 query 的 enabled 门控处理（colada 内置 watch(enabled)），
+  // 不在此注册登录 watcher：多个消费方实例化本组合函数时会产生多份 watcher，
+  // 而 colada 的 refetch 并不单飞（fetch 会 abort 上一笔再重启），会造成请求抖动。
+
+  /** 仅当数据缺失或超过 staleTime 时才真正重取（保持原实现的节流语义） */
+  async function ensureFreshData(): Promise<void> {
+    if (!isLoggedIn.value)
+      return
+    const freshest = queryCache
+      .getEntries({ key: PERMISSION_CACHE_KEY })
+      .reduce((latest, entry) => Math.max(latest, entry.when), 0)
+    if (!freshest || Date.now() - freshest > CACHE_DURATION)
+      await refreshPermissionData()
   }
 
   return {
     // 状态
-    permissionData: computed(() => permissionDataState.value),
+    permissionData,
     isLoggedIn,
 
     // 获取器

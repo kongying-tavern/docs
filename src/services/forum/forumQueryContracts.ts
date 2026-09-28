@@ -35,6 +35,7 @@ export const forumKeys = {
   comments: (topicId: string | number) => ['forum', 'comments', String(topicId)] as const,
   user: (username: string) => ['forum', 'users', 'detail', username.trim()] as const,
   sessionUser: () => ['session', 'user'] as const,
+  permission: (scope: 'team' | 'feedback' | 'blog') => ['forum', 'permission', scope] as const,
   pinned: () => ['forum', 'topics', 'list', 'pinned'] as const,
   personalState: (userId: string | number) => ['forum', 'personal-state', String(userId)] as const,
   reactionResource: (resourceIdentity: string) => ['forum', 'reactions', resourceIdentity] as const,
