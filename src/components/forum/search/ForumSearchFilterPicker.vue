@@ -30,7 +30,7 @@ const emit = defineEmits<{
 const { message } = useLocalized()
 const { getStateLabel } = useForumSearchToken()
 const { permissionData, ensureFreshData } = usePermissionData()
-const tagMap = getTopicTagMap()
+const tagMap = computed(() => getTopicTagMap(message))
 const tagLabelGetter = getTopicTagLabelGetter()
 const labelStore = useForumLabelStore()
 const { getTagDisplay } = useTopicTagDisplay()
@@ -71,7 +71,7 @@ const tagGroups = computed(() => {
   const dynamicOptions = labelStore.categoryLabels.value
     .filter(label => !tagLabelGetter.isLabel(label.name))
     .map(label => [label.name, getTagDisplay(label.name)] as [string, string])
-  const options = [...tagMap, ...dynamicOptions] as Array<[string, string]>
+  const options = [...tagMap.value, ...dynamicOptions] as Array<[string, string]>
   return indexGroups([
     {
       id: 'platforms',

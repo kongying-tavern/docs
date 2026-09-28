@@ -11,13 +11,14 @@ const REGEXP_SPECIAL_CHARACTERS = /[.*+?^${}()|[\]\\]/gu
 
 export function useForumSearchToken() {
   const { message } = useLocalized()
-  const topicTagMap = getTopicTagMap()
+  // 响应式：语言切换后按新 locale 重建，token 解析别名随语言更新
+  const topicTagMap = computed(() => getTopicTagMap(message))
   const topicTagLabelGetter = getTopicTagLabelGetter()
   const labelStore = useForumLabelStore()
   const { getTagDisplay } = useTopicTagDisplay()
   const localizedTagLabels = computed(() => {
     const staticEntries = Array.from(
-      topicTagMap,
+      topicTagMap.value,
       ([tag, display]) => [display, topicTagLabelGetter.getLabel(tag) ?? tag] as [string, string],
     )
     // 动态标签（管理页新增、静态表里没有的）以显示名 → label 参与 token 解析
