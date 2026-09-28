@@ -270,7 +270,7 @@ test('topic authors can close their own feedback from the topic menu', async () 
   const [permissionsSource, menuSource, routeSource, topicStateSource] = await Promise.all([
     readFile(new URL('../../src/forum/composables/auth/useRuleChecks.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/composables/util/defineTopicDropdownMenu.ts', import.meta.url), 'utf8'),
-    readFile(new URL('../../src/forum/composables/useForumRoute.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../../src/forum/composables/state/useForumRoute.ts', import.meta.url), 'utf8'),
     readFile(new URL('../../src/forum/components/topic/composables/useTopicPageState.ts', import.meta.url), 'utf8'),
   ])
 

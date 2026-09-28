@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/forum/composables/data/useForumQueries'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { resolveForumListScope } from '~/forum/services/listSkeleton'
 import { parseForumSearchQuery } from '~/forum/services/searchQuery'
 import ForumAside from '../aside/ForumAside.vue'

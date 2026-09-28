@@ -7,7 +7,7 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button/'
 import { Textarea } from '@/components/ui/textarea/'
 import { useSubmitTopic } from '~/forum/composables/data/useSubmitTopic'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import BlurFade from './ui/BlurFade.vue'
 
 const { showForm } = defineProps<{

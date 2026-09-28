@@ -1,7 +1,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useTopicUserRole } from '~/forum/composables/util/useTopicUserRole'
 import { decodeForumText } from '~/forum/services/contentCodec'
 import { renderForumComment } from '~/forum/services/contentRenderer'

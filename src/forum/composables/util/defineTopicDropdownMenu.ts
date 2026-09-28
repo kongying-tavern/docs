@@ -7,9 +7,9 @@ import { computed, ref, toValue } from 'vue'
 import { issues } from '~/forum/api/gitee'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumPersonalState } from '~/forum/composables/data/useForumPersonalState'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useTopicManager } from '~/forum/composables/state/useTopicManager'
 import { useTopicStatusEditor } from '~/forum/composables/state/useTopicStatusEditor'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
 import {
   getSelectableTopicStatuses,
   groupTopicStatuses,

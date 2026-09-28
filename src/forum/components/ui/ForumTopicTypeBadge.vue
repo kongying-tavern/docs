@@ -2,7 +2,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { getTopicDisplayStatus } from '~/forum/services/topicStatus'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
 

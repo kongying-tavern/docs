@@ -2,7 +2,7 @@
 import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import User from '@/components/ui/User.vue'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import NavBarUserAvatarDropdownMenu from './NavBarUserAvatarDropdownMenu.vue'
 import UserAvatar from './UserAvatar.vue'

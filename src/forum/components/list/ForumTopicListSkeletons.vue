@@ -3,8 +3,8 @@ import { createReusableTemplate, useWindowSize } from '@vueuse/core'
 import { computed } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
 import {
   buildForumListCacheKey,
   MAX_SKELETON_COUNT,

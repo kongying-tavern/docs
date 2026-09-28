@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/empty'
 import { useLocalized } from '@/hooks/useLocalized'
 import { GiteeAPIError } from '~/forum/api/gitee'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 import ForumOpenFeedbackFormButton from '../form/ForumOpenFeedbackFormButton.vue'
 

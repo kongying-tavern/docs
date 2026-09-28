@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumHome from '../home/ForumHome.vue'
 import ForumUserPage from '../user/ForumUserPage.vue'
 

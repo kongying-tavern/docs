@@ -7,7 +7,7 @@ import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { getSiteHref } from '~/constants/site'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumContextMenu from '../ui/ForumContextMenu.vue'
 import BentoGridItem from './ForumBento.vue'
 

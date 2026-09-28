@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
 import { CATEGORY_LABEL_PREFIX } from '~/forum/services/label'
 

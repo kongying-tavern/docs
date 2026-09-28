@@ -3,7 +3,7 @@ import { useEventListener, useInfiniteScroll, useMediaQuery } from '@vueuse/core
 import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/forum/composables/data/useForumQueries'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { resolveCommentTargetState, resolveRestoredCommentPage } from '~/forum/services/commentNavigation'
 import { readForumCommentId } from '~/forum/services/route'
 

@@ -3,7 +3,7 @@ import type { SettingsNavigationItem, SettingsSectionId } from '~/composables/us
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/forum/composables/useForumRoute'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import useLogin from '~/forum/hooks/useLogin'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import SettingsNavigation from './SettingsNavigation.vue'
