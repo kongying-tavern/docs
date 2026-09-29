@@ -1,5 +1,5 @@
 import type ForumAPI from '~/forum/api/types'
-import { useEventListener, useInfiniteScroll, useMediaQuery } from '@vueuse/core'
+import { useEventListener, useMediaQuery } from '@vueuse/core'
 import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/forum/composables/data/useForumQueries'
@@ -120,13 +120,20 @@ export function useCommentAreaState(props: {
   }, { immediate: true })
 
   if (!import.meta.env.SSR && !props.inline) {
-    useInfiniteScroll(window, async () => {
-      await comments.loadMore()
-    }, {
-      distance: 10,
-      interval: 1500,
-      canLoadMore: () => enabled.value && comments.canLoadMore.value,
-    })
+    // vueuse 的 useInfiniteScroll 对 window 目标不可用（IntersectionObserver 无法
+    // 观察 window），评论区自动加载与列表同款自实现：距文档底部 64px 内触发
+    let autoLoading = false
+    useEventListener(window, 'scroll', () => {
+      const root = document.documentElement
+      if (autoLoading || !enabled.value || !comments.canLoadMore.value)
+        return
+      if (root.scrollHeight - root.scrollTop - root.clientHeight < 64) {
+        autoLoading = true
+        void comments.loadMore().finally(() => {
+          autoLoading = false
+        })
+      }
+    }, { passive: true })
   }
 
   return {
