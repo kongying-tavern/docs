@@ -21,19 +21,14 @@ const props = defineProps<{
   canLoadMore?: boolean
   sort?: ForumAPI.SortMethod
 }>()
-const {
-  data,
-  loadMore,
-  sort = 'created',
-} = props
 
 const { message } = useLocalized()
 const previousVisitAt = beginForumVisit()
 const lastVisitedDividerIndex = computed(() =>
-  findLastVisitedDividerIndex(data, previousVisitAt, sort),
+  findLastVisitedDividerIndex(props.data, previousVisitAt, props.sort),
 )
 
-if (loadMore) {
+if (props.loadMore) {
   // vueuse 的 useInfiniteScroll 对 window 目标不可用（IntersectionObserver 无法
   // 观察 window -> isElementVisible 恒 false -> 自动加载从不触发），这里自实现：
   // 监听 window scroll，滚动距文档底部小于阈值时加载下一页，loading/error 时跳过。
@@ -43,12 +38,11 @@ if (loadMore) {
     'scroll',
     () => {
       const scrollRoot = document.documentElement
-      // props 解构值非响应式（闭包恒为初值），这里必须读 props 上的最新值
       if (autoLoading || props.error || !props.canLoadMore)
         return
       if (scrollRoot.scrollHeight - scrollRoot.scrollTop - scrollRoot.clientHeight < 64) {
         autoLoading = true
-        Promise.resolve(loadMore()).finally(() => {
+        Promise.resolve(props.loadMore!()).finally(() => {
           autoLoading = false
         })
       }
@@ -71,13 +65,13 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
 <template>
   <div>
     <TransitionGroup
-      v-if="data.length > 0"
+      v-if="props.data.length > 0"
       tag="ul"
       name="topic-list"
       class="topic-list"
     >
       <li
-        v-for="(item, index) in data"
+        v-for="(item, index) in props.data"
         :key="item.id"
       >
         <Divider
@@ -103,9 +97,9 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
     <ForumTopicListEmpty
       v-else
       class="my-8"
-      :error="error"
-      :query="query"
-      :refresh-data="refreshData"
+      :error="props.error"
+      :query="props.query"
+      :refresh-data="props.refreshData"
     />
 
     <ForumTopicPreviewDialog
