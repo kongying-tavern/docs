@@ -6,6 +6,7 @@ import { useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
+import { GiteeAPIError } from '~/forum/api/gitee'
 import { useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
@@ -224,6 +225,8 @@ const loadStateMessage = computed(() => {
         v-if="topics.rows.value.length > 0"
         :loading="topics.loadingMore.value"
         :error="Boolean(topics.error.value)"
+        :rate-limit="topics.error.value instanceof GiteeAPIError && topics.error.value.isExceededRateLimit()"
+        :error-message="topics.error.value?.message ?? ''"
         :can-load-more="topics.canLoadMore.value"
         :load-more="topics.loadMore"
         :retry="topics.refetch"

@@ -5,6 +5,7 @@ import { computed, nextTick, useTemplateRef, watch } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
+import { GiteeAPIError } from '~/forum/api/gitee'
 import { useNavigateToTopic } from '../composables/useNavigateToTopic'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import { useCommentAreaState } from './composables/useCommentAreaState'
@@ -150,6 +151,8 @@ watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
           v-if="!inline"
           :loading="commentLoading"
           :error="Boolean(commentError)"
+          :rate-limit="commentError instanceof GiteeAPIError && commentError.isExceededRateLimit()"
+          :error-message="commentError?.message ?? ''"
           :can-load-more="canLoadMoreComment"
           :load-more="loadMoreComment"
           :retry="retry"

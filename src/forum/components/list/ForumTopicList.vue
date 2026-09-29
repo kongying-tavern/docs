@@ -42,7 +42,7 @@ if (loadMore) {
     {
       distance: 10,
       interval: 1500,
-      canLoadMore: () => canLoadMore || false,
+      canLoadMore: () => !error && canLoadMore,
     },
   )
 }

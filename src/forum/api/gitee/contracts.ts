@@ -11,7 +11,10 @@ const userSchema = z.object({
 const issueSchema = z.object({
   id: z.number().optional(),
   number: z.string(),
-  state: z.enum(['open', 'closed', 'progressing']),
+  // Gitee 的 state 枚举不止 open/closed/progressing（state=all 的响应会出现其他值，
+  // 如 rejected），严格枚举会让整个列表在解析期失败并陷入重试循环；
+  // 保留原值，由业务层按已知状态分类、未知状态参与通用展示。
+  state: z.string(),
   title: z.string(),
   body: z.string(),
   html_url: z.string(),

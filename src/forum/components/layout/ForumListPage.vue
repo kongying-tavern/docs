@@ -3,6 +3,7 @@ import type ForumAPI from '~/forum/api/types'
 import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
+import { GiteeAPIError } from '~/forum/api/gitee'
 import ForumAside from '../aside/ForumAside.vue'
 import ForumTopicList from '../list/ForumTopicList.vue'
 import ForumTopicToolbar from '../list/ForumTopicToolbar.vue'
@@ -84,6 +85,8 @@ const isInitialLoading = computed(() => props.loading && props.renderData.length
             v-if="renderData.length > 0"
             :loading="loadingMore"
             :error="Boolean(error)"
+            :rate-limit="error instanceof GiteeAPIError && error.isExceededRateLimit()"
+            :error-message="error?.message ?? ''"
             :can-load-more="canLoadMore"
             :load-more="loadMore"
             :retry="refreshData"
