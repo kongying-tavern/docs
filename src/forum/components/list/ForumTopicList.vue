@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { useInfiniteScroll } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import Divider from '@/components/ui/divider/Divider.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
@@ -11,12 +11,7 @@ import ForumTopic from './ForumTopic.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
 
-const {
-  data,
-  loadMore,
-  canLoadMore = false,
-  sort = 'created',
-} = defineProps<{
+const props = defineProps<{
   data: ForumAPI.Topic[]
   loadMore?: () => Promise<unknown> | unknown
   refreshData?: () => Promise<unknown> | unknown
@@ -26,6 +21,11 @@ const {
   canLoadMore?: boolean
   sort?: ForumAPI.SortMethod
 }>()
+const {
+  data,
+  loadMore,
+  sort = 'created',
+} = props
 
 const { message } = useLocalized()
 const previousVisitAt = beginForumVisit()
@@ -34,16 +34,26 @@ const lastVisitedDividerIndex = computed(() =>
 )
 
 if (loadMore) {
-  useInfiniteScroll(
+  // vueuse 的 useInfiniteScroll 对 window 目标不可用（IntersectionObserver 无法
+  // 观察 window -> isElementVisible 恒 false -> 自动加载从不触发），这里自实现：
+  // 监听 window scroll，滚动距文档底部小于阈值时加载下一页，loading/error 时跳过。
+  let autoLoading = false
+  useEventListener(
     window,
+    'scroll',
     () => {
-      loadMore()
+      const scrollRoot = document.documentElement
+      // props 解构值非响应式（闭包恒为初值），这里必须读 props 上的最新值
+      if (autoLoading || props.error || !props.canLoadMore)
+        return
+      if (scrollRoot.scrollHeight - scrollRoot.scrollTop - scrollRoot.clientHeight < 64) {
+        autoLoading = true
+        Promise.resolve(loadMore()).finally(() => {
+          autoLoading = false
+        })
+      }
     },
-    {
-      distance: 10,
-      interval: 1500,
-      canLoadMore: () => !error && canLoadMore,
-    },
+    { passive: true },
   )
 }
 
