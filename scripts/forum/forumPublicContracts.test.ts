@@ -91,7 +91,7 @@ test('comment scrolling hooks register during component setup', async () => {
   ])
 
   assert.doesNotMatch(stateSource, /function initialize/)
-  assert.match(stateSource, /if \(!import\.meta\.env\.SSR && !props\.inline\) \{\s+useInfiniteScroll/)
+  assert.match(stateSource, /if \(!import\.meta\.env\.SSR && !props\.inline\) \{\s+useEventListener\(window, 'scroll'/)
   assert.match(areaSource, /const inputObservationTarget = computed/)
   assert.doesNotMatch(areaSource, /stopObserver|onUnmounted\(cleanup\)/)
 })
