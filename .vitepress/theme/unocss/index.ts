@@ -8,9 +8,10 @@ export const borderBaselinePreflight: Preflight = {
 *, ::before, ::after {
   border-width: 0;
   border-style: solid;
-  /* 主题变量为 oklch 分量（--border: L C H），必须以 oklch() 包装才是合法颜色；
-     缺色时 border-color 会回落 currentColor，弹层边框就会跟随文字色变成深色实线 */
-  border-color: oklch(var(--border));
+  /* 主题变量是 oklch 分量（--border: L C H），而 Wind4 会把 oklch(var(--x)) 折叠成
+     var(--x)（假定变量已是完整颜色），导致非法值回落 currentColor。因此这里引用
+     theme.css 提供的完整色形式 --border-color，而非 oklch(var(--border)) */
+  border-color: var(--border-color);
 }`,
 }
 

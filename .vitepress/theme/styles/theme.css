@@ -16,6 +16,7 @@
   --destructive: 0.704 0.191 22.216;
   --destructive-foreground: 1 0 0;
   --border: 0.9131 0.0013 286.37;
+  --border-color: oklch(0.9131 0.0013 286.37);
   --input: 0.9131 0.0013 286.37;
   --ring: 0.8147 0.0028 286.34;
   --chart-1: 0.81 0.1 252;
@@ -73,6 +74,7 @@
   --destructive: 0.704 0.191 22.216;
   --destructive-foreground: 0.985 0 0;
   --border: 0.3667 0.0095 260.72;
+  --border-color: oklch(0.3667 0.0095 260.72);
   --input: 0.2741 0.0055 286.03;
   --ring: 0.3027 0.0071 285.97;
   --chart-1: 0.81 0.1 252;
