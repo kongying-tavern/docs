@@ -28,7 +28,7 @@ const buttonRef = ref<HTMLButtonElement>()
     :disabled="props.disabled"
     :class="
       cn(
-        'group bg-background relative w-auto cursor-pointer overflow-hidden rounded-full border p-2 px-6 text-center font-semibold',
+        'group bg-background relative w-auto cursor-pointer overflow-hidden rounded-full border border-border p-2 px-6 text-center font-semibold',
         props.class,
       )
     "
