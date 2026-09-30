@@ -40,7 +40,7 @@ export function shouldShowQuotedTopicImageBelow(images?: readonly ForumAPI.Image
   return Number(width) > 0 && Number(height) > 0 && Number(width) / Number(height) >= 4 / 3
 }
 
-export function readQuotedTopicRequest(input: string | URL): ForumAPI.QuotedTopicReference | undefined {
+export function readQuotedTopicRequest(input: string | URL): QuotableTopicReference | undefined {
   const url = toUrl(input)
   return normalizeQuotedTopicReference({
     id: url.searchParams.get(QUOTED_TOPIC_ID_PARAM),
