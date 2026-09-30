@@ -51,11 +51,13 @@ function resolveShimmerColor(body: string, theme: PresetUnoTheme): string {
   }
   const color = findThemeColor(theme, value) ?? value
   return pct
-    ? `color-mix(in oklch, ${color} ${pct}%, transparent)`
+    ? `color-mix(in srgb, ${color} ${pct}%, transparent)`
     : color
 }
 
-const SHIMMER_GRADIENT = `linear-gradient(calc(90deg + var(--shimmer-angle)),var(--_base) calc(50% - var(--_spread)),color-mix(in oklch,var(--_highlight),var(--_base) 50%) calc(50% - var(--_spread) * 0.5),var(--_highlight) 50%,color-mix(in oklch,var(--_highlight),var(--_base) 50%) calc(50% + var(--_spread) * 0.5),var(--_base) calc(50% + var(--_spread)))`
+// 渐变停靠必须避免 oklch/alpha:同站点自定义字体组合下 Chromium 的
+// background-clip:text 会静默丢绘制(文本直接隐形),固态 srgb 颜色可正常绘制。
+const SHIMMER_GRADIENT = `linear-gradient(calc(90deg + var(--shimmer-angle)),var(--_base) calc(50% - var(--_spread)),color-mix(in srgb,var(--_highlight),var(--_base) 50%) calc(50% - var(--_spread) * 0.5),var(--_highlight) 50%,color-mix(in srgb,var(--_highlight),var(--_base) 50%) calc(50% + var(--_spread) * 0.5),var(--_base) calc(50% + var(--_spread)))`
 
 export const shimmerRules: Rule<PresetUnoTheme>[] = [
   [
@@ -64,7 +66,7 @@ export const shimmerRules: Rule<PresetUnoTheme>[] = [
       {
         '--_spread': 'var(--shimmer-spread, calc(3ch + 40px))',
         '--_base': 'currentColor',
-        '--_highlight': 'var(--shimmer-color, oklch(from currentColor l c h / calc(alpha * 0.2)))',
+        '--_highlight': 'var(--shimmer-color, color-mix(in srgb, currentColor 80%, white))',
         'background-image': `var(--shimmer-image, ${SHIMMER_GRADIENT})`,
         'background-repeat': 'no-repeat',
         'background-size': 'calc(200% + var(--_spread) * 2) 100%',
@@ -72,10 +74,13 @@ export const shimmerRules: Rule<PresetUnoTheme>[] = [
         'background-clip': 'text',
         '-webkit-background-clip': 'text',
         '-webkit-text-fill-color': 'var(--shimmer-text-fill, transparent)',
+        // 提升自身合成层:子元素(如 torph 的 will-change 字符 span)被独立合成时,
+        // Chromium 会丢弃父元素的 background-clip:text 渐变绘制,translateZ 可修复。
+        'transform': 'translateZ(0)',
         'animation': 'tw-shimmer var(--shimmer-duration, 2s) linear infinite',
       },
       '@keyframes tw-shimmer{from{background-position:100% 0}to{background-position:0 0}}',
-      ':where(html.dark) .shimmer{--_highlight:var(--shimmer-color,oklch(from currentColor max(0.8,calc(l + 0.4)) c h / calc(alpha + 0.4)))}',
+      ':where(html.dark) .shimmer{--_highlight:var(--shimmer-color,color-mix(in srgb,currentColor 55%,white))}',
       '.shimmer:where([dir="rtl"],[dir="rtl"] *){animation-direction:reverse}',
       '@media (prefers-reduced-motion:reduce){.shimmer{animation:none;background-image:none;-webkit-text-fill-color:currentColor}}',
     ],
