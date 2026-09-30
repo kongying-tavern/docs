@@ -114,7 +114,7 @@ export function useForumReaction(
       return acked
     }
     catch (error) {
-      toast.info(message.value.forum.errors.operationFailedRetry, { error, scene: 'rc' })
+      toast.error(message.value.forum.errors.operationFailedRetry, { error, scene: 'rc' })
       return false
     }
   }
