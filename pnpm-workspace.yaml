@@ -5,7 +5,7 @@ autoInstallPeers: false
 overrides:
   # 收敛 2026-08 audit 的 Critical/High 依赖告警（全部为同主版本修补升级）
   "@lunariajs/core>simple-git": ^3.36.0
-  "@comark/markdown-it>js-yaml": ^4.3.2
+  "@comark/markdown-it>js-yaml": ^5.4.1
   "@vueuse/motion>defu": ^6.1.7
   "sass>immutable": ^5.1.9
   "vite>rollup": ^4.63.1
