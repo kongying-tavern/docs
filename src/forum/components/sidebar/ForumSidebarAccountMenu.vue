@@ -8,6 +8,7 @@ import User from '@/components/ui/User.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import SettingsPage from '~/components/settings/SettingsPage.vue'
+import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
 import useLogin from '~/forum/hooks/useLogin'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
@@ -43,6 +44,7 @@ async function openSettings(): Promise<void> {
   rememberSettingsReturnUrl()
   location.hash = 'settings'
 }
+useForumShortcut('settings', openSettings)
 
 function closeSettingsDrawer(close: () => void): void {
   mobileSettingsOpen.value = false
@@ -138,6 +140,7 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
         <button
           type="button"
           class="forum-sidebar-account-trigger"
+          :data-feedback-account="userInfo.info ? 'logged-in' : 'logged-out'"
           :data-forum-user="userInfo.info?.login"
           @click="closeForumSidebar"
         >
@@ -285,6 +288,11 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
   color: var(--vp-c-text-2);
   transition-property: background-color, color;
   transition-duration: 150ms;
+}
+
+.forum-sidebar-help-trigger .icon-btn {
+  width: 16px;
+  height: 16px;
 }
 
 .forum-sidebar-profile {

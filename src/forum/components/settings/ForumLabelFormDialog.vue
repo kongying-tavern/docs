@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -22,6 +22,7 @@ import {
   validateForumLabelName,
 } from '~/forum/services/forumLabelTaxonomy'
 import { toast } from '~/services/telemetry/toast'
+import { isVisibleFeedback } from '~/utils/isVisibleFeedback'
 
 const props = defineProps<{
   open: boolean
@@ -115,23 +116,28 @@ async function handleSubmit() {
 
   submitting.value = true
   try {
+    let saved: GITEE.IssueLabel
+    const originalLabel = props.label
+    const successCopy = props.label ? message.value.forum.labelAdmin.updateSuccess : message.value.forum.labelAdmin.createSuccess
     if (props.label) {
-      const updated = await labelStore.updateForumLabel(props.label.name, {
+      saved = await labelStore.updateForumLabel(props.label.name, {
         ...(fullName.value !== props.label.name ? { name: fullName.value } : {}),
         color: color.value,
       })
-      toast.success(
-        message.value.forum.labelAdmin.updateSuccess.replace('{name}', updated.name),
-      )
     }
     else {
-      const created = await labelStore.createForumLabel(fullName.value, color.value)
-      toast.success(
-        message.value.forum.labelAdmin.createSuccess.replace('{name}', created.name),
-      )
+      saved = await labelStore.createForumLabel(fullName.value, color.value)
     }
     emit('submitted')
     close()
+    await nextTick()
+    // The table translates semantic labels and does not display every custom color.
+    // A color-only edit therefore still needs an explicit acknowledgement.
+    const visibleResult = (!originalLabel || originalLabel.name !== saved.name)
+      && [...document.querySelectorAll<HTMLElement>('[data-feedback-label]')]
+        .some(element => element.dataset.feedbackLabel === saved.name && isVisibleFeedback(element))
+    if (!visibleResult)
+      toast.success(successCopy.replace('{name}', saved.name))
   }
   catch (error) {
     toast.error(

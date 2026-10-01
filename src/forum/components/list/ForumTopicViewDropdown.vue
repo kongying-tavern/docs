@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type { FORUM } from '~/forum/components/types'
 import type { ForumSort } from '~/forum/services/forumRoute'
+import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useForumListControlOptions } from '~/forum/composables/view/useForumListControlOptions'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import ForumAsideTagFilter from '../aside/ForumAsideTagFilter.vue'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 const props = defineProps<{ sort: ForumSort }>()
@@ -12,6 +15,7 @@ const emit = defineEmits<{ sortChange: [sort: ForumSort] }>()
 const { viewMode, setViewMode } = useForumViewMode()
 const { views, sorts } = useForumListControlOptions()
 const { message } = useLocalized()
+const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
 const drawerTitle = computed(() => `${message.value.forum.header.view.label}、${message.value.forum.sidebar.listSort}`)
 
@@ -62,5 +66,39 @@ const items = computed<FORUM.TopicDropdownMenu[]>(() => [
         <span class="i-lucide-settings icon-btn bg-[--vp-c-text-2] size-4" aria-hidden="true" />
       </button>
     </template>
+    <template #menu>
+      <ForumAsideTagFilter v-if="isMobile" class="forum-mobile-tag-filter" />
+    </template>
   </ForumResponsiveMenu>
 </template>
+
+<style scoped>
+.forum-mobile-tag-filter {
+  padding: 0 10px 14px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.forum-mobile-tag-filter :deep(.vp-border-divider) {
+  height: auto;
+  margin-bottom: 4px;
+  border: 0;
+  line-height: 1.4;
+}
+
+.forum-mobile-tag-filter :deep(.aside-tag-filter-title) {
+  color: var(--vp-c-text-3);
+  font-family: inherit;
+  font-size: calc(11px * var(--site-ui-scale));
+  font-weight: 600;
+}
+
+.forum-mobile-tag-filter :deep(.forum-tag-filter) {
+  min-height: 32px;
+  align-items: center;
+}
+
+.forum-mobile-tag-filter :deep(button:focus-visible) {
+  outline: 2px solid var(--vp-c-brand-2);
+  outline-offset: 3px;
+}
+</style>

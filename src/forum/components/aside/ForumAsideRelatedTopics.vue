@@ -9,7 +9,8 @@ import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { CATEGORY_LABEL_PREFIX } from '~/forum/services/forumLabel'
 import { skeletonItemOpacity } from '~/forum/services/forumListSkeleton'
 import ForumTime from '../ui/ForumTime.vue'
-import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
+import ForumTopicLifecycle from '../ui/ForumTopicLifecycle.vue'
+import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
 import ForumAsideSection from './ForumAsideSection.vue'
 
 const props = defineProps<{
@@ -103,12 +104,17 @@ function commentCount(topic: ForumAPI.Topic): number {
               <span>{{ message.forum.sidebar.totalComments.replace('{count}', String(commentCount(related))) }}</span>
               <ForumTime :date="related.createdAt" :toggleable="false" />
             </span>
-            <ForumTopicTypeBadge
-              :type="related.type"
-              :state="related.state"
-              :status="related.status"
-              :good-issue="related.goodIssue"
-            />
+            <span class="related-status">
+              <ForumTopicLifecycle v-if="related.type === 'BUG' || related.type === 'FEAT'" :state="related.state" icon-only />
+              <span v-if="related.status" class="related-conclusion">
+                <ForumTopicStatusBadge :status="related.status" />
+                {{ message.forum.topic.status[related.status] }}
+              </span>
+              <span v-if="related.goodIssue" class="related-conclusion">
+                <ForumTopicStatusBadge status="good-issue" />
+                {{ message.forum.topic.status.goodIssue }}
+              </span>
+            </span>
           </span>
         </a>
       </li>
@@ -132,6 +138,7 @@ function commentCount(topic: ForumAPI.Topic): number {
   gap: 7px;
   padding: 13px 4px;
   border-radius: 8px;
+  min-width: 0;
 }
 
 .related-user {
@@ -179,7 +186,7 @@ function commentCount(topic: ForumAPI.Topic): number {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 6px;
   margin-top: 3px;
 }
 
@@ -187,7 +194,7 @@ function commentCount(topic: ForumAPI.Topic): number {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   color: var(--vp-c-text-2);
   font-size: calc(12px * var(--site-ui-scale));
   line-height: calc(18px * var(--site-ui-scale));
@@ -196,11 +203,26 @@ function commentCount(topic: ForumAPI.Topic): number {
 .related-meta > span {
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
 }
 
-.related-footer :deep(.font-size-xs) {
+.related-meta :deep(time) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.related-status,
+.related-conclusion {
+  display: inline-flex;
   flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
   color: var(--vp-c-text-2);
+  font-size: calc(12px * var(--site-ui-scale));
+  line-height: calc(18px * var(--site-ui-scale));
+  white-space: nowrap;
 }
 
 .aside-state {

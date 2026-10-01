@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import ForumTopicStatusBadge from '../ForumTopicStatusBadge.vue'
+import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
 import { menuItemKey, sortMenuItems } from './shared'
 
 defineProps<{
@@ -90,12 +91,14 @@ function handleRadioClick(item: FORUM.MenuRadioItem) {
         type="button"
         role="menuitem"
         :disabled="item.disabled"
+        :data-variant="item.variant"
         class="forum-menu-mobile-option" :class="[item.class]"
         @click="handleItemClick(item)"
       >
-        <ForumTopicStatusBadge v-if="item.status !== undefined" :status="item.status ?? undefined" />
+        <ForumTopicTypeBadge v-if="item.topicType" :type="item.topicType" />
+        <ForumTopicStatusBadge v-else-if="item.status !== undefined" :status="item.status ?? undefined" />
         <span v-else-if="item.icon" class="icon-btn shrink-0" :class="item.icon" />
-        <span class="text-left flex-1 min-w-0 truncate">{{ item.label }}</span>
+        <span v-if="!item.topicType" class="text-left flex-1 min-w-0 truncate">{{ item.label }}</span>
         <span v-if="item.shortcut" class="text-xs text-[var(--vp-c-text-3)]">{{ item.shortcut }}</span>
       </button>
     </template>
@@ -144,5 +147,18 @@ function handleRadioClick(item: FORUM.MenuRadioItem) {
 .forum-menu-mobile-option:disabled {
   opacity: 0.45;
   pointer-events: none;
+}
+
+/* destructive 与基础 DropdownMenuItem 同语义：红字，悬停背景红色同调 */
+.forum-menu-mobile-option[data-variant='destructive'] {
+  color: oklch(var(--destructive));
+}
+
+.forum-menu-mobile-option[data-variant='destructive']:hover {
+  background: oklch(var(--destructive) / 0.1);
+}
+
+.dark .forum-menu-mobile-option[data-variant='destructive']:hover {
+  background: oklch(var(--destructive) / 0.2);
 }
 </style>

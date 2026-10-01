@@ -6,6 +6,7 @@ export const FORUM_LINK_HOST_ALLOWLIST = ['yuanshen.site', 'gitee.com', 'github.
 const FORUM_MENTION_LOGIN_REGEX = /^[\dA-Z][\w-]{0,63}$/i
 const AUTO_LINK_DISPLAY_LENGTH = 48
 const AUTO_LINK_PROTOCOL_REGEX = /^https?:\/\//i
+const ABSOLUTE_WEB_LINK_REGEX = /^\s*(?:https?:\/\/|\/\/)/i
 
 export function isAllowedForumHref(href: string): boolean {
   if (!isSafeForumHref(href))
@@ -26,6 +27,19 @@ export function isAllowedForumHref(href: string): boolean {
 
 export function isSafeForumHref(href: string): boolean {
   return SAFE_FORUM_URI_REGEX.test(href)
+}
+
+/** Non-allowlisted web links expose their destination instead of an authored label. */
+export function getUntrustedForumLinkHref(href: string): string | undefined {
+  if (!ABSOLUTE_WEB_LINK_REGEX.test(href) || isAllowedForumHref(href))
+    return undefined
+  try {
+    const url = new URL(href, SITE_ORIGIN)
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : undefined
+  }
+  catch {
+    return undefined
+  }
 }
 
 export function getForumMentionHref(login: string): string | undefined {

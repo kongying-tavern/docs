@@ -70,6 +70,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
     <ForumImage
       v-else-if="isCardMode && hasImages"
       layout="row"
+      adaptive-row
       :images="images"
       :max-display="3"
       class="mt-2"

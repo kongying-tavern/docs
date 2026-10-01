@@ -2,20 +2,24 @@ import type { Extensions } from '@tiptap/core'
 import type { SuggestionOptions } from '@tiptap/suggestion'
 import type ForumAPI from '~/forum/api/types'
 import type { ForumEditorSuggestionItem } from '~/forum/tiptap/forumSuggestionRenderer'
-import { Markdown } from '@tiptap/markdown'
 import StarterKit from '@tiptap/starter-kit'
 import { EmojiNode } from '~/forum/tiptap/emojiNode'
 import { createLinkExtension } from '~/forum/tiptap/linkConfig'
 import { createMentionNode, MentionNode } from '~/forum/tiptap/mentionNode'
 import { createTopicReferenceNode } from '~/forum/tiptap/topicReferenceNode'
 import { getForumDocumentTitle } from './forumDocumentLinkIndex'
-import { isAllowedForumHref, shortenForumAutoLink } from './forumLinkPolicy'
+import { shortenForumAutoLink } from './forumLinkPolicy'
 
-export function createForumContentExtensions(options: { openLinks?: boolean } = {}): Extensions {
+export function createForumContentExtensions(options: {
+  openLinks?: boolean
+  getTopics?: () => readonly ForumAPI.Topic[]
+  suggestionRender?: SuggestionOptions<ForumEditorSuggestionItem>['render']
+} = {}): Extensions {
   return [
     StarterKit.configure({ link: false }),
     EmojiNode,
-    MentionNode,
+    options.suggestionRender ? createMentionNode(options.suggestionRender) : MentionNode,
+    createTopicReferenceNode(options.getTopics ?? (() => []), options.suggestionRender),
     createLinkExtension({ openOnClick: options.openLinks }),
   ]
 }
@@ -58,20 +62,12 @@ export function createForumTopicEditorExtensions(
         },
       }
     },
-    parseMarkdown: (token, helpers) => token.raw === token.href && isAllowedForumHref(token.href)
-      ? helpers.applyMark('link', helpers.parseInline(token.tokens || []), { href: token.href })
-      : helpers.createTextNode(token.raw || token.text || ''),
-    renderMarkdown: node => String(node.attrs?.href || ''),
-  })
-  const topicMention = createMentionNode(options.suggestionRender).extend({
-    renderMarkdown: node => `@${String(node.attrs?.label || node.attrs?.id || '')}`,
   })
 
   return [
     StarterKit.configure({ codeBlock: false, heading: false, link: false }),
     topicLink,
-    topicMention,
+    createMentionNode(options.suggestionRender),
     createTopicReferenceNode(options.getTopics ?? (() => []), options.suggestionRender),
-    Markdown,
   ]
 }

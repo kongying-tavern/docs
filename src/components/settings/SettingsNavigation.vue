@@ -68,7 +68,7 @@ const emit = defineEmits<{
 }
 
 .settings-navigation-item.active {
-  color: var(--vp-c-brand-1);
+  font-weight: 600;
 }
 
 .settings-navigation-icon {

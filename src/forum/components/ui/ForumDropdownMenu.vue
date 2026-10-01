@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import ForumHintIcon from './ForumHintIcon.vue'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
+import ForumTopicTypeBadge from './ForumTopicTypeBadge.vue'
 import { menuItemKey, sortMenuItems } from './responsive/shared'
 
 defineProps<{
@@ -73,10 +74,11 @@ function handleRadioSelect(group: FORUM.MenuRadioGroup, value: string) {
       </DropdownMenuRadioItem>
     </DropdownMenuRadioGroup>
 
-    <DropdownMenuItem v-else-if="item.type === 'item'" :id="item.id" :disabled="item.disabled" :class="item.class" @click="item.action">
-      <ForumTopicStatusBadge v-if="item.status !== undefined" :status="item.status ?? undefined" />
+    <DropdownMenuItem v-else-if="item.type === 'item'" :id="item.id" :disabled="item.disabled" :variant="item.variant" :class="item.class" @click="item.action">
+      <ForumTopicTypeBadge v-if="item.topicType" :type="item.topicType" />
+      <ForumTopicStatusBadge v-else-if="item.status !== undefined" :status="item.status ?? undefined" />
       <span v-else-if="item.icon" class="mr-2 icon-btn" :class="item.icon" />
-      <span>{{ item.label }}</span>
+      <span v-if="!item.topicType">{{ item.label }}</span>
       <DropdownMenuShortcut v-if="item.shortcut">
         {{ item.shortcut }}
       </DropdownMenuShortcut>

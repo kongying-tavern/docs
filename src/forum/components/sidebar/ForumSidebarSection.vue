@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
+import { useResizeObserver } from '@vueuse/core'
+import { nextTick, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicDropdownMenu from '../topic/ForumTopicDropdownMenu.vue'
-import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
+import ForumTopicMetadata from '../ui/ForumTopicMetadata.vue'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   title: string
   icon: string
   items?: Array<{
@@ -37,6 +39,18 @@ const emit = defineEmits<{
 
 const { message } = useLocalized()
 
+const topicListEl = ref<HTMLElement | null>(null)
+const topicListScrollable = ref(false)
+
+// 内容不满一屏时滚动遮罩会误淡出最后一行,只在真正可滚动时启用
+function measureTopicList() {
+  const el = topicListEl.value
+  topicListScrollable.value = el ? el.scrollHeight > el.clientHeight + 1 : false
+}
+
+watch(() => props.items.length, () => nextTick(measureTopicList))
+useResizeObserver(topicListEl, measureTopicList)
+
 function handleToggle(event: Event) {
   emit('update:open', (event.currentTarget as HTMLDetailsElement).open)
 }
@@ -60,7 +74,11 @@ function commentLabel(item: { commentCount?: number }): string {
     <div class="mt-1">
       <slot />
       <template v-if="items.length > 0">
-        <div class="forum-sidebar-topic-list">
+        <div
+          ref="topicListEl"
+          class="forum-sidebar-topic-list"
+          :class="{ 'scroll-fade': topicListScrollable }"
+        >
           <div
             v-for="item in items"
             :key="item.id"
@@ -68,8 +86,9 @@ function commentLabel(item: { commentCount?: number }): string {
             class="forum-sidebar-topic-row"
           >
             <a :href="item.href" class="forum-sidebar-topic" :title="item.title">
-              <ForumTopicTypeBadge
+              <ForumTopicMetadata
                 :type="item.type"
+                :topic-id="item.id"
                 :state="item.state"
                 :status="item.status"
                 :good-issue="item.goodIssue"

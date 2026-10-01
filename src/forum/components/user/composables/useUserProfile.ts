@@ -1,5 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { computed, ref, toValue, watch } from 'vue'
+import type { FORUM } from '../../types'
+import { computed, toValue, watch } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeMessagesHref } from '~/constants/site'
@@ -16,8 +17,6 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   const userAuth = useUserAuthStore()
   const { isOfficial } = useRuleChecks()
 
-  const menuRef = ref<HTMLElement | null>(null)
-
   const profileQuery = useForumUserProfileQuery(
     username,
     computed(() => userAuth.isTokenValid ? userAuth.auth?.accessToken : undefined),
@@ -31,11 +30,7 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
     && String(renderedUser.value.id) === String(userInfo.info?.id),
   ))
 
-  const menu = computed<{
-    id: 'all' | 'closed'
-    label: string
-    icon: string
-  }[]>(() => {
+  const menu = computed<FORUM.ProfileTab[]>(() => {
     return [
       {
         id: 'all',
@@ -63,7 +58,6 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   })
 
   return {
-    menuRef,
     userData: profileQuery.data,
     loading: profileQuery.isLoading,
     error: profileQuery.error,

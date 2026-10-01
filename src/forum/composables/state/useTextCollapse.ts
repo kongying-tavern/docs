@@ -1,18 +1,11 @@
 import type { Ref } from 'vue'
 import { computed, ref, unref } from 'vue'
-import { stripMarkdownImages } from '~/forum/services/forumContentCodec'
 
 export function useTextCollapse(contentRaw: string | Ref<string>, maxLength: number = 180) {
   const isExpanded = ref(false)
   const hasOverflow = computed(() => {
     const content = unref(contentRaw)
-    return content && typeof content === 'string' ? stripMarkdownImages(content).length > maxLength : false
-  })
-  const collapseText = computed(() => {
-    const content = unref(contentRaw)
-    if (!content || typeof content !== 'string')
-      return ''
-    return isExpanded.value ? content : content.slice(0, maxLength)
+    return typeof content === 'string' && content.length > maxLength
   })
 
   const toggleExpand = () => {
@@ -22,7 +15,6 @@ export function useTextCollapse(contentRaw: string | Ref<string>, maxLength: num
   return {
     isExpanded,
     hasOverflow,
-    collapseText,
     toggleExpand,
   }
 }

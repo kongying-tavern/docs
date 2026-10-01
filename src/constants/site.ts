@@ -6,6 +6,7 @@
 export const SITE_ORIGIN = 'https://yuanshen.site'
 export const SITE_BASE = '/docs'
 export const ASSET_ORIGIN = 'https://assets.yuanshen.site'
+export const FORUM_IMAGE_ORIGIN = 'https://webp.assets.interknot.site'
 export const API_ORIGIN = 'https://api.yuanshen.site'
 
 export const GITEE_ORIGIN = 'https://gitee.com'

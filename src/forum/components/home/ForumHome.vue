@@ -29,6 +29,9 @@ const loadStateMessage = computed(() => {
     return message.value.forum.loadError
   return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
 })
+function login(): void {
+  location.hash = 'login-alert'
+}
 </script>
 
 <template>
@@ -49,6 +52,7 @@ const loadStateMessage = computed(() => {
     :on-type-change="navigateType"
     :on-sort-change="navigateSort"
     :on-search="submitSearch"
+    @login="login"
   >
     <template #header>
       <ForumCarouselBento class="forum-header" :list="pinned.data.value || []" />

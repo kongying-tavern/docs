@@ -15,6 +15,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   error: []
   ready: []
+  dimensions: [size: { width: number, height: number }]
 }>()
 
 const isRealImageReady = ref(false)
@@ -47,6 +48,7 @@ const aspectStyle = computed(() => {
 function preloadRealImage() {
   const img = new Image()
   img.onload = () => {
+    reportDimensions(img)
     img.decode?.()?.finally(markRealImageReady) ?? markRealImageReady()
   }
   img.onerror = () => {
@@ -54,6 +56,15 @@ function preloadRealImage() {
     emit('error')
   }
   img.src = props.image.src
+}
+
+function reportDimensions(img: HTMLImageElement) {
+  if (!hasError.value && img.naturalWidth > 0 && img.naturalHeight > 0)
+    emit('dimensions', { width: img.naturalWidth, height: img.naturalHeight })
+}
+
+function onImageLoad(event: Event) {
+  reportDimensions(event.target as HTMLImageElement)
 }
 
 function onLazyError() {
@@ -65,7 +76,7 @@ function onLazyError() {
 <template>
   <div
     class="size-full relative overflow-hidden"
-    :class="[hasError || (useLazyLoad() && !isRealImageReady) ? 'cursor-wait' : interactive === false ? 'cursor-default' : 'cursor-zoom-in', props.class]"
+    :class="[hasError || interactive === false ? 'cursor-default' : useLazyLoad() && !isRealImageReady ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
   >
     <template v-if="useLazyLoad()">
       <img
@@ -107,18 +118,22 @@ function onLazyError() {
           class="size-full transition-transform duration-200"
           :class="imageClass"
           :style="aspectStyle"
+          @error="onLazyError"
+          @load="onImageLoad"
         >
       </Transition>
     </template>
 
     <img
       v-else
-      :src="image.src"
+      :src="hasError ? ERROR_IMAGE : image.src"
       :alt="image.alt || ''"
       class="size-full transition-transform duration-200"
       :class="imageClass"
       :style="aspectStyle"
       loading="lazy"
+      @error="!hasError && onLazyError()"
+      @load="onImageLoad"
     >
   </div>
 </template>

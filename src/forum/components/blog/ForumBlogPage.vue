@@ -6,10 +6,9 @@ import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
 import { data as allPosts } from '~/_data/posts.data'
-import { useMarkdownRenderer } from '~/forum/composables/view/useMarkdownRenderer'
+import { renderTiptapToHtml } from '~/forum/services/forumContentRenderer'
 
 const { lang, frontmatter } = useData()
-const { renderMarkdownPreview } = useMarkdownRenderer()
 
 const posts = computed(() => {
   const currentLang = lang.value || 'zh'
@@ -77,7 +76,10 @@ function postExcerpt(post: BlogPost): string {
   const versionGroup = groups.length > 1 ? groups[1] : match[2]
   const items = [...versionGroup.matchAll(LIST_ITEM_RE)].slice(0, 2).map(item => item[1])
 
-  return renderMarkdownPreview([`**${match[1].trim()}**`, ...items.map(item => `- ${item}`)].join('\n'))
+  return renderTiptapToHtml({ type: 'doc', content: [
+    { type: 'paragraph', content: [{ type: 'text', text: match[1].trim(), marks: [{ type: 'bold' }] }] },
+    ...(items.length ? [{ type: 'bulletList', content: items.map(text => ({ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text }] }] })) }] : []),
+  ] })
 }
 </script>
 

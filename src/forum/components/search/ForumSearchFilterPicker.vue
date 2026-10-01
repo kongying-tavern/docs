@@ -367,7 +367,7 @@ defineExpose({ moveActive, selectActive })
 
 .forum-filter-picker-category:hover {
   background: var(--vp-c-default-soft);
-  color: var(--vp-c-brand-1);
+  color: var(--vp-c-text-1);
 }
 
 .forum-filter-picker-category-icon {
@@ -501,9 +501,8 @@ defineExpose({ moveActive, selectActive })
 }
 
 .forum-filter-picker-user-search input:focus-visible {
-  border-color: var(--vp-c-brand-1);
-  outline: 2px solid color-mix(in srgb, var(--vp-c-brand-1) 45%, transparent);
-  outline-offset: 1px;
+  border-color: var(--vp-c-text-1);
+  outline: none;
 }
 
 .forum-filter-picker-search-icon {

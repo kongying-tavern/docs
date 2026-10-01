@@ -6,7 +6,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useBounceScroll } from '~/forum/composables/view/useBounceScroll'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
-import { planForumImageGrid } from '~/forum/services/forumImageLayout'
+import { planForumImageGrid, planForumImageRow } from '~/forum/services/forumImageLayout'
 import ForumImageIndicator from './ForumImageIndicator.vue'
 import ForumImageItem from './ForumImageItem.vue'
 import ForumImageNavigationButton from './ForumImageNavigationButton.vue'
@@ -31,6 +31,8 @@ interface Props {
   imageClass?: string
   context?: PreviewerContext
   previewEnabled?: boolean
+  adaptiveRow?: boolean
+  rowMaxHeight?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,20 +41,22 @@ const props = withDefaults(defineProps<Props>(), {
   containerClass: '',
   imageClass: '',
   previewEnabled: true,
+  rowMaxHeight: 200,
 })
 
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()
 const errorMap = ref(new Set<number>())
 const readyMap = ref(new Set<number>())
+const naturalSizes = ref(new Map<number, { width: number, height: number }>())
 // errorMap/readyMap 以 images 下标为 key：列表被整体替换（如引用话题 refetch 重建）时，旧下标的记录必须作废
 watch(() => props.images, () => {
   errorMap.value = new Set()
   readyMap.value = new Set()
+  naturalSizes.value = new Map()
 })
 const availableImages = computed(() => props.images
-  .map((image, sourceIndex) => ({ image, sourceIndex }))
-  .filter(({ sourceIndex }) => !errorMap.value.has(sourceIndex)))
+  .map((image, sourceIndex) => ({ image, sourceIndex })))
 
 const actualLayout = computed<Exclude<LayoutMode, 'auto'>>(() => {
   if (props.layout !== 'auto')
@@ -76,6 +80,8 @@ const isRail = computed(() =>
 
 const railRef = useTemplateRef<HTMLElement>('railRef')
 const { width: gridWidth } = useElementSize(railRef)
+const layoutRef = useTemplateRef<HTMLElement>('layoutRef')
+const { width: layoutWidth } = useElementSize(layoutRef)
 const railIndex = ref(0)
 const railProgress = ref(0)
 
@@ -191,10 +197,16 @@ const remainingCount = computed(() => {
   return 0
 })
 
-const validImages = computed(() => availableImages.value.map(({ image }) => image))
+const previewImages = computed(() => availableImages.value.filter(({ sourceIndex }) => !errorMap.value.has(sourceIndex)))
+const validImages = computed(() => previewImages.value.map(({ image }) => image))
 const rowContainerStyle = computed<Record<string, string> | undefined>(() =>
   !isRail.value && actualLayout.value === 'row'
-    ? { '--forum-image-columns': String(Math.max(1, displayImages.value.length)) }
+    ? props.adaptiveRow
+      ? (() => {
+          const plan = planForumImageRow(displayImages.value.map(({ image, sourceIndex }) => naturalSizes.value.get(sourceIndex) ?? image), layoutWidth.value, props.rowMaxHeight)
+          return { gridTemplateColumns: plan.columns, height: `${plan.height}px`, width: `${plan.width}px`, maxWidth: '100%' }
+        })()
+      : { '--forum-image-columns': String(Math.max(1, displayImages.value.length)) }
     : undefined,
 )
 
@@ -203,11 +215,11 @@ function handleError(index: number) {
 }
 
 function previewIndexFor(sourceIndex: number): number {
-  return availableImages.value.findIndex(image => image.sourceIndex === sourceIndex)
+  return previewImages.value.findIndex(image => image.sourceIndex === sourceIndex)
 }
 
 function isPreviewReady(image: ImageItem, index: number): boolean {
-  return !(image.thumbHash || image.thumbhash) || readyMap.value.has(index)
+  return !errorMap.value.has(index) && (!(image.thumbHash || image.thumbhash) || readyMap.value.has(index))
 }
 
 function handleReady(index: number) {
@@ -227,7 +239,7 @@ const layoutConfig = computed(() => {
 
   // @unocss-include
   const containerStyles: Record<string, string> = {
-    row: 'forum-image-row grid gap-2 max-w-[80%]',
+    row: props.adaptiveRow ? 'forum-image-row grid gap-2' : 'forum-image-row grid gap-2 max-w-[80%]',
     gallery: 'grid grid-cols-2 grid-rows-2 gap-0 max-h-[400px] rounded-lg overflow-hidden',
     single: 'grid grid-cols-1 max-h-[500px] gap-0',
     double: 'grid grid-cols-2 gap-0 max-h-[400px]',
@@ -250,7 +262,7 @@ const layoutConfig = computed(() => {
     if (isRail.value)
       return 'w-[78vw] max-w-[420px] shrink-0 snap-start rounded-xl'
     if (layout === 'row')
-      return 'h-100px min-w-0 rounded'
+      return props.adaptiveRow ? 'h-full min-h-0 min-w-0 rounded-lg bg-[var(--vp-c-bg-soft)]' : 'h-100px min-w-0 rounded'
     const cornerClass = cornerStyles[layout]?.[index] ?? ''
     return `${baseStyles} ${cornerClass}`
   }
@@ -269,13 +281,13 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 
 <template>
   <ForumImagePreviewer
-    v-if="validImages.length > 0"
+    v-if="displayImages.length > 0"
     :images="validImages"
     :context="context"
     class="forum-image-previewer"
   >
     <template #default="{ openAt }">
-      <div class="forum-image-layout">
+      <div ref="layoutRef" class="forum-image-layout">
         <ForumImageIndicator
           v-if="isRail && railCount > 1"
           class="forum-image-rail-indicator"
@@ -298,6 +310,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
           <div
             ref="railRef"
             :class="[layoutConfig.containerStyle, isRail ? '' : containerClass]"
+            :data-adaptive-row="adaptiveRow && !isRail && actualLayout === 'row' ? '' : undefined"
             :data-forum-grid-layout="isAdaptiveGrid ? adaptivePlan.layout : undefined"
             :style="rowContainerStyle"
             @scroll.passive="onRailScroll"
@@ -322,11 +335,12 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
             >
               <ForumImageItem
                 :image="image"
-                :fill-container="true"
+                :fill-container="!(adaptiveRow && !isRail && actualLayout === 'row')"
                 :interactive="previewEnabled"
                 :class="imageClass"
                 @error="handleError(sourceIndex)"
                 @ready="handleReady(sourceIndex)"
+                @dimensions="naturalSizes.set(sourceIndex, $event)"
               />
 
               <div
@@ -366,6 +380,10 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 <style scoped>
 .forum-image-row {
   grid-template-columns: repeat(var(--forum-image-columns), minmax(0, 1fr));
+}
+
+.forum-image-row[data-adaptive-row] :deep(img) {
+  transform: none;
 }
 
 .forum-image-adaptive-grid {

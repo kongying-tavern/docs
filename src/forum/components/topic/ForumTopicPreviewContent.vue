@@ -39,6 +39,7 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
     />
     <ForumTopicItemFooter :topic-data="topic" hide-comment-button />
     <ForumCommentArea
+      presentation="embedded"
       repo="Feedback"
       :topic-id="String(topic.id)"
       :topic-author-id="topic.user.id"

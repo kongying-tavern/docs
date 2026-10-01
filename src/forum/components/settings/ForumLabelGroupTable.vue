@@ -131,6 +131,7 @@ function previewStatus(row: ForumLabelRow): ForumAPI.TopicStatus | undefined {
                 <div
                   v-for="row in entry.rows"
                   :key="row.label.id"
+                  :data-feedback-label="row.label.name"
                   class="label-group-item"
                 >
                   <span class="pl-2 flex gap-2 min-w-0 items-center">

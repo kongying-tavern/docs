@@ -3,6 +3,23 @@ interface SizedImage {
   height?: number
 }
 
+/** A bounded justified row: preserve image proportions without letting long screenshots dominate the feed. */
+export function planForumImageRow(images: readonly SizedImage[], containerWidth: number, maxHeight = 200) {
+  const ratios = images.map(aspect)
+  const width = Number.isFinite(containerWidth) && containerWidth > 0 ? containerWidth : 480
+  const availableWidth = Math.max(1, width - Math.max(0, images.length - 1) * 8)
+  const totalRatio = ratios.reduce((sum, ratio) => sum + ratio, 0) || 1
+  // The available width takes precedence over the preferred minimum height:
+  // forcing a taller row would letterbox wide images when using object-contain.
+  const heightLimit = Number.isFinite(maxHeight) && maxHeight > 0 ? maxHeight : 200
+  const height = Math.min(heightLimit, availableWidth / totalRatio)
+  return {
+    height,
+    width: Math.min(width, height * totalRatio + Math.max(0, images.length - 1) * 8),
+    columns: ratios.map(ratio => `${ratio}fr`).join(' '),
+  }
+}
+
 export type ForumImageGridLayout = 'single' | 'two-vertical' | 'two-horizontal' | 'three-left' | 'three-top' | 'grid'
 
 export interface ForumImageGridPlan {

@@ -1,5 +1,5 @@
 import type ForumAPI from '~/forum/api/types'
-import { useEventListener, useMediaQuery } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/forum/composables/data/useForumQueries'
@@ -11,11 +11,10 @@ export function useCommentAreaState(props: {
   repo: ForumAPI.Repo
   topicId: string
   topicAuthorId: string | number
-  inline?: boolean
+  presentation: 'page' | 'embedded' | 'inline'
   commentCount?: number
 }) {
   const { message } = useLocalized()
-  const isMobile = useMediaQuery('(max-width: 768px)')
   const enabled = computed(() => props.commentCount !== null && props.commentCount !== undefined && props.commentCount !== -1)
   const comments = useForumCommentsQuery({
     topicId: () => props.topicId,
@@ -25,10 +24,9 @@ export function useCommentAreaState(props: {
   const { location: forumLocation, replaceCommentPage, route } = useForumRoute()
 
   const replyCommentID = ref<number | string | null>(null)
-  const commentInputBoxIsVisible = ref(true)
   const isClosedComment = computed(() => props.commentCount === -1)
   const currentCommentPage = computed(() => comments.data.value?.pageParams.at(-1) ?? 0)
-  const requestedCommentPage = computed(() => route.value?.name === 'topic' && route.value.topicId === props.topicId
+  const requestedCommentPage = computed(() => props.presentation === 'page' && route.value?.name === 'topic' && route.value.topicId === props.topicId
     ? route.value.commentPage
     : 1)
   const browserHref = ref(forumLocation.value?.href ?? '')
@@ -38,7 +36,7 @@ export function useCommentAreaState(props: {
     syncBrowserHref()
     useEventListener(window, 'hashchange', syncBrowserHref)
   }
-  const targetCommentId = computed(() => readForumCommentId(browserHref.value))
+  const targetCommentId = computed(() => props.presentation === 'page' ? readForumCommentId(browserHref.value) : null)
   const commentPages = computed(() => {
     const pages = new Map<string, number>()
     comments.data.value?.pages.forEach((page, index) => {
@@ -60,6 +58,8 @@ export function useCommentAreaState(props: {
   }))
   const targetCommentReady = computed(() => targetCommentState.value === 'ready')
   const loadStateMessage = computed(() => {
+    if (comments.isLoading.value)
+      return message.value.forum.comment.loadingComment
     if (comments.error.value)
       return message.value.forum.loadError
     if (targetCommentState.value === 'missing')
@@ -115,31 +115,12 @@ export function useCommentAreaState(props: {
   )
 
   watch([currentCommentPage, requestedCommentPage, comments.canLoadMore], ([page, requestedPage, canLoadMore]) => {
-    if (page > 0)
+    if (page > 0 && props.presentation === 'page')
       replaceCommentPage(resolveRestoredCommentPage(page, requestedPage, canLoadMore))
   }, { immediate: true })
 
-  if (!import.meta.env.SSR && !props.inline) {
-    // vueuse 的 useInfiniteScroll 对 window 目标不可用（IntersectionObserver 无法
-    // 观察 window），评论区自动加载与列表同款自实现：距文档底部 64px 内触发
-    let autoLoading = false
-    useEventListener(window, 'scroll', () => {
-      const root = document.documentElement
-      if (autoLoading || !enabled.value || !comments.canLoadMore.value)
-        return
-      if (root.scrollHeight - root.scrollTop - root.clientHeight < 64) {
-        autoLoading = true
-        void comments.loadMore().finally(() => {
-          autoLoading = false
-        })
-      }
-    }, { passive: true })
-  }
-
   return {
     replyCommentID: readonly(replyCommentID),
-    commentInputBoxIsVisible: readonly(commentInputBoxIsVisible),
-    isMobile,
     canLoadMoreComment: comments.canLoadMore,
     renderComments: comments.rows,
     commentPages,
@@ -157,8 +138,5 @@ export function useCommentAreaState(props: {
     handleCommentSubmit,
     retry: comments.refetch,
     loadMoreComment: comments.loadMore,
-    setCommentInputBoxVisible: (visible: boolean) => {
-      commentInputBoxIsVisible.value = visible
-    },
   }
 }

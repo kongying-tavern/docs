@@ -1,6 +1,23 @@
 import type { CustomConfig } from '../types'
 
 const settings: CustomConfig['settings'] = {
+  shortcuts: {
+    title: 'Keyboard shortcuts',
+    groups: { input: 'Message input', application: 'Application' },
+    actions: { send: 'Send comment or reply', bold: 'Bold', italic: 'Italic', strike: 'Strikethrough', search: 'Focus search', publish: 'Publish feedback', settings: 'Open settings' },
+    edit: 'Change shortcut',
+    unassigned: 'Unassigned',
+    resetGroup: 'Reset',
+    resetLabel: 'All shortcuts',
+    resetAll: 'Reset all shortcuts',
+    clear: 'Clear binding',
+    cancel: 'Cancel',
+    save: 'Save',
+    recordDescription: 'Press a key combination in the recording area. Tab moves to the action buttons; Esc cancels. Ctrl / ⌘ adapts to your system.',
+    conflict: 'Conflicts with',
+    reserved: 'Choose another combination to preserve common text, browser and system controls. Only / for application search can use a single key.',
+    invalid: 'Unsupported key combination',
+  },
   title: 'Settings',
   back: 'Go back',
   close: 'Close settings',

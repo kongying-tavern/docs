@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import ForumQuoteTopicButton from '../topic/ForumQuoteTopicButton.vue'
+import ForumTopicMetadataControl from '../topic/ForumTopicMetadataControl.vue'
 import ForumTopicReactionButton from '../ui/ForumTopicReactionButton.vue'
-import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 
 const { topicData } = defineProps<{
   topicData: ForumAPI.Topic
@@ -75,10 +75,12 @@ function handleCommentClick() {
       </Button>
       <ForumQuoteTopicButton :topic="topicData" :autoload="reactionEnabled" />
     </div>
-    <ForumTopicTypeBadge
+    <ForumTopicMetadataControl
       v-if="isCompactMode"
+      :topic="topicData"
       data-forum-shared-topic="type"
       :type="topicData.type"
+      :topic-id="topicData.id"
       :state="topicData.state"
       :status="topicData.status"
       :good-issue="topicData.goodIssue"

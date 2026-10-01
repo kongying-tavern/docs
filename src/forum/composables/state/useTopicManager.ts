@@ -28,7 +28,7 @@ async function withOperationLock<T>(key: string, operation: () => Promise<T>): P
   }
 }
 
-export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | null | undefined>, message: Ref<CustomConfig>) {
+export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | null | undefined>, message: Ref<CustomConfig>, onSuccess?: (topic: ForumAPI.Topic, text: string, field?: 'type' | 'status' | 'goodIssue') => Promise<void> | void) {
   const mutations = useForumTopicMutations()
 
   function currentTopic(): ForumAPI.Topic {
@@ -47,7 +47,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     createPatch: (topic: ForumAPI.Topic) => Parameters<typeof mutations.updateTopic>[2],
     successMessage: string,
     failureMessage: string,
-    options: { confirmType?: ForumAPI.FeedbackTopicType } = {},
+    options: { confirmType?: ForumAPI.FeedbackTopicType, visibleField?: 'type' | 'status' | 'goodIssue' } = {},
   ): Promise<ForumAPI.Topic | false> {
     const topic = currentTopic()
     return withOperationLock(topic.id, async () => {
@@ -72,7 +72,10 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
         toast.warning(message.value.forum.topic.menu.syncPending.replace('{action}', successMessage))
         return false
       }
-      toast.success(successMessage)
+      if (onSuccess)
+        await onSuccess(outcome.topic, successMessage, options.visibleField)
+      else
+        toast.success(successMessage)
       return outcome.topic
     })
   }
@@ -110,7 +113,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     topic => buildTopicTypeChangePatch(topic, newType),
     message.value.forum.topic.menu.changeType.success,
     message.value.forum.topic.menu.changeType.fail,
-    { confirmType: newType },
+    { confirmType: newType, visibleField: 'type' },
   )
 
   const togglePinnedTopic = () => update(
@@ -150,6 +153,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       }),
       message.value.forum.topic.menu.modifyStatus.success,
       message.value.forum.topic.menu.modifyStatus.fail,
+      { visibleField: 'status' },
     )
   }
 
@@ -172,6 +176,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     topic => buildTopicMembershipPatch(topic, { labels: toggleTopicLabel(currentLabels(topic), 'GOOD-ISSUE', !topic.goodIssue) }),
     message.value.forum.topic.menu.goodIssue.success,
     message.value.forum.topic.menu.goodIssue.fail,
+    { visibleField: 'goodIssue' },
   )
 
   return {

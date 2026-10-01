@@ -569,6 +569,9 @@ importers:
       ky:
         specifier: catalog:frontend
         version: 2.0.2
+      linkifyjs:
+        specifier: 4.3.2
+        version: 4.3.2
       lucide:
         specifier: ^1.34.0
         version: 1.34.0

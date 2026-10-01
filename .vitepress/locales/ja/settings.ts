@@ -1,6 +1,23 @@
 import type { CustomConfig } from '../types'
 
 const settings: CustomConfig['settings'] = {
+  shortcuts: {
+    title: 'キーボードショートカット',
+    groups: { input: 'メッセージ入力', application: 'アプリケーション' },
+    actions: { send: 'コメント・返信を送信', bold: '太字', italic: '斜体', strike: '取り消し線', search: '検索欄に移動', publish: 'フィードバックを投稿', settings: '設定を開く' },
+    edit: 'ショートカットを変更',
+    unassigned: '未設定',
+    resetGroup: '初期設定に戻す',
+    resetLabel: 'すべてのショートカット',
+    resetAll: 'すべて初期設定に戻す',
+    clear: '割り当てを解除',
+    cancel: 'キャンセル',
+    save: '保存',
+    recordDescription: '記録エリアでキーの組み合わせを押してください。Tab でボタンに移動し、Esc でキャンセルします。Ctrl／⌘ はシステムに合わせて表示されます。',
+    conflict: '次のショートカットと重複しています',
+    reserved: '文字編集、ブラウザー、システムの標準操作を避け、別の組み合わせを指定してください。単独キーはアプリケーション検索の / のみ利用できます。',
+    invalid: 'このキーの組み合わせは利用できません',
+  },
   title: '設定',
   back: '前のページに戻る',
   close: '設定を閉じる',

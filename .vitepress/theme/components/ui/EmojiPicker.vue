@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { useLocalStorage } from '@vueuse/core'
+import { reactiveOmit, useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import EmojiData from '~/_data/emojis.json'
@@ -29,12 +30,12 @@ defineOptions({
 })
 
 const props = withDefaults(
-  defineProps<PopoverContentProps & { class?: HTMLAttributes['class'], recordCount?: number }>(),
+  defineProps<PopoverContentProps & { class?: HTMLAttributes['class'], recordCount?: number, disabled?: boolean }>(),
   {
-    align: 'center',
+    align: 'start',
     side: 'top',
-    sideOffset: 50,
-    disableUpdateOnLayoutShift: true,
+    sideOffset: 8,
+    collisionPadding: 12,
     recordCount: 8,
   },
 )
@@ -62,7 +63,8 @@ watchEffect(() => {
   }
 })
 
-const isOpen = ref(false)
+const isOpen = defineModel<boolean>('open', { default: false })
+const contentProps = reactiveOmit(props, 'class', 'recordCount', 'disabled')
 const activePresetIndex = ref(0)
 
 const emojiPreloader = useEmojiPreload()
@@ -93,7 +95,7 @@ const recentEmojisFiltered = computed(() => {
 })
 
 function selectEmoji(emoji: string) {
-  if (!emoji || typeof emoji !== 'string') {
+  if (props.disabled || !emoji || typeof emoji !== 'string') {
     return
   }
 
@@ -104,6 +106,7 @@ function selectEmoji(emoji: string) {
     width: currentPreset.value.width,
     height: currentPreset.value.height,
   })
+  isOpen.value = false
 
   // 更新最近使用的表情
   const currentPresetName = currentPreset.value.presets
@@ -133,6 +136,14 @@ function prevPreset() {
   }
 }
 
+function selectPreset(value: unknown): void {
+  if (typeof value !== 'string' || value === '')
+    return
+  const index = Number(value)
+  if (Number.isInteger(index) && index >= 0 && index < EmojiData.length)
+    activePresetIndex.value = index
+}
+
 function deleteRecentEmoji(emoji: string) {
   if (!emoji || typeof emoji !== 'string') {
     return
@@ -155,31 +166,34 @@ function deleteRecentEmoji(emoji: string) {
     <PopoverTrigger as-child>
       <slot name="trigger">
         <Button
+          type="button"
           variant="ghost"
+          size="icon-sm"
+          :disabled="disabled"
           :aria-label="triggerLabel"
           aria-haspopup="dialog"
-          :class="cn('h-8 w-6 border border-[var(--vp-c-gutter)] border-solid bg-transparent', $props.class)"
+          :class="cn(props.class)"
           @mouseenter="handleTriggerHover"
         >
           <span class="i-custom:emoji c-[var(--vp-c-text-2)] icon-btn size-4" />
         </Button>
       </slot>
     </PopoverTrigger>
-    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit !z-[1100]">
+    <PopoverContent v-bind="{ ...$attrs, ...contentProps }" class="p-0 w-80 overflow-hidden">
       <div
-        class="c-[var(--vp-c-text-1)] border rounded-lg bg-[var(--vp-c-bg-elv)] flex flex-col h-[270px] w-[360px] shadow"
+        class="flex flex-col h-72 max-h-[var(--reka-popover-content-available-height)] w-full"
       >
         <div class="p-2 flex flex-1 flex-col overflow-hidden">
           <div v-if="recentEmojisFiltered.length > 0" class="mb-2">
             <p class="text-sm font-bold">
-              最近使用
+              {{ message.forum.publish.feedbackForm.recentUsed }}
             </p>
             <TransitionGroup
               name="emoji-shift" tag="div"
               class="emoji-grid-inner gap-1 grid grid-cols-8 grid-rows-1 max-h-32px overflow-hidden"
             >
               <Button
-                v-for="emoji in recentEmojisFiltered" :key="emoji" variant="ghost" class="text-lg p-0 h-8 w-8"
+                v-for="emoji in recentEmojisFiltered" :key="emoji" type="button" variant="ghost" size="icon-sm" :aria-label="emoji"
                 @click="selectEmoji(emoji)" @dblclick="deleteRecentEmoji(emoji)"
               >
                 <Emoji :emoji="emoji" :width="currentPreset.width" :height="currentPreset.height" />
@@ -189,30 +203,29 @@ function deleteRecentEmoji(emoji: string) {
           <p class="text-sm font-bold">
             {{ currentPreset.presets }}
           </p>
-          <div class="emoji-list gap-1 grid grid-cols-8 overflow-auto">
+          <div class="emoji-list overscroll-contain gap-1 grid grid-cols-8 overflow-auto">
             <Button
-              v-for="(emoji, key) in currentEmojiList" :key="key" variant="ghost" class="text-lg p-1 size-fit"
+              v-for="(emoji, key) in currentEmojiList" :key="key" type="button" variant="ghost" size="icon-sm" :aria-label="String(key)"
               @click="selectEmoji(emoji)"
             >
               <Emoji :emoji="emoji" :width="currentPreset.width" :height="currentPreset.height" />
             </Button>
           </div>
         </div>
-        <div class="p-2 bg-[var(--vp-c-bg-alt)] flex h-10 w-full items-center justify-between">
-          <div class="flex gap-2 overflow-auto">
-            <Button
-              v-for="(preset, index) in EmojiData" :key="preset.presets" variant="ghost" class="p-1 size-fit"
-              @click="() => { activePresetIndex = index; }"
+        <div class="p-2 border-t flex shrink-0 w-full items-center justify-between">
+          <ToggleGroup type="single" size="sm" :spacing="1" :model-value="String(activePresetIndex)" class="overflow-auto" @update:model-value="selectPreset">
+            <ToggleGroupItem
+              v-for="(preset, index) in EmojiData" :key="preset.presets" :value="String(index)" :aria-label="preset.presets" class="px-0 size-8"
             >
               <Emoji :emoji="preset.logo" :height="25" :width="25" />
-            </Button>
-          </div>
+            </ToggleGroupItem>
+          </ToggleGroup>
           <div class="ml-4 flex gap-1">
-            <Button variant="ghost" class="w-4" :disabled="activePresetIndex === 0" @click="prevPreset">
+            <Button type="button" variant="ghost" size="icon-xs" :aria-label="message.forum.publish.feedbackForm.previousEmojiGroup" :disabled="activePresetIndex === 0" @click="prevPreset">
               <span class="i-lucide:chevron-left icon-btn" />
             </Button>
             <Button
-              variant="ghost" class="w-4" :disabled="activePresetIndex === EmojiData.length - 1"
+              type="button" variant="ghost" size="icon-xs" :aria-label="message.forum.publish.feedbackForm.nextEmojiGroup" :disabled="activePresetIndex === EmojiData.length - 1"
               @click="nextPreset"
             >
               <span class="i-lucide:chevron-right icon-btn" />
@@ -225,8 +238,8 @@ function deleteRecentEmoji(emoji: string) {
 </template>
 
 <style scoped>
-::-webkit-scrollbar {
-  display: none;
+.emoji-list {
+  scrollbar-width: thin;
 }
 
 .emoji-shift-enter-active,
@@ -250,5 +263,13 @@ function deleteRecentEmoji(emoji: string) {
 
 .emoji-grid-inner > *:nth-child(n + 9) {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emoji-shift-enter-active,
+  .emoji-shift-leave-active,
+  .emoji-shift-move {
+    transition: none;
+  }
 }
 </style>

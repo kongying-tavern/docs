@@ -10,6 +10,7 @@ import {
   SETTINGS_SECTION_DEFINITIONS,
 } from '~/config/settingsOptions'
 import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
+import { useSitePreferences } from './useSitePreferences'
 
 export type { SettingsSectionId } from '~/config/settingsOptions'
 
@@ -37,12 +38,14 @@ export function useSettingsNavigation(
   const { localeIndex } = useData()
   const router = useRouter()
   const { message } = useLocalized()
+  const { desktopUi } = useSitePreferences()
   const activeSection = ref<SettingsSectionId>(DEFAULT_SECTION)
   const sectionSelected = ref(false)
 
   const sections = computed<SettingsNavigationItem[]>(() => SETTINGS_SECTION_DEFINITIONS
     .filter(section => section.id !== 'language' || toValue(translationSupported))
     .filter(section => section.id !== 'labels' || toValue(options.labelManagementEnabled))
+    .filter(section => section.id !== 'shortcuts' || desktopUi.value)
     .map(section => ({
       ...section,
       label: section.id === 'labels'

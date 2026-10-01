@@ -4,6 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import type { EmojiItem } from '@/components/ui/EmojiPicker.vue'
 import type ForumAPI from '~/forum/api/types'
 import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
+import { useQueryCache } from '@pinia/colada'
 import { ReloadIcon } from '@radix-icons/vue'
 import CharacterCount from '@tiptap/extension-character-count'
 import { Editor, EditorContent } from '@tiptap/vue-3'
@@ -18,8 +19,11 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useForumEditorShortcuts } from '~/forum/composables/view/useForumEditorShortcuts'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
+import { collectForumTopics, forumKeys } from '~/forum/services/forumQueryContracts'
 import { createForumContentExtensions } from '~/forum/services/forumTiptapExtensions'
+import { createForumSuggestionRenderer } from '~/forum/tiptap/forumSuggestionRenderer'
 import ForumImageUpload from './ForumImageUpload.vue'
 
 type SupportFeature = 'Upload' | 'Emoji' | 'Mention' | 'Submit'
@@ -84,6 +88,8 @@ const hideFooter = ref(props.collapse)
 const editor = shallowRef<TiptapEditor | null>(null)
 const isEditorFocused = ref(false)
 const showMentionPicker = ref(false)
+const showEmojiPicker = ref(false)
+const queryCache = useQueryCache()
 const emojiPreload = useEmojiPreload()
 
 // ProseMirror 深代理是性能陷阱，编辑器勿改回深响应式 ref；统计值在文档变更时显式同步
@@ -101,6 +107,15 @@ function syncEditorStats(ed: TiptapEditor): void {
 }
 
 let autofocusTimer: ReturnType<typeof setTimeout> | undefined
+const shortcutExtension = useForumEditorShortcuts({
+  enabled: () => !props.disabled && !props.loading,
+  send: () => {
+    if (!props.features.includes('Submit') || charCount.value === 0)
+      return false
+    handleSubmit()
+    return true
+  },
+})
 
 function emptyDoc(): JSONContent {
   return { type: 'doc', content: [{ type: 'paragraph' }] }
@@ -109,14 +124,18 @@ function emptyDoc(): JSONContent {
 onMounted(() => {
   editor.value = new Editor({
     extensions: [
-      ...createForumContentExtensions(),
+      ...createForumContentExtensions({
+        getTopics: () => collectForumTopics(queryCache.getEntries({ key: forumKeys.topics() }).map(entry => entry.state.value.data)),
+        suggestionRender: createForumSuggestionRenderer(),
+      }),
+      shortcutExtension,
       CharacterCount.configure({ limit: props.maxTextLength }),
     ],
     content: props.modelValue ?? emptyDoc(),
     editable: !props.disabled,
     autofocus: false,
-    enableInputRules: false,
-    enablePasteRules: false,
+    enableInputRules: ['topicReference'],
+    enablePasteRules: ['topicReference'],
     coreExtensionOptions: {
       clipboardTextSerializer: {
         blockSeparator: '\n',
@@ -160,13 +179,15 @@ onMounted(() => {
 })
 
 onClickOutside(container, () => {
-  if (props.autoHideFooter && charCount.value === 0 && !showMentionPicker.value)
+  if (props.autoHideFooter && charCount.value === 0 && !showMentionPicker.value && !showEmojiPicker.value)
     hideFooter.value = true
 })
 
 function handleEmojiSelect(emoji: EmojiItem): void {
+  if (props.disabled || props.loading)
+    return
   hideFooter.value = false
-  editor.value?.chain().insertContent({
+  editor.value?.chain().focus().insertContent({
     type: 'emoji',
     attrs: {
       emoji: emoji.emoji,
@@ -178,6 +199,8 @@ function handleEmojiSelect(emoji: EmojiItem): void {
 }
 
 function handleMentionSelect(user: ForumAPI.User): void {
+  if (props.disabled || props.loading)
+    return
   hideFooter.value = false
   editor.value?.chain().focus().insertContent({
     type: 'mention',
@@ -195,7 +218,7 @@ function emitFiles(files: File[]): void {
 }
 
 function handlePaste(event: ClipboardEvent): void {
-  if (event.clipboardData)
+  if (!props.disabled && !props.loading && props.features.includes('Upload') && event.clipboardData)
     emitFiles([...event.clipboardData.files])
 }
 
@@ -223,6 +246,19 @@ watch(() => props.disabled, (disabled) => {
   editor.value?.setEditable(!disabled)
 })
 
+watch(() => [props.disabled, props.loading], () => {
+  if (props.disabled || props.loading) {
+    showEmojiPicker.value = false
+    showMentionPicker.value = false
+  }
+})
+
+function restoreEditorFocus(event: Event): void {
+  event.preventDefault()
+  if (!props.disabled && !props.loading)
+    editor.value?.view.focus({ preventScroll: true })
+}
+
 onBeforeUnmount(() => {
   clearTimeout(autofocusTimer)
   editor.value?.destroy()
@@ -242,13 +278,13 @@ onBeforeUnmount(() => {
     <div class="comment-area w-full">
       <div class="body relative">
         <div
-          class="px-2 pt-2 border border-color-[var(--vp-c-gutter)] rounded-md bg-[var(--vp-c-bg-soft)] h-fit min-h-48px w-full focus:border-style-solid focus:bg-transparent"
+          class="px-2 pt-2 border border-input rounded-md border-solid bg-background h-fit min-h-48px w-full transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20"
           :class="{ 'pb-2': attachments.length > 0 }"
           @click="hideFooter = false"
           @focus="emojiPreload.smartPreload"
         >
           <div v-if="toolbarPosition === 'inner'" class="right-12px absolute">
-            <EmojiPicker v-if="features.includes('Emoji')" class="border-none" :reference="container" @select="handleEmojiSelect" />
+            <EmojiPicker v-if="features.includes('Emoji')" v-model:open="showEmojiPicker" :disabled="disabled || loading" @close-auto-focus="restoreEditorFocus" @select="handleEmojiSelect" />
           </div>
 
           <InputPlaceholders
@@ -316,16 +352,16 @@ onBeforeUnmount(() => {
         :enter="entryMotion.enter"
         class="footer mt-2.5 flex w-full items-center justify-between"
       >
-        <div class="tool">
-          <EmojiPicker v-if="features.includes('Emoji')" :reference="container" @select="handleEmojiSelect" />
+        <div class="tool flex gap-1 items-center">
+          <EmojiPicker v-if="features.includes('Emoji')" v-model:open="showEmojiPicker" :disabled="disabled || loading" @close-auto-focus="restoreEditorFocus" @select="handleEmojiSelect" />
 
-          <MentionPicker v-if="features.includes('Mention')" v-model:open="showMentionPicker" class="ml-2" @select="handleMentionSelect" />
+          <MentionPicker v-if="features.includes('Mention')" v-model:open="showMentionPicker" :disabled="disabled || loading" @close-auto-focus="restoreEditorFocus" @select="handleMentionSelect" />
 
           <Button
             v-if="features.includes('Upload')"
             type="button"
             variant="ghost"
-            class="ml-2 border border-[var(--vp-c-gutter)] border-solid bg-transparent h-8 w-6"
+            size="icon-sm"
             :disabled="disabled || loading"
             :aria-label="message.forum.publish.feedbackForm.addImages"
             @click="imageUpload?.open()"

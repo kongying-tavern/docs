@@ -3,6 +3,7 @@ import type { CustomConfig } from '~/forum/types'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { VALIDATION_LIMITS } from '../forumConfig'
+import { decodeForumText } from '../forumContentCodec'
 import { TOPIC_ID_REGEX } from '../forumTopicQuote'
 
 interface TopicValidationMessages {
@@ -36,7 +37,7 @@ export function createTopicDraftSchema(options: {
     ),
     text: z.preprocess(
       value => value ?? '',
-      z.string().max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, messages.tooLong(VALIDATION_LIMITS.CONTENT.MAX_LENGTH)),
+      z.string().refine(value => decodeForumText(value).text.length <= VALIDATION_LIMITS.CONTENT.MAX_LENGTH, messages.tooLong(VALIDATION_LIMITS.CONTENT.MAX_LENGTH)),
     ),
     tags: z.preprocess(
       value => value ?? [],
@@ -49,7 +50,7 @@ export function createTopicDraftSchema(options: {
       type: z.enum(['FEAT', 'BUG']),
     }).optional(),
   }).superRefine((draft, context) => {
-    if (draft.text.trim().length < VALIDATION_LIMITS.CONTENT.MIN_LENGTH) {
+    if (decodeForumText(draft.text).text.trim().length < VALIDATION_LIMITS.CONTENT.MIN_LENGTH) {
       context.addIssue({
         code: 'custom',
         message: messages.contentRequired,

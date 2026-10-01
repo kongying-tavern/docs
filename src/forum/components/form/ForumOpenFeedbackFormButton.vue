@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
+import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
@@ -49,6 +50,7 @@ function handleButtonClick() {
     location.hash = 'login-alert'
   }
 }
+useForumShortcut('publish', handleButtonClick, { enabled: () => frontmatter.value.publishTopic ?? true })
 
 // @unocss-includes
 const selectPublishTopicMenu = computed(() => {

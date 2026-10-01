@@ -2,22 +2,18 @@
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { getTopicDisplayStatus } from '~/forum/services/forumTopicStatus'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
 
-const { type, state, status, goodIssue = false, iconOnly = false, interactive = false } = defineProps<{
+const { type, status, goodIssue = false, iconOnly = false, interactive = false } = defineProps<{
   type: ForumAPI.TopicType
-  state?: ForumAPI.TopicState
   status?: ForumAPI.TopicStatus
   goodIssue?: boolean
   iconOnly?: boolean
   interactive?: boolean
 }>()
 
+const emit = defineEmits<{ filterType: [type: 'bug' | 'feat'], filterStatus: [status: ForumAPI.TopicStatus | 'good-issue'] }>()
 const { message } = useLocalized()
-const { addSearchFacet, navigateType } = useForumRoute()
-
 const topicTypeMap = computed(() => new Map<ForumAPI.TopicKind, string>([
   ['FEAT', message.value.forum.topic.type.feat],
   ['ANN', message.value.forum.topic.type.ann],
@@ -32,20 +28,19 @@ const typeColorClass: Record<ForumAPI.TopicKind, string> = {
   POST: 'bg-[var(--forum-topic-type-post)]',
 }
 
-const displayStatus = computed(() => getTopicDisplayStatus(status, state))
 const typeText = computed(() => type ? topicTypeMap.value.get(type) : undefined)
-const statusText = computed(() => displayStatus.value ? message.value.forum.topic.status[displayStatus.value] : undefined)
+const statusText = computed(() => status ? message.value.forum.topic.status[status] : undefined)
 const goodIssueText = computed(() => goodIssue ? message.value.forum.topic.status.goodIssue : undefined)
 const accessibleLabel = computed(() => [typeText.value, statusText.value, goodIssueText.value].filter(Boolean).join(' • '))
 const typeFilter = computed(() => type === 'BUG' ? 'bug' : type === 'FEAT' ? 'feat' : null)
 
 function filterByType() {
   if (typeFilter.value)
-    navigateType(typeFilter.value, true)
+    emit('filterType', typeFilter.value)
 }
 
-function filterByStatus(value: ForumAPI.TopicDisplayStatus | 'good-issue') {
-  addSearchFacet('state', value)
+function filterByStatus(value: ForumAPI.TopicStatus | 'good-issue') {
+  emit('filterStatus', value)
 }
 </script>
 
@@ -71,18 +66,18 @@ function filterByStatus(value: ForumAPI.TopicDisplayStatus | 'good-issue') {
       </button>
       <span v-else class="rounded-[2px] size-12px inline-block" :class="typeColorClass[type]" aria-hidden="true" />
       <button
-        v-if="displayStatus && interactive"
+        v-if="status && interactive"
         type="button"
         class="forum-badge-square-filter forum-badge-state-square-filter"
         aria-hidden="true"
         tabindex="-1"
         :title="statusText"
         @pointerdown.stop
-        @click.stop="filterByStatus(displayStatus)"
+        @click.stop="filterByStatus(status)"
       >
-        <ForumTopicStatusBadge :status="displayStatus" />
+        <ForumTopicStatusBadge :status="status" />
       </button>
-      <ForumTopicStatusBadge v-else-if="displayStatus" :status="displayStatus" />
+      <ForumTopicStatusBadge v-else-if="status" :status="status" />
       <button
         v-if="goodIssue && interactive"
         type="button"
@@ -112,18 +107,20 @@ function filterByStatus(value: ForumAPI.TopicDisplayStatus | 'good-issue') {
       </template>
       <template v-if="statusText">
         <span aria-hidden="true"> • </span>
-        <button
-          v-if="interactive && displayStatus"
-          type="button"
-          class="forum-badge-text-filter forum-badge-state-text-filter"
-          @pointerdown.stop
-          @click.stop="filterByStatus(displayStatus)"
-        >
-          {{ statusText }}
-        </button>
-        <template v-else>
-          {{ statusText }}
-        </template>
+        <slot name="status">
+          <button
+            v-if="interactive && status"
+            type="button"
+            class="forum-badge-text-filter forum-badge-state-text-filter"
+            @pointerdown.stop
+            @click.stop="filterByStatus(status)"
+          >
+            {{ statusText }}
+          </button>
+          <template v-else>
+            {{ statusText }}
+          </template>
+        </slot>
       </template>
       <template v-if="goodIssueText">
         <span aria-hidden="true"> • </span>

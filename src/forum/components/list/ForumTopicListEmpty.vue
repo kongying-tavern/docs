@@ -10,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { EmptyMorphFrame, EmptySwap } from '@/components/ui/empty-motion'
 import { useLocalized } from '@/hooks/useLocalized'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
@@ -64,6 +65,20 @@ const errorDescription = computed(() => {
   return message.value.forum.errors.loadFailedHint
 })
 
+const stateKey = computed(() => props.error ? 'error' : isSearchEmpty.value ? 'search' : 'inbox')
+
+const title = computed(() => props.error
+  ? message.value.forum.loadError
+  : isSearchEmpty.value ? searchTitle.value : message.value.forum.empty.title)
+
+const description = computed(() => props.error
+  ? errorDescription.value
+  : isSearchEmpty.value
+    ? message.value.forum.empty.searchDescription
+    : message.value.forum.empty.description)
+
+const morphKey = computed(() => `${title.value}\n${description.value}`)
+
 function handleLogin() {
   location.hash = 'login-alert'
 }
@@ -76,17 +91,25 @@ function handleRetry() {
 <template>
   <Empty class="border-none">
     <EmptyHeader>
-      <EmptyMedia variant="icon">
-        <CircleAlert v-if="error" />
-        <Search v-else-if="isSearchEmpty" />
-        <Inbox v-else />
+      <EmptyMedia variant="icon" class="border !rounded-xl !size-12">
+        <EmptySwap :swap-key="stateKey" variant="icon">
+          <CircleAlert v-if="error" :stroke-width="1.5" />
+          <Search v-else-if="isSearchEmpty" :stroke-width="1.5" />
+          <Inbox v-else :stroke-width="1.5" />
+        </EmptySwap>
       </EmptyMedia>
-      <EmptyTitle>
-        {{ error ? message.forum.loadError : isSearchEmpty ? searchTitle : message.forum.empty.title }}
-      </EmptyTitle>
-      <EmptyDescription>
-        {{ error ? errorDescription : isSearchEmpty ? message.forum.empty.searchDescription : message.forum.empty.description }}
-      </EmptyDescription>
+      <EmptyMorphFrame :morph-key="morphKey">
+        <EmptyTitle class="w-full">
+          <EmptySwap :swap-key="title">
+            {{ title }}
+          </EmptySwap>
+        </EmptyTitle>
+        <EmptyDescription class="max-w-72 w-full">
+          <EmptySwap :swap-key="description">
+            {{ description }}
+          </EmptySwap>
+        </EmptyDescription>
+      </EmptyMorphFrame>
     </EmptyHeader>
 
     <!-- 主按钮：实心主题色；次按钮：描边 -->

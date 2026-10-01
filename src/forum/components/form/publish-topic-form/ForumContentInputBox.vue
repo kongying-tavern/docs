@@ -2,6 +2,7 @@
 import type { Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '~/forum/api/types'
+import { BoldIcon, ItalicIcon, StrikethroughIcon } from '@lucide/vue'
 import { useQueryCache } from '@pinia/colada'
 import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'
@@ -12,7 +13,9 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
+import { useForumEditorShortcuts } from '~/forum/composables/view/useForumEditorShortcuts'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
+import { forumTextToEditorDoc } from '~/forum/services/forumLegacyContent'
 import { collectForumTopics, forumKeys } from '~/forum/services/forumQueryContracts'
 import { createForumTopicEditorExtensions } from '~/forum/services/forumTiptapExtensions'
 import { createForumSuggestionRenderer } from '~/forum/tiptap/forumSuggestionRenderer'
@@ -44,8 +47,9 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 })
 
 const editor = shallowRef<TiptapEditor | null>(null)
-const focused = ref(false)
+const shortcutExtension = useForumEditorShortcuts()
 const activeFormats = ref<TextFormat[]>([])
+const formatMenu = useTemplateRef<InstanceType<typeof ToggleGroup>>('format-menu')
 const queryCache = useQueryCache()
 const { message } = useLocalized()
 
@@ -72,7 +76,8 @@ function shouldShowFormatMenu({ editor: currentEditor, from, to }: {
   from: number
   to: number
 }): boolean {
-  return from !== to
+  const hasFocus = currentEditor.isFocused || formatMenu.value?.$el.contains(document.activeElement)
+  return currentEditor.isEditable && Boolean(hasFocus) && !currentEditor.view.composing && from !== to
     && !currentEditor.isActive('code')
     && currentEditor.state.doc.textBetween(from, to).trim().length > 0
 }
@@ -100,6 +105,7 @@ const { isOverDropZone } = useForumImageDropZone(dropZone, {
 onMounted(() => {
   editor.value = new Editor({
     extensions: [
+      shortcutExtension,
       ...createForumTopicEditorExtensions({
         documentLinks: forumDocumentLinks,
         getTopics: getLoadedTopics,
@@ -107,19 +113,14 @@ onMounted(() => {
       }),
       Placeholder.configure({ placeholder: props.placeholder }),
     ],
-    content: modelValue.value || '',
-    contentType: 'markdown',
-    enableInputRules: ['blockquote', 'bold', 'bulletList', 'code', 'italic', 'orderedList', 'strike'],
+    content: forumTextToEditorDoc(modelValue.value || ''),
+    enableInputRules: ['blockquote', 'bold', 'bulletList', 'code', 'italic', 'orderedList', 'strike', 'topicReference'],
     onUpdate: ({ editor: currentEditor }) => {
-      modelValue.value = currentEditor.getMarkdown()
-    },
-    onFocus: () => {
-      focused.value = true
+      modelValue.value = currentEditor.isEmpty ? '' : JSON.stringify(currentEditor.getJSON())
     },
     onSelectionUpdate: ({ editor: currentEditor }) => syncActiveFormats(currentEditor),
     onTransaction: ({ editor: currentEditor }) => syncActiveFormats(currentEditor),
     onBlur: ({ event }) => {
-      focused.value = false
       emits('blur', event)
     },
     editorProps: {
@@ -135,9 +136,9 @@ onMounted(() => {
 })
 
 watch(modelValue, (value) => {
-  if (!editor.value || editor.value.getMarkdown() === value)
+  if (!editor.value || JSON.stringify(editor.value.getJSON()) === value)
     return
-  editor.value.commands.setContent(value || '', { contentType: 'markdown', emitUpdate: false })
+  editor.value.commands.setContent(forumTextToEditorDoc(value || ''), { emitUpdate: false })
 })
 
 onBeforeUnmount(() => editor.value?.destroy())
@@ -151,27 +152,21 @@ onBeforeUnmount(() => editor.value?.destroy())
     <div class="comment-area w-full">
       <div
         ref="drop-zone"
-        class="body letter-content-input px-3 py-2 border vp-border-input border-input rounded-md border-style-solid bg-transparent shadow-sm transition-colors relative placeholder:text-muted-foreground"
-        :class="
-          cn(
-            focused
-              ? 'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
-              : '',
-          )
-        "
+        class="body letter-content-input px-3 py-2 border vp-border-input border-input rounded-md border-style-solid bg-transparent shadow-sm transition-colors relative placeholder:text-muted-foreground focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20"
       >
         <div class="editor min-h-inherit relative">
           <BubbleMenu
             v-if="editor"
             :editor="editor"
             :should-show="shouldShowFormatMenu"
-            :options="{ placement: 'top', offset: 8 }"
+            :options="{ placement: 'top', offset: 8, flip: { padding: 12 }, shift: { padding: 12 } }"
           >
             <ToggleGroup
+              ref="format-menu"
               type="multiple"
               size="sm"
               :model-value="activeFormats"
-              class="p-1 border border-[var(--vp-c-divider)] border-solid bg-[var(--vp-c-bg-elv)] shadow-lg"
+              class="forum-format-menu"
             >
               <ToggleGroupItem
                 value="bold"
@@ -181,8 +176,9 @@ onBeforeUnmount(() => editor.value?.destroy())
                 @mousedown.prevent
                 @click="toggleFormat('bold')"
               >
-                <span class="i-lucide-bold size-4" />
+                <BoldIcon />
               </ToggleGroupItem>
+
               <ToggleGroupItem
                 value="italic"
                 class="px-0 size-8"
@@ -191,8 +187,9 @@ onBeforeUnmount(() => editor.value?.destroy())
                 @mousedown.prevent
                 @click="toggleFormat('italic')"
               >
-                <span class="i-lucide-italic size-4" />
+                <ItalicIcon />
               </ToggleGroupItem>
+
               <ToggleGroupItem
                 value="strike"
                 class="px-0 size-8"
@@ -201,14 +198,14 @@ onBeforeUnmount(() => editor.value?.destroy())
                 @mousedown.prevent
                 @click="toggleFormat('strike')"
               >
-                <span class="i-lucide-strikethrough size-4" />
+                <StrikethroughIcon />
               </ToggleGroupItem>
             </ToggleGroup>
           </BubbleMenu>
           <EditorContent
             v-if="editor"
             :editor="(editor as InstanceType<typeof Editor>)"
-            :class="cn('forum-markdown-editor h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', props.class)"
+            :class="cn('forum-rich-editor h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', props.class)"
           />
         </div>
         <slot name="after-editor" />
@@ -248,6 +245,49 @@ onBeforeUnmount(() => editor.value?.destroy())
 
 :deep(.tiptap p) {
   margin: 0;
+}
+
+.forum-format-menu {
+  padding: 0.25rem;
+  border: 1px solid oklch(var(--border));
+  border-radius: var(--radius);
+  background: oklch(var(--popover));
+  color: oklch(var(--popover-foreground));
+  box-shadow: var(--vp-shadow-2);
+}
+
+:deep(.tiptap :is(ul, ol)) {
+  margin: 0.5rem 0;
+  padding-inline-start: 1.5rem;
+}
+
+:deep(.tiptap ul) {
+  list-style: disc;
+}
+:deep(.tiptap ol) {
+  list-style: decimal;
+}
+
+:deep(.tiptap blockquote) {
+  margin: 0.5rem 0;
+  padding-inline-start: 0.75rem;
+  border-inline-start: 3px solid oklch(var(--border));
+  color: oklch(var(--muted-foreground));
+}
+
+:deep(.tiptap code) {
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  background: oklch(var(--muted));
+  font-size: 0.875em;
+}
+
+:deep(.tiptap .forum-topic-reference) {
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  background: oklch(var(--accent));
+  color: oklch(var(--accent-foreground));
+  white-space: nowrap;
 }
 
 :deep(.tiptap p.is-editor-empty:first-child::before) {

@@ -17,6 +17,7 @@ import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
+import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
 import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
 import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 import { reportingEnabled } from '~/services/telemetry'
@@ -51,11 +52,10 @@ const {
 const canManageLabels = hasAnyPermissions('manage_feedback')
 const labelManagementEnabled = computed(() => canManageLabels.value)
 const { autoTranslateEnabled, excludedSourceLanguages } = useForumTranslationPreferences()
+const { preferences: shortcutPreferences } = useForumShortcutPreferences()
 const translationSupported = ref(typeof window !== 'undefined' && isBrowserTranslationSupported())
-const desktopContent = useTemplateRef<HTMLElement>('desktopContent')
 const saveStatusVisible = ref(false)
 let saveStatusTimer: ReturnType<typeof setTimeout> | undefined
-let scrollFrame: number | undefined
 
 const {
   sections,
@@ -71,10 +71,12 @@ const {
   updateHash: !props.embeddedMobile,
 })
 const websiteSections = computed(() => sections.value.filter(section => section.group === 'website'))
+const websiteSectionIds = computed(() => websiteSections.value.map(section => section.id))
 const applicationSections = computed(() => sections.value.filter(section => section.group === 'application'))
+const settingsNav = useTemplateRef<InstanceType<typeof SettingsMenu> | null>('settingsNav')
 const dialogTitle = computed(() => activeSection.value === 'labels'
   ? message.value.settings.groups.application
-  : message.value.settings.title)
+  : activeSection.value === 'shortcuts' ? message.value.settings.shortcuts.title : message.value.settings.title)
 const drawerTitle = computed(() => {
   if (!sectionSelected.value)
     return message.value.settings.title
@@ -101,63 +103,23 @@ watch([
   autoTranslateEnabled,
   () => excludedSourceLanguages.value.join(','),
   reportingEnabled,
+  shortcutPreferences,
 ], showSaveStatus, { flush: 'post' })
 
-const SECTION_SCROLL_GAP = 20
+watch(desktopUi, (desktop) => {
+  if (!desktop && activeSection.value === 'shortcuts')
+    selectSection('appearance')
+})
 
-function scrollToSection(section: SettingsSectionId, behavior: ScrollBehavior): void {
-  const container = desktopContent.value
-  const target = container?.querySelector<HTMLElement>(`#${section}`)
-  if (!container || !target)
-    return
-
-  const containerRect = container.getBoundingClientRect()
-  const targetRect = target.getBoundingClientRect()
-  container.scrollTo({
-    top: container.scrollTop + targetRect.top - containerRect.top - SECTION_SCROLL_GAP,
-    behavior,
-  })
-}
-
-async function changeSection(section: SettingsSectionId): Promise<void> {
+function changeSection(section: SettingsSectionId): void {
   selectSection(section)
-  await nextTick()
-  if (desktopUi.value) {
-    if (section === 'labels') {
-      desktopContent.value?.scrollTo({ top: 0, behavior: 'auto' })
-      return
-    }
-    const behavior = document.documentElement.dataset.reducedMotion === 'true' ? 'auto' : 'smooth'
-    scrollToSection(section, behavior)
-  }
+  void nextTick().then(() => settingsNav.value?.scrollTo(section))
 }
 
-function syncSectionFromScroll(): void {
-  if (activeSection.value === 'labels')
-    return
-  if (scrollFrame !== undefined)
-    cancelAnimationFrame(scrollFrame)
-  scrollFrame = requestAnimationFrame(() => {
-    const container = desktopContent.value
-    if (!container)
-      return
-
-    const scrollableSections = websiteSections.value
-    const threshold = container.getBoundingClientRect().top + 56
-    let current = scrollableSections[0]?.id
-    if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
-      current = scrollableSections.at(-1)?.id
-    }
-    else {
-      for (const section of scrollableSections) {
-        const element = container.querySelector<HTMLElement>(`#${section.id}`)
-        if (element && element.getBoundingClientRect().top <= threshold)
-          current = section.id
-      }
-    }
-    if (current && current !== activeSection.value)
-      selectSection(current)
-  })
+/** 内容滚动联动：滚动位置跨过区段边界时同步 active（labels 面板不参与联动） */
+function handleScrollActive(section: string): void {
+  if (section !== activeSection.value && activeSection.value !== 'labels' && activeSection.value !== 'shortcuts')
+    selectSection(section)
 }
 
 function handleDialogOpen(open: boolean): void {
@@ -175,14 +137,11 @@ async function focusActiveNavigation(event: Event): Promise<void> {
 
 onMounted(async () => {
   await nextTick()
-  if (desktopUi.value)
-    scrollToSection(activeSection.value, 'auto')
+  settingsNav.value?.scrollTo(activeSection.value, 'auto')
 })
 
 onBeforeUnmount(() => {
   clearTimeout(saveStatusTimer)
-  if (scrollFrame !== undefined)
-    cancelAnimationFrame(scrollFrame)
   if (props.dialogOnly)
     consumeSettingsReturnUrl()
 })
@@ -216,12 +175,16 @@ onBeforeUnmount(() => {
     >
       <aside class="settings-dialog-sidebar">
         <SettingsMenu
+          ref="settingsNav"
           class="settings-dialog-menu"
           :website-sections="websiteSections"
           :application-sections="applicationSections"
           :active-section="activeSection"
           :hash-prefix="dialogOnly ? 'settings' : undefined"
+          :section-ids="websiteSectionIds"
+          scroller=".settings-dialog-content"
           @select="changeSection"
+          @update:active="handleScrollActive"
         >
           <Transition name="settings-save">
             <p v-if="saveStatusVisible" class="settings-save-note" role="status">
@@ -256,12 +219,12 @@ onBeforeUnmount(() => {
           </Button>
         </header>
 
-        <div ref="desktopContent" class="settings-dialog-content" @scroll.passive="syncSectionFromScroll">
+        <div class="settings-dialog-content">
           <SettingsPanel
             :active-section="activeSection"
             :show-language="translationSupported"
             :show-label-admin="labelManagementEnabled"
-            :show-all="activeSection !== 'labels'"
+            :show-all="activeSection !== 'labels' && activeSection !== 'shortcuts'"
           />
         </div>
       </section>

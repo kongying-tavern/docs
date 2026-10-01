@@ -10,6 +10,7 @@ export const SETTINGS_SECTION_DEFINITIONS = [
   { id: 'language', group: 'website', icon: 'i-lucide-languages' },
   { id: 'privacy', group: 'website', icon: 'i-lucide-shield-check' },
   { id: 'labels', group: 'application', icon: 'i-lucide-tags' },
+  { id: 'shortcuts', group: 'application', icon: 'i-lucide-keyboard' },
 ] as const
 
 export type SettingsSectionId = typeof SETTINGS_SECTION_DEFINITIONS[number]['id']

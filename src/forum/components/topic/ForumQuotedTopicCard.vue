@@ -5,6 +5,7 @@ import { computed } from 'vue'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { decodeTopicBody } from '~/forum/services/forumContentCodec'
 import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
 import { shouldShowQuotedTopicImageBelow } from '~/forum/services/forumTopicQuote'
 import ForumImage from '../ui/ForumImage.vue'
@@ -34,7 +35,7 @@ const { message } = useLocalized()
 const { topicHref } = useForumRoute()
 const detailHref = computed(() => topicHref(props.reference.id, null))
 const renderedContent = computed(() => props.topic
-  ? renderForumTopicSummary(props.topic.content.text, { topicHref: id => topicHref(id, null) })
+  ? renderForumTopicSummary(decodeTopicBody(props.topic.contentRaw).content, { topicHref: id => topicHref(id, null) })
   : '')
 const images = computed(() => (props.topic?.content.images ?? []).map(image => ({
   src: image.src,

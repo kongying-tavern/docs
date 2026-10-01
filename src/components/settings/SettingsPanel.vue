@@ -6,6 +6,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import TelemetrySettings from '~/components/telemetry/TelemetrySettings.vue'
 import ForumLabelAdminPage from '~/forum/components/settings/ForumLabelAdminPage.vue'
+import ForumShortcutSettings from '~/forum/components/settings/ForumShortcutSettings.vue'
 import ForumTranslationSettings from '~/forum/components/settings/ForumTranslationSettings.vue'
 import AppearanceSettings from './AppearanceSettings.vue'
 import NotificationSettings from './NotificationSettings.vue'
@@ -72,6 +73,7 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
   </SettingsSection>
 
   <ForumLabelAdminPage v-if="showLabelAdmin && activeSection === 'labels'" embedded />
+  <ForumShortcutSettings v-if="activeSection === 'shortcuts'" />
 </template>
 
 <style scoped>

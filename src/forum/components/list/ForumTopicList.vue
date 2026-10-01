@@ -38,7 +38,7 @@ if (props.loadMore) {
     'scroll',
     () => {
       const scrollRoot = document.documentElement
-      if (autoLoading || props.error || !props.canLoadMore)
+      if (autoLoading || props.loading || props.error || !props.canLoadMore)
         return
       if (scrollRoot.scrollHeight - scrollRoot.scrollTop - scrollRoot.clientHeight < 64) {
         autoLoading = true

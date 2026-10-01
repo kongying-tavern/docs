@@ -10,6 +10,7 @@ withDefaults(defineProps<{
   canLoadMore?: boolean
   error?: boolean
   text?: string
+  loadingText?: string
   loadMore?: () => unknown
   retry?: () => unknown
   status?: 'status' | 'alert'
@@ -27,44 +28,40 @@ withDefaults(defineProps<{
   errorMessage: '',
 })
 
+const emit = defineEmits<{ login: [] }>()
 const { message } = useLocalized()
-
-function handleLogin() {
-  location.hash = 'login-alert'
-}
 </script>
 
 <template>
   <div class="mb-8 flex w-full justify-center" :role="status">
-    <div v-if="error && rateLimit" class="mt-8 flex flex-col gap-3 items-center">
+    <div v-if="error && rateLimit && !loading" class="mt-8 flex flex-col gap-3 items-center">
       <p class="c-[var(--vp-c-text-2)] text-ui-14">
         {{ message.forum.exceededRateLimitWarning }}
       </p>
-      <Button variant="outline" size="sm" @click="handleLogin">
+      <Button variant="outline" size="sm" @click="emit('login')">
         <span class="i-lucide-log-in icon-btn" aria-hidden="true" />
         {{ message.forum.auth.login }}
       </Button>
     </div>
-    <div v-else-if="error && errorMessage" class="mt-8 flex w-full justify-center">
-      <p class="c-[var(--vp-c-text-3)] text-ui-12">
+    <div v-else-if="error || loading || canLoadMore" class="mt-8 flex flex-col gap-3 items-center">
+      <p v-if="error && errorMessage && !loading" class="c-[var(--vp-c-text-3)] text-ui-12">
         {{ errorMessage }}
       </p>
+      <Button
+        class="vp-link"
+        variant="link"
+        :disabled="loading"
+        @click="error ? retry?.() : loadMore?.()"
+      >
+        <ReloadIcon
+          v-if="loading || error"
+          class="mr-2 h-4 w-4"
+          :class="{ 'animate-spin': loading }"
+          aria-hidden="true"
+        />
+        <TextMorph :text="loading ? (loadingText ?? message.ui.button.loading) : error ? message.forum.auth.callback.error.retry : text" />
+      </Button>
     </div>
-    <Button
-      v-else-if="error || loading || canLoadMore"
-      class="vp-link mt-8"
-      variant="link"
-      :disabled="loading"
-      @click="error ? retry?.() : loadMore?.()"
-    >
-      <ReloadIcon
-        v-if="loading || error"
-        class="mr-2 h-4 w-4"
-        :class="{ 'animate-spin': loading }"
-        aria-hidden="true"
-      />
-      <TextMorph :text="error ? message.forum.auth.callback.error.retry : text" />
-    </Button>
     <Divider
       v-else
       variant="center"

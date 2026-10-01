@@ -6,6 +6,7 @@ import { getLangPath } from '@/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { decodeTopicBody } from '~/forum/services/forumContentCodec'
 import { renderForumTopic } from '~/forum/services/forumContentRenderer'
 import { getTopicTypeMap } from '~/forum/services/getTopicTypeMap'
 import { handleError } from '~/forum/services/handleError'
@@ -41,7 +42,7 @@ export function useTopicPageState() {
   const renderedContent = computed(() => {
     if (!topic?.value?.content.text)
       return ''
-    return renderForumTopic(topic.value.content.text, {
+    return renderForumTopic(decodeTopicBody(topic.value.contentRaw).content, {
       topicHref: id => topicHref(id, null),
       documentLinks: forumDocumentLinks,
     })

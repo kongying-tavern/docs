@@ -12,12 +12,16 @@ export namespace FORUM {
     icon?: string
     shortcut?: string
     disabled?: boolean
+    /** destructive:红字且悬停高亮背景同色适配；桌面透传给基础 DropdownMenuItem，移动端渲染器出同款观感 */
+    variant?: 'default' | 'destructive'
     class?: HTMLAttributes['class']
     action?: () => unknown
     id?: string
     order?: MenuOrder
     /** 行首状态色块；null 渲染空槽位（与其它行对齐），不声明则完全不占位 */
     status?: ForumAPI.TopicDisplayStatus | 'good-issue' | null
+    /** 类型选项复用 ForumTopicTypeBadge 的色块和名称。 */
+    topicType?: ForumAPI.FeedbackTopicType
   }
 
   interface MenuLabel {
@@ -83,4 +87,11 @@ export namespace FORUM {
   type MenuElement = MenuItemBase | MenuLabel | MenuInfo | MenuSeparator | MenuGroup | MenuSubmenu | MenuRadioItem | MenuRadioGroup
 
   export type TopicDropdownMenu = MenuElement
+
+  /** 用户主页的反馈筛选 tab，主 tab 行与折叠吸顶条共用 */
+  interface ProfileTab {
+    id: 'all' | 'closed'
+    label: string
+    icon: string
+  }
 }

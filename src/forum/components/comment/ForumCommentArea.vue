@@ -1,37 +1,27 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { createReusableTemplate, useElementBounding, useIntersectionObserver, watchOnce } from '@vueuse/core'
-import { computed, nextTick, useTemplateRef, watch } from 'vue'
-import Separator from '@/components/ui/separator/Separator.vue'
+import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { scrollTo } from '~/composables/scrollTo'
 import { GiteeAPIError } from '~/forum/api/gitee'
-import { useNavigateToTopic } from '../composables/useNavigateToTopic'
-import ForumLoadState from '../ui/ForumLoadState.vue'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useCommentAreaState } from './composables/useCommentAreaState'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
-import ForumCommentItem from './ForumCommentItem.vue'
+import ForumCommentPanel from './ForumCommentPanel.vue'
 
 const props = withDefaults(defineProps<{
   repo: ForumAPI.Repo
   topicId: string
   topicAuthorId: string | number
   inline?: boolean
+  presentation?: 'page' | 'embedded' | 'inline'
   commentCount?: number
   topic?: ForumAPI.Topic
   autofocusInput?: boolean
-  /** 数据加载后替换骨架屏的内容传 false,避免重复播放入场动画 */
   entryAnimation?: boolean
-}>(), {
-  entryAnimation: true,
-})
-
+}>(), { entryAnimation: true })
+const presentation = computed(() => props.presentation ?? (props.inline ? 'inline' : 'page'))
 const { message } = useLocalized()
-
 const {
-  replyCommentID: _replyCommentID,
-  commentInputBoxIsVisible,
-  isMobile,
   renderComments,
   commentPages,
   allCommentCount,
@@ -43,151 +33,66 @@ const {
   commentLoading,
   commentError,
   isClosedComment,
-  isReplyingTo,
+  replyCommentID,
   toggleCommentReply,
   handleCommentSubmit,
   retry,
   loadMoreComment,
-  setCommentInputBoxVisible,
   canLoadMoreComment,
-} = useCommentAreaState(props)
-
-const { detailHref } = useNavigateToTopic(props.topicId)
-
-const commentArea = useTemplateRef('commentArea')
-const commentInputBox = useTemplateRef('commentInputBox')
-const { right, left, width } = useElementBounding(commentArea)
-const [CommentAreaCommentInputBox, UseCommentAreaCommentInputBox] = createReusableTemplate()
-const inputObservationTarget = computed(() => (
-  !props.inline && renderComments.value.length >= 5 ? commentInputBox.value : null
-))
-useIntersectionObserver(
-  inputObservationTarget,
-  ([entry]) => {
-    setCommentInputBoxVisible(!!entry?.isIntersecting)
-  },
-)
-
-watchOnce(commentLoading, async () => {
-  if (props.inline || targetCommentId.value)
-    return
-  await nextTick()
-  scrollTo()
+} = useCommentAreaState({
+  get repo() { return props.repo },
+  get topicId() { return props.topicId },
+  get topicAuthorId() { return props.topicAuthorId },
+  get commentCount() { return props.commentCount },
+  get presentation() { return presentation.value },
 })
-
-let lastScrolledCommentId: string | null = null
-watch([targetCommentId, targetCommentReady], async ([commentId, ready]) => {
-  if (!commentId) {
-    lastScrolledCommentId = null
-    return
-  }
-  if (!ready || commentId === lastScrolledCommentId)
-    return
-
-  lastScrolledCommentId = commentId
-  await nextTick()
-  scrollTo({ hash: `#reply-${commentId}` })
-  document.getElementById(`reply-${commentId}`)?.focus({ preventScroll: true })
-}, { immediate: true })
+const { topicHref } = useForumRoute()
+function login(): void {
+  location.hash = 'login-alert'
+}
 </script>
 
 <template>
-  <div>
-    <CommentAreaCommentInputBox>
+  <ForumCommentPanel
+    :presentation="presentation"
+    :comments="renderComments"
+    :comment-pages="commentPages"
+    :reply-id="replyCommentID"
+    :repo="repo"
+    :topic-id="topicId"
+    :topic-author-id="topicAuthorId"
+    :count="allCommentCount"
+    :closed="isClosedComment"
+    :loading="commentLoading"
+    :error="Boolean(commentError)"
+    :rate-limit="commentError instanceof GiteeAPIError && commentError.isExceededRateLimit()"
+    :error-message="commentError?.message ?? ''"
+    :can-load-more="canLoadMoreComment"
+    :load-message="loadStateMessage"
+    :initial-page="currentCommentPage === 1"
+    :target-id="targetCommentId"
+    :target-ready="targetCommentReady"
+    :target-missing="targetCommentState === 'missing'"
+    :detail-href="topicHref(topicId, 'reply')"
+    :entry-animation="entryAnimation"
+    @reply="toggleCommentReply"
+    @load-more="loadMoreComment"
+    @retry="retry"
+    @login="login"
+  >
+    <template #input>
+      <ForumCommentInputBox :repo="repo" :autofocus="autofocusInput" :placeholder="message.forum.comment.placeholder" :topic-id="topicId" :topic="topic" :entry-animation="entryAnimation" @comment:submit="handleCommentSubmit" />
+    </template>
+    <template #reply="{ comment }">
       <ForumCommentInputBox
         :repo="repo"
-        :autofocus="autofocusInput"
-        :placeholder="message.forum.comment.placeholder"
         :topic-id="topicId"
         :topic="topic"
+        :reply-target="comment.author.login"
+        :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
         :entry-animation="entryAnimation"
         @comment:submit="handleCommentSubmit"
       />
-    </CommentAreaCommentInputBox>
-    <div
-      v-if="!isClosedComment"
-      ref="commentArea"
-      :class="{ 'pb-24': !inline }"
-    >
-      <p
-        v-if="!inline"
-        id="reply"
-        class="font-(size-5 --vp-font-family-subtitle) line-height-[21px] mb-5.5 mt-4"
-      >
-        {{ message.forum.comment.commentCount }}
-        <span class="font-size-3.5 color-[var(--vp-c-text-3)] vertical-text-top">
-          {{ allCommentCount }}
-        </span>
-      </p>
-      <UseCommentAreaCommentInputBox ref="commentInputBox" />
-      <div class="comment-list mt-8" :class="entryAnimation && 'slide-enter'">
-        <ForumCommentItem
-          v-for="(comment, index) in renderComments"
-          :id="`reply-${comment.id}`"
-          :key="comment.id"
-          tabindex="-1"
-          :class="{ 'last-comment': index === renderComments.length - 1 }"
-          :repo="repo"
-          :topic-author-id="topicAuthorId"
-          :topic-id="topicId"
-          :comment-data="comment"
-          :comment-page="commentPages.get(String(comment.id)) ?? 1"
-          :comment-click-handler="() => toggleCommentReply(comment.id)"
-        >
-          <ForumCommentInputBox
-            v-if="isReplyingTo(comment.id)"
-            class="mt-4"
-            :repo="repo"
-            :topic-id="topicId"
-            :topic="topic"
-            :reply-target="comment.author.login"
-            :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
-            :entry-animation="entryAnimation"
-            @comment:submit="handleCommentSubmit"
-          />
-        </ForumCommentItem>
-
-        <ForumLoadState
-          v-if="!inline"
-          :loading="commentLoading"
-          :error="Boolean(commentError)"
-          :rate-limit="commentError instanceof GiteeAPIError && commentError.isExceededRateLimit()"
-          :error-message="commentError?.message ?? ''"
-          :can-load-more="canLoadMoreComment"
-          :load-more="loadMoreComment"
-          :retry="retry"
-          :text="loadStateMessage"
-          :status="targetCommentState === 'missing' ? 'alert' : 'status'"
-        />
-
-        <a
-          v-if="canLoadMoreComment && inline"
-          class="font-size-3 c-[var(--vp-c-text-3)] vp-link text-center w-full cursor-pointer"
-          :href="detailHref('reply')"
-        >
-          {{ message.forum.comment.loadMoreComment }}
-        </a>
-      </div>
-      <Separator
-        v-if="(currentCommentPage === 1 && commentLoading) && !inline"
-        class="font-size-3 c-[var(--vp-c-text-3)] my-8 text-center w-full inline-block"
-        :label="message.forum.comment.loadingComment"
-      />
-      <Teleport to="body">
-        <div
-          v-if="!commentInputBoxIsVisible"
-          class="pt-8 border-t bg-[--vp-c-bg] bottom-0 fixed z-2"
-          :style="{ left: `${left}px`, right: `${right}px`, width: isMobile ? '100vw' : `${width}px` }"
-        >
-          <UseCommentAreaCommentInputBox class="pb-6" />
-        </div>
-      </Teleport>
-    </div>
-  </div>
+    </template>
+  </ForumCommentPanel>
 </template>
-
-<style>
-.comment-list.forum-topic-item:hover > .topic-info > div > .topic-info-list > .topic-btn-more {
-  opacity: 1 !important;
-}
-</style>

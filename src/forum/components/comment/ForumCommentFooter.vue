@@ -80,7 +80,7 @@ const deleteMenu = computed<FORUM.TopicDropdownMenu[]>(() => canDelete.value
       id: 'delete-comment',
       label: message.value.forum.topic.menu.deleteComment.text,
       icon: 'i-lucide:trash-2',
-      class: 'c-red opacity-90 hover:c-red hover:opacity-100',
+      variant: 'destructive',
       disabled: forumMutations.deletingComment.value,
       action: () => deleteDialogOpen.value = true,
     }]

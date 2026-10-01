@@ -1,8 +1,9 @@
 import type { INTER_KNOT } from './api'
 import type { SSOAuth } from '~/forum/stores/auth/useUserAuth'
+import { FORUM_IMAGE_ORIGIN } from '~/constants/site'
 import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
 
-export const ASSETS_URL_PREFIX = 'https://webp.assets.interknot.site/'
+export const ASSETS_URL_PREFIX = `${FORUM_IMAGE_ORIGIN}/`
 
 /** hub 对失效 access token 的 500 响应体标记（区别于正常鉴权使用的 401） */
 export const EXPIRED_USER_ACCESS_TOKEN = 'Expired user access token'

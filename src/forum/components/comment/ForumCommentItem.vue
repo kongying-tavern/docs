@@ -112,21 +112,22 @@ function handleCommentClick(author: ForumAPI.User): void {
         v-if="props.commentData.content.images && props.size !== 'small'"
         :images="props.commentData.content.images.map(img => ({
           src: img.src,
-          width: img.width || 1920,
-          height: img.height || 1080,
+          width: img.width,
+          height: img.height,
           alt: img.alt || '',
           thumbHash: img.thumbHash,
         }))"
         layout="row"
+        adaptive-row
+        :row-max-height="160"
         :max-display="3"
-        container-class="!max-w-[28rem]"
         :context="{
           kind: 'comment',
           comment: props.commentData,
           repo: props.repo,
           topicAuthorId: props.topicAuthorId,
         }"
-        class="mt-4"
+        class="mt-4 max-w-[28rem]"
       />
 
       <div v-if="props.size !== 'small'" class="comment-info mt-2">

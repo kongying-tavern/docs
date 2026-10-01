@@ -1,36 +1,32 @@
+import type { MaybeRefOrGetter } from 'vue'
 import type ForumAPI from '~/forum/api/types'
-import { computed } from 'vue'
+import { computed, toValue } from 'vue'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useTextCollapse } from '~/forum/composables/state/useTextCollapse'
 
-export function useTopicContent(topic: ForumAPI.Topic | ForumAPI.Post) {
-  const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)
+export function useTopicContent(source: MaybeRefOrGetter<ForumAPI.Topic | ForumAPI.Post>) {
+  const topic = computed(() => toValue(source))
+  const { isCardMode, isCompactMode } = useForumViewMode(() => topic.value.type)
 
-  const renderedText = computed(() => topic.content.text)
-  const isPost = computed(() => topic.type === 'POST')
-  const isAnn = computed(() => topic.type === 'ANN')
+  const renderedText = computed(() => topic.value.content.text)
+  const isPost = computed(() => topic.value.type === 'POST')
+  const isAnn = computed(() => topic.value.type === 'ANN')
 
-  const { isExpanded, hasOverflow, collapseText, toggleExpand } = useTextCollapse(renderedText)
+  const { isExpanded, hasOverflow, toggleExpand } = useTextCollapse(renderedText)
 
   const shouldShowTitle = computed(() => {
     if (isCompactMode.value)
       return false
-    return topic.type !== 'BUG'
+    return topic.value.type !== 'BUG'
   })
 
   const displayTitle = computed(() => {
     if (isCompactMode.value) {
-      return topic.type === 'BUG'
+      return topic.value.type === 'BUG'
         ? renderedText.value
-        : (topic.title.length < 10 ? renderedText.value : topic.title)
+        : (topic.value.title.length < 10 ? renderedText.value : topic.value.title)
     }
-    return topic.title
-  })
-
-  const displayContent = computed(() => {
-    if (topic.type === 'BUG')
-      return renderedText.value
-    return isAnn.value ? renderedText.value : collapseText.value
+    return topic.value.title
   })
 
   return {
@@ -46,6 +42,5 @@ export function useTopicContent(topic: ForumAPI.Topic | ForumAPI.Post) {
 
     shouldShowTitle,
     displayTitle,
-    displayContent,
   }
 }

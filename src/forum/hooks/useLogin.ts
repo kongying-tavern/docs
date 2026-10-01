@@ -17,6 +17,7 @@ import { AuthError, AuthErrorType } from '~/services/authErrors'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { showPageAlert } from '~/services/telemetry/pageAlert'
 import { toast } from '~/services/telemetry/toast'
+import { isVisibleFeedback } from '~/utils/isVisibleFeedback'
 
 const REDIRECT_LINK_KEY = 'redirect-link'
 
@@ -262,9 +263,18 @@ function useLogin() {
 
   function handlePostLogin() {
     if (isLoggedIn()) {
-      toast.success(theme.value.forum.auth.loginSuccess)
+      notifyAuthResult('logged-in', theme.value.forum.auth.loginSuccess)
       trackOp(OpsEvents.loginSuccess)
     }
+  }
+
+  function notifyAuthResult(state: 'logged-in' | 'logged-out', text: string): void {
+    void nextTick(() => {
+      const visibleResult = [...document.querySelectorAll<HTMLElement>('[data-feedback-account]')]
+        .some(element => element.dataset.feedbackAccount === state && isVisibleFeedback(element))
+      if (!visibleResult)
+        toast.success(text)
+    })
   }
 
   function showLoginAlert() {
@@ -346,7 +356,7 @@ function useLogin() {
     userAuth.logout()
     userInfo.clearUserInfo()
     clearApiCache()
-    toast.success(theme.value.forum.auth.logoutSuccess)
+    notifyAuthResult('logged-out', theme.value.forum.auth.logoutSuccess)
   }
 
   function getOAuthCallbackParams(): OAuthCallbackParams {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SettingsNavigationItem, SettingsSectionId } from '~/composables/useSettingsNavigation'
+import { useTemplateRef } from 'vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -14,25 +15,40 @@ withDefaults(defineProps<{
   activeSection: SettingsSectionId
   hashPrefix?: string
   drilldown?: boolean
+  /** 滚动联动区段与滚动容器（见 FluidHoverList） */
+  sectionIds?: string[]
+  scroller?: string
 }>(), {
   drilldown: false,
 })
 
 const emit = defineEmits<{
-  select: [section: SettingsSectionId]
+  'select': [section: SettingsSectionId]
+  'update:active': [section: string]
 }>()
 
 const { message } = useLocalized()
 const userInfo = useUserInfoStore()
 const { showLoginAlert } = useLogin()
 const { userHref } = useForumRoute()
+const fluidList = useTemplateRef<InstanceType<typeof FluidHoverList> | null>('fluidList')
+
+defineExpose({
+  scrollTo: (section: string, behavior?: ScrollBehavior) => fluidList.value?.scrollTo(section, behavior),
+})
 </script>
 
 <template>
   <FluidHoverList
+    ref="fluidList"
     class="settings-menu"
     :class="{ 'is-drilldown': drilldown }"
     indicator-class="bg-muted"
+    active=".settings-navigation-item.active"
+    active-indicator-class="bg-muted"
+    :section-ids="sectionIds"
+    :scroller="scroller"
+    @update:active="emit('update:active', $event)"
   >
     <a
       v-if="userInfo.info"

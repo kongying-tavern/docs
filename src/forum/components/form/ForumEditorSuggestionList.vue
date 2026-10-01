@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { SuggestionKeyDownProps } from '@tiptap/suggestion'
+import type { ListboxRoot } from 'reka-ui'
 import type { ForumEditorSuggestionItem } from '~/forum/tiptap/forumSuggestionRenderer'
-import { ref, watch } from 'vue'
+import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import {
   Command,
   CommandGroup,
@@ -11,16 +12,38 @@ import {
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 
+defineOptions({ inheritAttrs: false })
+
 const props = defineProps<{
   items: ForumEditorSuggestionItem[]
   command: (item: ForumEditorSuggestionItem) => void
 }>()
 
 const selectedIndex = ref(0)
+const commandRoot = useTemplateRef<InstanceType<typeof ListboxRoot>>('command-root')
 const { message } = useLocalized()
 
 watch(() => props.items, () => {
   selectedIndex.value = 0
+})
+
+watch([selectedIndex, () => props.items], async () => {
+  await nextTick()
+  const root = commandRoot.value
+  const item = root?.$el.querySelectorAll('[data-slot="command-item"]')[selectedIndex.value]
+  if (root && item) {
+    // Changing the value invokes Reka's focus navigation. Suggestions keep focus in ProseMirror.
+    root.highlightedElement = item
+    const list = item.closest<HTMLElement>('[data-slot="command-list"]')
+    if (list) {
+      const itemRect = item.getBoundingClientRect()
+      const listRect = list.getBoundingClientRect()
+      if (itemRect.top < listRect.top)
+        list.scrollTop -= listRect.top - itemRect.top
+      else if (itemRect.bottom > listRect.bottom)
+        list.scrollTop += itemRect.bottom - listRect.bottom
+    }
+  }
 })
 
 function select(index: number): void {
@@ -31,10 +54,10 @@ function select(index: number): void {
 
 function onKeyDown({ event }: SuggestionKeyDownProps): boolean {
   const count = props.items.length
-  if (!count || !['ArrowUp', 'ArrowDown', 'Enter'].includes(event.key))
+  if (event.isComposing || !count || !['ArrowUp', 'ArrowDown', 'Enter', 'Tab'].includes(event.key))
     return false
   event.preventDefault()
-  if (event.key === 'Enter')
+  if (event.key === 'Enter' || event.key === 'Tab')
     select(selectedIndex.value)
   else
     selectedIndex.value = (selectedIndex.value + (event.key === 'ArrowDown' ? 1 : -1) + count) % count
@@ -45,7 +68,11 @@ defineExpose({ onKeyDown })
 </script>
 
 <template>
-  <Command class="forum-editor-suggestions">
+  <Command
+    ref="command-root"
+    class="forum-editor-suggestions"
+    :highlight-on-hover="false"
+  >
     <CommandList>
       <p v-if="items.length === 0" class="text-sm text-[var(--vp-c-text-3)] p-4 text-center">
         {{ message.forum.publish.tagsInput.noResultsFound }}
@@ -55,35 +82,30 @@ defineExpose({ onKeyDown })
           v-for="(item, index) in items"
           :key="item.id"
           :value="String(item.id)"
-          as-child
           class="forum-editor-suggestion-item"
-          :class="{ 'bg-[var(--vp-c-default-soft)]': selectedIndex === index }"
           @pointerenter="selectedIndex = index"
+          @pointerdown.prevent
+          @select="select(index)"
         >
-          <button
-            type="button"
-            class="forum-editor-suggestion-button"
-            @pointerdown.stop.prevent="select(index)"
+          <img
+            v-if="item.kind === 'user' && item.avatar"
+            :src="item.avatar"
+            alt=""
+            class="forum-editor-suggestion-avatar"
           >
-            <img
-              v-if="item.kind === 'user' && item.avatar"
-              :src="item.avatar"
-              alt=""
-              class="forum-editor-suggestion-avatar"
-            >
-            <ForumTopicTypeBadge
-              v-else-if="item.kind === 'topic'"
-              :type="item.topicType"
-              icon-only
-              class="forum-editor-suggestion-type"
-            />
-            <span class="leading-tight flex flex-1 flex-col min-w-0">
-              <strong class="text-sm font-medium truncate">{{ item.label }}</strong>
-              <span v-if="item.description" class="text-xs text-[var(--vp-c-text-3)] truncate">
-                {{ item.description }}
-              </span>
+          <ForumTopicTypeBadge
+            v-else-if="item.kind === 'topic' && item.topicType"
+            :type="item.topicType"
+            icon-only
+            class="forum-editor-suggestion-type"
+          />
+          <span v-else class="i-lucide-hash shrink-0 size-5" aria-hidden="true" />
+          <span class="leading-tight flex flex-1 flex-col min-w-0">
+            <strong class="text-sm font-medium truncate">{{ item.label }}</strong>
+            <span v-if="item.description || (item.kind === 'topic' && item.manual)" class="text-xs text-muted-foreground truncate">
+              {{ item.kind === 'topic' && item.manual ? message.forum.publish.feedbackForm.referenceById : item.description }}
             </span>
-          </button>
+          </span>
         </CommandItem>
       </CommandGroup>
     </CommandList>
@@ -96,9 +118,10 @@ defineExpose({ onKeyDown })
   --forum-suggestion-scrollbar-hover: color-mix(in srgb, var(--vp-c-text-2) 64%, transparent);
 
   width: min(320px, calc(100vw - 24px));
+  height: auto;
   max-height: min(280px, calc(100dvh - 24px));
   border: 1px solid var(--vp-c-divider);
-  background: var(--vp-c-bg-elv);
+  border-radius: var(--radius);
   box-shadow: var(--vp-shadow-3);
 }
 
@@ -137,8 +160,6 @@ defineExpose({ onKeyDown })
   gap: 10px;
   padding: 8px;
   border: 0;
-  background: transparent;
-  color: inherit;
   text-align: left;
 }
 

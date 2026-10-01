@@ -3,11 +3,9 @@ import type ForumAPI from '~/forum/api/types'
 import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { GiteeAPIError } from '~/forum/api/gitee'
 import ForumAside from '../aside/ForumAside.vue'
-import ForumTopicList from '../list/ForumTopicList.vue'
+import ForumTopicResults from '../list/ForumTopicResults.vue'
 import ForumTopicToolbar from '../list/ForumTopicToolbar.vue'
-import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumLayout from './ForumLayout.vue'
 
 interface Props {
@@ -41,6 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   showToolbar: true,
 })
 
+const emit = defineEmits<{ login: [] }>()
+
 const isInitialLoading = computed(() => props.loading && props.renderData.length === 0)
 </script>
 
@@ -70,27 +70,11 @@ const isInitialLoading = computed(() => props.loading && props.renderData.length
         <slot name="content-before" />
 
         <slot name="content-main">
-          <ForumTopicList
-            :data="renderData"
-            :loading="isInitialLoading"
-            :error="error"
-            :query="query"
-            :sort="sort"
-            :load-more="loadMore"
-            :refresh-data="refreshData"
-            :can-load-more="canLoadMore"
-          />
-
-          <ForumLoadState
-            v-if="renderData.length > 0"
-            :loading="loadingMore"
-            :error="Boolean(error)"
-            :rate-limit="error instanceof GiteeAPIError && error.isExceededRateLimit()"
-            :error-message="error?.message ?? ''"
-            :can-load-more="canLoadMore"
-            :load-more="loadMore"
-            :retry="refreshData"
-            :text="loadStateMessage"
+          <ForumTopicResults
+            :data="renderData" :loading="isInitialLoading" :loading-more="loadingMore"
+            :error="error" :query="query" :sort="sort" :can-load-more="canLoadMore"
+            :load-more="loadMore" :refresh-data="refreshData" :text="loadStateMessage"
+            @login="emit('login')"
           />
         </slot>
 

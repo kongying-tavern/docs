@@ -1,5 +1,4 @@
 import type { TopicFormData } from '~/forum/services/form/validation'
-import { refAutoReset } from '@vueuse/core'
 import { useForm } from 'vee-validate'
 import { computed, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -11,7 +10,7 @@ import {
   writeTopicDraft,
 } from '~/forum/services/form/topicDraft'
 import { createTopicFormSchema, getAllowedTopicTypes } from '~/forum/services/form/validation'
-import { getFormTabsConfig, TRANSITION_DURATION } from '../publish-topic-form/config'
+import { getFormTabsConfig } from '../publish-topic-form/config'
 
 export function useFormState() {
   const { message } = useLocalized()
@@ -21,7 +20,6 @@ export function useFormState() {
 
   const isOpen = ref(false)
   const currentTabIndex = ref<number>(0)
-  const inSwitchTabTransition = refAutoReset(false, TRANSITION_DURATION)
 
   /**
    * In-memory drafts kept per topic type. Each type holds its own working
@@ -74,16 +72,7 @@ export function useFormState() {
     const targetType = tabList.value[nextTabIndex.value]
     if (!targetType)
       return
-    const quotedTopic = formData.value.quotedTopic
-    snapshotDraft(formData.value.type)
-    currentTabIndex.value = nextTabIndex.value
-    inSwitchTabTransition.value = true
-    setTimeout(() => {
-      setFieldValue('type', targetType)
-      applyDraft(targetType)
-      if (quotedTopic)
-        setFieldValue('quotedTopic', quotedTopic)
-    }, TRANSITION_DURATION / 2)
+    setFormType(targetType)
   }
 
   function initFormData(): void {
@@ -152,7 +141,6 @@ export function useFormState() {
 
   return {
     isOpen,
-    inSwitchTabTransition,
     formData,
     formTabs,
     isDirty,

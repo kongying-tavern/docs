@@ -10,6 +10,7 @@ import { useForumPersonalState } from '~/forum/composables/data/useForumPersonal
 import { useForumTopicQuery, useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumTopicSeenState } from '~/forum/composables/state/useForumTopicSeenState'
+import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { isRecentClosedTopic } from '~/forum/services/forumPersonalState'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
@@ -220,12 +221,16 @@ function handleCreate() {
     location.hash = 'login-alert'
   }
 }
+useForumShortcut('publish', handleCreate)
 </script>
 
 <template>
   <div class="forum-sidebar">
     <div class="forum-sidebar-scroll">
-      <FluidHoverList>
+      <FluidHoverList
+        active=".forum-sidebar-link.active"
+        active-indicator-class="bg-[var(--vp-c-default-soft)]"
+      >
         <ForumSidebarNav :items="navItems" @create="handleCreate" />
 
         <ForumSidebarSection

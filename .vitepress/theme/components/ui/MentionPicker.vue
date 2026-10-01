@@ -2,9 +2,9 @@
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '~/forum/api/types'
-import { useLocalStorage } from '@vueuse/core'
+import { reactiveOmit, useLocalStorage } from '@vueuse/core'
 import { shuffle } from 'lodash-es'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -20,6 +20,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 
 import feedbackRepoMember from '~/_data/feedbackMemberList.json'
@@ -31,14 +32,14 @@ defineOptions({
 })
 
 const props = withDefaults(
-  defineProps<PopoverContentProps & { class?: HTMLAttributes['class'], searchTerm?: string, showSearch?: boolean, open?: boolean, items?: ForumAPI.User[], recordCount?: number }>(),
+  defineProps<PopoverContentProps & { class?: HTMLAttributes['class'], searchTerm?: string, showSearch?: boolean, disabled?: boolean, items?: ForumAPI.User[], recordCount?: number }>(),
   {
     align: 'start',
     side: 'bottom',
-    disableUpdateOnLayoutShift: true,
-    open: false,
+    sideOffset: 8,
+    collisionPadding: 12,
     recordCount: 4,
-    searchTerm: '12',
+    searchTerm: '',
     showSearch: true,
   },
 )
@@ -47,7 +48,9 @@ const emit = defineEmits<{
   (e: 'select', user: ForumAPI.User): void
 }>()
 
-const isOpen = ref(props.open)
+const isOpen = defineModel<boolean>('open', { default: false })
+const { message } = useLocalized()
+const contentProps = reactiveOmit(props, 'class', 'searchTerm', 'showSearch', 'disabled', 'items', 'recordCount')
 
 const officialMember = shuffle(props.items ? props.items : [...feedbackRepoMember.data, ...TeamMember.data])
 
@@ -76,10 +79,11 @@ const recentMentionFiltered = computed(() => {
 })
 
 function selectMention(member: ForumAPI.User) {
-  if (!member || !member.id || !member.username)
+  if (props.disabled || !member || !member.id || !member.username)
     return
 
   emit('select', member)
+  isOpen.value = false
 
   // 更新最近提及列表
   const newRecentMention = recentMention.value.filter(item => item && item.id !== member.id)
@@ -93,26 +97,30 @@ function selectMention(member: ForumAPI.User) {
     <PopoverTrigger as-child>
       <slot name="trigger">
         <Button
+          type="button"
           variant="ghost"
-          :class="cn('h-8 w-6 border border-[var(--vp-c-gutter)] border-solid bg-transparent', $props.class)"
+          size="icon-sm"
+          :disabled="disabled"
+          :aria-label="message.forum.publish.feedbackForm.mentionUser"
+          :class="cn(props.class)"
         >
           <span class="i-custom:mention c-[var(--vp-c-text-2)] icon-btn size-4" />
         </Button>
       </slot>
     </PopoverTrigger>
-    <PopoverContent v-bind="{ ...$props }" class="p-0 size-fit !z-[1100]">
-      <Command class="border rounded-lg max-w-[250px] shadow-md">
-        <CommandInput v-if="showSearch" :auto-focus="false" placeholder="Search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup v-if="recentMentionFiltered.length > 0" heading="Recent">
-            <CommandItem v-for="item in recentMentionFiltered" :key="item.id" :value="item.username" @select="selectMention(item)">
+    <PopoverContent v-bind="{ ...$attrs, ...contentProps }" class="p-0 w-72">
+      <Command>
+        <CommandInput v-if="showSearch" :placeholder="message.forum.publish.feedbackForm.searchPeople" />
+        <CommandList class="overscroll-contain max-h-64">
+          <CommandEmpty>{{ message.forum.publish.tagsInput.noResultsFound }}</CommandEmpty>
+          <CommandGroup v-if="recentMentionFiltered.length > 0" :heading="message.forum.publish.feedbackForm.recentUsed">
+            <CommandItem v-for="item in recentMentionFiltered" :key="item.id" :value="`${item.username} @${item.login}`" @select="selectMention(item)">
               <User size="sm" :name="item.username" :description="`@${item.login}`" :avatar="{ src: item.avatar, icon: 'i-lucide-image' }" />
             </CommandItem>
           </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup v-if="OfficialMemberFiltered.length > 0" heading="Official">
-            <CommandItem v-for="item in OfficialMemberFiltered" :key="item.id" :value="item.username" @select="selectMention(item)">
+          <CommandSeparator v-if="recentMentionFiltered.length && OfficialMemberFiltered.length" />
+          <CommandGroup v-if="OfficialMemberFiltered.length > 0" :heading="message.forum.publish.feedbackForm.teamMembers">
+            <CommandItem v-for="item in OfficialMemberFiltered" :key="item.id" :value="`${item.username} @${item.login}`" @select="selectMention(item)">
               <User size="sm" :name="item.username" :description="`@${item.login}`" :avatar="{ src: item.avatar, icon: 'i-lucide-image' }" />
             </CommandItem>
           </CommandGroup>
@@ -121,9 +129,3 @@ function selectMention(member: ForumAPI.User) {
     </PopoverContent>
   </Popover>
 </template>
-
-<style scoped>
-::-webkit-scrollbar {
-  display: none;
-}
-</style>

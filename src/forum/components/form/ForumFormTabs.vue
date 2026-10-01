@@ -6,12 +6,12 @@ import { computed, unref } from 'vue'
 import { DialogHeader } from '@/components/ui/dialog'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
 interface Props {
   modelValue: TopicFormData['type']
   tabs: TabsConfig[]
   hasPermission: boolean
+  username: string
 }
 
 interface Emits {
@@ -21,7 +21,6 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 const { message } = useLocalized()
-const userInfoStore = useUserInfoStore()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const activeTab = computed({
@@ -46,12 +45,12 @@ function formatDate(date = new Date()): string {
   >
     <DialogHeader v-if="isDesktop" class="desktop-paper-header font-serif pt-6">
       <div class="text-base c-[var(--vp-c-text-2)] leading-none flex w-full justify-between">
-        <p>@{{ userInfoStore.info?.login || 'Guest' }}</p>
+        <p>@{{ username }}</p>
         <time class="c-[var(--vp-c-text-1)]">{{ formatDate() }}</time>
       </div>
       <div class="desktop-letter-rule mb-6" aria-hidden="true" />
       <h2 class="desktop-form-title leading-tight tracking-[-0.025em] mb-6 mt-8 text-left text-ui-42">
-        {{ message.forum.publish.title }} · {{ visibleTabs.find(tab => tab.value === modelValue)?.label }}
+        {{ message.forum.publish.title }} - {{ visibleTabs.find(tab => tab.value === modelValue)?.label }}
       </h2>
       <div class="desktop-title-divider mb-10 w-18" aria-hidden="true" />
     </DialogHeader>

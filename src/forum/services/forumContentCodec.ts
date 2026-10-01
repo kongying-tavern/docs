@@ -1,5 +1,6 @@
 import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '~/forum/api/types'
+import { FORUM_IMAGE_ORIGIN } from '~/constants/site'
 
 // HTML 注释以 --> 或 --!> 结束；未闭合的注释按规范延伸到输入末尾
 const TOPIC_COMMENT_SPLIT_REGEX = /(<!--[\s\S]*?(?:-->|--!>|$))/gu
@@ -19,6 +20,8 @@ const LEADING_TRAILING_QUOTE_REGEX = /^"|"$/g
 const MULTIPLE_NEWLINES_END_REGEX = /\n{3,}$/
 
 const UNSAFE_EMOJI_SEGMENT_REGEX = /[\\?#<>"']/u
+const RICH_BODY_PREFIX_REGEX = /^(?:\s|<!--[\s\S]*?(?:-->|--!>))*/u
+const TOPIC_REFERENCE_ID_REGEX = /^I[A-Z0-9]{5,}$/iu
 
 const SUPPORTED_TIPTAP_NODES = new Set([
   'blockquote',
@@ -34,6 +37,7 @@ const SUPPORTED_TIPTAP_NODES = new Set([
   'orderedList',
   'paragraph',
   'text',
+  'topicReference',
 ])
 
 const SUPPORTED_TIPTAP_MARKS = new Set([
@@ -75,7 +79,6 @@ interface DecodedForumBody {
 }
 
 interface DecodedTopicBody extends DecodedForumBody {
-  content: Extract<DecodedForumText, { kind: 'plain' }>
   metadata: TopicMetadata
 }
 
@@ -103,7 +106,7 @@ export function decodeTopicBody(body?: string): DecodedTopicBody {
   const { text, attachments } = parseAttachmentMarkdown(source)
 
   return {
-    content: { kind: 'plain', text },
+    content: decodeForumText(text),
     metadata: mergeJsonComments(comments),
     ...(attachments.length ? { attachments } : {}),
   }
@@ -175,15 +178,18 @@ export function parseAttachmentMarkdown(markdown?: string): {
   if (!markdown)
     return { text: '', attachments: [] }
 
+  const rich = splitRichBody(markdown)
+  if (rich) {
+    const { attachments } = parseAttachmentMarkdown(rich.tail)
+    return { text: rich.json, attachments }
+  }
+
   const attachments: ForumAttachment[] = []
   const text = markdown
     .replace(MARKDOWN_IMAGE_REGEX, (_match, altText: string, src: string, meta?: string) => {
       const parsedMetadata = parseAttachmentMetadata(meta)
       attachments.push({
-        src: src.replace(
-          'webp.assets.inter-knot.site',
-          'webp.assets.interknot.site',
-        ),
+        src: normalizeAttachmentSrc(src),
         ...(altText ? { alt: altText } : {}),
         ...parsedMetadata,
       })
@@ -195,6 +201,18 @@ export function parseAttachmentMarkdown(markdown?: string): {
     .trim()
 
   return { text, attachments }
+}
+
+function normalizeAttachmentSrc(src: string): string {
+  try {
+    const url = new URL(src.startsWith('//') ? `https:${src}` : src)
+    if ((url.protocol === 'https:' || url.protocol === 'http:')
+      && (url.hostname === 'webp.assets.interknot.site' || url.hostname === 'webp.assets.inter-knot.site')) {
+      return `${FORUM_IMAGE_ORIGIN}${url.pathname}${url.search}${url.hash}`
+    }
+  }
+  catch {}
+  return src
 }
 
 function parseAttachmentMetadata(meta?: string): Partial<ForumAttachment> {
@@ -225,15 +243,51 @@ function parseAttachmentMetadata(meta?: string): Partial<ForumAttachment> {
   return result
 }
 
+/** Separate JSON before legacy regexes can alter strings inside the document. */
+function splitRichBody(body: string): { prefix: string, json: string, tail: string } | undefined {
+  const prefix = RICH_BODY_PREFIX_REGEX.exec(body)?.[0] ?? ''
+  const start = prefix.length
+  if (body[start] !== '{')
+    return undefined
+  let depth = 0
+  let quoted = false
+  let escaped = false
+  for (let index = start; index < body.length; index++) {
+    const character = body[index]
+    if (quoted) {
+      if (escaped)
+        escaped = false
+      else if (character === '\\')
+        escaped = true
+      else if (character === '"')
+        quoted = false
+      continue
+    }
+    if (character === '"')
+      quoted = true
+    else if (character === '{' || character === '[')
+      depth++
+    else if (character === '}' || character === ']')
+      depth--
+    if (depth === 0) {
+      const json = body.slice(start, index + 1)
+      if (decodeForumText(json).kind === 'tiptap')
+        return { prefix, json, tail: body.slice(index + 1) }
+      return undefined
+    }
+  }
+}
+
 function splitTopicComments(body: string): {
   comments: string[]
   content: string
 } {
-  const chunks = body.split(TOPIC_COMMENT_SPLIT_REGEX)
+  const rich = splitRichBody(body)
+  const chunks = (rich ? rich.prefix : body).split(TOPIC_COMMENT_SPLIT_REGEX)
   const comments = chunks.filter(isHtmlComment)
   return {
     comments,
-    content: chunks.filter(chunk => !isHtmlComment(chunk)).join(''),
+    content: chunks.filter(chunk => !isHtmlComment(chunk)).join('') + (rich ? rich.json + rich.tail : ''),
   }
 }
 
@@ -278,6 +332,12 @@ function isSupportedTiptapNode(value: unknown, parentType: string): value is JSO
 
   if (value.text !== undefined || value.marks !== undefined)
     return false
+
+  if (value.type === 'topicReference') {
+    return parentType === 'paragraph' && value.content === undefined
+      && isRecord(value.attrs) && typeof value.attrs.id === 'string'
+      && TOPIC_REFERENCE_ID_REGEX.test(value.attrs.id)
+  }
 
   if (value.type === 'mention') {
     return parentType === 'paragraph'
@@ -375,6 +435,8 @@ function tiptapDocToText(node: JSONContent): string {
     return '\n'
   if (node.type === 'emoji')
     return String(node.attrs?.emoji || '')
+  if (node.type === 'topicReference')
+    return `#${node.attrs?.id || ''}`
   if (node.type === 'mention')
     return `@${node.attrs?.label || ''}`
   return node.content?.map(tiptapDocToText).join('') ?? ''
