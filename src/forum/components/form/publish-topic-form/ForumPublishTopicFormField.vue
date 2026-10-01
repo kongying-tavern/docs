@@ -29,11 +29,3 @@ const { required = false } = defineProps<{
     <FormMessage class="text-xs" />
   </FormItem>
 </template>
-
-<style scoped>
-.required::after {
-  content: ' *';
-  margin-left: 2px;
-  color: var(--vp-c-danger-1);
-}
-</style>
