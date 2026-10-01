@@ -41,6 +41,14 @@ export default defineConfig({
         parent: `@media (max-width: ${FORUM_MOBILE_BREAKPOINT_PX}px)`,
       }
     }) as Variant,
+    ((matcher) => {
+      if (!matcher.startsWith('pointer-fine:'))
+        return matcher
+      return {
+        matcher: matcher.slice('pointer-fine:'.length),
+        parent: '@media (hover: hover) and (pointer: fine)',
+      }
+    }) as Variant,
   ],
   preflights: [...shadcnPreflights],
   rules: [
