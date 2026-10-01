@@ -22,7 +22,6 @@ const SettingsSidebarExtras = defineAsyncComponent(() => import('~/components/se
 const SettingsPage = defineAsyncComponent(() => import('~/components/settings/SettingsPage.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
-const NavBarUserAvatar = defineAsyncComponent(() => import('@/components/NavBarUserAvatar.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const { isDark, frontmatter } = useData()
 const { theme: themePreference, toastDuration, toastPosition } = useSitePreferences()
@@ -34,9 +33,15 @@ const showSettingsHash = computed(() => {
   return currentHash.value.startsWith(prefix)
     && isSettingsSectionId(currentHash.value.slice(prefix.length))
 })
+// 设置弹窗仅论坛页可打开：唯一入口是论坛侧栏账号菜单，其余布局不再响应 #settings hash
 const showSettingsDialog = computed(() =>
-  frontmatter.value.layout !== 'Settings'
+  frontmatter.value.layout === 'Forum'
   && showSettingsHash.value,
+)
+// 登录弹窗由 hash 触发，触发点只存在于论坛页与设置页（设置菜单的登录入口），其余布局不挂载
+const showAuthDialogs = computed(() =>
+  frontmatter.value.layout === 'Forum'
+  || frontmatter.value.layout === 'Settings',
 )
 
 function syncHash(): void {
@@ -126,10 +131,6 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
       />
     </template>
 
-    <template #nav-bar-content-after>
-      <NavBarUserAvatar v-if="frontmatter.layout !== 'Forum'" />
-    </template>
-
     <template #sidebar-nav-before>
       <ForumSidebar v-if="frontmatter.layout === 'Forum'" />
       <SettingsSidebarExtras v-if="frontmatter.layout === 'Settings'" />
@@ -138,8 +139,10 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
     <template #layout-bottom>
       <SettingsPage v-if="showSettingsDialog" dialog-only />
       <HighlightTargetedHeading />
-      <LoginAlertDialog />
-      <OAuthLoginAlertDialog />
+      <template v-if="showAuthDialogs">
+        <LoginAlertDialog />
+        <OAuthLoginAlertDialog />
+      </template>
     </template>
   </Layout>
   <MediumZoom />
