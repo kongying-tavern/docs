@@ -124,3 +124,6 @@ skills-lock.json
 /TODO.md
 
 .agents/
+
+# Generated component metadata (rebuilt by the Vite plugin)
+/.vitepress/theme/mdc-components.mjs
