@@ -42,7 +42,7 @@ watch(() => route.path, () => pageAlert.clear())
       <OctagonXIcon v-if="item.variant === 'destructive'" />
       <TriangleAlertIcon v-else />
       <AlertTitle>{{ item.title }}</AlertTitle>
-      <AlertDescription v-if="item.description" class="whitespace-pre-wrap break-all">
+      <AlertDescription v-if="item.description" class="whitespace-pre-wrap break-all" data-clarity-mask="true">
         {{ item.description }}
       </AlertDescription>
       <button

@@ -204,6 +204,7 @@ onBeforeUnmount(() => editor.value?.destroy())
           </BubbleMenu>
           <EditorContent
             v-if="editor"
+            data-clarity-mask="true"
             :editor="(editor as InstanceType<typeof Editor>)"
             :class="cn('forum-rich-editor h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', props.class)"
           />

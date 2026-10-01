@@ -297,6 +297,7 @@ onBeforeUnmount(() => {
           />
           <EditorContent
             v-if="editor"
+            data-clarity-mask="true"
             class="editor font-size-3.5 line-height-[32px] bg-transparent h-auto min-h-32px w-full cursor-text"
             :editor="(editor as InstanceType<typeof Editor>)"
           />

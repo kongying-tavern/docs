@@ -47,7 +47,7 @@ const copyText = computed(() => [
 </script>
 
 <template>
-  <div class="flex flex-col gap-1 min-w-0">
+  <div class="flex flex-col gap-1 min-w-0" data-clarity-mask="true">
     <span v-if="typeof content === 'string'" class="whitespace-pre-wrap break-all">{{ content }}</span>
     <component :is="content" v-else-if="isComponent(content)" v-bind="contentProps ?? {}" />
     <span v-if="detail" class="telemetry-detail">{{ detail }}</span>
