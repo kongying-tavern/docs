@@ -142,6 +142,7 @@ let lastClickAt = 0
 let smoothZoomTimer: number | undefined
 const {
   flipping,
+  entering,
   usesSourceTransition,
   setSource,
   beginEnter,
@@ -156,6 +157,7 @@ interface SlideChangeOptions {
 }
 
 function commitSlide(target: number, dir: 1 | -1, options: SlideChangeOptions = {}): void {
+  clearSource()
   const old = displayImages.value[current.value]
   current.value = target
   slideDir.value = dir
@@ -232,6 +234,7 @@ function setImages(images: PreviewImage[], index: number): void {
   const count = images.length
   if (count === 0)
     return
+  clearSource()
   clearTimeout(sweepTimer)
   sweeping.value = false
   sweepDir.value = 0
@@ -287,6 +290,7 @@ function openAt(index: number, sourceEl?: Element | null): void {
     return
   if (!props.images[index])
     return
+  clearTimeout(closeTimer)
   setSource(sourceEl)
   clickState = null
   lastClickAt = 0
@@ -295,6 +299,10 @@ function openAt(index: number, sourceEl?: Element | null): void {
   sweepDir.value = 0
   imagesOverride.value = null
   current.value = Math.min(Math.max(index, 0), total.value - 1)
+  if (!visible.value) {
+    prevActive = document.activeElement as HTMLElement | null
+    prevOverflow = document.documentElement.style.overflow
+  }
   visible.value = true
   closing.value = false
   panelOpen.value = true
@@ -304,8 +312,6 @@ function openAt(index: number, sourceEl?: Element | null): void {
   imgReady.value = false
   nextTick(syncImgReady)
   resetTransform()
-  prevActive = document.activeElement as HTMLElement | null
-  prevOverflow = document.documentElement.style.overflow
   document.documentElement.style.overflow = 'hidden'
   preloadNeighbors()
   register(self)
@@ -344,6 +350,8 @@ function handleRootClick(event: MouseEvent): void {
 
 /** 控件点击不应进入图片拖拽手势；其余指针仍由根节点接管，允许拖出图片后继续。 */
 function handlePreviewPointerDown(event: PointerEvent): void {
+  if (entering.value || closing.value)
+    return
   if ((event.target as Element | null)?.closest('button'))
     return
   handlePointerDown(event)
@@ -364,6 +372,8 @@ function smoothZoom(action: () => void): void {
  * "放大态复位/未放大放大"切换。
  */
 function handleStackClick(event: MouseEvent): void {
+  if (entering.value || closing.value)
+    return
   const now = performance.now()
   if (clickState && now - lastClickAt < 300) {
     const prev = clickState
@@ -448,7 +458,7 @@ defineExpose({ openAt, close })
         v-if="visible"
         ref="containerEl"
         class="forum-preview-root inset-0 fixed z-[1000]"
-        :class="{ closing, 'has-panel': hasPanel, 'is-dragging': dragging, 'is-settling': settling }"
+        :class="{ closing, entering, 'source-transition': usesSourceTransition, 'has-panel': hasPanel, 'is-dragging': dragging, 'is-settling': settling }"
         role="dialog"
         aria-modal="true"
         :aria-label="message.forum.topic.previewTitle"
@@ -456,7 +466,7 @@ defineExpose({ openAt, close })
         @pointermove="handlePointerMove"
         @pointerup="handlePointerUp"
         @pointercancel="handlePointerUp"
-        @wheel="handleWheel"
+        @wheel="!entering && !closing && handleWheel($event)"
         @click="handleRootClick"
       >
         <div class="forum-preview-overlay" />
@@ -471,7 +481,7 @@ defineExpose({ openAt, close })
             :class="{
               flipping,
               settling,
-              'is-idle': scale === 1 && !dragging && !settling && !sweeping,
+              'is-idle': scale === 1 && !dragging && !settling && !sweeping && !entering && !closing && !flipping,
               'can-zoom-in': scale === 1,
               'can-grab': scale > 1 && !dragging,
             }"

@@ -161,6 +161,16 @@
   transition: transform 360ms cubic-bezier(0.2, 0, 0.2, 1);
 }
 
+/* 进出场由 WAAPI 驱动，避免叠加手势的 CSS 过渡。 */
+.forum-preview-root.entering .forum-preview-stack.flipping,
+.forum-preview-root.source-transition.closing .forum-preview-stack.flipping {
+  transition: none;
+}
+
+.forum-preview-root.entering .forum-preview-stack:not(.flipping) {
+  visibility: hidden;
+}
+
 .forum-preview-root.is-settling .forum-preview-stack {
   transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -246,7 +256,6 @@
   filter: blur(14px);
 }
 
-/* 拆三通道动画：各属性各配缓动 */
 .forum-preview-enter.enter-scale {
   animation:
     preview-stack-in 380ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards,
@@ -296,6 +305,11 @@
 .forum-preview-root.closing .forum-preview-image,
 .forum-preview-root.closing .forum-preview-overlay {
   transition: opacity 240ms ease;
+}
+
+/* 缩回缩略图时保持可见，避免淡出掩盖位移。 */
+.forum-preview-root.source-transition.closing .forum-preview-image {
+  opacity: 1;
 }
 
 .forum-preview-root.closing .forum-preview-cards {
