@@ -150,6 +150,7 @@ function useForumMutationCache() {
 
   function captureTopicCache(topicId: string | number) {
     return {
+      topicId: String(topicId),
       detailKey: forumKeys.topic(topicId),
       detail: queryCache.getQueryData<ForumAPI.Topic>(forumKeys.topic(topicId)),
       lists: queryCache.getEntries({ key: forumKeys.topicLists() }).map(entry => ({
@@ -161,8 +162,44 @@ function useForumMutationCache() {
 
   function restoreTopicCache(snapshot: ReturnType<typeof captureTopicCache>): void {
     queryCache.setQueryData(snapshot.detailKey, snapshot.detail)
-    for (const entry of snapshot.lists)
-      queryCache.setQueryData(entry.key, entry.data)
+    for (const entry of snapshot.lists) {
+      const current = queryCache.getQueryData(entry.key)
+      if (Array.isArray(entry.data) && Array.isArray(current)) {
+        queryCache.setQueryData(entry.key, restoreTopicRows(entry.data, current, snapshot.topicId))
+      }
+      else if (isTopicPages(entry.data) && isTopicPages(current)) {
+        const before = entry.data
+        const hadTopic = before.pages.some(page => page.items.some(topic => String(topic.id) === snapshot.topicId))
+        const hasTopic = current.pages.some(page => page.items.some(topic => String(topic.id) === snapshot.topicId))
+        if (!hadTopic && !hasTopic)
+          continue
+        const totalDelta = Number(hadTopic) - Number(hasTopic)
+        queryCache.setQueryData(entry.key, {
+          ...current,
+          pages: current.pages.map((page, index) => ({
+            ...page,
+            items: restoreTopicRows(before.pages[index]?.items ?? [], page.items, snapshot.topicId),
+            total: Math.max(0, page.total + totalDelta),
+          })),
+        })
+      }
+    }
+  }
+
+  function restoreTopicRows(before: ForumAPI.Topic[], current: ForumAPI.Topic[], topicId: string): ForumAPI.Topic[] {
+    const previousIndex = before.findIndex(topic => String(topic.id) === topicId)
+    const currentIndex = current.findIndex(topic => String(topic.id) === topicId)
+    if (previousIndex < 0 && currentIndex < 0)
+      return current
+    const restored = current.filter(topic => String(topic.id) !== topicId)
+    if (previousIndex < 0)
+      return restored
+
+    const nextIds = new Set(before.slice(previousIndex + 1).map(topic => String(topic.id)))
+    const nextIndex = restored.findIndex(topic => nextIds.has(String(topic.id)))
+    const index = currentIndex >= 0 ? currentIndex : nextIndex >= 0 ? nextIndex : Math.min(previousIndex, restored.length)
+    restored.splice(index, 0, before[previousIndex])
+    return restored
   }
 
   async function invalidate(kind: ForumMutationKind, topicId?: string | number, topic?: ForumAPI.Topic): Promise<void> {
