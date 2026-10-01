@@ -1,5 +1,5 @@
 /** 「最近更新」的时间窗口，按天计 */
-export const RECENT_UPDATE_WINDOW_DAYS = 60
+export const RECENT_UPDATE_WINDOW_DAYS = 7
 
 /** 首页 aside 最多展示的条目数 */
 export const RECENT_UPDATE_LIMIT = 5
@@ -42,6 +42,7 @@ const TIMELINE_BLOCK_RE = /^:::[ \t]*timeline([^\n]*)\n([\s\S]*?)(?=^:::)/m
 /** 日期可能写在容器 info 上，也可能写在块内 `##` 子标题上（`## 2026-08-26-1413`、`## 2026-8-16 06:49`） */
 const DATE_RE = /\d{4}-\d{1,2}-\d{1,2}/
 const HEADING_DATE_RE = /^\d{4}-\d{1,2}-\d{1,2}/
+const UPDATE_DATE_RE = /(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T-](\d{2}):?(\d{2}))?/
 
 /** 容器 info 末尾的 `[...]` 是 dot 的 class 选项，不属于文案 */
 const DOT_OPTIONS_RE = /\s*\[[^\]]*\]\s*$/
@@ -85,8 +86,24 @@ export function toTimestamp(raw?: string): number {
   return utc - offset * 60_000
 }
 
-export function getPostUpdatedAt(post: Pick<BlogUpdatePost, 'date' | 'gitInfo'>): number {
-  return toTimestamp(post.gitInfo?.lastModified?.date || post.date)
+export function getPostUpdatedAt(post: Pick<BlogUpdatePost, 'date' | 'gitInfo' | 'content'>): number {
+  const block = post.content?.match(TIMELINE_BLOCK_RE)
+  if (block) {
+    const firstHeading = [...block[2].matchAll(HEADING_RE)][0]?.[1].trim()
+    // 子标题表示该版本的最新热更新，优先于容器上的版本发布日期。
+    const raw = firstHeading && HEADING_DATE_RE.test(firstHeading) ? firstHeading : block[1]
+    const match = raw.match(UPDATE_DATE_RE)
+    if (match) {
+      const [, year, month, day, hour = '00', minute = '00'] = match
+      // 日志使用中国本地时间；补零后显式指定时区，避免浏览器解析差异。
+      const timestamp = Date.parse(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour}:${minute}:00+08:00`)
+      if (Number.isFinite(timestamp))
+        return timestamp
+    }
+  }
+
+  const modified = toTimestamp(post.gitInfo?.lastModified?.date)
+  return Number.isFinite(modified) ? modified : toTimestamp(post.date)
 }
 
 /**

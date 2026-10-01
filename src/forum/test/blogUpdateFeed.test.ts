@@ -6,9 +6,10 @@ import {
   getPostUpdatedAt,
   parseLatestUpdateEntry,
   RECENT_UPDATE_LIMIT,
+  RECENT_UPDATE_WINDOW_DAYS,
   selectRecentBlogUpdates,
   toTimestamp,
-} from '../../src/forum/services/blogUpdateFeed'
+} from '../services/blogUpdateFeed'
 
 const COPY = {
   quoted: '{title}：{summary}',
@@ -84,6 +85,26 @@ test('prefers the git last-modified date and falls back to the creation date', (
     getPostUpdatedAt({ date: '2025-01-14 17:47:49 +0800' }),
     Date.UTC(2025, 0, 14, 9, 47, 49),
   )
+})
+
+test('uses the latest release date instead of a shared formatting commit', () => {
+  const metadata = { date: '', gitInfo: { lastModified: { date: '2026-08-31 16:25:37 +0800' } } }
+  assert.equal(getPostUpdatedAt({ ...metadata, content: CONTAINER_DATE_POST }), Date.parse('2026-08-28T00:00:00+08:00'))
+  assert.equal(getPostUpdatedAt({ ...metadata, content: HEADING_DATE_POST }), Date.parse('2026-08-26T14:13:00+08:00'))
+  assert.equal(getPostUpdatedAt({ ...metadata, content: VERSION_AND_HEADING_DATE_POST }), Date.parse('2026-08-16T06:49:00+08:00'))
+  assert.equal(getPostUpdatedAt({ ...metadata, content: '::: timeline Beta-7.0.2\n- change\n:::' }), Date.parse('2026-08-31T16:25:37+08:00'))
+})
+
+test('formatting commits do not resurface expired releases or future releases', () => {
+  const posts = ['2025-12-03', '2026-10-03'].map((date, index) => ({
+    title: String(index),
+    url: `/zh/blog/posts/${index}`,
+    lang: 'zh',
+    date: '',
+    content: `::: timeline Rc1.1.0：${date}\n- change\n:::`,
+    gitInfo: { lastModified: { date: '2026-08-31 16:25:37 +0800' } },
+  }))
+  assert.deepEqual(selectRecentBlogUpdates(posts, { lang: 'zh', now: Date.parse('2026-10-01T00:00:00+08:00') }), [])
 })
 
 test('takes the container version and first bullet when the block carries the date', () => {
@@ -195,12 +216,12 @@ test('selects only posts updated inside the window, newest first', () => {
     { title: 'D', url: '/en/blog/posts/d', content: CONTAINER_DATE_POST, date: '', lang: 'en', gitInfo: { lastModified: { date: '2026-09-15 10:00:00 +0800' } } },
   ]
 
-  const items = selectRecentBlogUpdates(posts, { lang: 'zh', now })
+  const items = selectRecentBlogUpdates(posts, { lang: 'zh', now, windowDays: 60 })
 
-  assert.deepEqual(items.map(item => item.title), ['A', 'B', 'C'])
-  assert.deepEqual(items.map(item => item.slug), ['a', 'b', 'c'])
-  assert.deepEqual(items.map(item => item.itemCount), [2, 1, 0])
-  assert.equal(items[1].label, 'Rc1.1.0')
+  assert.deepEqual(items.map(item => item.title), ['C', 'A', 'B'])
+  assert.deepEqual(items.map(item => item.slug), ['c', 'a', 'b'])
+  assert.deepEqual(items.map(item => item.itemCount), [0, 2, 1])
+  assert.equal(items[2].label, 'Rc1.1.0')
 })
 
 test('excludes future-dated commits and caps the list length', () => {
@@ -229,6 +250,19 @@ test('returns nothing when no post was updated inside the window', () => {
   ]
 
   assert.deepEqual(selectRecentBlogUpdates(posts, { lang: 'zh', now }), [])
+})
+
+test('the default window includes only the last seven days', () => {
+  const now = Date.parse('2026-10-01T12:00:00+08:00')
+  const oldest = now - 7 * 24 * 60 * 60 * 1000
+  const posts = [oldest - 1, oldest, now, now + 1].map((date, index) => ({
+    title: String(index),
+    url: `/zh/blog/posts/${index}`,
+    lang: 'zh',
+    date: new Date(date).toISOString(),
+  }))
+  assert.equal(RECENT_UPDATE_WINDOW_DAYS, 7)
+  assert.deepEqual(selectRecentBlogUpdates(posts, { lang: 'zh', now }).map(item => item.title), ['2', '1'])
 })
 
 test('keeps posts without a timeline so new articles still surface', () => {

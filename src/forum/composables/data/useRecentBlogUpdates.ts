@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import type { BlogUpdateItem, BlogUpdatePost } from '~/forum/services/blogUpdateFeed'
 import { useData } from 'vitepress'
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { selectRecentBlogUpdates } from '~/forum/services/blogUpdateFeed'
 
 /**
@@ -15,8 +15,18 @@ import { selectRecentBlogUpdates } from '~/forum/services/blogUpdateFeed'
  */
 export function useRecentBlogUpdates(posts: readonly BlogUpdatePost[]): ComputedRef<BlogUpdateItem[]> {
   const { lang } = useData()
+  const now = ref(Date.now())
+  let timer: ReturnType<typeof setInterval> | undefined
+  onMounted(() => {
+    now.value = Date.now()
+    timer = setInterval(() => {
+      now.value = Date.now()
+    }, 60_000)
+  })
+  onUnmounted(() => clearInterval(timer))
 
   return computed(() => selectRecentBlogUpdates(posts, {
     lang: (lang.value || 'zh').split('-')[0],
+    now: now.value,
   }))
 }

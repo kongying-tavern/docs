@@ -1,18 +1,16 @@
 <script setup lang="ts">
+import type { BlogUpdateItem } from '~/forum/services/blogUpdateFeed'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
-import { data as allBlogPosts } from '~/_data/posts.data'
-import { useRecentBlogUpdates } from '~/forum/composables/data/useRecentBlogUpdates'
 import { describeBlogUpdate } from '~/forum/services/blogUpdateFeed'
 import ForumTime from '../ui/ForumTime.vue'
 
+defineProps<{ items: readonly BlogUpdateItem[] }>()
 const { localeIndex } = useData()
 const { message } = useLocalized()
 const copy = computed(() => message.value.forum.aside.recentUpdates)
-
-const items = useRecentBlogUpdates(allBlogPosts)
 
 // 站点默认语言挂在根路径下，博客路由需按当前 locale 前缀拼；base 交给 VPLink 处理
 function postHref(slug: string): string {
@@ -39,7 +37,7 @@ function postHref(slug: string): string {
         class="aside-recent-updates-entry"
       >
         <span class="aside-recent-updates-dot" aria-hidden="true" />
-        <VPLink class="aside-recent-updates-item" :href="postHref(item.slug)">
+        <VPLink class="aside-recent-updates-item" :href="postHref(item.slug)" :title="describeBlogUpdate(item, copy)">
           <ForumTime class="aside-recent-updates-time" :date="item.updatedAt" :toggleable="false" />
           <span class="aside-recent-updates-text">{{ describeBlogUpdate(item, copy) }}</span>
         </VPLink>
@@ -74,8 +72,8 @@ function postHref(slug: string): string {
 .aside-recent-updates-entry:not(:last-child)::before {
   position: absolute;
   left: 5px;
-  top: 20.5px;
-  bottom: -13.5px;
+  top: calc(6px + 9px * var(--site-ui-scale));
+  bottom: calc(-10px - 9px * var(--site-ui-scale));
   width: 1px;
   content: '';
   background-color: var(--vp-c-divider);
@@ -85,7 +83,7 @@ function postHref(slug: string): string {
 .aside-recent-updates-dot {
   position: absolute;
   left: 0;
-  top: 9.5px;
+  top: calc(6px + 9px * var(--site-ui-scale) - 5.5px);
   box-sizing: border-box;
   width: 11px;
   height: 11px;
@@ -101,6 +99,15 @@ function postHref(slug: string): string {
   gap: 2px;
   border-radius: 6px;
   padding: 6px 8px 6px 17px;
+}
+
+.aside-recent-updates-item:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+.aside-recent-updates-item :deep(time) {
+  cursor: inherit;
 }
 
 .aside-recent-updates-time {
@@ -120,10 +127,17 @@ function postHref(slug: string): string {
   line-height: calc(19px * var(--site-ui-scale));
   overflow-wrap: anywhere;
   text-wrap: pretty;
+  transition: color 150ms;
 }
 
-/* hover 只作链接色提示，不做卡片底色 */
-.aside-recent-updates-item:hover .aside-recent-updates-text {
+.aside-recent-updates-item:hover .aside-recent-updates-text,
+.aside-recent-updates-item:focus-visible .aside-recent-updates-text {
   color: var(--vp-c-brand-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aside-recent-updates-text {
+    transition: none;
+  }
 }
 </style>

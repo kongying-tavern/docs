@@ -23,7 +23,7 @@ const showRecentUpdates = computed(() => props.recentUpdates && items.value.leng
 
 <template>
   <div class="px-4 pb-4 rounded-[12px] bg-[--vp-c-bg-soft] flex flex-col">
-    <ForumAsideRecentUpdates v-if="showRecentUpdates" />
+    <ForumAsideRecentUpdates v-if="showRecentUpdates" :items="items" />
     <ForumAsideTagFilter v-if="tagFilter" />
     <ForumAsideRecommendedDocs />
     <ForumAsideTeamBlog v-if="!showRecentUpdates" />
