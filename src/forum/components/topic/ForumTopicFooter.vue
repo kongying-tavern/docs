@@ -1,17 +1,10 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumTopicReactionButton from '../ui/ForumTopicReactionButton.vue'
 import ForumCopyLinkButton from './ForumCopyLinkButton.vue'
 import ForumQuoteTopicButton from './ForumQuoteTopicButton.vue'
 
 defineProps<{ topic: ForumAPI.Topic }>()
-
-const { message } = useLocalized()
-const { homeHref } = useForumRoute()
-const forumHref = computed(() => homeHref())
 </script>
 
 <template>
@@ -21,8 +14,5 @@ const forumHref = computed(() => homeHref())
       <ForumQuoteTopicButton :topic="topic" />
       <ForumCopyLinkButton />
     </div>
-    <a class="text-sm vp-link" :href="forumHref">
-      {{ message.forum.topic.backToFeedbackForum }}
-    </a>
   </div>
 </template>
