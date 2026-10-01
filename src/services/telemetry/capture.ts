@@ -34,11 +34,10 @@ export interface ReportResult {
   sessionId: string
 }
 
-/** 同一 Error 对象只上报一次,toast 层与请求层重复相遇时复用同一错误ID */
+/** 同一会话内复用错误及其 cause/originalError 链的追踪标识。 */
 const reportedErrors = new WeakMap<object, ReportResult>()
 
-function report(errorId: string): ReportResult {
-  const { code } = ensureSession()
+function report(errorId: string, code: string): ReportResult {
   const result: ReportResult = { errorId, sessionId: code }
   sendClarityEvent(`error_${errorId}`)
   if (import.meta.env.DEV)
@@ -55,18 +54,29 @@ export function reportError(options?: { scene?: Scene, error?: unknown }): Repor
     return null
 
   const { error } = options ?? {}
-  if (error !== null && (typeof error === 'object' || typeof error === 'function')) {
-    const cached = reportedErrors.get(error as object)
-    if (cached)
+  const { code } = ensureSession()
+  const references = new Set<object>()
+  let current = error
+  while (current !== null && (typeof current === 'object' || typeof current === 'function') && !references.has(current)) {
+    references.add(current)
+    const cached = reportedErrors.get(current)
+    if (cached?.sessionId === code) {
+      for (const reference of references)
+        reportedErrors.set(reference, cached)
       return cached
+    }
+    try {
+      const wrapped = current as { cause?: unknown, originalError?: unknown }
+      current = wrapped.cause ?? wrapped.originalError
+    }
+    catch {
+      break
+    }
   }
-
   const scene = options?.scene ?? (error !== undefined ? 'api' : 'ui')
-  const errorId = `${scene}-${randomId(8)}`
-  const result = report(errorId)
-
-  if (error !== null && (typeof error === 'object' || typeof error === 'function'))
-    reportedErrors.set(error as object, result)
+  const result = report(`${scene}-${randomId(8)}`, code)
+  for (const reference of references)
+    reportedErrors.set(reference, result)
   return result
 }
 
@@ -78,16 +88,11 @@ export function installGlobalErrorCapture(app?: App): void {
   if (import.meta.env.SSR)
     return
 
-  const seen = new WeakSet<object>()
   let lastCaptureAt = 0
 
   function capture(error: unknown): void {
-    const isReference = error !== null && (typeof error === 'object' || typeof error === 'function')
-    if (isReference) {
-      if (seen.has(error as object))
-        return
-      seen.add(error as object)
-    }
+    if (!reportingEnabled.value)
+      return
 
     // 突发异常风暴时每秒至多自动上报一条
     const now = Date.now()
@@ -106,9 +111,13 @@ export function installGlobalErrorCapture(app?: App): void {
   })
 
   if (app) {
+    const previousHandler = app.config.errorHandler
     app.config.errorHandler = (error, _instance, info) => {
       capture(error)
-      telemetryLog.error(TelemetryLogGroup.VUE, info ?? 'unknown', error)
+      if (previousHandler)
+        previousHandler(error, _instance, info)
+      else
+        telemetryLog.error(TelemetryLogGroup.VUE, info ?? 'unknown', error)
     }
   }
 }

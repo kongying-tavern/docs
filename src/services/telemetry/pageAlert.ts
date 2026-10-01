@@ -13,17 +13,18 @@ export interface PageAlertOptions {
   variant?: PageAlertVariant
   /** 可用 {traceId} 占位符，会替换成会话ID与错误ID合并后的追踪标识 */
   description?: string
+  /** 无追踪标识时仍需展示的错误正文 */
+  descriptionFallback?: string
 }
 
 const DEFAULT_ALERT_ID = 'page-alert'
 const TRACE_ID_PLACEHOLDER = '{traceId}'
 
-function resolveDescription(template: string | undefined, traceId: string | null): string | undefined {
+function resolveDescription(template: string | undefined, traceId: string | null, fallback?: string): string | undefined {
   if (!template)
     return undefined
-  // 关闭上报时拿不到标识，纯为展示标识而写的文案就不再出现
   if (!traceId)
-    return template.includes(TRACE_ID_PLACEHOLDER) ? undefined : template
+    return template.includes(TRACE_ID_PLACEHOLDER) ? fallback : template
   return formatMessage(template, { traceId })
 }
 
@@ -33,13 +34,13 @@ export function showPageAlert(message: string, options: PageAlertOptions = {}): 
   const scene = options.scene ?? (options.error !== undefined ? 'api' : 'ui')
 
   if (!pageAlert.hasRegion) {
-    // 这里自己上报一次以取得追踪标识；toast 侧用 report: false 避免重复上报
+    // 已取得追踪标识，toast 不再重复上报。
     const reported = reportError({ scene, error: options.error })
     toast.error(message, {
       id: options.id ?? DEFAULT_ALERT_ID,
       scene: options.scene,
       error: options.error,
-      description: resolveDescription(options.description, formatTraceId(reported)),
+      description: resolveDescription(options.description, formatTraceId(reported), options.descriptionFallback),
       report: false,
     })
     return
@@ -50,6 +51,6 @@ export function showPageAlert(message: string, options: PageAlertOptions = {}): 
     id: options.id ?? DEFAULT_ALERT_ID,
     variant: options.variant ?? 'destructive',
     title: message,
-    description: resolveDescription(options.description, formatTraceId(reported)),
+    description: resolveDescription(options.description, formatTraceId(reported), options.descriptionFallback),
   })
 }

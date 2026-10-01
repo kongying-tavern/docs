@@ -101,6 +101,7 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
             id: 'comment-submit',
             scene: 'cm',
             error: result.error,
+            descriptionFallback: result.error.message,
             description: formatMessage(message.value.forum.errors.traceIdWithMessage, {
               message: result.error.message,
             }),

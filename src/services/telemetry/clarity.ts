@@ -1,11 +1,6 @@
-/**
- * Microsoft Clarity 客户端命令的安全调用封装。
- *
- * 只使用官方文档化命令(consentv2 / identify / event);所有命令在
- * SSR、未加载脚本(开发环境)时静默降级,不抛错、不阻塞业务。
- */
+/** Clarity 不可用或调用失败时静默降级，不影响业务。 */
 
-type ClarityMethod = (...args: unknown[]) => void
+type ClarityMethod = (...args: unknown[]) => unknown
 
 interface ClarityGlobal {
   clarity?: ClarityMethod
@@ -20,11 +15,21 @@ function globalClarity(): ClarityMethod | undefined {
 export function clarityAvailable(): boolean {
   return typeof document !== 'undefined'
     && document.documentElement.dataset.clarityLoaded === 'true'
-    && globalClarity() !== undefined
+    && typeof globalClarity() === 'function'
 }
 
 const PENDING_LIMIT = 50
 const pending: Array<{ method: string, args: unknown[] }> = []
+
+function callClarity(clarity: ClarityMethod, method: string, args: unknown[]): void {
+  try {
+    // identify 返回 Promise；同步错误和异步拒绝都不能影响业务。
+    void Promise.resolve(clarity(method, ...args)).catch(() => {})
+  }
+  catch {
+    // 诊断服务失败时静默降级，保留原始业务结果。
+  }
+}
 
 function flushPending(): void {
   if (!clarityAvailable())
@@ -34,7 +39,7 @@ function flushPending(): void {
     return
   while (pending.length > 0) {
     const { method, args } = pending.shift()!
-    clarity(method, ...args)
+    callClarity(clarity, method, args)
   }
 }
 
@@ -47,29 +52,45 @@ export function invokeClarity(method: string, ...args: unknown[]): void {
 
   const clarity = globalClarity()
   if (clarityAvailable() && clarity) {
-    clarity(method, ...args)
+    callClarity(clarity, method, args)
     return
   }
 
   if (import.meta.env.DEV)
     return
 
-  if (pending.length < PENDING_LIMIT)
+  // 授权状态先于待发送事件应用；identify 保留顺序以维持事件的会话归属。
+  if (method === 'consentv2' || method === 'identify') {
+    if (method === 'consentv2') {
+      const previous = pending.findIndex(command => command.method === method)
+      if (previous !== -1)
+        pending.splice(previous, 1)
+    }
+    if (pending.length >= PENDING_LIMIT) {
+      const eventIndex = pending.findIndex(command => command.method === 'event')
+      const oldestIdentify = pending.findIndex(command => command.method === 'identify')
+      pending.splice(eventIndex !== -1 ? eventIndex : oldestIdentify, 1)
+    }
+    if (method === 'consentv2')
+      pending.unshift({ method, args })
+    else
+      pending.push({ method, args })
+  }
+  else if (pending.length < PENDING_LIMIT) {
     pending.push({ method, args })
+  }
 }
 
-/** 授权：恢复完整采集。consentv2 键名按官方文档原样书写 */
 export function grantClarityConsent(): void {
   invokeClarity('consentv2', { ad_Storage: 'granted', analytics_Storage: 'granted' })
 }
 
-/** 撤销 cookie 授权并停止本站自定义诊断事件;Clarity 仍可能进行有限的无 cookie 统计 */
+/** 撤销 cookie 授权；Clarity 仍可能进行有限的无 cookie 统计。 */
 export function revokeClarityConsent(): void {
   pending.length = 0
   invokeClarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' })
 }
 
-/** 自定义标识:custom-id 由 Clarity 端哈希存储,custom-session-id 用于后台筛选定位会话 */
 export function identifyClarityUser(userId: string, sessionId: string): void {
   invokeClarity('identify', userId, sessionId)
 }

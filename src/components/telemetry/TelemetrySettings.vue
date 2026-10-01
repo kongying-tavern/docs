@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
 import { Switch } from '@/components/ui/switch'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -10,9 +10,10 @@ import {
   ensureSession,
   reportingEnabled,
 } from '~/services/telemetry'
+import { currentSupportCode } from '~/services/telemetry/session'
 
 const { message } = useLocalized()
-const sessionId = ref<string | null>(null)
+const sessionId = computed(() => reportingEnabled.value ? currentSupportCode.value : null)
 
 const reportingDescription = computed(() =>
   reportingEnabled.value
@@ -21,7 +22,8 @@ const reportingDescription = computed(() =>
 )
 
 onMounted(() => {
-  sessionId.value = reportingEnabled.value ? ensureSession().code : null
+  if (reportingEnabled.value)
+    ensureSession()
 })
 
 function setReporting(enabled: boolean): void {
@@ -30,11 +32,9 @@ function setReporting(enabled: boolean): void {
 
   if (!enabled) {
     disableReporting()
-    sessionId.value = null
   }
   else {
     enableReporting()
-    sessionId.value = ensureSession().code
   }
 }
 </script>

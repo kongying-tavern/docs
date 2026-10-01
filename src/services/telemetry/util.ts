@@ -19,9 +19,9 @@ export function randomId(length: number): string {
 }
 
 export function readStorage<T>(key: string): T | null {
-  if (typeof localStorage === 'undefined')
-    return null
   try {
+    if (typeof localStorage === 'undefined')
+      return null
     const raw = localStorage.getItem(key)
     return raw === null ? null : JSON.parse(raw) as T
   }
@@ -30,13 +30,15 @@ export function readStorage<T>(key: string): T | null {
   }
 }
 
-export function writeStorage(key: string, value: unknown): void {
-  if (typeof localStorage === 'undefined')
-    return
+export function writeStorage(key: string, value: unknown): boolean {
   try {
+    if (typeof localStorage === 'undefined')
+      return false
     localStorage.setItem(key, JSON.stringify(value))
+    return true
   }
   catch {
     // 隐私模式/配额不足时静默降级:标识只影响本次会话内的关联
+    return false
   }
 }

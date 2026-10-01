@@ -204,6 +204,8 @@ export function toGiteeAPIError(
   error: unknown,
   context: { method: HttpMethod, endpoint: string },
 ): GiteeAPIError {
+  if (error instanceof GiteeAPIError)
+    return error
   const cause = error instanceof Error ? error : new Error(String(error))
   const httpError = isHTTPError(error) ? error : undefined
   const rawText = httpError ? extractErrorMessage(httpError.data) : undefined

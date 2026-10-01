@@ -29,6 +29,10 @@ export const productionHead: HeadConfig[] = [
     `
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        try {
+          if(c.localStorage.getItem('telemetry:error-reporting:v1')==='false')
+            c[a]('consentv2',{ad_Storage:'denied',analytics_Storage:'denied'});
+        } catch(e) {}
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         t.onload=function(){c.document.documentElement.dataset.clarityLoaded="true";c.dispatchEvent(new Event("clarity-ready"))};
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);

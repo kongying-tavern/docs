@@ -1,10 +1,11 @@
+import { shallowRef } from 'vue'
 import { identifyClarityUser } from './clarity'
 import { randomId, readStorage, writeStorage } from './util'
 
 const INSTALL_ID_KEY = 'telemetry:install-id:v1'
 const SUPPORT_CODE_KEY = 'telemetry:support-code:v1'
 
-/** 与 Clarity 会话切分对齐:约 30 分钟无活动后轮换会话标识,使标识至多对应一个录制会话 */
+/** 约 30 分钟没有诊断事件或页面导航时轮换支持标识。 */
 export const SESSION_IDLE_MS = 30 * 60_000
 
 interface SupportCodeRecord {
@@ -12,19 +13,27 @@ interface SupportCodeRecord {
   expiresAt: number
 }
 
+let installId: string | undefined
+let supportRecord: SupportCodeRecord | undefined
+let storageAvailable = true
+export const currentSupportCode = shallowRef<string | null>(null)
+
 /** 设备级匿名标识:作 identify 的 custom-id(必填),由 Clarity 端哈希后存储 */
 export function getInstallId(): string {
-  const existing = readStorage<string>(INSTALL_ID_KEY)
-  if (existing)
-    return existing
-  const id = randomId(16)
-  writeStorage(INSTALL_ID_KEY, id)
+  const existing = storageAvailable ? readStorage<string>(INSTALL_ID_KEY) : null
+  if (typeof existing === 'string' && existing)
+    installId = existing
+  const id = installId ?? randomId(16)
+  installId = id
+  storageAvailable = writeStorage(INSTALL_ID_KEY, id) && storageAvailable
   return id
 }
 
 function issueSupportCode(): string {
   const id = randomId(10)
-  writeStorage(SUPPORT_CODE_KEY, { id, expiresAt: Date.now() + SESSION_IDLE_MS } satisfies SupportCodeRecord)
+  supportRecord = { id, expiresAt: Date.now() + SESSION_IDLE_MS }
+  currentSupportCode.value = id
+  storageAvailable = writeStorage(SUPPORT_CODE_KEY, supportRecord) && storageAvailable
   return id
 }
 
@@ -33,15 +42,17 @@ export function rotateSupportCode(): string {
   return issueSupportCode()
 }
 
-/**
- * 读取会话标识,过期即轮换并立即补一次 identify;
- * 返回当前标识与是否发生轮换,供上报路径决定是否单独重发 identify。
- */
+/** 过期时轮换并 identify；调用方可据 rotated 避免重复 identify。 */
 export function ensureSession(): { code: string, rotated: boolean } {
-  const record = readStorage<SupportCodeRecord>(SUPPORT_CODE_KEY)
-  if (record?.id && record.expiresAt > Date.now()) {
-    writeStorage(SUPPORT_CODE_KEY, { ...record, expiresAt: Date.now() + SESSION_IDLE_MS } satisfies SupportCodeRecord)
-    return { code: record.id, rotated: false }
+  const record = (storageAvailable ? readStorage<SupportCodeRecord>(SUPPORT_CODE_KEY) : null) ?? supportRecord
+  if (typeof record?.id === 'string' && record.id && typeof record.expiresAt === 'number' && record.expiresAt > Date.now()) {
+    const changed = supportRecord?.id !== record.id
+    supportRecord = { ...record, expiresAt: Date.now() + SESSION_IDLE_MS }
+    currentSupportCode.value = record.id
+    storageAvailable = writeStorage(SUPPORT_CODE_KEY, supportRecord) && storageAvailable
+    if (changed)
+      identifyClarityUser(getInstallId(), record.id)
+    return { code: record.id, rotated: changed }
   }
 
   const code = issueSupportCode()

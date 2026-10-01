@@ -21,7 +21,7 @@ export async function executeWithAuth<T extends unknown[], R>(
       }
       else {
         toast.error(errorMsg, { error, scene: 'cd' })
-        throw new Error('Operation failed')
+        return false
       }
     },
     {
