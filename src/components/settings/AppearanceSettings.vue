@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { Switch } from '@/components/ui/switch'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useThemeTransition } from '@/hooks/useThemeTransition'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import {
   isMotionPreference,
@@ -22,7 +22,7 @@ import SettingsSelect from './SettingsSelect.vue'
 import SettingsThemePreview from './SettingsThemePreview.vue'
 
 const { message } = useLocalized()
-const { isDark } = useData()
+const { setTheme: transitionTheme } = useThemeTransition()
 const {
   theme,
   usePointerCursor,
@@ -53,10 +53,7 @@ function setTheme(value: unknown): void {
   if (!isThemePreference(value))
     return
 
-  isDark.value = value === 'auto'
-    ? window.matchMedia('(prefers-color-scheme: dark)').matches
-    : value === 'dark'
-  theme.value = value
+  void transitionTheme(value)
 }
 
 function setMotionPreference(value: unknown): void {

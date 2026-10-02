@@ -3,6 +3,7 @@
 @import './ui/timeline.css';
 @import './ui/demo.css';
 @import './animation.css';
+@import './theme-transition.css';
 /* 字体声明不进阻塞 CSS：生产由 head.ts 注入链接，dev 由 loadFontStylesheets.ts 注入 */
 @import 'vue-sonner/style.css';
 

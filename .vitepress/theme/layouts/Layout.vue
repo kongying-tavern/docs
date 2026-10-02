@@ -2,12 +2,12 @@
 import { useEventListener, useIntersectionObserver } from '@vueuse/core'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, defineAsyncComponent, nextTick, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue'
+import { computed, defineAsyncComponent, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
-import { enableTransitions } from '@/shared'
+import { useThemeTransition } from '@/hooks/useThemeTransition'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { isSettingsSectionId } from '~/config/settingsOptions'
 
@@ -24,7 +24,8 @@ const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAl
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const { isDark, frontmatter } = useData()
-const { theme: themePreference, toastDuration, toastPosition } = useSitePreferences()
+const { toastDuration, toastPosition } = useSitePreferences()
+const { toggleTheme } = useThemeTransition()
 const currentHash = ref('')
 const showSettingsHash = computed(() => {
   if (currentHash.value === '#settings')
@@ -64,39 +65,7 @@ useIntersectionObserver(target, ([entry]) => {
   targetIsVisible.value = entry?.isIntersecting || false
 })
 
-provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
-  const nextIsDark = !isDark.value
-  const setAppearance = () => {
-    isDark.value = nextIsDark
-    themePreference.value = nextIsDark ? 'dark' : 'light'
-  }
-  if (!enableTransitions()) {
-    setAppearance()
-    return
-  }
-
-  const clipPath = [
-    `circle(0px at ${x}px ${y}px)`,
-    `circle(${Math.hypot(
-      Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y),
-    )}px at ${x}px ${y}px)`,
-  ]
-
-  await document.startViewTransition(async () => {
-    setAppearance()
-    await nextTick()
-  }).ready
-
-  document.documentElement.animate(
-    { clipPath: isDark.value ? clipPath.reverse() : clipPath },
-    {
-      duration: 300,
-      easing: 'ease-in',
-      pseudoElement: `::view-transition-${nextIsDark ? 'old' : 'new'}(root)`,
-    },
-  )
-})
+provide('toggle-appearance', toggleTheme)
 </script>
 
 <template>
@@ -149,22 +118,6 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 </template>
 
 <style>
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root),
-.dark::view-transition-new(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root),
-.dark::view-transition-old(root) {
-  z-index: 9999;
-}
-
 .VPSwitchAppearance {
   width: 22px !important;
 }

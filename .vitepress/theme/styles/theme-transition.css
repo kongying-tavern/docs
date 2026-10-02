@@ -1,0 +1,62 @@
+html[data-theme-transition] {
+  view-transition-name: root !important;
+}
+
+html[data-theme-transition] * {
+  view-transition-name: none !important;
+}
+
+html[data-theme-transition]::view-transition-group(root) {
+  animation: none;
+}
+
+html[data-theme-transition]::view-transition-image-pair(root) {
+  isolation: auto;
+}
+
+html[data-theme-transition]::view-transition-old(root),
+html[data-theme-transition]::view-transition-new(root) {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: normal;
+  object-fit: cover;
+}
+
+html[data-theme-transition]::view-transition-old(root) {
+  z-index: 1;
+  animation: theme-blur-out 500ms ease-in-out both;
+}
+
+html[data-theme-transition]::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-blur-in 500ms ease-in-out both;
+}
+
+@keyframes theme-blur-out {
+  from {
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  to {
+    filter: blur(16px);
+    opacity: 0;
+  }
+}
+
+@keyframes theme-blur-in {
+  from {
+    filter: blur(16px);
+    opacity: 0;
+  }
+
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+html[data-reduced-motion='true'][data-theme-transition]::view-transition-old(root),
+html[data-reduced-motion='true'][data-theme-transition]::view-transition-new(root) {
+  animation: none;
+}
