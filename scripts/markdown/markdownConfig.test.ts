@@ -1,5 +1,6 @@
 /* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import test from 'node:test'
 import { createMarkdownRenderer } from 'vitepress'
@@ -78,4 +79,15 @@ test('reserved lowercase containers do not swallow the MDC Card component', asyn
   assert.match(html, /<card\b/i)
   assert.match(html, /title="Hello"/)
   assert.doesNotMatch(html, /<p>::Card/)
+})
+
+test('the enhancement guide emits Vue named slots and valid MDC props', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const source = readFileSync(resolve('src/zh/md-enhance-guide.md'), 'utf8')
+  const html = await markdown.renderAsync(source)
+  assert.match(html, /<template #default="">/)
+  assert.match(html, /<template #details="">/)
+  assert.match(html, /<scratch-to-reveal[^>]*>刮开这里查看隐藏内容<\/scratch-to-reveal>/)
+  assert.match(html, /link="https:\/\/yuanshen.site\/"/)
+  assert.doesNotMatch(html, /link="&lt;https:/)
 })

@@ -474,14 +474,14 @@ items:
 
 ---
 
-# default
+#default
 这里是默认 slot 的内容。
 
 - 支持无序列表
 - 支持**粗体**和 `inline code`
 - 支持[普通链接](https://gitee.com)
 
-# details
+#details
 这里是命名 slot 的内容。
 
 > 这个区块来自 `#details`。
