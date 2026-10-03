@@ -135,7 +135,8 @@ export function applyComarkPatches(md: MarkdownIt): void {
     md.block.ruler.at(name, (state, startLine, endLine, silent) => {
       const line = state.src.slice(state.bMarks[startLine] + state.tShift[startLine], state.eMarks[startLine])
       const match = RE_CONTAINER_LINE.exec(line)
-      if (match && RESERVED_BLOCK_CONTAINERS.has(match[1].toLowerCase())) {
+      // Container names are case-sensitive; `::Card` is a Vue component.
+      if (match && RESERVED_BLOCK_CONTAINERS.has(match[1])) {
         return false
       }
       return Boolean(original(state, startLine, endLine, silent))

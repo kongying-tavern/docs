@@ -47,11 +47,11 @@ function headingTitle(heading: HTMLElement) {
 
 // 滚动时同步高亮与 URL hash（参考 VitePress useActiveAnchor，额外写入 hash）
 function syncActiveHeading() {
-  const offset = 80
   let currentId: string | null = null
   const scrollY = window.scrollY
   for (const heading of outlineHeadingElements) {
-    if (heading.getBoundingClientRect().top + scrollY <= scrollY + offset)
+    const offset = Number.parseFloat(getComputedStyle(heading).scrollMarginTop) || 0
+    if (heading.getBoundingClientRect().top + scrollY <= scrollY + offset + 1)
       currentId = heading.id
     else
       break
@@ -60,8 +60,10 @@ function syncActiveHeading() {
     const active = currentId != null && link.getAttribute('href') === `#${currentId}`
     link.classList.toggle('active', active)
   })
-  if (currentId && location.hash !== `#${currentId}`)
+  if (currentId && location.hash !== `#${currentId}`) {
     history.replaceState(history.state, '', `#${currentId}`)
+    route.hash = `#${currentId}`
+  }
 }
 
 onMounted(() => {

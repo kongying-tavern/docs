@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 import test from 'node:test'
 import { createMarkdownRenderer } from 'vitepress'
 import { markdownConfig } from '../../.vitepress/config/markdown'
+import { useMarkdownRenderer } from '../../src/composables/useMarkdownRenderer'
 
 test('VitePress built-ins render once alongside Comark', async () => {
   const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
@@ -57,4 +58,24 @@ mdc block content
   assert.match(html, /<div class="vp-raw">/)
   assert.match(html, /timeline-dot/)
   assert.match(html, /<my-widget>/)
+})
+
+test('standalone blog previews retain attrs, tasks, footnotes and Comark', () => {
+  const { renderMarkdownFull, renderMarkdownPreview } = useMarkdownRenderer()
+  const source = '*attrs*{.vp-link}\n\n- [ ] one\n- [x] two\n\nnote[^1]\n\n[^1]: footnote\n\n:span{width=300 class="mt-4"}'
+  for (const render of [renderMarkdownFull, renderMarkdownPreview]) {
+    const html = render(source)
+    assert.match(html, /<em class="vp-link">attrs<\/em>/)
+    assert.equal(html.match(/type="checkbox"/g)?.length, 2)
+    assert.equal(html.match(/<section class="footnotes"/g)?.length, 1)
+    assert.match(html, /<span[^>]*width="300"[^>]*class="mt-4"/)
+  }
+})
+
+test('reserved lowercase containers do not swallow the MDC Card component', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const html = await markdown.renderAsync('::Card\n---\ntitle: Hello\nlink: /test\n---\n::')
+  assert.match(html, /<card\b/i)
+  assert.match(html, /title="Hello"/)
+  assert.doesNotMatch(html, /<p>::Card/)
 })

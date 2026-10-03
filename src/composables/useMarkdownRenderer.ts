@@ -1,3 +1,6 @@
+import { attrs } from '@mdit/plugin-attrs'
+import { footnote } from '@mdit/plugin-footnote'
+import { tasklist } from '@mdit/plugin-tasklist'
 import MarkdownIt from 'markdown-it'
 import { ref } from 'vue'
 import { stripMarkdownImages } from '~/services/forum/forumContentCodec'
@@ -22,17 +25,13 @@ function createProjectMarkdownRenderer() {
     typographer: true,
   })
 
-  // 应用项目的markdown配置（但跳过可能不安全的插件）
-  if (markdownConfig.config) {
-    try {
-      // VitePress 2.0 passes MarkdownItAsync, but standalone MarkdownIt is
-      // structurally compatible for our plugins (timeline, comark-patches)
-      ;(markdownConfig.config as (md: MarkdownIt) => void)(md)
-    }
-    catch {
-      // 应用markdown配置时出错，使用默认配置
-    }
-  }
+  // Match VitePress's ordering: site preConfig, built-ins, then site config.
+  // This synchronous client renderer does not receive VitePress's built-ins.
+  ;(markdownConfig.preConfig as ((md: MarkdownIt) => void) | undefined)?.(md)
+  md.use(attrs, { rule: { fence: false } })
+  md.use(footnote)
+  md.use(tasklist)
+  ;(markdownConfig.config as ((md: MarkdownIt) => void) | undefined)?.(md)
 
   return md
 }

@@ -38,10 +38,7 @@ export const productionHead: HeadConfig[] = [
 export function cfgDynamicHead(
   pageData: PageData,
   siteConfig: SiteConfig,
-): void {
-  if (!isProd)
-    return
-
+): HeadConfig[] {
   const pageUrl = cfgGetPageUrl(pageData, siteConfig)
   const pageTitle = cfgGetPageTitle(pageData, siteConfig)
   const pageDesc = cfgGetPageDesc(pageData, siteConfig)
@@ -61,8 +58,7 @@ export function cfgDynamicHead(
     ['meta', { name: 'twitter:image', content: pageCover }],
   ]
 
-  pageData.frontmatter.head ??= []
-  pageData.frontmatter.head.splice(Number.POSITIVE_INFINITY, 0, ...head)
+  return head
 }
 
 export const commonHead: HeadConfig[] = [

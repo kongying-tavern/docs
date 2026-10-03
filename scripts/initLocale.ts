@@ -4,6 +4,7 @@ import process, { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline'
 import { fileURLToPath } from 'node:url'
 import cac from 'cac'
+import { writeLocaleImporters } from './locales/importers'
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '../..')
 const EXISTING_CODES = ['zh', 'en', 'ja']
@@ -199,6 +200,9 @@ function initLocale(options: Options): void {
   )
   writeFileSync(suggestBarPath, suggestBar)
   console.log('✓ Added LanguageSuggestBar entry (placeholder text, translate it)')
+
+  writeLocaleImporters(ROOT)
+  console.log('✓ Updated locale imports for Vite config bundling')
 
   console.log(`
 Done. Locale "${label}" (${code}) initialized from the ${template} template.

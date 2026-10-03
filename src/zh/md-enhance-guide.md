@@ -109,7 +109,7 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 logo: self
 title: That normal theme card
 desc: This is description
-cover: <https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png>
+cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png
 ---
 
 ::
@@ -137,7 +137,7 @@ hoverShadow: true
 ---
 
 title: 观看客户端基础使用教程
-link: <https://www.bilibili.com/video/BV1uU4y157Te>
+link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
 shadow: true
 ---
@@ -151,7 +151,7 @@ shadow: true
 ---
 
 title: 网页版地图
-link: <https://yuanshen.site/>
+link: https://yuanshen.site/
 logo: self
 desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
@@ -428,8 +428,10 @@ The HTML specificationis maintained by the W3C.
 
 #### Inline Component Demo
 
+<!-- zhlint ignore: :scratch-to-reveal -->
+
 :::: demo
-：scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
+:scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
 ::::
 
 #### Block Component Demo
@@ -441,11 +443,11 @@ items:
 
 - icon: i-custom-bilibili
   name: Bilibili
-  link: <https://bilibili.com>
+  link: https://bilibili.com
   secondary: 小电视
 - icon: i-custom-gitee
   name: Gitee
-  link: <https://gitee.com>
+  link: https://gitee.com
   secondary: 码云
 
 ---

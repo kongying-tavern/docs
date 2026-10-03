@@ -63,7 +63,7 @@ catalogs:
     sort-package-json: 4.0.0
     taze: 20.0.1
     tsconfig-paths: 4.2.0
-    vite-plugin-vue-devtools: 7.7.7
+    vite-plugin-vue-devtools: 8.2.1
     zhlint: 0.8.2
   editor:
     "@tiptap/core": ^3.20.1
@@ -122,9 +122,11 @@ catalogs:
   markdown:
     "@comark/markdown-it": ~0.3.4
     "@mdit/plugin-abbr": ^1.0.0
+    "@mdit/plugin-attrs": 1.1.1
     "@mdit/plugin-container": ^1.0.0
     "@mdit/plugin-demo": ^1.0.0
     "@mdit/plugin-figure": ^1.0.0
+    "@mdit/plugin-footnote": 1.0.2
     "@mdit/plugin-icon": ^1.0.0
     "@mdit/plugin-img-mark": ^1.0.0
     "@mdit/plugin-img-size": ^1.0.0
@@ -133,6 +135,7 @@ catalogs:
     "@mdit/plugin-spoiler": ^2.0.0
     "@mdit/plugin-sub": ^1.0.0
     "@mdit/plugin-sup": ^1.0.0
+    "@mdit/plugin-tasklist": 1.0.2
     markdown-it: 14.2.0
     markdown-it-container: 4.0.0
     markdown-it-emoji: ^3.0.0
