@@ -17,7 +17,7 @@ import { isRecentClosedTopic } from '~/services/forum/forumPersonalState'
 import { forumKeys } from '~/services/forum/forumQueryContracts'
 import { isClosedUnseen } from '~/services/forum/forumTopicSeenState'
 import { rememberLoginIntent } from '~/services/forum/loginIntent'
-import { FORM_HASH } from '../form/publish-topic-form/config'
+import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import { publishTopic } from '../utils/forumUi'
 import ForumSidebarCreateButton from './ForumSidebarCreateButton.vue'
 import ForumSidebarInformationMenu from './ForumSidebarInformationMenu.vue'
@@ -151,14 +151,14 @@ useEventListener('keydown', (event) => {
 })
 
 const navItems = computed(() => {
-  const items = [
+  const items: Array<{ label: string, icon: string, href: string, active: boolean, username?: string }> = [
     { label: message.value.forum.sidebar.home, icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
-    { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
+    { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/'), active: false },
   ]
   if (isLoggedIn.value && username.value) {
-    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), username: username.value })
+    items.push({ label: message.value.forum.sidebar.myProfile, icon: 'i-lucide-circle-user', href: userHref(username.value), active: false, username: username.value })
   }
-  items.push({ label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') })
+  items.push({ label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban'), active: false })
   return items
 })
 

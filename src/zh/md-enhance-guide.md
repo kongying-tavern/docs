@@ -102,6 +102,8 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 
 > 基础主题
 
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
 ::: demo
 ::Card
 ---
@@ -109,7 +111,7 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 logo: self
 title: That normal theme card
 desc: This is description
-cover: <https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png>
+cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png
 ---
 
 ::
@@ -137,7 +139,7 @@ hoverShadow: true
 ---
 
 title: 观看客户端基础使用教程
-link: <https://www.bilibili.com/video/BV1uU4y157Te>
+link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
 shadow: true
 ---
@@ -151,7 +153,7 @@ shadow: true
 ---
 
 title: 网页版地图
-link: <https://yuanshen.site/>
+link: https://yuanshen.site/
 logo: self
 desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
@@ -159,6 +161,8 @@ theme: medium
 
 ::
 ::::
+
+<!-- markdownlint-enable MD034 -->
 
 ## Markdown 语法扩展 {#section-markdown-syntax}
 
@@ -323,7 +327,7 @@ theme: medium
 
 #### 语法
 
-自定义属性由 `markdown-it-attrs` 插件实现，具体语法请参见 [markdown-it-attrs 文档](https://www.npmjs.com/package/markdown-it-attrs)。
+自定义属性由 VitePress 内置的 `@mdit/plugin-attrs` 实现，具体语法请参见 [Attrs 文档](https://mdit-plugins.github.io/attrs.html)。
 
 #### 示例
 
@@ -428,11 +432,15 @@ The HTML specificationis maintained by the W3C.
 
 #### Inline Component Demo
 
+<!-- zhlint ignore: :scratch-to-reveal -->
+
 :::: demo
-：scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
+:scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
 ::::
 
 #### Block Component Demo
+
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
 
 :::: demo
 ::link-grid{.mt-4}
@@ -441,11 +449,11 @@ items:
 
 - icon: i-custom-bilibili
   name: Bilibili
-  link: <https://bilibili.com>
+  link: https://bilibili.com
   secondary: 小电视
 - icon: i-custom-gitee
   name: Gitee
-  link: <https://gitee.com>
+  link: https://gitee.com
   secondary: 码云
 
 ---
@@ -454,6 +462,9 @@ items:
 ::::
 
 #### Slot Demo
+
+<!-- markdownlint-enable MD034 -->
+<!-- markdownlint-disable MD018 -- MDC slot markers require no space after #. -->
 
 :::: demo
 ::accordion-panels
@@ -472,14 +483,14 @@ items:
 
 ---
 
-# default
+#default
 这里是默认 slot 的内容。
 
 - 支持无序列表
 - 支持**粗体**和 `inline code`
 - 支持[普通链接](https://gitee.com)
 
-# details
+#details
 这里是命名 slot 的内容。
 
 > 这个区块来自 `#details`。
@@ -489,6 +500,8 @@ items:
 
 ::
 ::::
+
+<!-- markdownlint-enable MD018 -->
 
 > 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
 > `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props(`---` 块)必须紧跟在组件起始行之后。

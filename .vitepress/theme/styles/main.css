@@ -27,6 +27,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Default-theme document anchors already include the nav and banner offsets. */
+.Forum [id^='reply-'] {
+  scroll-margin-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height) + 1rem);
+}
+
 html:has(.Forum) {
   scroll-behavior: auto;
 }

@@ -200,7 +200,7 @@ test('form wiring keeps one submission and starts bounded closing before awaitin
 })
 
 test('desktop form motion moves the content surface without moving the action bar', () => {
-  const configSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/config.ts', import.meta.url), 'utf8')
+  const configSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/form-config.ts', import.meta.url), 'utf8')
   const formSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.vue', import.meta.url), 'utf8')
   const styleSource = readFileSync(new URL('../../src/components/forum/form/publish-topic-form/ForumPublishTopicForm.scss', import.meta.url), 'utf8')
 

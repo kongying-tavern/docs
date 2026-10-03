@@ -1,13 +1,13 @@
 export interface Member {
   name: string
-  qq: string
+  qq: string | number
   avatarPic?: string
   title: string
   company?: string
   companyLink?: string
-  projects: Link[]
+  projects?: Link[]
   location: string
-  languages: string[]
+  languages?: string[]
   website?: Link
   socials: Socials
   sponsor?: boolean | string
@@ -21,7 +21,8 @@ export interface Link {
 
 export interface Socials {
   [x: string]: unknown
-  github: string
+  github?: string
+  gitee?: string
   twitter?: string
   bilibili?: string
 }

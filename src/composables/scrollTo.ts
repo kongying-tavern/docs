@@ -1,5 +1,3 @@
-import { getScrollOffset } from 'vitepress'
-
 interface ScrollToOptions {
   offset?: number
   smooth?: boolean
@@ -8,7 +6,7 @@ interface ScrollToOptions {
 }
 
 export function scrollTo(options: ScrollToOptions = {}) {
-  if (import.meta.env.SSR || !location.hash)
+  if (typeof window === 'undefined')
     return
 
   const { el, offset = 0, smooth = true, hash = location.hash } = options
@@ -23,21 +21,19 @@ export function scrollTo(options: ScrollToOptions = {}) {
   }
 
   if (target) {
-    const targetPadding = Number.parseInt(
-      window.getComputedStyle(target).paddingTop,
-      10,
-    )
+    const targetMargin = Number.parseFloat(window.getComputedStyle(target).scrollMarginTop) || 0
+    const scrollPadding = Number.parseFloat(window.getComputedStyle(document.documentElement).scrollPaddingTop) || 0
     const targetTop
       = window.scrollY
         + target.getBoundingClientRect().top
-        - getScrollOffset()
-        + targetPadding
+        - targetMargin
+        - scrollPadding
         + offset
     function scrollToTarget() {
-      // only smooth scroll if distance is smaller than screen height.
-      if (!smooth || Math.abs(targetTop - window.scrollY) > window.innerHeight)
-        window.scrollTo(0, targetTop)
-      else window.scrollTo({ left: 0, top: targetTop, behavior: 'smooth' })
+      const animate = smooth
+        && Math.abs(targetTop - window.scrollY) <= window.innerHeight
+        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      window.scrollTo({ left: 0, top: targetTop, behavior: animate ? 'smooth' : 'instant' })
     }
     requestAnimationFrame(scrollToTarget)
   }

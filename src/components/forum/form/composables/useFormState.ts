@@ -11,7 +11,7 @@ import {
   writeTopicDraft,
 } from '~/services/forum/form/topicDraft'
 import { createTopicFormSchema, getAllowedTopicTypes } from '~/services/forum/form/validation'
-import { getFormTabsConfig, TRANSITION_DURATION } from '../publish-topic-form/config'
+import { getFormTabsConfig, TRANSITION_DURATION } from '../publish-topic-form/form-config'
 
 export function useFormState() {
   const { message } = useLocalized()

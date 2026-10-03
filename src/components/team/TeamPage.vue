@@ -29,10 +29,13 @@ function shuffleMembers(members: Member[], pinTheFirstMember = false): void {
 }
 
 const { theme } = useData()
+const membersCore: Member[] = membersCoreData
+const membersEmeriti: Member[] = membersEmeritiData
+const membersPartner: Member[] = membersPartnerData
 
-shuffleMembers(membersCoreData as Member[], true)
-shuffleMembers(membersEmeritiData as Member[])
-shuffleMembers(membersPartnerData as Member[])
+shuffleMembers(membersCore, true)
+shuffleMembers(membersEmeriti)
+shuffleMembers(membersPartner)
 </script>
 
 <template>
@@ -51,7 +54,7 @@ shuffleMembers(membersPartnerData as Member[])
       </template>
     </TeamHero>
 
-    <TeamList :members="membersCoreData as Member[]">
+    <TeamList :members="membersCore">
       <template #title>
         {{ theme.team.coreMember.title }}
       </template>
@@ -60,7 +63,7 @@ shuffleMembers(membersPartnerData as Member[])
       </template>
     </TeamList>
 
-    <TeamList :members="membersEmeritiData as Member[]">
+    <TeamList :members="membersEmeriti">
       <template #title>
         {{ theme.team.emeritiMember.title }}
       </template>
@@ -69,7 +72,7 @@ shuffleMembers(membersPartnerData as Member[])
       </template>
     </TeamList>
 
-    <TeamList :members="membersPartnerData as Member[]">
+    <TeamList :members="membersPartner">
       <template #title>
         {{ theme.team.partnerMember.title }}
       </template>

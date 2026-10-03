@@ -73,7 +73,9 @@ function parseTimelineInfo(rawInfo: string, klass: string): TimelineInfo {
 const splitChars = (text: string) => Array.from(text, c => `<span class='timeline-dot-date-char'>${c}</span>`).join('')
 
 /** 清除 timeline 容器内内容标题的 id（避免进入官方大纲/LocalNav），dot 标题由渲染器输出语义 id */
-function patchTimelineHeadingIds(md: MarkdownIt, klass: string) {
+type MarkdownInstance = Pick<MarkdownIt, 'core' | 'renderInline'>
+
+function patchTimelineHeadingIds(md: MarkdownInstance, klass: string) {
   const openType = `container_${klass}_open`
   const closeType = `container_${klass}_close`
   md.core.ruler.push('timeline-heading-ids', (state) => {
@@ -93,7 +95,7 @@ function patchTimelineHeadingIds(md: MarkdownIt, klass: string) {
   })
 }
 
-function MarkdownItTimeline(klass: string, md: MarkdownIt): ContainerArgs {
+function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs {
   patchTimelineHeadingIds(md, klass)
 
   /** 整组无日期判定按文档缓存，避免每个块重复扫描全部 token */

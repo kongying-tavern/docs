@@ -11,7 +11,7 @@ export function createConfigureFunction(): ConfigureFuncType {
     return {
       transformHead: (context: TransformContext) => {
         const { pageData, siteConfig } = context
-        cfgDynamicHead(pageData, siteConfig)
+        return cfgDynamicHead(pageData, siteConfig)
       },
     }
   }

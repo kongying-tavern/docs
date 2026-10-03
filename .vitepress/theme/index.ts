@@ -18,6 +18,7 @@ import handleRouteMatching from './lib/handleRouteMatching'
 import 'uno.css'
 
 const pinia = createPinia()
+const AccordionPanels = defineAsyncComponent(() => import('@/components/ui/AccordionPanels.vue'))
 const Blog = defineAsyncComponent(() => import('./layouts/Blog.vue'))
 const Card = defineAsyncComponent(() => import('@/components/Card.vue'))
 const Coins = defineAsyncComponent(() => import('@/components/Coins.vue'))
@@ -66,6 +67,7 @@ export default {
     app.use(MotionPlugin)
     app.use(PiniaColada)
 
+    app.component('AccordionPanels', AccordionPanels)
     app.component('Coins', Coins)
     app.component('Card', Card)
     app.component('Emoji', Emoji)

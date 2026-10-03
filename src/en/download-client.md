@@ -31,7 +31,7 @@ theme: medium
 <script setup lang="ts">
 import { useUrlSearchParams } from '@vueuse/core'
 import { onMounted } from 'vue'
-import { clientLink, downloadJump } from '../components/links/Download.ts'
+import { clientLink, downloadJump } from '../components/links/Download'
 
 const params = useUrlSearchParams('history')
 const downloadMethod = [

@@ -5,8 +5,8 @@ export const zhConfig = {
   title: '空荧酒馆',
   titleTemplate: ':title | 空荧酒馆',
   themeConfig: {
-    outlineTitle: '本页目录',
-    lastUpdatedText: '更新日期',
+    outline: { label: '本页目录' },
+    lastUpdated: { text: '更新日期' },
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
     docFooter: {

@@ -8,7 +8,7 @@ title: 目次
 
 ## **アップデートログ**
 
-- [アップデートログ（Chinese）](./../../../zh/blog/posts/hotupdatelog-client)
+- [アップデートログ（Chinese）](https://yuanshen.site/docs/blog/hotupdatelog-client)
 
 ## **ガイド**
 

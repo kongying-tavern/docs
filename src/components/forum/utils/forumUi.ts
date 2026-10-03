@@ -1,7 +1,7 @@
 import type { CustomConfig } from '../../../../.vitepress/locales/types'
 import type { ImageAttachmentError } from '~/services/forum/form/imageAttachment'
 import { IMAGE_UPLOAD_POLICY } from '~/services/forum/forumConfig'
-import { FORM_HASH } from '../form/publish-topic-form/config'
+import { FORM_HASH } from '../form/publish-topic-form/form-config'
 
 export function formatMessage(template: string, values: Record<string, string | number>): string {
   return Object.entries(values).reduce(
@@ -29,7 +29,7 @@ export function formatImageAttachmentError(
   }
 }
 
-interface DataNode {
+export interface DataNode {
   text: string
   link?: string
   items?: DataNode[]

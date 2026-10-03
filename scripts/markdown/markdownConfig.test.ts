@@ -1,0 +1,93 @@
+/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import test from 'node:test'
+import { createMarkdownRenderer } from 'vitepress'
+import { markdownConfig } from '../../.vitepress/config/markdown'
+import { useMarkdownRenderer } from '../../src/composables/useMarkdownRenderer'
+
+test('VitePress built-ins render once alongside Comark', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const html = await markdown.renderAsync(`
+## Heading {#stable-heading}
+
+- [ ] one
+- [x] two
+
+note[^1]
+
+[^1]: footnote
+
+*attrs*{.vp-link}
+
+:span{width=300 class="mt-4"}
+`)
+
+  assert.equal(html.match(/id="stable-heading"/g)?.length, 1)
+  assert.equal(html.match(/type="checkbox"/g)?.length, 2)
+  assert.equal(html.match(/<section class="footnotes"/g)?.length, 1)
+  assert.match(html, /<em class="vp-link">attrs<\/em>/)
+  assert.match(html, /<span[^>]*width="300"[^>]*class="mt-4"/)
+})
+
+test('reserved containers yield to VitePress and site plugins instead of Comark', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const html = await markdown.renderAsync(`
+::: tip
+handled tip
+:::
+
+::::raw
+
+raw content
+
+::::
+
+::: timeline 2026-1-1
+
+timeline entry
+
+:::
+
+::: my-widget
+mdc block content
+:::
+`)
+
+  assert.match(html, /<div class="tip custom-block">/)
+  assert.match(html, /<div class="vp-raw">/)
+  assert.match(html, /timeline-dot/)
+  assert.match(html, /<my-widget>/)
+})
+
+test('standalone blog previews retain attrs, tasks, footnotes and Comark', () => {
+  const { renderMarkdownFull, renderMarkdownPreview } = useMarkdownRenderer()
+  const source = '*attrs*{.vp-link}\n\n- [ ] one\n- [x] two\n\nnote[^1]\n\n[^1]: footnote\n\n:span{width=300 class="mt-4"}'
+  for (const render of [renderMarkdownFull, renderMarkdownPreview]) {
+    const html = render(source)
+    assert.match(html, /<em class="vp-link">attrs<\/em>/)
+    assert.equal(html.match(/type="checkbox"/g)?.length, 2)
+    assert.equal(html.match(/<section class="footnotes"/g)?.length, 1)
+    assert.match(html, /<span[^>]*width="300"[^>]*class="mt-4"/)
+  }
+})
+
+test('reserved lowercase containers do not swallow the MDC Card component', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const html = await markdown.renderAsync('::Card\n---\ntitle: Hello\nlink: /test\n---\n::')
+  assert.match(html, /<card\b/i)
+  assert.match(html, /title="Hello"/)
+  assert.doesNotMatch(html, /<p>::Card/)
+})
+
+test('the enhancement guide emits Vue named slots and valid MDC props', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const source = readFileSync(resolve('src/zh/md-enhance-guide.md'), 'utf8')
+  const html = await markdown.renderAsync(source)
+  assert.match(html, /<template #default="">/)
+  assert.match(html, /<template #details="">/)
+  assert.match(html, /<scratch-to-reveal[^>]*>刮开这里查看隐藏内容<\/scratch-to-reveal>/)
+  assert.match(html, /link="https:\/\/yuanshen.site\/"/)
+  assert.doesNotMatch(html, /link="&lt;https:/)
+})

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { useSidebar } from 'vitepress/theme-without-fonts'
+import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { cn } from '@/lib/utils'
 
@@ -8,7 +8,7 @@ defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
-const { hasSidebar } = useSidebar()
+const { hasSidebar } = useLayout()
 
 const classes = computed(() => {
   return {

@@ -12,7 +12,8 @@ const props = defineProps<Props>()
 const router = useRouter()
 
 function handleClick() {
-  router.go(props.to)
+  if (props.to)
+    router.go(props.to)
 }
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
-import { useSidebar } from 'vitepress/theme-without-fonts'
+import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import ForumBlogPostHeader from '~/components/forum/blog/ForumBlogPostHeader.vue'
@@ -12,7 +12,7 @@ const DOT_SLASH_REGEX = /[./]+/g
 const HTML_SUFFIX_REGEX = /_html$/
 
 const { params, theme, frontmatter } = useData()
-const { hasSidebar, hasAside, leftAside } = useSidebar()
+const { hasSidebar, hasAside, leftAside } = useLayout()
 const route = useRoute()
 
 // 右侧大纲由 frontmatter 配置启用（outline: true / 'deep' 等），默认关闭
@@ -47,11 +47,11 @@ function headingTitle(heading: HTMLElement) {
 
 // 滚动时同步高亮与 URL hash（参考 VitePress useActiveAnchor，额外写入 hash）
 function syncActiveHeading() {
-  const offset = 80
   let currentId: string | null = null
   const scrollY = window.scrollY
   for (const heading of outlineHeadingElements) {
-    if (heading.getBoundingClientRect().top + scrollY <= scrollY + offset)
+    const offset = Number.parseFloat(getComputedStyle(heading).scrollMarginTop) || 0
+    if (heading.getBoundingClientRect().top + scrollY <= scrollY + offset + 1)
       currentId = heading.id
     else
       break
@@ -60,15 +60,17 @@ function syncActiveHeading() {
     const active = currentId != null && link.getAttribute('href') === `#${currentId}`
     link.classList.toggle('active', active)
   })
-  if (currentId && location.hash !== `#${currentId}`)
+  if (currentId && location.hash !== `#${currentId}`) {
     history.replaceState(history.state, '', `#${currentId}`)
+    route.hash = `#${currentId}`
+  }
 }
 
 onMounted(() => {
   const root = document.querySelector('.post-content')
   if (!root)
     return
-  outlineItems.value = [...root.querySelectorAll(':where(h2, h3, h4)')]
+  outlineItems.value = [...root.querySelectorAll<HTMLElement>(':where(h2, h3, h4)')]
     .filter(isOutlineHeading)
     .map(heading => ({
       id: heading.id,
@@ -76,7 +78,7 @@ onMounted(() => {
       level: Number(heading.tagName[1]),
     }))
     .filter(item => item.title)
-  outlineLinks = [...document.querySelectorAll('.post-aside .outline a')]
+  outlineLinks = [...document.querySelectorAll<HTMLAnchorElement>('.post-aside .outline a')]
   outlineHeadingElements = outlineItems.value
     .map(item => document.getElementById(item.id))
     .filter((element): element is HTMLElement => Boolean(element))
@@ -113,7 +115,7 @@ if (params?.value) {
         <div class="aside-container">
           <div class="aside-content">
             <p class="outline-title">
-              {{ theme.outline?.label || theme.outlineTitle || '本页目录' }}
+              {{ theme.outline?.label || '本页目录' }}
             </p>
             <nav
               v-if="outlineItems.length"

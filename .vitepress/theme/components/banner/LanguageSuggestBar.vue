@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData, useRouter, withBase } from 'vitepress'
+import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import CloseButton from '@/components/ui/CloseButton.vue'
@@ -36,7 +36,9 @@ const INDEX_MD_REGEX = /(^|\/)index\.md$/
 /** Matches .md extension */
 const MD_EXTENSION_REGEX = /\.md$/
 
-const { localeIndex, page, theme, site, hash } = useData()
+const data = useData()
+const { localeIndex, page, theme, site } = data
+const route = useRoute()
 const { go } = useRouter()
 
 const open = ref(false)
@@ -61,15 +63,19 @@ function handleLanguageSelect(ev: CustomEvent) {
 }
 
 function toSuggestLanguagePage(locale?: string) {
+  const targetLocale = locale || suggestLocale.value.key
+  const i18nRouting = theme.value.i18nRouting
+  const link = typeof i18nRouting === 'function'
+    ? i18nRouting(data, route, targetLocale)
+    : normalizeLink(
+      getLangPath(targetLocale),
+      i18nRouting !== false,
+      page.value.relativePath.slice(currentLangPath.value.length - 1),
+      !site.value.cleanUrls,
+    ) + route.query + route.hash
+
   go(
-    withBase(
-      normalizeLink(
-        getLangPath(locale || suggestLocale.value.key),
-        theme.value.i18nRouting !== false,
-        page.value.relativePath.slice(currentLangPath.value.length - 1),
-        !site.value.cleanUrls,
-      ) + hash.value,
-    ),
+    withBase(link),
   )
 }
 
@@ -125,7 +131,7 @@ function normalizeLink(
                 <CommandList>
                   <CommandGroup class="!text-primary-foreground">
                     <CommandItem
-                      v-for="locale in LOCALE_CONFIG"
+                      v-for="locale in localeConfig"
                       :key="locale.key"
                       :value="locale.key"
                       class="text-[oklch(var(--primary-foreground)/0.7)] focus:bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-bg)] hover:!text-primary-foreground"
@@ -154,7 +160,7 @@ function normalizeLink(
           class="mx-12px bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-hover-bg)]"
           @click="toSuggestLanguagePage(suggestLocale.key)"
         >
-          {{ languageSuggestBarTranslate[suggestLocale.key].continue }}
+          {{ suggestTranslate.continue }}
         </Button>
 
         <CloseButton
