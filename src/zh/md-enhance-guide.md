@@ -102,6 +102,8 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 
 > 基础主题
 
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
 ::: demo
 ::Card
 ---
@@ -159,6 +161,8 @@ theme: medium
 
 ::
 ::::
+
+<!-- markdownlint-enable MD034 -->
 
 ## Markdown 语法扩展 {#section-markdown-syntax}
 
@@ -436,6 +440,8 @@ The HTML specificationis maintained by the W3C.
 
 #### Block Component Demo
 
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
 :::: demo
 ::link-grid{.mt-4}
 ---
@@ -456,6 +462,9 @@ items:
 ::::
 
 #### Slot Demo
+
+<!-- markdownlint-enable MD034 -->
+<!-- markdownlint-disable MD018 -- MDC slot markers require no space after #. -->
 
 :::: demo
 ::accordion-panels
@@ -491,6 +500,8 @@ items:
 
 ::
 ::::
+
+<!-- markdownlint-enable MD018 -->
 
 > 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
 > `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props(`---` 块)必须紧跟在组件起始行之后。
