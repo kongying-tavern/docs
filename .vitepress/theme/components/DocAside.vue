@@ -48,7 +48,7 @@ const items = computed(() => {
       >
         <p v-if="page?.lastUpdated">
           {{ theme.lastUpdated?.text }}
-          {{ formatDate(page?.lastUpdated) }}
+          <ClientOnly>{{ formatDate(page?.lastUpdated) }}</ClientOnly>
         </p>
 
         <VPLink
