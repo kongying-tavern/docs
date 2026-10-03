@@ -53,16 +53,14 @@ export function cfgDynamicHead(
   pageData: PageData,
   siteConfig: SiteConfig,
 ): HeadConfig[] {
-  if (!isProd)
-    return []
-
   const pageUrl = cfgGetPageUrl(pageData, siteConfig)
   const pageTitle = cfgGetPageTitle(pageData, siteConfig)
   const pageDesc = cfgGetPageDesc(pageData, siteConfig)
   const pageKeywords = cfgGetPageKeywords(pageData, siteConfig)
   const pageCover = cfgGetPageCover(pageData, siteConfig)
 
-  // 返回值经 transformHead 合并进每页 <head>，mergeHead 按首个 meta 属性去重
+  // transformHead merges these into each page; VitePress dedupes meta identity
+  // independently of content, so page values replace the site defaults.
   return [
     ['meta', { name: 'description', content: pageDesc }],
     ['meta', { name: 'keywords', content: pageKeywords }],

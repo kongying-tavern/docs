@@ -159,7 +159,11 @@ html {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--vp-nav-height) + 1rem);
+}
+
+/* Default-theme document anchors already include the nav and banner offsets. */
+.Forum [id^='reply-'] {
+  scroll-margin-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height) + 1rem);
 }
 
 html:has(.Forum) {

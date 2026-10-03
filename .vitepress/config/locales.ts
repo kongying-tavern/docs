@@ -1,8 +1,9 @@
 import type { DefaultTheme, HeadConfig, LocaleConfig } from 'vitepress'
-import type { LocaleConfigShape } from '../locales/types'
+import type { CustomConstant, LocaleConfigShape } from '../locales/types'
 import { DEFAULT_LOCALE, SITE_LOGO } from '../locales/common/site'
 import { baseHelper } from '../theme/utils'
 import { getLocaleDirs } from './localeDirs'
+import { localeImporters } from './localeImporters'
 
 // 约定:locales 目录下含 index.ts 的子目录即一门语言,导出 <lang>Config/label/lang;zh 为默认语言(root)
 const STATIC_FIELDS = [
@@ -22,7 +23,12 @@ const LINKED_FIELDS = ['nav', 'sidebar', 'footer'] as const
 export async function createLocalesConfig(): Promise<LocaleConfig<DefaultTheme.Config>> {
   const locales: LocaleConfig<DefaultTheme.Config> = {}
   for (const lang of getLocaleDirs()) {
-    const mod = (await import(`../locales/${lang}/index.ts`)) as {
+    const mods = localeImporters[lang]
+    const loadIndex = mods?.index
+    if (!mods || !loadIndex) {
+      throw new Error(`Missing locale importers for "${lang}" in .vitepress/config/localeImporters.ts; run pnpm init:locale to register the locale`)
+    }
+    const mod = (await loadIndex()) as {
       label: string
       lang: string
       [key: string]: unknown
@@ -32,7 +38,7 @@ export async function createLocalesConfig(): Promise<LocaleConfig<DefaultTheme.C
       throw new Error(`Missing ${lang}Config export in .vitepress/locales/${lang}/index.ts`)
     }
 
-    const constants = (await import(`../locales/${lang}/constants.ts`)).default
+    const constants = (await mods.constants() as { default: CustomConstant }).default
     const themeConfig: Record<string, unknown> = {
       siteTitle: constants.META_TITLE,
       keyword: constants.META_KEYWORDS,
@@ -40,15 +46,15 @@ export async function createLocalesConfig(): Promise<LocaleConfig<DefaultTheme.C
       logo: SITE_LOGO,
     }
     for (const [field, module] of STATIC_FIELDS) {
-      themeConfig[field] = (await import(`../locales/${lang}/${module}.ts`)).default
+      themeConfig[field] = (await mods[module]() as { default: unknown }).default
     }
     for (const field of LINKED_FIELDS) {
-      const content = (await import(`../locales/${lang}/${field}.ts`)).default
+      const content = (await mods[field]() as { default: Record<string, unknown> }).default
       themeConfig[field] = baseHelper(content, constants.LOCAL_BASE)
     }
     Object.assign(themeConfig, config.themeConfig)
 
-    const head = (await import(`../locales/${lang}/head.ts`)).default as HeadConfig[]
+    const head = (await mods.head() as { default: HeadConfig[] }).default
     const key = lang === DEFAULT_LOCALE ? 'root' : lang
     locales[key] = {
       label: mod.label,
