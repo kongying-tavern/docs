@@ -28,7 +28,7 @@
 
 ## 验证
 
-`src/forum/test/telemetryRuntime.test.ts` 在隔离环境运行真实封装，覆盖 SDK 异常、队列、偏好同步、错误包装去重、会话轮换和存储降级，不连接真实 Clarity 服务。
+`tests/shared/telemetryRuntime.test.ts` 在隔离环境运行真实封装，覆盖 SDK 异常、队列、偏好同步、错误包装去重、会话轮换和存储降级，不连接真实 Clarity 服务。
 
 ## 性能、交互与白屏覆盖
 

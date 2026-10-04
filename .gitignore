@@ -116,7 +116,10 @@ src/public/fonts/fonts-standard.css
 advisor-plans/
 test-results/
 playwright-report/
-e2e/
+/tests/e2e/gen-*.json
+/tests/e2e/state-*.json
+/tests/e2e/gen-mock.mjs
+/tests/e2e/.legacy/
 /output/
 
 # Agent tooling pins and scratchpads

@@ -19,5 +19,5 @@ if [ -s /tmp/hook-files.txt ]; then
     code=$?
   fi
   [ $code -eq 0 ] || { tail -5 /tmp/hook-eslint.log; exit 1; }
-  git add -u
+  git add --pathspec-from-file=/tmp/hook-files.txt
 fi

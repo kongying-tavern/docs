@@ -42,7 +42,11 @@
     "**/components/**/*.vue",
     "**/composables/**/*.ts",
     "**/scripts/**/*.ts",
-    "**/src/**/*.ts"
+    "**/src/**/*.ts",
+    "tests/forum/**/*.ts",
+    "tests/shared/**/*.ts",
+    "tests/theme/**/*.ts",
+    "tests/fonts/**/*.ts"
   ],
   "exclude": [
     "**/node_modules/**",
