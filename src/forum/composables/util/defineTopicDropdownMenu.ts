@@ -27,6 +27,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
     toggleGoodIssue,
     toggleHideTopic,
     togglePinnedTopic,
+    togglePrivateTopic,
     toggleTopicCommentArea,
     hideTopicWithStatus,
     updatingTopic,
@@ -179,6 +180,14 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         label: currentTopic.value.commentCount === -1 ? menuLabels.value.commentArea.open : menuLabels.value.commentArea.close,
         icon: currentTopic.value.commentCount === -1 ? 'i-lucide:message-circle' : 'i-lucide:message-circle-off',
         action: toggleTopicCommentArea,
+      },
+      {
+        id: 'private-topic',
+        type: 'item',
+        label: currentTopic.value.isPrivate ? menuLabels.value.privateFeedback.makePublic : menuLabels.value.privateFeedback.makePrivate,
+        icon: currentTopic.value.isPrivate ? 'i-lucide:lock-open' : 'i-lucide:lock',
+        disabled: updatingTopic.value,
+        action: togglePrivateTopic,
       },
       // 已隐藏给「取消隐藏」，有状态时「隐藏反馈」直接执行；无状态则先经二级菜单
       // 挑一个状态再隐藏（见 hideFeedbackSubmenuItems）。hideState 是 ref，

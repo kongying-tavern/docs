@@ -6,6 +6,7 @@ import { normalizeQuotedTopicReference } from './forumTopicQuote'
 import { getTopicStatus } from './forumTopicStatus'
 
 export interface OptimisticTopicPatch {
+  security_hole?: boolean
   title?: string
   body?: string
   state?: ForumAPI.TopicState
@@ -20,6 +21,8 @@ export function applyOptimisticTopicPatch(
   patch: OptimisticTopicPatch,
 ): ForumAPI.Topic {
   const next = { ...topic, updatedAt: new Date().toISOString() }
+  if (patch.security_hole !== undefined)
+    next.isPrivate = patch.security_hole
 
   if (patch.title !== undefined)
     next.title = patch.title.replace(TOPIC_TYPE_PREFIX, '').trim()

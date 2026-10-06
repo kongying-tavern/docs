@@ -123,6 +123,13 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     message.value.forum.topic.menu.pinTopic.fail,
   )
 
+  const togglePrivateTopic = () => update(
+    'changeTopicMembership',
+    topic => ({ security_hole: topic.isPrivate !== true }),
+    message.value.forum.topic.menu.privateFeedback.success,
+    message.value.forum.topic.menu.privateFeedback.fail,
+  )
+
   const toggleTopicCommentArea = () => {
     return update(
       'toggleCommentArea',
@@ -183,6 +190,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     toggleCloseTopic,
     toggleHideTopic,
     togglePinnedTopic,
+    togglePrivateTopic,
     toggleTopicType,
     replaceTopicTags,
     setTopicStatus,
