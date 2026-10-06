@@ -6,6 +6,8 @@ from collections import defaultdict
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from fontTools.ttLib import TTFont
+
 from .config import FontSpec, FontSubsetConfig
 from .font_io import content_hash, source_codepoints, subset_chunk
 from .models import FontFace, face_group, split_group
@@ -134,6 +136,14 @@ class FontSubsetPipeline:
         ]
         if missing:
             raise FileNotFoundError(f"Missing source fonts: {', '.join(missing)}")
+        for spec in self.config.fonts:
+            with TTFont(self.config.source_path(spec), lazy=True) as font:
+                actual_weight = font["OS/2"].usWeightClass
+            if actual_weight != spec.font_weight:
+                raise ValueError(
+                    f"{spec.source_file} weight {actual_weight} does not match "
+                    f"configured weight {spec.font_weight}"
+                )
 
     def _build_tier(
         self,
@@ -171,6 +181,7 @@ class FontSubsetPipeline:
                     script,
                     tier,
                     to_ranges(output_codepoints),
+                    spec.font_weight,
                 )
             )
         return faces
@@ -276,6 +287,7 @@ class FontSubsetPipeline:
                             script,
                             tier,
                             to_ranges(coverage),
+                            spec.font_weight,
                         )
                     )
         return faces
@@ -306,6 +318,7 @@ class FontSubsetPipeline:
                         expand_ranges(face.ranges)
                         for face in faces
                         if face.family == spec.css_family
+                        and face.font_weight == spec.font_weight
                         and face.script == script
                         and face.tier == tier
                     )
@@ -326,7 +339,7 @@ class FontSubsetPipeline:
             face
             for spec in self.config.fonts
             for face in (*min_faces, *standard_faces)
-            if face.family == spec.css_family
+            if face.family == spec.css_family and face.font_weight == spec.font_weight
         ]
 
     def _print_summary(self, faces: list[FontFace], staging_fonts: Path) -> None:
@@ -336,7 +349,9 @@ class FontSubsetPipeline:
                 tier_faces = [
                     face
                     for face in faces
-                    if face.family == spec.css_family and face.group == group
+                    if face.family == spec.css_family
+                    and face.font_weight == spec.font_weight
+                    and face.group == group
                 ]
                 if not tier_faces:
                     summaries.append(f"{group}=0 chunks")
@@ -349,4 +364,4 @@ class FontSubsetPipeline:
                     f"{group}={len(tier_faces)} chunks/{sum(sizes)} KiB "
                     f"({min(sizes)}-{max(sizes)} KiB each)"
                 )
-            print(f"[fonts:subset] {spec.family}: {', '.join(summaries)}")
+            print(f"[fonts:subset] {spec.family} {spec.font_weight}: {', '.join(summaries)}")

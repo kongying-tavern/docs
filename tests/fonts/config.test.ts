@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this build script */
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
@@ -39,6 +38,9 @@ test('normalizes only font-build inputs for Python', () => {
   )
   assert.deepEqual(manifest.scripts, config.scripts.sets)
   assert.deepEqual(manifest.fonts[0]!.scriptTiers, config.fonts[0]!.scriptTiers)
+  assert.equal('fontWeight' in manifest.css, false)
+  assert.deepEqual(manifest.fonts.map(font => font.fontWeight), [400, 600, 700, 600, 400])
+  assert.equal(new Set(manifest.fonts.slice(0, 3).map(font => font.cssFamily)).size, 1)
   assert.equal('siteExtraction' in manifest, false)
   assert.equal('siteRoles' in manifest.fonts[0]!, false)
 })

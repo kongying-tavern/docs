@@ -114,7 +114,6 @@ const configSchema = z.object({
       'Must start with "/" (absolute) or be "." (relative to the generated CSS)',
     ),
     fontStyle: z.string().min(1),
-    fontWeight: z.number().int().positive(),
     fontDisplay: z.string().min(1),
     localFallback: z.string().min(1),
   }),
@@ -133,6 +132,7 @@ const configSchema = z.object({
   fonts: z.array(z.object({
     family: z.string().min(1),
     cssFamily: z.string().min(1),
+    fontWeight: z.number().int().min(1).max(1000),
     fileStem: z.string().regex(/^[a-z0-9]+(?:_[a-z0-9]+)*$/),
     sourceFile: relativePath,
     scriptTiers: z.array(z.string().min(1)).min(1),
@@ -165,7 +165,7 @@ const configSchema = z.object({
     })
   }
 
-  for (const key of ['family', 'cssFamily', 'fileStem', 'sourceFile'] as const) {
+  for (const key of ['fileStem', 'sourceFile'] as const) {
     const values = config.fonts.map(font => font[key])
     if (new Set(values).size !== values.length) {
       context.addIssue({
@@ -174,6 +174,15 @@ const configSchema = z.object({
         path: ['fonts'],
       })
     }
+  }
+
+  const faces = config.fonts.map(font => `${font.cssFamily}:${font.fontWeight}`)
+  if (new Set(faces).size !== faces.length) {
+    context.addIssue({
+      code: 'custom',
+      message: 'Each CSS font family and weight must be unique',
+      path: ['fonts'],
+    })
   }
 
   if (new Set(config.fontaine.fallbacks).size !== config.fontaine.fallbacks.length) {

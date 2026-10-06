@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this build script */
 import { strict as assert } from 'node:assert'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -51,15 +50,17 @@ test('assigns structured site text to configured font roles', async () => {
   const textFor = (font: string): string => String.fromCodePoint(...result[font])
 
   const base = textFor('sarasa_gothic_sc')
-  for (const character of '丙戊壬子辰丑寅')
+  for (const weight of ['semibold', 'bold'])
+    assert.equal(textFor(`sarasa_gothic_sc_${weight}`), base)
+  for (const character of '丙戊壬子辰丑寅庚')
     assert.match(base, new RegExp(character))
-  for (const character of '甲乙丁己庚辛癸卯')
+  for (const character of '甲乙丁己辛癸卯')
     assert.doesNotMatch(base, new RegExp(character))
 
   const subtitle = textFor('hywenhei_65w')
-  for (const character of '甲乙丙丁己庚辛癸丑寅卯')
+  for (const character of '甲乙丙丁己辛癸丑寅卯')
     assert.match(subtitle, new RegExp(character))
-  for (const character of '戊壬子辰')
+  for (const character of '戊壬子辰庚')
     assert.doesNotMatch(subtitle, new RegExp(character))
 
   const title = textFor('hywenhei_85w')

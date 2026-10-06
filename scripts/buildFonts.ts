@@ -69,6 +69,7 @@ function standardHash(): string {
       css: config.css,
       fonts: config.fonts.map(font => ({
         fileStem: font.fileStem,
+        fontWeight: font.fontWeight,
         sourceFile: font.sourceFile,
         scriptTiers: font.scriptTiers,
         standardTiers: font.standardTiers,

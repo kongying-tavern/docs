@@ -24,6 +24,7 @@ class FontFace:
     script: str
     tier: str
     ranges: tuple[CodepointRange, ...]
+    font_weight: int
 
     @property
     def group(self) -> str:

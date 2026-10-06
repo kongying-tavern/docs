@@ -49,7 +49,7 @@ export async function generateFontaineFallbackCss(
         'font': fallback,
         'metrics': fallbackMetrics.get(fallback),
         'font-style': config.css.fontStyle,
-        'font-weight': String(config.css.fontWeight),
+        'font-weight': String(font.fontWeight),
       }))
     }
   }

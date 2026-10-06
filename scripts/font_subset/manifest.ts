@@ -23,6 +23,7 @@ export function createFontBuildManifest(config: FontSubsetConfig) {
     siteCharacters: config.siteCharacters,
     fonts: config.fonts.map(font => ({
       cssFamily: font.cssFamily,
+      fontWeight: font.fontWeight,
       family: font.family,
       fileStem: font.fileStem,
       sourceFile: font.sourceFile,

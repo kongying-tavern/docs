@@ -77,31 +77,30 @@
     },
     "tagRoles": {
       "h1": "title",
-      "button": "subtitle",
-      "summary": "subtitle",
-      "strong": "subtitle",
       "h2": "subtitle",
       "h3": "subtitle",
       "h4": "subtitle",
       "h5": "subtitle",
-      "h6": "subtitle",
-      "kbd": "subtitle",
-      "thead": "subtitle"
+      "h6": "subtitle"
     },
     "classRoles": {
+      "font-sans": "content",
+      "font-title": "title",
+      "font-subtitle": "subtitle",
       "outline-title": "title",
       "title": "title",
       "VPNav": "subtitle",
-      "VPButton": "subtitle",
       "custom-block-title": "subtitle",
       "VPLocalNavOutlineDropdown": "subtitle",
       "doc-info-left": "subtitle",
       "subtitle": "subtitle",
-      "vp-link": "subtitle",
       "lead": "subtitle",
       "timeline-dot-title": "subtitle"
     },
     "fontVariableRoles": {
+      "--font-sans": "content",
+      "--font-subtitle": "subtitle",
+      "--font-title": "title",
       "--vp-font-family-base": "content",
       "--vp-font-family-content": "content",
       "--vp-font-family-subtitle": "subtitle",
@@ -161,7 +160,6 @@
   "css": {
     "publicFontPath": ".",
     "fontStyle": "normal",
-    "fontWeight": 100,
     "fontDisplay": "swap",
     "localFallback": "☺"
   },
@@ -240,6 +238,7 @@
     {
       "family": "Sarasa Gothic SC",
       "cssFamily": "SarasaGothicSC-min",
+      "fontWeight": 400,
       "fileStem": "sarasa_gothic_sc",
       "sourceFile": "SarasaGothicSC-Regular.ttf",
       "scriptTiers": [
@@ -259,8 +258,53 @@
       ]
     },
     {
+      "family": "Sarasa Gothic SC",
+      "cssFamily": "SarasaGothicSC-min",
+      "fontWeight": 600,
+      "fileStem": "sarasa_gothic_sc_semibold",
+      "sourceFile": "SarasaGothicSC-SemiBold.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
+      "standardTiers": [
+        "l1",
+        "l2l3"
+      ],
+      "siteRoles": [
+        "content",
+        "shared"
+      ]
+    },
+    {
+      "family": "Sarasa Gothic SC",
+      "cssFamily": "SarasaGothicSC-min",
+      "fontWeight": 700,
+      "fileStem": "sarasa_gothic_sc_bold",
+      "sourceFile": "SarasaGothicSC-Bold.ttf",
+      "scriptTiers": [
+        "latin",
+        "latin-ext",
+        "symbols",
+        "kana",
+        "cjk-punct"
+      ],
+      "standardTiers": [
+        "l1",
+        "l2l3"
+      ],
+      "siteRoles": [
+        "content",
+        "shared"
+      ]
+    },
+    {
       "family": "HYWenHei-65W",
       "cssFamily": "HYWenHei-65W-min",
+      "fontWeight": 600,
       "fileStem": "hywenhei_65w",
       "sourceFile": "HYWenHei-65W.ttf",
       "scriptTiers": [
@@ -283,6 +327,7 @@
     {
       "family": "HYWenHei-85W",
       "cssFamily": "HYWenHei-85W-min",
+      "fontWeight": 400,
       "fileStem": "hywenhei_85w",
       "sourceFile": "HYWenHei-85W-zh-full.ttf",
       "scriptTiers": [

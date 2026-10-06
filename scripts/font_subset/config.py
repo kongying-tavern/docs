@@ -31,6 +31,7 @@ def parse_unicode_set(text: str) -> frozenset[int]:
 class FontSpec:
     family: str
     css_family: str
+    font_weight: int
     file_stem: str
     source_file: str
     script_tiers: tuple[str, ...]
@@ -41,7 +42,6 @@ class FontSpec:
 class CssConfig:
     public_font_path: str
     font_style: str
-    font_weight: int
     font_display: str
     local_fallback: str
 
@@ -190,6 +190,7 @@ def load_manifest(path: Path) -> FontSubsetConfig:
         FontSpec(
             family=value["family"],
             css_family=value["cssFamily"],
+            font_weight=value["fontWeight"],
             file_stem=value["fileStem"],
             source_file=value["sourceFile"],
             script_tiers=tuple(value["scriptTiers"]),
@@ -220,7 +221,6 @@ def load_manifest(path: Path) -> FontSubsetConfig:
         css=CssConfig(
             public_font_path=css["publicFontPath"].rstrip("/"),
             font_style=css["fontStyle"],
-            font_weight=css["fontWeight"],
             font_display=css["fontDisplay"],
             local_fallback=css["localFallback"],
         ),

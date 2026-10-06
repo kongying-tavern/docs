@@ -13,10 +13,10 @@ from .unicode_ranges import expand_ranges, ranges_to_css, to_ranges
 
 
 def exposed_codepoints(faces: list[FontFace]) -> dict[str, set[int]]:
-    min_codepoints: defaultdict[tuple[str, str], set[int]] = defaultdict(set)
+    min_codepoints: defaultdict[tuple[str, int, str], set[int]] = defaultdict(set)
     for face in faces:
         if face.tier == "min":
-            min_codepoints[(face.family, face.script)].update(
+            min_codepoints[(face.family, face.font_weight, face.script)].update(
                 expand_ranges(face.ranges)
             )
 
@@ -26,7 +26,7 @@ def exposed_codepoints(faces: list[FontFace]) -> dict[str, set[int]]:
         codepoints = (
             coverage
             if face.tier == "min"
-            else coverage - min_codepoints[(face.family, face.script)]
+            else coverage - min_codepoints[(face.family, face.font_weight, face.script)]
         )
         if not codepoints:
             raise ValueError(f"{face.file_name} has an empty CSS unicode-range")
@@ -50,15 +50,16 @@ def validate_outputs(
         raise ValueError("CSS references do not match generated WOFF2 files")
 
     exposed = exposed_codepoints(faces)
-    family_codepoints: defaultdict[str, set[int]] = defaultdict(set)
+    family_codepoints: defaultdict[tuple[str, int], set[int]] = defaultdict(set)
     for face in faces:
         declared = exposed[face.file_name]
-        overlap = family_codepoints[face.family] & declared
+        key = (face.family, face.font_weight)
+        overlap = family_codepoints[key] & declared
         if overlap:
             raise ValueError(
-                f"{face.family} has overlapping unicode-range declarations"
+                f"{face.family} weight {face.font_weight} has overlapping unicode-range declarations"
             )
-        family_codepoints[face.family].update(declared)
+        family_codepoints[key].update(declared)
 
         output = staging_fonts / face.file_name
         if output.stat().st_size == 0:
@@ -137,7 +138,7 @@ def _font_face_rule(
             "@font-face {",
             f"  font-family: '{face.family}';",
             f"  font-style: {css.font_style};",
-            f"  font-weight: {css.font_weight};",
+            f"  font-weight: {face.font_weight};",
             f"  font-display: {css.font_display};",
             "  src:",
             f"    local('{css.local_fallback}'),",
