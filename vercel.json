@@ -16,6 +16,15 @@
   ],
   "headers": [
     {
+      "source": "/docs/((?:en/|ja/)?feedback(?:/.*|\\.html)?)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    },
+    {
       "source": "/docs/assets/(.*)",
       "headers": [
         {

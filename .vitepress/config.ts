@@ -13,6 +13,7 @@ import { sitemapConfig } from './config/sitemap'
 import { cfgDynamicTitleTemplate } from './config/title'
 
 export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
+  base: '/docs/',
   srcDir: 'src',
   outDir: './dist',
   srcExclude: [],
