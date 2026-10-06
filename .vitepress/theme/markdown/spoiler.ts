@@ -156,7 +156,8 @@ function postProcess(state: StateInline, delimiters: Delimiter[], { tag, attrs }
       token.tag = tag
       token.nesting = 1
       token.markup = '!!'
-      token.attrs = attrs
+      // Attrs mutates the opening token; each spoiler needs its own array.
+      token.attrs = attrs.map(attr => [...attr])
       token.content = ''
 
       token = state.tokens[endDelim.token]
@@ -222,10 +223,12 @@ export const spoiler: PluginWithOptions<MarkdownItSpoilerOptions> = (
   // Custom rendering rules for ScratchToReveal component
   md.renderer.rules.spoiler_open = (tokens, idx) => {
     const content = extractSpoilerContent(tokens, idx)
-    const { align } = extractAttributesFromContent(content)
+    const attributes = tokens[idx].attrs?.map(([key, value]) => `${key}=${value}`).join(',')
+    const { width, align } = extractAttributesFromContent(attributes ? `${content}{${attributes}}` : content)
+    const widthProp = width ? ` :width="${width}"` : ''
     const alignStyle = align ? ` style="text-align: ${align};"` : ''
 
-    return `<ScratchToReveal spoiler class="inline-spoiler"${alignStyle}>`
+    return `<ScratchToReveal class="inline-spoiler"${widthProp}${alignStyle}>`
   }
 
   md.renderer.rules.spoiler_close = () => {

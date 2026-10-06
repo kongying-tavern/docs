@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
-import { useResizeObserver, watchOnce } from '@vueuse/core'
+import { useResizeObserver } from '@vueuse/core'
 import { Motion, useAnimate } from 'motion-v'
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useAttrs, useTemplateRef, watch } from 'vue'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
   gradientColors?: [string, string, string]
 }
 
+defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<Props>(), {
   gradientColors: () => ['#cfd9df', '#e2ebf0', '#f5f9fc'],
   minScratchPercentage: 50,
@@ -21,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   complete: []
 }>()
+
+const attrs = useAttrs()
 
 const cursorImg
   = 'url(\'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4KICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNSIgc3R5bGU9ImZpbGw6I2ZmZjtzdHJva2U6IzAwMDtzdHJva2Utd2lkdGg6MXB4OyIgLz4KPC9zdmc+\'), auto'
@@ -36,10 +39,10 @@ const isComplete = ref(false)
 
 useResizeObserver(slot, (entries) => {
   const entry = entries[0]
-  const { width, height } = entry.contentRect
+  const { width, height } = entry.target.getBoundingClientRect()
 
-  autoWidth.value = Math.ceil(width) + 12
-  autoHeight.value = Math.ceil(height) + 8
+  autoWidth.value = Math.ceil(width)
+  autoHeight.value = Math.ceil(height)
 })
 
 const context = ref<CanvasRenderingContext2D>()
@@ -59,7 +62,7 @@ const canvasWidth = computed(() => canvasRef.value?.width || autoWidth.value || 
 const canvasHeight = computed(() => canvasRef.value?.height || autoHeight.value || props.height!)
 
 function drawCanvas(canvasRef: Ref<HTMLCanvasElement>) {
-  context.value = canvasRef.value.getContext('2d')!
+  context.value = canvasRef.value.getContext('2d', { willReadFrequently: true })!
   context.value.fillStyle = '#ccc'
   context.value.fillRect(0, 0, canvasWidth.value, canvasHeight.value)
   const gradient = context.value.createLinearGradient(0, 0, canvasWidth.value, canvasHeight.value)
@@ -97,10 +100,14 @@ function handleDocumentTouchMove(event: TouchEvent) {
 }
 
 function handleDocumentMouseUp() {
+  if (!isScratching.value)
+    return
   isScratching.value = false
   checkCompletion()
 }
 function handleDocumentTouchEnd() {
+  if (!isScratching.value)
+    return
   isScratching.value = false
   checkCompletion()
 }
@@ -158,10 +165,10 @@ onMounted(() => {
   addEventListeners()
 })
 
-watchOnce(
-  () => autoWidth.value > 0 && autoHeight.value > 0,
-  async () => {
-    if (!canvasRef.value)
+watch(
+  [autoWidth, autoHeight],
+  () => {
+    if (!canvasRef.value || isComplete.value || !autoWidth.value || !autoHeight.value)
       return
     canvasRef.value.width = autoWidth.value
     canvasRef.value.height = autoHeight.value
@@ -187,10 +194,12 @@ onUnmounted(() => {
   <ClientOnly>
     <Motion
       ref="containerRef"
+      v-bind="attrs"
       :class="cn('relative inline-flex', props.class)"
       :style="{
-        width: '100%',
-        height: '100%',
+        width: props.width ? `${props.width}px` : undefined,
+        maxWidth: '100%',
+        height: props.height ? `${props.height}px` : undefined,
         cursor: cursorStyle,
         opacity: slot ? 1 : 0,
         userSelect: isComplete ? 'auto' : 'none',
@@ -208,6 +217,7 @@ onUnmounted(() => {
       <div
         ref="slot"
         class="py-2 h-auto max-w-full inline-block"
+        :style="{ width: props.width ? '100%' : undefined, height: props.height ? '100%' : undefined }"
       >
         <slot />
       </div>

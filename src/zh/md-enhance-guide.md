@@ -374,9 +374,12 @@ paragraph _style me_{.vp-link} more text
 #### 示例
 
 :::: demo
-大家好~**`:1。小黄脸/呲牙。png:`**
-`:1。小黄脸/呲牙。png:`
-演出，开始~`:2。原神/芙宁娜-乐。png:`
+<!-- zhlint ignore: :1.小黄脸/呲牙.png: -->
+<!-- zhlint ignore: :2.原神/芙宁娜-乐.png: -->
+
+大家好~**:1.小黄脸/呲牙.png:**
+:1.小黄脸/呲牙.png:
+演出，开始~:2.原神/芙宁娜-乐.png:
 ::::
 
 ### [Task list](https://mdit-plugins.github.io/zh/tasklist.html#%E9%80%89%E9%A1%B9)
@@ -435,7 +438,7 @@ The HTML specificationis maintained by the W3C.
 <!-- zhlint ignore: :scratch-to-reveal -->
 
 :::: demo
-:scratch-to-reveal[刮开这里查看隐藏内容]{width=300 .mt-4}
+:scratch-to-reveal[刮开这里查看隐藏内容]{:width=300 .mt-4}
 ::::
 
 #### Block Component Demo
@@ -509,6 +512,8 @@ items:
 #### Props 语法
 
 行内组件的 props 需要写在同一个 `{...}` 中，不支持连续声明多个 props block。
+
+数值、布尔值或数组等需要使用 Vue 绑定，例如 `{:width=300}`、`{:disabled=true}`；普通 `width=300` 会传入字符串。
 
 | 语法            | 含义                  | 示例          |
 | --------------- | --------------------- | ------------- |

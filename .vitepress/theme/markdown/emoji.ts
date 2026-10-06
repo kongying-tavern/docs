@@ -24,7 +24,7 @@ function initEmojiCache() {
 }
 
 /** Matches emoji paths in markdown */
-const EMOJI_PATH_REGEX: RegExp = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/
+const EMOJI_PATH_REGEX: RegExp = /^:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/
 
 const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
   // 初始化缓存

@@ -21,7 +21,7 @@
     "lint": "eslint --cache . && pnpm lint:zh",
     "lint:eslint": "eslint --cache .",
     "lint:eslint:fix": "eslint --cache --fix .",
-    "lint:md": "markdownlint **/*.md",
+    "lint:md": "markdownlint \"**/*.md\"",
     "lint:zh": "node scripts/lintZh.mjs",
     "lint:zh:fix": "node scripts/lintZh.mjs --fix",
     "typecheck": "pnpm typecheck:ts && pnpm typecheck:vue",

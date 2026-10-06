@@ -1,4 +1,5 @@
 import type MarkdownIt from 'markdown-it'
+import type { RuleInline } from 'markdown-it/lib/parser_inline.mjs'
 
 const RE_JSON_BRACKET = /^\s*[[{]/
 const RE_JSON_BOOL_NULL = /^\s*(?:true|false|null)\s*$/
@@ -6,6 +7,7 @@ const RE_JSON_NUMBER = /^\s*-?\d+(?:\.\d+)?(?:e[+-]?\d+)?\s*$/i
 const RE_VALID_COMPONENT = /^[A-Z]/
 const RE_DOUBLE_QUOTE = /"/g
 const RE_CONTAINER_LINE = /^:{2,}\s*([A-Z][\w-]*)/i
+const RE_INLINE_COMPONENT_NAME = /^:([\w$-]+)/
 
 /**
  * 容器名保留名单:这些名字由 VitePress 内置容器(tip/raw/…)或
@@ -52,14 +54,25 @@ function isJsonValue(value: string): boolean {
  * Apply compatibility patches for @comark/markdown-it to work with
  * Vue template compiler (used by VitePress).
  *
- * Two fixes:
- * 1. inlineComponent renderer — filter valid component names only,
- *    restore invalid ones to text (avoids Vue "Element is missing end tag")
- * 2. blockComponent renderer — detect JSON props and emit :attr syntax
- *    so Vue evaluates arrays/objects instead of treating them as strings
+ * Preserve ordinary inline syntax and reserved containers alongside MDC,
+ * emit valid Vue component tags, and bind JSON props with :attr syntax.
  */
 export function applyComarkPatches(md: MarkdownIt): void {
   const renderToken = md.renderer.renderToken.bind(md.renderer)
+
+  // Yield ordinary colon text and emoji before tokenization, so later
+  // inline rules can still process them instead of restoring plain text.
+  const inlineRules = (md.inline.ruler as unknown as { __rules__?: Array<{ name: string, fn: RuleInline }> }).__rules__
+  const inlineComponent = inlineRules?.find(rule => rule.name === 'mdc_inline_component')
+  if (inlineComponent) {
+    const original = inlineComponent.fn
+    md.inline.ruler.at('mdc_inline_component', (state, silent) => {
+      const name = RE_INLINE_COMPONENT_NAME.exec(state.src.slice(state.pos))?.[1]
+      if (!name || (!name.includes('-') && !RE_VALID_COMPONENT.test(name)))
+        return false
+      return original(state, silent)
+    })
+  }
 
   // ── inlineComponent: only render valid component names as HTML ──────
   md.renderer.rules.mdc_inline_component = (tokens, idx, options, _env, self) => {
