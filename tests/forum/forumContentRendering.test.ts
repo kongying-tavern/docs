@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import { resolveExtensions } from '@tiptap/core'
@@ -386,4 +385,29 @@ test('rich code blocks keep URLs and Topic references literal', () => {
   const source = 'https://gitee.com/alice #ICROD8 @alice'
   const html = renderTiptapToHtml({ type: 'doc', content: [{ type: 'codeBlock', content: [{ type: 'text', text: source }] }] }, { topicHref: id => `/feedback/topic/${id}` })
   assert.equal(html, `<pre><code>${source}</code></pre>`)
+})
+
+test('lightweight legacy parsing preserves nested marks, lists, entities and literal syntax', () => {
+  const cases = [
+    ['**bold *italic* bold**', '<p><strong>bold </strong><strong><em>italic</em></strong><strong> bold</strong></p>'],
+    ['~~**x**~~', '<p><s><strong>x</strong></s></p>'],
+    ['a &amp; b', '<p>a &amp;amp; b</p>'],
+    ['Title\n=====', '<h1>Title</h1>'],
+    ['    indented\n    block', ''],
+    ['- one\n- two\n  - nested', '<ul><li><p>one</p></li><li><p>two</p><ul><li><p>nested</p></li></ul></li></ul>'],
+  ]
+  for (const [source, expected] of cases)
+    assert.equal(renderForumTopic(source), expected, source)
+  assert.match(renderForumTopic('[site](https://gitee.com/alice)'), /\[site\]\(https:\/\/gitee.com\/alice\)/)
+  assert.equal(renderForumTopic('![image](https://gitee.com/a.png)').includes('<img'), false)
+})
+
+test('read-only rich rendering preserves mark nesting and rejects attribute injection', () => {
+  const marks = [{ type: 'italic' }, { type: 'bold' }]
+  assert.equal(renderTiptapToHtml({ type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: '<x>', marks }] }] }), '<p><strong><em>&lt;x&gt;</em></strong></p>')
+  const html = renderTiptapToHtml({ type: 'doc', content: [
+    { type: 'heading', attrs: { level: '2 onclick=evil' }, content: [{ type: 'text', text: 'Title' }] },
+    { type: 'orderedList', attrs: { start: '1 onclick=evil' }, content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Item' }] }] }] },
+  ] })
+  assert.equal(html, '<h1>Title</h1><ol><li><p>Item</p></li></ol>')
 })

@@ -1,9 +1,9 @@
 import type { JSONContent } from '@tiptap/core'
 import type { DecodedForumText } from './forumContentCodec'
 import {
-  renderToHTMLString,
+  renderJSONContentToString,
   serializeChildrenToHTMLString,
-} from '@tiptap/static-renderer/pm/html-string'
+} from '@tiptap/static-renderer/json/html-string'
 import DOMPurify from 'dompurify'
 import { find } from 'linkifyjs'
 import { SITE_ORIGIN } from '~/constants/site'
@@ -19,7 +19,6 @@ import {
   SAFE_FORUM_URI_REGEX,
   shortenForumAutoLink,
 } from './forumLinkPolicy'
-import { createForumContentExtensions } from './forumTiptapExtensions'
 import { TOPIC_ID_PATTERN } from './forumTopicQuote'
 
 /** Matches an emoji filename extension. */
@@ -90,28 +89,50 @@ type RenderedForumComment
     | { kind: 'html', html: string, text: string }
 
 export function renderTiptapToHtml(doc: JSONContent, options: ForumTopicRenderOptions = {}): string {
-  return renderToHTMLString({
-    content: doc,
-    extensions: createForumContentExtensions({ openLinks: true }),
-    options: {
-      markMapping: {
-        link: ({ mark, children }) => {
-          const content = serializeChildrenToHTMLString(children)
-          const href = typeof mark.attrs.href === 'string' ? mark.attrs.href : ''
-          return renderTiptapLink(href, content, options)
-        },
-      },
-      nodeMapping: {
-        codeBlock: ({ node }) => `<pre><code>${escapeHtml(node.textContent)}</code></pre>`,
-        topicReference: ({ node }) => linkForumReferences(`#${String(node.attrs.id || '')}`, options),
-        emoji: ({ node }) => renderEmoji(node.attrs),
-        mention: ({ node }) => renderMention(node.attrs),
-        text: ({ node }) => node.marks?.some(mark => mark.type.name === 'code' || mark.type.name === 'link')
-          ? escapeHtml(node.text || '')
-          : renderForumPlainText(node.text || '', options),
+  type RenderNode = Omit<JSONContent, 'type' | 'content'> & { type: string, content?: RenderNode[] }
+  type RenderMark = NonNullable<JSONContent['marks']>[number]
+  const normalize = (node: JSONContent): RenderNode => {
+    const { type, content, ...rest } = node
+    return { ...rest, type: type ?? '', content: content?.map(normalize) }
+  }
+  return renderJSONContentToString<RenderMark, RenderNode>({
+    markMapping: {
+      bold: ({ children }) => `<strong>${serializeChildrenToHTMLString(children)}</strong>`,
+      italic: ({ children }) => `<em>${serializeChildrenToHTMLString(children)}</em>`,
+      strike: ({ children }) => `<s>${serializeChildrenToHTMLString(children)}</s>`,
+      underline: ({ children }) => `<u>${serializeChildrenToHTMLString(children)}</u>`,
+      code: ({ children }) => `<code>${serializeChildrenToHTMLString(children)}</code>`,
+      link: ({ mark, children }) => {
+        const content = serializeChildrenToHTMLString(children)
+        const href = typeof mark.attrs?.href === 'string' ? mark.attrs.href : ''
+        return renderTiptapLink(href, content, options)
       },
     },
-  })
+    nodeMapping: {
+      doc: ({ children }) => serializeChildrenToHTMLString(children),
+      paragraph: ({ children }) => `<p>${serializeChildrenToHTMLString(children)}</p>`,
+      blockquote: ({ children }) => `<blockquote>${serializeChildrenToHTMLString(children)}</blockquote>`,
+      bulletList: ({ children }) => `<ul>${serializeChildrenToHTMLString(children)}</ul>`,
+      listItem: ({ children }) => `<li>${serializeChildrenToHTMLString(children)}</li>`,
+      orderedList: ({ node, children }) => {
+        const start = Number.isInteger(node.attrs?.start) ? node.attrs!.start : 1
+        return `<ol${start === 1 ? '' : ` start=${start}`}>${serializeChildrenToHTMLString(children)}</ol>`
+      },
+      heading: ({ node, children }) => {
+        const level = Number.isInteger(node.attrs?.level) && node.attrs!.level >= 1 && node.attrs!.level <= 6 ? node.attrs!.level : 1
+        return `<h${level}>${serializeChildrenToHTMLString(children)}</h${level}>`
+      },
+      hardBreak: () => '<br>',
+      horizontalRule: () => '<hr>',
+      codeBlock: ({ node }) => `<pre><code>${escapeHtml(node.content?.map(child => child.text ?? '').join('') ?? '')}</code></pre>`,
+      topicReference: ({ node }) => linkForumReferences(`#${String(node.attrs?.id || '')}`, options),
+      emoji: ({ node }) => renderEmoji(node.attrs ?? {}),
+      mention: ({ node }) => renderMention(node.attrs ?? {}),
+      text: ({ node }) => node.marks?.some((mark: NonNullable<JSONContent['marks']>[number]) => mark.type === 'code' || mark.type === 'link')
+        ? escapeHtml(node.text || '')
+        : renderForumPlainText(node.text || '', options),
+    },
+  })({ content: normalize(doc) })
 }
 
 export function renderForumComment(
