@@ -40,14 +40,14 @@ function handleSelect(option: ForumSelectOption) {
     <DrawerTrigger as-child>
       <slot name="trigger" />
     </DrawerTrigger>
-    <DrawerContent class="pb-[max(1rem,env(safe-area-inset-bottom))] max-h-[80vh] overflow-y-auto">
-      <DrawerHeader class="text-left">
+    <DrawerContent class="pb-[max(1rem,env(safe-area-inset-bottom))] max-h-[80dvh] overflow-hidden">
+      <DrawerHeader class="text-left shrink-0">
         <DrawerTitle>{{ label }}</DrawerTitle>
         <DrawerDescription class="sr-only">
           {{ label }}
         </DrawerDescription>
       </DrawerHeader>
-      <div class="px-4 pb-2" role="listbox" :aria-label="label">
+      <div class="px-4 pb-2 overscroll-contain flex-1 min-h-0 overflow-y-auto" role="listbox" :aria-label="label">
         <template v-for="(group, groupIndex) in groups" :key="groupIndex">
           <div v-if="group.label" class="forum-select-drawer-group">
             {{ group.label }}

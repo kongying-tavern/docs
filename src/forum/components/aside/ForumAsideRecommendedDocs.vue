@@ -10,7 +10,7 @@ const copy = computed(() => message.value.forum.aside.suggest)
 
 const recommendedDocs = computed(() => {
   const sidebarDocs = flattenWithTags(
-    Object.values(theme.value.sidebar).flat().filter(item => item.text),
+    Object.values(theme.value.sidebar as Record<string, Parameters<typeof flattenWithTags>[0]>).flat().filter(item => item.text),
   ).filter(item => item.text.trim() !== item.tag.trim())
   const firstBySection = new Map<string, typeof sidebarDocs[number]>()
   for (const item of sidebarDocs) {

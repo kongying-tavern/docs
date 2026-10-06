@@ -36,7 +36,7 @@ const contactQRCode = useQRCode(computed(() => copy.value.qrcodeLink))
   align-items: center;
   justify-content: center;
   padding: 0 12px;
-  border: 1px solid var(--vp-c-brand-3);
+  border: 1px solid oklch(var(--ring));
   border-radius: 999px;
   color: var(--vp-c-brand-1);
   font-size: calc(12px * var(--site-ui-scale));

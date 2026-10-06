@@ -2,10 +2,10 @@
 import { computed, defineAsyncComponent } from 'vue'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumHome from '../home/ForumHome.vue'
-import ForumUserPage from '../user/ForumUserPage.vue'
 
 const ForumTopicPage = defineAsyncComponent(() => import('../topic/ForumTopicPage.vue'))
 const ForumSearchPage = defineAsyncComponent(() => import('../search/ForumSearchPage.vue'))
+const ForumUserPage = defineAsyncComponent(() => import('../user/ForumUserPage.vue'))
 
 const { route } = useForumRoute()
 

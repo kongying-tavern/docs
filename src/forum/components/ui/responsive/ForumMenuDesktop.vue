@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type { FORUM } from '../types'
+import type { FORUM } from '../../types'
 import {
   DropdownMenu,
   DropdownMenuContent,

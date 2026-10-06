@@ -8,11 +8,9 @@ defineProps<{ topic: ForumAPI.Topic }>()
 </script>
 
 <template>
-  <div class="mt-12 flex items-center justify-between">
-    <div class="flex gap-3">
-      <ForumTopicReactionButton :topic-id="String(topic.id)" refetch-on-mount="always" />
-      <ForumQuoteTopicButton :topic="topic" />
-      <ForumCopyLinkButton />
-    </div>
+  <div class="mt-12 flex flex-wrap gap-3 items-center">
+    <ForumTopicReactionButton :topic-id="String(topic.id)" refetch-on-mount="always" />
+    <ForumQuoteTopicButton :topic="topic" />
+    <ForumCopyLinkButton />
   </div>
 </template>

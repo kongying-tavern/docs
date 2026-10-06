@@ -60,6 +60,11 @@ const statusOptions = computed<StatusOption[]>(() => {
   return flat
 })
 
+function statusForOption(id: string): ForumAPI.TopicStatus | undefined {
+  const option = statusOptions.value.find(option => option.id === id)
+  return option?.id === KEEP ? undefined : option?.id
+}
+
 async function handleSubmit() {
   if (!topic.value)
     return
@@ -107,7 +112,7 @@ watch([topic, open], ([, isOpen]) => {
           </button>
         </template>
         <template #prefix="{ option }">
-          <ForumTopicStatusBadge :status="option.id === KEEP ? undefined : option.id" />
+          <ForumTopicStatusBadge :status="statusForOption(option.id)" />
         </template>
       </ForumResponsiveSelect>
 

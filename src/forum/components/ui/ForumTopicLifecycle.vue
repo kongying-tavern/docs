@@ -63,7 +63,7 @@ async function copyTopicId() {
 .forum-topic-lifecycle {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: 0.25rem;
   flex-shrink: 0;
   color: var(--vp-c-text-2);
   font-size: 12px;
@@ -73,25 +73,28 @@ async function copyTopicId() {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid var(--vp-c-text-2);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
 
 .forum-topic-lifecycle-icon > span {
-  width: 12px;
-  height: 12px;
+  width: 9px;
+  height: 9px;
+}
+
+.is-open {
+  border: 1px solid currentColor;
 }
 
 .is-progressing {
-  border-color: var(--vp-c-green-3);
   background: var(--vp-c-green-3);
   color: var(--vp-c-white);
 }
 
 .is-closed {
-  border-color: var(--vp-c-danger-3);
   background: var(--vp-c-danger-3);
   color: var(--vp-c-white);
 }
@@ -137,7 +140,7 @@ button.forum-topic-id.is-copied .forum-topic-copy-icon {
 }
 
 button.forum-topic-id:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 2px;
   border-radius: 2px;
 }

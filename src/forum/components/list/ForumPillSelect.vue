@@ -17,10 +17,11 @@ const emit = defineEmits<{
   'update:modelValue': [value: T]
 }>()
 
-function handleUpdateModelValue(next: T) {
-  if (next !== props.modelValue) {
-    emit('update:modelValue', next)
-    emit('change', next)
+function handleUpdateModelValue(next: string) {
+  const option = props.options.find(option => option.id === next)
+  if (option && next !== props.modelValue) {
+    emit('update:modelValue', option.id)
+    emit('change', option.id)
   }
 }
 

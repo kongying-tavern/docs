@@ -12,6 +12,11 @@ const ui: CustomConfig['ui'] = {
   banner: {
     wip: 'The translation for this page is still in progress.',
   },
+  chunkLoadRecovery: {
+    description: 'Some content could not load. The connection may have failed or the page may have been updated. Save any unsent content, then check your connection and reload.',
+    reload: 'Reload page',
+    later: 'Later',
+  },
   button: {
     submit: 'Submit',
     cancel: 'Cancel',

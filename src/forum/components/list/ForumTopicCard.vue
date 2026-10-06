@@ -13,8 +13,12 @@ const { topic, compact, cardMode, showComment, inReply } = defineProps<{
   showComment: boolean
   inReply: boolean
 }>()
-const emit = defineEmits<{ activate: [destination: 'detail' | 'preview'], prepare: [], comment: [destination: 'detail' | 'preview'] }>()
+const emit = defineEmits<{ activate: [destination: 'detail' | 'preview'], prepare: [destination: 'detail' | 'preview'], comment: [destination: 'detail' | 'preview'] }>()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+function prepare(): void {
+  if (topic.type !== 'POST')
+    emit('prepare', isMobile.value ? 'detail' : 'preview')
+}
 function openComments(): void {
   emit('comment', isMobile.value ? 'detail' : 'preview')
 }
@@ -40,7 +44,7 @@ function activate(event: MouseEvent): void {
     :id="`topic-${topic.id}`" :data-forum-topic="String(topic.id)"
     class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full hover:bg-[var(--vp-c-default-soft)]"
     :class="[topic.type]" :tabindex="topic.type === 'POST' ? undefined : 0"
-    @pointerdown="emit('prepare')" @keydown.enter.self="emit('prepare'); openTopic()" @click="activate"
+    @pointerenter="prepare" @focusin="prepare" @pointerdown="prepare" @keydown.enter.self="prepare(); openTopic()" @click="activate"
   >
     <div class="topic-content">
       <div data-forum-card-interactive>

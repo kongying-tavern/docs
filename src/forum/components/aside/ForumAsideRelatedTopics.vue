@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
-import { Skeleton } from '@/components/ui/skeleton'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { CATEGORY_LABEL_PREFIX } from '~/forum/services/forumLabel'
-import { skeletonItemOpacity } from '~/forum/services/forumListSkeleton'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumTopicLifecycle from '../ui/ForumTopicLifecycle.vue'
 import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
@@ -16,8 +14,6 @@ import ForumAsideSection from './ForumAsideSection.vue'
 const props = defineProps<{
   topic: ForumAPI.Topic
 }>()
-
-const RELATED_SKELETON_COUNT = 3
 
 const { message } = useLocalized()
 const { topicHref } = useForumRoute()
@@ -45,45 +41,8 @@ function commentCount(topic: ForumAPI.Topic): number {
 </script>
 
 <template>
-  <ForumAsideSection section-id="related" :title="copy.title">
-    <div v-if="!canLoadRelated" class="aside-state">
-      {{ copy.noTags }}
-    </div>
-    <div v-else-if="relatedTopics.isLoading.value && !relatedTopics.rows.value.length" aria-hidden="true">
-      <div
-        v-for="index in RELATED_SKELETON_COUNT"
-        :key="index"
-        class="aside-skeleton-item"
-        :style="{ opacity: skeletonItemOpacity(index - 1, RELATED_SKELETON_COUNT) }"
-      >
-        <div class="flex gap-1 items-center">
-          <Skeleton class="rounded-full shrink-0 size-6" />
-          <Skeleton class="h-3 w-20" />
-          <Skeleton class="h-3 w-14" />
-        </div>
-        <div class="space-y-1.5">
-          <Skeleton class="h-4 w-full" />
-          <Skeleton class="h-4 w-[62%]" />
-        </div>
-        <div class="flex items-center justify-between">
-          <div class="flex gap-2.5">
-            <Skeleton class="h-3 w-20" />
-            <Skeleton class="h-3 w-10" />
-          </div>
-          <Skeleton class="h-4 w-14" />
-        </div>
-      </div>
-    </div>
-    <div v-else-if="relatedTopics.error.value" class="aside-state" role="status">
-      <span>{{ copy.error }}</span>
-      <button type="button" :disabled="relatedTopics.isLoading.value" @click="relatedTopics.refetch()">
-        {{ copy.retry }}
-      </button>
-    </div>
-    <p v-else-if="!relatedSuggestions.length" class="aside-state">
-      {{ copy.empty }}
-    </p>
-    <ol v-else class="related-topic-list">
+  <ForumAsideSection v-if="canLoadRelated && relatedSuggestions.length" section-id="related" :title="copy.title">
+    <ol class="related-topic-list">
       <li v-for="related in relatedSuggestions" :key="related.id">
         <a :href="topicHref(String(related.id), null)" class="related-topic">
           <User
@@ -223,44 +182,5 @@ function commentCount(topic: ForumAPI.Topic): number {
   font-size: calc(12px * var(--site-ui-scale));
   line-height: calc(18px * var(--site-ui-scale));
   white-space: nowrap;
-}
-
-.aside-state {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 0;
-  padding: 14px 4px;
-  border-top: 1px solid var(--vp-c-divider);
-  color: var(--vp-c-text-2);
-  font-size: calc(13px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
-}
-
-.aside-state button {
-  flex-shrink: 0;
-  color: var(--vp-c-brand-1);
-  cursor: pointer;
-}
-
-.aside-state button:hover:not(:disabled) {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.aside-state button:disabled {
-  opacity: 0.5;
-  cursor: wait;
-}
-
-.aside-skeleton-item {
-  display: grid;
-  gap: 8px;
-  padding: 13px 4px;
-}
-
-.aside-skeleton-item + .aside-skeleton-item {
-  border-top: 1px solid var(--vp-c-divider);
 }
 </style>

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
-import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import { useTopicInteraction } from '../composables/useTopicInteraction'
 import { useTopicState } from '../composables/useTopicState'
 import ForumQuotedTopic from '../topic/ForumQuotedTopic.vue'
@@ -20,10 +19,13 @@ const { topic } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  preview: [topic: ForumAPI.Topic, focusComment: boolean]
+  'preview': [topic: ForumAPI.Topic, focusComment: boolean]
+  'prepare-preview': []
 }>()
 
-const { translator, menu: baseMenu, showComment } = useTopicState(topic)
+const ForumCommentArea = defineAsyncComponent(() => import('../comment/ForumCommentArea.vue'))
+
+const { menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)
 const translatedContent = ref<string>()
 const translatedTitle = ref('')
@@ -46,8 +48,16 @@ function handleSummaryClick() {
   toPostDetailPage()
 }
 
+function prepareInteraction(destination: 'detail' | 'preview'): void {
+  prepareTopicDetail()
+  if (destination === 'preview')
+    emit('prepare-preview')
+  else
+    void import('../topic/ForumTopicPage.vue').catch(() => {})
+}
+
 function handleCommentClick(destination: 'detail' | 'preview') {
-  if (destination === 'detail') {
+  if (destination === 'detail' || topic.type === 'POST') {
     toPostDetailPage('reply')
     return
   }
@@ -73,7 +83,7 @@ function showTranslatedContent(content: string): void {
 <template>
   <ForumTopicCard
     :topic="topic" :compact="isCompactMode" :card-mode="isCardMode" :show-comment="showComment" :in-reply="inReply"
-    @prepare="prepareTopicDetail" @activate="handleRowActivation" @comment="handleCommentClick"
+    @prepare="prepareInteraction" @activate="handleRowActivation" @comment="handleCommentClick"
   >
     <template #header>
       <ForumTopicHeader :topic="topic" :menu="menu" />
@@ -81,7 +91,7 @@ function showTranslatedContent(content: string): void {
     <template #content>
       <ForumTopicContent :topic="topic" :detail-href="detailHref()" :content-override="showingTranslation ? translatedContent : undefined" :title-override="showingTranslation ? translatedTitle : undefined" @summary-click="handleSummaryClick">
         <template #translation>
-          <ForumTopicTranslator :key="`translator-${topic.id}`" ref="translator" :content="topic.content.text" :title="topic.title" :source-language="topic.language" @translated="showTranslatedContent" @title-translated="translatedTitle = $event" @close="showingTranslation = false" />
+          <ForumTopicTranslator :key="`translator-${topic.id}`" :content="topic.content.text" :title="topic.title" :source-language="topic.language" @translated="showTranslatedContent" @title-translated="translatedTitle = $event" @close="showingTranslation = false" />
         </template>
       </ForumTopicContent>
     </template>

@@ -26,8 +26,9 @@ function getRadioCheckedValue(group: FORUM.MenuRadioGroup): string {
   return group.items.find(item => item.checked)?.value ?? ''
 }
 
-function handleRadioSelect(group: FORUM.MenuRadioGroup, value: string) {
-  group.items.find(item => item.value === value)?.onChange?.(value)
+function handleRadioSelect(group: FORUM.MenuRadioGroup, value: unknown) {
+  if (typeof value === 'string')
+    group.items.find(item => item.value === value)?.onChange?.(value)
 }
 </script>
 

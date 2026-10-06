@@ -54,12 +54,17 @@ function scheduleForumPreload(): void {
     return
 
   const preload = () => {
+    if (!FORUM_PATH_REGEX.test(location.pathname)) {
+      forumPreloadScheduled = false
+      return
+    }
     void Promise.all([
       loadForumLayout(),
       preloadForumRouteView(),
-      import('~/forum/components/topic/ForumTopicPage.vue'),
       import('~/forum/components/sidebar/ForumSidebar.vue'),
-    ]).catch(() => undefined)
+    ]).catch(() => {
+      forumPreloadScheduled = false
+    })
   }
   if ('requestIdleCallback' in window)
     window.requestIdleCallback(preload, { timeout: 3000 })

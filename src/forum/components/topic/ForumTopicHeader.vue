@@ -59,11 +59,13 @@ const { userHref } = useForumRoute()
         :date="topic.createdAt"
         :toggleable="interactive"
       />
-      <ForumTopicDropdownMenu
-        v-if="showMenu"
-        :topic-data="topic"
-        :menu="menu"
-      />
+      <slot name="menu">
+        <ForumTopicDropdownMenu
+          v-if="showMenu && topic.type !== 'POST'"
+          :topic-data="topic"
+          :menu="menu"
+        />
+      </slot>
     </div>
   </div>
 </template>

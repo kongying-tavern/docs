@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import Divider from '@/components/ui/divider/Divider.vue'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useIdlePreload } from '~/forum/composables/view/useIdlePreload'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { beginForumVisit, findLastVisitedDividerIndex } from '~/forum/services/forumLastVisit'
 import ForumTopicPreviewDialog from '../topic/ForumTopicPreviewDialog.vue'
+import { preloadForumTopicPreviewContent } from '../utils/forumComponentPreload'
 import ForumTopic from './ForumTopic.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
@@ -22,10 +25,18 @@ const props = defineProps<{
   sort?: ForumAPI.SortMethod
 }>()
 
+function preparePreview(): void {
+  void preloadForumTopicPreviewContent().catch(() => {})
+}
+
+const mobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+useIdlePreload(preloadForumTopicPreviewContent, () => props.data.length > 0 && !mobile.value)
+useIdlePreload(() => import('../topic/ForumTopicPage.vue'), () => props.data.length > 0 && mobile.value)
+
 const { message } = useLocalized()
 const previousVisitAt = beginForumVisit()
 const lastVisitedDividerIndex = computed(() =>
-  findLastVisitedDividerIndex(props.data, previousVisitAt, props.sort),
+  findLastVisitedDividerIndex(props.data, previousVisitAt, props.sort ?? 'created'),
 )
 
 if (props.loadMore) {
@@ -83,6 +94,7 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
         </Divider>
         <ForumTopic
           :topic="item"
+          @prepare-preview="preparePreview"
           @preview="openPreview"
         />
         <Separator
@@ -103,6 +115,7 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
     />
 
     <ForumTopicPreviewDialog
+      v-if="previewTopic"
       v-model:open="previewOpen"
       :topic="previewTopic"
       :focus-comment="previewFocusComment"

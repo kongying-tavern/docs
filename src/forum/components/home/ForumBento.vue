@@ -1,30 +1,24 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { useRouter } from 'vitepress'
 import { cn } from '@/lib/utils'
 
 interface Props {
   class?: HTMLAttributes['class']
-  to?: string
+  to: string
 }
 
 const props = defineProps<Props>()
-const router = useRouter()
-
-function handleClick() {
-  router.go(props.to)
-}
 </script>
 
 <template>
-  <div
+  <a
+    :href="props.to"
     :class="
       cn(
         'cursor-pointer row-span-1 rounded-xl group/bento transition-[background-color,border-color] duration-200 shadow-input dark:shadow-none p-4 border border-transparent justify-between flex flex-col space-y-4 hover:bg-[var(--vp-c-bg-soft)] hover:border-[var(--vp-c-border)]',
         props.class,
       )
     "
-    @click="handleClick"
   >
     <slot name="header" />
     <div class="transition duration-200">
@@ -36,5 +30,5 @@ function handleClick() {
         <slot name="description" />
       </div>
     </div>
-  </div>
+  </a>
 </template>

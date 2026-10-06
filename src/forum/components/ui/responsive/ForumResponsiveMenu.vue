@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { DropdownMenuContentProps } from 'reka-ui'
-import type { FORUM } from '../types'
+import type { FORUM } from '../../types'
 import { useMediaQuery } from '@vueuse/core'
-import { computed, defineAsyncComponent, onMounted } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
-import { prefetchForumUiBranch } from './shared'
 
 const props = withDefaults(defineProps<{
   items?: FORUM.TopicDropdownMenu[]
@@ -34,12 +33,6 @@ const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
 const hasItems = computed(() => (props.items?.length ?? 0) > 0)
 const drawerTitle = computed(() => props.title ?? message.value.forum.topic.menu.moreActions)
-
-onMounted(() => {
-  prefetchForumUiBranch(isMobile.value
-    ? () => import('./ForumMenuMobileDrawer.vue')
-    : () => import('./ForumMenuDesktop.vue'))
-})
 </script>
 
 <template>

@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
+import { defineAsyncComponent } from 'vue'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import ForumAsideContact from './ForumAsideContact.vue'
 import ForumAsideHomeResources from './ForumAsideHomeResources.vue'
 import ForumAsideLoginPrompt from './ForumAsideLoginPrompt.vue'
 import ForumAsideMeta from './ForumAsideMeta.vue'
-import ForumAsideRelatedTopics from './ForumAsideRelatedTopics.vue'
-import ForumAsideTopicTimeline from './ForumAsideTopicTimeline.vue'
-import ForumAsideUserProfile from './ForumAsideUserProfile.vue'
 
 withDefaults(defineProps<{
   topic?: ForumAPI.Topic | null
@@ -19,6 +16,10 @@ withDefaults(defineProps<{
   tagFilter: false,
   username: null,
 })
+const ForumAsideContact = defineAsyncComponent(() => import('./ForumAsideContact.vue'))
+const ForumAsideRelatedTopics = defineAsyncComponent(() => import('./ForumAsideRelatedTopics.vue'))
+const ForumAsideTopicTimeline = defineAsyncComponent(() => import('./ForumAsideTopicTimeline.vue'))
+const ForumAsideUserProfile = defineAsyncComponent(() => import('./ForumAsideUserProfile.vue'))
 
 const auth = useUserAuthStore()
 </script>
@@ -71,7 +72,7 @@ const auth = useUserAuthStore()
 }
 
 .forum-context-aside :deep(:is(a, button):focus-visible) {
-  outline: 2px solid var(--vp-c-brand-2);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 3px;
 }
 </style>

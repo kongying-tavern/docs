@@ -4,16 +4,21 @@ import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import { computed, defineAsyncComponent, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
+import ChunkLoadRecovery from '@/components/ChunkLoadRecovery.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useThemeTransition } from '@/hooks/useThemeTransition'
 import { useSitePreferences } from '~/composables/useSitePreferences'
-import { isSettingsSectionId } from '~/config/settingsOptions'
+import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '~/config/settingsOptions'
 
 import '@/styles/main.css'
 
 const { Layout } = DefaultTheme
+const PiniaColadaDevtools = import.meta.env.DEV && import.meta.env.VITE_COLADA_DEVTOOLS !== 'false'
+  ? defineAsyncComponent(() => import('@pinia/colada-devtools').then(module => module.PiniaColadaDevtools))
+  : null
 const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
 const DocHeader = defineAsyncComponent(() => import('@/components/DocHeader.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
@@ -23,8 +28,12 @@ const SettingsPage = defineAsyncComponent(() => import('~/components/settings/Se
 const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
+const ToastDiagnosticsDialog = defineAsyncComponent(() => import('~/components/telemetry/ToastDiagnosticsDialog.vue'))
 const { isDark, frontmatter } = useData()
-const { toastDuration, toastPosition } = useSitePreferences()
+const { message } = useLocalized()
+const { desktopUi, toastDuration, toastPosition } = useSitePreferences()
+// Keep the Sonner position key stable; responsive placement is handled by CSS.
+const displayedToastDuration = computed(() => desktopUi.value ? toastDuration.value : DEFAULT_TOAST_DURATION)
 const { toggleTheme } = useThemeTransition()
 const currentHash = ref('')
 const showSettingsHash = computed(() => {
@@ -72,11 +81,14 @@ provide('toggle-appearance', toggleTheme)
   <Layout :class="{ [frontmatter.layout || '']: true, [frontmatter.class || '']: true }">
     <template #layout-top>
       <Banner />
+      <ChunkLoadRecovery />
       <Sonner
         :theme="isDark ? 'dark' : 'light'"
         :position="toastPosition"
-        :duration="toastDuration"
-        :close-button="toastDuration === Number.POSITIVE_INFINITY"
+        :duration="displayedToastDuration"
+        :visible-toasts="desktopUi ? 3 : 1"
+        :close-button="displayedToastDuration === Number.POSITIVE_INFINITY"
+        :toast-options="{ closeButtonAriaLabel: message.ui.button.close }"
       />
     </template>
 
@@ -107,6 +119,7 @@ provide('toggle-appearance', toggleTheme)
 
     <template #layout-bottom>
       <SettingsPage v-if="showSettingsDialog" dialog-only />
+      <ToastDiagnosticsDialog />
       <HighlightTargetedHeading />
       <template v-if="showAuthDialogs">
         <LoginAlertDialog />
@@ -115,6 +128,9 @@ provide('toggle-appearance', toggleTheme)
     </template>
   </Layout>
   <MediumZoom />
+  <ClientOnly>
+    <PiniaColadaDevtools v-if="PiniaColadaDevtools" />
+  </ClientOnly>
 </template>
 
 <style>

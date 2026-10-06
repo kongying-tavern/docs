@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
+import type { FORUM } from '../../types'
 import ForumTopicStatusBadge from '../ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
 import { menuItemKey, sortMenuItems } from './shared'
@@ -78,12 +78,28 @@ function handleRadioClick(item: FORUM.MenuRadioItem) {
       <button
         v-else-if="item.type === 'submenu'"
         type="button"
+        :disabled="item.disabled"
         class="forum-menu-mobile-option" :class="[item.class]"
         @click="handleSubmenuClick(item)"
       >
         <span v-if="item.icon" class="icon-btn shrink-0" :class="item.icon" />
         <span class="text-left flex-1 min-w-0 truncate">{{ item.label }}</span>
         <span class="i-lucide-chevron-right text-[var(--vp-c-text-3)] shrink-0 size-4" aria-hidden="true" />
+      </button>
+
+      <button
+        v-else-if="item.type === 'radio-item'"
+        type="button"
+        role="menuitemradio"
+        :aria-checked="item.checked"
+        :disabled="item.disabled"
+        class="forum-menu-mobile-option" :class="[item.class]"
+        @click="handleRadioClick(item)"
+      >
+        <span v-if="item.icon" class="icon-btn shrink-0" :class="item.icon" />
+        <span class="text-left flex-1 min-w-0 truncate">{{ item.label }}</span>
+        <span v-if="item.hint" class="text-xs text-[var(--vp-c-text-3)]">{{ item.hint }}</span>
+        <span v-if="item.checked" class="i-lucide-check text-[var(--vp-c-brand-1)] shrink-0 size-4" aria-hidden="true" />
       </button>
 
       <button

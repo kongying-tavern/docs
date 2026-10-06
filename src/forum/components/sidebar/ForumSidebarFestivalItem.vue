@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { ActiveForumFestival, ForumFestivalEffectController } from '~/forum/services/forumFestival'
+import type { ForumFestivalEffectController } from '~/forum/effects/types'
+import type { ActiveForumFestival } from '~/forum/services/forumFestival'
 import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
@@ -322,7 +323,7 @@ onBeforeUnmount(() => {
 }
 
 .forum-sidebar-festival:focus-within {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 2px;
 }
 

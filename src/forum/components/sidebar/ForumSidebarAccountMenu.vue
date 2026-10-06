@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { ForumSidebarMenuItem } from './forumSidebarMenu'
 import { useMediaQuery } from '@vueuse/core'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import User from '@/components/ui/User.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
+import { useIdlePreload } from '~/forum/composables/view/useIdlePreload'
 import useLogin from '~/forum/hooks/useLogin'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
@@ -22,11 +22,19 @@ const props = defineProps<{
   profileHref: string
 }>()
 
+const loadSettings = () => import('~/components/settings/SettingsPage.vue')
+const SettingsPage = defineAsyncComponent(loadSettings)
+
 const { message } = useLocalized()
 const userInfo = useUserInfoStore()
 const { showLoginAlert, logout } = useLogin()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const mobileSettingsOpen = ref(false)
+useIdlePreload(loadSettings, () => isMobile.value)
+function prepareSettings(): void {
+  if (isMobile.value)
+    void loadSettings().catch(() => {})
+}
 
 function closeForumSidebar(): void {
   if (isMobile.value)
@@ -142,6 +150,9 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
           class="forum-sidebar-account-trigger"
           :data-feedback-account="userInfo.info ? 'logged-in' : 'logged-out'"
           :data-forum-user="userInfo.info?.login"
+          @pointerenter="prepareSettings"
+          @focus="prepareSettings"
+          @pointerdown="prepareSettings"
           @click="closeForumSidebar"
         >
           <UserAvatar
@@ -271,7 +282,7 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
 
 .forum-sidebar-account-trigger:focus-visible,
 .forum-sidebar-help-trigger:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 2px;
 }
 

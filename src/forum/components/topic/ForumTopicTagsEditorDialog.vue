@@ -51,15 +51,15 @@ watch([topic, open], ([newTopic, isOpen]) => {
       <div class="flex items-center space-x-2">
         <ForumTagsInput v-model="tags" />
       </div>
-      <DialogFooter class="sm:justify-start">
-        <Button type="button" variant="default" :disabled="updatingTopic" @click="handleSubmit">
-          {{ updatingTopic ? message.ui.button.loading : message.ui.button.submit }}
-        </Button>
+      <DialogFooter>
         <DialogClose as-child>
           <Button type="button" variant="secondary" :disabled="updatingTopic" @click="handleCancel">
             {{ message.ui.button.cancel }}
           </Button>
         </DialogClose>
+        <Button type="button" variant="default" :disabled="updatingTopic" @click="handleSubmit">
+          {{ updatingTopic ? message.ui.button.loading : message.ui.button.submit }}
+        </Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

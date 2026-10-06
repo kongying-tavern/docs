@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
-import { computed, ref } from 'vue'
+import type { FORUM } from '../../types'
+import { computed, ref, shallowRef } from 'vue'
 import {
   Drawer,
   DrawerContent,
@@ -31,9 +31,9 @@ interface MenuPanel {
   items: FORUM.TopicDropdownMenu[]
 }
 
-const panels = ref<MenuPanel[]>([{ title: props.title, items: props.items }])
+const panels = shallowRef<MenuPanel[]>([{ title: props.title, items: props.items }])
 
-const currentPanel = computed(() => panels.value.at(-1))
+const currentPanel = computed(() => panels.value.at(-1) ?? { title: props.title, items: props.items })
 const canGoBack = computed(() => panels.value.length > 1)
 
 function handleOpenChange(next: boolean) {
@@ -61,8 +61,8 @@ function handleClose() {
     <DrawerTrigger as-child>
       <slot name="trigger" />
     </DrawerTrigger>
-    <DrawerContent class="pb-[max(1rem,env(safe-area-inset-bottom))] max-h-[80vh] overflow-y-auto">
-      <DrawerHeader class="text-left">
+    <DrawerContent class="pb-[max(1rem,env(safe-area-inset-bottom))] max-h-[80dvh] overflow-hidden">
+      <DrawerHeader class="text-left shrink-0">
         <DrawerTitle class="flex gap-2 items-center">
           <button
             v-if="canGoBack"
@@ -79,7 +79,7 @@ function handleClose() {
           {{ currentPanel.title }}
         </DrawerDescription>
       </DrawerHeader>
-      <div class="px-4 pb-2">
+      <div class="px-4 pb-2 overscroll-contain flex-1 min-h-0 overflow-y-auto">
         <Transition name="forum-menu-panel" mode="out-in">
           <div :key="currentPanel.title">
             <slot v-if="!canGoBack" name="menu" />
@@ -104,5 +104,12 @@ function handleClose() {
 .forum-menu-panel-enter-from,
 .forum-menu-panel-leave-to {
   opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .forum-menu-panel-enter-active,
+  .forum-menu-panel-leave-active {
+    transition: none;
+  }
 }
 </style>

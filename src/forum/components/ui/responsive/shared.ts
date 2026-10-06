@@ -60,17 +60,3 @@ export function menuItemKey(item: FORUM.TopicDropdownMenu, index: number): strin
     return item.id ?? `radio-item-${index}`
   return item.id ?? `${item.type}-${index}`
 }
-
-/** 按当前环境空闲预取对应分支的 chunk，避免首次点击才发起请求 */
-export function prefetchForumUiBranch(loader: () => Promise<unknown>): void {
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(() => {
-      void loader().catch(() => undefined)
-    }, { timeout: 2000 })
-  }
-  else {
-    setTimeout(() => {
-      void loader().catch(() => undefined)
-    }, 0)
-  }
-}

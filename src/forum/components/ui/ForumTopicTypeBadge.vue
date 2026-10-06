@@ -153,7 +153,7 @@ function filterByStatus(value: ForumAPI.TopicStatus | 'good-issue') {
 
 .forum-badge-square-filter:hover,
 .forum-badge-square-filter:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 2px;
 }
 

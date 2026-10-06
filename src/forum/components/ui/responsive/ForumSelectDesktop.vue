@@ -35,8 +35,9 @@ defineSlots<{
 
 const groups = computed(() => groupSelectOptions(props.options))
 
-function handleValueChange(next: string) {
-  emit('update:modelValue', next)
+function handleValueChange(next: unknown) {
+  if (typeof next === 'string')
+    emit('update:modelValue', next)
 }
 </script>
 

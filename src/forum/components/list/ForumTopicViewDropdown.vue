@@ -59,7 +59,7 @@ const items = computed<FORUM.TopicDropdownMenu[]>(() => [
     <template #trigger>
       <button
         type="button"
-        class="rounded-full inline-flex size-8 items-center justify-center focus-visible:outline-2 focus-visible:outline-[--vp-c-brand-1] hover:bg-[--vp-c-bg-soft]"
+        class="rounded-full inline-flex size-8 items-center justify-center focus-visible:outline-2 focus-visible:outline-ring hover:bg-[--vp-c-bg-soft]"
         :aria-label="`${message.forum.header.view.label}、${message.forum.sidebar.listSort}`"
         aria-haspopup="menu"
       >
@@ -98,7 +98,7 @@ const items = computed<FORUM.TopicDropdownMenu[]>(() => [
 }
 
 .forum-mobile-tag-filter :deep(button:focus-visible) {
-  outline: 2px solid var(--vp-c-brand-2);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 3px;
 }
 </style>

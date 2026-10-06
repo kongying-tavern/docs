@@ -18,7 +18,10 @@ import { useReactionStats } from '~/forum/composables/data/useReactionStats'
 const { open, target } = useReactionStats()
 const { message } = useLocalized()
 
-const reactionTarget = computed(() => target.value ?? { kind: 'topic', topicId: '' })
+const reactionTarget = computed(() => ({
+  topicId: target.value?.topicId ?? '',
+  commentId: target.value?.kind === 'comment' ? target.value.commentId : undefined,
+}))
 const reactionEnabled = computed(() => Boolean(target.value) && open.value)
 
 const {

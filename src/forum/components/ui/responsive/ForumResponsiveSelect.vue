@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { ForumSelectOption } from './shared'
 import { useMediaQuery } from '@vueuse/core'
-import { defineAsyncComponent, onMounted } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
-import { prefetchForumUiBranch } from './shared'
 
 const props = defineProps<{
   modelValue: string
@@ -34,12 +33,6 @@ function handleUpdateModelValue(next: string) {
     emit('change', next)
   }
 }
-
-onMounted(() => {
-  prefetchForumUiBranch(isMobile.value
-    ? () => import('./ForumSelectMobileDrawer.vue')
-    : () => import('./ForumSelectDesktop.vue'))
-})
 </script>
 
 <template>
@@ -62,7 +55,7 @@ onMounted(() => {
     v-else
     :model-value="props.modelValue"
     :options="props.options"
-    :label="title ?? label"
+    :label="title ?? label ?? ''"
     @update:model-value="handleUpdateModelValue"
   >
     <template #trigger>

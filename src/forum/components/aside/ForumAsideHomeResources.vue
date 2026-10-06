@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { data as allBlogPosts } from '~/_data/posts.data'
+import { data as allBlogPosts } from '~/_data/forumBlogPosts.data'
 import { useRecentBlogUpdates } from '~/forum/composables/data/useRecentBlogUpdates'
 import ForumAsideRecentUpdates from './ForumAsideRecentUpdates.vue'
 import ForumAsideRecommendedDocs from './ForumAsideRecommendedDocs.vue'

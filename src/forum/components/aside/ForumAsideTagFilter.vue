@@ -21,7 +21,7 @@ const labels = computed(() => {
     ...getTopicTagMap(message).keys(),
   ])
   const dynamicLabels = labelStore.categoryLabels.value.map(label => label.name)
-  return [...new Set([...staticLabels, ...dynamicLabels])]
+  return [...new Set([...staticLabels, ...dynamicLabels])].filter((label): label is string => typeof label === 'string')
 })
 const active = computed(() => parseForumSearchQuery(list.value?.q ?? '').tags)
 

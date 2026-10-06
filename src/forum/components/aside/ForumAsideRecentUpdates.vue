@@ -102,7 +102,7 @@ function postHref(slug: string): string {
 }
 
 .aside-recent-updates-item:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 2px;
 }
 
