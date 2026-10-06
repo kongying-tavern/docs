@@ -134,7 +134,4 @@ wip: true
 
 :::
 
-<style lang="scss" scoped>
-@use '../components/links/Join.scss';
-@include Join.main;
-</style>
+<style scoped src="../components/links/Join.css"></style>

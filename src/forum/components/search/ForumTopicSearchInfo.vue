@@ -28,7 +28,7 @@ async function handleUndo() {
 <template>
   <blockquote
     v-if="isSearching && !props.loading && props.total > 0"
-    class="text-sm color-[var(--vp-c-text-2)] my-3 px-2 py-1 border-l-2 border-[var(--vp-c-divider)] rounded-r-md flex min-h-8 w-full items-center hover:bg-[var(--vp-c-bg-soft)]"
+    class="text-sm color-[var(--vp-c-text-2)] my-3 px-2 py-1 border-[var(--vp-c-divider)] border-l-2 rounded-r-md flex min-h-8 w-full items-center hover:bg-[var(--vp-c-bg-soft)]"
   >
     <span
       class="i-lucide-chevron-right mr-1.5 icon-btn bg-[var(--vp-c-text-3)] shrink-0 size-4"

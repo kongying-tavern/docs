@@ -29,7 +29,8 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
+@import '@/styles/media.css';
 .forum-container {
   margin: 0 auto;
   padding: 0 16px;
@@ -52,7 +53,7 @@ onBeforeUnmount(() => {
   min-width: 0;
 }
 
-@media (min-width: 1440px) {
+@media (--site-wide) {
   .forum-container {
     width: min(var(--forum-container-max-width), 100%);
     margin: 0 auto;
@@ -60,14 +61,14 @@ onBeforeUnmount(() => {
   }
 }
 
-@media (min-width: 1280px) and (max-width: 1439px) {
+@media (--forum-two-columns) {
   .forum-columns {
     grid-template-columns: minmax(0, 1fr) 260px;
     gap: 16px;
   }
 }
 
-@media (max-width: 1279px) {
+@media (--forum-single-column) {
   .forum-columns {
     display: block;
   }

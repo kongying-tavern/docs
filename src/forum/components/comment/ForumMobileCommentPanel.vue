@@ -207,7 +207,8 @@ function setOpen(value: boolean): void {
   overflow: clip;
   border-radius: 16px 16px 0 0;
   transform: none;
-  translate: none;
+  /* Keep this reset separate from transform when Lightning CSS folds transforms. */
+  translate: none !important;
   animation: none;
   transition: height 180ms ease;
 }

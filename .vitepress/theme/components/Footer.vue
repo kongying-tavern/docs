@@ -112,7 +112,8 @@ function isExpanded(title: string) {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
+@import '@/styles/media.css';
 .footer-container {
   z-index: 1;
   position: relative;
@@ -264,7 +265,7 @@ function isExpanded(title: string) {
   }
 }
 
-@media (min-width: 1440px) {
+@media (--site-wide) {
   .footer-container .footer {
     max-width: calc(var(--vp-layout-max-width) - 64px);
     padding-left: 48px;
@@ -272,14 +273,14 @@ function isExpanded(title: string) {
   }
 }
 
-@media (min-width: 960px) {
+@media (--site-desktop) {
   .VPSidebar ~ .footer-container {
     width: calc(100% - var(--vp-sidebar-width));
     left: var(--vp-sidebar-width);
   }
 }
 
-@media (min-width: 48rem) {
+@media (--footer-columns) {
   .footer {
     grid-auto-flow: column;
     place-items: self-start;

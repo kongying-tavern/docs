@@ -1,5 +1,6 @@
 import type { DefaultTheme } from 'vitepress'
 import { fileURLToPath } from 'node:url'
+import { Features } from 'lightningcss'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
@@ -21,6 +22,13 @@ function flattenSidebarItems(items: DefaultTheme.SidebarItem[]): DefaultTheme.Si
 }
 
 export default defineConfig({
+  css: {
+    transformer: 'lightningcss',
+    lightningcss: {
+      drafts: { customMedia: true },
+      include: Features.Nesting | Features.CustomMediaQueries,
+    },
+  },
   build: {
     // The route-local Forum editor is ~572 kB raw (~154 kB Brotli).
     chunkSizeWarningLimit: 600,

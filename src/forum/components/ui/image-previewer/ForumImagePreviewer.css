@@ -1,3 +1,4 @@
+@import '@/styles/media.css';
 /* 图片舞台自行处理拖拽与缩放，侧栏单独恢复文字选择和纵向滚动。 */
 .forum-preview-root {
   --preview-panel-w: min(560px, 90vw);
@@ -456,7 +457,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (--motion-reduce) {
   .forum-preview-overlay,
   .forum-preview-image,
   .forum-preview-stack,

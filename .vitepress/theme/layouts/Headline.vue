@@ -47,7 +47,7 @@ function handleButtonClick() {
 <template>
   <div class="slide-enter Headline">
     <div
-      class="pb-6 border-b-1px border-b-[var(--vp-c-divider)] border-b-solid"
+      class="pb-6 border-b-[var(--vp-c-divider)] border-b-1px border-b-solid"
     >
       <div class="headline-ader fl-bex items-start justify-between">
         <div class="headline-content">

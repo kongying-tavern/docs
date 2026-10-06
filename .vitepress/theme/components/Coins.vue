@@ -70,7 +70,7 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .links {
   display: flex;
   flex-wrap: wrap;

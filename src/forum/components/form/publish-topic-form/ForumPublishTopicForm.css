@@ -1,3 +1,4 @@
+@import '@/styles/media.css';
 .form-container {
   --forum-send-duration: 260ms;
   --forum-send-ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -26,7 +27,7 @@
   color: var(--vp-c-text-1);
 }
 
-@media (min-width: 768px) {
+@media (--form-desktop) {
   .letter-title-input,
   .letter-tags-input,
   .letter-content-input {
@@ -216,7 +217,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (--form-mobile) {
   .form-container.feedback-drawer[data-vaul-drawer-direction='bottom'] {
     max-height: calc(100dvh - 24px);
     border-radius: 1rem 1rem 0 0;
@@ -294,7 +295,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (--motion-reduce) {
   .form-container {
     --forum-send-duration: 0ms;
   }

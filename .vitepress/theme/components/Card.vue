@@ -164,7 +164,8 @@ const descText = computed(() => {
   </a>
 </template>
 
-<style lang="scss">
+<style>
+@import '@/styles/media.css';
 .card {
   display: flex;
   flex-wrap: wrap;
@@ -201,7 +202,7 @@ const descText = computed(() => {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
-@media (min-width: 640px) {
+@media (--site-sm) {
   [card-grid] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -292,7 +293,7 @@ const descText = computed(() => {
     max-width: unset;
     margin: 0.5rem;
 
-    @media (max-width: 959px) {
+    @media (--site-mobile) {
       flex-basis: 100%;
     }
 

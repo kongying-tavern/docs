@@ -3,14 +3,15 @@ import type { ComponentMeta } from 'vue-component-meta'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { normalizePath } from 'vite'
 import { createCheckerByJson } from 'vue-component-meta'
 
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
 const projectRoot = resolve(currentDir, '..', '..')
 const outFile = resolve(projectRoot, '.vitepress/theme/mdc-components.mjs')
-const themeEntry = resolve(projectRoot, '.vitepress/theme/index.ts')
+const themeEntry = normalizePath(resolve(projectRoot, '.vitepress/theme/index.ts'))
 const themeDir = resolve(themeEntry, '..')
-const compDir = resolve(projectRoot, '.vitepress/theme/components')
+const compDir = normalizePath(resolve(projectRoot, '.vitepress/theme/components'))
 const PASCAL_BOUNDARY_RE = /([a-z0-9])([A-Z])/g
 const BARREL_EXPORT_RE = /export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*['"](.+\.vue)['"]/g
 const COMPONENT_IMPORT_RE = /import\s+(\w+)\s+from\s+['"](.+\.vue)['"]/g
@@ -130,8 +131,11 @@ export function mdcMetadataPlugin(): Plugin {
       }
     },
 
-    async handleHotUpdate(ctx) {
-      if (ctx.file.startsWith(compDir) || ctx.file === themeEntry)
+    async hotUpdate(ctx) {
+      // The metadata is shared by all environments; regenerate once per edit.
+      if (this.environment.name !== 'client')
+        return
+      if (ctx.file.startsWith(`${compDir}/`) || ctx.file === themeEntry)
         generate()
     },
   }

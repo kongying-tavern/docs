@@ -36,7 +36,4 @@ If you have proposals for a new idea or mechanic, join us to make it real.
 
 :::
 
-<style lang="scss" scoped>
-@use '../components/links/Join.scss';
-@include Join.main;
-</style>
+<style scoped src="../components/links/Join.css"></style>

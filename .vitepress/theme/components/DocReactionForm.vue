@@ -131,7 +131,7 @@ defineExpose({
   </BlurFade>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .feedback-question-submit {
   button {
     transition:

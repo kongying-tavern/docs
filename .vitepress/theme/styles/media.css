@@ -1,0 +1,11 @@
+/* Shared conditions are compiled by Lightning CSS, including in dev. */
+@custom-media --site-sm (width >= 640px);
+@custom-media --site-desktop (width >= 960px);
+@custom-media --site-wide (width >= 1440px);
+@custom-media --site-mobile (width <= 959px);
+@custom-media --form-desktop (width >= 768px);
+@custom-media --form-mobile (width <= 767px);
+@custom-media --forum-two-columns (1280px <= width <= 1439px);
+@custom-media --forum-single-column (width <= 1279px);
+@custom-media --footer-columns (width >= 48rem);
+@custom-media --motion-reduce (prefers-reduced-motion: reduce);

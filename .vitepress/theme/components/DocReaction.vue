@@ -104,8 +104,9 @@ const styles = computed(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-@media (min-width: 640px) {
+<style scoped>
+@import '@/styles/media.css';
+@media (--site-sm) {
   .feedback {
     grid-template-columns: repeat(1, 2fr);
     grid-column-gap: 16px;

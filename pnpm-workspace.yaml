@@ -1,4 +1,6 @@
 minimumReleaseAgeExcludePrune: true
+minimumReleaseAgeExclude:
+  - vite@8.3.3
 
 trustPolicy: no-downgrade
 # Approved exceptions for existing locked versions in the VitePress toolchain.
@@ -20,7 +22,6 @@ overrides:
   '@vueuse/motion>defu': ^6.1.7
   hast-util-to-html>mdast-util-to-hast: ^13.2.1
   micromatch>picomatch: ^2.3.2
-  sass>immutable: ^5.1.9
   unconfig>defu: ^6.1.7
   vite>postcss: ^8.5.26
   vite>rollup: ^4.63.1
@@ -49,14 +50,14 @@ catalog:
 catalogs:
   build:
     '@lunariajs/core': ^0.1.1
-    sass: ^1.98.0
+    lightningcss: ^1.33.0
     tsx: 4.23.12
     typescript: ^5.9.3
     unlazy: ^1.1.0
-    unocss: ^66.6.6
+    unocss: ^66.10.5
     unocss-preset-animations: ^1.3.0
     unocss-preset-shadcn: ^1.0.1
-    vite: ^8.1.4
+    vite: ^8.3.3
     vitepress: 2.0.0-alpha.20
     vitepress-plugin-llms: ^1.14.0
     vue-component-meta: ^3.3.7
@@ -75,12 +76,12 @@ catalogs:
     '@commitlint/config-conventional': 21.2.0
     '@commitlint/types': 21.2.0
     '@pinia/colada-devtools': 1.1.2
-    '@unocss/eslint-plugin': ^66.6.6
+    '@unocss/eslint-plugin': ^66.10.5
     conventional-changelog-cli: 5.0.0
     dotenv-cli: 11.0.0
     eslint: ^10.12.0
     eslint-plugin-format: 2.0.1
-    fontaine: 0.8.0
+    fontaine: 1.0.0
     git-cz: 4.9.0
     husky: 9.1.7
     jiti: ^2.7.0
@@ -132,14 +133,14 @@ catalogs:
     zod: ^4.3.6
   markdown:
     '@comark/markdown-it': ~0.3.4
-    '@mdit/plugin-abbr': ^1.0.0
-    '@mdit/plugin-container': ^1.0.0
-    '@mdit/plugin-demo': ^1.0.0
-    '@mdit/plugin-figure': ^1.0.0
-    '@mdit/plugin-img-size': ^1.0.0
-    '@mdit/plugin-mark': ^2.0.0
-    '@mdit/plugin-sub': ^1.0.0
-    '@mdit/plugin-sup': ^1.0.0
+    '@mdit/plugin-abbr': 1.0.2
+    '@mdit/plugin-container': 1.0.2
+    '@mdit/plugin-demo': 1.0.3
+    '@mdit/plugin-figure': 1.1.1
+    '@mdit/plugin-img-size': 1.0.3
+    '@mdit/plugin-mark': 2.0.2
+    '@mdit/plugin-sub': 1.0.4
+    '@mdit/plugin-sup': 1.0.4
     markdown-it: 14.2.0
     markdown-it-container: 4.0.0
     markdown-it-emoji: ^3.0.0

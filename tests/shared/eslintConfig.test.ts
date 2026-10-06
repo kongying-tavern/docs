@@ -10,7 +10,7 @@ async function messages(source: string, filePath: string) {
 }
 
 test('ESLint covers config languages, source and maintained tests', async () => {
-  for (const file of ['package.json', 'pnpm-workspace.yaml', '.github/workflows/check.yml', '.vscode/settings.json', 'tsconfig.vue.json', 'scripts/runTests.mjs', 'src/forum/components/comment/ForumCommentArea.vue', 'tests/e2e/forum.spec.ts', 'src/components/links/Join.scss']) {
+  for (const file of ['package.json', 'pnpm-workspace.yaml', '.github/workflows/check.yml', '.vscode/settings.json', 'tsconfig.vue.json', 'scripts/runTests.mjs', 'src/forum/components/comment/ForumCommentArea.vue', 'tests/e2e/forum.spec.ts', 'src/components/links/Join.css']) {
     assert.equal(await eslint.isPathIgnored(file), false, file)
     assert.ok(await eslint.calculateConfigForFile(file), file)
   }

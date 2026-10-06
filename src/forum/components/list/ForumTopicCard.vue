@@ -85,7 +85,7 @@ function activate(event: MouseEvent): void {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .forum-topic-item:not(.ANN):hover :deep(.topic-title-link) {
   text-decoration: underline;
 }

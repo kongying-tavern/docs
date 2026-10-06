@@ -39,7 +39,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
         {{ message.forum.publish.feedbackForm.fieldsNeedAttention.replace('{count}', String(errorCount)) }}
       </button>
       <InteractiveHoverButton
-        class="text-base ml--1.5 mr-8 mt--2 px-8 py-3 border-2 border-[var(--vp-c-divider)] rounded-md border-dashed bg-transparent hover:border-solid"
+        class="text-base ml--1.5 mr-8 mt--2 px-8 py-3 border-[var(--vp-c-divider)] border-2 rounded-md border-dashed bg-transparent hover:border-solid"
         :disabled="disabled || loading"
         :loading="loading"
         :text="loading ? message.forum.publish.publishLoading : message.forum.publish.feedbackForm.submit"

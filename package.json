@@ -100,7 +100,6 @@
     "pinia": "catalog:frontend",
     "qrcode": "catalog:frontend",
     "reka-ui": "catalog:frontend",
-    "sass": "catalog:build",
     "thumbhash": "catalog:frontend",
     "torph": "catalog:",
     "typescript": "catalog:build",
@@ -139,6 +138,7 @@
     "husky": "catalog:dev",
     "jiti": "catalog:dev",
     "js-yaml": "catalog:utils",
+    "lightningcss": "catalog:build",
     "lint-staged": "catalog:dev",
     "lodash-es": "catalog:frontend",
     "markdown-it": "catalog:markdown",
@@ -161,7 +161,7 @@
     "zhlint": "catalog:dev"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue,mjs,cjs,mts,cts,json,jsonc,json5,yaml,yml,css,scss}": "node node_modules/eslint/bin/eslint.js --cache --fix --no-warn-ignored"
+    "*.{js,jsx,ts,tsx,vue,mjs,cjs,mts,cts,json,jsonc,json5,yaml,yml,css}": "node node_modules/eslint/bin/eslint.js --cache --fix --no-warn-ignored"
   },
   "config": {
     "commitizen": {

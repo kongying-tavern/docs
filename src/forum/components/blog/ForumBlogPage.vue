@@ -86,7 +86,7 @@ function postExcerpt(post: BlogPost): string {
 <template>
   <section
     v-if="featured.length && isMediumUp"
-    class="border-b-1px border-b-[var(--vp-c-divider)] border-b-solid md:grid md:grid-cols-3"
+    class="border-b-[var(--vp-c-divider)] border-b-1px border-b-solid md:grid md:grid-cols-3"
   >
     <!-- 主 featured：大卡（2/3 宽） -->
     <a

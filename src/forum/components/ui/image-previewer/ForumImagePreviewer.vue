@@ -598,4 +598,4 @@ defineExpose({ openAt, close })
   </div>
 </template>
 
-<style scoped src="./ForumImagePreviewer.scss"></style>
+<style scoped src="./ForumImagePreviewer.css"></style>

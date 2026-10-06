@@ -178,7 +178,7 @@ export default defineConfig({
       exclude: [/node_modules\//],
     },
   },
-  transformers: [transformerDirectives(), transformerVariantGroup()],
+  transformers: [transformerDirectives({ enforce: 'pre' }), transformerVariantGroup()],
   // 动态拼接的图标类名无法被提取器扫描,显式声明
   safelist: [
     'prose',

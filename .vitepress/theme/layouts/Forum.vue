@@ -14,7 +14,8 @@ import ForumGlobalDialogs from '~/forum/components/layout/ForumGlobalDialogs.vue
   <ForumGlobalDialogs />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
+@import '@/styles/media.css';
 .Forum {
   flex-grow: 1;
   flex-shrink: 0;
@@ -29,7 +30,7 @@ import ForumGlobalDialogs from '~/forum/components/layout/ForumGlobalDialogs.vue
   padding: 0 16px;
 }
 
-@media (min-width: 1440px) {
+@media (--site-wide) {
   .forum-alert-slot {
     width: min(var(--forum-container-max-width), 100%);
     padding: 0;

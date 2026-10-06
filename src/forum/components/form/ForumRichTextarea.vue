@@ -483,7 +483,8 @@ onBeforeUnmount(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
+@import '@/styles/media.css';
 .comment-drop-overlay {
   position: absolute;
   z-index: 20;
@@ -505,11 +506,10 @@ onBeforeUnmount(() => {
   svg {
     color: var(--vp-c-green-3);
   }
-
-  &--warning,
-  &--warning svg {
-    color: var(--vp-c-red-3);
-  }
+}
+.character-count--warning,
+.character-count--warning svg {
+  color: var(--vp-c-red-3);
 }
 .comment-editor-mobile,
 .comment-editor-mobile .comment-area {
@@ -609,7 +609,7 @@ onBeforeUnmount(() => {
   opacity: 0;
   transform: translateY(-4px);
 }
-@media (prefers-reduced-motion: reduce) {
+@media (--motion-reduce) {
   .mobile-mention-enter-active,
   .mobile-mention-leave-active {
     transition: none;

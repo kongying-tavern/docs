@@ -81,20 +81,19 @@ export function fontaineFallbackPlugin(): Plugin {
     buildStart() {
       transformed = false
     },
-    async transform(code, id) {
-      const file = normalizePath(id.split('?', 1)[0])
-      if (!file.endsWith(cssEntrySuffix))
-        return
-
-      transformed = true
-      fallbackCss ??= generateFontaineFallbackCss(defaultProjectRoot)
-      const generatedCss = await fallbackCss
-      // Keep metric parity in dev, but log only the production client build.
-      if (isBuild && !isSsrBuild) {
-        const count = config.fonts.length * config.fontaine.fallbacks.length
-        logger?.info(`[fonts:fontaine] injected ${count} fallback metric rules`)
-      }
-      return `${code}\n\n${generatedCss}`
+    transform: {
+      filter: { id: new RegExp(`${cssEntrySuffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\?.*)?$`) },
+      async handler(code) {
+        transformed = true
+        fallbackCss ??= generateFontaineFallbackCss(defaultProjectRoot)
+        const generatedCss = await fallbackCss
+        // Keep metric parity in dev, but log only the production client build.
+        if (isBuild && !isSsrBuild) {
+          const count = config.fonts.length * config.fontaine.fallbacks.length
+          logger?.info(`[fonts:fontaine] injected ${count} fallback metric rules`)
+        }
+        return `${code}\n\n${generatedCss}`
+      },
     },
     buildEnd(error) {
       if (!error && !isSsrBuild && !transformed)

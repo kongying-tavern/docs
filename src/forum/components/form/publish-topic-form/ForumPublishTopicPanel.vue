@@ -217,4 +217,4 @@ defineExpose(presentation)
   </Drawer>
 </template>
 
-<style lang="scss" src="./ForumPublishTopicForm.scss"></style>
+<style src="./ForumPublishTopicForm.css"></style>

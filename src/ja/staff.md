@@ -252,7 +252,7 @@ wip: true
 
 [^1]: 名单排序不分先后；
 
-<style lang="scss" scoped>
+<style scoped>
 h1,h2,h3,h4 {
   text-align: center;
 }

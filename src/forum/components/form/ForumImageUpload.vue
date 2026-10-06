@@ -132,7 +132,7 @@ defineExpose({ open })
     <button
       type="button"
       data-remove-image
-      class="image-action rounded-bl-md bg-[var(--forum-media-overlay)] flex size-7 pointer-events-auto items-center right-0 top-0 justify-center absolute focus-visible:outline-2 focus-visible:outline-[var(--forum-media-on-overlay)] hover:bg-[var(--forum-media-overlay-strong)]"
+      class="image-action rounded-bl-md bg-[var(--forum-media-overlay)] flex size-7 pointer-events-auto items-center right-0 top-0 justify-center absolute focus-visible:outline-[var(--forum-media-on-overlay)] focus-visible:outline-2 hover:bg-[var(--forum-media-overlay-strong)]"
       :aria-label="formatMessage(message.forum.publish.feedbackForm.removeImage, { filename: attachment.file?.name || attachment.savedImage?.alt || '' })"
       :disabled="disabled"
       @click="removeAttachment(attachment.id, index)"

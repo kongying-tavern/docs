@@ -263,7 +263,7 @@ We sincerely thank every individual that contributed to the making of this map.
 
 > The members of the list is arranged in no particular order；
 
-<style lang="scss" scoped>
+<style scoped>
 h1,h2,h3,h4 {
   text-align: center;
 }
