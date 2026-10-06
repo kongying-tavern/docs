@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import {
@@ -16,6 +15,15 @@ const COPY = {
   released: '{title}：已更新到 {version}',
   updated: '{title}：已更新',
 }
+
+test('precomputed compact blog entries produce the same recent update feed as full bodies', () => {
+  const full = [{ title: 'Update', url: '/blog/posts/test', date: '2026-08-28T00:00:00Z', lang: 'zh', content: '::: timeline v1\n- A change\n:::' }]
+  const compact = full.map(({ content, ...post }) => ({ ...post, latestUpdate: parseLatestUpdateEntry(content) }))
+  const options = { lang: 'zh', now: Date.parse('2026-08-29T00:00:00Z') }
+  assert.deepEqual(selectRecentBlogUpdates(compact, options), selectRecentBlogUpdates(full, options))
+  assert.equal(JSON.stringify(compact).includes('content'), false)
+  assert.deepEqual(selectRecentBlogUpdates([{ ...compact[0], latestUpdate: null }], options)[0].summary, '')
+})
 
 /** 容器自身带日期 + 块内 `###` 分类标题（zh/changelog-web.md 的写法） */
 const CONTAINER_DATE_POST = [

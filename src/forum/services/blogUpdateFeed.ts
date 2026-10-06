@@ -24,6 +24,8 @@ export interface BlogUpdatePost {
   title: string
   url: string
   content?: string
+  /** 构建期从正文提取；论坛客户端无需下载全文。 */
+  latestUpdate?: BlogUpdateEntry | null
   date: string
   lang: string
   gitInfo?: { lastModified?: { date?: string } } | null
@@ -145,7 +147,7 @@ export function selectRecentBlogUpdates(
     .sort((a, b) => b.updatedAt - a.updatedAt)
     .slice(0, limit)
     .map(({ post, updatedAt }) => {
-      const entry = parseLatestUpdateEntry(post.content)
+      const entry = post.latestUpdate === undefined ? parseLatestUpdateEntry(post.content) : post.latestUpdate
       return {
         title: post.title,
         slug: post.url.slice(post.url.lastIndexOf('/') + 1),

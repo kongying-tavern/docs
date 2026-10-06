@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { BlogPost } from '~/utils/createBlogLoader'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
-import { data as allBlogPosts } from '~/_data/posts.data'
+import { data as allBlogPosts } from '~/_data/forumBlogPosts.data'
 import ForumTime from '../ui/ForumTime.vue'
 
 const { lang, localeIndex } = useData()
@@ -18,13 +17,13 @@ const teamBlogItems = computed(() => {
 
   return copy.value.items.map((item) => {
     const slug = item.link.split('/').filter(Boolean).at(-1)
-    const post = allBlogPosts.find((candidate: BlogPost) =>
+    const post = allBlogPosts.find((candidate: { lang: string, url: string }) =>
       candidate.lang === currentLang && candidate.url.endsWith(`/posts/${slug}`),
     )
 
     return {
       ...item,
-      authors: post?.authors.map(author => author.username || author.login).join('、') ?? '',
+      authors: post?.authors.map((author: { username: string, login: string }) => author.username || author.login).join('、') ?? '',
       updatedAt: post?.gitInfo?.lastModified.date ?? post?.date,
     }
   })
