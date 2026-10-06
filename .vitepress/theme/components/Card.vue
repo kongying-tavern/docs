@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { computed } from 'vue'
+import { ASSET_ORIGIN } from '~/constants/site'
 
 import { isLinkExternal, isRelativeLink } from '../utils'
 
@@ -138,9 +139,9 @@ const descText = computed(() => {
       >
     </div>
 
-    <div :class="`card-footer ${logoMissing && !iconLink ? 'no-logo' : ''}`">
+    <div class="card-footer" :class="{ 'no-logo': logoMissing && !iconLink }">
       <template v-if="iconLink">
-        <label :class="`card-icon ${iconLink}`" />
+        <label class="card-icon" :class="iconLink" />
       </template>
       <template v-else>
         <template v-if="!logoMissing">

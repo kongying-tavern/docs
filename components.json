@@ -3,8 +3,8 @@
   "style": "new-york-v4",
   "typescript": true,
   "tailwind": {
-    "config": "tailwind.config.js",
-    "css": ".vitepress/theme/styles/shadcn.css",
+    "config": "",
+    "css": ".vitepress/theme/styles/theme.css",
     "baseColor": "zinc",
     "cssVariables": true,
     "prefix": ""

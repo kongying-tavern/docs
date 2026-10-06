@@ -1,6 +1,7 @@
 import type { Preflight } from 'unocss'
 import { scrollFadePreflight, scrollFadeRules } from './scroll-fade.ts'
 import { shimmerPreflight, shimmerRules } from './shimmer.ts'
+import { sroundedRules } from './srounded.ts'
 import { switchRules } from './switch.ts'
 
 export const borderBaselinePreflight: Preflight = {
@@ -16,7 +17,7 @@ export const borderBaselinePreflight: Preflight = {
 }`,
 }
 
-/** shadcn-vue 工具类(shimmer / scroll-fade / switch)的 UnoCSS 规则与 preflight 汇总。 */
-export const shadcnRules = [...shimmerRules, ...scrollFadeRules, ...switchRules]
+/** shadcn-vue 工具类(shimmer / scroll-fade / switch / srounded)的 UnoCSS 规则与 preflight 汇总。 */
+export const shadcnRules = [...shimmerRules, ...scrollFadeRules, ...switchRules, ...sroundedRules]
 
 export const shadcnPreflights = [borderBaselinePreflight, shimmerPreflight, scrollFadePreflight]

@@ -18,8 +18,20 @@ export default defineConfig({
     /^i-lucide-(?:log-in|x)-.+$/,
   ],
   theme: {
-    breakpoints: {
-      mobile: FORUM_MOBILE_BREAKPOINT_PX,
+    font: {
+      sans: 'var(--vp-font-family-base)',
+      serif: 'var(--vp-font-family-serif)',
+      mono: 'var(--vp-font-family-mono)',
+      title: 'var(--vp-font-family-title)',
+      subtitle: 'var(--vp-font-family-subtitle)',
+    },
+    breakpoint: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+      'mobile': `${FORUM_MOBILE_BREAKPOINT_PX + 1}px`,
     },
     text: {
       'xs': { fontSize: 'calc(12px * var(--site-ui-scale))', lineHeight: 'calc(16px * var(--site-ui-scale))' },
@@ -33,14 +45,18 @@ export default defineConfig({
     },
   },
   variants: [
-    ((matcher) => {
-      if (!matcher.startsWith('max-mobile:'))
-        return matcher
-      return {
-        matcher: matcher.slice('max-mobile:'.length),
-        parent: `@media (max-width: ${FORUM_MOBILE_BREAKPOINT_PX}px)`,
-      }
-    }) as Variant,
+    {
+      name: 'site-max-mobile',
+      order: -1,
+      match: (matcher) => {
+        if (!matcher.startsWith('max-mobile:'))
+          return matcher
+        return {
+          matcher: matcher.slice('max-mobile:'.length),
+          parent: `@media (max-width: ${FORUM_MOBILE_BREAKPOINT_PX}px)`,
+        }
+      },
+    } as Variant,
     ((matcher) => {
       if (!matcher.startsWith('pointer-fine:'))
         return matcher
@@ -59,13 +75,6 @@ export default defineConfig({
     [
       /^leading-ui-(\d+(?:\.\d+)?)$/,
       ([, size]) => ({ 'line-height': `calc(${size}px * var(--site-ui-scale))` }),
-    ],
-    [
-      'custom-scrollbar',
-      {
-        'scrollbar-width': 'thin',
-        'scrollbar-color': 'hsl(var(--muted-foreground) / 0.2) transparent',
-      },
     ],
     ...shadcnRules,
   ],
@@ -122,11 +131,14 @@ export default defineConfig({
     ],
     [
       'custom-scrollbar',
-      `[&::-webkit-scrollbar]:w-4px
+      `[scrollbar-width:thin]
+       [scrollbar-color:oklch(var(--muted-foreground)/0.2)_transparent]
+       [&::-webkit-scrollbar]:w-4px
+       [&::-webkit-scrollbar]:h-4px
        [&::-webkit-scrollbar-track]:bg-transparent
-       [&::-webkit-scrollbar-thumb]:bg-[hsl(var(--muted-foreground)/0.2)]
+       [&::-webkit-scrollbar-thumb]:bg-[oklch(var(--muted-foreground)/0.2)]
        [&::-webkit-scrollbar-thumb]:rounded-2px
-       [&::-webkit-scrollbar-thumb:hover]:bg-[hsl(var(--muted-foreground)/0.4)]
+       [&::-webkit-scrollbar-thumb:hover]:bg-[oklch(var(--muted-foreground)/0.4)]
       `,
     ],
   ],

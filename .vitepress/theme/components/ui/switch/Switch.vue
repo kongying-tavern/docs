@@ -41,7 +41,7 @@ function onThumbAnimationEnd(event: AnimationEvent) {
     data-slot="switch"
     v-bind="forwarded"
     :class="cn(
-      'peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted-foreground/35 pointer-fine:hover:data-[state=unchecked]:bg-muted-foreground/50 focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-border shadow-xs transition-all motion-reduce:transition-none outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50',
+      'peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted-foreground/35 pointer-fine:hover:data-[state=unchecked]:bg-muted-foreground/50 focus-visible:outline-ring focus-visible:outline-2 focus-visible:outline-offset-2 inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-border shadow-xs transition-all motion-reduce:transition-none outline-none disabled:cursor-not-allowed disabled:opacity-50',
       props.class,
     )"
     @update:model-value="uncontrolledValue = $event"
@@ -56,7 +56,7 @@ function onThumbAnimationEnd(event: AnimationEvent) {
     <SwitchThumb
       data-slot="switch-thumb"
       :class="cn(
-        'pointer-events-none block size-4 rounded-full bg-background dark:data-[state=unchecked]:bg-foreground dark:data-[state=checked]:bg-primary-foreground ring-0 switch-thumb-motion motion-reduce:transition-none',
+        'pointer-events-none block size-4 rounded-full bg-background dark:bg-foreground ring-0 switch-thumb-motion motion-reduce:transition-none',
         pressed && !reduceMotion
           ? (checked ? 'scale-x-[1.25] translate-x-[16px]' : 'scale-x-[1.25] translate-x-[5px]')
           : (checked ? 'translate-x-[18px]' : 'translate-x-[3px]'),

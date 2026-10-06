@@ -69,8 +69,8 @@ function startOAuthLogin(): void {
 
 <template>
   <Dialog v-model:open="open">
-    <DialogContent class="p-0 gap-0 max-w-[min(420px,calc(100vw-2rem))] overflow-hidden">
-      <div class="px-6 py-5 border-b bg-muted/30">
+    <DialogContent class="p-0 flex flex-col gap-0 max-h-[calc(100dvh-2rem)] max-w-[min(420px,calc(100vw-2rem))] overflow-hidden sm:max-w-[420px]">
+      <div class="px-6 py-5 border-b bg-muted/30 shrink-0">
         <DialogHeader class="pr-8 text-left">
           <DialogTitle class="text-xl leading-tight">
             {{ theme.forum.auth.loginAlert }}
@@ -81,7 +81,7 @@ function startOAuthLogin(): void {
         </DialogHeader>
       </div>
 
-      <div class="px-6 py-5 gap-5 grid">
+      <div class="px-6 py-5 overscroll-contain gap-5 grid min-h-0 overflow-y-auto">
         <Alert v-if="passwordLoginError" variant="destructive" class="pr-9">
           <OctagonXIcon />
           <AlertTitle>{{ passwordLoginError }}</AlertTitle>
@@ -200,8 +200,8 @@ function startOAuthLogin(): void {
 }
 
 :deep(.login-credential-input:focus-visible) {
-  border-bottom-color: var(--vp-c-brand-1);
-  box-shadow: 0 1px 0 var(--vp-c-brand-1);
+  border-bottom-color: oklch(var(--ring));
+  box-shadow: 0 1px 0 oklch(var(--ring));
   outline: none;
 }
 </style>

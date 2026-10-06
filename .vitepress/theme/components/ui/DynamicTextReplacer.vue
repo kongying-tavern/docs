@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes, VNode, VNodeNormalizedChildren } from 'vue'
-import { computed, Text, toRaw, useSlots } from 'vue'
+import { computed, isVNode, Text, toRaw, useSlots } from 'vue'
 import { cn } from '@/lib/utils'
 
 defineOptions({
@@ -108,7 +108,7 @@ function renderVNodeChildren(children: VNodeNormalizedChildren): string {
     }
 
     // Handle the case where children is a single VNode object
-    return renderVNodeToHTML(children as VNode)
+    return isVNode(children) ? renderVNodeToHTML(children) : ''
   }
 
   return ''

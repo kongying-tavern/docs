@@ -13,6 +13,7 @@
 
 :root {
   text-autospace: normal;
+  scrollbar-gutter: stable;
   --site-ui-scale: 1;
 }
 
@@ -147,6 +148,15 @@ html.light {
   font-size: calc(12px * var(--site-ui-scale));
 }
 
+/* Use real font weights throughout, including controls and portaled dialogs. */
+html {
+  font-synthesis: style;
+}
+
+:where(button, input, optgroup, select, textarea) {
+  font-family: inherit;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -162,28 +172,37 @@ div.VPHomeHero > div > div.main > p.text,
   font-family: var(--vp-font-family-title);
 }
 
-button,
-summary,
-strong,
 h2,
 h3,
 h4,
 h5,
 h6,
-kbd,
-thead,
-.VPButton,
-[data-menu-item],
-[data-radix-vue-collection-item],
 .custom-block-title,
 .VPLocalNavOutlineDropdown,
 .doc-info-left,
 .subtitle,
-.vp-link,
 .lead,
 .timeline-dot-title,
 div.VPHomeHero > div > div.main > p.tagline {
   font-family: var(--vp-font-family-subtitle);
+}
+
+/* Keep emoji inline without changing the picker layout. */
+img[data-emoji] {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+/* Lower inline artwork slightly to compensate for font descent and image padding.
+   em keeps the optical baseline consistent when the surrounding text is scaled. */
+:is(
+    .forum-rich-textarea .tiptap,
+    .topic-comment-item .content,
+    .forum-topic-summary,
+    [data-forum-shared-topic='content']
+  )
+  img[data-emoji] {
+  vertical-align: -0.125em;
 }
 
 .forum-document-link,
@@ -309,8 +328,11 @@ textarea {
 
 #app a:focus-visible,
 #app button:focus-visible,
-#app input[type='checkbox']:focus-visible {
-  --at-apply: outline-1 outline-primary ring-2 ring-primary;
+#app input[type='checkbox']:focus-visible,
+[data-slot='dialog-content'] :is(a, button, input[type='checkbox']):focus-visible {
+  outline: 2px solid oklch(var(--ring));
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 .VPSidebar::-webkit-scrollbar {
@@ -394,8 +416,8 @@ textarea {
   --forum-media-backdrop: color-mix(in srgb, var(--vp-c-black) 45%, transparent);
   --forum-media-overlay: color-mix(in srgb, var(--vp-c-black) 55%, transparent);
   --forum-media-overlay-strong: color-mix(in srgb, var(--vp-c-black) 75%, transparent);
-  --forum-media-glass: color-mix(in srgb, var(--vp-c-white) 8%, transparent);
-  --forum-media-glass-hover: color-mix(in srgb, var(--vp-c-white) 16%, transparent);
+  --forum-media-glass: var(--forum-media-overlay);
+  --forum-media-glass-hover: var(--forum-media-overlay-strong);
   --forum-media-dot: color-mix(in srgb, var(--vp-c-white) 35%, transparent);
   --forum-media-dot-hover: color-mix(in srgb, var(--vp-c-white) 60%, transparent);
   /* 图片描边用纯黑/白低透明度：调色板中性色会带上底色，在图片边缘读起来像脏边 */
@@ -445,6 +467,23 @@ html.dark {
 
 .VPDocAsideOutline.has-outline > .content {
   border: none;
+}
+
+@media (min-width: 768px) and (max-width: 959px) {
+  .VPNavBarSearch .DocSearch-Button-Placeholder,
+  .VPNavBarSearch .DocSearch-Button-Keys {
+    display: none;
+  }
+
+  .VPNavBarSearch .DocSearch-Button {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .VPNavBarSearch .DocSearch-Search-Icon {
+    margin-right: 0;
+  }
 }
 
 /* Fluid hover：共享 indicator 接管 item 高亮后，压制 item 自身的 focus 背景。

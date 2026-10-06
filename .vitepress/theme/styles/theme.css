@@ -7,18 +7,20 @@
   --popover-foreground: 0.3588 0.012 285.78;
   --primary: 0.7168 0.1343 160.53;
   --primary-foreground: 1 0 0;
+  --primary-button: var(--primary);
+  --primary-button-foreground: 1 0 0;
   --secondary: 0.9203 0.0067 286.27;
   --secondary-foreground: 0.3588 0.012 285.78;
   --muted: 0.8993 0.0081 286.24;
-  --muted-foreground: 0.552 0.012 285.78;
+  --muted-foreground: 0.49 0.012 285.78;
   --accent: 0.97 0 0;
   --accent-foreground: 0.3588 0.012 285.78;
-  --destructive: 0.704 0.191 22.216;
+  --destructive: 0.49 0.18 22.216;
   --destructive-foreground: 1 0 0;
   --border: 0.9131 0.0013 286.37;
   --border-color: oklch(0.9131 0.0013 286.37);
   --input: 0.9131 0.0013 286.37;
-  --ring: 0.8147 0.0028 286.34;
+  --ring: 0.6 0 0;
   --chart-1: 0.81 0.1 252;
   --chart-2: 0.62 0.19 260;
   --chart-3: 0.55 0.22 263;
@@ -31,13 +33,12 @@
   --sidebar-accent: 0.97 0 0;
   --sidebar-accent-foreground: 0.205 0 0;
   --sidebar-border: 0.9131 0.0013 286.37;
-  --sidebar-ring: 0.708 0 0;
-  --font-sans:
-    'SarasaGothicSC-min', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-  --font-serif: 'SarasaGothicSC-min', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --sidebar-ring: var(--ring);
+  --font-sans: var(--vp-font-family-base);
+  --font-serif: var(--vp-font-family-serif);
+  --font-mono: var(--vp-font-family-mono);
+  --font-title: var(--vp-font-family-title);
+  --font-subtitle: var(--vp-font-family-subtitle);
   --radius: 0.625rem;
   --shadow-x: 0;
   --shadow-y: 1px;
@@ -64,19 +65,19 @@
   --popover: 0.2493 0.0114 278.04;
   --popover-foreground: 0.985 0 0;
   --primary: 0.7168 0.1343 160.53;
-  --primary-foreground: 0.985 0.001 106.423;
+  --primary-foreground: 0.205 0 0;
   --secondary: 0.3995 0.0207 259.4;
   --secondary-foreground: 0.9011 0.0121 106.64;
   --muted: 0.2741 0.0055 286.03;
   --muted-foreground: 0.6819 0.0102 286.13;
   --accent: 0.2741 0.0055 286.03;
-  --accent-foreground: 0 0% 98%;
+  --accent-foreground: 0.985 0 0;
   --destructive: 0.704 0.191 22.216;
-  --destructive-foreground: 0.985 0 0;
+  --destructive-foreground: 0.205 0 0;
   --border: 0.3667 0.0095 260.72;
   --border-color: oklch(0.3667 0.0095 260.72);
   --input: 0.2741 0.0055 286.03;
-  --ring: 0.3027 0.0071 285.97;
+  --ring: 0.68 0 0;
   --chart-1: 0.81 0.1 252;
   --chart-2: 0.62 0.19 260;
   --chart-3: 0.55 0.22 263;
@@ -85,17 +86,11 @@
   --sidebar: 0.2011 0.0039 286.04;
   --sidebar-foreground: 0.985 0 0;
   --sidebar-primary: 0.7168 0.1343 160.53;
-  --sidebar-primary-foreground: 0.985 0 0;
+  --sidebar-primary-foreground: 0.205 0 0;
   --sidebar-accent: 0.269 0 0;
   --sidebar-accent-foreground: 0.985 0 0;
   --sidebar-border: 0.3027 0.0071 285.97;
-  --sidebar-ring: 0.439 0 0;
-  --font-sans:
-    'SarasaGothicSC-min', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
-  --font-serif: 'SarasaGothicSC-min', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --sidebar-ring: var(--ring);
   --radius: 0.625rem;
   --shadow-x: 0;
   --shadow-y: 1px;
@@ -120,7 +115,7 @@
 
 .VPHomeFeatures .VPFeature:hover,
 .VPHomeFeatures .VPFeature.link:hover {
-  border-color: var(--vp-c-brand-2);
+  border-color: oklch(var(--ring));
 }
 
 /* 图标底：品牌浅绿色，替代默认灰蓝 */

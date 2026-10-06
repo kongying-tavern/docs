@@ -4,6 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import { Search } from '@lucide/vue'
 import { reactiveOmit } from '@vueuse/core'
 import { ListboxFilter, useForwardProps } from 'reka-ui'
+import { onMounted, watch } from 'vue'
 import { cn } from '@/lib/utils'
 import { useCommand } from '.'
 
@@ -20,6 +21,14 @@ const delegatedProps = reactiveOmit(props, 'class')
 const forwardedProps = useForwardProps(delegatedProps)
 
 const { filterState } = useCommand()
+onMounted(() => {
+  if (typeof props.modelValue === 'string')
+    filterState.search = props.modelValue
+})
+watch(() => props.modelValue, (value) => {
+  if (typeof value === 'string')
+    filterState.search = value
+})
 </script>
 
 <template>

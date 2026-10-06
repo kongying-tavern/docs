@@ -109,7 +109,7 @@ function normalizeLink(
                 variant="outline"
                 role="combobox"
                 :aria-expanded="open"
-                class="bg-[var(--suggest-language-bar-bg)] w-full justify-between hover:bg-[var(--suggest-language-bar-hover-bg)] md:w-[300px] hover:!text-primary-foreground"
+                class="bg-[var(--suggest-language-bar-bg)] w-full justify-between hover:bg-[var(--suggest-language-bar-hover-bg)] md:w-[300px] hover:!text-white"
               >
                 <span class="vpi-languages option-icon icon-btn" />
                 {{ suggestLocale?.label }}
@@ -123,12 +123,12 @@ function normalizeLink(
             >
               <Command>
                 <CommandList>
-                  <CommandGroup class="!text-primary-foreground">
+                  <CommandGroup class="!text-white">
                     <CommandItem
-                      v-for="locale in LOCALE_CONFIG"
+                      v-for="locale in localeConfig"
                       :key="locale.key"
                       :value="locale.key"
-                      class="text-[oklch(var(--primary-foreground)/0.7)] focus:bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-bg)] hover:!text-primary-foreground"
+                      class="text-white/70 focus:bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-bg)] hover:!text-white"
                       @select="handleLanguageSelect"
                     >
                       {{ locale.label }}
@@ -154,7 +154,7 @@ function normalizeLink(
           class="mx-12px bg-[var(--suggest-language-bar-bg)] hover:bg-[var(--suggest-language-bar-hover-bg)]"
           @click="toSuggestLanguagePage(suggestLocale.key)"
         >
-          {{ languageSuggestBarTranslate[suggestLocale.key].continue }}
+          {{ suggestTranslate.continue }}
         </Button>
 
         <CloseButton

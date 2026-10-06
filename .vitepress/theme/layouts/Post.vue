@@ -69,7 +69,7 @@ onMounted(() => {
   const root = document.querySelector('.post-content')
   if (!root)
     return
-  outlineItems.value = [...root.querySelectorAll(':where(h2, h3, h4)')]
+  outlineItems.value = [...root.querySelectorAll<HTMLElement>(':where(h2, h3, h4)')]
     .filter(isOutlineHeading)
     .map(heading => ({
       id: heading.id,
@@ -77,7 +77,7 @@ onMounted(() => {
       level: Number(heading.tagName[1]),
     }))
     .filter(item => item.title)
-  outlineLinks = [...document.querySelectorAll('.post-aside .outline a')]
+  outlineLinks = [...document.querySelectorAll<HTMLAnchorElement>('.post-aside .outline a')]
   outlineHeadingElements = outlineItems.value
     .map(item => document.getElementById(item.id))
     .filter((element): element is HTMLElement => Boolean(element))

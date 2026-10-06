@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { LoaderCircle } from '@lucide/vue'
-import { ref } from 'vue'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -17,24 +16,23 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   loading: false,
 })
-
-const buttonRef = ref<HTMLButtonElement>()
 </script>
 
 <template>
   <button
-    ref="buttonRef"
     type="submit"
     :disabled="props.disabled"
+    :aria-busy="props.loading"
     :class="
       cn(
-        'group bg-background relative w-auto cursor-pointer overflow-hidden rounded-full border p-2 px-6 text-center font-semibold',
+        'group [--primary:var(--primary-button)] [--primary-foreground:var(--primary-button-foreground)] bg-background relative w-auto cursor-pointer overflow-hidden rounded-full border p-2 px-6 text-center font-semibold',
         props.class,
       )
     "
   >
     <div class="flex gap-2 items-center">
       <div
+        aria-hidden="true"
         class="rounded-lg bg-primary size-2 scale-100 transition-[transform] duration-300 group-hover:scale-[100.8]"
       />
       <span
@@ -45,6 +43,7 @@ const buttonRef = ref<HTMLButtonElement>()
     </div>
 
     <div
+      aria-hidden="true"
       class="text-primary-foreground opacity-0 flex gap-2 size-full translate-x-12 transition-[transform,opacity] duration-300 items-center top-0 justify-center absolute z-10 group-hover:opacity-100 group-hover:-translate-x-5"
     >
       <span class="whitespace-nowrap">{{ text }}</span>

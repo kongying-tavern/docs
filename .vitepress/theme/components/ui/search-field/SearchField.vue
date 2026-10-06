@@ -253,6 +253,13 @@ defineExpose({
     transition: none;
   }
 }
+
+@media (max-width: 767px) {
+  .search-field :deep(.search-field-input),
+  .search-field :deep(.search-field-token) {
+    font-size: 16px;
+  }
+}
 .search-field.page-mode :deep(.search-field-results) {
   position: static;
   width: var(--forum-search-content-width, 100%);

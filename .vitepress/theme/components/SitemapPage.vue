@@ -71,7 +71,7 @@ const blogPosts = computed((): ForumAPI.Post[] => {
       if (!post || !post.title || !post.path)
         return false
       // 检查文章是否包含当前语言的标签
-      return post.tags && post.tags.includes(languageTag)
+      return languageTag !== null && post.tags && post.tags.includes(languageTag)
     })
     .slice(0, 20)
 })
@@ -134,7 +134,7 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
     })
   }
 
-  Object.values(sidebar).forEach((sidebarItems: NavItem[] | NavItem) => {
+  Object.values(sidebar).forEach((sidebarItems) => {
     if (Array.isArray(sidebarItems)) {
       extractFromSidebarItems(sidebarItems)
     }

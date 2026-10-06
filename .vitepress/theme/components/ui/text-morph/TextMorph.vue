@@ -4,6 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import { TextMorph as TorphTextMorph } from 'torph/vue'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
+import { cn } from '@/lib/utils'
 
 // torph 文本形变的统一封装：locale 缺省跟随站点语言，其余参数与 torph 保持一致
 const props = withDefaults(defineProps<{
@@ -38,7 +39,7 @@ const resolvedLocale = computed(() => props.locale ?? lang.value)
 <template>
   <TorphTextMorph
     :as="props.as"
-    :class="props.class"
+    :class="cn(props.class)"
     :disabled="props.disabled"
     :duration="props.duration"
     :ease="props.ease"

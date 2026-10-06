@@ -8,7 +8,7 @@ const {
   src = `${ASSET_ORIGIN}/res_ext/avatar/UI_AvatarIcon_71045_Circle.png`,
   alt,
   size = 'sm',
-} = defineProps<{ src?: string, alt?: string, size?: string }>()
+} = defineProps<{ src?: string, alt?: string, size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' }>()
 
 const { message } = useLocalized()
 

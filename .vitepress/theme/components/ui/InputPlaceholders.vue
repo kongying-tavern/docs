@@ -8,12 +8,14 @@ interface Props {
   text: string
   placeholders?: string[] | string
   duration?: number
+  align?: 'start' | 'center'
   class?: HTMLAttributes['class']
 }
 
 const props = withDefaults(defineProps<Props>(), {
   placeholders: () => ['Placeholder 1', 'Placeholder 2', 'Placeholder 3'],
   duration: 6000,
+  align: 'center',
 })
 
 const placeholders = isArray(props.placeholders) ? props.placeholders : [props.placeholders]
@@ -57,7 +59,7 @@ onBeforeUnmount(() => {
 <template>
   <ClientOnly>
     <!-- Placeholder Text -->
-    <div v-if="props.text.length === 0" class="rounded-full flex pointer-events-none items-center inset-0 absolute">
+    <div v-if="props.text.length === 0" data-slot="input-placeholder" class="rounded-full flex pointer-events-none inset-0 absolute" :class="align === 'start' ? 'items-start' : 'items-center'">
       <Transition
         v-show="!vanishingText"
         mode="out-in"
@@ -70,7 +72,7 @@ onBeforeUnmount(() => {
       >
         <p
           :key="currentPlaceholder"
-          :class="cn('w-[calc(100%-2rem)] truncate text-left text-sm font-normal sm:px-4 sm:text-base color-[var(--vp-c-text-3)]', props.class)"
+          :class="cn('w-[calc(100%-2rem)] truncate text-left text-sm font-normal sm:px-4 sm:text-base color-[var(--vp-c-text-3)]', align === 'start' && 'm-0 px-0 text-base leading-[1.625]', props.class)"
         >
           {{ placeholders[currentPlaceholder] }}
         </p>

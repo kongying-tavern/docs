@@ -1,16 +1,5 @@
 <script setup lang="ts">
-import qqGroups from '~/_data/qq-groups.json'
-
-interface QQGroup {
-  id: string
-  name: string
-  number: string
-  link: string
-  status: 'suggest' | 'warning' | 'banned' | 'normal'
-  tooltip: string
-}
-
-const groups: QQGroup[] = qqGroups
+import groups from '~/_data/qq-groups.json'
 
 function getGroupClass(status: string): string {
   return `qq-group qq-group--${status}`

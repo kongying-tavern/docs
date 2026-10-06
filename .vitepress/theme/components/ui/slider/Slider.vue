@@ -43,7 +43,7 @@ const ariaValueText = computed(() => attrs['aria-valuetext'] as string | undefin
       data-slot="slider-thumb"
       :aria-label="ariaLabel"
       :aria-valuetext="ariaValueText"
-      class="border border-primary rounded-full bg-white shrink-0 size-4 block ring-ring/50 shadow-sm transition-[color,box-shadow] focus-visible:outline-hidden disabled:opacity-50 disabled:pointer-events-none focus-visible:ring-4 hover:ring-4"
+      class="border border-border rounded-full bg-white shrink-0 size-4 block ring-ring/50 shadow-sm transition-[color,box-shadow] focus-visible:outline-hidden disabled:opacity-50 disabled:pointer-events-none focus-visible:ring-4 hover:ring-4"
     />
   </SliderRoot>
 </template>
