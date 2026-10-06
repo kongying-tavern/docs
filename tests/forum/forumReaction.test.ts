@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type { TopicReaction } from '../../src/forum/services/forumReaction'
 import assert from 'node:assert/strict'
 import test from 'node:test'

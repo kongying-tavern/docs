@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- Node's built-in regression runner */
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import { effectScope, nextTick, shallowRef } from 'vue'

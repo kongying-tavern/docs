@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "vueCompilerOptions": {
+    "vitePressExtensions": []
+  },
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/*.md"
+  ]
+}

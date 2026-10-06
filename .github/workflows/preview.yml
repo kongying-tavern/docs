@@ -6,7 +6,7 @@ on:
       SURGE_TOKEN:
         required: true
   workflow_run:
-    workflows: ['TEST_BUILD']
+    workflows: [TEST_BUILD]
     types:
       - completed
 
@@ -67,7 +67,7 @@ jobs:
         uses: ./.github/actions/upsert-comment
         with:
           issue-number: ${{ steps.pr.outputs.id }}
-          marker: '<!-- AUTO_PREVIEW_HOOK -->'
+          marker: <!-- AUTO_PREVIEW_HOOK -->
           body: |
             <a href="${{ steps.deploy.outputs.url }}"><img alt="成功" src="https://assets.yuanshen.site/images/privew_is_ready_v1.png"></a>
             <!-- [工作流地址](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) -->
@@ -78,7 +78,7 @@ jobs:
         uses: ./.github/actions/upsert-comment
         with:
           issue-number: ${{ steps.pr.outputs.id }}
-          marker: '<!-- AUTO_PREVIEW_HOOK -->'
+          marker: <!-- AUTO_PREVIEW_HOOK -->
           body: |
             [<img alt="失败" src="https://assets.yuanshen.site/images/privew_failed_v1.png">](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             <!-- AUTO_PREVIEW_HOOK -->
@@ -107,7 +107,7 @@ jobs:
         uses: ./.github/actions/upsert-comment
         with:
           issue-number: ${{ steps.pr.outputs.id }}
-          marker: '<!-- AUTO_PREVIEW_HOOK -->'
+          marker: <!-- AUTO_PREVIEW_HOOK -->
           body: |
             [<img alt="失败" src="https://assets.yuanshen.site/images/privew_failed_v1.png">](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             <!-- AUTO_PREVIEW_HOOK -->

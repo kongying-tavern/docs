@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test */
 import type { ItemRect, PickNearestInput } from '../../../.vitepress/theme/hooks/fluid-hover/geometry'
 import assert from 'node:assert/strict'
 import test from 'node:test'

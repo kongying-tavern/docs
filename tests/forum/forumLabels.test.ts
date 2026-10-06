@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test */
 import type { LabelPageFetcher } from '../../src/forum/api/gitee/labels'
 import assert from 'node:assert/strict'
 import test from 'node:test'

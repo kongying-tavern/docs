@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test */
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { constrainSwipe, fullSwipeThreshold, resolveSwipeRelease, swipeSide, swipeVelocity } from '../../../.vitepress/theme/components/ui/swipe-actions/gesture'

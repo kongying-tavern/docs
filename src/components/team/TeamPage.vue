@@ -1,5 +1,3 @@
-<script lang="ts"></script>
-
 <script setup lang="ts">
 import type { Member } from './Member'
 import { useData } from 'vitepress'

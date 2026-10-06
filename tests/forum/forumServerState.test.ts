@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test */
 import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import test, { mock } from 'node:test'

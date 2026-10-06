@@ -8,16 +8,21 @@ on:
       - '.vitepress/**'
       - 'scripts/**'
       - 'tests/**'
-      - 'package.json'
-      - 'requirements.txt'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'eslint.config.ts'
-      - 'vite.config.ts'
-      - 'unocss.config.ts'
-      - 'tsconfig.json'
-      - '.nvmrc'
-      - '.python-version'
+      - '.github/**'
+      - '.vscode/**'
+      - '*.json'
+      - '*.yml'
+      - '*.yaml'
+      - package.json
+      - requirements.txt
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - eslint.config.ts
+      - vite.config.ts
+      - unocss.config.ts
+      - tsconfig.json
+      - .nvmrc
+      - .python-version
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
@@ -26,16 +31,21 @@ on:
       - '.vitepress/**'
       - 'scripts/**'
       - 'tests/**'
-      - 'package.json'
-      - 'requirements.txt'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'eslint.config.ts'
-      - 'vite.config.ts'
-      - 'unocss.config.ts'
-      - 'tsconfig.json'
-      - '.nvmrc'
-      - '.python-version'
+      - '.github/**'
+      - '.vscode/**'
+      - '*.json'
+      - '*.yml'
+      - '*.yaml'
+      - package.json
+      - requirements.txt
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - eslint.config.ts
+      - vite.config.ts
+      - unocss.config.ts
+      - tsconfig.json
+      - .nvmrc
+      - .python-version
   workflow_dispatch:
 
 permissions:

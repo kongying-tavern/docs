@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import { normalizeComment, normalizeIssue } from '../../src/forum/api/gitee/normalize'

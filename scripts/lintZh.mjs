@@ -41,7 +41,7 @@ const MDC_YAML_PROPS_REGEX = /(^|\n)(::[^\r\n]*\r?\n)(---\r?\n[\s\S]*?\r?\n---)(
 options.hyperParse.unshift((data) => {
   data.modifiedValue = data.modifiedValue.replace(
     MDC_YAML_PROPS_REGEX,
-    (originValue, leading, component, yaml, index) => {
+    (_originValue, leading, component, yaml, index) => {
       const yamlIndex = index + leading.length + component.length
       data.ignoredByParsers.push({
         name: 'mdc-yaml-props',

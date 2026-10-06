@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { isVisibleFeedback } from '../../src/utils/isVisibleFeedback'

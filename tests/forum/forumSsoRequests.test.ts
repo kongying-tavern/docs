@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test */
 import type { AuthSessionAccessor } from '../../src/services/authSession'
 import assert from 'node:assert/strict'
 import { registerHooks } from 'node:module'

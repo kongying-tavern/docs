@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test */
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import test from 'node:test'
