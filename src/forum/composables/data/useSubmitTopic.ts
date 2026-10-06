@@ -46,6 +46,7 @@ export function useSubmitTopic() {
       body: composeTopicBody(text, { labels, quotedTopic }),
       title: `${type}:${title.length === 0 ? `${text.substring(0, 12)}...` : title}`,
       labels: labels.join(','),
+      security_hole: options.isPrivate === true,
     }
 
     const topic = await forumMutations.createTopic(newTopic)
@@ -54,11 +55,13 @@ export function useSubmitTopic() {
     // quote form. A count-sync failure must not turn a real publication into a
     // form failure that encourages the user to submit the topic again.
     try {
-      const resourceUrl = await recordPublishedTopicQuote(
-        topic,
-        reactionEnvironmentForOrigin(location.origin),
-        (url, userId) => reactions.setPageReaction('like', { url, userId }),
-      )
+      const resourceUrl = options.isPrivate
+        ? undefined
+        : await recordPublishedTopicQuote(
+            topic,
+            reactionEnvironmentForOrigin(location.origin),
+            (url, userId) => reactions.setPageReaction('like', { url, userId }),
+          )
       if (resourceUrl)
         void queryCache.invalidateQueries({ key: forumKeys.reactionResource(resourceUrl) }).catch(() => {})
     }

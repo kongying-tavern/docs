@@ -53,6 +53,7 @@ const {
   isDisabled,
   isLoading,
   loadError,
+  filteredTags,
   tagList,
   getLocalizedTagName,
   handleSelect,
@@ -68,12 +69,12 @@ const {
   <Popover>
     <PopoverTrigger as-child>
       <TagsInput
-        class="letter-tags-input px-0 border vp-border-input gap-0 min-h-42px w-full"
+        class="letter-tags-input px-3 border vp-border-input gap-2 min-h-42px w-full md:px-0 md:gap-0"
         v-bind="$attrs"
         :model-value="modelValue"
         :placeholder="placeholder"
       >
-        <div class="pl-3 flex flex-wrap gap-2 items-center">
+        <div v-if="modelValue.length" class="contents md:pl-3 md:flex md:flex-wrap md:gap-2 md:items-center">
           <TagsInputItem
             v-for="item in modelValue"
             :key="item"
@@ -84,7 +85,7 @@ const {
             <TagsInputItemDelete @click="handleDelete(item)" />
           </TagsInputItem>
         </div>
-        <TagsInputInput class="px-3 w-full" @keydown.enter.prevent />
+        <TagsInputInput class="px-0 min-w-24 w-auto md:px-3 md:w-full" :placeholder="placeholder" @keydown.enter.prevent />
       </TagsInput>
     </PopoverTrigger>
     <PopoverContent
@@ -111,6 +112,9 @@ const {
               {{ message.forum.publish.tagsInput.retry }}
             </button>
           </div>
+          <p v-else-if="filteredTags.length === 0" class="text-sm py-6 text-center" role="status">
+            {{ message.forum.publish.tagsInput.noResultsFound }}
+          </p>
           <CommandEmpty v-else>
             {{ message.forum.publish.tagsInput.noResultsFound }}
           </CommandEmpty>

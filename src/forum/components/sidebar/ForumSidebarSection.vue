@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<{
     closedUnseen?: boolean
     canUnfollow?: boolean
     menuTopic?: ForumAPI.Topic
+    draft?: boolean
   }>
   open: boolean
   loginPrompt?: string
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{
   'update:open': [open: boolean]
   'unfollow': [topicId: string]
+  'openDraft': []
 }>()
 
 const { message } = useLocalized()
@@ -85,7 +87,7 @@ function commentLabel(item: { commentCount?: number }): string {
             data-fluid-hover-item
             class="forum-sidebar-topic-row"
           >
-            <a :href="item.href" class="forum-sidebar-topic" :title="item.title">
+            <a :href="item.href" class="forum-sidebar-topic" :title="item.title" :data-draft-type="item.draft ? item.type : undefined" @click="item.draft && emit('openDraft')">
               <ForumTopicMetadata
                 :type="item.type"
                 :topic-id="item.id"
@@ -96,6 +98,9 @@ function commentLabel(item: { commentCount?: number }): string {
                 class="forum-sidebar-topic-type"
               />
               <span class="flex-1 min-w-0 truncate">{{ item.title }}</span>
+              <span v-if="item.draft" class="text-xs text-secondary-foreground px-2 py-0.5 rounded-full bg-secondary shrink-0">
+                {{ message.forum.publish.feedbackForm.draftBadge }}
+              </span>
               <span
                 v-if="(item.commentCount ?? 0) > 0"
                 class="forum-sidebar-comments"
@@ -275,7 +280,7 @@ details[open] .chevron {
 }
 
 .forum-sidebar-unfollow:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 1px;
 }
 

@@ -12,6 +12,9 @@
   --letter-paper-texture:
     radial-gradient(color-mix(in srgb, var(--vp-c-text-1) 7%, transparent) 10%, transparent 20%),
     radial-gradient(color-mix(in srgb, var(--vp-c-text-1) 5%, transparent) 15%, transparent 25%);
+}
+
+.form-container.paper {
   background-color: var(--letter-paper-color);
   background-image: var(--letter-paper-texture);
   background-position:
@@ -23,34 +26,34 @@
   color: var(--vp-c-text-1);
 }
 
-.letter-title-input,
-.letter-tags-input,
-.letter-content-input {
-  border: 0 !important;
-  border-bottom: 1px solid color-mix(in srgb, var(--vp-c-text-1) 30%, transparent) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease;
-}
-
-.letter-title-input:hover,
-.letter-tags-input:hover,
-.letter-content-input:hover {
-  background: color-mix(in srgb, var(--vp-c-bg-soft) 72%, transparent) !important;
-}
-
-.letter-title-input:focus-visible,
-.letter-tags-input:focus-within,
-.letter-content-input:focus-within {
-  border-bottom-color: var(--vp-c-brand-1) !important;
-  background: var(--vp-c-bg-soft) !important;
-  box-shadow: none !important;
-}
-
 @media (min-width: 768px) {
+  .letter-title-input,
+  .letter-tags-input,
+  .letter-content-input {
+    border: 0 !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--vp-c-text-1) 30%, transparent) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .letter-title-input:hover,
+  .letter-tags-input:hover,
+  .letter-content-input:hover {
+    background: color-mix(in srgb, var(--vp-c-bg-soft) 72%, transparent) !important;
+  }
+
+  .letter-title-input:focus-visible,
+  .letter-tags-input:focus-within,
+  .letter-content-input:focus-within {
+    border-bottom-color: oklch(var(--ring)) !important;
+    background: var(--vp-c-bg-soft) !important;
+    box-shadow: none !important;
+  }
+
   .form-container {
     width: min(800px, calc(100vw - 32px)) !important;
     min-height: 100dvh;
@@ -214,11 +217,80 @@
 }
 
 @media (max-width: 767px) {
-  .form-content {
-    max-height: calc(100dvh - 148px - env(safe-area-inset-bottom));
+  .form-container.feedback-drawer[data-vaul-drawer-direction='bottom'] {
+    max-height: calc(100dvh - 24px);
+    border-radius: 1rem 1rem 0 0;
+    overflow: clip;
+    font-family: var(--vp-font-family-base);
+    font-size: calc(14px * var(--site-ui-scale));
+    line-height: 1.5;
+  }
+
+  .feedback-drawer [data-slot='drawer-title'] {
+    font-size: calc(20px * var(--site-ui-scale));
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .feedback-drawer :is(button, input, .tiptap) {
+    font-family: inherit;
+  }
+
+  .feedback-drawer [data-slot='tabs-trigger'] {
+    color: oklch(var(--muted-foreground));
+    font-size: calc(14px * var(--site-ui-scale));
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .feedback-drawer [data-slot='tabs-trigger'][data-state='active'] {
+    color: oklch(var(--foreground));
+    font-weight: 600;
+  }
+
+  .feedback-drawer [data-slot='form-label'] {
+    font-size: calc(14px * var(--site-ui-scale));
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .feedback-drawer :is(input, .forum-rich-editor) {
+    font-size: calc(16px * var(--site-ui-scale));
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .feedback-drawer input::placeholder,
+  .feedback-drawer .tiptap p.is-editor-empty:first-child::before {
+    color: oklch(var(--muted-foreground));
+    font-size: calc(14px * var(--site-ui-scale));
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .feedback-drawer :is([data-slot='form-message'], .forum-image-upload p, .validation-summary) {
+    font-size: calc(12px * var(--site-ui-scale));
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .feedback-drawer [type='submit'] {
+    font-size: calc(14px * var(--site-ui-scale));
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .feedback-drawer .form-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     overflow-y: auto;
     overscroll-behavior: contain;
-    scrollbar-gutter: stable;
+  }
+
+  .feedback-drawer .form-fields {
+    flex-shrink: 0;
   }
 }
 

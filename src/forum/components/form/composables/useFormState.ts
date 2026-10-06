@@ -1,18 +1,22 @@
 import type { TopicFormData } from '~/forum/services/form/validation'
 import { useForm } from 'vee-validate'
-import { computed, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import {
   createDefaultTopicDraft,
   readTopicDraft,
+  removeTopicDraft,
   restoreTopicDraft,
   writeTopicDraft,
 } from '~/forum/services/form/topicDraft'
 import { createTopicFormSchema, getAllowedTopicTypes } from '~/forum/services/form/validation'
 import { getFormTabsConfig } from '../publish-topic-form/config'
 
-export function useFormState() {
+export function useFormState(draftsEnabled: () => boolean = () => true) {
+  const loadDraft = (type: TopicFormData['type']) => draftsEnabled()
+    ? readTopicDraft(type)
+    : { ...createDefaultTopicDraft(), type }
   const { message } = useLocalized()
   const { hasAnyPermissions } = useRuleChecks()
   const hasPermission = hasAnyPermissions('manage_feedback')
@@ -27,24 +31,30 @@ export function useFormState() {
    * switching away preserves unsaved edits for the next visit.
    */
   const draftSessions = new Map<TopicFormData['type'], TopicFormData>()
+  const initialDraft = loadDraft('BUG')
+  const savedBaselines = reactive(new Map<TopicFormData['type'], TopicFormData>([['BUG', initialDraft]]))
 
   const validationSchema = computed(() => createTopicFormSchema(message, hasPermission.value))
   const {
     resetForm: resetValidationForm,
     setFieldValue,
-    meta,
     validate,
     values,
   } = useForm({
     validationSchema,
-    initialValues: readTopicDraft('BUG'),
+    initialValues: initialDraft,
     // Fields unmount every time the dialog/drawer closes; keep their values so
     // the draft survives a same-session reopen.
     keepValuesOnUnmount: true,
   })
 
   const formData = computed(() => restoreTopicDraft(values))
-  const isDirty = computed(() => meta.value.dirty)
+  function textIdentity(draft: TopicFormData): string {
+    return JSON.stringify([draft.type, draft.title, draft.text, draft.tags, draft.quotedTopic ?? null, draft.isPrivate === true])
+  }
+  const isDirty = computed(() => textIdentity(formData.value)
+    !== textIdentity(savedBaselines.get(formData.value.type) ?? loadDraft(formData.value.type)))
+  const savedAttachments = computed(() => (savedBaselines.get(formData.value.type) ?? loadDraft(formData.value.type)).attachments ?? [])
 
   const tabList = computed(() => {
     return getAllowedTopicTypes(hasPermission.value)
@@ -64,9 +74,17 @@ export function useFormState() {
   }
 
   function applyDraft(type: TopicFormData['type']): void {
-    const draft = draftSessions.get(type) ?? readTopicDraft(type)
-    resetValidationForm({ values: { ...draft, type, tags: [...draft.tags] } })
+    if (!savedBaselines.has(type))
+      savedBaselines.set(type, { ...loadDraft(type), type })
+    const draft = draftSessions.get(type) ?? loadDraft(type)
+    resetValidationForm({ values: { ...draft, type, tags: [...draft.tags], isPrivate: draft.isPrivate === true } })
   }
+
+  watch(draftsEnabled, () => {
+    draftSessions.clear()
+    savedBaselines.clear()
+    applyDraft(formData.value.type)
+  }, { flush: 'sync' })
 
   function switchTab(): void {
     const targetType = tabList.value[nextTabIndex.value]
@@ -75,30 +93,48 @@ export function useFormState() {
     setFormType(targetType)
   }
 
-  function initFormData(): void {
-    const type = formData.value.type
+  function initFormData(type = formData.value.type): void {
     const freshDraft = { ...createDefaultTopicDraft(), type }
+    if (draftsEnabled())
+      writeTopicDraft(type, freshDraft)
     draftSessions.set(type, freshDraft)
-    writeTopicDraft(type, freshDraft)
-    resetValidationForm({ values: freshDraft })
+    savedBaselines.set(type, freshDraft)
+    if (type === formData.value.type)
+      resetValidationForm({ values: { ...freshDraft, isPrivate: false } })
   }
 
-  function saveDraft(): void {
-    const type = formData.value.type
-    const draft = { ...formData.value, type, tags: [...formData.value.tags] }
-    draftSessions.set(type, draft)
+  function saveDraft(attachments: NonNullable<TopicFormData['attachments']> = [], type = formData.value.type, reset = true): void {
+    const working = type === formData.value.type ? formData.value : draftSessions.get(type) ?? loadDraft(type)
+    const draft = restoreTopicDraft({ ...working, type, tags: [...working.tags], attachments })
+    if (!draftsEnabled())
+      return
     writeTopicDraft(type, draft)
-    resetValidationForm({ values: draft })
+    draftSessions.set(type, draft)
+    savedBaselines.set(type, draft)
+    if (reset && type === formData.value.type)
+      resetValidationForm({ values: { ...draft, isPrivate: draft.isPrivate === true } })
   }
 
   function discardDraft(): void {
     const type = formData.value.type
-    const draft = readTopicDraft(type)
+    const draft = loadDraft(type)
     draftSessions.set(type, draft)
-    resetValidationForm({ values: draft })
+    savedBaselines.set(type, draft)
+    resetValidationForm({ values: { ...draft, isPrivate: draft.isPrivate === true } })
   }
 
-  function setFormType(type: (typeof tabList.value)[number]): void {
+  function deleteDraft(): void {
+    const type = formData.value.type
+    if (!draftsEnabled())
+      return
+    removeTopicDraft(type)
+    const freshDraft = { ...createDefaultTopicDraft(), type }
+    draftSessions.delete(type)
+    savedBaselines.set(type, freshDraft)
+    resetValidationForm({ values: { ...freshDraft, isPrivate: false } })
+  }
+
+  function setFormType(type: (typeof tabList.value)[number], carryReference = true): void {
     if (!tabList.value.includes(type))
       return
     const prevType = formData.value.type
@@ -106,10 +142,14 @@ export function useFormState() {
       const quotedTopic = formData.value.quotedTopic
       snapshotDraft(prevType)
       applyDraft(type)
-      if (quotedTopic)
+      if (quotedTopic && carryReference)
         setFieldValue('quotedTopic', quotedTopic)
     }
     currentTabIndex.value = tabList.value.indexOf(type)
+  }
+
+  function setPrivate(isPrivate: boolean): void {
+    setFieldValue('isPrivate', isPrivate)
   }
 
   function setQuotedTopic(quotedTopic?: TopicFormData['quotedTopic']): void {
@@ -144,6 +184,7 @@ export function useFormState() {
     formData,
     formTabs,
     isDirty,
+    savedAttachments,
 
     tabList,
     nextTab,
@@ -154,7 +195,9 @@ export function useFormState() {
     initFormData,
     saveDraft,
     discardDraft,
+    deleteDraft,
     setFormType,
+    setPrivate,
     setQuotedTopic,
     openForm,
     closeForm,

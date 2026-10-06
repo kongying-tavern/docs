@@ -4,6 +4,8 @@ import type { TopicFormData } from '~/forum/services/form/validation'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, unref } from 'vue'
 import { DialogHeader } from '@/components/ui/dialog'
+import { DrawerHeader, DrawerTitle } from '@/components/ui/drawer'
+import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLocalized } from '@/hooks/useLocalized'
 
@@ -12,6 +14,7 @@ interface Props {
   tabs: TabsConfig[]
   hasPermission: boolean
   username: string
+  loading?: boolean
 }
 
 interface Emits {
@@ -43,7 +46,7 @@ function formatDate(date = new Date()): string {
     v-model="activeTab"
     class="form-content w-full md:px-4"
   >
-    <DialogHeader v-if="isDesktop" class="desktop-paper-header font-serif pt-6">
+    <DialogHeader v-if="isDesktop" class="desktop-paper-header font-title pt-6">
       <div class="text-base c-[var(--vp-c-text-2)] leading-none flex w-full justify-between">
         <p>@{{ username }}</p>
         <time class="c-[var(--vp-c-text-1)]">{{ formatDate() }}</time>
@@ -55,24 +58,25 @@ function formatDate(date = new Date()): string {
       <div class="desktop-title-divider mb-10 w-18" aria-hidden="true" />
     </DialogHeader>
 
-    <DialogHeader v-else class="form-header px-5 pb-4 pt-5 text-left sm:px-6">
-      <h2 class="text-xl text-[var(--vp-c-text-1)] tracking-[-0.02em] font-semibold">
+    <DrawerHeader v-else class="px-5 pb-5 pt-3 shrink-0">
+      <DrawerTitle>
         {{ message.forum.publish.title }}
-      </h2>
+      </DrawerTitle>
       <TabsList
-        class="mt-3 border-solid grid h-10 w-fit"
+        class="mt-4 grid h-10 w-full"
         :class="hasPermission ? 'grid-cols-3' : 'grid-cols-2'"
       >
         <TabsTrigger
           v-for="tab in visibleTabs"
           :key="tab.value"
           :value="tab.value"
-          class="text-sm"
+          :disabled="loading"
         >
           {{ tab.label }}
         </TabsTrigger>
       </TabsList>
-    </DialogHeader>
+    </DrawerHeader>
+    <Separator v-if="!isDesktop" />
 
     <slot />
   </Tabs>

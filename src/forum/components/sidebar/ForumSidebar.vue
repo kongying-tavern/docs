@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { useQueryCache } from '@pinia/colada'
-import { useLocalStorage, useMediaQuery } from '@vueuse/core'
+import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
-import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
+import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumPersonalState } from '~/forum/composables/data/useForumPersonalState'
 import { useForumTopicQuery, useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
+import { useFeedbackFormExperiment } from '~/forum/composables/state/useFeedbackFormExperiment'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumTopicSeenState } from '~/forum/composables/state/useForumTopicSeenState'
 import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
+import { useIdlePreload } from '~/forum/composables/view/useIdlePreload'
+import { readSavedTopicDrafts, TOPIC_DRAFT_CHANGE_EVENT } from '~/forum/services/form/topicDraft'
+import { getAllowedTopicTypes } from '~/forum/services/form/validation'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { decodeForumText } from '~/forum/services/forumContentCodec'
 import { isRecentClosedTopic } from '~/forum/services/forumPersonalState'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
 import { isClosedUnseen } from '~/forum/services/forumTopicSeenState'
@@ -19,7 +25,8 @@ import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import { FORM_HASH } from '../form/publish-topic-form/config'
-import { publishTopic } from '../utils/submitFormUi'
+import { preloadForumRichTextarea } from '../utils/forumComponentPreload'
+import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
 import ForumSidebarAccountMenu from './ForumSidebarAccountMenu.vue'
 import ForumSidebarFestivalItem from './ForumSidebarFestivalItem.vue'
 import ForumSidebarNav from './ForumSidebarNav.vue'
@@ -35,7 +42,20 @@ const personal = useForumPersonalState()
 const topicSeen = useForumTopicSeenState()
 
 const isLoggedIn = computed(() => auth.isTokenValid)
+useIdlePreload(preloadForumPublishForm, () => isLoggedIn.value)
+useIdlePreload(preloadForumRichTextarea, () => isLoggedIn.value)
 const username = computed(() => userInfo.info?.login ?? '')
+const { hasAnyPermissions } = useRuleChecks()
+const canManageFeedback = hasAnyPermissions('manage_feedback')
+const experiment = useFeedbackFormExperiment()
+const topicDrafts = shallowRef<ReturnType<typeof readSavedTopicDrafts>>([])
+function refreshDrafts(): void {
+  topicDrafts.value = isLoggedIn.value && experiment.variant.value === 'compact' ? readSavedTopicDrafts(getAllowedTopicTypes(canManageFeedback.value)) : []
+}
+onMounted(refreshDrafts)
+watch([isLoggedIn, canManageFeedback, username, experiment.variant], refreshDrafts)
+useEventListener(TOPIC_DRAFT_CHANGE_EVENT, refreshDrafts)
+useEventListener('storage', refreshDrafts)
 watch(() => userInfo.info, (info) => {
   if (info)
     queryCache.setQueryData(forumKeys.user(info.login), info)
@@ -89,6 +109,11 @@ const currentParticipatedTopics = computed(() => new Map(
 // 移动端（<960px）收藏创建按钮从 sidebar 移入 VPLocalNav 的返回顶部右侧。
 // VPLocalNav 由默认主题渲染且晚于本组件挂载，故用原生 DOM 手动挂载（Teleport 时序不可靠）。
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+function openDraft(): void {
+  preloadForumPublishForm()
+  if (isMobile.value)
+    document.querySelector<HTMLElement>('.VPBackdrop')?.click()
+}
 let localNavCreateBtn: HTMLButtonElement | null = null
 
 function renderLocalNavCreateBtn() {
@@ -140,7 +165,7 @@ watch(isLoggedIn, renderLocalNavCreateBtn)
 onBeforeUnmount(unmountLocalNavCreateBtn)
 
 const navItems = computed(() => {
-  const items = [
+  const items: InstanceType<typeof ForumSidebarNav>['$props']['items'] = [
     { label: message.value.forum.sidebar.home, icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
     { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
     { label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') },
@@ -153,21 +178,30 @@ const navItems = computed(() => {
   return items
 })
 
-const submittedItems = computed(() => submitted.rows.value
-  .filter(topic => isRecentClosedTopic(topic))
-  .slice(0, 20)
-  .map(topic => ({
-    id: String(topic.id),
-    title: topic.title,
-    href: topicHref(String(topic.id), null),
-    type: topic.type,
-    state: topic.state,
-    status: topic.status,
-    goodIssue: topic.goodIssue,
-    commentCount: Math.max(0, topic.commentCount),
-    closedUnseen: isClosedUnseen(topic, topicSeen.seenAt(String(topic.id))),
-    menuTopic: topic,
-  })))
+const submittedItems = computed(() => [
+  ...topicDrafts.value.map(draft => ({
+    id: `draft-${draft.type}`,
+    title: draft.title.trim() || decodeForumText(draft.text).text.trim() || message.value.forum.publish.feedbackForm.untitledDraft,
+    href: `#${FORM_HASH}-DRAFT-${draft.type}`,
+    type: draft.type,
+    draft: true,
+  })),
+  ...submitted.rows.value
+    .filter(topic => isRecentClosedTopic(topic))
+    .slice(0, 20)
+    .map(topic => ({
+      id: String(topic.id),
+      title: topic.title,
+      href: topicHref(String(topic.id), null),
+      type: topic.type,
+      state: topic.state,
+      status: topic.status,
+      goodIssue: topic.goodIssue,
+      commentCount: Math.max(0, topic.commentCount),
+      closedUnseen: isClosedUnseen(topic, topicSeen.seenAt(String(topic.id))),
+      menuTopic: topic,
+    })),
+])
 const followedItems = computed(() => personal.state.value.followedTopics
   .map(topic => ({ topic, current: currentFollowedTopics.value.get(topic.topicId) }))
   .filter(({ topic, current }) => isRecentClosedTopic(current ?? topic))
@@ -240,6 +274,7 @@ useForumShortcut('publish', handleCreate)
           :items="submittedItems"
           :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
           :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
+          @open-draft="openDraft"
         />
         <ForumSidebarSection
           v-model:open="participatedSectionOpen"

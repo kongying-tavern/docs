@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import type { CustomConfig } from '~/forum/types'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
-import { VALIDATION_LIMITS } from '../forumConfig'
+import { IMAGE_UPLOAD_POLICY, VALIDATION_LIMITS } from '../forumConfig'
 import { decodeForumText } from '../forumContentCodec'
 import { TOPIC_ID_REGEX } from '../forumTopicQuote'
 
@@ -23,6 +23,16 @@ const DEFAULT_TOPIC_VALIDATION_MESSAGES: TopicValidationMessages = {
   tooLong: maximum => `Must contain at most ${maximum} characters.`,
   tooManyTags: maximum => `Select at most ${maximum} tags.`,
 }
+
+const REMOTE_IMAGE_URL = /^https?:\/\//i
+
+export const draftImageSchema = z.object({
+  src: z.string().url().refine(value => REMOTE_IMAGE_URL.test(value)),
+  alt: z.string().optional(),
+  thumbHash: z.string().optional(),
+  width: z.number().positive().finite().optional(),
+  height: z.number().positive().finite().optional(),
+})
 
 export function createTopicDraftSchema(options: {
   canPublishAnnouncement: boolean
@@ -45,6 +55,8 @@ export function createTopicDraftSchema(options: {
         .max(VALIDATION_LIMITS.TAGS.MAX_COUNT, messages.tooManyTags(VALIDATION_LIMITS.TAGS.MAX_COUNT)),
     ),
     type: z.enum(['FEAT', 'BUG', 'ANN']),
+    isPrivate: z.boolean().optional(),
+    attachments: z.array(draftImageSchema).max(IMAGE_UPLOAD_POLICY.MAX_COUNT).optional(),
     quotedTopic: z.object({
       id: z.string().trim().toUpperCase().regex(TOPIC_ID_REGEX),
       type: z.enum(['FEAT', 'BUG']),

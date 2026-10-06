@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TabsConfig } from './publish-topic-form/types'
 import { useMediaQuery } from '@vueuse/core'
+import { FieldGroup } from '@/components/ui/field'
 import { FormField } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TabsContent } from '@/components/ui/tabs'
@@ -12,10 +13,12 @@ import ForumTagsInput from './publish-topic-form/ForumTagsInput.vue'
 
 interface Props {
   tabs: TabsConfig[]
+  imageSelectionDisabled?: boolean
 }
 
 interface Emits {
   (e: 'files-selected', files: File[]): void
+  (e: 'select-images'): void
 }
 
 defineProps<Props>()
@@ -26,9 +29,9 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 </script>
 
 <template>
-  <div class="form-fields px-5 pb-5 md:px-4 sm:px-6">
+  <div class="form-fields px-5 pb-5 pt-4 md:px-4 md:pt-0">
     <TabsContent v-for="tab in tabs" :key="tab.value" :value="tab.value" class="mt-0">
-      <div class="gap-5 grid w-full items-center md:gap-6">
+      <FieldGroup class="gap-6">
         <FormField
           v-if="tab.fields?.title"
           v-slot="{ componentField }"
@@ -73,7 +76,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 
         <FormField
           v-if="tab.fields.content"
-          v-slot="{ componentField }"
+          v-slot="{ componentField, errorMessage }"
           name="text"
         >
           <ForumPublishTopicFormField
@@ -84,17 +87,21 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
             <ForumContentInputBox
               id="content"
               v-bind="componentField"
-              :class="isDesktop ? 'min-h-36' : 'min-h-28'"
+              class="min-h-36"
               :placeholder="tab.fields.content.placeholder"
               :aria-label="tab.fields.content.label"
+              :aria-invalid="Boolean(errorMessage)"
               :support-paste="true"
+              :show-toolbar="!isDesktop"
+              :image-selection-disabled="imageSelectionDisabled"
               @paste-files="$emit('files-selected', $event)"
+              @select-images="$emit('select-images')"
             >
               <template #after-editor>
                 <slot name="after-content" />
               </template>
               <template v-if="!isDesktop" #uploader>
-                <slot name="uploader" size="xl" />
+                <slot name="uploader" size="sm" />
               </template>
             </ForumContentInputBox>
           </ForumPublishTopicFormField>
@@ -117,7 +124,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
           />
           <slot name="uploader" size="lg" />
         </div>
-      </div>
+      </FieldGroup>
     </TabsContent>
   </div>
 </template>

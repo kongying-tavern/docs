@@ -59,14 +59,18 @@ export function flattenWithTags(
   return result
 }
 
-let publishFormPreloaded = false
+let publishFormPreload: Promise<boolean> | undefined
 
 /** 发布表单含 tiptap 编辑器（~154kB Brotli）；入口 hover/聚焦/点击时预热，避免直达时可感知加载 */
-export function preloadForumPublishForm(): void {
-  if (publishFormPreloaded)
-    return
-  publishFormPreloaded = true
-  void import('~/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue').catch(() => undefined)
+export function preloadForumPublishForm(): Promise<boolean> {
+  publishFormPreload ??= Promise.all([
+    import('~/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue'),
+    import('~/forum/components/form/publish-topic-form/ForumCompactPublishTopicPanel.vue'),
+  ]).then(() => true).catch(() => {
+    publishFormPreload = undefined
+    return false
+  })
+  return publishFormPreload
 }
 
 export function publishTopic() {

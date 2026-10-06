@@ -42,11 +42,13 @@ export async function submitTopicFormTransaction(options: {
   }
 
   const draft: ForumAPI.CreateTopicOption = {
-    ...parsed.data,
+    type: parsed.data.type,
+    isPrivate: parsed.data.isPrivate === true,
     title: parsed.data.title.trim(),
     text: parsed.data.text.trim()
       + formatAttachmentMarkdownList(options.getUploadedAttachments()),
     tags: parsed.data.type === 'ANN' ? [] : [...parsed.data.tags],
+    ...(parsed.data.quotedTopic ? { quotedTopic: parsed.data.quotedTopic } : {}),
   }
 
   try {

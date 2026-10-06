@@ -4,29 +4,32 @@ import { OctagonXIcon, XIcon } from '@lucide/vue'
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, ref, useTemplateRef } from 'vue'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Dialog, DialogDescription, DialogScrollContent, DialogTitle } from '@/components/ui/dialog'
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/ui/drawer'
+import { Drawer, DrawerContent } from '@/components/ui/drawer'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
+import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import ForumFormActionBar from '../ForumFormActionBar.vue'
 import ForumFormActions from '../ForumFormActions.vue'
 import ForumFormContent from '../ForumFormContent.vue'
 import ForumFormTabs from '../ForumFormTabs.vue'
 
+import ForumPublishTopicStage from './ForumPublishTopicStage.vue'
+
 const props = defineProps<{ form: PublishTopicController['form'], upload: PublishTopicController['upload'], submission: PublishTopicController['submission'], actions: PublishTopicController['actions'] }>()
-const { isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopicData, quotedTopicQuery, draftPromptOpen } = props.form
+const { isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopicData, quotedTopicQuery } = props.form
 const { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry } = props.upload
 const { submitLoading, submissionPhase, submissionAlert, validationErrorCount, finalIsDisabled } = props.submission
-const { handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, switchTab, focusFirstInvalid } = props.actions
+const { handleFormSubmit, handleClose, handleOpenChange, setFormType, switchTab, focusFirstInvalid } = props.actions
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 const [UseForm, Form] = createReusableTemplate()
 const [UseUploader, Uploader] = createReusableTemplate()
 const formElement = useTemplateRef<HTMLFormElement>('formElement')
+const imageUpload = useTemplateRef<InstanceType<typeof ForumImageUpload>>('imageUpload')
 const inSwitchTabTransition = ref(false)
 const sendMotionActive = ref(false)
 const pendingMotion = new Set<() => void>()
@@ -95,40 +98,49 @@ defineExpose(presentation)
 <template>
   <UseUploader v-slot="{ size }">
     <ForumImageUpload
+      ref="imageUpload"
       :attachments="attachments"
       :disabled="imageSelectionDisabled"
+      :hide-default-trigger="!isDesktop"
+      :class="{ hidden: !isDesktop && attachments.length === 0 }"
       :size="size"
       @files-selected="handleFilesSelected"
       @remove="remove"
       @retry="handleRetry"
+      @paste.stop
     />
   </UseUploader>
 
   <UseForm>
-    <Alert v-if="submissionAlert" variant="destructive" class="mb-3 pr-9">
-      <OctagonXIcon />
-      <AlertTitle>{{ submissionAlert.title }}</AlertTitle>
-      <AlertDescription class="whitespace-pre-wrap break-words">
-        {{ submissionAlert.description }}
-      </AlertDescription>
-      <button
-        type="button"
-        class="color-[var(--vp-c-text-2)] icon-btn right-1.5 top-1.5 absolute hover:color-[var(--vp-c-text-1)]"
-        :aria-label="message.ui.button.close"
-        @click="submissionAlert = null"
-      >
-        <XIcon class="size-3.5" />
-      </button>
-    </Alert>
-
     <ForumFormTabs
       :model-value="formData.type"
       :tabs="formTabs"
       :has-permission="hasPermission"
       :username="username"
+      :loading="submitLoading"
       @update:model-value="setFormType"
     >
-      <ForumFormContent :tabs="formTabs" @files-selected="handleFilesSelected">
+      <Alert v-if="submissionAlert" variant="destructive" class="mx-5 mb-3 pr-9 shrink-0 w-auto md:mx-4">
+        <OctagonXIcon />
+        <AlertTitle>{{ submissionAlert.title }}</AlertTitle>
+        <AlertDescription class="whitespace-pre-wrap break-words">
+          {{ submissionAlert.description }}
+        </AlertDescription>
+        <button
+          type="button"
+          class="color-[var(--vp-c-text-2)] icon-btn right-1.5 top-1.5 absolute hover:color-[var(--vp-c-text-1)]"
+          :aria-label="message.ui.button.close"
+          @click="submissionAlert = null"
+        >
+          <XIcon class="size-3.5" />
+        </button>
+      </Alert>
+      <ForumFormContent
+        :tabs="formTabs"
+        :image-selection-disabled="imageSelectionDisabled || attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT"
+        @files-selected="handleFilesSelected"
+        @select-images="imageUpload?.open()"
+      >
         <template #uploader="{ size }">
           <Uploader :size="size" />
         </template>
@@ -162,10 +174,36 @@ defineExpose(presentation)
         {{ message.forum.publish.form.content.placeholder }}
       </DialogDescription>
 
-      <form ref="formElement" class="letter-form flex flex-col" @submit.prevent="handleFormSubmit">
-        <div class="form-motion-surface flex flex-col">
-          <Form />
+      <ForumPublishTopicStage :form="form" :actions="actions">
+        <form ref="formElement" class="letter-form flex flex-col" @submit.prevent="handleFormSubmit">
+          <div class="form-motion-surface flex flex-col">
+            <Form />
 
+            <ForumFormActions
+              :loading="submitLoading"
+              :disabled="finalIsDisabled"
+              :error-count="validationErrorCount"
+              @close="handleClose"
+              @review-errors="focusFirstInvalid"
+            />
+          </div>
+
+          <ForumFormActionBar
+            :next-tab="nextTab"
+            :in-transition="inSwitchTabTransition"
+            @close="handleClose"
+            @switch-tab="animateSwitchTab"
+          />
+        </form>
+      </ForumPublishTopicStage>
+    </DialogScrollContent>
+  </Dialog>
+
+  <Drawer v-else :open="isOpen" @update:open="handleOpenChange">
+    <DrawerContent class="form-container feedback-drawer max-h-[calc(100dvh-24px)] overflow-clip" :aria-describedby="undefined" :data-phase="sendMotionActive ? 'closing' : submissionPhase">
+      <ForumPublishTopicStage :form="form" :actions="actions">
+        <form ref="formElement" class="letter-form flex flex-1 flex-col min-h-0 overflow-hidden" @submit.prevent="handleFormSubmit">
+          <Form />
           <ForumFormActions
             :loading="submitLoading"
             :disabled="finalIsDisabled"
@@ -173,61 +211,10 @@ defineExpose(presentation)
             @close="handleClose"
             @review-errors="focusFirstInvalid"
           />
-        </div>
-
-        <ForumFormActionBar
-          :next-tab="nextTab"
-          :in-transition="inSwitchTabTransition"
-          @close="handleClose"
-          @switch-tab="animateSwitchTab"
-        />
-      </form>
-    </DialogScrollContent>
-  </Dialog>
-
-  <Drawer v-else :open="isOpen" @update:open="handleOpenChange">
-    <DrawerContent class="form-container max-h-[calc(100dvh-8px)] overflow-hidden" :data-phase="sendMotionActive ? 'closing' : submissionPhase">
-      <DrawerTitle class="sr-only">
-        {{ message.forum.publish.title }}
-      </DrawerTitle>
-      <DrawerDescription class="sr-only">
-        {{ message.forum.publish.form.content.placeholder }}
-      </DrawerDescription>
-      <form ref="formElement" class="letter-form flex flex-col min-h-0" @submit.prevent="handleFormSubmit">
-        <Form />
-        <ForumFormActions
-          :loading="submitLoading"
-          :disabled="finalIsDisabled"
-          :error-count="validationErrorCount"
-          @close="handleClose"
-          @review-errors="focusFirstInvalid"
-        />
-      </form>
+        </form>
+      </ForumPublishTopicStage>
     </DrawerContent>
   </Drawer>
-
-  <AlertDialog v-model:open="draftPromptOpen">
-    <AlertDialogContent>
-      <AlertDialogHeader>
-        <AlertDialogTitle>{{ message.forum.publish.feedbackForm.keepDraftTitle }}</AlertDialogTitle>
-        <AlertDialogDescription>
-          {{ message.forum.publish.feedbackForm.keepDraftDescription }}
-        </AlertDialogDescription>
-      </AlertDialogHeader>
-      <AlertDialogFooter>
-        <!-- 放弃草稿销毁用户内容，破坏性选项与保留选项需要视觉区分 -->
-        <AlertDialogCancel
-          class="text-destructive border-destructive/40 hover:bg-destructive/10"
-          @click="discardCurrentDraft"
-        >
-          {{ message.forum.publish.feedbackForm.discardDraft }}
-        </AlertDialogCancel>
-        <AlertDialogAction @click="keepDraft">
-          {{ message.forum.publish.feedbackForm.keepDraft }}
-        </AlertDialogAction>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialog>
 </template>
 
 <style lang="scss" src="./ForumPublishTopicForm.scss"></style>

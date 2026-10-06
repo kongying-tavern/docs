@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
-import { computed, nextTick, useId, useTemplateRef } from 'vue'
+import { createReusableTemplate } from '@vueuse/core'
+import { computed, nextTick, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import ForumImage from '~/forum/components/ui/ForumImage.vue'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
@@ -14,6 +16,9 @@ const props = withDefaults(defineProps<{
   hideDefaultTrigger?: boolean
   class?: HTMLAttributes['class']
   size?: 'xl' | 'lg' | 'sm'
+  cardPreview?: boolean
+  hideHint?: boolean
+  previewMaxHeight?: number
 }>(), {
   disabled: false,
   hideDefaultTrigger: false,
@@ -28,10 +33,17 @@ const emit = defineEmits<{
 
 const atLimit = computed(() => props.attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT)
 const selectionDisabled = computed(() => props.disabled || atLimit.value)
-const inputId = `forum-image-picker-${useId()}`
 const input = useTemplateRef<HTMLInputElement>('input')
 const dropZone = useTemplateRef<HTMLElement>('drop-zone')
 const { message } = useLocalized()
+const [DefineActions, Actions] = createReusableTemplate<{ attachment: ImageAttachment, index: number }>()
+const previewImages = computed(() => props.attachments.map(attachment => ({
+  src: attachment.previewUrl,
+  alt: attachment.file?.name || attachment.savedImage?.alt || '',
+  width: attachment.thumbHash?.originalWidth ?? attachment.savedImage?.width,
+  height: attachment.thumbHash?.originalHeight ?? attachment.savedImage?.height,
+  thumbHash: attachment.thumbHash?.dataBase64 ?? attachment.savedImage?.thumbHash,
+})))
 const previewSizeClass = computed(() => ({
   sm: 'size-20',
   lg: 'size-28',
@@ -58,8 +70,10 @@ async function removeAttachment(id: string, index: number): Promise<void> {
   emit('remove', id)
   await nextTick()
 
-  const removeButtons = dropZone.value?.querySelectorAll<HTMLButtonElement>('[data-remove-image]')
-  const nextButton = removeButtons?.[Math.min(index, Math.max(0, removeButtons.length - 1))]
+  const nextAttachment = props.attachments[Math.min(index, props.attachments.length - 1)]
+  const nextButton = nextAttachment
+    ? dropZone.value?.querySelector<HTMLButtonElement>(`[data-attachment-id="${CSS.escape(nextAttachment.id)}"] [data-remove-image]`)
+    : undefined
   const focusTarget = nextButton ?? dropZone.value
   focusTarget?.focus({ preventScroll: true })
 }
@@ -78,9 +92,14 @@ function errorText(attachment: ImageAttachment): string {
 function statusText(attachment: ImageAttachment): string {
   if (attachment.status === 'failed')
     return errorText(attachment)
+  const copy = message.value.forum.publish.feedbackForm
+  if (attachment.status === 'queued')
+    return copy.imageQueued
+  if (attachment.status === 'processing')
+    return copy.imageProcessing
   return attachment.status === 'uploaded'
-    ? message.value.forum.publish.feedbackForm.success
-    : message.value.forum.publish.feedbackForm.uploadingImages
+    ? copy.imageUploaded
+    : copy.uploadingImages
         .replace('{settled}', '0')
         .replace('{total}', '1')
 }
@@ -94,6 +113,40 @@ defineExpose({ open })
 </script>
 
 <template>
+  <DefineActions v-slot="{ attachment, index }">
+    <div v-if="attachment.status === 'failed'" class="bg-[var(--forum-media-overlay-strong)] flex flex-col gap-1 items-center inset-0 justify-center absolute">
+      <span class="i-lucide-circle-alert bg-[var(--forum-media-on-overlay)] size-4" aria-hidden="true" />
+      <span class="text-[var(--forum-media-on-overlay)] leading-none font-medium text-ui-10">
+        {{ message.forum.publish.feedbackForm.uploadFailedShort }}
+      </span>
+      <button
+        type="button"
+        class="mt-0.5 rounded-full bg-[var(--forum-media-overlay)] flex size-6 pointer-events-auto items-center justify-center"
+        :aria-label="formatMessage(message.forum.publish.feedbackForm.retryImage, { filename: attachment.file?.name || attachment.savedImage?.alt || '' })"
+        :disabled="disabled"
+        @click="emit('retry', attachment.id)"
+      >
+        <span class="i-lucide-rotate-ccw bg-[var(--forum-media-on-overlay)] size-3.5" aria-hidden="true" />
+      </button>
+    </div>
+    <button
+      type="button"
+      data-remove-image
+      class="image-action rounded-bl-md bg-[var(--forum-media-overlay)] flex size-7 pointer-events-auto items-center right-0 top-0 justify-center absolute focus-visible:outline-2 focus-visible:outline-[var(--forum-media-on-overlay)] hover:bg-[var(--forum-media-overlay-strong)]"
+      :aria-label="formatMessage(message.forum.publish.feedbackForm.removeImage, { filename: attachment.file?.name || attachment.savedImage?.alt || '' })"
+      :disabled="disabled"
+      @click="removeAttachment(attachment.id, index)"
+    >
+      <span
+        class="bg-[var(--forum-media-on-overlay)] size-4"
+        :class="attachment.status === 'uploading' ? 'i-lucide-loader-circle animate-spin' : 'i-lucide-x'"
+        aria-hidden="true"
+      />
+    </button>
+    <span class="sr-only" role="status">
+      {{ statusText(attachment) }}
+    </span>
+  </DefineActions>
   <section
     ref="drop-zone"
     class="forum-image-upload mt-2"
@@ -103,16 +156,34 @@ defineExpose({ open })
     @paste="handlePaste"
   >
     <input
-      :id="inputId"
       ref="input"
-      class="sr-only"
       type="file"
+      :aria-label="message.forum.publish.feedbackForm.addImages"
       :accept="IMAGE_UPLOAD_ACCEPT"
       :disabled="selectionDisabled"
-      multiple
+      multiple hidden
       @change="handleInput"
     >
+    <ForumImage
+      v-if="cardPreview && attachments.length"
+      :images="previewImages"
+      layout="row"
+      adaptive-row
+      :rail-max-height="previewMaxHeight"
+      :row-max-height="previewMaxHeight ?? 200"
+      :max-display="IMAGE_UPLOAD_POLICY.MAX_COUNT"
+      :preview-enabled="false"
+      class="mt-3"
+      aria-live="polite"
+    >
+      <template #image-overlay="{ index }">
+        <div class="pointer-events-none inset-0 absolute" :data-status="attachments[index].status" :data-attachment-id="attachments[index].id">
+          <Actions :attachment="attachments[index]" :index="index" />
+        </div>
+      </template>
+    </ForumImage>
     <TransitionGroup
+      v-if="!cardPreview"
       tag="ul"
       name="photo-grid"
       class="image-preview-list mt-3 flex flex-wrap gap-3 items-start"
@@ -124,71 +195,39 @@ defineExpose({ open })
         class="image-preview rounded-md relative overflow-hidden"
         :class="previewSizeClass"
         :data-status="attachment.status"
+        :data-attachment-id="attachment.id"
       >
         <img
           :src="attachment.previewUrl"
-          :alt="attachment.file.name"
+          :alt="attachment.file?.name || attachment.savedImage?.alt || ''"
           class="size-full object-cover"
         >
-        <div v-if="attachment.status === 'failed'" class="bg-[var(--forum-media-overlay-soft)] flex flex-col gap-1 items-center inset-0 justify-center absolute">
-          <span class="i-lucide-circle-alert bg-[var(--forum-media-on-overlay)] size-4" aria-hidden="true" />
-          <span class="leading-none font-medium bg-[var(--forum-media-on-overlay)] text-ui-10">
-            {{ message.forum.publish.feedbackForm.uploadFailedShort }}
-          </span>
-          <button
-            type="button"
-            class="mt-0.5 rounded-full bg-[var(--forum-media-overlay)] flex size-6 items-center justify-center"
-            :aria-label="formatMessage(message.forum.publish.feedbackForm.retryImage, { filename: attachment.file.name })"
-            :disabled="disabled"
-            @click="emit('retry', attachment.id)"
-          >
-            <span class="i-lucide-rotate-ccw bg-[var(--forum-media-on-overlay)] size-3.5" aria-hidden="true" />
-          </button>
-        </div>
-        <button
-          type="button"
-          data-remove-image
-          class="image-action rounded-bl-md bg-[var(--forum-media-overlay)] flex size-7 items-center right-0 top-0 justify-center absolute focus-visible:outline-2 focus-visible:outline-[var(--forum-media-on-overlay)] hover:bg-[var(--forum-media-overlay-strong)]"
-          :aria-label="formatMessage(message.forum.publish.feedbackForm.removeImage, { filename: attachment.file.name })"
-          :disabled="disabled"
-          @click="removeAttachment(attachment.id, index)"
-        >
-          <span
-            class="bg-[var(--forum-media-on-overlay)] size-4"
-            :class="attachment.status === 'uploading' ? 'i-lucide-loader-circle animate-spin' : 'i-lucide-x'"
-            aria-hidden="true"
-          />
-        </button>
-        <span class="sr-only" role="status">
-          {{ statusText(attachment) }}
-        </span>
+        <Actions :attachment="attachment" :index="index" />
       </li>
 
       <li v-if="!hideDefaultTrigger" key="image-trigger">
-        <label
-          :for="inputId"
+        <button
+          type="button"
+          :disabled="selectionDisabled"
           class="image-trigger text-sm border-2 rounded-md border-dashed inline-flex flex-col gap-2 cursor-pointer transition-colors items-center justify-center"
           :class="[
             previewSizeClass,
             selectionDisabled ? 'cursor-not-allowed opacity-50' : '',
           ]"
+          @click="open"
         >
           <span class="i-lucide:image-plus size-5" aria-hidden="true" />
           {{ message.forum.publish.feedbackForm.addImages }}
-        </label>
+        </button>
       </li>
     </TransitionGroup>
 
-    <p class="text-xs c-[var(--vp-c-text-3)] mt-2">
+    <p v-if="!hideHint && (attachments.length || !hideDefaultTrigger)" class="text-xs c-[var(--vp-c-text-3)] mt-2">
       {{ formatMessage(message.forum.publish.feedbackForm.attachmentsLimit, {
         count: attachments.length,
         max: IMAGE_UPLOAD_POLICY.MAX_COUNT,
         size: IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL,
       }) }}
-    </p>
-
-    <p v-if="attachments.length" class="text-xs c-[var(--vp-c-text-3)] mt-2">
-      {{ message.forum.publish.feedbackForm.localFilesWarning }}
     </p>
 
     <div v-if="isOverDropZone" class="image-drop-overlay" aria-hidden="true">
@@ -207,7 +246,7 @@ defineExpose({ open })
 .image-drop-overlay {
   position: absolute;
   z-index: 20;
-  border: 2px dashed var(--vp-c-brand-1);
+  border: 2px dashed oklch(var(--ring));
   border-radius: inherit;
   background: color-mix(in srgb, var(--vp-c-bg-elv) 86%, transparent);
   color: var(--vp-c-brand-1);
@@ -227,7 +266,7 @@ defineExpose({ open })
 
 .image-trigger:hover:not(.cursor-not-allowed) {
   background: var(--vp-c-bg-soft);
-  border-color: var(--vp-c-brand-1);
+  border-color: oklch(var(--ring));
 }
 
 .image-preview {
@@ -268,6 +307,20 @@ defineExpose({ open })
 
 .image-action:active:not(:disabled) {
   transform: scale(0.88);
+}
+
+@media (pointer: coarse) {
+  .image-preview {
+    min-width: 7rem;
+    min-height: 7rem;
+  }
+
+  .image-action,
+  .image-preview-list button,
+  [data-attachment-id] button {
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -14,7 +14,7 @@ export interface UploadFieldConfig {
 }
 
 export interface TabsConfig {
-  value: Exclude<ForumAPI.TopicType, null>
+  value: ForumAPI.FeedbackTopicType
   label: string
   condition: boolean | ComputedRef<boolean>
   fields: {

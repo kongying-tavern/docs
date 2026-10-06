@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
+import { createReusableTemplate } from '@vueuse/core'
 import { useRouter } from 'vitepress'
 import { computed } from 'vue'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
@@ -9,6 +11,7 @@ import { decodeTopicBody } from '~/forum/services/forumContentCodec'
 import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
 import { shouldShowQuotedTopicImageBelow } from '~/forum/services/forumTopicQuote'
 import ForumImage from '../ui/ForumImage.vue'
+import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 import ForumTopicHeader from './ForumTopicHeader.vue'
 
 const props = withDefaults(defineProps<{
@@ -18,6 +21,8 @@ const props = withDefaults(defineProps<{
   unavailable?: boolean
   interactive?: boolean
   compact?: boolean
+  removable?: boolean
+  removeDisabled?: boolean
 }>(), {
   topic: undefined,
   loading: false,
@@ -28,9 +33,11 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   retry: []
+  remove: []
 }>()
 
 const router = useRouter()
+const [UseRemoveMenu, RemoveMenu] = createReusableTemplate()
 const { message } = useLocalized()
 const { topicHref } = useForumRoute()
 const detailHref = computed(() => topicHref(props.reference.id, null))
@@ -75,11 +82,23 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
     @click="openTopic"
     @keydown.enter="openTopic"
   >
+    <UseRemoveMenu>
+      <ForumResponsiveMenu v-if="removable" :items="[{ id: 'remove-reference', type: 'item', label: message.forum.publish.feedbackForm.removeReference, disabled: removeDisabled, action: () => emit('remove') }]" align="end">
+        <template #trigger>
+          <Button type="button" variant="ghost" size="icon-sm" :disabled="removeDisabled" :aria-label="message.forum.topic.menu.moreActions">
+            <span class="i-lucide-ellipsis" aria-hidden="true" />
+          </Button>
+        </template>
+      </ForumResponsiveMenu>
+    </UseRemoveMenu>
     <div class="quote-card-inner p-3">
       <div v-if="loading" class="flex flex-col gap-2" aria-live="polite">
         <div class="flex gap-2 items-center">
           <Skeleton class="rounded-full size-6" />
           <Skeleton class="h-4 w-28" />
+          <div v-if="removable" class="ml-auto">
+            <RemoveMenu />
+          </div>
         </div>
         <Skeleton class="h-4 w-2/3" />
         <Skeleton class="h-4 w-full" />
@@ -97,10 +116,15 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
         >
           {{ message.forum.topic.quote.retry }}
         </button>
+        <RemoveMenu />
       </div>
 
       <template v-else>
-        <ForumTopicHeader :topic="topic" :show-menu="false" :interactive="interactive" />
+        <ForumTopicHeader :topic="topic" :show-menu="false" :interactive="interactive">
+          <template v-if="removable" #menu>
+            <RemoveMenu />
+          </template>
+        </ForumTopicHeader>
 
         <h4 v-if="topic.type !== 'BUG'" class="quote-title font-semibold m-0 mt-2 min-w-0 line-clamp-1">
           {{ topic.title }}

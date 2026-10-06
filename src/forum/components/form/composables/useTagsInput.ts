@@ -1,4 +1,5 @@
 import { computed, onMounted, ref } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
 import { addTagToModel, removeTagFromModel } from '~/forum/services/form/topicTagModel'
@@ -6,12 +7,14 @@ import { addTagToModel, removeTagFromModel } from '~/forum/services/form/topicTa
 export interface UseTagsInputOptions {
   modelValue: import('vue').Ref<string[]>
   max: number
+  includeSelected?: boolean
 }
 
 export function useTagsInput(options: UseTagsInputOptions) {
   const { modelValue, max } = options
 
   const { getTagDisplay } = useTopicTagDisplay()
+  const { message } = useLocalized()
   const labelStore = useForumLabelStore()
 
   const searchTerm = ref('')
@@ -28,16 +31,17 @@ export function useTagsInput(options: UseTagsInputOptions) {
     tags.value.filter(i => !modelValue.value.includes(i)),
   )
 
+  const groupTags = computed(() => options.includeSelected ? tags.value : filteredTags.value)
   const tagList = computed(() => [
     {
-      heading: 'Platform',
-      list: filteredTags.value.filter(val => val.includes('PLATFORM')),
+      heading: message.value.forum.publish.tagsInput.platformGroup,
+      list: groupTags.value.filter(val => val.includes('PLATFORM')),
     },
     {
-      heading: 'Type',
-      list: filteredTags.value.filter(val => !val.includes('PLATFORM')),
+      heading: message.value.forum.publish.tagsInput.typeGroup,
+      list: groupTags.value.filter(val => !val.includes('PLATFORM')),
     },
-  ])
+  ].filter(group => group.list.length))
 
   function getLocalizedTagName(key: string): string {
     return getTagDisplay(key)

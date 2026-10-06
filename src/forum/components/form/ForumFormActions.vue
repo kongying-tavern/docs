@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ReloadIcon } from '@radix-icons/vue'
+import { LoaderCircleIcon, SendIcon } from '@lucide/vue'
 import { useMediaQuery } from '@vueuse/core'
 import { Button, InteractiveHoverButton } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { DrawerFooter } from '@/components/ui/drawer'
+import { Separator } from '@/components/ui/separator'
 import { useLocalized } from '@/hooks/useLocalized'
 
 interface Props {
@@ -46,7 +47,8 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
     </DialogFooter>
   </template>
 
-  <div v-else class="form-footer-container bottom-0 sticky z-10">
+  <div v-else class="form-footer-container shrink-0">
+    <Separator />
     <button
       v-if="errorCount"
       type="button"
@@ -56,14 +58,11 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
       <span class="i-lucide-circle-alert size-4" aria-hidden="true" />
       {{ message.forum.publish.feedbackForm.fieldsNeedAttention.replace('{count}', String(errorCount)) }}
     </button>
-    <DrawerFooter class="px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
-      <Button type="submit" :disabled="disabled || loading">
-        <ReloadIcon v-if="loading" class="mr-2 h-4 w-4 animate-spin" />
-        <span v-else class="i-lucide-send size-4" aria-hidden="true" />
+    <DrawerFooter class="px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4">
+      <Button type="submit" size="lg" class="w-full" :disabled="disabled || loading">
+        <LoaderCircleIcon v-if="loading" class="animate-spin" data-icon="inline-start" />
+        <SendIcon v-else data-icon="inline-start" />
         {{ loading ? message.forum.publish.publishLoading : message.forum.publish.feedbackForm.submit }}
-      </Button>
-      <Button type="button" variant="outline" @click="emit('close')">
-        {{ message.ui.button.cancel }}
       </Button>
     </DrawerFooter>
   </div>
@@ -82,7 +81,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
   width: fit-content;
   min-width: fit-content;
   background: var(--vp-c-brand-1) !important;
-  border: 1px solid var(--vp-c-brand-1) !important;
+  border: 1px solid oklch(var(--ring)) !important;
   border-radius: 0.5rem;
   box-shadow: none;
   color: var(--vp-c-white) !important;
@@ -92,7 +91,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 
 .submit-letter-action:hover {
   background: var(--vp-c-brand-2) !important;
-  border-color: var(--vp-c-brand-2) !important;
+  border-color: oklch(var(--ring)) !important;
   transform: none;
 }
 </style>

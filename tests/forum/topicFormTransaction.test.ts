@@ -1,10 +1,9 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import { ref } from 'vue'
 import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
-import { createDefaultTopicDraft, restoreTopicDraft } from '../../src/forum/services/form/topicDraft'
+import { createDefaultTopicDraft, readTopicDraft, restoreTopicDraft, writeTopicDraft } from '../../src/forum/services/form/topicDraft'
 import { submitTopicFormTransaction } from '../../src/forum/services/form/topicFormTransaction'
 import { addTagToModel, removeTagFromModel } from '../../src/forum/services/form/topicTagModel'
 import { createTopicDraftSchema, getAllowedTopicTypes } from '../../src/forum/services/form/validation'
@@ -45,6 +44,24 @@ test('rich Topic validation measures visible content instead of serialized JSON'
   assert.equal(schema.safeParse({ ...validDraft(), text: richText('x'.repeat(VALIDATION_LIMITS.CONTENT.MAX_LENGTH + 1)) }).success, false)
 })
 
+for (const { name, patch, valid } of [
+  { name: 'title maximum', patch: { title: 'x'.repeat(VALIDATION_LIMITS.TITLE.MAX_LENGTH) }, valid: true },
+  { name: 'title above maximum', patch: { title: 'x'.repeat(VALIDATION_LIMITS.TITLE.MAX_LENGTH + 1) }, valid: false },
+  { name: 'whitespace title', patch: { title: '   ' }, valid: false },
+  { name: 'content minimum', patch: { text: 'x'.repeat(VALIDATION_LIMITS.CONTENT.MIN_LENGTH) }, valid: true },
+  { name: 'content below minimum', patch: { text: 'x'.repeat(VALIDATION_LIMITS.CONTENT.MIN_LENGTH - 1) }, valid: false },
+  { name: 'content maximum', patch: { text: 'x'.repeat(VALIDATION_LIMITS.CONTENT.MAX_LENGTH) }, valid: true },
+  { name: 'content above maximum', patch: { text: 'x'.repeat(VALIDATION_LIMITS.CONTENT.MAX_LENGTH + 1) }, valid: false },
+  { name: 'tag count maximum', patch: { tags: Array.from({ length: VALIDATION_LIMITS.TAGS.MAX_COUNT }, (_, i) => `tag-${i}`) }, valid: true },
+  { name: 'tag count above maximum', patch: { tags: Array.from({ length: VALIDATION_LIMITS.TAGS.MAX_COUNT + 1 }, (_, i) => `tag-${i}`) }, valid: false },
+  { name: 'tag length maximum', patch: { tags: ['x'.repeat(VALIDATION_LIMITS.TAGS.MAX_TAG_LENGTH)] }, valid: true },
+  { name: 'tag length above maximum', patch: { tags: ['x'.repeat(VALIDATION_LIMITS.TAGS.MAX_TAG_LENGTH + 1)] }, valid: false },
+]) {
+  test(`Topic validation boundary: ${name}`, () => {
+    assert.equal(createTopicDraftSchema({ canPublishAnnouncement: false }).safeParse({ ...validDraft('FEAT'), ...patch }).success, valid)
+  })
+}
+
 test('schema and draft restore keep one validated quoted Topic without locking the form type', () => {
   const reference = { id: 'ICROD8', type: 'BUG' as const }
   const schema = createTopicDraftSchema({ canPublishAnnouncement: false })
@@ -75,7 +92,7 @@ test('schema normalizes untouched fields before reporting localized business err
   ])
 })
 
-test('default/reset drafts and tag arrays are fresh and storage restore ignores attachments', () => {
+test('default/reset drafts and tag arrays are fresh and storage restore ignores invalid attachments', () => {
   const first = createDefaultTopicDraft()
   const second = createDefaultTopicDraft()
   assert.notEqual(first, second)
@@ -94,6 +111,36 @@ test('default/reset drafts and tag arrays are fresh and storage restore ignores 
     text: 'Saved content',
     tags: ['CATA-DOCS'],
   })
+})
+
+test('draft storage preserves uploaded image metadata per type and excludes transient files and unsafe URLs', () => {
+  const storage = new Map<string, string>()
+  const previous = Object.getOwnPropertyDescriptor(globalThis, 'localStorage')
+  Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: {
+    getItem: (key: string) => storage.get(key) ?? null,
+    setItem: (key: string, value: string) => storage.set(key, value),
+    removeItem: (key: string) => storage.delete(key),
+  } })
+  try {
+    const image = { src: 'https://assets.example/saved.png', alt: 'saved.png', thumbHash: 'hash', width: 120, height: 80 }
+    const draft = restoreTopicDraft({
+      ...validDraft('FEAT'),
+      attachments: [image, { src: 'blob:temporary', alt: 'pending.png' }, { src: 'javascript:alert(1)' }, { ...image, file: new File(['image'], 'private.png'), previewUrl: 'blob:private' }],
+    })
+    assert.deepEqual(draft.attachments, [image, image])
+    writeTopicDraft('FEAT', draft)
+    assert.deepEqual(readTopicDraft('FEAT').attachments, [image, image])
+    assert.equal(readTopicDraft('BUG').attachments, undefined)
+    assert.equal([...storage.values()].some(value => value.includes('private') || value.includes('blob:')), false)
+    writeTopicDraft('FEAT', { ...draft, attachments: [] })
+    assert.equal(readTopicDraft('FEAT').attachments, undefined)
+  }
+  finally {
+    if (previous)
+      Object.defineProperty(globalThis, 'localStorage', previous)
+    else
+      Reflect.deleteProperty(globalThis, 'localStorage')
+  }
 })
 
 test('tag mutations follow the current model after reset', () => {
@@ -227,4 +274,26 @@ test('transaction passes the quoted Topic through independently of the selected 
   assert.equal(result.ok, true)
   assert.equal(submitted?.type, 'FEAT')
   assert.deepEqual(submitted?.quotedTopic, reference)
+})
+
+test('privacy survives draft storage and validation and is passed to the publication', async () => {
+  const restored = restoreTopicDraft({ ...validDraft('FEAT'), isPrivate: true })
+  assert.equal(restored.isPrivate, true)
+  assert.equal(restoreTopicDraft({ ...validDraft('FEAT'), isPrivate: 'true' }).isPrivate, undefined)
+  assert.equal(createTopicDraftSchema({ canPublishAnnouncement: false }).safeParse({ ...validDraft('FEAT'), isPrivate: 'true' }).success, false)
+  for (const isPrivate of [true, false]) {
+    let submitted: ForumAPI.CreateTopicOption | undefined
+    const result = await submitTopicFormTransaction({
+      draft: { ...restored, isPrivate },
+      canPublishAnnouncement: false,
+      settleUploads: async () => ({ ok: true }),
+      getUploadedAttachments: () => [],
+      submitTopic: async (draft) => {
+        submitted = draft
+        return topic()
+      },
+    })
+    assert.equal(result.ok, true)
+    assert.equal(submitted?.isPrivate, isPrivate)
+  }
 })
