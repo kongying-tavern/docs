@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["./**/*.ts", "../../src/forum/api/gitee/typings.d.ts"],
+  "exclude": ["**/node_modules/**", ".legacy/**"]
+}

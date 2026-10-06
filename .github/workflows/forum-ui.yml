@@ -1,0 +1,36 @@
+name: Forum UI
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', '.vitepress/**', 'tests/e2e/**', 'tests/forum/**', scripts/runTests.mjs, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, .github/workflows/forum-ui.yml, '.github/actions/setup/**', vite.config.ts, unocss.config.ts, .nvmrc, .python-version, requirements.txt, 'scripts/fonts/**', 'scripts/font_subset/**', scripts/buildFonts.ts]
+  pull_request:
+    branches: [main]
+    paths: ['src/**', '.vitepress/**', 'tests/e2e/**', 'tests/forum/**', scripts/runTests.mjs, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, .github/workflows/forum-ui.yml, '.github/actions/setup/**', vite.config.ts, unocss.config.ts, .nvmrc, .python-version, requirements.txt, 'scripts/fonts/**', 'scripts/font_subset/**', scripts/buildFonts.ts]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: forum-ui-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  forum-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm typecheck:forum:ui
+      - run: pnpm test:forum:ui
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: forum-ui-failure
+          path: |
+            test-results/forum
+            playwright-report
+          retention-days: 7

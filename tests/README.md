@@ -27,6 +27,7 @@ tests/
 | `pnpm test:shared` | shared |
 | `pnpm test:theme` | shared + theme，保留主题原有网站设置检查 |
 | `pnpm test:fonts` | fonts |
+| `pnpm test:forum:ui` | e2e 的 `*.spec.ts`，自动启动 VitePress |
 | `pnpm test:theme:ui` | swipe-actions 的 `browser.test.mjs`，自动启动组件测试服务 |
 
 逻辑测试由 `scripts/runTests.mjs` 使用 Node 原生目录枚举递归发现，再交给 Node/tsx 执行。
@@ -41,8 +42,9 @@ tests/
 - 新测试不要放进生产目录；需要细分时在当前职责目录下建子目录，递归入口会自动发现。
 - 测试直接导入生产模块；使用相对路径或项目已有别名，不复制实现。
 - 页面截图、trace 和临时捕获放在忽略的产物目录，不当作维护中的测试源码。
-- `pnpm typecheck` 包含四类逻辑测试。
+- `pnpm typecheck` 包含四类逻辑测试；浏览器测试另运行 `pnpm typecheck:forum:ui`。
 - 默认逻辑入口不启动浏览器；组件浏览器 harness 保留独立命令及其原有浏览器环境要求。
 
 `test:theme:ui` 默认使用已安装的 Chrome，可通过原有 `SWIPE_BROWSER_CHANNEL` 与
-`SWIPE_PLAYWRIGHT_PATH` 环境变量选择浏览器和安装位置。论坛页面 e2e 仍在本地验收，其正式入口和案例另行提交。
+`SWIPE_PLAYWRIGHT_PATH` 环境变量选择浏览器和安装位置。论坛 e2e 使用根包固定的 Playwright
+Chromium，安装与 Mock 规则见 `e2e/README.md`。
