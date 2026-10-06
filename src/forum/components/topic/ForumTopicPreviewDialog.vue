@@ -3,10 +3,10 @@ import type ForumAPI from '~/forum/api/types'
 import { X } from '@lucide/vue'
 import { useRouter } from 'vitepress'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import ForumTopicPreviewContent from './ForumTopicPreviewContent.vue'
+import { ForumPreloadedTopicPreviewContent as ForumTopicPreviewContent } from '../utils/forumComponentPreload'
 
 const props = defineProps<{
   topic: ForumAPI.Topic | null
@@ -31,13 +31,15 @@ function goToTopicDetail(): void {
 <template>
   <Dialog v-if="topic" v-model:open="open">
     <DialogContent
-      class="p-0 overflow-hidden sm:max-w-[600px]"
+      class="topic-preview-dialog p-0 flex flex-col gap-0 overflow-hidden sm:max-w-[600px]"
+      style="top: clamp(16px, 8dvh, 80px); max-width: min(600px, calc(100vw - 32px)); max-height: calc(100dvh - clamp(16px, 8dvh, 80px) - 16px); translate: -50% 0;"
+      :aria-describedby="undefined"
       :show-close-button="false"
     >
-      <div class="preview-header px-4 py-3 flex items-center justify-between">
-        <p class="font-size-5 font-[var(--vp-font-family-subtitle)] m-0">
+      <div class="preview-header px-4 py-3 flex shrink-0 items-center justify-between sm:px-5">
+        <DialogTitle class="font-size-5 font-[var(--vp-font-family-subtitle)] m-0">
           {{ message.forum.topic.previewTitle }}
-        </p>
+        </DialogTitle>
         <DialogClose as-child>
           <Button
             type="button"
@@ -51,25 +53,33 @@ function goToTopicDetail(): void {
       </div>
 
       <div
-        class="preview-body p-6 pt-2 flex flex-col gap-4 max-h-[calc(85vh-53px)] overflow-y-auto"
-        @click.self="goToTopicDetail"
+        class="preview-body p-4 overscroll-contain min-h-0 overflow-y-auto sm:p-5"
       >
-        <ForumTopicPreviewContent
-          :topic="topic"
-          :focus-comment="focusComment"
-          @detail-click="goToTopicDetail"
-        />
+        <Suspense>
+          <ForumTopicPreviewContent
+            :topic="topic"
+            :focus-comment="focusComment"
+            @detail-click="goToTopicDetail"
+          />
+          <template #fallback>
+            <p role="status" aria-live="polite">
+              {{ message.forum.comment.loadingComment }}
+            </p>
+          </template>
+        </Suspense>
       </div>
     </DialogContent>
   </Dialog>
 </template>
 
-<style scoped>
-.preview-header {
-  border-bottom: 1px solid var(--vp-c-divider);
+<style>
+@media (prefers-reduced-motion: reduce) {
+  .topic-preview-dialog[data-state] {
+    animation: none !important;
+  }
 }
 
-.preview-body::-webkit-scrollbar {
-  display: none;
+.topic-preview-dialog .preview-header {
+  border-bottom: 1px solid var(--vp-c-divider);
 }
 </style>

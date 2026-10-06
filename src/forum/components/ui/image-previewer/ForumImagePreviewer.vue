@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { useMediaQuery } from '@vueuse/core'
+import { useLocalStorage, useMediaQuery } from '@vueuse/core'
+import { DialogContent, DialogRoot, DialogTitle } from 'reka-ui'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -60,7 +61,8 @@ const stageEl = ref<HTMLDivElement>()
 const stackEl = ref<HTMLDivElement>()
 const imageEl = ref<HTMLImageElement>()
 const panelOpen = ref(false)
-const panelCollapsed = ref(false)
+const panelCollapsed = useLocalStorage('forum-image-preview-panel-collapsed', false)
+const panelEntering = ref(false)
 const slideDir = ref<1 | -1 | 0>(0)
 const prevImg = ref<{ src: string, alt?: string } | null>(null)
 const prevSeq = ref(0)
@@ -306,7 +308,7 @@ function openAt(index: number, sourceEl?: Element | null): void {
   visible.value = true
   closing.value = false
   panelOpen.value = true
-  panelCollapsed.value = false
+  panelEntering.value = isDesktop.value && Boolean(props.context) && !panelCollapsed.value
   slideDir.value = 0
   prevImg.value = null
   imgReady.value = false
@@ -329,13 +331,14 @@ function close(): void {
   panelOpen.value = false
   closing.value = true
   const exitDelay = beginExit()
-  closeTimer = window.setTimeout(() => {
+  closeTimer = window.setTimeout(async () => {
     visible.value = false
     closing.value = false
     flipping.value = false
     imagesOverride.value = null
     clearSource()
     document.documentElement.style.overflow = prevOverflow
+    await nextTick()
     restoreFocus()
     prevActive = null
     emit('close')
@@ -408,9 +411,12 @@ function restoreFocus(): void {
   target.focus?.()
 }
 
-/** 捕获阶段拦截按键：预览打开时 ESC/方向键只作用于预览，不冒泡给外层 Dialog */
+/** 内层弹层优先处理按键；图片快捷键不干扰侧栏控件。 */
 function handleKeydown(event: KeyboardEvent): void {
-  if (!visible.value || closing.value)
+  if (!visible.value || closing.value || event.isComposing)
+    return
+  const target = event.target instanceof Element ? event.target : null
+  if (target?.closest('[data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="popover-content"], [data-slot="dialog-content"], [data-slot="sheet-content"], [data-slot="drawer-content"]'))
     return
   if (event.key === 'Escape') {
     event.preventDefault()
@@ -419,6 +425,8 @@ function handleKeydown(event: KeyboardEvent): void {
     return
   }
   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+    if (target?.closest('.preview-side-panel, input, textarea, select, [contenteditable="true"]'))
+      return
     event.preventDefault()
     event.stopImmediatePropagation()
     const dir = event.key === 'ArrowRight' ? 1 : -1
@@ -454,131 +462,138 @@ defineExpose({ openAt, close })
     <slot :open-at="openAt" :close="close" />
 
     <Teleport to="body">
-      <div
-        v-if="visible"
-        ref="containerEl"
-        class="forum-preview-root inset-0 fixed z-[1000]"
-        :class="{ closing, entering, 'source-transition': usesSourceTransition, 'has-panel': hasPanel, 'is-dragging': dragging, 'is-settling': settling }"
-        role="dialog"
-        aria-modal="true"
-        :aria-label="message.forum.topic.previewTitle"
-        @pointerdown="handlePreviewPointerDown"
-        @pointermove="handlePointerMove"
-        @pointerup="handlePointerUp"
-        @pointercancel="handlePointerUp"
-        @wheel="!entering && !closing && handleWheel($event)"
-        @click="handleRootClick"
-      >
-        <div class="forum-preview-overlay" />
-
-        <div
-          ref="stageEl"
-          class="forum-preview-stage"
-        >
+      <DialogRoot v-if="visible" :open="true" @update:open="!$event && close()">
+        <DialogContent as-child :aria-describedby="undefined" @close-auto-focus.prevent>
           <div
-            ref="stackEl"
-            class="forum-preview-stack"
-            :class="{
-              flipping,
-              settling,
-              'is-idle': scale === 1 && !dragging && !settling && !sweeping && !entering && !closing && !flipping,
-              'can-zoom-in': scale === 1,
-              'can-grab': scale > 1 && !dragging,
-            }"
-            :style="{ transform: stackTransform(tx, ty, scale, dragRotate) }"
-            @click="handleStackClick"
+            ref="containerEl"
+            class="forum-preview-root inset-0 fixed z-[1000]"
+            :class="{ closing, entering, 'source-transition': usesSourceTransition, 'has-panel': hasPanel, 'panel-entering': hasPanel && panelEntering, 'is-dragging': dragging, 'is-settling': settling }"
+            role="dialog"
+            aria-modal="true"
+            :aria-label="message.forum.topic.previewTitle"
+            @pointerdown="handlePreviewPointerDown"
+            @pointermove="handlePointerMove"
+            @pointerup="handlePointerUp"
+            @pointercancel="handlePointerUp"
+            @wheel="!entering && !closing && handleWheel($event)"
+            @click="handleRootClick"
           >
-            <img
-              v-if="prevImg"
-              :key="`prev-${prevSeq}`"
-              :src="prevImg.src"
-              :alt="prevImg.alt || ''"
-              class="forum-preview-image forum-preview-exit"
-              :class="slideDir === 1 ? 'exit-left' : 'exit-right'"
-              :style="{
-                '--preview-carry': `${carriedRef}px`,
-                '--preview-exit-dur': `${exitDur}ms`,
-              }"
-              draggable="false"
+            <DialogTitle class="sr-only">
+              {{ message.forum.topic.previewTitle }}
+            </DialogTitle>
+            <div class="forum-preview-overlay" />
+
+            <div
+              ref="stageEl"
+              class="forum-preview-stage"
             >
-            <img
-              v-if="total > 0"
-              :key="current"
-              ref="imageEl"
-              :src="displayImages[current].src"
-              :alt="displayImages[current].alt || ''"
-              class="forum-preview-image forum-preview-enter"
-              :class="[enterAnimClass, { 'is-loading': !imgReady }]"
-              :style="{
-                ...imgStyle,
-                '--preview-carry': `${carriedRef}px`,
-                '--preview-enter-dur': `${enterDur}ms`,
-              }"
-              draggable="false"
-              @load="imgReady = true"
-              @error="imgReady = true"
+              <div
+                ref="stackEl"
+                class="forum-preview-stack"
+                :class="{
+                  flipping,
+                  settling,
+                  'is-idle': scale === 1 && !dragging && !settling && !sweeping && !entering && !closing && !flipping,
+                  'can-zoom-in': scale === 1,
+                  'can-grab': scale > 1 && !dragging,
+                }"
+                :style="{ transform: stackTransform(tx, ty, scale, dragRotate) }"
+                @click="handleStackClick"
+              >
+                <img
+                  v-if="prevImg"
+                  :key="`prev-${prevSeq}`"
+                  :src="prevImg.src"
+                  :alt="prevImg.alt || ''"
+                  class="forum-preview-image forum-preview-exit"
+                  :class="slideDir === 1 ? 'exit-left' : 'exit-right'"
+                  :style="{
+                    '--preview-carry': `${carriedRef}px`,
+                    '--preview-exit-dur': `${exitDur}ms`,
+                  }"
+                  draggable="false"
+                >
+                <img
+                  v-if="total > 0"
+                  :key="current"
+                  ref="imageEl"
+                  :src="displayImages[current].src"
+                  :alt="displayImages[current].alt || ''"
+                  class="forum-preview-image forum-preview-enter"
+                  :class="[enterAnimClass, { 'is-loading': !imgReady }]"
+                  :style="{
+                    ...imgStyle,
+                    '--preview-carry': `${carriedRef}px`,
+                    '--preview-enter-dur': `${enterDur}ms`,
+                  }"
+                  draggable="false"
+                  @load="imgReady = true"
+                  @error="imgReady = true"
+                >
+              </div>
+
+              <ForumImageNavigationButton
+                v-if="total > 1"
+                class="forum-preview-nav prev"
+                auto-hide
+                direction="previous"
+                :label="message.forum.imagePreview.previous"
+                @click.stop="goTo(current - 1, -1)"
+              />
+              <ForumImageNavigationButton
+                v-if="total > 1"
+                class="forum-preview-nav next"
+                auto-hide
+                direction="next"
+                :label="message.forum.imagePreview.next"
+                @click.stop="goTo(current + 1, 1)"
+              />
+            </div>
+
+            <FeyCards
+              v-if="options.counter !== false && total > 1"
+              class="forum-preview-cards"
+              :img-src="displayImages.map(i => i.src)"
+              :aria-labels="imageAriaLabels"
+              :active="current"
+              :width="36"
+              :height="52"
+              :card-spacing="7"
+              :shift-distance="10"
+              @select="goTo"
+            />
+
+            <PreviewerControls
+              :index="current"
+              :total="total"
+              :show-dots="options.dots !== false"
+              @close="close"
+              @select="goTo"
+            />
+
+            <button
+              v-if="isDesktop && context"
+              type="button"
+              class="forum-preview-panel-toggle"
+              :aria-label="panelCollapsed ? message.forum.imagePreview.expandPanel : message.forum.imagePreview.collapsePanel"
+              @click.stop="panelCollapsed = !panelCollapsed"
             >
+              <span
+                :class="panelCollapsed ? 'i-lucide-chevron-left' : 'i-lucide-chevron-right'"
+                aria-hidden="true"
+              />
+            </button>
+            <PreviewerSidePanel
+              v-if="isDesktop && visible"
+              :open="panelOpen && !panelCollapsed"
+              :context="context"
+              @before-enter="panelEntering = true"
+              @after-enter="panelEntering = false"
+              @enter-cancelled="panelEntering = false"
+            />
           </div>
-
-          <ForumImageNavigationButton
-            v-if="total > 1"
-            class="forum-preview-nav prev"
-            auto-hide
-            direction="previous"
-            :label="message.forum.imagePreview.previous"
-            @click.stop="goTo(current - 1, -1)"
-          />
-          <ForumImageNavigationButton
-            v-if="total > 1"
-            class="forum-preview-nav next"
-            auto-hide
-            direction="next"
-            :label="message.forum.imagePreview.next"
-            @click.stop="goTo(current + 1, 1)"
-          />
-        </div>
-
-        <FeyCards
-          v-if="options.counter !== false && total > 1"
-          class="forum-preview-cards"
-          :img-src="displayImages.map(i => i.src)"
-          :aria-labels="imageAriaLabels"
-          :active="current"
-          :width="36"
-          :height="52"
-          :card-spacing="7"
-          :shift-distance="10"
-          @select="goTo"
-        />
-
-        <PreviewerControls
-          :index="current"
-          :total="total"
-          :show-dots="options.dots !== false"
-          @close="close"
-          @select="goTo"
-        />
-
-        <button
-          v-if="isDesktop && context"
-          type="button"
-          class="forum-preview-panel-toggle"
-          :aria-label="panelCollapsed ? message.forum.imagePreview.expandPanel : message.forum.imagePreview.collapsePanel"
-          @click.stop="panelCollapsed = !panelCollapsed"
-        >
-          <span
-            :class="panelCollapsed ? 'i-lucide-chevron-left' : 'i-lucide-chevron-right'"
-            aria-hidden="true"
-          />
-        </button>
-      </div>
-
-      <PreviewerSidePanel
-        v-if="isDesktop && visible"
-        :open="panelOpen && !panelCollapsed"
-        :context="context"
-        @close="close"
-      />
+        </DialogContent>
+      </DialogRoot>
     </Teleport>
   </div>
 </template>

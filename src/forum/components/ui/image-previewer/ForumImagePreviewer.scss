@@ -1,10 +1,17 @@
-/* 模态 Sheet 打开时会给 body 设 pointer-events: none，预览根需恢复 */
+/* 图片舞台自行处理拖拽与缩放，侧栏单独恢复文字选择和纵向滚动。 */
 .forum-preview-root {
   --preview-panel-w: min(560px, 90vw);
   --preview-gap: 32px;
+  --preview-vertical-gap: var(--preview-gap);
   user-select: none;
   touch-action: none;
   pointer-events: auto;
+  overflow: hidden;
+}
+
+/* 全屏预览锁定页面滚动时不再保留滚动条空隙；否则浏览器会裁掉遮罩的右沿。 */
+:global(html:has(.forum-preview-root)) {
+  scrollbar-gutter: auto;
 }
 
 /* 面板内 reka 浮层(⋮菜单/hover-card/翻译 Popover)portal 到 body 且默认 z-50，
@@ -61,8 +68,12 @@
 }
 
 .forum-preview-root:not(.has-panel) .forum-preview-stage {
-  padding-top: max(var(--preview-gap), 6vh);
-  padding-bottom: max(var(--preview-gap), 6vh);
+  padding-top: var(--preview-vertical-gap);
+  padding-bottom: var(--preview-vertical-gap);
+}
+
+.forum-preview-root:not(.has-panel) {
+  --preview-vertical-gap: max(var(--preview-gap), 6dvh);
 }
 
 .forum-preview-cards {
@@ -127,6 +138,14 @@
   }
 }
 
+/* 侧栏就位后再通过按钮原有的 opacity 过渡淡入。 */
+.forum-preview-root.panel-entering .forum-preview-panel-toggle,
+.forum-preview-root.panel-entering :deep(.forum-preview-close) {
+  visibility: hidden;
+  opacity: 0;
+  transition: none;
+}
+
 .forum-preview-stack {
   position: relative;
   display: flex;
@@ -161,8 +180,8 @@
   transition: transform 360ms cubic-bezier(0.2, 0, 0.2, 1);
 }
 
-/* 进出场由 WAAPI 驱动，避免叠加手势的 CSS 过渡。 */
-.forum-preview-root.entering .forum-preview-stack.flipping,
+/* Source zoom is driven by WAAPI; keep its transform independent of hover/gestures. */
+.forum-preview-root.source-transition.entering .forum-preview-stack.flipping,
 .forum-preview-root.source-transition.closing .forum-preview-stack.flipping {
   transition: none;
 }
@@ -187,7 +206,7 @@
 
 .forum-preview-image {
   max-width: 100%;
-  max-height: 100%;
+  max-height: calc(100dvh - 2 * var(--preview-vertical-gap));
   border-radius: inherit;
   object-fit: contain;
   opacity: 0;
@@ -256,6 +275,7 @@
   filter: blur(14px);
 }
 
+/* 拆三通道动画：各属性各配缓动 */
 .forum-preview-enter.enter-scale {
   animation:
     preview-stack-in 380ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards,
@@ -307,7 +327,7 @@
   transition: opacity 240ms ease;
 }
 
-/* 缩回缩略图时保持可见，避免淡出掩盖位移。 */
+/* Keep the image visible for the entire journey back to its thumbnail. */
 .forum-preview-root.source-transition.closing .forum-preview-image {
   opacity: 1;
 }

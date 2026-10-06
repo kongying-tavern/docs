@@ -1,68 +1,52 @@
 <script setup lang="ts">
 import type { PreviewerContext } from '../ForumImagePreviewer.vue'
-import { onBeforeUnmount, ref, watch } from 'vue'
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-} from '@/components/ui/sheet'
+import { defineAsyncComponent } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumCommentItem from '../../../comment/ForumCommentItem.vue'
-import ForumTopicPreviewContent from '../../../topic/ForumTopicPreviewContent.vue'
 
-const props = defineProps<{
+defineProps<{
   open: boolean
   context?: PreviewerContext
 }>()
 
-const emit = defineEmits<{ close: [] }>()
+const emit = defineEmits<{
+  beforeEnter: []
+  afterEnter: []
+  enterCancelled: []
+}>()
+
+const ForumTopicPreviewContent = defineAsyncComponent(() => import('../../../topic/ForumTopicPreviewContent.vue'))
+
 const { message } = useLocalized()
-
-const EXIT_MS = 320
-const rendered = ref(props.open)
-let unmountTimer: number | undefined
-
-watch(() => props.open, (open) => {
-  clearTimeout(unmountTimer)
-  if (open) {
-    rendered.value = true
-    return
-  }
-  unmountTimer = window.setTimeout(() => {
-    rendered.value = false
-  }, EXIT_MS)
-}, { flush: 'sync' })
-
-onBeforeUnmount(() => clearTimeout(unmountTimer))
 </script>
 
 <template>
-  <Sheet
-    v-if="context && rendered"
-    :open="open"
-    @update:open="!$event && emit('close')"
+  <Transition
+    name="preview-side-panel"
+    appear
+    @before-enter="emit('beforeEnter')"
+    @after-enter="emit('afterEnter')"
+    @enter-cancelled="emit('enterCancelled')"
   >
-    <SheetContent
-      :force-mount="true"
-      side="right"
-      :show-close-button="false"
-      :overlay="false"
-      style="animation-fill-mode: forwards"
-      class="p-4 overflow-y-auto !max-w-none !w-[min(560px,90vw)] !z-[1001]"
-      @interact-outside="(event) => event.preventDefault()"
-      @close-auto-focus="(event) => event.preventDefault()"
+    <aside
+      v-if="open && context"
+      :aria-label="message.forum.topic.previewTitle"
+      class="preview-side-panel p-4 bg-background flex flex-col gap-4 w-[min(560px,90vw)] inset-y-0 right-0 absolute overflow-y-auto"
+      @pointerdown.stop
+      @pointermove.stop
+      @pointerup.stop
+      @pointercancel.stop
+      @wheel.stop
+      @click.stop
     >
-      <SheetTitle class="sr-only">
-        {{ message.forum.topic.previewTitle }}
-      </SheetTitle>
-      <SheetDescription class="sr-only">
-        {{ context.topic?.title || context.comment?.contentRaw || message.forum.topic.previewTitle }}
-      </SheetDescription>
-      <ForumTopicPreviewContent
-        v-if="context.kind === 'topic' && context.topic"
-        :topic="context.topic"
-      />
+      <Suspense v-if="context.kind === 'topic' && context.topic">
+        <ForumTopicPreviewContent :topic="context.topic" />
+        <template #fallback>
+          <p role="status" aria-live="polite">
+            {{ message.forum.comment.loadingComment }}
+          </p>
+        </template>
+      </Suspense>
       <ForumCommentItem
         v-else-if="context.kind === 'comment' && context.comment"
         :repo="context.repo"
@@ -70,6 +54,35 @@ onBeforeUnmount(() => clearTimeout(unmountTimer))
         :topic-author-id="context.topicAuthorId ?? -1"
         :comment-data="context.comment"
       />
-    </SheetContent>
-  </Sheet>
+    </aside>
+  </Transition>
 </template>
+
+<style scoped>
+.preview-side-panel {
+  user-select: text;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}
+
+.preview-side-panel-enter-active {
+  transition: transform 500ms ease-in-out;
+}
+
+.preview-side-panel-leave-active {
+  transition: transform 300ms ease-in-out;
+  pointer-events: none;
+}
+
+.preview-side-panel-enter-from,
+.preview-side-panel-leave-to {
+  transform: translateX(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-side-panel-enter-active,
+  .preview-side-panel-leave-active {
+    transition: none;
+  }
+}
+</style>

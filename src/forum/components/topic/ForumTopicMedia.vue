@@ -76,7 +76,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
       class="mt-2"
       :context="{
         kind: 'topic',
-        topic: props.topic,
+        topic: props.topic.type === 'POST' ? undefined : props.topic,
         repo: props.topic.type === 'POST' ? 'Blog' : 'Feedback',
         topicAuthorId: props.topic.user.id,
       }"
@@ -95,6 +95,6 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
 }
 
 .topic-compact-media:hover {
-  border-color: var(--vp-c-brand);
+  border-color: oklch(var(--ring));
 }
 </style>

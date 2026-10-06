@@ -33,6 +33,7 @@ interface Props {
   previewEnabled?: boolean
   adaptiveRow?: boolean
   rowMaxHeight?: number
+  railMaxHeight?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -49,11 +50,13 @@ const { reducedMotion } = useSitePreferences()
 const errorMap = ref(new Set<number>())
 const readyMap = ref(new Set<number>())
 const naturalSizes = ref(new Map<number, { width: number, height: number }>())
-// errorMap/readyMap 以 images 下标为 key：列表被整体替换（如引用话题 refetch 重建）时，旧下标的记录必须作废
-watch(() => props.images, () => {
-  errorMap.value = new Set()
-  readyMap.value = new Set()
-  naturalSizes.value = new Map()
+// 相同位置、相同地址的缩略图会复用组件，不会再次发出 ready；保留它们的加载状态。
+// 地址变化或位置变化的图片会重新挂载，只清理这些下标的记录。
+watch(() => props.images.map(image => image.src), (sources, previousSources) => {
+  const retained = (index: number) => sources[index] !== undefined && sources[index] === previousSources[index]
+  errorMap.value = new Set([...errorMap.value].filter(retained))
+  readyMap.value = new Set([...readyMap.value].filter(retained))
+  naturalSizes.value = new Map([...naturalSizes.value].filter(([index]) => retained(index)))
 })
 const availableImages = computed(() => props.images
   .map((image, sourceIndex) => ({ image, sourceIndex })))
@@ -147,7 +150,7 @@ const railHeight = computed(() => {
 function railItemStyle(): Record<string, string> | undefined {
   if (!isRail.value)
     return undefined
-  return { height: `${railHeight.value}px` }
+  return { height: `${Math.min(railHeight.value, props.railMaxHeight ?? Number.POSITIVE_INFINITY)}px` }
 }
 
 function railStep(): number {
@@ -325,7 +328,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
               :class="[
                 layoutConfig.getItemStyle(index),
                 !isRail && !isAdaptiveGrid && actualLayout === 'triple' ? tripleGridClasses[index] : '',
-                previewEnabled ? 'transition-colors hover:border-[var(--vp-c-brand)]' : '',
+                previewEnabled ? 'transition-colors hover:border-ring' : '',
                 previewEnabled ? (isPreviewReady(image, sourceIndex) ? 'cursor-zoom-in' : 'cursor-wait') : '',
               ]"
               :style="railItemStyle()"
@@ -342,6 +345,8 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
                 @ready="handleReady(sourceIndex)"
                 @dimensions="naturalSizes.set(sourceIndex, $event)"
               />
+
+              <slot name="image-overlay" :image="image" :index="sourceIndex" />
 
               <div
                 v-if="index === displayImages.length - 1 && remainingCount > 0"
