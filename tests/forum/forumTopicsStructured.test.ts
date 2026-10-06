@@ -1,11 +1,11 @@
-/* eslint-disable test/no-import-node-test */
 import type ForumAPI from '../../src/forum/api/types'
 import type { TopicStateFilter } from '../../src/forum/services/forumQueryContracts'
 import type { ForumSearchState } from '../../src/forum/services/forumSearchQuery'
 import type { StructuredTopicFetcher } from '../../src/forum/services/forumTopics'
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { getStructuredForumTopics } from '../../src/forum/services/forumTopics'
+import { setImmediate } from 'node:timers/promises'
+import { getStructuredForumTopics, invalidateStructuredForumTopics } from '../../src/forum/services/forumTopics'
 
 type Params = Parameters<typeof getStructuredForumTopics>[0]
 
@@ -17,6 +17,48 @@ const baseParams: Params = {
   pageSize: 20,
 }
 const isOfficialUser = () => false
+
+test('concurrent readers share a structured batch instead of fetching the same page twice', async () => {
+  let calls = 0
+  const fetchTopics: StructuredTopicFetcher = async () => {
+    calls++
+    await setImmediate()
+    return { data: [topic({ id: 'CONCURRENT', labels: ['CATA-LOGIN'], tags: ['CATA-LOGIN'] })], totalPage: 1 }
+  }
+  const params = { ...baseParams, q: 'map', creator: 'alice', tags: ['CATA-LOGIN'] }
+  const results = await Promise.all([
+    getStructuredForumTopics(params, isOfficialUser, fetchTopics),
+    getStructuredForumTopics(params, isOfficialUser, fetchTopics),
+  ])
+  assert.equal(calls, 1)
+  assert.deepEqual(results.map(result => result.topics.map(item => item.id)), [['CONCURRENT'], ['CONCURRENT']])
+})
+
+test('failed structured batches release the shared request and retry the same page', async () => {
+  const params = { ...baseParams, q: 'retry-map', statuses: ['closed'] as ForumSearchState[] }
+  const pages: number[] = []
+  const fetchTopics: StructuredTopicFetcher = async (query) => {
+    pages.push(query.current ?? 1)
+    if (pages.length === 1)
+      throw new Error('Synthetic failure')
+    return { data: [topic({ id: 'RETRY', state: 'progressing', title: 'retry-map' })], totalPage: 1 }
+  }
+  await assert.rejects(getStructuredForumTopics(params, isOfficialUser, fetchTopics), /Synthetic failure/)
+  assert.deepEqual((await getStructuredForumTopics(params, isOfficialUser, fetchTopics)).topics.map(item => item.id), ['RETRY'])
+  assert.deepEqual(pages, [1, 1])
+})
+
+test('invalidating a pending scan prevents its late result from seeding the refreshed cache', async () => {
+  const params = { ...baseParams, q: 'generation-map', statuses: ['closed'] as ForumSearchState[] }
+  let resolve!: (result: Awaited<ReturnType<StructuredTopicFetcher>>) => void
+  const old = getStructuredForumTopics(params, isOfficialUser, () => new Promise(done => resolve = done))
+  invalidateStructuredForumTopics(params)
+  const fetchNew: StructuredTopicFetcher = async () => ({ data: [topic({ id: 'NEW', state: 'progressing', title: 'generation-map' })], totalPage: 1 })
+  assert.equal((await getStructuredForumTopics(params, isOfficialUser, fetchNew)).topics[0].id, 'NEW')
+  resolve({ data: [topic({ id: 'OLD', state: 'progressing', title: 'generation-map' })], totalPage: 1 })
+  await old
+  assert.equal((await getStructuredForumTopics(params, isOfficialUser, fetchNew)).topics[0].id, 'NEW')
+})
 
 function topic(partial: Partial<ForumAPI.Topic>): ForumAPI.Topic {
   return {

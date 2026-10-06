@@ -1,6 +1,36 @@
 import type { CustomConfig } from '../types'
 
 const settings: CustomConfig['settings'] = {
+  experiments: {
+    title: '試験的な機能',
+    feedbackForm: '新しいフィードバックフォーム',
+    legacyFeedbackForm: '従来のフィードバックフォーム',
+    legacyDescription: '新版に割り当てられています。オンで従来版を使用し、オフで既定の段階的公開の割り当てに戻します。このブラウザーの現在のアカウントにのみ適用され、次にフォームを開くときに反映されます。',
+    description: 'オンで新版を使用し、オフで既定の段階的公開の割り当てに戻します。このブラウザーの現在のアカウントにのみ適用され、次にフォームを開くときに反映されます。',
+  },
+  profile: {
+    title: 'プロフィール',
+    description: '変更は Gitee に保存され、プロフィールページに表示されます。',
+    username: '表示名',
+    blog: 'ブログサイト',
+    weibo: 'Weibo の URL',
+    bio: '自己紹介',
+    avatar: 'アバター',
+    login: 'ユーザー名',
+    email: 'メールアドレス',
+    giteeSettings: 'Gitee アカウント設定',
+    readonlyDescription: 'これらの情報は Gitee で変更できます。編集ボタンで対応する設定を新しいタブに開きます。',
+    editOnGitee: 'Gitee で編集',
+    editBio: '自己紹介を編集',
+    unset: '未設定または非公開',
+    save: '保存',
+    cancel: 'キャンセル',
+    saving: '保存中…',
+    saved: '保存しました',
+    saveFailed: '保存できませんでした。プロフィールを元に戻し、入力内容は保持しています。再試行してください。',
+    retry: '再試行',
+    sessionChanged: 'アカウントが変更されました。もう一度編集してください。',
+  },
   shortcuts: {
     title: 'キーボードショートカット',
     groups: { input: 'メッセージ入力', application: 'アプリケーション' },

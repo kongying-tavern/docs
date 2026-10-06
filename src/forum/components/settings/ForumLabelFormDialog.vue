@@ -61,7 +61,8 @@ const nameError = computed(() => {
   )
   if (!code)
     return ''
-  return message.value.forum.labelAdmin.errors[code]
+  const errorKeys = { required: 'nameRequired', invalid: 'nameInvalid', taken: 'nameTaken' } as const
+  return message.value.forum.labelAdmin.errors[errorKeys[code]]
 })
 
 const colorError = computed(() =>
@@ -166,14 +167,14 @@ async function handleSubmit() {
         </DialogDescription>
       </DialogHeader>
 
-      <div :class="isEditing ? 'gap-4 grid grid-cols-2' : 'flex flex-col gap-4'">
+      <div :class="isEditing ? 'gap-4 grid grid-cols-1 sm:grid-cols-2' : 'flex flex-col gap-4'">
         <div class="flex flex-col gap-1.5 min-w-0">
           <label class="text-sm font-medium" for="forum-label-name">
             {{ message.forum.labelAdmin.nameLabel }}
           </label>
           <div
             v-if="isEditing"
-            class="px-3 outline-none border border-input rounded-md bg-transparent flex h-9 min-w-0 w-full transition-[color,box-shadow] items-center overflow-hidden focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50"
+            class="px-3 border border-input rounded-md bg-transparent flex h-9 min-w-0 w-full items-center overflow-hidden focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-2"
           >
             <span
               v-if="editablePrefix"
@@ -185,7 +186,7 @@ async function handleSubmit() {
               id="forum-label-name"
               v-model="name"
               :disabled="submitting"
-              class="text-sm text-[var(--vp-c-text-1)] font-mono outline-none bg-transparent flex-1 h-full min-w-0 placeholder:text-muted-foreground disabled:opacity-50"
+              class="text-base text-[var(--vp-c-text-1)] font-mono outline-none bg-transparent flex-1 h-full min-w-0 md:text-sm placeholder:text-muted-foreground disabled:opacity-50"
               autocomplete="off"
               spellcheck="false"
             >
@@ -226,6 +227,7 @@ async function handleSubmit() {
             >
             <Input
               :model-value="color"
+              :aria-label="`${message.forum.labelAdmin.colorLabel} (HEX)`"
               class="font-mono uppercase"
               maxlength="6"
               :disabled="submitting"
@@ -248,15 +250,15 @@ async function handleSubmit() {
         </div>
       </div>
 
-      <DialogFooter class="sm:justify-start">
-        <Button type="button" :disabled="!canSubmit" @click="handleSubmit">
-          {{ submitting ? message.ui.button.loading : message.ui.button.submit }}
-        </Button>
+      <DialogFooter>
         <DialogClose as-child>
           <Button type="button" variant="secondary" :disabled="submitting">
             {{ message.ui.button.cancel }}
           </Button>
         </DialogClose>
+        <Button type="button" :disabled="!canSubmit" @click="handleSubmit">
+          {{ submitting ? message.ui.button.loading : message.ui.button.submit }}
+        </Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

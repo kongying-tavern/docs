@@ -26,6 +26,8 @@ declare namespace GITEE {
     events_url: string
     received_events_url: string
     bio?: string
+    blog?: string
+    weibo?: string
     created_at?: string
     updated_at?: string
     email?: string

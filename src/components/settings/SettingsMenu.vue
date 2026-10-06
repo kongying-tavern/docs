@@ -4,8 +4,8 @@ import { useTemplateRef } from 'vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import useLogin from '~/forum/hooks/useLogin'
+import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import SettingsNavigation from './SettingsNavigation.vue'
 
@@ -30,7 +30,7 @@ const emit = defineEmits<{
 const { message } = useLocalized()
 const userInfo = useUserInfoStore()
 const { showLoginAlert } = useLogin()
-const { userHref } = useForumRoute()
+const auth = useUserAuthStore()
 const fluidList = useTemplateRef<InstanceType<typeof FluidHoverList> | null>('fluidList')
 
 defineExpose({
@@ -50,11 +50,14 @@ defineExpose({
     :scroller="scroller"
     @update:active="emit('update:active', $event)"
   >
-    <a
-      v-if="userInfo.info"
+    <button
+      v-if="auth.isLoggedIn && userInfo.info"
       data-fluid-hover-item
-      class="settings-user"
-      :href="userHref(userInfo.info.login)"
+      type="button"
+      class="settings-user settings-navigation-item"
+      :class="{ active: activeSection === 'profile' }"
+      :aria-current="activeSection === 'profile' ? 'page' : undefined"
+      @click="emit('select', 'profile')"
     >
       <User
         size="sm"
@@ -68,7 +71,7 @@ defineExpose({
           description: 'block truncate',
         }"
       />
-    </a>
+    </button>
     <button
       v-else
       data-fluid-hover-item

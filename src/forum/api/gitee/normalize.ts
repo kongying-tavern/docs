@@ -51,6 +51,8 @@ export function normalizeUser(user?: GITEE.User): ForumAPI.User {
     id: user.id,
     login: user.login,
     ...(user.bio ? { bio: user.bio } : {}),
+    ...(user.blog ? { blog: user.blog } : {}),
+    ...(user.weibo ? { weibo: user.weibo } : {}),
     ...(user.email ? { email: user.email } : {}),
     ...(user.created_at ? { createAt: new Date(user.created_at) } : {}),
     ...(user.updated_at ? { updateAt: new Date(user.updated_at) } : {}),
@@ -107,6 +109,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
   const quotedTopic = normalizeQuotedTopicReference(decoded.metadata.quotedTopic)
 
   return {
+    isPrivate: issue.security_hole === true,
     labels,
     tags: labels.filter(isCategoryLabel),
     status: getTopicStatus(labels),
@@ -114,6 +117,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     title,
     id: issue.number,
     type: type || 'BUG',
+    ...(issue.id != null ? { providerId: issue.id } : {}),
     content: {
       text: decoded.content.text,
       ...(decoded.attachments ? { images: decoded.attachments } : {}),

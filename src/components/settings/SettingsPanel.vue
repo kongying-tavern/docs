@@ -5,7 +5,10 @@ import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import TelemetrySettings from '~/components/telemetry/TelemetrySettings.vue'
+import { useSitePreferences } from '~/composables/useSitePreferences'
+import ForumExperimentSettings from '~/forum/components/settings/ForumExperimentSettings.vue'
 import ForumLabelAdminPage from '~/forum/components/settings/ForumLabelAdminPage.vue'
+import ForumProfileSettings from '~/forum/components/settings/ForumProfileSettings.vue'
 import ForumShortcutSettings from '~/forum/components/settings/ForumShortcutSettings.vue'
 import ForumTranslationSettings from '~/forum/components/settings/ForumTranslationSettings.vue'
 import AppearanceSettings from './AppearanceSettings.vue'
@@ -21,10 +24,13 @@ defineProps<{
 
 const { localeIndex } = useData()
 const { message } = useLocalized()
+const { desktopUi } = useSitePreferences()
 const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}privacy`))
 </script>
 
 <template>
+  <ForumProfileSettings v-if="activeSection === 'profile'" />
+  <ForumExperimentSettings v-if="activeSection === 'experiments'" />
   <SettingsSection
     v-if="showAll || activeSection === 'appearance'"
     id="appearance"
@@ -35,7 +41,7 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
   </SettingsSection>
 
   <SettingsSection
-    v-if="showAll || activeSection === 'notifications'"
+    v-if="desktopUi && (showAll || activeSection === 'notifications')"
     id="notifications"
     :title="message.settings.notifications.title"
     :show-heading="showAll"

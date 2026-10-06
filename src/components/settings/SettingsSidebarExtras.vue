@@ -26,9 +26,7 @@ const settingsItems = computed(() => SETTINGS_SECTION_DEFINITIONS
   .filter(section => section.id !== 'language' || translationSupported.value)
   .map(section => ({
     ...section,
-    label: section.id === 'labels'
-      ? message.value.forum.labelAdmin.title
-      : message.value.settings[section.id].title,
+    label: message.value.settings[section.id].title,
   })))
 
 function settingsHref(section: string): string {

@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test */
 import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import test, { mock } from 'node:test'
@@ -8,6 +7,7 @@ import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { useForumCommentMutations, useForumTopicMutations } from '../../src/forum/composables/data/useForumMutations'
 import { forumKeys } from '../../src/forum/services/forumQueryContracts'
+import { getStructuredForumTopics } from '../../src/forum/services/forumTopics'
 
 const rawIssue = {
   number: 'A',
@@ -40,6 +40,30 @@ const topic = {
 } satisfies ForumAPI.Topic
 
 const listKey = forumKeys.topicList({ filter: 'all', sort: 'created', creator: null, q: '', pageSize: 20 })
+
+test('confirmed edits invalidate structured search data as well as Colada list entries', async () => {
+  const originalFetch = globalThis.fetch
+  const { mutations, invalidations } = await setup()
+  const params = { filter: 'all' as const, sort: 'created' as const, creator: null, q: '', tags: ['CATA-LOGIN'] }
+  let title = 'Original'
+  let fetches = 0
+  const fetchTopics = async () => {
+    fetches++
+    return { data: [{ ...topic, title, labels: [...topic.labels, 'CATA-LOGIN'], tags: ['CATA-LOGIN'] }], totalPage: 1 }
+  }
+  globalThis.fetch = async () => new Response(JSON.stringify({ ...rawIssue, title: 'BUG:Changed' }), { headers: { 'Content-Type': 'application/json' } })
+  try {
+    assert.equal((await getStructuredForumTopics(params, () => false, fetchTopics)).topics[0].title, 'Original')
+    assert.equal((await mutations.updateTopic('editTopic', 'A', { title: 'Changed' }, topic)).status, 'success')
+    title = 'Changed'
+    assert.equal((await getStructuredForumTopics(params, () => false, fetchTopics)).topics[0].title, 'Changed')
+    assert.equal(fetches, 2)
+  }
+  finally {
+    invalidations.mock.restore()
+    globalThis.fetch = originalFetch
+  }
+})
 
 async function setup() {
   let mutations!: ReturnType<typeof useForumTopicMutations>

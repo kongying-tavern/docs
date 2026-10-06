@@ -1,8 +1,9 @@
 import type ForumAPI from '../types'
-import { apiCall } from '.'
+import { apiCall, deleteApiCache } from '.'
 import { GITEE_API_CONFIG } from './config'
 import { parseGiteeUser, parseGiteeUsers } from './contracts'
 import { normalizeUser } from './normalize'
+import { buildUserProfileForm } from './userProfile'
 
 const { OWNER } = GITEE_API_CONFIG
 
@@ -23,6 +24,15 @@ export async function getAuthorizedUser(accessToken: string): Promise<ForumAPI.U
   })
 
   return normalizeUser(parseGiteeUser(data, 'user'))
+}
+
+export async function updateAuthorizedUser(profile: ForumAPI.UserProfileUpdate): Promise<ForumAPI.User> {
+  const { data } = await apiCall<GITEE.UserInfo>('patch', 'user', {
+    body: buildUserProfileForm(profile),
+  })
+  const updated = normalizeUser(parseGiteeUser(data, 'user'))
+  deleteApiCache('get', `users/${updated.login}`, { searchParams: {} })
+  return updated
 }
 
 export async function getUserOrgs(

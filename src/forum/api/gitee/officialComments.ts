@@ -4,13 +4,15 @@ import { normalizeComment } from './normalize'
 export type OfficialUserPredicate = (userId: string | number) => boolean
 
 export function extractOfficialAndAuthorComments(
-  issue: GITEE.IssueInfo,
+  issue: { id?: number, number?: string, user?: { id?: number } },
   commentList: GITEE.CommentList,
   isOfficialUser: OfficialUserPredicate,
 ): ForumAPI.Comment[] | null {
   const comments: ForumAPI.Comment[] = []
   const relatedComments = commentList.filter(
-    comment => issue.id != null && comment.target?.issue?.id === issue.id,
+    comment => issue.id != null
+      ? comment.target?.issue?.id === issue.id
+      : issue.number != null && comment.target?.issue?.number === issue.number,
   )
   const authorComment = relatedComments.find(
     comment => comment.user?.id != null && comment.user.id === issue.user?.id,

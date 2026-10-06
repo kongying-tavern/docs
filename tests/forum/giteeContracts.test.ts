@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
 import {
@@ -55,6 +54,12 @@ test('malformed successful Gitee responses fail before normalization', () => {
   assert.throws(() => parseGiteeIssues({ message: 'failed' }, 'issues'), /Invalid Gitee response from issues/)
   assert.throws(() => parseGiteeComments([{ ...comment, body: null }], 'comments'), /Invalid Gitee response from comments/)
   assert.throws(() => parseGiteeUser({ ...user, id: '1' }, 'user'), /Invalid Gitee response from user/)
+})
+
+test('comment association accepts legacy id-only targets and validates current string issue numbers', () => {
+  for (const target of [{ issue: { id: 100 } }, { issue: { id: 100, number: 'I12345' } }])
+    assert.equal(parseGiteeComment({ ...comment, target }, 'comments').target, target)
+  assert.throws(() => parseGiteeComment({ ...comment, target: { issue: { id: 100, number: 12345 } } }, 'comments'), /Invalid Gitee response/)
 })
 
 test('related comments ignore provider rows without usable association or author', () => {

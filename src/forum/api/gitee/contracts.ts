@@ -6,6 +6,10 @@ const userSchema = z.object({
   name: z.string(),
   avatar_url: z.string(),
   html_url: z.string(),
+  bio: z.string().nullish(),
+  blog: z.string().nullish(),
+  weibo: z.string().nullish(),
+  email: z.string().nullish(),
 })
 
 const issueSchema = z.object({
@@ -19,6 +23,7 @@ const issueSchema = z.object({
   body: z.string(),
   html_url: z.string(),
   comments: z.number(),
+  security_hole: z.boolean().optional(),
   created_at: z.string(),
   updated_at: z.string(),
   finished_at: z.string().nullable().optional(),
@@ -34,7 +39,7 @@ const commentSchema = z.object({
   updated_at: z.string().nullish(),
   in_reply_to_id: z.union([z.string(), z.number()]).nullish(),
   user: userSchema.nullish(),
-  target: z.object({ issue: z.object({ id: z.number() }).nullish() }).nullish(),
+  target: z.object({ issue: z.object({ id: z.number(), number: z.string().optional() }).nullish() }).nullish(),
 })
 
 const authSchema = z.object({

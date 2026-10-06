@@ -16,6 +16,7 @@ import {
   requiresAuthoritativeRefetch,
 } from '~/forum/services/forumQueryContracts'
 import { applyOptimisticTopicPatch } from '~/forum/services/forumTopicOptimistic'
+import { invalidateStructuredForumTopics } from '~/forum/services/forumTopics'
 
 type TopicPatch = Parameters<typeof issues.putTopic>[1]
 const commentMutationQueues = new Map<string, Promise<unknown>>()
@@ -210,8 +211,10 @@ function useForumMutationCache() {
     }
 
     const work: Promise<unknown>[] = []
-    if (policy.invalidateTopicLists)
+    if (policy.invalidateTopicLists) {
+      invalidateStructuredForumTopics()
       work.push(queryCache.invalidateQueries({ key: forumKeys.topicLists() }))
+    }
     if (topicId !== undefined && policy.invalidateDetail)
       work.push(queryCache.invalidateQueries({ key: forumKeys.topic(topicId), exact: true }))
     if (policy.invalidatePinned && !policy.invalidateTopicLists)

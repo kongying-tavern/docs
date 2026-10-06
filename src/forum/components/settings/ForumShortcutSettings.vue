@@ -8,6 +8,9 @@ import SettingsSection from '~/components/settings/SettingsSection.vue'
 import { useForumShortcutRecorder } from '~/forum/composables/view/useForumShortcutRecorder'
 
 const { copy, groups, selected, draft, draftKeys, open, error, operationError, recorder, focusRecorder, edit, save, toggle, reset } = useForumShortcutRecorder()
+function setRecorderElement(element: unknown) {
+  recorder.value = element instanceof HTMLElement ? element : null
+}
 </script>
 
 <template>
@@ -51,7 +54,7 @@ const { copy, groups, selected, draft, draftKeys, open, error, operationError, r
       <DialogContent @escape-key-down.prevent @open-auto-focus="focusRecorder">
         <DialogTitle>{{ copy.edit }} · {{ selected ? copy.actions[selected] : '' }}</DialogTitle>
         <DialogDescription>{{ copy.recordDescription }}</DialogDescription>
-        <div ref="recorder" data-shortcut-recorder tabindex="0" :aria-label="copy.recordDescription" class="p-4 border rounded-md flex min-h-16 items-center justify-center focus-visible:outline-primary focus-visible:outline" aria-live="polite">
+        <div :ref="setRecorderElement" data-shortcut-recorder tabindex="0" :aria-label="copy.recordDescription" class="p-4 border rounded-md flex min-h-16 items-center justify-center focus-visible:outline-ring focus-visible:outline" aria-live="polite">
           <KbdGroup v-if="draftKeys.length">
             <Kbd v-for="key in draftKeys" :key="key">{{ key }}</Kbd>
           </KbdGroup>
@@ -124,7 +127,7 @@ const { copy, groups, selected, draft, draftKeys, open, error, operationError, r
 }
 
 .shortcut-binding:focus-visible {
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 4px;
 }
 

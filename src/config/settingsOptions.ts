@@ -5,12 +5,14 @@ export type ThemePreference = 'light' | 'dark' | 'auto'
 export type ToastPosition = NonNullable<ToasterProps['position']>
 
 export const SETTINGS_SECTION_DEFINITIONS = [
-  { id: 'appearance', group: 'website', icon: 'i-lucide-palette' },
-  { id: 'notifications', group: 'website', icon: 'i-lucide-bell' },
-  { id: 'language', group: 'website', icon: 'i-lucide-languages' },
-  { id: 'privacy', group: 'website', icon: 'i-lucide-shield-check' },
-  { id: 'labels', group: 'application', icon: 'i-lucide-tags' },
-  { id: 'shortcuts', group: 'application', icon: 'i-lucide-keyboard' },
+  { id: 'profile', group: 'account', icon: 'i-lucide-user-round', standalone: true },
+  { id: 'appearance', group: 'website', icon: 'i-lucide-palette', standalone: false },
+  { id: 'notifications', group: 'website', icon: 'i-lucide-bell', standalone: false },
+  { id: 'language', group: 'website', icon: 'i-lucide-languages', standalone: false },
+  { id: 'privacy', group: 'website', icon: 'i-lucide-shield-check', standalone: false },
+  { id: 'labels', group: 'application', icon: 'i-lucide-tags', standalone: true },
+  { id: 'experiments', group: 'application', icon: 'i-lucide-flask-conical', standalone: true },
+  { id: 'shortcuts', group: 'application', icon: 'i-lucide-keyboard', standalone: true },
 ] as const
 
 export type SettingsSectionId = typeof SETTINGS_SECTION_DEFINITIONS[number]['id']

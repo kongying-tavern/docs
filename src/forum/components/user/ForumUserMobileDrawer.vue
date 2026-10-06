@@ -4,7 +4,7 @@ import { useRouter } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
-import { Drawer, DrawerContent, DrawerFooter } from '@/components/ui/drawer'
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from '@/components/ui/drawer'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
@@ -40,8 +40,8 @@ function goToProfilePage() {
 
 <template>
   <Drawer v-model:open="open">
-    <DrawerContent>
-      <div class="p-4 pb-8 flex gap-3 items-start">
+    <DrawerContent class="max-h-[80dvh] overflow-hidden">
+      <div class="p-4 pb-8 overscroll-contain flex flex-1 gap-3 min-h-0 items-start overflow-y-auto">
         <Avatar
           :data-forum-user="user?.login"
           :src="user?.avatar"
@@ -52,9 +52,9 @@ function goToProfilePage() {
 
         <div class="flex-1 min-w-0">
           <div class="flex gap-2 items-center">
-            <h3 class="text-base text-[var(--vp-c-text-1)] font-bold truncate">
+            <DrawerTitle class="text-base text-[var(--vp-c-text-1)] font-bold truncate">
               {{ user?.username || message.forum.labels.unknown }}
-            </h3>
+            </DrawerTitle>
             <span
               v-if="role"
               class="rounded-full"
@@ -63,9 +63,9 @@ function goToProfilePage() {
             </span>
           </div>
 
-          <p class="text-xs c-[var(--vp-c-text-2)] mt-1">
+          <DrawerDescription class="text-xs c-[var(--vp-c-text-2)] mt-1 break-words">
             {{ user?.bio || message.forum.labels.lazyPerson }}
-          </p>
+          </DrawerDescription>
 
           <div class="font-size-3.5 c-[--vp-c-text-3] mt-3 flex flex-wrap gap-4">
             <div class="flex gap-2 items-center">
@@ -79,7 +79,7 @@ function goToProfilePage() {
 
       <DrawerFooter
         v-if="!isSelf"
-        class="p-4 pt-0"
+        class="p-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-0 shrink-0"
       >
         <div class="flex gap-2">
           <Button

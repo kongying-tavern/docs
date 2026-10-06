@@ -21,7 +21,7 @@ export const useForumLabelStore = createGlobalState(() => {
 
   /**
    * force=true 时绕过会话缓存重新拉取（管理页刷新/写后同步）；并发调用共享同一 Promise。
-   * 注意 useMemoize 的 load() 命中缓存会直接返回不执行函数，所以强制刷新必须先把缓存键删掉。
+   * 强制刷新先清除旧缓存，再绕过缓存请求；新结果仍会写入缓存供后续普通加载复用。
    */
   function loadLabels(force = false): Promise<void> {
     if (inFlight)
@@ -34,7 +34,7 @@ export const useForumLabelStore = createGlobalState(() => {
     error.value = null
     inFlight = (async () => {
       try {
-        labels_.value = await labels.getAllLabels(force)
+        labels_.value = await labels.getAllLabels(!force)
       }
       catch (cause) {
         error.value = cause instanceof Error ? cause : new Error(String(cause))

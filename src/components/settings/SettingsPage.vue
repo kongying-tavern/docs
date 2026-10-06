@@ -15,6 +15,7 @@ import {
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { SETTINGS_SECTION_DEFINITIONS } from '~/config/settingsOptions'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
 import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
@@ -73,10 +74,13 @@ const {
 const websiteSections = computed(() => sections.value.filter(section => section.group === 'website'))
 const websiteSectionIds = computed(() => websiteSections.value.map(section => section.id))
 const applicationSections = computed(() => sections.value.filter(section => section.group === 'application'))
+const standalonePanel = computed(() => SETTINGS_SECTION_DEFINITIONS.find(section => section.id === activeSection.value)?.standalone ?? false)
 const settingsNav = useTemplateRef<InstanceType<typeof SettingsMenu> | null>('settingsNav')
 const dialogTitle = computed(() => activeSection.value === 'labels'
   ? message.value.settings.groups.application
-  : activeSection.value === 'shortcuts' ? message.value.settings.shortcuts.title : message.value.settings.title)
+  : activeSection.value === 'profile'
+    ? message.value.settings.profile.title
+    : activeSection.value === 'shortcuts' || activeSection.value === 'experiments' ? activeItem.value.label : message.value.settings.title)
 const drawerTitle = computed(() => {
   if (!sectionSelected.value)
     return message.value.settings.title
@@ -116,10 +120,11 @@ function changeSection(section: SettingsSectionId): void {
   void nextTick().then(() => settingsNav.value?.scrollTo(section))
 }
 
-/** 内容滚动联动：滚动位置跨过区段边界时同步 active（labels 面板不参与联动） */
+/** 独立面板不参与内容滚动联动。 */
 function handleScrollActive(section: string): void {
-  if (section !== activeSection.value && activeSection.value !== 'labels' && activeSection.value !== 'shortcuts')
-    selectSection(section)
+  const selected = sections.value.find(item => item.id === section)
+  if (selected && section !== activeSection.value && !standalonePanel.value)
+    selectSection(selected.id)
 }
 
 function handleDialogOpen(open: boolean): void {
@@ -224,7 +229,7 @@ onBeforeUnmount(() => {
             :active-section="activeSection"
             :show-language="translationSupported"
             :show-label-admin="labelManagementEnabled"
-            :show-all="activeSection !== 'labels' && activeSection !== 'shortcuts'"
+            :show-all="!standalonePanel"
           />
         </div>
       </section>

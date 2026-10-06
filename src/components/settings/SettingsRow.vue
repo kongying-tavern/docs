@@ -3,15 +3,16 @@ defineProps<{
   title: string
   description?: string
   alignStart?: boolean
+  labelFor?: string
 }>()
 </script>
 
 <template>
   <div class="settings-row" :class="{ 'items-start': alignStart }">
     <div class="settings-row-copy">
-      <div class="settings-row-title">
+      <component :is="labelFor ? 'label' : 'div'" :for="labelFor" class="settings-row-title">
         {{ title }}
-      </div>
+      </component>
       <div v-if="description || $slots.description" class="settings-row-description">
         <slot name="description">
           {{ description }}

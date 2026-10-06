@@ -1,6 +1,36 @@
 import type { CustomConfig } from '../types'
 
 const settings: CustomConfig['settings'] = {
+  experiments: {
+    title: 'Experimental features',
+    feedbackForm: 'New feedback form',
+    legacyFeedbackForm: 'Classic feedback form',
+    legacyDescription: 'You are assigned the new form. On uses the classic form; off restores the default rollout assignment. Applies only to your account in this browser, the next time you open the form.',
+    description: 'On uses the new form; off restores the default rollout assignment. Applies only to your account in this browser, the next time you open the form.',
+  },
+  profile: {
+    title: 'Personal profile',
+    description: 'Changes are saved to Gitee and shown on your profile page.',
+    username: 'Display name',
+    blog: 'Blog website',
+    weibo: 'Weibo URL',
+    bio: 'Bio',
+    avatar: 'Avatar',
+    login: 'Username',
+    email: 'Email',
+    giteeSettings: 'Gitee account settings',
+    readonlyDescription: 'Edit these details on Gitee. The edit button opens the corresponding settings in a new tab.',
+    editOnGitee: 'Edit on Gitee',
+    editBio: 'Edit bio',
+    unset: 'Not set or private',
+    save: 'Save profile',
+    cancel: 'Cancel',
+    saving: 'Saving…',
+    saved: 'Profile saved',
+    saveFailed: 'Could not save. Your profile was restored and your draft was kept. Please retry.',
+    retry: 'Retry',
+    sessionChanged: 'Your account has changed. Please edit your profile again.',
+  },
   shortcuts: {
     title: 'Keyboard shortcuts',
     groups: { input: 'Message input', application: 'Application' },

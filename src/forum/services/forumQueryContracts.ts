@@ -29,6 +29,7 @@ export const forumKeys = {
   all: ['forum'] as const,
   topics: () => ['forum', 'topics'] as const,
   topicLists: () => ['forum', 'topics', 'list'] as const,
+  relatedTopicComments: () => ['forum', 'topics', 'list', 'related-comments'] as const,
   topicList: (params: ForumTopicListParams) => ['forum', 'topics', 'list', normalizeTopicListParams(params)] as const,
   topic: (id: string | number) => ['forum', 'topics', 'detail', String(id)] as const,
   topicTimeline: (id: string | number) => ['forum', 'topics', 'timeline', String(id)] as const,

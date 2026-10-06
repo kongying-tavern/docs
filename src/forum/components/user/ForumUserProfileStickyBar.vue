@@ -43,7 +43,7 @@ const { message } = useLocalized()
           v-model:active-tab="activeTab"
           layout="inline"
           :tabs="tabs"
-          :aria-label="message.forum.header.navigation.groups.status"
+          v-bind="{ ariaLabel: message.forum.header.navigation.groups.status }"
         />
 
         <div class="ml-auto gap-2 hidden sm:flex">

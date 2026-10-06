@@ -62,10 +62,19 @@ interface StructuredSearchCache {
   publishedCount: number
   exhausted: boolean
   lastAccess: number
+  pendingBatch?: Promise<void>
 }
 
 /** 分面搜索按查询键缓存抓取进度与已抓条目，页面滚动时按需补抓，而不是一次拉全 */
 const structuredCaches = new Map<string, StructuredSearchCache>()
+
+/** Query invalidation must also discard the provider scan behind structured lists. */
+export function invalidateStructuredForumTopics(params?: ForumTopicListParams): void {
+  if (params)
+    structuredCaches.delete(structuredCacheKey(params))
+  else
+    structuredCaches.clear()
+}
 
 export function buildForumProviderRequest(queryParams: ForumQueryParams): ForumProviderRequest {
   const filter = queryParams.filter || 'all'
@@ -100,7 +109,7 @@ export async function getForumTopics(
     return getStructuredForumTopics(queryParams, isOfficialUser, issues.getTopics, queryParams.page ?? 1)
 
   const request = buildForumProviderRequest(queryParams)
-  const response = await issues.getTopics(request.query, request.state, request.search, isOfficialUser)
+  const response = await issues.getTopics(request.query, request.state, request.search)
   const selectedType = queryParams.topicType && queryParams.topicType !== 'all'
     ? queryParams.topicType
     : queryParams.filter
@@ -130,7 +139,9 @@ export async function getStructuredForumTopics(
     const filtered = collectStructuredTopics(cache, queryParams)
     if (cache.exhausted || filtered.length >= page * pageSize)
       break
-    await fetchNextStructuredBatch(cache, queryParams, isOfficialUser, fetchTopics)
+    cache.pendingBatch ??= fetchNextStructuredBatch(cache, queryParams, isOfficialUser, fetchTopics)
+      .finally(() => cache.pendingBatch = undefined)
+    await cache.pendingBatch
     batches += 1
   }
 

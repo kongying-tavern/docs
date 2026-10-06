@@ -12,6 +12,11 @@ export const API_ORIGIN = 'https://api.yuanshen.site'
 export const GITEE_ORIGIN = 'https://gitee.com'
 export const GITHUB_ORIGIN = 'https://github.com'
 
+export function getGiteeSettingsHref(section: 'profile' | 'avatar' | 'account' | 'emails'): string {
+  const paths = { profile: '/profile', avatar: '/profile', account: '/profile/account_information', emails: '/profile/emails' }
+  return `${GITEE_ORIGIN}${paths[section]}`
+}
+
 /** 拼接站点页面地址，path 必须以 `/` 开头（如 `/imgs/common/logo.png`）。 */
 export function getSiteHref(path: string): string {
   return `${SITE_ORIGIN}${SITE_BASE}${path}`

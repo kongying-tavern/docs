@@ -22,11 +22,13 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
     computed(() => userAuth.isTokenValid ? userAuth.auth?.accessToken : undefined),
   )
 
-  const renderedUser = computed(() => profileQuery.data.value)
+  const renderedUser = computed(() => userAuth.isLoggedIn && userInfo.info?.login === username.value
+    ? userInfo.info
+    : profileQuery.data.value)
 
   const role = computed(() => (isOfficial(renderedUser.value?.id || 0).value ? 'official' : null))
   const isAuthorizedUser = computed(() => Boolean(
-    renderedUser.value?.id
+    userAuth.isLoggedIn && renderedUser.value?.id
     && String(renderedUser.value.id) === String(userInfo.info?.id),
   ))
 

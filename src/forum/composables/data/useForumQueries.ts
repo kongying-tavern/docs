@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type ForumAPI from '~/forum/api/types'
 import type { ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
-import { useInfiniteQuery, useQuery } from '@pinia/colada'
+import { useInfiniteQuery, useQuery, useQueryCache } from '@pinia/colada'
 import { computed, toValue, watch } from 'vue'
 import { issues, user } from '~/forum/api/gitee'
 import { usePermissionData } from '~/forum/composables/auth/usePermissionData'
@@ -16,7 +16,7 @@ import {
   forumKeys,
   normalizeTopicListParams,
 } from '~/forum/services/forumQueryContracts'
-import { getForumTopics, getPinnedForumTopics } from '~/forum/services/forumTopics'
+import { getForumTopics, getPinnedForumTopics, invalidateStructuredForumTopics } from '~/forum/services/forumTopics'
 
 // 列表页 scope：传入时首屏成功记录条数供骨架屏复用（见 forumListSkeleton）；pageSize=1 的计数查询不要传
 export function useForumTopicsQuery(
@@ -49,7 +49,39 @@ export function useForumTopicsQuery(
     staleTime: 60_000,
   })
 
-  const rows = computed(() => flattenForumPages(query.data.value?.pages ?? []))
+  const topics = computed(() => flattenForumPages(query.data.value?.pages ?? []))
+  const queryCache = useQueryCache()
+  const relatedEnabled = computed(() => toValue(enabled) && !normalized.value.q
+    && normalized.value.pageSize > 1 && topics.value.some(topic => topic.commentCount > 0))
+  // 摘要查询使用独立状态和缓存键；延迟或失败都不阻塞列表与翻页。
+  const relatedComments = useQuery({
+    key: () => [
+      ...forumKeys.relatedTopicComments(),
+      normalized.value,
+      topics.value.map(topic => [topic.id, topic.updatedAt, topic.commentCount, topic.user.id, topic.providerId]),
+      [...new Set([...getTeamMemberIds.value, ...getFeedbackMemberIds.value])].toSorted((a, b) => a - b),
+    ],
+    enabled: relatedEnabled,
+    query: () => issues.getTopicListRelatedComments(topics.value, userId =>
+      getTeamMemberIds.value.has(Number(userId)) || getFeedbackMemberIds.value.has(Number(userId))),
+    staleTime: 60_000,
+    placeholderData: previous => previous,
+  })
+  const rows = computed(() => topics.value.map((topic) => {
+    const comments = relatedEnabled.value && topic.commentCount > 0
+      ? relatedComments.data.value?.[topic.id]
+      : undefined
+    return comments === undefined ? topic : { ...topic, relatedComments: comments }
+  }))
+  // 列表刷新只等待列表；摘要标记过期后在后台补充，包括失败后的重试。
+  async function refetch(...args: Parameters<typeof query.refetch>) {
+    invalidateStructuredForumTopics(normalized.value)
+    void queryCache.invalidateQueries({ key: [...forumKeys.relatedTopicComments(), normalized.value] }, false)
+    const result = await query.refetch(...args)
+    if (relatedEnabled.value)
+      void relatedComments.refresh()
+    return result
+  }
   const total = computed(() => query.data.value?.pages.at(-1)?.total ?? 0)
   const loadingMore = computed(() => query.isLoading.value && rows.value.length > 0)
 
@@ -63,6 +95,7 @@ export function useForumTopicsQuery(
 
   return {
     ...query,
+    refetch,
     rows,
     total,
     loadingMore,
@@ -138,7 +171,8 @@ export function useForumCommentsQuery(options: {
   })
 
   const rows = computed(() => flattenForumPages(query.data.value?.pages ?? []))
-  const total = computed(() => query.data.value?.pages.at(-1)?.total ?? rows.value.length)
+  // A missing total header is normalized to zero; retain the loaded count in that case.
+  const total = computed(() => query.data.value?.pages.at(-1)?.total || rows.value.length)
 
   return {
     ...query,

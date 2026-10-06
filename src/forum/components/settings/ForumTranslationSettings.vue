@@ -86,6 +86,7 @@ watch(searchTerm, (search) => {
     </SettingsRow>
 
     <SettingsRow
+      class="language-tags-row"
       :title="message.settings.language.excludedSourceLanguages"
       :description="message.settings.language.excludedSourceLanguagesDescription"
       align-start
@@ -101,6 +102,7 @@ watch(searchTerm, (search) => {
 
               <ListboxFilter v-model="searchTerm" as-child>
                 <TagsInputInput
+                  :aria-label="message.settings.language.searchLanguages"
                   :placeholder="excludedSourceLanguages.length === 0 ? message.settings.language.searchLanguages : ''"
                   class="language-search-input"
                   @focus="open = true"
@@ -170,7 +172,7 @@ watch(searchTerm, (search) => {
   --language-scrollbar: color-mix(in srgb, var(--vp-c-text-3) 44%, transparent);
   --language-scrollbar-hover: color-mix(in srgb, var(--vp-c-text-2) 64%, transparent);
 
-  max-height: 280px;
+  max-height: min(280px, calc(var(--reka-popover-content-available-height) - 10px));
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-color: var(--language-scrollbar) transparent;
@@ -200,7 +202,7 @@ watch(searchTerm, (search) => {
 
 .language-options-empty {
   padding: 24px 12px;
-  color: var(--muted-foreground);
+  color: oklch(var(--muted-foreground));
   font-size: calc(14px * var(--site-ui-scale));
   text-align: center;
 }
@@ -218,19 +220,32 @@ watch(searchTerm, (search) => {
 }
 
 .language-option[data-highlighted] {
-  color: var(--accent-foreground);
-  background: var(--accent);
+  color: oklch(var(--accent-foreground));
+  background: oklch(var(--accent));
 }
 
 .language-code {
   flex: none;
-  color: var(--muted-foreground);
+  color: oklch(var(--muted-foreground));
   font-family: var(--vp-font-family-mono);
   font-size: calc(12px * var(--site-ui-scale));
   text-transform: uppercase;
 }
 
 @media (max-width: 639px) {
+  .language-tags-anchor {
+    width: 100%;
+  }
+}
+
+@container settings-section (max-width: 680px) {
+  .language-tags-row.settings-row.items-start {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .language-tags-row :deep(.settings-row-control),
   .language-tags-anchor {
     width: 100%;
   }

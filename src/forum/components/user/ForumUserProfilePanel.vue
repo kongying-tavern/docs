@@ -10,6 +10,7 @@ import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import ForumSearchInput from '../search/ForumSearchInput.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumProfileTabs from './ForumProfileTabs.vue'
+import ForumUserBio from './ForumUserBio.vue'
 import ForumUserProfileStickyBar from './ForumUserProfileStickyBar.vue'
 
 const props = defineProps<{
@@ -23,6 +24,7 @@ const props = defineProps<{
   query: string
 }>()
 const emit = defineEmits<{ message: [], search: [query: string], openSearch: [] }>()
+defineSlots<{ follow: (props: { textClass?: string }) => unknown }>()
 const modelValue = defineModel<'all' | 'closed'>('activeTab', { default: 'all' })
 const { message } = useLocalized()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
@@ -98,7 +100,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
 
-            <div class="flex-1 w-full">
+            <div class="flex-1 min-w-0 w-full">
               <div class="flex gap-2 items-center">
                 <h1 data-forum-user-name class="text-xl text-[var(--vp-c-text-1)] font-bold sm:text-2xl">
                   {{ renderedUser?.username || message.forum.labels.unknown }}
@@ -108,9 +110,7 @@ onBeforeUnmount(() => {
                 </span>
               </div>
 
-              <p class="text-sm c-[var(--vp-c-text-2)] mt-1.5 sm:text-base sm:mt-2">
-                {{ renderedUser?.bio || message.forum.labels.lazyPerson }}
-              </p>
+              <ForumUserBio :user="renderedUser" :editable="isAuthorizedUser" />
 
               <div class="font-size-3.5 c-[--vp-c-text-3] mt-3 flex flex-wrap gap-4 sm:mt-4 sm:gap-6">
                 <div class="flex gap-2 items-center">
@@ -161,7 +161,7 @@ onBeforeUnmount(() => {
             v-model:active-tab="modelValue"
             layout="fill"
             :tabs="menu"
-            :aria-label="message.forum.header.navigation.groups.status"
+            v-bind="{ ariaLabel: message.forum.header.navigation.groups.status }"
             class="shrink-0"
           />
           <ForumSearchInput

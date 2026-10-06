@@ -17,9 +17,18 @@ export namespace ForumAPI {
     avatar?: string
     homepage?: string
     bio?: string
+    blog?: string
+    weibo?: string
     email?: string
     createAt?: Date
     updateAt?: Date
+  }
+
+  export interface UserProfileUpdate {
+    username?: string
+    blog?: string
+    weibo?: string
+    bio?: string
   }
 
   export type FeedbackTopicType = 'ANN' | 'BUG' | 'FEAT'
@@ -84,7 +93,10 @@ export namespace ForumAPI {
   }
 
   export interface Topic extends ForumItemBase {
+    isPrivate?: boolean
     type: FeedbackTopicType
+    /** 服务端内部标识，供关联评论匹配；路由仍使用公开话题编号。 */
+    providerId?: number
   }
 
   export interface Post extends ForumItemBase {
@@ -179,12 +191,14 @@ export namespace ForumAPI {
     tags: string[]
     text: string
     quotedTopic?: ForumAPI.QuotedTopicReference
+    isPrivate?: boolean
   }
 
   export interface FormSubmitData {
     body: string
     title: string
     labels?: string
+    security_hole?: boolean
   }
 
   export type Repo = 'Feedback' | 'Blog'

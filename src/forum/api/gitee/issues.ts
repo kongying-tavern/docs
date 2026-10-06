@@ -50,19 +50,6 @@ function isDevTestIssue(issue: GITEE.IssueInfo): boolean {
   return (issue.labels ?? []).some(label => label?.name === 'DEV-TEST')
 }
 
-/** 键须与 fetchCommentsForIssueWindow 的请求字面量一致 */
-function invalidateRelatedCommentCache(): void {
-  for (let page = 1; page <= RELATED_COMMENT_MAX_PAGES; page++) {
-    deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`, {
-      searchParams: {
-        page,
-        sort: 'created',
-        per_page: RELATED_COMMENT_PER_PAGE,
-      },
-    })
-  }
-}
-
 /** 键须与 getPinnedList/getAnnouncementList 的请求字面量一致 */
 function invalidatePinnedAndAnnouncementCache(): void {
   deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues`, {
@@ -79,35 +66,16 @@ function invalidatePinnedAndAnnouncementCache(): void {
   })
 }
 
-/** 预取评论窗口首页；失败静默（窗口主流程会按需重试并上报）。缓存键与窗口翻页一致 */
-function fetchCommentWindowHead(): Promise<GITEE.CommentList | undefined> {
-  return apiCall<GITEE.CommentList>(
-    'get',
-    `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`,
-    {
-      searchParams: {
-        page: 1,
-        sort: 'created',
-        per_page: RELATED_COMMENT_PER_PAGE,
-      },
-      cache: true,
-    },
-  )
-    .then(({ data }) => data)
-    .catch(() => undefined)
-}
-
 /**
  * 以本页最早创建的 issue 为锚点、按创建时间倒序翻页拉取评论：
- * 每条评论必晚于其所属 issue 的创建时间，故此窗口可覆盖本页主题的作者/官方评论。
- * `head` 是与列表请求并行预取的首页结果，命中锚点时免去串行首拉。
+ * 每条评论必晚于其所属 issue 的创建时间，以锚点确定窗口范围；最多取三页，摘要尽力补充。
+ * 由独立的关联评论查询调用，不参与话题列表的加载状态。
  */
 async function fetchCommentsForIssueWindow(
-  issues: GITEE.IssueInfo[],
-  head?: GITEE.CommentList,
+  topics: readonly ForumAPI.Topic[],
 ): Promise<GITEE.CommentList> {
-  const anchorMs = issues
-    .map(val => Date.parse(val.created_at))
+  const anchorMs = topics
+    .map(val => Date.parse(val.createdAt))
     .filter(ts => !Number.isNaN(ts))
     .reduce((min, ts) => Math.min(min, ts), Number.POSITIVE_INFINITY)
 
@@ -118,23 +86,18 @@ async function fetchCommentsForIssueWindow(
   for (let page = 1; page <= RELATED_COMMENT_MAX_PAGES; page++) {
     let pageComments: GITEE.CommentList
     try {
-      if (page === 1 && head) {
-        pageComments = head
-      }
-      else {
-        ;({ data: pageComments } = await apiCall<GITEE.CommentList>(
-          'get',
-          `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`,
-          {
-            searchParams: {
-              page,
-              sort: 'created',
-              per_page: RELATED_COMMENT_PER_PAGE,
-            },
-            cache: true,
+      ;({ data: pageComments } = await apiCall<GITEE.CommentList>(
+        'get',
+        `repos/${OWNER}/${FEEDBACK_REPO}/issues/comments`,
+        {
+          searchParams: {
+            page,
+            sort: 'created',
+            per_page: RELATED_COMMENT_PER_PAGE,
           },
-        ))
-      }
+        },
+      ))
+      pageComments = parseGiteeComments(pageComments, 'issues/comments')
     }
     catch (error) {
       reportRequestFailure(toGiteeAPIError(error, {
@@ -144,7 +107,6 @@ async function fetchCommentsForIssueWindow(
       break
     }
 
-    pageComments = parseGiteeComments(pageComments, 'issues/comments')
     if (pageComments.length === 0)
       break
 
@@ -152,11 +114,25 @@ async function fetchCommentsForIssueWindow(
 
     const oldestComment = pageComments.at(-1)
     const oldestMs = oldestComment ? Date.parse(oldestComment.created_at) : Number.NaN
-    if (Number.isNaN(oldestMs) || oldestMs < anchorMs)
+    if (pageComments.length < RELATED_COMMENT_PER_PAGE || Number.isNaN(oldestMs) || oldestMs < anchorMs)
       break
   }
 
   return comments
+}
+
+/** 列表呈现后独立补充作者/官方评论；失败保留已成功读取的摘要。 */
+export async function getTopicListRelatedComments(
+  topics: readonly ForumAPI.Topic[],
+  isOfficialUser: OfficialUserPredicate,
+): Promise<Record<string, ForumAPI.Comment[] | null>> {
+  const comments = topics.some(topic => topic.commentCount > 0)
+    ? await fetchCommentsForIssueWindow(topics)
+    : []
+  return Object.fromEntries(topics.map(topic => [
+    topic.id,
+    extractOfficialAndAuthorComments({ id: topic.providerId, number: topic.id, user: { id: Number(topic.user.id) } }, comments, isOfficialUser),
+  ]))
 }
 
 export async function getTopic(number: string): Promise<ForumAPI.Topic> {
@@ -200,13 +176,9 @@ export async function getTopics(
   query: ForumAPI.Query,
   state: TopicStateFilter | undefined,
   search: string | undefined,
-  isOfficialUser: OfficialUserPredicate,
 ): Promise<ForumAPI.PaginatedResult<ForumAPI.Topic[]>> {
-  // Separate the requests to prevent comments timeout from affecting issues
+  // 列表请求仅返回话题，关联评论由独立查询补充。
   const request = buildTopicListRequest(query, state, search)
-  // 评论窗口首页与列表请求并行预取：窗口锚点判断只需列表里的最早创建时间，
-  // 首页预取命中锚点时列表关键路径上不再有串行评论请求
-  const commentWindowHead = search ? undefined : fetchCommentWindowHead()
   const { data: issues, pagination } = await apiCall<GITEE.IssueList>(
     'get',
     request.endpoint,
@@ -216,41 +188,10 @@ export async function getTopics(
   )
 
   const validIssues = parseGiteeIssues(issues, request.endpoint)
-  if (search) {
-    return {
-      data: validIssues
-        .filter(val => import.meta.env.DEV || !isDevTestIssue(val))
-        .map(val => normalizeIssue(val)),
-      ...pagination,
-    }
-  }
-
-  // 整页都没有评论时无需窗口；有评论才消费预取结果（未命中时按需续拉后续页）
-  const needsCommentWindow = validIssues.some(issue => (issue.comments ?? 0) > 0)
-  const comments = needsCommentWindow
-    ? await fetchCommentsForIssueWindow(validIssues, await commentWindowHead)
-    : []
-
-  const data: ForumAPI.Topic[] = []
-
-  validIssues.forEach((val) => {
-    const topic = normalizeIssue(val)
-
-    if (
-      !import.meta.env.DEV
-      && isDevTestIssue(val)
-    ) {
-      return
-    }
-
-    data.push({
-      relatedComments: extractOfficialAndAuthorComments(val, comments, isOfficialUser),
-      ...topic,
-    })
-  })
-
   return {
-    data,
+    data: validIssues
+      .filter(val => import.meta.env?.DEV || !isDevTestIssue(val))
+      .map(val => normalizeIssue(val)),
     ...pagination,
   }
 }
@@ -392,8 +333,6 @@ export async function postTopicComment(
     },
   )
 
-  invalidateRelatedCommentCache()
-
   return normalizeComment(parseGiteeComment(comment, `issues/${number}/comments`))
 }
 
@@ -413,9 +352,6 @@ export async function deleteTopicComment(
 
   const deleted = response.status === 204
 
-  if (deleted)
-    invalidateRelatedCommentCache()
-
   return deleted
 }
 
@@ -426,6 +362,7 @@ export async function putTopic(
     body?: string
     labels?: string
     state?: ForumAPI.TopicState
+    security_hole?: boolean
   },
   options: TopicUpdateOptions = {},
 ): Promise<TopicUpdateOutcome> {
@@ -456,7 +393,7 @@ export async function putTopic(
   // 标签和状态必须读回确认；PATCH 响应并不保证 Gitee/Webhook 已持久化。
   const hasMembershipChange = data.labels !== undefined || data.state !== undefined
   const needsReformat = hasMembershipChange && !options.skipReformat
-  if (!hasMembershipChange && !requestedType)
+  if (!hasMembershipChange && !requestedType && data.security_hole === undefined)
     return { status: 'success', topic: result }
 
   let syncError: Error | undefined
@@ -487,7 +424,9 @@ export async function putTopic(
   }
 }
 
-export function isTopicPatchConfirmed(topic: ForumAPI.Topic, patch: { labels?: string, state?: ForumAPI.TopicState }): boolean {
+export function isTopicPatchConfirmed(topic: ForumAPI.Topic, patch: { labels?: string, state?: ForumAPI.TopicState, security_hole?: boolean }): boolean {
+  if (patch.security_hole !== undefined && (topic.isPrivate === true) !== patch.security_hole)
+    return false
   if (patch.state !== undefined && topic.state !== patch.state)
     return false
   if (patch.labels === undefined)

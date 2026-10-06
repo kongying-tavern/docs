@@ -38,6 +38,7 @@ defineProps<{
 }
 
 .settings-section-body {
+  container: settings-section / inline-size;
   display: grid;
   overflow: hidden;
   border: 1px solid var(--vp-c-divider);
