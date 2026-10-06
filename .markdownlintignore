@@ -6,3 +6,6 @@ dist
 plans/
 advisor-plans/
 .playwright-mcp/
+output/
+**/test-results/**
+**/playwright-report/**
