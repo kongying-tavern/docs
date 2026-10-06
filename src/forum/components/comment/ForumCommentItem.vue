@@ -57,8 +57,8 @@ function handleCommentClick(author: ForumAPI.User): void {
 </script>
 
 <template>
-  <div class="topic-comment-item rounded-md flex" :class="COMMENT_STYLES[props.size].container">
-    <div v-if="props.size !== 'small'" class="mr-2 w-[64px]">
+  <div class="topic-comment-item rounded-md flex" :class="[COMMENT_STYLES[props.size].container, { 'comment-normal': props.size === 'normal' }]">
+    <div v-if="props.size !== 'small'" class="comment-avatar mr-2 w-[64px]">
       <ForumUserHoverCard :user="props.commentData.author">
         <template #trigger>
           <a class="cursor-pointer" :href="userHref(props.commentData.author.login)" :data-forum-user="props.commentData.author.login">
@@ -67,7 +67,7 @@ function handleCommentClick(author: ForumAPI.User): void {
         </template>
       </ForumUserHoverCard>
     </div>
-    <div class="comment-info flex w-[calc(100%-40px)]" :class="COMMENT_STYLES[props.size].contentContainer">
+    <div class="comment-main comment-info flex w-[calc(100%-40px)]" :class="COMMENT_STYLES[props.size].contentContainer">
       <div v-if="props.size !== 'small'" class="title flex" :class="COMMENT_STYLES[props.size].header">
         <ForumUserHoverCard :user="props.commentData.author">
           <template #trigger>
@@ -159,16 +159,32 @@ function handleCommentClick(author: ForumAPI.User): void {
   max-width: 20px;
   margin-inline: 1px;
   object-fit: contain;
-  vertical-align: text-bottom;
 }
 
 .last-comment > .comment-info {
   border: none !important;
 }
+@media (max-width: 959px) {
+  .comment-normal .comment-avatar {
+    flex-shrink: 0;
+    width: 40px;
+  }
+  .comment-normal .comment-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .comment-normal .title {
+    flex-wrap: wrap;
+  }
+  .comment-normal .content :deep(pre) {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+}
 
 .topic-comment-item:target {
   animation: comment-highlight 2s ease-out;
-  outline: 2px solid var(--vp-c-brand-1);
+  outline: 2px solid oklch(var(--ring));
   outline-offset: 4px;
 }
 

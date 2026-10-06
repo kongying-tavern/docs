@@ -2,13 +2,15 @@
 import type { Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '~/forum/api/types'
-import { BoldIcon, ItalicIcon, StrikethroughIcon } from '@lucide/vue'
+import { AtSignIcon, BoldIcon, HashIcon, ImagePlusIcon, ItalicIcon, StrikethroughIcon } from '@lucide/vue'
 import { useQueryCache } from '@pinia/colada'
 import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { BubbleMenu } from '@tiptap/vue-3/menus'
 import { useVModel } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
+import { Button } from '@/components/ui/button'
+import MentionPicker from '@/components/ui/MentionPicker.vue'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
@@ -29,15 +31,23 @@ const props = withDefaults(defineProps<{
   defaultValue?: string
   placeholder?: string
   supportPaste?: boolean
+  supportDrop?: boolean
+  showToolbar?: boolean
+  imageSelectionDisabled?: boolean
+  ariaInvalid?: boolean
   /** contenteditable 不是 labelable 元素，<label for> 关联不上，需显式可访问名称 */
   ariaLabel?: string
+  ariaDescribedby?: string
+  borderless?: boolean
 }>(), {
   modelValue: '',
+  supportDrop: true,
 })
 
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string): void
   (e: 'paste-files', files: File[]): void
+  (e: 'select-images'): void
   (e: 'blur', event: FocusEvent): void
 }>()
 
@@ -49,11 +59,19 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 const editor = shallowRef<TiptapEditor | null>(null)
 const shortcutExtension = useForumEditorShortcuts()
 const activeFormats = ref<TextFormat[]>([])
+const showMentionPicker = ref(false)
 const formatMenu = useTemplateRef<InstanceType<typeof ToggleGroup>>('format-menu')
 const queryCache = useQueryCache()
 const { message } = useLocalized()
 
 type TextFormat = 'bold' | 'italic' | 'strike'
+
+const formatActions = [
+  { value: 'bold', icon: BoldIcon, label: 'formatBold' },
+  { value: 'italic', icon: ItalicIcon, label: 'formatItalic' },
+  { value: 'strike', icon: StrikethroughIcon, label: 'formatStrike' },
+] as const
+const WHITESPACE_REGEX = /\s/u
 
 function syncActiveFormats(currentEditor: TiptapEditor): void {
   activeFormats.value = (['bold', 'italic', 'strike'] as const).filter(format => currentEditor.isActive(format))
@@ -88,6 +106,27 @@ function getLoadedTopics(): ForumAPI.Topic[] {
   )
 }
 
+function openTopicSearch(): void {
+  const currentEditor = editor.value
+  if (!currentEditor)
+    return
+  const { from } = currentEditor.state.selection
+  const previousCharacter = currentEditor.state.doc.textBetween(Math.max(0, from - 1), from)
+  currentEditor.chain().focus().insertContent(`${previousCharacter && !WHITESPACE_REGEX.test(previousCharacter) ? ' ' : ''}#`).run()
+}
+
+function handleMentionSelect(user: ForumAPI.User): void {
+  editor.value?.chain().focus().insertContent([
+    { type: 'mention', attrs: { id: user.id, label: user.login } },
+    { type: 'text', text: ' ' },
+  ]).run()
+}
+
+function restoreEditorFocus(event: Event): void {
+  event.preventDefault()
+  editor.value?.view.dom.focus({ preventScroll: true })
+}
+
 function handlePaste(event: ClipboardEvent): void {
   if (!props.supportPaste || !event.clipboardData)
     return
@@ -98,7 +137,7 @@ function handlePaste(event: ClipboardEvent): void {
 
 const dropZone = useTemplateRef<HTMLElement>('drop-zone')
 const { isOverDropZone } = useForumImageDropZone(dropZone, {
-  disabled: () => !props.supportPaste,
+  disabled: () => !props.supportPaste || !props.supportDrop || props.imageSelectionDisabled,
   onFiles: files => emits('paste-files', files),
 })
 
@@ -129,7 +168,9 @@ onMounted(() => {
         ...(props.id ? { id: props.id } : {}),
         'role': 'textbox',
         'aria-multiline': 'true',
+        'aria-invalid': String(Boolean(props.ariaInvalid)),
         ...(props.ariaLabel ? { 'aria-label': props.ariaLabel } : {}),
+        'aria-describedby': props.ariaDescribedby || '',
       },
     },
   })
@@ -142,6 +183,15 @@ watch(modelValue, (value) => {
 })
 
 onBeforeUnmount(() => editor.value?.destroy())
+
+watch(() => [props.ariaInvalid, props.ariaLabel, props.ariaDescribedby] as const, ([invalid, label, describedby]) => {
+  editor.value?.setOptions({ editorProps: { attributes: {
+    ...editor.value.options.editorProps.attributes,
+    'aria-invalid': String(Boolean(invalid)),
+    'aria-label': label || '',
+    'aria-describedby': describedby || '',
+  } } })
+})
 </script>
 
 <template>
@@ -152,7 +202,8 @@ onBeforeUnmount(() => editor.value?.destroy())
     <div class="comment-area w-full">
       <div
         ref="drop-zone"
-        class="body letter-content-input px-3 py-2 border vp-border-input border-input rounded-md border-style-solid bg-transparent shadow-sm transition-colors relative placeholder:text-muted-foreground focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20"
+        class="body px-3 py-3 border border-input rounded-md bg-transparent shadow-xs transition-[border-color,box-shadow] relative focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50"
+        :class="{ 'border-destructive': ariaInvalid, 'compact-content-input': borderless, 'letter-content-input': !borderless }"
       >
         <div class="editor min-h-inherit relative">
           <BubbleMenu
@@ -169,36 +220,16 @@ onBeforeUnmount(() => editor.value?.destroy())
               class="forum-format-menu"
             >
               <ToggleGroupItem
-                value="bold"
+                v-for="action in formatActions"
+                :key="action.value"
+                :value="action.value"
                 class="px-0 size-8"
-                :aria-label="message.forum.publish.feedbackForm.formatBold"
-                :title="message.forum.publish.feedbackForm.formatBold"
+                :aria-label="message.forum.publish.feedbackForm[action.label]"
+                :title="message.forum.publish.feedbackForm[action.label]"
                 @mousedown.prevent
-                @click="toggleFormat('bold')"
+                @click="toggleFormat(action.value)"
               >
-                <BoldIcon />
-              </ToggleGroupItem>
-
-              <ToggleGroupItem
-                value="italic"
-                class="px-0 size-8"
-                :aria-label="message.forum.publish.feedbackForm.formatItalic"
-                :title="message.forum.publish.feedbackForm.formatItalic"
-                @mousedown.prevent
-                @click="toggleFormat('italic')"
-              >
-                <ItalicIcon />
-              </ToggleGroupItem>
-
-              <ToggleGroupItem
-                value="strike"
-                class="px-0 size-8"
-                :aria-label="message.forum.publish.feedbackForm.formatStrike"
-                :title="message.forum.publish.feedbackForm.formatStrike"
-                @mousedown.prevent
-                @click="toggleFormat('strike')"
-              >
-                <StrikethroughIcon />
+                <component :is="action.icon" />
               </ToggleGroupItem>
             </ToggleGroup>
           </BubbleMenu>
@@ -206,11 +237,54 @@ onBeforeUnmount(() => editor.value?.destroy())
             v-if="editor"
             data-clarity-mask="true"
             :editor="(editor as InstanceType<typeof Editor>)"
-            :class="cn('forum-rich-editor h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', props.class)"
+            :class="cn('forum-rich-editor custom-scrollbar h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', props.class)"
           />
         </div>
         <slot name="after-editor" />
         <slot name="uploader" />
+
+        <div v-if="showToolbar" class="pt-2 flex gap-1 items-center">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-lg"
+            :disabled="imageSelectionDisabled"
+            :aria-label="message.forum.publish.feedbackForm.addImages"
+            :title="message.forum.publish.feedbackForm.addImages"
+            @click="emits('select-images')"
+          >
+            <ImagePlusIcon :size="16" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-lg"
+            :aria-label="message.forum.publish.feedbackForm.referenceTopic"
+            :title="message.forum.publish.feedbackForm.referenceTopic"
+            @mousedown.prevent
+            @click="openTopicSearch"
+          >
+            <HashIcon :size="16" />
+          </Button>
+          <MentionPicker
+            v-model:open="showMentionPicker"
+            side="top"
+            @select="handleMentionSelect"
+            @close-auto-focus="restoreEditorFocus"
+          >
+            <template #trigger>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-lg"
+                :aria-label="message.forum.publish.feedbackForm.mentionUser"
+                :title="message.forum.publish.feedbackForm.mentionUser"
+              >
+                <AtSignIcon :size="16" />
+              </Button>
+            </template>
+          </MentionPicker>
+        </div>
 
         <div v-if="isOverDropZone" class="drop-overlay" aria-hidden="true">
           <span class="i-lucide-images size-5" />
@@ -222,6 +296,23 @@ onBeforeUnmount(() => editor.value?.destroy())
 </template>
 
 <style scoped>
+.compact-content-input {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.compact-content-input:focus-within {
+  box-shadow: none;
+}
+.compact-content-input :deep(.tiptap:focus-visible) {
+  outline: 2px solid oklch(var(--ring));
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+</style>
+
+<style scoped>
 .drop-overlay {
   position: absolute;
   z-index: 20;
@@ -230,7 +321,7 @@ onBeforeUnmount(() => editor.value?.destroy())
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border: 2px dashed var(--vp-c-brand-1);
+  border: 2px dashed oklch(var(--ring));
   border-radius: 0.5rem;
   background: color-mix(in srgb, var(--vp-c-bg-elv) 86%, transparent);
   color: var(--vp-c-brand-1);

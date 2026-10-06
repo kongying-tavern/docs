@@ -45,12 +45,18 @@ export function createForumSuggestionRenderer() {
         return
       const host = element.parentElement
       const hostRect = host === document.body ? undefined : host?.getBoundingClientRect()
-      const viewportLeft = Math.max(12, Math.min(rect.left, window.innerWidth - element.offsetWidth - 12))
+      const viewport = window.visualViewport
+      const topEdge = Math.max((viewport?.offsetTop ?? 0) + 12, hostRect ? hostRect.top + 12 : 0)
+      const toolbar = host?.querySelector<HTMLElement>('.editor-tools-row')?.getBoundingClientRect()
+      const bottomEdge = Math.min((viewport?.offsetTop ?? 0) + (viewport?.height ?? window.innerHeight) - 12, toolbar?.top ?? Infinity)
+      element.style.maxHeight = `${Math.max(44, bottomEdge - topEdge)}px`
+      element.style.overflowY = 'auto'
+      const viewportLeft = Math.max((viewport?.offsetLeft ?? 0) + 12, Math.min(rect.left, (viewport?.offsetLeft ?? 0) + (viewport?.width ?? window.innerWidth) - element.offsetWidth - 12))
       const below = rect.bottom + 6
       const above = rect.top - element.offsetHeight - 6
-      const viewportTop = Math.max(12, Math.min(
-        below + element.offsetHeight > window.innerHeight - 12 && above >= 12 ? above : below,
-        window.innerHeight - element.offsetHeight - 12,
+      const viewportTop = Math.max(topEdge, Math.min(
+        below + element.offsetHeight > bottomEdge && above >= topEdge ? above : below,
+        bottomEdge - element.offsetHeight,
       ))
       element.style.pointerEvents = 'auto'
       element.style.zIndex = '10000'
@@ -75,6 +81,8 @@ export function createForumSuggestionRenderer() {
         }
         window.addEventListener('scroll', schedulePosition, true)
         window.addEventListener('resize', schedulePosition)
+        window.visualViewport?.addEventListener('resize', schedulePosition)
+        window.visualViewport?.addEventListener('scroll', schedulePosition)
         props.editor.on('blur', hideOnBlur)
         props.editor.on('focus', showOnFocus)
         position()
@@ -99,6 +107,8 @@ export function createForumSuggestionRenderer() {
         cancelAnimationFrame(frame)
         window.removeEventListener('scroll', schedulePosition, true)
         window.removeEventListener('resize', schedulePosition)
+        window.visualViewport?.removeEventListener('resize', schedulePosition)
+        window.visualViewport?.removeEventListener('scroll', schedulePosition)
         current?.editor.off('blur', hideOnBlur)
         current?.editor.off('focus', showOnFocus)
         component?.element?.remove()

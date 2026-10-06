@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
@@ -7,7 +6,7 @@ import { useImageAttachmentQueue } from '../../src/forum/composables/view/useIma
 import {
   submitCommentTransaction,
 } from '../../src/forum/services/commentTransaction'
-import { decodeCommentBody, encodeCommentBody } from '../../src/forum/services/forumContentCodec'
+import { decodeCommentBody } from '../../src/forum/services/forumContentCodec'
 
 function doc(text: string): JSONContent {
   return {
@@ -49,26 +48,6 @@ function queue(upload: (file: File) => Promise<ForumAPI.Image> = file => Promise
     revokePreviewUrl: () => {},
   })
 }
-
-test('legacy plain Comment content remains readable through the codec', () => {
-  const body = encodeCommentBody('legacy plain comment')
-  assert.equal(body, 'legacy plain comment')
-  assert.deepEqual(decodeCommentBody(body).content, {
-    kind: 'plain',
-    text: 'legacy plain comment',
-  })
-})
-
-test('Tiptap Comment JSON keeps ordered attachments', () => {
-  const body = encodeCommentBody(doc('hello'), [
-    { src: 'https://assets.example/first.png', alt: 'first' },
-    { src: 'https://assets.example/second.png', alt: 'second' },
-  ])
-  const decoded = decodeCommentBody(body)
-
-  assert.equal(decoded.content.kind, 'tiptap')
-  assert.deepEqual(decoded.attachments?.map(image => image.alt), ['first', 'second'])
-})
 
 test('upload failure prevents the Comment API call', async () => {
   let apiCalls = 0

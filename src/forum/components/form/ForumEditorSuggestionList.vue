@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SuggestionKeyDownProps } from '@tiptap/suggestion'
 import type { ListboxRoot } from 'reka-ui'
+import type { ComponentExposed } from 'vue-component-type-helpers'
 import type { ForumEditorSuggestionItem } from '~/forum/tiptap/forumSuggestionRenderer'
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import {
@@ -20,7 +21,7 @@ const props = defineProps<{
 }>()
 
 const selectedIndex = ref(0)
-const commandRoot = useTemplateRef<InstanceType<typeof ListboxRoot>>('command-root')
+const commandRoot = useTemplateRef<ComponentExposed<typeof ListboxRoot<string>> & { $el: HTMLElement }>('command-root')
 const { message } = useLocalized()
 
 watch(() => props.items, () => {
@@ -30,7 +31,8 @@ watch(() => props.items, () => {
 watch([selectedIndex, () => props.items], async () => {
   await nextTick()
   const root = commandRoot.value
-  const item = root?.$el.querySelectorAll('[data-slot="command-item"]')[selectedIndex.value]
+  const element = root?.$el
+  const item = element?.querySelectorAll<HTMLElement>('[data-slot="command-item"]')[selectedIndex.value]
   if (root && item) {
     // Changing the value invokes Reka's focus navigation. Suggestions keep focus in ProseMirror.
     root.highlightedElement = item

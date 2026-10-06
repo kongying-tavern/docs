@@ -1,5 +1,6 @@
 import type { SuggestionOptions } from '@tiptap/suggestion'
 import type { ForumEditorSuggestionItem } from './forumSuggestionRenderer'
+import type ForumAPI from '~/forum/api/types'
 import { mergeAttributes } from '@tiptap/core'
 import Mention from '@tiptap/extension-mention'
 import { PluginKey } from '@tiptap/pm/state'
@@ -11,10 +12,17 @@ const officialMember = [...new Map(
   [...feedbackRepoMember.data, ...TeamMember.data]
     .map(member => [member.login.toLocaleLowerCase(), member]),
 ).values()]
-const mentionPluginKey = new PluginKey('forumMention')
+export const mentionPluginKey = new PluginKey('forumMention')
 
-export function createMentionNode(render?: SuggestionOptions<ForumEditorSuggestionItem>['render']) {
-  return Mention.configure({
+export function createMentionNode(render?: SuggestionOptions<ForumEditorSuggestionItem>['render'], getUsers: () => readonly ForumAPI.User[] = () => officialMember) {
+  return Mention.extend({
+    addAttributes() {
+      return {
+        ...this.parent?.(),
+        replyTarget: { default: false, rendered: false, parseHTML: () => false },
+      }
+    },
+  }).configure({
     HTMLAttributes: { class: 'mention' },
     renderHTML({ options, node }) {
       const displayName = node.attrs.label || node.attrs.id || 'Unknown'
@@ -38,7 +46,7 @@ export function createMentionNode(render?: SuggestionOptions<ForumEditorSuggesti
       pluginKey: mentionPluginKey,
       items: ({ query }) => {
         const normalized = query.toLocaleLowerCase()
-        return officialMember
+        return getUsers()
           .filter(user => user.username.toLocaleLowerCase().includes(normalized)
             || user.login.toLocaleLowerCase().includes(normalized))
           .slice(0, 6)

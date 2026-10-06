@@ -13,12 +13,14 @@ import { shortenForumAutoLink } from './forumLinkPolicy'
 export function createForumContentExtensions(options: {
   openLinks?: boolean
   getTopics?: () => readonly ForumAPI.Topic[]
+  getMentionUsers?: () => readonly ForumAPI.User[]
   suggestionRender?: SuggestionOptions<ForumEditorSuggestionItem>['render']
+  mentionSuggestionRender?: SuggestionOptions<ForumEditorSuggestionItem>['render']
 } = {}): Extensions {
   return [
     StarterKit.configure({ link: false }),
     EmojiNode,
-    options.suggestionRender ? createMentionNode(options.suggestionRender) : MentionNode,
+    options.mentionSuggestionRender || options.suggestionRender ? createMentionNode(options.mentionSuggestionRender ?? options.suggestionRender, options.getMentionUsers) : MentionNode,
     createTopicReferenceNode(options.getTopics ?? (() => []), options.suggestionRender),
     createLinkExtension({ openOnClick: options.openLinks }),
   ]

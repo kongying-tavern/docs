@@ -1,6 +1,7 @@
 import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '~/forum/api/types'
-import { computed, ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, onScopeDispose, ref } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { uploadImg } from '~/apis/interknot.site/upload'
 import { GiteeAPIError } from '~/forum/api/gitee'
@@ -27,6 +28,7 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
   const content = ref<JSONContent>(emptyDoc())
   const plainText = ref('')
   const submitPending = ref(false)
+  const submitError = ref('')
 
   const forumMutations = useForumCommentMutations()
   const personal = useForumPersonalState()
@@ -36,8 +38,16 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
     upload: uploadImg,
     prepare: calculateThumbHashForFile,
   })
+  onScopeDispose(queue.reset)
   const loading = computed(() => submitPending.value || forumMutations.creatingComment.value)
   const busy = computed(() => loading.value || queue.isBusy.value)
+  // The composer owns drafts across desktop, mobile, and closed editor panels.
+  useEventListener('beforeunload', (event) => {
+    if (plainText.value.trim() || queue.attachments.value.length || busy.value) {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+  })
   function emptyDoc(): JSONContent {
     return { type: 'doc', content: [{ type: 'paragraph' }] }
   }
@@ -56,6 +66,7 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
     }
 
     submitPending.value = true
+    submitError.value = ''
     try {
       const result = await submitCommentTransaction({
         content: content.value,
@@ -93,10 +104,12 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
 
       if (!result.ok) {
         if (result.stage === 'upload') {
+          submitError.value = message.value.forum.publish.feedbackForm.uploadFailed
           for (const error of result.errors)
             toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm), { report: false })
         }
         else {
+          submitError.value = result.error.message
           showPageAlert(message.value.forum.comment.commentFail, {
             id: 'comment-submit',
             scene: 'cm',
@@ -130,5 +143,5 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
     }
   }
 
-  return { userInfo, userAuth, content, plainText, loading, busy, queue, submit, addFiles, retryAttachment, maxTextLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH }
+  return { userInfo, userAuth, content, plainText, loading, busy, queue, submitError, submit, addFiles, retryAttachment, maxTextLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH }
 }

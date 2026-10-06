@@ -6,7 +6,7 @@ import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
-import ForumRichTextarea from '../form/ForumRichTextarea.vue'
+import { ForumPreloadedRichTextarea as ForumRichTextarea } from '../utils/forumComponentPreload'
 
 const props = defineProps<{
   avatar?: string
@@ -23,6 +23,7 @@ const props = defineProps<{
   replyTarget: string
   label: string
 }>()
+
 const emit = defineEmits<{
   'input': [value: string]
   'files-selected': [files: File[]]
@@ -31,6 +32,7 @@ const emit = defineEmits<{
   'submit': []
   'login': []
 }>()
+
 const content = defineModel<JSONContent>({ required: true })
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()

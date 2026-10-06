@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { computed } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { collectMentionUsers } from '~/forum/services/commentComposer'
+import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { useCommentAreaState } from './composables/useCommentAreaState'
 import ForumCommentInputBox from './ForumCommentInputBox.vue'
 import ForumCommentPanel from './ForumCommentPanel.vue'
@@ -47,6 +50,25 @@ const {
   get presentation() { return presentation.value },
 })
 const { topicHref } = useForumRoute()
+const mobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
+const input = useTemplateRef<InstanceType<typeof ForumCommentInputBox>>('input')
+const replyUser = ref<ForumAPI.User>()
+const editorOpen = ref(false)
+const mentionUsers = computed(() => collectMentionUsers(replyUser.value ? [replyUser.value] : [], props.topic ? [props.topic.user] : [], renderComments.value.map(comment => comment.author)))
+function reply(id: string | number): void {
+  if (!mobile.value) {
+    toggleCommentReply(id)
+    return
+  }
+  if (input.value?.pending)
+    return
+  replyUser.value = renderComments.value.find(comment => String(comment.id) === String(id))?.author
+  input.value?.open()
+}
+function submitted(): void {
+  replyUser.value = undefined
+  handleCommentSubmit()
+}
 function login(): void {
   location.hash = 'login-alert'
 }
@@ -57,7 +79,8 @@ function login(): void {
     :presentation="presentation"
     :comments="renderComments"
     :comment-pages="commentPages"
-    :reply-id="replyCommentID"
+    :reply-id="mobile ? null : replyCommentID"
+    :editor-open="editorOpen"
     :repo="repo"
     :topic-id="topicId"
     :topic-author-id="topicAuthorId"
@@ -75,13 +98,13 @@ function login(): void {
     :target-missing="targetCommentState === 'missing'"
     :detail-href="topicHref(topicId, 'reply')"
     :entry-animation="entryAnimation"
-    @reply="toggleCommentReply"
+    @reply="reply"
     @load-more="loadMoreComment"
     @retry="retry"
     @login="login"
   >
     <template #input>
-      <ForumCommentInputBox :repo="repo" :autofocus="autofocusInput" :placeholder="message.forum.comment.placeholder" :topic-id="topicId" :topic="topic" :entry-animation="entryAnimation" @comment:submit="handleCommentSubmit" />
+      <ForumCommentInputBox ref="input" :repo="repo" :presentation="presentation" :reply-user="replyUser" :mention-users="mentionUsers" :autofocus="autofocusInput" :placeholder="message.forum.comment.placeholder" :topic-id="topicId" :topic="topic" :entry-animation="entryAnimation" @editor-open="editorOpen = $event" @cancel-reply="replyUser = undefined" @comment:submit="submitted" />
     </template>
     <template #reply="{ comment }">
       <ForumCommentInputBox
