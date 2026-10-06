@@ -1,7 +1,7 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'node:test'
+import { createImageUploadCache } from '../../src/apis/interknot.site/imageUploadCache'
 import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
 import { serializeUploadedAttachments, validateImageBatch } from '../../src/forum/services/form/imageAttachment'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/forum/services/forumConfig'
@@ -47,6 +47,52 @@ function queueOptions(upload: (selected: File) => Promise<ForumAPI.Image> = sele
   }
 }
 
+test('restored uploaded images retain metadata and join pending uploads without uploading again', async () => {
+  const pending = deferred<ForumAPI.Image>()
+  const calls: string[] = []
+  const setup = queueOptions(async (selected) => {
+    calls.push(selected.name)
+    return pending.promise
+  })
+  const queue = useImageAttachmentQueue(setup.options)
+  const image = { src: 'https://assets.example/saved.png', alt: 'saved.png', thumbHash: 'hash', width: 120, height: 80 }
+  queue.restore([image])
+  assert.deepEqual(queue.serializedAttachments.value, [image])
+  assert.equal(queue.attachments.value[0].status, 'uploaded')
+  await queue.addFiles([file('pending.png')])
+  let completed = false
+  const saving = queue.settleUploads().then((result) => {
+    completed = true
+    return result
+  })
+  await new Promise(resolve => setTimeout(resolve, 0))
+  assert.equal(completed, false)
+  assert.deepEqual(calls, ['pending.png'])
+  pending.resolve(uploaded('pending.png'))
+  assert.equal((await saving).ok, true)
+  assert.deepEqual(queue.serializedAttachments.value, [image, { src: 'https://assets.example/pending.png', alt: 'pending.png' }])
+  queue.remove(queue.attachments.value[0].id)
+  assert.deepEqual(setup.revoked, [])
+  queue.reset()
+  assert.deepEqual(setup.revoked, ['blob:pending.png'])
+})
+
+test('settlement also waits for images added while autosave is awaiting an earlier upload', async () => {
+  const first = deferred<ForumAPI.Image>()
+  const second = deferred<ForumAPI.Image>()
+  const queue = useImageAttachmentQueue(queueOptions(selected => selected.name === 'first.png' ? first.promise : second.promise).options)
+  await queue.addFiles([file('first.png')])
+  let finished = false
+  const saving = queue.settleUploads().then(() => finished = true)
+  await queue.addFiles([file('second.png')])
+  first.resolve(uploaded('first.png'))
+  await new Promise(resolve => setTimeout(resolve, 0))
+  assert.equal(finished, false)
+  second.resolve(uploaded('second.png'))
+  await saving
+  assert.deepEqual(queue.serializedAttachments.value.map(image => image.alt), ['first.png', 'second.png'])
+})
+
 test('uses one four-file, 6 MiB, five-format frontend policy', () => {
   assert.equal(IMAGE_UPLOAD_POLICY.MAX_COUNT, 4)
   assert.equal(IMAGE_UPLOAD_POLICY.MAX_BYTES, 6 * 1024 * 1024)
@@ -74,7 +120,7 @@ test('accepts exactly four files and rejects the fifth before insertion', async 
   assert.equal(fifth.ok, false)
   assert.equal(fifth.ok ? '' : fifth.errors[0]?.code, 'count-exceeded')
   assert.equal(queue.attachments.value.length, 4)
-  assert.equal(queue.attachments.value.some(item => item.file.name === '5.png'), false)
+  assert.equal(queue.attachments.value.some(item => item.file?.name === '5.png'), false)
 })
 
 test('rejects invalid type and size before either can enter uploading', async () => {
@@ -88,6 +134,15 @@ test('rejects invalid type and size before either can enter uploading', async ()
   assert.deepEqual(invalid.ok ? [] : invalid.errors.map(error => error.code), ['invalid-type', 'size-exceeded'])
   assert.deepEqual(queue.attachments.value, [])
   assert.equal(queue.isBusy.value, false)
+})
+
+test('accepts an image at the exact byte limit', async () => {
+  const queue = useImageAttachmentQueue(queueOptions().options)
+  const result = await queue.addFiles([file('boundary.png', 'image/png', IMAGE_UPLOAD_POLICY.MAX_BYTES)])
+  assert.equal(result.ok, true)
+  assert.equal((await queue.settleUploads()).ok, true)
+  assert.equal(queue.serializedAttachments.value[0]?.alt, 'boundary.png')
+  queue.reset()
 })
 
 test('optional thumbhash failure still uploads the selected file immediately', async () => {
@@ -274,4 +329,26 @@ test('reset revokes remaining previews and replaces the queue array', async () =
   assert.notEqual(queue.attachments.value, previous)
   assert.deepEqual(queue.attachments.value, [])
   assert.deepEqual(setup.revoked, ['blob:draft.png'])
+})
+
+test('separate queues reuse matching original files while preserving each attachment name and order', async () => {
+  let uploads = 0
+  const upload = createImageUploadCache(async (selected) => {
+    uploads++
+    return uploaded(selected.name)
+  })
+  const firstQueue = useImageAttachmentQueue({ ...queueOptions().options, upload })
+  await firstQueue.addFiles([file('first.png'), file('renamed.png')])
+  await firstQueue.settleUploads()
+  assert.equal(uploads, 1)
+  assert.deepEqual(firstQueue.serializedAttachments.value.map(image => image.alt), ['first.png', 'renamed.png'])
+  assert.equal(firstQueue.serializedAttachments.value[0].src, firstQueue.serializedAttachments.value[1].src)
+
+  const otherQueue = useImageAttachmentQueue({ ...queueOptions().options, upload })
+  await otherQueue.addFiles([file('selected-in-another-composer.png')])
+  await otherQueue.settleUploads()
+  assert.equal(uploads, 1)
+  assert.equal(otherQueue.serializedAttachments.value[0].src, firstQueue.serializedAttachments.value[0].src)
+  firstQueue.reset()
+  otherQueue.reset()
 })

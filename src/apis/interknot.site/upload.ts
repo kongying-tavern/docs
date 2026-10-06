@@ -1,6 +1,7 @@
 import type { INTER_KNOT } from './api'
 import type ForumAPI from '~/forum/api/types'
 import { fetcher } from '.'
+import { createImageUploadCache } from './imageUploadCache'
 import { normalizeImage } from './utils'
 
 export type ImageUploadRequest = (
@@ -12,24 +13,31 @@ export type ImageUploadRequest = (
   },
 ) => { json: () => Promise<INTER_KNOT.ImageResponse> }
 
+const defaultRequest: ImageUploadRequest = (endpoint, options) => fetcher.post(endpoint, options)
+const uploaders = new WeakMap<ImageUploadRequest, ReturnType<typeof createImageUploadCache>>()
+
 export async function uploadImg(
   rawFile: File,
   options: {
     signal?: AbortSignal
+    originalFile?: File
     request?: ImageUploadRequest
   } = {},
 ): Promise<ForumAPI.Image> {
-  const formData = new FormData()
-  formData.append('file', rawFile)
-
-  const request: ImageUploadRequest = options.request
-    ?? ((endpoint, requestOptions) => fetcher.post(endpoint, requestOptions))
-  const data = await request('images/upload', {
-    body: formData,
-    retry: 0,
-    ...(options.signal ? { signal: options.signal } : {}),
-  })
-    .json()
-
-  return normalizeImage(data)
+  const request = options.request ?? defaultRequest
+  let uploader = uploaders.get(request)
+  if (!uploader) {
+    uploader = createImageUploadCache(async (file, { signal }) => {
+      const formData = new FormData()
+      formData.append('file', file)
+      const data = await request('images/upload', {
+        body: formData,
+        retry: 0,
+        signal,
+      }).json()
+      return normalizeImage(data)
+    })
+    uploaders.set(request, uploader)
+  }
+  return uploader(rawFile, options)
 }

@@ -14,7 +14,7 @@ import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 
 export type ImageUploadFunction = (
   file: File,
-  options?: { signal?: AbortSignal },
+  options?: { signal?: AbortSignal, originalFile?: File },
 ) => Promise<ForumAPI.Image>
 
 export interface ImageAttachmentQueueOptions {
@@ -45,6 +45,7 @@ export function useImageAttachmentQueue(
   retry: (id: string) => Promise<UploadImageAttachmentsResult>
   remove: (id: string) => void
   reset: () => void
+  restore: (images: ForumAPI.ImageInfo[]) => void
   serializedAttachments: ComputedRef<ForumAPI.ImageInfo[]>
 } {
   const upload = options.upload
@@ -89,7 +90,7 @@ export function useImageAttachmentQueue(
 
   async function prepareAndUpload(id: string): Promise<void> {
     const initial = attachments.value.find(attachment => attachment.id === id)
-    if (!initial || !['processing', 'queued'].includes(initial.status))
+    if (!initial?.file || !['processing', 'queued'].includes(initial.status))
       return
 
     let uploadFile = preparedFiles.get(id)
@@ -127,7 +128,7 @@ export function useImageAttachmentQueue(
     item.error = undefined
 
     try {
-      const result = await upload(uploadFile, { signal: controller.signal })
+      const result = await upload(uploadFile, { signal: controller.signal, originalFile: initial.file })
       const current = attachments.value.find(attachment => attachment.id === id)
       if (!current)
         return
@@ -143,7 +144,7 @@ export function useImageAttachmentQueue(
       current.status = 'failed'
       current.error = {
         code: 'upload-failed',
-        fileName: current.file.name,
+        fileName: current.file?.name || '',
       }
     }
     finally {
@@ -199,7 +200,9 @@ export function useImageAttachmentQueue(
       if (item.status === 'queued' || item.status === 'processing')
         startTask(item.id)
     }
-    await Promise.all([...tasks.values()])
+    // Files can be added while autosave is waiting for an earlier upload.
+    while (tasks.size)
+      await Promise.all([...tasks.values()])
     const errors = attachments.value.flatMap(item => item.status === 'failed' && item.error ? [item.error] : [])
     return errors.length ? { ok: false, errors } : { ok: true }
   }
@@ -225,18 +228,31 @@ export function useImageAttachmentQueue(
     controllers.get(id)?.abort()
     controllers.delete(id)
     preparedFiles.delete(id)
-    revokePreviewUrl(removed.previewUrl)
+    if (removed.file)
+      revokePreviewUrl(removed.previewUrl)
   }
 
   function reset(): void {
     for (const item of attachments.value) {
       controllers.get(item.id)?.abort()
-      revokePreviewUrl(item.previewUrl)
+      if (item.file)
+        revokePreviewUrl(item.previewUrl)
     }
     controllers.clear()
     preparedFiles.clear()
     attachments.value = []
     nextSelectionIndex = 0
+  }
+
+  function restore(images: ForumAPI.ImageInfo[]): void {
+    reset()
+    attachments.value = images.map(image => ({
+      id: createId(),
+      selectionIndex: nextSelectionIndex++,
+      previewUrl: image.src,
+      status: 'uploaded',
+      savedImage: { ...image },
+    }))
   }
 
   return {
@@ -250,6 +266,7 @@ export function useImageAttachmentQueue(
     retry,
     remove,
     reset,
+    restore,
     serializedAttachments,
   }
 }

@@ -1,6 +1,18 @@
 import type ForumAPI from '~/forum/api/types'
-import type { ThumbHashCalculated } from '~/forum/composables/view/calculateThumbHashForFile'
 import { IMAGE_UPLOAD_POLICY } from '../forumConfig'
+
+export interface ThumbHashCalculated {
+  /** The image data URL used as an HTML src attribute. */
+  dataUrl: string
+  /** The image base64 used as a data-thumbhash attribute. */
+  dataBase64: string
+  /** Resized dimensions, less than 100px for thumbhash. */
+  width: number
+  height: number
+  /** Original image dimensions. */
+  originalWidth: number
+  originalHeight: number
+}
 
 export type ImageAttachmentStatus
   = | 'queued'
@@ -25,7 +37,8 @@ export interface ImageAttachmentError {
 export interface ImageAttachment {
   id: string
   selectionIndex: number
-  file: File
+  file?: File
+  savedImage?: ForumAPI.ImageInfo
   previewUrl: string
   status: ImageAttachmentStatus
   thumbHash?: ThumbHashCalculated
@@ -87,17 +100,19 @@ export function validateImageBatch(
 
 export function serializeUploadedAttachments(attachments: ImageAttachment[]): ForumAPI.ImageInfo[] {
   return attachments
-    .filter(attachment => attachment.status === 'uploaded' && attachment.remote)
+    .filter(attachment => attachment.status === 'uploaded' && (attachment.remote || attachment.savedImage))
     .toSorted((left, right) => left.selectionIndex - right.selectionIndex)
-    .map(attachment => ({
-      src: attachment.remote!.link,
-      alt: attachment.file.name,
-      ...(attachment.thumbHash
-        ? {
-            thumbHash: attachment.thumbHash.dataBase64,
-            width: attachment.thumbHash.originalWidth,
-            height: attachment.thumbHash.originalHeight,
-          }
-        : {}),
-    }))
+    .map(attachment => attachment.savedImage
+      ? { ...attachment.savedImage }
+      : ({
+          src: attachment.remote!.link,
+          alt: attachment.file?.name || '',
+          ...(attachment.thumbHash
+            ? {
+                thumbHash: attachment.thumbHash.dataBase64,
+                width: attachment.thumbHash.originalWidth,
+                height: attachment.thumbHash.originalHeight,
+              }
+            : {}),
+        }))
 }

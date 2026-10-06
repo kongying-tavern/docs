@@ -1,36 +1,8 @@
+import type { ThumbHashCalculated } from '~/forum/services/form/imageAttachment'
 import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
 import { binaryToBase64 } from '@/utils'
 
-export interface ThumbHashCalculated {
-  /**
-   * The thumbhash data URL of the image. Will be used to render as
-   * `src` attribute in the HTML.
-   */
-  dataUrl: string
-  /**
-   * The thumbhash data base64 of the image. Will be used to render as
-   * `data-thumbhash` attribute in the HTML.
-   */
-  dataBase64: string
-  /**
-   * The resized width of the image (thumbhash requires the image to be
-   * resized to less than 100px in width or height).
-   */
-  width: number
-  /**
-   * The original width of the image.
-   */
-  originalWidth: number
-  /**
-   * The resized height of the image (thumbhash requires the image to
-   * be resized to less than 100px in width or height).
-   */
-  height: number
-  /**
-   * The original height of the image.
-   */
-  originalHeight: number
-}
+export type { ThumbHashCalculated } from '~/forum/services/form/imageAttachment'
 
 /**
  * Calculate the thumbhash data for the image.

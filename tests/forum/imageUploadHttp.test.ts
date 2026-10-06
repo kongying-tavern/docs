@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- use Node's built-in runner for this contract */
 import type { INTER_KNOT } from '../../src/apis/interknot.site/api'
 import type { ImageUploadRequest } from '../../src/apis/interknot.site/upload'
 import { strict as assert } from 'node:assert'
@@ -48,4 +47,23 @@ test('an explicit user retry is a separate visible attempt', async () => {
   assert.equal(posts, 1)
   await uploadImg(selected, { request })
   assert.equal(posts, 2)
+})
+
+test('the shared HTTP entry reuses identical original files across separately selected attachments', async () => {
+  let posts = 0
+  const request: ImageUploadRequest = (_endpoint, options) => {
+    posts++
+    assert.equal(options.retry, 0)
+    assert.equal(options.body.get('file') instanceof File, true)
+    return { json: async () => response }
+  }
+  const original = new File(['original bytes'], 'source.png', { type: 'image/png' })
+  const compressed = new File(['compressed bytes'], 'source.png', { type: 'image/png' })
+  const first = await uploadImg(compressed, { request, originalFile: original })
+  const second = await uploadImg(compressed, {
+    request,
+    originalFile: new File(['original bytes'], 'renamed.png', { type: 'image/png' }),
+  })
+  assert.deepEqual(second, first)
+  assert.equal(posts, 1)
 })
