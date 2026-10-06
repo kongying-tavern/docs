@@ -25,7 +25,7 @@ function alignToActionButton(): void {
   if (!toastEl || !actionEl || !button)
     return
 
-  function measureDelta(): number {
+  const measureDelta = (): number => {
     const actionRect = actionEl.getBoundingClientRect()
     const buttonRect = button.getBoundingClientRect()
     return (actionRect.top + actionRect.height / 2) - (buttonRect.top + buttonRect.height / 2)

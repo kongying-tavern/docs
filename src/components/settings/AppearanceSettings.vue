@@ -122,7 +122,7 @@ function setUiFontSize(value: unknown): void {
       <SettingsSelect
         :model-value="motionPreference"
         :options="motionOptions"
-        :aria-label="message.settings.appearance.motion"
+        v-bind="{ ariaLabel: message.settings.appearance.motion }"
         @update:model-value="setMotionPreference"
       />
     </div>

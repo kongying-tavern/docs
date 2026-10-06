@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
       <SettingsSelect
         :model-value="toastPosition"
         :options="positionOptions"
-        :aria-label="message.settings.notifications.position"
+        v-bind="{ ariaLabel: message.settings.notifications.position }"
         @update:model-value="setToastPosition"
       />
     </div>

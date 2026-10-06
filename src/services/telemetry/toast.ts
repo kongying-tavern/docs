@@ -3,8 +3,11 @@ import type { ReportResult, Scene } from './capture'
 import { isVNode, markRaw } from 'vue'
 import { toast as sonner } from 'vue-sonner'
 import TelemetryToastDescription from '~/components/telemetry/TelemetryToastDescription.vue'
+import { DESKTOP_UI_MEDIA_QUERY } from '../sitePreferences'
 import { reportError } from './capture'
 import { describeError, formatTraceId } from './describeError'
+import { resolveToastTiming } from './toastPresentation'
+import { createToastQueue } from './toastQueue'
 
 type SonnerMessage = Parameters<typeof sonner.error>[0]
 type SonnerOptions = Parameters<typeof sonner.error>[1]
@@ -23,6 +26,63 @@ export type TelemetryToastOptions = ToastOptionsBase & {
 }
 
 type ReportableMethod = 'error' | 'info' | 'warning'
+type DisplayMethod = ReportableMethod | 'success' | 'message' | 'loading'
+
+const mobileQueue = createToastQueue()
+let queueId = 0
+let viewport: MediaQueryList | undefined
+
+function display(method: DisplayMethod, message: SonnerMessage, options?: ToastOptionsBase): string | number {
+  if (typeof window === 'undefined')
+    return sonner[method](message, options)
+  if (!viewport) {
+    viewport = window.matchMedia(DESKTOP_UI_MEDIA_QUERY)
+    viewport.addEventListener('change', (event) => {
+      if (event.matches)
+        mobileQueue.flush()
+    })
+  }
+  if (viewport.matches)
+    return sonner[method](message, options)
+
+  const id = options?.id ?? `mobile-toast-${++queueId}`
+  const finish = () => mobileQueue.finish(id)
+  const action = (value: ToastOptionsBase['action'], cancel = false): ToastOptionsBase['action'] => {
+    if (!value || typeof value !== 'object' || !('label' in value))
+      return value
+    return {
+      ...value,
+      onClick(event: MouseEvent) {
+        value.onClick?.(event)
+        if (cancel || !event.defaultPrevented)
+          queueMicrotask(finish)
+      },
+    }
+  }
+  mobileQueue.enqueue(id, () => sonner[method](message, {
+    ...options,
+    id,
+    action: action(options?.action),
+    cancel: action(options?.cancel, true),
+    onDismiss(notification) {
+      try {
+        options?.onDismiss?.(notification)
+      }
+      finally {
+        finish()
+      }
+    },
+    onAutoClose(notification) {
+      try {
+        options?.onAutoClose?.(notification)
+      }
+      finally {
+        finish()
+      }
+    },
+  }))
+  return id
+}
 
 function shouldReport(method: ReportableMethod, options?: TelemetryToastOptions): boolean {
   if (options?.report !== undefined)
@@ -79,7 +139,14 @@ function emit(
   const reported = shouldReport(method, options)
     ? reportError({ scene: options?.scene ?? (error !== undefined ? 'api' : 'ui'), error })
     : null
-  return sonner[method](message, withMeta(options, reported, error, message))
+  return display(method, message, withTiming(method, withMeta(options, reported, error, message)))
+}
+
+function withTiming(kind: string, options?: ToastOptionsBase): ToastOptionsBase {
+  const mobile = typeof window !== 'undefined' && !window.matchMedia(DESKTOP_UI_MEDIA_QUERY).matches
+  if (!mobile)
+    return options ?? {}
+  return { ...options, ...resolveToastTiming(mobile, kind, options) }
 }
 
 export const toast = {
@@ -87,4 +154,15 @@ export const toast = {
   error: (message: SonnerMessage, options?: TelemetryToastOptions) => emit('error', message, options),
   info: (message: SonnerMessage, options?: TelemetryToastOptions) => emit('info', message, options),
   warning: (message: SonnerMessage, options?: TelemetryToastOptions) => emit('warning', message, options),
+  success: (message: SonnerMessage, options?: ToastOptionsBase) => display('success', message, withTiming('success', options)),
+  message: (message: SonnerMessage, options?: ToastOptionsBase) => display('message', message, withTiming('default', options)),
+  loading: (message: SonnerMessage, options?: ToastOptionsBase) => display('loading', message, withTiming('loading', options)),
+  dismiss: (id?: string | number) => {
+    const result = sonner.dismiss(id)
+    if (id === undefined)
+      mobileQueue.clear()
+    else
+      mobileQueue.finish(id)
+    return result
+  },
 }

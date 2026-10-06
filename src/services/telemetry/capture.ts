@@ -50,7 +50,7 @@ function report(errorId: string, code: string): ReportResult {
  * 上报关闭或 SSR 时返回 null,调用方应据此隐藏相关 UI。
  */
 export function reportError(options?: { scene?: Scene, error?: unknown }): ReportResult | null {
-  if (import.meta.env.SSR || !reportingEnabled.value)
+  if (typeof window === 'undefined' || import.meta.env.SSR || !reportingEnabled.value)
     return null
 
   const { error } = options ?? {}

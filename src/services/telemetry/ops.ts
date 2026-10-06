@@ -12,7 +12,8 @@ export const OpsEvents = {
   logout: 'auth_logout',
 } as const
 
-export type OpsEvent = (typeof OpsEvents)[keyof typeof OpsEvents]
+export type FeedbackFormEvent = `forum_form_${'legacy' | 'compact'}_${'open' | 'attempt' | 'success' | 'failed' | 'validation'}`
+export type OpsEvent = (typeof OpsEvents)[keyof typeof OpsEvents] | FeedbackFormEvent
 
 export function trackOp(event: OpsEvent): void {
   if (import.meta.env.SSR || !reportingEnabled.value)

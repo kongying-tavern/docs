@@ -29,7 +29,12 @@ const minimumToastDuration = TOAST_DURATION_DEFINITIONS[0].value
 export const useSitePreferences = createGlobalState(() => {
   const storedTheme = useLocalStorage<ThemePreference>(THEME_STORAGE_KEY, 'auto')
   const storedToastPosition = useLocalStorage<ToastPosition>(TOAST_POSITION_STORAGE_KEY, 'bottom-right')
-  const storedToastDuration = useLocalStorage<number | 'persistent'>(TOAST_DURATION_STORAGE_KEY, DEFAULT_TOAST_DURATION)
+  const storedToastDuration = useLocalStorage<number | 'persistent'>(TOAST_DURATION_STORAGE_KEY, DEFAULT_TOAST_DURATION, {
+    serializer: {
+      read: value => value === 'persistent' ? 'persistent' : Number(value),
+      write: value => String(value),
+    },
+  })
   const storedUsePointerCursor = useLocalStorage(POINTER_CURSOR_STORAGE_KEY, false)
   const storedMotion = useLocalStorage<MotionPreference>(MOTION_STORAGE_KEY, 'system')
   const storedUiFontSize = useLocalStorage(UI_FONT_SIZE_STORAGE_KEY, DEFAULT_UI_FONT_SIZE)

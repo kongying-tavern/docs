@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import { computed, isVNode } from 'vue'
+import { Button } from '@/components/ui/button'
 import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useToastDiagnostics } from '~/composables/useToastDiagnostics'
 import { formatMessage } from '~/utils/formatMessage'
 
 type DescriptionContent = (() => string | Component) | string | Component
@@ -19,6 +22,8 @@ const props = defineProps<{
 }>()
 
 const { message } = useLocalized()
+const { desktopUi } = useSitePreferences()
+const { openDiagnostics } = useToastDiagnostics()
 
 function isComponent(value: unknown): value is Component {
   return typeof value === 'function'
@@ -47,11 +52,24 @@ const copyText = computed(() => [
 </script>
 
 <template>
-  <div class="flex flex-col gap-1 min-w-0" data-clarity-mask="true">
-    <span v-if="typeof content === 'string'" class="whitespace-pre-wrap break-all">{{ content }}</span>
-    <component :is="content" v-else-if="isComponent(content)" v-bind="contentProps ?? {}" />
-    <span v-if="detail" class="telemetry-detail">{{ detail }}</span>
-    <div v-if="detail || traceSuffix" class="telemetry-trace">
+  <div class="telemetry-description flex flex-col gap-1 min-w-0" data-clarity-mask="true">
+    <div v-if="content" class="telemetry-body">
+      <span v-if="typeof content === 'string'" :class="desktopUi ? 'whitespace-pre-wrap break-all' : 'telemetry-content'">{{ content }}</span>
+      <component :is="content" v-else-if="isComponent(content)" v-bind="contentProps ?? {}" />
+    </div>
+    <Button
+      v-if="!desktopUi && (detail || traceSuffix)"
+      type="button"
+      variant="ghost"
+      size="sm"
+      class="telemetry-details-button"
+      :aria-label="message.forum.telemetry.viewErrorDetails"
+      @click.stop="openDiagnostics({ title: title ?? message.forum.telemetry.errorDetails, content: copyText }, $event.currentTarget as HTMLElement)"
+    >
+      {{ message.forum.telemetry.details }}
+    </Button>
+    <span v-if="desktopUi && detail" class="telemetry-detail">{{ detail }}</span>
+    <div v-if="desktopUi && (detail || traceSuffix)" class="telemetry-trace">
       <code v-if="traceSuffix" class="telemetry-trace-text">{{ traceSuffix }}</code>
       <span v-else class="telemetry-trace-gap" aria-hidden="true" />
       <ClipboardCopyButton
@@ -66,6 +84,29 @@ const copyText = computed(() => [
 </template>
 
 <style scoped>
+.telemetry-body {
+  display: contents;
+}
+
+.telemetry-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.telemetry-details-button {
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 6px;
+  color: var(--vp-c-text-2);
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.telemetry-details-button:focus-visible {
+  outline: 2px solid oklch(var(--ring));
+  outline-offset: 2px;
+}
+
 .telemetry-detail {
   font-size: calc(12px * var(--site-ui-scale));
   line-height: calc(18px * var(--site-ui-scale));
