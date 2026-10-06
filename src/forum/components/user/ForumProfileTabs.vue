@@ -10,7 +10,7 @@ const { tabs, ariaLabel, layout = 'fill' } = defineProps<{
   layout?: 'fill' | 'inline'
 }>()
 
-const activeTab = defineModel<'all' | 'closed'>('activeTab', { default: 'all' })
+const activeTab = defineModel<'all' | 'closed' | 'archived'>('activeTab', { default: 'all' })
 
 const groupRef = ref<HTMLElement | null>(null)
 const indicator = ref({ x: 0, width: 0 })
@@ -32,7 +32,7 @@ onMounted(() => {
   void document.fonts?.ready.then(syncIndicator)
 })
 
-watch(activeTab, syncIndicator)
+watch([activeTab, () => tabs], syncIndicator, { flush: 'post' })
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
@@ -46,20 +46,20 @@ onBeforeUnmount(() => {
     role="group"
     :aria-label="ariaLabel"
     class="profile-tabs gap-1 min-w-0 relative"
-    :class="layout === 'fill' ? 'grid h-12 grid-cols-2' : 'flex h-12 items-center'"
+    :class="layout === 'fill' ? 'grid h-12 grid-flow-col auto-cols-fr' : 'flex h-12 items-center'"
   >
     <Button
       v-for="item in tabs"
       :key="item.id"
       :data-tab-id="item.id"
       variant="ghost"
-      class="rounded-md whitespace-nowrap self-center relative hover:c-[--vp-c-brand]"
-      :class="layout === 'fill' ? 'w-full' : 'shrink-0'"
+      class="rounded-md min-w-0 whitespace-nowrap self-center relative hover:c-[--vp-c-brand]"
+      :class="[layout === 'fill' ? 'w-full' : 'shrink-0', tabs.length > 2 && 'max-sm:px-2', layout === 'inline' && 'max-sm:text-xs']"
       :aria-pressed="activeTab === item.id"
       @click="activeTab = item.id"
     >
       <span class="flex items-center">
-        <span class="mr-2 inline-block" :class="item.icon" aria-hidden="true" />
+        <span class="mr-2 inline-block" :class="[item.icon, tabs.length > 2 && 'max-sm:hidden']" aria-hidden="true" />
         {{ item.label }}
       </span>
     </Button>

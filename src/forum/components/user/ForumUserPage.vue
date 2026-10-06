@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useArchivedFeedbackAccess } from '~/forum/composables/auth/useArchivedFeedbackAccess'
 import { useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { resolveForumListScope } from '~/forum/services/forumListSkeleton'
@@ -17,14 +18,18 @@ const { route, list, navigateFilter, navigateType, navigateSort } = useForumRout
 const { message } = useLocalized()
 
 const username = computed(() => route.value?.name === 'user' ? route.value.username : '')
-const feedbackFilter = computed(() => list.value?.filter === 'closed' ? 'closed' : 'all')
-const activeTab = computed<'all' | 'closed'>({
+const canViewArchived = useArchivedFeedbackAccess(username)
+const feedbackFilter = computed(() => {
+  const filter = list.value?.filter
+  return filter === 'closed' || (filter === 'archived' && canViewArchived.value) ? filter : 'all'
+})
+const activeTab = computed<'all' | 'closed' | 'archived'>({
   get: () => feedbackFilter.value,
   set: filter => void navigateFilter(filter),
 })
-// Existing links to former profile filters fall back to the two visible tabs.
-watch(() => list.value?.filter, (filter) => {
-  if (route.value?.name === 'user' && filter && filter !== 'all' && filter !== 'closed')
+// Unsupported or no longer authorized tabs fall back to the default list.
+watch([() => list.value?.filter, canViewArchived], ([filter]) => {
+  if (route.value?.name === 'user' && filter && filter !== feedbackFilter.value)
     void navigateFilter('all')
 }, { immediate: true })
 
@@ -36,7 +41,7 @@ const topics = useForumTopicsQuery(computed(() => ({
   q: search.value.text,
   tags: search.value.tags,
   statuses: search.value.states,
-  creator: search.value.author ?? username.value,
+  creator: feedbackFilter.value === 'archived' ? username.value : search.value.author ?? username.value,
 })), true, computed(() => resolveForumListScope(route.value)))
 // 主页头部数量：该用户的全部反馈（不分类型/状态），不跟随下方筛选
 const allTopicsCount = useForumTopicsQuery(computed(() => ({

@@ -4,8 +4,8 @@ import type { ForumPage, ForumTopicListParams } from '~/forum/services/forumQuer
 import { useInfiniteQuery, useQuery, useQueryCache } from '@pinia/colada'
 import { computed, toValue, watch } from 'vue'
 import { issues, user } from '~/forum/api/gitee'
+import { useArchivedFeedbackAccess } from '~/forum/composables/auth/useArchivedFeedbackAccess'
 import { usePermissionData } from '~/forum/composables/auth/usePermissionData'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { FORUM_CONFIG } from '~/forum/services/forumConfig'
 import {
   buildForumListCacheKey,
@@ -25,11 +25,10 @@ export function useForumTopicsQuery(
   skeletonScope?: MaybeRefOrGetter<string | null>,
 ) {
   const { getTeamMemberIds, getFeedbackMemberIds } = usePermissionData()
-  const { hasAnyRoles } = useRuleChecks()
-  const canViewArchived = hasAnyRoles('teamMember', 'feedbackMember')
+  const canViewArchived = useArchivedFeedbackAccess(() => toValue(params).creator)
   const normalized = computed(() => {
     const value = normalizeTopicListParams(toValue(params))
-    // Archived lists are admin-only; a hand-edited URL falls back to the default list.
+    // Only administrators or the queried creator can view archived lists.
     return value.filter === 'archived' && !canViewArchived.value
       ? { ...value, filter: 'all' as const }
       : value

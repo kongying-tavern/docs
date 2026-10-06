@@ -4,6 +4,7 @@ import { computed, toValue, watch } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeMessagesHref } from '~/constants/site'
+import { useArchivedFeedbackAccess } from '~/forum/composables/auth/useArchivedFeedbackAccess'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumUserProfileQuery } from '~/forum/composables/data/useForumQueries'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
@@ -32,8 +33,10 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
     && String(renderedUser.value.id) === String(userInfo.info?.id),
   ))
 
+  const canViewArchived = useArchivedFeedbackAccess(username)
+
   const menu = computed<FORUM.ProfileTab[]>(() => {
-    return [
+    const items: FORUM.ProfileTab[] = [
       {
         id: 'all',
         label: message.value.forum.header.navigation.allFeedback,
@@ -45,6 +48,14 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
         icon: 'i-lucide-circle-check',
       },
     ]
+    if (canViewArchived.value) {
+      items.push({
+        id: 'archived',
+        label: message.value.forum.header.navigation.archivedFeedback,
+        icon: 'i-lucide-circle-off',
+      })
+    }
+    return items
   })
 
   function sendMessage(): void {

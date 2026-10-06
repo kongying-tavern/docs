@@ -90,7 +90,7 @@ export namespace FORUM {
 
   /** 用户主页的反馈筛选 tab，主 tab 行与折叠吸顶条共用 */
   interface ProfileTab {
-    id: 'all' | 'closed'
+    id: 'all' | 'closed' | 'archived'
     label: string
     icon: string
   }

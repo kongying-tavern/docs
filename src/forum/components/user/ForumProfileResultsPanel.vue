@@ -4,7 +4,7 @@ import { ref, watch } from 'vue'
 import ForumTopicResults from '../list/ForumTopicResults.vue'
 
 const props = defineProps<{
-  activeTab: 'all' | 'closed'
+  activeTab: 'all' | 'closed' | 'archived'
   data: ForumAPI.Topic[]
   loading?: boolean
   loadingMore?: boolean
@@ -19,7 +19,8 @@ const props = defineProps<{
 const emit = defineEmits<{ login: [] }>()
 const tabDirection = ref<'back' | 'forward'>('forward')
 watch(() => props.activeTab, (next, previous) => {
-  tabDirection.value = next === 'closed' && previous === 'all' ? 'forward' : 'back'
+  const tabs = ['all', 'closed', 'archived']
+  tabDirection.value = tabs.indexOf(next) > tabs.indexOf(previous) ? 'forward' : 'back'
 })
 </script>
 
