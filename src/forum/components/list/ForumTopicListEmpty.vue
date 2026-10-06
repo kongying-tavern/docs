@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { CircleAlert, Inbox, Search } from '@lucide/vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Empty,
-  EmptyActions,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -12,10 +10,13 @@ import {
 } from '@/components/ui/empty'
 import { EmptyMorphFrame, EmptySwap } from '@/components/ui/empty-motion'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 import ForumOpenFeedbackFormButton from '../form/ForumOpenFeedbackFormButton.vue'
+import ForumEmptyActions from '../ui/ForumEmptyActions.vue'
+import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 
 const props = defineProps<{
   error?: Error | boolean | null
@@ -23,6 +24,7 @@ const props = defineProps<{
   refreshData?: () => Promise<unknown> | unknown
 }>()
 const { message } = useLocalized()
+const { reducedMotion } = useSitePreferences()
 const { route, navigate, navigateFilter } = useForumRoute()
 const { formatSearchQuery } = useForumSearchToken()
 
@@ -65,7 +67,14 @@ const errorDescription = computed(() => {
   return message.value.forum.errors.loadFailedHint
 })
 
-const stateKey = computed(() => props.error ? 'error' : isSearchEmpty.value ? 'search' : 'inbox')
+const stateKey = computed(() => {
+  if (props.error)
+    return rateLimitError.value ? 'rate-limit' : unauthorizedError.value ? 'locked' : 'error'
+  if (isSearchEmpty.value)
+    return 'search'
+  return hasActiveFilters.value ? 'filtered' : 'feedback'
+})
+const retrying = ref(false)
 
 const title = computed(() => props.error
   ? message.value.forum.loadError
@@ -83,19 +92,25 @@ function handleLogin() {
   location.hash = 'login-alert'
 }
 
-function handleRetry() {
-  props.refreshData?.()
+async function handleRetry() {
+  if (retrying.value)
+    return
+  retrying.value = true
+  try {
+    await props.refreshData?.()
+  }
+  finally {
+    retrying.value = false
+  }
 }
 </script>
 
 <template>
-  <Empty class="border-none">
+  <Empty class="forum-empty-state border-none" :aria-busy="retrying" :role="error ? 'alert' : 'status'">
     <EmptyHeader>
-      <EmptyMedia variant="icon" class="border !rounded-xl !size-12">
+      <EmptyMedia>
         <EmptySwap :swap-key="stateKey" variant="icon">
-          <CircleAlert v-if="error" :stroke-width="1.5" />
-          <Search v-else-if="isSearchEmpty" :stroke-width="1.5" />
-          <Inbox v-else :stroke-width="1.5" />
+          <ForumEmptyIllustration :variant="stateKey" :busy="retrying" />
         </EmptySwap>
       </EmptyMedia>
       <EmptyMorphFrame :morph-key="morphKey">
@@ -113,56 +128,60 @@ function handleRetry() {
     </EmptyHeader>
 
     <!-- 主按钮：实心主题色；次按钮：描边 -->
-    <EmptyActions v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions">
+    <ForumEmptyActions v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions">
       <template v-if="!error && (isSearchEmpty || hasActiveFilters)">
-        <Button @click="handleClearFilters">
-          <span class="i-lucide-x icon-btn" aria-hidden="true" />
-          {{ message.forum.empty.clearFilters }}
-        </Button>
         <ForumOpenFeedbackFormButton
           :label="message.forum.empty.createFeedback"
           variant="outline"
           :hide-on-mobile="false"
         />
+        <Button @click="handleClearFilters">
+          <span class="i-lucide-x icon-btn" aria-hidden="true" />
+          {{ message.forum.empty.clearFilters }}
+        </Button>
       </template>
 
       <template v-else-if="showUserEmptyActions">
-        <ForumOpenFeedbackFormButton
-          :label="message.forum.empty.createFeedback"
-          :hide-on-mobile="false"
-        />
         <Button variant="outline" @click="handleShowClosed">
           <span class="i-lucide-circle-check icon-btn" aria-hidden="true" />
           {{ message.forum.empty.showClosed }}
         </Button>
+        <ForumOpenFeedbackFormButton
+          :label="message.forum.empty.createFeedback"
+          :hide-on-mobile="false"
+        />
       </template>
 
       <template v-else-if="error">
+        <Button
+          v-if="unauthorizedError && refreshData"
+          variant="outline"
+          :disabled="retrying"
+          @click="handleRetry"
+        >
+          <span :class="[retrying ? 'i-lucide-loader-circle' : 'i-lucide-refresh-cw', retrying && !reducedMotion && 'animate-spin']" class="icon-btn" aria-hidden="true" />
+          {{ message.forum.auth.callback.error.retry }}
+        </Button>
         <Button v-if="rateLimitError || unauthorizedError" @click="handleLogin">
           <span class="i-lucide-log-in icon-btn" aria-hidden="true" />
           {{ message.forum.auth.login }}
         </Button>
         <Button
           v-else-if="refreshData"
+          :disabled="retrying"
           @click="handleRetry"
         >
-          {{ message.forum.auth.callback.error.retry }}
-        </Button>
-        <Button
-          v-if="unauthorizedError && refreshData"
-          variant="outline"
-          @click="handleRetry"
-        >
+          <span :class="[retrying ? 'i-lucide-loader-circle' : 'i-lucide-refresh-cw', retrying && !reducedMotion && 'animate-spin']" class="icon-btn" aria-hidden="true" />
           {{ message.forum.auth.callback.error.retry }}
         </Button>
       </template>
-    </EmptyActions>
+    </ForumEmptyActions>
 
-    <EmptyActions v-else>
+    <ForumEmptyActions v-else>
       <ForumOpenFeedbackFormButton
         :label="message.forum.empty.createFeedback"
         :hide-on-mobile="false"
       />
-    </EmptyActions>
+    </ForumEmptyActions>
   </Empty>
 </template>

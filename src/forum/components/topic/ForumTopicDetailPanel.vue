@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { CircleAlert } from '@lucide/vue'
 import { Button } from '@/components/ui/button'
-import { Empty, EmptyActions, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { EmptySwap } from '@/components/ui/empty-motion'
-import Separator from '@/components/ui/separator/Separator.vue'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import ForumEmptyActions from '../ui/ForumEmptyActions.vue'
+import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 import ForumImage from '../ui/ForumImage.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
 import ForumTime from '../ui/ForumTime.vue'
@@ -114,7 +113,7 @@ const { message } = useLocalized()
         :context="topic ? {
           kind: 'topic',
           topic,
-          repo: topic.type === 'POST' ? 'Blog' : 'Feedback',
+          repo: 'Feedback',
           topicAuthorId: topic.user.id,
         } : undefined"
       />
@@ -128,12 +127,10 @@ const { message } = useLocalized()
   </div>
 
   <div v-else-if="error" class="py-12" role="alert">
-    <Empty class="border-none">
+    <Empty class="forum-empty-state border-none">
       <EmptyHeader>
-        <EmptyMedia variant="icon" class="border !rounded-xl !size-12">
-          <EmptySwap swap-key="error" variant="icon">
-            <CircleAlert :stroke-width="1.5" />
-          </EmptySwap>
+        <EmptyMedia>
+          <ForumEmptyIllustration variant="error" />
         </EmptyMedia>
         <EmptyTitle>
           {{ message.forum.loadError }}
@@ -142,16 +139,16 @@ const { message } = useLocalized()
           {{ message.forum.errors.loadFailedHint }}
         </EmptyDescription>
       </EmptyHeader>
-      <EmptyActions>
+      <ForumEmptyActions>
         <Button @click="emit('retry')">
+          <span class="i-lucide-refresh-cw icon-btn" aria-hidden="true" />
           {{ message.forum.auth.callback.error.retry }}
         </Button>
-      </EmptyActions>
+      </ForumEmptyActions>
     </Empty>
   </div>
 
   <ForumTopicPageSkeleton v-else />
-  <Separator />
   <div v-if="$slots.comments" class="mt-8">
     <slot name="comments" />
   </div>
