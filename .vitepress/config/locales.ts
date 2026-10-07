@@ -1,9 +1,9 @@
 import type { DefaultTheme, HeadConfig, LocaleConfig } from 'vitepress'
-import type { CustomConstant, LocaleConfigShape } from '../locales/types'
-import { DEFAULT_LOCALE, SITE_LOGO } from '../locales/common/site'
-import { baseHelper } from '../theme/utils'
-import { getLocaleDirs } from './localeDirs'
-import { localeImporters } from './localeImporters'
+import type { CustomConstant, LocaleConfigShape } from '../locales/types.ts'
+import { DEFAULT_LOCALE, SITE_LOGO } from '../locales/common/site.ts'
+import { baseHelper } from '../theme/utils.ts'
+import { getLocaleDirs } from './localeDirs.ts'
+import { localeImporters } from './localeImporters.ts'
 
 // 约定:locales 目录下含 index.ts 的子目录即一门语言,导出 <lang>Config/label/lang;zh 为默认语言(root)
 const STATIC_FIELDS = [

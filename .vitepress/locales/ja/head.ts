@@ -1,5 +1,5 @@
 import type { LocaleSpecificConfig } from 'vitepress'
-import C from './constants'
+import C from './constants.ts'
 
 // 页面级 SEO/OG 标签由 config/head.ts 的 cfgDynamicHead 按页注入，此处只保留站点级标签
 const head: LocaleSpecificConfig['head'] = [

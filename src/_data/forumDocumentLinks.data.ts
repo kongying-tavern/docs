@@ -1,11 +1,10 @@
-import type { ForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex'
+import type { ForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex.ts'
 import { createContentLoader } from 'vitepress'
-import { buildForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex'
+import { buildForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex.ts'
 
-export type { ForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex'
+export type { ForumDocumentLinks } from '../forum/services/forumDocumentLinkIndex.ts'
 
-declare const data: ForumDocumentLinks
-export { data }
+export declare const data: ForumDocumentLinks
 
 export default createContentLoader('**/*.md', {
   includeSrc: true,

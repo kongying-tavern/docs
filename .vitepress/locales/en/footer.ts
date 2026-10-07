@@ -1,4 +1,4 @@
-import type { CustomConfig } from '../types'
+import type { CustomConfig } from '../types.ts'
 
 const footer: CustomConfig['footer'] = {
   qrcodeTitle: 'Discord Server',

@@ -1,4 +1,4 @@
-import type { CustomConfig } from '../types'
+import type { CustomConfig } from '../types.ts'
 
 const payment: CustomConfig['payment'] = {
   wechatpay: {

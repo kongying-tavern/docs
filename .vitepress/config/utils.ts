@@ -1,6 +1,6 @@
 import type { PageData, SiteConfig } from 'vitepress'
 
-import { SITE_ORIGIN } from '../../src/constants/site'
+import { SITE_ORIGIN } from '../../src/constants/site.ts'
 
 // eslint-disable-next-line node/prefer-global/process
 export const isProd = process.env.NODE_ENV === 'production'

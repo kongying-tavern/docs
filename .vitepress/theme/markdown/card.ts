@@ -6,7 +6,7 @@ import { container } from '@mdit/plugin-container'
 
 import { load } from 'js-yaml'
 import { entries, fromPairs, isPlainObject, isString } from 'lodash-es'
-import { stringifyProp } from '../utils'
+import { stringifyProp } from '../utils.ts'
 
 export interface CardOptions {
   title: string

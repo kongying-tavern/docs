@@ -1,6 +1,6 @@
 import type { PluginSimple } from 'markdown-it'
 import type MarkdownIt from 'markdown-it'
-import EmojiData from '../../../src/_data/emojis.json'
+import EmojiData from '../../../src/_data/emojis.json' with { type: 'json' }
 
 // 创建 emoji 查找缓存
 const emojiCache = new Map<string, { url: string, height: number, width: number }>()

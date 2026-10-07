@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { DEFAULT_LOCALE } from '../locales/common/site'
+import { DEFAULT_LOCALE } from '../locales/common/site.ts'
 
 export const LOCALES_DIR = fileURLToPath(new URL('../locales/', import.meta.url))
 

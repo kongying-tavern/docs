@@ -1,6 +1,6 @@
 import type { PageData, SiteConfig } from 'vitepress'
-import type { CustomConfig } from '../locales/types'
-import type { LocaleConfigVal } from './types'
+import type { CustomConfig } from '../locales/types.ts'
+import type { LocaleConfigVal } from './types.ts'
 
 export function cfgDynamicTitleTemplate(
   pageData: PageData,

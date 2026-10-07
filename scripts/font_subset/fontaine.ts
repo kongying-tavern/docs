@@ -10,7 +10,7 @@ import { normalizePath } from 'vite'
 import {
   loadFontSubsetConfig,
   resolveFontSubsetPaths,
-} from './config'
+} from './config.ts'
 
 const defaultProjectRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)))
 

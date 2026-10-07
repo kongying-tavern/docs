@@ -1,5 +1,5 @@
 import type { LocaleSpecificConfig } from 'vitepress'
-import C from './constants'
+import C from './constants.ts'
 
 const head: LocaleSpecificConfig['head'] = [
   ['meta', { property: 'og:site_name', content: C.META_TITLE }],

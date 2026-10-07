@@ -1,9 +1,9 @@
 import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
-import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site'
+import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site.ts'
 import { TELEMETRY_ENABLED_STORAGE_KEY } from '../../src/constants/telemetry.ts'
-import { sitePreferencesBootScript } from '../../src/services/sitePreferences'
-import { DEFAULT_LOCALE } from '../locales/common/site'
-import { getLocaleDirs } from './localeDirs'
+import { sitePreferencesBootScript } from '../../src/services/sitePreferences.ts'
+import { DEFAULT_LOCALE } from '../locales/common/site.ts'
+import { getLocaleDirs } from './localeDirs.ts'
 import {
   cfgGetPageCover,
   cfgGetPageDesc,
@@ -11,7 +11,7 @@ import {
   cfgGetPageTitle,
   cfgGetPageUrl,
   isProd,
-} from './utils'
+} from './utils.ts'
 
 /** 字体样式表（字体管线生成到 public/fonts/）非阻塞加载：preload 提前拉取，media="print" 应用不阻塞渲染；dev 由 loadFontStylesheets.ts 注入 */
 const fontStylesheetHead: HeadConfig[] = ['/fonts/fonts-subset.css', '/fonts/fonts-standard.css']

@@ -1,21 +1,23 @@
 import type { DefaultTheme, UserConfig } from 'vitepress'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import { generateBreadcrumbsData } from './config/breadcrumbsDataGenerator'
-import { createConfigureFunction } from './config/common'
-import { createHeadConfig } from './config/head'
-import { ignoreDeadLinksConfig } from './config/ignoreDeadLinks'
-import { createLocalesConfig } from './config/locales'
-import { markdownConfig } from './config/markdown'
-import { rewritesConfig } from './config/rewrites'
-import { localeSearchConfig } from './config/search'
-import { sitemapConfig } from './config/sitemap'
-import { cfgDynamicTitleTemplate } from './config/title'
+import { generateBreadcrumbsData } from './config/breadcrumbsDataGenerator.ts'
+import { createConfigureFunction } from './config/common.ts'
+import { createHeadConfig } from './config/head.ts'
+import { ignoreDeadLinksConfig } from './config/ignoreDeadLinks.ts'
+import { createLocalesConfig } from './config/locales.ts'
+import { markdownConfig } from './config/markdown.ts'
+import { rewritesConfig } from './config/rewrites.ts'
+import { localeSearchConfig } from './config/search.ts'
+import { sitemapConfig } from './config/sitemap.ts'
+import { cfgDynamicTitleTemplate } from './config/title.ts'
 
 export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   base: '/docs/',
   srcDir: 'src',
   outDir: './dist',
+  cacheDir: process.env.VITEPRESS_CACHE_DIR,
   srcExclude: [],
   cleanUrls: true,
   lastUpdated: true,

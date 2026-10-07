@@ -1,5 +1,5 @@
-import type { LocaleConfigShape } from '../types'
-import C from './constants'
+import type { LocaleConfigShape } from '../types.ts'
+import C from './constants.ts'
 
 export const jaConfig = {
   title: '空蛍酒場',

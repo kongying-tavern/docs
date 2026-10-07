@@ -1,4 +1,4 @@
-import type { FontSubsetConfig, PythonEnvironment } from './config'
+import type { FontSubsetConfig, PythonEnvironment } from './config.ts'
 import { spawn } from 'node:child_process'
 
 export interface ProcessOutputHandlers {

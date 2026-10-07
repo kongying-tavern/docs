@@ -1,4 +1,4 @@
-import type { CustomConfig } from '../types'
+import type { CustomConfig } from '../types.ts'
 
 const docReaction: CustomConfig['docReaction'] = {
   feedbackMsg: 'このドキュメントは役立ちましたか？',

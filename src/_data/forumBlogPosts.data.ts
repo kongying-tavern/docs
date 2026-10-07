@@ -1,5 +1,5 @@
-import { parseLatestUpdateEntry } from '../forum/services/blogUpdateFeed'
-import { createBlogLoader } from '../utils/createBlogLoader'
+import { parseLatestUpdateEntry } from '../forum/services/blogUpdateFeed.ts'
+import { createBlogLoader } from '../utils/createBlogLoader.ts'
 
 const source = createBlogLoader('*/blog/posts/*.md')
 

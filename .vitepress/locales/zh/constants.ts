@@ -1,4 +1,4 @@
-import type { CustomConstant } from '../types'
+import type { CustomConstant } from '../types.ts'
 
 const constants: CustomConstant = {
   META_URL: 'https://yuanshen.site/docs/',

@@ -1,8 +1,8 @@
 import type { TransformContext } from 'vitepress'
 
-import type { ConfigureFuncType } from './types'
-import { cfgDynamicHead } from './head'
-import { isProd } from './utils'
+import type { ConfigureFuncType } from './types.ts'
+import { cfgDynamicHead } from './head.ts'
+import { isProd } from './utils.ts'
 
 export const hostname = 'https://yuanshen.site/docs/'
 
