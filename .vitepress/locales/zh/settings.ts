@@ -82,9 +82,9 @@ const settings = {
     duration: '持续时间',
     durationDescription: '选择通知自动关闭的速度，或保持显示直到手动关闭。',
     fast: '快',
-    default: '默认',
+    default: '标准',
     slow: '慢',
-    persistent: '长显',
+    persistent: '持续显示',
     previewMessage: '这是一条测试通知',
     positions: {
       topLeft: '左上',

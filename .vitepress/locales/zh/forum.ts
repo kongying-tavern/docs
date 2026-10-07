@@ -8,8 +8,8 @@ const forum = {
   empty: {
     title: '暂无反馈',
     description: '调整筛选条件，或提交新的反馈。',
-    searchTitle: '搜索“{query}”',
-    searchDescription: '没有找到相关反馈。',
+    searchTitle: '未找到“{query}”相关反馈',
+    searchDescription: '试试其他关键词，或调整筛选条件。',
     clearFilters: '清除筛选',
     createFeedback: '新建反馈',
     showClosed: '查看已结反馈',
@@ -115,7 +115,7 @@ const forum = {
         fail: '反馈类型更新失败',
       },
       modifyTags: {
-        text: '修改标签',
+        text: '编辑标签',
         title: '编辑反馈标签（#{id}）',
         success: '反馈标签更新成功',
         fail: '反馈标签更新失败',
@@ -255,7 +255,7 @@ const forum = {
     oauthLogin: '使用授权登录',
     or: '或者',
     notGiteeAccountMsg: '没有 Gitee 账号？%signup',
-    clickToGiteeSignup: '点击注册 Gitee 账号',
+    clickToGiteeSignup: '注册 Gitee 账号',
     callback: {
       title: '正在通过 Gitee 授权登录…',
       description: '请稍候，即将返回原页面',
@@ -458,8 +458,8 @@ const forum = {
       editDraft: '编辑草稿',
       draftSavedShort: '已保存',
       autoSaveFailed: '保存失败',
-      chooseType: '选择话题类型',
-      backToTypes: '返回话题类型选择',
+      chooseType: '选择反馈类型',
+      backToTypes: '返回反馈类型选择',
       chooseTypeDescription: '你想提交哪一类反馈？',
       newFeedback: '新建反馈',
       createMore: '继续创建',
@@ -478,8 +478,8 @@ const forum = {
       removeReference: '移除引用',
       removeTag: '移除分类 {tag}',
       submit: '提交反馈',
-      keepDraftTitle: '保留本次编辑？',
-      keepDraftDescription: '保留后，下次打开反馈表单可以继续编辑。',
+      keepDraftTitle: '保存本次编辑？',
+      keepDraftDescription: '保存后，下次打开反馈表单可以继续编辑。',
       discardDraft: '不保存',
       keepDraft: '保存',
       fieldsNeedAttention: '还有 {count} 个字段需要完善',
@@ -523,7 +523,7 @@ const forum = {
     form: {
       title: {
         text: '标题',
-        placeholder: '请输入标题（5-50 字）',
+        placeholder: '5-50 字',
       },
       type: {
         text: '标签',
