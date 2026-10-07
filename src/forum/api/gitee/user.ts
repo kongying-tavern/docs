@@ -35,18 +35,6 @@ export async function updateAuthorizedUser(profile: ForumAPI.UserProfileUpdate):
   return updated
 }
 
-export async function getUserOrgs(
-  username: string,
-  _accessToken: string,
-  cache = true,
-): Promise<ForumAPI.User> {
-  const { data } = await apiCall<GITEE.UserInfo>('get', `users/${username}/orgs`, {
-    cache,
-  })
-
-  return normalizeUser(parseGiteeUser(data, `users/${username}/orgs`))
-}
-
 export async function getOrgMembers(
   accessToken?: string,
   cache = true,

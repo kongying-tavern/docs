@@ -5,7 +5,6 @@ import { getAuthSession } from '~/services/authSession'
 import { reportRequestFailure } from '~/services/telemetry/request'
 import * as oauth from './oauth'
 import * as reactions from './reactions'
-import * as translate from './translate'
 import * as upload from './upload'
 import { isAccessTokenRejectionStatus } from './utils'
 
@@ -144,4 +143,4 @@ export const fetcher = ky.create({
   },
 })
 
-export { oauth, reactions, translate, upload }
+export { oauth, reactions, upload }

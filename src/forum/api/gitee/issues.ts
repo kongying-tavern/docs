@@ -50,18 +50,12 @@ function isDevTestIssue(issue: GITEE.IssueInfo): boolean {
   return (issue.labels ?? []).some(label => label?.name === 'DEV-TEST')
 }
 
-/** 键须与 getPinnedList/getAnnouncementList 的请求字面量一致 */
-function invalidatePinnedAndAnnouncementCache(): void {
+/** 键须与 getPinnedList 的请求字面量一致 */
+function invalidatePinnedTopicCache(): void {
   deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues`, {
     searchParams: {
       state: 'open',
       labels: ['PINNED'],
-    },
-  })
-  deleteApiCache('get', `repos/${OWNER}/${FEEDBACK_REPO}/issues`, {
-    searchParams: {
-      state: 'open',
-      labels: ['TYP-ANN'],
     },
   })
 }
@@ -210,22 +204,6 @@ export async function getPinnedList(): Promise<ForumAPI.Topic[]> {
   )
 
   return parseGiteeIssues(issues, 'issues/pinned').map(issue => Object.assign(normalizeIssue(issue), { pinned: true }))
-}
-
-export async function getAnnouncementList(): Promise<ForumAPI.Topic[]> {
-  const { data: issues } = await apiCall<GITEE.IssueList>(
-    'get',
-    `repos/${OWNER}/${FEEDBACK_REPO}/issues`,
-    {
-      searchParams: {
-        state: 'open',
-        labels: ['TYP-ANN'],
-      },
-      cache: true,
-    },
-  )
-
-  return parseGiteeIssues(issues, 'issues/announcements').map(issue => normalizeIssue(issue))
 }
 
 export async function getTopicComments(
@@ -388,7 +366,7 @@ export async function putTopic(
 
   const result = normalizeIssue(parseGiteeIssue(issueInfo, `issues/${number}/update`))
 
-  invalidatePinnedAndAnnouncementCache()
+  invalidatePinnedTopicCache()
 
   // 标签和状态必须读回确认；PATCH 响应并不保证 Gitee/Webhook 已持久化。
   const hasMembershipChange = data.labels !== undefined || data.state !== undefined

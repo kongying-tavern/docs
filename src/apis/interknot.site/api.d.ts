@@ -55,25 +55,4 @@ export namespace INTER_KNOT {
     }
   }
 
-  export interface TranslateResponse {
-    statusCode: number
-    statusMessage?: string
-    data: {
-      translatedText: string
-      translatedTextLength: number
-      sourceLanguage: string
-      targetLanguage: string
-    }
-  }
-
-  export interface LanguageResponse {
-    statusCode: number
-    statusMessage?: string
-    data: {
-      languages: {
-        code: string
-        name: string
-      }[]
-    }
-  }
 }

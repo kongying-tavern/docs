@@ -101,35 +101,3 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
     return null
   }
 }
-
-/**
- * 获取当前Git仓库的根目录
- */
-export function getGitRoot(): string | null {
-  try {
-    const gitRoot = execFileSync('git', ['rev-parse', '--show-toplevel'], {
-      encoding: 'utf-8',
-      stdio: 'pipe',
-    }).trim()
-    return gitRoot
-  }
-  catch {
-    return null
-  }
-}
-
-/**
- * 批量获取多个文件的Git信息
- */
-export async function getGitFileInfoBatch(filePaths: string[]): Promise<Map<string, GitFileInfo>> {
-  const results = new Map<string, GitFileInfo>()
-
-  for (const filePath of filePaths) {
-    const info = await getGitFileInfo(filePath)
-    if (info) {
-      results.set(filePath, info)
-    }
-  }
-
-  return results
-}

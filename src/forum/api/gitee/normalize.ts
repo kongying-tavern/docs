@@ -73,34 +73,6 @@ function getUniqueIndexById(id: number, range: number): number {
   return hash % range
 }
 
-export function normalizeIssueToBlog(issue: GITEE.IssueInfo): ForumAPI.Post {
-  const decoded = decodeTopicBody(issue.body)
-  const labels = filterWhitelistTags(issue.labels)
-  return {
-    type: 'POST',
-    id: issue.number,
-    title: stripMarkdownImages(issue.title.split('%%')[0]?.trim() ?? ''),
-    path: issue.title.split('%%')[1]?.trim() || issue.number,
-    link: issue.html_url,
-    content: {
-      text: decoded.content.text,
-      ...(decoded.attachments ? { images: decoded.attachments } : {}),
-    },
-    contentRaw: issue.body,
-    commentCount: issue.comments,
-    user: normalizeUser(issue.assignee || issue.user),
-    author: normalizeUser(issue.assignee || issue.user),
-    labels,
-    // 反馈标签按前缀识别，不依赖静态映射表（管理页可动态增删 CATA- 标签）
-    tags: labels.filter(isCategoryLabel),
-    status: getTopicStatus(labels),
-    goodIssue: labels.includes('GOOD-ISSUE'),
-    state: issue.state,
-    createdAt: issue.created_at,
-    updatedAt: issue.updated_at,
-  }
-}
-
 export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
   const { type: titleType, title } = getTopicTypeFromTitle(issue.title)
   const type = getTopicTypeFromLabels(issue.labels) ?? titleType

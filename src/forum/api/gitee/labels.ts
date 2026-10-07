@@ -88,15 +88,6 @@ function assertLabelPayload(label: GITEE.IssueLabel, method: 'post' | 'patch'): 
   return label
 }
 
-export async function getLabel(name: string): Promise<GITEE.IssueLabel> {
-  const { data } = await apiCall<GITEE.IssueLabel>(
-    'get',
-    `${LABELS_ENDPOINT}/${encodeURIComponent(name)}`,
-  )
-
-  return data
-}
-
 export async function createLabel(
   name: string,
   color: string,
