@@ -294,6 +294,17 @@ const forum: CustomConfig['forum'] = {
         retry: '再試行',
       },
     },
+    errorMessages: {
+      tokenExpired: 'ログインの有効期限が切れました。もう一度ログインしてください。',
+      tokenInvalid: 'ログイン状態が無効です。もう一度ログインしてください。',
+      tokenRefreshFailed: 'ログイン状態を更新できませんでした。しばらくしてから再試行してください。',
+      tokenMissing: 'ログイン情報が見つかりません。もう一度ログインしてください。',
+      oauthExchangeFailed: 'ログインを完了できませんでした。再試行してください。',
+      networkError: 'ネットワーク接続に問題があります。接続を確認して再試行してください。',
+      unauthorized: 'アクセスが許可されていません。もう一度ログインしてください。',
+      userInfoFetchFailed: 'アカウント情報を取得できませんでした。しばらくしてから再試行してください。',
+      unknown: '操作を完了できませんでした。しばらくしてから再試行してください。',
+    },
   },
   aside: {
     recentUpdates: {

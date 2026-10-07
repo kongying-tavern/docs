@@ -292,6 +292,17 @@ const forum: CustomConfig['forum'] = {
         retry: 'Retry',
       },
     },
+    errorMessages: {
+      tokenExpired: 'Your session has expired. Sign in again.',
+      tokenInvalid: 'Your session is no longer valid. Sign in again.',
+      tokenRefreshFailed: 'Could not refresh your session. Try again later.',
+      tokenMissing: 'Sign-in details are missing. Sign in again.',
+      oauthExchangeFailed: 'Sign-in could not be completed. Try again.',
+      networkError: 'Network problem. Check your connection and try again.',
+      unauthorized: 'Not authorized. Sign in again.',
+      userInfoFetchFailed: 'Could not load your account. Try again later.',
+      unknown: 'The action could not be completed. Try again later.',
+    },
   },
   aside: {
     recentUpdates: {

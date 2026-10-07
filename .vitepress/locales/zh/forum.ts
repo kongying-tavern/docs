@@ -277,6 +277,17 @@ const forum = {
         retry: '重试',
       },
     },
+    errorMessages: {
+      tokenExpired: '登录已过期，请重新登录',
+      tokenInvalid: '登录状态异常，请重新登录',
+      tokenRefreshFailed: '登录状态更新失败，请稍后重试',
+      tokenMissing: '登录信息未找到，请重新登录',
+      oauthExchangeFailed: '登录未能完成，请重试',
+      networkError: '网络连接异常，请检查网络后重试',
+      unauthorized: '未获授权，请重新登录',
+      userInfoFetchFailed: '获取用户信息失败，请稍后重试',
+      unknown: '操作失败，请稍后重试',
+    },
   },
   aside: {
     recentUpdates: {

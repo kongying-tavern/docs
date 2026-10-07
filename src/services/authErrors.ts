@@ -77,28 +77,6 @@ export class AuthError extends Error {
   }
 
   /**
-   * 获取用户友好的错误信息
-   */
-  getUserMessage(): string {
-    switch (this.type) {
-      case AuthErrorType.TOKEN_EXPIRED:
-        return '登录已过期，请重新登录'
-      case AuthErrorType.TOKEN_INVALID:
-        return '登录状态异常，请重新登录'
-      case AuthErrorType.TOKEN_REFRESH_FAILED:
-        return '登录状态更新失败，请稍后重试'
-      case AuthErrorType.OAUTH_EXCHANGE_FAILED:
-        return '登录过程中出现问题，请重试'
-      case AuthErrorType.NETWORK_ERROR:
-        return '网络连接异常，请检查网络后重试'
-      case AuthErrorType.USER_INFO_FETCH_FAILED:
-        return '获取用户信息失败，请稍后重试'
-      default:
-        return this.message || '操作失败，请稍后重试'
-    }
-  }
-
-  /**
    * 转换为日志格式
    */
   toLogFormat(): {
@@ -121,31 +99,31 @@ export class AuthError extends Error {
  */
 export const createAuthError = {
   tokenExpired: (originalError?: Error) =>
-    new AuthError(AuthErrorType.TOKEN_EXPIRED, '访问令牌已过期', originalError),
+    new AuthError(AuthErrorType.TOKEN_EXPIRED, 'Access token expired', originalError),
 
   tokenInvalid: (originalError?: Error) =>
-    new AuthError(AuthErrorType.TOKEN_INVALID, '访问令牌无效', originalError),
+    new AuthError(AuthErrorType.TOKEN_INVALID, 'Access token invalid', originalError),
 
   tokenRefreshFailed: (originalError?: Error) =>
-    new AuthError(AuthErrorType.TOKEN_REFRESH_FAILED, '刷新令牌失败', originalError),
+    new AuthError(AuthErrorType.TOKEN_REFRESH_FAILED, 'Could not refresh the access token', originalError),
 
   tokenMissing: () =>
-    new AuthError(AuthErrorType.TOKEN_MISSING, '缺少访问令牌'),
+    new AuthError(AuthErrorType.TOKEN_MISSING, 'Access token missing'),
 
   oauthExchangeFailed: (originalError?: Error) =>
-    new AuthError(AuthErrorType.OAUTH_EXCHANGE_FAILED, 'OAuth授权码交换失败', originalError),
+    new AuthError(AuthErrorType.OAUTH_EXCHANGE_FAILED, 'OAuth authorization code exchange failed', originalError),
 
   networkError: (originalError?: Error) =>
-    new AuthError(AuthErrorType.NETWORK_ERROR, '网络请求失败', originalError),
+    new AuthError(AuthErrorType.NETWORK_ERROR, 'Network request failed', originalError),
 
   unauthorized: (originalError?: Error) =>
-    new AuthError(AuthErrorType.UNAUTHORIZED, '未授权访问', originalError),
+    new AuthError(AuthErrorType.UNAUTHORIZED, 'Unauthorized request', originalError),
 
   userInfoFetchFailed: (originalError?: Error) =>
-    new AuthError(AuthErrorType.USER_INFO_FETCH_FAILED, '获取用户信息失败', originalError),
+    new AuthError(AuthErrorType.USER_INFO_FETCH_FAILED, 'Could not fetch user profile', originalError),
 
   ssoRefreshFailed: (originalError?: Error, ssoType?: string) =>
-    new AuthError(AuthErrorType.SSO_REFRESH_FAILED, `SSO令牌刷新失败${ssoType ? `: ${ssoType}` : ''}`, originalError),
+    new AuthError(AuthErrorType.SSO_REFRESH_FAILED, `SSO token refresh failed${ssoType ? `: ${ssoType}` : ''}`, originalError),
 }
 
 /**
@@ -174,7 +152,7 @@ export async function wrapAuthOperation<T>(
   catch (error) {
     const authError = error instanceof AuthError
       ? error
-      : new AuthError(errorType, errorMessage || '操作失败', error as Error)
+      : new AuthError(errorType, errorMessage || 'Auth operation failed', error as Error)
 
     return { success: false, error: authError }
   }

@@ -8,6 +8,7 @@ import { removeQueryParam } from '@/utils'
 import { oauth as interKnotOauth } from '~/apis/interknot.site'
 import { clearApiCache, oauth, password as passwordAuth } from '~/forum/api/gitee'
 import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
+import { authErrorMessage } from '~/forum/hooks/authErrorMessage'
 import { useAuthProgress } from '~/forum/hooks/useAuthProgress'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
 import { clearLoginIntent, takeLoginIntent } from '~/forum/services/loginIntent'
@@ -119,7 +120,7 @@ function useLogin() {
       // 已知认证错误直接提示；未知错误清掉可能残留的半登录状态再提示
       const authError = AuthError.isAuthError(error) ? error : null
       await handleOAuthFailure(
-        authError ? authError.getUserMessage() : theme.value.forum.auth.loginFail,
+        authError ? authErrorMessage(authError, theme.value.forum.auth.errorMessages) : theme.value.forum.auth.loginFail,
         !authError,
         error,
       )
@@ -236,7 +237,7 @@ function useLogin() {
 
         if (!result.success) {
           const errorMsg = AuthError.isAuthError(result.error)
-            ? result.error.getUserMessage()
+            ? authErrorMessage(result.error, theme.value.forum.auth.errorMessages)
             : theme.value.forum.auth.loginFail
           toast.error(`interknot.site: ${errorMsg}`, { scene: 'ss', error: result.error })
           return
