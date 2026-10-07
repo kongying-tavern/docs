@@ -1,4 +1,5 @@
 import type { MotionPreference } from '~/config/settingsOptions'
+import { SITE_DESKTOP_MEDIA_QUERY } from '~/constants/breakpoints'
 
 export type { MotionPreference } from '~/config/settingsOptions'
 
@@ -10,7 +11,7 @@ export const DEFAULT_UI_FONT_SIZE = 14
 export const MIN_UI_FONT_SIZE = 12
 export const MAX_UI_FONT_SIZE = 18
 export const UI_FONT_SIZE_STEPS = [MIN_UI_FONT_SIZE, DEFAULT_UI_FONT_SIZE, MAX_UI_FONT_SIZE] as const
-export const DESKTOP_UI_MEDIA_QUERY = '(min-width: 960px)'
+export const DESKTOP_UI_MEDIA_QUERY = SITE_DESKTOP_MEDIA_QUERY
 
 export function normalizeUiFontSize(value: unknown): number {
   const numericValue = Number(value)

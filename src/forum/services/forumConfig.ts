@@ -1,10 +1,13 @@
+// unocss.config.ts 经 jiti 加载本文件且不解析 `~` 别名，此依赖链只可用相对导入
+import { SITE_MOBILE_BREAKPOINT_PX, SITE_MOBILE_MEDIA_QUERY } from '../../constants/breakpoints'
+
 export const FORUM_CONFIG = {
   DEFAULT_PAGE_SIZE: 20,
 } as const
 
-export const FORUM_MOBILE_BREAKPOINT_PX = 959
+export const FORUM_MOBILE_BREAKPOINT_PX = SITE_MOBILE_BREAKPOINT_PX
 
-export const FORUM_MOBILE_MEDIA_QUERY = `(max-width: ${FORUM_MOBILE_BREAKPOINT_PX}px)`
+export const FORUM_MOBILE_MEDIA_QUERY = SITE_MOBILE_MEDIA_QUERY
 
 export const IMAGE_UPLOAD_POLICY = {
   MAX_COUNT: 4,
