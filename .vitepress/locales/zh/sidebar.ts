@@ -6,13 +6,13 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/settings-labels': [{ text: '' }],
   '/manual': [
     {
-      text: '目录',
-      link: '/manual/client/',
-    },
-    {
       text: '使用手册',
       collapsed: false,
       items: [
+        {
+          text: '目录',
+          link: '/manual/client/',
+        },
         {
           text: '批量选择',
           link: '/manual/client/batch-selection',

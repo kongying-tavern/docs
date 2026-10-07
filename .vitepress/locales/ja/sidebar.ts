@@ -6,13 +6,13 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/settings-labels': [{ text: '' }],
   '/manual': [
     {
-      text: '目次',
-      link: '/manual/client/',
-    },
-    {
       text: 'ガイダンス',
       collapsed: false,
       items: [
+        {
+          text: '目次',
+          link: '/manual/client/',
+        },
         {
           text: '一括選択',
           link: '/manual/client/batch-selection',

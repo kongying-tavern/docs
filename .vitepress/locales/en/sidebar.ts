@@ -6,13 +6,13 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/settings-labels': [{ text: '' }],
   '/manual': [
     {
-      text: 'Table of Contents',
-      link: '/manual/client/',
-    },
-    {
       text: 'Handbook',
       collapsed: false,
       items: [
+        {
+          text: 'Table of Contents',
+          link: '/manual/client/',
+        },
         {
           text: 'Marking Multiple Pins',
           link: '/manual/client/batch-selection',
