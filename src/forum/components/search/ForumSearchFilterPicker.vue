@@ -4,14 +4,12 @@ import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/for
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { usePermissionData } from '~/forum/composables/auth/usePermissionData'
-import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
-import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
+import { useForumTagFilterOptions } from '~/forum/composables/view/useForumTagFilterOptions'
 import { FORUM_SEARCH_STATES, getForumSearchStateGroup } from '~/forum/services/forumSearchQuery'
 import { getForumSearchUserGroups } from '~/forum/services/forumSearchUsers'
 import { TOPIC_STATUS_GROUP_ORDER } from '~/forum/services/forumTopicStatus'
 import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
-import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
 import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
 
 const props = defineProps<{
@@ -30,10 +28,8 @@ const emit = defineEmits<{
 const { message } = useLocalized()
 const { getStateLabel } = useForumSearchToken()
 const { permissionData, ensureFreshData } = usePermissionData()
-const tagMap = computed(() => getTopicTagMap(message))
 const tagLabelGetter = getTopicTagLabelGetter()
-const labelStore = useForumLabelStore()
-const { getTagDisplay } = useTopicTagDisplay()
+const { options: tagOptions } = useForumTagFilterOptions()
 const activeIndex = ref(0)
 const pickerEl = ref<HTMLElement>()
 const authorSearch = ref('')
@@ -44,7 +40,7 @@ const rootOptions = computed(() => [
     facet: 'state' as const,
     icon: 'i-lucide-list-filter',
     label: message.value.forum.topic.searchFacets.state,
-    inlineLabel: message.value.forum.header.search.stateFilter,
+    inlineLabel: message.value.forum.topic.searchFacets.stateTab,
     title: message.value.forum.topic.searchFacets.stateTitle,
     description: message.value.forum.topic.searchFacets.stateDescription,
   },
@@ -52,7 +48,7 @@ const rootOptions = computed(() => [
     facet: 'tags' as const,
     icon: 'i-lucide-tags',
     label: message.value.forum.topic.searchFacets.tags,
-    inlineLabel: message.value.forum.topic.searchFacets.tags,
+    inlineLabel: message.value.forum.topic.searchFacets.tagsTab,
     title: message.value.forum.topic.searchFacets.tagsTitle,
     description: message.value.forum.topic.searchFacets.tagsDescription,
   },
@@ -60,18 +56,14 @@ const rootOptions = computed(() => [
     facet: 'author' as const,
     icon: 'i-lucide-user-round',
     label: message.value.forum.topic.searchFacets.author,
-    inlineLabel: message.value.forum.header.search.userFilter,
+    inlineLabel: message.value.forum.topic.searchFacets.authorTab,
     title: message.value.forum.topic.searchFacets.authorTitle,
     description: message.value.forum.topic.searchFacets.authorDescription,
   },
 ])
 
 const tagGroups = computed(() => {
-  // 静态 i18n 标签打底，合并仓库实时 CATA- 标签（不在静态表里的动态标签按原名展示）
-  const dynamicOptions = labelStore.categoryLabels.value
-    .filter(label => !tagLabelGetter.isLabel(label.name))
-    .map(label => [label.name, getTagDisplay(label.name)] as [string, string])
-  const options = [...tagMap.value, ...dynamicOptions] as Array<[string, string]>
+  const options = tagOptions.value.map(option => [option.id, option.label] as [string, string])
   return indexGroups([
     {
       id: 'platforms',
@@ -124,9 +116,7 @@ watch(() => props.facet, (facet) => {
     nextTick(() => authorSearchEl.value?.focus())
     void ensureFreshData()
   }
-  if (facet === 'tags')
-    void labelStore.loadLabels()
-})
+}, { immediate: true })
 
 watch(authorSearch, () => activeIndex.value = 0)
 
@@ -167,6 +157,7 @@ defineExpose({ moveActive, selectActive })
       <button
         v-for="option in rootOptions"
         :key="option.facet"
+        :data-facet="option.facet"
         type="button"
         class="forum-filter-picker-category"
         @click="emit('chooseFacet', option.facet)"

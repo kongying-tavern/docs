@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { SearchPageController } from './useSearchPageController'
 import type { ForumSearchFacet } from '~/forum/services/forumSearchQuery'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
+import { EmptyMorphFrame, EmptySwap } from '@/components/ui/empty-motion'
+import { SearchFieldTransition } from '@/components/ui/search-field'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
@@ -23,18 +25,33 @@ const { toggleFacet, leaveSearch, login } = props.actions
 const { message } = useLocalized()
 const { formatSearchQuery } = useForumSearchToken()
 const activeFacet = ref<ForumSearchFacet | null>(null)
+const filterStage = useTemplateRef<HTMLElement>('filterStage')
+watch(activeFacet, async (facet, previous) => {
+  await nextTick()
+  const panel = filterStage.value?.querySelector<HTMLElement>('.forum-filter-picker:not([inert])')
+  const target = facet === 'author'
+    ? panel?.querySelector<HTMLInputElement>('input')
+    : facet
+      ? panel?.querySelector<HTMLButtonElement>('button')
+      : panel?.querySelector<HTMLButtonElement>(`[data-facet="${previous}"]`)
+  target?.focus({ preventScroll: true })
+})
 const historyExpanded = ref(false)
 const historyCleared = ref(false)
 const visibleSearches = computed(() => historyExpanded.value ? recentSearches.value : recentSearches.value.slice(0, 6))
 const sectionTitle = computed(() => {
   if (activeFacet.value === 'state')
-    return message.value.forum.header.search.stateFilter
+    return message.value.forum.topic.searchFacets.stateTab
   if (activeFacet.value === 'tags')
-    return message.value.forum.topic.searchFacets.tags
+    return message.value.forum.topic.searchFacets.tagsTab
   if (activeFacet.value === 'author')
-    return message.value.forum.header.search.userFilter
+    return message.value.forum.topic.searchFacets.authorTab
   return message.value.forum.header.search.searchContent
 })
+function hideLeavingFilter(element: Element): void {
+  element.setAttribute('inert', '')
+  element.setAttribute('aria-hidden', 'true')
+}
 function runSearch(value: string): void {
   activeFacet.value = null
   if (value.trim())
@@ -57,6 +74,16 @@ function clearRecentSearches(): void {
 <template>
   <div class="forum-search-page">
     <header class="forum-search-page-header">
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        :aria-label="message.forum.header.search.leaveSearch"
+        :title="message.forum.header.search.leaveSearch"
+        @click="leaveSearch"
+      >
+        <span class="i-lucide-arrow-left size-4" aria-hidden="true" />
+      </Button>
       <ForumSearchInput
         v-model:query="queryDraft"
         class="flex-1 min-w-0"
@@ -75,25 +102,31 @@ function clearRecentSearches(): void {
         :sort="list?.sort ?? 'created'"
         @search="applySettings"
       />
-      <Button type="button" variant="ghost" class="px-4 shrink-0 h-12" @click="leaveSearch">
-        {{ message.ui.button.cancel }}
-      </Button>
     </header>
 
     <template v-if="!hasCriteria && !suggestionMode">
       <section class="forum-search-section" :aria-label="sectionTitle">
         <h2 class="forum-search-section-title">
-          {{ sectionTitle }}
+          <EmptySwap :swap-key="sectionTitle">
+            {{ sectionTitle }}
+          </EmptySwap>
         </h2>
-        <ForumSearchFilterPicker
-          :query="parseForumSearchQuery(queryDraft)"
-          :facet="activeFacet"
-          :users="suggestionTopics.rows.value.map(topic => topic.user)"
-          inline
-          @back="activeFacet = null"
-          @choose-facet="activeFacet = $event"
-          @toggle="toggleFacet"
-        />
+        <EmptyMorphFrame :morph-key="activeFacet ?? 'root'">
+          <div ref="filterStage" class="forum-search-filter-stage">
+            <SearchFieldTransition @before-leave="hideLeavingFilter">
+              <ForumSearchFilterPicker
+                :key="activeFacet ?? 'root'"
+                :query="parseForumSearchQuery(queryDraft)"
+                :facet="activeFacet"
+                :users="suggestionTopics.rows.value.map(topic => topic.user)"
+                inline
+                @back="activeFacet = null"
+                @choose-facet="activeFacet = $event"
+                @toggle="toggleFacet"
+              />
+            </SearchFieldTransition>
+          </div>
+        </EmptyMorphFrame>
       </section>
 
       <section v-if="!activeFacet && (recentSearches.length || historyCleared)" class="forum-search-section" :aria-label="message.forum.header.search.recentSearches">
@@ -180,6 +213,16 @@ function clearRecentSearches(): void {
   padding: 16px 0 20px;
 }
 
+.forum-search-filter-stage {
+  position: relative;
+  width: 100%;
+}
+
+.forum-search-filter-stage :deep(.search-panel-leave-active) {
+  position: absolute;
+  inset: 0 0 auto;
+}
+
 .forum-search-section-title {
   margin: 0 0 16px;
   padding-bottom: 12px;
@@ -224,13 +267,75 @@ function clearRecentSearches(): void {
   text-align: center;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 767px) {
   .forum-search-page-header {
     gap: 4px;
+    padding: 12px 0 8px;
   }
 
-  .forum-search-page-header > :last-child {
-    padding: 0 12px;
+  .forum-search-page-header :deep(.search-field-control) {
+    min-height: 40px;
+    gap: 6px;
+    border-color: transparent;
+    border-radius: 10px;
+    padding-inline: 10px;
+    background: var(--vp-c-default-soft);
+  }
+
+  .forum-search-page-header :deep(.search-field-control:focus-within) {
+    border-color: var(--vp-c-divider);
+  }
+
+  .forum-search-page-header :deep(.search-field-input) {
+    height: 38px;
+    padding-inline: 0;
+    font-size: 16px;
+  }
+
+  .forum-search-page-header :deep(.search-field-icon) {
+    width: 16px;
+    height: 16px;
+    color: var(--vp-c-text-3);
+  }
+
+  .forum-search-page-header :deep(.forum-filter-drawer-trigger) {
+    width: 40px;
+    height: 40px;
+    color: var(--vp-c-text-2);
+  }
+
+  .forum-search-page-header :deep(.forum-filter-drawer-trigger > span) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .forum-search-section {
+    padding: 16px 0;
+  }
+
+  .forum-search-section-title {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    font-size: calc(13px * var(--site-ui-scale));
+  }
+
+  .forum-search-section :deep(.forum-filter-picker-category) {
+    min-height: 80px;
+    gap: 8px;
+    font-weight: 400;
+  }
+
+  .forum-search-section :deep(.forum-filter-picker-category-icon) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .forum-search-history-grid {
+    column-gap: 8px;
+  }
+
+  .forum-search-history-item {
+    padding-inline: 8px;
   }
 }
 </style>

@@ -1,33 +1,18 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { useForumTagFilterOptions } from '~/forum/composables/view/useForumTagFilterOptions'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
-import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
-import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
 import ForumTagList from '../ui/ForumTagList.vue'
 
 const { message } = useLocalized()
 const { list } = useForumRoute()
 const copy = computed(() => message.value.forum.aside.tagFilter)
 
-const labelStore = useForumLabelStore()
-
-// 静态 i18n 标签打底，合并仓库实时 CATA- 标签（管理页增删后即时生效）；
-// 映射按当前语言即时重建，切换语言后列表与显示名同步刷新
-const labels = computed(() => {
-  const staticLabels = getTopicTagLabelGetter().toLabels([
-    ...getTopicTagMap(message).keys(),
-  ])
-  const dynamicLabels = labelStore.categoryLabels.value.map(label => label.name)
-  return [...new Set([...staticLabels, ...dynamicLabels])].filter((label): label is string => typeof label === 'string')
-})
+const { options } = useForumTagFilterOptions()
+const labels = computed(() => options.value.map(option => option.id))
 const active = computed(() => parseForumSearchQuery(list.value?.q ?? '').tags)
-
-onMounted(() => {
-  void labelStore.loadLabels()
-})
 </script>
 
 <template>
