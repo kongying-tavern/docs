@@ -1,9 +1,8 @@
 import type { DefaultTheme } from 'vitepress'
 
 const notFound: DefaultTheme.NotFoundOptions = {
-  title: 'PAGE NOT FOUND',
-  quote:
-    'But if you don\'t change your direction, and if you keep looking, you may end up where you are heading.',
+  title: 'Page not found',
+  quote: 'Maybe it went traveling with Venti.',
   linkLabel: 'Take me home',
 }
 
