@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import type { Member } from './Member'
+import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { getGiteeProfileHref } from '~/constants/site'
+import { formatMessage } from '~/utils/formatMessage'
 
 const props = defineProps<{
   member: Member
 }>()
+
+const { theme } = useData()
+const memberCard = computed(() => theme.value.team.memberCard)
 
 const avatarUrl = computed(() => {
   return (
@@ -23,7 +28,7 @@ const avatarUrl = computed(() => {
       :href="`https://github.com/sponsors/${member.socials?.github}`"
       no-icon
     >
-      <svg i-ic-sharp-favorite class="sponsor-icon" /> 赞助
+      <svg i-ic-sharp-favorite class="sponsor-icon" /> {{ memberCard.sponsor }}
     </VPLink>
 
     <figure class="avatar">
@@ -31,7 +36,7 @@ const avatarUrl = computed(() => {
         class="avatar-img skeleton"
         onload="this.classList.toggle('skeleton')"
         :src="avatarUrl"
-        :alt="`${member.name}'s Profile Picture`"
+        :alt="formatMessage(memberCard.profilePicture, { name: member.name })"
       >
     </figure>
 
@@ -61,7 +66,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.projects" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              Projects
+              {{ memberCard.projects }}
             </h2>
             <svg i-ph-code-bold class="code desc-icon" />
           </div>
@@ -81,7 +86,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.location" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              Location
+              {{ memberCard.location }}
             </h2>
             <svg i-ic-sharp-location-on class="desc-icon" />
           </div>
@@ -93,7 +98,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.languages" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              Languages
+              {{ memberCard.languages }}
             </h2>
             <svg i-ic-round-language class="desc-icon" />
           </div>
@@ -111,7 +116,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.website" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              Website
+              {{ memberCard.website }}
             </h2>
             <svg
               i-ic-baseline-attachment

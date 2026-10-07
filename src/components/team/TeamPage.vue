@@ -47,7 +47,7 @@ shuffleMembers(membersPartner)
       </template>
       <template #action>
         <VPLink href="https://github.com/orgs/kongying-tavern/teams">
-          了解更多关于团队
+          {{ theme.team.heroAction }}
         </VPLink>
       </template>
     </TeamHero>

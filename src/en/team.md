@@ -1,6 +1,8 @@
 ---
+title: Team
 layout: page
 aside: false
+wip: true
 ---
 
 <script setup lang="ts">

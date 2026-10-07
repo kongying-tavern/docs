@@ -1,5 +1,5 @@
 ---
-title: Team
+title: チーム
 layout: page
 aside: false
 wip: true
