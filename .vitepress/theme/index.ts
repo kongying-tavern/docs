@@ -1,19 +1,20 @@
 import type { Theme } from 'vitepress'
 import { PiniaColada } from '@pinia/colada'
-import { MotionPlugin } from '@vueuse/motion'
 import { createPinia } from 'pinia'
 import DefaultTheme, {
   VPBadge,
   VPImage,
   VPLink,
 } from 'vitepress/theme-without-fonts'
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
+import Blog from '@/layouts/Blog.vue'
 import Layout from '@/layouts/Layout.vue'
 import { FORUM_PATH_REGEX, isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/forumViewTransition'
 import { identifySessionIfEnabled, installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
 import { AsyncForumRouteView, preloadForumRouteView } from './components/AsyncForumRouteView'
+import { forumStartupKey } from './components/forumStartup'
 import handleRouteMatching from './lib/handleRouteMatching'
 import { loadFontStylesheets } from './loadFontStylesheets'
 
@@ -21,7 +22,6 @@ import 'uno.css'
 
 const pinia = createPinia()
 const AccordionPanels = defineAsyncComponent(() => import('@/components/ui/AccordionPanels.vue'))
-const Blog = defineAsyncComponent(() => import('./layouts/Blog.vue'))
 const Card = defineAsyncComponent(() => import('@/components/Card.vue'))
 const Coins = defineAsyncComponent(() => import('@/components/Coins.vue'))
 const Emoji = defineAsyncComponent(() => import('@/components/ui/Emoji.vue'))
@@ -81,6 +81,8 @@ export default {
   Layout,
 
   enhanceApp({ app, router, siteData }) {
+    const initialDocument = ref(true)
+    app.provide(forumStartupKey, initialDocument)
     googleAnalytics({
       id: 'G-Q2K9DXZCEY',
       debug: false,
@@ -89,7 +91,6 @@ export default {
     installTelemetry(app)
 
     app.use(pinia)
-    app.use(MotionPlugin)
     app.use(PiniaColada)
 
     app.component('AccordionPanels', AccordionPanels)
@@ -118,7 +119,12 @@ export default {
     }
 
     let resumingBlogNavigation = false
+    let initialNavigation = true
     router.onBeforeRouteChange = async (to) => {
+      if (initialNavigation)
+        initialNavigation = false
+      else
+        initialDocument.value = false
       scheduleForumPreloadIfForumPath(to)
       if (resumingBlogNavigation || !isForumToBlogNavigation(router.route.path, to))
         return

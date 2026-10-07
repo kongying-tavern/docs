@@ -53,7 +53,7 @@ defineExpose({
 </script>
 
 <template>
-  <BlurFade v-if="isEditing || showForm" class="slide-enter feedback-question" :duration="0.2" :delay="200">
+  <BlurFade v-if="isEditing || showForm" class="feedback-question" :duration="0.2" :delay="200">
     <div v-if="loading" class="loader mr-4" />
     <p v-if="loading">
       {{ theme.docReaction.loadingMsg }}

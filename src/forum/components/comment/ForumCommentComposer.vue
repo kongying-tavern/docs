@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { JSONContent } from '@tiptap/core'
 import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
-import { computed } from 'vue'
 import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -36,13 +35,10 @@ const emit = defineEmits<{
 const content = defineModel<JSONContent>({ required: true })
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()
-const entryMotion = computed(() => (props.entryAnimation && !reducedMotion.value
-  ? { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } }
-  : {}))
 </script>
 
 <template>
-  <div v-motion :initial="entryMotion.initial" :enter="entryMotion.enter" class="flex">
+  <div class="flex" :class="{ 'content-enter': props.entryAnimation && !reducedMotion }">
     <div class="user-avatar mr-2 flex w-[64px]">
       <UserAvatar size="lg" :src="avatar" :alt="username" />
     </div>

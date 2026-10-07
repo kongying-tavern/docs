@@ -66,7 +66,7 @@ const items = computed(() => {
           </span>
         </VPLink>
       </div>
-      <DocReaction v-if="showReaction" v-motion-slide-right variant="card" />
+      <DocReaction v-if="showReaction" class="content-enter content-enter-right" variant="card" />
     </div>
   </div>
 </template>

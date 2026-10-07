@@ -52,9 +52,9 @@ onBeforeUnmount(() => {
 
     <BlurFade
       v-if="selectedPayment && coins[selectedPayment]"
-      :duration="200"
+      :duration="0.2"
       :delay="200"
-      class="slide-enter coin-details font-[var(--vp-font-family-subtitle)]"
+      class="coin-details font-[var(--vp-font-family-subtitle)]"
     >
       <p>
         <span ref="icon" />

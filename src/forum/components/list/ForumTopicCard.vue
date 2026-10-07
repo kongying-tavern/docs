@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { useMediaQuery } from '@vueuse/core'
-import { computed } from 'vue'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import ForumCommentItem from '../comment/ForumCommentItem.vue'
@@ -27,7 +26,6 @@ function openTopic(): void {
     emit('activate', isMobile.value ? 'detail' : 'preview')
 }
 const { reducedMotion } = useSitePreferences()
-const commentEntryMotion = computed(() => reducedMotion.value ? {} : { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } })
 function activate(event: MouseEvent): void {
   if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)
     return
@@ -73,8 +71,8 @@ function activate(event: MouseEvent): void {
     </div>
     <div v-if="showComment && topic.relatedComments?.length && !compact && !inReply" class="topic-comment mt-4 px-4 py-2 rounded-md bg-[var(--vp-c-bg-soft)]" data-forum-card-interactive>
       <ForumCommentItem
-        v-for="commentItem in topic.relatedComments" :key="commentItem.id" v-motion
-        :initial="commentEntryMotion.initial" :enter="commentEntryMotion.enter" repo="Feedback" size="small"
+        v-for="commentItem in topic.relatedComments" :key="commentItem.id"
+        :class="{ 'content-enter': !reducedMotion }" repo="Feedback" size="small"
         :comment-count="-1" :comment-data="commentItem" :topic-author-id="topic.user.id" :topic-id="topic.id"
         @comment:click="openComments"
       />

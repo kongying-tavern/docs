@@ -124,9 +124,6 @@ const emojiPreload = useEmojiPreload()
 const charCount = ref(0)
 const percentage = computed(() => Math.round((100 / props.maxTextLength) * charCount.value))
 const { reducedMotion } = useSitePreferences()
-const entryMotion = computed(() => (props.entryAnimation && !reducedMotion.value
-  ? { initial: { y: -24, opacity: 0 }, enter: { y: 0, opacity: 1 } }
-  : {}))
 
 function syncEditorStats(ed: TiptapEditor): void {
   charCount.value = ed.storage.characterCount.characters()
@@ -372,11 +369,8 @@ onBeforeUnmount(() => {
   </ImageAttachments>
   <div
     ref="textarea-container"
-    v-motion
-    :initial="entryMotion.initial"
-    :enter="entryMotion.enter"
     class="forum-rich-textarea flex relative"
-    :class="cn('w-full flex', containerClass, { 'comment-editor-mobile': mobile, 'comment-editor-borderless': borderless })"
+    :class="cn('w-full flex', containerClass, { 'comment-editor-mobile': mobile, 'comment-editor-borderless': borderless, 'content-enter': entryAnimation && !reducedMotion })"
     @paste="handlePaste"
   >
     <div class="comment-area w-full">

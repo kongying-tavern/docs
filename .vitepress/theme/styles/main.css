@@ -12,9 +12,31 @@
 }
 
 :root {
+  /* 中文排版：全站唯一的排版属性声明点，依据 W3C《中文排版需求》(CLReq)。 */
+
+  /* 连续标点挤压（CLReq 6.3.2 的强制项）。Chrome 123+ / Edge 123+ 生效，且要求
+     字体带 halt 或 chws —— 缺一个整条属性就对该字体禁用，所以目前只有正文的
+     Sarasa 真正受它影响；HYWenHei 65W/85W 没有该特性，副标题层级的标点仍是全角。
+     normal 是规范初值，显式写出以免 UA 默认值变化。 */
+  text-spacing-trim: normal;
+
+  /* 中西文间距：汉字与拉丁字母/数字之间插 1/8 em（CLReq 下限）。标点两侧不插，
+     与显式空格不叠加。Chrome 140+ / Safari 18.4+ / Firefox 145+ 生效。 */
   text-autospace: normal;
+
+  /* 避头尾：锁死在 CLReq 6.1.1 的 basic 档（浏览器 default 断行即此档）。
+     auto 允许 UA 按行宽放宽到 loose，窄栏下会破例，故显式声明 normal。 */
+  line-break: normal;
+
   scrollbar-gutter: stable;
   --site-ui-scale: 1;
+}
+
+/* 等宽内容按原样渲染：等宽字格是语义的一部分，不该被自动间距推动，
+   标点宽度也不该随上下文变化。 */
+:is(code, kbd, samp, pre) {
+  text-autospace: no-autospace;
+  text-spacing-trim: space-all;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -251,6 +273,14 @@ img[data-emoji] {
 
 .forum-external-link {
   overflow-wrap: anywhere;
+}
+
+/* Match the default theme's public site: only sidebar pages reserve a
+   sidebar column between the brand and search. */
+@media (min-width: 60rem) {
+  .VPNavBar:not(.has-sidebar) > .wrapper > .container > .title {
+    min-width: 0;
+  }
 }
 
 .vp-doc h2 {
