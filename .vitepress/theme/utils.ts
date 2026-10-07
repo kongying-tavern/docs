@@ -1,9 +1,12 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 import { isObject } from 'lodash-es'
 
-import { camelCase } from './utils/text'
+/** Matches snake_case underscores before a lowercase letter */
+const UNDERSCORE_LOWER_REGEX = /_([a-z])/g
 
-export { escapeHtml } from './utils/text'
+function camelCase(str: string): string {
+  return str.replace(UNDERSCORE_LOWER_REGEX, (_, letter) => letter.toUpperCase())
+}
 
 const markdownLinkRegexp = /.md((\?|#).*)?$/
 
@@ -120,7 +123,14 @@ export function baseHelper<T extends Record<string, unknown> | unknown[]>(obj: T
   return modifyKey(modifiedLink as Record<string, unknown>, base) as T
 }
 
-export { hash } from './utils/text'
+export function hash(str: string): number {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i)
+    hash &= hash // Convert to 32bit integer
+  }
+  return hash
+}
 
 export function removeQueryParam(param: string) {
   const urlObj = new URL(location.href)
