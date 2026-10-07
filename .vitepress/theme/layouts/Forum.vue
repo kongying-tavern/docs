@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import ForumEntry from '@/components/ForumEntry.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import ForumGlobalDialogs from '~/forum/components/layout/ForumGlobalDialogs.vue'
 </script>
 
 <template>
-  <div class="slide-enter Forum">
+  <div class="Forum">
     <div class="forum-alert-slot">
       <PageAlertRegion class="mb-4" />
     </div>
     <slot />
-    <Content />
+    <ForumEntry />
   </div>
   <ForumGlobalDialogs />
 </template>
@@ -17,6 +18,8 @@ import ForumGlobalDialogs from '~/forum/components/layout/ForumGlobalDialogs.vue
 <style scoped>
 @import '@/styles/media.css';
 .Forum {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 0;
   margin: calc(var(--vp-layout-top-height, 0px) + 20px) auto 0;
