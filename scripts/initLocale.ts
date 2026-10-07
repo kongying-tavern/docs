@@ -163,37 +163,15 @@ function initLocale(options: Options): void {
 
   const suggestBarPath = join(ROOT, '.vitepress/locales/common/LanguageSuggestBar.ts')
   let suggestBar = readFileSync(suggestBarPath, 'utf8')
-  const zhEntry = [
-    '  root: {',
-    '    changeLanguage: \'我想更改此页面的语言为：\',',
-    '    continue: \'继续\',',
-    '  },',
-  ].join('\n')
-  const enEntry = [
-    '  en: {',
-    '    changeLanguage: \'I want to change the language of this page to:\',',
-    '    continue: \'Continue\',',
-    '  },',
-  ].join('\n')
-  const anchorEntry = template === 'zh' ? zhEntry : enEntry
-  const placeholderText = template === 'zh'
-    ? {
-        changeLanguage: '我想更改此页面的语言为：',
-        continue: '继续',
-      }
-    : {
-        changeLanguage: 'I want to change the language of this page to:',
-        continue: 'Continue',
-      }
-  if (!suggestBar.includes(anchorEntry))
+  // 结构化匹配模板条目：整条复制其字段作为占位文案，避免在新增字段时漏改这里的字面量
+  const anchorRe = template === 'zh'
+    ? /\n {2}root: \{\n([\s\S]*?)\n {2}\},/
+    : /\n {2}en: \{\n([\s\S]*?)\n {2}\},/
+  const anchorEntry = suggestBar.match(anchorRe)
+  if (!anchorEntry)
     fail(`${template} entry not found in LanguageSuggestBar.ts`)
-  const newEntry = [
-    `  ${code}: {`,
-    `    changeLanguage: '${placeholderText.changeLanguage}',`,
-    `    continue: '${placeholderText.continue}',`,
-    '  },',
-  ].join('\n')
-  suggestBar = suggestBar.replace(anchorEntry, `${anchorEntry}\n${newEntry}`)
+  const newEntry = `\n  ${code}: {\n${anchorEntry[1]}\n  },`
+  suggestBar = suggestBar.replace(anchorEntry[0], `${anchorEntry[0]}${newEntry}`)
   suggestBar = suggestBar.replace(
     SUGGEST_TYPE_RE,
     `\n  ja: LanguageSuggestBar\n  ${code}: LanguageSuggestBar\n}`,

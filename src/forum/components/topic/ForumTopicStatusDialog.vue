@@ -102,7 +102,7 @@ watch([topic, open], ([, isOpen]) => {
             type="button"
             data-size="default"
             :class="cn(FORUM_SELECT_TRIGGER_CLASSES, 'w-full')"
-            :aria-label="`${message.forum.header.navigation.groups.status}：${selectedText}`"
+            :aria-label="`${message.forum.header.navigation.groups.status}${message.ui.labelSeparator}${selectedText}`"
           >
             <span class="flex gap-2 items-center">
               <ForumTopicStatusBadge :status="selectedStatus" />

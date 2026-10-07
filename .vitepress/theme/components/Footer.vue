@@ -65,7 +65,7 @@ function isExpanded(title: string) {
       <div class="footer-qrcode justify-self-end">
         <img
           :src="qrcode"
-          alt="QR Code"
+          :alt="theme.footer.qrcodeAlt"
         >
         <h4>{{ theme.footer.qrcodeTitle }}</h4>
         <p text-center>

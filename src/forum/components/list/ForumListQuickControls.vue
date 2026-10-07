@@ -59,7 +59,7 @@ function changeSort(value: string): void {
             type="button"
             variant="ghost"
             size="sm"
-            :aria-label="`${message.forum.sidebar.listSort}：${sortLabel(sort)}`"
+            :aria-label="`${message.forum.sidebar.listSort}${message.ui.labelSeparator}${sortLabel(sort)}`"
           >
             {{ sortLabel(sort) }}
             <ChevronDown class="opacity-50 size-4" aria-hidden="true" />

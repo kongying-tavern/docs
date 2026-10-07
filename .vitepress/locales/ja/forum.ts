@@ -393,6 +393,7 @@ const forum: CustomConfig['forum'] = {
       label: '表示形式',
       card: 'カード',
       compact: 'コンパクト',
+      optionsTitle: '表示と並び順',
     },
     sort: {
       created: '作成日',

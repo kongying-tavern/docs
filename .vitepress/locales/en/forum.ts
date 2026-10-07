@@ -391,6 +391,7 @@ const forum: CustomConfig['forum'] = {
       label: 'View mode',
       card: 'Card',
       compact: 'Compact',
+      optionsTitle: 'Display and sorting',
     },
     sort: {
       created: 'Newest',

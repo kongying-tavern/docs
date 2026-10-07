@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@pinia/colada'
 import { computed, ref, watch } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { user } from '~/forum/api/gitee'
 import { authGuards } from '~/forum/composables/auth/auth-helpers'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
@@ -8,6 +9,7 @@ import { toast } from '~/services/telemetry/toast'
 export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const followState = ref<boolean | null>(null)
 
+  const { message } = useLocalized()
   const userInfo = useUserInfoStore()
 
   const currentUser = computed(() => authorizedUser || userInfo?.info?.login)
@@ -15,10 +17,9 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const disabled = ref(currentUser.value === targetUser)
 
   if (!targetUser) {
-    throw new Error('目标用户不能为空')
+    throw new Error('useFollowUser: targetUser is required')
   }
 
-  // 获取关注状态 - useQuery
   const {
     data: alreadyFollowed,
     error: getFollowStatusError,
@@ -26,10 +27,9 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
     key: () => ['follow-status', currentUser.value ?? '', targetUser] as const,
     query: () => user.getFollowStatus(currentUser.value!, targetUser),
     enabled: () => !disabled.value && !!currentUser.value,
-    staleTime: 1000 * 60 * 5, // 5分钟内不重新请求
+    staleTime: 1000 * 60 * 5,
   })
 
-  // 切换关注 - useMutation
   const {
     mutate: runToggleFollow,
     isLoading: following,
@@ -39,15 +39,15 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
       user.toggleFollowUser(params.follow, params.targetUser),
     onMutate: () => {
       if (!authGuards.requireLogin()) {
-        throw new Error('需要登录')
+        throw new Error(message.value.forum.auth.loginTips)
       }
       if (currentUser.value === targetUser) {
-        toast.warning('不能对自己进行该操作')
-        throw new Error('不能对自己进行该操作')
+        toast.warning(message.value.forum.errors.cannotDoToSelf)
+        throw new Error(message.value.forum.errors.cannotDoToSelf)
       }
     },
     onError: (error) => {
-      toast.error('关注失败，请稍后重试', { error })
+      toast.error(message.value.forum.errors.followFailed, { error })
     },
   })
 

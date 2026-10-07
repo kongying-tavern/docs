@@ -2,6 +2,7 @@ import type { CustomConfig } from '../types.ts'
 
 const footer: CustomConfig['footer'] = {
   qrcodeTitle: 'Discord Server',
+  qrcodeAlt: 'Discord invite QR code',
   qrcodeMessage: 'Contact us on Discord',
   qrcodeLink: 'https://discord.gg/aFe57AKZUF',
   navigation: [

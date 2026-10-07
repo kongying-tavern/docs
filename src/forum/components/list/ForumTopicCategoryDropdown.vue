@@ -22,6 +22,6 @@ const currentLabel = computed(() => options.value.find(option => option.id === v
     v-model="value"
     :label="message.forum.header.navigation.groups.type"
     :options="options"
-    :aria-label="`${message.forum.header.navigation.groups.type}：${currentLabel}`"
+    :aria-label="`${message.forum.header.navigation.groups.type}${message.ui.labelSeparator}${currentLabel}`"
   />
 </template>

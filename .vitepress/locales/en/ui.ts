@@ -26,6 +26,11 @@ const ui: CustomConfig['ui'] = {
     all: 'All',
     emoji: 'Emoji',
   },
+  labelSeparator: ': ',
+  payment: {
+    addressLabel: 'Payment address',
+    qrcodeAlt: '{name} QR code',
+  },
   sitemap: {
     blog: 'Blog posts',
     manual: 'User manual',

@@ -24,6 +24,11 @@ const ui = {
     all: '全部',
     emoji: '表情',
   },
+  labelSeparator: '：',
+  payment: {
+    addressLabel: '收款地址',
+    qrcodeAlt: '{name} 收款二维码',
+  },
   sitemap: {
     blog: '博客文章',
     manual: '使用手册',

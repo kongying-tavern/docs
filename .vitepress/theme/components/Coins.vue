@@ -2,6 +2,7 @@
 import { useData } from 'vitepress'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useQRCode } from '@/hooks/useQRCode'
+import { formatMessage } from '~/utils/formatMessage'
 import BlurFade from './ui/BlurFade.vue'
 
 const { theme } = useData()
@@ -12,6 +13,11 @@ const qrcodeText = computed(
   () => (selectedPayment.value ? coins.value[selectedPayment.value]?.address : ''),
 )
 const qrcode = useQRCode(qrcodeText)
+const qrcodeAlt = computed(() =>
+  selectedPayment.value
+    ? formatMessage(theme.value.ui.payment.qrcodeAlt, { name: coins.value[selectedPayment.value]?.name ?? '' })
+    : '',
+)
 const icon = ref()
 
 function updatePaymentType() {
@@ -58,14 +64,14 @@ onBeforeUnmount(() => {
     >
       <p>
         <span ref="icon" />
-        {{ coins[selectedPayment].name }} Address:<br><a
+        {{ coins[selectedPayment].name }} {{ theme.ui.payment.addressLabel }}{{ theme.ui.labelSeparator }}<br><a
           :href="coins[selectedPayment].address"
           :title="coins[selectedPayment].name"
           target="_blank"
           rel="noopener noreferrer"
         >{{ coins[selectedPayment].address }}</a>
       </p>
-      <img :src="qrcode" alt="QR Code">
+      <img :src="qrcode" :alt="qrcodeAlt">
     </BlurFade>
   </div>
 </template>

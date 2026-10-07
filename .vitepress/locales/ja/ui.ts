@@ -26,6 +26,11 @@ const ui: CustomConfig['ui'] = {
     all: 'すべて',
     emoji: '絵文字',
   },
+  labelSeparator: '：',
+  payment: {
+    addressLabel: '送金先アドレス',
+    qrcodeAlt: '{name} の QR コード',
+  },
   sitemap: {
     blog: 'ブログ記事',
     manual: 'ユーザーマニュアル',

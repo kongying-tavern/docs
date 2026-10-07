@@ -1,5 +1,6 @@
 const footer = {
-  qrcodeTitle: '反馈QQ群',
+  qrcodeTitle: '反馈 QQ 群',
+  qrcodeAlt: '反馈 QQ 群二维码',
   qrcodeMessage: '如遇问题欢迎联系我们',
   qrcodeLink: 'https://jq.qq.com/?_wv=1027&k=nbveGrfQ',
   navigation: [

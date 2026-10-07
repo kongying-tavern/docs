@@ -376,6 +376,7 @@ const forum = {
       label: '显示方式',
       card: '卡片',
       compact: '紧凑',
+      optionsTitle: '显示与排序',
     },
     sort: {
       created: '最近创建',

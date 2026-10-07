@@ -17,7 +17,7 @@ const { views, sorts } = useForumListControlOptions()
 const { message } = useLocalized()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
-const drawerTitle = computed(() => `${message.value.forum.header.view.label}、${message.value.forum.sidebar.listSort}`)
+const drawerTitle = computed(() => message.value.forum.header.view.optionsTitle)
 
 const items = computed<FORUM.TopicDropdownMenu[]>(() => [
   {
@@ -60,7 +60,7 @@ const items = computed<FORUM.TopicDropdownMenu[]>(() => [
       <button
         type="button"
         class="rounded-full inline-flex size-8 items-center justify-center focus-visible:outline-2 focus-visible:outline-ring hover:bg-[--vp-c-bg-soft]"
-        :aria-label="`${message.forum.header.view.label}、${message.forum.sidebar.listSort}`"
+        :aria-label="drawerTitle"
         aria-haspopup="menu"
       >
         <span class="i-lucide-settings icon-btn bg-[--vp-c-text-2] size-4" aria-hidden="true" />

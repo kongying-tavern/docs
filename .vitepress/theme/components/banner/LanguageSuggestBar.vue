@@ -95,7 +95,7 @@ function normalizeLink(
     class="py-8px w-full"
     :lang="suggestLang"
     dir="ltr"
-    aria-label="Choose country or region"
+    :aria-label="suggestTranslate.ariaLabel"
   >
     <div class="flex flex-wrap w-full items-center">
       <div class="text-align-left text-ui-14 max-md:w-85%">
