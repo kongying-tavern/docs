@@ -6,7 +6,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useLocalized } from '@/hooks/useLocalized'
 import EmojiData from '~/_data/emojis.json'
 
-import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
+import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import Emoji from './Emoji.vue'
 
 export interface EmojiItem {
@@ -29,7 +29,7 @@ const emit = defineEmits<{
 
 const { message } = useLocalized()
 
-const recentEmojis = useLocalStorage<Record<string, string[]>>('RECENT_EMOJIS', {})
+const recentEmojis = useLocalStorage<Record<string, string[]>>(RECENT_EMOJIS_STORAGE_KEY, {})
 
 // 立即修复无效的初始值
 if (!import.meta.env.SSR) {
