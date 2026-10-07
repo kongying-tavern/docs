@@ -111,8 +111,13 @@ export function resolveReactionViewer(authenticated: boolean, userId?: string | 
     : { identity: 'user:pending', ready: false }
 }
 
+/**
+ * 待提交去重用的缓存标识。资源串是不透明标识而非可解析 URL：
+ * 论坛资源是绝对 URL，文档页则是不带协议的冻结存储 key（见 pageReactionResource），
+ * 因此这里只做拼接，不能将其规范化。
+ */
 export function reactionCacheIdentity(resourceUrl: string, viewerIdentity: string): string {
-  return `${new URL(resourceUrl).href}|${viewerIdentity}`
+  return `${resourceUrl}|${viewerIdentity}`
 }
 
 export function normalizeReactionResponse(
