@@ -23,6 +23,7 @@ export function useSSORefreshManager(
   const ssoRefreshRetryCount = ref<Record<string, number>>({})
   const isManagerActive = ref(false)
   const watcherStopHandles: WatchStopHandle[] = []
+  const refreshGenerations: Record<string, number> = {}
 
   const shouldRefreshSSOToken = computed(() => {
     return (platform: keyof SSOLocaleAuth): boolean => {
@@ -113,11 +114,10 @@ export function useSSORefreshManager(
   }
 
   async function refreshSSOToken(platform: keyof SSOLocaleAuth): Promise<void> {
+    if (isRefreshingSSO.value[platform])
+      return
+    const generation = refreshGenerations[platform] ?? 0
     try {
-      if (isRefreshingSSO.value[platform]) {
-        return
-      }
-
       if (!tokenManager.validateToken()) {
         log.warn(LogGroup.SSO, `Cannot refresh ${platform} SSO token: main token is invalid`)
         return
@@ -139,19 +139,26 @@ export function useSSORefreshManager(
           throw createAuthError.networkError(new Error(`Unsupported SSO platform: ${platform}`))
       }
 
+      if (generation !== (refreshGenerations[platform] ?? 0))
+        return
+
       ssoRefreshRetryCount.value[platform] = 0
       log.success(LogGroup.SSO, `${platform} SSO token refresh successful`)
 
-      scheduleSSOTokenRefresh(platform)
+      if (isManagerActive.value)
+        scheduleSSOTokenRefresh(platform)
     }
     catch (error) {
+      if (generation !== (refreshGenerations[platform] ?? 0))
+        return
       log.error(LogGroup.SSO, `${platform} SSO token refresh failed`, error)
 
       const currentRetryCount = (ssoRefreshRetryCount.value[platform] || 0) + 1
       ssoRefreshRetryCount.value[platform] = currentRetryCount
 
-      if (currentRetryCount < MAX_SSO_REFRESH_RETRIES) {
-        setTimeout(() => {
+      if (currentRetryCount < MAX_SSO_REFRESH_RETRIES && isManagerActive.value) {
+        clearSSOTimer(platform)
+        ssoRefreshTimers.value[platform] = setTimeout(() => {
           if (tokenManager.validateToken() && isManagerActive.value) {
             refreshSSOToken(platform).catch(err =>
               log.warn(LogGroup.SSO, `SSO retry failed for ${platform}`, err),
@@ -161,7 +168,8 @@ export function useSSORefreshManager(
       }
     }
     finally {
-      isRefreshingSSO.value[platform] = false
+      if (generation === (refreshGenerations[platform] ?? 0))
+        isRefreshingSSO.value[platform] = false
     }
   }
 
@@ -254,6 +262,7 @@ export function useSSORefreshManager(
 
   function stopSSORefresh(platform: keyof SSOLocaleAuth): void {
     try {
+      refreshGenerations[platform] = (refreshGenerations[platform] ?? 0) + 1
       clearSSOTimer(platform)
       isRefreshingSSO.value[platform] = false
       ssoRefreshRetryCount.value[platform] = 0
@@ -265,7 +274,8 @@ export function useSSORefreshManager(
 
   function stopAllSSORefresh(): void {
     try {
-      Object.keys(ssoRefreshTimers.value).forEach((platform) => {
+      isManagerActive.value = false
+      new Set([...Object.keys(ssoRefreshTimers.value), ...Object.keys(isRefreshingSSO.value)]).forEach((platform) => {
         stopSSORefresh(platform as keyof SSOLocaleAuth)
       })
       // 连同 watcher 停止，防重复 start 叠加

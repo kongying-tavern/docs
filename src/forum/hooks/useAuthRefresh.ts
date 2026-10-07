@@ -30,6 +30,7 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
   let isAutoRefreshActive = false
   let stopAuthWatcher: (() => void) | null = null
   let listenersAttached = false
+  let autoRefreshGeneration = 0
 
   /** refresh_token 被服务端拒绝（400/401/403）视为致命；网络抖动/5xx 可重试 */
   function isFatalRefreshError(error: unknown): boolean {
@@ -46,12 +47,13 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
     }
   }
 
-  function stopBackgroundRetry(): void {
+  function stopBackgroundRetry(resetRounds = true): void {
     if (backgroundRetryTimer) {
       clearTimeout(backgroundRetryTimer)
       backgroundRetryTimer = null
     }
-    backgroundRetryRounds = 0
+    if (resetRounds)
+      backgroundRetryRounds = 0
   }
 
   function scheduleTokenRefresh(): void {
@@ -90,7 +92,7 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
 
   /** 兜底路径：低频后台重试，online/visibilitychange 可提前唤醒 */
   function scheduleBackgroundRetry(): void {
-    stopBackgroundRetry()
+    stopBackgroundRetry(false)
     backgroundRetryRounds++
 
     if (backgroundRetryRounds > MAX_BACKGROUND_RETRY_ROUNDS) {
@@ -152,12 +154,14 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
   }
 
   /** 经 Web Locks 互斥执行一次真实刷新 */
-  async function executeRefreshOnce(): Promise<void> {
+  async function executeRefreshOnce(isCurrent: () => boolean): Promise<void> {
     const authBefore = tokenManager.localAuth.value
     if (!authBefore?.refreshToken)
       throw createAuthError.tokenRefreshFailed()
 
     const doRefresh = async (): Promise<void> => {
+      if (!isCurrent())
+        return
       // 等待锁期间其他标签页可能已完成刷新
       const current = tokenManager.localAuth.value
       if (
@@ -169,11 +173,17 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
         return
       }
 
-      const refreshTokenValue = current?.refreshToken ?? authBefore.refreshToken
+      const refreshTokenValue = current?.refreshToken
+      if (!refreshTokenValue)
+        throw createAuthError.tokenRefreshFailed()
       const response = await oauth.refreshToken(refreshTokenValue)
 
       if (!response.success)
         throw response.error
+
+      // Never apply a response for credentials belonging to a cleared/replaced session.
+      if (!isCurrent() || tokenManager.localAuth.value?.refreshToken !== refreshTokenValue)
+        return
 
       const camelResponse = toCamelCaseObject(response.data as unknown as Record<string, unknown>)
 
@@ -201,10 +211,13 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
   }
 
   /** 快速重试递增后退，耗尽后转后台低频重试；致命错误终结会话 */
-  async function refreshWithRetry(): Promise<void> {
+  async function refreshWithRetry(isCurrent: () => boolean): Promise<void> {
     for (;;) {
       try {
-        await executeRefreshOnce()
+        await executeRefreshOnce(isCurrent)
+
+        if (!isCurrent())
+          return
 
         retryCount.value = 0
         backgroundRetryRounds = 0
@@ -214,6 +227,8 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
         return
       }
       catch (error) {
+        if (!isCurrent())
+          throw error
         if (isFatalRefreshError(error)) {
           log.error(LogGroup.REFRESH, 'Refresh token rejected by server, session terminated', error)
           throw createAuthError.tokenInvalid(error instanceof Error ? error : new Error(String(error)))
@@ -235,6 +250,9 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
         })
 
         await sleep(retryInterval)
+
+        if (!isCurrent())
+          return
 
         // 退避期间其他标签页可能已刷新成功
         if (tokenManager.isTokenValid.value) {
@@ -262,21 +280,22 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
 
     tokenManager.isTokenRefreshing.value = true
     tokenManager.lastRefreshAttempt.value = Date.now()
-    tokenManager.startRefreshTracking()
+    const task = tokenManager.startRefreshTracking()
+    const generation = autoRefreshGeneration
+    const session = tokenManager.getSessionGeneration()
+    const isCurrent = () => generation === autoRefreshGeneration
+      && session === tokenManager.getSessionGeneration()
 
     try {
-      await refreshWithRetry()
-      tokenManager.completeRefreshTracking(true)
+      await refreshWithRetry(isCurrent)
+      tokenManager.completeRefreshTracking(true, undefined, task)
     }
     catch (error) {
       // 先 settle 等待者再清会话，保证 waitForTokenReady 拿到带类型的错误
-      tokenManager.completeRefreshTracking(false, error)
-      if (error instanceof AuthError && error.requiresReauth())
+      tokenManager.completeRefreshTracking(false, error, task)
+      if (isCurrent() && error instanceof AuthError && error.requiresReauth())
         handleSessionExpired()
       throw error
-    }
-    finally {
-      tokenManager.isTokenRefreshing.value = false
     }
   }
 
@@ -335,6 +354,7 @@ export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>)
   }
 
   function stopAutoRefresh(): void {
+    autoRefreshGeneration++
     stopAuthWatcher?.()
     stopAuthWatcher = null
     isAutoRefreshActive = false

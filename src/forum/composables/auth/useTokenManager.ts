@@ -57,6 +57,7 @@ export function useTokenManager() {
 
   // Promise-based refresh tracking
   let refreshDeferred: Deferred<void> | null = null
+  let sessionGeneration = 0
 
   const isTokenValid = computed(() => {
     if (!localAuth.value?.accessToken)
@@ -118,6 +119,7 @@ export function useTokenManager() {
 
   function clearTokens(): void {
     log.info(LogGroup.TOKEN, 'Clearing all tokens')
+    sessionGeneration++
     localAuth.value = null
     lastRefreshAttempt.value = 0
     isTokenRefreshing.value = false
@@ -157,11 +159,16 @@ export function useTokenManager() {
     return refreshDeferred.promise
   }
 
-  function startRefreshTracking(): void {
+  function startRefreshTracking(): Deferred<void> {
     refreshDeferred = createDeferred<void>()
+    // 自动刷新可能没有等待者；仍保留原 Promise 的拒绝供并发调用者接收。
+    void refreshDeferred.promise.catch(() => {})
+    return refreshDeferred
   }
 
-  function completeRefreshTracking(success: boolean, error?: unknown): void {
+  function completeRefreshTracking(success: boolean, error?: unknown, task = refreshDeferred): void {
+    if (task !== refreshDeferred)
+      return
     if (success) {
       refreshDeferred?.resolve()
     }
@@ -169,6 +176,7 @@ export function useTokenManager() {
       refreshDeferred?.reject(error)
     }
     refreshDeferred = null
+    isTokenRefreshing.value = false
   }
 
   function validateToken(): boolean {
@@ -278,5 +286,6 @@ export function useTokenManager() {
     waitForRefreshComplete,
     startRefreshTracking,
     completeRefreshTracking,
+    getSessionGeneration: () => sessionGeneration,
   }
 }
