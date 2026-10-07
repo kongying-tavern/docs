@@ -1,7 +1,10 @@
 /* eslint-disable ts/naming-convention */
 /// <reference types="vite/client" />
 
-interface ImportMetaEnv {}
+interface ImportMetaEnv {
+  /** compact 反馈表单灰度百分比（0-100）；未设置或非法值走 legacy 表单 */
+  readonly VITE_FEEDBACK_FORM_COMPACT_PERCENT?: string
+}
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
