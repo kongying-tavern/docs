@@ -9,7 +9,7 @@ import DefaultTheme, {
 } from 'vitepress/theme-without-fonts'
 import { defineAsyncComponent } from 'vue'
 import Layout from '@/layouts/Layout.vue'
-import { isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/forumViewTransition'
+import { FORUM_PATH_REGEX, isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/forumViewTransition'
 import { identifySessionIfEnabled, installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { routes } from '../routes'
@@ -36,9 +36,6 @@ const ForumLabelAdminPage = defineAsyncComponent(() => import('~/forum/component
 const QQGroupList = defineAsyncComponent(() => import('@/components/QQGroupList.vue'))
 const ScratchToReveal = defineAsyncComponent(() => import('@/components/ui/ScratchToReveal.vue'))
 const SitemapPage = defineAsyncComponent(() => import('@/components/SitemapPage.vue'))
-
-/** 论坛页面路径：各语言的 /feedback 页与 SPA 子路由 /feedback/topic/... */
-const FORUM_PATH_REGEX = /(?:^|\/)feedback(?:[./?#]|$)/
 
 let forumPreloadScheduled = false
 

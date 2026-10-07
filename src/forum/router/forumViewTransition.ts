@@ -6,7 +6,8 @@ import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 type SharedRoute = Extract<ForumRoute, { name: 'topic' } | { name: 'user' }>
 
 const BLOG_POST_PATH_REGEX = /\/blog\/posts\/([^/?#]+)/
-const FORUM_PATH_REGEX = /(?:^|\/)feedback(?:\/|$)/
+/** 论坛路径：各语言 /feedback 页、SPA 子路由与 dist 的 feedback.html 形态 */
+export const FORUM_PATH_REGEX = /(?:^|\/)feedback(?:[./?#]|$)/
 
 export function resolveForumSharedRoute(current: ForumRoute, target: ForumRoute): SharedRoute | null {
   if (target.name === 'user')
