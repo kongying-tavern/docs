@@ -8,12 +8,12 @@
 .Blog {
   max-width: 1152px;
   margin: 0 auto;
-  padding: 28px 24px 64px;
+  padding: 24px 8px 64px;
 }
 
 @media (min-width: 768px) {
   .Blog {
-    padding: 48px 0 128px;
+    padding: 40px 24px 96px;
   }
 }
 </style>

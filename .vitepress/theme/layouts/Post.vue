@@ -162,8 +162,50 @@ if (params?.value) {
 </template>
 
 <style scoped>
+.post-aside .outline-title {
+  font-family: var(--vp-font-family-base);
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-text-1);
+}
+
+.post-aside .outline ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post-aside .outline li {
+  margin: 0;
+}
+
+.post-aside .outline a {
+  display: block;
+  padding: 6px 0 6px 12px;
+  border-left: 2px solid var(--vp-c-divider);
+  font-family: var(--vp-font-family-base);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--vp-c-text-2);
+  overflow-wrap: anywhere;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.post-aside .outline a:hover,
+.post-aside .outline a:focus-visible {
+  color: var(--vp-c-text-1);
+}
+
 .post-aside .outline a.active {
+  border-left-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
+  font-weight: 600;
 }
 
 .post-layout {
@@ -289,10 +331,307 @@ if (params?.value) {
 
 .post-content-container {
   margin: 0 auto;
+  max-width: 800px;
 }
 
 .post-layout.has-aside .post-content-container,
 .post-layout .post-container:has(.post-aside) .post-content-container {
   max-width: 688px;
+}
+
+.main :deep(.vp-doc) {
+  font-family: var(--vp-font-family-base);
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-wrap: break-word;
+}
+
+.main :deep(.timeline-dot) {
+  --post-timeline-dot-center: calc(28px + 24px * 0.7);
+  padding-top: 28px;
+  padding-bottom: 32px;
+  color: var(--vp-c-text-1);
+}
+
+.main :deep(.timeline-dot::before) {
+  top: calc(var(--post-timeline-dot-center) - 8px);
+}
+
+.main :deep(.timeline-dot:not(.timeline-dot + .timeline-dot)::after) {
+  top: var(--post-timeline-dot-center);
+  height: calc(100% - var(--post-timeline-dot-center));
+}
+
+.main :deep(.timeline-dot:not(.timeline-dot + .timeline-dot):not(:has(.timeline-dot-icon))::before) {
+  top: calc(var(--post-timeline-dot-center) - 6px);
+  width: 12px;
+  height: 12px;
+  margin-left: 2px;
+  border-width: 6px;
+  box-shadow:
+    0 0 0 2px var(--vp-c-bg),
+    0 0 0 4px color-mix(in srgb, var(--vp-c-brand) 12%, transparent);
+}
+
+.main :deep(.timeline-dot:has(.timeline-dot-icon)::before) {
+  top: calc(var(--post-timeline-dot-center) - 12px);
+}
+
+.main :deep(.timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon) {
+  top: calc(var(--post-timeline-dot-center) - 6.5px);
+}
+
+.main :deep(.timeline-dot-title) {
+  font-synthesis: none;
+  font-family: var(--vp-font-family-subtitle);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  border: 0;
+  text-wrap: balance;
+  scroll-margin-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 24px);
+}
+
+.main :deep(.timeline-dot-date) {
+  font-synthesis: none;
+  font-family: var(--vp-font-family-base);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+.main :deep(.timeline-dot-date-year) {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.main :deep(.timeline-dot > h2:not(.timeline-dot-title)),
+.main :deep(.timeline-dot > h3) {
+  font-family: var(--vp-font-family-base) !important;
+  font-size: 18px !important;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 24px 0 12px;
+  padding: 0;
+  border: 0;
+}
+
+.main :deep(.timeline-dot > h3) {
+  font-size: 16px !important;
+}
+
+.main :deep(.timeline-dot > ul) {
+  margin: 14px 0 0;
+  padding-left: 20px;
+}
+
+.main :deep(.timeline-dot li + li) {
+  margin-top: 8px;
+}
+
+.main :deep(.timeline-dot li::marker) {
+  color: var(--vp-c-text-3);
+}
+
+.main :deep(.timeline-dot strong) {
+  font-weight: 600;
+}
+
+@media (max-width: 959px) {
+  .main :deep(.timeline-dot-title) {
+    scroll-margin-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + 72px);
+  }
+}
+
+@media (min-width: 641px) {
+  .main :deep(.timeline-dot:not(.timeline-dot-concise)) {
+    padding-left: 152px;
+  }
+
+  .main :deep(.timeline-dot:not(.timeline-dot-concise)::before) {
+    left: 120px;
+  }
+
+  .main :deep(.timeline-dot:not(.timeline-dot-concise)::after) {
+    left: 127px;
+  }
+
+  .main :deep(.timeline-dot:not(.timeline-dot-concise):has(.timeline-dot-icon)::before) {
+    left: 116px;
+  }
+
+  .main :deep(.timeline-dot:not(.timeline-dot-concise):has(.timeline-dot-icon) .timeline-dot-icon) {
+    left: 121.5px;
+  }
+
+  .main :deep(.timeline-dot-date) {
+    top: 35px;
+    width: 104px;
+  }
+
+  .main :deep(.timeline-dot-date-md) {
+    justify-content: flex-end;
+    gap: 0;
+    align-items: baseline;
+  }
+
+  .main :deep(.timeline-dot-date-md) {
+    font-size: 14px;
+    letter-spacing: 0.015em;
+    white-space: pre;
+  }
+
+  .main :deep(.timeline-dot-date-month) {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--vp-c-text-1);
+  }
+
+  .main :deep(.timeline-dot-date-day) {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .main :deep(.timeline-dot-date-literal) {
+    margin: 0 2px;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--vp-c-text-3);
+  }
+
+  .main :deep(.timeline-dot-date-char) {
+    flex: none;
+  }
+
+  .main :deep(.timeline-dot .timeline-dot-date-year) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .main :deep(.timeline-dot-year-start) {
+    isolation: isolate;
+    min-height: 232px;
+  }
+
+  .main :deep(.timeline-dot-year-start) {
+    --post-timeline-dot-center: calc(92px + 24px * 0.7);
+    padding-top: 92px;
+  }
+
+  .main :deep(.timeline-dot-year-start .timeline-dot-date) {
+    top: 99px;
+  }
+
+  .main :deep(.timeline-dot-year-backdrop) {
+    position: absolute;
+    display: block;
+    top: calc(var(--post-timeline-dot-center) - 144px * 0.4);
+    right: 0;
+    z-index: -1;
+    font-family: var(--vp-font-family-title);
+    font-size: 144px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: transparent;
+    -webkit-text-stroke: 1.2px color-mix(in srgb, var(--vp-c-text-1) 18%, transparent);
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .main :deep(.timeline-dot-year-start) {
+    isolation: isolate;
+    min-height: 200px;
+  }
+
+  .main :deep(.timeline-dot.timeline-dot-year-start:has(.timeline-dot-date)) {
+    --post-timeline-dot-center: calc(64px + 13px * 1.5 + 4px + 22px * 0.7);
+    padding-top: 64px;
+  }
+
+  .main :deep(.timeline-dot-year-backdrop) {
+    position: absolute;
+    display: block;
+    top: calc(var(--post-timeline-dot-center) - 88px * 0.4);
+    right: 0;
+    z-index: -1;
+    font-family: var(--vp-font-family-title);
+    font-size: 88px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--vp-c-text-1) 16%, transparent);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .main :deep(.timeline-dot) {
+    --post-timeline-dot-center: calc(24px + 22px * 0.7);
+    padding: 24px 0 28px 32px;
+  }
+
+  .main :deep(.timeline-dot:has(.timeline-dot-date)) {
+    --post-timeline-dot-center: calc(24px + 13px * 1.5 + 4px + 22px * 0.7);
+  }
+
+  .main :deep(.timeline-dot:has(.timeline-dot-sr)) {
+    --post-timeline-dot-center: calc(24px + 13px * 0.75);
+  }
+
+  .main :deep(.timeline-dot::before) {
+    left: 0;
+  }
+
+  .main :deep(.timeline-dot::after) {
+    left: 7px;
+  }
+
+  .main :deep(.timeline-dot-date) {
+    position: static;
+    display: flex;
+    gap: 6px;
+    width: auto;
+    margin-bottom: 4px;
+  }
+
+  .main :deep(.timeline-dot-date-full) {
+    display: block;
+  }
+
+  .main :deep(.timeline-dot-date-year),
+  .main :deep(.timeline-dot-date-md) {
+    display: none;
+  }
+
+  .main :deep(.timeline-dot-date-char) {
+    flex: none;
+  }
+
+  .main :deep(.timeline-dot-title) {
+    font-size: 22px;
+  }
+
+  .main :deep(.timeline-dot:has(.timeline-dot-icon)::before) {
+    left: -4px;
+  }
+
+  .main :deep(.timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon) {
+    left: 1.5px;
+  }
 }
 </style>

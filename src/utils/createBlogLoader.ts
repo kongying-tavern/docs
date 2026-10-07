@@ -1,10 +1,12 @@
-import type { GitFileInfo } from './git'
+import type { GitFileInfo } from './git.ts'
 import type ForumAPI from '~/forum/api/types'
 import { join } from 'node:path'
 import { createContentLoader } from 'vitepress'
-import { BLOG_POST_ORDER } from '../constants/blog'
-import { parseAuthors } from '../forum/utils/frontmatter'
-import { getGitFileInfo } from './git'
+import { BLOG_POST_ORDER } from '../constants/blog.ts'
+import { DEFAULT_LOCALE } from '../constants/site.ts'
+import { parseAuthors } from '../forum/utils/frontmatter.ts'
+import { extractBlogExcerpt } from './blogExcerpt.ts'
+import { getGitFileInfo } from './git.ts'
 
 /** Matches language path in blog URLs */
 const BLOG_LANGUAGE_PATH_REGEX = /^\/([^/]+)\/blog\/posts\//
@@ -28,44 +30,19 @@ export interface BlogPost {
  */
 function extractLanguageFromUrl(url: string): string {
   const pathMatch = url.match(BLOG_LANGUAGE_PATH_REGEX)
-  return pathMatch ? pathMatch[1] : 'zh'
+  return pathMatch ? pathMatch[1] : DEFAULT_LOCALE
 }
 
 /**
  * 构建文件路径
  */
-function buildFilePath(url: string): string {
-  const sourcePath = url.startsWith('/src/') ? url.slice(1) : `src${url}`
+export function buildBlogFilePath(url: string): string {
+  // ContentLoader returns rewritten URLs in VitePress 2. Chinese URLs omit
+  // their locale directory, but Git history still belongs to src/zh/….
+  const sourceUrl = url.startsWith('/blog/posts/') ? `/${DEFAULT_LOCALE}${url}` : url
+  const sourcePath = sourceUrl.startsWith('/src/') ? sourceUrl.slice(1) : `src${sourceUrl}`
   // eslint-disable-next-line node/prefer-global/process
   return join(process.cwd(), `${sourcePath}.md`)
-}
-
-/**
- * 提取自定义摘要内容
- * 从第一个 ---- 到 <!-- more --> 之间的内容，保持原始 Markdown 格式
- */
-function extractCustomExcerpt(content: string): string | undefined {
-  if (!content)
-    return undefined
-
-  // 查找第一个 ---- 的位置
-  const firstDashIndex = content.indexOf('----')
-  if (firstDashIndex === -1)
-    return undefined
-
-  // 查找 <!-- more --> 的位置
-  const moreIndex = content.indexOf('<!-- more -->')
-  if (moreIndex === -1)
-    return undefined
-
-  // 提取中间的内容
-  const startIndex = firstDashIndex + 4 // 跳过 ----
-  const excerptContent = content.slice(startIndex, moreIndex).trim()
-
-  if (!excerptContent)
-    return undefined
-
-  return excerptContent
 }
 
 /**
@@ -86,7 +63,9 @@ function getConfiguredOrderIndex(lang: string, url: string): number {
 export function createBlogLoader(pattern: string) {
   return createContentLoader(pattern, {
     includeSrc: true,
-    excerpt: true,
+    excerpt: (file) => {
+      file.excerpt = extractBlogExcerpt(file.content)
+    },
     transform: async (rawData) => {
       const blogPosts: BlogPost[] = []
 
@@ -94,7 +73,7 @@ export function createBlogLoader(pattern: string) {
       const promises = rawData.map(async (page) => {
         try {
           const lang = extractLanguageFromUrl(page.url)
-          const filePath = buildFilePath(page.url)
+          const filePath = buildBlogFilePath(page.url)
 
           // 并行获取Git信息和解析作者
           const [gitInfo, authors] = await Promise.all([
@@ -102,9 +81,8 @@ export function createBlogLoader(pattern: string) {
             Promise.resolve(parseAuthors(page.frontmatter || {})),
           ])
 
-          // 提取自定义摘要，如果没有则使用 VitePress 默认摘要
-          const customExcerpt = extractCustomExcerpt(page.src || '')
-          const excerpt = customExcerpt || page.excerpt
+          // VitePress renders the excerpt; cards must not contain nested links.
+          const excerpt = page.excerpt?.replace(/<\/?a\b[^>]*>/g, '')
 
           const blogPost: BlogPost = {
             title: page.frontmatter?.title || 'Untitled',

@@ -18,7 +18,7 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
 </script>
 
 <template>
-  <div :data-forum-blog-post="blogSlug" class="slide-enter mb-12 pb-2 text-center text-left flex flex-col w-full items-center">
+  <div :data-forum-blog-post="blogSlug" class="blog-post-header slide-enter flex flex-col w-full items-center">
     <!-- 面包屑 -->
     <nav class="text-sm c-[var(--vp-c-text-2)] flex gap-2 items-center">
       <VPLink class="hover:underline" href="../../">
@@ -38,7 +38,7 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
     </h1>
 
     <!-- meta -->
-    <div class="text-sm mt-5 flex gap-3 items-center">
+    <div class="blog-post-meta text-sm mt-5 flex gap-3 items-center">
       <template v-if="authors.length === 1">
         <VPLink
           class="c-[var(--vp-c-text-2)] flex gap-1.5 items-center hover:underline"
@@ -109,10 +109,49 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
 </template>
 
 <style scoped>
-/* 封面比正文容器更宽：两侧对称溢出并保持居中 */
+.blog-post-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.blog-post-header nav {
+  font-family: var(--vp-font-family-base);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.blog-post-header h1 {
+  font-family: var(--vp-font-family-title);
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  margin-top: 20px;
+}
+
+.blog-post-meta {
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 8px;
+  font-family: var(--vp-font-family-base);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.blog-post-header :deep(time) {
+  font-family: var(--vp-font-family-base);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* Keep the wider cover centered while respecting the mobile page gutters. */
 .post-cover {
-  width: min(820px, 82vw);
-  max-width: min(820px, 82vw);
+  width: min(820px, calc(100vw - 48px));
+  max-width: min(820px, calc(100vw - 48px));
   flex-shrink: 0;
   align-self: center;
 }

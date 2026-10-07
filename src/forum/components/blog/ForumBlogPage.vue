@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { BlogPost } from '~/utils/createBlogLoader'
-import { useMediaQuery } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
 import { data as allPosts } from '~/_data/posts.data'
-import { renderTiptapToHtml } from '~/forum/services/forumContentRenderer'
 
 const { lang, frontmatter } = useData()
 
@@ -20,12 +18,8 @@ const posts = computed(() => {
   return result
 })
 
-// 移动端跳过 featured 大卡，全部文章以普通列表展示
-const isMediumUp = useMediaQuery('(min-width: 768px)')
+// Keep SSR and client markup identical; CSS selects the responsive layout.
 const featured = computed(() => posts.value.slice(0, 3))
-const restPosts = computed(() => posts.value.slice(3))
-const listPosts = computed(() => (isMediumUp.value ? restPosts.value : posts.value))
-const showSectionHeader = computed(() => (isMediumUp.value ? restPosts.value.length > 0 : posts.value.length > 0))
 
 function buildPostLink(url: string) {
   return `./posts/${url.slice(url.lastIndexOf('/') + 1)}`
@@ -60,40 +54,19 @@ function coverProps(post: BlogPost) {
     decoding: 'async',
   }
 }
-
-// 从正文提取最新更新：第一个 timeline 版本的标题 + 首条版本组的前两条条目
-const TIMELINE_BLOCK_RE = /^::: timeline (.+)\n([\s\S]*?)^:::[^\n]*$/m
-const VERSION_HEADING_RE = /^#{2,3} .+$/m
-const LIST_ITEM_RE = /^[-*] (.+)$/gm
-
-function postExcerpt(post: BlogPost): string {
-  const match = post.content?.match(TIMELINE_BLOCK_RE)
-  if (!match)
-    return ''
-
-  // 取第一个版本子标题（##/###）之后的条目组
-  const groups = match[2].split(VERSION_HEADING_RE)
-  const versionGroup = groups.length > 1 ? groups[1] : match[2]
-  const items = [...versionGroup.matchAll(LIST_ITEM_RE)].slice(0, 2).map(item => item[1])
-
-  return renderTiptapToHtml({ type: 'doc', content: [
-    { type: 'paragraph', content: [{ type: 'text', text: match[1].trim(), marks: [{ type: 'bold' }] }] },
-    ...(items.length ? [{ type: 'bulletList', content: items.map(text => ({ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text }] }] })) }] : []),
-  ] })
-}
 </script>
 
 <template>
   <section
-    v-if="featured.length && isMediumUp"
-    class="border-b-[var(--vp-c-divider)] border-b-1px border-b-solid md:grid md:grid-cols-3"
+    v-if="featured.length"
+    class="blog-featured border-b-[var(--vp-c-divider)] border-b-1px border-b-solid md:grid md:grid-cols-3"
   >
     <!-- 主 featured：大卡（2/3 宽） -->
     <a
-      class="group px-4 pt-4 rounded-xl flex flex-col transition-colors duration-200 md:px-6 md:pt-5 hover:bg-[var(--vp-c-bg-soft)] md:col-span-2"
+      class="blog-primary group px-4 pt-4 rounded-xl flex flex-col transition-colors duration-200 md:px-6 md:pt-5 hover:bg-[var(--vp-c-bg-soft)] md:col-span-2"
       :href="buildPostLink(featured[0].url)"
     >
-      <div class="rounded-xl bg-[var(--vp-c-bg-soft)] overflow-hidden">
+      <div class="blog-cover rounded-xl bg-[var(--vp-c-bg-soft)] overflow-hidden">
         <img
           class="w-full aspect-[1200/630] transition-transform duration-300 object-cover group-hover:scale-103"
           :src="coverProps(featured[0]).src"
@@ -115,9 +88,9 @@ function postExcerpt(post: BlogPost): string {
           {{ featured[0].title }}
         </h2>
         <div
-          v-if="postExcerpt(featured[0])"
-          class="prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-3"
-          v-html="postExcerpt(featured[0])"
+          v-if="featured[0].excerpt"
+          class="blog-excerpt prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-3"
+          v-html="featured[0].excerpt"
         />
       </div>
       <div class="mt-5 pb-4 flex gap-4 items-center justify-between">
@@ -147,10 +120,10 @@ function postExcerpt(post: BlogPost): string {
       <a
         v-for="post in featured.slice(1)"
         :key="post.url"
-        class="group py-5 rounded-xl flex flex-col transition-colors duration-200 md:px-6 hover:bg-[var(--vp-c-bg-soft)]"
+        class="blog-secondary group py-5 rounded-xl flex flex-col transition-colors duration-200 md:px-6 hover:bg-[var(--vp-c-bg-soft)]"
         :href="buildPostLink(post.url)"
       >
-        <div class="rounded-xl bg-[var(--vp-c-bg-soft)] overflow-hidden">
+        <div class="blog-cover rounded-xl bg-[var(--vp-c-bg-soft)] overflow-hidden">
           <img
             class="w-full aspect-[1200/630] transition-transform duration-300 object-cover group-hover:scale-103"
             :src="coverProps(post).src"
@@ -183,25 +156,25 @@ function postExcerpt(post: BlogPost): string {
   </section>
 
   <header
-    v-if="showSectionHeader"
-    class="pb-10 pt-6 md:px-6 md:pb-12 md:pt-16"
+    v-if="posts.length"
+    class="blog-section-header pb-10 pt-6 md:px-6 md:pb-12 md:pt-16"
   >
     <h1 class="text-3xl leading-[1.25] tracking-tight font-bold md:text-4xl">
       {{ frontmatter.title }}
     </h1>
   </header>
 
-  <ul class="c-[var(--vp-c-text-1)]">
+  <ul class="blog-posts c-[var(--vp-c-text-1)]">
     <li
-      v-for="post in listPosts"
+      v-for="post in posts"
       :key="post.url"
-      class="mb-3 pr-4 rounded-xl transition-colors duration-200 relative last:mb-0 md:mb-4 md:ml-6 md:pr-6 hover:bg-[var(--vp-c-bg-soft)] md:max-h-52 md:overflow-hidden"
+      class="mb-3 pr-4 rounded-xl transition-colors duration-200 relative last:mb-0 md:mb-4 md:ml-6 md:pr-6 hover:bg-[var(--vp-c-bg-soft)]"
     >
       <a
-        class="group flex flex-col md:flex-row"
+        class="blog-post-link group flex"
         :href="buildPostLink(post.url)"
       >
-        <div class="rounded-xl bg-[var(--vp-c-bg-soft)] shrink-0 w-full overflow-hidden md:w-[350px] md:self-start">
+        <div class="blog-cover rounded-xl bg-[var(--vp-c-bg-soft)] shrink-0 w-full overflow-hidden md:w-[350px] md:self-start">
           <img
             class="w-full aspect-[1200/630] transition-transform duration-300 object-cover group-hover:scale-103"
             :src="coverProps(post).src"
@@ -213,7 +186,7 @@ function postExcerpt(post: BlogPost): string {
           >
         </div>
 
-        <div class="pb-5 pr-5 pt-5 flex grow flex-col gap-2.5 md:p-6">
+        <div class="blog-post-copy pb-5 pr-5 pt-5 flex grow flex-col gap-2.5 min-w-0 md:p-6">
           <span
             v-if="postType(post)"
             class="text-sm c-[var(--vp-c-text-3)] tracking-wide font-[var(--vp-font-family-subtitle)]"
@@ -224,9 +197,9 @@ function postExcerpt(post: BlogPost): string {
             {{ post.title }}
           </h2>
           <div
-            v-if="postExcerpt(post)"
-            class="prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none hidden line-clamp-2 md:block md:line-clamp-1"
-            v-html="postExcerpt(post)"
+            v-if="post.excerpt"
+            class="blog-excerpt prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-2"
+            v-html="post.excerpt"
           />
           <div class="mt-auto flex gap-4 items-center justify-between">
             <div class="flex -space-x-2">
@@ -252,3 +225,160 @@ function postExcerpt(post: BlogPost): string {
     </li>
   </ul>
 </template>
+
+<style scoped>
+.blog-featured {
+  display: none;
+}
+
+.blog-post-link {
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.blog-cover {
+  outline: 1px solid oklch(0 0 0 / 0.1);
+  outline-offset: -1px;
+}
+
+:global(.dark) .blog-cover {
+  outline-color: oklch(1 0 0 / 0.1);
+}
+
+.blog-section-header {
+  padding: 8px 16px 24px;
+}
+
+.blog-posts > li {
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.blog-post-copy {
+  gap: 10px;
+  padding: 0;
+}
+
+.blog-post-copy > h2,
+.blog-secondary h3 {
+  font-size: 22px;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.blog-primary h2 {
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.blog-post-copy > span,
+.blog-featured span {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.blog-excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.75;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.blog-primary .blog-excerpt {
+  font-size: 15px;
+  -webkit-line-clamp: 4;
+}
+
+.blog-post-copy > div:last-child {
+  padding-top: 6px;
+}
+
+.blog-post-link:focus-visible,
+.blog-featured a:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 3px;
+}
+
+.blog-excerpt :deep(p),
+.blog-excerpt :deep(ul) {
+  margin: 0;
+}
+
+.blog-excerpt :deep(p + ul) {
+  margin-top: 4px;
+}
+
+.blog-excerpt :deep(ul) {
+  padding-left: 1.2em;
+  list-style: disc;
+}
+
+.blog-excerpt :deep(li) {
+  margin: 0;
+  padding-left: 2px;
+}
+
+.blog-excerpt :deep(li::marker) {
+  color: var(--vp-c-text-3);
+}
+
+.blog-excerpt :deep(strong) {
+  font-weight: 500;
+}
+
+@media (min-width: 768px) {
+  .blog-featured {
+    display: grid;
+  }
+
+  .blog-posts > li:nth-child(-n + 3) {
+    display: none;
+  }
+
+  .blog-featured + .blog-section-header:has(+ .blog-posts > li:last-child:nth-child(-n + 3)) {
+    display: none;
+  }
+
+  .blog-post-link {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .blog-post-link > .blog-cover {
+    width: clamp(240px, 32%, 340px);
+  }
+
+  .blog-section-header {
+    padding: 40px 20px 24px;
+  }
+
+  .blog-primary,
+  .blog-secondary {
+    padding: 20px;
+  }
+
+  .blog-primary {
+    padding-bottom: 0;
+  }
+
+  .blog-secondary h3 {
+    font-size: 20px;
+  }
+
+  .blog-post-copy {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-cover img {
+    transition: none;
+    transform: none;
+  }
+}
+</style>
