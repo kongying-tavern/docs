@@ -78,6 +78,14 @@ export function quoteReactionResource(topicId: string, environment: ReactionEnvi
   return `${topicReactionResource(topicId, environment)}/quotes`
 }
 
+/**
+ * 文档页 reaction 资源：`yuanshen.site` + 站点内路径（无协议），调用方传入已含 base 的路径。
+ * 该字符串是服务端既有的存储 key，格式冻结不可规范化——改动会让历史计数失联（需数据迁移）。
+ */
+export function pageReactionResource(path: string): string {
+  return `yuanshen.site${path}`
+}
+
 /** One stable reaction identity per successfully created quoting topic. */
 export async function recordPublishedTopicQuote(
   topic: Pick<ForumAPI.Topic, 'id' | 'quotedTopic'>,

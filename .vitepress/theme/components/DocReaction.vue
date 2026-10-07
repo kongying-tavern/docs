@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
 import { computed, useTemplateRef } from 'vue'
-import { useReactionStore } from '~/forum/stores/useReaction'
+import { useForumReaction } from '~/forum/composables/data/useForumReaction'
 import DocFeedbackForm from './DocReactionForm.vue'
 
 const { variant = 'default', showForm = true } = defineProps<{
@@ -10,33 +10,38 @@ const { variant = 'default', showForm = true } = defineProps<{
 }>()
 
 const { theme } = useData()
-const reaction = useReactionStore()
+const route = useRoute()
+const {
+  error,
+  lastResult,
+  reactionState,
+  reactionSubmitLoading,
+  setReactionState,
+} = useForumReaction(() => ({ kind: 'page' as const, path: route.path }))
 const feedbackForm = useTemplateRef('feedbackForm')
 
 // @unocss-include
 const feedbackStateClass = computed(() => {
-  if (!reaction.setReactionResponse)
+  if (!lastResult.value)
     return 'hide'
 
-  const isSuccess = reaction.setReactionResponse?.statusCode === 200
-  return isSuccess ? 'doc-reaction-feedback-state-success' : 'doc-reaction-feedback-state-error'
+  return lastResult.value === 'success' ? 'doc-reaction-feedback-state-success' : 'doc-reaction-feedback-state-error'
 })
 
 const feedbackMessage = computed(() => {
   if (feedbackForm.value?.isEditing)
     return theme.value.docReaction.feedbackSuccessMsg
-  if (!reaction.setReactionResponse)
+  if (!lastResult.value)
     return theme.value.docReaction.feedbackMsg
 
-  const isSuccess = reaction.setReactionResponse?.statusCode === 200
-  return isSuccess
+  return lastResult.value === 'success'
     ? theme.value.docReaction.feedbackSuccessMsg
     : theme.value.docReaction.feedbackFailMsg
 })
 
 const additionalMessage = computed((): string => {
-  const isFormEditingOrSuccess = feedbackForm.value?.isEditing || reaction.setReactionResponse?.statusCode === 200
-  const isDislikeState = reaction.reactionState === 'dislike'
+  const isFormEditingOrSuccess = feedbackForm.value?.isEditing || lastResult.value === 'success'
+  const isDislikeState = reactionState.value === 'dislike'
 
   return (isFormEditingOrSuccess && isDislikeState)
     ? theme.value.docReaction.badFeedbackSuccessMsg
@@ -65,19 +70,19 @@ const styles = computed(() => {
 <template>
   <div id="doc-feedback" class="feedback" :class="styles.container">
     <p flex items-center :class="styles.message">
-      <span v-if="reaction.reactionSubmitLoading" class="loader feedback-state" />
+      <span v-if="reactionSubmitLoading" class="loader feedback-state" />
       <span :class="feedbackStateClass" />
       {{ feedbackMessage }}
 
-      <template v-if="variant === 'card' && reaction.error?.message">
-        ({{ reaction.error?.message }} )
+      <template v-if="variant === 'card' && error?.message">
+        ({{ error?.message }} )
       </template>
 
       <br>
 
       <template v-if="variant !== 'card'">
         {{ additionalMessage }}
-        {{ reaction.error?.message }}
+        {{ error?.message }}
       </template>
     </p>
     <div class="feedback-con" :class="styles.buttonContainer">
@@ -85,8 +90,8 @@ const styles = computed(() => {
         :tooltip="theme.docReaction.good"
         role="button"
         class="feedback-btn good"
-        :class="{ active: reaction.reactionState === 'like', [styles.button]: true }"
-        @click="reaction.setReactionState('like')"
+        :class="{ active: reactionState === 'like', [styles.button]: true }"
+        @click="setReactionState('like')"
       >
         <i i-custom-thumb />
       </span>
@@ -94,13 +99,13 @@ const styles = computed(() => {
         :tooltip="theme.docReaction.bad"
         role="button"
         class="feedback-btn bad"
-        :class="{ active: reaction.reactionState === 'dislike', [styles.button]: true }"
-        @click="reaction.setReactionState('dislike')"
+        :class="{ active: reactionState === 'dislike', [styles.button]: true }"
+        @click="setReactionState('dislike')"
       >
         <i i-custom-thumb rotate-180 />
       </span>
     </div>
-    <DocFeedbackForm v-if="variant === 'default' && showForm" ref="feedbackForm" :show-form="reaction.reactionState === 'dislike' && reaction.setReactionResponse?.statusCode === 200" />
+    <DocFeedbackForm v-if="variant === 'default' && showForm" ref="feedbackForm" :show-form="reactionState === 'dislike' && lastResult === 'success'" />
   </div>
 </template>
 

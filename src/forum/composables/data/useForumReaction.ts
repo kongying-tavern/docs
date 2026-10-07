@@ -2,7 +2,8 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { INTER_KNOT } from '~/apis/interknot.site/api'
 import type { TopicReaction } from '~/forum/services/forumReaction'
 import { useMutation, useQuery, useQueryCache, useQueryState } from '@pinia/colada'
-import { computed, reactive, toValue } from 'vue'
+import { withBase } from 'vitepress'
+import { computed, reactive, ref, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { reactions } from '~/apis/interknot.site'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
@@ -10,6 +11,7 @@ import {
   coordinateReactionMutation,
   forumReactionResource,
   normalizeReactionResponse,
+  pageReactionResource,
   quoteReactionResource,
   reactionCacheIdentity,
   reactionEnvironmentForOrigin,
@@ -27,12 +29,15 @@ const pendingReactionKeys = reactive(new Set<string>())
 export type ForumReactionTarget
   = | { topicId: string, commentId?: string, kind?: never }
     | { topicId: string, kind: 'quote', commentId?: never }
+    | { kind: 'page', path: string }
 
 function useForumReactionContext(target: MaybeRefOrGetter<ForumReactionTarget>) {
   const userAuth = useUserAuthStore()
   const userInfo = useUserInfoStore()
   const resourceUrl = computed(() => {
     const current = toValue(target)
+    if (current.kind === 'page')
+      return pageReactionResource(withBase(current.path))
     const environment = reactionEnvironmentForOrigin(import.meta.env.SSR ? 'http://reaction.invalid' : location.origin)
     return current.kind === 'quote'
       ? quoteReactionResource(current.topicId, environment)
@@ -56,9 +61,15 @@ export function useForumReaction(
   const { message } = useLocalized()
   const { resourceUrl, viewer, userId, viewerIdentity, queryKey, pendingKey } = useForumReactionContext(target)
 
+  const lastResult = ref<'success' | 'error' | null>(null)
+
   const query = useQuery<TopicReaction>({
     key: () => queryKey.value,
-    enabled: () => !import.meta.env.SSR && viewer.value.ready && Boolean(toValue(target).topicId) && toValue(enabled),
+    enabled: () => {
+      const current = toValue(target)
+      const hasResource = current.kind === 'page' ? current.path.length > 0 : Boolean(current.topicId)
+      return !import.meta.env.SSR && viewer.value.ready && hasResource && toValue(enabled)
+    },
     staleTime: 60_000,
     refetchOnMount: options.refetchOnMount,
     query: async () => {
@@ -111,9 +122,11 @@ export function useForumReaction(
       })
       if (acked)
         trackOp(OpsEvents.reactionToggle)
+      lastResult.value = acked ? 'success' : null
       return acked
     }
     catch (error) {
+      lastResult.value = 'error'
       toast.error(message.value.forum.errors.operationFailedRetry, { error, scene: 'rc' })
       return false
     }
@@ -124,6 +137,8 @@ export function useForumReaction(
     resourceUrl,
     viewerIdentity,
     viewerReady: computed(() => viewer.value.ready),
+    reactionState: computed(() => query.data.value?.state ?? null),
+    lastResult,
     setReactionState,
     reactionSubmitLoading: computed(() => pendingReactionKeys.has(pendingKey.value)),
   }
