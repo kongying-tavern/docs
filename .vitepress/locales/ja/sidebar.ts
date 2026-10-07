@@ -53,6 +53,7 @@ const sidebar: DefaultTheme.SidebarMulti = {
     },
     {
       text: 'よくある質問',
+      collapsed: false,
       items: [
         {
           text: 'ゲームアカウントが凍結される可能性は？',

@@ -1,7 +1,7 @@
 import type { CustomConfig } from '../types.ts'
 
 const asideLinks: CustomConfig['asideLinks'] = {
-  title: 'Links',
+  title: 'Quick links',
   starOnGitHub: 'Star on GitHub',
   contactUsText: 'Chat on Discord',
   contactUsLink: 'https://discord.gg/SWz6RTWNkm',

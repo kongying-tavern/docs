@@ -2,7 +2,7 @@ import type { CustomConfig } from '../types.ts'
 
 const asideLinks: CustomConfig['asideLinks'] = {
   title: 'クイックリンク',
-  starOnGitHub: 'GitHub でスター',
+  starOnGitHub: 'GitHub でスターを付ける',
   contactUsText: 'Discord に参加',
   contactUsLink: 'https://discord.gg/SWz6RTWNkm',
   sponsor: 'スポンサーになる',

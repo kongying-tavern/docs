@@ -45,16 +45,16 @@ const nav: DefaultTheme.NavItem[] = [
     ],
   },
   {
-    text: 'フィードバック',
+    text: 'ヘルプとフィードバック',
     items: [
       {
         text: 'フィードバック',
         link: '/feedback/',
       },
-      // {
-      //   text: 'ご要望',
-      //   link: 'https://support.qq.com/products/321980/topic-detail/2016/',
-      // },
+      {
+        text: '機能リクエスト',
+        link: '/feedback/feat',
+      },
     ],
   },
   {

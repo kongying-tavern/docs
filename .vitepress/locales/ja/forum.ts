@@ -95,9 +95,9 @@ const forum: CustomConfig['forum'] = {
     menu: {
       moreActions: 'その他の操作',
       back: '戻る',
-      syncPending: '{action}。同期結果を確認中です',
-      giteeLink: 'Giteeリンク',
-      toOriginal: '元のテキストに移動',
+      syncPending: '{action}。同期結果の確認待ちです',
+      giteeLink: 'Gitee で見る',
+      toOriginal: '元の投稿を表示',
       hideFeedback: {
         text: 'フィードバックを隠す',
         success: '表示状態を更新しました',
@@ -107,7 +107,7 @@ const forum: CustomConfig['forum'] = {
         text: 'コメントを削除',
         title: 'コメントを削除しますか？',
         confirm: '削除すると元に戻せません。このコメントを削除しますか？',
-        success: '削除しました',
+        success: 'コメントを削除しました',
         fail: '削除に失敗しました',
       },
       closeFeedback: {
@@ -128,8 +128,8 @@ const forum: CustomConfig['forum'] = {
       changeType: {
         text: '種類を変更',
         to: '変更先',
-        success: 'フィードバックのタイプを変更しました',
-        fail: 'フィードバックのタイプを変更できませんでした',
+        success: 'フィードバックの種類を変更しました',
+        fail: 'フィードバックの種類を変更できませんでした',
       },
       modifyTags: {
         text: 'タグを編集',
@@ -306,14 +306,14 @@ const forum: CustomConfig['forum'] = {
       title: 'タグで絞り込み',
     },
     login: {
-      title: 'ログインしてフィードバック',
+      title: 'ログインしてフィードバックを送信',
       description: 'Gitee アカウントで問題や提案を投稿し、対応状況を確認できます。',
       oauth: 'Gitee で認証',
     },
     contactUs: {
       title: 'コミュニティに参加',
       action: '参加',
-      join: 'QR コードで Discord へ',
+      join: 'QR コードで Discord に参加',
       desc: '緊急の問題やマップの不具合はこちらでご連絡ください。',
       qrCodeAlt: 'コミュニティ招待 QR コード',
       qrcodeLink: FORUM_LINKS.discord,
