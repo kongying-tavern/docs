@@ -17,7 +17,7 @@ const forum = {
   reaction: {
     label: '反馈评价',
     like: '赞同',
-    dislike: '反对',
+    dislike: '不赞同',
   },
   imagePreview: {
     previous: '上一张图片',
