@@ -147,6 +147,9 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
 
 // Helper function to normalize path for current language
 function normalizePath(originalPath: string, targetLang: string): string {
+  // 外部链接不是站点路径，按原样保留；加语言前缀会把 https://v3.yuanshen.site 拼成 /jahttps://…
+  if (/^[a-z][a-z\d+.-]*:/i.test(originalPath))
+    return originalPath
   // Remove any existing locale prefix from the path
   const locales = availableLocales.value.filter(locale => locale !== 'root')
   const localePattern = new RegExp(`^/(${locales.join('|')})(?=/|$)`)
