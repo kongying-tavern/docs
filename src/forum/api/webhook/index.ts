@@ -1,11 +1,12 @@
 import ky from 'ky'
 
-import { GITEE_API_CONFIG } from '../gitee/config'
+import { API_ORIGIN } from '~/constants/site'
+import { GITEE_API_CONFIG } from '../gitee/gitee-config'
 
 const WEBHOOK_TOKEN = '4c0001c8-dec1-4c13-a689-4cbcd7d156ae'
 
 const fetcher = ky.create({
-  prefix: 'https://api.yuanshen.site/webhook',
+  prefix: `${API_ORIGIN}/webhook`,
   timeout: 8000,
   retry: 2,
 })
