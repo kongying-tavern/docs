@@ -73,14 +73,17 @@ function parseTimelineInfo(rawInfo: string, klass: string): TimelineInfo {
 const splitChars = (text: string) => Array.from(text, c => `<span class='timeline-dot-date-char'>${c}</span>`).join('')
 
 /** 清除 timeline 容器内内容标题的 id（避免进入官方大纲/LocalNav），dot 标题由渲染器输出语义 id */
-type MarkdownInstance = Pick<MarkdownIt, 'core' | 'renderInline'>
+type MarkdownInstance = Pick<MarkdownIt, 'renderInline' | 'renderer'>
 
+// 放在渲染阶段而非 core 规则：core 规则会与 VitePress 的锚点规则争执行顺序，
+// 一旦插件被重复注册（锚点跑第二遍），第二遍锚点就会把清空的 id 当作重复的自定义 id 中断构建。
 function patchTimelineHeadingIds(md: MarkdownInstance, klass: string) {
   const openType = `container_${klass}_open`
   const closeType = `container_${klass}_close`
-  md.core.ruler.push('timeline-heading-ids', (state) => {
+  const render = md.renderer.render.bind(md.renderer)
+  md.renderer.render = (tokens, options, env) => {
     let depth = 0
-    for (const token of state.tokens) {
+    for (const token of tokens) {
       if (token.type === openType) {
         depth++
         continue
@@ -92,20 +95,21 @@ function patchTimelineHeadingIds(md: MarkdownInstance, klass: string) {
       if (depth > 0 && token.type === 'heading_open')
         token.attrSet('id', '')
     }
-  })
+    return render(tokens, options, env)
+  }
 }
 
 function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs {
   patchTimelineHeadingIds(md, klass)
 
   /** 整组无日期判定按文档缓存，避免每个块重复扫描全部 token */
-  const memo: { tokens: Token[] | null, hasAnyDate: boolean, dotIndex: number } = { tokens: null, hasAnyDate: false, dotIndex: 0 }
+  const memo: { tokens: Token[] | null, hasAnyDate: boolean, dotIndex: number, lastYear: string } = { tokens: null, hasAnyDate: false, dotIndex: 0, lastYear: '' }
 
   return [
     container,
     klass,
     {
-      render(tokens: Token[], idx: number) {
+      render(tokens: Token[], idx: number, _options, env) {
         if (tokens[idx].nesting !== 1)
           return '</div>\n'
 
@@ -113,6 +117,8 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
           const opens = tokens.filter(candidate => candidate.type === 'container_timeline_open')
           memo.tokens = tokens
           memo.hasAnyDate = opens.some(candidate => parseTimelineInfo(candidate.info, klass).hasDate)
+          memo.lastYear = ''
+          memo.dotIndex = 0
         }
 
         const parsed = parseTimelineInfo(tokens[idx].info, klass)
@@ -120,9 +126,23 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
         const slugBase = (parsed.title || parsed.date).toLowerCase().replace(SLUG_RE, '-').replace(SLUG_EDGE_RE, '')
         const dotId = slugBase || `tl-${memo.dotIndex++}`
         const [year = '', month = '', day = ''] = parsed.date.split('-')
+        const startsYear = Boolean(year && year !== memo.lastYear)
+        if (year)
+          memo.lastYear = year
+        const pathLocale = String(env?.relativePath || '').replaceAll('\\', '/').split('/')[0]
+        const locale = pathLocale === 'en' ? 'en-US' : pathLocale === 'ja' ? 'ja-JP' : 'zh-CN'
+        const dateValue = new Date(`${parsed.date}T00:00:00Z`)
+        const validDate = parsed.hasDate && !Number.isNaN(dateValue.getTime())
+        const dateFormat = { timeZone: 'UTC', month: 'short', day: 'numeric' } as const
+        const localizedDate = validDate
+          ? new Intl.DateTimeFormat(locale, { ...dateFormat, year: 'numeric' }).format(dateValue)
+          : parsed.date
+        const monthDay = validDate
+          ? new Intl.DateTimeFormat(locale, dateFormat).formatToParts(dateValue).map(part => `<span class='timeline-dot-date-part timeline-dot-date-${part.type}'>${part.value}</span>`).join('')
+          : `${splitChars(month)}<span class='timeline-dot-date-char'>/</span>${splitChars(day)}`
         const dateSpan = parsed.date
           ? `
-<span class='timeline-dot-date'><span class='timeline-dot-date-year'>${splitChars(year)}</span><span class='timeline-dot-date-md'>${splitChars(month)}<span class='timeline-dot-date-char'>/</span>${splitChars(day)}</span></span>`
+<time class='timeline-dot-date' datetime='${parsed.date}' aria-label='${localizedDate}'><span class='timeline-dot-date-full'>${localizedDate}</span><span class='timeline-dot-date-year'>${splitChars(year)}</span><span class='timeline-dot-date-md'>${monthDay}</span></time>`
           : ''
         const iconSpan = parsed.iconClass
           ? `
@@ -131,6 +151,7 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
         const classNames = [
           'timeline-dot',
           memo.hasAnyDate ? '' : 'timeline-dot-concise',
+          startsYear ? 'timeline-dot-year-start' : '',
           parsed.colorClass,
         ].filter(Boolean).join(' ')
 
@@ -139,7 +160,10 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
           : parsed.date
             ? `<span class='timeline-dot-sr'>${parsed.date}</span>`
             : ''
-        return `<div class='${classNames}'>${dateSpan}
+        const yearBackdrop = startsYear
+          ? `<span class='timeline-dot-year-backdrop' aria-hidden='true'>${year}</span>`
+          : ''
+        return `<div class='${classNames}'>${yearBackdrop}${dateSpan}
 <h2 class='timeline-dot-title title' id='${dotId}'>${titleHtml}</h2>${iconSpan}
 `
       },
