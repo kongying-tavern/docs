@@ -1,5 +1,6 @@
 import type { MotionPreference } from '~/config/settingsOptions'
-import { SITE_DESKTOP_MEDIA_QUERY } from '~/constants/breakpoints'
+// config/head.ts 的原生 Node 加载链不解析 `~` 别名，此处只可用相对导入
+import { SITE_DESKTOP_MEDIA_QUERY } from '../constants/breakpoints.ts'
 
 export type { MotionPreference } from '~/config/settingsOptions'
 

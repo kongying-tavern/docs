@@ -1,7 +1,7 @@
 import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
 import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site'
+import { TELEMETRY_ENABLED_STORAGE_KEY } from '../../src/constants/telemetry.ts'
 import { sitePreferencesBootScript } from '../../src/services/sitePreferences'
-import { TELEMETRY_ENABLED_STORAGE_KEY } from '../../src/services/telemetry/settings'
 import { DEFAULT_LOCALE } from '../locales/common/site'
 import { getLocaleDirs } from './localeDirs'
 import {

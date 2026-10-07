@@ -1,5 +1,5 @@
 // unocss.config.ts 经 jiti 加载本文件且不解析 `~` 别名，此依赖链只可用相对导入
-import { SITE_MOBILE_BREAKPOINT_PX, SITE_MOBILE_MEDIA_QUERY } from '../../constants/breakpoints'
+import { SITE_MOBILE_BREAKPOINT_PX, SITE_MOBILE_MEDIA_QUERY } from '../../constants/breakpoints.ts'
 
 export const FORUM_CONFIG = {
   DEFAULT_PAGE_SIZE: 20,
