@@ -77,7 +77,7 @@ const nav: DefaultTheme.NavItem[] = [
           },
           {
             text: '团队博客',
-            link: './blog',
+            link: '/blog',
           },
         ],
       },

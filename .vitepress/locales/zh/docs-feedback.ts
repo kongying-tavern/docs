@@ -4,7 +4,7 @@ const docReaction = {
   bad: '无帮助',
   feedbackFailMsg: '反馈失败，请重试或联系管理员（QQ：1961266616）',
   feedbackSuccessMsg: '提交成功，感谢你的反馈！',
-  badFeedbackSuccessMsg: '希望你能在下方告知我们具体问题~',
+  badFeedbackSuccessMsg: '希望你能在下方告知我们具体问题～',
   loadingMsg: '加载中…',
   errorMessage: '错误信息：',
   viewFeedback: '查看反馈 #{id}',

@@ -30,7 +30,7 @@ const footer = {
         },
         {
           text: '团队博客',
-          link: './blog',
+          link: '/blog',
         },
         {
           text: '赞助鸣谢',

@@ -64,12 +64,47 @@ const resultList = globSync('src/zh/**/*.md').map((file) => {
 })
 
 const exitCode = report(resultList)
+
+// zhlint 只覆盖 markdown；locale 词条（TS 字面量）同样面向中日文读者，
+// 这里补一层目标语言标点检查，避免 ASCII 波浪线与半角标点漏进 UI。
+const LOCALE_TS_GLOBS = [
+  '.vitepress/locales/zh/*.ts',
+  '.vitepress/locales/ja/*.ts',
+  '.vitepress/locales/common/*.ts',
+]
+const STRING_LITERAL_REGEX = /'((?:[^'\\]|\\.)*)'/g
+const PUNCT_RULES = [
+  { message: 'ASCII 波浪线应写作全角', test: t => t.includes('~') && !t.includes('://') },
+  { message: '半角冒号紧贴中日文', test: t => /[\u3040-\u30FF\u4E00-\u9FFF]:/.test(t) },
+  { message: '半角括号紧贴汉字', test: t => /\([\u4E00-\u9FFF]/.test(t) },
+]
+const localeIssues = globSync(LOCALE_TS_GLOBS).flatMap((file) => {
+  const lines = readFileSync(file, { encoding: 'utf8' }).split(/\r?\n/)
+  return lines.flatMap((line, index) => {
+    if (line.trimStart().startsWith('import ') || line.trimStart().startsWith('//'))
+      return []
+    return [...line.matchAll(STRING_LITERAL_REGEX)]
+      .filter(([, text]) => PUNCT_RULES.some(rule => rule.test(text)))
+      .map(([, text]) => ({
+        file,
+        line: index + 1,
+        message: PUNCT_RULES.find(rule => rule.test(text)).message,
+        text,
+      }))
+  })
+})
+if (localeIssues.length) {
+  console.log('\n[locale 标点] locale 词条中的中日文标点：')
+  localeIssues.forEach(({ file, line, message, text }) =>
+    console.log(`  ${file}:${line}  ${message}  →  ${text}`))
+}
+
 if (fix) {
   resultList.forEach(({ file, origin, result }) => {
     if (origin !== result)
       writeFileSync(file, result)
   })
 }
-else if (exitCode) {
-  process.exit(exitCode)
+else if (exitCode || localeIssues.length) {
+  process.exit(exitCode || 1)
 }
