@@ -5,7 +5,7 @@ const ui: CustomConfig['ui'] = {
     templateMappings: [
       {
         test: /(^|\/?)manual\/client\/?/,
-        template: ':title - アプリガイダンス | 空蛍酒場',
+        template: ':title - ユーザーマニュアル | 空蛍酒場',
       },
     ],
   },

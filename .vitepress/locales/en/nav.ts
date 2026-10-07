@@ -20,7 +20,7 @@ const nav: DefaultTheme.NavItem[] = [
         text: 'Windows Client',
         items: [
           {
-            text: 'Manual',
+            text: 'User Manual',
             link: '/manual/client/',
           },
           {

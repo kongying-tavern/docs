@@ -28,7 +28,7 @@ const forum = {
   },
   sidebar: {
     home: '社区反馈',
-    manual: '用户手册',
+    manual: '使用手册',
     download: '下载客户端',
     myProfile: '个人主页',
     faq: '常见问题',

@@ -3,7 +3,7 @@ import type { CustomConfig } from '../types.ts'
 const docReaction: CustomConfig['docReaction'] = {
   feedbackMsg: 'このドキュメントは役立ちましたか？',
   good: '役立つ',
-  bad: '役に立たない',
+  bad: '役立たない',
   feedbackFailMsg:
     'フィードバックの送信に失敗しました。再試行するか、管理者に連絡してください（QQ：1961266616）。',
   feedbackSuccessMsg:

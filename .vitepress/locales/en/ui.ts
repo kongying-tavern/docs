@@ -5,7 +5,7 @@ const ui: CustomConfig['ui'] = {
     templateMappings: [
       {
         test: /(^|\/?)manual\/client\/?/,
-        template: ':title - Client Manuals | Kongying Tavern',
+        template: ':title - Client user manual | Kongying Tavern',
       },
     ],
   },
@@ -27,13 +27,13 @@ const ui: CustomConfig['ui'] = {
     emoji: 'Emoji',
   },
   sitemap: {
-    blog: 'Blog Posts',
-    manual: 'User Manual',
-    general: 'General Pages',
-    api: 'API Documentation',
+    blog: 'Blog posts',
+    manual: 'User manual',
+    general: 'General pages',
+    api: 'API documentation',
     guide: 'Guides',
     community: 'Community',
-    about: 'About Us',
+    about: 'About us',
   },
 }
 

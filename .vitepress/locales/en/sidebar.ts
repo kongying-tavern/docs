@@ -6,7 +6,7 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/settings-labels': [{ text: '' }],
   '/manual': [
     {
-      text: 'Handbook',
+      text: 'User Manual',
       collapsed: false,
       items: [
         {

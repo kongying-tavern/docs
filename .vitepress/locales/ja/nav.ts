@@ -20,7 +20,7 @@ const nav: DefaultTheme.NavItem[] = [
         text: 'Windowsアプリ',
         items: [
           {
-            text: 'ガイダンス',
+            text: 'ユーザーマニュアル',
             link: '/manual/client/',
           },
           {

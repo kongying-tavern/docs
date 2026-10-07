@@ -7,12 +7,12 @@ const Changelog: CustomConfig['changelog'] = {
   changeType: {
     features: 'Features',
     fixed: 'Fixes',
-    breaking: 'Breaking Changes',
+    breaking: 'Breaking changes',
     optimized: 'Optimized',
   },
   action: {
     download: 'Download',
-    community: 'Join Community',
+    community: 'Join community',
   },
 }
 

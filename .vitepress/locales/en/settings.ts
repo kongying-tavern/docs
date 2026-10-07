@@ -5,8 +5,8 @@ const settings: CustomConfig['settings'] = {
     title: 'Experimental features',
     feedbackForm: 'New feedback form',
     legacyFeedbackForm: 'Classic feedback form',
-    legacyDescription: 'You are assigned the new form. On uses the classic form; off restores the default rollout assignment. Applies only to your account in this browser, the next time you open the form.',
-    description: 'On uses the new form; off restores the default rollout assignment. Applies only to your account in this browser, the next time you open the form.',
+    legacyDescription: 'You are assigned the new form. When on, the classic form is used. When off, the default rollout assignment is restored. Applies only to your account in this browser, the next time you open the form.',
+    description: 'When on, the new form is used. When off, the default rollout assignment is restored. Applies only to your account in this browser, the next time you open the form.',
   },
   profile: {
     title: 'Personal profile',

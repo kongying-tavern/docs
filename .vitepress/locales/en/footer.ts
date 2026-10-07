@@ -43,7 +43,7 @@ const footer: CustomConfig['footer'] = {
       title: 'Support',
       items: [
         {
-          text: 'Client User Manual',
+          text: 'Client user manual',
           link: '/manual/client/',
         },
         {

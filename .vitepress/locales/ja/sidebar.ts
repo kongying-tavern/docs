@@ -6,7 +6,7 @@ const sidebar: DefaultTheme.SidebarMulti = {
   '/settings-labels': [{ text: '' }],
   '/manual': [
     {
-      text: 'ガイダンス',
+      text: 'ユーザーマニュアル',
       collapsed: false,
       items: [
         {

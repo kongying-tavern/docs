@@ -2,8 +2,8 @@ import type { CustomConfig } from '../types.ts'
 
 const docReaction: CustomConfig['docReaction'] = {
   feedbackMsg: 'Was this document helpful?',
-  good: 'Yes',
-  bad: 'No',
+  good: 'Helpful',
+  bad: 'Not helpful',
   feedbackFailMsg:
     'Feedback failed. Please retry or contact the admin (QQ: 1961266616).',
   feedbackSuccessMsg: 'Feedback submitted successfully, thank you!',
@@ -16,10 +16,10 @@ const docReaction: CustomConfig['docReaction'] = {
     feedbackDetail: 'Details/Suggestions',
     feedbackTip: 'Describe issues or suggestions here',
     issueOptions: [
-      { label: 'Page Display Error', value: 'CATA-DISPLAY' },
-      { label: 'Typos, Punctuation', value: 'CATA-TYPOS' },
-      { label: 'Content, Image, Link Error', value: 'CATA-DOCS' },
-      { label: 'Other Issues', value: 'CATA-OTHER' },
+      { label: 'Page display error', value: 'CATA-DISPLAY' },
+      { label: 'Typos and punctuation', value: 'CATA-TYPOS' },
+      { label: 'Content, image, and link errors', value: 'CATA-DOCS' },
+      { label: 'Other issues', value: 'CATA-OTHER' },
     ],
   },
 }
