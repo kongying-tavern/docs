@@ -71,7 +71,6 @@
     "@tiptap/extension-link": "catalog:editor",
     "@tiptap/extension-mention": "catalog:conflicts_editor_h3_4_4",
     "@tiptap/extension-placeholder": "catalog:conflicts_editor_h3_4_4",
-    "@tiptap/markdown": "catalog:editor",
     "@tiptap/pm": "catalog:editor",
     "@tiptap/starter-kit": "catalog:conflicts_editor_h3_4_4",
     "@tiptap/static-renderer": "catalog:editor",
@@ -79,20 +78,17 @@
     "@tiptap/vue-3": "catalog:conflicts_editor_h3_4_4",
     "@vee-validate/zod": "catalog:",
     "@vueuse/core": "catalog:frontend",
-    "@vueuse/integrations": "catalog:frontend",
     "@vueuse/motion": "catalog:frontend",
     "canvas-confetti": "catalog:frontend",
     "class-variance-authority": "catalog:frontend",
     "cn": "catalog:frontend",
     "compressorjs": "catalog:frontend",
     "dayjs": "catalog:frontend",
-    "dexie": "catalog:frontend",
     "dompurify": "catalog:",
     "embla-carousel-vue": "catalog:frontend",
     "fast-fuzzy": "catalog:frontend",
     "ky": "catalog:frontend",
     "linkifyjs": "catalog:",
-    "lucide": "catalog:",
     "medium-zoom": "catalog:frontend",
     "morphicons": "catalog:",
     "motion-v": "catalog:conflicts_frontend_h1_7_1",
@@ -117,7 +113,6 @@
     "@antfu/eslint-config": "catalog:dev",
     "@commitlint/cli": "catalog:dev",
     "@commitlint/config-conventional": "catalog:dev",
-    "@commitlint/types": "catalog:dev",
     "@pinia/colada-devtools": "catalog:dev",
     "@playwright/test": "catalog:",
     "@types/canvas-confetti": "catalog:types",
@@ -139,7 +134,6 @@
     "jiti": "catalog:dev",
     "js-yaml": "catalog:utils",
     "lightningcss": "catalog:build",
-    "lint-staged": "catalog:dev",
     "lodash-es": "catalog:frontend",
     "markdown-it": "catalog:markdown",
     "markdown-it-container": "catalog:markdown",
@@ -147,7 +141,6 @@
     "markdown-it-kbd-better": "catalog:markdown",
     "markdownlint-cli": "catalog:dev",
     "open-editor": "catalog:dev",
-    "prettier": "catalog:dev",
     "shadcn-vue": "catalog:",
     "taze": "catalog:dev",
     "tsx": "catalog:build",
@@ -159,13 +152,5 @@
     "vue-component-type-helpers": "catalog:",
     "vue-tsc": "catalog:",
     "zhlint": "catalog:dev"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue,mjs,cjs,mts,cts,json,jsonc,json5,yaml,yml,css}": "node node_modules/eslint/bin/eslint.js --cache --fix --no-warn-ignored"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-git"
-    }
   }
 }
