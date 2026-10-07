@@ -119,7 +119,7 @@ const { reducedMotion } = useSitePreferences()
 }
 
 .illustration-secondary {
-  opacity: 0.4;
+  stroke: color-mix(in srgb, var(--vp-c-text-3) 40%, var(--vp-c-bg));
 }
 
 .illustration-accent {

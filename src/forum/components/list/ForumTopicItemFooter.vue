@@ -67,10 +67,10 @@ function handleCommentClick() {
         data-action="comment"
         :disabled="isClosedComment"
         :aria-label="commentAriaLabel"
-        class="rounded-full bg-[var(--vp-c-bg-alt)] h-8 max-mobile:h-11"
+        class="rounded-full bg-[var(--vp-c-bg-alt)] h-8 max-mobile:h-9"
         @click="handleCommentClick"
       >
-        <span class="i-lucide-message-circle h-5 w-5 max-mobile:size-6" aria-hidden="true" />
+        <span class="i-lucide-message-circle h-5 w-5" aria-hidden="true" />
         {{ displayText }}
       </Button>
       <ForumQuoteTopicButton :topic="topicData" :autoload="reactionEnabled" />

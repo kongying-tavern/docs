@@ -52,7 +52,7 @@ function handleButtonClick() {
 }
 useForumShortcut('publish', handleButtonClick, { enabled: () => frontmatter.value.publishTopic ?? true })
 
-// @unocss-includes
+// @unocss-include
 const selectPublishTopicMenu = computed(() => {
   const baseItems = [
     {

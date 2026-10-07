@@ -10,11 +10,14 @@ import { EmptyActions } from '@/components/ui/empty'
 
 <style scoped>
 .forum-empty-actions :deep([data-slot='button']) {
+  min-inline-size: 9rem;
+  padding-block: 0;
+  border: 1px solid transparent;
   border-radius: 9999px;
 }
 
 .forum-empty-actions :deep([data-slot='button'][data-variant='outline']) {
-  border: 1px solid var(--vp-c-divider);
+  border-color: var(--vp-c-border);
   background: transparent;
   box-shadow: none;
 }
