@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { constrainSwipe, fullSwipeThreshold, resolveSwipeRelease, swipeSide, swipeVelocity } from '../../../.vitepress/theme/components/ui/swipe-actions/gesture'
 
 const input = { value: 100, velocity: 0, count: 2, width: 400, fullSwipe: true, armed: false }
