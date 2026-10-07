@@ -10,17 +10,18 @@ import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
 import MarkdownItKbd from 'markdown-it-kbd-better'
-import MarkdownItCard from '../theme/markdown/card'
-import MarkdownItColorPreview from '../theme/markdown/colorPreview'
-import { applyComarkPatches } from '../theme/markdown/comark-patches'
-import MarkdownItCustomColor from '../theme/markdown/customColor'
-import MarkdownItEmoji from '../theme/markdown/emoji'
-import MarkdownItLightbox from '../theme/markdown/lightbox'
-import MarkdownItMention from '../theme/markdown/mention'
-import { ruby } from '../theme/markdown/ruby'
-import { spoiler } from '../theme/markdown/spoiler'
-import MarkdownItTimeline from '../theme/markdown/timeline'
-import MarkdownItVariableInject from '../theme/markdown/variableInject'
+import MarkdownItCard from '../theme/markdown/card.ts'
+import MarkdownItColorPreview from '../theme/markdown/colorPreview.ts'
+import { applyComarkPatches } from '../theme/markdown/comark-patches.ts'
+import MarkdownItCustomColor from '../theme/markdown/customColor.ts'
+import MarkdownItDocHeaderTitle from '../theme/markdown/docHeaderTitle.ts'
+import MarkdownItEmoji from '../theme/markdown/emoji.ts'
+import MarkdownItLightbox from '../theme/markdown/lightbox.ts'
+import MarkdownItMention from '../theme/markdown/mention.ts'
+import { ruby } from '../theme/markdown/ruby.ts'
+import { spoiler } from '../theme/markdown/spoiler.ts'
+import MarkdownItTimeline from '../theme/markdown/timeline.ts'
+import MarkdownItVariableInject from '../theme/markdown/variableInject.ts'
 
 export const markdownConfig: MarkdownOptions = {
   attrs: true,
@@ -80,6 +81,7 @@ export const markdownConfig: MarkdownOptions = {
     md.use(MarkdownItEmoji)
     md.use(abbr)
     md.use(ruby)
+    md.use(MarkdownItDocHeaderTitle)
 
     // Kbd reuses `:`-adjacent syntax, so it runs after Comark.
     md.use(MarkdownItKbd, {
