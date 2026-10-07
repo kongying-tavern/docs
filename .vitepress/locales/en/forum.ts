@@ -1,5 +1,5 @@
-import type { CustomConfig } from '../types'
-import { FORUM_LINKS } from '../common/forumLinks'
+import type { CustomConfig } from '../types.ts'
+import { FORUM_LINKS } from '../common/forumLinks.ts'
 
 const forum: CustomConfig['forum'] = {
   loadMore: 'Load more',
@@ -404,8 +404,7 @@ const forum: CustomConfig['forum'] = {
       feedbackType: 'Feedback type',
       resetFilters: 'Reset',
       searchContent: 'Search specific content',
-      stateFilter: 'Feedback status',
-      userFilter: 'Users',
+      leaveSearch: 'Exit search',
       recentSearches: 'Recent searches',
       clearRecentSearches: 'Clear search history',
       noRecentSearches: 'No recent searches',

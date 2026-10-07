@@ -1,4 +1,4 @@
-import { FORUM_LINKS } from '../common/forumLinks'
+import { FORUM_LINKS } from '../common/forumLinks.ts'
 
 const forum = {
   loadMore: '加载更多',
@@ -389,8 +389,7 @@ const forum = {
       feedbackType: '反馈类型',
       resetFilters: '重置',
       searchContent: '搜索指定内容',
-      stateFilter: '反馈状态',
-      userFilter: '用户',
+      leaveSearch: '退出搜索',
       recentSearches: '最近搜索',
       clearRecentSearches: '清空搜索历史',
       noRecentSearches: '没有最近搜索内容',

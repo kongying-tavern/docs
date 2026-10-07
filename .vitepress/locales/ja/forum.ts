@@ -1,5 +1,5 @@
-import type { CustomConfig } from '../types'
-import { FORUM_LINKS } from '../common/forumLinks'
+import type { CustomConfig } from '../types.ts'
+import { FORUM_LINKS } from '../common/forumLinks.ts'
 
 const forum: CustomConfig['forum'] = {
   loadMore: 'もっと読む',
@@ -406,8 +406,7 @@ const forum: CustomConfig['forum'] = {
       feedbackType: 'フィードバックの種類',
       resetFilters: 'リセット',
       searchContent: '条件を指定して検索',
-      stateFilter: 'フィードバックの状態',
-      userFilter: 'ユーザー',
+      leaveSearch: '検索を終了',
       recentSearches: '最近の検索',
       clearRecentSearches: '検索履歴を消去',
       noRecentSearches: '最近の検索はありません',
