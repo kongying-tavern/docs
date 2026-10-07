@@ -1,6 +1,7 @@
 import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
 import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site'
 import { sitePreferencesBootScript } from '../../src/services/sitePreferences'
+import { TELEMETRY_ENABLED_STORAGE_KEY } from '../../src/services/telemetry/settings'
 import { DEFAULT_LOCALE } from '../locales/common/site'
 import { getLocaleDirs } from './localeDirs'
 import {
@@ -30,7 +31,7 @@ export const productionHead: HeadConfig[] = [
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         try {
-          if(c.localStorage.getItem('telemetry:error-reporting:v1')==='false')
+          if(c.localStorage.getItem('${TELEMETRY_ENABLED_STORAGE_KEY}')==='false')
             c[a]('consentv2',{ad_Storage:'denied',analytics_Storage:'denied'});
         } catch(e) {}
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
