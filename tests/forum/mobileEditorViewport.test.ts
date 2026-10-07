@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
 import { useMobileEditorViewport } from '../../src/forum/composables/view/useMobileEditorViewport'
 

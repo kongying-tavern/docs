@@ -1,6 +1,6 @@
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { renderForumTopic } from '../../src/forum/services/forumContentRenderer'
 import { getTopicReferenceSuggestions, normalizeTopicReferenceId } from '../../src/forum/services/forumTopicReferenceSuggestions'
 

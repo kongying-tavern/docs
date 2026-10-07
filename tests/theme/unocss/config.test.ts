@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
 import { createGenerator } from 'unocss'
+import { test } from 'vitest'
 import { FORUM_MOBILE_BREAKPOINT_PX } from '../../../src/forum/services/forumConfig'
 import config from '../../../unocss.config'
 

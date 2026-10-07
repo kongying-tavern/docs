@@ -23,6 +23,9 @@ tests/
 | --- | --- |
 | `pnpm test` | forum、shared、theme、fonts 下所有 `*.test.ts` |
 | `pnpm test:list` | 列出上述完整文件清单，不执行 |
+| `pnpm test:watch` | 持续监听四类逻辑测试，修改后重跑受影响的测试 |
+| `pnpm test:ui` | 启动 Vitest 界面，查看结果、筛选和重跑测试 |
+| `pnpm test:coverage` | 运行逻辑测试并生成 `coverage/` 覆盖率报告 |
 | `pnpm test:forum` | forum |
 | `pnpm test:shared` | shared |
 | `pnpm test:theme` | shared + theme，保留主题原有网站设置检查 |
@@ -30,13 +33,23 @@ tests/
 | `pnpm test:forum:ui` | e2e 的 `*.spec.ts`，自动启动 VitePress |
 | `pnpm test:theme:ui` | swipe-actions 的 `browser.test.mjs`，自动启动组件测试服务 |
 
-逻辑测试由 `scripts/runTests.mjs` 使用 Node 原生目录枚举递归发现，再交给 Node/tsx 执行。
-不依赖 Windows shell 的递归 glob 展开；每个请求的分类没有测试时直接失败，避免空跑成功。
-可以用 `node scripts/runTests.mjs forum --list` 查看单个分类的发现结果。
+逻辑测试由 `vitest.config.ts` 统一发现并在 Node 环境执行，不依赖 Windows shell 展开 glob。
+测试配置独立于站点 Vite 配置，避免运行逻辑测试时启动字体构建或页面调试插件。
+文件保持隔离，mock、环境变量和 stub 全局对象在每条测试后自动恢复；使用假定时器的测试
+还应在清理钩子中调用 `vi.useRealTimers()`。空测试集和 CI 中的 `test.only` 会导致失败。
+可以用 `pnpm exec vitest list tests/forum --filesOnly` 查看单个分类的发现结果，
+或用 `pnpm test:watch tests/forum -t "关键词"` 监听指定范围。
+现有 `node:assert/strict` 断言继续使用，测试注册、清理、spy 和假定时器改用 Vitest API。
+
+覆盖率显式统计论坛 API、composable、认证、路由、服务、store 和工具，以及共享逻辑、
+主题 hooks/utils 与字体流水线；未被导入的文件也纳入统计，Vue 页面与组件不属于这个逻辑指标。
+CI 运行完整覆盖率测试并上传 HTML 报告。全局门槛基于当前范围的基线，认证刷新模块另有
+行覆盖率 65%、分支覆盖率 60% 的门槛；新增统计范围时应重新评估基线。
+shared 套件还通过独立 Node 进程实际验证两份站点配置和三个内容数据加载器的原生加载，检查完整运行时导入链的兼容性。
 
 命名与放置规则：
 
-- Node/tsx 逻辑测试用 `*.test.ts`，Playwright 旅程用 `*.spec.ts`。
+- Vitest 逻辑测试用 `*.test.ts`，Playwright 旅程用 `*.spec.ts`。
 - 将只有本领域使用的 fixture/helper 放在本领域的 `fixtures/` 或 `support/`，不为单次使用
   新建全局 helper。领域 fixture 与原始 API fixture 分开。
 - 新测试不要放进生产目录；需要细分时在当前职责目录下建子目录，递归入口会自动发现。
@@ -48,3 +61,16 @@ tests/
 `test:theme:ui` 默认使用已安装的 Chrome，可通过原有 `SWIPE_BROWSER_CHANNEL` 与
 `SWIPE_PLAYWRIGHT_PATH` 环境变量选择浏览器和安装位置。论坛 e2e 使用根包固定的 Playwright
 Chromium，安装与 Mock 规则见 `e2e/README.md`。
+论坛 e2e 关闭调试工具，并使用独立 VitePress 缓存目录，避免与日常开发服务器的依赖预构建互相覆盖。
+
+开发服务器的 Vite DevTools 中可打开 Vitest dock 并点击启动，在同一面板中操作测试界面。
+Pinia Colada v2、Medula 和 UnoCSS Inspector 也在这个面板中；查看 Colada 缓存时使用站点内
+嵌入的面板，单独打开的 DevTools 标签页无法连接另一个标签页的缓存。Colada 的 MCP 可通过
+已有 Devframe 连接器调用，运行时操作需要浏览器页面保持打开。
+设置 `VITE_COLADA_DEVTOOLS=false` 可关闭 Colada 调试插件，支持 shell 环境变量和根目录 `.env`。
+如果当前环境设置了 `CI=true`，使用 `pnpm test:ui --watch` 让测试界面保持运行。
+
+`pnpm build:analyze` 生成 Rolldown 分析记录和独立的静态分析产物，输出到
+`.vitepress/cache/build-analysis/`。启动 `pnpm dev` 后在 Rolldown dock 查看构建记录；
+普通 `pnpm build` 保持原有发布输出，不附带静态调试界面。分析产物不会进入 Git。
+分析完成后自动清理旧 Rolldown session，仅保留最近两个（通常为一轮客户端与 SSR 构建）。

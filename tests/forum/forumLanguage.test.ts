@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { isTextPlausibleForLanguage } from '../../src/forum/services/forumLanguage'
 
 test('与正文文字不符的声明语言会被否决', () => {

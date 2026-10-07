@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
-import { it } from 'node:test'
+import { test } from 'vitest'
 import { resolveFeedbackFormVariant, selectFeedbackFormVariant } from '../../src/forum/services/form/feedbackFormExperiment'
 
-it('only identified administrators can override rollout in either direction', () => {
+test('only identified administrators can override rollout in either direction', () => {
   assert.equal(resolveFeedbackFormVariant('123', 0, true, true), 'compact')
   assert.equal(resolveFeedbackFormVariant('123', 100, true, false), 'legacy')
   assert.equal(resolveFeedbackFormVariant('123', 0, true, false), 'legacy')
@@ -12,7 +12,7 @@ it('only identified administrators can override rollout in either direction', ()
   assert.equal(resolveFeedbackFormVariant('123', 10, true), selectFeedbackFormVariant('123', 10))
 })
 
-it('the switch selects the opposite of the assigned variant and clearing it restores assignment', () => {
+test('the switch selects the opposite of the assigned variant and clearing it restores assignment', () => {
   for (const percentage of [0, 10, 100]) {
     const assigned = selectFeedbackFormVariant('123', percentage)
     const override = assigned !== 'compact'
@@ -21,7 +21,7 @@ it('the switch selects the opposite of the assigned variant and clearing it rest
   }
 })
 
-it('rollout is deterministic, supports rollback and excludes unidentified accounts', () => {
+test('rollout is deterministic, supports rollback and excludes unidentified accounts', () => {
   assert.equal(selectFeedbackFormVariant(undefined, 100), 'legacy')
   for (const percentage of [0, -1, Number.NaN])
     assert.equal(selectFeedbackFormVariant('123', percentage), 'legacy')
@@ -29,7 +29,7 @@ it('rollout is deterministic, supports rollback and excludes unidentified accoun
   assert.equal(selectFeedbackFormVariant(123, 10), selectFeedbackFormVariant('123', 10))
 })
 
-it('increasing traffic preserves participants and roughly allocates the configured percentage', () => {
+test('increasing traffic preserves participants and roughly allocates the configured percentage', () => {
   let participants = 0
   for (let id = 1; id <= 10000; id++) {
     const variant = selectFeedbackFormVariant(id, 10)

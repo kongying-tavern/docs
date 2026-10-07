@@ -1,14 +1,14 @@
 {
-	"recommendations": [
-		"dbaeumer.vscode-eslint",
-		"esbenp.prettier-vscode",
-		"davidanson.vscode-markdownlint",
-		"streetsidesoftware.code-spell-checker",
-		"Vue.volar",
-		"antfu.iconify",
-		"bierner.markdown-yaml-preamble",
-		"mrmlnc.vscode-scss",
-		"redhat.vscode-yaml",
-    "Nuxt.mdc",
-	]
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "davidanson.vscode-markdownlint",
+    "streetsidesoftware.code-spell-checker",
+    "Vue.volar",
+    "antfu.iconify",
+    "bierner.markdown-yaml-preamble",
+    "mrmlnc.vscode-scss",
+    "redhat.vscode-yaml",
+    "Nuxt.mdc"
+  ]
 }

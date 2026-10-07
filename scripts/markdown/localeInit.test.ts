@@ -5,12 +5,12 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writ
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
-import test from 'node:test'
 import { loadConfigFromFile } from 'vite'
+import { test } from 'vitest'
 
 test('init:locale registers a new language in the bundled Vite config', async (t) => {
   const root = mkdtempSync(join(tmpdir(), 'vitepress-locale-'))
-  t.after(() => rmSync(root, { recursive: true, force: true }))
+  t.onTestFinished(() => rmSync(root, { recursive: true, force: true }))
   for (const dir of ['scripts/locales', 'src/en/blog', '.vitepress/locales/en', '.vitepress/locales/common', '.vitepress/config'])
     mkdirSync(join(root, dir), { recursive: true })
   symlinkSync(resolve('node_modules'), join(root, 'node_modules'), 'junction')

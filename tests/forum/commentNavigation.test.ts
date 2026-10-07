@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { resolveCommentTargetState, resolveRestoredCommentPage } from '../../src/forum/services/commentNavigation'
 
 test('comment targets distinguish loading, ready, missing, and ordinary browsing states', () => {

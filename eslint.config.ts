@@ -116,10 +116,17 @@ export default antfu({
     'jsonc/quotes': 'off',
   },
 }, {
-  name: 'project/node-tests',
-  files: ['tests/**/*.test.{ts,js,mjs,cjs}'],
+  name: 'project/vitest-tests',
+  files: ['tests/{forum,shared,theme,fonts}/**/*.test.ts'],
   rules: {
-    // The maintained logic suites use node:test, not Vitest.
+    'test/consistent-test-it': ['error', { fn: 'test', withinDescribe: 'test' }],
+    'test/prefer-lowercase-title': 'off',
+  },
+}, {
+  name: 'project/node-browser-tests',
+  files: ['tests/theme/swipe-actions/browser.test.mjs'],
+  rules: {
+    // The standalone Playwright harness retains its Node runner.
     'test/no-import-node-test': 'off',
   },
 }, {

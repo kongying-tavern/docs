@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { isAccessTokenRejectionStatus, isExpiredUserAccessTokenBody } from '../../src/apis/interknot.site/utils'
 
 test('401 is always a token rejection regardless of body', () => {

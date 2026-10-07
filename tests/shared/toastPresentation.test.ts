@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { resolveToastTiming } from '../../src/services/telemetry/toastPresentation'
 
 test('mobile errors and actionable notifications remain available until dismissed', () => {

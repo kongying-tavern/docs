@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import test from 'node:test'
 import { createMarkdownRenderer, mergeMarkdownLocales } from 'vitepress'
+import { test } from 'vitest'
 import { compileTemplate } from 'vue/compiler-sfc'
 import { createLocalesConfig } from '../../.vitepress/config/locales'
 import { markdownConfig } from '../../.vitepress/config/markdown'
@@ -179,4 +179,62 @@ const value = 2
   assert.match(html, /second.js/)
   const compiled = compileTemplate({ source: html, filename: 'extensions.vue', id: 'extensions' })
   assert.deepEqual(compiled.errors, [])
+})
+
+test('recruitment cards remain separate top-level containers in every locale', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  for (const [locale, count] of [['zh', 9], ['en', 2], ['ja', 8]] as const) {
+    const source = readFileSync(resolve(`src/${locale}/join.md`), 'utf8')
+    const html = await markdown.renderAsync(source)
+    let depth = 0
+    let cards = 0
+    for (const match of html.matchAll(/<div\b[^>]*>|<\/div>/g)) {
+      if (match[0] === '</div>') {
+        depth--
+      }
+      else {
+        if (match[0].includes('class="vp-raw"')) {
+          assert.equal(depth, 0, `${locale}: recruitment card must not be nested`)
+          cards++
+        }
+        depth++
+      }
+    }
+    assert.equal(cards, count, `${locale}: all recruitment cards render`)
+    assert.equal(depth, 0, `${locale}: containers close correctly`)
+  }
+})
+
+test('the doc header title is dropped only when the page renders its own h1', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const frontmatterOf = async (source: string) => {
+    const env: Record<string, unknown> = { relativePath: 'zh/page.md' }
+    await markdown.renderAsync(source, env)
+    return env.frontmatter as Record<string, unknown> | undefined
+  }
+
+  assert.equal((await frontmatterOf('# Title\n\nBody'))?.docHeaderTitle, false)
+  assert.equal((await frontmatterOf('Intro\n\n## Section'))?.docHeaderTitle, undefined)
+  assert.equal((await frontmatterOf('```md\n# Example\n```\n\nIntro'))?.docHeaderTitle, undefined)
+  assert.equal((await frontmatterOf('---\ndocHeaderTitle: true\n---\n\n# Title'))?.docHeaderTitle, true)
+
+  const ownTitle = readFileSync(resolve('src/zh/sitemap.md'), 'utf8')
+  const fencedOnly = readFileSync(resolve('src/zh/frontmatter.md'), 'utf8')
+  assert.equal((await frontmatterOf(ownTitle))?.docHeaderTitle, false)
+  assert.equal((await frontmatterOf(fencedOnly))?.docHeaderTitle, undefined)
+})
+
+test('timeline headings lose their ids while rendering, not while parsing', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const source = '::: timeline 2025-12-03 | Version 3\n## Inner heading\n\n- item\n:::\n'
+  const env: Record<string, unknown> = { relativePath: 'zh/page.md' }
+
+  // 若在 core 阶段清空 id，重复注册插件时第二遍锚点规则会把这些空 id 当作重复的自定义 id 而中断构建。
+  const tokens = markdown.parse(source, env)
+  const inner = tokens.find(token => token.type === 'heading_open' && token.tag === 'h2')
+  assert.ok(inner, 'the heading inside the timeline container is parsed as an h2')
+  assert.ok(inner.attrGet('id'), 'the parse phase must leave the anchor id intact')
+
+  const html = await markdown.renderAsync(source, env)
+  assert.match(html, /<h2 id=""[^>]*>Inner heading/)
 })

@@ -130,3 +130,5 @@ skills-lock.json
 
 # Generated component metadata (rebuilt by the Vite plugin)
 /.vitepress/theme/mdc-components.mjs
+
+.zcodeignore

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { createToastQueue } from '../../src/services/telemetry/toastQueue'
 
 test('queued notifications start only after the active notification finishes', () => {

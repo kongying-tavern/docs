@@ -1,8 +1,8 @@
 import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
-import test, { mock } from 'node:test'
 import { PiniaColada, useQueryCache } from '@pinia/colada'
 import { createPinia } from 'pinia'
+import { test, vi } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { useForumCommentMutations, useForumTopicMutations } from '../../src/forum/composables/data/useForumMutations'
@@ -60,7 +60,7 @@ test('confirmed edits invalidate structured search data as well as Colada list e
     assert.equal(fetches, 2)
   }
   finally {
-    invalidations.mock.restore()
+    invalidations.mockRestore()
     globalThis.fetch = originalFetch
   }
 })
@@ -82,7 +82,7 @@ async function setup() {
   cache.setQueryData(forumKeys.topic('A'), topic)
   cache.setQueryData(listKey, { pages: [{ items: [topic, other], total: 2, totalPage: 1 }], pageParams: [1] })
   cache.setQueryData(forumKeys.pinned(), [topic])
-  const invalidations = mock.method(cache, 'invalidateQueries')
+  const invalidations = vi.spyOn(cache, 'invalidateQueries')
   return { cache, mutations, comments, invalidations }
 }
 
@@ -114,14 +114,14 @@ test('unknown topic update restores list membership and pinned data without over
     assert.equal(restored.pages[0].total, 2)
     assert.equal(cache.getQueryData<ForumAPI.Topic>(forumKeys.topic('A'))?.state, 'open')
     assert.deepEqual(cache.getQueryData(forumKeys.pinned()), [topic])
-    assert.deepEqual(invalidations.mock.calls.map(call => call.arguments[0]), [
+    assert.deepEqual(invalidations.mock.calls.map(call => call[0]), [
       { key: forumKeys.topicLists() },
       { key: forumKeys.topicTimeline('A'), exact: true },
       { key: forumKeys.topic('A'), exact: true },
     ])
   }
   finally {
-    invalidations.mock.restore()
+    invalidations.mockRestore()
     globalThis.fetch = originalFetch
   }
 })
@@ -159,7 +159,7 @@ test('failed reopening removes only its optimistic row and preserves concurrent 
     assert.equal(cache.getQueryData<ForumAPI.Topic>(forumKeys.topic('A'))?.state, 'closed')
   }
   finally {
-    invalidations.mock.restore()
+    invalidations.mockRestore()
     globalThis.fetch = originalFetch
   }
 })
@@ -199,10 +199,10 @@ test('confirmed comment writes synchronize counts and invalidate each affected c
       { key: forumKeys.topic('A'), exact: true },
       { key: forumKeys.comments('A'), exact: true },
     ]
-    assert.deepEqual(invalidations.mock.calls.map(call => call.arguments[0]), [...expectedInvalidations, ...expectedInvalidations])
+    assert.deepEqual(invalidations.mock.calls.map(call => call[0]), [...expectedInvalidations, ...expectedInvalidations])
   }
   finally {
-    invalidations.mock.restore()
+    invalidations.mockRestore()
     globalThis.fetch = originalFetch
   }
 })
@@ -223,14 +223,14 @@ test('partial topic update keeps authoritative data and refetches detail', async
     assert.equal(outcome.status, 'partial')
     assert.equal(cache.getQueryData<ForumAPI.Topic>(forumKeys.topic('A'))?.type, 'FEAT')
     assert.deepEqual(cache.getQueryData(forumKeys.pinned()), [])
-    assert.deepEqual(invalidations.mock.calls.map(call => call.arguments[0]), [
+    assert.deepEqual(invalidations.mock.calls.map(call => call[0]), [
       { key: forumKeys.topicLists() },
       { key: forumKeys.topicTimeline('A'), exact: true },
       { key: forumKeys.topic('A'), exact: true },
     ])
   }
   finally {
-    invalidations.mock.restore()
+    invalidations.mockRestore()
     globalThis.fetch = originalFetch
   }
 })
@@ -244,10 +244,10 @@ test('malformed topic response rolls back optimistic data without invalidating c
     assert.equal(cache.getQueryData<ForumAPI.Topic>(forumKeys.topic('A'))?.title, 'Original')
     assert.equal(cache.getQueryData<ForumAPI.Topic[]>(forumKeys.pinned())?.[0].title, 'Original')
     assert.equal(cache.getQueryData<{ pages: Array<{ items: ForumAPI.Topic[] }> }>(listKey)?.pages[0].items[0].title, 'Original')
-    assert.equal(invalidations.mock.callCount(), 0)
+    assert.equal(invalidations.mock.calls.length, 0)
   }
   finally {
-    invalidations.mock.restore()
+    invalidations.mockRestore()
     globalThis.fetch = originalFetch
   }
 })
@@ -262,10 +262,10 @@ test('failed comment deletion restores counts in detail, paged lists and pinned 
     assert.equal(cache.getQueryData<ForumAPI.Topic[]>(forumKeys.pinned())?.[0].commentCount, 2)
     const pages = cache.getQueryData<{ pages: Array<{ items: ForumAPI.Topic[] }> }>(listKey)!
     assert.equal(pages.pages[0].items[0].commentCount, 2)
-    assert.equal(invalidations.mock.callCount(), 0)
+    assert.equal(invalidations.mock.calls.length, 0)
   }
   finally {
-    invalidations.mock.restore()
+    invalidations.mockRestore()
     globalThis.fetch = originalFetch
   }
 })

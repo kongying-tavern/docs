@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import test from 'node:test'
 import { runInNewContext } from 'node:vm'
 import ts from 'typescript'
+import { test } from 'vitest'
 import * as Vue from 'vue'
 
 test('queue initialization and transaction rejection both release the submission lock', async () => {

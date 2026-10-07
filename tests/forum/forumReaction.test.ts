@@ -1,11 +1,12 @@
 import type { TopicReaction } from '../../src/forum/services/forumReaction'
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import {
   applyReactionIntent,
   coordinateReactionMutation,
   createEmptyReaction,
   forumReactionResource,
+  pageReactionResource,
   quoteReactionResource,
   reactionCacheIdentity,
   reactionEnvironmentForOrigin,
@@ -102,6 +103,16 @@ test('resource and viewer identities are stable and separated', () => {
   assert.notEqual(
     reactionCacheIdentity(zh, resolveReactionViewer(false).identity),
     reactionCacheIdentity(zh, resolveReactionViewer(true, 42).identity),
+  )
+})
+
+test('page reaction keys stay usable as cache identities despite having no protocol', () => {
+  const page = pageReactionResource('/docs/manual/client/save-restore')
+  assert.equal(page, 'yuanshen.site/docs/manual/client/save-restore')
+  assert.equal(reactionCacheIdentity(page, 'guest'), `${page}|guest`)
+  assert.notEqual(
+    reactionCacheIdentity(page, resolveReactionViewer(false).identity),
+    reactionCacheIdentity(page, resolveReactionViewer(true, 42).identity),
   )
 })
 

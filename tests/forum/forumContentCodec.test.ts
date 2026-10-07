@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { FORUM_IMAGE_ORIGIN } from '../../src/constants/site'
 import {
   decodeCommentBody,
@@ -42,7 +42,7 @@ test('updates Topic metadata while preserving unknown keys and content', () => {
   }])
 })
 
-test('Topic metadata preserves a quoted Topic reference across later state updates', () => {
+test('topic metadata preserves a quoted Topic reference across later state updates', () => {
   const withQuote = updateTopicMetadata('Body', {
     quotedTopic: { id: 'ICROD8', type: 'BUG' },
   })

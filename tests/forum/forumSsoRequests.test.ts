@@ -1,30 +1,20 @@
 import type { AuthSessionAccessor } from '../../src/services/authSession'
 import assert from 'node:assert/strict'
-import { registerHooks } from 'node:module'
-import test, { mock } from 'node:test'
 import { createPinia } from 'pinia'
+import { test, vi } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { getAuthSession, registerAuthSessionAccessor } from '../../src/services/authSession'
 
-// Supply Vite's browser flag for this module while executing its real ky hooks in Node.
-const browserModule = new URL('../../src/apis/interknot.site/index.ts', import.meta.url).href
-const loader = registerHooks({
-  load(url, context, nextLoad) {
-    const result = nextLoad(url, context)
-    if (url.split('?')[0] !== browserModule || !result.source)
-      return result
-    const source = typeof result.source === 'string' ? result.source : new TextDecoder().decode(result.source)
-    return { ...result, source: `import.meta.env = { SSR: false };\n${source}` }
-  },
-})
+// Exercise the real client hooks without a custom Node module loader.
+vi.stubEnv('SSR', false)
 const { fetcher, SSO_SESSION_CONTEXT } = await import('../../src/apis/interknot.site')
 const { useUserInfoStore } = await import('../../src/forum/stores/auth/useUserInfo')
-loader.deregister()
 
 let clock = Date.now()
 
 async function setup() {
+  vi.stubEnv('SSR', false)
   const app = createSSRApp({
     setup() {
       useUserInfoStore().fingerprint = { visitorId: 'test-device', confidence: { score: 1 }, components: {}, version: 'test' }
@@ -59,13 +49,13 @@ async function setup() {
   }
   registerAuthSessionAccessor(session)
   clock += 20_000
-  const time = mock.method(Date, 'now', () => clock)
+  const time = vi.spyOn(Date, 'now').mockImplementation(() => clock)
   return {
     session,
     refreshes: () => refreshes,
     failRefresh: (value: boolean) => failRefresh = value,
     restore() {
-      time.mock.restore()
+      time.mockRestore()
       registerAuthSessionAccessor(previous)
     },
   }

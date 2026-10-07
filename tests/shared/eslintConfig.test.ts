@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
 import { ESLint } from 'eslint'
+import { test } from 'vitest'
 
 const eslint = new ESLint()
 
@@ -10,13 +10,13 @@ async function messages(source: string, filePath: string) {
 }
 
 test('ESLint covers config languages, source and maintained tests', async () => {
-  for (const file of ['package.json', 'pnpm-workspace.yaml', '.github/workflows/check.yml', '.vscode/settings.json', 'tsconfig.vue.json', 'scripts/runTests.mjs', 'src/forum/components/comment/ForumCommentArea.vue', 'tests/e2e/forum.spec.ts', 'src/components/links/Join.css']) {
+  for (const file of ['package.json', 'pnpm-workspace.yaml', '.github/workflows/check.yml', '.vscode/settings.json', 'tsconfig.vue.json', 'vitest.config.ts', 'src/forum/components/comment/ForumCommentArea.vue', 'tests/e2e/forum.spec.ts', 'src/components/links/Join.css']) {
     assert.equal(await eslint.isPathIgnored(file), false, file)
     assert.ok(await eslint.calculateConfigForFile(file), file)
   }
   for (const file of ['src/zh/index.md', 'pnpm-lock.yaml', 'src/public/fonts/fonts-standard.css', '.vitepress/theme/mdc-components.mjs', '.vitepress/cache/generated.ts', 'tests/e2e/state-compare.json'])
     assert.equal(await eslint.isPathIgnored(file), true, file)
-})
+}, 30_000)
 
 test('forum services retain both layer and theme import restrictions', async () => {
   for (const path of ['~/forum/components/Example.vue', '~/forum/composables/data/example', '../composables/example', '../../composables/example', '../../../../.vitepress/locales/types']) {
@@ -47,8 +47,10 @@ test('data JSON checks correctness without changing generator formatting', async
   assert.ok(invalid.some(message => message.fatal))
 })
 
-test('Node tests accept node:test while focused tests remain forbidden', async () => {
+test('vitest suites reject Node imports and focused tests while the browser harness keeps its runner', async () => {
   const result = await messages('import test from \'node:test\'\ntest.only(\'example\', () => {})\n', 'tests/shared/eslintProbe.test.ts')
-  assert.ok(!result.some(message => message.ruleId === 'test/no-import-node-test'))
+  assert.ok(result.some(message => message.ruleId === 'test/no-import-node-test'))
   assert.ok(result.some(message => message.ruleId === 'test/no-only-tests'))
+  const browser = await messages('import test from \'node:test\'\ntest(\'example\', () => {})\n', 'tests/theme/swipe-actions/browser.test.mjs')
+  assert.ok(!browser.some(message => message.ruleId === 'test/no-import-node-test'))
 })

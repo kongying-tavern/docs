@@ -2,8 +2,8 @@ import { strict as assert } from 'node:assert'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { after, test } from 'node:test'
 import MarkdownIt from 'markdown-it'
+import { afterAll, test } from 'vitest'
 import { loadFontSubsetConfig } from '../../scripts/font_subset/config'
 import { collectSiteCodepoints } from '../../scripts/font_subset/files'
 
@@ -11,7 +11,7 @@ const fixtureRoot = mkdtempSync(join(tmpdir(), 'font-subset-extractor-'))
 const sourceDir = join(fixtureRoot, 'src')
 mkdirSync(sourceDir)
 
-after(() => rmSync(fixtureRoot, { recursive: true, force: true }))
+afterAll(() => rmSync(fixtureRoot, { recursive: true, force: true }))
 
 test('assigns structured site text to configured font roles', async () => {
   writeFileSync(join(sourceDir, 'page.md'), [

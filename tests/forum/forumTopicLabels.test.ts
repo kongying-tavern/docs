@@ -1,6 +1,6 @@
 import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { isTopicTypeChangeConfirmed } from '../../src/forum/api/gitee/issues'
 import { normalizeIssue } from '../../src/forum/api/gitee/normalize'
 import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../src/forum/composables/util/composeTopicBody'
@@ -22,7 +22,7 @@ import {
   topicStatusHidesTopic,
 } from '../../src/forum/services/forumTopicStatus'
 
-test('Topic label edits preserve provider labels and keep one type', () => {
+test('topic label edits preserve provider labels and keep one type', () => {
   const labels = ['WEB-FEEDBACK', 'LC-ZH', 'TYP-BUG', 'CATA-DOCS', 'PINNED']
 
   assert.deepEqual(replaceTopicTypeLabel(labels, 'FEAT'), [
@@ -109,7 +109,7 @@ test('type label overrides the legacy title prefix, and read-back confirmation r
   assert.equal(normalizeIssue({ ...issue, labels: [] }).type, 'BUG')
 })
 
-test('Topic status labels are exclusive while preserving unrelated labels', () => {
+test('topic status labels are exclusive while preserving unrelated labels', () => {
   const labels = ['TYP-BUG', 'CATA-DOCS', 'ST-CONFIRMED', 'GOOD-ISSUE']
 
   assert.deepEqual(replaceTopicStatus(labels, 'fixed'), [
@@ -126,7 +126,7 @@ test('Topic status labels are exclusive while preserving unrelated labels', () =
   assert.equal(getTopicStatus(['ST-STALE', 'ST-FIXED']), 'stale')
 })
 
-test('Topic status definitions expose type and hiding semantics', () => {
+test('topic status definitions expose type and hiding semantics', () => {
   assert.deepEqual(
     getAvailableTopicStatuses('FEAT').map(definition => definition.id),
     ['roadmap', 'rfc', 'not-planned', 'stale', 'duplicate', 'invalid'],

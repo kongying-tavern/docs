@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { readSavedTopicDrafts, readTopicDraft, removeTopicDraft, writeTopicDraft } from '../../src/forum/services/form/topicDraft'
 import { STORAGE_KEYS } from '../../src/forum/services/forumConfig'
 

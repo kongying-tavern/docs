@@ -1,7 +1,7 @@
 import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
 import {
   submitCommentTransaction,
@@ -71,7 +71,7 @@ test('upload failure prevents the Comment API call', async () => {
   assert.equal(apiCalls, 0)
 })
 
-test('Comment API failure retains editor content and uploaded attachments', async () => {
+test('comment API failure retains editor content and uploaded attachments', async () => {
   const attachments = queue()
   const editor = doc('retain me')
   await attachments.addFiles([new File(['test'], 'retain.png', { type: 'image/png' })])

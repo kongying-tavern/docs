@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
 import { runInNewContext } from 'node:vm'
+import { test } from 'vitest'
 import {
   DEFAULT_TOAST_DURATION,
   isMotionPreference,

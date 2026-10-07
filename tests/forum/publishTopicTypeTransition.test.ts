@@ -1,6 +1,6 @@
-import type { TestContext } from 'node:test'
+import type { TestContext } from 'vitest'
 import assert from 'node:assert/strict'
-import { it } from 'node:test'
+import { test } from 'vitest'
 import { preparePublishTypeMotion } from '../../src/forum/components/utils/publishTopicTypeTransition'
 
 interface MockElement {
@@ -38,7 +38,7 @@ function setupMotion(t: TestContext, mounted = true) {
   for (const [key, value] of Object.entries(globals)) {
     const previous = Object.getOwnPropertyDescriptor(globalThis, key)
     Object.defineProperty(globalThis, key, { configurable: true, value })
-    t.after(() => {
+    t.onTestFinished(() => {
       if (previous)
         Object.defineProperty(globalThis, key, previous)
       else
@@ -113,7 +113,7 @@ function setupMotion(t: TestContext, mounted = true) {
   }
 }
 
-it('selection requests a visible row-to-trigger animation and restores the trigger', async (t) => {
+test('selection requests a visible row-to-trigger animation and restores the trigger', async (t) => {
   const { motion, target, attributes, state } = setupMotion(t)
   await motion.play()
   assert.equal(state().frames[0].top, '160px')
@@ -128,7 +128,7 @@ it('selection requests a visible row-to-trigger animation and restores the trigg
   assert.equal(state().observing, false)
 })
 
-it('grows the shell and gradually reveals the form after the chooser departs', async (t) => {
+test('grows the shell and gradually reveals the form after the chooser departs', async (t) => {
   const { motion, shell, state } = setupMotion(t)
   assert.equal(shell.style.height, '232px')
   await motion.play()
@@ -142,7 +142,7 @@ it('grows the shell and gradually reveals the form after the chooser departs', a
   assert.equal(shell.style.overflow, '')
 })
 
-it('keeps the row visible until the asynchronous menu trigger mounts', async (t) => {
+test('keeps the row visible until the asynchronous menu trigger mounts', async (t) => {
   const { motion, mount, state } = setupMotion(t, false)
   const playing = motion.play()
   assert.equal(state().appended, true)
@@ -156,7 +156,7 @@ it('keeps the row visible until the asynchronous menu trigger mounts', async (t)
   assert.equal(state().observing, false)
 })
 
-it('closing while the trigger loads releases the pending motion', async (t) => {
+test('closing while the trigger loads releases the pending motion', async (t) => {
   const { motion, mount, state, target } = setupMotion(t, false)
   const playing = motion.play()
   motion.cancel()

@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { normalizeComment, normalizeIssue } from '../../src/forum/api/gitee/normalize'
 import { extractOfficialAndAuthorComments } from '../../src/forum/api/gitee/officialComments'
 import { composeTopicBody, writeTopicBodyComment } from '../../src/forum/composables/util/composeTopicBody'

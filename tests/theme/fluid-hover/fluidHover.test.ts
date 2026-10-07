@@ -1,6 +1,6 @@
 import type { ItemRect, PickNearestInput } from '../../../.vitepress/theme/hooks/fluid-hover/geometry'
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { pickNearest } from '../../../.vitepress/theme/hooks/fluid-hover/geometry'
 import { stepSpring } from '../../../.vitepress/theme/hooks/fluid-hover/spring'
 

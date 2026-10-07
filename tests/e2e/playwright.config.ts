@@ -18,7 +18,11 @@ export default defineConfig({
     serviceWorkers: 'block',
   },
   webServer: {
-    env: { VITE_COLADA_DEVTOOLS: 'false' },
+    env: {
+      VITE_COLADA_DEVTOOLS: 'false',
+      VITE_DEVTOOLS: 'false',
+      VITEPRESS_CACHE_DIR: '.vitepress/cache/forum-e2e',
+    },
     command: `pnpm exec vitepress dev --base / --host 127.0.0.1 --port ${port} --strictPort`,
     cwd: fileURLToPath(new URL('../..', import.meta.url)),
     url: baseURL,

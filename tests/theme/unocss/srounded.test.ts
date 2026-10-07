@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
 import { createGenerator, presetWind4 } from 'unocss'
+import { test } from 'vitest'
 import { sroundedRules } from '../../../.vitepress/theme/unocss/srounded'
 
 test('smooth corner utilities preserve fallback, variants and pill geometry', async () => {

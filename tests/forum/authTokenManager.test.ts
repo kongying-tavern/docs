@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { useTokenManager } from '../../src/forum/composables/auth/useTokenManager'
 
 test('replacing the main access token invalidates its SSO token', () => {

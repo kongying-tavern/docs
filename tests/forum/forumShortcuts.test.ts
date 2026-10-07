@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { matchesShortcut, normalizeShortcut, normalizeShortcutPreferences, resolveEditorShortcut, resolveShortcut, shortcutBindingError, shortcutFromEvent } from '../../src/forum/services/forumShortcuts'
 
 const defaults = { overrides: {} }

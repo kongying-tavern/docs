@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { buildTopicListRequest } from '../../src/forum/api/gitee/issues'
 import { forumKeys } from '../../src/forum/services/forumQueryContracts'
 import { buildForumHref, parseForumLocation } from '../../src/forum/services/forumRoute'
@@ -125,7 +125,7 @@ test('provider intersects concluded range with bug type and preserves sorting', 
   assert.equal(provider.query.sort, 'updated')
 })
 
-test('User filter and clear-search transitions preserve the rest of the URL tuple', () => {
+test('user filter and clear-search transitions preserve the rest of the URL tuple', () => {
   const currentUrl = '/docs/ja/feedback/user/alice/feat?q=map&sort=updated&view=card#results'
   const parsed = parseForumLocation(currentUrl, routeOptions)
   assert.equal(parsed?.route.name, 'user')

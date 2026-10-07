@@ -1,17 +1,20 @@
 import type { DefaultTheme } from 'vitepress'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { PiniaColadaDevtools } from '@pinia/colada-devtools/vite'
 import { Features } from 'lightningcss'
+import { medula } from 'medula/vite'
 import UnoCSS from 'unocss/vite'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
-import { DEFAULT_LOCALE } from './.vitepress/locales/common/site'
-import zhConstants from './.vitepress/locales/zh/constants'
-import zhSidebar from './.vitepress/locales/zh/sidebar'
-import { fontSubsetPlugin } from './.vitepress/plugins/font-subset'
-import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata'
-import openInEditor from './.vitepress/plugins/open-in-editor'
-import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine'
+import { DEFAULT_LOCALE } from './.vitepress/locales/common/site.ts'
+import zhConstants from './.vitepress/locales/zh/constants.ts'
+import zhSidebar from './.vitepress/locales/zh/sidebar.ts'
+import { fontSubsetPlugin } from './.vitepress/plugins/font-subset/index.ts'
+import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
+import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
+import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
 
 // llms 1.14 drops the site base in nested sidebar groups; keep section entries flat.
 function flattenSidebarItems(items: DefaultTheme.SidebarItem[]): DefaultTheme.SidebarItem[] {
@@ -21,7 +24,13 @@ function flattenSidebarItems(items: DefaultTheme.SidebarItem[]): DefaultTheme.Si
   ])
 }
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  devtools: process.env.VITE_DEVTOOLS === 'false'
+    ? false
+    : {
+        apply: process.env.VITE_BUILD_ANALYZE === 'true' ? 'all' : 'serve',
+        build: { withApp: process.env.VITE_BUILD_ANALYZE === 'true' },
+      },
   css: {
     transformer: 'lightningcss',
     lightningcss: {
@@ -68,7 +77,9 @@ export default defineConfig({
     // https://github.com/unjs/fontaine
     fontaineFallbackPlugin(),
     openInEditor(),
-    vueDevTools(),
+    process.env.VITE_DEVTOOLS !== 'false' && vueDevTools({ appendTo: /vitepress\/dist\/client\/app\/index\.js$/ }),
+    process.env.VITE_DEVTOOLS !== 'false' && medula(),
+    loadEnv(mode, process.cwd(), 'VITE_COLADA_DEVTOOLS').VITE_COLADA_DEVTOOLS !== 'false' && PiniaColadaDevtools(),
     llmstxt({
       // Chinese is the source locale; translated copies would duplicate the corpus.
       workDir: DEFAULT_LOCALE,
@@ -105,4 +116,4 @@ export default defineConfig({
   json: {
     stringify: true,
   },
-})
+}))

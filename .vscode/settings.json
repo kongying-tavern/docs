@@ -26,20 +26,37 @@
     "zhlint"
   ],
   "files.trimTrailingWhitespace": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "json",
+    "jsonc",
+    "yaml",
+    "css",
+    "scss"
+  ],
   "markdown.validate.enabled": true,
   "search.exclude": {
     "**/node_modules": true,
-    "**/src/_data":true,
+    "**/src/_data": true,
     "**/.vitepress/.cache/**": true,
     "**/.vitepress/.temp/**": true,
     "**/dist/**": true,
     "packages/*/lib/**": true
   },
-  "vue.server.includeLanguages": ["vue", "markdown"],
+  "vue.server.includeLanguages": [
+    "vue",
+    "markdown"
+  ],
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "scss.lint.unknownAtRules": "ignore",
   "github.copilot.chat.commitMessageGeneration.instructions": [
-    { "file": ".github/commit-convention.md" }
+    {
+      "file": ".github/commit-convention.md"
+    }
   ],
   // Required for the extension
   "mdc.enableFormatting": true,

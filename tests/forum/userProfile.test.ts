@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { buildUserProfileForm } from '../../src/forum/api/gitee/userProfile'
 import { applyUserProfilePatch, settleUserProfilePatch, syncUserProfileDraft } from '../../src/forum/services/forumUserProfileOptimistic'
 

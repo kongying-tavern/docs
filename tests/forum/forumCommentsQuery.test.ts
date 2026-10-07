@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
 import { PiniaColada } from '@pinia/colada'
 import { createPinia } from 'pinia'
+import { test } from 'vitest'
 import { createSSRApp, effectScope } from 'vue'
 import { clearApiCache } from '../../src/forum/api/gitee'
 import { useForumCommentsQuery } from '../../src/forum/composables/data/useForumQueries'

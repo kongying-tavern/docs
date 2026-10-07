@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
-import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { runInNewContext } from 'node:vm'
 import ts from 'typescript'
+import { test } from 'vitest'
 import { ref, shallowRef, watch } from 'vue'
 
 const telemetryDir = fileURLToPath(new URL('../../src/services/telemetry/', import.meta.url))
@@ -86,7 +86,7 @@ function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
   return { load, calls, listeners, enabled, document, window, storage, alerts, toasts }
 }
 
-test('Clarity isolates synchronous exceptions and rejected identify promises', async () => {
+test('clarity isolates synchronous exceptions and rejected identify promises', async () => {
   const env = runtime()
   const clarity = env.load('clarity.ts')
   env.window.clarity = () => {

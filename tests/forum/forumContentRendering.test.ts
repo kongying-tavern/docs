@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
 import { resolveExtensions } from '@tiptap/core'
+import { test } from 'vitest'
 import { decodeCommentBody, decodeForumText, decodeTopicBody, updateTopicMetadata } from '../../src/forum/services/forumContentCodec'
 import {
   renderForumComment,
@@ -121,7 +121,7 @@ test('malformed or unsupported rich roots fall back to exact interpolated plain 
   }
 })
 
-test('Legacy Topic conversion disables raw HTML, allowlists links, and preserves JSON-looking text', () => {
+test('legacy Topic conversion disables raw HTML, allowlists links, and preserves JSON-looking text', () => {
   const rendered = renderForumTopic('123\nhttps://gitee.com/KYJGYSDT\nhttps://example.com\n<script>alert(1)</script>')
 
   assert.match(rendered, /^<p>123<br>/)
@@ -132,7 +132,7 @@ test('Legacy Topic conversion disables raw HTML, allowlists links, and preserves
   assert.match(rendered, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/)
 })
 
-test('Topic paragraph breaks keep inline Markdown nesting valid', () => {
+test('topic paragraph breaks keep inline Markdown nesting valid', () => {
   assert.equal(
     renderForumTopic('**first\nsecond**'),
     '<p><strong>first<br>\nsecond</strong></p>',
@@ -146,7 +146,7 @@ test('link allowlist validates normalized origins before accepting relative URLs
   assert.equal(isAllowedForumHref('javascript:alert(1)'), false)
 })
 
-test('Topic bodies and summaries share safe topic references and shortened auto-links', () => {
+test('topic bodies and summaries share safe topic references and shortened auto-links', () => {
   const longUrl = 'https://gitee.com/KYJGYSDT/a/very/long/path/that/keeps/going?query=full-value'
   const source = `关联 #ICROD8、@lain718、普通 #BUG、邮箱 test@example.com、代码 \`#IABC12\`，参见 ${longUrl}`
   const options = { topicHref: (id: string) => `/feedback/topic/${id}` }
@@ -220,7 +220,7 @@ test('scheme-less links do not rewrite code or authored Markdown link syntax', (
   assert.match(rendered, /href="https:\/\/gitee\.com\/KYJGYSDT"/)
 })
 
-test('Topic bodies and summaries replace pasted site docs with their VitePress titles', () => {
+test('topic bodies and summaries replace pasted site docs with their VitePress titles', () => {
   const href = 'https://yuanshen.site/docs/manual/client/fullscreen-windowed'
   const documentLinks = { '/manual/client/fullscreen-windowed': '窗口全屏/无边框窗口模式' }
 
@@ -292,7 +292,7 @@ test('plain and rich Comments share Topic references, shortened URLs, and docume
   }
 })
 
-test('Topic special text leaves authored links, headings, and unsafe destinations alone', () => {
+test('topic special text leaves authored links, headings, and unsafe destinations alone', () => {
   const rendered = renderForumTopic([
     '# Heading',
     '![image](https://example.com/image.png)',
@@ -331,7 +331,7 @@ test('plain Comments do not interpret Markdown syntax', () => {
   }
 })
 
-test('Topic JSON preserves formatting, references and attachments across decode and render', () => {
+test('topic JSON preserves formatting, references and attachments across decode and render', () => {
   const doc = { type: 'doc', content: [{ type: 'paragraph', content: [
     { type: 'text', text: 'bold', marks: [{ type: 'bold' }] },
     { type: 'topicReference', attrs: { id: 'ICROD8', label: 'topic' } },

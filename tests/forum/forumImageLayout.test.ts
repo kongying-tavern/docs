@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { planForumImageGrid, planForumImageRow } from '../../src/forum/services/forumImageLayout'
 
 const wide = { width: 1600, height: 800 }

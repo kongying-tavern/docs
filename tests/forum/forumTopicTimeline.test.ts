@@ -1,7 +1,7 @@
 import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
-import test from 'node:test'
+import { test } from 'vitest'
 import { buildTopicOperateLogsRequest } from '../../src/forum/api/gitee/issues'
 import { normalizeTopicTimeline } from '../../src/forum/api/gitee/normalize'
 import { TOPIC_STATUS_DEFINITIONS } from '../../src/forum/services/forumTopicStatus'

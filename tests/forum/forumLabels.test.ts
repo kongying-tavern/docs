@@ -1,6 +1,6 @@
 import type { LabelPageFetcher } from '../../src/forum/api/gitee/labels'
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { getAllLabels } from '../../src/forum/api/gitee/labels'
 
 function label(name: string): GITEE.IssueLabel {

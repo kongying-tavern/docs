@@ -1,6 +1,6 @@
 import type ForumAPI from '../../src/forum/api/types'
 import assert from 'node:assert/strict'
-import test, { mock } from 'node:test'
+import { test, vi } from 'vitest'
 import { serializeTopicCommentMutation } from '../../src/forum/composables/data/useForumMutations'
 import {
   collectForumTopics,
@@ -178,14 +178,14 @@ test('a failed comment write does not block the next queued write', async () => 
 
 test('browser comment writes use a topic-specific Web Lock and propagate failures', async () => {
   const navigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'navigator')
-  const request = mock.fn(async (_name: string, task: () => Promise<unknown>) => task())
+  const request = vi.fn(async (_name: string, task: () => Promise<unknown>) => task())
   Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { locks: { request } } })
   try {
     assert.equal(await serializeTopicCommentMutation(42, async () => 'confirmed'), 'confirmed')
     await assert.rejects(serializeTopicCommentMutation('42', async () => {
       throw new Error('Rejected')
     }), /Rejected/)
-    assert.deepEqual(request.mock.calls.map(call => call.arguments[0]), ['forum-topic-comments:42', 'forum-topic-comments:42'])
+    assert.deepEqual(request.mock.calls.map(call => call[0]), ['forum-topic-comments:42', 'forum-topic-comments:42'])
   }
   finally {
     if (navigatorDescriptor)

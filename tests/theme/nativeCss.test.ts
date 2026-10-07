@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import test from 'node:test'
 import { preprocessCSS, resolveConfig } from 'vite'
+import { test } from 'vitest'
 import { compileStyle, parse } from 'vue/compiler-sfc'
 import { FORUM_MOBILE_BREAKPOINT_PX } from '../../src/forum/services/forumConfig'
 import siteConfig from '../../vite.config'
 
 test('shared custom media is lowered with nesting through the actual Vite CSS pipeline', async () => {
-  const config = await resolveConfig({ ...siteConfig, configFile: false, plugins: [] }, 'serve')
+  const config = await resolveConfig({ ...siteConfig({ command: 'serve', mode: 'development' }), configFile: false, plugins: [] }, 'serve')
   const result = await preprocessCSS(`
     @import '@/styles/media.css';
     .probe {
@@ -29,7 +29,7 @@ test('Vue scoped nested footer rules retain their compiled selectors and respons
   const { descriptor } = parse(await readFile(filename, 'utf8'), { filename })
   const style = compileStyle({ source: descriptor.styles[0].content, filename, id: 'data-v-css-probe', scoped: true })
   assert.deepEqual(style.errors, [])
-  const config = await resolveConfig({ ...siteConfig, configFile: false, plugins: [] }, 'serve')
+  const config = await resolveConfig({ ...siteConfig({ command: 'serve', mode: 'development' }), configFile: false, plugins: [] }, 'serve')
   const result = await preprocessCSS(style.code, `${filename}?vue&type=style&lang.css`, config)
   assert.doesNotMatch(result.code, /@custom-media|--footer-columns|--site-wide/)
   assert.match(result.code, /width\s*>=\s*48rem/)
@@ -42,7 +42,7 @@ test('mobile dialogs retain the independent translate reset against UnoCSS posit
   const { descriptor } = parse(await readFile(filename, 'utf8'), { filename })
   const style = compileStyle({ source: descriptor.styles[0].content, filename, id: 'data-v-dialog-probe', scoped: true })
   assert.deepEqual(style.errors, [])
-  const config = await resolveConfig({ ...siteConfig, configFile: false, plugins: [] }, 'build')
+  const config = await resolveConfig({ ...siteConfig({ command: 'build', mode: 'production' }), configFile: false, plugins: [] }, 'build')
   const result = await preprocessCSS(style.code, `${filename}?vue&type=style&lang.css`, config)
   assert.match(result.code, /translate:\s*none\s*!important/)
 })

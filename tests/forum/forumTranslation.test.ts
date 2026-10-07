@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { matchLanguages } from '../../src/forum/composables/data/matchLanguages'
 import { areLanguagesEquivalent } from '../../src/forum/services/forumLanguage'
 import { prepareTerminology } from '../../src/forum/services/forumTerminology'

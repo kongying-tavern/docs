@@ -1,6 +1,6 @@
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { ref } from 'vue'
 import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
 import { createDefaultTopicDraft, readTopicDraft, restoreTopicDraft, writeTopicDraft } from '../../src/forum/services/form/topicDraft'

@@ -1,6 +1,6 @@
 import type { KyResponse } from 'ky'
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { extractPaginationParams } from '../../src/forum/api/gitee/normalize'
 
 const cases: Array<{ name: string, headers: Record<string, string>, expected: unknown }> = [

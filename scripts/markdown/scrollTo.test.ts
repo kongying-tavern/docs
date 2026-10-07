@@ -1,6 +1,6 @@
 /* eslint-disable test/no-import-node-test -- verify scrolling without a DOM implementation */
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { scrollTo } from '../../src/composables/scrollTo'
 
 test('explicit targets work without a URL hash and honor CSS offsets and reduced motion', (t) => {
@@ -23,7 +23,12 @@ test('explicit targets work without a URL hash and honor CSS offsets and reduced
   for (const [key, value] of Object.entries(globals)) {
     const previous = Object.getOwnPropertyDescriptor(globalThis, key)
     Object.defineProperty(globalThis, key, { value, configurable: true })
-    t.after(() => previous ? Object.defineProperty(globalThis, key, previous) : Reflect.deleteProperty(globalThis, key))
+    t.onTestFinished(() => {
+      if (previous)
+        Object.defineProperty(globalThis, key, previous)
+      else
+        Reflect.deleteProperty(globalThis, key)
+    })
   }
   scrollTo({ hash: '#reply-1', offset: 5 })
   assert.deepEqual(calls, [{ left: 0, top: 315, behavior: 'instant' }])

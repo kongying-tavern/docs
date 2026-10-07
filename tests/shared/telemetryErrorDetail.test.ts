@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { test } from 'vitest'
 import { describeError, formatTraceId } from '../../src/services/telemetry/describeError'
 
 test('describeError surfaces the concrete error text instead of ids', () => {

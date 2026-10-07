@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { resolveForumDirection, resolveForumScroll, resolveForumSharedRoute } from '../../src/forum/router/forumViewTransition'
 import {
   buildForumHref,
@@ -212,7 +212,7 @@ test('canonicalization preserves the current History state object', () => {
   assert.equal(calls.length, 1)
 })
 
-test('Forum transitions follow the element that explains the navigation', () => {
+test('forum transitions follow the element that explains the navigation', () => {
   const home = { name: 'home', locale: 'root', list: { filter: 'all', topicType: 'all', sort: 'created', q: '', creator: null } } as const
   const topic = { name: 'topic', locale: 'root', topicId: 'I123', commentPage: 1 } as const
   const user = { name: 'user', locale: 'root', username: 'alice', list: { ...home.list, creator: 'alice' } } as const
@@ -223,14 +223,14 @@ test('Forum transitions follow the element that explains the navigation', () => 
   assert.equal(resolveForumSharedRoute(home, home), null)
 })
 
-test('Forum navigation restores saved scroll only for history entries', () => {
+test('forum navigation restores saved scroll only for history entries', () => {
   assert.deepEqual(resolveForumScroll({}), { isBack: false, top: 0 })
   assert.deepEqual(resolveForumScroll({ scrollPosition: 420 }), { isBack: true, top: 420 })
   assert.deepEqual(resolveForumScroll({ scrollPosition: -1 }), { isBack: true, top: 0 })
   assert.deepEqual(resolveForumScroll({ scrollPosition: 'invalid' }), { isBack: true, top: 0 })
 })
 
-test('Topic return links use the same back direction as browser history', () => {
+test('topic return links use the same back direction as browser history', () => {
   const home = { name: 'home', locale: 'root', list: { filter: 'all', topicType: 'all', sort: 'created', q: '', creator: null } } as const
   const topic = { name: 'topic', locale: 'root', topicId: 'I123', commentPage: 1 } as const
 
@@ -251,6 +251,8 @@ test('ships exactly three scoped Vercel Forum rewrites and localized shells', ()
   for (const path of ['src/zh/feedback.md', 'src/en/feedback.md', 'src/ja/feedback.md']) {
     const shell = readSource(path)
     assert.match(shell, /layout: Forum/)
-    assert.match(shell, /<ForumRouteView \/>/)
   }
+  assert.match(readSource('.vitepress/theme/layouts/Forum.vue'), /<ForumEntry\s*\/>/)
+  assert.match(readSource('.vitepress/theme/components/ForumEntry.vue'), /<AsyncForumRouteView\b/)
+  assert.match(readSource('.vitepress/theme/components/AsyncForumRouteView.ts'), /ForumRouteView\.vue/)
 })

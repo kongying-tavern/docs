@@ -1,5 +1,5 @@
 import { strict as assert } from 'node:assert'
-import { test } from 'node:test'
+import { test } from 'vitest'
 import { effectScope, nextTick, shallowRef } from 'vue'
 import { usePreviewerFlip } from '../../src/forum/components/ui/image-previewer/composables/usePreviewerFlip'
 
@@ -37,7 +37,7 @@ function fixture(reducedMotion = false, loaded = true) {
 
 test('source entrance stays active until the browser finishes its transform animation', async (t) => {
   const f = fixture()
-  t.after(f.dispose)
+  t.onTestFinished(f.dispose)
   f.flip.setSource(f.source)
   assert.equal(f.flip.entering.value, true)
   f.flip.beginEnter()
@@ -53,7 +53,7 @@ test('source entrance stays active until the browser finishes its transform anim
 
 test('switching away cancels pending image load and prevents a late entrance', async (t) => {
   const f = fixture(false, false)
-  t.after(f.dispose)
+  t.onTestFinished(f.dispose)
   f.flip.setSource(f.source)
   f.flip.beginEnter()
   await nextTick()
@@ -69,7 +69,7 @@ test('switching away cancels pending image load and prevents a late entrance', a
 
 test('reduced motion skips source transforms', async (t) => {
   const f = fixture(true)
-  t.after(f.dispose)
+  t.onTestFinished(f.dispose)
   f.flip.setSource(f.source)
   f.flip.beginEnter()
   await nextTick()
@@ -79,7 +79,7 @@ test('reduced motion skips source transforms', async (t) => {
 
 test('clearing the source cancels an active entrance', async (t) => {
   const f = fixture()
-  t.after(f.dispose)
+  t.onTestFinished(f.dispose)
   f.flip.setSource(f.source)
   f.flip.beginEnter()
   await nextTick()

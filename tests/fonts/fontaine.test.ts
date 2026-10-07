@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import test from 'node:test'
 import { fileURLToPath } from 'node:url'
+import { test } from 'vitest'
 import { loadFontSubsetConfig } from '../../scripts/font_subset/config'
 import { generateFontaineFallbackCss } from '../../scripts/font_subset/fontaine'
 

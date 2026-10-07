@@ -3,9 +3,9 @@ import type { UploadImageAttachmentsResult } from '../../src/forum/services/form
 import type { TopicFormData } from '../../src/forum/services/form/validation'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import test from 'node:test'
 import { runInNewContext } from 'node:vm'
 import ts from 'typescript'
+import { test, vi } from 'vitest'
 import * as Vue from 'vue'
 import { useTopicDraftPersistence } from '../../src/forum/components/form/composables/useTopicDraftPersistence'
 import { resolvePublishTopicType } from '../../src/forum/services/form/publishTopicEntry'
@@ -352,9 +352,9 @@ test('cold draft links wait for account rollout and resume only the compact form
   }
 })
 
-test('create more is offered only after success on a new opening within five minutes', async (t) => {
+test('create more is offered only after success on a new opening within five minutes', async () => {
   let now = 1000
-  t.mock.method(Date, 'now', () => now)
+  vi.spyOn(Date, 'now').mockImplementation(() => now)
   const setup = runtime()
   try {
     assert.equal(setup.controller.form.showCreateMore.value, false)

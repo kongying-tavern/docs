@@ -1,7 +1,7 @@
 import type { ImageAttachment, UploadImageAttachmentsResult } from '../../src/forum/services/form/imageAttachment'
 import type { TopicFormData } from '../../src/forum/services/form/validation'
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import { afterEach, test, vi } from 'vitest'
 import { computed, effectScope, ref } from 'vue'
 import { useTopicDraftPersistence } from '../../src/forum/components/form/composables/useTopicDraftPersistence'
 
@@ -180,23 +180,25 @@ test('page exit persists immediately and invalidates a waiting asynchronous save
   finally { fixture.scope.stop() }
 })
 
-test('debounced saves commit once and stopping clears pending timers', async (context) => {
-  context.mock.timers.enable({ apis: ['setTimeout'] })
+afterEach(() => vi.useRealTimers())
+
+test('debounced saves commit once and stopping clears pending timers', async () => {
+  vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
   const fixture = setup()
   try {
     fixture.uploads.resolve({ ok: true })
     fixture.persistence.activate('BUG')
     fixture.persistence.schedule('BUG')
-    context.mock.timers.tick(400)
+    vi.advanceTimersByTime(400)
     fixture.persistence.schedule('BUG')
-    context.mock.timers.tick(400)
+    vi.advanceTimersByTime(400)
     assert.equal(fixture.settlements(), 0)
-    context.mock.timers.tick(100)
+    vi.advanceTimersByTime(100)
     assert.equal(await fixture.persistence.flush('BUG'), true)
     assert.equal(fixture.writes.length, 1)
     fixture.persistence.schedule('BUG')
     fixture.persistence.stop('BUG')
-    context.mock.timers.tick(500)
+    vi.advanceTimersByTime(500)
     await Promise.resolve()
     assert.equal(fixture.writes.length, 1)
   }
