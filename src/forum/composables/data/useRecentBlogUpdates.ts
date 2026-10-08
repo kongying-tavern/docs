@@ -10,8 +10,7 @@ import { selectRecentBlogUpdates } from '~/forum/services/blogUpdateFeed'
  * 窗口按客户端当前时间滚动，条目过期后无需重新构建即会消失；首页与「团队博客」列表互斥，
  * 两处都取自这里以保证判断一致。
  *
- * 文章数据由调用方传入：`~/_data/posts.data` 的具名 `data` 导出由 VitePress 在构建期生成，
- * 本地 `posts.data.ts` 只有 default，`pnpm typecheck` 认不出来，所以导入留在 .vue 里。
+ * 调用方传入 `~/_data/forumBlogPosts.data` 的构建期数据，其中仅保留最新更新及边栏所需元信息。
  */
 export function useRecentBlogUpdates(posts: readonly BlogUpdatePost[]): ComputedRef<BlogUpdateItem[]> {
   const { lang } = useData()
