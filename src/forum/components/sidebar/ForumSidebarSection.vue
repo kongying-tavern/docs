@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { useResizeObserver } from '@vueuse/core'
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicDropdownMenu from '../topic/ForumTopicDropdownMenu.vue'
 import ForumTopicMetadata from '../ui/ForumTopicMetadata.vue'
@@ -41,7 +41,7 @@ const emit = defineEmits<{
 
 const { message } = useLocalized()
 
-const topicListEl = ref<HTMLElement | null>(null)
+const topicListEl = useTemplateRef<HTMLElement>('topicListEl')
 const topicListScrollable = ref(false)
 
 // 内容不满一屏时滚动遮罩会误淡出最后一行,只在真正可滚动时启用

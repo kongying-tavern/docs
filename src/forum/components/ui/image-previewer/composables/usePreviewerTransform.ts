@@ -16,7 +16,7 @@ export interface PreviewerTransform {
  */
 export function usePreviewerTransform(options: {
   maxZoom: Ref<number>
-  imageEl: Ref<HTMLImageElement | undefined>
+  imageEl: Readonly<Ref<HTMLImageElement | null | undefined>>
   zoomEnabled: Ref<boolean>
   onSwipe: (direction: 1 | -1, dx: number) => void
   onVerticalClose?: () => void

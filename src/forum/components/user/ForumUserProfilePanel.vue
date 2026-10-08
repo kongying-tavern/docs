@@ -2,7 +2,7 @@
 import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { useDebounceFn, useEventListener, useMediaQuery } from '@vueuse/core'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -30,7 +30,7 @@ const { message } = useLocalized()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const searchQuery = ref(props.query)
 watch(() => props.query, query => searchQuery.value = query)
-const tabRowRef = ref<HTMLElement | null>(null)
+const tabRowRef = useTemplateRef<HTMLElement>('tabRowRef')
 const condensed = ref(false)
 let foldObserver: IntersectionObserver | null = null
 

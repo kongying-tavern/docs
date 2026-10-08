@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 
 const { tabs, ariaLabel, layout = 'fill' } = defineProps<{
@@ -12,7 +12,7 @@ const { tabs, ariaLabel, layout = 'fill' } = defineProps<{
 
 const activeTab = defineModel<'all' | 'closed' | 'archived'>('activeTab', { default: 'all' })
 
-const groupRef = ref<HTMLElement | null>(null)
+const groupRef = useTemplateRef<HTMLElement>('groupRef')
 const indicator = ref({ x: 0, width: 0 })
 let resizeObserver: ResizeObserver | null = null
 

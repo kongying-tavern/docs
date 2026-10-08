@@ -2,7 +2,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { DialogContent, DialogRoot, DialogTitle } from 'reka-ui'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
@@ -57,10 +57,10 @@ const isDesktop = useMediaQuery('(min-width: 960px)')
 const visible = ref(false)
 const closing = ref(false)
 const current = ref(0)
-const containerEl = ref<HTMLDivElement>()
-const stageEl = ref<HTMLDivElement>()
-const stackEl = ref<HTMLDivElement>()
-const imageEl = ref<HTMLImageElement>()
+const containerEl = useTemplateRef<HTMLDivElement>('containerEl')
+const stageEl = useTemplateRef<HTMLDivElement>('stageEl')
+const stackEl = useTemplateRef<HTMLDivElement>('stackEl')
+const imageEl = useTemplateRef<HTMLImageElement>('imageEl')
 const panelOpen = ref(false)
 const panelCollapsed = useLocalStorage('forum-image-preview-panel-collapsed', false)
 const panelEntering = ref(false)

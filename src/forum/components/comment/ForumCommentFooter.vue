@@ -2,7 +2,7 @@
 import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { useClipboard, useIntersectionObserver } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -95,7 +95,7 @@ const statsMenu = computed<FORUM.TopicDropdownMenu[]>(() => canViewStats.value &
     }]
   : [])
 
-const reactionTarget = ref<HTMLElement | null>(null)
+const reactionTarget = useTemplateRef<HTMLElement>('reactionTarget')
 const reactionEnabled = ref(false)
 const { stop: stopReactionObserver } = useIntersectionObserver(reactionTarget, ([entry]) => {
   if (!entry?.isIntersecting)

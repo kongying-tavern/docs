@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { useIntersectionObserver } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
@@ -21,7 +21,7 @@ const emit = defineEmits<{
 
 const { message } = useLocalized()
 const { isCompactMode } = useForumViewMode(() => topicData.type)
-const reactionTarget = ref<HTMLElement | null>(null)
+const reactionTarget = useTemplateRef<HTMLElement>('reactionTarget')
 const reactionEnabled = ref(false)
 
 const { stop: stopReactionObserver } = useIntersectionObserver(reactionTarget, ([entry]) => {

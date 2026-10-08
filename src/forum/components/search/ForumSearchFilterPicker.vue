@@ -31,7 +31,7 @@ const { permissionData, ensureFreshData } = usePermissionData()
 const tagLabelGetter = getTopicTagLabelGetter()
 const { options: tagOptions } = useForumTagFilterOptions()
 const activeIndex = ref(-1)
-const pickerEl = ref<HTMLElement>()
+const pickerEl = useTemplateRef<HTMLElement>('pickerEl')
 const authorSearch = ref('')
 const authorSearchEl = useTemplateRef<HTMLInputElement>('authorSearchEl')
 

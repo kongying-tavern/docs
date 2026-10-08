@@ -19,8 +19,8 @@ export function stackTransform(dx: number, dy: number, scale: number, rotate = 0
 }
 
 export function usePreviewerFlip(
-  imageEl: Ref<HTMLImageElement | undefined>,
-  stackEl: Ref<HTMLDivElement | undefined>,
+  imageEl: Readonly<Ref<HTMLImageElement | null | undefined>>,
+  stackEl: Readonly<Ref<HTMLDivElement | null | undefined>>,
   reducedMotion: Readonly<Ref<boolean>>,
 ) {
   const sourceRect = shallowRef<DOMRect | null>(null)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 
@@ -26,9 +26,9 @@ const emit = defineEmits<{
 const open = defineModel<boolean>('open', { default: false })
 const section = ref<string | null>(null)
 const lastSection = ref<string | null>(null)
-const rootPanel = ref<HTMLElement | null>(null)
-const detailPanel = ref<HTMLElement | null>(null)
-const body = ref<HTMLElement | null>(null)
+const rootPanel = useTemplateRef<HTMLElement>('rootPanel')
+const detailPanel = useTemplateRef<HTMLElement>('detailPanel')
+const body = useTemplateRef<HTMLElement>('body')
 const panelHeight = ref(0)
 const sections = computed(() => props.sections.map(item => ({
   ...item,
