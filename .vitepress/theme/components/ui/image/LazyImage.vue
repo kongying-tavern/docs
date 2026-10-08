@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ImgHTMLAttributes } from 'vue'
-import { autoSizes as _autoSizes, lazyLoad, loadImage } from 'unlazy'
+import { autoSizes as _autoSizes, lazyLoad, triggerLoad } from 'unlazy'
 import { nextTick, onBeforeUnmount, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
@@ -73,7 +73,7 @@ watchEffect(async () => {
       _autoSizes(target.value)
     }
 
-    loadImage(target.value, handleImageLoaded)
+    cleanup = triggerLoad(target.value, { onImageLoad: handleImageLoaded })
     return
   }
 
