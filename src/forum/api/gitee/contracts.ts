@@ -51,8 +51,18 @@ const authSchema = z.object({
   token_type: z.string(),
 })
 
-/** 校验实际消费的字段，保留上游原始对象与未使用字段。 */
-function validate<T>(schema: z.ZodType, value: unknown, endpoint: string): T {
+/**
+ * 校验实际消费的字段，保留上游原始对象与未使用字段。
+ *
+ * 返回类型仍由调用方声明（provider 契约比 schema 宽得多，未校验的字段照旧透出），
+ * 但 `T extends z.infer<S>` 要求该声明覆盖 schema 校验过的每个字段，
+ * 所以 schema 与接口漂移会在这里报错，而不是靠 `as T` 蒙过去。
+ */
+function validate<S extends z.ZodType, T extends z.infer<S>>(
+  schema: S,
+  value: unknown,
+  endpoint: string,
+): T {
   const result = schema.safeParse(value)
   if (!result.success) {
     throw new Error(`Invalid Gitee response from ${endpoint}: ${z.prettifyError(result.error)}`)
