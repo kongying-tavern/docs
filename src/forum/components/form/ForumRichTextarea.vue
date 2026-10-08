@@ -77,16 +77,16 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  (e: 'focus', event: FocusEvent): void
-  (e: 'blur', event: FocusEvent): void
-  (e: 'input', value: string): void
-  (e: 'emoji:select', emoji: EmojiItem): void
-  (e: 'mention:select', user: ForumAPI.User): void
-  (e: 'files-selected', files: File[]): void
-  (e: 'remove-attachment', id: string): void
-  (e: 'retry-attachment', id: string): void
-  (e: 'submit'): void
-  (e: 'update:modelValue', value: JSONContent): void
+  'focus': [event: FocusEvent]
+  'blur': [event: FocusEvent]
+  'input': [value: string]
+  'emoji:select': [emoji: EmojiItem]
+  'mention:select': [user: ForumAPI.User]
+  'files-selected': [files: File[]]
+  'remove-attachment': [id: string]
+  'retry-attachment': [id: string]
+  'submit': []
+  'update:modelValue': [value: JSONContent]
 }>()
 
 const { message } = useLocalized()

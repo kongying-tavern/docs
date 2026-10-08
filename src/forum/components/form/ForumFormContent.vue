@@ -16,13 +16,11 @@ interface Props {
   imageSelectionDisabled?: boolean
 }
 
-interface Emits {
-  (e: 'files-selected', files: File[]): void
-  (e: 'select-images'): void
-}
-
 defineProps<Props>()
-defineEmits<Emits>()
+defineEmits<{
+  'files-selected': [files: File[]]
+  'select-images': []
+}>()
 
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')

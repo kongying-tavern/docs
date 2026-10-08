@@ -26,9 +26,9 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (e: 'files-selected', files: File[]): void
-  (e: 'remove', id: string): void
-  (e: 'retry', id: string): void
+  'files-selected': [files: File[]]
+  'remove': [id: string]
+  'retry': [id: string]
 }>()
 
 const atLimit = computed(() => props.attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT)

@@ -17,12 +17,10 @@ interface Props {
   loading?: boolean
 }
 
-interface Emits {
-  (e: 'update:modelValue', value: TopicFormData['type']): void
-}
-
 const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const emit = defineEmits<{
+  'update:modelValue': [value: TopicFormData['type']]
+}>()
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 

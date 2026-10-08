@@ -13,13 +13,11 @@ interface Props {
   errorCount?: number
 }
 
-interface Emits {
-  (e: 'close'): void
-  (e: 'review-errors'): void
-}
-
 defineProps<Props>()
-const emit = defineEmits<Emits>()
+const emit = defineEmits<{
+  'close': []
+  'review-errors': []
+}>()
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 </script>

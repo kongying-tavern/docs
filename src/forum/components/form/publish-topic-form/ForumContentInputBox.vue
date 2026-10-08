@@ -45,10 +45,10 @@ const props = withDefaults(defineProps<{
 })
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', payload: string): void
-  (e: 'paste-files', files: File[]): void
-  (e: 'select-images'): void
-  (e: 'blur', event: FocusEvent): void
+  'update:modelValue': [payload: string]
+  'paste-files': [files: File[]]
+  'select-images': []
+  'blur': [event: FocusEvent]
 }>()
 
 const modelValue = useVModel(props, 'modelValue', emits, {
