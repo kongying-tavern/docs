@@ -8,6 +8,8 @@ import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
 import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
 
 const REGEXP_SPECIAL_CHARACTERS = /[.*+?^${}()|[\]\\]/gu
+const WHITESPACE_REGEX = /\s/u
+const SINGLE_VALUE_PATTERN = '[^\\s,]+'
 
 export function useForumSearchToken() {
   const { message } = useLocalized()
@@ -73,7 +75,12 @@ export function useForumSearchToken() {
       .map(alias => escapeRegExp(alias.label))
       .sort((a, b) => b.length - a.length)
       .join('|')
-    const matcher = new RegExp(`(?:^|\\s)(${pattern}):(\\S+)`, 'giu')
+    const knownLabels = [
+      ...localizedStateLabels.value.keys(),
+      ...localizedTagLabels.value.keys(),
+    ]
+    const valuePattern = buildValueListPattern(knownLabels)
+    const matcher = new RegExp(`(?:^|\\s)(${pattern}):(${valuePattern})`, 'giu')
 
     for (const match of value.matchAll(matcher)) {
       const facet = aliasByLabel.get(match[1].toLocaleLowerCase())
@@ -111,4 +118,20 @@ export function useForumSearchToken() {
 
 function escapeRegExp(value: string): string {
   return value.replace(REGEXP_SPECIAL_CHARACTERS, '\\$&')
+}
+
+/**
+ * 显示名可能带空格（en 的 "Not planned"、"Documentation issue"），
+ * 已知多词标签必须排在单值之前，否则 token 会在第一个空格处被截断；
+ * 单值也不能跨逗号，否则 "state:Fixed,Not planned" 里的后者会被吞掉。
+ * 逗号列表保留空段（"state:fixed,,closed"），与原 \S+ 切分行为一致。
+ */
+function buildValueListPattern(knownLabels: string[]): string {
+  const multiWord = [...new Set(knownLabels)]
+    .filter(label => WHITESPACE_REGEX.test(label))
+    .sort((a, b) => b.length - a.length)
+  const value = multiWord.length
+    ? `(?:${multiWord.map(escapeRegExp).join('|')}(?=[,\\s]|$)|${SINGLE_VALUE_PATTERN})`
+    : SINGLE_VALUE_PATTERN
+  return `${value}(?:,(?:${value})?)*`
 }
