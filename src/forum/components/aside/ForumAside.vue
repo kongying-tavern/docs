@@ -60,9 +60,13 @@ const auth = useUserAuthStore()
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
   padding: 0 4px 10px;
   border-bottom: 1px solid var(--vp-c-divider);
+}
+
+/* 间距写在正文上方：与原本的 margin-bottom 折叠结果一致，且正文为空时不留下尾部留白 */
+.forum-context-aside :deep(.aside-section-header + *) {
+  margin-top: 14px;
 }
 
 .forum-context-aside :deep(.aside-section-card) {

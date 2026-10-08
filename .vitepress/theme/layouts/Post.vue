@@ -143,7 +143,8 @@ if (params?.value) {
 
           <ForumBlogPostHeader />
 
-          <main class="main">
+          <!-- 头图与正文的 40px 间距记在正文上方，见 design.md 的 Vertical Rhythm -->
+          <main class="main post-body">
             <Content
               class="vp-doc VPDoc"
               :class="[
@@ -330,6 +331,10 @@ if (params?.value) {
 .post-content-container {
   margin: 0 auto;
   max-width: 800px;
+}
+
+.post-body {
+  margin-top: 40px;
 }
 
 .post-layout.has-aside .post-content-container,

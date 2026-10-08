@@ -107,7 +107,6 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
 
 <style scoped>
 .blog-post-header {
-  margin-bottom: 40px;
   text-align: center;
 }
 

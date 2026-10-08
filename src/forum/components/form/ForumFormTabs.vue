@@ -51,8 +51,8 @@ function formatDate(date = new Date()): string {
         <p>@{{ username }}</p>
         <time class="c-[var(--vp-c-text-1)]">{{ formatDate() }}</time>
       </div>
-      <div class="desktop-letter-rule mb-6" aria-hidden="true" />
-      <h2 class="desktop-form-title leading-tight tracking-[-0.025em] mb-6 mt-8 text-left text-ui-42">
+      <div class="desktop-letter-rule" aria-hidden="true" />
+      <h2 class="desktop-form-title leading-tight tracking-[-0.025em] mt-8 text-left text-ui-42">
         {{ message.forum.publish.title }} - {{ visibleTabs.find(tab => tab.value === modelValue)?.label }}
       </h2>
       <div class="desktop-title-divider mb-10 w-18" aria-hidden="true" />
@@ -104,6 +104,7 @@ function formatDate(date = new Date()): string {
 }
 
 .desktop-title-divider {
+  margin-top: 1.5rem;
   border-top: 2px solid color-mix(in srgb, var(--vp-c-text-1) 72%, transparent);
 }
 </style>

@@ -61,11 +61,10 @@ function postHref(slug: string): string {
 
 .aside-recent-updates-entry {
   position: relative;
-  margin-bottom: 4px;
 }
 
-.aside-recent-updates-entry:last-child {
-  margin-bottom: 0;
+.aside-recent-updates-entry + .aside-recent-updates-entry {
+  margin-top: 4px;
 }
 
 /* 轴与圆点对齐小节标题的左缘（卡片内容左缘），不再往卡片留白里挤 */

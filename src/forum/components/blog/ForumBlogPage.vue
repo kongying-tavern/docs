@@ -166,7 +166,7 @@ function coverProps(post: BlogPost) {
     <li
       v-for="post in posts"
       :key="post.url"
-      class="mb-3 pr-4 rounded-xl transition-colors duration-200 relative last:mb-0 md:mb-4 md:ml-6 md:pr-6 hover:bg-[var(--vp-c-bg-soft)]"
+      class="pr-4 rounded-xl transition-colors duration-200 relative md:ml-6 md:pr-6 hover:bg-[var(--vp-c-bg-soft)]"
     >
       <a
         class="blog-post-link group flex"
@@ -249,8 +249,12 @@ function coverProps(post: BlogPost) {
 }
 
 .blog-posts > li {
-  margin: 0 0 16px;
+  margin: 0;
   padding: 0;
+}
+
+.blog-posts > li + li {
+  margin-top: 16px;
 }
 
 .blog-post-copy {
