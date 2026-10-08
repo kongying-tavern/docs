@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 0
 
       - name: Cache font subsets
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             src/public/fonts

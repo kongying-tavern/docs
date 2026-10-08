@@ -73,7 +73,7 @@ jobs:
           fetch-depth: 0
 
       - name: Cache font subsets
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             src/public/fonts
@@ -99,7 +99,7 @@ jobs:
         run: pnpm test:coverage
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: logic-coverage
           path: coverage/
