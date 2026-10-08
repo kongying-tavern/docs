@@ -134,7 +134,7 @@ function getStepStatusClass(status: ProgressStep['status']) {
           class="scroll-island-content text-sm mb-2 px-4 py-2 flex flex-col gap-1 h-full max-h-60 overflow-y-auto"
         >
           <!-- Steps display for custom mode -->
-          <div v-if="steps.length > 0" class="space-y-2">
+          <div v-if="steps.length > 0" class="flex flex-col gap-2">
             <div
               v-for="step in steps"
               :key="step.key"

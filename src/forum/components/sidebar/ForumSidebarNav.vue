@@ -16,7 +16,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="pb-3 space-y-1">
+  <div class="pb-3 flex flex-col gap-1">
     <template v-for="item in items" :key="item.label">
       <a
         v-if="item.href"

@@ -65,7 +65,7 @@ function itemOpacity(index: number) {
         </div>
 
         <div class="mt-1">
-          <div class="mt-2 space-y-1.5">
+          <div class="mt-2 flex flex-col gap-1.5">
             <Skeleton class="h-6 w-1/2" />
             <Skeleton class="h-6 w-1/4" />
           </div>
@@ -75,7 +75,7 @@ function itemOpacity(index: number) {
             <Skeleton class="h-4 w-10" />
           </div>
 
-          <div class="mt-1 pr-4 space-y-2">
+          <div class="mt-1 pr-4 flex flex-col gap-2">
             <Skeleton class="h-4 w-full" />
             <Skeleton class="h-4 w-[92%]" />
             <Skeleton class="h-4 w-full" />
@@ -112,7 +112,7 @@ function itemOpacity(index: number) {
 
         <div class="mt-1 flex flex-nowrap w-full items-start justify-between">
           <div class="flex-1 max-w-[calc(100%-100px)] min-w-0 overflow-hidden">
-            <div class="space-y-2">
+            <div class="flex flex-col gap-2">
               <Skeleton class="h-4 w-[92%]" />
               <Skeleton class="h-4 w-[55%]" />
             </div>
