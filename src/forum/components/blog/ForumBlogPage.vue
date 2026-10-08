@@ -3,6 +3,7 @@ import type { BlogPost } from '~/utils/createBlogLoader'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
+import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Time from '@/components/ui/Time/Time.vue'
 import { data as allPosts } from '~/_data/posts.data'
 
@@ -114,43 +115,46 @@ function coverProps(post: BlogPost) {
       </div>
     </a>
 
-    <div class="flex flex-col divide-[var(--vp-c-divider)] divide-y">
-      <a
-        v-for="post in featured.slice(1)"
-        :key="post.url"
-        class="blog-secondary group py-5 rounded-xl flex flex-col transition-colors duration-200 md:px-6 hover:bg-[var(--vp-c-bg-soft)]"
-        :href="buildPostLink(post.url)"
-      >
-        <div class="blog-cover rounded-xl bg-[var(--vp-c-bg-soft)] overflow-hidden">
-          <img
-            class="w-full aspect-[1200/630] transition-transform duration-300 object-cover group-hover:scale-103"
-            :src="coverProps(post).src"
-            :alt="coverProps(post).alt"
-            width="1200"
-            height="630"
-            loading="lazy"
-            decoding="async"
-          >
-        </div>
-        <div class="pt-4 flex grow flex-col gap-2.5">
-          <span
-            v-if="postType(post)"
-            class="text-sm c-[var(--vp-c-text-3)] tracking-wide font-[var(--vp-font-family-subtitle)]"
-          >
-            <span class="mr-1">#</span>{{ postType(post) }}
-          </span>
-          <h3 class="text-xl leading-snug font-medium">
-            {{ post.title }}
-          </h3>
-          <Time
-            class="text-xs c-[var(--vp-c-text-2)] tracking-wider font-[var(--vp-font-family-subtitle)] mt-auto list-none"
-            :datetime="post.date"
-            :locale="lang"
-            date-style="medium"
-          />
-        </div>
-      </a>
-    </div>
+    <FluidHoverList indicator-class="rounded-xl bg-[var(--vp-c-bg-soft)]">
+      <div class="flex flex-col divide-[var(--vp-c-divider)] divide-y">
+        <a
+          v-for="post in featured.slice(1)"
+          :key="post.url"
+          data-fluid-hover-item
+          class="blog-secondary group py-5 rounded-xl flex flex-col transition-colors duration-200 md:px-6"
+          :href="buildPostLink(post.url)"
+        >
+          <div class="blog-cover rounded-xl bg-[var(--vp-c-bg-soft)] overflow-hidden">
+            <img
+              class="w-full aspect-[1200/630] transition-transform duration-300 object-cover group-hover:scale-103"
+              :src="coverProps(post).src"
+              :alt="coverProps(post).alt"
+              width="1200"
+              height="630"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <div class="pt-4 flex grow flex-col gap-2.5">
+            <span
+              v-if="postType(post)"
+              class="text-sm c-[var(--vp-c-text-3)] tracking-wide font-[var(--vp-font-family-subtitle)]"
+            >
+              <span class="mr-1">#</span>{{ postType(post) }}
+            </span>
+            <h3 class="text-xl leading-snug font-medium">
+              {{ post.title }}
+            </h3>
+            <Time
+              class="text-xs c-[var(--vp-c-text-2)] tracking-wider font-[var(--vp-font-family-subtitle)] mt-auto list-none"
+              :datetime="post.date"
+              :locale="lang"
+              date-style="medium"
+            />
+          </div>
+        </a>
+      </div>
+    </FluidHoverList>
   </section>
 
   <header
@@ -162,66 +166,69 @@ function coverProps(post: BlogPost) {
     </h1>
   </header>
 
-  <ul class="blog-posts c-[var(--vp-c-text-1)]">
-    <li
-      v-for="post in posts"
-      :key="post.url"
-      class="pr-4 rounded-xl transition-colors duration-200 relative md:ml-6 md:pr-6 hover:bg-[var(--vp-c-bg-soft)]"
-    >
-      <a
-        class="blog-post-link group flex"
-        :href="buildPostLink(post.url)"
+  <FluidHoverList indicator-class="rounded-xl bg-[var(--vp-c-bg-soft)]">
+    <ul class="blog-posts c-[var(--vp-c-text-1)]">
+      <li
+        v-for="post in posts"
+        :key="post.url"
+        data-fluid-hover-item
+        class="pr-4 rounded-xl transition-colors duration-200 relative md:ml-6 md:pr-6"
       >
-        <div class="blog-cover rounded-xl bg-[var(--vp-c-bg-soft)] shrink-0 w-full overflow-hidden md:w-[350px] md:self-start">
-          <img
-            class="w-full aspect-[1200/630] transition-transform duration-300 object-cover group-hover:scale-103"
-            :src="coverProps(post).src"
-            :alt="coverProps(post).alt"
-            width="1200"
-            height="630"
-            loading="lazy"
-            decoding="async"
-          >
-        </div>
+        <a
+          class="blog-post-link group flex"
+          :href="buildPostLink(post.url)"
+        >
+          <div class="blog-cover rounded-xl bg-[var(--vp-c-bg-soft)] shrink-0 w-full overflow-hidden md:w-[350px] md:self-start">
+            <img
+              class="w-full aspect-[1200/630] transition-transform duration-300 object-cover group-hover:scale-103"
+              :src="coverProps(post).src"
+              :alt="coverProps(post).alt"
+              width="1200"
+              height="630"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
 
-        <div class="blog-post-copy pb-5 pr-5 pt-5 flex grow flex-col gap-2.5 min-w-0 md:p-6">
-          <span
-            v-if="postType(post)"
-            class="text-sm c-[var(--vp-c-text-3)] tracking-wide font-[var(--vp-font-family-subtitle)]"
-          >
-            <span class="mr-1">#</span>{{ postType(post) }}
-          </span>
-          <h2 class="text-2xl leading-8 font-medium">
-            {{ post.title }}
-          </h2>
-          <div
-            v-if="post.excerpt"
-            class="blog-excerpt prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-2"
-            v-html="post.excerpt"
-          />
-          <div class="mt-auto flex gap-4 items-center justify-between">
-            <div class="flex -space-x-2">
-              <Avatar
-                v-for="author in post.authors"
-                :key="author.id"
-                size="sm"
-                class="ring-2 ring-[var(--vp-c-bg)]"
-                :src="author.avatar"
-                :alt="author.username"
+          <div class="blog-post-copy pb-5 pr-5 pt-5 flex grow flex-col gap-2.5 min-w-0 md:p-6">
+            <span
+              v-if="postType(post)"
+              class="text-sm c-[var(--vp-c-text-3)] tracking-wide font-[var(--vp-font-family-subtitle)]"
+            >
+              <span class="mr-1">#</span>{{ postType(post) }}
+            </span>
+            <h2 class="text-2xl leading-8 font-medium">
+              {{ post.title }}
+            </h2>
+            <div
+              v-if="post.excerpt"
+              class="blog-excerpt prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-2"
+              v-html="post.excerpt"
+            />
+            <div class="mt-auto flex gap-4 items-center justify-between">
+              <div class="flex -space-x-2">
+                <Avatar
+                  v-for="author in post.authors"
+                  :key="author.id"
+                  size="sm"
+                  class="ring-2 ring-[var(--vp-c-bg)]"
+                  :src="author.avatar"
+                  :alt="author.username"
+                />
+              </div>
+              <Time
+                class="text-xs c-[var(--vp-c-text-2)] tracking-wider font-[var(--vp-font-family-subtitle)] list-none"
+                :datetime="post.date"
+                :locale="lang"
+                date-style="medium"
               />
             </div>
-            <Time
-              class="text-xs c-[var(--vp-c-text-2)] tracking-wider font-[var(--vp-font-family-subtitle)] list-none"
-              :datetime="post.date"
-              :locale="lang"
-              date-style="medium"
-            />
           </div>
-        </div>
-      </a>
-      <div class="bg-[var(--vp-c-divider)] h-px bottom-0 left-0 right-0 absolute" />
-    </li>
-  </ul>
+        </a>
+        <div class="bg-[var(--vp-c-divider)] h-px bottom-0 left-0 right-0 absolute" />
+      </li>
+    </ul>
+  </FluidHoverList>
 </template>
 
 <style scoped>
