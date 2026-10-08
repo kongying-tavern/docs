@@ -77,7 +77,7 @@ catalogs:
     '@tiptap/starter-kit': ^3.20.1
     '@tiptap/vue-3': ^3.20.1
   conflicts_frontend_h1_7_1:
-    motion-v: ^2.0.0
+    motion-v: ^2.6.0
   dev:
     '@antfu/eslint-config': ^9.5.1
     '@commitlint/cli': 21.2.3
