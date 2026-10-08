@@ -370,36 +370,12 @@ onBeforeUnmount(() => {
 }
 
 .settings-dialog-content {
-  --settings-scrollbar: color-mix(in srgb, var(--vp-c-text-3) 42%, transparent);
-  --settings-scrollbar-hover: color-mix(in srgb, var(--vp-c-text-2) 64%, transparent);
-
+  @apply panel-scrollbar;
   min-height: 0;
   overflow-y: auto;
   padding: 28px;
   overscroll-behavior: contain;
-  scrollbar-color: var(--settings-scrollbar) transparent;
   scrollbar-gutter: stable;
-  scrollbar-width: thin;
-}
-
-.settings-dialog-content::-webkit-scrollbar {
-  width: 10px;
-}
-
-.settings-dialog-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.settings-dialog-content::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background: var(--settings-scrollbar);
-  background-clip: padding-box;
-}
-
-.settings-dialog-content::-webkit-scrollbar-thumb:hover {
-  background: var(--settings-scrollbar-hover);
-  background-clip: padding-box;
 }
 
 .settings-dialog-content :deep(.settings-section + .settings-section) {

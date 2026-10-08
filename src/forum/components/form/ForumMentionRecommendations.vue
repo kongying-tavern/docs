@@ -76,10 +76,7 @@ function setAllOpen(value: boolean): void {
   overscroll-behavior-x: contain;
   background: transparent;
   padding-block: 4px;
-  scrollbar-width: none;
-}
-.mention-recommendations::-webkit-scrollbar {
-  display: none;
+  @apply scrollbar-none;
 }
 .mention-person {
   font-family: inherit;

@@ -75,7 +75,7 @@ defineExpose({ onKeyDown })
     class="forum-editor-suggestions"
     :highlight-on-hover="false"
   >
-    <CommandList>
+    <CommandList class="panel-scrollbar">
       <p v-if="items.length === 0" class="text-sm text-[var(--vp-c-text-3)] p-4 text-center">
         {{ message.forum.publish.tagsInput.noResultsFound }}
       </p>
@@ -116,9 +116,6 @@ defineExpose({ onKeyDown })
 
 <style scoped>
 .forum-editor-suggestions {
-  --forum-suggestion-scrollbar: color-mix(in srgb, var(--vp-c-text-3) 44%, transparent);
-  --forum-suggestion-scrollbar-hover: color-mix(in srgb, var(--vp-c-text-2) 64%, transparent);
-
   width: min(320px, calc(100vw - 24px));
   height: auto;
   max-height: min(280px, calc(100dvh - 24px));
@@ -130,29 +127,7 @@ defineExpose({ onKeyDown })
 :deep([data-slot='command-list']) {
   max-height: min(280px, calc(100dvh - 24px));
   overscroll-behavior: contain;
-  scrollbar-color: var(--forum-suggestion-scrollbar) transparent;
   scrollbar-gutter: stable;
-  scrollbar-width: thin;
-}
-
-:deep([data-slot='command-list']::-webkit-scrollbar) {
-  width: 10px;
-}
-
-:deep([data-slot='command-list']::-webkit-scrollbar-track) {
-  background: transparent;
-}
-
-:deep([data-slot='command-list']::-webkit-scrollbar-thumb) {
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background: var(--forum-suggestion-scrollbar);
-  background-clip: padding-box;
-}
-
-:deep([data-slot='command-list']::-webkit-scrollbar-thumb:hover) {
-  background: var(--forum-suggestion-scrollbar-hover);
-  background-clip: padding-box;
 }
 
 .forum-editor-suggestion-item {

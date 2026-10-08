@@ -389,28 +389,6 @@ textarea {
   box-shadow: none;
 }
 
-.VPSidebar::-webkit-scrollbar {
-  background: transparent;
-  height: 8px;
-  width: 8px;
-  margin-right: 8px;
-}
-
-.VPSidebar::-webkit-scrollbar-corner {
-  width: 4px;
-}
-
-.VPSidebar::-webkit-scrollbar-thumb {
-  background-clip: content-box;
-  background-color: var(--vp-button-alt-bg);
-  border: 2px solid transparent;
-  border-radius: 4px;
-}
-
-.VPSidebar::-webkit-scrollbar-track {
-  background-color: var(--vp-c-bg);
-}
-
 #app > div > div.VPLocalNav > div > div > div.outline {
   outline-style: none !important;
 }

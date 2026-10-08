@@ -161,26 +161,12 @@ const { message } = useLocalized()
 }
 
 .settings-drawer-body {
-  --settings-scrollbar: color-mix(in srgb, var(--vp-c-text-3) 42%, transparent);
-
+  @apply panel-scrollbar;
   min-height: 0;
   flex: 0 1 auto;
   overflow-y: auto;
   padding: 16px 16px max(24px, env(safe-area-inset-bottom));
   overscroll-behavior: contain;
-  scrollbar-color: var(--settings-scrollbar) transparent;
-  scrollbar-width: thin;
-}
-
-.settings-drawer-body::-webkit-scrollbar {
-  width: 8px;
-}
-
-.settings-drawer-body::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background: var(--settings-scrollbar);
-  background-clip: padding-box;
 }
 
 .settings-drawer-detail {

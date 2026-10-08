@@ -72,7 +72,7 @@ function selectMention(user: ForumAPI.User): void {
   flex: 1;
   min-height: 0;
   max-height: none;
-  scrollbar-width: thin;
+  @apply scrollbar-width-thin;
 }
 .mention-command-compact :deep([data-slot='command-group'] + [data-slot='command-group']) {
   margin-top: 12px;

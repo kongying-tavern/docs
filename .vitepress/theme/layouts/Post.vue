@@ -284,11 +284,7 @@ if (params?.value) {
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: none;
-}
-
-.post-aside .aside-container::-webkit-scrollbar {
-  display: none;
+  @apply scrollbar-none;
 }
 
 .post-aside .aside-curtain {

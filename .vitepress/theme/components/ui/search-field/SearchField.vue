@@ -206,7 +206,7 @@ defineExpose({
   min-width: 0;
   max-width: 65%;
   overflow-x: auto;
-  scrollbar-width: none;
+  @apply scrollbar-none;
 }
 
 .search-field :deep(.search-field-token) {

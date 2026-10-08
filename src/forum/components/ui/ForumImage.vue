@@ -473,15 +473,10 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 }
 
 .forum-image-rail {
+  @apply scrollbar-none;
   position: relative;
   padding-bottom: 10px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   scroll-snap-type: x proximity;
-}
-
-.forum-image-rail::-webkit-scrollbar {
-  display: none;
 }
 
 .forum-image-rail-btn {

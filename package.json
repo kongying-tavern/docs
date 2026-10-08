@@ -104,6 +104,7 @@
     "typescript": "catalog:build",
     "unocss": "catalog:build",
     "unocss-preset-animations": "catalog:build",
+    "unocss-preset-scrollbar": "catalog:build",
     "unocss-preset-shadcn": "catalog:build",
     "vaul-vue": "catalog:frontend",
     "vee-validate": "catalog:",

@@ -198,7 +198,7 @@ function deleteRecentEmoji(emoji: string) {
   flex: 1;
   min-height: 0;
   align-content: start;
-  scrollbar-width: thin;
+  @apply scrollbar-width-thin;
 }
 .emoji-list:focus-visible {
   outline: 1px solid oklch(var(--ring));
@@ -247,11 +247,7 @@ html[data-reduced-motion='true'] .emoji-shift-move {
 }
 .emoji-panel-compact .emoji-list,
 .emoji-panel-compact :deep(.emoji-presets) {
-  scrollbar-width: none;
-}
-.emoji-panel-compact .emoji-list::-webkit-scrollbar,
-.emoji-panel-compact :deep(.emoji-presets::-webkit-scrollbar) {
-  display: none;
+  @apply scrollbar-none;
 }
 .emoji-panel-compact .emoji-list {
   grid-auto-rows: 48px;

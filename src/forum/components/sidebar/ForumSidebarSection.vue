@@ -149,33 +149,11 @@ function commentLabel(item: { commentCount?: number }): string {
 }
 
 .forum-sidebar-topic-list {
+  @apply panel-scrollbar;
   max-height: 240px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-
-.forum-sidebar-topic-list::-webkit-scrollbar {
-  width: 5px;
-}
-
-.forum-sidebar-topic-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.forum-sidebar-topic-list::-webkit-scrollbar-thumb {
-  background: transparent;
-}
-
-.forum-sidebar-topic-list:hover {
-  scrollbar-color: var(--vp-c-divider) transparent;
-}
-
-.forum-sidebar-topic-list:hover::-webkit-scrollbar-thumb {
-  border-radius: 99px;
-  background: var(--vp-c-divider);
 }
 
 .forum-sidebar-summary,

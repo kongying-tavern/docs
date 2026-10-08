@@ -4,6 +4,32 @@ import { test } from 'vitest'
 import { FORUM_MOBILE_BREAKPOINT_PX } from '../../../src/forum/services/forumConfig'
 import config from '../../../unocss.config'
 
+test('scrollbar shortcuts preserve overflow and generate standard and WebKit styling', async () => {
+  const uno = await createGenerator({ ...config, safelist: [] })
+  for (const utility of ['custom-scrollbar', 'panel-scrollbar', 'VPSidebar', 'scrollbar-none', 'no-scrollbar']) {
+    const { css, matched } = await uno.generate(utility)
+    assert.ok(matched.has(utility), `${utility} must generate CSS`)
+    assert.match(css, /::-webkit-scrollbar/)
+    assert.doesNotMatch(css, /overflow(?:-[xy])?:/)
+    if (utility.endsWith('none') || utility === 'no-scrollbar') {
+      assert.match(css, /scrollbar-width:none/)
+      assert.match(css, /display:none/)
+    }
+    else {
+      assert.match(css, /scrollbar-width:thin/)
+      assert.match(css, /scrollbar-color:/)
+      assert.match(css, /::-webkit-scrollbar-thumb:hover/)
+      assert.match(css, /width:10px/)
+      assert.match(css, /:focus-within/)
+      assert.match(css, /@media \(hover: hover\) and \(pointer: fine\)/)
+      assert.match(css, /@media \(forced-colors: active\)/)
+      assert.match(css, /@media\s*\(pointer:coarse\)/)
+      assert.match(css, /@media \(hover: hover\) and \(pointer: fine\) and \(forced-colors: none\)\{[^}]*::-webkit-scrollbar-thumb/)
+      assert.match(css, /scrollbar-color:auto/)
+    }
+  }
+})
+
 test('standard responsive utilities survive the custom mobile breakpoint', async () => {
   const uno = await createGenerator(config)
   const utilities = ['sm:max-w-lg', 'md:flex', 'lg:grid-cols-2', 'xl:grid-cols-3', '2xl:block']

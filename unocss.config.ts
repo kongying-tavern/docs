@@ -9,6 +9,7 @@ import {
   transformerVariantGroup,
 } from 'unocss'
 import presetAnimations from 'unocss-preset-animations'
+import { presetScrollbar } from 'unocss-preset-scrollbar'
 import { presetShadcn } from 'unocss-preset-shadcn'
 import { shadcnPreflights, shadcnRules } from './.vitepress/theme/unocss/index.ts'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
@@ -56,6 +57,14 @@ export default defineConfig({
     leading: Object.fromEntries(uiLineHeights.map(size => [`ui-${size}`, scaledUiSize(size)])),
   },
   variants: [
+    ((matcher) => {
+      if (!matcher.startsWith('scrollbar-desktop:'))
+        return matcher
+      return {
+        matcher: matcher.slice('scrollbar-desktop:'.length),
+        parent: '@media (hover: hover) and (pointer: fine) and (forced-colors: none)',
+      }
+    }) as Variant,
     {
       name: 'site-max-mobile',
       order: -1,
@@ -134,16 +143,32 @@ export default defineConfig({
     ],
     [
       'custom-scrollbar',
-      `[scrollbar-width:thin]
-       [scrollbar-color:oklch(var(--muted-foreground)/0.2)_transparent]
-       [&::-webkit-scrollbar]:w-4px
-       [&::-webkit-scrollbar]:h-4px
-       [&::-webkit-scrollbar-track]:bg-transparent
-       [&::-webkit-scrollbar-thumb]:bg-[oklch(var(--muted-foreground)/0.2)]
-       [&::-webkit-scrollbar-thumb]:rounded-2px
-       [&::-webkit-scrollbar-thumb:hover]:bg-[oklch(var(--muted-foreground)/0.4)]
-      `,
+      'panel-scrollbar',
     ],
+    [
+      'panel-scrollbar',
+      `scrollbar-width-thin
+       scrollbar-color-[var(--panel-scrollbar-color)_transparent]
+       [--panel-scrollbar-thumb:color-mix(in_srgb,var(--vp-c-text-2)_75%,transparent)]
+       [--panel-scrollbar-hover:color-mix(in_srgb,var(--vp-c-text-1)_70%,transparent)]
+       [--panel-scrollbar-color:var(--panel-scrollbar-thumb)]
+       pointer-fine:hover:[--panel-scrollbar-color:var(--panel-scrollbar-hover)]
+       focus-within:[--panel-scrollbar-color:var(--panel-scrollbar-hover)]
+       scrollbar-desktop:panel-scrollbar-webkit
+       [@media(pointer:coarse)]:scrollbar-width-auto
+       forced-colors:[scrollbar-color:auto] forced-colors:scrollbar-width-auto`,
+    ],
+    [
+      'panel-scrollbar-webkit',
+      `scrollbar:w-10px scrollbar:h-10px scrollbar-track:bg-transparent
+       scrollbar-thumb:border-2px scrollbar-thumb:border-solid scrollbar-thumb:border-transparent
+       scrollbar-thumb:rounded-999px scrollbar-thumb:bg-[var(--panel-scrollbar-color)]
+       scrollbar-thumb:[background-clip:padding-box]
+       [&::-webkit-scrollbar-thumb:hover]:bg-[var(--panel-scrollbar-hover)]
+       [&::-webkit-scrollbar-thumb:active]:bg-[var(--vp-c-text-1)]`,
+    ],
+    ['no-scrollbar', 'scrollbar-none'],
+    ['VPSidebar', 'panel-scrollbar'],
   ],
   presets: [
     presetWind4({
@@ -163,6 +188,8 @@ export default defineConfig({
       },
     }),
     presetAttributify(),
+    // Use the low-level utilities so scrollbar styling never changes a container's overflow.
+    presetScrollbar({ compatible: true }),
     presetAnimations(),
     presetShadcn(
       {
@@ -194,6 +221,8 @@ export default defineConfig({
   transformers: [transformerDirectives({ enforce: 'pre' }), transformerVariantGroup()],
   // 动态拼接的图标类名无法被提取器扫描,显式声明
   safelist: [
+    // VitePress owns this class in node_modules, outside the content scanner.
+    'VPSidebar',
     ...uiFontSizes.map(size => `text-ui-${size}`),
     ...uiLineHeights.map(size => `leading-ui-${size}`),
     'prose',

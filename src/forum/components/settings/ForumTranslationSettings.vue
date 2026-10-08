@@ -169,35 +169,11 @@ watch(searchTerm, (search) => {
 }
 
 .language-options-list {
-  --language-scrollbar: color-mix(in srgb, var(--vp-c-text-3) 44%, transparent);
-  --language-scrollbar-hover: color-mix(in srgb, var(--vp-c-text-2) 64%, transparent);
-
+  @apply panel-scrollbar;
   max-height: min(280px, calc(var(--reka-popover-content-available-height) - 10px));
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-color: var(--language-scrollbar) transparent;
   scrollbar-gutter: stable;
-  scrollbar-width: thin;
-}
-
-.language-options-list::-webkit-scrollbar {
-  width: 10px;
-}
-
-.language-options-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.language-options-list::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background: var(--language-scrollbar);
-  background-clip: padding-box;
-}
-
-.language-options-list::-webkit-scrollbar-thumb:hover {
-  background: var(--language-scrollbar-hover);
-  background-clip: padding-box;
 }
 
 .language-options-empty {

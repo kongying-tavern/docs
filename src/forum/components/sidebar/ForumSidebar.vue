@@ -326,16 +326,12 @@ useForumShortcut('publish', handleCreate)
 }
 
 .forum-sidebar-scroll {
+  @apply scrollbar-none;
   flex: 1;
   min-height: 0;
   padding-top: 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-width: none;
-}
-
-.forum-sidebar-scroll::-webkit-scrollbar {
-  display: none;
 }
 
 :global(.forum-localnav-create) {

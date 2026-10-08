@@ -500,15 +500,12 @@ onBeforeUnmount(() => {
   min-height: 0;
 }
 .comment-editor-mobile .rich-editor-scroll {
+  @apply scrollbar-none;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  scrollbar-width: none;
   overscroll-behavior: contain;
   scroll-padding-block: 12px;
-}
-.comment-editor-mobile .rich-editor-scroll::-webkit-scrollbar {
-  display: none;
 }
 .comment-editor-borderless .body > div {
   border: 0;
@@ -546,13 +543,10 @@ onBeforeUnmount(() => {
 }
 
 .comment-editor-mobile :deep(.image-preview-list) {
+  @apply scrollbar-none;
   flex-wrap: nowrap;
   overflow-x: auto;
-  scrollbar-width: none;
   overscroll-behavior-x: contain;
-}
-.comment-editor-mobile :deep(.image-preview-list::-webkit-scrollbar) {
-  display: none;
 }
 .comment-editor-mobile :deep(.image-preview) {
   flex-shrink: 0;

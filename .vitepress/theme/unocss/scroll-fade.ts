@@ -78,8 +78,6 @@ export const scrollFadeRules: Rule<PresetUnoTheme>[] = [
   [/^scroll-fade-([tbse])-(\d+)$/, ([, e, n]) => ({ [`--scroll-fade-${e}-size`]: `calc(var(--spacing) * ${n})` })],
   [/^scroll-fade-\[(.+)\]$/, ([, v]) => ({ '--scroll-fade-size': v })],
   [/^scroll-fade-(\d+)$/, ([, n]) => ({ '--scroll-fade-size': `calc(var(--spacing) * ${n})` })],
-  // 配合 fade 滚动容器隐藏滚动条,避免边缘露出滚动条
-  ['no-scrollbar', [{ '-ms-overflow-style': 'none', 'scrollbar-width': 'none' }, '.no-scrollbar::-webkit-scrollbar{display:none}']],
 ]
 
 export const scrollFadePreflight: Preflight = {
