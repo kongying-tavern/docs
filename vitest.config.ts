@@ -21,7 +21,7 @@ export default defineConfig({
       include: [
         'src/forum/{api,composables,hooks,router,services,stores,utils}/**/*.ts',
         'src/{composables,services,utils}/**/*.ts',
-        '.vitepress/theme/{hooks,utils}/**/*.ts',
+        '.vitepress/theme/hooks/**/*.ts',
         'scripts/font_subset/**/*.ts',
       ],
       exclude: ['**/*.d.ts', '**/types/**'],
