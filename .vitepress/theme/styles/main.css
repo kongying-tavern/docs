@@ -214,6 +214,25 @@ div.VPHomeHero > div > div.main > p.tagline {
   font-family: var(--vp-font-family-subtitle);
 }
 
+/* 显示级标题按行宽均分：浏览器只在有限行数内做平衡，长行自动回落普通断行 */
+:is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+/* 描述类短文案避免末行只剩一个词；长正文列（.vp-doc、话题正文、评论）不在此列 */
+:is(
+  [data-slot='alert-description'],
+  [data-slot='alert-dialog-description'],
+  [data-slot='dialog-description'],
+  [data-slot='drawer-description'],
+  [data-slot='empty-description'],
+  [data-slot='field-description'],
+  [data-slot='form-description'],
+  [data-slot='sheet-description']
+) {
+  text-wrap: pretty;
+}
+
 /* Keep emoji inline without changing the picker layout. */
 img[data-emoji] {
   display: inline-block;
