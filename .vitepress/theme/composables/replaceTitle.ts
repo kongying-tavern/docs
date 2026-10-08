@@ -1,4 +1,3 @@
-/** Matches title text before the pipe separator */
 const TITLE_BEFORE_PIPE_REGEX = /[^|]+/
 
 export function replaceTitle(title: string) {

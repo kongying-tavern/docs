@@ -31,14 +31,12 @@ const { message } = useLocalized()
 
 const recentEmojis = useLocalStorage<Record<string, string[]>>(RECENT_EMOJIS_STORAGE_KEY, {})
 
-// 立即修复无效的初始值
 if (!import.meta.env.SSR) {
   if (typeof recentEmojis.value !== 'object' || recentEmojis.value === null || Array.isArray(recentEmojis.value)) {
     recentEmojis.value = {}
   }
 }
 
-// 验证并自动重置对象类型
 watchEffect(() => {
   if (typeof recentEmojis.value !== 'object' || recentEmojis.value === null || Array.isArray(recentEmojis.value)) {
     recentEmojis.value = {}
@@ -59,7 +57,6 @@ const currentEmojiList = computed<Record<string, string>>(() => {
   )
 })
 
-// 过滤空值并限制最大数量
 const recentEmojisFiltered = computed(() => {
   const currentPresetName = currentPreset.value?.presets
   if (!currentPresetName) {

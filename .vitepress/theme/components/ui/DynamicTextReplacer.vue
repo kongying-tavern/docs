@@ -13,7 +13,6 @@ const { tag = 'p', data } = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
-/** Matches HTML entities that need escaping */
 const HTML_ENTITY_REGEX = /["&<>]/g
 
 const slots = useSlots()
@@ -33,16 +32,13 @@ function renderVNodeToHTML(vnode: VNode | VNode[] | string | number | boolean | 
     return vnode.map(renderVNodeToHTML).join('')
   }
 
-  // Handle VNode objects
   if (typeof vnode === 'object' && vnode !== null) {
     const rawVNode = toRaw(vnode)
 
-    // Handle text nodes - check for reactive text content
     if (rawVNode.type === Text) {
       return String(rawVNode.children || '')
     }
 
-    // Handle HTML elements
     if (typeof rawVNode.type === 'string') {
       const { type, props, children } = rawVNode
       const safeProps = props

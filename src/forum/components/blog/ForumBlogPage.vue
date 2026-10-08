@@ -61,7 +61,6 @@ function coverProps(post: BlogPost) {
     v-if="featured.length"
     class="blog-featured border-b-[var(--vp-c-divider)] border-b-1px border-b-solid md:grid md:grid-cols-3"
   >
-    <!-- 主 featured：大卡（2/3 宽） -->
     <a
       class="blog-primary group px-4 pt-4 rounded-xl flex flex-col transition-colors duration-200 md:px-6 md:pt-5 hover:bg-[var(--vp-c-bg-soft)] md:col-span-2"
       :href="buildPostLink(featured[0].url)"
@@ -115,7 +114,6 @@ function coverProps(post: BlogPost) {
       </div>
     </a>
 
-    <!-- 次 featured：右侧两小卡（1/3 宽） -->
     <div class="flex flex-col divide-[var(--vp-c-divider)] divide-y">
       <a
         v-for="post in featured.slice(1)"

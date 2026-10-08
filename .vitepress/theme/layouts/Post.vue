@@ -5,10 +5,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { replaceTitle } from '@/composables/replaceTitle'
 import ForumBlogPostHeader from '~/forum/components/blog/ForumBlogPostHeader.vue'
 
-/** Matches dots and slashes in route paths */
 const DOT_SLASH_REGEX = /[./]+/g
 
-/** Matches .html extension suffix */
 const HTML_SUFFIX_REGEX = /_html$/
 
 const { params, theme, frontmatter } = useData()

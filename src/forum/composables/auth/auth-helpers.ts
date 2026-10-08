@@ -7,9 +7,6 @@ import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import { AuthError, AuthErrorType } from '~/services/authErrors'
 import { toast } from '~/services/telemetry/toast'
 
-/**
- * 认证状态工具类
- */
 export class AuthHelper {
   private static _instance: AuthHelper
   private userAuth = useUserAuthStore()
@@ -24,23 +21,14 @@ export class AuthHelper {
     return AuthHelper._instance
   }
 
-  /**
-   * 检查当前是否已登录
-   */
   get isLoggedIn(): boolean {
     return this.userAuth.isTokenValid
   }
 
-  /**
-   * 获取当前访问令牌
-   */
   get accessToken(): string | null {
     return this.userAuth.auth?.accessToken ?? null
   }
 
-  /**
-   * 获取当前用户信息
-   */
   get userInfo() {
     return this.userInfoStore.info
   }
@@ -77,35 +65,20 @@ export class AuthHelper {
     return this.accessToken
   }
 
-  /**
-   * 检查当前用户是否为指定用户
-   */
   isCurrentUser(username: string): boolean {
     const user = this.userInfoStore.info
     return user?.login === username || user?.username === username
   }
 }
 
-/**
- * 获取认证助手实例的便捷函数
- */
 export const useAuthHelper = () => AuthHelper.getInstance()
 
-/**
- * 便捷的认证检查函数
- */
 export const authGuards = {
-  /**
-   * 登录守卫 - 检查是否已登录
-   */
   requireLogin: (message?: string): boolean => {
     return useAuthHelper().ensureLoggedIn(message)
   },
 }
 
-/**
- * 带认证的操作执行器
- */
 export const withAuth = {
   async execute<T>(
     operation: (token: string) => Promise<T>,

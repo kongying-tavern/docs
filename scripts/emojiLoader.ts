@@ -2,7 +2,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-/** Matches image file extensions */
 const IMAGE_FILE_REGEX = /\.(?:png|jpg|jpeg|gif|webp)$/
 
 const filename = fileURLToPath(import.meta.url)

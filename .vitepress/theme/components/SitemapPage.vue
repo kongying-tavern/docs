@@ -29,23 +29,18 @@ interface NavItem {
 
 const { localeIndex, theme, site } = useData()
 
-/** Matches leading dots and slashes in paths */
 const LEADING_DOT_SLASH_REGEX = /^\.?\//
 
-/** Matches trailing slash in paths */
 const TRAILING_SLASH_PATH_REGEX = /\/$/
 
-// Get current language using VitePress APIs
 const currentLang = computed(() => {
   return localeIndex.value || 'root'
 })
 
-// Get available locales from VitePress config
 const availableLocales = computed(() => {
   return Object.keys(site.value.locales || {})
 })
 
-// Get UI translations from theme config
 const sitemapTitles = computed(() => {
   return theme.value.ui?.sitemap || {
     blog: 'Blog Posts',
@@ -58,7 +53,6 @@ const sitemapTitles = computed(() => {
   }
 })
 
-// Blog posts data - 根据当前语言过滤博客文章
 const blogPosts = computed((): ForumAPI.Post[] => {
   const lang = currentLang.value
   const locale = lang === 'root' ? 'zh' : lang
@@ -67,23 +61,19 @@ const blogPosts = computed((): ForumAPI.Post[] => {
   if (!languageTag)
     return []
 
-  // 过滤当前语言的博客文章，取前20篇
   return (postsData as ForumAPI.Post[])
     .filter((post: ForumAPI.Post) => {
       if (!post || !post.title || !post.path)
         return false
-      // 检查文章是否包含当前语言的标签
       return languageTag !== null && post.tags && post.tags.includes(languageTag)
     })
     .slice(0, 20)
 })
 
-// Extract pages from VitePress navigation and sidebar config
 function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'general' | 'manual' | 'blog' | 'api' | 'guide' }> {
   const pages: Array<{ path: string, title: string, type: 'general' | 'manual' | 'blog' | 'api' | 'guide' }> = []
   const seenPaths = new Set<string>()
 
-  // Helper to determine page type based on path
   function getPageType(path: string): 'general' | 'manual' | 'blog' | 'api' | 'guide' {
     if (path.includes('/manual/') || path.includes('/faq/'))
       return 'manual'
@@ -96,7 +86,6 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
     return 'general'
   }
 
-  // Add page if not duplicate
   function addPage(path: string, title: string) {
     const cleanPath = path.replace(LEADING_DOT_SLASH_REGEX, '/').replace(TRAILING_SLASH_PATH_REGEX, '') || '/'
     if (!seenPaths.has(cleanPath)) {
@@ -109,7 +98,6 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
     }
   }
 
-  // Extract from navigation
   const nav = theme.value.nav || []
   const extractFromNavItems = (items: NavItem[]): void => {
     items.forEach((item: NavItem) => {
@@ -123,7 +111,6 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
   }
   extractFromNavItems(nav)
 
-  // Extract from sidebar
   const sidebar = (theme.value.sidebar || {}) as Record<string, NavItem[] | NavItem>
   const extractFromSidebarItems = (items: NavItem[]): void => {
     items.forEach((item: NavItem) => {
@@ -145,12 +132,10 @@ function extractPagesFromConfig(): Array<{ path: string, title: string, type: 'g
   return pages
 }
 
-// Helper function to normalize path for current language
 function normalizePath(originalPath: string, targetLang: string): string {
   // 外部链接不是站点路径，按原样保留；加语言前缀会把 https://v3.yuanshen.site 拼成 /jahttps://…
   if (/^[a-z][a-z\d+.-]*:/i.test(originalPath))
     return originalPath
-  // Remove any existing locale prefix from the path
   const locales = availableLocales.value.filter(locale => locale !== 'root')
   const localePattern = new RegExp(`^/(${locales.join('|')})(?=/|$)`)
   const pathWithoutLocale = originalPath.replace(localePattern, '') || '/'
@@ -219,7 +204,6 @@ const sitemapData = computed((): SitemapGroup[] => {
 
 <template>
   <div class="VPSitemapPage" style="user-select: none;">
-    <!-- Render groups dynamically -->
     <div v-for="group in sitemapData" :key="group.type">
       <h2>{{ group.title }}</h2>
       <div v-for="item in group.items" :key="item.path" class="item">
@@ -286,7 +270,6 @@ const sitemapData = computed((): SitemapGroup[] => {
   white-space: nowrap;
 }
 
-/* Badge colors */
 .VPSitemapPage .badge.general {
   border-color: #8b5cf6;
   color: #8b5cf6;
@@ -312,7 +295,6 @@ const sitemapData = computed((): SitemapGroup[] => {
   color: #ea580c;
 }
 
-/* Dark mode colors */
 .dark .VPSitemapPage .badge.general {
   border-color: #a78bfa;
   color: #a78bfa;
@@ -338,7 +320,6 @@ const sitemapData = computed((): SitemapGroup[] => {
   color: #f97316;
 }
 
-/* Section headers */
 .VPSitemapPage h2 {
   margin: 24px 0 12px 0;
   font-size: calc(20px * var(--site-ui-scale));

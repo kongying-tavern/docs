@@ -1,4 +1,3 @@
-/** Matches LC- prefix in locale labels */
 const LC_PREFIX_REGEX = /^LC-/g
 
 export function getForumLocaleLabelGetter() {

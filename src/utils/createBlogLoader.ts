@@ -8,7 +8,6 @@ import { parseAuthors } from '../forum/utils/frontmatter.ts'
 import { extractBlogExcerpt } from './blogExcerpt.ts'
 import { getGitFileInfo } from './git.ts'
 
-/** Matches language path in blog URLs */
 const BLOG_LANGUAGE_PATH_REGEX = /^\/([^/]+)\/blog\/posts\//
 
 export interface BlogPost {
@@ -25,17 +24,11 @@ export interface BlogPost {
   filePath: string
 }
 
-/**
- * 提取URL路径中的语言信息
- */
 function extractLanguageFromUrl(url: string): string {
   const pathMatch = url.match(BLOG_LANGUAGE_PATH_REGEX)
   return pathMatch ? pathMatch[1] : DEFAULT_LOCALE
 }
 
-/**
- * 构建文件路径
- */
 export function buildBlogFilePath(url: string): string {
   // ContentLoader returns rewritten URLs in VitePress 2. Chinese URLs omit
   // their locale directory, but Git history still belongs to src/zh/….

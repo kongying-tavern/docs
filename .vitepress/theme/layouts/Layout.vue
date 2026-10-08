@@ -100,10 +100,6 @@ provide('toggle-appearance', toggleTheme)
       <PageAlertRegion class="mb-4" />
       <DocHeader />
     </template>
-    <!--
-    <template #doc-footer-before>
-      <DocInfo />
-    </template> -->
 
     <template #aside-outline-after>
       <DocAside

@@ -1,11 +1,7 @@
 export interface BannerItem {
-  /** 过期时间戳 */
   expiryDate: number
-  /** 内容哈希值 */
   contentHash: number
-  /** 语言区域 */
   locale: string
-  /** 页面路径 */
   path: string
 }
 

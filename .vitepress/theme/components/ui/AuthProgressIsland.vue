@@ -6,7 +6,6 @@ import ScrollIsland from './ScrollIsland.vue'
 
 const { authProgress } = useLogin()
 
-// Convert auth steps to generic progress steps
 const progressSteps = computed((): ProgressStep[] => {
   return authProgress.steps.value.map(step => ({
     key: step.key,

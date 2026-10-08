@@ -27,13 +27,10 @@ const { suggestLang } = defineProps<{
 
 const emit = defineEmits(['close'])
 
-/** Matches trailing slash */
 const TRAILING_SLASH_REGEX = /\/$/
 
-/** Matches index.md in paths */
 const INDEX_MD_REGEX = /(^|\/)index\.md$/
 
-/** Matches .md extension */
 const MD_EXTENSION_REGEX = /\.md$/
 
 const { localeIndex, page, theme, site, hash } = useData()

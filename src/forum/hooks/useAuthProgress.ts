@@ -78,7 +78,6 @@ export function useAuthProgress() {
       return authTexts.status.completed
     }
 
-    // Show current step name
     return authTexts.steps[currentStep.value]
   })
 

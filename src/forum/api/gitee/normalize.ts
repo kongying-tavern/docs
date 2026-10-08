@@ -14,10 +14,8 @@ import { GITEE_API_CONFIG, GITEE_ISSUE_STATE_TITLES } from './config'
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 const TOPIC_TYPE_LABEL = /^TYP-(BUG|FEAT|ANN)$/
 
-/** Matches a page number in API pagination links */
 const PAGE_QUERY_PARAM_REGEX = /[?&](?:page|current)=([^&>]+)/
 
-/** Matches the last-page relation in API pagination links */
 const LAST_PAGE_REL_REGEX = /rel="?last"?/
 
 const forumLocaleLabelGetter = getForumLocaleLabelGetter()

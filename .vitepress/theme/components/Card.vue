@@ -16,30 +16,19 @@ const props = withDefaults(defineProps<CardProps>(), {
   shadow: false,
 })
 
-/** Matches domain from URL */
 const DOMAIN_FROM_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?([^/]+)\//
 
-/** Matches leading dot or slash */
 const LEADING_DOT_SLASH_REGEX = /(\.\/|\/)/g
 
 interface CardProps {
-  /** Card title */
   title: string
-  /** Card description, default is link when empty */
   desc?: string
-  /** Card icon, defaults to project Logo */
   logo?: string
-  /** Card link */
   link?: string
-  /** Card background color */
   color?: string
-  /** Card cover image, Only NormalTheme */
   cover?: string
-  /** Enable hover shadow effect, defaults to false */
   hoverShadow?: boolean
-  /** Enable card shadow effect, defaults to false */
   shadow?: boolean
-  /** Card theme, defaults to normal */
   theme?: 'medium' | 'normal'
 }
 

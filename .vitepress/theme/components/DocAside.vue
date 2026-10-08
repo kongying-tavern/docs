@@ -8,7 +8,6 @@ const { showReaction = true } = defineProps<{
   showReaction?: boolean
 }>()
 
-/** Matches :path placeholder in URL templates */
 const PATH_PLACEHOLDER_REGEX = /:path/g
 
 const { theme, page } = useData()

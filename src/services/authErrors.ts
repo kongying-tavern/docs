@@ -1,28 +1,19 @@
-/**
- * 认证相关的错误类型和错误处理工具
- */
-
 export enum AuthErrorType {
-  // Token相关错误
   TOKEN_EXPIRED = 'TOKEN_EXPIRED',
   TOKEN_INVALID = 'TOKEN_INVALID',
   TOKEN_REFRESH_FAILED = 'TOKEN_REFRESH_FAILED',
   TOKEN_MISSING = 'TOKEN_MISSING',
 
-  // OAuth流程错误
   OAUTH_CODE_MISSING = 'OAUTH_CODE_MISSING',
   OAUTH_EXCHANGE_FAILED = 'OAUTH_EXCHANGE_FAILED',
   OAUTH_REDIRECT_FAILED = 'OAUTH_REDIRECT_FAILED',
 
-  // 网络和API错误
   NETWORK_ERROR = 'NETWORK_ERROR',
   API_ERROR = 'API_ERROR',
   UNAUTHORIZED = 'UNAUTHORIZED',
 
-  // 用户信息相关
   USER_INFO_FETCH_FAILED = 'USER_INFO_FETCH_FAILED',
 
-  // SSO相关
   SSO_REFRESH_FAILED = 'SSO_REFRESH_FAILED',
   SSO_LOGOUT_FAILED = 'SSO_LOGOUT_FAILED',
 }
@@ -45,18 +36,12 @@ export class AuthError extends Error {
     this.context = context
   }
 
-  /**
-   * 检查是否为特定类型的认证错误
-   */
   static isAuthError(error: unknown, type?: AuthErrorType): error is AuthError {
     if (!(error instanceof AuthError))
       return false
     return type ? error.type === type : true
   }
 
-  /**
-   * 检查是否为可重试的错误
-   */
   isRetryable(): boolean {
     return [
       AuthErrorType.NETWORK_ERROR,
@@ -65,9 +50,6 @@ export class AuthError extends Error {
     ].includes(this.type)
   }
 
-  /**
-   * 检查是否需要重新登录
-   */
   requiresReauth(): boolean {
     return [
       AuthErrorType.TOKEN_EXPIRED,
@@ -76,9 +58,6 @@ export class AuthError extends Error {
     ].includes(this.type)
   }
 
-  /**
-   * 转换为日志格式
-   */
   toLogFormat(): {
     type: AuthErrorType
     message: string
@@ -94,9 +73,6 @@ export class AuthError extends Error {
   }
 }
 
-/**
- * 创建认证错误的便捷函数
- */
 export const createAuthError = {
   tokenExpired: (originalError?: Error) =>
     new AuthError(AuthErrorType.TOKEN_EXPIRED, 'Access token expired', originalError),
@@ -126,9 +102,6 @@ export const createAuthError = {
     new AuthError(AuthErrorType.SSO_REFRESH_FAILED, `SSO token refresh failed${ssoType ? `: ${ssoType}` : ''}`, originalError),
 }
 
-/**
- * 统一的错误结果类型
- */
 export type AuthResult<T> = {
   success: true
   data: T
@@ -137,9 +110,6 @@ export type AuthResult<T> = {
   error: AuthError
 }
 
-/**
- * 将API调用包装为统一的错误处理格式
- */
 export async function wrapAuthOperation<T>(
   operation: () => Promise<T>,
   errorType: AuthErrorType,

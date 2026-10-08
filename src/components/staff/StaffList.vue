@@ -152,7 +152,7 @@ const { list, title, desc } = defineProps<{
 }
 
 .member {
-  flex-basis: calc(25% - 26px); /* 25% width with 16px gutter between items */
+  flex-basis: calc(25% - 26px);
   box-sizing: border-box;
   text-align: left;
   padding: 16px;
@@ -176,9 +176,8 @@ const { list, title, desc } = defineProps<{
 .member-title {
   font-size: calc(14px * var(--site-ui-scale));
   color: var(--vp-c-text-2);
-  align-self: flex-end; /* Align title to the end (bottom) of the flex container */
+  align-self: flex-end;
 }
-/* Add the following style to the child element you want to break onto a new line */
 .break-line {
   flex-basis: 100%;
   width: 100%;

@@ -21,7 +21,6 @@ import {
 } from './forumLinkPolicy'
 import { TOPIC_ID_PATTERN } from './forumTopicQuote'
 
-/** Matches an emoji filename extension. */
 const EMOJI_FILE_EXTENSION_REGEX = /\.[^.]+$/
 
 /** Matches forum Topic references and Gitee logins without linking email addresses. */

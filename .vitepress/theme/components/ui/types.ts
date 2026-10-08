@@ -1,4 +1,3 @@
-// Emoji related types
 export interface EmojiItem {
   emoji: string
   name: string

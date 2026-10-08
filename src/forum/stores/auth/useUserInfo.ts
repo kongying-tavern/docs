@@ -64,12 +64,10 @@ export const useUserInfoStore = defineStore('user-info', () => {
   })
 
   return {
-    // states
     info,
     fingerprint,
     isInitialized,
 
-    // actions
     refreshUserInfo,
     refreshFingerprint,
     clearUserInfo,

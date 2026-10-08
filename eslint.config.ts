@@ -55,22 +55,18 @@ export default antfu({
     typescript: {
       'ts/no-explicit-any': 'warn',
 
-      // 命名规范
       'ts/naming-convention': [
         'error',
-        // TS interface 只允许大驼峰
         {
           selector: 'interface',
           format: ['PascalCase'],
           leadingUnderscore: 'forbid',
         },
-        // TS Type 只允许大驼峰
         {
           selector: 'typeLike',
           format: ['PascalCase'],
           leadingUnderscore: 'forbid',
         },
-        // 变量只允许大小驼峰、全大写下划线、全小写下划线
         {
           selector: 'variable',
           format: ['PascalCase', 'camelCase', 'UPPER_CASE', 'snake_case'],

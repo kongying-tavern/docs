@@ -18,7 +18,7 @@ export const SCENES = [
   'rc', // 表态
   'ld', // 列表/话题加载
   'lg', // 密码登录
-  'oa', // OAuth 登录/回调
+  'oa',
   'ss', // SSO 会话刷新
   'api', // 通用接口失败
   'ui', // 界面提示类(无错误对象)

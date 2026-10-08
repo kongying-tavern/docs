@@ -2,7 +2,6 @@ import { execFileSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import process from 'node:process'
 
-/** Matches backslash in file paths */
 const BACKSLASH_PATH_REGEX = /\\/g
 
 export interface GitCommit {
@@ -19,9 +18,6 @@ export interface GitFileInfo {
   commits: GitCommit[]
 }
 
-/**
- * 解析Git日志输出为结构化数据
- */
 function parseGitLog(output: string): GitCommit[] {
   const commits: GitCommit[] = []
   const lines = output.trim().split('\n')
@@ -45,17 +41,12 @@ function parseGitLog(output: string): GitCommit[] {
   return commits
 }
 
-/**
- * 获取文件的Git信息
- */
 export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | null> {
   try {
-    // 检查文件是否存在
     if (!existsSync(filePath)) {
       return null
     }
 
-    // 检查是否在Git仓库中
     try {
       execFileSync('git', ['rev-parse', '--git-dir'], {
         cwd: process.cwd(),

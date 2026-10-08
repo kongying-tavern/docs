@@ -1,7 +1,6 @@
 /* eslint-disable regexp/no-unused-capturing-group */
 import { isObject } from 'lodash-es'
 
-/** Matches snake_case underscores before a lowercase letter */
 const UNDERSCORE_LOWER_REGEX = /_([a-z])/g
 
 function camelCase(str: string): string {
@@ -10,16 +9,12 @@ function camelCase(str: string): string {
 
 const markdownLinkRegexp = /.md((\?|#).*)?$/
 
-/** Matches single quotes in JSON strings */
 const SINGLE_QUOTE_REGEX = /'/g
 
-/** Matches HTTP/HTTPS protocol links */
 const HTTP_LINK_REGEX = /^(https?:)?\/\//
 
-/** Matches relative links */
 const RELATIVE_LINK_REGEX = /^(?!www\.|https?:\/\/|[A-Za-z]:\\|\/\/).*/
 
-/** Matches trailing slash at the end of a path */
 const TRAILING_SLASH_PATH_REGEX = /\/$/
 
 // single quote will break @vue/compiler-sfc
@@ -68,7 +63,6 @@ export function isRelativeLink(link: string) {
   return RELATIVE_LINK_REGEX.test(link)
 }
 
-/** Matches multiple consecutive slashes */
 const MULTIPLE_SLASH_REGEX = /\/+/gu
 
 function concatLink(link: string, base: string): string {

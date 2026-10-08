@@ -32,23 +32,19 @@ export interface SSOLocaleAuth {
 }
 
 export const useUserAuthStore = defineStore('user-auth', () => {
-  // Initialize composables
   const tokenManager = useTokenManager()
   const ssoAuth = useSSOAuth(tokenManager)
   const authRefresh = useAuthRefresh(tokenManager)
   const ssoRefreshManager = useSSORefreshManager(tokenManager, ssoAuth)
 
-  // State
   const loginStatus = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
   const lastError = ref<AuthError | null>(null)
 
-  // Computed
   const auth = computed<LocalAuth | null>(() => tokenManager.localAuth.value || null)
   const ssoLocalAuth = computed(() => tokenManager.ssoAuth.value)
   const isTokenValid = computed(() => tokenManager.isTokenValid.value)
   const isLoggedIn = computed(() => !!tokenManager.localAuth.value?.accessToken && tokenManager.isTokenValid.value)
 
-  // Actions
   const setAuth = (newAuth: ForumAPI.Auth) => {
     log.info(LogGroup.AUTH, 'Setting authentication data')
 

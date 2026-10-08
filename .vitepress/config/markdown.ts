@@ -73,7 +73,7 @@ export const markdownConfig: MarkdownOptions = {
     md.use(obsidianImgSize)
     md.use(figure)
     md.use(...MarkdownItTimeline('timeline', md))
-    md.use(spoiler) // Custom spoiler plugin with ScratchToReveal
+    md.use(spoiler)
     md.use(MarkdownItLightbox)
     md.use(MarkdownItVariableInject)
     md.use(MarkdownItCustomColor)

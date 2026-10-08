@@ -19,7 +19,6 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
 
 <template>
   <div :data-forum-blog-post="blogSlug" class="blog-post-header slide-enter flex flex-col w-full items-center">
-    <!-- 面包屑 -->
     <nav class="text-sm c-[var(--vp-c-text-2)] flex gap-2 items-center">
       <VPLink class="hover:underline" href="../../">
         {{ message.forum.blog.breadcrumbHome }}
@@ -37,7 +36,6 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
       {{ frontmatter?.title || 'Untitled' }}
     </h1>
 
-    <!-- meta -->
     <div class="blog-post-meta text-sm mt-5 flex gap-3 items-center">
       <template v-if="authors.length === 1">
         <VPLink
@@ -90,7 +88,6 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
       </span>
     </div>
 
-    <!-- 分隔线 -->
     <div class="mx-auto my-8 bg-[var(--vp-c-border)] h-1.5px w-24" />
 
     <!-- 封面 -->

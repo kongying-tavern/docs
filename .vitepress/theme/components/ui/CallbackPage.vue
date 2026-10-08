@@ -82,7 +82,6 @@ onMounted(() => {
   justify-content: center;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
   .callback-page {
     padding: 4rem 1rem 1rem;
@@ -103,7 +102,6 @@ onMounted(() => {
   }
 }
 
-/* 极小屏幕优化 */
 @media (max-width: 480px) {
   .callback-page {
     padding: 3rem 0.75rem 1rem;

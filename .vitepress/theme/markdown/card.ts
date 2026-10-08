@@ -71,7 +71,6 @@ function cardRender(
       config = JSON.parse(content) as unknown
     }
     catch (err) {
-      // do nothing
       // eslint-disable-next-line no-console
       console.error(`Parsing card JSON config failed:`, err)
     }

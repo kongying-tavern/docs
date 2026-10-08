@@ -13,31 +13,28 @@ const MarkdownItMention: PluginSimple = (md: MarkdownIt) => {
     const max = state.posMax
     const ch = state.src.charCodeAt(start)
 
-    // 检查是否以 @ 开头
-    if (ch !== 0x40/* @ */)
+    if (ch !== 0x40)
       return false
 
     let pos = start + 1
     let username = ''
 
-    // 收集用户名
     while (pos < max) {
       const ch = state.src.charCodeAt(pos)
-      if (ch === 0x20/* space */ || ch === 0x09/* \t */)
+      if (ch === 0x20 || ch === 0x09)
         break
-      if (ch === 0x0A/* \n */)
+      if (ch === 0x0A)
         break
       if (ch === 0x5B/* [ */ || ch === 0x5D/* ] */)
         break
       if (ch === 0x28/* ( */ || ch === 0x29/* ) */)
         break
-      if (ch === 0x2C/* , */ || ch === 0x2E/* . */)
+      if (ch === 0x2C || ch === 0x2E)
         break
       username += state.src[pos]
       pos++
     }
 
-    // 检查用户名是否在白名单中（同时检查 username 和 login）
     const user = WHITE_LIST.find(u => u.username === username || u.login === username)
     if (!user)
       return false

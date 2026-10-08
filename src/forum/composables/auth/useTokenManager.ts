@@ -22,7 +22,6 @@ function getTimeUntilRefresh(expiresTime: number) {
 }
 
 export function useTokenManager() {
-  // Local storage for auth data with explicit JSON serialization
   const localAuth = useLocalStorage<LocalAuth | null>(USERAUTH_KEY, null, {
     serializer: {
       read: (v: string) => {
@@ -55,7 +54,6 @@ export function useTokenManager() {
   const isTokenRefreshing = ref(false)
   const lastRefreshAttempt = ref<number>(0)
 
-  // Promise-based refresh tracking
   let refreshDeferred: Deferred<void> | null = null
   let sessionGeneration = 0
 

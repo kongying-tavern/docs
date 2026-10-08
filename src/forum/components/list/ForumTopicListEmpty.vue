@@ -127,7 +127,6 @@ async function handleRetry() {
       </EmptyMorphFrame>
     </EmptyHeader>
 
-    <!-- 主按钮：实心主题色；次按钮：描边 -->
     <ForumEmptyActions v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions">
       <template v-if="!error && (isSearchEmpty || hasActiveFilters)">
         <ForumOpenFeedbackFormButton

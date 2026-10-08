@@ -37,7 +37,6 @@ const props = withDefaults(defineProps<{
   hour12: undefined,
 })
 
-// Get current VitePress locale
 const { lang } = useData()
 
 const date = computed(() => {

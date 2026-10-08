@@ -27,7 +27,6 @@ function mountGoogleAnalytics(id: string, debug: boolean) {
     return
   }
 
-  // insert gtag `<script>` tag
   const gtagScript = document.createElement('script')
   gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${id}`
   gtagScript.async = true

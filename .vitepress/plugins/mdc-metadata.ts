@@ -51,7 +51,7 @@ function extractProps(meta: ComponentMeta): MdcProp[] {
 
 /** Parse the theme barrel and index.ts to find globally-registered component file paths. */
 function resolveGlobalComponents(): Map<string, string> {
-  const components = new Map<string, string>() // pascalName → absolutePath
+  const components = new Map<string, string>()
 
   // 1. ui/index.ts barrel: `export { default as Foo } from './Foo.vue'`
   const uiIndex = resolve(compDir, 'ui/index.ts')
@@ -73,7 +73,7 @@ function resolveGlobalComponents(): Map<string, string> {
         specifier = resolve(projectRoot, '.vitepress/theme', specifier.slice(2))
       else if (specifier.startsWith('.'))
         specifier = resolve(themeDir, specifier)
-      else continue // external package, skip
+      else continue
       importMap.set(m[1], specifier)
     }
 

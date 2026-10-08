@@ -22,7 +22,6 @@ interface LockManagerLike {
 const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms))
 
 export function useAuthRefresh(tokenManager: ReturnType<typeof useTokenManager>) {
-  // Refresh timer management
   let refreshTimer: ReturnType<typeof setTimeout> | null = null
   let backgroundRetryTimer: ReturnType<typeof setTimeout> | null = null
   const retryCount = ref(0)

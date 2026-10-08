@@ -11,7 +11,7 @@ const rubyRule: RuleInline = (state, silent) => {
   const start = state.pos
   const max = state.posMax
 
-  if (state.src.charCodeAt(start) !== 42 /* * */ || state.src.charCodeAt(start + 1) !== 123 /* { */ || start + 5 >= max)
+  if (state.src.charCodeAt(start) !== 42 || state.src.charCodeAt(start + 1) !== 123 /* { */ || start + 5 >= max)
     return false
 
   // Signal to the 'text' rule (and other silent-scanning rules) that we
@@ -28,7 +28,7 @@ const rubyRule: RuleInline = (state, silent) => {
     if (dividerPosition) {
       if (
         state.src.charCodeAt(state.pos) === 125
-        && /* } */ state.src.charCodeAt(state.pos - 1) !== 92 /* \ */
+        && /* } */ state.src.charCodeAt(state.pos - 1) !== 92
       ) {
         closePos = state.pos
         break
@@ -36,7 +36,7 @@ const rubyRule: RuleInline = (state, silent) => {
     }
     else if (
       state.src.charCodeAt(state.pos) === 58
-      && /* : */ state.src.charCodeAt(state.pos - 1) !== 92 /* \ */
+      && state.src.charCodeAt(state.pos - 1) !== 92
     ) {
       dividerPosition = state.pos
     }

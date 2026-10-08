@@ -8,7 +8,6 @@ import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 import type { Delimiter } from 'markdown-it/lib/rules_inline/state_inline.mjs'
 import type Token from 'markdown-it/lib/token.mjs'
 
-/** Matches spoiler content with attributes */
 const SPOILER_CONTENT_REGEX = /^([^{]*)\{([^}]+)\}$/
 
 export interface MarkdownItSpoilerOptions {
@@ -56,7 +55,6 @@ function extractSpoilerContent(tokens: Token[], startIdx: number): string {
  * Parse attributes from content like "text{width=200,align=center}" or "text{w=150px,a=right}"
  */
 function extractAttributesFromContent(content: string): SpoilerContent {
-  // Match pattern: text{width=200,align=center} or text{w=150,a=right}
   const match = content.match(SPOILER_CONTENT_REGEX)
   if (!match)
     return { content }
@@ -65,7 +63,6 @@ function extractAttributesFromContent(content: string): SpoilerContent {
   const attributesStr = match[2]
   const result: SpoilerContent = { content: cleanContent }
 
-  // Parse multiple attributes
   const attributes = attributesStr.split(',').map(attr => attr.trim())
 
   for (const attr of attributes) {
@@ -96,7 +93,7 @@ const tokenize: RuleInline = (state, silent) => {
   const start = state.pos
   const marker = state.src.charCodeAt(start)
 
-  if (silent || marker !== 33 /* ! */)
+  if (silent || marker !== 33)
     return false
 
   const scanned = state.scanDelims(state.pos, true)
@@ -148,7 +145,7 @@ function postProcess(state: StateInline, delimiters: Delimiter[], { tag, attrs }
   for (let i = 0; i < max; i++) {
     const startDelim = delimiters[i]
 
-    if (startDelim.marker === 0x21 /* ! */ && startDelim.end !== -1) {
+    if (startDelim.marker === 0x21 && startDelim.end !== -1) {
       const endDelim = delimiters[startDelim.end]
 
       token = state.tokens[startDelim.token]

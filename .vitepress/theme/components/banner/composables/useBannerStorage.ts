@@ -7,12 +7,10 @@ import { STORE_KEY } from '../configs'
 export function useBannerStorage() {
   const bannerData = useLocalStorage<PartialBannerItem[]>(STORE_KEY, [])
 
-  // 立即修复无效的初始值
   if (!import.meta.env.SSR && !Array.isArray(bannerData.value)) {
     bannerData.value = []
   }
 
-  // 验证并自动重置数组类型
   watchEffect(() => {
     if (!Array.isArray(bannerData.value)) {
       bannerData.value = []

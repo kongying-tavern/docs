@@ -3,9 +3,7 @@ import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 
 interface Props {
-  /** 按钮大小 */
   size?: string
-  /** 额外的 CSS 类 */
   class?: string
   /** 无障碍标签（缺省回落到当前语言的「关闭」） */
   label?: string

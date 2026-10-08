@@ -2,7 +2,6 @@ import { withBase } from 'vitepress'
 import { readonly, ref } from 'vue'
 import EmojiData from '~/_data/emojis.json'
 
-/** 最近使用 emoji 的存储 key：EmojiPickerPanel 写入、本模块读取 */
 export const RECENT_EMOJIS_STORAGE_KEY = 'RECENT_EMOJIS'
 
 const preloadedUrls = new Set<string>()

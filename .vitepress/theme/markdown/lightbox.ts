@@ -12,7 +12,6 @@ import type Token from 'markdown-it/lib/token.mjs'
 const MarkdownItLightbox: PluginSimple = (md: MarkdownIt) => {
   const imageRule = md.renderer.rules.image as RenderRule
 
-  // Customize the image renderer.
   md.renderer.rules.image = (
     tokens: Token[],
     idx: number,

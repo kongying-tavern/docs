@@ -22,7 +22,6 @@ function getGroupClass(status: string): string {
 </template>
 
 <style scoped>
-/* 推荐群 */
 .qq-group--suggest > a strong::after {
   display: inline-block;
   margin-left: 6px;
@@ -38,7 +37,6 @@ function getGroupClass(status: string): string {
   content: '推荐';
 }
 
-/* 已满群 */
 .qq-group--warning > a strong::after {
   display: inline-block;
   margin-left: 6px;
@@ -54,7 +52,6 @@ function getGroupClass(status: string): string {
   content: '已满';
 }
 
-/* 被封禁的群 */
 .qq-group--banned > a strong::after {
   display: inline-block;
   margin-left: 6px;

@@ -26,7 +26,6 @@ export function useBannerState(banner: Ref<HTMLElement | undefined>) {
 
   const isShowBanner = ref(false)
 
-  // 计算是否显示语言建议栏
   const isShowLanguageSuggestBar = computed(
     () =>
       (frontmatter.value.languageSuggest
@@ -34,7 +33,6 @@ export function useBannerState(banner: Ref<HTMLElement | undefined>) {
       && !lang.value.includes(suggestLanguage),
   )
 
-  // 计算是否可以显示 banner
   const canBannerVisible = computed(
     () =>
       frontmatter.value.wip
@@ -42,28 +40,23 @@ export function useBannerState(banner: Ref<HTMLElement | undefined>) {
       || isShowLanguageSuggestBar.value,
   )
 
-  // 计算过期时间
   const dismissExpiryTime = computed(() => Date.now() + BANNER_CONSTANTS.ONE_DAY_MS)
 
-  // 检查是否过期
   const isExpired = computed(() => {
     const expiryDate = frontmatter.value.bannerExpiryDate
     return expiryDate && dayjs(expiryDate).isValid() && dayjs().isAfter(expiryDate)
   })
 
-  // 计算 banner 文本
   const bannerText = computed(() =>
     frontmatter.value.wip
       ? (theme.value.ui?.banner?.wip ?? '')
       : frontmatter.value.banner,
   )
 
-  // 计算 banner 内容哈希
   const bannerHash = computed(() =>
     bannerText.value ? hash(bannerText.value) : 0,
   )
 
-  // 隐藏 banner
   const hideBanner = () => {
     isShowBanner.value = false
     document.documentElement.style.setProperty(
@@ -72,7 +65,6 @@ export function useBannerState(banner: Ref<HTMLElement | undefined>) {
     )
   }
 
-  // 更新布局高度
   watchEffect(() => {
     if (height.value) {
       document.documentElement.style.setProperty(

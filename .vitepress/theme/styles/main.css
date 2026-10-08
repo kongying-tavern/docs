@@ -441,7 +441,6 @@ textarea {
   display: none !important;
 }
 
-/* CSS Variables for spoiler colors */
 :root {
   --vp-spoiler-color-1: var(--vp-c-text-1);
   --vp-spoiler-color-2: var(--vp-c-text-2);
@@ -479,7 +478,6 @@ html.dark {
   --forum-image-outline: oklch(1 0 0 / 0.1);
 }
 
-/* Inline spoiler styles for ScratchToReveal component */
 .inline-spoiler {
   display: inline-block;
   vertical-align: baseline;
@@ -497,8 +495,6 @@ html.dark {
 .inline-spoiler:focus {
   outline: none;
 }
-
-/* Text alignment classes for spoiler - removed since we now use inline styles */
 
 .VPDocAsideOutline.has-outline > .content {
   border: none;

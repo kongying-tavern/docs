@@ -35,7 +35,6 @@ export interface PermissionDataState {
 const CACHE_DURATION = 60 * 60 * 1000 // 1小时缓存（query staleTime）
 const PERMISSION_CACHE_KEY = ['forum', 'permission']
 
-// 类型转换函数：将 ForumAPI.User 转换为 MemberData
 function convertUserToMemberData(users: ForumAPI.User[]): MemberData[] {
   return users.map(user => ({
     id: typeof user.id === 'string' ? Number.parseInt(user.id, 10) : user.id,
@@ -48,15 +47,12 @@ function convertUserToMemberData(users: ForumAPI.User[]): MemberData[] {
 
 // 解析本地数据（支持新旧格式）
 function parseLocalData(rawData: MemberDataWithTimestamp | MemberData[]): MemberData[] {
-  // 新格式：带时间戳的数据
   if (rawData && typeof rawData === 'object' && 'data' in rawData && 'lastUpdated' in rawData) {
     return rawData.data
   }
-  // 旧格式：直接是数组
   return rawData as MemberData[]
 }
 
-// 获取本地数据的时间戳
 function getLocalDataTimestamp(rawData: MemberDataWithTimestamp | MemberData[]): number | null {
   if (rawData && typeof rawData === 'object' && 'lastUpdated' in rawData) {
     return rawData.lastUpdated
@@ -199,16 +195,13 @@ export function usePermissionData() {
   }
 
   return {
-    // 状态
     permissionData,
     isLoggedIn,
 
-    // 获取器
     getTeamMemberIds,
     getFeedbackMemberIds,
     getBlogMemberIds,
 
-    // 方法
     refreshPermissionData,
     ensureFreshData,
   }

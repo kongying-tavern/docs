@@ -5,38 +5,32 @@ import { Button } from '@/components/ui/button'
 
 const { frontmatter } = useData()
 
-// 检查是否有按钮配置并且有权限
 const hasButton = computed(() => {
   const buttonConfig = frontmatter.value.button
   if (!buttonConfig)
     return false
 
-  // 如果指定了组件，则显示组件（组件内部处理权限）
   if (buttonConfig.component)
     return true
 
-  // 如果是简单按钮配置，检查文本和权限
   if (!buttonConfig.text)
     return false
 
   return true
 })
 
-// 动态组件解析
 const buttonComponent = computed(() => {
   if (frontmatter.value.button?.component) {
     try {
       return resolveComponent(frontmatter.value.button.component)
     }
     catch {
-      // 无法解析组件，静默返回 null
       return null
     }
   }
   return null
 })
 
-// 按钮点击处理
 function handleButtonClick() {
   if (frontmatter.value.button?.link) {
     window.location.href = frontmatter.value.button.link
@@ -66,9 +60,7 @@ function handleButtonClick() {
           </p>
         </div>
         <div v-if="hasButton" class="headline-actions">
-          <!-- 动态组件渲染 -->
           <component :is="buttonComponent" v-if="buttonComponent" />
-          <!-- 简单按钮配置 -->
           <Button
             v-else-if="frontmatter.button.text"
             :variant="frontmatter.button.variant || 'default'"
