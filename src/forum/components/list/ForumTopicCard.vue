@@ -40,7 +40,8 @@ function activate(event: MouseEvent): void {
 <template>
   <div
     :id="`topic-${topic.id}`" :data-forum-topic="String(topic.id)"
-    class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full hover:bg-[var(--vp-c-default-soft)]"
+    data-fluid-hover-item
+    class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full"
     :class="[topic.type]" :tabindex="topic.type === 'POST' ? undefined : 0"
     @pointerenter="prepare" @focusin="prepare" @pointerdown="prepare" @keydown.enter.self="prepare(); openTopic()" @click="activate"
   >

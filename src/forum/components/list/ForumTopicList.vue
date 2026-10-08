@@ -3,6 +3,7 @@ import type ForumAPI from '~/forum/api/types'
 import { useEventListener, useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import Divider from '@/components/ui/divider/Divider.vue'
+import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useIdlePreload } from '~/forum/composables/view/useIdlePreload'
@@ -75,34 +76,38 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
 
 <template>
   <div>
-    <TransitionGroup
+    <FluidHoverList
       v-if="props.data.length > 0"
-      tag="ul"
-      name="topic-list"
-      class="topic-list"
+      indicator-class="rounded-xl bg-[var(--vp-c-default-soft)]"
     >
-      <li
-        v-for="(item, index) in props.data"
-        :key="item.id"
+      <TransitionGroup
+        tag="ul"
+        name="topic-list"
+        class="topic-list"
       >
-        <Divider
-          v-if="index === lastVisitedDividerIndex"
-          variant="center"
-          class="last-visited-divider py-3"
+        <li
+          v-for="(item, index) in props.data"
+          :key="item.id"
         >
-          {{ message.forum.lastVisited }}
-        </Divider>
-        <ForumTopic
-          :topic="item"
-          @prepare-preview="preparePreview"
-          @preview="openPreview"
-        />
-        <Separator
-          v-if="index < data.length - 1 && index + 1 !== lastVisitedDividerIndex"
-          class="h-1px"
-        />
-      </li>
-    </TransitionGroup>
+          <Divider
+            v-if="index === lastVisitedDividerIndex"
+            variant="center"
+            class="last-visited-divider py-3"
+          >
+            {{ message.forum.lastVisited }}
+          </Divider>
+          <ForumTopic
+            :topic="item"
+            @prepare-preview="preparePreview"
+            @preview="openPreview"
+          />
+          <Separator
+            v-if="index < data.length - 1 && index + 1 !== lastVisitedDividerIndex"
+            class="h-1px"
+          />
+        </li>
+      </TransitionGroup>
+    </FluidHoverList>
 
     <ForumTopicListSkeletons v-else-if="loading" />
 
