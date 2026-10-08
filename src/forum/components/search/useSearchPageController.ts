@@ -11,7 +11,7 @@ import { resolveForumListScope } from '~/forum/services/forumListSkeleton'
 import { parseForumSearchQuery, toggleForumSearchFacet } from '~/forum/services/forumSearchQuery'
 
 export function useSearchPageController() {
-  const { route, list, leaveSearch, navigate, submitSearch } = useForumRoute()
+  const { route, list, navigate, submitSearch } = useForumRoute()
   const { message } = useLocalized()
   const { setViewMode } = useForumViewMode()
   const queryDraft = ref(list.value?.q ?? '')
@@ -93,7 +93,7 @@ export function useSearchPageController() {
   return {
     searchModel: { queryDraft, list, recentSearches, hasCriteria, suggestionMode },
     results: { topics, suggestionTopics, loadStateMessage },
-    actions: { runSearch, applySettings, clearRecentSearches, toggleFacet, leaveSearch, login },
+    actions: { runSearch, applySettings, clearRecentSearches, toggleFacet, login },
   }
 }
 export type SearchPageController = ReturnType<typeof useSearchPageController>

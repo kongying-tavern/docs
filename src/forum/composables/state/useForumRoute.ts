@@ -13,7 +13,6 @@ import { appendForumSearchFacet, toggleForumSearchFacet } from '~/forum/services
 
 const forumLocation = shallowRef<ParsedForumLocation | null>(null)
 let canReturnToForumRoute = false
-let canReturnFromSearch = false
 
 export function publishForumLocation(input: string | URL, options: ForumRouteOptions): ParsedForumLocation | null {
   const previous = forumLocation.value
@@ -22,8 +21,6 @@ export function publishForumLocation(input: string | URL, options: ForumRouteOpt
     canReturnToForumRoute = false
   else if (previous && previous.canonicalHref !== next.canonicalHref)
     canReturnToForumRoute = true
-  if (!next || (next.route.name !== 'search' && next.route.name !== 'topic'))
-    canReturnFromSearch = false
   forumLocation.value = next
   return forumLocation.value
 }
@@ -97,46 +94,24 @@ export function useForumRoute() {
       return false
 
     const fromUserPage = current.name === 'user'
-    canReturnFromSearch = true
-    try {
-      return await navigate({
-        name: 'search',
-        locale: current.locale,
-        username: null,
-        list: fromUserPage
-          ? {
-              ...current.list,
-              filter: 'everything',
-              topicType: 'all',
-              q: appendForumSearchFacet(q, 'author', current.username),
-              creator: null,
-            }
-          : { ...current.list, q },
-      }, null)
-    }
-    catch (error) {
-      canReturnFromSearch = false
-      throw error
-    }
+    return navigate({
+      name: 'search',
+      locale: current.locale,
+      username: null,
+      list: fromUserPage
+        ? {
+            ...current.list,
+            filter: 'everything',
+            topicType: 'all',
+            q: appendForumSearchFacet(q, 'author', current.username),
+            creator: null,
+          }
+        : { ...current.list, q },
+    }, null)
   }
 
   function openSearch(): Promise<boolean> {
     return openSearchWithQuery(list.value?.q ?? '')
-  }
-
-  async function leaveSearch(): Promise<void> {
-    const current = route.value
-    if (current?.name !== 'search')
-      return
-    if (!import.meta.env.SSR && canReturnFromSearch) {
-      canReturnFromSearch = false
-      window.history.back()
-      return
-    }
-    const list = { ...current.list, q: '' }
-    await navigate(current.username
-      ? { name: 'user', locale: current.locale, username: current.username, list }
-      : { name: 'home', locale: current.locale, list }, null)
   }
 
   function homeHref(filter: ForumFilter = 'all'): string {
@@ -272,7 +247,6 @@ export function useForumRoute() {
     navigate,
     openSearch,
     openSearchWithQuery,
-    leaveSearch,
     navigateFilter,
     navigateType,
     navigateSort,

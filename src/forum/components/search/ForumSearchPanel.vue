@@ -21,7 +21,7 @@ const props = defineProps<{
 }>()
 const { queryDraft, list, recentSearches, hasCriteria, suggestionMode } = props.searchModel
 const { topics, suggestionTopics, loadStateMessage } = props.results
-const { toggleFacet, leaveSearch, login } = props.actions
+const { toggleFacet, login } = props.actions
 const { message } = useLocalized()
 const { formatSearchQuery } = useForumSearchToken()
 const activeFacet = ref<ForumSearchFacet | null>(null)
@@ -74,16 +74,6 @@ function clearRecentSearches(): void {
 <template>
   <div class="forum-search-page">
     <header class="forum-search-page-header">
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon"
-        :aria-label="message.forum.header.search.leaveSearch"
-        :title="message.forum.header.search.leaveSearch"
-        @click="leaveSearch"
-      >
-        <span class="i-lucide-arrow-left size-4" aria-hidden="true" />
-      </Button>
       <ForumSearchInput
         v-model:query="queryDraft"
         class="flex-1 min-w-0"

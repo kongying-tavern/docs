@@ -417,7 +417,6 @@ const forum: CustomConfig['forum'] = {
       feedbackType: 'フィードバックの種類',
       resetFilters: 'リセット',
       searchContent: '条件を指定して検索',
-      leaveSearch: '検索を終了',
       recentSearches: '最近の検索',
       clearRecentSearches: '検索履歴を消去',
       noRecentSearches: '最近の検索はありません',

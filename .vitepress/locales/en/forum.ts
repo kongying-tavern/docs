@@ -415,7 +415,6 @@ const forum: CustomConfig['forum'] = {
       feedbackType: 'Feedback type',
       resetFilters: 'Reset',
       searchContent: 'Search specific content',
-      leaveSearch: 'Exit search',
       recentSearches: 'Recent searches',
       clearRecentSearches: 'Clear search history',
       noRecentSearches: 'No recent searches',

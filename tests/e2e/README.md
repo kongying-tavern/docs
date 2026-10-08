@@ -73,7 +73,6 @@ Playwright 由根包和根锁文件固定版本，不在 tests/e2e 下安装第�
 | lazy-interaction | 省流模式、空闲预加载、交互触发加载及慢加载时弹层响应和编辑器焦点 |
 | reaction | 话题详情读取服务端计数；点赞→撤销→反向切换按服务端权威值写回；写入失败回滚计数 |
 | entry-animation | 文档 header 先于正文入场、减动效同时关闭、blur fade 时长与终态 |
-| search-exit | 从列表发起的搜索返回原位、直接搜索 URL 的站内退出，覆盖多宽度 |
 | search-facet-transition | 筛选切换在正常与减动效下保持焦点 |
 | markdown-rendering | Markdown demo 的类型化 props 与独立 spoiler 属性，覆盖多宽度 |
 | mobile-toast | 移动端连续通知的完整时长、队列动作与触摸关闭、诊断卡片在来源消失后仍可读 |
