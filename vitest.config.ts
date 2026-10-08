@@ -19,6 +19,7 @@ export default defineConfig({
       provider: 'v8',
       reportOnFailure: true,
       include: [
+        'src/apis/**/*.ts',
         'src/forum/{api,composables,hooks,router,services,stores,utils}/**/*.ts',
         'src/{composables,services,utils}/**/*.ts',
         '.vitepress/theme/hooks/**/*.ts',
@@ -27,10 +28,10 @@ export default defineConfig({
       exclude: ['**/*.d.ts', '**/types/**'],
       reporter: ['text', 'html', 'json-summary'],
       thresholds: {
-        'lines': 47,
-        'statements': 47,
-        'functions': 44,
-        'branches': 47,
+        'lines': 50,
+        'statements': 50,
+        'functions': 48,
+        'branches': 49,
         'src/forum/hooks/{useAuthRefresh,useSSORefreshManager}.ts': {
           perFile: true,
           lines: 65,
