@@ -4,8 +4,9 @@ test('home 页 footer 二维码卡片可见且支持夜间模式重生成', asyn
   await page.goto('/feedback/home')
   const card = page.locator('.footer-qrcode')
   await expect(card).toBeVisible()
-  const qr = card.locator('img[alt="QR Code"]')
-  await expect(qr).toBeVisible()
+  // Select the card's only image instead of its localized alt text.
+  const qr = card.locator('img')
+  await expect(qr).toBeVisible({ timeout: 30_000 })
 
   // 二维码由 useQRCode 生成（data URL）
   const lightSrc = await qr.getAttribute('src')

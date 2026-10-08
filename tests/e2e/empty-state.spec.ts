@@ -6,8 +6,10 @@ const SEARCH_URL = '/feedback/search?q=zzzzqweqwe&filter=all&topicType=all&sort=
 
 test('search empty state', async ({ page }) => {
   await page.goto(SEARCH_URL)
-  await expect(page.getByText('搜索“zzzzqweqwe”')).toBeVisible({ timeout: 20000 })
-  await expect(page.getByText('没有找到相关反馈。')).toBeVisible()
+  // First cold visit to the search route compiles it on demand, like the other
+  // cold-load waits in this suite.
+  await expect(page.getByText('未找到“zzzzqweqwe”相关反馈')).toBeVisible({ timeout: 30_000 })
+  await expect(page.getByText('试试其他关键词，或调整筛选条件。')).toBeVisible()
   await expect(page.getByRole('button', { name: '清除筛选' })).toBeVisible()
 })
 
