@@ -1,7 +1,8 @@
 import type { ComputedRef } from 'vue'
 import type { BlogUpdateItem, BlogUpdatePost } from '~/forum/services/blogUpdateFeed'
+import { useIntervalFn } from '@vueuse/core'
 import { useData } from 'vitepress'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { selectRecentBlogUpdates } from '~/forum/services/blogUpdateFeed'
 
 /**
@@ -15,14 +16,13 @@ import { selectRecentBlogUpdates } from '~/forum/services/blogUpdateFeed'
 export function useRecentBlogUpdates(posts: readonly BlogUpdatePost[]): ComputedRef<BlogUpdateItem[]> {
   const { lang } = useData()
   const now = ref(Date.now())
-  let timer: ReturnType<typeof setInterval> | undefined
+  // SSR 写入的 now 来自构建期，挂载后必须按客户端时间重取一次
   onMounted(() => {
     now.value = Date.now()
-    timer = setInterval(() => {
-      now.value = Date.now()
-    }, 60_000)
   })
-  onUnmounted(() => clearInterval(timer))
+  useIntervalFn(() => {
+    now.value = Date.now()
+  }, 60_000)
 
   return computed(() => selectRecentBlogUpdates(posts, {
     lang: (lang.value || 'zh').split('-')[0],

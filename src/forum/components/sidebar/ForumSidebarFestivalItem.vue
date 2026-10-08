@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ForumFestivalEffectController } from '~/forum/effects/types'
 import type { ActiveForumFestival } from '~/forum/services/forumFestival'
-import { useLocalStorage } from '@vueuse/core'
+import { defaultDocument, useEventListener, useIntervalFn, useLocalStorage } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -39,7 +39,6 @@ const loadingOccurrence = ref('')
 let currentEffect: ForumFestivalEffectController | null = null
 let currentOccurrence = ''
 let runToken = 0
-let clockTimer = 0
 let autoStartTimer = 0
 
 const visibleFestivals = computed<ActiveForumFestival[]>(() => {
@@ -190,11 +189,14 @@ function handleVisibilityChange(): void {
   }
 }
 
+// defaultDocument 而不是 document：这个侧栏项会在 SSR 里 setup，裸引用会抛 ReferenceError
+useEventListener(defaultDocument, 'visibilitychange', handleVisibilityChange)
+useIntervalFn(() => now.value = Date.now(), 30_000)
+
 onMounted(() => {
   mounted.value = true
+  // SSR 写入的 now 来自构建期，挂载后必须按客户端时间重取一次
   now.value = Date.now()
-  clockTimer = window.setInterval(() => now.value = Date.now(), 30_000)
-  document.addEventListener('visibilitychange', handleVisibilityChange)
   scheduleAutoStart()
 })
 
@@ -206,9 +208,7 @@ watch([localeIndex, reducedMotion, unavailableOccurrences, autoplayedOccurrences
 
 onBeforeUnmount(() => {
   stopCurrentEffect()
-  clearInterval(clockTimer)
   clearTimeout(autoStartTimer)
-  document.removeEventListener('visibilitychange', handleVisibilityChange)
 })
 </script>
 
