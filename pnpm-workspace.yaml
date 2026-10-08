@@ -5,6 +5,7 @@ minimumReleaseAgeExclude:
   - '@playwright/test@1.64.0'
   - playwright-core@1.64.0
   - playwright@1.64.0
+  - '@pinia/colada@1.4.8'
 
 trustPolicy: no-downgrade
 # Approved exceptions for existing locked versions in the VitePress toolchain.
@@ -40,7 +41,7 @@ allowBuilds:
   vue-demi: false
 
 catalog:
-  '@pinia/colada': ^1.0.0
+  '@pinia/colada': ^1.4.8
   '@playwright/test': 1.64.0
   '@vee-validate/zod': ^4.15.1
   cac: ^7.0.0
