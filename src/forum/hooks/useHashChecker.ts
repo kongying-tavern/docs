@@ -13,16 +13,7 @@ export function useHashChecker(
   callback?: (hash: string) => boolean | void,
   options: UseHashCheckerOptions = {},
 ) {
-  const defaultOptions: UseHashCheckerOptions = {
-    immediate: true,
-    clearHash: true,
-    redirectHash: null,
-  }
-
-  const { immediate, redirectHash, clearHash } = {
-    ...defaultOptions,
-    ...options,
-  }
+  const { immediate = true, redirectHash = null, clearHash = true } = options
 
   const currentHash = computed(() => {
     if (import.meta.env.SSR)
