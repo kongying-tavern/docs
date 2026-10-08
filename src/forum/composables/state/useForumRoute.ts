@@ -21,8 +21,7 @@ export function publishForumLocation(input: string | URL, options: ForumRouteOpt
     canReturnToForumRoute = false
   else if (previous && previous.canonicalHref !== next.canonicalHref)
     canReturnToForumRoute = true
-  // 一次导航可能回灌两次（页面加载钩子 + 导航结束钩子），同一地址不重复换引用，
-  // 否则视图过渡期间会白白触发一轮依赖 location 的重算
+  // 一次导航会经过两个钩子，地址没变就不换引用，省掉过渡期间的一轮重算
   if (previous?.canonicalHref !== next?.canonicalHref)
     forumLocation.value = next
   return next

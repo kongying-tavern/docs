@@ -47,7 +47,7 @@ const isOpen = ref(false)
 const activeIndex = ref(-1)
 const filterPicker = useTemplateRef<InstanceType<typeof ForumSearchFilterPicker>>('filterPicker')
 const filterInputEl = useTemplateRef<HTMLInputElement>('filterInputEl')
-// 筛选面板跟着空输入自动展开，只有方向键进面板后才由它接管回车，否则回车必须提交搜索
+// 面板随空输入自动展开，回车默认归搜索框，方向键进面板后才交给面板
 const pickerEngaged = ref(false)
 const loadedUsers = computed(() => props.suggestions.map(topic => topic.user))
 

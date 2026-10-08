@@ -145,9 +145,8 @@ export default {
       identifySessionIfEnabled()
       return shouldLoadPage
     }
-    // 同路径只换 query/hash 时 VitePress 的 changeRoute 返回 false、跳过 loadPage，
-    // 上面的页面加载钩子不会跑，论坛路由状态得在导航结束后补一次，否则地址栏变了列表不跟着变
-    router.onAfterRouteChange = async (to) => {
+    // 同路径只换 query/hash 时 VitePress 不加载页面，onBeforePageLoad 不会跑，状态要在这里补回灌
+    router.onAfterRouteChange = (to) => {
       publishForumLocation(to, { base: siteData.value.base, locales: Object.keys(siteData.value.locales) })
     }
   },

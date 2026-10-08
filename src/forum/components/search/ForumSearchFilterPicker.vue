@@ -110,7 +110,6 @@ const optionCount = computed(() => {
 })
 
 watch(() => props.facet, (facet) => {
-  // 进入分面本身就是主动选择，预选首项；根层保持无高亮，回车留给搜索框自己
   activeIndex.value = facet ? 0 : -1
   authorSearch.value = ''
   if (facet === 'author') {
@@ -139,7 +138,6 @@ function moveActive(offset: number) {
   nextTick(() => pickerEl.value?.querySelector<HTMLElement>(`[data-forum-filter-index="${activeIndex.value}"]`)?.scrollIntoView({ block: 'nearest' }))
 }
 
-/** 返回是否真的命中了高亮项：无高亮时调用方应退回自己的默认动作（提交搜索 / 提交筛选草稿） */
 function selectActive(): boolean {
   const option = pickerEl.value?.querySelector<HTMLButtonElement>(`[data-forum-filter-index="${activeIndex.value}"]`)
   if (!option)
