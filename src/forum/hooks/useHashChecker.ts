@@ -1,5 +1,6 @@
+import { useEventListener } from '@vueuse/core'
 import { isArray } from 'lodash-es'
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 interface UseHashCheckerOptions {
   immediate?: boolean
@@ -58,14 +59,7 @@ export function useHashChecker(
   }
 
   const handleHashChangeEvent = () => {
-    if (import.meta.env.SSR)
-      return
-
-    window.addEventListener('hashchange', checkHash)
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('hashchange', checkHash)
-    })
+    useEventListener('hashchange', checkHash)
   }
 
   if (immediate) {
