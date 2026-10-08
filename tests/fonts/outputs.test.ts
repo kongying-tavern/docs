@@ -5,9 +5,10 @@ import { test } from 'vitest'
 import { loadFontSubsetConfig } from '../../scripts/font_subset/config'
 import { detectPython, runProcess } from '../../scripts/font_subset/process'
 
-test('font outputs install on fresh Windows checkouts and preserve custom files', async () => {
-  const projectRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)))
-  const python = await detectPython(projectRoot, loadFontSubsetConfig().python)
+const projectRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)))
+const python = await detectPython(projectRoot, loadFontSubsetConfig().python)
+
+test.skipIf(!python)('font outputs install on fresh Windows checkouts and preserve custom files', async () => {
   assert.ok(python, 'The font build requires Python with fontTools and brotli')
   let output = ''
   const code = await runProcess(python.command, [...python.args, 'tests/fonts/outputs.py'], projectRoot, {
