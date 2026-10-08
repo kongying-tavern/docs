@@ -20,7 +20,7 @@ export const FORUM_SEARCH_STATES: readonly ForumSearchState[] = [
 ]
 const searchStates = new Set<ForumSearchState>(FORUM_SEARCH_STATES)
 
-export function getForumSearchStateGroup(state: ForumSearchState): string {
+export function getForumSearchStateGroup(state: ForumSearchState) {
   if (state === 'closed')
     return 'resolution'
   if (state === 'good-issue')
