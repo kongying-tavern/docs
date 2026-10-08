@@ -16,9 +16,6 @@ import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '~/config/settingsOp
 import '@/styles/main.css'
 
 const { Layout } = DefaultTheme
-const PiniaColadaDevtools = import.meta.env.DEV && import.meta.env.VITE_COLADA_DEVTOOLS !== 'false'
-  ? defineAsyncComponent(() => import('@pinia/colada-devtools').then(module => module.PiniaColadaDevtools))
-  : null
 const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
 const DocHeader = defineAsyncComponent(() => import('@/components/DocHeader.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
@@ -124,9 +121,6 @@ provide('toggle-appearance', toggleTheme)
     </template>
   </Layout>
   <MediumZoom />
-  <ClientOnly>
-    <PiniaColadaDevtools v-if="PiniaColadaDevtools" />
-  </ClientOnly>
 </template>
 
 <style>
