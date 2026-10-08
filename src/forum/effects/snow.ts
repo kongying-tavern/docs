@@ -3,6 +3,7 @@ import type {
   ForumFestivalEffectOptions,
   ForumFestivalEffectStopOptions,
 } from './types'
+import { readReducedMotion } from '~/services/sitePreferences'
 import './snow.css'
 
 interface Snowflake {
@@ -85,12 +86,8 @@ const SNOWFLAKE_CURSOR_SRC = `data:image/svg+xml,${encodeURIComponent(SNOWFLAKE_
 export function startFestivalEffect(
   options: ForumFestivalEffectOptions,
 ): ForumFestivalEffectController {
-  if (
-    typeof document === 'undefined'
-    || window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  ) {
+  if (typeof document === 'undefined' || readReducedMotion())
     return { finished: Promise.resolve(), stop: () => {} }
-  }
 
   const canvas = document.createElement('canvas')
   canvas.dataset.forumFestivalEffect = 'true'

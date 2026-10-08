@@ -21,6 +21,7 @@ export function stackTransform(dx: number, dy: number, scale: number, rotate = 0
 export function usePreviewerFlip(
   imageEl: Ref<HTMLImageElement | undefined>,
   stackEl: Ref<HTMLDivElement | undefined>,
+  reducedMotion: Readonly<Ref<boolean>>,
 ) {
   const sourceRect = shallowRef<DOMRect | null>(null)
   const flipping = shallowRef(false)
@@ -80,7 +81,7 @@ export function usePreviewerFlip(
           fallback()
           return
         }
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (reducedMotion.value) {
           entering.value = false
           return
         }
@@ -119,7 +120,7 @@ export function usePreviewerFlip(
     // 先读取动画当前帧，再取消入场，关闭时才能连续接上。
     const from = stack ? getComputedStyle(stack).transform : 'none'
     cancel()
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    if (reducedMotion.value)
       return 0
     if (!source || !image || !stack || aborted.value || image.naturalWidth === 0)
       return EXIT_MS

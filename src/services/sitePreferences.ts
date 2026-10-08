@@ -32,6 +32,14 @@ export function resolveReducedMotion(preference: MotionPreference, systemReduced
   return systemReduced
 }
 
+/**
+ * 命令式代码读减动效的唯一入口：boot script 在水合前就把生效结果写在 html 属性上，
+ * CSS 选择器读的也是同一个属性，拿不到 composable 时别再退回原始媒体查询。
+ */
+export function readReducedMotion(root = typeof document === 'undefined' ? undefined : document.documentElement): boolean {
+  return root?.dataset.reducedMotion === 'true'
+}
+
 export function applySitePreferences(
   root: HTMLElement,
   preferences: {

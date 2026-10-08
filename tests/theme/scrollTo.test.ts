@@ -1,10 +1,9 @@
-/* eslint-disable test/no-import-node-test -- verify scrolling without a DOM implementation */
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
 import { scrollTo } from '../../src/composables/scrollTo'
 
 test('explicit targets work without a URL hash and honor CSS offsets and reduced motion', (t) => {
-  const root = {}
+  const root: { dataset: Record<string, string> } = { dataset: {} }
   const target = { getBoundingClientRect: () => ({ top: 300 }) } as unknown as Element
   const calls: ScrollToOptions[] = []
   // Node has no browser globals; restore all descriptors after the test.
@@ -30,8 +29,14 @@ test('explicit targets work without a URL hash and honor CSS offsets and reduced
         Reflect.deleteProperty(globalThis, key)
     })
   }
+  root.dataset.reducedMotion = 'true'
   scrollTo({ hash: '#reply-1', offset: 5 })
   assert.deepEqual(calls, [{ left: 0, top: 315, behavior: 'instant' }])
   scrollTo({ hash: '#%invalid' })
   assert.equal(calls.length, 1)
+
+  // 站点偏好显式选了「不减弱」时，系统媒体查询不该再否决平滑滚动
+  root.dataset.reducedMotion = 'false'
+  scrollTo({ hash: '#reply-2', offset: 5 })
+  assert.equal(calls[1]?.behavior, 'smooth')
 })

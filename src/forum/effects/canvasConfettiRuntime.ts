@@ -3,6 +3,7 @@ import type {
   ForumFestivalEffectStopOptions,
 } from './types'
 import confetti from 'canvas-confetti'
+import { readReducedMotion } from '~/services/sitePreferences'
 
 export type FestivalConfetti = ReturnType<typeof confetti.create>
 
@@ -16,7 +17,7 @@ export function startCanvasFestival(
   durationMs: number,
   renderFrame: (frame: FestivalAnimationFrame) => void,
 ): ForumFestivalEffectController {
-  if (typeof document === 'undefined' || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (typeof document === 'undefined' || readReducedMotion()) {
     return {
       finished: Promise.resolve(),
       stop: () => {},

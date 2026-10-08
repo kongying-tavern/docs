@@ -1,3 +1,5 @@
+import { readReducedMotion } from '~/services/sitePreferences'
+
 interface ScrollToOptions {
   offset?: number
   smooth?: boolean
@@ -31,9 +33,8 @@ export function scrollTo(options: ScrollToOptions = {}) {
         + offset
     function scrollToTarget() {
       const animate = smooth
-        && document.documentElement.dataset.reducedMotion !== 'true'
+        && !readReducedMotion()
         && Math.abs(targetTop - window.scrollY) <= window.innerHeight
-        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
       window.scrollTo({ left: 0, top: targetTop, behavior: animate ? 'smooth' : 'instant' })
     }
     requestAnimationFrame(scrollToTarget)

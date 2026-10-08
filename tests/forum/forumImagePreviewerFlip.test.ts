@@ -6,7 +6,7 @@ import { usePreviewerFlip } from '../../src/forum/components/ui/image-previewer/
 function fixture(reducedMotion = false, loaded = true) {
   const originalWindow = globalThis.window
   Object.assign(globalThis, {
-    window: { setTimeout, matchMedia: () => ({ matches: reducedMotion }) },
+    window: { setTimeout },
   })
   const scope = effectScope()
   const listeners = new Map<string, () => void>()
@@ -27,7 +27,7 @@ function fixture(reducedMotion = false, loaded = true) {
       } })
     },
   } as unknown as HTMLDivElement
-  const flip = scope.run(() => usePreviewerFlip(shallowRef(image), shallowRef(stack)))!
+  const flip = scope.run(() => usePreviewerFlip(shallowRef(image), shallowRef(stack), shallowRef(reducedMotion)))!
   const source = { getBoundingClientRect: () => ({ left: 40, top: 300, width: 180, height: 120 }) } as Element
   return { flip, source, image, animations, listeners, dispose: () => {
     scope.stop()

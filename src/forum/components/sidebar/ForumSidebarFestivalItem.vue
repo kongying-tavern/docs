@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { ForumFestivalEffectController } from '~/forum/effects/types'
 import type { ActiveForumFestival } from '~/forum/services/forumFestival'
-import { useLocalStorage, useMediaQuery } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { forumFestivals } from '~/forum/config/forumFestivals'
 import {
   FESTIVAL_AUTOPLAYED_STORAGE_KEY,
@@ -18,7 +19,7 @@ import {
 
 const { localeIndex } = useData()
 const { message } = useLocalized()
-const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+const { reducedMotion } = useSitePreferences()
 const dismissedStorage = useLocalStorage<unknown>(FESTIVAL_DISMISSALS_STORAGE_KEY, [])
 const autoplayedStorage = useLocalStorage<unknown>(FESTIVAL_AUTOPLAYED_STORAGE_KEY, [])
 const dismissedOccurrences = computed(() => normalizeOccurrenceList(dismissedStorage.value))

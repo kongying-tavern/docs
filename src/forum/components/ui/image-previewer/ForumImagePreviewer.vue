@@ -5,6 +5,7 @@ import { DialogContent, DialogRoot, DialogTitle } from 'reka-ui'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import ForumImageNavigationButton from '../ForumImageNavigationButton.vue'
 import PreviewerControls from './components/PreviewerControls.vue'
 import PreviewerSidePanel from './components/PreviewerSidePanel.vue'
@@ -142,6 +143,7 @@ let prevOverflow = ''
 let clickState: { s: number, x: number, y: number } | null = null
 let lastClickAt = 0
 let smoothZoomTimer: number | undefined
+const { reducedMotion } = useSitePreferences()
 const {
   flipping,
   entering,
@@ -150,7 +152,7 @@ const {
   beginEnter,
   beginExit,
   clearSource,
-} = usePreviewerFlip(imageEl, stackEl)
+} = usePreviewerFlip(imageEl, stackEl, reducedMotion)
 
 interface SlideChangeOptions {
   /** 拖拽松手位移（px） */

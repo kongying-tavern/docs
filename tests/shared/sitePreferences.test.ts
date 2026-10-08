@@ -15,6 +15,7 @@ import {
   MAX_UI_FONT_SIZE,
   MIN_UI_FONT_SIZE,
   normalizeUiFontSize,
+  readReducedMotion,
   resolveReducedMotion,
   sitePreferencesBootScript,
 } from '../../src/services/sitePreferences'
@@ -47,6 +48,27 @@ test('resolves reduced motion from the explicit three-state preference', () => {
   assert.equal(resolveReducedMotion('reduce', true), true)
   assert.equal(resolveReducedMotion('no-preference', false), false)
   assert.equal(resolveReducedMotion('no-preference', true), false)
+})
+
+test('reads back the applied reduced motion from the root dataset', () => {
+  const root = createRoot()
+  assert.equal(readReducedMotion(root), false)
+
+  applySitePreferences(root, {
+    usePointerCursor: false,
+    reducedMotion: true,
+    uiFontSize: DEFAULT_UI_FONT_SIZE,
+    desktop: true,
+  })
+  assert.equal(readReducedMotion(root), true)
+
+  applySitePreferences(root, {
+    usePointerCursor: false,
+    reducedMotion: false,
+    uiFontSize: DEFAULT_UI_FONT_SIZE,
+    desktop: true,
+  })
+  assert.equal(readReducedMotion(root), false)
 })
 
 test('settings option definitions remain valid storage values', () => {
