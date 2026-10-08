@@ -47,6 +47,8 @@ const isOpen = ref(false)
 const activeIndex = ref(-1)
 const filterPicker = useTemplateRef<InstanceType<typeof ForumSearchFilterPicker>>('filterPicker')
 const filterInputEl = useTemplateRef<HTMLInputElement>('filterInputEl')
+// 筛选面板跟着空输入自动展开，只有方向键进面板后才由它接管回车，否则回车必须提交搜索
+const pickerEngaged = ref(false)
 const loadedUsers = computed(() => props.suggestions.map(topic => topic.user))
 
 const inputEl = useTemplateRef<InstanceType<typeof SearchField>>('inputEl')
@@ -61,11 +63,20 @@ const showSuggestions = computed(() => {
 const showFilterPicker = computed(() => !props.page && isOpen.value && !textQuery.value)
 
 watch(filteredSuggestions, () => activeIndex.value = -1)
+watch(showFilterPicker, (open) => {
+  if (!open)
+    pickerEngaged.value = false
+})
 
 function handleExpand() {
   inputEl.value?.focus()
 }
 useForumShortcut('search', handleExpand, { priority: props.page ? 1 : 0 })
+
+function handleInputFocus() {
+  isOpen.value = true
+  pickerEngaged.value = false
+}
 
 function handleSearch() {
   isOpen.value = false
@@ -126,10 +137,9 @@ function handleFilterEnter(event: KeyboardEvent) {
   if (event.isComposing)
     return
   event.preventDefault()
-  if (showFilterPicker.value)
-    filterPicker.value?.selectActive()
-  else
-    handleFilterSubmit()
+  if (showFilterPicker.value && filterPicker.value?.selectActive())
+    return
+  handleFilterSubmit()
 }
 
 function handleTextInput(event: Event) {
@@ -155,6 +165,7 @@ function moveActive(offset: number, event: KeyboardEvent) {
     return
   event.preventDefault()
   if (showFilterPicker.value) {
+    pickerEngaged.value = true
     filterPicker.value?.moveActive(offset)
     return
   }
@@ -176,10 +187,8 @@ function selectActive(event: KeyboardEvent) {
   event.preventDefault()
   if (props.page)
     return handleSearch()
-  if (showFilterPicker.value) {
-    filterPicker.value?.selectActive()
+  if (pickerEngaged.value && filterPicker.value?.selectActive())
     return
-  }
   const suggestion = filteredSuggestions.value[activeIndex.value]
   if (!suggestion)
     return handleSearch()
@@ -251,7 +260,7 @@ function handleInputBlur(event: FocusEvent) {
     :aria-controls="showSuggestions || showFilterPicker ? listboxId : undefined"
     :aria-expanded="showSuggestions || showFilterPicker"
     :aria-activedescendant="showSuggestions && activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined"
-    @focus="isOpen = true"
+    @focus="handleInputFocus"
     @leave="handleInputBlur"
     @input="handleTextInput"
     @compositionend="handleTextInput"

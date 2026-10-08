@@ -30,7 +30,7 @@ const { getStateLabel } = useForumSearchToken()
 const { permissionData, ensureFreshData } = usePermissionData()
 const tagLabelGetter = getTopicTagLabelGetter()
 const { options: tagOptions } = useForumTagFilterOptions()
-const activeIndex = ref(0)
+const activeIndex = ref(-1)
 const pickerEl = ref<HTMLElement>()
 const authorSearch = ref('')
 const authorSearchEl = useTemplateRef<HTMLInputElement>('authorSearchEl')
@@ -110,7 +110,8 @@ const optionCount = computed(() => {
 })
 
 watch(() => props.facet, (facet) => {
-  activeIndex.value = 0
+  // 进入分面本身就是主动选择，预选首项；根层保持无高亮，回车留给搜索框自己
+  activeIndex.value = facet ? 0 : -1
   authorSearch.value = ''
   if (facet === 'author') {
     nextTick(() => authorSearchEl.value?.focus())
@@ -129,14 +130,22 @@ function isStateSelected(state: ForumSearchState): boolean {
 }
 
 function moveActive(offset: number) {
-  if (!optionCount.value)
+  const count = optionCount.value
+  if (!count)
     return
-  activeIndex.value = (activeIndex.value + offset + optionCount.value) % optionCount.value
+  activeIndex.value = activeIndex.value === -1
+    ? (offset > 0 ? 0 : count - 1)
+    : (activeIndex.value + offset + count) % count
   nextTick(() => pickerEl.value?.querySelector<HTMLElement>(`[data-forum-filter-index="${activeIndex.value}"]`)?.scrollIntoView({ block: 'nearest' }))
 }
 
-function selectActive() {
-  pickerEl.value?.querySelector<HTMLButtonElement>(`[data-forum-filter-index="${activeIndex.value}"]`)?.click()
+/** 返回是否真的命中了高亮项：无高亮时调用方应退回自己的默认动作（提交搜索 / 提交筛选草稿） */
+function selectActive(): boolean {
+  const option = pickerEl.value?.querySelector<HTMLButtonElement>(`[data-forum-filter-index="${activeIndex.value}"]`)
+  if (!option)
+    return false
+  option.click()
+  return true
 }
 
 function indexGroups<T, G extends { options: T[] }>(groups: G[]): Array<G & { startIndex: number }> {
