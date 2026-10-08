@@ -47,6 +47,9 @@ const {
   railMaxHeight,
   adaptiveRow,
 } = defineProps<Props>()
+defineSlots<{
+  'image-overlay': (props: { image: ImageItem, index: number }) => unknown
+}>()
 
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()

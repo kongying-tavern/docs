@@ -22,6 +22,10 @@ import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 defineProps<{
   groups: { group: ForumLabelGroup, rows: ForumLabelRow[] }[]
 }>()
+defineSlots<{
+  'header': () => unknown
+  'row-actions': (props: { row: ForumLabelRow }) => unknown
+}>()
 
 const { message } = useLocalized()
 

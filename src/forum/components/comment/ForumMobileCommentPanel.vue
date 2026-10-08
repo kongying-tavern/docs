@@ -13,6 +13,9 @@ import { useCommentEditorMorph } from './composables/useCommentEditorMorph'
 
 const props = defineProps<{ embedded: boolean, pending: boolean, origin?: HTMLElement, replyUser?: ForumAPI.User, error?: string }>()
 const emit = defineEmits<{ 'cancel-reply': [], 'focus-editor': [] }>()
+defineSlots<{
+  default: (props: { target: HTMLElement | null, active: boolean }) => unknown
+}>()
 const open = defineModel<boolean>('open', { required: true })
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()

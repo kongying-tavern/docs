@@ -40,6 +40,10 @@ const emit = defineEmits<{
   'login': []
   'reply': [id: string | number]
 }>()
+defineSlots<{
+  input: () => unknown
+  reply: (props: { comment: ForumAPI.Comment }) => unknown
+}>()
 const { message } = useLocalized()
 const area = useTemplateRef('area')
 const inputAnchor = useTemplateRef('inputAnchor')

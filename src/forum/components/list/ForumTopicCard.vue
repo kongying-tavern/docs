@@ -13,6 +13,15 @@ const { topic, compact, cardMode, showComment, inReply } = defineProps<{
   inReply: boolean
 }>()
 const emit = defineEmits<{ activate: [destination: 'detail' | 'preview'], prepare: [destination: 'detail' | 'preview'], comment: [destination: 'detail' | 'preview'] }>()
+defineSlots<{
+  header: () => unknown
+  content: () => unknown
+  media: () => unknown
+  tags: () => unknown
+  quote: () => unknown
+  footer: (props: { openComments: () => void }) => unknown
+  comments: () => unknown
+}>()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 function prepare(): void {
   if (topic.type !== 'POST')

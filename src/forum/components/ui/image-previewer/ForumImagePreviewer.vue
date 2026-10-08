@@ -46,6 +46,9 @@ const emit = defineEmits<{
   close: []
   change: [index: number]
 }>()
+defineSlots<{
+  default: (props: { openAt: typeof openAt, close: typeof close }) => unknown
+}>()
 
 const { message } = useLocalized()
 const { tryDelegate, register, unregister } = useActivePreviewer()
