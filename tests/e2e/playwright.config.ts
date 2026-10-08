@@ -10,11 +10,13 @@ export default defineConfig({
   testMatch: '**/*.spec.ts',
   timeout: 45_000,
   expect: { timeout: 10_000 },
+  forbidOnly: !!process.env.CI,
   retries: 0,
   workers: 1,
   use: {
     baseURL,
     trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
     serviceWorkers: 'block',
   },
   webServer: {
@@ -30,6 +32,8 @@ export default defineConfig({
     timeout: 180_000,
   },
   outputDir: '../../test-results/forum',
-  reporter: process.env.CI ? [['line'], ['html', { outputFolder: 'playwright-report', open: 'never' }]] : 'list',
+  // Relative reporter output paths resolve against this config's directory, so the
+  // report is placed beside test-results/ at the repository root for CI upload.
+  reporter: process.env.CI ? [['line'], ['html', { outputFolder: '../../playwright-report', open: 'never' }]] : 'list',
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
 })
