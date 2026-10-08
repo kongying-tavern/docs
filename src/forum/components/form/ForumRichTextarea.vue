@@ -46,7 +46,6 @@ interface Props {
   autoHideFooter?: boolean
   autofocus?: boolean
   entryAnimation?: boolean
-  modelValue?: JSONContent | null
   /** 无可见标签场景（评论框）下的可访问名称 */
   ariaLabel?: string
   mobile?: boolean
@@ -71,7 +70,6 @@ const props = withDefaults(defineProps<Props>(), {
   showCharacterCounter: false,
   autoHideFooter: true,
   entryAnimation: true,
-  modelValue: null,
   active: true,
   mentionUsers: () => [],
 })
@@ -86,8 +84,9 @@ const emit = defineEmits<{
   'remove-attachment': [id: string]
   'retry-attachment': [id: string]
   'submit': []
-  'update:modelValue': [value: JSONContent]
 }>()
+
+const modelValue = defineModel<JSONContent | null>({ default: null })
 
 const { message } = useLocalized()
 const container = useTemplateRef('textarea-container')
@@ -157,7 +156,7 @@ onMounted(() => {
       shortcutExtension,
       CharacterCount.configure({ limit: props.maxTextLength }),
     ],
-    content: props.modelValue ?? emptyDoc(),
+    content: modelValue.value ?? emptyDoc(),
     editable: !props.disabled,
     autofocus: false,
     enableInputRules: ['topicReference'],
@@ -169,7 +168,7 @@ onMounted(() => {
     },
     onUpdate: ({ editor: currentEditor }) => {
       syncEditorStats(currentEditor)
-      emit('update:modelValue', currentEditor.getJSON())
+      modelValue.value = currentEditor.getJSON()
       emit('input', currentEditor.getText({ blockSeparator: '\n' }))
     },
     onFocus: () => {
@@ -268,7 +267,7 @@ function handleSubmit(): void {
     emit('submit')
 }
 
-watch(() => props.modelValue, (value) => {
+watch(modelValue, (value) => {
   if (!editor.value)
     return
   const nextValue = value ?? emptyDoc()

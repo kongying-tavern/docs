@@ -7,25 +7,23 @@ import ForumResponsiveSelect from '../ui/responsive/ForumResponsiveSelect.vue'
 import { FORUM_SELECT_TRIGGER_CLASSES } from '../ui/responsive/shared'
 
 const props = defineProps<{
-  modelValue: T
   label: string
   options: ReadonlyArray<{ id: T, label: string, hint?: string }>
   ariaLabel?: string
 }>()
 const emit = defineEmits<{
-  'change': [value: T]
-  'update:modelValue': [value: T]
+  change: [value: T]
 }>()
-
+const modelValue = defineModel<T>({ required: true })
 function handleUpdateModelValue(next: string) {
   const option = props.options.find(option => option.id === next)
-  if (option && next !== props.modelValue) {
-    emit('update:modelValue', option.id)
+  if (option && next !== modelValue.value) {
+    modelValue.value = option.id
     emit('change', option.id)
   }
 }
 
-const current = computed(() => props.options.find(option => option.id === props.modelValue))
+const current = computed(() => props.options.find(option => option.id === modelValue.value))
 const currentLabel = computed(() => current.value?.label ?? props.options[0]?.label ?? '')
 const pillClasses = cn(
   FORUM_SELECT_TRIGGER_CLASSES,
@@ -35,7 +33,7 @@ const pillClasses = cn(
 
 <template>
   <ForumResponsiveSelect
-    :model-value="props.modelValue"
+    :model-value="modelValue"
     :options="props.options"
     :label="props.label"
     @update:model-value="handleUpdateModelValue"

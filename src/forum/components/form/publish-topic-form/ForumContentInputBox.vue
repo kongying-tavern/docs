@@ -7,7 +7,6 @@ import { useQueryCache } from '@pinia/colada'
 import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { BubbleMenu } from '@tiptap/vue-3/menus'
-import { useVModel } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import MentionPicker from '@/components/ui/MentionPicker.vue'
@@ -26,9 +25,7 @@ defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<{
   id?: string
-  modelValue?: string
   class?: HTMLAttributes['class']
-  defaultValue?: string
   placeholder?: string
   supportPaste?: boolean
   supportDrop?: boolean
@@ -40,21 +37,16 @@ const props = withDefaults(defineProps<{
   ariaDescribedby?: string
   borderless?: boolean
 }>(), {
-  modelValue: '',
   supportDrop: true,
 })
 
 const emits = defineEmits<{
-  'update:modelValue': [payload: string]
   'paste-files': [files: File[]]
   'select-images': []
   'blur': [event: FocusEvent]
 }>()
 
-const modelValue = useVModel(props, 'modelValue', emits, {
-  passive: true,
-  defaultValue: props.defaultValue,
-})
+const modelValue = defineModel<string>({ default: '' })
 
 const editor = shallowRef<TiptapEditor | null>(null)
 const shortcutExtension = useForumEditorShortcuts()

@@ -12,17 +12,16 @@ import {
 import { groupSelectOptions } from './shared'
 
 const props = defineProps<{
-  modelValue: string
   options: ReadonlyArray<ForumSelectOption>
   label: string
 }>()
-
-const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 
 defineSlots<{
   trigger: () => unknown
   prefix: (props: { option: ForumSelectOption }) => unknown
 }>()
+
+const modelValue = defineModel<string>({ required: true })
 
 const open = ref(false)
 const groups = computed(() => groupSelectOptions(props.options))
@@ -30,7 +29,7 @@ const groups = computed(() => groupSelectOptions(props.options))
 function handleSelect(option: ForumSelectOption) {
   if (option.disabled)
     return
-  emit('update:modelValue', option.id)
+  modelValue.value = option.id
   open.value = false
 }
 </script>

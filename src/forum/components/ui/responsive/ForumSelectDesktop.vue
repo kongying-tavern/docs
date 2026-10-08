@@ -18,13 +18,10 @@ defineOptions({
 })
 
 const props = defineProps<{
-  modelValue: string
   options: ReadonlyArray<ForumSelectOption>
   /** 根分组的标题；缺省则不显示根组标题 */
   label?: string
 }>()
-
-const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 
 defineSlots<{
   /** 触发按钮内容（完整按钮元素），由 as-child 注入 combobox 语义 */
@@ -33,16 +30,18 @@ defineSlots<{
   prefix: (props: { option: ForumSelectOption }) => unknown
 }>()
 
+const modelValue = defineModel<string>({ required: true })
+
 const groups = computed(() => groupSelectOptions(props.options))
 
 function handleValueChange(next: unknown) {
   if (typeof next === 'string')
-    emit('update:modelValue', next)
+    modelValue.value = next
 }
 </script>
 
 <template>
-  <Select :model-value="props.modelValue" @update:model-value="handleValueChange">
+  <Select :model-value="modelValue" @update:model-value="handleValueChange">
     <!-- 直接用 reka 的 SelectTrigger：ui/select 包装版自带 SelectIcon，
         与 as-child 组合会多渲染一个箭头（reka Slot 会保留全部子节点） -->
     <SelectTrigger as-child>

@@ -10,7 +10,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLocalized } from '@/hooks/useLocalized'
 
 interface Props {
-  modelValue: TopicFormData['type']
   tabs: TabsConfig[]
   hasPermission: boolean
   username: string
@@ -18,16 +17,10 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits<{
-  'update:modelValue': [value: TopicFormData['type']]
-}>()
+const activeTab = defineModel<TopicFormData['type']>({ required: true })
 const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
-const activeTab = computed({
-  get: () => props.modelValue,
-  set: value => emit('update:modelValue', value),
-})
 const visibleTabs = computed(() => props.tabs.filter(tab => unref(tab.condition)))
 
 function formatDate(date = new Date()): string {
@@ -51,7 +44,7 @@ function formatDate(date = new Date()): string {
       </div>
       <div class="desktop-letter-rule" aria-hidden="true" />
       <h2 class="desktop-form-title leading-tight tracking-[-0.025em] mt-8 text-left text-ui-42">
-        {{ message.forum.publish.title }} - {{ visibleTabs.find(tab => tab.value === modelValue)?.label }}
+        {{ message.forum.publish.title }} - {{ visibleTabs.find(tab => tab.value === activeTab)?.label }}
       </h2>
       <div class="desktop-title-divider mb-10 w-18" aria-hidden="true" />
     </DialogHeader>

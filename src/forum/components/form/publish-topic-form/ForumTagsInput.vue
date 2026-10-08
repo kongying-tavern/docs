@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { useVModel } from '@vueuse/core'
 import {
   Command,
   CommandEmpty,
@@ -30,22 +29,14 @@ const props = withDefaults(
   defineProps<{
     class?: HTMLAttributes['class']
     max?: number
-    modelValue?: string[]
     placeholder?: string
   }>(),
   {
     max: VALIDATION_LIMITS.TAGS.MAX_COUNT,
-    modelValue: () => [],
   },
 )
 
-const emits = defineEmits<{
-  'update:modelValue': [value: string[]]
-}>()
-
-const modelValue = useVModel(props, 'modelValue', emits, {
-  passive: true,
-})
+const modelValue = defineModel<string[]>({ default: () => [] })
 
 const { message } = useLocalized()
 
