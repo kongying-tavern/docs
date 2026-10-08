@@ -136,7 +136,7 @@ function flattenFieldMessages(record: Record<string, unknown>): string[] {
     }
     else if (Array.isArray(value)) {
       messages.push(...value
-        .filter((item): item is string => typeof item === 'string')
+        .filter(item => typeof item === 'string')
         .map(item => item.trim())
         .filter(Boolean))
     }

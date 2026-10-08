@@ -49,7 +49,7 @@ export function restoreTopicDraft(value: unknown): TopicFormData {
     title: typeof stored.title === 'string' ? stored.title : '',
     text: typeof stored.text === 'string' ? stored.text : '',
     tags: Array.isArray(stored.tags)
-      ? stored.tags.filter((tag): tag is string => typeof tag === 'string')
+      ? stored.tags.filter(tag => typeof tag === 'string')
       : [],
     ...(stored.isPrivate === true ? { isPrivate: true } : {}),
     ...(quotedTopic ? { quotedTopic } : {}),
