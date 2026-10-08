@@ -26,7 +26,7 @@ const loadFailed = computed(() => Boolean(error.value) && !data.value)
 </script>
 
 <template>
-  <div class="flex gap-1 items-center" role="group" :aria-label="message.forum.reaction.label">
+  <div class="flex gap-1 items-center" role="group" :aria-label="message.forum.reaction.label" data-forum-reaction="comment">
     <Button
       type="button"
       variant="ghost"

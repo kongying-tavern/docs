@@ -1,4 +1,5 @@
 import type { Page, Route } from '@playwright/test'
+import type { INTER_KNOT } from '~/apis/interknot.site/api'
 import { alice, comment, currentUser, issue } from '../fixtures/gitee'
 
 const collaboratorsPath = /^\/api\/v5\/repos\/KYJGYSDT\/(?:Feedback|Blog)\/collaborators$/
@@ -22,14 +23,66 @@ export interface ForumScenario {
   comments?: GITEE.Comment[]
   user?: GITEE.User
   following?: boolean
+  /** Initial InterKnot reaction state, applied per reaction resource (the `url` query parameter). */
+  reaction?: { likeCount?: number, dislikeCount?: number, state?: INTER_KNOT.ReactionState | null }
   // Only explicitly handled writes are allowed. Returning undefined delegates to the read fixtures.
   handle?: ApiHandler
+}
+
+interface ReactionSnapshot {
+  likeCount: number
+  dislikeCount: number
+  state: INTER_KNOT.ReactionState | null
+}
+
+/**
+ * Typed with the production response contract on purpose: `pnpm typecheck:forum:ui`
+ * fails when the InterKnot envelope or the reaction payload drifts.
+ */
+function reactionPayload(reaction: ReactionSnapshot): INTER_KNOT.ReactionResponse {
+  return {
+    statusCode: 200,
+    statusMessage: 'OK',
+    data: {
+      reaction: {
+        id: 1,
+        url: 'synthetic-reaction',
+        likeCount: reaction.likeCount,
+        dislikeCount: reaction.dislikeCount,
+        clickCount: 0,
+        createdAt: '2026-01-01T00:00:00+08:00',
+        lastUpdatedAt: '2026-01-01T00:00:00+08:00',
+      },
+      state: reaction.state,
+    },
+  }
+}
+
+function applyReactionAction(reaction: ReactionSnapshot, action: string | null): void {
+  if (reaction.state === 'like')
+    reaction.likeCount = Math.max(reaction.likeCount - 1, 0)
+  else if (reaction.state === 'dislike')
+    reaction.dislikeCount = Math.max(reaction.dislikeCount - 1, 0)
+  if (action === 'like')
+    reaction.likeCount += 1
+  else if (action === 'dislike')
+    reaction.dislikeCount += 1
+  reaction.state = action === 'like' || action === 'dislike' ? action : null
 }
 
 export async function installForumApi(page: Page, scenario: ForumScenario = {}) {
   const topics = scenario.topics ?? [issue()]
   const comments = scenario.comments ?? [comment()]
   let following = scenario.following ?? false
+  const reactions = new Map<string, ReactionSnapshot>()
+  const reactionFor = (resource: string): ReactionSnapshot => {
+    let current = reactions.get(resource)
+    if (!current) {
+      current = { likeCount: scenario.reaction?.likeCount ?? 3, dislikeCount: scenario.reaction?.dislikeCount ?? 0, state: scenario.reaction?.state ?? null }
+      reactions.set(resource, current)
+    }
+    return current
+  }
   const requests: ApiRequest[] = []
   const unexpected: string[] = []
   const reply = async (route: Route, result: ApiReply) => route.fulfill({
@@ -104,7 +157,13 @@ export async function installForumApi(page: Page, scenario: ForumScenario = {}) 
         return
       }
       if (url.hostname === 'hub.interknot.site' && path === '/api/reactions') {
-        await reply(route, { data: { state: true, message: '', data: { reaction: null } } })
+        await reply(route, { data: reactionPayload(reactionFor(query.get('url') ?? '')) })
+        return
+      }
+      if (url.hostname === 'hub.interknot.site' && path === '/api/reactions/add') {
+        const reaction = reactionFor(query.get('url') ?? '')
+        applyReactionAction(reaction, query.get('action'))
+        await reply(route, { data: reactionPayload(reaction) })
         return
       }
     }

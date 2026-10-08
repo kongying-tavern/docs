@@ -39,7 +39,7 @@ function handleReaction(state: INTER_KNOT.ReactionState) {
 </script>
 
 <template>
-  <div class="px-2px rounded-full bg-[var(--vp-c-bg-alt)] flex h-8 items-center max-mobile:h-9" role="group" :aria-label="message.forum.reaction.label">
+  <div class="px-2px rounded-full bg-[var(--vp-c-bg-alt)] flex h-8 items-center max-mobile:h-9" role="group" :aria-label="message.forum.reaction.label" data-forum-reaction="topic">
     <Button
       type="button"
       variant="ghost"
