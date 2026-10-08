@@ -9,6 +9,7 @@ import DefaultTheme, {
 import { defineAsyncComponent, ref } from 'vue'
 import Blog from '@/layouts/Blog.vue'
 import Layout from '@/layouts/Layout.vue'
+import { publishForumLocation } from '~/forum/composables/state/useForumRoute'
 import { FORUM_PATH_REGEX, isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/forumViewTransition'
 import { identifySessionIfEnabled, installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
@@ -143,6 +144,11 @@ export default {
       const shouldLoadPage = await handleRouteMatching(to, siteData.value.base, routes, router, siteData.value.locales)
       identifySessionIfEnabled()
       return shouldLoadPage
+    }
+    // 同路径只换 query/hash 时 VitePress 的 changeRoute 返回 false、跳过 loadPage，
+    // 上面的页面加载钩子不会跑，论坛路由状态得在导航结束后补一次，否则地址栏变了列表不跟着变
+    router.onAfterRouteChange = async (to) => {
+      publishForumLocation(to, { base: siteData.value.base, locales: Object.keys(siteData.value.locales) })
     }
   },
 } satisfies Theme

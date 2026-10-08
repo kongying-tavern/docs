@@ -60,7 +60,7 @@ Playwright 由根包和根锁文件固定版本，不在 tests/e2e 下安装第�
 | --- | --- |
 | forum-smoke | 列表→详情→后退→前进；直接打开详情；正确的评论数组、正文、作者 |
 | comment-navigation | 后页评论深链、焦点与可视区域；目标不存在的结束状态；pending 不显示终态 |
-| list-contract | URL 的关键词/类型/排序与真实请求及结果一致，刷新保留；失败后点击重试恢复 |
+| list-contract | URL 的关键词/类型/排序与真实请求及结果一致，刷新保留；页内换词与侧栏标签不改地址路径也即时重查；失败后点击重试恢复 |
 | empty-state | 搜索空态、用户空态、详情错误及 401/403/500 的不同提示/动作 |
 | mobile-comment | 真实 Tiptap 编辑、mention、emoji、附件；关闭重开、失败保留、重试成功清理；上传不重复 |
 | publish-topic | 实际发布表单；2xx errors 失败恢复、双击锁、成功刷新列表及再次打开后的清理 |
