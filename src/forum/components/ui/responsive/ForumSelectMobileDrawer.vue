@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumSelectOption } from './shared'
+import type { ForumSelectOption, ForumSelectSlots } from './shared'
 import { computed, ref } from 'vue'
 import {
   Drawer,
@@ -16,10 +16,7 @@ const props = defineProps<{
   label: string
 }>()
 
-defineSlots<{
-  trigger: () => unknown
-  prefix: (props: { option: ForumSelectOption }) => unknown
-}>()
+defineSlots<ForumSelectSlots>()
 
 const modelValue = defineModel<string>({ required: true })
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { FORUM } from '../types'
 import { computed, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useArchivedFeedbackAccess } from '~/forum/composables/auth/useArchivedFeedbackAccess'
@@ -23,7 +24,7 @@ const feedbackFilter = computed(() => {
   const filter = list.value?.filter
   return filter === 'closed' || (filter === 'archived' && canViewArchived.value) ? filter : 'all'
 })
-const activeTab = computed<'all' | 'closed' | 'archived'>({
+const activeTab = computed<FORUM.ProfileTab['id']>({
   get: () => feedbackFilter.value,
   set: filter => void navigateFilter(filter),
 })

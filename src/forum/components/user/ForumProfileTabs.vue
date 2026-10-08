@@ -10,7 +10,7 @@ const { tabs, ariaLabel, layout = 'fill' } = defineProps<{
   layout?: 'fill' | 'inline'
 }>()
 
-const activeTab = defineModel<'all' | 'closed' | 'archived'>('activeTab', { default: 'all' })
+const activeTab = defineModel<FORUM.ProfileTab['id']>('activeTab', { default: 'all' })
 
 const groupRef = useTemplateRef<HTMLElement>('groupRef')
 const indicator = ref({ x: 0, width: 0 })

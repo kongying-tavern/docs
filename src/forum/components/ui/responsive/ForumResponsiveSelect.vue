@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumSelectOption } from './shared'
+import type { ForumSelectOption, ForumSelectSlots } from './shared'
 import { useMediaQuery } from '@vueuse/core'
 import { defineAsyncComponent } from 'vue'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
@@ -14,12 +14,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   change: [value: string]
 }>()
-defineSlots<{
-  /** 触发按钮内容（完整按钮元素），桌面与移动端共用同一份标记 */
-  trigger: () => unknown
-  /** 选项行前缀，如状态色块 */
-  prefix: (props: { option: ForumSelectOption }) => unknown
-}>()
+defineSlots<ForumSelectSlots>()
 const modelValue = defineModel<string>({ required: true })
 const ForumSelectDesktop = defineAsyncComponent(() => import('./ForumSelectDesktop.vue'))
 const ForumSelectMobileDrawer = defineAsyncComponent(() => import('./ForumSelectMobileDrawer.vue'))

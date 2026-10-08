@@ -13,6 +13,14 @@ export interface ForumSelectOption<T extends string = string> {
   group?: string
 }
 
+/** 三件套（桌面 / 移动抽屉 / 响应式分发）共用的 slot 契约 */
+export interface ForumSelectSlots {
+  /** 触发按钮内容（完整按钮元素）；桌面端由 as-child 注入 combobox 语义 */
+  trigger: () => unknown
+  /** 选项行前缀，如状态色块 */
+  prefix: (props: { option: ForumSelectOption }) => unknown
+}
+
 /** 把扁平选项按 group 分组，保持原顺序；无 group 的合成根组（label 为空） */
 export function groupSelectOptions<T extends string>(
   options: ReadonlyArray<ForumSelectOption<T>>,

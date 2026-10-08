@@ -18,7 +18,7 @@ const { username, avatar, login, role, isAuthorizedUser, visible, tabs } = defin
 }>()
 
 const emit = defineEmits<{ message: [] }>()
-const activeTab = defineModel<'all' | 'closed' | 'archived'>('activeTab', { default: 'all' })
+const activeTab = defineModel<FORUM.ProfileTab['id']>('activeTab', { default: 'all' })
 const { message } = useLocalized()
 </script>
 

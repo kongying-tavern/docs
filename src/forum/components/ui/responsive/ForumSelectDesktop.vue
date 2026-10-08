@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumSelectOption } from './shared'
+import type { ForumSelectOption, ForumSelectSlots } from './shared'
 import { SelectTrigger } from 'reka-ui'
 import { computed } from 'vue'
 import {
@@ -23,12 +23,7 @@ const props = defineProps<{
   label?: string
 }>()
 
-defineSlots<{
-  /** 触发按钮内容（完整按钮元素），由 as-child 注入 combobox 语义 */
-  trigger: () => unknown
-  /** 选项行前缀，如状态色块 */
-  prefix: (props: { option: ForumSelectOption }) => unknown
-}>()
+defineSlots<ForumSelectSlots>()
 
 const modelValue = defineModel<string>({ required: true })
 

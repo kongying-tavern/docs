@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { ref, watch } from 'vue'
 import ForumTopicResults from '../list/ForumTopicResults.vue'
 
 const props = defineProps<{
-  activeTab: 'all' | 'closed' | 'archived'
+  activeTab: FORUM.ProfileTab['id']
   data: ForumAPI.Topic[]
   loading?: boolean
   loadingMore?: boolean

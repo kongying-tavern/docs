@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useUserProfile } from './composables/useUserProfile'
@@ -6,7 +7,7 @@ import ForumFollowUserButton from './ForumFollowUserButton.vue'
 import ForumUserProfilePanel from './ForumUserProfilePanel.vue'
 
 const props = defineProps<{ username: string, topicCount: number, suggestions?: ForumAPI.Topic[] }>()
-const activeTab = defineModel<'all' | 'closed' | 'archived'>('activeTab', { default: 'all' })
+const activeTab = defineModel<FORUM.ProfileTab['id']>('activeTab', { default: 'all' })
 const { list, openSearch, openSearchWithQuery } = useForumRoute()
 const { renderedUser, role, isAuthorizedUser, menu, sendMessage } = useUserProfile(() => props.username)
 </script>

@@ -25,7 +25,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ message: [], search: [query: string], openSearch: [] }>()
 defineSlots<{ follow: (props: { textClass?: string }) => unknown }>()
-const modelValue = defineModel<'all' | 'closed' | 'archived'>('activeTab', { default: 'all' })
+const modelValue = defineModel<FORUM.ProfileTab['id']>('activeTab', { default: 'all' })
 const { message } = useLocalized()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const searchQuery = ref(props.query)
