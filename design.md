@@ -102,11 +102,57 @@ All three families are self-hosted, subset WOFF2 files (40–80 KB per chunk) ge
 
 Headings are weight 600 and use the subtitle/title families per the tier above; body text is no less than 16px (14px minimum for nav and dense UI).
 
+### Type Rendering
+
+Five details that keep text still, snug in its box, and evenly wrapped. Each is declared once — in `.vitepress/theme/styles/main.css` or a component's own scoped style — and never patched per instance.
+
+**Weight without reflow.** `html { font-synthesis: style }` switches synthesised weight off document-wide, portaled dialogs and form controls included: a family asked for a weight it does not own snaps to the nearest real face instead of smearing a faux bold, so a label that turns `font-weight: 600` keeps its measured width. Emphasis therefore switches *cut*, not weight — `HYWenHei-65W-min` is registered at 600, `HYWenHei-85W-min` at 400, and Sarasa carries real 400/600/700. The optical-size axis a variable font would carry is encoded as one family per optical cut (`-65W` / `-85W`); the pipeline ships static subsets, so `font-optical-sizing` and `font-variation-settings` appear nowhere, and a new optical size means a new family in `scripts/fonts/`, not a CSS axis.
+
+**Steady numbers.** A figure that can change in place, or that is read down a column, carries `tabular-nums`: every digit takes the same advance, so the words after the number hold still.
+
+| Surface | Figure |
+|---------|--------|
+| Reaction pills (`ForumTopicReactionButton`, `ForumCommentReactionButtons`, `ForumQuoteTopicButton`) | like / dislike counts |
+| Reaction stats dialog (`ForumReactionStatsDialog`) | per-reaction counts and views |
+| Sidebar topic rows (`ForumSidebarSection`) | comment counts |
+| Editor toolbar (`ForumEditorTools`) | image counter (`n / 8`) |
+| Topic ID badge (`ForumTopicLifecycle`) | topic number |
+| Timeline date column (`Post.vue`, `.timeline-dot-date`) | dates on the rail |
+
+**Trimmed labels.** `text-box: trim-both cap alphabetic` removes the leading a line box adds above the capitals, so the padding a label declares is the space you see. Nothing applies it yet, and its scope is deliberately narrow: the trim is measured against Latin cap-height and alphabetic metrics while CJK ink extends past both, so it belongs on Latin/numeric labels (counters, `kbd`, version tags) and never on Chinese copy.
+
+**Balanced headings.** Short display lines take `text-wrap: balance` so their lines come out even instead of leaving a stub — the blog post header (`ForumBlogPostHeader`), the blog page title and lead (`ForumBlogPage`, `Post.vue`), the publish paper's headline (`ForumPublishTopicForm.css`), and the `Empty` primitives. Balancing is capped at a handful of lines, which is exactly the display case, so it is never applied to a reading column.
+
+**Pretty paragraphs.** `text-wrap: pretty` on short prose, so a paragraph does not end on a lone word — the aside cards (`ForumAsideLoginPrompt`, `ForumAsideRecentUpdates`, `ForumAsideTeamBlog`) — plus `text-balance` on empty-state copy (`ui/empty`, `ui/empty-motion/EmptySwap`). Long-form reading text (`.vp-doc`, topic bodies, comments) keeps the default `wrap`.
+
 ## Tokens — Spacing & Shapes
 
 **Density:** comfortable
 
 Spacing is utility-driven: UnoCSS base unit `--spacing: 0.25rem` (4px), with explicit `px` utilities (`py-8px`, `pl-24px`) used at component boundaries.
+
+### Vertical Rhythm
+
+**Space goes above a block.** Every vertical gap is authored as space *above* the block that needs it — `margin-top` on the block itself, or `gap` on the column holding the stack — so a block that appears later never shifts text already on screen. A block that can appear and disappear (a translation status, a loading row, an error line) contributes no space while it is empty, and the block below keeps its own `margin-top`.
+
+| Gap | Value | Where |
+|-----|-------|-------|
+| Above a document section (`.vp-doc h2`) | 24px (`padding-top: 1.5rem`) plus up to 16px of collapsed margin; the stock `3rem` is overridden to 10px and the divider rule is removed | `main.css` |
+| Between aside sections | 28px | `.forum-context-aside` grid `gap: 28px` |
+| Above an aside section header | 14px to the card below | `.aside-section-header` (`margin-bottom` — the one space-below holdout) |
+| Above a topic title | 4px (`mt-1`), 12px below it (`mb-xs`) | `ForumTopicDetailPanel` |
+| Above topic metadata / body | 12px (`mt-3`) / 14px (`mt-3.5`) | `ForumTopicDetailPanel` |
+| Above topic tags, quote strip, action row | 8px (`mt-2`); 16px for the action row in card mode (`mt-4`) | `ForumTopicCard` |
+| Inside a comment | 2px container (`mt-.5`), 8px header (`mt-2`), 6px body (`mt-1.5`) | `commentStyles.ts` |
+| Between comment rows | 12px `padding-bottom` on the row plus a 1px `border-bottom` — a divider, not a margin | `commentStyles.ts` |
+| Between sidebar sections | 8px vertical padding plus a `border-top` hairline | `ForumSidebarSection` |
+| Between menu / select rows | 4px content padding, rows at `padding: 8px 10px` | `DropdownMenuContent`, `ForumSidebarMenuItems` |
+| Between dialog rows | 16px (`gap-4`) inside 24px of padding | `DialogContent` |
+| Between forum body paragraphs | no margin at all — the blank line kept by the container's `white-space: pre-wrap` is the entire gap (one line box, ≈24px at 16/24) | topic and comment content containers |
+
+Dividers follow the same idea: they are drawn as a `border-top` / `border-bottom` on the row itself with that row's padding as the air around them, never as a standalone spacer element. The one place in the forum where a gap is cancelled rather than authored is the translation slot — `ForumTopicDetailPanel` wraps it in `-mb-3.5` to cancel the body's `mt-3.5`, so an empty slot leaves no gap.
+
+Density is not a second mode. There is no compact variant of the scale: below the 959px mobile breakpoint the touch targets *grow* (44px buttons) while the gaps stay on this scale, and the density knob a user actually has is `--site-ui-scale`, which scales UI type and control metrics rather than the spacing scale. The one place the space-above rule is not applied is prose inherited from VitePress — `.vp-doc` paragraphs, lists and tables keep the stock symmetric `margin: 1rem 0`.
 
 ### Spacing Scale
 
@@ -271,6 +317,29 @@ Fixed top, z-index `--vp-z-index-layout-top`. Background: `#383636`; text white;
 
 One ring everywhere: 1px outline + 2px ring in primary green (`oklch(0.7168 0.1343 160.53)` ≈ `#44bd87`). Focus is never removed except for components that provide their own visible affordance (scratch-to-reveal spoilers keep `outline: none` by design).
 
+## Motion
+
+**The highlight glides; it never blinks.** A row list does not toggle a background per row. One highlight layer lives in the container and slides to whichever row sits nearest the pointer, so the highlight is always under the cursor and there is no dead zone in gaps, padding, or the space past the last row. This is the house rule for any list or menu that highlights rows — reach for `FluidHoverList` instead of writing per-row `hover:bg-*`.
+
+`FluidHoverList` (`.vitepress/theme/components/ui/fluid-hover/`) wraps the headless core in `.vitepress/theme/hooks/fluid-hover/`: a pure nearest-centre pick (`geometry.ts`) plus a single absolutely-positioned indicator driven by a critically damped closed-form spring (the framer-motion `{ type: 'spring', duration, bounce: 0 }` curve). Its transform, size and opacity are written per frame — never through a CSS transition — so the pointer can retarget mid-flight without a restart.
+
+| Motion | Value |
+|--------|-------|
+| Highlight tier `fast` (default) | 0.08s spring |
+| Highlight tiers `moderate` / `slow` | 0.16s / 0.24s |
+| Highlight fade in / out | 0.08s / 0.06s |
+| Hover and small state changes | 120–180ms `ease` / `ease-out` |
+| Larger reorders and panel moves | 200–420ms `cubic-bezier(0.22, 1, 0.36, 1)` or `cubic-bezier(0.32, 0.72, 0, 1)` |
+| Navbar chrome (hide-on-scroll, background) | 350ms / 500ms |
+| View transitions | fade out 240ms, fade in 320ms; mobile page slide 360ms |
+| `slide-enter` stagger (docs only, 90ms step) | 800ms |
+
+Container contract: the container is `position: relative` (a Reka popper needs its own wrapper — the teleported `$el` is a placeholder, not the content element) and every row carries `data-fluid-hover-item`, sub-menu trigger rows included, or the trigger and its neighbours light up together. Inside a fluid container a global rule in `main.css` suppresses each row's `:focus` background, so the sliding layer is the only highlight and keyboard focus is rendered by the indicator too — with `[data-variant='destructive']` rows keeping their semantic red above it.
+
+Navigation adds a second, independent layer: an always-visible active marker (`active` selector + `active-indicator-class`) pinned to the current section, ignoring hover, positioned directly with no transition. `sectionIds` and `scroller` wire it to a section scroll-spy that is suppressed while a programmatic scroll is in flight. The marker never uses brand green — an active row reads through text (brand-1, weight) only, never a second background stacked under the highlight.
+
+**Reduced motion.** The site resolves the motion preference once at boot into `data-reduced-motion` on `<html>` (`sitePreferences.ts`), defaulting to the system `prefers-reduced-motion`; a global rule then collapses every CSS transition and animation to 0.01ms. JS-driven motion reads that same dataset rather than the media query, so an explicit in-site preference wins over the OS setting: the highlight snaps to the row while its fades still run, and programmatic scrolling falls back from `smooth` to `auto`.
+
 ## Do's and Don'ts
 
 ### Do
@@ -282,6 +351,11 @@ One ring everywhere: 1px outline + 2px ring in primary green (`oklch(0.7168 0.13
 - Run new copy through the font subset pipeline — adding common characters only widens the `cjk.min` layer.
 - Reserve red (`--vp-c-danger-*`) for destructive/errors, yellow for warnings, purple for author/mod roles and announcements.
 - Mirror light/dark via the `.dark` token set; both themes are first-class.
+- Author vertical space above the block that needs it (`margin-top`, or `gap` on the column); a block that appears later must never shift what is already rendered.
+- Give every changing count `tabular-nums`, every short display heading `text-wrap: balance`, and short prose `text-wrap: pretty`.
+- Switch family for emphasis (`-65W` ↔ `-85W`) instead of asking a face for a weight it does not carry; synthesised weight is off on purpose.
+- Reach for `FluidHoverList` when a list or menu highlights rows — one highlight per container, gliding, with the active marker as a separate layer.
+- Route any JS-driven motion through `data-reduced-motion` rather than reading the media query directly.
 
 ### Don't
 
@@ -293,6 +367,11 @@ One ring everywhere: 1px outline + 2px ring in primary green (`oklch(0.7168 0.13
 - Do not apply hard shadows to cards or sections in page flow — elevation is for floating layers (dialogs, dropdowns) only.
 - Do not introduce new mobile breakpoints; the forum and component hierarchy hinge on the 959px `mobile` breakpoint (derived from `FORUM_MOBILE_BREAKPOINT_PX`).
 - Do not change the legacy `--vp-c-brand` (#44bd87) alias — brand-1/2/3 and brand coexist on purpose (button fills vs. link tints).
+- Do not author space below a block — no new `margin-bottom` + `:last-child` resets, no `space-y-*` (Wind4 emits it as `margin-block-end`); convert what is there as you touch it.
+- Do not add `font-variation-settings` or `font-optical-sizing` — the subsets are static faces; a new optical cut is a new family in `scripts/fonts/`.
+- Do not trim label boxes with `text-box` on CJK copy — the trim metrics are Latin cap-height and alphabetic baseline, and Chinese ink extends past both.
+- Do not `text-wrap: balance` or `pretty` a reading column (`.vp-doc`, topic bodies, comments); those values are for short display blocks.
+- Do not give a row its own hover or `:focus` background inside a fluid-hover container — the shared indicator is the only highlight.
 
 ## Imagery
 
@@ -306,7 +385,7 @@ The site follows the classic VitePress three-zone document layout, recolored and
 - **Desktop (≥961px):** 295px sidebar left (`--vp-c-bg-alt`), centered content column, aside outline right (hidden for the forum and full-width pages).
 - **Mobile (≤960px):** sidebar collapses into a drawer; a 52px local nav with outline dropdown replaces both rails.
 - **Home layout:** hero (gradient name, tagline, brand + alt CTAs, blurred logo), then the default feature grid (flex wrap, 1/2/4 columns, 16px effective gap) with slide-enter stagger.
-- **Content flow:** h2 sections open with a divider line (`border-top: 1px divider`, 24px padding) and 48px spacing; figures center with bold captions; blockquotes get a 2px divider-left rule.
+- **Content flow:** h2 sections open with 24px of padding (`padding-top: 1.5rem`) rather than VitePress's divider rule, which `main.css` removes and whose `margin-top: 3rem` it overrides to 10px; figures center with bold captions; blockquotes get a 2px divider-left rule.
 - **Footer:** multi-column navigation, QR card right, then a license row — "MIT Licensed, Made with ❤ by Kongying Tavern" — with social icon links.
 - **Forum pages:** the layout widens beyond the doc column (full width up to 1279px); keep components `/docs/`-relative and respect the 959px mobile breakpoint for stacking.
 - **Scroll behavior:** smooth globally (`scroll-behavior: smooth`), disabled inside the forum; scroll anchoring disabled there to avoid hash-jump drift.
