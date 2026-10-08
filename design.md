@@ -119,7 +119,13 @@ Five details that keep text still, snug in its box, and evenly wrapped. Each is 
 | Topic ID badge (`ForumTopicLifecycle`) | topic number |
 | Timeline date column (`Post.vue`, `.timeline-dot-date`) | dates on the rail |
 
-**Trimmed labels.** `text-box: trim-both cap alphabetic` removes the leading a line box adds above the capitals, so the padding a label declares is the space you see. Nothing applies it yet, and its scope is deliberately narrow: the trim is measured against Latin cap-height and alphabetic metrics while CJK ink extends past both, so it belongs on Latin/numeric labels (counters, `kbd`, version tags) and never on Chinese copy.
+**Trimmed labels.** `text-box: trim-both cap alphabetic` removes the leading a line box adds above the capitals, so the padding a label declares is the space you see. It is available (Baseline 2026: Chrome 133 / Safari 18.2 / Firefox 154) but deliberately **not applied anywhere**, for three reasons that have to be solved first:
+
+- The trim is measured against Latin cap-height and alphabetic metrics, while Chinese ink extends past both — and the edge values that would be right for CJK (`ideographic`, `ideographic-ink`) are still unimplemented in Chrome and Safari, so a Chinese label cannot be trimmed correctly, only wrongly.
+- It applies to block containers and inline boxes. The labels here are flex containers (`kbd`, counters, chips) or inline text, so the text to trim is an anonymous flex item that no selector can reach — trimming would mean editing hosted `components/ui` primitives to wrap their slot.
+- Every current label sits in a fixed-height box (`h-5`, `h-8`), where the only visible effect is an optical recentring of one or two pixels, not the padding-equals-space win the property exists for.
+
+Apply it when a Latin/numeric-only label gets its own block box and its vertical padding matters (a version tag, a build counter), never on CJK copy.
 
 **Balanced headings.** Short display lines take `text-wrap: balance` so their lines come out even instead of leaving a stub — the blog post header (`ForumBlogPostHeader`), the blog page title and lead (`ForumBlogPage`, `Post.vue`), the publish paper's headline (`ForumPublishTopicForm.css`), and the `Empty` primitives. Balancing is capped at a handful of lines, which is exactly the display case, so it is never applied to a reading column.
 
