@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
-import { FORM_HASH } from '~/forum/components/form/publish-topic-form/config'
+import { useEventListener } from '@vueuse/core'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { FORM_HASH } from '~/forum/components/form/publish-topic-form/form-config'
 import { useReactionStats } from '~/forum/composables/data/useReactionStats'
 import { useTopicStatusEditor } from '~/forum/composables/state/useTopicStatusEditor'
 import { useTopicTagsEditor } from '~/forum/composables/state/useTopicTagsEditor'
@@ -31,14 +32,8 @@ function mountPublishFormWhenRequested(): void {
     shouldMountPublishForm.value = true
 }
 
-onMounted(() => {
-  mountPublishFormWhenRequested()
-  window.addEventListener('hashchange', mountPublishFormWhenRequested)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('hashchange', mountPublishFormWhenRequested)
-})
+onMounted(mountPublishFormWhenRequested)
+useEventListener('hashchange', mountPublishFormWhenRequested)
 </script>
 
 <template>

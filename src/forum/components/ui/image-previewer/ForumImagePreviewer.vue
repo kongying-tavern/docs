@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { useLocalStorage, useMediaQuery } from '@vueuse/core'
+import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { DialogContent, DialogRoot, DialogTitle } from 'reka-ui'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
@@ -441,12 +441,9 @@ watch(() => props.images, () => {
     current.value = Math.max(total.value - 1, 0)
 })
 
-onMounted(() => {
-  window.addEventListener('keydown', handleKeydown, { capture: true })
-})
+useEventListener('keydown', handleKeydown, { capture: true })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeydown, { capture: true })
   if (visible.value)
     document.documentElement.style.overflow = prevOverflow
   clearTimeout(prevClearTimer)
