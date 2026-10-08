@@ -5,6 +5,7 @@ import DefaultTheme from 'vitepress/theme-without-fonts'
 import { computed, defineAsyncComponent, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue'
 import Banner from '@/components/banner/Banner.vue'
 import ChunkLoadRecovery from '@/components/ChunkLoadRecovery.vue'
+import DocHeader from '@/components/DocHeader.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
@@ -17,7 +18,6 @@ import '@/styles/main.css'
 
 const { Layout } = DefaultTheme
 const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
-const DocHeader = defineAsyncComponent(() => import('@/components/DocHeader.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('~/forum/components/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('~/components/settings/SettingsSidebarExtras.vue'))
@@ -26,7 +26,7 @@ const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAl
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const ToastDiagnosticsDialog = defineAsyncComponent(() => import('~/components/telemetry/ToastDiagnosticsDialog.vue'))
-const { isDark, frontmatter } = useData()
+const { isDark, frontmatter, page } = useData()
 const { message } = useLocalized()
 const { desktopUi, toastDuration, toastPosition } = useSitePreferences()
 // Keep the Sonner position key stable; responsive placement is handled by CSS.
@@ -95,7 +95,7 @@ provide('toggle-appearance', toggleTheme)
 
     <template #doc-before>
       <PageAlertRegion class="mb-4" />
-      <DocHeader />
+      <DocHeader :key="page.relativePath" />
     </template>
 
     <template #aside-outline-after>
