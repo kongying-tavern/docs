@@ -40,7 +40,6 @@ export function startCanvasFestival(
   const fire = confetti.create(canvas, {
     resize: true,
     useWorker: true,
-    disableForReducedMotion: true,
   })
   const startedAt = performance.now()
   const pendingEmissions = new Set<Promise<unknown>>()

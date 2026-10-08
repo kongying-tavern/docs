@@ -32,7 +32,6 @@ function explodeNewYear(
     shapes: ['circle', 'star'],
     scalar: 0.9 + Math.random() * 0.25,
     zIndex: 79,
-    disableForReducedMotion: true,
   })
   void fire({
     particleCount: 28,
@@ -47,7 +46,6 @@ function explodeNewYear(
     shapes: ['star'],
     scalar: 0.58,
     zIndex: 79,
-    disableForReducedMotion: true,
   })
 }
 
@@ -69,7 +67,6 @@ function explodeSpringFestival(
     shapes: ['circle'],
     scalar: 0.88 + Math.random() * 0.18,
     zIndex: 79,
-    disableForReducedMotion: true,
   })
   void fire({
     particleCount: 58,
@@ -84,7 +81,6 @@ function explodeSpringFestival(
     shapes: ['circle'],
     scalar: 0.68,
     zIndex: 79,
-    disableForReducedMotion: true,
   })
   void fire({
     particleCount: 24,
@@ -99,7 +95,6 @@ function explodeSpringFestival(
     shapes: ['star'],
     scalar: 0.58,
     zIndex: 79,
-    disableForReducedMotion: true,
   })
 }
 
@@ -124,7 +119,6 @@ function emitRocketTrail(
     shapes: ['circle'],
     scalar: springFestival ? 0.72 : 0.78 + Math.random() * 0.22,
     zIndex: 79,
-    disableForReducedMotion: true,
   })
   void fire({
     particleCount: 1,
@@ -139,7 +133,6 @@ function emitRocketTrail(
     shapes: ['circle'],
     scalar: 1.25,
     zIndex: 79,
-    disableForReducedMotion: true,
   })
 }
 
