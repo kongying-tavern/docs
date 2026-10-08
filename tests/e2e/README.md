@@ -105,6 +105,19 @@ Playwright 由根包和根锁文件固定版本，不在 tests/e2e 下安装第�
 - 受 `aria-label` 控制的重复组件（话题与评论各有一个 reaction 组）用 `data-forum-reaction`
   区分作用域，不要依赖 DOM 顺序。
 
+## 时间与模块加载
+
+- 断言通知时长这类时间线时用 `page.clock`：`install()` 之后真实时间仍在流动，必须再调用
+  `pauseAt()` 才会冻结；冻结后 `runFor()` 能精确定位边界（通知 4000ms 生命周期、退出动画后
+  再 unmount 的 200ms）。依赖 CSS 动画/`requestAnimationFrame` 的等待保持真实时间，不要
+  放进冻结的时钟里。
+- 通过 `page.evaluate` 驱动某个模块前先调 `support/modules.ts` 的 `warmModules()`：
+  dev server 首次载入新依赖会重新预构建并整页刷新，正在等待的 evaluate 会以
+  “Resulting promise was garbage collected” 失败，且刷新会丢掉刚触发的通知。
+- `scenario` 是 option fixture，同一个 worker 内所有用例共用同一对象；自动 fixture 会在用例
+  结束后按快照还原（含 `topics`/`comments` 数组内容）。用例仍可在测试中改 scenario 让 mock
+  响应变化，但改动不会漏给下一条用例。
+
 默认入口没有人工截图专用测试。失败保留 trace 与 screenshot，CI 上传 `test-results/forum`
 与 `playwright-report`；报告目录按 Playwright 规则相对 config 目录解析，所以 `html`
 reporter 的输出路径写成 `../../playwright-report`，落在仓库根目录。截图生成成功不等于
