@@ -42,10 +42,15 @@ tests/
 现有 `node:assert/strict` 断言继续使用，测试注册、清理、spy 和假定时器改用 Vitest API。
 
 覆盖率显式统计论坛 API、composable、认证、路由、服务、store 和工具，以及共享逻辑、
-主题 hooks/utils 与字体流水线；未被导入的文件也纳入统计，Vue 页面与组件不属于这个逻辑指标。
+主题 hooks 与字体流水线；未被导入的文件也纳入统计，Vue 页面与组件不属于这个逻辑指标。
 CI 运行完整覆盖率测试并上传 HTML 报告。全局门槛基于当前范围的基线，认证刷新模块另有
 行覆盖率 65%、分支覆盖率 60% 的门槛；新增统计范围时应重新评估基线。
 shared 套件还通过独立 Node 进程实际验证两份站点配置和三个内容数据加载器的原生加载，检查完整运行时导入链的兼容性。
+`tests/fonts` 中依赖 Python 的两项流水线检查在缺少 fontTools/brotli 时标记为 skipped
+并保持套件通过，安装了工具链的 CI 仍会真实执行；本地无 Python 时不要把它们当作通过。
+测试里的生产模块 mock 必须是边界替身，不要用 `readFileSync` + `node:vm` 之类的方式加载
+生产源码：那样会绕开 Vite 别名、丢掉覆盖率归因，并把"依赖清单"变成脆弱的隐式契约。
+确实无法在 Node 环境加载的模块（例如 telemetry toast 依赖 Vue 组件）才值得这样替换。
 
 命名与放置规则：
 
@@ -59,8 +64,9 @@ shared 套件还通过独立 Node 进程实际验证两份站点配置和三个�
 - 默认逻辑入口不启动浏览器；组件浏览器 harness 保留独立命令及其原有浏览器环境要求。
 
 `test:theme:ui` 默认使用已安装的 Chrome，可通过原有 `SWIPE_BROWSER_CHANNEL` 与
-`SWIPE_PLAYWRIGHT_PATH` 环境变量选择浏览器和安装位置。论坛 e2e 使用根包固定的 Playwright
-Chromium，安装与 Mock 规则见 `e2e/README.md`。
+`SWIPE_PLAYWRIGHT_PATH` 环境变量选择浏览器和安装位置；CI 的 Forum UI 工作流以
+`SWIPE_BROWSER_CHANNEL=chromium` 复用它已安装的 Chromium。论坛 e2e 使用根包固定的
+Playwright Chromium，安装与 Mock 规则见 `e2e/README.md`。
 论坛 e2e 关闭调试工具，并使用独立 VitePress 缓存目录，避免与日常开发服务器的依赖预构建互相覆盖。
 
 开发服务器的 Vite DevTools 中可打开 Vitest dock 并点击启动，在同一面板中操作测试界面。
