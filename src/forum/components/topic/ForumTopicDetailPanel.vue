@@ -72,7 +72,7 @@ const { message } = useLocalized()
       v-if="topic.type !== 'BUG'"
       id="title"
       data-forum-shared-topic="title"
-      class="text-xl font-semibold m-0 mb-xs mt-1 break-words overflow-hidden md:text-1.5rem md:mb-1"
+      class="text-xl font-semibold m-0 mt-1 break-words overflow-hidden md:text-1.5rem"
     >
       {{ showingTranslation && translatedTitle ? translatedTitle : topic.title }}
     </h3>
@@ -81,7 +81,9 @@ const { message } = useLocalized()
       <slot name="metadata" />
     </div>
 
-    <div class="font-size-4 line-height-6 -mb-3.5">
+    <!-- 正文紧贴翻译状态行：间距此前由 -mb-3.5 抵消正文 mt-3.5 得到，这里直接写成无间距，
+         状态行自带上方 0.125rem；槽位为空时同样不产生位移 -->
+    <div class="font-size-4 line-height-6">
       <slot name="translation" />
     </div>
 
@@ -89,14 +91,14 @@ const { message } = useLocalized()
       v-if="!showingTranslation"
       id="content"
       data-forum-shared-topic="content"
-      class="font-size-4 line-height-6 mt-3.5 opacity-99 whitespace-pre-wrap overflow-hidden"
+      class="font-size-4 line-height-6 opacity-99 whitespace-pre-wrap overflow-hidden"
       v-html="renderedContent"
     />
     <article
       v-else
       id="content"
       data-forum-shared-topic="content"
-      class="font-size-4 line-height-6 mt-3.5 opacity-99 whitespace-pre-wrap overflow-hidden"
+      class="font-size-4 line-height-6 opacity-99 whitespace-pre-wrap overflow-hidden"
     >
       {{ translatedContent }}
     </article>
