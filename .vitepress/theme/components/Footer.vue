@@ -115,11 +115,12 @@ function isExpanded(title: string) {
 <style scoped>
 @import '@/styles/media.css';
 .footer-container {
+  --footer-gutter: 32px;
   z-index: 1;
   position: relative;
   right: 0;
   bottom: 0;
-  padding: 0 32px;
+  padding: 0 var(--footer-gutter);
   background-color: var(--vp-c-bg-alt);
 }
 
@@ -273,10 +274,20 @@ function isExpanded(title: string) {
   }
 }
 
+/* 有侧栏时 Footer 要贴在内容列上：≤1440 侧栏宽度就是 --vp-sidebar-width，≥1440 起
+   VitePress 会按 (100% - --vp-layout-max-width) / 2 把它继续加宽（VP1/VP2 同一套公式），
+   所以这里必须复用 .VPContent.has-sidebar 的 padding；写死 --vp-sidebar-width 的
+   定位在宽屏下会被侧栏盖住左侧的那些栏目。 */
 @media (--site-desktop) {
   .VPSidebar ~ .footer-container {
-    width: calc(100% - var(--vp-sidebar-width));
-    left: var(--vp-sidebar-width);
+    padding-left: calc(var(--vp-sidebar-width) + var(--footer-gutter));
+  }
+}
+
+@media (--site-wide) {
+  .VPSidebar ~ .footer-container {
+    padding-left: calc((100% - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width) + var(--footer-gutter));
+    padding-right: calc((100% - var(--vp-layout-max-width)) / 2 + var(--footer-gutter));
   }
 }
 
