@@ -1,5 +1,9 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // TS 6 起 types 默认空数组；本工程只 include e2e，拿不到根工程经 vite 类型间接引入的 @types/node
+    "types": ["node"]
+  },
   "include": ["./**/*.ts", "../../src/forum/api/gitee/typings.d.ts"],
   "exclude": ["**/node_modules/**"]
 }
