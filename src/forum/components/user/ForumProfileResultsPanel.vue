@@ -67,16 +67,14 @@ watch(() => props.activeTab, (next, previous) => {
   opacity: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .profile-tab-enter-active,
-  .profile-tab-leave-active {
-    transition: opacity 120ms ease;
-  }
+html[data-reduced-motion='true'] .profile-tab-enter-active,
+html[data-reduced-motion='true'] .profile-tab-leave-active {
+  transition: opacity 120ms ease;
+}
 
-  .profile-tab-enter-from,
-  .profile-tab-leave-to {
-    transform: none !important;
-    opacity: 0;
-  }
+html[data-reduced-motion='true'] .profile-tab-enter-from,
+html[data-reduced-motion='true'] .profile-tab-leave-to {
+  transform: none !important;
+  opacity: 0;
 }
 </style>

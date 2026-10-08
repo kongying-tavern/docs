@@ -122,9 +122,7 @@ watch(() => open.value, (isOpen) => {
 </template>
 
 <style scoped>
-@media (prefers-reduced-motion: reduce) {
-  .animate-spin {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .animate-spin {
+  animation: none;
 }
 </style>

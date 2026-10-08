@@ -222,9 +222,7 @@ defineExpose({ startTranslate })
   color: var(--vp-c-text-3);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-spin {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .animate-spin {
+  animation: none;
 }
 </style>

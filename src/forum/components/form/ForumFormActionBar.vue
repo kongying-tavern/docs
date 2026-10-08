@@ -73,13 +73,11 @@ const { message } = useLocalized()
   margin-left: 0.375rem;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-spin {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .animate-spin {
+  animation: none;
+}
 
-  .form-action-btn {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .form-action-btn {
+  transition: none;
 }
 </style>

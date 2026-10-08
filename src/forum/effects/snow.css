@@ -57,12 +57,10 @@ html.forum-festival-snow-cursor * {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-festival-snow-cursor-image {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .forum-festival-snow-cursor-image {
+  animation: none;
+}
 
-  .forum-festival-snow-cursor-feedback.is-bursting {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .forum-festival-snow-cursor-feedback.is-bursting {
+  animation: none;
 }

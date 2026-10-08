@@ -180,10 +180,8 @@ watch(() => [props.targetId, props.targetReady] as const, async ([commentId, rea
 .mobile-comment-surface :deep(.topic-comment-item) {
   scroll-margin-bottom: 80px;
 }
-@media (prefers-reduced-motion: reduce) {
-  .comment-input-mobile,
-  .comment-input-mobile :deep(*) {
-    transition: none !important;
-  }
+html[data-reduced-motion='true'] .comment-input-mobile,
+html[data-reduced-motion='true'] .comment-input-mobile :deep(*) {
+  transition: none !important;
 }
 </style>

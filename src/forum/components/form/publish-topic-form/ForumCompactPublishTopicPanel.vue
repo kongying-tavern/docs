@@ -389,11 +389,9 @@ defineExpose(presentation)
   width: 14px;
   height: 14px;
 }
-@media (prefers-reduced-motion: reduce) {
-  .compact-corner-button,
-  .compact-properties :deep([data-slot='popover-trigger']) {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .compact-corner-button,
+html[data-reduced-motion='true'] .compact-properties :deep([data-slot='popover-trigger']) {
+  transition: none;
 }
 .compact-footer :deep([data-size='icon-sm'] svg) {
   width: 16px;
@@ -502,10 +500,8 @@ defineExpose(presentation)
   height: auto;
   padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
-@media (prefers-reduced-motion: reduce) {
-  :global(.compact-drawer[data-slot='drawer-content']) {
-    transition: none;
-  }
+html[data-reduced-motion='true'] :global(.compact-drawer[data-slot='drawer-content']) {
+  transition: none;
 }
 @media (max-width: 767px) {
   .compact-corner-button:not(.compact-close),

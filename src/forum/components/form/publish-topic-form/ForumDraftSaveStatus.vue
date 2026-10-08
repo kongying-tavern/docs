@@ -47,10 +47,8 @@ onBeforeUnmount(() => clearTimeout(hideTimer))
 .draft-save-status-leave-to {
   opacity: 0;
 }
-@media (prefers-reduced-motion: reduce) {
-  .draft-save-status-enter-active,
-  .draft-save-status-leave-active {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .draft-save-status-enter-active,
+html[data-reduced-motion='true'] .draft-save-status-leave-active {
+  transition: none;
 }
 </style>

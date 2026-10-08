@@ -106,10 +106,8 @@ function handleClose() {
   opacity: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-menu-panel-enter-active,
-  .forum-menu-panel-leave-active {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .forum-menu-panel-enter-active,
+html[data-reduced-motion='true'] .forum-menu-panel-leave-active {
+  transition: none;
 }
 </style>

@@ -189,10 +189,8 @@ defineExpose({ close, open: toggle })
   padding-block: 0;
   margin-block: 0;
 }
-@media (prefers-reduced-motion: reduce) {
-  .editor-emoji-enter-active,
-  .editor-emoji-leave-active {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .editor-emoji-enter-active,
+html[data-reduced-motion='true'] .editor-emoji-leave-active {
+  transition: none;
 }
 </style>

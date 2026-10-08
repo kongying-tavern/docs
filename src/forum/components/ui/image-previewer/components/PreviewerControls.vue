@@ -98,14 +98,12 @@ const { message } = useLocalized()
     opacity 220ms ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-preview-close,
-  .forum-preview-dots {
-    transition: none !important;
-  }
+html[data-reduced-motion='true'] .forum-preview-close,
+html[data-reduced-motion='true'] .forum-preview-dots {
+  transition: none !important;
+}
 
-  .forum-preview-close svg {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .forum-preview-close svg {
+  transition: none;
 }
 </style>

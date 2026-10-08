@@ -179,15 +179,13 @@ onBeforeUnmount(() => {
   opacity: 0;
   transform: translateY(-4px);
 }
-@media (prefers-reduced-motion: reduce) {
-  .topic-stage-shell,
-  .topic-stage-enter-active,
-  .topic-stage-leave-active {
-    transition: none;
-  }
-  .topic-stage-enter-from,
-  .topic-stage-leave-to {
-    transform: none;
-  }
+html[data-reduced-motion='true'] .topic-stage-shell,
+html[data-reduced-motion='true'] .topic-stage-enter-active,
+html[data-reduced-motion='true'] .topic-stage-leave-active {
+  transition: none;
+}
+html[data-reduced-motion='true'] .topic-stage-enter-from,
+html[data-reduced-motion='true'] .topic-stage-leave-to {
+  transform: none;
 }
 </style>

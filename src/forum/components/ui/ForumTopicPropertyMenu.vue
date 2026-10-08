@@ -76,9 +76,7 @@ defineProps<{
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-topic-property-chevron {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .forum-topic-property-chevron {
+  transition: none;
 }
 </style>

@@ -323,16 +323,14 @@ defineExpose({ open })
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .photo-grid-move,
-  .photo-grid-enter-active,
-  .photo-grid-leave-active,
-  .image-action {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .photo-grid-move,
+html[data-reduced-motion='true'] .photo-grid-enter-active,
+html[data-reduced-motion='true'] .photo-grid-leave-active,
+html[data-reduced-motion='true'] .image-action {
+  transition: none;
+}
 
-  .animate-spin {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .animate-spin {
+  animation: none;
 }
 </style>

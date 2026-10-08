@@ -196,15 +196,13 @@ svg path {
   transition: none !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-empty-illustration {
-    --empty-active: 0 !important;
-  }
+html[data-reduced-motion='true'] .forum-empty-illustration {
+  --empty-active: 0 !important;
+}
 
-  .forum-empty-illustration g,
-  .forum-empty-illustration path {
-    animation: none !important;
-    transition: none !important;
-  }
+html[data-reduced-motion='true'] .forum-empty-illustration g,
+html[data-reduced-motion='true'] .forum-empty-illustration path {
+  animation: none !important;
+  transition: none !important;
 }
 </style>

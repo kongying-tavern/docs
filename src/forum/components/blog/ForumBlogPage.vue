@@ -384,10 +384,8 @@ function coverProps(post: BlogPost) {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .blog-cover img {
-    transition: none;
-    transform: none;
-  }
+html[data-reduced-motion='true'] .blog-cover img {
+  transition: none;
+  transform: none;
 }
 </style>

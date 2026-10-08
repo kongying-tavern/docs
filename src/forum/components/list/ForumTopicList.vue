@@ -168,21 +168,19 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
   transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .topic-list-enter-active,
-  .topic-list-leave-active {
-    transition: opacity 120ms ease;
-  }
+html[data-reduced-motion='true'] .topic-list-enter-active,
+html[data-reduced-motion='true'] .topic-list-leave-active {
+  transition: opacity 120ms ease;
+}
 
-  .topic-list-move {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .topic-list-move {
+  transition: none;
+}
 
-  .topic-list-enter-from,
-  .topic-list-leave-to {
-    transform: none;
-    filter: none;
-    opacity: 0;
-  }
+html[data-reduced-motion='true'] .topic-list-enter-from,
+html[data-reduced-motion='true'] .topic-list-leave-to {
+  transform: none;
+  filter: none;
+  opacity: 0;
 }
 </style>

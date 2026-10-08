@@ -79,10 +79,8 @@ const { message } = useLocalized()
   transform: translateX(100%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .preview-side-panel-enter-active,
-  .preview-side-panel-leave-active {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .preview-side-panel-enter-active,
+html[data-reduced-motion='true'] .preview-side-panel-leave-active {
+  transition: none;
 }
 </style>

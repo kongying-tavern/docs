@@ -134,9 +134,7 @@ function postHref(slug: string): string {
   color: var(--vp-c-brand-1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .aside-recent-updates-text {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .aside-recent-updates-text {
+  transition: none;
 }
 </style>

@@ -328,26 +328,24 @@ function submit(): void {
   padding-right: 0;
   opacity: 0;
 }
-@media (prefers-reduced-motion: reduce) {
-  .forum-filter-drawer-back,
-  .forum-filter-drawer-footer,
-  .forum-filter-drawer-reset,
-  .forum-filter-drawer-row,
-  .forum-filter-drawer-check,
-  .forum-filter-drawer-title-enter-active,
-  .forum-filter-drawer-title-leave-active,
-  .forum-filter-drawer-panels,
-  .forum-filter-drawer-panel {
-    transition: none;
-  }
-  .forum-filter-drawer-panel,
-  .forum-filter-drawer-title-enter-from,
-  .forum-filter-drawer-title-leave-to {
-    filter: none;
-    transform: none;
-  }
-  .forum-filter-drawer-row:active {
-    transform: none;
-  }
+html[data-reduced-motion='true'] .forum-filter-drawer-back,
+html[data-reduced-motion='true'] .forum-filter-drawer-footer,
+html[data-reduced-motion='true'] .forum-filter-drawer-reset,
+html[data-reduced-motion='true'] .forum-filter-drawer-row,
+html[data-reduced-motion='true'] .forum-filter-drawer-check,
+html[data-reduced-motion='true'] .forum-filter-drawer-title-enter-active,
+html[data-reduced-motion='true'] .forum-filter-drawer-title-leave-active,
+html[data-reduced-motion='true'] .forum-filter-drawer-panels,
+html[data-reduced-motion='true'] .forum-filter-drawer-panel {
+  transition: none;
+}
+html[data-reduced-motion='true'] .forum-filter-drawer-panel,
+html[data-reduced-motion='true'] .forum-filter-drawer-title-enter-from,
+html[data-reduced-motion='true'] .forum-filter-drawer-title-leave-to {
+  filter: none;
+  transform: none;
+}
+html[data-reduced-motion='true'] .forum-filter-drawer-row:active {
+  transform: none;
 }
 </style>

@@ -194,9 +194,7 @@ function handleCommentClick(author: ForumAPI.User): void {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .topic-comment-item:target {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .topic-comment-item:target {
+  animation: none;
 }
 </style>

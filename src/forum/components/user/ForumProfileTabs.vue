@@ -84,9 +84,7 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .profile-tab-indicator {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .profile-tab-indicator {
+  transition: none;
 }
 </style>

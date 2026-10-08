@@ -165,10 +165,8 @@ onBeforeUnmount(() => {
   outline-offset: 3px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-image-navigation-button,
-  .forum-image-navigation-button span {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .forum-image-navigation-button,
+html[data-reduced-motion='true'] .forum-image-navigation-button span {
+  transition: none;
 }
 </style>

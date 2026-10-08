@@ -73,10 +73,8 @@ function goToTopicDetail(): void {
 </template>
 
 <style>
-@media (prefers-reduced-motion: reduce) {
-  .topic-preview-dialog[data-state] {
-    animation: none !important;
-  }
+html[data-reduced-motion='true'] .topic-preview-dialog[data-state] {
+  animation: none !important;
 }
 
 .topic-preview-dialog .preview-header {

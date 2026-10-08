@@ -299,9 +299,7 @@ details[open] .chevron {
   line-height: calc(20px * var(--site-ui-scale));
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .chevron {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .chevron {
+  transition: none;
 }
 </style>

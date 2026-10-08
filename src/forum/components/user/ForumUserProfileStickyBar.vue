@@ -104,10 +104,8 @@ const { message } = useLocalized()
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .user-sticky-bar {
-    transform: none;
-    transition: opacity 120ms ease;
-  }
+html[data-reduced-motion='true'] .user-sticky-bar {
+  transform: none;
+  transition: opacity 120ms ease;
 }
 </style>

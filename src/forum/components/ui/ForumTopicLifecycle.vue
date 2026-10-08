@@ -153,9 +153,7 @@ button.forum-topic-id:focus-visible {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-topic-copy-icon {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .forum-topic-copy-icon {
+  transition: none;
 }
 </style>

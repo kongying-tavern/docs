@@ -289,12 +289,10 @@ function setOpen(value: boolean): void {
     border-radius: var(--comment-entry-radius);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .mobile-comment-embedded,
-  :global(.mobile-comment-dialog .mobile-comment-panel),
-  :global(.mobile-comment-dialog[data-slot='dialog-content']) {
-    transition: none;
-    animation: none !important;
-  }
+html[data-reduced-motion='true'] .mobile-comment-embedded,
+html[data-reduced-motion='true'] :global(.mobile-comment-dialog .mobile-comment-panel),
+html[data-reduced-motion='true'] :global(.mobile-comment-dialog[data-slot='dialog-content']) {
+  transition: none;
+  animation: none !important;
 }
 </style>

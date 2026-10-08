@@ -96,9 +96,7 @@ function markerStyle(index: number): Record<string, string> {
   outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-image-indicator-marker {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .forum-image-indicator-marker {
+  transition: none;
 }
 </style>
