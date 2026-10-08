@@ -14,17 +14,12 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(
-  defineProps<{
-    items: FORUM.TopicDropdownMenu[]
-    side?: DropdownMenuContentProps['side']
-    align?: DropdownMenuContentProps['align']
-    class?: HTMLAttributes['class']
-  }>(),
-  {
-    side: 'bottom',
-  },
-)
+const { side = 'bottom', class: className, items } = defineProps<{
+  items: FORUM.TopicDropdownMenu[]
+  side?: DropdownMenuContentProps['side']
+  align?: DropdownMenuContentProps['align']
+  class?: HTMLAttributes['class']
+}>()
 
 defineSlots<{
   trigger: () => unknown
@@ -42,10 +37,10 @@ defineSlots<{
       fluid
       :side="side"
       :align="align"
-      :class="cn('w-max text-nowrap', props.class)"
+      :class="cn('w-max text-nowrap', className)"
     >
       <slot name="menu" />
-      <ForumDropdownMenu :items="props.items" />
+      <ForumDropdownMenu :items="items" />
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

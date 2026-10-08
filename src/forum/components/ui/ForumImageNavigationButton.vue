@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-const props = withDefaults(defineProps<{
+const { visible = true, autoHide = false, size = 'medium' } = defineProps<{
   direction: 'previous' | 'next'
   label: string
   visible?: boolean
   autoHide?: boolean
   size?: 'small' | 'medium'
-}>(), {
-  visible: true,
-  autoHide: false,
-  size: 'medium',
-})
+}>()
 
 const emit = defineEmits<{
   click: [event: MouseEvent]
@@ -36,9 +32,9 @@ function syncVisibility(visible: boolean) {
   })
 }
 
-watch(() => props.visible, syncVisibility)
+watch(() => visible, syncVisibility)
 
-onMounted(() => syncVisibility(props.visible))
+onMounted(() => syncVisibility(visible))
 
 onBeforeUnmount(() => {
   if (enterFrame !== undefined)

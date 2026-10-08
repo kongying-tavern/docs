@@ -17,15 +17,12 @@ import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
 import { FORM_HASH } from './publish-topic-form/config'
 
-const props = withDefaults(defineProps<{
+const { variant = 'default', hideOnMobile = true, label } = defineProps<{
   label?: string
   variant?: ButtonVariants['variant']
   /** 侧栏等紧凑场景默认在移动端隐藏；空态等整页场景需关闭 */
   hideOnMobile?: boolean
-}>(), {
-  variant: 'default',
-  hideOnMobile: true,
-})
+}>()
 
 const { frontmatter } = useData()
 const { message } = useLocalized()
@@ -38,7 +35,7 @@ const isAdmin = hasAnyRoles('teamMember', 'feedbackMember')
 const buttonText = computed(() => {
   if (!isLoggedIn.value)
     return message.value.forum.sidebar.loginToCreate
-  return props.label ?? message.value.forum.publish.title
+  return label ?? message.value.forum.publish.title
 })
 
 function handleButtonClick() {

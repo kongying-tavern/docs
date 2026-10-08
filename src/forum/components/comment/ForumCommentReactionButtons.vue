@@ -5,11 +5,11 @@ import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/forum/composables/data/useForumReaction'
 
-const props = withDefaults(defineProps<{
+const { autoload = true, topicId, commentId } = defineProps<{
   topicId: string
   commentId: string
   autoload?: boolean
-}>(), { autoload: true })
+}>()
 
 const { message } = useLocalized()
 const {
@@ -19,7 +19,7 @@ const {
   refetch,
   setReactionState,
   reactionSubmitLoading,
-} = useForumReaction(() => ({ topicId: props.topicId, commentId: props.commentId }), () => props.autoload)
+} = useForumReaction(() => ({ topicId, commentId }), () => autoload)
 
 const disabled = computed(() => !data.value || reactionSubmitLoading.value)
 const loadFailed = computed(() => Boolean(error.value) && !data.value)

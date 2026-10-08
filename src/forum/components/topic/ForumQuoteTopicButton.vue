@@ -9,19 +9,17 @@ import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/forum/services/
 import { FORM_HASH } from '../form/publish-topic-form/config'
 import { preloadForumPublishForm } from '../utils/submitFormUi'
 
-const props = withDefaults(defineProps<{ topic: ForumAPI.Topic, autoload?: boolean }>(), {
-  autoload: true,
-})
+const { autoload = true, topic } = defineProps<{ topic: ForumAPI.Topic, autoload?: boolean }>()
 const { message } = useLocalized()
 const { data: quoteReaction, isLoading } = useForumReaction(
-  () => ({ topicId: String(props.topic.id), kind: 'quote' }),
-  () => props.autoload && isQuotableTopicType(props.topic.type),
+  () => ({ topicId: String(topic.id), kind: 'quote' }),
+  () => autoload && isQuotableTopicType(topic.type),
 )
 
 function openQuotedTopicForm(): void {
   const href = buildQuotedTopicFormHref(window.location.href, {
-    id: String(props.topic.id),
-    type: props.topic.type,
+    id: String(topic.id),
+    type: topic.type,
   }, FORM_HASH)
   const target = new URL(href, window.location.origin)
   const hash = target.hash

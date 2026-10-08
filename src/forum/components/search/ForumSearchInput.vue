@@ -14,7 +14,7 @@ import ForumTopicMetadata from '../ui/ForumTopicMetadata.vue'
 import { useForumSearchFilters } from './composables/useForumSearchFilters'
 import ForumSearchFilterPicker from './ForumSearchFilterPicker.vue'
 
-const props = withDefaults(defineProps<{
+const { suggestions = [], page, suggestionMode } = defineProps<{
   autofocus?: boolean
   page?: boolean
   showFacets?: boolean
@@ -23,16 +23,14 @@ const props = withDefaults(defineProps<{
   suggestionError?: boolean
   class?: HTMLAttributes['class']
   suggestions?: ForumAPI.Topic[]
-}>(), {
-  suggestions: () => [],
-})
+}>()
 const emit = defineEmits<{ submit: [query: string] }>()
 const SEARCH_TEXT_MAX_LENGTH = 50
 const modelValue = defineModel<string>('query', { required: true })
 const { message } = useLocalized()
 const router = useRouter()
 const { topicHref } = useForumRoute()
-const filters = useForumSearchFilters(modelValue, () => Boolean(props.page))
+const filters = useForumSearchFilters(modelValue, () => Boolean(page))
 const {
   activeFacet,
   editingFilter,
@@ -49,18 +47,18 @@ const filterPicker = useTemplateRef<InstanceType<typeof ForumSearchFilterPicker>
 const filterInputEl = useTemplateRef<HTMLInputElement>('filterInputEl')
 // 面板随空输入自动展开，回车默认归搜索框，方向键进面板后才交给面板
 const pickerEngaged = ref(false)
-const loadedUsers = computed(() => props.suggestions.map(topic => topic.user))
+const loadedUsers = computed(() => suggestions.map(topic => topic.user))
 
 const inputEl = useTemplateRef<InstanceType<typeof SearchField>>('inputEl')
 
 const filteredSuggestions = computed(() => {
-  return getForumSearchSuggestions(props.suggestions, textQuery.value)
+  return getForumSearchSuggestions(suggestions, textQuery.value)
 })
 const showSuggestions = computed(() => {
-  const visible = props.page ? props.suggestionMode : isOpen.value
+  const visible = page ? suggestionMode : isOpen.value
   return Boolean(visible && textQuery.value && filteredSuggestions.value.length > 0)
 })
-const showFilterPicker = computed(() => !props.page && isOpen.value && !textQuery.value)
+const showFilterPicker = computed(() => !page && isOpen.value && !textQuery.value)
 
 watch(filteredSuggestions, () => activeIndex.value = -1)
 watch(showFilterPicker, (open) => {
@@ -71,7 +69,7 @@ watch(showFilterPicker, (open) => {
 function handleExpand() {
   inputEl.value?.focus()
 }
-useForumShortcut('search', handleExpand, { priority: props.page ? 1 : 0 })
+useForumShortcut('search', handleExpand, { priority: page ? 1 : 0 })
 
 function handleInputFocus() {
   isOpen.value = true
@@ -115,7 +113,7 @@ function handleFilterBlur(event: FocusEvent) {
   if (focusRemainsInSearch(event))
     return
   if (filters.hasIncompleteFacetDraft()) {
-    if (!props.page)
+    if (!page)
       activeFacet.value = null
     isOpen.value = false
     return
@@ -154,7 +152,7 @@ function handleTextInput(event: Event) {
     return
   }
 
-  if (!props.page)
+  if (!page)
     activeFacet.value = null
   editingFilter.value = false
   isOpen.value = true
@@ -185,7 +183,7 @@ function selectActive(event: KeyboardEvent) {
   if (event.isComposing)
     return
   event.preventDefault()
-  if (props.page)
+  if (page)
     return handleSearch()
   if (pickerEngaged.value && filterPicker.value?.selectActive())
     return
@@ -203,7 +201,7 @@ function chooseFacet(facet: ForumSearchFacet) {
 }
 
 function focusFacet(facet: ForumSearchFacet) {
-  if (!props.page && facet !== 'author') {
+  if (!page && facet !== 'author') {
     nextTick(() => {
       const input = filterInputEl.value
       input?.focus()
@@ -230,7 +228,7 @@ function handleEscape(event: KeyboardEvent) {
     return
   event.preventDefault()
   event.stopPropagation()
-  if (activeFacet.value && !props.page)
+  if (activeFacet.value && !page)
     leaveFacet()
   else
     isOpen.value = false

@@ -5,7 +5,7 @@ import Divider from '@/components/ui/divider/Divider.vue'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 
-withDefaults(defineProps<{
+const { loading = false, canLoadMore = false, error = false, text = '', status = 'status', rateLimit = false, errorMessage = '' } = defineProps<{
   loading?: boolean
   canLoadMore?: boolean
   error?: boolean
@@ -18,15 +18,7 @@ withDefaults(defineProps<{
   rateLimit?: boolean
   /** 具体错误信息（来自 query.error），便于用户判断失败原因 */
   errorMessage?: string
-}>(), {
-  loading: false,
-  canLoadMore: false,
-  error: false,
-  text: '',
-  status: 'status',
-  rateLimit: false,
-  errorMessage: '',
-})
+}>()
 
 const emit = defineEmits<{ login: [] }>()
 const { message } = useLocalized()

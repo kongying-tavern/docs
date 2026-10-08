@@ -1,31 +1,26 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = withDefaults(defineProps<{
+const { tone = 'overlay', continuous = false, ariaLabel = undefined, ariaLabels = [], progress, total } = defineProps<{
   total: number
   progress: number
   tone?: 'overlay' | 'surface'
   continuous?: boolean
   ariaLabel?: string
   ariaLabels?: string[]
-}>(), {
-  tone: 'overlay',
-  continuous: false,
-  ariaLabel: undefined,
-  ariaLabels: () => [],
-})
+}>()
 
 const emit = defineEmits<{
   select: [index: number]
 }>()
 
 const activeIndex = computed(() => Math.min(
-  Math.max(Math.round(props.progress), 0),
-  Math.max(0, props.total - 1),
+  Math.max(Math.round(progress), 0),
+  Math.max(0, total - 1),
 ))
 
 function markerStyle(index: number): Record<string, string> {
-  const proximity = Math.max(0, 1 - Math.abs(index - props.progress))
+  const proximity = Math.max(0, 1 - Math.abs(index - progress))
   return {
     width: `${14 + proximity * 10}px`,
     opacity: `${0.35 + proximity * 0.65}`,

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+const { card = false } = defineProps<{
   /** 稳定的标识：用于生成标题 id 与 aria-labelledby */
   sectionId: string
   title: string
   /** 软底卡片外观（如「加入社区」） */
   card?: boolean
-}>(), {
-  card: false,
-})
+}>()
 </script>
 
 <template>

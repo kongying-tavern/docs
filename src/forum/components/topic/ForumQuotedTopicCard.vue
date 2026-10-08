@@ -14,7 +14,7 @@ import ForumImage from '../ui/ForumImage.vue'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 import ForumTopicHeader from './ForumTopicHeader.vue'
 
-const props = withDefaults(defineProps<{
+const { topic = undefined, loading = false, unavailable = false, interactive = true, compact = false, reference } = defineProps<{
   reference: ForumAPI.QuotedTopicReference
   topic?: ForumAPI.Topic
   loading?: boolean
@@ -23,13 +23,7 @@ const props = withDefaults(defineProps<{
   compact?: boolean
   removable?: boolean
   removeDisabled?: boolean
-}>(), {
-  topic: undefined,
-  loading: false,
-  unavailable: false,
-  interactive: true,
-  compact: false,
-})
+}>()
 
 const emit = defineEmits<{
   retry: []
@@ -40,25 +34,25 @@ const router = useRouter()
 const [UseRemoveMenu, RemoveMenu] = createReusableTemplate()
 const { message } = useLocalized()
 const { topicHref } = useForumRoute()
-const detailHref = computed(() => topicHref(props.reference.id, null))
-const renderedContent = computed(() => props.topic
-  ? renderForumTopicSummary(decodeTopicBody(props.topic.contentRaw).content, { topicHref: id => topicHref(id, null) })
+const detailHref = computed(() => topicHref(reference.id, null))
+const renderedContent = computed(() => topic
+  ? renderForumTopicSummary(decodeTopicBody(topic.contentRaw).content, { topicHref: id => topicHref(id, null) })
   : '')
-const images = computed(() => (props.topic?.content.images ?? []).map(image => ({
+const images = computed(() => (topic?.content.images ?? []).map(image => ({
   src: image.src,
   alt: image.alt || '',
   thumbHash: image.thumbHash,
   width: image.width,
   height: image.height,
 })))
-const showWideImage = computed(() => !props.compact && shouldShowQuotedTopicImageBelow(images.value))
+const showWideImage = computed(() => !compact && shouldShowQuotedTopicImageBelow(images.value))
 const showSideImages = computed(() => images.value.length > 0 && !showWideImage.value)
-const imageContext = computed(() => props.topic
-  ? { kind: 'topic' as const, topic: props.topic, repo: 'Feedback' as const, topicAuthorId: props.topic.user.id }
+const imageContext = computed(() => topic
+  ? { kind: 'topic' as const, topic, repo: 'Feedback' as const, topicAuthorId: topic.user.id }
   : undefined)
 
 function openTopic(event: MouseEvent | KeyboardEvent): void {
-  if (!props.interactive)
+  if (!interactive)
     return
   const target = event.target as HTMLElement
   if (target.closest('a, button'))

@@ -13,16 +13,12 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 
-withDefaults(defineProps<{
+const { align = 'start', immersive = false, hideHeader = false } = defineProps<{
   title: string
   align?: PopoverContentProps['align']
   immersive?: boolean
   hideHeader?: boolean
-}>(), {
-  align: 'start',
-  immersive: false,
-  hideHeader: false,
-})
+}>()
 
 const emit = defineEmits<{
   closed: []

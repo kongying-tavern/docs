@@ -7,18 +7,15 @@ import ForumAsideRecommendedDocs from './ForumAsideRecommendedDocs.vue'
 import ForumAsideTagFilter from './ForumAsideTagFilter.vue'
 import ForumAsideTeamBlog from './ForumAsideTeamBlog.vue'
 
-const props = withDefaults(defineProps<{
+const { recentUpdates = false, tagFilter = false } = defineProps<{
   /** 首页在卡片顶部加一栏「最近更新」，并与团队博客互斥 */
   recentUpdates?: boolean
   /** 首页在「最近更新」与「文档推荐」之间插一栏「标签筛选」 */
   tagFilter?: boolean
-}>(), {
-  recentUpdates: false,
-  tagFilter: false,
-})
+}>()
 
 const items = useRecentBlogUpdates(allBlogPosts)
-const showRecentUpdates = computed(() => props.recentUpdates && items.value.length > 0)
+const showRecentUpdates = computed(() => recentUpdates && items.value.length > 0)
 </script>
 
 <template>

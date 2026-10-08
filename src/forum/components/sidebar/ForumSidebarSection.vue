@@ -6,7 +6,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicDropdownMenu from '../topic/ForumTopicDropdownMenu.vue'
 import ForumTopicMetadata from '../ui/ForumTopicMetadata.vue'
 
-const props = withDefaults(defineProps<{
+const { items = [], loginPrompt = '', loginAction = '' } = defineProps<{
   title: string
   icon: string
   items?: Array<{
@@ -27,11 +27,7 @@ const props = withDefaults(defineProps<{
   loginPrompt?: string
   loginAction?: string
   actionDisabled?: boolean
-}>(), {
-  items: () => [],
-  loginPrompt: '',
-  loginAction: '',
-})
+}>()
 
 const emit = defineEmits<{
   'update:open': [open: boolean]
@@ -50,7 +46,7 @@ function measureTopicList() {
   topicListScrollable.value = el ? el.scrollHeight > el.clientHeight + 1 : false
 }
 
-watch(() => props.items.length, () => nextTick(measureTopicList))
+watch(() => items.length, () => nextTick(measureTopicList))
 useResizeObserver(topicListEl, measureTopicList)
 
 function handleToggle(event: Event) {

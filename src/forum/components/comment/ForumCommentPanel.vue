@@ -10,7 +10,7 @@ import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumCommentItem from './ForumCommentItem.vue'
 
-const props = withDefaults(defineProps<{
+const { entryAnimation = true, presentation, comments, closed, loading, error, canLoadMore, targetId, targetReady } = defineProps<{
   presentation: 'page' | 'embedded' | 'inline'
   comments: ForumAPI.Comment[]
   replyId?: string | number | null
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<{
   detailHref: string
   entryAnimation?: boolean
   editorOpen?: boolean
-}>(), { entryAnimation: true })
+}>()
 const emit = defineEmits<{
   'load-more': []
   'retry': []
@@ -52,16 +52,16 @@ const modalVisible = ref(false)
 useMutationObserver(() => typeof document === 'undefined' ? null : document.body, () => {
   modalVisible.value = !!document.querySelector('[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"], .mobile-comment-dialog[data-state="closed"]')
 }, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-state'] })
-const mobileFixed = computed(() => mobile.value && props.presentation === 'page')
-const inputObservationTarget = computed(() => props.presentation === 'page' && !mobile.value && props.comments.length >= 5 ? inputAnchor.value : null)
+const mobileFixed = computed(() => mobile.value && presentation === 'page')
+const inputObservationTarget = computed(() => presentation === 'page' && !mobile.value && comments.length >= 5 ? inputAnchor.value : null)
 watch(inputObservationTarget, () => inputVisible.value = true)
 useIntersectionObserver(inputObservationTarget, ([entry]) => inputVisible.value = !!entry?.isIntersecting)
-const docked = computed(() => mobileFixed.value || (props.presentation === 'page' && !!inputObservationTarget.value && !inputVisible.value))
+const docked = computed(() => mobileFixed.value || (presentation === 'page' && !!inputObservationTarget.value && !inputVisible.value))
 const dockedStyle = computed(() => !docked.value ? undefined : mobileFixed.value ? { left: '0', width: '100%' } : { left: `${left.value}px`, width: `${width.value}px` })
 
 if (!import.meta.env.SSR) {
   useEventListener(window, 'scroll', () => {
-    if (props.presentation !== 'page' || props.closed || props.loading || props.error || !props.canLoadMore)
+    if (presentation !== 'page' || closed || loading || error || !canLoadMore)
       return
     const root = document.documentElement
     if (root.scrollHeight - root.scrollTop - root.clientHeight < 64)
@@ -69,15 +69,15 @@ if (!import.meta.env.SSR) {
   }, { passive: true })
 }
 
-watchOnce(() => props.loading, async () => {
-  if (props.presentation !== 'page' || props.targetId)
+watchOnce(() => loading, async () => {
+  if (presentation !== 'page' || targetId)
     return
   await nextTick()
   scrollTo()
 })
 
 let lastScrolledCommentId: string | null = null
-watch(() => [props.targetId, props.targetReady] as const, async ([commentId, ready]) => {
+watch(() => [targetId, targetReady] as const, async ([commentId, ready]) => {
   if (!commentId) {
     lastScrolledCommentId = null
     return
@@ -89,7 +89,7 @@ watch(() => [props.targetId, props.targetReady] as const, async ([commentId, rea
   if (!target)
     return
   lastScrolledCommentId = commentId
-  if (props.presentation === 'page')
+  if (presentation === 'page')
     scrollTo({ el: target, hash: `#reply-${commentId}` })
   else
     target.scrollIntoView({ block: 'nearest' })

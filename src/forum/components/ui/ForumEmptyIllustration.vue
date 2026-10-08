@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useSitePreferences } from '~/composables/useSitePreferences'
 
-withDefaults(defineProps<{
+const { variant = 'feedback' } = defineProps<{
   variant?: 'feedback' | 'search' | 'filtered' | 'error' | 'rate-limit' | 'locked' | 'comment'
   busy?: boolean
   compact?: boolean
-}>(), { variant: 'feedback' })
+}>()
 
 const { reducedMotion } = useSitePreferences()
 </script>

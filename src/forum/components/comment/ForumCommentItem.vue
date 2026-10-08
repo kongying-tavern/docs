@@ -12,22 +12,15 @@ import { useTopicComment } from './composables/useTopicComment'
 import { COMMENT_STYLES } from './constants/commentStyles'
 import ForumCommentFooter from './ForumCommentFooter.vue'
 
-const props = withDefaults(
-  defineProps<{
-    repo?: ForumAPI.Repo
-    topicId: string
-    topicAuthorId: string | number
-    commentData: ForumAPI.Comment
-    commentPage?: number
-    size?: 'small' | 'normal'
-    commentClickHandler?: () => void
-  }>(),
-  {
-    size: 'normal',
-    repo: 'Feedback',
-    commentPage: 1,
-  },
-)
+const { size = 'normal', repo = 'Feedback', commentPage = 1, commentData, topicAuthorId, commentClickHandler, topicId } = defineProps<{
+  repo?: ForumAPI.Repo
+  topicId: string
+  topicAuthorId: string | number
+  commentData: ForumAPI.Comment
+  commentPage?: number
+  size?: 'small' | 'normal'
+  commentClickHandler?: () => void
+}>()
 
 const emit = defineEmits<{
   'comment:click': [author: ForumAPI.User]
@@ -39,8 +32,8 @@ const {
   content,
   role,
 } = useTopicComment({
-  commentData: props.commentData,
-  topicAuthorId: props.topicAuthorId,
+  commentData,
+  topicAuthorId,
 })
 
 const translatedText = ref('')
@@ -57,37 +50,37 @@ function handleCommentClick(author: ForumAPI.User): void {
 </script>
 
 <template>
-  <div class="topic-comment-item rounded-md flex" :class="[COMMENT_STYLES[props.size].container, { 'comment-normal': props.size === 'normal' }]">
-    <div v-if="props.size !== 'small'" class="comment-avatar mr-2 w-[64px]">
-      <ForumUserHoverCard :user="props.commentData.author">
+  <div class="topic-comment-item rounded-md flex" :class="[COMMENT_STYLES[size].container, { 'comment-normal': size === 'normal' }]">
+    <div v-if="size !== 'small'" class="comment-avatar mr-2 w-[64px]">
+      <ForumUserHoverCard :user="commentData.author">
         <template #trigger>
-          <a class="cursor-pointer" :href="userHref(props.commentData.author.login)" :data-forum-user="props.commentData.author.login">
-            <Avatar data-forum-user-avatar :src="props.commentData.author.avatar" :alt="props.commentData.author.username" :size="COMMENT_STYLES[props.size].avatarSize" />
+          <a class="cursor-pointer" :href="userHref(commentData.author.login)" :data-forum-user="commentData.author.login">
+            <Avatar data-forum-user-avatar :src="commentData.author.avatar" :alt="commentData.author.username" :size="COMMENT_STYLES[size].avatarSize" />
           </a>
         </template>
       </ForumUserHoverCard>
     </div>
-    <div class="comment-main comment-info flex w-[calc(100%-40px)]" :class="COMMENT_STYLES[props.size].contentContainer">
-      <div v-if="props.size !== 'small'" class="title flex" :class="COMMENT_STYLES[props.size].header">
-        <ForumUserHoverCard :user="props.commentData.author">
+    <div class="comment-main comment-info flex w-[calc(100%-40px)]" :class="COMMENT_STYLES[size].contentContainer">
+      <div v-if="size !== 'small'" class="title flex" :class="COMMENT_STYLES[size].header">
+        <ForumUserHoverCard :user="commentData.author">
           <template #trigger>
-            <a class="font-size-3.5" :href="userHref(props.commentData.author.login)">
-              {{ props.commentData.author.username }}
+            <a class="font-size-3.5" :href="userHref(commentData.author.login)">
+              {{ commentData.author.username }}
             </a>
           </template>
         </ForumUserHoverCard>
 
-        <ForumUserAtTag :user="props.commentData.author" class="ml-2" />
+        <ForumUserAtTag :user="commentData.author" class="ml-2" />
       </div>
       <span v-else class="title font-size-xs flex whitespace-nowrap items-baseline">
-        {{ props.commentData.author.username }}
+        {{ commentData.author.username }}
         <!-- 视觉居中：pill 上移使其相对用户名正文对称，同时让 pill 内的文字自身居中（pt+pb 之和不变，pill 高度不变） -->
         <ForumRoleBadge class="translate-y-[-0.75px] important:mb-0 [&>span]:pb-[1.2px] [&>span]:pt-[3.8px]" :type="role" />
         :
       </span>
 
       <ForumTopicTranslator
-        v-if="props.size !== 'small'"
+        v-if="size !== 'small'"
         :content="content.text"
         @translated="showTranslatedContent"
         @close="showingTranslation = false"
@@ -96,21 +89,21 @@ function handleCommentClick(author: ForumAPI.User): void {
       <article
         v-if="content.kind === 'html' && !showingTranslation"
         class="content"
-        :class="COMMENT_STYLES[props.size].content"
+        :class="COMMENT_STYLES[size].content"
         v-html="content.html"
       />
 
       <article
         v-else
         class="content whitespace-pre-wrap"
-        :class="COMMENT_STYLES[props.size].content"
+        :class="COMMENT_STYLES[size].content"
       >
         {{ showingTranslation ? translatedText : content.text }}
       </article>
 
       <ForumImage
-        v-if="props.commentData.content.images && props.size !== 'small'"
-        :images="props.commentData.content.images.map(img => ({
+        v-if="commentData.content.images && size !== 'small'"
+        :images="commentData.content.images.map(img => ({
           src: img.src,
           width: img.width,
           height: img.height,
@@ -123,17 +116,17 @@ function handleCommentClick(author: ForumAPI.User): void {
         :max-display="3"
         :context="{
           kind: 'comment',
-          comment: props.commentData,
-          repo: props.repo,
-          topicAuthorId: props.topicAuthorId,
+          comment: commentData,
+          repo,
+          topicAuthorId,
         }"
         class="mt-4 max-w-[28rem]"
       />
 
-      <div v-if="props.size !== 'small'" class="comment-info mt-2">
+      <div v-if="size !== 'small'" class="comment-info mt-2">
         <ForumCommentFooter
-          :repo="props.repo" :comment-data="props.commentData" :comment-click-handler="props.commentClickHandler"
-          :topic-id="props.topicId" :comment-page="props.commentPage"
+          :repo="repo" :comment-data="commentData" :comment-click-handler="commentClickHandler"
+          :topic-id="topicId" :comment-page="commentPage"
           @comment:click="handleCommentClick"
         />
       </div>
@@ -143,7 +136,7 @@ function handleCommentClick(author: ForumAPI.User): void {
 
     <!-- small 的正文与用户名同行，译文状态行放到该行之外，避免整行宽度被它占满 -->
     <ForumTopicTranslator
-      v-if="props.size === 'small'"
+      v-if="size === 'small'"
       :content="content.text"
       @translated="showTranslatedContent"
       @close="showingTranslation = false"

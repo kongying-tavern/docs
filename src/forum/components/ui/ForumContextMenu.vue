@@ -9,19 +9,17 @@ import { cn } from '@/lib/utils'
 import { defineTopicDropdownMenu } from '~/forum/composables/util/defineTopicDropdownMenu'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'
 
-const props = withDefaults(defineProps<{
+const { menu = [], topicData, class: className } = defineProps<{
   topicData: ForumAPI.Topic
   class?: HTMLAttributes['class']
   menu?: FORUM.TopicDropdownMenu[]
-}>(), {
-  menu: () => [],
-})
+}>()
 
 const { message } = useLocalized()
 // 与「更多操作」三点菜单同源：菜单项直接复用 defineTopicDropdownMenu，
 // 避免在 bento 上重复实现一套话题操作
-const providerMenu = defineTopicDropdownMenu(() => props.topicData, message)
-const items = computed(() => [...props.menu, ...providerMenu.value])
+const providerMenu = defineTopicDropdownMenu(() => topicData, message)
+const items = computed(() => [...menu, ...providerMenu.value])
 </script>
 
 <template>
@@ -31,7 +29,7 @@ const items = computed(() => [...props.menu, ...providerMenu.value])
     </ContextMenuTrigger>
     <ContextMenuContent
       fluid
-      :class="cn('w-max text-nowrap', props.class)"
+      :class="cn('w-max text-nowrap', className)"
     >
       <slot name="menu" />
       <ForumDropdownMenu :items="items" />

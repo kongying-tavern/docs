@@ -35,13 +35,11 @@ export interface PreviewerOptions {
   dots?: boolean
 }
 
-const props = withDefaults(defineProps<{
+const { options = {}, images, context } = defineProps<{
   images: PreviewImage[]
   options?: PreviewerOptions
   context?: PreviewerContext
-}>(), {
-  options: () => ({}),
-})
+}>()
 
 const emit = defineEmits<{
   open: [index: number]
@@ -76,15 +74,15 @@ let closeTimer: number | undefined
 
 /** 委托替换的图片列表（如预览打开后点击侧边面板中的评论图片）；置空则跟随 props */
 const imagesOverride = ref<PreviewImage[] | null>(null)
-const displayImages = computed(() => imagesOverride.value ?? props.images)
+const displayImages = computed(() => imagesOverride.value ?? images)
 
 const total = computed(() => displayImages.value.length)
 const imageAriaLabels = computed(() => displayImages.value.map((_, index) =>
   message.value.forum.imagePreview.showImage.replace('{index}', String(index + 1))))
-const zoomEnabled = computed(() => props.options.zoom !== false)
-const maxZoom = computed(() => props.options.maxZoom ?? 4)
+const zoomEnabled = computed(() => options.zoom !== false)
+const maxZoom = computed(() => options.maxZoom ?? 4)
 const hasPanel = computed(() =>
-  isDesktop.value && visible.value && Boolean(props.context) && !panelCollapsed.value)
+  isDesktop.value && visible.value && Boolean(context) && !panelCollapsed.value)
 
 const imgReady = ref(false)
 const imgStyle = computed(() => {
@@ -290,9 +288,9 @@ function preloadNeighbors(): void {
 }
 
 function openAt(index: number, sourceEl?: Element | null): void {
-  if (tryDelegate(index, props.images))
+  if (tryDelegate(index, images))
     return
-  if (!props.images[index])
+  if (!images[index])
     return
   clearTimeout(closeTimer)
   setSource(sourceEl)
@@ -310,7 +308,7 @@ function openAt(index: number, sourceEl?: Element | null): void {
   visible.value = true
   closing.value = false
   panelOpen.value = true
-  panelEntering.value = isDesktop.value && Boolean(props.context) && !panelCollapsed.value
+  panelEntering.value = isDesktop.value && Boolean(context) && !panelCollapsed.value
   slideDir.value = 0
   prevImg.value = null
   imgReady.value = false
@@ -436,7 +434,7 @@ function handleKeydown(event: KeyboardEvent): void {
   }
 }
 
-watch(() => props.images, () => {
+watch(() => images, () => {
   if (current.value >= total.value)
     current.value = Math.max(total.value - 1, 0)
 })

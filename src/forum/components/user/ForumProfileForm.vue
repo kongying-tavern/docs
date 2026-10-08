@@ -13,37 +13,37 @@ import { USER_PROFILE_FIELDS } from '~/forum/config/userProfile'
 import { syncUserProfileDraft } from '~/forum/services/forumUserProfileOptimistic'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
-const props = withDefaults(defineProps<{
+const { bioOnly = false, user } = defineProps<{
   user: ForumAPI.User
   bioOnly?: boolean
-}>(), { bioOnly: false })
+}>()
 const emit = defineEmits<{ saved: [], submitted: [], failed: [] }>()
 const { message } = useLocalized()
 const userInfo = useUserInfoStore()
 const { save, saving } = useUserProfileEditor()
-const fields = computed(() => USER_PROFILE_FIELDS.filter(field => !props.bioOnly || field.key === 'bio'))
+const fields = computed(() => USER_PROFILE_FIELDS.filter(field => !bioOnly || field.key === 'bio'))
 const keys = computed(() => fields.value.map(field => field.key))
-const original = reactive(Object.fromEntries(keys.value.map(key => [key, props.user[key] ?? ''])))
+const original = reactive(Object.fromEntries(keys.value.map(key => [key, user[key] ?? ''])))
 const draft = reactive({ ...original })
 const error = ref('')
 const saved = ref(false)
 const dirty = computed(() => keys.value.some(key => draft[key] !== original[key]))
-const fieldId = (key: string) => `profile-${props.bioOnly ? 'inline' : 'settings'}-${key}`
+const fieldId = (key: string) => `profile-${bioOnly ? 'inline' : 'settings'}-${key}`
 const form = useTemplateRef<HTMLFormElement>('form')
 const scheduleSave = useDebounceFn(submit, 700)
 // Defer our own optimistic update until it settles; other entry points can
 // refresh untouched inputs without discarding local edits.
 let submitting = false
-watch(() => keys.value.map(key => props.user[key]), async () => {
+watch(() => keys.value.map(key => user[key]), async () => {
   if (submitting)
     return
-  syncUserProfileDraft(draft, original, props.user, keys.value)
+  syncUserProfileDraft(draft, original, user, keys.value)
   await nextTick()
-  if (props.bioOnly)
+  if (bioOnly)
     resizeBio()
 })
 onMounted(() => {
-  if (props.bioOnly) {
+  if (bioOnly) {
     resizeBio()
     form.value?.querySelector('textarea')?.focus()
   }
@@ -58,7 +58,7 @@ function resizeBio(): void {
 }
 
 async function submit(): Promise<void> {
-  if (submitting || saving.value || !dirty.value || userInfo.info?.login !== props.user.login)
+  if (submitting || saving.value || !dirty.value || userInfo.info?.login !== user.login)
     return
   if (!form.value?.checkValidity())
     return
@@ -79,7 +79,7 @@ async function submit(): Promise<void> {
     }
     // The parent may have received another field update while this request ran.
     await nextTick()
-    syncUserProfileDraft(draft, original, props.user, keys.value)
+    syncUserProfileDraft(draft, original, user, keys.value)
     saved.value = true
     if (dirty.value)
       void scheduleSave()
@@ -88,7 +88,7 @@ async function submit(): Promise<void> {
   }
   catch {
     await nextTick()
-    syncUserProfileDraft(draft, original, props.user, keys.value)
+    syncUserProfileDraft(draft, original, user, keys.value)
     error.value = message.value.settings.profile.saveFailed
     emit('failed')
   }

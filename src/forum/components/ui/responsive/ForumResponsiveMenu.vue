@@ -6,7 +6,7 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 
-const props = withDefaults(defineProps<{
+const { items = [], side = 'bottom', disabled = false, title } = defineProps<{
   items?: FORUM.TopicDropdownMenu[]
   /** 抽屉标题，缺省取「更多操作」 */
   title?: string
@@ -14,11 +14,7 @@ const props = withDefaults(defineProps<{
   align?: DropdownMenuContentProps['align']
   /** 空菜单时不渲染整个触发器 */
   disabled?: boolean
-}>(), {
-  items: () => [],
-  side: 'bottom',
-  disabled: false,
-})
+}>()
 defineSlots<{
   /** 触发按钮（完整按钮元素），桌面与移动端共用同一份标记 */
   trigger: () => unknown
@@ -31,14 +27,14 @@ const ForumMenuMobileDrawer = defineAsyncComponent(() => import('./ForumMenuMobi
 const { message } = useLocalized()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
-const hasItems = computed(() => (props.items?.length ?? 0) > 0)
-const drawerTitle = computed(() => props.title ?? message.value.forum.topic.menu.moreActions)
+const hasItems = computed(() => (items?.length ?? 0) > 0)
+const drawerTitle = computed(() => title ?? message.value.forum.topic.menu.moreActions)
 </script>
 
 <template>
   <ForumMenuDesktop
     v-if="!disabled && hasItems && !isMobile"
-    :items="props.items"
+    :items="items"
     :side="side"
     :align="align"
   >
@@ -52,7 +48,7 @@ const drawerTitle = computed(() => props.title ?? message.value.forum.topic.menu
 
   <ForumMenuMobileDrawer
     v-else-if="!disabled && hasItems"
-    :items="props.items"
+    :items="items"
     :title="drawerTitle"
   >
     <template #trigger>

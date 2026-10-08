@@ -25,16 +25,11 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
 import { useTagsInput } from '../composables/useTagsInput'
 
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    max?: number
-    placeholder?: string
-  }>(),
-  {
-    max: VALIDATION_LIMITS.TAGS.MAX_COUNT,
-  },
-)
+const { max = VALIDATION_LIMITS.TAGS.MAX_COUNT } = defineProps<{
+  class?: HTMLAttributes['class']
+  max?: number
+  placeholder?: string
+}>()
 
 const modelValue = defineModel<string[]>({ default: () => [] })
 
@@ -52,7 +47,7 @@ const {
   loadTags,
 } = useTagsInput({
   modelValue,
-  max: props.max,
+  max,
 })
 </script>
 

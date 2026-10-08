@@ -58,21 +58,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<Props>(), {
-  attachments: () => [],
-  replyTarget: '',
-  collapse: true,
-  features: () => ['Upload', 'Emoji', 'Mention', 'Submit'],
-  maxTextLength: 500,
-  disabled: false,
-  toolbarPosition: 'bottom',
-  loading: false,
-  showCharacterCounter: false,
-  autoHideFooter: true,
-  entryAnimation: true,
-  active: true,
-  mentionUsers: () => [],
-})
+const { attachments = [], replyTarget = '', collapse = true, features = ['Upload', 'Emoji', 'Mention', 'Submit'], maxTextLength = 500, disabled = false, toolbarPosition = 'bottom', loading = false, showCharacterCounter = false, autoHideFooter = true, entryAnimation = true, active = true, mentionUsers = [], mobile, class: className, ariaLabel, autofocus } = defineProps<Props>()
 
 const emit = defineEmits<{
   'focus': [event: FocusEvent]
@@ -92,36 +78,36 @@ const { message } = useLocalized()
 const container = useTemplateRef('textarea-container')
 const imageUpload = useTemplateRef<InstanceType<typeof ForumImageUpload>>('imageUpload')
 const [ImageAttachments, AttachmentContent] = createReusableTemplate()
-const hideFooter = ref(props.collapse)
+const hideFooter = ref(collapse)
 const editor = shallowRef<TiptapEditor | null>(null)
 const isEditorFocused = ref(false)
 const mentionDrawerOpen = ref(false)
 const showMentionPicker = ref(false)
 const showEmojiPicker = ref(false)
 const tools = useTemplateRef<InstanceType<typeof ForumEditorTools>>('tools')
-const mentionCandidates = useForumMentionCandidates(() => props.mentionUsers)
+const mentionCandidates = useForumMentionCandidates(() => mentionUsers)
 const mobileMention = useMobileEditorMention(editor, () => mentionCandidates.users.value, (user) => {
   mentionCandidates.remember(user)
   emit('mention:select', user)
-}, () => !!props.mobile)
+}, () => !!mobile)
 let savedSelection: { from: number, to: number } | undefined
 const text = ref('')
-const uploadBusy = computed(() => props.attachments.some(item => item.status === 'queued' || item.status === 'processing' || item.status === 'uploading'))
-const uploadFailed = computed(() => props.attachments.some(item => item.status === 'failed'))
-const submitBlocked = computed(() => props.loading || uploadBusy.value || uploadFailed.value || !text.value.trim())
+const uploadBusy = computed(() => attachments.some(item => item.status === 'queued' || item.status === 'processing' || item.status === 'uploading'))
+const uploadFailed = computed(() => attachments.some(item => item.status === 'failed'))
+const submitBlocked = computed(() => loading || uploadBusy.value || uploadFailed.value || !text.value.trim())
 const uploadStatus = computed(() => uploadFailed.value
   ? message.value.forum.publish.feedbackForm.uploadFailed
   : uploadBusy.value
     ? message.value.forum.publish.feedbackForm.uploadingImages
-        .replace('{settled}', String(props.attachments.filter(item => item.status === 'uploaded').length))
-        .replace('{total}', String(props.attachments.length))
+        .replace('{settled}', String(attachments.filter(item => item.status === 'uploaded').length))
+        .replace('{total}', String(attachments.length))
     : '')
 const queryCache = useQueryCache()
 const emojiPreload = useEmojiPreload()
 
 // ProseMirror 深代理是性能陷阱，编辑器勿改回深响应式 ref；统计值在文档变更时显式同步
 const charCount = ref(0)
-const percentage = computed(() => Math.round((100 / props.maxTextLength) * charCount.value))
+const percentage = computed(() => Math.round((100 / maxTextLength) * charCount.value))
 const { reducedMotion } = useSitePreferences()
 
 function syncEditorStats(ed: TiptapEditor): void {
@@ -131,9 +117,9 @@ function syncEditorStats(ed: TiptapEditor): void {
 
 let autofocusTimer: ReturnType<typeof setTimeout> | undefined
 const shortcutExtension = useForumEditorShortcuts({
-  enabled: () => !props.disabled && !props.loading,
+  enabled: () => !disabled && !loading,
   send: () => {
-    if (!props.features.includes('Submit') || charCount.value === 0)
+    if (!features.includes('Submit') || charCount.value === 0)
       return false
     handleSubmit()
     return true
@@ -150,14 +136,14 @@ onMounted(() => {
       ...createForumContentExtensions({
         getTopics: () => collectForumTopics(queryCache.getEntries({ key: forumKeys.topics() }).map(entry => entry.state.value.data)),
         suggestionRender: createForumSuggestionRenderer(),
-        mentionSuggestionRender: props.mobile ? mobileMention.render : undefined,
+        mentionSuggestionRender: mobile ? mobileMention.render : undefined,
         getMentionUsers: () => mentionCandidates.users.value,
       }),
       shortcutExtension,
-      CharacterCount.configure({ limit: props.maxTextLength }),
+      CharacterCount.configure({ limit: maxTextLength }),
     ],
     content: modelValue.value ?? emptyDoc(),
-    editable: !props.disabled,
+    editable: !disabled,
     autofocus: false,
     enableInputRules: ['topicReference'],
     enablePasteRules: ['topicReference'],
@@ -178,17 +164,17 @@ onMounted(() => {
     },
     onBlur: () => {
       isEditorFocused.value = false
-      if (props.mobile && !mentionDrawerOpen.value)
+      if (mobile && !mentionDrawerOpen.value)
         mobileMention.close()
       emit('blur', new FocusEvent('blur'))
     },
     editorProps: {
       attributes: {
-        'class': cn('outline-none', props.class),
+        'class': cn('outline-none', className),
         // contenteditable div 不是 labelable 元素，<label for> 关联不上，需要显式补语义
         'role': 'textbox',
         'aria-multiline': 'true',
-        ...(props.ariaLabel ? { 'aria-label': props.ariaLabel } : {}),
+        ...(ariaLabel ? { 'aria-label': ariaLabel } : {}),
       },
     },
   })
@@ -196,7 +182,7 @@ onMounted(() => {
   syncEditorStats(editor.value)
 
   // 按需聚焦输入框（不触发浏览器滚动到该元素；延迟避开 Dialog 打开动画的焦点接管）
-  if (props.autofocus) {
+  if (autofocus) {
     nextTick(() => {
       autofocusTimer = setTimeout(() => {
         editor.value?.view.dom.focus({ preventScroll: true })
@@ -206,12 +192,12 @@ onMounted(() => {
 })
 
 onClickOutside(container, () => {
-  if (props.autoHideFooter && charCount.value === 0 && !showMentionPicker.value && !showEmojiPicker.value)
+  if (autoHideFooter && charCount.value === 0 && !showMentionPicker.value && !showEmojiPicker.value)
     hideFooter.value = true
 })
 
 function handleEmojiSelect(emoji: EmojiItem): void {
-  if (props.disabled || props.loading)
+  if (disabled || loading)
     return
   hideFooter.value = false
   restoreSelection()
@@ -228,7 +214,7 @@ function handleEmojiSelect(emoji: EmojiItem): void {
 }
 
 function handleMentionSelect(user: ForumAPI.User): void {
-  if (props.disabled || props.loading)
+  if (disabled || loading)
     return
   hideFooter.value = false
   restoreSelection()
@@ -253,17 +239,17 @@ function handlePaste(event: ClipboardEvent): void {
   // The existing attachment component handles paste inside its own drop zone.
   if (event.target instanceof Element && event.target.closest('.forum-image-upload'))
     return
-  if (!props.disabled && !props.loading && props.features.includes('Upload') && event.clipboardData)
+  if (!disabled && !loading && features.includes('Upload') && event.clipboardData)
     emitFiles([...event.clipboardData.files])
 }
 
 const { isOverDropZone } = useForumImageDropZone(container, {
-  disabled: computed(() => props.disabled || props.loading || !props.features.includes('Upload')),
+  disabled: computed(() => disabled || loading || !features.includes('Upload')),
   onFiles: emitFiles,
 })
 
 function handleSubmit(): void {
-  if (!props.disabled && !submitBlocked.value)
+  if (!disabled && !submitBlocked.value)
     emit('submit')
 }
 
@@ -277,12 +263,12 @@ watch(modelValue, (value) => {
   }
 }, { deep: true })
 
-watch(() => props.disabled, (disabled) => {
+watch(() => disabled, (disabled) => {
   editor.value?.setEditable(!disabled)
 })
 
-watch(() => [props.disabled, props.loading], () => {
-  if (props.disabled || props.loading) {
+watch(() => [disabled, loading], () => {
+  if (disabled || loading) {
     showEmojiPicker.value = false
     showMentionPicker.value = false
   }
@@ -290,12 +276,12 @@ watch(() => [props.disabled, props.loading], () => {
 
 function restoreEditorFocus(event: Event): void {
   event.preventDefault()
-  if (!props.disabled && !props.loading)
+  if (!disabled && !loading)
     editor.value?.view.dom.focus({ preventScroll: true })
 }
 
 function focus(): void {
-  if (!props.disabled && props.active)
+  if (!disabled && active)
     editor.value?.view.dom.focus({ preventScroll: true })
 }
 function restoreSelection(): void {
@@ -305,15 +291,15 @@ function restoreSelection(): void {
   }
 }
 function openTool(tool: 'emoji' | 'mention'): void {
-  if (props.mobile && tool === 'mention') {
+  if (mobile && tool === 'mention') {
     mobileMention.begin()
     return
   }
-  if (props.mobile)
+  if (mobile)
     mobileMention.close()
   if (editor.value)
     savedSelection = { from: editor.value.state.selection.from, to: editor.value.state.selection.to }
-  if (props.mobile) {
+  if (mobile) {
     editor.value?.commands.blur()
   }
 }
@@ -324,7 +310,7 @@ function closeTool(restoreFocus = true): void {
   if (restoreFocus)
     focus()
 }
-watch(() => props.active, (active) => {
+watch(() => active, (active) => {
   if (!active) {
     tools.value?.close()
     mobileMention.close()
@@ -332,7 +318,7 @@ watch(() => props.active, (active) => {
   }
 })
 function activateTool(tool: 'emoji' | 'mention' | 'upload'): void {
-  if (props.disabled || props.loading || !props.mobile)
+  if (disabled || loading || !mobile)
     return
   hideFooter.value = false
   if (tool === 'upload')

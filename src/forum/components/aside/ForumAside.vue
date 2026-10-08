@@ -6,16 +6,12 @@ import ForumAsideHomeResources from './ForumAsideHomeResources.vue'
 import ForumAsideLoginPrompt from './ForumAsideLoginPrompt.vue'
 import ForumAsideMeta from './ForumAsideMeta.vue'
 
-withDefaults(defineProps<{
+const { recentUpdates = false, tagFilter = false, username = null } = defineProps<{
   topic?: ForumAPI.Topic | null
   recentUpdates?: boolean
   tagFilter?: boolean
   username?: string | null
-}>(), {
-  recentUpdates: false,
-  tagFilter: false,
-  username: null,
-})
+}>()
 const ForumAsideContact = defineAsyncComponent(() => import('./ForumAsideContact.vue'))
 const ForumAsideRelatedTopics = defineAsyncComponent(() => import('./ForumAsideRelatedTopics.vue'))
 const ForumAsideTopicTimeline = defineAsyncComponent(() => import('./ForumAsideTopicTimeline.vue'))

@@ -12,7 +12,7 @@ import { useLocalized } from '@/hooks/useLocalized'
 import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import ForumEditorToolIcon from './ForumEditorToolIcon.vue'
 
-const props = withDefaults(defineProps<{
+const { imageCount = 0, disabled } = defineProps<{
   features: string[]
   mobile?: boolean
   mentionActive?: boolean
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<{
   imageCount?: number
   status?: string
   mentionUsers: ForumAPI.User[]
-}>(), { imageCount: 0 })
+}>()
 const emit = defineEmits<{
   'emoji': [emoji: EmojiItem]
   'mention': [user: ForumAPI.User]
@@ -59,7 +59,7 @@ function close(restoreFocus = true): void {
   activeTool.value = null
   emit('tool-close', restoreFocus)
 }
-watch(() => props.disabled, disabled => disabled && (activeTool.value = null))
+watch(() => disabled, disabled => disabled && (activeTool.value = null))
 watch(emojiOpen, open => open && emit('tool-open', 'emoji'))
 watch(mentionOpen, open => open && emit('tool-open', 'mention'))
 defineExpose({ close, open: toggle })

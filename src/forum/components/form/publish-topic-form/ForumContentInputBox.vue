@@ -23,7 +23,7 @@ import { createForumSuggestionRenderer } from '~/forum/tiptap/forumSuggestionRen
 
 defineOptions({ inheritAttrs: false })
 
-const props = withDefaults(defineProps<{
+const { supportDrop = true, supportPaste, imageSelectionDisabled, placeholder, id, ariaInvalid, ariaLabel, ariaDescribedby, class: className } = defineProps<{
   id?: string
   class?: HTMLAttributes['class']
   placeholder?: string
@@ -36,9 +36,7 @@ const props = withDefaults(defineProps<{
   ariaLabel?: string
   ariaDescribedby?: string
   borderless?: boolean
-}>(), {
-  supportDrop: true,
-})
+}>()
 
 const emits = defineEmits<{
   'paste-files': [files: File[]]
@@ -120,7 +118,7 @@ function restoreEditorFocus(event: Event): void {
 }
 
 function handlePaste(event: ClipboardEvent): void {
-  if (!props.supportPaste || !event.clipboardData)
+  if (!supportPaste || !event.clipboardData)
     return
   const files = [...event.clipboardData.files]
   if (files.length)
@@ -129,7 +127,7 @@ function handlePaste(event: ClipboardEvent): void {
 
 const dropZone = useTemplateRef<HTMLElement>('drop-zone')
 const { isOverDropZone } = useForumImageDropZone(dropZone, {
-  disabled: () => !props.supportPaste || !props.supportDrop || props.imageSelectionDisabled,
+  disabled: () => !supportPaste || !supportDrop || imageSelectionDisabled,
   onFiles: files => emits('paste-files', files),
 })
 
@@ -142,7 +140,7 @@ onMounted(() => {
         getTopics: getLoadedTopics,
         suggestionRender: createForumSuggestionRenderer(),
       }),
-      Placeholder.configure({ placeholder: props.placeholder }),
+      Placeholder.configure({ placeholder }),
     ],
     content: forumTextToEditorDoc(modelValue.value || ''),
     enableInputRules: ['blockquote', 'bold', 'bulletList', 'code', 'italic', 'orderedList', 'strike', 'topicReference'],
@@ -157,12 +155,12 @@ onMounted(() => {
     editorProps: {
       attributes: {
         'class': 'outline-none min-h-inherit',
-        ...(props.id ? { id: props.id } : {}),
+        ...(id ? { id } : {}),
         'role': 'textbox',
         'aria-multiline': 'true',
-        'aria-invalid': String(Boolean(props.ariaInvalid)),
-        ...(props.ariaLabel ? { 'aria-label': props.ariaLabel } : {}),
-        'aria-describedby': props.ariaDescribedby || '',
+        'aria-invalid': String(Boolean(ariaInvalid)),
+        ...(ariaLabel ? { 'aria-label': ariaLabel } : {}),
+        'aria-describedby': ariaDescribedby || '',
       },
     },
   })
@@ -176,7 +174,7 @@ watch(modelValue, (value) => {
 
 onBeforeUnmount(() => editor.value?.destroy())
 
-watch(() => [props.ariaInvalid, props.ariaLabel, props.ariaDescribedby] as const, ([invalid, label, describedby]) => {
+watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label, describedby]) => {
   editor.value?.setOptions({ editorProps: { attributes: {
     ...editor.value.options.editorProps.attributes,
     'aria-invalid': String(Boolean(invalid)),
@@ -229,7 +227,7 @@ watch(() => [props.ariaInvalid, props.ariaLabel, props.ariaDescribedby] as const
             v-if="editor"
             data-clarity-mask="true"
             :editor="(editor as InstanceType<typeof Editor>)"
-            :class="cn('forum-rich-editor custom-scrollbar h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', props.class)"
+            :class="cn('forum-rich-editor custom-scrollbar h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', className)"
           />
         </div>
         <slot name="after-editor" />

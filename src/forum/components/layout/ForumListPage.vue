@@ -28,20 +28,11 @@ interface Props {
   showToolbar?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  loading: false,
-  loadingMore: false,
-  canLoadMore: false,
-  loadStateMessage: 'Loading...',
-  filter: 'all',
-  topicType: 'all',
-  sort: 'created',
-  showToolbar: true,
-})
+const { loading = false, loadingMore = false, canLoadMore = false, loadStateMessage = 'Loading...', filter = 'all', topicType = 'all', sort = 'created', showToolbar = true, renderData } = defineProps<Props>()
 
 const emit = defineEmits<{ login: [] }>()
 
-const isInitialLoading = computed(() => props.loading && props.renderData.length === 0)
+const isInitialLoading = computed(() => loading && renderData.length === 0)
 </script>
 
 <template>

@@ -14,21 +14,18 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<
+const { side = 'bottom', menu = [], topicData } = defineProps<
   {
     topicData: ForumAPI.Topic
     class?: HTMLAttributes['class']
     menu?: FORUM.TopicDropdownMenu[]
   } & DropdownMenuContentProps
->(), {
-  side: 'bottom',
-  menu: () => [],
-})
+>()
 
 const { message } = useLocalized()
-const providerMenu = defineTopicDropdownMenu(() => props.topicData, message)
+const providerMenu = defineTopicDropdownMenu(() => topicData, message)
 const dropdownMenu = computed(() => providerMenu.value)
-const items = computed(() => [...props.menu, ...dropdownMenu.value])
+const items = computed(() => [...menu, ...dropdownMenu.value])
 </script>
 
 <template>

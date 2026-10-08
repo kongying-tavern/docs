@@ -15,11 +15,7 @@ interface Props {
   interactive?: boolean
 }
 
-withDefaults(defineProps<Props>(), {
-  menu: () => [],
-  showMenu: true,
-  interactive: true,
-})
+const { menu = [], showMenu = true, interactive = true } = defineProps<Props>()
 
 const { userHref } = useForumRoute()
 </script>

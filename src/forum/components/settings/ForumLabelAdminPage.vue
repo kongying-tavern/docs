@@ -23,11 +23,9 @@ import { toast } from '~/services/telemetry/toast'
 import ForumLabelFormDialog from './ForumLabelFormDialog.vue'
 import ForumLabelGroupTable from './ForumLabelGroupTable.vue'
 
-withDefaults(defineProps<{
+const { embedded = false } = defineProps<{
   embedded?: boolean
-}>(), {
-  embedded: false,
-})
+}>()
 
 const { message } = useLocalized()
 const router = useRouter()

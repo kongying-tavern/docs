@@ -36,14 +36,17 @@ interface Props {
   railMaxHeight?: number
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  layout: 'auto',
-  maxDisplay: 3,
-  containerClass: '',
-  imageClass: '',
-  previewEnabled: true,
-  rowMaxHeight: 200,
-})
+const {
+  layout = 'auto',
+  maxDisplay = 3,
+  containerClass = '',
+  imageClass = '',
+  previewEnabled = true,
+  rowMaxHeight = 200,
+  images,
+  railMaxHeight,
+  adaptiveRow,
+} = defineProps<Props>()
 
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()
@@ -52,18 +55,18 @@ const readyMap = ref(new Set<number>())
 const naturalSizes = ref(new Map<number, { width: number, height: number }>())
 // 相同位置、相同地址的缩略图会复用组件，不会再次发出 ready；保留它们的加载状态。
 // 地址变化或位置变化的图片会重新挂载，只清理这些下标的记录。
-watch(() => props.images.map(image => image.src), (sources, previousSources) => {
+watch(() => images.map(image => image.src), (sources, previousSources) => {
   const retained = (index: number) => sources[index] !== undefined && sources[index] === previousSources[index]
   errorMap.value = new Set([...errorMap.value].filter(retained))
   readyMap.value = new Set([...readyMap.value].filter(retained))
   naturalSizes.value = new Map([...naturalSizes.value].filter(([index]) => retained(index)))
 })
-const availableImages = computed(() => props.images
+const availableImages = computed(() => images
   .map((image, sourceIndex) => ({ image, sourceIndex })))
 
 const actualLayout = computed<Exclude<LayoutMode, 'auto'>>(() => {
-  if (props.layout !== 'auto')
-    return props.layout
+  if (layout !== 'auto')
+    return layout
 
   const count = availableImages.value.length
   const layoutMap: Record<number, Exclude<LayoutMode, 'auto'>> = {
@@ -92,11 +95,11 @@ useBounceScroll(railRef, { axis: 'x' })
 
 const isAdaptiveGrid = computed(() => !isRail.value && (
   actualLayout.value === 'thumbnail'
-  || (props.layout === 'auto' && availableImages.value.length > 1)
+  || (layout === 'auto' && availableImages.value.length > 1)
 ))
 const adaptiveImages = computed(() => availableImages.value.slice(
   0,
-  actualLayout.value === 'thumbnail' ? Math.min(props.maxDisplay, 4) : 4,
+  actualLayout.value === 'thumbnail' ? Math.min(maxDisplay, 4) : 4,
 ))
 const adaptiveAspect = computed(() => actualLayout.value === 'thumbnail'
   ? 1
@@ -109,7 +112,7 @@ const adaptivePlan = computed(() => planForumImageGrid(
 const displayImages = computed(() => {
   const layout = actualLayout.value
   if (layout === 'row')
-    return availableImages.value.slice(0, props.maxDisplay)
+    return availableImages.value.slice(0, maxDisplay)
   if (isAdaptiveGrid.value)
     return adaptivePlan.value.order.map(index => adaptiveImages.value[index])
   if (isRail.value)
@@ -150,7 +153,7 @@ const railHeight = computed(() => {
 function railItemStyle(): Record<string, string> | undefined {
   if (!isRail.value)
     return undefined
-  return { height: `${Math.min(railHeight.value, props.railMaxHeight ?? Number.POSITIVE_INFINITY)}px` }
+  return { height: `${Math.min(railHeight.value, railMaxHeight ?? Number.POSITIVE_INFINITY)}px` }
 }
 
 function railStep(): number {
@@ -190,7 +193,7 @@ watch([railCount, isRail], ([count, rail]) => {
 const remainingCount = computed(() => {
   const layout = actualLayout.value
   if (layout === 'row')
-    return Math.max(0, availableImages.value.length - props.maxDisplay)
+    return Math.max(0, availableImages.value.length - maxDisplay)
   if (isAdaptiveGrid.value)
     return Math.max(0, availableImages.value.length - adaptiveImages.value.length)
   if (isRail.value)
@@ -204,9 +207,9 @@ const previewImages = computed(() => availableImages.value.filter(({ sourceIndex
 const validImages = computed(() => previewImages.value.map(({ image }) => image))
 const rowContainerStyle = computed<Record<string, string> | undefined>(() =>
   !isRail.value && actualLayout.value === 'row'
-    ? props.adaptiveRow
+    ? adaptiveRow
       ? (() => {
-          const plan = planForumImageRow(displayImages.value.map(({ image, sourceIndex }) => naturalSizes.value.get(sourceIndex) ?? image), layoutWidth.value, props.rowMaxHeight)
+          const plan = planForumImageRow(displayImages.value.map(({ image, sourceIndex }) => naturalSizes.value.get(sourceIndex) ?? image), layoutWidth.value, rowMaxHeight)
           return { gridTemplateColumns: plan.columns, height: `${plan.height}px`, width: `${plan.width}px`, maxWidth: '100%' }
         })()
       : { '--forum-image-columns': String(Math.max(1, displayImages.value.length)) }
@@ -242,7 +245,7 @@ const layoutConfig = computed(() => {
 
   // @unocss-include
   const containerStyles: Record<string, string> = {
-    row: props.adaptiveRow ? 'forum-image-row grid gap-2' : 'forum-image-row grid gap-2 max-w-[80%]',
+    row: adaptiveRow ? 'forum-image-row grid gap-2' : 'forum-image-row grid gap-2 max-w-[80%]',
     gallery: 'grid grid-cols-2 grid-rows-2 gap-0 max-h-[400px] rounded-lg overflow-hidden',
     single: 'grid grid-cols-1 max-h-[500px] gap-0',
     double: 'grid grid-cols-2 gap-0 max-h-[400px]',
@@ -265,7 +268,7 @@ const layoutConfig = computed(() => {
     if (isRail.value)
       return 'w-[78vw] max-w-[420px] shrink-0 snap-start rounded-xl'
     if (layout === 'row')
-      return props.adaptiveRow ? 'h-full min-h-0 min-w-0 rounded-lg bg-[var(--vp-c-bg-soft)]' : 'h-100px min-w-0 rounded'
+      return adaptiveRow ? 'h-full min-h-0 min-w-0 rounded-lg bg-[var(--vp-c-bg-soft)]' : 'h-100px min-w-0 rounded'
     const cornerClass = cornerStyles[layout]?.[index] ?? ''
     return `${baseStyles} ${cornerClass}`
   }

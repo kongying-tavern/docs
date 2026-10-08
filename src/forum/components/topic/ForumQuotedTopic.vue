@@ -4,11 +4,9 @@ import { computed } from 'vue'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
 import ForumQuotedTopicCard from './ForumQuotedTopicCard.vue'
 
-const props = withDefaults(defineProps<{ reference: ForumAPI.QuotedTopicReference, compact?: boolean }>(), {
-  compact: false,
-})
-const query = useForumTopicQuery(() => props.reference.id)
-const topic = computed(() => String(query.data.value?.id ?? '') === props.reference.id
+const { compact = false, reference } = defineProps<{ reference: ForumAPI.QuotedTopicReference, compact?: boolean }>()
+const query = useForumTopicQuery(() => reference.id)
+const topic = computed(() => String(query.data.value?.id ?? '') === reference.id
   ? query.data.value
   : undefined)
 </script>

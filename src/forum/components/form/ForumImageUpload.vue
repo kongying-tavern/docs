@@ -10,7 +10,7 @@ import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDro
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import { formatMessage } from '~/utils/formatMessage'
 
-const props = withDefaults(defineProps<{
+const { disabled = false, hideDefaultTrigger = false, size = 'xl', attachments, class: className } = defineProps<{
   attachments: ImageAttachment[]
   disabled?: boolean
   hideDefaultTrigger?: boolean
@@ -19,11 +19,7 @@ const props = withDefaults(defineProps<{
   cardPreview?: boolean
   hideHint?: boolean
   previewMaxHeight?: number
-}>(), {
-  disabled: false,
-  hideDefaultTrigger: false,
-  size: 'xl',
-})
+}>()
 
 const emit = defineEmits<{
   'files-selected': [files: File[]]
@@ -31,13 +27,13 @@ const emit = defineEmits<{
   'retry': [id: string]
 }>()
 
-const atLimit = computed(() => props.attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT)
-const selectionDisabled = computed(() => props.disabled || atLimit.value)
+const atLimit = computed(() => attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT)
+const selectionDisabled = computed(() => disabled || atLimit.value)
 const input = useTemplateRef<HTMLInputElement>('input')
 const dropZone = useTemplateRef<HTMLElement>('drop-zone')
 const { message } = useLocalized()
 const [DefineActions, Actions] = createReusableTemplate<{ attachment: ImageAttachment, index: number }>()
-const previewImages = computed(() => props.attachments.map(attachment => ({
+const previewImages = computed(() => attachments.map(attachment => ({
   src: attachment.previewUrl,
   alt: attachment.file?.name || attachment.savedImage?.alt || '',
   width: attachment.thumbHash?.originalWidth ?? attachment.savedImage?.width,
@@ -48,7 +44,7 @@ const previewSizeClass = computed(() => ({
   sm: 'size-20',
   lg: 'size-28',
   xl: 'size-32',
-})[props.size])
+})[size])
 
 function emitFiles(files: File[]): void {
   if (!selectionDisabled.value && files.length)
@@ -70,7 +66,7 @@ async function removeAttachment(id: string, index: number): Promise<void> {
   emit('remove', id)
   await nextTick()
 
-  const nextAttachment = props.attachments[Math.min(index, props.attachments.length - 1)]
+  const nextAttachment = attachments[Math.min(index, attachments.length - 1)]
   const nextButton = nextAttachment
     ? dropZone.value?.querySelector<HTMLButtonElement>(`[data-attachment-id="${CSS.escape(nextAttachment.id)}"] [data-remove-image]`)
     : undefined
@@ -79,7 +75,7 @@ async function removeAttachment(id: string, index: number): Promise<void> {
 }
 
 const { isOverDropZone } = useForumImageDropZone(dropZone, {
-  disabled: computed(() => selectionDisabled.value || props.hideDefaultTrigger),
+  disabled: computed(() => selectionDisabled.value || hideDefaultTrigger),
   onFiles: emitFiles,
 })
 
@@ -150,7 +146,7 @@ defineExpose({ open })
   <section
     ref="drop-zone"
     class="forum-image-upload mt-2"
-    :class="props.class"
+    :class="className"
     tabindex="0"
     :aria-label="message.forum.publish.feedbackForm.attachmentsLabel"
     @paste="handlePaste"

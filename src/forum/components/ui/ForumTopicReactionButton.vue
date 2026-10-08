@@ -7,14 +7,12 @@ import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useTopicsReaction } from '~/forum/composables/data/useTopicsReaction'
 
-const props = withDefaults(defineProps<{
+const { autoload = true, topicId, refetchOnMount } = defineProps<{
   topicId: string
   autoload?: boolean
   /** 组件挂载时强制重新拉取（无论缓存是否新鲜），用于详情页每次打开都计一次浏览量 */
   refetchOnMount?: 'always' | boolean
-}>(), {
-  autoload: true,
-})
+}>()
 const { message } = useLocalized()
 const {
   data: reactionData,
@@ -24,12 +22,12 @@ const {
   setReactionState,
   reactionSubmitLoading,
   viewerReady,
-} = useTopicsReaction(() => props.topicId, () => props.autoload, { refetchOnMount: props.refetchOnMount })
+} = useTopicsReaction(() => topicId, () => autoload, { refetchOnMount })
 
 const reactionState = computed(() => reactionData.value?.state ?? null)
 const likeCount = computed(() => reactionData.value?.data.likeCount ?? 0)
 const loadFailed = computed(() => Boolean(error.value) && !reactionData.value)
-const loading = computed(() => !reactionData.value && (!viewerReady.value || isLoading.value || !props.autoload))
+const loading = computed(() => !reactionData.value && (!viewerReady.value || isLoading.value || !autoload))
 const disabled = computed(() => !reactionData.value || reactionSubmitLoading.value)
 
 function handleReaction(state: INTER_KNOT.ReactionState) {
