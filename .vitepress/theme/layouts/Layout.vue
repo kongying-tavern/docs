@@ -132,6 +132,13 @@ provide('toggle-appearance', toggleTheme)
   transform: none !important;
 }
 
+/* VPContent 默认是块级盒子，弹性链缺了这一环：.Forum 与 .forum-entry 的 flex-grow
+   取不到整页高度，非全屏的启动遮罩会缩到内容高，logo 停在页顶而非视口中央。 */
+.Layout.Forum .VPContent {
+  display: flex;
+  flex-direction: column;
+}
+
 /* 论坛页二级导航隐藏“回到顶部”，该区域留给移动端创建反馈按钮 */
 .Layout.Forum .VPLocalNav .VPLocalNavOutlineDropdown {
   display: none;
