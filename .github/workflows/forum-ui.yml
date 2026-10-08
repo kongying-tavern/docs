@@ -3,10 +3,10 @@ name: Forum UI
 on:
   push:
     branches: [main]
-    paths: ['src/**', '.vitepress/**', 'tests/e2e/**', 'tests/forum/**', vitest.config.ts, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, .github/workflows/forum-ui.yml, '.github/actions/setup/**', vite.config.ts, unocss.config.ts, .nvmrc, .python-version, requirements.txt, 'scripts/fonts/**', 'scripts/font_subset/**', scripts/buildFonts.ts]
+    paths: ['src/**', '.vitepress/**', 'tests/e2e/**', 'tests/forum/**', 'tests/theme/**', vitest.config.ts, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, .github/workflows/forum-ui.yml, '.github/actions/setup/**', vite.config.ts, unocss.config.ts, .nvmrc, .python-version, requirements.txt, 'scripts/fonts/**', 'scripts/font_subset/**', scripts/buildFonts.ts]
   pull_request:
     branches: [main]
-    paths: ['src/**', '.vitepress/**', 'tests/e2e/**', 'tests/forum/**', vitest.config.ts, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, .github/workflows/forum-ui.yml, '.github/actions/setup/**', vite.config.ts, unocss.config.ts, .nvmrc, .python-version, requirements.txt, 'scripts/fonts/**', 'scripts/font_subset/**', scripts/buildFonts.ts]
+    paths: ['src/**', '.vitepress/**', 'tests/e2e/**', 'tests/forum/**', 'tests/theme/**', vitest.config.ts, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, .github/workflows/forum-ui.yml, '.github/actions/setup/**', vite.config.ts, unocss.config.ts, .nvmrc, .python-version, requirements.txt, 'scripts/fonts/**', 'scripts/font_subset/**', scripts/buildFonts.ts]
   workflow_dispatch:
 
 permissions:
@@ -26,6 +26,9 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm typecheck:forum:ui
       - run: pnpm test:forum:ui
+      - run: pnpm test:theme:ui
+        env:
+          SWIPE_BROWSER_CHANNEL: chromium
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
