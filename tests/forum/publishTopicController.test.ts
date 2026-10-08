@@ -1,14 +1,74 @@
-import type { PublishTopicPresentation } from '../../src/forum/components/form/composables/usePublishTopicController'
-import type { UploadImageAttachmentsResult } from '../../src/forum/services/form/imageAttachment'
-import type { TopicFormData } from '../../src/forum/services/form/validation'
+import type { PublishTopicPresentation } from '~/forum/components/form/composables/usePublishTopicController'
+import type { UploadImageAttachmentsResult } from '~/forum/services/form/imageAttachment'
+import type { TopicFormData } from '~/forum/services/form/validation'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
-import { runInNewContext } from 'node:vm'
-import ts from 'typescript'
 import { test, vi } from 'vitest'
-import * as Vue from 'vue'
-import { useTopicDraftPersistence } from '../../src/forum/components/form/composables/useTopicDraftPersistence'
-import { resolvePublishTopicType } from '../../src/forum/services/form/publishTopicEntry'
+import { effectScope, reactive, ref, shallowRef } from 'vue'
+import { usePublishTopicController } from '~/forum/components/form/composables/usePublishTopicController'
+
+const mocks = vi.hoisted(() => ({
+  drafts: new Map<string, unknown>(),
+  exitHandlers: new Map<string, (event: BeforeUnloadEvent) => void>(),
+  hashHandler: undefined as undefined | ((hash: string) => unknown),
+  state: undefined as unknown,
+  formSubmit: undefined as unknown,
+  userInfo: undefined as unknown as { info?: { login: string }, refreshUserInfo: () => Promise<void> },
+}))
+
+// The composable runs outside a component instance, where the real hook only warns.
+vi.mock('vue', async importOriginal => ({
+  ...await importOriginal<typeof import('vue')>(),
+  onBeforeUnmount() {},
+}))
+vi.mock('@vueuse/core', async importOriginal => ({
+  ...await importOriginal<typeof import('@vueuse/core')>(),
+  useEventListener: (event: string, handler: (event: BeforeUnloadEvent) => void) => mocks.exitHandlers.set(event, handler),
+}))
+vi.mock('@/hooks/useLocalized', async () => {
+  const { ref } = await import('vue')
+  return { useLocalized: () => ({ message: ref({ forum: { publish: { feedbackForm: {} } } }) }) }
+})
+vi.mock('~/forum/api/gitee', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/api/gitee')>(),
+  isPhoneBindingRequiredError: () => false,
+}))
+vi.mock('~/forum/components/utils/submitFormUi', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/components/utils/submitFormUi')>(),
+  formatImageAttachmentError: () => '',
+}))
+vi.mock('~/forum/composables/data/useForumQueries', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/composables/data/useForumQueries')>(),
+  useForumTopicQuery: () => ({ data: ref(undefined), error: ref(null), isLoading: ref(false) }),
+}))
+vi.mock('~/forum/hooks/useHashChecker', () => ({ useHashChecker: (_hash: unknown, handler: (hash: string) => unknown) => mocks.hashHandler = handler }))
+vi.mock('~/forum/services/form/topicDraft', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/services/form/topicDraft')>(),
+  readTopicDraft: (type: TopicFormData['type']) => mocks.drafts.get(type),
+  readSavedTopicDrafts: () => [...mocks.drafts.values()],
+}))
+vi.mock('~/forum/services/forumTopicQuote', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/services/forumTopicQuote')>(),
+  isQuotableTopicType: () => true,
+  readQuotedTopicRequest: () => undefined,
+  clearQuotedTopicRequest: () => {},
+}))
+vi.mock('~/forum/services/loginIntent', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/services/loginIntent')>(),
+  rememberLoginIntent: () => {},
+}))
+vi.mock('~/forum/stores/auth/useUserAuth', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/stores/auth/useUserAuth')>(),
+  useUserAuthStore: () => ({ isTokenValid: true }),
+}))
+vi.mock('~/forum/stores/auth/useUserInfo', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/stores/auth/useUserInfo')>(),
+  useUserInfoStore: () => mocks.userInfo,
+}))
+// The real telemetry tree imports Vue components, which this Node-only suite cannot load.
+vi.mock('~/services/telemetry', () => ({ OpsEvents: {}, reportError() {}, trackOp() {} }))
+vi.mock('~/services/telemetry/toast', () => ({ toast: { loading() {}, success() {}, error() {}, dismiss() {} } }))
+vi.mock('~/forum/components/form/composables/useFormState', () => ({ useFormState: () => mocks.state }))
+vi.mock('~/forum/components/form/composables/useFormSubmit', () => ({ useFormSubmit: () => mocks.formSubmit }))
 
 function deferred<T>() {
   let resolve!: (value: T) => void
@@ -25,20 +85,18 @@ function runtime(options: { settleUploads?: () => Promise<UploadImageAttachments
     ['BUG', { type: 'BUG', title: '', text: 'BUG content', tags: ['PLATFORM_PC'] }],
     ['FEAT', { type: 'FEAT', title: 'Feature title', text: 'FEAT content', tags: ['PLATFORM_PC'] }],
   ])
-  const formData = Vue.shallowRef(drafts.get('BUG')!)
-  const isOpen = Vue.ref(true)
-  const submitLoading = Vue.ref(false)
+  const formData = shallowRef(drafts.get('BUG')!)
+  const isOpen = ref(true)
+  const submitLoading = ref(false)
   const submission = deferred<{ ok: true, topic: { id: string } }>()
   const validation = deferred<{ valid: boolean, errors: Record<string, string> }>()
   const resetTypes: TopicFormData['type'][] = []
   const initializedTypes: TopicFormData['type'][] = []
-  let hashHandler!: (hash: string) => unknown
   let submitCalls = 0
   const setFormType = (type: TopicFormData['type']) => formData.value = drafts.get(type)!
-  const queue = { attachments: Vue.ref([]), retry: async () => ({ ok: true }), serializedAttachments: Vue.ref([]), settleUploads: options.settleUploads ?? (async () => ({ ok: true })) }
-  const exitHandlers = new Map<string, (event: BeforeUnloadEvent) => void>()
+  const queue = { attachments: ref([]), retry: async () => ({ ok: true }), serializedAttachments: ref([]), settleUploads: options.settleUploads ?? (async () => ({ ok: true })) }
   const savedDrafts: Array<{ type: string, text: string }> = []
-  const userInfo = Vue.reactive<{ info?: { login: string }, refreshUserInfo: () => Promise<void> }>({
+  const userInfo = reactive<{ info?: { login: string }, refreshUserInfo: () => Promise<void> }>({
     info: options.accountReady ? undefined : { login: 'alice' },
     refreshUserInfo: async () => {
       await options.accountReady
@@ -48,12 +106,12 @@ function runtime(options: { settleUploads?: () => Promise<UploadImageAttachments
   const state = {
     formData,
     isOpen,
-    formTabs: Vue.ref([]),
-    tabList: Vue.ref(['BUG', 'FEAT']),
-    nextTab: Vue.ref(undefined),
-    hasPermission: Vue.ref(false),
-    isDirty: Vue.ref(false),
-    savedAttachments: Vue.ref([]),
+    formTabs: ref([]),
+    tabList: ref(['BUG', 'FEAT']),
+    nextTab: ref(undefined),
+    hasPermission: ref(false),
+    isDirty: ref(false),
+    savedAttachments: ref([]),
     setFormType,
     switchTab: () => setFormType('FEAT'),
     openForm: (type?: TopicFormData['type']) => {
@@ -79,71 +137,38 @@ function runtime(options: { settleUploads?: () => Promise<UploadImageAttachments
     deleteDraft: () => {},
   }
   const noop = () => {}
-  const dependencies: Record<string, unknown> = {
-    'vue': { ...Vue, onBeforeUnmount: noop },
-    '@vueuse/core': { useEventListener: (event: string, handler: (event: BeforeUnloadEvent) => void) => exitHandlers.set(event, handler) },
-    '@/hooks/useLocalized': { useLocalized: () => ({ message: Vue.ref({ forum: { publish: { feedbackForm: {} } } }) }) },
-    '~/forum/stores/auth/useUserAuth': { useUserAuthStore: () => ({ isTokenValid: true }) },
-    '~/forum/stores/auth/useUserInfo': { useUserInfoStore: () => userInfo },
-    './useFormState': { useFormState: () => state },
-    './useTopicDraftPersistence': { useTopicDraftPersistence },
-    './useFormSubmit': { useFormSubmit: () => ({
-      submitLoading,
-      attachments: Vue.ref([]),
-      serializedAttachments: Vue.ref([]),
-      progress: Vue.ref({ total: 0, settled: 0 }),
-      handleSubmit: async () => {
-        submitCalls++
-        submitLoading.value = true
-        try {
-          return await submission.promise
-        }
-        finally {
-          submitLoading.value = false
-        }
-      },
-      reset: (type = formData.value.type) => resetTypes.push(type),
-      getQueue: () => queue,
-      addFiles: noop,
-      remove: noop,
-      retry: noop,
-      restore: noop,
-      settleUploads: noop,
-    }) },
-    '~/forum/hooks/useHashChecker': { useHashChecker: (_hash: unknown, handler: typeof hashHandler) => hashHandler = handler },
-    '~/forum/services/form/publishTopicEntry': { resolvePublishTopicType },
-    '~/forum/services/form/topicDraft': { readTopicDraft: (type: TopicFormData['type']) => drafts.get(type), readSavedTopicDrafts: () => [...drafts.values()] },
-    '~/forum/composables/data/useForumQueries': { useForumTopicQuery: () => ({ data: Vue.ref(undefined), error: Vue.ref(null), isLoading: Vue.ref(false) }) },
-    '~/forum/services/forumTopicQuote': { readQuotedTopicRequest: noop, clearQuotedTopicRequest: noop, isQuotableTopicType: () => true, QUOTED_TOPIC_ID_PARAM: 'quote', QUOTED_TOPIC_TYPE_PARAM: 'quote-type' },
-    '~/forum/services/loginIntent': { rememberLoginIntent: noop },
-    '~/forum/components/utils/submitFormUi': { formatImageAttachmentError: noop },
-    '~/forum/api/gitee': { isPhoneBindingRequiredError: () => false },
-    '~/services/telemetry': { OpsEvents: {}, reportError: noop, trackOp: noop },
-    '~/services/telemetry/toast': { toast: { loading: noop, success: noop, error: noop, dismiss: noop } },
-    '~/utils/formatMessage': { formatMessage: noop },
-    '../publish-topic-form/config': { FORM_HASH: 'PUBLISH-TOPIC' },
-  }
-  const source = readFileSync(new URL('../../src/forum/components/form/composables/usePublishTopicController.ts', import.meta.url), 'utf8')
-  const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
-  const module = { exports: {} as typeof import('../../src/forum/components/form/composables/usePublishTopicController') }
-  runInNewContext(code, {
-    module,
-    exports: module.exports,
-    require: (name: string) => {
-      assert.ok(name in dependencies, `Unexpected controller dependency: ${name}`)
-      return dependencies[name]
+  mocks.drafts = drafts as unknown as Map<string, unknown>
+  mocks.exitHandlers.clear()
+  mocks.hashHandler = undefined
+  mocks.state = state
+  mocks.userInfo = userInfo
+  mocks.formSubmit = {
+    submitLoading,
+    attachments: ref([]),
+    serializedAttachments: ref([]),
+    progress: ref({ total: 0, settled: 0 }),
+    handleSubmit: async () => {
+      submitCalls++
+      submitLoading.value = true
+      try {
+        return await submission.promise
+      }
+      finally {
+        submitLoading.value = false
+      }
     },
-    structuredClone,
-    Date,
-    setTimeout,
-    clearTimeout,
-    URL,
-    console,
-    window: { location: { href: 'http://localhost/forum' }, history: {} },
-  })
-  const scope = Vue.effectScope()
-  const controller = scope.run(() => module.exports.usePublishTopicController(() => options.presentation ?? null, undefined, () => typeof options.draftsEnabled === 'function' ? options.draftsEnabled() : options.draftsEnabled ?? true))!
-  return { controller, drafts, formData, state, savedDrafts, exit: (event: string, payload = new Event(event, { cancelable: true })) => exitHandlers.get(event)!(payload as BeforeUnloadEvent), isOpen, validation, submission, resetTypes, initializedTypes, hash: (hash: string) => hashHandler(hash), submitCalls: () => submitCalls, dispose: () => scope.stop() }
+    reset: (type = formData.value.type) => resetTypes.push(type),
+    getQueue: () => queue,
+    addFiles: noop,
+    remove: noop,
+    retry: noop,
+    restore: noop,
+    settleUploads: noop,
+  }
+  vi.stubGlobal('window', { location: { href: 'http://localhost/forum' }, history: {} })
+  const scope = effectScope()
+  const controller = scope.run(() => usePublishTopicController(() => options.presentation ?? null, undefined, () => typeof options.draftsEnabled === 'function' ? options.draftsEnabled() : options.draftsEnabled ?? true))!
+  return { controller, drafts, formData, state, savedDrafts, exit: (event: string, payload = new Event(event, { cancelable: true })) => mocks.exitHandlers.get(event)!(payload as BeforeUnloadEvent), isOpen, validation, submission, resetTypes, initializedTypes, hash: (hash: string) => mocks.hashHandler!(hash), submitCalls: () => submitCalls, dispose: () => scope.stop() }
 }
 
 test('validation and publication lock hash entries, reopening and every form-type action', async () => {

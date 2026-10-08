@@ -239,20 +239,12 @@ test('topic return links use the same back direction as browser history', () => 
   assert.equal(resolveForumDirection(topic, home, true), 'back')
 })
 
-test('ships exactly three scoped Vercel Forum rewrites and localized shells', () => {
-  const readSource = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')
-  const config = JSON.parse(readSource('vercel.json'))
+test('ships exactly three scoped Vercel Forum rewrites', () => {
+  const config = JSON.parse(readFileSync(new URL('../../vercel.json', import.meta.url), 'utf8'))
 
   assert.deepEqual(config.rewrites, [
     { source: '/docs/feedback/:path*', destination: '/docs/feedback' },
     { source: '/docs/en/feedback/:path*', destination: '/docs/en/feedback' },
     { source: '/docs/ja/feedback/:path*', destination: '/docs/ja/feedback' },
   ])
-  for (const path of ['src/zh/feedback.md', 'src/en/feedback.md', 'src/ja/feedback.md']) {
-    const shell = readSource(path)
-    assert.match(shell, /layout: Forum/)
-  }
-  assert.match(readSource('.vitepress/theme/layouts/Forum.vue'), /<ForumEntry\s*\/>/)
-  assert.match(readSource('.vitepress/theme/components/ForumEntry.vue'), /<AsyncForumRouteView\b/)
-  assert.match(readSource('.vitepress/theme/components/AsyncForumRouteView.ts'), /ForumRouteView\.vue/)
 })

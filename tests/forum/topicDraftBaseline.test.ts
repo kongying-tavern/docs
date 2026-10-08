@@ -1,60 +1,79 @@
-import type { TopicFormData } from '../../src/forum/services/form/validation'
+import type { TopicFormData } from '~/forum/services/form/validation'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
-import { runInNewContext } from 'node:vm'
-import ts from 'typescript'
-import { useForm } from 'vee-validate'
-import { test } from 'vitest'
-import * as Vue from 'vue'
+import { test, vi } from 'vitest'
+import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import * as draftStorage from '../../src/forum/services/form/topicDraft'
+import { useFormState } from '~/forum/components/form/composables/useFormState'
+import * as draftStorage from '~/forum/services/form/topicDraft'
+
+const mocks = vi.hoisted(() => ({
+  resets: 0,
+  form: undefined as undefined | ReturnType<typeof import('vee-validate').useForm<TopicFormData>>,
+}))
+
+vi.mock('vee-validate', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('vee-validate')>()
+  return {
+    ...actual,
+    useForm: (options: Parameters<typeof actual.useForm<TopicFormData>>[0]) => {
+      const form = actual.useForm<TopicFormData>(options)
+      mocks.form = form
+      const reset = form.resetForm
+      return {
+        ...form,
+        resetForm: (...args: Parameters<typeof reset>) => {
+          mocks.resets++
+          reset(...args)
+        },
+      }
+    },
+  }
+})
+vi.mock('@/hooks/useLocalized', async () => {
+  const { ref } = await import('vue')
+  return { useLocalized: () => ({ message: ref({}) }) }
+})
+vi.mock('~/forum/composables/auth/useRuleChecks', async () => {
+  const { ref } = await import('vue')
+  return { useRuleChecks: () => ({ hasAnyPermissions: () => ref(false) }) }
+})
+vi.mock('~/forum/services/form/validation', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/services/form/validation')>(),
+  createTopicFormSchema: () => undefined,
+  getAllowedTopicTypes: () => ['BUG', 'FEAT'],
+}))
+vi.mock('~/forum/components/form/publish-topic-form/form-config', async importOriginal => ({
+  ...await importOriginal<typeof import('~/forum/components/form/publish-topic-form/form-config')>(),
+  getFormTabsConfig: () => [],
+}))
 
 async function setup(draftsEnabled = true) {
   const storage = new Map<string, string>()
   const previous = Object.getOwnPropertyDescriptor(globalThis, 'localStorage')
+  let storageFails = false
   Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: {
     getItem: (key: string) => storage.get(key) ?? null,
-    setItem: (key: string, value: string) => storage.set(key, value),
-    removeItem: (key: string) => storage.delete(key),
-  } })
-  draftStorage.writeTopicDraft('BUG', { type: 'BUG', title: '', text: 'stored compact draft', tags: [] })
-  let form!: ReturnType<typeof useForm<TopicFormData>>
-  let resets = 0
-  let storageFails = false
-  const dependencies: Record<string, unknown> = {
-    'vue': Vue,
-    'vee-validate': { useForm: (options: Parameters<typeof useForm<TopicFormData>>[0]) => {
-      form = useForm<TopicFormData>(options)
-      const reset = form.resetForm
-      return { ...form, resetForm: (...args: Parameters<typeof reset>) => {
-        resets++
-        reset(...args)
-      } }
-    } },
-    '@/hooks/useLocalized': { useLocalized: () => ({ message: Vue.ref({}) }) },
-    '~/forum/composables/auth/useRuleChecks': { useRuleChecks: () => ({ hasAnyPermissions: () => Vue.ref(false) }) },
-    '~/forum/services/form/topicDraft': { ...draftStorage, writeTopicDraft: (...args: Parameters<typeof draftStorage.writeTopicDraft>) => {
+    setItem: (key: string, value: string) => {
       if (storageFails)
         throw new Error('Storage full')
-      draftStorage.writeTopicDraft(...args)
-    } },
-    '~/forum/services/form/validation': { createTopicFormSchema: () => undefined, getAllowedTopicTypes: () => ['BUG', 'FEAT'] },
-    '../publish-topic-form/config': { getFormTabsConfig: () => [] },
-  }
-  const source = readFileSync(new URL('../../src/forum/components/form/composables/useFormState.ts', import.meta.url), 'utf8')
-  const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
-  const module = { exports: {} as typeof import('../../src/forum/components/form/composables/useFormState') }
-  runInNewContext(code, { module, exports: module.exports, require: (name: string) => dependencies[name] })
-  let state!: ReturnType<typeof module.exports.useFormState>
-  const app = Vue.createSSRApp({ setup() {
-    state = module.exports.useFormState(() => draftsEnabled)
+      storage.set(key, value)
+    },
+    removeItem: (key: string) => storage.delete(key),
+  } })
+  mocks.resets = 0
+  mocks.form = undefined
+  draftStorage.writeTopicDraft('BUG', { type: 'BUG', title: '', text: 'stored compact draft', tags: [] })
+
+  let state!: ReturnType<typeof useFormState>
+  const app = createSSRApp({ setup() {
+    state = useFormState(() => draftsEnabled)
     return () => null
   } })
   await renderToString(app)
   return {
     state,
-    form,
-    resets: () => resets,
+    form: mocks.form!,
+    resets: () => mocks.resets,
     failStorage: () => storageFails = true,
     dispose: () => {
       if (previous)

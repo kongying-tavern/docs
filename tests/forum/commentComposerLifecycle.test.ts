@@ -1,11 +1,47 @@
-import type ForumAPI from '../../src/forum/api/types'
+import type ForumAPI from '~/forum/api/types'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
-import { runInNewContext } from 'node:vm'
-import ts from 'typescript'
-import { test } from 'vitest'
-import * as Vue from 'vue'
-import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
+import { test, vi } from 'vitest'
+import { effectScope } from 'vue'
+import { useCommentComposer } from '~/forum/components/comment/composables/useCommentComposer'
+
+type UploadImpl = (file: File, options?: { signal?: AbortSignal }) => Promise<ForumAPI.Image>
+
+const mocks = vi.hoisted(() => ({
+  upload: (async () => {
+    throw new Error('upload not configured')
+  }) as UploadImpl,
+  revoked: [] as string[],
+}))
+
+vi.mock('@vueuse/core', async importOriginal => ({
+  ...await importOriginal<typeof import('@vueuse/core')>(),
+  useEventListener() {},
+}))
+vi.mock('@/hooks/useLocalized', async () => {
+  const { ref } = await import('vue')
+  return { useLocalized: () => ({ message: ref({}) }) }
+})
+vi.mock('~/forum/composables/data/useForumMutations', async () => {
+  const { ref } = await import('vue')
+  return { useForumCommentMutations: () => ({ creatingComment: ref(false) }) }
+})
+vi.mock('~/forum/composables/data/useForumPersonalState', () => ({ useForumPersonalState: () => ({}) }))
+vi.mock('~/forum/hooks/useLogin', () => ({ default: () => ({ logout() {}, redirectAuth() {} }) }))
+vi.mock('~/forum/stores/auth/useUserAuth', () => ({ useUserAuthStore: () => ({}) }))
+vi.mock('~/forum/stores/auth/useUserInfo', () => ({ useUserInfoStore: () => ({}) }))
+// The real toast module renders a Vue component, which this Node-only suite cannot load.
+vi.mock('~/services/telemetry/toast', () => ({ toast: { warning() {}, error() {}, success() {}, loading() {}, dismiss() {} } }))
+vi.mock('~/forum/composables/view/useImageAttachmentQueue', async (importOriginal) => {
+  const { useImageAttachmentQueue } = await importOriginal<typeof import('~/forum/composables/view/useImageAttachmentQueue')>()
+  return {
+    useImageAttachmentQueue: () => useImageAttachmentQueue({
+      upload: (file, uploadOptions) => mocks.upload(file, uploadOptions),
+      optimize: async file => file,
+      createPreviewUrl: () => 'blob:comment-image',
+      revokePreviewUrl: url => mocks.revoked.push(url),
+    }),
+  }
+})
 
 test('disposing the comment composer cancels its upload and releases local image previews', async () => {
   let signal: AbortSignal | undefined
@@ -13,59 +49,21 @@ test('disposing the comment composer cancels its upload and releases local image
   const pending = new Promise<ForumAPI.Image>((done) => {
     resolve = done
   })
-  const revoked: string[] = []
-  const dependencies: Record<string, unknown> = {
-    'vue': Vue,
-    '@vueuse/core': { useEventListener() {} },
-    '@/hooks/useLocalized': { useLocalized: () => ({ message: Vue.ref({}) }) },
-    '~/apis/interknot.site/upload': { uploadImg() {} },
-    '~/forum/api/gitee': {},
-    '~/forum/composables/data/useForumMutations': { useForumCommentMutations: () => ({ creatingComment: Vue.ref(false) }) },
-    '~/forum/composables/data/useForumPersonalState': { useForumPersonalState: () => ({}) },
-    '~/forum/composables/view/calculateThumbHashForFile': {},
-    '~/forum/composables/view/useImageAttachmentQueue': {
-      useImageAttachmentQueue: () => useImageAttachmentQueue({
-        upload: async (_file, options) => {
-          signal = options?.signal
-          return pending
-        },
-        optimize: async file => file,
-        createPreviewUrl: () => 'blob:comment-image',
-        revokePreviewUrl: url => revoked.push(url),
-      }),
-    },
-    '~/forum/hooks/useLogin': { default: () => ({}) },
-    '~/forum/services/commentTransaction': {},
-    '~/forum/services/form/validation': {},
-    '~/forum/services/forumConfig': { VALIDATION_LIMITS: { CONTENT: { MAX_LENGTH: 2000 } } },
-    '~/forum/stores/auth/useUserAuth': { useUserAuthStore: () => ({}) },
-    '~/forum/stores/auth/useUserInfo': { useUserInfoStore: () => ({}) },
-    '~/services/telemetry': {},
-    '~/services/telemetry/pageAlert': {},
-    '~/services/telemetry/toast': {},
-    '~/utils/formatMessage': {},
-    '../../utils/submitFormUi': {},
+  mocks.revoked.length = 0
+  mocks.upload = async (_file, options) => {
+    signal = options?.signal
+    return pending
   }
-  const source = readFileSync(new URL('../../src/forum/components/comment/composables/useCommentComposer.ts', import.meta.url), 'utf8')
-  const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText
-  const module = { exports: {} as typeof import('../../src/forum/components/comment/composables/useCommentComposer') }
-  runInNewContext(code, {
-    module,
-    exports: module.exports,
-    require: (name: string) => {
-      assert.ok(name in dependencies, `Unexpected composer dependency: ${name}`)
-      return dependencies[name]
-    },
-  })
-  const scope = Vue.effectScope()
-  const composer = scope.run(() => module.exports.useCommentComposer({ repo: 'Feedback', topicId: '123' }, () => {}))!
+
+  const scope = effectScope()
+  const composer = scope.run(() => useCommentComposer({ repo: 'Feedback', topicId: '123' }, () => {}))!
   await composer.addFiles([new File(['image'], 'comment.png', { type: 'image/png' })])
   await Promise.resolve()
   assert.equal(signal?.aborted, false)
   assert.equal(composer.queue.attachments.value.length, 1)
   scope.stop()
   assert.equal(signal?.aborted, true)
-  assert.deepEqual(revoked, ['blob:comment-image'])
+  assert.deepEqual(mocks.revoked, ['blob:comment-image'])
   assert.deepEqual(composer.queue.attachments.value, [])
   resolve({ state: true, message: '', data: { id: 'late', link: 'https://assets.example/late', fileSize: 1, originName: 'late' } })
   await composer.queue.settleUploads()
