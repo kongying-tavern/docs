@@ -157,6 +157,7 @@ function commentCount(topic: ForumAPI.Topic): number {
   color: var(--vp-c-text-2);
   font-size: calc(12px * var(--site-ui-scale));
   line-height: calc(18px * var(--site-ui-scale));
+  font-variant-numeric: tabular-nums;
 }
 
 .related-meta > span {

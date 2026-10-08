@@ -154,7 +154,7 @@ onMounted(() => {
           <p class="text-sm text-[var(--vp-c-text-2)]">
             {{ message.forum.labelAdmin.description }}
           </p>
-          <p v-if="!isLoading && !loadError" class="text-xs text-[var(--vp-c-text-3)]">
+          <p v-if="!isLoading && !loadError" class="text-xs text-[var(--vp-c-text-3)] tabular-nums">
             {{ message.forum.labelAdmin.count.replace('{count}', String(totalCount)) }}
           </p>
         </div>

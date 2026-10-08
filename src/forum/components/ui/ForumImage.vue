@@ -350,7 +350,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
 
               <div
                 v-if="index === displayImages.length - 1 && remainingCount > 0"
-                class="text-xs text-[var(--forum-media-on-overlay)] px-1.5 py-0.5 rounded bg-[var(--forum-media-overlay)] right-1 top-1 absolute backdrop-blur-sm"
+                class="text-xs text-[var(--forum-media-on-overlay)] px-1.5 py-0.5 rounded bg-[var(--forum-media-overlay)] right-1 top-1 absolute backdrop-blur-sm tabular-nums"
               >
                 +{{ remainingCount }}
               </div>

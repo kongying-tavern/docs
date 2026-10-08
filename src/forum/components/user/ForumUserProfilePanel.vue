@@ -115,7 +115,7 @@ onBeforeUnmount(() => {
               <div class="font-size-3.5 c-[--vp-c-text-3] mt-3 flex flex-wrap gap-4 sm:mt-4 sm:gap-6">
                 <div class="flex gap-2 items-center">
                   <i class="i-lucide-file-text" />
-                  <span>{{ topicCount }}</span>
+                  <span class="tabular-nums">{{ topicCount }}</span>
                   <span>{{ message.forum.labels.posts }}</span>
                 </div>
                 <div class="flex gap-2 items-center">

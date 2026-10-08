@@ -116,6 +116,7 @@ for (const prop in props) {
 <template>
   <time
     v-bind="dataset"
+    class="tabular-nums"
     :datetime="isoDate"
     :title="title"
   >{{ formattedDate }}</time>

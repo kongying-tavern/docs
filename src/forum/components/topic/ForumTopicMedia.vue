@@ -60,7 +60,7 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
 
       <span
         v-if="hasMultipleImages"
-        class="font-size-xs text-[var(--forum-media-on-overlay)] p-1 rounded-2px bg-[var(--forum-media-overlay)] flex h-18px items-center right-1 top-1 justify-center absolute"
+        class="font-size-xs text-[var(--forum-media-on-overlay)] p-1 rounded-2px bg-[var(--forum-media-overlay)] flex h-18px items-center right-1 top-1 justify-center absolute tabular-nums"
       >
         <span class="i-lucide-image mr-1 bg-[var(--forum-media-on-overlay)] size-3" />
         {{ imageCount }}

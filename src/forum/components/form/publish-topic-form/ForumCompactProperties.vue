@@ -42,7 +42,7 @@ function selectReference(id: string, type: string) {
         <Button id="tags" type="button" variant="secondary" size="xs" class="rounded-full" :disabled="disabled" v-bind="$attrs">
           <TagsIcon data-icon="inline-start" />
           <span class="max-w-40 truncate">{{ tagsModel.length === 1 ? getLocalizedTagName(tagsModel[0]) : copy.selectTags }}</span>
-          <span v-if="tagsModel.length > 1">{{ tagsModel.length }}</span>
+          <span v-if="tagsModel.length > 1" class="tabular-nums">{{ tagsModel.length }}</span>
           <ChevronDownIcon data-icon="inline-end" />
         </Button>
       </PopoverTrigger>

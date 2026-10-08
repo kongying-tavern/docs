@@ -117,7 +117,7 @@ function previewStatus(row: ForumLabelRow): ForumAPI.TopicStatus | undefined {
                   aria-hidden="true"
                 />
                 {{ groupLabel(entry.group) }}
-                <span class="text-xs text-[var(--vp-c-text-3)] font-normal ml-0.5">
+                <span class="text-xs text-[var(--vp-c-text-3)] font-normal ml-0.5 tabular-nums">
                   {{ entry.rows.length }}
                 </span>
               </span>

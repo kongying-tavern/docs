@@ -101,7 +101,7 @@ watch(() => [props.targetId, props.targetReady] as const, async ([commentId, rea
   <div v-if="!closed" ref="area" class="forum-comment-surface" :class="{ 'pb-24': presentation === 'page', 'mobile-comment-surface': mobile }">
     <p v-if="presentation !== 'inline'" id="reply" class="font-(size-5 --vp-font-family-subtitle) line-height-[21px]" :class="presentation === 'embedded' ? 'mb-3 mt-0' : 'mb-5.5 mt-4'">
       {{ message.forum.comment.commentCount }}
-      <span class="font-size-3.5 color-[var(--vp-c-text-3)] vertical-text-top">{{ count }}</span>
+      <span class="font-size-3.5 color-[var(--vp-c-text-3)] vertical-text-top tabular-nums">{{ count }}</span>
     </p>
     <div ref="inputAnchor" :style="docked && !mobileFixed ? { minHeight: `${inputHeight}px` } : undefined">
       <Teleport to="body" :disabled="!mobileFixed">

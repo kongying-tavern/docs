@@ -497,6 +497,8 @@ onBeforeUnmount(() => {
 }
 
 .character-count {
+  font-variant-numeric: tabular-nums;
+
   svg {
     color: var(--vp-c-green-3);
   }
