@@ -244,14 +244,12 @@ defineExpose({
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .search-field,
-  .search-field-trigger,
-  .search-field-control,
-  .search-field :deep(.search-field-token) {
-    animation: none;
-    transition: none;
-  }
+html[data-reduced-motion='true'] .search-field,
+html[data-reduced-motion='true'] .search-field-trigger,
+html[data-reduced-motion='true'] .search-field-control,
+html[data-reduced-motion='true'] .search-field :deep(.search-field-token) {
+  animation: none;
+  transition: none;
 }
 
 @media (max-width: 767px) {
@@ -356,9 +354,7 @@ defineExpose({
   outline-offset: -2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :deep(.search-field-result) {
-    transition: none;
-  }
+html[data-reduced-motion='true'] :deep(.search-field-result) {
+  transition: none;
 }
 </style>

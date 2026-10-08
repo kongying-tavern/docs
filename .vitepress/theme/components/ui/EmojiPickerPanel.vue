@@ -236,12 +236,10 @@ function deleteRecentEmoji(emoji: string) {
   display: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .emoji-shift-enter-active,
-  .emoji-shift-leave-active,
-  .emoji-shift-move {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .emoji-shift-enter-active,
+html[data-reduced-motion='true'] .emoji-shift-leave-active,
+html[data-reduced-motion='true'] .emoji-shift-move {
+  transition: none;
 }
 .emoji-panel-compact .emoji-list,
 .emoji-panel-compact .emoji-grid-inner {

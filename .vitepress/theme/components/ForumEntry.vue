@@ -79,9 +79,7 @@ onBeforeUnmount(() => {
   opacity: 0;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-startup-leave-active {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .forum-startup-leave-active {
+  transition: none;
 }
 </style>

@@ -24,10 +24,8 @@
   transform: translateY(-4px);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .search-panel-enter-active,
-  .search-panel-leave-active {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .search-panel-enter-active,
+html[data-reduced-motion='true'] .search-panel-leave-active {
+  transition: none;
 }
 </style>

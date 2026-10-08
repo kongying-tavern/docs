@@ -43,9 +43,7 @@ const { theme } = useData()
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .forum-loading-logo {
-    animation: none;
-  }
+html[data-reduced-motion='true'] .forum-loading-logo {
+  animation: none;
 }
 </style>

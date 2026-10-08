@@ -225,10 +225,8 @@ onMounted(() => {
   object-fit: cover;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .fey-cards,
-  .fey-card-surface {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .fey-cards,
+html[data-reduced-motion='true'] .fey-card-surface {
+  transition: none;
 }
 </style>

@@ -133,11 +133,9 @@ watch(() => route.path, () => pageAlert.clear())
   transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .page-alert-enter-active,
-  .page-alert-leave-active,
-  .page-alert-move {
-    transition: none;
-  }
+html[data-reduced-motion='true'] .page-alert-enter-active,
+html[data-reduced-motion='true'] .page-alert-leave-active,
+html[data-reduced-motion='true'] .page-alert-move {
+  transition: none;
 }
 </style>
