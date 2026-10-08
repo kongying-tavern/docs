@@ -1,4 +1,5 @@
 import { currentUser, localAuth } from './fixtures/gitee'
+import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules'
 import { expect, test } from './support/test'
 
 test('mobile notifications stay at the top center and desktop preferences survive resizing', async ({ page }) => {
@@ -14,6 +15,7 @@ test('mobile notifications stay at the top center and desktop preferences surviv
     location.hash = 'settings/notifications'
   })
   await expect(page.getByRole('combobox', { name: '显示位置', exact: true })).toBeVisible()
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.info('通知位置回归', { report: false })
@@ -56,6 +58,7 @@ test('narrow error notifications keep trace copying and retry within the card', 
   await page.setViewportSize({ width: 320, height: 700 })
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE, '/components/telemetry/TelemetryToastDescription.vue')
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     const { default: Description } = await import('/components/telemetry/TelemetryToastDescription.vue')

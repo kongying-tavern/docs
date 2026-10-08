@@ -1,3 +1,5 @@
+import { DEFAULT_TOAST_DURATION } from '../../src/config/settingsOptions'
+import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules'
 import { expect, test } from './support/test'
 
 async function swipeToast(page: import('@playwright/test').Page, notification: import('@playwright/test').Locator) {
@@ -21,29 +23,50 @@ test('mobile burst gives each notification its full display duration', async ({ 
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
+
+  // A paused clock makes the queue timeline exact and fast. install() alone still
+  // lets real time through; pauseAt() is what freezes it.
+  await page.clock.install()
+  await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 50)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.info('第一条', { report: false })
     setTimeout(() => toast.warning('第二条', { report: false }), 350)
     setTimeout(() => toast.success('第三条'), 700)
   })()`)
+
   const front = page.locator('[data-sonner-toast][data-visible=true]')
+  const lifetime = DEFAULT_TOAST_DURATION
+  let elapsed = 0
+  const advanceTo = async (target: number) => {
+    await page.clock.runFor(target - elapsed)
+    elapsed = target
+  }
+
+  await advanceTo(700)
   await expect(front).toContainText('第一条')
-  await page.waitForTimeout(1200)
+  // The burst must not shorten the first notification inside its lifetime.
+  await advanceTo(lifetime - 1)
   await expect(front).toContainText('第一条')
-  await expect(front).toContainText('第二条', { timeout: 6000 })
-  await page.waitForTimeout(1200)
+  await advanceTo(lifetime + 1)
   await expect(front).toContainText('第二条')
-  await expect(front).toContainText('第三条', { timeout: 6000 })
-  await page.waitForTimeout(1200)
+  await advanceTo(2 * lifetime - 1)
+  await expect(front).toContainText('第二条')
+  await advanceTo(2 * lifetime + 1)
   await expect(front).toContainText('第三条')
-  await expect(front).toHaveCount(0, { timeout: 6000 })
+  await advanceTo(3 * lifetime - 1)
+  await expect(front).toContainText('第三条')
+  // Sonner unmounts a closed notification on its own timer after the exit animation.
+  await advanceTo(3 * lifetime + 500)
+  await expect(page.locator('[data-sonner-toast]')).toHaveCount(0)
 })
 
 test('mobile queue advances through actions and touch dismissal', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.success('已移除', { action: { label: '撤销', onClick: () => {} } })
@@ -66,6 +89,7 @@ test('mobile diagnostics remain readable after the originating toast is dismisse
   await page.setViewportSize({ width: 320, height: 700 })
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.error('评论发送失败', {
@@ -160,6 +184,7 @@ test('mobile errors persist and explicit expiry still wins', async ({ page }) =>
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.error('需要处理的错误', { report: false, id: 'persistent-error' })
@@ -189,6 +214,7 @@ test('desktop error layout and configured timing stay unchanged after mobile use
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await page.setViewportSize({ width: 1280, height: 900 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.error('桌面错误回归', {
@@ -216,6 +242,7 @@ test('same-id updates do not duplicate notifications and mobile exposes one at a
   await page.setViewportSize({ width: 360, height: 740 })
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.error('待处理错误', { id: 'first-error', report: false })
@@ -255,6 +282,7 @@ test('large text and long actions remain reachable in a short mobile viewport', 
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await page.evaluate(() => document.documentElement.style.setProperty('--site-ui-scale', '2'))
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.error('网络连接中断，请稍后再试', {
@@ -282,6 +310,7 @@ test('mobile actions reuse Button colors and exit without scrollbars', async ({ 
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
+  await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.success('已移除', { action: { label: '撤销', onClick: () => {} } })
