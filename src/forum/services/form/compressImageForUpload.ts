@@ -48,7 +48,8 @@ export async function compressImageForUpload(file: File): Promise<File> {
       maxWidth: 4096,
       maxHeight: 4096,
       convertSize: Number.POSITIVE_INFINITY,
-      success(result) {
+      success(result: File | Blob) {
+        // CompressorJS 的 File 构造失败时会回落 Blob，其 .d.ts 未覆盖该分支。
         const compressed = result instanceof File
           ? result
           : new File([result], file.name, {
