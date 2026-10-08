@@ -56,6 +56,6 @@ function updateValue(value: unknown): void {
 .select-option-icon {
   flex: none;
   color: var(--vp-c-text-2);
-  font-size: calc(16px * var(--site-ui-scale));
+  @apply text-base;
 }
 </style>

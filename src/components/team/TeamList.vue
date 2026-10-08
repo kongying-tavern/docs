@@ -85,14 +85,14 @@ defineProps<{
 }
 
 .title {
-  font-size: calc(20px * var(--site-ui-scale));
+  @apply text-ui-20;
   font-weight: 500;
 }
 
 .lead {
   padding-top: 8px;
-  line-height: calc(24px * var(--site-ui-scale));
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply leading-ui-24;
+  @apply text-ui-14;
   font-weight: 500;
   color: var(--vp-c-text-2);
 }

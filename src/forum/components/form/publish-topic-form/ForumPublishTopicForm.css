@@ -223,12 +223,12 @@
     border-radius: 1rem 1rem 0 0;
     overflow: clip;
     font-family: var(--vp-font-family-base);
-    font-size: calc(14px * var(--site-ui-scale));
+    font-size: var(--text-ui-14-fontSize);
     line-height: 1.5;
   }
 
   .feedback-drawer [data-slot='drawer-title'] {
-    font-size: calc(20px * var(--site-ui-scale));
+    font-size: var(--text-ui-20-fontSize);
     font-weight: 600;
     line-height: 1.2;
     text-wrap: balance;
@@ -240,7 +240,7 @@
 
   .feedback-drawer [data-slot='tabs-trigger'] {
     color: oklch(var(--muted-foreground));
-    font-size: calc(14px * var(--site-ui-scale));
+    font-size: var(--text-ui-14-fontSize);
     font-weight: 500;
     line-height: 1.5;
   }
@@ -251,13 +251,13 @@
   }
 
   .feedback-drawer [data-slot='form-label'] {
-    font-size: calc(14px * var(--site-ui-scale));
+    font-size: var(--text-ui-14-fontSize);
     font-weight: 600;
     line-height: 1.5;
   }
 
   .feedback-drawer :is(input, .forum-rich-editor) {
-    font-size: calc(16px * var(--site-ui-scale));
+    font-size: var(--text-ui-16-fontSize);
     font-weight: 400;
     line-height: 1.5;
   }
@@ -265,19 +265,19 @@
   .feedback-drawer input::placeholder,
   .feedback-drawer .tiptap p.is-editor-empty:first-child::before {
     color: oklch(var(--muted-foreground));
-    font-size: calc(14px * var(--site-ui-scale));
+    font-size: var(--text-ui-14-fontSize);
     font-weight: 400;
     line-height: 1.5;
   }
 
   .feedback-drawer :is([data-slot='form-message'], .forum-image-upload p, .validation-summary) {
-    font-size: calc(12px * var(--site-ui-scale));
+    font-size: var(--text-ui-12-fontSize);
     font-weight: 400;
     line-height: 1.5;
   }
 
   .feedback-drawer [type='submit'] {
-    font-size: calc(14px * var(--site-ui-scale));
+    font-size: var(--text-ui-14-fontSize);
     font-weight: 600;
     line-height: 1.5;
   }

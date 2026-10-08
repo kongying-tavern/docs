@@ -29,8 +29,8 @@ function startOAuthLogin(): void {
 p {
   margin: 0;
   color: var(--vp-c-text-2);
-  font-size: calc(13px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
+  @apply text-ui-13;
+  @apply leading-ui-20;
   text-wrap: pretty;
 }
 

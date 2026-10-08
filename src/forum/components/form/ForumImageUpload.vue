@@ -112,7 +112,7 @@ defineExpose({ open })
   <DefineActions v-slot="{ attachment, index }">
     <div v-if="attachment.status === 'failed'" class="bg-[var(--forum-media-overlay-strong)] flex flex-col gap-1 items-center inset-0 justify-center absolute">
       <span class="i-lucide-circle-alert bg-[var(--forum-media-on-overlay)] size-4" aria-hidden="true" />
-      <span class="text-[var(--forum-media-on-overlay)] leading-none font-medium text-ui-10">
+      <span class="text-ui-10 text-[var(--forum-media-on-overlay)] leading-none font-medium">
         {{ message.forum.publish.feedbackForm.uploadFailedShort }}
       </span>
       <button
@@ -251,7 +251,7 @@ defineExpose({ open })
   align-items: center;
   justify-content: center;
   inset: -0.375rem;
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   font-weight: 600;
   pointer-events: none;
 }

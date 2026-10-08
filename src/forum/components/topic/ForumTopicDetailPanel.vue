@@ -91,7 +91,7 @@ const { message } = useLocalized()
       v-if="!showingTranslation"
       id="content"
       data-forum-shared-topic="content"
-      class="font-size-4 line-height-6 opacity-99 whitespace-pre-wrap overflow-hidden"
+      class="opacity-99 max-w-none whitespace-pre-wrap overflow-hidden prose prose-base dark:prose-invert"
       v-html="renderedContent"
     />
     <article

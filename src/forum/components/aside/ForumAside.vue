@@ -47,8 +47,8 @@ const auth = useUserAuthStore()
 .forum-context-aside :deep(h2) {
   margin: 0;
   font-family: var(--vp-font-family-subtitle);
-  font-size: calc(18px * var(--site-ui-scale));
-  line-height: calc(26px * var(--site-ui-scale));
+  @apply text-ui-18;
+  @apply leading-ui-26;
 }
 
 .forum-context-aside :deep(.aside-section-header) {

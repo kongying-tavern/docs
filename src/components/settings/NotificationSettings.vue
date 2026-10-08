@@ -142,7 +142,7 @@ onBeforeUnmount(() => {
   z-index: 1;
   min-width: 0;
   color: var(--vp-c-text-2);
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-caption;
 }
 
 .duration-tabs-list :deep(.duration-tab[data-state='active']) {

@@ -350,9 +350,9 @@ useForumShortcut('publish', handleCreate)
   border: 0;
   background: transparent;
   color: var(--vp-c-text-1);
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   font-weight: 500;
-  line-height: calc(24px * var(--site-ui-scale));
+  @apply leading-ui-24;
   cursor: pointer;
 }
 

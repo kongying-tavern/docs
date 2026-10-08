@@ -89,7 +89,7 @@ function handleCommentClick(author: ForumAPI.User): void {
       <article
         v-if="content.kind === 'html' && !showingTranslation"
         class="content"
-        :class="COMMENT_STYLES[size].content"
+        :class="[COMMENT_STYLES[size].content, size === 'normal' && 'prose prose-sm dark:prose-invert max-w-none']"
         v-html="content.html"
       />
 

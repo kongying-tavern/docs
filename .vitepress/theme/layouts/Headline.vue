@@ -114,8 +114,8 @@ function handleButtonClick() {
 
 .action :deep(a) {
   display: inline-block;
-  line-height: calc(20px * var(--site-ui-scale));
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply leading-ui-20;
+  @apply text-ui-14;
   font-weight: 500;
   color: var(--vp-c-brand);
   transition: color 0.25s;

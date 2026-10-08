@@ -263,8 +263,8 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
   background: transparent;
   color: var(--vp-c-text-1);
   font-family: inherit;
-  font-size: calc(14px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
+  @apply text-ui-14;
+  @apply leading-ui-20;
   cursor: pointer;
   transition-property: background-color, color;
   transition-duration: 150ms;

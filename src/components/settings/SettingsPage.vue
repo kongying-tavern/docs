@@ -312,8 +312,7 @@ onBeforeUnmount(() => {
 .settings-dialog-title {
   color: var(--vp-c-text-1);
   font-family: var(--vp-font-family-title);
-  font-size: calc(24px * var(--site-ui-scale));
-  line-height: calc(32px * var(--site-ui-scale));
+  @apply text-2xl;
   letter-spacing: -0.02em;
 }
 
@@ -324,8 +323,7 @@ onBeforeUnmount(() => {
   margin-block-start: auto;
   padding: 10px 8px 0;
   color: var(--vp-c-text-3);
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-caption;
 }
 
 .settings-save-enter-active,

@@ -188,7 +188,7 @@ function getStepStatusClass(status: ProgressStep['status']) {
 
 .scroll-island-title {
   color: var(--vp-c-text-1);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
 }
 
 /* Content Area */

@@ -189,8 +189,7 @@ function setUiFontSize(value: unknown): void {
   justify-content: center;
   gap: 6px;
   color: var(--vp-c-text-1);
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-caption;
 }
 
 .settings-select {

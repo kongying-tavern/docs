@@ -227,7 +227,7 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
             v-if="editor"
             data-clarity-mask="true"
             :editor="(editor as InstanceType<typeof Editor>)"
-            :class="cn('forum-rich-editor custom-scrollbar h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-6', className)"
+            :class="cn('forum-rich-editor prose prose-sm dark:prose-invert prose-p:my-0 max-w-none custom-scrollbar h-auto max-h-256px w-full cursor-text overflow-y-auto bg-transparent text-base md:text-sm leading-ui-24', className)"
           />
         </div>
         <slot name="after-editor" />
@@ -315,7 +315,7 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
   border-radius: 0.5rem;
   background: color-mix(in srgb, var(--vp-c-bg-elv) 86%, transparent);
   color: var(--vp-c-brand-1);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   font-weight: 600;
   pointer-events: none;
 }
@@ -325,10 +325,6 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
   white-space: pre-wrap;
 }
 
-:deep(.tiptap p) {
-  margin: 0;
-}
-
 .forum-format-menu {
   padding: 0.25rem;
   border: 1px solid oklch(var(--border));
@@ -336,32 +332,6 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
   background: oklch(var(--popover));
   color: oklch(var(--popover-foreground));
   box-shadow: var(--vp-shadow-2);
-}
-
-:deep(.tiptap :is(ul, ol)) {
-  margin: 0.5rem 0;
-  padding-inline-start: 1.5rem;
-}
-
-:deep(.tiptap ul) {
-  list-style: disc;
-}
-:deep(.tiptap ol) {
-  list-style: decimal;
-}
-
-:deep(.tiptap blockquote) {
-  margin: 0.5rem 0;
-  padding-inline-start: 0.75rem;
-  border-inline-start: 3px solid oklch(var(--border));
-  color: oklch(var(--muted-foreground));
-}
-
-:deep(.tiptap code) {
-  padding: 0.125rem 0.25rem;
-  border-radius: 0.25rem;
-  background: oklch(var(--muted));
-  font-size: 0.875em;
 }
 
 :deep(.tiptap .forum-topic-reference) {
@@ -395,13 +365,13 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
   height: 1em;
   background: currentcolor;
   content: '';
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z'/%3E%3Cpolyline points='14 2 14 8 20 8'/%3E%3Cline x1='16' x2='8' y1='13' y2='13'/%3E%3Cline x1='16' x2='8' y1='17' y2='17'/%3E%3Cline x1='10' x2='8' y1='9' y2='9'/%3E%3C/svg%3E")
     center / contain no-repeat;
 }
 
 :deep(.tiptap [data-link-display]::after) {
   content: attr(data-link-display);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
 }
 </style>

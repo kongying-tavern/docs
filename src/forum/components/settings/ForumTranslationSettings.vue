@@ -203,7 +203,7 @@ watch(searchTerm, (search) => {
 .language-options-empty {
   padding: 24px 12px;
   color: oklch(var(--muted-foreground));
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   text-align: center;
 }
 
@@ -215,7 +215,7 @@ watch(searchTerm, (search) => {
   gap: 8px;
   border-radius: 4px;
   padding: 6px 8px;
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   outline: none;
 }
 
@@ -228,7 +228,7 @@ watch(searchTerm, (search) => {
   flex: none;
   color: oklch(var(--muted-foreground));
   font-family: var(--vp-font-family-mono);
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   text-transform: uppercase;
 }
 

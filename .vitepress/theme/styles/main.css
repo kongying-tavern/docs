@@ -120,7 +120,7 @@ html.light {
 }
 
 #app {
-  font-size: calc(14px * var(--site-ui-scale));
+  font-size: var(--text-ui-14-fontSize);
 }
 
 /* VitePress 默认主题内部使用固定 px，站点 UI 缩放需要在主题边界统一接管。
@@ -144,7 +144,7 @@ html.light {
     .VPFooter,
     .VPButton.medium
   ) {
-  font-size: calc(14px * var(--site-ui-scale));
+  font-size: var(--text-ui-14-fontSize);
 }
 
 #app
@@ -154,7 +154,7 @@ html.light {
     .VPNavScreenMenuGroupSection,
     .VPNavScreenTranslations .items
   ) {
-  font-size: calc(13px * var(--site-ui-scale));
+  font-size: var(--text-ui-13-fontSize);
 }
 
 #app
@@ -167,7 +167,7 @@ html.light {
     .VPLocalNavOutlineDropdown .top-link,
     .VPSkipLink
   ) {
-  font-size: calc(12px * var(--site-ui-scale));
+  font-size: var(--text-ui-12-fontSize);
 }
 
 /* Use real font weights throughout, including controls and portaled dialogs. */
@@ -335,7 +335,7 @@ html.dark .vp-doc figure figcaption {
 }
 
 .VPMenuLink .link {
-  line-height: calc(28px * var(--site-ui-scale)) !important;
+  line-height: var(--leading-ui-28) !important;
 }
 
 .VPMenu .items > :not(.VPMenuLink).title {

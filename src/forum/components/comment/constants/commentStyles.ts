@@ -25,6 +25,6 @@ export const COMMENT_STYLES: Record<'small' | 'normal', CommentStyleConfig> = {
     avatarSize: 'md',
     leftWidth: 'w-[64px] mr-2',
     header: 'mt-2',
-    content: 'break-words font-size-3.5 line-height-[24px] break-all mt-1.5 whitespace-pre-wrap',
+    content: 'break-words text-sm leading-ui-24 break-all mt-1.5 whitespace-pre-wrap',
   },
 }

@@ -79,7 +79,7 @@ const displayedToastOptions = computed(() => {
 }
 
 .toaster [data-sonner-toast][data-styled='true'] {
-  font-size: calc(13px * var(--site-ui-scale));
+  @apply text-ui-13;
 }
 
 .toaster [data-sonner-toast][data-styled='true'] [data-content] {
@@ -89,7 +89,7 @@ const displayedToastOptions = computed(() => {
 }
 
 .toaster [data-sonner-toast][data-styled='true'] [data-button] {
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   min-height: 24px;
   height: auto;
   padding-block: 4px;
@@ -168,7 +168,7 @@ const displayedToastOptions = computed(() => {
     column-gap: 10px;
     row-gap: 8px;
     padding: 12px 16px;
-    font-size: calc(14px * var(--site-ui-scale));
+    @apply text-ui-14;
     line-height: 1.5;
     max-height: calc(100dvh - var(--vp-nav-height, 64px) - 24px - env(safe-area-inset-top, 0px));
     overflow-y: auto;
@@ -211,7 +211,7 @@ const displayedToastOptions = computed(() => {
     margin: 4px 0;
     padding: 6px 12px;
     border-radius: var(--radius-md, 6px);
-    font-size: calc(13px * var(--site-ui-scale));
+    @apply text-ui-13;
     line-height: 1.5;
     white-space: normal;
     overflow-wrap: anywhere;

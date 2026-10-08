@@ -4,7 +4,7 @@
   flex-direction: column;
   width: 100%;
   margin-bottom: 36px;
-  font-size: calc(15px * var(--site-ui-scale));
+  font-size: var(--text-ui-15-fontSize);
   transition:
     all 0.5s,
     box-shadow 0.25s ease,
@@ -58,8 +58,8 @@
       display: inline-block;
       border-radius: 6px;
       padding: 0 20px;
-      line-height: calc(34px * var(--site-ui-scale));
-      font-size: calc(14px * var(--site-ui-scale));
+      line-height: var(--leading-ui-34);
+      font-size: var(--text-ui-14-fontSize);
       border-color: var(--vp-button-brand-border);
       color: var(--vp-button-brand-text);
       background-color: var(--vp-button-brand-bg);

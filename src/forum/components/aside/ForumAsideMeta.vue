@@ -47,8 +47,8 @@ const year = String(new Date().getFullYear())
   margin: -14px 0 0;
   padding: 0 16px;
   color: var(--vp-c-text-3);
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-ui-12;
+  @apply leading-ui-18;
   list-style: none;
 }
 

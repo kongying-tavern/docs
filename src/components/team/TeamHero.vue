@@ -36,21 +36,21 @@
 }
 
 .title {
-  line-height: calc(32px * var(--site-ui-scale));
-  font-size: calc(32px * var(--site-ui-scale));
+  @apply leading-ui-32;
+  @apply text-ui-32;
   font-weight: 500;
 }
 
 @media (min-width: 768px) {
   .title {
-    line-height: calc(40px * var(--site-ui-scale));
-    font-size: calc(40px * var(--site-ui-scale));
+    @apply leading-ui-40;
+    @apply text-ui-40;
   }
 }
 
 .lead {
   padding-top: 8px;
-  font-size: calc(16px * var(--site-ui-scale));
+  @apply text-ui-16;
   font-weight: 500;
   max-width: 512px;
   color: var(--vp-c-text-2);
@@ -62,8 +62,8 @@
 
 .action :deep(a) {
   display: inline-block;
-  line-height: calc(20px * var(--site-ui-scale));
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply leading-ui-20;
+  @apply text-ui-14;
   font-weight: 500;
   color: var(--vp-c-brand);
   transition: color 0.25s;

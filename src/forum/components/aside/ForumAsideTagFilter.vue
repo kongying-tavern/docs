@@ -30,7 +30,7 @@ const active = computed(() => parseForumSearchQuery(list.value?.q ?? '').tags)
 <style scoped>
 /* 卡片内小节的标题跟同卡片的其它小节一致，需比 .forum-context-aside :deep(h2) 更具体 */
 .aside-tag-filter .aside-tag-filter-title {
-  font-size: calc(16px * var(--site-ui-scale));
+  @apply text-ui-16;
   line-height: inherit;
 }
 </style>

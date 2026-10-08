@@ -82,9 +82,8 @@ const emit = defineEmits<{
   min-width: 0;
   flex: 1;
   color: inherit;
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-sm;
   font-weight: 600;
-  line-height: calc(20px * var(--site-ui-scale));
 }
 
 .settings-navigation-chevron {

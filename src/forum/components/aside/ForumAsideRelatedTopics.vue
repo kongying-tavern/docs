@@ -109,8 +109,8 @@ function commentCount(topic: ForumAPI.Topic): number {
   min-width: 0;
   align-items: baseline;
   gap: 4px;
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-ui-12;
+  @apply leading-ui-18;
 }
 
 .related-name {
@@ -135,9 +135,9 @@ function commentCount(topic: ForumAPI.Topic): number {
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   font-weight: 500;
-  line-height: calc(21px * var(--site-ui-scale));
+  @apply leading-ui-21;
   overflow-wrap: anywhere;
 }
 
@@ -155,8 +155,8 @@ function commentCount(topic: ForumAPI.Topic): number {
   align-items: center;
   gap: 8px;
   color: var(--vp-c-text-2);
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-ui-12;
+  @apply leading-ui-18;
   font-variant-numeric: tabular-nums;
 }
 
@@ -180,8 +180,8 @@ function commentCount(topic: ForumAPI.Topic): number {
   align-items: center;
   gap: 4px;
   color: var(--vp-c-text-2);
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-ui-12;
+  @apply leading-ui-18;
   white-space: nowrap;
 }
 </style>

@@ -121,7 +121,7 @@ defineExpose({
 .search-field-trigger {
   gap: 6px;
   padding: 0 12px 0 10px;
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   white-space: nowrap;
 }
 
@@ -164,7 +164,7 @@ defineExpose({
   border-radius: 0;
   padding: 0 4px;
   background: transparent;
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   box-shadow: none;
   outline: none;
 }
@@ -193,7 +193,7 @@ defineExpose({
 
 .page-mode :deep(.search-field-input) {
   height: 46px;
-  font-size: calc(15px * var(--site-ui-scale));
+  @apply text-ui-15;
 }
 
 .page-mode .search-field-icon {
@@ -220,7 +220,7 @@ defineExpose({
   background: var(--vp-c-bg-elv);
   color: var(--vp-c-text-2);
   font: inherit;
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   line-height: 20px;
   outline: none;
   transition:
@@ -283,14 +283,14 @@ html[data-reduced-motion='true'] .search-field :deep(.search-field-token) {
 }
 
 .search-field.page-mode :deep(.search-field-result-title) {
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
 }
 
 :deep(.search-field-result-state) {
   width: var(--forum-search-content-width, 100%);
   padding: 24px 12px;
   color: var(--vp-c-text-3);
-  font-size: calc(13px * var(--site-ui-scale));
+  @apply text-ui-13;
   text-align: center;
 }
 
@@ -332,15 +332,15 @@ html[data-reduced-motion='true'] .search-field :deep(.search-field-token) {
 
 :deep(.search-field-result-title) {
   color: var(--vp-c-text-1);
-  font-size: calc(13px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
+  @apply text-ui-13;
+  @apply leading-ui-20;
 }
 
 :deep(.search-field-result-excerpt) {
   margin-top: 1px;
   color: var(--vp-c-text-3);
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-ui-12;
+  @apply leading-ui-18;
 }
 
 :deep(.search-field-result:hover),

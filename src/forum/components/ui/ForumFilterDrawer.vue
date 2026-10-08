@@ -269,7 +269,7 @@ function submit(): void {
   padding: 0 12px;
   background: transparent;
   color: var(--vp-c-text-1);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   transition:
     background-color 120ms ease,
     transform 120ms ease;
@@ -300,7 +300,7 @@ function submit(): void {
   overflow: hidden;
   max-width: 40%;
   color: var(--vp-c-text-3);
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

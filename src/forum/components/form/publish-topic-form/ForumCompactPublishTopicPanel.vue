@@ -318,7 +318,7 @@ defineExpose(presentation)
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: calc(13px * var(--site-ui-scale));
+  @apply text-ui-13;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -337,7 +337,7 @@ defineExpose(presentation)
   gap: 8px;
   margin-inline-end: 2px;
   color: oklch(var(--muted-foreground));
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   white-space: nowrap;
 }
 .compact-footer-actions > [type='submit'] {
@@ -436,7 +436,7 @@ html[data-reduced-motion='true'] .compact-properties :deep([data-slot='popover-t
   background: transparent;
   border: 0;
   padding: 0;
-  font-size: calc(22px * var(--site-ui-scale));
+  @apply text-ui-22;
   font-weight: 600;
   line-height: 1.5;
   color: oklch(var(--foreground));
@@ -476,7 +476,7 @@ html[data-reduced-motion='true'] .compact-properties :deep([data-slot='popover-t
   width: 100%;
   text-align: right;
   color: oklch(var(--destructive));
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
 }
 .compact-validation:hover {
   text-decoration: underline;
@@ -517,7 +517,7 @@ html[data-reduced-motion='true'] :global(.compact-drawer[data-slot='drawer-conte
   .compact-properties :deep([data-slot='popover-trigger']) {
     height: var(--compact-control-size);
     max-width: 100%;
-    font-size: calc(12px * var(--site-ui-scale));
+    @apply text-ui-12;
     padding-inline: 10px;
   }
   .compact-properties :deep([data-slot='popover-trigger'] > span) {
@@ -539,7 +539,7 @@ html[data-reduced-motion='true'] :global(.compact-drawer[data-slot='drawer-conte
     margin-left: auto;
   }
   .compact-heading-title {
-    font-size: calc(13px * var(--site-ui-scale));
+    @apply text-ui-13;
   }
   .compact-body {
     padding: var(--compact-inset);

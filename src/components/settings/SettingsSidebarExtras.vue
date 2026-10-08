@@ -143,9 +143,8 @@ function openLabelAdmin(): void {
   border-radius: 8px;
   padding: 8px 10px;
   color: var(--vp-c-text-2);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-sm;
   font-weight: 500;
-  line-height: calc(20px * var(--site-ui-scale));
   text-align: start;
   text-decoration: none;
 }

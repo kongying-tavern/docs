@@ -72,9 +72,9 @@
   top: 22px;
   width: 64px;
   color: var(--vp-c-text-2);
-  font-size: calc(16px * var(--site-ui-scale));
+  font-size: var(--text-ui-16-fontSize);
   font-weight: 500;
-  line-height: calc(20px * var(--site-ui-scale));
+  line-height: var(--leading-ui-20);
   font-family: var(--vp-font-family-subtitle);
 }
 
@@ -86,8 +86,8 @@
 }
 
 .timeline-dot-date-year {
-  font-size: calc(18px * var(--site-ui-scale));
-  line-height: calc(22px * var(--site-ui-scale));
+  font-size: var(--text-ui-18-fontSize);
+  line-height: var(--leading-ui-22);
 }
 
 /* 字符等宽栅格：各行字符均匀分栏，两端与上下行对正 */
@@ -101,7 +101,7 @@
   position: absolute;
   left: 95px;
   top: 37px;
-  font-size: calc(10px * var(--site-ui-scale));
+  font-size: var(--text-ui-10-fontSize);
   line-height: 1;
   color: inherit;
   z-index: 2;
@@ -119,7 +119,7 @@
 .timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon {
   left: 93.5px;
   top: 35.5px;
-  font-size: calc(13px * var(--site-ui-scale));
+  font-size: var(--text-ui-13-fontSize);
   color: var(--vp-c-white);
 }
 
@@ -130,8 +130,8 @@
   padding-top: 0;
   top: 0;
   color: var(--timeline-title-text);
-  font-size: calc(24px * var(--site-ui-scale));
-  line-height: calc(32px * var(--site-ui-scale));
+  font-size: var(--text-ui-24-fontSize);
+  line-height: var(--leading-ui-32);
   font-weight: bold;
 }
 
@@ -175,14 +175,14 @@
 
 .timeline-dot > h2:not(.timeline-dot-title) {
   font-family: var(--vp-font-family-subtitle) !important;
-  font-size: calc(20px * var(--site-ui-scale)) !important;
-  line-height: calc(30px * var(--site-ui-scale));
+  font-size: var(--text-ui-20-fontSize) !important;
+  line-height: var(--leading-ui-30);
   color: var(--timeline-title-text);
 }
 
 .timeline-dot > h3 {
-  font-size: calc(16px * var(--site-ui-scale));
-  line-height: calc(26px * var(--site-ui-scale));
+  font-size: var(--text-ui-16-fontSize);
+  line-height: var(--leading-ui-26);
   color: var(--timeline-title-text);
 }
 
@@ -237,6 +237,6 @@
   .timeline-dot:has(.timeline-dot-icon) .timeline-dot-icon {
     left: 69.5px;
     top: 35.5px;
-    font-size: calc(13px * var(--site-ui-scale));
+    font-size: var(--text-ui-13-fontSize);
   }
 }

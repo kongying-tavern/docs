@@ -88,7 +88,7 @@ const items = computed<FORUM.TopicDropdownMenu[]>(() => [
 .forum-mobile-tag-filter :deep(.aside-tag-filter-title) {
   color: var(--vp-c-text-3);
   font-family: inherit;
-  font-size: calc(11px * var(--site-ui-scale));
+  @apply text-ui-11;
   font-weight: 600;
 }
 

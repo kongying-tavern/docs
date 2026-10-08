@@ -89,7 +89,7 @@ function coverProps(post: BlogPost) {
         </h2>
         <div
           v-if="featured[0].excerpt"
-          class="blog-excerpt prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-3"
+          class="blog-excerpt c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-3 prose prose-sm dark:prose-invert"
           v-html="featured[0].excerpt"
         />
       </div>
@@ -202,7 +202,7 @@ function coverProps(post: BlogPost) {
             </h2>
             <div
               v-if="post.excerpt"
-              class="blog-excerpt prose c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-2"
+              class="blog-excerpt c-[var(--vp-c-text-2)] leading-relaxed max-w-none line-clamp-2 prose prose-sm dark:prose-invert"
               v-html="post.excerpt"
             />
             <div class="mt-auto flex gap-4 items-center justify-between">
@@ -290,14 +290,14 @@ function coverProps(post: BlogPost) {
 .blog-excerpt {
   display: -webkit-box;
   overflow: hidden;
-  font-size: 14px;
+  font-size: var(--text-ui-14-fontSize);
   line-height: 1.75;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
 
 .blog-primary .blog-excerpt {
-  font-size: 15px;
+  font-size: var(--text-ui-15-fontSize);
   -webkit-line-clamp: 4;
 }
 

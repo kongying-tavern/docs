@@ -3,6 +3,7 @@ import {
   defineConfig,
   presetAttributify,
   presetIcons,
+  presetTypography,
   presetWind4,
   transformerDirectives,
   transformerVariantGroup,
@@ -12,6 +13,24 @@ import { presetShadcn } from 'unocss-preset-shadcn'
 import { shadcnPreflights, shadcnRules } from './.vitepress/theme/unocss/index.ts'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
 import { FORUM_MOBILE_BREAKPOINT_PX } from './src/forum/services/forumConfig'
+
+const scaledUiSize = (size: number) => `calc(${size}px * var(--site-ui-scale))`
+const uiFontSizes = [6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 30, 32, 36, 40, 42]
+const uiLineHeights = [14, 16, 18, 19, 20, 21, 22, 24, 26, 28, 30, 32, 34, 36, 40]
+
+const uiTextTheme = {
+  'xs': { fontSize: scaledUiSize(12), lineHeight: scaledUiSize(16) },
+  'caption': { fontSize: scaledUiSize(12), lineHeight: scaledUiSize(18) },
+  'label': { fontSize: scaledUiSize(13), lineHeight: scaledUiSize(20) },
+  'sm': { fontSize: scaledUiSize(14), lineHeight: scaledUiSize(20) },
+  'base': { fontSize: scaledUiSize(16), lineHeight: scaledUiSize(24) },
+  'lg': { fontSize: scaledUiSize(18), lineHeight: scaledUiSize(28) },
+  'xl': { fontSize: scaledUiSize(20), lineHeight: scaledUiSize(28) },
+  '2xl': { fontSize: scaledUiSize(24), lineHeight: scaledUiSize(32) },
+  '3xl': { fontSize: scaledUiSize(30), lineHeight: scaledUiSize(36) },
+  '4xl': { fontSize: scaledUiSize(36), lineHeight: scaledUiSize(40) },
+  ...Object.fromEntries(uiFontSizes.map(size => [`ui-${size}`, { fontSize: scaledUiSize(size) }])),
+}
 
 export default defineConfig({
   blocklist: [
@@ -33,16 +52,8 @@ export default defineConfig({
       '2xl': '1536px',
       'mobile': `${FORUM_MOBILE_BREAKPOINT_PX + 1}px`,
     },
-    text: {
-      'xs': { fontSize: 'calc(12px * var(--site-ui-scale))', lineHeight: 'calc(16px * var(--site-ui-scale))' },
-      'sm': { fontSize: 'calc(14px * var(--site-ui-scale))', lineHeight: 'calc(20px * var(--site-ui-scale))' },
-      'base': { fontSize: 'calc(16px * var(--site-ui-scale))', lineHeight: 'calc(24px * var(--site-ui-scale))' },
-      'lg': { fontSize: 'calc(18px * var(--site-ui-scale))', lineHeight: 'calc(28px * var(--site-ui-scale))' },
-      'xl': { fontSize: 'calc(20px * var(--site-ui-scale))', lineHeight: 'calc(28px * var(--site-ui-scale))' },
-      '2xl': { fontSize: 'calc(24px * var(--site-ui-scale))', lineHeight: 'calc(32px * var(--site-ui-scale))' },
-      '3xl': { fontSize: 'calc(30px * var(--site-ui-scale))', lineHeight: 'calc(36px * var(--site-ui-scale))' },
-      '4xl': { fontSize: 'calc(36px * var(--site-ui-scale))', lineHeight: 'calc(40px * var(--site-ui-scale))' },
-    },
+    text: uiTextTheme,
+    leading: Object.fromEntries(uiLineHeights.map(size => [`ui-${size}`, scaledUiSize(size)])),
   },
   variants: [
     {
@@ -68,14 +79,6 @@ export default defineConfig({
   ],
   preflights: [...shadcnPreflights],
   rules: [
-    [
-      /^text-ui-(\d+(?:\.\d+)?)$/,
-      ([, size]) => ({ 'font-size': `calc(${size}px * var(--site-ui-scale))` }),
-    ],
-    [
-      /^leading-ui-(\d+(?:\.\d+)?)$/,
-      ([, size]) => ({ 'line-height': `calc(${size}px * var(--site-ui-scale))` }),
-    ],
     ...shadcnRules,
   ],
   shortcuts: [
@@ -149,6 +152,16 @@ export default defineConfig({
         reset: false,
       },
     }),
+    presetTypography({
+      sizeScheme: {
+        sm: {
+          'font-size': scaledUiSize(14),
+        },
+        base: {
+          'font-size': scaledUiSize(16),
+        },
+      },
+    }),
     presetAttributify(),
     presetAnimations(),
     presetShadcn(
@@ -181,6 +194,8 @@ export default defineConfig({
   transformers: [transformerDirectives({ enforce: 'pre' }), transformerVariantGroup()],
   // 动态拼接的图标类名无法被提取器扫描,显式声明
   safelist: [
+    ...uiFontSizes.map(size => `text-ui-${size}`),
+    ...uiLineHeights.map(size => `leading-ui-${size}`),
     'prose',
     'prose-sm',
     'm-auto',

@@ -128,14 +128,14 @@ function handleRadioClick(item: FORUM.MenuRadioItem) {
   gap: 6px;
   padding: 6px 10px 5px;
   color: var(--vp-c-text-3);
-  font-size: calc(11px * var(--site-ui-scale));
+  @apply text-ui-11;
   font-weight: 600;
 }
 
 .forum-menu-mobile-info {
   padding: 6px 10px 5px;
   color: var(--vp-c-text-3);
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   line-height: 1.4;
 }
 
@@ -150,7 +150,7 @@ function handleRadioClick(item: FORUM.MenuRadioItem) {
   border-radius: 7px;
   background: transparent;
   color: var(--vp-c-text-1);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   text-align: left;
   cursor: pointer;
   transition: background-color 120ms ease;

@@ -116,7 +116,7 @@ defineExpose({ close, open: toggle })
   min-width: 56px;
   padding: 0 12px;
   border: 1px solid oklch(var(--primary-button));
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   line-height: 20px;
   font-weight: 500;
 }

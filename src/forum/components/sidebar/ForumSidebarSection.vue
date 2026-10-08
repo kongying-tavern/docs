@@ -191,7 +191,7 @@ function commentLabel(item: { commentCount?: number }): string {
   position: relative;
   padding: 8px 10px;
   cursor: pointer;
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   font-weight: 600;
   list-style: none;
 }
@@ -229,8 +229,8 @@ details[open] .chevron {
   min-width: 0;
   flex: 1;
   color: inherit;
-  font-size: calc(13px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
+  @apply text-ui-13;
+  @apply leading-ui-20;
 }
 
 .forum-sidebar-topic-type {
@@ -255,8 +255,8 @@ details[open] .chevron {
 }
 
 .forum-sidebar-comment-count {
-  font-size: calc(11px * var(--site-ui-scale));
-  line-height: calc(16px * var(--site-ui-scale));
+  @apply text-ui-11;
+  @apply leading-ui-16;
   font-variant-numeric: tabular-nums;
 }
 
@@ -291,8 +291,8 @@ details[open] .chevron {
   gap: 6px;
   padding: 7px 10px 7px 36px;
   color: var(--vp-c-text-3);
-  font-size: calc(13px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
+  @apply text-ui-13;
+  @apply leading-ui-20;
 }
 
 html[data-reduced-motion='true'] .chevron {

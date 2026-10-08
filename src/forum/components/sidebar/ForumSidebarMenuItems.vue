@@ -60,8 +60,8 @@ function handleSelect(item: ForumSidebarMenuItem) {
   background: transparent;
   color: var(--vp-c-text-2);
   font-family: inherit;
-  font-size: calc(14px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
+  @apply text-ui-14;
+  @apply leading-ui-20;
   text-align: left;
   cursor: pointer;
   transition-property: background-color, color;

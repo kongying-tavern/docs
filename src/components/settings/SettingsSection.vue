@@ -32,9 +32,8 @@ defineProps<{
 
 .settings-section-header h2 {
   color: var(--vp-c-text-1);
-  font-size: calc(20px * var(--site-ui-scale));
+  @apply text-xl;
   font-weight: 600;
-  line-height: calc(28px * var(--site-ui-scale));
 }
 
 .settings-section-body {

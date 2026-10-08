@@ -43,7 +43,7 @@ const { diagnostics, closeDiagnostics, restoreDiagnosticsFocus } = useToastDiagn
   margin: 0;
   min-width: 0;
   font-family: var(--vp-font-family-mono);
-  font-size: calc(13px * var(--site-ui-scale));
+  @apply text-ui-13;
   line-height: 1.6;
   white-space: pre-wrap;
   overflow-wrap: anywhere;

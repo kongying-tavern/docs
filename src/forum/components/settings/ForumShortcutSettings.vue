@@ -87,7 +87,7 @@ function setRecorderElement(element: unknown) {
 .shortcut-group-title {
   margin: 0 0 8px;
   color: var(--vp-c-text-2);
-  font-size: calc(13px * var(--site-ui-scale));
+  @apply text-ui-13;
   font-weight: 600;
   line-height: 20px;
 }
@@ -107,8 +107,8 @@ function setRecorderElement(element: unknown) {
 
 .shortcut-label {
   color: var(--vp-c-text-1);
-  font-size: calc(14px * var(--site-ui-scale));
-  line-height: calc(22px * var(--site-ui-scale));
+  @apply text-ui-14;
+  @apply leading-ui-22;
 }
 
 .shortcut-binding {
@@ -122,7 +122,7 @@ function setRecorderElement(element: unknown) {
   background: transparent;
   color: var(--vp-c-text-3);
   font: inherit;
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-ui-12;
   cursor: pointer;
 }
 

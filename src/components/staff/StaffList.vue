@@ -167,14 +167,14 @@ const { list, title, desc } = defineProps<{
 }
 
 .member-name {
-  font-size: calc(16px * var(--site-ui-scale));
+  @apply text-ui-16;
   font-weight: bold;
   word-break: keep-all;
   white-space: nowrap;
 }
 
 .member-title {
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   color: var(--vp-c-text-2);
   align-self: flex-end;
 }

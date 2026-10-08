@@ -218,7 +218,7 @@ function clearRecentSearches(): void {
   padding-bottom: 12px;
   border-bottom: 1px solid var(--vp-c-divider);
   color: var(--vp-c-text-1);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   font-weight: 600;
 }
 
@@ -253,7 +253,7 @@ function clearRecentSearches(): void {
 .forum-search-history-empty {
   margin: 24px 0;
   color: var(--vp-c-text-2);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-ui-14;
   text-align: center;
 }
 
@@ -306,7 +306,7 @@ function clearRecentSearches(): void {
   .forum-search-section-title {
     margin-bottom: 12px;
     padding-bottom: 10px;
-    font-size: calc(13px * var(--site-ui-scale));
+    @apply text-ui-13;
   }
 
   .forum-search-section :deep(.forum-filter-picker-category) {

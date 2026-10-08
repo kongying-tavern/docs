@@ -57,7 +57,7 @@ onMounted(() => {
 }
 
 .callback-title {
-  font-size: calc(40px * var(--site-ui-scale));
+  @apply text-ui-40;
   font-weight: 600;
   color: var(--vp-c-text-1);
   margin: 0 0 1.5rem 0;
@@ -68,7 +68,7 @@ onMounted(() => {
 }
 
 .callback-description {
-  font-size: calc(20px * var(--site-ui-scale));
+  @apply text-ui-20;
   color: var(--vp-c-text-2);
   margin: 0;
   line-height: 1.5;
@@ -88,12 +88,12 @@ onMounted(() => {
   }
 
   .callback-title {
-    font-size: calc(30px * var(--site-ui-scale));
+    @apply text-ui-30;
     line-height: 1.3;
   }
 
   .callback-description {
-    font-size: calc(18px * var(--site-ui-scale));
+    @apply text-ui-18;
     line-height: 1.6;
   }
 
@@ -108,12 +108,12 @@ onMounted(() => {
   }
 
   .callback-title {
-    font-size: calc(24px * var(--site-ui-scale));
+    @apply text-ui-24;
     line-height: 1.4;
   }
 
   .callback-description {
-    font-size: calc(16px * var(--site-ui-scale));
+    @apply text-ui-16;
     line-height: 1.7;
   }
 }

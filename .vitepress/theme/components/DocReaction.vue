@@ -123,8 +123,8 @@ const styles = computed(() => {
 }
 
 .title {
-  line-height: calc(20px * var(--site-ui-scale));
-  font-size: calc(14px * var(--site-ui-scale));
+  line-height: var(--leading-ui-20);
+  font-size: var(--text-ui-14-fontSize);
   font-weight: 500;
   transition: color 0.25s;
 }

@@ -57,16 +57,14 @@ defineProps<{
 
 .settings-row-title {
   color: var(--vp-c-text-1);
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-sm;
   font-weight: 600;
-  line-height: calc(20px * var(--site-ui-scale));
 }
 
 .settings-row-description {
   margin-block-start: 3px;
   color: var(--vp-c-text-2);
-  font-size: calc(13px * var(--site-ui-scale));
-  line-height: calc(20px * var(--site-ui-scale));
+  @apply text-label;
 }
 
 .settings-row-control {

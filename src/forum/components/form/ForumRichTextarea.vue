@@ -397,7 +397,7 @@ onBeforeUnmount(() => {
           <EditorContent
             v-if="editor"
             data-clarity-mask="true"
-            class="editor font-size-3.5 line-height-[32px] bg-transparent h-auto min-h-32px w-full cursor-text"
+            class="editor bg-transparent h-auto max-w-none min-h-32px w-full cursor-text prose prose-sm prose-p:my-0 dark:prose-invert"
             :editor="(editor as InstanceType<typeof Editor>)"
           />
           <span v-if="mobile && mobileMention.showHint.value" class="mobile-mention-hint text-muted-foreground" :style="mobileMention.hintStyle.value">
@@ -476,7 +476,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   inset: 0;
-  font-size: calc(14px * var(--site-ui-scale));
+  font-size: var(--text-ui-14-fontSize);
   font-weight: 600;
   pointer-events: none;
 }
@@ -518,7 +518,7 @@ onBeforeUnmount(() => {
 }
 .comment-editor-mobile .editor {
   position: relative;
-  font-size: calc(16px * var(--site-ui-scale));
+  font-size: var(--text-ui-16-fontSize);
   line-height: 1.625;
   min-height: 100px;
 }
@@ -529,7 +529,7 @@ onBeforeUnmount(() => {
   position: absolute;
   right: 0;
   pointer-events: none;
-  font-size: calc(16px * var(--site-ui-scale));
+  font-size: var(--text-ui-16-fontSize);
   line-height: 1.625;
   white-space: normal;
   overflow-wrap: break-word;

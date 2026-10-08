@@ -141,8 +141,7 @@ const { message } = useLocalized()
   flex: 1;
   color: var(--vp-c-text-1);
   font-family: var(--vp-font-family-title);
-  font-size: calc(20px * var(--site-ui-scale));
-  line-height: calc(28px * var(--site-ui-scale));
+  @apply text-xl;
   letter-spacing: -0.02em;
 }
 
@@ -194,8 +193,7 @@ const { message } = useLocalized()
   align-items: center;
   gap: 7px;
   color: var(--vp-c-text-3);
-  font-size: calc(12px * var(--site-ui-scale));
-  line-height: calc(18px * var(--site-ui-scale));
+  @apply text-caption;
 }
 
 .settings-save-enter-active,

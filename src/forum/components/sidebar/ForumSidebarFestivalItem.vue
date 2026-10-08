@@ -292,8 +292,8 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 10px;
   padding: 4px 10px;
-  font-size: calc(12px * var(--site-ui-scale, 1));
-  line-height: calc(16px * var(--site-ui-scale, 1));
+  @apply text-ui-12;
+  @apply leading-ui-16;
   text-align: left;
 }
 

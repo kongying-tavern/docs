@@ -78,8 +78,8 @@ function setReporting(enabled: boolean): void {
 .telemetry-session-copy {
   max-width: 100%;
   font-family: var(--vp-font-family-mono);
-  font-size: calc(16px * var(--site-ui-scale));
-  line-height: calc(22px * var(--site-ui-scale));
+  @apply text-ui-16;
+  @apply leading-ui-22;
 }
 
 @media (max-width: 639px) {

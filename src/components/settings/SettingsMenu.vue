@@ -143,7 +143,7 @@ defineExpose({
 
 .settings-user-login {
   width: 100%;
-  font-size: calc(14px * var(--site-ui-scale));
+  @apply text-sm;
   font-weight: 600;
   text-align: start;
 }
@@ -176,9 +176,8 @@ defineExpose({
 .settings-navigation-group-label {
   padding-inline: 12px;
   color: var(--vp-c-text-3);
-  font-size: calc(12px * var(--site-ui-scale));
+  @apply text-caption;
   font-weight: 600;
-  line-height: calc(18px * var(--site-ui-scale));
 }
 
 .settings-menu.is-drilldown {

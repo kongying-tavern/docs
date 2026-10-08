@@ -87,7 +87,7 @@ watch(() => props.query ?? '', query => searchQuery.value = query)
     border-radius: 9999px;
     padding: 0 10px;
     color: var(--vp-c-text-2);
-    font-size: calc(12px * var(--site-ui-scale));
+    @apply text-ui-12;
   }
 
   .forum-mobile-search-trigger:hover {
