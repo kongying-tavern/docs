@@ -451,7 +451,7 @@ catalogs:
       version: 5.4.3
 
 overrides:
-  '@comark/markdown-it>js-yaml': ^4.3.2
+  '@comark/markdown-it>js-yaml': ^5.0.0
   '@lunariajs/core>simple-git': ^3.36.0
   '@types/markdown-it': 14.1.2
   hast-util-to-html>mdast-util-to-hast: ^13.2.1
@@ -6988,7 +6988,7 @@ snapshots:
   '@comark/markdown-it@0.3.4(@types/markdown-it@14.1.2)(markdown-it@14.2.0)':
     dependencies:
       '@types/markdown-it': 14.1.2
-      js-yaml: 4.3.2
+      js-yaml: 5.4.3
       markdown-it: 14.2.0
 
   '@commitlint/cli@21.2.3(@types/node@24.19.1)(conventional-commits-parser@7.1.2)(typescript@6.0.3)':
