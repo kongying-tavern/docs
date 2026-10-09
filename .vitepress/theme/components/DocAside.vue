@@ -39,7 +39,7 @@ const items = computed(() => {
 
 <template>
   <div
-    class="font-[var(--vp-font-family-subtitle)] pt-5 border-color-[var(--vp-c-divider)] border-none hidden space-y-6 !mt-5 lg:block"
+    class="font-[var(--vp-font-family-subtitle)] pt-5 border-color-[var(--vp-c-divider)] border-none space-y-6 hidden !mt-5 lg:block"
   >
     <div class="space-y-3">
       <div
