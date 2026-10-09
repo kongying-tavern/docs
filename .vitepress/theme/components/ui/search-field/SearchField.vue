@@ -89,6 +89,8 @@ defineExpose({
 
 <style scoped>
 .search-field {
+  --search-field-hover: color-mix(in srgb, var(--vp-c-text-1) 4%, transparent);
+  --search-field-panel-shadow: var(--vp-shadow-1);
   position: relative;
   width: fit-content;
   max-width: 100%;
@@ -110,12 +112,11 @@ defineExpose({
   align-items: center;
   min-height: 32px;
   border: 1px solid transparent;
-  border-radius: 9999px;
+  border-radius: 8px;
   color: var(--vp-c-text-2);
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease;
+    background-color 150ms ease-out,
+    border-color 150ms ease-out;
 }
 
 .search-field-trigger {
@@ -126,7 +127,7 @@ defineExpose({
 }
 
 .search-field-trigger:hover {
-  background: var(--vp-c-default-soft);
+  background: var(--search-field-hover);
 }
 
 .search-field-trigger:focus-visible {
@@ -135,16 +136,20 @@ defineExpose({
 }
 
 .search-field-control {
-  gap: 4px;
+  gap: 6px;
   min-width: 0;
   padding-inline: 10px;
-  background: var(--vp-c-default-soft);
-  animation: search-field-reveal 160ms ease-out;
+  border-color: var(--vp-c-divider);
+  background: var(--vp-c-bg);
 }
 
 .search-field-control:focus-within {
-  border-color: var(--vp-c-text-3);
+  border-color: var(--vp-c-border);
   box-shadow: none;
+}
+
+.search-field-control:focus-within .search-field-icon {
+  color: var(--vp-c-text-2);
 }
 
 .search-field-trigger > span:first-child,
@@ -153,6 +158,8 @@ defineExpose({
   height: 16px;
   flex: none;
   pointer-events: none;
+  color: var(--vp-c-text-3);
+  transition: color 150ms ease-out;
 }
 
 .search-field :deep(.search-field-input) {
@@ -162,7 +169,7 @@ defineExpose({
   min-width: 48px;
   border: 0;
   border-radius: 0;
-  padding: 0 4px;
+  padding: 0 2px;
   background: transparent;
   @apply text-ui-12;
   box-shadow: none;
@@ -182,13 +189,13 @@ defineExpose({
 .page-mode .search-field-control {
   min-height: 48px;
   border-color: var(--vp-c-divider);
-  border-radius: 12px;
+  border-radius: 10px;
   padding-inline: 14px;
-  background: var(--vp-c-bg-elv);
+  background: var(--vp-c-bg);
 }
 
 .page-mode .search-field-control:focus-within {
-  border-color: var(--vp-c-text-3);
+  border-color: var(--vp-c-border);
 }
 
 .page-mode :deep(.search-field-input) {
@@ -214,10 +221,10 @@ defineExpose({
   box-sizing: content-box;
   min-width: 2ch;
   max-width: 320px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 5px;
-  padding: 1px 5px;
-  background: var(--vp-c-bg-elv);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 1px 6px;
+  background: var(--search-field-hover);
   color: var(--vp-c-text-2);
   font: inherit;
   @apply text-ui-12;
@@ -233,26 +240,44 @@ defineExpose({
   color: var(--vp-c-text-1);
 }
 
-@keyframes search-field-reveal {
-  from {
-    opacity: 0;
-    transform: translateX(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 html[data-reduced-motion='true'] .search-field,
 html[data-reduced-motion='true'] .search-field-trigger,
 html[data-reduced-motion='true'] .search-field-control,
+html[data-reduced-motion='true'] .search-field-icon,
 html[data-reduced-motion='true'] .search-field :deep(.search-field-token) {
   animation: none;
   transition: none;
 }
 
 @media (max-width: 767px) {
+  .page-mode .search-field-control {
+    min-height: 40px;
+    border-color: transparent;
+    padding-inline: 10px;
+    background: var(--vp-c-default-soft);
+  }
+
+  .page-mode .search-field-control:focus-within {
+    border-color: var(--vp-c-text-3);
+    outline: none;
+    box-shadow: none;
+  }
+
+  .page-mode :deep(.search-field-input) {
+    height: 38px;
+    padding-inline: 0;
+  }
+
+  .page-mode .search-field-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--vp-c-text-3);
+  }
+
+  .page-mode .search-field-control:focus-within .search-field-icon {
+    color: var(--vp-c-text-3);
+  }
+
   .search-field :deep(.search-field-input),
   .search-field :deep(.search-field-token) {
     font-size: 16px;
@@ -302,10 +327,10 @@ html[data-reduced-motion='true'] .search-field :deep(.search-field-token) {
   width: max(100%, 320px);
   max-width: calc(100vw - 32px);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 6px;
   background: var(--vp-c-bg-elv);
-  box-shadow: var(--vp-shadow-3);
+  box-shadow: var(--search-field-panel-shadow);
   max-height: min(460px, 65vh);
   overflow-y: auto;
 }
@@ -345,7 +370,7 @@ html[data-reduced-motion='true'] .search-field :deep(.search-field-token) {
 
 :deep(.search-field-result:hover),
 :deep(.search-field-result.active) {
-  background: var(--vp-c-default-soft);
+  background: var(--search-field-hover);
   color: var(--vp-c-text-1);
 }
 

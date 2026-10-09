@@ -263,31 +263,6 @@ function clearRecentSearches(): void {
     padding: 12px 0 8px;
   }
 
-  .forum-search-page-header :deep(.search-field-control) {
-    min-height: 40px;
-    gap: 6px;
-    border-color: transparent;
-    border-radius: 10px;
-    padding-inline: 10px;
-    background: var(--vp-c-default-soft);
-  }
-
-  .forum-search-page-header :deep(.search-field-control:focus-within) {
-    border-color: var(--vp-c-divider);
-  }
-
-  .forum-search-page-header :deep(.search-field-input) {
-    height: 38px;
-    padding-inline: 0;
-    font-size: 16px;
-  }
-
-  .forum-search-page-header :deep(.search-field-icon) {
-    width: 16px;
-    height: 16px;
-    color: var(--vp-c-text-3);
-  }
-
   .forum-search-page-header :deep(.forum-filter-drawer-trigger) {
     width: 40px;
     height: 40px;

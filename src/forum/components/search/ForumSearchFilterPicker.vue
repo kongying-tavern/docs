@@ -318,10 +318,10 @@ defineExpose({ moveActive, selectActive })
   max-height: min(460px, 65vh);
   overflow-y: auto;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 6px;
   background: var(--vp-c-bg-elv);
-  box-shadow: var(--vp-shadow-3);
+  box-shadow: var(--search-field-panel-shadow, var(--vp-shadow-1));
 }
 
 .forum-filter-picker.is-inline {
@@ -360,11 +360,13 @@ defineExpose({ moveActive, selectActive })
   color: var(--vp-c-text-2);
   @apply text-ui-13;
   font-weight: 600;
-  transition: background-color 160ms ease;
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out;
 }
 
 .forum-filter-picker-category:hover {
-  background: var(--vp-c-default-soft);
+  background: var(--search-field-hover, color-mix(in srgb, var(--vp-c-text-1) 4%, transparent));
   color: var(--vp-c-text-1);
 }
 
@@ -375,7 +377,7 @@ defineExpose({ moveActive, selectActive })
 
 .forum-filter-picker-header,
 .forum-filter-picker-group {
-  padding: 6px 10px 5px;
+  padding: 8px 12px 6px;
   color: var(--vp-c-text-3);
   @apply text-ui-11;
   font-weight: 600;
@@ -387,10 +389,13 @@ defineExpose({ moveActive, selectActive })
   display: flex;
   width: 100%;
   border: 0;
-  border-radius: 7px;
+  border-radius: 6px;
   background: transparent;
   color: var(--vp-c-text-2);
   text-align: left;
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out;
 }
 
 .forum-filter-picker-back {
@@ -404,8 +409,8 @@ defineExpose({ moveActive, selectActive })
 .forum-filter-picker-root-option {
   gap: 10px;
   align-items: center;
-  min-height: 58px;
-  padding: 8px 10px;
+  min-height: 52px;
+  padding: 8px 12px;
 }
 
 .forum-filter-picker-option {
@@ -421,14 +426,14 @@ defineExpose({ moveActive, selectActive })
 .forum-filter-picker-root-option.active,
 .forum-filter-picker-option:hover,
 .forum-filter-picker-option.active {
-  background: var(--vp-c-default-soft);
+  background: var(--search-field-hover, color-mix(in srgb, var(--vp-c-text-1) 4%, transparent));
   color: var(--vp-c-text-1);
 }
 
 .forum-filter-picker-icon {
   flex: 0 0 auto;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   color: var(--vp-c-text-3);
 }
 
@@ -439,15 +444,15 @@ defineExpose({ moveActive, selectActive })
 
 .forum-filter-picker-title {
   color: var(--vp-c-text-1);
-  @apply text-ui-14;
+  @apply text-ui-13;
   @apply leading-ui-20;
 }
 
 .forum-filter-picker-description,
 .forum-filter-picker-login {
   color: var(--vp-c-text-3);
-  @apply text-ui-11;
-  @apply leading-ui-16;
+  @apply text-ui-12;
+  @apply leading-ui-18;
 }
 
 .forum-filter-picker-option-icon {
@@ -492,14 +497,14 @@ defineExpose({ moveActive, selectActive })
   border: 1px solid var(--vp-c-divider);
   border-radius: 7px;
   padding: 0 10px 0 32px;
-  background: var(--vp-c-default-soft);
+  background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
   @apply text-ui-12;
   outline: none;
 }
 
 .forum-filter-picker-user-search input:focus-visible {
-  border-color: var(--vp-c-text-1);
+  border-color: var(--vp-c-border);
   outline: none;
 }
 
@@ -519,5 +524,20 @@ defineExpose({ moveActive, selectActive })
   color: var(--vp-c-text-3);
   @apply text-ui-12;
   text-align: center;
+}
+
+.forum-filter-picker-back:focus-visible,
+.forum-filter-picker-root-option:focus-visible,
+.forum-filter-picker-option:focus-visible,
+.forum-filter-picker-category:focus-visible {
+  outline: 2px solid var(--vp-c-text-3);
+  outline-offset: -2px;
+}
+
+html[data-reduced-motion='true'] .forum-filter-picker-back,
+html[data-reduced-motion='true'] .forum-filter-picker-root-option,
+html[data-reduced-motion='true'] .forum-filter-picker-option,
+html[data-reduced-motion='true'] .forum-filter-picker-category {
+  transition: none;
 }
 </style>
