@@ -26,6 +26,7 @@
     "zhlint"
   ],
   "files.trimTrailingWhitespace": true,
+  "vitest.configSearchPatternInclude": "**/vitest.config.ts",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
