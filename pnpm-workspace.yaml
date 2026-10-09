@@ -21,7 +21,7 @@ shellEmulator: true
 packages: []
 
 overrides:
-  '@comark/markdown-it>js-yaml': ^4.3.2
+  '@comark/markdown-it>js-yaml': ^5.0.0
   # 收敛 2026-08 audit 的 Critical/High 依赖告警（全部为同主版本修补升级）
   '@lunariajs/core>simple-git': ^3.36.0
   # 14.2.0 同时提供 dist/* 与 lib/* 两套互不兼容的声明（utils.isPunctCharCode
