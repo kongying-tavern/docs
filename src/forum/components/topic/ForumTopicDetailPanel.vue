@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { Button } from '@/components/ui/button'
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import { Empty, EmptyActions, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import User from '@/components/ui/User.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import ForumEmptyActions from '../ui/ForumEmptyActions.vue'
 import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 import ForumImage from '../ui/ForumImage.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
@@ -141,12 +140,12 @@ const { message } = useLocalized()
           {{ message.forum.errors.loadFailedHint }}
         </EmptyDescription>
       </EmptyHeader>
-      <ForumEmptyActions>
+      <EmptyActions variant="pills">
         <Button @click="emit('retry')">
           <span class="i-lucide-refresh-cw icon-btn" aria-hidden="true" />
           {{ message.forum.auth.callback.error.retry }}
         </Button>
-      </ForumEmptyActions>
+      </EmptyActions>
     </Empty>
   </div>
 

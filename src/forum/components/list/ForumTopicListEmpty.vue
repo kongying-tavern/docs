@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Empty,
+  EmptyActions,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -15,7 +16,6 @@ import { GiteeAPIError } from '~/forum/api/gitee'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 import ForumOpenFeedbackFormButton from '../form/ForumOpenFeedbackFormButton.vue'
-import ForumEmptyActions from '../ui/ForumEmptyActions.vue'
 import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 
 const props = defineProps<{
@@ -127,7 +127,7 @@ async function handleRetry() {
       </EmptyMorphFrame>
     </EmptyHeader>
 
-    <ForumEmptyActions v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions">
+    <EmptyActions v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions" variant="pills">
       <template v-if="!error && (isSearchEmpty || hasActiveFilters)">
         <ForumOpenFeedbackFormButton
           :label="message.forum.empty.createFeedback"
@@ -174,13 +174,13 @@ async function handleRetry() {
           {{ message.forum.auth.callback.error.retry }}
         </Button>
       </template>
-    </ForumEmptyActions>
+    </EmptyActions>
 
-    <ForumEmptyActions v-else>
+    <EmptyActions v-else variant="pills">
       <ForumOpenFeedbackFormButton
         :label="message.forum.empty.createFeedback"
         :hide-on-mobile="false"
       />
-    </ForumEmptyActions>
+    </EmptyActions>
   </Empty>
 </template>
