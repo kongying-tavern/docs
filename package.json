@@ -44,7 +44,7 @@
     "commit": "git-cz",
     "lunaria:build": "lunaria build",
     "lunaria:preview": "lunaria preview",
-    "up": "taze major -I",
+    "up": "taze major -I --exclude typescript@7",
     "use-data-env": "dotenv -e .env.data -c --",
     "init:locale": "tsx ./scripts/initLocale.ts"
   },
