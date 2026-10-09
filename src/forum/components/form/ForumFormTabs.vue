@@ -43,7 +43,7 @@ function formatDate(date = new Date()): string {
         <time class="c-[var(--vp-c-text-1)]">{{ formatDate() }}</time>
       </div>
       <div class="desktop-letter-rule" aria-hidden="true" />
-      <h2 class="desktop-form-title leading-tight tracking-[-0.025em] mt-8 text-left text-ui-42">
+      <h2 class="desktop-form-title text-ui-42 leading-tight tracking-[-0.025em] mt-8 text-left">
         {{ message.forum.publish.title }} - {{ visibleTabs.find(tab => tab.value === activeTab)?.label }}
       </h2>
       <div class="desktop-title-divider mb-10 w-18" aria-hidden="true" />
