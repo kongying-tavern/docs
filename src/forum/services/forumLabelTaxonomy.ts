@@ -1,4 +1,4 @@
-import { GITEE_API_CONFIG } from '~/forum/api/gitee/config'
+import { GITEE_API_CONFIG } from '~/forum/api/gitee/gitee-config'
 import { CATEGORY_LABEL_PREFIX, isCategoryLabel } from './forumLabel'
 
 export type ForumLabelGroup = 'type' | 'category' | 'status' | 'locale' | 'special' | 'other'

@@ -106,13 +106,6 @@ export default defineConfig(({ mode }) => ({
     }),
     mdcMetadataPlugin(),
   ],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
-      },
-    },
-  },
   json: {
     stringify: true,
   },

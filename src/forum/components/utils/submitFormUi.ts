@@ -2,7 +2,7 @@ import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment
 import type { CustomConfig } from '~/forum/types'
 import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import { formatMessage } from '~/utils/formatMessage'
-import { FORM_HASH } from '../form/publish-topic-form/config'
+import { FORM_HASH } from '../form/publish-topic-form/form-config'
 
 export function formatImageAttachmentError(
   error: ImageAttachmentError,
@@ -23,7 +23,7 @@ export function formatImageAttachmentError(
   }
 }
 
-export interface DataNode {
+interface DataNode {
   text: string
   link?: string
   items?: DataNode[]

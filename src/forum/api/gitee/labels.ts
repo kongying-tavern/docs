@@ -1,8 +1,8 @@
 import type ForumAPI from '../types'
 import { buildFormData } from '~/services/apiUtils'
 import { apiCall, deleteApiCache } from '.'
-import { GITEE_API_CONFIG } from './config'
 import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
+import { GITEE_API_CONFIG } from './gitee-config'
 import { GiteeApiErrorType } from './types'
 
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG

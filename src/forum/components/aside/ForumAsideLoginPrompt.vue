@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
-import { FORM_HASH } from '../form/publish-topic-form/config'
+import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import ForumAsideSection from './ForumAsideSection.vue'
 
 const { message } = useLocalized()

@@ -15,7 +15,7 @@ import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
-import { FORM_HASH } from './publish-topic-form/config'
+import { FORM_HASH } from './publish-topic-form/form-config'
 
 const { variant = 'default', hideOnMobile = true, label } = defineProps<{
   label?: string

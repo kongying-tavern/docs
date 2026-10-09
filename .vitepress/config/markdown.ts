@@ -26,7 +26,7 @@ import MarkdownItVariableInject from '../theme/markdown/variableInject.ts'
 export const markdownConfig: MarkdownOptions = {
   attrs: true,
   image: {
-    lazyLoading: true,
+    lazyLoad: true,
   },
   preConfig(md) {
     // `demo` must run before Comark, otherwise `:::: demo` is parsed as
@@ -60,7 +60,7 @@ export const markdownConfig: MarkdownOptions = {
         inlineSpan: false,
       },
     })
-    // VitePress 2.0 passes MarkdownItAsync which extends MarkdownIt
+    // VitePress 2 passes MarkdownItAsync, which extends MarkdownIt.
     applyComarkPatches(md as unknown as MarkdownIt)
   },
   config(md) {

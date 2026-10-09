@@ -1,3 +1,5 @@
+import type { MarkdownOptions } from 'vitepress'
+
 // 其余语言模块按此契约与 zh(默认)结构对齐
 export interface CustomConfig {
   footer: typeof import('./zh/footer').default
@@ -13,8 +15,8 @@ export interface CustomConfig {
 }
 
 export interface LocaleTextConfig {
-  outlineTitle: string
-  lastUpdatedText: string
+  outline: { label: string }
+  lastUpdated: { text: string }
   returnToTopLabel: string
   langMenuLabel: string
   docFooter: {
@@ -26,6 +28,7 @@ export interface LocaleTextConfig {
 export interface LocaleConfigShape {
   title: string
   titleTemplate: string
+  markdown?: Pick<MarkdownOptions, 'codeCopyButton'>
   themeConfig: LocaleTextConfig
 }
 

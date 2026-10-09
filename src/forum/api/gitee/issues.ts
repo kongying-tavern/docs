@@ -7,9 +7,9 @@ import { buildFormData } from '~/services/apiUtils'
 import { reportRequestFailure } from '~/services/telemetry/request'
 import { apiCall, deleteApiCache } from '.'
 import { reformat } from '../webhook'
-import { GITEE_API_CONFIG } from './config'
 import { parseGiteeComment, parseGiteeComments, parseGiteeIssue, parseGiteeIssues } from './contracts'
 import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
+import { GITEE_API_CONFIG } from './gitee-config'
 import {
   normalizeComment,
   normalizeIssue,

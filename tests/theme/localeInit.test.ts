@@ -1,4 +1,3 @@
-/* eslint-disable test/no-import-node-test -- verify the locale migration through the real CLI */
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'

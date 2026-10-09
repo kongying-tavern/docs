@@ -6,7 +6,7 @@ import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/forum/composables/data/useForumReaction'
 import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/forum/services/forumTopicQuote'
-import { FORM_HASH } from '../form/publish-topic-form/config'
+import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import { preloadForumPublishForm } from '../utils/submitFormUi'
 
 const { autoload = true, topic } = defineProps<{ topic: ForumAPI.Topic, autoload?: boolean }>()

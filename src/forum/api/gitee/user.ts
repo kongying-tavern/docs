@@ -1,7 +1,7 @@
 import type ForumAPI from '../types'
 import { apiCall, deleteApiCache } from '.'
-import { GITEE_API_CONFIG } from './config'
 import { parseGiteeUser, parseGiteeUsers } from './contracts'
+import { GITEE_API_CONFIG } from './gitee-config'
 import { normalizeUser } from './normalize'
 import { buildUserProfileForm } from './userProfile'
 

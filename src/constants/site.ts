@@ -4,6 +4,7 @@
  * 域名或 base 变更只需改这一处。
  */
 export const SITE_ORIGIN = 'https://yuanshen.site'
+export const DEFAULT_LOCALE = 'zh'
 export const SITE_BASE = '/docs'
 export const ASSET_ORIGIN = 'https://assets.yuanshen.site'
 export const FORUM_IMAGE_ORIGIN = 'https://webp.assets.interknot.site'

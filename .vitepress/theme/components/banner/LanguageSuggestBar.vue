@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData, useRouter, withBase } from 'vitepress'
+import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import CloseButton from '@/components/ui/CloseButton.vue'
@@ -33,7 +33,9 @@ const INDEX_MD_REGEX = /(^|\/)index\.md$/
 
 const MD_EXTENSION_REGEX = /\.md$/
 
-const { localeIndex, page, theme, site, hash } = useData()
+const data = useData()
+const { localeIndex, page, theme, site } = data
+const route = useRoute()
 const { go } = useRouter()
 
 const open = ref(false)
@@ -58,15 +60,19 @@ function handleLanguageSelect(ev: CustomEvent) {
 }
 
 function toSuggestLanguagePage(locale?: string) {
+  const targetLocale = locale || suggestLocale.value.key
+  const i18nRouting = theme.value.i18nRouting
+  const link = typeof i18nRouting === 'function'
+    ? i18nRouting(data, route, targetLocale)
+    : normalizeLink(
+      getLangPath(targetLocale),
+      i18nRouting !== false,
+      page.value.relativePath.slice(currentLangPath.value.length - 1),
+      !site.value.cleanUrls,
+    ) + route.query + route.hash
+
   go(
-    withBase(
-      normalizeLink(
-        getLangPath(locale || suggestLocale.value.key),
-        theme.value.i18nRouting !== false,
-        page.value.relativePath.slice(currentLangPath.value.length - 1),
-        !site.value.cleanUrls,
-      ) + hash.value,
-    ),
+    withBase(link),
   )
 }
 
@@ -95,7 +101,7 @@ function normalizeLink(
     :aria-label="suggestTranslate.ariaLabel"
   >
     <div class="flex flex-wrap w-full items-center">
-      <div class="text-align-left text-ui-14 max-md:w-85%">
+      <div class="text-ui-14 text-align-left max-md:w-85%">
         {{ suggestTranslate.changeLanguage }}
       </div>
       <div class="mt-4 flex flex-1 items-center justify-end md:mt-0">

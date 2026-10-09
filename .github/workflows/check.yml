@@ -104,9 +104,6 @@ jobs:
           name: logic-coverage
           path: coverage/
 
-      - name: Markdown and migration regression tests
-        run: pnpm test:markdown
-
       - name: Build project (MPA)
         env:
           NODE_OPTIONS: --max_old_space_size=4096

@@ -16,7 +16,7 @@ export function cfgDynamicTitleTemplate(
     const localeConfig: LocaleConfigVal
       = siteConfig.userConfig.locales![localeKey] ?? {}
     const templateMappings: CustomConfig['ui']['title']['templateMappings']
-      = localeConfig.themeConfig?.ui.title.templateMappings ?? []
+      = localeConfig.themeConfig?.ui?.title?.templateMappings ?? []
     for (const templateMapping of templateMappings) {
       if (
         templateMapping.test

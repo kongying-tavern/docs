@@ -9,7 +9,7 @@ import { getTopicStatus, getTopicStatusFromLabel } from '~/forum/services/forumT
 import { getForumLocaleLabelGetter } from '~/forum/services/getForumLocaleGetter'
 import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
 
-import { GITEE_API_CONFIG, GITEE_ISSUE_STATE_TITLES } from './config'
+import { GITEE_API_CONFIG, GITEE_ISSUE_STATE_TITLES } from './gitee-config'
 
 const GITEE_DEFAULT_AVATAR_URL = 'https://gitee.com/assets/no_portrait.png'
 const TOPIC_TYPE_LABEL = /^TYP-(BUG|FEAT|ANN)$/

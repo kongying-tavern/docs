@@ -297,7 +297,7 @@ html[data-reduced-motion='true'] .search-field :deep(.search-field-token) {
   box-shadow: none;
 }
 
-.search-field.page-mode :deep(.search-field-result) + :deep(.search-field-result) {
+.search-field.page-mode :deep(.search-field-result + .search-field-result) {
   border-top: 1px solid var(--vp-c-divider);
 }
 

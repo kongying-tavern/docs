@@ -283,7 +283,13 @@ function extractMarkdown(
 ): void {
   const { body, data } = splitFrontmatter(source)
   walkFrontmatter(data, '', targets, extraction)
-  const tokens = parser.parse(body, { path: fileName })
+  let tokens: Token[]
+  try {
+    tokens = parser.parse(body, { path: fileName })
+  }
+  catch (error) {
+    throw new Error(`Failed to scan Markdown font characters in ${fileName}`, { cause: error })
+  }
   walkMarkdownTokens(tokens, [extraction.defaultRole], targets, extraction)
 }
 

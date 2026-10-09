@@ -78,7 +78,7 @@ function scheduleForumPreloadIfForumPath(path: string): void {
 }
 
 export default {
-  ...DefaultTheme,
+  extends: DefaultTheme,
   Layout,
 
   enhanceApp({ app, router, siteData }) {

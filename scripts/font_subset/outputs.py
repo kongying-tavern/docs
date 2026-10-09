@@ -160,7 +160,6 @@ def commit_outputs(
     fonts_dir = config.fonts_dir
     staged_fonts = staging_root / "fonts"
     fonts_backup = staging_root / "previous-fonts"
-    fonts_were_present = fonts_dir.exists()
     css_outputs = (
         (
             staged_site_css,
@@ -175,6 +174,10 @@ def commit_outputs(
     )
     for _, css_file, _ in css_outputs:
         css_file.parent.mkdir(parents=True, exist_ok=True)
+
+    # CSS can live inside fonts_dir; parent creation above also creates that
+    # directory on a fresh checkout. Back it up before replacing it on Windows.
+    fonts_were_present = fonts_dir.exists()
 
     if fonts_were_present:
         for existing in fonts_dir.iterdir():

@@ -4,9 +4,12 @@ import C from './constants.ts'
 export const zhConfig = {
   title: '空荧酒馆',
   titleTemplate: ':title | 空荧酒馆',
+  markdown: {
+    codeCopyButton: { tooltipText: '复制代码', copiedText: '已复制' },
+  },
   themeConfig: {
-    outlineTitle: '本页目录',
-    lastUpdatedText: '更新日期',
+    outline: { label: '本页目录' },
+    lastUpdated: { text: '更新日期' },
     returnToTopLabel: '回到顶部',
     langMenuLabel: '更改语言',
     docFooter: {

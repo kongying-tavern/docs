@@ -22,7 +22,7 @@ export function writeLocaleImporters(root: string): void {
       .sort()
     for (const file of modules) {
       const name = file.slice(0, -3)
-      const key = IDENTIFIER_RE.test(name) ? name : `'${name}'`
+      const key = `'${name}'`
       lines.push(`    ${key}: () => import('../locales/${locale}/${file}'),`)
     }
     lines.push('  },')
