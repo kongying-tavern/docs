@@ -25,14 +25,14 @@ const { list, title, desc } = defineProps<{
       <div
         class="ml-0 grid grid-cols-[repeat(auto-fit,minmax(150px,3fr))] h-fit w-full justify-items-center md:mt-62px md:justify-items-stretch"
       >
-        <h3 :id="item.id" class="text-2xl c-[var(--vp-c-text-1)] font-medium mb-4 mt-1 text-center col-span-full w-full md:text-left md:hidden">
+        <h3 :id="item.id" class="text-2xl c-[var(--vp-c-text-1)] font-medium mb-4 mt-1 text-center col-span-full w-full md:hidden">
           {{ item.label }}
         </h3>
 
         <div
           v-for="(member, index) in item.members"
           :key="member.name"
-          class="member text-xs text-neutral-800 font-normal mb-8 md:text-sm"
+          class="member mb-8"
         >
           <p class="view-fade-y member-name c-[var(--vp-c-text-1)] font-[var(--vp-font-family-subtitle)] text-center w-full md:text-left">
             {{ member.name }}
@@ -58,101 +58,7 @@ const { list, title, desc } = defineProps<{
 </template>
 
 <style scoped>
-.info {
-  flex-shrink: 0;
-  padding: 0 24px;
-  max-width: 512px;
-}
-
-@media (min-width: 768px) {
-  .info {
-    position: sticky;
-    top: calc(var(--vp-layout-top-height, 0px) + 32px);
-    left: 0;
-    padding: 0 24px 0 0;
-    width: 128px;
-  }
-
-  html.banner-dismissed .info {
-    top: 32px;
-  }
-}
-
-@media (min-width: 960px) {
-  .info {
-    top: calc(var(--vp-layout-top-height, 0px) + 88px);
-    padding: 0 64px 0 0;
-    width: 290px;
-  }
-
-  html.banner-dismissed .info {
-    top: 88px;
-  }
-}
-
-.title {
-  display: inline-block;
-  width: max-content;
-  font-size: calc(24px * var(--site-ui-scale));
-  font-weight: 500;
-  word-break: keep-all;
-}
-
-@keyframes progress {
-  from {
-    width: 0%;
-    opacity: 0;
-  }
-  to {
-    width: 100%;
-    opacity: 1;
-  }
-}
-
-.lead {
-  padding-top: 8px;
-  line-height: calc(24px * var(--site-ui-scale));
-  font-size: calc(14px * var(--site-ui-scale));
-  font-weight: 500;
-  color: var(--vp-c-text-2);
-}
-
-.members {
-  margin-left: 12px;
-}
-
-@media (min-width: 768px) {
-  .members {
-    flex-grow: 1;
-  }
-}
-
-.member + .member {
-  padding-top: 16px;
-}
-
-@media (min-width: 640px) {
-  .member {
-    margin: 0 auto;
-    max-width: 592px;
-  }
-}
-
-@media (min-width: 768px) {
-  .member {
-    margin: 0;
-    max-width: 100%;
-  }
-}
-
-.members {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 .member {
-  flex-basis: calc(25% - 26px);
   box-sizing: border-box;
   text-align: left;
   padding: 16px;
@@ -160,6 +66,13 @@ const { list, title, desc } = defineProps<{
   max-width: 140px;
   flex-direction: column;
   align-items: baseline;
+  @apply leading-ui-16;
+}
+
+@media (min-width: 768px) {
+  .member {
+    @apply leading-ui-20;
+  }
 }
 
 .member p {

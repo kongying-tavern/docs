@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import type { MotionValue } from 'motion-v'
 import type { HTMLAttributes } from 'vue'
 import { Motion, useScroll, useTransform } from 'motion-v'
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { ref } from 'vue'
 
 interface Props {
-  containerClass?: HTMLAttributes['class']
   class?: HTMLAttributes['class']
   items?: {
     id: string
@@ -20,27 +18,14 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const timelineRef = ref<HTMLElement | null>(null)
-const height = ref(0)
-
-onMounted(async () => {
-  await nextTick()
-  if (timelineRef.value) {
-    const rect = timelineRef.value.getBoundingClientRect()
-    height.value = rect.height
-  }
-})
 
 const { scrollYProgress } = useScroll({
   target: timelineRef,
   offset: ['start 10%', 'end 50%'],
 })
 
-const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1])
-const heightTransform = ref<MotionValue<number>>(useTransform(scrollYProgress, [0, 1], [0, 0]))
-
-watch(height, (newHeight) => {
-  heightTransform.value = useTransform(scrollYProgress, [0, 1], [0, newHeight])
-})
+const fillHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
+const fillOpacity = useTransform(scrollYProgress, [0, 0.12], [0, 1])
 </script>
 
 <template>
@@ -51,7 +36,7 @@ watch(height, (newHeight) => {
       v-if="title || description"
       class="mx-auto px-4 py-20 max-w-7xl lg:px-10 md:px-8"
     >
-      <h2 class="text-4xl c-[var(--vp-c-text-1)] mb-4 text-center max-w-4xl md:text-6xl md:text-left">
+      <h2 class="text-4xl c-[var(--vp-c-text-1)] font-[var(--vp-font-family-title)] mb-4 text-center max-w-4xl md:text-6xl md:text-left">
         {{ title }}
       </h2>
       <p class="subtitle text-sm c-[var(--vp-c-text-2)] text-center w-full inline-block md:text-base md:text-left md:max-w-sm">
@@ -61,7 +46,7 @@ watch(height, (newHeight) => {
 
     <div
       ref="timelineRef"
-      class="mx-auto pb-20 max-w-7xl relative"
+      class="timeline-body mx-auto pb-20 max-w-7xl relative"
     >
       <div
         v-for="(item, index) in props.items"
@@ -69,38 +54,91 @@ watch(height, (newHeight) => {
         class="pt-10 flex justify-start relative z-1 md:pt-40 md:gap-10"
       >
         <div
-          class="flex-col max-w-xs hidden items-center self-start top-40 sticky z-0 z-40 md:flex md:flex-row lg:max-w-sm md:w-full"
+          class="max-w-xs items-center self-start top-40 sticky z-40 hidden md:flex lg:max-w-sm md:w-full"
         >
-          <div
-            class="rounded-full bg-white flex h-10 w-10 items-center left-3 justify-center absolute dark:bg-black md:left-3"
-          >
-            <div
-              class="p-2 border border-neutral-300 rounded-full bg-neutral-200 h-4 w-4 dark:border-neutral-700 dark:bg-neutral-800"
-            />
+          <div class="timeline-dot-mask" aria-hidden="true">
+            <div class="timeline-dot-bead" />
           </div>
           <h3
-            class="text-xl c-[var(--vp-c-text-1)] font-bold hidden md:text-2.25rem md:pl-20 md:block"
+            class="text-xl c-[var(--vp-c-text-1)] font-bold md:text-2.25rem md:pl-20"
           >
             {{ item.label }}
           </h3>
         </div>
         <slot :name="item.id" />
       </div>
-      <div
-        :style="{
-          height: `${height}px`,
-        }"
-        class="bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] w-[2px] hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] left-8 top-0 absolute overflow-hidden from-transparent to-transparent via-neutral-200 from-0% to-99% md:block md:block md:left-8 dark:via-neutral-700"
-      >
+      <div class="timeline-rail" aria-hidden="true">
         <Motion
-          as="div"
+          class="timeline-rail-fill"
           :style="{
-            height: heightTransform as unknown as string,
-            opacity: opacityTransform,
+            height: fillHeight,
+            opacity: fillOpacity,
           }"
-          class="rounded-full w-[2px] inset-x-0 top-0 absolute from-green-500 to-transparent via-blue-500 from-0% via-10% bg-gradient-to-t"
         />
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.timeline-body {
+  --timeline-rail-center: 33px;
+}
+
+.timeline-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--timeline-rail-center) - 1px);
+  display: none;
+  width: 2px;
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    var(--vp-c-divider) 24px,
+    var(--vp-c-divider) calc(100% - 24px),
+    transparent
+  );
+  clip-path: polygon(50% 0, 100% 6px, 100% calc(100% - 6px), 50% 100%, 0 calc(100% - 6px), 0 6px);
+}
+
+.timeline-rail-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  border-radius: 9999px;
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--vp-c-brand-1) 80%, var(--vp-c-bg)),
+    color-mix(in srgb, var(--vp-c-brand-1) 45%, var(--vp-c-bg))
+  );
+}
+
+.timeline-dot-mask {
+  position: absolute;
+  left: var(--timeline-rail-center);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background-color: var(--vp-c-bg);
+  transform: translateX(-50%);
+}
+
+.timeline-dot-bead {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 9999px;
+  background-color: var(--vp-c-divider);
+}
+
+@media (min-width: 768px) {
+  .timeline-rail {
+    display: block;
+  }
+}
+</style>
