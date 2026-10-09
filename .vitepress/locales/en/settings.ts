@@ -7,6 +7,8 @@ const settings: CustomConfig['settings'] = {
     legacyFeedbackForm: 'Classic feedback form',
     legacyDescription: 'You are assigned the new form. When on, the classic form is used. When off, the default rollout assignment is restored. Applies only to your account in this browser, the next time you open the form.',
     description: 'When on, the new form is used. When off, the default rollout assignment is restored. Applies only to your account in this browser, the next time you open the form.',
+    accountLogin: 'Password sign-in',
+    accountLoginDescription: 'Sign in with an account and password instead of the authorization redirect. Admin-only by default, with no button in the interface: it opens through #account-login-alert, and only in a browser where an admin account has signed in.',
   },
   profile: {
     title: 'Personal profile',

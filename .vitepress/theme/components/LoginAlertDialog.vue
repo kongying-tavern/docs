@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { getLangPath } from '@/utils'
+import { useAccountLoginExperiment } from '~/forum/composables/state/useAccountLoginExperiment'
 import { useHashChecker } from '~/forum/hooks/useHashChecker'
 import useLogin from '~/forum/hooks/useLogin'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
@@ -27,6 +28,7 @@ import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 const userAuth = useUserAuthStore()
 const { localeIndex, theme } = useData()
 const { isAuthenticating, passwordLoginError, loginWithPassword } = useLogin()
+const { browserAccess } = useAccountLoginExperiment()
 
 const open = ref(false)
 const username = ref('')
@@ -35,7 +37,7 @@ const canSubmit = computed(() => Boolean(username.value.trim() && password.value
 const accountLoginHelpHref = computed(() => withBase(`${getLangPath(localeIndex.value)}manual/faq/login/accountlogin`))
 
 useHashChecker('account-login-alert', () => {
-  if (!userAuth.isTokenValid)
+  if (!userAuth.isTokenValid && browserAccess())
     open.value = true
 })
 

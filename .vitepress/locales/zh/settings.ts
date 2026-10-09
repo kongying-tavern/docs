@@ -5,6 +5,8 @@ const settings = {
     legacyFeedbackForm: '旧版反馈表单',
     legacyDescription: '你已分配到新版。开启使用旧版，关闭恢复默认灰度分配。仅影响当前账号在此浏览器中的体验，下次打开表单时生效。',
     description: '开启使用新版，关闭恢复默认灰度分配。仅影响当前账号在此浏览器中的体验，下次打开表单时生效。',
+    accountLogin: '账号密码登录',
+    accountLoginDescription: '使用账号和密码直接登录，不经过授权跳转。默认仅管理员可用，界面不提供按钮，只保留 #account-login-alert 入口；在此浏览器登录过管理员账号后才能打开。',
   },
   profile: {
     title: '个人资料',

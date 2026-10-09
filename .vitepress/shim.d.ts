@@ -4,6 +4,8 @@
 interface ImportMetaEnv {
   /** compact 反馈表单灰度百分比（0-100）；未设置或非法值走 legacy 表单 */
   readonly VITE_FEEDBACK_FORM_COMPACT_PERCENT?: string
+  /** 账号密码登录灰度百分比（0-100）；未设置或非法值仅管理员可用 */
+  readonly VITE_ACCOUNT_LOGIN_PERCENT?: string
 }
 
 interface ImportMeta {
