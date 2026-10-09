@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import type { FeedbackFormVariant } from '~/forum/services/form/feedbackFormExperiment'
 import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
 import type { TopicFormData } from '~/forum/services/form/validation'
 import { useEventListener } from '@vueuse/core'
@@ -29,11 +30,12 @@ export interface PublishTopicPresentation {
   createMore?: () => boolean
 }
 
-export function usePublishTopicController(presentation: () => PublishTopicPresentation | null, onEvent?: (event: 'attempt' | 'success' | 'failed' | 'validation') => void, draftsEnabled: () => boolean = () => true) {
+export function usePublishTopicController(presentation: () => PublishTopicPresentation | null, onEvent?: (event: 'attempt' | 'success' | 'failed' | 'validation') => void, variant: () => FeedbackFormVariant = () => 'compact') {
   const userAuth = useUserAuthStore()
   const { message } = useLocalized()
   const userInfo = useUserInfoStore()
   const username = computed(() => userInfo.info?.login || 'Guest')
+  const draftsEnabled = () => variant() === 'compact'
 
   const {
     isOpen,
@@ -121,6 +123,15 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   const entryPage = ref<'types' | 'form'>('form')
   const choosingType = computed(() => entryPage.value === 'types')
   const editingSavedDraft = ref(false)
+  let entryTargetType: TopicFormData['type'] | undefined
+  function resolveEntryPage(targetType?: TopicFormData['type']): 'types' | 'form' {
+    return targetType || variant() === 'legacy' ? 'form' : 'types'
+  }
+  function initializeEntryPage(): void {
+    if (submissionBusy.value || submissionPhase.value === 'succeeded' || editingSavedDraft.value)
+      return
+    entryPage.value = resolveEntryPage(entryTargetType)
+  }
   watch(() => formData.value.type, () => {
     editingSavedDraft.value = false
   }, { flush: 'sync' })
@@ -247,7 +258,8 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
 
       const targetType = resolvePublishTopicType(hash, tabList.value, quotedTopic?.type)
       editingSavedDraft.value = false
-      entryPage.value = targetType ? 'form' : 'types'
+      entryTargetType = targetType
+      entryPage.value = resolveEntryPage(targetType)
       openForm(targetType)
     },
     {
@@ -461,7 +473,8 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
       if (isOpen.value)
         return
       editingSavedDraft.value = false
-      entryPage.value = 'types'
+      entryTargetType = undefined
+      entryPage.value = resolveEntryPage()
       openForm()
     }
     else {
@@ -600,7 +613,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     form: { showCreateMore, entryPage, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftPromptOpen, deleteDraftError, isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError },
     upload: { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry },
     submission: { submitLoading, submissionPhase, submissionAlert, validationErrorCount, finalIsDisabled },
-    actions: { markEditorActive, requestDeleteDraft, confirmDeleteDraft, selectInitialType, returnToTypeSelection, handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, switchTab, focusFirstInvalid, saveDraft, setPrivate, setQuotedTopic, clearAttachments: reset },
+    actions: { initializeEntryPage, markEditorActive, requestDeleteDraft, confirmDeleteDraft, selectInitialType, returnToTypeSelection, handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, switchTab, focusFirstInvalid, saveDraft, setPrivate, setQuotedTopic, clearAttachments: reset },
   }
 }
 

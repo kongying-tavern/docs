@@ -71,7 +71,6 @@ test.describe('legacy upload picker', () => {
     await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
     await page.goto('/feedback')
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
-    await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
     const form = page.locator('.form-container')
     const trigger = form.locator('.forum-image-upload').getByRole('button', { name: '添加图片', exact: true })
     await page.keyboard.press('Tab')
@@ -96,7 +95,6 @@ test.describe('legacy upload picker', () => {
       : undefined
     await page.goto('/feedback')
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
-    await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
     const form = page.locator('.form-container')
     await form.locator('input[type="file"]').setInputFiles({ name: 'legacy.png', mimeType: 'image/png', buffer: png })
     await expect(form.locator('[data-status="failed"]')).toHaveCount(1)

@@ -13,12 +13,14 @@ const userInfo = useUserInfoStore()
 const experiment = useFeedbackFormExperiment()
 const variant = ref<FeedbackFormVariant>(experiment.variant.value)
 const ready = ref(false)
+// 面板就绪前读实时分配，之后读冻结值，避免打开过程中换皮
+const currentVariant = () => ready.value ? variant.value : experiment.variant.value
 let reopeningAfterFailure = false
 const controller = usePublishTopicController(() => panel.value, (event) => {
   if (event === 'failed')
     reopeningAfterFailure = true
   trackOp(`forum_form_${variant.value}_${event}`)
-}, () => (ready.value ? variant.value : experiment.variant.value) === 'compact')
+}, currentVariant)
 watch([experiment.variant, controller.form.isOpen, controller.submission.submitLoading], ([assigned, open, submitting]) => {
   if (!open && !submitting)
     variant.value = assigned
@@ -42,6 +44,7 @@ watch(controller.form.isOpen, async (open) => {
   if (!controller.form.isOpen.value)
     return
   variant.value = experiment.variant.value
+  controller.actions.initializeEntryPage()
   ready.value = true
   trackOp(`forum_form_${variant.value}_open`)
 }, { immediate: true })

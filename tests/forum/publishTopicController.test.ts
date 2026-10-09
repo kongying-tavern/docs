@@ -1,4 +1,5 @@
 import type { PublishTopicPresentation } from '~/forum/components/form/composables/usePublishTopicController'
+import type { FeedbackFormVariant } from '~/forum/services/form/feedbackFormExperiment'
 import type { UploadImageAttachmentsResult } from '~/forum/services/form/imageAttachment'
 import type { TopicFormData } from '~/forum/services/form/validation'
 import assert from 'node:assert/strict'
@@ -80,7 +81,7 @@ function deferred<T>() {
   return { promise, resolve, reject }
 }
 
-function runtime(options: { settleUploads?: () => Promise<UploadImageAttachmentsResult>, presentation?: PublishTopicPresentation, cleanupError?: Error, draftsEnabled?: boolean | (() => boolean), accountReady?: Promise<void> } = {}) {
+function runtime(options: { settleUploads?: () => Promise<UploadImageAttachmentsResult>, presentation?: PublishTopicPresentation, cleanupError?: Error, variant?: FeedbackFormVariant | (() => FeedbackFormVariant), accountReady?: Promise<void> } = {}) {
   const drafts = new Map<TopicFormData['type'], TopicFormData>([
     ['BUG', { type: 'BUG', title: '', text: 'BUG content', tags: ['PLATFORM_PC'] }],
     ['FEAT', { type: 'FEAT', title: 'Feature title', text: 'FEAT content', tags: ['PLATFORM_PC'] }],
@@ -167,7 +168,7 @@ function runtime(options: { settleUploads?: () => Promise<UploadImageAttachments
   }
   vi.stubGlobal('window', { location: { href: 'http://localhost/forum' }, history: {} })
   const scope = effectScope()
-  const controller = scope.run(() => usePublishTopicController(() => options.presentation ?? null, undefined, () => typeof options.draftsEnabled === 'function' ? options.draftsEnabled() : options.draftsEnabled ?? true))!
+  const controller = scope.run(() => usePublishTopicController(() => options.presentation ?? null, undefined, () => typeof options.variant === 'function' ? options.variant() : options.variant ?? 'compact'))!
   return { controller, drafts, formData, state, savedDrafts, exit: (event: string, payload = new Event(event, { cancelable: true })) => mocks.exitHandlers.get(event)!(payload as BeforeUnloadEvent), isOpen, validation, submission, resetTypes, initializedTypes, hash: (hash: string) => mocks.hashHandler!(hash), submitCalls: () => submitCalls, dispose: () => scope.stop() }
 }
 
@@ -306,7 +307,7 @@ test('storage cleanup failure after publication retains success and does not reo
 })
 
 test('legacy form has no draft resume, save, close prompt or page-exit persistence', async () => {
-  const setup = runtime({ draftsEnabled: false })
+  const setup = runtime({ variant: 'legacy' })
   try {
     setup.isOpen.value = false
     setup.hash('PUBLISH-TOPIC-DRAFT-FEAT')
@@ -327,14 +328,14 @@ test('legacy form has no draft resume, save, close prompt or page-exit persisten
 })
 
 test('reload warns for dirty legacy and compact drafts and allows clean forms', () => {
-  for (const draftsEnabled of [false, true]) {
-    const setup = runtime({ draftsEnabled })
+  for (const variant of ['legacy', 'compact'] as const) {
+    const setup = runtime({ variant })
     try {
       setup.state.isDirty.value = true
       const dirty = new Event('beforeunload', { cancelable: true })
       setup.exit('beforeunload', dirty)
       assert.equal(dirty.defaultPrevented, true)
-      assert.equal(setup.savedDrafts.length, draftsEnabled ? 1 : 0)
+      assert.equal(setup.savedDrafts.length, variant === 'compact' ? 1 : 0)
       setup.state.isDirty.value = false
       const clean = new Event('beforeunload', { cancelable: true })
       setup.exit('beforeunload', clean)
@@ -360,18 +361,58 @@ test('reload warns while publication validation is pending even without dirty in
 test('cold draft links wait for account rollout and resume only the compact form', async () => {
   for (const compact of [true, false]) {
     const account = deferred<void>()
-    let enabled = false
-    const setup = runtime({ accountReady: account.promise, draftsEnabled: () => enabled })
+    let assigned: FeedbackFormVariant = 'legacy'
+    const setup = runtime({ accountReady: account.promise, variant: () => assigned })
     try {
       setup.isOpen.value = false
       setup.hash('PUBLISH-TOPIC-DRAFT-FEAT')
       assert.equal(setup.isOpen.value, false)
-      enabled = compact
+      assigned = compact ? 'compact' : 'legacy'
       account.resolve()
       await new Promise<void>(resolve => setImmediate(resolve))
       assert.equal(setup.isOpen.value, compact)
       assert.equal(setup.controller.form.editingSavedDraft.value, compact)
       assert.equal(setup.formData.value.type, compact ? 'FEAT' : 'BUG')
+    }
+    finally { setup.dispose() }
+  }
+})
+
+test('cold openings initialize their entry after account rollout without losing explicit targets', async () => {
+  for (const entry of ['hash', 'button', 'target'] as const) {
+    const account = deferred<void>()
+    let assigned: FeedbackFormVariant = 'legacy'
+    const setup = runtime({ accountReady: account.promise, variant: () => assigned })
+    try {
+      setup.isOpen.value = false
+      if (entry === 'button')
+        setup.controller.actions.handleOpenChange(true)
+      else
+        setup.hash(entry === 'target' ? 'PUBLISH-TOPIC-FEAT' : 'PUBLISH-TOPIC')
+      assigned = 'compact'
+      account.resolve()
+      await new Promise<void>(resolve => setImmediate(resolve))
+      setup.controller.actions.initializeEntryPage()
+      assert.equal(setup.controller.form.entryPage.value, entry === 'target' ? 'form' : 'types')
+      assert.equal(setup.formData.value.type, entry === 'target' ? 'FEAT' : 'BUG')
+    }
+    finally { setup.dispose() }
+  }
+})
+
+test('the legacy form opens straight into the form while the compact form starts on the type chooser', () => {
+  for (const variant of ['legacy', 'compact'] as const) {
+    const setup = runtime({ variant })
+    try {
+      setup.isOpen.value = false
+      setup.hash('PUBLISH-TOPIC')
+      assert.equal(setup.isOpen.value, true)
+      assert.equal(setup.controller.form.entryPage.value, variant === 'legacy' ? 'form' : 'types')
+      assert.equal(setup.controller.form.choosingType.value, variant === 'compact')
+      assert.equal(setup.formData.value.type, 'BUG')
+      setup.isOpen.value = false
+      setup.controller.actions.handleOpenChange(true)
+      assert.equal(setup.controller.form.entryPage.value, variant === 'legacy' ? 'form' : 'types')
     }
     finally { setup.dispose() }
   }
