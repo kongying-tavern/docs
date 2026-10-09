@@ -150,7 +150,7 @@ catalogs:
     '@mdit/plugin-mark': 2.0.2
     '@mdit/plugin-sub': 1.0.4
     '@mdit/plugin-sup': 1.0.4
-    markdown-it: 14.2.0
+    markdown-it: 14.3.1
     markdown-it-container: 4.0.0
     markdown-it-emoji: ^3.0.0
     markdown-it-kbd-better: 1.2.5
