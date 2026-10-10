@@ -25,6 +25,8 @@ export function usePreviewerTransform(options: {
   reset: () => void
   setTransform: (s: number, x: number, y: number) => void
   dragging: Ref<boolean>
+  ignoreClick: Ref<boolean>
+  touchInput: Ref<boolean>
   handlePointerDown: (event: PointerEvent) => void
   handlePointerMove: (event: PointerEvent) => void
   handlePointerUp: (event: PointerEvent) => void
@@ -35,13 +37,15 @@ export function usePreviewerTransform(options: {
   const tx = ref(0)
   const ty = ref(0)
   const dragging = ref(false)
+  const ignoreClick = ref(false)
+  const touchInput = ref(false)
   const dragRotate = ref(0)
   const settling = ref(false)
   let settleTimer: number | undefined
   let pressed = false
 
   const pointers = new Map<number, { x: number, y: number }>()
-  let pinchStart: { dist: number, scale: number } | null = null
+  let pinchStart: { dist: number, scale: number, x: number, y: number, tx: number, ty: number, cx: number, cy: number } | null = null
   let dragStart: { x: number, y: number, tx: number, ty: number, time: number } | null = null
 
   function clampTransform(s: number, x: number, y: number): [number, number, number] {
@@ -115,15 +119,38 @@ export function usePreviewerTransform(options: {
   }
 
   function handlePointerDown(event: PointerEvent): void {
+    if (event.pointerType === 'mouse' && event.button !== 0)
+      return
+    if (pointers.size === 0) {
+      ignoreClick.value = false
+      touchInput.value = event.pointerType === 'touch'
+    }
     // 回弹途中再次按下：立即中断过渡，避免跟随延迟
     clearTimeout(settleTimer)
     settling.value = false
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY })
     pressed = true
-    if (pointers.size === 2) {
+    if (pointers.size === 2 && options.zoomEnabled.value) {
       const [a, b] = [...pointers.values()]
-      pinchStart = { dist: Math.hypot(a.x - b.x, a.y - b.y), scale: scale.value }
+      const rect = options.imageEl.value?.getBoundingClientRect()
+      pinchStart = {
+        dist: Math.max(Math.hypot(a.x - b.x, a.y - b.y), 1),
+        scale: scale.value,
+        x: (a.x + b.x) / 2,
+        y: (a.y + b.y) / 2,
+        tx: tx.value,
+        ty: ty.value,
+        cx: rect ? rect.left + rect.width / 2 - tx.value : 0,
+        cy: rect ? rect.top + rect.height / 2 - ty.value : 0,
+      }
+      ignoreClick.value = true
+      dragRotate.value = 0
       dragStart = null
+      return
+    }
+    if (pointers.size > 1) {
+      dragStart = null
+      ignoreClick.value = true
       return
     }
     dragStart = { x: event.clientX, y: event.clientY, tx: tx.value, ty: ty.value, time: Date.now() }
@@ -141,9 +168,16 @@ export function usePreviewerTransform(options: {
       const factor = dist / pinchStart.dist
       const cx = (a.x + b.x) / 2
       const cy = (a.y + b.y) / 2
-      scale.value = Math.min(Math.max(pinchStart.scale * factor, 1), options.maxZoom.value)
-      tx.value = (cx - window.innerWidth / 2) * 0.35
-      ty.value = (cy - window.innerHeight / 2) * 0.35
+      const s = Math.min(Math.max(pinchStart.scale * factor, 1), options.maxZoom.value)
+      const k = s / pinchStart.scale
+      // 保持双指起始焦点对应的图片内容，并叠加双指中心的平移。
+      const nx = pinchStart.tx * k + (1 - k) * (pinchStart.x - pinchStart.cx) + cx - pinchStart.x
+      const ny = pinchStart.ty * k + (1 - k) * (pinchStart.y - pinchStart.cy) + cy - pinchStart.y
+      const [, x, y] = clampTransform(s, nx, ny)
+      scale.value = s
+      tx.value = x
+      ty.value = y
+      dragging.value = true
       return
     }
 
@@ -151,6 +185,8 @@ export function usePreviewerTransform(options: {
       return
     const dx = event.clientX - dragStart.x
     const dy = event.clientY - dragStart.y
+    if (Math.abs(dx) + Math.abs(dy) >= 6)
+      ignoreClick.value = true
     if (scale.value > 1) {
       const [s, nx, ny] = clampTransform(scale.value, dragStart.tx + dx, dragStart.ty + dy)
       scale.value = s
@@ -164,7 +200,30 @@ export function usePreviewerTransform(options: {
   }
 
   function handlePointerUp(event: PointerEvent): void {
+    if (!pointers.has(event.pointerId))
+      return
     pointers.delete(event.pointerId)
+    if (event.type === 'pointercancel') {
+      pointers.clear()
+      pinchStart = null
+      dragStart = null
+      pressed = false
+      dragging.value = false
+      ignoreClick.value = true
+      if (scale.value === 1)
+        relax()
+      return
+    }
+    if (pinchStart || pointers.size > 0) {
+      pinchStart = null
+      const remaining = [...pointers.values()][0]
+      dragStart = remaining && scale.value > 1
+        ? { ...remaining, tx: tx.value, ty: ty.value, time: Date.now() }
+        : null
+      pressed = Boolean(remaining)
+      dragging.value = Boolean(remaining) && scale.value > 1
+      return
+    }
     if (pointers.size < 2)
       pinchStart = null
     if (pointers.size === 0) {
@@ -212,6 +271,8 @@ export function usePreviewerTransform(options: {
     reset,
     setTransform,
     dragging,
+    ignoreClick,
+    touchInput,
     handleWheel,
     handleDoubleClick,
     handlePointerDown,

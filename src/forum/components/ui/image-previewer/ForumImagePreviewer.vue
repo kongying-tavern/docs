@@ -123,6 +123,8 @@ const {
   dragRotate,
   settling,
   dragging,
+  ignoreClick,
+  touchInput,
   zoomAt,
   setTransform,
   handlePointerDown,
@@ -349,6 +351,8 @@ function close(): void {
 }
 
 function handleRootClick(event: MouseEvent): void {
+  if (ignoreClick.value)
+    return
   const target = event.target as HTMLElement | null
   if (target === containerEl.value || target === stageEl.value)
     close()
@@ -358,7 +362,7 @@ function handleRootClick(event: MouseEvent): void {
 function handlePreviewPointerDown(event: PointerEvent): void {
   if (entering.value || closing.value)
     return
-  if ((event.target as Element | null)?.closest('button'))
+  if ((event.target as Element | null)?.closest('button, .preview-side-panel, .forum-preview-cards'))
     return
   handlePointerDown(event)
 }
@@ -378,7 +382,7 @@ function smoothZoom(action: () => void): void {
  * "放大态复位/未放大放大"切换。
  */
 function handleStackClick(event: MouseEvent): void {
-  if (entering.value || closing.value)
+  if (entering.value || closing.value || !zoomEnabled.value || ignoreClick.value || touchInput.value)
     return
   const now = performance.now()
   if (clickState && now - lastClickAt < 300) {

@@ -84,6 +84,26 @@
   z-index: 4;
 }
 
+@media (max-width: 959px) {
+  .forum-preview-root {
+    --preview-gap: 16px;
+  }
+
+  .forum-preview-stage {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  .forum-preview-root:not(.has-panel) {
+    --preview-vertical-gap: max(72px, env(safe-area-inset-top, 0px), env(safe-area-inset-bottom, 0px));
+  }
+
+  .forum-preview-cards {
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    left: calc(12px + env(safe-area-inset-left, 0px));
+  }
+}
+
 .forum-preview-root.has-panel :deep(.forum-preview-dots) {
   left: calc((100% - var(--preview-panel-w)) / 2);
 }

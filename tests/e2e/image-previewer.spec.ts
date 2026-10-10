@@ -4,6 +4,61 @@ import { expect, test } from './support/test'
 const imageMetadata = '{thumbhash:"1fsrB38I9wiIh4hwj3CI+AiIgIAICIgA",width:"640",height:"480"}'
 test.use({ scenario: { topics: [issue({ body: `![测试图片](https://example.com/preview.png)${imageMetadata}\n![另一张图片](https://example.com/preview.png?second)${imageMetadata}` })] } })
 
+test.describe('mobile image gestures', () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
+
+  test('tap stays fitted, pinch zooms, and one remaining finger pans', async ({ page }) => {
+    const errors: string[] = []
+    page.on('pageerror', error => errors.push(error.message))
+    await page.route('https://example.com/preview.png*', route => route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480"><rect width="640" height="480" fill="#7799bb"/></svg>',
+    }))
+    await page.goto('/feedback/topic/123')
+    await page.locator('.forum-image-previewer button').filter({ has: page.locator('img') }).first().tap()
+    const preview = page.locator('.forum-preview-root')
+    await expect(preview).not.toHaveClass(/entering/)
+    await expect(preview.locator('.forum-preview-stage')).toHaveCSS('padding-top', '72px')
+    await expect(preview.locator('.forum-preview-stage')).toHaveCSS('padding-bottom', '72px')
+    await expect(preview.locator('.forum-preview-cards')).toHaveCSS('top', '12px')
+    await expect(preview.locator('.forum-preview-close')).toHaveCSS('width', '44px')
+    await expect(preview.locator('.forum-preview-close')).toHaveCSS('height', '44px')
+    const stack = preview.locator('.forum-preview-stack')
+    const transform = () => stack.evaluate((element) => {
+      const matrix = new DOMMatrix(getComputedStyle(element).transform)
+      return { scale: matrix.a, x: matrix.e, y: matrix.f }
+    })
+    await preview.locator('.forum-preview-image').last().tap()
+    expect((await transform()).scale).toBe(1)
+    const session = await page.context().newCDPSession(page)
+    const touch = (type: 'touchStart' | 'touchMove' | 'touchEnd' | 'touchCancel', points: { x: number, y: number, id: number }[]) =>
+      session.send('Input.dispatchTouchEvent', { type, touchPoints: points })
+    await touch('touchStart', [{ x: 160, y: 400, id: 1 }, { x: 230, y: 400, id: 2 }])
+    await touch('touchMove', [{ x: 125, y: 400, id: 1 }, { x: 265, y: 400, id: 2 }])
+    await expect.poll(async () => (await transform()).scale).toBeCloseTo(2)
+    await touch('touchEnd', [{ x: 265, y: 400, id: 2 }])
+    const before = await transform()
+    await touch('touchMove', [{ x: 155, y: 420, id: 1 }])
+    await expect.poll(async () => (await transform()).x).toBeCloseTo(before.x + 30)
+    await touch('touchEnd', [])
+    expect((await transform()).scale).toBeCloseTo(2)
+    await expect(preview).toBeVisible()
+    await touch('touchStart', [{ x: 125, y: 400, id: 1 }, { x: 265, y: 400, id: 2 }])
+    await touch('touchMove', [{ x: 160, y: 400, id: 1 }, { x: 230, y: 400, id: 2 }])
+    await touch('touchEnd', [])
+    await expect.poll(async () => (await transform()).scale).toBe(1)
+    await touch('touchStart', [{ x: 195, y: 400, id: 1 }])
+    await touch('touchMove', [{ x: 195, y: 540, id: 1 }])
+    await touch('touchCancel', [])
+    await expect(preview).toBeVisible()
+    await touch('touchStart', [{ x: 195, y: 400, id: 1 }])
+    await touch('touchMove', [{ x: 195, y: 540, id: 1 }])
+    await touch('touchEnd', [])
+    await expect(preview).toHaveCount(0)
+    expect(errors).toEqual([])
+  })
+})
+
 test.describe('portrait image spacing and click zoom', () => {
   test.use({ scenario: { topics: [issue({ body: '![长图](https://example.com/portrait.svg){width:"400",height:"4000"}' })] } })
 

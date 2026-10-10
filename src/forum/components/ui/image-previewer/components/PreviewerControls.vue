@@ -106,4 +106,20 @@ html[data-reduced-motion='true'] .forum-preview-dots {
 html[data-reduced-motion='true'] .forum-preview-close svg {
   transition: none;
 }
+
+@media (max-width: 959px) {
+  .forum-preview-close {
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    width: 44px;
+    height: 44px;
+  }
+
+  .forum-preview-dots.forum-image-indicator {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
 </style>
