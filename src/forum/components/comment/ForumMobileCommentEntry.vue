@@ -55,10 +55,14 @@ defineExpose({ element })
 .mobile-comment-entry-tools {
   display: flex;
   flex-shrink: 0;
-  padding-right: 2px;
+  padding-right: 4px;
 }
 .mobile-comment-entry-tools :deep(button) {
-  width: 28px;
+  width: 44px;
   height: 44px;
+}
+.mobile-comment-entry-tools :deep(.icon-btn) {
+  width: 20px;
+  height: 20px;
 }
 </style>
