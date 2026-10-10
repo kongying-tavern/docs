@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ForumFilter } from '~/forum/services/forumRoute'
 import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -25,7 +26,7 @@ const props = defineProps<{
 }>()
 const { message } = useLocalized()
 const { reducedMotion } = useSitePreferences()
-const { route, navigate, navigateFilter } = useForumRoute()
+const { route, navigate } = useForumRoute()
 const { formatSearchQuery } = useForumSearchToken()
 
 const rateLimitError = computed(() =>
@@ -44,19 +45,37 @@ const hasActiveFilters = computed(() => {
   return Boolean(list.q) || list.filter !== 'all' || list.topicType !== 'all'
 })
 
-// 用户页「未结」默认筛选且无搜索时的空列表：给出新建反馈、查看已结两个出口
-const showUserEmptyActions = computed(() =>
-  route.value?.name === 'user' && !props.error && !isSearchEmpty.value && !hasActiveFilters.value)
+const filterRecommendations = computed(() => {
+  const current = route.value
+  if (!current || !('list' in current))
+    return []
+  const { list } = current
+  const actions: { key: string, label: string, changes: Partial<{ filter: ForumFilter, topicType: 'all', q: string }> }[] = []
+  const copy = message.value.forum.empty
+  const recommendFilter = (filter: ForumFilter, label: string) => {
+    actions.push({ key: filter, label, changes: { filter } })
+  }
+  if (current.name === 'user') {
+    if (list.filter === 'all')
+      recommendFilter('closed', copy.switchClosed)
+    else
+      recommendFilter('all', copy.switchOpen)
+  }
+  else if (list.filter !== 'everything') {
+    recommendFilter('everything', copy.switchEverything)
+  }
+  if (list.topicType !== 'all')
+    actions.push({ key: 'type', label: copy.showAllTypes, changes: { topicType: 'all' } })
+  if (list.q)
+    actions.push({ key: 'query', label: copy.clearSearch, changes: { q: '' } })
+  return actions
+})
 
-async function handleClearFilters() {
+async function applyRecommendation(changes: Partial<{ filter: ForumFilter, topicType: 'all', q: string }>) {
   const current = route.value
   if (!current || !('list' in current))
     return
-  await navigate({ ...current, list: { ...current.list, q: '', filter: 'all', topicType: 'all' } })
-}
-
-async function handleShowClosed() {
-  await navigateFilter('closed')
+  await navigate({ ...current, list: { ...current.list, ...changes } })
 }
 
 const errorDescription = computed(() => {
@@ -127,23 +146,16 @@ async function handleRetry() {
       </EmptyMorphFrame>
     </EmptyHeader>
 
-    <EmptyActions v-if="error || isSearchEmpty || hasActiveFilters || showUserEmptyActions" variant="pills">
-      <template v-if="!error && (isSearchEmpty || hasActiveFilters)">
-        <ForumOpenFeedbackFormButton
-          :label="message.forum.empty.createFeedback"
+    <EmptyActions variant="pills">
+      <template v-if="!error">
+        <Button
+          v-for="recommendation in filterRecommendations"
+          :key="recommendation.key"
           variant="outline"
-          :hide-on-mobile="false"
-        />
-        <Button @click="handleClearFilters">
-          <span class="i-lucide-x icon-btn" aria-hidden="true" />
-          {{ message.forum.empty.clearFilters }}
-        </Button>
-      </template>
-
-      <template v-else-if="showUserEmptyActions">
-        <Button variant="outline" @click="handleShowClosed">
-          <span class="i-lucide-circle-check icon-btn" aria-hidden="true" />
-          {{ message.forum.empty.showClosed }}
+          @click="applyRecommendation(recommendation.changes)"
+        >
+          <span class="i-lucide-list-filter icon-btn" aria-hidden="true" />
+          {{ recommendation.label }}
         </Button>
         <ForumOpenFeedbackFormButton
           :label="message.forum.empty.createFeedback"
@@ -151,7 +163,7 @@ async function handleRetry() {
         />
       </template>
 
-      <template v-else-if="error">
+      <template v-else>
         <Button
           v-if="unauthorizedError && refreshData"
           variant="outline"
@@ -174,13 +186,6 @@ async function handleRetry() {
           {{ message.forum.auth.callback.error.retry }}
         </Button>
       </template>
-    </EmptyActions>
-
-    <EmptyActions v-else variant="pills">
-      <ForumOpenFeedbackFormButton
-        :label="message.forum.empty.createFeedback"
-        :hide-on-mobile="false"
-      />
     </EmptyActions>
   </Empty>
 </template>
