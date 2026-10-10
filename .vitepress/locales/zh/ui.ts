@@ -10,6 +10,7 @@ const ui = {
   banner: {
     wip: '此页面正在施工中，不代表最终效果。',
   },
+  asyncContent: { failed: '内容加载失败', retry: '重试' },
   chunkLoadRecovery: {
     description: '部分内容加载失败，可能是网络中断或页面已更新。请先保存未发送的内容，再检查网络并刷新页面。',
     reload: '刷新页面',

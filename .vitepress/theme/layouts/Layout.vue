@@ -11,8 +11,10 @@ import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useThemeTransition } from '@/hooks/useThemeTransition'
+import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '~/config/settingsOptions'
+import { closeSettingsDialog } from '~/services/settingsNavigation'
 
 import '@/styles/main.css'
 
@@ -21,7 +23,6 @@ const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('~/forum/components/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('~/components/settings/SettingsSidebarExtras.vue'))
-const SettingsPage = defineAsyncComponent(() => import('~/components/settings/SettingsPage.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
@@ -111,7 +112,7 @@ provide('toggle-appearance', toggleTheme)
     </template>
 
     <template #layout-bottom>
-      <SettingsPage v-if="showSettingsDialog" dialog-only />
+      <SettingsPage v-if="showSettingsDialog" dialog-only @close="closeSettingsDialog" />
       <ToastDiagnosticsDialog />
       <HighlightTargetedHeading />
       <template v-if="showAuthDialogs">

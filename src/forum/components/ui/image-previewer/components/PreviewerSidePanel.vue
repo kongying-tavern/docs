@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PreviewerContext } from '../ForumImagePreviewer.vue'
-import { defineAsyncComponent } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
+import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import ForumCommentItem from '../../../comment/ForumCommentItem.vue'
 
 defineProps<{
@@ -15,7 +16,7 @@ const emit = defineEmits<{
   enterCancelled: []
 }>()
 
-const ForumTopicPreviewContent = defineAsyncComponent(() => import('../../../topic/ForumTopicPreviewContent.vue'))
+const ForumTopicPreviewContent = defineRecoverableAsyncComponent(() => import('../../../topic/ForumTopicPreviewContent.vue'), AsyncContentLoading)
 
 const { message } = useLocalized()
 </script>

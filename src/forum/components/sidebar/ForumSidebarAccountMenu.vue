@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { ForumSidebarMenuItem } from './forumSidebarMenu'
 import { useMediaQuery } from '@vueuse/core'
-import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import User from '@/components/ui/User.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { useLocalized } from '@/hooks/useLocalized'
+import { loadSettingsContent } from '~/components/settings/settingsLoader'
+import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
 import { useIdlePreload } from '~/forum/composables/view/useIdlePreload'
 import useLogin from '~/forum/hooks/useLogin'
@@ -22,18 +24,14 @@ const props = defineProps<{
   profileHref: string
 }>()
 
-const loadSettings = () => import('~/components/settings/SettingsPage.vue')
-const SettingsPage = defineAsyncComponent(loadSettings)
-
 const { message } = useLocalized()
 const userInfo = useUserInfoStore()
 const { showLoginAlert, logout } = useLogin()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const mobileSettingsOpen = ref(false)
-useIdlePreload(loadSettings, () => isMobile.value)
+useIdlePreload(loadSettingsContent, () => true)
 function prepareSettings(): void {
-  if (isMobile.value)
-    void loadSettings().catch(() => {})
+  void loadSettingsContent().catch(() => {})
 }
 
 function closeForumSidebar(): void {

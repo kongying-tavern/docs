@@ -53,8 +53,24 @@ export async function transitionForumRoute(
     return
   }
 
-  if (target.name === 'topic')
-    await import('~/forum/components/topic/ForumTopicPage.vue')
+  if (target.name === 'topic') {
+    // A cold chunk must not hold navigation hostage just to preserve shared animation.
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const ready = await Promise.race([
+      import('~/forum/components/topic/ForumTopicPage.vue').then(() => true, () => false),
+      new Promise<boolean>((resolve) => {
+        timer = setTimeout(resolve, 100, false)
+      }),
+    ])
+    clearTimeout(timer)
+    if (!ready) {
+      update()
+      await nextTick()
+      await nextTick()
+      window.scrollTo(0, scroll.top)
+      return
+    }
+  }
 
   const sharedRoute = resolveForumSharedRoute(current, target)
   const sharedElements = shouldAnimateSharedElements() && sharedRoute ? findSharedElements(sharedRoute, current) : []

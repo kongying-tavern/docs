@@ -11,7 +11,7 @@ import {
 } from '~/config/settingsOptions'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
+import { closeSettingsDialog, closeSettingsPage } from '~/services/settingsNavigation'
 import { useSitePreferences } from './useSitePreferences'
 
 export type { SettingsSectionId } from '~/config/settingsOptions'
@@ -111,31 +111,12 @@ export function useSettingsNavigation(
   }
 
   function closeSettings(): void {
-    const saved = consumeSettingsReturnUrl()
     if (options.hashPrefix) {
-      const currentUrl = location.href
-      const target = saved ? new URL(saved, location.href) : new URL(location.href)
-      if (!saved)
-        target.hash = ''
-      history.replaceState(history.state, '', target)
-      window.dispatchEvent(new HashChangeEvent('hashchange', { oldURL: currentUrl, newURL: target.href }))
+      closeSettingsDialog()
       return
     }
 
-    if (saved && saved !== location.href) {
-      void router.go(saved)
-      return
-    }
-
-    if (document.referrer && document.referrer !== location.href) {
-      const referrer = new URL(document.referrer)
-      if (referrer.origin === location.origin) {
-        history.back()
-        return
-      }
-    }
-
-    void router.go(fallbackHref())
+    closeSettingsPage(url => router.go(url), fallbackHref())
   }
 
   onMounted(syncFromHash)

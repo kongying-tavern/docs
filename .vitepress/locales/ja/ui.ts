@@ -12,6 +12,7 @@ const ui: CustomConfig['ui'] = {
   banner: {
     wip: 'このページの翻訳は準備中です。',
   },
+  asyncContent: { failed: 'コンテンツを読み込めませんでした', retry: '再試行' },
   chunkLoadRecovery: {
     description: '一部の内容を読み込めませんでした。接続の問題、またはページの更新が原因の可能性があります。未送信の内容を保存し、接続を確認してから再読み込みしてください。',
     reload: '再読み込み',

@@ -18,6 +18,7 @@ defineProps<{
   labelManagementEnabled: boolean
   translationSupported: boolean
   showRootBack?: boolean
+  withinShell?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -69,13 +70,13 @@ const { message } = useLocalized()
         </Button>
 
         <Transition name="settings-drawer-title" mode="out-in">
-          <DrawerTitle :key="sectionSelected ? activeSection : 'root'" class="settings-drawer-title">
+          <component :is="withinShell ? 'h2' : DrawerTitle" :key="sectionSelected ? activeSection : 'root'" class="settings-drawer-title">
             {{ title }}
-          </DrawerTitle>
+          </component>
         </Transition>
         <span class="settings-drawer-button-spacer" aria-hidden="true" />
       </div>
-      <DrawerDescription class="sr-only">
+      <DrawerDescription v-if="!withinShell" class="sr-only">
         {{ sectionSelected ? activeItem.label : message.settings.groups.website }}
       </DrawerDescription>
       <Transition name="settings-save">

@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
+import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
+import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumHome from '../home/ForumHome.vue'
+import ForumTopicLoading from '../topic/ForumTopicLoading.vue'
 
 const emit = defineEmits<{ ready: [] }>()
 
-const ForumTopicPage = defineAsyncComponent(() => import('../topic/ForumTopicPage.vue'))
-const ForumSearchPage = defineAsyncComponent(() => import('../search/ForumSearchPage.vue'))
-const ForumUserPage = defineAsyncComponent(() => import('../user/ForumUserPage.vue'))
+const ForumTopicPage = defineRecoverableAsyncComponent(() => import('../topic/ForumTopicPage.vue'), ForumTopicLoading)
+const ForumSearchPage = defineRecoverableAsyncComponent(() => import('../search/ForumSearchPage.vue'), AsyncContentLoading)
+const ForumUserPage = defineRecoverableAsyncComponent(() => import('../user/ForumUserPage.vue'), AsyncContentLoading)
 
 const { route } = useForumRoute()
 

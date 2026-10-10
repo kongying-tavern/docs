@@ -4,12 +4,10 @@ import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
+import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
+import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import TelemetrySettings from '~/components/telemetry/TelemetrySettings.vue'
 import { useSitePreferences } from '~/composables/useSitePreferences'
-import ForumExperimentSettings from '~/forum/components/settings/ForumExperimentSettings.vue'
-import ForumLabelAdminPage from '~/forum/components/settings/ForumLabelAdminPage.vue'
-import ForumProfileSettings from '~/forum/components/settings/ForumProfileSettings.vue'
-import ForumShortcutSettings from '~/forum/components/settings/ForumShortcutSettings.vue'
 import ForumTranslationSettings from '~/forum/components/settings/ForumTranslationSettings.vue'
 import AppearanceSettings from './AppearanceSettings.vue'
 import NotificationSettings from './NotificationSettings.vue'
@@ -21,6 +19,10 @@ defineProps<{
   showLanguage?: boolean
   showLabelAdmin?: boolean
 }>()
+const ForumExperimentSettings = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumExperimentSettings.vue'), AsyncContentLoading)
+const ForumLabelAdminPage = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumLabelAdminPage.vue'), AsyncContentLoading)
+const ForumProfileSettings = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumProfileSettings.vue'), AsyncContentLoading)
+const ForumShortcutSettings = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumShortcutSettings.vue'), AsyncContentLoading)
 
 const { localeIndex } = useData()
 const { message } = useLocalized()

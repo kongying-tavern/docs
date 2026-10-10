@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, ref } from 'vue'
+import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
+import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useTopicInteraction } from '../composables/useTopicInteraction'
 import { useTopicState } from '../composables/useTopicState'
@@ -23,7 +25,7 @@ const emit = defineEmits<{
   'prepare-preview': []
 }>()
 
-const ForumCommentArea = defineAsyncComponent(() => import('../comment/ForumCommentArea.vue'))
+const ForumCommentArea = defineRecoverableAsyncComponent(() => import('../comment/ForumCommentArea.vue'), AsyncContentLoading)
 
 const { menu: baseMenu, showComment } = useTopicState(topic)
 const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)

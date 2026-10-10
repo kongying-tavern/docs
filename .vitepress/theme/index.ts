@@ -9,6 +9,7 @@ import DefaultTheme, {
 import { defineAsyncComponent, ref } from 'vue'
 import Blog from '@/layouts/Blog.vue'
 import Layout from '@/layouts/Layout.vue'
+import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { publishForumLocation } from '~/forum/composables/state/useForumRoute'
 import { FORUM_PATH_REGEX, isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/forumViewTransition'
 import { identifySessionIfEnabled, installTelemetry } from '~/services/telemetry'
@@ -32,7 +33,6 @@ const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
 const LinkGrid = defineAsyncComponent(() => import('@/components/ui/LinkGrid.vue'))
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
-const SettingsPage = defineAsyncComponent(() => import('~/components/settings/SettingsPage.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('~/forum/components/settings/ForumLabelAdminPage.vue'))
 const QQGroupList = defineAsyncComponent(() => import('@/components/QQGroupList.vue'))
 const ScratchToReveal = defineAsyncComponent(() => import('@/components/ui/ScratchToReveal.vue'))
