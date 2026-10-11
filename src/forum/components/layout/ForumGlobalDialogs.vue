@@ -37,12 +37,10 @@ useEventListener('hashchange', mountPublishFormWhenRequested)
 </script>
 
 <template>
-  <ClientOnly>
-    <template v-if="shouldMountPublishForm">
-      <ForumPublishTopicForm @close="cancelPendingPublish" />
-    </template>
-    <ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" @close="shouldMountTopicTagsEditor = false" />
-    <ForumReactionStatsDialog v-if="shouldMountReactionStats" @close="shouldMountReactionStats = false" />
-    <ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" @close="shouldMountTopicStatusEditor = false" />
-  </ClientOnly>
+  <template v-if="shouldMountPublishForm">
+    <ForumPublishTopicForm @close="cancelPendingPublish" />
+  </template>
+  <ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" @close="shouldMountTopicTagsEditor = false" />
+  <ForumReactionStatsDialog v-if="shouldMountReactionStats" @close="shouldMountReactionStats = false" />
+  <ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" @close="shouldMountTopicStatusEditor = false" />
 </template>

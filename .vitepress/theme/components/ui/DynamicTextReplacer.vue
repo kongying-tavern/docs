@@ -136,12 +136,10 @@ const formattedString = computed(() => {
 </script>
 
 <template>
-  <ClientOnly>
-    <!-- eslint-disable vue/no-v-text-v-html-on-component -->
-    <component
-      :is="tag"
-      :class="cn('font-size-3.5 line-height-[24px] color-[--vp-c-text-3] break-keep', $props.class)"
-      v-html="formattedString"
-    />
-  </ClientOnly>
+  <!-- eslint-disable vue/no-v-text-v-html-on-component -->
+  <component
+    :is="tag"
+    :class="cn('font-size-3.5 line-height-[24px] color-[--vp-c-text-3] break-keep', $props.class)"
+    v-html="formattedString"
+  />
 </template>

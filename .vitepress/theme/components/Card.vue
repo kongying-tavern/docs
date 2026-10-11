@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ASSET_ORIGIN } from '~/constants/site'
 import { isLinkExternal, isRelativeLink } from '../utils'
 
@@ -93,6 +93,9 @@ const coverLink = computed(() =>
   isRelativeLink(props.cover) ? withBase(props.cover) : props.cover,
 )
 
+const origin = ref('')
+onMounted(() => origin.value = location.origin)
+
 const descText = computed(() => {
   if (props.desc) {
     return props.desc
@@ -100,7 +103,7 @@ const descText = computed(() => {
   if (isRelativeLink(props.link)) {
     const prefix: string = props.link.substring(0, 3).replace(LEADING_DOT_SLASH_REGEX, '')
     const suffix: string = props.link.substring(3)
-    return location.origin + withBase(`/${prefix}${suffix}`)
+    return origin.value + withBase(`/${prefix}${suffix}`)
   }
   return props.link || ''
 })
@@ -142,11 +145,9 @@ const descText = computed(() => {
           {{ title }}
         </div>
         <hr>
-        <ClientOnly>
-          <div class="card-desc">
-            {{ descText }}
-          </div>
-        </ClientOnly>
+        <div class="card-desc">
+          {{ descText }}
+        </div>
       </div>
     </div>
   </a>

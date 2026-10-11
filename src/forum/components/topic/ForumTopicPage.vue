@@ -53,48 +53,46 @@ function handleTitleTranslated(title: string): void {
 </script>
 
 <template>
-  <ClientOnly>
-    <ForumLayout>
-      <template #content>
-        <ForumTopicDetailPanel
-          :topic="topic" :loading="loading" :error="error"
-          :author-href="topic ? userHref(topic.user.login) : ''"
-          :rendered-content="renderedContent" :translated-content="translatedContent"
-          :translated-title="translatedTitle" :showing-translation="showingTranslation"
-          :topic-images="topicImages" @back="backToPreviousPage" @retry="retry"
-        >
-          <template v-if="topic" #menu>
-            <ForumTopicDropdownMenu :topic-data="topic" :menu="translationMenu" side="bottom" @topic:close="backToPreviousPage" />
-          </template>
-          <template v-if="topic" #metadata>
-            <ForumTopicMetadataControl :topic="topic" :type="topic.type" :topic-id="topic.id" :state="topic.state" :status="topic.status" :good-issue="topic.goodIssue" interactive />
-          </template>
-          <template v-if="topic" #translation>
-            <ForumTopicTranslator ref="translator" :content="topic.content.text" :title="topic.title" :source-language="topic.language" @translated="showTranslatedContent" @title-translated="handleTitleTranslated" @close="showingTranslation = false" />
-          </template>
-          <template v-if="topic?.quotedTopic" #quote>
-            <ForumQuotedTopic :reference="topic.quotedTopic" />
-          </template>
-          <template v-if="topic" #footer>
-            <ForumTopicFooter :topic="topic" />
-          </template>
-          <template v-if="topic" #comments>
-            <ForumCommentArea
-              v-if="topic"
-              repo="Feedback"
-              :entry-animation="false"
-              :topic-id="topicId"
-              :topic="topic"
-              :topic-author-id="topic?.user.id || -1"
-              :comment-count="topic?.commentCount"
-            />
-          </template>
-        </ForumTopicDetailPanel>
-      </template>
+  <ForumLayout>
+    <template #content>
+      <ForumTopicDetailPanel
+        :topic="topic" :loading="loading" :error="error"
+        :author-href="topic ? userHref(topic.user.login) : ''"
+        :rendered-content="renderedContent" :translated-content="translatedContent"
+        :translated-title="translatedTitle" :showing-translation="showingTranslation"
+        :topic-images="topicImages" @back="backToPreviousPage" @retry="retry"
+      >
+        <template v-if="topic" #menu>
+          <ForumTopicDropdownMenu :topic-data="topic" :menu="translationMenu" side="bottom" @topic:close="backToPreviousPage" />
+        </template>
+        <template v-if="topic" #metadata>
+          <ForumTopicMetadataControl :topic="topic" :type="topic.type" :topic-id="topic.id" :state="topic.state" :status="topic.status" :good-issue="topic.goodIssue" interactive />
+        </template>
+        <template v-if="topic" #translation>
+          <ForumTopicTranslator ref="translator" :content="topic.content.text" :title="topic.title" :source-language="topic.language" @translated="showTranslatedContent" @title-translated="handleTitleTranslated" @close="showingTranslation = false" />
+        </template>
+        <template v-if="topic?.quotedTopic" #quote>
+          <ForumQuotedTopic :reference="topic.quotedTopic" />
+        </template>
+        <template v-if="topic" #footer>
+          <ForumTopicFooter :topic="topic" />
+        </template>
+        <template v-if="topic" #comments>
+          <ForumCommentArea
+            v-if="topic"
+            repo="Feedback"
+            :entry-animation="false"
+            :topic-id="topicId"
+            :topic="topic"
+            :topic-author-id="topic?.user.id || -1"
+            :comment-count="topic?.commentCount"
+          />
+        </template>
+      </ForumTopicDetailPanel>
+    </template>
 
-      <template #aside>
-        <ForumAside :topic="topic" />
-      </template>
-    </ForumLayout>
-  </ClientOnly>
+    <template #aside>
+      <ForumAside :topic="topic" />
+    </template>
+  </ForumLayout>
 </template>

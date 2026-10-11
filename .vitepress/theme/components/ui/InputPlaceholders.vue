@@ -57,26 +57,24 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <ClientOnly>
-    <!-- Placeholder Text -->
-    <div v-if="props.text.length === 0" data-slot="input-placeholder" class="rounded-full flex pointer-events-none inset-0 absolute" :class="align === 'start' ? 'items-start' : 'items-center'">
-      <Transition
-        v-show="!vanishingText"
-        mode="out-in"
-        enter-active-class="transition duration-300 ease-out"
-        leave-active-class="transition duration-300 ease-in"
-        enter-from-class="opacity-0 translate-y-4"
-        enter-to-class="opacity-100 translate-y-0"
-        leave-from-class="opacity-100 translate-y-0"
-        leave-to-class="opacity-0 -translate-y-4"
+  <!-- Placeholder Text -->
+  <div v-if="props.text.length === 0" data-slot="input-placeholder" class="rounded-full flex pointer-events-none inset-0 absolute" :class="align === 'start' ? 'items-start' : 'items-center'">
+    <Transition
+      v-show="!vanishingText"
+      mode="out-in"
+      enter-active-class="transition duration-300 ease-out"
+      leave-active-class="transition duration-300 ease-in"
+      enter-from-class="opacity-0 translate-y-4"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 -translate-y-4"
+    >
+      <p
+        :key="currentPlaceholder"
+        :class="cn('w-[calc(100%-2rem)] truncate text-left text-sm font-normal sm:px-4 sm:text-base color-[var(--vp-c-text-3)]', align === 'start' && 'm-0 px-0 text-base leading-[1.625]', props.class)"
       >
-        <p
-          :key="currentPlaceholder"
-          :class="cn('w-[calc(100%-2rem)] truncate text-left text-sm font-normal sm:px-4 sm:text-base color-[var(--vp-c-text-3)]', align === 'start' && 'm-0 px-0 text-base leading-[1.625]', props.class)"
-        >
-          {{ placeholders[currentPlaceholder] }}
-        </p>
-      </Transition>
-    </div>
-  </ClientOnly>
+        {{ placeholders[currentPlaceholder] }}
+      </p>
+    </Transition>
+  </div>
 </template>

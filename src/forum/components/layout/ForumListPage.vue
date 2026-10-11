@@ -36,47 +36,45 @@ const isInitialLoading = computed(() => loading && renderData.length === 0)
 </script>
 
 <template>
-  <ClientOnly>
-    <ForumLayout>
-      <template #header>
-        <slot name="header" />
+  <ForumLayout>
+    <template #header>
+      <slot name="header" />
+    </template>
+
+    <template #content>
+      <template v-if="showToolbar">
+        <ForumTopicToolbar
+          :filter="filter"
+          :topic-type="topicType"
+          :sort="sort"
+          :query="query"
+          :suggestions="renderData"
+          @filter-change="onFilterChange?.($event)"
+          @type-change="onTypeChange?.($event)"
+          @sort-change="onSortChange?.($event)"
+          @search="onSearch?.($event)"
+        />
+        <Separator div class="mt-2" />
       </template>
 
-      <template #content>
-        <template v-if="showToolbar">
-          <ForumTopicToolbar
-            :filter="filter"
-            :topic-type="topicType"
-            :sort="sort"
-            :query="query"
-            :suggestions="renderData"
-            @filter-change="onFilterChange?.($event)"
-            @type-change="onTypeChange?.($event)"
-            @sort-change="onSortChange?.($event)"
-            @search="onSearch?.($event)"
-          />
-          <Separator div class="mt-2" />
-        </template>
+      <slot name="content-before" />
 
-        <slot name="content-before" />
+      <slot name="content-main">
+        <ForumTopicResults
+          :data="renderData" :loading="isInitialLoading" :loading-more="loadingMore"
+          :error="error" :query="query" :sort="sort" :can-load-more="canLoadMore"
+          :load-more="loadMore" :refresh-data="refreshData" :text="loadStateMessage"
+          @login="emit('login')"
+        />
+      </slot>
 
-        <slot name="content-main">
-          <ForumTopicResults
-            :data="renderData" :loading="isInitialLoading" :loading-more="loadingMore"
-            :error="error" :query="query" :sort="sort" :can-load-more="canLoadMore"
-            :load-more="loadMore" :refresh-data="refreshData" :text="loadStateMessage"
-            @login="emit('login')"
-          />
-        </slot>
+      <slot name="content-after" />
+    </template>
 
-        <slot name="content-after" />
-      </template>
-
-      <template #aside>
-        <slot name="aside">
-          <ForumAside />
-        </slot>
-      </template>
-    </ForumLayout>
-  </ClientOnly>
+    <template #aside>
+      <slot name="aside">
+        <ForumAside />
+      </slot>
+    </template>
+  </ForumLayout>
 </template>

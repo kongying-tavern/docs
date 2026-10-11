@@ -6,6 +6,4 @@ title: Label Management
 docHeader: false
 ---
 
-<ClientOnly>
-  <ForumLabelAdminPage />
-</ClientOnly>
+<ForumLabelAdminPage />
