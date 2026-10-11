@@ -1,4 +1,17 @@
+import type { GiteeGist } from './gists'
 import { z } from 'zod'
+
+const gistSchema = z.object({
+  id: z.union([z.string().trim().min(1), z.number().int().positive()]),
+  description: z.string().nullable(),
+  public: z.boolean(),
+  files: z.record(z.string(), z.object({
+    content: z.string().optional(),
+    filename: z.string().optional(),
+    raw_url: z.string().optional(),
+  })),
+  truncated: z.boolean().optional(),
+})
 
 const userSchema = z.object({
   id: z.number(),
@@ -96,4 +109,12 @@ export function parseGiteeUsers(value: unknown, endpoint: string): GITEE.User[] 
 
 export function parseGiteeAuth(value: unknown): GITEE.Auth {
   return validate(authSchema, value, 'oauth/token')
+}
+
+export function parseGiteeGist(value: unknown, endpoint: string): GiteeGist {
+  return validate(gistSchema, value, endpoint)
+}
+
+export function parseGiteeGists(value: unknown): GiteeGist[] {
+  return validate(z.array(gistSchema), value, 'gists')
 }

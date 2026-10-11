@@ -32,8 +32,8 @@ function cacheGistId(userId: string, id: string | null): void {
 }
 
 function isForumStateGist(gist: gists.GiteeGist): boolean {
+  // A missing state file is damaged data, not permission to create a replacement.
   return gist.description === gists.FORUM_STATE_GIST_DESCRIPTION
-    && Boolean(gist.files[gists.FORUM_STATE_GIST_FILE])
 }
 
 function gistContent(gist: gists.GiteeGist): string | undefined {
@@ -47,7 +47,16 @@ export class ForumPersonalStateCorruptionError extends Error {
   }
 }
 
+export class ForumPersonalStateConflictError extends Error {
+  constructor(public readonly gistIds: string[]) {
+    super('Multiple forum personal state gists were found. No state was overwritten.')
+    this.name = 'ForumPersonalStateConflictError'
+  }
+}
+
 export function readForumStateGist(gist: gists.GiteeGist): ForumPersonalState {
+  if (gist.truncated)
+    throw new Error('The forum personal state gist response is incomplete.')
   const result = decodeForumPersonalState(gistContent(gist))
   if (!result.ok)
     throw new ForumPersonalStateCorruptionError(String(gist.id), result.reason)
@@ -76,13 +85,25 @@ async function findForumStateGist(userId: string, context: ForumPersonalStateWri
     }
   }
 
-  const summary = (await gists.listGists(options)).find(isForumStateGist)
-  context.assertCurrent?.()
+  const candidates = new Map<string, gists.GiteeGist>()
+  for (let page = 1; ; page++) {
+    const summaries = await gists.listGists({ ...options, page })
+    context.assertCurrent?.()
+    for (const summary of summaries.filter(isForumStateGist))
+      candidates.set(String(summary.id), summary)
+    if (candidates.size > 1)
+      throw new ForumPersonalStateConflictError([...candidates.keys()])
+    if (summaries.length < 100)
+      break
+  }
+  const summary = candidates.values().next().value
   if (!summary)
     return null
 
   const gist = await gists.getGist(String(summary.id), options)
   context.assertCurrent?.()
+  if (!isForumStateGist(gist))
+    throw new Error('The forum personal state gist changed during discovery.')
   cacheGistId(userId, String(gist.id))
   return gist
 }

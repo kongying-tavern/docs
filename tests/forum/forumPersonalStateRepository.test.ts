@@ -4,7 +4,7 @@ import { beforeEach, expect, test, vi } from 'vitest'
 import { clearApiCache } from '../../src/forum/api/gitee'
 import { FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '../../src/forum/api/gitee/gists'
 import { emptyForumPersonalState, setFollowedTopic, toggleFollowedTopic } from '../../src/forum/services/forumPersonalState'
-import { ForumPersonalStateCorruptionError, loadForumPersonalState, updateForumPersonalState } from '../../src/forum/services/forumPersonalStateRepository'
+import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError, loadForumPersonalState, updateForumPersonalState } from '../../src/forum/services/forumPersonalStateRepository'
 
 const aliceKey = 'forum-personal-gist:alice'
 const topicA = { topicId: 'IA', title: 'Topic A', type: 'BUG' as const, authorLogin: 'alice', recordedAt: '2026-10-12T00:00:00.000Z' }
@@ -16,6 +16,7 @@ let storage: Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 let detailStatus: number | undefined
 let afterRead: (() => Promise<void>) | undefined
 let afterList: (() => Promise<void>) | undefined
+let listFailurePage: number | undefined
 
 function stateGist(id = 'existing', state = emptyForumPersonalState()): GiteeGist {
   return { id, description: FORUM_STATE_GIST_DESCRIPTION, public: false, files: { [FORUM_STATE_GIST_FILE]: { content: JSON.stringify(state) } } }
@@ -49,6 +50,7 @@ beforeEach(() => {
   detailStatus = undefined
   afterRead = undefined
   afterList = undefined
+  listFailurePage = undefined
   storage = {
     getItem: key => values.get(key) ?? null,
     setItem: (key, value) => { values.set(key, value) },
@@ -66,6 +68,8 @@ beforeEach(() => {
     calls.push({ method: request.method, endpoint, page })
     const reply = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } })
     if (request.method === 'GET' && endpoint === 'gists') {
+      if (page === listFailurePage)
+        return reply({ message: 'Forbidden' }, 403)
       const perPage = Number(url.searchParams.get('per_page') ?? 20)
       const snapshot = [...remote.values()].slice((page - 1) * perPage, page * perPage)
       await afterList?.()
@@ -219,7 +223,7 @@ test('failed cache eviction still permits rediscovery of a deleted cached gist',
   expect((await loadForumPersonalState('alice')).followedTopics).toEqual([topicA])
 })
 
-test.fails('a gist beyond page one must be discovered rather than duplicated', async () => {
+test('a gist beyond page one must be discovered rather than duplicated', async () => {
   for (let index = 0; index < 100; index++)
     remote.set(`other-${index}`, { ...stateGist(`other-${index}`), description: 'Unrelated gist' })
   remote.set('existing', stateGist('existing', { ...emptyForumPersonalState(), followedTopics: [topicA] }))
@@ -227,6 +231,53 @@ test.fails('a gist beyond page one must be discovered rather than duplicated', a
   expect(next.followedTopics.map(topic => topic.topicId).sort()).toEqual(['IA', 'IB'])
   expect(remote.size).toBe(101)
   expect(calls.some(call => call.endpoint === 'gists' && call.page === 2)).toBe(true)
+})
+
+test('a full first page followed by a failed second page must not cause creation', async () => {
+  for (let index = 0; index < 100; index++)
+    remote.set(`other-${index}`, { ...stateGist(`other-${index}`), description: 'Unrelated gist' })
+  listFailurePage = 2
+  await expect(updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))).rejects.toMatchObject({ state: 403 })
+  expect(remote.size).toBe(100)
+  expect(calls.every(call => call.method === 'GET')).toBe(true)
+})
+
+test('duplicate candidates block updates while preserving both source gists', async () => {
+  remote.set('first', stateGist('first', { ...emptyForumPersonalState(), followedTopics: [topicA] }))
+  remote.set('second', stateGist('second', { ...emptyForumPersonalState(), followedTopics: [topicB] }))
+  const original = structuredClone([...remote.values()])
+  await expect(updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))).rejects.toBeInstanceOf(ForumPersonalStateConflictError)
+  expect([...remote.values()]).toEqual(original)
+  expect(calls.every(call => call.method === 'GET')).toBe(true)
+})
+
+test('a cached gist is read directly without traversing the account list', async () => {
+  seed()
+  await loadForumPersonalState('alice')
+  expect(calls).toEqual([{ method: 'GET', endpoint: 'gists/existing', page: 1 }])
+})
+
+test('a missing state file is preserved instead of silently creating a replacement gist', async () => {
+  seed()
+  remote.get('existing')!.files = {}
+  await expect(updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))).rejects.toBeInstanceOf(ForumPersonalStateCorruptionError)
+  expect(remote.size).toBe(1)
+  expect(remote.get('existing')!.files).toEqual({})
+  expect(calls.every(call => call.method === 'GET')).toBe(true)
+})
+
+test('a truncated response cannot authorize destructive writes', async () => {
+  seed()
+  remote.get('existing')!.truncated = true
+  await expect(updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))).rejects.toThrow('incomplete')
+  expect(calls.every(call => call.method === 'GET')).toBe(true)
+})
+
+test('an invalid list response cannot be treated as an absent personal state', async () => {
+  const fetch = vi.fn(async () => new Response(JSON.stringify([{ id: 'bad', description: 'Kongying Forum State', public: false }]), { headers: { 'Content-Type': 'application/json' } }))
+  vi.stubGlobal('fetch', fetch)
+  await expect(updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))).rejects.toThrow('Invalid Gitee response')
+  expect(fetch).toHaveBeenCalledOnce()
 })
 
 test.fails('two independent clients must not silently lose one of their committed updates', { timeout: 3000 }, async () => {

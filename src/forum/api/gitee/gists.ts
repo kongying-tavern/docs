@@ -1,5 +1,6 @@
 import type { ApiCallOptions } from './types'
 import { apiCall } from '.'
+import { parseGiteeGist, parseGiteeGists } from './contracts'
 
 export type GistRequestOptions = Pick<ApiCallOptions, 'expectedSessionGeneration'>
 
@@ -14,25 +15,28 @@ export interface GiteeGistFile {
 
 export interface GiteeGist {
   id: string | number
-  description: string
+  description: string | null
   files: Record<string, GiteeGistFile>
   public: boolean
   updated_at?: string
+  truncated?: boolean
 }
 
 function unwrapGist(data: GiteeGist | GiteeGist[]): GiteeGist {
+  if (Array.isArray(data) && data.length !== 1)
+    throw new Error('Gitee returned an ambiguous or empty gist response.')
   const gist = Array.isArray(data) ? data[0] : data
   if (!gist)
     throw new Error('Gitee returned an empty gist response.')
-  return gist
+  return parseGiteeGist(gist, 'gists/detail')
 }
 
-export async function listGists(options: GistRequestOptions = {}): Promise<GiteeGist[]> {
+export async function listGists({ page = 1, ...options }: GistRequestOptions & { page?: number } = {}): Promise<GiteeGist[]> {
   const { data } = await apiCall<GiteeGist[]>('get', 'gists', {
     ...options,
-    searchParams: { page: 1, per_page: 100 },
+    searchParams: { page, per_page: 100 },
   })
-  return data
+  return parseGiteeGists(data)
 }
 
 export async function getGist(id: string, options: GistRequestOptions = {}): Promise<GiteeGist> {
