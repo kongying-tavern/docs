@@ -137,3 +137,14 @@ test('legacy migration backs up an existing corrupt destination before replacing
   expect(readTopicDraft('BUG').text).toBe(draft.text)
   expect(readTopicDraftBackup('BUG')?.raw).toBe('{corrupt destination')
 })
+
+test('later valid saves do not erase the preserved corrupt original', () => {
+  const corrupt = '{original damaged draft'
+  values.set(bugKey, corrupt)
+  writeTopicDraft('BUG', draft)
+  writeTopicDraft('BUG', { ...draft, text: 'Later valid version' })
+  expect([...values.values()].some(value => value.includes(corrupt))).toBe(true)
+  expect(readTopicDraftBackup('BUG', 'corrupt')?.raw).toBe(corrupt)
+  expect(readTopicDraftBackup('BUG')?.raw).toContain(draft.text)
+  expect([...values.keys()].filter(key => key.endsWith('-backup'))).toHaveLength(2)
+})

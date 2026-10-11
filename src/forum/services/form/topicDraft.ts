@@ -23,6 +23,9 @@ function backupDraft(storage: Storage, sourceKey: string, raw: string | null): v
   if (raw === null)
     return
   const backup: TopicDraftBackup = { version: 1, sourceKey, raw, savedAt: Date.now() }
+  // Keep damaged bytes separately so subsequent autosaves cannot evict them.
+  if (!parseStoredDraft(raw))
+    storage.setItem(`${sourceKey}-corrupt-backup`, JSON.stringify(backup))
   // One previous raw snapshot per slot bounds storage while retaining malformed data.
   storage.setItem(`${sourceKey}-backup`, JSON.stringify(backup))
 }
@@ -157,10 +160,10 @@ export function writeTopicDraft(type: TopicFormData['type'], draft: TopicFormDat
   notifyDraftChange()
 }
 
-export function readTopicDraftBackup(type: TopicFormData['type']): TopicDraftBackup | null {
+export function readTopicDraftBackup(type: TopicFormData['type'], kind: 'previous' | 'corrupt' = 'previous'): TopicDraftBackup | null {
   try {
     for (const key of [getTopicDraftStorageKey(type), LEGACY_DRAFT_KEY]) {
-      const raw = localStorage.getItem(`${key}-backup`)
+      const raw = localStorage.getItem(`${key}-${kind === 'corrupt' ? 'corrupt-' : ''}backup`)
       if (!raw)
         continue
       let value: unknown
@@ -184,6 +187,20 @@ export function readTopicDraftBackup(type: TopicFormData['type']): TopicDraftBac
     // Backup lookup must not prevent editing the current draft.
   }
   return null
+}
+
+export function readTopicDraftRaw(type: TopicFormData['type']): string | null {
+  try {
+    return localStorage.getItem(getTopicDraftStorageKey(type))
+  }
+  catch {
+    return null
+  }
+}
+
+export function canRestoreTopicDraftBackup(type: TopicFormData['type']): boolean {
+  const backup = readTopicDraftBackup(type)
+  return backup !== null && parseStoredDraft(backup.raw)?.type === type
 }
 
 export function restoreTopicDraftBackup(type: TopicFormData['type']): boolean {
