@@ -12,12 +12,14 @@ const mocks = vi.hoisted(() => ({
   userInfo: { info: { id: 'alice' } as { id: string } | undefined },
   load: vi.fn(),
   update: vi.fn(),
+  recover: vi.fn(),
 }))
 vi.mock('../../src/forum/stores/auth/useUserAuth', () => ({ useUserAuthStore: () => mocks.auth }))
 vi.mock('../../src/forum/stores/auth/useUserInfo', () => ({ useUserInfoStore: () => mocks.userInfo }))
 vi.mock('../../src/forum/services/forumPersonalStateRepository', () => ({
   loadForumPersonalState: mocks.load,
   updateForumPersonalState: mocks.update,
+  recoverForumPersonalState: mocks.recover,
 }))
 
 beforeEach(() => {
@@ -27,6 +29,7 @@ beforeEach(() => {
   mocks.userInfo = shallowReactive({ info: { id: 'alice' } })
   mocks.load.mockReset().mockResolvedValue(emptyForumPersonalState())
   mocks.update.mockReset()
+  mocks.recover.mockReset()
 })
 
 async function setup() {
@@ -84,6 +87,41 @@ test('failed remote reads expose an error while the public state currently looks
     await fixture.personal.refetch().catch(() => {})
     expect(fixture.personal.error.value).toBe(error)
     expect(fixture.personal.state.value).toEqual(emptyForumPersonalState())
+  }
+  finally {
+    fixture.dispose()
+  }
+})
+
+test('successful recovery updates the query and clears the previous read error', async () => {
+  mocks.load.mockRejectedValue(new Error('Corrupt'))
+  mocks.recover.mockResolvedValue({ state: emptyForumPersonalState(), backupGistId: 'backup' })
+  const fixture = await setup()
+  try {
+    await fixture.personal.refetch().catch(() => {})
+    expect(fixture.personal.error.value).toBeInstanceOf(Error)
+    expect(await fixture.personal.recover({ gistId: 'source', raw: '{', mode: 'reset' })).toBe('backup')
+    expect(fixture.personal.error.value).toBeNull()
+    expect(fixture.personal.state.value).toEqual(emptyForumPersonalState())
+  }
+  finally {
+    fixture.dispose()
+  }
+})
+
+test('late recovery cannot update a replacement account session', async () => {
+  let finish!: (result: { state: ForumPersonalState, backupGistId: string }) => void
+  mocks.recover.mockImplementation(() => new Promise(resolve => finish = resolve))
+  const fixture = await setup()
+  try {
+    const pending = fixture.personal.recover({ gistId: 'source', raw: '{', mode: 'reset' })
+    await vi.waitFor(() => expect(mocks.recover).toHaveBeenCalledOnce())
+    mocks.userInfo.info = { id: 'bob' }
+    mocks.generation++
+    const recovered: ForumPersonalState = { ...emptyForumPersonalState(), followedTopics: [{ topicId: 'IA', title: 'Alice recovery', type: 'BUG', authorLogin: 'alice', recordedAt: '2026-10-12T00:00:00.000Z' }] }
+    finish({ state: recovered, backupGistId: 'backup' })
+    await expect(pending).rejects.toThrow('session changed')
+    expect(fixture.cache.getQueryData(forumKeys.personalState('bob'))).not.toEqual(recovered)
   }
   finally {
     fixture.dispose()

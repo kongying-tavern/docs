@@ -24,9 +24,11 @@ import { isClosedUnseen } from '~/forum/services/forumTopicSeenState'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import { toast } from '~/services/telemetry/toast'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import { preloadForumRichTextarea } from '../utils/forumComponentPreload'
 import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
+import ForumPersonalStateRecovery from './ForumPersonalStateRecovery.vue'
 import ForumSidebarAccountMenu from './ForumSidebarAccountMenu.vue'
 import ForumSidebarFestivalItem from './ForumSidebarFestivalItem.vue'
 import ForumSidebarNav from './ForumSidebarNav.vue'
@@ -262,6 +264,15 @@ function handleCreate() {
   }
 }
 useForumShortcut('publish', handleCreate)
+
+async function handleUnfollow(topicId: string): Promise<void> {
+  try {
+    await personal.unfollow(topicId)
+  }
+  catch (error) {
+    toast.error(message.value.forum.errors.followFailed, { error, scene: 'op' })
+  }
+}
 </script>
 
 <template>
@@ -300,9 +311,10 @@ useForumShortcut('publish', handleCreate)
           :action-disabled="personal.saving.value"
           :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
           :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
-          @unfollow="personal.unfollow"
+          @unfollow="handleUnfollow"
         />
       </FluidHoverList>
+      <ForumPersonalStateRecovery v-if="isLoggedIn" />
     </div>
 
     <ForumSidebarFestivalItem />
