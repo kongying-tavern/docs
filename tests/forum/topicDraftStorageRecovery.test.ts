@@ -130,3 +130,10 @@ test('legacy migration keeps a recoverable raw copy without mixing topic types',
   expect(readTopicDraftBackup('FEAT')?.raw).toBe(raw)
   expect(readTopicDraftBackup('BUG')).toBeNull()
 })
+
+test('legacy migration backs up an existing corrupt destination before replacing it', () => {
+  values.set(legacyKey, JSON.stringify(draft))
+  values.set(bugKey, '{corrupt destination')
+  expect(readTopicDraft('BUG').text).toBe(draft.text)
+  expect(readTopicDraftBackup('BUG')?.raw).toBe('{corrupt destination')
+})

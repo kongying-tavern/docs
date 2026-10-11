@@ -113,6 +113,7 @@ export function readTopicDraft(type: TopicFormData['type']): SavedTopicDraft {
   }
   if (legacy && legacy.type === type) {
     try {
+      backupDraft(storage, getTopicDraftStorageKey(type), storage.getItem(getTopicDraftStorageKey(type)))
       storage.setItem(getTopicDraftStorageKey(type), JSON.stringify(legacy))
       backupDraft(storage, LEGACY_DRAFT_KEY, storage.getItem(LEGACY_DRAFT_KEY))
       storage.removeItem(LEGACY_DRAFT_KEY)
