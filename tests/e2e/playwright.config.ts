@@ -3,7 +3,9 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from '@playwright/test'
 
 const port = Number(process.env.FORUM_E2E_PORT || 5174)
-const baseURL = `http://127.0.0.1:${port}`
+const preview = process.env.FORUM_E2E_PREVIEW === 'true'
+const previewDir = process.env.FORUM_E2E_PREVIEW_DIR || 'dist'
+const baseURL = `http://127.0.0.1:${port}${preview ? '/docs/' : ''}`
 
 export default defineConfig({
   testDir: '.',
@@ -25,7 +27,9 @@ export default defineConfig({
       VITE_DEVTOOLS: 'false',
       VITEPRESS_CACHE_DIR: '.vitepress/cache/forum-e2e',
     },
-    command: `pnpm exec vitepress dev --base / --host 127.0.0.1 --port ${port} --strictPort`,
+    command: preview
+      ? `pnpm exec vitepress serve --outDir "${previewDir}" --base /docs/ --host 127.0.0.1 --port ${port}`
+      : `pnpm exec vitepress dev --base / --host 127.0.0.1 --port ${port} --strictPort`,
     cwd: fileURLToPath(new URL('../..', import.meta.url)),
     url: baseURL,
     reuseExistingServer: false,

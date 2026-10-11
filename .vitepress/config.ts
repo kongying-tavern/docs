@@ -16,7 +16,7 @@ import { cfgDynamicTitleTemplate } from './config/title.ts'
 export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   base: '/docs/',
   srcDir: 'src',
-  outDir: './dist',
+  outDir: process.env.VITEPRESS_OUT_DIR || './dist',
   cacheDir: process.env.VITEPRESS_CACHE_DIR,
   srcExclude: [],
   cleanUrls: true,

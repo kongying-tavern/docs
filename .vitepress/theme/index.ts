@@ -10,15 +10,13 @@ import { defineAsyncComponent, ref } from 'vue'
 import Blog from '@/layouts/Blog.vue'
 import Layout from '@/layouts/Layout.vue'
 import SettingsPage from '~/components/settings/SettingsPage.vue'
-import { publishForumLocation } from '~/forum/composables/state/useForumRoute'
-import { FORUM_PATH_REGEX, isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/forumViewTransition'
-import { identifySessionIfEnabled, installTelemetry } from '~/services/telemetry'
+import { installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
-import { routes } from '../routes'
-import { AsyncForumRouteView, preloadForumRouteView } from './components/AsyncForumRouteView'
+import { AsyncForumRouteView } from './components/AsyncForumRouteView'
 import { forumStartupKey } from './components/forumStartup'
-import handleRouteMatching from './lib/handleRouteMatching'
 import { loadFontStylesheets } from './loadFontStylesheets'
+import { loadForumLayout, useForumLinkPreload } from './router/forumPreload'
+import { installThemeRouter } from './router/installThemeRouter'
 
 import 'uno.css'
 
@@ -27,7 +25,6 @@ const AccordionPanels = defineAsyncComponent(() => import('@/components/ui/Accor
 const Card = defineAsyncComponent(() => import('@/components/Card.vue'))
 const Coins = defineAsyncComponent(() => import('@/components/Coins.vue'))
 const Emoji = defineAsyncComponent(() => import('@/components/ui/Emoji.vue'))
-const loadForumLayout = () => import('./layouts/Forum.vue')
 const Forum = defineAsyncComponent(loadForumLayout)
 const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
 const LinkGrid = defineAsyncComponent(() => import('@/components/ui/LinkGrid.vue'))
@@ -38,48 +35,13 @@ const QQGroupList = defineAsyncComponent(() => import('@/components/QQGroupList.
 const ScratchToReveal = defineAsyncComponent(() => import('@/components/ui/ScratchToReveal.vue'))
 const SitemapPage = defineAsyncComponent(() => import('@/components/SitemapPage.vue'))
 
-let forumPreloadScheduled = false
-
-function scheduleForumPreload(): void {
-  // SSG 渲染期同样会经 router 钩子走到这里；预加载只属于浏览器
-  if (forumPreloadScheduled || import.meta.env.SSR)
-    return
-  forumPreloadScheduled = true
-
-  const connection = (navigator as Navigator & {
-    connection?: { effectiveType?: string, saveData?: boolean }
-  }).connection
-  if (connection?.saveData || connection?.effectiveType?.includes('2g'))
-    return
-
-  const preload = () => {
-    if (!FORUM_PATH_REGEX.test(location.pathname)) {
-      forumPreloadScheduled = false
-      return
-    }
-    void Promise.all([
-      loadForumLayout(),
-      preloadForumRouteView(),
-      import('~/forum/components/sidebar/ForumSidebar.vue'),
-    ]).catch(() => {
-      forumPreloadScheduled = false
-    })
-  }
-  if ('requestIdleCallback' in window)
-    window.requestIdleCallback(preload, { timeout: 3000 })
-  else
-    setTimeout(preload, 1500)
-}
-
-/** 纯文档页不再无条件预取论坛 chunk；仅在进入论坛页面/路由时预热 */
-function scheduleForumPreloadIfForumPath(path: string): void {
-  if (FORUM_PATH_REGEX.test(path))
-    scheduleForumPreload()
-}
-
 export default {
   extends: DefaultTheme,
   Layout,
+
+  setup() {
+    useForumLinkPreload()
+  },
 
   enhanceApp({ app, router, siteData }) {
     const initialDocument = ref(true)
@@ -116,38 +78,8 @@ export default {
 
     if (!import.meta.env.SSR) {
       loadFontStylesheets()
-      scheduleForumPreloadIfForumPath(location.pathname)
     }
 
-    let resumingBlogNavigation = false
-    let initialNavigation = true
-    router.onBeforeRouteChange = async (to) => {
-      if (initialNavigation)
-        initialNavigation = false
-      else
-        initialDocument.value = false
-      scheduleForumPreloadIfForumPath(to)
-      if (resumingBlogNavigation || !isForumToBlogNavigation(router.route.path, to))
-        return
-      await transitionForumBlog(router.route.path, to, async () => {
-        resumingBlogNavigation = true
-        try {
-          await router.go(to)
-        }
-        finally {
-          resumingBlogNavigation = false
-        }
-      })
-      return false
-    }
-    router.onBeforePageLoad = async (to) => {
-      const shouldLoadPage = await handleRouteMatching(to, siteData.value.base, routes, router, siteData.value.locales)
-      identifySessionIfEnabled()
-      return shouldLoadPage
-    }
-    // 同路径只换 query/hash 时 VitePress 不加载页面，onBeforePageLoad 不会跑，状态要在这里补回灌
-    router.onAfterRouteChange = (to) => {
-      publishForumLocation(to, { base: siteData.value.base, locales: Object.keys(siteData.value.locales) })
-    }
+    installThemeRouter(router, siteData, initialDocument)
   },
 } satisfies Theme
