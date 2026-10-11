@@ -47,9 +47,11 @@ const date = computed(() => {
 })
 
 const now = ref(new Date())
+const mounted = ref(false)
 let interval: ReturnType<typeof setInterval> | null = null
 
 onMounted(() => {
+  mounted.value = true
   if (props.relative) {
     now.value = new Date()
     interval = setInterval(() => {
@@ -74,6 +76,15 @@ const formatter = computed(() => {
 })
 
 const formattedDate = computed(() => {
+  // Build hosts and visitors can have different time zones (and clocks).
+  // Hydrate a stable absolute date first, then apply the visitor's local format.
+  if (!mounted.value) {
+    const { locale, relative, title, datetime, ...options } = props
+    return new Intl.DateTimeFormat(locale || lang.value || 'zh-CN', {
+      ...options,
+      timeZone: options.timeZone || 'UTC',
+    }).format(date.value)
+  }
   if (props.relative) {
     const diffInSeconds = (date.value.getTime() - now.value.getTime()) / 1000
     const units: Array<{ unit: Intl.RelativeTimeFormatUnit, value: number }> = [
