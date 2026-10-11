@@ -1,5 +1,5 @@
 import { useData } from 'vitepress'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
 export type AuthStepKey = 'init' | 'token' | 'session' | 'sso' | 'redirect'
 
@@ -17,6 +17,7 @@ export function useAuthProgress() {
   const currentStep = ref<AuthStepKey>('init')
   const errorStep = ref<AuthStepKey | null>(null)
   const isRetrying = ref(false)
+  const completed = ref(false)
 
   const steps = computed<AuthStep[]>(() => {
     const authTexts = theme.value.forum.auth.callback
@@ -26,6 +27,9 @@ export function useAuthProgress() {
 
       if (errorStep.value === key) {
         status = 'failed'
+      }
+      else if (key === 'redirect' && completed.value) {
+        status = 'completed'
       }
       else if (key === currentStep.value) {
         status = 'processing'
@@ -82,6 +86,7 @@ export function useAuthProgress() {
   })
 
   function setStep(step: AuthStepKey) {
+    completed.value = false
     if (errorStep.value) {
       errorStep.value = null
     }
@@ -97,10 +102,12 @@ export function useAuthProgress() {
     }
     else {
       currentStep.value = step
+      completed.value = true
     }
   }
 
   function setError(step: AuthStepKey) {
+    completed.value = false
     errorStep.value = step
     currentStep.value = step
   }
@@ -122,15 +129,8 @@ export function useAuthProgress() {
     currentStep.value = 'init'
     errorStep.value = null
     isRetrying.value = false
+    completed.value = false
   }
-
-  watch(currentStep, (newStep) => {
-    if (newStep === 'redirect') {
-      setTimeout(() => {
-        completeStep('redirect')
-      }, 500)
-    }
-  })
 
   return {
     steps,

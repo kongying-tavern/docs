@@ -81,6 +81,10 @@ function useLogin() {
   initOAuthFlow()
 
   async function initOAuthFlow() {
+    // 先展示回跳地址，授权进度页保留到流程结束；最终导航必须显式加载页面。
+    if (hasOAuthCallback)
+      window.history.replaceState({}, '', getRedirectTarget())
+
     // 授权失败回调（如用户拒绝授权）：?error=access_denied
     if (oauthCallback.error) {
       log.error(LogGroup.LOGIN, `OAuth callback returned error: ${oauthCallback.error}`)
@@ -185,18 +189,27 @@ function useLogin() {
 
   async function redirectToOriginalPage() {
     try {
-      const storedUrl = getStoredRedirectUrl()
-      // 回跳目标指向回调页自身时回退首页，否则登录后回到无参数的回调页卡死
-      const target = isCallbackUrl(storedUrl) ? withBase('/') : storedUrl
-
-      window.history.replaceState({}, '', target)
-      await go(target)
+      // 地址栏已提前替换，initialLoad 强制加载目标页面，避免同 URL 导航被跳过。
+      const target = getRedirectTarget()
+      await go(target, { replace: true, initialLoad: true })
+      // initialLoad 不执行滚动；页面渲染后用同 URL 导航恢复原生路由的锚点/页首定位。
+      await nextTick()
+      await go(target, { replace: true })
+      authProgress.completeStep('redirect')
       clearStoredRedirectUrl()
     }
     catch (error) {
       log.warn(LogGroup.LOGIN, 'Redirect failed, falling back to home', error)
-      await go(withBase('/'))
+      await go(withBase('/'), { replace: true })
+      authProgress.completeStep('redirect')
+      clearStoredRedirectUrl()
     }
+  }
+
+  function getRedirectTarget(): string {
+    const storedUrl = getStoredRedirectUrl()
+    // 回跳目标指向回调页自身时回退首页。
+    return isCallbackUrl(storedUrl) ? withBase('/') : storedUrl
   }
 
   /** 回放发起登录时记录的意图（如自动打开反馈表单） */
