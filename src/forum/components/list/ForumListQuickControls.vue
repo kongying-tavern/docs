@@ -46,8 +46,8 @@ function changeSort(value: string): void {
 </script>
 
 <template>
-  <div class="pb-3 flex gap-2 items-start justify-between">
-    <div class="flex flex-wrap gap-2 min-w-0 items-center">
+  <div class="pb-3 flex gap-2 min-w-0 items-center justify-between">
+    <div class="py-1 flex gap-2 min-w-0 items-center overflow-x-auto scrollbar-none scroll-fade-x scroll-fade-4">
       <ForumResponsiveSelect
         :model-value="sort"
         :options="sortOptions"
@@ -57,7 +57,7 @@ function changeSort(value: string): void {
         <template #trigger>
           <Button
             type="button"
-            variant="ghost"
+            variant="secondary"
             size="sm"
             :aria-label="`${message.forum.sidebar.listSort}${message.ui.labelSeparator}${sortLabel(sort)}`"
           >
@@ -69,7 +69,7 @@ function changeSort(value: string): void {
       <Button
         v-for="type in types"
         :key="type.id"
-        variant="ghost"
+        :variant="type.id === topicType ? 'ghost' : 'secondary'"
         size="sm"
         :class="type.id === topicType
           ? 'bg-[var(--vp-c-brand-soft)] text-[var(--vp-c-brand-1)]'

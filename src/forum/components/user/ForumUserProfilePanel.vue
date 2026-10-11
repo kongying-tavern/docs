@@ -64,7 +64,7 @@ onBeforeUnmount(() => {
     <div class="rounded-lg w-full">
       <div class="mx-auto w-full">
         <div class="p-4 rounded-lg w-full sm:p-6">
-          <div class="flex flex-col gap-4 items-start sm:flex-row sm:gap-6">
+          <div class="flex gap-4 items-start max-sm:flex-col sm:gap-6">
             <div class="flex w-full items-start justify-between sm:w-auto">
               <div class="relative">
                 <Avatar
