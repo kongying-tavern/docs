@@ -1,6 +1,6 @@
 import { useEventListener } from '@vueuse/core'
 import { isArray } from 'lodash-es'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 interface UseHashCheckerOptions {
   immediate?: boolean
@@ -54,7 +54,7 @@ export function useHashChecker(
   }
 
   if (immediate) {
-    checkHash()
+    onMounted(checkHash)
 
     handleHashChangeEvent()
   }

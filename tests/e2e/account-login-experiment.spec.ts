@@ -1,10 +1,14 @@
 import { expect, test } from './support/test'
 
 test('password login requires remembered rollout access after logout', async ({ page }) => {
-  await page.goto('/feedback#account-login-alert')
+  await page.goto('feedback#account-login-alert')
+  // Wait for the lazy dialog to consume the first hash before changing storage.
+  await expect(page).toHaveURL(/\/feedback$/)
   await expect(page.locator('#gitee-login-username')).toHaveCount(0)
   await page.evaluate(() => localStorage.setItem('forum-account-login-access', 'true'))
-  await page.goto('/feedback#account-login-alert')
+  // A hash-only goto stays in the same document; reload to read persisted access.
+  await page.reload()
+  await page.goto('feedback#account-login-alert')
   await expect(page.locator('#gitee-login-username')).toBeVisible()
 })
 
@@ -25,7 +29,7 @@ test('unavailable rollout storage keeps the login entry closed without throwing'
       setItem.call(this, key, value)
     }
   })
-  await page.goto('/feedback#account-login-alert')
+  await page.goto('feedback#account-login-alert')
   await expect(page.locator('#gitee-login-username')).toHaveCount(0)
   expect(errors).toEqual([])
 })

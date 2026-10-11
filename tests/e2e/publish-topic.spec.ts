@@ -16,7 +16,7 @@ test('real topic form retains rejected input and clears it only after a confirme
     return { data: created }
   }
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await page.getByRole('button', { name: '新建反馈', exact: true }).click()
   const form = page.locator('.form-container')
   await expect(form).toBeVisible()
@@ -45,7 +45,7 @@ test.describe('compact publish options', () => {
   test('reference search supports keyboard selection without filtering remote results twice', async ({ page, scenario }) => {
     scenario.topics!.splice(0, scenario.topics!.length, issue({ number: 'IABC123', comments: 0 }))
     await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
     await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
     const form = page.locator('.compact-form')
@@ -76,7 +76,7 @@ test.describe('compact publish options', () => {
         return { data: created }
       }
       await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-      await page.goto('/feedback')
+      await page.goto('feedback')
       const open = async () => {
         await page.getByRole('button', { name: '新建反馈', exact: true }).click()
         await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()

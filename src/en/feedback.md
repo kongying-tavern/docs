@@ -1,5 +1,5 @@
 ---
 layout: Forum
-sidebar: false
+sidebar: true
 title: Feedback
 ---

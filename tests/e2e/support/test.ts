@@ -1,4 +1,5 @@
 import type { ForumScenario } from './forum-api'
+import process from 'node:process'
 import { test as base, expect } from '@playwright/test'
 import { installForumApi } from './forum-api'
 
@@ -28,6 +29,24 @@ export const test = base.extend<{ forum: Awaited<ReturnType<typeof installForumA
   forum: [async ({ page, scenario }, use) => {
     const snapshot = snapshotScenario(scenario)
     const api = await installForumApi(page, scenario)
+    const hydrationErrors: string[] = []
+    if (process.env.FORUM_E2E_PREVIEW === 'true') {
+      page.on('console', (message) => {
+        if (/hydration|mismatch/i.test(message.text()))
+          hydrationErrors.push(message.text())
+      })
+      // Mirror the production host's SPA fallback, serving the real built shell.
+      await page.route(/\/docs\/(?:en\/|ja\/)?feedback\/.+/, async (route) => {
+        if (!route.request().isNavigationRequest()) {
+          await route.fallback()
+          return
+        }
+        const url = new URL(route.request().url())
+        const shellPath = url.pathname.slice(0, url.pathname.indexOf('/feedback/') + '/feedback'.length)
+        const response = await page.request.get(`${url.origin}${shellPath}`)
+        await route.fulfill({ response })
+      })
+    }
     try {
       await use(api)
     }
@@ -35,6 +54,7 @@ export const test = base.extend<{ forum: Awaited<ReturnType<typeof installForumA
       restoreScenario(scenario, snapshot)
     }
     expect(api.unexpected, 'Every business request must be explicitly mocked').toEqual([])
+    expect(hydrationErrors, 'Built pages must hydrate without mismatches').toEqual([])
   }, { auto: true }],
 })
 export { expect } from '@playwright/test'

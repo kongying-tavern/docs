@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { useElementBounding, useElementSize, useEventListener, useIntersectionObserver, useMediaQuery, useMutationObserver, watchOnce } from '@vueuse/core'
-import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
+import { computed, inject, nextTick, ref, useTemplateRef, watch } from 'vue'
+import { forumLayoutReadyKey } from '@/components/forumStartup'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
@@ -81,12 +82,13 @@ watchOnce(() => loading, async () => {
 })
 
 let lastScrolledCommentId: string | null = null
-watch(() => [targetId, targetReady] as const, async ([commentId, ready]) => {
+const layoutReady = inject(forumLayoutReadyKey, ref(true))
+watch(() => [targetId, targetReady, layoutReady.value] as const, async ([commentId, ready, visible]) => {
   if (!commentId) {
     lastScrolledCommentId = null
     return
   }
-  if (!ready || commentId === lastScrolledCommentId)
+  if (!ready || !visible || commentId === lastScrolledCommentId)
     return
   await nextTick()
   const target = area.value?.querySelector<HTMLElement>(`[id="reply-${CSS.escape(commentId)}"]`)

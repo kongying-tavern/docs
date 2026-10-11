@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { inject, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref } from 'vue'
 import { AsyncForumRouteView } from './AsyncForumRouteView'
 import ForumLoading from './ForumLoading.vue'
-import { forumStartupKey } from './forumStartup'
+import { forumLayoutReadyKey, forumStartupKey } from './forumStartup'
 
 const initialDocument = inject(forumStartupKey)
 const fullscreen = initialDocument?.value ?? false
 const loading = ref(fullscreen)
 const preparing = ref(true)
+provide(forumLayoutReadyKey, computed(() => !preparing.value))
 const mounted = ref(false)
 let shownAt = 0
 let releaseTimer: ReturnType<typeof setTimeout> | undefined

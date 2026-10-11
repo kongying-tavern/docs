@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ForumSidebarMenuItem } from './forumSidebarMenu'
-import { useMediaQuery } from '@vueuse/core'
+import { useMediaQuery, useMounted } from '@vueuse/core'
 import { computed, nextTick, ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -26,6 +26,8 @@ const props = defineProps<{
 
 const { message } = useLocalized()
 const userInfo = useUserInfoStore()
+const mounted = useMounted()
+const accountUser = computed(() => mounted.value ? userInfo.info : undefined)
 const { showLoginAlert, logout } = useLogin()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const mobileSettingsOpen = ref(false)
@@ -62,10 +64,10 @@ watch(isMobile, (mobile) => {
     mobileSettingsOpen.value = false
 })
 
-const accountLabel = computed(() => userInfo.info?.username || message.value.forum.auth.loginMsg)
+const accountLabel = computed(() => accountUser.value?.username || message.value.forum.auth.loginMsg)
 
 const accountItems = computed<ForumSidebarMenuItem[]>(() => [
-  ...(userInfo.info
+  ...(accountUser.value
     ? [
         {
           label: message.value.forum.user.myFeedback.title,
@@ -92,7 +94,7 @@ const accountItems = computed<ForumSidebarMenuItem[]>(() => [
     keepOpen: isMobile.value,
     action: openSettings,
   },
-  ...(userInfo.info
+  ...(accountUser.value
     ? [
         {
           label: message.value.forum.auth.logoutMsg,
@@ -146,21 +148,21 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
         <button
           type="button"
           class="forum-sidebar-account-trigger"
-          :data-feedback-account="userInfo.info ? 'logged-in' : 'logged-out'"
-          :data-forum-user="userInfo.info?.login"
+          :data-feedback-account="accountUser ? 'logged-in' : 'logged-out'"
+          :data-forum-user="accountUser?.login"
           @pointerenter="prepareSettings"
           @focus="prepareSettings"
           @pointerdown="prepareSettings"
           @click="closeForumSidebar"
         >
           <UserAvatar
-            :data-forum-user-avatar="userInfo.info?.login || undefined"
-            :src="userInfo.info?.avatar"
-            :alt="userInfo.info?.username"
+            :data-forum-user-avatar="accountUser?.login || undefined"
+            :src="accountUser?.avatar"
+            :alt="accountUser?.username"
             size="xs"
           />
           <span
-            :data-forum-user-name="userInfo.info?.login || undefined"
+            :data-forum-user-name="accountUser?.login || undefined"
             class="text-left flex-1 min-w-0 truncate"
           >
             {{ accountLabel }}
@@ -177,18 +179,18 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
         />
         <template v-else>
           <a
-            v-if="userInfo.info"
+            v-if="accountUser"
             class="forum-sidebar-profile"
             :href="profileHref"
-            :data-forum-user="userInfo.info.login"
+            :data-forum-user="accountUser.login"
             @click="close"
           >
             <User
               class="min-w-0"
               size="sm"
-              :name="userInfo.info.username"
-              :description="`@${userInfo.info.login}`"
-              :avatar="{ src: userInfo.info.avatar, alt: userInfo.info.username }"
+              :name="accountUser.username"
+              :description="`@${accountUser.login}`"
+              :avatar="{ src: accountUser.avatar, alt: accountUser.username }"
               :ui="{
                 root: 'min-w-0',
                 wrapper: 'min-w-0',
@@ -197,7 +199,7 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
               }"
             />
           </a>
-          <Separator v-if="userInfo.info" class="forum-sidebar-menu-separator" />
+          <Separator v-if="accountUser" class="forum-sidebar-menu-separator" />
           <ForumSidebarMenuItems :items="accountItems" @select="close" />
         </template>
       </template>

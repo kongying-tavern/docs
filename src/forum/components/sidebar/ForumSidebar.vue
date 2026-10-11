@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQueryCache } from '@pinia/colada'
-import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
+import { StorageSerializers, useEventListener, useLocalStorage, useMediaQuery, useMounted } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
@@ -41,12 +41,14 @@ const { route, topicHref, userHref } = useForumRoute()
 const personal = useForumPersonalState()
 const topicSeen = useForumTopicSeenState()
 
-const isLoggedIn = computed(() => auth.isTokenValid)
+const mounted = useMounted()
+const isLoggedIn = computed(() => mounted.value && auth.isTokenValid)
 useIdlePreload(preloadForumPublishForm, () => isLoggedIn.value)
 useIdlePreload(preloadForumRichTextarea, () => isLoggedIn.value)
-const username = computed(() => userInfo.info?.login ?? '')
+const username = computed(() => mounted.value ? userInfo.info?.login ?? '' : '')
 const { hasAnyPermissions } = useRuleChecks()
-const canManageFeedback = hasAnyPermissions('manage_feedback')
+const manageFeedbackPermission = hasAnyPermissions('manage_feedback')
+const canManageFeedback = computed(() => mounted.value && manageFeedbackPermission.value)
 const experiment = useFeedbackFormExperiment()
 const topicDrafts = shallowRef<ReturnType<typeof readSavedTopicDrafts>>([])
 function refreshDrafts(): void {
@@ -71,9 +73,10 @@ const submitted = useForumTopicsQuery(computed(() => ({
 })), computed(() => isLoggedIn.value && Boolean(username.value)))
 
 // null = 用户未主动设置过：默认跟随登录态（未登录收起 / 登录后展开）
-const submittedOpen = useLocalStorage<boolean | null>('forum-sidebar-submitted-open', null)
-const followedOpen = useLocalStorage<boolean | null>('forum-sidebar-followed-open', null)
-const participatedOpen = useLocalStorage<boolean | null>('forum-sidebar-participated-open', null)
+// A null default cannot infer a boolean serializer; otherwise "false" is truthy.
+const submittedOpen = useLocalStorage<boolean | null>('forum-sidebar-submitted-open', null, { initOnMounted: true, serializer: StorageSerializers.boolean })
+const followedOpen = useLocalStorage<boolean | null>('forum-sidebar-followed-open', null, { initOnMounted: true, serializer: StorageSerializers.boolean })
+const participatedOpen = useLocalStorage<boolean | null>('forum-sidebar-participated-open', null, { initOnMounted: true, serializer: StorageSerializers.boolean })
 
 const submittedSectionOpen = computed({
   get: () => Boolean(submittedOpen.value ?? isLoggedIn.value),
