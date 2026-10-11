@@ -82,17 +82,28 @@ function parseStoredDraft(value: string | null): SavedTopicDraft | null {
  * single-key draft once (migration) when the per-type slot is empty.
  */
 export function readTopicDraft(type: TopicFormData['type']): SavedTopicDraft {
-  if (typeof localStorage === 'undefined')
+  let storage: Storage
+  let legacy: SavedTopicDraft | null
+  try {
+    if (typeof localStorage === 'undefined')
+      return createDefaultTopicDraft()
+    storage = localStorage
+    const stored = parseStoredDraft(storage.getItem(getTopicDraftStorageKey(type)))
+    if (stored)
+      return stored
+    legacy = parseStoredDraft(storage.getItem(LEGACY_DRAFT_KEY))
+  }
+  catch {
     return createDefaultTopicDraft()
-
-  const stored = parseStoredDraft(localStorage.getItem(getTopicDraftStorageKey(type)))
-  if (stored)
-    return stored
-
-  const legacy = parseStoredDraft(localStorage.getItem(LEGACY_DRAFT_KEY))
+  }
   if (legacy && legacy.type === type) {
-    localStorage.setItem(getTopicDraftStorageKey(type), JSON.stringify(legacy))
-    localStorage.removeItem(LEGACY_DRAFT_KEY)
+    try {
+      storage.setItem(getTopicDraftStorageKey(type), JSON.stringify(legacy))
+      storage.removeItem(LEGACY_DRAFT_KEY)
+    }
+    catch {
+      // Reading a valid draft does not require its migration to succeed.
+    }
     return legacy
   }
 
@@ -111,9 +122,16 @@ export function readSavedTopicDrafts(types: TopicFormData['type'][]): SavedTopic
 export function writeTopicDraft(type: TopicFormData['type'], draft: TopicFormData): void {
   if (typeof localStorage === 'undefined')
     return
-  // The legacy key no longer needs to be consulted once a per-type draft exists.
-  localStorage.removeItem(LEGACY_DRAFT_KEY)
   localStorage.setItem(getTopicDraftStorageKey(type), JSON.stringify({ ...restoreTopicDraft(draft), savedAt: Date.now() }))
+  try {
+    // Only discard the matching legacy draft after its replacement is durable.
+    const legacy = parseStoredDraft(localStorage.getItem(LEGACY_DRAFT_KEY))
+    if (legacy?.type === type)
+      localStorage.removeItem(LEGACY_DRAFT_KEY)
+  }
+  catch {
+    // Optional cleanup must not report an already committed draft as failed.
+  }
   notifyDraftChange()
 }
 
