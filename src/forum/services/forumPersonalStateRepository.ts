@@ -54,11 +54,17 @@ export function readForumStateGist(gist: gists.GiteeGist): ForumPersonalState {
   return result.state
 }
 
-async function findForumStateGist(userId: string): Promise<gists.GiteeGist | null> {
+export interface ForumPersonalStateWriteContext extends gists.GistRequestOptions {
+  assertCurrent?: () => void
+}
+
+async function findForumStateGist(userId: string, context: ForumPersonalStateWriteContext = {}): Promise<gists.GiteeGist | null> {
+  const options = { expectedSessionGeneration: context.expectedSessionGeneration }
   const cachedId = cachedGistId(userId)
   if (cachedId) {
     try {
-      const gist = await gists.getGist(cachedId)
+      const gist = await gists.getGist(cachedId, options)
+      context.assertCurrent?.()
       if (isForumStateGist(gist))
         return gist
       cacheGistId(userId, null)
@@ -70,31 +76,39 @@ async function findForumStateGist(userId: string): Promise<gists.GiteeGist | nul
     }
   }
 
-  const summary = (await gists.listGists()).find(isForumStateGist)
+  const summary = (await gists.listGists(options)).find(isForumStateGist)
+  context.assertCurrent?.()
   if (!summary)
     return null
 
-  const gist = await gists.getGist(String(summary.id))
+  const gist = await gists.getGist(String(summary.id), options)
+  context.assertCurrent?.()
   cacheGistId(userId, String(gist.id))
   return gist
 }
 
-export async function loadForumPersonalState(userId: string): Promise<ForumPersonalState> {
-  const gist = await findForumStateGist(userId)
+export async function loadForumPersonalState(userId: string, context: ForumPersonalStateWriteContext = {}): Promise<ForumPersonalState> {
+  context.assertCurrent?.()
+  const gist = await findForumStateGist(userId, context)
   return gist ? readForumStateGist(gist) : emptyForumPersonalState()
 }
 
 export async function updateForumPersonalState(
   userId: string,
   update: (state: ForumPersonalState) => ForumPersonalState,
+  context: ForumPersonalStateWriteContext = {},
 ): Promise<ForumPersonalState> {
   const task = async () => {
-    const gist = await findForumStateGist(userId)
+    context.assertCurrent?.()
+    const gist = await findForumStateGist(userId, context)
+    context.assertCurrent?.()
     const next = update(gist ? readForumStateGist(gist) : emptyForumPersonalState())
     const content = serializeForumPersonalState(next)
+    const options = { expectedSessionGeneration: context.expectedSessionGeneration }
     const saved = gist
-      ? await gists.updateForumStateGist(String(gist.id), content)
-      : await gists.createForumStateGist(content)
+      ? await gists.updateForumStateGist(String(gist.id), content, options)
+      : await gists.createForumStateGist(content, options)
+    context.assertCurrent?.()
     cacheGistId(userId, String(saved.id))
     return next
   }

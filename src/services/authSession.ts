@@ -4,6 +4,7 @@
  * 避免 client ↔ store 的模块环（token 经回调获取，而非 import 进入 store 子图）。
  */
 export interface AuthSessionAccessor {
+  getSessionGeneration?: () => number
   isTokenValid: () => boolean
   getAccessToken: () => string | null
   refreshToken: () => Promise<void>

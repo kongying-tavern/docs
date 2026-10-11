@@ -71,10 +71,12 @@ export function useTokenManager() {
     return getRestTime(localAuth.value.expiresTime)
   })
 
-  function setTokens(authData: Partial<LocalAuth>): void {
+  function setTokens(authData: Partial<LocalAuth>, options: { newSession?: boolean } = {}): void {
     log.info(LogGroup.TOKEN, 'Setting new tokens', { hasAccessToken: !!authData.accessToken })
 
     if (authData.accessToken && authData.expiresIn) {
+      if (options.newSession)
+        sessionGeneration++
       if (localAuth.value?.accessToken && localAuth.value.accessToken !== authData.accessToken)
         clearSSOTokens()
 

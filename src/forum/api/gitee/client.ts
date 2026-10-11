@@ -27,9 +27,15 @@ interface PreparedRequest {
 /** 附加 access_token（Gitee 风格），并将查询参数归一化为 ky 接受的键值对数组 */
 export async function prepareRequest(
   endpoint: string,
-  { searchParams = {}, json, body }: RequestPayload,
+  { searchParams = {}, json, body, expectedSessionGeneration }: RequestPayload,
 ): Promise<PreparedRequest> {
+  const assertSession = () => {
+    if (expectedSessionGeneration !== undefined && getAuthSession()?.getSessionGeneration?.() !== expectedSessionGeneration)
+      throw new Error('Forum personal state session changed.')
+  }
+  assertSession()
   const accessToken = await resolveAccessToken(endpoint)
+  assertSession()
 
   if (accessToken) {
     if (body)

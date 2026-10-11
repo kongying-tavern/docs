@@ -156,11 +156,15 @@ function prependTopic(list: ForumPersonalTopic[], topic: ForumPersonalTopic, lim
 
 export function toggleFollowedTopic(state: ForumPersonalState, topic: ForumPersonalTopic): ForumPersonalState {
   const exists = state.followedTopics.some(item => item.topicId === topic.topicId)
+  return setFollowedTopic(state, topic, !exists)
+}
+
+export function setFollowedTopic(state: ForumPersonalState, topic: ForumPersonalTopic, followed: boolean): ForumPersonalState {
   return {
     ...state,
-    followedTopics: exists
-      ? state.followedTopics.filter(item => item.topicId !== topic.topicId)
-      : prependTopic(state.followedTopics, topic, FOLLOWED_TOPIC_LIMIT),
+    followedTopics: followed
+      ? prependTopic(state.followedTopics, topic, FOLLOWED_TOPIC_LIMIT)
+      : state.followedTopics.filter(item => item.topicId !== topic.topicId),
   }
 }
 

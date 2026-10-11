@@ -3,7 +3,7 @@ import type { ForumPersonalState } from '../../src/forum/services/forumPersonalS
 import { beforeEach, expect, test, vi } from 'vitest'
 import { clearApiCache } from '../../src/forum/api/gitee'
 import { FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '../../src/forum/api/gitee/gists'
-import { emptyForumPersonalState, toggleFollowedTopic } from '../../src/forum/services/forumPersonalState'
+import { emptyForumPersonalState, setFollowedTopic, toggleFollowedTopic } from '../../src/forum/services/forumPersonalState'
 import { ForumPersonalStateCorruptionError, loadForumPersonalState, updateForumPersonalState } from '../../src/forum/services/forumPersonalStateRepository'
 
 const aliceKey = 'forum-personal-gist:alice'
@@ -143,6 +143,30 @@ test('fallback queue preserves two simultaneous updates within one repository in
     updateForumPersonalState('alice', state => toggleFollowedTopic(state, topicB)),
   ])
   expect(savedState().followedTopics.map(topic => topic.topicId).sort()).toEqual(['IA', 'IB'])
+})
+
+test('retrying a follow intent is idempotent instead of cancelling the follow', async () => {
+  seed()
+  const follow = () => updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))
+  await follow()
+  await follow()
+  expect(savedState().followedTopics).toEqual([topicA])
+})
+
+test('a queued mutation from an expired context never sends HTTP', async () => {
+  seed()
+  let valid = true
+  const context = { assertCurrent: () => {
+    if (!valid)
+      throw new Error('Session changed')
+  } }
+  const first = updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))
+  const second = updateForumPersonalState('alice', state => setFollowedTopic(state, topicB, true), context)
+  valid = false
+  await first
+  await expect(second).rejects.toThrow('Session changed')
+  expect(savedState().followedTopics).toEqual([topicA])
+  expect(calls.filter(call => call.method === 'PATCH')).toHaveLength(1)
 })
 
 // Confirmed defects: remove .fails one at a time during the planned fixes.

@@ -17,6 +17,8 @@ export type HttpMethod = 'get' | 'post' | 'patch' | 'delete' | 'put'
 export type SearchParamValue = string | number | boolean | Array<string | number> | undefined
 
 export interface RequestPayload {
+  /** Reject queued/prepared requests after logout or a replacement login. */
+  expectedSessionGeneration?: number
   searchParams?: Record<string, SearchParamValue>
   /** JSON 请求体；与 `body` 互斥，`body` 优先 */
   json?: Record<string, unknown>

@@ -63,7 +63,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
         tokenType: tokenType || 'bearer',
         scope: scope || 'user_info',
         createdAt: Date.now(),
-      })
+      }, { newSession: true })
 
       loginStatus.value = 'success'
       lastError.value = null
@@ -170,6 +170,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
 
   // 把认证状态注入给 API 层（gitee/interknot client），断开 client ↔ store 的模块环
   registerAuthSessionAccessor({
+    getSessionGeneration: tokenManager.getSessionGeneration,
     isTokenValid: () => isTokenValid.value,
     getAccessToken: () => auth.value?.accessToken ?? null,
     refreshToken: () => refreshToken(),
@@ -190,6 +191,7 @@ export const useUserAuthStore = defineStore('user-auth', () => {
     // Computed
     isTokenValid,
     isLoggedIn,
+    getSessionGeneration: tokenManager.getSessionGeneration,
 
     // Actions
     setAuth,

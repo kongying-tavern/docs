@@ -14,3 +14,17 @@ test('replacing the main access token invalidates its SSO token', () => {
   manager.setTokens({ ...mainAuth, accessToken: 'main-new' })
   assert.deepEqual(manager.ssoAuth.value.interKnot, {})
 })
+
+test('new logins invalidate pending session work while token refresh keeps its generation', () => {
+  const manager = useTokenManager()
+  const auth = { accessToken: 'first', refreshToken: 'refresh', expiresIn: 3600 }
+  const initial = manager.getSessionGeneration()
+  manager.setTokens(auth, { newSession: true })
+  assert.equal(manager.getSessionGeneration(), initial + 1)
+  manager.setTokens({ ...auth, accessToken: 'refreshed' })
+  assert.equal(manager.getSessionGeneration(), initial + 1)
+  manager.setTokens({ ...auth, accessToken: 'replacement' }, { newSession: true })
+  assert.equal(manager.getSessionGeneration(), initial + 2)
+  manager.clearTokens()
+  assert.equal(manager.getSessionGeneration(), initial + 3)
+})

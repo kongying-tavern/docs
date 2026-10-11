@@ -1,4 +1,7 @@
+import type { ApiCallOptions } from './types'
 import { apiCall } from '.'
+
+export type GistRequestOptions = Pick<ApiCallOptions, 'expectedSessionGeneration'>
 
 export const FORUM_STATE_GIST_DESCRIPTION = 'Kongying Forum State'
 export const FORUM_STATE_GIST_FILE = 'kongying-forum-state.json'
@@ -24,20 +27,22 @@ function unwrapGist(data: GiteeGist | GiteeGist[]): GiteeGist {
   return gist
 }
 
-export async function listGists(): Promise<GiteeGist[]> {
+export async function listGists(options: GistRequestOptions = {}): Promise<GiteeGist[]> {
   const { data } = await apiCall<GiteeGist[]>('get', 'gists', {
+    ...options,
     searchParams: { page: 1, per_page: 100 },
   })
   return data
 }
 
-export async function getGist(id: string): Promise<GiteeGist> {
-  const { data } = await apiCall<GiteeGist | GiteeGist[]>('get', `gists/${id}`)
+export async function getGist(id: string, options: GistRequestOptions = {}): Promise<GiteeGist> {
+  const { data } = await apiCall<GiteeGist | GiteeGist[]>('get', `gists/${id}`, options)
   return unwrapGist(data)
 }
 
-export async function createForumStateGist(content: string): Promise<GiteeGist> {
+export async function createForumStateGist(content: string, options: GistRequestOptions = {}): Promise<GiteeGist> {
   const { data } = await apiCall<GiteeGist | GiteeGist[]>('post', 'gists', {
+    ...options,
     json: {
       description: FORUM_STATE_GIST_DESCRIPTION,
       public: false,
@@ -49,8 +54,9 @@ export async function createForumStateGist(content: string): Promise<GiteeGist> 
   return unwrapGist(data)
 }
 
-export async function updateForumStateGist(id: string, content: string): Promise<GiteeGist> {
+export async function updateForumStateGist(id: string, content: string, options: GistRequestOptions = {}): Promise<GiteeGist> {
   const { data } = await apiCall<GiteeGist | GiteeGist[]>('patch', `gists/${id}`, {
+    ...options,
     json: {
       description: FORUM_STATE_GIST_DESCRIPTION,
       public: false,
