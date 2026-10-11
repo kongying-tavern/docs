@@ -6,6 +6,8 @@ export type GistRequestOptions = Pick<ApiCallOptions, 'expectedSessionGeneration
 
 export const FORUM_STATE_GIST_DESCRIPTION = 'Kongying Forum State'
 export const FORUM_STATE_GIST_FILE = 'kongying-forum-state.json'
+export const FORUM_STATE_BACKUP_DESCRIPTION = 'Kongying Forum State Backup'
+export const FORUM_STATE_BACKUP_FILE = 'kongying-forum-state-backup.json'
 
 export interface GiteeGistFile {
   content?: string
@@ -70,4 +72,20 @@ export async function updateForumStateGist(id: string, content: string, options:
     },
   })
   return unwrapGist(data)
+}
+
+export async function createForumStateBackup(source: GiteeGist, options: GistRequestOptions = {}): Promise<GiteeGist> {
+  const content = JSON.stringify({ version: 1, sourceGistId: String(source.id), savedAt: new Date().toISOString(), files: source.files }, null, 2)
+  const { data } = await apiCall<GiteeGist | GiteeGist[]>('post', 'gists', {
+    ...options,
+    json: {
+      description: FORUM_STATE_BACKUP_DESCRIPTION,
+      public: false,
+      files: { [FORUM_STATE_BACKUP_FILE]: { content } },
+    },
+  })
+  const saved = unwrapGist(data)
+  if (saved.public || saved.description !== FORUM_STATE_BACKUP_DESCRIPTION || saved.files[FORUM_STATE_BACKUP_FILE]?.content !== content)
+    throw new Error('The forum personal state backup could not be verified.')
+  return saved
 }

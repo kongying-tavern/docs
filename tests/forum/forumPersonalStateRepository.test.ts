@@ -2,9 +2,9 @@ import type { GiteeGist } from '../../src/forum/api/gitee/gists'
 import type { ForumPersonalState } from '../../src/forum/services/forumPersonalState'
 import { beforeEach, expect, test, vi } from 'vitest'
 import { clearApiCache } from '../../src/forum/api/gitee'
-import { FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '../../src/forum/api/gitee/gists'
+import { FORUM_STATE_BACKUP_DESCRIPTION, FORUM_STATE_BACKUP_FILE, FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '../../src/forum/api/gitee/gists'
 import { emptyForumPersonalState, setFollowedTopic, toggleFollowedTopic } from '../../src/forum/services/forumPersonalState'
-import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError, loadForumPersonalState, updateForumPersonalState } from '../../src/forum/services/forumPersonalStateRepository'
+import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError, loadForumPersonalState, recoverForumPersonalState, updateForumPersonalState } from '../../src/forum/services/forumPersonalStateRepository'
 
 const aliceKey = 'forum-personal-gist:alice'
 const topicA = { topicId: 'IA', title: 'Topic A', type: 'BUG' as const, authorLogin: 'alice', recordedAt: '2026-10-12T00:00:00.000Z' }
@@ -17,6 +17,9 @@ let detailStatus: number | undefined
 let afterRead: (() => Promise<void>) | undefined
 let afterList: (() => Promise<void>) | undefined
 let listFailurePage: number | undefined
+let backupFailure: boolean
+let patchFailure: boolean
+let afterBackup: (() => void) | undefined
 
 function stateGist(id = 'existing', state = emptyForumPersonalState()): GiteeGist {
   return { id, description: FORUM_STATE_GIST_DESCRIPTION, public: false, files: { [FORUM_STATE_GIST_FILE]: { content: JSON.stringify(state) } } }
@@ -51,6 +54,9 @@ beforeEach(() => {
   afterRead = undefined
   afterList = undefined
   listFailurePage = undefined
+  backupFailure = false
+  patchFailure = false
+  afterBackup = undefined
   storage = {
     getItem: key => values.get(key) ?? null,
     setItem: (key, value) => { values.set(key, value) },
@@ -85,9 +91,15 @@ beforeEach(() => {
     }
     if ((request.method === 'POST' && endpoint === 'gists') || (request.method === 'PATCH' && id)) {
       const payload = await request.json() as Pick<GiteeGist, 'description' | 'files' | 'public'>
+      if (payload.description === FORUM_STATE_BACKUP_DESCRIPTION && backupFailure)
+        return reply({ message: 'Backup failed' }, 403)
+      if (request.method === 'PATCH' && patchFailure)
+        return reply({ message: 'Update failed' }, 403)
       const target = id || `created-${remote.size + 1}`
       const gist: GiteeGist = { id: target, ...payload }
       remote.set(target, gist)
+      if (payload.description === FORUM_STATE_BACKUP_DESCRIPTION)
+        afterBackup?.()
       return reply(gist, request.method === 'POST' ? 201 : 200)
     }
     throw new Error(`Unexpected audit request: ${request.method} ${endpoint}`)
@@ -278,6 +290,85 @@ test('an invalid list response cannot be treated as an absent personal state', a
   vi.stubGlobal('fetch', fetch)
   await expect(updateForumPersonalState('alice', state => setFollowedTopic(state, topicA, true))).rejects.toThrow('Invalid Gitee response')
   expect(fetch).toHaveBeenCalledOnce()
+})
+
+test.each(['repair', 'reset'] as const)('explicit %s saves a private verbatim backup before replacing corrupted state', async (mode) => {
+  seed()
+  const raw = JSON.stringify({ version: 1, followedTopics: [topicA, { invalid: true }], recentParticipated: [] })
+  remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = raw
+  const result = await recoverForumPersonalState('alice', { gistId: 'existing', raw, mode })
+  const backup = remote.get(result.backupGistId)!
+  expect(backup.description).toBe(FORUM_STATE_BACKUP_DESCRIPTION)
+  expect(backup.public).toBe(false)
+  expect(JSON.parse(backup.files[FORUM_STATE_BACKUP_FILE].content!)).toMatchObject({ version: 1, sourceGistId: 'existing', files: { [FORUM_STATE_GIST_FILE]: { content: raw } } })
+  expect(savedState().followedTopics).toEqual(mode === 'repair' ? [topicA] : [])
+  expect(calls.filter(call => call.method !== 'GET').map(call => call.method)).toEqual(['POST', 'PATCH'])
+})
+
+test('failed backup prevents any replacement of corrupted data', async () => {
+  seed()
+  const raw = '{'
+  remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = raw
+  backupFailure = true
+  await expect(recoverForumPersonalState('alice', { gistId: 'existing', raw, mode: 'reset' })).rejects.toMatchObject({ state: 403 })
+  expect(remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content).toBe(raw)
+  expect(remote.size).toBe(1)
+  expect(calls.some(call => call.method === 'PATCH')).toBe(false)
+})
+
+test.each(['changed', 'session'] as const)('a %s change during backup prevents recovery and retains the backup', async (change) => {
+  seed()
+  const raw = '{'
+  remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = raw
+  let current = true
+  afterBackup = () => {
+    if (change === 'changed')
+      remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = 'changed'
+    else
+      current = false
+  }
+  await expect(recoverForumPersonalState('alice', { gistId: 'existing', raw, mode: 'reset' }, { assertCurrent: () => {
+    if (!current)
+      throw new Error('Session changed')
+  } })).rejects.toThrow()
+  expect(calls.some(call => call.method === 'PATCH')).toBe(false)
+  expect(remote.size).toBe(2)
+})
+
+test('a failed replacement retains both the original and the completed backup', async () => {
+  seed()
+  remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = '{'
+  patchFailure = true
+  await expect(recoverForumPersonalState('alice', { gistId: 'existing', raw: '{', mode: 'reset' })).rejects.toMatchObject({ state: 403 })
+  expect(remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content).toBe('{')
+  expect([...remote.values()].filter(gist => gist.description === FORUM_STATE_BACKUP_DESCRIPTION)).toHaveLength(1)
+})
+
+test.each([
+  ['future version', JSON.stringify({ version: 2 }), false],
+  ['valid state', JSON.stringify(emptyForumPersonalState()), false],
+  ['truncated state', '{', true],
+])('%s cannot be reset through corruption recovery', async (_name, raw, truncated) => {
+  seed()
+  remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = raw
+  remote.get('existing')!.truncated = truncated
+  await expect(recoverForumPersonalState('alice', { gistId: 'existing', raw, mode: 'reset' })).rejects.toThrow()
+  expect(calls.every(call => call.method === 'GET')).toBe(true)
+})
+
+test('empty salvage requires an explicit reset instead of calling it a repair', async () => {
+  seed()
+  remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = '{'
+  await expect(recoverForumPersonalState('alice', { gistId: 'existing', raw: '{', mode: 'repair' })).rejects.toThrow('explicit reset')
+  expect(calls.every(call => call.method === 'GET')).toBe(true)
+})
+
+test('raw personal data is available for recovery but absent from serialized errors', async () => {
+  seed()
+  remote.get('existing')!.files[FORUM_STATE_GIST_FILE].content = '{private'
+  const error = await loadForumPersonalState('alice').catch(error => error)
+  expect(error.raw).toBe('{private')
+  expect(JSON.stringify(error)).not.toContain('private')
 })
 
 test.fails('two independent clients must not silently lose one of their committed updates', { timeout: 3000 }, async () => {
