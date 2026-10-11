@@ -12,6 +12,21 @@ const LEGACY_DRAFT_KEY = STORAGE_KEYS.FORUM_FORM_DATA
 export type SavedTopicDraft = TopicFormData & { savedAt?: number }
 export const TOPIC_DRAFT_CHANGE_EVENT = 'forum-topic-drafts-changed'
 
+export interface TopicDraftBackup {
+  version: 1
+  sourceKey: string
+  raw: string
+  savedAt: number
+}
+
+function backupDraft(storage: Storage, sourceKey: string, raw: string | null): void {
+  if (raw === null)
+    return
+  const backup: TopicDraftBackup = { version: 1, sourceKey, raw, savedAt: Date.now() }
+  // One previous raw snapshot per slot bounds storage while retaining malformed data.
+  storage.setItem(`${sourceKey}-backup`, JSON.stringify(backup))
+}
+
 declare global {
   interface WindowEventMap {
     [TOPIC_DRAFT_CHANGE_EVENT]: Event
@@ -99,6 +114,7 @@ export function readTopicDraft(type: TopicFormData['type']): SavedTopicDraft {
   if (legacy && legacy.type === type) {
     try {
       storage.setItem(getTopicDraftStorageKey(type), JSON.stringify(legacy))
+      backupDraft(storage, LEGACY_DRAFT_KEY, storage.getItem(LEGACY_DRAFT_KEY))
       storage.removeItem(LEGACY_DRAFT_KEY)
     }
     catch {
@@ -122,17 +138,60 @@ export function readSavedTopicDrafts(types: TopicFormData['type'][]): SavedTopic
 export function writeTopicDraft(type: TopicFormData['type'], draft: TopicFormData): void {
   if (typeof localStorage === 'undefined')
     return
-  localStorage.setItem(getTopicDraftStorageKey(type), JSON.stringify({ ...restoreTopicDraft(draft), savedAt: Date.now() }))
+  const key = getTopicDraftStorageKey(type)
+  backupDraft(localStorage, key, localStorage.getItem(key))
+  localStorage.setItem(key, JSON.stringify({ ...restoreTopicDraft(draft), type, savedAt: Date.now() }))
   try {
     // Only discard the matching legacy draft after its replacement is durable.
-    const legacy = parseStoredDraft(localStorage.getItem(LEGACY_DRAFT_KEY))
-    if (legacy?.type === type)
+    const raw = localStorage.getItem(LEGACY_DRAFT_KEY)
+    const legacy = parseStoredDraft(raw)
+    if (legacy?.type === type) {
+      backupDraft(localStorage, LEGACY_DRAFT_KEY, raw)
       localStorage.removeItem(LEGACY_DRAFT_KEY)
+    }
   }
   catch {
     // Optional cleanup must not report an already committed draft as failed.
   }
   notifyDraftChange()
+}
+
+export function readTopicDraftBackup(type: TopicFormData['type']): TopicDraftBackup | null {
+  try {
+    for (const key of [getTopicDraftStorageKey(type), LEGACY_DRAFT_KEY]) {
+      const raw = localStorage.getItem(`${key}-backup`)
+      if (!raw)
+        continue
+      let value: unknown
+      try {
+        value = JSON.parse(raw)
+      }
+      catch {
+        continue
+      }
+      if (!value || typeof value !== 'object')
+        continue
+      const backup = value as Partial<TopicDraftBackup>
+      if (backup.version !== 1 || backup.sourceKey !== key || typeof backup.raw !== 'string' || typeof backup.savedAt !== 'number' || !Number.isFinite(backup.savedAt) || backup.savedAt <= 0)
+        continue
+      if (key === LEGACY_DRAFT_KEY && parseStoredDraft(backup.raw)?.type !== type)
+        continue
+      return backup as TopicDraftBackup
+    }
+  }
+  catch {
+    // Backup lookup must not prevent editing the current draft.
+  }
+  return null
+}
+
+export function restoreTopicDraftBackup(type: TopicFormData['type']): boolean {
+  const backup = readTopicDraftBackup(type)
+  const restored = backup ? parseStoredDraft(backup.raw) : null
+  if (!restored || restored.type !== type)
+    return false
+  writeTopicDraft(type, restored)
+  return true
 }
 
 export function removeTopicDraft(type: TopicFormData['type']): void {

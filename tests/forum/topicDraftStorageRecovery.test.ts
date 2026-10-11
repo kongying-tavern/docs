@@ -1,6 +1,6 @@
 import type { TopicFormData } from '../../src/forum/services/form/validation'
 import { beforeEach, expect, test, vi } from 'vitest'
-import { createDefaultTopicDraft, readTopicDraft, writeTopicDraft } from '../../src/forum/services/form/topicDraft'
+import { createDefaultTopicDraft, readTopicDraft, readTopicDraftBackup, restoreTopicDraftBackup, writeTopicDraft } from '../../src/forum/services/form/topicDraft'
 import { STORAGE_KEYS } from '../../src/forum/services/forumConfig'
 
 const legacyKey = STORAGE_KEYS.FORUM_FORM_DATA
@@ -8,9 +8,6 @@ const bugKey = `${legacyKey}-bug`
 let values: Map<string, string>
 let storage: Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
 const draft: TopicFormData = { type: 'BUG', title: 'Unsaved report', text: 'Keep this body', tags: [] }
-
-// Confirmed defects: remove .fails when implementing the corresponding fixes.
-// Evidence and staged design: advisor-plans/017-forum-storage-recovery-plan.md.
 
 beforeEach(() => {
   values = new Map()
@@ -90,12 +87,46 @@ test('failed legacy cleanup does not misreport a durable draft save', () => {
   expect(values.has(legacyKey)).toBe(true)
 })
 
-test('corrupt JSON survives read fallback, but the next normal save currently destroys its only copy', () => {
-  // Characterizes the missing recovery/backup policy without inventing a backup key.
+test('corrupt JSON survives read fallback and is backed up verbatim before replacement', () => {
   const corrupt = '{"title":"recoverable original text",'
   values.set(bugKey, corrupt)
   expect(readTopicDraft('BUG')).toEqual(createDefaultTopicDraft())
   expect(values.get(bugKey)).toBe(corrupt)
   writeTopicDraft('BUG', draft)
-  expect([...values.values()]).not.toContain(corrupt)
+  expect(readTopicDraftBackup('BUG')?.raw).toBe(corrupt)
+  expect(restoreTopicDraftBackup('BUG')).toBe(false)
+})
+
+test('backup failure blocks replacement and preserves the original draft', () => {
+  const corrupt = '{"title":"recoverable original text",'
+  values.set(bugKey, corrupt)
+  const originalSet = storage.setItem
+  storage.setItem = (key, value) => {
+    if (key.endsWith('-backup'))
+      throw new DOMException('Storage full', 'QuotaExceededError')
+    originalSet(key, value)
+  }
+  expect(() => writeTopicDraft('BUG', draft)).toThrow('Storage full')
+  expect(values.get(bugKey)).toBe(corrupt)
+})
+
+test('a valid previous snapshot can be restored and backups remain bounded', () => {
+  writeTopicDraft('BUG', draft)
+  writeTopicDraft('BUG', { ...draft, text: 'Second version' })
+  expect(readTopicDraftBackup('BUG')?.raw).toContain('Keep this body')
+  expect(restoreTopicDraftBackup('BUG')).toBe(true)
+  expect(readTopicDraft('BUG').text).toBe(draft.text)
+  expect(readTopicDraftBackup('BUG')?.raw).toContain('Second version')
+  expect([...values.keys()].filter(key => key.endsWith('-backup'))).toHaveLength(1)
+})
+
+test('legacy migration keeps a recoverable raw copy without mixing topic types', () => {
+  const raw = JSON.stringify({ ...draft, type: 'FEAT' })
+  values.set(legacyKey, raw)
+  readTopicDraft('FEAT')
+  expect(values.has(legacyKey)).toBe(false)
+  expect(readTopicDraftBackup('FEAT')?.raw).toBe(raw)
+  values.set(`${legacyKey}-feat-backup`, '{broken backup')
+  expect(readTopicDraftBackup('FEAT')?.raw).toBe(raw)
+  expect(readTopicDraftBackup('BUG')).toBeNull()
 })
