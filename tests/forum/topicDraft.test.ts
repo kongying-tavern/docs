@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { readSavedTopicDrafts, readTopicDraft, removeTopicDraft, writeTopicDraft } from '../../src/forum/services/form/topicDraft'
+import { readSavedTopicDrafts, readTopicDraft, removeTopicDraft, restoreTopicDraft, writeTopicDraft } from '../../src/forum/services/form/topicDraft'
 import { STORAGE_KEYS } from '../../src/forum/services/forumConfig'
 
 function withStorage(run: (storage: Map<string, string>) => void): void {
@@ -56,5 +56,25 @@ test('deleting one draft removes its storage slot and leaves other types availab
     assert.deepEqual(readSavedTopicDrafts(['BUG', 'FEAT']).map(draft => draft.type), ['BUG'])
     assert.equal(readTopicDraft('FEAT').attachments, undefined)
     assert.equal(readTopicDraft('BUG').text, 'Bug draft')
+  })
+})
+
+test('successful draft writes persist their time while reads and legacy migration preserve it', () => {
+  withStorage((storage) => {
+    const draft = { type: 'FEAT' as const, title: 'Saved draft', text: 'Body', tags: [] }
+    const startedAt = Date.now()
+    writeTopicDraft('FEAT', draft)
+    const savedAt = readTopicDraft('FEAT').savedAt!
+    assert.ok(savedAt >= startedAt && savedAt <= Date.now())
+    assert.equal(readSavedTopicDrafts(['FEAT'])[0].savedAt, savedAt)
+    assert.equal(readTopicDraft('FEAT').savedAt, savedAt)
+    storage.set(`${STORAGE_KEYS.FORUM_FORM_DATA}-feat`, JSON.stringify({ ...draft, savedAt: 1 }))
+    writeTopicDraft('FEAT', draft)
+    assert.ok(readTopicDraft('FEAT').savedAt! >= startedAt)
+    for (const invalid of [-1, 0, Infinity, 'yesterday'])
+      assert.equal(restoreTopicDraft({ ...draft, savedAt: invalid }).savedAt, undefined)
+    storage.delete(`${STORAGE_KEYS.FORUM_FORM_DATA}-feat`)
+    storage.set(STORAGE_KEYS.FORUM_FORM_DATA, JSON.stringify({ ...draft, savedAt }))
+    assert.equal(readSavedTopicDrafts(['FEAT'])[0].savedAt, savedAt)
   })
 })

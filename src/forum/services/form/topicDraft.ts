@@ -9,6 +9,7 @@ import { draftImageSchema } from './validation'
  * Kept only as a read fallback so existing drafts are migrated once.
  */
 const LEGACY_DRAFT_KEY = STORAGE_KEYS.FORUM_FORM_DATA
+export type SavedTopicDraft = TopicFormData & { savedAt?: number }
 export const TOPIC_DRAFT_CHANGE_EVENT = 'forum-topic-drafts-changed'
 
 declare global {
@@ -31,12 +32,12 @@ export function createDefaultTopicDraft(): TopicFormData {
   }
 }
 
-export function restoreTopicDraft(value: unknown): TopicFormData {
+export function restoreTopicDraft(value: unknown): SavedTopicDraft {
   const fallback = createDefaultTopicDraft()
   if (!value || typeof value !== 'object' || Array.isArray(value))
     return fallback
 
-  const stored = value as Partial<TopicFormData>
+  const stored = value as Partial<SavedTopicDraft>
   const quotedTopic = normalizeQuotedTopicReference(stored.quotedTopic)
   const attachments = Array.isArray(stored.attachments)
     ? stored.attachments.flatMap((image) => {
@@ -54,6 +55,7 @@ export function restoreTopicDraft(value: unknown): TopicFormData {
     ...(stored.isPrivate === true ? { isPrivate: true } : {}),
     ...(quotedTopic ? { quotedTopic } : {}),
     ...(attachments.length ? { attachments } : {}),
+    ...(typeof stored.savedAt === 'number' && Number.isFinite(stored.savedAt) && stored.savedAt > 0 ? { savedAt: stored.savedAt } : {}),
   }
 }
 
@@ -61,7 +63,7 @@ function getTopicDraftStorageKey(type: TopicFormData['type']): string {
   return `${LEGACY_DRAFT_KEY}-${type.toLowerCase()}`
 }
 
-function parseStoredDraft(value: string | null): TopicFormData | null {
+function parseStoredDraft(value: string | null): SavedTopicDraft | null {
   if (!value)
     return null
   try {
@@ -79,7 +81,7 @@ function parseStoredDraft(value: string | null): TopicFormData | null {
  * Read the stored draft for a specific type. Falls back to the legacy
  * single-key draft once (migration) when the per-type slot is empty.
  */
-export function readTopicDraft(type: TopicFormData['type']): TopicFormData {
+export function readTopicDraft(type: TopicFormData['type']): SavedTopicDraft {
   if (typeof localStorage === 'undefined')
     return createDefaultTopicDraft()
 
@@ -97,7 +99,7 @@ export function readTopicDraft(type: TopicFormData['type']): TopicFormData {
   return createDefaultTopicDraft()
 }
 
-export function readSavedTopicDrafts(types: TopicFormData['type'][]): TopicFormData[] {
+export function readSavedTopicDrafts(types: TopicFormData['type'][]): SavedTopicDraft[] {
   return types.flatMap((type) => {
     const draft = { ...readTopicDraft(type), type }
     const hasContent = draft.title.trim() || decodeForumText(draft.text).text.trim()
@@ -111,7 +113,7 @@ export function writeTopicDraft(type: TopicFormData['type'], draft: TopicFormDat
     return
   // The legacy key no longer needs to be consulted once a per-type draft exists.
   localStorage.removeItem(LEGACY_DRAFT_KEY)
-  localStorage.setItem(getTopicDraftStorageKey(type), JSON.stringify(restoreTopicDraft(draft)))
+  localStorage.setItem(getTopicDraftStorageKey(type), JSON.stringify({ ...restoreTopicDraft(draft), savedAt: Date.now() }))
   notifyDraftChange()
 }
 
