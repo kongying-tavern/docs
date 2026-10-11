@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { INTER_KNOT } from '~/apis/interknot.site/api'
 import { ReloadIcon } from '@radix-icons/vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -17,18 +17,26 @@ const { message } = useLocalized()
 const {
   data: reactionData,
   error,
-  isLoading,
   refetch,
   setReactionState,
   reactionSubmitLoading,
-  viewerReady,
 } = useTopicsReaction(() => topicId, () => autoload, { refetchOnMount })
 
 const reactionState = computed(() => reactionData.value?.state ?? null)
 const likeCount = computed(() => reactionData.value?.data.likeCount ?? 0)
 const loadFailed = computed(() => Boolean(error.value) && !reactionData.value)
-const loading = computed(() => !reactionData.value && (!viewerReady.value || isLoading.value || !autoload))
+const retrying = ref(false)
 const disabled = computed(() => !reactionData.value || reactionSubmitLoading.value)
+
+async function retryReaction() {
+  retrying.value = true
+  try {
+    await refetch()
+  }
+  finally {
+    retrying.value = false
+  }
+}
 
 function handleReaction(state: INTER_KNOT.ReactionState) {
   if (!disabled.value)
@@ -56,27 +64,24 @@ function handleReaction(state: INTER_KNOT.ReactionState) {
     </Button>
 
     <TextMorph
-      v-if="reactionData"
+      v-if="!loadFailed && !retrying"
       :text="String(likeCount)"
       class="px-1 tabular-nums max-mobile:text-base"
       aria-live="polite"
     />
-    <ReloadIcon v-else-if="loading" class="mx-1 animate-spin" aria-hidden="true" />
     <Button
-      v-else-if="loadFailed"
+      v-else
       type="button"
       variant="ghost"
       size="icon"
       class="rounded-full h-8 w-8 max-mobile:h-9 max-mobile:w-9"
       :aria-label="message.forum.auth.callback.error.retry"
-      @click="refetch()"
+      :disabled="retrying"
+      :aria-busy="retrying"
+      @click="retryReaction"
     >
-      <span
-        class="i-lucide-rotate-ccw align-mid flex-shrink-0 h-5 w-5 inline-block max-mobile:h-5 max-mobile:w-5"
-        aria-hidden="true"
-      />
+      <ReloadIcon :class="{ 'animate-spin motion-reduce:animate-none': retrying }" aria-hidden="true" />
     </Button>
-    <span v-else class="px-1 tabular-nums" aria-hidden="true">–</span>
 
     <Button
       type="button"
