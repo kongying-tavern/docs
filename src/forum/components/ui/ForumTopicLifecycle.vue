@@ -39,7 +39,9 @@ async function copyTopicId() {
 <template>
   <span class="forum-topic-lifecycle">
     <span class="forum-topic-lifecycle-icon" :class="`is-${state}`" role="img" :title="label" :aria-label="label">
-      <span v-if="state !== 'open'" :class="state === 'progressing' ? 'i-lucide-check' : 'i-lucide-x'" aria-hidden="true" />
+      <svg v-if="state !== 'open'" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path :d="state === 'progressing' ? 'M3 6L5 8L9 4' : 'M4 4L8 8M8 4L4 8'" />
+      </svg>
     </span>
     <button
       v-if="!iconOnly && topicId != null && copyable && isSupported"
@@ -80,13 +82,15 @@ async function copyTopicId() {
   border-radius: 50%;
 }
 
-.forum-topic-lifecycle-icon > span {
-  width: 9px;
-  height: 9px;
+.forum-topic-lifecycle-icon > svg {
+  display: block;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
 .is-open {
-  border: 1px solid currentColor;
+  border: 1.5px solid currentColor;
 }
 
 .is-progressing {
