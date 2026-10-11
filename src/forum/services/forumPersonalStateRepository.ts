@@ -9,6 +9,28 @@ function gistStorageKey(userId: string): string {
   return `${GIST_ID_KEY_PREFIX}${userId}`
 }
 
+function cachedGistId(userId: string): string | null {
+  try {
+    return localStorage.getItem(gistStorageKey(userId))
+  }
+  catch {
+    return null
+  }
+}
+
+function cacheGistId(userId: string, id: string | null): void {
+  try {
+    const key = gistStorageKey(userId)
+    if (id === null)
+      localStorage.removeItem(key)
+    else
+      localStorage.setItem(key, id)
+  }
+  catch {
+    // This optional locator cache must not affect remote read/write outcomes.
+  }
+}
+
 function isForumStateGist(gist: gists.GiteeGist): boolean {
   return gist.description === gists.FORUM_STATE_GIST_DESCRIPTION
     && Boolean(gist.files[gists.FORUM_STATE_GIST_FILE])
@@ -33,19 +55,18 @@ export function readForumStateGist(gist: gists.GiteeGist): ForumPersonalState {
 }
 
 async function findForumStateGist(userId: string): Promise<gists.GiteeGist | null> {
-  const key = gistStorageKey(userId)
-  const cachedId = localStorage.getItem(key)
+  const cachedId = cachedGistId(userId)
   if (cachedId) {
     try {
       const gist = await gists.getGist(cachedId)
       if (isForumStateGist(gist))
         return gist
-      localStorage.removeItem(key)
+      cacheGistId(userId, null)
     }
     catch (error) {
       if (!(error instanceof GiteeAPIError) || error.state !== 404)
         throw error
-      localStorage.removeItem(key)
+      cacheGistId(userId, null)
     }
   }
 
@@ -54,7 +75,7 @@ async function findForumStateGist(userId: string): Promise<gists.GiteeGist | nul
     return null
 
   const gist = await gists.getGist(String(summary.id))
-  localStorage.setItem(key, String(gist.id))
+  cacheGistId(userId, String(gist.id))
   return gist
 }
 
@@ -74,11 +95,11 @@ export async function updateForumPersonalState(
     const saved = gist
       ? await gists.updateForumStateGist(String(gist.id), content)
       : await gists.createForumStateGist(content)
-    localStorage.setItem(gistStorageKey(userId), String(saved.id))
+    cacheGistId(userId, String(saved.id))
     return next
   }
 
-  if (navigator.locks)
+  if (typeof navigator !== 'undefined' && navigator.locks)
     return navigator.locks.request(`forum-personal-state:${userId}`, task)
 
   const queued = writeQueue.then(task, task)
