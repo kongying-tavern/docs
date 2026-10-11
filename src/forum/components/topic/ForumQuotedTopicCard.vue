@@ -13,6 +13,7 @@ import { shouldShowQuotedTopicImageBelow } from '~/forum/services/forumTopicQuot
 import ForumImage from '../ui/ForumImage.vue'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 import ForumTopicHeader from './ForumTopicHeader.vue'
+import ForumTopicVisibilityIcon from './ForumTopicVisibilityIcon.vue'
 
 const { topic = undefined, loading = false, unavailable = false, interactive = true, compact = false, reference } = defineProps<{
   reference: ForumAPI.QuotedTopicReference
@@ -121,10 +122,12 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
         </ForumTopicHeader>
 
         <h4 v-if="topic.type !== 'BUG'" class="quote-title font-semibold m-0 mt-2 min-w-0 line-clamp-1">
+          <ForumTopicVisibilityIcon v-if="topic.isPrivate" />
           {{ topic.title }}
         </h4>
 
         <div class="quote-content mt-2 flex gap-3 items-start">
+          <ForumTopicVisibilityIcon v-if="topic.isPrivate && topic.type === 'BUG'" class="mt-0.5 shrink-0" />
           <div
             v-if="interactive"
             class="forum-topic-summary text-sm flex-1 min-w-0 whitespace-pre-wrap overflow-hidden"

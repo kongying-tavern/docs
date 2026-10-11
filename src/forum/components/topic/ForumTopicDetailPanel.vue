@@ -11,6 +11,7 @@ import ForumTime from '../ui/ForumTime.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
 import ForumTopicPageSkeleton from './ForumTopicPageSkeleton.vue'
+import ForumTopicVisibilityIcon from './ForumTopicVisibilityIcon.vue'
 
 const { topic, loading, error, authorHref, renderedContent, translatedContent, translatedTitle, showingTranslation, topicImages } = defineProps<{
   topic?: ForumAPI.Topic
@@ -73,6 +74,7 @@ const { message } = useLocalized()
       data-forum-shared-topic="title"
       class="text-xl font-semibold m-0 mt-1 break-words overflow-hidden md:text-1.5rem"
     >
+      <ForumTopicVisibilityIcon v-if="topic.isPrivate" />
       {{ showingTranslation && translatedTitle ? translatedTitle : topic.title }}
     </h3>
 
@@ -85,6 +87,8 @@ const { message } = useLocalized()
     <div class="font-size-4 line-height-6">
       <slot name="translation" />
     </div>
+
+    <ForumTopicVisibilityIcon v-if="topic.isPrivate && topic.type === 'BUG'" class="mt-1 float-left" />
 
     <article
       v-if="!showingTranslation"

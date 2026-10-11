@@ -185,7 +185,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         id: 'private-topic',
         type: 'item',
         label: currentTopic.value.isPrivate ? menuLabels.value.privateFeedback.makePublic : menuLabels.value.privateFeedback.makePrivate,
-        icon: currentTopic.value.isPrivate ? 'i-lucide:lock-open' : 'i-lucide:lock',
+        icon: currentTopic.value.isPrivate ? 'i-lucide:lock-keyhole-open' : 'i-lucide:lock-keyhole',
         disabled: updatingTopic.value,
         action: togglePrivateTopic,
       },

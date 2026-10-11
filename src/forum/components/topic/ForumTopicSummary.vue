@@ -6,6 +6,7 @@ import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { decodeTopicBody } from '~/forum/services/forumContentCodec'
 import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
 import { useTopicContent } from './composables/useTopicContent'
+import ForumTopicVisibilityIcon from './ForumTopicVisibilityIcon.vue'
 
 const { topic, detailHref, contentOverride, titleOverride, topicHref } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
@@ -47,6 +48,7 @@ const {
   displayTitle,
 } = useTopicContent(() => topic)
 
+const isPrivate = computed(() => 'isPrivate' in topic && topic.isPrivate === true)
 const isPinned = computed(() => topic.pinned === true)
 /** 置顶标记优先跟随标题；无标题视图（紧凑模式、BUG 反馈）时落在正文开头 */
 const showPinInContent = computed(() => isPinned.value && !shouldShowTitle.value)
@@ -75,10 +77,12 @@ function handleExpandClick(): void {
         }"
       >
         <a v-if="!isAnn" class="topic-title-link color-inherit no-underline line-clamp-2" :href="detailHref">
+          <ForumTopicVisibilityIcon v-if="isPrivate" />
           <span v-if="isPinned" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           {{ titleOverride ?? displayTitle }}
         </a>
         <p v-else class="line-clamp-2">
+          <ForumTopicVisibilityIcon v-if="isPrivate" />
           <span v-if="isPinned" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           {{ titleOverride ?? displayTitle }}
         </p>
@@ -103,6 +107,7 @@ function handleExpandClick(): void {
           @click="handleSummaryClick($event)"
           @keydown.enter="handleSummaryClick($event)"
         >
+          <ForumTopicVisibilityIcon v-if="isPrivate && !shouldShowTitle" class="mt-0.5 float-left" />
           <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           <div v-html="renderedContent" />
         </div>
@@ -111,6 +116,7 @@ function handleExpandClick(): void {
           v-else-if="isAnn" data-forum-card-interactive
           class="forum-topic-summary"
         >
+          <ForumTopicVisibilityIcon v-if="isPrivate && !shouldShowTitle" class="mt-0.5 float-left" />
           <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           <div v-html="renderedContent" />
         </div>
@@ -119,6 +125,7 @@ function handleExpandClick(): void {
           v-else data-forum-card-interactive
           class="forum-topic-summary"
         >
+          <ForumTopicVisibilityIcon v-if="isPrivate && !shouldShowTitle" class="mt-0.5 float-left" />
           <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           <div v-html="renderedContent" />
         </div>
@@ -154,6 +161,7 @@ function handleExpandClick(): void {
           @click="handleSummaryClick($event)"
           @keydown.enter="handleSummaryClick($event)"
         >
+          <ForumTopicVisibilityIcon v-if="isPrivate && !shouldShowTitle" class="mt-0.5 float-left" />
           <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           <div v-html="renderedContent" />
         </div>
@@ -162,6 +170,7 @@ function handleExpandClick(): void {
           v-else-if="isAnn" data-forum-card-interactive
           class="forum-topic-summary"
         >
+          <ForumTopicVisibilityIcon v-if="isPrivate && !shouldShowTitle" class="mt-0.5 float-left" />
           <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           <div v-html="renderedContent" />
         </div>
@@ -170,6 +179,7 @@ function handleExpandClick(): void {
           v-else data-forum-card-interactive
           class="forum-topic-summary"
         >
+          <ForumTopicVisibilityIcon v-if="isPrivate && !shouldShowTitle" class="mt-0.5 float-left" />
           <span v-if="showPinInContent" class="i-lucide-pin topic-pin-icon" aria-hidden="true" />
           <div v-html="renderedContent" />
         </div>
