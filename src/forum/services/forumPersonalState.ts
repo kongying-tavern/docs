@@ -27,31 +27,40 @@ export interface ForumPersonalState {
 
 type ForumPersonalStateDecodeResult
   = | { ok: true, state: ForumPersonalState }
-    | { ok: false, reason: string }
+    | { ok: false, reason: string, kind: 'corrupt' | 'unsupported-version' }
+
+function validDate(value: unknown): value is string {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value))
+}
 
 export function emptyForumPersonalState(): ForumPersonalState {
   return { version: 1, followedTopics: [], recentParticipated: [] }
 }
 
 function normalizeTopic(value: unknown): ForumPersonalTopic | null {
-  if (!value || typeof value !== 'object')
+  if (!value || typeof value !== 'object' || Array.isArray(value))
     return null
   const topic = value as Partial<ForumPersonalTopic>
-  if (!topic.topicId || !topic.title || !topic.authorLogin || !topic.recordedAt)
+  const id: unknown = topic.topicId
+  const topicId = typeof id === 'string' ? id.trim() : typeof id === 'number' && Number.isSafeInteger(id) && id > 0 ? String(id) : ''
+  if (!topicId || typeof topic.title !== 'string' || typeof topic.authorLogin !== 'string' || !topic.authorLogin.trim() || !validDate(topic.recordedAt))
     return null
   if (!['BUG', 'FEAT', 'ANN', 'POST'].includes(String(topic.type)))
     return null
+  const title = stripMarkdownImages(topic.title)
+  if (!title)
+    return null
   return {
-    topicId: String(topic.topicId),
-    title: stripMarkdownImages(String(topic.title)),
+    topicId,
+    title,
     type: topic.type as ForumAPI.TopicType,
-    authorLogin: String(topic.authorLogin),
-    recordedAt: String(topic.recordedAt),
-    ...(typeof topic.commentCount === 'number' ? { commentCount: topic.commentCount } : {}),
+    authorLogin: topic.authorLogin.trim(),
+    recordedAt: topic.recordedAt,
+    ...(typeof topic.commentCount === 'number' && Number.isSafeInteger(topic.commentCount) && topic.commentCount >= 0 ? { commentCount: topic.commentCount } : {}),
     ...(['open', 'closed', 'progressing'].includes(String(topic.state)) ? { state: topic.state as ForumAPI.TopicState } : {}),
     ...(TOPIC_STATUSES.has(topic.status as ForumAPI.TopicStatus) ? { status: topic.status as ForumAPI.TopicStatus } : {}),
     ...(typeof topic.goodIssue === 'boolean' ? { goodIssue: topic.goodIssue } : {}),
-    ...(typeof topic.closedAt === 'string' ? { closedAt: topic.closedAt } : {}),
+    ...(validDate(topic.closedAt) ? { closedAt: topic.closedAt } : {}),
   }
 }
 
@@ -75,18 +84,20 @@ function normalizeTopics(value: unknown, limit: number, rejectInvalid = false): 
 
 export function decodeForumPersonalState(content: string | undefined): ForumPersonalStateDecodeResult {
   if (!content)
-    return { ok: false, reason: 'The gist file is empty.' }
+    return { ok: false, kind: 'corrupt', reason: 'The gist file is empty.' }
   try {
     const value = JSON.parse(content) as Partial<ForumPersonalState>
-    if (!value || typeof value !== 'object' || value.version !== 1)
-      return { ok: false, reason: 'The gist uses an unsupported state version.' }
+    if (!value || typeof value !== 'object' || Array.isArray(value))
+      return { ok: false, kind: 'corrupt', reason: 'The gist state is not an object.' }
+    if (value.version !== 1)
+      return { ok: false, kind: 'unsupported-version', reason: 'The gist uses an unsupported state version.' }
     if (!Array.isArray(value.followedTopics) || !Array.isArray(value.recentParticipated))
-      return { ok: false, reason: 'The gist state lists are missing or invalid.' }
+      return { ok: false, kind: 'corrupt', reason: 'The gist state lists are missing or invalid.' }
 
     const followedTopics = normalizeTopics(value.followedTopics, FOLLOWED_TOPIC_LIMIT, true)
     const recentParticipated = normalizeTopics(value.recentParticipated, RECENT_PARTICIPATED_LIMIT, true)
     if (!followedTopics || !recentParticipated)
-      return { ok: false, reason: 'The gist contains an invalid topic entry.' }
+      return { ok: false, kind: 'corrupt', reason: 'The gist contains an invalid topic entry.' }
 
     return { ok: true, state: {
       version: 1,
@@ -95,7 +106,7 @@ export function decodeForumPersonalState(content: string | undefined): ForumPers
     } }
   }
   catch {
-    return { ok: false, reason: 'The gist file is not valid JSON.' }
+    return { ok: false, kind: 'corrupt', reason: 'The gist file is not valid JSON.' }
   }
 }
 
@@ -104,6 +115,8 @@ export function parseForumPersonalState(content: string | undefined): ForumPerso
     return emptyForumPersonalState()
   try {
     const value = JSON.parse(content) as Partial<ForumPersonalState>
+    if (!value || typeof value !== 'object' || value.version !== 1)
+      return emptyForumPersonalState()
     return {
       version: 1,
       followedTopics: normalizeTopics(value.followedTopics, FOLLOWED_TOPIC_LIMIT) ?? [],
@@ -120,7 +133,7 @@ export function serializeForumPersonalState(state: ForumPersonalState): string {
   const result = decodeForumPersonalState(content)
   if (!result.ok)
     throw new Error(`Refusing to save invalid forum personal state: ${result.reason}`)
-  return content
+  return JSON.stringify(result.state, null, 2)
 }
 
 export function summarizePersonalTopic(topic: ForumAPI.Topic, recordedAt = new Date().toISOString()): ForumPersonalTopic {
