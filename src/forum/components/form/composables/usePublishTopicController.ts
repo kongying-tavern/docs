@@ -203,15 +203,28 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }
 
   let pendingDraftHash: string | undefined
+  const deleteDraftOnly = ref(false)
+  watch(deleteDraftPromptOpen, (open) => {
+    if (!open && deleteDraftOnly.value) {
+      closeForm()
+      deleteDraftOnly.value = false
+    }
+  }, { flush: 'sync' })
   function resumeDraft(hash: string): void {
     if (!userAuth.isTokenValid || !draftsEnabled() || draftSaving.value || submissionBusy.value)
       return
     const type = resolvePublishTopicType(hash, tabList.value)
     openForm()
-    if (type && readSavedTopicDrafts(tabList.value).some(draft => draft.type === type))
+    if (type && readSavedTopicDrafts(tabList.value).some(draft => draft.type === type)) {
       selectSavedDraft(type)
-    else
+      if (hash.startsWith(`${FORM_HASH}-DRAFT-DELETE-`)) {
+        deleteDraftOnly.value = true
+        requestDeleteDraft()
+      }
+    }
+    else {
       entryPage.value = 'types'
+    }
   }
   watch(() => userInfo.info, (info) => {
     if (!info || !pendingDraftHash)
@@ -222,7 +235,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }, { flush: 'post' })
 
   useHashChecker(
-    [FORM_HASH, ...tabList.value.flatMap((val: string) => [`${FORM_HASH}-${val}`, `${FORM_HASH}-DRAFT-${val}`])],
+    [FORM_HASH, ...tabList.value.flatMap((val: string) => [`${FORM_HASH}-${val}`, `${FORM_HASH}-DRAFT-${val}`, `${FORM_HASH}-DRAFT-DELETE-${val}`])],
     (hash: string) => {
       pendingDraftHash = undefined
       if (draftSaving.value || submissionBusy.value)
@@ -610,7 +623,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }, { flush: 'sync' })
 
   return {
-    form: { showCreateMore, entryPage, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftPromptOpen, deleteDraftError, isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError },
+    form: { showCreateMore, entryPage, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftOnly, deleteDraftPromptOpen, deleteDraftError, isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError },
     upload: { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry },
     submission: { submitLoading, submissionPhase, submissionAlert, validationErrorCount, finalIsDisabled },
     actions: { initializeEntryPage, markEditorActive, requestDeleteDraft, confirmDeleteDraft, selectInitialType, returnToTypeSelection, handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, switchTab, focusFirstInvalid, saveDraft, setPrivate, setQuotedTopic, clearAttachments: reset },

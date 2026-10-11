@@ -188,6 +188,7 @@ const submittedItems = computed(() => [
     href: `#${FORM_HASH}-DRAFT-${draft.type}`,
     type: draft.type,
     draft: true,
+    draftData: draft,
   })),
   ...submitted.rows.value
     .filter(topic => isRecentClosedTopic(topic))
@@ -224,6 +225,7 @@ const followedItems = computed(() => personal.state.value.followedTopics
         topicSeen.seenAt(topic.topicId),
       ),
       canUnfollow: true,
+      menuTopic: current,
     }
   }))
 const participatedItems = computed(() => personal.state.value.recentParticipated
@@ -231,6 +233,7 @@ const participatedItems = computed(() => personal.state.value.recentParticipated
   .filter(({ topic, current }) => isRecentClosedTopic(current ?? topic))
   .slice(0, 20)
   .map(({ topic, current }) => ({
+    menuTopic: current,
     id: topic.topicId,
     title: current?.title ?? topic.title,
     href: topicHref(topic.topicId, null),
@@ -275,9 +278,11 @@ useForumShortcut('publish', handleCreate)
           :title="message.forum.sidebar.recentSubmitted"
           icon="i-lucide-history"
           :items="submittedItems"
+          create-when-empty
           :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
           :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
           @open-draft="openDraft"
+          @create="handleCreate"
         />
         <ForumSidebarSection
           v-model:open="participatedSectionOpen"

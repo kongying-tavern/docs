@@ -16,12 +16,13 @@ import ForumTopicHeader from './ForumTopicHeader.vue'
 import ForumTopicVisibilityIcon from './ForumTopicVisibilityIcon.vue'
 
 const { topic = undefined, loading = false, unavailable = false, interactive = true, compact = false, reference } = defineProps<{
-  reference: ForumAPI.QuotedTopicReference
+  reference: Pick<ForumAPI.QuotedTopicReference, 'id'>
   topic?: ForumAPI.Topic
   loading?: boolean
   unavailable?: boolean
   interactive?: boolean
   compact?: boolean
+  embedded?: boolean
   removable?: boolean
   removeDisabled?: boolean
 }>()
@@ -71,6 +72,7 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
       'quoted-topic-card--interactive cursor-pointer': topic && interactive,
       'quoted-topic-card--readonly': !interactive,
       'quoted-topic-card--compact': compact,
+      'quoted-topic-card--embedded': embedded,
     }"
     :role="topic && interactive ? 'link' : undefined"
     :tabindex="topic && interactive ? 0 : undefined"
@@ -175,6 +177,12 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
 
 .quoted-topic-card--readonly {
   background: color-mix(in srgb, var(--vp-c-bg-soft) 92%, var(--vp-c-text-1) 8%);
+}
+
+.quoted-topic-card--embedded {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
 }
 
 .quoted-topic-card:hover,

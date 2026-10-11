@@ -29,7 +29,7 @@ import ForumKeepDraftDialog from './ForumKeepDraftDialog.vue'
 import ForumPublishTopicStage from './ForumPublishTopicStage.vue'
 
 const props = defineProps<{ form: PublishTopicController['form'], upload: PublishTopicController['upload'], submission: PublishTopicController['submission'], actions: PublishTopicController['actions'] }>()
-const { showCreateMore, isOpen, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftPromptOpen, deleteDraftError, formData, formTabs, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError } = props.form
+const { showCreateMore, isOpen, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftOnly, deleteDraftPromptOpen, deleteDraftError, formData, formTabs, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError } = props.form
 const { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry } = props.upload
 const { submitLoading, submissionAlert, validationErrorCount, finalIsDisabled } = props.submission
 const { handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, focusFirstInvalid, saveDraft, setQuotedTopic } = props.actions
@@ -212,7 +212,7 @@ defineExpose(presentation)
       </div>
     </form>
   </UseForm>
-  <Dialog v-if="isDesktop" :open="isOpen" @update:open="handleOpenChange">
+  <Dialog v-if="isDesktop" :open="isOpen && !deleteDraftOnly" @update:open="handleOpenChange">
     <DialogContent class="compact-dialog srounded-[var(--compact-radius)]" :class="{ 'compact-expanded': expanded }" :show-close-button="false">
       <DialogTitle class="sr-only">
         {{ copy.newFeedback }}
@@ -226,7 +226,7 @@ defineExpose(presentation)
       </ForumPublishTopicStage>
     </DialogContent>
   </Dialog>
-  <Drawer v-else :open="isOpen" @update:open="handleOpenChange">
+  <Drawer v-else :open="isOpen && !deleteDraftOnly" @update:open="handleOpenChange">
     <DrawerContent class="compact-drawer data-[vaul-drawer-direction=bottom]:srounded-t-[var(--compact-radius)]" :class="{ 'compact-choosing-type': choosingType, 'compact-expanded': expanded, 'compact-keyboard-visible': keyboardVisible }" :style="drawerStyle" :aria-describedby="undefined">
       <DrawerTitle class="sr-only">
         {{ copy.newFeedback }}

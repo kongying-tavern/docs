@@ -91,7 +91,7 @@ function handleRadioSelect(group: FORUM.MenuRadioGroup, value: unknown) {
         <span>{{ item.label }}</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent>
+        <DropdownMenuSubContent class="z-[max(50,calc(var(--vp-z-index-sidebar)+1))]">
           <ForumDropdownMenu :items="item.items" />
         </DropdownMenuSubContent>
       </DropdownMenuPortal>

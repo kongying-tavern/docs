@@ -3,11 +3,9 @@ import type { HTMLAttributes } from 'vue'
 import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu'
 import { useLocalized } from '@/hooks/useLocalized'
-import { cn } from '@/lib/utils'
 import { defineTopicDropdownMenu } from '~/forum/composables/util/defineTopicDropdownMenu'
-import ForumDropdownMenu from './ForumDropdownMenu.vue'
+import ForumMenuContext from './ForumMenuContext.vue'
 
 const { menu = [], topicData, class: className } = defineProps<{
   topicData: ForumAPI.Topic
@@ -23,16 +21,10 @@ const items = computed(() => [...menu, ...providerMenu.value])
 </script>
 
 <template>
-  <ContextMenu>
-    <ContextMenuTrigger as-child>
-      <slot />
-    </ContextMenuTrigger>
-    <ContextMenuContent
-      fluid
-      :class="cn('w-max text-nowrap', className)"
-    >
+  <ForumMenuContext :menu="items" :class="className">
+    <slot />
+    <template #menu>
       <slot name="menu" />
-      <ForumDropdownMenu :items="items" />
-    </ContextMenuContent>
-  </ContextMenu>
+    </template>
+  </ForumMenuContext>
 </template>

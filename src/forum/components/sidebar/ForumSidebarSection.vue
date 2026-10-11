@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
+import type { SavedTopicDraft } from '~/forum/services/form/topicDraft'
 import { useResizeObserver } from '@vueuse/core'
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import ForumTopicDropdownMenu from '../topic/ForumTopicDropdownMenu.vue'
+import { issues } from '~/forum/api/gitee'
+import ForumContextMenu from '../ui/ForumContextMenu.vue'
+import ForumMenuContext from '../ui/ForumMenuContext.vue'
 import ForumTopicMetadata from '../ui/ForumTopicMetadata.vue'
+import ForumSidebarTopicPreview from './ForumSidebarTopicPreview.vue'
 
-const { items = [], loginPrompt = '', loginAction = '' } = defineProps<{
+const { items = [], loginPrompt = '', loginAction = '', actionDisabled = false } = defineProps<{
   title: string
   icon: string
   items?: Array<{
@@ -22,17 +27,20 @@ const { items = [], loginPrompt = '', loginAction = '' } = defineProps<{
     canUnfollow?: boolean
     menuTopic?: ForumAPI.Topic
     draft?: boolean
+    draftData?: SavedTopicDraft
   }>
   open: boolean
   loginPrompt?: string
   loginAction?: string
   actionDisabled?: boolean
+  createWhenEmpty?: boolean
 }>()
 
 const emit = defineEmits<{
   'update:open': [open: boolean]
   'unfollow': [topicId: string]
   'openDraft': []
+  'create': []
 }>()
 
 const { message } = useLocalized()
@@ -56,6 +64,46 @@ function handleToggle(event: Event) {
 function commentLabel(item: { commentCount?: number }): string {
   return message.value.forum.sidebar.totalComments.replace('{count}', String(item.commentCount || 0))
 }
+
+function fallbackMenu(item: typeof items[number]): FORUM.TopicDropdownMenu[] {
+  if (item.draft) {
+    return [{
+      type: 'item',
+      id: 'edit-draft',
+      label: message.value.forum.publish.feedbackForm.editDraft,
+      icon: 'i-lucide-square-pen',
+      action: () => openDraftMenuItem(item.href),
+    }, {
+      type: 'item',
+      id: 'delete-draft',
+      label: message.value.forum.publish.feedbackForm.deleteDraft,
+      icon: 'i-lucide-trash-2',
+      variant: 'destructive',
+      action: () => openDraftMenuItem(item.href.replace('-DRAFT-', '-DRAFT-DELETE-')),
+    }]
+  }
+  return [{
+    type: 'item',
+    id: 'gitee-link',
+    label: message.value.forum.topic.menu.giteeLink,
+    icon: 'i-lucide-cable',
+    action: () => issues.openTopicOnGitee(item.id),
+  }, ...(item.canUnfollow
+    ? [{
+        type: 'item' as const,
+        id: 'unfollow-topic',
+        label: message.value.forum.labels.unfollow,
+        icon: 'i-lucide-bookmark-minus',
+        disabled: actionDisabled,
+        action: () => emit('unfollow', item.id),
+      }]
+    : [])]
+}
+
+function openDraftMenuItem(href: string): void {
+  emit('openDraft')
+  location.hash = href.slice(1)
+}
 </script>
 
 <template>
@@ -63,10 +111,12 @@ function commentLabel(item: { commentCount?: number }): string {
     <summary
       data-fluid-hover-item
       class="forum-sidebar-summary"
+      @click="createWhenEmpty && !items.length && ($event.preventDefault(), emit('create'))"
     >
       <span :class="icon" aria-hidden="true" />
       <span class="flex-1 min-w-0 truncate">{{ title }}</span>
-      <span class="chevron i-lucide-chevron-down" aria-hidden="true" />
+      <span v-if="createWhenEmpty && !items.length" class="i-lucide-plus" aria-hidden="true" />
+      <span v-else class="chevron i-lucide-chevron-down" aria-hidden="true" />
     </summary>
 
     <div class="mt-1">
@@ -77,61 +127,60 @@ function commentLabel(item: { commentCount?: number }): string {
           class="forum-sidebar-topic-list"
           :class="{ 'scroll-fade': topicListScrollable }"
         >
-          <div
+          <component
+            :is="item.menuTopic ? ForumContextMenu : ForumMenuContext"
             v-for="item in items"
             :key="item.id"
-            data-fluid-hover-item
-            class="forum-sidebar-topic-row"
+            :topic-data="item.menuTopic"
+            :menu="item.menuTopic ? [] : fallbackMenu(item)"
           >
-            <a :href="item.href" class="forum-sidebar-topic" :title="item.title" :data-draft-type="item.draft ? item.type : undefined" @click="item.draft && emit('openDraft')">
-              <ForumTopicMetadata
-                :type="item.type"
-                :topic-id="item.id"
-                :state="item.state"
-                :status="item.status"
-                :good-issue="item.goodIssue"
-                icon-only
-                class="forum-sidebar-topic-type"
-              />
-              <span class="flex-1 min-w-0 truncate">{{ item.title }}</span>
-              <span v-if="item.draft" class="text-xs text-secondary-foreground px-2 py-0.5 rounded-full bg-secondary shrink-0">
-                {{ message.forum.publish.feedbackForm.draftBadge }}
-              </span>
-              <span
-                v-if="(item.commentCount ?? 0) > 0"
-                class="forum-sidebar-comments"
-                :class="{ closed: item.closedUnseen }"
-                role="img"
-                :aria-label="commentLabel(item)"
-              >
-                <span
-                  class="size-4"
-                  :class="item.closedUnseen ? 'i-lucide-message-circle-check' : 'i-lucide-message-circle'"
-                  aria-hidden="true"
-                />
-                <span class="forum-sidebar-comment-count" aria-hidden="true">
-                  {{ item.commentCount }}
-                </span>
-              </span>
-            </a>
-            <ForumTopicDropdownMenu
-              v-if="item.menuTopic"
-              :topic-data="item.menuTopic"
-              side="right"
-              class="p-0 size-7"
-            />
-            <button
-              v-if="item.canUnfollow"
-              type="button"
-              class="forum-sidebar-unfollow"
-              :disabled="actionDisabled"
-              :aria-label="message.forum.labels.unfollow"
-              :title="message.forum.labels.unfollow"
-              @click="emit('unfollow', item.id)"
-            >
-              <span class="i-lucide-bookmark-minus size-3.5" aria-hidden="true" />
-            </button>
-          </div>
+            <ForumSidebarTopicPreview :topic-id="item.id" :title="item.title" :topic="item.menuTopic" :draft="item.draftData">
+              <div data-fluid-hover-item class="forum-sidebar-topic-row">
+                <a :href="item.href" class="forum-sidebar-topic" :title="item.title" :data-draft-type="item.draft ? item.type : undefined" @click="item.draft && emit('openDraft')">
+                  <ForumTopicMetadata
+                    :type="item.type"
+                    :topic-id="item.id"
+                    :state="item.state"
+                    :status="item.status"
+                    :good-issue="item.goodIssue"
+                    icon-only
+                    class="forum-sidebar-topic-type"
+                  />
+                  <span class="flex-1 min-w-0 truncate">{{ item.title }}</span>
+                  <span v-if="item.draft" class="text-xs text-secondary-foreground px-2 py-0.5 rounded-full bg-secondary shrink-0">
+                    {{ message.forum.publish.feedbackForm.draftBadge }}
+                  </span>
+                  <span
+                    v-if="(item.commentCount ?? 0) > 0"
+                    class="forum-sidebar-comments"
+                    :class="{ closed: item.closedUnseen }"
+                    role="img"
+                    :aria-label="commentLabel(item)"
+                  >
+                    <span
+                      class="size-4"
+                      :class="item.closedUnseen ? 'i-lucide-message-circle-check' : 'i-lucide-message-circle'"
+                      aria-hidden="true"
+                    />
+                    <span class="forum-sidebar-comment-count" aria-hidden="true">
+                      {{ item.commentCount }}
+                    </span>
+                  </span>
+                </a>
+                <button
+                  v-if="item.canUnfollow"
+                  type="button"
+                  class="forum-sidebar-unfollow"
+                  :disabled="actionDisabled"
+                  :aria-label="message.forum.labels.unfollow"
+                  :title="message.forum.labels.unfollow"
+                  @click="emit('unfollow', item.id)"
+                >
+                  <span class="i-lucide-bookmark-minus size-3.5" aria-hidden="true" />
+                </button>
+              </div>
+            </ForumSidebarTopicPreview>
+          </component>
         </div>
       </template>
       <div v-else-if="loginPrompt" class="forum-sidebar-login-prompt">
