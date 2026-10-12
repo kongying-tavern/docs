@@ -1,7 +1,8 @@
 import { expect, test } from './support/test'
 
-test('home 页 footer 二维码卡片可见且支持夜间模式重生成', async ({ page }) => {
-  await page.goto('/feedback/home')
+test('site home footer QR code regenerates when the color scheme changes', async ({ page }) => {
+  await page.goto('./')
+  await expect(page.locator('.VPHome')).toBeVisible()
   const card = page.locator('.footer-qrcode')
   await expect(card).toBeVisible()
   // Select the card's only image instead of its localized alt text.

@@ -9,7 +9,7 @@ for (const width of [1440, 390]) {
       if (message.type() === 'error' || message.text().startsWith('[Vue warn]'))
         errors.push(message.text())
     })
-    await page.goto('/md-enhance-guide')
+    await page.goto('md-enhance-guide')
     await expect(page).toHaveTitle('Markdown 增强语法指南 | 空荧酒馆')
     const demo = page.locator('.vp-md-demo').first()
     await demo.locator('summary').click()

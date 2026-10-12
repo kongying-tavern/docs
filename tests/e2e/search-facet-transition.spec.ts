@@ -6,7 +6,7 @@ for (const reducedMotion of ['no-preference', 'reduce'] as const) {
   test(`search facet transitions preserve focus with ${reducedMotion} motion`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.emulateMedia({ reducedMotion })
-    await page.goto('/feedback/search')
+    await page.goto('feedback/search')
     const stage = page.locator('.forum-search-filter-stage')
     const active = stage.locator('.forum-filter-picker:not([inert])')
     await active.getByRole('button', { name: '标签筛选', exact: true }).click()

@@ -6,6 +6,7 @@ const port = Number(process.env.FORUM_E2E_PORT || 5174)
 const preview = process.env.FORUM_E2E_PREVIEW === 'true'
 const previewDir = process.env.FORUM_E2E_PREVIEW_DIR || 'dist'
 const baseURL = `http://127.0.0.1:${port}${preview ? '/docs/' : ''}`
+const suite = preview ? 'production' : 'source'
 
 export default defineConfig({
   testDir: '.',
@@ -26,18 +27,19 @@ export default defineConfig({
       VITE_COLADA_DEVTOOLS: 'false',
       VITE_DEVTOOLS: 'false',
       VITEPRESS_CACHE_DIR: '.vitepress/cache/forum-e2e',
+      ...(preview ? { VITEPRESS_OUT_DIR: previewDir } : {}),
     },
     command: preview
-      ? `pnpm exec vitepress serve --outDir "${previewDir}" --base /docs/ --host 127.0.0.1 --port ${port}`
+      ? `pnpm exec vitepress serve --base /docs/ --host 127.0.0.1 --port ${port}`
       : `pnpm exec vitepress dev --base / --host 127.0.0.1 --port ${port} --strictPort`,
     cwd: fileURLToPath(new URL('../..', import.meta.url)),
     url: baseURL,
     reuseExistingServer: false,
     timeout: 180_000,
   },
-  outputDir: '../../test-results/forum',
+  outputDir: `../../test-results/forum/${suite}-${port}`,
   // Relative reporter output paths resolve against this config's directory, so the
   // report is placed beside test-results/ at the repository root for CI upload.
-  reporter: process.env.CI ? [['line'], ['html', { outputFolder: '../../playwright-report', open: 'never' }]] : 'list',
+  reporter: process.env.CI ? [['line'], ['html', { outputFolder: `../../playwright-report/${suite}-${port}`, open: 'never' }]] : 'list',
   projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
 })

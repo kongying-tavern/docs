@@ -98,6 +98,7 @@ const accountItems = computed<ForumSidebarMenuItem[]>(() => [
     ? [
         {
           label: message.value.forum.auth.logoutMsg,
+          testId: 'account-logout',
           icon: 'i-lucide-log-out',
           separatorBefore: true,
           danger: true,

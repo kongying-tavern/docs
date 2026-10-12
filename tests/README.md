@@ -31,6 +31,9 @@ tests/
 | `pnpm test:theme` | shared + theme，保留主题原有网站设置检查 |
 | `pnpm test:fonts` | fonts |
 | `pnpm test:forum:ui` | e2e 的 `*.spec.ts`，自动启动 VitePress |
+| `pnpm test:forum:ui:build` | 构建独立的 `/docs/` 浏览器测试产物 |
+| `pnpm test:forum:ui:production` | 构建产物上的用户流程、hydration 与 chunk 检查 |
+| `pnpm test:forum:ui:source` | `@source` 源码专项，自动启动开发服务器 |
 | `pnpm test:theme:ui` | swipe-actions 的 `browser.test.mjs`，自动启动组件测试服务 |
 
 逻辑测试由 `vitest.config.ts` 统一发现并在 Node 环境执行，不依赖 Windows shell 展开 glob。

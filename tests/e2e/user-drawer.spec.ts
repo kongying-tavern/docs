@@ -5,7 +5,7 @@ import { expect, test } from './support/test'
 test.use({ scenario: { following: false } })
 
 async function openTopicDetail(page: Page): Promise<void> {
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   await expect(page.locator('[data-forum-shared-topic="author"]').first()).toBeVisible()
 }
 

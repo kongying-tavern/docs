@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
-test('document header enters before the body on initial load and document navigation', async ({ page }) => {
-  await page.goto('/frontmatter')
+test('document header enters before the body on initial load and document navigation', async ({ page, baseURL }) => {
+  await page.goto('frontmatter')
   const header = page.locator('.docs-header')
   const heading = header.locator(':scope > .slide-enter')
   const body = page.locator('.main > .vp-doc > div > *')
@@ -19,17 +19,17 @@ test('document header enters before the body on initial load and document naviga
   await expect(body.nth(20)).toHaveCSS('animation-delay', '1.8s')
 
   // Track node identity and actual animation starts, not just persistent CSS values.
-  await header.evaluate((element) => {
+  await header.evaluate((element, target) => {
     element.setAttribute('data-previous-document', 'true')
     document.addEventListener('animationstart', (event) => {
       if (event.target instanceof HTMLElement && event.target.matches('.docs-header > .slide-enter'))
         event.target.parentElement?.setAttribute('data-entry-started', 'true')
     })
     const link = document.createElement('a')
-    link.href = '/community'
+    link.href = target
     link.textContent = 'Entry animation navigation'
     element.append(link)
-  })
+  }, new URL('community', baseURL).href)
   await page.getByRole('link', { name: 'Entry animation navigation' }).click()
   await expect(page).toHaveURL(/\/community$/)
   await expect(header).not.toHaveAttribute('data-previous-document', 'true')
@@ -40,7 +40,7 @@ test('document header enters before the body on initial load and document naviga
 
 test('reduced motion disables document header and body entry together', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.goto('/frontmatter')
+  await page.goto('frontmatter')
   await expect(page.locator('.docs-header')).toHaveCSS('animation-name', 'none')
   await expect(page.locator('.docs-header > .slide-enter')).toHaveCSS('animation-name', 'none')
   await expect(page.locator('.docs-header [data-slot="breadcrumb-item"]').first()).toHaveCSS('animation-name', 'none')
@@ -48,7 +48,7 @@ test('reduced motion disables document header and body entry together', async ({
 })
 
 test('blur fade honors its timing and finishes with visible content', async ({ page }) => {
-  await page.goto('/support-us#alipay')
+  await page.goto('support-us#alipay')
   const details = page.locator('.coin-details')
   await expect(details).toHaveAttribute('data-entered', 'true')
   await expect(details).toHaveCSS('animation-duration', '0.2s')
@@ -59,7 +59,7 @@ test('blur fade honors its timing and finishes with visible content', async ({ p
 
 test('reduced motion keeps blur fade content visible without animation', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('site-motion-preference', 'reduce'))
-  await page.goto('/support-us#alipay')
+  await page.goto('support-us#alipay')
   const details = page.locator('.coin-details')
   await expect(details).toHaveCSS('animation-name', 'none')
   await expect(details).toHaveCSS('opacity', '1')

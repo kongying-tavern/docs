@@ -9,11 +9,17 @@ test.use({ scenario: { following: false, user: { ...currentUser, id: 2 }, commen
 
 async function openForm(page: Page) {
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await page.getByRole('button', { name: '新建反馈', exact: true }).click()
   await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
   const form = page.locator('.compact-form')
   await expect(form).toBeVisible()
+  await expect(page.locator('[data-publish-type-form]')).not.toHaveAttribute('inert', '')
+  await page.locator('.topic-stage-shell').evaluate(async element => Promise.all(
+    element.getAnimations({ subtree: true })
+      .filter(animation => animation.effect?.getTiming().iterations !== Infinity)
+      .map(animation => animation.finished.catch(() => {})),
+  ))
   return form
 }
 
@@ -69,7 +75,7 @@ test.describe('legacy upload picker', () => {
       ? { data: { statusCode: 200, data: { pathname: 'keyboard.png', size: png.length } } }
       : undefined
     await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
     const form = page.locator('.form-container')
     const trigger = form.locator('.forum-image-upload').getByRole('button', { name: '添加图片', exact: true })
@@ -93,7 +99,7 @@ test.describe('legacy upload picker', () => {
     scenario.handle = request => request.path === '/api/images/upload'
       ? { status: 503, data: { message: 'Synthetic image failure' } }
       : undefined
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
     const form = page.locator('.form-container')
     await form.locator('input[type="file"]').setInputFiles({ name: 'legacy.png', mimeType: 'image/png', buffer: png })
@@ -154,13 +160,13 @@ test.describe('touch upload recovery', () => {
       expect(contrast).toBeGreaterThanOrEqual(4.5)
       for (const button of await form.locator('[data-status="failed"] button').all()) {
         const bounds = await button.boundingBox()
-        expect(bounds?.width).toBeGreaterThanOrEqual(44)
-        expect(bounds?.height).toBeGreaterThanOrEqual(44)
+        // Transformed DOMRects can undershoot integer CSS sizes by floating-point noise.
+        expect(bounds!.width + 0.01).toBeGreaterThanOrEqual(44)
+        expect(bounds!.height + 0.01).toBeGreaterThanOrEqual(44)
       }
       await expect(form.getByRole('button', { name: '提交反馈', exact: true })).toBeVisible()
       const retry = form.getByRole('button', { name: '重新上传 retry.png', exact: true })
-      await retry.focus()
-      await page.keyboard.press('Enter')
+      await retry.press('Enter')
       await expect(form.locator('[data-status="uploaded"]')).toHaveCount(1)
       expect(forum.requests.filter(request => request.path === '/api/images/upload')).toHaveLength(2)
     })
@@ -172,8 +178,8 @@ for (const [name, type, fixture] of [
   ['WebP', 'image/webp', animatedWebp],
   ['APNG', 'image/png', animatedPng],
 ] as const) {
-  test(`compression preserves every frame of animated ${name}`, async ({ page }) => {
-    await page.goto('/feedback')
+  test(`compression preserves every frame of animated ${name}`, { tag: '@source' }, async ({ page }) => {
+    await page.goto('feedback')
     const result = await page.evaluate(async ({ content, modulePath, type }) => {
       const { compressImageForUpload } = await import(modulePath)
       const original = new File([new Uint8Array(content)], 'animated', { type })
@@ -187,8 +193,8 @@ for (const [name, type, fixture] of [
   })
 }
 
-test('static JPEG compression still reduces bytes and retains image dimensions', async ({ page }) => {
-  await page.goto('/feedback')
+test('static JPEG compression still reduces bytes and retains image dimensions', { tag: '@source' }, async ({ page }) => {
+  await page.goto('feedback')
   const result = await page.evaluate(async (modulePath) => {
     const { compressImageForUpload } = await import(modulePath)
     const canvas = document.createElement('canvas')

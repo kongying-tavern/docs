@@ -9,7 +9,7 @@ async function signalLoadFailure(page: import('@playwright/test').Page): Promise
 }
 
 test('load failure offers one manual recovery prompt without automatically reloading', async ({ page }) => {
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
   let navigations = 0
   page.on('framenavigated', (frame) => {
@@ -36,7 +36,7 @@ for (const mobile of [false, true]) {
     scenario.following = false
     await page.setViewportSize(mobile ? { width: 375, height: 812 } : { width: 1280, height: 900 })
     await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    await page.goto('/feedback/topic/123')
+    await page.goto('feedback/topic/123')
     if (mobile)
       await page.locator('.mobile-comment-entry').click()
     const editor = page.locator('[contenteditable="true"]').first()

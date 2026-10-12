@@ -1,58 +1,50 @@
 # 论坛浏览器回归
 
-源码位于 `tests/e2e/`，依赖统一由仓库根包管理。
+浏览器测试按运行环境分为两个门槛，CI 都执行且不自动重试：
 
-2026-10-08 工作区验证：逻辑测试 508/508、Chromium 全量页面 85/86（8.7 分钟），
-根项目与 e2e 类型检查、变更文件 ESLint、`pnpm lint:md` 均通过。
-本次修复两条断言了应用里已不存在的文案/属性的用例：搜索空态改为
-`未找到“{query}”相关反馈` + `试试其他关键词，或调整筛选条件。`，
-二维码改为按卡片内的 `img` 定位（原 `img[alt="QR Code"]` 与三语 alt 都不匹配），
-冷启动断言等待放宽到 30s。新增 `reaction.spec.ts`：读取服务端计数、点赞→撤销→反向切换
-按服务端权威值写回、写入失败回滚计数；并修正 InterKnot reaction 响应契约
-（原先缺 `statusCode` 使浏览器内 reaction 查询恒报错）。
-仍有一条固定 sleep 的偶发失败：`mobile-toast`「mobile burst gives each notification its
-full display duration」在相邻两次运行中一次失败一次通过，改用 `page.clock` 之前不要把
-本地全绿当作门槛。
-
-本机环境有两个会导致大量假失败的陷阱，排查顺序如下：
-
-1. 字体流水线在每次 dev/build 启动时运行。若有另一个 dev server 或进程正在使用
-   `src/public/fonts`，Windows 上的原子换目录会失败（`[fonts:subset] error: [WinError 5]`），
-   插件抛出后 e2e 的 dev server 会在运行中途退出，表现为大量 `ERR_CONNECTION_REFUSED`。
-   先跑一次 `pnpm build:fonts` 命中缓存（约 8 秒）能显著降低触发概率。
-2. 被中断的运行会留下半成品依赖缓存 `.vitepress/cache/forum-e2e`，之后的运行会出现
-   页面 HTTP 200 正常但组件不挂载、断言全部 `element(s) not found` 的假象。
-   删掉该目录重跑即可恢复。
-
-2026-10-06 工作区验证：逻辑测试 449/449，Chromium 全量页面测试 68 项通过、
-2 项失败；修正导航测试的弹层关闭方式和引用反馈 fixture 后，两项定向复验通过。
-根项目、Vue 组件及 e2e 类型检查、中文检查、347 个变更文件的分批 lint 均通过。
-生产构建成功，保留两条依赖 PURE 注释提示。全量 ESLint 在本机发生原生进程崩溃，
-因此不记为通过；分批检查覆盖本次全部可 lint 的变更文件。
-本次使用独立 5284 端口，直接调用已安装的本地工具，绕过包管理器的证书错误；
-浏览器产物位于 `test-results/forum-review/`。浏览器测试关闭开发工具悬浮按钮，
-防止其遮挡移动端交互入口，日常开发默认仍开启。
-
-2026-10-04 工作区验证记录：逻辑测试 413/413、固定 Chromium 页面测试 30/30，
-根项目及 e2e 类型检查、定向 lint 均通过。默认测试端口被占用，本次全量复验使用
-独立 5274 端口；其余测试配置保持一致，产物位于 `test-results/forum-final/`。
-目录整理提交 `670dc10d` 独立验证为逻辑 319/319、组件浏览器 8 项子测试通过。
-论坛 e2e 和新增业务回归仍与对应业务实现保留在工作区，不属于该目录整理提交。
+- **production**：对 `/docs/` base 的真实构建产物运行用户流程、SSR hydration 和 chunk 加载检查。
+- **source**：带 `@source` 标签，验证源码模块拦截、浏览器内直接导入、Vue 实例操作等专项行为。
+  这些测试需要开发服务器，不能用来代替生产构建验证。混合文件按单条用例标记，不按文件整体排除。
 
 从仓库根目录运行：
 
 ```sh
-pnpm install --frozen-lockfile
 pnpm exec playwright install chromium
 pnpm typecheck:forum:ui
-pnpm test:forum:ui:list
-pnpm test:forum:ui
+pnpm test:forum:ui:build
+pnpm test:forum:ui:production
+pnpm test:forum:ui:source
 ```
 
-测试自动启动独立的 VitePress 服务（127.0.0.1:5174），结束时关闭自己启动的服务。
-不复用日常开发的 5173 服务。启动需要项目既有 Python/fonttools 字体工具链，见
-`requirements.txt`。Linux CI 使用 `playwright install --with-deps chromium`。
-Playwright 由根包和根锁文件固定版本，不在 tests/e2e 下安装第二套依赖。
+`test:forum:ui:build` 输出到忽略的 `.vitepress/cache/forum-ui-build`，不覆盖日常预览的 `dist`。
+生产测试复用该产物，代码修改后先重新构建。两个命令都自动启动独立的 5174 服务并在结束时关闭，
+本地依次运行；CI 用 matrix 独立执行，失败产物按 suite 命名。
+本地若用 `FORUM_E2E_PORT` 并行启动不同端口，trace 和 HTML 报告也按 suite 与端口隔离；
+同端口的定向检查应等待上一轮结束，或显式指定独立 `--output`。
+`pnpm test:forum:ui` 保留开发服务器下的完整本地入口，生产专用用例在这个模式下跳过。
+使用 `--list` 查看对应命令选中的用例，使用文件名或 `--grep` 做定向复验。
+
+导航使用相对 URL（例如 `page.goto('feedback/topic/123')`），让 Playwright 的 baseURL
+处理 `/docs/` 前缀。生产测试 fixture 模拟部署的论坛子路由 fallback，并检查 hydration 错误；
+真实部署的静态服务器重写仍需要单独验证。
+
+启动需要项目既有 Python/fonttools 字体工具链，见 `requirements.txt`。
+Playwright 由根包和根锁文件固定版本；Linux CI 安装 Chromium 时使用 `--with-deps`。
+Windows 上若被中断的 dev 运行留下损坏缓存，可将 `.vitepress/cache/forum-e2e` 改名后重新运行；
+不要把缓存问题用重试或增加超时掩盖。
+
+## 断言与定位规则
+
+- 行为测试断言 URL、请求参数、输入保留、状态转换和焦点；不要用具体翻译文案代替行为结果。
+- 有稳定的字段 ID 或语义属性时直接复用；确实缺少时才添加 `data-testid`，值表达动作或职责。
+  不为每个 DOM 元素加测试标识，也不把 CSS 布局类当成业务契约。
+- 可访问性断言保留 role、非空可访问名称、键盘操作和焦点。文案专项只在需要固定措辞时使用独立预期，
+  不直接读取生产翻译对象作为正确答案。
+- 网络与异步动作通过 fixture 显式挂起和释放；等待可观察状态或有限动画结束，不用固定 sleep 猜完成时间。
+  `page.clock` 专门验证持续时间和过期边界。手势采样间隔属于输入模拟，可以保留。
+- 浏览器变换后的几何值使用小且明确的浮点容差。新增尺寸/排版组合优先归入专门的布局检查，
+  不塞进发布、登录等事务流程。
+- 参数组合和业务失败分支优先放在 `tests/forum`；E2E 保留真实组件接起来的关键流程。
 
 ## 场景分类
 
@@ -68,7 +60,7 @@ Playwright 由根包和根锁文件固定版本，不在 tests/e2e 下安装第�
 | image-upload | 同内容上传复用、取消隔离、拖放、移动失败重试、动画保留与静态图片压缩 |
 | image-previewer | 竖图折叠预览与点击缩放；侧栏折叠状态跨图片与刷新保持 |
 | user-drawer | 移动端访客、未关注/已关注、本人；资料页导航与关闭；桌面点击及 hover 不同入口 |
-| contact-aside | 首页二维码可见，切换深色主题重新生成 |
+| contact-aside | 站点首页确实渲染；footer 二维码可见，切换深色主题重新生成 |
 | mock-contract | 请求处理器自身：详情/评论互不混淆，未知读取和意外写入被阻止 |
 | lazy-interaction | 省流模式、空闲预加载、交互触发加载及慢加载时弹层响应和编辑器焦点 |
 | reaction | 话题详情读取服务端计数；点赞→撤销→反向切换按服务端权威值写回；写入失败回滚计数 |
@@ -111,8 +103,8 @@ Playwright 由根包和根锁文件固定版本，不在 tests/e2e 下安装第�
   再 unmount 的 200ms）。依赖 CSS 动画/`requestAnimationFrame` 的等待保持真实时间，不要
   放进冻结的时钟里。
 - 通过 `page.evaluate` 驱动某个模块前先调 `support/modules.ts` 的 `warmModules()`：
-  dev server 首次载入新依赖会重新预构建并整页刷新，正在等待的 evaluate 会以
-  “Resulting promise was garbage collected” 失败，且刷新会丢掉刚触发的通知。
+  让源码模块在冻结时钟或开始断言前加载完成；该 helper 不重试失败导入。
+  Vite 通过主题入口预扫描依赖，冷启动重载由专项用例检查。
 - `scenario` 是 option fixture，同一个 worker 内所有用例共用同一对象；自动 fixture 会在用例
   结束后按快照还原（含 `topics`/`comments` 数组内容）。用例仍可在测试中改 scenario 让 mock
   响应变化，但改动不会漏给下一条用例。
@@ -127,7 +119,3 @@ reporter 的输出路径写成 `../../playwright-report`，落在仓库根目录
 真实设备软键盘、屏幕阅读器、生产静态服务器深链重写，以及真实 Gitee 写入协议属于
 不同环境。当前 Chromium 模拟 viewport 不等同于真机；自动化不写入真实服务。
 工作流已接入，但本地通过不等于远端 CI 已执行成功。
-
-此前生产构建成功（有依赖 PURE 注释提示）。带 `/docs/` base 的 VitePress preview
-中论坛首页成功挂载；直接访问 `/docs/feedback/topic/123` 返回 404。预览服务不会执行
-`vercel.json` 的论坛子路由重写，因此该结果不能替代真实部署验收；未改动现有部署规则。

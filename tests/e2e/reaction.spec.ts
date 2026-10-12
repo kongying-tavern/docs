@@ -5,7 +5,7 @@ test.use({ scenario: { following: false, user: currentUser } })
 
 test('话题 reaction 读取服务端计数并把切换结果写回', async ({ page, forum }) => {
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
 
   const group = page.locator('[data-forum-reaction="topic"]')
   const like = group.getByRole('button', { name: '赞同', exact: true })
@@ -41,7 +41,7 @@ test('reaction 请求失败时回滚到失败前的计数', async ({ page }) => 
     writes++
     return route.fulfill({ status: 500, contentType: 'application/json', body: '{}' })
   })
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
 
   const group = page.locator('[data-forum-reaction="topic"]')
   const like = group.getByRole('button', { name: '赞同', exact: true })

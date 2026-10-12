@@ -1,7 +1,7 @@
 import { localAuth } from './fixtures/gitee'
 import { expect, test } from './support/test'
 
-test('save-data skips speculative preview loading but still warms on intent', async ({ page }) => {
+test('save-data skips speculative preview loading but still warms on intent', { tag: '@source' }, async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'connection', { value: { saveData: true, effectiveType: '4g' }, configurable: true })
   })
@@ -10,7 +10,7 @@ test('save-data skips speculative preview loading but still warms on intent', as
     requested = true
     await route.continue()
   })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   const row = page.locator('.forum-topic-item').first()
   await expect(row).toBeVisible({ timeout: 30_000 })
   await page.waitForLoadState('networkidle')
@@ -19,13 +19,13 @@ test('save-data skips speculative preview loading but still warms on intent', as
   await expect.poll(() => requested).toBe(true)
 })
 
-test('desktop preview finishes idle preload before any user interaction', async ({ page }) => {
+test('desktop preview finishes idle preload before any user interaction', { tag: '@source' }, async ({ page }) => {
   let requested = false
   await page.route('**/ForumTopicPreviewContent.vue*', async (route) => {
     requested = true
     await route.continue()
   })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   const row = page.locator('.forum-topic-item').first()
   await expect(row).toBeVisible({ timeout: 30_000 })
   await expect.poll(() => requested).toBe(true)
@@ -35,7 +35,7 @@ test('desktop preview finishes idle preload before any user interaction', async 
   await expect(page.getByRole('dialog').locator('.preview-body > p[role="status"]')).toHaveCount(0)
 })
 
-test('authenticated mobile editor is downloaded before opening, with no loading placeholder', async ({ page, scenario }) => {
+test('authenticated mobile editor is downloaded before opening, with no loading placeholder', { tag: '@source' }, async ({ page, scenario }) => {
   scenario.following = false
   await page.setViewportSize({ width: 375, height: 812 })
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
@@ -44,7 +44,7 @@ test('authenticated mobile editor is downloaded before opening, with no loading 
     requested = true
     await route.continue()
   })
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   const entry = page.locator('.mobile-comment-entry')
   await expect(entry).toBeVisible({ timeout: 30_000 })
   await expect.poll(() => requested).toBe(true)
@@ -56,7 +56,7 @@ test('authenticated mobile editor is downloaded before opening, with no loading 
   await expect(drawer.getByRole('status')).toHaveCount(0)
 })
 
-test('preview shell opens and closes while its content download is pending', async ({ page }) => {
+test('preview shell opens and closes while its content download is pending', { tag: '@source' }, async ({ page }) => {
   let release!: () => void
   const pending = new Promise<void>((resolve) => {
     release = resolve
@@ -66,7 +66,7 @@ test('preview shell opens and closes while its content download is pending', asy
     await route.continue()
   })
   try {
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await page.locator('.forum-topic-item').first().getByRole('button', { name: /评论/ }).first().click()
     const dialog = page.getByRole('dialog')
     await expect(dialog).toBeVisible()
@@ -81,7 +81,7 @@ test('preview shell opens and closes while its content download is pending', asy
   }
 })
 
-test('slow mobile editor import keeps drawer responsive and focuses after mounting', async ({ page, scenario }) => {
+test('slow mobile editor import keeps drawer responsive and focuses after mounting', { tag: '@source' }, async ({ page, scenario }) => {
   scenario.following = false
   await page.setViewportSize({ width: 375, height: 812 })
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
@@ -96,7 +96,7 @@ test('slow mobile editor import keeps drawer responsive and focuses after mounti
     await route.continue()
   })
   try {
-    await page.goto('/feedback/topic/123')
+    await page.goto('feedback/topic/123')
     const entry = page.locator('.mobile-comment-entry')
     await expect(entry).toBeVisible({ timeout: 30_000 })
     await expect.poll(() => requested).toBe(true)

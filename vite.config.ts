@@ -41,6 +41,10 @@ export default defineConfig(({ mode }) => ({
     // The route-local Forum editor is ~572 kB raw (~154 kB Brotli).
     chunkSizeWarningLimit: 600,
   },
+  optimizeDeps: {
+    // Scan lazy UI imports before serving pages so cold interactions cannot trigger a reload.
+    entries: [fileURLToPath(new URL('./.vitepress/theme/index.ts', import.meta.url)).replaceAll('\\', '/')],
+  },
   server: {
     host: true,
     fs: {

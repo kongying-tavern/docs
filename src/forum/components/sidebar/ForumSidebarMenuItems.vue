@@ -35,6 +35,7 @@ function handleSelect(item: ForumSidebarMenuItem) {
       </a>
       <button
         v-else
+        :data-testid="item.testId"
         type="button"
         class="forum-sidebar-menu-item"
         :class="{ 'forum-sidebar-menu-item-danger': item.danger }"

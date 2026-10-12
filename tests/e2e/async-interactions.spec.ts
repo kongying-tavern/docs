@@ -14,11 +14,16 @@ async function holdModule(page: Page, module: string): Promise<() => void> {
   return release
 }
 
-test('mobile embedded settings stay cancelable without stacking a second dialog', async ({ page }, testInfo) => {
+test('mobile embedded settings stay cancelable without stacking a second dialog', { tag: '@source' }, async ({ page }, testInfo) => {
+  const navigations: string[] = []
+  page.on('request', (request) => {
+    if (request.isNavigationRequest() && request.frame() === page.mainFrame())
+      navigations.push(request.url())
+  })
   await page.setViewportSize({ width: 390, height: 844 })
   const release = await holdModule(page, 'SettingsContent.vue')
   try {
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
     await page.locator('.VPLocalNav').getByRole('button', { name: /Menu|菜单/ }).click()
     await page.locator('.forum-sidebar-account-trigger').click()
@@ -34,19 +39,20 @@ test('mobile embedded settings stay cancelable without stacking a second dialog'
     await page.locator('.forum-sidebar-account-trigger').click()
     await page.getByRole('button', { name: '设置', exact: true }).click()
     await expect(page.locator('.settings-mobile-view')).toBeVisible()
+    expect(navigations, 'Lazy dependencies must not reload the page and dismiss the drawer').toHaveLength(1)
   }
   finally {
     release()
   }
 })
 
-test('non-default settings panels download only after selection and show local loading', async ({ page }) => {
+test('non-default settings panels download only after selection and show local loading', { tag: '@source' }, async ({ page }) => {
   const requested: string[] = []
   page.on('request', request => requested.push(request.url()))
   const release = await holdModule(page, 'ForumShortcutSettings.vue')
   try {
     await page.setViewportSize({ width: 1280, height: 900 })
-    await page.goto('/feedback#settings')
+    await page.goto('feedback#settings')
     await expect(page.locator('.settings-dialog')).toBeVisible()
     expect(requested.some(url => url.includes('ForumShortcutSettings.vue'))).toBe(false)
     await page.getByRole('link', { name: '键盘快捷键', exact: true }).click()
@@ -61,13 +67,13 @@ test('non-default settings panels download only after selection and show local l
 })
 
 for (const cancel of [false, true]) {
-  test(`desktop settings show a cancelable shell while downloading (${cancel ? 'cancel' : 'complete'})`, async ({ page }, testInfo) => {
+  test(`desktop settings show a cancelable shell while downloading (${cancel ? 'cancel' : 'complete'})`, { tag: '@source' }, async ({ page }, testInfo) => {
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))
     await page.setViewportSize({ width: 1280, height: 900 })
     const release = await holdModule(page, 'SettingsContent.vue')
     try {
-      await page.goto('/feedback')
+      await page.goto('feedback')
       await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
       await page.evaluate(() => {
         location.hash = 'settings'
@@ -114,10 +120,10 @@ for (const cancel of [false, true]) {
   })
 }
 
-test('tag editor displays loading feedback and can be canceled before its module arrives', async ({ page }) => {
+test('tag editor displays loading feedback and can be canceled before its module arrives', { tag: '@source' }, async ({ page }) => {
   const release = await holdModule(page, 'ForumTopicTagsEditorDialog.vue')
   try {
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
     await page.evaluate(`(async () => {
       const { useTopicTagsEditor } = await import('/forum/composables/state/useTopicTagsEditor.ts')
@@ -139,13 +145,13 @@ test('tag editor displays loading feedback and can be canceled before its module
   }
 })
 
-test('the second publish module remains cancelable while downloading', async ({ page, scenario }) => {
+test('the second publish module remains cancelable while downloading', { tag: '@source' }, async ({ page, scenario }) => {
   scenario.following = false
   scenario.user = { ...currentUser, id: 2 }
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
   const release = await holdModule(page, 'ForumCompactPublishTopicPanel.vue')
   try {
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
     const loading = page.getByRole('dialog', { name: '加载中', exact: true })
@@ -161,12 +167,12 @@ test('the second publish module remains cancelable while downloading', async ({ 
   }
 })
 
-test('cold topic navigation displays its destination before the module finishes loading', async ({ page }) => {
+test('cold topic navigation displays its destination before the module finishes loading', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 })
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   const release = await holdModule(page, 'ForumTopicPage.vue')
   try {
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
     await page.evaluate(() => {
       // Exercise the site's delegated SPA navigation without hover prefetch.
@@ -187,11 +193,11 @@ test('cold topic navigation displays its destination before the module finishes 
   }
 })
 
-test('mobile direct settings keep the same drawer and retain focus after loading', async ({ page }) => {
+test('mobile direct settings keep the same drawer and retain focus after loading', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   const release = await holdModule(page, 'SettingsContent.vue')
   try {
-    await page.goto('/feedback#settings')
+    await page.goto('feedback#settings')
     const drawer = page.locator('.settings-drawer')
     await expect(drawer.locator('[data-async-loading]')).toBeVisible()
     await drawer.evaluate(element => element.setAttribute('data-original-shell', 'true'))
@@ -206,10 +212,10 @@ test('mobile direct settings keep the same drawer and retain focus after loading
   }
 })
 
-test('settings skeletons respect the site reduced-motion preference', async ({ page }) => {
+test('settings skeletons respect the site reduced-motion preference', { tag: '@source' }, async ({ page }) => {
   const release = await holdModule(page, 'SettingsContent.vue')
   try {
-    await page.goto('/feedback#settings')
+    await page.goto('feedback#settings')
     const skeleton = page.locator('.settings-dialog [data-slot="skeleton"]').first()
     await expect(skeleton).toBeVisible()
     await page.evaluate(() => document.documentElement.dataset.reducedMotion = 'true')
@@ -220,9 +226,9 @@ test('settings skeletons respect the site reduced-motion preference', async ({ p
   }
 })
 
-test('failed settings content offers retry and reload inside the original shell', async ({ page }) => {
+test('failed settings content offers retry and reload inside the original shell', { tag: '@source' }, async ({ page }) => {
   await page.route('**/SettingsContent.vue*', route => route.abort('failed'))
-  await page.goto('/feedback#settings')
+  await page.goto('feedback#settings')
   const dialog = page.locator('.settings-dialog')
   await expect(dialog.locator('[data-async-error]')).toBeVisible()
   await expect(dialog.locator('[data-async-loading]')).toHaveCount(0)
@@ -237,10 +243,10 @@ test('failed settings content offers retry and reload inside the original shell'
   await expect(dialog.locator('.settings-dialog-menu')).toBeVisible()
 })
 
-test('a stalled settings download times out and can be retried without replacing the shell', async ({ page }) => {
+test('a stalled settings download times out and can be retried without replacing the shell', { tag: '@source' }, async ({ page }) => {
   const release = await holdModule(page, 'SettingsContent.vue')
   try {
-    await page.goto('/feedback#settings')
+    await page.goto('feedback#settings')
     const dialog = page.locator('.settings-dialog')
     await expect(dialog.locator('[data-async-loading]')).toBeVisible()
     await dialog.evaluate(element => element.setAttribute('data-original-shell', 'true'))

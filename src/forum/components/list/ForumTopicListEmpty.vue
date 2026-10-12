@@ -125,7 +125,7 @@ async function handleRetry() {
 </script>
 
 <template>
-  <Empty class="forum-empty-state border-none" :aria-busy="retrying" :role="error ? 'alert' : 'status'">
+  <Empty data-testid="feedback-empty-state" :data-state="stateKey" class="forum-empty-state border-none" :aria-busy="retrying" :role="error ? 'alert' : 'status'">
     <EmptyHeader>
       <EmptyMedia>
         <EmptySwap :swap-key="stateKey" variant="icon">
@@ -151,6 +151,7 @@ async function handleRetry() {
         <Button
           v-for="recommendation in filterRecommendations"
           :key="recommendation.key"
+          :data-testid="`empty-filter-${recommendation.key}`"
           variant="outline"
           @click="applyRecommendation(recommendation.changes)"
         >

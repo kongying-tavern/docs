@@ -14,7 +14,7 @@ test.describe('mobile image gestures', () => {
       contentType: 'image/svg+xml',
       body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480"><rect width="640" height="480" fill="#7799bb"/></svg>',
     }))
-    await page.goto('/feedback/topic/123')
+    await page.goto('feedback/topic/123')
     await page.locator('.forum-image-previewer button').filter({ has: page.locator('img') }).first().tap()
     const preview = page.locator('.forum-preview-root')
     await expect(preview).not.toHaveClass(/entering/)
@@ -68,7 +68,7 @@ test.describe('portrait image spacing and click zoom', () => {
       body: '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="4000"><rect width="400" height="4000" fill="red"/></svg>',
     }))
     await page.addInitScript(() => localStorage.setItem('forum-image-preview-panel-collapsed', 'true'))
-    await page.goto('/feedback/topic/123')
+    await page.goto('feedback/topic/123')
     await page.locator('.forum-image-previewer button').first().click()
     const preview = page.locator('.forum-preview-root')
     await expect(preview).not.toHaveClass(/entering/)
@@ -94,7 +94,7 @@ test('side panel stays collapsed across images and browser reloads', async ({ pa
     contentType: 'image/svg+xml',
     body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480"><rect width="640" height="480" fill="red"/></svg>',
   }))
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   await page.locator('.forum-image-previewer button').first().click()
   const preview = page.locator('.forum-preview-root')
   const toggle = preview.locator('.forum-preview-panel-toggle')
@@ -128,12 +128,12 @@ test('side panel stays collapsed across images and browser reloads', async ({ pa
   await expect(toggle).toBeVisible()
 })
 
-test('image preview releases its dialog and can reopen after closing', async ({ page }) => {
+test('image preview releases its dialog and can reopen after closing', { tag: '@source' }, async ({ page }) => {
   await page.route('https://example.com/preview.png*', route => route.fulfill({
     contentType: 'image/svg+xml',
     body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480"><rect width="640" height="480" fill="red"/></svg>',
   }))
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   const thumbnails = page.locator('.forum-image-previewer button')
   const thumbnail = thumbnails.first()
   await expect(thumbnail).toBeEnabled({ timeout: 30_000 })
@@ -176,7 +176,7 @@ test('image preview can reopen inside the topic sheet', async ({ page }) => {
     contentType: 'image/svg+xml',
     body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480"><rect width="640" height="480" fill="red"/></svg>',
   }))
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await page.locator('.forum-topic-item').first().getByRole('button', { name: /评论/ }).first().click()
   const thumbnails = page.locator('.topic-preview-dialog .forum-image-previewer button')
   const thumbnail = thumbnails.first()

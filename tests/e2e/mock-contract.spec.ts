@@ -3,7 +3,7 @@ import { installForumApi } from './support/forum-api'
 
 test('Mock separates detail from comments and blocks unknown reads and accidental writes', async ({ page }) => {
   const api = await installForumApi(page)
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   const values = await page.evaluate(async () => {
     const base = 'https://gitee.com/api/v5/repos/KYJGYSDT/Feedback/issues'
     const detail = await (await fetch(`${base}/123`)).json()

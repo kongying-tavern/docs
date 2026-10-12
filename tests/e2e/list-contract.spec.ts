@@ -10,7 +10,7 @@ const topics = [
 test.use({ scenario: { topics, comments: [] } })
 
 test('search URL drives keyword, type and sorting requests and survives reload', async ({ page, forum }) => {
-  await page.goto('/feedback/search/feat?q=needle&sort=updated')
+  await page.goto('feedback/search/feat?q=needle&sort=updated')
   const rows = page.locator('.forum-topic-item')
   await expect(rows).toHaveCount(1)
   await expect(rows).toContainText('needle suggestion')
@@ -28,7 +28,7 @@ test('failed search retries through the visible action and replaces its error wi
   scenario.handle = request => request.path === '/api/v5/search/issues' && fail
     ? { status: 400, data: { message: 'Synthetic error' } }
     : undefined
-  await page.goto('/feedback/search/feat?q=needle')
+  await page.goto('feedback/search/feat?q=needle')
   await expect(page.getByText('加载失败', { exact: true })).toBeVisible()
   fail = false
   await page.getByRole('button', { name: '重试' }).click()
@@ -39,7 +39,7 @@ test('failed search retries through the visible action and replaces its error wi
 
 // 同路径换 query 不加载页面，状态靠 onAfterRouteChange 回灌；漏掉就是地址栏变了列表不变
 test('keyword typed into the toolbar search refilters the list in place', async ({ page, forum }) => {
-  await page.goto('/feedback')
+  await page.goto('feedback')
   const rows = page.locator('.forum-topic-item')
   await expect(rows).toHaveCount(3)
 
@@ -55,7 +55,7 @@ test('keyword typed into the toolbar search refilters the list in place', async 
 })
 
 test('aside tag chips refilter the list in place', async ({ page }) => {
-  await page.goto('/feedback')
+  await page.goto('feedback')
   const rows = page.locator('.forum-topic-item')
   await expect(rows).toHaveCount(3)
 

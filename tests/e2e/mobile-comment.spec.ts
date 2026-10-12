@@ -10,7 +10,7 @@ for (const width of [375, 1280]) {
   test(`unsent comment guards site navigation at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    await page.goto('/feedback/topic/123')
+    await page.goto('feedback/topic/123')
     if (width === 375)
       await page.locator('.mobile-comment-entry-text').click()
     const editor = page.locator('[contenteditable="true"]').first()
@@ -64,7 +64,7 @@ test('mobile editor retains text, mention, emoji and attachment across close and
   }
   await page.route('https://webp.assets.interknot.site/e2e-upload.png', route => route.fulfill({ contentType: 'image/png', body: png }))
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   await page.locator('.mobile-comment-entry').click()
   const drawer = page.getByRole('dialog', { name: '评论', exact: true })
   const editor = drawer.locator('[contenteditable="true"]')
@@ -104,7 +104,7 @@ test('mobile editor retains text, mention, emoji and attachment across close and
 for (const tool of ['emoji', 'mention', 'upload'] as const) {
   test(`mobile detail entry opens ${tool} directly`, async ({ page }, testInfo) => {
     await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    await page.goto('/feedback/topic/123')
+    await page.goto('feedback/topic/123')
     const entry = page.locator('.mobile-comment-entry')
     const panel = page.getByRole('dialog', { name: '评论', exact: true })
     const editor = panel.locator('[contenteditable="true"]')
@@ -134,7 +134,7 @@ for (const tool of ['emoji', 'mention', 'upload'] as const) {
 
 test('mobile mention recommendations mark selections and remain open for additional choices', async ({ page }, testInfo) => {
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   await page.locator('.mobile-comment-entry').getByRole('button', { name: '提及成员', exact: true }).click()
   const panel = page.getByRole('dialog', { name: '评论', exact: true })
   const editor = panel.locator('[contenteditable="true"]')
@@ -166,7 +166,7 @@ test('mobile mention recommendations mark selections and remain open for additio
   await expect(row).toHaveCount(0)
 })
 
-test('mobile editor shows skeleton while loading and aligns enlarged toolbar controls', async ({ page }, testInfo) => {
+test('mobile editor shows skeleton while loading and aligns enlarged toolbar controls', { tag: '@source' }, async ({ page }, testInfo) => {
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
   let release!: () => void
   const ready = new Promise<void>(resolve => release = resolve)
@@ -174,7 +174,7 @@ test('mobile editor shows skeleton while loading and aligns enlarged toolbar con
     await ready
     await route.continue()
   })
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   await page.locator('.mobile-comment-entry').getByRole('button', { name: '提及成员', exact: true }).click()
   const panel = page.getByRole('dialog', { name: '评论', exact: true })
   await expect(panel.locator('.comment-editor-skeleton')).toBeVisible()
@@ -205,7 +205,7 @@ test('mobile editor shows skeleton while loading and aligns enlarged toolbar con
 test('mobile comment morph respects reduced motion and restores entry focus', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-  await page.goto('/feedback/topic/123')
+  await page.goto('feedback/topic/123')
   const entry = page.locator('.mobile-comment-entry-text')
   await entry.click()
   const panel = page.getByRole('dialog', { name: '评论', exact: true })

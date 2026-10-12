@@ -1,6 +1,15 @@
+import type { Locator } from '@playwright/test'
 import { DEFAULT_TOAST_DURATION } from '../../src/config/settingsOptions'
 import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules'
 import { expect, test } from './support/test'
+
+async function settleToast(notification: Locator): Promise<void> {
+  await notification.evaluate(async element => Promise.all(
+    element.getAnimations({ subtree: true })
+      .filter(animation => animation.effect?.getTiming().iterations !== Infinity)
+      .map(animation => animation.finished.catch(() => {})),
+  ))
+}
 
 async function swipeToast(page: import('@playwright/test').Page, notification: import('@playwright/test').Locator) {
   const box = await notification.boundingBox()
@@ -19,9 +28,9 @@ async function swipeToast(page: import('@playwright/test').Page, notification: i
   }
 }
 
-test('mobile burst gives each notification its full display duration', async ({ page }) => {
+test('mobile burst gives each notification its full display duration', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
 
@@ -62,9 +71,9 @@ test('mobile burst gives each notification its full display duration', async ({ 
   await expect(page.locator('[data-sonner-toast]')).toHaveCount(0)
 })
 
-test('mobile queue advances through actions and touch dismissal', async ({ page }) => {
+test('mobile queue advances through actions and touch dismissal', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
@@ -79,15 +88,15 @@ test('mobile queue advances through actions and touch dismissal', async ({ page 
   await front.getByRole('button', { name: '撤销', exact: true }).click()
   await expect(front).toContainText('加载完成')
   await expect(front).toHaveAttribute('data-mounted', 'true')
-  await page.waitForTimeout(450)
+  await settleToast(front)
   await swipeToast(page, front)
   await expect(front).toContainText('最后一条')
 })
 
-test('mobile diagnostics remain readable after the originating toast is dismissed', async ({ page, context }) => {
+test('mobile diagnostics remain readable after the originating toast is dismissed', { tag: '@source' }, async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.setViewportSize({ width: 320, height: 700 })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
@@ -102,7 +111,7 @@ test('mobile diagnostics remain readable after the originating toast is dismisse
   const toast = page.locator('[data-sonner-toast]').filter({ hasText: '评论发送失败' })
   await expect(toast).toBeVisible()
   await expect(toast).toHaveAttribute('data-mounted', 'true')
-  await page.waitForTimeout(450)
+  await settleToast(toast)
   await expect(toast.locator('.telemetry-detail')).toHaveCount(0)
   await expect(toast.getByRole('button', { name: '关闭', exact: true })).toHaveCount(0)
   const geometry = await toast.evaluate((element) => {
@@ -135,7 +144,7 @@ test('mobile diagnostics remain readable after the originating toast is dismisse
   expect(geometry.actionHitHeight).toBeGreaterThanOrEqual(44)
   expect(geometry.centered).toBeLessThan(1)
   await expect.poll(() => toast.evaluate(element => Number(getComputedStyle(element).opacity))).toBe(1)
-  await page.waitForTimeout(450)
+  await settleToast(toast)
   await page.screenshot({ path: test.info().outputPath('mobile-toast-320.png') })
   for (const width of [360, 390, 430, 820]) {
     await page.setViewportSize({ width, height: 844 })
@@ -180,11 +189,13 @@ test('mobile diagnostics remain readable after the originating toast is dismisse
   await expect(dialog).toHaveCount(0)
 })
 
-test('mobile errors persist and explicit expiry still wins', async ({ page }) => {
+test('mobile errors persist and explicit expiry still wins', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
+  await page.clock.install()
+  await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 50)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.error('需要处理的错误', { report: false, id: 'persistent-error' })
@@ -192,26 +203,29 @@ test('mobile errors persist and explicit expiry still wins', async ({ page }) =>
   const persistent = page.locator('[data-sonner-toast]').filter({ hasText: '需要处理的错误' })
   await expect(persistent).toBeVisible()
   await page.mouse.move(380, 800)
-  await page.waitForTimeout(4500)
+  await page.clock.runFor(4500)
   await expect(persistent).toBeVisible()
+  await page.clock.resume()
   await swipeToast(page, persistent)
   await expect(persistent).toHaveCount(0)
+  await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 50)
   await page.evaluate(`(async () => {
     const { toast } = await import('/services/telemetry/toast.ts')
     toast.error('显式短暂提示', { report: false, duration: 1000 })
   })()`)
   const temporary = page.locator('[data-sonner-toast]').filter({ hasText: '显式短暂提示' })
   await expect(temporary).toBeVisible()
-  await expect(temporary).toHaveCount(0, { timeout: 4000 })
+  await page.clock.runFor(1500)
+  await expect(temporary).toHaveCount(0)
 })
 
-test('desktop error layout and configured timing stay unchanged after mobile use', async ({ page }) => {
+test('desktop error layout and configured timing stay unchanged after mobile use', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.addInitScript(() => {
     localStorage.setItem('site-toast-position', 'bottom-left')
     localStorage.setItem('site-toast-duration', '4000')
   })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await page.setViewportSize({ width: 1280, height: 900 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
@@ -232,15 +246,15 @@ test('desktop error layout and configured timing stay unchanged after mobile use
   expect(await toast.evaluate(element => getComputedStyle(element).display)).toBe('flex')
   expect(await toast.evaluate(element => getComputedStyle(element).fontSize)).toBe('13px')
   expect(await toast.evaluate(element => getComputedStyle(element).backdropFilter)).toBe('none')
-  await page.waitForTimeout(450)
+  await settleToast(toast)
   await page.screenshot({ path: test.info().outputPath('desktop-toast.png') })
   await page.mouse.move(1200, 100)
   await expect(toast).toHaveCount(0, { timeout: 7000 })
 })
 
-test('same-id updates do not duplicate notifications and mobile exposes one at a time', async ({ page }) => {
+test('same-id updates do not duplicate notifications and mobile exposes one at a time', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 740 })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
@@ -276,10 +290,10 @@ test('same-id updates do not duplicate notifications and mobile exposes one at a
   })).toBeLessThan(1)
 })
 
-test('large text and long actions remain reachable in a short mobile viewport', async ({ page }) => {
+test('large text and long actions remain reachable in a short mobile viewport', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 240 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await page.evaluate(() => document.documentElement.style.setProperty('--site-ui-scale', '2'))
   await warmModules(page, TELEMETRY_TOAST_MODULE)
@@ -306,9 +320,9 @@ test('large text and long actions remain reachable in a short mobile viewport', 
   await expect(page.locator('body')).toHaveAttribute('data-toast-retried', 'true')
 })
 
-test('mobile actions reuse Button colors and exit without scrollbars', async ({ page }) => {
+test('mobile actions reuse Button colors and exit without scrollbars', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {

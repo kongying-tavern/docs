@@ -8,11 +8,16 @@ const errors = ref(0)
 const fullSwipe = ref(true)
 const disabled = ref(false)
 const slow = ref(false)
+const finishSlowAction = ref<(() => void) | null>(null)
 function leading(id: number) {
   return [{ id: 'read', label: 'Mark read', keepRow: true, onSelect: async () => {
     selected.value = `read:${id}`
-    if (slow.value)
-      await new Promise(resolve => setTimeout(resolve, 400))
+    if (slow.value) {
+      await new Promise<void>((resolve) => {
+        finishSlowAction.value = resolve
+      })
+      finishSlowAction.value = null
+    }
   } }]
 }
 function trailing(id: number) {
@@ -33,6 +38,9 @@ function trailing(id: number) {
     <label><input v-model="fullSwipe" type="checkbox"> Full swipe</label>
     <label><input v-model="disabled" type="checkbox"> Disable rows</label>
     <label><input v-model="slow" type="checkbox"> Slow action</label>
+    <button v-if="finishSlowAction" type="button" @click="finishSlowAction()">
+      Finish slow action
+    </button>
     <SwipeActions label="Inbox">
       <SwipeActionsRow
         v-for="item in items"

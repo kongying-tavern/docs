@@ -2,13 +2,13 @@ import { currentUser, localAuth } from './fixtures/gitee'
 import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules'
 import { expect, test } from './support/test'
 
-test('mobile notifications stay at the top center and desktop preferences survive resizing', async ({ page }) => {
+test('mobile notifications stay at the top center and desktop preferences survive resizing', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 })
   await page.addInitScript(() => {
     localStorage.setItem('site-toast-position', 'bottom-left')
     localStorage.setItem('site-toast-duration', 'persistent')
   })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await page.reload()
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await page.evaluate(() => {
@@ -54,9 +54,9 @@ test('mobile notifications stay at the top center and desktop preferences surviv
   await expect(page.locator('[data-sonner-toast]').filter({ hasText: '移动端默认时长' })).toHaveCount(0, { timeout: 7000 })
 })
 
-test('narrow error notifications keep trace copying and retry within the card', async ({ page }) => {
+test('narrow error notifications keep trace copying and retry within the card', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 700 })
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE, '/components/telemetry/TelemetryToastDescription.vue')
   await page.evaluate(`(async () => {
@@ -88,9 +88,9 @@ test('narrow error notifications keep trace copying and retry within the card', 
   await expect(page.locator('body')).toHaveAttribute('data-toast-retried', 'true')
 })
 
-test('language settings adapt to the panel width and tag actions keep their hierarchy', async ({ page }) => {
+test('language settings adapt to the panel width and tag actions keep their hierarchy', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 960, height: 700 })
-  await page.goto('/feedback#settings/language')
+  await page.goto('feedback#settings/language')
   const row = page.locator('.language-tags-row')
   await expect(row).toBeVisible()
   expect(await row.evaluate(element => getComputedStyle(element).flexDirection)).toBe('column')
@@ -98,7 +98,7 @@ test('language settings adapt to the panel width and tag actions keep their hier
   expect(copyWidth).toBeGreaterThan(400)
   await page.setViewportSize({ width: 1280, height: 900 })
   await expect.poll(() => row.evaluate(element => getComputedStyle(element).flexDirection)).toBe('row')
-  await page.goto('/feedback')
+  await page.goto('feedback')
   await page.evaluate(`(async () => {
     const { useTopicTagsEditor } = await import('/forum/composables/state/useTopicTagsEditor.ts')
     useTopicTagsEditor().openTopicTagsEditorDialog({ id: '123', type: 'FEAT', tags: [] })
@@ -115,13 +115,16 @@ test('language settings adapt to the panel width and tag actions keep their hier
 
 test.describe('compact form typography and confirmation bounds', () => {
   test.use({ scenario: { user: { ...currentUser, id: 2 }, following: false, comments: [] } })
-  test('large UI text scales together and login confirmation remains scrollable at low height', async ({ page }) => {
+  test('large UI text scales together and login confirmation remains scrollable at low height', async ({ page, scenario }) => {
+    scenario.handle = request => request.method === 'GET' && request.path === '/api/sso/logout'
+      ? { data: { statusCode: 200, statusMessage: 'OK' } }
+      : undefined
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.addInitScript((auth) => {
       localStorage.setItem('USER-AUTH', auth)
       localStorage.setItem('site-ui-font-size', '18')
     }, localAuth())
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
     await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
     const form = page.locator('.compact-form')
@@ -133,11 +136,11 @@ test.describe('compact form typography and confirmation bounds', () => {
     expect(fonts['.compact-toggle']).toBeCloseTo(12 * 18 / 14, 2)
     await page.locator('.compact-close').click()
     await expect(form).toHaveCount(0)
-    await page.evaluate(`(async () => {
-      const { useUserAuthStore } = await import('/forum/stores/auth/useUserAuth.ts')
-      useUserAuthStore().logout()
+    await page.locator('.forum-sidebar-account-trigger').click()
+    await page.getByTestId('account-logout').click()
+    await page.evaluate(() => {
       location.hash = 'oauth-login-alert'
-    })()`)
+    })
     const confirmation = page.locator('[data-slot=alert-dialog-content]')
     await expect(confirmation).toBeVisible()
     await expect.poll(() => confirmation.evaluate(element => element.getBoundingClientRect().width)).toBeLessThanOrEqual(512)
@@ -156,7 +159,7 @@ test.describe('compact draft confirmation', () => {
   test('edited content offers draft saving and closing opens a reachable confirmation', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    await page.goto('/feedback')
+    await page.goto('feedback')
     await page.getByRole('button', { name: '新建反馈', exact: true }).click()
     await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
     const form = page.locator('.compact-form')
@@ -186,11 +189,10 @@ test.describe('compact draft confirmation', () => {
     await test.info().attach('draft-confirmation-mobile', { path: screenshotPath, contentType: 'image/png' })
     await confirmation.getByRole('button', { name: '保存', exact: true }).click()
     await expect(confirmation).toHaveCount(0)
-    const saved = await page.evaluate(async () => {
-      const draftModule = '/forum/services/form/topicDraft.ts'
-      const { readTopicDraft } = await import(draftModule)
-      return readTopicDraft('FEAT')
-    })
-    expect(saved.title).toBe('草稿确认回归')
+    await page.setViewportSize({ width: 1280, height: 900 })
+    await page.locator('.forum-sidebar-topic-row').filter({ hasText: '草稿确认回归' }).click({ button: 'right' })
+    await page.getByRole('menuitem', { name: '编辑草稿', exact: true }).click()
+    await expect(form.locator('#title')).toHaveValue('草稿确认回归')
+    await expect(form.locator('[contenteditable="true"]')).toContainText('关闭之前保留的草稿内容')
   })
 })
