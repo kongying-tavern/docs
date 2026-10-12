@@ -18,7 +18,7 @@ const salvage = computed(() => parseForumPersonalState(corruption.value?.raw))
 const recoveredCount = computed(() => salvage.value.followedTopics.length + salvage.value.recentParticipated.length)
 const selection = ref<'repair' | 'reset' | null>(null)
 const actionError = ref(false)
-const backupId = ref('')
+const recovered = ref(false)
 const retrying = ref(false)
 const busy = computed(() => retrying.value || personal.loading.value || personal.saving.value)
 const errorLabel = computed(() => {
@@ -31,22 +31,11 @@ const errorLabel = computed(() => {
 watch(() => [userInfo.info?.id, auth.getSessionGeneration()], () => {
   selection.value = null
   actionError.value = false
-  backupId.value = ''
+  recovered.value = false
 })
 watch(personal.error, () => {
   selection.value = null
 })
-
-function downloadOriginal(): void {
-  if (typeof corruption.value?.raw !== 'string')
-    return
-  const url = URL.createObjectURL(new Blob([corruption.value.raw], { type: 'application/json' }))
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = 'forum-personal-state-original.json'
-  anchor.click()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
 
 async function retry(): Promise<void> {
   retrying.value = true
@@ -69,7 +58,8 @@ async function confirmRecovery(): Promise<void> {
     return
   actionError.value = false
   try {
-    backupId.value = await personal.recover({ gistId: error.gistId, raw: error.raw, mode })
+    await personal.recover({ gistId: error.gistId, raw: error.raw, mode })
+    recovered.value = true
     selection.value = null
   }
   catch {
@@ -79,7 +69,7 @@ async function confirmRecovery(): Promise<void> {
 </script>
 
 <template>
-  <div v-if="personal.error.value || backupId" class="personal-recovery" data-personal-state-recovery :aria-busy="busy">
+  <div v-if="personal.error.value || recovered" class="personal-recovery" data-personal-state-recovery :aria-busy="busy">
     <template v-if="personal.error.value">
       <p role="alert">
         {{ errorLabel }}
@@ -87,9 +77,6 @@ async function confirmRecovery(): Promise<void> {
       <div class="personal-recovery-actions">
         <button type="button" :disabled="busy" @click="retry">
           {{ labels.retry }}
-        </button>
-        <button v-if="typeof corruption?.raw === 'string'" type="button" :disabled="busy" @click="downloadOriginal">
-          {{ labels.download }}
         </button>
         <template v-if="canRecover">
           <button v-if="recoveredCount" type="button" :disabled="busy" @click="selection = 'repair'">
@@ -102,7 +89,6 @@ async function confirmRecovery(): Promise<void> {
       </div>
       <div v-if="selection" class="personal-recovery-confirm">
         <p>{{ selection === 'repair' ? labels.repairConfirm.replace('{count}', String(recoveredCount)) : labels.resetConfirm }}</p>
-        <p>{{ labels.backupFirst }}</p>
         <div class="personal-recovery-actions">
           <button type="button" :disabled="busy" @click="confirmRecovery">
             {{ labels.confirm }}
@@ -117,7 +103,7 @@ async function confirmRecovery(): Promise<void> {
       </p>
     </template>
     <p v-else role="status">
-      {{ labels.success.replace('{id}', backupId) }}
+      {{ labels.success }}
     </p>
   </div>
 </template>

@@ -23,7 +23,6 @@ import { useMobilePublishViewport } from '../composables/useMobilePublishViewpor
 import ForumCompactProperties from './ForumCompactProperties.vue'
 import ForumContentInputBox from './ForumContentInputBox.vue'
 import ForumDeleteDraftDialog from './ForumDeleteDraftDialog.vue'
-import ForumDraftBackupRecovery from './ForumDraftBackupRecovery.vue'
 import ForumDraftSaveStatus from './ForumDraftSaveStatus.vue'
 import ForumKeepDraftDialog from './ForumKeepDraftDialog.vue'
 
@@ -140,7 +139,6 @@ defineExpose(presentation)
         </div>
       </header>
       <div class="compact-body custom-scrollbar">
-        <ForumDraftBackupRecovery :type="formData.type" :disabled="submitLoading || draftSaving" :restore="actions.restoreDraftBackup" />
         <Alert v-if="submissionAlert" variant="destructive" class="mb-4">
           <AlertTitle>{{ submissionAlert.title }}</AlertTitle>
           <AlertDescription class="whitespace-pre-wrap">

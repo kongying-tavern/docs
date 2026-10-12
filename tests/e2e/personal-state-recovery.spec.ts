@@ -1,5 +1,4 @@
 import type { GiteeGist } from '../../src/forum/api/gitee/gists'
-import { readFile } from 'node:fs/promises'
 import { FORUM_STATE_BACKUP_DESCRIPTION, FORUM_STATE_BACKUP_FILE, FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '../../src/forum/api/gitee/gists'
 import { currentUser, localAuth } from './fixtures/gitee'
 import { expect, test } from './support/test'
@@ -47,6 +46,7 @@ for (const mode of ['repair', 'reset', 'backup-failure', 'future', 'read-failure
     await expect(page.locator('.forum-topic-item')).toHaveCount(1)
     const panel = page.locator('[data-personal-state-recovery]')
     await expect(panel).toBeVisible()
+    await expect(panel).not.toContainText(/备份|导出|下载/)
     await expect(page.locator('vite-error-overlay')).toHaveCount(0)
     if (mode === 'future' || mode === 'read-failure') {
       await expect(panel).toContainText(mode === 'future' ? '当前版本不支持' : '读取失败')
@@ -62,14 +62,10 @@ for (const mode of ['repair', 'reset', 'backup-failure', 'future', 'read-failure
       }
     }
     else {
-      await expect(panel).toContainText('原始内容仍保留')
-      const downloadEvent = page.waitForEvent('download')
-      await panel.getByRole('button', { name: '下载原始数据', exact: true }).click()
-      const download = await downloadEvent
-      expect(download.suggestedFilename()).toBe('forum-personal-state-original.json')
-      expect(await readFile((await download.path())!, 'utf8')).toBe(original)
+      await expect(panel).toContainText('数据已损坏')
       await panel.getByRole('button', { name: mode === 'repair' ? '恢复有效记录' : '重置记录', exact: true }).click()
       await expect(panel).toContainText(mode === 'repair' ? '保留 1 条有效记录' : '清空关注和参与记录')
+      await expect(panel).not.toContainText(/备份|导出|下载/)
       expect(writes).toEqual([])
       if (mode === 'repair')
         await page.screenshot({ path: testInfo.outputPath('recovery-confirm.png') })
@@ -80,11 +76,13 @@ for (const mode of ['repair', 'reset', 'backup-failure', 'future', 'read-failure
       await panel.getByRole('button', { name: '确认操作', exact: true }).click()
       if (mode === 'backup-failure') {
         await expect(panel).toContainText('操作失败')
+        await expect(panel).not.toContainText(/备份|导出|下载/)
         expect(source.files[FORUM_STATE_GIST_FILE].content).toBe(original)
         expect(writes).toEqual(['backup'])
       }
       else {
         await expect(panel).toContainText('记录已恢复')
+        await expect(panel).not.toContainText(/备份|导出|下载/)
         expect(writes).toEqual(['backup', 'update'])
         expect(backup?.description).toBe(FORUM_STATE_BACKUP_DESCRIPTION)
         expect(backup?.public).toBe(false)

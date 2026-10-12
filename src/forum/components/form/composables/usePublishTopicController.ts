@@ -10,7 +10,7 @@ import { formatImageAttachmentError } from '~/forum/components/utils/submitFormU
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
 import { useHashChecker } from '~/forum/hooks/useHashChecker'
 import { resolvePublishTopicType } from '~/forum/services/form/publishTopicEntry'
-import { readSavedTopicDrafts, restoreTopicDraftBackup } from '~/forum/services/form/topicDraft'
+import { readSavedTopicDrafts } from '~/forum/services/form/topicDraft'
 import { clearQuotedTopicRequest, isQuotableTopicType, QUOTED_TOPIC_ID_PARAM, QUOTED_TOPIC_TYPE_PARAM, readQuotedTopicRequest } from '~/forum/services/forumTopicQuote'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
@@ -561,26 +561,6 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     }
   }
 
-  function restoreDraftBackup(): boolean {
-    if (!draftsEnabled() || draftSaving.value || submissionBusy.value)
-      return false
-    const type = formData.value.type
-    draftSaveError.value = ''
-    draftPersistence.stop(type)
-    try {
-      if (!restoreTopicDraftBackup(type))
-        return false
-      discardDraft()
-      restore(savedAttachments.value)
-      editingSavedDraft.value = true
-      return true
-    }
-    catch {
-      draftSaveError.value = message.value.forum.publish.feedbackForm.draftSaveFailed
-      return false
-    }
-  }
-
   watch([formData, () => attachments.value.map(image => image.id).join(','), autoSaveEnabled], () => {
     if (!autoSaveEnabled.value || !isDirty.value || submitLoading.value || draftSaving.value)
       return
@@ -646,7 +626,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     form: { showCreateMore, entryPage, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftOnly, deleteDraftPromptOpen, deleteDraftError, isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError },
     upload: { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry },
     submission: { submitLoading, submissionPhase, submissionAlert, validationErrorCount, finalIsDisabled },
-    actions: { initializeEntryPage, markEditorActive, restoreDraftBackup, requestDeleteDraft, confirmDeleteDraft, selectInitialType, returnToTypeSelection, handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, switchTab, focusFirstInvalid, saveDraft, setPrivate, setQuotedTopic, clearAttachments: reset },
+    actions: { initializeEntryPage, markEditorActive, requestDeleteDraft, confirmDeleteDraft, selectInitialType, returnToTypeSelection, handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, switchTab, focusFirstInvalid, saveDraft, setPrivate, setQuotedTopic, clearAttachments: reset },
   }
 }
 

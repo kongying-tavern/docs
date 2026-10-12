@@ -189,20 +189,6 @@ export function readTopicDraftBackup(type: TopicFormData['type'], kind: 'previou
   return null
 }
 
-export function readTopicDraftRaw(type: TopicFormData['type']): string | null {
-  try {
-    return localStorage.getItem(getTopicDraftStorageKey(type))
-  }
-  catch {
-    return null
-  }
-}
-
-export function canRestoreTopicDraftBackup(type: TopicFormData['type']): boolean {
-  const backup = readTopicDraftBackup(type)
-  return backup !== null && parseStoredDraft(backup.raw)?.type === type
-}
-
 export function restoreTopicDraftBackup(type: TopicFormData['type']): boolean {
   const backup = readTopicDraftBackup(type)
   const restored = backup ? parseStoredDraft(backup.raw) : null
