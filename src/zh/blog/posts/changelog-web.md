@@ -9,15 +9,15 @@ authors:
 cover: "https://genshin.og.interknot.site/apis/v1/og?cover=3&title=网页版%0A更新日志"
 ---
 
-{define:T_REFACTOR}:recycle：功能重构{/define}
-{define:T_FEAT}:sparkles：新增功能{/define}
-{define:T_BUG}:bug：BUG 修复{/define}
-{define:T_SECURITY}:lock：安全优化{/define}
-{define:T_ENHANCE}:zap：功能优化{/define}
-{define:T_RES}:bento：资源更新{/define}
-{define:T_MISC}:page_facing_up：其他{/define}
-{define:T_I18N}:globe_with_meridians：本地化{/define}
-{define:T_DEPRECATE}:fire：作废{/define}
+{define:T_REFACTOR}:recycle: 功能重构{/define}
+{define:T_FEAT}:sparkles: 新增功能{/define}
+{define:T_BUG}:bug: BUG 修复{/define}
+{define:T_SECURITY}:lock: 安全优化{/define}
+{define:T_ENHANCE}:zap: 功能优化{/define}
+{define:T_RES}:bento: 资源更新{/define}
+{define:T_MISC}:page_facing_up: 其他{/define}
+{define:T_I18N}:globe_with_meridians: 本地化{/define}
+{define:T_DEPRECATE}:fire: 作废{/define}
 
 **Hi，这里是原神地图网页版的更新日志\(o゜▽゜\)o☆**
 

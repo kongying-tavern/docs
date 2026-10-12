@@ -11,50 +11,11 @@
  */
 import { globSync, readFileSync, writeFileSync } from 'node:fs'
 import process from 'node:process'
-import { readRc, report, run } from 'zhlint'
-import { normalizeConfig } from 'zhlint/lib/options.js'
+import { report, run } from 'zhlint'
+import { createLintZhOptions } from './lintZhOptions.mjs'
 
 const fix = process.argv.includes('--fix')
-const rc = readRc('./')
-const options = normalizeConfig(rc)
-delete options.rules.spaceOutsideHalfwidthBracket
-
-// VitePress 标题锚点 `{#id}` 与 zhlint 的括号配对规则冲突，作为 opaque 区域跳过。
-// “括号未匹配”是解析器错误，case-ignore 无法覆盖，必须用 hyper parser 占位。
-const HEADING_ANCHOR_REGEX = /\{#[\w-]*\}/g
-options.hyperParse.push((data) => {
-  data.modifiedValue = data.modifiedValue.replace(HEADING_ANCHOR_REGEX, (originValue, index) => {
-    data.ignoredByParsers.push({
-      name: 'mdc-anchor',
-      meta: 'mdc-anchor',
-      index,
-      length: originValue.length,
-      originValue,
-    })
-    return '@'.repeat(originValue.length)
-  })
-  return data
-})
-
-// MDC 组件的 `---` 属性块是 YAML；半角冒号是语法，不能按中文标点改写。
-const MDC_YAML_PROPS_REGEX = /(^|\n)(::[^\r\n]*\r?\n)(---\r?\n[\s\S]*?\r?\n---)(?=\r?\n)/g
-options.hyperParse.unshift((data) => {
-  data.modifiedValue = data.modifiedValue.replace(
-    MDC_YAML_PROPS_REGEX,
-    (_originValue, leading, component, yaml, index) => {
-      const yamlIndex = index + leading.length + component.length
-      data.ignoredByParsers.push({
-        name: 'mdc-yaml-props',
-        meta: 'mdc-yaml-props',
-        index: yamlIndex,
-        length: yaml.length,
-        originValue: yaml,
-      })
-      return `${leading}${component}${'@'.repeat(yaml.length)}`
-    },
-  )
-  return data
-})
+const options = createLintZhOptions()
 
 const resultList = globSync('src/zh/**/*.md').map((file) => {
   console.log(`[start] ${file}`)
