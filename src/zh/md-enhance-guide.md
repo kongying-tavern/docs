@@ -90,9 +90,9 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 | desc        | 卡片描述，为空时默认显示为 link                         |  link  |     `String`      |
 | link        | 卡片跳转链接，非必填                                    |   -    |     `String`      |
 | logo        | 卡片下方 Logo 的链接，非必填。填 `self` 默认为空荧 Logo |   -    |     `String`      |
-| theme       | 卡片主题，非必填                                        | normal | `normal`or`media` |
+| theme       | 卡片主题，非必填                                        | normal | `normal` or `media` |
 | color       | 卡片链颜色，非必填                                      | normal |     `String`      |
-| cover       | 卡片封面链接，非必填。仅在normal主题生效                |   -    |     `String`      |
+| cover       | 卡片封面链接，非必填。仅在 normal 主题生效                |   -    |     `String`      |
 | hoverShadow | 是否启用卡片 hover 时阴影效果，默认不启用               | false  |     `Boolean`     |
 | shadow      | 是否启用卡片阴影效果，默认不启用                        | false  |     `Boolean`     |
 
