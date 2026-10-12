@@ -12,6 +12,8 @@ import {
 import { appendForumSearchFacet, toggleForumSearchFacet } from '~/forum/services/forumSearchQuery'
 
 const forumLocation = shallowRef<ParsedForumLocation | null>(null)
+// Cached list rows settle after the topic transition, so removals stay visible.
+export const forumTopicTransitioning = shallowRef(false)
 let canReturnToForumRoute = false
 
 export function publishForumLocation(input: string | URL, options: ForumRouteOptions): ParsedForumLocation | null {

@@ -1,17 +1,3 @@
-<script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
-
-// 论坛页内容动态插入（评论/回复区展开）会触发浏览器滚动锚定自动调整滚动位置，
-// 导致页面无意义跳动；论坛页挂载期间禁用，离开时恢复
-onMounted(() => {
-  document.documentElement.style.overflowAnchor = 'none'
-})
-
-onBeforeUnmount(() => {
-  document.documentElement.style.overflowAnchor = ''
-})
-</script>
-
 <template>
   <div class="forum-container relative">
     <slot name="header" />

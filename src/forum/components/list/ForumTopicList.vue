@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { useEventListener, useMediaQuery } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import Divider from '@/components/ui/divider/Divider.vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Separator from '@/components/ui/separator/Separator.vue'
@@ -25,6 +25,15 @@ const props = defineProps<{
   canLoadMore?: boolean
   sort?: ForumAPI.SortMethod
 }>()
+
+const active = ref(true)
+onActivated(() => active.value = true)
+const hasRenderedTopics = ref(props.data.length > 0)
+const leavingRows = ref(0)
+watch(() => props.data.length, (length) => {
+  if (length > 0)
+    hasRenderedTopics.value = true
+})
 
 function preparePreview(): void {
   void preloadForumTopicPreviewContent().catch(() => {})
@@ -50,7 +59,7 @@ if (props.loadMore) {
     'scroll',
     () => {
       const scrollRoot = document.documentElement
-      if (autoLoading || props.loading || props.error || !props.canLoadMore)
+      if (!active.value || autoLoading || props.loading || props.error || !props.canLoadMore)
         return
       if (scrollRoot.scrollHeight - scrollRoot.scrollTop - scrollRoot.clientHeight < 64) {
         autoLoading = true
@@ -66,6 +75,10 @@ if (props.loadMore) {
 const previewTopic = ref<ForumAPI.Topic | null>(null)
 const previewOpen = ref(false)
 const previewFocusComment = ref(false)
+onDeactivated(() => {
+  active.value = false
+  previewOpen.value = false
+})
 
 function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
   previewTopic.value = topic
@@ -77,13 +90,16 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
 <template>
   <div>
     <FluidHoverList
-      v-if="props.data.length > 0"
+      v-if="hasRenderedTopics"
       indicator-class="rounded-xl bg-[var(--vp-c-default-soft)]"
     >
       <TransitionGroup
         tag="ul"
         name="topic-list"
         class="topic-list"
+        @before-leave="leavingRows++"
+        @after-leave="leavingRows--"
+        @leave-cancelled="leavingRows--"
       >
         <li
           v-for="(item, index) in props.data"
@@ -109,10 +125,10 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
       </TransitionGroup>
     </FluidHoverList>
 
-    <ForumTopicListSkeletons v-else-if="loading" />
+    <ForumTopicListSkeletons v-if="data.length === 0 && leavingRows === 0 && loading" />
 
     <ForumTopicListEmpty
-      v-else
+      v-else-if="data.length === 0 && leavingRows === 0"
       class="my-8"
       :error="props.error"
       :query="props.query"

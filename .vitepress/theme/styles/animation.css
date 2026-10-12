@@ -360,13 +360,6 @@ html[data-forum-navigated] .post-layout [slide-enter] {
   }
 }
 
-::view-transition-group(forum-topic-author),
-::view-transition-group(forum-topic-login),
-::view-transition-group(forum-topic-title),
-::view-transition-group(forum-topic-type),
-::view-transition-group(forum-topic-content),
-::view-transition-group(forum-topic-image),
-::view-transition-group(forum-topic-quote),
 ::view-transition-group(forum-blog-cover),
 ::view-transition-group(forum-blog-title),
 ::view-transition-group(forum-user-avatar),
@@ -375,53 +368,21 @@ html[data-forum-navigated] .post-layout [slide-enter] {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html[data-forum-transition='forward']::view-transition-group(forum-topic-login),
 html[data-forum-transition='forward']::view-transition-group(forum-user-name),
-html[data-forum-transition='back']::view-transition-group(forum-topic-content),
 html[data-forum-transition='back']::view-transition-group(forum-user-avatar) {
   animation-delay: 20ms;
 }
 
-html[data-forum-transition='forward']::view-transition-group(forum-topic-type),
-html[data-forum-transition='back']::view-transition-group(forum-topic-title) {
-  animation-delay: 40ms;
-}
-
-html[data-forum-transition='forward']::view-transition-group(forum-topic-title),
 html[data-forum-transition='forward']::view-transition-group(forum-blog-title),
-html[data-forum-transition='back']::view-transition-group(forum-blog-title),
-html[data-forum-transition='back']::view-transition-group(forum-topic-type) {
+html[data-forum-transition='back']::view-transition-group(forum-blog-title) {
   animation-delay: 60ms;
 }
 
-html[data-forum-transition='forward']::view-transition-group(forum-topic-content),
-html[data-forum-transition='back']::view-transition-group(forum-topic-login) {
-  animation-delay: 80ms;
-}
-
-html[data-forum-transition='forward']::view-transition-group(forum-topic-image),
-html[data-forum-transition='forward']::view-transition-group(forum-topic-quote),
-html[data-forum-transition='back']::view-transition-group(forum-topic-quote),
 html[data-forum-transition='forward']::view-transition-group(forum-blog-cover),
-html[data-forum-transition='back']::view-transition-group(forum-blog-cover),
-html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
+html[data-forum-transition='back']::view-transition-group(forum-blog-cover) {
   animation-delay: 100ms;
 }
 
-::view-transition-old(forum-topic-author),
-::view-transition-new(forum-topic-author),
-::view-transition-old(forum-topic-login),
-::view-transition-new(forum-topic-login),
-::view-transition-old(forum-topic-title),
-::view-transition-new(forum-topic-title),
-::view-transition-old(forum-topic-type),
-::view-transition-new(forum-topic-type),
-::view-transition-old(forum-topic-content),
-::view-transition-new(forum-topic-content),
-::view-transition-old(forum-topic-image),
-::view-transition-new(forum-topic-image),
-::view-transition-old(forum-topic-quote),
-::view-transition-new(forum-topic-quote),
 ::view-transition-old(forum-blog-cover),
 ::view-transition-new(forum-blog-cover),
 ::view-transition-old(forum-blog-title),
@@ -438,19 +399,10 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
 /* 圆形头像在几何形变中必须等比缩放：快照尺寸受 DPR 取整与 ring 墨溢出影响，
    与形变中的盒子存在细微宽高比偏差，fill 拉伸会把圆压扁成椭圆 */
 ::view-transition-old(forum-user-avatar),
-::view-transition-new(forum-user-avatar),
-::view-transition-old(forum-topic-author),
-::view-transition-new(forum-topic-author) {
+::view-transition-new(forum-user-avatar) {
   object-fit: contain;
 }
 
-::view-transition-old(forum-topic-author),
-::view-transition-old(forum-topic-login),
-::view-transition-old(forum-topic-title),
-::view-transition-old(forum-topic-type),
-::view-transition-old(forum-topic-content),
-::view-transition-old(forum-topic-image),
-::view-transition-old(forum-topic-quote),
 ::view-transition-old(forum-blog-cover),
 ::view-transition-old(forum-blog-title),
 ::view-transition-old(forum-user-avatar),
@@ -458,13 +410,6 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
   animation: forum-shared-fade-out 280ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-::view-transition-new(forum-topic-author),
-::view-transition-new(forum-topic-login),
-::view-transition-new(forum-topic-title),
-::view-transition-new(forum-topic-type),
-::view-transition-new(forum-topic-content),
-::view-transition-new(forum-topic-image),
-::view-transition-new(forum-topic-quote),
 ::view-transition-new(forum-blog-cover),
 ::view-transition-new(forum-blog-title),
 ::view-transition-new(forum-user-avatar),
@@ -482,6 +427,83 @@ html[data-forum-transition='back']::view-transition-group(forum-topic-author) {
   from {
     opacity: 0;
   }
+}
+
+/* 桌面详情以完整区域衔接，不拆出标题/元信息形变。
+   详情与目标页使用不同名称，保留各自位置和尺寸，避免旧快照跳到新布局。
+   新旧区域同时衔接，位移表达前进/返回，避免分段淡化造成闪屏。 */
+@media (min-width: 960px) {
+  html[data-forum-topic-transition] {
+    view-transition-name: none;
+    --forum-detail-enter-x: 24px;
+    --forum-detail-exit-x: -12px;
+  }
+
+  html[data-forum-topic-transition][data-forum-transition='back'] {
+    --forum-detail-enter-x: -24px;
+    --forum-detail-exit-x: 12px;
+  }
+
+  html[data-forum-topic-transition] [data-forum-route-topic] .forum-content {
+    view-transition-name: forum-detail-body;
+  }
+
+  html[data-forum-topic-transition] [data-forum-route-topic] .forum-aside {
+    view-transition-name: forum-detail-aside;
+  }
+
+  html[data-forum-topic-transition] .forum-header {
+    view-transition-name: forum-detail-header;
+  }
+
+  html[data-forum-topic-transition] .forum-route-view:not([data-forum-route-topic]) .forum-content {
+    view-transition-name: forum-destination-body;
+  }
+
+  html[data-forum-topic-transition] .forum-route-view:not([data-forum-route-topic]) .forum-aside {
+    view-transition-name: forum-destination-aside;
+  }
+
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-group(*) {
+    animation: none;
+  }
+
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-old(forum-detail-body),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-old(forum-detail-aside),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-old(forum-destination-body),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-old(forum-destination-aside),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-old(forum-detail-header) {
+    animation: forum-detail-exit 180ms cubic-bezier(0.32, 0.72, 0, 1) both;
+    mix-blend-mode: normal;
+  }
+
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-new(forum-detail-body),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-new(forum-detail-aside),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-new(forum-destination-body),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-new(forum-destination-aside),
+  html[data-forum-topic-transition][data-forum-transition]::view-transition-new(forum-detail-header) {
+    animation: forum-detail-enter 280ms cubic-bezier(0.32, 0.72, 0, 1) both;
+    mix-blend-mode: normal;
+  }
+}
+
+@keyframes forum-detail-exit {
+  to {
+    opacity: 0;
+    transform: translateX(var(--forum-detail-exit-x));
+  }
+}
+
+@keyframes forum-detail-enter {
+  from {
+    opacity: 0;
+    transform: translateX(var(--forum-detail-enter-x));
+  }
+}
+
+html[data-forum-navigated]:has(.Forum) .VPSidebar,
+html[data-forum-navigated] .Forum .content-enter {
+  animation: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

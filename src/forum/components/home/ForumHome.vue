@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/forum/composables/data/useForumQueries'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { forumTopicTransitioning, useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { resolveForumListScope } from '~/forum/services/forumListSkeleton'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
 import ForumAside from '../aside/ForumAside.vue'
@@ -10,7 +10,15 @@ import ForumListPage from '../layout/ForumListPage.vue'
 import ForumTopicSearchInfo from '../search/ForumTopicSearchInfo.vue'
 import ForumCarouselBento from './ForumCarouselBento.vue'
 
-const { route, list, navigateFilter, navigateType, navigateSort, submitSearch } = useForumRoute()
+const { route, navigateFilter, navigateType, navigateSort, submitSearch } = useForumRoute()
+// Retain the cached home's own filters while a detail/user route is active.
+const homeRoute = shallowRef(route.value?.name === 'home' ? route.value : null)
+watch(route, (value) => {
+  if (value?.name === 'home')
+    homeRoute.value = value
+})
+const list = computed(() => homeRoute.value?.list ?? null)
+const active = computed(() => route.value?.name === 'home')
 const search = computed(() => parseForumSearchQuery(list.value?.q ?? ''))
 const topics = useForumTopicsQuery(computed(() => ({
   filter: list.value?.filter ?? 'all',
@@ -20,8 +28,15 @@ const topics = useForumTopicsQuery(computed(() => ({
   tags: search.value.tags,
   statuses: search.value.states,
   creator: search.value.author,
-})), true, computed(() => resolveForumListScope(route.value)))
+})), active, computed(() => resolveForumListScope(homeRoute.value)))
 const pinned = usePinnedTopicsQuery()
+// Server/cache changes are immediate. Keep the displayed list intact while it
+// is offscreen, then let TransitionGroup remove changed rows after returning.
+const displayedRows = shallowRef(topics.rows.value)
+watch([topics.rows, active, forumTopicTransitioning], ([rows, isActive, transitioning]) => {
+  if (isActive && !transitioning)
+    displayedRows.value = rows
+})
 const { message } = useLocalized()
 
 const loadStateMessage = computed(() => {
@@ -36,7 +51,7 @@ function login(): void {
 
 <template>
   <ForumListPage
-    :render-data="topics.rows.value"
+    :render-data="displayedRows"
     :loading="topics.isLoading.value"
     :loading-more="topics.loadingMore.value"
     :error="topics.error.value"

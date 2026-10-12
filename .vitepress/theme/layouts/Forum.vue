@@ -1,7 +1,25 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted } from 'vue'
 import ForumEntry from '@/components/ForumEntry.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import ForumGlobalDialogs from '~/forum/components/layout/ForumGlobalDialogs.vue'
+
+let previousScrollRestoration: ScrollRestoration | undefined
+let previousOverflowAnchor = ''
+onMounted(() => {
+  previousScrollRestoration = window.history.scrollRestoration
+  // The route transition restores scroll inside its update callback. Native
+  // history restoration would scroll the old detail before its snapshot is taken.
+  window.history.scrollRestoration = 'manual'
+  previousOverflowAnchor = document.documentElement.style.overflowAnchor
+  // Keep this on the forum shell: cached lists do not remount their layout.
+  document.documentElement.style.overflowAnchor = 'none'
+})
+onBeforeUnmount(() => {
+  if (previousScrollRestoration)
+    window.history.scrollRestoration = previousScrollRestoration
+  document.documentElement.style.overflowAnchor = previousOverflowAnchor
+})
 </script>
 
 <template>

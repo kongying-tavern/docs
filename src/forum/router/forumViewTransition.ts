@@ -1,9 +1,11 @@
 import type { ForumRoute } from '~/forum/services/forumRoute'
 import { nextTick } from 'vue'
 import { enableTransitions } from '@/shared'
+import { forumTopicTransitioning } from '~/forum/composables/state/useForumRoute'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 
 type SharedRoute = Extract<ForumRoute, { name: 'topic' } | { name: 'user' }>
+let activeRouteTransition: ViewTransition | undefined
 
 const BLOG_POST_PATH_REGEX = /\/blog\/posts\/([^/?#]+)/
 /** 论坛路径：各语言 /feedback 页、SPA 子路由与 dist 的 feedback.html 形态 */
@@ -40,6 +42,11 @@ export async function transitionForumRoute(
   target: ForumRoute,
   update: () => void,
 ): Promise<void> {
+  // Finish the previous cleanup before naming snapshots for another navigation.
+  if (activeRouteTransition) {
+    activeRouteTransition.skipTransition()
+    await activeRouteTransition.finished.catch(() => {})
+  }
   const scroll = resolveForumScroll(window.history.state)
   const staysOnUser = current?.name === 'user'
     && target.name === 'user'
@@ -73,12 +80,21 @@ export async function transitionForumRoute(
   }
 
   const sharedRoute = resolveForumSharedRoute(current, target)
-  const sharedElements = shouldAnimateSharedElements() && sharedRoute ? findSharedElements(sharedRoute, current) : []
+  const direction = resolveForumDirection(current, target, scroll.isBack)
+  const isTopicTransition = shouldAnimateSharedElements() && (current.name === 'topic' || target.name === 'topic')
+  // A detail and a truncated card have different text flow and metadata layout.
+  // Transition these as complete regions instead of stretching detached text snapshots.
+  const sharedElements = shouldAnimateSharedElements() && !isTopicTransition && sharedRoute?.name === 'user'
+    ? findSharedElements(sharedRoute, current)
+    : []
   const newElements: HTMLElement[] = []
   for (const { element, name } of sharedElements)
     element.style.setProperty('view-transition-name', name)
   document.documentElement.dataset.forumNavigated = ''
-  document.documentElement.dataset.forumTransition = resolveForumDirection(current, target, scroll.isBack)
+  document.documentElement.dataset.forumTransition = direction
+  if (isTopicTransition)
+    document.documentElement.dataset.forumTopicTransition = ''
+  forumTopicTransitioning.value = current.name === 'topic' || target.name === 'topic'
 
   const transition = document.startViewTransition(async () => {
     update()
@@ -89,7 +105,7 @@ export async function transitionForumRoute(
       element.style.removeProperty('view-transition-name')
 
     window.scrollTo(0, scroll.top)
-    if (sharedRoute && sharedElements.length) {
+    if (sharedRoute?.name === 'user' && sharedElements.length) {
       for (const { element, name } of findSharedElements(sharedRoute, target)) {
         if (!sharedElements.some(source => source.name === name))
           continue
@@ -98,6 +114,7 @@ export async function transitionForumRoute(
       }
     }
   })
+  activeRouteTransition = transition
 
   const cleanup = () => {
     for (const { element } of sharedElements)
@@ -105,6 +122,9 @@ export async function transitionForumRoute(
     for (const element of newElements)
       element.style.removeProperty('view-transition-name')
     delete document.documentElement.dataset.forumTransition
+    delete document.documentElement.dataset.forumTopicTransition
+    forumTopicTransitioning.value = false
+    activeRouteTransition = undefined
   }
   void transition.finished.then(cleanup, cleanup)
   await transition.updateCallbackDone
@@ -168,29 +188,14 @@ function shouldAnimateSharedElements(): boolean {
   return !window.matchMedia(FORUM_MOBILE_MEDIA_QUERY).matches
 }
 
-function findSharedElements(shared: SharedRoute, page: ForumRoute): { element: HTMLElement, name: string }[] {
-  if (shared.name === 'user') {
-    const root = findUserRoot(shared.username, page)
-    if (!root)
-      return []
-    return [
-      { element: findUserElement(shared.username, root, '.avatar-image, [data-forum-user-avatar], img'), name: 'forum-user-avatar' },
-      { element: findUserElement(shared.username, root, '[data-forum-user-name]'), name: 'forum-user-name' },
-    ].filter((item): item is { element: HTMLElement, name: string } => Boolean(item.element))
-  }
-
-  const root = findTopicRoot(shared.topicId, page)
+function findSharedElements(shared: Extract<SharedRoute, { name: 'user' }>, page: ForumRoute): { element: HTMLElement, name: string }[] {
+  const root = findUserRoot(shared.username, page)
   if (!root)
     return []
-  return ['author', 'login', 'type', 'title', 'content', 'image', 'quote'].flatMap((role) => {
-    const element = root.querySelector<HTMLElement>(`[data-forum-shared-topic="${role}"]`)
-    return element ? [{ element, name: `forum-topic-${role}` }] : []
-  })
-}
-
-function findTopicRoot(topicId: string, page: ForumRoute): HTMLElement | null {
-  const isRoute = page.name === 'topic' && topicId === page.topicId
-  return document.querySelector<HTMLElement>(`[${isRoute ? 'data-forum-route-topic' : 'data-forum-topic'}="${CSS.escape(topicId)}"]`)
+  return [
+    { element: findUserElement(shared.username, root, '.avatar-image, [data-forum-user-avatar], img'), name: 'forum-user-avatar' },
+    { element: findUserElement(shared.username, root, '[data-forum-user-name]'), name: 'forum-user-name' },
+  ].filter((item): item is { element: HTMLElement, name: string } => Boolean(item.element))
 }
 
 function findUserRoot(username: string, page: ForumRoute): HTMLElement | null {

@@ -41,6 +41,8 @@ const viewKey = computed(() => {
     class="forum-route-view"
     :data-forum-route-topic="route?.name === 'topic' ? route.topicId : undefined"
   >
-    <component :is="view" :key="viewKey" @vue:mounted="emit('ready')" />
+    <KeepAlive include="ForumHome" :max="1">
+      <component :is="view" :key="viewKey" @vue:mounted="emit('ready')" />
+    </KeepAlive>
   </div>
 </template>
