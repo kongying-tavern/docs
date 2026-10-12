@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
+import { useMediaQuery, useMounted } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { ref } from 'vue'
 import { useQRCode } from '@/hooks/useQRCode'
@@ -10,6 +10,7 @@ const { frontmatter, theme } = useData()
 const qrcode = useQRCode(theme.value.footer.qrcodeLink)
 
 const isDesktop = useMediaQuery('(min-width: 48rem)')
+const mounted = useMounted()
 const openSections = ref(new Set<string>())
 
 function toggleSection(title: string) {
@@ -22,7 +23,7 @@ function toggleSection(title: string) {
 }
 
 function isExpanded(title: string) {
-  return isDesktop.value || openSections.value.has(title)
+  return (mounted.value && isDesktop.value) || openSections.value.has(title)
 }
 </script>
 

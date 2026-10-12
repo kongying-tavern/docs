@@ -2,7 +2,7 @@ import type ForumAPI from '~/forum/api/types'
 import { useQueryCache } from '@pinia/colada'
 import { createSharedComposable } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
-import { nextTick, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { removeQueryParam } from '@/utils'
 import { oauth as interKnotOauth } from '~/apis/interknot.site'
@@ -78,7 +78,7 @@ function useLogin() {
   const { go } = useRouter()
   const { theme, localeIndex } = useData()
 
-  initOAuthFlow()
+  onMounted(initOAuthFlow)
 
   async function initOAuthFlow() {
     // 先展示回跳地址，授权进度页保留到流程结束；最终导航必须显式加载页面。
