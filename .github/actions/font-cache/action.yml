@@ -1,0 +1,17 @@
+name: Cache font subsets
+description: Cache generated fonts using the same input signatures as the font builder.
+runs:
+  using: composite
+  steps:
+    - name: Calculate font input signatures
+      id: inputs
+      shell: bash
+      run: pnpm exec tsx scripts/buildFonts.ts --cache-key
+
+    - name: Restore font subsets
+      uses: actions/cache@v6
+      with:
+        path: ${{ steps.inputs.outputs.fonts-dir }}
+        key: font-subset-v2-${{ runner.os }}-${{ steps.inputs.outputs.standard-hash }}-${{ steps.inputs.outputs.site-hash }}
+        restore-keys: |
+          font-subset-v2-${{ runner.os }}-${{ steps.inputs.outputs.standard-hash }}-

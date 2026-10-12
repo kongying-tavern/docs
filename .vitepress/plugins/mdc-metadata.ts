@@ -123,6 +123,7 @@ export function mdcMetadataPlugin(): Plugin {
 
   return {
     name: 'vite-plugin-mdc-metadata',
+    apply: 'serve',
 
     async buildStart() {
       if (!generated) {

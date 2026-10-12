@@ -12,6 +12,7 @@ import { rewritesConfig } from './config/rewrites.ts'
 import { localeSearchConfig } from './config/search.ts'
 import { sitemapConfig } from './config/sitemap.ts'
 import { cfgDynamicTitleTemplate } from './config/title.ts'
+import { fontSubsetPlugin } from './plugins/font-subset/index.ts'
 
 export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   base: '/docs/',
@@ -35,6 +36,7 @@ export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
     },
   },
   vite: {
+    plugins: [fontSubsetPlugin()],
     configFile: fileURLToPath(import.meta.resolve('../vite.config.ts')),
   },
   ...createConfigureFunction(),

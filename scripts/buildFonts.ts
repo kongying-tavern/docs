@@ -1,6 +1,6 @@
 import type { PythonEnvironment } from './font_subset/config'
 import type { SiteFontCodepoints } from './font_subset/files'
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { appendFileSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
@@ -12,12 +12,9 @@ import {
   loadFontSubsetConfig,
   resolveFontSubsetPaths,
 } from './font_subset/config'
-import { collectFiles, collectSiteCodepoints } from './font_subset/files'
-import { calculateHash } from './font_subset/hash'
-import {
-  createFontBuildManifest,
-  fontBuildManifestVersion,
-} from './font_subset/manifest'
+import { collectSiteCodepoints } from './font_subset/files'
+import { calculateFontInputHashes } from './font_subset/inputs'
+import { createFontBuildManifest } from './font_subset/manifest'
 import { detectPython, runProcess } from './font_subset/process'
 
 const scriptPath = fileURLToPath(import.meta.url)
@@ -46,68 +43,31 @@ function forwardOutput(
     logger[level](message)
 }
 
-const pythonInputs = [
-  paths.pythonEntry,
-  paths.requirements,
-  ...collectFiles(paths.pythonPackage, new Set(['.py'])),
-  ...config.fonts.map(font => resolve(paths.sourceDir, font.sourceFile)),
-]
-
-function standardHash(): string {
-  return calculateHash(
-    projectRoot,
-    config.hashing.standardNamespace,
-    pythonInputs,
-    {
-      version: config.version,
-      manifestVersion: fontBuildManifestVersion,
-      fileNameLength: config.hashing.fileNameLength,
-      chunking: {
-        standardCharactersPerChunk: config.chunking.standardCharactersPerChunk,
-      },
-      output: config.output,
-      css: config.css,
-      fonts: config.fonts.map(font => ({
-        fileStem: font.fileStem,
-        fontWeight: font.fontWeight,
-        sourceFile: font.sourceFile,
-        scriptTiers: font.scriptTiers,
-        standardTiers: font.standardTiers,
-      })),
-      characters: {
-        expectedLevelSizes: config.characters.expectedLevelSizes,
-        source: config.characters.source,
-        slicing: config.characters.slicing,
-        levels: config.characters.levels,
-      },
-      scripts: config.scripts,
-    },
-  )
+async function prepareFontInputs() {
+  const markdown = await createMarkdownRenderer(resolve(projectRoot, 'src'), markdownConfig)
+  const siteCodepoints = await collectSiteCodepoints(projectRoot, config, markdown)
+  return {
+    siteCodepoints,
+    ...calculateFontInputHashes(projectRoot, config, siteCodepoints),
+  }
 }
 
-function siteHash(codepoints: SiteFontCodepoints): string {
-  return calculateHash(
-    projectRoot,
-    config.hashing.siteNamespace,
-    pythonInputs,
-    {
-      version: config.version,
-      manifestVersion: fontBuildManifestVersion,
-      fileNameLength: config.hashing.fileNameLength,
-      chunking: {
-        siteTargetBytes: config.chunking.siteTargetBytes,
-        estimatedBytesPerCharacter: config.chunking.estimatedBytesPerCharacter,
-      },
-      output: config.output,
-      css: config.css,
-      fonts: config.fonts,
-      scan: config.scan,
-      siteCharacters: config.siteCharacters,
-      codepoints: Object.fromEntries(Object.entries(codepoints).map(
-        ([font, values]) => [font, values.map(codepoint => codepoint.toString(16))],
-      )),
-    },
-  )
+export async function getFontCacheInputs() {
+  const { standardHash, siteHash } = await prepareFontInputs()
+  return { standardHash, siteHash, fontsDir: config.paths.fontsDir }
+}
+
+async function writeFontCacheInputs(): Promise<void> {
+  const inputs = await getFontCacheInputs()
+  process.stdout.write(`${JSON.stringify(inputs)}\n`)
+  if (process.env.GITHUB_OUTPUT) {
+    appendFileSync(process.env.GITHUB_OUTPUT, [
+      `standard-hash=${inputs.standardHash}`,
+      `site-hash=${inputs.siteHash}`,
+      `fonts-dir=${inputs.fontsDir}`,
+      '',
+    ].join('\n'), 'utf8')
+  }
 }
 
 async function generateFonts(
@@ -167,13 +127,7 @@ export async function buildFonts(options: {
   force?: boolean
   logger?: FontBuildLogger
 } = {}): Promise<void> {
-  const markdown = await createMarkdownRenderer(
-    resolve(projectRoot, 'src'),
-    markdownConfig,
-  )
-  const siteCodepoints = await collectSiteCodepoints(projectRoot, config, markdown)
-  const standardInputHash = standardHash()
-  const siteInputHash = siteHash(siteCodepoints)
+  const { siteCodepoints, standardHash: standardInputHash, siteHash: siteInputHash } = await prepareFontInputs()
   const force = options.force ?? false
   const logger = options.logger ?? cliLogger
 
@@ -191,6 +145,7 @@ export async function buildFonts(options: {
   }
 
   const reuseStandard = !force && artifacts.standardIsCurrent(standardInputHash)
+  logger.info(`[fonts:subset] cache miss: ${reuseStandard ? 'reusing standard tiers; rebuilding site tier' : 'rebuilding all tiers'}`)
   await generateFonts(
     python,
     siteCodepoints,
@@ -204,7 +159,10 @@ export async function buildFonts(options: {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === scriptPath) {
-  buildFonts({ force: process.argv.includes('--force') }).catch((error) => {
+  const task = process.argv.includes('--cache-key')
+    ? writeFontCacheInputs()
+    : buildFonts({ force: process.argv.includes('--force') })
+  task.catch((error) => {
     const message = error instanceof Error ? error.message : String(error)
     process.stderr.write(`${message.startsWith('[fonts:subset]') ? message : `[fonts:subset] error: ${message}`}\n`)
     process.exitCode = 1

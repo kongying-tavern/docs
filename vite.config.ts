@@ -11,7 +11,6 @@ import llmstxt from 'vitepress-plugin-llms'
 import { DEFAULT_LOCALE } from './.vitepress/locales/common/site.ts'
 import zhConstants from './.vitepress/locales/zh/constants.ts'
 import zhSidebar from './.vitepress/locales/zh/sidebar.ts'
-import { fontSubsetPlugin } from './.vitepress/plugins/font-subset/index.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
 import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
@@ -69,8 +68,6 @@ export default defineConfig(({ mode }) => ({
     ],
   },
   plugins: [
-    fontSubsetPlugin(),
-
     // https://github.com/antfu/unocss
     UnoCSS(),
 
