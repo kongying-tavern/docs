@@ -396,7 +396,7 @@ if (params?.value) {
   font-synthesis: none;
   font-family: var(--vp-font-family-base);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
 }
@@ -473,33 +473,9 @@ if (params?.value) {
 
   .main :deep(.timeline-dot-date-md) {
     justify-content: flex-end;
-    gap: 0;
     align-items: baseline;
-  }
-
-  .main :deep(.timeline-dot-date-md) {
-    font-size: 14px;
-    letter-spacing: 0.015em;
+    gap: 0;
     white-space: pre;
-  }
-
-  .main :deep(.timeline-dot-date-month) {
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--vp-c-text-1);
-  }
-
-  .main :deep(.timeline-dot-date-day) {
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .main :deep(.timeline-dot-date-literal) {
-    margin: 0 2px;
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--vp-c-text-3);
   }
 
   .main :deep(.timeline-dot-date-char) {
