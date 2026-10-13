@@ -26,6 +26,22 @@ export type { TopicReaction } from '~/forum/services/forumReaction'
 
 const pendingReactionKeys = reactive(new Set<string>())
 
+function reactionQuery(url: string, userId?: string) {
+  return async () => {
+    const response = await reactions.getPageReaction({ url, ...(userId ? { userId } : {}) })
+    if (!response || response.statusCode !== 200)
+      throw new Error('Reaction response was empty.')
+    return normalizeReactionResponse(response, url)
+  }
+}
+
+function writeReaction(input: { action: INTER_KNOT.ReactionState | 'revoke', url: string, userId?: string }) {
+  return reactions.setPageReaction(input.action, {
+    url: input.url,
+    ...(input.userId ? { userId: input.userId } : {}),
+  })
+}
+
 export type ForumReactionTarget
   = | { topicId: string, commentId?: string, kind?: never }
     | { topicId: string, kind: 'quote', commentId?: never }
@@ -63,32 +79,22 @@ export function useForumReaction(
 
   const lastResult = ref<'success' | 'error' | null>(null)
 
-  const query = useQuery<TopicReaction>({
-    key: () => queryKey.value,
-    enabled: () => {
-      const current = toValue(target)
-      const hasResource = current.kind === 'page' ? current.path.length > 0 : Boolean(current.topicId)
-      return !import.meta.env.SSR && viewer.value.ready && hasResource && toValue(enabled)
-    },
-    staleTime: 60_000,
-    refetchOnMount: options.refetchOnMount,
-    query: async () => {
-      const response = await reactions.getPageReaction({
-        url: resourceUrl.value,
-        ...(userId.value ? { userId: userId.value } : {}),
-      })
-      if (!response || response.statusCode !== 200)
-        throw new Error('Reaction response was empty.')
-      return normalizeReactionResponse(response, resourceUrl.value)
-    },
+  const query = useQuery<TopicReaction>(() => {
+    const current = toValue(target)
+    const hasResource = current.kind === 'page' ? current.path.length > 0 : Boolean(current.topicId)
+    // Cached options contain request values, never component-owned getters/refs.
+    return {
+      key: queryKey.value,
+      enabled: !import.meta.env.SSR && viewer.value.ready && hasResource && toValue(enabled),
+      staleTime: 60_000,
+      refetchOnMount: options.refetchOnMount,
+      query: reactionQuery(resourceUrl.value, userId.value),
+    }
   })
 
   const mutation = useMutation({
-    mutation: (input: { action: INTER_KNOT.ReactionState | 'revoke', url: string, userId?: string }) =>
-      reactions.setPageReaction(input.action, {
-        url: input.url,
-        ...(input.userId ? { userId: input.userId } : {}),
-      }),
+    gcTime: 0,
+    mutation: writeReaction,
   })
 
   async function setReactionState(requested: INTER_KNOT.ReactionState): Promise<boolean> {

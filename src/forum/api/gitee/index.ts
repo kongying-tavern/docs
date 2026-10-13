@@ -1,6 +1,5 @@
 import type { KyResponse } from 'ky'
 import type { ApiCallOptions, ApiResult, HttpMethod } from './types'
-import { useMemoize } from '@vueuse/core'
 import { reportRequestFailure } from '~/services/telemetry/request'
 import { fetcher, prepareRequest } from './client'
 import { toGiteeAPIError } from './errors'
@@ -73,15 +72,14 @@ function stripAccessToken(options: RequestOptions): RequestOptions {
   }
 }
 
-/**
- * 会话级响应缓存。useMemoize 缓存的是请求 Promise（含进行中请求的去重）；
- * 注意 `load`（非缓存路径）也会写入缓存 —— 与原实现保持一致。
- * 缓存键剔除 access_token：token 轮换不应产生新缓存项，也避免 token 出现在键中。
- */
-const memoizedRequest = useMemoize(performRequest, {
-  getKey: (method, endpoint, options: RequestOptions) =>
-    JSON.stringify([method, endpoint, stripAccessToken(options)]),
-})
+const RESPONSE_CACHE_TTL = 60_000
+const RESPONSE_CACHE_LIMIT = 128
+const responses = new Map<string, { result: ApiResult<unknown>, expires: number }>()
+const pending = new Map<string, { promise: Promise<ApiResult<unknown>>, persist: boolean }>()
+
+function requestKey(method: HttpMethod, endpoint: string, options: RequestOptions): string {
+  return JSON.stringify([method, endpoint, stripAccessToken(options)])
+}
 
 export function apiCall<T>(
   method: HttpMethod,
@@ -90,19 +88,48 @@ export function apiCall<T>(
 ): Promise<ApiResult<T>> {
   const { cache = false, ...payload } = options
 
-  const key = memoizedRequest.generateKey(method, endpoint, payload)
-  const result = cache
-    ? memoizedRequest(method, endpoint, payload)
-    : memoizedRequest.load(method, endpoint, payload)
-
-  // 失败的请求不留缓存，避免后续请求反复命中同一个 rejected Promise
-  result.catch(() => memoizedRequest.cache.delete(key))
-
-  return result as Promise<ApiResult<T>>
+  // Writes are never deduplicated; query data belongs to Colada, not this transport cache.
+  if (method !== 'get')
+    return performRequest(method, endpoint, payload)
+  const key = requestKey(method, endpoint, payload)
+  const stored = responses.get(key)
+  if (cache && stored && stored.expires > Date.now()) {
+    responses.delete(key)
+    responses.set(key, stored)
+    return Promise.resolve(stored.result as ApiResult<T>)
+  }
+  responses.delete(key)
+  const running = pending.get(key)
+  if (running) {
+    running.persist ||= cache
+    return running.promise as Promise<ApiResult<T>>
+  }
+  const entry = { promise: performRequest<unknown>(method, endpoint, payload), persist: cache }
+  pending.set(key, entry)
+  entry.promise.then((result) => {
+    // Clearing/invalidation while a request is pending must not resurrect its cache entry.
+    if (pending.get(key) !== entry)
+      return
+    pending.delete(key)
+    if (entry.persist && result.response.ok) {
+      for (const [cachedKey, value] of responses) {
+        if (value.expires <= Date.now())
+          responses.delete(cachedKey)
+      }
+      responses.set(key, { result, expires: Date.now() + RESPONSE_CACHE_TTL })
+      if (responses.size > RESPONSE_CACHE_LIMIT)
+        responses.delete(responses.keys().next().value!)
+    }
+  }, () => {
+    if (pending.get(key) === entry)
+      pending.delete(key)
+  })
+  return entry.promise as Promise<ApiResult<T>>
 }
 
 export function clearApiCache(): void {
-  memoizedRequest.clear()
+  responses.clear()
+  pending.clear()
 }
 
 export function deleteApiCache(
@@ -110,7 +137,9 @@ export function deleteApiCache(
   endpoint: string,
   options: Omit<ApiCallOptions, 'cache'>,
 ): void {
-  memoizedRequest.delete(method, endpoint, options)
+  const key = requestKey(method, endpoint, options)
+  responses.delete(key)
+  pending.delete(key)
 }
 
 export { gists, issues, labels, oauth, password, user }

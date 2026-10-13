@@ -27,7 +27,7 @@ export interface RequestPayload {
 }
 
 export interface ApiCallOptions extends RequestPayload {
-  /** 缓存本次请求的响应（会话级；失败响应不会被缓存） */
+  /** 缓存 GET 的成功响应（60 秒，最多 128 项）；进行中 GET 独立去重 */
   cache?: boolean
   /** 透传给 ky；置为 false 时非 2xx 响应不抛错，由调用方检查 `response.status` */
   throwHttpErrors?: boolean

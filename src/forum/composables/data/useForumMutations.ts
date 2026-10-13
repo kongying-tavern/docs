@@ -19,6 +19,21 @@ import { applyOptimisticTopicPatch } from '~/forum/services/forumTopicOptimistic
 import { invalidateStructuredForumTopics } from '~/forum/services/forumTopics'
 
 type TopicPatch = Parameters<typeof issues.putTopic>[1]
+interface TopicUpdateInput {
+  topicId: string | number
+  patch: TopicPatch
+  confirmType?: ForumAPI.FeedbackTopicType
+  skipReformat: boolean
+}
+function writeTopic(input: TopicUpdateInput) {
+  return issues.putTopic(input.topicId, input.patch, { skipReformat: input.skipReformat, confirmType: input.confirmType })
+}
+function writeComment(input: { repo: ForumAPI.Repo, topicId: string, body: string }) {
+  return issues.postTopicComment(input.repo, input.topicId, input.body)
+}
+function deleteCommentRequest(input: { repo: ForumAPI.Repo, topicId: string, commentId: string | number }) {
+  return issues.deleteTopicComment(input.commentId, input.repo)
+}
 const commentMutationQueues = new Map<string, Promise<unknown>>()
 
 export async function serializeTopicCommentMutation<T>(topicId: string | number, task: () => Promise<T>): Promise<T> {
@@ -43,10 +58,7 @@ export function useForumTopicMutations() {
   const { hasAnyRoles } = useRuleChecks()
   const canSkipTopicReformat = hasAnyRoles('teamMember', 'feedbackMember')
   const createTopicMutation = useMutation({ mutation: issues.postTopic })
-  const updateTopicMutation = useMutation({
-    mutation: (input: { topicId: string | number, patch: TopicPatch, confirmType?: ForumAPI.FeedbackTopicType }) =>
-      issues.putTopic(input.topicId, input.patch, { skipReformat: canSkipTopicReformat.value, confirmType: input.confirmType }),
-  })
+  const updateTopicMutation = useMutation({ mutation: writeTopic })
   async function createTopic(input: ForumAPI.FormSubmitData): Promise<ForumAPI.Topic> {
     const topic = await createTopicMutation.mutateAsync(input)
     await cache.invalidate('createTopic', topic.id, topic)
@@ -67,7 +79,7 @@ export function useForumTopicMutations() {
     cache.queryCache.setQueryData(forumKeys.topic(topicId), optimisticTopic)
 
     try {
-      const settledOutcome = await updateTopicMutation.mutateAsync({ topicId, patch, confirmType })
+      const settledOutcome = await updateTopicMutation.mutateAsync({ topicId, patch, confirmType, skipReformat: canSkipTopicReformat.value })
       if (settledOutcome.status === 'unknown')
         cache.restoreTopicCache(snapshot)
       else
@@ -96,12 +108,10 @@ export function useForumTopicMutations() {
 export function useForumCommentMutations() {
   const cache = useForumMutationCache()
   const createCommentMutation = useMutation({
-    mutation: (input: { repo: ForumAPI.Repo, topicId: string, body: string }) =>
-      issues.postTopicComment(input.repo, input.topicId, input.body),
+    mutation: writeComment,
   })
   const deleteCommentMutation = useMutation({
-    mutation: (input: { repo: ForumAPI.Repo, topicId: string, commentId: string | number }) =>
-      issues.deleteTopicComment(input.commentId, input.repo),
+    mutation: deleteCommentRequest,
   })
 
   async function createComment(input: { repo: ForumAPI.Repo, topicId: string, body: string }): Promise<ForumAPI.Comment> {
