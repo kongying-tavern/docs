@@ -1,8 +1,18 @@
+import { png } from './fixtures/images'
 import { expect, test } from './support/test'
 
 for (const width of [1440, 390]) {
   test(`Markdown demos render typed props and independent spoiler attributes at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 })
+    // Keep external images and analytics independent of the Markdown regression.
+    await page.route(url => !['127.0.0.1', 'localhost'].includes(url.hostname), async (route) => {
+      if (route.request().resourceType() === 'image')
+        await route.fulfill({ contentType: 'image/png', body: png })
+      else if (new URL(route.request().url()).hostname === 'scripts.clarity.ms')
+        await route.fulfill({ contentType: 'application/javascript', body: '' })
+      else
+        await route.fallback()
+    })
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))
     page.on('console', (message) => {
