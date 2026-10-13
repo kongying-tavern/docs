@@ -95,11 +95,10 @@ export function createHighlightIndicator(
       return
     needsSync = true
     if (raf)
-      cancelAnimationFrame(raf)
-    else
-      last = 0
-    raf = 0
-    frame()
+      return
+    last = 0
+    // Resize callbacks must not synchronously write geometry back into the observed tree.
+    raf = requestAnimationFrame(frame)
   }
 
   function flush() {
@@ -126,11 +125,12 @@ export function createHighlightIndicator(
 
   function sync() {
     needsSync = false
-    measuredSize = sizeOf(container)
     const item = options.target
       ? container.querySelector<HTMLElement>(options.target)
       : store.highlighted
     const origin = options.from ? container.querySelector<HTMLElement>(options.from) : null
+    if (item || origin)
+      measuredSize = sizeOf(container)
     const previous = current
     const changed = item !== current
     const snap = changed && !options.target && store.snap

@@ -2,10 +2,14 @@
 import { useData } from 'vitepress'
 import {
   computed,
+  onActivated,
   onBeforeUnmount,
+  onDeactivated,
   onMounted,
   ref,
+  watch,
 } from 'vue'
+import { subscribeRelativeTime } from '~/services/relativeTimeClock'
 
 const props = withDefaults(defineProps<{
   locale?: string
@@ -48,21 +52,26 @@ const date = computed(() => {
 
 const now = ref(new Date())
 const mounted = ref(false)
-let interval: ReturnType<typeof setInterval> | null = null
+const active = ref(false)
+let unsubscribe: (() => void) | undefined
+
+watch([() => active.value && props.relative, () => date.value.getTime()], ([enabled]) => {
+  unsubscribe?.()
+  unsubscribe = enabled
+    ? subscribeRelativeTime(() => date.value.getTime(), value => now.value = new Date(value))
+    : undefined
+}, { flush: 'sync' })
 
 onMounted(() => {
   mounted.value = true
-  if (props.relative) {
-    now.value = new Date()
-    interval = setInterval(() => {
-      now.value = new Date()
-    }, 1000)
-  }
+  active.value = true
 })
+onActivated(() => active.value = true)
+onDeactivated(() => active.value = false)
 
 onBeforeUnmount(() => {
-  if (interval)
-    clearInterval(interval)
+  active.value = false
+  unsubscribe?.()
 })
 
 const formatter = computed(() => {
