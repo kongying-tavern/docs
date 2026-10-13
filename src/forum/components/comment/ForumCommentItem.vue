@@ -145,6 +145,14 @@ function handleCommentClick(author: ForumAPI.User): void {
 </template>
 
 <style scoped>
+.comment-normal .content :deep(> :first-child) {
+  margin-top: 0;
+}
+
+.comment-normal .content :deep(> :last-child) {
+  margin-bottom: 0;
+}
+
 .content :deep(img[data-emoji]) {
   display: inline-block;
   width: 20px;
