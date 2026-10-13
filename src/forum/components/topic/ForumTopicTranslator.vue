@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { TranslationResult } from '~/forum/services/forumTranslation'
 import { useElementVisibility } from '@vueuse/core'
-import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
@@ -11,12 +11,20 @@ import { translate, translateAuto } from '~/forum/services/forumTranslation'
 import { toast } from '~/services/telemetry/toast'
 import ForumTranslationSettingsMenu from './ForumTranslationSettingsMenu.vue'
 
+export interface TopicTranslationSnapshot {
+  context: string
+  result: TranslationResult
+  title: string
+  showingOriginal: boolean
+}
+
 const props = withDefaults(defineProps<{
   content: string
   title?: string
   sourceLanguage?: string | null
   targetLanguage?: string
   autoTranslate?: boolean
+  snapshot?: TopicTranslationSnapshot
   class?: HTMLAttributes['class']
 }>(), {
   autoTranslate: true,
@@ -26,6 +34,7 @@ const emit = defineEmits<{
   'translated': [content: string]
   'title-translated': [title: string]
   'close': []
+  'snapshot': [snapshot: TopicTranslationSnapshot | undefined]
 }>()
 
 const { message } = useLocalized()
@@ -38,12 +47,42 @@ const {
 const root = useTemplateRef<HTMLElement>('root')
 const visible = useElementVisibility(root)
 const translation = ref<TranslationResult>()
+const translatedTitle = ref('')
 const loading = ref(false)
 const showingOriginal = ref(false)
 let autoAttemptedFor = ''
 let request: AbortController | undefined
 
 const targetLanguage = computed(() => props.targetLanguage ?? preferredTargetLanguage.value)
+const excludedSourceLanguagesKey = computed(() => excludedSourceLanguages.value.toSorted().join(','))
+const translationContext = computed(() => JSON.stringify([
+  props.content,
+  props.title,
+  props.sourceLanguage,
+  targetLanguage.value,
+  props.autoTranslate,
+  autoTranslateEnabled.value,
+  excludedSourceLanguagesKey.value,
+]))
+if (props.snapshot?.context === translationContext.value) {
+  translation.value = props.snapshot.result
+  translatedTitle.value = props.snapshot.title
+  showingOriginal.value = props.snapshot.showingOriginal
+}
+onMounted(() => {
+  if (translation.value && !showingOriginal.value) {
+    emit('translated', translation.value.text)
+    emit('title-translated', translatedTitle.value)
+  }
+  else if (props.snapshot && !translation.value) {
+    emit('snapshot', undefined)
+  }
+})
+watch([translation, showingOriginal, translatedTitle], () => {
+  emit('snapshot', translation.value
+    ? { context: translationContext.value, result: translation.value, title: translatedTitle.value, showingOriginal: showingOriginal.value }
+    : undefined)
+})
 const translatedFrom = computed(() => {
   const sourceLanguage = translation.value?.sourceLanguage
   if (!sourceLanguage)
@@ -64,6 +103,7 @@ async function startTranslate(manual = true): Promise<void> {
   if (translation.value) {
     showingOriginal.value = false
     emit('translated', translation.value.text)
+    emit('title-translated', translatedTitle.value)
     return
   }
   if (loading.value)
@@ -95,8 +135,10 @@ async function startTranslate(manual = true): Promise<void> {
             targetLanguage: targetLanguage.value,
             signal: controller.signal,
           })
-          if (request === controller && titleResult.provider !== 'passthrough')
+          if (request === controller && titleResult.provider !== 'passthrough') {
+            translatedTitle.value = titleResult.text
             emit('title-translated', titleResult.text)
+          }
         }
         catch {
           // The translated body remains useful when the title model is unavailable.
@@ -122,9 +164,12 @@ async function startTranslate(manual = true): Promise<void> {
 function reset(): void {
   request?.abort()
   request = undefined
+  loading.value = false
   translation.value = undefined
+  translatedTitle.value = ''
   showingOriginal.value = false
   autoAttemptedFor = ''
+  emit('title-translated', '')
   emit('close')
 }
 
@@ -132,13 +177,14 @@ function toggleOriginal(): void {
   if (!translation.value)
     return
   showingOriginal.value = !showingOriginal.value
-  if (showingOriginal.value)
+  if (showingOriginal.value) {
     emit('close')
-  else
+  }
+  else {
     emit('translated', translation.value.text)
+    emit('title-translated', translatedTitle.value)
+  }
 }
-
-const excludedSourceLanguagesKey = computed(() => excludedSourceLanguages.value.toSorted().join(','))
 
 watch(
   [
@@ -152,7 +198,7 @@ watch(
   ],
   ([isVisible, autoTranslateProp, autoEnabled, content, sourceLanguage, target, excludedLanguages]) => {
     const attemptKey = JSON.stringify([content, sourceLanguage, target, excludedLanguages])
-    if (!isVisible || !autoEnabled || !autoTranslateProp || autoAttemptedFor === attemptKey)
+    if (!isVisible || !autoEnabled || !autoTranslateProp || translation.value || autoAttemptedFor === attemptKey)
       return
     autoAttemptedFor = attemptKey
     void startTranslate(false)
@@ -160,18 +206,7 @@ watch(
   { immediate: true },
 )
 
-watch(autoTranslateEnabled, (enabled) => {
-  if (!enabled && translation.value)
-    reset()
-})
-
-watch(
-  [() => props.content, () => props.sourceLanguage, targetLanguage, excludedSourceLanguagesKey],
-  () => {
-    reset()
-  },
-  { flush: 'sync' },
-)
+watch(translationContext, reset, { flush: 'sync' })
 
 onBeforeUnmount(() => request?.abort())
 

@@ -8,6 +8,7 @@ defineProps<{
   data: ForumAPI.Topic[]
   loading?: boolean
   loadingMore?: boolean
+  pageLoadDuration?: number
   error?: Error | null
   canLoadMore?: boolean
   loadMore?: () => Promise<unknown> | unknown
@@ -20,10 +21,14 @@ const emit = defineEmits<{ login: [] }>()
 </script>
 
 <template>
-  <div>
+  <div
+    class="forum-topic-results"
+    :class="{ 'pb-[clamp(8rem,35dvh,20rem)]': data.length > 0 }"
+  >
     <ForumTopicList
       :data="data"
-      :loading="loading"
+      :loading="loading || loadingMore"
+      :page-load-duration="pageLoadDuration"
       :error="error"
       :query="query"
       :sort="sort"

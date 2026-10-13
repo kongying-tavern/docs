@@ -10,6 +10,8 @@ import { defineAsyncComponent, ref } from 'vue'
 import Blog from '@/layouts/Blog.vue'
 import Layout from '@/layouts/Layout.vue'
 import SettingsPage from '~/components/settings/SettingsPage.vue'
+import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
+import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { AsyncForumRouteView } from './components/AsyncForumRouteView'
@@ -55,6 +57,13 @@ export default {
 
     app.use(pinia)
     app.use(PiniaColada)
+    if (!import.meta.env.SSR) {
+      // Persistent watchers must not inherit the first topic component's instance.
+      app.runWithContext(() => {
+        useForumTranslationPreferences()
+        useForumViewMode()
+      })
+    }
 
     app.component('AccordionPanels', AccordionPanels)
     app.component('Coins', Coins)

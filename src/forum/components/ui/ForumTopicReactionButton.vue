@@ -65,6 +65,7 @@ function handleReaction(state: INTER_KNOT.ReactionState) {
 
     <TextMorph
       v-if="!loadFailed && !retrying"
+      :disabled="!autoload"
       :text="String(likeCount)"
       class="px-1 tabular-nums max-mobile:text-base"
       aria-live="polite"

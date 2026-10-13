@@ -9,6 +9,7 @@ const props = defineProps<{
   data: ForumAPI.Topic[]
   loading?: boolean
   loadingMore?: boolean
+  pageLoadDuration?: number
   error?: Error | null
   canLoadMore?: boolean
   loadMore?: () => Promise<unknown> | unknown

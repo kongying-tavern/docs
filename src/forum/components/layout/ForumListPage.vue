@@ -12,6 +12,7 @@ interface Props {
   renderData: ForumAPI.Topic[]
   loading?: boolean
   loadingMore?: boolean
+  pageLoadDuration?: number
   error?: Error | null
   canLoadMore?: boolean
   loadMore?: () => Promise<unknown> | unknown
@@ -62,6 +63,7 @@ const isInitialLoading = computed(() => loading && renderData.length === 0)
       <slot name="content-main">
         <ForumTopicResults
           :data="renderData" :loading="isInitialLoading" :loading-more="loadingMore"
+          :page-load-duration="pageLoadDuration"
           :error="error" :query="query" :sort="sort" :can-load-more="canLoadMore"
           :load-more="loadMore" :refresh-data="refreshData" :text="loadStateMessage"
           @login="emit('login')"

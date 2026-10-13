@@ -190,5 +190,12 @@ export async function installForumApi(page: Page, scenario: ForumScenario = {}) 
 function paginated<T>(items: T[], query: URLSearchParams): ApiReply {
   const page = Number(query.get('page') ?? 1)
   const size = Number(query.get('per_page') ?? 20)
-  return { data: items.slice((page - 1) * size, page * size), headers: { Total_count: String(items.length), Total_page: String(Math.ceil(items.length / size)) } }
+  return {
+    data: items.slice((page - 1) * size, page * size),
+    headers: {
+      'Total_count': String(items.length),
+      'Total_page': String(Math.ceil(items.length / size)),
+      'Access-Control-Expose-Headers': 'Total_count, Total_page',
+    },
+  }
 }

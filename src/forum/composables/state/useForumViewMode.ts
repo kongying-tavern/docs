@@ -1,12 +1,20 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '~/forum/components/types'
-import { useLocalStorage } from '@vueuse/core'
+import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import { computed, nextTick, toValue } from 'vue'
 import { enableTransitions } from '@/shared'
 import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '~/forum/components/shared'
 
 export const FORUM_VIEW_MODES = ['CARD', 'COMPACT'] as const
 const DEFAULT_FORUM_VIEW_MODE = 'CARD' as const
+function createStoredViewMode() {
+  return useLocalStorage<FORUM.TopicViewMode>(
+    FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY,
+    DEFAULT_FORUM_VIEW_MODE,
+    { mergeDefaults: true },
+  )
+}
+const useStoredViewMode = createGlobalState(createStoredViewMode)
 
 /** 显示方式切换时参与几何形变的共享角色：封面图、正文、引用卡、类型徽章 */
 const VIEW_CHANGE_ROLES = ['image', 'content', 'quote', 'type'] as const
@@ -63,13 +71,7 @@ export function getViewModeIconClass(mode: FORUM.TopicViewMode): string {
  * @param topicType 传入话题类型后，公告（ANN）话题不随视图切换，始终以卡片模式渲染
  */
 export function useForumViewMode(topicType?: MaybeRefOrGetter<string | undefined>) {
-  const rawViewMode = useLocalStorage<FORUM.TopicViewMode>(
-    FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY,
-    DEFAULT_FORUM_VIEW_MODE,
-    {
-      mergeDefaults: true,
-    },
-  )
+  const rawViewMode = import.meta.env.SSR ? createStoredViewMode() : useStoredViewMode()
 
   const viewMode = computed({
     get: () => {

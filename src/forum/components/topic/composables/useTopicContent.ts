@@ -1,10 +1,10 @@
-import type { MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 import type ForumAPI from '~/forum/api/types'
 import { computed, toValue } from 'vue'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useTextCollapse } from '~/forum/composables/state/useTextCollapse'
 
-export function useTopicContent(source: MaybeRefOrGetter<ForumAPI.Topic | ForumAPI.Post>) {
+export function useTopicContent(source: MaybeRefOrGetter<ForumAPI.Topic | ForumAPI.Post>, expanded?: Ref<boolean>) {
   const topic = computed(() => toValue(source))
   const { isCardMode, isCompactMode } = useForumViewMode(() => topic.value.type)
 
@@ -12,7 +12,7 @@ export function useTopicContent(source: MaybeRefOrGetter<ForumAPI.Topic | ForumA
   const isPost = computed(() => topic.value.type === 'POST')
   const isAnn = computed(() => topic.value.type === 'ANN')
 
-  const { isExpanded, hasOverflow, toggleExpand } = useTextCollapse(renderedText)
+  const { isExpanded, hasOverflow, toggleExpand } = useTextCollapse(renderedText, undefined, expanded)
 
   const shouldShowTitle = computed(() => {
     if (isCompactMode.value)

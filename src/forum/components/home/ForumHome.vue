@@ -54,6 +54,7 @@ function login(): void {
     :render-data="displayedRows"
     :loading="topics.isLoading.value"
     :loading-more="topics.loadingMore.value"
+    :page-load-duration="topics.pageLoadDuration.value"
     :error="topics.error.value"
     :can-load-more="topics.canLoadMore.value"
     :load-more="topics.loadMore"

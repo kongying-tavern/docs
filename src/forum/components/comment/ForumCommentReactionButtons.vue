@@ -44,6 +44,7 @@ const loadFailed = computed(() => Boolean(error.value) && !data.value)
       />
       <TextMorph
         v-if="data"
+        :disabled="!autoload"
         :text="String(data.data.likeCount)"
         class="tabular-nums"
         aria-live="polite"

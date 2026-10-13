@@ -62,6 +62,7 @@ function openQuotedTopicForm(): void {
       <span class="sr-only">{{ message.forum.topic.quote.action }}</span>
       <TextMorph
         v-if="!loadFailed && !retrying"
+        :disabled="!autoload"
         :text="String(quoteReaction?.data.likeCount ?? 0)"
         class="tabular-nums"
         aria-live="polite"

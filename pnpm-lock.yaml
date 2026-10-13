@@ -524,6 +524,9 @@ importers:
       '@radix-icons/vue':
         specifier: catalog:frontend
         version: 1.0.0(vue@3.5.43(typescript@6.0.3))
+      '@tanstack/vue-virtual':
+        specifier: 3.13.12
+        version: 3.13.12(vue@3.5.43(typescript@6.0.3))
       '@tiptap/core':
         specifier: catalog:conflicts_editor_h3_4_4
         version: 3.20.1(@tiptap/pm@3.20.1)

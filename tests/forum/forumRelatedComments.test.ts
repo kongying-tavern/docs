@@ -40,14 +40,14 @@ function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } })
 }
 
-async function setup(initial: Partial<ForumTopicListParams> = {}) {
+async function setup(initial: Partial<ForumTopicListParams> = {}, gcTime = 0) {
   clearApiCache()
   const app = createSSRApp({
     setup() {
       useUserInfoStore()
       return () => null
     },
-  }).use(createPinia()).use(PiniaColada, { queryOptions: { gcTime: 0 } })
+  }).use(createPinia()).use(PiniaColada, { queryOptions: { gcTime } })
   await renderToString(app)
   const scope = effectScope()
   const params = ref<ForumTopicListParams>({ filter: 'all', sort: 'created', creator: null, q: '', ...initial })
@@ -65,6 +65,30 @@ async function until(predicate: () => boolean) {
   }
   assert.ok(predicate(), 'query did not settle')
 }
+
+test('obsolete cumulative comment summaries are released despite a persistent default cache', { timeout: 5000 }, async () => {
+  const originalFetch = globalThis.fetch
+  let generation = 0
+  globalThis.fetch = async (input) => {
+    const url = String(input instanceof Request ? input.url : input)
+    return url.includes('/issues/comments')
+      ? json([{ ...rawComment, id: 42 + generation, target: { issue: { id: 101 + generation } } }])
+      : json([{ ...rawIssue, id: 101 + generation, number: `ICACHE${generation}` }])
+  }
+  const { scope, query, cache } = await setup({}, 60_000)
+  try {
+    for (generation = 0; generation < 6; generation++) {
+      await query.refetch(true)
+      await until(() => query.rows.value[0]?.relatedComments?.[0]?.id === 42 + generation)
+      await until(() => cache.getEntries({ key: forumKeys.relatedTopicComments() }).length <= 1)
+    }
+  }
+  finally {
+    scope.stop()
+    globalThis.fetch = originalFetch
+    clearApiCache()
+  }
+})
 
 test('pending related comments do not delay list success and fill rows after resolution', { timeout: 3000 }, async () => {
   const originalFetch = globalThis.fetch

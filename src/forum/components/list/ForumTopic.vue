@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TopicTranslationSnapshot } from '../topic/ForumTopicTranslator.vue'
 import type ForumAPI from '~/forum/api/types'
 import { computed, ref } from 'vue'
 import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
@@ -15,14 +16,16 @@ import ForumTagList from '../ui/ForumTagList.vue'
 import ForumTopicCard from './ForumTopicCard.vue'
 import ForumTopicItemFooter from './ForumTopicItemFooter.vue'
 
-const { topic } = defineProps<{
+const { topic, translationSnapshot } = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
   comment?: ForumAPI.Comment
+  translationSnapshot?: TopicTranslationSnapshot
 }>()
 
 const emit = defineEmits<{
   'preview': [topic: ForumAPI.Topic, focusComment: boolean]
   'prepare-preview': []
+  'translation-snapshot': [snapshot: TopicTranslationSnapshot | undefined]
 }>()
 
 const ForumCommentArea = defineRecoverableAsyncComponent(() => import('../comment/ForumCommentArea.vue'), AsyncContentLoading)
@@ -93,7 +96,7 @@ function showTranslatedContent(content: string): void {
     <template #content>
       <ForumTopicContent :topic="topic" :detail-href="detailHref()" :content-override="showingTranslation ? translatedContent : undefined" :title-override="showingTranslation ? translatedTitle : undefined" @summary-click="handleSummaryClick">
         <template #translation>
-          <ForumTopicTranslator :key="`translator-${topic.id}`" :content="topic.content.text" :title="topic.title" :source-language="topic.language" @translated="showTranslatedContent" @title-translated="translatedTitle = $event" @close="showingTranslation = false" />
+          <ForumTopicTranslator :key="`translator-${topic.id}`" :snapshot="translationSnapshot" :content="topic.content.text" :title="topic.title" :source-language="topic.language" @translated="showTranslatedContent" @title-translated="translatedTitle = $event" @close="showingTranslation = false" @snapshot="emit('translation-snapshot', $event)" />
         </template>
       </ForumTopicContent>
     </template>

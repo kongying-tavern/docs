@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useLanguage } from '@/composables/useLanguage'
 import { useLocalized } from '@/hooks/useLocalized'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
+import { useForumTopicPresentation } from '~/forum/composables/view/useForumTopicPresentation'
 import { decodeTopicBody } from '~/forum/services/forumContentCodec'
 import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
 import { useTopicContent } from './composables/useTopicContent'
@@ -22,6 +24,18 @@ const emit = defineEmits<{
 }>()
 
 const { message } = useLocalized()
+const { currentPageLang } = useLanguage()
+const presentation = useForumTopicPresentation()
+const localExpanded = ref(false)
+const expanded = computed({
+  get: () => presentation?.expanded.get(topic.id) ?? localExpanded.value,
+  set: (value: boolean) => {
+    if (presentation)
+      presentation.expanded.set(topic.id, value)
+    else
+      localExpanded.value = value
+  },
+})
 
 /**
  * 正文整体作为跳转入口：由父级决定是跳详情页还是打开预览；正文渲染出的内部 <a>/<button> 正常放行。
@@ -46,17 +60,24 @@ const {
   toggleExpand,
   shouldShowTitle,
   displayTitle,
-} = useTopicContent(() => topic)
+} = useTopicContent(() => topic, expanded)
 
 const isPrivate = computed(() => 'isPrivate' in topic && topic.isPrivate === true)
 const isPinned = computed(() => topic.pinned === true)
 /** 置顶标记优先跟随标题；无标题视图（紧凑模式、BUG 反馈）时落在正文开头 */
 const showPinInContent = computed(() => isPinned.value && !shouldShowTitle.value)
 
-const renderedContent = computed(() => renderForumTopicSummary(contentOverride ?? decodeTopicBody(topic.contentRaw).content, {
-  topicHref,
-  documentLinks: forumDocumentLinks,
-}))
+const renderedContent = computed(() => {
+  const cached = presentation?.getSummary(topic.id)
+  if (cached?.raw === topic.contentRaw && cached.override === contentOverride && cached.locale === currentPageLang.value)
+    return cached.html
+  const html = renderForumTopicSummary(contentOverride ?? decodeTopicBody(topic.contentRaw).content, {
+    topicHref,
+    documentLinks: forumDocumentLinks,
+  })
+  presentation?.rememberSummary(topic.id, { raw: topic.contentRaw, override: contentOverride, locale: currentPageLang.value, html })
+  return html
+})
 
 function handleExpandClick(): void {
   toggleExpand()

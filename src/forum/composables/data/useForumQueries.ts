@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import type ForumAPI from '~/forum/api/types'
 import type { ForumPage, ForumTopicListParams } from '~/forum/services/forumQueryContracts'
 import { useInfiniteQuery, useQuery, useQueryCache } from '@pinia/colada'
-import { computed, toValue, watch } from 'vue'
+import { computed, ref, toValue, watch } from 'vue'
 import { issues, user } from '~/forum/api/gitee'
 import { useArchivedFeedbackAccess } from '~/forum/composables/auth/useArchivedFeedbackAccess'
 import { usePermissionData } from '~/forum/composables/auth/usePermissionData'
@@ -24,6 +24,7 @@ export function useForumTopicsQuery(
   enabled: MaybeRefOrGetter<boolean> = true,
   skeletonScope?: MaybeRefOrGetter<string | null>,
 ) {
+  const pageLoadDuration = ref(1000)
   const { getTeamMemberIds, getFeedbackMemberIds } = usePermissionData()
   const canViewArchived = useArchivedFeedbackAccess(() => toValue(params).creator)
   const normalized = computed(() => {
@@ -38,10 +39,12 @@ export function useForumTopicsQuery(
     initialPageParam: 1,
     enabled: () => toValue(enabled),
     query: async ({ pageParam }) => {
+      const started = performance.now()
       const result = await getForumTopics({
         ...normalized.value,
         page: pageParam,
       }, userId => getTeamMemberIds.value.has(Number(userId)) || getFeedbackMemberIds.value.has(Number(userId)))
+      pageLoadDuration.value = Math.max(100, performance.now() - started)
       return { items: result.topics, total: result.total, totalPage: result.totalPage }
     },
     getNextPageParam: (lastPage, _pages, page) => nextPage(lastPage, page, normalized.value.pageSize),
@@ -65,12 +68,23 @@ export function useForumTopicsQuery(
       getTeamMemberIds.value.has(Number(userId)) || getFeedbackMemberIds.value.has(Number(userId))),
     staleTime: 60_000,
     placeholderData: previous => previous,
+    // Each appended page changes the cumulative key. Only the current summary
+    // needs retaining; historical prefixes otherwise grow quadratically.
+    gcTime: 0,
   })
+  const enrichedRows = new WeakMap<ForumAPI.Topic, { comments: ForumAPI.Comment[] | null, row: ForumAPI.Topic }>()
   const rows = computed(() => topics.value.map((topic) => {
     const comments = relatedEnabled.value && topic.commentCount > 0
       ? relatedComments.data.value?.[topic.id]
       : undefined
-    return comments === undefined ? topic : { ...topic, relatedComments: comments }
+    if (comments === undefined)
+      return topic
+    const cached = enrichedRows.get(topic)
+    if (cached?.comments === comments)
+      return cached.row
+    const row = { ...topic, relatedComments: comments }
+    enrichedRows.set(topic, { comments, row })
+    return row
   }))
   // 列表刷新只等待列表；摘要标记过期后在后台补充，包括失败后的重试。
   async function refetch(...args: Parameters<typeof query.refetch>) {
@@ -98,6 +112,7 @@ export function useForumTopicsQuery(
     rows,
     total,
     loadingMore,
+    pageLoadDuration,
     canLoadMore: query.hasNextPage,
     loadMore: () => query.loadNextPage({ cancelRefetch: false, throwOnError: false }),
   }

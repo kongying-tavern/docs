@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
-import { TextMorph } from '@/components/ui/text-morph'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
@@ -27,7 +26,8 @@ async function handleUndo() {
 
 <template>
   <blockquote
-    v-if="isSearching && !props.loading && props.total > 0"
+    v-if="isSearching && props.total > 0"
+    :aria-busy="props.loading"
     class="text-sm color-[var(--vp-c-text-2)] my-3 px-2 py-1 border-[var(--vp-c-divider)] border-l-2 rounded-r-md flex min-h-8 w-full items-center hover:bg-[var(--vp-c-bg-soft)]"
   >
     <span
@@ -35,7 +35,7 @@ async function handleUndo() {
       aria-hidden="true"
     />
     <p class="flex-1 min-w-0 line-clamp-2">
-      <TextMorph :text="summary" />
+      <span>{{ summary }}</span>
     </p>
     <Button
       type="button"
