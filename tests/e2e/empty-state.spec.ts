@@ -42,12 +42,12 @@ test('list unauthorized error state', async ({ page, scenario }) => {
 })
 
 test('user page empty state', async ({ page }) => {
-  await page.goto('feedback/user/alice?filter=all')
+  await page.goto('feedback/@alice?filter=all')
   await expect(page.getByTestId('feedback-empty-state')).toHaveAttribute('data-state', 'feedback')
   // 未登录时主按钮按设计显示登录文案（限定内容区，侧边栏同文案按钮不会混淆）
   await expect(page.locator('#VPContent').getByRole('button', { name: '登录后提交反馈' })).toBeVisible()
   await page.getByTestId('empty-filter-closed').click()
-  await expect(page).toHaveURL(/\/feedback\/user\/alice\/closed(?:\?|$)/)
+  await expect(page).toHaveURL(/\/feedback\/@alice\/closed(?:\?|$)/)
   await expect(page.getByTestId('empty-filter-all')).toBeVisible()
 })
 

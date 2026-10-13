@@ -126,15 +126,15 @@ test('provider intersects concluded range with bug type and preserves sorting', 
 })
 
 test('user filter and clear-search transitions preserve the rest of the URL tuple', () => {
-  const currentUrl = '/docs/ja/feedback/user/alice/feat?q=map&sort=updated&view=card#results'
+  const currentUrl = '/docs/ja/feedback/@alice/feat?q=map&sort=updated&view=card#results'
   const parsed = parseForumLocation(currentUrl, routeOptions)
   assert.equal(parsed?.route.name, 'user')
   if (!parsed || parsed.route.name !== 'user')
     return
 
   const filtered = { ...parsed.route, list: { ...parsed.route.list, filter: 'closed' as const } }
-  assert.equal(buildForumHref(filtered, { ...routeOptions, currentUrl }), '/docs/ja/feedback/user/alice/closed/feat?q=map&sort=updated&view=card#results')
+  assert.equal(buildForumHref(filtered, { ...routeOptions, currentUrl }), '/docs/ja/feedback/@alice/closed/feat?q=map&sort=updated&view=card#results')
 
   const cleared = { ...filtered, list: { ...filtered.list, q: '' } }
-  assert.equal(buildForumHref(cleared, { ...routeOptions, currentUrl }), '/docs/ja/feedback/user/alice/closed/feat?sort=updated&view=card#results')
+  assert.equal(buildForumHref(cleared, { ...routeOptions, currentUrl }), '/docs/ja/feedback/@alice/closed/feat?sort=updated&view=card#results')
 })

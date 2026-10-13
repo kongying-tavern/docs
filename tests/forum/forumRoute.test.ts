@@ -59,14 +59,14 @@ test('round-trips archived and everything list filters', () => {
 
 test('round-trips combined range and type paths for home and user lists', () => {
   const home = parseForumLocation('/docs/feedback/closed/bug?q=crash&sort=updated', ROUTE_OPTIONS)
-  const user = parseForumLocation('/docs/en/feedback/user/alice/archived/feat', ROUTE_OPTIONS)
+  const user = parseForumLocation('/docs/en/feedback/@alice/archived/feat', ROUTE_OPTIONS)
 
   assert.equal(home?.route.name === 'home' ? home.route.list.filter : null, 'closed')
   assert.equal(home?.route.name === 'home' ? home.route.list.topicType : null, 'bug')
   assert.equal(home?.canonicalHref, '/docs/feedback/closed/bug?q=crash&sort=updated')
   assert.equal(user?.route.name === 'user' ? user.route.list.filter : null, 'archived')
   assert.equal(user?.route.name === 'user' ? user.route.list.topicType : null, 'feat')
-  assert.equal(user?.canonicalHref, '/docs/en/feedback/user/alice/archived/feat')
+  assert.equal(user?.canonicalHref, '/docs/en/feedback/@alice/archived/feat')
 
   const legacy = parseForumLocation('/docs/feedback/feat', ROUTE_OPTIONS)
   assert.equal(legacy?.route.name === 'home' ? legacy.route.list.filter : null, 'all')
@@ -77,7 +77,7 @@ test('round-trips combined range and type paths for home and user lists', () => 
 
 test('round-trips localized Topic and encoded User routes', () => {
   const topic = parseForumLocation('/docs/en/feedback/topic/AB%20123', ROUTE_OPTIONS)
-  const user = parseForumLocation('/docs/ja/feedback/user/%E7%A9%BA%20%E8%8D%A7/closed?q=test', ROUTE_OPTIONS)
+  const user = parseForumLocation('/docs/ja/feedback/@%E7%A9%BA%20%E8%8D%A7/closed?q=test', ROUTE_OPTIONS)
 
   assert.deepEqual(topic?.route, { name: 'topic', locale: 'en', topicId: 'AB 123', commentPage: 1 })
   assert.equal(topic?.canonicalHref, '/docs/en/feedback/topic/AB%20123')
@@ -87,12 +87,12 @@ test('round-trips localized Topic and encoded User routes', () => {
     username: '空 荧',
     list: { filter: 'closed', topicType: 'all', sort: 'created', q: 'test', creator: '空 荧' },
   })
-  assert.equal(user?.canonicalHref, '/docs/ja/feedback/user/%E7%A9%BA%20%E8%8D%A7/closed?q=test')
+  assert.equal(user?.canonicalHref, '/docs/ja/feedback/@%E7%A9%BA%20%E8%8D%A7/closed?q=test')
 })
 
 test('round-trips dedicated Search routes with list and user scopes', () => {
   const home = parseForumLocation('/docs/feedback/search/closed/bug?q=map&sort=updated', ROUTE_OPTIONS)
-  const user = parseForumLocation('/docs/en/feedback/user/alice/search/feat?q=crash', ROUTE_OPTIONS)
+  const user = parseForumLocation('/docs/en/feedback/@alice/search/feat?q=crash', ROUTE_OPTIONS)
 
   assert.deepEqual(home?.route, {
     name: 'search',
@@ -107,7 +107,7 @@ test('round-trips dedicated Search routes with list and user scopes', () => {
     username: 'alice',
     list: { filter: 'all', topicType: 'feat', sort: 'created', q: 'crash', creator: 'alice' },
   })
-  assert.equal(user?.canonicalHref, '/docs/en/feedback/user/alice/search/feat?q=crash')
+  assert.equal(user?.canonicalHref, '/docs/en/feedback/@alice/search/feat?q=crash')
   assert.equal(parseForumLocation('/docs/feedback/search/bug/closed', ROUTE_OPTIONS), null)
 })
 
@@ -129,17 +129,30 @@ test('non-Forum locale transition drops the previous Forum list tuple', () => {
   }, {
     ...ROUTE_OPTIONS,
     currentUrl: '/docs/en/community',
-  }), '/docs/en/feedback/user/alice')
+  }), '/docs/en/feedback/@alice')
 })
 
 test('matches reserved resources before filters and rejects invalid paths', () => {
   assert.equal(parseForumLocation('/docs/feedback/nope', ROUTE_OPTIONS), null)
   assert.equal(parseForumLocation('/docs/feedback/topic', ROUTE_OPTIONS), null)
   assert.equal(parseForumLocation('/docs/feedback/topic/id/extra', ROUTE_OPTIONS), null)
-  assert.equal(parseForumLocation('/docs/feedback/user/name/nope', ROUTE_OPTIONS), null)
+  assert.equal(parseForumLocation('/docs/feedback/@name/nope', ROUTE_OPTIONS), null)
   assert.equal(parseForumLocation('/docs-extra/feedback', ROUTE_OPTIONS), null)
   assert.equal(parseForumLocation('/docs/feedback-not-a-route', ROUTE_OPTIONS), null)
-  assert.equal(parseForumLocation('/docs/feedback/user/%E0%A4%A', ROUTE_OPTIONS), null)
+  assert.equal(parseForumLocation('/docs/feedback/@%E0%A4%A', ROUTE_OPTIONS), null)
+})
+
+test('user handles do not collide with resources and old user paths are rejected', () => {
+  for (const username of ['search', 'topic', 'user', 'closed', 'archived', 'everything', 'bug', 'feat']) {
+    const parsed = parseForumLocation(`/docs/feedback/@${username}`, ROUTE_OPTIONS)
+    assert.equal(parsed?.route.name, 'user')
+    assert.equal(parsed?.route.name === 'user' ? parsed.route.username : null, username)
+    assert.equal(parsed?.canonicalHref, `/docs/feedback/@${username}`)
+  }
+  assert.equal(parseForumLocation('/docs/feedback/@', ROUTE_OPTIONS), null)
+  assert.equal(parseForumLocation('/docs/feedback/user/alice', ROUTE_OPTIONS), null)
+  assert.equal(parseForumLocation('/docs/feedback/user/alice/search/feat', ROUTE_OPTIONS), null)
+  assert.equal(parseForumLocation('/docs/feedback/%40alice', ROUTE_OPTIONS)?.canonicalHref, '/docs/feedback/@alice')
 })
 
 test('caps search at the structured-query contract', () => {
@@ -161,7 +174,7 @@ test('builders preserve unrelated query and hash while replacing owned list stat
     currentUrl: '/docs/feedback?view=card&q=old&sort=created#comments',
   })
 
-  assert.equal(href, '/docs/en/feedback/user/alice%2Fbob/feat?view=card&q=map&sort=updated#comments')
+  assert.equal(href, '/docs/en/feedback/@alice%2Fbob/feat?view=card&q=map&sort=updated#comments')
 })
 
 test('round-trips Topic comment loading state and canonicalizes invalid pages', () => {

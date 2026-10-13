@@ -72,7 +72,7 @@ test.describe('移动端用户 Drawer', () => {
     await clickTopicAuthor(page)
     await page.locator('[data-slot="drawer-footer"]').getByText('前往个人资料页').click()
 
-    await expect(page).toHaveURL(/\/feedback\/user\/alice/)
+    await expect(page).toHaveURL(/\/feedback\/@alice/)
     await expect(page.locator('[data-slot="drawer-content"]')).toHaveCount(0)
   })
 })
@@ -84,7 +84,7 @@ test.describe('桌面端保持直跳', () => {
     await openTopicDetail(page)
 
     await clickTopicAuthor(page)
-    await expect(page).toHaveURL(/\/feedback\/user\/alice/)
+    await expect(page).toHaveURL(/\/feedback\/@alice/)
     await expect(page.locator('[data-slot="drawer-content"]')).toHaveCount(0)
   })
 })

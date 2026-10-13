@@ -104,16 +104,17 @@ export function parseForumLocation(input: string | URL, options: ForumRouteOptio
       commentPage: readCommentPage(url.searchParams),
     }
   }
-  else if (segments[1] === 'user') {
-    if ((segments.length < 3 || segments.length > 6) || !segments[2])
+  else if (segments[1].startsWith('@')) {
+    const username = segments[1].slice(1)
+    if (segments.length > 5 || !username)
       return null
-    const isSearch = segments[3] === 'search'
-    const listPath = readListPath(segments.slice(isSearch ? 4 : 3))
+    const isSearch = segments[2] === 'search'
+    const listPath = readListPath(segments.slice(isSearch ? 3 : 2))
     if (!listPath)
       return null
     route = isSearch
-      ? { name: 'search', locale, username: segments[2], list: readListState(url, segments[2], listPath.filter, listPath.topicType) }
-      : { name: 'user', locale, username: segments[2], list: readListState(url, segments[2], listPath.filter, listPath.topicType) }
+      ? { name: 'search', locale, username, list: readListState(url, username, listPath.filter, listPath.topicType) }
+      : { name: 'user', locale, username, list: readListState(url, username, listPath.filter, listPath.topicType) }
   }
   else {
     const listPath = readListPath(segments.slice(1))
@@ -147,10 +148,10 @@ export function buildForumHref(route: ForumRoute, options: ForumHrefOptions): st
   else {
     url.searchParams.delete(COMMENT_PAGE_PARAM)
     if (route.name === 'user')
-      segments.push('user', route.username)
+      segments.push(`@${route.username}`)
     if (route.name === 'search') {
       if (route.username)
-        segments.push('user', route.username)
+        segments.push(`@${route.username}`)
       segments.push('search')
     }
     if (route.list.filter !== 'all')
@@ -160,7 +161,12 @@ export function buildForumHref(route: ForumRoute, options: ForumHrefOptions): st
     writeListQuery(url.searchParams, route.list)
   }
 
-  const encodedPath = segments.map(segment => encodeURIComponent(segment)).join('/')
+  const userSegmentIndex = route.name === 'user' || (route.name === 'search' && route.username)
+    ? (route.locale === 'root' ? 1 : 2)
+    : -1
+  const encodedPath = segments.map((segment, index) => index === userSegmentIndex
+    ? `@${encodeURIComponent(segment.slice(1))}`
+    : encodeURIComponent(segment)).join('/')
   url.pathname = `${base}${encodedPath}`
 
   if (options.hash !== undefined)
