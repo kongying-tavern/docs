@@ -18,6 +18,7 @@ import {
   getConclusiveTopicStatuses,
   getTopicDisplayStatus,
   getTopicStatus,
+  getTopicStatusDefinition,
   replaceTopicStatus,
   topicStatusHidesTopic,
 } from '../../src/forum/services/forumTopicStatus'
@@ -133,10 +134,13 @@ test('topic status definitions expose type and hiding semantics', () => {
   )
   assert.deepEqual(
     getConclusiveTopicStatuses('BUG').map(definition => definition.id),
-    ['wontfix', 'fixed', 'not-reproducible', 'duplicate', 'invalid'],
+    ['wontfix', 'fixed', 'not-reproducible', 'stale', 'duplicate', 'invalid'],
   )
   assert.equal(topicStatusHidesTopic('fixed'), true)
   assert.equal(topicStatusHidesTopic('confirmed'), false)
+  assert.equal(topicStatusHidesTopic('stale'), true)
+  assert.equal(getTopicStatusDefinition('stale').group, 'resolution')
+  assert.ok(getConclusiveTopicStatuses('FEAT').some(definition => definition.id === 'stale'))
 })
 
 test('closed Topics without a label expose the default closed display status', () => {

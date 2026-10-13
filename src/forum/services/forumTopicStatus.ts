@@ -30,7 +30,7 @@ export const TOPIC_STATUS_DEFINITIONS: readonly TopicStatusDefinition[] = [
   { id: 'needs-triage', label: 'ST-NEEDS-TRIAGE', group: 'triage', icon: 'i-lucide-circle-dot', colorClass: 'bg-amber-500', topicTypes: ['BUG'] },
   { id: 'blocked', label: 'ST-BLOCKED', group: 'triage', icon: 'i-lucide-ban', colorClass: 'bg-red-600', topicTypes: ['BUG'] },
   { id: 'needs-more-info', label: 'ST-NEEDS-MORE-INFO', group: 'triage', icon: 'i-lucide-info', colorClass: 'bg-cyan-500', topicTypes: ['BUG'] },
-  { id: 'stale', label: 'ST-STALE', group: 'maintenance', icon: 'i-lucide-clock', colorClass: 'bg-stone-500' },
+  { id: 'stale', label: 'ST-STALE', group: 'resolution', icon: 'i-lucide-clock', colorClass: 'bg-stone-500', hidesTopic: true },
   { id: 'duplicate', label: 'ST-DUPLICATE', group: 'resolution', icon: 'i-lucide-copy', colorClass: 'bg-violet-500', hidesTopic: true },
   { id: 'invalid', label: 'ST-INVALID', group: 'resolution', icon: 'i-lucide-circle-x', colorClass: 'bg-pink-600', hidesTopic: true },
 ] as const

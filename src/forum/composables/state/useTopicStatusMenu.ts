@@ -20,7 +20,8 @@ export function createTopicStatusGroupItems(
 ): FORUM.MenuElement[] {
   const items: FORUM.MenuElement[] = []
   for (const { group, definitions: grouped } of groupTopicStatuses(definitions)) {
-    items.push({ type: 'separator' })
+    if (items.length)
+      items.push({ type: 'separator' })
     items.push({
       type: 'group',
       items: [
@@ -94,6 +95,9 @@ export function useTopicStatusMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, 
         class: 'important:c-[var(--vp-c-warning-1)] max-w-56',
       })
     }
+
+    if (items.length)
+      items.push({ type: 'separator' })
 
     items.push(...createTopicStatusGroupItems(
       getSelectableTopicStatuses(currentTopic.value.type, currentStatus),
