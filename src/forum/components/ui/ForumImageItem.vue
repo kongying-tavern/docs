@@ -1,175 +1,115 @@
 <script setup lang="ts">
 import type { ImageItem } from './ForumImage.vue'
-import { computed, ref } from 'vue'
-import LazyImage from '@/components/ui/image/LazyImage.vue'
+import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { ASSET_ORIGIN } from '~/constants/site'
+import { useForumImageLoading } from '~/forum/composables/view/useForumImageLoading'
+import { forumImagePlaceholder } from '~/forum/services/forumImagePlaceholder'
 
 const props = defineProps<{
   image: ImageItem
-  /** 是否填充容器（grid 布局使用 object-cover） */
   fillContainer?: boolean
   interactive?: boolean
   class?: string
 }>()
-
 const emit = defineEmits<{
   error: []
   ready: []
   dimensions: [size: { width: number, height: number }]
 }>()
-
-const isRealImageReady = ref(false)
-
+const root = useTemplateRef<HTMLElement>('root')
+const imageElement = useTemplateRef<HTMLImageElement>('imageElement')
+const { near, visible, allowed, complete } = useForumImageLoading(root, () => props.image.src)
+const ready = ref(false)
 const hasError = ref(false)
-
 const ERROR_IMAGE = `${ASSET_ORIGIN}/images/noImage.png`
+const hash = computed(() => props.image.thumbHash || props.image.thumbhash)
+const placeholder = computed(() => near.value && hash.value ? forumImagePlaceholder(hash.value) : undefined)
+const imageClass = computed(() => props.fillContainer ? 'object-cover' : 'object-contain')
+const aspectStyle = computed(() => props.fillContainer || !props.image.width || !props.image.height
+  ? {}
+  : { aspectRatio: `${props.image.width} / ${props.image.height}` })
+const source = computed(() => hasError.value ? ERROR_IMAGE : allowed.value || ready.value ? props.image.src : undefined)
+let generation = 0
 
-const thumbHash = () => props.image.thumbHash || props.image.thumbhash
-
-const useLazyLoad = () => !!thumbHash()
-
-const imageClass = computed(() =>
-  props.fillContainer ? 'object-cover' : 'object-contain',
-)
-
-function markRealImageReady() {
-  if (isRealImageReady.value)
-    return
-  isRealImageReady.value = true
-  emit('ready')
-}
-
-const aspectStyle = computed(() => {
-  if (props.fillContainer || !props.image.width || !props.image.height)
-    return {}
-  return { aspectRatio: `${props.image.width} / ${props.image.height}` }
+watch(() => props.image.src, () => {
+  generation++
+  ready.value = hasError.value = false
+}, { flush: 'sync' })
+watch(allowed, (value) => {
+  if (!value && !ready.value)
+    generation++
+  if (value && (ready.value || hasError.value))
+    complete()
+}, { flush: 'sync' })
+onBeforeUnmount(() => {
+  generation++
+  // Removing a DOM node alone does not consistently cancel its pending image request.
+  imageElement.value?.removeAttribute('src')
 })
 
-function preloadRealImage() {
-  const img = new Image()
-  img.onload = () => {
-    reportDimensions(img)
-    img.decode?.()?.finally(markRealImageReady) ?? markRealImageReady()
-  }
-  img.onerror = () => {
-    hasError.value = true
-    emit('error')
-  }
-  img.src = props.image.src
+async function onLoad(): Promise<void> {
+  const image = imageElement.value
+  if (!image || !allowed.value || hasError.value || ready.value || !image.naturalWidth)
+    return
+  const current = generation
+  // Decode the displayed image once; preserve a loaded image if decode() rejects.
+  await image.decode().catch(() => {})
+  if (current !== generation || hasError.value)
+    return
+  emit('dimensions', { width: image.naturalWidth, height: image.naturalHeight })
+  ready.value = true
+  complete()
+  emit('ready')
 }
-
-function reportDimensions(img: HTMLImageElement) {
-  if (!hasError.value && img.naturalWidth > 0 && img.naturalHeight > 0)
-    emit('dimensions', { width: img.naturalWidth, height: img.naturalHeight })
-}
-
-function onImageLoad(event: Event) {
-  reportDimensions(event.target as HTMLImageElement)
-}
-
-function onLazyError() {
+function onError(): void {
+  if (!source.value || hasError.value)
+    return
   hasError.value = true
+  complete()
   emit('error')
 }
 </script>
 
 <template>
-  <div
-    class="size-full relative overflow-hidden"
-    :class="[hasError || interactive === false ? 'cursor-default' : useLazyLoad() && !isRealImageReady ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
-  >
-    <template v-if="useLazyLoad()">
-      <img
-        v-if="hasError"
-        :src="ERROR_IMAGE"
-        :alt="image.alt || ''"
-        class="bg-[var(--vp-c-bg-alt)] size-full"
-        :class="imageClass"
-        :style="aspectStyle"
-      >
-
-      <Transition
-        v-else-if="!isRealImageReady"
-        name="fade"
-        mode="out-in"
-      >
-        <LazyImage
-          :src="image.src"
-          :thumbhash="thumbHash()"
-          :width="image.width"
-          :height="image.height"
-          class="size-full object-cover"
-          :style="aspectStyle"
-          @loaded="preloadRealImage"
-          @error="onLazyError"
-        />
-      </Transition>
-
-      <Transition
-        v-else
-        name="reveal"
-        mode="in-out"
-        appear
-      >
-        <img
-          :src="image.src"
-          :alt="image.alt || ''"
-          class="size-full transition-transform duration-200"
-          :class="imageClass"
-          :style="aspectStyle"
-          @error="onLazyError"
-          @load="onImageLoad"
-        >
-      </Transition>
-    </template>
-
+  <div ref="root" class="size-full relative overflow-hidden" :style="aspectStyle" :class="[hasError || interactive === false ? 'cursor-default' : hash && !ready ? 'cursor-wait' : 'cursor-zoom-in', props.class]">
     <img
-      v-else
-      :src="hasError ? ERROR_IMAGE : image.src"
-      :alt="image.alt || ''"
-      class="size-full transition-transform duration-200"
+      v-if="placeholder && !ready && !hasError"
+      :src="placeholder"
+      alt=""
+      aria-hidden="true"
+      class="size-full inset-0 absolute"
       :class="imageClass"
-      :style="aspectStyle"
-      loading="lazy"
-      @error="!hasError && onLazyError()"
-      @load="onImageLoad"
+    >
+    <img
+      ref="imageElement"
+      :src="source"
+      :alt="image.alt || ''"
+      :width="image.width"
+      :height="image.height"
+      class="forum-image-source size-full block"
+      :class="imageClass"
+      :style="{ opacity: placeholder && !ready && !hasError ? 0 : 1 }"
+      loading="eager"
+      decoding="async"
+      :fetchpriority="visible ? 'high' : 'low'"
+      @load="onLoad"
+      @error="onError"
     >
   </div>
 </template>
 
 <style scoped>
+.forum-image-source {
+  transition:
+    opacity 120ms ease,
+    transform 200ms ease;
+}
 @media (hover: hover) and (pointer: fine) {
-  .cursor-zoom-in:hover img {
+  .cursor-zoom-in:hover .forum-image-source {
     transform: scale(1.05);
   }
 }
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.4s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.reveal-enter-active {
-  transition:
-    opacity 0.4s cubic-bezier(0.2, 0, 0, 1),
-    filter 0.4s cubic-bezier(0.2, 0, 0, 1);
-}
-
-.reveal-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.reveal-enter-from {
-  opacity: 0;
-  filter: blur(4px);
-}
-
-.reveal-leave-to {
-  opacity: 0;
+html[data-reduced-motion='true'] .forum-image-source {
+  transition: none;
 }
 </style>

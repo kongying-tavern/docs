@@ -3,6 +3,7 @@ import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import ForumImage from '../ui/ForumImage.vue'
+import ForumImageItem from '../ui/ForumImageItem.vue'
 
 const props = defineProps<{
   topic: ForumAPI.Topic | ForumAPI.Post
@@ -43,14 +44,13 @@ const shouldShowInCompact = computed(() => isCompactMode.value)
       v-if="isCompactMode"
       class="topic-compact-media ml-2 mt-1 border border-[var(--forum-image-outline)] rounded-sm flex h-75px min-w-100px items-center relative overflow-hidden"
     >
-      <img
+      <ForumImageItem
         v-if="primaryImage"
-        :src="primaryImage.src"
-        :alt="primaryImage.alt || ''"
+        :image="primaryImage"
+        fill-container
+        :interactive="false"
         class="h-75px w-100px object-cover"
-        loading="lazy"
-      >
-
+      />
       <div
         v-else
         class="bg-[--vp-c-bg-soft] flex size-full transition-colors duration-200 items-center justify-center hover:bg-[--vp-c-bg-alt]"
