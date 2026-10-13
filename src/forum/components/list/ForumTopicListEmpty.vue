@@ -45,30 +45,25 @@ const hasActiveFilters = computed(() => {
   return Boolean(list.q) || list.filter !== 'all' || list.topicType !== 'all'
 })
 
-const filterRecommendations = computed(() => {
+const filterRecommendation = computed(() => {
   const current = route.value
   if (!current || !('list' in current))
-    return []
+    return null
   const { list } = current
-  const actions: { key: string, label: string, changes: Partial<{ filter: ForumFilter, topicType: 'all', q: string }> }[] = []
   const copy = message.value.forum.empty
-  const recommendFilter = (filter: ForumFilter, label: string) => {
-    actions.push({ key: filter, label, changes: { filter } })
-  }
-  if (current.name === 'user') {
-    if (list.filter === 'all')
-      recommendFilter('closed', copy.switchClosed)
-    else
-      recommendFilter('all', copy.switchOpen)
-  }
-  else if (list.filter !== 'everything') {
-    recommendFilter('everything', copy.switchEverything)
-  }
-  if (list.topicType !== 'all')
-    actions.push({ key: 'type', label: copy.showAllTypes, changes: { topicType: 'all' } })
+  // 先放宽搜索和类型，再切换状态；每次只推荐一个保留其余条件的恢复操作。
   if (list.q)
-    actions.push({ key: 'query', label: copy.clearSearch, changes: { q: '' } })
-  return actions
+    return { key: 'query', label: copy.clearSearch, changes: { q: '' } }
+  if (list.topicType !== 'all')
+    return { key: 'type', label: copy.showAllTypes, changes: { topicType: 'all' as const } }
+  if (list.creator) {
+    if (list.filter === 'all')
+      return { key: 'closed', label: copy.switchClosed, changes: { filter: 'closed' as const } }
+    return { key: 'all', label: copy.switchOpen, changes: { filter: 'all' as const } }
+  }
+  if (list.filter !== 'everything')
+    return { key: 'everything', label: copy.switchEverything, changes: { filter: 'everything' as const } }
+  return null
 })
 
 async function applyRecommendation(changes: Partial<{ filter: ForumFilter, topicType: 'all', q: string }>) {
@@ -149,37 +144,36 @@ async function handleRetry() {
     <EmptyActions variant="pills">
       <template v-if="!error">
         <Button
-          v-for="recommendation in filterRecommendations"
-          :key="recommendation.key"
-          :data-testid="`empty-filter-${recommendation.key}`"
-          variant="outline"
-          @click="applyRecommendation(recommendation.changes)"
+          v-if="filterRecommendation"
+          :data-testid="`empty-filter-${filterRecommendation.key}`"
+          @click="applyRecommendation(filterRecommendation.changes)"
         >
           <span class="i-lucide-list-filter icon-btn" aria-hidden="true" />
-          {{ recommendation.label }}
+          {{ filterRecommendation.label }}
         </Button>
         <ForumOpenFeedbackFormButton
           :label="message.forum.empty.createFeedback"
+          :variant="filterRecommendation ? 'outline' : 'default'"
           :hide-on-mobile="false"
         />
       </template>
 
       <template v-else>
-        <Button
-          v-if="unauthorizedError && refreshData"
-          variant="outline"
-          :disabled="retrying"
-          @click="handleRetry"
-        >
-          <span :class="[retrying ? 'i-lucide-loader-circle' : 'i-lucide-refresh-cw', retrying && !reducedMotion && 'animate-spin']" class="icon-btn" aria-hidden="true" />
-          {{ message.forum.auth.callback.error.retry }}
-        </Button>
         <Button v-if="rateLimitError || unauthorizedError" @click="handleLogin">
           <span class="i-lucide-log-in icon-btn" aria-hidden="true" />
           {{ message.forum.auth.login }}
         </Button>
         <Button
           v-else-if="refreshData"
+          :disabled="retrying"
+          @click="handleRetry"
+        >
+          <span :class="[retrying ? 'i-lucide-loader-circle' : 'i-lucide-refresh-cw', retrying && !reducedMotion && 'animate-spin']" class="icon-btn" aria-hidden="true" />
+          {{ message.forum.auth.callback.error.retry }}
+        </Button>
+        <Button
+          v-if="unauthorizedError && refreshData"
+          variant="outline"
           :disabled="retrying"
           @click="handleRetry"
         >

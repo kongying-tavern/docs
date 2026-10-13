@@ -149,6 +149,10 @@ const { message } = useLocalized()
           <span class="i-lucide-refresh-cw icon-btn" aria-hidden="true" />
           {{ message.forum.auth.callback.error.retry }}
         </Button>
+        <Button variant="outline" @click="emit('back')">
+          <span class="i-lucide-arrow-left icon-btn" aria-hidden="true" />
+          {{ message.forum.topic.backToPrevPage }}
+        </Button>
       </EmptyActions>
     </Empty>
   </div>
