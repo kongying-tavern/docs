@@ -4,16 +4,19 @@ import type ForumAPI from '~/forum/api/types'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useUserProfile } from './composables/useUserProfile'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
+import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 import ForumUserProfilePanel from './ForumUserProfilePanel.vue'
 
 const props = defineProps<{ username: string, topicCount: number, suggestions?: ForumAPI.Topic[] }>()
 const activeTab = defineModel<FORUM.ProfileTab['id']>('activeTab', { default: 'all' })
 const { list, openSearch, openSearchWithQuery } = useForumRoute()
-const { renderedUser, role, isAuthorizedUser, menu, sendMessage } = useUserProfile(() => props.username)
+const { renderedUser, loading, role, isAuthorizedUser, menu, sendMessage } = useUserProfile(() => props.username)
 </script>
 
 <template>
+  <ForumUserProfileHeaderSkeleton v-if="loading && !renderedUser" :tabs="menu" />
   <ForumUserProfilePanel
+    v-else
     v-model:active-tab="activeTab" v-bind="props"
     :rendered-user="renderedUser" :role="role" :is-authorized-user="isAuthorizedUser"
     :menu="menu" :query="list?.q ?? ''"

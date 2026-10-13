@@ -5,12 +5,13 @@ import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableA
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumHome from '../home/ForumHome.vue'
 import ForumTopicLoading from '../topic/ForumTopicLoading.vue'
+import ForumUserLoading from '../user/ForumUserLoading.vue'
 
 const emit = defineEmits<{ ready: [] }>()
 
 const ForumTopicPage = defineRecoverableAsyncComponent(() => import('../topic/ForumTopicPage.vue'), ForumTopicLoading)
 const ForumSearchPage = defineRecoverableAsyncComponent(() => import('../search/ForumSearchPage.vue'), AsyncContentLoading)
-const ForumUserPage = defineRecoverableAsyncComponent(() => import('../user/ForumUserPage.vue'), AsyncContentLoading)
+const ForumUserPage = defineRecoverableAsyncComponent(() => import('../user/ForumUserPage.vue'), ForumUserLoading)
 
 const { route } = useForumRoute()
 

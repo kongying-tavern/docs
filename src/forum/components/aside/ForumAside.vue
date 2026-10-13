@@ -32,7 +32,7 @@ const auth = useUserAuthStore()
       :tag-filter="tagFilter"
     />
     <ForumAsideUserProfile v-if="username" :username="username" />
-    <ForumAsideMeta />
+    <ForumAsideMeta v-if="!username" />
   </div>
 </template>
 
