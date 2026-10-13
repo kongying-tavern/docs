@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'reka-ui'
 import { useMediaQuery } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import {
   Drawer,
   DrawerContent,
@@ -36,6 +36,13 @@ function close() {
   open.value = false
 }
 
+async function handleOpenChange(next: boolean): Promise<void> {
+  // Let the sidebar's post-flush watcher release its scroll lock before the drawer acquires one.
+  if (next)
+    await nextTick()
+  open.value = next
+}
+
 watch(open, (isOpen) => {
   if (!isOpen)
     emit('closed')
@@ -46,7 +53,7 @@ watch(isMobile, () => {
 </script>
 
 <template>
-  <Drawer v-if="isMobile" v-model:open="open">
+  <Drawer v-if="isMobile" :open="open" @update:open="handleOpenChange">
     <DrawerTrigger as-child>
       <slot name="trigger" />
     </DrawerTrigger>

@@ -154,7 +154,7 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
           @pointerenter="prepareSettings"
           @focus="prepareSettings"
           @pointerdown="prepareSettings"
-          @click="closeForumSidebar"
+          @click.capture="closeForumSidebar"
         >
           <UserAvatar
             :data-forum-user-avatar="accountUser?.login || undefined"
@@ -213,7 +213,7 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
           size="icon"
           class="forum-sidebar-help-trigger"
           :aria-label="message.forum.sidebar.information"
-          @click="closeForumSidebar"
+          @click.capture="closeForumSidebar"
         >
           <span class="i-lucide-circle-help icon-btn" data-icon="inline-start" aria-hidden="true" />
         </Button>
