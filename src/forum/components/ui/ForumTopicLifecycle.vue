@@ -77,15 +77,15 @@ async function copyTopicId() {
   justify-content: center;
   box-sizing: border-box;
   flex-shrink: 0;
-  width: 12px;
-  height: 12px;
+  width: var(--forum-topic-lifecycle-icon-size, 12px);
+  height: var(--forum-topic-lifecycle-icon-size, 12px);
   border-radius: 50%;
 }
 
 .forum-topic-lifecycle-icon > svg {
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 100%;
+  height: 100%;
   flex-shrink: 0;
 }
 

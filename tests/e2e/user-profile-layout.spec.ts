@@ -1,4 +1,76 @@
+import { alice, localAuth } from './fixtures/gitee'
 import { expect, test } from './support/test'
+
+test('sticky profile bar follows the content column across viewport sizes', async ({ page }) => {
+  await page.goto('feedback/@alice')
+  const profile = page.locator('[data-forum-user-profile="alice"]')
+  await expect(profile.locator('[data-forum-user-name]')).toContainText('Alice', { timeout: 30_000 })
+  await page.reload()
+  await expect(profile.locator('[data-forum-user-name]')).toContainText('Alice')
+  const tabs = profile.locator('.profile-tabs').first()
+  await expect(tabs.locator('.forum-topic-lifecycle')).toHaveCount(1)
+  await expect(tabs.locator('[data-tab-id="all"] .forum-topic-lifecycle-icon')).toHaveClass(/is-open/)
+  await tabs.locator('[data-tab-id="closed"]').click()
+  await expect(tabs.locator('[data-tab-id="all"] .forum-topic-lifecycle')).toHaveCount(0)
+  await expect(tabs.locator('[data-tab-id="closed"] .forum-topic-lifecycle-icon')).toHaveClass(/is-progressing/)
+  await expect(tabs.locator('.forum-topic-lifecycle-icon')).toHaveCSS('width', '14px')
+  await tabs.locator('[data-tab-id="all"]').click()
+  await page.locator('.forum-content').evaluate(el => el.style.minHeight = '2000px')
+  const bar = page.locator('.user-sticky-bar')
+  await expect(bar.locator('img')).toHaveCount(0)
+  for (const width of [1920, 1440, 1280, 1024, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.evaluate(() => window.scrollTo(0, 650))
+    await expect(bar).toHaveAttribute('data-visible', 'true')
+    await expect.poll(async () => {
+      const contentBox = (await profile.boundingBox())!
+      const barBox = (await bar.boundingBox())!
+      return Math.max(Math.abs(contentBox.x - barBox.x), Math.abs(contentBox.width - barBox.width))
+    }).toBeLessThan(2)
+    const tabs = bar.locator('.profile-tabs')
+    await expect.poll(() => tabs.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThan(2)
+    const identityBox = (await bar.locator('.user-sticky-bar-identity').boundingBox())!
+    const tabsBox = (await tabs.boundingBox())!
+    if ((await bar.boundingBox())!.width < 640)
+      expect(tabsBox.y).toBeGreaterThanOrEqual(identityBox.y + identityBox.height)
+    else
+      expect(tabsBox.x).toBeGreaterThanOrEqual(identityBox.x + identityBox.width)
+  }
+  await bar.locator('[data-tab-id="closed"]').click()
+  await expect(page).toHaveURL(/\/feedback\/@alice\/closed$/)
+  await expect(bar.locator('.forum-topic-lifecycle')).toHaveCount(1)
+  await expect(bar.locator('[data-tab-id="closed"] .forum-topic-lifecycle-icon')).toHaveClass(/is-progressing/)
+  await expect(tabs.locator('[data-tab-id="closed"]')).toHaveAttribute('aria-pressed', 'true')
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await expect(bar).toHaveAttribute('data-visible', 'false')
+  await expect(bar).toHaveAttribute('inert', '')
+})
+
+test.describe('localized profile with archive access', () => {
+  test.use({ scenario: { user: { ...alice, name: 'Alice with a very long display name for profile layout' } } })
+
+  for (const locale of ['en', 'ja']) {
+    test(`${locale} sticky tabs fit narrow screens and switch to archived feedback`, async ({ page }) => {
+      await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
+      await page.goto(`${locale}/feedback/@alice`)
+      const profile = page.locator('[data-forum-user-profile="alice"]')
+      await expect(profile.locator('[data-forum-user-name]')).toContainText('Alice', { timeout: 30_000 })
+      await page.locator('.forum-content').evaluate(el => el.style.minHeight = '2000px')
+      const bar = page.locator('.user-sticky-bar')
+      for (const width of [320, 640, 768, 960, 1280]) {
+        await page.setViewportSize({ width, height: 900 })
+        await page.evaluate(() => window.scrollTo(0, 650))
+        await expect(bar).toHaveAttribute('data-visible', 'true')
+        await expect(bar.locator('[data-tab-id]')).toHaveCount(3)
+        await expect.poll(() => bar.evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThan(2)
+      }
+      await bar.locator('[data-tab-id="archived"]').click()
+      await expect(page).toHaveURL(new RegExp(`/${locale}/feedback/@alice/archived$`))
+      await expect(bar.locator('.forum-topic-lifecycle')).toHaveCount(1)
+      await expect(bar.locator('.forum-topic-lifecycle-icon')).toHaveClass(/is-closed/)
+    })
+  }
+})
 
 test.describe('mobile profile filters', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })

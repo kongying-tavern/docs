@@ -92,6 +92,6 @@ export namespace FORUM {
   interface ProfileTab {
     id: 'all' | 'closed' | 'archived'
     label: string
-    icon: string
+    state: ForumAPI.TopicState
   }
 }

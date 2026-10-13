@@ -2,6 +2,7 @@
 import type { FORUM } from '../types'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { Button } from '@/components/ui/button'
+import ForumTopicLifecycle from '../ui/ForumTopicLifecycle.vue'
 
 const { tabs, ariaLabel, layout = 'fill' } = defineProps<{
   tabs: FORUM.ProfileTab[]
@@ -45,6 +46,7 @@ onBeforeUnmount(() => {
     ref="groupRef"
     role="group"
     :aria-label="ariaLabel"
+    :data-layout="layout"
     class="profile-tabs gap-1 min-w-0 relative"
     :class="layout === 'fill' ? 'grid h-12 grid-flow-col auto-cols-fr' : 'flex h-12 items-center'"
   >
@@ -54,12 +56,18 @@ onBeforeUnmount(() => {
       :data-tab-id="item.id"
       variant="ghost"
       class="rounded-md min-w-0 whitespace-nowrap self-center relative hover:c-[--vp-c-brand]"
-      :class="[layout === 'fill' ? 'w-full' : 'shrink-0', tabs.length > 2 && 'max-sm:px-2', layout === 'inline' && 'max-sm:text-xs']"
+      :class="[layout === 'fill' ? 'w-full' : 'shrink-0 max-sm:flex-1 max-sm:w-0', tabs.length > 2 && 'max-sm:px-2 max-sm:text-xs max-sm:whitespace-normal max-sm:leading-tight', layout === 'inline' && 'max-sm:text-xs']"
       :aria-pressed="activeTab === item.id"
       @click="activeTab = item.id"
     >
       <span class="flex items-center">
-        <span class="mr-2 inline-block" :class="[item.icon, tabs.length > 2 && 'max-sm:hidden']" aria-hidden="true" />
+        <ForumTopicLifecycle
+          v-if="activeTab === item.id"
+          :state="item.state"
+          icon-only
+          class="profile-tab-state-icon"
+          aria-hidden="true"
+        />
         {{ item.label }}
       </span>
     </Button>
@@ -72,6 +80,22 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+@container profile-sticky (width < 640px) {
+  .profile-tabs[data-layout='inline'] > button {
+    flex: 1;
+    width: 0;
+    padding-inline: 8px;
+    font-size: 12px;
+    line-height: 1.25;
+    white-space: normal;
+  }
+}
+
+.profile-tab-state-icon {
+  --forum-topic-lifecycle-icon-size: 14px;
+  margin-inline-end: 6px;
+}
+
 .profile-tab-indicator {
   position: absolute;
   bottom: 0;

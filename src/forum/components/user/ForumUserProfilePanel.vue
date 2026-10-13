@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
-import { useDebounceFn, useEventListener, useMediaQuery } from '@vueuse/core'
+import { useDebounceFn, useElementBounding, useEventListener, useMediaQuery } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
@@ -31,6 +31,8 @@ const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const searchQuery = ref(props.query)
 watch(() => props.query, query => searchQuery.value = query)
 const tabRowRef = useTemplateRef<HTMLElement>('tabRowRef')
+const profileRef = useTemplateRef<HTMLElement>('profileRef')
+const { left: profileLeft, width: profileWidth } = useElementBounding(profileRef)
 const condensed = ref(false)
 let foldObserver: IntersectionObserver | null = null
 
@@ -60,7 +62,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="w-full" :data-forum-user-profile="username">
+  <div ref="profileRef" class="w-full" :data-forum-user-profile="username">
     <div class="rounded-lg w-full">
       <div class="mx-auto w-full">
         <div class="p-4 rounded-lg w-full sm:p-6">
@@ -175,20 +177,22 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <ForumUserProfileStickyBar
-      v-model:active-tab="modelValue"
-      :username="renderedUser?.username || ''"
-      :avatar="renderedUser?.avatar"
-      :login="renderedUser?.login"
-      :role="role"
-      :is-authorized-user="isAuthorizedUser"
-      :visible="condensed"
-      :tabs="menu"
-      @message="emit('message')"
-    >
-      <template #follow>
-        <slot name="follow" />
-      </template>
-    </ForumUserProfileStickyBar>
+    <Teleport to="body">
+      <ForumUserProfileStickyBar
+        v-model:active-tab="modelValue"
+        :style="{ left: `${profileLeft}px`, width: `${profileWidth}px` }"
+        :username="renderedUser?.username || ''"
+        :login="renderedUser?.login"
+        :role="role"
+        :is-authorized-user="isAuthorizedUser"
+        :visible="condensed"
+        :tabs="menu"
+        @message="emit('message')"
+      >
+        <template #follow>
+          <slot name="follow" />
+        </template>
+      </ForumUserProfileStickyBar>
+    </Teleport>
   </div>
 </template>

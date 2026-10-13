@@ -40,19 +40,19 @@ export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
       {
         id: 'all',
         label: message.value.forum.header.navigation.allFeedback,
-        icon: 'i-lucide-file-text',
+        state: 'open',
       },
       {
         id: 'closed',
         label: message.value.forum.header.navigation.closedFeedback,
-        icon: 'i-lucide-circle-check',
+        state: 'progressing',
       },
     ]
     if (canViewArchived.value) {
       items.push({
         id: 'archived',
         label: message.value.forum.header.navigation.archivedFeedback,
-        icon: 'i-lucide-circle-off',
+        state: 'closed',
       })
     }
     return items

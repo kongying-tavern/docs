@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
-import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { useLocalized } from '@/hooks/useLocalized'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumProfileTabs from './ForumProfileTabs.vue'
 
-const { username, avatar, login, role, isAuthorizedUser, visible, tabs } = defineProps<{
+const { username, login, role, isAuthorizedUser, visible, tabs } = defineProps<{
   username: string
-  avatar?: string
   login?: string
   role?: 'official' | null
   isAuthorizedUser: boolean
@@ -25,28 +23,25 @@ const { message } = useLocalized()
 <template>
   <div class="user-sticky-bar" :data-visible="visible" :inert="!visible">
     <div class="user-sticky-bar-inner">
-      <div class="flex gap-3 h-12 min-w-0 items-center">
-        <Avatar
-          :src="avatar"
-          :alt="username"
-          class="shrink-0 h-8 w-8 max-sm:h-6 max-sm:w-6"
-          img-class="size-full rounded-full object-cover"
-        />
-        <span class="text-sm text-[var(--vp-c-text-1)] font-semibold truncate">
-          {{ username || message.forum.labels.unknown }}
-        </span>
-        <div v-if="role" class="shrink-0 hidden sm:block">
-          <ForumRoleBadge :type="role" />
+      <div class="user-sticky-bar-row">
+        <div class="user-sticky-bar-identity">
+          <span class="text-sm text-[var(--vp-c-text-1)] font-semibold truncate">
+            {{ username || message.forum.labels.unknown }}
+          </span>
+          <div v-if="role" class="shrink-0 hidden sm:block">
+            <ForumRoleBadge :type="role" />
+          </div>
         </div>
 
         <ForumProfileTabs
           v-model:active-tab="activeTab"
           layout="inline"
+          class="user-sticky-bar-tabs"
           :tabs="tabs"
           v-bind="{ ariaLabel: message.forum.header.navigation.groups.status }"
         />
 
-        <div class="ml-auto gap-2 hidden sm:flex">
+        <div class="user-sticky-bar-actions">
           <Button
             v-if="!isAuthorizedUser"
             variant="outline"
@@ -69,7 +64,6 @@ const { message } = useLocalized()
 <style scoped>
 .user-sticky-bar {
   position: fixed;
-  inset-inline: 0;
   top: calc(var(--vp-nav-height, 64px) + var(--vp-layout-top-height, 0px));
   /* 压在站点导航之下，避免盖住导航自身的弹层 */
   z-index: calc(var(--vp-z-index-nav, 30) - 1);
@@ -93,14 +87,51 @@ const { message } = useLocalized()
 
 .user-sticky-bar-inner {
   width: 100%;
-  margin: 0 auto;
-  padding: 0 16px;
+  container: profile-sticky / inline-size;
 }
 
-@media (min-width: 1440px) {
-  .user-sticky-bar-inner {
-    width: min(var(--forum-container-max-width), 100%);
-    padding: 0;
+.user-sticky-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 56px;
+}
+
+.user-sticky-bar-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.user-sticky-bar-tabs,
+.user-sticky-bar-actions {
+  flex-shrink: 0;
+}
+
+.user-sticky-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@container profile-sticky (width < 640px) {
+  .user-sticky-bar-row {
+    flex-wrap: wrap;
+    gap: 0 8px;
+    padding-top: 8px;
+  }
+
+  .user-sticky-bar-tabs {
+    order: 1;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .user-sticky-bar-identity {
+    min-height: 36px;
   }
 }
 
