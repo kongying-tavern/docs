@@ -27,7 +27,7 @@ const { message } = useLocalized()
 <template>
   <div class="mb-8 flex w-full justify-center" :role="status">
     <div v-if="error && rateLimit && !loading" class="mt-8 flex flex-col gap-3 items-center">
-      <p class="c-[var(--vp-c-text-2)] text-ui-14">
+      <p class="text-ui-14 c-[var(--vp-c-text-2)]">
         {{ message.forum.exceededRateLimitWarning }}
       </p>
       <Button variant="outline" size="sm" @click="emit('login')">
@@ -36,7 +36,7 @@ const { message } = useLocalized()
       </Button>
     </div>
     <div v-else-if="error || loading || canLoadMore" class="mt-8 flex flex-col gap-3 items-center">
-      <p v-if="error && errorMessage && !loading" class="c-[var(--vp-c-text-3)] text-ui-12">
+      <p v-if="error && errorMessage && !loading" class="text-ui-12 c-[var(--vp-c-text-3)]">
         {{ errorMessage }}
       </p>
       <Button
