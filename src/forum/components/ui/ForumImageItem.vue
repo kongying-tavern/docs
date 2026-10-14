@@ -18,12 +18,12 @@ const emit = defineEmits<{
 }>()
 const root = useTemplateRef<HTMLElement>('root')
 const imageElement = useTemplateRef<HTMLImageElement>('imageElement')
-const { near, visible, allowed, complete } = useForumImageLoading(root, () => props.image.src)
+const { visible, allowed, complete } = useForumImageLoading(root, () => props.image.src)
 const ready = ref(false)
 const hasError = ref(false)
 const ERROR_IMAGE = `${ASSET_ORIGIN}/images/noImage.png`
 const hash = computed(() => props.image.thumbHash || props.image.thumbhash)
-const placeholder = computed(() => near.value && hash.value ? forumImagePlaceholder(hash.value) : undefined)
+const placeholder = computed(() => hash.value ? forumImagePlaceholder(hash.value) : undefined)
 const imageClass = computed(() => props.fillContainer ? 'object-cover' : 'object-contain')
 const aspectStyle = computed(() => props.fillContainer || !props.image.width || !props.image.height
   ? {}
@@ -49,7 +49,13 @@ onBeforeUnmount(() => {
 
 async function onLoad(): Promise<void> {
   const image = imageElement.value
-  if (!image || !allowed.value || hasError.value || ready.value || !image.naturalWidth)
+  if (!image || ready.value || !image.naturalWidth)
+    return
+  if (hasError.value) {
+    ready.value = image.currentSrc === ERROR_IMAGE
+    return
+  }
+  if (!allowed.value)
     return
   const current = generation
   // Decode the displayed image once; preserve a loaded image if decode() rejects.
@@ -65,13 +71,21 @@ function onError(): void {
   if (!source.value || hasError.value)
     return
   hasError.value = true
+  ready.value = false
   complete()
   emit('error')
 }
 </script>
 
 <template>
-  <div ref="root" class="size-full relative overflow-hidden" :style="aspectStyle" :class="[hasError || interactive === false ? 'cursor-default' : hash && !ready ? 'cursor-wait' : 'cursor-zoom-in', props.class]">
+  <div
+    ref="root"
+    :role="!ready && image.alt ? 'img' : undefined"
+    :aria-label="!ready ? image.alt || undefined : undefined"
+    class="size-full relative overflow-hidden"
+    :style="[aspectStyle, ready ? undefined : { backgroundColor: 'var(--vp-c-bg-soft)' }]"
+    :class="[hasError || interactive === false ? 'cursor-default' : hash && !ready ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
+  >
     <img
       v-if="placeholder && !ready && !hasError"
       :src="placeholder"
@@ -88,7 +102,7 @@ function onError(): void {
       :height="image.height"
       class="forum-image-source size-full block"
       :class="imageClass"
-      :style="{ opacity: placeholder && !ready && !hasError ? 0 : 1 }"
+      :style="{ visibility: ready ? 'visible' : 'hidden' }"
       loading="eager"
       decoding="async"
       :fetchpriority="visible ? 'high' : 'low'"
@@ -100,9 +114,7 @@ function onError(): void {
 
 <style scoped>
 .forum-image-source {
-  transition:
-    opacity 120ms ease,
-    transform 200ms ease;
+  transition: transform 200ms ease;
 }
 @media (hover: hover) and (pointer: fine) {
   .cursor-zoom-in:hover .forum-image-source {

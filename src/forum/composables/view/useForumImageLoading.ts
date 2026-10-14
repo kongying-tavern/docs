@@ -48,14 +48,13 @@ function observe(target: Element, listener: VisibilityListener): () => void {
 /** Only mounted rows participate; decoding completion releases the queue slot. */
 export function useForumImageLoading(target: Ref<HTMLElement | null>, source: () => string) {
   const active = ref(true)
-  const near = ref(false)
   const visible = ref(false)
   const permitted = ref(false)
   const admittedSource = ref('')
   const allowed = computed(() => permitted.value && admittedSource.value === source())
   let complete = () => {}
   watch([target, active, source], ([element, enabled, url], _previous, onCleanup) => {
-    permitted.value = near.value = visible.value = false
+    permitted.value = visible.value = false
     complete = () => {}
     if (!element || !enabled)
       return
@@ -66,7 +65,6 @@ export function useForumImageLoading(target: Ref<HTMLElement | null>, source: ()
     complete = job.complete
     const stop = observe(element, (rect) => {
       visible.value = rect.bottom > 0 && rect.top < innerHeight && rect.right > 0 && rect.left < innerWidth
-      near.value = rect.bottom > -200 && rect.top < innerHeight + 200
       job.update(visible.value ? 0 : rect.top >= innerHeight ? 1 : 2, Math.max(0, rect.top - innerHeight, -rect.bottom))
     })
     onCleanup(() => {
@@ -76,5 +74,5 @@ export function useForumImageLoading(target: Ref<HTMLElement | null>, source: ()
   }, { flush: 'post' })
   onActivated(() => active.value = true)
   onDeactivated(() => active.value = false)
-  return { near, visible, allowed, complete: () => complete() }
+  return { visible, allowed, complete: () => complete() }
 }
