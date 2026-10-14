@@ -4,6 +4,7 @@ import type { FORUM } from '../types'
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu'
 import { cn } from '@/lib/utils'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'
+import { menuContentClasses } from './responsive/shared'
 
 const { menu = [], class: className } = defineProps<{
   menu?: FORUM.TopicDropdownMenu[]
@@ -16,7 +17,7 @@ const { menu = [], class: className } = defineProps<{
     <ContextMenuTrigger as-child>
       <slot />
     </ContextMenuTrigger>
-    <ContextMenuContent fluid :class="cn('w-max text-nowrap z-[max(50,calc(var(--vp-z-index-sidebar)+1))]', className)">
+    <ContextMenuContent fluid :class="cn(menuContentClasses(menu), 'z-[max(50,calc(var(--vp-z-index-sidebar)+1))]', className)">
       <slot name="menu" />
       <ForumDropdownMenu :items="menu" />
     </ContextMenuContent>

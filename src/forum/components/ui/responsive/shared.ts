@@ -39,6 +39,13 @@ export function groupSelectOptions<T extends string>(
 
 export const FORUM_SELECT_TRIGGER_CLASSES = [SELECT_TRIGGER_CLASSES]
 
+/** Size each popup independently; submenu bindings do not widen the parent. */
+export function menuContentClasses(items: FORUM.MenuElement[]): string {
+  const hasShortcut = (items: FORUM.MenuElement[]): boolean => items.some(item =>
+    item.type === 'item' ? !!item.shortcut : item.type === 'group' && hasShortcut(item.items))
+  return hasShortcut(items) ? 'w-max text-nowrap min-w-[min(16rem,calc(100vw-2rem))]' : 'w-max text-nowrap'
+}
+
 /** 菜单模型的排序与 key 生成，桌面（DropdownMenu）与移动端（抽屉）渲染器共用 */
 export function sortMenuItems(items: FORUM.TopicDropdownMenu[]): FORUM.TopicDropdownMenu[] {
   const orderedItems = items.filter(item => item.order !== undefined)

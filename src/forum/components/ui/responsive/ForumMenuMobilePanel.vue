@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FORUM } from '../../types'
+import ForumMenuShortcut from '../ForumMenuShortcut.vue'
 import ForumTopicStatusBadge from '../ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
 import { menuItemKey, sortMenuItems } from './shared'
@@ -115,7 +116,7 @@ function handleRadioClick(item: FORUM.MenuRadioItem) {
         <ForumTopicStatusBadge v-else-if="item.status !== undefined" :status="item.status ?? undefined" />
         <span v-else-if="item.icon" class="icon-btn shrink-0" :class="item.icon" />
         <span v-if="!item.topicType" class="text-left flex-1 min-w-0 truncate">{{ item.label }}</span>
-        <span v-if="item.shortcut" class="text-xs text-[var(--vp-c-text-3)]">{{ item.shortcut }}</span>
+        <ForumMenuShortcut v-if="item.shortcut" :shortcut="item.shortcut" />
       </button>
     </template>
   </div>

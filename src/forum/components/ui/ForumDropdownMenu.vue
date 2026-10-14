@@ -8,15 +8,15 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu'
 import ForumHintIcon from './ForumHintIcon.vue'
+import ForumMenuShortcut from './ForumMenuShortcut.vue'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from './ForumTopicTypeBadge.vue'
-import { menuItemKey, sortMenuItems } from './responsive/shared'
+import { menuContentClasses, menuItemKey, sortMenuItems } from './responsive/shared'
 
 defineProps<{
   items: FORUM.TopicDropdownMenu[]
@@ -78,11 +78,9 @@ function handleRadioSelect(group: FORUM.MenuRadioGroup, value: unknown) {
     <DropdownMenuItem v-else-if="item.type === 'item'" :id="item.id" :disabled="item.disabled" :variant="item.variant" :class="item.class" @click="item.action">
       <ForumTopicTypeBadge v-if="item.topicType" :type="item.topicType" />
       <ForumTopicStatusBadge v-else-if="item.status !== undefined" :status="item.status ?? undefined" />
-      <span v-else-if="item.icon" class="mr-2 icon-btn" :class="item.icon" />
-      <span v-if="!item.topicType">{{ item.label }}</span>
-      <DropdownMenuShortcut v-if="item.shortcut">
-        {{ item.shortcut }}
-      </DropdownMenuShortcut>
+      <span v-else-if="item.icon" class="icon-btn shrink-0" :class="item.icon" aria-hidden="true" />
+      <span v-if="!item.topicType" class="min-w-0">{{ item.label }}</span>
+      <ForumMenuShortcut v-if="item.shortcut" :shortcut="item.shortcut" />
     </DropdownMenuItem>
 
     <DropdownMenuSub v-else-if="item.type === 'submenu'">
@@ -91,7 +89,7 @@ function handleRadioSelect(group: FORUM.MenuRadioGroup, value: unknown) {
         <span>{{ item.label }}</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent class="z-[max(50,calc(var(--vp-z-index-sidebar)+1))]">
+        <DropdownMenuSubContent class="z-[max(50,calc(var(--vp-z-index-sidebar)+1))]" :class="menuContentClasses(item.items)">
           <ForumDropdownMenu :items="item.items" />
         </DropdownMenuSubContent>
       </DropdownMenuPortal>

@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import ForumDropdownMenu from '../ForumDropdownMenu.vue'
+import { menuContentClasses } from './shared'
 
 defineOptions({
   inheritAttrs: false,
@@ -37,7 +38,7 @@ defineSlots<{
       fluid
       :side="side"
       :align="align"
-      :class="cn('w-max text-nowrap', className)"
+      :class="cn(menuContentClasses(items), className)"
     >
       <slot name="menu" />
       <ForumDropdownMenu :items="items" />
