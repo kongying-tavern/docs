@@ -18,6 +18,7 @@ const hasImages = computed(() =>
 const images = computed(() => {
   const imgs = props.topic.content?.images || []
   return imgs.map(img => ({
+    ...img,
     src: img.src,
     alt: img.alt || '',
     width: img.width,

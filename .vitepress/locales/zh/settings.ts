@@ -42,8 +42,8 @@ const settings = {
   copyFailed: '复制失败，请重试或手动选择文本复制',
   shortcuts: {
     title: '键盘快捷键',
-    groups: { input: '消息输入框', application: '应用' },
-    actions: { send: '发送评论或回复', bold: '粗体', italic: '斜体', strike: '删除线', search: '聚焦搜索', publish: '发布反馈', settings: '打开设置' },
+    groups: { image: '图片预览', input: '消息输入框', application: '应用' },
+    actions: { imageToggleZoom: '切换缩放', imageOpen: '查看图片', imagePrevious: '上一张图片', imageNext: '下一张图片', imageZoomIn: '放大', imageZoomOut: '缩小', imageReset: '重置缩放', imageTop: '回到图片顶部', imageBottom: '移到图片底部', imagePanel: '显示／隐藏右侧面板', imageClose: '关闭预览', imageCopy: '复制图片', imageSave: '图片另存为…', imageLink: '复制图片链接', send: '发送评论或回复', bold: '粗体', italic: '斜体', strike: '删除线', search: '聚焦搜索', publish: '发布反馈', settings: '打开设置', imageNewTab: '在新标签页打开图片', imageMetadata: '查看图片原数据' },
     edit: '修改快捷键',
     unassigned: '未绑定',
     resetGroup: '恢复默认',
@@ -54,7 +54,7 @@ const settings = {
     save: '保存',
     recordDescription: '在录制区域按下组合键。Tab 可移动到操作按钮，Esc 取消。Ctrl／⌘ 会自动适配系统。',
     conflict: '与以下快捷键冲突',
-    reserved: '请使用其他组合键，避免占用文本编辑、浏览器或系统常用按键。单键仅支持应用搜索的 /。',
+    reserved: '请使用其他组合键，避免占用文本编辑、浏览器或系统常用按键。图片预览可以使用单键，应用搜索可以使用 /。',
     invalid: '不支持此按键组合',
   },
   appearance: {

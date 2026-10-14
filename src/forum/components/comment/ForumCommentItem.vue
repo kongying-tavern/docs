@@ -104,6 +104,7 @@ function handleCommentClick(author: ForumAPI.User): void {
       <ForumImage
         v-if="commentData.content.images && size !== 'small'"
         :images="commentData.content.images.map(img => ({
+          ...img,
           src: img.src,
           width: img.width,
           height: img.height,

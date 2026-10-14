@@ -10,6 +10,7 @@ interface ShortcutRegistration {
   run: () => unknown
   enabled?: MaybeRefOrGetter<boolean>
   priority?: number
+  accepts?: (event: KeyboardEvent) => boolean
 }
 
 const useDispatcher = createSharedComposable(() => {
@@ -23,20 +24,18 @@ const useDispatcher = createSharedComposable(() => {
       return
     const candidates = [...registrations].toSorted((a, b) => (b.priority ?? 0) - (a.priority ?? 0))
     const overlayOpen = document.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"][data-state="open"], [role="listbox"][data-state="open"]')
-    if (!overlayOpen) {
-      for (const registration of candidates) {
-        if (preferences.active(registration.id) && (registration.enabled === undefined || toValue(registration.enabled))
-          && matchesShortcut(preferences.get(registration.id).binding, event)) {
-          event.preventDefault()
-          event.stopImmediatePropagation()
-          if (!event.repeat)
-            registration.run()
-          return
-        }
+    for (const registration of candidates) {
+      if ((registration.accepts ? registration.accepts(event) : !overlayOpen) && preferences.active(registration.id) && (registration.enabled === undefined || toValue(registration.enabled))
+        && matchesShortcut(preferences.get(registration.id).binding, event)) {
+        event.preventDefault()
+        event.stopImmediatePropagation()
+        if (!event.repeat)
+          registration.run()
+        return
       }
     }
     // Disabled bindings and the site's original / must not fall through to other handlers.
-    if (preferences.desktopUi.value && (candidates.some(registration => matchesShortcut(preferences.get(registration.id).binding, event))
+    if (preferences.desktopUi.value && (candidates.some(registration => (registration.enabled === undefined || toValue(registration.enabled)) && (registration.accepts ? registration.accepts(event) : !overlayOpen) && matchesShortcut(preferences.get(registration.id).binding, event))
       || (candidates.some(registration => registration.id === 'search') && matchesShortcut(FORUM_SHORTCUTS.find(action => action.id === 'search')!.binding, event)))) {
       event.preventDefault()
       event.stopImmediatePropagation()

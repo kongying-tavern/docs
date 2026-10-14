@@ -34,6 +34,7 @@ const topicImages = computed(() => {
     return []
 
   return topic.value.content.images.map(img => ({
+    ...img,
     src: img.src,
     alt: img.alt || '',
     thumbHash: img.thumbHash,

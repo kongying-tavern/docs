@@ -6,9 +6,11 @@ import { ASSET_ORIGIN } from '~/constants/site'
 import { useForumImageLoading } from '~/forum/composables/view/useForumImageLoading'
 import { isForumLongImage } from '~/forum/services/forumImageLayout'
 import { forumImagePlaceholder } from '~/forum/services/forumImagePlaceholder'
+import ForumImageContextMenu from './ForumImageContextMenu.vue'
 
 const props = defineProps<{
   image: ImageItem
+  preview?: () => void
   fillContainer?: boolean
   interactive?: boolean
   class?: string
@@ -18,7 +20,12 @@ const emit = defineEmits<{
   ready: []
   dimensions: [size: { width: number, height: number }]
 }>()
+const menuCommands = [{ id: 'imageOpen' as const, run: () => props.preview?.(), enabled: () => !!props.preview }]
 const root = useTemplateRef<HTMLElement>('root')
+const menuActive = computed(() => !!root.value)
+function acceptsShortcut(event: KeyboardEvent) {
+  return menuActive.value && !!root.value && (root.value.contains(event.target as Node) || root.value.closest('button') === event.target) && !document.querySelector('.forum-preview-root, [role="menu"][data-state="open"]') && event.target instanceof Element && !event.target.closest('input, textarea, [contenteditable]')
+}
 const imageElement = useTemplateRef<HTMLImageElement>('imageElement')
 const { visible, allowed, complete } = useForumImageLoading(root, () => props.image.src)
 const ready = ref(false)
@@ -85,41 +92,43 @@ function onError(): void {
 </script>
 
 <template>
-  <div
-    ref="root"
-    :role="!ready && image.alt ? 'img' : undefined"
-    :aria-label="!ready ? image.alt || undefined : undefined"
-    class="size-full relative overflow-hidden"
-    :style="[aspectStyle, ready ? undefined : { backgroundColor: 'var(--vp-c-bg-soft)' }]"
-    :class="[hasError || interactive === false ? 'cursor-default' : hash && !ready ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
-  >
-    <img
-      v-if="placeholder && !ready && !hasError"
-      :src="placeholder"
-      alt=""
-      aria-hidden="true"
-      class="size-full inset-0 absolute"
-      :class="imageClass"
+  <ForumImageContextMenu :image="{ ...image, naturalWidth: naturalSize?.width, naturalHeight: naturalSize?.height }" :commands="menuCommands" :active="menuActive" :accepts="acceptsShortcut">
+    <div
+      ref="root"
+      :role="!ready && image.alt ? 'img' : undefined"
+      :aria-label="!ready ? image.alt || undefined : undefined"
+      class="size-full relative overflow-hidden"
+      :style="[aspectStyle, ready ? undefined : { backgroundColor: 'var(--vp-c-bg-soft)' }]"
+      :class="[hasError || interactive === false ? 'cursor-default' : hash && !ready ? 'cursor-wait' : 'cursor-zoom-in', props.class]"
     >
-    <img
-      ref="imageElement"
-      :src="source"
-      :alt="image.alt || ''"
-      :width="image.width"
-      :height="image.height"
-      class="forum-image-source size-full block"
-      :class="imageClass"
-      :style="{ visibility: ready ? 'visible' : 'hidden' }"
-      loading="eager"
-      decoding="async"
-      :fetchpriority="visible ? 'high' : 'low'"
-      @load="onLoad"
-      @error="onError"
-    >
-    <span v-if="isLong && !hasError" class="forum-long-image-label">
-      {{ message.forum.imagePreview.longImage }}
-    </span>
-  </div>
+      <img
+        v-if="placeholder && !ready && !hasError"
+        :src="placeholder"
+        alt=""
+        aria-hidden="true"
+        class="size-full inset-0 absolute"
+        :class="imageClass"
+      >
+      <img
+        ref="imageElement"
+        :src="source"
+        :alt="image.alt || ''"
+        :width="image.width"
+        :height="image.height"
+        class="forum-image-source size-full block"
+        :class="imageClass"
+        :style="{ visibility: ready ? 'visible' : 'hidden' }"
+        loading="eager"
+        decoding="async"
+        :fetchpriority="visible ? 'high' : 'low'"
+        @load="onLoad"
+        @error="onError"
+      >
+      <span v-if="isLong && !hasError" class="forum-long-image-label">
+        {{ message.forum.imagePreview.longImage }}
+      </span>
+    </div>
+  </ForumImageContextMenu>
 </template>
 
 <style scoped>

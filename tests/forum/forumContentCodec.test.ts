@@ -35,6 +35,7 @@ test('updates Topic metadata while preserving unknown keys and content', () => {
   assert.equal(decoded.content.text, 'Topic body')
   assert.deepEqual(decoded.attachments, [{
     src: `${FORUM_IMAGE_ORIGIN}/a.webp`,
+    originalSrc: 'https://webp.assets.inter-knot.site/a.webp',
     alt: 'diagram',
     thumbHash: 'hash',
     width: 800,

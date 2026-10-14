@@ -41,6 +41,7 @@ const renderedContent = computed(() => topic
   ? renderForumTopicSummary(decodeTopicBody(topic.contentRaw).content, { topicHref: id => topicHref(id, null) })
   : '')
 const images = computed(() => (topic?.content.images ?? []).map(image => ({
+  ...image,
   src: image.src,
   alt: image.alt || '',
   thumbHash: image.thumbHash,

@@ -208,6 +208,13 @@ function touchMove(event: TouchEvent) {
     })
   }
 }
+function scrollToEdge(bottom: boolean) {
+  if (viewport.value) {
+    viewport.value.scrollTop = bottom ? viewport.value.scrollHeight : 0
+    syncWindow()
+  }
+}
+defineExpose({ changeZoom, scrollToEdge, zoom })
 </script>
 
 <template>
@@ -241,14 +248,12 @@ function touchMove(event: TouchEvent) {
       class="forum-long-reader-viewport"
       :class="scrollFade"
       tabindex="0"
-      :aria-keyshortcuts="isDesktop && zoomEnabled ? 'Enter' : undefined"
       :aria-label="message.forum.imagePreview.longImage"
       @scroll.passive="syncWindow"
       @pointerdown="beginImageClick"
       @pointermove="trackImageClick"
       @pointerup="trackImageClick"
       @pointercancel="imageClick = undefined"
-      @keydown.enter.prevent="toggleZoom()"
       @touchstart="touchStart"
       @touchmove="touchMove"
       @touchend="pinch = undefined"
@@ -289,6 +294,12 @@ function touchMove(event: TouchEvent) {
   overscroll-behavior: contain;
   border-radius: 8px;
   scrollbar-gutter: stable;
+}
+@media (min-width: 960px) and (hover: hover) and (pointer: fine) {
+  .forum-long-reader-viewport:not(:hover) {
+    --panel-scrollbar-color: transparent;
+    scrollbar-color: transparent transparent;
+  }
 }
 .forum-long-reader-map-rail {
   display: flex;

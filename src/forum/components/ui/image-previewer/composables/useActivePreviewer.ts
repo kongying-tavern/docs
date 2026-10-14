@@ -1,13 +1,12 @@
+import type { ForumImageResource } from '~/forum/services/forumImageResource'
+
 /**
  * 预览器控制器（模块级单例）。
  * 侧边面板内容复用的嵌套实例点击缩略图时，委托给当前活跃的预览器：
  * 图片能在活跃列表中找到则直接切换；找不到（如点击的是评论图片）
  * 则替换活跃预览器的图片列表，避免再开一层全屏预览或重复播放面板动画。
  */
-interface PreviewerImageRef {
-  src: string
-  alt?: string
-}
+type PreviewerImageRef = ForumImageResource
 
 interface ActivePreviewer {
   getImages: () => PreviewerImageRef[]

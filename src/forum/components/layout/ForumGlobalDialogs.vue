@@ -5,6 +5,7 @@ import AsyncDialogLoading from '~/components/AsyncDialogLoading.vue'
 import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import { FORM_HASH } from '~/forum/components/form/publish-topic-form/form-config'
 import { useReactionStats } from '~/forum/composables/data/useReactionStats'
+import { useForumImageMetadata } from '~/forum/composables/state/useForumImageMetadata'
 import { useTopicStatusEditor } from '~/forum/composables/state/useTopicStatusEditor'
 import { useTopicTagsEditor } from '~/forum/composables/state/useTopicTagsEditor'
 
@@ -16,6 +17,8 @@ const ForumPublishTopicForm = defineRecoverableAsyncComponent(() => import('~/fo
 const ForumTopicTagsEditorDialog = defineRecoverableAsyncComponent(() => import('~/forum/components/topic/ForumTopicTagsEditorDialog.vue'), AsyncDialogLoading)
 const ForumReactionStatsDialog = defineRecoverableAsyncComponent(() => import('~/forum/components/ui/ForumReactionStatsDialog.vue'), AsyncDialogLoading)
 const ForumTopicStatusDialog = defineRecoverableAsyncComponent(() => import('~/forum/components/topic/ForumTopicStatusDialog.vue'), AsyncDialogLoading)
+const ForumImageMetadataDialog = defineRecoverableAsyncComponent(() => import('~/forum/components/ui/ForumImageMetadataDialog.vue'), AsyncDialogLoading)
+const { open: shouldMountImageMetadata } = useForumImageMetadata()
 const shouldMountPublishForm = ref(false)
 const { open: shouldMountTopicTagsEditor } = useTopicTagsEditor()
 const { open: shouldMountReactionStats } = useReactionStats()
@@ -42,5 +45,6 @@ useEventListener('hashchange', mountPublishFormWhenRequested)
   </template>
   <ForumTopicTagsEditorDialog v-if="shouldMountTopicTagsEditor" @close="shouldMountTopicTagsEditor = false" />
   <ForumReactionStatsDialog v-if="shouldMountReactionStats" @close="shouldMountReactionStats = false" />
+  <ForumImageMetadataDialog v-if="shouldMountImageMetadata" />
   <ForumTopicStatusDialog v-if="shouldMountTopicStatusEditor" @close="shouldMountTopicStatusEditor = false" />
 </template>

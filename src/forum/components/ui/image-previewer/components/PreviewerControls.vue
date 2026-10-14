@@ -4,6 +4,8 @@ import { useLocalized } from '@/hooks/useLocalized'
 import ForumImageIndicator from '../../ForumImageIndicator.vue'
 
 defineProps<{
+  closeShortcut?: string
+  closeShortcutAria?: string
   index: number
   total: number
   showDots?: boolean
@@ -22,6 +24,8 @@ const { message } = useLocalized()
     type="button"
     class="forum-preview-close"
     :aria-label="message.ui.button.close"
+    :title="closeShortcut"
+    :aria-keyshortcuts="closeShortcutAria"
     @click.stop="emit('close')"
   >
     <X class="size-5" />

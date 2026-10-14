@@ -35,8 +35,8 @@ const settings: CustomConfig['settings'] = {
   },
   shortcuts: {
     title: 'キーボードショートカット',
-    groups: { input: 'メッセージ入力', application: 'アプリケーション' },
-    actions: { send: 'コメント・返信を送信', bold: '太字', italic: '斜体', strike: '取り消し線', search: '検索欄に移動', publish: 'フィードバックを投稿', settings: '設定を開く' },
+    groups: { image: '画像プレビュー', input: 'メッセージ入力', application: 'アプリケーション' },
+    actions: { imageToggleZoom: '拡大を切り替え', imageOpen: '画像を表示', imagePrevious: '前の画像', imageNext: '次の画像', imageZoomIn: '拡大', imageZoomOut: '縮小', imageReset: '倍率をリセット', imageTop: '画像の先頭へ', imageBottom: '画像の末尾へ', imagePanel: 'サイドパネルを切り替え', imageClose: 'プレビューを閉じる', imageCopy: '画像をコピー', imageSave: '画像を保存…', imageLink: '画像リンクをコピー', send: 'コメント・返信を送信', bold: '太字', italic: '斜体', strike: '取り消し線', search: '検索欄に移動', publish: 'フィードバックを投稿', settings: '設定を開く', imageNewTab: '新しいタブで画像を開く', imageMetadata: '画像の元データを表示' },
     edit: 'ショートカットを変更',
     unassigned: '未設定',
     resetGroup: '初期設定に戻す',

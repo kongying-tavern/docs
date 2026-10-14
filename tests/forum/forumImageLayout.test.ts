@@ -17,7 +17,7 @@ test('card rows fit natural proportions within a bounded common height', () => {
 
 test('card rows bound long screenshots and tolerate missing or invalid dimensions', () => {
   const plan = planForumImageRow([{ width: 1, height: 10000 }, { width: 10000, height: 1 }], 600)
-  assert.equal(plan.columns, '0.6666666666666666fr 10000fr')
+  assert.equal(plan.columns, '1fr 10000fr')
   assert.ok(plan.height > 0 && plan.height <= 200)
   assert.equal(planForumImageRow([{}], Number.NaN).height, 200)
   assert.ok(planForumImageRow([square, square, square], 200).width <= 200)
@@ -29,7 +29,7 @@ test('long screenshots get bounded readable thumbnails without classifying ordin
   assert.equal(isForumLongImage(tall), false)
   for (const image of [{}, { width: 0, height: 400 }, { width: 1, height: Number.POSITIVE_INFINITY }])
     assert.equal(isForumLongImage(image), false)
-  assert.ok(Math.abs(planForumImageRow([{ width: 400, height: 4000 }], 600).width - 200 * 2 / 3) < 1e-10)
+  assert.ok(Math.abs(planForumImageRow([{ width: 400, height: 4000 }], 600).width - 200) < 1e-10)
 })
 
 test('wide images fit the row without vertical letterboxing', () => {
@@ -79,4 +79,9 @@ test('the same planner adapts its crop targets to a wide detail-page grid', () =
     layout: 'three-top',
     order: [1, 0, 2],
   })
+})
+
+test('phone screenshots crop the top into a readable card thumbnail', () => {
+  assert.equal(isForumLongImage({ width: 1080, height: 2400 }), true)
+  assert.equal(planForumImageRow([{ width: 1080, height: 2400 }], 600).width, 200)
 })

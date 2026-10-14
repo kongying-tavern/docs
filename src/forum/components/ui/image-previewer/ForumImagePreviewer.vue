@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
-import { useEventListener, useLocalStorage, useMediaQuery } from '@vueuse/core'
+import type { ForumImageCommand } from '~/forum/composables/view/useForumImageMenu'
+import type { ForumImageResource } from '~/forum/services/forumImageResource'
+import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { DialogContent, DialogRoot, DialogTitle } from 'reka-ui'
 import { computed, nextTick, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
 import { isForumLongImage } from '~/forum/services/forumImageLayout'
+import ForumImageContextMenu from '../ForumImageContextMenu.vue'
 import ForumImageNavigationButton from '../ForumImageNavigationButton.vue'
 import PreviewerControls from './components/PreviewerControls.vue'
 import PreviewerLongImage from './components/PreviewerLongImage.vue'
@@ -15,12 +19,7 @@ import { useActivePreviewer } from './composables/useActivePreviewer'
 import { stackTransform, usePreviewerFlip } from './composables/usePreviewerFlip'
 import { usePreviewerTransform } from './composables/usePreviewerTransform'
 
-export interface PreviewImage {
-  src: string
-  width?: number
-  height?: number
-  alt?: string
-}
+export type PreviewImage = ForumImageResource
 
 export interface PreviewerContext {
   kind: 'topic' | 'comment'
@@ -63,6 +62,7 @@ const current = ref(0)
 const containerEl = useTemplateRef<HTMLDivElement>('containerEl')
 const stageEl = useTemplateRef<HTMLDivElement>('stageEl')
 const stackEl = useTemplateRef<HTMLDivElement>('stackEl')
+const longReader = useTemplateRef<InstanceType<typeof PreviewerLongImage>>('longReader')
 const imageEl = useTemplateRef<HTMLImageElement>('imageEl')
 const panelOpen = ref(false)
 const panelCollapsed = useLocalStorage('forum-image-preview-panel-collapsed', false)
@@ -427,35 +427,47 @@ function restoreFocus(): void {
   target.focus?.()
 }
 
-/** 内层弹层优先处理按键；图片快捷键不干扰侧栏控件。 */
-function handleKeydown(event: KeyboardEvent): void {
-  if (!visible.value || closing.value || event.isComposing)
-    return
+const shortcutPreferences = useForumShortcutPreferences()
+const previewActive = computed(() => visible.value && !closing.value)
+const shortcut = shortcutPreferences.label
+
+function acceptsImageShortcut(event: KeyboardEvent, id?: string): boolean {
   const target = event.target instanceof Element ? event.target : null
-  if (target?.closest('[data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="popover-content"], [data-slot="dialog-content"], [data-slot="sheet-content"], [data-slot="drawer-content"]'))
-    return
-  if (event.key === 'Escape') {
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    close()
-    return
-  }
-  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-    if (target?.closest('.preview-side-panel, .forum-long-reader-map, input, textarea, select, [contenteditable="true"]'))
-      return
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    const dir = event.key === 'ArrowRight' ? 1 : -1
-    goTo(current.value + dir, dir)
-  }
+  if ((event.key === 'Enter' || event.key === ' ') && target?.closest('button, a[href], [role="button"]'))
+    return false
+  if (document.querySelector('[role="menu"][data-state="open"], [data-image-metadata]'))
+    return false
+  if (target?.closest('[data-slot="popover-content"]'))
+    return false
+  if (id !== 'imageClose' && id !== 'imagePanel' && target?.closest('.preview-side-panel, .forum-long-reader-map'))
+    return false
+  return !target?.closest('[data-slot="dialog-content"], [data-slot="sheet-content"], [data-slot="drawer-content"]')
+    || !!target?.closest('.forum-preview-root')
 }
+function changeImageZoom(value: number) {
+  if (isLongImage.value)
+    return longReader.value?.changeZoom(value)
+  const rect = imageEl.value?.getBoundingClientRect()
+  if (rect)
+    smoothZoom(() => zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, value / scale.value))
+}
+const previewCommands: ForumImageCommand[] = [
+  { id: 'imageToggleZoom', run: () => changeImageZoom((isLongImage.value ? longReader.value?.zoom ?? 1 : scale.value) > 1 ? 1 : 2), enabled: () => zoomEnabled.value },
+  { id: 'imagePrevious', run: () => goTo(current.value - 1, -1), enabled: () => total.value > 1 },
+  { id: 'imageNext', run: () => goTo(current.value + 1, 1), enabled: () => total.value > 1 },
+  { id: 'imageZoomIn', run: () => changeImageZoom((isLongImage.value ? longReader.value?.zoom ?? 1 : scale.value) * 1.5), enabled: () => zoomEnabled.value },
+  { id: 'imageZoomOut', run: () => changeImageZoom((isLongImage.value ? longReader.value?.zoom ?? 1 : scale.value) / 1.5), enabled: () => zoomEnabled.value },
+  { id: 'imageReset', run: () => isLongImage.value ? longReader.value?.changeZoom(1) : resetTransform(), enabled: () => zoomEnabled.value },
+  { id: 'imageTop', run: () => longReader.value?.scrollToEdge(false), enabled: isLongImage },
+  { id: 'imageBottom', run: () => longReader.value?.scrollToEdge(true), enabled: isLongImage },
+  { id: 'imagePanel', run: () => panelCollapsed.value = !panelCollapsed.value, enabled: () => isDesktop.value && !!context },
+  { id: 'imageClose', run: close },
+]
 
 watch(() => images, () => {
   if (current.value >= total.value)
     current.value = Math.max(total.value - 1, 0)
 })
-
-useEventListener('keydown', handleKeydown, { capture: true })
 
 onBeforeUnmount(() => {
   if (visible.value)
@@ -476,7 +488,7 @@ defineExpose({ openAt, close })
 
     <Teleport to="body">
       <DialogRoot v-if="visible" :open="true" @update:open="!$event && close()">
-        <DialogContent as-child :aria-describedby="undefined" @close-auto-focus.prevent>
+        <DialogContent as-child :aria-describedby="undefined" @close-auto-focus.prevent @escape-key-down="shortcutPreferences.desktopUi.value && $event.preventDefault()">
           <div
             ref="containerEl"
             class="forum-preview-root inset-0 fixed z-[1000]"
@@ -496,75 +508,77 @@ defineExpose({ openAt, close })
             </DialogTitle>
             <div class="forum-preview-overlay" />
 
-            <div
-              ref="stageEl"
-              class="forum-preview-stage"
-              :class="{ 'is-long-image': isLongImage }"
-            >
-              <PreviewerLongImage v-if="isLongImage" :key="`${current}:${activeImage.src}`" :image="activeImage" :zoom-enabled="zoomEnabled" :max-zoom="maxZoom" @dimensions="loadedSize = $event" />
+            <ForumImageContextMenu :image="{ ...displayImages[current], naturalWidth: loadedSize?.width, naturalHeight: loadedSize?.height }" :commands="previewCommands" :active="previewActive" :accepts="acceptsImageShortcut">
               <div
-                v-else
-                ref="stackEl"
-                class="forum-preview-stack"
-                :class="{
-                  flipping,
-                  settling,
-                  'is-idle': scale === 1 && !dragging && !settling && !sweeping && !entering && !closing && !flipping,
-                  'can-zoom-in': scale === 1,
-                  'can-grab': scale > 1 && !dragging,
-                }"
-                :style="{ transform: stackTransform(tx, ty, scale, dragRotate) }"
-                @click="handleStackClick"
+                ref="stageEl"
+                class="forum-preview-stage"
+                :class="{ 'is-long-image': isLongImage }"
               >
-                <img
-                  v-if="prevImg"
-                  :key="`prev-${prevSeq}`"
-                  :src="prevImg.src"
-                  :alt="prevImg.alt || ''"
-                  class="forum-preview-image forum-preview-exit"
-                  :class="slideDir === 1 ? 'exit-left' : 'exit-right'"
-                  :style="{
-                    '--preview-carry': `${carriedRef}px`,
-                    '--preview-exit-dur': `${exitDur}ms`,
+                <PreviewerLongImage v-if="isLongImage" ref="longReader" :key="`${current}:${activeImage.src}`" :image="activeImage" :zoom-enabled="zoomEnabled" :max-zoom="maxZoom" @dimensions="loadedSize = $event" />
+                <div
+                  v-else
+                  ref="stackEl"
+                  class="forum-preview-stack"
+                  :class="{
+                    flipping,
+                    settling,
+                    'is-idle': scale === 1 && !dragging && !settling && !sweeping && !entering && !closing && !flipping,
+                    'can-zoom-in': scale === 1,
+                    'can-grab': scale > 1 && !dragging,
                   }"
-                  draggable="false"
+                  :style="{ transform: stackTransform(tx, ty, scale, dragRotate) }"
+                  @click="handleStackClick"
                 >
-                <img
-                  v-if="total > 0"
-                  :key="current"
-                  ref="imageEl"
-                  :src="displayImages[current].src"
-                  :alt="displayImages[current].alt || ''"
-                  class="forum-preview-image forum-preview-enter"
-                  :class="[enterAnimClass, { 'is-loading': !imgReady }]"
-                  :style="{
-                    ...imgStyle,
-                    '--preview-carry': `${carriedRef}px`,
-                    '--preview-enter-dur': `${enterDur}ms`,
-                  }"
-                  draggable="false"
-                  @load="syncImgReady"
-                  @error="imgReady = true"
-                >
-              </div>
+                  <img
+                    v-if="prevImg"
+                    :key="`prev-${prevSeq}`"
+                    :src="prevImg.src"
+                    :alt="prevImg.alt || ''"
+                    class="forum-preview-image forum-preview-exit"
+                    :class="slideDir === 1 ? 'exit-left' : 'exit-right'"
+                    :style="{
+                      '--preview-carry': `${carriedRef}px`,
+                      '--preview-exit-dur': `${exitDur}ms`,
+                    }"
+                    draggable="false"
+                  >
+                  <img
+                    v-if="total > 0"
+                    :key="current"
+                    ref="imageEl"
+                    :src="displayImages[current].src"
+                    :alt="displayImages[current].alt || ''"
+                    class="forum-preview-image forum-preview-enter"
+                    :class="[enterAnimClass, { 'is-loading': !imgReady }]"
+                    :style="{
+                      ...imgStyle,
+                      '--preview-carry': `${carriedRef}px`,
+                      '--preview-enter-dur': `${enterDur}ms`,
+                    }"
+                    draggable="false"
+                    @load="syncImgReady"
+                    @error="imgReady = true"
+                  >
+                </div>
 
-              <ForumImageNavigationButton
-                v-if="total > 1"
-                class="forum-preview-nav prev"
-                auto-hide
-                direction="previous"
-                :label="message.forum.imagePreview.previous"
-                @click.stop="goTo(current - 1, -1)"
-              />
-              <ForumImageNavigationButton
-                v-if="total > 1"
-                class="forum-preview-nav next"
-                auto-hide
-                direction="next"
-                :label="message.forum.imagePreview.next"
-                @click.stop="goTo(current + 1, 1)"
-              />
-            </div>
+                <ForumImageNavigationButton
+                  v-if="total > 1"
+                  class="forum-preview-nav prev"
+                  auto-hide
+                  direction="previous"
+                  :label="message.forum.imagePreview.previous"
+                  @click.stop="goTo(current - 1, -1)"
+                />
+                <ForumImageNavigationButton
+                  v-if="total > 1"
+                  class="forum-preview-nav next"
+                  auto-hide
+                  direction="next"
+                  :label="message.forum.imagePreview.next"
+                  @click.stop="goTo(current + 1, 1)"
+                />
+              </div>
+            </ForumImageContextMenu>
 
             <FeyCards
               v-if="options.counter !== false && total > 1"
@@ -580,6 +594,8 @@ defineExpose({ openAt, close })
             />
 
             <PreviewerControls
+              :close-shortcut="shortcut('imageClose')"
+              :close-shortcut-aria="shortcutPreferences.aria('imageClose')"
               :index="current"
               :total="total"
               :show-dots="options.dots !== false"
@@ -592,6 +608,8 @@ defineExpose({ openAt, close })
               type="button"
               class="forum-preview-panel-toggle"
               :aria-label="panelCollapsed ? message.forum.imagePreview.expandPanel : message.forum.imagePreview.collapsePanel"
+              :title="shortcut('imagePanel')"
+              :aria-keyshortcuts="shortcutPreferences.aria('imagePanel')"
               @click.stop="panelCollapsed = !panelCollapsed"
             >
               <span

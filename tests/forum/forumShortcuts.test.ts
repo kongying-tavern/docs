@@ -7,7 +7,7 @@ const key = (value: string, modifiers: Partial<{ ctrlKey: boolean, metaKey: bool
 
 test('bindings normalize modifier order and reject malformed combinations', () => {
   assert.equal(normalizeShortcut('Shift+Mod+B'), 'Mod+Shift+B')
-  for (const invalid of ['Mod+Mod+B', 'Mod+Ctrl+B', 'Tab', 'Escape', 'Ctrl+', 'A+B', 'ctrl+B', 12, null])
+  for (const invalid of ['Mod+Mod+B', 'Mod+Ctrl+B', 'Tab', 'Ctrl+', 'A+B', 'ctrl+B', 12, null])
     assert.equal(normalizeShortcut(invalid), null)
   assert.equal(normalizeShortcut(''), '')
 })
@@ -81,4 +81,14 @@ test('disabled custom editor keys and old defaults cannot fall through to Starte
   assert.equal(resolveEditorShortcut(defaults, key('Enter', { ctrlKey: true }), false), null)
   assert.deepEqual(resolveEditorShortcut(defaults, key('Enter', { ctrlKey: true }), true), { id: 'send', enabled: true })
   assert.equal(resolveEditorShortcut(defaults, key('Enter'), true), null)
+})
+
+test('image shortcuts support configurable scoped navigation', () => {
+  assert.equal(normalizeShortcut('Escape'), 'Escape')
+  assert.equal(shortcutBindingError('imagePanel', 'I', defaults), null)
+  assert.equal(shortcutBindingError('imagePanel', 'ArrowLeft', defaults), 'imagePrevious')
+  assert.equal(shortcutBindingError('imageCopy', 'Mod+C', defaults), 'reserved')
+  assert.equal(shortcutBindingError('imageOpen', 'Enter', defaults), null)
+  assert.equal(shortcutBindingError('imageToggleZoom', 'Enter', defaults), null)
+  assert.equal(shortcutBindingError('imageCopy', 'Enter', defaults), 'imageOpen')
 })

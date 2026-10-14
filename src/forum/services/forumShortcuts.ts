@@ -6,10 +6,27 @@ export const FORUM_SHORTCUTS = [
   { id: 'search', group: 'application', binding: '/' },
   { id: 'publish', group: 'application', binding: '' },
   { id: 'settings', group: 'application', binding: '' },
+  { id: 'imageOpen', group: 'image', binding: 'Enter', scope: 'thumbnail' },
+  { id: 'imageToggleZoom', group: 'image', binding: 'Enter', scope: 'preview' },
+  { id: 'imagePrevious', group: 'image', binding: 'ArrowLeft', scope: 'preview' },
+  { id: 'imageNext', group: 'image', binding: 'ArrowRight', scope: 'preview' },
+  { id: 'imageZoomIn', group: 'image', binding: '=', scope: 'preview' },
+  { id: 'imageZoomOut', group: 'image', binding: '-', scope: 'preview' },
+  { id: 'imageReset', group: 'image', binding: '0', scope: 'preview' },
+  { id: 'imageTop', group: 'image', binding: 'Home', scope: 'preview' },
+  { id: 'imageBottom', group: 'image', binding: 'End', scope: 'preview' },
+  { id: 'imagePanel', group: 'image', binding: 'I', scope: 'preview' },
+  { id: 'imageClose', group: 'image', binding: 'Escape', scope: 'preview' },
+  { id: 'imageCopy', group: 'image', binding: 'Mod+Shift+C' },
+  { id: 'imageSave', group: 'image', binding: 'Mod+S' },
+  { id: 'imageLink', group: 'image', binding: 'Mod+Shift+L' },
+  { id: 'imageNewTab', group: 'image', binding: '' },
+  { id: 'imageMetadata', group: 'image', binding: '' },
 ] as const
 
 export type ForumShortcutId = typeof FORUM_SHORTCUTS[number]['id']
 export type ForumInputShortcutId = Extract<ForumShortcutId, 'send' | 'bold' | 'italic' | 'strike'>
+export type ForumImageShortcutId = Extract<ForumShortcutId, `image${string}`>
 export type ForumShortcutGroup = typeof FORUM_SHORTCUTS[number]['group']
 export interface ShortcutOverride { enabled: boolean, binding: string }
 export interface ShortcutPreferences {
@@ -18,7 +35,7 @@ export interface ShortcutPreferences {
 
 const MODIFIERS = ['Mod', 'Ctrl', 'Alt', 'Shift', 'Meta'] as const
 const RESERVED_PRIMARY_KEYS = /^[ACFLNPRTVWXZ]$/
-const KEYS = /^(?:[A-Z0-9/.,;[\]'`=\\-]|Enter|Space|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Plus)$/
+const KEYS = /^(?:[A-Z0-9/.,;[\]'`=\\-]|Enter|Escape|Home|End|PageUp|PageDown|Space|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Plus)$/
 
 export function normalizeShortcut(value: unknown): string | null {
   if (value === '')
@@ -129,14 +146,17 @@ export function shortcutBindingError(id: ForumShortcutId, binding: string, prefe
   const key = parts.at(-1)!
   const hasPrimary = parts.some(part => ['Mod', 'Ctrl', 'Meta'].includes(part))
   // Text editing and browser navigation shortcuts must stay available.
+  const imageScope = action.group === 'image'
   if ((hasPrimary && parts.length === 2 && RESERVED_PRIMARY_KEYS.test(key))
     || (parts.includes('Alt') && !hasPrimary)
-    || (parts.length === 1 && !(id === 'search' && key === '/'))) {
+    || (parts.length === 1 && !imageScope && !(id === 'search' && key === '/'))) {
     return 'reserved'
   }
   for (const other of FORUM_SHORTCUTS) {
-    if (other.id === id || (other.group === 'input') !== (action.group === 'input'))
+    if (other.id === id || other.group !== action.group
+      || ('scope' in other && 'scope' in action && other.scope !== action.scope)) {
       continue
+    }
     const resolved = resolveShortcut(preferences, other.id)
     if (resolved.enabled && resolved.binding && bindingsOverlap(binding, resolved.binding))
       return other.id

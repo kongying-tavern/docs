@@ -22,6 +22,8 @@
 :global(body:has(.forum-preview-root) [data-slot='dropdown-menu-content']),
 :global(body:has(.forum-preview-root) [data-slot='dropdown-menu-sub-content']),
 :global(body:has(.forum-preview-root) [data-slot='hover-card-content']),
+:global(body:has(.forum-preview-root) [data-slot='context-menu-content']),
+:global(body:has(.forum-preview-root) [data-slot='context-menu-sub-content']),
 :global(body:has(.forum-preview-root) [data-slot='popover-content']) {
   z-index: 1002;
 }

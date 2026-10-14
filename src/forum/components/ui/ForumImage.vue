@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PreviewerContext } from './image-previewer/ForumImagePreviewer.vue'
+import type { ForumImageResource } from '~/forum/services/forumImageResource'
 import { useElementSize, useMediaQuery } from '@vueuse/core'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
@@ -12,14 +13,7 @@ import ForumImageItem from './ForumImageItem.vue'
 import ForumImageNavigationButton from './ForumImageNavigationButton.vue'
 import ForumImagePreviewer from './image-previewer/ForumImagePreviewer.vue'
 
-export interface ImageItem {
-  src: string
-  alt?: string
-  width?: number
-  height?: number
-  thumbHash?: string
-  thumbhash?: string
-}
+export type ImageItem = ForumImageResource
 
 type LayoutMode = 'auto' | 'single' | 'double' | 'triple' | 'quad' | 'gallery' | 'row' | 'thumbnail'
 
@@ -207,7 +201,7 @@ const remainingCount = computed(() => {
 })
 
 const previewImages = computed(() => availableImages.value.filter(({ sourceIndex }) => !errorMap.value.has(sourceIndex)))
-const validImages = computed(() => previewImages.value.map(({ image, sourceIndex }) => ({ ...image, ...naturalSizes.value.get(sourceIndex) })))
+const validImages = computed(() => previewImages.value.map(({ image, sourceIndex }) => ({ ...image, declaredWidth: image.width, declaredHeight: image.height, ...naturalSizes.value.get(sourceIndex) })))
 const rowContainerStyle = computed<Record<string, string> | undefined>(() =>
   !isRail.value && actualLayout.value === 'row'
     ? adaptiveRow
@@ -341,9 +335,11 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
               :disabled="previewEnabled && !isPreviewReady(image, sourceIndex) ? true : undefined"
               :aria-label="previewEnabled ? message.forum.imagePreview.showImage.replace('{index}', String(index + 1)) : undefined"
               @click="previewEnabled && openAt(previewIndexFor(sourceIndex), $event.currentTarget)"
+              @keydown.enter.prevent
             >
               <ForumImageItem
                 :image="image"
+                :preview="previewEnabled && isPreviewReady(image, sourceIndex) ? () => openAt(previewIndexFor(sourceIndex)) : undefined"
                 fill-container
                 :interactive="previewEnabled"
                 :class="imageClass"

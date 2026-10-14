@@ -34,6 +34,8 @@ const dropZone = useTemplateRef<HTMLElement>('drop-zone')
 const { message } = useLocalized()
 const [DefineActions, Actions] = createReusableTemplate<{ attachment: ImageAttachment, index: number }>()
 const previewImages = computed(() => attachments.map(attachment => ({
+  ...attachment.savedImage,
+  ...(attachment.file ? { fileName: attachment.file.name, fileSize: attachment.file.size } : {}),
   src: attachment.previewUrl,
   alt: attachment.file?.name || attachment.savedImage?.alt || '',
   width: attachment.thumbHash?.originalWidth ?? attachment.savedImage?.width,

@@ -188,8 +188,10 @@ export function parseAttachmentMarkdown(markdown?: string): {
   const text = markdown
     .replace(MARKDOWN_IMAGE_REGEX, (_match, altText: string, src: string, meta?: string) => {
       const parsedMetadata = parseAttachmentMetadata(meta)
+      const normalizedSrc = normalizeAttachmentSrc(src)
       attachments.push({
-        src: normalizeAttachmentSrc(src),
+        src: normalizedSrc,
+        ...(normalizedSrc !== src ? { originalSrc: src } : {}),
         ...(altText ? { alt: altText } : {}),
         ...parsedMetadata,
       })

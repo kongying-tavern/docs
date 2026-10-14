@@ -13,7 +13,7 @@ export function useForumShortcutRecorder() {
   const draft = ref('')
   const operationError = ref('')
   const copy = computed(() => message.value.settings.shortcuts)
-  const groups = computed(() => (['input', 'application'] as const).map(group => ({
+  const groups = computed(() => (['input', 'application', 'image'] as const).map(group => ({
     id: group,
     label: copy.value.groups[group],
     actions: FORUM_SHORTCUTS.filter(action => action.group === group).map(({ id }) => {

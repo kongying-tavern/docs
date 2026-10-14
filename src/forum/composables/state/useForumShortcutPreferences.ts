@@ -15,6 +15,12 @@ export const useForumShortcutPreferences = createGlobalState(() => {
   const recording = ref(false)
   const get = (id: ForumShortcutId) => resolveShortcut(preferences.value, id)
   const active = (id: ForumShortcutId) => desktopUi.value && get(id).enabled && !!get(id).binding
+  const label = (id: ForumShortcutId) => active(id)
+    ? get(id).binding.replace('Mod', mac.value ? '⌘' : 'Ctrl').replace('Meta', '⌘')
+    : undefined
+  const aria = (id: ForumShortcutId) => active(id)
+    ? get(id).binding.replace('Mod', mac.value ? 'Meta' : 'Control').replace('Ctrl', 'Control')
+    : undefined
   function update(id: ForumShortcutId, binding: string, actionEnabled = get(id).enabled) {
     const error = actionEnabled ? shortcutBindingError(id, binding, preferences.value) : null
     if (error)
@@ -25,5 +31,5 @@ export const useForumShortcutPreferences = createGlobalState(() => {
   function reset() {
     stored.value = { overrides: {} }
   }
-  return { preferences, desktopUi, mac, recording, get, active, update, reset }
+  return { preferences, desktopUi, mac, recording, get, active, label, aria, update, reset }
 })
