@@ -1,8 +1,8 @@
-import type { INTER_KNOT } from '../../src/apis/interknot.site/api'
-import type { ImageUploadRequest } from '../../src/apis/interknot.site/upload'
+import type { INTER_KNOT } from '../../src/forum/api/interknot.site/api'
+import type { ImageUploadRequest } from '../../src/forum/api/interknot.site/upload'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { uploadImg } from '../../src/apis/interknot.site/upload'
+import { uploadImg } from '../../src/forum/api/interknot.site/upload'
 
 const response: INTER_KNOT.ImageResponse = {
   statusCode: 200,

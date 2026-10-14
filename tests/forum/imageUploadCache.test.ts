@@ -1,7 +1,7 @@
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { createImageUploadCache } from '../../src/apis/interknot.site/imageUploadCache'
+import { createImageUploadCache } from '../../src/forum/api/interknot.site/imageUploadCache'
 
 function image(name: string, bytes = 'same image', type = 'image/png') {
   return new File([bytes], name, { type })

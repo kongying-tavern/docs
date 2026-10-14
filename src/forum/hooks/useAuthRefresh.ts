@@ -3,7 +3,7 @@ import { isHTTPError } from 'ky'
 import { ref, watch } from 'vue'
 import { toCamelCaseObject } from '@/utils'
 import { oauth } from '~/forum/api/gitee'
-import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
+import { log, LogGroup } from '~/forum/services/authLogger'
 import { AuthError, createAuthError } from '~/services/authErrors'
 
 const TOKEN_REFRESH_BASE_RETRY_INTERVAL_MS = 5000

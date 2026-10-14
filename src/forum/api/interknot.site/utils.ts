@@ -1,7 +1,7 @@
 import type { INTER_KNOT } from './api'
 import type { SSOAuth } from '~/forum/stores/auth/useUserAuth'
 import { FORUM_IMAGE_ORIGIN } from '~/constants/site'
-import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
+import { log, LogGroup } from '~/forum/services/authLogger'
 
 export const ASSETS_URL_PREFIX = `${FORUM_IMAGE_ORIGIN}/`
 

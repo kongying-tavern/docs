@@ -44,7 +44,7 @@ tests/
 或用 `pnpm test:watch tests/forum -t "关键词"` 监听指定范围。
 现有 `node:assert/strict` 断言继续使用，测试注册、清理、spy 和假定时器改用 Vitest API。
 
-覆盖率显式统计 provider 适配层（`src/apis`）、论坛 API、composable、认证、路由、服务、
+覆盖率显式统计论坛 API（含 provider 适配层）、composable、认证、路由、服务、
 store 和工具，以及共享逻辑、主题 hooks 与字体流水线；未被导入的文件也纳入统计，
 Vue 页面与组件不属于这个逻辑指标。
 CI 运行完整覆盖率测试并上传 HTML 报告。全局门槛基于当前范围的基线，认证刷新模块另有

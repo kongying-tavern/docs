@@ -1,5 +1,5 @@
 import type { Page, Route } from '@playwright/test'
-import type { INTER_KNOT } from '~/apis/interknot.site/api'
+import type { INTER_KNOT } from '~/forum/api/interknot.site/api'
 import { alice, comment, currentUser, issue } from '../fixtures/gitee'
 
 const collaboratorsPath = /^\/api\/v5\/repos\/KYJGYSDT\/(?:Feedback|Blog)\/collaborators$/

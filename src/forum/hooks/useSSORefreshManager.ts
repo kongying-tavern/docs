@@ -3,7 +3,7 @@ import type { useSSOAuth } from './useSSOAuth'
 import type { useTokenManager } from '~/forum/composables/auth/useTokenManager'
 import type { SSOLocaleAuth } from '~/forum/stores/auth/useUserAuth'
 import { computed, ref, watch } from 'vue'
-import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
+import { log, LogGroup } from '~/forum/services/authLogger'
 import { createAuthError } from '~/services/authErrors'
 
 const SSO_REFRESH_THRESHOLD_MS = 5 * 60 * 1000

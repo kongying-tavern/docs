@@ -14,7 +14,7 @@ vi.mock('vue', async importOriginal => ({
   ...await importOriginal<typeof import('vue')>(),
   onBeforeUnmount() {},
 }))
-vi.mock('~/apis/interknot.site/upload', () => ({ uploadImg() {} }))
+vi.mock('~/forum/api/interknot.site/upload', () => ({ uploadImg() {} }))
 vi.mock('~/forum/composables/data/useSubmitTopic', () => ({ useSubmitTopic: () => ({ submitData() {} }) }))
 vi.mock('~/forum/composables/view/calculateThumbHashForFile', () => ({ calculateThumbHashForFile() {} }))
 vi.mock('~/forum/composables/view/useImageAttachmentQueue', () => ({

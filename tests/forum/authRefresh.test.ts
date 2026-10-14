@@ -3,9 +3,9 @@ import { HTTPError } from 'ky'
 import { afterEach, beforeEach, test, vi } from 'vitest'
 import { effectScope, nextTick } from 'vue'
 import { oauth } from '../../src/forum/api/gitee'
-import { log } from '../../src/forum/composables/auth/auth-logger'
 import { useTokenManager } from '../../src/forum/composables/auth/useTokenManager'
 import { useAuthRefresh } from '../../src/forum/hooks/useAuthRefresh'
+import { log } from '../../src/forum/services/authLogger'
 import { createAuthError } from '../../src/services/authErrors'
 
 vi.mock('../../src/forum/api/gitee', () => ({ oauth: { refreshToken: vi.fn() } }))

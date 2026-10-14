@@ -8,7 +8,7 @@ import { getAuthSession, registerAuthSessionAccessor } from '../../src/services/
 
 // Exercise the real client hooks without a custom Node module loader.
 vi.stubEnv('SSR', false)
-const { fetcher, SSO_SESSION_CONTEXT } = await import('../../src/apis/interknot.site')
+const { fetcher, SSO_SESSION_CONTEXT } = await import('../../src/forum/api/interknot.site')
 const { useUserInfoStore } = await import('../../src/forum/stores/auth/useUserInfo')
 
 let clock = Date.now()

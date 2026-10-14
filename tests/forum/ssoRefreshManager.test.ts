@@ -2,9 +2,9 @@ import type { useSSOAuth } from '../../src/forum/hooks/useSSOAuth'
 import assert from 'node:assert/strict'
 import { afterEach, beforeEach, test, vi } from 'vitest'
 import { effectScope, nextTick } from 'vue'
-import { log } from '../../src/forum/composables/auth/auth-logger'
 import { useTokenManager } from '../../src/forum/composables/auth/useTokenManager'
 import { useSSORefreshManager } from '../../src/forum/hooks/useSSORefreshManager'
+import { log } from '../../src/forum/services/authLogger'
 
 const cleanup: (() => void)[] = []
 beforeEach(() => {

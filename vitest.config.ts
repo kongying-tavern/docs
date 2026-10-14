@@ -19,7 +19,6 @@ export default defineConfig({
       provider: 'v8',
       reportOnFailure: true,
       include: [
-        'src/apis/**/*.ts',
         'src/forum/{api,composables,hooks,router,services,stores,utils}/**/*.ts',
         'src/{composables,services,utils}/**/*.ts',
         '.vitepress/theme/hooks/**/*.ts',

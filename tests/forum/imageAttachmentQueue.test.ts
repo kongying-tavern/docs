@@ -1,7 +1,7 @@
 import type ForumAPI from '../../src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { createImageUploadCache } from '../../src/apis/interknot.site/imageUploadCache'
+import { createImageUploadCache } from '../../src/forum/api/interknot.site/imageUploadCache'
 import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
 import { serializeUploadedAttachments, validateImageBatch } from '../../src/forum/services/form/imageAttachment'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../src/forum/services/forumConfig'

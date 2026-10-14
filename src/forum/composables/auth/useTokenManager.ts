@@ -3,7 +3,7 @@ import type { LocalAuth, SSOAuth, SSOLocaleAuth } from '~/forum/stores/auth/useU
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { createDeferred } from '~/composables/createDeferred'
-import { log, LogGroup } from '~/forum/composables/auth/auth-logger'
+import { log, LogGroup } from '~/forum/services/authLogger'
 
 const USERAUTH_KEY = 'USER-AUTH'
 const SSO_USERAUTH_KEY = 'SSO-USER-AUTH'
