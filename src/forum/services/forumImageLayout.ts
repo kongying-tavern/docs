@@ -3,9 +3,15 @@ interface SizedImage {
   height?: number
 }
 
-/** A bounded justified row: preserve image proportions without letting long screenshots dominate the feed. */
+/** Tall screenshots need a readable, bounded preview rather than a thin strip. */
+export function isForumLongImage(image: SizedImage): boolean {
+  return Number.isFinite(image.width) && Number.isFinite(image.height)
+    && Number(image.width) > 0 && Number(image.height) / Number(image.width) >= 2.5
+}
+
+/** Preserve ordinary proportions; give long screenshots a bounded portrait thumbnail. */
 export function planForumImageRow(images: readonly SizedImage[], containerWidth: number, maxHeight = 200) {
-  const ratios = images.map(aspect)
+  const ratios = images.map(image => isForumLongImage(image) ? 2 / 3 : aspect(image))
   const width = Number.isFinite(containerWidth) && containerWidth > 0 ? containerWidth : 480
   const availableWidth = Math.max(1, width - Math.max(0, images.length - 1) * 8)
   const totalRatio = ratios.reduce((sum, ratio) => sum + ratio, 0) || 1

@@ -23,6 +23,8 @@ const forum = {
     dislike: '不赞同',
   },
   imagePreview: {
+    longImage: '长图',
+    longImageNavigator: '长图位置导航',
     previous: '上一张图片',
     next: '下一张图片',
     expandPanel: '展开预览面板',

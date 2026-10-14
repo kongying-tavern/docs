@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { ImageItem } from './ForumImage.vue'
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
+import { useLocalized } from '@/hooks/useLocalized'
 import { ASSET_ORIGIN } from '~/constants/site'
 import { useForumImageLoading } from '~/forum/composables/view/useForumImageLoading'
+import { isForumLongImage } from '~/forum/services/forumImageLayout'
 import { forumImagePlaceholder } from '~/forum/services/forumImagePlaceholder'
 
 const props = defineProps<{
@@ -20,12 +22,15 @@ const root = useTemplateRef<HTMLElement>('root')
 const imageElement = useTemplateRef<HTMLImageElement>('imageElement')
 const { visible, allowed, complete } = useForumImageLoading(root, () => props.image.src)
 const ready = ref(false)
+const { message } = useLocalized()
+const naturalSize = ref<{ width: number, height: number }>()
+const isLong = computed(() => isForumLongImage(naturalSize.value ?? props.image))
 const hasError = ref(false)
 const ERROR_IMAGE = `${ASSET_ORIGIN}/images/noImage.png`
 const hash = computed(() => props.image.thumbHash || props.image.thumbhash)
 const placeholder = computed(() => hash.value ? forumImagePlaceholder(hash.value) : undefined)
-const imageClass = computed(() => props.fillContainer ? 'object-cover' : 'object-contain')
-const aspectStyle = computed(() => props.fillContainer || !props.image.width || !props.image.height
+const imageClass = computed(() => isLong.value ? 'object-cover object-top' : props.fillContainer ? 'object-cover' : 'object-contain')
+const aspectStyle = computed(() => props.fillContainer || isLong.value || !props.image.width || !props.image.height
   ? {}
   : { aspectRatio: `${props.image.width} / ${props.image.height}` })
 const source = computed(() => hasError.value ? ERROR_IMAGE : allowed.value || ready.value ? props.image.src : undefined)
@@ -33,6 +38,7 @@ let generation = 0
 
 watch(() => props.image.src, () => {
   generation++
+  naturalSize.value = undefined
   ready.value = hasError.value = false
 }, { flush: 'sync' })
 watch(allowed, (value) => {
@@ -62,7 +68,8 @@ async function onLoad(): Promise<void> {
   await image.decode().catch(() => {})
   if (current !== generation || hasError.value)
     return
-  emit('dimensions', { width: image.naturalWidth, height: image.naturalHeight })
+  naturalSize.value = { width: image.naturalWidth, height: image.naturalHeight }
+  emit('dimensions', naturalSize.value)
   ready.value = true
   complete()
   emit('ready')
@@ -109,10 +116,24 @@ function onError(): void {
       @load="onLoad"
       @error="onError"
     >
+    <span v-if="isLong && !hasError" class="forum-long-image-label">
+      {{ message.forum.imagePreview.longImage }}
+    </span>
   </div>
 </template>
 
 <style scoped>
+.forum-long-image-label {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--forum-media-overlay);
+  color: var(--forum-media-on-overlay);
+  font-size: 12px;
+  pointer-events: none;
+}
 .forum-image-source {
   transition: transform 200ms ease;
 }

@@ -59,33 +59,123 @@ test.describe('mobile image gestures', () => {
   })
 })
 
-test.describe('portrait image spacing and click zoom', () => {
+test.describe('long image reading', () => {
   test.use({ scenario: { topics: [issue({ body: '![长图](https://example.com/portrait.svg){width:"400",height:"4000"}' })] } })
 
-  test('collapsed preview fits tall images and animates click zoom', async ({ page }) => {
-    await page.route('https://example.com/portrait.svg', route => route.fulfill({
-      contentType: 'image/svg+xml',
-      body: '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="4000"><rect width="400" height="4000" fill="red"/></svg>',
-    }))
-    await page.addInitScript(() => localStorage.setItem('forum-image-preview-panel-collapsed', 'true'))
+  for (const mobile of [false, true]) {
+    test.describe(mobile ? 'mobile reader' : 'desktop reader', () => {
+      test.use({ viewport: mobile ? { width: 390, height: 844 } : { width: 1280, height: 900 }, hasTouch: mobile, isMobile: mobile })
+      test(`long image supports reading and gesture zoom without a toolbar on ${mobile ? 'mobile' : 'desktop'}`, async ({ page }) => {
+        const errors: string[] = []
+        page.on('pageerror', error => errors.push(error.message))
+        await page.route('https://example.com/portrait.svg', route => route.fulfill({
+          contentType: 'image/svg+xml',
+          body: `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="4000">${Array.from({ length: 20 }, (_, i) => `<rect y="${i * 200}" width="400" height="200" fill="${i % 2 ? '#dbeafe' : '#f1f5f9'}"/><text x="24" y="${i * 200 + 90}" font-size="28" fill="#334155">Section ${i + 1}</text>`).join('')}</svg>`,
+        }))
+        await page.addInitScript(() => localStorage.setItem('forum-image-preview-panel-collapsed', 'true'))
+        await page.goto('feedback/topic/123')
+        await page.locator('.forum-image-previewer button').first().click()
+        const preview = page.locator('.forum-preview-root')
+        await expect(preview).not.toHaveClass(/entering/)
+        const reader = preview.locator('.forum-long-reader-viewport')
+        const image = reader.locator('img')
+        await expect(reader).toBeVisible()
+        const map = preview.getByRole('slider', { name: '长图位置导航' })
+        await expect(map).toHaveCount(mobile ? 0 : 1)
+        if (mobile) {
+          await expect(reader).toHaveClass(/scroll-fade-b/)
+          await expect(reader).not.toHaveClass(/scroll-fade-t/)
+          await expect.poll(() => reader.evaluate(el => getComputedStyle(el).maskImage)).not.toBe('none')
+        }
+        else {
+          await expect(reader).not.toHaveClass(/scroll-fade-b/)
+        }
+        const bounds = await image.boundingBox()
+        expect(bounds).not.toBeNull()
+        expect(bounds!.width).toBeGreaterThan(mobile ? 300 : 350)
+        expect(bounds!.height).toBeGreaterThan(page.viewportSize()!.height)
+        if (mobile) {
+          await image.tap({ position: { x: bounds!.width / 2, y: 100 } })
+          expect((await image.boundingBox())!.width).toBeCloseTo(bounds!.width, 0)
+          const session = await page.context().newCDPSession(page)
+          await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 190, y: 500, id: 1 }] })
+          await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 190, y: 250, id: 1 }] })
+          await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+          await expect.poll(() => reader.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
+          await expect(preview).toBeVisible()
+          const beforePinch = (await image.boundingBox())!.width
+          const pinchCenter = { x: 110, y: 250 }
+          const focalPoint = () => image.evaluate((el, point) => {
+            const box = el.getBoundingClientRect()
+            return { x: (point.x - box.left) / box.width, y: (point.y - box.top) / box.height }
+          }, pinchCenter)
+          const beforeFocal = await focalPoint()
+          await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 70, y: 250, id: 1 }, { x: 150, y: 250, id: 2 }] })
+          await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 30, y: 250, id: 1 }, { x: 190, y: 250, id: 2 }] })
+          await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+          await expect.poll(async () => (await image.boundingBox())!.width).toBeGreaterThan(beforePinch)
+          const afterFocal = await focalPoint()
+          expect(Math.abs(afterFocal.x - beforeFocal.x)).toBeLessThan(0.005)
+          expect(Math.abs(afterFocal.y - beforeFocal.y)).toBeLessThan(0.005)
+        }
+        await reader.evaluate(element => element.scrollTo({ top: 800 }))
+        await expect.poll(() => reader.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
+        await expect(preview).toBeVisible()
+        if (!mobile) {
+          const beforeZoom = (await map.locator('.forum-long-reader-window').boundingBox())!.height
+          await reader.hover()
+          await page.keyboard.down('Control')
+          await page.mouse.wheel(0, -200)
+          await page.keyboard.up('Control')
+          await expect.poll(async () => (await image.boundingBox())!.width).toBeGreaterThan(bounds!.width)
+          await expect.poll(async () => (await map.locator('.forum-long-reader-window').boundingBox())!.height).toBeLessThan(beforeZoom)
+        }
+        await expect(preview.locator('.forum-long-reader button, .forum-long-reader progress')).toHaveCount(0)
+        if (mobile) {
+          await expect(reader).toHaveClass(/\bscroll-fade\b/)
+          await expect.poll(() => reader.evaluate(el => Number.parseFloat(getComputedStyle(el).getPropertyValue('--scroll-fade-t')))).toBeGreaterThan(0)
+          await reader.evaluate(el => el.scrollTo({ top: el.scrollHeight }))
+          await expect(reader).not.toHaveClass(/scroll-fade-b/)
+          await expect(reader).toHaveClass(/scroll-fade-t/)
+          await reader.evaluate(el => el.scrollTo({ top: 800 }))
+          await expect(reader).toHaveClass(/\bscroll-fade\b/)
+          await reader.evaluate(el => el.scrollTo({ top: 0 }))
+          await expect(reader).toHaveClass(/scroll-fade-b/)
+          await expect(reader).not.toHaveClass(/scroll-fade-t/)
+          await reader.evaluate(el => el.scrollTo({ top: 800 }))
+          await expect(reader).toHaveClass(/\bscroll-fade\b/)
+        }
+        await page.screenshot({ path: `test-results/forum/long-image-${mobile ? 'mobile' : 'desktop'}.png` })
+        await preview.locator('.forum-preview-close').click()
+        await expect(preview).toHaveCount(0)
+        expect(errors).toEqual([])
+      })
+    })
+  }
+})
+
+test.describe('long image mobile safe areas', () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, scenario: { topics: [issue({ body: '![long](https://example.com/notch.svg){width:"400",height:"4000"}\n![other](https://example.com/notch.svg?other){width:"400",height:"4000"}' })] } })
+
+  test('notched screens keep image content clear of close, cards and image navigation', async ({ page }) => {
+    const session = await page.context().newCDPSession(page)
+    await session.send('Emulation.setSafeAreaInsetsOverride', { insets: { top: 44, bottom: 34, left: 0, right: 0 } })
+    await page.route('https://example.com/notch.svg*', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="4000"/>' }))
     await page.goto('feedback/topic/123')
-    await page.locator('.forum-image-previewer button').first().click()
+    await page.locator('.forum-image-previewer button').filter({ has: page.locator('img') }).first().tap()
     const preview = page.locator('.forum-preview-root')
-    await expect(preview).not.toHaveClass(/entering/)
-    const image = preview.locator('.forum-preview-image').last()
-    const bounds = await image.boundingBox()
-    expect(bounds).not.toBeNull()
-    expect(bounds!.y).toBeGreaterThanOrEqual(32)
-    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(page.viewportSize()!.height - 32)
-    await image.click()
-    const stack = preview.locator('.forum-preview-stack')
-    await expect(stack).toHaveCSS('transition-property', 'transform')
-    await expect(stack).toHaveCSS('transition-duration', '0.36s')
-    await expect(stack).toHaveClass(/flipping/)
-    expect(await stack.evaluate(element => element.getAnimations().some(animation =>
-      animation instanceof CSSTransition && animation.transitionProperty === 'transform'))).toBe(true)
-    await expect(stack).not.toHaveClass(/flipping/)
-    await expect.poll(() => stack.evaluate(element => new DOMMatrix(getComputedStyle(element).transform).a)).toBe(2)
+    const stage = preview.locator('.forum-preview-stage')
+    await expect(stage).toHaveCSS('padding-top', '116px')
+    await expect(stage).toHaveCSS('padding-bottom', '106px')
+    const reader = (await preview.locator('.forum-long-reader-viewport').boundingBox())!
+    for (const selector of ['.forum-preview-close', '.forum-preview-cards']) {
+      const control = (await preview.locator(selector).boundingBox())!
+      expect(reader.y).toBeGreaterThanOrEqual(control.y + control.height)
+    }
+    const dots = (await preview.locator('.forum-preview-dots').boundingBox())!
+    expect(reader.y + reader.height).toBeLessThanOrEqual(dots.y)
+    await preview.locator('.forum-preview-close').tap()
+    await expect(preview).toHaveCount(0)
   })
 })
 

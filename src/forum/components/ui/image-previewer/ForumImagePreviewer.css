@@ -63,6 +63,10 @@
   padding: var(--preview-gap);
 }
 
+.forum-preview-root.is-long-image {
+  touch-action: auto;
+}
+
 .forum-preview-root.has-panel .forum-preview-stage {
   padding-right: calc(var(--preview-panel-w) + var(--preview-gap));
   transition: padding-right 240ms ease;
@@ -75,6 +79,15 @@
 
 .forum-preview-root:not(.has-panel) {
   --preview-vertical-gap: max(var(--preview-gap), 6dvh);
+}
+
+.forum-preview-root .forum-preview-stage.is-long-image {
+  padding-top: calc(72px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+}
+
+.forum-preview-root.has-image-dots .forum-preview-stage.is-long-image {
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
 }
 
 .forum-preview-cards {

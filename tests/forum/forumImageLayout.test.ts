@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { planForumImageGrid, planForumImageRow } from '../../src/forum/services/forumImageLayout'
+import { isForumLongImage, planForumImageGrid, planForumImageRow } from '../../src/forum/services/forumImageLayout'
 
 const wide = { width: 1600, height: 800 }
 const tall = { width: 800, height: 1600 }
@@ -15,12 +15,21 @@ test('card rows fit natural proportions within a bounded common height', () => {
   assert.equal(planForumImageRow([wide, wide, wide], 608).height, 592 / 6)
 })
 
-test('card rows retain extreme ratios and tolerate missing or invalid dimensions', () => {
+test('card rows bound long screenshots and tolerate missing or invalid dimensions', () => {
   const plan = planForumImageRow([{ width: 1, height: 10000 }, { width: 10000, height: 1 }], 600)
-  assert.equal(plan.columns, '0.0001fr 10000fr')
+  assert.equal(plan.columns, '0.6666666666666666fr 10000fr')
   assert.ok(plan.height > 0 && plan.height <= 200)
   assert.equal(planForumImageRow([{}], Number.NaN).height, 200)
   assert.ok(planForumImageRow([square, square, square], 200).width <= 200)
+})
+
+test('long screenshots get bounded readable thumbnails without classifying ordinary portraits', () => {
+  assert.equal(isForumLongImage({ width: 400, height: 4000 }), true)
+  assert.equal(isForumLongImage({ width: 1920, height: 5400 }), true)
+  assert.equal(isForumLongImage(tall), false)
+  for (const image of [{}, { width: 0, height: 400 }, { width: 1, height: Number.POSITIVE_INFINITY }])
+    assert.equal(isForumLongImage(image), false)
+  assert.ok(Math.abs(planForumImageRow([{ width: 400, height: 4000 }], 600).width - 200 * 2 / 3) < 1e-10)
 })
 
 test('wide images fit the row without vertical letterboxing', () => {

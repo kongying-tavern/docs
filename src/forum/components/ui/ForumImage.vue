@@ -207,7 +207,7 @@ const remainingCount = computed(() => {
 })
 
 const previewImages = computed(() => availableImages.value.filter(({ sourceIndex }) => !errorMap.value.has(sourceIndex)))
-const validImages = computed(() => previewImages.value.map(({ image }) => image))
+const validImages = computed(() => previewImages.value.map(({ image, sourceIndex }) => ({ ...image, ...naturalSizes.value.get(sourceIndex) })))
 const rowContainerStyle = computed<Record<string, string> | undefined>(() =>
   !isRail.value && actualLayout.value === 'row'
     ? adaptiveRow
@@ -344,7 +344,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
             >
               <ForumImageItem
                 :image="image"
-                :fill-container="!(adaptiveRow && !isRail && actualLayout === 'row')"
+                fill-container
                 :interactive="previewEnabled"
                 :class="imageClass"
                 @error="handleError(sourceIndex)"

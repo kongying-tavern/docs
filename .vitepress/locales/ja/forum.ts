@@ -24,6 +24,8 @@ const forum: CustomConfig['forum'] = {
     dislike: '反対',
   },
   imagePreview: {
+    longImage: '縦長画像',
+    longImageNavigator: '縦長画像の位置ナビゲーション',
     previous: '前の画像',
     next: '次の画像',
     expandPanel: 'プレビューパネルを開く',

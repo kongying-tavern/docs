@@ -24,6 +24,8 @@ const forum: CustomConfig['forum'] = {
     dislike: 'Disagree',
   },
   imagePreview: {
+    longImage: 'Long image',
+    longImageNavigator: 'Long image position navigator',
     previous: 'Previous image',
     next: 'Next image',
     expandPanel: 'Expand preview panel',

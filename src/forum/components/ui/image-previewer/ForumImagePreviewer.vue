@@ -6,8 +6,10 @@ import { computed, nextTick, onBeforeUnmount, ref, useTemplateRef, watch } from 
 import { FeyCards } from '@/components/ui/cards'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { isForumLongImage } from '~/forum/services/forumImageLayout'
 import ForumImageNavigationButton from '../ForumImageNavigationButton.vue'
 import PreviewerControls from './components/PreviewerControls.vue'
+import PreviewerLongImage from './components/PreviewerLongImage.vue'
 import PreviewerSidePanel from './components/PreviewerSidePanel.vue'
 import { useActivePreviewer } from './composables/useActivePreviewer'
 import { stackTransform, usePreviewerFlip } from './composables/usePreviewerFlip'
@@ -88,6 +90,9 @@ const hasPanel = computed(() =>
   isDesktop.value && visible.value && Boolean(context) && !panelCollapsed.value)
 
 const imgReady = ref(false)
+const loadedSize = ref<{ width: number, height: number }>()
+const activeImage = computed(() => ({ ...displayImages.value[current.value], ...loadedSize.value }))
+const isLongImage = computed(() => isForumLongImage(activeImage.value))
 const imgStyle = computed(() => {
   const image = displayImages.value[current.value]
   return image?.width && image?.height
@@ -109,9 +114,12 @@ const exitDur = computed(() => Math.max(
 function syncImgReady(): void {
   const img = imageEl.value
   imgReady.value = Boolean(img?.complete && img.naturalWidth > 0)
+  if (imgReady.value && img)
+    loadedSize.value = { width: img.naturalWidth, height: img.naturalHeight }
 }
 
-watch([current, displayImages], () => {
+watch([current, () => displayImages.value[current.value]?.src], () => {
+  loadedSize.value = undefined
   imgReady.value = false
   nextTick(syncImgReady)
 })
@@ -298,7 +306,7 @@ function openAt(index: number, sourceEl?: Element | null): void {
   if (!images[index])
     return
   clearTimeout(closeTimer)
-  setSource(sourceEl)
+  setSource(isForumLongImage(images[index]) ? undefined : sourceEl)
   clickState = null
   lastClickAt = 0
   clearTimeout(sweepTimer)
@@ -306,6 +314,7 @@ function openAt(index: number, sourceEl?: Element | null): void {
   sweepDir.value = 0
   imagesOverride.value = null
   current.value = Math.min(Math.max(index, 0), total.value - 1)
+  loadedSize.value = undefined
   if (!visible.value) {
     prevActive = document.activeElement as HTMLElement | null
     prevOverflow = document.documentElement.style.overflow
@@ -432,7 +441,7 @@ function handleKeydown(event: KeyboardEvent): void {
     return
   }
   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-    if (target?.closest('.preview-side-panel, input, textarea, select, [contenteditable="true"]'))
+    if (target?.closest('.preview-side-panel, .forum-long-reader-map, input, textarea, select, [contenteditable="true"]'))
       return
     event.preventDefault()
     event.stopImmediatePropagation()
@@ -471,7 +480,7 @@ defineExpose({ openAt, close })
           <div
             ref="containerEl"
             class="forum-preview-root inset-0 fixed z-[1000]"
-            :class="{ closing, entering, 'source-transition': usesSourceTransition, 'has-panel': hasPanel, 'panel-entering': hasPanel && panelEntering, 'is-dragging': dragging, 'is-settling': settling }"
+            :class="{ closing, entering, 'is-long-image': isLongImage, 'has-image-dots': total > 1 && options.dots !== false, 'source-transition': usesSourceTransition, 'has-panel': hasPanel, 'panel-entering': hasPanel && panelEntering, 'is-dragging': dragging, 'is-settling': settling }"
             role="dialog"
             aria-modal="true"
             :aria-label="message.forum.topic.previewTitle"
@@ -490,8 +499,11 @@ defineExpose({ openAt, close })
             <div
               ref="stageEl"
               class="forum-preview-stage"
+              :class="{ 'is-long-image': isLongImage }"
             >
+              <PreviewerLongImage v-if="isLongImage" :key="`${current}:${activeImage.src}`" :image="activeImage" :zoom-enabled="zoomEnabled" :max-zoom="maxZoom" @dimensions="loadedSize = $event" />
               <div
+                v-else
                 ref="stackEl"
                 class="forum-preview-stack"
                 :class="{
@@ -531,7 +543,7 @@ defineExpose({ openAt, close })
                     '--preview-enter-dur': `${enterDur}ms`,
                   }"
                   draggable="false"
-                  @load="imgReady = true"
+                  @load="syncImgReady"
                   @error="imgReady = true"
                 >
               </div>
