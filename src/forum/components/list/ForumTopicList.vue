@@ -7,7 +7,6 @@ import Divider from '@/components/ui/divider/Divider.vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { useLocalized } from '@/hooks/useLocalized'
-import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useForumListPrefetch } from '~/forum/composables/view/useForumListPrefetch'
 import { provideForumTopicPresentation } from '~/forum/composables/view/useForumTopicPresentation'
 import { useForumTopicWindow } from '~/forum/composables/view/useForumTopicWindow'
@@ -20,7 +19,6 @@ import ForumTopic from './ForumTopic.vue'
 import ForumTopicEntry from './ForumTopicEntry.vue'
 import ForumTopicListEmpty from './ForumTopicListEmpty.vue'
 import ForumTopicListSkeletons from './ForumTopicListSkeletons.vue'
-import ForumTopicScrollPreview from './ForumTopicScrollPreview.vue'
 
 const props = defineProps<{
   data: ForumAPI.Topic[]
@@ -35,7 +33,6 @@ const props = defineProps<{
 }>()
 
 const active = ref(true)
-const { isCompactMode } = useForumViewMode()
 provideForumTopicPresentation(() => props.data)
 const listHost = useTemplateRef<HTMLElement>('listHost')
 const { rows, windowed, height, setRoot, measureRow } = useForumTopicWindow(() => props.data, active)
@@ -130,15 +127,18 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
         @after-leave="leavingRows--"
         @leave-cancelled="leavingRows--"
       >
+        <li v-if="windowed" key="scroll-placeholder" class="topic-scroll-placeholder" aria-hidden="true">
+          <ForumTopicListSkeletons viewport-only />
+        </li>
         <li
-          v-for="{ item, index, start, size, preview } in rows"
+          v-for="{ item, index, start } in rows"
           :ref="measureRow"
           :key="item.id"
           :data-topic-id="item.id"
           :data-index="index"
           :aria-posinset="index + 1"
           :aria-setsize="data.length"
-          :style="start === undefined ? undefined : { position: 'absolute', top: `${start}px`, left: 0, width: '100%', height: preview ? `${size}px` : undefined }"
+          :style="start === undefined ? undefined : { position: 'absolute', top: `${start}px`, left: 0, width: '100%' }"
         >
           <Divider
             v-if="index === lastVisitedDividerIndex"
@@ -148,9 +148,7 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
             {{ message.forum.lastVisited }}
           </Divider>
           <ForumTopicEntry :delay="enterDelays.get(item.id)" @entered="enterDelays.delete(item.id)">
-            <ForumTopicScrollPreview v-if="preview" :topic="item" :height="size!" :compact="isCompactMode && item.type !== 'ANN'" />
             <ForumTopic
-              v-else
               :topic="item"
               :translation-snapshot="translations.get(item.id)"
               @prepare-preview="preparePreview"
@@ -196,24 +194,18 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
 
 /* A single viewport-sized paint layer remains available while the compositor
    scrolls ahead of the main thread. Rich rows cover it once their window lands. */
-.topic-list[data-windowed='true']::before {
-  content: '';
-  display: block;
+.topic-scroll-placeholder {
   position: sticky;
   top: calc(var(--vp-nav-height) + 8px);
   height: calc(100dvh - var(--vp-nav-height) - 8px);
+  overflow-anchor: none;
+  overflow: clip;
   pointer-events: none;
   will-change: transform;
-  background-image:
-    linear-gradient(transparent 20px, var(--vp-c-default-soft) 20px 38px, transparent 38px),
-    linear-gradient(transparent 54px, var(--vp-c-default-soft) 54px 66px, transparent 66px),
-    linear-gradient(transparent 78px, var(--vp-c-default-soft) 78px 90px, transparent 90px);
-  background-size:
-    42% 180px,
-    88% 180px,
-    72% 180px;
-  background-position: 16px 0;
-  background-repeat: repeat-y;
+}
+
+.topic-scroll-placeholder :deep([data-slot='skeleton']) {
+  animation: none;
 }
 
 .topic-list[data-windowed='true'] > li {

@@ -15,15 +15,17 @@ import {
   skeletonItemOpacity,
 } from '~/forum/services/forumListSkeleton'
 
+const props = defineProps<{ viewportOnly?: boolean }>()
 const [TopicCardSkeleton, UseTopicCardSkeleton] = createReusableTemplate()
 const [TopicCompactViewSkeleton, UseTopicCompactViewSkeleton] = createReusableTemplate()
-
 const { height } = useWindowSize()
 const { isCardMode } = useForumViewMode()
 const { route } = useForumRoute()
 
 // 上次加载条数优先（查询端写入同 key），缓存缺失时按视口估算
 const cachedCount = computed(() => {
+  if (props.viewportOnly)
+    return null
   const scope = resolveForumListScope(route.value)
   const params = resolveForumListParams(route.value)
   if (!scope || !params)
@@ -42,13 +44,13 @@ const skeletonCount = computed(() => {
 
 // 条数已知（缓存命中）时不渐隐，仅视口估算时从上到下淡出
 function itemOpacity(index: number) {
-  return cachedCount.value !== null ? 1 : skeletonItemOpacity(index, skeletonCount.value)
+  return props.viewportOnly || cachedCount.value !== null ? 1 : skeletonItemOpacity(index, skeletonCount.value)
 }
 </script>
 
 <template>
   <TopicCardSkeleton>
-    <div class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full">
+    <div class="my-1 px-4 py-2 rounded-xl w-full" :class="{ 'forum-topic-item': !viewportOnly }">
       <div class="topic-content">
         <div class="flex gap-2 justify-between">
           <div class="flex flex-wrap gap-[0.25rem] min-w-0 items-center">
@@ -94,7 +96,7 @@ function itemOpacity(index: number) {
   </TopicCardSkeleton>
 
   <TopicCompactViewSkeleton>
-    <div class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full">
+    <div class="my-1 px-4 py-2 rounded-xl w-full" :class="{ 'forum-topic-item': !viewportOnly }">
       <div class="topic-content">
         <div class="flex gap-2 justify-between">
           <div class="flex flex-wrap gap-[0.25rem] min-w-0 items-center">
@@ -138,6 +140,7 @@ function itemOpacity(index: number) {
 
   <TransitionGroup
     tag="div"
+    :css="!viewportOnly"
     enter-active-class="transition-all duration-300 ease-out"
     enter-from-class="-translate-y-4"
     enter-to-class="translate-y-0"

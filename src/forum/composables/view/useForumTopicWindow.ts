@@ -16,10 +16,6 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
   const initialMeasurements = shallowRef<VirtualItem[]>([])
   const measuredSizes = new Map<string, number>()
   const focusedId = ref<string>()
-  const fastScrolling = ref(false)
-  let lastOffset = 0
-  let lastScrollAt = 0
-  let layoutAdjustment = 0
   let restoringAnchor = false
   let displayChange = 0
   const { isCompactMode } = useForumViewMode()
@@ -39,7 +35,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     estimateSize,
     scrollMargin: margin.value,
     initialMeasurementsCache: initialMeasurements.value,
-    overscan: 8,
+    overscan: 4,
     measureElement: (element, entry, instance) => {
       // Ref callbacks run between DOM insertions. Reading offsetHeight there
       // forces a layout for every row. ResizeObserver measures the completed
@@ -53,23 +49,6 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
       const cached = instance.measurementsCache[Number(element.dataset.index)]
       return measuredSizes.get(id) ?? (cached?.key === id ? cached.size : estimateSize())
     },
-    onChange: (instance, sync) => {
-      if (!instance.isScrolling) {
-        fastScrolling.value = false
-        return
-      }
-      if (sync) {
-        const now = performance.now()
-        const offset = instance.scrollOffset ?? 0
-        // Size corrections scroll the window too; they are not a user fling.
-        const delta = Math.abs(offset - lastOffset - layoutAdjustment)
-        layoutAdjustment = 0
-        if (delta > (instance.scrollRect?.height ?? 720) || delta / Math.max(16, now - lastScrollAt) > 3)
-          fastScrolling.value = true
-        lastOffset = offset
-        lastScrollAt = now
-      }
-    },
     useAnimationFrameWithResizeObserver: true,
     rangeExtractor: (range) => {
       const indexes = defaultRangeExtractor(range)
@@ -79,12 +58,8 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
       return indexes.toSorted((a, b) => a - b)
     },
   })))
-  virtualizer.value.shouldAdjustScrollPositionOnItemSizeChange = (item, delta, instance) => {
-    const adjust = !restoringAnchor && item.start < (instance.scrollOffset ?? 0)
-    if (adjust)
-      layoutAdjustment += delta
-    return adjust
-  }
+  virtualizer.value.shouldAdjustScrollPositionOnItemSizeChange = (item, _delta, instance) =>
+    !restoringAnchor && item.start < (instance.scrollOffset ?? 0)
 
   function setRoot(element: Element | ComponentPublicInstance | null): void {
     const next = (element && '$el' in element ? element.$el : element) as HTMLElement | undefined
@@ -149,7 +124,6 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     if (!enabled) {
       displayChange++
       restoringAnchor = false
-      fastScrolling.value = false
     }
     if (!enabled && windowed.value) {
       initialMeasurements.value = virtualizer.value.measurementsCache.slice()
@@ -226,17 +200,9 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
       restoringAnchor = false
   })
 
-  let fullRowIds = new Set<string>()
-  const rows = computed(() => {
-    if (!windowed.value)
-      return data().map((item, index) => ({ item, index, start: undefined, size: undefined, preview: false }))
-    const items = virtualizer.value.getVirtualItems()
-    // Keep existing interactive rows alive during a gesture. Only new rows use
-    // the cheap text presentation until scrolling settles.
-    if (!fastScrolling.value)
-      fullRowIds = new Set(items.map(row => data()[row.index].id))
-    return items.map(row => ({ item: data()[row.index], index: row.index, start: row.start - margin.value, size: row.size, preview: fastScrolling.value && !fullRowIds.has(data()[row.index].id) && data()[row.index].id !== focusedId.value }))
-  })
+  const rows = computed(() => windowed.value
+    ? virtualizer.value.getVirtualItems().map(row => ({ item: data()[row.index], index: row.index, start: row.start - margin.value }))
+    : data().map((item, index) => ({ item, index, start: undefined })))
   const height = computed(() => windowed.value
     ? observing.value && active.value ? virtualizer.value.getTotalSize() : retainedHeight.value
     : undefined)

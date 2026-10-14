@@ -31,6 +31,9 @@ test('natural pagination bounds mounted rows through 1000 items and preserves ke
     timings.push(Date.now() - start)
   }
   await expect(list).toHaveAttribute('data-windowed', 'true')
+  const skeleton = page.locator('.topic-scroll-placeholder [data-slot="skeleton"]').first()
+  await expect(skeleton).toBeAttached()
+  await expect(skeleton).toHaveCSS('animation-name', 'none')
   expect(await page.locator('.forum-topic-item').count()).toBeLessThan(40)
   const row = page.locator('.forum-topic-item').first()
   await row.focus()
@@ -116,7 +119,7 @@ test('5000 variable-height topics remain bounded on mobile and changing display 
   await page.waitForTimeout(300)
   expect(await page.locator('.forum-topic-item').count()).toBeLessThan(50)
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
-  const anchor = await page.locator('.topic-list > li').evaluateAll((rows) => {
+  const anchor = await page.locator('.topic-list > li[data-topic-id]').evaluateAll((rows) => {
     const row = rows.find(row => row.getBoundingClientRect().bottom > 0) as HTMLElement
     return { id: row.dataset.topicId, top: row.getBoundingClientRect().top }
   })
@@ -199,12 +202,15 @@ test('rapid jumps keep readable rows across a long image list', async ({ page, s
   await expect(page.locator('.topic-list')).toHaveAttribute('data-total-items', '5000', { timeout: 30_000 })
   await page.waitForTimeout(1000)
   const frames = await page.evaluate(async () => {
-    const samples: Array<{ position: number, readable: number, mounted: number }> = []
+    const samples: Array<{ position: number, readable: number, mounted: number, completeCards: number }> = []
     for (const position of [0.2, 0.8, 0.4, 0.95, 0.05, 0.7, 0.3]) {
       window.scrollTo({ top: (document.documentElement.scrollHeight - innerHeight) * position, behavior: 'instant' })
       await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
       const rows = [...document.querySelectorAll('.forum-topic-item')]
-      samples.push({ position, mounted: rows.length, readable: rows.filter((row) => {
+      samples.push({ position, mounted: rows.length, completeCards: rows.filter((row) => {
+        const rect = row.getBoundingClientRect()
+        return rect.bottom > 70 && rect.top < innerHeight && row.querySelector('h4 a') && row.querySelector('.forum-image-source')
+      }).length, readable: rows.filter((row) => {
         const rect = row.getBoundingClientRect()
         return rect.bottom > 70 && rect.top < innerHeight && (row.querySelector('article')?.textContent?.includes('可阅读') ?? false)
       }).length })
@@ -212,6 +218,7 @@ test('rapid jumps keep readable rows across a long image list', async ({ page, s
     return samples
   })
   expect(frames.every(frame => frame.readable > 0), JSON.stringify(frames)).toBe(true)
+  expect(frames.every(frame => frame.completeCards > 0), JSON.stringify(frames)).toBe(true)
   expect(frames.every(frame => frame.mounted < 60), JSON.stringify(frames)).toBe(true)
   const cdp = await page.context().newCDPSession(page)
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 })
@@ -288,7 +295,6 @@ test('rapid jumps keep readable rows across a long image list', async ({ page, s
     return rect.bottom > 70 && rect.top < innerHeight && row.querySelector('article')?.textContent?.includes('可阅读')
   }).length)).toBeGreaterThan(0)
   await page.screenshot({ path: info.outputPath('after-scrollbar-drag.png') })
-  await expect(page.locator('[data-scroll-preview]')).toHaveCount(0)
   await cdp.send('Performance.enable')
   await cdp.send('HeapProfiler.collectGarbage')
   const metrics = await cdp.send('Performance.getMetrics')
@@ -327,8 +333,7 @@ test('removing a deep row retains other measured heights in a long list', async 
     await page.evaluate(top => window.scrollTo({ top, behavior: 'instant' }), top)
     await page.waitForTimeout(200)
   }
-  await expect(page.locator('[data-scroll-preview]')).toHaveCount(0)
-  // Capture the measured rich window, after the scroll-end presentation settles.
+  // Capture the rich window after its batched measurements settle.
   await page.waitForTimeout(300)
   const target = await page.locator('.forum-topic-item').evaluateAll(rows => rows.find((row) => {
     const rect = row.querySelector('h4 a')?.getBoundingClientRect()
