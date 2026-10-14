@@ -88,8 +88,8 @@ function itemOpacity(index: number) {
 
       <div class="mr-2 mt-4 flex justify-between">
         <div class="flex gap-2 items-center">
-          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-11 max-mobile:w-30" />
-          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-11 max-mobile:w-24" />
+          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-9 max-mobile:w-24" />
+          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-9" />
         </div>
       </div>
     </div>
@@ -127,8 +127,8 @@ function itemOpacity(index: number) {
 
       <div class="mr-2 mt-2 flex w-full items-center justify-between">
         <div class="flex gap-2 items-center">
-          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-11 max-mobile:w-30" />
-          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-11 max-mobile:w-24" />
+          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-9 max-mobile:w-24" />
+          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-9" />
         </div>
         <div class="flex gap-1 items-center">
           <Skeleton class="size-3 !rounded-none" />
