@@ -2,13 +2,16 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { useLocalized } from '@/hooks/useLocalized'
 import AsyncLoadError from '~/components/AsyncLoadError.vue'
+import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumLayout from '../layout/ForumLayout.vue'
+import ForumListQuickControls from '../list/ForumListQuickControls.vue'
 import ForumTopicListSkeletons from '../list/ForumTopicListSkeletons.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
 defineProps<{ error?: Error }>()
 const emit = defineEmits<{ retry: [] }>()
 const { message } = useLocalized()
+const { list } = useForumRoute()
 </script>
 
 <template>
@@ -22,12 +25,12 @@ const { message } = useLocalized()
     </template>
     <template v-if="!error" #content>
       <div aria-hidden="true">
-        <div class="pb-3 flex gap-2 h-13 min-w-0 items-center">
-          <div class="py-1 flex gap-2 min-w-0 overflow-hidden">
-            <Skeleton v-for="item in 4" :key="item" class="rounded-md shrink-0 h-8 w-20" />
-          </div>
-          <Skeleton class="ml-auto rounded-md shrink-0 size-8" />
-        </div>
+        <ForumListQuickControls
+          inert
+          class="user-controls-skeleton motion-safe:animate-pulse"
+          :sort="list?.sort ?? 'created'"
+          :topic-type="list?.topicType ?? 'all'"
+        />
         <ForumTopicListSkeletons />
       </div>
     </template>
@@ -42,3 +45,18 @@ const { message } = useLocalized()
     </template>
   </ForumLayout>
 </template>
+
+<style scoped>
+.user-controls-skeleton :deep(button) {
+  @apply bg-primary/10;
+  color: transparent;
+}
+
+.user-controls-skeleton :deep(button > *) {
+  visibility: hidden;
+}
+
+html[data-reduced-motion='true'] .user-controls-skeleton {
+  animation: none;
+}
+</style>

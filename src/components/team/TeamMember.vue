@@ -34,9 +34,10 @@ const avatarUrl = computed(() => {
     <figure class="avatar">
       <img
         class="avatar-img skeleton"
-        onload="this.classList.toggle('skeleton')"
         :src="avatarUrl"
         :alt="formatMessage(memberCard.profilePicture, { name: member.name })"
+        @load="($event.target as HTMLImageElement).classList.remove('skeleton')"
+        @error="($event.target as HTMLImageElement).classList.remove('skeleton')"
       >
     </figure>
 
@@ -294,8 +295,12 @@ const avatarUrl = computed(() => {
   transform: translateX(-8px);
 }
 
-.avatar-img .skeleton {
+.avatar-img.skeleton {
   animation: skeleton-flashed 2s linear 2s infinite;
+}
+
+html[data-reduced-motion='true'] .avatar-img.skeleton {
+  animation: none;
 }
 
 @media (min-width: 512px) {

@@ -63,6 +63,11 @@ html[data-reduced-motion='true'] .content-enter {
     rgba(255, 255, 255, 0)
   );
   animation: skeleton-gradient 1.5s linear 2s infinite;
+  pointer-events: none;
+}
+
+html[data-reduced-motion='true'] .skeleton-animation::after {
+  animation: none;
 }
 
 @keyframes slide-enter {

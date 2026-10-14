@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { ASSET_ORIGIN } from '~/constants/site'
 import { isLinkExternal, isRelativeLink } from '../utils'
 
@@ -44,12 +44,11 @@ const iconMap: Record<string, string> = {
   'weixitianli.com': 'i-custom-wxtl',
 }
 
-function imgLoadHandler(e: Event) {
-  const target = e.target as HTMLImageElement
-  target.classList.remove('skeleton-animation')
-}
+const coverLoading = ref(Boolean(props.cover))
+watch(() => props.cover, cover => coverLoading.value = Boolean(cover))
 
 function imgErrorHandler(e: Event) {
+  coverLoading.value = false
   const target = e.target as HTMLImageElement
   target.classList.add('load-error')
   target.src = `${ASSET_ORIGIN}/images/noImage.png`
@@ -121,11 +120,11 @@ const descText = computed(() => {
     }"
     :is-external-link="isExternal ? 'true' : 'false'"
   >
-    <div v-if="cover" class="card-cover-container">
+    <div v-if="cover" class="card-cover-container" :class="{ 'skeleton-animation': coverLoading }">
       <img
-        class="card-cover-img no-zoomable skeleton-animation"
+        class="card-cover-img no-zoomable"
         :src="coverLink"
-        @load="imgLoadHandler"
+        @load="coverLoading = false"
         @error="imgErrorHandler"
       >
     </div>
@@ -200,14 +199,23 @@ const descText = computed(() => {
 .card-theme-normal {
   max-width: 360px;
   margin: 1rem 0.5rem;
+  flex-direction: column;
 
-  .card-cover-contanier {
+  .card-cover-container {
     position: relative;
     overflow: hidden;
-    width: auto;
+    width: 100%;
+    flex-shrink: 0;
     margin: 0;
     height: 160px;
     border-radius: 0.75rem 0.75rem 0 0;
+  }
+
+  .card-cover-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card-footer {
@@ -216,7 +224,7 @@ const descText = computed(() => {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: auto;
+    width: 100%;
     padding: 1.25rem 1rem;
     margin: 0;
   }

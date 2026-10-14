@@ -152,14 +152,40 @@ onMounted(() => {
           <p class="text-sm text-[var(--vp-c-text-2)]">
             {{ message.forum.labelAdmin.description }}
           </p>
-          <p v-if="!isLoading && !loadError" class="text-xs text-[var(--vp-c-text-3)] tabular-nums">
-            {{ message.forum.labelAdmin.count.replace('{count}', String(totalCount)) }}
+          <p v-if="!loadError" class="text-xs text-[var(--vp-c-text-3)] tabular-nums">
+            <Skeleton v-if="isLoading && !hasLoaded" class="h-4 w-24" />
+            <template v-else>
+              {{ message.forum.labelAdmin.count.replace('{count}', String(totalCount)) }}
+            </template>
           </p>
         </div>
 
-        <div v-if="isLoading && !hasLoaded" class="flex flex-col gap-3" aria-busy="true">
-          <Skeleton class="h-8 w-40" />
-          <Skeleton v-for="index in 4" :key="index" class="h-12 w-full" />
+        <div v-if="isLoading && !hasLoaded" class="flex flex-col gap-6" aria-busy="true">
+          <section v-for="section in 2" :key="section" class="border border-[var(--vp-c-divider)] rounded-xl overflow-hidden" aria-hidden="true">
+            <div class="px-4 bg-[var(--vp-c-default-soft)] flex gap-2 h-12 items-center">
+              <Skeleton class="h-4 min-w-0 w-24" />
+              <div v-if="section === 1" class="ml-auto flex shrink-0 gap-2">
+                <Skeleton class="h-8 w-16" />
+                <Skeleton class="h-8 w-16" />
+              </div>
+            </div>
+            <div class="border-b border-[var(--vp-c-divider)] grid grid-cols-[144px_minmax(0,1fr)_96px] h-10 items-center">
+              <Skeleton class="ml-4 h-3.5 w-20" />
+              <Skeleton class="h-3.5 max-w-32 w-full" />
+              <Skeleton class="ml-auto mr-4 h-3.5 w-12" />
+            </div>
+            <div class="px-4 py-2.5 flex gap-2 items-center">
+              <Skeleton class="shrink-0 size-4" />
+              <Skeleton class="h-4 w-24" />
+            </div>
+            <div class="mx-2 mb-2 border border-[var(--vp-c-divider)] rounded-lg overflow-hidden">
+              <div v-for="index in 3" :key="index" class="border-b border-[var(--vp-c-divider)] grid grid-cols-[144px_minmax(0,1fr)_96px] h-10 items-center last:border-b-0">
+                <Skeleton class="ml-2 rounded-full h-5 w-24" />
+                <Skeleton class="h-3.5 max-w-40 w-full" />
+                <Skeleton class="ml-auto mr-2 h-6 w-16" />
+              </div>
+            </div>
+          </section>
         </div>
 
         <div v-else-if="loadError" class="py-10 flex flex-col gap-3 items-center" role="alert">

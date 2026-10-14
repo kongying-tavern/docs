@@ -54,7 +54,7 @@ function handleCommentClick() {
 </script>
 
 <template>
-  <div class="font-size-3 mr-2 flex w-full justify-between">
+  <div class="font-size-3 mr-2 flex flex-wrap gap-y-2 w-full justify-between">
     <div class="topic-info-list flex gap-3 cursor-default items-center">
       <div v-if="topicData.type !== 'ANN'" ref="reactionTarget" @focusin="reactionEnabled = true">
         <ForumTopicReactionButton :topic-id="topicData.id" :autoload="reactionEnabled" />

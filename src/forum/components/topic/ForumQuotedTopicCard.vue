@@ -89,17 +89,26 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
       </ForumResponsiveMenu>
     </UseRemoveMenu>
     <div class="quote-card-inner p-3">
-      <div v-if="loading" class="flex flex-col gap-2" aria-live="polite">
-        <div class="flex gap-2 items-center">
-          <Skeleton class="rounded-full size-6" />
-          <Skeleton class="h-4 w-28" />
-          <div v-if="removable" class="ml-auto">
-            <RemoveMenu />
+      <div v-if="loading" aria-live="polite" aria-busy="true">
+        <div class="flex gap-2 justify-between">
+          <div class="flex flex-wrap gap-1 min-w-0 items-center">
+            <div class="flex gap-1.5 items-center">
+              <Skeleton class="rounded-full shrink-0 size-6" />
+              <Skeleton class="h-4 w-12" />
+            </div>
+            <Skeleton class="h-4 w-14" />
+          </div>
+          <div class="flex shrink-0 gap-2 items-center">
+            <Skeleton class="h-4 w-12" />
+            <RemoveMenu v-if="removable" />
           </div>
         </div>
-        <Skeleton class="h-4 w-2/3" />
-        <Skeleton class="h-4 w-full" />
-        <Skeleton v-if="!compact" class="h-4 w-4/5" />
+        <Skeleton class="quote-title mt-2 h-6 w-2/3" />
+        <div class="quote-content mt-2 flex flex-col gap-1.5">
+          <Skeleton class="h-3.5 w-full" />
+          <Skeleton class="h-3.5 w-4/5" />
+          <Skeleton v-if="!compact" class="h-3.5 w-3/5" />
+        </div>
         <span class="sr-only">{{ message.forum.topic.quote.loading }}</span>
       </div>
 

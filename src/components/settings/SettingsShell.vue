@@ -173,6 +173,11 @@ const { desktopUi } = useSitePreferences()
   margin-block-start: 52px;
 }
 
+.settings-dialog-content .async-content-skeleton,
+.settings-drawer-detail .async-content-skeleton {
+  padding: 0;
+}
+
 html[data-reduced-motion='true'] .settings-save-enter-active,
 html[data-reduced-motion='true'] .settings-save-leave-active {
   transition: none;

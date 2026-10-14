@@ -62,17 +62,17 @@ function itemOpacity(index: number) {
           </div>
           <div class="flex shrink-0 gap-2 items-center">
             <Skeleton class="h-4 w-12" />
-            <Skeleton class="rounded-md h-5 w-9" />
+            <Skeleton class="rounded-md shrink-0 h-5 w-9" />
           </div>
         </div>
 
         <div class="mt-1">
-          <div class="mt-2 flex flex-col gap-1.5">
-            <Skeleton class="h-6 w-1/2" />
-            <Skeleton class="h-6 w-1/4" />
+          <div class="mt-1 flex flex-col">
+            <Skeleton class="h-27px w-1/2" />
+            <Skeleton class="h-27px w-1/4" />
           </div>
 
-          <div class="mt-2 flex gap-1 items-center">
+          <div class="flex gap-1 h-5 items-center">
             <Skeleton class="size-3 !rounded-none" />
             <Skeleton class="h-4 w-10" />
           </div>
@@ -87,9 +87,10 @@ function itemOpacity(index: number) {
       </div>
 
       <div class="mr-2 mt-4 flex justify-between">
-        <div class="flex gap-2 items-center">
-          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-9 max-mobile:w-24" />
-          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-9" />
+        <div class="flex gap-3 items-center">
+          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-9 max-mobile:w-23.5" />
+          <Skeleton class="rounded-full h-8 w-19.5 max-mobile:h-9" />
+          <Skeleton class="rounded-full h-8 w-15 max-mobile:h-9" />
         </div>
       </div>
     </div>
@@ -119,16 +120,19 @@ function itemOpacity(index: number) {
               <Skeleton class="h-4 w-[55%]" />
             </div>
           </div>
-          <div class="ml-2 mt-1 border border-[var(--forum-image-outline)] rounded-sm flex h-75px min-w-100px relative overflow-hidden">
-            <Skeleton class="h-full w-full" />
+          <div class="shrink-0 w-100px">
+            <div class="ml-2 mt-1 border border-[var(--forum-image-outline)] rounded-sm flex h-75px min-w-100px relative overflow-hidden">
+              <Skeleton class="h-full w-full" />
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="mr-2 mt-2 flex w-full items-center justify-between">
-        <div class="flex gap-2 items-center">
-          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-9 max-mobile:w-24" />
-          <Skeleton class="rounded-full h-8 w-20 max-mobile:h-9" />
+      <div class="mr-2 mt-2 flex flex-wrap gap-y-2 w-full items-center justify-between">
+        <div class="flex gap-3 items-center">
+          <Skeleton class="rounded-full h-8 w-22 max-mobile:h-9 max-mobile:w-23.5" />
+          <Skeleton class="rounded-full h-8 w-19.5 max-mobile:h-9" />
+          <Skeleton class="rounded-full h-8 w-15 max-mobile:h-9" />
         </div>
         <div class="flex gap-1 items-center">
           <Skeleton class="size-3 !rounded-none" />
