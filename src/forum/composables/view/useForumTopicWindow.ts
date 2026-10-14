@@ -1,10 +1,11 @@
-import type { VirtualItem } from '@tanstack/vue-virtual'
+import type { VirtualItem, Virtualizer } from '@tanstack/vue-virtual'
 import type { ComponentPublicInstance, Ref } from 'vue'
 import type ForumAPI from '~/forum/api/types'
-import { defaultRangeExtractor, useWindowVirtualizer } from '@tanstack/vue-virtual'
+import { useWindowVirtualizer } from '@tanstack/vue-virtual'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, onScopeDispose, ref, shallowRef, watch } from 'vue'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
+import { useForumTopicRenderBuffer } from '~/forum/composables/view/useForumTopicRenderBuffer'
 import { layoutTop } from '~/forum/utils/layoutPosition'
 
 export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<boolean>) {
@@ -16,10 +17,14 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
   const initialMeasurements = shallowRef<VirtualItem[]>([])
   const measuredSizes = new Map<string, number>()
   const focusedId = ref<string>()
+  const indexById = new Map<string, number>()
+  const renderBuffer = useForumTopicRenderBuffer(active, focusedId, indexById)
   let restoringAnchor = false
   let displayChange = 0
   const { isCompactMode } = useForumViewMode()
   const estimateSize = () => isCompactMode.value ? 180 : 380
+  // Changing this identity invalidates every measurement in TanStack 3.13.12.
+  const getItemKey = (index: number) => data()[index].id
 
   function updateMargin(): void {
     if (!root.value || !active.value)
@@ -28,38 +33,40 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     margin.value = layoutTop(root.value)
   }
 
-  const virtualizer = useWindowVirtualizer<HTMLElement>(computed(() => ({
-    count: data().length,
-    enabled: !import.meta.env.SSR && windowed.value && active.value && observing.value,
-    getItemKey: index => data()[index].id,
-    estimateSize,
-    scrollMargin: margin.value,
-    initialMeasurementsCache: initialMeasurements.value,
-    overscan: 4,
-    measureElement: (element, entry, instance) => {
-      // Ref callbacks run between DOM insertions. Reading offsetHeight there
-      // forces a layout for every row. ResizeObserver measures the completed
-      // batch; until then, preserve the cached/estimated height.
-      const id = element.dataset.topicId!
-      const size = entry ? Math.round(entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height) : 0
-      if (size > 0) {
-        measuredSizes.set(id, size)
-        return size
-      }
-      const cached = instance.measurementsCache[Number(element.dataset.index)]
-      return measuredSizes.get(id) ?? (cached?.key === id ? cached.size : estimateSize())
-    },
-    useAnimationFrameWithResizeObserver: true,
-    rangeExtractor: (range) => {
-      const indexes = defaultRangeExtractor(range)
-      const focusedIndex = focusedId.value === undefined ? -1 : data().findIndex(item => item.id === focusedId.value)
-      if (focusedIndex >= 0 && !indexes.includes(focusedIndex))
-        indexes.push(focusedIndex)
-      return indexes.toSorted((a, b) => a - b)
-    },
-  })))
-  virtualizer.value.shouldAdjustScrollPositionOnItemSizeChange = (item, _delta, instance) =>
-    !restoringAnchor && item.start < (instance.scrollOffset ?? 0)
+  const virtualizer: Ref<Virtualizer<Window, HTMLElement>> = useWindowVirtualizer<HTMLElement>(computed(() => {
+    const extract = renderBuffer.extract.value
+    return {
+      count: data().length,
+      enabled: !import.meta.env.SSR && windowed.value && active.value && observing.value,
+      getItemKey,
+      estimateSize,
+      scrollMargin: margin.value,
+      initialMeasurementsCache: initialMeasurements.value,
+      overscan: 0,
+      rangeExtractor: range => extract(range, virtualizer.value),
+      observeElementOffset: renderBuffer.observeOffset,
+      measureElement: (element, entry, instance) => {
+        // Ref callbacks run between DOM insertions. Reading offsetHeight there
+        // forces a layout for every row. ResizeObserver measures the completed
+        // batch; until then, preserve the cached/estimated height.
+        const id = element.dataset.topicId!
+        const size = entry ? Math.round(entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height) : 0
+        if (size > 0) {
+          measuredSizes.set(id, size)
+          return size
+        }
+        const cached = instance.measurementsCache[Number(element.dataset.index)]
+        return measuredSizes.get(id) ?? (cached?.key === id ? cached.size : estimateSize())
+      },
+      useAnimationFrameWithResizeObserver: true,
+    }
+  }))
+  virtualizer.value.shouldAdjustScrollPositionOnItemSizeChange = (item, delta, instance) => {
+    const adjust = !restoringAnchor && item.start < (instance.scrollOffset ?? 0)
+    if (adjust)
+      renderBuffer.adjust(delta)
+    return adjust
+  }
 
   function setRoot(element: Element | ComponentPublicInstance | null): void {
     const next = (element && '$el' in element ? element.$el : element) as HTMLElement | undefined
@@ -83,13 +90,16 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     const count = ids.length
     if (import.meta.env.SSR)
       return
+    indexById.clear()
+    ids.forEach((id, index) => indexById.set(id, index))
+    renderBuffer.invalidate()
     const currentIds = new Set(ids)
     for (const id of measuredSizes.keys()) {
       if (!currentIds.has(id))
         measuredSizes.delete(id)
     }
     // The virtualizer retains sizes by identity even when a query replaces its rows.
-    if (virtualizer.value.measurementsCache.some(row => !currentIds.has(String(row.key)))) {
+    if (virtualizer.value.measurementsCache.some(row => row.key !== ids[row.index])) {
       const instance = virtualizer.value
       const sizes = new Map([...initialMeasurements.value, ...instance.measurementsCache]
         .filter(row => currentIds.has(String(row.key)))
@@ -124,6 +134,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     if (!enabled) {
       displayChange++
       restoringAnchor = false
+      renderBuffer.reset()
     }
     if (!enabled && windowed.value) {
       initialMeasurements.value = virtualizer.value.measurementsCache.slice()
@@ -149,7 +160,10 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     active.value = false
     cancelAnimationFrame(marginFrame)
   })
-  useEventListener(import.meta.env.SSR ? undefined : window, 'resize', updateMargin, { passive: true })
+  useEventListener(import.meta.env.SSR ? undefined : window, 'resize', () => {
+    updateMargin()
+    renderBuffer.resize(window.innerHeight)
+  }, { passive: true })
   const syncFocus = () => {
     const target = root.value?.contains(document.activeElement)
       ? document.activeElement
@@ -167,6 +181,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     const index = Number(anchor?.dataset.index)
     const top = anchor?.getBoundingClientRect().top ?? 0
     const change = ++displayChange
+    renderBuffer.reset()
     restoringAnchor = true
     initialMeasurements.value = []
     measuredSizes.clear()
@@ -203,6 +218,10 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
   const rows = computed(() => windowed.value
     ? virtualizer.value.getVirtualItems().map(row => ({ item: data()[row.index], index: row.index, start: row.start - margin.value }))
     : data().map((item, index) => ({ item, index, start: undefined })))
+  watch(() => rows.value.map(row => row.item.id), (ids, previous) => {
+    if (windowed.value)
+      renderBuffer.recordRows(ids, previous)
+  })
   const height = computed(() => windowed.value
     ? observing.value && active.value ? virtualizer.value.getTotalSize() : retainedHeight.value
     : undefined)
