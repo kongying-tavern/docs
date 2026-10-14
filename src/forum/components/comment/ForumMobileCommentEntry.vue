@@ -38,7 +38,14 @@ defineExpose({ element })
   min-height: 48px;
   border: 1px solid var(--vp-c-divider);
   border-radius: var(--radius);
+  background: oklch(var(--background));
   font-family: var(--vp-font-family-base);
+}
+.mobile-comment-entry:has(.mobile-comment-entry-text:hover) {
+  background: oklch(var(--accent));
+}
+.mobile-comment-entry .mobile-comment-entry-text {
+  background: transparent;
 }
 .mobile-comment-entry :deep(button) {
   font-family: inherit;

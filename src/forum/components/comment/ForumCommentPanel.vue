@@ -50,7 +50,7 @@ const area = useTemplateRef('area')
 const inputAnchor = useTemplateRef('inputAnchor')
 const inputSurface = useTemplateRef('inputSurface')
 const { left, width } = useElementBounding(area)
-const { height: inputHeight } = useElementSize(inputSurface)
+const { height: inputHeight } = useElementSize(inputSurface, undefined, { box: 'border-box' })
 const inputVisible = ref(true)
 const mobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const modalVisible = ref(false)
@@ -104,7 +104,7 @@ watch(() => [targetId, targetReady, layoutReady.value] as const, async ([comment
 </script>
 
 <template>
-  <div v-if="!closed" ref="area" class="forum-comment-surface" :class="{ 'pb-24': presentation === 'page', 'mobile-comment-surface': mobile }">
+  <div v-if="!closed" ref="area" class="forum-comment-surface" :class="{ 'pb-24': presentation === 'page', 'mobile-comment-surface': mobile }" :style="mobileFixed ? { 'paddingBottom': `${inputHeight + 16}px`, '--comment-input-height': `${inputHeight}px` } : undefined">
     <p v-if="presentation !== 'inline'" id="reply" class="font-(size-5 --vp-font-family-subtitle) line-height-[21px]" :class="presentation === 'embedded' ? 'mb-3 mt-0' : 'mb-5.5 mt-4'">
       {{ message.forum.comment.commentCount }}
       <span class="font-size-3.5 color-[var(--vp-c-text-3)] vertical-text-top tabular-nums">{{ count }}</span>
@@ -176,15 +176,27 @@ watch(() => [targetId, targetReady, layoutReady.value] as const, async ([comment
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-top: 8px;
-  padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--vp-c-divider);
+}
+.comment-input-mobile::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-bottom, 0px);
+  /* Continue the opaque surface through browser toolbar viewport changes. */
+  height: calc(100lvh - 100svh + env(safe-area-inset-bottom, 0px));
+  background: var(--vp-c-bg);
+  pointer-events: none;
 }
 .comment-input-covered {
   visibility: hidden;
   pointer-events: none;
 }
 .mobile-comment-surface :deep(.topic-comment-item) {
-  scroll-margin-bottom: 80px;
+  scroll-margin-bottom: calc(var(--comment-input-height, 64px) + 16px);
 }
 html[data-reduced-motion='true'] .comment-input-mobile,
 html[data-reduced-motion='true'] .comment-input-mobile :deep(*) {

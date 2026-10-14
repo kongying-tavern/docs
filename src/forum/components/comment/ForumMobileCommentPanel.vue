@@ -24,7 +24,7 @@ const motionReady = ref(false)
 const root = useTemplateRef<HTMLElement>('root')
 const editorHost = useTemplateRef<HTMLElement>('editorHost')
 const desktop = computed(() => props.embedded)
-const { drawerStyle } = useMobileEditorViewport(open, desktop, root, '.rich-editor-scroll')
+const { drawerStyle, keyboardVisible } = useMobileEditorViewport(open, desktop, root, '.rich-editor-scroll')
 const morph = useCommentEditorMorph(root, () => props.origin)
 const [Panel, PanelContent] = createReusableTemplate()
 watch(open, (value) => {
@@ -111,7 +111,7 @@ function setOpen(value: boolean): void {
           {{ message.ui.button.cancel }}
         </Button>
       </div>
-      <Alert v-if="error" variant="destructive" class="mx-4 mb-2 w-auto" role="alert">
+      <Alert v-if="error" variant="destructive" class="mobile-comment-error mx-4 mb-2 w-auto" role="alert">
         <AlertDescription>{{ error }}</AlertDescription>
       </Alert>
       <div ref="editorHost" class="mobile-comment-editor" />
@@ -121,7 +121,7 @@ function setOpen(value: boolean): void {
     <PanelContent />
   </div>
   <Dialog v-else :open="open" @update:open="setOpen">
-    <DialogContent class="mobile-comment-dialog" :class="{ 'comment-expanded': expanded, 'motion-ready': motionReady, 'motion-reduced': reducedMotion }" :style="[drawerStyle, morph.style.value]" :show-close-button="false" :aria-describedby="undefined" @open-auto-focus="showEditor" @close-auto-focus="restoreFocus" @escape-key-down="guardDismiss" @pointer-down-outside="guardDismiss" @animationend="afterAnimation">
+    <DialogContent class="mobile-comment-dialog" :class="{ 'comment-expanded': expanded, 'motion-ready': motionReady, 'motion-reduced': reducedMotion, 'keyboard-visible': keyboardVisible }" :style="[drawerStyle, morph.style.value]" :show-close-button="false" :aria-describedby="undefined" @open-auto-focus="showEditor" @close-auto-focus="restoreFocus" @escape-key-down="guardDismiss" @pointer-down-outside="guardDismiss" @animationend="afterAnimation">
       <DialogTitle class="sr-only">
         {{ message.forum.comment.comment }}
       </DialogTitle>
@@ -145,11 +145,12 @@ function setOpen(value: boolean): void {
   align-items: center;
   justify-content: flex-end;
   padding: 0 16px;
+  flex-shrink: 0;
 }
 .mobile-comment-header :deep(button) {
   font-family: inherit;
-  min-width: 32px;
-  min-height: 32px;
+  min-width: 44px;
+  min-height: 44px;
 }
 .mobile-comment-header :deep(svg) {
   width: 16px;
@@ -163,6 +164,10 @@ function setOpen(value: boolean): void {
   padding-inline: 16px;
   color: oklch(var(--muted-foreground));
   font-size: 12px;
+  flex-shrink: 0;
+}
+.mobile-comment-error {
+  flex-shrink: 0;
 }
 .mobile-comment-reply > span {
   min-width: 0;
@@ -196,18 +201,23 @@ function setOpen(value: boolean): void {
   min-height: min(552px, 80dvh);
 }
 :global(.mobile-comment-dialog[data-slot='dialog-content']) {
+  --comment-panel-available-height: calc(
+    var(--compact-viewport-height, 100dvh) - max(12px, env(safe-area-inset-top, 0px))
+  );
   top: auto;
   left: 0;
   bottom: var(--compact-viewport-bottom, 0px);
   width: 100%;
   max-width: none;
   height: auto;
-  min-height: min(320px, calc(var(--compact-viewport-height, 100dvh) - 12px));
-  max-height: calc(var(--compact-viewport-height, 100dvh) - 12px) !important;
+  min-height: min(320px, var(--comment-panel-available-height));
+  max-height: var(--comment-panel-available-height) !important;
   display: flex;
   flex-direction: column;
   padding: 8px 0 0;
-  overflow: clip;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--vp-c-bg);
+  overflow: visible;
   border-radius: 16px 16px 0 0;
   transform: none;
   /* Keep this reset separate from transform when Lightning CSS folds transforms. */
@@ -215,11 +225,56 @@ function setOpen(value: boolean): void {
   animation: none;
   transition: height 180ms ease;
 }
+:global(.mobile-comment-dialog::after) {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: calc(var(--compact-viewport-bottom, 0px) + env(safe-area-inset-bottom, 0px));
+  height: calc(var(--compact-viewport-bottom, 0px) + 100lvh - 100svh + env(safe-area-inset-bottom, 0px));
+  background: var(--vp-c-bg);
+  pointer-events: none;
+}
+:global(.mobile-comment-dialog .mobile-comment-panel) {
+  overflow: clip;
+  border-radius: inherit;
+}
+:global(.mobile-comment-dialog.keyboard-visible[data-slot='dialog-content']) {
+  padding-bottom: 0;
+}
+:global(.mobile-comment-dialog.keyboard-visible::after) {
+  display: none;
+}
+:global(.mobile-comment-dialog .mobile-comment-editor),
+:global(.mobile-comment-dialog .mobile-comment-header),
+:global(.mobile-comment-dialog .mobile-comment-reply) {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+:global(.mobile-comment-dialog .mobile-comment-error) {
+  margin-left: max(16px, env(safe-area-inset-left, 0px));
+  margin-right: max(16px, env(safe-area-inset-right, 0px));
+}
+:global(.mobile-comment-dialog .editor-tools:has(.editor-tool-panel)) {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+  min-height: 0;
+  max-height: calc(var(--comment-panel-available-height) * 0.5);
+}
+:global(.mobile-comment-dialog .editor-tools-row) {
+  flex-shrink: 0;
+}
+:global(.mobile-comment-dialog .editor-tool-panel) {
+  flex-shrink: 1;
+  min-height: 0;
+}
 :global(.mobile-comment-dialog.comment-expanded[data-slot='dialog-content']) {
-  height: calc(var(--compact-viewport-height, 100dvh) - 12px);
+  height: var(--comment-panel-available-height);
 }
 :global(.mobile-comment-dialog:not(.comment-expanded)[data-slot='dialog-content']:has(.editor-tool-panel)) {
-  min-height: min(552px, calc(var(--compact-viewport-height, 100dvh) - 12px));
+  min-height: min(552px, var(--comment-panel-available-height));
 }
 :global(.mobile-comment-dialog.motion-ready:not(.motion-reduced)[data-state='open']) {
   animation: comment-editor-enter 300ms cubic-bezier(0.22, 1, 0.36, 1);
