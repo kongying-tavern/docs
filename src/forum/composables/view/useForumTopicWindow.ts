@@ -8,7 +8,10 @@ import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useForumTopicRenderBuffer } from '~/forum/composables/view/useForumTopicRenderBuffer'
 import { layoutTop } from '~/forum/utils/layoutPosition'
 
-export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<boolean>) {
+const FULL_TOPIC_LIST_LIMIT = 80
+
+/** Query identity and pending refer to the full query, including retained rows while it loads. */
+export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<boolean>, listKey: () => string | undefined = () => undefined, pending: () => boolean | undefined = () => false) {
   const root = shallowRef<HTMLElement>()
   const windowed = ref(false)
   const observing = ref(true)
@@ -19,6 +22,10 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
   const focusedId = ref<string>()
   const indexById = new Map<string, number>()
   const renderBuffer = useForumTopicRenderBuffer(active, focusedId, indexById)
+  let windowedForQuery = false
+  let awaitingQuery = false
+  let gestureActive = false
+  let expectedAnchorScroll = 0
   let restoringAnchor = false
   let displayChange = 0
   const { isCompactMode } = useForumViewMode()
@@ -86,10 +93,71 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     })
   }
 
-  watch(() => data().map(topic => topic.id), (ids) => {
+  function captureAnchor(): { id: string, top: number } | undefined {
+    const row = [...root.value?.querySelectorAll<HTMLElement>('li[data-topic-id]') ?? []]
+      .find(row => row.getBoundingClientRect().bottom > 0)
+    return row ? { id: row.dataset.topicId!, top: row.getBoundingClientRect().top } : undefined
+  }
+
+  async function restoreAnchor(anchor: { id: string, top: number }): Promise<void> {
+    if (gestureActive)
+      return
+    const change = ++displayChange
+    expectedAnchorScroll = window.scrollY
+    restoringAnchor = true
+    await nextTick()
+    if (change !== displayChange || !active.value)
+      return
+    const index = indexById.get(anchor.id)
+    if (windowed.value && index !== undefined) {
+      const offset = virtualizer.value.getOffsetForIndex(index, 'start')?.[0]
+      if (offset !== undefined)
+        window.scrollTo({ top: offset - anchor.top, behavior: 'instant' })
+      expectedAnchorScroll = window.scrollY
+    }
+    let stable = 0
+    for (let frame = 0; frame < 8 && stable < 2 && active.value; frame++) {
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
+      if (change !== displayChange || !active.value)
+        break
+      const row = root.value?.querySelector<HTMLElement>(`li[data-topic-id="${CSS.escape(anchor.id)}"]`)
+      if (!row)
+        break
+      const delta = row.getBoundingClientRect().top - anchor.top
+      if (Math.abs(delta) > 1) {
+        window.scrollBy({ top: delta, behavior: 'instant' })
+        expectedAnchorScroll = window.scrollY
+        stable = 0
+      }
+      else {
+        stable++
+      }
+    }
+    if (change === displayChange)
+      restoringAnchor = false
+  }
+
+  watch([() => data().map(topic => topic.id), listKey, pending], ([ids, key, loading], [, previousKey]) => {
     const count = ids.length
     if (import.meta.env.SSR)
       return
+    const reset = key !== previousKey || count === 0
+    if (key !== previousKey)
+      awaitingQuery = true
+    if (!loading)
+      awaitingQuery = false
+    if (reset) {
+      windowedForQuery = false
+      displayChange++
+      restoringAnchor = false
+      renderBuffer.reset()
+    }
+    // Once enabled, retain this mode until a new query or an empty-list reset.
+    // Old rows retained while a new query loads must not latch its next result's mode.
+    if (count > FULL_TOPIC_LIST_LIMIT && !awaitingQuery && active.value)
+      windowedForQuery = true
+    const shouldWindow = count > FULL_TOPIC_LIST_LIMIT || windowedForQuery
+    const anchor = shouldWindow && !windowed.value && !reset && active.value && !gestureActive ? captureAnchor() : undefined
     indexById.clear()
     ids.forEach((id, index) => indexById.set(id, index))
     renderBuffer.invalidate()
@@ -115,7 +183,12 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
       instance.getTotalSize()
     }
     initialMeasurements.value = initialMeasurements.value.filter(row => currentIds.has(String(row.key)))
-    if (count <= 80) {
+    if (!shouldWindow) {
+      if (windowed.value) {
+        displayChange++
+        restoringAnchor = false
+        renderBuffer.reset()
+      }
       windowed.value = false
       initialMeasurements.value = []
     }
@@ -127,6 +200,8 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
         measuredSizes.set(id, size)
       initialMeasurements.value = seedMeasurements(sizes)
       windowed.value = true
+      if (anchor)
+        void restoreAnchor(anchor)
     }
   }, { immediate: true })
 
@@ -134,6 +209,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     if (!enabled) {
       displayChange++
       restoringAnchor = false
+      gestureActive = false
       renderBuffer.reset()
     }
     if (!enabled && windowed.value) {
@@ -164,6 +240,25 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     updateMargin()
     renderBuffer.resize(window.innerHeight)
   }, { passive: true })
+  function cancelAnchor(): void {
+    if (restoringAnchor) {
+      displayChange++
+      restoringAnchor = false
+    }
+  }
+  const eventTarget = import.meta.env.SSR ? undefined : window
+  useEventListener(eventTarget, ['wheel', 'keydown'], cancelAnchor, { passive: true })
+  useEventListener(eventTarget, ['touchstart', 'pointerdown'], () => {
+    if (!active.value)
+      return
+    gestureActive = true
+    cancelAnchor()
+  }, { passive: true })
+  useEventListener(eventTarget, ['touchend', 'touchcancel', 'pointerup', 'pointercancel', 'blur'], () => gestureActive = false, { passive: true })
+  useEventListener(eventTarget, 'scroll', () => {
+    if (restoringAnchor && Math.abs(window.scrollY - expectedAnchorScroll) > 1)
+      cancelAnchor()
+  }, { passive: true })
   const syncFocus = () => {
     const target = root.value?.contains(document.activeElement)
       ? document.activeElement
@@ -176,43 +271,13 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
   watch(isCompactMode, async () => {
     if (!windowed.value || !active.value)
       return
-    const anchor = [...root.value?.querySelectorAll<HTMLElement>('li[data-topic-id]') ?? []]
-      .find(row => row.getBoundingClientRect().bottom > 0)
-    const index = Number(anchor?.dataset.index)
-    const top = anchor?.getBoundingClientRect().top ?? 0
-    const change = ++displayChange
+    const anchor = captureAnchor()
     renderBuffer.reset()
-    restoringAnchor = true
     initialMeasurements.value = []
     measuredSizes.clear()
     virtualizer.value.measure()
-    await nextTick()
-    if (change !== displayChange || !active.value)
-      return
-    if (anchor && Number.isFinite(index)) {
-      const offset = virtualizer.value.getOffsetForIndex(index, 'start')?.[0]
-      if (offset !== undefined)
-        window.scrollTo({ top: offset - top, behavior: 'instant' })
-      let stable = 0
-      for (let frame = 0; frame < 8 && stable < 2 && active.value; frame++) {
-        await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
-        if (change !== displayChange || !active.value)
-          break
-        const row = root.value?.querySelector<HTMLElement>(`li[data-index="${index}"]`)
-        if (!row)
-          break
-        const delta = row.getBoundingClientRect().top - top
-        if (Math.abs(delta) > 1) {
-          window.scrollBy({ top: delta, behavior: 'instant' })
-          stable = 0
-        }
-        else {
-          stable++
-        }
-      }
-    }
-    if (change === displayChange)
-      restoringAnchor = false
+    if (anchor)
+      await restoreAnchor(anchor)
   })
 
   const rows = computed(() => windowed.value

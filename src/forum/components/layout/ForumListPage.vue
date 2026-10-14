@@ -10,6 +10,7 @@ import ForumLayout from './ForumLayout.vue'
 
 interface Props {
   renderData: ForumAPI.Topic[]
+  listKey?: string
   loading?: boolean
   loadingMore?: boolean
   pageLoadDuration?: number
@@ -64,6 +65,7 @@ const isInitialLoading = computed(() => loading && renderData.length === 0)
         <ForumTopicResults
           :data="renderData" :loading="isInitialLoading" :loading-more="loadingMore"
           :page-load-duration="pageLoadDuration"
+          :list-key="listKey" :list-pending="loading"
           :error="error" :query="query" :sort="sort" :can-load-more="canLoadMore"
           :load-more="loadMore" :refresh-data="refreshData" :text="loadStateMessage"
           @login="emit('login')"

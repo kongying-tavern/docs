@@ -344,6 +344,7 @@ test('removing a deep row retains other measured heights in a long list', async 
   const neighborId = items[items.findIndex(topic => topic.number === target) + 1]!.number
   const neighbor = page.locator(`[data-forum-topic="${neighborId}"]`)
   const neighborTop = await neighbor.evaluate(element => element.getBoundingClientRect().top)
+  const beforeScrollY = await page.evaluate(() => window.scrollY)
   const removedHeight = await row.evaluate(element => element.closest('li')!.getBoundingClientRect().height)
   const height = await list.evaluate(element => element.getBoundingClientRect().height)
   const beforeRows = await page.locator('li[data-topic-id]').evaluateAll(rows => rows.map(row => ({ id: (row as HTMLElement).dataset.topicId, index: (row as HTMLElement).dataset.index, height: row.getBoundingClientRect().height, top: (row as HTMLElement).style.top })))
@@ -356,19 +357,29 @@ test('removing a deep row retains other measured heights in a long list', async 
   await page.waitForTimeout(500)
   const afterHeight = await list.evaluate(element => element.getBoundingClientRect().height)
   const afterRows = await page.locator('li[data-topic-id]').evaluateAll(rows => rows.map(row => ({ id: (row as HTMLElement).dataset.topicId, index: (row as HTMLElement).dataset.index, height: row.getBoundingClientRect().height, top: (row as HTMLElement).style.top })))
-  await writeFile(info.outputPath('deletion-heights.json'), JSON.stringify({ height, removedHeight, beforeRows, afterHeight, afterRows }))
+  const afterScrollY = await page.evaluate(() => window.scrollY)
+  const afterNeighborTop = await neighbor.evaluate(element => element.getBoundingClientRect().top)
+  await writeFile(info.outputPath('deletion-heights.json'), JSON.stringify({ height, removedHeight, beforeRows, beforeScrollY, neighborTop, afterHeight, afterRows, afterScrollY, afterNeighborTop }))
   await expect(page.locator('html')).not.toHaveAttribute('data-forum-transition')
   // Deletion can bring a previously estimated overscan row into the measured
   // window. Verify surviving identities directly instead of freezing total size.
   expect(afterHeight).toBeLessThan(height)
   const removedIndex = Number(beforeRows.find(item => item.id === target)!.index)
+  const reference = beforeRows.find(previous => previous.id !== target && afterRows.some(current => current.id === previous.id))!
+  const afterReference = afterRows.find(current => current.id === reference.id)!
+  const referenceShift = Number.parseFloat(afterReference.top) - Number.parseFloat(reference.top)
   for (const current of afterRows) {
     const previous = beforeRows.find(item => item.id === current.id)
     if (!previous)
       continue
     expect(Math.abs(current.height - previous.height), current.id).toBeLessThan(1)
-    const expectedTop = Number.parseFloat(previous.top) - (Number(previous.index) > removedIndex ? removedHeight : 0)
-    expect(Math.abs(Number.parseFloat(current.top) - expectedTop), current.id).toBeLessThan(1)
+    // Newly measured rows above the window can shift the whole document prefix.
+    // Compare surviving row spacing relative to a common identity; separately
+    // verify the actual viewport position below, including scroll compensation.
+    const deletionShift = (Number(previous.index) > removedIndex ? removedHeight : 0)
+      - (Number(reference.index) > removedIndex ? removedHeight : 0)
+    const expectedTop = Number.parseFloat(previous.top) + referenceShift - deletionShift
+    expect(Math.abs(Number.parseFloat(current.top) - expectedTop), current.id).toBeLessThan(5)
   }
   await expect.poll(async () => Math.abs(await neighbor.evaluate(element => element.getBoundingClientRect().top) - (neighborTop - removedHeight))).toBeLessThan(40)
   await expect(page.locator(`[data-forum-topic="${target}"]`)).toHaveCount(0)

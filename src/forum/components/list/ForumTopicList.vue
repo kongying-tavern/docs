@@ -30,12 +30,14 @@ const props = defineProps<{
   query?: string
   canLoadMore?: boolean
   sort?: ForumAPI.SortMethod
+  listKey?: string
+  listPending?: boolean
 }>()
 
 const active = ref(true)
 provideForumTopicPresentation(() => props.data)
 const listHost = useTemplateRef<HTMLElement>('listHost')
-const { rows, windowed, height, setRoot, measureRow } = useForumTopicWindow(() => props.data, active)
+const { rows, windowed, height, setRoot, measureRow } = useForumTopicWindow(() => props.data, active, () => props.listKey, () => props.listPending)
 onActivated(() => active.value = true)
 const hasRenderedTopics = ref(props.data.length > 0)
 const leavingRows = ref(0)

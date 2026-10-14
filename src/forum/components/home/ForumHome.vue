@@ -52,6 +52,7 @@ function login(): void {
 <template>
   <ForumListPage
     :render-data="displayedRows"
+    :list-key="topics.listKey.value"
     :loading="topics.isLoading.value"
     :loading-more="topics.loadingMore.value"
     :page-load-duration="topics.pageLoadDuration.value"

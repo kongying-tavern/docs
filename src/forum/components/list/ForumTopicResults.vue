@@ -15,6 +15,8 @@ defineProps<{
   refreshData?: () => Promise<unknown> | unknown
   query?: string
   sort?: ForumAPI.SortMethod
+  listKey?: string
+  listPending?: boolean
   text?: string
 }>()
 const emit = defineEmits<{ login: [] }>()
@@ -32,6 +34,8 @@ const emit = defineEmits<{ login: [] }>()
       :error="error"
       :query="query"
       :sort="sort"
+      :list-key="listKey ?? JSON.stringify([query, sort])"
+      :list-pending="listPending ?? loading"
       :load-more="loadMore"
       :refresh-data="refreshData"
       :can-load-more="canLoadMore"

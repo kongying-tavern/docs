@@ -7,6 +7,7 @@ import ForumTopicResults from '../list/ForumTopicResults.vue'
 const props = defineProps<{
   activeTab: FORUM.ProfileTab['id']
   data: ForumAPI.Topic[]
+  listKey?: string
   loading?: boolean
   loadingMore?: boolean
   pageLoadDuration?: number

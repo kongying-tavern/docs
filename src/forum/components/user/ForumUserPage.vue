@@ -66,6 +66,7 @@ function login(): void {
 <template>
   <ForumListPage
     :render-data="topics.rows.value"
+    :list-key="topics.listKey.value"
     :loading="topics.isLoading.value"
     :loading-more="topics.loadingMore.value"
     :page-load-duration="topics.pageLoadDuration.value"
@@ -108,6 +109,7 @@ function login(): void {
     <template #content-main>
       <ForumProfileResultsPanel
         :active-tab="activeTab" :data="topics.rows.value"
+        :list-key="topics.listKey.value"
         :loading="topics.isLoading.value" :loading-more="topics.loadingMore.value"
         :page-load-duration="topics.pageLoadDuration.value"
         :error="topics.error.value" :can-load-more="topics.canLoadMore.value"

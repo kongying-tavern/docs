@@ -173,6 +173,7 @@ function clearRecentSearches(): void {
       <ForumTopicResults
         :data="topics.rows.value" :loading="topics.isLoading.value" :loading-more="topics.loadingMore.value"
         :page-load-duration="topics.pageLoadDuration.value"
+        :list-key="topics.listKey.value"
         :error="topics.error.value" :can-load-more="topics.canLoadMore.value"
         :sort="list?.sort ?? 'created'" :query="list?.q ?? ''"
         :load-more="topics.loadMore" :refresh-data="topics.refetch" :text="loadStateMessage"

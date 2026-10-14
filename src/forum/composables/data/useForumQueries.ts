@@ -108,6 +108,7 @@ export function useForumTopicsQuery(
 
   return {
     ...query,
+    listKey: computed(() => JSON.stringify(normalized.value)),
     refetch,
     rows,
     total,
