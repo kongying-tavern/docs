@@ -150,7 +150,7 @@ test('parses repeated attachments and ignores invalid dimensions', () => {
 })
 
 test('rebases legacy image hosts onto the configured asset origin', () => {
-  for (const host of ['webp.assets.interknot.site', 'webp.assets.inter-knot.site']) {
+  for (const host of ['webp.assets.interknot.site', 'webp.assets.inter-knot.site', 'assets.webp.inter-knot.site']) {
     for (const prefix of ['https://', 'http://', '//']) {
       const body = `![image](${prefix}${host}/folder/a%20b.webp?size=800#preview)`
       for (const decode of [decodeTopicBody, decodeCommentBody]) {
@@ -162,6 +162,8 @@ test('rebases legacy image hosts onto the configured asset origin', () => {
     `${FORUM_IMAGE_ORIGIN}/a.webp`,
     'https://example.com/webp.assets.interknot.site/a.webp',
     'https://webp.assets.interknot.site.example.com/a.webp',
+    'https://example.com/assets.webp.inter-knot.site/a.webp',
+    'https://assets.webp.inter-knot.site.example.com/a.webp',
     '/local/a.webp',
     'invalid-url',
   ]) {

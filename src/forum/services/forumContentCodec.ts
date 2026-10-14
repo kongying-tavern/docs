@@ -207,7 +207,9 @@ function normalizeAttachmentSrc(src: string): string {
   try {
     const url = new URL(src.startsWith('//') ? `https:${src}` : src)
     if ((url.protocol === 'https:' || url.protocol === 'http:')
-      && (url.hostname === 'webp.assets.interknot.site' || url.hostname === 'webp.assets.inter-knot.site')) {
+      && (url.hostname === 'webp.assets.interknot.site'
+        || url.hostname === 'webp.assets.inter-knot.site'
+        || url.hostname === 'assets.webp.inter-knot.site')) {
       return `${FORUM_IMAGE_ORIGIN}${url.pathname}${url.search}${url.hash}`
     }
   }
