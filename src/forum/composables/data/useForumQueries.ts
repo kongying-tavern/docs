@@ -163,26 +163,30 @@ export function useForumCommentsQuery(options: {
   enabled: MaybeRefOrGetter<boolean>
 }) {
   const pageSize = FORUM_CONFIG.DEFAULT_PAGE_SIZE
-  const query = useInfiniteQuery<ForumPage<ForumAPI.Comment>, Error, number>({
-    key: () => forumKeys.comments(toValue(options.topicId)),
-    initialPageParam: 1,
-    enabled: () => Boolean(toValue(options.topicId)) && toValue(options.enabled),
-    query: async ({ pageParam }) => {
-      const result = await issues.getTopicComments(toValue(options.repo), {
-        current: pageParam,
-        pageSize,
-        sort: 'created',
-        filter: null,
-        creator: null,
-      }, toValue(options.topicId))
-      return {
-        items: result.data,
-        total: result.total ?? 0,
-        totalPage: result.totalPage ?? 0,
-      }
-    },
-    getNextPageParam: (lastPage, _pages, page) => nextPage(lastPage, page, pageSize),
-    staleTime: 60_000,
+  const query = useInfiniteQuery<ForumPage<ForumAPI.Comment>, Error, number>(() => {
+    const topicId = toValue(options.topicId)
+    const repo = toValue(options.repo)
+    return {
+      key: forumKeys.comments(topicId),
+      initialPageParam: 1,
+      enabled: Boolean(topicId) && toValue(options.enabled),
+      query: async ({ pageParam }) => {
+        const result = await issues.getTopicComments(repo, {
+          current: pageParam,
+          pageSize,
+          sort: 'created',
+          filter: null,
+          creator: null,
+        }, topicId)
+        return {
+          items: result.data,
+          total: result.total ?? 0,
+          totalPage: result.totalPage ?? 0,
+        }
+      },
+      getNextPageParam: (lastPage, _pages, page) => nextPage(lastPage, page, pageSize),
+      staleTime: 60_000,
+    }
   })
 
   const rows = computed(() => flattenForumPages(query.data.value?.pages ?? []))

@@ -1,4 +1,5 @@
 import { defineAsyncComponent, shallowRef } from 'vue'
+import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 
 // Keep the resolved component as well as the downloaded module. A warm opening
 // can render synchronously instead of entering an async component's fallback.
@@ -8,8 +9,8 @@ export async function preloadForumRichTextarea(): Promise<void> {
   ForumPreloadedRichTextarea.value = module.default
 }
 
-export const ForumPreloadedTopicPreviewContent = shallowRef(defineAsyncComponent(() => import('../topic/ForumTopicPreviewContent.vue')))
-export async function preloadForumTopicPreviewContent(): Promise<void> {
-  const module = await import('../topic/ForumTopicPreviewContent.vue')
-  ForumPreloadedTopicPreviewContent.value = module.default
+export const ForumPreloadedCommentArea = shallowRef(defineRecoverableAsyncComponent(() => import('../comment/ForumCommentArea.vue')))
+export async function preloadForumCommentArea(): Promise<void> {
+  const module = await import('../comment/ForumCommentArea.vue')
+  ForumPreloadedCommentArea.value = module.default
 }

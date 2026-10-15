@@ -52,7 +52,7 @@ function activate(event: MouseEvent): void {
     data-fluid-hover-item
     class="forum-topic-item my-1 px-4 py-2 rounded-xl w-full"
     :class="[topic.type]" :tabindex="topic.type === 'POST' ? undefined : 0"
-    @pointerenter="prepare" @focusin="prepare" @pointerdown="prepare" @keydown.enter.self="prepare(); openTopic()" @click="activate"
+    @pointerenter="prepare" @focusin="prepare" @pointerdown="prepare" @keydown.enter.self.prevent="prepare(); openTopic()" @click="activate"
   >
     <div class="topic-content">
       <div data-forum-card-interactive>

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { ForumPreloadedTopicPreviewContent as ForumTopicPreviewContent } from '../utils/forumComponentPreload'
+import ForumTopicPreviewContent from './ForumTopicPreviewContent.vue'
 
 const props = defineProps<{
   topic: ForumAPI.Topic | null
@@ -55,18 +55,11 @@ function goToTopicDetail(): void {
       <div
         class="preview-body p-4 overscroll-contain min-h-0 overflow-y-auto sm:p-5"
       >
-        <Suspense>
-          <ForumTopicPreviewContent
-            :topic="topic"
-            :focus-comment="focusComment"
-            @detail-click="goToTopicDetail"
-          />
-          <template #fallback>
-            <p role="status" aria-live="polite">
-              {{ message.forum.comment.loadingComment }}
-            </p>
-          </template>
-        </Suspense>
+        <ForumTopicPreviewContent
+          :topic="topic"
+          :focus-comment="focusComment"
+          @detail-click="goToTopicDetail"
+        />
       </div>
     </DialogContent>
   </Dialog>

@@ -2,8 +2,8 @@
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import ForumTopicItemFooter from '../list/ForumTopicItemFooter.vue'
+import { ForumPreloadedCommentArea as ForumCommentArea } from '../utils/forumComponentPreload'
 import ForumQuotedTopic from './ForumQuotedTopic.vue'
 import ForumTopicContent from './ForumTopicContent.vue'
 import ForumTopicHeader from './ForumTopicHeader.vue'
@@ -39,6 +39,7 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
     />
     <ForumTopicItemFooter :topic-data="topic" hide-comment-button />
     <ForumCommentArea
+      v-if="topic.commentCount !== -1"
       presentation="embedded"
       repo="Feedback"
       :topic-id="String(topic.id)"

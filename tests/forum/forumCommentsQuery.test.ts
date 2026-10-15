@@ -1,13 +1,60 @@
 import assert from 'node:assert/strict'
-import { PiniaColada } from '@pinia/colada'
+import { PiniaColada, useQueryCache } from '@pinia/colada'
 import { createPinia } from 'pinia'
 import { test } from 'vitest'
-import { createSSRApp, effectScope } from 'vue'
+import { createSSRApp, effectScope, ref } from 'vue'
 import { clearApiCache } from '../../src/forum/api/gitee'
 import { useForumCommentsQuery } from '../../src/forum/composables/data/useForumQueries'
 import { FORUM_CONFIG } from '../../src/forum/services/forumConfig'
 
 const headerCases: Record<string, string>[] = [{}, { Link: '<https://gitee.com/comments?page=2>; rel="last"' }]
+
+test('comment prefetch keeps pending topics separate and shares the warm cache', async () => {
+  clearApiCache()
+  const original = globalThis.fetch
+  const requested: string[] = []
+  let release!: () => void
+  const pending = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  globalThis.fetch = async (input) => {
+    const url = new URL(input instanceof Request ? input.url : String(input))
+    const id = url.pathname.split('/').at(-2)!
+    requested.push(id)
+    if (id === 'FIRST')
+      await pending
+    return new Response(JSON.stringify([{ id: id === 'FIRST' ? 1 : 2, body: id, created_at: '2026-01-01T00:00:00Z' }]), {
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+  const scope = effectScope()
+  const app = createSSRApp({ render: () => null }).use(createPinia()).use(PiniaColada)
+  try {
+    const topicId = ref('FIRST')
+    const prefetch = app.runWithContext(() => scope.run(() => useForumCommentsQuery({ topicId, repo: 'Feedback', enabled: true }))!)
+    const first = prefetch.refresh(true)
+    topicId.value = 'SECOND'
+    await prefetch.refresh(true)
+    assert.equal(prefetch.rows.value[0]?.id, 2)
+    release()
+    await first
+    const preview = app.runWithContext(() => scope.run(() => useForumCommentsQuery({ topicId: 'FIRST', repo: 'Feedback', enabled: true }))!)
+    assert.equal(preview.rows.value[0]?.id, 1)
+    await preview.refresh(true)
+    assert.deepEqual(requested, ['FIRST', 'SECOND'])
+    topicId.value = 'FIRST'
+    await prefetch.refresh(true)
+    const cache = app.runWithContext(() => useQueryCache())
+    await cache.invalidateQueries({ key: ['forum', 'comments', 'FIRST'], exact: true }, 'all')
+    assert.deepEqual(requested, ['FIRST', 'SECOND', 'FIRST'])
+  }
+  finally {
+    release()
+    scope.stop()
+    globalThis.fetch = original
+    clearApiCache()
+  }
+})
 
 for (const headers of headerCases) {
   test(`comments count and pagination survive ${'Link' in headers ? 'Link-only' : 'missing'} total headers`, async () => {
