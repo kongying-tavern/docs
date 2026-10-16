@@ -2,6 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '~/forum/components/types'
 import type { ForumImageResource } from '~/forum/services/forumImageResource'
 import type { ForumImageShortcutId } from '~/forum/services/forumShortcuts'
+import { createSharedComposable } from '@vueuse/core'
 import { computed, toValue } from 'vue'
 import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
@@ -37,13 +38,14 @@ const IMAGE_ACTION_ICONS: Record<ForumImageShortcutId, string> = {
   imageMetadata: 'i-lucide-info',
 }
 
+const useImageInspectionPermission = createSharedComposable(() => useRuleChecks().hasAnyPermissions('manage_feedback'))
+
 export function useForumImageMenu(image: MaybeRefOrGetter<ForumImageResource>, commands: MaybeRefOrGetter<ForumImageCommand[]>, active: MaybeRefOrGetter<boolean>, accepts: (event: KeyboardEvent, id?: string) => boolean) {
   const { message } = useLocalized()
   const preferences = useForumShortcutPreferences()
   const { busy, copyImage, saveImage, copyLink } = useForumImageActions(image)
   const { inspect } = useForumImageMetadata()
-  const { hasAnyPermissions } = useRuleChecks()
-  const canInspect = hasAnyPermissions('manage_feedback')
+  const canInspect = useImageInspectionPermission()
   const actions = computed<ForumImageCommand[]>(() => [
     ...toValue(commands),
     { id: 'imageCopy', run: copyImage },

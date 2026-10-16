@@ -23,6 +23,7 @@ const forum = {
     dislike: '不赞同',
   },
   imageActions: {
+    processing: '正在处理图片…',
     saved: '已保存图片',
     failed: '操作失败，请检查网络或浏览器权限后重试',
     copied: '已复制',

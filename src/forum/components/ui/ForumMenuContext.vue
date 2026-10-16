@@ -13,11 +13,12 @@ const { menu = [], class: className } = defineProps<{
 </script>
 
 <template>
-  <ContextMenu>
+  <!-- A context menu must not lock and relayout the entire image list. -->
+  <ContextMenu :modal="false">
     <ContextMenuTrigger as-child>
       <slot />
     </ContextMenuTrigger>
-    <ContextMenuContent fluid :class="cn(menuContentClasses(menu), 'z-[max(50,calc(var(--vp-z-index-sidebar)+1))]', className)">
+    <ContextMenuContent fluid :class="cn(menuContentClasses(menu), 'data-[state=open]:animate-none data-[state=closed]:animate-none z-[max(50,calc(var(--vp-z-index-sidebar)+1))]', className)">
       <slot name="menu" />
       <ForumDropdownMenu :items="menu" />
     </ContextMenuContent>

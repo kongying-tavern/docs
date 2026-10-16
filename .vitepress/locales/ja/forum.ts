@@ -24,6 +24,7 @@ const forum: CustomConfig['forum'] = {
     dislike: '反対',
   },
   imageActions: {
+    processing: '画像を処理しています…',
     saved: '画像を保存しました',
     failed: '接続またはブラウザー権限を確認して再試行してください',
     copied: 'コピーしました',

@@ -75,7 +75,7 @@ function handleRadioSelect(group: FORUM.MenuRadioGroup, value: unknown) {
       </DropdownMenuRadioItem>
     </DropdownMenuRadioGroup>
 
-    <DropdownMenuItem v-else-if="item.type === 'item'" :id="item.id" :disabled="item.disabled" :variant="item.variant" :class="item.class" @click="item.action">
+    <DropdownMenuItem v-else-if="item.type === 'item'" :id="item.id" :disabled="item.disabled" :variant="item.variant" :class="item.class" @select="item.action">
       <ForumTopicTypeBadge v-if="item.topicType" :type="item.topicType" />
       <ForumTopicStatusBadge v-else-if="item.status !== undefined" :status="item.status ?? undefined" />
       <span v-else-if="item.icon" class="icon-btn shrink-0" :class="item.icon" aria-hidden="true" />

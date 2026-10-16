@@ -92,10 +92,12 @@ test('pending image downloads do not block closing the preview', async ({ page }
   await preview.locator('.forum-long-reader-viewport img').click({ button: 'right' })
   await page.getByRole('menuitem', { name: /图片另存为/ }).click()
   await expect.poll(() => !!finishRequest).toBe(true)
+  await expect(page.getByText('正在处理图片…', { exact: true })).toBeVisible()
   let downloads = 0
   page.on('download', () => downloads++)
   await page.keyboard.press('Escape')
   await expect(preview).toBeHidden()
+  await expect(page.getByText('正在处理图片…', { exact: true })).toBeHidden()
   finishRequest?.()
   await expect(page.getByText('已保存图片', { exact: true })).toHaveCount(0)
   expect(downloads).toBe(0)
@@ -220,4 +222,13 @@ test('save as uses the existing file system wrapper when supported', async ({ pa
   await page.getByRole('menuitem', { name: /图片另存为/ }).click()
   await expect.poll(() => page.evaluate(() => sessionStorage.getItem('picker-name'))).toBe('phone.jpeg')
   await expect.poll(() => page.evaluate(() => Number(sessionStorage.getItem('picker-size')))).toBeGreaterThan(0)
+  await page.evaluate(() => {
+    Object.defineProperty(window, 'showSaveFilePicker', { configurable: true, value: async () => {
+      throw new DOMException('Cancelled', 'AbortError')
+    } })
+  })
+  await image.click({ button: 'right' })
+  await page.getByRole('menuitem', { name: /图片另存为/ }).click()
+  await expect(page.getByText('正在处理图片…', { exact: true })).toHaveCount(0)
+  await expect(page.getByText('操作失败，请检查网络或浏览器权限后重试', { exact: true })).toHaveCount(0)
 })

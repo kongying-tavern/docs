@@ -24,6 +24,7 @@ const forum: CustomConfig['forum'] = {
     dislike: 'Disagree',
   },
   imageActions: {
+    processing: 'Processing image…',
     saved: 'Image saved',
     failed: 'Operation failed. Check your connection or browser permissions and retry.',
     copied: 'Copied',
