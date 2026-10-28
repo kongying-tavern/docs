@@ -72,7 +72,7 @@
     "@number-flow/vue": "catalog:frontend",
     "@pinia/colada": "catalog:",
     "@radix-icons/vue": "catalog:frontend",
-    "@tanstack/vue-virtual": "3.13.12",
+    "@tanstack/vue-virtual": "catalog:",
     "@tiptap/core": "catalog:conflicts_editor_h3_4_4",
     "@tiptap/extension-character-count": "catalog:conflicts_editor_h3_4_4",
     "@tiptap/extension-link": "catalog:editor",

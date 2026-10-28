@@ -176,6 +176,9 @@ catalogs:
     '@playwright/test':
       specifier: 1.64.0
       version: 1.64.0
+    '@tanstack/vue-virtual':
+      specifier: 3.13.12
+      version: 3.13.12
     '@vee-validate/zod':
       specifier: ^4.15.1
       version: 4.15.1
@@ -525,7 +528,7 @@ importers:
         specifier: catalog:frontend
         version: 1.0.0(vue@3.5.43(typescript@6.0.3))
       '@tanstack/vue-virtual':
-        specifier: 3.13.12
+        specifier: 'catalog:'
         version: 3.13.12(vue@3.5.43(typescript@6.0.3))
       '@tiptap/core':
         specifier: catalog:conflicts_editor_h3_4_4
