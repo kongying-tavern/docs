@@ -112,7 +112,7 @@ function previewStatus(row: ForumLabelRow): ForumAPI.TopicStatus | undefined {
           >
             <TableCell
               colspan="3"
-              class="text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5 text-ui-13"
+              class="text-ui-13 text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5"
             >
               <span class="flex gap-2 items-center">
                 <span
