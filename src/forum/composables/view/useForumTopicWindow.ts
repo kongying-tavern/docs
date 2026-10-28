@@ -69,7 +69,8 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     }
   }))
   virtualizer.value.shouldAdjustScrollPositionOnItemSizeChange = (item, delta, instance) => {
-    const adjust = !restoringAnchor && item.start < (instance.scrollOffset ?? 0)
+    // Resizing the partially visible anchor must not move its top edge.
+    const adjust = !restoringAnchor && item.end <= (instance.scrollOffset ?? 0)
     if (adjust)
       renderBuffer.adjust(delta)
     return adjust
@@ -116,7 +117,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
       expectedAnchorScroll = window.scrollY
     }
     let stable = 0
-    for (let frame = 0; frame < 8 && stable < 2 && active.value; frame++) {
+    for (let frame = 0; frame < 8 && stable < 3 && active.value; frame++) {
       await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
       if (change !== displayChange || !active.value)
         break
@@ -278,7 +279,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     virtualizer.value.measure()
     if (anchor)
       await restoreAnchor(anchor)
-  })
+  }, { flush: 'sync' })
 
   const rows = computed(() => windowed.value
     ? virtualizer.value.getVirtualItems().map(row => ({ item: data()[row.index], index: row.index, start: row.start - margin.value }))

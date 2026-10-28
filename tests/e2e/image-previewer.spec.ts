@@ -103,6 +103,15 @@ test.describe('long image reading', () => {
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
           await expect.poll(() => reader.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
           await expect(preview).toBeVisible()
+          // Keep native swipe momentum out of the subsequent pinch-anchor measurement.
+          let previousScroll = -1
+          let stableScrolls = 0
+          await expect.poll(async () => {
+            const scroll = await reader.evaluate(element => element.scrollTop)
+            stableScrolls = scroll === previousScroll ? stableScrolls + 1 : 0
+            previousScroll = scroll
+            return stableScrolls
+          }).toBeGreaterThanOrEqual(3)
           const beforePinch = (await image.boundingBox())!.width
           const pinchCenter = { x: 110, y: 250 }
           const focalPoint = () => image.evaluate((el, point) => {
