@@ -120,6 +120,7 @@ catalogs:
     '@lucide/vue': ^1.52.0
     '@number-flow/vue': ^0.5.2
     '@radix-icons/vue': ^1.0.0
+    '@tanstack/vue-virtual': 3.13.12
     '@vueuse/core': ^14.2.1
     canvas-confetti: ^1.9.4
     class-variance-authority: ^0.7.1

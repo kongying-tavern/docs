@@ -326,6 +326,9 @@ catalogs:
     '@radix-icons/vue':
       specifier: ^1.0.0
       version: 1.0.0
+    '@tanstack/vue-virtual':
+      specifier: 3.13.12
+      version: 3.13.12
     '@vueuse/core':
       specifier: ^14.2.1
       version: 14.4.0
@@ -525,7 +528,7 @@ importers:
         specifier: catalog:frontend
         version: 1.0.0(vue@3.5.43(typescript@6.0.3))
       '@tanstack/vue-virtual':
-        specifier: 3.13.12
+        specifier: catalog:frontend
         version: 3.13.12(vue@3.5.43(typescript@6.0.3))
       '@tiptap/core':
         specifier: catalog:conflicts_editor_h3_4_4

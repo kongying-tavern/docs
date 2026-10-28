@@ -109,8 +109,9 @@ test.describe('long image reading', () => {
             const box = el.getBoundingClientRect()
             return { x: (point.x - box.left) / box.width, y: (point.y - box.top) / box.height }
           }, pinchCenter)
-          const beforeFocal = await focalPoint()
           await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 70, y: 250, id: 1 }, { x: 150, y: 250, id: 2 }] })
+          // Starting the pinch stops the preceding swipe's native momentum.
+          const beforeFocal = await focalPoint()
           await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 30, y: 250, id: 1 }, { x: 190, y: 250, id: 2 }] })
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
           await expect.poll(async () => (await image.boundingBox())!.width).toBeGreaterThan(beforePinch)

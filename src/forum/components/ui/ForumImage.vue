@@ -335,7 +335,6 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
               :disabled="previewEnabled && !isPreviewReady(image, sourceIndex) ? true : undefined"
               :aria-label="previewEnabled ? message.forum.imagePreview.showImage.replace('{index}', String(index + 1)) : undefined"
               @click="previewEnabled && openAt(previewIndexFor(sourceIndex), $event.currentTarget)"
-              @keydown.enter.prevent
             >
               <ForumImageItem
                 :image="image"
