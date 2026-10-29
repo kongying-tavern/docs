@@ -54,8 +54,19 @@ export default defineConfig({
       'mobile': `${FORUM_MOBILE_BREAKPOINT_PX + 1}px`,
     },
     text: uiTextTheme,
+    spacing: { DEFAULT: 'calc(0.25rem * var(--site-ui-scale))' },
     leading: Object.fromEntries(uiLineHeights.map(size => [`ui-${size}`, scaledUiSize(size)])),
   },
+  // Numeric typography utilities bypass Wind4's named text tokens.
+  postprocess: [({ entries }) => {
+    for (const entry of entries) {
+      if (['font-size', 'line-height', '--un-leading'].includes(entry[0]) && typeof entry[1] === 'string') {
+        const size = /^((?:\d+(?:\.\d+)?|\.\d+)(?:px|rem))(\s*!important)?$/.exec(entry[1])
+        if (size)
+          entry[1] = `calc(${size[1]} * var(--site-ui-scale))${size[2] ?? ''}`
+      }
+    }
+  }],
   variants: [
     ((matcher) => {
       if (!matcher.startsWith('scrollbar-desktop:'))
@@ -89,6 +100,7 @@ export default defineConfig({
   preflights: [...shadcnPreflights],
   rules: [
     ...shadcnRules,
+    [/^size-(\d+(?:\.\d+)?)px$/, ([, size]) => ({ width: scaledUiSize(Number(size)), height: scaledUiSize(Number(size)) })],
   ],
   shortcuts: [
     [

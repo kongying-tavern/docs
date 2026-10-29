@@ -46,15 +46,12 @@ export function applySitePreferences(
     usePointerCursor: boolean
     reducedMotion: boolean
     uiFontSize: number
-    desktop: boolean
   },
 ): void {
   root.dataset.pointerCursor = String(preferences.usePointerCursor)
   root.dataset.reducedMotion = String(preferences.reducedMotion)
 
-  const effectiveFontSize = preferences.desktop
-    ? normalizeUiFontSize(preferences.uiFontSize)
-    : DEFAULT_UI_FONT_SIZE
+  const effectiveFontSize = normalizeUiFontSize(preferences.uiFontSize)
   root.dataset.uiFontSize = String(effectiveFontSize)
   root.style.setProperty('--site-ui-scale', String(effectiveFontSize / DEFAULT_UI_FONT_SIZE))
 }
@@ -66,9 +63,8 @@ export const sitePreferencesBootScript = `
   const pointer = read('${POINTER_CURSOR_STORAGE_KEY}', 'false') === 'true';
   const motion = read('${MOTION_STORAGE_KEY}', 'system');
   const systemReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const desktop = matchMedia('${DESKTOP_UI_MEDIA_QUERY}').matches;
   const rawSize = Number(read('${UI_FONT_SIZE_STORAGE_KEY}', '${DEFAULT_UI_FONT_SIZE}'));
-  const size = desktop && Number.isFinite(rawSize)
+  const size = Number.isFinite(rawSize)
     ? [${UI_FONT_SIZE_STEPS.join(',')}].reduce((closest, step) => Math.abs(step - rawSize) < Math.abs(closest - rawSize) ? step : closest)
     : ${DEFAULT_UI_FONT_SIZE};
   root.dataset.pointerCursor = String(pointer);

@@ -13,6 +13,7 @@ import { DEFAULT_LOCALE } from './.vitepress/locales/common.ts'
 import zhSite from './.vitepress/locales/zh/config.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
 import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
+import { uiScalePlugin } from './.vitepress/theme/uiScale.ts'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
 import { SITE_ORIGIN } from './src/constants/site.ts'
 
@@ -82,6 +83,7 @@ export default defineConfig(({ mode }) => ({
     }),
     // https://github.com/antfu/unocss
     UnoCSS(),
+    uiScalePlugin(),
 
     // https://github.com/unjs/fontaine
     fontaineFallbackPlugin(),

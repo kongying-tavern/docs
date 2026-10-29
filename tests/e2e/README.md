@@ -24,6 +24,15 @@ pnpm test:forum:ui:source
 `pnpm test:forum:ui` 保留开发服务器下的完整本地入口，生产专用用例在这个模式下跳过。
 使用 `--list` 查看对应命令选中的用例，使用文件名或 `--grep` 做定向复验。
 
+移动端侧栏与登录弹窗的遮挡检查也可在 WebKit 下单独运行：
+
+```sh
+pnpm exec playwright install webkit
+pnpm exec playwright test --config tests/e2e/playwright.webkit.config.ts
+```
+
+此配置只运行 `sidebar-overlay`，覆盖手机和平板宽度；iOS Safari 真机仍需单独验证。
+
 导航使用相对 URL（例如 `page.goto('feedback/topic/123')`），让 Playwright 的 baseURL
 处理 `/docs/` 前缀。生产测试 fixture 模拟部署的论坛子路由 fallback，并检查 hydration 错误；
 真实部署的静态服务器重写仍需要单独验证。

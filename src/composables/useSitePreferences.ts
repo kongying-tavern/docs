@@ -80,7 +80,6 @@ export const useSitePreferences = createGlobalState(() => {
       usePointerCursor: usePointerCursor.value,
       reducedMotion: reducedMotion.value,
       uiFontSize: uiFontSize.value,
-      desktop: desktopUi.value,
     })
   })
 

@@ -117,6 +117,14 @@
   --vp-layout-top-height: 0.1px;
 }
 
+/* Keep mobile navigation above the header (40) and below portaled UI (50). */
+@media (max-width: 959px) {
+  :root {
+    --vp-z-index-backdrop: 44;
+    --vp-z-index-sidebar: 45;
+  }
+}
+
 @media (min-width: 640px) {
   :root {
     --vp-home-hero-image-filter: blur(56px);

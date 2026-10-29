@@ -129,7 +129,13 @@ test('5000 variable-height topics remain bounded on mobile and changing display 
     window.dispatchEvent(new StorageEvent('storage', { key: 'FORUM-TOPIC-VIEW-MODE', newValue: 'COMPACT', storageArea: localStorage }))
   })
   await expect(page.locator(`li[data-topic-id="${anchor.id}"]`)).toBeAttached()
-  await expect.poll(async () => Math.abs(await page.locator(`li[data-topic-id="${anchor.id}"]`).evaluate(row => row.getBoundingClientRect().top) - anchor.top)).toBeLessThan(12)
+  // Late ResizeObserver measurements must not displace an initially restored anchor.
+  let stable = 0
+  await expect.poll(async () => {
+    const delta = Math.abs(await page.locator(`li[data-topic-id="${anchor.id}"]`).evaluate(row => row.getBoundingClientRect().top) - anchor.top)
+    stable = delta < 12 ? stable + 1 : 0
+    return stable
+  }, { intervals: [100] }).toBeGreaterThanOrEqual(3)
 })
 
 test('expanded body survives window remounts', async ({ page, scenario }) => {

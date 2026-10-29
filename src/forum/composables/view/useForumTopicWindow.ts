@@ -4,6 +4,7 @@ import type ForumAPI from '~/forum/api/types'
 import { useWindowVirtualizer } from '@tanstack/vue-virtual'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useForumTopicRenderBuffer } from '~/forum/composables/view/useForumTopicRenderBuffer'
 import { layoutTop } from '~/forum/utils/layoutPosition'
@@ -29,6 +30,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
   let restoringAnchor = false
   let displayChange = 0
   const { isCompactMode } = useForumViewMode()
+  const { uiFontSize } = useSitePreferences()
   const estimateSize = () => isCompactMode.value ? 180 : 380
   // Changing this identity invalidates every measurement in TanStack 3.13.12.
   const getItemKey = (index: number) => data()[index].id
@@ -69,7 +71,8 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     }
   }))
   virtualizer.value.shouldAdjustScrollPositionOnItemSizeChange = (item, delta, instance) => {
-    const adjust = !restoringAnchor && item.start < (instance.scrollOffset ?? 0)
+    // A visible row resizing must not move its own top; only compensate rows above it.
+    const adjust = !restoringAnchor && item.end <= (instance.scrollOffset ?? 0)
     if (adjust)
       renderBuffer.adjust(delta)
     return adjust
@@ -268,7 +271,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
   useEventListener(root, 'focusin', syncFocus)
   useEventListener(root, 'focusout', () => void nextTick(syncFocus))
 
-  watch(isCompactMode, async () => {
+  watch([isCompactMode, uiFontSize], async () => {
     if (!windowed.value || !active.value)
       return
     const anchor = captureAnchor()
@@ -278,7 +281,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
     virtualizer.value.measure()
     if (anchor)
       await restoreAnchor(anchor)
-  })
+  }, { flush: 'sync' })
 
   const rows = computed(() => windowed.value
     ? virtualizer.value.getVirtualItems().map(row => ({ item: data()[row.index], index: row.index, start: row.start - margin.value }))

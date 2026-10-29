@@ -1,5 +1,6 @@
 @import './theme.css';
 @import './vp-vars.css';
+@import './ui-scale.css';
 @import './ui/timeline.css';
 @import './ui/demo.css';
 @import './animation.css';
@@ -119,7 +120,16 @@ html.light {
   color-scheme: light;
 }
 
-#app {
+/* Keep UI preferences at UI boundaries so document copy inherits VitePress defaults. */
+:where(
+  .Forum,
+  .settings-layout,
+  [role='dialog'],
+  [role='alertdialog'],
+  [role='menu'],
+  [data-slot='popover-content'],
+  [data-slot='drawer-content']
+) {
   font-size: var(--text-ui-14-fontSize);
 }
 

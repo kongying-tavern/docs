@@ -9,7 +9,7 @@ const { status } = defineProps<{
 
 <template>
   <span
-    class="border border-black/15 rounded-[2px] shrink-0 size-12px inline-block dark:border-white/25"
+    class="border border-black/15 rounded-[2px] shrink-0 inline-block size-12px dark:border-white/25"
     :class="status ? getTopicStatusColorClass(status) : 'bg-transparent border-dashed'"
     aria-hidden="true"
   />

@@ -1,0 +1,13 @@
+/* Keep the switch's fixed thumb offsets in the same unit as its Wind4 dimensions.
+   The press animation widens the thumb to 1.25, moving its resting offset by 2px. */
+html [data-slot='switch-thumb'] {
+  translate: calc((3px + (var(--un-scale-x, 1) - 1) * 8px) * var(--site-ui-scale));
+}
+
+html [data-slot='switch-thumb'][data-state='checked'] {
+  translate: calc((18px - (var(--un-scale-x, 1) - 1) * 8px) * var(--site-ui-scale));
+}
+/* Reuse the existing icon-size contract, including its contextual overrides. */
+:root {
+  --forum-topic-lifecycle-icon-size: var(--text-ui-12-fontSize);
+}

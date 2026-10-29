@@ -58,7 +58,6 @@ test('reads back the applied reduced motion from the root dataset', () => {
     usePointerCursor: false,
     reducedMotion: true,
     uiFontSize: DEFAULT_UI_FONT_SIZE,
-    desktop: true,
   })
   assert.equal(readReducedMotion(root), true)
 
@@ -66,7 +65,6 @@ test('reads back the applied reduced motion from the root dataset', () => {
     usePointerCursor: false,
     reducedMotion: false,
     uiFontSize: DEFAULT_UI_FONT_SIZE,
-    desktop: true,
   })
   assert.equal(readReducedMotion(root), false)
 })
@@ -84,31 +82,20 @@ test('settings option definitions remain valid storage values', () => {
   assert.equal(TOAST_DURATION_DEFINITIONS.some(option => option.value === DEFAULT_TOAST_DURATION), true)
 })
 
-test('applies font scaling only to the desktop interface', () => {
-  const desktopRoot = createRoot()
-  applySitePreferences(desktopRoot, {
+test.each([12, 14, 18])('applies font size %s independently of the viewport', (size) => {
+  const root = createRoot()
+  applySitePreferences(root, {
     usePointerCursor: true,
     reducedMotion: true,
-    uiFontSize: 18,
-    desktop: true,
+    uiFontSize: size,
   })
-  assert.equal(desktopRoot.dataset.pointerCursor, 'true')
-  assert.equal(desktopRoot.dataset.reducedMotion, 'true')
-  assert.equal(desktopRoot.dataset.uiFontSize, '18')
-  assert.equal(desktopRoot.style.getPropertyValue('--site-ui-scale'), String(18 / DEFAULT_UI_FONT_SIZE))
-
-  const mobileRoot = createRoot()
-  applySitePreferences(mobileRoot, {
-    usePointerCursor: true,
-    reducedMotion: false,
-    uiFontSize: 18,
-    desktop: false,
-  })
-  assert.equal(mobileRoot.dataset.uiFontSize, String(DEFAULT_UI_FONT_SIZE))
-  assert.equal(mobileRoot.style.getPropertyValue('--site-ui-scale'), '1')
+  assert.equal(root.dataset.pointerCursor, 'true')
+  assert.equal(root.dataset.reducedMotion, 'true')
+  assert.equal(root.dataset.uiFontSize, String(size))
+  assert.equal(root.style.getPropertyValue('--site-ui-scale'), String(size / DEFAULT_UI_FONT_SIZE))
 })
 
-test('boot script restores explicit motion and desktop font preferences', () => {
+test.each([false, true])('boot script restores font preferences when desktop=%s', (desktop) => {
   const root = createRoot()
   const values: Record<string, string> = {
     'site-use-pointer-cursor': 'true',
@@ -118,7 +105,7 @@ test('boot script restores explicit motion and desktop font preferences', () => 
   runInNewContext(sitePreferencesBootScript, {
     document: { documentElement: root },
     localStorage: { getItem: (key: string) => values[key] ?? null },
-    matchMedia: (query: string) => ({ matches: query.includes('min-width') || query.includes('reduced-motion') }),
+    matchMedia: (query: string) => ({ matches: query.includes('min-width') ? desktop : query.includes('reduced-motion') }),
   })
 
   assert.equal(root.dataset.pointerCursor, 'true')
