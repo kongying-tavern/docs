@@ -10,6 +10,7 @@ import { FeyCards } from '@/components/ui/cards'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
 import { isForumLongImage } from '~/forum/services/forumImageLayout'
+import { useTopicPreviewPrefetch } from '../../composables/useTopicPreviewPrefetch'
 import ForumImageContextMenu from '../ForumImageContextMenu.vue'
 import ForumImageNavigationButton from '../ForumImageNavigationButton.vue'
 import PreviewerControls from './components/PreviewerControls.vue'
@@ -85,6 +86,16 @@ const zoomEnabled = computed(() => options.zoom !== false)
 const maxZoom = computed(() => options.maxZoom ?? 4)
 const hasPanel = computed(() =>
   isDesktop.value && visible.value && Boolean(context) && !panelCollapsed.value)
+
+const prefetchTopicPreview = useTopicPreviewPrefetch()
+function preparePanel(): void {
+  if (isDesktop.value && !panelCollapsed.value && context?.kind === 'topic')
+    prefetchTopicPreview(context.topic)
+}
+watch(() => hasPanel.value ? context : undefined, () => {
+  if (hasPanel.value)
+    preparePanel()
+})
 
 const imgReady = ref(false)
 const loadedSize = ref<{ width: number, height: number }>()
@@ -249,6 +260,7 @@ function openAt(index: number, sourceEl?: Element | null): void {
     return
   if (!images[index])
     return
+  preparePanel()
   clearTimeout(closeTimer)
   setSource(isForumLongImage(images[index]) ? undefined : sourceEl)
   clickState = null
@@ -426,7 +438,7 @@ defineExpose({ openAt, close })
 </script>
 
 <template>
-  <div class="forum-image-previewer">
+  <div class="forum-image-previewer" @pointerenter="preparePanel" @focusin="preparePanel" @pointerdown="preparePanel">
     <slot :open-at="openAt" :close="close" />
 
     <Teleport to="body">

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { PreviewerContext } from '../ForumImagePreviewer.vue'
 import { useI18n } from 'vue-i18n'
-import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
-import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import ForumCommentItem from '../../../comment/ForumCommentItem.vue'
+import ForumTopicPreviewContent from '../../../topic/ForumTopicPreviewContent.vue'
 
 defineProps<{
   open: boolean
@@ -15,8 +14,6 @@ const emit = defineEmits<{
   afterEnter: []
   enterCancelled: []
 }>()
-
-const ForumTopicPreviewContent = defineRecoverableAsyncComponent(() => import('../../../topic/ForumTopicPreviewContent.vue'), AsyncContentLoading)
 
 const { t } = useI18n({ useScope: 'global' })
 </script>
@@ -40,14 +37,7 @@ const { t } = useI18n({ useScope: 'global' })
       @wheel.stop
       @click.stop
     >
-      <Suspense v-if="context.kind === 'topic' && context.topic">
-        <ForumTopicPreviewContent :topic="context.topic" />
-        <template #fallback>
-          <p role="status" aria-live="polite">
-            {{ t('forum.comment.loadingComment') }}
-          </p>
-        </template>
-      </Suspense>
+      <ForumTopicPreviewContent v-if="context.kind === 'topic' && context.topic" :topic="context.topic" />
       <ForumCommentItem
         v-else-if="context.kind === 'comment' && context.comment"
         :repo="context.repo"

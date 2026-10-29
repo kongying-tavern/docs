@@ -7,13 +7,13 @@ import { useI18n } from 'vue-i18n'
 import Divider from '@/components/ui/divider/Divider.vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useForumCommentsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumListPrefetch } from '~/forum/composables/view/useForumListPrefetch'
 import { provideForumTopicPresentation } from '~/forum/composables/view/useForumTopicPresentation'
 import { useForumTopicWindow } from '~/forum/composables/view/useForumTopicWindow'
 import { useIdlePreload } from '~/forum/composables/view/useIdlePreload'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { beginForumVisit, findLastVisitedDividerIndex } from '~/forum/services/forumLastVisit'
+import { useTopicPreviewPrefetch } from '../composables/useTopicPreviewPrefetch'
 import ForumTopicPreviewDialog from '../topic/ForumTopicPreviewDialog.vue'
 import { preloadForumCommentArea } from '../utils/forumComponentPreload'
 import ForumTopic from './ForumTopic.vue'
@@ -73,15 +73,7 @@ watch(() => props.data.map(topic => topic.id), (ids, previousIds) => {
   void nextTick(() => enterDelays.value.clear())
 }, { immediate: true })
 
-const prefetchTopicId = ref('')
-const previewComments = useForumCommentsQuery({ topicId: prefetchTopicId, repo: 'Feedback', enabled: true })
-function preparePreview(topic: ForumAPI.Topic): void {
-  void preloadForumCommentArea().catch(() => {})
-  if (topic.commentCount < 0)
-    return
-  prefetchTopicId.value = String(topic.id)
-  void previewComments.refresh()
-}
+const preparePreview = useTopicPreviewPrefetch()
 
 const mobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 useIdlePreload(preloadForumCommentArea, () => props.data.length > 0 && !mobile.value)
