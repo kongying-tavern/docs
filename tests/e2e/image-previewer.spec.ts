@@ -280,3 +280,43 @@ test('image preview can reopen inside the topic sheet', async ({ page }) => {
     await expect(preview).toHaveCount(0)
   }
 })
+
+for (const count of [1, 3]) {
+  test.describe(`image drag with ${count} attachments`, () => {
+    test.use({ scenario: { topics: [issue({ body: Array.from({ length: count }, (_, index) => `![Image ${index}](https://example.com/drag.svg?${index})${imageMetadata}`).join('\n') })] } })
+
+    test('fitted drag respects image count and wraps directly', async ({ page }) => {
+      await page.addInitScript(() => localStorage.setItem('forum-image-preview-panel-collapsed', 'true'))
+      await page.route('https://example.com/drag.svg*', route => route.fulfill({
+        contentType: 'image/svg+xml',
+        body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480"><rect width="640" height="480" fill="#7799bb"/></svg>',
+      }))
+      await page.goto('feedback/topic/123')
+      await page.locator('.forum-image-previewer button').filter({ has: page.locator('img') }).first().click()
+      const preview = page.locator('.forum-preview-root')
+      await expect(preview).not.toHaveClass(/entering/)
+      const image = preview.locator('.forum-preview-enter')
+      const bounds = (await image.boundingBox())!
+      const x = bounds.x + bounds.width / 2
+      const y = bounds.y + bounds.height / 2
+      // Drag right from the first image: multiple images should wrap straight to the last.
+      await page.mouse.move(x, y)
+      await page.mouse.down()
+      await page.mouse.move(x + 120, y + 20, { steps: 8 })
+      const translation = await preview.locator('.forum-preview-stack').evaluate((element) => {
+        const matrix = new DOMMatrix(getComputedStyle(element).transform)
+        return { x: matrix.e, y: matrix.f }
+      })
+      expect(translation.x).toBe(count === 1 ? 0 : 120)
+      expect(translation.y).toBe(0)
+      await page.mouse.up()
+      await expect(image).toHaveAttribute('src', `https://example.com/drag.svg?${count - 1}`)
+      await expect(preview).toBeVisible()
+      await expect(preview).not.toHaveClass(/is-dragging/)
+      await expect(preview.locator('.forum-preview-exit')).toHaveCount(0)
+      await expect(image).toHaveAttribute('src', `https://example.com/drag.svg?${count - 1}`)
+      await preview.locator('.forum-preview-close').click()
+      await expect(preview).toHaveCount(0)
+    })
+  })
+}

@@ -18,6 +18,7 @@ export function usePreviewerTransform(options: {
   maxZoom: Ref<number>
   imageEl: Readonly<Ref<HTMLImageElement | null | undefined>>
   zoomEnabled: Ref<boolean>
+  swipeEnabled?: Ref<boolean>
   onSwipe: (direction: 1 | -1, dx: number) => void
   onVerticalClose?: () => void
 }): PreviewerTransform & {
@@ -43,6 +44,7 @@ export function usePreviewerTransform(options: {
   const settling = ref(false)
   let settleTimer: number | undefined
   let pressed = false
+  let axis: 'x' | 'y' | null = null
 
   const pointers = new Map<number, { x: number, y: number }>()
   let pinchStart: { dist: number, scale: number, x: number, y: number, tx: number, ty: number, cx: number, cy: number } | null = null
@@ -91,7 +93,7 @@ export function usePreviewerTransform(options: {
     clearTimeout(settleTimer)
     settleTimer = window.setTimeout(() => {
       settling.value = false
-    }, 420)
+    }, 240)
     reset()
   }
 
@@ -122,6 +124,7 @@ export function usePreviewerTransform(options: {
     if (event.pointerType === 'mouse' && event.button !== 0)
       return
     if (pointers.size === 0) {
+      axis = null
       ignoreClick.value = false
       touchInput.value = event.pointerType === 'touch'
     }
@@ -185,8 +188,10 @@ export function usePreviewerTransform(options: {
       return
     const dx = event.clientX - dragStart.x
     const dy = event.clientY - dragStart.y
-    if (Math.abs(dx) + Math.abs(dy) >= 6)
+    if (Math.abs(dx) + Math.abs(dy) >= 6) {
       ignoreClick.value = true
+      ;(event.currentTarget as HTMLElement | null)?.setPointerCapture?.(event.pointerId)
+    }
     if (scale.value > 1) {
       const [s, nx, ny] = clampTransform(scale.value, dragStart.tx + dx, dragStart.ty + dy)
       scale.value = s
@@ -194,9 +199,17 @@ export function usePreviewerTransform(options: {
       ty.value = ny
       return
     }
-    tx.value = dragStart.tx + dx
-    ty.value = dragStart.ty + dy
-    dragRotate.value = Math.min(Math.max(dx * 0.05, -10), 10)
+    if (options.swipeEnabled?.value === false)
+      return
+    if (!axis && Math.max(Math.abs(dx), Math.abs(dy)) >= 8) {
+      if (Math.abs(dx) > Math.abs(dy) * 1.3)
+        axis = 'x'
+      else if (event.pointerType === 'touch' && Math.abs(dy) > Math.abs(dx) * 1.3)
+        axis = 'y'
+    }
+    dragging.value = axis !== null
+    tx.value = axis === 'x' ? dragStart.tx + dx : 0
+    ty.value = axis === 'y' ? dragStart.ty + dy : 0
   }
 
   function handlePointerUp(event: PointerEvent): void {
@@ -238,13 +251,15 @@ export function usePreviewerTransform(options: {
     dragStart = null
 
     if (scale.value === 1) {
-      const horizontal = Math.abs(dx) > Math.abs(dy) * 1.3
+      if (options.swipeEnabled?.value === false)
+        return
+      const horizontal = axis === 'x'
       const quickSwipe = horizontal && Math.abs(dx) > 40 && dt < 300
       if (horizontal && (Math.abs(dx) > 80 || quickSwipe)) {
-        options.onSwipe(dx < 0 ? 1 : -1, dx)
+        options.onSwipe(dx < 0 ? 1 : -1, tx.value)
         return
       }
-      if (event.pointerType === 'touch' && Math.abs(dy) > 90 && Math.abs(dy) > Math.abs(dx) * 1.3) {
+      if (axis === 'y' && Math.abs(dy) > 90 && Math.abs(dy) > Math.abs(dx) * 1.3) {
         options.onVerticalClose?.()
         return
       }

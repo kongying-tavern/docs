@@ -71,9 +71,6 @@ const slideDir = ref<1 | -1 | 0>(0)
 const prevImg = ref<{ src: string, alt?: string } | null>(null)
 const prevSeq = ref(0)
 const carriedRef = ref(0)
-const sweeping = ref(false)
-const sweepDir = ref<0 | 1 | -1>(0)
-let sweepTimer: number | undefined
 let prevClearTimer: number | undefined
 let closeTimer: number | undefined
 
@@ -100,15 +97,8 @@ const imgStyle = computed(() => {
     : undefined
 })
 
-/** 与箭头切换同速 */
-const enterDur = computed(() => Math.max(
-  90,
-  Math.round((130 + Math.abs(carriedRef.value)) * 420 / 130),
-))
-const exitDur = computed(() => Math.max(
-  60,
-  Math.round((130 - Math.abs(carriedRef.value)) * 300 / 130),
-))
+const enterDur = computed(() => Math.round(240 - Math.min(Math.abs(carriedRef.value), 130) * 0.4))
+const exitDur = computed(() => enterDur.value)
 
 /** 缓存命中时 load 事件可能已错过，需主动探测 */
 function syncImgReady(): void {
@@ -145,6 +135,7 @@ const {
   maxZoom,
   imageEl,
   zoomEnabled,
+  swipeEnabled: computed(() => total.value > 1),
   onSwipe: (direction, dx) => goTo(current.value + direction, direction, { carried: dx }),
   onVerticalClose: () => close(),
 })
@@ -168,7 +159,6 @@ const {
 interface SlideChangeOptions {
   /** 拖拽松手位移（px） */
   carried?: number
-  sweep?: boolean
 }
 
 function commitSlide(target: number, dir: 1 | -1, options: SlideChangeOptions = {}): void {
@@ -176,45 +166,16 @@ function commitSlide(target: number, dir: 1 | -1, options: SlideChangeOptions = 
   const old = displayImages.value[current.value]
   current.value = target
   slideDir.value = dir
-  carriedRef.value = options.sweep
-    ? 0
-    : Math.min(Math.max(options.carried ?? 0, -140), 140)
-  prevImg.value = options.sweep || !old ? null : { src: old.src, alt: old.alt }
+  carriedRef.value = options.carried ?? 0
+  prevImg.value = old ? { src: old.src, alt: old.alt } : null
   prevSeq.value += 1
   resetTransform()
+  preloadNeighbors()
   emit('change', target)
   clearTimeout(prevClearTimer)
   prevClearTimer = window.setTimeout(() => {
     prevImg.value = null
   }, 300)
-}
-
-function startSweep(dir: 1 | -1): void {
-  const count = total.value
-  const start = current.value
-  const end = dir === -1 ? 0 : count - 1
-  const steps = (start - end + count) % count
-  if (steps === 0)
-    return
-  clearTimeout(sweepTimer)
-  sweeping.value = true
-  sweepDir.value = dir
-  let step = 0
-  const tick = (): void => {
-    const next = dir === -1
-      ? (start - step - 1 + count) % count
-      : (start + step + 1) % count
-    commitSlide(next, dir, { sweep: true })
-    step += 1
-    if (step < steps) {
-      sweepTimer = window.setTimeout(tick, 120)
-    }
-    else {
-      sweeping.value = false
-      sweepDir.value = 0
-    }
-  }
-  sweepTimer = window.setTimeout(tick, 50)
 }
 
 function goTo(index: number, direction?: 1 | -1, options: SlideChangeOptions = {}): void {
@@ -229,18 +190,6 @@ function goTo(index: number, direction?: 1 | -1, options: SlideChangeOptions = {
     const delta = (target - current.value + count) % count
     dir = delta > count / 2 ? -1 : 1
   }
-  // 打断进行中的回卷扫描
-  clearTimeout(sweepTimer)
-  sweeping.value = false
-  sweepDir.value = 0
-  if ((options.carried ?? 0) !== 0) {
-    const wrapBack = dir === -1 && current.value === 0 && target === count - 1
-    const wrapForward = dir === 1 && current.value === count - 1 && target === 0
-    if (wrapBack || wrapForward) {
-      startSweep(wrapBack ? 1 : -1)
-      return
-    }
-  }
   commitSlide(target, dir, options)
 }
 
@@ -250,9 +199,6 @@ function setImages(images: PreviewImage[], index: number): void {
   if (count === 0)
     return
   clearSource()
-  clearTimeout(sweepTimer)
-  sweeping.value = false
-  sweepDir.value = 0
   const target = Math.min(Math.max(index, 0), count - 1)
   const old = displayImages.value[current.value]
   imagesOverride.value = images
@@ -270,8 +216,6 @@ function setImages(images: PreviewImage[], index: number): void {
 }
 
 const enterAnimClass = computed(() => {
-  if (sweepDir.value !== 0)
-    return sweepDir.value === 1 ? 'sweep-right' : 'sweep-left'
   if (slideDir.value === 0)
     return usesSourceTransition.value ? '' : 'enter-scale'
   return slideDir.value === 1 ? 'enter-right' : 'enter-left'
@@ -309,9 +253,6 @@ function openAt(index: number, sourceEl?: Element | null): void {
   setSource(isForumLongImage(images[index]) ? undefined : sourceEl)
   clickState = null
   lastClickAt = 0
-  clearTimeout(sweepTimer)
-  sweeping.value = false
-  sweepDir.value = 0
   imagesOverride.value = null
   current.value = Math.min(Math.max(index, 0), total.value - 1)
   loadedSize.value = undefined
@@ -339,9 +280,6 @@ function close(): void {
   if (closing.value)
     return
   unregister(self)
-  clearTimeout(sweepTimer)
-  sweeping.value = false
-  sweepDir.value = 0
   panelOpen.value = false
   closing.value = true
   const exitDelay = beginExit()
@@ -373,6 +311,12 @@ function handlePreviewPointerDown(event: PointerEvent): void {
     return
   if ((event.target as Element | null)?.closest('button, .preview-side-panel, .forum-preview-cards'))
     return
+  // A new gesture takes over from the previous slide immediately.
+  imageEl.value?.getAnimations().forEach((animation) => {
+    if (animation instanceof CSSAnimation && animation.animationName.startsWith('preview-slide-'))
+      animation.finish()
+  })
+  prevImg.value = null
   handlePointerDown(event)
 }
 
@@ -475,7 +419,6 @@ onBeforeUnmount(() => {
   clearTimeout(prevClearTimer)
   clearTimeout(smoothZoomTimer)
   clearTimeout(closeTimer)
-  clearTimeout(sweepTimer)
   unregister(self)
 })
 
@@ -522,8 +465,8 @@ defineExpose({ openAt, close })
                   :class="{
                     flipping,
                     settling,
-                    'is-idle': scale === 1 && !dragging && !settling && !sweeping && !entering && !closing && !flipping,
-                    'can-zoom-in': scale === 1,
+                    'is-idle': scale === 1 && !dragging && !settling && !entering && !closing && !flipping,
+                    'can-zoom-in': zoomEnabled && scale === 1,
                     'can-grab': scale > 1 && !dragging,
                   }"
                   :style="{ transform: stackTransform(tx, ty, scale, dragRotate) }"

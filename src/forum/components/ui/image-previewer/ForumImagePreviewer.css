@@ -227,17 +227,7 @@
 }
 
 .forum-preview-root.is-settling .forum-preview-stack {
-  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .forum-preview-stack.is-idle {
-    transition: scale 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .forum-preview-stack.is-idle:hover {
-    scale: 1.02;
-  }
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .forum-preview-image {
@@ -318,44 +308,18 @@
     preview-blur-in 450ms ease backwards;
 }
 
+/* Slide motion follows the gesture without extra zoom or blur. */
 .forum-preview-enter.enter-right {
-  animation:
-    preview-slide-x-in-right 420ms cubic-bezier(0.16, 1, 0.3, 1) backwards,
-    preview-stack-in 420ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards,
-    preview-blur-in 420ms ease backwards;
-  animation-duration: var(--preview-enter-dur, 420ms);
+  animation: preview-slide-x-in-right var(--preview-enter-dur, 240ms) cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
-
 .forum-preview-enter.enter-left {
-  animation:
-    preview-slide-x-in-left 420ms cubic-bezier(0.16, 1, 0.3, 1) backwards,
-    preview-stack-in 420ms cubic-bezier(0.34, 1.4, 0.64, 1) backwards,
-    preview-blur-in 420ms ease backwards;
-  animation-duration: var(--preview-enter-dur, 420ms);
+  animation: preview-slide-x-in-left var(--preview-enter-dur, 240ms) cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
-
-.forum-preview-enter.sweep-left {
-  animation: preview-sweep-in-left 130ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-}
-
-.forum-preview-enter.sweep-right {
-  animation: preview-sweep-in-right 130ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-}
-
 .forum-preview-exit.exit-left {
-  animation:
-    preview-slide-x-out-left 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
-    preview-stack-out 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
-    preview-blur-out 300ms ease both;
-  animation-duration: var(--preview-exit-dur, 300ms);
+  animation: preview-slide-x-out-left var(--preview-exit-dur, 240ms) cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-
 .forum-preview-exit.exit-right {
-  animation:
-    preview-slide-x-out-right 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
-    preview-stack-out 300ms cubic-bezier(0.4, 0, 0.4, 1) both,
-    preview-blur-out 300ms ease both;
-  animation-duration: var(--preview-exit-dur, 300ms);
+  animation: preview-slide-x-out-right var(--preview-exit-dur, 240ms) cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .forum-preview-root.closing .forum-preview-image,
@@ -392,7 +356,8 @@
 
 @keyframes preview-slide-x-in-right {
   from {
-    translate: calc(130px + var(--preview-carry, 0px)) 0;
+    translate: 130px 0;
+    opacity: 0;
   }
   to {
     translate: 0 0;
@@ -401,7 +366,8 @@
 
 @keyframes preview-slide-x-in-left {
   from {
-    translate: calc(-130px + var(--preview-carry, 0px)) 0;
+    translate: -130px 0;
+    opacity: 0;
   }
   to {
     translate: 0 0;
@@ -413,7 +379,8 @@
     translate: var(--preview-carry, 0px) 0;
   }
   to {
-    translate: -130px 0;
+    translate: calc(var(--preview-carry, 0px) - 130px) 0;
+    opacity: 0;
   }
 }
 
@@ -422,33 +389,8 @@
     translate: var(--preview-carry, 0px) 0;
   }
   to {
-    translate: 130px 0;
-  }
-}
-
-@keyframes preview-sweep-in-left {
-  from {
-    translate: -110px 0;
-    opacity: 0.35;
-    filter: blur(6px);
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes preview-sweep-in-right {
-  from {
-    translate: 110px 0;
-    opacity: 0.35;
-    filter: blur(6px);
-  }
-  to {
-    translate: 0 0;
-    opacity: 1;
-    filter: blur(0);
+    translate: calc(var(--preview-carry, 0px) + 130px) 0;
+    opacity: 0;
   }
 }
 
