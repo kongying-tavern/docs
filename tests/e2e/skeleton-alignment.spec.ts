@@ -37,6 +37,9 @@ for (const width of [320, 390, 640, 768, 959, 960, 1440]) {
         const imageBefore = !detail && mode === 'COMPACT'
           ? await row.locator('.h-75px').boundingBox()
           : null
+        const imageOffsetBefore = imageBefore
+          ? await row.locator('.h-75px').evaluate(element => element.getBoundingClientRect().y - element.closest('.forum-topic-item')!.getBoundingClientRect().y)
+          : null
         const bounds = (await row.boundingBox())!
         for (const pill of before)
           expect(pill.x + pill.width).toBeLessThanOrEqual(bounds.x + bounds.width + 1)
@@ -58,10 +61,10 @@ for (const width of [320, 390, 640, 768, 959, 960, 1440]) {
         expect(Math.abs(headerBefore!.height - headerAfter!.height)).toBeLessThan(1)
         if (imageBefore) {
           const imageAfter = (await loadedRow.locator('.topic-compact-media').boundingBox())!
-          const loadedBounds = (await loadedRow.boundingBox())!
+          const imageOffsetAfter = await loadedRow.locator('.topic-compact-media').evaluate(element => element.getBoundingClientRect().y - element.closest('.forum-topic-item')!.getBoundingClientRect().y)
           expect(imageBefore.width).toBeCloseTo(imageAfter.width, 1)
           expect(imageBefore.height).toBeCloseTo(imageAfter.height, 1)
-          expect(imageBefore.y - bounds.y).toBeCloseTo(imageAfter.y - loadedBounds.y, 1)
+          expect(imageOffsetBefore).toBeCloseTo(imageOffsetAfter, 1)
         }
       }
       finally {
@@ -143,7 +146,7 @@ for (const width of [320, 1440]) {
       await route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="gray"/></svg>' })
     })
     try {
-      await page.goto('md-enhance-guide')
+      await page.goto('md-enhance-guide', { waitUntil: 'domcontentloaded' })
       const cover = page.locator('.card-theme-normal .card-cover-container').first()
       await expect(cover).toBeVisible()
       await expect(cover).toHaveClass(/skeleton-animation/)

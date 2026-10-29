@@ -103,14 +103,24 @@ test.describe('long image reading', () => {
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
           await expect.poll(() => reader.evaluate(element => element.scrollTop)).toBeGreaterThan(0)
           await expect(preview).toBeVisible()
+          // Keep native swipe momentum out of the subsequent pinch-anchor measurement.
+          let previousScroll = -1
+          let stableScrolls = 0
+          await expect.poll(async () => {
+            const scroll = await reader.evaluate(element => element.scrollTop)
+            stableScrolls = scroll === previousScroll ? stableScrolls + 1 : 0
+            previousScroll = scroll
+            return stableScrolls
+          }).toBeGreaterThanOrEqual(3)
           const beforePinch = (await image.boundingBox())!.width
           const pinchCenter = { x: 110, y: 250 }
           const focalPoint = () => image.evaluate((el, point) => {
             const box = el.getBoundingClientRect()
             return { x: (point.x - box.left) / box.width, y: (point.y - box.top) / box.height }
           }, pinchCenter)
-          const beforeFocal = await focalPoint()
           await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 70, y: 250, id: 1 }, { x: 150, y: 250, id: 2 }] })
+          // Starting the pinch stops the preceding swipe's native momentum.
+          const beforeFocal = await focalPoint()
           await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 30, y: 250, id: 1 }, { x: 190, y: 250, id: 2 }] })
           await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
           await expect.poll(async () => (await image.boundingBox())!.width).toBeGreaterThan(beforePinch)

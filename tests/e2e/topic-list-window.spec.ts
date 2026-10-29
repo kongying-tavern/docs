@@ -119,14 +119,13 @@ test('5000 variable-height topics remain bounded on mobile and changing display 
   await page.waitForTimeout(300)
   expect(await page.locator('.forum-topic-item').count()).toBeLessThan(50)
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
+  // Capture and change mode in one task so late measurements cannot stale the anchor.
   const anchor = await page.locator('.topic-list > li[data-topic-id]').evaluateAll((rows) => {
     const row = rows.find(row => row.getBoundingClientRect().bottom > 0) as HTMLElement
-    return { id: row.dataset.topicId, top: row.getBoundingClientRect().top }
-  })
-  // Change the shared preference without Playwright scrolling the toolbar into view.
-  await page.evaluate(() => {
+    const anchor = { id: row.dataset.topicId, top: row.getBoundingClientRect().top }
     localStorage.setItem('FORUM-TOPIC-VIEW-MODE', 'COMPACT')
     window.dispatchEvent(new StorageEvent('storage', { key: 'FORUM-TOPIC-VIEW-MODE', newValue: 'COMPACT', storageArea: localStorage }))
+    return anchor
   })
   await expect(page.locator(`li[data-topic-id="${anchor.id}"]`)).toBeAttached()
   // Late ResizeObserver measurements must not displace an initially restored anchor.

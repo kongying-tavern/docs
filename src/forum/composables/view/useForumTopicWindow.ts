@@ -119,7 +119,7 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
       expectedAnchorScroll = window.scrollY
     }
     let stable = 0
-    for (let frame = 0; frame < 8 && stable < 2 && active.value; frame++) {
+    for (let frame = 0; frame < 8 && stable < 3 && active.value; frame++) {
       await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
       if (change !== displayChange || !active.value)
         break

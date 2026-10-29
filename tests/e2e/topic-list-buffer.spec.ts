@@ -244,7 +244,7 @@ test('behavior: deferred reclamation retains row identity, reverses and remains 
     await page.evaluate(async () => {
       const control = (window as unknown as IdleControl).bufferIdleControl
       for (let step = 1; step <= 6; step++) {
-        window.scrollTo({ top: control.originalY + innerHeight * 1.5 * step / 6, behavior: 'instant' })
+        window.scrollTo({ top: control.originalY + innerHeight * 1.75 * step / 6, behavior: 'instant' })
         await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
       }
     })
@@ -258,7 +258,8 @@ test('behavior: deferred reclamation retains row identity, reverses and remains 
     snapshots.push({ phase: 'reversed', ...await inspect() })
     await page.evaluate(() => {
       const control = (window as unknown as IdleControl).bufferIdleControl
-      window.scrollTo({ top: control.originalY + innerHeight * 1.5, behavior: 'instant' })
+      // Clear the resting 0.75-viewport buffer even after row-height anchoring.
+      window.scrollTo({ top: control.originalY + innerHeight * 1.75, behavior: 'instant' })
     })
     await page.waitForTimeout(350)
     await expect.poll(async () => (await inspect()).pending).toBeGreaterThan(0)
