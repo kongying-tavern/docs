@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useLocalized } from '@/hooks/useLocalized'
 import EmojiData from '~/_data/emojis.json'
 
 import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
@@ -27,7 +27,7 @@ const emit = defineEmits<{
   (e: 'select', arg1: EmojiItem): void
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const recentEmojis = useLocalStorage<Record<string, string[]>>(RECENT_EMOJIS_STORAGE_KEY, {})
 
@@ -144,7 +144,7 @@ function deleteRecentEmoji(emoji: string) {
     <div class="emoji-picker-body p-2 flex flex-1 flex-col overflow-hidden">
       <div v-if="recentEmojisFiltered.length > 0" class="mb-2 shrink-0">
         <p class="text-sm font-bold">
-          {{ message.forum.publish.feedbackForm.recentUsed }}
+          {{ t('forum.publish.feedbackForm.recentUsed') }}
         </p>
         <TransitionGroup
           name="emoji-shift" tag="div"
@@ -179,11 +179,11 @@ function deleteRecentEmoji(emoji: string) {
         </ToggleGroupItem>
       </ToggleGroup>
       <div class="ml-4 flex gap-1">
-        <Button type="button" variant="ghost" size="icon-xs" :aria-label="message.forum.publish.feedbackForm.previousEmojiGroup" :disabled="activePresetIndex === 0" @click="prevPreset">
+        <Button type="button" variant="ghost" size="icon-xs" :aria-label="t('forum.publish.feedbackForm.previousEmojiGroup')" :disabled="activePresetIndex === 0" @click="prevPreset">
           <span class="i-lucide:chevron-left icon-btn" />
         </Button>
         <Button
-          type="button" variant="ghost" size="icon-xs" :aria-label="message.forum.publish.feedbackForm.nextEmojiGroup" :disabled="activePresetIndex === EmojiData.length - 1"
+          type="button" variant="ghost" size="icon-xs" :aria-label="t('forum.publish.feedbackForm.nextEmojiGroup')" :disabled="activePresetIndex === EmojiData.length - 1"
           @click="nextPreset"
         >
           <span class="i-lucide:chevron-right icon-btn" />

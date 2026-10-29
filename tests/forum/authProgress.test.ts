@@ -1,14 +1,9 @@
 import { afterEach, expect, test, vi } from 'vitest'
 import { useAuthProgress } from '~/forum/hooks/useAuthProgress'
 
-vi.mock('vitepress', async () => {
-  const { ref } = await import('vue')
-  return { useData: () => ({ theme: ref({ forum: { auth: { callback: {
-    steps: { init: 'init', token: 'token', session: 'session', sso: 'sso', redirect: 'redirect' },
-    status: { completed: 'completed' },
-    error: { title: 'error' },
-  } } } }) }) }
-})
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({ t: (key: string) => key.split('.').at(-1) }),
+}))
 
 afterEach(() => vi.useRealTimers())
 

@@ -2,8 +2,8 @@
 import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { SETTINGS_SECTION_DEFINITIONS } from '~/config/settingsOptions'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
@@ -12,7 +12,7 @@ import { consumeSettingsReturnUrl } from '~/services/settingsNavigation'
 
 const { localeIndex, page } = useData()
 const router = useRouter()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { hasAnyPermissions } = useRuleChecks()
 const canManageLabels = hasAnyPermissions('manage_feedback')
 const isLabelAdminPage = computed(() => page.value.relativePath.includes('settings-labels'))
@@ -26,7 +26,7 @@ const settingsItems = computed(() => SETTINGS_SECTION_DEFINITIONS
   .filter(section => section.id !== 'language' || translationSupported.value)
   .map(section => ({
     ...section,
-    label: message.value.settings[section.id].title,
+    label: t(`settings.${section.id}.title`),
   })))
 
 function settingsHref(section: string): string {
@@ -96,7 +96,7 @@ function openLabelAdmin(): void {
   <div class="settings-sidebar-extras">
     <Button variant="ghost" class="settings-sidebar-item settings-back" @click="goBack">
       <span class="i-lucide-arrow-left icon-btn" aria-hidden="true" />
-      {{ message.settings.back }}
+      {{ t('settings.back') }}
     </Button>
     <div class="settings-sidebar-divider" />
     <a
@@ -120,7 +120,7 @@ function openLabelAdmin(): void {
         @click="openLabelAdmin"
       >
         <span class="i-lucide-tags icon-btn size-4" aria-hidden="true" />
-        {{ message.forum.labelAdmin.title }}
+        {{ t('forum.labelAdmin.title') }}
       </button>
     </template>
   </div>

@@ -1,0 +1,656 @@
+loadMore: Load more
+noMore: No more
+loadError: Failed to load
+lastVisited: Last visited
+empty:
+  title: No feedback yet
+  description: Adjust the filters or submit new feedback.
+  searchTitle: No results for “{query}”
+  searchDescription: Try another keyword, or adjust the filters.
+  switchEverything: Switch to all feedback
+  switchOpen: Switch to open feedback
+  switchClosed: Switch to closed feedback
+  showAllTypes: Show all feedback types
+  clearSearch: Clear search criteria
+  createFeedback: New feedback
+reaction:
+  label: Feedback rating
+  like: Agree
+  dislike: Disagree
+imageActions:
+  processing: Processing image…
+  saved: Image saved
+  failed: Operation failed. Check your connection or browser permissions and retry.
+  copied: Copied
+  unknown: Unknown
+  raw: Original attachment data
+  dimensions: Natural dimensions
+  ratio: Aspect ratio
+  size: File size
+  type: File type
+  modified: Last modified
+  loading: Loading image information…
+  loadFailed: Resource information unavailable. Original attachment data is still shown.
+imagePreview:
+  longImage: Long image
+  longImageNavigator: Long image position navigator
+  previous: Previous image
+  next: Next image
+  expandPanel: Expand preview panel
+  collapsePanel: Collapse preview panel
+  showImage: Show image {index}
+sidebar:
+  home: Feedback forum
+  manual: User manual
+  download: Download client
+  myProfile: My profile
+  faq: FAQ
+  createFeedback: New feedback
+  loginToCreate: Sign in to submit
+  recentSubmitted: My feedback
+  followedTopics: Following
+  recentParticipated: Participated
+  emptySubmitted: No feedback posted yet
+  emptyFollowed: No feedback followed yet
+  emptyParticipated: No feedback joined yet
+  loginToView: Sign in to view
+  loginNow: Sign in
+  syncFailed: Comment posted, but participation could not be synced
+  personalRecovery:
+    readFailed: Following and participation records could not be loaded. Please retry.
+    corrupt: Following and participation data is damaged. Try recovering your records.
+    unsupported: These records use a format this version does not support. Update the app and retry.
+    conflict: Multiple record files were found. Check them in Gitee; no files were merged or overwritten.
+    retry: Reload records
+    repair: Recover valid records
+    reset: Reset records
+    repairConfirm: Keep {count} valid records and remove unrecognized entries. Continue?
+    resetConfirm: Clear all following and participation records. Continue?
+    confirm: Confirm
+    cancel: Cancel
+    actionFailed: The operation failed. Reload before retrying.
+    success: Records recovered.
+  totalComments: '{count} comment total | {count} comments total'
+  information: More
+  listSort: Sort by
+  opensource: Open source
+  feedbackCommunity: Discord
+  userAgreement: User agreement
+  privacyPolicy: Privacy policy
+  festival:
+    christmasSnow: Let it snow
+    newYearFireworks: Launch New Year fireworks
+    springFestivalFireworks: Launch Spring Festival fireworks
+    dismiss: Hide for this holiday
+exceededRateLimitWarning: Too many requests. Sign in and try again.
+translate:
+  translateText: Translate
+  translatedFrom: Translated from {language}
+  settings: Translation settings
+  settingsDescription: Choose how translations work on this device
+  autoTranslate: Translate automatically
+  autoTranslateDescription: Translate feedback written in another language
+  viewOriginal: View original
+  showTranslation: Show translation
+  conservativeSkip: This text is too short or its language is uncertain
+  error: Translation failed
+  limit: Maximum request limit reached
+  loading: Translating…
+topic:
+  official: Official
+  author: Author
+  officialAt: '{''@''}Kongying-Tavern'
+  showMore: Show more
+  previewTitle: Feedback preview
+  backToFeedbackForum: Back to forum
+  quote:
+    action: Quote feedback
+    quoted: Quoted feedback
+    remove: Remove quote
+    loading: Loading quoted feedback
+    unavailable: This quoted feedback is unavailable
+    invalid: The quote link is invalid. A regular feedback form was opened instead.
+    retry: Retry
+    countSyncFailed: Feedback was published, but the quote count could not be updated
+  menu:
+    moreActions: More actions
+    back: Back
+    syncPending: '{action}. Sync result pending.'
+    giteeLink: View on Gitee
+    toOriginal: Go to original
+    hideFeedback:
+      text: Hide feedback
+      success: Feedback visibility updated
+      fail: Failed to update feedback visibility
+    deleteComment:
+      text: Delete comment
+      title: Delete comment?
+      confirm: This cannot be undone. Delete this comment?
+      success: Comment deleted
+      fail: Failed to delete comment
+    closeFeedback:
+      text: Archive feedback
+      title: Archive feedback?
+      confirm: >-
+        This feedback will be archived and removed from the unresolved and closed lists. You can also record a
+        resolution status.
+      keepStatus: Keep current status
+      submit: Archive feedback
+      success: Feedback archived
+      fail: Failed to archive feedback
+    copyId: Copy feedback ID
+    copyLink:
+      text: Copy link
+      success: Copied
+      fail: Failed to copy
+    changeType:
+      text: Change type
+      to: Change to
+      success: Feedback type updated
+      fail: Failed to update feedback type
+    modifyTags:
+      text: Edit tags
+      title: Edit feedback tags (#{id})
+      success: Feedback tags updated
+      fail: Failed to update feedback tags
+    modifyStatus:
+      text: Set status
+      none: Clear status
+      conflict: Multiple status labels were found. Only the selected status will be kept.
+      conclusiveHint: Setting a resolution status moves an open feedback to Closed.
+      success: Feedback status updated
+      fail: Failed to update feedback status
+    goodIssue:
+      mark: Mark as featured
+      unmark: Remove featured mark
+      success: Featured mark updated
+      fail: Failed to update featured mark
+    pinTopic:
+      pin: Pin feedback
+      unpin: Unpin feedback
+      success: Pin status updated
+      fail: Failed to update pin status
+    commentArea:
+      open: Open comments
+      close: Close comments
+      success: Comment section updated
+      fail: Failed to update comment section
+    privateFeedback:
+      makePrivate: Make visible to administrators only
+      makePublic: Make feedback public
+      success: Feedback visibility updated
+      fail: Failed to update feedback visibility
+    reopenFeedback:
+      text: Unarchive feedback
+    unhideFeedback:
+      text: Unhide feedback
+    reactionStats:
+      text: View stats
+      title: Feedback stats (#{id})
+      commentTitle: Comment stats (#{id})
+      views: Views
+      loading: Loading stats…
+      refresh: Refresh
+      fail: Failed to load stats
+  type:
+    sug: Suggestion
+    bug: Bug
+    feat: Feature
+    ann: Announcement
+  status:
+    roadmap: Roadmap
+    rfc: RFC
+    not-planned: Not planned
+    wontfix: Won’t fix
+    fixed: Fixed
+    not-reproducible: Not reproducible
+    confirmed: Confirmed
+    needs-triage: Needs triage
+    blocked: Blocked
+    needs-more-info: Needs more info
+    stale: Stale
+    duplicate: Duplicate
+    invalid: Invalid
+    closed: Closed
+    goodIssue: Featured
+  statusGroups:
+    planning: Planning
+    triage: Triage
+    maintenance: Maintenance
+    resolution: Resolution
+  searchFacets:
+    label: Filters
+    tags: tags
+    state: state
+    author: author
+    stateTab: Status
+    tagsTab: Tags
+    authorTab: Author
+    choose: Choose a filter
+    back: Back to filters
+    tagsTitle: Filter by tag
+    tagsDescription: Choose one or more feedback tags
+    stateTitle: Filter by status
+    stateDescription: Choose one or more feedback statuses
+    authorTitle: Filter by author
+    authorDescription: Choose a user
+    platforms: Platforms
+    categories: Issue types
+    teamMembers: Team members
+    recommendedUsers: Suggested users
+    searchUsers: Search users
+    noOptions: No options available
+  state:
+    open: Open
+    closed: Closed
+    rejected: Rejected
+    progressing: In progress
+  backToPrevPage: Back to previous page
+auth:
+  login: Sign in
+  logout: Sign out
+  loginMsg: Sign in with Gitee
+  logoutMsg: Sign out of Gitee
+  loginTips: Sign in and try again
+  loginToCheck: Please {login} to view (・ω・)
+  jumpToGiteeTips: Redirecting to Gitee to sign in
+  loginSuccess: Signed in
+  logoutSuccess: Signed out
+  loginFail: Sign-in failed
+  logoutFail: Sign-out failed
+  loginAlert: Account sign-in
+  loginAlertMsg: Continue with your Gitee account
+  oauthLoginAlert: Continue to Gitee authorization
+  oauthLoginAlertMsg: You will leave this page and return automatically after authorization.
+  account: Account
+  accountPlaceholder: Gitee login or email (not phone or game account)
+  loginHelp: Having trouble signing in?
+  password: Password
+  passwordPlaceholder: Enter your password
+  passwordLogin: Sign in
+  passwordLoginFail: Sign-in failed. Check your account, password, or network and try again.
+  oauthLogin: Use authorization instead
+  or: Or
+  notGiteeAccountMsg: No Gitee account? {signup}
+  clickToGiteeSignup: Sign up for Gitee
+  callback:
+    title: Signing in via Gitee…
+    description: Please wait. You will be redirected back shortly.
+    steps:
+      init: Parse auth params
+      token: Obtain access token
+      session: Establish user session
+      sso: Sync SSO status
+      redirect: Prepare page redirect
+    status:
+      pending: Pending
+      processing: Processing
+      completed: Completed
+      failed: Failed
+    error:
+      title: Authorization failed
+      retry: Retry
+  errorMessages:
+    tokenExpired: Your session has expired. Sign in again.
+    tokenInvalid: Your session is no longer valid. Sign in again.
+    tokenRefreshFailed: Could not refresh your session. Try again later.
+    tokenMissing: Sign-in details are missing. Sign in again.
+    oauthExchangeFailed: Sign-in could not be completed. Try again.
+    networkError: Network problem. Check your connection and try again.
+    unauthorized: Not authorized. Sign in again.
+    userInfoFetchFailed: Could not load your account. Try again later.
+    unknown: The action could not be completed. Try again later.
+aside:
+  recentUpdates:
+    title: Recent updates
+    quoted: '{title}: {summary}'
+    released: '{title}: updated to {version}'
+    updated: '{title}: updated'
+  tagFilter:
+    title: Filter by tag
+  login:
+    title: Sign in to send feedback
+    description: Use your Gitee account to submit ideas, report issues, and follow progress.
+    oauth: Authorize with Gitee
+  contactUs:
+    title: Join the community
+    action: Join
+    join: Scan to join Discord
+    desc: Contact us there for urgent issues or map problems.
+    qrCodeAlt: Community invite QR code
+  teamBlog:
+    text: Team blog
+    items:
+      hotupdatelog-client: Client hot update log
+      changelog-web: Web map update log
+      changelog-autotrack: Position tracking updates
+  suggest:
+    text: Recommended docs
+  related:
+    title: Related feedback
+    noTags: This topic has no tags available for matching.
+    empty: No related feedback yet.
+    error: Related feedback could not be loaded.
+    retry: Retry
+  timeline:
+    title: Status history
+    created: Feedback created
+    statusSet: Status set to {status}
+    statusChanged: Status changed from {from} to {to}
+    statusCleared: Status cleared
+    stateChanged: State changed to {state}
+    error: Status history could not be loaded.
+    retry: Retry
+  meta:
+    links:
+      agreement: Agreement
+      privacy: Privacy
+      license: Open source license
+    poweredBy:
+      text: Powered by Gitee
+    copyright: © {year} Kongying Tavern
+  userProfile:
+    verification: Verification
+    verifiedMember: Kongying Tavern official team member
+    profile: Profile
+    userId: User ID
+    joinDate: Join date
+    loginLabel: Username
+comment:
+  publish: Post
+  mentionPlaceholder: Type or search for someone to mention
+  viewAllMentions: View all
+  topicParticipants: Topic participants
+  comment: Comment
+  loginToComment: Sign in to comment
+  continueEditing: Continue editing…
+  minimize: Minimize comment editor
+  leaveDraft: Your comment has not been sent. Leaving will discard it. Leave anyway?
+  commentSuccess: Comment posted
+  commentFail: Failed to post comment
+  commentAfterLogin: Please {login} to comment (・ω・)
+  commentCount: Comments
+  placeholder: Share your thoughts~
+  loadMoreComment: Load more comments
+  targetNotFound: The linked comment could not be found. It may have been deleted; you can still browse this feedback.
+  noComment: No comments
+  noMoreComment: No more comments
+  loadingComment: Loading comments…
+  reply: Reply
+  commentsClosed: Comments are closed
+header:
+  view:
+    label: View mode
+    card: Card
+    compact: Compact
+    optionsTitle: Display and sorting
+  sort:
+    created: Newest
+    updated: Recently updated
+    notesCount: Comments
+  search:
+    placeholder: Search feedback
+    settings: Filters and display
+    feedbackRange: Feedback range
+    feedbackType: Feedback type
+    resetFilters: Reset
+    searchContent: Search specific content
+    recentSearches: Recent searches
+    clearRecentSearches: Clear search history
+    noRecentSearches: No recent searches
+    expandRecentSearches: Show more
+    collapseRecentSearches: Show less
+    allRelatedContentCount: Related feedback
+    resultSummary: Found {count} results for “{query}”
+  navigation:
+    groups:
+      status: Status
+      type: Type
+    adminOnly: Admins only
+    allFeedback: Unresolved feedback
+    allTypes: All types
+    bugFeedback: Bug reports
+    featFeedback: Feature requests
+    closedFeedback: Closed feedback
+    archivedFeedback: Archived feedback
+    everythingFeedback: All feedback
+publish:
+  tags:
+    issue:
+      typos: Typos
+      display: Display issue
+      login: Login issue
+      performance: Performance issue
+      translation: Translation issue
+      other: Other
+      pin: Pin issue
+      docs: Documentation issue
+    platforms:
+      all: All platforms
+      web: Web issue
+      client: Client issue
+  title: Feedback form
+  type:
+    sug: Suggestion
+    bug: Bug
+    feat: Feature
+    ann: Announcement
+  tagsInput:
+    platformGroup: Platform
+    typeGroup: Category
+    searchTags: Search tags
+    loading: Loading tags…
+    maxTagsLimit: Tag limit reached
+    noResultsFound: No matches
+    loadFailed: Could not load tags. Try again.
+    retry: Retry
+  feedbackForm:
+    deleteDraft: Delete draft
+    deleteDraftTitle: Delete this draft?
+    deleteDraftDescription: This draft and its current edits will be deleted. This cannot be undone.
+    deleteDraftFailed: Could not delete the draft. Please try again.
+    draftBadge: Draft
+    untitledDraft: Untitled draft
+    editDraft: Edit draft
+    draftSavedShort: Saved
+    autoSaveFailed: Save failed
+    chooseType: Choose a feedback type
+    backToTypes: Back to feedback types
+    chooseTypeDescription: What would you like to share?
+    newFeedback: New feedback
+    createMore: Create more
+    privateFeedback: Visible to administrators only
+    privateFeedbackVisibility: Visible to administrators only
+    privateFeedbackDescription: Only administrators can view this feedback after submission.
+    saveDraft: Save draft
+    savingDraft: Saving
+    draftSaveFailed: Could not save the draft. Please try again.
+    draftSaved: Draft saved
+    expand: Expand editor
+    collapse: Collapse editor
+    selectTags: Categories
+    selectReference: Reference feedback
+    searchReference: Search feedback title or ID…
+    removeReference: Remove reference
+    removeTag: Remove category {tag}
+    submit: Submit feedback
+    keepDraftTitle: Save these edits?
+    keepDraftDescription: Saved edits can be continued the next time you open the feedback form.
+    discardDraft: Don’t save
+    keepDraft: Save
+    fieldsNeedAttention: '{count} field still needs attention | {count} fields still need attention'
+    uploadingImages: Uploading images {settled}/{total}
+    imageQueued: Waiting to upload
+    imageProcessing: Processing image
+    imageUploaded: Image uploaded
+    publishing: Publishing feedback…
+    success: Feedback published
+    uploadFailed: An image could not be uploaded. Review it and retry.
+    uploadFailedShort: Upload failed
+    publishFailed: Feedback could not be published. Your draft is preserved.
+    phoneBindingRequired: Bind a phone number to your Gitee account, then resubmit.
+    returnToForm: Return to form
+    copyError: Copy error details
+    retryImage: Retry {filename}
+    removeImage: Remove {filename}
+    addImages: Add images
+    attachmentsLabel: Feedback images
+    attachmentsLimit: '{count}/{max} images · {size} each'
+    imageEmpty: '{filename} is empty'
+    imageInvalidType: '{filename} uses an unsupported image format'
+    imageTooLarge: '{filename} exceeds the {size} limit'
+    imageCountExceeded: You can add up to {max} images
+    previewFailed: Could not preview {filename}
+    formatBold: Toggle bold
+    formatItalic: Toggle italic
+    formatStrike: Toggle strikethrough
+    referenceById: Reference this ID (topic not loaded)
+    referenceTopic: Search and reference a topic
+    mentionUser: Mention a member
+    searchPeople: Search names or accounts…
+    recentUsed: Recently used
+    teamMembers: Team members
+    previousEmojiGroup: Previous emoji group
+    nextEmojiGroup: Next emoji group
+  publishLoading: Submitting…
+  form:
+    title:
+      text: Title
+      placeholder: 5–50 characters
+    type:
+      text: Label
+      placeholder: Select at least one
+    content:
+      text: Feedback content
+      placeholder: Describe your feedback in detail (5–2000 characters)
+    upload:
+      text: Upload images
+      tip: Upload up to {range} images, max {size} each
+user:
+  menu:
+    giteePage: Gitee profile
+    giteeAccountInfo: Gitee account info
+  myFeedback:
+    title: My feedback
+readMore: Read more
+labels:
+  submitBug: Report bug
+  submitSuggestion: Suggest
+  teamBlog: Team blog
+  userManual: User manual
+  joinCommunity: Join community
+  writeThoughts: Write your thoughts…
+  shareExperience: Share your experience…
+  askQuestion: Ask your question…
+  lazyPerson: This person is lazy and wrote nothing~
+  unknown: Unknown
+  fetchUserFailed: Could not load profile
+  personalHomepage: ’s profile
+  goToProfile: View profile
+  imageLoadFailed: Image load failed
+  follow: Follow
+  following: Following
+  unfollow: Unfollow
+  posts: Posts
+  joinTime: Joined
+  privateMessage: Message
+  login: Login
+  openInEditor: Open in editor
+labelAdmin:
+  title: Label management
+  description: >-
+    Manage Gitee labels of the feedback repo. Category labels apply to the publish form and filters in real
+    time.
+  accessDenied: Insufficient permissions
+  accessDeniedDescription: This page is only available to members with feedback management permissions.
+  create: New label
+  edit: Edit label
+  delete: Delete
+  refresh: Refresh
+  refreshSuccess: Refreshed — {count} labels
+  backToList: Back to feedback list
+  loading: Loading labels…
+  loadFailed: Failed to load labels
+  retry: Retry
+  empty: No labels yet
+  count: '{count} label | {count} labels'
+  groups:
+    type: Feedback types
+    category: Category labels
+    status: Statuses
+    locale: Languages
+    special: Feature labels
+    other: Others
+  manageableSection: Manageable labels
+  noPreview: No preview available
+  reservedSection: System reserved
+  reservedHint: Reserved labels are depended on by site logic and cannot be renamed or deleted.
+  columnPreview: Preview
+  columnName: Name
+  columnActions: Actions
+  nameLabel: Label name
+  namePlaceholder: e.g. CATA-PERFORMANCE
+  nameHint: Labels starting with CATA- appear as category tags in the publish form and filters.
+  reservedNameWarning: >-
+    This name falls into the system-reserved range (type or feature labels) and will be locked as a reserved
+    label.
+  colorLabel: Label color
+  previewLabel: Preview
+  errors:
+    nameRequired: Label name is required
+    nameInvalid: Only letters, digits, hyphens and underscores are allowed, up to 48 characters
+    nameTaken: A label with the same name already exists
+    colorInvalid: Color must be a 6-digit hexadecimal value
+  deleteTitle: Delete label
+  deleteDescription: Deleting “{name}” removes it from the repo and all feedback, and filter links using it will stop working.
+  deleteConfirm: Delete
+  createSuccess: Label “{name}” created
+  updateSuccess: Label “{name}” updated
+  deleteSuccess: Label “{name}” deleted
+  operateFailed: 'Operation failed: {message}'
+validation:
+  errors:
+    titleRequired: Topic title is required
+    contentTooShort: Content must be at least {min} characters
+    contentTooLong: Content must be no more than {max} characters
+    tagsRequired: At least {min} tag is required
+    tooManyTagsLimit: No more than {max} tags allowed
+    commentEmpty: Comment cannot be empty
+    announcementPermission: Only administrators can publish announcements
+errors:
+  tooManyRequests: Too many requests, please try again later
+  serverError: Server error, please try again
+  notFound: Resource not found
+  unknownError: Unknown error
+  networkError: Network connection failed
+  permissionDenied: Permission denied
+  operationFailedRetry: Operation failed, please try again later
+  networkRequestFailed: Network request failed. Showing local data.
+  loadFailedHint: Try again shortly, or check your network connection.
+  sortDataLoadFailed: Failed to load sort data
+  cannotDoToSelf: Cannot perform this operation on yourself
+  followFailed: Follow failed, please try again later
+  unfollowSuccess: Unfollowed
+  followSuccess: Followed
+  permissionInsufficientAnnouncement: Only administrators can publish announcements
+  ssoRefreshTokenFailed: Could not refresh your sign-in status. Please sign in again.
+  traceIdOnly: '(error ID: {traceId})'
+  traceIdWithMessage: '{message} (error ID: {traceId})'
+telemetry:
+  description: >-
+    When on, errors and usage are reported anonymously to help find and fix problems. What you write is never
+    included.
+  enable: Enable diagnostics reporting
+  stateDisabled: Diagnostics reporting is off.
+  sessionId: Session ID
+  copySessionId: Copy session ID
+  copySuccess: Copied
+  traceIdSuffix: '(error ID: {traceId})'
+  copyErrorInfo: Copy error details
+  viewErrorDetails: View error details
+  details: Details
+  errorDetails: Error details
+  sessionHint: Include the session ID with your feedback so support can locate the session.
+blog:
+  breadcrumbHome: Home
+  breadcrumbBlog: Team blog

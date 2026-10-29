@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import type { CustomConfig } from '~/forum/types'
+import type { Composer } from 'vue-i18n'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { toast } from '~/services/telemetry/toast'
 
@@ -15,36 +14,36 @@ import { toast } from '~/services/telemetry/toast'
  */
 export function handleError(
   error: Error | undefined,
-  message: Ref<CustomConfig>,
+  t: Composer['t'],
   options?: {
     errorMessage: string
   },
 ) {
   if (error instanceof GiteeAPIError) {
     if (error.isExceededRateLimit()) {
-      return toast.error(message.value.forum.loadError, {
+      return toast.error(t('forum.loadError'), {
         error,
         scene: 'ld',
-        description: message.value.forum.exceededRateLimitWarning,
+        description: t('forum.exceededRateLimitWarning'),
         action: {
-          label: message.value.forum.auth.login,
+          label: t('forum.auth.login'),
           onClick: () => (location.hash = 'login-alert'),
         },
       })
     }
 
     if (error.isUnauthorized()) {
-      return toast.error(message.value.forum.loadError, {
+      return toast.error(t('forum.loadError'), {
         error,
         scene: 'ld',
-        description: `${message.value.forum.auth.loginTips} (${error.message})`,
+        description: `${t('forum.auth.loginTips')} (${error.message})`,
         action: {
-          label: message.value.forum.auth.login,
+          label: t('forum.auth.login'),
           onClick: () => (location.hash = 'login-alert'),
         },
       })
     }
   }
 
-  return toast.error(options?.errorMessage || message.value.forum.loadError, { error, scene: 'ld' })
+  return toast.error(options?.errorMessage || t('forum.loadError'), { error, scene: 'ld' })
 }

@@ -55,6 +55,9 @@ jobs:
       - name: Build site
         run: pnpm build
 
+      - name: Build translation reports
+        run: pnpm translations:build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

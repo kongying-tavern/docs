@@ -3,10 +3,10 @@ import type { TopicTranslationSnapshot } from '../topic/ForumTopicTranslator.vue
 import type ForumAPI from '~/forum/api/types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, nextTick, onActivated, onDeactivated, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Divider from '@/components/ui/divider/Divider.vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Separator from '@/components/ui/separator/Separator.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumCommentsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumListPrefetch } from '~/forum/composables/view/useForumListPrefetch'
 import { provideForumTopicPresentation } from '~/forum/composables/view/useForumTopicPresentation'
@@ -87,7 +87,7 @@ const mobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 useIdlePreload(preloadForumCommentArea, () => props.data.length > 0 && !mobile.value)
 useIdlePreload(() => import('../topic/ForumTopicPage.vue'), () => props.data.length > 0 && mobile.value)
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const previousVisitAt = beginForumVisit()
 const lastVisitedDividerIndex = computed(() =>
   findLastVisitedDividerIndex(props.data, previousVisitAt, props.sort ?? 'created'),
@@ -155,7 +155,7 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
             variant="center"
             class="last-visited-divider py-3"
           >
-            {{ message.forum.lastVisited }}
+            {{ t('forum.lastVisited') }}
           </Divider>
           <ForumTopicEntry :delay="enterDelays.get(item.id)" @entered="enterDelays.delete(item.id)">
             <ForumTopic

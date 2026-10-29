@@ -8,10 +8,10 @@ import Placeholder from '@tiptap/extension-placeholder'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { BubbleMenu } from '@tiptap/vue-3/menus'
 import { onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import MentionPicker from '@/components/ui/MentionPicker.vue'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumEditorShortcuts } from '~/forum/composables/view/useForumEditorShortcuts'
@@ -52,7 +52,7 @@ const activeFormats = ref<TextFormat[]>([])
 const showMentionPicker = ref(false)
 const formatMenu = useTemplateRef<InstanceType<typeof ToggleGroup>>('format-menu')
 const queryCache = useQueryCache()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 type TextFormat = 'bold' | 'italic' | 'strike'
 
@@ -214,8 +214,8 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
                 :key="action.value"
                 :value="action.value"
                 class="px-0 size-8"
-                :aria-label="message.forum.publish.feedbackForm[action.label]"
-                :title="message.forum.publish.feedbackForm[action.label]"
+                :aria-label="t(`forum.publish.feedbackForm.${action.label}`)"
+                :title="t(`forum.publish.feedbackForm.${action.label}`)"
                 @mousedown.prevent
                 @click="toggleFormat(action.value)"
               >
@@ -239,8 +239,8 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
             variant="ghost"
             size="icon-lg"
             :disabled="imageSelectionDisabled"
-            :aria-label="message.forum.publish.feedbackForm.addImages"
-            :title="message.forum.publish.feedbackForm.addImages"
+            :aria-label="t('forum.publish.feedbackForm.addImages')"
+            :title="t('forum.publish.feedbackForm.addImages')"
             @click="emits('select-images')"
           >
             <ImagePlusIcon :size="16" />
@@ -249,8 +249,8 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
             type="button"
             variant="ghost"
             size="icon-lg"
-            :aria-label="message.forum.publish.feedbackForm.referenceTopic"
-            :title="message.forum.publish.feedbackForm.referenceTopic"
+            :aria-label="t('forum.publish.feedbackForm.referenceTopic')"
+            :title="t('forum.publish.feedbackForm.referenceTopic')"
             @mousedown.prevent
             @click="openTopicSearch"
           >
@@ -267,8 +267,8 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
                 type="button"
                 variant="ghost"
                 size="icon-lg"
-                :aria-label="message.forum.publish.feedbackForm.mentionUser"
-                :title="message.forum.publish.feedbackForm.mentionUser"
+                :aria-label="t('forum.publish.feedbackForm.mentionUser')"
+                :title="t('forum.publish.feedbackForm.mentionUser')"
               >
                 <AtSignIcon :size="16" />
               </Button>
@@ -278,7 +278,7 @@ watch(() => [ariaInvalid, ariaLabel, ariaDescribedby] as const, ([invalid, label
 
         <div v-if="isOverDropZone" class="drop-overlay" aria-hidden="true">
           <span class="i-lucide-images size-5" />
-          <span>{{ message.forum.publish.feedbackForm.addImages }}</span>
+          <span>{{ t('forum.publish.feedbackForm.addImages') }}</span>
         </div>
       </div>
     </div>

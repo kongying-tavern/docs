@@ -3,8 +3,8 @@ import { useQueryCache } from '@pinia/colada'
 import { StorageSerializers, useEventListener, useLocalStorage, useMediaQuery, useMounted } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumPersonalState } from '~/forum/composables/data/useForumPersonalState'
@@ -35,7 +35,7 @@ import ForumSidebarNav from './ForumSidebarNav.vue'
 import ForumSidebarSection from './ForumSidebarSection.vue'
 
 const { localeIndex } = useData()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const auth = useUserAuthStore()
 const userInfo = useUserInfoStore()
 const queryCache = useQueryCache()
@@ -131,8 +131,8 @@ function renderLocalNavCreateBtn() {
   icon.ariaHidden = 'true'
   const label = document.createElement('span')
   label.textContent = isLoggedIn.value
-    ? message.value.forum.sidebar.createFeedback
-    : message.value.forum.sidebar.loginToCreate
+    ? t('forum.sidebar.createFeedback')
+    : t('forum.sidebar.loginToCreate')
   localNavCreateBtn.replaceChildren(icon, label)
 }
 
@@ -171,12 +171,12 @@ onBeforeUnmount(unmountLocalNavCreateBtn)
 
 const navItems = computed(() => {
   const items: InstanceType<typeof ForumSidebarNav>['$props']['items'] = [
-    { label: message.value.forum.sidebar.home, icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
-    { label: message.value.forum.sidebar.manual, icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
-    { label: message.value.forum.sidebar.faq, icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') },
+    { label: t('forum.sidebar.home'), icon: 'i-lucide-house', href: pageHref('feedback'), active: route.value?.name === 'home' },
+    { label: t('forum.sidebar.manual'), icon: 'i-lucide-book-open', href: pageHref('manual/client/') },
+    { label: t('forum.sidebar.faq'), icon: 'i-lucide-circle-help', href: pageHref('manual/faq/accountsafety/acntban') },
   ]
   items.push({
-    label: isLoggedIn.value ? message.value.forum.sidebar.createFeedback : message.value.forum.sidebar.loginToCreate,
+    label: isLoggedIn.value ? t('forum.sidebar.createFeedback') : t('forum.sidebar.loginToCreate'),
     icon: isLoggedIn.value ? 'i-lucide-square-pen' : 'i-lucide-log-in',
     action: true,
   })
@@ -186,7 +186,7 @@ const navItems = computed(() => {
 const submittedItems = computed(() => [
   ...topicDrafts.value.map(draft => ({
     id: `draft-${draft.type}`,
-    title: draft.title.trim() || decodeForumText(draft.text).text.trim() || message.value.forum.publish.feedbackForm.untitledDraft,
+    title: draft.title.trim() || decodeForumText(draft.text).text.trim() || t('forum.publish.feedbackForm.untitledDraft'),
     href: `#${FORM_HASH}-DRAFT-${draft.type}`,
     type: draft.type,
     draft: true,
@@ -270,7 +270,7 @@ async function handleUnfollow(topicId: string): Promise<void> {
     await personal.unfollow(topicId)
   }
   catch (error) {
-    toast.error(message.value.forum.errors.followFailed, { error, scene: 'op' })
+    toast.error(t('forum.errors.followFailed'), { error, scene: 'op' })
   }
 }
 </script>
@@ -286,31 +286,31 @@ async function handleUnfollow(topicId: string): Promise<void> {
 
         <ForumSidebarSection
           v-model:open="submittedSectionOpen"
-          :title="message.forum.sidebar.recentSubmitted"
+          :title="t('forum.sidebar.recentSubmitted')"
           icon="i-lucide-history"
           :items="submittedItems"
           create-when-empty
-          :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
-          :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
+          :login-prompt="isLoggedIn ? '' : t('forum.sidebar.loginToView')"
+          :login-action="isLoggedIn ? '' : t('forum.sidebar.loginNow')"
           @open-draft="openDraft"
           @create="handleCreate"
         />
         <ForumSidebarSection
           v-model:open="participatedSectionOpen"
-          :title="message.forum.sidebar.recentParticipated"
+          :title="t('forum.sidebar.recentParticipated')"
           icon="i-lucide-message-circle-more"
           :items="participatedItems"
-          :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
-          :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
+          :login-prompt="isLoggedIn ? '' : t('forum.sidebar.loginToView')"
+          :login-action="isLoggedIn ? '' : t('forum.sidebar.loginNow')"
         />
         <ForumSidebarSection
           v-model:open="followedSectionOpen"
-          :title="message.forum.sidebar.followedTopics"
+          :title="t('forum.sidebar.followedTopics')"
           icon="i-lucide-bookmark"
           :items="followedItems"
           :action-disabled="personal.saving.value"
-          :login-prompt="isLoggedIn ? '' : message.forum.sidebar.loginToView"
-          :login-action="isLoggedIn ? '' : message.forum.sidebar.loginNow"
+          :login-prompt="isLoggedIn ? '' : t('forum.sidebar.loginToView')"
+          :login-action="isLoggedIn ? '' : t('forum.sidebar.loginNow')"
           @unfollow="handleUnfollow"
         />
       </FluidHoverList>

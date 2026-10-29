@@ -2,9 +2,9 @@
 import type ForumAPI from '~/forum/api/types'
 import { X } from '@lucide/vue'
 import { useRouter } from 'vitepress'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumTopicPreviewContent from './ForumTopicPreviewContent.vue'
 
@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const open = defineModel<boolean>({ default: false })
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const router = useRouter()
 const { topicHref } = useForumRoute()
 
@@ -38,14 +38,14 @@ function goToTopicDetail(): void {
     >
       <div class="preview-header px-4 py-3 flex shrink-0 items-center justify-between sm:px-5">
         <DialogTitle class="font-size-5 font-[var(--vp-font-family-subtitle)] m-0">
-          {{ message.forum.topic.previewTitle }}
+          {{ t('forum.topic.previewTitle') }}
         </DialogTitle>
         <DialogClose as-child>
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            :aria-label="message.ui.button.close"
+            :aria-label="t('ui.button.close')"
           >
             <X class="size-4" />
           </Button>

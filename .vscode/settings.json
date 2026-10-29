@@ -1,4 +1,9 @@
 {
+  "x18n.enabled": true,
+  "x18n.annotations": true,
+  "x18n.annotationInPlace": false,
+  "x18n.displayLocale": "",
+  "yaml.validate": true,
   "cSpell.words": [
     "alipay",
     "Aliyun",

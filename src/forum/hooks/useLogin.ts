@@ -3,7 +3,7 @@ import { useQueryCache } from '@pinia/colada'
 import { createSharedComposable } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { nextTick, onMounted, ref } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { removeQueryParam } from '@/utils'
 import { clearApiCache, oauth, password as passwordAuth } from '~/forum/api/gitee'
 import { oauth as interKnotOauth } from '~/forum/api/interknot.site'
@@ -64,7 +64,7 @@ function useLogin() {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
   const queryCache = useQueryCache()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const oauthCallback = getOAuthCallbackParams()
   const authCode = oauthCallback.code
   /** 本次页面加载是否携带 OAuth 回调参数（授权码或授权错误） */
@@ -76,7 +76,7 @@ function useLogin() {
   const authProgress = useAuthProgress()
 
   const { go } = useRouter()
-  const { theme, localeIndex } = useData()
+  const { localeIndex } = useData()
 
   onMounted(initOAuthFlow)
 
@@ -89,7 +89,7 @@ function useLogin() {
     if (oauthCallback.error) {
       log.error(LogGroup.LOGIN, `OAuth callback returned error: ${oauthCallback.error}`)
       authProgress.setError('token')
-      await handleOAuthFailure(theme.value.forum.auth.loginFail)
+      await handleOAuthFailure(t('forum.auth.loginFail'))
       return
     }
 
@@ -107,7 +107,7 @@ function useLogin() {
     if (!oauthCallback.stateValid) {
       log.error(LogGroup.LOGIN, 'OAuth state mismatch, rejecting callback')
       authProgress.setError('token')
-      await handleOAuthFailure(theme.value.forum.auth.loginFail)
+      await handleOAuthFailure(t('forum.auth.loginFail'))
       return
     }
 
@@ -124,7 +124,7 @@ function useLogin() {
       // 已知认证错误直接提示；未知错误清掉可能残留的半登录状态再提示
       const authError = AuthError.isAuthError(error) ? error : null
       await handleOAuthFailure(
-        authError ? authErrorMessage(authError, theme.value.forum.auth.errorMessages) : theme.value.forum.auth.loginFail,
+        authError ? authErrorMessage(authError, t) : t('forum.auth.loginFail'),
         !authError,
         error,
       )
@@ -148,7 +148,7 @@ function useLogin() {
       id: 'oauth-login',
       scene: 'oa',
       error,
-      description: theme.value.forum.errors.traceIdOnly,
+      description: t('forum.errors.traceIdOnly', { traceId: '{traceId}' }),
     })
     // 会话已建立（如 SSO 失败）按登录成功回放意图；未登录则丢弃防止误回放
     if (isLoggedIn())
@@ -250,8 +250,8 @@ function useLogin() {
 
         if (!result.success) {
           const errorMsg = AuthError.isAuthError(result.error)
-            ? authErrorMessage(result.error, theme.value.forum.auth.errorMessages)
-            : theme.value.forum.auth.loginFail
+            ? authErrorMessage(result.error, t)
+            : t('forum.auth.loginFail')
           toast.error(`interknot.site: ${errorMsg}`, { scene: 'ss', error: result.error })
           return
         }
@@ -259,7 +259,7 @@ function useLogin() {
         // 验证返回数据的完整性（setSSOToken 依据 expiresIn 重算 expiresTime）
         const { accessToken: newAccessToken, createdAt, expiresIn } = result.data
         if (!newAccessToken) {
-          toast.error(message.value.forum.errors.ssoRefreshTokenFailed, { scene: 'ss' })
+          toast.error(t('forum.errors.ssoRefreshTokenFailed'), { scene: 'ss' })
           return
         }
 
@@ -277,7 +277,7 @@ function useLogin() {
 
   function handlePostLogin() {
     if (isLoggedIn()) {
-      notifyAuthResult('logged-in', theme.value.forum.auth.loginSuccess)
+      notifyAuthResult('logged-in', t('forum.auth.loginSuccess'))
       trackOp(OpsEvents.loginSuccess)
     }
   }
@@ -332,7 +332,7 @@ function useLogin() {
         clearApiCache()
       }
       log.error(LogGroup.LOGIN, 'Password login failed')
-      passwordLoginError.value = theme.value.forum.auth.passwordLoginFail
+      passwordLoginError.value = t('forum.auth.passwordLoginFail')
       reportError({ scene: 'lg', error })
       return false
     }
@@ -370,7 +370,7 @@ function useLogin() {
     userAuth.logout()
     userInfo.clearUserInfo()
     clearApiCache()
-    notifyAuthResult('logged-out', theme.value.forum.auth.logoutSuccess)
+    notifyAuthResult('logged-out', t('forum.auth.logoutSuccess'))
   }
 
   function getOAuthCallbackParams(): OAuthCallbackParams {

@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/ui/drawer'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 
 defineProps<{ embeddedMobile?: boolean, title: string }>()
 const emit = defineEmits<{ close: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { desktopUi } = useSitePreferences()
 </script>
 
@@ -29,7 +29,7 @@ const { desktopUi } = useSitePreferences()
       <DialogDescription class="sr-only">
         {{ title }}
       </DialogDescription>
-      <Button class="settings-shell-close" variant="ghost" size="icon" :aria-label="message.settings.close" @click="emit('close')">
+      <Button class="settings-shell-close" variant="ghost" size="icon" :aria-label="t('settings.close')" @click="emit('close')">
         <span class="i-lucide-x icon-btn" aria-hidden="true" />
       </Button>
       <slot />

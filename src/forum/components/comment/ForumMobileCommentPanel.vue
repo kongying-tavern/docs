@@ -3,10 +3,10 @@ import type ForumAPI from '~/forum/api/types'
 import { Maximize2Icon, Minimize2Icon } from '@lucide/vue'
 import { createReusableTemplate, useEventListener, useMutationObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useMobileEditorViewport } from '~/forum/composables/view/useMobileEditorViewport'
 import { useCommentEditorMorph } from './composables/useCommentEditorMorph'
@@ -17,7 +17,7 @@ defineSlots<{
   default: (props: { target: HTMLElement | null, active: boolean }) => unknown
 }>()
 const open = defineModel<boolean>('open', { required: true })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 const expanded = ref(false)
 const motionReady = ref(false)
@@ -101,14 +101,14 @@ function setOpen(value: boolean): void {
   <Panel>
     <div ref="root" class="mobile-comment-panel" :class="{ 'comment-expanded': expanded }">
       <header class="mobile-comment-header">
-        <Button type="button" variant="ghost" size="icon-sm" :aria-label="expanded ? message.forum.publish.feedbackForm.collapse : message.forum.publish.feedbackForm.expand" :aria-pressed="expanded" @click="expanded = !expanded">
+        <Button type="button" variant="ghost" size="icon-sm" :aria-label="expanded ? t('forum.publish.feedbackForm.collapse') : t('forum.publish.feedbackForm.expand')" :aria-pressed="expanded" @click="expanded = !expanded">
           <Minimize2Icon v-if="expanded" /><Maximize2Icon v-else />
         </Button>
       </header>
       <div v-if="replyUser" class="mobile-comment-reply">
-        <span>{{ message.forum.comment.reply }} @{{ replyUser.login }}</span>
+        <span>{{ t('forum.comment.reply') }} @{{ replyUser.login }}</span>
         <Button type="button" variant="ghost" size="sm" :disabled="pending" @click="emit('cancel-reply')">
-          {{ message.ui.button.cancel }}
+          {{ t('ui.button.cancel') }}
         </Button>
       </div>
       <Alert v-if="error" variant="destructive" class="mobile-comment-error mx-4 mb-2 w-auto" role="alert">
@@ -123,7 +123,7 @@ function setOpen(value: boolean): void {
   <Dialog v-else :open="open" @update:open="setOpen">
     <DialogContent class="mobile-comment-dialog" :class="{ 'comment-expanded': expanded, 'motion-ready': motionReady, 'motion-reduced': reducedMotion, 'keyboard-visible': keyboardVisible }" :style="[drawerStyle, morph.style.value]" :show-close-button="false" :aria-describedby="undefined" @open-auto-focus="showEditor" @close-auto-focus="restoreFocus" @escape-key-down="guardDismiss" @pointer-down-outside="guardDismiss" @animationend="afterAnimation">
       <DialogTitle class="sr-only">
-        {{ message.forum.comment.comment }}
+        {{ t('forum.comment.comment') }}
       </DialogTitle>
       <PanelContent />
     </DialogContent>

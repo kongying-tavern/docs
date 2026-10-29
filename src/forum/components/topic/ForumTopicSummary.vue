@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useLanguage } from '@/composables/useLanguage'
-import { useLocalized } from '@/hooks/useLocalized'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumTopicPresentation } from '~/forum/composables/view/useForumTopicPresentation'
 import { decodeTopicBody } from '~/forum/services/forumContentCodec'
@@ -23,7 +23,7 @@ const emit = defineEmits<{
   'summary-click': []
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { currentPageLang } = useLanguage()
 const presentation = useForumTopicPresentation()
 const localExpanded = ref(false)
@@ -155,7 +155,7 @@ function handleExpandClick(): void {
           class="font-size-4 vp-link py-2 inline-flex"
           :href="detailHref"
         >
-          {{ message.forum.readMore }}
+          {{ t('forum.readMore') }}
         </a>
 
         <button
@@ -164,7 +164,7 @@ function handleExpandClick(): void {
           class="font-size-4 vp-link px-0 py-2 border-0 bg-transparent"
           @click="handleExpandClick"
         >
-          {{ message.forum.topic.showMore }}
+          {{ t('forum.topic.showMore') }}
         </button>
       </article>
 

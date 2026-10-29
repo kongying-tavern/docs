@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PreviewerContext } from '../ForumImagePreviewer.vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
 import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import ForumCommentItem from '../../../comment/ForumCommentItem.vue'
@@ -18,7 +18,7 @@ const emit = defineEmits<{
 
 const ForumTopicPreviewContent = defineRecoverableAsyncComponent(() => import('../../../topic/ForumTopicPreviewContent.vue'), AsyncContentLoading)
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
@@ -31,7 +31,7 @@ const { message } = useLocalized()
   >
     <aside
       v-if="open && context"
-      :aria-label="message.forum.topic.previewTitle"
+      :aria-label="t('forum.topic.previewTitle')"
       class="preview-side-panel p-4 bg-background flex flex-col gap-4 w-[min(560px,90vw)] inset-y-0 right-0 absolute overflow-y-auto"
       @pointerdown.stop
       @pointermove.stop
@@ -44,7 +44,7 @@ const { message } = useLocalized()
         <ForumTopicPreviewContent :topic="context.topic" />
         <template #fallback>
           <p role="status" aria-live="polite">
-            {{ message.forum.comment.loadingComment }}
+            {{ t('forum.comment.loadingComment') }}
           </p>
         </template>
       </Suspense>

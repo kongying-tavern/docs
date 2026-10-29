@@ -3,13 +3,13 @@ import { useEventListener, useIntersectionObserver } from '@vueuse/core'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import { computed, defineAsyncComponent, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Banner from '@/components/banner/Banner.vue'
 import ChunkLoadRecovery from '@/components/ChunkLoadRecovery.vue'
 import DocHeader from '@/components/DocHeader.vue'
 import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useThemeTransition } from '@/hooks/useThemeTransition'
 import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { useSitePreferences } from '~/composables/useSitePreferences'
@@ -28,7 +28,7 @@ const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vu
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const ToastDiagnosticsDialog = defineAsyncComponent(() => import('~/components/telemetry/ToastDiagnosticsDialog.vue'))
 const { isDark, frontmatter, page } = useData()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { desktopUi, toastDuration, toastPosition } = useSitePreferences()
 // Keep the Sonner position key stable; responsive placement is handled by CSS.
 const displayedToastDuration = computed(() => desktopUi.value ? toastDuration.value : DEFAULT_TOAST_DURATION)
@@ -86,7 +86,7 @@ provide('toggle-appearance', toggleTheme)
         :duration="displayedToastDuration"
         :visible-toasts="desktopUi ? 3 : 1"
         :close-button="displayedToastDuration === Number.POSITIVE_INFINITY"
-        :toast-options="{ closeButtonAriaLabel: message.ui.button.close }"
+        :toast-options="{ closeButtonAriaLabel: t('ui.button.close') }"
       />
     </template>
 

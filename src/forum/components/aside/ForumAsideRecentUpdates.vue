@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import type { BlogUpdateItem } from '~/forum/services/blogUpdateFeed'
+import type { BlogUpdateFormatters, BlogUpdateItem } from '~/forum/services/blogUpdateFeed'
 import { useData } from 'vitepress'
-import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { getLangPath } from '@/utils'
 import { describeBlogUpdate } from '~/forum/services/blogUpdateFeed'
 import ForumTime from '../ui/ForumTime.vue'
 
 defineProps<{ items: readonly BlogUpdateItem[] }>()
 const { localeIndex } = useData()
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.recentUpdates)
+const { t } = useI18n({ useScope: 'global' })
+const format: BlogUpdateFormatters = {
+  quoted: (title, summary) => t('forum.aside.recentUpdates.quoted', { title, summary }),
+  released: (title, version) => t('forum.aside.recentUpdates.released', { title, version }),
+  updated: title => t('forum.aside.recentUpdates.updated', { title }),
+}
 
 // 站点默认语言挂在根路径下，博客路由需按当前 locale 前缀拼；base 交给 VPLink 处理
 function postHref(slug: string): string {
@@ -26,7 +29,7 @@ function postHref(slug: string): string {
   >
     <div class="lh-14 font-[var(--vp-font-family-subtitle)] mb-4 vp-border-divider h-14">
       <h2 id="aside-recent-updates-title" class="aside-recent-updates-title color-[var(--vp-c-text-1)]">
-        {{ copy.title }}
+        {{ t('forum.aside.recentUpdates.title') }}
       </h2>
     </div>
 
@@ -37,9 +40,9 @@ function postHref(slug: string): string {
         class="aside-recent-updates-entry"
       >
         <span class="aside-recent-updates-dot" aria-hidden="true" />
-        <VPLink class="aside-recent-updates-item" :href="postHref(item.slug)" :title="describeBlogUpdate(item, copy)">
+        <VPLink class="aside-recent-updates-item" :href="postHref(item.slug)" :title="describeBlogUpdate(item, format)">
           <ForumTime class="aside-recent-updates-time" :date="item.updatedAt" :toggleable="false" />
-          <span class="aside-recent-updates-text">{{ describeBlogUpdate(item, copy) }}</span>
+          <span class="aside-recent-updates-text">{{ describeBlogUpdate(item, format) }}</span>
         </VPLink>
       </li>
     </ol>

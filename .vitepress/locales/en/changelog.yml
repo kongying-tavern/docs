@@ -1,0 +1,11 @@
+title: Changelog
+reportIssues: Report issues on {feedback}.
+feedbackPage: Feedback
+changeType:
+  features: Features
+  fixed: Fixes
+  breaking: Breaking changes
+  optimized: Optimized
+action:
+  download: Download
+  community: Join community

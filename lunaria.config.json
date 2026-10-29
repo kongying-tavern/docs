@@ -34,15 +34,6 @@
         "src/zh/blog/[id].md"
       ],
       "type": "universal"
-    },
-    {
-      "location": ".vitepress/locales/**/*.ts",
-      "pattern": ".vitepress/locales/@lang/@path",
-      "ignore": [
-        ".vitepress/locales/types.ts",
-        ".vitepress/locales/common/LanguageSuggestBar.ts"
-      ],
-      "type": "universal"
     }
   ]
 }

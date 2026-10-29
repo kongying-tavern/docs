@@ -1,12 +1,10 @@
-import { useLocalized } from '@/hooks/useLocalized'
+import type { Composer } from 'vue-i18n'
 
-export function getTopicTypeMap() {
-  const { message } = useLocalized()
-
+export function getTopicTypeMap(t: Composer['t']) {
   return new Map([
-    ['FEAT', message.value.forum.topic.type.feat],
-    ['ANN', message.value.forum.topic.type.ann],
-    ['BUG', message.value.forum.topic.type.bug],
-    ['POST', message.value.forum.labels.teamBlog],
+    ['FEAT', t('forum.topic.type.feat')],
+    ['ANN', t('forum.topic.type.ann')],
+    ['BUG', t('forum.topic.type.bug')],
+    ['POST', t('forum.labels.teamBlog')],
   ])
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumTopicsQuery, usePinnedTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { forumTopicTransitioning, useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { resolveForumListScope } from '~/forum/services/forumListSkeleton'
@@ -37,12 +37,12 @@ watch([topics.rows, active, forumTopicTransitioning], ([rows, isActive, transiti
   if (isActive && !transitioning)
     displayedRows.value = rows
 })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const loadStateMessage = computed(() => {
   if (topics.error.value)
-    return message.value.forum.loadError
-  return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
+    return t('forum.loadError')
+  return topics.canLoadMore.value ? t('forum.loadMore') : t('forum.noMore')
 })
 function login(): void {
   location.hash = 'login-alert'

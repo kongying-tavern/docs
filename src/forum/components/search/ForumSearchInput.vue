@@ -4,8 +4,8 @@ import type ForumAPI from '~/forum/api/types'
 import type { ForumSearchFacet } from '~/forum/services/forumSearchQuery'
 import { useRouter } from 'vitepress'
 import { computed, nextTick, ref, useId, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { SearchField, SearchFieldTransition } from '@/components/ui/search-field'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
 import { stringifyForumSearchQuery } from '~/forum/services/forumSearchQuery'
@@ -27,7 +27,7 @@ const { suggestions = [], page, suggestionMode } = defineProps<{
 const emit = defineEmits<{ submit: [query: string] }>()
 const SEARCH_TEXT_MAX_LENGTH = 50
 const modelValue = defineModel<string>('query', { required: true })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const router = useRouter()
 const { topicHref } = useForumRoute()
 const filters = useForumSearchFilters(modelValue, () => Boolean(page))
@@ -250,8 +250,8 @@ function handleInputBlur(event: FocusEvent) {
     :page="page"
     :autofocus="autofocus"
     :has-criteria="Boolean(modelValue.trim())"
-    :label="message.ui.button.search"
-    :placeholder="page ? message.forum.header.search.placeholder : message.ui.button.search"
+    :label="t('ui.button.search')"
+    :placeholder="page ? t('forum.header.search.placeholder') : t('ui.button.search')"
     :maxlength="SEARCH_TEXT_MAX_LENGTH"
     role="combobox"
     aria-autocomplete="list"
@@ -277,7 +277,7 @@ function handleInputBlur(event: FocusEvent) {
           v-model="filterDraft"
           type="text"
           class="search-field-token"
-          :aria-label="message.forum.topic.searchFacets.label"
+          :aria-label="t('forum.topic.searchFacets.label')"
           :size="Math.max(filterDraft.length, 1)"
           :title="filterDraft"
           autocomplete="off"
@@ -315,13 +315,13 @@ function handleInputBlur(event: FocusEvent) {
     </SearchFieldTransition>
 
     <div v-if="page && suggestionMode && suggestionLoading" class="search-field-result-state" role="status">
-      {{ message.ui.button.loading }}
+      {{ t('ui.button.loading') }}
     </div>
     <div v-else-if="page && suggestionMode && suggestionError" class="search-field-result-state" role="status">
-      {{ message.forum.loadError }}
+      {{ t('forum.loadError') }}
     </div>
     <div v-else-if="page && suggestionMode && !showSuggestions" class="search-field-result-state" role="status">
-      {{ message.forum.empty.searchDescription }}
+      {{ t('forum.empty.searchDescription') }}
     </div>
 
     <SearchFieldTransition>
@@ -330,7 +330,7 @@ function handleInputBlur(event: FocusEvent) {
         :id="listboxId"
         class="search-field-results"
         role="listbox"
-        :aria-label="message.ui.button.search"
+        :aria-label="t('ui.button.search')"
       >
         <button
           v-for="(suggestion, index) in filteredSuggestions"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { X } from '@lucide/vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import ForumImageIndicator from '../../ForumImageIndicator.vue'
 
 defineProps<{
@@ -16,14 +16,14 @@ const emit = defineEmits<{
   select: [index: number]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
   <button
     type="button"
     class="forum-preview-close"
-    :aria-label="message.ui.button.close"
+    :aria-label="t('ui.button.close')"
     :title="closeShortcut"
     :aria-keyshortcuts="closeShortcutAria"
     @click.stop="emit('close')"

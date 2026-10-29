@@ -1,7 +1,7 @@
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, watch, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { replaceTitle } from '@/composables/replaceTitle'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { data as forumDocumentLinks } from '~/_data/forumDocumentLinks.data'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
@@ -12,12 +12,12 @@ import { getTopicTypeMap } from '~/forum/services/getTopicTypeMap'
 import { handleError } from '~/forum/services/handleError'
 
 export function useTopicPageState() {
-  const topicTypeMap = getTopicTypeMap()
   const { localeIndex } = useData()
   const { route, topicHref, leaveTopic } = useForumRoute()
   const topicId = computed(() => route.value?.name === 'topic' ? route.value.topicId : '')
   const { go } = useRouter()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
+  const topicTypeMap = computed(() => getTopicTypeMap(t))
 
   const {
     data: topic,
@@ -34,8 +34,8 @@ export function useTopicPageState() {
       go(withBase(`${getLangPath(localeIndex.value)}404.html`))
       return
     }
-    handleError(err, message, {
-      errorMessage: message.value.forum.loadError + err.message,
+    handleError(err, t, {
+      errorMessage: t('forum.loadError') + err.message,
     })
   })
 
@@ -54,7 +54,7 @@ export function useTopicPageState() {
     const title = topic.value?.type === 'BUG'
       ? `${topic.value.content.text.substring(0, 6)}...`
       : topic.value?.title || ''
-    const type = topicTypeMap.get(topic.value?.type || '')
+    const type = topicTypeMap.value.get(topic.value?.type || '')
     replaceTitle(type ? `${type} - ${title}` : title)
   })
 

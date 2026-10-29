@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeMessagesHref } from '~/constants/site'
 import { useFollowUser } from '~/forum/composables/data/useFollowUser'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
@@ -11,7 +11,7 @@ const { user } = defineProps<{
   user: ForumAPI.User
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const currentUser = useUserInfoStore()
 
 const isLoggedIn = computed(() => Boolean(currentUser.info))
@@ -30,7 +30,7 @@ function sendMessage() {
     @click="sendMessage"
   >
     <span class="i-lucide-mail text-sm mr-1" />
-    <span>{{ message.forum.labels.privateMessage }}</span>
+    <span>{{ t('forum.labels.privateMessage') }}</span>
   </Button>
   <Button
     v-else
@@ -39,6 +39,6 @@ function sendMessage() {
     @click="toggleFollowThisUser"
   >
     <span class="i-lucide-user-plus text-base mr-1" />
-    <span>{{ message.forum.labels.follow }}</span>
+    <span>{{ t('forum.labels.follow') }}</span>
   </Button>
 </template>

@@ -3,11 +3,11 @@ import type { TabsConfig } from './publish-topic-form/types'
 import type { TopicFormData } from '~/forum/services/form/validation'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, unref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { DialogHeader } from '@/components/ui/dialog'
 import { DrawerHeader, DrawerTitle } from '@/components/ui/drawer'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useLocalized } from '@/hooks/useLocalized'
 
 interface Props {
   tabs: TabsConfig[]
@@ -18,17 +18,17 @@ interface Props {
 
 const props = defineProps<Props>()
 const activeTab = defineModel<TopicFormData['type']>({ required: true })
-const { message } = useLocalized()
+const { t, d } = useI18n({ useScope: 'global' })
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const visibleTabs = computed(() => props.tabs.filter(tab => unref(tab.condition)))
 
 function formatDate(date = new Date()): string {
-  return new Intl.DateTimeFormat(undefined, {
+  return d(date, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
-  }).format(date)
+  })
 }
 </script>
 
@@ -43,15 +43,15 @@ function formatDate(date = new Date()): string {
         <time class="c-[var(--vp-c-text-1)]">{{ formatDate() }}</time>
       </div>
       <div class="desktop-letter-rule" aria-hidden="true" />
-      <h2 class="desktop-form-title leading-tight tracking-[-0.025em] mt-8 text-left text-ui-42">
-        {{ message.forum.publish.title }} - {{ visibleTabs.find(tab => tab.value === activeTab)?.label }}
+      <h2 class="desktop-form-title text-ui-42 leading-tight tracking-[-0.025em] mt-8 text-left">
+        {{ t('forum.publish.title') }} - {{ visibleTabs.find(tab => tab.value === activeTab)?.label }}
       </h2>
       <div class="desktop-title-divider mb-10 w-18" aria-hidden="true" />
     </DialogHeader>
 
     <DrawerHeader v-else class="px-5 pb-5 pt-3 shrink-0">
       <DrawerTitle>
-        {{ message.forum.publish.title }}
+        {{ t('forum.publish.title') }}
       </DrawerTitle>
       <TabsList
         class="mt-4 grid h-10 w-full"

@@ -1,0 +1,199 @@
+# VitePress locale configuration. Interface messages live in the other *.yml files.
+label: English
+lang: en-US
+title: Kongying Tavern
+titleTemplate: :title | Kongying Tavern
+description: A Genshin interactive map by Kongying Tavern for completionists
+markdown:
+  codeCopyButton:
+    tooltipText: Copy code
+    copiedText: Copied
+themeConfig:
+  keyword: Genshin Interactive Map, Genshin Map, Kongying Tavern, yuanshenmap, Genshin Impact Map, Kongying Map
+  outline:
+    label: On This Page
+  lastUpdated:
+    text: Update Date
+  returnToTopLabel: Back to Top
+  langMenuLabel: Change language
+  docFooter:
+    prev: Previous page
+    next: Next page
+  notFound:
+    title: Page not found
+    quote: Maybe it went traveling with Venti.
+    linkLabel: Take me home
+  nav:
+    - text: Community
+      link: /community
+    - text: Support us
+      link: /support-us
+    - text: Map Utilities
+      items:
+        - text: Windows Client
+          items:
+            - text: Download
+              link: /download-client
+            - text: User Manual
+              link: /manual/client/
+            - text: Release Notes
+              link: /blog/posts/hotupdatelog-client
+        - text: Web Version
+          items:
+            - text: Try Now
+              link: https://v3.yuanshen.site
+            - text: Release Notes
+              link: /blog/posts/changelog-web
+        - text: Game Text Translations
+          link: https://hoyofan.yuanshen.site/
+    - text: Support
+      items:
+        - text: Feedback
+          link: /feedback/
+        - text: Feature Requests
+          link: /feedback/feat
+    - text: About
+      items:
+        - text: About Us
+          items:
+            - text: Join Us
+              link: /join
+            - text: Our Team
+              link: /team
+            - text: Team Blog
+              link: /blog
+        - text: Acknowledgements
+          items:
+            - text: Contributors
+              link: /staff
+            - text: Sponsors
+              link: /support-us#sponsor-acknowledgement
+            - text: Credits
+              link: /credits
+        - text: Legal (Chinese)
+          items:
+            - text: Disclaimer
+              link: /disclaimer
+            - text: Privacy
+              link: /privacy
+            - text: Agreement
+              link: /agreement
+        - text: Other
+          items:
+            - text: Translate for Us
+              link: /translations
+            - text: Friend-links
+              link: /friends-links
+  sidebar:
+    /feedback:
+      - {}
+    /settings:
+      - {}
+    /settings-labels:
+      - {}
+    /manual:
+      - text: User Manual
+        collapsed: false
+        items:
+          - text: Table of Contents
+            link: /manual/client/
+          - text: Marking Multiple Pins
+            link: /manual/client/batch-selection
+          - text: Change Pin Visibility
+            link: /manual/client/hide-show-done
+          - text: Overlay Mode
+            link: /manual/client/overlay-mode
+          - text: Position Tracker
+            link: /manual/client/position-tracking
+          - text: Custom Path Planner (Canvas)
+            link: /manual/client/canvas
+          - text: Launching The Game in Windowed Fullscreen
+            link: /manual/client/fullscreen-windowed
+          - text: Framerate/Tracking Control
+            link: /manual/client/framerate
+          - text: Progress Recovery
+            link: /manual/client/save-restore
+          - text: Easter Eggs
+            link: /manual/client/easter-egg
+      - text: FAQ
+        collapsed: false
+        items:
+          - text: Account safety
+            link: /manual/faq/accountsafety/acntban
+          - text: Auto Update
+            link: /manual/faq/autoupdate/updater
+          - text: Installation Error
+            items:
+              - text: Code 2503
+                link: /manual/faq/instlerror/code2503
+              - text: Missing .dll file
+                link: /manual/faq/instlerror/missingdll
+          - text: Launch Error
+            items:
+              - text: Stuck/No Progress
+                link: /manual/faq/launcherror/emptydialog
+              - text: Version Check Failed
+                link: /manual/faq/launcherror/versioncheck
+          - text: About Login
+            items:
+              - text: Login Problems
+                link: /manual/faq/login/accountlogin
+              - text: Repeated Login Requests
+                link: /manual/faq/login/clientrepeatedly
+          - text: Cloud Save
+            items:
+              - text: Cloud Save Verification Issue for Overseas Users
+                link: /manual/faq/cloudsave/verificationissueforoverseasuser
+  footer:
+    qrcodeTitle: Discord Server
+    qrcodeAlt: Discord invite QR code
+    qrcodeMessage: Contact us on Discord
+    qrcodeLink: https://discord.gg/aFe57AKZUF
+    navigation:
+      - title: Products
+        items:
+          - text: Client User Manual
+            link: /manual/client/
+          - text: Client Release Notes
+            link: /blog/posts/hotupdatelog-client
+          - text: Web Release Notes
+            link: /blog/posts/changelog-web
+      - title: About
+        items:
+          - text: Join Us
+            link: /join
+          - text: Our Team
+            link: /team
+          - text: Team Blog
+            link: /blog
+          - text: Sponsors
+            link: /support-us
+      - title: Legal (Chinese)
+        items:
+          - text: Disclaimer
+            link: /disclaimer
+          - text: Privacy
+            link: /privacy
+          - text: Agreement
+            link: /agreement
+      - title: More
+        items:
+          - text: Feedback
+            link: /feedback/
+          - text: Translate for Us
+            link: /translations
+          - text: Friend-links
+            link: /friends-links
+  ui:
+    title:
+      templateMappings:
+        - template: :title - Client user manual | Kongying Tavern
+          test: (^|\/?)manual\/client\/?
+  forum:
+    aside:
+      contactUs:
+        qrcodeLink: https://discord.gg/aFe57AKZUF
+  languageSuggest:
+    changeLanguage: 'I want to change the language of this page to:'
+    continue: Continue
+    ariaLabel: Choose country or region

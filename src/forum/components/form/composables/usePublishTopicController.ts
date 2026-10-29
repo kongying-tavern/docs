@@ -4,7 +4,7 @@ import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment
 import type { TopicFormData } from '~/forum/services/form/validation'
 import { useEventListener } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { isPhoneBindingRequiredError } from '~/forum/api/gitee'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
@@ -17,7 +17,6 @@ import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import { OpsEvents, reportError, trackOp } from '~/services/telemetry'
 import { toast } from '~/services/telemetry/toast'
-import { formatMessage } from '~/utils/formatMessage'
 import { FORM_HASH } from '../publish-topic-form/form-config'
 import { useFormState } from './useFormState'
 import { useFormSubmit } from './useFormSubmit'
@@ -32,7 +31,7 @@ export interface PublishTopicPresentation {
 
 export function usePublishTopicController(presentation: () => PublishTopicPresentation | null, onEvent?: (event: 'attempt' | 'success' | 'failed' | 'validation') => void, variant: () => FeedbackFormVariant = () => 'compact') {
   const userAuth = useUserAuthStore()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const userInfo = useUserInfoStore()
   const username = computed(() => userInfo.info?.login || 'Guest')
   const draftsEnabled = () => variant() === 'compact'
@@ -85,7 +84,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     getQueue,
     persist: persistDraft,
     uploadError: errors => errors.map(imageErrorText).join('\n'),
-    storageError: () => message.value.forum.publish.feedbackForm.draftSaveFailed,
+    storageError: () => t('forum.publish.feedbackForm.draftSaveFailed'),
   })
   const autoSaveState = computed(() => draftPersistence.states.get(formData.value.type))
   const autoSaveEnabled = computed(() => draftsEnabled() && (autoSaveState.value?.enabled ?? false))
@@ -171,12 +170,11 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }
 
   function imageErrorText(error: ImageAttachmentError): string {
-    return formatImageAttachmentError(error, message.value.forum.publish.feedbackForm)
+    return formatImageAttachmentError(error, t)
   }
 
   function updateUploadToast(): void {
-    const copy = message.value.forum.publish.feedbackForm
-    toast.loading(formatMessage(copy.uploadingImages, {
+    toast.loading(t('forum.publish.feedbackForm.uploadingImages', {
       settled: progress.value.settled,
       total: progress.value.total,
     }), { id: SUBMISSION_TOAST_ID })
@@ -264,7 +262,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
         setQuotedTopic(quotedTopic)
       }
       else if (hasQuotedTopicParams) {
-        toast.error(message.value.forum.topic.quote.invalid, { report: false })
+        toast.error(t('forum.topic.quote.invalid'), { report: false })
       }
       if (hasQuotedTopicParams)
         clearQuotedTopicRequest(window.history, window.location.href)
@@ -288,7 +286,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     if (!isQuotableTopicType(quotedTopic.type)) {
       setQuotedTopic(undefined)
       pendingQuotedTopicDefaultType = undefined
-      toast.error(message.value.forum.topic.quote.invalid, { report: false })
+      toast.error(t('forum.topic.quote.invalid'), { report: false })
       return
     }
 
@@ -323,7 +321,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
           return
         if (!isQuotableTopicType(quotedTopic.type)) {
           setQuotedTopic(undefined)
-          toast.error(message.value.forum.topic.quote.invalid, { report: false })
+          toast.error(t('forum.topic.quote.invalid'), { report: false })
           return
         }
         setQuotedTopic({ id: String(quotedTopic.id), type: quotedTopic.type })
@@ -349,7 +347,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
       if (progress.value.total > progress.value.settled)
         updateUploadToast()
       else
-        toast.loading(message.value.forum.publish.feedbackForm.publishing, { id: SUBMISSION_TOAST_ID })
+        toast.loading(t('forum.publish.feedbackForm.publishing'), { id: SUBMISSION_TOAST_ID })
 
       closeCompletion = closeAfterSend()
       const result = await submitForm(
@@ -361,7 +359,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
           if (stage === 'uploading' && progress.value.total > progress.value.settled)
             updateUploadToast()
           else if (stage === 'publishing')
-            toast.loading(message.value.forum.publish.feedbackForm.publishing, { id: SUBMISSION_TOAST_ID })
+            toast.loading(t('forum.publish.feedbackForm.publishing'), { id: SUBMISSION_TOAST_ID })
         },
       )
       await closeCompletion
@@ -371,7 +369,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
         onEvent?.('success')
         submissionPhase.value = 'succeeded'
         submissionAlert.value = null
-        toast.success(message.value.forum.publish.feedbackForm.success, { id: SUBMISSION_TOAST_ID })
+        toast.success(t('forum.publish.feedbackForm.success'), { id: SUBMISSION_TOAST_ID })
         trackOp(OpsEvents.topicPublish)
         draftPersistence.stop(draft.type)
         try {
@@ -381,7 +379,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
         catch (error) {
           // Publication is already committed; local cleanup must not invite a duplicate retry.
           reportError({ scene: 'tp', error })
-          toast.error(message.value.forum.publish.feedbackForm.draftSaveFailed, { report: false })
+          toast.error(t('forum.publish.feedbackForm.draftSaveFailed'), { report: false })
           return
         }
         if (createMore) {
@@ -397,12 +395,12 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
       const stage = result.stage === 'upload' ? 'upload' : 'topic'
       console.error('[forum] 反馈发布失败:', result)
       const isPhoneBinding = result.stage === 'topic' && isPhoneBindingRequiredError(result.error)
-      const copy = message.value.forum.publish.feedbackForm
+
       submissionAlert.value = {
-        title: stage === 'upload' ? copy.uploadFailed : copy.publishFailed,
+        title: stage === 'upload' ? t('forum.publish.feedbackForm.uploadFailed') : t('forum.publish.feedbackForm.publishFailed'),
         description: result.stage === 'upload'
           ? result.errors.map(imageErrorText).join('\n')
-          : (isPhoneBinding ? copy.phoneBindingRequired : result.error.message),
+          : (isPhoneBinding ? t('forum.publish.feedbackForm.phoneBindingRequired') : result.error.message),
       }
       // 与 toast 版一致的遥测口径：upload 阶段无 error 详情，topic 阶段上报原始错误
       reportError(result.stage === 'upload' ? { scene: 'up' } : { scene: 'tp', error: result.error })
@@ -415,10 +413,10 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
       submissionPhase.value = 'failed'
       onEvent?.('failed')
       toast.dismiss(SUBMISSION_TOAST_ID)
-      const copy = message.value.forum.publish.feedbackForm
+
       submissionAlert.value = {
-        title: stage === 'upload' ? copy.uploadFailed : copy.publishFailed,
-        description: error instanceof Error ? error.message : copy.publishFailed,
+        title: stage === 'upload' ? t('forum.publish.feedbackForm.uploadFailed') : t('forum.publish.feedbackForm.publishFailed'),
+        description: error instanceof Error ? error.message : t('forum.publish.feedbackForm.publishFailed'),
       }
       reportError({ scene: stage === 'upload' ? 'up' : 'tp', error })
       reopenFailedForm(stage)
@@ -540,7 +538,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
       closeForm()
     }
     catch {
-      deleteDraftError.value = message.value.forum.publish.feedbackForm.deleteDraftFailed
+      deleteDraftError.value = t('forum.publish.feedbackForm.deleteDraftFailed')
     }
   }
 

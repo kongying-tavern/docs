@@ -1,7 +1,7 @@
 import type { TopicFormData } from '~/forum/services/form/validation'
 import { useForm } from 'vee-validate'
 import { computed, reactive, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import {
   createDefaultTopicDraft,
@@ -17,10 +17,10 @@ export function useFormState(draftsEnabled: () => boolean = () => true) {
   const loadDraft = (type: TopicFormData['type']) => draftsEnabled()
     ? readTopicDraft(type)
     : { ...createDefaultTopicDraft(), type }
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const { hasAnyPermissions } = useRuleChecks()
   const hasPermission = hasAnyPermissions('manage_feedback')
-  const formTabs = computed(() => getFormTabsConfig(message, hasPermission))
+  const formTabs = computed(() => getFormTabsConfig(t, hasPermission))
 
   const isOpen = ref(false)
   const currentTabIndex = ref<number>(0)
@@ -34,7 +34,7 @@ export function useFormState(draftsEnabled: () => boolean = () => true) {
   const initialDraft = loadDraft('BUG')
   const savedBaselines = reactive(new Map<TopicFormData['type'], TopicFormData>([['BUG', initialDraft]]))
 
-  const validationSchema = computed(() => createTopicFormSchema(message, hasPermission.value))
+  const validationSchema = computed(() => createTopicFormSchema(t, hasPermission.value))
   const {
     resetForm: resetValidationForm,
     setFieldValue,

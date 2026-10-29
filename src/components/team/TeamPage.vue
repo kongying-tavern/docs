@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { Member } from './Member'
-import { useData } from 'vitepress'
+
+import { useI18n } from 'vue-i18n'
 import membersCoreData from './members-core.json'
 import membersEmeritiData from './members-emeriti.json'
 import membersPartnerData from './members-partner.json'
 import TeamHero from './TeamHero.vue'
 import TeamList from './TeamList.vue'
+
+const { t } = useI18n({ useScope: 'global' })
 
 function shuffleMembers(members: Member[], pinTheFirstMember = false): void {
   const offset = pinTheFirstMember ? 2 : 0
@@ -26,7 +29,6 @@ function shuffleMembers(members: Member[], pinTheFirstMember = false): void {
   }
 }
 
-const { theme } = useData()
 const membersCore: Member[] = membersCoreData
 const membersEmeriti: Member[] = membersEmeritiData
 const membersPartner: Member[] = membersPartnerData
@@ -40,42 +42,42 @@ shuffleMembers(membersPartner)
   <div class="TeamPage">
     <TeamHero>
       <template #title>
-        {{ theme.team.title }}
+        {{ t('team.title') }}
       </template>
       <template #lead>
-        <span class="nowrap">{{ theme.team.desc }}</span>
+        <span class="nowrap">{{ t('team.desc') }}</span>
       </template>
       <template #action>
         <VPLink href="https://github.com/orgs/kongying-tavern/teams">
-          {{ theme.team.heroAction }}
+          {{ t('team.heroAction') }}
         </VPLink>
       </template>
     </TeamHero>
 
     <TeamList :members="membersCore">
       <template #title>
-        {{ theme.team.coreMember.title }}
+        {{ t('team.coreMember.title') }}
       </template>
       <template #lead>
-        {{ theme.team.coreMember.desc }}
+        {{ t('team.coreMember.desc') }}
       </template>
     </TeamList>
 
     <TeamList :members="membersEmeriti">
       <template #title>
-        {{ theme.team.emeritiMember.title }}
+        {{ t('team.emeritiMember.title') }}
       </template>
       <template #lead>
-        {{ theme.team.emeritiMember.desc }}
+        {{ t('team.emeritiMember.desc') }}
       </template>
     </TeamList>
 
     <TeamList :members="membersPartner">
       <template #title>
-        {{ theme.team.partnerMember.title }}
+        {{ t('team.partnerMember.title') }}
       </template>
       <template #lead>
-        {{ theme.team.partnerMember.desc }}
+        {{ t('team.partnerMember.desc') }}
       </template>
     </TeamList>
   </div>

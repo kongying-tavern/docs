@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useToastDiagnostics } from '~/composables/useToastDiagnostics'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { diagnostics, closeDiagnostics, restoreDiagnosticsFocus } = useToastDiagnostics()
 </script>
 
@@ -18,20 +18,20 @@ const { diagnostics, closeDiagnostics, restoreDiagnosticsFocus } = useToastDiagn
       @close-auto-focus="restoreDiagnosticsFocus"
     >
       <DialogHeader>
-        <DialogTitle>{{ diagnostics?.title || message.forum.telemetry.errorDetails }}</DialogTitle>
-        <DialogDescription>{{ message.forum.telemetry.errorDetails }}</DialogDescription>
+        <DialogTitle>{{ diagnostics?.title || t('forum.telemetry.errorDetails') }}</DialogTitle>
+        <DialogDescription>{{ t('forum.telemetry.errorDetails') }}</DialogDescription>
       </DialogHeader>
       <pre class="toast-diagnostics-text">{{ diagnostics?.content }}</pre>
       <DialogFooter>
         <DialogClose as-child>
           <Button variant="ghost">
-            {{ message.ui.button.close }}
+            {{ t('ui.button.close') }}
           </Button>
         </DialogClose>
         <ClipboardCopyButton
           :value="diagnostics?.content ?? ''"
-          :label="message.forum.telemetry.copyErrorInfo"
-          :success-label="message.forum.telemetry.copySuccess"
+          :label="t('forum.telemetry.copyErrorInfo')"
+          :success-label="t('forum.telemetry.copySuccess')"
         />
       </DialogFooter>
     </DialogContent>

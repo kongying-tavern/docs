@@ -2,7 +2,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { collectMentionUsers } from '~/forum/services/commentComposer'
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<{
   entryAnimation?: boolean
 }>(), { entryAnimation: true })
 const presentation = computed(() => props.presentation ?? (props.inline ? 'inline' : 'page'))
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const {
   renderComments,
   commentPages,
@@ -104,7 +104,7 @@ function login(): void {
     @login="login"
   >
     <template #input>
-      <ForumCommentInputBox ref="input" :repo="repo" :presentation="presentation" :reply-user="replyUser" :mention-users="mentionUsers" :autofocus="autofocusInput" :placeholder="message.forum.comment.placeholder" :topic-id="topicId" :topic="topic" :entry-animation="entryAnimation" @editor-open="editorOpen = $event" @cancel-reply="replyUser = undefined" @comment:submit="submitted" />
+      <ForumCommentInputBox ref="input" :repo="repo" :presentation="presentation" :reply-user="replyUser" :mention-users="mentionUsers" :autofocus="autofocusInput" :placeholder="t('forum.comment.placeholder')" :topic-id="topicId" :topic="topic" :entry-animation="entryAnimation" @editor-open="editorOpen = $event" @cancel-reply="replyUser = undefined" @comment:submit="submitted" />
     </template>
     <template #reply="{ comment }">
       <ForumCommentInputBox
@@ -112,7 +112,7 @@ function login(): void {
         :topic-id="topicId"
         :topic="topic"
         :reply-target="comment.author.login"
-        :placeholder="`${message.forum.comment.reply} @${comment.author.username}：`"
+        :placeholder="`${t('forum.comment.reply')} @${comment.author.username}：`"
         :entry-animation="entryAnimation"
         @comment:submit="handleCommentSubmit"
       />

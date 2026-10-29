@@ -9,7 +9,7 @@ import {
   DialogPortal,
   useForwardPropsEmits,
 } from 'reka-ui'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { cn } from '@/lib/utils'
 import DialogOverlay from './DialogOverlay.vue'
 
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<DialogContentProps & {
   showCloseButton: true,
 })
 const emits = defineEmits<DialogContentEmits>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const delegatedProps = reactiveOmit(props, 'class', 'overlayClass')
 
@@ -52,7 +52,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
         class="text-muted-foreground rounded-md inline-flex size-7 transition-colors items-center right-4 top-4 justify-center absolute hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 hover:bg-accent [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none disabled:pointer-events-none"
       >
         <X />
-        <span class="sr-only">{{ message.ui.button.close }}</span>
+        <span class="sr-only">{{ t('ui.button.close') }}</span>
       </DialogClose>
     </DialogContent>
   </DialogPortal>

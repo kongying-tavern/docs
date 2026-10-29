@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
+
 import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { DEFAULT_LOCALE } from '~/constants/site'
 import postsData from '../../../src/_data/posts.json'
 import { getForumLocaleLabelGetter } from '../../../src/forum/services/getForumLocaleGetter'
+
+const { t } = useI18n({ useScope: 'global' })
 
 interface SitemapItem {
   type: 'blog' | 'manual' | 'general' | 'api' | 'guide'
@@ -41,21 +46,9 @@ const availableLocales = computed(() => {
   return Object.keys(site.value.locales || {})
 })
 
-const sitemapTitles = computed(() => {
-  return theme.value.ui?.sitemap || {
-    blog: 'Blog Posts',
-    manual: 'Manual',
-    general: 'General',
-    api: 'API',
-    guide: 'Guide',
-    community: 'Community',
-    about: 'About',
-  }
-})
-
 const blogPosts = computed((): ForumAPI.Post[] => {
   const lang = currentLang.value
-  const locale = lang === 'root' ? 'zh' : lang
+  const locale = lang === 'root' ? DEFAULT_LOCALE : lang
   const localeLabelGetter = getForumLocaleLabelGetter()
   const languageTag = localeLabelGetter.getLabel(locale.toUpperCase())
   if (!languageTag)
@@ -152,7 +145,6 @@ function normalizePath(originalPath: string, targetLang: string): string {
 // Create sitemap data based on dynamically extracted pages
 const sitemapData = computed((): SitemapGroup[] => {
   const lang = currentLang.value
-  const t = sitemapTitles.value
 
   // Get page definitions from VitePress navigation and sidebar config
   const pageDefinitions = extractPagesFromConfig()
@@ -192,7 +184,7 @@ const sitemapData = computed((): SitemapGroup[] => {
     if (groupMap.has(type)) {
       groups.push({
         type,
-        title: t[type as keyof typeof t] || type,
+        title: t(`ui.sitemap.${type}`),
         items: groupMap.get(type)!,
       })
     }

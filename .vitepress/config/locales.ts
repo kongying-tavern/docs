@@ -1,68 +1,28 @@
-import type { DefaultTheme, HeadConfig, LocaleConfig } from 'vitepress'
-import type { CustomConstant, LocaleConfigShape } from '../locales/types.ts'
-import { DEFAULT_LOCALE, SITE_LOGO } from '../locales/common/site.ts'
+import type { DefaultTheme, LocaleConfig } from 'vitepress'
+import type { SiteLocale } from '../locales/types.ts'
+import { DEFAULT_LOCALE } from '../locales/common.ts'
 import { baseHelper } from '../theme/utils.ts'
 import { getLocaleDirs } from './localeDirs.ts'
 import { localeImporters } from './localeImporters.ts'
 
-// 约定:locales 目录下含 index.ts 的子目录即一门语言,导出 <lang>Config/label/lang;zh 为默认语言(root)
-const STATIC_FIELDS = [
-  ['notFound', '404'],
-  ['ui', 'ui'],
-  ['asideLinks', 'aside-links'],
-  ['docReaction', 'docs-feedback'],
-  ['staff', 'staff'],
-  ['team', 'team'],
-  ['payment', 'payment'],
-  ['forum', 'forum'],
-  ['settings', 'settings'],
-  ['changelog', 'changelog'],
-] as const
-const LINKED_FIELDS = ['nav', 'sidebar', 'footer'] as const
-
 export async function createLocalesConfig(): Promise<LocaleConfig<DefaultTheme.Config>> {
   const locales: LocaleConfig<DefaultTheme.Config> = {}
-  for (const lang of getLocaleDirs()) {
-    const mods = localeImporters[lang]
-    const loadIndex = mods?.index
-    if (!mods || !loadIndex) {
-      throw new Error(`Missing locale importers for "${lang}" in .vitepress/config/localeImporters.ts; run pnpm init:locale to register the locale`)
-    }
-    const mod = (await loadIndex()) as {
-      label: string
-      lang: string
-      [key: string]: unknown
-    }
-    const config = mod[`${lang}Config`] as LocaleConfigShape
-    if (!config) {
-      throw new Error(`Missing ${lang}Config export in .vitepress/locales/${lang}/index.ts`)
-    }
-
-    const constants = (await mods.constants() as { default: CustomConstant }).default
-    const themeConfig: Record<string, unknown> = {
-      siteTitle: constants.META_TITLE,
-      keyword: constants.META_KEYWORDS,
-      image: constants.META_IMAGE,
-      logo: SITE_LOGO,
-    }
-    for (const [field, module] of STATIC_FIELDS) {
-      themeConfig[field] = (await mods[module]() as { default: unknown }).default
-    }
-    for (const field of LINKED_FIELDS) {
-      const content = (await mods[field]() as { default: Record<string, unknown> }).default
-      themeConfig[field] = baseHelper(content, constants.LOCAL_BASE)
-    }
-    Object.assign(themeConfig, config.themeConfig)
-
-    const head = (await mods.head() as { default: HeadConfig[] }).default
-    const key = lang === DEFAULT_LOCALE ? 'root' : lang
-    locales[key] = {
-      label: mod.label,
-      lang: mod.lang,
+  const importers: Record<string, () => Promise<{ default: SiteLocale }>> = localeImporters
+  for (const locale of getLocaleDirs()) {
+    const load = importers[locale]
+    if (!load)
+      throw new Error(`Missing importer for "${locale}"; run pnpm init:locale`)
+    const { default: config } = await load()
+    const theme = config.themeConfig
+    const base = locale === DEFAULT_LOCALE ? '/' : `/${locale}`
+    locales[locale === DEFAULT_LOCALE ? 'root' : locale] = {
       ...config,
-      description: constants.META_DESCRIPTION,
-      head,
-      themeConfig: themeConfig as DefaultTheme.Config,
+      themeConfig: {
+        ...theme,
+        nav: theme.nav && baseHelper(theme.nav, base),
+        sidebar: theme.sidebar && baseHelper(theme.sidebar, base),
+        footer: baseHelper({ ...theme.footer }, base),
+      },
     }
   }
   return locales

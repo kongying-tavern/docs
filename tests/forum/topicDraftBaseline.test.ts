@@ -29,9 +29,11 @@ vi.mock('vee-validate', async (importOriginal) => {
     },
   }
 })
-vi.mock('@/hooks/useLocalized', async () => {
-  const { ref } = await import('vue')
-  return { useLocalized: () => ({ message: ref({}) }) }
+vi.mock('vue-i18n', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('vue-i18n')>()
+  const { loadTestMessages } = await import('../shared/support/i18n')
+  const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
+  return { ...actual, useI18n: () => i18n.global }
 })
 vi.mock('~/forum/composables/auth/useRuleChecks', async () => {
   const { ref } = await import('vue')

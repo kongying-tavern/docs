@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TabsConfig } from './publish-topic-form/types'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 
 defineProps<{
   nextTab?: TabsConfig
@@ -13,13 +13,13 @@ const emit = defineEmits<{
   switchTab: []
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
   <div class="action-bar flex flex-col items-start absolute">
     <Button class="form-action-btn" type="button" variant="secondary" @click="emit('close')">
-      <span>{{ message.ui.button.close }}</span>
+      <span>{{ t('ui.button.close') }}</span>
       <span class="i-lucide-x icon-btn" aria-hidden="true" />
     </Button>
 

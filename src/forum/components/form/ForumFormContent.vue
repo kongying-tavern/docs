@@ -1,28 +1,30 @@
 <script setup lang="ts">
 import type { TabsConfig } from './publish-topic-form/types'
 import { useMediaQuery } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import { FieldGroup } from '@/components/ui/field'
 import { FormField } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { TabsContent } from '@/components/ui/tabs'
-import { useLocalized } from '@/hooks/useLocalized'
 import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import ForumContentInputBox from './publish-topic-form/ForumContentInputBox.vue'
 import ForumPublishTopicFormField from './publish-topic-form/ForumPublishTopicFormField.vue'
 import ForumTagsInput from './publish-topic-form/ForumTagsInput.vue'
+
+defineProps<Props>()
+
+defineEmits<{
+  'files-selected': [files: File[]]
+  'select-images': []
+}>()
+
+const { t } = useI18n({ useScope: 'global' })
 
 interface Props {
   tabs: TabsConfig[]
   imageSelectionDisabled?: boolean
 }
 
-defineProps<Props>()
-defineEmits<{
-  'files-selected': [files: File[]]
-  'select-images': []
-}>()
-
-const { message } = useLocalized()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 </script>
 
@@ -115,9 +117,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
           <p
             class="text-xs c-[var(--vp-c-text-3)] leading-normal"
             v-text="
-              message.forum.publish.form?.upload?.tip
-                ?.replace('%size', IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL)
-                ?.replace('%range', String(IMAGE_UPLOAD_POLICY.MAX_COUNT)) || ''
+              t('forum.publish.form.upload.tip', { size: IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL, range: String(IMAGE_UPLOAD_POLICY.MAX_COUNT) }) || ''
             "
           />
           <slot name="uploader" size="lg" />

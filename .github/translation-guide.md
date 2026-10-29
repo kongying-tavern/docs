@@ -1,83 +1,42 @@
-# Genshin Interactive Map Community Translation Guidelines
+# Translation Guide
 
-If you are here, you are likely interested in contributing to the translation of the Genshin Interactive Map documentation. Thank you! Before you start, make sure to read the following guidelines to get an understanding of the workflow.
+Use this guide to translate the documentation site. For map client translations, see the [translations page](https://yuanshen.site/docs/translations/#translations-client).
 
-## High Level Steps of Working on a New Translation
+Local setup: [中文教程](./trans-guide-no-exp.md) · [English tutorial](./trans-guide-no-exp-en.md). To add a language, follow the [new language guide (Chinese)](./trans-guide-new-language.md).
 
-1. Open a thread in the Discussion tab to indicate your intention of working on a translation. Make sure to check if there is already one created for your language - this can help avoid duplicated efforts. Use the thread to find fellow collaborators to form a translation team. We strongly suggest working as a team because peer reviews are necessary to ensure translation quality.
+## Files and tools
 
-2. Fork [kongying-tavern/docs](https://github.com/kongying-tavern/docs) to start the translation process in your own repo (you can create a dedicated organization for it if you want). Make sure to read the [Workflow Recommendations](#workflow-recommendations) section below before you start! Feel free to deploy your own preview with Vercel or Netlify during this phase.
+| Content | Files | Editing |
+| --- | --- | --- |
+| Articles | `src/<locale>/**/*.md` | Markdown editor |
+| UI messages | `.vitepress/locales/<locale>/*.yml`, except `site.yml` | `pnpm i18n:ui` |
+| Site configuration | `.vitepress/locales/<locale>/site.yml` | `pnpm i18n:ui` or YAML editor |
 
-3. Send us a Pull Request to add your WIP repo to the end of this README file.
+[Lunaria](https://yuanshen.site/docs/_translations/) tracks articles; [x18n](https://yuanshen.site/docs/_i18n/) tracks UI and site text. Both published dashboards are read-only. Submit changes through a pull request.
 
-   Some Notes:
+Claim articles on the [claim board](https://github.com/kongying-tavern/docs/issues/555), which lists the commands and deadlines. For UI messages, edit the YAML files and submit a pull request. Leave `config.ts`, shared configuration and generated files unchanged.
 
-   - Before performing the transfer, use the GitHub support request to [detach your fork](https://support.github.com/request/fork). This is necessary because GitHub doesn't allow multiple forks of the same source repo to co-exist in the same organization.
+## Translation rules
 
-   - When you first transfer the repo, you likely won't have write access to it because the repo will need to be assigned to the team for proper permissions, let us know once the transfer is done so we can set it up.
+- Translate from the Chinese source and retain its page structure. Translate frontmatter titles and descriptions; keep explicit heading anchors such as `{#installation}` and component names.
+- Keep YAML keys, `{name}` placeholders, component slot names and plural separators `|`. x18n also lists links and regular expression patterns in `site.yml`; change them only when the task calls for it.
+- Keep menu grouping and order aligned across locales: array entries are matched by index. If a page is unavailable in a locale, link to an existing translation and label its language.
+- Follow the [forum glossary](./forum-glossary.md) for forum messages. Check short labels, interpolated values and links in the affected page.
+- Review each warning against the source text and its use on the page. Update the translation when the source changes.
 
-   - For consistency, the team and repo names are determined based on the [ISO 639-1 language codes](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+## Checks and submission
 
-4. Once translation is finished, we will move it from WIP to completed languages on `yuanshen.site`, and announce the translation from the official Twitter account!
+Run the checks that apply to your changes:
 
-## Workflow Recommendations
+| Change | Commands |
+| --- | --- |
+| Markdown | `pnpm lint:md` |
+| UI messages or `site.yml` | `pnpm i18n:check` |
+| Chinese articles | `pnpm lint:zh` |
+| Vue or TypeScript | `pnpm typecheck` |
 
-### Setup
+Preview with `pnpm dev` and open the URL printed by VitePress. Before submitting UI or site configuration changes, run `pnpm build` too.
 
-Read the [Contributing Section](https://github.com/kongying-tavern/docs#contributing) of the docs. Make sure to use `pnpm` and Node.js `^20.19.0` or `>=22.12.0`. Familiarize yourself with [VitePress' markdown extension features](https://vitepress.vuejs.org/guide/markdown.html).
+In the pull request, describe the language, changed content and checks performed. Commit source files only; exclude `dist/` and generated fonts.
 
-### Use Issues and Pull Requests
-
-It's recommended to manage the workload using issues and pull requests. Create an issue for each page that still needs translation, then let team members self-assign to claim the work. Create a pull request for the translation of each page. This way, other collaborators can review and provide feedback before the the PR is merged. It is also recommended to use "Squash and Merge" for the PRs so you have a clean history.
-
-### Document Translation Conventions
-
-When working as a team, make sure to use consistent translations for common terminologies to avoid confusion. It's best to have a place to document the conventions and consensus generated from reviews. You can use GitHub wiki, team discussions thread, or directly as a markdown file in the repo itself. If a term is particularly tricky to concisely translate in your language, consider leaving it untranslated.
-
-For the feedback forum UI copy, the [Forum Glossary](./forum-glossary.md) is the source of truth — keep every translation consistent with its key terms and style rules.
-
-### Translating Non-Content Text
-
-Some text are part of the VitePress theme instead of markdown content. You can translate these in `.vitepress/config/[langCode].ts`. In addition to navigation and sidebar items, you can also customize most of the theme text by providing the `themeConfig.i18n` option. [Example usage in English translation](https://github.com/kongying-tavern/docs/blob/main/.vitepress/config/en.ts)
-
-### Retaining Original Anchors
-
-VitePress automatically generates header anchor links (links that start with `#`) based on the text. Since we have a lot of cross-linking to headers within the site, it is easier to retain original Chinese header links so that you don't need to update links everywhere when you translate the headers. It also makes it easier to switch between different languages of the same header link.
-
-We already added header anchor links in the original Chinese document, use the following syntax when translating to retain them:
-
-```diff
-- ## Original Header {#original-header}
-+ ## Translated Header {#original-header}
-```
-
-You may also notice that some headers are followed by one or two `\*` markers:
-
-```md
-### `<script setup>` \*\* {#script-setup}
-```
-
-These are custom markers we use to differentiate between Options-API-only and Composition-API-only sections. We use a custom markdown plugin to wrap these sections in additional divs that can be shown / hidden by toggling CSS classes. Please keep them when translating the headers!
-
-## Complete Translations
-
-- [简体中文 / Simplified Chinese](index.md/) [[source](https://github.com/kongying-tavern/docs/tree/main/src/)]
-- [英文 / English](./en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/en)]
-
-## Current Active Translations (in alphabetical order)
-
-- [日本語 / Japanese](./ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/ja)]
-- [韩语 / Korean](./kr/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/kr)]
-
-## Resources
-
-### Software
-
-- [Grammarly](https://www.grammarly.com/): Desktop app and browser extension for checking spelling and grammar (though grammar checking doesn't catch everything and occasionally shows a false positive).
-- [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker): An extension for VS Code to help you check spelling within markdown and code examples.
-
-### Books
-
-- [On Writing Well](https://www.amazon.com/Writing-Well-30th-Anniversary-Nonfiction-ebook/dp/B0090RVGW0) (see [popular quotes](https://www.goodreads.com/work/quotes/1139032-on-writing-well-the-classic-guide-to-writing-nonfiction))
-- [Bird by Bird](https://www.amazon.com/Bird-Some-Instructions-Writing-Life/dp/0385480016) (see [popular quotes](https://www.goodreads.com/work/quotes/841198-bird-by-bird-some-instructions-on-writing-and-life))
-- [Cognitive Load Theory](https://www.amazon.com/Cognitive-Explorations-Instructional-Performance-Technologies/dp/144198125X/)
+See the [i18n development guide](../scripts/x18n/README.md#命令说明) for command behavior, file writes and Vue usage.

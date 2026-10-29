@@ -1,0 +1,199 @@
+# VitePress locale configuration. Interface messages live in the other *.yml files.
+label: 简体中文
+lang: zh-CN
+title: 空荧酒馆
+titleTemplate: :title | 空荧酒馆
+description: 空荧酒馆制作的原神全资源攻略地图。
+markdown:
+  codeCopyButton:
+    tooltipText: 复制代码
+    copiedText: 已复制
+themeConfig:
+  keyword: 原神地图, 空荧地图, 空荧酒馆原神地图, 空荧酒馆, 原神资源, yuanshen, Kongying Tavern
+  outline:
+    label: 本页目录
+  lastUpdated:
+    text: 更新日期
+  returnToTopLabel: 回到顶部
+  langMenuLabel: 更改语言
+  docFooter:
+    prev: 上一页
+    next: 下一页
+  notFound:
+    title: 这个页面找不到了
+    quote: 可能跟温迪一起出游了吧
+    linkLabel: 回到首页
+  nav:
+    - text: 加入社区
+      link: /community
+    - text: 支持我们
+      link: /support-us
+    - text: 地图工具
+      items:
+        - text: Windows 客户端
+          items:
+            - text: 前往下载
+              link: /download-client
+            - text: 使用手册
+              link: /manual/client/
+            - text: 更新日志
+              link: /blog/posts/hotupdatelog-client
+        - text: 地图网页版
+          items:
+            - text: 立即体验
+              link: https://v3.yuanshen.site
+            - text: 更新日志
+              link: /blog/posts/changelog-web
+        - text: 游戏文字翻译
+          link: https://hoyofan.yuanshen.site/
+    - text: 帮助和反馈
+      items:
+        - text: 问题反馈
+          link: /feedback/
+        - text: 功能建议
+          link: /feedback/feat
+    - text: 了解更多
+      items:
+        - text: 了解我们
+          items:
+            - text: 加入我们
+              link: /join
+            - text: 了解团队
+              link: /team
+            - text: 团队博客
+              link: /blog
+        - text: 鸣谢
+          items:
+            - text: 制作人员
+              link: /staff
+            - text: 赞助鸣谢
+              link: /support-us#sponsor-acknowledgement
+            - text: 技术鸣谢
+              link: /credits
+        - text: 政策
+          items:
+            - text: 免责声明
+              link: /disclaimer
+            - text: 隐私政策
+              link: /privacy
+            - text: 用户协议
+              link: /agreement
+        - text: 其他
+          items:
+            - text: 参与翻译
+              link: /translations
+            - text: 友情链接
+              link: /friends-links
+  sidebar:
+    /feedback:
+      - {}
+    /settings:
+      - {}
+    /settings-labels:
+      - {}
+    /manual:
+      - text: 使用手册
+        collapsed: false
+        items:
+          - text: 目录
+            link: /manual/client/
+          - text: 批量选择
+            link: /manual/client/batch-selection
+          - text: 隐藏/显示标记
+            link: /manual/client/hide-show-done
+          - text: 覆盖模式
+            link: /manual/client/overlay-mode
+          - text: 位置追踪
+            link: /manual/client/position-tracking
+          - text: 画板/路线功能
+            link: /manual/client/canvas
+          - text: 窗口全屏/无边框窗口模式
+            link: /manual/client/fullscreen-windowed
+          - text: 帧率设置
+            link: /manual/client/framerate
+          - text: 存档恢复
+            link: /manual/client/save-restore
+          - text: 彩蛋
+            link: /manual/client/easter-egg
+      - text: 常见问题
+        collapsed: false
+        items:
+          - text: 使用地图客户端会被封号吗？
+            link: /manual/faq/accountsafety/acntban
+          - text: 【自动更新】没有反应
+            link: /manual/faq/autoupdate/updater
+          - text: 安装错误
+            items:
+              - text: 错误码 2503
+                link: /manual/faq/instlerror/code2503
+              - text: 【无法安装】提示缺乏 dll 文件
+                link: /manual/faq/instlerror/missingdll
+          - text: 【无法打开】
+            items:
+              - text: 空窗提示或卡进度条
+                link: /manual/faq/launcherror/emptydialog
+              - text: “数据查询失败”、“版本查询失败”
+                link: /manual/faq/launcherror/versioncheck
+          - text: 登录
+            items:
+              - text: 【不能登录】如何登录
+                link: /manual/faq/login/accountlogin
+              - text: 【每次打开都需重新登陆】
+                link: /manual/faq/login/clientrepeatedly
+          - text: 云存档
+            items:
+              - text: 海外用戶雲存檔驗證問題說明
+                link: /manual/faq/cloudsave/verificationissueforoverseasuser
+  footer:
+    qrcodeTitle: 反馈 QQ 群
+    qrcodeAlt: 反馈 QQ 群二维码
+    qrcodeMessage: 如遇问题欢迎联系我们
+    qrcodeLink: https://jq.qq.com/?_wv=1027&k=nbveGrfQ
+    navigation:
+      - title: 产品
+        items:
+          - text: 客户端使用手册
+            link: /manual/client/
+          - text: 客户端更新日志
+            link: /blog/posts/hotupdatelog-client
+          - text: 网页版更新日志
+            link: /blog/posts/changelog-web
+      - title: 关于
+        items:
+          - text: 加入我们
+            link: /join
+          - text: 了解团队
+            link: /team
+          - text: 团队博客
+            link: /blog
+          - text: 赞助鸣谢
+            link: /support-us
+      - title: 政策
+        items:
+          - text: 免责声明
+            link: /disclaimer
+          - text: 隐私政策
+            link: /privacy
+          - text: 用户协议
+            link: /agreement
+      - title: 更多
+        items:
+          - text: 问题反馈
+            link: /feedback/
+          - text: 参与翻译
+            link: /translations
+          - text: 友情链接
+            link: /friends-links
+  ui:
+    title:
+      templateMappings:
+        - template: :title - 客户端使用手册 | 空荧酒馆
+          test: (^|\/?)manual\/client\/?
+  forum:
+    aside:
+      contactUs:
+        qrcodeLink: https://jq.qq.com/?_wv=1027&k=nbveGrfQ
+  languageSuggest:
+    changeLanguage: 我想更改此页面的语言为：
+    continue: 继续
+    ariaLabel: 选择国家或地区

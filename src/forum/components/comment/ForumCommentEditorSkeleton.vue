@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useLocalized } from '@/hooks/useLocalized'
 
 defineProps<{ mention: boolean }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
-  <div class="comment-editor-skeleton" role="status" aria-live="polite" :aria-label="message.forum.comment.loadingComment" aria-busy="true">
-    <span class="sr-only">{{ message.forum.comment.loadingComment }}</span>
+  <div class="comment-editor-skeleton" role="status" aria-live="polite" :aria-label="t('forum.comment.loadingComment')" aria-busy="true">
+    <span class="sr-only">{{ t('forum.comment.loadingComment') }}</span>
     <div v-if="mention" class="comment-editor-skeleton-mentions" aria-hidden="true">
       <div v-for="index in 5" :key="index" class="comment-editor-skeleton-person">
         <Skeleton class="rounded-full size-8" />

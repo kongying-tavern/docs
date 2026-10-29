@@ -3,6 +3,7 @@ import type ForumAPI from '~/forum/api/types'
 import { useMediaQuery } from '@vueuse/core'
 import { useRouter } from 'vitepress'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,7 +11,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeMessagesHref } from '~/constants/site'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumUserProfileQuery } from '~/forum/composables/data/useForumQueries'
@@ -29,7 +29,7 @@ const { user, userId } = defineProps<{
 if (!user && !userId)
   throw new Error('Must contain any of the two parameters')
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const router = useRouter()
 const { route, userHref } = useForumRoute()
 const currentUser = useUserInfoStore()
@@ -114,7 +114,7 @@ function sendMessage() {
             </div>
 
             <p class="text-xs c-[var(--vp-c-text-2)] mt-1 line-clamp-2">
-              {{ userInfo?.bio || message.forum.labels.lazyPerson }}
+              {{ userInfo?.bio || t('forum.labels.lazyPerson') }}
             </p>
           </div>
         </div>
@@ -128,7 +128,7 @@ function sendMessage() {
             @click="sendMessage"
           >
             <span class="i-lucide-mail text-sm mr-1" />
-            <span>{{ message.forum.labels.privateMessage }}</span>
+            <span>{{ t('forum.labels.privateMessage') }}</span>
           </Button>
           <ForumFollowUserButton
             v-if="userInfo?.login"

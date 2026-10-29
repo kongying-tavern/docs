@@ -2,10 +2,12 @@ import { strict as assert } from 'node:assert'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import process from 'node:process'
 import MarkdownIt from 'markdown-it'
 import { afterAll, test } from 'vitest'
 import { loadFontSubsetConfig } from '../../scripts/font_subset/config'
 import { collectSiteCodepoints } from '../../scripts/font_subset/files'
+import { calculateFontInputHashes } from '../../scripts/font_subset/inputs'
 
 const fixtureRoot = mkdtempSync(join(tmpdir(), 'font-subset-extractor-'))
 const sourceDir = join(fixtureRoot, 'src')
@@ -68,4 +70,31 @@ test('assigns structured site text to configured font roles', async () => {
     assert.match(title, new RegExp(character))
   for (const character of '乙丙戊己庚壬癸子丑寅辰')
     assert.doesNotMatch(title, new RegExp(character))
+})
+
+test('locale YAML contributes nested and multiline text and invalidates only the site cache', async () => {
+  const config = loadFontSubsetConfig()
+  const localeScan = config.scan.find(entry => entry.path === '.vitepress/locales')!
+  assert.ok(localeScan.extensions.includes('.yml'))
+  const root = mkdtempSync(join(tmpdir(), 'font-yaml-'))
+  try {
+    const directory = join(root, '.vitepress/locales/ja')
+    mkdirSync(directory, { recursive: true })
+    const file = join(directory, 'forum.yml')
+    writeFileSync(file, 'description: 絞り込み\nitems:\n  - |\n    解決済み\n')
+    config.scan = [localeScan]
+    const before = await collectSiteCodepoints(root, config, new MarkdownIt())
+    for (const character of '絞済')
+      assert.ok(before.sarasa_gothic_sc.includes(character.codePointAt(0)!))
+    const hashes = calculateFontInputHashes(process.cwd(), config, before)
+    writeFileSync(file, 'description: 絞り込み\nitems:\n  - |\n    解決済み\n    遷移\n')
+    const after = await collectSiteCodepoints(root, config, new MarkdownIt())
+    assert.ok(after.sarasa_gothic_sc.includes('遷'.codePointAt(0)!))
+    const changed = calculateFontInputHashes(process.cwd(), config, after)
+    assert.equal(changed.standardHash, hashes.standardHash)
+    assert.notEqual(changed.siteHash, hashes.siteHash)
+  }
+  finally {
+    rmSync(root, { recursive: true, force: true })
+  }
 })

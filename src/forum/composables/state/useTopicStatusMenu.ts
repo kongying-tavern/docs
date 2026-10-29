@@ -1,8 +1,8 @@
-import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import type { Composer } from 'vue-i18n'
 import type ForumAPI from '~/forum/api/types'
 import type { FORUM } from '~/forum/components/types'
 import type { TopicStatusDefinition } from '~/forum/services/forumTopicStatus'
-import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useTopicManager } from '~/forum/composables/state/useTopicManager'
@@ -14,7 +14,7 @@ import { useForumRoute } from './useForumRoute'
 export function createTopicStatusGroupItems(
   definitions: readonly TopicStatusDefinition[],
   idPrefix: string,
-  message: CustomConfig,
+  t: Composer['t'],
   disabled: boolean,
   createAction: (status: ForumAPI.TopicStatus) => () => unknown,
 ): FORUM.MenuElement[] {
@@ -27,16 +27,16 @@ export function createTopicStatusGroupItems(
       items: [
         {
           type: 'label',
-          label: message.forum.topic.statusGroups[group],
+          label: t(`forum.topic.statusGroups.${group}`),
           // 结论状态会把未结反馈带走，「已结」这件事不写出来用户看不出来
           hint: grouped.some(definition => definition.hidesTopic)
-            ? message.forum.topic.menu.modifyStatus.conclusiveHint
+            ? t('forum.topic.menu.modifyStatus.conclusiveHint')
             : undefined,
         },
         ...grouped.map(definition => ({
           id: `${idPrefix}-${definition.id}`,
           type: 'item' as const,
-          label: message.forum.topic.status[definition.id],
+          label: t(`forum.topic.status.${definition.id}`),
           status: definition.id,
           disabled,
           action: createAction(definition.id),
@@ -47,10 +47,10 @@ export function createTopicStatusGroupItems(
   return items
 }
 
-export function useTopicStatusMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>) {
+export function useTopicStatusMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, t: Composer['t']) {
   const currentTopic = computed(() => toValue(topicData))
-  const menuLabels = computed(() => message.value.forum.topic.menu)
-  const { setTopicStatus, updatingTopic } = useTopicManager(currentTopic, message, useTopicOperationFeedback())
+
+  const { setTopicStatus, updatingTopic } = useTopicManager(currentTopic, t, useTopicOperationFeedback())
   const { route, leaveTopic } = useForumRoute()
   const { hasAnyPermissions } = useRuleChecks(() => currentTopic.value.user.id)
   const canEdit = hasAnyPermissions('edit_feedback')
@@ -80,7 +80,7 @@ export function useTopicStatusMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, 
       items.push({
         id: 'status-topic-none',
         type: 'item',
-        label: menuLabels.value.modifyStatus.none,
+        label: t('forum.topic.menu.modifyStatus.none'),
         status: null,
         disabled: updatingTopic.value,
         action: () => handleSetTopicStatus(null),
@@ -91,7 +91,7 @@ export function useTopicStatusMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, 
       items.push({
         id: 'status-topic-conflict',
         type: 'info',
-        label: menuLabels.value.modifyStatus.conflict,
+        label: t('forum.topic.menu.modifyStatus.conflict'),
         class: 'important:c-[var(--vp-c-warning-1)] max-w-56',
       })
     }
@@ -102,7 +102,7 @@ export function useTopicStatusMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, 
     items.push(...createTopicStatusGroupItems(
       getSelectableTopicStatuses(currentTopic.value.type, currentStatus),
       'status-topic',
-      message.value,
+      t,
       updatingTopic.value,
       status => () => handleSetTopicStatus(status),
     ))

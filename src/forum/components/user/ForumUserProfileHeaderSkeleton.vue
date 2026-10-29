@@ -2,21 +2,21 @@
 import type { FORUM } from '../types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { SearchField } from '@/components/ui/search-field'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import ForumProfileTabs from './ForumProfileTabs.vue'
 
 const props = defineProps<{ tabs?: FORUM.ProfileTab[] }>()
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { list } = useForumRoute()
 const activeTab = computed(() => list.value?.filter === 'closed' || list.value?.filter === 'archived' ? list.value.filter : 'all')
 const tabs = computed(() => props.tabs ?? [
-  { id: 'all' as const, label: message.value.forum.header.navigation.allFeedback, state: 'open' as const },
-  { id: 'closed' as const, label: message.value.forum.header.navigation.closedFeedback, state: 'progressing' as const },
+  { id: 'all' as const, label: t('forum.header.navigation.allFeedback'), state: 'open' as const },
+  { id: 'closed' as const, label: t('forum.header.navigation.closedFeedback'), state: 'progressing' as const },
 ])
 </script>
 
@@ -64,7 +64,7 @@ const tabs = computed(() => props.tabs ?? [
       <div class="mx-auto">
         <div class="flex gap-2 min-w-0 items-center">
           <div class="min-w-0 relative max-sm:flex-1 sm:shrink-0" inert>
-            <ForumProfileTabs :tabs="tabs" :active-tab="activeTab" v-bind="{ ariaLabel: message.forum.header.navigation.groups.status }" class="opacity-0" />
+            <ForumProfileTabs :tabs="tabs" :active-tab="activeTab" v-bind="{ ariaLabel: t('forum.header.navigation.groups.status') }" class="opacity-0" />
             <div class="gap-1 grid auto-cols-fr grid-flow-col inset-0 absolute">
               <div v-for="tab in tabs" :key="tab.id" class="px-4 flex min-w-0 items-center justify-center">
                 <Skeleton class="h-5 max-w-full w-22 max-sm:w-16" />
@@ -75,7 +75,7 @@ const tabs = computed(() => props.tabs ?? [
             <SearchField
               :model-value="list?.q ?? ''"
               :has-criteria="Boolean(list?.q?.trim())"
-              :label="message.ui.button.search"
+              :label="t('ui.button.search')"
               class="opacity-0 min-w-0"
             />
             <div

@@ -2,7 +2,7 @@ import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '~/forum/api/types'
 import { useEventListener } from '@vueuse/core'
 import { computed, onScopeDispose, ref } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { uploadImg } from '~/forum/api/interknot.site/upload'
 import { useForumCommentMutations } from '~/forum/composables/data/useForumMutations'
@@ -18,13 +18,12 @@ import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 import { OpsEvents, trackOp } from '~/services/telemetry'
 import { showPageAlert } from '~/services/telemetry/pageAlert'
 import { toast } from '~/services/telemetry/toast'
-import { formatMessage } from '~/utils/formatMessage'
 import { formatImageAttachmentError } from '../../utils/submitFormUi'
 
 export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: string, topic?: ForumAPI.Topic }, onSubmitted: (comment: ForumAPI.Comment) => void) {
   const userInfo = useUserInfoStore()
   const userAuth = useUserAuthStore()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const content = ref<JSONContent>(emptyDoc())
   const plainText = ref('')
   const submitPending = ref(false)
@@ -53,7 +52,7 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
   }
 
   function validateComment(text: string): Error | undefined {
-    const result = createCommentFormSchema(message).safeParse({ content: text })
+    const result = createCommentFormSchema(t).safeParse({ content: text })
     return result.success ? undefined : new Error(result.error.issues[0]?.message || 'Invalid comment.')
   }
 
@@ -83,12 +82,12 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
           queue.reset()
           if (options.topic) {
             personal.recordParticipation(options.topic).catch((error) => {
-              toast.warning(message.value.forum.sidebar.syncFailed, {
+              toast.warning(t('forum.sidebar.syncFailed'), {
                 error,
                 ...(error instanceof GiteeAPIError && error.state === 403
                   ? {
                       action: {
-                        label: message.value.forum.auth.login,
+                        label: t('forum.auth.login'),
                         onClick: () => {
                           logout()
                           redirectAuth()
@@ -104,19 +103,20 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
 
       if (!result.ok) {
         if (result.stage === 'upload') {
-          submitError.value = message.value.forum.publish.feedbackForm.uploadFailed
+          submitError.value = t('forum.publish.feedbackForm.uploadFailed')
           for (const error of result.errors)
-            toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm), { report: false })
+            toast.error(formatImageAttachmentError(error, t), { report: false })
         }
         else {
           submitError.value = result.error.message
-          showPageAlert(message.value.forum.comment.commentFail, {
+          showPageAlert(t('forum.comment.commentFail'), {
             id: 'comment-submit',
             scene: 'cm',
             error: result.error,
             descriptionFallback: result.error.message,
-            description: formatMessage(message.value.forum.errors.traceIdWithMessage, {
+            description: t('forum.errors.traceIdWithMessage', {
               message: result.error.message,
+              traceId: '{traceId}',
             }),
           })
         }
@@ -131,7 +131,7 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
     const result = await queue.addFiles(files)
     if (!result.ok) {
       for (const error of result.errors)
-        toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm), { report: false })
+        toast.error(formatImageAttachmentError(error, t), { report: false })
     }
   }
 
@@ -139,7 +139,7 @@ export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: stri
     const result = await queue.retry(id)
     if (!result.ok) {
       for (const error of result.errors)
-        toast.error(formatImageAttachmentError(error, message.value.forum.publish.feedbackForm), { report: false })
+        toast.error(formatImageAttachmentError(error, t), { report: false })
     }
   }
 

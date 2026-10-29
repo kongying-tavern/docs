@@ -45,7 +45,9 @@
       "extensions": [
         ".js",
         ".mjs",
-        ".ts"
+        ".ts",
+        ".yml",
+        ".yaml"
       ]
     }
   ],
@@ -73,6 +75,10 @@
       ],
       "json": [
         ".json"
+      ],
+      "yaml": [
+        ".yml",
+        ".yaml"
       ]
     },
     "tagRoles": {

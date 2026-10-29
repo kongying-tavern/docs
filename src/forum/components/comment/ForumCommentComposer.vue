@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { JSONContent } from '@tiptap/core'
 import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
+import { I18nT, useI18n } from 'vue-i18n'
 import UserAvatar from '@/components/UserAvatar.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { ForumPreloadedRichTextarea as ForumRichTextarea } from '../utils/forumComponentPreload'
 
@@ -33,7 +32,7 @@ const emit = defineEmits<{
 }>()
 
 const content = defineModel<JSONContent>({ required: true })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 </script>
 
@@ -63,13 +62,13 @@ const { reducedMotion } = useSitePreferences()
       @submit="emit('submit')"
     />
     <div v-else class="font-size-3.5 line-height-[32px] ml-4 p-2 text-center rounded-md bg-[var(--vp-c-bg-soft)] h-auto min-h-48px w-[calc(100%-80px)] cursor-text">
-      <DynamicTextReplacer :data="message.forum.comment.commentAfterLogin" class="important:line-height-[32px] important:m-0">
+      <I18nT keypath="forum.comment.commentAfterLogin" scope="global" tag="p" class="important:line-height-[32px] important:m-0">
         <template #login>
           <button type="button" class="vp-link" @click="emit('login')">
-            [{{ message.forum.auth.login }}]
+            [{{ t('forum.auth.login') }}]
           </button>
         </template>
-      </DynamicTextReplacer>
+      </I18nT>
     </div>
   </div>
 </template>

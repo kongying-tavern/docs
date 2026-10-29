@@ -2,11 +2,11 @@
 import type ForumAPI from '~/forum/api/types'
 import { useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import MentionPickerPanel from '@/components/ui/MentionPickerPanel.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 
 const props = defineProps<{
   items: readonly ForumAPI.User[]
@@ -26,11 +26,11 @@ function measureRecommendations(): void {
 }
 useResizeObserver(recommendations, measureRecommendations)
 watch(() => props.items, () => nextTick(measureRecommendations), { flush: 'post' })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const groupedItems = computed(() => [
-  { heading: message.value.forum.comment.topicParticipants, items: props.groups.participants },
-  { heading: message.value.forum.publish.feedbackForm.recentUsed, items: props.groups.recent },
-  { heading: message.value.forum.publish.feedbackForm.teamMembers, items: props.groups.team },
+  { heading: t('forum.comment.topicParticipants'), items: props.groups.participants },
+  { heading: t('forum.publish.feedbackForm.recentUsed'), items: props.groups.recent },
+  { heading: t('forum.publish.feedbackForm.teamMembers'), items: props.groups.team },
 ])
 function select(user: ForumAPI.User): void {
   allOpen.value = false
@@ -43,7 +43,7 @@ function setAllOpen(value: boolean): void {
 </script>
 
 <template>
-  <div ref="recommendations" class="mention-recommendations scroll-fade-4" :class="{ 'scroll-fade-x': scrollable }" role="group" :aria-label="message.forum.publish.feedbackForm.mentionUser">
+  <div ref="recommendations" class="mention-recommendations scroll-fade-4" :class="{ 'scroll-fade-x': scrollable }" role="group" :aria-label="t('forum.publish.feedbackForm.mentionUser')">
     <Button v-for="(user, index) in items" :key="user.id" type="button" variant="ghost" class="mention-person" :class="{ 'is-selected': selectedUserIds.includes(String(user.id)) }" :aria-pressed="selectedUserIds.includes(String(user.id))" :disabled="disabled" :aria-label="`${user.username} @${user.login}`" :aria-current="index === selectedIndex ? 'true' : undefined" @pointerdown.prevent @click="select(user)">
       <span class="mention-avatar">
         <Avatar :src="user.avatar" :alt="user.username" size="sm" />
@@ -51,16 +51,16 @@ function setAllOpen(value: boolean): void {
       </span>
       <span class="truncate">{{ user.username }}</span>
     </Button>
-    <span v-if="!items.length" class="text-xs text-muted-foreground self-center">{{ message.forum.publish.tagsInput.noResultsFound }}</span>
-    <Button type="button" variant="ghost" class="mention-person" :disabled="disabled" :aria-label="message.forum.comment.viewAllMentions" @pointerdown.prevent @click="setAllOpen(true)">
+    <span v-if="!items.length" class="text-xs text-muted-foreground self-center">{{ t('forum.publish.tagsInput.noResultsFound') }}</span>
+    <Button type="button" variant="ghost" class="mention-person" :disabled="disabled" :aria-label="t('forum.comment.viewAllMentions')" @pointerdown.prevent @click="setAllOpen(true)">
       <span class="flex size-8 items-center justify-center" aria-hidden="true"><span class="i-lucide:ellipsis size-4" /></span>
-      <span>{{ message.forum.comment.viewAllMentions }}</span>
+      <span>{{ t('forum.comment.viewAllMentions') }}</span>
     </Button>
   </div>
   <Drawer :open="allOpen" :should-scale-background="false" @update:open="setAllOpen">
     <DrawerContent class="mention-all-drawer" :aria-describedby="undefined" @close-auto-focus="$event.preventDefault(); emit('drawer-open', false)">
       <DrawerTitle class="sr-only">
-        {{ message.forum.publish.feedbackForm.mentionUser }}
+        {{ t('forum.publish.feedbackForm.mentionUser') }}
       </DrawerTitle>
       <MentionPickerPanel :open="allOpen" compact :groups="groupedItems" :search-term="query" :disabled="disabled" @select="select" />
     </DrawerContent>

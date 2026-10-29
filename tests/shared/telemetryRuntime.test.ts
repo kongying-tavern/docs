@@ -126,9 +126,7 @@ test('handled deletion failure returns false and preserves the original error in
   const error = new Error('Permission denied')
   const result = await executeWithAuth(async () => {
     throw error
-  }, [], 'Delete failed', ref({
-    forum: { auth: { loginTips: 'Sign in' } },
-  }) as Parameters<typeof executeWithAuth>[3])
+  }, [], 'Delete failed', (() => 'Sign in') as Parameters<typeof executeWithAuth>[3])
   assert.equal(result, false)
   assert.equal(env.toasts.length, 1)
   assert.equal((env.toasts[0] as { error: unknown }).error, error)

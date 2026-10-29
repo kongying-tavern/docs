@@ -20,6 +20,7 @@ on:
       - eslint.config.ts
       - vite.config.ts
       - vitest.config.ts
+      - x18n.config.ts
       - unocss.config.ts
       - tsconfig.json
       - .nvmrc
@@ -44,6 +45,7 @@ on:
       - eslint.config.ts
       - vite.config.ts
       - vitest.config.ts
+      - x18n.config.ts
       - unocss.config.ts
       - tsconfig.json
       - .nvmrc
@@ -94,6 +96,9 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Check UI translations
+        run: pnpm i18n:check
 
       - name: Logic tests and coverage
         run: pnpm test:coverage

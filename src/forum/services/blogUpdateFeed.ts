@@ -159,15 +159,6 @@ export function selectRecentBlogUpdates(
     })
 }
 
-export interface BlogUpdateCopy {
-  /** 形如 `{title}：{summary}`，只有一条内容时直接引用原文 */
-  quoted: string
-  /** 形如 `{title}：已更新到 {version}` */
-  released: string
-  /** 版本号取不到时的兜底文案 */
-  updated: string
-}
-
 /** 文章标题里的【】是分类标记，用在句子里读起来累赘 */
 const BRACKETS_RE = /【|】/g
 
@@ -175,15 +166,21 @@ const BRACKETS_RE = /【|】/g
  * 出处放在最前面：它标识这条属于哪个日志，放句尾会被窄栏的截断吃掉。
  * 有具体内容时引用它，否则只报版本号。
  */
-export function describeBlogUpdate(item: BlogUpdateItem, copy: BlogUpdateCopy): string {
+export interface BlogUpdateFormatters {
+  quoted: (title: string, summary: string) => string
+  released: (title: string, version: string) => string
+  updated: (title: string) => string
+}
+
+export function describeBlogUpdate(item: BlogUpdateItem, format: BlogUpdateFormatters): string {
   const title = item.title.replace(BRACKETS_RE, '')
 
   if (item.itemCount === 1 && item.summary)
-    return copy.quoted.replace('{title}', title).replace('{summary}', item.summary)
+    return format.quoted(title, item.summary)
 
   return item.label
-    ? copy.released.replace('{title}', title).replace('{version}', item.label)
-    : copy.updated.replace('{title}', title)
+    ? format.released(title, item.label)
+    : format.updated(title)
 }
 
 /**

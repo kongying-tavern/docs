@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../../types'
 import { computed, ref, shallowRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   Drawer,
   DrawerContent,
@@ -9,7 +10,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { useLocalized } from '@/hooks/useLocalized'
 import ForumMenuMobilePanel from './ForumMenuMobilePanel.vue'
 
 const props = defineProps<{
@@ -22,7 +22,7 @@ defineSlots<{
   menu: () => unknown
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const open = ref(false)
 
@@ -68,7 +68,7 @@ function handleClose() {
             v-if="canGoBack"
             type="button"
             class="text-[var(--vp-c-text-2)] rounded-full inline-flex shrink-0 h-7 w-7 items-center justify-center hover:bg-[var(--vp-c-default-soft)]"
-            :aria-label="message.forum.topic.menu.back"
+            :aria-label="t('forum.topic.menu.back')"
             @click="handleGoBack"
           >
             <span class="i-lucide-arrow-left size-4" aria-hidden="true" />

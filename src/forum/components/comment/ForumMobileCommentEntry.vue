@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import ForumEditorToolIcon from '../form/ForumEditorToolIcon.vue'
 
 defineProps<{ label: string, disabled: boolean, expanded: boolean, tools: boolean }>()
 const emit = defineEmits<{ open: [], prepare: [], tool: [tool: 'emoji' | 'mention' | 'upload'] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const element = useTemplateRef<HTMLElement>('element')
 defineExpose({ element })
 </script>
@@ -17,13 +17,13 @@ defineExpose({ element })
       {{ label }}
     </Button>
     <div v-if="tools" class="mobile-comment-entry-tools">
-      <Button type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="message.ui.button.emoji" @click="emit('tool', 'emoji')">
+      <Button type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="t('ui.button.emoji')" @click="emit('tool', 'emoji')">
         <ForumEditorToolIcon tool="emoji" />
       </Button>
-      <Button type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="message.forum.publish.feedbackForm.mentionUser" @click="emit('tool', 'mention')">
+      <Button type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="t('forum.publish.feedbackForm.mentionUser')" @click="emit('tool', 'mention')">
         <ForumEditorToolIcon tool="mention" />
       </Button>
-      <Button type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="message.forum.publish.feedbackForm.addImages" @click="emit('tool', 'upload')">
+      <Button type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="t('forum.publish.feedbackForm.addImages')" @click="emit('tool', 'upload')">
         <ForumEditorToolIcon tool="upload" />
       </Button>
     </div>

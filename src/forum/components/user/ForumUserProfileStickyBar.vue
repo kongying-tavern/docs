@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumProfileTabs from './ForumProfileTabs.vue'
 
@@ -17,7 +17,7 @@ const { username, login, role, isAuthorizedUser, visible, tabs } = defineProps<{
 
 const emit = defineEmits<{ message: [] }>()
 const activeTab = defineModel<FORUM.ProfileTab['id']>('activeTab', { default: 'all' })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
@@ -26,7 +26,7 @@ const { message } = useLocalized()
       <div class="user-sticky-bar-row">
         <div class="user-sticky-bar-identity">
           <span class="text-sm text-[var(--vp-c-text-1)] font-semibold truncate">
-            {{ username || message.forum.labels.unknown }}
+            {{ username || t('forum.labels.unknown') }}
           </span>
           <div v-if="role" class="shrink-0 hidden sm:block">
             <ForumRoleBadge :type="role" />
@@ -38,7 +38,7 @@ const { message } = useLocalized()
           layout="inline"
           class="user-sticky-bar-tabs"
           :tabs="tabs"
-          v-bind="{ ariaLabel: message.forum.header.navigation.groups.status }"
+          v-bind="{ ariaLabel: t('forum.header.navigation.groups.status') }"
         />
 
         <div class="user-sticky-bar-actions">
@@ -47,7 +47,7 @@ const { message } = useLocalized()
             variant="outline"
             size="icon"
             class="border border-[var(--vp-c-divider)] border-solid"
-            :aria-label="message.forum.labels.privateMessage"
+            :aria-label="t('forum.labels.privateMessage')"
             @click="emit('message')"
           >
             <span class="i-lucide-mail text-base" aria-hidden="true" />

@@ -2,8 +2,8 @@
 import type { ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { ChevronDown } from '@lucide/vue'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getViewModeIconClass, useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import ForumResponsiveSelect from '../ui/responsive/ForumResponsiveSelect.vue'
 
@@ -17,27 +17,27 @@ const emit = defineEmits<{
   'type-change': [type: ForumTopicType]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { viewMode, setViewMode } = useForumViewMode()
 const types = computed(() => [
-  { id: 'all' as const, label: message.value.forum.header.navigation.allTypes },
-  { id: 'bug' as const, label: message.value.forum.header.navigation.bugFeedback },
-  { id: 'feat' as const, label: message.value.forum.header.navigation.featFeedback },
+  { id: 'all' as const, label: t('forum.header.navigation.allTypes') },
+  { id: 'bug' as const, label: t('forum.header.navigation.bugFeedback') },
+  { id: 'feat' as const, label: t('forum.header.navigation.featFeedback') },
 ])
 const sortOptions = computed(() => [
-  { id: 'created' as const, label: message.value.forum.header.sort.created },
-  { id: 'updated' as const, label: message.value.forum.header.sort.updated },
+  { id: 'created' as const, label: t('forum.header.sort.created') },
+  { id: 'updated' as const, label: t('forum.header.sort.updated') },
 ])
 function sortLabel(sort: ForumSort): string {
   return sort === 'updated'
-    ? message.value.forum.header.sort.updated
-    : message.value.forum.header.sort.created
+    ? t('forum.header.sort.updated')
+    : t('forum.header.sort.created')
 }
 const nextViewMode = computed(() => viewMode.value === 'CARD' ? 'COMPACT' : 'CARD')
 const nextViewLabel = computed(() => nextViewMode.value === 'CARD'
-  ? message.value.forum.header.view.card
-  : message.value.forum.header.view.compact)
-const viewToggleLabel = computed(() => `${message.value.forum.header.view.label}：${nextViewLabel.value}`)
+  ? t('forum.header.view.card')
+  : t('forum.header.view.compact'))
+const viewToggleLabel = computed(() => `${t('forum.header.view.label')}：${nextViewLabel.value}`)
 
 function changeSort(value: string): void {
   if (value === 'created' || value === 'updated')
@@ -51,7 +51,7 @@ function changeSort(value: string): void {
       <ForumResponsiveSelect
         :model-value="sort"
         :options="sortOptions"
-        :label="message.forum.sidebar.listSort"
+        :label="t('forum.sidebar.listSort')"
         @update:model-value="changeSort"
       >
         <template #trigger>
@@ -59,7 +59,7 @@ function changeSort(value: string): void {
             type="button"
             variant="secondary"
             size="sm"
-            :aria-label="`${message.forum.sidebar.listSort}${message.ui.labelSeparator}${sortLabel(sort)}`"
+            :aria-label="`${t('forum.sidebar.listSort')}${t('ui.labelSeparator')}${sortLabel(sort)}`"
           >
             {{ sortLabel(sort) }}
             <ChevronDown class="opacity-50 size-4" aria-hidden="true" />

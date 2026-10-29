@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Kbd, KbdGroup } from '@/components/ui/kbd'
@@ -7,7 +8,9 @@ import SettingsRow from '~/components/settings/SettingsRow.vue'
 import SettingsSection from '~/components/settings/SettingsSection.vue'
 import { useForumShortcutRecorder } from '~/forum/composables/view/useForumShortcutRecorder'
 
-const { copy, groups, selected, draft, draftKeys, open, error, operationError, recorder, focusRecorder, edit, save, toggle, reset } = useForumShortcutRecorder()
+const { t } = useI18n({ useScope: 'global' })
+
+const { groups, selected, draft, draftKeys, open, error, operationError, recorder, focusRecorder, edit, save, toggle, reset } = useForumShortcutRecorder()
 function setRecorderElement(element: unknown) {
   recorder.value = element instanceof HTMLElement ? element : null
 }
@@ -30,48 +33,48 @@ function setRecorderElement(element: unknown) {
           @update:model-value="toggle(action.id, Boolean($event))"
         />
         <span :id="`shortcut-label-${action.id}`" class="shortcut-label">{{ action.label }}</span>
-        <button type="button" class="shortcut-binding" :aria-label="`${copy.edit}: ${action.label}`" @click="edit(action.id)">
+        <button type="button" class="shortcut-binding" :aria-label="`${t('settings.shortcuts.edit')}: ${action.label}`" @click="edit(action.id)">
           <KbdGroup v-if="action.keys.length">
             <Kbd v-for="key in action.keys" :key="key">{{ key }}</Kbd>
           </KbdGroup>
-          <span v-else>{{ copy.unassigned }}</span>
+          <span v-else>{{ t('settings.shortcuts.unassigned') }}</span>
         </button>
       </div>
     </section>
     <section class="shortcut-group" aria-labelledby="shortcuts-reset">
       <h3 id="shortcuts-reset" class="shortcut-group-title">
-        {{ copy.resetGroup }}
+        {{ t('settings.shortcuts.resetGroup') }}
       </h3>
-      <SettingsSection id="shortcuts-reset-card" :title="copy.resetGroup">
-        <SettingsRow :title="copy.resetLabel">
+      <SettingsSection id="shortcuts-reset-card" :title="t('settings.shortcuts.resetGroup')">
+        <SettingsRow :title="t('settings.shortcuts.resetLabel')">
           <Button type="button" variant="outline" size="sm" @click="reset()">
-            {{ copy.resetAll }}
+            {{ t('settings.shortcuts.resetAll') }}
           </Button>
         </SettingsRow>
       </SettingsSection>
     </section>
     <Dialog v-model:open="open">
       <DialogContent @escape-key-down.prevent @open-auto-focus="focusRecorder">
-        <DialogTitle>{{ copy.edit }} · {{ selected ? copy.actions[selected] : '' }}</DialogTitle>
-        <DialogDescription>{{ copy.recordDescription }}</DialogDescription>
-        <div :ref="setRecorderElement" data-shortcut-recorder tabindex="0" :aria-label="copy.recordDescription" class="p-4 border rounded-md flex min-h-16 items-center justify-center focus-visible:outline-ring focus-visible:outline" aria-live="polite">
+        <DialogTitle>{{ t('settings.shortcuts.edit') }} · {{ selected ? t(`settings.shortcuts.actions.${selected}`) : '' }}</DialogTitle>
+        <DialogDescription>{{ t('settings.shortcuts.recordDescription') }}</DialogDescription>
+        <div :ref="setRecorderElement" data-shortcut-recorder tabindex="0" :aria-label="t('settings.shortcuts.recordDescription')" class="p-4 border rounded-md flex min-h-16 items-center justify-center focus-visible:outline-ring focus-visible:outline" aria-live="polite">
           <KbdGroup v-if="draftKeys.length">
             <Kbd v-for="key in draftKeys" :key="key">{{ key }}</Kbd>
           </KbdGroup>
-          <span v-else class="text-muted-foreground">{{ copy.unassigned }}</span>
+          <span v-else class="text-muted-foreground">{{ t('settings.shortcuts.unassigned') }}</span>
         </div>
         <p v-if="error" role="alert" class="text-sm text-destructive">
           {{ error }}
         </p>
         <div class="flex flex-wrap gap-2 justify-end">
           <Button type="button" variant="ghost" @click="draft = ''">
-            {{ copy.clear }}
+            {{ t('settings.shortcuts.clear') }}
           </Button>
           <Button type="button" variant="outline" @click="open = false">
-            {{ copy.cancel }}
+            {{ t('settings.shortcuts.cancel') }}
           </Button>
           <Button type="button" :disabled="!!error" @click="save">
-            {{ copy.save }}
+            {{ t('settings.shortcuts.save') }}
           </Button>
         </div>
       </DialogContent>

@@ -3,7 +3,7 @@ import type { PreviewerContext } from './image-previewer/ForumImagePreviewer.vue
 import type { ForumImageResource } from '~/forum/services/forumImageResource'
 import { useElementSize, useMediaQuery } from '@vueuse/core'
 import { computed, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useBounceScroll } from '~/forum/composables/view/useBounceScroll'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
@@ -45,7 +45,7 @@ defineSlots<{
   'image-overlay': (props: { image: ImageItem, index: number }) => unknown
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 const errorMap = ref(new Set<number>())
 const readyMap = ref(new Set<number>())
@@ -299,7 +299,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
           :progress="railProgress"
           :total="railCount"
           :aria-label="`${railIndex + 1} / ${railCount}`"
-          :aria-labels="displayImages.map((_, index) => message.forum.imagePreview.showImage.replace('{index}', String(index + 1)))"
+          :aria-labels="displayImages.map((_, index) => t('forum.imagePreview.showImage', { index: String(index + 1) }))"
           @select="scrollRailTo"
         />
 
@@ -333,7 +333,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
               ]"
               :style="railItemStyle()"
               :disabled="previewEnabled && !isPreviewReady(image, sourceIndex) ? true : undefined"
-              :aria-label="previewEnabled ? message.forum.imagePreview.showImage.replace('{index}', String(index + 1)) : undefined"
+              :aria-label="previewEnabled ? t('forum.imagePreview.showImage', { index: String(index + 1) }) : undefined"
               @click="previewEnabled && openAt(previewIndexFor(sourceIndex), $event.currentTarget)"
               @keydown.enter.prevent
             >
@@ -364,7 +364,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
             class="forum-image-rail-btn forum-image-rail-prev"
             direction="previous"
             size="small"
-            :label="message.forum.imagePreview.previous"
+            :label="t('forum.imagePreview.previous')"
             :visible="showPrevArrow"
             @click="scrollRailTo(railIndex - 1)"
           />
@@ -374,7 +374,7 @@ const tripleGridClasses = ['row-span-2', 'col-start-2 row-start-1', 'col-start-2
             class="forum-image-rail-btn forum-image-rail-next"
             direction="next"
             size="small"
-            :label="message.forum.imagePreview.next"
+            :label="t('forum.imagePreview.next')"
             :visible="showNextArrow"
             @click="scrollRailTo(railIndex + 1)"
           />

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { SettingsNavigationItem, SettingsSectionId } from '~/composables/useSettingsNavigation'
 import { useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import User from '@/components/ui/User.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import useLogin from '~/forum/hooks/useLogin'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
@@ -27,7 +27,7 @@ const emit = defineEmits<{
   'update:active': [section: string]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const userInfo = useUserInfoStore()
 const { showLoginAlert } = useLogin()
 const auth = useUserAuthStore()
@@ -80,33 +80,33 @@ defineExpose({
       @click="showLoginAlert"
     >
       <span class="settings-user-placeholder i-lucide-user-round icon-btn" aria-hidden="true" />
-      <span>{{ message.forum.auth.loginMsg }}</span>
+      <span>{{ t('forum.auth.loginMsg') }}</span>
     </button>
 
     <div class="settings-navigation-group">
       <p class="settings-navigation-group-label">
-        {{ message.settings.groups.website }}
+        {{ t('settings.groups.website') }}
       </p>
       <SettingsNavigation
         :items="websiteSections"
         :active-section="activeSection"
         :hash-prefix="hashPrefix"
         :drilldown="drilldown"
-        :aria-label="message.settings.groups.website"
+        :aria-label="t('settings.groups.website')"
         @select="emit('select', $event)"
       />
     </div>
 
     <div v-if="applicationSections.length > 0" class="settings-navigation-group">
       <p class="settings-navigation-group-label">
-        {{ message.settings.groups.application }}
+        {{ t('settings.groups.application') }}
       </p>
       <SettingsNavigation
         :items="applicationSections"
         :active-section="activeSection"
         :hash-prefix="hashPrefix"
         :drilldown="drilldown"
-        :aria-label="message.settings.groups.application"
+        :aria-label="t('settings.groups.application')"
         @select="emit('select', $event)"
       />
     </div>

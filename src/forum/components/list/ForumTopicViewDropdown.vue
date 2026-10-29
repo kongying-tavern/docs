@@ -3,7 +3,7 @@ import type { FORUM } from '~/forum/components/types'
 import type { ForumSort } from '~/forum/services/forumRoute'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import { useForumListControlOptions } from '~/forum/composables/view/useForumListControlOptions'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
@@ -14,16 +14,16 @@ const props = defineProps<{ sort: ForumSort }>()
 const emit = defineEmits<{ sortChange: [sort: ForumSort] }>()
 const { viewMode, setViewMode } = useForumViewMode()
 const { views, sorts } = useForumListControlOptions()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
-const drawerTitle = computed(() => message.value.forum.header.view.optionsTitle)
+const drawerTitle = computed(() => t('forum.header.view.optionsTitle'))
 
 const items = computed<FORUM.TopicDropdownMenu[]>(() => [
   {
     type: 'radio-group',
     id: 'view-mode',
-    label: message.value.forum.header.view.label,
+    label: t('forum.header.view.label'),
     items: views.value.map(mode => ({
       type: 'radio-item',
       id: `view-${mode.id}`,
@@ -38,7 +38,7 @@ const items = computed<FORUM.TopicDropdownMenu[]>(() => [
   {
     type: 'radio-group',
     id: 'sort',
-    label: message.value.forum.sidebar.listSort,
+    label: t('forum.sidebar.listSort'),
     items: sorts.value.map(sort => ({
       type: 'radio-item',
       id: `sort-${sort.id}`,

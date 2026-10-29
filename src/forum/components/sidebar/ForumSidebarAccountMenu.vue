@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { ForumSidebarMenuItem } from './forumSidebarMenu'
 import { useMediaQuery, useMounted } from '@vueuse/core'
+import { useData } from 'vitepress'
 import { computed, nextTick, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import User from '@/components/ui/User.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { loadSettingsContent } from '~/components/settings/settingsLoader'
 import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
@@ -24,7 +25,8 @@ const props = defineProps<{
   profileHref: string
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
+const { theme } = useData()
 const userInfo = useUserInfoStore()
 const mounted = useMounted()
 const accountUser = computed(() => mounted.value ? userInfo.info : undefined)
@@ -64,18 +66,18 @@ watch(isMobile, (mobile) => {
     mobileSettingsOpen.value = false
 })
 
-const accountLabel = computed(() => accountUser.value?.username || message.value.forum.auth.loginMsg)
+const accountLabel = computed(() => accountUser.value?.username || t('forum.auth.loginMsg'))
 
 const accountItems = computed<ForumSidebarMenuItem[]>(() => [
   ...(accountUser.value
     ? [
         {
-          label: message.value.forum.user.myFeedback.title,
+          label: t('forum.user.myFeedback.title'),
           icon: 'i-lucide-message-square-text',
           href: props.profileHref,
         },
         {
-          label: message.value.forum.user.menu.giteeAccountInfo,
+          label: t('forum.user.menu.giteeAccountInfo'),
           icon: 'i-lucide-user-round-pen',
           href: 'https://gitee.com/profile/account_information',
           external: true,
@@ -83,13 +85,13 @@ const accountItems = computed<ForumSidebarMenuItem[]>(() => [
       ]
     : [
         {
-          label: message.value.forum.auth.loginMsg,
+          label: t('forum.auth.loginMsg'),
           icon: 'i-lucide-log-in',
           action: showLoginAlert,
         },
       ]),
   {
-    label: message.value.settings.title,
+    label: t('settings.title'),
     icon: 'i-lucide-settings',
     keepOpen: isMobile.value,
     action: openSettings,
@@ -97,7 +99,7 @@ const accountItems = computed<ForumSidebarMenuItem[]>(() => [
   ...(accountUser.value
     ? [
         {
-          label: message.value.forum.auth.logoutMsg,
+          label: t('forum.auth.logoutMsg'),
           testId: 'account-logout',
           icon: 'i-lucide-log-out',
           separatorBefore: true,
@@ -110,27 +112,27 @@ const accountItems = computed<ForumSidebarMenuItem[]>(() => [
 
 const helpItems = computed<ForumSidebarMenuItem[]>(() => [
   {
-    label: message.value.forum.sidebar.privacyPolicy,
+    label: t('forum.sidebar.privacyPolicy'),
     icon: 'i-lucide-shield-check',
     href: props.privacyHref,
   },
   {
-    label: message.value.forum.sidebar.userAgreement,
+    label: t('forum.sidebar.userAgreement'),
     icon: 'i-lucide-file-text',
     href: props.agreementHref,
   },
   {
-    label: message.value.forum.sidebar.opensource,
+    label: t('forum.sidebar.opensource'),
     icon: 'i-lucide-github',
     href: 'https://github.com/kongying-tavern/docs',
     external: true,
   },
   {
-    label: message.value.forum.sidebar.feedbackCommunity,
-    icon: message.value.forum.aside.contactUs.qrcodeLink.includes('qq.com')
+    label: t('forum.sidebar.feedbackCommunity'),
+    icon: theme.value.forum.aside.contactUs.qrcodeLink.includes('qq.com')
       ? 'i-simple-icons-qq'
       : 'i-simple-icons-discord',
-    href: message.value.forum.aside.contactUs.qrcodeLink,
+    href: theme.value.forum.aside.contactUs.qrcodeLink,
     external: true,
   },
 ])
@@ -139,7 +141,7 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
 <template>
   <div class="forum-sidebar-account">
     <ForumSidebarResponsiveMenu
-      :title="mobileSettingsOpen ? message.settings.title : accountLabel"
+      :title="mobileSettingsOpen ? t('settings.title') : accountLabel"
       :immersive="mobileSettingsOpen"
       hide-header
       align="start"
@@ -206,13 +208,13 @@ const helpItems = computed<ForumSidebarMenuItem[]>(() => [
       </template>
     </ForumSidebarResponsiveMenu>
 
-    <ForumSidebarResponsiveMenu :title="message.forum.sidebar.information" align="end">
+    <ForumSidebarResponsiveMenu :title="t('forum.sidebar.information')" align="end">
       <template #trigger>
         <Button
           variant="ghost"
           size="icon"
           class="forum-sidebar-help-trigger"
-          :aria-label="message.forum.sidebar.information"
+          :aria-label="t('forum.sidebar.information')"
           @click.capture="closeForumSidebar"
         >
           <span class="i-lucide-circle-help icon-btn" data-icon="inline-start" aria-hidden="true" />

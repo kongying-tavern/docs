@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ForumFilter } from '~/forum/services/forumRoute'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   Empty,
@@ -11,7 +12,6 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { EmptyMorphFrame, EmptySwap } from '@/components/ui/empty-motion'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { GiteeAPIError } from '~/forum/api/gitee'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
@@ -24,7 +24,7 @@ const props = defineProps<{
   query?: string
   refreshData?: () => Promise<unknown> | unknown
 }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 const { route, navigate } = useForumRoute()
 const { formatSearchQuery } = useForumSearchToken()
@@ -35,8 +35,7 @@ const unauthorizedError = computed(() =>
   props.error instanceof GiteeAPIError && props.error.isUnauthorized())
 
 const isSearchEmpty = computed(() => Boolean(props.query) && !props.error)
-const searchTitle = computed(() => message.value.forum.empty.searchTitle
-  .replace('{query}', formatSearchQuery(props.query || '')))
+const searchTitle = computed(() => t('forum.empty.searchTitle', { query: formatSearchQuery(props.query || '') }))
 
 const hasActiveFilters = computed(() => {
   const list = route.value && 'list' in route.value ? route.value.list : null
@@ -50,19 +49,19 @@ const filterRecommendation = computed(() => {
   if (!current || !('list' in current))
     return null
   const { list } = current
-  const copy = message.value.forum.empty
+
   // 先放宽搜索和类型，再切换状态；每次只推荐一个保留其余条件的恢复操作。
   if (list.q)
-    return { key: 'query', label: copy.clearSearch, changes: { q: '' } }
+    return { key: 'query', label: t('forum.empty.clearSearch'), changes: { q: '' } }
   if (list.topicType !== 'all')
-    return { key: 'type', label: copy.showAllTypes, changes: { topicType: 'all' as const } }
+    return { key: 'type', label: t('forum.empty.showAllTypes'), changes: { topicType: 'all' as const } }
   if (list.creator) {
     if (list.filter === 'all')
-      return { key: 'closed', label: copy.switchClosed, changes: { filter: 'closed' as const } }
-    return { key: 'all', label: copy.switchOpen, changes: { filter: 'all' as const } }
+      return { key: 'closed', label: t('forum.empty.switchClosed'), changes: { filter: 'closed' as const } }
+    return { key: 'all', label: t('forum.empty.switchOpen'), changes: { filter: 'all' as const } }
   }
   if (list.filter !== 'everything')
-    return { key: 'everything', label: copy.switchEverything, changes: { filter: 'everything' as const } }
+    return { key: 'everything', label: t('forum.empty.switchEverything'), changes: { filter: 'everything' as const } }
   return null
 })
 
@@ -75,10 +74,10 @@ async function applyRecommendation(changes: Partial<{ filter: ForumFilter, topic
 
 const errorDescription = computed(() => {
   if (rateLimitError.value)
-    return message.value.forum.exceededRateLimitWarning
+    return t('forum.exceededRateLimitWarning')
   if (unauthorizedError.value)
-    return message.value.forum.auth.loginTips
-  return message.value.forum.errors.loadFailedHint
+    return t('forum.auth.loginTips')
+  return t('forum.errors.loadFailedHint')
 })
 
 const stateKey = computed(() => {
@@ -91,14 +90,14 @@ const stateKey = computed(() => {
 const retrying = ref(false)
 
 const title = computed(() => props.error
-  ? message.value.forum.loadError
-  : isSearchEmpty.value ? searchTitle.value : message.value.forum.empty.title)
+  ? t('forum.loadError')
+  : isSearchEmpty.value ? searchTitle.value : t('forum.empty.title'))
 
 const description = computed(() => props.error
   ? errorDescription.value
   : isSearchEmpty.value
-    ? message.value.forum.empty.searchDescription
-    : message.value.forum.empty.description)
+    ? t('forum.empty.searchDescription')
+    : t('forum.empty.description'))
 
 const morphKey = computed(() => `${title.value}\n${description.value}`)
 
@@ -152,7 +151,7 @@ async function handleRetry() {
           {{ filterRecommendation.label }}
         </Button>
         <ForumOpenFeedbackFormButton
-          :label="message.forum.empty.createFeedback"
+          :label="t('forum.empty.createFeedback')"
           :variant="filterRecommendation ? 'outline' : 'default'"
           :hide-on-mobile="false"
         />
@@ -161,7 +160,7 @@ async function handleRetry() {
       <template v-else>
         <Button v-if="rateLimitError || unauthorizedError" @click="handleLogin">
           <span class="i-lucide-log-in icon-btn" aria-hidden="true" />
-          {{ message.forum.auth.login }}
+          {{ t('forum.auth.login') }}
         </Button>
         <Button
           v-else-if="refreshData"
@@ -169,7 +168,7 @@ async function handleRetry() {
           @click="handleRetry"
         >
           <span :class="[retrying ? 'i-lucide-loader-circle' : 'i-lucide-refresh-cw', retrying && !reducedMotion && 'animate-spin']" class="icon-btn" aria-hidden="true" />
-          {{ message.forum.auth.callback.error.retry }}
+          {{ t('forum.auth.callback.error.retry') }}
         </Button>
         <Button
           v-if="unauthorizedError && refreshData"
@@ -178,7 +177,7 @@ async function handleRetry() {
           @click="handleRetry"
         >
           <span :class="[retrying ? 'i-lucide-loader-circle' : 'i-lucide-refresh-cw', retrying && !reducedMotion && 'animate-spin']" class="icon-btn" aria-hidden="true" />
-          {{ message.forum.auth.callback.error.retry }}
+          {{ t('forum.auth.callback.error.retry') }}
         </Button>
       </template>
     </EmptyActions>

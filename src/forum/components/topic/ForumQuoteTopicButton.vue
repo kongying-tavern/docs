@@ -2,16 +2,16 @@
 import type ForumAPI from '~/forum/api/types'
 import { ReloadIcon } from '@radix-icons/vue'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/forum/composables/data/useForumReaction'
 import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/forum/services/forumTopicQuote'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import { preloadForumPublishForm } from '../utils/submitFormUi'
 
 const { autoload = true, topic } = defineProps<{ topic: ForumAPI.Topic, autoload?: boolean }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { data: quoteReaction, error, refetch } = useForumReaction(
   () => ({ topicId: String(topic.id), kind: 'quote' }),
   () => autoload && isQuotableTopicType(topic.type),
@@ -52,14 +52,14 @@ function openQuotedTopicForm(): void {
       variant="ghost"
       size="sm"
       class="rounded-full h-8 max-mobile:h-9"
-      :title="message.forum.topic.quote.action"
-      :data-tooltip="message.forum.topic.quote.action"
+      :title="t('forum.topic.quote.action')"
+      :data-tooltip="t('forum.topic.quote.action')"
       @mouseenter="preloadForumPublishForm"
       @focus="preloadForumPublishForm"
       @click="openQuotedTopicForm"
     >
       <span class="i-lucide-quote h-5 w-5 max-mobile:size-5" aria-hidden="true" />
-      <span class="sr-only">{{ message.forum.topic.quote.action }}</span>
+      <span class="sr-only">{{ t('forum.topic.quote.action') }}</span>
       <TextMorph
         v-if="!loadFailed && !retrying"
         :disabled="!autoload"
@@ -74,7 +74,7 @@ function openQuotedTopicForm(): void {
       variant="ghost"
       size="icon"
       class="rounded-full h-8 w-8 max-mobile:h-9 max-mobile:w-9"
-      :aria-label="message.forum.auth.callback.error.retry"
+      :aria-label="t('forum.auth.callback.error.retry')"
       :disabled="retrying"
       :aria-busy="retrying"
       @click="retryQuoteReaction"

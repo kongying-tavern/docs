@@ -2,7 +2,7 @@
 import type ForumAPI from '~/forum/api/types'
 import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/forum/services/forumSearchQuery'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { usePermissionData } from '~/forum/composables/auth/usePermissionData'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 import { useForumTagFilterOptions } from '~/forum/composables/view/useForumTagFilterOptions'
@@ -25,7 +25,7 @@ const emit = defineEmits<{
   toggle: [facet: ForumSearchFacet, value: string]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { getStateLabel } = useForumSearchToken()
 const { permissionData, ensureFreshData } = usePermissionData()
 const tagLabelGetter = getTopicTagLabelGetter()
@@ -39,26 +39,26 @@ const rootOptions = computed(() => [
   {
     facet: 'state' as const,
     icon: 'i-lucide-list-filter',
-    label: message.value.forum.topic.searchFacets.state,
-    inlineLabel: message.value.forum.topic.searchFacets.stateTab,
-    title: message.value.forum.topic.searchFacets.stateTitle,
-    description: message.value.forum.topic.searchFacets.stateDescription,
+    label: t('forum.topic.searchFacets.state'),
+    inlineLabel: t('forum.topic.searchFacets.stateTab'),
+    title: t('forum.topic.searchFacets.stateTitle'),
+    description: t('forum.topic.searchFacets.stateDescription'),
   },
   {
     facet: 'tags' as const,
     icon: 'i-lucide-tags',
-    label: message.value.forum.topic.searchFacets.tags,
-    inlineLabel: message.value.forum.topic.searchFacets.tagsTab,
-    title: message.value.forum.topic.searchFacets.tagsTitle,
-    description: message.value.forum.topic.searchFacets.tagsDescription,
+    label: t('forum.topic.searchFacets.tags'),
+    inlineLabel: t('forum.topic.searchFacets.tagsTab'),
+    title: t('forum.topic.searchFacets.tagsTitle'),
+    description: t('forum.topic.searchFacets.tagsDescription'),
   },
   {
     facet: 'author' as const,
     icon: 'i-lucide-user-round',
-    label: message.value.forum.topic.searchFacets.author,
-    inlineLabel: message.value.forum.topic.searchFacets.authorTab,
-    title: message.value.forum.topic.searchFacets.authorTitle,
-    description: message.value.forum.topic.searchFacets.authorDescription,
+    label: t('forum.topic.searchFacets.author'),
+    inlineLabel: t('forum.topic.searchFacets.authorTab'),
+    title: t('forum.topic.searchFacets.authorTitle'),
+    description: t('forum.topic.searchFacets.authorDescription'),
   },
 ])
 
@@ -67,12 +67,12 @@ const tagGroups = computed(() => {
   return indexGroups([
     {
       id: 'platforms',
-      label: message.value.forum.topic.searchFacets.platforms,
+      label: t('forum.topic.searchFacets.platforms'),
       options: options.filter(([tag]) => tag.includes('PLATFORM')),
     },
     {
       id: 'categories',
-      label: message.value.forum.topic.searchFacets.categories,
+      label: t('forum.topic.searchFacets.categories'),
       options: options.filter(([tag]) => !tag.includes('PLATFORM')),
     },
   ])
@@ -81,7 +81,7 @@ const tagGroups = computed(() => {
 const statusGroups = computed(() => indexGroups(
   TOPIC_STATUS_GROUP_ORDER.map(group => ({
     id: group,
-    label: message.value.forum.topic.statusGroups[group],
+    label: t(`forum.topic.statusGroups.${group}`),
     options: FORUM_SEARCH_STATES
       .filter(state => getForumSearchStateGroup(state) === group)
       .map(state => ({ id: state })),
@@ -93,8 +93,8 @@ const authorGroups = computed(() => indexGroups(
     .map(group => ({
       id: group.id,
       label: group.id === 'recommended'
-        ? message.value.forum.topic.searchFacets.recommendedUsers
-        : message.value.forum.topic.searchFacets.teamMembers,
+        ? t('forum.topic.searchFacets.recommendedUsers')
+        : t('forum.topic.searchFacets.teamMembers'),
       options: group.users,
     })),
 ))
@@ -159,7 +159,7 @@ defineExpose({ moveActive, selectActive })
 </script>
 
 <template>
-  <div ref="pickerEl" class="forum-filter-picker" :class="{ 'is-inline': inline }" :role="inline ? undefined : 'listbox'" :aria-label="message.forum.topic.searchFacets.label">
+  <div ref="pickerEl" class="forum-filter-picker" :class="{ 'is-inline': inline }" :role="inline ? undefined : 'listbox'" :aria-label="t('forum.topic.searchFacets.label')">
     <div v-if="inline && !facet" class="forum-filter-picker-categories">
       <button
         v-for="option in rootOptions"
@@ -174,11 +174,11 @@ defineExpose({ moveActive, selectActive })
       </button>
     </div>
     <div v-else-if="!facet" class="forum-filter-picker-header">
-      {{ message.forum.topic.searchFacets.choose }}
+      {{ t('forum.topic.searchFacets.choose') }}
     </div>
     <button v-else type="button" class="forum-filter-picker-back" @click="emit('back')">
       <span class="i-lucide-arrow-left size-4" aria-hidden="true" />
-      {{ message.forum.topic.searchFacets.back }}
+      {{ t('forum.topic.searchFacets.back') }}
     </button>
 
     <div v-if="!inline || facet" class="forum-filter-picker-options" :class="{ 'is-inline': inline }">
@@ -261,8 +261,8 @@ defineExpose({ moveActive, selectActive })
             ref="authorSearchEl"
             v-model="authorSearch"
             type="search"
-            :placeholder="message.forum.topic.searchFacets.searchUsers"
-            :aria-label="message.forum.topic.searchFacets.searchUsers"
+            :placeholder="t('forum.topic.searchFacets.searchUsers')"
+            :aria-label="t('forum.topic.searchFacets.searchUsers')"
             autocomplete="off"
             spellcheck="false"
             @keydown.down.prevent="moveActive(1)"
@@ -300,7 +300,7 @@ defineExpose({ moveActive, selectActive })
           </template>
         </template>
         <div v-if="!optionCount" class="forum-filter-picker-empty">
-          {{ message.forum.topic.searchFacets.noOptions }}
+          {{ t('forum.topic.searchFacets.noOptions') }}
         </div>
       </template>
     </div>

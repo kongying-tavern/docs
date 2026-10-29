@@ -3,10 +3,11 @@ import { test, vi } from 'vitest'
 import { effectScope, ref } from 'vue'
 
 // 解析结果依赖真实文案：en 的状态与标签显示名带空格（"Not planned"、"Documentation issue"）
-vi.mock('@/hooks/useLocalized', async () => {
-  const { ref } = await import('vue')
-  const { default: forum } = await import('../../.vitepress/locales/en/forum')
-  return { useLocalized: () => ({ message: ref({ forum }) }) }
+vi.mock('vue-i18n', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('vue-i18n')>()
+  const { loadTestMessages } = await import('../shared/support/i18n')
+  const i18n = actual.createI18n({ legacy: false, locale: 'en', messages: { en: loadTestMessages('en') } })
+  return { ...actual, useI18n: () => i18n.global }
 })
 vi.mock('~/forum/composables/state/useForumLabelStore', async () => {
   const { ref } = await import('vue')

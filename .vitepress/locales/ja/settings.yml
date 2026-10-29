@@ -1,0 +1,129 @@
+experiments:
+  title: 試験的な機能
+  feedbackForm: 新しいフィードバックフォーム
+  legacyFeedbackForm: 従来のフィードバックフォーム
+  legacyDescription: 新版に割り当てられています。オンで従来版を使用し、オフで既定の段階的公開の割り当てに戻します。このブラウザーの現在のアカウントにのみ適用され、次にフォームを開くときに反映されます。
+  description: オンで新版を使用し、オフで既定の段階的公開の割り当てに戻します。このブラウザーの現在のアカウントにのみ適用され、次にフォームを開くときに反映されます。
+  accountLogin: パスワードログイン
+  accountLoginDescription: >-
+    アカウントとパスワードで直接ログインします（認可リダイレクトなし）。既定では管理者のみで、画面にボタンはありません。#account-login-alert
+    で開けますが、このブラウザーで管理者アカウントにログインしたことがある場合に限られます。
+profile:
+  title: プロフィール
+  description: 変更は Gitee に保存され、プロフィールページに表示されます。
+  username: 表示名
+  blog: ブログサイト
+  weibo: Weibo の URL
+  bio: 自己紹介
+  avatar: アバター
+  login: ユーザー名
+  email: メールアドレス
+  giteeSettings: Gitee アカウント設定
+  readonlyDescription: これらの情報は Gitee で変更できます。編集ボタンで対応する設定を新しいタブに開きます。
+  editOnGitee: Gitee で編集
+  editBio: 自己紹介を編集
+  unset: 未設定または非公開
+  save: 保存
+  cancel: キャンセル
+  saving: 保存中…
+  saved: 保存しました
+  saveFailed: 保存できませんでした。プロフィールを元に戻し、入力内容は保持しています。再試行してください。
+  retry: 再試行
+  sessionChanged: アカウントが変更されました。もう一度編集してください。
+shortcuts:
+  title: キーボードショートカット
+  groups:
+    image: 画像プレビュー
+    input: メッセージ入力
+    application: アプリケーション
+  actions:
+    imageToggleZoom: 拡大を切り替え
+    imageOpen: 画像を表示
+    imagePrevious: 前の画像
+    imageNext: 次の画像
+    imageZoomIn: 拡大
+    imageZoomOut: 縮小
+    imageReset: 倍率をリセット
+    imageTop: 画像の先頭へ
+    imageBottom: 画像の末尾へ
+    imagePanel: サイドパネルを切り替え
+    imageClose: プレビューを閉じる
+    imageCopy: 画像をコピー
+    imageSave: 画像を保存…
+    imageLink: 画像リンクをコピー
+    send: コメント・返信を送信
+    bold: 太字
+    italic: 斜体
+    strike: 取り消し線
+    search: 検索欄に移動
+    publish: フィードバックを投稿
+    settings: 設定を開く
+    imageNewTab: 新しいタブで画像を開く
+    imageMetadata: 画像の元データを表示
+  edit: ショートカットを変更
+  unassigned: 未設定
+  resetGroup: 初期設定に戻す
+  resetLabel: すべてのショートカット
+  resetAll: すべて初期設定に戻す
+  clear: 割り当てを解除
+  cancel: キャンセル
+  save: 保存
+  recordDescription: 記録エリアでキーの組み合わせを押してください。Tab でボタンに移動し、Esc でキャンセルします。Ctrl／⌘ はシステムに合わせて表示されます。
+  conflict: 次のショートカットと重複しています
+  reserved: 文字編集、ブラウザー、システムの標準操作を避け、別の組み合わせを指定してください。画像プレビューでは単独キーを使用でき、アプリケーション検索では / を使用できます。
+  invalid: このキーの組み合わせは利用できません
+title: 設定
+back: 前のページに戻る
+close: 設定を閉じる
+autoSave: 変更はこのブラウザに自動保存されます
+groups:
+  website: ウェブサイト設定
+  application: アプリ設定
+copyFailed: コピーに失敗しました。もう一度お試しいただくか、テキストを手動でコピーしてください
+appearance:
+  title: 外観
+  theme: テーマモード
+  themeDescription: ドキュメント、フィードバック、その他のページに適用されます。
+  light: ライト
+  dark: ダーク
+  auto: システム設定
+  pointerCursor: ポインターカーソルを使用
+  pointerCursorDescription: ボタン、リンク、その他の操作要素にポインターを合わせたとき、指のカーソルを表示します。
+  motion: モーションを減らす
+  motionDescription: 端末の設定に従うか、ページ遷移、スクロール、UI アニメーションの軽減を常に有効または無効にします。
+  motionSystem: システム設定
+  motionOn: オン
+  motionOff: オフ
+  uiFontSize: UI フォントサイズ
+  uiFontSizeDescription: UI の基準サイズを調整します。文字、アイコン、コントロールのサイズも比例して調整されます。
+  fontSizeSmall: 小
+  fontSizeStandard: 標準
+  fontSizeLarge: 大
+notifications:
+  title: 通知
+  position: 表示位置
+  positionDescription: 通知をページのどこに表示するか選択します。
+  duration: 表示時間
+  durationDescription: 通知が閉じる速さ、または手動で閉じるまで表示する設定を選択します。
+  fast: 速い
+  default: 標準
+  slow: 遅い
+  persistent: 常時表示
+  previewMessage: これはテスト通知です
+  positions:
+    topLeft: 左上
+    topCenter: 上中央
+    topRight: 右上
+    bottomLeft: 左下
+    bottomCenter: 下中央
+    bottomRight: 右下
+language:
+  title: 言語と翻訳
+  excludedSourceLanguages: 自動翻訳しない原文言語
+  excludedSourceLanguagesDescription: これらの言語が検出された場合は原文を保持します。手動翻訳は引き続き利用できます。
+  searchLanguages: 言語を検索して選択…
+  chooseLanguages: 言語を選択
+  noLanguagesFound: 一致する言語がありません
+  unavailable: このブラウザはフィードバックのローカル翻訳に対応していません。
+privacy:
+  title: プライバシーと診断

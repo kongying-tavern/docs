@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumPersonalState } from '~/forum/composables/data/useForumPersonalState'
 import { parseForumPersonalState } from '~/forum/services/forumPersonalState'
 import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError } from '~/forum/services/forumPersonalStateRepository'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const personal = useForumPersonalState()
 const auth = useUserAuthStore()
 const userInfo = useUserInfoStore()
-const labels = computed(() => message.value.forum.sidebar.personalRecovery)
+
 const corruption = computed(() => personal.error.value instanceof ForumPersonalStateCorruptionError ? personal.error.value : null)
 const canRecover = computed(() => corruption.value?.kind === 'corrupt' && typeof corruption.value.raw === 'string')
 const salvage = computed(() => parseForumPersonalState(corruption.value?.raw))
@@ -23,10 +23,10 @@ const retrying = ref(false)
 const busy = computed(() => retrying.value || personal.loading.value || personal.saving.value)
 const errorLabel = computed(() => {
   if (corruption.value?.kind === 'unsupported-version')
-    return labels.value.unsupported
+    return t('forum.sidebar.personalRecovery.unsupported')
   if (corruption.value)
-    return labels.value.corrupt
-  return personal.error.value instanceof ForumPersonalStateConflictError ? labels.value.conflict : labels.value.readFailed
+    return t('forum.sidebar.personalRecovery.corrupt')
+  return personal.error.value instanceof ForumPersonalStateConflictError ? t('forum.sidebar.personalRecovery.conflict') : t('forum.sidebar.personalRecovery.readFailed')
 })
 watch(() => [userInfo.info?.id, auth.getSessionGeneration()], () => {
   selection.value = null
@@ -76,34 +76,34 @@ async function confirmRecovery(): Promise<void> {
       </p>
       <div class="personal-recovery-actions">
         <button type="button" :disabled="busy" @click="retry">
-          {{ labels.retry }}
+          {{ t('forum.sidebar.personalRecovery.retry') }}
         </button>
         <template v-if="canRecover">
           <button v-if="recoveredCount" type="button" :disabled="busy" @click="selection = 'repair'">
-            {{ labels.repair }}
+            {{ t('forum.sidebar.personalRecovery.repair') }}
           </button>
           <button type="button" :disabled="busy" @click="selection = 'reset'">
-            {{ labels.reset }}
+            {{ t('forum.sidebar.personalRecovery.reset') }}
           </button>
         </template>
       </div>
       <div v-if="selection" class="personal-recovery-confirm">
-        <p>{{ selection === 'repair' ? labels.repairConfirm.replace('{count}', String(recoveredCount)) : labels.resetConfirm }}</p>
+        <p>{{ selection === 'repair' ? t('forum.sidebar.personalRecovery.repairConfirm', { count: String(recoveredCount) }) : t('forum.sidebar.personalRecovery.resetConfirm') }}</p>
         <div class="personal-recovery-actions">
           <button type="button" :disabled="busy" @click="confirmRecovery">
-            {{ labels.confirm }}
+            {{ t('forum.sidebar.personalRecovery.confirm') }}
           </button>
           <button type="button" :disabled="busy" @click="selection = null">
-            {{ labels.cancel }}
+            {{ t('forum.sidebar.personalRecovery.cancel') }}
           </button>
         </div>
       </div>
       <p v-if="actionError" role="alert">
-        {{ labels.actionFailed }}
+        {{ t('forum.sidebar.personalRecovery.actionFailed') }}
       </p>
     </template>
     <p v-else role="status">
-      {{ labels.success }}
+      {{ t('forum.sidebar.personalRecovery.success') }}
     </p>
   </div>
 </template>

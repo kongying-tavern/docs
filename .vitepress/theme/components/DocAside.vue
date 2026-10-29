@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import DocReaction from './DocReaction.vue'
+import Time from './ui/Time/Time.vue'
 
 const { showReaction = true } = defineProps<{
   showReaction?: boolean
@@ -11,7 +12,7 @@ const { showReaction = true } = defineProps<{
 const PATH_PLACEHOLDER_REGEX = /:path/g
 
 const { theme, page } = useData()
-const { formatDate, message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const editLink = computed(() => !import.meta.env.DEV
   ? 'https://github.com/kongying-tavern/docs/edit/main/src/:path'.replace(
@@ -24,12 +25,12 @@ const editLink = computed(() => !import.meta.env.DEV
 const items = computed(() => {
   return [
     {
-      label: import.meta.env.DEV ? message.value.forum.labels.openInEditor : message.value.asideLinks.editLink,
+      label: import.meta.env.DEV ? t('forum.labels.openInEditor') : t('asideLinks.editLink'),
       icon: 'i-lucide:square-pen',
       href: editLink.value,
     },
     {
-      label: message.value.asideLinks.translateThisPage,
+      label: t('asideLinks.translateThisPage'),
       icon: 'i-lucide:languages',
       href: '/translations',
     },
@@ -39,7 +40,7 @@ const items = computed(() => {
 
 <template>
   <div
-    class="font-[var(--vp-font-family-subtitle)] pt-5 border-color-[var(--vp-c-divider)] border-none hidden space-y-6 !mt-5 lg:block"
+    class="font-[var(--vp-font-family-subtitle)] pt-5 border-color-[var(--vp-c-divider)] border-none space-y-6 hidden !mt-5 lg:block"
   >
     <div class="space-y-3">
       <div
@@ -47,7 +48,7 @@ const items = computed(() => {
       >
         <p v-if="page?.lastUpdated">
           {{ theme.lastUpdated?.text }}
-          <ClientOnly>{{ formatDate(page?.lastUpdated) }}</ClientOnly>
+          <Time :datetime="page.lastUpdated" relative />
         </p>
 
         <VPLink

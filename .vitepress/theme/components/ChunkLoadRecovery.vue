@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const failed = ref(false)
 
 // Keep the original rejection: async components must not receive an undefined module.
@@ -19,13 +19,13 @@ function reload(): void {
 
 <template>
   <aside v-if="failed" role="alert" class="chunk-load-recovery">
-    <p>{{ message.ui.chunkLoadRecovery.description }}</p>
+    <p>{{ t('ui.chunkLoadRecovery.description') }}</p>
     <div class="flex flex-wrap gap-2">
       <Button type="button" size="sm" @click="reload">
-        {{ message.ui.chunkLoadRecovery.reload }}
+        {{ t('ui.chunkLoadRecovery.reload') }}
       </Button>
       <Button type="button" size="sm" variant="outline" @click="failed = false">
-        {{ message.ui.chunkLoadRecovery.later }}
+        {{ t('ui.chunkLoadRecovery.later') }}
       </Button>
     </div>
   </aside>

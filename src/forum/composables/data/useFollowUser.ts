@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@pinia/colada'
 import { computed, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { user } from '~/forum/api/gitee'
 import { authGuards } from '~/forum/composables/auth/auth-helpers'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
@@ -9,7 +9,7 @@ import { toast } from '~/services/telemetry/toast'
 export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const followState = ref<boolean | null>(null)
 
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const userInfo = useUserInfoStore()
 
   const currentUser = computed(() => authorizedUser || userInfo?.info?.login)
@@ -39,15 +39,15 @@ export function useFollowUser(targetUser: string, authorizedUser?: string) {
       user.toggleFollowUser(params.follow, params.targetUser),
     onMutate: () => {
       if (!authGuards.requireLogin()) {
-        throw new Error(message.value.forum.auth.loginTips)
+        throw new Error(t('forum.auth.loginTips'))
       }
       if (currentUser.value === targetUser) {
-        toast.warning(message.value.forum.errors.cannotDoToSelf)
-        throw new Error(message.value.forum.errors.cannotDoToSelf)
+        toast.warning(t('forum.errors.cannotDoToSelf'))
+        throw new Error(t('forum.errors.cannotDoToSelf'))
       }
     },
     onError: (error) => {
-      toast.error(message.value.forum.errors.followFailed, { error })
+      toast.error(t('forum.errors.followFailed'), { error })
     },
   })
 

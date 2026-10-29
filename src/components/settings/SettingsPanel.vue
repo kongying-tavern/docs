@@ -2,7 +2,7 @@
 import type { SettingsSectionId } from '~/composables/useSettingsNavigation'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { getLangPath } from '@/utils'
 import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
 import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
@@ -25,7 +25,7 @@ const ForumProfileSettings = defineRecoverableAsyncComponent(() => import('~/for
 const ForumShortcutSettings = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumShortcutSettings.vue'), AsyncContentLoading)
 
 const { localeIndex } = useData()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { desktopUi } = useSitePreferences()
 const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}privacy`))
 </script>
@@ -36,7 +36,7 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
   <SettingsSection
     v-if="showAll || activeSection === 'appearance'"
     id="appearance"
-    :title="message.settings.appearance.title"
+    :title="t('settings.appearance.title')"
     :show-heading="showAll"
   >
     <AppearanceSettings />
@@ -45,7 +45,7 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
   <SettingsSection
     v-if="desktopUi && (showAll || activeSection === 'notifications')"
     id="notifications"
-    :title="message.settings.notifications.title"
+    :title="t('settings.notifications.title')"
     :show-heading="showAll"
   >
     <NotificationSettings />
@@ -54,7 +54,7 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
   <SettingsSection
     v-if="(showAll && showLanguage) || activeSection === 'language'"
     id="language"
-    :title="message.settings.language.title"
+    :title="t('settings.language.title')"
     :show-heading="showAll"
   >
     <ForumTranslationSettings />
@@ -63,7 +63,7 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
   <SettingsSection
     v-if="showAll || activeSection === 'privacy'"
     id="privacy"
-    :title="message.settings.privacy.title"
+    :title="t('settings.privacy.title')"
     :show-heading="showAll"
   >
     <TelemetrySettings />
@@ -74,7 +74,7 @@ const privacyHref = computed(() => withBase(`${getLangPath(localeIndex.value)}pr
         target="_blank"
         rel="noopener noreferrer"
       >
-        {{ message.forum.sidebar.privacyPolicy }}
+        {{ t('forum.sidebar.privacyPolicy') }}
         <span class="i-lucide-arrow-up-right icon-btn" aria-hidden="true" />
       </a>
     </template>

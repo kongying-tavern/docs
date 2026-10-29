@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import type { CustomConfig } from '~/forum/types'
+import type { Composer } from 'vue-i18n'
 import { withAuth } from '~/forum/composables/auth/auth-helpers'
 import { catchError } from '~/services/apiUtils'
 import { toast } from '~/services/telemetry/toast'
@@ -10,7 +9,7 @@ export async function executeWithAuth<T extends unknown[], R>(
   action: ActionFunction<T, R>,
   argument: T,
   errorMsg: string,
-  message: Ref<CustomConfig>,
+  t: Composer['t'],
 ): Promise<R | false> {
   const result = await withAuth.execute(
     async () => {
@@ -25,7 +24,7 @@ export async function executeWithAuth<T extends unknown[], R>(
       }
     },
     {
-      loginMessage: message.value.forum.auth.loginTips,
+      loginMessage: t('forum.auth.loginTips'),
     },
   )
 

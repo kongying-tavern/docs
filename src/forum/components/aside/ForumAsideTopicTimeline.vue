@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import User from '@/components/ui/User.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicTimelineQuery } from '~/forum/composables/data/useForumQueries'
 import { useTopicUserRole } from '~/forum/composables/util/useTopicUserRole'
 import { getTopicDisplayStatus } from '~/forum/services/forumTopicStatus'
@@ -19,9 +19,9 @@ const props = defineProps<{
   topic: ForumAPI.Topic
 }>()
 
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.timeline)
-const topicStateMap = getTopicStateMap()
+const { t } = useI18n({ useScope: 'global' })
+
+const topicStateMap = computed(() => getTopicStateMap(t))
 const { resolveRole } = useTopicUserRole()
 
 const timeline = useForumTopicTimelineQuery(computed(() => props.topic.id))
@@ -29,7 +29,7 @@ const events = computed(() => ensureTopicTimelineAnchor(timeline.data.value ?? [
 const hasChanges = computed(() => hasTopicTimelineChanges(events.value))
 
 function statusText(status: ForumAPI.TopicStatus): string {
-  return message.value.forum.topic.status[status]
+  return t(`forum.topic.status.${status}`)
 }
 
 /**
@@ -74,38 +74,32 @@ function describeSegments(event: ForumAPI.TopicTimelineEvent): TimelineSegment {
   const status = eventDisplayStatus(event)
 
   if (event.kind === 'created')
-    return { before: copy.value.created, label: '', suffix: '' }
+    return { before: t('forum.aside.timeline.created'), label: '', suffix: '' }
 
   if (event.kind === 'state') {
-    const label = (event.state ? topicStateMap.get(event.state) : event.stateLabel) ?? ''
-    return segment(copy.value.stateChanged, { state: label }, 'state', status)
+    const label = (event.state ? topicStateMap.value.get(event.state) : event.stateLabel) ?? ''
+    return segment('forum.aside.timeline.stateChanged', { state: label }, 'state', status)
   }
 
   if (event.from && event.to) {
-    return segment(copy.value.statusChanged, {
+    return segment('forum.aside.timeline.statusChanged', {
       from: statusText(event.from),
       to: statusText(event.to),
     }, 'to', status)
   }
 
   return event.to
-    ? segment(copy.value.statusSet, { status: statusText(event.to) }, 'status', status)
-    : { before: copy.value.statusCleared, label: '', suffix: '' }
+    ? segment('forum.aside.timeline.statusSet', { status: statusText(event.to) }, 'status', status)
+    : { before: t('forum.aside.timeline.statusCleared'), label: '', suffix: '' }
 }
 
 function segment(
-  template: string,
+  key: string,
   values: Record<string, string>,
   slot: string,
   status: ForumAPI.TopicDisplayStatus | undefined,
 ): TimelineSegment {
-  let text = template
-  for (const [key, value] of Object.entries(values)) {
-    if (key !== slot)
-      text = text.replace(`{${key}}`, value)
-  }
-
-  const [before = '', ...rest] = text.replace(`{${slot}}`, STATUS_SLOT).split(STATUS_SLOT)
+  const [before = '', ...rest] = t(key, { ...values, [slot]: STATUS_SLOT }).split(STATUS_SLOT)
   return {
     before,
     label: values[slot] ?? '',
@@ -128,21 +122,21 @@ const nodes = computed(() => events.value.map(event => ({
   <ForumAsideSection
     v-if="timeline.error.value || hasChanges"
     section-id="timeline"
-    :title="copy.title"
+    :title="t('forum.aside.timeline.title')"
   >
     <div
       v-if="timeline.error.value"
       class="text-ui-13 color-[--vp-c-text-2] px-1 py-3.5 border-t border-t-[var(--vp-c-divider)] border-solid flex gap-3 items-center justify-between"
       role="status"
     >
-      <span>{{ copy.error }}</span>
+      <span>{{ t('forum.aside.timeline.error') }}</span>
       <button
         type="button"
         class="vp-link shrink-0"
         :disabled="timeline.isLoading.value"
         @click="timeline.refetch()"
       >
-        {{ copy.retry }}
+        {{ t('forum.aside.timeline.retry') }}
       </button>
     </div>
 

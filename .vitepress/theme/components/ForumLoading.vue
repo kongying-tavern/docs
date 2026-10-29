@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { useData, withBase } from 'vitepress'
-import { SITE_LOGO } from '../../locales/common/site'
+import { withBase } from 'vitepress'
+
+import { useI18n } from 'vue-i18n'
+import { SITE_LOGO } from '../../locales/common'
 
 defineProps<{ fullscreen?: boolean }>()
-const { theme } = useData()
+
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
-  <div class="forum-loading" :class="{ 'forum-loading-fullscreen': fullscreen }" role="status" :aria-label="theme.ui.button.loading" aria-busy="true">
+  <div class="forum-loading" :class="{ 'forum-loading-fullscreen': fullscreen }" role="status" :aria-label="t('ui.button.loading')" aria-busy="true">
     <img class="forum-loading-logo" :src="withBase(SITE_LOGO)" alt="" width="80" height="80" fetchpriority="high">
   </div>
 </template>

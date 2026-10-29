@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { flattenWithTags } from '../utils/submitFormUi'
 
 const { theme } = useData()
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.suggest)
+const { t } = useI18n({ useScope: 'global' })
 
 const recommendedDocs = computed(() => {
   const sidebarDocs = flattenWithTags(
@@ -18,7 +17,7 @@ const recommendedDocs = computed(() => {
       firstBySection.set(item.tag, item)
   }
 
-  const candidates = [...copy.value.items, ...firstBySection.values(), ...sidebarDocs]
+  const candidates = [...theme.value.forum.aside.suggest.items, ...firstBySection.values(), ...sidebarDocs]
   return candidates.filter((item, index) =>
     item.link && candidates.findIndex(candidate => candidate.link === item.link) === index,
   ).slice(0, 6)
@@ -34,7 +33,7 @@ function cleanLabel(text: string): string {
 <template>
   <div class="selected-articles mb-4">
     <p class="color-[var(--vp-c-text-1)] lh-14 font-[var(--vp-font-family-subtitle)] mb-4 vp-border-divider h-14">
-      {{ copy.text }}
+      {{ t('forum.aside.suggest.text') }}
     </p>
     <VPLink
       v-for="item in recommendedDocs"

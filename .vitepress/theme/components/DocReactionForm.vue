@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
+
 import { useSessionStorage } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button/'
 import { Textarea } from '@/components/ui/textarea/'
 import { useSubmitTopic } from '~/forum/composables/data/useSubmitTopic'
@@ -14,7 +16,9 @@ const { showForm } = defineProps<{
   showForm: boolean
 }>()
 
-const { theme, page } = useData()
+const { t } = useI18n({ useScope: 'global' })
+
+const { page, theme } = useData()
 const { topicHref } = useForumRoute()
 
 const initFormData: ForumAPI.CreateTopicOption = {
@@ -56,12 +60,12 @@ defineExpose({
   <BlurFade v-if="isEditing || showForm" class="feedback-question" :duration="0.2" :delay="200">
     <div v-if="loading" class="loader mr-4" />
     <p v-if="loading">
-      {{ theme.docReaction.loadingMsg }}
+      {{ t('docReaction.loadingMsg') }}
     </p>
     <form v-if="!(data || error)">
       <div class="feedback-title" mt-4>
         <span class="required" />
-        {{ theme.docReaction.form.chooseIssues }}
+        {{ t('docReaction.form.chooseIssues') }}
       </div>
       <div class="mb-4 mt-2 flex flex-wrap items-center">
         <div
@@ -75,17 +79,17 @@ defineExpose({
           <label
             :for="`feedback-question-checkbox-${index}`"
             class="text-sm text-color-[var(--vp-c-text-1)] font-medium ms-2"
-          >{{ item.label }}</label>
+          >{{ t(`docReaction.form.issueOptions.${item.value}`) }}</label>
         </div>
       </div>
 
       <div class="feedback-title" mt-4 flex justify-between>
-        {{ theme.docReaction.form.feedbackDetail }}
+        {{ t('docReaction.form.feedbackDetail') }}
       </div>
       <Textarea
         v-model="formData.text"
         rows="4"
-        :placeholder="theme.docReaction.form.feedbackTip"
+        :placeholder="t('docReaction.form.feedbackTip')"
         maxlength="2000"
         class="text-sm text-gray-900 mt-4 p-2.5 border border-gray-300 rounded-lg border-solid bg-gray-50 w-full block dark:text-white dark:border-gray-600 dark:bg-[var(--vp-c-bg-alt)]"
       />
@@ -95,7 +99,7 @@ defineExpose({
           type="button" :disabled="formData.tags.length < 1"
           @click="submit()"
         >
-          {{ theme.ui.button.submit }}
+          {{ t('ui.button.submit') }}
         </Button>
         <Button
           variant="secondary"
@@ -103,7 +107,7 @@ defineExpose({
           ml-4
           @click="cancel()"
         >
-          {{ theme.ui.button.cancel }}
+          {{ t('ui.button.cancel') }}
         </Button>
       </div>
     </form>
@@ -113,18 +117,18 @@ defineExpose({
         <span v-if="!data?.id" class="doc-reaction-feedback-state-error" />
         {{
           data?.id
-            ? theme.docReaction.feedbackSuccessMsg
-            : theme.docReaction.feedbackFailMsg
+            ? t('docReaction.feedbackSuccessMsg')
+            : t('docReaction.feedbackFailMsg')
         }}
 
         <pre v-if="error" class="mt-4" tabindex="0">
           <code>
-            {{ theme.docReaction.errorMessage }}{{ error?.message }}
+            {{ t('docReaction.errorMessage') }}{{ error?.message }}
           </code>
         </pre>
 
         <a class="vp-link mt-1 text-center w-full inline-block" :href="topicHref(String(data?.id || ''), null)" target="_blank" rel="noopener noreferrer">
-          {{ data?.id ? theme.docReaction.viewFeedback.replace('{id}', String(data.id)) : '' }}
+          {{ data?.id ? t('docReaction.viewFeedback', { id: String(data.id) }) : '' }}
         </a>
       </div>
     </div>

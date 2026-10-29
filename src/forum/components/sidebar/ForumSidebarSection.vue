@@ -4,7 +4,7 @@ import type ForumAPI from '~/forum/api/types'
 import type { SavedTopicDraft } from '~/forum/services/form/topicDraft'
 import { useResizeObserver } from '@vueuse/core'
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { issues } from '~/forum/api/gitee'
 import ForumContextMenu from '../ui/ForumContextMenu.vue'
 import ForumMenuContext from '../ui/ForumMenuContext.vue'
@@ -43,7 +43,7 @@ const emit = defineEmits<{
   'create': []
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const topicListEl = useTemplateRef<HTMLElement>('topicListEl')
 const topicListScrollable = ref(false)
@@ -62,7 +62,7 @@ function handleToggle(event: Event) {
 }
 
 function commentLabel(item: { commentCount?: number }): string {
-  return message.value.forum.sidebar.totalComments.replace('{count}', String(item.commentCount || 0))
+  return t('forum.sidebar.totalComments', { count: item.commentCount || 0 })
 }
 
 function fallbackMenu(item: typeof items[number]): FORUM.TopicDropdownMenu[] {
@@ -70,13 +70,13 @@ function fallbackMenu(item: typeof items[number]): FORUM.TopicDropdownMenu[] {
     return [{
       type: 'item',
       id: 'edit-draft',
-      label: message.value.forum.publish.feedbackForm.editDraft,
+      label: t('forum.publish.feedbackForm.editDraft'),
       icon: 'i-lucide-square-pen',
       action: () => openDraftMenuItem(item.href),
     }, {
       type: 'item',
       id: 'delete-draft',
-      label: message.value.forum.publish.feedbackForm.deleteDraft,
+      label: t('forum.publish.feedbackForm.deleteDraft'),
       icon: 'i-lucide-trash-2',
       variant: 'destructive',
       action: () => openDraftMenuItem(item.href.replace('-DRAFT-', '-DRAFT-DELETE-')),
@@ -85,14 +85,14 @@ function fallbackMenu(item: typeof items[number]): FORUM.TopicDropdownMenu[] {
   return [{
     type: 'item',
     id: 'gitee-link',
-    label: message.value.forum.topic.menu.giteeLink,
+    label: t('forum.topic.menu.giteeLink'),
     icon: 'i-lucide-cable',
     action: () => issues.openTopicOnGitee(item.id),
   }, ...(item.canUnfollow
     ? [{
         type: 'item' as const,
         id: 'unfollow-topic',
-        label: message.value.forum.labels.unfollow,
+        label: t('forum.labels.unfollow'),
         icon: 'i-lucide-bookmark-minus',
         disabled: actionDisabled,
         action: () => emit('unfollow', item.id),
@@ -148,7 +148,7 @@ function openDraftMenuItem(href: string): void {
                   />
                   <span class="flex-1 min-w-0 truncate">{{ item.title }}</span>
                   <span v-if="item.draft" class="text-xs text-secondary-foreground px-2 py-0.5 rounded-full bg-secondary shrink-0">
-                    {{ message.forum.publish.feedbackForm.draftBadge }}
+                    {{ t('forum.publish.feedbackForm.draftBadge') }}
                   </span>
                   <span
                     v-if="(item.commentCount ?? 0) > 0"
@@ -172,8 +172,8 @@ function openDraftMenuItem(href: string): void {
                   type="button"
                   class="forum-sidebar-unfollow"
                   :disabled="actionDisabled"
-                  :aria-label="message.forum.labels.unfollow"
-                  :title="message.forum.labels.unfollow"
+                  :aria-label="t('forum.labels.unfollow')"
+                  :title="t('forum.labels.unfollow')"
                   @click="emit('unfollow', item.id)"
                 >
                   <span class="i-lucide-bookmark-minus size-3.5" aria-hidden="true" />

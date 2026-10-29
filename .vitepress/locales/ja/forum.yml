@@ -1,0 +1,648 @@
+loadMore: もっと読む
+noMore: これ以上ありません
+loadError: 読み込みに失敗しました
+lastVisited: 前回ここまで閲覧
+empty:
+  title: フィードバックはありません
+  description: 絞り込み条件を変更するか、新しいフィードバックを投稿してください。
+  searchTitle: 「{query}」は見つかりませんでした
+  searchDescription: 別のキーワードを試すか、絞り込み条件を変更してください。
+  switchEverything: すべてのフィードバックに切り替える
+  switchOpen: 未解決のフィードバックに切り替える
+  switchClosed: 解決済みのフィードバックに切り替える
+  showAllTypes: すべてのフィードバック種類を表示
+  clearSearch: 検索条件を解除
+  createFeedback: フィードバックを作成
+reaction:
+  label: フィードバック評価
+  like: 賛成
+  dislike: 反対
+imageActions:
+  processing: 画像を処理しています…
+  saved: 画像を保存しました
+  failed: 接続またはブラウザー権限を確認して再試行してください
+  copied: コピーしました
+  unknown: 不明
+  raw: 添付画像の元データ
+  dimensions: 実際の寸法
+  ratio: 縦横比
+  size: ファイルサイズ
+  type: ファイル形式
+  modified: 最終更新日時
+  loading: 画像情報を読み込み中…
+  loadFailed: リソース情報を取得できません。添付画像の元データは表示できます。
+imagePreview:
+  longImage: 縦長画像
+  longImageNavigator: 縦長画像の位置ナビゲーション
+  previous: 前の画像
+  next: 次の画像
+  expandPanel: プレビューパネルを開く
+  collapsePanel: プレビューパネルを閉じる
+  showImage: '{index} 枚目の画像を表示'
+sidebar:
+  home: フィードバックフォーラム
+  manual: ユーザーマニュアル
+  download: クライアントをダウンロード
+  myProfile: プロフィール
+  faq: よくある質問
+  createFeedback: フィードバックを作成
+  loginToCreate: ログインして投稿
+  recentSubmitted: マイフィードバック
+  followedTopics: フォロー中
+  recentParticipated: 参加済み
+  emptySubmitted: 投稿したフィードバックはありません
+  emptyFollowed: フォロー中のフィードバックはありません
+  emptyParticipated: 参加したフィードバックはありません
+  loginToView: ログインして表示
+  loginNow: ログイン
+  syncFailed: コメントは投稿されましたが、参加履歴を同期できませんでした
+  personalRecovery:
+    readFailed: フォローと参加履歴を読み込めませんでした。再試行してください。
+    corrupt: フォローと参加履歴のデータが破損しています。記録の復元をお試しください。
+    unsupported: このバージョンでは対応していない形式です。アプリを更新して再試行してください。
+    conflict: 複数の記録ファイルが見つかりました。Gitee で確認してください。統合や上書きは行っていません。
+    retry: 再読み込み
+    repair: 有効な記録を復元
+    reset: 記録をリセット
+    repairConfirm: 有効な記録 {count} 件を保持し、認識できない項目を削除します。続行しますか？
+    resetConfirm: フォローと参加履歴をすべて消去します。続行しますか？
+    confirm: 確認
+    cancel: キャンセル
+    actionFailed: 操作に失敗しました。再読み込みしてから再試行してください。
+    success: 記録を復元しました。
+  totalComments: コメント全 {count} 件
+  information: 詳細
+  listSort: 一覧の並び順
+  opensource: オープンソース
+  feedbackCommunity: Discord
+  userAgreement: 利用規約
+  privacyPolicy: プライバシーポリシー
+  festival:
+    christmasSnow: 雪を降らせよう
+    newYearFireworks: 新年の花火を上げよう
+    springFestivalFireworks: 春節の花火を上げよう
+    dismiss: この期間は表示しない
+exceededRateLimitWarning: リクエストが集中しています。ログインしてから再試行してください
+translate:
+  translateText: 翻訳
+  translatedFrom: '{language}から翻訳'
+  settings: 翻訳設定
+  settingsDescription: この端末での翻訳方法を設定します
+  autoTranslate: 自動翻訳
+  autoTranslateDescription: 別の言語で書かれたフィードバックを翻訳します
+  viewOriginal: 原文を表示
+  showTranslation: 翻訳を表示
+  conservativeSkip: 文章が短すぎるか、言語を特定できませんでした
+  error: 翻訳に失敗しました
+  limit: 最大リクエスト数に達しました
+  loading: 翻訳中…
+topic:
+  official: 公式
+  author: 作成者
+  officialAt: '{''@''}空蛍酒場'
+  showMore: もっと見る
+  previewTitle: フィードバックプレビュー
+  backToFeedbackForum: フォーラムに戻る
+  quote:
+    action: フィードバックを引用
+    quoted: 引用フィードバック
+    remove: 引用を削除
+    loading: 引用フィードバックを読み込み中
+    unavailable: 引用フィードバックを表示できません
+    invalid: 引用リンクが無効なため、通常のフィードバックフォームを開きました
+    retry: 再試行
+    countSyncFailed: フィードバックは公開されましたが、引用数を更新できませんでした
+  menu:
+    moreActions: その他の操作
+    back: 戻る
+    syncPending: '{action}。同期結果の確認待ちです'
+    giteeLink: Gitee で見る
+    toOriginal: 元の投稿を表示
+    hideFeedback:
+      text: フィードバックを隠す
+      success: 表示状態を更新しました
+      fail: 表示状態を更新できませんでした
+    deleteComment:
+      text: コメントを削除
+      title: コメントを削除しますか？
+      confirm: 削除すると元に戻せません。このコメントを削除しますか？
+      success: コメントを削除しました
+      fail: 削除に失敗しました
+    closeFeedback:
+      text: フィードバックをアーカイブ
+      title: フィードバックをアーカイブしますか？
+      confirm: アーカイブすると、このフィードバックは未対応・クローズ済みの一覧に表示されなくなります。同時に解決ステータスを設定することもできます。
+      keepStatus: 現在のステータスを維持
+      submit: アーカイブする
+      success: アーカイブしました
+      fail: アーカイブに失敗しました
+    copyId: フィードバック ID をコピー
+    copyLink:
+      text: リンクをコピー
+      success: コピーされました
+      fail: コピーに失敗しました
+    changeType:
+      text: 種類を変更
+      to: 変更先
+      success: フィードバックの種類を変更しました
+      fail: フィードバックの種類を変更できませんでした
+    modifyTags:
+      text: タグを編集
+      title: フィードバックタグを編集（#{id}）
+      success: フィードバックのタグを変更しました
+      fail: フィードバックのタグを変更できませんでした
+    modifyStatus:
+      text: ステータスを設定
+      none: ステータスをクリア
+      conflict: 複数のステータスラベルがあります。選択したものだけが残ります。
+      conclusiveHint: 結論ステータスを設定すると、未対応のフィードバックは自動的にクローズ済みになります。
+      success: フィードバックステータスを更新しました
+      fail: フィードバックステータスを更新できませんでした
+    goodIssue:
+      mark: 注目に設定
+      unmark: 注目を解除
+      success: 注目マークを更新しました
+      fail: 注目マークを更新できませんでした
+    pinTopic:
+      pin: フィードバックを固定
+      unpin: 固定を解除
+      success: フィードバックの固定状態を変更しました
+      fail: フィードバックの固定状態を変更できませんでした
+    commentArea:
+      open: コメントを開く
+      close: コメントを閉じる
+      success: コメント欄の状態を変更しました
+      fail: コメント欄の状態を変更できませんでした
+    privateFeedback:
+      makePrivate: 管理者のみ閲覧可能にする
+      makePublic: フィードバックを公開する
+      success: フィードバックの公開設定を更新しました
+      fail: フィードバックの公開設定を更新できませんでした
+    reopenFeedback:
+      text: アーカイブを解除
+    unhideFeedback:
+      text: 非表示を解除
+    reactionStats:
+      text: 統計を見る
+      title: フィードバック統計（#{id}）
+      commentTitle: コメント統計（#{id}）
+      views: 閲覧数
+      loading: 統計を読み込み中…
+      refresh: 更新
+      fail: 統計の読み込みに失敗しました
+  type:
+    sug: 提案
+    bug: バグ
+    feat: 機能
+    ann: お知らせ
+  status:
+    roadmap: ロードマップ
+    rfc: RFC
+    not-planned: 対応予定なし
+    wontfix: 修正しない
+    fixed: 修正済み
+    not-reproducible: 再現不可
+    confirmed: 確認済み
+    needs-triage: 要トリアージ
+    blocked: ブロック中
+    needs-more-info: 追加情報が必要
+    stale: 長期間更新なし
+    duplicate: 重複
+    invalid: 無効
+    closed: クローズ済み
+    goodIssue: 注目
+  statusGroups:
+    planning: 計画
+    triage: 対応状況
+    maintenance: メンテナンス
+    resolution: 結論
+  searchFacets:
+    label: フィルター
+    tags: タグ
+    state: 状態
+    author: 作成者
+    stateTab: 状態
+    tagsTab: タグ
+    authorTab: 作成者
+    choose: フィルターを選択
+    back: フィルターに戻る
+    tagsTitle: タグで絞り込む
+    tagsDescription: フィードバックタグを複数選択できます
+    stateTitle: 状態で絞り込む
+    stateDescription: フィードバック状態を複数選択できます
+    authorTitle: 作成者で絞り込む
+    authorDescription: ユーザーを選択します
+    platforms: プラットフォーム
+    categories: 問題の種類
+    teamMembers: チームメンバー
+    recommendedUsers: おすすめユーザー
+    searchUsers: ユーザーを検索
+    noOptions: 選択肢がありません
+  state:
+    open: 開放中
+    closed: クローズ済み
+    rejected: 却下
+    progressing: 進行中
+  backToPrevPage: 前のページに戻る
+auth:
+  login: ログイン
+  logout: ログアウト
+  loginMsg: Giteeでログイン
+  logoutMsg: Giteeからログアウト
+  loginTips: ログインして再試行
+  loginToCheck: '{login} すると見られます (・ω・)'
+  jumpToGiteeTips: Giteeで認証します
+  loginSuccess: ログイン成功
+  logoutSuccess: ログアウト完了
+  loginFail: ログイン失敗
+  logoutFail: ログアウト失敗
+  loginAlert: アカウントでログイン
+  loginAlertMsg: Gitee アカウントで続行
+  oauthLoginAlert: Gitee 認証へ進む
+  oauthLoginAlertMsg: このページを離れ、認証完了後に自動で戻ります。
+  account: アカウント
+  accountPlaceholder: Gitee ログイン名またはメール（電話番号・ゲームアカウント不可）
+  loginHelp: ログインでお困りですか？
+  password: パスワード
+  passwordPlaceholder: パスワードを入力
+  passwordLogin: ログイン
+  passwordLoginFail: ログインに失敗しました。アカウント、パスワード、ネットワークを確認してください。
+  oauthLogin: 認証ログインを使用
+  or: または
+  notGiteeAccountMsg: Giteeアカウントがない？{signup}
+  clickToGiteeSignup: Gitee に登録
+  callback:
+    title: Giteeの認証でログインしています…
+    description: しばらくお待ちください。元のページにリダイレクトされます
+    steps:
+      init: 認証パラメータの解析
+      token: アクセストークンの取得
+      session: ユーザーセッションの確立
+      sso: SSOステータスの同期
+      redirect: ページリダイレクトの準備
+    status:
+      pending: 待機中
+      processing: 処理中
+      completed: 完了
+      failed: 失敗
+    error:
+      title: 認証失敗
+      retry: 再試行
+  errorMessages:
+    tokenExpired: ログインの有効期限が切れました。もう一度ログインしてください。
+    tokenInvalid: ログイン状態が無効です。もう一度ログインしてください。
+    tokenRefreshFailed: ログイン状態を更新できませんでした。しばらくしてから再試行してください。
+    tokenMissing: ログイン情報が見つかりません。もう一度ログインしてください。
+    oauthExchangeFailed: ログインを完了できませんでした。再試行してください。
+    networkError: ネットワーク接続に問題があります。接続を確認して再試行してください。
+    unauthorized: アクセスが許可されていません。もう一度ログインしてください。
+    userInfoFetchFailed: アカウント情報を取得できませんでした。しばらくしてから再試行してください。
+    unknown: 操作を完了できませんでした。しばらくしてから再試行してください。
+aside:
+  recentUpdates:
+    title: 最近の更新
+    quoted: '{title}：{summary}'
+    released: '{title}：{version} に更新'
+    updated: '{title}：更新あり'
+  tagFilter:
+    title: タグで絞り込み
+  login:
+    title: ログインしてフィードバックを送信
+    description: Gitee アカウントで問題や提案を投稿し、対応状況を確認できます。
+    oauth: Gitee で認証
+  contactUs:
+    title: コミュニティに参加
+    action: 参加
+    join: QR コードで Discord に参加
+    desc: 緊急の問題やマップの不具合はこちらでご連絡ください。
+    qrCodeAlt: コミュニティ招待 QR コード
+  teamBlog:
+    text: チームブログ
+    items:
+      hotupdatelog-client: クライアント更新ログ
+      changelog-web: Web 版更新ログ
+      changelog-autotrack: 位置追跡更新ログ
+  suggest:
+    text: おすすめドキュメント
+  related:
+    title: 関連フィードバック
+    noTags: 関連項目の検索に使えるタグがありません。
+    empty: 関連するフィードバックはまだありません。
+    error: 関連フィードバックを読み込めませんでした。
+    retry: 再試行
+  timeline:
+    title: ステータス履歴
+    created: フィードバックを作成
+    statusSet: 対応状況を {status} に設定
+    statusChanged: 対応状況を {from} から {to} に変更
+    statusCleared: 対応状況を解除
+    stateChanged: ステータスを {state} に変更
+    error: ステータス履歴を読み込めませんでした。
+    retry: 再試行
+  meta:
+    links:
+      agreement: 利用規約
+      privacy: プライバシーポリシー
+      license: オープンソースライセンス
+    poweredBy:
+      text: Powered by Gitee
+    copyright: © {year} Kongying Tavern
+  userProfile:
+    verification: 認証
+    verifiedMember: 空蛍酒場の公式チームメンバー
+    profile: プロフィール
+    userId: ユーザーID
+    joinDate: 登録日
+    loginLabel: ログイン名
+comment:
+  publish: 投稿
+  mentionPlaceholder: メンションする人を入力または検索
+  viewAllMentions: すべて見る
+  topicParticipants: トピックの参加者
+  comment: コメント
+  loginToComment: ログインしてコメント
+  continueEditing: 編集を続ける…
+  minimize: コメント編集を閉じる
+  leaveDraft: コメントはまだ送信されていません。移動すると内容が失われます。移動しますか？
+  commentSuccess: コメントを投稿しました
+  commentFail: コメントを投稿できませんでした
+  commentAfterLogin: '{login} してコメントしてください (・ω・)'
+  commentCount: コメント
+  placeholder: コメントを入力してください〜
+  loadMoreComment: さらに読み込む
+  targetNotFound: リンク先のコメントが見つかりません。削除された可能性がありますが、このフィードバックは引き続き閲覧できます。
+  noComment: コメントがありません
+  noMoreComment: これ以上コメントはありません
+  loadingComment: コメント読み込み中…
+  reply: 返信
+  commentsClosed: コメント欄は閉じられています
+header:
+  view:
+    label: 表示形式
+    card: カード
+    compact: コンパクト
+    optionsTitle: 表示と並び順
+  sort:
+    created: 作成日
+    updated: 更新日
+    notesCount: コメント数
+  search:
+    placeholder: 検索
+    settings: 絞り込みと表示
+    feedbackRange: フィードバックの範囲
+    feedbackType: フィードバックの種類
+    resetFilters: リセット
+    searchContent: 条件を指定して検索
+    recentSearches: 最近の検索
+    clearRecentSearches: 検索履歴を消去
+    noRecentSearches: 最近の検索はありません
+    expandRecentSearches: もっと見る
+    collapseRecentSearches: 閉じる
+    allRelatedContentCount: 関連フィードバック
+    resultSummary: 「{query}」の検索結果：{count} 件
+  navigation:
+    groups:
+      status: ステータス
+      type: 種類
+    adminOnly: 管理者のみ
+    allFeedback: 未対応フィードバック
+    allTypes: すべての種類
+    bugFeedback: バグ報告
+    featFeedback: 機能提案
+    closedFeedback: クローズ済みフィードバック
+    archivedFeedback: アーカイブ済みフィードバック
+    everythingFeedback: すべてのフィードバック
+publish:
+  tags:
+    issue:
+      typos: 誤字
+      display: 表示問題
+      login: ログイン問題
+      performance: パフォーマンス問題
+      translation: 翻訳問題
+      other: その他
+      pin: ピンの問題
+      docs: ドキュメント問題
+    platforms:
+      all: 全プラットフォームで再現可能
+      web: ウェブ版の問題
+      client: クライアント版の問題
+  title: フィードバックフォーム
+  type:
+    sug: 提案
+    bug: バグ
+    feat: 機能
+    ann: お知らせ
+  tagsInput:
+    platformGroup: プラットフォーム
+    typeGroup: カテゴリー
+    searchTags: タグを検索
+    loading: タグを読み込み中…
+    maxTagsLimit: タグの上限に達しました
+    noResultsFound: 該当なし
+    loadFailed: タグを読み込めませんでした。もう一度お試しください。
+    retry: 再試行
+  feedbackForm:
+    deleteDraft: 下書きを削除
+    deleteDraftTitle: この下書きを削除しますか？
+    deleteDraftDescription: この下書きと現在の編集内容が削除されます。元に戻すことはできません。
+    deleteDraftFailed: 下書きを削除できませんでした。もう一度お試しください。
+    draftBadge: 下書き
+    untitledDraft: 無題の下書き
+    editDraft: 下書きを編集
+    draftSavedShort: 保存済み
+    autoSaveFailed: 保存に失敗しました
+    chooseType: フィードバックの種類を選択
+    backToTypes: フィードバックの種類選択に戻る
+    chooseTypeDescription: どのようなフィードバックを送りますか？
+    newFeedback: 新しいフィードバック
+    createMore: 続けて作成
+    privateFeedback: 管理者のみ閲覧可能
+    privateFeedbackVisibility: 管理者のみ閲覧可能
+    privateFeedbackDescription: 送信後は管理者のみ閲覧でき、一般には公開されません。
+    saveDraft: 下書きを保存
+    savingDraft: 保存中
+    draftSaveFailed: 下書きを保存できませんでした。もう一度お試しください。
+    draftSaved: 下書きを保存しました
+    expand: 編集画面を拡大
+    collapse: 編集画面を縮小
+    selectTags: カテゴリ
+    selectReference: フィードバックを引用
+    searchReference: タイトルまたは ID で検索…
+    removeReference: 引用を削除
+    removeTag: カテゴリ {tag} を削除
+    submit: フィードバックを投稿
+    keepDraftTitle: 今回の編集内容を保存しますか？
+    keepDraftDescription: 保存すると、次回フィードバックフォームを開いたときに編集を続けられます。
+    discardDraft: 保存しない
+    keepDraft: 保存
+    fieldsNeedAttention: 確認が必要な項目が {count} 件あります
+    uploadingImages: 画像をアップロード中 {settled}/{total}
+    imageQueued: アップロード待ち
+    imageProcessing: 画像を処理中
+    imageUploaded: 画像をアップロードしました
+    publishing: フィードバックを投稿中…
+    success: フィードバックを投稿しました
+    uploadFailed: 画像をアップロードできませんでした。確認して再試行してください。
+    uploadFailedShort: アップロード失敗
+    publishFailed: 投稿できませんでした。入力内容は保存されています。
+    phoneBindingRequired: Gitee アカウントに電話番号が登録されていません。登録後にフィードバックを再送信してください。
+    returnToForm: フォームに戻る
+    copyError: エラー情報をコピー
+    retryImage: '{filename} を再アップロード'
+    removeImage: '{filename} を削除'
+    addImages: 画像を追加
+    attachmentsLabel: フィードバック画像
+    attachmentsLimit: '{count}/{max} 枚・1 枚あたり {size}'
+    imageEmpty: '{filename} は空のファイルです'
+    imageInvalidType: '{filename} の画像形式はサポートされていません'
+    imageTooLarge: '{filename} は上限 {size} を超えています'
+    imageCountExceeded: 画像は最大 {max} 枚まで追加できます
+    previewFailed: '{filename} をプレビューできません'
+    formatBold: 太字を切り替え
+    formatItalic: 斜体を切り替え
+    formatStrike: 取り消し線を切り替え
+    referenceById: この ID を参照（トピック未読み込み）
+    referenceTopic: トピックを検索して参照
+    mentionUser: メンバーにメンション
+    searchPeople: 名前やアカウントを検索…
+    recentUsed: 最近使用
+    teamMembers: チームメンバー
+    previousEmojiGroup: 前の絵文字グループ
+    nextEmojiGroup: 次の絵文字グループ
+  publishLoading: 投稿中…
+  form:
+    title:
+      text: タイトル
+      placeholder: 5〜50 文字
+    type:
+      text: ラベル
+      placeholder: 1 つ以上選択してください
+    content:
+      text: 内容
+      placeholder: フィードバックの内容を詳しく記入してください（5〜2000 文字）
+    upload:
+      text: 画像をアップロード
+      tip: '{range} 枚までのスクリーンショットをアップロード（最大 {size} MB）'
+user:
+  menu:
+    giteePage: Giteeプロフィール
+    giteeAccountInfo: Giteeアカウント情報
+  myFeedback:
+    title: マイフィードバック
+readMore: 続きを読む
+validation:
+  errors:
+    titleRequired: タイトルが必要です
+    contentTooShort: コンテンツは最低 {min} 文字必要です
+    contentTooLong: コンテンツは最大 {max} 文字以下にしてください
+    tagsRequired: 最低 {min} 個のタグが必要です
+    tooManyTagsLimit: タグは最大 {max} 個まで許可されています
+    commentEmpty: コメントは空にできません
+    announcementPermission: お知らせを投稿できるのは管理者のみです
+errors:
+  tooManyRequests: リクエストが多すぎます。後でもう一度お試しください
+  serverError: サーバーエラー、もう一度お試しください
+  notFound: リソースが見つかりません
+  unknownError: 不明なエラー
+  networkError: ネットワーク接続に失敗しました
+  permissionDenied: アクセス権限がありません
+  operationFailedRetry: 操作に失敗しました。後でもう一度お試しください
+  networkRequestFailed: ネットワークリクエストが失敗しました。ローカルデータを表示しています
+  loadFailedHint: しばらくしてから再試行するか、ネットワーク接続を確認してください。
+  sortDataLoadFailed: ソートデータの読み込みに失敗しました
+  cannotDoToSelf: 自分に対してはこの操作を実行できません
+  followFailed: フォローに失敗しました。後でもう一度お試しください
+  unfollowSuccess: フォローを解除しました
+  followSuccess: フォローしました
+  permissionInsufficientAnnouncement: 権限不足：お知らせを投稿できるのは管理者のみです
+  ssoRefreshTokenFailed: ログイン状態を更新できませんでした。再度ログインしてください
+  traceIdOnly: （エラーID：{traceId}）
+  traceIdWithMessage: '{message}（エラーID：{traceId}）'
+telemetry:
+  description: オンにすると、エラーと利用状況を匿名で送信し、問題の発見と修正に役立てます。入力内容は含まれません。
+  enable: 診断情報の送信を有効にする
+  stateDisabled: 診断情報の送信はオフです。
+  sessionId: セッションID
+  copySessionId: セッションIDをコピー
+  copySuccess: コピー済み
+  traceIdSuffix: （エラーID：{traceId}）
+  copyErrorInfo: エラー情報をコピー
+  viewErrorDetails: エラーの詳細を見る
+  details: 詳細
+  errorDetails: エラーの詳細
+  sessionHint: フィードバックにセッションIDを添えると、サポートが該当セッションを特定しやすくなります。
+labels:
+  submitBug: バグ報告
+  submitSuggestion: 提案
+  teamBlog: チームブログ
+  userManual: ユーザーマニュアル
+  joinCommunity: コミュニティに参加
+  writeThoughts: あなたの考えを書いてください…
+  shareExperience: あなたの経験を共有してください…
+  askQuestion: あなたの質問を投稿してください…
+  lazyPerson: この人は怠け者で、何も書いていません〜
+  unknown: 不明
+  fetchUserFailed: プロフィールを読み込めませんでした
+  personalHomepage: さんのプロフィール
+  goToProfile: プロフィールを見る
+  imageLoadFailed: 画像の読み込みに失敗しました
+  follow: フォロー
+  following: フォロー中
+  unfollow: フォロー解除
+  posts: 投稿
+  joinTime: 参加日
+  privateMessage: メッセージ
+  login: ログイン
+  openInEditor: エディターで開く
+labelAdmin:
+  title: ラベル管理
+  description: フィードバックリポジトリの Gitee ラベルを管理します。カテゴリラベルは投稿フォームとフィルターに即時反映されます。
+  accessDenied: 権限が不足しています
+  accessDeniedDescription: このページはフィードバック管理権限を持つメンバーのみ利用できます。
+  create: ラベルを作成
+  edit: ラベルを編集
+  delete: 削除
+  refresh: 更新
+  refreshSuccess: 更新しました（{count} 件のラベル）
+  backToList: フィードバック一覧に戻る
+  loading: ラベルを読み込み中…
+  loadFailed: ラベルの読み込みに失敗しました
+  retry: 再試行
+  empty: ラベルはまだありません
+  count: '{count} 件のラベル'
+  groups:
+    type: フィードバック種別
+    category: カテゴリラベル
+    status: ステータス
+    locale: 言語
+    special: 機能ラベル
+    other: その他
+  manageableSection: 管理可能ラベル
+  noPreview: プレビューはありません
+  reservedSection: システム予約
+  reservedHint: 予約ラベルはサイトのロジックが依存しているため、名前変更や削除はできません。
+  columnPreview: プレビュー
+  columnName: 名前
+  columnActions: 操作
+  nameLabel: ラベル名
+  namePlaceholder: 例：CATA-PERFORMANCE
+  nameHint: CATA- で始まるラベルはカテゴリタグとして投稿フォームとフィルターに表示されます。
+  reservedNameWarning: この名前はシステム予約の範囲（種別・機能ラベル）に該当するため、作成後に予約ラベルとしてロックされます。
+  colorLabel: ラベルの色
+  previewLabel: プレビュー
+  errors:
+    nameRequired: ラベル名を入力してください
+    nameInvalid: 名前には英字・数字・ハイフン・アンダースコアのみ使用でき、最大 48 文字です
+    nameTaken: 同じ名前のラベルが既に存在します
+    colorInvalid: 色は 6 桁の 16 進数で指定してください
+  deleteTitle: ラベルの削除
+  deleteDescription: 「{name}」を削除すると、リポジトリとすべてのフィードバックから取り除かれ、そのラベルを使ったフィルターリンクは無効になります。
+  deleteConfirm: 削除する
+  createSuccess: ラベル「{name}」を作成しました
+  updateSuccess: ラベル「{name}」を更新しました
+  deleteSuccess: ラベル「{name}」を削除しました
+  operateFailed: 操作に失敗しました：{message}
+blog:
+  breadcrumbHome: ホーム
+  breadcrumbBlog: チームブログ

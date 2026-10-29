@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
   <span
     class="i-lucide-lock-keyhole topic-visibility-icon"
     role="img"
-    :aria-label="message.forum.publish.feedbackForm.privateFeedbackVisibility"
-    :title="message.forum.publish.feedbackForm.privateFeedbackVisibility"
+    :aria-label="t('forum.publish.feedbackForm.privateFeedbackVisibility')"
+    :title="t('forum.publish.feedbackForm.privateFeedbackVisibility')"
   />
 </template>
 

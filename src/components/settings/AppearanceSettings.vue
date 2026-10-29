@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Switch } from '@/components/ui/switch'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useThemeTransition } from '@/hooks/useThemeTransition'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import {
@@ -21,7 +21,7 @@ import SettingsRow from './SettingsRow.vue'
 import SettingsSelect from './SettingsSelect.vue'
 import SettingsThemePreview from './SettingsThemePreview.vue'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { setTheme: transitionTheme } = useThemeTransition()
 const {
   theme,
@@ -33,11 +33,11 @@ const {
 
 const themeOptions = computed(() => THEME_OPTION_DEFINITIONS.map(option => ({
   ...option,
-  label: message.value.settings.appearance[option.labelKey],
+  label: t(`settings.appearance.${option.labelKey}`),
 })))
 const motionOptions = computed(() => MOTION_OPTION_DEFINITIONS.map(option => ({
   ...option,
-  label: message.value.settings.appearance[option.labelKey],
+  label: t(`settings.appearance.${option.labelKey}`),
 })))
 const fontSizeOptions = [
   { value: MIN_UI_FONT_SIZE, iconSize: 14, labelKey: 'fontSizeSmall' },
@@ -73,8 +73,8 @@ function setUiFontSize(value: unknown): void {
 
 <template>
   <SettingsRow
-    :title="message.settings.appearance.theme"
-    :description="message.settings.appearance.themeDescription"
+    :title="t('settings.appearance.theme')"
+    :description="t('settings.appearance.themeDescription')"
     align-start
   >
     <div class="theme-options-wrap">
@@ -105,24 +105,24 @@ function setUiFontSize(value: unknown): void {
 
   <SettingsRow
     v-if="desktopUi"
-    :title="message.settings.appearance.pointerCursor"
-    :description="message.settings.appearance.pointerCursorDescription"
+    :title="t('settings.appearance.pointerCursor')"
+    :description="t('settings.appearance.pointerCursorDescription')"
   >
     <Switch
       v-model="usePointerCursor"
-      :aria-label="message.settings.appearance.pointerCursor"
+      :aria-label="t('settings.appearance.pointerCursor')"
     />
   </SettingsRow>
 
   <SettingsRow
-    :title="message.settings.appearance.motion"
-    :description="message.settings.appearance.motionDescription"
+    :title="t('settings.appearance.motion')"
+    :description="t('settings.appearance.motionDescription')"
   >
     <div class="settings-select">
       <SettingsSelect
         :model-value="motionPreference"
         :options="motionOptions"
-        v-bind="{ ariaLabel: message.settings.appearance.motion }"
+        v-bind="{ ariaLabel: t('settings.appearance.motion') }"
         @update:model-value="setMotionPreference"
       />
     </div>
@@ -130,8 +130,8 @@ function setUiFontSize(value: unknown): void {
 
   <SettingsRow
     v-if="desktopUi"
-    :title="message.settings.appearance.uiFontSize"
-    :description="message.settings.appearance.uiFontSizeDescription"
+    :title="t('settings.appearance.uiFontSize')"
+    :description="t('settings.appearance.uiFontSizeDescription')"
   >
     <ToggleGroup
       type="single"
@@ -144,8 +144,8 @@ function setUiFontSize(value: unknown): void {
         v-for="option in fontSizeOptions"
         :key="option.value"
         :value="String(option.value)"
-        :aria-label="message.settings.appearance[option.labelKey]"
-        :title="message.settings.appearance[option.labelKey]"
+        :aria-label="t(`settings.appearance.${option.labelKey}`)"
+        :title="t(`settings.appearance.${option.labelKey}`)"
       >
         <span
           class="i-lucide-case-sensitive"

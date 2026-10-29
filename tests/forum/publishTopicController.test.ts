@@ -25,9 +25,11 @@ vi.mock('@vueuse/core', async importOriginal => ({
   ...await importOriginal<typeof import('@vueuse/core')>(),
   useEventListener: (event: string, handler: (event: BeforeUnloadEvent) => void) => mocks.exitHandlers.set(event, handler),
 }))
-vi.mock('@/hooks/useLocalized', async () => {
-  const { ref } = await import('vue')
-  return { useLocalized: () => ({ message: ref({ forum: { publish: { feedbackForm: {} } } }) }) }
+vi.mock('vue-i18n', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('vue-i18n')>()
+  const { loadTestMessages } = await import('../shared/support/i18n')
+  const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
+  return { ...actual, useI18n: () => i18n.global }
 })
 vi.mock('~/forum/api/gitee', async importOriginal => ({
   ...await importOriginal<typeof import('~/forum/api/gitee')>(),

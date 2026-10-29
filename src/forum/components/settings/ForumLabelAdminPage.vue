@@ -2,6 +2,7 @@
 import type { ForumLabelGroup, ForumLabelRow } from '~/forum/services/forumLabelTaxonomy'
 import { useRouter } from 'vitepress'
 import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   AlertDialog,
@@ -15,7 +16,6 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
@@ -27,7 +27,7 @@ const { embedded = false } = defineProps<{
   embedded?: boolean
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const router = useRouter()
 const { homeHref } = useForumRoute()
 const labelStore = useForumLabelStore()
@@ -69,10 +69,7 @@ function refresh(): void {
   void labelStore.loadLabels(true).then(() => {
     if (!labelStore.error.value) {
       toast.success(
-        message.value.forum.labelAdmin.refreshSuccess.replace(
-          '{count}',
-          String(labelStore.labels.value.length),
-        ),
+        t('forum.labelAdmin.refreshSuccess', { count: labelStore.labels.value.length }),
       )
     }
   })
@@ -92,17 +89,14 @@ async function handleDelete(): Promise<void> {
     const deleted = await labelStore.deleteForumLabel(target.label.name)
     if (deleted) {
       toast.success(
-        message.value.forum.labelAdmin.deleteSuccess.replace('{name}', target.label.name),
+        t('forum.labelAdmin.deleteSuccess', { name: target.label.name }),
       )
     }
     deleteTarget.value = null
   }
   catch (error) {
     toast.error(
-      message.value.forum.labelAdmin.operateFailed.replace(
-        '{message}',
-        error instanceof Error ? error.message : message.value.forum.errors.unknownError,
-      ),
+      t('forum.labelAdmin.operateFailed', { message: error instanceof Error ? error.message : t('forum.errors.unknownError') }),
       { error, scene: 'op' },
     )
   }
@@ -129,8 +123,8 @@ onMounted(() => {
       <!-- 权限门禁：入口虽不可见，直连 URL 也要挡住（真正的安全由 Gitee API 权限兜底） -->
       <Alert v-if="!canManage" variant="destructive" class="mx-auto my-8 max-w-xl">
         <span class="i-lucide-shield-alert" aria-hidden="true" />
-        <AlertTitle>{{ message.forum.labelAdmin.accessDenied }}</AlertTitle>
-        <AlertDescription>{{ message.forum.labelAdmin.accessDeniedDescription }}</AlertDescription>
+        <AlertTitle>{{ t('forum.labelAdmin.accessDenied') }}</AlertTitle>
+        <AlertDescription>{{ t('forum.labelAdmin.accessDeniedDescription') }}</AlertDescription>
       </Alert>
       <Button
         v-if="!canManage"
@@ -141,21 +135,21 @@ onMounted(() => {
         @click="backToList"
       >
         <span class="i-lucide-arrow-left size-4" aria-hidden="true" />
-        {{ message.forum.labelAdmin.backToList }}
+        {{ t('forum.labelAdmin.backToList') }}
       </Button>
 
       <div v-else class="flex flex-col gap-6">
         <div class="flex flex-col gap-1 min-w-0">
           <h1 class="text-xl text-[var(--vp-c-text-1)] font-semibold">
-            {{ message.forum.labelAdmin.title }}
+            {{ t('forum.labelAdmin.title') }}
           </h1>
           <p class="text-sm text-[var(--vp-c-text-2)]">
-            {{ message.forum.labelAdmin.description }}
+            {{ t('forum.labelAdmin.description') }}
           </p>
           <p v-if="!loadError" class="text-xs text-[var(--vp-c-text-3)] tabular-nums">
             <Skeleton v-if="isLoading && !hasLoaded" class="h-4 w-24" />
             <template v-else>
-              {{ message.forum.labelAdmin.count.replace('{count}', String(totalCount)) }}
+              {{ t('forum.labelAdmin.count', { count: totalCount }) }}
             </template>
           </p>
         </div>
@@ -191,10 +185,10 @@ onMounted(() => {
         <div v-else-if="loadError" class="py-10 flex flex-col gap-3 items-center" role="alert">
           <span class="i-lucide-circle-alert text-[var(--vp-c-text-3)] size-8" aria-hidden="true" />
           <p class="text-sm text-[var(--vp-c-text-2)]">
-            {{ message.forum.labelAdmin.loadFailed }}
+            {{ t('forum.labelAdmin.loadFailed') }}
           </p>
           <Button type="button" variant="outline" size="sm" @click="refresh">
-            {{ message.forum.labelAdmin.retry }}
+            {{ t('forum.labelAdmin.retry') }}
           </Button>
         </div>
 
@@ -204,7 +198,7 @@ onMounted(() => {
             <template #header>
               <div class="flex gap-2 items-center">
                 <span class="text-sm text-[var(--vp-c-text-1)] font-semibold">
-                  {{ message.forum.labelAdmin.manageableSection }}
+                  {{ t('forum.labelAdmin.manageableSection') }}
                 </span>
                 <span class="ml-auto flex gap-2 items-center">
                   <Button
@@ -212,7 +206,7 @@ onMounted(() => {
                     variant="outline"
                     size="sm"
                     :disabled="isLoading"
-                    :aria-label="message.forum.labelAdmin.refresh"
+                    :aria-label="t('forum.labelAdmin.refresh')"
                     @click="refresh"
                   >
                     <span
@@ -220,11 +214,11 @@ onMounted(() => {
                       :class="{ 'animate-spin': isLoading }"
                       aria-hidden="true"
                     />
-                    {{ message.forum.labelAdmin.refresh }}
+                    {{ t('forum.labelAdmin.refresh') }}
                   </Button>
                   <Button type="button" size="sm" @click="openCreate">
                     <span class="i-lucide-plus size-4" aria-hidden="true" />
-                    {{ message.forum.labelAdmin.create }}
+                    {{ t('forum.labelAdmin.create') }}
                   </Button>
                 </span>
               </div>
@@ -236,8 +230,8 @@ onMounted(() => {
                   :href="row.label.url"
                   target="_blank"
                   rel="noopener"
-                  :aria-label="message.forum.topic.menu.giteeLink"
-                  :title="message.forum.topic.menu.giteeLink"
+                  :aria-label="t('forum.topic.menu.giteeLink')"
+                  :title="t('forum.topic.menu.giteeLink')"
                 >
                   <span class="i-lucide-external-link size-3.5" aria-hidden="true" />
                 </a>
@@ -246,8 +240,8 @@ onMounted(() => {
                   variant="ghost"
                   size="icon-xs"
                   class="text-[var(--vp-c-text-2)]"
-                  :aria-label="message.forum.labelAdmin.edit"
-                  :title="message.forum.labelAdmin.edit"
+                  :aria-label="t('forum.labelAdmin.edit')"
+                  :title="t('forum.labelAdmin.edit')"
                   @click="openEdit(row)"
                 >
                   <span class="i-lucide-pencil size-3.5" aria-hidden="true" />
@@ -257,8 +251,8 @@ onMounted(() => {
                   variant="ghost"
                   size="icon-xs"
                   class="text-[var(--vp-c-text-2)] hover:text-destructive"
-                  :aria-label="message.forum.labelAdmin.delete"
-                  :title="message.forum.labelAdmin.delete"
+                  :aria-label="t('forum.labelAdmin.delete')"
+                  :title="t('forum.labelAdmin.delete')"
                   @click="deleteTarget = row"
                 >
                   <span class="i-lucide-trash-2 size-3.5" aria-hidden="true" />
@@ -272,18 +266,18 @@ onMounted(() => {
             <template #header>
               <div class="flex flex-wrap gap-x-2 gap-y-0.5 items-baseline">
                 <span class="text-sm text-[var(--vp-c-text-2)] font-semibold">
-                  {{ message.forum.labelAdmin.reservedSection }}
+                  {{ t('forum.labelAdmin.reservedSection') }}
                 </span>
                 <span class="text-xs text-[var(--vp-c-text-3)]">
-                  {{ message.forum.labelAdmin.reservedHint }}
+                  {{ t('forum.labelAdmin.reservedHint') }}
                 </span>
               </div>
             </template>
             <template #row-actions>
               <span
                 class="pr-2 flex w-full items-center justify-end"
-                :aria-label="message.forum.labelAdmin.reservedHint"
-                :title="message.forum.labelAdmin.reservedHint"
+                :aria-label="t('forum.labelAdmin.reservedHint')"
+                :title="t('forum.labelAdmin.reservedHint')"
               >
                 <span
                   class="i-lucide-lock text-[var(--vp-c-text-3)] size-3.5"
@@ -294,7 +288,7 @@ onMounted(() => {
           </ForumLabelGroupTable>
 
           <p v-if="totalCount === 0" class="text-sm text-[var(--vp-c-text-3)] py-8 text-center">
-            {{ message.forum.labelAdmin.empty }}
+            {{ t('forum.labelAdmin.empty') }}
           </p>
         </template>
       </div>
@@ -311,21 +305,21 @@ onMounted(() => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{{ message.forum.labelAdmin.deleteTitle }}</AlertDialogTitle>
+            <AlertDialogTitle>{{ t('forum.labelAdmin.deleteTitle') }}</AlertDialogTitle>
             <AlertDialogDescription>
-              {{ message.forum.labelAdmin.deleteDescription.replace('{name}', deleteTarget?.label.name ?? '') }}
+              {{ t('forum.labelAdmin.deleteDescription', { name: deleteTarget?.label.name ?? '' }) }}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel :disabled="deleting">
-              {{ message.ui.button.cancel }}
+              {{ t('ui.button.cancel') }}
             </AlertDialogCancel>
             <AlertDialogAction
               class="text-white bg-destructive hover:bg-destructive/90"
               :disabled="deleting"
               @click="handleDelete"
             >
-              {{ message.forum.labelAdmin.deleteConfirm }}
+              {{ t('forum.labelAdmin.deleteConfirm') }}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { OctagonXIcon, XIcon } from '@lucide/vue'
+
 import { useData, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
+import { I18nT, useI18n } from 'vue-i18n'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,7 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import DynamicTextReplacer from '@/components/ui/DynamicTextReplacer.vue'
 import {
   Field,
   FieldGroup,
@@ -25,8 +26,10 @@ import { useHashChecker } from '~/forum/hooks/useHashChecker'
 import useLogin from '~/forum/hooks/useLogin'
 import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
 
+const { t } = useI18n({ useScope: 'global' })
+
 const userAuth = useUserAuthStore()
-const { localeIndex, theme } = useData()
+const { localeIndex } = useData()
 const { isAuthenticating, passwordLoginError, loginWithPassword } = useLogin()
 const { browserAccess } = useAccountLoginExperiment()
 
@@ -75,10 +78,10 @@ function startOAuthLogin(): void {
       <div class="px-6 py-5 border-b bg-muted/30 shrink-0">
         <DialogHeader class="pr-8 text-left">
           <DialogTitle class="text-xl leading-tight">
-            {{ theme.forum.auth.loginAlert }}
+            {{ t('forum.auth.loginAlert') }}
           </DialogTitle>
           <DialogDescription>
-            {{ theme.forum.auth.loginAlertMsg }}
+            {{ t('forum.auth.loginAlertMsg') }}
           </DialogDescription>
         </DialogHeader>
       </div>
@@ -90,7 +93,7 @@ function startOAuthLogin(): void {
           <button
             type="button"
             class="color-[var(--vp-c-text-2)] icon-btn right-1.5 top-1.5 absolute hover:color-[var(--vp-c-text-1)]"
-            :aria-label="theme.ui.button.close"
+            :aria-label="t('ui.button.close')"
             @click="passwordLoginError = null"
           >
             <XIcon class="size-3.5" />
@@ -101,7 +104,7 @@ function startOAuthLogin(): void {
           <FieldGroup class="gap-4">
             <Field>
               <FieldLabel for="gitee-login-username">
-                {{ theme.forum.auth.account }}
+                {{ t('forum.auth.account') }}
               </FieldLabel>
               <div class="relative">
                 <span class="i-lucide-user text-muted-foreground size-4 pointer-events-none left-3 top-1/2 absolute -translate-y-1/2" aria-hidden="true" />
@@ -113,7 +116,7 @@ function startOAuthLogin(): void {
                   class="login-credential-input pl-9"
                   autocomplete="username"
                   autocapitalize="none"
-                  :placeholder="theme.forum.auth.accountPlaceholder"
+                  :placeholder="t('forum.auth.accountPlaceholder')"
                   :disabled="isAuthenticating"
                   required
                 />
@@ -122,7 +125,7 @@ function startOAuthLogin(): void {
 
             <Field>
               <FieldLabel for="gitee-login-password">
-                {{ theme.forum.auth.password }}
+                {{ t('forum.auth.password') }}
               </FieldLabel>
               <div class="relative">
                 <span class="i-lucide-lock-keyhole text-muted-foreground size-4 pointer-events-none left-3 top-1/2 absolute -translate-y-1/2" aria-hidden="true" />
@@ -133,7 +136,7 @@ function startOAuthLogin(): void {
                   type="password"
                   class="login-credential-input pl-9"
                   autocomplete="current-password"
-                  :placeholder="theme.forum.auth.passwordPlaceholder"
+                  :placeholder="t('forum.auth.passwordPlaceholder')"
                   :disabled="isAuthenticating"
                   required
                 />
@@ -151,15 +154,15 @@ function startOAuthLogin(): void {
               class="i-lucide-loader-circle animate-spin"
               aria-hidden="true"
             />
-            {{ theme.forum.auth.passwordLogin }}
+            {{ t('forum.auth.passwordLogin') }}
           </Button>
 
           <a :href="accountLoginHelpHref" class="text-sm vp-link w-fit">
-            {{ theme.forum.auth.loginHelp }}
+            {{ t('forum.auth.loginHelp') }}
           </a>
         </form>
 
-        <FieldSeparator>{{ theme.forum.auth.or }}</FieldSeparator>
+        <FieldSeparator>{{ t('forum.auth.or') }}</FieldSeparator>
 
         <Button
           type="button"
@@ -169,11 +172,11 @@ function startOAuthLogin(): void {
           @click="startOAuthLogin"
         >
           <span class="i-lucide-external-link" aria-hidden="true" />
-          {{ theme.forum.auth.oauthLogin }}
+          {{ t('forum.auth.oauthLogin') }}
         </Button>
 
-        <DynamicTextReplacer
-          :data="theme.forum.auth.notGiteeAccountMsg"
+        <I18nT
+          keypath="forum.auth.notGiteeAccountMsg" scope="global" tag="p"
           class="text-center"
         >
           <template #signup>
@@ -183,10 +186,10 @@ function startOAuthLogin(): void {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {{ theme.forum.auth.clickToGiteeSignup }}
+              {{ t('forum.auth.clickToGiteeSignup') }}
             </a>
           </template>
-        </DynamicTextReplacer>
+        </I18nT>
       </div>
     </DialogContent>
   </Dialog>

@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import type { CustomConfig } from '~/forum/types'
+import type { Composer } from 'vue-i18n'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { IMAGE_UPLOAD_POLICY, VALIDATION_LIMITS } from '../forumConfig'
@@ -97,34 +96,28 @@ export function createTopicDraftSchema(options: {
 }
 
 export function createTopicFormSchema(
-  message: Ref<CustomConfig>,
+  t: Composer['t'],
   canPublishAnnouncement: boolean,
 ) {
-  const { forum } = message.value
-  const { errors } = forum.validation
-
   return toTypedSchema(createTopicDraftSchema({
     canPublishAnnouncement,
     messages: {
-      announcementPermission: errors.announcementPermission,
-      contentRequired: errors.contentTooShort.replace('{min}', String(VALIDATION_LIMITS.CONTENT.MIN_LENGTH)),
-      tagsRequired: errors.tagsRequired.replace('{min}', String(VALIDATION_LIMITS.TAGS.MIN_COUNT)),
-      titleRequired: errors.titleRequired,
-      tooLong: maximum => errors.contentTooLong.replace('{max}', String(maximum)),
-      tooManyTags: maximum => errors.tooManyTagsLimit.replace('{max}', String(maximum)),
+      announcementPermission: t('forum.validation.errors.announcementPermission'),
+      contentRequired: t('forum.validation.errors.contentTooShort', { min: VALIDATION_LIMITS.CONTENT.MIN_LENGTH }),
+      tagsRequired: t('forum.validation.errors.tagsRequired', { min: VALIDATION_LIMITS.TAGS.MIN_COUNT }),
+      titleRequired: t('forum.validation.errors.titleRequired'),
+      tooLong: max => t('forum.validation.errors.contentTooLong', { max }),
+      tooManyTags: max => t('forum.validation.errors.tooManyTagsLimit', { max }),
     },
   }))
 }
 
-export function createCommentFormSchema(message: Ref<CustomConfig>) {
-  const { forum } = message.value
-  const { errors } = forum.validation
-
+export function createCommentFormSchema(t: Composer['t']) {
   return z.object({
     content: z.string()
       .trim()
-      .min(1, errors.commentEmpty)
-      .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, errors.contentTooLong.replace('{max}', String(VALIDATION_LIMITS.CONTENT.MAX_LENGTH))),
+      .min(1, t('forum.validation.errors.commentEmpty'))
+      .max(VALIDATION_LIMITS.CONTENT.MAX_LENGTH, t('forum.validation.errors.contentTooLong', { max: VALIDATION_LIMITS.CONTENT.MAX_LENGTH })),
   })
 }
 

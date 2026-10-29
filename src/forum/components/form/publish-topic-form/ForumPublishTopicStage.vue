@@ -2,8 +2,8 @@
 import type { PublishTopicController } from '../composables/usePublishTopicController'
 import { createReusableTemplate } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, ref, unref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import ForumTopicTypeBadge from '~/forum/components/ui/ForumTopicTypeBadge.vue'
 import { preparePublishTypeMotion } from '~/forum/components/utils/publishTopicTypeTransition'
@@ -11,7 +11,7 @@ import ForumPublishTopicListItem from './ForumPublishTopicListItem.vue'
 
 const props = defineProps<{ form: PublishTopicController['form'], actions: PublishTopicController['actions'], morphType?: boolean, fixedHeight?: boolean, hideCloseButton?: boolean }>()
 const { entryPage, choosingType, formTabs, isOpen } = props.form
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 const typeMotionActive = ref(false)
 const [DefineHeader, Header] = createReusableTemplate<{ title: string, description: string }>()
@@ -100,7 +100,7 @@ onBeforeUnmount(() => {
           </p>
         </div>
       </div>
-      <Button v-if="!hideCloseButton" type="button" variant="ghost" size="icon-sm" class="shrink-0" :aria-label="message.ui.button.close" @click="actions.handleClose">
+      <Button v-if="!hideCloseButton" type="button" variant="ghost" size="icon-sm" class="shrink-0" :aria-label="t('ui.button.close')" @click="actions.handleClose">
         <span class="i-lucide-x" aria-hidden="true" />
       </Button>
     </header>
@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
   <div ref="shell" class="topic-stage-shell" :class="{ 'type-motion-active': typeMotionActive, 'motion-reduced': reducedMotion }">
     <Transition name="topic-stage" :mode="typeMotionActive || reducedMotion ? undefined : 'out-in'" :css="!typeMotionActive && !reducedMotion" @before-leave="keepHeight" @enter="resize" @after-enter="focusForm">
       <section v-if="choosingType" key="choose" data-publish-type-chooser class="topic-chooser" :class="{ 'external-close': hideCloseButton }">
-        <Header :title="message.forum.publish.feedbackForm.chooseType" :description="message.forum.publish.feedbackForm.chooseTypeDescription" />
+        <Header :title="t('forum.publish.feedbackForm.chooseType')" :description="t('forum.publish.feedbackForm.chooseTypeDescription')" />
         <ul class="topic-entry-list mt-6 custom-scrollbar flex flex-col gap-2">
           <li v-for="tab in formTabs.filter(tab => unref(tab.condition))" :key="tab.value">
             <ForumPublishTopicListItem :aria-disabled="typeMotionActive" @click="selectType(tab.value, $event)">

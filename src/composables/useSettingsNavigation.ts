@@ -3,7 +3,7 @@ import type { SettingsSectionGroup, SettingsSectionId } from '~/config/settingsO
 import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref, toValue, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { getLangPath } from '@/utils'
 import {
   isSettingsSectionId,
@@ -39,7 +39,7 @@ export function useSettingsNavigation(
 } {
   const { localeIndex } = useData()
   const router = useRouter()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const { desktopUi } = useSitePreferences()
   const auth = useUserAuthStore()
   const { hasAnyPermissions } = useRuleChecks()
@@ -57,8 +57,8 @@ export function useSettingsNavigation(
     .map(section => ({
       ...section,
       label: section.id === 'labels'
-        ? message.value.forum.labelAdmin.title
-        : message.value.settings[section.id].title,
+        ? t('forum.labelAdmin.title')
+        : t(`settings.${section.id}.title`),
     })))
 
   const activeItem = computed<SettingsNavigationItem>(() =>

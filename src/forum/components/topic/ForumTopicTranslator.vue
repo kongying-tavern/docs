@@ -3,8 +3,8 @@ import type { HTMLAttributes } from 'vue'
 import type { TranslationResult } from '~/forum/services/forumTranslation'
 import { useElementVisibility } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useLanguage } from '@/composables/useLanguage'
-import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
 import { translate, translateAuto } from '~/forum/services/forumTranslation'
@@ -37,7 +37,7 @@ const emit = defineEmits<{
   'snapshot': [snapshot: TopicTranslationSnapshot | undefined]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { currentPageLang } = useLanguage()
 const {
   autoTranslateEnabled,
@@ -94,10 +94,7 @@ const translatedFrom = computed(() => {
     return sourceLanguage
   }
 })
-const translationLabel = computed(() => message.value.forum.translate.translatedFrom.replace(
-  '{language}',
-  translatedFrom.value,
-))
+const translationLabel = computed(() => t('forum.translate.translatedFrom', { language: translatedFrom.value }))
 
 async function startTranslate(manual = true): Promise<void> {
   if (translation.value) {
@@ -146,12 +143,12 @@ async function startTranslate(manual = true): Promise<void> {
       }
     }
     else if (manual && result.reason !== 'same-language') {
-      toast.info(message.value.forum.translate.conservativeSkip)
+      toast.info(t('forum.translate.conservativeSkip'))
     }
   }
   catch (error) {
     if (!(error instanceof DOMException && error.name === 'AbortError'))
-      toast.error(message.value.forum.translate.error, { error })
+      toast.error(t('forum.translate.error'), { error })
   }
   finally {
     if (request === controller) {
@@ -221,7 +218,7 @@ defineExpose({ startTranslate })
       aria-live="polite"
     >
       <span class="i-lucide-loader-circle shrink-0 size-4 animate-spin" aria-hidden="true" />
-      <span class="truncate">{{ message.forum.translate.loading }}</span>
+      <span class="truncate">{{ t('forum.translate.loading') }}</span>
     </div>
 
     <div
@@ -235,7 +232,7 @@ defineExpose({ startTranslate })
         @click.stop.prevent="toggleOriginal"
       >
         <span class="i-lucide-languages shrink-0 size-4" aria-hidden="true" />
-        <span class="truncate">{{ showingOriginal ? message.forum.translate.showTranslation : translationLabel }}</span>
+        <span class="truncate">{{ showingOriginal ? t('forum.translate.showTranslation') : translationLabel }}</span>
       </button>
       <span class="opacity-0 transition-opacity group-hover:opacity-100 max-mobile:opacity-100">
         <ForumTranslationSettingsMenu />

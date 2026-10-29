@@ -49,7 +49,12 @@
     "lunaria:preview": "lunaria preview",
     "up": "taze major -I --exclude typescript@7",
     "use-data-env": "dotenv -e .env.data -c --",
-    "init:locale": "tsx ./scripts/initLocale.ts"
+    "init:locale": "tsx ./scripts/initLocale.ts",
+    "i18n": "x18n",
+    "i18n:check": "x18n check",
+    "i18n:ui": "x18n ui",
+    "i18n:build": "x18n build --out-dir dist/_i18n",
+    "translations:build": "pnpm lunaria:build && pnpm i18n:build"
   },
   "dependencies": {
     "@comark/markdown-it": "catalog:markdown",
@@ -89,7 +94,6 @@
     "class-variance-authority": "catalog:frontend",
     "cn": "catalog:frontend",
     "compressorjs": "catalog:frontend",
-    "dayjs": "catalog:frontend",
     "dompurify": "catalog:",
     "embla-carousel-vue": "catalog:frontend",
     "fast-fuzzy": "catalog:frontend",
@@ -113,6 +117,7 @@
     "vee-validate": "catalog:",
     "vitepress": "catalog:build",
     "vue": "catalog:frontend",
+    "vue-i18n": "catalog:frontend",
     "vue-sonner": "catalog:frontend",
     "zod": "catalog:frontend"
   },
@@ -120,6 +125,7 @@
     "@antfu/eslint-config": "catalog:dev",
     "@commitlint/cli": "catalog:dev",
     "@commitlint/config-conventional": "catalog:dev",
+    "@intlify/unplugin-vue-i18n": "catalog:build",
     "@pinia/colada-devtools": "catalog:dev",
     "@playwright/test": "catalog:",
     "@types/canvas-confetti": "catalog:types",
@@ -135,8 +141,10 @@
     "@vitejs/devtools-rolldown": "catalog:dev",
     "@vitejs/devtools-vite": "catalog:dev",
     "@vitejs/devtools-vitest": "catalog:dev",
+    "@vitejs/plugin-vue": "catalog:build",
     "@vitest/coverage-v8": "catalog:dev",
     "@vitest/ui": "catalog:dev",
+    "@x18n/cli": "catalog:dev",
     "cac": "catalog:",
     "dotenv-cli": "catalog:dev",
     "eslint": "catalog:dev",

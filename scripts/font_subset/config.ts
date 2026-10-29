@@ -81,6 +81,7 @@ const configSchema = z.object({
       vue: z.array(extension),
       script: z.array(extension),
       json: z.array(extension),
+      yaml: z.array(extension),
     }),
     tagRoles: z.record(z.string().min(1), fontRole),
     classRoles: z.record(z.string().min(1), fontRole),

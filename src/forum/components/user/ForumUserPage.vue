@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import { computed, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useArchivedFeedbackAccess } from '~/forum/composables/auth/useArchivedFeedbackAccess'
 import { useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
@@ -16,7 +16,7 @@ import ForumUserProfileHeader from './ForumUserProfileHeader.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'
 
 const { route, list, navigateFilter, navigateType, navigateSort } = useForumRoute()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const username = computed(() => route.value?.name === 'user' ? route.value.username : '')
 const canViewArchived = useArchivedFeedbackAccess(username)
@@ -55,8 +55,8 @@ const allTopicsCount = useForumTopicsQuery(computed(() => ({
 })), computed(() => Boolean(username.value)))
 const loadStateMessage = computed(() => {
   if (topics.error.value)
-    return message.value.forum.loadError
-  return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
+    return t('forum.loadError')
+  return topics.canLoadMore.value ? t('forum.loadMore') : t('forum.noMore')
 })
 function login(): void {
   location.hash = 'login-alert'

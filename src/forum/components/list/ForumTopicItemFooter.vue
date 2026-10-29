@@ -2,8 +2,8 @@
 import type ForumAPI from '~/forum/api/types'
 import { useIntersectionObserver } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
 import ForumQuoteTopicButton from '../topic/ForumQuoteTopicButton.vue'
 import ForumTopicMetadataControl from '../topic/ForumTopicMetadataControl.vue'
@@ -19,7 +19,7 @@ const emit = defineEmits<{
   'comment:click': [user: ForumAPI.User]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { isCompactMode } = useForumViewMode(() => topicData.type)
 const reactionTarget = useTemplateRef<HTMLElement>('reactionTarget')
 const reactionEnabled = ref(false)
@@ -34,18 +34,18 @@ const { stop: stopReactionObserver } = useIntersectionObserver(reactionTarget, (
 const isClosedComment = computed(() => topicData.commentCount === -1)
 const displayText = computed(() => {
   if (isClosedComment.value)
-    return message.value.forum.comment.commentsClosed
+    return t('forum.comment.commentsClosed')
   if (topicData.commentCount > 0)
     return topicData.commentCount
-  return message.value.forum.comment.comment
+  return t('forum.comment.comment')
 })
 // 有评论时可见文本是裸数字，读屏需要带上下文的名称
 const commentAriaLabel = computed(() => {
   if (isClosedComment.value)
-    return message.value.forum.comment.commentsClosed
+    return t('forum.comment.commentsClosed')
   if (topicData.commentCount > 0)
-    return `${message.value.forum.comment.comment} ${topicData.commentCount}`
-  return message.value.forum.comment.comment
+    return `${t('forum.comment.comment')} ${topicData.commentCount}`
+  return t('forum.comment.comment')
 })
 
 function handleCommentClick() {

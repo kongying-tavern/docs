@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useLocalized } from '@/hooks/useLocalized'
 import AsyncLoadError from './AsyncLoadError.vue'
 
 withDefaults(defineProps<{ error?: Error, padded?: boolean }>(), { padded: true })
 const emit = defineEmits<{ retry: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const { message } = useLocalized()
     <AsyncLoadError @retry="emit('retry')" />
   </div>
   <div v-else class="async-content-skeleton" :class="{ 'is-padded': padded }" role="status" aria-live="polite" aria-busy="true" data-async-loading>
-    <span class="sr-only">{{ message.ui.button.loading }}</span>
+    <span class="sr-only">{{ t('ui.button.loading') }}</span>
     <div aria-hidden="true">
       <Skeleton class="mb-5 h-7 w-1/3" />
       <div class="skeleton-rows">

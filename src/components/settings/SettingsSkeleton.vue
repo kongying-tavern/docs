@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { createReusableTemplate } from '@vueuse/core'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useLocalized } from '@/hooks/useLocalized'
 import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
 import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
 import { useSitePreferences } from '~/composables/useSitePreferences'
@@ -13,7 +13,7 @@ import { isBrowserTranslationSupported } from '~/forum/services/browserTranslati
 defineOptions({ inheritAttrs: false })
 defineProps<{ embeddedMobile?: boolean, error?: Error }>()
 const emit = defineEmits<{ close: [], retry: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { desktopUi } = useSitePreferences()
 const [MenuSkeleton, UseMenuSkeleton] = createReusableTemplate()
 const { hasAnyPermissions } = useRuleChecks()
@@ -49,7 +49,7 @@ const menuGroups = computed(() => ['website', 'application'].map(group => sectio
     <section class="settings-dialog-main">
       <header class="settings-dialog-panel-header">
         <h2 class="settings-dialog-title">
-          {{ message.settings.title }}
+          {{ t('settings.title') }}
         </h2>
       </header>
       <div class="settings-dialog-content">
@@ -60,17 +60,17 @@ const menuGroups = computed(() => ['website', 'application'].map(group => sectio
   <div v-else class="settings-mobile-skeleton">
     <header class="settings-skeleton-header">
       <div class="flex gap-1 min-h-11 items-center">
-        <Button variant="ghost" size="icon" class="rounded-lg shrink-0 size-11" :aria-label="message.settings.close" @click="emit('close')">
+        <Button variant="ghost" size="icon" class="rounded-lg shrink-0 size-11" :aria-label="t('settings.close')" @click="emit('close')">
           <span class="i-lucide-x icon-btn" aria-hidden="true" />
         </Button>
         <h2 class="text-xl text-[var(--vp-c-text-1)] tracking-tight font-[var(--vp-font-family-title)] flex-1 min-w-0">
-          {{ message.settings.title }}
+          {{ t('settings.title') }}
         </h2>
         <span class="shrink-0 size-11" aria-hidden="true" />
       </div>
     </header>
     <div class="settings-skeleton-body" data-async-loading aria-busy="true">
-      <span class="sr-only" role="status">{{ message.ui.button.loading }}</span>
+      <span class="sr-only" role="status">{{ t('ui.button.loading') }}</span>
       <AsyncContentLoading v-if="error" :error="error" :padded="false" @retry="emit('retry')" />
       <UseMenuSkeleton v-else />
     </div>

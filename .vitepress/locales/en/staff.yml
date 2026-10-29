@@ -1,0 +1,12 @@
+title: Staff
+desc: Contributors to the Kongying Tavern Genshin Impact map project
+communityStaff:
+  title: Community operations
+clientStaff:
+  title: Client development
+webStaff:
+  title: Web development
+translateStaff:
+  title: Translation and localization
+pinStaff:
+  title: Map marker contributions

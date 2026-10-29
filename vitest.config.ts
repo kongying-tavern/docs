@@ -1,7 +1,15 @@
 import { fileURLToPath } from 'node:url'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  plugins: [vue(), VueI18nPlugin({
+    include: fileURLToPath(new URL('./.vitepress/locales/**/*.yml', import.meta.url)).replaceAll('\\', '/'),
+    exclude: '**/site.yml',
+    runtimeOnly: false,
+    fullInstall: false,
+  })],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./.vitepress/theme', import.meta.url)),

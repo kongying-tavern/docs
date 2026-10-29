@@ -11,9 +11,9 @@ import {
 } from '../../src/forum/services/blogUpdateFeed'
 
 const COPY = {
-  quoted: '{title}：{summary}',
-  released: '{title}：已更新到 {version}',
-  updated: '{title}：已更新',
+  quoted: (title: string, summary: string) => `${title}：${summary}`,
+  released: (title: string, version: string) => `${title}：已更新到 ${version}`,
+  updated: (title: string) => `${title}：已更新`,
 }
 
 test('precomputed compact blog entries produce the same recent update feed as full bodies', () => {

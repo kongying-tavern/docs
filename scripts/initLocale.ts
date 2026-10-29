@@ -4,15 +4,13 @@ import process, { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline'
 import { fileURLToPath } from 'node:url'
 import cac from 'cac'
+import { dump, JSON_SCHEMA, load } from 'js-yaml'
 import { writeLocaleImporters } from './locales/importers'
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '../..')
-const EXISTING_CODES = ['zh', 'en', 'ja']
 const LOCALE_CODE_RE = /^[a-z]{2}$/
 const TEMPLATES = ['zh', 'en'] as const
 const ZH_ONLY_PAGES = ['frontmatter.md', 'md-enhance-guide.md', 'announcement.md']
-const LABEL_EXPORT_RE = /export const label = '.*'/
-const SUGGEST_TYPE_RE = /\n {2}ja: LanguageSuggestBar\n\}/
 
 type Template = typeof TEMPLATES[number]
 
@@ -27,41 +25,18 @@ interface LunariaConfig {
   locales: Array<{ label: string, lang: string }>
 }
 
-const TEMPLATE_PLACEHOLDERS: Record<Template, { localCode: string, localBase: string, metaUrl: string }> = {
-  zh: {
-    localCode: 'zh-CN',
-    localBase: '/',
-    metaUrl: 'https://yuanshen.site/docs/',
-  },
-  en: {
-    localCode: 'en-US',
-    localBase: '/en',
-    metaUrl: 'https://yuanshen.site/docs/en/',
-  },
-}
-
 function fail(msg: string): never {
   console.error(`✗ ${msg}`)
   process.exit(1)
 }
 
-function replaceIn(file: string, from: string, to: string): void {
-  const path = join(ROOT, file)
-  const content = readFileSync(path, 'utf8')
-  if (!content.includes(from)) {
-    const snippet = from.length > 60 ? `${from.slice(0, 60)}...` : from
-    fail(`pattern not found in ${file}: ${snippet}`)
-  }
-  writeFileSync(path, content.replace(from, to))
-}
-
 async function collectInput(options: Partial<Options>): Promise<Options> {
-  const code = options.code ?? ''
+  const code = options.code?.trim().toLowerCase() ?? ''
   if (code && options.label) {
     return {
       code,
       label: options.label,
-      lang: options.lang ?? `${code}-${code.toUpperCase()}`,
+      lang: options.lang ?? code,
       template: options.template ?? 'zh',
     }
   }
@@ -75,11 +50,11 @@ async function collectInput(options: Partial<Options>): Promise<Options> {
     return value ?? ''
   }
   const answerCode = code || (await ask('Locale code (ISO 639-1): ')).trim().toLowerCase()
-  const label = (await ask('Locale name in its own language: ')).trim()
+  const label = options.label ?? (await ask('Locale name in its own language: ')).trim()
   const langAnswer = (await ask(
     options.lang
       ? ''
-      : `BCP-47 tag (enter to use ${answerCode}-${answerCode.toUpperCase()}): `,
+      : `BCP-47 tag (enter to use ${answerCode}): `,
   )).trim()
   const templateAnswer = (await ask(
     options.template
@@ -90,7 +65,7 @@ async function collectInput(options: Partial<Options>): Promise<Options> {
   return {
     code: answerCode,
     label,
-    lang: options.lang ?? (langAnswer || `${answerCode}-${answerCode.toUpperCase()}`),
+    lang: options.lang ?? (langAnswer || answerCode),
     template: assertTemplate(options.template ?? (templateAnswer || 'zh')),
   }
 }
@@ -102,17 +77,42 @@ function assertTemplate(template: string): Template {
 }
 
 function initLocale(options: Options): void {
-  const { code, label, lang } = options
+  const { code } = options
+  const label = options.label.trim()
+  const lang = options.lang.trim()
   const template = assertTemplate(options.template)
-  const placeholders = TEMPLATE_PLACEHOLDERS[template]
   if (!LOCALE_CODE_RE.test(code))
     fail(`invalid locale code "${code}", expected two lowercase letters (ISO 639-1)`)
-  if (EXISTING_CODES.includes(code))
-    fail(`locale "${code}" already exists`)
   if (existsSync(join(ROOT, `.vitepress/locales/${code}`)))
     fail(`.vitepress/locales/${code} already exists`)
+  if (existsSync(join(ROOT, `src/${code}`)))
+    fail(`src/${code} already exists`)
   if (!label)
     fail('locale name is required')
+  try {
+    if (new Intl.Locale(lang).language !== code)
+      fail(`language tag "${lang}" must match locale code "${code}"`)
+  }
+  catch {
+    fail(`invalid BCP-47 language tag "${lang}"`)
+  }
+
+  // Validate registration and template inputs before creating either target directory.
+  const lunariaPath = join(ROOT, 'lunaria.config.json')
+  const lunaria = JSON.parse(readFileSync(lunariaPath, 'utf8')) as LunariaConfig
+  if (lunaria.locales.some(entry => entry.lang === code))
+    fail(`lunaria.config.json already contains ${code}`)
+  const templateSite = join(ROOT, `.vitepress/locales/${template}/site.yml`)
+  if (!existsSync(join(ROOT, `.vitepress/locales/${template}/config.ts`)))
+    fail(`missing config.ts in ${template} template`)
+  const site = load(readFileSync(templateSite, 'utf8'), { schema: JSON_SCHEMA }) as Record<string, unknown>
+  if (!site || typeof site !== 'object' || !site.title || !site.themeConfig)
+    fail(`missing title or themeConfig in ${template} template site.yml`)
+  const blogPath = 'blog/[path].paths.ts'
+  const blog = readFileSync(join(ROOT, `src/${template}/${blogPath}`), 'utf8')
+  const templateBlogLocale = `usePostData('${template.toUpperCase()}')`
+  if (!blog.includes(templateBlogLocale))
+    fail(`pattern not found in src/${template}/${blogPath}: ${templateBlogLocale}`)
 
   for (const dir of ['src', '.vitepress/locales']) {
     cpSync(join(ROOT, `${dir}/${template}`), join(ROOT, `${dir}/${code}`), {
@@ -122,62 +122,16 @@ function initLocale(options: Options): void {
     console.log(`✓ Copied ${dir}/${template} → ${dir}/${code}`)
   }
 
-  replaceIn(
-    `src/${code}/blog/[path].paths.ts`,
-    `usePostData('${template.toUpperCase()}')`,
-    `usePostData('${code.toUpperCase()}')`,
-  )
-  replaceIn(`.vitepress/locales/${code}/constants.ts`, `LOCAL_CODE: '${placeholders.localCode}'`, `LOCAL_CODE: '${lang}'`)
-  replaceIn(`.vitepress/locales/${code}/constants.ts`, `LOCAL_BASE: '${placeholders.localBase}'`, `LOCAL_BASE: '/${code}'`)
-  replaceIn(
-    `.vitepress/locales/${code}/constants.ts`,
-    `META_URL: '${placeholders.metaUrl}'`,
-    `META_URL: 'https://yuanshen.site/docs/${code}/'`,
-  )
-  replaceIn(
-    `.vitepress/locales/${code}/index.ts`,
-    `export const ${template}Config`,
-    `export const ${code}Config`,
-  )
-  console.log('✓ Updated placeholder references')
+  writeFileSync(join(ROOT, `src/${code}/${blogPath}`), blog.replace(templateBlogLocale, `usePostData('${code.toUpperCase()}')`))
+  const sitePath = join(ROOT, `.vitepress/locales/${code}/site.yml`)
+  site.label = label
+  site.lang = lang
+  writeFileSync(sitePath, dump(site, { noRefs: true, lineWidth: 110 }))
+  console.log('✓ Updated locale identity in site.yml')
 
-  const indexPath = join(ROOT, `.vitepress/locales/${code}/index.ts`)
-  const indexContent = readFileSync(indexPath, 'utf8')
-  if (indexContent.includes('export const label')) {
-    writeFileSync(indexPath, indexContent.replace(LABEL_EXPORT_RE, `export const label = '${label}'`))
-  }
-  else {
-    writeFileSync(
-      indexPath,
-      `${indexContent.trimEnd()}\n\nexport const label = '${label}'\nexport const lang = C.LOCAL_CODE\n`,
-    )
-  }
-
-  const lunariaPath = join(ROOT, 'lunaria.config.json')
-  const lunaria = JSON.parse(readFileSync(lunariaPath, 'utf8')) as LunariaConfig
-  if (lunaria.locales.some(entry => entry.lang === code))
-    fail(`lunaria.config.json already contains ${code}`)
   lunaria.locales.push({ label, lang: code })
   writeFileSync(lunariaPath, `${JSON.stringify(lunaria, null, 2)}\n`)
   console.log('✓ Registered in lunaria.config.json')
-
-  const suggestBarPath = join(ROOT, '.vitepress/locales/common/LanguageSuggestBar.ts')
-  let suggestBar = readFileSync(suggestBarPath, 'utf8')
-  // 结构化匹配模板条目：整条复制其字段作为占位文案，避免在新增字段时漏改这里的字面量
-  const anchorRe = template === 'zh'
-    ? /\n {2}root: \{\n([\s\S]*?)\n {2}\},/
-    : /\n {2}en: \{\n([\s\S]*?)\n {2}\},/
-  const anchorEntry = suggestBar.match(anchorRe)
-  if (!anchorEntry)
-    fail(`${template} entry not found in LanguageSuggestBar.ts`)
-  const newEntry = `\n  ${code}: {\n${anchorEntry[1]}\n  },`
-  suggestBar = suggestBar.replace(anchorEntry[0], `${anchorEntry[0]}${newEntry}`)
-  suggestBar = suggestBar.replace(
-    SUGGEST_TYPE_RE,
-    `\n  ja: LanguageSuggestBar\n  ${code}: LanguageSuggestBar\n}`,
-  )
-  writeFileSync(suggestBarPath, suggestBar)
-  console.log('✓ Added LanguageSuggestBar entry (placeholder text, translate it)')
 
   writeLocaleImporters(ROOT)
   console.log('✓ Updated locale imports for Vite config bundling')
@@ -186,9 +140,9 @@ function initLocale(options: Options): void {
 Done. Locale "${label}" (${code}) initialized from the ${template} template.
 Next steps:
 1. Translate src/${code}/**/*.md (priority: translations.md, index.md, download-client.md, community.md, support-us.md)
-2. Translate .vitepress/locales/${code}/*.ts (title, META_*, nav, sidebar, footer, ui, forum) and the LanguageSuggestBar entry
-3. Verify: pnpm typecheck && pnpm dev (preview /docs/${code}/)
-4. Claim files in issue #242 and submit PRs
+2. Translate .vitepress/locales/${code}/*.yml (site.yml includes the site title, metadata, menus and language suggestion)
+3. Verify: pnpm i18n:check && pnpm typecheck && pnpm dev (preview /docs/${code}/)
+4. Follow .github/trans-guide-new-language.md to claim files and submit PRs
 localesConfig needs no manual edits: languages are auto-discovered from the locales directory.`)
 }
 

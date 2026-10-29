@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
+
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useQRCode } from '@/hooks/useQRCode'
-import { formatMessage } from '~/utils/formatMessage'
 import BlurFade from './ui/BlurFade.vue'
 
+const { t } = useI18n({ useScope: 'global' })
+
 const { theme } = useData()
-const coins = ref(theme.value.payment)
+const coins = computed(() => theme.value.payment)
 
 const selectedPayment = ref<string>()
 const qrcodeText = computed(
@@ -15,7 +18,7 @@ const qrcodeText = computed(
 const qrcode = useQRCode(qrcodeText)
 const qrcodeAlt = computed(() =>
   selectedPayment.value
-    ? formatMessage(theme.value.ui.payment.qrcodeAlt, { name: coins.value[selectedPayment.value]?.name ?? '' })
+    ? t('ui.payment.qrcodeAlt', { name: t(`payment.${selectedPayment.value}.name`) })
     : '',
 )
 const icon = ref()
@@ -45,13 +48,13 @@ onBeforeUnmount(() => {
     <div class="one-time-donations">
       <div class="links font-[var(--vp-font-family-subtitle)]">
         <a
-          v-for="(payment, key) in theme.payment"
+          v-for="(_payment, key) in coins"
           :key="key"
           :href="`#${key}`"
-          :title="payment.name"
+          :title="t(`payment.${key}.name`)"
         >
           <span :class="`i-custom-${key}`" />
-          {{ payment.name }}
+          {{ t(`payment.${key}.name`) }}
         </a>
       </div>
     </div>
@@ -64,9 +67,9 @@ onBeforeUnmount(() => {
     >
       <p>
         <span ref="icon" />
-        {{ coins[selectedPayment].name }} {{ theme.ui.payment.addressLabel }}{{ theme.ui.labelSeparator }}<br><a
+        {{ t(`payment.${selectedPayment}.name`) }} {{ t('ui.payment.addressLabel') }}{{ t('ui.labelSeparator') }}<br><a
           :href="coins[selectedPayment].address"
-          :title="coins[selectedPayment].name"
+          :title="t(`payment.${selectedPayment}.name`)"
           target="_blank"
           rel="noopener noreferrer"
         >{{ coins[selectedPayment].address }}</a>

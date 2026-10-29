@@ -2,7 +2,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { toast } from '~/services/telemetry/toast'
 
 const { state, topicId, iconOnly = false, copyable = false } = defineProps<{
@@ -12,13 +12,13 @@ const { state, topicId, iconOnly = false, copyable = false } = defineProps<{
   copyable?: boolean
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { copy, copied, isSupported } = useClipboard({ legacy: true })
 const copying = ref(false)
 // Gitee 的 progressing 对应已结列表，closed 对应归档列表。
 const label = computed(() => state === 'closed'
-  ? message.value.forum.header.navigation.archivedFeedback
-  : state === 'progressing' ? message.value.forum.topic.status.closed : message.value.forum.header.navigation.allFeedback)
+  ? t('forum.header.navigation.archivedFeedback')
+  : state === 'progressing' ? t('forum.topic.status.closed') : t('forum.header.navigation.allFeedback'))
 
 async function copyTopicId() {
   if (topicId == null || copying.value)
@@ -28,7 +28,7 @@ async function copyTopicId() {
     await copy(String(topicId))
   }
   catch (error) {
-    toast.error(message.value.forum.topic.menu.copyLink.fail, { error, scene: 'op' })
+    toast.error(t('forum.topic.menu.copyLink.fail'), { error, scene: 'op' })
   }
   finally {
     copying.value = false
@@ -48,8 +48,8 @@ async function copyTopicId() {
       type="button"
       class="forum-topic-id"
       :class="{ 'is-copied': copied }"
-      :title="copied ? message.forum.topic.menu.copyLink.success : message.forum.topic.menu.copyId"
-      :aria-label="`${message.forum.topic.menu.copyId} #${topicId}`"
+      :title="copied ? t('forum.topic.menu.copyLink.success') : t('forum.topic.menu.copyId')"
+      :aria-label="`${t('forum.topic.menu.copyId')} #${topicId}`"
       :disabled="copying"
       @pointerdown.stop
       @click.stop.prevent="copyTopicId"

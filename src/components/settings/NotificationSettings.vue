@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import {
   DEFAULT_TOAST_DURATION,
@@ -13,16 +13,16 @@ import { toast } from '~/services/telemetry/toast'
 import SettingsRow from './SettingsRow.vue'
 import SettingsSelect from './SettingsSelect.vue'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { toastPosition, toastDuration } = useSitePreferences()
 
 const positionOptions = computed(() => TOAST_POSITION_DEFINITIONS.map(option => ({
   ...option,
-  label: message.value.settings.notifications.positions[option.labelKey],
+  label: t(`settings.notifications.positions.${option.labelKey}`),
 })))
 const durationOptions = computed(() => TOAST_DURATION_DEFINITIONS.map(option => ({
   ...option,
-  label: message.value.settings.notifications[option.labelKey],
+  label: t(`settings.notifications.${option.labelKey}`),
 })))
 const durationStep = computed({
   get: () => {
@@ -61,7 +61,7 @@ function previewToast(): void {
 
   clearTimeout(previewToastTimer)
   previewToastTimer = setTimeout(() => {
-    previewToastId = toast.info(message.value.settings.notifications.previewMessage, {
+    previewToastId = toast.info(t('settings.notifications.previewMessage'), {
       duration: toastDuration.value,
       position: toastPosition.value,
       closeButton: !Number.isFinite(toastDuration.value),
@@ -83,22 +83,22 @@ onBeforeUnmount(() => {
 
 <template>
   <SettingsRow
-    :title="message.settings.notifications.position"
-    :description="message.settings.notifications.positionDescription"
+    :title="t('settings.notifications.position')"
+    :description="t('settings.notifications.positionDescription')"
   >
     <div class="settings-select">
       <SettingsSelect
         :model-value="toastPosition"
         :options="positionOptions"
-        v-bind="{ ariaLabel: message.settings.notifications.position }"
+        v-bind="{ ariaLabel: t('settings.notifications.position') }"
         @update:model-value="setToastPosition"
       />
     </div>
   </SettingsRow>
 
   <SettingsRow
-    :title="message.settings.notifications.duration"
-    :description="message.settings.notifications.durationDescription"
+    :title="t('settings.notifications.duration')"
+    :description="t('settings.notifications.durationDescription')"
   >
     <Tabs
       :model-value="String(durationStep)"
@@ -107,7 +107,7 @@ onBeforeUnmount(() => {
     >
       <TabsList
         class="duration-tabs-list"
-        :aria-label="message.settings.notifications.duration"
+        :aria-label="t('settings.notifications.duration')"
       >
         <span
           class="duration-tabs-indicator"

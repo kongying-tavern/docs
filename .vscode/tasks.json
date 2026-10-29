@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "i18n: check",
+      "type": "shell",
+      "command": "pnpm i18n:check",
+      "problemMatcher": []
+    },
+    {
+      "label": "i18n: open local UI",
+      "type": "shell",
+      "command": "pnpm i18n:ui",
+      "problemMatcher": []
+    }
+  ]
+}

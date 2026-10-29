@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 
@@ -10,14 +10,12 @@ const { list, clearSearch } = useForumRoute()
 const { formatSearchQuery } = useForumSearchToken()
 const isSearching = computed(() => Boolean(list.value?.q))
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const currentSearchQuery = computed(() => {
   return formatSearchQuery(list.value?.q || '')
 })
-const summary = computed(() => message.value.forum.header.search.resultSummary
-  .replace('{query}', currentSearchQuery.value)
-  .replace('{count}', String(props.total)))
+const summary = computed(() => t('forum.header.search.resultSummary', { query: currentSearchQuery.value, count: String(props.total) }))
 
 async function handleUndo() {
   await clearSearch()
@@ -42,7 +40,7 @@ async function handleUndo() {
       variant="ghost"
       size="icon-sm"
       class="color-[var(--vp-c-text-3)] rounded-full"
-      :aria-label="message.ui.button.close"
+      :aria-label="t('ui.button.close')"
       @click="handleUndo"
     >
       <span class="i-lucide-x icon-btn size-4" aria-hidden="true" />

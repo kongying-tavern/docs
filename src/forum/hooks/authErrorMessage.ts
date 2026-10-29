@@ -1,3 +1,4 @@
+import type { Composer } from 'vue-i18n'
 import type { AuthError, AuthErrorType } from '~/services/authErrors'
 
 /** 认证错误类型到 `forum.auth.errorMessages` 词条的映射 */
@@ -28,6 +29,6 @@ const MESSAGE_KEY_BY_TYPE: Record<AuthErrorType, AuthErrorMessageKey> = {
   SSO_LOGOUT_FAILED: 'unknown',
 }
 
-export function authErrorMessage(error: AuthError, messages: Record<AuthErrorMessageKey, string>): string {
-  return messages[MESSAGE_KEY_BY_TYPE[error.type]]
+export function authErrorMessage(error: AuthError, t: Composer['t']): string {
+  return t(`forum.auth.errorMessages.${MESSAGE_KEY_BY_TYPE[error.type]}`)
 }

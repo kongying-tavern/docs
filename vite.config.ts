@@ -1,6 +1,7 @@
 import type { DefaultTheme } from 'vitepress'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { PiniaColadaDevtools } from '@pinia/colada-devtools/vite'
 import { Features } from 'lightningcss'
 import { medula } from 'medula/vite'
@@ -8,12 +9,12 @@ import UnoCSS from 'unocss/vite'
 import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
-import { DEFAULT_LOCALE } from './.vitepress/locales/common/site.ts'
-import zhConstants from './.vitepress/locales/zh/constants.ts'
-import zhSidebar from './.vitepress/locales/zh/sidebar.ts'
+import { DEFAULT_LOCALE } from './.vitepress/locales/common.ts'
+import zhSite from './.vitepress/locales/zh/config.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
 import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
+import { SITE_ORIGIN } from './src/constants/site.ts'
 
 // llms 1.14 drops the site base in nested sidebar groups; keep section entries flat.
 function flattenSidebarItems(items: DefaultTheme.SidebarItem[]): DefaultTheme.SidebarItem[] {
@@ -72,6 +73,13 @@ export default defineConfig(({ mode }) => ({
     ],
   },
   plugins: [
+    VueI18nPlugin({
+      include: fileURLToPath(new URL('./.vitepress/locales/**/*.yml', import.meta.url)).replaceAll('\\', '/'),
+      exclude: '**/site.yml',
+      ssr: true,
+      fullInstall: false,
+      dropMessageCompiler: true,
+    }),
     // https://github.com/antfu/unocss
     UnoCSS(),
 
@@ -84,11 +92,11 @@ export default defineConfig(({ mode }) => ({
     llmstxt({
       // Chinese is the source locale; translated copies would duplicate the corpus.
       workDir: DEFAULT_LOCALE,
-      domain: new URL(zhConstants.META_URL).origin,
-      title: `${zhConstants.META_TITLE}原神地图文档`,
-      description: zhConstants.META_DESCRIPTION,
+      domain: SITE_ORIGIN,
+      title: `${zhSite.title}原神地图文档`,
+      description: zhSite.description,
       details: '涵盖地图客户端使用手册、常见问题、下载与社区说明。本文档以中文原文为准。',
-      sidebar: Object.values(zhSidebar).flat().map(section => ({
+      sidebar: Object.values(zhSite.themeConfig.sidebar as DefaultTheme.SidebarMulti).flat().map(section => ({
         ...section,
         items: flattenSidebarItems(section.items ?? []),
       })),

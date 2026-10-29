@@ -1,6 +1,6 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { DEFAULT_LOCALE } from '../../../locales/common/site'
+import { DEFAULT_LOCALE } from '../../../locales/common'
 
 export const STORE_KEY = 'BANNER'
 export const DEFAULT_LOCALE_CODE = DEFAULT_LOCALE

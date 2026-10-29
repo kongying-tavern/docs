@@ -1,6 +1,6 @@
 import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '~/forum/services/forumSearchQuery'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
 import { FORUM_SEARCH_STATES, parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
@@ -12,9 +12,9 @@ const WHITESPACE_REGEX = /\s/u
 const SINGLE_VALUE_PATTERN = '[^\\s,]+'
 
 export function useForumSearchToken() {
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   // 响应式：语言切换后按新 locale 重建，token 解析别名随语言更新
-  const topicTagMap = computed(() => getTopicTagMap(message))
+  const topicTagMap = computed(() => getTopicTagMap(t))
   const topicTagLabelGetter = getTopicTagLabelGetter()
   const labelStore = useForumLabelStore()
   const { getTagDisplay } = useTopicTagDisplay()
@@ -33,29 +33,29 @@ export function useForumSearchToken() {
     FORUM_SEARCH_STATES.map(state => [getStateLabel(state), state]),
   ))
   const facetAliases = computed(() => [
-    { facet: 'tags' as const, labels: [message.value.forum.topic.searchFacets.tags, 'tags'] },
-    { facet: 'state' as const, labels: [message.value.forum.topic.searchFacets.state, 'state'] },
-    { facet: 'author' as const, labels: [message.value.forum.topic.searchFacets.author, 'author'] },
+    { facet: 'tags' as const, labels: [t('forum.topic.searchFacets.tags'), 'tags'] },
+    { facet: 'state' as const, labels: [t('forum.topic.searchFacets.state'), 'state'] },
+    { facet: 'author' as const, labels: [t('forum.topic.searchFacets.author'), 'author'] },
   ].flatMap(({ facet, labels }) =>
     Array.from(new Set(labels), label => ({ facet, label, normalizedLabel: label.toLocaleLowerCase() })),
   ))
 
   function getStateLabel(state: ForumSearchState): string {
     return state === 'good-issue'
-      ? message.value.forum.topic.status.goodIssue
-      : message.value.forum.topic.status[state] ?? state
+      ? t('forum.topic.status.goodIssue')
+      : t(`forum.topic.status.${state}`) ?? state
   }
 
   function formatSearchToken(query: ForumSearchQuery): string {
     const parts = [
       query.tags.length
-        ? `${message.value.forum.topic.searchFacets.tags}:${query.tags.map(label => getTagDisplay(label)).join(',')}`
+        ? `${t('forum.topic.searchFacets.tags')}:${query.tags.map(label => getTagDisplay(label)).join(',')}`
         : '',
       query.states.length
-        ? `${message.value.forum.topic.searchFacets.state}:${query.states.map(getStateLabel).join(',')}`
+        ? `${t('forum.topic.searchFacets.state')}:${query.states.map(getStateLabel).join(',')}`
         : '',
       query.author
-        ? `${message.value.forum.topic.searchFacets.author}:${query.author}`
+        ? `${t('forum.topic.searchFacets.author')}:${query.author}`
         : '',
     ]
     return parts.filter(Boolean).join(' ')

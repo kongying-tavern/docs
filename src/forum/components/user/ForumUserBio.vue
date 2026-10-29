@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import ForumProfileForm from './ForumProfileForm.vue'
 
 const props = defineProps<{ user?: ForumAPI.User, editable: boolean }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const editing = ref(false)
 const editorInitialized = ref(false)
 const root = useTemplateRef<HTMLDivElement>('root')
@@ -37,13 +37,13 @@ watch(editing, async (active) => {
       v-if="!editing && editable && user"
       type="button"
       class="bio-edit-trigger text-start w-full block"
-      :aria-label="message.settings.profile.editBio"
+      :aria-label="t('settings.profile.editBio')"
       @click="editing = true"
     >
-      <span class="whitespace-pre-wrap break-words">{{ user.bio || message.forum.labels.lazyPerson }}</span>
+      <span class="whitespace-pre-wrap break-words">{{ user.bio || t('forum.labels.lazyPerson') }}</span>
     </button>
     <p v-else-if="!editable" class="text-sm text-[var(--vp-c-text-2)] whitespace-pre-wrap break-words sm:text-base">
-      {{ user?.bio || message.forum.labels.lazyPerson }}
+      {{ user?.bio || t('forum.labels.lazyPerson') }}
     </p>
   </div>
 </template>

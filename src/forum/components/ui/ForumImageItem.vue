@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ImageItem } from './ForumImage.vue'
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { ASSET_ORIGIN } from '~/constants/site'
 import { useForumImageLoading } from '~/forum/composables/view/useForumImageLoading'
 import { isForumLongImage } from '~/forum/services/forumImageLayout'
@@ -29,7 +29,7 @@ function acceptsShortcut(event: KeyboardEvent) {
 const imageElement = useTemplateRef<HTMLImageElement>('imageElement')
 const { visible, allowed, complete } = useForumImageLoading(root, () => props.image.src)
 const ready = ref(false)
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const naturalSize = ref<{ width: number, height: number }>()
 const isLong = computed(() => isForumLongImage(naturalSize.value ?? props.image))
 const hasError = ref(false)
@@ -125,7 +125,7 @@ function onError(): void {
         @error="onError"
       >
       <span v-if="isLong && !hasError" class="forum-long-image-label">
-        {{ message.forum.imagePreview.longImage }}
+        {{ t('forum.imagePreview.longImage') }}
       </span>
     </div>
   </ForumImageContextMenu>

@@ -2,10 +2,10 @@
 import type ForumAPI from '~/forum/api/types'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, nextTick, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { useLocalized } from '@/hooks/useLocalized'
 import SettingsRow from '~/components/settings/SettingsRow.vue'
 import SettingsSection from '~/components/settings/SettingsSection.vue'
 import { useUserProfileEditor } from '~/forum/composables/data/useUserProfileEditor'
@@ -18,7 +18,7 @@ const { bioOnly = false, user } = defineProps<{
   bioOnly?: boolean
 }>()
 const emit = defineEmits<{ saved: [], submitted: [], failed: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const userInfo = useUserInfoStore()
 const { save, saving } = useUserProfileEditor()
 const fields = computed(() => USER_PROFILE_FIELDS.filter(field => !bioOnly || field.key === 'bio'))
@@ -89,7 +89,7 @@ async function submit(): Promise<void> {
   catch {
     await nextTick()
     syncUserProfileDraft(draft, original, user, keys.value)
-    error.value = message.value.settings.profile.saveFailed
+    error.value = t('settings.profile.saveFailed')
     emit('failed')
   }
   finally {
@@ -109,16 +109,16 @@ watch(draft, () => {
       :id="fieldId('bio')"
       v-model="draft.bio"
       class="inline-bio"
-      :aria-label="message.settings.profile.bio"
+      :aria-label="t('settings.profile.bio')"
       rows="1"
       @input="resizeBio"
     />
-    <SettingsSection v-else id="profile-form" :title="message.settings.profile.title">
+    <SettingsSection v-else id="profile-form" :title="t('settings.profile.title')">
       <slot name="before-rows" />
       <SettingsRow
         v-for="field in fields"
         :key="field.key"
-        :title="message.settings.profile[field.key]"
+        :title="t(`settings.profile.${field.key}`)"
         :label-for="fieldId(field.key)"
         :align-start="field.control === 'textarea'"
       >
@@ -128,7 +128,7 @@ watch(draft, () => {
           v-model="draft[field.key]"
           :rows="4"
           :autocomplete="field.autocomplete"
-          :placeholder="field.key === 'bio' ? message.forum.labels.lazyPerson : undefined"
+          :placeholder="field.key === 'bio' ? t('forum.labels.lazyPerson') : undefined"
         />
         <Input
           v-else
@@ -143,11 +143,11 @@ watch(draft, () => {
     <div v-if="error" role="alert" class="text-sm text-destructive flex gap-2 items-center">
       <p>{{ error }}</p>
       <Button type="button" variant="link" size="xs" :disabled="saving" @click="submit">
-        {{ message.settings.profile.retry }}
+        {{ t('settings.profile.retry') }}
       </Button>
     </div>
     <p v-else-if="!bioOnly && saved && !dirty" role="status" class="text-sm text-muted-foreground">
-      {{ message.settings.profile.saved }}
+      {{ t('settings.profile.saved') }}
     </p>
   </form>
 </template>

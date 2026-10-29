@@ -4,11 +4,11 @@ import type ForumAPI from '~/forum/api/types'
 import { LoaderCircleIcon } from '@lucide/vue'
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import EmojiPicker from '@/components/ui/EmojiPicker.vue'
 import EmojiPickerPanel from '@/components/ui/EmojiPickerPanel.vue'
 import MentionPicker from '@/components/ui/MentionPicker.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import ForumEditorToolIcon from './ForumEditorToolIcon.vue'
 
@@ -32,7 +32,7 @@ const emit = defineEmits<{
   'tool-open': [tool: 'emoji' | 'mention']
   'tool-close': [restoreFocus?: boolean]
 }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const activeTool = ref<'emoji' | null>(null)
 const emojiPanel = useTemplateRef<HTMLElement>('emojiPanel')
 onClickOutside(emojiPanel, () => activeTool.value && close(false))
@@ -70,10 +70,10 @@ defineExpose({ close, open: toggle })
     <div class="editor-tools-row">
       <div class="editor-tool-actions flex gap-1 items-center">
         <template v-if="mobile">
-          <Button v-if="features.includes('Emoji') && !activeTool" type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="message.ui.button.emoji" :aria-expanded="activeTool === 'emoji'" @pointerdown.prevent @click="toggle('emoji')">
+          <Button v-if="features.includes('Emoji') && !activeTool" type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="t('ui.button.emoji')" :aria-expanded="activeTool === 'emoji'" @pointerdown.prevent @click="toggle('emoji')">
             <ForumEditorToolIcon tool="emoji" />
           </Button>
-          <Button v-if="features.includes('Mention')" type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="message.forum.publish.feedbackForm.mentionUser" :aria-expanded="mentionActive" @pointerdown.prevent @click="toggle('mention')">
+          <Button v-if="features.includes('Mention')" type="button" variant="ghost" size="icon" :disabled="disabled" :aria-label="t('forum.publish.feedbackForm.mentionUser')" :aria-expanded="mentionActive" @pointerdown.prevent @click="toggle('mention')">
             <ForumEditorToolIcon tool="mention" />
           </Button>
         </template>
@@ -81,18 +81,18 @@ defineExpose({ close, open: toggle })
           <EmojiPicker v-if="features.includes('Emoji')" v-model:open="emojiOpen" :disabled="disabled" @close-auto-focus="$event.preventDefault(); emit('tool-close')" @select="emit('emoji', $event)" />
           <MentionPicker v-if="features.includes('Mention')" v-model:open="mentionOpen" :items="mentionUsers" :disabled="disabled" @close-auto-focus="$event.preventDefault(); emit('tool-close')" @select="emit('mention', $event)" />
         </template>
-        <Button v-if="features.includes('Upload')" type="button" variant="ghost" :size="mobile ? imageCount ? 'sm' : 'icon' : 'icon-sm'" :class="{ 'editor-upload-capsule': mobile && imageCount > 0 }" :disabled="disabled || uploadDisabled" :aria-label="message.forum.publish.feedbackForm.addImages" @pointerdown.prevent @click="emit('upload')">
+        <Button v-if="features.includes('Upload')" type="button" variant="ghost" :size="mobile ? imageCount ? 'sm' : 'icon' : 'icon-sm'" :class="{ 'editor-upload-capsule': mobile && imageCount > 0 }" :disabled="disabled || uploadDisabled" :aria-label="t('forum.publish.feedbackForm.addImages')" @pointerdown.prevent @click="emit('upload')">
           <ForumEditorToolIcon tool="upload" />
           <span v-if="mobile && imageCount" class="text-xs text-muted-foreground tabular-nums">{{ imageCount }}/{{ IMAGE_UPLOAD_POLICY.MAX_COUNT }}</span>
         </Button>
       </div>
       <Button v-if="features.includes('Submit')" type="button" :variant="mobile && (disabled || submitDisabled) ? 'outline' : 'default'" :size="mobile ? 'sm' : 'default'" :disabled="disabled || submitDisabled" class="editor-publish" :class="{ 'rounded-full': mobile, 'bg-transparent dark:bg-transparent shadow-none': mobile && (disabled || submitDisabled) }" @click="emit('submit')">
         <LoaderCircleIcon v-if="submitting" class="animate-spin" data-icon="inline-start" />
-        {{ message.forum.comment.publish }}
+        {{ t('forum.comment.publish') }}
       </Button>
     </div>
     <Transition name="editor-emoji">
-      <section v-if="mobile && activeTool === 'emoji'" ref="emojiPanel" class="editor-tool-panel bg-muted/50" :aria-label="message.ui.button.emoji">
+      <section v-if="mobile && activeTool === 'emoji'" ref="emojiPanel" class="editor-tool-panel bg-muted/50" :aria-label="t('ui.button.emoji')">
         <EmojiPickerPanel :open="true" compact :close-on-select="false" :record-count="7" :disabled="disabled" @select="emit('emoji', $event)" />
       </section>
     </Transition>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { CheckIcon, CopyIcon } from '@lucide/vue'
 import { useClipboard } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { toast } from '~/services/telemetry/toast'
 
 const props = withDefaults(defineProps<{
@@ -15,13 +15,13 @@ const props = withDefaults(defineProps<{
   compact: false,
 })
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { copy, copied, isSupported } = useClipboard({ copiedDuring: 1500 })
 
 async function handleCopy() {
   const ok = await copy(props.value).catch(() => false)
   if (ok === false)
-    toast.error(message.value.settings.copyFailed)
+    toast.error(t('settings.copyFailed'))
 }
 </script>
 

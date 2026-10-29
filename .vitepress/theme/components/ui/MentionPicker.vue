@@ -3,9 +3,9 @@ import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '~/forum/api/types'
 import { reactiveOmit } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import MentionPickerPanel from './MentionPickerPanel.vue'
 
@@ -22,14 +22,14 @@ const props = withDefaults(defineProps<PopoverContentProps & { class?: HTMLAttri
 const emit = defineEmits<{ select: [user: ForumAPI.User] }>()
 const isOpen = defineModel<boolean>('open', { default: false })
 const contentProps = reactiveOmit(props, 'class', 'searchTerm', 'showSearch', 'disabled', 'items', 'recordCount')
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
   <Popover v-model:open="isOpen">
     <PopoverTrigger as-child>
       <slot name="trigger">
-        <Button type="button" variant="ghost" size="icon-sm" :disabled="disabled" :aria-label="message.forum.publish.feedbackForm.mentionUser" :class="cn(props.class)">
+        <Button type="button" variant="ghost" size="icon-sm" :disabled="disabled" :aria-label="t('forum.publish.feedbackForm.mentionUser')" :class="cn(props.class)">
           <span class="i-custom:mention c-[var(--vp-c-text-2)] icon-btn size-4" />
         </Button>
       </slot>

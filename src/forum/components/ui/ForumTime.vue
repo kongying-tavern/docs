@@ -2,6 +2,7 @@
 import { useData } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 import Time from '@/components/ui/Time/Time.vue'
+import { DEFAULT_LOCALE } from '~/constants/site'
 
 const { date = new Date(), relative = true, toggleable = true } = defineProps<{
   date?: string | number | Date
@@ -11,9 +12,6 @@ const { date = new Date(), relative = true, toggleable = true } = defineProps<{
 }>()
 
 const { lang } = useData()
-
-// 浏览器本地语言；SSR 阶段不可用时回退站点 locale
-const browserLocale = import.meta.env.SSR ? '' : navigator.language
 
 const parsedDate = computed(() => new Date(date))
 
@@ -32,7 +30,7 @@ const absoluteOptions = computed<Intl.DateTimeFormatOptions>(() => ({
 
 // 完整本地化时间，Intl 默认使用运行时（用户当前）时区
 const absoluteText = computed(() => new Intl.DateTimeFormat(
-  browserLocale || lang.value || 'zh-CN',
+  lang.value || DEFAULT_LOCALE,
   absoluteOptions.value,
 ).format(parsedDate.value))
 

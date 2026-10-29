@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { SettingsNavigationItem, SettingsSectionId } from '~/composables/useSettingsNavigation'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { DrawerDescription, DrawerTitle } from '@/components/ui/drawer'
-import { useLocalized } from '@/hooks/useLocalized'
 import SettingsMenu from './SettingsMenu.vue'
 import SettingsPanel from './SettingsPanel.vue'
 
@@ -28,7 +28,7 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const { message } = useLocalized()
           variant="ghost"
           size="icon"
           class="settings-back-button"
-          :aria-label="message.settings.back"
+          :aria-label="t('settings.back')"
           @click="emit('showSectionList')"
         >
           <span class="i-lucide-arrow-left icon-btn" aria-hidden="true" />
@@ -52,7 +52,7 @@ const { message } = useLocalized()
           variant="ghost"
           size="icon"
           class="settings-back-button"
-          :aria-label="message.settings.back"
+          :aria-label="t('settings.back')"
           @click="emit('leave')"
         >
           <span class="i-lucide-arrow-left icon-btn" aria-hidden="true" />
@@ -63,7 +63,7 @@ const { message } = useLocalized()
           variant="ghost"
           size="icon"
           class="settings-close-button"
-          :aria-label="message.settings.close"
+          :aria-label="t('settings.close')"
           @click="emit('close')"
         >
           <span class="i-lucide-x icon-btn" aria-hidden="true" />
@@ -77,12 +77,12 @@ const { message } = useLocalized()
         <span class="settings-drawer-button-spacer" aria-hidden="true" />
       </div>
       <DrawerDescription v-if="!withinShell" class="sr-only">
-        {{ sectionSelected ? activeItem.label : message.settings.groups.website }}
+        {{ sectionSelected ? activeItem.label : t('settings.groups.website') }}
       </DrawerDescription>
       <Transition name="settings-save">
         <p v-if="saveStatusVisible" class="settings-mobile-save" role="status">
           <span class="i-lucide-cloud-check icon-btn" aria-hidden="true" />
-          {{ message.settings.autoSave }}
+          {{ t('settings.autoSave') }}
         </p>
       </Transition>
     </header>

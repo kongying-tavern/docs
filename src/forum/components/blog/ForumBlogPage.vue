@@ -6,11 +6,12 @@ import Avatar from '@/components/ui/Avatar.vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Time from '@/components/ui/Time/Time.vue'
 import { data as allPosts } from '~/_data/posts.data'
+import { DEFAULT_LOCALE } from '~/constants/site'
 
 const { lang, frontmatter } = useData()
 
 const posts = computed(() => {
-  const currentLang = lang.value || 'zh'
+  const currentLang = lang.value || DEFAULT_LOCALE
   const baseLang = currentLang.split('-')[0]
   const result = allPosts.filter((post: BlogPost) => post.lang === baseLang)
 

@@ -4,7 +4,7 @@ import type { ActiveForumFestival } from '~/forum/services/forumFestival'
 import { defaultDocument, useEventListener, useIntervalFn, useLocalStorage } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { forumFestivals } from '~/forum/config/forumFestivals'
 import {
@@ -18,7 +18,7 @@ import {
 } from '~/forum/services/forumFestival'
 
 const { localeIndex } = useData()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 const dismissedStorage = useLocalStorage<unknown>(FESTIVAL_DISMISSALS_STORAGE_KEY, [])
 const autoplayedStorage = useLocalStorage<unknown>(FESTIVAL_AUTOPLAYED_STORAGE_KEY, [])
@@ -55,7 +55,7 @@ const visibleFestivals = computed<ActiveForumFestival[]>(() => {
 })
 
 function festivalLabel(festival: ActiveForumFestival): string {
-  return message.value.forum.sidebar.festival[festival.definition.labelKey]
+  return t(`forum.sidebar.festival.${festival.definition.labelKey}`)
 }
 
 function storeOccurrence(storage: typeof dismissedStorage, occurrence: string): void {
@@ -246,8 +246,8 @@ onBeforeUnmount(() => {
     <button
       type="button"
       class="forum-sidebar-festival-close"
-      :aria-label="message.forum.sidebar.festival.dismiss"
-      :title="message.forum.sidebar.festival.dismiss"
+      :aria-label="t('forum.sidebar.festival.dismiss')"
+      :title="t('forum.sidebar.festival.dismiss')"
       @click.stop="dismiss(festival)"
     >
       <span class="i-lucide-x icon-btn size-4" aria-hidden="true" />

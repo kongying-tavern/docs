@@ -2,7 +2,7 @@ import type Token from 'markdown-it/lib/token.mjs'
 import type { FontRole, FontSubsetConfig } from './config'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { extname, join, resolve } from 'node:path'
-import { load as loadYaml } from 'js-yaml'
+import { JSON_SCHEMA, load as loadYaml } from 'js-yaml'
 import ts from 'typescript'
 import { parse as parseSfc } from 'vue/compiler-sfc'
 
@@ -345,6 +345,9 @@ export async function collectSiteCodepoints(
         case 'script':
           for (const text of extractScriptStrings(source, file))
             addText(targets, [config.siteExtraction.sharedRole], text)
+          break
+        case 'yaml':
+          walkJson(loadYaml(source, { schema: JSON_SCHEMA, filename: file }), targets, config.siteExtraction.sharedRole)
           break
         case 'json':
           walkJson(JSON.parse(source), targets, config.siteExtraction.sharedRole)

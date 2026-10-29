@@ -1,43 +1,27 @@
-import type { MarkdownOptions } from 'vitepress'
+import type { DefaultTheme, LocaleSpecificConfig, MarkdownOptions } from 'vitepress'
+import type { SHARED_THEME_CONFIG } from './common.ts'
 
-// 其余语言模块按此契约与 zh(默认)结构对齐
+// Only project-specific theme fields extend VitePress's native configuration types.
 export interface CustomConfig {
-  footer: typeof import('./zh/footer').default
-  ui: typeof import('./zh/ui').default
-  asideLinks: typeof import('./zh/aside-links').default
-  docReaction: typeof import('./zh/docs-feedback').default
-  staff: typeof import('./zh/staff').default
-  team: typeof import('./zh/team').default
-  payment: typeof import('./zh/payment').default
-  forum: typeof import('./zh/forum').default
-  settings: typeof import('./zh/settings').default
-  changelog: typeof import('./zh/changelog').default
-}
-
-export interface LocaleTextConfig {
-  outline: { label: string }
-  lastUpdated: { text: string }
-  returnToTopLabel: string
-  langMenuLabel: string
-  docFooter: {
-    prev: string
-    next: string
+  forum: typeof SHARED_THEME_CONFIG.forum & { aside: { contactUs: { qrcodeLink: string } } }
+  keyword: string
+  image: string
+  footer: {
+    qrcodeTitle: string
+    qrcodeAlt: string
+    qrcodeMessage: string
+    qrcodeLink: string
+    navigation: Array<{ title: string, items: Array<{ text: string, link: string }> }>
   }
+  ui: {
+    title: { templateMappings: Array<{ test: RegExp, template: string }> }
+  }
+  languageSuggest: { changeLanguage: string, continue: string, ariaLabel: string }
 }
 
-export interface LocaleConfigShape {
-  title: string
-  titleTemplate: string
+export type SiteLocale = LocaleSpecificConfig<DefaultTheme.Config & CustomConfig> & {
   markdown?: Pick<MarkdownOptions, 'codeCopyButton'>
-  themeConfig: LocaleTextConfig
-}
-
-export interface CustomConstant {
-  META_URL: string
-  META_TITLE: string
-  META_KEYWORDS: string
-  META_DESCRIPTION: string
-  META_IMAGE: string
-  LOCAL_CODE: string
-  LOCAL_BASE: string
+  label: string
+  lang: string
+  themeConfig: DefaultTheme.Config & CustomConfig
 }

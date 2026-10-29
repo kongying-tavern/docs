@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SettingsSectionId } from '~/composables/useSettingsNavigation'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useSettingsNavigation } from '~/composables/useSettingsNavigation'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { SETTINGS_SECTION_DEFINITIONS } from '~/config/settingsOptions'
@@ -28,7 +28,7 @@ const emit = defineEmits<{
   title: [title: string]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { hasAnyPermissions } = useRuleChecks()
 const {
   theme,
@@ -66,15 +66,15 @@ const applicationSections = computed(() => sections.value.filter(section => sect
 const standalonePanel = computed(() => SETTINGS_SECTION_DEFINITIONS.find(section => section.id === activeSection.value)?.standalone ?? false)
 const settingsNav = useTemplateRef<InstanceType<typeof SettingsMenu> | null>('settingsNav')
 const dialogTitle = computed(() => activeSection.value === 'labels'
-  ? message.value.settings.groups.application
+  ? t('settings.groups.application')
   : activeSection.value === 'profile'
-    ? message.value.settings.profile.title
-    : activeSection.value === 'shortcuts' || activeSection.value === 'experiments' ? activeItem.value.label : message.value.settings.title)
+    ? t('settings.profile.title')
+    : activeSection.value === 'shortcuts' || activeSection.value === 'experiments' ? activeItem.value.label : t('settings.title'))
 const drawerTitle = computed(() => {
   if (!sectionSelected.value)
-    return message.value.settings.title
+    return t('settings.title')
   return activeSection.value === 'labels'
-    ? message.value.settings.groups.application
+    ? t('settings.groups.application')
     : activeItem.value.label
 })
 
@@ -168,7 +168,7 @@ onBeforeUnmount(() => {
       <Transition name="settings-save">
         <p v-if="saveStatusVisible" class="settings-save-note" role="status">
           <span class="i-lucide-cloud-check icon-btn" aria-hidden="true" />
-          {{ message.settings.autoSave }}
+          {{ t('settings.autoSave') }}
         </p>
       </Transition>
     </SettingsMenu>

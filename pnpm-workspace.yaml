@@ -6,6 +6,13 @@ minimumReleaseAgeExclude:
   - playwright-core@1.64.0
   - playwright@1.64.0
   - '@pinia/colada@1.4.8'
+  - '@x18n/builtins@0.1.1'
+  - '@x18n/cli@0.1.1'
+  - '@x18n/core@0.1.1'
+  - '@x18n/node@0.1.1'
+  - '@x18n/ui@0.1.1'
+  - '@intlify/bundle-utils@11.2.8'
+  - '@intlify/unplugin-vue-i18n@11.2.8'
 
 trustPolicy: no-downgrade
 # Approved exceptions for existing locked versions in the VitePress toolchain.
@@ -33,6 +40,9 @@ overrides:
   unconfig>defu: ^6.1.7
   vite>postcss: ^8.5.26
   vite>rollup: ^4.63.1
+
+patchedDependencies:
+  '@x18n/builtins@0.1.1': patches/@x18n__builtins@0.1.1.patch
 # pnpm 11+ 以 allowBuilds 取代 ignoredBuiltDependencies；
 # false = 保持 pnpm 10 时代显式忽略这些包构建脚本的行为
 allowBuilds:
@@ -57,7 +67,9 @@ catalog:
 
 catalogs:
   build:
+    '@intlify/unplugin-vue-i18n': 11.2.8
     '@lunariajs/core': ^0.1.1
+    '@vitejs/plugin-vue': 6.0.9
     lightningcss: ^1.33.0
     tsx: 4.23.15
     typescript: ^6.0.3
@@ -92,6 +104,7 @@ catalogs:
     '@vitejs/devtools-vitest': 0.7.6
     '@vitest/coverage-v8': 5.0.3
     '@vitest/ui': 5.0.3
+    '@x18n/cli': 0.1.1
     dotenv-cli: 11.0.0
     eslint: ^10.12.0
     eslint-plugin-format: 2.0.1
@@ -126,7 +139,6 @@ catalogs:
     class-variance-authority: ^0.7.1
     cn: ^0.2.6
     compressorjs: ^1.4.0
-    dayjs: ^1.11.23
     embla-carousel-vue: ^8.6.0
     fast-fuzzy: ^1.12.0
     ky: ^2.1.0
@@ -139,6 +151,7 @@ catalogs:
     thumbhash: ^0.1.1
     vaul-vue: ^0.4.1
     vue: ^3.5.43
+    vue-i18n: 11.4.16
     vue-sonner: ^2.0.9
     zod: ^4.3.6
   markdown:

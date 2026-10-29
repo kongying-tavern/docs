@@ -126,7 +126,8 @@ playwright-report/
 skills-lock.json
 /TODO.md
 
-.agents/
+.agents/*
+!.agents/i18n.md
 
 # Generated component metadata (rebuilt by the Vite plugin)
 /.vitepress/theme/mdc-components.mjs

@@ -1,7 +1,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { useQueryCache } from '@pinia/colada'
 import { useData } from 'vitepress'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { reactions } from '~/forum/api/interknot.site'
 import { authGuards } from '~/forum/composables/auth/auth-helpers'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
@@ -16,13 +16,13 @@ import { toast } from '~/services/telemetry/toast'
 const localeLabelGetter = getForumLocaleLabelGetter()
 
 export function useSubmitTopic() {
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const { lang } = useData()
   const forumMutations = useForumTopicMutations()
   const queryCache = useQueryCache()
 
   const submitData = async (options: ForumAPI.CreateTopicOption) => {
-    if (!authGuards.requireLogin(message.value.forum.auth.loginTips))
+    if (!authGuards.requireLogin(t('forum.auth.loginTips')))
       throw new Error('Authentication is required to publish a Topic.')
 
     const { text, title, tags, type, quotedTopic } = options
@@ -66,7 +66,7 @@ export function useSubmitTopic() {
         void queryCache.invalidateQueries({ key: forumKeys.reactionResource(resourceUrl) }).catch(() => {})
     }
     catch (error) {
-      toast.warning(message.value.forum.topic.quote.countSyncFailed, { error, scene: 'rc' })
+      toast.warning(t('forum.topic.quote.countSyncFailed'), { error, scene: 'rc' })
     }
 
     return topic

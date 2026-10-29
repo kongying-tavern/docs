@@ -4,7 +4,7 @@ import type { ForumImageResource } from '~/forum/services/forumImageResource'
 import type { ForumImageShortcutId } from '~/forum/services/forumShortcuts'
 import { createSharedComposable } from '@vueuse/core'
 import { computed, toValue } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumImageMetadata } from '~/forum/composables/state/useForumImageMetadata'
 import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
@@ -41,7 +41,7 @@ const IMAGE_ACTION_ICONS: Record<ForumImageShortcutId, string> = {
 const useImageInspectionPermission = createSharedComposable(() => useRuleChecks().hasAnyPermissions('manage_feedback'))
 
 export function useForumImageMenu(image: MaybeRefOrGetter<ForumImageResource>, commands: MaybeRefOrGetter<ForumImageCommand[]>, active: MaybeRefOrGetter<boolean>, accepts: (event: KeyboardEvent, id?: string) => boolean) {
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const preferences = useForumShortcutPreferences()
   const { busy, copyImage, saveImage, copyLink } = useForumImageActions(image)
   const { inspect } = useForumImageMetadata()
@@ -76,7 +76,7 @@ export function useForumImageMenu(image: MaybeRefOrGetter<ForumImageResource>, c
       { type: 'group' as const, items: group.filter(id => available(id)).map(id => ({
         type: 'item' as const,
         id,
-        label: message.value.settings.shortcuts.actions[id],
+        label: t(`settings.shortcuts.actions.${id}`),
         icon: IMAGE_ACTION_ICONS[id],
         shortcut: shortcut(id),
         disabled: busy.value && (id === 'imageCopy' || id === 'imageSave' || id === 'imageLink'),

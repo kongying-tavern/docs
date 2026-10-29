@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumMentionCandidates } from '~/forum/composables/view/useForumMentionCandidates'
 import User from './User.vue'
 
 const props = withDefaults(defineProps<{ disabled?: boolean, items?: ForumAPI.User[], groups?: { heading: string, items: ForumAPI.User[] }[], recordCount?: number, showSearch?: boolean, searchTerm?: string, compact?: boolean }>(), { recordCount: 4, showSearch: true, searchTerm: '' })
 const emit = defineEmits<{ select: [user: ForumAPI.User] }>()
 const isOpen = defineModel<boolean>('open', { default: false })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const search = ref(props.searchTerm)
 watch(() => props.searchTerm, value => search.value = value)
 const { users, recent, remember } = useForumMentionCandidates(() => props.items ?? [])
 const recentMentionFiltered = computed(() => props.items ? [] : recent.value.filter(user => user?.id !== undefined && user?.username).slice(0, props.recordCount))
 const OfficialMemberFiltered = computed(() => users.value.filter(user => !recentMentionFiltered.value.some(recent => String(recent.id) === String(user.id))))
 const displayGroups = computed(() => (props.groups ?? [
-  { heading: message.value.forum.publish.feedbackForm.recentUsed, items: recentMentionFiltered.value },
-  { heading: props.items ? message.value.forum.publish.feedbackForm.mentionUser : message.value.forum.publish.feedbackForm.teamMembers, items: OfficialMemberFiltered.value },
+  { heading: t('forum.publish.feedbackForm.recentUsed'), items: recentMentionFiltered.value },
+  { heading: props.items ? t('forum.publish.feedbackForm.mentionUser') : t('forum.publish.feedbackForm.teamMembers'), items: OfficialMemberFiltered.value },
 ]).filter(group => group.items.length > 0))
 function selectMention(user: ForumAPI.User): void {
   if (props.disabled)
@@ -31,9 +31,9 @@ function selectMention(user: ForumAPI.User): void {
 
 <template>
   <Command :class="{ 'mention-command-compact': compact }">
-    <CommandInput v-if="showSearch" v-model="search" :placeholder="message.forum.publish.feedbackForm.searchPeople" />
+    <CommandInput v-if="showSearch" v-model="search" :placeholder="t('forum.publish.feedbackForm.searchPeople')" />
     <CommandList class="overscroll-contain max-h-64" :class="{ 'mention-panel-compact': compact }">
-      <CommandEmpty>{{ message.forum.publish.tagsInput.noResultsFound }}</CommandEmpty>
+      <CommandEmpty>{{ t('forum.publish.tagsInput.noResultsFound') }}</CommandEmpty>
       <CommandGroup v-for="group in displayGroups" :key="group.heading" :heading="group.heading">
         <CommandItem v-for="item in group.items" :key="item.id" :value="`${item.username} @${item.login}`" @select="selectMention(item)">
           <User size="sm" :name="item.username" :description="`@${item.login}`" :avatar="{ src: item.avatar, icon: 'i-lucide-image' }">

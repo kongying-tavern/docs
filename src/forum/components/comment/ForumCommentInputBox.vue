@@ -4,7 +4,7 @@ import type RichTextarea from '../form/ForumRichTextarea.vue'
 import type ForumAPI from '~/forum/api/types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { setCommentReply } from '~/forum/services/commentComposer'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { ForumPreloadedRichTextarea as ForumRichTextarea, preloadForumRichTextarea } from '../utils/forumComponentPreload'
@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<{
 }>(), { placeholder: () => [''], replyTarget: '', collapse: true, repo: 'Feedback', autofocus: false, entryAnimation: true })
 const emit = defineEmits<{ 'comment:submit': [comment: ForumAPI.Comment], 'cancel-reply': [], 'editor-open': [open: boolean] }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const mobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const mobileOpen = ref(false)
 const mobileEntry = useTemplateRef<InstanceType<typeof ForumMobileCommentEntry>>('mobileEntry')
@@ -43,8 +43,8 @@ const { userInfo, userAuth, content, plainText, loading, busy, queue, submitErro
   emit('comment:submit', comment)
 })
 const hasDraft = computed(() => !!plainText.value.trim() || queue.attachments.value.length > 0)
-useCommentDraftGuard(computed(() => hasDraft.value || busy.value), () => message.value.forum.comment.leaveDraft)
-const mobilePlaceholder = computed(() => hasDraft.value ? message.value.forum.comment.continueEditing : message.value.forum.comment.placeholder)
+useCommentDraftGuard(computed(() => hasDraft.value || busy.value), () => t('forum.comment.leaveDraft'))
+const mobilePlaceholder = computed(() => hasDraft.value ? t('forum.comment.continueEditing') : t('forum.comment.placeholder'))
 async function focusEditor(): Promise<void> {
   await nextTick()
   if (mobileOpen.value && entryTool.value !== 'emoji' && entryTool.value !== 'upload')
@@ -105,7 +105,7 @@ function login(): void {
   <template v-if="mobile">
     <ForumMobileCommentEntry
       ref="mobileEntry"
-      :label="userAuth.isTokenValid ? mobilePlaceholder : message.forum.comment.loginToComment"
+      :label="userAuth.isTokenValid ? mobilePlaceholder : t('forum.comment.loginToComment')"
       :disabled="loading"
       :expanded="mobileOpen"
       :tools="presentation === 'page'"
@@ -132,7 +132,7 @@ function login(): void {
             :max-text-length="maxTextLength"
             :placeholders="placeholder"
             :mention-users="mentionUsers"
-            :aria-label="message.forum.comment.comment"
+            :aria-label="t('forum.comment.comment')"
             @input="plainText = $event"
             @files-selected="addFiles"
             @remove-attachment="queue.remove"
@@ -159,7 +159,7 @@ function login(): void {
     :entry-animation="entryAnimation"
     :placeholders="placeholder"
     :reply-target="replyTarget"
-    :label="message.forum.comment.comment"
+    :label="t('forum.comment.comment')"
     @input="plainText = $event"
     @files-selected="addFiles"
     @remove-attachment="queue.remove"

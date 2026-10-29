@@ -1,14 +1,14 @@
 ## 翻译认领
 
-简体中文 / English / 日本語 为官方翻译，下方按语言列出**缺失或过期**的文件。认领方式：
+本看板列出**尚未翻译或需要更新的文章**。界面词条请到 [x18n](https://yuanshen.site/docs/_i18n/) 查看。
 
-- 评论 `/claim 文件路径` 认领（可一次认领多个文件，也可认领整个目录，如 `/claim src/manual/`）
-- 放弃请评论 `/release 文件路径`
-- 认领后请在 **{{ttl_days}}** 天内提交 PR，逾期自动释放，届时欢迎重新认领
+- 评论 `/claim 文件路径` 认领文章。支持多个文件或整个目录，如 `/claim src/manual/`。
+- 评论 `/release 文件路径` 放弃认领。
+- 认领后请在 **{{ttl_days}}** 天内提交 PR。逾期会自动释放，可重新认领。
 
-相关链接：[翻译进度]({{dashboard_url}}) · [新语言启动教程](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md) · [翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)
+相关链接：[文章翻译进度]({{dashboard_url}}) · [翻译指南](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) · [新增语言](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)
 
-> 韩语与法语已归档（暂时停止维护），如需恢复请联系维护者。
+> 韩语与法语已归档，如需恢复请联系维护者。
 
 ### English
 

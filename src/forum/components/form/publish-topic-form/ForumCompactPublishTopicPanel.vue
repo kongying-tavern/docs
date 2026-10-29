@@ -4,6 +4,7 @@ import type { FORUM } from '~/forum/components/types'
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, LoaderCircleIcon, Maximize2Icon, Minimize2Icon, PaperclipIcon, Trash2Icon, XIcon } from '@lucide/vue'
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
 import { computed, nextTick, ref, unref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
@@ -11,7 +12,6 @@ import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import { Field, FieldError, FieldLabel } from '@/components/ui/field'
 import { FormField } from '@/components/ui/form'
 import { Switch } from '@/components/ui/switch'
-import { useLocalized } from '@/hooks/useLocalized'
 import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
 import ForumTopicTypeBadge from '~/forum/components/ui/ForumTopicTypeBadge.vue'
@@ -33,8 +33,8 @@ const { showCreateMore, isOpen, choosingType, editingSavedDraft, autoSaveEnabled
 const { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry } = props.upload
 const { submitLoading, submissionAlert, validationErrorCount, finalIsDisabled } = props.submission
 const { handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, focusFirstInvalid, saveDraft, setQuotedTopic } = props.actions
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.publish.feedbackForm)
+const { t } = useI18n({ useScope: 'global' })
+
 const desktopViewport = useMediaQuery('(min-width: 768px)')
 const isDesktop = ref(desktopViewport.value)
 // Keep the parent modal mounted while a draft confirmation owns focus.
@@ -70,7 +70,7 @@ const [UseForm, Form] = createReusableTemplate()
 const [UseClose, Close] = createReusableTemplate()
 async function save() {
   if (await saveDraft())
-    toast.success(copy.value.draftSaved)
+    toast.success(t('forum.publish.feedbackForm.draftSaved'))
   else if (draftSaveError.value)
     toast.error(draftSaveError.value, { report: false })
 }
@@ -101,7 +101,7 @@ defineExpose(presentation)
 
 <template>
   <UseClose>
-    <Button type="button" variant="ghost" size="icon-xs" class="compact-close compact-corner-button" :disabled="submitLoading || draftSaving" :aria-label="message.ui.button.close" @click="handleClose">
+    <Button type="button" variant="ghost" size="icon-xs" class="compact-close compact-corner-button" :disabled="submitLoading || draftSaving" :aria-label="t('ui.button.close')" @click="handleClose">
       <XIcon class="size-3.5" />
     </Button>
   </UseClose>
@@ -109,7 +109,7 @@ defineExpose(presentation)
     <form ref="formElement" :inert="draftSaving" class="compact-form" @input="actions.markEditorActive" @keydown="actions.markEditorActive" @pointerdown="actions.markEditorActive" @submit.prevent="handleFormSubmit">
       <header class="compact-header">
         <div class="compact-heading">
-          <ForumResponsiveMenu v-if="isDesktop" :items="typeItems" :title="message.forum.topic.menu.changeType.text" align="start">
+          <ForumResponsiveMenu v-if="isDesktop" :items="typeItems" :title="t('forum.topic.menu.changeType.text')" align="start">
             <template #trigger>
               <Button type="button" variant="secondary" size="xs" data-publish-type-target class="compact-type compact-corner-button" :disabled="submitLoading || draftSaving">
                 <ForumTopicTypeBadge data-publish-type-label class="compact-type-badge" :type="formData.type" />
@@ -117,23 +117,23 @@ defineExpose(presentation)
               </Button>
             </template>
           </ForumResponsiveMenu>
-          <Button v-else type="button" variant="secondary" size="xs" data-publish-type-target class="compact-type compact-corner-button" :disabled="submitLoading || draftSaving" :aria-label="copy.backToTypes" @click="returnToTypes">
+          <Button v-else type="button" variant="secondary" size="xs" data-publish-type-target class="compact-type compact-corner-button" :disabled="submitLoading || draftSaving" :aria-label="t('forum.publish.feedbackForm.backToTypes')" @click="returnToTypes">
             <ChevronLeftIcon data-icon="inline-start" />
             <ForumTopicTypeBadge data-publish-type-label class="compact-type-badge" :type="formData.type" />
           </Button>
           <ChevronRightIcon class="text-muted-foreground shrink-0 size-3.5" aria-hidden="true" />
-          <span class="compact-heading-title">{{ editingSavedDraft ? copy.editDraft : copy.newFeedback }}</span>
+          <span class="compact-heading-title">{{ editingSavedDraft ? t('forum.publish.feedbackForm.editDraft') : t('forum.publish.feedbackForm.newFeedback') }}</span>
         </div>
         <div class="compact-header-actions">
           <ForumDraftSaveStatus v-if="autoSaveEnabled" :status="autoSaveStatus" :saved-at="savedAt" :idle="editorIdle" />
           <Button v-if="canSaveDraft" type="button" variant="secondary" size="xs" class="compact-corner-button" :disabled="submitLoading || draftSaving" @click="save">
             <LoaderCircleIcon v-if="draftSaving" class="animate-spin" data-icon="inline-start" />
-            {{ draftSaving ? copy.savingDraft : copy.saveDraft }}
+            {{ draftSaving ? t('forum.publish.feedbackForm.savingDraft') : t('forum.publish.feedbackForm.saveDraft') }}
           </Button>
-          <Button v-if="editingSavedDraft" type="button" variant="ghost" size="icon-xs" class="compact-corner-button" :disabled="submitLoading || draftSaving" :aria-label="copy.deleteDraft" :title="copy.deleteDraft" @click="actions.requestDeleteDraft">
+          <Button v-if="editingSavedDraft" type="button" variant="ghost" size="icon-xs" class="compact-corner-button" :disabled="submitLoading || draftSaving" :aria-label="t('forum.publish.feedbackForm.deleteDraft')" :title="t('forum.publish.feedbackForm.deleteDraft')" @click="actions.requestDeleteDraft">
             <Trash2Icon />
           </Button>
-          <Button type="button" variant="ghost" size="icon-xs" class="compact-corner-button" :aria-label="expanded ? copy.collapse : copy.expand" :title="expanded ? copy.collapse : copy.expand" :aria-pressed="expanded" @click="expanded = !expanded">
+          <Button type="button" variant="ghost" size="icon-xs" class="compact-corner-button" :aria-label="expanded ? t('forum.publish.feedbackForm.collapse') : t('forum.publish.feedbackForm.expand')" :title="expanded ? t('forum.publish.feedbackForm.collapse') : t('forum.publish.feedbackForm.expand')" :aria-pressed="expanded" @click="expanded = !expanded">
             <Minimize2Icon v-if="expanded" class="size-3.5" /><Maximize2Icon v-else class="size-3.5" />
           </Button>
         </div>
@@ -173,7 +173,7 @@ defineExpose(presentation)
         <FormField v-slot="{ componentField, errorMessage }" name="tags">
           <Field :data-invalid="Boolean(errorMessage)" class="compact-properties gap-2">
             <FieldLabel class="sr-only">
-              {{ copy.selectTags }}
+              {{ t('forum.publish.feedbackForm.selectTags') }}
             </FieldLabel>
             <ForumCompactProperties :tags="componentField.modelValue || []" :quoted-topic="formData.quotedTopic" :disabled="submitLoading || draftSaving" :aria-invalid="Boolean(errorMessage)" :aria-describedby="errorMessage ? 'tags-error' : undefined" @update:tags="componentField['onUpdate:modelValue']" @update:quoted-topic="setQuotedTopic" />
             <FieldError v-if="errorMessage" id="tags-error">
@@ -186,39 +186,39 @@ defineExpose(presentation)
         </div>
       </div>
       <footer class="compact-footer">
-        <Button type="button" variant="secondary" size="icon-sm" class="compact-corner-button" :aria-label="copy.addImages" :title="copy.addImages" :disabled="imageSelectionDisabled || attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT" @click="uploader?.open()">
+        <Button type="button" variant="secondary" size="icon-sm" class="compact-corner-button" :aria-label="t('forum.publish.feedbackForm.addImages')" :title="t('forum.publish.feedbackForm.addImages')" :disabled="imageSelectionDisabled || attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COUNT" @click="uploader?.open()">
           <PaperclipIcon />
         </Button>
         <div class="compact-footer-actions">
           <label v-if="showCreateMore" for="compact-create-more" class="compact-toggle">
             <Switch id="compact-create-more" v-model="createMore" :disabled="finalIsDisabled" />
-            <span>{{ copy.createMore }}</span>
+            <span>{{ t('forum.publish.feedbackForm.createMore') }}</span>
           </label>
-          <label for="compact-private-feedback" class="compact-toggle" :title="copy.privateFeedbackVisibility">
-            <Switch id="compact-private-feedback" :model-value="formData.isPrivate === true" :disabled="finalIsDisabled" :aria-description="copy.privateFeedbackDescription" @update:model-value="actions.setPrivate" />
-            <span>{{ copy.privateFeedback }}</span>
+          <label for="compact-private-feedback" class="compact-toggle" :title="t('forum.publish.feedbackForm.privateFeedbackVisibility')">
+            <Switch id="compact-private-feedback" :model-value="formData.isPrivate === true" :disabled="finalIsDisabled" :aria-description="t('forum.publish.feedbackForm.privateFeedbackDescription')" @update:model-value="actions.setPrivate" />
+            <span>{{ t('forum.publish.feedbackForm.privateFeedback') }}</span>
           </label>
           <Button type="submit" size="sm" class="compact-corner-button" :disabled="finalIsDisabled">
-            <LoaderCircleIcon v-if="submitLoading" class="animate-spin" data-icon="inline-start" />{{ submitLoading ? message.forum.publish.publishLoading : copy.submit }}
+            <LoaderCircleIcon v-if="submitLoading" class="animate-spin" data-icon="inline-start" />{{ submitLoading ? t('forum.publish.publishLoading') : t('forum.publish.feedbackForm.submit') }}
           </Button>
         </div>
         <button v-if="validationErrorCount" type="button" class="compact-validation" @click="focusFirstInvalid">
-          {{ copy.fieldsNeedAttention.replace('{count}', String(validationErrorCount)) }}
+          {{ t('forum.publish.feedbackForm.fieldsNeedAttention', { count: validationErrorCount }) }}
         </button>
       </footer>
       <div v-if="isOverDropZone" class="compact-drop-overlay" aria-hidden="true">
         <PaperclipIcon />
-        <span>{{ copy.addImages }}</span>
+        <span>{{ t('forum.publish.feedbackForm.addImages') }}</span>
       </div>
     </form>
   </UseForm>
   <Dialog v-if="isDesktop" :open="isOpen && !deleteDraftOnly" @update:open="handleOpenChange">
     <DialogContent class="compact-dialog srounded-[var(--compact-radius)]" :class="{ 'compact-expanded': expanded }" :show-close-button="false">
       <DialogTitle class="sr-only">
-        {{ copy.newFeedback }}
+        {{ t('forum.publish.feedbackForm.newFeedback') }}
       </DialogTitle>
       <DialogDescription class="sr-only">
-        {{ message.forum.publish.form.content.placeholder }}
+        {{ t('forum.publish.form.content.placeholder') }}
       </DialogDescription>
       <Close />
       <ForumPublishTopicStage :form="form" :actions="actions" morph-type hide-close-button>
@@ -229,7 +229,7 @@ defineExpose(presentation)
   <Drawer v-else :open="isOpen && !deleteDraftOnly" @update:open="handleOpenChange">
     <DrawerContent class="compact-drawer data-[vaul-drawer-direction=bottom]:srounded-t-[var(--compact-radius)]" :class="{ 'compact-choosing-type': choosingType, 'compact-expanded': expanded, 'compact-keyboard-visible': keyboardVisible }" :style="drawerStyle" :aria-describedby="undefined">
       <DrawerTitle class="sr-only">
-        {{ copy.newFeedback }}
+        {{ t('forum.publish.feedbackForm.newFeedback') }}
       </DrawerTitle>
       <Close />
       <ForumPublishTopicStage :form="form" :actions="actions" fixed-height hide-close-button>

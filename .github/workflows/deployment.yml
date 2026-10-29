@@ -68,8 +68,8 @@ jobs:
       - name: Build Site
         run: pnpm build:vitepress
 
-      - name: Build Lunaria
-        run: pnpm lunaria:build
+      - name: Build translation reports
+        run: pnpm translations:build
 
       - name: Deploy
         id: deploy

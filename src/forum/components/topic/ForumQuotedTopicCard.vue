@@ -3,9 +3,9 @@ import type ForumAPI from '~/forum/api/types'
 import { createReusableTemplate } from '@vueuse/core'
 import { useRouter } from 'vitepress'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { decodeTopicBody } from '~/forum/services/forumContentCodec'
 import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 const router = useRouter()
 const [UseRemoveMenu, RemoveMenu] = createReusableTemplate()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { topicHref } = useForumRoute()
 const detailHref = computed(() => topicHref(reference.id, null))
 const renderedContent = computed(() => topic
@@ -81,9 +81,9 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
     @keydown.enter="openTopic"
   >
     <UseRemoveMenu>
-      <ForumResponsiveMenu v-if="removable" :items="[{ id: 'remove-reference', type: 'item', label: message.forum.publish.feedbackForm.removeReference, disabled: removeDisabled, action: () => emit('remove') }]" align="end">
+      <ForumResponsiveMenu v-if="removable" :items="[{ id: 'remove-reference', type: 'item', label: t('forum.publish.feedbackForm.removeReference'), disabled: removeDisabled, action: () => emit('remove') }]" align="end">
         <template #trigger>
-          <Button type="button" variant="ghost" size="icon-sm" :disabled="removeDisabled" :aria-label="message.forum.topic.menu.moreActions">
+          <Button type="button" variant="ghost" size="icon-sm" :disabled="removeDisabled" :aria-label="t('forum.topic.menu.moreActions')">
             <span class="i-lucide-ellipsis" aria-hidden="true" />
           </Button>
         </template>
@@ -110,18 +110,18 @@ function openTopic(event: MouseEvent | KeyboardEvent): void {
           <Skeleton class="h-3.5 w-4/5" />
           <Skeleton v-if="!compact" class="h-3.5 w-3/5" />
         </div>
-        <span class="sr-only">{{ message.forum.topic.quote.loading }}</span>
+        <span class="sr-only">{{ t('forum.topic.quote.loading') }}</span>
       </div>
 
       <div v-else-if="unavailable || !topic" class="quote-unavailable text-sm color-[var(--vp-c-text-2)] py-4 flex gap-2 items-center">
         <span class="i-lucide-message-square-off shrink-0 size-4" aria-hidden="true" />
-        <span>{{ message.forum.topic.quote.unavailable }}</span>
+        <span>{{ t('forum.topic.quote.unavailable') }}</span>
         <button
           type="button"
           class="vp-link ml-auto"
           @click.stop="emit('retry')"
         >
-          {{ message.forum.topic.quote.retry }}
+          {{ t('forum.topic.quote.retry') }}
         </button>
         <RemoveMenu />
       </div>

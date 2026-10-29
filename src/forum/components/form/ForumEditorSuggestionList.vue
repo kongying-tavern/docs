@@ -4,13 +4,13 @@ import type { ListboxRoot } from 'reka-ui'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import type { ForumEditorSuggestionItem } from '~/forum/tiptap/forumSuggestionRenderer'
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandList,
 } from '@/components/ui/command'
-import { useLocalized } from '@/hooks/useLocalized'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 
 defineOptions({ inheritAttrs: false })
@@ -22,7 +22,7 @@ const props = defineProps<{
 
 const selectedIndex = ref(0)
 const commandRoot = useTemplateRef<ComponentExposed<typeof ListboxRoot<string>> & { $el: HTMLElement }>('command-root')
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 watch(() => props.items, () => {
   selectedIndex.value = 0
@@ -77,7 +77,7 @@ defineExpose({ onKeyDown })
   >
     <CommandList class="panel-scrollbar">
       <p v-if="items.length === 0" class="text-sm text-[var(--vp-c-text-3)] p-4 text-center">
-        {{ message.forum.publish.tagsInput.noResultsFound }}
+        {{ t('forum.publish.tagsInput.noResultsFound') }}
       </p>
       <CommandGroup>
         <CommandItem
@@ -105,7 +105,7 @@ defineExpose({ onKeyDown })
           <span class="leading-tight flex flex-1 flex-col min-w-0">
             <strong class="text-sm font-medium truncate">{{ item.label }}</strong>
             <span v-if="item.description || (item.kind === 'topic' && item.manual)" class="text-xs text-muted-foreground truncate">
-              {{ item.kind === 'topic' && item.manual ? message.forum.publish.feedbackForm.referenceById : item.description }}
+              {{ item.kind === 'topic' && item.manual ? t('forum.publish.feedbackForm.referenceById') : item.description }}
             </span>
           </span>
         </CommandItem>

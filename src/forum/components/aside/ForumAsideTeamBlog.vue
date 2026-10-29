@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { getLangPath } from '@/utils'
 import { data as allBlogPosts } from '~/_data/forumBlogPosts.data'
+import { DEFAULT_LOCALE } from '~/constants/site'
 import ForumTime from '../ui/ForumTime.vue'
 
-const { lang, localeIndex } = useData()
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.teamBlog)
+const { lang, localeIndex, theme } = useData()
+const { t } = useI18n({ useScope: 'global' })
+
 // 站点默认语言挂在根路径下，博客路由需按当前 locale 前缀拼；base 交给 VPLink 处理
 const blogHref = computed(() => `${getLangPath(localeIndex.value)}blog`)
 
 const teamBlogItems = computed(() => {
-  const currentLang = (lang.value || 'zh').split('-')[0]
+  const currentLang = (lang.value || DEFAULT_LOCALE).split('-')[0]
 
-  return copy.value.items.map((item) => {
+  return Object.entries(theme.value.forum.aside.teamBlog.items as Record<string, { link: string }>).map(([key, item]) => {
     const slug = item.link.split('/').filter(Boolean).at(-1)
     const post = allBlogPosts.find((candidate: { lang: string, url: string }) =>
       candidate.lang === currentLang && candidate.url.endsWith(`/posts/${slug}`),
@@ -23,6 +24,7 @@ const teamBlogItems = computed(() => {
 
     return {
       ...item,
+      text: t(`forum.aside.teamBlog.items.${key}`),
       authors: post?.authors.map((author: { username: string, login: string }) => author.username || author.login).join('、') ?? '',
       updatedAt: post?.gitInfo?.lastModified.date ?? post?.date,
     }
@@ -34,10 +36,10 @@ const teamBlogItems = computed(() => {
   <div>
     <div class="lh-14 font-[var(--vp-font-family-subtitle)] mb-4 vp-border-divider flex h-14 justify-between">
       <p class="color-[var(--vp-c-text-1)]">
-        {{ copy.text }}
+        {{ t('forum.aside.teamBlog.text') }}
       </p>
       <VPLink class="forum-aside-all-link" :href="blogHref">
-        {{ message.ui.button.all }}
+        {{ t('ui.button.all') }}
       </VPLink>
     </div>
 

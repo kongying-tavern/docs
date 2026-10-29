@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import dayjs from 'dayjs'
 import { useData } from 'vitepress'
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { isFromExternalPage } from '@/composables/isFromExternalPage'
 import { useLanguage } from '@/composables/useLanguage'
 import { getLangCode, hash } from '../../../utils'
@@ -11,8 +11,9 @@ import { BANNER_CONSTANTS, BANNER_SELECTORS } from '../constants'
 import { useBannerStorage } from './useBannerStorage'
 
 export function useBannerState(banner: Ref<HTMLElement | undefined>) {
+  const { t } = useI18n({ useScope: 'global' })
   const { height } = useElementSize(banner)
-  const { frontmatter, page, theme, lang, localeIndex } = useData()
+  const { frontmatter, page, lang, localeIndex } = useData()
   const localeConfig = useLocaleConfig()
   const { matchedLang } = useLanguage(
     localeConfig.value.map(val => val.lang),
@@ -44,12 +45,13 @@ export function useBannerState(banner: Ref<HTMLElement | undefined>) {
 
   const isExpired = computed(() => {
     const expiryDate = frontmatter.value.bannerExpiryDate
-    return expiryDate && dayjs(expiryDate).isValid() && dayjs().isAfter(expiryDate)
+    const timestamp = expiryDate ? new Date(expiryDate).getTime() : Number.NaN
+    return Number.isFinite(timestamp) && Date.now() > timestamp
   })
 
   const bannerText = computed(() =>
     frontmatter.value.wip
-      ? (theme.value.ui?.banner?.wip ?? '')
+      ? (t('ui.banner.wip') ?? '')
       : frontmatter.value.banner,
   )
 

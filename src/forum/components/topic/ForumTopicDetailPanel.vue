@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { Empty, EmptyActions, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import User from '@/components/ui/User.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 import ForumImage from '../ui/ForumImage.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
@@ -25,7 +25,7 @@ const { topic, loading, error, authorHref, renderedContent, translatedContent, t
   topicImages: ForumAPI.ImageInfo[]
 }>()
 const emit = defineEmits<{ back: [], retry: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
@@ -38,7 +38,7 @@ const { message } = useLocalized()
         <Button
           type="button"
           variant="ghost"
-          :aria-label="message.forum.topic.backToPrevPage"
+          :aria-label="t('forum.topic.backToPrevPage')"
           class="mr-1 rounded-full bg-[var(--vp-c-bg-alt)] flex w-36px items-center max-sm:hidden"
           @click="emit('back')"
         >
@@ -138,20 +138,20 @@ const { message } = useLocalized()
           <ForumEmptyIllustration variant="error" />
         </EmptyMedia>
         <EmptyTitle>
-          {{ message.forum.loadError }}
+          {{ t('forum.loadError') }}
         </EmptyTitle>
         <EmptyDescription>
-          {{ message.forum.errors.loadFailedHint }}
+          {{ t('forum.errors.loadFailedHint') }}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyActions variant="pills">
         <Button @click="emit('retry')">
           <span class="i-lucide-refresh-cw icon-btn" aria-hidden="true" />
-          {{ message.forum.auth.callback.error.retry }}
+          {{ t('forum.auth.callback.error.retry') }}
         </Button>
         <Button variant="outline" @click="emit('back')">
           <span class="i-lucide-arrow-left icon-btn" aria-hidden="true" />
-          {{ message.forum.topic.backToPrevPage }}
+          {{ t('forum.topic.backToPrevPage') }}
         </Button>
       </EmptyActions>
     </Empty>

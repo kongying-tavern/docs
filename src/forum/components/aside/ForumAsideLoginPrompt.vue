@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import ForumAsideSection from './ForumAsideSection.vue'
 
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.login)
+const { t } = useI18n({ useScope: 'global' })
 
 function startOAuthLogin(): void {
   rememberLoginIntent(FORM_HASH)
@@ -16,11 +14,11 @@ function startOAuthLogin(): void {
 </script>
 
 <template>
-  <ForumAsideSection section-id="login" :title="copy.title" card>
-    <p>{{ copy.description }}</p>
+  <ForumAsideSection section-id="login" :title="t('forum.aside.login.title')" card>
+    <p>{{ t('forum.aside.login.description') }}</p>
     <Button class="aside-login-button w-full" type="button" @click="startOAuthLogin">
       <span class="i-lucide-log-in" aria-hidden="true" />
-      {{ copy.oauth }}
+      {{ t('forum.aside.login.oauth') }}
     </Button>
   </ForumAsideSection>
 </template>

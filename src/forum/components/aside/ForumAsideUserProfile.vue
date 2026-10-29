@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useUserProfile } from '../user/composables/useUserProfile'
 import ForumAsideSection from './ForumAsideSection.vue'
 
@@ -8,8 +8,7 @@ const props = defineProps<{
   username: string
 }>()
 
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.userProfile)
+const { t } = useI18n({ useScope: 'global' })
 
 const { renderedUser, role } = useUserProfile(() => props.username)
 
@@ -28,18 +27,18 @@ const profileRows = computed<ProfileRow[]>(() => {
     return []
 
   const rows: ProfileRow[] = [
-    { label: copy.value.userId, icon: 'i-lucide-hash', value: String(user.id) },
+    { label: t('forum.aside.userProfile.userId'), icon: 'i-lucide-hash', value: String(user.id) },
   ]
   if (user.createAt) {
     rows.push({
-      label: copy.value.joinDate,
+      label: t('forum.aside.userProfile.joinDate'),
       icon: 'i-lucide-calendar-days',
       value: user.createAt.toLocaleDateString(),
     })
   }
   if (user.login) {
     rows.push({
-      label: copy.value.loginLabel,
+      label: t('forum.aside.userProfile.loginLabel'),
       icon: 'i-lucide-at-sign',
       value: user.login,
       href: `https://gitee.com/${user.login}`,
@@ -54,13 +53,13 @@ const profileRows = computed<ProfileRow[]>(() => {
     <ForumAsideSection
       v-if="role === 'official'"
       section-id="user-verification"
-      :title="copy.verification"
+      :title="t('forum.aside.userProfile.verification')"
       card
     >
       <div class="user-verification">
         <i class="i-lucide-badge-check user-verification-icon" aria-hidden="true" />
         <p class="user-verification-desc">
-          {{ copy.verifiedMember }}
+          {{ t('forum.aside.userProfile.verifiedMember') }}
         </p>
       </div>
     </ForumAsideSection>
@@ -68,7 +67,7 @@ const profileRows = computed<ProfileRow[]>(() => {
     <ForumAsideSection
       v-if="renderedUser"
       section-id="user-profile"
-      :title="copy.profile"
+      :title="t('forum.aside.userProfile.profile')"
       card
     >
       <ul class="user-profile-rows">

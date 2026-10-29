@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { useData, useRoute } from 'vitepress'
+import { useRoute } from 'vitepress'
+
 import { computed, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useForumReaction } from '~/forum/composables/data/useForumReaction'
 import DocFeedbackForm from './DocReactionForm.vue'
 
@@ -9,7 +11,8 @@ const { variant = 'default', showForm = true } = defineProps<{
   showForm?: boolean
 }>()
 
-const { theme } = useData()
+const { t } = useI18n({ useScope: 'global' })
+
 const route = useRoute()
 const {
   error,
@@ -30,13 +33,13 @@ const feedbackStateClass = computed(() => {
 
 const feedbackMessage = computed(() => {
   if (feedbackForm.value?.isEditing)
-    return theme.value.docReaction.feedbackSuccessMsg
+    return t('docReaction.feedbackSuccessMsg')
   if (!lastResult.value)
-    return theme.value.docReaction.feedbackMsg
+    return t('docReaction.feedbackMsg')
 
   return lastResult.value === 'success'
-    ? theme.value.docReaction.feedbackSuccessMsg
-    : theme.value.docReaction.feedbackFailMsg
+    ? t('docReaction.feedbackSuccessMsg')
+    : t('docReaction.feedbackFailMsg')
 })
 
 const additionalMessage = computed((): string => {
@@ -44,7 +47,7 @@ const additionalMessage = computed((): string => {
   const isDislikeState = reactionState.value === 'dislike'
 
   return (isFormEditingOrSuccess && isDislikeState)
-    ? theme.value.docReaction.badFeedbackSuccessMsg
+    ? t('docReaction.badFeedbackSuccessMsg')
     : ''
 })
 
@@ -87,7 +90,7 @@ const styles = computed(() => {
     </p>
     <div class="feedback-con" :class="styles.buttonContainer">
       <span
-        :tooltip="theme.docReaction.good"
+        :tooltip="t('docReaction.good')"
         role="button"
         class="feedback-btn good"
         :class="{ active: reactionState === 'like', [styles.button]: true }"
@@ -96,7 +99,7 @@ const styles = computed(() => {
         <i i-custom-thumb />
       </span>
       <span
-        :tooltip="theme.docReaction.bad"
+        :tooltip="t('docReaction.bad')"
         role="button"
         class="feedback-btn bad"
         :class="{ active: reactionState === 'dislike', [styles.button]: true }"

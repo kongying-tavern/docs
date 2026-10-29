@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { computed, toValue } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
 import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
 import { areLanguagesEquivalent } from '~/forum/services/forumLanguage'
@@ -20,7 +20,7 @@ export function useTopicTranslationMenu(
   translator: MaybeRefOrGetter<ForumTranslatorRef | null | undefined>,
 ) {
   const { targetLanguage } = useForumTranslationPreferences()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
 
   return computed<FORUM.TopicDropdownMenu[]>(() => {
     const current = toValue(topic)
@@ -38,7 +38,7 @@ export function useTopicTranslationMenu(
       {
         type: 'item',
         id: 'translator',
-        label: message.value.forum.translate.translateText,
+        label: t('forum.translate.translateText'),
         icon: 'i-lucide-languages',
         order: 2,
         action: translatorRef.startTranslate,

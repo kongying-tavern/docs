@@ -1,5 +1,5 @@
 import { computed, onMounted, ref } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
 import { addTagToModel, removeTagFromModel } from '~/forum/services/form/topicTagModel'
@@ -14,7 +14,7 @@ export function useTagsInput(options: UseTagsInputOptions) {
   const { modelValue, max } = options
 
   const { getTagDisplay } = useTopicTagDisplay()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const labelStore = useForumLabelStore()
 
   const searchTerm = ref('')
@@ -34,11 +34,11 @@ export function useTagsInput(options: UseTagsInputOptions) {
   const groupTags = computed(() => options.includeSelected ? tags.value : filteredTags.value)
   const tagList = computed(() => [
     {
-      heading: message.value.forum.publish.tagsInput.platformGroup,
+      heading: t('forum.publish.tagsInput.platformGroup'),
       list: groupTags.value.filter(val => val.includes('PLATFORM')),
     },
     {
-      heading: message.value.forum.publish.tagsInput.typeGroup,
+      heading: t('forum.publish.tagsInput.typeGroup'),
       list: groupTags.value.filter(val => !val.includes('PLATFORM')),
     },
   ].filter(group => group.list.length))

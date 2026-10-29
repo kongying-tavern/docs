@@ -1,12 +1,11 @@
+import type { Composer } from 'vue-i18n'
 import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
-import type { CustomConfig } from '~/forum/types'
 import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
-import { formatMessage } from '~/utils/formatMessage'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 
 export function formatImageAttachmentError(
   error: ImageAttachmentError,
-  copy: CustomConfig['forum']['publish']['feedbackForm'],
+  t: Composer['t'],
 ): string {
   const values = {
     filename: error.fileName,
@@ -14,12 +13,12 @@ export function formatImageAttachmentError(
     max: IMAGE_UPLOAD_POLICY.MAX_COUNT,
   }
   switch (error.code) {
-    case 'count-exceeded': return formatMessage(copy.imageCountExceeded, values)
-    case 'empty-file': return formatMessage(copy.imageEmpty, values)
-    case 'invalid-type': return formatMessage(copy.imageInvalidType, values)
-    case 'size-exceeded': return formatMessage(copy.imageTooLarge, values)
-    case 'preview-failed': return formatMessage(copy.previewFailed, values)
-    default: return copy.uploadFailed
+    case 'count-exceeded': return t('forum.publish.feedbackForm.imageCountExceeded', values)
+    case 'empty-file': return t('forum.publish.feedbackForm.imageEmpty', values)
+    case 'invalid-type': return t('forum.publish.feedbackForm.imageInvalidType', values)
+    case 'size-exceeded': return t('forum.publish.feedbackForm.imageTooLarge', values)
+    case 'preview-failed': return t('forum.publish.feedbackForm.previewFailed', values)
+    default: return t('forum.publish.feedbackForm.uploadFailed')
   }
 }
 

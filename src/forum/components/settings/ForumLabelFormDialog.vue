@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,7 +12,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
 import {
   getFallbackLabelDisplay,
@@ -37,7 +37,7 @@ const emit = defineEmits<{
 
 const HASH_PREFIX_REGEX = /^#/
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const labelStore = useForumLabelStore()
 
 const name = ref('')
@@ -62,18 +62,18 @@ const nameError = computed(() => {
   if (!code)
     return ''
   const errorKeys = { required: 'nameRequired', invalid: 'nameInvalid', taken: 'nameTaken' } as const
-  return message.value.forum.labelAdmin.errors[errorKeys[code]]
+  return t(`forum.labelAdmin.errors.${errorKeys[code]}`)
 })
 
 const colorError = computed(() =>
   validateForumLabelColor(color.value)
     ? ''
-    : message.value.forum.labelAdmin.errors.colorInvalid,
+    : t('forum.labelAdmin.errors.colorInvalid'),
 )
 
 const reservedWarning = computed(() =>
   !props.label && usesReservedPrefix(fullName.value)
-    ? message.value.forum.labelAdmin.reservedNameWarning
+    ? t('forum.labelAdmin.reservedNameWarning')
     : '',
 )
 
@@ -119,7 +119,7 @@ async function handleSubmit() {
   try {
     let saved: GITEE.IssueLabel
     const originalLabel = props.label
-    const successCopy = props.label ? message.value.forum.labelAdmin.updateSuccess : message.value.forum.labelAdmin.createSuccess
+    const successKey = props.label ? 'forum.labelAdmin.updateSuccess' : 'forum.labelAdmin.createSuccess'
     if (props.label) {
       saved = await labelStore.updateForumLabel(props.label.name, {
         ...(fullName.value !== props.label.name ? { name: fullName.value } : {}),
@@ -138,14 +138,11 @@ async function handleSubmit() {
       && [...document.querySelectorAll<HTMLElement>('[data-feedback-label]')]
         .some(element => element.dataset.feedbackLabel === saved.name && isVisibleFeedback(element))
     if (!visibleResult)
-      toast.success(successCopy.replace('{name}', saved.name))
+      toast.success(t(successKey, { name: saved.name }))
   }
   catch (error) {
     toast.error(
-      message.value.forum.labelAdmin.operateFailed.replace(
-        '{message}',
-        error instanceof Error ? error.message : message.value.forum.errors.unknownError,
-      ),
+      t('forum.labelAdmin.operateFailed', { message: error instanceof Error ? error.message : t('forum.errors.unknownError') }),
       { error, scene: 'op' },
     )
   }
@@ -160,17 +157,17 @@ async function handleSubmit() {
     <DialogContent class="sm:max-w-[460px]">
       <DialogHeader>
         <DialogTitle>
-          {{ isEditing ? message.forum.labelAdmin.edit : message.forum.labelAdmin.create }}
+          {{ isEditing ? t('forum.labelAdmin.edit') : t('forum.labelAdmin.create') }}
         </DialogTitle>
         <DialogDescription class="sr-only">
-          {{ message.forum.labelAdmin.description }}
+          {{ t('forum.labelAdmin.description') }}
         </DialogDescription>
       </DialogHeader>
 
       <div :class="isEditing ? 'gap-4 grid grid-cols-1 sm:grid-cols-2' : 'flex flex-col gap-4'">
         <div class="flex flex-col gap-1.5 min-w-0">
           <label class="text-sm font-medium" for="forum-label-name">
-            {{ message.forum.labelAdmin.nameLabel }}
+            {{ t('forum.labelAdmin.nameLabel') }}
           </label>
           <div
             v-if="isEditing"
@@ -195,7 +192,7 @@ async function handleSubmit() {
             v-else
             id="forum-label-name"
             v-model="name"
-            :placeholder="message.forum.labelAdmin.namePlaceholder"
+            :placeholder="t('forum.labelAdmin.namePlaceholder')"
             :disabled="submitting"
             autocomplete="off"
             spellcheck="false"
@@ -207,27 +204,27 @@ async function handleSubmit() {
             {{ reservedWarning }}
           </p>
           <p v-else-if="!isEditing" class="text-xs text-[var(--vp-c-text-3)]">
-            {{ message.forum.labelAdmin.nameHint }}
+            {{ t('forum.labelAdmin.nameHint') }}
           </p>
         </div>
 
         <div class="flex flex-col gap-1.5 min-w-0">
           <label class="text-sm font-medium" for="forum-label-color">
-            {{ message.forum.labelAdmin.colorLabel }}
+            {{ t('forum.labelAdmin.colorLabel') }}
           </label>
           <div class="flex gap-2 items-center">
             <input
               id="forum-label-color"
               type="color"
               :value="colorInputValue"
-              :aria-label="message.forum.labelAdmin.colorLabel"
+              :aria-label="t('forum.labelAdmin.colorLabel')"
               :disabled="submitting"
               class="p-1 border border-input rounded-md bg-transparent shrink-0 h-9 w-9 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               @input="onColorInput"
             >
             <Input
               :model-value="color"
-              :aria-label="`${message.forum.labelAdmin.colorLabel} (HEX)`"
+              :aria-label="`${t('forum.labelAdmin.colorLabel')} (HEX)`"
               class="font-mono uppercase"
               maxlength="6"
               :disabled="submitting"
@@ -253,11 +250,11 @@ async function handleSubmit() {
       <DialogFooter>
         <DialogClose as-child>
           <Button type="button" variant="secondary" :disabled="submitting">
-            {{ message.ui.button.cancel }}
+            {{ t('ui.button.cancel') }}
           </Button>
         </DialogClose>
         <Button type="button" :disabled="!canSubmit" @click="handleSubmit">
-          {{ submitting ? message.ui.button.loading : message.ui.button.submit }}
+          {{ submitting ? t('ui.button.loading') : t('ui.button.submit') }}
         </Button>
       </DialogFooter>
     </DialogContent>

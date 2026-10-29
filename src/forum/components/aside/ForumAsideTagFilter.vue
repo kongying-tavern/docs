@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumTagFilterOptions } from '~/forum/composables/view/useForumTagFilterOptions'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
 import ForumTagList from '../ui/ForumTagList.vue'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { list } = useForumRoute()
-const copy = computed(() => message.value.forum.aside.tagFilter)
 
 const { options } = useForumTagFilterOptions()
 const labels = computed(() => options.value.map(option => option.id))
@@ -19,7 +18,7 @@ const active = computed(() => parseForumSearchQuery(list.value?.q ?? '').tags)
   <section class="aside-tag-filter mb-4" aria-labelledby="aside-tag-filter-title">
     <div class="lh-14 font-[var(--vp-font-family-subtitle)] mb-4 vp-border-divider h-14">
       <h2 id="aside-tag-filter-title" class="aside-tag-filter-title color-[var(--vp-c-text-1)]">
-        {{ copy.title }}
+        {{ t('forum.aside.tagFilter.title') }}
       </h2>
     </div>
 

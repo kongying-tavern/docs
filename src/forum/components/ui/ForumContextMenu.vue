@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { defineTopicDropdownMenu } from '~/forum/composables/util/defineTopicDropdownMenu'
 import ForumMenuContext from './ForumMenuContext.vue'
 
@@ -13,10 +13,10 @@ const { menu = [], topicData, class: className } = defineProps<{
   menu?: FORUM.TopicDropdownMenu[]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 // 与「更多操作」三点菜单同源：菜单项直接复用 defineTopicDropdownMenu，
 // 避免在 bento 上重复实现一套话题操作
-const providerMenu = defineTopicDropdownMenu(() => topicData, message)
+const providerMenu = defineTopicDropdownMenu(() => topicData, t)
 const items = computed(() => [...menu, ...providerMenu.value])
 </script>
 

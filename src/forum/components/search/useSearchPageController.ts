@@ -3,7 +3,7 @@ import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/fo
 import type { ForumSearchFacet } from '~/forum/services/forumSearchQuery'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
@@ -12,7 +12,7 @@ import { parseForumSearchQuery, toggleForumSearchFacet } from '~/forum/services/
 
 export function useSearchPageController() {
   const { route, list, navigate, submitSearch } = useForumRoute()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const { setViewMode } = useForumViewMode()
   const queryDraft = ref(list.value?.q ?? '')
   const recentSearches = useLocalStorage<string[]>('forum-recent-searches', [])
@@ -83,8 +83,8 @@ export function useSearchPageController() {
 
   const loadStateMessage = computed(() => {
     if (topics.error.value)
-      return message.value.forum.loadError
-    return topics.canLoadMore.value ? message.value.forum.loadMore : message.value.forum.noMore
+      return t('forum.loadError')
+    return topics.canLoadMore.value ? t('forum.loadMore') : t('forum.noMore')
   })
   function login(): void {
     location.hash = 'login-alert'

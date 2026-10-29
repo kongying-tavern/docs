@@ -1,0 +1,103 @@
+diff --git a/dist/formats/yaml.mjs b/dist/formats/yaml.mjs
+index d81bf247b0a75d3a642e7b4dd0243482fa826fff..8f9f0e9ce47165136b5ab0b4e25dba0061761739 100644
+--- a/dist/formats/yaml.mjs
++++ b/dist/formats/yaml.mjs
+@@ -1,6 +1,6 @@
+ import { a as splice, s as toLeaf } from "../shared-C7ceptwi.mjs";
+ import { applyTextEdits, diffText, errors, pathId } from "@x18n/core";
+-import { Document, Scalar, isMap, isNode, isScalar, parseDocument, stringify } from "yaml";
++import { Document, Scalar, isMap, isNode, isScalar, isSeq, parseDocument, stringify, visit } from "yaml";
+ //#region src/formats/yaml/index.ts
+ function scalarTextRange(node) {
+ 	const range = node.range;
+@@ -16,6 +16,23 @@ function scalarTextRange(node) {
+ }
+ function readMap(node, path, ranges) {
+ 	const out = {};
++	if (isSeq(node)) {
++		for (const [index, value] of node.items.entries()) {
++			const key = String(index);
++			const childPath = [...path, key];
++			if (isNode(value) && value.range) {
++				const range = { start: value.range[0], end: value.range[1] };
++				ranges.set(pathId(childPath), { key: range, value: range });
++			}
++			if (isMap(value) || isSeq(value)) out[key] = readMap(value, childPath, ranges);
++			else if (isScalar(value)) {
++				const leaf = toLeaf(value.value);
++				if (leaf !== void 0) out[key] = leaf;
++			}
++			else if (value === null) out[key] = null;
++		}
++		return out;
++	}
+ 	if (!isMap(node)) return out;
+ 	for (const pair of node.items) {
+ 		const keyNode = pair.key;
+@@ -33,7 +50,7 @@ function readMap(node, path, ranges) {
+ 			value: valueRange ?? keyRange
+ 		});
+ 		if (value === void 0) out[key] = null;
+-		else if (isMap(value)) out[key] = readMap(value, childPath, ranges);
++		else if (isMap(value) || isSeq(value)) out[key] = readMap(value, childPath, ranges);
+ 		else if (isScalar(value)) {
+ 			const leaf = toLeaf(value.value);
+ 			if (leaf !== void 0) out[key] = leaf;
+@@ -64,6 +81,7 @@ function scalarText(value, type) {
+ */
+ function removePair(text, doc, path) {
+ 	const map = path.length === 1 ? doc.contents : doc.getIn(path.slice(0, -1), true);
++	if (isSeq(map)) return void 0;
+ 	if (!isMap(map)) return text;
+ 	const pair = map.items.findLast((item) => isScalar(item.key) && String(item.key.value) === path.at(-1));
+ 	const key = pair?.key;
+@@ -82,6 +100,7 @@ function indentOf(text) {
+ 	return /^( +)\S/m.exec(text)?.[1]?.length ?? 2;
+ }
+ function yaml() {
++	const sequenceNamespaces = new Set();
+ 	return {
+ 		name: "x18n:format-yaml",
+ 		formats: [{
+@@ -89,12 +108,13 @@ function yaml() {
+ 			extensions: ["yml", "yaml"],
+ 			parse(text, ctx) {
+ 				const doc = parse$1(text, ctx.path);
++				visit(doc, { Seq() { sequenceNamespaces.add(ctx.namespace ?? ""); } });
+ 				const ranges = /* @__PURE__ */ new Map();
+ 				if (doc.contents === null) return {
+ 					tree: {},
+ 					ranges
+ 				};
+-				if (!isMap(doc.contents)) throw errors.X18N2003({ path: ctx.path });
++				if (!isMap(doc.contents) && !isSeq(doc.contents)) throw errors.X18N2003({ path: ctx.path });
+ 				return {
+ 					tree: readMap(doc.contents, [], ranges),
+ 					ranges
+@@ -123,8 +143,12 @@ function yaml() {
+ 						}
+ 					}
+ 					if (doc.contents === null) doc = new Document({});
+-					if (op.type === "set") doc.setIn(op.path, op.value);
+-					else doc.deleteIn(op.path);
++				const path = op.path.map((segment, index) => {
++					const parent = index === 0 ? doc.contents : doc.getIn(op.path.slice(0, index), true);
++					return (isSeq(parent) || parent === void 0) && /^(0|[1-9]\d*)$/.test(segment) ? Number(segment) : segment;
++				});
++				if (op.type === "set") doc.setIn(path, op.value);
++				else doc.deleteIn(path);
+ 					next = doc.toString({
+ 						indent: indentOf(text),
+ 						lineWidth: 0
+@@ -132,7 +156,10 @@ function yaml() {
+ 				}
+ 				return diffText(text, next);
+ 			},
+-			serialize: (tree) => Object.keys(tree).length === 0 ? "{}\n" : stringify(tree, { lineWidth: 0 })
++			serialize(tree, ctx) {
++				if (sequenceNamespaces.has(ctx.namespace ?? "")) throw new Error("Cannot rewrite YAML namespaces containing arrays without preserving sequence structure. Use in-place edits or copy the source locale file.");
++				return Object.keys(tree).length === 0 ? "{}\n" : stringify(tree, { lineWidth: 0 });
++			}
+ 		}]
+ 	};
+ }

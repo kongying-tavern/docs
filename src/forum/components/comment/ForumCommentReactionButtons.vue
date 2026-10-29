@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { TextMorph } from '@/components/ui/text-morph'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/forum/composables/data/useForumReaction'
 
 const { autoload = true, topicId, commentId } = defineProps<{
@@ -11,7 +11,7 @@ const { autoload = true, topicId, commentId } = defineProps<{
   autoload?: boolean
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const {
   data,
   error,
@@ -26,13 +26,13 @@ const loadFailed = computed(() => Boolean(error.value) && !data.value)
 </script>
 
 <template>
-  <div class="flex gap-1 items-center" role="group" :aria-label="message.forum.reaction.label" data-forum-reaction="comment">
+  <div class="flex gap-1 items-center" role="group" :aria-label="t('forum.reaction.label')" data-forum-reaction="comment">
     <Button
       type="button"
       variant="ghost"
       size="sm"
       class="text-xs text-[var(--vp-c-text-2)] leading-none px-2 rounded-full gap-1 h-7 hover:text-[var(--vp-c-text-2)] important:bg-transparent"
-      :aria-label="message.forum.reaction.like"
+      :aria-label="t('forum.reaction.like')"
       :aria-pressed="data?.state === 'like'"
       :disabled="disabled"
       @click="setReactionState('like')"
@@ -56,7 +56,7 @@ const loadFailed = computed(() => Boolean(error.value) && !data.value)
       variant="ghost"
       size="icon"
       class="text-xs text-[var(--vp-c-text-2)] leading-none rounded-full h-7 w-7 hover:text-[var(--vp-c-text-2)] important:bg-transparent"
-      :aria-label="message.forum.reaction.dislike"
+      :aria-label="t('forum.reaction.dislike')"
       :aria-pressed="data?.state === 'dislike'"
       :disabled="disabled"
       @click="setReactionState('dislike')"
@@ -73,7 +73,7 @@ const loadFailed = computed(() => Boolean(error.value) && !data.value)
       variant="ghost"
       size="icon"
       class="text-xs leading-none rounded-full h-7 w-7"
-      :aria-label="message.forum.auth.callback.error.retry"
+      :aria-label="t('forum.auth.callback.error.retry')"
       :disabled="isLoading"
       @click="refetch()"
     >

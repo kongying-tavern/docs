@@ -3,8 +3,8 @@ import type { HTMLAttributes } from 'vue'
 import { OctagonXIcon, TriangleAlertIcon, XIcon } from '@lucide/vue'
 import { useRoute } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { useLocalized } from '@/hooks/useLocalized'
 import { usePageAlertStore } from '@/stores/usePageAlert'
 
 const props = defineProps<{
@@ -12,10 +12,10 @@ const props = defineProps<{
 }>()
 
 const route = useRoute()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const pageAlert = usePageAlertStore()
 
-const closeLabel = computed(() => message.value.ui?.button?.close ?? 'Close')
+const closeLabel = computed(() => t('ui.button.close'))
 
 onMounted(() => pageAlert.registerRegion())
 onBeforeUnmount(() => pageAlert.unregisterRegion())

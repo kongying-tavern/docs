@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { getLangPath } from '@/utils'
 
-const { localeIndex } = useData()
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.meta)
+const { localeIndex, theme } = useData()
+const { t } = useI18n({ useScope: 'global' })
 
 // 站内链接需按当前 locale 前缀拼（默认语言挂在根路径下），外链原样保留
 function resolveLink(link: string): string {
@@ -18,19 +16,19 @@ const year = String(new Date().getFullYear())
 
 <template>
   <ul class="aside-meta">
-    <li v-for="item in copy.links" :key="item.link">
+    <li v-for="(item, key) in theme.forum.aside.meta.links" :key="key">
       <!-- no-icon 关掉 VitePress 给外链加的箭头 -->
       <VPLink class="aside-meta-link no-icon" :href="resolveLink(item.link)">
-        {{ item.text }}
+        {{ t(`forum.aside.meta.links.${key}`) }}
       </VPLink>
     </li>
     <li>
-      <VPLink class="aside-meta-link no-icon" :href="copy.poweredBy.link">
-        {{ copy.poweredBy.text }}
+      <VPLink class="aside-meta-link no-icon" :href="theme.forum.aside.meta.poweredBy.link">
+        {{ t('forum.aside.meta.poweredBy.text') }}
       </VPLink>
     </li>
     <li>
-      <span>{{ copy.copyright.replace('{year}', year) }}</span>
+      <span>{{ t('forum.aside.meta.copyright', { year }) }}</span>
     </li>
   </ul>
 </template>

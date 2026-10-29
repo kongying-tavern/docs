@@ -1,0 +1,199 @@
+# VitePress locale configuration. Interface messages live in the other *.yml files.
+label: 日本語
+lang: ja-JP
+title: 空蛍酒場
+titleTemplate: :title | 空蛍酒場
+description: 空蛍酒場が開発している、資源・任務などの攻略情報を掲載したマップ
+markdown:
+  codeCopyButton:
+    tooltipText: コードをコピー
+    copiedText: コピーしました
+themeConfig:
+  keyword: 原神マップ, テイワットマップ, 空蛍酒場, yuanshenmap, Genshin Impact Map, Kongying Map
+  outline:
+    label: このページでは
+  lastUpdated:
+    text: 更新日時
+  returnToTopLabel: 先頭に戻る
+  langMenuLabel: 言語を変更
+  docFooter:
+    prev: 前へ
+    next: 次へ
+  notFound:
+    title: ページが見つかりません
+    quote: 風に吹かれて、どこかへ飛んで行ってしまったようです。
+    linkLabel: ホームに戻る
+  nav:
+    - text: コミュニティ
+      link: /community
+    - text: スポンサーになる
+      link: /support-us
+    - text: アプリ
+      items:
+        - text: Windowsアプリ
+          items:
+            - text: アプリダウンロード
+              link: /download-client
+            - text: ユーザーマニュアル
+              link: /manual/client/
+            - text: リリースノート（英語）
+              link: https://yuanshen.site/docs/en/blog/posts/hotupdatelog-client
+        - text: Webアプリ
+          items:
+            - text: 今すぐ体験
+              link: https://v3.yuanshen.site
+            - text: リリースノート（英語）
+              link: https://yuanshen.site/docs/en/blog/posts/changelog-web
+        - text: ゲーム内テキスト翻訳
+          link: https://hoyofan.yuanshen.site/
+    - text: ヘルプとフィードバック
+      items:
+        - text: フィードバック
+          link: /feedback/
+        - text: 機能リクエスト
+          link: /feedback/feat
+    - text: もっと知る
+      items:
+        - text: 私たちを知る
+          items:
+            - text: 開発に参画
+              link: /join
+            - text: チームを知る
+              link: /team
+            - text: チームブログ
+              link: /blog
+        - text: 感謝
+          items:
+            - text: 貢献者感謝
+              link: /staff
+            - text: 寄付感謝
+              link: /support-us#sponsor-acknowledgement
+            - text: 技術提供
+              link: /credits
+        - text: 法令について
+          items:
+            - text: 免責事項
+              link: /disclaimer
+            - text: プライバシーポリシー
+              link: /privacy
+            - text: 利用規約
+              link: /agreement
+        - text: その他
+          items:
+            - text: 翻訳に参加
+              link: /translations
+            - text: リンク集
+              link: /friends-links
+  sidebar:
+    /feedback:
+      - {}
+    /settings:
+      - {}
+    /settings-labels:
+      - {}
+    /manual:
+      - text: ユーザーマニュアル
+        collapsed: false
+        items:
+          - text: 目次
+            link: /manual/client/
+          - text: 一括選択
+            link: /manual/client/batch-selection
+          - text: マーカー表示/非表示
+            link: /manual/client/hide-show-done
+          - text: オーバーレイモード
+            link: /manual/client/overlay-mode
+          - text: オートトラ
+            link: /manual/client/position-tracking
+          - text: キャンバス-ルート計画
+            link: /manual/client/canvas
+          - text: ウィンドウ全画面/ボーダレスウィンドウモード
+            link: /manual/client/fullscreen-windowed
+          - text: フレームレート
+            link: /manual/client/framerate
+          - text: データ復元
+            link: /manual/client/save-restore
+          - text: イースターエッグ
+            link: /manual/client/easter-egg
+      - text: よくある質問
+        collapsed: false
+        items:
+          - text: ゲームアカウントが凍結される可能性は？
+            link: /manual/faq/accountsafety/acntban
+          - text: 【自動更新】自動更新されない
+            link: /manual/faq/autoupdate/updater
+          - text: 【インストールできない】
+            items:
+              - text: エラーコード 2503
+                link: /manual/faq/instlerror/code2503
+              - text: 【インストールできない】.dll がないため
+                link: /manual/faq/instlerror/missingdll
+          - text: 【アプリ開かない】
+            items:
+              - text: 画面真っ白またはプログレスバーが止まる
+                link: /manual/faq/launcherror/emptydialog
+              - text: 「データクエリ失敗」「バージョンチェック失敗」
+                link: /manual/faq/launcherror/versioncheck
+          - text: ログイン
+            items:
+              - text: 【ログインできない】ログイン方法
+                link: /manual/faq/login/accountlogin
+              - text: 【毎回ログインを求められる】
+                link: /manual/faq/login/clientrepeatedly
+          - text: クラウドセーブ
+            items:
+              - text: 海外ユーザーのクラウドセーブ認証（英語）
+                link: https://yuanshen.site/docs/en/manual/faq/cloudsave/verificationissueforoverseasuser
+  footer:
+    qrcodeTitle: Discordサーバー
+    qrcodeAlt: Discord 招待 QR コード
+    qrcodeMessage: お気軽にご連絡ください
+    qrcodeLink: https://discord.gg/aFe57AKZUF
+    navigation:
+      - title: プロダクト
+        items:
+          - text: ユーザーマニュアル
+            link: /manual/client/
+          - text: アプリのリリースノート（英語）
+            link: https://yuanshen.site/docs/en/blog/posts/hotupdatelog-client
+          - text: Webアプリのリリースノート（英語）
+            link: https://yuanshen.site/docs/en/blog/posts/changelog-web
+      - title: 私たちについて
+        items:
+          - text: 仲間になる
+            link: /join
+          - text: チーム紹介
+            link: /team
+          - text: チームブログ
+            link: /blog
+          - text: スポンサー
+            link: /support-us
+      - title: 法令について
+        items:
+          - text: 免責事項
+            link: /disclaimer
+          - text: プライバシーポリシー
+            link: /privacy
+          - text: 利用規約
+            link: /agreement
+      - title: その他
+        items:
+          - text: フィードバック
+            link: /feedback/
+          - text: 翻訳に参加
+            link: /translations
+          - text: リンク集
+            link: /friends-links
+  ui:
+    title:
+      templateMappings:
+        - template: :title - ユーザーマニュアル | 空蛍酒場
+          test: (^|\/?)manual\/client\/?
+  forum:
+    aside:
+      contactUs:
+        qrcodeLink: https://discord.gg/aFe57AKZUF
+  languageSuggest:
+    changeLanguage: このページの言語を変更：
+    continue: 続ける
+    ariaLabel: 国または地域を選択

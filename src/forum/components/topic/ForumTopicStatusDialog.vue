@@ -3,6 +3,7 @@ import type { ForumSelectOption } from '../ui/responsive/shared'
 import type ForumAPI from '~/forum/api/types'
 import { ChevronDown } from '@lucide/vue'
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,7 +14,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useTopicManager } from '~/forum/composables/state/useTopicManager'
@@ -26,9 +26,9 @@ import { FORUM_SELECT_TRIGGER_CLASSES } from '../ui/responsive/shared'
 const KEEP = '__keep__'
 
 const { open, topic } = useTopicStatusEditor()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { route, leaveTopic } = useForumRoute()
-const { toggleCloseTopic, updatingTopic } = useTopicManager(topic, message)
+const { toggleCloseTopic, updatingTopic } = useTopicManager(topic, t)
 const [, toggleClose] = toggleCloseTopic()
 const selected = ref<ForumAPI.TopicStatus | typeof KEEP>(KEEP)
 
@@ -38,22 +38,22 @@ const selectedStatus = computed<ForumAPI.TopicStatus | undefined>(() =>
   selected.value === KEEP ? undefined : selected.value,
 )
 const selectedText = computed(() => selectedStatus.value
-  ? message.value.forum.topic.status[selectedStatus.value]
-  : message.value.forum.topic.menu.closeFeedback.keepStatus)
+  ? t(`forum.topic.status.${selectedStatus.value}`)
+  : t('forum.topic.menu.closeFeedback.keepStatus'))
 
 type StatusOption = ForumSelectOption<ForumAPI.TopicStatus | typeof KEEP>
 
 const statusOptions = computed<StatusOption[]>(() => {
   const flat: StatusOption[] = [{
     id: KEEP,
-    label: message.value.forum.topic.menu.closeFeedback.keepStatus,
+    label: t('forum.topic.menu.closeFeedback.keepStatus'),
   }]
   for (const group of groupedOptions.value) {
     for (const definition of group.definitions) {
       flat.push({
         id: definition.id,
-        label: message.value.forum.topic.status[definition.id],
-        group: message.value.forum.topic.statusGroups[group.group],
+        label: t(`forum.topic.status.${definition.id}`),
+        group: t(`forum.topic.statusGroups.${group.group}`),
       })
     }
   }
@@ -88,21 +88,21 @@ watch([topic, open], ([, isOpen]) => {
   <Dialog v-if="topic" v-model:open="open">
     <DialogContent class="sm:max-w-[440px]">
       <DialogHeader>
-        <DialogTitle>{{ message.forum.topic.menu.closeFeedback.title }}</DialogTitle>
-        <DialogDescription>{{ message.forum.topic.menu.closeFeedback.confirm }}</DialogDescription>
+        <DialogTitle>{{ t('forum.topic.menu.closeFeedback.title') }}</DialogTitle>
+        <DialogDescription>{{ t('forum.topic.menu.closeFeedback.confirm') }}</DialogDescription>
       </DialogHeader>
 
       <ForumResponsiveSelect
         v-model="selected"
         :options="statusOptions"
-        :title="message.forum.header.navigation.groups.status"
+        :title="t('forum.header.navigation.groups.status')"
       >
         <template #trigger>
           <button
             type="button"
             data-size="default"
             :class="cn(FORUM_SELECT_TRIGGER_CLASSES, 'w-full')"
-            :aria-label="`${message.forum.header.navigation.groups.status}${message.ui.labelSeparator}${selectedText}`"
+            :aria-label="`${t('forum.header.navigation.groups.status')}${t('ui.labelSeparator')}${selectedText}`"
           >
             <span class="flex gap-2 items-center">
               <ForumTopicStatusBadge :status="selectedStatus" />
@@ -119,7 +119,7 @@ watch([topic, open], ([, isOpen]) => {
       <DialogFooter>
         <DialogClose as-child>
           <Button type="button" variant="secondary" :disabled="updatingTopic">
-            {{ message.ui.button.cancel }}
+            {{ t('ui.button.cancel') }}
           </Button>
         </DialogClose>
         <Button
@@ -128,7 +128,7 @@ watch([topic, open], ([, isOpen]) => {
           :disabled="updatingTopic"
           @click="handleSubmit"
         >
-          {{ updatingTopic ? message.ui.button.loading : message.forum.topic.menu.closeFeedback.submit }}
+          {{ updatingTopic ? t('ui.button.loading') : t('forum.topic.menu.closeFeedback.submit') }}
         </Button>
       </DialogFooter>
     </DialogContent>

@@ -2,10 +2,10 @@
 import type { SearchPageController } from './useSearchPageController'
 import type { ForumSearchFacet } from '~/forum/services/forumSearchQuery'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { EmptyMorphFrame, EmptySwap } from '@/components/ui/empty-motion'
 import { SearchFieldTransition } from '@/components/ui/search-field'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
 import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
 import ForumTopicResults from '../list/ForumTopicResults.vue'
@@ -22,7 +22,7 @@ const props = defineProps<{
 const { queryDraft, list, recentSearches, hasCriteria, suggestionMode } = props.searchModel
 const { topics, suggestionTopics, loadStateMessage } = props.results
 const { toggleFacet, login } = props.actions
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { formatSearchQuery } = useForumSearchToken()
 const activeFacet = ref<ForumSearchFacet | null>(null)
 const filterStage = useTemplateRef<HTMLElement>('filterStage')
@@ -41,12 +41,12 @@ const historyCleared = ref(false)
 const visibleSearches = computed(() => historyExpanded.value ? recentSearches.value : recentSearches.value.slice(0, 6))
 const sectionTitle = computed(() => {
   if (activeFacet.value === 'state')
-    return message.value.forum.topic.searchFacets.stateTab
+    return t('forum.topic.searchFacets.stateTab')
   if (activeFacet.value === 'tags')
-    return message.value.forum.topic.searchFacets.tagsTab
+    return t('forum.topic.searchFacets.tagsTab')
   if (activeFacet.value === 'author')
-    return message.value.forum.topic.searchFacets.authorTab
-  return message.value.forum.header.search.searchContent
+    return t('forum.topic.searchFacets.authorTab')
+  return t('forum.header.search.searchContent')
 })
 function hideLeavingFilter(element: Element): void {
   element.setAttribute('inert', '')
@@ -119,10 +119,10 @@ function clearRecentSearches(): void {
         </EmptyMorphFrame>
       </section>
 
-      <section v-if="!activeFacet && (recentSearches.length || historyCleared)" class="forum-search-section" :aria-label="message.forum.header.search.recentSearches">
+      <section v-if="!activeFacet && (recentSearches.length || historyCleared)" class="forum-search-section" :aria-label="t('forum.header.search.recentSearches')">
         <div class="forum-search-history-heading">
           <h2 class="forum-search-section-title">
-            {{ message.forum.header.search.recentSearches }}
+            {{ t('forum.header.search.recentSearches') }}
           </h2>
           <div class="flex gap-1 items-center">
             <Button
@@ -130,7 +130,7 @@ function clearRecentSearches(): void {
               type="button"
               variant="ghost"
               size="icon-sm"
-              :aria-label="message.forum.header.search.clearRecentSearches"
+              :aria-label="t('forum.header.search.clearRecentSearches')"
               @click="clearRecentSearches"
             >
               <span class="i-lucide-trash-2 size-4" aria-hidden="true" />
@@ -143,7 +143,7 @@ function clearRecentSearches(): void {
               :aria-expanded="historyExpanded"
               @click="historyExpanded = !historyExpanded"
             >
-              {{ historyExpanded ? message.forum.header.search.collapseRecentSearches : message.forum.header.search.expandRecentSearches }}
+              {{ historyExpanded ? t('forum.header.search.collapseRecentSearches') : t('forum.header.search.expandRecentSearches') }}
               <span class="i-lucide-chevron-down size-4" :class="{ 'rotate-180': historyExpanded }" aria-hidden="true" />
             </Button>
           </div>
@@ -163,7 +163,7 @@ function clearRecentSearches(): void {
           </Button>
         </div>
         <p v-else class="forum-search-history-empty" role="status">
-          {{ message.forum.header.search.noRecentSearches }}
+          {{ t('forum.header.search.noRecentSearches') }}
         </p>
       </section>
     </template>

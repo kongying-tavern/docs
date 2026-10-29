@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 
@@ -10,7 +10,7 @@ const props = defineProps<{
   interactive?: boolean
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { isOfficial } = useRuleChecks()
 const { userHref } = useForumRoute()
 
@@ -30,10 +30,10 @@ const officialHref = 'https://github.com/kongying-tavern/'
       rel="noopener"
       class="text-[var(--forum-role-official-at)] font-semibold shrink-0 hover:underline"
     >
-      {{ message.forum.topic.officialAt }}
+      {{ t('forum.topic.officialAt') }}
     </a>
     <span v-else-if="official" class="text-[var(--forum-role-official-at)] font-semibold shrink-0">
-      {{ message.forum.topic.officialAt }}
+      {{ t('forum.topic.officialAt') }}
     </span>
     <a v-if="interactive !== false" :href="userHref(user.login)" :data-forum-user="user.login" data-forum-user-name class="truncate hover:underline">
       @{{ user.login }}

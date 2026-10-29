@@ -1,4 +1,4 @@
-# 翻译认领看板同步：push 到 main 或手动触发时对账 Lunaria 状态并更新认领 issue
+# 文章翻译认领看板同步：push 到 main 或手动触发时对账 Lunaria 状态并更新认领 issue
 name: Translation tracker sync
 on:
   push:

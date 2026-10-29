@@ -2,15 +2,15 @@ import type { MaybeRefOrGetter } from 'vue'
 import type { ForumImageResource } from '~/forum/services/forumImageResource'
 import { createSharedComposable, useClipboard, useClipboardItems, useFileSystemAccess, useObjectUrl } from '@vueuse/core'
 import { nextTick, onScopeDispose, ref, shallowRef, toValue } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { toast } from 'vue-sonner'
-import { useLocalized } from '@/hooks/useLocalized'
 import { fetchImageResource, imageClipboardBlob, imageFileName } from '~/forum/services/forumImageResource'
 
 // Clipboard capabilities and permission observers belong to the browser, not each thumbnail.
 const useImageClipboard = createSharedComposable(() => ({ clipboard: useClipboard(), imageClipboard: useClipboardItems() }))
 
 export function useForumImageActions(image: MaybeRefOrGetter<ForumImageResource>) {
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const { clipboard, imageClipboard } = useImageClipboard()
   const fileSystem = useFileSystemAccess({ dataType: 'Blob' })
   const downloadBlob = shallowRef<Blob>()
@@ -26,12 +26,12 @@ export function useForumImageActions(image: MaybeRefOrGetter<ForumImageResource>
   async function resource(value: ForumImageResource) {
     return (await fetchImageResource(value.src, controller?.signal)).blob
   }
-  async function perform(action: () => Promise<unknown>, success = message.value.forum.imageActions.copied) {
+  async function perform(action: () => Promise<unknown>, success = t('forum.imageActions.copied')) {
     if (busy.value)
       return
     busy.value = true
     controller = new AbortController()
-    notification = toast.loading(message.value.forum.imageActions.processing)
+    notification = toast.loading(t('forum.imageActions.processing'))
     try {
       await action()
       if (!controller.signal.aborted)
@@ -39,7 +39,7 @@ export function useForumImageActions(image: MaybeRefOrGetter<ForumImageResource>
     }
     catch (error) {
       if (!controller.signal.aborted && !(error instanceof DOMException && error.name === 'AbortError'))
-        toast.error(message.value.forum.imageActions.failed, { id: notification })
+        toast.error(t('forum.imageActions.failed'), { id: notification })
       else
         toast.dismiss(notification)
     }
@@ -84,7 +84,7 @@ export function useForumImageActions(image: MaybeRefOrGetter<ForumImageResource>
         anchor.download = imageFileName(value)
         anchor.click()
       }
-    }, message.value.forum.imageActions.saved)
+    }, t('forum.imageActions.saved'))
   }
   return { busy, copyImage, copyLink, saveImage }
 }

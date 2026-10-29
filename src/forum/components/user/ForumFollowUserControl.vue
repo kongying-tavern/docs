@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 
 defineProps<{ followState: boolean | null, following: boolean, disabled: boolean, textClass?: HTMLAttributes['class'] }>()
 const emit = defineEmits<{ toggle: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const isHovered = ref(false)
 </script>
 
@@ -28,7 +28,7 @@ const isHovered = ref(false)
       ]"
     />
     <span :class="textClass">
-      {{ followState ? (isHovered ? message.forum.labels.unfollow : message.forum.labels.following) : message.forum.labels.follow }}
+      {{ followState ? (isHovered ? t('forum.labels.unfollow') : t('forum.labels.following')) : t('forum.labels.follow') }}
     </span>
   </Button>
 </template>

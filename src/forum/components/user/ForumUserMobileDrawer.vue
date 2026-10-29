@@ -2,10 +2,10 @@
 import type ForumAPI from '~/forum/api/types'
 import { useRouter } from 'vitepress'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from '@/components/ui/drawer'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
@@ -19,7 +19,7 @@ const { user, hideProfileButton } = defineProps<{
 
 const open = defineModel<boolean>('open', { default: false })
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const router = useRouter()
 const { userHref } = useForumRoute()
 const currentUser = useUserInfoStore()
@@ -53,7 +53,7 @@ function goToProfilePage() {
         <div class="flex-1 min-w-0">
           <div class="flex gap-2 items-center">
             <DrawerTitle class="text-base text-[var(--vp-c-text-1)] font-bold truncate">
-              {{ user?.username || message.forum.labels.unknown }}
+              {{ user?.username || t('forum.labels.unknown') }}
             </DrawerTitle>
             <span
               v-if="role"
@@ -64,14 +64,14 @@ function goToProfilePage() {
           </div>
 
           <DrawerDescription class="text-xs c-[var(--vp-c-text-2)] mt-1 break-words">
-            {{ user?.bio || message.forum.labels.lazyPerson }}
+            {{ user?.bio || t('forum.labels.lazyPerson') }}
           </DrawerDescription>
 
           <div class="font-size-3.5 c-[--vp-c-text-3] mt-3 flex flex-wrap gap-4">
             <div class="flex gap-2 items-center">
               <i class="i-lucide-calendar-days" />
-              <span>{{ user?.createAt?.toLocaleDateString() || message.forum.labels.unknown }}</span>
-              <span>{{ message.forum.labels.joinTime }}</span>
+              <span>{{ user?.createAt?.toLocaleDateString() || t('forum.labels.unknown') }}</span>
+              <span>{{ t('forum.labels.joinTime') }}</span>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@ function goToProfilePage() {
             @click="goToProfilePage"
           >
             <span class="i-lucide-user text-sm mr-1" />
-            <span>{{ message.forum.labels.goToProfile }}</span>
+            <span>{{ t('forum.labels.goToProfile') }}</span>
           </Button>
           <ForumUserDrawerFollowOrMessage
             v-if="user?.login"

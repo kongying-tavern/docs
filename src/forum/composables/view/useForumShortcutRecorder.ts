@@ -1,26 +1,25 @@
 import type { ForumShortcutId } from '~/forum/services/forumShortcuts'
 import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, onScopeDispose, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
 import { FORUM_SHORTCUTS, shortcutBindingError, shortcutFromEvent } from '~/forum/services/forumShortcuts'
 
 export function useForumShortcutRecorder() {
   const preferences = useForumShortcutPreferences()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const selected = ref<ForumShortcutId | null>(null)
   const recorder = ref<HTMLElement | null>(null)
   const draft = ref('')
   const operationError = ref('')
-  const copy = computed(() => message.value.settings.shortcuts)
   const groups = computed(() => (['input', 'application', 'image'] as const).map(group => ({
     id: group,
-    label: copy.value.groups[group],
+    label: t(`settings.shortcuts.groups.${group}`),
     actions: FORUM_SHORTCUTS.filter(action => action.group === group).map(({ id }) => {
       const state = preferences.get(id)
       return {
         id,
-        label: copy.value.actions[id],
+        label: t(`settings.shortcuts.actions.${id}`),
         enabled: state.enabled && !!state.binding,
         unassigned: !state.binding,
         keys: state.binding.replace('Mod', preferences.mac.value ? '⌘' : 'Ctrl').replace('Meta', '⌘').split('+').filter(Boolean),
@@ -34,8 +33,8 @@ export function useForumShortcutRecorder() {
     if (!error)
       return ''
     return error === 'invalid' || error === 'reserved'
-      ? copy.value[error]
-      : `${copy.value.conflict}: ${copy.value.actions[error]}`
+      ? t(`settings.shortcuts.${error}`)
+      : `${t('settings.shortcuts.conflict')}: ${t(`settings.shortcuts.actions.${error}`)}`
   }
   const error = computed(() => errorText(bindingError.value))
   const draftKeys = computed(() => draft.value.replace('Mod', preferences.mac.value ? '⌘' : 'Ctrl').split('+').filter(Boolean))
@@ -94,5 +93,5 @@ export function useForumShortcutRecorder() {
     preferences.reset()
     operationError.value = ''
   }
-  return { copy, groups, selected, draft, draftKeys, open, error, operationError, recorder, focusRecorder, edit, save, toggle, reset }
+  return { groups, selected, draft, draftKeys, open, error, operationError, recorder, focusRecorder, edit, save, toggle, reset }
 }

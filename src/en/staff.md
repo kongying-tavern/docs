@@ -6,10 +6,12 @@ layout: doc
 ---
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import dayjs from 'dayjs';
+import { onMounted, ref } from 'vue';
 
-const date = ref(dayjs().diff(dayjs('2020-06-1'), 'day'));
+const date = ref('');
+onMounted(() => {
+  date.value = String(Math.floor((Date.now() - Date.UTC(2020, 5, 1)) / 86_400_000));
+});
 </script>
 
 # Contribution Acknowledgement

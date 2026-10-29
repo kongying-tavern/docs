@@ -3,10 +3,10 @@ import type { PublishTopicController, PublishTopicPresentation } from '../compos
 import { OctagonXIcon, XIcon } from '@lucide/vue'
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Dialog, DialogDescription, DialogScrollContent, DialogTitle } from '@/components/ui/dialog'
 import { Drawer, DrawerContent } from '@/components/ui/drawer'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
@@ -23,7 +23,7 @@ const { isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopi
 const { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry } = props.upload
 const { submitLoading, submissionPhase, submissionAlert, validationErrorCount, finalIsDisabled } = props.submission
 const { handleFormSubmit, handleClose, handleOpenChange, setFormType, switchTab, focusFirstInvalid } = props.actions
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 const [UseForm, Form] = createReusableTemplate()
@@ -129,7 +129,7 @@ defineExpose(presentation)
         <button
           type="button"
           class="color-[var(--vp-c-text-2)] icon-btn right-1.5 top-1.5 absolute hover:color-[var(--vp-c-text-1)]"
-          :aria-label="message.ui.button.close"
+          :aria-label="t('ui.button.close')"
           @click="submissionAlert = null"
         >
           <XIcon class="size-3.5" />
@@ -168,10 +168,10 @@ defineExpose(presentation)
       :class="{ 'animate-switching': inSwitchTabTransition }"
     >
       <DialogTitle class="sr-only">
-        {{ message.forum.publish.title }}
+        {{ t('forum.publish.title') }}
       </DialogTitle>
       <DialogDescription class="sr-only">
-        {{ message.forum.publish.form.content.placeholder }}
+        {{ t('forum.publish.form.content.placeholder') }}
       </DialogDescription>
 
       <ForumPublishTopicStage :form="form" :actions="actions">

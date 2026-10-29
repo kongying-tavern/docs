@@ -1,0 +1,140 @@
+experiments:
+  title: Experimental features
+  feedbackForm: New feedback form
+  legacyFeedbackForm: Classic feedback form
+  legacyDescription: >-
+    You are assigned the new form. When on, the classic form is used. When off, the default rollout assignment
+    is restored. Applies only to your account in this browser, the next time you open the form.
+  description: >-
+    When on, the new form is used. When off, the default rollout assignment is restored. Applies only to your
+    account in this browser, the next time you open the form.
+  accountLogin: Password sign-in
+  accountLoginDescription: >-
+    Sign in with an account and password instead of the authorization redirect. Admin-only by default, with no
+    button in the interface: it opens through #account-login-alert, and only in a browser where an admin
+    account has signed in.
+profile:
+  title: Personal profile
+  description: Changes are saved to Gitee and shown on your profile page.
+  username: Display name
+  blog: Blog website
+  weibo: Weibo URL
+  bio: Bio
+  avatar: Avatar
+  login: Username
+  email: Email
+  giteeSettings: Gitee account settings
+  readonlyDescription: Edit these details on Gitee. The edit button opens the corresponding settings in a new tab.
+  editOnGitee: Edit on Gitee
+  editBio: Edit bio
+  unset: Not set or private
+  save: Save profile
+  cancel: Cancel
+  saving: Saving…
+  saved: Profile saved
+  saveFailed: Could not save. Your profile was restored and your draft was kept. Please retry.
+  retry: Retry
+  sessionChanged: Your account has changed. Please edit your profile again.
+shortcuts:
+  title: Keyboard shortcuts
+  groups:
+    image: Image preview
+    input: Message input
+    application: Application
+  actions:
+    imageToggleZoom: Toggle zoom
+    imageOpen: View image
+    imagePrevious: Previous image
+    imageNext: Next image
+    imageZoomIn: Zoom in
+    imageZoomOut: Zoom out
+    imageReset: Reset zoom
+    imageTop: Go to image top
+    imageBottom: Go to image bottom
+    imagePanel: Toggle side panel
+    imageClose: Close preview
+    imageCopy: Copy image
+    imageSave: Save image as…
+    imageLink: Copy image link
+    send: Send comment or reply
+    bold: Bold
+    italic: Italic
+    strike: Strikethrough
+    search: Focus search
+    publish: Publish feedback
+    settings: Open settings
+    imageNewTab: Open image in new tab
+    imageMetadata: Inspect image metadata
+  edit: Change shortcut
+  unassigned: Unassigned
+  resetGroup: Reset
+  resetLabel: All shortcuts
+  resetAll: Reset all shortcuts
+  clear: Clear binding
+  cancel: Cancel
+  save: Save
+  recordDescription: >-
+    Press a key combination in the recording area. Tab moves to the action buttons; Esc cancels. Ctrl / ⌘
+    adapts to your system.
+  conflict: Conflicts with
+  reserved: >-
+    Choose another combination to preserve common text, browser and system controls. Single keys are available
+    for image previews and / for application search.
+  invalid: Unsupported key combination
+title: Settings
+back: Go back
+close: Close settings
+autoSave: Changes are saved automatically in this browser
+groups:
+  website: Website settings
+  application: App settings
+copyFailed: Copy failed — try again or select the text manually
+appearance:
+  title: Appearance
+  theme: Theme mode
+  themeDescription: Applies to documentation, feedback, and other site pages.
+  light: Light
+  dark: Dark
+  auto: System
+  pointerCursor: Use pointer cursors
+  pointerCursorDescription: Show a pointer cursor over buttons, links, and other interactive elements.
+  motion: Reduce motion
+  motionDescription: >-
+    Follow the device preference, or always enable or disable reduced transitions, scrolling, and interface
+    animation.
+  motionSystem: System
+  motionOn: On
+  motionOff: Off
+  uiFontSize: UI font size
+  uiFontSizeDescription: Adjust the base interface size. Text, icons, and controls scale proportionally.
+  fontSizeSmall: Small
+  fontSizeStandard: Default
+  fontSizeLarge: Large
+notifications:
+  title: Notifications
+  position: Position
+  positionDescription: Choose where notifications appear on the page.
+  duration: Duration
+  durationDescription: Choose how quickly notifications close, or keep them visible until dismissed.
+  fast: Fast
+  default: Default
+  slow: Slow
+  persistent: Persistent
+  previewMessage: This is a test notification
+  positions:
+    topLeft: Top left
+    topCenter: Top center
+    topRight: Top right
+    bottomLeft: Bottom left
+    bottomCenter: Bottom center
+    bottomRight: Bottom right
+language:
+  title: Language and translation
+  excludedSourceLanguages: Languages not to auto-translate
+  excludedSourceLanguagesDescription: Keep the original when one of these languages is detected. Manual translation remains available.
+  searchLanguages: Search and select languages…
+  chooseLanguages: Choose languages
+  noLanguagesFound: No matching languages found
+  unavailable: Local translation of feedback is not supported by this browser.
+privacy:
+  title: Privacy and diagnostics

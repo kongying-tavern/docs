@@ -5,8 +5,8 @@ import type { ForumImageResource } from '~/forum/services/forumImageResource'
 import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { DialogContent, DialogRoot, DialogTitle } from 'reka-ui'
 import { computed, nextTick, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { FeyCards } from '@/components/ui/cards'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
 import { isForumLongImage } from '~/forum/services/forumImageLayout'
@@ -51,7 +51,7 @@ defineSlots<{
   default: (props: { openAt: typeof openAt, close: typeof close }) => unknown
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { tryDelegate, register, unregister } = useActivePreviewer()
 
 const isDesktop = useMediaQuery('(min-width: 960px)')
@@ -80,7 +80,7 @@ const displayImages = computed(() => imagesOverride.value ?? images)
 
 const total = computed(() => displayImages.value.length)
 const imageAriaLabels = computed(() => displayImages.value.map((_, index) =>
-  message.value.forum.imagePreview.showImage.replace('{index}', String(index + 1))))
+  t('forum.imagePreview.showImage', { index: String(index + 1) })))
 const zoomEnabled = computed(() => options.zoom !== false)
 const maxZoom = computed(() => options.maxZoom ?? 4)
 const hasPanel = computed(() =>
@@ -438,7 +438,7 @@ defineExpose({ openAt, close })
             :class="{ closing, entering, 'is-long-image': isLongImage, 'has-image-dots': total > 1 && options.dots !== false, 'source-transition': usesSourceTransition, 'has-panel': hasPanel, 'panel-entering': hasPanel && panelEntering, 'is-dragging': dragging, 'is-settling': settling }"
             role="dialog"
             aria-modal="true"
-            :aria-label="message.forum.topic.previewTitle"
+            :aria-label="t('forum.topic.previewTitle')"
             @pointerdown="handlePreviewPointerDown"
             @pointermove="handlePointerMove"
             @pointerup="handlePointerUp"
@@ -447,7 +447,7 @@ defineExpose({ openAt, close })
             @click="handleRootClick"
           >
             <DialogTitle class="sr-only">
-              {{ message.forum.topic.previewTitle }}
+              {{ t('forum.topic.previewTitle') }}
             </DialogTitle>
             <div class="forum-preview-overlay" />
 
@@ -509,7 +509,7 @@ defineExpose({ openAt, close })
                   class="forum-preview-nav prev"
                   auto-hide
                   direction="previous"
-                  :label="message.forum.imagePreview.previous"
+                  :label="t('forum.imagePreview.previous')"
                   @click.stop="goTo(current - 1, -1)"
                 />
                 <ForumImageNavigationButton
@@ -517,7 +517,7 @@ defineExpose({ openAt, close })
                   class="forum-preview-nav next"
                   auto-hide
                   direction="next"
-                  :label="message.forum.imagePreview.next"
+                  :label="t('forum.imagePreview.next')"
                   @click.stop="goTo(current + 1, 1)"
                 />
               </div>
@@ -550,7 +550,7 @@ defineExpose({ openAt, close })
               v-if="isDesktop && context"
               type="button"
               class="forum-preview-panel-toggle"
-              :aria-label="panelCollapsed ? message.forum.imagePreview.expandPanel : message.forum.imagePreview.collapsePanel"
+              :aria-label="panelCollapsed ? t('forum.imagePreview.expandPanel') : t('forum.imagePreview.collapsePanel')"
               :title="shortcut('imagePanel')"
               :aria-keyshortcuts="shortcutPreferences.aria('imagePanel')"
               @click.stop="panelCollapsed = !panelCollapsed"

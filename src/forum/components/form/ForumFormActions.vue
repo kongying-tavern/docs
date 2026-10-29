@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { LoaderCircleIcon, SendIcon } from '@lucide/vue'
 import { useMediaQuery } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import { Button, InteractiveHoverButton } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
 import { DrawerFooter } from '@/components/ui/drawer'
 import { Separator } from '@/components/ui/separator'
-import { useLocalized } from '@/hooks/useLocalized'
 
 interface Props {
   loading: boolean
@@ -18,7 +18,7 @@ const emit = defineEmits<{
   'close': []
   'review-errors': []
 }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const isDesktop = useMediaQuery('(min-width: 768px)')
 </script>
 
@@ -34,13 +34,13 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
         @click="emit('review-errors')"
       >
         <span class="i-lucide-circle-alert size-4" aria-hidden="true" />
-        {{ message.forum.publish.feedbackForm.fieldsNeedAttention.replace('{count}', String(errorCount)) }}
+        {{ t('forum.publish.feedbackForm.fieldsNeedAttention', { count: errorCount }) }}
       </button>
       <InteractiveHoverButton
         class="text-base ml--1.5 mr-8 mt--2 px-8 py-3 border-[var(--vp-c-divider)] border-2 rounded-md border-dashed bg-transparent hover:border-solid"
         :disabled="disabled || loading"
         :loading="loading"
-        :text="loading ? message.forum.publish.publishLoading : message.forum.publish.feedbackForm.submit"
+        :text="loading ? t('forum.publish.publishLoading') : t('forum.publish.feedbackForm.submit')"
       />
     </DialogFooter>
   </template>
@@ -54,13 +54,13 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
       @click="emit('review-errors')"
     >
       <span class="i-lucide-circle-alert size-4" aria-hidden="true" />
-      {{ message.forum.publish.feedbackForm.fieldsNeedAttention.replace('{count}', String(errorCount)) }}
+      {{ t('forum.publish.feedbackForm.fieldsNeedAttention', { count: errorCount }) }}
     </button>
     <DrawerFooter class="px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4">
       <Button type="submit" size="lg" class="w-full" :disabled="disabled || loading">
         <LoaderCircleIcon v-if="loading" class="animate-spin" data-icon="inline-start" />
         <SendIcon v-else data-icon="inline-start" />
-        {{ loading ? message.forum.publish.publishLoading : message.forum.publish.feedbackForm.submit }}
+        {{ loading ? t('forum.publish.publishLoading') : t('forum.publish.feedbackForm.submit') }}
       </Button>
     </DrawerFooter>
   </div>

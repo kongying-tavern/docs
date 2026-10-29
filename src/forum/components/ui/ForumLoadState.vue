@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ReloadIcon } from '@radix-icons/vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import Divider from '@/components/ui/divider/Divider.vue'
 import { TextMorph } from '@/components/ui/text-morph'
-import { useLocalized } from '@/hooks/useLocalized'
 
 const { loading = false, canLoadMore = false, error = false, text = '', status = 'status', rateLimit = false, errorMessage = '' } = defineProps<{
   loading?: boolean
@@ -21,18 +21,18 @@ const { loading = false, canLoadMore = false, error = false, text = '', status =
 }>()
 
 const emit = defineEmits<{ login: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
   <div class="mb-8 flex w-full justify-center" :role="status">
     <div v-if="error && rateLimit && !loading" class="mt-8 flex flex-col gap-3 items-center">
       <p class="text-ui-14 c-[var(--vp-c-text-2)]">
-        {{ message.forum.exceededRateLimitWarning }}
+        {{ t('forum.exceededRateLimitWarning') }}
       </p>
       <Button variant="outline" size="sm" @click="emit('login')">
         <span class="i-lucide-log-in icon-btn" aria-hidden="true" />
-        {{ message.forum.auth.login }}
+        {{ t('forum.auth.login') }}
       </Button>
     </div>
     <div v-else-if="error || loading || canLoadMore" class="mt-8 flex flex-col gap-3 items-center">
@@ -51,7 +51,7 @@ const { message } = useLocalized()
           :class="{ 'animate-spin will-change-transform': loading }"
           aria-hidden="true"
         />
-        <TextMorph :disabled="loading" :text="loading ? (loadingText ?? message.ui.button.loading) : error ? message.forum.auth.callback.error.retry : text" />
+        <TextMorph :disabled="loading" :text="loading ? (loadingText ?? t('ui.button.loading')) : error ? t('forum.auth.callback.error.retry') : text" />
       </Button>
     </div>
     <Divider

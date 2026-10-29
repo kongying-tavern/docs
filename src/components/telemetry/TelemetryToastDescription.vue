@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import { computed, isVNode } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useToastDiagnostics } from '~/composables/useToastDiagnostics'
-import { formatMessage } from '~/utils/formatMessage'
 
 type DescriptionContent = (() => string | Component) | string | Component
 
@@ -21,7 +20,7 @@ const props = defineProps<{
   traceId?: string | null
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { desktopUi } = useSitePreferences()
 const { openDiagnostics } = useToastDiagnostics()
 
@@ -31,7 +30,7 @@ function isComponent(value: unknown): value is Component {
 }
 
 const traceSuffix = computed(() => props.traceId
-  ? formatMessage(message.value.forum.telemetry.traceIdSuffix, { traceId: props.traceId })
+  ? t('forum.telemetry.traceIdSuffix', { traceId: props.traceId })
   : null)
 
 /** 与标题或描述完全相同时不再重复成行 */
@@ -63,10 +62,10 @@ const copyText = computed(() => [
       variant="ghost"
       size="sm"
       class="telemetry-details-button"
-      :aria-label="message.forum.telemetry.viewErrorDetails"
-      @click.stop="openDiagnostics({ title: title ?? message.forum.telemetry.errorDetails, content: copyText }, $event.currentTarget as HTMLElement)"
+      :aria-label="t('forum.telemetry.viewErrorDetails')"
+      @click.stop="openDiagnostics({ title: title ?? t('forum.telemetry.errorDetails'), content: copyText }, $event.currentTarget as HTMLElement)"
     >
-      {{ message.forum.telemetry.details }}
+      {{ t('forum.telemetry.details') }}
     </Button>
     <span v-if="desktopUi && detail" class="telemetry-detail">{{ detail }}</span>
     <div v-if="desktopUi && (detail || traceSuffix)" class="telemetry-trace">
@@ -76,8 +75,8 @@ const copyText = computed(() => [
         compact
         class="telemetry-trace-copy icon-btn"
         :value="copyText"
-        :label="message.forum.telemetry.copyErrorInfo"
-        :success-label="message.forum.topic.menu.copyLink.success"
+        :label="t('forum.telemetry.copyErrorInfo')"
+        :success-label="t('forum.topic.menu.copyLink.success')"
       />
     </div>
   </div>

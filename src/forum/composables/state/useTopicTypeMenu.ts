@@ -1,17 +1,17 @@
-import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
+import type { Composer } from 'vue-i18n'
 import type ForumAPI from '~/forum/api/types'
 import type { FORUM } from '~/forum/components/types'
-import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useTopicOperationFeedback } from '~/forum/composables/view/useTopicOperationFeedback'
 import { useTopicManager } from './useTopicManager'
 
-export function useTopicTypeMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>) {
+export function useTopicTypeMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, t: Composer['t']) {
   const currentTopic = computed(() => toValue(topicData))
   const { hasAnyPermissions } = useRuleChecks()
   const canManage = hasAnyPermissions('manage_feedback')
-  const { toggleTopicType, updatingTopic } = useTopicManager(currentTopic, message, useTopicOperationFeedback())
+  const { toggleTopicType, updatingTopic } = useTopicManager(currentTopic, t, useTopicOperationFeedback())
   const topicTypes: ForumAPI.FeedbackTopicType[] = ['FEAT', 'BUG', 'ANN']
 
   async function changeType(type: ForumAPI.FeedbackTopicType) {
@@ -25,7 +25,7 @@ export function useTopicTypeMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, me
     .map(type => ({
       id: `change-topic-${type}`,
       type: 'item',
-      label: message.value.forum.topic.type[type.toLowerCase() as keyof typeof message.value.forum.topic.type],
+      label: t(`forum.topic.type.${type.toLowerCase()}`),
       topicType: type,
       disabled: updatingTopic.value,
       action: () => changeType(type),

@@ -16,6 +16,7 @@ import { installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { AsyncForumRouteView } from './components/AsyncForumRouteView'
 import { forumStartupKey } from './components/forumStartup'
+import { installI18n, setupI18n } from './i18n'
 import { loadFontStylesheets } from './loadFontStylesheets'
 import { loadForumLayout, useForumLinkPreload } from './router/forumPreload'
 import { installThemeRouter } from './router/installThemeRouter'
@@ -42,10 +43,12 @@ export default {
   Layout,
 
   setup() {
+    setupI18n()
     useForumLinkPreload()
   },
 
   enhanceApp({ app, router, siteData }) {
+    installI18n(app)
     const initialDocument = ref(true)
     app.provide(forumStartupKey, initialDocument)
     googleAnalytics({

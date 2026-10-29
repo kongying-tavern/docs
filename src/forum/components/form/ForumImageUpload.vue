@@ -3,12 +3,11 @@ import type { HTMLAttributes } from 'vue'
 import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
 import { createReusableTemplate } from '@vueuse/core'
 import { computed, nextTick, useTemplateRef } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import ForumImage from '~/forum/components/ui/ForumImage.vue'
 import { formatImageAttachmentError } from '~/forum/components/utils/submitFormUi'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
 import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
-import { formatMessage } from '~/utils/formatMessage'
 
 const { disabled = false, hideDefaultTrigger = false, size = 'xl', attachments, class: className } = defineProps<{
   attachments: ImageAttachment[]
@@ -31,7 +30,7 @@ const atLimit = computed(() => attachments.length >= IMAGE_UPLOAD_POLICY.MAX_COU
 const selectionDisabled = computed(() => disabled || atLimit.value)
 const input = useTemplateRef<HTMLInputElement>('input')
 const dropZone = useTemplateRef<HTMLElement>('drop-zone')
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const [DefineActions, Actions] = createReusableTemplate<{ attachment: ImageAttachment, index: number }>()
 const previewImages = computed(() => attachments.map(attachment => ({
   ...attachment.savedImage,
@@ -83,23 +82,21 @@ const { isOverDropZone } = useForumImageDropZone(dropZone, {
 
 function errorText(attachment: ImageAttachment): string {
   return attachment.error
-    ? formatImageAttachmentError(attachment.error, message.value.forum.publish.feedbackForm)
-    : message.value.forum.publish.feedbackForm.uploadFailed
+    ? formatImageAttachmentError(attachment.error, t)
+    : t('forum.publish.feedbackForm.uploadFailed')
 }
 
 function statusText(attachment: ImageAttachment): string {
   if (attachment.status === 'failed')
     return errorText(attachment)
-  const copy = message.value.forum.publish.feedbackForm
+
   if (attachment.status === 'queued')
-    return copy.imageQueued
+    return t('forum.publish.feedbackForm.imageQueued')
   if (attachment.status === 'processing')
-    return copy.imageProcessing
+    return t('forum.publish.feedbackForm.imageProcessing')
   return attachment.status === 'uploaded'
-    ? copy.imageUploaded
-    : copy.uploadingImages
-        .replace('{settled}', '0')
-        .replace('{total}', '1')
+    ? t('forum.publish.feedbackForm.imageUploaded')
+    : t('forum.publish.feedbackForm.uploadingImages', { settled: '0', total: '1' })
 }
 
 function open(): void {
@@ -115,12 +112,12 @@ defineExpose({ open })
     <div v-if="attachment.status === 'failed'" class="bg-[var(--forum-media-overlay-strong)] flex flex-col gap-1 items-center inset-0 justify-center absolute">
       <span class="i-lucide-circle-alert bg-[var(--forum-media-on-overlay)] size-4" aria-hidden="true" />
       <span class="text-ui-10 text-[var(--forum-media-on-overlay)] leading-none font-medium">
-        {{ message.forum.publish.feedbackForm.uploadFailedShort }}
+        {{ t('forum.publish.feedbackForm.uploadFailedShort') }}
       </span>
       <button
         type="button"
         class="mt-0.5 rounded-full bg-[var(--forum-media-overlay)] flex size-6 pointer-events-auto items-center justify-center"
-        :aria-label="formatMessage(message.forum.publish.feedbackForm.retryImage, { filename: attachment.file?.name || attachment.savedImage?.alt || '' })"
+        :aria-label="t('forum.publish.feedbackForm.retryImage', { filename: attachment.file?.name || attachment.savedImage?.alt || '' })"
         :disabled="disabled"
         @click="emit('retry', attachment.id)"
       >
@@ -131,7 +128,7 @@ defineExpose({ open })
       type="button"
       data-remove-image
       class="image-action rounded-bl-md bg-[var(--forum-media-overlay)] flex size-7 pointer-events-auto items-center right-0 top-0 justify-center absolute focus-visible:outline-[var(--forum-media-on-overlay)] focus-visible:outline-2 hover:bg-[var(--forum-media-overlay-strong)]"
-      :aria-label="formatMessage(message.forum.publish.feedbackForm.removeImage, { filename: attachment.file?.name || attachment.savedImage?.alt || '' })"
+      :aria-label="t('forum.publish.feedbackForm.removeImage', { filename: attachment.file?.name || attachment.savedImage?.alt || '' })"
       :disabled="disabled"
       @click="removeAttachment(attachment.id, index)"
     >
@@ -150,13 +147,13 @@ defineExpose({ open })
     class="forum-image-upload mt-2"
     :class="className"
     tabindex="0"
-    :aria-label="message.forum.publish.feedbackForm.attachmentsLabel"
+    :aria-label="t('forum.publish.feedbackForm.attachmentsLabel')"
     @paste="handlePaste"
   >
     <input
       ref="input"
       type="file"
-      :aria-label="message.forum.publish.feedbackForm.addImages"
+      :aria-label="t('forum.publish.feedbackForm.addImages')"
       :accept="IMAGE_UPLOAD_ACCEPT"
       :disabled="selectionDisabled"
       multiple hidden
@@ -215,13 +212,13 @@ defineExpose({ open })
           @click="open"
         >
           <span class="i-lucide:image-plus size-5" aria-hidden="true" />
-          {{ message.forum.publish.feedbackForm.addImages }}
+          {{ t('forum.publish.feedbackForm.addImages') }}
         </button>
       </li>
     </TransitionGroup>
 
     <p v-if="!hideHint && (attachments.length || !hideDefaultTrigger)" class="text-xs c-[var(--vp-c-text-3)] mt-2">
-      {{ formatMessage(message.forum.publish.feedbackForm.attachmentsLimit, {
+      {{ t('forum.publish.feedbackForm.attachmentsLimit', {
         count: attachments.length,
         max: IMAGE_UPLOAD_POLICY.MAX_COUNT,
         size: IMAGE_UPLOAD_POLICY.MAX_SIZE_LABEL,
@@ -230,7 +227,7 @@ defineExpose({ open })
 
     <div v-if="isOverDropZone" class="image-drop-overlay" aria-hidden="true">
       <span class="i-lucide-images size-5" />
-      <span>{{ message.forum.publish.feedbackForm.addImages }}</span>
+      <span>{{ t('forum.publish.feedbackForm.addImages') }}</span>
     </div>
   </section>
 </template>

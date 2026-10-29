@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ReloadIcon } from '@radix-icons/vue'
 import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,12 +12,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { TextMorph } from '@/components/ui/text-morph'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumReaction } from '~/forum/composables/data/useForumReaction'
 import { useReactionStats } from '~/forum/composables/data/useReactionStats'
 
 const { open, target } = useReactionStats()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const reactionTarget = computed(() => ({
   topicId: target.value?.topicId ?? '',
@@ -40,12 +40,11 @@ const viewCount = computed(() => reactionData.value?.data.clickCount ?? 0)
 const reactionState = computed(() => reactionData.value?.state ?? null)
 
 const statsTitle = computed(() => {
-  const labels = message.value.forum.topic.menu.reactionStats
   if (!target.value)
     return ''
-  const template = target.value.kind === 'comment' ? labels.commentTitle : labels.title
+  const key = target.value.kind === 'comment' ? 'forum.topic.menu.reactionStats.commentTitle' : 'forum.topic.menu.reactionStats.title'
   const id = target.value.kind === 'comment' ? target.value.commentId : target.value.topicId
-  return template.replace('{id}', id)
+  return t(key, { id })
 })
 
 watch(() => open.value, (isOpen) => {
@@ -64,37 +63,37 @@ watch(() => open.value, (isOpen) => {
       </DialogHeader>
 
       <div v-if="loadFailed" class="text-sm c-[var(--vp-c-danger-1)] py-2" role="alert">
-        {{ message.forum.topic.menu.reactionStats.fail }}
+        {{ t('forum.topic.menu.reactionStats.fail') }}
       </div>
 
       <div v-else-if="loading" class="text-sm text-[var(--vp-c-text-3)] py-4 flex gap-2 items-center justify-center">
         <ReloadIcon class="animate-spin" aria-hidden="true" />
-        {{ message.forum.topic.menu.reactionStats.loading }}
+        {{ t('forum.topic.menu.reactionStats.loading') }}
       </div>
 
       <div v-else class="py-2 flex items-center">
         <div class="flex flex-1 gap-1.5 items-center justify-center">
           <span class="i-lucide-arrow-up text-[var(--vp-c-green-3)]" aria-hidden="true" />
-          <span class="sr-only">{{ message.forum.reaction.like }}</span>
+          <span class="sr-only">{{ t('forum.reaction.like') }}</span>
           <TextMorph :text="String(likeCount)" class="text-lg leading-7 font-semibold tabular-nums" />
         </div>
         <div class="bg-[var(--vp-c-divider)] h-5 w-px" />
         <div class="flex flex-1 gap-1.5 items-center justify-center">
           <span class="i-lucide-arrow-down text-[var(--vp-c-red-3)]" aria-hidden="true" />
-          <span class="sr-only">{{ message.forum.reaction.dislike }}</span>
+          <span class="sr-only">{{ t('forum.reaction.dislike') }}</span>
           <TextMorph :text="String(dislikeCount)" class="text-lg leading-7 font-semibold tabular-nums" />
         </div>
         <div class="bg-[var(--vp-c-divider)] h-5 w-px" />
         <div class="flex flex-1 gap-1.5 items-center justify-center">
           <span class="i-lucide-eye" aria-hidden="true" />
-          <span class="sr-only">{{ message.forum.topic.menu.reactionStats.views }}</span>
+          <span class="sr-only">{{ t('forum.topic.menu.reactionStats.views') }}</span>
           <TextMorph :text="String(viewCount)" class="text-lg leading-7 font-semibold tabular-nums" />
         </div>
         <template v-if="reactionState">
           <div class="bg-[var(--vp-c-divider)] h-5 w-px" />
           <div class="flex flex-1 gap-1.5 items-center justify-center">
             <span class="i-lucide-user text-[var(--vp-c-text-2)]" aria-hidden="true" />
-            <TextMorph :text="message.forum.reaction[reactionState]" class="text-lg leading-7 font-semibold" />
+            <TextMorph :text="t(`forum.reaction.${reactionState}`)" class="text-lg leading-7 font-semibold" />
           </div>
         </template>
       </div>
@@ -104,16 +103,16 @@ watch(() => open.value, (isOpen) => {
           type="button"
           variant="outline"
           :disabled="isLoading"
-          :aria-label="message.forum.topic.menu.reactionStats.refresh"
+          :aria-label="t('forum.topic.menu.reactionStats.refresh')"
           @click="refetch()"
         >
           <ReloadIcon v-if="isLoading" class="mr-1 animate-spin" aria-hidden="true" />
           <span v-else class="i-lucide-rotate-ccw mr-1" aria-hidden="true" />
-          {{ message.forum.topic.menu.reactionStats.refresh }}
+          {{ t('forum.topic.menu.reactionStats.refresh') }}
         </Button>
         <DialogClose as-child>
           <Button type="button" variant="secondary">
-            {{ message.ui.button.close }}
+            {{ t('ui.button.close') }}
           </Button>
         </DialogClose>
       </DialogFooter>

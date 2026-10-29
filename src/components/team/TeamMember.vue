@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import type { Member } from './Member'
-import { useData } from 'vitepress'
+
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { getGiteeProfileHref } from '~/constants/site'
-import { formatMessage } from '~/utils/formatMessage'
 
 const props = defineProps<{
   member: Member
 }>()
 
-const { theme } = useData()
-const memberCard = computed(() => theme.value.team.memberCard)
+const { t } = useI18n({ useScope: 'global' })
 
 const avatarUrl = computed(() => {
   return (
@@ -28,14 +27,14 @@ const avatarUrl = computed(() => {
       :href="`https://github.com/sponsors/${member.socials?.github}`"
       no-icon
     >
-      <svg i-ic-sharp-favorite class="sponsor-icon" /> {{ memberCard.sponsor }}
+      <svg i-ic-sharp-favorite class="sponsor-icon" /> {{ t('team.memberCard.sponsor') }}
     </VPLink>
 
     <figure class="avatar">
       <img
         class="avatar-img skeleton"
         :src="avatarUrl"
-        :alt="formatMessage(memberCard.profilePicture, { name: member.name })"
+        :alt="t('team.memberCard.profilePicture', { name: member.name })"
         @load="($event.target as HTMLImageElement).classList.remove('skeleton')"
         @error="($event.target as HTMLImageElement).classList.remove('skeleton')"
       >
@@ -67,7 +66,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.projects" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              {{ memberCard.projects }}
+              {{ t('team.memberCard.projects') }}
             </h2>
             <svg i-ph-code-bold class="code desc-icon" />
           </div>
@@ -87,7 +86,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.location" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              {{ memberCard.location }}
+              {{ t('team.memberCard.location') }}
             </h2>
             <svg i-ic-sharp-location-on class="desc-icon" />
           </div>
@@ -99,7 +98,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.languages" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              {{ memberCard.languages }}
+              {{ t('team.memberCard.languages') }}
             </h2>
             <svg i-ic-round-language class="desc-icon" />
           </div>
@@ -117,7 +116,7 @@ const avatarUrl = computed(() => {
         <section v-if="member.website" class="desc">
           <div class="desc-title">
             <h2 class="sr-only">
-              {{ memberCard.website }}
+              {{ t('team.memberCard.website') }}
             </h2>
             <svg
               i-ic-baseline-attachment

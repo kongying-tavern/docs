@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useLocalized } from '@/hooks/useLocalized'
 import AsyncLoadError from '~/components/AsyncLoadError.vue'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumLayout from '../layout/ForumLayout.vue'
@@ -10,7 +10,7 @@ import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue
 
 defineProps<{ error?: Error }>()
 const emit = defineEmits<{ retry: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { list } = useForumRoute()
 </script>
 
@@ -19,7 +19,7 @@ const { list } = useForumRoute()
     <template #header>
       <AsyncLoadError v-if="error" @retry="emit('retry')" />
       <template v-else>
-        <span class="sr-only" role="status">{{ message.ui.button.loading }}</span>
+        <span class="sr-only" role="status">{{ t('ui.button.loading') }}</span>
         <ForumUserProfileHeaderSkeleton data-async-loading aria-busy="true" />
       </template>
     </template>

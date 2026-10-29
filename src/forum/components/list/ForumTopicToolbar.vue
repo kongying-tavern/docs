@@ -2,7 +2,7 @@
 import type ForumAPI from '~/forum/api/types'
 import type { ForumFilter, ForumSort, ForumTopicType } from '~/forum/services/forumRoute'
 import { ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumSearchInput from '../search/ForumSearchInput.vue'
 import ForumTopicCategoryDropdown from './ForumTopicCategoryDropdown.vue'
@@ -25,7 +25,7 @@ const emit = defineEmits<{
 }>()
 
 const searchQuery = ref(props.query ?? '')
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { openSearch } = useForumRoute()
 
 watch(() => props.query ?? '', query => searchQuery.value = query)
@@ -47,11 +47,11 @@ watch(() => props.query ?? '', query => searchQuery.value = query)
     <button
       type="button"
       class="forum-mobile-search-trigger ml-auto"
-      :aria-label="message.forum.header.search.placeholder"
+      :aria-label="t('forum.header.search.placeholder')"
       @click="openSearch"
     >
       <span class="i-lucide-search icon-btn bg-[var(--vp-c-text-2)] size-4" aria-hidden="true" />
-      <span class="forum-mobile-search-trigger-text">{{ message.ui.button.search }}</span>
+      <span class="forum-mobile-search-trigger-text">{{ t('ui.button.search') }}</span>
     </button>
   </div>
 </template>

@@ -2,7 +2,7 @@ import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
 import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site.ts'
 import { TELEMETRY_ENABLED_STORAGE_KEY } from '../../src/constants/telemetry.ts'
 import { sitePreferencesBootScript } from '../../src/services/sitePreferences.ts'
-import { DEFAULT_LOCALE } from '../locales/common/site.ts'
+import { DEFAULT_LOCALE } from '../locales/common.ts'
 import { getLocaleDirs } from './localeDirs.ts'
 import {
   cfgGetPageCover,

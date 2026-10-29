@@ -1,28 +1,31 @@
 <script setup lang="ts">
+import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useQRCode } from '@/hooks/useQRCode'
 import ForumAsideSection from './ForumAsideSection.vue'
 
-const { message } = useLocalized()
-const copy = computed(() => message.value.forum.aside.contactUs)
-const contactQRCode = useQRCode(computed(() => copy.value.qrcodeLink))
+const { theme } = useData()
+
+const { t } = useI18n({ useScope: 'global' })
+
+const contactQRCode = useQRCode(computed(() => theme.value.forum.aside.contactUs.qrcodeLink))
 </script>
 
 <template>
-  <ForumAsideSection section-id="contact" :title="copy.title" card>
+  <ForumAsideSection section-id="contact" :title="t('forum.aside.contactUs.title')" card>
     <template #action>
-      <a class="contact-action" :href="copy.qrcodeLink" target="_blank" rel="noopener">
-        {{ copy.action }}
+      <a class="contact-action" :href="theme.forum.aside.contactUs.qrcodeLink" target="_blank" rel="noopener">
+        {{ t('forum.aside.contactUs.action') }}
       </a>
     </template>
     <div class="contact-body">
       <div class="contact-copy">
-        <span>{{ copy.join }}</span>
-        <span>{{ copy.desc }}</span>
+        <span>{{ t('forum.aside.contactUs.join') }}</span>
+        <span>{{ t('forum.aside.contactUs.desc') }}</span>
       </div>
-      <a :href="copy.qrcodeLink" target="_blank" rel="noopener">
-        <img :src="contactQRCode" :alt="copy.qrCodeAlt">
+      <a :href="theme.forum.aside.contactUs.qrcodeLink" target="_blank" rel="noopener">
+        <img :src="contactQRCode" :alt="t('forum.aside.contactUs.qrCodeAlt')">
       </a>
     </div>
   </ForumAsideSection>

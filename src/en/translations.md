@@ -1,33 +1,37 @@
 ---
 layout: doc
 title: Translations
+description: Track documentation translations and learn how to contribute.
 ---
 
 ## Available Languages {#available-languages}
 
-- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/)]
-- [英文 / English](./index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/en)]
-- [日本語 / Japanese](../ja/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/ja)]
+- [简体中文](../index.md) · [Source](https://github.com/kongying-tavern/docs/tree/main/src/zh)
+- [English](./index.md) · [Source](https://github.com/kongying-tavern/docs/tree/main/src/en)
+- [日本語](../ja/index.md) · [Source](https://github.com/kongying-tavern/docs/tree/main/src/ja)
 
-## Work in Progress Languages {#work-in-progress-languages}
+## Translation Tasks {#work-in-progress-languages}
 
-See the [Translation Claim Board](https://github.com/kongying-tavern/docs/issues/555)
+Find articles to translate and claim instructions on the [claim board](https://github.com/kongying-tavern/docs/issues/555).
 
-## Current Translation Progress {#translation-progress}
+## Translation Progress {#translation-progress}
 
-Check the completion status of all language translations on the [Translation Progress page](https://yuanshen.site/docs/_translations/).
+- [Article translation progress (Lunaria)](https://yuanshen.site/docs/_translations/): articles that need translation or updates.
+- [UI translation dashboard (x18n)](https://yuanshen.site/docs/_i18n/): interface text, coverage and diagnostics. The published dashboard is read-only.
+
+Start with the [beginner tutorial](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-no-exp-en.md). File locations and submission requirements are in the [translation guide](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md).
 
 ## Archived Languages {#archived-languages}
 
-The following translations have been archived for now, as they have not been actively maintained for a long time. They remain available in the repository history:
+Archived translations remain available in the repository history:
 
-- [한국어 / Korean](https://github.com/kongying-tavern/docs/tree/4781134518828c2be1cc1155e4923460727dd0d6/src/ko)
-- [Français / French](https://github.com/kongying-tavern/docs/tree/8a696e72e2d51fdf78e4842a1896874244e93815/src/fr)
+- [한국어](https://github.com/kongying-tavern/docs/tree/4781134518828c2be1cc1155e4923460727dd0d6/src/ko)
+- [Français](https://github.com/kongying-tavern/docs/tree/8a696e72e2d51fdf78e4842a1896874244e93815/src/fr)
 
-## Participating in Map Client Translations {#translations-client}
+## Map Client Translations {#translations-client}
 
-Map client translations happen on our internal translation platform. If you would like to participate, contact us on [QQ group (1108155744)](https://qm.qq.com/cgi-bin/qm/qr?k=FJBE2DpMV7XJ9rv5w12zvrHWUlXKJGbD&jump_from=webapi&authKey=vq4mUAECA1JCKr1aC230jN6glhsl4mZCOJxpiqyFYyoADqFnC4LlGcoNq7WtFNVV) or [Discord](https://discord.com/invite/aFe57AKZUF).
+Client translations use our internal platform. To participate, contact us on [QQ group (1108155744)](https://qm.qq.com/cgi-bin/qm/qr?k=FJBE2DpMV7XJ9rv5w12zvrHWUlXKJGbD&jump_from=webapi&authKey=vq4mUAECA1JCKr1aC230jN6glhsl4mZCOJxpiqyFYyoADqFnC4LlGcoNq7WtFNVV) or [Discord](https://discord.com/invite/aFe57AKZUF).
 
-## Starting a new Translation {#starting-a-new-translation}
+## Add a Language {#starting-a-new-translation}
 
-We welcome community efforts to provide more translations. See the [New Language Translation Tutorial](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md) for the setup process, and claim files on the [Translation Claim Board](https://github.com/kongying-tavern/docs/issues/555) by commenting `/claim path/to/file`. If you are interested in contributing, please also check out the [Translation Guidelines](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md) to get started.
+To add a language, follow the [new language guide (Chinese)](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md).

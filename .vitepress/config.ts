@@ -10,6 +10,7 @@ import { createLocalesConfig } from './config/locales.ts'
 import { markdownConfig } from './config/markdown.ts'
 import { rewritesConfig } from './config/rewrites.ts'
 import { localeSearchConfig } from './config/search.ts'
+import { siteLocaleWatchPlugin } from './config/siteLocale.ts'
 import { sitemapConfig } from './config/sitemap.ts'
 import { cfgDynamicTitleTemplate } from './config/title.ts'
 import { fontSubsetPlugin } from './plugins/font-subset/index.ts'
@@ -36,7 +37,7 @@ export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
     },
   },
   vite: {
-    plugins: [fontSubsetPlugin()],
+    plugins: [fontSubsetPlugin(), siteLocaleWatchPlugin()],
     configFile: fileURLToPath(import.meta.resolve('../vite.config.ts')),
   },
   ...createConfigureFunction(),

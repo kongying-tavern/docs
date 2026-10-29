@@ -1,33 +1,37 @@
 ---
 layout: doc
-title: 多言語と翻訳
+title: 言語と翻訳
+description: ドキュメントの翻訳状況と参加方法を紹介します。
 ---
 
-## 多言語版 {#available-languages}
+## 対応言語 {#available-languages}
 
-- [简体中文 / Simplified Chinese](../index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/)]
-- [英文 / English](../en/index.md) [[source](https://github.com/kongying-tavern/docs/tree/main/src/en)]
-- [日本語 / Japanese](#) [[source](https://github.com/kongying-tavern/docs/tree/main/src/ja)]
+- [简体中文](../index.md) · [ソース](https://github.com/kongying-tavern/docs/tree/main/src/zh)
+- [English](../en/index.md) · [ソース](https://github.com/kongying-tavern/docs/tree/main/src/en)
+- [日本語](./index.md) · [ソース](https://github.com/kongying-tavern/docs/tree/main/src/ja)
 
-## 翻訳中の言語 {#work-in-progress-languages}
+## 翻訳タスク {#work-in-progress-languages}
 
-詳しくは[翻訳認領ボード](https://github.com/kongying-tavern/docs/issues/555)をご覧ください
+翻訳する記事と担当の申請方法は[翻訳タスク一覧](https://github.com/kongying-tavern/docs/issues/555)で確認できます。
 
-## 現在の翻訳更新状況 {#translation-progress}
+## 翻訳状況 {#translation-progress}
 
-各言語の翻訳の進捗状況は[翻訳状況ページ](https://yuanshen.site/docs/_translations/)で確認できます。
+- [記事の翻訳状況（Lunaria）](https://yuanshen.site/docs/_translations/)：未翻訳の記事や、更新が必要な記事を確認できます。
+- [画面文言の翻訳状況（x18n）](https://yuanshen.site/docs/_i18n/)：各言語の文言、翻訳率、診断結果を確認できます。公開版は閲覧専用です。
 
-## アーカイブされた翻訳 {#archived-languages}
+翻訳を始める方は[入門チュートリアル (英語)](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-no-exp-en.md)をご覧ください。編集するファイルとプルリクエストの送り方は[翻訳ガイド (英語)](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)にまとめています。
 
-以下の言語は長期間更新・維持されていないため、一時的にアーカイブされています（リポジトリの履歴から閲覧できます）：
+## アーカイブ {#archived-languages}
 
-- [한국어 / Korean](https://github.com/kongying-tavern/docs/tree/4781134518828c2be1cc1155e4923460727dd0d6/src/ko)
-- [Français / French](https://github.com/kongying-tavern/docs/tree/8a696e72e2d51fdf78e4842a1896874244e93815/src/fr)
+アーカイブされた翻訳はリポジトリの履歴から閲覧できます。
 
-## マップクライアントの翻訳に参加する {#translations-client}
+- [한국어](https://github.com/kongying-tavern/docs/tree/4781134518828c2be1cc1155e4923460727dd0d6/src/ko)
+- [Français](https://github.com/kongying-tavern/docs/tree/8a696e72e2d51fdf78e4842a1896874244e93815/src/fr)
 
-マップクライアントの翻訳は社内翻訳プラットフォームで行われています。参加をご希望の場合は、[QQ グループ（グループ番号：1108155744）](https://qm.qq.com/cgi-bin/qm/qr?k=FJBE2DpMV7XJ9rv5w12zvrHWUlXKJGbD&jump_from=webapi&authKey=vq4mUAECA1JCKr1aC230jN6glhsl4mZCOJxpiqyFYyoADqFnC4LlGcoNq7WtFNVV) または [Discord](https://discord.com/invite/aFe57AKZUF) でご連絡ください。
+## クライアントの翻訳 {#translations-client}
 
-## 新しい翻訳を開始する {#starting-a-new-translation}
+クライアントの翻訳には内部の翻訳プラットフォームを使用しています。参加をご希望の方は、[QQ グループ (1108155744)](https://qm.qq.com/cgi-bin/qm/qr?k=FJBE2DpMV7XJ9rv5w12zvrHWUlXKJGbD&jump_from=webapi&authKey=vq4mUAECA1JCKr1aC230jN6glhsl4mZCOJxpiqyFYyoADqFnC4LlGcoNq7WtFNVV) または [Discord](https://discord.com/invite/aFe57AKZUF) でご連絡ください。
 
-新しい翻訳を開始する流れは[新言語翻訳チュートリアル](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)をご覧ください。要件と認領については、[翻訳認領ボード](https://github.com/kongying-tavern/docs/issues/555)で `/claim ファイルパス` とコメントしてください（期限切れは自動解放）。ご興味のある方は[翻訳ガイド](https://github.com/kongying-tavern/docs/blob/main/.github/translation-guide.md)もご覧ください。
+## 言語の追加 {#starting-a-new-translation}
+
+言語を追加する場合は[新言語ガイド (中国語)](https://github.com/kongying-tavern/docs/blob/main/.github/trans-guide-new-language.md)に沿って初期設定してください。

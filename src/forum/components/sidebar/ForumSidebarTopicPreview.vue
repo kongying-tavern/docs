@@ -3,8 +3,8 @@ import type ForumAPI from '~/forum/api/types'
 import type { SavedTopicDraft } from '~/forum/services/form/topicDraft'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicQuery } from '~/forum/composables/data/useForumQueries'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import { decodeForumText } from '~/forum/services/forumContentCodec'
@@ -18,7 +18,7 @@ const props = defineProps<{
   topic?: ForumAPI.Topic
   draft?: SavedTopicDraft
 }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const canHover = useMediaQuery('(hover: hover) and (pointer: fine)')
 const requestedOpen = ref(false)
@@ -54,11 +54,11 @@ function closeForContextMenu(): void {
       :side-offset="12"
       :collision-padding="16"
       class="forum-sidebar-topic-preview p-0 overscroll-contain max-h-[min(480px,calc(100dvh-32px))] max-w-[calc(100vw-32px)] w-96 overflow-y-auto"
-      :aria-label="message.forum.topic.previewTitle"
+      :aria-label="t('forum.topic.previewTitle')"
     >
       <div v-if="draft" class="p-3 flex flex-col gap-2">
         <div class="text-xs text-muted-foreground flex gap-2 items-center justify-between">
-          <span>{{ message.forum.publish.feedbackForm.draftBadge }}</span>
+          <span>{{ t('forum.publish.feedbackForm.draftBadge') }}</span>
           <ForumTime v-if="draft.savedAt" :date="draft.savedAt" :toggleable="false" class="shrink-0 whitespace-nowrap" />
         </div>
         <strong class="text-sm break-words">{{ title }}</strong>

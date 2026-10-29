@@ -9,6 +9,7 @@ import {
   useFilter,
 } from 'reka-ui'
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -25,12 +26,11 @@ import {
   TagsInputItemText,
 } from '@/components/ui/tags-input'
 import { useLanguage } from '@/composables/useLanguage'
-import { useLocalized } from '@/hooks/useLocalized'
 import supportedLanguages from '~/_data/supportedLanguages.json'
 import SettingsRow from '~/components/settings/SettingsRow.vue'
 import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { currentPageLang } = useLanguage()
 const {
   autoTranslateEnabled,
@@ -76,19 +76,19 @@ watch(searchTerm, (search) => {
 <template>
   <div class="translation-settings">
     <SettingsRow
-      :title="message.forum.translate.autoTranslate"
-      :description="message.forum.translate.autoTranslateDescription"
+      :title="t('forum.translate.autoTranslate')"
+      :description="t('forum.translate.autoTranslateDescription')"
     >
       <Switch
         v-model="autoTranslateEnabled"
-        :aria-label="message.forum.translate.autoTranslate"
+        :aria-label="t('forum.translate.autoTranslate')"
       />
     </SettingsRow>
 
     <SettingsRow
       class="language-tags-row"
-      :title="message.settings.language.excludedSourceLanguages"
-      :description="message.settings.language.excludedSourceLanguagesDescription"
+      :title="t('settings.language.excludedSourceLanguages')"
+      :description="t('settings.language.excludedSourceLanguagesDescription')"
       align-start
     >
       <Popover v-model:open="open">
@@ -102,8 +102,8 @@ watch(searchTerm, (search) => {
 
               <ListboxFilter v-model="searchTerm" as-child>
                 <TagsInputInput
-                  :aria-label="message.settings.language.searchLanguages"
-                  :placeholder="excludedSourceLanguages.length === 0 ? message.settings.language.searchLanguages : ''"
+                  :aria-label="t('settings.language.searchLanguages')"
+                  :placeholder="excludedSourceLanguages.length === 0 ? t('settings.language.searchLanguages') : ''"
                   class="language-search-input"
                   @focus="open = true"
                   @keydown.enter.prevent
@@ -114,7 +114,7 @@ watch(searchTerm, (search) => {
               <PopoverTrigger as-child>
                 <Button type="button" variant="ghost" size="icon-sm" class="ml-auto self-start order-last">
                   <ChevronDownIcon data-icon="inline-start" />
-                  <span class="sr-only">{{ message.settings.language.chooseLanguages }}</span>
+                  <span class="sr-only">{{ t('settings.language.chooseLanguages') }}</span>
                 </Button>
               </PopoverTrigger>
             </TagsInput>
@@ -123,7 +123,7 @@ watch(searchTerm, (search) => {
           <PopoverContent class="p-1 w-[--reka-popover-trigger-width]" align="end" @open-auto-focus.prevent>
             <ListboxContent class="language-options-list" tabindex="0">
               <p v-if="filteredLanguageOptions.length === 0" class="language-options-empty" role="status">
-                {{ message.settings.language.noLanguagesFound }}
+                {{ t('settings.language.noLanguagesFound') }}
               </p>
               <ListboxItem
                 v-for="option in filteredLanguageOptions"

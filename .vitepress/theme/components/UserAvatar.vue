@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Avatar from '@/components/ui/Avatar.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { ASSET_ORIGIN } from '~/constants/site'
 
 const {
@@ -10,9 +10,9 @@ const {
   size = 'sm',
 } = defineProps<{ src?: string, alt?: string, size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
-const displayAlt = computed(() => alt || message.value.forum.labels.login)
+const displayAlt = computed(() => alt || t('forum.labels.login'))
 </script>
 
 <template>

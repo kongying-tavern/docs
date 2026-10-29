@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useMediaQuery, useMounted } from '@vueuse/core'
+
 import { useData, withBase } from 'vitepress'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useQRCode } from '@/hooks/useQRCode'
 
 import { socialList } from '../composables/socialList'
 
 const { frontmatter, theme } = useData()
-const qrcode = useQRCode(theme.value.footer.qrcodeLink)
+const qrcode = useQRCode(computed(() => theme.value.footer.qrcodeLink))
 
 const isDesktop = useMediaQuery('(min-width: 48rem)')
 const mounted = useMounted()

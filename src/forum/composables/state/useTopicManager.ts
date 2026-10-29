@@ -1,7 +1,7 @@
-import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { Composer } from 'vue-i18n'
 import type { TopicUpdateOutcome } from '~/forum/api/gitee/issues'
 import type ForumAPI from '~/forum/api/types'
-import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'
 import { withAuth } from '~/forum/composables/auth/auth-helpers'
 import {
@@ -28,7 +28,7 @@ async function withOperationLock<T>(key: string, operation: () => Promise<T>): P
   }
 }
 
-export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | null | undefined>, message: Ref<CustomConfig>, onSuccess?: (topic: ForumAPI.Topic, text: string, field?: 'type' | 'status' | 'goodIssue') => Promise<void> | void) {
+export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | null | undefined>, t: Composer['t'], onSuccess?: (topic: ForumAPI.Topic, text: string, field?: 'type' | 'status' | 'goodIssue') => Promise<void> | void) {
   const mutations = useForumTopicMutations()
 
   function currentTopic(): ForumAPI.Topic {
@@ -55,7 +55,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       try {
         outcome = await withAuth.execute(
           () => mutations.updateTopic(kind, topic.id, createPatch(topic), topic, options.confirmType),
-          { loginMessage: message.value.forum.auth.loginTips, errorMessage: failureMessage },
+          { loginMessage: t('forum.auth.loginTips'), errorMessage: failureMessage },
         )
       }
       catch {
@@ -69,7 +69,7 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
         return false
       }
       if (outcome.status === 'partial') {
-        toast.warning(message.value.forum.topic.menu.syncPending.replace('{action}', successMessage))
+        toast.warning(t('forum.topic.menu.syncPending', { action: successMessage }))
         return false
       }
       if (onSuccess)
@@ -93,8 +93,8 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
             : {}),
         })
       },
-      message.value.forum.topic.menu.closeFeedback.success,
-      message.value.forum.topic.menu.closeFeedback.fail,
+      t('forum.topic.menu.closeFeedback.success'),
+      t('forum.topic.menu.closeFeedback.fail'),
     )]
   }
 
@@ -103,31 +103,31 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
     return [hideState, () => update(
       'changeTopicMembership',
       topic => buildTopicMembershipPatch(topic, { state: topic.state === 'progressing' ? 'open' : 'progressing' }),
-      message.value.forum.topic.menu.hideFeedback.success,
-      message.value.forum.topic.menu.hideFeedback.fail,
+      t('forum.topic.menu.hideFeedback.success'),
+      t('forum.topic.menu.hideFeedback.fail'),
     )]
   }
 
   const toggleTopicType = (newType: ForumAPI.FeedbackTopicType) => update(
     'changeTopicMembership',
     topic => buildTopicTypeChangePatch(topic, newType),
-    message.value.forum.topic.menu.changeType.success,
-    message.value.forum.topic.menu.changeType.fail,
+    t('forum.topic.menu.changeType.success'),
+    t('forum.topic.menu.changeType.fail'),
     { confirmType: newType, visibleField: 'type' },
   )
 
   const togglePinnedTopic = () => update(
     'pinTopic',
     topic => buildTopicMembershipPatch(topic, { labels: toggleTopicLabel(currentLabels(topic), 'PINNED', !topic.pinned) }),
-    message.value.forum.topic.menu.pinTopic.success,
-    message.value.forum.topic.menu.pinTopic.fail,
+    t('forum.topic.menu.pinTopic.success'),
+    t('forum.topic.menu.pinTopic.fail'),
   )
 
   const togglePrivateTopic = () => update(
     'changeTopicMembership',
     topic => ({ security_hole: topic.isPrivate !== true }),
-    message.value.forum.topic.menu.privateFeedback.success,
-    message.value.forum.topic.menu.privateFeedback.fail,
+    t('forum.topic.menu.privateFeedback.success'),
+    t('forum.topic.menu.privateFeedback.fail'),
   )
 
   const toggleTopicCommentArea = () => {
@@ -136,16 +136,16 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       topic => buildTopicMembershipPatch(topic, {
         labels: toggleTopicLabel(currentLabels(topic), 'COMMENT-CLOSED', topic.commentCount !== -1),
       }),
-      message.value.forum.topic.menu.commentArea.success,
-      message.value.forum.topic.menu.commentArea.fail,
+      t('forum.topic.menu.commentArea.success'),
+      t('forum.topic.menu.commentArea.fail'),
     )
   }
 
   const replaceTopicTags = (newTags: string[]) => update(
     'changeTopicMembership',
     topic => buildTopicMembershipPatch(topic, { labels: replaceEditableTopicLabels(currentLabels(topic), newTags) }),
-    message.value.forum.topic.menu.modifyTags.success,
-    message.value.forum.topic.menu.modifyTags.fail,
+    t('forum.topic.menu.modifyTags.success'),
+    t('forum.topic.menu.modifyTags.fail'),
   )
 
   const setTopicStatus = (status: ForumAPI.TopicStatus | null) => {
@@ -158,8 +158,8 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
         labels: replaceTopicStatus(currentLabels(topic), status),
         ...(shouldHide ? { state: 'progressing' as const } : {}),
       }),
-      message.value.forum.topic.menu.modifyStatus.success,
-      message.value.forum.topic.menu.modifyStatus.fail,
+      t('forum.topic.menu.modifyStatus.success'),
+      t('forum.topic.menu.modifyStatus.fail'),
       { visibleField: 'status' },
     )
   }
@@ -174,15 +174,15 @@ export function useTopicManager(targetTopic: MaybeRefOrGetter<ForumAPI.Topic | n
       labels: replaceTopicStatus(currentLabels(topic), status),
       state: 'progressing' as const,
     }),
-    message.value.forum.topic.menu.hideFeedback.success,
-    message.value.forum.topic.menu.hideFeedback.fail,
+    t('forum.topic.menu.hideFeedback.success'),
+    t('forum.topic.menu.hideFeedback.fail'),
   )
 
   const toggleGoodIssue = () => update(
     'changeTopicMembership',
     topic => buildTopicMembershipPatch(topic, { labels: toggleTopicLabel(currentLabels(topic), 'GOOD-ISSUE', !topic.goodIssue) }),
-    message.value.forum.topic.menu.goodIssue.success,
-    message.value.forum.topic.menu.goodIssue.fail,
+    t('forum.topic.menu.goodIssue.success'),
+    t('forum.topic.menu.goodIssue.fail'),
     { visibleField: 'goodIssue' },
   )
 

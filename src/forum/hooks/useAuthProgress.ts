@@ -1,5 +1,5 @@
-import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export type AuthStepKey = 'init' | 'token' | 'session' | 'sso' | 'redirect'
 
@@ -12,7 +12,7 @@ export interface AuthStep {
 const stepOrder: AuthStepKey[] = ['init', 'token', 'session', 'sso', 'redirect']
 
 export function useAuthProgress() {
-  const { theme } = useData()
+  const { t } = useI18n({ useScope: 'global' })
 
   const currentStep = ref<AuthStepKey>('init')
   const errorStep = ref<AuthStepKey | null>(null)
@@ -20,8 +20,6 @@ export function useAuthProgress() {
   const completed = ref(false)
 
   const steps = computed<AuthStep[]>(() => {
-    const authTexts = theme.value.forum.auth.callback
-
     return stepOrder.map((key) => {
       let status: AuthStep['status'] = 'pending'
 
@@ -40,7 +38,7 @@ export function useAuthProgress() {
 
       return {
         key,
-        label: authTexts.steps[key],
+        label: t(`forum.auth.callback.steps.${key}`),
         status,
       }
     })
@@ -72,17 +70,15 @@ export function useAuthProgress() {
   })
 
   const title = computed(() => {
-    const authTexts = theme.value.forum.auth.callback
-
     if (hasError.value) {
-      return authTexts.error.title
+      return t('forum.auth.callback.error.title')
     }
 
     if (isComplete.value) {
-      return authTexts.status.completed
+      return t('forum.auth.callback.status.completed')
     }
 
-    return authTexts.steps[currentStep.value]
+    return t(`forum.auth.callback.steps.${currentStep.value}`)
   })
 
   function setStep(step: AuthStepKey) {

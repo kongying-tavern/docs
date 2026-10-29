@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ForumFilter } from '~/forum/services/forumRoute'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumListControlOptions } from '~/forum/composables/view/useForumListControlOptions'
 import ForumPillSelect from './ForumPillSelect.vue'
 
@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ change: [filter: ForumFilter] }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { filters: options } = useForumListControlOptions()
 
 const filter = computed<ForumFilter>({
@@ -23,7 +23,7 @@ const filter = computed<ForumFilter>({
   <div class="flex gap-4 items-center">
     <ForumPillSelect
       v-model="filter"
-      :label="message.forum.header.navigation.groups.status"
+      :label="t('forum.header.navigation.groups.status')"
       :options="options"
     />
   </div>

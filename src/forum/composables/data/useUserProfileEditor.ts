@@ -1,6 +1,6 @@
 import type ForumAPI from '~/forum/api/types'
 import { useMutation, useQueryCache } from '@pinia/colada'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { updateAuthorizedUser } from '~/forum/api/gitee/user'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
 import { applyUserProfilePatch, settleUserProfilePatch } from '~/forum/services/forumUserProfileOptimistic'
@@ -12,12 +12,12 @@ export function useUserProfileEditor() {
   const auth = useUserAuthStore()
   const userInfo = useUserInfoStore()
   const cache = useQueryCache()
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const mutation = useMutation({
     mutation: async (profile: ForumAPI.UserProfileUpdate) => {
       const login = userInfo.info?.login
       if (!auth.isLoggedIn || !login)
-        throw new Error(message.value.forum.auth.loginMsg)
+        throw new Error(t('forum.auth.loginMsg'))
       const snapshot = userInfo.info!
       const optimistic = applyUserProfilePatch(snapshot, profile)
       const key = forumKeys.user(login)
@@ -28,7 +28,7 @@ export function useUserProfileEditor() {
         const updated = await updateAuthorizedUser(profile)
         // 请求期间退出或切换账号后，不把旧账号响应写回当前会话。
         if (!auth.isLoggedIn || userInfo.info?.login !== login || updated.login !== login)
-          throw new Error(message.value.settings.profile.sessionChanged)
+          throw new Error(t('settings.profile.sessionChanged'))
         const settled = settleUserProfilePatch(userInfo.info!, optimistic, updated, profile)
         userInfo.info = settled
         cache.setQueryData(key, settled)

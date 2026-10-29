@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
 import { Switch } from '@/components/ui/switch'
-import { useLocalized } from '@/hooks/useLocalized'
 import SettingsRow from '~/components/settings/SettingsRow.vue'
 import {
   disableReporting,
@@ -12,13 +12,13 @@ import {
 } from '~/services/telemetry'
 import { currentSupportCode } from '~/services/telemetry/session'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const sessionId = computed(() => reportingEnabled.value ? currentSupportCode.value : null)
 
 const reportingDescription = computed(() =>
   reportingEnabled.value
-    ? message.value.forum.telemetry.description
-    : message.value.forum.telemetry.stateDisabled,
+    ? t('forum.telemetry.description')
+    : t('forum.telemetry.stateDisabled'),
 )
 
 onMounted(() => {
@@ -42,29 +42,29 @@ function setReporting(enabled: boolean): void {
 <template>
   <div class="telemetry-settings">
     <SettingsRow
-      :title="message.forum.telemetry.enable"
+      :title="t('forum.telemetry.enable')"
       :description="reportingDescription"
     >
       <Switch
         :model-value="reportingEnabled"
-        :aria-label="message.forum.telemetry.enable"
+        :aria-label="t('forum.telemetry.enable')"
         @update:model-value="setReporting"
       />
     </SettingsRow>
 
     <SettingsRow
       v-if="reportingEnabled && sessionId"
-      :title="message.forum.telemetry.sessionId"
+      :title="t('forum.telemetry.sessionId')"
     >
       <template #description>
-        <span>{{ message.forum.telemetry.sessionHint }}</span>
+        <span>{{ t('forum.telemetry.sessionHint') }}</span>
       </template>
       <ClipboardCopyButton
         class="telemetry-session-copy"
         :value="sessionId"
-        :label="message.forum.telemetry.copySessionId"
+        :label="t('forum.telemetry.copySessionId')"
         :display-label="sessionId"
-        :success-label="message.forum.telemetry.copySuccess"
+        :success-label="t('forum.telemetry.copySuccess')"
       />
     </SettingsRow>
   </div>

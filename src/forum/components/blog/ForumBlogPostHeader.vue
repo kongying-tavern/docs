@@ -2,16 +2,16 @@
 import { useData, useRoute } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Avatar from '@/components/ui/Avatar.vue'
 import Time from '@/components/ui/Time/Time.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getGiteeProfileHref } from '~/constants/site'
 import { parseAuthors } from '~/forum/utils/frontmatter'
 
 const BLOG_POST_PATH_REGEX = /\/blog\/posts\/([^/?#]+)/
 
 const { frontmatter, lang, page } = useData()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const route = useRoute()
 const authors = parseAuthors(frontmatter.value)
 const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
@@ -21,11 +21,11 @@ const blogSlug = computed(() => route.path.match(BLOG_POST_PATH_REGEX)?.[1])
   <div :data-forum-blog-post="blogSlug" class="blog-post-header slide-enter flex flex-col w-full items-center">
     <nav class="text-sm c-[var(--vp-c-text-2)] flex gap-2 items-center">
       <VPLink class="hover:underline" href="../../">
-        {{ message.forum.blog.breadcrumbHome }}
+        {{ t('forum.blog.breadcrumbHome') }}
       </VPLink>
       <span class="c-[var(--vp-c-text-3)]">/</span>
       <VPLink class="hover:underline" href="../">
-        {{ message.forum.blog.breadcrumbBlog }}
+        {{ t('forum.blog.breadcrumbBlog') }}
       </VPLink>
     </nav>
 

@@ -2,9 +2,9 @@
 import type ForumAPI from '~/forum/api/types'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import User from '@/components/ui/User.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getLangPath } from '@/utils'
 import { getSiteHref } from '~/constants/site'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 
 const { localeIndex } = useData()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { topicHref } = useForumRoute()
 
 const presetUser = {
@@ -29,21 +29,21 @@ const presetList = computed(() => [
   {
     id: 'team-blog',
     icon: 'i-lucide-rss',
-    title: message.value.forum.labels.teamBlog,
+    title: t('forum.labels.teamBlog'),
     relativeLink: 'blog',
     user: presetUser,
   },
   {
     id: 'manuel',
     icon: 'i-lucide-book-text',
-    title: message.value.forum.labels.userManual,
+    title: t('forum.labels.userManual'),
     relativeLink: 'manual/client/',
     user: presetUser,
   },
   {
     id: 'community',
     icon: 'i-lucide-aperture',
-    title: message.value.forum.labels.joinCommunity,
+    title: t('forum.labels.joinCommunity'),
     relativeLink: 'community',
     user: presetUser,
   },

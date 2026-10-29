@@ -3,6 +3,7 @@ import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -13,7 +14,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { executeWithAuth } from '~/forum/composables/auth/executeWithAuth'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumCommentMutations } from '~/forum/composables/data/useForumMutations'
@@ -44,7 +44,7 @@ const emit = defineEmits<{
   'comment:click': [author: ForumAPI.User]
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const forumMutations = useForumCommentMutations()
 const { commentHref } = useForumRoute()
 const { copy, isSupported: clipboardSupported } = useClipboard()
@@ -61,15 +61,15 @@ const copyMenu = computed<FORUM.TopicDropdownMenu[]>(() => clipboardSupported.va
   ? [{
       type: 'item',
       id: 'copy-comment-link',
-      label: message.value.forum.topic.menu.copyLink.text,
+      label: t('forum.topic.menu.copyLink.text'),
       icon: 'i-lucide:link',
       action: async () => {
         try {
           await copy(new URL(commentHref(topicId, commentData.id, commentPage), location.href).href)
-          toast.success(message.value.forum.topic.menu.copyLink.success)
+          toast.success(t('forum.topic.menu.copyLink.success'))
         }
         catch {
-          toast.error(message.value.forum.topic.menu.copyLink.fail, { report: false })
+          toast.error(t('forum.topic.menu.copyLink.fail'), { report: false })
         }
       },
     }]
@@ -78,7 +78,7 @@ const deleteMenu = computed<FORUM.TopicDropdownMenu[]>(() => canDelete.value
   ? [{
       type: 'item',
       id: 'delete-comment',
-      label: message.value.forum.topic.menu.deleteComment.text,
+      label: t('forum.topic.menu.deleteComment.text'),
       icon: 'i-lucide:trash-2',
       variant: 'destructive',
       disabled: forumMutations.deletingComment.value,
@@ -89,7 +89,7 @@ const statsMenu = computed<FORUM.TopicDropdownMenu[]>(() => canViewStats.value &
   ? [{
       type: 'item',
       id: 'comment-reaction-stats',
-      label: message.value.forum.topic.menu.reactionStats.text,
+      label: t('forum.topic.menu.reactionStats.text'),
       icon: 'i-lucide:chart-column',
       action: () => openReactionStatsDialog({ kind: 'comment', topicId, commentId: String(commentData.id) }),
     }]
@@ -113,8 +113,8 @@ async function handleDeleteComment() {
   const deleted = await executeWithAuth(
     forumMutations.deleteComment,
     [{ commentId: commentData.id, repo, topicId: topicId || 'unknown' }],
-    message.value.forum.topic.menu.deleteComment.fail,
-    message,
+    t('forum.topic.menu.deleteComment.fail'),
+    t,
   )
   if (deleted)
     deleteDialogOpen.value = false
@@ -132,7 +132,7 @@ async function handleDeleteComment() {
         <ForumCommentReactionButtons :topic-id="topicId" :comment-id="String(commentData.id)" :autoload="reactionEnabled" />
       </div>
       <Button type="button" size="sm" class="text-xs leading-none px-2 rounded-full h-7" variant="ghost" @click="handleCommentClick">
-        {{ message.forum.comment.reply }}
+        {{ t('forum.comment.reply') }}
       </Button>
     </div>
     <div class="ml-auto flex shrink-0 items-center">
@@ -143,15 +143,15 @@ async function handleDeleteComment() {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {{ message.forum.topic.menu.deleteComment.title }}
+            {{ t('forum.topic.menu.deleteComment.title') }}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            {{ message.forum.topic.menu.deleteComment.confirm }}
+            {{ t('forum.topic.menu.deleteComment.confirm') }}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel :disabled="forumMutations.deletingComment.value">
-            {{ message.ui.button.cancel }}
+            {{ t('ui.button.cancel') }}
           </AlertDialogCancel>
           <Button
             type="button"
@@ -159,7 +159,7 @@ async function handleDeleteComment() {
             :disabled="forumMutations.deletingComment.value"
             @click="handleDeleteComment"
           >
-            {{ forumMutations.deletingComment.value ? message.ui.button.loading : message.forum.topic.menu.deleteComment.text }}
+            {{ forumMutations.deletingComment.value ? t('ui.button.loading') : t('forum.topic.menu.deleteComment.text') }}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

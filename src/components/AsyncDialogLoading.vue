@@ -1,22 +1,22 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
-import { useLocalized } from '@/hooks/useLocalized'
 import AsyncContentLoading from './AsyncContentLoading.vue'
 
 defineOptions({ inheritAttrs: false })
 defineProps<{ error?: Error }>()
 const emit = defineEmits<{ close: [], retry: [] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
   <Dialog :open="true" @update:open="open => !open && emit('close')">
     <DialogContent>
       <DialogTitle class="sr-only">
-        {{ error ? message.ui.asyncContent.failed : message.ui.button.loading }}
+        {{ error ? t('ui.asyncContent.failed') : t('ui.button.loading') }}
       </DialogTitle>
       <DialogDescription class="sr-only">
-        {{ message.ui.button.loading }}
+        {{ t('ui.button.loading') }}
       </DialogDescription>
       <AsyncContentLoading :error="error" @retry="emit('retry')" />
     </DialogContent>

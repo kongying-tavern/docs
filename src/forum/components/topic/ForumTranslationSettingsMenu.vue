@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMediaQuery } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -10,25 +11,24 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { useLocalized } from '@/hooks/useLocalized'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import ForumTranslationSettings from '../settings/ForumTranslationSettings.vue'
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 </script>
 
 <template>
   <Drawer v-if="isMobile">
     <DrawerTrigger as-child>
-      <Button type="button" variant="ghost" size="icon" class="rounded-full size-6" :aria-label="message.forum.translate.settings">
+      <Button type="button" variant="ghost" size="icon" class="rounded-full size-6" :aria-label="t('forum.translate.settings')">
         <span class="i-lucide-sliders-horizontal size-3.5" aria-hidden="true" />
       </Button>
     </DrawerTrigger>
     <DrawerContent class="pb-[max(1rem,env(safe-area-inset-bottom))]">
       <DrawerHeader class="text-left">
-        <DrawerTitle>{{ message.forum.translate.settings }}</DrawerTitle>
-        <DrawerDescription>{{ message.forum.translate.settingsDescription }}</DrawerDescription>
+        <DrawerTitle>{{ t('forum.translate.settings') }}</DrawerTitle>
+        <DrawerDescription>{{ t('forum.translate.settingsDescription') }}</DrawerDescription>
       </DrawerHeader>
       <div class="px-4 pb-2">
         <ForumTranslationSettings />
@@ -38,7 +38,7 @@ const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
   <Popover v-else>
     <PopoverTrigger as-child>
-      <Button type="button" variant="ghost" size="icon" class="rounded-full size-6" :aria-label="message.forum.translate.settings">
+      <Button type="button" variant="ghost" size="icon" class="rounded-full size-6" :aria-label="t('forum.translate.settings')">
         <span class="i-lucide-sliders-horizontal size-3.5" aria-hidden="true" />
       </Button>
     </PopoverTrigger>

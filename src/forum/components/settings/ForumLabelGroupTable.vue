@@ -2,6 +2,7 @@
 import type ForumAPI from '~/forum/api/types'
 import type { ForumLabelGroup, ForumLabelRow } from '~/forum/services/forumLabelTaxonomy'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   Table,
   TableBody,
@@ -10,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useLocalized } from '@/hooks/useLocalized'
 import { getFallbackLabelDisplay } from '~/forum/services/forumLabelTaxonomy'
 import { getTopicStatusFromLabel } from '~/forum/services/forumTopicStatus'
 import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
@@ -27,25 +27,25 @@ defineSlots<{
   'row-actions': (props: { row: ForumLabelRow }) => unknown
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 /** 分组折叠状态：默认全部展开，记录被手动收起的组；两张表分组不重叠，各自持有 */
 const collapsedGroups = ref<Partial<Record<ForumLabelGroup, boolean>>>({})
 
 const typeLabelGetter = getTopicTypeLabelGetter()
 // 响应式：语言切换后按新 locale 重建，表格里的标签显示名随即更新
-const topicTagMap = computed(() => getTopicTagMap(message))
+const topicTagMap = computed(() => getTopicTagMap(t))
 const topicTagLabelGetter = getTopicTagLabelGetter()
 
 function groupLabel(group: ForumLabelGroup): string {
-  return message.value.forum.labelAdmin.groups[group]
+  return t(`forum.labelAdmin.groups.${group}`)
 }
 
 /** 标签在站点 UI 中的翻译名：状态/反馈标签取对应词条，无词条返回空 */
 function getUiLabelName(row: ForumLabelRow): string {
   if (row.group === 'status') {
     const status = getTopicStatusFromLabel(row.label.name)
-    return status ? message.value.forum.topic.status[status] : ''
+    return status ? t(`forum.topic.status.${status}`) : ''
   }
   if (row.group === 'category') {
     return topicTagMap.value.get(row.label.name)
@@ -93,13 +93,13 @@ function previewStatus(row: ForumLabelRow): ForumAPI.TopicStatus | undefined {
         </TableRow>
         <TableRow>
           <TableHead class="pl-4 w-36">
-            {{ message.forum.labelAdmin.columnPreview }}
+            {{ t('forum.labelAdmin.columnPreview') }}
           </TableHead>
           <TableHead class="px-0">
-            {{ message.forum.labelAdmin.columnName }}
+            {{ t('forum.labelAdmin.columnName') }}
           </TableHead>
           <TableHead class="pr-4 text-right w-24">
-            {{ message.forum.labelAdmin.columnActions }}
+            {{ t('forum.labelAdmin.columnActions') }}
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -112,7 +112,7 @@ function previewStatus(row: ForumLabelRow): ForumAPI.TopicStatus | undefined {
           >
             <TableCell
               colspan="3"
-              class="text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5 text-ui-13"
+              class="text-ui-13 text-[var(--vp-c-text-1)] font-semibold px-4 py-2.5"
             >
               <span class="flex gap-2 items-center">
                 <span
@@ -164,7 +164,7 @@ function previewStatus(row: ForumLabelRow): ForumAPI.TopicStatus | undefined {
                         aria-hidden="true"
                       />
                       <span class="text-xs text-[var(--vp-c-text-3)] truncate">
-                        {{ message.forum.labelAdmin.noPreview }}
+                        {{ t('forum.labelAdmin.noPreview') }}
                       </span>
                     </template>
                   </span>

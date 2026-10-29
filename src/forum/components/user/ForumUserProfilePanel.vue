@@ -3,9 +3,9 @@ import type { FORUM } from '../types'
 import type ForumAPI from '~/forum/api/types'
 import { useDebounceFn, useElementBounding, useEventListener, useMediaQuery } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Avatar from '@/components/ui/Avatar.vue'
 import { Button } from '@/components/ui/button'
-import { useLocalized } from '@/hooks/useLocalized'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import ForumSearchInput from '../search/ForumSearchInput.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
@@ -26,7 +26,7 @@ const props = defineProps<{
 const emit = defineEmits<{ message: [], search: [query: string], openSearch: [] }>()
 defineSlots<{ follow: (props: { textClass?: string }) => unknown }>()
 const modelValue = defineModel<FORUM.ProfileTab['id']>('activeTab', { default: 'all' })
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 const searchQuery = ref(props.query)
 watch(() => props.query, query => searchQuery.value = query)
@@ -83,7 +83,7 @@ onBeforeUnmount(() => {
                   variant="outline"
                   size="icon"
                   class="border border-[var(--vp-c-divider)] border-solid"
-                  :aria-label="message.forum.labels.privateMessage"
+                  :aria-label="t('forum.labels.privateMessage')"
                   @click="emit('message')"
                 >
                   <span class="i-lucide-mail text-base" aria-hidden="true" />
@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
                   variant="outline"
                   size="icon"
                   class="border border-[var(--vp-c-divider)] border-solid"
-                  :aria-label="message.ui.button.search"
+                  :aria-label="t('ui.button.search')"
                   @click="emit('openSearch')"
                 >
                   <span class="i-lucide-search text-base" aria-hidden="true" />
@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
             <div class="flex-1 min-w-0 w-full">
               <div class="flex gap-2 items-center">
                 <h1 data-forum-user-name class="text-xl text-[var(--vp-c-text-1)] font-bold sm:text-2xl">
-                  {{ renderedUser?.username || message.forum.labels.unknown }}
+                  {{ renderedUser?.username || t('forum.labels.unknown') }}
                 </h1>
                 <span class="rounded-full">
                   <ForumRoleBadge :type="role" />
@@ -118,12 +118,12 @@ onBeforeUnmount(() => {
                 <div class="flex gap-2 items-center">
                   <i class="i-lucide-file-text" />
                   <span class="tabular-nums">{{ topicCount }}</span>
-                  <span>{{ message.forum.labels.posts }}</span>
+                  <span>{{ t('forum.labels.posts') }}</span>
                 </div>
                 <div class="flex gap-2 items-center">
                   <i class="i-lucide-calendar-days" />
-                  <span>{{ renderedUser?.createAt?.toLocaleDateString() || message.forum.labels.unknown }}</span>
-                  <span>{{ message.forum.labels.joinTime }}</span>
+                  <span>{{ renderedUser?.createAt?.toLocaleDateString() || t('forum.labels.unknown') }}</span>
+                  <span>{{ t('forum.labels.joinTime') }}</span>
                 </div>
               </div>
             </div>
@@ -134,7 +134,7 @@ onBeforeUnmount(() => {
                 variant="outline"
                 size="icon"
                 class="border border-[var(--vp-c-divider)] border-solid"
-                :aria-label="message.forum.labels.privateMessage"
+                :aria-label="t('forum.labels.privateMessage')"
                 @click="emit('message')"
               >
                 <span class="i-lucide-mail text-base" aria-hidden="true" />
@@ -144,7 +144,7 @@ onBeforeUnmount(() => {
                 variant="outline"
                 size="icon"
                 class="border border-[var(--vp-c-divider)] border-solid"
-                :aria-label="message.ui.button.search"
+                :aria-label="t('ui.button.search')"
                 @click="emit('openSearch')"
               >
                 <span class="i-lucide-search text-base" aria-hidden="true" />
@@ -163,7 +163,7 @@ onBeforeUnmount(() => {
             v-model:active-tab="modelValue"
             layout="fill"
             :tabs="menu"
-            v-bind="{ ariaLabel: message.forum.header.navigation.groups.status }"
+            v-bind="{ ariaLabel: t('forum.header.navigation.groups.status') }"
             class="max-sm:flex-1 sm:shrink-0"
           />
           <ForumSearchInput

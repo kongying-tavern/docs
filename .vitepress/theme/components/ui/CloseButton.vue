@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 
 interface Props {
   size?: string
@@ -18,8 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   click: []
 }>()
-const { message } = useLocalized()
-const ariaLabel = computed(() => props.label ?? message.value.ui?.button?.close ?? 'Close')
+const { t } = useI18n({ useScope: 'global' })
+const ariaLabel = computed(() => props.label ?? t('ui.button.close'))
 </script>
 
 <template>

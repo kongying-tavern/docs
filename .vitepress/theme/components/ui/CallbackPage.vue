@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import { useData, useRouter, withBase } from 'vitepress'
-import { computed, onMounted } from 'vue'
+import { useRouter, withBase } from 'vitepress'
+
+import { onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import useLogin from '~/forum/hooks/useLogin'
 import AuthProgressIsland from './AuthProgressIsland.vue'
 
-const { theme } = useData()
+const { t } = useI18n({ useScope: 'global' })
+
 const router = useRouter()
 const { hasOAuthCallback } = useLogin()
-
-const authTexts = computed(() => theme.value.forum.auth.callback)
 
 onMounted(() => {
   // 无回调参数只是误入；正常回调（含到达时已登录）由 useLogin 负责回跳
@@ -22,10 +23,10 @@ onMounted(() => {
     <div class="callback-content">
       <div class="callback-header">
         <h1 class="callback-title">
-          {{ authTexts.title }}
+          {{ t('forum.auth.callback.title') }}
         </h1>
         <p class="callback-description">
-          {{ authTexts.description }}
+          {{ t('forum.auth.callback.description') }}
         </p>
       </div>
 

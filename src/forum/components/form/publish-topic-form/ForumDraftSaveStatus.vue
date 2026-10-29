@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { CheckIcon, CircleAlertIcon, LoaderCircleIcon } from '@lucide/vue'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { onBeforeUnmount, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 
 const props = defineProps<{ status: 'saved' | 'saving' | 'error', savedAt: number, idle: boolean }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
-const copy = computed(() => message.value.forum.publish.feedbackForm)
+
 const showSaved = ref(false)
 let lastShown = 0
 let hideTimer: ReturnType<typeof setTimeout> | undefined
@@ -33,7 +33,7 @@ onBeforeUnmount(() => clearTimeout(hideTimer))
       <LoaderCircleIcon v-if="status === 'saving'" class="size-3.5 animate-spin" aria-hidden="true" />
       <CircleAlertIcon v-else-if="status === 'error'" class="size-3.5" aria-hidden="true" />
       <CheckIcon v-else class="size-3.5" aria-hidden="true" />
-      {{ status === 'saving' ? copy.savingDraft : status === 'error' ? copy.autoSaveFailed : copy.draftSavedShort }}
+      {{ status === 'saving' ? t('forum.publish.feedbackForm.savingDraft') : status === 'error' ? t('forum.publish.feedbackForm.autoSaveFailed') : t('forum.publish.feedbackForm.draftSavedShort') }}
     </span>
   </Transition>
 </template>

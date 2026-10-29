@@ -3,7 +3,7 @@ import type { DropdownMenuContentProps } from 'reka-ui'
 import type { FORUM } from '../../types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, defineAsyncComponent } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 
 const { items = [], side = 'bottom', disabled = false, title } = defineProps<{
@@ -24,11 +24,11 @@ defineSlots<{
 const ForumMenuDesktop = defineAsyncComponent(() => import('./ForumMenuDesktop.vue'))
 const ForumMenuMobileDrawer = defineAsyncComponent(() => import('./ForumMenuMobileDrawer.vue'))
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
 const hasItems = computed(() => (items?.length ?? 0) > 0)
-const drawerTitle = computed(() => title ?? message.value.forum.topic.menu.moreActions)
+const drawerTitle = computed(() => title ?? t('forum.topic.menu.moreActions'))
 </script>
 
 <template>

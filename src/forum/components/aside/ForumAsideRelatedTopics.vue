@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import User from '@/components/ui/User.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { CATEGORY_LABEL_PREFIX } from '~/forum/services/forumLabel'
@@ -15,9 +15,8 @@ const props = defineProps<{
   topic: ForumAPI.Topic
 }>()
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const { topicHref } = useForumRoute()
-const copy = computed(() => message.value.forum.aside.related)
 
 // 反馈标签按前缀识别，动态新增的 CATA- 标签同样参与相关推荐
 const relatedLabels = computed(() => props.topic.tags.filter(tag => tag.startsWith(CATEGORY_LABEL_PREFIX)))
@@ -41,7 +40,7 @@ function commentCount(topic: ForumAPI.Topic): number {
 </script>
 
 <template>
-  <ForumAsideSection v-if="canLoadRelated && relatedSuggestions.length" section-id="related" :title="copy.title">
+  <ForumAsideSection v-if="canLoadRelated && relatedSuggestions.length" section-id="related" :title="t('forum.aside.related.title')">
     <ol class="related-topic-list">
       <li v-for="related in relatedSuggestions" :key="related.id">
         <a :href="topicHref(String(related.id), null)" class="related-topic">
@@ -60,18 +59,18 @@ function commentCount(topic: ForumAPI.Topic): number {
           <span class="related-title">{{ related.title }}</span>
           <span class="related-footer">
             <span class="related-meta">
-              <span>{{ message.forum.sidebar.totalComments.replace('{count}', String(commentCount(related))) }}</span>
+              <span>{{ t('forum.sidebar.totalComments', { count: commentCount(related) }) }}</span>
               <ForumTime :date="related.createdAt" :toggleable="false" />
             </span>
             <span class="related-status">
               <ForumTopicLifecycle v-if="related.type === 'BUG' || related.type === 'FEAT'" :state="related.state" icon-only />
               <span v-if="related.status" class="related-conclusion">
                 <ForumTopicStatusBadge :status="related.status" />
-                {{ message.forum.topic.status[related.status] }}
+                {{ t(`forum.topic.status.${related.status}`) }}
               </span>
               <span v-if="related.goodIssue" class="related-conclusion">
                 <ForumTopicStatusBadge status="good-issue" />
-                {{ message.forum.topic.status.goodIssue }}
+                {{ t('forum.topic.status.goodIssue') }}
               </span>
             </span>
           </span>

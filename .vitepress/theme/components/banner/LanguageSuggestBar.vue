@@ -18,7 +18,6 @@ import { cn } from '@/lib/utils'
 
 import { ensureStartingSlash, getLangPath } from '@/utils'
 
-import { languageSuggestBarTranslate } from '../../../locales/common/LanguageSuggestBar'
 import { useLocaleConfig } from './configs'
 
 const { suggestLang } = defineProps<{
@@ -48,8 +47,8 @@ const suggestLocale = computed(
 )
 const suggestTranslate = computed(
   () =>
-    languageSuggestBarTranslate[suggestLocale.value.key as keyof typeof languageSuggestBarTranslate]
-    ?? languageSuggestBarTranslate.root,
+    site.value.locales[suggestLocale.value.key]?.themeConfig?.languageSuggest
+    ?? theme.value.languageSuggest,
 )
 
 function handleLanguageSelect(ev: CustomEvent) {

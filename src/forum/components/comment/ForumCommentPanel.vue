@@ -2,9 +2,9 @@
 import type ForumAPI from '~/forum/api/types'
 import { useElementBounding, useElementSize, useEventListener, useIntersectionObserver, useMediaQuery, useMutationObserver, watchOnce } from '@vueuse/core'
 import { computed, inject, nextTick, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { forumLayoutReadyKey } from '@/components/forumStartup'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { useLocalized } from '@/hooks/useLocalized'
 import { scrollTo } from '~/composables/scrollTo'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
 import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
@@ -45,7 +45,7 @@ defineSlots<{
   input: () => unknown
   reply: (props: { comment: ForumAPI.Comment }) => unknown
 }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const area = useTemplateRef('area')
 const inputAnchor = useTemplateRef('inputAnchor')
 const inputSurface = useTemplateRef('inputSurface')
@@ -106,7 +106,7 @@ watch(() => [targetId, targetReady, layoutReady.value] as const, async ([comment
 <template>
   <div v-if="!closed" ref="area" class="forum-comment-surface" :class="{ 'pb-24': presentation === 'page', 'mobile-comment-surface': mobile }" :style="mobileFixed ? { 'paddingBottom': `${inputHeight + 16}px`, '--comment-input-height': `${inputHeight}px` } : undefined">
     <p v-if="presentation !== 'inline'" id="reply" class="font-(size-5 --vp-font-family-subtitle) line-height-[21px]" :class="presentation === 'embedded' ? 'mb-3 mt-0' : 'mb-5.5 mt-4'">
-      {{ message.forum.comment.commentCount }}
+      {{ t('forum.comment.commentCount') }}
       <span class="font-size-3.5 color-[var(--vp-c-text-3)] vertical-text-top tabular-nums">{{ count }}</span>
     </p>
     <div ref="inputAnchor" :style="docked && !mobileFixed ? { minHeight: `${inputHeight}px` } : undefined">
@@ -139,7 +139,7 @@ watch(() => [targetId, targetReady, layoutReady.value] as const, async ([comment
           <EmptyMedia>
             <ForumEmptyIllustration variant="comment" compact />
           </EmptyMedia>
-          <EmptyTitle>{{ message.forum.comment.noComment }}</EmptyTitle>
+          <EmptyTitle>{{ t('forum.comment.noComment') }}</EmptyTitle>
         </EmptyHeader>
       </Empty>
       <ForumLoadState
@@ -152,12 +152,12 @@ watch(() => [targetId, targetReady, layoutReady.value] as const, async ([comment
         :load-more="() => emit('load-more')"
         :retry="() => emit('retry')"
         :text="loadMessage"
-        :loading-text="message.forum.comment.loadingComment"
+        :loading-text="t('forum.comment.loadingComment')"
         :status="targetMissing ? 'alert' : 'status'"
         @login="emit('login')"
       />
       <a v-if="canLoadMore && presentation === 'inline'" class="font-size-3 c-[var(--vp-c-text-3)] vp-link text-center w-full cursor-pointer" :href="detailHref">
-        {{ message.forum.comment.loadMoreComment }}
+        {{ t('forum.comment.loadMoreComment') }}
       </a>
     </div>
   </div>

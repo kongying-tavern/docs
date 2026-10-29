@@ -2,11 +2,11 @@
 import type { PreviewImage } from '../ForumImagePreviewer.vue'
 import { useElementSize, useMediaQuery } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 
 const { image, zoomEnabled = true, maxZoom = 4 } = defineProps<{ image: PreviewImage, zoomEnabled?: boolean, maxZoom?: number }>()
 const emit = defineEmits<{ dimensions: [size: { width: number, height: number }] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const viewport = useTemplateRef<HTMLElement>('viewport')
 const imageElement = useTemplateRef<HTMLImageElement>('imageElement')
 const navigator = useTemplateRef<HTMLElement>('navigator')
@@ -228,7 +228,7 @@ defineExpose({ changeZoom, scrollToEdge, zoom })
         role="slider"
         tabindex="0"
         aria-orientation="vertical"
-        :aria-label="message.forum.imagePreview.longImageNavigator"
+        :aria-label="t('forum.imagePreview.longImageNavigator')"
         :aria-valuemin="0"
         :aria-valuemax="100"
         :aria-valuenow="readingPosition"
@@ -248,7 +248,7 @@ defineExpose({ changeZoom, scrollToEdge, zoom })
       class="forum-long-reader-viewport"
       :class="scrollFade"
       tabindex="0"
-      :aria-label="message.forum.imagePreview.longImage"
+      :aria-label="t('forum.imagePreview.longImage')"
       @scroll.passive="syncWindow"
       @pointerdown="beginImageClick"
       @pointermove="trackImageClick"

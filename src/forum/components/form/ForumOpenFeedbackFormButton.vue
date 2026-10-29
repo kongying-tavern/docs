@@ -2,6 +2,7 @@
 import type { ButtonVariants } from '@/components/ui/button'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useLocalized } from '@/hooks/useLocalized'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
 import { rememberLoginIntent } from '~/forum/services/loginIntent'
@@ -25,7 +25,7 @@ const { variant = 'default', hideOnMobile = true, label } = defineProps<{
 }>()
 
 const { frontmatter } = useData()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const userAuth = useUserAuthStore()
 const { hasAnyRoles } = useRuleChecks()
 
@@ -34,8 +34,8 @@ const isAdmin = hasAnyRoles('teamMember', 'feedbackMember')
 
 const buttonText = computed(() => {
   if (!isLoggedIn.value)
-    return message.value.forum.sidebar.loginToCreate
-  return label ?? message.value.forum.publish.title
+    return t('forum.sidebar.loginToCreate')
+  return label ?? t('forum.publish.title')
 })
 
 function handleButtonClick() {
@@ -53,7 +53,7 @@ useForumShortcut('publish', handleButtonClick, { enabled: () => frontmatter.valu
 const selectPublishTopicMenu = computed(() => {
   const baseItems = [
     {
-      label: message.value.forum.labels.submitBug,
+      label: t('forum.labels.submitBug'),
       icon: 'i-lucide-bug',
       action: () => {
         location.hash = 'BUG'
@@ -61,7 +61,7 @@ const selectPublishTopicMenu = computed(() => {
       },
     },
     {
-      label: message.value.forum.labels.submitSuggestion,
+      label: t('forum.labels.submitSuggestion'),
       icon: 'i-lucide-file-text',
       action: () => {
         location.hash = 'FEAT'
@@ -72,7 +72,7 @@ const selectPublishTopicMenu = computed(() => {
 
   if (isAdmin.value) {
     baseItems.push({
-      label: message.value.forum.publish.type.ann,
+      label: t('forum.publish.type.ann'),
       icon: 'i-lucide-megaphone',
       action: () => {
         location.hash = 'ANN'

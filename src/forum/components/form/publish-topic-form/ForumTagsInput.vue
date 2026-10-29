@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   Command,
   CommandEmpty,
@@ -21,7 +22,6 @@ import {
   TagsInputItemDelete,
   TagsInputItemText,
 } from '@/components/ui/tags-input'
-import { useLocalized } from '@/hooks/useLocalized'
 import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
 import { useTagsInput } from '../composables/useTagsInput'
 
@@ -33,7 +33,7 @@ const { max = VALIDATION_LIMITS.TAGS.MAX_COUNT } = defineProps<{
 
 const modelValue = defineModel<string[]>({ default: () => [] })
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 
 const {
   isDisabled,
@@ -82,27 +82,27 @@ const {
           :disabled="isDisabled"
           :placeholder="
             isDisabled
-              ? message.forum.publish.tagsInput.maxTagsLimit
-              : message.forum.publish.tagsInput.searchTags
+              ? t('forum.publish.tagsInput.maxTagsLimit')
+              : t('forum.publish.tagsInput.searchTags')
           "
         />
         <CommandSeparator />
         <CommandList>
           <div v-if="isLoading" class="text-sm c-[var(--vp-c-text-2)] px-3 py-5 flex gap-2 items-center justify-center">
             <span class="i-lucide-loader-circle size-4 animate-spin" aria-hidden="true" />
-            {{ message.forum.publish.tagsInput.loading }}
+            {{ t('forum.publish.tagsInput.loading') }}
           </div>
           <div v-else-if="loadError" class="text-sm px-3 py-4 flex flex-col gap-2 items-center" role="alert">
-            <span>{{ message.forum.publish.tagsInput.loadFailed }}</span>
+            <span>{{ t('forum.publish.tagsInput.loadFailed') }}</span>
             <button type="button" class="text-[var(--vp-c-brand-1)] hover:underline" @click="loadTags">
-              {{ message.forum.publish.tagsInput.retry }}
+              {{ t('forum.publish.tagsInput.retry') }}
             </button>
           </div>
           <p v-else-if="filteredTags.length === 0" class="text-sm py-6 text-center" role="status">
-            {{ message.forum.publish.tagsInput.noResultsFound }}
+            {{ t('forum.publish.tagsInput.noResultsFound') }}
           </p>
           <CommandEmpty v-else>
-            {{ message.forum.publish.tagsInput.noResultsFound }}
+            {{ t('forum.publish.tagsInput.noResultsFound') }}
           </CommandEmpty>
 
           <template v-if="!isLoading && !loadError">

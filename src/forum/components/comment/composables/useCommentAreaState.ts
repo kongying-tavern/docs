@@ -1,7 +1,7 @@
 import type ForumAPI from '~/forum/api/types'
 import { useEventListener } from '@vueuse/core'
 import { computed, onScopeDispose, readonly, ref, watch } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import { useForumCommentsQuery } from '~/forum/composables/data/useForumQueries'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { resolveCommentTargetState, resolveRestoredCommentPage } from '~/forum/services/commentNavigation'
@@ -14,7 +14,7 @@ export function useCommentAreaState(props: {
   presentation: 'page' | 'embedded' | 'inline'
   commentCount?: number
 }) {
-  const { message } = useLocalized()
+  const { t } = useI18n({ useScope: 'global' })
   const enabled = computed(() => props.commentCount !== null && props.commentCount !== undefined && props.commentCount !== -1)
   const comments = useForumCommentsQuery({
     topicId: () => props.topicId,
@@ -59,16 +59,16 @@ export function useCommentAreaState(props: {
   const targetCommentReady = computed(() => targetCommentState.value === 'ready')
   const loadStateMessage = computed(() => {
     if (comments.isLoading.value)
-      return message.value.forum.comment.loadingComment
+      return t('forum.comment.loadingComment')
     if (comments.error.value)
-      return message.value.forum.loadError
+      return t('forum.loadError')
     if (targetCommentState.value === 'missing')
-      return message.value.forum.comment.targetNotFound
+      return t('forum.comment.targetNotFound')
     if (comments.canLoadMore.value)
-      return message.value.forum.comment.loadMoreComment
+      return t('forum.comment.loadMoreComment')
     if (comments.rows.value.length === 0)
-      return message.value.forum.comment.noComment
-    return message.value.forum.comment.noMoreComment
+      return t('forum.comment.noComment')
+    return t('forum.comment.noMoreComment')
   })
 
   function toggleCommentReply(id: number | string): void {

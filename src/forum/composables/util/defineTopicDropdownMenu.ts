@@ -1,7 +1,7 @@
-import type { ComputedRef, MaybeRefOrGetter, Ref } from 'vue'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { Composer } from 'vue-i18n'
 import type ForumAPI from '~/forum/api/types'
 import type { FORUM } from '~/forum/components/types'
-import type { CustomConfig } from '~/forum/types'
 import { computed, toValue } from 'vue'
 import { issues } from '~/forum/api/gitee'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
@@ -20,7 +20,7 @@ import { useTopicReactionState } from '../data/useTopicsReaction'
 import { useTopicTagsEditor } from '../state/useTopicTagsEditor'
 
 // @unocss-include
-export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, message: Ref<CustomConfig>): ComputedRef<FORUM.TopicDropdownMenu[]> {
+export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, t: Composer['t']): ComputedRef<FORUM.TopicDropdownMenu[]> {
   const currentTopic = computed(() => toValue(topicData))
   const {
     toggleCloseTopic,
@@ -31,7 +31,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
     toggleTopicCommentArea,
     hideTopicWithStatus,
     updatingTopic,
-  } = useTopicManager(currentTopic, message, useTopicOperationFeedback())
+  } = useTopicManager(currentTopic, t, useTopicOperationFeedback())
   const { route, leaveTopic } = useForumRoute()
   const { hasAnyPermissions } = useRuleChecks(() => currentTopic.value.user.id)
   const personal = useForumPersonalState()
@@ -46,11 +46,9 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
   const { openReactionStatsDialog } = useReactionStats()
   const reactionQueryFailed = useTopicReactionState(() => currentTopic.value.id).error
 
-  const menuLabels = computed(() => message.value.forum.topic.menu)
-
   const hasManagePermission = hasAnyPermissions('manage_feedback')
-  const { items: statusSubmenuItems, canEdit: hasEditPermission } = useTopicStatusMenu(currentTopic, message)
-  const { items: topicTypeItems } = useTopicTypeMenu(currentTopic, message)
+  const { items: statusSubmenuItems, canEdit: hasEditPermission } = useTopicStatusMenu(currentTopic, t)
+  const { items: topicTypeItems } = useTopicTypeMenu(currentTopic, t)
 
   const openOnGitee = () => issues.openTopicOnGitee(currentTopic.value.id)
 
@@ -78,7 +76,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
     createTopicStatusGroupItems(
       getSelectableTopicStatuses(currentTopic.value.type),
       'hide-topic-status',
-      message.value,
+      t,
       updatingTopic.value,
       status => () => handleHideTopicWithStatus(status),
     ))
@@ -96,10 +94,10 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
     try {
       await personal.toggleFollow(currentTopic.value)
       if (personal.isFollowing(currentTopic.value.id) === wasFollowing)
-        toast.error(message.value.forum.errors.followFailed, { scene: 'op' })
+        toast.error(t('forum.errors.followFailed'), { scene: 'op' })
     }
     catch (error) {
-      toast.error(message.value.forum.errors.followFailed, { error, scene: 'op' })
+      toast.error(t('forum.errors.followFailed'), { error, scene: 'op' })
     }
   }
 
@@ -109,7 +107,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         type: 'item',
         id: 'gitee-link',
         order: 1,
-        label: menuLabels.value.giteeLink,
+        label: t('forum.topic.menu.giteeLink'),
         icon: 'i-lucide:cable',
         action: openOnGitee,
       },
@@ -127,8 +125,8 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         id: 'follow-topic',
         order: 3,
         label: following
-          ? message.value.forum.labels.unfollow
-          : message.value.forum.labels.follow,
+          ? t('forum.labels.unfollow')
+          : t('forum.labels.follow'),
         icon: following ? 'i-lucide:bookmark-minus' : 'i-lucide:bookmark',
         disabled: personal.saving.value,
         action: handleToggleFollow,
@@ -148,7 +146,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         ? [{
             id: 'reaction-stats',
             type: 'item',
-            label: menuLabels.value.reactionStats.text,
+            label: t('forum.topic.menu.reactionStats.text'),
             icon: 'i-lucide:chart-column',
             action: () => openReactionStatsDialog({ kind: 'topic', topicId: String(currentTopic.value.id) }),
           } as const]
@@ -156,35 +154,35 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       {
         type: 'submenu',
         id: 'change-type-topic',
-        label: menuLabels.value.changeType.text,
+        label: t('forum.topic.menu.changeType.text'),
         icon: 'i-lucide:settings',
         items: topicTypeItems.value,
       },
       {
         id: 'tags-topic',
         type: 'item',
-        label: menuLabels.value.modifyTags.text,
+        label: t('forum.topic.menu.modifyTags.text'),
         icon: 'i-lucide-tags',
         action: () => openTopicTagsEditorDialog(currentTopic.value),
       },
       {
         id: 'pinned-topic',
         type: 'item',
-        label: currentTopic.value.pinned ? menuLabels.value.pinTopic.unpin : menuLabels.value.pinTopic.pin,
+        label: currentTopic.value.pinned ? t('forum.topic.menu.pinTopic.unpin') : t('forum.topic.menu.pinTopic.pin'),
         icon: currentTopic.value.pinned ? 'i-lucide:pin-off' : 'i-lucide:pin',
         action: togglePinnedTopic,
       },
       {
         id: 'close-comment-topic',
         type: 'item',
-        label: currentTopic.value.commentCount === -1 ? menuLabels.value.commentArea.open : menuLabels.value.commentArea.close,
+        label: currentTopic.value.commentCount === -1 ? t('forum.topic.menu.commentArea.open') : t('forum.topic.menu.commentArea.close'),
         icon: currentTopic.value.commentCount === -1 ? 'i-lucide:message-circle' : 'i-lucide:message-circle-off',
         action: toggleTopicCommentArea,
       },
       {
         id: 'private-topic',
         type: 'item',
-        label: currentTopic.value.isPrivate ? menuLabels.value.privateFeedback.makePublic : menuLabels.value.privateFeedback.makePrivate,
+        label: currentTopic.value.isPrivate ? t('forum.topic.menu.privateFeedback.makePublic') : t('forum.topic.menu.privateFeedback.makePrivate'),
         icon: currentTopic.value.isPrivate ? 'i-lucide:lock-keyhole-open' : 'i-lucide:lock-keyhole',
         disabled: updatingTopic.value,
         action: togglePrivateTopic,
@@ -196,7 +194,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         ? {
             id: 'hide-topic',
             type: 'item',
-            label: menuLabels.value.unhideFeedback.text,
+            label: t('forum.topic.menu.unhideFeedback.text'),
             icon: 'i-lucide:eye',
             action: handleToggleHideTopic,
           }
@@ -204,14 +202,14 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
           ? {
               id: 'hide-topic',
               type: 'item',
-              label: menuLabels.value.hideFeedback.text,
+              label: t('forum.topic.menu.hideFeedback.text'),
               icon: 'i-lucide:eye-off',
               action: handleToggleHideTopic,
             }
           : {
               id: 'hide-topic',
               type: 'submenu',
-              label: menuLabels.value.hideFeedback.text,
+              label: t('forum.topic.menu.hideFeedback.text'),
               icon: 'i-lucide:eye-off',
               items: hideFeedbackSubmenuItems.value,
             },
@@ -229,7 +227,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       {
         type: 'submenu',
         id: 'status-topic',
-        label: menuLabels.value.modifyStatus.text,
+        label: t('forum.topic.menu.modifyStatus.text'),
         icon: 'i-lucide:circle-dot-dashed',
         items: statusSubmenuItems.value,
       },
@@ -237,8 +235,8 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
         type: 'item',
         id: 'good-issue-topic',
         label: currentTopic.value.goodIssue
-          ? menuLabels.value.goodIssue.unmark
-          : menuLabels.value.goodIssue.mark,
+          ? t('forum.topic.menu.goodIssue.unmark')
+          : t('forum.topic.menu.goodIssue.mark'),
         icon: currentTopic.value.goodIssue ? 'i-lucide:badge-minus' : 'i-lucide:badge-check',
         action: toggleGoodIssue,
       },
@@ -256,7 +254,7 @@ export function defineTopicDropdownMenu(topicData: MaybeRefOrGetter<ForumAPI.Top
       {
         type: 'item',
         id: 'close-feedback',
-        label: closeState.value ? menuLabels.value.reopenFeedback.text : menuLabels.value.closeFeedback.text,
+        label: closeState.value ? t('forum.topic.menu.reopenFeedback.text') : t('forum.topic.menu.closeFeedback.text'),
         icon: closeState.value ? 'i-lucide:archive-restore' : 'i-lucide:archive',
         action: handleToggleCloseTopic,
         variant: closeState.value ? undefined : 'destructive',

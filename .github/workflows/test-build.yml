@@ -33,8 +33,8 @@ jobs:
       - name: Build
         run: pnpm site:preview
 
-      - name: Build Lunaria
-        run: pnpm lunaria:build
+      - name: Build translation reports
+        run: pnpm translations:build
 
       - name: Zip site artifact
         run: |

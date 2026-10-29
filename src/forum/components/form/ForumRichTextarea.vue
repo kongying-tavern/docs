@@ -10,9 +10,9 @@ import { Editor, EditorContent } from '@tiptap/vue-3'
 import { createReusableTemplate, onClickOutside } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import EmojiPicker from '@/components/ui/EmojiPicker.vue'
 import InputPlaceholders from '@/components/ui/InputPlaceholders.vue'
-import { useLocalized } from '@/hooks/useLocalized'
 import { cn } from '@/lib/utils'
 import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 import { useSitePreferences } from '~/composables/useSitePreferences'
@@ -74,7 +74,7 @@ const emit = defineEmits<{
 
 const modelValue = defineModel<JSONContent | null>({ default: null })
 
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const container = useTemplateRef('textarea-container')
 const imageUpload = useTemplateRef<InstanceType<typeof ForumImageUpload>>('imageUpload')
 const [ImageAttachments, AttachmentContent] = createReusableTemplate()
@@ -96,11 +96,9 @@ const uploadBusy = computed(() => attachments.some(item => item.status === 'queu
 const uploadFailed = computed(() => attachments.some(item => item.status === 'failed'))
 const submitBlocked = computed(() => loading || uploadBusy.value || uploadFailed.value || !text.value.trim())
 const uploadStatus = computed(() => uploadFailed.value
-  ? message.value.forum.publish.feedbackForm.uploadFailed
+  ? t('forum.publish.feedbackForm.uploadFailed')
   : uploadBusy.value
-    ? message.value.forum.publish.feedbackForm.uploadingImages
-        .replace('{settled}', String(attachments.filter(item => item.status === 'uploaded').length))
-        .replace('{total}', String(attachments.length))
+    ? t('forum.publish.feedbackForm.uploadingImages', { settled: String(attachments.filter(item => item.status === 'uploaded').length), total: String(attachments.length) })
     : '')
 const queryCache = useQueryCache()
 const emojiPreload = useEmojiPreload()
@@ -391,7 +389,7 @@ onBeforeUnmount(() => {
             :align="mobile ? 'start' : 'center'"
             class="pl-2"
             :placeholders="replyTarget
-              ? [`${message.forum.comment.reply} @${replyTarget}:`]
+              ? [`${t('forum.comment.reply')} @${replyTarget}:`]
               : placeholders"
           />
           <EditorContent
@@ -401,7 +399,7 @@ onBeforeUnmount(() => {
             :editor="(editor as InstanceType<typeof Editor>)"
           />
           <span v-if="mobile && mobileMention.showHint.value" class="mobile-mention-hint text-muted-foreground" :style="mobileMention.hintStyle.value">
-            {{ message.forum.comment.mentionPlaceholder }}
+            {{ t('forum.comment.mentionPlaceholder') }}
           </span>
 
           <AttachmentContent v-if="!mobile" />
@@ -431,7 +429,7 @@ onBeforeUnmount(() => {
 
           <div v-if="isOverDropZone" class="comment-drop-overlay" aria-hidden="true">
             <span class="i-lucide-images size-5" />
-            <span>{{ message.forum.publish.feedbackForm.addImages }}</span>
+            <span>{{ t('forum.publish.feedbackForm.addImages') }}</span>
           </div>
         </div>
       </div>

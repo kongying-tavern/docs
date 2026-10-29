@@ -1,0 +1,10 @@
+wechatpay:
+  name: WeChat Pay
+alipay:
+  name: Alipay
+qqpay:
+  name: QQ Pay
+paypal:
+  name: PayPal
+bilibili:
+  name: bilibili

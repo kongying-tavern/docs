@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
-import { useLocalized } from '@/hooks/useLocalized'
+import { useI18n } from 'vue-i18n'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
 
 const { type, status, goodIssue = false, iconOnly = false, interactive = false } = defineProps<{
@@ -13,12 +13,12 @@ const { type, status, goodIssue = false, iconOnly = false, interactive = false }
 }>()
 
 const emit = defineEmits<{ filterType: [type: 'bug' | 'feat'], filterStatus: [status: ForumAPI.TopicStatus | 'good-issue'] }>()
-const { message } = useLocalized()
+const { t } = useI18n({ useScope: 'global' })
 const topicTypeMap = computed(() => new Map<ForumAPI.TopicKind, string>([
-  ['FEAT', message.value.forum.topic.type.feat],
-  ['ANN', message.value.forum.topic.type.ann],
-  ['BUG', message.value.forum.topic.type.bug],
-  ['POST', message.value.forum.labels.teamBlog],
+  ['FEAT', t('forum.topic.type.feat')],
+  ['ANN', t('forum.topic.type.ann')],
+  ['BUG', t('forum.topic.type.bug')],
+  ['POST', t('forum.labels.teamBlog')],
 ]))
 
 const typeColorClass: Record<ForumAPI.TopicKind, string> = {
@@ -29,8 +29,8 @@ const typeColorClass: Record<ForumAPI.TopicKind, string> = {
 }
 
 const typeText = computed(() => type ? topicTypeMap.value.get(type) : undefined)
-const statusText = computed(() => status ? message.value.forum.topic.status[status] : undefined)
-const goodIssueText = computed(() => goodIssue ? message.value.forum.topic.status.goodIssue : undefined)
+const statusText = computed(() => status ? t(`forum.topic.status.${status}`) : undefined)
+const goodIssueText = computed(() => goodIssue ? t('forum.topic.status.goodIssue') : undefined)
 const accessibleLabel = computed(() => [typeText.value, statusText.value, goodIssueText.value].filter(Boolean).join(' • '))
 const typeFilter = computed(() => type === 'BUG' ? 'bug' : type === 'FEAT' ? 'feat' : null)
 
@@ -62,9 +62,9 @@ function filterByStatus(value: ForumAPI.TopicStatus | 'good-issue') {
         @pointerdown.stop
         @click.stop="filterByType"
       >
-        <span class="rounded-[2px] size-12px inline-block" :class="typeColorClass[type]" aria-hidden="true" />
+        <span class="rounded-[2px] inline-block size-12px" :class="typeColorClass[type]" aria-hidden="true" />
       </button>
-      <span v-else class="rounded-[2px] size-12px inline-block" :class="typeColorClass[type]" aria-hidden="true" />
+      <span v-else class="rounded-[2px] inline-block size-12px" :class="typeColorClass[type]" aria-hidden="true" />
       <button
         v-if="status && interactive"
         type="button"
