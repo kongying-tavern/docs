@@ -19,7 +19,7 @@ test.each([false, true])('actual form footer selects plural with numeric error c
   desktop.value = isDesktop
   for (const count of [1, 2]) {
     const app = createSSRApp(english(ForumFormActions, { loading: false, disabled: false, errorCount: count }))
-    installI18n(app)
+    await installI18n(app, 'en')
     const html = await renderToString(app)
     expect(html).toContain(count === 1 ? '1 field still needs attention' : '2 fields still need attention')
   }

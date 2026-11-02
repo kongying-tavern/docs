@@ -16,7 +16,7 @@ import { installTelemetry } from '~/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { AsyncForumRouteView } from './components/AsyncForumRouteView'
 import { forumStartupKey } from './components/forumStartup'
-import { installI18n, setupI18n } from './i18n'
+import { installI18n, interfaceLocaleForHref, setupI18n } from './i18n'
 import { loadFontStylesheets } from './loadFontStylesheets'
 import { loadForumLayout, useForumLinkPreload } from './router/forumPreload'
 import { installThemeRouter } from './router/installThemeRouter'
@@ -47,8 +47,9 @@ export default {
     useForumLinkPreload()
   },
 
-  enhanceApp({ app, router, siteData }) {
-    installI18n(app)
+  async enhanceApp({ app, router, siteData }) {
+    const initialLocale = import.meta.env.SSR ? 'root' : interfaceLocaleForHref(location.href, siteData.value)
+    const loadLocale = await installI18n(app, initialLocale)
     const initialDocument = ref(true)
     app.provide(forumStartupKey, initialDocument)
     googleAnalytics({
@@ -92,6 +93,6 @@ export default {
       loadFontStylesheets()
     }
 
-    installThemeRouter(router, siteData, initialDocument)
+    installThemeRouter(router, siteData, initialDocument, loadLocale)
   },
 } satisfies Theme

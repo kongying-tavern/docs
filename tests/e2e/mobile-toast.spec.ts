@@ -94,6 +94,11 @@ test('mobile queue advances through actions and touch dismissal', { tag: '@sourc
 })
 
 test('mobile diagnostics remain readable after the originating toast is dismissed', { tag: '@source' }, async ({ page, context }) => {
+  const diagnosticRequests: string[] = []
+  page.on('request', (request) => {
+    if (request.url().includes('/components/telemetry/ToastDiagnosticsDialog.vue'))
+      diagnosticRequests.push(request.url())
+  })
   await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.setViewportSize({ width: 320, height: 700 })
   await page.goto('feedback')
@@ -155,9 +160,19 @@ test('mobile diagnostics remain readable after the originating toast is dismisse
     expect(await toast.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)
   }
   await page.setViewportSize({ width: 320, height: 700 })
-  await toast.getByRole('button', { name: '查看错误详情', exact: true }).click()
+  expect(diagnosticRequests).toHaveLength(0)
+  const detailsButton = toast.getByRole('button', { name: '查看错误详情', exact: true })
+  await detailsButton.click()
   const dialog = page.getByRole('dialog', { name: '评论发送失败', exact: true })
   await expect(dialog).toBeVisible()
+  expect(diagnosticRequests.length).toBeGreaterThan(0)
+  const loadedRequestCount = diagnosticRequests.length
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
+  await expect(detailsButton).toBeFocused()
+  await detailsButton.click()
+  await expect(dialog).toBeVisible()
+  expect(diagnosticRequests).toHaveLength(loadedRequestCount)
   await expect(dialog.locator('pre')).toContainText('POST /comments failed')
   const diagnosticText = await dialog.locator('pre').textContent()
   await dialog.getByRole('button', { name: '复制错误信息', exact: true }).click()

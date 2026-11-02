@@ -22,7 +22,7 @@ function sourceCloseLabel(locale: string): string {
   return ((loadTestMessages(locale).ui as Record<string, unknown>).button as Record<string, string>).close
 }
 
-function page(locale: string) {
+async function page(locale: string) {
   const app = createSSRApp({
     setup() {
       setupI18n()
@@ -31,11 +31,37 @@ function page(locale: string) {
     },
   })
   app.provide('test-locale', ref(locale))
-  installI18n(app)
+  await installI18n(app, locale)
   return app
 }
 
 describe('VitePress vue-i18n integration', () => {
+  test('loads only requested locales per app and allows retry after a rejected load', async () => {
+    let composer!: Composer
+    const app = createSSRApp({ setup() {
+      composer = useI18n({ useScope: 'global' })
+      return () => h('p')
+    } })
+    const loadLocale = await installI18n(app)
+    await renderToString(app)
+    expect(composer.availableLocales).toEqual([DEFAULT_LOCALE])
+    const first = loadLocale('en')
+    expect(loadLocale('en')).toBe(first)
+    await first
+    expect(composer.availableLocales).toEqual(expect.arrayContaining([DEFAULT_LOCALE, 'en']))
+    expect(composer.availableLocales).not.toContain('ja')
+    await expect(loadLocale('unknown')).rejects.toThrow('Unknown interface locale')
+    await expect(loadLocale('unknown')).rejects.toThrow('Unknown interface locale')
+    let otherComposer!: Composer
+    const other = createSSRApp({ setup() {
+      otherComposer = useI18n({ useScope: 'global' })
+      return () => h('p')
+    } })
+    await installI18n(other)
+    await renderToString(other)
+    expect(otherComposer.availableLocales).toEqual([DEFAULT_LOCALE])
+  })
+
   test('renders named component slots without leaving translation placeholders', async () => {
     const app = createSSRApp({
       setup() {
@@ -47,7 +73,8 @@ describe('VitePress vue-i18n integration', () => {
       },
     })
     app.provide('test-locale', ref('en'))
-    installI18n(app)
+    const loadLocale = await installI18n(app)
+    await Promise.all(getLocaleDirs().map(loadLocale))
     const html = await renderToString(app)
     expect(html).toContain('<button>')
     expect(html).not.toContain('{login}')
@@ -67,13 +94,13 @@ describe('VitePress vue-i18n integration', () => {
   })
   test('renders each locale in an isolated SSR app, including the root locale', async () => {
     const locales = getLocaleDirs()
-    const html = await Promise.all(locales.map(locale => renderToString(page(locale === DEFAULT_LOCALE ? 'root' : locale))))
+    const html = await Promise.all(locales.map(locale => page(locale === DEFAULT_LOCALE ? 'root' : locale).then(renderToString)))
     for (const [index, locale] of locales.entries())
       expect(html[index]).toBe(`<p>${sourceCloseLabel(locale)}</p>`)
-    expect(await renderToString(page('root'))).toBe(`<p>${sourceCloseLabel(DEFAULT_LOCALE)}</p>`)
+    expect(await renderToString(await page('root'))).toBe(`<p>${sourceCloseLabel(DEFAULT_LOCALE)}</p>`)
   })
 
-  test('updates existing callers on navigation and supports compiled messages, plural forms and literals', () => {
+  test('updates existing callers on navigation and supports compiled messages, plural forms and literals', async () => {
     interface Node { text: string, children: Node[] }
     const node = (text = ''): Node => ({ text, children: [] })
     const renderer = createRenderer<Node, Node>({
@@ -98,7 +125,8 @@ describe('VitePress vue-i18n integration', () => {
       },
     })
     app.provide('test-locale', localeIndex)
-    installI18n(app)
+    const loadLocale = await installI18n(app)
+    await Promise.all(getLocaleDirs().map(loadLocale))
     app.mount(node())
     const label = computed(() => composer.t('ui.button.close'))
     expect(label.value).toBe(sourceCloseLabel(DEFAULT_LOCALE))

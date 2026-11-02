@@ -5,16 +5,33 @@ import { isForumToBlogNavigation, transitionForumBlog } from '~/forum/router/for
 import { parseForumLocation } from '~/forum/services/forumRoute'
 import { identifySessionIfEnabled } from '~/services/telemetry'
 import { routes } from '../../routes'
+import { interfaceLocaleForHref } from '../i18n'
 import handleRouteMatching from '../lib/handleRouteMatching'
 import { preloadForumEntry } from './forumPreload'
 
 /** Install the theme's navigation lifecycle in one place. */
-export function installThemeRouter(router: Router, siteData: Ref<SiteData>, initialDocument: Ref<boolean>): void {
+export function installThemeRouter(router: Router, siteData: Ref<SiteData>, initialDocument: Ref<boolean>, loadLocale: (locale: string) => Promise<void>): void {
   let resumingBlogNavigation = false
   let initialNavigation = true
   let loadingForumShell = false
   let initialPageLoad = true
+  let navigationSequence = 0
+  let currentHref = import.meta.env.SSR ? '' : location.href
+  async function prepareLocale(to: string): Promise<boolean> {
+    try {
+      await loadLocale(interfaceLocaleForHref(to, siteData.value))
+      return true
+    }
+    catch (error) {
+      // eslint-disable-next-line no-console -- Preserve the load failure while cancelling navigation without losing current content.
+      console.warn('Failed to load interface messages', error)
+      return false
+    }
+  }
   router.onBeforeRouteChange = async (to) => {
+    const sequence = ++navigationSequence
+    if (!await prepareLocale(to) || sequence !== navigationSequence)
+      return false
     if (loadingForumShell)
       return
     if (initialNavigation)
@@ -36,6 +53,16 @@ export function installThemeRouter(router: Router, siteData: Ref<SiteData>, init
     return false
   }
   router.onBeforePageLoad = async (to) => {
+    // popstate bypasses onBeforeRouteChange, so prepare messages here as well.
+    const sequence = ++navigationSequence
+    const ready = await prepareLocale(to)
+    if (sequence !== navigationSequence)
+      return false
+    if (!ready) {
+      if (!import.meta.env.SSR)
+        history.replaceState(history.state, '', currentHref)
+      return false
+    }
     if (loadingForumShell)
       return true
     const isInitialPageLoad = initialPageLoad
@@ -66,6 +93,8 @@ export function installThemeRouter(router: Router, siteData: Ref<SiteData>, init
   router.onAfterRouteChange = (to) => {
     if (loadingForumShell)
       return
-    publishForumLocation(to, { base: siteData.value.base, locales: Object.keys(siteData.value.locales) })
+    if (!import.meta.env.SSR)
+      currentHref = location.href
+    publishForumLocation(import.meta.env.SSR ? to : currentHref, { base: siteData.value.base, locales: Object.keys(siteData.value.locales) })
   }
 }

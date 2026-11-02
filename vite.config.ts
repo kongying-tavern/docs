@@ -9,6 +9,7 @@ import UnoCSS from 'unocss/vite'
 import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
+import { getLocaleDirs } from './.vitepress/config/localeDirs.ts'
 import { DEFAULT_LOCALE } from './.vitepress/locales/common.ts'
 import zhSite from './.vitepress/locales/zh/config.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
@@ -40,8 +41,19 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // The route-local Forum editor is ~572 kB raw (~154 kB Brotli).
+    // Keep the existing budget; optimize loaded dependencies rather than hiding warnings.
     chunkSizeWarningLimit: 600,
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          // Keep each language in one request instead of one chunk per namespace.
+          groups: getLocaleDirs().map(locale => ({
+            name: `messages-${locale}`,
+            test: (id: string) => id.replaceAll('\\', '/').includes(`/.vitepress/locales/${locale}/`) && id.endsWith('.yml') && !id.endsWith('/site.yml'),
+          })),
+        },
+      },
+    },
   },
   optimizeDeps: {
     // Scan lazy UI imports before serving pages so cold interactions cannot trigger a reload.

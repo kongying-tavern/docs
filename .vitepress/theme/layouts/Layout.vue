@@ -2,7 +2,7 @@
 import { useEventListener, useIntersectionObserver } from '@vueuse/core'
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
-import { computed, defineAsyncComponent, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue'
+import { computed, defineAsyncComponent, onMounted, provide, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Banner from '@/components/banner/Banner.vue'
 import ChunkLoadRecovery from '@/components/ChunkLoadRecovery.vue'
@@ -13,6 +13,7 @@ import { Sonner } from '@/components/ui/sonner'
 import { useThemeTransition } from '@/hooks/useThemeTransition'
 import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useToastDiagnostics } from '~/composables/useToastDiagnostics'
 import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '~/config/settingsOptions'
 import { closeSettingsDialog } from '~/services/settingsNavigation'
 
@@ -27,6 +28,12 @@ const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAl
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))
 const ToastDiagnosticsDialog = defineAsyncComponent(() => import('~/components/telemetry/ToastDiagnosticsDialog.vue'))
+const { diagnostics } = useToastDiagnostics()
+const diagnosticsActivated = ref(false)
+watch(diagnostics, (value) => {
+  if (value)
+    diagnosticsActivated.value = true
+}, { immediate: true })
 const { isDark, frontmatter, page } = useData()
 const { t } = useI18n({ useScope: 'global' })
 const { desktopUi, toastDuration, toastPosition } = useSitePreferences()
@@ -113,7 +120,7 @@ provide('toggle-appearance', toggleTheme)
 
     <template #layout-bottom>
       <SettingsPage v-if="showSettingsDialog" dialog-only @close="closeSettingsDialog" />
-      <ToastDiagnosticsDialog />
+      <ToastDiagnosticsDialog v-if="diagnosticsActivated" />
       <HighlightTargetedHeading />
       <template v-if="showAuthDialogs">
         <LoginAlertDialog />
