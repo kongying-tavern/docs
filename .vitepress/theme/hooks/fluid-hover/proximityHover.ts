@@ -167,6 +167,7 @@ export function createProximityHover(
         }
         return
       }
+      stale = false
       measurementTries = MEASUREMENT_ATTEMPTS
     }
     if (!dirty)
