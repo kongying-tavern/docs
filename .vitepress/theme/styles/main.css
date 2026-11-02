@@ -243,9 +243,10 @@ div.VPHomeHero > div > div.main > p.tagline {
   text-wrap: pretty;
 }
 
-/* Keep emoji inline without changing the picker layout. */
+/* Inline emoji must not inherit prose image margins that enlarge the line box. */
 img[data-emoji] {
   display: inline-block;
+  margin: 0;
   vertical-align: baseline;
 }
 
