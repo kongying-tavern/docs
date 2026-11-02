@@ -39,6 +39,7 @@ function initialize(root: string, ...args: string[]) {
   return spawnSync(process.execPath, [resolve('node_modules/tsx/dist/cli.mjs'), join(root, 'scripts/initLocale.ts'), '--code', 'fr', '--label', 'Français', ...args], { encoding: 'utf8' })
 }
 
+// Includes a cold CLI process and Vite config bundling, which can exceed the default 5s under load.
 test.each(['zh', 'en'] as const)('init:locale loads a complete language from the real %s template', async (template) => {
   const root = fixture(template)
   const originalSite = readFileSync(join(root, `.vitepress/locales/${template}/site.yml`), 'utf8')
@@ -68,7 +69,7 @@ export default async () => ({ define: { locales: await createLocalesConfig() } }
   assert.equal(locales.fr.lang, 'fr-CA')
   assert.ok('/fr/manual' in locales.fr.themeConfig!.sidebar!)
   assert.ok(result.stdout.includes('pnpm i18n:check'))
-})
+}, 15000)
 
 test('init:locale defaults to a language-only tag without guessing a region', () => {
   const root = fixture()

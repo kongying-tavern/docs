@@ -12,9 +12,11 @@ import config from '../../x18n.config.ts'
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const cli = join(root, 'node_modules/@x18n/cli/bin.mjs')
 
-function fixture(files: Record<string, string>, pattern = 'locales/{locale}.json') {
-  const directory = mkdtempSync(join(tmpdir(), 'kongying-x18n-test-'))
+function fixture(files: Record<string, string>, pattern = 'locales/{locale}.json', parent = tmpdir()) {
+  const directory = mkdtempSync(join(parent, 'kongying-x18n-test-'))
   onTestFinished(() => rmSync(directory, { recursive: true, force: true }))
+  // TMP may be inside an ignored repository cache; synthetic projects own their ignore boundary.
+  mkdirSync(join(directory, '.git'))
   for (const [path, text] of Object.entries(files)) {
     mkdirSync(dirname(join(directory, path)), { recursive: true })
     writeFileSync(join(directory, path), text)
@@ -61,8 +63,27 @@ describe('x18n native YAML integration', () => {
       t('forum.title')
       t('forum.MISSING')
     `)
+    expect(result.exitCode).toBe(1)
     expect(result.report.diagnostics.filter((item: { code: string }) => item.code === 'missing-key')
       .map((item: { key: string }) => item.key)).toEqual(['forum.MISSING'])
+  })
+
+  test('isolates temporary usage scans from parent ignore rules while respecting local ignores', () => {
+    const parent = mkdtempSync(join(tmpdir(), 'kongying-x18n-parent-'))
+    onTestFinished(() => rmSync(parent, { recursive: true, force: true }))
+    mkdirSync(join(parent, '.git'))
+    mkdirSync(join(parent, 'ignored'))
+    writeFileSync(join(parent, '.gitignore'), 'ignored/\n')
+    const directory = fixture({
+      'locales/zh.json': JSON.stringify({ title: '标题' }),
+      'locales/en.json': JSON.stringify({ title: 'Title' }),
+      'src/example.ts': 'const { t } = useI18n(); t(\'title\'); t(\'MISSING\')',
+      'src/ignored.ts': 't(\'IGNORED\')',
+      '.gitignore': 'src/ignored.ts\n',
+    }, 'locales/{locale}.json', join(parent, 'ignored'))
+    const report = command(['usages'], directory)
+    expect(report.errors).toEqual([])
+    expect(report.data.projects[0].usages.map((usage: { key: string }) => usage.key).sort()).toEqual(['MISSING', 'title'])
   })
 
   test('checks actual message and component-slot placeholders through the native preset', () => {
