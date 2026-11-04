@@ -8,10 +8,12 @@ import { Skeleton } from '@/components/ui/skeleton'
       <div class="flex flex-wrap gap-[0.25rem] min-w-0 items-center">
         <Skeleton class="mr-1 rounded-full h-9 w-36px max-sm:hidden" />
         <div class="flex gap-2 items-center">
-          <Skeleton class="rounded-full size-8" />
-          <Skeleton class="h-4 w-12" />
+          <Skeleton class="rounded-full size-8.5" />
+          <div class="flex flex-col gap-1">
+            <Skeleton class="h-4 w-12" />
+            <Skeleton class="h-3 w-14" />
+          </div>
         </div>
-        <Skeleton class="h-4 w-14" />
       </div>
 
       <div class="flex shrink-0 gap-2 items-center">

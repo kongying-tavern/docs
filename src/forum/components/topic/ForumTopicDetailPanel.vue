@@ -49,14 +49,18 @@ const { t } = useI18n({ useScope: 'global' })
             <User
               :data-forum-user="topic.user.login"
               data-forum-shared-topic="author"
-              size="sm"
+              size="md"
+              :ui="{ avatar: '[&>img]:size-8.5 [&>div]:size-8.5' }"
               :name="topic.user.username"
               :to="authorHref"
               :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
-            />
+            >
+              <template #description>
+                <ForumUserAtTag :user="topic.user" />
+              </template>
+            </User>
           </template>
         </ForumUserHoverCard>
-        <ForumUserAtTag :user="topic.user" />
       </div>
 
       <div class="flex shrink-0 gap-2 items-center">

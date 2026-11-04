@@ -38,13 +38,13 @@ const { reducedMotion } = useSitePreferences()
 
 <template>
   <div class="flex" :class="{ 'content-enter': props.entryAnimation && !reducedMotion }">
-    <div class="user-avatar mr-2 flex w-[64px]">
-      <UserAvatar size="lg" :src="avatar" :alt="username" />
+    <div class="user-avatar mr-2 flex shrink-0 w-8.5">
+      <UserAvatar size="md" class="size-8.5" img-class="size-full" :src="avatar" :alt="username" />
     </div>
     <ForumRichTextarea
       v-if="authenticated"
       v-model="content"
-      container-class="w-[calc(100%-72px)]"
+      container-class="min-w-0 flex-1"
       :attachments="attachments"
       :disabled="loading"
       :loading="busy"
@@ -61,7 +61,7 @@ const { reducedMotion } = useSitePreferences()
       @retry-attachment="emit('retry-attachment', $event)"
       @submit="emit('submit')"
     />
-    <div v-else class="font-size-3.5 line-height-[32px] ml-4 p-2 text-center rounded-md bg-[var(--vp-c-bg-soft)] h-auto min-h-48px w-[calc(100%-80px)] cursor-text">
+    <div v-else class="font-size-3.5 line-height-[32px] p-2 text-center rounded-md bg-[var(--vp-c-bg-soft)] flex-1 h-auto min-h-48px min-w-0 cursor-text">
       <I18nT keypath="forum.comment.commentAfterLogin" scope="global" tag="p" class="important:line-height-[32px] important:m-0">
         <template #login>
           <button type="button" class="vp-link" @click="emit('login')">

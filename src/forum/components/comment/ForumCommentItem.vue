@@ -51,16 +51,16 @@ function handleCommentClick(author: ForumAPI.User): void {
 
 <template>
   <div class="topic-comment-item rounded-md flex" :class="[COMMENT_STYLES[size].container, { 'comment-normal': size === 'normal' }]">
-    <div v-if="size !== 'small'" class="comment-avatar mr-2 w-[64px]">
+    <div v-if="size !== 'small'" class="comment-avatar mr-2 shrink-0 w-8.5">
       <ForumUserHoverCard :user="commentData.author">
         <template #trigger>
           <a class="cursor-pointer" :href="userHref(commentData.author.login)" :data-forum-user="commentData.author.login">
-            <Avatar data-forum-user-avatar :src="commentData.author.avatar" :alt="commentData.author.username" :size="COMMENT_STYLES[size].avatarSize" />
+            <Avatar data-forum-user-avatar class="size-8.5" img-class="size-full" :src="commentData.author.avatar" :alt="commentData.author.username" :size="COMMENT_STYLES[size].avatarSize" />
           </a>
         </template>
       </ForumUserHoverCard>
     </div>
-    <div class="comment-main comment-info flex w-[calc(100%-40px)]" :class="COMMENT_STYLES[size].contentContainer">
+    <div class="comment-main comment-info flex flex-1 min-w-0" :class="COMMENT_STYLES[size].contentContainer">
       <div v-if="size !== 'small'" class="title flex" :class="COMMENT_STYLES[size].header">
         <ForumUserHoverCard :user="commentData.author">
           <template #trigger>
@@ -167,14 +167,6 @@ function handleCommentClick(author: ForumAPI.User): void {
   border: none !important;
 }
 @media (max-width: 959px) {
-  .comment-normal .comment-avatar {
-    flex-shrink: 0;
-    width: 40px;
-  }
-  .comment-normal .comment-main {
-    flex: 1;
-    min-width: 0;
-  }
   .comment-normal .title {
     flex-wrap: wrap;
   }

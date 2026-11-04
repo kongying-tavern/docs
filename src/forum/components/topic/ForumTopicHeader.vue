@@ -13,9 +13,10 @@ interface Props {
   menu?: FORUM.TopicDropdownMenu[]
   showMenu?: boolean
   interactive?: boolean
+  authorSize?: 'xs' | 'md'
 }
 
-const { menu = [], showMenu = true, interactive = true } = defineProps<Props>()
+const { menu = [], showMenu = true, interactive = true, authorSize = 'xs' } = defineProps<Props>()
 
 const { userHref } = useForumRoute()
 </script>
@@ -29,11 +30,16 @@ const { userHref } = useForumRoute()
             class="cursor-pointer"
             :data-forum-user="topic.user.login"
             data-forum-shared-topic="author"
-            size="xs"
+            :size="authorSize"
+            :ui="authorSize === 'md' ? { avatar: '[&>img]:size-8.5 [&>div]:size-8.5' } : undefined"
             :name="topic.user.username"
             :to="userHref(topic.user.login)"
             :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
-          />
+          >
+            <template v-if="authorSize === 'md'" #description>
+              <ForumUserAtTag :user="topic.user" :interactive="interactive" @click.stop />
+            </template>
+          </User>
         </template>
       </ForumUserHoverCard>
 
@@ -41,12 +47,17 @@ const { userHref } = useForumRoute()
         v-else
         :data-forum-user="topic.user.login"
         data-forum-shared-topic="author"
-        size="xs"
+        :size="authorSize"
+        :ui="authorSize === 'md' ? { avatar: '[&>img]:size-8.5 [&>div]:size-8.5' } : undefined"
         :name="topic.user.username"
         :avatar="{ src: topic.user.avatar, alt: topic.user.login }"
-      />
+      >
+        <template v-if="authorSize === 'md'" #description>
+          <ForumUserAtTag :user="topic.user" :interactive="false" />
+        </template>
+      </User>
 
-      <ForumUserAtTag :user="topic.user" :interactive="interactive" />
+      <ForumUserAtTag v-if="authorSize === 'xs'" :user="topic.user" :interactive="interactive" />
     </div>
 
     <div class="flex shrink-0 gap-2 items-center">

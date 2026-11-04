@@ -26,7 +26,7 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
 
 <template>
   <div class="flex flex-col gap-4">
-    <ForumTopicHeader :topic="topic" />
+    <ForumTopicHeader :topic="topic" author-size="md" />
     <ForumTopicContent
       :topic="topic"
       :detail-href="detailHref"
