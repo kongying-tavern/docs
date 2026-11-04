@@ -12,7 +12,7 @@ export const OpsEvents = {
   logout: 'auth_logout',
 } as const
 
-export type FeedbackFormEvent = `forum_form_${'legacy' | 'compact'}_${'open' | 'attempt' | 'success' | 'failed' | 'validation'}`
+export type FeedbackFormEvent = `forum_form_compact_${'open' | 'attempt' | 'success' | 'failed' | 'validation'}`
 export type OpsEvent = (typeof OpsEvents)[keyof typeof OpsEvents] | FeedbackFormEvent
 
 export function trackOp(event: OpsEvent): void {

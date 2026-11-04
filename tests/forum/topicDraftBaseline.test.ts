@@ -49,7 +49,7 @@ vi.mock('~/forum/components/form/publish-topic-form/form-config', async importOr
   getFormTabsConfig: () => [],
 }))
 
-async function setup(draftsEnabled = true) {
+async function setup() {
   const storage = new Map<string, string>()
   const previous = Object.getOwnPropertyDescriptor(globalThis, 'localStorage')
   let storageFails = false
@@ -64,11 +64,11 @@ async function setup(draftsEnabled = true) {
   } })
   mocks.resets = 0
   mocks.form = undefined
-  draftStorage.writeTopicDraft('BUG', { type: 'BUG', title: '', text: 'stored compact draft', tags: [] })
+  draftStorage.writeTopicDraft('BUG', { type: 'BUG', title: '', text: 'stored draft', tags: [] })
 
   let state!: ReturnType<typeof useFormState>
   const app = createSSRApp({ setup() {
-    state = useFormState(() => draftsEnabled)
+    state = useFormState()
     return () => null
   } })
   await renderToString(app)
@@ -122,20 +122,6 @@ test('storage failure leaves the saved text and attachment baseline unchanged', 
     assert.throws(() => fixture.state.initFormData('BUG'))
     assert.equal(fixture.state.formData.value.text, 'unsaved edit')
     assert.deepEqual(fixture.state.savedAttachments.value, [{ src: 'https://example.com/saved.png' }])
-  }
-  finally { fixture.dispose() }
-})
-
-test('legacy form neither restores nor overwrites compact drafts', async () => {
-  const fixture = await setup(false)
-  try {
-    assert.equal(fixture.state.formData.value.text, '')
-    fixture.form.setFieldValue('text', 'legacy edit')
-    fixture.state.saveDraft()
-    fixture.state.initFormData()
-    assert.equal(draftStorage.readTopicDraft('BUG').text, 'stored compact draft')
-    fixture.state.deleteDraft()
-    assert.equal(draftStorage.readTopicDraft('BUG').text, 'stored compact draft')
   }
   finally { fixture.dispose() }
 })

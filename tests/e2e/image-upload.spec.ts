@@ -68,17 +68,14 @@ test('simultaneous duplicates and later reselection reuse one upload; different 
   expect(forum.requests.filter(request => request.path === '/api/images/upload')).toHaveLength(2)
 })
 
-test.describe('legacy upload picker', () => {
+test.describe('upload picker', () => {
   test.use({ hasTouch: true, scenario: { following: false, user: currentUser, comments: [] } })
   test('the visible picker opens by keyboard and has a visible focus indicator', async ({ page, scenario }) => {
     scenario.handle = request => request.path === '/api/images/upload'
       ? { data: { statusCode: 200, data: { pathname: 'keyboard.png', size: png.length } } }
       : undefined
-    await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    await page.goto('feedback')
-    await page.getByRole('button', { name: '新建反馈', exact: true }).click()
-    const form = page.locator('.form-container')
-    const trigger = form.locator('.forum-image-upload').getByRole('button', { name: '添加图片', exact: true })
+    const form = await openForm(page)
+    const trigger = form.getByRole('button', { name: '添加图片', exact: true })
     await page.keyboard.press('Tab')
     await trigger.focus()
     const focus = await trigger.evaluate((element) => {
@@ -92,28 +89,6 @@ test.describe('legacy upload picker', () => {
     await page.keyboard.press('Enter')
     await (await selecting).setFiles({ name: 'keyboard.png', mimeType: 'image/png', buffer: png })
     await expect(form.locator('[data-status="uploaded"]')).toHaveCount(1)
-  })
-  test('touch recovery controls fit the small legacy thumbnail without overlapping', async ({ page, scenario }) => {
-    await page.setViewportSize({ width: 390, height: 900 })
-    await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
-    scenario.handle = request => request.path === '/api/images/upload'
-      ? { status: 503, data: { message: 'Synthetic image failure' } }
-      : undefined
-    await page.goto('feedback')
-    await page.getByRole('button', { name: '新建反馈', exact: true }).click()
-    const form = page.locator('.form-container')
-    await form.locator('input[type="file"]').setInputFiles({ name: 'legacy.png', mimeType: 'image/png', buffer: png })
-    await expect(form.locator('[data-status="failed"]')).toHaveCount(1)
-    await form.locator('[data-status="failed"]').evaluate(async (element) => {
-      await Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished))
-    })
-    const retry = await form.getByRole('button', { name: '重新上传 legacy.png', exact: true }).boundingBox()
-    const remove = await form.getByRole('button', { name: '移除 legacy.png', exact: true }).boundingBox()
-    expect(retry!.width).toBeGreaterThanOrEqual(44)
-    expect(remove!.width).toBeGreaterThanOrEqual(44)
-    const overlaps = retry!.x < remove!.x + remove!.width && retry!.x + retry!.width > remove!.x
-      && retry!.y < remove!.y + remove!.height && retry!.y + retry!.height > remove!.y
-    expect(overlaps).toBe(false)
   })
 })
 

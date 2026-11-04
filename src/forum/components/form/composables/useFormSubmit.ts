@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue'
 import type ForumAPI from '~/forum/api/types'
 import type { TopicFormTransactionResult, TopicFormTransactionStage } from '~/forum/services/form/topicFormTransaction'
 import type { TopicFormData } from '~/forum/services/form/validation'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { uploadImg } from '~/forum/api/interknot.site/upload'
 import { useSubmitTopic } from '~/forum/composables/data/useSubmitTopic'
 import { calculateThumbHashForFile } from '~/forum/composables/view/calculateThumbHashForFile'
@@ -10,28 +10,19 @@ import { useImageAttachmentQueue } from '~/forum/composables/view/useImageAttach
 import { readTopicDraft } from '~/forum/services/form/topicDraft'
 import { submitTopicFormTransaction } from '~/forum/services/form/topicFormTransaction'
 
-export function useFormSubmit(type: ComputedRef<TopicFormData['type']>, draftsEnabled: () => boolean = () => true) {
+export function useFormSubmit(type: ComputedRef<TopicFormData['type']>) {
   const { submitData } = useSubmitTopic()
   const queues = new Map<TopicFormData['type'], ReturnType<typeof useImageAttachmentQueue>>()
   function getQueue(topicType: TopicFormData['type']) {
     let current = queues.get(topicType)
     if (!current) {
       current = useImageAttachmentQueue({ upload: uploadImg, prepare: calculateThumbHashForFile })
-      if (draftsEnabled())
-        current.restore(readTopicDraft(topicType).attachments ?? [])
+      current.restore(readTopicDraft(topicType).attachments ?? [])
       queues.set(topicType, current)
     }
     return current
   }
-  watch(draftsEnabled, () => {
-    for (const current of queues.values())
-      current.reset()
-    queues.clear()
-  }, { flush: 'sync' })
-  const queue = computed(() => {
-    draftsEnabled()
-    return getQueue(type.value)
-  })
+  const queue = computed(() => getQueue(type.value))
   onBeforeUnmount(() => {
     for (const current of queues.values())
       current.reset()

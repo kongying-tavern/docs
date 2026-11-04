@@ -3,7 +3,6 @@ import type { Composer } from 'vue-i18n'
 import type { TabsConfig } from './types'
 import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
 
-export const TRANSITION_DURATION = 480
 export const FORM_HASH = 'PUBLISH-TOPIC'
 
 export function getFormTabsConfig(
@@ -27,10 +26,6 @@ export function getFormTabsConfig(
           placeholder: t('forum.publish.form.content.placeholder'),
           maxLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH,
           minLength: VALIDATION_LIMITS.CONTENT.MIN_LENGTH,
-        },
-        upload: {
-          label: t('forum.publish.form.upload.text'),
-          placeholder: t('forum.publish.form.content.placeholder'),
         },
       },
     },
@@ -56,10 +51,6 @@ export function getFormTabsConfig(
           maxLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH,
           minLength: VALIDATION_LIMITS.CONTENT.MIN_LENGTH,
         },
-        upload: {
-          label: t('forum.publish.form.upload.text'),
-          placeholder: t('forum.publish.form.content.placeholder'),
-        },
       },
     },
     {
@@ -78,10 +69,6 @@ export function getFormTabsConfig(
           placeholder: t('forum.publish.form.content.placeholder'),
           maxLength: VALIDATION_LIMITS.CONTENT.MAX_LENGTH,
           minLength: VALIDATION_LIMITS.CONTENT.MIN_LENGTH,
-        },
-        upload: {
-          label: t('forum.publish.form.upload.text'),
-          placeholder: t('forum.publish.form.content.placeholder'),
         },
       },
     },

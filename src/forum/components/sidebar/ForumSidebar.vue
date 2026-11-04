@@ -9,7 +9,6 @@ import { getLangPath } from '@/utils'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumPersonalState } from '~/forum/composables/data/useForumPersonalState'
 import { useForumTopicQuery, useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
-import { useFeedbackFormExperiment } from '~/forum/composables/state/useFeedbackFormExperiment'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import { useForumTopicSeenState } from '~/forum/composables/state/useForumTopicSeenState'
 import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
@@ -51,13 +50,12 @@ const username = computed(() => mounted.value ? userInfo.info?.login ?? '' : '')
 const { hasAnyPermissions } = useRuleChecks()
 const manageFeedbackPermission = hasAnyPermissions('manage_feedback')
 const canManageFeedback = computed(() => mounted.value && manageFeedbackPermission.value)
-const experiment = useFeedbackFormExperiment()
 const topicDrafts = shallowRef<ReturnType<typeof readSavedTopicDrafts>>([])
 function refreshDrafts(): void {
-  topicDrafts.value = isLoggedIn.value && experiment.variant.value === 'compact' ? readSavedTopicDrafts(getAllowedTopicTypes(canManageFeedback.value)) : []
+  topicDrafts.value = isLoggedIn.value ? readSavedTopicDrafts(getAllowedTopicTypes(canManageFeedback.value)) : []
 }
 onMounted(refreshDrafts)
-watch([isLoggedIn, canManageFeedback, username, experiment.variant], refreshDrafts)
+watch([isLoggedIn, canManageFeedback, username], refreshDrafts)
 useEventListener(TOPIC_DRAFT_CHANGE_EVENT, refreshDrafts)
 useEventListener('storage', refreshDrafts)
 watch(() => userInfo.info, (info) => {

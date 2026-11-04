@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import type { FeedbackFormVariant } from '~/forum/services/form/feedbackFormExperiment'
 import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
 import type { TopicFormData } from '~/forum/services/form/validation'
 import { useEventListener } from '@vueuse/core'
@@ -29,21 +28,18 @@ export interface PublishTopicPresentation {
   createMore?: () => boolean
 }
 
-export function usePublishTopicController(presentation: () => PublishTopicPresentation | null, onEvent?: (event: 'attempt' | 'success' | 'failed' | 'validation') => void, variant: () => FeedbackFormVariant = () => 'compact') {
+export function usePublishTopicController(presentation: () => PublishTopicPresentation | null, onEvent?: (event: 'attempt' | 'success' | 'failed' | 'validation') => void) {
   const userAuth = useUserAuthStore()
   const { t } = useI18n({ useScope: 'global' })
   const userInfo = useUserInfoStore()
   const username = computed(() => userInfo.info?.login || 'Guest')
-  const draftsEnabled = () => variant() === 'compact'
 
   const {
     isOpen,
     formData,
     formTabs,
     tabList,
-    nextTab,
     hasPermission,
-    switchTab: advanceTab,
     initFormData,
     isDirty: textIsDirty,
     savedAttachments,
@@ -56,7 +52,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     openForm,
     closeForm,
     validate,
-  } = useFormState(draftsEnabled)
+  } = useFormState()
 
   const quotedTopicQuery = useForumTopicQuery(computed(() => formData.value.quotedTopic?.id ?? ''))
   const quotedTopicData = computed(() => String(quotedTopicQuery.data.value?.id ?? '') === formData.value.quotedTopic?.id
@@ -76,7 +72,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     restore,
     serializedAttachments,
     getQueue,
-  } = useFormSubmit(computed(() => formData.value.type), draftsEnabled)
+  } = useFormSubmit(computed(() => formData.value.type))
 
   const draftSaving = ref(false)
   const draftSaveError = ref('')
@@ -87,13 +83,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     storageError: () => t('forum.publish.feedbackForm.draftSaveFailed'),
   })
   const autoSaveState = computed(() => draftPersistence.states.get(formData.value.type))
-  const autoSaveEnabled = computed(() => draftsEnabled() && (autoSaveState.value?.enabled ?? false))
-  watch(draftsEnabled, (enabled) => {
-    if (!enabled) {
-      for (const type of draftPersistence.states.keys())
-        draftPersistence.stop(type)
-    }
-  }, { flush: 'sync' })
+  const autoSaveEnabled = computed(() => autoSaveState.value?.enabled ?? false)
   const autoSaveStatus = computed(() => autoSaveState.value?.status ?? 'saved')
   const savedAt = computed(() => autoSaveState.value?.savedAt ?? 0)
   const editorIdle = ref(true)
@@ -122,14 +112,8 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   const entryPage = ref<'types' | 'form'>('form')
   const choosingType = computed(() => entryPage.value === 'types')
   const editingSavedDraft = ref(false)
-  let entryTargetType: TopicFormData['type'] | undefined
   function resolveEntryPage(targetType?: TopicFormData['type']): 'types' | 'form' {
-    return targetType || variant() === 'legacy' ? 'form' : 'types'
-  }
-  function initializeEntryPage(): void {
-    if (submissionBusy.value || submissionPhase.value === 'succeeded' || editingSavedDraft.value)
-      return
-    entryPage.value = resolveEntryPage(entryTargetType)
+    return targetType ? 'form' : 'types'
   }
   watch(() => formData.value.type, () => {
     editingSavedDraft.value = false
@@ -160,13 +144,8 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }
 
   function setPrivate(isPrivate: boolean): void {
-    if (draftsEnabled() && !draftSaving.value && !submissionBusy.value)
-      updatePrivate(isPrivate)
-  }
-
-  function switchTab(): void {
     if (!draftSaving.value && !submissionBusy.value)
-      advanceTab()
+      updatePrivate(isPrivate)
   }
 
   function imageErrorText(error: ImageAttachmentError): string {
@@ -209,7 +188,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
     }
   }, { flush: 'sync' })
   function resumeDraft(hash: string): void {
-    if (!userAuth.isTokenValid || !draftsEnabled() || draftSaving.value || submissionBusy.value)
+    if (!userAuth.isTokenValid || draftSaving.value || submissionBusy.value)
       return
     const type = resolvePublishTopicType(hash, tabList.value)
     openForm()
@@ -269,7 +248,6 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
 
       const targetType = resolvePublishTopicType(hash, tabList.value, quotedTopic?.type)
       editingSavedDraft.value = false
-      entryTargetType = targetType
       entryPage.value = resolveEntryPage(targetType)
       openForm(targetType)
     },
@@ -451,10 +429,6 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   async function handleClose(): Promise<void> {
     if (draftSaving.value || submissionBusy.value)
       return
-    if (!draftsEnabled()) {
-      closeForm()
-      return
-    }
     draftSaveError.value = ''
     const type = formData.value.type
     if (autoSaveEnabled.value && isDirty.value) {
@@ -484,7 +458,6 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
       if (isOpen.value)
         return
       editingSavedDraft.value = false
-      entryTargetType = undefined
       entryPage.value = resolveEntryPage()
       openForm()
     }
@@ -508,7 +481,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }
 
   function selectSavedDraft(type: TopicFormData['type']): void {
-    if (!draftsEnabled() || draftSaving.value || submissionBusy.value || !tabList.value.includes(type)
+    if (draftSaving.value || submissionBusy.value || !tabList.value.includes(type)
       || !readSavedTopicDrafts(tabList.value).some(draft => draft.type === type)) {
       return
     }
@@ -519,14 +492,14 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }
 
   function requestDeleteDraft(): void {
-    if (!draftsEnabled() || !editingSavedDraft.value || draftSaving.value || submissionBusy.value)
+    if (!editingSavedDraft.value || draftSaving.value || submissionBusy.value)
       return
     deleteDraftError.value = ''
     deleteDraftPromptOpen.value = true
   }
 
   function confirmDeleteDraft(): void {
-    if (!draftsEnabled() || draftSaving.value || submissionBusy.value)
+    if (draftSaving.value || submissionBusy.value)
       return
     const type = formData.value.type
     try {
@@ -543,7 +516,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }
 
   async function saveDraft(): Promise<boolean> {
-    if (!draftsEnabled() || draftSaving.value || submissionBusy.value)
+    if (draftSaving.value || submissionBusy.value)
       return false
     draftSaving.value = true
     draftSaveError.value = ''
@@ -588,7 +561,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }
 
   function saveDirtyDraft(): void {
-    if (draftsEnabled() && isDirty.value)
+    if (isDirty.value)
       draftPersistence.saveSnapshot(formData.value.type)
   }
 
@@ -609,7 +582,7 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   watch(isOpen, (open) => {
     if (open) {
       const elapsed = lastPublishedAt.value === null ? Infinity : Date.now() - lastPublishedAt.value
-      showCreateMore.value = draftsEnabled() && elapsed >= 0 && elapsed < CREATE_MORE_REOPEN_WINDOW_MS
+      showCreateMore.value = elapsed >= 0 && elapsed < CREATE_MORE_REOPEN_WINDOW_MS
     }
     if (open && !submissionBusy.value) {
       submissionPhase.value = 'idle'
@@ -621,10 +594,10 @@ export function usePublishTopicController(presentation: () => PublishTopicPresen
   }, { flush: 'sync' })
 
   return {
-    form: { showCreateMore, entryPage, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftOnly, deleteDraftPromptOpen, deleteDraftError, isOpen, formData, formTabs, nextTab, hasPermission, username, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError },
+    form: { showCreateMore, entryPage, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftOnly, deleteDraftPromptOpen, deleteDraftError, isOpen, formData, formTabs, hasPermission, username, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError },
     upload: { attachments, imageSelectionDisabled, remove, handleFilesSelected, handleRetry },
     submission: { submitLoading, submissionPhase, submissionAlert, validationErrorCount, finalIsDisabled },
-    actions: { initializeEntryPage, markEditorActive, requestDeleteDraft, confirmDeleteDraft, selectInitialType, returnToTypeSelection, handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, switchTab, focusFirstInvalid, saveDraft, setPrivate, setQuotedTopic, clearAttachments: reset },
+    actions: { markEditorActive, requestDeleteDraft, confirmDeleteDraft, selectInitialType, returnToTypeSelection, handleFormSubmit, handleClose, handleOpenChange, keepDraft, discardCurrentDraft, setFormType, focusFirstInvalid, saveDraft, setPrivate, setQuotedTopic, clearAttachments: reset },
   }
 }
 

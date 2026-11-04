@@ -15,15 +15,25 @@ test('real topic form retains rejected input and clears it only after a confirme
     scenario.topics!.push(created)
     return { data: created }
   }
-  await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
+  await page.addInitScript((auth) => {
+    localStorage.setItem('USER-AUTH', auth)
+    localStorage.setItem('forum-feedback-form-overrides', JSON.stringify({ 99: false }))
+  }, localAuth())
   await page.goto('feedback')
   await page.getByRole('button', { name: '新建反馈', exact: true }).click()
-  const form = page.locator('.form-container')
+  await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
+  const form = page.locator('.compact-form')
   await expect(form).toBeVisible()
-  await expect(page.locator('[data-publish-type-chooser]')).toHaveCount(0)
-  await form.getByRole('button', { name: '我想要', exact: true }).click()
+  await expect(page.locator('[data-publish-type-form]')).not.toHaveAttribute('inert', '')
+  await page.locator('.topic-stage-shell').evaluate(async element => Promise.all(
+    element.getAnimations({ subtree: true })
+      .filter(animation => animation.effect?.getTiming().iterations !== Infinity)
+      .map(animation => animation.finished.catch(() => {})),
+  ))
   await form.locator('#title').fill('浏览器发布回归')
   await form.locator('[contenteditable="true"]').fill('真实编辑器发布内容')
+  await expect(form.locator('#title')).toHaveValue('浏览器发布回归')
+  await expect(form.locator('[contenteditable="true"]')).toContainText('真实编辑器发布内容')
   await form.getByRole('button', { name: '提交反馈', exact: true }).click({ clickCount: 2 })
   await expect(form).toContainText('Synthetic publication rejected')
   await expect(form.locator('#title')).toHaveValue('浏览器发布回归')
@@ -35,7 +45,7 @@ test('real topic form retains rejected input and clears it only after a confirme
   expect(posts).toBe(2)
   expect(forum.requests.filter(request => request.method === 'POST' && request.path === '/api/v5/repos/KYJGYSDT/issues')).toHaveLength(2)
   await page.getByRole('button', { name: '新建反馈', exact: true }).click()
-  await expect(page.locator('[data-publish-type-chooser]')).toHaveCount(0)
+  await page.locator('[data-publish-type-chooser]').getByRole('button').filter({ hasText: '我想要' }).click()
   await expect(form.locator('#title')).toHaveValue('')
   await expect(form.locator('[contenteditable="true"]')).toHaveText('')
 })
@@ -114,3 +124,22 @@ test.describe('compact publish options', () => {
     })
   }
 })
+
+for (const width of [1280, 390]) {
+  test(`new form localizes single and multiple validation errors at width ${width}`, async ({ page, forum }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.addInitScript(auth => localStorage.setItem('USER-AUTH', auth), localAuth())
+    await page.goto('en/feedback#PUBLISH-TOPIC-FEAT')
+    const form = page.locator('.compact-form')
+    const editor = form.locator('[contenteditable="true"]')
+    const submit = form.locator('button[type="submit"]')
+    await expect(form).toBeVisible()
+    await submit.click()
+    await expect(form).toContainText('2 fields still need attention')
+    await editor.fill('Feedback content for validation')
+    await expect(editor).toContainText('Feedback content for validation')
+    await submit.click()
+    await expect(form).toContainText('1 field still needs attention')
+    expect(forum.requests.filter(request => request.method === 'POST' && request.path === '/api/v5/repos/KYJGYSDT/issues')).toHaveLength(0)
+  })
+}
