@@ -52,7 +52,7 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ## 2026-11-04-229
 
-- 更新了 7.1 版本相关资源
+- 更新了 7.2 版本相关资源
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致某些语言的已选物品栏的地区文本不显示。
 - 添加了机器翻译功能，可选Bing/Google/LLM，支持LLM配置，当前只针对部分重要文本做了可机器翻译适配，实验性功能，可能会有bug
 
