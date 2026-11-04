@@ -50,6 +50,10 @@ cover: "https://genshin.og.interknot.site/apis/v1/og?cover=2&title=客户端热�
 
 ::: timeline Rc1.1.0：
 
+## 2026-11-04-1388
+
+- 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致冰映之镜宫分层位置错误。
+
 ## 2026-11-04-658
 
 - 修复了一个{%= L_NORMAL %} bug，该 bug 曾导致古鳞者空窟分层错误。
