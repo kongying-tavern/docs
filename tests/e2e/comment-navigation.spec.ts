@@ -31,7 +31,7 @@ test('pending comments show loading rather than terminal text, then display the 
     }
   }
   try {
-    await page.goto('feedback/topic/123')
+    await page.goto('feedback/topic/123', { waitUntil: 'domcontentloaded' })
     await expect(page.getByRole('button', { name: '评论加载中…' })).toBeDisabled()
     await expect(page.getByText('没有更多评论', { exact: true })).toHaveCount(0)
   }
