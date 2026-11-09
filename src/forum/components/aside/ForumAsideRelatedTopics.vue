@@ -56,7 +56,7 @@ function commentCount(topic: ForumAPI.Topic): number {
               </span>
             </template>
           </User>
-          <span class="related-title">{{ related.title }}</span>
+          <span class="related-title">{{ related.type === 'BUG' ? related.content.text : related.title }}</span>
           <span class="related-footer">
             <span class="related-meta">
               <span>{{ t('forum.sidebar.totalComments', { count: commentCount(related) }) }}</span>

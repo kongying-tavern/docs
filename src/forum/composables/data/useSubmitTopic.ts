@@ -7,6 +7,7 @@ import { authGuards } from '~/forum/composables/auth/auth-helpers'
 import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
 import { useForumTopicMutations } from '~/forum/composables/data/useForumMutations'
 import { composeTopicBody } from '~/forum/composables/util/composeTopicBody'
+import { buildPublishedTopicTitle } from '~/forum/services/form/publishTopicEntry'
 import { forumKeys } from '~/forum/services/forumQueryContracts'
 import { reactionEnvironmentForOrigin, recordPublishedTopicQuote } from '~/forum/services/forumReaction'
 import { buildTopicCreationLabels } from '~/forum/services/forumTopicLabels'
@@ -44,7 +45,7 @@ export function useSubmitTopic() {
 
     const newTopic = {
       body: composeTopicBody(text, { labels, quotedTopic }),
-      title: `${type}:${title.length === 0 ? `${text.substring(0, 12)}...` : title}`,
+      title: buildPublishedTopicTitle(type, title, text),
       labels: labels.join(','),
       security_hole: options.isPrivate === true,
     }
