@@ -1,5 +1,6 @@
 import type { App } from 'vue'
 import { createApp, h, ref } from 'vue'
+import { installI18n } from '../../../.vitepress/theme/i18n'
 
 /** Mount a second consumer of the same cached reaction outside the viewport. */
 export async function mountReactionCacheProbe() {
@@ -23,6 +24,7 @@ export async function mountReactionCacheProbe() {
     },
   })
   app._context.provides = original._context.provides
+  await installI18n(app)
   app.mount(root)
   return { showSecond: () => second.value = true }
 }

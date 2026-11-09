@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
@@ -7,7 +6,14 @@ import { markdownConfig } from '../../.vitepress/config/markdown'
 import { extractBlogExcerpt } from '../../src/utils/blogExcerpt'
 
 test('blog summaries render macros and Markdown from the latest update only', async () => {
-  const source = readFileSync('src/zh/blog/posts/hotupdatelog-client.md', 'utf8')
+  const source = `{define:L_NORMAL}{color:#2bbc6e}**普通级**{/color}{/define}
+::: timeline Rc1.1.0：
+## Latest
+- 修复了一个{%= L_NORMAL %} bug，搜索栏有异常字体溢出。
+- 第二项更新。
+## Older
+- 点位图标仍显示旧缓存。
+:::`
   const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
   const html = await markdown.renderAsync(extractBlogExcerpt(source.replace(/\r?\n/g, '\r\n')))
   assert.ok(html.includes('Rc1.1.0'))
