@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 <template>
   <div class="mb-4">
-    <div class="flex w-full items-center justify-between">
+    <div class="flex min-h-9 w-full items-center justify-between">
       <div class="flex flex-wrap gap-[0.25rem] min-w-0 items-center">
         <Skeleton class="mr-1 rounded-full h-9 w-36px max-sm:hidden" />
         <div class="flex gap-2 items-center">

@@ -49,7 +49,7 @@ test('callback exposes return URL immediately but keeps progress until token exc
     sessionStorage.setItem('gitee-oauth-state', 'synthetic-state')
   }, new URL('feedback?from=oauth', baseURL).href)
   try {
-    await page.goto('callback?code=synthetic-code&state=synthetic-state')
+    await page.goto('callback?code=synthetic-code&state=synthetic-state', { waitUntil: 'domcontentloaded' })
     await expect(page).toHaveURL(/\/feedback\?from=oauth$/)
     await expect(page.locator('.callback-page')).toBeVisible()
     await expect(page.getByRole('heading', { name: '测试反馈路由可用' })).toHaveCount(0)

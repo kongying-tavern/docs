@@ -26,11 +26,13 @@ for (const width of [320, 390, 640, 768, 959, 960, 1440]) {
         return undefined
       }
       try {
-        await page.goto(detail ? 'feedback/topic/123' : 'feedback')
+        await page.goto(detail ? 'feedback/topic/123' : 'feedback', { waitUntil: 'domcontentloaded' })
         const row = detail
           ? page.locator('.mb-4').filter({ has: page.locator('[data-slot="skeleton"].h-8') }).first()
           : page.locator('.forum-topic-item').filter({ has: page.locator('[data-slot="skeleton"]') }).first()
-        const pills = row.locator('[data-slot="skeleton"].rounded-full:not(.size-6):not(.size-8):not(.w-36px)')
+        const pills = row.locator(detail
+          ? '.mt-12 > [data-slot="skeleton"]'
+          : '[data-slot="skeleton"].rounded-full:not(.size-6):not(.size-8):not(.w-36px)')
         await expect(pills).toHaveCount(3)
         const before = await dimensions(pills)
         const headerBefore = await row.locator(detail ? ':scope > div' : '.topic-content > div').first().boundingBox()
