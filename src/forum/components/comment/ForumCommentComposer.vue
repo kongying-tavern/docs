@@ -37,9 +37,9 @@ const { reducedMotion } = useSitePreferences()
 </script>
 
 <template>
-  <div class="flex" :class="{ 'content-enter': props.entryAnimation && !reducedMotion }">
-    <div class="user-avatar mr-2 flex shrink-0 w-8.5">
-      <UserAvatar size="md" class="size-8.5" img-class="size-full" :src="avatar" :alt="username" />
+  <div class="flex items-start" :class="{ 'content-enter': props.entryAnimation && !reducedMotion }">
+    <div class="user-avatar mr-2 mt-1 flex shrink-0 w-10">
+      <UserAvatar size="md" :src="avatar" :alt="username" />
     </div>
     <ForumRichTextarea
       v-if="authenticated"
