@@ -3,6 +3,8 @@ import { test } from 'vitest'
 import { normalizeComment, normalizeIssue } from '../../src/forum/api/gitee/normalize'
 import { extractOfficialAndAuthorComments } from '../../src/forum/api/gitee/officialComments'
 import { composeTopicBody, writeTopicBodyComment } from '../../src/forum/composables/util/composeTopicBody'
+import { getForumSearchSuggestions } from '../../src/forum/services/forumSearchSuggestions'
+import { getTopicReferenceSuggestions } from '../../src/forum/services/forumTopicReferenceSuggestions'
 import {
   LEGACY_PLAIN_COMMENT,
   LEGACY_PLAIN_TOPIC,
@@ -85,6 +87,27 @@ test('normalizes rich Topics to readable text while retaining the source documen
   assert.equal(topic.contentRaw, raw)
   assert.equal(topic.type, 'BUG')
   assert.equal(topic.title, 'Codec contract')
+})
+
+test('legacy JSON titles are repaired before search and reference suggestions consume them', () => {
+  const raw = JSON.stringify(VALID_TIPTAP_DOC)
+  for (const type of ['BUG', 'FEAT', 'ANN']) {
+    const topic = normalizeIssue({ ...issue(composeTopicBody(raw, { labels: ['WEB-FEEDBACK'] })), title: `${type}:${raw.substring(0, 12)}...` })
+    assert.equal(topic.title, 'Hello @alice...')
+    assert.equal(topic.contentRaw, composeTopicBody(raw, { labels: ['WEB-FEEDBACK'] }))
+    assert.equal(getForumSearchSuggestions([topic], 'hello')[0].topic.title, 'Hello @alice...')
+    assert.equal(getForumSearchSuggestions([topic], '"type"').length, 0)
+    assert.equal(getTopicReferenceSuggestions([topic], 'hello')[0].title, 'Hello @alice...')
+    assert.equal(getTopicReferenceSuggestions([topic], '"type"').length, 0)
+  }
+})
+
+test('title repair preserves explicit titles and JSON examples in plain bodies', () => {
+  const rich = JSON.stringify(VALID_TIPTAP_DOC)
+  for (const title of ['自定义标题', '{"type":"doc 示例', 'JSON 格式问题'])
+    assert.equal(normalizeIssue({ ...issue(rich), title: `BUG:${title}` }).title, title)
+  const title = `${rich.substring(0, 12)}...`
+  assert.equal(normalizeIssue({ ...issue('普通正文'), title: `BUG:${title}` }).title, title)
 })
 
 test('normalizes only valid quoted Topic metadata into the public Topic contract', () => {

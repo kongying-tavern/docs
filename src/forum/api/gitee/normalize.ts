@@ -6,6 +6,7 @@ import { decodeCommentBody, decodeTopicBody, stripMarkdownImages } from '~/forum
 import { isCategoryLabel } from '~/forum/services/forumLabel'
 import { normalizeQuotedTopicReference } from '~/forum/services/forumTopicQuote'
 import { getTopicStatus, getTopicStatusFromLabel } from '~/forum/services/forumTopicStatus'
+import { normalizeForumTopicTitle } from '~/forum/services/forumTopicTitle'
 import { getForumLocaleLabelGetter } from '~/forum/services/getForumLocaleGetter'
 import { getTopicTypeLabelGetter } from '~/forum/services/getTopicTypeLabelGetter'
 
@@ -84,7 +85,7 @@ export function normalizeIssue(issue: GITEE.IssueInfo): ForumAPI.Topic {
     tags: labels.filter(isCategoryLabel),
     status: getTopicStatus(labels),
     goodIssue: labels.includes('GOOD-ISSUE'),
-    title,
+    title: normalizeForumTopicTitle(title, decoded.content),
     id: issue.number,
     type: type || 'BUG',
     ...(issue.id != null ? { providerId: issue.id } : {}),
