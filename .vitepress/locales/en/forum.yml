@@ -189,6 +189,7 @@ topic:
       title: Feedback stats (#{id})
       commentTitle: Comment stats (#{id})
       views: Views
+      clicks: Clicks
       loading: Loading stats…
       refresh: Refresh
       fail: Failed to load stats

@@ -11,6 +11,7 @@ export namespace INTER_KNOT {
         likeCount: number
         dislikeCount: number
         clickCount: number
+        viewCount: number
         createdAt: string
         lastUpdatedAt: string
       } | null

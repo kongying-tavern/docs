@@ -36,7 +36,8 @@ const loadFailed = computed(() => Boolean(error.value) && !hasData.value)
 const loading = computed(() => !hasData.value && !loadFailed.value)
 const likeCount = computed(() => reactionData.value?.data.likeCount ?? 0)
 const dislikeCount = computed(() => reactionData.value?.data.dislikeCount ?? 0)
-const viewCount = computed(() => reactionData.value?.data.clickCount ?? 0)
+const viewCount = computed(() => reactionData.value?.data.viewCount ?? 0)
+const clickCount = computed(() => reactionData.value?.data.clickCount ?? 0)
 const reactionState = computed(() => reactionData.value?.state ?? null)
 
 const statsTitle = computed(() => {
@@ -55,7 +56,7 @@ watch(() => open.value, (isOpen) => {
 
 <template>
   <Dialog v-if="target" v-model:open="open">
-    <DialogContent class="sm:max-w-[380px]">
+    <DialogContent class="sm:max-w-[480px]">
       <DialogHeader>
         <DialogTitle>
           {{ statsTitle }}
@@ -88,6 +89,12 @@ watch(() => open.value, (isOpen) => {
           <span class="i-lucide-eye" aria-hidden="true" />
           <span class="sr-only">{{ t('forum.topic.menu.reactionStats.views') }}</span>
           <TextMorph :text="String(viewCount)" class="text-lg leading-7 font-semibold tabular-nums" />
+        </div>
+        <div class="bg-[var(--vp-c-divider)] h-5 w-px" />
+        <div class="flex flex-1 gap-1.5 items-center justify-center" :title="t('forum.topic.menu.reactionStats.clicks')">
+          <span class="i-lucide-mouse-pointer-2" aria-hidden="true" />
+          <span class="sr-only">{{ t('forum.topic.menu.reactionStats.clicks') }}</span>
+          <TextMorph :text="String(clickCount)" class="text-lg leading-7 font-semibold tabular-nums" />
         </div>
         <template v-if="reactionState">
           <div class="bg-[var(--vp-c-divider)] h-5 w-px" />

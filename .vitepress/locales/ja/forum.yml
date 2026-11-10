@@ -187,6 +187,7 @@ topic:
       title: フィードバック統計（#{id}）
       commentTitle: コメント統計（#{id}）
       views: 閲覧数
+      clicks: クリック数
       loading: 統計を読み込み中…
       refresh: 更新
       fail: 統計の読み込みに失敗しました

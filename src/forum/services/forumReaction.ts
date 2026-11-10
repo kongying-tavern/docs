@@ -36,6 +36,7 @@ export function createEmptyReaction(resourceUrl: string): ReactionData {
     likeCount: 0,
     dislikeCount: 0,
     clickCount: 0,
+    viewCount: 0,
     createdAt: '',
     lastUpdatedAt: '',
   }

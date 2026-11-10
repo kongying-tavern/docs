@@ -50,6 +50,7 @@ function reactionPayload(reaction: ReactionSnapshot): INTER_KNOT.ReactionRespons
         likeCount: reaction.likeCount,
         dislikeCount: reaction.dislikeCount,
         clickCount: 0,
+        viewCount: 0,
         createdAt: '2026-01-01T00:00:00+08:00',
         lastUpdatedAt: '2026-01-01T00:00:00+08:00',
       },
