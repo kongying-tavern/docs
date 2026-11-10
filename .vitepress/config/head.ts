@@ -14,14 +14,14 @@ import {
 } from './utils.ts'
 
 /** 字体样式表（字体管线生成到 public/fonts/）非阻塞加载：preload 提前拉取，media="print" 应用不阻塞渲染；dev 由 loadFontStylesheets.ts 注入 */
-const fontStylesheetHead: HeadConfig[] = ['/fonts/fonts-subset.css', '/fonts/fonts-standard.css']
-  .flatMap(href => [
-    ['link', { rel: 'preload', as: 'style', href: `${SITE_ORIGIN}${SITE_BASE}${href}` }],
-    ['link', { rel: 'stylesheet', href: `${SITE_ORIGIN}${SITE_BASE}${href}`, media: 'print', onload: 'this.media=\'all\'' }],
+function createFontStylesheetHead(base: string): HeadConfig[] {
+  return ['fonts-subset.css', 'fonts-standard.css'].flatMap(name => [
+    ['link', { rel: 'preload', as: 'style', href: `${base}fonts/${name}` }],
+    ['link', { rel: 'stylesheet', href: `${base}fonts/${name}`, media: 'print', onload: 'this.media=\'all\'' }],
   ])
+}
 
 export const productionHead: HeadConfig[] = [
-  ...fontStylesheetHead,
   [
     'script',
     {
@@ -63,6 +63,7 @@ export function cfgDynamicHead(
   // transformHead merges these into each page; VitePress dedupes meta identity
   // independently of content, so page values replace the site defaults.
   return [
+    ...createFontStylesheetHead(siteConfig.site.base),
     ['meta', { name: 'description', content: pageDesc }],
     ['meta', { name: 'keywords', content: pageKeywords }],
     ['meta', { property: 'og:url', content: pageUrl }],

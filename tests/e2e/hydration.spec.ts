@@ -45,6 +45,11 @@ test.describe('production hydration', () => {
       await page.goto(`${base}${locale}feedback`)
       await expect(page.locator('.forum-context-aside')).toBeVisible()
       await expect(page.locator('.VPSidebar')).toBeVisible()
+      for (const name of ['fonts-subset', 'fonts-standard']) {
+        await expect(page.locator(`link[rel="stylesheet"][href$="/${name}.css"]`))
+          .toHaveAttribute('href', `${base}fonts/${name}.css`)
+      }
+      await page.evaluate(() => document.fonts.ready.then(() => undefined))
       expect(errors).toEqual([])
     })
 
