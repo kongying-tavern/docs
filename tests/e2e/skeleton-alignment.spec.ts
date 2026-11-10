@@ -32,8 +32,17 @@ for (const width of [320, 390, 640, 768, 959, 960, 1440]) {
           : page.locator('.forum-topic-item').filter({ has: page.locator('[data-slot="skeleton"]') }).first()
         const pills = row.locator(detail
           ? '.mt-12 > [data-slot="skeleton"]'
-          : '[data-slot="skeleton"].rounded-full:not(.size-6):not(.size-8):not(.w-36px)')
+          : ':scope > .mr-2 [data-slot="skeleton"].rounded-full.h-8')
         await expect(pills).toHaveCount(3)
+        if (mode === 'CARD') {
+          const titleLines = row.locator('.topic-content .h-4\\.5')
+          await expect(titleLines).toHaveCount(2)
+          const [first, second] = await titleLines.evaluateAll(elements => elements.map((element) => {
+            const { top, bottom } = element.getBoundingClientRect()
+            return { top, bottom }
+          }))
+          expect(second.top - first.bottom).toBeGreaterThanOrEqual(7)
+        }
         const before = await dimensions(pills)
         const headerBefore = await row.locator(detail ? ':scope > div' : '.topic-content > div').first().boundingBox()
         const imageBefore = !detail && mode === 'COMPACT'

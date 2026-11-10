@@ -67,21 +67,22 @@ function itemOpacity(index: number) {
         </div>
 
         <div class="mt-1">
-          <div class="mt-1 flex flex-col">
-            <Skeleton class="h-27px w-1/2" />
-            <Skeleton class="h-27px w-1/4" />
+          <div class="mt-1 py-1 flex flex-col gap-2">
+            <Skeleton class="h-4.5 w-2/3" />
+            <Skeleton class="h-4.5 w-1/3" />
           </div>
 
-          <div class="flex gap-1 h-5 items-center">
-            <Skeleton class="size-3 !rounded-none" />
+          <div class="flex gap-2 h-6 items-center">
+            <Skeleton class="rounded-full shrink-0 size-3" />
             <Skeleton class="h-4 w-10" />
+            <Skeleton class="rounded-full h-5 w-16" />
           </div>
 
-          <div class="mt-1 pr-4 flex flex-col gap-2">
-            <Skeleton class="h-4 w-full" />
-            <Skeleton class="h-4 w-[92%]" />
-            <Skeleton class="h-4 w-full" />
-            <Skeleton class="h-4 w-2/3" />
+          <div class="mt-1 py-1 pr-4 flex flex-col gap-2">
+            <Skeleton class="h-3.5 w-full" />
+            <Skeleton class="h-3.5 w-[92%]" />
+            <Skeleton class="h-3.5 w-full" />
+            <Skeleton class="h-3.5 w-2/3" />
           </div>
         </div>
       </div>
@@ -115,9 +116,9 @@ function itemOpacity(index: number) {
 
         <div class="mt-1 flex flex-nowrap w-full items-start justify-between">
           <div class="flex-1 max-w-[calc(100%-100px)] min-w-0 overflow-hidden">
-            <div class="flex flex-col gap-2">
-              <Skeleton class="h-4 w-[92%]" />
-              <Skeleton class="h-4 w-[55%]" />
+            <div class="mt-1 py-1 flex flex-col gap-2">
+              <Skeleton class="h-3.5 w-[92%]" />
+              <Skeleton class="h-3.5 w-[55%]" />
             </div>
           </div>
           <div class="shrink-0 w-100px">
