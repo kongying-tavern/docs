@@ -15,7 +15,7 @@ test('Mock separates detail from comments and blocks unknown reads and accidenta
     return { number: detail.number, array: Array.isArray(comments), target: comments[0].target.issue.number, blocked }
   })
   expect(values).toEqual({ number: '123', array: true, target: '123', blocked: [true, true] })
-  expect(api.unexpected).toEqual([
+  expect([...api.unexpected].sort()).toEqual([
     'GET /api/v5/repos/KYJGYSDT/Feedback/issues/unhandled/resource',
     'POST /api/v5/repos/KYJGYSDT/Feedback/issues',
   ])
