@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue'
 import AsyncDialogLoading from '~/components/AsyncDialogLoading.vue'
 import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
 import { FORM_HASH } from '~/forum/components/form/publish-topic-form/form-config'
+import ForumPublishTopicLoading from '~/forum/components/form/publish-topic-form/ForumPublishTopicLoading.vue'
 import { useReactionStats } from '~/forum/composables/data/useReactionStats'
 import { useForumImageMetadata } from '~/forum/composables/state/useForumImageMetadata'
 import { useTopicStatusEditor } from '~/forum/composables/state/useTopicStatusEditor'
@@ -13,7 +14,7 @@ import { useTopicTagsEditor } from '~/forum/composables/state/useTopicTagsEditor
 // 新增对话框在此追加异步组件与状态 composable，平台层零改动。
 // 编辑器 chunk 改为入口意图预热（ForumOpenFeedbackFormButton/forumUi.preloadForumPublishForm），
 // 不再挂载即预加载。
-const ForumPublishTopicForm = defineRecoverableAsyncComponent(() => import('~/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue'), AsyncDialogLoading)
+const ForumPublishTopicForm = defineRecoverableAsyncComponent(() => import('~/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue'), ForumPublishTopicLoading)
 const ForumTopicTagsEditorDialog = defineRecoverableAsyncComponent(() => import('~/forum/components/topic/ForumTopicTagsEditorDialog.vue'), AsyncDialogLoading)
 const ForumReactionStatsDialog = defineRecoverableAsyncComponent(() => import('~/forum/components/ui/ForumReactionStatsDialog.vue'), AsyncDialogLoading)
 const ForumTopicStatusDialog = defineRecoverableAsyncComponent(() => import('~/forum/components/topic/ForumTopicStatusDialog.vue'), AsyncDialogLoading)

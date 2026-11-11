@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import type { PublishTopicController } from '../composables/usePublishTopicController'
-import { createReusableTemplate } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, ref, unref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import ForumTopicTypeBadge from '~/forum/components/ui/ForumTopicTypeBadge.vue'
 import { preparePublishTypeMotion } from '~/forum/components/utils/publishTopicTypeTransition'
 import ForumPublishTopicListItem from './ForumPublishTopicListItem.vue'
 
-const props = defineProps<{ form: PublishTopicController['form'], actions: PublishTopicController['actions'], morphType?: boolean, fixedHeight?: boolean, hideCloseButton?: boolean }>()
-const { entryPage, choosingType, formTabs, isOpen } = props.form
+const props = defineProps<{ form: PublishTopicController['form'], actions: PublishTopicController['actions'], morphType?: boolean, fixedHeight?: boolean }>()
+const { entryPage, choosingType, formTabs, formData, isOpen } = props.form
 const { t } = useI18n({ useScope: 'global' })
 const { reducedMotion } = useSitePreferences()
 const typeMotionActive = ref(false)
-const [DefineHeader, Header] = createReusableTemplate<{ title: string, description: string }>()
 let typeMotion: ReturnType<typeof preparePublishTypeMotion> | undefined
 const shell = useTemplateRef<HTMLElement>('shell')
 function keepHeight(element: Element) {
@@ -60,58 +58,53 @@ async function selectType(type: PublishTopicController['form']['formData']['valu
     props.actions.selectInitialType(type)
     return
   }
-  typeMotion = preparePublishTypeMotion(source, shell.value)
+  const motion = preparePublishTypeMotion(source, shell.value)
+  typeMotion = motion
   typeMotionActive.value = true
   await nextTick()
   try {
     props.actions.selectInitialType(type)
     await nextTick()
     if (isOpen.value)
-      await typeMotion?.play()
+      await motion.play()
   }
   finally {
-    typeMotion?.cancel()
-    typeMotion = undefined
-    typeMotionActive.value = false
-    if (isOpen.value && shell.value)
-      focusForm(shell.value)
+    motion.cancel()
+    if (typeMotion === motion) {
+      typeMotion = undefined
+      typeMotionActive.value = false
+      // Vue must remove inert before the newly revealed field can take focus.
+      await nextTick()
+      if (!typeMotion && isOpen.value && shell.value)
+        focusForm(shell.value)
+    }
   }
 }
-watch(isOpen, (open) => {
-  if (!open) {
+watch([isOpen, reducedMotion], ([open, reduced]) => {
+  if (!open || reduced)
     typeMotion?.cancel()
-  }
 })
+useEventListener('resize', () => typeMotion?.cancel())
 onBeforeUnmount(() => {
   typeMotion?.cancel()
 })
 </script>
 
 <template>
-  <DefineHeader v-slot="{ title, description }">
-    <header class="flex gap-4 items-start justify-between">
-      <div class="flex gap-2 min-w-0 items-start">
-        <div class="min-w-0">
+  <div ref="shell" class="topic-stage-shell" :class="{ 'type-motion-active': typeMotionActive, 'motion-reduced': reducedMotion, 'stage-back': choosingType }">
+    <Transition name="topic-stage" :mode="typeMotionActive || reducedMotion ? undefined : 'out-in'" :css="!typeMotionActive && !reducedMotion" @before-leave="keepHeight" @enter="resize" @after-enter="focusForm">
+      <section v-if="choosingType" key="choose" data-publish-type-chooser class="topic-chooser">
+        <header>
           <h2 class="text-lg text-foreground font-semibold">
-            {{ title }}
+            {{ t('forum.publish.feedbackForm.chooseType') }}
           </h2>
           <p class="text-sm text-muted-foreground mt-2">
-            {{ description }}
+            {{ t('forum.publish.feedbackForm.chooseTypeDescription') }}
           </p>
-        </div>
-      </div>
-      <Button v-if="!hideCloseButton" type="button" variant="ghost" size="icon-sm" class="shrink-0" :aria-label="t('ui.button.close')" @click="actions.handleClose">
-        <span class="i-lucide-x" aria-hidden="true" />
-      </Button>
-    </header>
-  </DefineHeader>
-  <div ref="shell" class="topic-stage-shell" :class="{ 'type-motion-active': typeMotionActive, 'motion-reduced': reducedMotion }">
-    <Transition name="topic-stage" :mode="typeMotionActive || reducedMotion ? undefined : 'out-in'" :css="!typeMotionActive && !reducedMotion" @before-leave="keepHeight" @enter="resize" @after-enter="focusForm">
-      <section v-if="choosingType" key="choose" data-publish-type-chooser class="topic-chooser" :class="{ 'external-close': hideCloseButton }">
-        <Header :title="t('forum.publish.feedbackForm.chooseType')" :description="t('forum.publish.feedbackForm.chooseTypeDescription')" />
+        </header>
         <ul class="topic-entry-list mt-6 custom-scrollbar flex flex-col gap-2">
           <li v-for="tab in formTabs.filter(tab => unref(tab.condition))" :key="tab.value">
-            <ForumPublishTopicListItem :aria-disabled="typeMotionActive" @click="selectType(tab.value, $event)">
+            <ForumPublishTopicListItem :aria-disabled="typeMotionActive" :data-stage-focus="tab.value === formData.type ? '' : undefined" @click="selectType(tab.value, $event)">
               <ForumTopicTypeBadge data-publish-type-label :type="tab.value" />
             </ForumPublishTopicListItem>
           </li>
@@ -131,7 +124,7 @@ onBeforeUnmount(() => {
   min-height: 0;
   corner-shape: inherit;
   flex: 1 1 auto;
-  transition: height 140ms ease;
+  transition: height 160ms cubic-bezier(0.22, 0.8, 0.25, 1);
 }
 .topic-stage-shell.type-motion-active,
 .topic-stage-shell.motion-reduced {
@@ -146,14 +139,12 @@ onBeforeUnmount(() => {
 }
 .topic-chooser > header {
   flex-shrink: 0;
+  padding-inline-end: calc(var(--compact-control-size, 32px) + 16px);
 }
 .topic-entry-list {
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
-}
-.topic-chooser.external-close > header {
-  padding-inline-end: calc(var(--compact-control-size, 32px) + 16px);
 }
 .topic-form-stage {
   display: flex;
@@ -168,8 +159,12 @@ onBeforeUnmount(() => {
 .topic-stage-enter-active,
 .topic-stage-leave-active {
   transition:
-    opacity 140ms ease,
-    transform 140ms ease;
+    opacity 160ms cubic-bezier(0.22, 0.8, 0.25, 1),
+    transform 160ms cubic-bezier(0.22, 0.8, 0.25, 1);
+}
+.topic-stage-leave-active {
+  transition-duration: 100ms;
+  pointer-events: none;
 }
 .topic-stage-enter-from {
   opacity: 0;
@@ -178,6 +173,12 @@ onBeforeUnmount(() => {
 .topic-stage-leave-to {
   opacity: 0;
   transform: translateY(-4px);
+}
+.stage-back .topic-stage-enter-from {
+  transform: translateY(-4px);
+}
+.stage-back .topic-stage-leave-to {
+  transform: translateY(4px);
 }
 html[data-reduced-motion='true'] .topic-stage-shell,
 html[data-reduced-motion='true'] .topic-stage-enter-active,

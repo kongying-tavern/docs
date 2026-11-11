@@ -1,0 +1,165 @@
+.compact-dialog[data-slot='dialog-content'],
+.compact-drawer[data-slot='drawer-content'] {
+  --compact-control-size: 32px;
+  --compact-control-radius: calc(var(--compact-control-size) / 2);
+  --compact-radius: calc(var(--compact-inset) + var(--compact-control-radius));
+  --srounded-scale: 1;
+  --compact-corner-radius: var(--compact-radius);
+  --compact-inset: 16px;
+}
+@supports (corner-shape: superellipse(1)) {
+  .compact-dialog[data-slot='dialog-content'],
+  .compact-drawer[data-slot='drawer-content'] {
+    --compact-corner-radius: calc(var(--compact-radius) * var(--srounded-scale, 1.6));
+  }
+}
+.compact-dialog[data-slot='dialog-content'] {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  width: min(760px, calc(100vw - 48px));
+  max-width: none;
+  top: clamp(24px, 10vh, 96px);
+  translate: -50% 0;
+  max-height: calc(100dvh - clamp(24px, 10vh, 96px) - 24px);
+  overflow: clip;
+}
+.compact-dialog[data-state='open'] {
+  animation-duration: 220ms;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.25, 1);
+}
+.compact-dialog[data-state='closed'] {
+  animation-duration: 140ms;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.25, 1);
+}
+.compact-dialog.compact-expanded[data-slot='dialog-content'] {
+  width: min(1120px, calc(100vw - 48px));
+  top: 24px;
+  height: calc(100dvh - 48px);
+  max-height: calc(100dvh - 48px);
+}
+.compact-drawer[data-slot='drawer-content'] {
+  --compact-header-offset: 24px;
+  bottom: var(--compact-viewport-bottom, 0px);
+  height: min(calc(var(--compact-viewport-height, 100dvh) * 0.8), calc(var(--compact-viewport-height, 100dvh) - 12px));
+  max-height: calc(var(--compact-viewport-height, 100dvh) - 12px) !important;
+  overflow: clip;
+  transition: height 200ms cubic-bezier(0.22, 0.8, 0.25, 1);
+}
+.compact-drawer.compact-expanded[data-slot='drawer-content'],
+.compact-drawer.compact-keyboard-visible[data-slot='drawer-content'] {
+  height: calc(var(--compact-viewport-height, 100dvh) - 12px);
+}
+.compact-drawer.compact-keyboard-visible[data-slot='drawer-content'] {
+  transition: none;
+}
+.compact-drawer.compact-choosing-type[data-slot='drawer-content'] {
+  height: auto;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+html[data-reduced-motion='true'] .compact-drawer[data-slot='drawer-content'] {
+  transition: none;
+}
+:is(.compact-dialog, .compact-drawer) .compact-form {
+  corner-shape: inherit;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+:is(.compact-dialog, .compact-drawer) .compact-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: var(--compact-inset);
+  padding-inline-end: calc(var(--compact-inset) + var(--compact-control-size) + 6px);
+  flex-shrink: 0;
+}
+:is(.compact-dialog, .compact-drawer) .compact-heading,
+:is(.compact-dialog, .compact-drawer) .compact-header-actions,
+:is(.compact-dialog, .compact-drawer) .compact-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+:is(.compact-dialog, .compact-drawer) .compact-header-actions {
+  flex-shrink: 0;
+}
+:is(.compact-dialog, .compact-drawer) .compact-close {
+  position: absolute;
+  top: calc(var(--compact-inset) + var(--compact-header-offset, 0px));
+  right: var(--compact-inset);
+  z-index: 1;
+}
+:is(.compact-dialog, .compact-drawer) .compact-heading {
+  gap: 8px;
+}
+:is(.compact-dialog, .compact-drawer) .compact-corner-button {
+  height: var(--compact-control-size);
+  border-radius: 9999px;
+  corner-shape: round;
+}
+:is(.compact-dialog, .compact-drawer) .compact-corner-button[data-size^='icon'] {
+  width: var(--compact-control-size);
+}
+:is(.compact-dialog, .compact-drawer) .compact-footer-actions > [type='submit'] {
+  margin-inline-start: 12px;
+}
+:is(.compact-dialog, .compact-drawer) .compact-body {
+  display: flex;
+  flex-direction: column;
+  padding: 8px var(--compact-inset) var(--compact-inset);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-padding-block: 12px;
+  min-height: 0;
+  flex: 1;
+}
+:is(.compact-dialog, .compact-drawer) .compact-body > * {
+  flex-shrink: 0;
+}
+:is(.compact-dialog, .compact-drawer) .compact-content-field {
+  flex: 1;
+  min-height: 120px;
+}
+:is(.compact-dialog, .compact-drawer) .compact-properties {
+  margin-top: 16px;
+}
+:is(.compact-dialog, .compact-drawer) .compact-empty-uploader {
+  height: 0;
+  overflow: hidden;
+}
+:is(.compact-dialog, .compact-drawer) .compact-footer {
+  padding: var(--compact-inset);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+@media (max-width: 767px) {
+  :is(.compact-dialog, .compact-drawer) .compact-header {
+    padding: var(--compact-inset);
+    padding-inline-end: calc(var(--compact-inset) + var(--compact-control-size) + 6px);
+    gap: 6px;
+  }
+  :is(.compact-dialog, .compact-drawer) .compact-body {
+    padding: var(--compact-inset);
+  }
+  :is(.compact-dialog, .compact-drawer) .compact-footer {
+    padding: var(--compact-inset) var(--compact-inset) max(var(--compact-inset), env(safe-area-inset-bottom));
+    gap: 6px;
+  }
+  :is(.compact-dialog, .compact-drawer) .compact-footer-actions {
+    margin-inline-start: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}
+/* Keep loading and loaded panels on the same geometry to prevent layout jumps. */

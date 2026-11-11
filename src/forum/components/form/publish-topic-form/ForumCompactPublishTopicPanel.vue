@@ -15,7 +15,7 @@ import { Switch } from '@/components/ui/switch'
 import ForumImageUpload from '~/forum/components/form/ForumImageUpload.vue'
 import ForumQuotedTopicCard from '~/forum/components/topic/ForumQuotedTopicCard.vue'
 import ForumTopicTypeBadge from '~/forum/components/ui/ForumTopicTypeBadge.vue'
-import ForumResponsiveMenu from '~/forum/components/ui/responsive/ForumResponsiveMenu.vue'
+import ForumMenuDesktop from '~/forum/components/ui/responsive/ForumMenuDesktop.vue'
 import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
 import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
 import { toast } from '~/services/telemetry/toast'
@@ -27,6 +27,7 @@ import ForumDraftSaveStatus from './ForumDraftSaveStatus.vue'
 import ForumKeepDraftDialog from './ForumKeepDraftDialog.vue'
 
 import ForumPublishTopicStage from './ForumPublishTopicStage.vue'
+import './publish-topic-panel.css'
 
 const props = defineProps<{ form: PublishTopicController['form'], upload: PublishTopicController['upload'], submission: PublishTopicController['submission'], actions: PublishTopicController['actions'] }>()
 const { showCreateMore, isOpen, choosingType, editingSavedDraft, autoSaveEnabled, autoSaveStatus, savedAt, editorIdle, deleteDraftOnly, deleteDraftPromptOpen, deleteDraftError, formData, formTabs, quotedTopicData, quotedTopicQuery, draftPromptOpen, isDirty, draftSaving, draftSaveError } = props.form
@@ -109,14 +110,14 @@ defineExpose(presentation)
     <form ref="formElement" :inert="draftSaving" class="compact-form" @input="actions.markEditorActive" @keydown="actions.markEditorActive" @pointerdown="actions.markEditorActive" @submit.prevent="handleFormSubmit">
       <header class="compact-header">
         <div class="compact-heading">
-          <ForumResponsiveMenu v-if="isDesktop" :items="typeItems" :title="t('forum.topic.menu.changeType.text')" align="start">
+          <ForumMenuDesktop v-if="isDesktop" :items="typeItems" align="start">
             <template #trigger>
               <Button type="button" variant="secondary" size="xs" data-publish-type-target class="compact-type compact-corner-button" :disabled="submitLoading || draftSaving">
                 <ForumTopicTypeBadge data-publish-type-label class="compact-type-badge" :type="formData.type" />
                 <ChevronDownIcon data-icon="inline-end" />
               </Button>
             </template>
-          </ForumResponsiveMenu>
+          </ForumMenuDesktop>
           <Button v-else type="button" variant="secondary" size="xs" data-publish-type-target class="compact-type compact-corner-button" :disabled="submitLoading || draftSaving" :aria-label="t('forum.publish.feedbackForm.backToTypes')" @click="returnToTypes">
             <ChevronLeftIcon data-icon="inline-start" />
             <ForumTopicTypeBadge data-publish-type-label class="compact-type-badge" :type="formData.type" />
@@ -221,7 +222,7 @@ defineExpose(presentation)
         {{ t('forum.publish.form.content.placeholder') }}
       </DialogDescription>
       <Close />
-      <ForumPublishTopicStage :form="form" :actions="actions" morph-type hide-close-button>
+      <ForumPublishTopicStage :form="form" :actions="actions" morph-type>
         <Form />
       </ForumPublishTopicStage>
     </DialogContent>
@@ -232,7 +233,7 @@ defineExpose(presentation)
         {{ t('forum.publish.feedbackForm.newFeedback') }}
       </DrawerTitle>
       <Close />
-      <ForumPublishTopicStage :form="form" :actions="actions" fixed-height hide-close-button>
+      <ForumPublishTopicStage :form="form" :actions="actions" fixed-height>
         <Form />
       </ForumPublishTopicStage>
     </DrawerContent>
@@ -242,47 +243,6 @@ defineExpose(presentation)
 </template>
 
 <style scoped>
-:global(.compact-dialog[data-slot='dialog-content']),
-:global(.compact-drawer[data-slot='drawer-content']) {
-  --compact-control-size: 32px;
-  --compact-control-radius: calc(var(--compact-control-size) / 2);
-  --compact-radius: calc(var(--compact-inset) + var(--compact-control-radius));
-  --srounded-scale: 1;
-  --compact-corner-radius: var(--compact-radius);
-  --compact-inset: 16px;
-}
-@supports (corner-shape: superellipse(1)) {
-  :global(.compact-dialog[data-slot='dialog-content']),
-  :global(.compact-drawer[data-slot='drawer-content']) {
-    --compact-corner-radius: calc(var(--compact-radius) * var(--srounded-scale, 1.6));
-  }
-}
-:global(.compact-dialog[data-slot='dialog-content']) {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 0;
-  width: min(760px, calc(100vw - 48px));
-  max-width: none;
-  top: clamp(24px, 10vh, 96px);
-  translate: -50% 0;
-  max-height: calc(100dvh - clamp(24px, 10vh, 96px) - 24px);
-  overflow: clip;
-}
-:global(.compact-dialog.compact-expanded[data-slot='dialog-content']) {
-  width: min(1120px, calc(100vw - 48px));
-  top: 24px;
-  height: calc(100dvh - 48px);
-  max-height: calc(100dvh - 48px);
-}
-.compact-form {
-  corner-shape: inherit;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  flex: 1 1 auto;
-}
 .compact-drop-overlay {
   position: absolute;
   inset: 6px;
@@ -297,23 +257,6 @@ defineExpose(presentation)
   color: var(--vp-c-brand-1);
   pointer-events: none;
 }
-.compact-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: var(--compact-inset);
-  padding-inline-end: calc(var(--compact-inset) + var(--compact-control-size) + 6px);
-  flex-shrink: 0;
-}
-.compact-heading,
-.compact-header-actions,
-.compact-footer-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-}
 .compact-heading-title {
   min-width: 0;
   overflow: hidden;
@@ -321,15 +264,6 @@ defineExpose(presentation)
   @apply text-ui-13;
   font-weight: 500;
   white-space: nowrap;
-}
-.compact-header-actions {
-  flex-shrink: 0;
-}
-.compact-close {
-  position: absolute;
-  top: calc(var(--compact-inset) + var(--compact-header-offset, 0px));
-  right: var(--compact-inset);
-  z-index: 1;
 }
 .compact-toggle {
   display: inline-flex;
@@ -340,23 +274,9 @@ defineExpose(presentation)
   @apply text-ui-12;
   white-space: nowrap;
 }
-.compact-footer-actions > [type='submit'] {
-  margin-inline-start: 12px;
-}
-.compact-heading {
-  gap: 8px;
-}
 .compact-type[data-size='xs'] {
   padding-inline: 10px;
   gap: 8px;
-}
-.compact-corner-button {
-  height: var(--compact-control-size);
-  border-radius: 9999px;
-  corner-shape: round;
-}
-.compact-corner-button[data-size^='icon'] {
-  width: var(--compact-control-size);
 }
 .compact-corner-button:not([type='submit']),
 .compact-properties :deep([data-slot='popover-trigger']) {
@@ -397,26 +317,9 @@ html[data-reduced-motion='true'] .compact-properties :deep([data-slot='popover-t
   width: 16px;
   height: 16px;
 }
-.compact-body {
-  display: flex;
-  flex-direction: column;
-  padding: 8px var(--compact-inset) var(--compact-inset);
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  scroll-padding-block: 12px;
-  min-height: 0;
-  flex: 1;
-}
-.compact-body > * {
-  flex-shrink: 0;
-}
 :global(.compact-dialog .type-motion-active .compact-body),
 :global(.compact-dialog .type-motion-active .forum-rich-editor) {
   overflow: clip;
-}
-.compact-content-field {
-  flex: 1;
-  min-height: 120px;
 }
 .compact-editor-container,
 .compact-editor-container :deep(.comment-area),
@@ -455,22 +358,6 @@ html[data-reduced-motion='true'] .compact-properties :deep([data-slot='popover-t
 .compact-body :deep(.forum-rich-editor) {
   max-height: none;
 }
-.compact-properties {
-  margin-top: 16px;
-}
-.compact-empty-uploader {
-  height: 0;
-  overflow: hidden;
-}
-.compact-footer {
-  padding: var(--compact-inset);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
 .compact-validation {
   order: -1;
   width: 100%;
@@ -480,28 +367,6 @@ html[data-reduced-motion='true'] .compact-properties :deep([data-slot='popover-t
 }
 .compact-validation:hover {
   text-decoration: underline;
-}
-:global(.compact-drawer[data-slot='drawer-content']) {
-  --compact-header-offset: 24px;
-  bottom: var(--compact-viewport-bottom, 0px);
-  height: min(calc(var(--compact-viewport-height, 100dvh) * 0.8), calc(var(--compact-viewport-height, 100dvh) - 12px));
-  max-height: calc(var(--compact-viewport-height, 100dvh) - 12px) !important;
-  overflow: clip;
-  transition: height 200ms ease-in-out;
-}
-:global(.compact-drawer.compact-expanded[data-slot='drawer-content']),
-:global(.compact-drawer.compact-keyboard-visible[data-slot='drawer-content']) {
-  height: calc(var(--compact-viewport-height, 100dvh) - 12px);
-}
-:global(.compact-drawer.compact-keyboard-visible[data-slot='drawer-content']) {
-  transition: none;
-}
-:global(.compact-drawer.compact-choosing-type[data-slot='drawer-content']) {
-  height: auto;
-  padding-bottom: max(8px, env(safe-area-inset-bottom));
-}
-html[data-reduced-motion='true'] :global(.compact-drawer[data-slot='drawer-content']) {
-  transition: none;
 }
 @media (max-width: 767px) {
   .compact-corner-button:not(.compact-close),
@@ -530,29 +395,11 @@ html[data-reduced-motion='true'] :global(.compact-drawer[data-slot='drawer-conte
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
-  .compact-header {
-    padding: var(--compact-inset);
-    padding-inline-end: calc(var(--compact-inset) + var(--compact-control-size) + 6px);
-    gap: 6px;
-  }
   .compact-header-actions {
     margin-left: auto;
   }
   .compact-heading-title {
     @apply text-ui-13;
-  }
-  .compact-body {
-    padding: var(--compact-inset);
-  }
-  .compact-footer {
-    padding: var(--compact-inset) var(--compact-inset) max(var(--compact-inset), env(safe-area-inset-bottom));
-    gap: 6px;
-  }
-  .compact-footer-actions {
-    margin-inline-start: auto;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 8px;
   }
 }
 @media (max-width: 380px) {

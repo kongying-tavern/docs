@@ -23,28 +23,16 @@ function element(): MockElement {
   }
 }
 
-function setupMotion(t: TestContext, mounted = true) {
+function setupMotion(t: TestContext, targetPresent = true) {
   const computed = { borderTopLeftRadius: '9999px', borderRadius: '9999px', padding: '8px', getPropertyValue: () => '', * [Symbol.iterator]() {} }
-  let notifyMount = () => {}
-  let observing = false
-  const globals = {
-    getComputedStyle: () => computed,
-    MutationObserver: class {
-      constructor(callback: () => void) { notifyMount = callback }
-      observe() { observing = true }
-      disconnect() { observing = false }
-    },
-  }
-  for (const [key, value] of Object.entries(globals)) {
-    const previous = Object.getOwnPropertyDescriptor(globalThis, key)
-    Object.defineProperty(globalThis, key, { configurable: true, value })
-    t.onTestFinished(() => {
-      if (previous)
-        Object.defineProperty(globalThis, key, previous)
-      else
-        Reflect.deleteProperty(globalThis, key)
-    })
-  }
+  const previous = Object.getOwnPropertyDescriptor(globalThis, 'getComputedStyle')
+  Object.defineProperty(globalThis, 'getComputedStyle', { configurable: true, value: () => computed })
+  t.onTestFinished(() => {
+    if (previous)
+      Object.defineProperty(globalThis, 'getComputedStyle', previous)
+    else
+      Reflect.deleteProperty(globalThis, 'getComputedStyle')
+  })
   let frames: Keyframe[] = []
   let duration: number | undefined
   let removed = false
@@ -52,8 +40,18 @@ function setupMotion(t: TestContext, mounted = true) {
   let measuringForm = false
   let shellFrames: Keyframe[] = []
   let formTiming: KeyframeAnimationOptions | undefined
+  let handoffTiming: KeyframeAnimationOptions | undefined
   const attributes = new Map<string, string>()
-  const target = { ...element(), isConnected: true, style: { ...element().style, opacity: '0.9' }, getBoundingClientRect: () => ({ left: 32, top: 40, width: 120, height: 32 }) }
+  const target = {
+    ...element(),
+    isConnected: true,
+    style: { ...element().style, opacity: '0.9' },
+    getBoundingClientRect: () => ({ left: 32, top: 40, width: 120, height: 32 }),
+    animate(_frames: Keyframe[], timing: KeyframeAnimationOptions) {
+      handoffTiming = timing
+      return { finished: Promise.resolve(), cancel: () => {} }
+    },
+  }
   const ghost = {
     ...element(),
     querySelectorAll: () => [],
@@ -61,8 +59,10 @@ function setupMotion(t: TestContext, mounted = true) {
     setAttribute: (key: string, value: string) => attributes.set(key, value),
     remove: () => { removed = true },
     animate(keyframes: Keyframe[], options: KeyframeAnimationOptions) {
-      frames = keyframes
-      duration = options.duration as number
+      if ('transform' in keyframes[0]) {
+        frames = keyframes
+        duration = options.duration as number
+      }
       assert.equal(target.style.opacity, '0')
       return { finished: Promise.resolve(), cancel: () => {} }
     },
@@ -88,7 +88,7 @@ function setupMotion(t: TestContext, mounted = true) {
     querySelector: (selector: string) => {
       if (selector === '[data-publish-type-form]')
         return form
-      if (mounted) {
+      if (targetPresent) {
         measuringForm = true
         return target
       }
@@ -105,27 +105,23 @@ function setupMotion(t: TestContext, mounted = true) {
     target,
     shell,
     attributes,
-    mount: () => {
-      mounted = true
-      notifyMount()
-    },
-    state: () => ({ frames, duration, removed, appended, observing, shellFrames, formTiming }),
+    state: () => ({ frames, duration, removed, appended, shellFrames, formTiming, handoffTiming }),
   }
 }
 
 test('selection requests a visible row-to-trigger animation and restores the trigger', async (t) => {
   const { motion, target, attributes, state } = setupMotion(t)
   await motion.play()
-  assert.equal(state().frames[0].top, '160px')
-  assert.equal(state().frames[1].top, '40px')
+  assert.equal(state().frames[0].transform, 'translate(0px, 0px)')
+  assert.equal(state().frames[1].transform, 'translate(0px, -120px)')
   assert.equal(state().frames[0].width, '700px')
   assert.equal(state().frames[1].width, '120px')
   assert.equal(state().frames[1].borderRadius, '16px')
-  assert.equal(state().duration, 460)
+  assert.equal(state().duration, 280)
+  assert.equal(Number(state().handoffTiming!.delay) + Number(state().handoffTiming!.duration), state().duration)
   assert.equal(attributes.get('aria-hidden'), 'true')
   assert.equal(target.style.opacity, '0.9')
   assert.equal(state().removed, true)
-  assert.equal(state().observing, false)
 })
 
 test('grows the shell and gradually reveals the form after the chooser departs', async (t) => {
@@ -134,7 +130,7 @@ test('grows the shell and gradually reveals the form after the chooser departs',
   await motion.play()
   assert.deepEqual(state().shellFrames, [{ height: '232px' }, { height: '360px' }])
   const timing = state().formTiming!
-  assert.ok(Number(timing.delay) >= 120)
+  assert.ok(Number(timing.delay) >= 40)
   assert.ok(Number(timing.duration) > Number(state().duration) / 2)
   assert.ok(Number(timing.delay) + Number(timing.duration) <= Number(state().duration))
   assert.equal(shell.style.height, '')
@@ -142,28 +138,49 @@ test('grows the shell and gradually reveals the form after the chooser departs',
   assert.equal(shell.style.overflow, '')
 })
 
-test('keeps the row visible until the asynchronous menu trigger mounts', async (t) => {
-  const { motion, mount, state } = setupMotion(t, false)
-  const playing = motion.play()
-  assert.equal(state().appended, true)
-  assert.equal(state().removed, false)
+test('a missing trigger releases the shell without waiting for a DOM mutation', async (t) => {
+  const { motion, shell, state } = setupMotion(t, false)
+  await motion.play()
   assert.equal(state().frames.length, 0)
-  assert.equal(state().observing, true)
-  mount()
-  await playing
-  assert.equal(state().frames.length, 2)
   assert.equal(state().removed, true)
-  assert.equal(state().observing, false)
+  assert.equal(shell.style.height, '')
+  assert.equal(shell.style.flex, '')
+  assert.equal(shell.style.overflow, '')
 })
 
-test('closing while the trigger loads releases the pending motion', async (t) => {
-  const { motion, mount, state, target } = setupMotion(t, false)
+test('closing during playback removes the snapshot and restores the trigger', async (t) => {
+  const { motion, state, target } = setupMotion(t)
   const playing = motion.play()
   motion.cancel()
   await playing
-  mount()
+  assert.equal(state().frames.length, 2)
+  assert.equal(state().removed, true)
+  assert.equal(target.style.opacity, '0.9')
+})
+
+test('repeated cancellation cannot overwrite layout applied after the first cleanup', async (t) => {
+  const { motion, shell } = setupMotion(t, false)
+  const playing = motion.play()
+  motion.cancel()
+  shell.style.height = '400px'
+  motion.cancel()
+  await playing
+  assert.equal(shell.style.height, '400px')
+})
+
+test('an unmeasurable target retains its original opacity', async (t) => {
+  const { motion, target } = setupMotion(t)
+  target.getBoundingClientRect = () => ({ left: 32, top: 40, width: 0, height: 0 })
+  await motion.play()
+  assert.equal(target.style.opacity, '0.9')
+})
+
+test('a disconnected trigger does not start playback or change its opacity', async (t) => {
+  const { motion, target, shell, state } = setupMotion(t)
+  target.isConnected = false
+  await motion.play()
   assert.equal(state().frames.length, 0)
   assert.equal(state().removed, true)
-  assert.equal(state().observing, false)
   assert.equal(target.style.opacity, '0.9')
+  assert.equal(shell.style.height, '')
 })
