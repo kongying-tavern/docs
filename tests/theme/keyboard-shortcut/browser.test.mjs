@@ -17,6 +17,7 @@ const entry = fileURLToPath(new URL('./fixtures/server.ts', import.meta.url)).re
 test('keyboard shortcut SSR and browser regression', { timeout: 120000 }, async (t) => {
   const server = await createServer({
     root,
+    cacheDir: `${root}/node_modules/.vite-keyboard-shortcut`,
     configFile: false,
     plugins: [vue(), UnoCSS(), {
       name: 'keyboard-shortcut-test-page',
@@ -70,7 +71,15 @@ test('keyboard shortcut SSR and browser regression', { timeout: 120000 }, async 
         Object.defineProperty(navigator, 'userAgentData', { value: undefined })
       }, platform)
       await page.goto(url)
-      await page.waitForFunction(expected => [...document.querySelectorAll('#auto [data-slot="keyboard-shortcut"], #deferred [data-slot="keyboard-shortcut"]')].every(el => el.getAttribute('data-platform') === expected), expected)
+      try {
+        await page.waitForFunction((expected) => {
+          const shortcuts = [...document.querySelectorAll('#auto [data-slot="keyboard-shortcut"], #deferred [data-slot="keyboard-shortcut"]')]
+          return shortcuts.length === 2 && shortcuts.every(el => el.getAttribute('data-platform') === expected)
+        }, expected)
+      }
+      catch (error) {
+        throw new Error(`${error.message}\nBrowser errors: ${JSON.stringify(failures)}\n${await page.locator('body').textContent()}`)
+      }
       const keys = id => page.locator(`#${id} [data-slot="kbd"]`)
       assert.deepEqual(await keys('auto').allTextContents(), [mod, 'K'])
       const keycap = await keys('auto').first().evaluate((element) => {

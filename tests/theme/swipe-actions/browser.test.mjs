@@ -16,6 +16,7 @@ const fixture = fileURLToPath(new URL('./fixtures/main.ts', import.meta.url)).re
 test('swipe actions browser regression', { timeout: 120000 }, async (t) => {
   const server = await createServer({
     root,
+    cacheDir: `${root}/node_modules/.vite-swipe-actions`,
     configFile: false,
     plugins: [vue(), UnoCSS(), {
       name: 'swipe-test-page',
@@ -33,7 +34,7 @@ test('swipe actions browser regression', { timeout: 120000 }, async (t) => {
         '~': `${root}/src`,
       },
     },
-    optimizeDeps: { include: ['vue', '@lucide/vue', 'cn', '@vueuse/core', 'reka-ui', 'class-variance-authority'] },
+    optimizeDeps: { entries: [fixture], include: ['vue', '@lucide/vue', 'cn', '@vueuse/core', 'reka-ui', 'class-variance-authority'] },
     server: { host: '127.0.0.1', port: 0 },
   })
   await server.listen()
