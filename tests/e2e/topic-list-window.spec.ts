@@ -340,6 +340,20 @@ test('removing a deep row retains other measured heights in a long list', async 
   }
   // Capture the rich window after its batched measurements settle.
   await page.waitForTimeout(300)
+  await expect(list.locator('.topic-btn-more').first()).toBeAttached()
+  await list.evaluate((element) => {
+    element.setAttribute('data-remount-menu-missing', 'false')
+    new MutationObserver((records) => {
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (node instanceof HTMLElement && node.matches('li[data-topic-id]') && node.style.display !== 'none'
+            && node.querySelector('.topic-header') && !node.querySelector('.topic-btn-more')) {
+            element.setAttribute('data-remount-menu-missing', 'true')
+          }
+        }
+      }
+    }).observe(element, { childList: true })
+  })
   const target = await page.locator('.forum-topic-item').evaluateAll(rows => rows.find((row) => {
     const rect = row.querySelector('h4 a')?.getBoundingClientRect()
     return rect && rect.top > 70 && rect.bottom < innerHeight
@@ -388,4 +402,5 @@ test('removing a deep row retains other measured heights in a long list', async 
   }
   await expect.poll(async () => Math.abs(await neighbor.evaluate(element => element.getBoundingClientRect().top) - (neighborTop - removedHeight))).toBeLessThan(40)
   await expect(page.locator(`[data-forum-topic="${target}"]`)).toHaveCount(0)
+  await expect(list).toHaveAttribute('data-remount-menu-missing', 'false')
 })

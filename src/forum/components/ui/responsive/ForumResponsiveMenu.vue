@@ -2,9 +2,10 @@
 import type { DropdownMenuContentProps } from 'reka-ui'
 import type { FORUM } from '../../types'
 import { useMediaQuery } from '@vueuse/core'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { ForumMenuDesktop, ForumMenuMobileDrawer } from './menuComponents'
 
 const { items = [], side = 'bottom', disabled = false, title } = defineProps<{
   items?: FORUM.TopicDropdownMenu[]
@@ -21,9 +22,6 @@ defineSlots<{
   /** 内容前置行，如调用方自定义的菜单项 */
   menu: () => unknown
 }>()
-const ForumMenuDesktop = defineAsyncComponent(() => import('./ForumMenuDesktop.vue'))
-const ForumMenuMobileDrawer = defineAsyncComponent(() => import('./ForumMenuMobileDrawer.vue'))
-
 const { t } = useI18n({ useScope: 'global' })
 const isMobile = useMediaQuery(FORUM_MOBILE_MEDIA_QUERY)
 
