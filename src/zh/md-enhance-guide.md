@@ -170,17 +170,53 @@ theme: medium
 
 ### Kbd 快捷键 {#kbd}
 
-#### 语法
-
-```markdown
-[[<快捷键>]]
-```
+用 `[[按键]]` 展示快捷键：`+` 表示同时按下，`,` 表示依次按下。
 
 #### 示例
 
+<!-- zhlint ignore: [[Ctrl+K, Ctrl+Alt+C]] -->
+<!-- zhlint ignore: [[G, I]] -->
+
 :::: demo
-[[Meta]][[K]]
+
+| 用法 | 示例 |
+| --- | --- |
+| 单键 | [[Esc]] [[Enter]] [[F1]] |
+| 组合键 | [[Ctrl+Shift+P]] |
+| 连续组合键 | [[Ctrl+K, Ctrl+Alt+C]] |
+| 按键序列 | [[G, I]] |
+| 任选其一 | [[F1]] 或 [[Ctrl+H]] |
+| 方向键 | [[Up]] [[Down]] [[Left]] [[Right]] |
+| 系统键 | [[Win]] [[Meta]] |
+| 符号键 | [[Ctrl+Plus]] [[Mod+Comma]] |
+
 ::::
+
+按键名不区分大小写。方向键也支持 `ArrowUp`、`ArrUp` 等别名；加号键和逗号键分别写作 `Plus`、`Comma`。
+
+#### 平台适配
+
+`Mod` 自动适配主修饰键：Apple 平台为 ⌘，Windows / Linux 为 Ctrl。明确写出的 `Ctrl`、`Cmd` 保持各自含义。
+
+编写指定平台的教程时，用 `platform` 固定显示，可选 `mac`、`windows`、`linux`：
+
+:::: demo
+自动适配：[[Mod+K]]。
+
+Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
+::::
+
+::: details 在 Vue 中使用
+`sequence` 的每个内层数组表示同时按下，多个数组表示依次按下：
+
+```vue
+<KeyboardShortcut
+  :sequence="[['Ctrl', 'A'], ['Ctrl', 'D']]"
+  platform="windows"
+/>
+```
+
+:::
 
 ### Footnote 脚注 {#footnote}
 
