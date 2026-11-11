@@ -65,7 +65,9 @@ export function useForumTopicWindow(data: () => ForumAPI.Topic[], active: Ref<bo
           return size
         }
         const cached = instance.measurementsCache[Number(element.dataset.index)]
-        return measuredSizes.get(id) ?? (cached?.key === id ? cached.size : estimateSize())
+        // Ref callbacks can precede scroll-observer reattachment; only the
+        // ResizeObserver batch may correct an existing virtual size and scroll.
+        return cached?.key === id ? cached.size : measuredSizes.get(id) ?? estimateSize()
       },
       useAnimationFrameWithResizeObserver: true,
     }
