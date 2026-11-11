@@ -3,7 +3,6 @@ import { ReloadIcon } from '@radix-icons/vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import Divider from '@/components/ui/divider/Divider.vue'
-import { TextMorph } from '@/components/ui/text-morph'
 
 const { loading = false, canLoadMore = false, error = false, text = '', status = 'status', rateLimit = false, errorMessage = '' } = defineProps<{
   loading?: boolean
@@ -51,7 +50,7 @@ const { t } = useI18n({ useScope: 'global' })
           :class="{ 'animate-spin will-change-transform': loading }"
           aria-hidden="true"
         />
-        <TextMorph :disabled="loading" :text="loading ? (loadingText ?? t('ui.button.loading')) : error ? t('forum.auth.callback.error.retry') : text" />
+        <span>{{ loading ? (loadingText ?? t('ui.button.loading')) : error ? t('forum.auth.callback.error.retry') : text }}</span>
       </Button>
     </div>
     <Divider

@@ -30,7 +30,7 @@ const emit = defineEmits<{
 
 const ForumCommentArea = defineRecoverableAsyncComponent(() => import('../comment/ForumCommentArea.vue'), AsyncContentLoading)
 
-const { menu: baseMenu, showComment } = useTopicState(topic)
+const { menu: baseMenu, showComment } = useTopicState(() => topic)
 const { isCardMode, isCompactMode } = useForumViewMode(() => topic.type)
 const translatedContent = ref<string>()
 const translatedTitle = ref('')

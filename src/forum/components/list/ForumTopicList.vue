@@ -42,6 +42,54 @@ const { rows, windowed, height, setRoot, measureRow } = useForumTopicWindow(() =
 onActivated(() => active.value = true)
 const hasRenderedTopics = ref(props.data.length > 0)
 const leavingRows = ref(0)
+let pendingLeaves = 0
+const leavePositions = new WeakMap<Element, { top: number, left: number, width: number }>()
+function captureLeavingRows(ids: string[]): void {
+  if (windowed.value)
+    return
+  const root = listHost.value?.querySelector<HTMLElement>('.topic-list')
+  if (!root)
+    return
+  const remaining = new Set(ids)
+  const removed = [...root.querySelectorAll<HTMLElement>(':scope > li[data-topic-id]')]
+    .filter(row => !remaining.has(row.dataset.topicId!) && !leavePositions.has(row))
+  if (!removed.length)
+    return
+  // Batch reads before any leave hook takes a row out of normal flow.
+  const listHeight = root.offsetHeight
+  for (const row of removed)
+    leavePositions.set(row, { top: row.offsetTop, left: row.offsetLeft, width: row.offsetWidth })
+  root.style.minHeight = `${listHeight}px`
+}
+function beforeLeave(element: Element): void {
+  const position = leavePositions.get(element)
+  if (position) {
+    Object.assign((element as HTMLElement).style, {
+      top: `${position.top}px`,
+      left: `${position.left}px`,
+      width: `${position.width}px`,
+    })
+  }
+  pendingLeaves++
+  // Only the empty/loading state needs this count; updating it for a nonempty
+  // result rerenders TransitionGroup mid-patch and overwrites its old positions.
+  if (props.data.length === 0)
+    leavingRows.value = pendingLeaves
+}
+function afterLeave(element: Element): void {
+  if (leavePositions.has(element)) {
+    leavePositions.delete(element)
+    if (!windowed.value) {
+      for (const property of ['top', 'left', 'width'])
+        (element as HTMLElement).style.removeProperty(property)
+    }
+  }
+  pendingLeaves--
+  if (leavingRows.value > 0)
+    leavingRows.value = pendingLeaves
+  if (pendingLeaves === 0)
+    listHost.value?.querySelector<HTMLElement>('.topic-list')?.style.removeProperty('min-height')
+}
 watch(() => props.data.length, (length) => {
   if (length > 0)
     hasRenderedTopics.value = true
@@ -56,6 +104,7 @@ function saveTranslation(id: string, snapshot: TopicTranslationSnapshot | undefi
     translations.delete(id)
 }
 watch(() => props.data.map(topic => topic.id), (ids, previousIds) => {
+  captureLeavingRows(ids)
   const current = new Set(ids)
   for (const id of translations.keys()) {
     if (!current.has(id))
@@ -116,8 +165,10 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
       v-if="hasRenderedTopics"
       :indicator-class="windowed ? 'rounded-xl bg-[var(--vp-c-default-soft)] z-1' : 'rounded-xl bg-[var(--vp-c-default-soft)]'"
     >
+      <!-- Only measure moves when rows or their layout change, not for loading/animation bookkeeping. -->
       <TransitionGroup
         :ref="setRoot"
+        v-memo="[rows, windowed, height, lastVisitedDividerIndex]"
         tag="ul"
         :name="windowed ? '' : 'topic-list'"
         :css="!windowed"
@@ -125,9 +176,9 @@ function openPreview(topic: ForumAPI.Topic, focusComment: boolean) {
         :style="height === undefined ? undefined : { height: `${height}px` }"
         :data-total-items="data.length"
         :data-windowed="windowed"
-        @before-leave="leavingRows++"
-        @after-leave="leavingRows--"
-        @leave-cancelled="leavingRows--"
+        @before-leave="beforeLeave"
+        @after-leave="afterLeave"
+        @leave-cancelled="afterLeave"
       >
         <li v-if="windowed" key="scroll-placeholder" class="topic-scroll-placeholder" aria-hidden="true">
           <ForumTopicListSkeletons viewport-only />

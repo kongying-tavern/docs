@@ -49,11 +49,22 @@ export function useForumTopicsQuery(
     },
     getNextPageParam: (lastPage, _pages, page) => nextPage(lastPage, page, normalized.value.pageSize),
     staleTime: 60_000,
+    // Keep keyed rows mounted while the next filter loads, instead of rebuilding the whole list.
+    placeholderData: (previous, entry) => {
+      const previousParams = entry?.key[3] as ReturnType<typeof normalizeTopicListParams> | undefined
+      // Do not carry archived placeholders into public queries, including across later logout.
+      if (!toValue(skeletonScope) || previousParams?.creator !== normalized.value.creator
+        || (previousParams?.filter === 'archived') !== (normalized.value.filter === 'archived')
+        || (previousParams?.filter === 'archived' && !canViewArchived.value)) {
+        return undefined
+      }
+      return previous
+    },
   })
 
   const topics = computed(() => flattenForumPages(query.data.value?.pages ?? []))
   const queryCache = useQueryCache()
-  const relatedEnabled = computed(() => toValue(enabled) && !normalized.value.q
+  const relatedEnabled = computed(() => toValue(enabled) && !query.isPlaceholderData.value && !normalized.value.q
     && normalized.value.pageSize > 1 && topics.value.some(topic => topic.commentCount > 0))
   // 摘要查询使用独立状态和缓存键；延迟或失败都不阻塞列表与翻页。
   const relatedComments = useQuery({
@@ -73,19 +84,26 @@ export function useForumTopicsQuery(
     gcTime: 0,
   })
   const enrichedRows = new WeakMap<ForumAPI.Topic, { comments: ForumAPI.Comment[] | null, row: ForumAPI.Topic }>()
-  const rows = computed(() => topics.value.map((topic) => {
-    const comments = relatedEnabled.value && topic.commentCount > 0
-      ? relatedComments.data.value?.[topic.id]
-      : undefined
-    if (comments === undefined)
-      return topic
-    const cached = enrichedRows.get(topic)
-    if (cached?.comments === comments)
-      return cached.row
-    const row = { ...topic, relatedComments: comments }
-    enrichedRows.set(topic, { comments, row })
-    return row
-  }))
+  const rows = computed<ForumAPI.Topic[]>((previousRows) => {
+    const nextRows = topics.value.map((topic) => {
+      if (query.isPlaceholderData.value)
+        return enrichedRows.get(topic)?.row ?? topic
+      const comments = relatedEnabled.value && topic.commentCount > 0
+        ? relatedComments.data.value?.[topic.id]
+        : undefined
+      if (comments === undefined)
+        return topic
+      const cached = enrichedRows.get(topic)
+      if (cached?.comments === comments)
+        return cached.row
+      const row = { ...topic, relatedComments: comments }
+      enrichedRows.set(topic, { comments, row })
+      return row
+    })
+    return previousRows?.length === nextRows.length && nextRows.every((row, index) => row === previousRows[index])
+      ? previousRows
+      : nextRows
+  })
   // 列表刷新只等待列表；摘要标记过期后在后台补充，包括失败后的重试。
   async function refetch(...args: Parameters<typeof query.refetch>) {
     invalidateStructuredForumTopics(normalized.value)
@@ -100,8 +118,8 @@ export function useForumTopicsQuery(
 
   // 只记录首屏第一页条数；追加加载不改动第一页，不会重复覆盖
   const scope = computed(() => toValue(skeletonScope) ?? null)
-  watch([scope, () => query.data.value?.pages[0]?.items.length], ([currentScope, firstPageCount]) => {
-    if (!currentScope || !firstPageCount)
+  watch([scope, () => query.data.value?.pages[0]?.items.length, query.isPlaceholderData], ([currentScope, firstPageCount, placeholder]) => {
+    if (!currentScope || !firstPageCount || placeholder)
       return
     saveSkeletonListCount(buildForumListCacheKey(currentScope, normalized.value), firstPageCount)
   })
