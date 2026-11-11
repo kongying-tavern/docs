@@ -16,6 +16,9 @@ button:
   all: 全部
   emoji: 表情
 labelSeparator: ：
+shortcut:
+  plus: ' 加 '
+  then: '，然后 '
 payment:
   addressLabel: 收款地址
   qrcodeAlt: '{name} 收款二维码'

@@ -131,7 +131,7 @@ HTML [[Meta]]
   assert.match(html, /<sup>2<\/sup>/)
   assert.match(html, /<ruby>/)
   assert.match(html, /<abbr title="Hyper Text Markup Language">HTML<\/abbr>/)
-  assert.match(html, /<kbd>/)
+  assert.match(html, /<KeyboardShortcut /)
   assert.match(html, /:prefix text <Emoji emoji="1.小黄脸\/呲牙.png"/)
   assert.equal(html.match(/<Emoji /g)?.length, 1)
   assert.ok(html.includes('😄'), html)
@@ -148,6 +148,21 @@ test('image dimensions preserve lazy loading, zoom attributes and figure caption
     assert.match(html, /<figure[^>]*>/)
     assert.match(html, /<figcaption>caption<\/figcaption>/)
   }
+})
+
+test('keyboard shortcuts reuse UI components and preserve platform aliases and escaping', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const html = await markdown.renderAsync('[[Ctrl]] + [[C]] / [[cMd]] + [[Opt]] + [[ArrUp]] / [[Win]] / [[A&B]]\n\nShortcut: <KbdGroup>[[Meta]][[K]]</KbdGroup>')
+  assert.match(html, /:sequence="\[\[&quot;Ctrl&quot;\]\]"/)
+  assert.match(html, /:sequence="\[\[&quot;cMd&quot;\]\]"/)
+  assert.match(html, /:sequence="\[\[&quot;ArrUp&quot;\]\]"/)
+  assert.match(html, /:sequence="\[\[&quot;Win&quot;\]\]"/)
+  assert.match(html, /:sequence="\[\[&quot;A&amp;B&quot;\]\]"/)
+  assert.match(html, /<KbdGroup><KeyboardShortcut /)
+  const compiled = compileTemplate({ source: html, filename: 'keyboard.vue', id: 'keyboard' })
+  assert.deepEqual(compiled.errors, [])
+  assert.match(compiled.code, /resolveComponent\("KeyboardShortcut"\)/)
+  assert.match(compiled.code, /resolveComponent\("KbdGroup"\)/)
 })
 
 test('native alerts, nested containers and code groups survive Comark and Vue compilation', async () => {

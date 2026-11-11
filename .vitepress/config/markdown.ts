@@ -9,13 +9,13 @@ import { imgSize, obsidianImgSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import MarkdownItKbd from 'markdown-it-kbd-better'
 import MarkdownItCard from '../theme/markdown/card.ts'
 import MarkdownItColorPreview from '../theme/markdown/colorPreview.ts'
 import { applyComarkPatches } from '../theme/markdown/comark-patches.ts'
 import MarkdownItCustomColor from '../theme/markdown/customColor.ts'
 import MarkdownItDocHeaderTitle from '../theme/markdown/docHeaderTitle.ts'
 import MarkdownItEmoji from '../theme/markdown/emoji.ts'
+import MarkdownItKbd from '../theme/markdown/kbd.ts'
 import MarkdownItLightbox from '../theme/markdown/lightbox.ts'
 import MarkdownItMention from '../theme/markdown/mention.ts'
 import { ruby } from '../theme/markdown/ruby.ts'
@@ -84,12 +84,6 @@ export const markdownConfig: MarkdownOptions = {
     md.use(MarkdownItDocHeaderTitle)
 
     // Kbd reuses `:`-adjacent syntax, so it runs after Comark.
-    md.use(MarkdownItKbd, {
-      presets: [
-        {
-          name: 'icons',
-        },
-      ],
-    })
+    md.use(MarkdownItKbd)
   },
 }

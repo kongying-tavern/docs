@@ -13,6 +13,8 @@ tests/
     unocss/               样式规则
     swipe-actions/        手势逻辑与独立浏览器组件测试
       fixtures/           组件浏览器测试页面
+    keyboard-shortcut/    快捷键的平台显示、SSR 水合与浏览器组件测试
+      fixtures/           快捷键 SSR 与异步组件测试页面
   fonts/                  字体配置、文件和 fallback 构建契约
   e2e/                    Playwright 页面交互旅程
     fixtures/             原始 provider 数据
@@ -34,7 +36,7 @@ tests/
 | `pnpm test:forum:ui:build` | 构建独立的 `/docs/` 浏览器测试产物 |
 | `pnpm test:forum:ui:production` | 构建产物上的用户流程、hydration 与 chunk 检查 |
 | `pnpm test:forum:ui:source` | `@source` 源码专项，自动启动开发服务器 |
-| `pnpm test:theme:ui` | swipe-actions 的 `browser.test.mjs`，自动启动组件测试服务 |
+| `pnpm test:theme:ui` | swipe-actions 和 keyboard-shortcut 的 `browser.test.mjs`，自动启动组件测试服务 |
 
 逻辑测试由 `vitest.config.ts` 统一发现并在 Node 环境执行，不依赖 Windows shell 展开 glob。
 测试配置独立于站点 Vite 配置，避免运行逻辑测试时启动字体构建或页面调试插件。

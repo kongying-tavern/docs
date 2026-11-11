@@ -120,7 +120,7 @@ export default antfu({
   },
 }, {
   name: 'project/node-browser-tests',
-  files: ['tests/theme/swipe-actions/browser.test.mjs'],
+  files: ['tests/theme/swipe-actions/browser.test.mjs', 'tests/theme/keyboard-shortcut/browser.test.mjs'],
   rules: {
     // The standalone Playwright harness retains its Node runner.
     'test/no-import-node-test': 'off',

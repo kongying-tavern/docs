@@ -7,6 +7,8 @@ import DefaultTheme, {
   VPLink,
 } from 'vitepress/theme-without-fonts'
 import { defineAsyncComponent, ref } from 'vue'
+import { Kbd, KbdGroup } from '@/components/ui/kbd'
+import KeyboardShortcut from '@/components/ui/KeyboardShortcut.vue'
 import Blog from '@/layouts/Blog.vue'
 import Layout from '@/layouts/Layout.vue'
 import SettingsPage from '~/components/settings/SettingsPage.vue'
@@ -73,6 +75,9 @@ export default {
     app.component('Coins', Coins)
     app.component('Card', Card)
     app.component('Emoji', Emoji)
+    app.component('Kbd', Kbd)
+    app.component('KbdGroup', KbdGroup)
+    app.component('KeyboardShortcut', KeyboardShortcut)
     app.component('QQGroupList', QQGroupList)
     app.component('ScratchToReveal', ScratchToReveal)
     app.component('SitemapPage', SitemapPage)

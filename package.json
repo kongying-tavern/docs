@@ -43,7 +43,7 @@
     "test:forum:ui:list": "playwright test --config tests/e2e/playwright.config.ts --list",
     "typecheck:forum:ui": "tsc --noEmit --project tests/e2e/tsconfig.json",
     "test:theme": "vitest run tests/shared tests/theme",
-    "test:theme:ui": "node --test tests/theme/swipe-actions/browser.test.mjs",
+    "test:theme:ui": "node --test tests/theme/swipe-actions/browser.test.mjs tests/theme/keyboard-shortcut/browser.test.mjs",
     "commit": "git-cz",
     "lunaria:build": "lunaria build",
     "lunaria:preview": "lunaria preview",

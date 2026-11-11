@@ -16,6 +16,9 @@ button:
   all: すべて
   emoji: 絵文字
 labelSeparator: ：
+shortcut:
+  plus: ' と '
+  then: '、次に '
 payment:
   addressLabel: 送金先アドレス
   qrcodeAlt: '{name} の QR コード'

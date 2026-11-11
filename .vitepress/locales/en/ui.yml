@@ -18,6 +18,9 @@ button:
   all: All
   emoji: Emoji
 labelSeparator: ': '
+shortcut:
+  plus: ' + '
+  then: ', then '
 payment:
   addressLabel: Payment address
   qrcodeAlt: '{name} QR code'
