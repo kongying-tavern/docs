@@ -167,7 +167,6 @@ catalogs:
     markdown-it: 14.2.0
     markdown-it-container: 4.0.0
     markdown-it-emoji: ^3.0.0
-    markdown-it-kbd-better: 1.2.5
   types:
     '@types/canvas-confetti': ^1.9.0
     '@types/js-yaml': ^4.0.9
