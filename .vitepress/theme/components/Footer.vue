@@ -2,12 +2,14 @@
 import { useMediaQuery, useMounted } from '@vueuse/core'
 
 import { useData, withBase } from 'vitepress'
+import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, ref } from 'vue'
 import { useQRCode } from '@/hooks/useQRCode'
 
 import { socialList } from '../composables/socialList'
 
 const { frontmatter, theme } = useData()
+const { hasSidebar } = useLayout()
 const qrcode = useQRCode(computed(() => theme.value.footer.qrcodeLink))
 
 const isDesktop = useMediaQuery('(min-width: 48rem)')
@@ -29,74 +31,76 @@ function isExpanded(title: string) {
 </script>
 
 <template>
-  <div
+  <footer
     v-if="frontmatter.footer !== false && frontmatter.sidebar !== true"
     class="slide-enter footer-container"
+    :class="{ 'has-sidebar': hasSidebar }"
+    :data-layout="frontmatter.layout || 'doc'"
   >
-    <footer class="footer">
-      <div
-        v-for="(item, idx) in theme.footer.navigation"
-        :key="item.title"
-        class="footer-navigation"
-        :class="{ open: isExpanded(item.title) }"
-      >
-        <h3 class="footer-title">
-          <button
-            type="button"
-            :aria-expanded="isExpanded(item.title)"
-            :aria-controls="`footer-navigation-${idx}`"
-            @click="toggleSection(item.title)"
-          >
-            {{ item.title }}
-          </button>
-        </h3>
-        <ul :id="`footer-navigation-${idx}`">
-          <li
-            v-for="ic in item.items"
-            :key="ic.text"
-          >
-            <VPLink
-              :href="ic.link"
-              :title="`${ic.text}（${withBase(ic.link)}）`"
+    <div class="footer-inner">
+      <div class="footer-main">
+        <div
+          v-for="(item, idx) in theme.footer.navigation"
+          :key="item.title"
+          class="footer-navigation"
+          :class="{ open: isExpanded(item.title) }"
+        >
+          <h3 class="footer-title">
+            <button
+              type="button"
+              :aria-expanded="isExpanded(item.title)"
+              :aria-controls="`footer-navigation-${idx}`"
+              @click="toggleSection(item.title)"
             >
-              {{ ic.text }}
-            </VPLink>
-          </li>
-        </ul>
+              {{ item.title }}
+            </button>
+          </h3>
+          <ul :id="`footer-navigation-${idx}`">
+            <li
+              v-for="ic in item.items"
+              :key="ic.text"
+            >
+              <VPLink
+                :href="ic.link"
+                :title="`${ic.text}（${withBase(ic.link)}）`"
+              >
+                {{ ic.text }}
+              </VPLink>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-qrcode">
+          <img
+            :src="qrcode"
+            :alt="theme.footer.qrcodeAlt"
+          >
+          <h4>{{ theme.footer.qrcodeTitle }}</h4>
+          <p>
+            {{ theme.footer.qrcodeMessage }}
+          </p>
+        </div>
       </div>
-      <div class="footer-qrcode justify-self-end">
-        <img
-          :src="qrcode"
-          :alt="theme.footer.qrcodeAlt"
-        >
-        <h4>{{ theme.footer.qrcodeTitle }}</h4>
-        <p text-center>
-          {{ theme.footer.qrcodeMessage }}
-        </p>
-      </div>
-    </footer>
-    <footer class="footer py-4">
-      <div class="grid-flow-col items-center">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          class="fill-current"
-          style="color: var(--vp-c-text-2)"
-        >
-          <path
-            d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"
-          />
-        </svg>
-        <p text-left>
-          MIT Licensed<br>Made with ❤ by Kongying Tavern
-        </p>
-      </div>
-      <div class="md:justify-self-end md:place-self-center">
-        <div class="gap-4 grid grid-flow-col">
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            class="fill-current"
+            style="color: var(--vp-c-text-2)"
+          >
+            <path
+              d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"
+            />
+          </svg>
+          <p>
+            MIT Licensed<br>Made with ❤ by Kongying Tavern
+          </p>
+        </div>
+        <div class="footer-socials">
           <a
             v-for="item in socialList"
             :key="item.title"
@@ -110,261 +114,310 @@ function isExpanded(title: string) {
           />
         </div>
       </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
 </template>
 
 <style scoped>
 @import '@/styles/media.css';
+
 .footer-container {
-  --footer-gutter: 32px;
-  z-index: 1;
+  --footer-gutter: 24px;
+  --footer-max-width: 1152px;
   position: relative;
-  right: 0;
-  bottom: 0;
-  padding: 0 var(--footer-gutter);
+  z-index: 1;
+  padding-inline: var(--footer-gutter);
   background-color: var(--vp-c-bg-alt);
-}
-
-.is-home ~ .footer-container .footer,
-.Headline > .footer-container .footer,
-.Blog .footer-container .footer {
-  max-width: 1152px;
-}
-
-.footer:first-child {
-  padding-top: 2.5rem;
-}
-
-.footer:last-child {
-  row-gap: 1rem;
-}
-
-.footer {
-  display: grid;
-  width: 100%;
-  grid-auto-flow: row;
-  place-items: start;
-  column-gap: 1rem;
-  font-size: var(--text-ui-14-fontSize);
   font-family: var(--vp-font-family-base);
+  font-size: var(--text-ui-14-fontSize);
   line-height: var(--leading-ui-20);
-  margin: 0 auto;
 }
 
-.footer > * {
+.footer-inner {
+  container: footer / inline-size;
+  width: 100%;
+  max-width: var(--footer-max-width);
+  margin-inline: auto;
+}
+
+:global(.Layout:has(.TeamPage) .footer-container) {
+  --footer-max-width: 960px;
+}
+
+:global(.Layout:has(.StaffPage) .footer-container) {
+  --footer-gutter: 16px;
+  --footer-max-width: 1280px;
+}
+
+.footer-container[data-layout='Blog'],
+.footer-container[data-layout='Headline'] {
+  --footer-max-width: 1104px;
+}
+
+.footer-container[data-layout='Blog'] {
+  --footer-gutter: 8px;
+}
+
+.footer-main {
   display: grid;
-  place-items: start;
-  gap: 0.5rem;
+  padding-block: 32px 24px;
 }
 
-.footer {
-  place-items: center;
+.footer-navigation {
+  min-width: 0;
+  border-bottom: 1px solid var(--vp-c-divider);
 }
 
 .footer-navigation:first-child {
   border-top: 1px solid var(--vp-c-divider);
 }
 
-.footer-navigation {
-  width: 100%;
-  line-height: var(--leading-ui-32);
-  font-size: var(--text-ui-14-fontSize);
-  font-weight: 500;
-  place-items: self-start;
-  border-bottom: 1px solid var(--vp-c-divider);
-  gap: 0;
-  overflow: hidden;
-
-  ul {
-    width: 100%;
-    height: 0;
-    overflow: hidden;
-    transition: 300ms ease;
-
-    li:last-child {
-      margin-bottom: 16px;
-    }
-  }
-
-  &.open ul {
-    height: 100%;
-  }
-
-  ul > li > a {
-    display: inline-block;
-    transition: color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
-    color: var(--vp-c-text-1);
-    padding: 6px 14px;
-    width: 100%;
-
-    &:hover {
-      color: var(--vp-c-brand);
-    }
-  }
-}
-
 .footer-title {
-  cursor: pointer;
-  width: 100%;
   font-weight: 700;
-  line-height: 1.33337;
+  line-height: var(--leading-ui-20);
   color: var(--vp-c-text-2);
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  padding: 1rem 0;
-  opacity: 0.8;
-
-  button {
-    all: unset;
-    display: block;
-    width: 100%;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  &::after {
-    content: '+';
-    filter: invert(50%);
-    float: right;
-    width: 14px;
-    height: 14px;
-    text-align: center;
-    margin-right: 8px;
-    transition: transform 0.3s ease;
-  }
 }
 
-.footer-navigation.open .footer-title::after {
-  transform: rotate(45deg) scale(1.08);
+.footer-title button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 16px;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.footer-title button::after {
+  content: '+';
+  flex: none;
+  width: 16px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.footer-navigation.open .footer-title button::after {
+  transform: rotate(45deg);
+}
+
+.footer-navigation ul {
+  display: none;
+  padding-block-end: 16px;
+}
+
+.footer-navigation.open ul {
+  display: block;
+}
+
+.footer-navigation a {
+  display: block;
+  padding-block: 6px;
+  line-height: var(--leading-ui-22);
+  color: var(--vp-c-text-1);
+  overflow-wrap: anywhere;
+  transition: color 0.25s;
+}
+
+.footer-navigation a:hover {
+  color: var(--vp-c-brand);
 }
 
 .footer-qrcode {
+  display: none;
   width: 192px;
   padding: 24px;
-  box-sizing: border-box;
-  border-radius: 9px;
-  background-color: var(--vp-c-bg-soft-up);
-  border: 1px solid var(--vp-c-divider);
-  display: none;
   flex-direction: column;
   align-items: center;
-  font-size: var(--text-ui-14-fontSize);
+  gap: 8px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 9px;
+  background-color: var(--vp-c-bg-soft-up);
   line-height: var(--leading-ui-22);
   color: var(--vp-c-text-2);
-
-  img {
-    box-shadow: var(--vp-shadow-1);
-  }
-
-  h4 {
-    margin: 4px 0 0;
-    font-size: var(--text-ui-16-fontSize);
-    line-height: var(--leading-ui-24);
-    font-weight: 700;
-    color: var(--vp-c-text-1);
-  }
+  text-align: center;
 }
 
-@media (--site-wide) {
-  .footer-container .footer {
-    max-width: calc(var(--vp-layout-max-width) - 64px);
-    padding-left: 48px;
-    padding-right: 48px;
-  }
+.footer-qrcode img {
+  width: 100%;
+  aspect-ratio: 1;
+  box-shadow: var(--vp-shadow-1);
 }
 
-/* 有侧栏时 Footer 要贴在内容列上：≤1440 侧栏宽度就是 --vp-sidebar-width，≥1440 起
-   VitePress 会按 (100% - --vp-layout-max-width) / 2 把它继续加宽（VP1/VP2 同一套公式），
-   所以这里必须复用 .VPContent.has-sidebar 的 padding；写死 --vp-sidebar-width 的
-   定位在宽屏下会被侧栏盖住左侧的那些栏目。 */
-@media (--site-desktop) {
-  .VPSidebar ~ .footer-container {
-    padding-left: calc(var(--vp-sidebar-width) + var(--footer-gutter));
-  }
+.footer-qrcode h4 {
+  font-size: var(--text-ui-16-fontSize);
+  line-height: var(--leading-ui-24);
+  font-weight: 700;
+  color: var(--vp-c-text-1);
 }
 
-@media (--site-wide) {
-  .VPSidebar ~ .footer-container {
-    padding-left: calc((100% - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width) + var(--footer-gutter));
-    padding-right: calc((100% - var(--vp-layout-max-width)) / 2 + var(--footer-gutter));
-  }
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 0 24px;
 }
 
-@media (--footer-columns) {
-  .footer {
-    grid-auto-flow: column;
-    place-items: self-start;
-    row-gap: 2.5rem;
-  }
+.footer-copyright {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+}
 
-  .footer:last-child {
-    border-top: 1px solid var(--vp-c-divider);
-  }
+.footer-copyright > svg {
+  flex: none;
+}
 
-  .footer-navigation:first-child {
-    border-top: none;
-  }
+.footer-copyright p {
+  overflow-wrap: anywhere;
+}
 
-  .footer-navigation {
-    place-items: self-start;
-    border: none;
-
-    ul {
-      height: 100%;
-    }
-
-    ul > li > a {
-      padding: 0;
-    }
-  }
-
-  .footer-center {
-    grid-auto-flow: row dense;
-  }
-
-  .footer-qrcode {
-    display: flex;
-  }
-
-  .footer:first-child {
-    padding-bottom: 2.5rem;
-  }
-
-  .footer-title {
-    cursor: default;
-
-    button {
-      cursor: default;
-    }
-
-    &::after {
-      display: none;
-    }
-  }
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
 .footer-sociallink {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 36px;
   height: 36px;
+  flex: none;
+  justify-content: center;
+  align-items: center;
   color: var(--vp-c-text-2);
+  border-radius: 25%;
+  transition:
+    color 0.25s,
+    background-color 0.25s;
+}
 
-  &:hover {
-    color: var(--vp-c-text-1);
-    transition: all 0.25s;
-    background-color: var(--vp-c-bg-elv);
-    border-radius: 25%;
+.footer-sociallink:hover {
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg-elv);
+}
+
+.footer-sociallink :deep(svg) {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.footer-title button:focus-visible,
+.footer-navigation a:focus-visible,
+.footer-sociallink:focus-visible {
+  outline: 2px solid var(--vp-c-brand);
+  outline-offset: 4px;
+}
+
+@media (--site-sm) {
+  .footer-container[data-layout='home'] {
+    --footer-gutter: 48px;
+  }
+}
+
+@media (--footer-columns) {
+  .footer-container {
+    --footer-gutter: 32px;
   }
 
-  & ~ svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
+  .footer-container[data-layout='Blog'],
+  .footer-container[data-layout='Headline'] {
+    --footer-gutter: 24px;
+  }
+
+  :global(.Layout:has(.StaffPage) .footer-container) {
+    --footer-gutter: 40px;
+  }
+
+  .footer-main {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) 192px;
+    gap: 32px;
+    align-items: start;
+    padding-block: 40px;
+  }
+
+  .footer-bottom {
+    padding-block: 24px;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  .footer-navigation,
+  .footer-navigation:first-child {
+    border: none;
+  }
+
+  .footer-title button {
+    padding-block: 0 16px;
+    cursor: default;
+  }
+
+  .footer-title button::after {
+    display: none;
+  }
+
+  .footer-navigation ul {
+    display: block;
+    padding: 0;
+  }
+
+  .footer-qrcode {
+    display: flex;
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    justify-self: end;
+  }
+}
+
+@media (--site-desktop) {
+  .footer-container[data-layout='home'] {
+    --footer-gutter: 64px;
+  }
+
+  .footer-container[data-layout='doc'],
+  .footer-container[data-layout='Post'] {
+    --footer-max-width: 992px;
+  }
+
+  /* Match VPContent's sidebar offset before applying the content gutter. */
+  .footer-container.has-sidebar {
+    --footer-max-width: none;
+    padding-inline-start: calc(var(--vp-sidebar-width) + var(--footer-gutter));
+  }
+}
+
+@media (--site-wide) {
+  .footer-container[data-layout='doc'],
+  .footer-container[data-layout='Post'] {
+    --footer-max-width: 1104px;
+  }
+
+  .footer-container.has-sidebar {
+    --footer-max-width: none;
+    padding-inline-start: calc(
+      (100% - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width) + var(--footer-gutter)
+    );
+    padding-inline-end: calc((100% - var(--vp-layout-max-width)) / 2 + var(--footer-gutter));
+  }
+}
+
+/* Keep the QR card beside the navigation only when the content column fits it. */
+@container footer (min-width: 896px) {
+  .footer-main {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) 192px;
+  }
+
+  .footer-qrcode {
+    grid-column: auto;
+    grid-row: auto;
   }
 }
 </style>
