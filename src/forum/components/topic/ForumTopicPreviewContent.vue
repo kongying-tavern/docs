@@ -3,6 +3,7 @@ import type ForumAPI from '~/forum/api/types'
 import { computed } from 'vue'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumTopicItemFooter from '../list/ForumTopicItemFooter.vue'
+import ForumTagList from '../ui/ForumTagList.vue'
 import { ForumPreloadedCommentArea as ForumCommentArea } from '../utils/forumComponentPreload'
 import ForumQuotedTopic from './ForumQuotedTopic.vue'
 import ForumTopicContent from './ForumTopicContent.vue'
@@ -32,6 +33,7 @@ const detailHref = computed(() => topicHref(String(props.topic.id), null))
       :detail-href="detailHref"
       @summary-click="emit('detail-click')"
     />
+    <ForumTagList :data="topic.tags" />
     <ForumTopicMedia :topic="topic" />
     <ForumQuotedTopic
       v-if="topic.quotedTopic"
