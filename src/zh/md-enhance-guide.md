@@ -418,12 +418,12 @@ paragraph _style me_{.vp-link} more text
 演出，开始~:2.原神/芙宁娜-乐.png:
 ::::
 
-### [Task list](https://mdit-plugins.github.io/zh/tasklist.html#%E9%80%89%E9%A1%B9)
+### [Task List 任务列表](https://mdit-plugins.github.io/zh/tasklist.html#%E9%80%89%E9%A1%B9) {#task-list}
 
 #### 语法
 
-使用 - [] 一些文字渲染一个未勾选的任务项
-使用 - [x] 一些文字渲染一个勾选了的任务项 (我们也支持大写的 X)
+- 使用 `- [ ] 一些文字` 渲染一个未勾选的任务项，方括号内需要保留一个空格。
+- 使用 `- [x] 一些文字` 渲染一个已勾选的任务项，也支持大写的 `X`。
 
 #### 示例
 
@@ -439,7 +439,7 @@ paragraph _style me_{.vp-link} more text
 #### 语法
 
 ```markdown
-\*{ruby base:ruby text1|ruby text2|...}
+*{ruby base:ruby text1|ruby text2|...}
 ```
 
 #### 示例
@@ -448,14 +448,14 @@ paragraph _style me_{.vp-link} more text
 *{中国:zhōng|guó}
 ::::
 
-### [Abbr](https://mdit-plugins.github.io/zh/abbr.html)
+### [Abbr 缩略词](https://mdit-plugins.github.io/zh/abbr.html) {#abbr}
 
 #### 语法
 
-通过此插件，你可以通过以额外 \* 开头的链接声明来声明缩略词。
+使用以 `*` 开头的链接声明格式定义缩略词：
 
 ```markdown
-\*[缩略词]: 内容
+*[缩略词]: 内容
 ```
 
 #### 示例
@@ -467,9 +467,11 @@ paragraph _style me_{.vp-link} more text
 The HTML specificationis maintained by the W3C.
 ::::
 
-### MDC
+## MDC {#mdc}
 
-#### Inline Component Demo
+MDC 用于在 Markdown 中声明 Vue 组件、传递属性和编写插槽内容。
+
+### Inline Component Demo
 
 <!-- zhlint ignore: :scratch-to-reveal -->
 
@@ -477,7 +479,7 @@ The HTML specificationis maintained by the W3C.
 :scratch-to-reveal[刮开这里查看隐藏内容]{:width=300 .mt-4}
 ::::
 
-#### Block Component Demo
+### Block Component Demo
 
 <!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
 
@@ -500,7 +502,7 @@ items:
 ::
 ::::
 
-#### Slot Demo
+### Slot Demo
 
 <!-- markdownlint-enable MD034 -->
 <!-- markdownlint-disable MD018 -- MDC slot markers require no space after #. -->
@@ -545,7 +547,7 @@ items:
 > 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
 > `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props(`---` 块)必须紧跟在组件起始行之后。
 
-#### Props 语法
+### Props 语法
 
 行内组件的 props 需要写在同一个 `{...}` 中，不支持连续声明多个 props block。
 

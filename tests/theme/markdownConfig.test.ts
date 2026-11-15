@@ -253,3 +253,33 @@ test('timeline headings lose their ids while rendering, not while parsing', asyn
   const html = await markdown.renderAsync(source, env)
   assert.match(html, /<h2 id=""[^>]*>Inner heading/)
 })
+
+test('timeline demos omit outline anchors without hiding following guide sections', async () => {
+  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const source = `
+## Components
+### Timeline
+:::: demo
+::: timeline 2025-12-03 | Demo version
+## Inner heading
+- example
+:::
+::::
+### Card
+::: timeline 2025-12-02 | Published version
+- release
+:::
+`
+  for (let pass = 0; pass < 2; pass++) {
+    const html = await markdown.renderAsync(source)
+    assert.match(html, /<h2 class='timeline-dot-title title'>Demo version<\/h2>/)
+    assert.match(html, /<h2 id=""[^>]*>Inner heading/)
+    assert.match(html, /<h3 id="card"[^>]*>Card/)
+    assert.match(html, /<h2 class='timeline-dot-title title' id='published-version'>/)
+    assert.doesNotMatch(html, /ignore-header/)
+  }
+
+  const guide = await markdown.renderAsync(readFileSync(resolve('src/zh/md-enhance-guide.md'), 'utf8'))
+  assert.equal(guide.match(/<h2 class='timeline-dot-title title'>/g)?.length, 3)
+  assert.match(guide, /<h2 id="mdc"[^>]*>MDC/)
+})

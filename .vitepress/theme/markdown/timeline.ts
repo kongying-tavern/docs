@@ -103,7 +103,7 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
   patchTimelineHeadingIds(md, klass)
 
   /** 整组无日期判定按文档缓存，避免每个块重复扫描全部 token */
-  const memo: { tokens: Token[] | null, hasAnyDate: boolean, dotIndex: number, lastYear: string } = { tokens: null, hasAnyDate: false, dotIndex: 0, lastYear: '' }
+  const memo: { tokens: Token[] | null, hasAnyDate: boolean, dotIndex: number, lastYear: string, demoEntries: Set<Token> } = { tokens: null, hasAnyDate: false, dotIndex: 0, lastYear: '', demoEntries: new Set() }
 
   return [
     container,
@@ -114,17 +114,33 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
           return '</div>\n'
 
         if (memo.tokens !== tokens) {
-          const opens = tokens.filter(candidate => candidate.type === 'container_timeline_open')
           memo.tokens = tokens
-          memo.hasAnyDate = opens.some(candidate => parseTimelineInfo(candidate.info, klass).hasDate)
+          memo.hasAnyDate = false
           memo.lastYear = ''
           memo.dotIndex = 0
+          memo.demoEntries.clear()
+          let demoDepth = 0
+          for (const token of tokens) {
+            if (token.type === 'demo_demo_content_open') {
+              demoDepth++
+            }
+            else if (token.type === 'demo_demo_content_close') {
+              demoDepth--
+            }
+            else if (token.type === `container_${klass}_open`) {
+              memo.hasAnyDate ||= parseTimelineInfo(token.info, klass).hasDate
+              if (demoDepth > 0)
+                memo.demoEntries.add(token)
+            }
+          }
         }
 
         const parsed = parseTimelineInfo(tokens[idx].info, klass)
         // dot 标题带语义 id（大纲/锚点用），无标题时回退日期、再回退序号
         const slugBase = (parsed.title || parsed.date).toLowerCase().replace(SLUG_RE, '-').replace(SLUG_EDGE_RE, '')
         const dotId = slugBase || `tl-${memo.dotIndex++}`
+        // VitePress 从带 id 的标题收集大纲；demo 不参与，避免打断正文的标题层级。
+        const titleId = memo.demoEntries.has(tokens[idx]) ? '' : ` id='${dotId}'`
         const [year = '', month = '', day = ''] = parsed.date.split('-')
         const startsYear = Boolean(year && year !== memo.lastYear)
         if (year)
@@ -164,7 +180,7 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
           ? `<span class='timeline-dot-year-backdrop' aria-hidden='true'>${year}</span>`
           : ''
         return `<div class='${classNames}'>${yearBackdrop}${dateSpan}
-<h2 class='timeline-dot-title title' id='${dotId}'>${titleHtml}</h2>${iconSpan}
+<h2 class='timeline-dot-title title'${titleId}>${titleHtml}</h2>${iconSpan}
 `
       },
     },
