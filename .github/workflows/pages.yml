@@ -3,6 +3,7 @@ name: GITHUB_PAGE
 on:
   push:
     branches:
+      - main
       - dev
   workflow_dispatch:
 
@@ -54,6 +55,8 @@ jobs:
 
       - name: Build site
         run: pnpm build
+        env:
+          DOCS_DEPLOY_TARGET: github-pages
 
       - name: Build translation reports
         run: pnpm translations:build
