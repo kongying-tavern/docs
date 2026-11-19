@@ -1,36 +1,30 @@
-import type { PageData, SiteConfig } from 'vitepress'
-
+import type { PageData } from 'vitepress'
+import process from 'node:process'
 import { SITE_ORIGIN } from '../../src/constants/site.ts'
 
-// eslint-disable-next-line node/prefer-global/process
 export const isProd = process.env.NODE_ENV === 'production'
-const LEADING_SLASHES_RE = /^\/+/
 
-export function cfgGetPageUrl(
-  pageData: PageData,
-  siteConfig: SiteConfig,
-): string {
-  const path = `${siteConfig.site.base}${pageData.relativePath.replace('.md', '')}`
-  return `${SITE_ORIGIN}/${path.replace(LEADING_SLASHES_RE, '')}`
+export function getDeploymentOrigin(): string {
+  return new URL(process.env.VITEPRESS_HOSTNAME || SITE_ORIGIN).origin
 }
 
-export function cfgGetPageTitle(pageData: PageData, _siteConfig?: SiteConfig<unknown>): string {
+export function cfgGetPageTitle(pageData: PageData): string {
   return pageData.frontmatter.title
     ? pageData.frontmatter.title
     : 'Kongying Tavern'
 }
-export function cfgGetPageDesc(pageData: PageData, _siteConfig?: SiteConfig<unknown>): string {
+export function cfgGetPageDesc(pageData: PageData): string {
   return pageData.frontmatter.description
     ? pageData.frontmatter.description
     : 'Genshin Interactive Map - A Completionist\'s Interactive Map by Kongying Tavern'
 }
-export function cfgGetPageKeywords(pageData: PageData, _siteConfig: SiteConfig<unknown>): string {
+export function cfgGetPageKeywords(pageData: PageData): string {
   return pageData.frontmatter.keywords
     ? pageData.frontmatter.keywords
     : '空荧酒馆,空荧地图,空荧酒馆原神地图,原神全资源攻略地图,原神攻略地图,原神地图,原神电子地图,原神互动地图,Genshin,Genshin_map,Genshin_Treasure,Genshin Map,Genshin Impact Map,Genshin Impact Interactive Map'
 }
-export function cfgGetPageCover(pageData: PageData, _siteConfig: SiteConfig<unknown>): string {
+export function cfgGetPageCover(pageData: PageData, deploymentUrl: URL): string {
   return pageData.frontmatter.image
     ? pageData.frontmatter.image
-    : 'https://yuanshen.site/docs/imgs/common/cover.jpg'
+    : new URL('imgs/common/cover.jpg', deploymentUrl).href
 }

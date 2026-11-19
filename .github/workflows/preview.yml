@@ -56,10 +56,11 @@ jobs:
         id: deploy
         env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          PR_ID: ${{ steps.pr.outputs.id }}
         run: |
-          repository=${{ github.repository }}
-          project_name=${repository#*/}
-          export DEPLOY_DOMAIN=https://kongying-tavern-preview-pr${{ steps.pr.outputs.id }}-$project_name.surge.sh
+          [[ "$PR_ID" =~ ^[0-9]+$ ]]
+          project_name=${GITHUB_REPOSITORY#*/}
+          export DEPLOY_DOMAIN="https://kongying-tavern-preview-pr${PR_ID}-$project_name.surge.sh"
           npx surge@0.43.0 --project ./dist --domain $DEPLOY_DOMAIN
           echo "url=$DEPLOY_DOMAIN" >> "$GITHUB_OUTPUT"
 

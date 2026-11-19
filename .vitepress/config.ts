@@ -3,7 +3,6 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 import { generateBreadcrumbsData } from './config/breadcrumbsDataGenerator.ts'
-import { createConfigureFunction } from './config/common.ts'
 import { createHeadConfig } from './config/head.ts'
 import { ignoreDeadLinksConfig } from './config/ignoreDeadLinks.ts'
 import { createLocalesConfig } from './config/locales.ts'
@@ -12,14 +11,14 @@ import { getPageExclusions } from './config/pageVisibility.ts'
 import { rewritesConfig } from './config/rewrites.ts'
 import { localeSearchConfig } from './config/search.ts'
 import { siteLocaleWatchPlugin } from './config/siteLocale.ts'
-import { sitemapConfig } from './config/sitemap.ts'
+import { createSitemapConfig } from './config/sitemap.ts'
 import { cfgDynamicTitleTemplate } from './config/title.ts'
 import { fontSubsetPlugin } from './plugins/font-subset/index.ts'
 
 const pagesDir = 'pages'
 
-export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
-  base: '/docs/',
+export default (): UserConfig<DefaultTheme.Config> => ({
+  base: process.env.VITEPRESS_BASE || '/docs/',
   srcDir: pagesDir,
   outDir: process.env.VITEPRESS_OUT_DIR || './dist',
   cacheDir: process.env.VITEPRESS_CACHE_DIR,
@@ -27,9 +26,9 @@ export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   cleanUrls: true,
   lastUpdated: true,
   locales: createLocalesConfig(),
-  sitemap: sitemapConfig,
+  ...createSitemapConfig(),
   markdown: markdownConfig,
-  head: await createHeadConfig(),
+  head: createHeadConfig(),
   rewrites: rewritesConfig,
   ignoreDeadLinks: ignoreDeadLinksConfig,
   themeConfig: {
@@ -43,7 +42,6 @@ export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
     plugins: [fontSubsetPlugin(), siteLocaleWatchPlugin()],
     configFile: fileURLToPath(import.meta.resolve('../vite.config.ts')),
   },
-  ...createConfigureFunction(),
   transformPageData(pageData, context) {
     generateBreadcrumbsData(pageData, context)
     const { siteConfig } = context

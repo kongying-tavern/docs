@@ -32,6 +32,8 @@ jobs:
 
       - name: Build
         run: pnpm site:preview
+        env:
+          VITEPRESS_HOSTNAME: ${{ github.event.number && format('https://kongying-tavern-preview-pr{0}-{1}.surge.sh', github.event.number, github.event.repository.name) || '' }}
 
       - name: Build translation reports
         run: pnpm translations:build

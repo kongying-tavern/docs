@@ -1,15 +1,12 @@
-import type { HeadConfig, PageData, SiteConfig } from 'vitepress'
+import type { HeadConfig, PageData } from 'vitepress'
 import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site.ts'
 import { TELEMETRY_ENABLED_STORAGE_KEY } from '../../src/constants/telemetry.ts'
 import { sitePreferencesBootScript } from '../../src/services/sitePreferences.ts'
-import { DEFAULT_LOCALE } from '../locales/common.ts'
-import { getLocaleDirs } from './localeDirs.ts'
 import {
   cfgGetPageCover,
   cfgGetPageDesc,
   cfgGetPageKeywords,
   cfgGetPageTitle,
-  cfgGetPageUrl,
   isProd,
 } from './utils.ts'
 
@@ -52,18 +49,20 @@ export const productionHead: HeadConfig[] = [
 
 export function cfgDynamicHead(
   pageData: PageData,
-  siteConfig: SiteConfig,
+  base: string,
+  deploymentUrl: URL,
+  path: string,
 ): HeadConfig[] {
-  const pageUrl = cfgGetPageUrl(pageData, siteConfig)
-  const pageTitle = cfgGetPageTitle(pageData, siteConfig)
-  const pageDesc = cfgGetPageDesc(pageData, siteConfig)
-  const pageKeywords = cfgGetPageKeywords(pageData, siteConfig)
-  const pageCover = cfgGetPageCover(pageData, siteConfig)
+  const pageUrl = new URL(path, deploymentUrl).href
+  const pageTitle = cfgGetPageTitle(pageData)
+  const pageDesc = cfgGetPageDesc(pageData)
+  const pageKeywords = cfgGetPageKeywords(pageData)
+  const pageCover = cfgGetPageCover(pageData, deploymentUrl)
 
   // transformHead merges these into each page; VitePress dedupes meta identity
   // independently of content, so page values replace the site defaults.
   return [
-    ...createFontStylesheetHead(siteConfig.site.base),
+    ...createFontStylesheetHead(base),
     ['meta', { name: 'description', content: pageDesc }],
     ['meta', { name: 'keywords', content: pageKeywords }],
     ['meta', { property: 'og:url', content: pageUrl }],
@@ -125,23 +124,6 @@ export const commonHead: HeadConfig[] = [
   ['meta', { name: 'twitter:creator', content: '@KongyingTavern' }],
 ]
 
-async function createHreflangHead(): Promise<HeadConfig[]> {
-  return getLocaleDirs().map(lang => [
-    'link',
-    {
-      rel: 'alternate',
-      hreflang: lang,
-      href: lang === DEFAULT_LOCALE
-        ? `${SITE_ORIGIN}${SITE_BASE}`
-        : `${SITE_ORIGIN}${SITE_BASE}/${lang}`,
-    },
-  ])
-}
-
-export async function createHeadConfig(): Promise<HeadConfig[]> {
-  return [
-    ...commonHead,
-    ...await createHreflangHead(),
-    ...(isProd ? productionHead : []),
-  ]
+export function createHeadConfig(): HeadConfig[] {
+  return isProd ? [...commonHead, ...productionHead] : commonHead
 }

@@ -57,6 +57,7 @@ jobs:
         run: pnpm build
         env:
           DOCS_DEPLOY_TARGET: github-pages
+          VITEPRESS_HOSTNAME: https://${{ github.repository_owner }}.github.io
 
       - name: Build translation reports
         run: pnpm translations:build

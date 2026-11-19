@@ -11,12 +11,12 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
 import { getLocaleDirs } from './.vitepress/config/localeDirs.ts'
 import { loadSiteLocale } from './.vitepress/config/siteLocale.ts'
+import { getDeploymentOrigin } from './.vitepress/config/utils.ts'
 import { DEFAULT_LOCALE } from './.vitepress/locales/common.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
 import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
 import { uiScalePlugin } from './.vitepress/theme/uiScale.ts'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
-import { SITE_ORIGIN } from './src/constants/site.ts'
 
 const zhSite = loadSiteLocale(new URL('./.vitepress/locales/zh/site.yml', import.meta.url))
 
@@ -105,10 +105,19 @@ export default defineConfig(({ mode }) => ({
     process.env.VITE_DEVTOOLS !== 'false' && vueDevTools({ appendTo: /vitepress\/dist\/client\/app\/index\.js$/ }),
     process.env.VITE_DEVTOOLS !== 'false' && medula(),
     loadEnv(mode, process.cwd(), 'VITE_COLADA_DEVTOOLS').VITE_COLADA_DEVTOOLS !== 'false' && PiniaColadaDevtools(),
+    {
+      name: 'llms-resolved-base',
+      apply: 'build',
+      configResolved({ vitepress }) {
+        // llms.txt reads userConfig.base, which VitePress leaves untouched by --base.
+        if (vitepress)
+          vitepress.userConfig.base = vitepress.site.base
+      },
+    },
     llmstxt({
       // Chinese is the source locale; translated copies would duplicate the corpus.
       workDir: DEFAULT_LOCALE,
-      domain: SITE_ORIGIN,
+      domain: getDeploymentOrigin(),
       title: `${zhSite.title}原神地图文档`,
       description: zhSite.description,
       details: '涵盖地图客户端使用手册、常见问题、下载与社区说明。本文档以中文原文为准。',
@@ -118,6 +127,8 @@ export default defineConfig(({ mode }) => ({
       })),
       // Keep static documentation; component-only pages have no useful Markdown body.
       ignoreFiles: [
+        '**/_*/**',
+        '**/_*.md',
         'feedback.md',
         'callback.md',
         'settings*.md',
