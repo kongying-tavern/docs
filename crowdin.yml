@@ -1,9 +1,0 @@
-commit_message: '[skip ci] Update translations (%language%) %original_file_name%'
-pull_request_title: 'i18n: update translations'
-pull_request_labels:
-  - i18n
-files:
-  - source: /pages/zh/**/*.md
-    translation: /pages/%locale%/**/%file_name%.md
-  - source: /.vitepress/locales/zh.ts
-    translation: /.vitepress/locales/%locale%.ts
