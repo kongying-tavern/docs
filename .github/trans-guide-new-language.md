@@ -23,6 +23,6 @@ pnpm init:locale
 ## 完成翻译
 
 1. 对照 `pages/zh/` 翻译新语言文章，优先完成重点页面。
-2. 翻译复制来的全部 YAML，包括 `site.yml` 中的站点文案和语言建议栏。`config.ts` 无需修改。
+2. 翻译复制来的全部 YAML，包括 `site.yml` 中的站点文案和语言建议栏。VitePress 会通过 `site.yml` 自动发现新语言。
 3. 在各语言 `translations.md` 的语言列表中补上新入口。
 4. 按[翻译规则](./translation-guide.md#translation-rules)复核文案，完成[提交前检查](./translation-guide.md#checks-and-submission)后提交 Pull Request。

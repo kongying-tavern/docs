@@ -11,8 +11,8 @@ import { loadSiteLocale } from '../../.vitepress/config/siteLocale.ts'
 import { DEFAULT_LOCALE, SHARED_THEME_CONFIG } from '../../.vitepress/locales/common.ts'
 import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site.ts'
 
-test('site YAML retains native VitePress fields, locale paths and executable title rules', async () => {
-  const locales = await createLocalesConfig()
+test('site YAML retains native VitePress fields, locale paths and executable title rules', () => {
+  const locales = createLocalesConfig()
   for (const locale of getLocaleDirs()) {
     const url = new URL(`../../.vitepress/locales/${locale}/site.yml`, import.meta.url)
     const raw = load(readFileSync(url, 'utf8'), { schema: JSON_SCHEMA }) as { label: string, lang: string, title: string, description: string }

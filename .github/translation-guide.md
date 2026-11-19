@@ -14,7 +14,7 @@ Local setup: [中文教程](./trans-guide-no-exp.md) · [English tutorial](./tra
 
 [Lunaria](https://yuanshen.site/docs/_translations/) tracks articles; [x18n](https://yuanshen.site/docs/_i18n/) tracks UI and site text. Both published dashboards are read-only. Submit changes through a pull request.
 
-Claim articles on the [claim board](https://github.com/kongying-tavern/docs/issues/555), which lists the commands and deadlines. For UI messages, edit the YAML files and submit a pull request. Leave `config.ts`, shared configuration and generated files unchanged.
+Claim articles on the [claim board](https://github.com/kongying-tavern/docs/issues/555), which lists the commands and deadlines. For UI messages, edit the YAML files and submit a pull request. Leave shared configuration and generated files unchanged.
 
 ## Translation rules
 

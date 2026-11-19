@@ -56,5 +56,19 @@ export function siteLocaleWatchPlugin(): Plugin {
     configResolved(config) {
       config.vitepress?.configDeps.push(...getLocaleDirs().map(locale => normalizePath(join(LOCALES_DIR, locale, 'site.yml'))))
     },
+    configureServer(server) {
+      server.watcher.add(LOCALES_DIR)
+    },
+    hotUpdate: {
+      order: 'pre',
+      handler({ file, type, server }) {
+        if (type !== 'create' || this.environment.name !== 'client')
+          return
+        // Let VitePress restart with freshly resolved config when a locale is added.
+        const deps = server.config.vitepress?.configDeps
+        if (deps && getLocaleDirs().some(locale => file === normalizePath(join(LOCALES_DIR, locale, 'site.yml'))) && !deps.includes(file))
+          deps.push(file)
+      },
+    },
   }
 }

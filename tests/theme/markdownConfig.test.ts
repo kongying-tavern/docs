@@ -8,7 +8,7 @@ import { createLocalesConfig } from '../../.vitepress/config/locales'
 import { markdownConfig } from '../../.vitepress/config/markdown'
 
 test('code copy buttons use the page locale during Markdown rendering', async () => {
-  const locales = await createLocalesConfig()
+  const locales = createLocalesConfig()
   const markdown = await createMarkdownRenderer(resolve('pages'), mergeMarkdownLocales(markdownConfig, locales))
   for (const [localeIndex, title, copied] of [
     ['root', '复制代码', '已复制'],

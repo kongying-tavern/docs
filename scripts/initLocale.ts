@@ -5,7 +5,6 @@ import { createInterface } from 'node:readline'
 import { fileURLToPath } from 'node:url'
 import cac from 'cac'
 import { dump, JSON_SCHEMA, load } from 'js-yaml'
-import { writeLocaleImporters } from './locales/importers'
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '../..')
 const LOCALE_CODE_RE = /^[a-z]{2}$/
@@ -103,8 +102,6 @@ function initLocale(options: Options): void {
   if (lunaria.locales.some(entry => entry.lang === code))
     fail(`lunaria.config.json already contains ${code}`)
   const templateSite = join(ROOT, `.vitepress/locales/${template}/site.yml`)
-  if (!existsSync(join(ROOT, `.vitepress/locales/${template}/config.ts`)))
-    fail(`missing config.ts in ${template} template`)
   const site = load(readFileSync(templateSite, 'utf8'), { schema: JSON_SCHEMA }) as Record<string, unknown>
   if (!site || typeof site !== 'object' || !site.title || !site.themeConfig)
     fail(`missing title or themeConfig in ${template} template site.yml`)
@@ -132,9 +129,6 @@ function initLocale(options: Options): void {
   lunaria.locales.push({ label, lang: code })
   writeFileSync(lunariaPath, `${JSON.stringify(lunaria, null, 2)}\n`)
   console.log('✓ Registered in lunaria.config.json')
-
-  writeLocaleImporters(ROOT)
-  console.log('✓ Updated locale imports for Vite config bundling')
 
   console.log(`
 Done. Locale "${label}" (${code}) initialized from the ${template} template.

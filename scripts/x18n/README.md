@@ -30,7 +30,7 @@
 
 文件名就是命名空间，例如 `docReaction.yml` 中的 `title` 对应 `docReaction.title`。新增词条优先复用已有命名空间；新增文件时，在源语言和目标语言目录中使用相同文件名，无需另行注册。
 
-界面 YAML 由官方 `@intlify/unplugin-vue-i18n` 预编译。`site.yml` 由同目录的 `config.ts` 加载，不参与消息编译；修改后 VitePress 会重载配置。公共地址和分类 ID 放在 [common.ts](../../.vitepress/locales/common.ts)，标题匹配字符串在加载时转为正则。
+界面 YAML 由官方 `@intlify/unplugin-vue-i18n` 预编译。VitePress 扫描语言目录并直接读取 `site.yml`，新增或修改该文件会重载站点配置。公共地址和分类 ID 放在 [common.ts](../../.vitepress/locales/common.ts)，标题匹配字符串在加载时转为正则。
 
 x18n 0.1.1 的 YAML 解析器缺少数组支持，项目通过 [pnpm 补丁](../../patches/@x18n__builtins@0.1.1.patch)补齐读取和编辑，安装依赖时自动应用。升级 x18n 后先验证原生数组支持，再移除补丁。
 

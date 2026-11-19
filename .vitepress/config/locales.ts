@@ -1,18 +1,15 @@
 import type { DefaultTheme, LocaleConfig } from 'vitepress'
-import type { SiteLocale } from '../locales/types.ts'
+import { join } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { DEFAULT_LOCALE } from '../locales/common.ts'
 import { baseHelper } from '../theme/utils.ts'
-import { getLocaleDirs } from './localeDirs.ts'
-import { localeImporters } from './localeImporters.ts'
+import { getLocaleDirs, LOCALES_DIR } from './localeDirs.ts'
+import { loadSiteLocale } from './siteLocale.ts'
 
-export async function createLocalesConfig(): Promise<LocaleConfig<DefaultTheme.Config>> {
+export function createLocalesConfig(): LocaleConfig<DefaultTheme.Config> {
   const locales: LocaleConfig<DefaultTheme.Config> = {}
-  const importers: Record<string, () => Promise<{ default: SiteLocale }>> = localeImporters
   for (const locale of getLocaleDirs()) {
-    const load = importers[locale]
-    if (!load)
-      throw new Error(`Missing importer for "${locale}"; run pnpm init:locale`)
-    const { default: config } = await load()
+    const config = loadSiteLocale(pathToFileURL(join(LOCALES_DIR, locale, 'site.yml')))
     const theme = config.themeConfig
     const base = locale === DEFAULT_LOCALE ? '/' : `/${locale}`
     locales[locale === DEFAULT_LOCALE ? 'root' : locale] = {

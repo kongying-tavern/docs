@@ -10,13 +10,15 @@ import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
 import { getLocaleDirs } from './.vitepress/config/localeDirs.ts'
+import { loadSiteLocale } from './.vitepress/config/siteLocale.ts'
 import { DEFAULT_LOCALE } from './.vitepress/locales/common.ts'
-import zhSite from './.vitepress/locales/zh/config.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
 import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
 import { uiScalePlugin } from './.vitepress/theme/uiScale.ts'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
 import { SITE_ORIGIN } from './src/constants/site.ts'
+
+const zhSite = loadSiteLocale(new URL('./.vitepress/locales/zh/site.yml', import.meta.url))
 
 // llms 1.14 drops the site base in nested sidebar groups; keep section entries flat.
 function flattenSidebarItems(items: DefaultTheme.SidebarItem[]): DefaultTheme.SidebarItem[] {

@@ -26,7 +26,7 @@ export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   srcExclude: getPageExclusions(fileURLToPath(new URL(`../${pagesDir}/`, import.meta.url))),
   cleanUrls: true,
   lastUpdated: true,
-  locales: await createLocalesConfig(),
+  locales: createLocalesConfig(),
   sitemap: sitemapConfig,
   markdown: markdownConfig,
   head: await createHeadConfig(),

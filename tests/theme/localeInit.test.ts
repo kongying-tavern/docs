@@ -1,8 +1,7 @@
 import type { DefaultTheme, LocaleConfig } from 'vitepress'
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
 import { JSON_SCHEMA, load } from 'js-yaml'
@@ -10,14 +9,14 @@ import { loadConfigFromFile } from 'vite'
 import { onTestFinished, test } from 'vitest'
 
 function fixture(template: 'zh' | 'en' = 'en') {
-  const root = mkdtempSync(join(tmpdir(), 'vitepress-locale-'))
+  const cacheDir = resolve('.vitepress/cache')
+  mkdirSync(cacheDir, { recursive: true })
+  const root = mkdtempSync(join(cacheDir, 'locale-init-'))
   onTestFinished(() => rmSync(root, { recursive: true, force: true }))
-  for (const dir of ['scripts/locales', `pages/${template}/blog`, 'src/constants', '.vitepress/config', '.vitepress/theme', '.vitepress/locales'])
+  for (const dir of ['scripts', `pages/${template}/blog`, 'src/constants', '.vitepress/config', '.vitepress/theme', '.vitepress/locales'])
     mkdirSync(join(root, dir), { recursive: true })
-  symlinkSync(resolve('node_modules'), join(root, 'node_modules'), 'junction')
   for (const path of [
     'scripts/initLocale.ts',
-    'scripts/locales/importers.ts',
     'src/constants/site.ts',
     '.vitepress/config/siteLocale.ts',
     '.vitepress/config/localeDirs.ts',
@@ -51,7 +50,6 @@ test.each(['zh', 'en'] as const)('init:locale loads a complete language from the
     label: 'Français',
     lang: 'fr-CA',
   })
-  assert.equal(readFileSync(join(root, '.vitepress/locales/fr/config.ts'), 'utf8'), readFileSync(join(root, `.vitepress/locales/${template}/config.ts`), 'utf8'))
   for (const file of ['ui', 'forum', 'settings', 'payment', 'asideLinks', 'docReaction', 'staff', 'team', 'changelog'])
     assert.equal(readFileSync(join(root, `.vitepress/locales/fr/${file}.yml`), 'utf8'), readFileSync(join(root, `.vitepress/locales/${template}/${file}.yml`), 'utf8'))
   assert.equal(readFileSync(join(root, 'pages/fr/blog/[path].paths.ts'), 'utf8'), 'usePostData(\'FR\')')
@@ -62,7 +60,7 @@ test.each(['zh', 'en'] as const)('init:locale loads a complete language from the
 
   const configPath = join(root, 'vite.config.ts')
   writeFileSync(configPath, `import { createLocalesConfig } from './.vitepress/config/locales.ts'
-export default async () => ({ define: { locales: await createLocalesConfig() } })`)
+export default () => ({ define: { locales: createLocalesConfig() } })`)
   const bundled = await loadConfigFromFile({ command: 'build', mode: 'production' }, configPath, root)
   const locales = bundled?.config.define?.locales as LocaleConfig<DefaultTheme.Config>
   assert.equal(locales.fr.label, 'Français')
@@ -99,7 +97,6 @@ test.each(['source-directory', 'locale-directory', 'lunaria-registration', 'inva
   const result = initialize(root, '--template', 'en', '--lang', tag)
   assert.equal(result.status, 1)
   assert.equal(readFileSync(lunaria, 'utf8'), originalRegistry)
-  assert.equal(existsSync(join(root, '.vitepress/config/localeImporters.ts')), false)
   assert.equal(existsSync(join(root, '.vitepress/locales/fr/site.yml')), false)
   assert.equal(existsSync(join(root, 'pages/fr/index.md')), false)
   if (problem === 'source-directory')
