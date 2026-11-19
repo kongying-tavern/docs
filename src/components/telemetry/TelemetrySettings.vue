@@ -3,7 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
 import { Switch } from '@/components/ui/switch'
-import SettingsRow from '~/components/settings/SettingsRow.vue'
+import SettingsRow from '~/features/settings/SettingsRow.vue'
 import {
   disableReporting,
   enableReporting,

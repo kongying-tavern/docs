@@ -2,7 +2,7 @@
 
 Parses the generated fonts-subset.css / fonts-standard.css, scans locale
 content, and reports which chunks each page would fetch. Stdlib-only; run
-`pnpm build:fonts` first so src/public/fonts is populated.
+`pnpm build:fonts` first so pages/public/fonts is populated.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ CSS_FILES = [
     ".vitepress/theme/styles/fonts-subset.css",
     ".vitepress/theme/styles/fonts-standard.css",
 ]
-FONTS_DIR = "src/public/fonts"
+FONTS_DIR = "pages/public/fonts"
 LOCALES = ["en", "ja", "zh"]
 SCAN_EXTENSIONS = {".md"}
 
@@ -90,7 +90,7 @@ def main() -> None:
     print("| locale | pages | avg files/page | avg KiB/page | pages fetching cjk.* |")
     print("| --- | --- | --- | --- | --- |")
     for locale in LOCALES:
-        pages = sorted((PROJECT_ROOT / "src" / locale).rglob("*.md"))
+        pages = sorted((PROJECT_ROOT / "pages" / locale).rglob("*.md"))
         per_page_files: list[int] = []
         per_page_bytes: list[int] = []
         cjk_pages = 0
@@ -113,7 +113,7 @@ def main() -> None:
 
     print("\n## Homepage breakdown\n")
     for locale in LOCALES:
-        page = PROJECT_ROOT / "src" / locale / "index.md"
+        page = PROJECT_ROOT / "pages" / locale / "index.md"
         codepoints = page_codepoints(page)
         hits = sorted(
             file_name

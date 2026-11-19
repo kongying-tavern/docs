@@ -21,17 +21,17 @@
   ],
   "files": [
     {
-      "location": "src/**/*.md",
-      "pattern": "src/@lang/@path",
+      "location": "pages/**/*.md",
+      "pattern": "pages/@lang/@path",
       "ignore": [
-        "public/",
+        "pages/public/**",
         "fr/",
-        "src/zh/frontmatter.md",
-        "src/zh/staff.md",
-        "src/zh/md-enhance-guide.md",
-        "src/zh/team.md",
-        "src/zh/announcement.md",
-        "src/zh/blog/[id].md"
+        "pages/zh/frontmatter.md",
+        "pages/zh/staff.md",
+        "pages/zh/md-enhance-guide.md",
+        "pages/zh/team.md",
+        "pages/zh/announcement.md",
+        "pages/zh/blog/[id].md"
       ],
       "type": "universal"
     }

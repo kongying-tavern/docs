@@ -14,7 +14,7 @@ test('blog summaries render macros and Markdown from the latest update only', as
 ## Older
 - 点位图标仍显示旧缓存。
 :::`
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync(extractBlogExcerpt(source.replace(/\r?\n/g, '\r\n')))
   assert.ok(html.includes('Rc1.1.0'))
   assert.ok(html.includes('<strong>普通级</strong>'))

@@ -1,8 +1,8 @@
 media:
-  input: src/public
+  input: pages/public
   output: /
 content:
   - name: zh
-    label: src
+    label: 文档页面
     type: collection
-    path: src
+    path: pages

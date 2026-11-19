@@ -10,11 +10,11 @@ async function messages(source: string, filePath: string) {
 }
 
 test('ESLint covers config languages, source and maintained tests', async () => {
-  for (const file of ['package.json', 'pnpm-workspace.yaml', '.github/workflows/check.yml', '.vscode/settings.json', 'tsconfig.vue.json', 'vitest.config.ts', 'src/forum/components/comment/ForumCommentArea.vue', 'tests/e2e/forum.spec.ts', 'src/components/links/Join.css']) {
+  for (const file of ['package.json', 'pnpm-workspace.yaml', '.github/workflows/check.yml', '.vscode/settings.json', 'tsconfig.vue.json', 'vitest.config.ts', 'src/forum/components/comment/ForumCommentArea.vue', 'tests/e2e/forum.spec.ts', 'src/features/links/Join.css']) {
     assert.equal(await eslint.isPathIgnored(file), false, file)
     assert.ok(await eslint.calculateConfigForFile(file), file)
   }
-  for (const file of ['src/zh/index.md', 'pnpm-lock.yaml', 'src/public/fonts/fonts-standard.css', '.vitepress/theme/mdc-components.mjs', '.vitepress/cache/generated.ts', 'tests/e2e/state-compare.json'])
+  for (const file of ['pages/zh/index.md', 'pnpm-lock.yaml', 'pages/public/fonts/fonts-standard.css', '.vitepress/theme/mdc-components.mjs', '.vitepress/cache/generated.ts', 'tests/e2e/state-compare.json'])
     assert.equal(await eslint.isPathIgnored(file), true, file)
 }, 30_000)
 
@@ -39,11 +39,11 @@ test('unused variables report once and unused imports retain a separate error', 
 })
 
 test('data JSON checks correctness without changing generator formatting', async () => {
-  const valid = await messages('{"items":[1,2]}', 'src/_data/eslint-probe.json')
+  const valid = await messages('{"items":[1,2]}', 'src/data/eslint-probe.json')
   assert.deepEqual(valid, [])
-  const duplicate = await messages('{"key":1,"key":2}', 'src/_data/eslint-probe.json')
+  const duplicate = await messages('{"key":1,"key":2}', 'src/data/eslint-probe.json')
   assert.ok(duplicate.some(message => message.ruleId === 'jsonc/no-dupe-keys'))
-  const invalid = await messages('{"key":}', 'src/_data/eslint-probe.json')
+  const invalid = await messages('{"key":}', 'src/data/eslint-probe.json')
   assert.ok(invalid.some(message => message.fatal))
 })
 

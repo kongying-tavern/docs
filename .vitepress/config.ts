@@ -8,6 +8,7 @@ import { createHeadConfig } from './config/head.ts'
 import { ignoreDeadLinksConfig } from './config/ignoreDeadLinks.ts'
 import { createLocalesConfig } from './config/locales.ts'
 import { markdownConfig } from './config/markdown.ts'
+import { getPageExclusions } from './config/pageVisibility.ts'
 import { rewritesConfig } from './config/rewrites.ts'
 import { localeSearchConfig } from './config/search.ts'
 import { siteLocaleWatchPlugin } from './config/siteLocale.ts'
@@ -15,12 +16,14 @@ import { sitemapConfig } from './config/sitemap.ts'
 import { cfgDynamicTitleTemplate } from './config/title.ts'
 import { fontSubsetPlugin } from './plugins/font-subset/index.ts'
 
+const pagesDir = 'pages'
+
 export default async (): Promise<UserConfig<DefaultTheme.Config>> => ({
   base: '/docs/',
-  srcDir: 'src',
+  srcDir: pagesDir,
   outDir: process.env.VITEPRESS_OUT_DIR || './dist',
   cacheDir: process.env.VITEPRESS_CACHE_DIR,
-  srcExclude: [],
+  srcExclude: getPageExclusions(fileURLToPath(new URL(`../${pagesDir}/`, import.meta.url))),
   cleanUrls: true,
   lastUpdated: true,
   locales: await createLocalesConfig(),

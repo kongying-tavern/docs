@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url'
 const IMAGE_FILE_REGEX = /\.(?:png|jpg|jpeg|gif|webp)$/
 
 const filename = fileURLToPath(import.meta.url)
-const baseDir = path.join(filename, '../../src/public/emojis')
-const dataDir = path.join(filename, '../../src/_data')
+const baseDir = path.join(filename, '../../pages/public/emojis')
+const dataDir = path.join(filename, '../../src/data')
 
 function getDirectories(source: string) {
   return fs.readdirSync(source, { withFileTypes: true })

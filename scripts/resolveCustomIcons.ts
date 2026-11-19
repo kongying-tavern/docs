@@ -8,7 +8,7 @@ interface IconData {
 
 export function resolveCustomIcons(): IconData {
   // 以仓库根（进程工作目录）定位资源目录；脚本运行于仓库根，无需相对路径回溯
-  const svgDir = path.resolve(process.cwd(), 'src/public/imgs/common/svg')
+  const svgDir = path.resolve(process.cwd(), 'pages/public/imgs/common/svg')
   const data: IconData = {}
 
   // Ensure the directory exists before reading

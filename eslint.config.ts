@@ -1,7 +1,7 @@
 import antfu from '@antfu/eslint-config'
 
 const themeImportRestrictions = [
-  { group: ['**/.vitepress/**'], message: 'src must not import from .vitepress by relative path; use src/forum/types.ts outlet' },
+  { group: ['**/.vitepress/**'], message: 'src must not import from .vitepress by relative path; use the src/forum/types.ts outlet' },
 ]
 
 export default antfu({

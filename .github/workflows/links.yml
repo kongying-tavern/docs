@@ -40,11 +40,11 @@ jobs:
             --max-concurrency 4
             --max-retries 4
             --retry-wait-time 5
-            --root-dir src
+            --root-dir pages
             --fallback-extensions md
             --remap '^https://github\.com/kongying-tavern/docs/blob/main/(.*)$ file://${{ github.workspace }}/$1'
-            --remap '^(file://.*)/src/(imgs|emojis|fonts|llms|common)/(.*) $1/src/public/$2/$3'
-            --remap '^(file://.*)/src/index\.md$ $1/src/zh/index.md'
+            --remap '^(file://.*)/pages/(imgs|emojis|fonts|llms|common)/(.*) $1/pages/public/$2/$3'
+            --remap '^(file://.*)/pages/index\.md$ $1/pages/zh/index.md'
             --exclude 'https://download.yuanshen.site/.*'
             --exclude '^https://deepwiki\.com/(badge\.svg|kongying-tavern/docs)/?$'
             --exclude 'https://github.com/kongying-tavern/docs/tree/dev/.*'

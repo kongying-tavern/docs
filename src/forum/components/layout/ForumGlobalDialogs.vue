@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
-import AsyncDialogLoading from '~/components/AsyncDialogLoading.vue'
-import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
+import AsyncDialogLoading from '~/components/async/AsyncDialogLoading.vue'
+import { defineRecoverableAsyncComponent } from '~/components/async/defineRecoverableAsyncComponent'
 import { FORM_HASH } from '~/forum/components/form/publish-topic-form/form-config'
 import ForumPublishTopicLoading from '~/forum/components/form/publish-topic-form/ForumPublishTopicLoading.vue'
 import { useReactionStats } from '~/forum/composables/data/useReactionStats'

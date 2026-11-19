@@ -18,7 +18,7 @@ test('site and Vite configuration load with the native Node runtime', { timeout:
     }
     globalThis.VITEPRESS_CONFIG = await resolveConfig(process.cwd(), 'serve', 'development')
     for (const file of ['posts', 'forumBlogPosts', 'forumDocumentLinks']) {
-      await import('./src/_data/' + file + '.data.ts')
+      await import('./src/data/' + file + '.data.ts')
       console.log('Native data loader loaded: ' + file)
     }
   `

@@ -15,11 +15,11 @@ const { theme, page } = useData()
 const { t } = useI18n({ useScope: 'global' })
 
 const editLink = computed(() => !import.meta.env.DEV
-  ? 'https://github.com/kongying-tavern/docs/edit/main/src/:path'.replace(
+  ? 'https://github.com/kongying-tavern/docs/edit/main/pages/:path'.replace(
       PATH_PLACEHOLDER_REGEX,
       page.value.filePath,
     )
-  : `${window.location.origin}/__open-in-editor?file=${encodeURIComponent(`./src/${page.value.filePath}`)}`,
+  : `${window.location.origin}/__open-in-editor?file=${encodeURIComponent(`./pages/${page.value.filePath}`)}`,
 )
 
 const items = computed(() => {

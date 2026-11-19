@@ -23,7 +23,7 @@ export async function getAuthToken() {
 }
 
 export async function saveJsonToFile(filename: string, data: unknown) {
-  const outputFilePath = new URL(`../src/_data/${filename}.json`, import.meta.url)
+  const outputFilePath = new URL(`../src/data/${filename}.json`, import.meta.url)
 
   try {
     await fs.writeFile(outputFilePath, JSON.stringify(data, null, 2), 'utf8')

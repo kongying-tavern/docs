@@ -85,8 +85,8 @@ function initLocale(options: Options): void {
     fail(`invalid locale code "${code}", expected two lowercase letters (ISO 639-1)`)
   if (existsSync(join(ROOT, `.vitepress/locales/${code}`)))
     fail(`.vitepress/locales/${code} already exists`)
-  if (existsSync(join(ROOT, `src/${code}`)))
-    fail(`src/${code} already exists`)
+  if (existsSync(join(ROOT, `pages/${code}`)))
+    fail(`pages/${code} already exists`)
   if (!label)
     fail('locale name is required')
   try {
@@ -109,12 +109,12 @@ function initLocale(options: Options): void {
   if (!site || typeof site !== 'object' || !site.title || !site.themeConfig)
     fail(`missing title or themeConfig in ${template} template site.yml`)
   const blogPath = 'blog/[path].paths.ts'
-  const blog = readFileSync(join(ROOT, `src/${template}/${blogPath}`), 'utf8')
+  const blog = readFileSync(join(ROOT, `pages/${template}/${blogPath}`), 'utf8')
   const templateBlogLocale = `usePostData('${template.toUpperCase()}')`
   if (!blog.includes(templateBlogLocale))
-    fail(`pattern not found in src/${template}/${blogPath}: ${templateBlogLocale}`)
+    fail(`pattern not found in pages/${template}/${blogPath}: ${templateBlogLocale}`)
 
-  for (const dir of ['src', '.vitepress/locales']) {
+  for (const dir of ['pages', '.vitepress/locales']) {
     cpSync(join(ROOT, `${dir}/${template}`), join(ROOT, `${dir}/${code}`), {
       recursive: true,
       filter: src => template !== 'zh' || !ZH_ONLY_PAGES.some(page => src.endsWith(`/${page}`) || src.endsWith(`\\${page}`)),
@@ -122,7 +122,7 @@ function initLocale(options: Options): void {
     console.log(`✓ Copied ${dir}/${template} → ${dir}/${code}`)
   }
 
-  writeFileSync(join(ROOT, `src/${code}/${blogPath}`), blog.replace(templateBlogLocale, `usePostData('${code.toUpperCase()}')`))
+  writeFileSync(join(ROOT, `pages/${code}/${blogPath}`), blog.replace(templateBlogLocale, `usePostData('${code.toUpperCase()}')`))
   const sitePath = join(ROOT, `.vitepress/locales/${code}/site.yml`)
   site.label = label
   site.lang = lang
@@ -139,7 +139,7 @@ function initLocale(options: Options): void {
   console.log(`
 Done. Locale "${label}" (${code}) initialized from the ${template} template.
 Next steps:
-1. Translate src/${code}/**/*.md (priority: translations.md, index.md, download-client.md, community.md, support-us.md)
+1. Translate pages/${code}/**/*.md (priority: translations.md, index.md, download-client.md, community.md, support-us.md)
 2. Translate .vitepress/locales/${code}/*.yml (site.yml includes the site title, metadata, menus and language suggestion)
 3. Verify: pnpm i18n:check && pnpm typecheck && pnpm dev (preview /docs/${code}/)
 4. Follow .github/trans-guide-new-language.md to claim files and submit PRs

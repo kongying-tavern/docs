@@ -74,7 +74,7 @@ test('menu paths keep the same meaning across locales and fallback links resolve
       const item = value as { link?: string, text?: string }
       if (item.link?.startsWith(`${SITE_ORIGIN}${SITE_BASE}/`)) {
         const path = new URL(item.link).pathname.slice(SITE_BASE.length + 1)
-        assert.ok(existsSync(new URL(`../../src/${path.replace(/\/$/, '/index')}.md`, import.meta.url)), item.link)
+        assert.ok(existsSync(new URL(`../../pages/${path.replace(/\/$/, '/index')}.md`, import.meta.url)), item.link)
         assert.match(item.text ?? '', /英語|English/)
       }
       Object.values(value).forEach(checkFallbacks)

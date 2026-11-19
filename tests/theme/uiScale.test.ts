@@ -15,7 +15,7 @@ test('legacy UI typography scales once while unitless leading and non-UI content
   assert.match(output, /line-height: calc\(20px \* var\(--site-ui-scale\)\)/)
   assert.match(output, /line-height: 1\.5/)
   assert.doesNotMatch(output, /calc\(calc/)
-  assert.doesNotMatch(compile(css, '/project/src/zh/article.md'), /calc\(12px/)
+  assert.doesNotMatch(compile(css, '/project/pages/zh/article.md'), /calc\(12px/)
   assert.doesNotMatch(compile(css, '/project/node_modules/vendor/ui.css'), /calc\(12px/)
 })
 

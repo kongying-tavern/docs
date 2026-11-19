@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Kbd, KbdGroup } from '@/components/ui/kbd'
 import { Switch } from '@/components/ui/switch'
-import SettingsRow from '~/components/settings/SettingsRow.vue'
-import SettingsSection from '~/components/settings/SettingsSection.vue'
+import SettingsRow from '~/features/settings/SettingsRow.vue'
+import SettingsSection from '~/features/settings/SettingsSection.vue'
 import { useForumShortcutRecorder } from '~/forum/composables/view/useForumShortcutRecorder'
 
 const { t } = useI18n({ useScope: 'global' })

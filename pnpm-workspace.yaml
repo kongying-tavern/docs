@@ -42,6 +42,7 @@ overrides:
   vite>rollup: ^4.63.1
 
 patchedDependencies:
+  '@lunariajs/core@0.1.1': patches/@lunariajs__core@0.1.1.patch
   '@x18n/builtins@0.1.1': patches/@x18n__builtins@0.1.1.patch
 # pnpm 11+ 以 allowBuilds 取代 ignoredBuiltDependencies；
 # false = 保持 pnpm 10 时代显式忽略这些包构建脚本的行为
@@ -70,6 +71,7 @@ catalogs:
     '@intlify/unplugin-vue-i18n': 11.2.8
     '@lunariajs/core': ^0.1.1
     '@vitejs/plugin-vue': 6.0.9
+    gray-matter: 4.0.3
     lightningcss: ^1.33.0
     tsx: 4.23.15
     typescript: ^6.0.3

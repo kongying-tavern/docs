@@ -6,7 +6,7 @@ import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { DEFAULT_LOCALE } from '~/constants/site'
-import postsData from '../../../src/_data/posts.json'
+import postsData from '../../../src/data/posts.json'
 import { getForumLocaleLabelGetter } from '../../../src/forum/services/getForumLocaleGetter'
 
 const { t } = useI18n({ useScope: 'global' })

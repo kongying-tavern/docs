@@ -5,8 +5,8 @@ import { computed } from 'vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import { FluidHoverList } from '@/components/ui/fluid-hover'
 import Time from '@/components/ui/Time/Time.vue'
-import { data as allPosts } from '~/_data/posts.data'
 import { DEFAULT_LOCALE } from '~/constants/site'
+import { data as allPosts } from '~/data/posts.data'
 
 const { lang, frontmatter } = useData()
 

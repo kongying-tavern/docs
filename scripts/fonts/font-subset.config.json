@@ -1,9 +1,9 @@
 {
   "version": 1,
   "paths": {
-    "fontsDir": "src/public/fonts",
-    "siteCssFile": "src/public/fonts/fonts-subset.css",
-    "standardCssFile": "src/public/fonts/fonts-standard.css",
+    "fontsDir": "pages/public/fonts",
+    "siteCssFile": "pages/public/fonts/fonts-subset.css",
+    "standardCssFile": "pages/public/fonts/fonts-standard.css",
     "sourceDir": "scripts/fonts/source",
     "pythonEntry": "scripts/subsetFonts.py",
     "pythonPackage": "scripts/font_subset",
@@ -11,11 +11,16 @@
   },
   "scan": [
     {
+      "path": "pages",
+      "extensions": [
+        ".md"
+      ]
+    },
+    {
       "path": "src",
       "extensions": [
         ".js",
         ".json",
-        ".md",
         ".mjs",
         ".ts",
         ".tsx",

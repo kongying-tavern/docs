@@ -44,7 +44,7 @@ function forwardOutput(
 }
 
 async function prepareFontInputs() {
-  const markdown = await createMarkdownRenderer(resolve(projectRoot, 'src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve(projectRoot, 'pages'), markdownConfig)
   const siteCodepoints = await collectSiteCodepoints(projectRoot, config, markdown)
   return {
     siteCodepoints,

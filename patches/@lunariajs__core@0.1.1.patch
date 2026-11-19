@@ -1,0 +1,24 @@
+diff --git a/dist/status/index.mjs b/dist/status/index.mjs
+index cd2042909c3aba55632f28dc890703fd0a22eebe..1eeb670fd42a4ab086dc9ceefd9dde65e46d91e4 100644
+--- a/dist/status/index.mjs
++++ b/dist/status/index.mjs
+@@ -259,7 +259,9 @@ async function getFileData(filePath, isSourceLocale, isShallowRepo, rootDir, loc
+     );
+     process.exit(1);
+   }
+-  const lastMajorCommit = findLastMajorCommit(filePath, allCommits, ignoreKeywords) || lastCommit;
++  const lastMajorCommit = findLastMajorCommit(filePath, allCommits, ignoreKeywords)
++    || findLastMajorCommit(filePath, allCommits, [])
++    || lastCommit;
+   return {
+     path: filePath,
+     isLocalizable: await isLocalizable(filePath, localizableProperty, isSourceLocale),
+@@ -309,7 +311,7 @@ function findLastMajorCommit(filePath, allCommits, ignoreKeywords) {
+   const TRACKER_DIRECTIVES = /(?<directive>@lunaria-track|@lunaria-ignore):(?<pathsOrGlobs>[^\n]+)?/;
+   const IGNORE_KEYWORDS = new RegExp(`(${ignoreKeywords.join("|")})`, "i");
+   return allCommits.find((entry) => {
+-    if (entry.message.match(IGNORE_KEYWORDS))
++    if (ignoreKeywords.length && entry.message.match(IGNORE_KEYWORDS))
+       return false;
+     const trackerDirectiveMatch = entry.body.match(TRACKER_DIRECTIVES);
+     if (!trackerDirectiveMatch || !trackerDirectiveMatch.groups)

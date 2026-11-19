@@ -1,5 +1,5 @@
 import { defineAsyncComponent, shallowRef } from 'vue'
-import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
+import { defineRecoverableAsyncComponent } from '~/components/async/defineRecoverableAsyncComponent'
 
 // Keep the resolved component as well as the downloaded module. A warm opening
 // can render synchronously instead of entering an async component's fallback.

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import AsyncContentLoading from '~/components/AsyncContentLoading.vue'
-import { defineRecoverableAsyncComponent } from '~/components/defineRecoverableAsyncComponent'
+import AsyncContentLoading from '~/components/async/AsyncContentLoading.vue'
+import { defineRecoverableAsyncComponent } from '~/components/async/defineRecoverableAsyncComponent'
 import { useForumRoute } from '~/forum/composables/state/useForumRoute'
 import ForumHome from '../home/ForumHome.vue'
 import ForumTopicLoading from '../topic/ForumTopicLoading.vue'

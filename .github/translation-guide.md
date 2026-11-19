@@ -8,7 +8,7 @@ Local setup: [中文教程](./trans-guide-no-exp.md) · [English tutorial](./tra
 
 | Content | Files | Editing |
 | --- | --- | --- |
-| Articles | `src/<locale>/**/*.md` | Markdown editor |
+| Articles | `pages/<locale>/**/*.md` | Markdown editor |
 | UI messages | `.vitepress/locales/<locale>/*.yml`, except `site.yml` | `pnpm i18n:ui` |
 | Site configuration | `.vitepress/locales/<locale>/site.yml` | `pnpm i18n:ui` or YAML editor |
 

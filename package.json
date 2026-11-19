@@ -151,6 +151,7 @@
     "eslint-plugin-format": "catalog:dev",
     "fontaine": "catalog:dev",
     "git-cz": "catalog:dev",
+    "gray-matter": "catalog:build",
     "husky": "catalog:dev",
     "jiti": "catalog:dev",
     "js-yaml": "catalog:utils",

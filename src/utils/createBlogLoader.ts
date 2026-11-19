@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { createContentLoader } from 'vitepress'
 import { BLOG_POST_ORDER } from '../constants/blog.ts'
 import { DEFAULT_LOCALE } from '../constants/site.ts'
+import { shouldPublishPage } from '../data/pageVisibility.ts'
 import { parseAuthors } from '../forum/utils/frontmatter.ts'
 import { extractBlogExcerpt } from './blogExcerpt.ts'
 import { getGitFileInfo } from './git.ts'
@@ -31,9 +32,9 @@ function extractLanguageFromUrl(url: string): string {
 
 export function buildBlogFilePath(url: string): string {
   // ContentLoader returns rewritten URLs in VitePress 2. Chinese URLs omit
-  // their locale directory, but Git history still belongs to src/zh/….
+  // their locale directory, but Git history still belongs to pages/zh/….
   const sourceUrl = url.startsWith('/blog/posts/') ? `/${DEFAULT_LOCALE}${url}` : url
-  const sourcePath = sourceUrl.startsWith('/src/') ? sourceUrl.slice(1) : `src${sourceUrl}`
+  const sourcePath = `pages${sourceUrl}`
   // eslint-disable-next-line node/prefer-global/process
   return join(process.cwd(), `${sourcePath}.md`)
 }
@@ -50,7 +51,7 @@ function getConfiguredOrderIndex(lang: string, url: string): number {
 
 /**
  * 创建博客数据加载器
- * @param pattern 文件路径模式，如 'src/zh/blog/posts/*.md'
+ * @param pattern 文件路径模式，如 'pages/zh/blog/posts/*.md'
  * @returns VitePress ContentLoader
  */
 export function createBlogLoader(pattern: string) {
@@ -63,7 +64,7 @@ export function createBlogLoader(pattern: string) {
       const blogPosts: BlogPost[] = []
 
       // 并行处理所有页面以提高性能
-      const promises = rawData.map(async (page) => {
+      const promises = rawData.filter(page => shouldPublishPage(page.frontmatter)).map(async (page) => {
         try {
           const lang = extractLanguageFromUrl(page.url)
           const filePath = buildBlogFilePath(page.url)

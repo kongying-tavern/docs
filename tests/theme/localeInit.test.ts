@@ -12,7 +12,7 @@ import { onTestFinished, test } from 'vitest'
 function fixture(template: 'zh' | 'en' = 'en') {
   const root = mkdtempSync(join(tmpdir(), 'vitepress-locale-'))
   onTestFinished(() => rmSync(root, { recursive: true, force: true }))
-  for (const dir of ['scripts/locales', `src/${template}/blog`, 'src/constants', '.vitepress/config', '.vitepress/theme', '.vitepress/locales'])
+  for (const dir of ['scripts/locales', `pages/${template}/blog`, 'src/constants', '.vitepress/config', '.vitepress/theme', '.vitepress/locales'])
     mkdirSync(join(root, dir), { recursive: true })
   symlinkSync(resolve('node_modules'), join(root, 'node_modules'), 'junction')
   for (const path of [
@@ -29,9 +29,9 @@ function fixture(template: 'zh' | 'en' = 'en') {
   cpSync(resolve(`.vitepress/locales/${template}`), join(root, `.vitepress/locales/${template}`), { recursive: true })
   writeFileSync(join(root, 'package.json'), '{"type":"module"}')
   writeFileSync(join(root, 'lunaria.config.json'), JSON.stringify({ locales: [{ lang: template, label: template }] }))
-  writeFileSync(join(root, `src/${template}/blog/[path].paths.ts`), `usePostData('${template.toUpperCase()}')`)
+  writeFileSync(join(root, `pages/${template}/blog/[path].paths.ts`), `usePostData('${template.toUpperCase()}')`)
   for (const page of ['index.md', 'frontmatter.md', 'md-enhance-guide.md', 'announcement.md'])
-    writeFileSync(join(root, `src/${template}/${page}`), `# ${page}`)
+    writeFileSync(join(root, `pages/${template}/${page}`), `# ${page}`)
   return root
 }
 
@@ -54,10 +54,10 @@ test.each(['zh', 'en'] as const)('init:locale loads a complete language from the
   assert.equal(readFileSync(join(root, '.vitepress/locales/fr/config.ts'), 'utf8'), readFileSync(join(root, `.vitepress/locales/${template}/config.ts`), 'utf8'))
   for (const file of ['ui', 'forum', 'settings', 'payment', 'asideLinks', 'docReaction', 'staff', 'team', 'changelog'])
     assert.equal(readFileSync(join(root, `.vitepress/locales/fr/${file}.yml`), 'utf8'), readFileSync(join(root, `.vitepress/locales/${template}/${file}.yml`), 'utf8'))
-  assert.equal(readFileSync(join(root, 'src/fr/blog/[path].paths.ts'), 'utf8'), 'usePostData(\'FR\')')
-  assert.equal(existsSync(join(root, 'src/fr/index.md')), true)
+  assert.equal(readFileSync(join(root, 'pages/fr/blog/[path].paths.ts'), 'utf8'), 'usePostData(\'FR\')')
+  assert.equal(existsSync(join(root, 'pages/fr/index.md')), true)
   for (const page of ['frontmatter.md', 'md-enhance-guide.md', 'announcement.md'])
-    assert.equal(existsSync(join(root, `src/fr/${page}`)), template !== 'zh')
+    assert.equal(existsSync(join(root, `pages/fr/${page}`)), template !== 'zh')
   assert.deepEqual(JSON.parse(readFileSync(join(root, 'lunaria.config.json'), 'utf8')).locales.at(-1), { lang: 'fr', label: 'Français' })
 
   const configPath = join(root, 'vite.config.ts')
@@ -83,8 +83,8 @@ test.each(['source-directory', 'locale-directory', 'lunaria-registration', 'inva
   const root = fixture()
   const lunaria = join(root, 'lunaria.config.json')
   if (problem === 'source-directory') {
-    mkdirSync(join(root, 'src/fr'))
-    writeFileSync(join(root, 'src/fr/keep.md'), 'Keep this file')
+    mkdirSync(join(root, 'pages/fr'))
+    writeFileSync(join(root, 'pages/fr/keep.md'), 'Keep this file')
   }
   if (problem === 'locale-directory')
     mkdirSync(join(root, '.vitepress/locales/fr'))
@@ -93,7 +93,7 @@ test.each(['source-directory', 'locale-directory', 'lunaria-registration', 'inva
   if (problem === 'invalid-site-template')
     writeFileSync(join(root, '.vitepress/locales/en/site.yml'), 'Incomplete')
   if (problem === 'invalid-blog-template')
-    writeFileSync(join(root, 'src/en/blog/[path].paths.ts'), 'Invalid blog configuration')
+    writeFileSync(join(root, 'pages/en/blog/[path].paths.ts'), 'Invalid blog configuration')
   const originalRegistry = readFileSync(lunaria, 'utf8')
   const tag = problem === 'invalid-tag' ? 'fr_XX' : problem === 'mismatched-tag' ? 'ja-JP' : 'fr'
   const result = initialize(root, '--template', 'en', '--lang', tag)
@@ -101,7 +101,7 @@ test.each(['source-directory', 'locale-directory', 'lunaria-registration', 'inva
   assert.equal(readFileSync(lunaria, 'utf8'), originalRegistry)
   assert.equal(existsSync(join(root, '.vitepress/config/localeImporters.ts')), false)
   assert.equal(existsSync(join(root, '.vitepress/locales/fr/site.yml')), false)
-  assert.equal(existsSync(join(root, 'src/fr/index.md')), false)
+  assert.equal(existsSync(join(root, 'pages/fr/index.md')), false)
   if (problem === 'source-directory')
-    assert.equal(readFileSync(join(root, 'src/fr/keep.md'), 'utf8'), 'Keep this file')
+    assert.equal(readFileSync(join(root, 'pages/fr/keep.md'), 'utf8'), 'Keep this file')
 })

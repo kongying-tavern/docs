@@ -26,8 +26,8 @@ import {
   TagsInputItemText,
 } from '@/components/ui/tags-input'
 import { useLanguage } from '@/composables/useLanguage'
-import supportedLanguages from '~/_data/supportedLanguages.json'
-import SettingsRow from '~/components/settings/SettingsRow.vue'
+import supportedLanguages from '~/data/supportedLanguages.json'
+import SettingsRow from '~/features/settings/SettingsRow.vue'
 import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
 
 const { t } = useI18n({ useScope: 'global' })

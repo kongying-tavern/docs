@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'pages/**'
       - '.vitepress/**'
       - 'scripts/**'
       - 'tests/**'
@@ -30,6 +31,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'src/**'
+      - 'pages/**'
       - '.vitepress/**'
       - 'scripts/**'
       - 'tests/**'
@@ -78,7 +80,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: |
-            src/public/fonts
+            pages/public/fonts
             .vitepress/theme/styles/fonts-subset.css
             .vitepress/theme/styles/fonts-standard.css
           # Standard-tier inputs only; the site tier depends on page text and

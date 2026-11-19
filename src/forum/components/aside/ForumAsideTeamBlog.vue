@@ -3,8 +3,8 @@ import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getLangPath } from '@/utils'
-import { data as allBlogPosts } from '~/_data/forumBlogPosts.data'
 import { DEFAULT_LOCALE } from '~/constants/site'
+import { data as allBlogPosts } from '~/data/forumBlogPosts.data'
 import ForumTime from '../ui/ForumTime.vue'
 
 const { lang, localeIndex, theme } = useData()

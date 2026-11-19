@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { Switch } from '@/components/ui/switch'
-import SettingsRow from '~/components/settings/SettingsRow.vue'
-import SettingsSection from '~/components/settings/SettingsSection.vue'
+import SettingsRow from '~/features/settings/SettingsRow.vue'
+import SettingsSection from '~/features/settings/SettingsSection.vue'
 import { useAccountLoginExperiment } from '~/forum/composables/state/useAccountLoginExperiment'
 
 const { t } = useI18n({ useScope: 'global' })

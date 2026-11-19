@@ -13,7 +13,7 @@ const require = createRequire(import.meta.url)
 
 test('cache-key CLI writes action outputs without invoking Python or changing font artifacts', () => {
   const temporary = mkdtempSync(join(tmpdir(), 'font-cache-cli-'))
-  const fonts = resolve(projectRoot, 'src/public/fonts')
+  const fonts = resolve(projectRoot, 'pages/public/fonts')
   const snapshot = () => Object.fromEntries((existsSync(fonts) ? readdirSync(fonts) : []).map(file => [
     file,
     createHash('sha256').update(readFileSync(join(fonts, file))).digest('hex'),
@@ -35,7 +35,7 @@ test('cache-key CLI writes action outputs without invoking Python or changing fo
     const inputs = JSON.parse(result.stdout)
     assert.match(inputs.standardHash, /^[a-f0-9]{64}$/)
     assert.match(inputs.siteHash, /^[a-f0-9]{64}$/)
-    assert.equal(inputs.fontsDir, 'src/public/fonts')
+    assert.equal(inputs.fontsDir, 'pages/public/fonts')
     assert.equal(readFileSync(output, 'utf8'), `existing=value\nstandard-hash=${inputs.standardHash}\nsite-hash=${inputs.siteHash}\nfonts-dir=${inputs.fontsDir}\n`)
     assert.equal(readdirSync(temporary).includes('python-called'), false)
     assert.deepEqual(snapshot(), before)

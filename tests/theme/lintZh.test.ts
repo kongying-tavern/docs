@@ -25,11 +25,11 @@ test('Chinese formatting preserves MDC syntax and checks its content', () => {
 })
 
 test('the web changelog keeps its emoji through formatting and VitePress rendering', async () => {
-  const source = readFileSync(resolve('src/zh/blog/posts/changelog-web.md'), 'utf8')
+  const source = readFileSync(resolve('pages/zh/blog/posts/changelog-web.md'), 'utf8')
   const { result, validations } = run(source, createLintZhOptions())
   assert.equal(result, source)
   assert.deepEqual(validations, [])
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync(result)
   assert.match(html, /✨ 新增功能/)
   assert.match(html, /🐛 BUG 修复/)

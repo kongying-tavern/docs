@@ -45,6 +45,7 @@
     "**/scripts/**/*.ts",
     "**/src/**/*.ts",
     "src/**/*.vue",
+    "pages/**/*.ts",
     "tests/forum/**/*.ts",
     "tests/shared/**/*.ts",
     "tests/theme/**/*.ts",

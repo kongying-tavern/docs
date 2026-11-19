@@ -27,7 +27,7 @@ beforeEach(() => {
 
 function fontBuild(plugin = fontSubsetPlugin()) {
   const configure = plugin.configResolved as (config: ResolvedConfig) => void
-  configure({ root: resolve(projectRoot, 'src') } as ResolvedConfig)
+  configure({ root: resolve(projectRoot, 'pages') } as ResolvedConfig)
   return plugin.buildStart as () => Promise<void>
 }
 

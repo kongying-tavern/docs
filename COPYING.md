@@ -11,10 +11,10 @@ The use of Kongying Tavern branding elements, including but not limited to the K
 
 This includes, but may not be limited to, the following files:
 
-- src/public/imgs/common/logo/logo_32.png
-- src/public/imgs/common/logo/logo_64.png
-- src/public/imgs/common/logo/logo_128.png
-- src/public/imgs/common/logo/logo_256.png
-- src/public/imgs/common/logo/logo_512.png
+- pages/public/imgs/common/logo/logo_32.png
+- pages/public/imgs/common/logo/logo_64.png
+- pages/public/imgs/common/logo/logo_128.png
+- pages/public/imgs/common/logo/logo_256.png
+- pages/public/imgs/common/logo/logo_512.png
 
 If you fork this repository, you must remove all Kongying Tavern branding assets from your fork.

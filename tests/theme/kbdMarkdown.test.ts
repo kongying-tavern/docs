@@ -14,20 +14,20 @@ function sequences(html: string): string[][][] {
 }
 
 test('shortcuts distinguish combinations and ordered steps while retaining adjacent legacy keys', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('[[ Esc ]] [[ Ctrl + A , Ctrl + D ]] [[G, I]] [[Meta]][[K]]')
   assert.deepEqual(sequences(html), [[['Esc']], [['Ctrl', 'A'], ['Ctrl', 'D']], [['G'], ['I']], [['Meta']], [['K']]])
   assert.deepEqual(compileTemplate({ source: html, filename: 'shortcuts.vue', id: 'shortcuts' }).errors, [])
 })
 
 test('shortcut separators and brackets support explicit names and literal escapes', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync(String.raw`[[Ctrl+Plus]] [[Comma]] [[Ctrl+\+]] [[\,]] [[\\]] [[\[]] [[\]]]`)
   assert.deepEqual(sequences(html), [[['Ctrl', 'Plus']], [['Comma']], [['Ctrl', '+']], [[',']], [['\\']], [['[']], [[']']]])
 })
 
 test('platform overrides are whitelisted and other Markdown attrs cannot become Vue bindings', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('[[Mod+K]]{platform=windows} [[Ctrl]]{platform=mac} [[Meta]]{platform=linux}\n\n[[A]]{:sequence="run()" @click="run()"}')
   assert.match(html, /platform="windows"/)
   assert.match(html, /platform="mac"/)
@@ -38,7 +38,7 @@ test('platform overrides are whitelisted and other Markdown attrs cannot become 
 })
 
 test('shortcut contents remain string data across HTML, Markdown and Vue compilation', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const keys = ['<script>alert(1)</script>', '{{ run() }}', '" @click="run()', '**bold**', 'A&B', '\');run();//']
   const html = await markdown.renderAsync(keys.map(key => `[[${key}]]`).join(' '))
   assert.deepEqual(sequences(html), keys.map(key => [[key]]))
@@ -49,7 +49,7 @@ test('shortcut contents remain string data across HTML, Markdown and Vue compila
 })
 
 test('malformed shortcuts do not consume adjacent text and ordinary links and code keep their behavior', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('before [[Ctrl+]] after [[,A]] / [[A,,B]] / [[ ]] / [[unclosed\nline\n\n[link](https://example.com) and [shortcut [[Ctrl+A]]](https://example.com)\n\n`[[Ctrl+A]]`\n\n```md\n[[Mod+K]]\n```')
   assert.match(html, /before \[\[Ctrl\+\]\] after/)
   assert.match(html, /\[\[,A\]\]/)
@@ -59,7 +59,7 @@ test('malformed shortcuts do not consume adjacent text and ordinary links and co
 })
 
 test('shortcuts remain inside inline and reference links', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   for (const source of [
     '[Press [[Esc]]](./target)',
     '[Press [[Ctrl+A]]](./target)',
@@ -72,7 +72,7 @@ test('shortcuts remain inside inline and reference links', async () => {
 })
 
 test('shortcut text participates in heading anchors, permalink names and the table of contents', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const env: Record<string, unknown> = {}
   const html = await markdown.renderAsync('[[toc]]\n\n## [[Esc]]\n\n## Open [[Ctrl+A]]\n\n## Open [[Ctrl+B]]', env)
   assert.match(html, /<h2 id="esc"/)
@@ -85,14 +85,14 @@ test('shortcut text participates in heading anchors, permalink names and the tab
 })
 
 test('image alternative text retains shortcut names without injecting shortcut HTML', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('![Press [[Ctrl+A]], then [[Ctrl+D]]](./a.png)')
   assert.match(html, /<img[^>]*alt="Press Ctrl\+A, then Ctrl\+D"/)
   assert.doesNotMatch(html, /alt="[^"]*KeyboardShortcut/)
 })
 
 test('shortcut headings remain literal in the table of contents without changing their anchors', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   for (const key of ['{{ run() }}', '{{ invalid syntax }}', '{{ $frontmatter.title }}']) {
     const html = await markdown.renderAsync(`---\ntitle: Replaced\n---\n\n[[toc]]\n\n## [[${key}]]\n\n## Normal {{ ordinary }}`)
     const anchor = /<h2 id="([^"]+)"/.exec(html)?.[1]
@@ -108,7 +108,7 @@ test('shortcut headings remain literal in the table of contents without changing
 })
 
 test('shortcut text stays literal through core replacements and frontmatter interpolation', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('---\ntitle: Replaced\n---\n\nBefore [[{{ $frontmatter.title }}]] [[:smile:]] [[https://example.com]] after')
   assert.deepEqual(sequences(html), [[['{{ $frontmatter.title }}']], [[':smile:']], [['https://example.com']]])
   assert.match(html, /Before <KeyboardShortcut /)
@@ -120,9 +120,9 @@ test('shortcut text stays literal through core replacements and frontmatter inte
 })
 
 test('all existing game-key sequences still render every single key independently', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   for (const locale of ['zh', 'en', 'ja']) {
-    const source = readFileSync(resolve(`src/${locale}/manual/client/easter-egg.md`), 'utf8')
+    const source = readFileSync(resolve(`pages/${locale}/manual/client/easter-egg.md`), 'utf8')
     const html = await markdown.renderAsync(source)
     assert.equal(sequences(html).length, 24)
     assert.deepEqual(sequences(html)[0], [['arrUp']])

@@ -11,11 +11,11 @@ import HighlightTargetedHeading from '@/components/HighlightTargetedHeading.vue'
 import PageAlertRegion from '@/components/PageAlertRegion.vue'
 import { Sonner } from '@/components/ui/sonner'
 import { useThemeTransition } from '@/hooks/useThemeTransition'
-import SettingsPage from '~/components/settings/SettingsPage.vue'
 import { useSitePreferences } from '~/composables/useSitePreferences'
 import { useToastDiagnostics } from '~/composables/useToastDiagnostics'
-import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '~/config/settingsOptions'
-import { closeSettingsDialog } from '~/services/settingsNavigation'
+import { closeSettingsDialog } from '~/features/settings/settingsNavigation'
+import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '~/features/settings/settingsOptions'
+import SettingsPage from '~/features/settings/SettingsPage.vue'
 
 import '@/styles/main.css'
 
@@ -23,7 +23,7 @@ const { Layout } = DefaultTheme
 const DocAside = defineAsyncComponent(() => import('@/components/DocAside.vue'))
 const DocReaction = defineAsyncComponent(() => import('@/components/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('~/forum/components/sidebar/ForumSidebar.vue'))
-const SettingsSidebarExtras = defineAsyncComponent(() => import('~/components/settings/SettingsSidebarExtras.vue'))
+const SettingsSidebarExtras = defineAsyncComponent(() => import('~/features/settings/SettingsSidebarExtras.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('@/components/LoginAlertDialog.vue'))
 const MediumZoom = defineAsyncComponent(() => import('@/components/MediumZoom.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('@/components/OAuthLoginAlertDialog.vue'))

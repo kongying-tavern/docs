@@ -17,7 +17,7 @@ import { createLintZhOptions } from './lintZhOptions.mjs'
 const fix = process.argv.includes('--fix')
 const options = createLintZhOptions()
 
-const resultList = globSync('src/zh/**/*.md').map((file) => {
+const resultList = globSync('pages/zh/**/*.md').map((file) => {
   console.log(`[start] ${file}`)
   const origin = readFileSync(file, { encoding: 'utf8' })
   const { result, validations } = run(origin, options)

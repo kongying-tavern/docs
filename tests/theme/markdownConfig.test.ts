@@ -9,7 +9,7 @@ import { markdownConfig } from '../../.vitepress/config/markdown'
 
 test('code copy buttons use the page locale during Markdown rendering', async () => {
   const locales = await createLocalesConfig()
-  const markdown = await createMarkdownRenderer(resolve('src'), mergeMarkdownLocales(markdownConfig, locales))
+  const markdown = await createMarkdownRenderer(resolve('pages'), mergeMarkdownLocales(markdownConfig, locales))
   for (const [localeIndex, title, copied] of [
     ['root', '复制代码', '已复制'],
     ['en', 'Copy code', 'Copied'],
@@ -22,7 +22,7 @@ test('code copy buttons use the page locale during Markdown rendering', async ()
 })
 
 test('VitePress built-ins render once alongside Comark', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync(`
 ## Heading {#stable-heading}
 
@@ -46,7 +46,7 @@ note[^1]
 })
 
 test('reserved containers yield to VitePress and site plugins instead of Comark', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync(`
 ::: tip
 handled tip
@@ -76,7 +76,7 @@ mdc block content
 })
 
 test('reserved lowercase containers do not swallow the MDC Card component', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('::Card\n---\ntitle: Hello\nlink: /test\n---\n::')
   assert.match(html, /<card\b/i)
   assert.match(html, /title="Hello"/)
@@ -84,8 +84,8 @@ test('reserved lowercase containers do not swallow the MDC Card component', asyn
 })
 
 test('the enhancement guide emits Vue named slots and valid MDC props', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
-  const source = readFileSync(resolve('src/zh/md-enhance-guide.md'), 'utf8')
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
+  const source = readFileSync(resolve('pages/zh/md-enhance-guide.md'), 'utf8')
   const html = await markdown.renderAsync(source)
   assert.match(html, /<template #default="">/)
   assert.match(html, /<template #details="">/)
@@ -98,7 +98,7 @@ test('the enhancement guide emits Vue named slots and valid MDC props', async ()
 })
 
 test('spoiler attributes stay independent and render typed widths and alignment', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('!!first!!{width=200} !!second!!{w=300} !!third!!{width=250,align=center} !!fourth!!{a=right} !!plain!!')
   assert.match(html, /<ScratchToReveal class="inline-spoiler" :width="200">first<\/ScratchToReveal>/)
   assert.match(html, /<ScratchToReveal class="inline-spoiler" :width="300">second<\/ScratchToReveal>/)
@@ -109,7 +109,7 @@ test('spoiler attributes stay independent and render typed widths and alignment'
 })
 
 test('site inline extensions render without swallowing adjacent text', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync(`
 {define:VALUE}**reused**{/define}
 {%= VALUE %}
@@ -138,7 +138,7 @@ HTML [[Meta]]
 })
 
 test('image dimensions preserve lazy loading, zoom attributes and figure captions', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   for (const syntax of ['![caption =200x100](/sample.png)', '![caption|200x100](/sample.png)']) {
     const html = await markdown.renderAsync(syntax)
     assert.match(html, /width="200"/)
@@ -151,7 +151,7 @@ test('image dimensions preserve lazy loading, zoom attributes and figure caption
 })
 
 test('keyboard shortcuts reuse UI components and preserve platform aliases and escaping', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('[[Ctrl]] + [[C]] / [[cMd]] + [[Opt]] + [[ArrUp]] / [[Win]] / [[A&B]]\n\nShortcut: <KbdGroup>[[Meta]][[K]]</KbdGroup>')
   assert.match(html, /:sequence="\[\[&quot;Ctrl&quot;\]\]"/)
   assert.match(html, /:sequence="\[\[&quot;cMd&quot;\]\]"/)
@@ -166,7 +166,7 @@ test('keyboard shortcuts reuse UI components and preserve platform aliases and e
 })
 
 test('native alerts, nested containers and code groups survive Comark and Vue compilation', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync(`
 > [!WARNING]
 > GFM alert
@@ -197,9 +197,9 @@ const value = 2
 })
 
 test('recruitment cards remain separate top-level containers in every locale', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   for (const [locale, count] of [['zh', 9], ['en', 2], ['ja', 8]] as const) {
-    const source = readFileSync(resolve(`src/${locale}/join.md`), 'utf8')
+    const source = readFileSync(resolve(`pages/${locale}/join.md`), 'utf8')
     const html = await markdown.renderAsync(source)
     let depth = 0
     let cards = 0
@@ -221,7 +221,7 @@ test('recruitment cards remain separate top-level containers in every locale', a
 })
 
 test('the doc header title is dropped only when the page renders its own h1', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const frontmatterOf = async (source: string) => {
     const env: Record<string, unknown> = { relativePath: 'zh/page.md' }
     await markdown.renderAsync(source, env)
@@ -233,14 +233,14 @@ test('the doc header title is dropped only when the page renders its own h1', as
   assert.equal((await frontmatterOf('```md\n# Example\n```\n\nIntro'))?.docHeaderTitle, undefined)
   assert.equal((await frontmatterOf('---\ndocHeaderTitle: true\n---\n\n# Title'))?.docHeaderTitle, true)
 
-  const ownTitle = readFileSync(resolve('src/zh/sitemap.md'), 'utf8')
-  const fencedOnly = readFileSync(resolve('src/zh/frontmatter.md'), 'utf8')
+  const ownTitle = readFileSync(resolve('pages/zh/sitemap.md'), 'utf8')
+  const fencedOnly = readFileSync(resolve('pages/zh/frontmatter.md'), 'utf8')
   assert.equal((await frontmatterOf(ownTitle))?.docHeaderTitle, false)
   assert.equal((await frontmatterOf(fencedOnly))?.docHeaderTitle, undefined)
 })
 
 test('timeline headings lose their ids while rendering, not while parsing', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const source = '::: timeline 2025-12-03 | Version 3\n## Inner heading\n\n- item\n:::\n'
   const env: Record<string, unknown> = { relativePath: 'zh/page.md' }
 
@@ -255,7 +255,7 @@ test('timeline headings lose their ids while rendering, not while parsing', asyn
 })
 
 test('timeline demos omit outline anchors without hiding following guide sections', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const source = `
 ## Components
 ### Timeline
@@ -279,7 +279,7 @@ test('timeline demos omit outline anchors without hiding following guide section
     assert.doesNotMatch(html, /ignore-header/)
   }
 
-  const guide = await markdown.renderAsync(readFileSync(resolve('src/zh/md-enhance-guide.md'), 'utf8'))
+  const guide = await markdown.renderAsync(readFileSync(resolve('pages/zh/md-enhance-guide.md'), 'utf8'))
   assert.equal(guide.match(/<h2 class='timeline-dot-title title'>/g)?.length, 3)
   assert.match(guide, /<h2 id="mdc"[^>]*>MDC/)
 })

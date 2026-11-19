@@ -1,8 +1,7 @@
 import { execFileSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
+import { relative } from 'node:path'
 import process from 'node:process'
-
-const BACKSLASH_PATH_REGEX = /\\/g
 
 export interface GitCommit {
   hash: string
@@ -58,11 +57,11 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
     }
 
     // 获取文件的Git历史 - 使用相对路径（经参数数组传参，不经 shell 拼接）
-    const relativePath = filePath.replace(`${process.cwd()}/`, '').replace(BACKSLASH_PATH_REGEX, '/')
+    const relativePath = relative(process.cwd(), filePath).replaceAll('\\', '/')
 
-    const output = execFileSync(
+    const readHistory = (path: string) => execFileSync(
       'git',
-      ['log', '--format=%H|||%ci|||%an|||%ae|||%s', '--follow', '--', relativePath],
+      ['log', '--format=%H|||%ci|||%an|||%ae|||%s', '--follow', '--', path],
       {
         cwd: process.cwd(),
         encoding: 'utf-8',
@@ -70,7 +69,10 @@ export async function getGitFileInfo(filePath: string): Promise<GitFileInfo | nu
       },
     )
 
-    const commits = parseGitLog(output)
+    // Once committed, --follow traces the move. Before that, Git only knows the old path.
+    const output = readHistory(relativePath)
+    const previousPath = relativePath.startsWith('pages/') ? `src/${relativePath.slice('pages/'.length)}` : undefined
+    const commits = parseGitLog(output || (previousPath ? readHistory(previousPath) : ''))
 
     if (commits.length === 0) {
       return null

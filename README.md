@@ -11,7 +11,7 @@
 
 ## Contributing
 
-This site is built with [VitePress](https://github.com/vuejs/vitepress). Site content is written in Markdown format located in `src`. For simple edits, you can directly edit the file on GitHub and generate a Pull Request.
+This site uses VitePress. Localized Markdown lives in `pages/zh`, `pages/en`, and `pages/ja`, with static assets in `pages/public`. Page implementations live in `src`. For simple edits, open the Markdown file on GitHub and create a pull request. [VitePress](https://github.com/vuejs/vitepress)
 
 For local development, [pnpm](https://pnpm.io/) is preferred as package manager:
 
@@ -25,6 +25,8 @@ This project requires Node.js `^20.19.0` or `>=22.12.0` (what Vite itself requir
 
 ## Working on the content
 
+- Use the translation guide to find the locale files and check changes before submitting. [Translation guide](./.github/translation-guide.md#files-and-tools)
+- Use `githubPagesOnly: true` in the frontmatter of a page that should ship only on GitHub Pages. [Frontmatter guide](./pages/zh/frontmatter.md)
 - See VitePress docs on supported [Markdown Extensions](https://vitepress.vuejs.org/guide/markdown) and the ability to [use Vue syntax inside markdown](https://vitepress.vuejs.org/guide/using-vue).
 
 ## License

@@ -5,7 +5,7 @@ import { test } from 'vitest'
 import { markdownConfig } from '../../.vitepress/config/markdown'
 
 test('timeline marks only the first dated entry and subsequent year changes', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const source = `
 ::: timeline 2025-12-03 | Version 3
 - Latest
@@ -31,7 +31,7 @@ test('timeline marks only the first dated entry and subsequent year changes', as
 })
 
 test('timeline localizes dates at render time without timezone drift', async () => {
-  const markdown = await createMarkdownRenderer(resolve('src'), markdownConfig)
+  const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const source = '::: timeline 2025-12-03 | Version 3\n- Latest\n:::'
   for (const [locale, fullDate, monthDay] of [
     ['zh', '2025年12月3日', '12月3日'],
