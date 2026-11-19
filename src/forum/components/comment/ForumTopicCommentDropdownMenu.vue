@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { FORUM } from '~/forum/components/types'
+import type { FORUM } from '@/src/forum/components/types'
+import { Button } from '@theme/components/ui/button'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 defineProps<{

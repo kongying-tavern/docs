@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { getLangPath } from '@theme/utils'
 import { useData, useRouter, withBase } from 'vitepress'
 import { onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getLangPath } from '@/utils'
-import { defineRecoverableAsyncComponent } from '~/components/async/defineRecoverableAsyncComponent'
-import { closeSettingsDialog, closeSettingsPage, consumeSettingsReturnUrl } from '~/features/settings/settingsNavigation'
+import { defineRecoverableAsyncComponent } from '@/src/components/async/defineRecoverableAsyncComponent'
+import { closeSettingsDialog, closeSettingsPage, consumeSettingsReturnUrl } from '@/src/features/settings/settingsNavigation'
 import { loadSettingsContent } from './settingsLoader'
 import SettingsShell from './SettingsShell.vue'
 import SettingsSkeleton from './SettingsSkeleton.vue'

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog'
 import { computed, onScopeDispose, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { useForumImageMetadata } from '~/forum/composables/state/useForumImageMetadata'
-import { fetchImageResource } from '~/forum/services/forumImageResource'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useForumImageMetadata } from '@/src/forum/composables/state/useForumImageMetadata'
+import { fetchImageResource } from '@/src/forum/services/forumImageResource'
 
 const { open, image } = useForumImageMetadata()
 const { t } = useI18n({ useScope: 'global' })

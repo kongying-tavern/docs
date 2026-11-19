@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import Time from '@theme/components/ui/Time/Time.vue'
 import { useData } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
-import Time from '@/components/ui/Time/Time.vue'
-import { DEFAULT_LOCALE } from '~/constants/site'
+import { DEFAULT_LOCALE } from '@/src/constants/site'
 
 const { date = new Date(), relative = true, toggleable = true } = defineProps<{
   date?: string | number | Date

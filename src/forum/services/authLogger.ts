@@ -1,4 +1,4 @@
-import { createLogger, LogLevel } from '~/utils/logger'
+import { createLogger, LogLevel } from '@/src/utils/logger'
 
 export { LogLevel }
 

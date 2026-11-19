@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import {
   Select,
   SelectContent,
@@ -7,7 +6,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@theme/components/ui/select'
+import { computed } from 'vue'
 
 interface SettingsSelectOption {
   value: string

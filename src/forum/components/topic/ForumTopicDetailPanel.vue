@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
+import { Button } from '@theme/components/ui/button'
+import { Empty, EmptyActions, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@theme/components/ui/empty'
+import User from '@theme/components/ui/User.vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { Empty, EmptyActions, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import User from '@/components/ui/User.vue'
 import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 import ForumImage from '../ui/ForumImage.vue'
 import ForumTagList from '../ui/ForumTagList.vue'

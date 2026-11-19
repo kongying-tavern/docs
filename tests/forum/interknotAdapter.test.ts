@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
   }) as () => unknown,
 }))
 
-vi.mock('~/forum/api/interknot.site', () => ({
+vi.mock('@/src/forum/api/interknot.site', () => ({
   SSO_SESSION_CONTEXT: { ssoSession: true },
   fetcher: {
     get: (path: string, options: Record<string, unknown> = {}) => {

@@ -1,4 +1,4 @@
-import { createLogger } from '~/utils/logger'
+import { createLogger } from '@/src/utils/logger'
 
 export enum TelemetryLogGroup {
   ERROR = 'TelemetryError',

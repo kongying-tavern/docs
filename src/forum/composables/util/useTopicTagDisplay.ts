@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getFallbackLabelDisplay } from '~/forum/services/forumLabelTaxonomy'
-import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
-import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
+import { getFallbackLabelDisplay } from '@/src/forum/services/forumLabelTaxonomy'
+import { getTopicTagLabelGetter } from '@/src/forum/services/getTopicTagLabelGetter'
+import { getTopicTagMap } from '@/src/forum/services/getTopicTagMap'
 
 export function useTopicTagDisplay() {
   const { t } = useI18n({ useScope: 'global' })

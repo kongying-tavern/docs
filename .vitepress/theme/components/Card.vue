@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { computed, onMounted, ref, watch } from 'vue'
-import { ASSET_ORIGIN } from '~/constants/site'
+import { ASSET_ORIGIN } from '@/src/constants/site'
 import { isLinkExternal, isRelativeLink } from '../utils'
 
 const props = withDefaults(defineProps<CardProps>(), {
@@ -153,7 +153,7 @@ const descText = computed(() => {
 </template>
 
 <style>
-@import '@/styles/media.css';
+@import '@theme/styles/media.css';
 .card {
   display: flex;
   flex-wrap: wrap;

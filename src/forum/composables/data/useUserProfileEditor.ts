@@ -1,11 +1,11 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { useI18n } from 'vue-i18n'
-import { updateAuthorizedUser } from '~/forum/api/gitee/user'
-import { forumKeys } from '~/forum/services/forumQueryContracts'
-import { applyUserProfilePatch, settleUserProfilePatch } from '~/forum/services/forumUserProfileOptimistic'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import { updateAuthorizedUser } from '@/src/forum/api/gitee/user'
+import { forumKeys } from '@/src/forum/services/forumQueryContracts'
+import { applyUserProfilePatch, settleUserProfilePatch } from '@/src/forum/services/forumUserProfileOptimistic'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 
 /** 设置页和详情页共用保存入口，同步会话信息及用户详情缓存。 */
 export function useUserProfileEditor() {

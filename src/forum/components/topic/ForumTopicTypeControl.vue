@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useTopicTypeMenu } from '~/forum/composables/state/useTopicTypeMenu'
+import { useTopicTypeMenu } from '@/src/forum/composables/state/useTopicTypeMenu'
 import ForumTopicPropertyMenu from '../ui/ForumTopicPropertyMenu.vue'
 
 const { topic } = defineProps<{ topic: ForumAPI.Topic }>()

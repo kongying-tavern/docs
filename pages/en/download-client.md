@@ -29,7 +29,7 @@ theme: medium
 ```
 
 <script setup lang="ts">
-import { clientLink, useDownloadRedirect } from '~/features/links/Download'
+import { clientLink, useDownloadRedirect } from '@/src/features/links/Download'
 
 const downloadMethod = [
   clientLink('sq', 'Community'),

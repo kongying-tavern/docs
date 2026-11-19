@@ -9,13 +9,13 @@ vi.mock('vue-i18n', async (importOriginal) => {
   const i18n = actual.createI18n({ legacy: false, locale: 'en', messages: { en: loadTestMessages('en') } })
   return { ...actual, useI18n: () => i18n.global }
 })
-vi.mock('~/forum/composables/state/useForumLabelStore', async () => {
+vi.mock('@/src/forum/composables/state/useForumLabelStore', async () => {
   const { ref } = await import('vue')
   return { useForumLabelStore: () => ({ categoryLabels: ref([]) }) }
 })
 
-const { useForumSearchToken } = await import('~/forum/composables/view/useForumSearchToken')
-const { useForumSearchFilters } = await import('~/forum/components/search/composables/useForumSearchFilters')
+const { useForumSearchToken } = await import('@/src/forum/composables/view/useForumSearchToken')
+const { useForumSearchFilters } = await import('@/src/forum/components/search/composables/useForumSearchFilters')
 
 const scope = effectScope()
 const token = scope.run(() => useForumSearchToken())!

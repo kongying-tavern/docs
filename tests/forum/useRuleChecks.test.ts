@@ -9,10 +9,10 @@ const mocks = vi.hoisted(() => ({
   blog: new Set<number>(),
 }))
 
-vi.mock('~/forum/stores/auth/useUserInfo', () => ({
+vi.mock('@/src/forum/stores/auth/useUserInfo', () => ({
   useUserInfoStore: () => ({ info: mocks.userId === undefined ? undefined : { id: mocks.userId } }),
 }))
-vi.mock('~/forum/composables/auth/usePermissionData', async () => {
+vi.mock('@/src/forum/composables/auth/usePermissionData', async () => {
   const { computed } = await import('vue')
   return {
     usePermissionData: () => ({

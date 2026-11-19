@@ -1,12 +1,12 @@
 import type { SuggestionOptions } from '@tiptap/suggestion'
 import type { ForumEditorSuggestionItem } from './forumSuggestionRenderer'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { mergeAttributes } from '@tiptap/core'
 import Mention from '@tiptap/extension-mention'
 import { PluginKey } from '@tiptap/pm/state'
-import feedbackRepoMember from '~/data/feedbackMemberList.gen.json'
-import TeamMember from '~/data/teamMemberList.gen.json'
-import { getForumMentionHref } from '~/forum/services/forumLinkPolicy'
+import feedbackRepoMember from '@/src/data/feedbackMemberList.gen.json'
+import TeamMember from '@/src/data/teamMemberList.gen.json'
+import { getForumMentionHref } from '@/src/forum/services/forumLinkPolicy'
 
 const officialMember = [...new Map(
   [...feedbackRepoMember.data, ...TeamMember.data]

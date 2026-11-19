@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { BlogUpdateFormatters, BlogUpdateItem } from '~/forum/services/blogUpdateFeed'
+import type { BlogUpdateFormatters, BlogUpdateItem } from '@/src/forum/services/blogUpdateFeed'
+import { getLangPath } from '@theme/utils'
 import { useData } from 'vitepress'
 import { useI18n } from 'vue-i18n'
-import { getLangPath } from '@/utils'
-import { describeBlogUpdate } from '~/forum/services/blogUpdateFeed'
+import { describeBlogUpdate } from '@/src/forum/services/blogUpdateFeed'
 import ForumTime from '../ui/ForumTime.vue'
 
 defineProps<{ items: readonly BlogUpdateItem[] }>()

@@ -10,14 +10,14 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@/*": [
-        "./.vitepress/theme/*"
-      ],
-      "#theme/*": [
+      "@theme/*": [
         "./.vitepress/theme/*"
       ],
       "~/*": [
-        "./src/*"
+        "./.vitepress/*"
+      ],
+      "@/*": [
+        "./*"
       ],
       "vite": [
         "./node_modules/vite"

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { computed } from 'vue'
-import { useFormSubmit } from '~/forum/components/form/composables/useFormSubmit'
+import { useFormSubmit } from '@/src/forum/components/form/composables/useFormSubmit'
 
 const mocks = vi.hoisted(() => ({
   failRestore: true,
@@ -14,10 +14,10 @@ vi.mock('vue', async importOriginal => ({
   ...await importOriginal<typeof import('vue')>(),
   onBeforeUnmount() {},
 }))
-vi.mock('~/forum/api/interknot.site/upload', () => ({ uploadImg() {} }))
-vi.mock('~/forum/composables/data/useSubmitTopic', () => ({ useSubmitTopic: () => ({ submitData() {} }) }))
-vi.mock('~/forum/composables/view/calculateThumbHashForFile', () => ({ calculateThumbHashForFile() {} }))
-vi.mock('~/forum/composables/view/useImageAttachmentQueue', () => ({
+vi.mock('@/src/forum/api/interknot.site/upload', () => ({ uploadImg() {} }))
+vi.mock('@/src/forum/composables/data/useSubmitTopic', () => ({ useSubmitTopic: () => ({ submitData() {} }) }))
+vi.mock('@/src/forum/composables/view/calculateThumbHashForFile', () => ({ calculateThumbHashForFile() {} }))
+vi.mock('@/src/forum/composables/view/useImageAttachmentQueue', () => ({
   useImageAttachmentQueue: () => ({
     restore() {
       if (mocks.failRestore)
@@ -25,8 +25,8 @@ vi.mock('~/forum/composables/view/useImageAttachmentQueue', () => ({
     },
   }),
 }))
-vi.mock('~/forum/services/form/topicDraft', () => ({ readTopicDraft: () => ({ attachments: [] }) }))
-vi.mock('~/forum/services/form/topicFormTransaction', () => ({
+vi.mock('@/src/forum/services/form/topicDraft', () => ({ readTopicDraft: () => ({ attachments: [] }) }))
+vi.mock('@/src/forum/services/form/topicFormTransaction', () => ({
   submitTopicFormTransaction: async () => {
     mocks.transactionCalls++
     if (mocks.failTransaction)

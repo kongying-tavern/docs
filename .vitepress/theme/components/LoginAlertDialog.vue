@@ -1,30 +1,30 @@
 <script setup lang="ts">
 import { OctagonXIcon, XIcon } from '@lucide/vue'
 
-import { useData, withBase } from 'vitepress'
-import { computed, ref, watch } from 'vue'
-import { I18nT, useI18n } from 'vue-i18n'
-import { Alert, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
+import { Alert, AlertTitle } from '@theme/components/ui/alert'
+import { Button } from '@theme/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from '@theme/components/ui/dialog'
 import {
   Field,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import { getLangPath } from '@/utils'
-import { useAccountLoginExperiment } from '~/forum/composables/state/useAccountLoginExperiment'
-import { useHashChecker } from '~/forum/hooks/useHashChecker'
-import useLogin from '~/forum/hooks/useLogin'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+} from '@theme/components/ui/field'
+import { Input } from '@theme/components/ui/input'
+import { getLangPath } from '@theme/utils'
+import { useData, withBase } from 'vitepress'
+import { computed, ref, watch } from 'vue'
+import { I18nT, useI18n } from 'vue-i18n'
+import { useAccountLoginExperiment } from '@/src/forum/composables/state/useAccountLoginExperiment'
+import { useHashChecker } from '@/src/forum/hooks/useHashChecker'
+import useLogin from '@/src/forum/hooks/useLogin'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
 
 const { t } = useI18n({ useScope: 'global' })
 

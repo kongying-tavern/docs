@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { isArray } from 'lodash-es'
 import BlogRepoMember from '../../data/blogMemberList.gen.json' with { type: 'json' }
 import TeamMember from '../../data/teamMemberList.gen.json' with { type: 'json' }

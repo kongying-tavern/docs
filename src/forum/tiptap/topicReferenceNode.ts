@@ -1,11 +1,11 @@
 import type { SuggestionOptions } from '@tiptap/suggestion'
 import type { ForumEditorSuggestionItem } from './forumSuggestionRenderer'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { InputRule, mergeAttributes, PasteRule } from '@tiptap/core'
 import Mention from '@tiptap/extension-mention'
 import { PluginKey } from '@tiptap/pm/state'
-import { TOPIC_ID_PATTERN } from '~/forum/services/forumTopicQuote'
-import { getTopicReferenceSuggestions, normalizeTopicReferenceId } from '~/forum/services/forumTopicReferenceSuggestions'
+import { TOPIC_ID_PATTERN } from '@/src/forum/services/forumTopicQuote'
+import { getTopicReferenceSuggestions, normalizeTopicReferenceId } from '@/src/forum/services/forumTopicReferenceSuggestions'
 
 const topicReferencePluginKey = new PluginKey('forumTopicReference')
 

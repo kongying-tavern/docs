@@ -1,4 +1,4 @@
-import { getGiteeProfileHref, SITE_ORIGIN } from '~/constants/site'
+import { getGiteeProfileHref, SITE_ORIGIN } from '@/src/constants/site'
 
 export const SAFE_FORUM_URI_REGEX = /^(?!\/\/)(?:https?:|\.{0,2}\/|#)/i
 const RELATIVE_FORUM_URI_REGEX = /^(?:\.{0,2}\/|#)/u

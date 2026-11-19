@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
 
 const props = withDefaults(defineProps<{
   swapKey: string | number

@@ -1,10 +1,10 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { defineStore } from 'pinia'
 import { onMounted, ref, watch } from 'vue'
 
-import { getAuthorizedUser } from '~/forum/api/gitee/user'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+import { getAuthorizedUser } from '@/src/forum/api/gitee/user'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
 
 interface FingerprintAgain {
   visitorId: string

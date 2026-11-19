@@ -6,7 +6,7 @@ layout: doc
 ---
 
 <script setup lang="ts">
-import { useProjectAgeDays } from '~/features/staff/useProjectAgeDays'
+import { useProjectAgeDays } from '@/src/features/staff/useProjectAgeDays'
 
 const days = useProjectAgeDays()
 </script>

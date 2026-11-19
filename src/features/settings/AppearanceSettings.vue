@@ -1,22 +1,22 @@
 <script setup lang="ts">
+import { Switch } from '@theme/components/ui/switch'
+import { ToggleGroup, ToggleGroupItem } from '@theme/components/ui/toggle-group'
+import { useThemeTransition } from '@theme/hooks/useThemeTransition'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Switch } from '@/components/ui/switch'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useThemeTransition } from '@/hooks/useThemeTransition'
-import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
 import {
   isMotionPreference,
   isThemePreference,
   MOTION_OPTION_DEFINITIONS,
   THEME_OPTION_DEFINITIONS,
-} from '~/features/settings/settingsOptions'
+} from '@/src/features/settings/settingsOptions'
 import {
   DEFAULT_UI_FONT_SIZE,
   MAX_UI_FONT_SIZE,
   MIN_UI_FONT_SIZE,
   normalizeUiFontSize,
-} from '~/services/sitePreferences'
+} from '@/src/services/sitePreferences'
 import SettingsRow from './SettingsRow.vue'
 import SettingsSelect from './SettingsSelect.vue'
 import SettingsThemePreview from './SettingsThemePreview.vue'

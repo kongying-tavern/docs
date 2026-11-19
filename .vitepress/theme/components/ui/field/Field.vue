@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { FieldVariants } from '.'
-import { cn } from '@/lib/utils'
+import { cn } from '@theme/lib/utils'
 import { fieldVariants } from '.'
 
 const props = defineProps<{

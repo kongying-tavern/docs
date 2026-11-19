@@ -1,9 +1,9 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, watchEffect } from 'vue'
-import feedbackMembers from '~/data/feedbackMemberList.gen.json'
-import teamMembers from '~/data/teamMemberList.gen.json'
-import { collectMentionUsers } from '~/forum/services/commentComposer'
+import feedbackMembers from '@/src/data/feedbackMemberList.gen.json'
+import teamMembers from '@/src/data/teamMemberList.gen.json'
+import { collectMentionUsers } from '@/src/forum/services/commentComposer'
 
 export function useForumMentionCandidates(getParticipants: () => readonly ForumAPI.User[] = () => []) {
   const recent = useLocalStorage<ForumAPI.User[]>('RECENT_MENTION', [])

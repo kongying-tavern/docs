@@ -2,12 +2,12 @@
 import type { DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
+import { Button } from '@theme/components/ui/button'
+import { cn } from '@theme/lib/utils'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { defineTopicDropdownMenu } from '~/forum/composables/util/defineTopicDropdownMenu'
+import { defineTopicDropdownMenu } from '@/src/forum/composables/util/defineTopicDropdownMenu'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 defineOptions({

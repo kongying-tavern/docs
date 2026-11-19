@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { INTER_KNOT } from '~/forum/api/interknot.site/api'
+import type { INTER_KNOT } from '@/src/forum/api/interknot.site/api'
 import { ReloadIcon } from '@radix-icons/vue'
+import { Button } from '@theme/components/ui/button'
+import { TextMorph } from '@theme/components/ui/text-morph'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { TextMorph } from '@/components/ui/text-morph'
-import { useTopicsReaction } from '~/forum/composables/data/useTopicsReaction'
+import { useTopicsReaction } from '@/src/forum/composables/data/useTopicsReaction'
 
 const { autoload = true, topicId, refetchOnMount } = defineProps<{
   topicId: string

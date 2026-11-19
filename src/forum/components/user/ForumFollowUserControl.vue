@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
+import { Button } from '@theme/components/ui/button'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
 
 defineProps<{ followState: boolean | null, following: boolean, disabled: boolean, textClass?: HTMLAttributes['class'] }>()
 const emit = defineEmits<{ toggle: [] }>()

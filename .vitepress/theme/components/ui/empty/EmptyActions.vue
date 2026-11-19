@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { EmptyActionsVariants } from '.'
-import { cn } from '@/lib/utils'
+import { cn } from '@theme/lib/utils'
 import { emptyActionsVariants } from '.'
 
 const props = defineProps<{

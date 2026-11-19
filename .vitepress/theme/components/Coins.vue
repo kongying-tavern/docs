@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useQRCode } from '@theme/hooks/useQRCode'
 
+import { useData } from 'vitepress'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useQRCode } from '@/hooks/useQRCode'
 import BlurFade from './ui/BlurFade.vue'
 
 const { t } = useI18n({ useScope: 'global' })

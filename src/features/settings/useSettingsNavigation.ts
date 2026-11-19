@@ -1,20 +1,20 @@
 import type { ComputedRef, Ref } from 'vue'
-import type { SettingsSectionGroup, SettingsSectionId } from '~/features/settings/settingsOptions'
+import type { SettingsSectionGroup, SettingsSectionId } from '@/src/features/settings/settingsOptions'
+import { getLangPath } from '@theme/utils'
 import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref, toValue, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getLangPath } from '@/utils'
-import { closeSettingsDialog, closeSettingsPage } from '~/features/settings/settingsNavigation'
+import { closeSettingsDialog, closeSettingsPage } from '@/src/features/settings/settingsNavigation'
 import {
   isSettingsSectionId,
   SETTINGS_SECTION_DEFINITIONS,
-} from '~/features/settings/settingsOptions'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+} from '@/src/features/settings/settingsOptions'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
 import { useSitePreferences } from '../../composables/useSitePreferences'
 
-export type { SettingsSectionId } from '~/features/settings/settingsOptions'
+export type { SettingsSectionId } from '@/src/features/settings/settingsOptions'
 
 export interface SettingsNavigationItem {
   id: SettingsSectionId

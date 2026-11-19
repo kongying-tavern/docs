@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChevronRightIcon } from '@lucide/vue'
-import { Button } from '@/components/ui/button'
+import { Button } from '@theme/components/ui/button'
 </script>
 
 <template>

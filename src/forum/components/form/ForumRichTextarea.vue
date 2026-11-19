@@ -1,29 +1,29 @@
 <script setup lang="ts">
+import type { EmojiItem } from '@theme/components/ui/EmojiPicker.vue'
 import type { JSONContent, Editor as TiptapEditor } from '@tiptap/core'
 import type { HTMLAttributes } from 'vue'
-import type { EmojiItem } from '@/components/ui/EmojiPicker.vue'
-import type ForumAPI from '~/forum/api/types'
-import type { ImageAttachment } from '~/forum/services/form/imageAttachment'
+import type ForumAPI from '@/src/forum/api/types'
+import type { ImageAttachment } from '@/src/forum/services/form/imageAttachment'
 import { useQueryCache } from '@pinia/colada'
+import EmojiPicker from '@theme/components/ui/EmojiPicker.vue'
+import InputPlaceholders from '@theme/components/ui/InputPlaceholders.vue'
+import { cn } from '@theme/lib/utils'
 import CharacterCount from '@tiptap/extension-character-count'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { createReusableTemplate, onClickOutside } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import EmojiPicker from '@/components/ui/EmojiPicker.vue'
-import InputPlaceholders from '@/components/ui/InputPlaceholders.vue'
-import { cn } from '@/lib/utils'
-import { useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
-import { useSitePreferences } from '~/composables/useSitePreferences'
-import { useForumEditorShortcuts } from '~/forum/composables/view/useForumEditorShortcuts'
-import { useForumImageDropZone } from '~/forum/composables/view/useForumImageDropZone'
-import { useForumMentionCandidates } from '~/forum/composables/view/useForumMentionCandidates'
-import { useMobileEditorMention } from '~/forum/composables/view/useMobileEditorMention'
-import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
-import { collectForumTopics, forumKeys } from '~/forum/services/forumQueryContracts'
-import { createForumContentExtensions } from '~/forum/services/forumTiptapExtensions'
-import { createForumSuggestionRenderer } from '~/forum/tiptap/forumSuggestionRenderer'
+import { useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { useForumEditorShortcuts } from '@/src/forum/composables/view/useForumEditorShortcuts'
+import { useForumImageDropZone } from '@/src/forum/composables/view/useForumImageDropZone'
+import { useForumMentionCandidates } from '@/src/forum/composables/view/useForumMentionCandidates'
+import { useMobileEditorMention } from '@/src/forum/composables/view/useMobileEditorMention'
+import { IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig'
+import { collectForumTopics, forumKeys } from '@/src/forum/services/forumQueryContracts'
+import { createForumContentExtensions } from '@/src/forum/services/forumTiptapExtensions'
+import { createForumSuggestionRenderer } from '@/src/forum/tiptap/forumSuggestionRenderer'
 import ForumEditorTools from './ForumEditorTools.vue'
 import ForumImageUpload from './ForumImageUpload.vue'
 import ForumMentionRecommendations from './ForumMentionRecommendations.vue'
@@ -461,7 +461,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-@import '@/styles/media.css';
+@import '@theme/styles/media.css';
 .comment-drop-overlay {
   position: absolute;
   z-index: 20;

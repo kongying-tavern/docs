@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { RetroDitherOptions } from '~/utils/retroDither'
+import type { RetroDitherOptions } from '@/src/utils/retroDither'
 import { ref, useTemplateRef, watch } from 'vue'
-import { retroDither } from '~/utils/retroDither'
+import { retroDither } from '@/src/utils/retroDither'
 
 // Image-only, static dithering. Supply a height or aspect-ratio on the host.
 const props = withDefaults(defineProps<RetroDitherOptions & {

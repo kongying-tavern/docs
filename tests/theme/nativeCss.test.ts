@@ -11,7 +11,7 @@ import siteConfig from '../../vite.config'
 test('shared custom media is lowered with nesting through the actual Vite CSS pipeline', async () => {
   const config = await resolveConfig({ ...siteConfig({ command: 'serve', mode: 'development' }), configFile: false, plugins: [] }, 'serve')
   const result = await preprocessCSS(`
-    @import '@/styles/media.css';
+    @import '@theme/styles/media.css';
     .probe {
       .child { color: red; }
       @media (--site-mobile) { display: none; }

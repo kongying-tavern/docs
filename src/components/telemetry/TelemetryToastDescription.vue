@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
+import { Button } from '@theme/components/ui/button'
+import ClipboardCopyButton from '@theme/components/ui/ClipboardCopyButton.vue'
 import { computed, isVNode } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
-import { useSitePreferences } from '~/composables/useSitePreferences'
-import { useToastDiagnostics } from '~/composables/useToastDiagnostics'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { useToastDiagnostics } from '@/src/composables/useToastDiagnostics'
 
 type DescriptionContent = (() => string | Component) | string | Component
 

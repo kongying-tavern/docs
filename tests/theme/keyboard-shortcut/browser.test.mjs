@@ -37,7 +37,11 @@ test('keyboard shortcut SSR and browser regression', { timeout: 120000 }, async 
     }],
     resolve: {
       dedupe: ['vue', 'vue-i18n'],
-      alias: { '@': `${root}/.vitepress/theme`, '~': `${root}/src` },
+      alias: {
+        '@theme': `${root}/.vitepress/theme`,
+        '~': `${root}/.vitepress`,
+        '@': root,
+      },
     },
     optimizeDeps: { entries: [fixture], include: ['vue', 'vue-i18n', 'cn', '@vueuse/core'] },
     server: { host: '127.0.0.1', port: 0 },

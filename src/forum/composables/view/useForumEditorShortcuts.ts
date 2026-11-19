@@ -1,9 +1,9 @@
 import type { Editor } from '@tiptap/core'
-import type { ForumInputShortcutId } from '~/forum/services/forumShortcuts'
+import type { ForumInputShortcutId } from '@/src/forum/services/forumShortcuts'
 import { Extension } from '@tiptap/core'
 import { Plugin } from '@tiptap/pm/state'
-import { useForumShortcutPreferences } from '~/forum/composables/state/useForumShortcutPreferences'
-import { resolveEditorShortcut } from '~/forum/services/forumShortcuts'
+import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences'
+import { resolveEditorShortcut } from '@/src/forum/services/forumShortcuts'
 
 /** High-priority editor keymap masks old formatting bindings when remapped or disabled. */
 export function useForumEditorShortcuts(options: { send?: () => boolean, enabled?: () => boolean } = {}) {

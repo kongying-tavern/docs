@@ -1,5 +1,5 @@
 import type { GitFileInfo } from './git.ts'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { join } from 'node:path'
 import { createContentLoader } from 'vitepress'
 import { BLOG_POST_ORDER } from '../constants/blog.ts'

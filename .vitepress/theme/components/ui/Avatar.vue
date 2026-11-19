@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType, StyleValue } from 'vue'
 
+import { cn } from '@theme/lib/utils'
 import { computed, ref, watch } from 'vue'
-import { cn } from '@/lib/utils'
 import { UI } from './config'
 
 const props = defineProps({

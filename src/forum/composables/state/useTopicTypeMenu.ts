@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { Composer } from 'vue-i18n'
-import type ForumAPI from '~/forum/api/types'
-import type { FORUM } from '~/forum/components/types'
+import type ForumAPI from '@/src/forum/api/types'
+import type { FORUM } from '@/src/forum/components/types'
 import { computed, toValue } from 'vue'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { useTopicOperationFeedback } from '~/forum/composables/view/useTopicOperationFeedback'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useTopicOperationFeedback } from '@/src/forum/composables/view/useTopicOperationFeedback'
 import { useTopicManager } from './useTopicManager'
 
 export function useTopicTypeMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, t: Composer['t']) {

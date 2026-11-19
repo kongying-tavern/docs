@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
+import { Button } from '@theme/components/ui/button'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumProfileTabs from './ForumProfileTabs.vue'
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { DropdownMenuContentEmits, DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+import { FluidHoverList } from '@theme/components/ui/fluid-hover'
+import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import {
   DropdownMenuContent,
   DropdownMenuPortal,
   useForwardPropsEmits,
 } from 'reka-ui'
-import { FluidHoverList } from '@/components/ui/fluid-hover'
-import { cn } from '@/lib/utils'
 
 defineOptions({
   inheritAttrs: false,

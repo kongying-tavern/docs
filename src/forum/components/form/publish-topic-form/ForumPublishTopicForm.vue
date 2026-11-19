@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PublishTopicPresentation } from '../composables/usePublishTopicController'
 import { h, useTemplateRef, watch } from 'vue'
-import { defineRecoverableAsyncComponent } from '~/components/async/defineRecoverableAsyncComponent'
-import { trackOp } from '~/services/telemetry'
+import { defineRecoverableAsyncComponent } from '@/src/components/async/defineRecoverableAsyncComponent'
+import { trackOp } from '@/src/services/telemetry'
 import { usePublishTopicController } from '../composables/usePublishTopicController'
 import ForumPublishTopicLoading from './ForumPublishTopicLoading.vue'
 

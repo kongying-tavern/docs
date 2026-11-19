@@ -1,5 +1,5 @@
 import type { Composer } from 'vue-i18n'
-import type { AuthError, AuthErrorType } from '~/services/authErrors'
+import type { AuthError, AuthErrorType } from '@/src/services/authErrors'
 
 /** 认证错误类型到 `forum.auth.errorMessages` 词条的映射 */
 export type AuthErrorMessageKey

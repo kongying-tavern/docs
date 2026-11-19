@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ForumSelectOption, ForumSelectSlots } from './shared'
-import { computed, ref } from 'vue'
 import {
   Drawer,
   DrawerContent,
@@ -8,7 +7,8 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer'
+} from '@theme/components/ui/drawer'
+import { computed, ref } from 'vue'
 import { groupSelectOptions } from './shared'
 
 const props = defineProps<{

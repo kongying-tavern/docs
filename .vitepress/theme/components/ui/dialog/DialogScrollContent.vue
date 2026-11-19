@@ -2,6 +2,7 @@
 import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { X } from '@lucide/vue'
+import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import {
   DialogClose,
@@ -10,7 +11,6 @@ import {
   DialogPortal,
   useForwardPropsEmits,
 } from 'reka-ui'
-import { cn } from '@/lib/utils'
 
 defineOptions({
   inheritAttrs: false,

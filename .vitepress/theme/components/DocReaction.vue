@@ -3,7 +3,7 @@ import { useRoute } from 'vitepress'
 
 import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumReaction } from '~/forum/composables/data/useForumReaction'
+import { useForumReaction } from '@/src/forum/composables/data/useForumReaction'
 import DocFeedbackForm from './DocReactionForm.vue'
 
 const { variant = 'default', showForm = true } = defineProps<{
@@ -113,7 +113,7 @@ const styles = computed(() => {
 </template>
 
 <style scoped>
-@import '@/styles/media.css';
+@import '@theme/styles/media.css';
 @media (--site-sm) {
   .feedback {
     grid-template-columns: repeat(1, 2fr);

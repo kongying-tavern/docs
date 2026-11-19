@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 
 /**
  * 除创建锚点外是否存在状态变化。

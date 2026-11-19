@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { FORUM } from '~/forum/components/types'
-import type { ForumSort } from '~/forum/services/forumRoute'
+import type { FORUM } from '@/src/forum/components/types'
+import type { ForumSort } from '@/src/forum/services/forumRoute'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
-import { useForumListControlOptions } from '~/forum/composables/view/useForumListControlOptions'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
+import { useForumListControlOptions } from '@/src/forum/composables/view/useForumListControlOptions'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
 import ForumAsideTagFilter from '../aside/ForumAsideTagFilter.vue'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 

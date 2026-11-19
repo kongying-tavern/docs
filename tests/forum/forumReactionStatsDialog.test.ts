@@ -7,7 +7,7 @@ import ForumReactionStatsDialog from '../../src/forum/components/ui/ForumReactio
 const stats = vi.hoisted(() => ({ commentId: undefined as string | undefined, viewCount: 3642 }))
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
-vi.mock('~/forum/composables/data/useReactionStats', async () => {
+vi.mock('@/src/forum/composables/data/useReactionStats', async () => {
   const { ref } = await import('vue')
   return {
     useReactionStats: () => ({
@@ -18,7 +18,7 @@ vi.mock('~/forum/composables/data/useReactionStats', async () => {
     }),
   }
 })
-vi.mock('~/forum/composables/data/useForumReaction', async () => {
+vi.mock('@/src/forum/composables/data/useForumReaction', async () => {
   const { ref } = await import('vue')
   return {
     useForumReaction: () => ({
@@ -29,7 +29,7 @@ vi.mock('~/forum/composables/data/useForumReaction', async () => {
     }),
   }
 })
-vi.mock('@/components/ui/dialog', () => {
+vi.mock('@theme/components/ui/dialog', () => {
   const slot = { template: '<div><slot /></div>' }
   return Object.fromEntries([
     'Dialog',
@@ -40,8 +40,8 @@ vi.mock('@/components/ui/dialog', () => {
     'DialogTitle',
   ].map(name => [name, slot]))
 })
-vi.mock('@/components/ui/button', () => ({ Button: { template: '<button><slot /></button>' } }))
-vi.mock('@/components/ui/text-morph', () => ({ TextMorph: { props: ['text'], template: '<span>{{ text }}</span>' } }))
+vi.mock('@theme/components/ui/button', () => ({ Button: { template: '<button><slot /></button>' } }))
+vi.mock('@theme/components/ui/text-morph', () => ({ TextMorph: { props: ['text'], template: '<span>{{ text }}</span>' } }))
 
 for (const commentId of [undefined, '99001']) {
   test(`reaction stats display server viewCount for ${commentId ? 'comments' : 'topics'}, independently of clickCount`, async () => {

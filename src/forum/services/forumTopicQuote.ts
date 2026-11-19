@@ -1,4 +1,4 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 
 export const QUOTED_TOPIC_ID_PARAM = 'quote-topic'
 export const QUOTED_TOPIC_TYPE_PARAM = 'quote-type'

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ReloadIcon } from '@radix-icons/vue'
-import { computed, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
+import { Button } from '@theme/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -10,10 +8,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { TextMorph } from '@/components/ui/text-morph'
-import { useForumReaction } from '~/forum/composables/data/useForumReaction'
-import { useReactionStats } from '~/forum/composables/data/useReactionStats'
+} from '@theme/components/ui/dialog'
+import { TextMorph } from '@theme/components/ui/text-morph'
+import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useForumReaction } from '@/src/forum/composables/data/useForumReaction'
+import { useReactionStats } from '@/src/forum/composables/data/useReactionStats'
 
 const { open, target } = useReactionStats()
 const { t } = useI18n({ useScope: 'global' })

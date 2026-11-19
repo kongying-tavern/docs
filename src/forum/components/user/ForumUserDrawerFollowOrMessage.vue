@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
+import { Button } from '@theme/components/ui/button'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { getGiteeMessagesHref } from '~/constants/site'
-import { useFollowUser } from '~/forum/composables/data/useFollowUser'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import { getGiteeMessagesHref } from '@/src/constants/site'
+import { useFollowUser } from '@/src/forum/composables/data/useFollowUser'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 
 const { user } = defineProps<{
   user: ForumAPI.User

@@ -11,7 +11,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@theme/components/ui/dropdown-menu'
 import ForumHintIcon from './ForumHintIcon.vue'
 import ForumMenuShortcut from './ForumMenuShortcut.vue'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'

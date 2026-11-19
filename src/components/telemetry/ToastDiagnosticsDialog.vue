@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
+import ClipboardCopyButton from '@theme/components/ui/ClipboardCopyButton.vue'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@theme/components/ui/dialog'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { useToastDiagnostics } from '~/composables/useToastDiagnostics'
+import { useToastDiagnostics } from '@/src/composables/useToastDiagnostics'
 
 const { t } = useI18n({ useScope: 'global' })
 const { diagnostics, closeDiagnostics, restoreDiagnosticsFocus } = useToastDiagnostics()

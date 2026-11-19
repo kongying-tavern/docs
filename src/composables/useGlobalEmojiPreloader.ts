@@ -1,6 +1,6 @@
 import { withBase } from 'vitepress'
 import { readonly, ref } from 'vue'
-import EmojiData from '~/data/emojis.gen.json'
+import EmojiData from '@/src/data/emojis.gen.json'
 
 export const RECENT_EMOJIS_STORAGE_KEY = 'RECENT_EMOJIS'
 

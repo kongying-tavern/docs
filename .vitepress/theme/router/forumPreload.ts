@@ -1,7 +1,7 @@
 import type { SiteData } from 'vitepress'
 import { useEventListener } from '@vueuse/core'
 import { useData } from 'vitepress'
-import { parseForumLocation } from '~/forum/services/forumRoute'
+import { parseForumLocation } from '@/src/forum/services/forumRoute'
 import { preloadForumRouteView } from '../components/AsyncForumRouteView'
 
 export const loadForumLayout = () => import('../layouts/Forum.vue')
@@ -28,7 +28,7 @@ export function preloadForumEntry(href: string, site: SiteData): void {
   entryPreload = Promise.all([
     loadForumLayout(),
     preloadForumRouteView(),
-    import('~/forum/components/sidebar/ForumSidebar.vue'),
+    import('@/src/forum/components/sidebar/ForumSidebar.vue'),
   ]).catch(() => {
     entryPreload = undefined
   })

@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { ForumSelectOption } from '../ui/responsive/shared'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { ChevronDown } from '@lucide/vue'
-import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
+import { Button } from '@theme/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -13,12 +11,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { cn } from '@/lib/utils'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { useTopicManager } from '~/forum/composables/state/useTopicManager'
-import { useTopicStatusEditor } from '~/forum/composables/state/useTopicStatusEditor'
-import { getConclusiveTopicStatuses, groupTopicStatuses } from '~/forum/services/forumTopicStatus'
+} from '@theme/components/ui/dialog'
+import { cn } from '@theme/lib/utils'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { useTopicManager } from '@/src/forum/composables/state/useTopicManager'
+import { useTopicStatusEditor } from '@/src/forum/composables/state/useTopicStatusEditor'
+import { getConclusiveTopicStatuses, groupTopicStatuses } from '@/src/forum/services/forumTopicStatus'
 import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
 import ForumResponsiveSelect from '../ui/responsive/ForumResponsiveSelect.vue'
 import { FORUM_SELECT_TRIGGER_CLASSES } from '../ui/responsive/shared'

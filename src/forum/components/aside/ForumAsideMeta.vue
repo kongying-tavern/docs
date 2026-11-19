@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { getLangPath } from '@theme/utils'
 import { useData } from 'vitepress'
 import { useI18n } from 'vue-i18n'
-import { getLangPath } from '@/utils'
 
 const { localeIndex, theme } = useData()
 const { t } = useI18n({ useScope: 'global' })

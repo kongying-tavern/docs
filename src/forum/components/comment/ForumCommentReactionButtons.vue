@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
+import { TextMorph } from '@theme/components/ui/text-morph'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { TextMorph } from '@/components/ui/text-morph'
-import { useForumReaction } from '~/forum/composables/data/useForumReaction'
+import { useForumReaction } from '@/src/forum/composables/data/useForumReaction'
 
 const { autoload = true, topicId, commentId } = defineProps<{
   topicId: string

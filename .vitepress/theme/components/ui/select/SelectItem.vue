@@ -2,6 +2,7 @@
 import type { SelectItemProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { Check } from '@lucide/vue'
+import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import {
   SelectItem,
@@ -9,7 +10,6 @@ import {
   SelectItemText,
   useForwardProps,
 } from 'reka-ui'
-import { cn } from '@/lib/utils'
 
 const props = defineProps<SelectItemProps & { class?: HTMLAttributes['class'] }>()
 

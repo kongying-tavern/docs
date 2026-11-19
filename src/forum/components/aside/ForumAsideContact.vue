@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useQRCode } from '@theme/hooks/useQRCode'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useQRCode } from '@/hooks/useQRCode'
 import ForumAsideSection from './ForumAsideSection.vue'
 
 const { theme } = useData()

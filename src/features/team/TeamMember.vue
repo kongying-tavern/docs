@@ -3,7 +3,7 @@ import type { Member } from './Member'
 
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getGiteeProfileHref } from '~/constants/site'
+import { getGiteeProfileHref } from '@/src/constants/site'
 
 const props = defineProps<{
   member: Member

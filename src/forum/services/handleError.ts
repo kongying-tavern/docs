@@ -1,6 +1,6 @@
 import type { Composer } from 'vue-i18n'
-import { GiteeAPIError } from '~/forum/api/gitee'
-import { toast } from '~/services/telemetry/toast'
+import { GiteeAPIError } from '@/src/forum/api/gitee'
+import { toast } from '@/src/services/telemetry/toast'
 
 /**
  * 数据加载失败的统一出口，带限流/未登录特化（附加登录引导动作）。

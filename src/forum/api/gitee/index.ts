@@ -1,6 +1,6 @@
 import type { KyResponse } from 'ky'
 import type { ApiCallOptions, ApiResult, HttpMethod } from './types'
-import { reportRequestFailure } from '~/services/telemetry/request'
+import { reportRequestFailure } from '@/src/services/telemetry/request'
 import { fetcher, prepareRequest } from './client'
 import { toGiteeAPIError } from './errors'
 import * as gists from './gists'

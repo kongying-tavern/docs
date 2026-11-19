@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import { Tabs, TabsList, TabsTrigger } from '@theme/components/ui/tabs'
 import { computed, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
 import {
   DEFAULT_TOAST_DURATION,
   isToastPosition,
   TOAST_DURATION_DEFINITIONS,
   TOAST_POSITION_DEFINITIONS,
-} from '~/features/settings/settingsOptions'
-import { toast } from '~/services/telemetry/toast'
+} from '@/src/features/settings/settingsOptions'
+import { toast } from '@/src/services/telemetry/toast'
 import SettingsRow from './SettingsRow.vue'
 import SettingsSelect from './SettingsSelect.vue'
 

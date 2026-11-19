@@ -6,8 +6,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { cn } from '@/lib/utils'
+} from '@theme/components/ui/dropdown-menu'
+import { cn } from '@theme/lib/utils'
 import ForumDropdownMenu from '../ForumDropdownMenu.vue'
 import { menuContentClasses } from './shared'
 

@@ -76,14 +76,18 @@ export default defineConfig(({ mode }) => ({
         ),
       },
       {
-        find: '@',
+        find: '@theme',
         replacement: fileURLToPath(
           new URL('./.vitepress/theme', import.meta.url),
         ),
       },
       {
         find: '~',
-        replacement: fileURLToPath(new URL('./src', import.meta.url)),
+        replacement: fileURLToPath(new URL('./.vitepress', import.meta.url)),
+      },
+      {
+        find: '@',
+        replacement: fileURLToPath(new URL('.', import.meta.url)).replace(/[\\/]$/u, ''),
       },
     ],
   },

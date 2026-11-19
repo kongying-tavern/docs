@@ -1,4 +1,4 @@
-import type { ForumImageResource } from '~/forum/services/forumImageResource'
+import type { ForumImageResource } from '@/src/forum/services/forumImageResource'
 
 /**
  * 预览器控制器（模块级单例）。

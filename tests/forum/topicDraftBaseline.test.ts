@@ -1,10 +1,10 @@
-import type { TopicFormData } from '~/forum/services/form/validation'
+import type { TopicFormData } from '@/src/forum/services/form/validation'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { useFormState } from '~/forum/components/form/composables/useFormState'
-import * as draftStorage from '~/forum/services/form/topicDraft'
+import { useFormState } from '@/src/forum/components/form/composables/useFormState'
+import * as draftStorage from '@/src/forum/services/form/topicDraft'
 
 const mocks = vi.hoisted(() => ({
   resets: 0,
@@ -35,17 +35,17 @@ vi.mock('vue-i18n', async (importOriginal) => {
   const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
   return { ...actual, useI18n: () => i18n.global }
 })
-vi.mock('~/forum/composables/auth/useRuleChecks', async () => {
+vi.mock('@/src/forum/composables/auth/useRuleChecks', async () => {
   const { ref } = await import('vue')
   return { useRuleChecks: () => ({ hasAnyPermissions: () => ref(false) }) }
 })
-vi.mock('~/forum/services/form/validation', async importOriginal => ({
-  ...await importOriginal<typeof import('~/forum/services/form/validation')>(),
+vi.mock('@/src/forum/services/form/validation', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/services/form/validation')>(),
   createTopicFormSchema: () => undefined,
   getAllowedTopicTypes: () => ['BUG', 'FEAT'],
 }))
-vi.mock('~/forum/components/form/publish-topic-form/form-config', async importOriginal => ({
-  ...await importOriginal<typeof import('~/forum/components/form/publish-topic-form/form-config')>(),
+vi.mock('@/src/forum/components/form/publish-topic-form/form-config', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/components/form/publish-topic-form/form-config')>(),
   getFormTabsConfig: () => [],
 }))
 

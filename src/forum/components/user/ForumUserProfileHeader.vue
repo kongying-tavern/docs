@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/types'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import type ForumAPI from '@/src/forum/api/types'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
 import { useUserProfile } from './composables/useUserProfile'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
 import ForumUserProfileHeaderSkeleton from './ForumUserProfileHeaderSkeleton.vue'

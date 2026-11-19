@@ -2,6 +2,7 @@
 import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { X } from '@lucide/vue'
+import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import {
   DialogClose,
@@ -10,7 +11,6 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { useI18n } from 'vue-i18n'
-import { cn } from '@/lib/utils'
 import DialogOverlay from './DialogOverlay.vue'
 
 defineOptions({

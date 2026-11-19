@@ -1,8 +1,8 @@
-import type { ThumbHashCalculated } from '~/forum/services/form/imageAttachment'
+import type { ThumbHashCalculated } from '@/src/forum/services/form/imageAttachment'
+import { binaryToBase64 } from '@theme/utils'
 import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
-import { binaryToBase64 } from '@/utils'
 
-export type { ThumbHashCalculated } from '~/forum/services/form/imageAttachment'
+export type { ThumbHashCalculated } from '@/src/forum/services/form/imageAttachment'
 
 /**
  * Calculate the thumbhash data for the image.

@@ -1,13 +1,13 @@
 import type { LocaleConfig, Router } from 'vitepress'
 import type { LocaleRoute } from '../../routes'
+import { getLangPath } from '@theme/utils'
 import { merge } from 'lodash-es'
 import { match } from 'path-to-regexp'
 import { withBase } from 'vitepress'
 import { markRaw } from 'vue'
-import { getLangPath } from '@/utils'
-import { publishForumLocation } from '~/forum/composables/state/useForumRoute'
-import { transitionForumBlog, transitionForumRoute } from '~/forum/router/forumViewTransition'
-import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '~/forum/services/forumRoute'
+import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute'
+import { transitionForumBlog, transitionForumRoute } from '@/src/forum/router/forumViewTransition'
+import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '@/src/forum/services/forumRoute'
 import { AsyncForumRouteView } from '../components/AsyncForumRouteView'
 
 const FORUM_TITLES: Record<string, string> = {

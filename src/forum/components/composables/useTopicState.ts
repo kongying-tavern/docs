@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { ForumTranslatorRef } from './useTopicTranslationMenu'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { isArray } from 'lodash-es'
 import { computed, toValue, useTemplateRef } from 'vue'
 import { useTopicTranslationMenu } from './useTopicTranslationMenu'

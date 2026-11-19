@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/types'
-import { useClipboard, useIntersectionObserver } from '@vueuse/core'
-import { computed, ref, useTemplateRef } from 'vue'
-import { useI18n } from 'vue-i18n'
+import type ForumAPI from '@/src/forum/api/types'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -12,15 +9,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { executeWithAuth } from '~/forum/composables/auth/executeWithAuth'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { useForumCommentMutations } from '~/forum/composables/data/useForumMutations'
-import { useForumReactionState } from '~/forum/composables/data/useForumReaction'
-import { useReactionStats } from '~/forum/composables/data/useReactionStats'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { toast } from '~/services/telemetry/toast'
+} from '@theme/components/ui/alert-dialog'
+import { Button } from '@theme/components/ui/button'
+import { useClipboard, useIntersectionObserver } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { executeWithAuth } from '@/src/forum/composables/auth/executeWithAuth'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useForumCommentMutations } from '@/src/forum/composables/data/useForumMutations'
+import { useForumReactionState } from '@/src/forum/composables/data/useForumReaction'
+import { useReactionStats } from '@/src/forum/composables/data/useReactionStats'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { toast } from '@/src/services/telemetry/toast'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumCommentReactionButtons from './ForumCommentReactionButtons.vue'
 import ForumTopicCommentDropdownMenu from './ForumTopicCommentDropdownMenu.vue'

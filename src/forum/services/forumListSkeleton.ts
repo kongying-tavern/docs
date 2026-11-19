@@ -1,8 +1,8 @@
-import type { ForumTopicListParams } from '~/forum/services/forumQueryContracts'
-import type { ForumRoute } from '~/forum/services/forumRoute'
+import type { ForumTopicListParams } from '@/src/forum/services/forumQueryContracts'
+import type { ForumRoute } from '@/src/forum/services/forumRoute'
 import { clamp } from 'lodash-es'
-import { normalizeTopicListParams } from '~/forum/services/forumQueryContracts'
-import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
+import { normalizeTopicListParams } from '@/src/forum/services/forumQueryContracts'
+import { parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery'
 
 /**
  * 会话缓存列表首屏条数，供下次无数据时骨架屏复用。

@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import type { Composer } from 'vue-i18n'
 import type { TabsConfig } from './types'
-import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
+import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig'
 
 export const FORM_HASH = 'PUBLISH-TOPIC'
 

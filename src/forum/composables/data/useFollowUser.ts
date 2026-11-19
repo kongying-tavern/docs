@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@pinia/colada'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { user } from '~/forum/api/gitee'
-import { authGuards } from '~/forum/composables/auth/auth-helpers'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
-import { toast } from '~/services/telemetry/toast'
+import { user } from '@/src/forum/api/gitee'
+import { authGuards } from '@/src/forum/composables/auth/auth-helpers'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { toast } from '@/src/services/telemetry/toast'
 
 export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const followState = ref<boolean | null>(null)

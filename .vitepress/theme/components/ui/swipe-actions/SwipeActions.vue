@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
+import { cn } from '@theme/lib/utils'
 import { onBeforeUnmount, onMounted, provide, ref } from 'vue'
-import { cn } from '@/lib/utils'
-import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
 import { swipeActionsKey } from './types'
 
 const props = defineProps<{ label: string, class?: HTMLAttributes['class'] }>()

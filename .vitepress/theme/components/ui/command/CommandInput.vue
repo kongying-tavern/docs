@@ -2,10 +2,10 @@
 import type { ListboxFilterProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { Search } from '@lucide/vue'
+import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { ListboxFilter, useForwardProps } from 'reka-ui'
 import { onMounted, watch } from 'vue'
-import { cn } from '@/lib/utils'
 import { useCommand } from '.'
 
 defineOptions({

@@ -1,16 +1,16 @@
 <script setup lang="ts">
+import ClipboardCopyButton from '@theme/components/ui/ClipboardCopyButton.vue'
+import { Switch } from '@theme/components/ui/switch'
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import ClipboardCopyButton from '@/components/ui/ClipboardCopyButton.vue'
-import { Switch } from '@/components/ui/switch'
-import SettingsRow from '~/features/settings/SettingsRow.vue'
+import SettingsRow from '@/src/features/settings/SettingsRow.vue'
 import {
   disableReporting,
   enableReporting,
   ensureSession,
   reportingEnabled,
-} from '~/services/telemetry'
-import { currentSupportCode } from '~/services/telemetry/session'
+} from '@/src/services/telemetry'
+import { currentSupportCode } from '@/src/services/telemetry/session'
 
 const { t } = useI18n({ useScope: 'global' })
 const sessionId = computed(() => reportingEnabled.value ? currentSupportCode.value : null)

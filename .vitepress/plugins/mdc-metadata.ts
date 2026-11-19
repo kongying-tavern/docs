@@ -69,8 +69,8 @@ function resolveGlobalComponents(): Map<string, string> {
 
     for (const m of src.matchAll(COMPONENT_IMPORT_RE)) {
       let specifier = m[2]
-      if (specifier.startsWith('@/'))
-        specifier = resolve(projectRoot, '.vitepress/theme', specifier.slice(2))
+      if (specifier.startsWith('@theme/'))
+        specifier = resolve(projectRoot, '.vitepress/theme', specifier.slice('@theme/'.length))
       else if (specifier.startsWith('.'))
         specifier = resolve(themeDir, specifier)
       else continue

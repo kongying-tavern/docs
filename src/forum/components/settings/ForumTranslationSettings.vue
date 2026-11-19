@@ -1,5 +1,21 @@
 <script setup lang="ts">
 import { CheckIcon, ChevronDownIcon } from '@lucide/vue'
+import { Button } from '@theme/components/ui/button'
+import {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverTrigger,
+} from '@theme/components/ui/popover'
+import { Switch } from '@theme/components/ui/switch'
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputItemDelete,
+  TagsInputItemText,
+} from '@theme/components/ui/tags-input'
+import { useLanguage } from '@theme/composables/useLanguage'
 import {
   ListboxContent,
   ListboxFilter,
@@ -10,25 +26,9 @@ import {
 } from 'reka-ui'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import {
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Switch } from '@/components/ui/switch'
-import {
-  TagsInput,
-  TagsInputInput,
-  TagsInputItem,
-  TagsInputItemDelete,
-  TagsInputItemText,
-} from '@/components/ui/tags-input'
-import { useLanguage } from '@/composables/useLanguage'
-import supportedLanguages from '~/data/supportedLanguages.json'
-import SettingsRow from '~/features/settings/SettingsRow.vue'
-import { useForumTranslationPreferences } from '~/forum/composables/data/useForumTranslationPreferences'
+import supportedLanguages from '@/src/data/supportedLanguages.json'
+import SettingsRow from '@/src/features/settings/SettingsRow.vue'
+import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences'
 
 const { t } = useI18n({ useScope: 'global' })
 const { currentPageLang } = useLanguage()

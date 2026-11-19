@@ -1,8 +1,8 @@
-import type { ThemePreference } from '~/composables/useSitePreferences'
+import type { ThemePreference } from '@/src/composables/useSitePreferences'
+import { enableTransitions } from '@theme/shared'
 import { useData } from 'vitepress'
 import { nextTick } from 'vue'
-import { enableTransitions } from '@/shared'
-import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
 
 let isAnimating = false
 

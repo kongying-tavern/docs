@@ -1,14 +1,14 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '../../types'
+import { replaceTitle } from '@theme/composables/replaceTitle'
 import { computed, toValue, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { replaceTitle } from '@/composables/replaceTitle'
-import { getGiteeMessagesHref } from '~/constants/site'
-import { useArchivedFeedbackAccess } from '~/forum/composables/auth/useArchivedFeedbackAccess'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { useForumUserProfileQuery } from '~/forum/composables/data/useForumQueries'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import { getGiteeMessagesHref } from '@/src/constants/site'
+import { useArchivedFeedbackAccess } from '@/src/forum/composables/auth/useArchivedFeedbackAccess'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useForumUserProfileQuery } from '@/src/forum/composables/data/useForumQueries'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 
 export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   const username = computed(() => toValue(usernameSource))

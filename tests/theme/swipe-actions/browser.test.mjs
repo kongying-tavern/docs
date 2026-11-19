@@ -30,8 +30,9 @@ test('swipe actions browser regression', { timeout: 120000 }, async (t) => {
     resolve: {
       dedupe: ['vue'],
       alias: {
-        '@': `${root}/.vitepress/theme`,
-        '~': `${root}/src`,
+        '@theme': `${root}/.vitepress/theme`,
+        '~': `${root}/.vitepress`,
+        '@': root,
       },
     },
     optimizeDeps: { entries: [fixture], include: ['vue', '@lucide/vue', 'cn', '@vueuse/core', 'reka-ui', 'class-variance-authority'] },

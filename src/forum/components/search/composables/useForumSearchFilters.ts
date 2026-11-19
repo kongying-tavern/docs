@@ -1,14 +1,14 @@
 import type { Ref } from 'vue'
-import type { ForumSearchFacet, ForumSearchQuery } from '~/forum/services/forumSearchQuery'
+import type { ForumSearchFacet, ForumSearchQuery } from '@/src/forum/services/forumSearchQuery'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumSearchToken } from '~/forum/composables/view/useForumSearchToken'
-import { clearStructuredSearchFilters, mergeTypedSearchFacet } from '~/forum/services/forumSearchInput'
+import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken'
+import { clearStructuredSearchFilters, mergeTypedSearchFacet } from '@/src/forum/services/forumSearchInput'
 import {
   parseForumSearchQuery,
   stringifyForumSearchQuery,
   toggleForumSearchFacet,
-} from '~/forum/services/forumSearchQuery'
+} from '@/src/forum/services/forumSearchQuery'
 
 /** 搜索框的结构化过滤器状态；焦点与建议列表仍由视图组件管理。 */
 export function useForumSearchFilters(query: Ref<string>, page: () => boolean) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog'
 import { useI18n } from 'vue-i18n'
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import AsyncContentLoading from './AsyncContentLoading.vue'
 
 defineOptions({ inheritAttrs: false })

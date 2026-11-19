@@ -1,10 +1,10 @@
 import type { WatchStopHandle } from 'vue'
 import type { useSSOAuth } from './useSSOAuth'
-import type { useTokenManager } from '~/forum/composables/auth/useTokenManager'
-import type { SSOLocaleAuth } from '~/forum/stores/auth/useUserAuth'
+import type { useTokenManager } from '@/src/forum/composables/auth/useTokenManager'
+import type { SSOLocaleAuth } from '@/src/forum/stores/auth/useUserAuth'
 import { computed, ref, watch } from 'vue'
-import { log, LogGroup } from '~/forum/services/authLogger'
-import { createAuthError } from '~/services/authErrors'
+import { log, LogGroup } from '@/src/forum/services/authLogger'
+import { createAuthError } from '@/src/services/authErrors'
 
 const SSO_REFRESH_THRESHOLD_MS = 5 * 60 * 1000
 const SSO_MIN_REFRESH_INTERVAL_MS = 30 * 1000

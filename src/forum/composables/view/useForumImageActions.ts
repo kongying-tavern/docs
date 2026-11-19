@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { ForumImageResource } from '~/forum/services/forumImageResource'
+import type { ForumImageResource } from '@/src/forum/services/forumImageResource'
 import { createSharedComposable, useClipboard, useClipboardItems, useFileSystemAccess, useObjectUrl } from '@vueuse/core'
 import { nextTick, onScopeDispose, ref, shallowRef, toValue } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { toast } from 'vue-sonner'
-import { fetchImageResource, imageClipboardBlob, imageFileName } from '~/forum/services/forumImageResource'
+import { fetchImageResource, imageClipboardBlob, imageFileName } from '@/src/forum/services/forumImageResource'
 
 // Clipboard capabilities and permission observers belong to the browser, not each thumbnail.
 const useImageClipboard = createSharedComposable(() => ({ clipboard: useClipboard(), imageClipboard: useClipboardItems() }))

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SwitchRootEmits, SwitchRootProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+import { cn } from '@theme/lib/utils'
 import { reactiveOmit, useMediaQuery } from '@vueuse/core'
 import {
   SwitchRoot,
@@ -8,7 +9,6 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { computed, ref, watch } from 'vue'
-import { cn } from '@/lib/utils'
 
 const props = defineProps<SwitchRootProps & { class?: HTMLAttributes['class'] }>()
 

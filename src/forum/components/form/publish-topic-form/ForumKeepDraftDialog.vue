@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Alert, AlertDescription } from '@theme/components/ui/alert'
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@theme/components/ui/alert-dialog'
+import { Button } from '@theme/components/ui/button'
 import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
 
 defineProps<{ saving: boolean, error: string }>()
 const emit = defineEmits<{ save: [], discard: [] }>()

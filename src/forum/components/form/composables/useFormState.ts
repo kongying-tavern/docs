@@ -1,16 +1,16 @@
-import type { TopicFormData } from '~/forum/services/form/validation'
+import type { TopicFormData } from '@/src/forum/services/form/validation'
 import { useForm } from 'vee-validate'
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
 import {
   createDefaultTopicDraft,
   readTopicDraft,
   removeTopicDraft,
   restoreTopicDraft,
   writeTopicDraft,
-} from '~/forum/services/form/topicDraft'
-import { createTopicFormSchema, getAllowedTopicTypes } from '~/forum/services/form/validation'
+} from '@/src/forum/services/form/topicDraft'
+import { createTopicFormSchema, getAllowedTopicTypes } from '@/src/forum/services/form/validation'
 import { getFormTabsConfig } from '../publish-topic-form/form-config'
 
 export function useFormState() {

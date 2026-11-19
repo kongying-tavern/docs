@@ -4,7 +4,7 @@ import type { FORUM } from '../../types'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
 import { ForumMenuDesktop, ForumMenuMobileDrawer } from './menuComponents'
 
 const { items = [], side = 'bottom', disabled = false, title } = defineProps<{

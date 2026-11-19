@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { FORUM } from '../../types'
-import { computed, ref, shallowRef } from 'vue'
-import { useI18n } from 'vue-i18n'
 import {
   Drawer,
   DrawerContent,
@@ -9,7 +7,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer'
+} from '@theme/components/ui/drawer'
+import { computed, ref, shallowRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ForumMenuMobilePanel from './ForumMenuMobilePanel.vue'
 
 const props = defineProps<{

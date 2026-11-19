@@ -3,9 +3,9 @@ import type { PublishTopicController } from '../composables/usePublishTopicContr
 import { useEventListener } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, ref, unref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '~/composables/useSitePreferences'
-import ForumTopicTypeBadge from '~/forum/components/ui/ForumTopicTypeBadge.vue'
-import { preparePublishTypeMotion } from '~/forum/components/utils/publishTopicTypeTransition'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import ForumTopicTypeBadge from '@/src/forum/components/ui/ForumTopicTypeBadge.vue'
+import { preparePublishTypeMotion } from '@/src/forum/components/utils/publishTopicTypeTransition'
 import ForumPublishTopicListItem from './ForumPublishTopicListItem.vue'
 
 const props = defineProps<{ form: PublishTopicController['form'], actions: PublishTopicController['actions'], morphType?: boolean, fixedHeight?: boolean }>()

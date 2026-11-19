@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
+import { useLanguage } from '@theme/composables/useLanguage'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useLanguage } from '@/composables/useLanguage'
-import { data as forumDocumentLinks } from '~/data/forumDocumentLinks.data'
-import { useForumTopicPresentation } from '~/forum/composables/view/useForumTopicPresentation'
-import { decodeTopicBody } from '~/forum/services/forumContentCodec'
-import { renderForumTopicSummary } from '~/forum/services/forumContentRenderer'
+import { data as forumDocumentLinks } from '@/src/data/forumDocumentLinks.data'
+import { useForumTopicPresentation } from '@/src/forum/composables/view/useForumTopicPresentation'
+import { decodeTopicBody } from '@/src/forum/services/forumContentCodec'
+import { renderForumTopicSummary } from '@/src/forum/services/forumContentRenderer'
 import { useTopicContent } from './composables/useTopicContent'
 import ForumTopicVisibilityIcon from './ForumTopicVisibilityIcon.vue'
 

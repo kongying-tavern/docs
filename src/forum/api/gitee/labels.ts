@@ -1,5 +1,5 @@
 import type ForumAPI from '../types'
-import { buildFormData } from '~/services/apiUtils'
+import { buildFormData } from '@/src/services/apiUtils'
 import { apiCall, deleteApiCache } from '.'
 import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
 import { GITEE_API_CONFIG } from './gitee-config'

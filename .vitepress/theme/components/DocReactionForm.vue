@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 
+import { Button } from '@theme/components/ui/button/'
+import { Textarea } from '@theme/components/ui/textarea/'
 import { useSessionStorage } from '@vueuse/core'
 import { isEqual } from 'lodash-es'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button/'
-import { Textarea } from '@/components/ui/textarea/'
-import { useSubmitTopic } from '~/forum/composables/data/useSubmitTopic'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { useSubmitTopic } from '@/src/forum/composables/data/useSubmitTopic'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
 import BlurFade from './ui/BlurFade.vue'
 
 const { showForm } = defineProps<{

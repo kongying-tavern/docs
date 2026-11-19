@@ -3,7 +3,7 @@ import type {
   ForumFestivalEffectStopOptions,
 } from './types'
 import confetti from 'canvas-confetti'
-import { readReducedMotion } from '~/services/sitePreferences'
+import { readReducedMotion } from '@/src/services/sitePreferences'
 
 export type FestivalConfetti = ReturnType<typeof confetti.create>
 

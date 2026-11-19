@@ -2,15 +2,15 @@
 import type { SuggestionKeyDownProps } from '@tiptap/suggestion'
 import type { ListboxRoot } from 'reka-ui'
 import type { ComponentExposed } from 'vue-component-type-helpers'
-import type { ForumEditorSuggestionItem } from '~/forum/tiptap/forumSuggestionRenderer'
-import { nextTick, ref, useTemplateRef, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import type { ForumEditorSuggestionItem } from '@/src/forum/tiptap/forumSuggestionRenderer'
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandList,
-} from '@/components/ui/command'
+} from '@theme/components/ui/command'
+import { nextTick, ref, useTemplateRef, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 
 defineOptions({ inheritAttrs: false })

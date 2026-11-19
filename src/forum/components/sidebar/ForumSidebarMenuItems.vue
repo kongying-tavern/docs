@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ForumSidebarMenuItem } from './forumSidebarMenu'
-import { Separator } from '@/components/ui/separator'
+import { Separator } from '@theme/components/ui/separator'
 
 defineProps<{
   items: ForumSidebarMenuItem[]

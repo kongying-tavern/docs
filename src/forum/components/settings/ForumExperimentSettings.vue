@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Switch } from '@theme/components/ui/switch'
 import { useI18n } from 'vue-i18n'
-import { Switch } from '@/components/ui/switch'
-import SettingsRow from '~/features/settings/SettingsRow.vue'
-import SettingsSection from '~/features/settings/SettingsSection.vue'
-import { useAccountLoginExperiment } from '~/forum/composables/state/useAccountLoginExperiment'
+import SettingsRow from '@/src/features/settings/SettingsRow.vue'
+import SettingsSection from '@/src/features/settings/SettingsSection.vue'
+import { useAccountLoginExperiment } from '@/src/forum/composables/state/useAccountLoginExperiment'
 
 const { t } = useI18n({ useScope: 'global' })
 const { canManage, enabled: accountLoginEnabled } = useAccountLoginExperiment()

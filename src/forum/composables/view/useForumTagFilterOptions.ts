@@ -1,9 +1,9 @@
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
-import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
-import { getTopicTagLabelGetter } from '~/forum/services/getTopicTagLabelGetter'
-import { getTopicTagMap } from '~/forum/services/getTopicTagMap'
+import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore'
+import { useTopicTagDisplay } from '@/src/forum/composables/util/useTopicTagDisplay'
+import { getTopicTagLabelGetter } from '@/src/forum/services/getTopicTagLabelGetter'
+import { getTopicTagMap } from '@/src/forum/services/getTopicTagMap'
 
 export function useForumTagFilterOptions() {
   const { t } = useI18n({ useScope: 'global' })

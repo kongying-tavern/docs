@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ThemePreference } from '~/features/settings/settingsOptions'
+import type { ThemePreference } from '@/src/features/settings/settingsOptions'
 
 defineProps<{
   theme: ThemePreference

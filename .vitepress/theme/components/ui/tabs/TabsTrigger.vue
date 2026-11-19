@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TabsTriggerProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
+import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { TabsTrigger, useForwardProps } from 'reka-ui'
-import { cn } from '@/lib/utils'
 
 const props = defineProps<TabsTriggerProps & { class?: HTMLAttributes['class'] }>()
 

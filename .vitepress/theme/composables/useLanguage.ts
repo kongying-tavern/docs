@@ -1,7 +1,7 @@
+import { getLangPath } from '@theme/utils'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { getLangPath } from '@/utils'
-import { matchLanguages } from '~/forum/composables/data/matchLanguages'
+import { matchLanguages } from '@/src/forum/composables/data/matchLanguages'
 import { DEFAULT_LOCALE } from '../../locales/common'
 
 const TRIM_PATH_SLASHES_RE = /^\/+|\/+$/g

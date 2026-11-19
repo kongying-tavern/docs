@@ -9,15 +9,15 @@ import ForumAsideRelatedTopics from '../../src/forum/components/aside/ForumAside
 
 const mocks = vi.hoisted(() => ({ topics: [] as ForumAPI.Topic[] }))
 
-vi.mock('~/forum/composables/data/useForumQueries', () => ({
+vi.mock('@/src/forum/composables/data/useForumQueries', () => ({
   useForumTopicsQuery: () => ({ rows: ref(mocks.topics) }),
 }))
-vi.mock('~/forum/composables/state/useForumRoute', () => ({
+vi.mock('@/src/forum/composables/state/useForumRoute', () => ({
   useForumRoute: () => ({ topicHref: (id: string) => `/feedback/topic/${id}` }),
 }))
-vi.mock('@/components/ui/User.vue', () => ({ default: { render: () => null } }))
-vi.mock('~/forum/components/ui/ForumTime.vue', () => ({ default: { render: () => null } }))
-vi.mock('~/forum/components/ui/ForumTopicLifecycle.vue', () => ({ default: { render: () => null } }))
+vi.mock('@theme/components/ui/User.vue', () => ({ default: { render: () => null } }))
+vi.mock('@/src/forum/components/ui/ForumTime.vue', () => ({ default: { render: () => null } }))
+vi.mock('@/src/forum/components/ui/ForumTopicLifecycle.vue', () => ({ default: { render: () => null } }))
 
 test('related BUG topics display decoded bodies even when legacy titles contain truncated JSON', async () => {
   const text = '地图标记无法正常显示'

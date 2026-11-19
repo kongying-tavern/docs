@@ -1,7 +1,7 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { useToggle } from '@vueuse/core'
 import { nextTick, readonly, ref } from 'vue'
-import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
 import { updateUrlHash } from '../utils/updateUrlHash'
 import { useNavigateToTopic } from './useNavigateToTopic'
 

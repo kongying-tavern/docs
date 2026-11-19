@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useData, withBase } from 'vitepress'
-import { computed } from 'vue'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +6,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
+} from '@theme/components/ui/breadcrumb'
+import { useData, withBase } from 'vitepress'
+import { computed } from 'vue'
 
 const { frontmatter, theme } = useData()
 

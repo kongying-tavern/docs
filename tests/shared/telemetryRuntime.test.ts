@@ -57,15 +57,15 @@ function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
           return { telemetryLog: { info() {}, error() {} }, TelemetryLogGroup: {} }
         if (dependency === './toast')
           return { toast: { error() {} } }
-        if (dependency === '~/services/telemetry/toast')
+        if (dependency === '@/src/services/telemetry/toast')
           return { toast: { error: (_message: string, options: unknown) => toasts.push(options) } }
-        if (dependency === '~/forum/composables/auth/auth-helpers')
+        if (dependency === '@/src/forum/composables/auth/auth-helpers')
           return { withAuth: { execute: (action: () => Promise<unknown>) => action() } }
-        if (dependency === '~/services/apiUtils')
+        if (dependency === '@/src/services/apiUtils')
           return { catchError: (promise: Promise<unknown>) => promise.then(value => [null, value], error => [error, undefined]) }
-        if (dependency === '@/stores/usePageAlert')
+        if (dependency === '@theme/stores/usePageAlert')
           return { usePageAlertStore: () => ({ hasRegion: true, push: (alert: { description?: string }) => alerts.push(alert) }) }
-        if (dependency === '~/utils/formatMessage')
+        if (dependency === '@/src/utils/formatMessage')
           return { formatMessage: (text: string, values: Record<string, string>) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match) }
         assert.ok(dependency.startsWith('.'), `Unexpected dependency: ${dependency}`)
         return load(`${resolve(dirname(filename), dependency)}.ts`)

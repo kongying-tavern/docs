@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Skeleton } from '@theme/components/ui/skeleton'
 import { useI18n } from 'vue-i18n'
-import { Skeleton } from '@/components/ui/skeleton'
 
 defineProps<{ mention: boolean }>()
 const { t } = useI18n({ useScope: 'global' })

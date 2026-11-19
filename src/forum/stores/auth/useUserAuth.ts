@@ -1,14 +1,14 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
+import { toCamelCaseObject } from '@theme/utils'
 import { defineStore } from 'pinia'
 import { computed, readonly, ref, watch } from 'vue'
-import { toCamelCaseObject } from '@/utils'
-import { useTokenManager } from '~/forum/composables/auth/useTokenManager'
-import { useAuthRefresh } from '~/forum/hooks/useAuthRefresh'
-import { useSSOAuth } from '~/forum/hooks/useSSOAuth'
-import { useSSORefreshManager } from '~/forum/hooks/useSSORefreshManager'
-import { log, LogGroup } from '~/forum/services/authLogger'
-import { AuthError, createAuthError } from '~/services/authErrors'
-import { registerAuthSessionAccessor } from '~/services/authSession'
+import { useTokenManager } from '@/src/forum/composables/auth/useTokenManager'
+import { useAuthRefresh } from '@/src/forum/hooks/useAuthRefresh'
+import { useSSOAuth } from '@/src/forum/hooks/useSSOAuth'
+import { useSSORefreshManager } from '@/src/forum/hooks/useSSORefreshManager'
+import { log, LogGroup } from '@/src/forum/services/authLogger'
+import { AuthError, createAuthError } from '@/src/services/authErrors'
+import { registerAuthSessionAccessor } from '@/src/services/authSession'
 
 export interface LocalAuth {
   accessToken: string

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 
 import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { DEFAULT_LOCALE } from '~/constants/site'
+import { DEFAULT_LOCALE } from '@/src/constants/site'
 import postsData from '../../../src/data/posts.json'
 import { getForumLocaleLabelGetter } from '../../../src/forum/services/getForumLocaleGetter'
 

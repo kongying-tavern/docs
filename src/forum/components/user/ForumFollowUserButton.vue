@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { useFollowUser } from '~/forum/composables/data/useFollowUser'
+import { useFollowUser } from '@/src/forum/composables/data/useFollowUser'
 import ForumFollowUserControl from './ForumFollowUserControl.vue'
 
 const { user, textClass } = defineProps<{ user: string, textClass?: HTMLAttributes['class'] }>()

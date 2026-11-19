@@ -1,4 +1,4 @@
-import type { ForumImageResource } from '~/forum/services/forumImageResource'
+import type { ForumImageResource } from '@/src/forum/services/forumImageResource'
 import { createGlobalState } from '@vueuse/core'
 import { ref } from 'vue'
 

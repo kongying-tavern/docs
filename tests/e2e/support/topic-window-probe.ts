@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { createApp, h, nextTick, ref, shallowRef } from 'vue'
 
 /** Exercise mode migration with controlled heights, without network or card setup costs. */

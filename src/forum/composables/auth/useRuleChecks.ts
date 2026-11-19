@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 import { usePermissionData } from './usePermissionData'
 
 const rolesPermissions = {

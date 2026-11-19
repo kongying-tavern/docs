@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { X } from '@lucide/vue'
+import { Button } from '@theme/components/ui/button'
+import { Dialog, DialogClose, DialogContent, DialogTitle } from '@theme/components/ui/dialog'
 import { useRouter } from 'vitepress'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
 import ForumTopicPreviewContent from './ForumTopicPreviewContent.vue'
 
 const props = defineProps<{

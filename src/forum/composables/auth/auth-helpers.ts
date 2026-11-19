@@ -2,10 +2,10 @@
  * 认证相关的工具函数，消除重复的验证逻辑
  */
 
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
-import { AuthError, AuthErrorType } from '~/services/authErrors'
-import { toast } from '~/services/telemetry/toast'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { AuthError, AuthErrorType } from '@/src/services/authErrors'
+import { toast } from '@/src/services/telemetry/toast'
 
 export class AuthHelper {
   private static _instance: AuthHelper

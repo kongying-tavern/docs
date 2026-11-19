@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest'
-import { useAuthProgress } from '~/forum/hooks/useAuthProgress'
+import { useAuthProgress } from '@/src/forum/hooks/useAuthProgress'
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: (key: string) => key.split('.').at(-1) }),

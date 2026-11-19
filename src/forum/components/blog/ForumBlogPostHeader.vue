@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import Avatar from '@theme/components/ui/Avatar.vue'
+import Time from '@theme/components/ui/Time/Time.vue'
 import { useData, useRoute } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Avatar from '@/components/ui/Avatar.vue'
-import Time from '@/components/ui/Time/Time.vue'
-import { getGiteeProfileHref } from '~/constants/site'
-import { parseAuthors } from '~/forum/utils/frontmatter'
+import { getGiteeProfileHref } from '@/src/constants/site'
+import { parseAuthors } from '@/src/forum/utils/frontmatter'
 
 const BLOG_POST_PATH_REGEX = /\/blog\/posts\/([^/?#]+)/
 

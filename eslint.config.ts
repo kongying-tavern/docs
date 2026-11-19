@@ -142,7 +142,7 @@ export default antfu({
     'no-restricted-imports': ['error', {
       patterns: [
         ...themeImportRestrictions,
-        { group: ['~/forum/components', '~/forum/components/**', '~/forum/composables', '~/forum/composables/**'], message: 'forum services/api must not import upward from components/composables' },
+        { group: ['@/src/forum/components', '@/src/forum/components/**', '@/src/forum/composables', '@/src/forum/composables/**'], message: 'forum services/api must not import upward from components/composables' },
         { regex: '^\\.{1,2}/(?:\\.\\./)*(?:components|composables)(?:/|$)', message: 'forum services/api must not import upward from components/composables' },
       ],
     }],

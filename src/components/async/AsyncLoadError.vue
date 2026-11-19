@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
 
 const emit = defineEmits<{ retry: [] }>()
 const { t } = useI18n({ useScope: 'global' })

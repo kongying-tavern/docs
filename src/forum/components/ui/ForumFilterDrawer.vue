@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@theme/components/ui/drawer'
 import { useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
-import { Button } from '@/components/ui/button'
-import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 
 const props = defineProps<{
   title: string

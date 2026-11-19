@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useMediaQuery, useMounted } from '@vueuse/core'
+import { useQRCode } from '@theme/hooks/useQRCode'
 
+import { useMediaQuery, useMounted } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, ref } from 'vue'
-import { useQRCode } from '@/hooks/useQRCode'
 
 import { socialList } from '../composables/socialList'
 
@@ -119,7 +119,7 @@ function isExpanded(title: string) {
 </template>
 
 <style scoped>
-@import '@/styles/media.css';
+@import '@theme/styles/media.css';
 
 .footer-container {
   --footer-gutter: 24px;

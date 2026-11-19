@@ -16,7 +16,7 @@
 </template>
 
 <style scoped>
-@import '@/styles/media.css';
+@import '@theme/styles/media.css';
 .forum-container {
   margin: 0 auto;
   padding: 0 16px;

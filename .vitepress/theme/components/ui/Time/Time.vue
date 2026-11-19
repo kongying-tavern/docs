@@ -9,9 +9,9 @@ import {
   ref,
   watch,
 } from 'vue'
-import { DEFAULT_LOCALE } from '~/constants/site'
-import { subscribeRelativeTime } from '~/services/relativeTimeClock'
-import { relativeTimeValue } from '~/utils/dateTime'
+import { DEFAULT_LOCALE } from '@/src/constants/site'
+import { subscribeRelativeTime } from '@/src/services/relativeTimeClock'
+import { relativeTimeValue } from '@/src/utils/dateTime'
 
 const props = withDefaults(defineProps<{
   locale?: string

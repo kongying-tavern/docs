@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
-import { useGrayscaleOverride } from '~/forum/composables/state/useGrayscaleOverride'
-import { resolveAccountLoginRollout, selectAccountLoginRollout } from '~/forum/services/experiment/accountLoginExperiment'
+import { useGrayscaleOverride } from '@/src/forum/composables/state/useGrayscaleOverride'
+import { resolveAccountLoginRollout, selectAccountLoginRollout } from '@/src/forum/services/experiment/accountLoginExperiment'
 
 /**
  * 密码登录弹窗只在使用者登出时打开，此刻已拿不到账号身份，

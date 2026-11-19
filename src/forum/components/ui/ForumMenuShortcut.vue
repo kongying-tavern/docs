@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Kbd, KbdGroup } from '@theme/components/ui/kbd'
 import { computed } from 'vue'
-import { Kbd, KbdGroup } from '@/components/ui/kbd'
 
 const props = defineProps<{ shortcut: string }>()
 const keys = computed(() => props.shortcut.split('+').filter(Boolean))

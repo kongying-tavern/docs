@@ -6,7 +6,7 @@ import {
 } from '@tiptap/static-renderer/json/html-string'
 import DOMPurify from 'dompurify'
 import { find } from 'linkifyjs'
-import { SITE_ORIGIN } from '~/constants/site'
+import { SITE_ORIGIN } from '@/src/constants/site'
 import { decodeForumText } from './forumContentCodec'
 import { getForumDocumentTitle } from './forumDocumentLinkIndex'
 import { forumTextToEditorDoc } from './forumLegacyContent'

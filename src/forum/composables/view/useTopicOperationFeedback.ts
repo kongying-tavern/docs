@@ -1,7 +1,7 @@
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { nextTick } from 'vue'
-import { toast } from '~/services/telemetry/toast'
-import { isVisibleFeedback } from '~/utils/isVisibleFeedback'
+import { toast } from '@/src/services/telemetry/toast'
+import { isVisibleFeedback } from '@/src/utils/isVisibleFeedback'
 
 export function useTopicOperationFeedback() {
   return async (topic: ForumAPI.Topic, text: string, field?: 'type' | 'status' | 'goodIssue'): Promise<void> => {

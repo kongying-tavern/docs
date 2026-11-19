@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { SettingsSectionId } from '~/features/settings/useSettingsNavigation'
+import type { SettingsSectionId } from '@/src/features/settings/useSettingsNavigation'
+import { getLangPath } from '@theme/utils'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getLangPath } from '@/utils'
-import AsyncContentLoading from '~/components/async/AsyncContentLoading.vue'
-import { defineRecoverableAsyncComponent } from '~/components/async/defineRecoverableAsyncComponent'
-import TelemetrySettings from '~/components/telemetry/TelemetrySettings.vue'
-import { useSitePreferences } from '~/composables/useSitePreferences'
-import ForumTranslationSettings from '~/forum/components/settings/ForumTranslationSettings.vue'
+import AsyncContentLoading from '@/src/components/async/AsyncContentLoading.vue'
+import { defineRecoverableAsyncComponent } from '@/src/components/async/defineRecoverableAsyncComponent'
+import TelemetrySettings from '@/src/components/telemetry/TelemetrySettings.vue'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import ForumTranslationSettings from '@/src/forum/components/settings/ForumTranslationSettings.vue'
 import AppearanceSettings from './AppearanceSettings.vue'
 import NotificationSettings from './NotificationSettings.vue'
 import SettingsSection from './SettingsSection.vue'
@@ -19,10 +19,10 @@ defineProps<{
   showLanguage?: boolean
   showLabelAdmin?: boolean
 }>()
-const ForumExperimentSettings = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumExperimentSettings.vue'), AsyncContentLoading)
-const ForumLabelAdminPage = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumLabelAdminPage.vue'), AsyncContentLoading)
-const ForumProfileSettings = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumProfileSettings.vue'), AsyncContentLoading)
-const ForumShortcutSettings = defineRecoverableAsyncComponent(() => import('~/forum/components/settings/ForumShortcutSettings.vue'), AsyncContentLoading)
+const ForumExperimentSettings = defineRecoverableAsyncComponent(() => import('@/src/forum/components/settings/ForumExperimentSettings.vue'), AsyncContentLoading)
+const ForumLabelAdminPage = defineRecoverableAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'), AsyncContentLoading)
+const ForumProfileSettings = defineRecoverableAsyncComponent(() => import('@/src/forum/components/settings/ForumProfileSettings.vue'), AsyncContentLoading)
+const ForumShortcutSettings = defineRecoverableAsyncComponent(() => import('@/src/forum/components/settings/ForumShortcutSettings.vue'), AsyncContentLoading)
 
 const { localeIndex } = useData()
 const { t } = useI18n({ useScope: 'global' })

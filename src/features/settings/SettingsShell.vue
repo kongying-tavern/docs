@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog'
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@theme/components/ui/drawer'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/ui/drawer'
-import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
 
 defineProps<{ embeddedMobile?: boolean, title: string }>()
 const emit = defineEmits<{ close: [] }>()

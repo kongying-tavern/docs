@@ -7,7 +7,7 @@ wip: true
 ---
 
 <script setup lang="ts">
-import StaffPage from '~/features/staff/StaffPage.vue'
+import StaffPage from '@/src/features/staff/StaffPage.vue'
 </script>
 
 <StaffPage />

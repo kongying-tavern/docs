@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { ReloadIcon } from '@radix-icons/vue'
+import { Button } from '@theme/components/ui/button'
+import { TextMorph } from '@theme/components/ui/text-morph'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { TextMorph } from '@/components/ui/text-morph'
-import { useForumReaction } from '~/forum/composables/data/useForumReaction'
-import { buildQuotedTopicFormHref, isQuotableTopicType } from '~/forum/services/forumTopicQuote'
+import { useForumReaction } from '@/src/forum/composables/data/useForumReaction'
+import { buildQuotedTopicFormHref, isQuotableTopicType } from '@/src/forum/services/forumTopicQuote'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import { preloadForumPublishForm } from '../utils/submitFormUi'
 

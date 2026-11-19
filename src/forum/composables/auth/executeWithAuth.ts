@@ -1,7 +1,7 @@
 import type { Composer } from 'vue-i18n'
-import { withAuth } from '~/forum/composables/auth/auth-helpers'
-import { catchError } from '~/services/apiUtils'
-import { toast } from '~/services/telemetry/toast'
+import { withAuth } from '@/src/forum/composables/auth/auth-helpers'
+import { catchError } from '@/src/services/apiUtils'
+import { toast } from '@/src/services/telemetry/toast'
 
 type ActionFunction<T extends unknown[], R = unknown> = (...args: T) => Promise<R>
 

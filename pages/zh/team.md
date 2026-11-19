@@ -6,7 +6,7 @@ wip: true
 ---
 
 <script setup lang="ts">
-import TeamPage from '~/features/team/TeamPage.vue'
+import TeamPage from '@/src/features/team/TeamPage.vue'
 </script>
 
 <TeamPage />

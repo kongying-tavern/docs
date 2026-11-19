@@ -1,9 +1,9 @@
 import type { Ref } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { nextTick, onDeactivated, onMounted, onScopeDispose, watch } from 'vue'
-import { forumListPrefetchDistance } from '~/forum/services/forumListPrefetch'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { layoutTop } from '~/forum/utils/layoutPosition'
+import { forumListPrefetchDistance } from '@/src/forum/services/forumListPrefetch'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { layoutTop } from '@/src/forum/utils/layoutPosition'
 
 interface ListPrefetchOptions {
   readonly itemCount: number

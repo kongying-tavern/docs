@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
+import { cn } from '@theme/lib/utils'
 import { useResizeObserver } from '@vueuse/core'
 import { Motion, useAnimate } from 'motion-v'
 import { computed, onMounted, onUnmounted, ref, useAttrs, useTemplateRef, watch } from 'vue'
-import { cn } from '@/lib/utils'
 
 interface Props {
   class?: string

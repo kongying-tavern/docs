@@ -39,7 +39,7 @@ theme: medium
 ```
 
 <script setup lang="ts">
-import { clientLink, useDownloadRedirect } from '~/features/links/Download.ts'
+import { clientLink, useDownloadRedirect } from '@/src/features/links/Download.ts'
 
 const downloadMethod = [
   clientLink('online', '在线安装器'),

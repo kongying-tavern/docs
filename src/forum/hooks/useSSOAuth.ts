@@ -1,7 +1,7 @@
-import type { useTokenManager } from '~/forum/composables/auth/useTokenManager'
-import { oauth as interKnotOauth } from '~/forum/api/interknot.site'
-import { log, LogGroup } from '~/forum/services/authLogger'
-import { createAuthError } from '~/services/authErrors'
+import type { useTokenManager } from '@/src/forum/composables/auth/useTokenManager'
+import { oauth as interKnotOauth } from '@/src/forum/api/interknot.site'
+import { log, LogGroup } from '@/src/forum/services/authLogger'
+import { createAuthError } from '@/src/services/authErrors'
 
 export function useSSOAuth(tokenManager: ReturnType<typeof useTokenManager>) {
   // 单飞：并发刷新共享同一次请求

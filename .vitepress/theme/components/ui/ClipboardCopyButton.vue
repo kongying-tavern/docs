@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { CheckIcon, CopyIcon } from '@lucide/vue'
+import { Button } from '@theme/components/ui/button'
 import { useClipboard } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { toast } from '~/services/telemetry/toast'
+import { toast } from '@/src/services/telemetry/toast'
 
 const props = withDefaults(defineProps<{
   value: string

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import type { ToasterProps } from 'vue-sonner'
 import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon, XIcon } from '@lucide/vue'
+import { buttonVariants } from '@theme/components/ui/button'
+import { cn } from '@theme/lib/utils'
 import { computed } from 'vue'
 import { Toaster as Sonner } from 'vue-sonner'
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { useSitePreferences } from '~/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
 
 const props = defineProps<ToasterProps>()
 const { desktopUi } = useSitePreferences()

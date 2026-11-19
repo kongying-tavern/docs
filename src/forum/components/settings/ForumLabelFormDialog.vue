@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
+import { Button } from '@theme/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -10,9 +8,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { useForumLabelStore } from '~/forum/composables/state/useForumLabelStore'
+} from '@theme/components/ui/dialog'
+import { Input } from '@theme/components/ui/input'
+import { computed, nextTick, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore'
 import {
   getFallbackLabelDisplay,
   getForumLabelPrefix,
@@ -20,9 +20,9 @@ import {
   usesReservedPrefix,
   validateForumLabelColor,
   validateForumLabelName,
-} from '~/forum/services/forumLabelTaxonomy'
-import { toast } from '~/services/telemetry/toast'
-import { isVisibleFeedback } from '~/utils/isVisibleFeedback'
+} from '@/src/forum/services/forumLabelTaxonomy'
+import { toast } from '@/src/services/telemetry/toast'
+import { isVisibleFeedback } from '@/src/utils/isVisibleFeedback'
 
 const props = defineProps<{
   open: boolean

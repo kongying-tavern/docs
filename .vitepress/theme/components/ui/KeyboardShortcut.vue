@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { ShortcutPlatform, ShortcutPlatformPreference } from '@/lib/keyboard'
+import type { ShortcutPlatform, ShortcutPlatformPreference } from '@theme/lib/keyboard'
+import { Kbd, KbdGroup } from '@theme/components/ui/kbd'
+import { detectShortcutPlatform, resolveShortcutKey } from '@theme/lib/keyboard'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Kbd, KbdGroup } from '@/components/ui/kbd'
-import { detectShortcutPlatform, resolveShortcutKey } from '@/lib/keyboard'
 
 const props = withDefaults(defineProps<{
   sequence: readonly (readonly string[])[]

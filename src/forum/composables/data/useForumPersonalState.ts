@@ -1,5 +1,5 @@
-import type ForumAPI from '~/forum/api/types'
-import type { ForumPersonalStateRecovery } from '~/forum/services/forumPersonalStateRepository'
+import type ForumAPI from '@/src/forum/api/types'
+import type { ForumPersonalStateRecovery } from '@/src/forum/services/forumPersonalStateRepository'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { createGlobalState } from '@vueuse/core'
 import { computed } from 'vue'
@@ -9,11 +9,11 @@ import {
   removeFollowedTopic,
   setFollowedTopic,
   summarizePersonalTopic,
-} from '~/forum/services/forumPersonalState'
-import { loadForumPersonalState, recoverForumPersonalState, updateForumPersonalState } from '~/forum/services/forumPersonalStateRepository'
-import { forumKeys } from '~/forum/services/forumQueryContracts'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+} from '@/src/forum/services/forumPersonalState'
+import { loadForumPersonalState, recoverForumPersonalState, updateForumPersonalState } from '@/src/forum/services/forumPersonalStateRepository'
+import { forumKeys } from '@/src/forum/services/forumQueryContracts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 
 export const useForumPersonalState = createGlobalState(() => {
   const auth = useUserAuthStore()

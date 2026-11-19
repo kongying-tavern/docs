@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'vue'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 
 export namespace FORUM {
   type MenuOrder = number | 'last'

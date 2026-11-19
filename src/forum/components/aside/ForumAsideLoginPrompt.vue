@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { rememberLoginIntent } from '~/forum/services/loginIntent'
+import { rememberLoginIntent } from '@/src/forum/services/loginIntent'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 import ForumAsideSection from './ForumAsideSection.vue'
 

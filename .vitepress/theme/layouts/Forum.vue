@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import ForumEntry from '@theme/components/ForumEntry.vue'
+import PageAlertRegion from '@theme/components/PageAlertRegion.vue'
 import { onBeforeUnmount, onMounted } from 'vue'
-import ForumEntry from '@/components/ForumEntry.vue'
-import PageAlertRegion from '@/components/PageAlertRegion.vue'
-import ForumGlobalDialogs from '~/forum/components/layout/ForumGlobalDialogs.vue'
+import ForumGlobalDialogs from '@/src/forum/components/layout/ForumGlobalDialogs.vue'
 
 let previousScrollRestoration: ScrollRestoration | undefined
 let previousOverflowAnchor = ''
@@ -34,7 +34,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-@import '@/styles/media.css';
+@import '@theme/styles/media.css';
 .Forum {
   display: flex;
   flex-direction: column;

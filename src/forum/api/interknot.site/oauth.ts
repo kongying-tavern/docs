@@ -1,8 +1,8 @@
 import type { INTER_KNOT } from './api'
-import type { SSOAuth } from '~/forum/stores/auth/useUserAuth'
-import type { AuthResult } from '~/services/authErrors'
-import { catchError } from '~/services/apiUtils'
-import { createAuthError } from '~/services/authErrors'
+import type { SSOAuth } from '@/src/forum/stores/auth/useUserAuth'
+import type { AuthResult } from '@/src/services/authErrors'
+import { catchError } from '@/src/services/apiUtils'
+import { createAuthError } from '@/src/services/authErrors'
 import { fetcher, SSO_SESSION_CONTEXT } from '.'
 import { generateRandomString, normalizeSSOAuth, signToken } from './utils'
 

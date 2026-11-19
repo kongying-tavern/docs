@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { Maximize2Icon, Minimize2Icon } from '@lucide/vue'
+import { Alert, AlertDescription } from '@theme/components/ui/alert'
+import { Button } from '@theme/components/ui/button'
+import { Dialog, DialogContent, DialogTitle } from '@theme/components/ui/dialog'
 import { createReusableTemplate, useEventListener, useMutationObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { useSitePreferences } from '~/composables/useSitePreferences'
-import { useMobileEditorViewport } from '~/forum/composables/view/useMobileEditorViewport'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { useMobileEditorViewport } from '@/src/forum/composables/view/useMobileEditorViewport'
 import { useCommentEditorMorph } from './composables/useCommentEditorMorph'
 
 const props = defineProps<{ embedded: boolean, pending: boolean, origin?: HTMLElement, replyUser?: ForumAPI.User, error?: string }>()

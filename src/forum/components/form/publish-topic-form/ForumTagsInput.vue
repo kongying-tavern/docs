@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { useI18n } from 'vue-i18n'
 import {
   Command,
   CommandEmpty,
@@ -9,20 +8,21 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/components/ui/command'
+} from '@theme/components/ui/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
+} from '@theme/components/ui/popover'
 import {
   TagsInput,
   TagsInputInput,
   TagsInputItem,
   TagsInputItemDelete,
   TagsInputItemText,
-} from '@/components/ui/tags-input'
-import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
+} from '@theme/components/ui/tags-input'
+import { useI18n } from 'vue-i18n'
+import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig'
 import { useTagsInput } from '../composables/useTagsInput'
 
 const { max = VALIDATION_LIMITS.TAGS.MAX_COUNT } = defineProps<{

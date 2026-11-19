@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { TopicFormData } from '~/forum/services/form/validation'
+import type { TopicFormData } from '@/src/forum/services/form/validation'
 import { ChevronDownIcon, HashIcon, TagsIcon } from '@lucide/vue'
+import { Button } from '@theme/components/ui/button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@theme/components/ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover'
 import { refDebounced } from '@vueuse/core'
 import { ListboxFilter } from 'reka-ui'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { useForumTopicsQuery } from '~/forum/composables/data/useForumQueries'
-import { VALIDATION_LIMITS } from '~/forum/services/forumConfig'
-import { isQuotableTopicType } from '~/forum/services/forumTopicQuote'
+import { useForumTopicsQuery } from '@/src/forum/composables/data/useForumQueries'
+import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig'
+import { isQuotableTopicType } from '@/src/forum/services/forumTopicQuote'
 import { useTagsInput } from '../composables/useTagsInput'
 
 const props = defineProps<{ tags: string[], quotedTopic?: TopicFormData['quotedTopic'], disabled: boolean }>()

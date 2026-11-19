@@ -1,8 +1,8 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { computed, toValue } from 'vue'
-import { useForumViewMode } from '~/forum/composables/state/useForumViewMode'
-import { useTextCollapse } from '~/forum/composables/state/useTextCollapse'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
+import { useTextCollapse } from '@/src/forum/composables/state/useTextCollapse'
 
 export function useTopicContent(source: MaybeRefOrGetter<ForumAPI.Topic | ForumAPI.Post>, expanded?: Ref<boolean>) {
   const topic = computed(() => toValue(source))

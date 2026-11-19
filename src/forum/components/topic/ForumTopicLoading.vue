@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import AsyncLoadError from '~/components/async/AsyncLoadError.vue'
+import AsyncLoadError from '@/src/components/async/AsyncLoadError.vue'
 import ForumTopicPageSkeleton from './ForumTopicPageSkeleton.vue'
 
 defineProps<{ error?: Error }>()

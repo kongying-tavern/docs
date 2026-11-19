@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
+import type ForumAPI from '@/src/forum/api/types'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
 import ForumTopicMetadataControl from './ForumTopicMetadataControl.vue'
 import ForumTopicSummary from './ForumTopicSummary.vue'
 

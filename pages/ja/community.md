@@ -32,8 +32,8 @@ outline: false
 <QQGroupList />
 
 <script setup lang="ts">
-import { serverLink } from '~/features/links/Community'
-import QQGroupList from '@/components/QQGroupList.vue'
+import { serverLink } from '@/src/features/links/Community'
+import QQGroupList from '@theme/components/QQGroupList.vue'
 
 const server = [
   serverLink('discord', 'Discord')

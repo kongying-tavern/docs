@@ -1,6 +1,6 @@
 import type { Composer } from 'vue-i18n'
-import type { ImageAttachmentError } from '~/forum/services/form/imageAttachment'
-import { IMAGE_UPLOAD_POLICY } from '~/forum/services/forumConfig'
+import type { ImageAttachmentError } from '@/src/forum/services/form/imageAttachment'
+import { IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig'
 import { FORM_HASH } from '../form/publish-topic-form/form-config'
 
 export function formatImageAttachmentError(
@@ -63,8 +63,8 @@ let publishFormPreload: Promise<boolean> | undefined
 /** 发布表单含 tiptap 编辑器（~154kB Brotli）；入口 hover/聚焦/点击时预热，避免直达时可感知加载 */
 export function preloadForumPublishForm(): Promise<boolean> {
   publishFormPreload ??= Promise.all([
-    import('~/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue'),
-    import('~/forum/components/form/publish-topic-form/ForumCompactPublishTopicPanel.vue'),
+    import('@/src/forum/components/form/publish-topic-form/ForumPublishTopicForm.vue'),
+    import('@/src/forum/components/form/publish-topic-form/ForumCompactPublishTopicPanel.vue'),
   ]).then(() => true).catch(() => {
     publishFormPreload = undefined
     return false

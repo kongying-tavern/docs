@@ -1,5 +1,5 @@
 import type { ComputedRef } from 'vue'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 
 export interface FieldConfig {
   label: string

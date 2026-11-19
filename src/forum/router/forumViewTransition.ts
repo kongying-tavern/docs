@@ -1,8 +1,8 @@
-import type { ForumRoute } from '~/forum/services/forumRoute'
+import type { ForumRoute } from '@/src/forum/services/forumRoute'
+import { enableTransitions } from '@theme/shared'
 import { nextTick } from 'vue'
-import { enableTransitions } from '@/shared'
-import { forumTopicTransitioning } from '~/forum/composables/state/useForumRoute'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { forumTopicTransitioning } from '@/src/forum/composables/state/useForumRoute'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
 
 type SharedRoute = Extract<ForumRoute, { name: 'topic' } | { name: 'user' }>
 let activeRouteTransition: ViewTransition | undefined
@@ -64,7 +64,7 @@ export async function transitionForumRoute(
     // A cold chunk must not hold navigation hostage just to preserve shared animation.
     let timer: ReturnType<typeof setTimeout> | undefined
     const ready = await Promise.race([
-      import('~/forum/components/topic/ForumTopicPage.vue').then(() => true, () => false),
+      import('@/src/forum/components/topic/ForumTopicPage.vue').then(() => true, () => false),
       new Promise<boolean>((resolve) => {
         timer = setTimeout(resolve, 100, false)
       }),

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { FORUM } from '../types'
+import { SearchField } from '@theme/components/ui/search-field'
+import { Skeleton } from '@theme/components/ui/skeleton'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { SearchField } from '@/components/ui/search-field'
-import { Skeleton } from '@/components/ui/skeleton'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
 import ForumProfileTabs from './ForumProfileTabs.vue'
 
 const props = defineProps<{ tabs?: FORUM.ProfileTab[] }>()

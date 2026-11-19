@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { defineTopicDropdownMenu } from '~/forum/composables/util/defineTopicDropdownMenu'
+import { defineTopicDropdownMenu } from '@/src/forum/composables/util/defineTopicDropdownMenu'
 import ForumMenuContext from './ForumMenuContext.vue'
 
 const { menu = [], topicData, class: className } = defineProps<{

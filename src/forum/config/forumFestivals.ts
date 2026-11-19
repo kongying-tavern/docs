@@ -1,4 +1,4 @@
-import type { ForumFestivalDefinition, ForumFestivalWindow } from '~/forum/services/forumFestival'
+import type { ForumFestivalDefinition, ForumFestivalWindow } from '@/src/forum/services/forumFestival'
 
 const CONFIGURED_YEARS = [2025, 2026, 2027, 2028, 2029, 2030] as const
 
@@ -62,7 +62,7 @@ export const forumFestivals = [
       fireworkStyle: 'spring-festival',
       palette: ['#ff1f3d', '#ff3d00', '#ffb300', '#ffd54f'],
     },
-    loadEffect: () => import('~/forum/effects/fireworks'),
+    loadEffect: () => import('@/src/forum/effects/fireworks'),
   },
   {
     id: 'new-year',
@@ -76,7 +76,7 @@ export const forumFestivals = [
       fireworkStyle: 'new-year',
       palette: ['#38bdf8', '#f8fafc', '#facc15', '#fb7185'],
     },
-    loadEffect: () => import('~/forum/effects/fireworks'),
+    loadEffect: () => import('@/src/forum/effects/fireworks'),
   },
   {
     id: 'christmas',
@@ -86,6 +86,6 @@ export const forumFestivals = [
     icon: 'i-lucide-snowflake',
     durationMs: 20_000,
     windows: fixedChristmasWindows(),
-    loadEffect: () => import('~/forum/effects/snow'),
+    loadEffect: () => import('@/src/forum/effects/snow'),
   },
 ] as const satisfies readonly ForumFestivalDefinition[]

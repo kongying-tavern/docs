@@ -1,14 +1,14 @@
 import type { ComputedRef } from 'vue'
-import type ForumAPI from '~/forum/api/types'
-import type { TopicFormTransactionResult, TopicFormTransactionStage } from '~/forum/services/form/topicFormTransaction'
-import type { TopicFormData } from '~/forum/services/form/validation'
+import type ForumAPI from '@/src/forum/api/types'
+import type { TopicFormTransactionResult, TopicFormTransactionStage } from '@/src/forum/services/form/topicFormTransaction'
+import type { TopicFormData } from '@/src/forum/services/form/validation'
 import { computed, onBeforeUnmount, ref } from 'vue'
-import { uploadImg } from '~/forum/api/interknot.site/upload'
-import { useSubmitTopic } from '~/forum/composables/data/useSubmitTopic'
-import { calculateThumbHashForFile } from '~/forum/composables/view/calculateThumbHashForFile'
-import { useImageAttachmentQueue } from '~/forum/composables/view/useImageAttachmentQueue'
-import { readTopicDraft } from '~/forum/services/form/topicDraft'
-import { submitTopicFormTransaction } from '~/forum/services/form/topicFormTransaction'
+import { uploadImg } from '@/src/forum/api/interknot.site/upload'
+import { useSubmitTopic } from '@/src/forum/composables/data/useSubmitTopic'
+import { calculateThumbHashForFile } from '@/src/forum/composables/view/calculateThumbHashForFile'
+import { useImageAttachmentQueue } from '@/src/forum/composables/view/useImageAttachmentQueue'
+import { readTopicDraft } from '@/src/forum/services/form/topicDraft'
+import { submitTopicFormTransaction } from '@/src/forum/services/form/topicFormTransaction'
 
 export function useFormSubmit(type: ComputedRef<TopicFormData['type']>) {
   const { submitData } = useSubmitTopic()

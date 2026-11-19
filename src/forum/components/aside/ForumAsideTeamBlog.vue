@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { getLangPath } from '@theme/utils'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getLangPath } from '@/utils'
-import { DEFAULT_LOCALE } from '~/constants/site'
-import { data as allBlogPosts } from '~/data/forumBlogPosts.data'
+import { DEFAULT_LOCALE } from '@/src/constants/site'
+import { data as allBlogPosts } from '@/src/data/forumBlogPosts.data'
 import ForumTime from '../ui/ForumTime.vue'
 
 const { lang, localeIndex, theme } = useData()

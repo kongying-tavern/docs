@@ -1,8 +1,8 @@
 import { useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 
 /** 灰度覆盖按账号存在浏览器里，只有登录中的管理员可读可写 */
 export function useGrayscaleOverride(storageKey: string) {

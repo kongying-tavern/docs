@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { ref, watch } from 'vue'
 import ForumTopicResults from '../list/ForumTopicResults.vue'
 

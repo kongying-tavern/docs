@@ -1,5 +1,5 @@
 import type ForumAPI from '../types'
-import { catchError } from '~/services/apiUtils'
+import { catchError } from '@/src/services/apiUtils'
 import { oauthFetcher } from './client'
 import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './gitee-config'
 import { normalizeAuth } from './normalize'

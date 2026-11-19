@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { useTopicTagDisplay } from '~/forum/composables/util/useTopicTagDisplay'
-import { CATEGORY_LABEL_PREFIX } from '~/forum/services/forumLabel'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { useTopicTagDisplay } from '@/src/forum/composables/util/useTopicTagDisplay'
+import { CATEGORY_LABEL_PREFIX } from '@/src/forum/services/forumLabel'
 
 const props = defineProps<{
   data: string[]

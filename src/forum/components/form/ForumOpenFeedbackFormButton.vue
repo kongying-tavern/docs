@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import type { ButtonVariants } from '@/components/ui/button'
-import { useData } from 'vitepress'
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
+import type { ButtonVariants } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { useForumShortcut } from '~/forum/composables/view/useForumShortcut'
-import { rememberLoginIntent } from '~/forum/services/loginIntent'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
+} from '@theme/components/ui/dropdown-menu'
+import { useData } from 'vitepress'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useForumShortcut } from '@/src/forum/composables/view/useForumShortcut'
+import { rememberLoginIntent } from '@/src/forum/services/loginIntent'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
 import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
 import { FORM_HASH } from './publish-topic-form/form-config'
 

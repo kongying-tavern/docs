@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'reka-ui'
-import { useMediaQuery } from '@vueuse/core'
-import { nextTick, ref, watch } from 'vue'
 import {
   Drawer,
   DrawerContent,
@@ -9,9 +7,11 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { FORUM_MOBILE_MEDIA_QUERY } from '~/forum/services/forumConfig'
+} from '@theme/components/ui/drawer'
+import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover'
+import { useMediaQuery } from '@vueuse/core'
+import { nextTick, ref, watch } from 'vue'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
 
 const { align = 'start', immersive = false, hideHeader = false } = defineProps<{
   title: string

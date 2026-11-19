@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
+import { Skeleton } from '@theme/components/ui/skeleton'
 import { createReusableTemplate } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
-import AsyncContentLoading from '~/components/async/AsyncContentLoading.vue'
-import { useSitePreferences } from '~/composables/useSitePreferences'
-import { useSettingsNavigation } from '~/features/settings/useSettingsNavigation'
-import { useRuleChecks } from '~/forum/composables/auth/useRuleChecks'
-import { isBrowserTranslationSupported } from '~/forum/services/browserTranslation'
+import AsyncContentLoading from '@/src/components/async/AsyncContentLoading.vue'
+import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { useSettingsNavigation } from '@/src/features/settings/useSettingsNavigation'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation'
 
 defineOptions({ inheritAttrs: false })
 defineProps<{ embeddedMobile?: boolean, error?: Error }>()

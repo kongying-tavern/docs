@@ -3,7 +3,7 @@ import type {
   ForumFestivalEffectOptions,
   ForumFestivalEffectStopOptions,
 } from './types'
-import { readReducedMotion } from '~/services/sitePreferences'
+import { readReducedMotion } from '@/src/services/sitePreferences'
 import './snow.css'
 
 interface Snowflake {

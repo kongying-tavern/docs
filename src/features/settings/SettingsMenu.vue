@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { SettingsNavigationItem, SettingsSectionId } from '~/features/settings/useSettingsNavigation'
+import type { SettingsNavigationItem, SettingsSectionId } from '@/src/features/settings/useSettingsNavigation'
+import { FluidHoverList } from '@theme/components/ui/fluid-hover'
+import User from '@theme/components/ui/User.vue'
 import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { FluidHoverList } from '@/components/ui/fluid-hover'
-import User from '@/components/ui/User.vue'
-import useLogin from '~/forum/hooks/useLogin'
-import { useUserAuthStore } from '~/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import useLogin from '@/src/forum/hooks/useLogin'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 import SettingsNavigation from './SettingsNavigation.vue'
 
 withDefaults(defineProps<{

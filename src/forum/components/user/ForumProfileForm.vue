@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type ForumAPI from '~/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
+import { Button } from '@theme/components/ui/button'
+import { Input } from '@theme/components/ui/input'
+import { Textarea } from '@theme/components/ui/textarea'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, nextTick, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import SettingsRow from '~/features/settings/SettingsRow.vue'
-import SettingsSection from '~/features/settings/SettingsSection.vue'
-import { useUserProfileEditor } from '~/forum/composables/data/useUserProfileEditor'
-import { USER_PROFILE_FIELDS } from '~/forum/config/userProfile'
-import { syncUserProfileDraft } from '~/forum/services/forumUserProfileOptimistic'
-import { useUserInfoStore } from '~/forum/stores/auth/useUserInfo'
+import SettingsRow from '@/src/features/settings/SettingsRow.vue'
+import SettingsSection from '@/src/features/settings/SettingsSection.vue'
+import { useUserProfileEditor } from '@/src/forum/composables/data/useUserProfileEditor'
+import { USER_PROFILE_FIELDS } from '@/src/forum/config/userProfile'
+import { syncUserProfileDraft } from '@/src/forum/services/forumUserProfileOptimistic'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 
 const { bioOnly = false, user } = defineProps<{
   user: ForumAPI.User

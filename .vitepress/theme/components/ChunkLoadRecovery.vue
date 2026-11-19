@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { Button } from '@theme/components/ui/button'
 import { useEventListener } from '@vueuse/core'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '@/components/ui/button'
 
 const { t } = useI18n({ useScope: 'global' })
 const failed = ref(false)

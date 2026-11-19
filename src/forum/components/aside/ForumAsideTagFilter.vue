@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumRoute } from '~/forum/composables/state/useForumRoute'
-import { useForumTagFilterOptions } from '~/forum/composables/view/useForumTagFilterOptions'
-import { parseForumSearchQuery } from '~/forum/services/forumSearchQuery'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { useForumTagFilterOptions } from '@/src/forum/composables/view/useForumTagFilterOptions'
+import { parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery'
 import ForumTagList from '../ui/ForumTagList.vue'
 
 const { t } = useI18n({ useScope: 'global' })

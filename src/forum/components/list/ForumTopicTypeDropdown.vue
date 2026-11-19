@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ForumFilter } from '~/forum/services/forumRoute'
+import type { ForumFilter } from '@/src/forum/services/forumRoute'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumListControlOptions } from '~/forum/composables/view/useForumListControlOptions'
+import { useForumListControlOptions } from '@/src/forum/composables/view/useForumListControlOptions'
 import ForumPillSelect from './ForumPillSelect.vue'
 
 const props = defineProps<{

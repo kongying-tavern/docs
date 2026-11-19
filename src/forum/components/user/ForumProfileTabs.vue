@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
+import { Button } from '@theme/components/ui/button'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
-import { Button } from '@/components/ui/button'
 import ForumTopicLifecycle from '../ui/ForumTopicLifecycle.vue'
 
 const { tabs, ariaLabel, layout = 'fill' } = defineProps<{
