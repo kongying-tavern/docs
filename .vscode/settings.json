@@ -74,5 +74,5 @@
     "editor.formatOnPaste": true
   },
   "mdc.enableComponentMetadataCompletions": true,
-  "mdc.componentMetadataLocalFilePattern": ".vitepress/theme/mdc-components.mjs"
+  "mdc.componentMetadataLocalFilePattern": ".vitepress/theme/mdc-components.gen.mjs"
 }

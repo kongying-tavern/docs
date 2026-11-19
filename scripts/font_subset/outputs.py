@@ -164,12 +164,12 @@ def commit_outputs(
         (
             staged_site_css,
             config.site_css_file,
-            staging_root / "previous-fonts-subset.css",
+            staging_root / "previous-fonts-subset.gen.css",
         ),
         (
             staged_standard_css,
             config.standard_css_file,
-            staging_root / "previous-fonts-standard.css",
+            staging_root / "previous-fonts-standard.gen.css",
         ),
     )
     for _, css_file, _ in css_outputs:
@@ -181,7 +181,10 @@ def commit_outputs(
 
     if fonts_were_present:
         for existing in fonts_dir.iterdir():
-            if managed_font_pattern.fullmatch(existing.name):
+            if managed_font_pattern.fullmatch(existing.name) or existing.name in {
+                "fonts-subset.css",
+                "fonts-standard.css",
+            }:
                 continue
             destination = staged_fonts / existing.name
             if existing.is_dir():

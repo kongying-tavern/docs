@@ -76,7 +76,7 @@ test('artifact validation rejects mismatched, missing and corrupted cached files
   const face = (group: string) => {
     const bytes = Buffer.from(group)
     const hash = createHash('sha256').update(bytes).digest('hex').slice(0, config.hashing.fileNameLength)
-    const file = `${stem}.${group}.01.${hash}.woff2`
+    const file = `${stem}.${group}.01.${hash}.gen.woff2`
     writeFileSync(join(paths.fontsDir, file), bytes)
     return { file, css: `@font-face { src: url('./${file}'); unicode-range: U+4E00; }` }
   }

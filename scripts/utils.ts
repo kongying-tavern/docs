@@ -22,23 +22,13 @@ export async function getAuthToken() {
   return auth
 }
 
-export async function saveJsonToFile(filename: string, data: unknown) {
-  const outputFilePath = new URL(`../src/data/${filename}.json`, import.meta.url)
-
-  try {
-    await fs.writeFile(outputFilePath, JSON.stringify(data, null, 2), 'utf8')
-    console.info(`Data successfully overwritten in ${outputFilePath.pathname}`)
-  }
-  catch (error) {
-    console.error('Error saving data:', error)
-  }
-}
-
 export async function saveMemberDataWithTimestamp(filename: string, memberData: unknown) {
+  const outputFilePath = new URL(`../src/data/${filename}.gen.json`, import.meta.url)
   const dataWithTimestamp = {
     data: memberData,
     lastUpdated: Date.now(),
   }
 
-  await saveJsonToFile(filename, dataWithTimestamp)
+  await fs.writeFile(outputFilePath, JSON.stringify(dataWithTimestamp, null, 2), 'utf8')
+  console.info(`Data successfully overwritten in ${outputFilePath.pathname}`)
 }

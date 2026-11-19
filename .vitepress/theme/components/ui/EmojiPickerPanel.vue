@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '~/composables/useGlobalEmojiPreloader'
 
-import EmojiData from '~/data/emojis.json'
+import EmojiData from '~/data/emojis.gen.json'
 import Emoji from './Emoji.vue'
 
 export interface EmojiItem {

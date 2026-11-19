@@ -1,6 +1,6 @@
 """Measure per-page WOFF2 download cost implied by unicode-range lazy loading.
 
-Parses the generated fonts-subset.css / fonts-standard.css, scans locale
+Parses the generated fonts-subset.gen.css / fonts-standard.gen.css, scans locale
 content, and reports which chunks each page would fetch. Stdlib-only; run
 `pnpm build:fonts` first so pages/public/fonts is populated.
 """
@@ -15,8 +15,8 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CSS_FILES = [
-    ".vitepress/theme/styles/fonts-subset.css",
-    ".vitepress/theme/styles/fonts-standard.css",
+    "pages/public/fonts/fonts-subset.gen.css",
+    "pages/public/fonts/fonts-standard.gen.css",
 ]
 FONTS_DIR = "pages/public/fonts"
 LOCALES = ["en", "ja", "zh"]
@@ -24,7 +24,7 @@ SCAN_EXTENSIONS = {".md"}
 
 FONT_FACE_RE = re.compile(r"@font-face\s*\{(.*?)\}", re.S)
 FAMILY_RE = re.compile(r"font-family: '([^']+)'")
-URL_RE = re.compile(r"url\('/fonts/([^']+)'\)")
+URL_RE = re.compile(r"url\('\./([^']+)'\)")
 RANGE_RE = re.compile(r"unicode-range: ([^;]+);")
 
 
@@ -60,8 +60,8 @@ def page_codepoints(path: Path) -> set[int]:
 
 
 def group_of(file_name: str) -> str:
-    # sarasa_gothic_sc.cjk.l1.01.<hash>.woff2 -> sarasa_gothic_sc.cjk.l1
-    return ".".join(file_name.split(".")[:-3])
+    # sarasa_gothic_sc.cjk.l1.01.<hash>.gen.woff2 -> sarasa_gothic_sc.cjk.l1
+    return ".".join(file_name.split(".")[:-4])
 
 
 def main() -> None:

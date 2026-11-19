@@ -14,7 +14,7 @@ test('ESLint covers config languages, source and maintained tests', async () => 
     assert.equal(await eslint.isPathIgnored(file), false, file)
     assert.ok(await eslint.calculateConfigForFile(file), file)
   }
-  for (const file of ['pages/zh/index.md', 'pnpm-lock.yaml', 'pages/public/fonts/fonts-standard.css', '.vitepress/theme/mdc-components.mjs', '.vitepress/cache/generated.ts', 'tests/e2e/state-compare.json'])
+  for (const file of ['pages/zh/index.md', 'pnpm-lock.yaml', 'pages/public/fonts/fonts-standard.gen.css', '.vitepress/theme/mdc-components.gen.mjs', '.vitepress/cache/generated.ts', 'tests/e2e/state-compare.json'])
     assert.equal(await eslint.isPathIgnored(file), true, file)
 }, 30_000)
 

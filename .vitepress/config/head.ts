@@ -15,7 +15,7 @@ import {
 
 /** 字体样式表（字体管线生成到 public/fonts/）非阻塞加载：preload 提前拉取，media="print" 应用不阻塞渲染；dev 由 loadFontStylesheets.ts 注入 */
 function createFontStylesheetHead(base: string): HeadConfig[] {
-  return ['fonts-subset.css', 'fonts-standard.css'].flatMap(name => [
+  return ['fonts-subset.gen.css', 'fonts-standard.gen.css'].flatMap(name => [
     ['link', { rel: 'preload', as: 'style', href: `${base}fonts/${name}` }],
     ['link', { rel: 'stylesheet', href: `${base}fonts/${name}`, media: 'print', onload: 'this.media=\'all\'' }],
   ])

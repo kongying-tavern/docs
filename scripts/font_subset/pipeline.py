@@ -43,7 +43,7 @@ class FontSubsetPipeline:
             rf"^(?P<stem>{stems})\."
             rf"(?P<group>cjk\.(?:{cjk_tiers})|{scripts})\."
             rf"(?P<index>\d{{2}})\."
-            rf"(?P<hash>[0-9a-f]{{{hash_length}}})\.{extension}$"
+            rf"(?P<hash>[0-9a-f]{{{hash_length}}})\.gen\.{extension}$"
         )
         self.managed_font_pattern = re.compile(
             # [._] matches both current dot-separated and legacy underscore names.
@@ -101,8 +101,8 @@ class FontSubsetPipeline:
                 self.generated_font_pattern,
             )
 
-            staged_site_css = staging_root / "fonts-subset.css"
-            staged_standard_css = staging_root / "fonts-standard.css"
+            staged_site_css = staging_root / "fonts-subset.gen.css"
+            staged_standard_css = staging_root / "fonts-standard.gen.css"
             write_css_files(
                 self.config,
                 faces,
@@ -170,7 +170,7 @@ class FontSubsetPipeline:
                 )
             digest = content_hash(provisional, self.config.file_hash_length)
             file_name = (
-                f"{spec.file_stem}.{group}.{index:02d}.{digest}."
+                f"{spec.file_stem}.{group}.{index:02d}.{digest}.gen."
                 f"{self.config.output_extension}"
             )
             provisional.replace(staging_fonts / file_name)

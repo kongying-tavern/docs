@@ -2,8 +2,8 @@
   "version": 1,
   "paths": {
     "fontsDir": "pages/public/fonts",
-    "siteCssFile": "pages/public/fonts/fonts-subset.css",
-    "standardCssFile": "pages/public/fonts/fonts-standard.css",
+    "siteCssFile": "pages/public/fonts/fonts-subset.gen.css",
+    "standardCssFile": "pages/public/fonts/fonts-standard.gen.css",
     "sourceDir": "scripts/fonts/source",
     "pythonEntry": "scripts/subsetFonts.py",
     "pythonPackage": "scripts/font_subset",

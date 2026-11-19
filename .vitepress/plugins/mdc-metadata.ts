@@ -8,7 +8,7 @@ import { createCheckerByJson } from 'vue-component-meta'
 
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
 const projectRoot = resolve(currentDir, '..', '..')
-const outFile = resolve(projectRoot, '.vitepress/theme/mdc-components.mjs')
+const outFile = resolve(projectRoot, '.vitepress/theme/mdc-components.gen.mjs')
 const themeEntry = normalizePath(resolve(projectRoot, '.vitepress/theme/index.ts'))
 const themeDir = resolve(themeEntry, '..')
 const compDir = normalizePath(resolve(projectRoot, '.vitepress/theme/components'))

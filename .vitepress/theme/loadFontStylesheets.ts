@@ -8,7 +8,7 @@ export function loadFontStylesheets(): void {
   if (!import.meta.env.DEV)
     return
 
-  for (const href of ['/fonts/fonts-subset.css', '/fonts/fonts-standard.css']) {
+  for (const href of ['/fonts/fonts-subset.gen.css', '/fonts/fonts-standard.gen.css']) {
     const link = document.createElement('link')
     link.rel = 'stylesheet'
     link.href = withBase(href)

@@ -9,10 +9,10 @@ for (const base of ['/docs/', '/', '/preview/']) {
     const config = { site: { base } } as SiteConfig
     const links = cfgDynamicHead(page, config).filter(([tag, attrs]) => tag === 'link' && attrs.href?.includes('/fonts/'))
     assert.deepEqual(links.map(([, attrs]) => attrs.href), [
-      `${base}fonts/fonts-subset.css`,
-      `${base}fonts/fonts-subset.css`,
-      `${base}fonts/fonts-standard.css`,
-      `${base}fonts/fonts-standard.css`,
+      `${base}fonts/fonts-subset.gen.css`,
+      `${base}fonts/fonts-subset.gen.css`,
+      `${base}fonts/fonts-standard.gen.css`,
+      `${base}fonts/fonts-standard.gen.css`,
     ])
   })
 }

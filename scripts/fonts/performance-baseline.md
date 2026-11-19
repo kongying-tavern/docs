@@ -34,7 +34,7 @@ performance.getEntriesByType('resource')
 ## Chunk inventory (72 chunks, 3 weights)
 
 Per-group totals; all `*.woff2` chunks and both generated stylesheets
-(`fonts-subset.css`, `fonts-standard.css`) are gitignored and rebuilt
+(`fonts-subset.gen.css`, `fonts-standard.gen.css`) are gitignored and rebuilt
 deterministically by `pnpm build:fonts` from the committed source TTFs (the
 font-subset Vite plugin runs the pipeline automatically on dev/build start).
 
@@ -149,4 +149,4 @@ content because UI chrome (nav, sidebar, suggest bar) adds characters.
   standard-tier chunks byte-identical (only CSS unicode-range declarations
   move).
 - `reuse` and `rebuild` paths must produce byte-identical
-  `fonts-standard.css` for identical inputs.
+  `fonts-standard.gen.css` for identical inputs.

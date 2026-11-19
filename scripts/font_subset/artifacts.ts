@@ -49,10 +49,10 @@ export class FontArtifacts {
       `^(?:(?:${stems})[._].*|(?:${legacyStems})-.*)\\.${extension}$`,
     )
     this.siteFontPattern = new RegExp(
-      `^(?:${stems})\\.cjk\\.min\\.\\d{2}\\.[a-f0-9]{${hashLength}}\\.${extension}$`,
+      `^(?:${stems})\\.cjk\\.min\\.\\d{2}\\.[a-f0-9]{${hashLength}}\\.gen\\.${extension}$`,
     )
     this.standardFontPattern = new RegExp(
-      `^(${stems})\\.((?:${standardGroups}))\\.\\d{2}\\.[a-f0-9]{${hashLength}}\\.${extension}$`,
+      `^(${stems})\\.((?:${standardGroups}))\\.\\d{2}\\.[a-f0-9]{${hashLength}}\\.gen\\.${extension}$`,
     )
     this.expectedStandardGroups = new Set(
       config.fonts.flatMap(font => [
@@ -136,7 +136,7 @@ export class FontArtifacts {
 
     const hashLength = this.config.hashing.fileNameLength
     const segments = file.split('.')
-    const expected = segments[segments.length - 2]!
+    const expected = segments[segments.length - 3]!
     const actual = createHash(this.config.hashing.algorithm)
       .update(readFileSync(path))
       .digest('hex')

@@ -4,9 +4,8 @@ import { fileURLToPath } from 'node:url'
 
 const IMAGE_FILE_REGEX = /\.(?:png|jpg|jpeg|gif|webp)$/
 
-const filename = fileURLToPath(import.meta.url)
-const baseDir = path.join(filename, '../../pages/public/emojis')
-const dataDir = path.join(filename, '../../src/data')
+const baseDir = fileURLToPath(new URL('../pages/public/emojis/', import.meta.url))
+const outputFile = new URL('../src/data/emojis.gen.json', import.meta.url)
 
 function getDirectories(source: string) {
   return fs.readdirSync(source, { withFileTypes: true })
@@ -20,10 +19,8 @@ function getImagesFromFolder(folderPath: string, folderName: string) {
 
   const imageList = files.filter(file => IMAGE_FILE_REGEX.test(file))
     .map((file) => {
-      const emojiPath = `/${path.posix.join(folderName, file)}`
-
       return {
-        [path.parse(file).name.toLowerCase()]: emojiPath.slice(1),
+        [path.parse(file).name.toLowerCase()]: path.posix.join(folderName, file),
       }
     })
 
@@ -33,30 +30,7 @@ function getImagesFromFolder(folderPath: string, folderName: string) {
   return { presets: folderName.split('.')[1], list: imageList, logo: configFile.logo, width: configFile.width, height: configFile.height }
 }
 
-function generateEmojiData(baseDir: string) {
-  if (!fs.existsSync(baseDir)) {
-    console.error(`Directory not found: ${baseDir}`)
-    return []
-  }
-  const folders = getDirectories(baseDir)
-  console.log(folders)
-  return folders.sort((a, b) => Number(a.charAt(0)) - Number(b.charAt(0))).map(folder => getImagesFromFolder(path.join(baseDir, folder), folder))
-}
-
-export function emojiLoader() {
-  const emojis = generateEmojiData(baseDir)
-
-  try {
-    fs.writeFileSync(path.join(dataDir, 'emojis.json'), JSON.stringify(emojis, null, 2), 'utf-8')
-  }
-  catch (error) {
-    console.error('Emojis data file could not be saved', error)
-  }
-
-  return { ...emojis.map(emoji => ({
-    [`emoji-${emoji.presets}`]: emoji.list,
-  })) }
-}
-
-emojiLoader()
-export default emojiLoader
+const emojis = getDirectories(baseDir)
+  .sort((a, b) => Number(a.charAt(0)) - Number(b.charAt(0)))
+  .map(folder => getImagesFromFolder(path.join(baseDir, folder), folder))
+fs.writeFileSync(outputFile, JSON.stringify(emojis, null, 2), 'utf8')
