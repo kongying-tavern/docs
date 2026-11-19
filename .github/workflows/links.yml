@@ -22,6 +22,10 @@ permissions:
   contents: read
   issues: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   link-check:
     runs-on: ubuntu-latest
@@ -45,6 +49,7 @@ jobs:
             --remap '^https://github\.com/kongying-tavern/docs/blob/main/(.*)$ file://${{ github.workspace }}/$1'
             --remap '^(file://.*)/pages/(imgs|emojis|fonts|llms|common)/(.*) $1/pages/public/$2/$3'
             --remap '^(file://.*)/pages/index\.md$ $1/pages/zh/index.md'
+            --remap '^(file://.*)/pages/.*?~/(.*) $1/src/$2'
             --exclude 'https://download.yuanshen.site/.*'
             --exclude '^https://deepwiki\.com/(badge\.svg|kongying-tavern/docs)/?$'
             --exclude 'https://github.com/kongying-tavern/docs/tree/dev/.*'
@@ -64,10 +69,74 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Issue From File
-        if: ${{ failure() && steps.lychee.outputs.exit_code != '' && steps.lychee.outputs.exit_code != '0' }}
-        uses: peter-evans/create-issue-from-file@v6
+      - name: Create or update issue
+        if: ${{ failure() && steps.lychee.outputs.exit_code != '' && steps.lychee.outputs.exit_code != '0' && github.event_name != 'pull_request' }}
+        uses: actions/github-script@v9
         with:
-          title: Link Checker Report
-          content-filepath: ./lychee/out.md
-          labels: report, automated issue
+          script: |
+            const fs = require('node:fs')
+            const body = fs.readFileSync('lychee/out.md', 'utf8')
+            const { owner, repo } = context.repo
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+              sort: 'created',
+              direction: 'desc',
+            })
+            const reports = openIssues.filter(issue => !issue.pull_request && issue.title === 'Link Checker Report')
+            const [current, ...duplicates] = reports
+
+            if (current) {
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: current.number,
+                body,
+              })
+            } else {
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title: 'Link Checker Report',
+                body,
+                labels: ['report', 'automated issue'],
+              })
+            }
+
+            for (const issue of duplicates) {
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                state: 'closed',
+                state_reason: 'not_planned',
+              })
+            }
+
+      - name: Close resolved report
+        if: ${{ success() && github.event_name != 'pull_request' }}
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+              sort: 'created',
+              direction: 'desc',
+            })
+            const reports = openIssues.filter(issue => !issue.pull_request && issue.title === 'Link Checker Report')
+
+            for (const issue of reports) {
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                state: 'closed',
+                state_reason: 'completed',
+              })
+            }
