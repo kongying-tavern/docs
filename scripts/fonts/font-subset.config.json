@@ -150,6 +150,13 @@
         "args": [
           "-3"
         ]
+      },
+      {
+        "command": "uv",
+        "args": [
+          "run",
+          "python"
+        ]
       }
     ]
   },
