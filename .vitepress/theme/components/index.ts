@@ -1,6 +1,6 @@
 export * from './banner'
 export * from './card'
-export { default as ChunkLoadRecovery } from './ChunkLoadRecovery.vue'
+export * from './chunk-load-recovery'
 export { default as Coins } from './Coins.vue'
 export * from './doc-header'
 export * from './doc-reaction'
