@@ -15,7 +15,7 @@ import { DocHeader } from '../components/doc-header/index.ts'
 import { HighlightTargetedHeading } from '../components/highlight-targeted-heading/index.ts'
 import { PageAlertRegion } from '../components/page-alert-region/index.ts'
 import { Sonner } from '../components/ui/sonner/index.ts'
-import { useThemeTransition } from '../hooks/useThemeTransition.ts'
+import { useThemeTransition } from '../composables/useThemeTransition.ts'
 
 import '../styles/main.css'
 import '../markdown-ext/demo/demo.css'

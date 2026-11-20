@@ -8,7 +8,7 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { computed, useTemplateRef } from 'vue'
-import { useFluidHover, useFluidHoverIndicator } from '../../../hooks/fluid-hover/index.ts'
+import { useFluidHover, useFluidHoverIndicator } from '../../../composables/fluid-hover/index.ts'
 import { cn } from '../../../lib/utils.ts'
 
 defineOptions({

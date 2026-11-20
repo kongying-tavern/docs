@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { FluidHoverAxis } from '../../../hooks/fluid-hover/index.ts'
+import type { FluidHoverAxis } from '../../../composables/fluid-hover/index.ts'
 import { nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
-import { useFluidHover, useFluidHoverIndicator } from '../../../hooks/fluid-hover/index.ts'
-import { onAncestorMotionEnd } from '../../../hooks/fluid-hover/measure.ts'
+import { useFluidHover, useFluidHoverIndicator } from '../../../composables/fluid-hover/index.ts'
+import { onAncestorMotionEnd } from '../../../composables/fluid-hover/measure.ts'
 import { cn } from '../../../lib/utils.ts'
 import { useSectionScrollSpy } from './useSectionScrollSpy.ts'
 

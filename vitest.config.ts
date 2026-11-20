@@ -30,7 +30,8 @@ export default defineConfig({
       include: [
         'src/forum/{api,composables,hooks,router,services,stores,utils}/**/*.ts',
         'src/{composables,services,utils}/**/*.ts',
-        '.vitepress/theme/hooks/**/*.ts',
+        '.vitepress/theme/composables/fluid-hover/**/*.ts',
+        '.vitepress/theme/composables/{useQRCode,useThemeTransition}.ts',
         'scripts/font_subset/**/*.ts',
       ],
       exclude: ['**/*.d.ts', '**/types/**'],
