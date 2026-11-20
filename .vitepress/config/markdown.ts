@@ -8,21 +8,23 @@ import { imgSize, obsidianImgSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import { MarkdownExtCard } from '../theme/markdown-ext/card/index.ts'
-import { MarkdownExtColorPreview } from '../theme/markdown-ext/color-preview/index.ts'
-import { applyComarkPatches } from '../theme/markdown-ext/comark/index.ts'
-import { MarkdownExtCustomColor } from '../theme/markdown-ext/custom-color/index.ts'
-import { MarkdownExtDemo } from '../theme/markdown-ext/demo/index.ts'
-import { MarkdownExtDocHeaderTitle } from '../theme/markdown-ext/doc-header-title/index.ts'
-import { MarkdownExtEmoji } from '../theme/markdown-ext/emoji/index.ts'
-import { MarkdownExtKbd } from '../theme/markdown-ext/kbd/index.ts'
-import { MarkdownExtLightbox } from '../theme/markdown-ext/lightbox/index.ts'
-import { MarkdownExtMention } from '../theme/markdown-ext/mention/index.ts'
-import { MarkdownExtQA } from '../theme/markdown-ext/qa/index.ts'
-import { MarkdownExtRuby } from '../theme/markdown-ext/ruby/index.ts'
-import { MarkdownExtSpoiler } from '../theme/markdown-ext/spoiler/index.ts'
-import { MarkdownExtTimeline } from '../theme/markdown-ext/timeline/index.ts'
-import { MarkdownExtVariableInject } from '../theme/markdown-ext/variable-inject/index.ts'
+import {
+  applyComarkPatches,
+  MarkdownExtCard,
+  MarkdownExtColorPreview,
+  MarkdownExtCustomColor,
+  MarkdownExtDemo,
+  MarkdownExtDocHeaderTitle,
+  MarkdownExtEmoji,
+  MarkdownExtKbd,
+  MarkdownExtLightbox,
+  MarkdownExtMention,
+  MarkdownExtQA,
+  MarkdownExtRuby,
+  MarkdownExtSpoiler,
+  MarkdownExtTimeline,
+  MarkdownExtVariableInject,
+} from '../theme/markdown-ext/index.ts'
 
 export const markdownConfig: MarkdownOptions = {
   attrs: true,
