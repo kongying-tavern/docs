@@ -39,7 +39,7 @@ const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))
 const QA = defineAsyncComponent(() => import('./markdown-ext/qa/QA.vue'))
 const QQGroupList = defineAsyncComponent(() => import('./components/qq-group-list/QQGroupList.vue'))
-const ScratchToReveal = defineAsyncComponent(() => import('./markdown-ext/spoiler/ScratchToReveal.vue'))
+const Spoiler = defineAsyncComponent(() => import('./markdown-ext/spoiler/Spoiler.vue'))
 const SitemapPage = defineAsyncComponent(() => import('./components/sitemap-page/SitemapPage.vue'))
 
 export default {
@@ -82,7 +82,7 @@ export default {
     app.component('KeyboardShortcut', KeyboardShortcut)
     app.component('QA', QA)
     app.component('QQGroupList', QQGroupList)
-    app.component('ScratchToReveal', ScratchToReveal)
+    app.component('Spoiler', Spoiler)
     app.component('SitemapPage', SitemapPage)
     app.component('VPBadge', VPBadge)
     app.component('VPImage', VPImage)

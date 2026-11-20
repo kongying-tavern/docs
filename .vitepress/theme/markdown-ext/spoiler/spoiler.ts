@@ -217,7 +217,7 @@ export const MarkdownExtSpoiler: PluginWithOptions<MarkdownExtSpoilerOptions> = 
     return true
   })
 
-  // Custom rendering rules for ScratchToReveal component
+  // Custom rendering rules for Spoiler component
   md.renderer.rules.spoiler_open = (tokens, idx) => {
     const content = extractSpoilerContent(tokens, idx)
     const attributes = tokens[idx].attrs?.map(([key, value]) => `${key}=${value}`).join(',')
@@ -225,10 +225,10 @@ export const MarkdownExtSpoiler: PluginWithOptions<MarkdownExtSpoilerOptions> = 
     const widthProp = width ? ` :width="${width}"` : ''
     const alignStyle = align ? ` style="text-align: ${align};"` : ''
 
-    return `<ScratchToReveal class="inline-spoiler"${widthProp}${alignStyle}>`
+    return `<Spoiler class="inline-spoiler"${widthProp}${alignStyle}>`
   }
 
   md.renderer.rules.spoiler_close = () => {
-    return '</ScratchToReveal>'
+    return '</Spoiler>'
   }
 }
