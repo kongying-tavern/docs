@@ -10,7 +10,6 @@ import Sidebar from './sidebar'
 import Footer from './footer'
 import _404 from './404'
 import UI from './ui'
-import QA from './qa'
 import SocialLinks from './social-links'
 import AsideLinks from './aside-links'
 import DocsFeedback from './docs-feedback'
@@ -38,7 +37,6 @@ export const jaConfig: LocaleSpecificConfig<
     langMenuLabel: '更改语言',
     notFound: _404,
     ui: UI,
-    qa: QA,
     socialLinks: SocialLinks,
     asideLinks: AsideLinks,
     docsFeedback: DocsFeedback,

@@ -1,7 +1,6 @@
 import Unocss from 'unocss/vite'
 import MarkdownItFootnote from 'markdown-it-footnote'
 import MarkdownItKbd from 'markdown-it-kbd-better'
-import MarkdownItColorInline from 'markdown-it-color-inline'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitepress'
 import type {
@@ -23,7 +22,6 @@ import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
 import { timeline } from './theme/markdown/timeline'
-import { qa } from './theme/markdown/qa'
 
 import { enConfig } from './locales/en'
 import { zhConfig } from './locales/zh'
@@ -243,9 +241,6 @@ export default defineConfig({
         },
       },
     },
-    outline: {
-      level: [2, 4],
-    },
   },
   rewrites: {
     'zh/:splat(.*)': ':splat',
@@ -426,8 +421,6 @@ export default defineConfig({
       md.use(obsidianImageSize)
       md.use(figure)
       md.use(timeline)
-      md.use(qa)
-      md.use(MarkdownItColorInline)
       md.use(MarkdownItKbd, {
         presets: [
           {

@@ -7,7 +7,6 @@ import Link from './components/Link.vue'
 import Coins from './components/Coins.vue'
 import googleAnalytics from '../plugins/google-analytics'
 import Card from '../theme/components/Card.vue'
-import QA from '../theme/components/QA.vue'
 import LinkGrid from '../theme/components/LinkGrid.vue'
 import { createPinia } from 'pinia'
 import DocAside from './components/DocAside.vue'
@@ -51,7 +50,6 @@ export default {
     app.component('Card', Card)
     app.component('LinkGrid', LinkGrid)
     app.component('Badge', VPBadge)
-    app.component('QA', QA)
   },
   setup() {
     const route = useRoute()

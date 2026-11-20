@@ -65,14 +65,6 @@ export interface CustomConfig {
       cancel: string
     }
   }
-  qa: {
-    button: {
-      collapse: string
-      collapseAll: string
-      expand: string
-      expandAll: string
-    }
-  }
   docsFeedback: {
     feedbackMsg: string
     good: string
