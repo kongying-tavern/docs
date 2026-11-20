@@ -18,6 +18,8 @@ import { Sonner } from '../components/ui/sonner'
 import { useThemeTransition } from '../hooks/useThemeTransition'
 
 import '../styles/main.css'
+import '../markdown-ext/demo/demo.css'
+import '../markdown-ext/timeline/timeline.css'
 
 const { Layout } = DefaultTheme
 const DocAside = defineAsyncComponent(() => import('../components/doc-aside/DocAside.vue'))
