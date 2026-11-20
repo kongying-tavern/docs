@@ -62,7 +62,7 @@ export function resolveGlobalComponents(): Map<string, string> {
   const components = new Map<string, string>()
 
   // 1. ui/index.ts barrel: `export { default as Foo } from './Foo.vue'`, or a
-  //    named re-export routed through the component directory: `export { Foo } from './foo'`
+  //    named re-export routed through the component directory: `export { Foo } from './foo/index.ts'`
   const uiIndex = resolve(compDir, 'ui/index.ts')
   if (existsSync(uiIndex)) {
     const src = readFileSync(uiIndex, 'utf-8')
@@ -75,7 +75,9 @@ export function resolveGlobalComponents(): Map<string, string> {
         continue
       }
       // Directory barrel: resolve each requested name through its index.ts.
-      const barrel = resolve(resolve(uiIndex, '..'), specifier, 'index.ts')
+      const barrel = specifier.endsWith('/index.ts')
+        ? resolve(resolve(uiIndex, '..'), specifier)
+        : resolve(resolve(uiIndex, '..'), specifier, 'index.ts')
       if (!existsSync(barrel))
         continue
       for (const inner of readFileSync(barrel, 'utf-8').matchAll(BARREL_EXPORT_RE)) {
