@@ -1,8 +1,8 @@
-import type ForumAPI from '@/src/forum/api/types'
-import Blog from '@/src/data/posts.json'
-import { isCategoryLabel } from '@/src/forum/services/forumLabel'
-import { getTopicStatus } from '@/src/forum/services/forumTopicStatus'
-import { getForumLocaleLabelGetter } from '@/src/forum/services/getForumLocaleGetter'
+import type ForumAPI from '../forum/api/types'
+import Blog from '../data/posts.json'
+import { isCategoryLabel } from '../forum/services/forumLabel'
+import { getTopicStatus } from '../forum/services/forumTopicStatus'
+import { getForumLocaleLabelGetter } from '../forum/services/getForumLocaleGetter'
 
 const localeLabelGetter = getForumLocaleLabelGetter()
 
