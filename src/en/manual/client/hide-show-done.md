@@ -14,7 +14,7 @@ There are two display modes for Found pins:
 ---
 
 Show Found:
-![](/imgs/_en/manual/hide-show-done/Hide.png)
+![](/imgs/en/manual/hide-show-done/Hide.png)
 
 Hide Found:
-![](/imgs/_en/manual/hide-show-done/show.png)
+![](/imgs/en/manual/hide-show-done/show.png)

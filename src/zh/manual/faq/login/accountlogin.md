@@ -15,7 +15,7 @@ description: 客户端登录使用的账号是Gitee账号，并不是游戏账�
 
 【Gitee 主页下图指示处，查看自己【用户名】，注意账号不包含“@”符号】
 
-![](/imgs/_zh/manual/login/giteeusername.png)
+![](/imgs/zh/manual/login/giteeusername.png)
 
 ---
 

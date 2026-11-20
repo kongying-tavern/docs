@@ -15,7 +15,7 @@ wip: true
 ---
 
 【显示】标记
-![](/imgs/_ja/manual/hide-show-done/Hide.png)
+![](/imgs/ja/manual/hide-show-done/Hide.png)
 
 【隐藏】标记
-![](/imgs/_ja/manual/hide-show-done/show.png)
+![](/imgs/ja/manual/hide-show-done/show.png)
