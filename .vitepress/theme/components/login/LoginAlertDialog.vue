@@ -8,23 +8,23 @@ import { useAccountLoginExperiment } from '@/src/forum/composables/state/useAcco
 import { useHashChecker } from '@/src/forum/hooks/useHashChecker'
 import useLogin from '@/src/forum/hooks/useLogin'
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { getLangPath } from '../utils'
-import { Alert, AlertTitle } from './ui/alert'
-import { Button } from './ui/button'
+import { getLangPath } from '../../utils'
+import { Alert, AlertTitle } from '../ui/alert'
+import { Button } from '../ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from './ui/dialog'
+} from '../ui/dialog'
 import {
   Field,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from './ui/field'
-import { Input } from './ui/input'
+} from '../ui/field'
+import { Input } from '../ui/input'
 
 const { t } = useI18n({ useScope: 'global' })
 
