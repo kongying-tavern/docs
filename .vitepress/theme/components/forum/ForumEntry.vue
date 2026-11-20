@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref } from 'vue'
-import { AsyncForumRouteView } from './AsyncForumRouteView'
+import { AsyncForumRouteView } from './asyncForumRouteView'
 import ForumLoading from './ForumLoading.vue'
 import { forumLayoutReadyKey, forumStartupKey } from './forumStartup'
 
