@@ -1,6 +1,6 @@
 import type { PageData, SiteConfig } from 'vitepress'
 import { describe, expect, test } from 'vitest'
-import { generateBreadcrumbsData } from '../../.vitepress/config/breadcrumbsDataGenerator'
+import { generateBreadcrumbsData } from '~/config/breadcrumbsDataGenerator'
 
 const pages = ['zh/index.md', 'zh/blog.md', 'zh/blog/post.md', 'zh/manual/client/index.md', 'zh/manual/client/canvas.md', 'zh/manual/faq/login/account.md', 'en/index.md', 'en/manual/client/index.md', 'en/manual/client/canvas.md', 'zh/指南/index.md', 'zh/指南/入门.md']
 const map = Object.fromEntries(pages.filter(p => p.startsWith('zh/')).map(p => [p, p.slice(3)]))

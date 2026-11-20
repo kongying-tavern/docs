@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import NumberFlow from '@number-flow/vue'
-import { cn } from '@theme/lib/utils'
 import { motion, MotionConfig } from 'motion-v'
 import { useData } from 'vitepress'
 import { computed, ref, useSlots } from 'vue'
+import { cn } from '../../lib/utils'
 import AnimatedCircularProgressBar from './AnimatedCircularProgressBar.vue'
 
 export interface ProgressStep {

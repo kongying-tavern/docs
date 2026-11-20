@@ -1,11 +1,11 @@
-import type ForumAPI from '../../src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { createSSRApp, h, ref } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { renderToString } from 'vue/server-renderer'
-import { normalizeIssue } from '../../src/forum/api/gitee/normalize'
-import ForumAsideRelatedTopics from '../../src/forum/components/aside/ForumAsideRelatedTopics.vue'
+import { normalizeIssue } from '@/src/forum/api/gitee/normalize'
+import ForumAsideRelatedTopics from '@/src/forum/components/aside/ForumAsideRelatedTopics.vue'
 
 const mocks = vi.hoisted(() => ({ topics: [] as ForumAPI.Topic[] }))
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { Input } from '@theme/components/ui/input'
-import { cn } from '@theme/lib/utils'
 import { computed, nextTick, onMounted, ref, useId, useTemplateRef } from 'vue'
+import { cn } from '../../../lib/utils'
+import { Input } from '../input'
 
 defineOptions({ inheritAttrs: false })
 const props = defineProps<{

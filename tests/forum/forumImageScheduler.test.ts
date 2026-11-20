@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest'
-import { createForumImageScheduler } from '../../src/forum/services/forumImageScheduler'
+import { createForumImageScheduler } from '@/src/forum/services/forumImageScheduler'
 
 const flush = () => Promise.resolve()
 

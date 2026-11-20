@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SettingsNavigationItem, SettingsSectionId } from '@/src/features/settings/useSettingsNavigation'
+import type { SettingsNavigationItem, SettingsSectionId } from './useSettingsNavigation'
 
 defineOptions({ inheritAttrs: false })
 

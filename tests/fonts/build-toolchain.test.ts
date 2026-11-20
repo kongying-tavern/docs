@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { beforeEach, test, vi } from 'vitest'
-import { buildFonts, getFontCacheInputs } from '../../scripts/buildFonts'
-import { FontArtifacts } from '../../scripts/font_subset/artifacts'
+import { buildFonts, getFontCacheInputs } from '@/scripts/buildFonts'
+import { FontArtifacts } from '@/scripts/font_subset/artifacts'
 
 const mocks = vi.hoisted(() => ({ detectPython: vi.fn(async () => null), runProcess: vi.fn() }))
 vi.mock('../../scripts/font_subset/process', () => mocks)

@@ -5,13 +5,13 @@
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { EmojiItem } from './EmojiPickerPanel.vue'
-import { Button } from '@theme/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader'
+import { cn } from '../../lib/utils'
+import { Button } from './button'
 import EmojiPickerPanel from './EmojiPickerPanel.vue'
+import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 export type { EmojiItem } from './EmojiPickerPanel.vue'
 

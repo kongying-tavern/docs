@@ -2,8 +2,8 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { test } from 'vitest'
-import { configFile, loadFontSubsetConfig } from '../../scripts/font_subset/config'
-import { createFontBuildManifest } from '../../scripts/font_subset/manifest'
+import { configFile, loadFontSubsetConfig } from '@/scripts/font_subset/config'
+import { createFontBuildManifest } from '@/scripts/font_subset/manifest'
 
 test('loads character and slicing data from referenced JSON files', () => {
   const document = JSON.parse(readFileSync(configFile, 'utf8'))

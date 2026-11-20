@@ -4,8 +4,8 @@ import { resolve } from 'node:path'
 import { createMarkdownRenderer, mergeMarkdownLocales } from 'vitepress'
 import { test } from 'vitest'
 import { compileTemplate } from 'vue/compiler-sfc'
-import { createLocalesConfig } from '../../.vitepress/config/locales'
-import { markdownConfig } from '../../.vitepress/config/markdown'
+import { createLocalesConfig } from '~/config/locales'
+import { markdownConfig } from '~/config/markdown'
 
 test('code copy buttons use the page locale during Markdown rendering', async () => {
   const locales = createLocalesConfig()

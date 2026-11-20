@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { FluidHoverAxis } from '@theme/hooks/fluid-hover'
 import type { HTMLAttributes } from 'vue'
-import { useFluidHover, useFluidHoverIndicator } from '@theme/hooks/fluid-hover'
-import { onAncestorMotionEnd } from '@theme/hooks/fluid-hover/measure'
-import { cn } from '@theme/lib/utils'
+import type { FluidHoverAxis } from '../../../hooks/fluid-hover'
 import { nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { useFluidHover, useFluidHoverIndicator } from '../../../hooks/fluid-hover'
+import { onAncestorMotionEnd } from '../../../hooks/fluid-hover/measure'
+import { cn } from '../../../lib/utils'
 import { useSectionScrollSpy } from './useSectionScrollSpy'
 
 const props = withDefaults(defineProps<{

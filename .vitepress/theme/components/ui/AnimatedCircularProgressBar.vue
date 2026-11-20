@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { cn } from '@theme/lib/utils'
 import { computed } from 'vue'
+import { cn } from '../../lib/utils'
 
 interface Props {
   max?: number

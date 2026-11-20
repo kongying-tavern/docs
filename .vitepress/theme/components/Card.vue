@@ -153,7 +153,7 @@ const descText = computed(() => {
 </template>
 
 <style>
-@import '@theme/styles/media.css';
+@import '../styles/media.css';
 .card {
   display: flex;
   flex-wrap: wrap;

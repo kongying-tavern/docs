@@ -4,7 +4,7 @@ import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
 import { compileTemplate } from 'vue/compiler-sfc'
-import { markdownConfig } from '../../.vitepress/config/markdown'
+import { markdownConfig } from '~/config/markdown'
 
 function sequences(html: string): string[][][] {
   return [...html.matchAll(/<KeyboardShortcut :sequence="([^"]*)"/g)].map((match) => {

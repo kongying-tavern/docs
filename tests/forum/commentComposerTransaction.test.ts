@@ -1,12 +1,12 @@
 import type { JSONContent } from '@tiptap/core'
-import type ForumAPI from '../../src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
+import { useImageAttachmentQueue } from '@/src/forum/composables/view/useImageAttachmentQueue'
 import {
   submitCommentTransaction,
-} from '../../src/forum/services/commentTransaction'
-import { decodeCommentBody } from '../../src/forum/services/forumContentCodec'
+} from '@/src/forum/services/commentTransaction'
+import { decodeCommentBody } from '@/src/forum/services/forumContentCodec'
 
 function doc(text: string): JSONContent {
   return {

@@ -3,13 +3,13 @@ import { Tabs, TabsList, TabsTrigger } from '@theme/components/ui/tabs'
 import { computed, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { toast } from '@/src/services/telemetry/toast'
 import {
   DEFAULT_TOAST_DURATION,
   isToastPosition,
   TOAST_DURATION_DEFINITIONS,
   TOAST_POSITION_DEFINITIONS,
-} from '@/src/features/settings/settingsOptions'
-import { toast } from '@/src/services/telemetry/toast'
+} from './settingsOptions'
 import SettingsRow from './SettingsRow.vue'
 import SettingsSelect from './SettingsSelect.vue'
 

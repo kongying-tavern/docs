@@ -1,6 +1,5 @@
 import type { LocaleConfig, Router } from 'vitepress'
 import type { LocaleRoute } from '../../routes'
-import { getLangPath } from '@theme/utils'
 import { merge } from 'lodash-es'
 import { match } from 'path-to-regexp'
 import { withBase } from 'vitepress'
@@ -9,6 +8,7 @@ import { publishForumLocation } from '@/src/forum/composables/state/useForumRout
 import { transitionForumBlog, transitionForumRoute } from '@/src/forum/router/forumViewTransition'
 import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '@/src/forum/services/forumRoute'
 import { AsyncForumRouteView } from '../components/AsyncForumRouteView'
+import { getLangPath } from '../utils'
 
 const FORUM_TITLES: Record<string, string> = {
   root: '社区反馈',

@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { matchesShortcut, normalizeShortcut, normalizeShortcutPreferences, resolveEditorShortcut, resolveShortcut, shortcutBindingError, shortcutFromEvent } from '../../src/forum/services/forumShortcuts'
+import { matchesShortcut, normalizeShortcut, normalizeShortcutPreferences, resolveEditorShortcut, resolveShortcut, shortcutBindingError, shortcutFromEvent } from '@/src/forum/services/forumShortcuts'
 
 const defaults = { overrides: {} }
 const key = (value: string, modifiers: Partial<{ ctrlKey: boolean, metaKey: boolean, altKey: boolean, shiftKey: boolean }> = {}) => ({ key: value, ctrlKey: false, metaKey: false, altKey: false, shiftKey: false, ...modifiers })

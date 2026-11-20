@@ -1,11 +1,11 @@
-import type { AuthSessionAccessor } from '../../src/services/authSession'
+import type { AuthSessionAccessor } from '@/src/services/authSession'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
-import { clearApiCache } from '../../src/forum/api/gitee'
-import { getGist } from '../../src/forum/api/gitee/gists'
-import { getAuthSession, registerAuthSessionAccessor } from '../../src/services/authSession'
+import { getGist } from '@/src/forum/api/gitee/gists'
+import { clearApiCache } from '@/src/forum/api/gitee/index'
+import { getAuthSession, registerAuthSessionAccessor } from '@/src/services/authSession'
 
 vi.mock('../../src/services/apiUtils', async importOriginal => ({
-  ...await importOriginal<typeof import('../../src/services/apiUtils')>(),
+  ...await importOriginal<typeof import('@/src/services/apiUtils')>(),
   isNodeEnvironment: () => false,
 }))
 

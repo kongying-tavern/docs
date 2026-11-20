@@ -6,17 +6,17 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences'
 import {
-  isMotionPreference,
-  isThemePreference,
-  MOTION_OPTION_DEFINITIONS,
-  THEME_OPTION_DEFINITIONS,
-} from '@/src/features/settings/settingsOptions'
-import {
   DEFAULT_UI_FONT_SIZE,
   MAX_UI_FONT_SIZE,
   MIN_UI_FONT_SIZE,
   normalizeUiFontSize,
 } from '@/src/services/sitePreferences'
+import {
+  isMotionPreference,
+  isThemePreference,
+  MOTION_OPTION_DEFINITIONS,
+  THEME_OPTION_DEFINITIONS,
+} from './settingsOptions'
 import SettingsRow from './SettingsRow.vue'
 import SettingsSelect from './SettingsSelect.vue'
 import SettingsThemePreview from './SettingsThemePreview.vue'

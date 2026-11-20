@@ -1,14 +1,14 @@
-import type { ForumTopicListParams } from '../../src/forum/services/forumQueryContracts'
+import type { ForumTopicListParams } from '@/src/forum/services/forumQueryContracts'
 import assert from 'node:assert/strict'
 import { PiniaColada } from '@pinia/colada'
 import { createPinia } from 'pinia'
 import { test } from 'vitest'
 import { createSSRApp, effectScope, nextTick, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { clearApiCache } from '../../src/forum/api/gitee'
-import { useForumTopicsQuery } from '../../src/forum/composables/data/useForumQueries'
-import { useUserAuthStore } from '../../src/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '../../src/forum/stores/auth/useUserInfo'
+import { clearApiCache } from '@/src/forum/api/gitee/index'
+import { useForumTopicsQuery } from '@/src/forum/composables/data/useForumQueries'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
 
 test('a late topic response cannot replace rows after the filter changes', { timeout: 3000 }, async () => {
   clearApiCache()

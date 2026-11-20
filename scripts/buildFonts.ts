@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { createMarkdownRenderer } from 'vitepress'
-import { markdownConfig } from '../.vitepress/config/markdown'
+import { markdownConfig } from '~/config/markdown'
 import { FontArtifacts } from './font_subset/artifacts'
 import {
   loadFontSubsetConfig,

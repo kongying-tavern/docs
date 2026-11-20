@@ -1,8 +1,8 @@
-import type { ItemRect, PickNearestInput } from '../../../.vitepress/theme/hooks/fluid-hover/geometry'
+import type { ItemRect, PickNearestInput } from '@theme/hooks/fluid-hover/geometry'
 import assert from 'node:assert/strict'
+import { pickNearest } from '@theme/hooks/fluid-hover/geometry'
+import { stepSpring } from '@theme/hooks/fluid-hover/spring'
 import { test } from 'vitest'
-import { pickNearest } from '../../../.vitepress/theme/hooks/fluid-hover/geometry'
-import { stepSpring } from '../../../.vitepress/theme/hooks/fluid-hover/spring'
 
 function rects(list: Array<{ left: number, top: number, width?: number, height?: number }>): (ItemRect | undefined)[] {
   return list.map(({ left, top, width = 100, height = 40 }) => ({ left, top, width, height }))

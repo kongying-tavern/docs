@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { putTopic } from '../../src/forum/api/gitee/issues'
-import { applyOptimisticTopicPatch } from '../../src/forum/services/forumTopicOptimistic'
+import { putTopic } from '@/src/forum/api/gitee/issues'
+import { applyOptimisticTopicPatch } from '@/src/forum/services/forumTopicOptimistic'
 
 const issue = {
   number: 'I1',

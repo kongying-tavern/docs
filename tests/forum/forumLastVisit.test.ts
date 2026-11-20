@@ -1,10 +1,10 @@
-import type ForumAPI from '../../src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
 import {
   beginForumVisitWithStorage,
   findLastVisitedDividerIndex,
-} from '../../src/forum/services/forumLastVisit'
+} from '@/src/forum/services/forumLastVisit'
 
 function storage(initial: Record<string, string> = {}) {
   const values = new Map(Object.entries(initial))

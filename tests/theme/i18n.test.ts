@@ -1,13 +1,13 @@
 import type { Composer } from 'vue-i18n'
+import Time from '@theme/components/ui/Time/Time.vue'
+import { installI18n, setupI18n } from '@theme/i18n'
 import { describe, expect, test, vi } from 'vitest'
 import { computed, createRenderer, createSSRApp, h, ref } from 'vue'
 import { I18nT, useI18n } from 'vue-i18n'
 import { renderToString } from 'vue/server-renderer'
-import { getLocaleDirs } from '../../.vitepress/config/localeDirs'
-import Time from '../../.vitepress/theme/components/ui/Time/Time.vue'
-import { installI18n, setupI18n } from '../../.vitepress/theme/i18n'
-import { DEFAULT_LOCALE } from '../../src/constants/site'
-import { relativeTimeValue } from '../../src/utils/dateTime'
+import { DEFAULT_LOCALE } from '@/src/constants/site'
+import { relativeTimeValue } from '@/src/utils/dateTime'
+import { getLocaleDirs } from '~/config/localeDirs'
 import { loadTestMessages } from '../shared/support/i18n'
 
 vi.mock('vitepress', async () => {

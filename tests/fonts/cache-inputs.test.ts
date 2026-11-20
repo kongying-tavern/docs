@@ -6,10 +6,10 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import MarkdownIt from 'markdown-it'
 import { afterEach, test } from 'vitest'
-import { FontArtifacts } from '../../scripts/font_subset/artifacts'
-import { loadFontSubsetConfig, resolveFontSubsetPaths } from '../../scripts/font_subset/config'
-import { collectSiteCodepoints } from '../../scripts/font_subset/files'
-import { calculateFontInputHashes } from '../../scripts/font_subset/inputs'
+import { FontArtifacts } from '@/scripts/font_subset/artifacts'
+import { loadFontSubsetConfig, resolveFontSubsetPaths } from '@/scripts/font_subset/config'
+import { collectSiteCodepoints } from '@/scripts/font_subset/files'
+import { calculateFontInputHashes } from '@/scripts/font_subset/inputs'
 
 const roots: string[] = []
 afterEach(() => {

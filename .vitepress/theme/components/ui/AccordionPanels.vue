@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@theme/lib/utils'
 import { useSlots } from 'vue'
+import { cn } from '../../lib/utils'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './accordion'
 
 interface AccordionPanelItem {

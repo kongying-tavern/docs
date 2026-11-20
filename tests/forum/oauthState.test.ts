@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { webcrypto } from 'node:crypto'
 import { beforeEach, test, vi } from 'vitest'
-import { redirectAuth, validateOAuthState } from '../../src/forum/api/gitee/oauth'
+import { redirectAuth, validateOAuthState } from '@/src/forum/api/gitee/oauth'
 
 // State validation never calls the token endpoint.
 vi.mock('../../src/forum/api/gitee/client', () => ({ oauthFetcher: {} }))

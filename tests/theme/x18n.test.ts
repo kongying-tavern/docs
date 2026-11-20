@@ -5,9 +5,9 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { JSON_SCHEMA, load } from 'js-yaml'
 import { describe, expect, onTestFinished, test } from 'vitest'
-import { getLocaleDirs } from '../../.vitepress/config/localeDirs.ts'
-import { DEFAULT_LOCALE } from '../../.vitepress/locales/common.ts'
-import config from '../../x18n.config.ts'
+import config from '@/x18n.config.ts'
+import { getLocaleDirs } from '~/config/localeDirs.ts'
+import { DEFAULT_LOCALE } from '~/locales/common.ts'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const cli = join(root, 'node_modules/@x18n/cli/bin.mjs')

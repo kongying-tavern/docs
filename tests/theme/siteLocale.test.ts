@@ -5,11 +5,11 @@ import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { JSON_SCHEMA, load } from 'js-yaml'
 import { test } from 'vitest'
-import { getLocaleDirs } from '../../.vitepress/config/localeDirs.ts'
-import { createLocalesConfig } from '../../.vitepress/config/locales.ts'
-import { loadSiteLocale } from '../../.vitepress/config/siteLocale.ts'
-import { DEFAULT_LOCALE, SHARED_THEME_CONFIG } from '../../.vitepress/locales/common.ts'
-import { SITE_BASE, SITE_ORIGIN } from '../../src/constants/site.ts'
+import { SITE_BASE, SITE_ORIGIN } from '@/src/constants/site.ts'
+import { getLocaleDirs } from '~/config/localeDirs.ts'
+import { createLocalesConfig } from '~/config/locales.ts'
+import { loadSiteLocale } from '~/config/siteLocale.ts'
+import { DEFAULT_LOCALE, SHARED_THEME_CONFIG } from '~/locales/common.ts'
 
 test('site YAML retains native VitePress fields, locale paths and executable title rules', () => {
   const locales = createLocalesConfig()

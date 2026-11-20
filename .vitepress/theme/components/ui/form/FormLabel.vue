@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { LabelProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
+import { cn } from '../../../lib/utils'
 import { Label } from '../label'
 import { useFormField } from './useFormField'
 

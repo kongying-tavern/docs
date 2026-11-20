@@ -1,9 +1,5 @@
 import type { Theme } from 'vitepress'
 import { PiniaColada } from '@pinia/colada'
-import { Kbd, KbdGroup } from '@theme/components/ui/kbd'
-import KeyboardShortcut from '@theme/components/ui/KeyboardShortcut.vue'
-import Blog from '@theme/layouts/Blog.vue'
-import Layout from '@theme/layouts/Layout.vue'
 import { createPinia } from 'pinia'
 import DefaultTheme, {
   VPBadge,
@@ -18,7 +14,11 @@ import { installTelemetry } from '@/src/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { AsyncForumRouteView } from './components/AsyncForumRouteView'
 import { forumStartupKey } from './components/forumStartup'
+import { Kbd, KbdGroup } from './components/ui/kbd'
+import KeyboardShortcut from './components/ui/KeyboardShortcut.vue'
 import { installI18n, interfaceLocaleForHref, setupI18n } from './i18n'
+import Blog from './layouts/Blog.vue'
+import Layout from './layouts/Layout.vue'
 import { loadFontStylesheets } from './loadFontStylesheets'
 import { loadForumLayout, useForumLinkPreload } from './router/forumPreload'
 import { installThemeRouter } from './router/installThemeRouter'
@@ -26,19 +26,19 @@ import { installThemeRouter } from './router/installThemeRouter'
 import 'uno.css'
 
 const pinia = createPinia()
-const AccordionPanels = defineAsyncComponent(() => import('@theme/components/ui/AccordionPanels.vue'))
-const Card = defineAsyncComponent(() => import('@theme/components/Card.vue'))
-const Coins = defineAsyncComponent(() => import('@theme/components/Coins.vue'))
-const Emoji = defineAsyncComponent(() => import('@theme/components/ui/Emoji.vue'))
+const AccordionPanels = defineAsyncComponent(() => import('./components/ui/AccordionPanels.vue'))
+const Card = defineAsyncComponent(() => import('./components/Card.vue'))
+const Coins = defineAsyncComponent(() => import('./components/Coins.vue'))
+const Emoji = defineAsyncComponent(() => import('./components/ui/Emoji.vue'))
 const Forum = defineAsyncComponent(loadForumLayout)
 const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
-const LinkGrid = defineAsyncComponent(() => import('@theme/components/ui/LinkGrid.vue'))
+const LinkGrid = defineAsyncComponent(() => import('./components/ui/LinkGrid.vue'))
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))
-const QQGroupList = defineAsyncComponent(() => import('@theme/components/QQGroupList.vue'))
-const ScratchToReveal = defineAsyncComponent(() => import('@theme/components/ui/ScratchToReveal.vue'))
-const SitemapPage = defineAsyncComponent(() => import('@theme/components/SitemapPage.vue'))
+const QQGroupList = defineAsyncComponent(() => import('./components/QQGroupList.vue'))
+const ScratchToReveal = defineAsyncComponent(() => import('./components/ui/ScratchToReveal.vue'))
+const SitemapPage = defineAsyncComponent(() => import('./components/SitemapPage.vue'))
 
 export default {
   extends: DefaultTheme,

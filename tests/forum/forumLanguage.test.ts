@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { isTextPlausibleForLanguage } from '../../src/forum/services/forumLanguage'
+import { isTextPlausibleForLanguage } from '@/src/forum/services/forumLanguage'
 
 test('与正文文字不符的声明语言会被否决', () => {
   // 中文正文里夹带英文词，仍应判定为中文正文，不能当作英语

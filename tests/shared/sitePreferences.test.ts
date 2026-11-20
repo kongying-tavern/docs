@@ -8,7 +8,7 @@ import {
   isToastPosition,
   TOAST_DURATION_DEFINITIONS,
   TOAST_POSITION_DEFINITIONS,
-} from '../../src/features/settings/settingsOptions'
+} from '@/src/features/settings/settingsOptions'
 import {
   applySitePreferences,
   DEFAULT_UI_FONT_SIZE,
@@ -18,7 +18,7 @@ import {
   readReducedMotion,
   resolveReducedMotion,
   sitePreferencesBootScript,
-} from '../../src/services/sitePreferences'
+} from '@/src/services/sitePreferences'
 
 function createRoot(): HTMLElement {
   const properties = new Map<string, string>()

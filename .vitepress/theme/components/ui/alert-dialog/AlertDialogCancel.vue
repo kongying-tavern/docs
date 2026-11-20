@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { AlertDialogCancelProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { buttonVariants } from '@theme/components/ui/button'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { AlertDialogCancel } from 'reka-ui'
+import { cn } from '../../../lib/utils'
+import { buttonVariants } from '../button'
 
 const props = defineProps<AlertDialogCancelProps & { class?: HTMLAttributes['class'] }>()
 

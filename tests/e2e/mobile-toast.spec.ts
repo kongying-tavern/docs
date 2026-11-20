@@ -1,5 +1,5 @@
 import type { Locator } from '@playwright/test'
-import { DEFAULT_TOAST_DURATION } from '../../src/features/settings/settingsOptions'
+import { DEFAULT_TOAST_DURATION } from '@/src/features/settings/settingsOptions'
 import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules'
 import { expect, test } from './support/test'
 

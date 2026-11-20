@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { scrollTo } from '../../src/composables/scrollTo'
+import { scrollTo } from '@/src/composables/scrollTo'
 
 test('explicit targets work without a URL hash and honor CSS offsets and reduced motion', (t) => {
   const root: { dataset: Record<string, string> } = { dataset: {} }

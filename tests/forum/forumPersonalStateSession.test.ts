@@ -1,10 +1,10 @@
-import type { ForumPersonalState } from '../../src/forum/services/forumPersonalState'
+import type { ForumPersonalState } from '@/src/forum/services/forumPersonalState'
 import { PiniaColada, useQueryCache } from '@pinia/colada'
 import { createPinia } from 'pinia'
 import { beforeEach, expect, test, vi } from 'vitest'
 import { createSSRApp, effectScope, shallowReactive } from 'vue'
-import { emptyForumPersonalState } from '../../src/forum/services/forumPersonalState'
-import { forumKeys } from '../../src/forum/services/forumQueryContracts'
+import { emptyForumPersonalState } from '@/src/forum/services/forumPersonalState'
+import { forumKeys } from '@/src/forum/services/forumQueryContracts'
 
 const mocks = vi.hoisted(() => ({
   generation: 0,
@@ -33,7 +33,7 @@ beforeEach(() => {
 })
 
 async function setup() {
-  const { useForumPersonalState } = await import('../../src/forum/composables/data/useForumPersonalState')
+  const { useForumPersonalState } = await import('@/src/forum/composables/data/useForumPersonalState')
   const scope = effectScope()
   const app = createSSRApp({ render: () => null })
     .use(createPinia())

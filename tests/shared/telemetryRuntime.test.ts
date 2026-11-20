@@ -8,13 +8,13 @@ import { test } from 'vitest'
 import { ref, shallowRef, watch } from 'vue'
 
 const telemetryDir = fileURLToPath(new URL('../../src/services/telemetry/', import.meta.url))
-type ModuleAPI = typeof import('../../src/services/telemetry/clarity')
-  & typeof import('../../src/services/telemetry/capture')
-  & typeof import('../../src/services/telemetry/settings')
-  & typeof import('../../src/services/telemetry/session')
-  & typeof import('../../src/services/telemetry/ops')
-  & typeof import('../../src/services/telemetry/pageAlert')
-  & typeof import('../../src/forum/composables/auth/executeWithAuth')
+type ModuleAPI = typeof import('@/src/services/telemetry/clarity')
+  & typeof import('@/src/services/telemetry/capture')
+  & typeof import('@/src/services/telemetry/settings')
+  & typeof import('@/src/services/telemetry/session')
+  & typeof import('@/src/services/telemetry/ops')
+  & typeof import('@/src/services/telemetry/pageAlert')
+  & typeof import('@/src/forum/composables/auth/executeWithAuth')
 
 function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
   const calls: unknown[][] = []

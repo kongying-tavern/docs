@@ -3,9 +3,9 @@ import { PiniaColada, useQueryCache } from '@pinia/colada'
 import { createPinia } from 'pinia'
 import { test } from 'vitest'
 import { createSSRApp, effectScope, ref } from 'vue'
-import { clearApiCache } from '../../src/forum/api/gitee'
-import { useForumCommentsQuery } from '../../src/forum/composables/data/useForumQueries'
-import { FORUM_CONFIG } from '../../src/forum/services/forumConfig'
+import { clearApiCache } from '@/src/forum/api/gitee/index'
+import { useForumCommentsQuery } from '@/src/forum/composables/data/useForumQueries'
+import { FORUM_CONFIG } from '@/src/forum/services/forumConfig'
 
 const headerCases: Record<string, string>[] = [{}, { Link: '<https://gitee.com/comments?page=2>; rel="last"' }]
 

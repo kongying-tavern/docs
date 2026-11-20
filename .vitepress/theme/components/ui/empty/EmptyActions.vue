@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { EmptyActionsVariants } from '.'
-import { cn } from '@theme/lib/utils'
 import { emptyActionsVariants } from '.'
+import { cn } from '../../../lib/utils'
 
 const props = defineProps<{
   class?: HTMLAttributes['class']

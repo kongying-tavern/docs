@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Avatar from '@theme/components/ui/Avatar.vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ASSET_ORIGIN } from '@/src/constants/site'
+import Avatar from './ui/Avatar.vue'
 
 const {
   src = `${ASSET_ORIGIN}/res_ext/avatar/UI_AvatarIcon_71045_Circle.png`,

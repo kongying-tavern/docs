@@ -2,9 +2,9 @@
 import type { NumberFieldDecrementProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { Minus } from '@lucide/vue'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { NumberFieldDecrement, useForwardProps } from 'reka-ui'
+import { cn } from '../../../lib/utils'
 
 const props = defineProps<NumberFieldDecrementProps & { class?: HTMLAttributes['class'] }>()
 

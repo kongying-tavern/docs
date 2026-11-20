@@ -2,10 +2,10 @@
 import type { ToggleEmits, ToggleProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type { ToggleVariants } from '.'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { Toggle, useForwardPropsEmits } from 'reka-ui'
 import { toggleVariants } from '.'
+import { cn } from '../../../lib/utils'
 
 const props = withDefaults(defineProps<ToggleProps & {
   class?: HTMLAttributes['class']

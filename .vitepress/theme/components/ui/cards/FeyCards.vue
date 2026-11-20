@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { cn } from '@theme/lib/utils'
 import { usePreferredReducedMotion } from '@vueuse/core'
 import { motion } from 'motion-v'
 import { computed, onMounted, ref } from 'vue'
+import { cn } from '../../../lib/utils'
 
 interface SpringConfig {
   type: 'spring'

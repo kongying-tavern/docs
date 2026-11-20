@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
-import { useRuleChecks } from '../../src/forum/composables/auth/useRuleChecks'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
 
 const mocks = vi.hoisted(() => ({
   userId: undefined as number | undefined,

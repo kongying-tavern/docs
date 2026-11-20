@@ -9,7 +9,7 @@
  *
  * ```vue
  * <script setup lang="ts">
- * import { useFluidHover, useFluidHoverIndicator } from '@theme/hooks/fluid-hover'
+ * import { useFluidHover, useFluidHoverIndicator } from './'
  *
  * const container = ref<HTMLElement | null>(null)
  * const indicator = ref<HTMLElement | null>(null)

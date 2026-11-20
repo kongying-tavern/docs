@@ -1,11 +1,11 @@
-import type ForumAPI from '../../src/forum/api/types'
-import type { TopicStateFilter } from '../../src/forum/services/forumQueryContracts'
-import type { ForumSearchState } from '../../src/forum/services/forumSearchQuery'
-import type { StructuredTopicFetcher } from '../../src/forum/services/forumTopics'
+import type ForumAPI from '@/src/forum/api/types'
+import type { TopicStateFilter } from '@/src/forum/services/forumQueryContracts'
+import type { ForumSearchState } from '@/src/forum/services/forumSearchQuery'
+import type { StructuredTopicFetcher } from '@/src/forum/services/forumTopics'
 import assert from 'node:assert/strict'
 import { setImmediate } from 'node:timers/promises'
 import { test } from 'vitest'
-import { getStructuredForumTopics, invalidateStructuredForumTopics } from '../../src/forum/services/forumTopics'
+import { getStructuredForumTopics, invalidateStructuredForumTopics } from '@/src/forum/services/forumTopics'
 
 type Params = Parameters<typeof getStructuredForumTopics>[0]
 

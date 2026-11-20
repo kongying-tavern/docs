@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { DrawerTitleProps } from 'vaul-vue'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { DrawerTitle } from 'vaul-vue'
+import { cn } from '../../../lib/utils'
 
 const props = defineProps<DrawerTitleProps & { class?: HTMLAttributes['class'] }>()
 

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useQRCode } from '@theme/hooks/useQRCode'
-
 import { useMediaQuery, useMounted } from '@vueuse/core'
+
 import { useData, withBase } from 'vitepress'
 import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, ref } from 'vue'
-
 import { socialList } from '../composables/socialList'
+
+import { useQRCode } from '../hooks/useQRCode'
 
 const { frontmatter, theme } = useData()
 const { hasSidebar } = useLayout()
@@ -119,7 +119,7 @@ function isExpanded(title: string) {
 </template>
 
 <style scoped>
-@import '@theme/styles/media.css';
+@import '../styles/media.css';
 
 .footer-container {
   --footer-gutter: 24px;

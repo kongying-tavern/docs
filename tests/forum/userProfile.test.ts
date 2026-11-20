@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { buildUserProfileForm } from '../../src/forum/api/gitee/userProfile'
-import { applyUserProfilePatch, settleUserProfilePatch, syncUserProfileDraft } from '../../src/forum/services/forumUserProfileOptimistic'
+import { buildUserProfileForm } from '@/src/forum/api/gitee/userProfile'
+import { applyUserProfilePatch, settleUserProfilePatch, syncUserProfileDraft } from '@/src/forum/services/forumUserProfileOptimistic'
 
 test('profile update clears bio without overwriting unspecified profile fields', () => {
   const body = buildUserProfileForm({ bio: '' })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SettingsNavigationItem, SettingsSectionId } from '@/src/features/settings/useSettingsNavigation'
+import type { SettingsNavigationItem, SettingsSectionId } from './useSettingsNavigation'
 import { FluidHoverList } from '@theme/components/ui/fluid-hover'
 import User from '@theme/components/ui/User.vue'
 import { useTemplateRef } from 'vue'

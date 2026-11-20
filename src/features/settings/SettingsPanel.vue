@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SettingsSectionId } from '@/src/features/settings/useSettingsNavigation'
+import type { SettingsSectionId } from './useSettingsNavigation'
 import { getLangPath } from '@theme/utils'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'

@@ -1,10 +1,10 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { normalizeComment, normalizeIssue } from '../../src/forum/api/gitee/normalize'
-import { extractOfficialAndAuthorComments } from '../../src/forum/api/gitee/officialComments'
-import { composeTopicBody, writeTopicBodyComment } from '../../src/forum/composables/util/composeTopicBody'
-import { getForumSearchSuggestions } from '../../src/forum/services/forumSearchSuggestions'
-import { getTopicReferenceSuggestions } from '../../src/forum/services/forumTopicReferenceSuggestions'
+import { normalizeComment, normalizeIssue } from '@/src/forum/api/gitee/normalize'
+import { extractOfficialAndAuthorComments } from '@/src/forum/api/gitee/officialComments'
+import { composeTopicBody, writeTopicBodyComment } from '@/src/forum/composables/util/composeTopicBody'
+import { getForumSearchSuggestions } from '@/src/forum/services/forumSearchSuggestions'
+import { getTopicReferenceSuggestions } from '@/src/forum/services/forumTopicReferenceSuggestions'
 import {
   LEGACY_PLAIN_COMMENT,
   LEGACY_PLAIN_TOPIC,

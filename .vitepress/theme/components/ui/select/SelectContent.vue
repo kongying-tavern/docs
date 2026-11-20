@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { SelectContentEmits, SelectContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { FluidHoverList } from '@theme/components/ui/fluid-hover'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import {
   SelectContent,
@@ -11,6 +9,8 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { SelectScrollDownButton, SelectScrollUpButton } from '.'
+import { cn } from '../../../lib/utils'
+import { FluidHoverList } from '../fluid-hover'
 
 defineOptions({
   inheritAttrs: false,

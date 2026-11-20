@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types'
-import Avatar from '@theme/components/ui/Avatar.vue'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@theme/components/ui/command'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useForumMentionCandidates } from '@/src/forum/composables/view/useForumMentionCandidates'
+import Avatar from './Avatar.vue'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from './command'
 import User from './User.vue'
 
 const props = withDefaults(defineProps<{ disabled?: boolean, items?: ForumAPI.User[], groups?: { heading: string, items: ForumAPI.User[] }[], recordCount?: number, showSearch?: boolean, searchTerm?: string, compact?: boolean }>(), { recordCount: 4, showSearch: true, searchTerm: '' })

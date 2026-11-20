@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { imageFileName } from '../../src/forum/services/forumImageResource'
+import { imageFileName } from '@/src/forum/services/forumImageResource'
 
 test('image save names preserve original extensions and sanitize picker-invalid characters', () => {
   assert.equal(imageFileName({ src: 'https://example.com/images/screen%20shot.jpeg?version=1#section' }), 'screen shot.jpeg')

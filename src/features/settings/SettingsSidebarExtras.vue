@@ -5,10 +5,10 @@ import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { consumeSettingsReturnUrl } from '@/src/features/settings/settingsNavigation'
-import { SETTINGS_SECTION_DEFINITIONS } from '@/src/features/settings/settingsOptions'
 import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
 import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation'
+import { consumeSettingsReturnUrl } from './settingsNavigation'
+import { SETTINGS_SECTION_DEFINITIONS } from './settingsOptions'
 
 const { localeIndex, page } = useData()
 const router = useRouter()

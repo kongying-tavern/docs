@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { SpringParams } from 'torph'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@theme/lib/utils'
 import { TextMorph as TorphTextMorph } from 'torph/vue'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
+import { cn } from '../../../lib/utils'
 
 // torph 文本形变的统一封装：locale 缺省跟随站点语言，其余参数与 torph 保持一致
 const props = withDefaults(defineProps<{

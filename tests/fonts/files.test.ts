@@ -5,9 +5,9 @@ import { join } from 'node:path'
 import process from 'node:process'
 import MarkdownIt from 'markdown-it'
 import { afterAll, test } from 'vitest'
-import { loadFontSubsetConfig } from '../../scripts/font_subset/config'
-import { collectSiteCodepoints } from '../../scripts/font_subset/files'
-import { calculateFontInputHashes } from '../../scripts/font_subset/inputs'
+import { loadFontSubsetConfig } from '@/scripts/font_subset/config'
+import { collectSiteCodepoints } from '@/scripts/font_subset/files'
+import { calculateFontInputHashes } from '@/scripts/font_subset/inputs'
 
 const fixtureRoot = mkdtempSync(join(tmpdir(), 'font-subset-extractor-'))
 const sourceDir = join(fixtureRoot, 'src')

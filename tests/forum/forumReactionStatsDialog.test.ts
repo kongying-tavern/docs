@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import ForumReactionStatsDialog from '../../src/forum/components/ui/ForumReactionStatsDialog.vue'
+import ForumReactionStatsDialog from '@/src/forum/components/ui/ForumReactionStatsDialog.vue'
 
 const stats = vi.hoisted(() => ({ commentId: undefined as string | undefined, viewCount: 3642 }))
 

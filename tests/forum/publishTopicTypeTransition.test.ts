@@ -1,7 +1,7 @@
 import type { TestContext } from 'vitest'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { preparePublishTypeMotion } from '../../src/forum/components/utils/publishTopicTypeTransition'
+import { preparePublishTypeMotion } from '@/src/forum/components/utils/publishTopicTypeTransition'
 
 interface MockElement {
   style: {

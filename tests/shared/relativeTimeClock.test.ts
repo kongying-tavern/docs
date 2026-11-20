@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest'
-import { subscribeRelativeTime } from '../../src/services/relativeTimeClock'
+import { subscribeRelativeTime } from '@/src/services/relativeTimeClock'
 
 const cleanup: Array<() => void> = []
 afterEach(() => {

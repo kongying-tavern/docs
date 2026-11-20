@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { LoaderCircle } from '@lucide/vue'
-import { cn } from '@theme/lib/utils'
+import { cn } from '../../../lib/utils'
 
 interface Props {
   text?: string

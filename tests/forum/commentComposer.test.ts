@@ -1,9 +1,9 @@
 import type { JSONContent } from '@tiptap/core'
-import type ForumAPI from '../../src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { collectMentionUsers, setCommentReply } from '../../src/forum/services/commentComposer'
-import { decodeCommentBody, encodeCommentBody } from '../../src/forum/services/forumContentCodec'
+import { collectMentionUsers, setCommentReply } from '@/src/forum/services/commentComposer'
+import { decodeCommentBody, encodeCommentBody } from '@/src/forum/services/forumContentCodec'
 
 const first: ForumAPI.User = { id: 1, login: 'first', username: 'First' }
 const second: ForumAPI.User = { id: 2, login: 'second', username: 'Second' }

@@ -6,9 +6,9 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AsyncContentLoading from '@/src/components/async/AsyncContentLoading.vue'
 import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { useSettingsNavigation } from '@/src/features/settings/useSettingsNavigation'
 import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
 import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation'
+import { useSettingsNavigation } from './useSettingsNavigation'
 
 defineOptions({ inheritAttrs: false })
 defineProps<{ embeddedMobile?: boolean, error?: Error }>()

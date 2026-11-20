@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { VariantProps } from 'class-variance-authority'
-import { cn } from '@theme/lib/utils'
 import { cva } from 'class-variance-authority'
 import { computed } from 'vue'
+import { cn } from '../../../lib/utils'
 
 const props = defineProps<DividerProps>()
 

@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { SettingsSectionId } from '@/src/features/settings/useSettingsNavigation'
+import type { SettingsSectionId } from './useSettingsNavigation'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { SETTINGS_SECTION_DEFINITIONS } from '@/src/features/settings/settingsOptions'
-import { useSettingsNavigation } from '@/src/features/settings/useSettingsNavigation'
 import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
 import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences'
 import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences'
@@ -12,7 +10,9 @@ import { isBrowserTranslationSupported } from '@/src/forum/services/browserTrans
 import { reportingEnabled } from '@/src/services/telemetry'
 import SettingsMenu from './SettingsMenu.vue'
 import SettingsMobileView from './SettingsMobileView.vue'
+import { SETTINGS_SECTION_DEFINITIONS } from './settingsOptions'
 import SettingsPanel from './SettingsPanel.vue'
+import { useSettingsNavigation } from './useSettingsNavigation'
 
 const props = withDefaults(defineProps<{
   dialogOnly?: boolean

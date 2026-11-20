@@ -1,13 +1,13 @@
-import type ForumAPI from '../../src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
 import { ref } from 'vue'
-import { useImageAttachmentQueue } from '../../src/forum/composables/view/useImageAttachmentQueue'
-import { createDefaultTopicDraft, readTopicDraft, restoreTopicDraft, writeTopicDraft } from '../../src/forum/services/form/topicDraft'
-import { submitTopicFormTransaction } from '../../src/forum/services/form/topicFormTransaction'
-import { addTagToModel, removeTagFromModel } from '../../src/forum/services/form/topicTagModel'
-import { createTopicDraftSchema, getAllowedTopicTypes } from '../../src/forum/services/form/validation'
-import { VALIDATION_LIMITS } from '../../src/forum/services/forumConfig'
+import { useImageAttachmentQueue } from '@/src/forum/composables/view/useImageAttachmentQueue'
+import { createDefaultTopicDraft, readTopicDraft, restoreTopicDraft, writeTopicDraft } from '@/src/forum/services/form/topicDraft'
+import { submitTopicFormTransaction } from '@/src/forum/services/form/topicFormTransaction'
+import { addTagToModel, removeTagFromModel } from '@/src/forum/services/form/topicTagModel'
+import { createTopicDraftSchema, getAllowedTopicTypes } from '@/src/forum/services/form/validation'
+import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig'
 
 function validDraft(type: 'BUG' | 'FEAT' | 'ANN' = 'BUG') {
   return {

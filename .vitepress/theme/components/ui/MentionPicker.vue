@@ -2,12 +2,12 @@
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/src/forum/api/types'
-import { Button } from '@theme/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover'
-import { cn } from '@theme/lib/utils'
 import { reactiveOmit } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+import { cn } from '../../lib/utils'
+import { Button } from './button'
 import MentionPickerPanel from './MentionPickerPanel.vue'
+import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<PopoverContentProps & { class?: HTMLAttributes['class'], searchTerm?: string, showSearch?: boolean, disabled?: boolean, items?: ForumAPI.User[], recordCount?: number }>(), {

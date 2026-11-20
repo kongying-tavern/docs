@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { OctagonXIcon, TriangleAlertIcon, XIcon } from '@lucide/vue'
-import { Alert, AlertDescription, AlertTitle } from '@theme/components/ui/alert'
-import { usePageAlertStore } from '@theme/stores/usePageAlert'
 import { useRoute } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { usePageAlertStore } from '../stores/usePageAlert'
+import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 
 const props = defineProps<{
   class?: HTMLAttributes['class']
