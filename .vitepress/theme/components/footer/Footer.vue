@@ -4,9 +4,9 @@ import { useMediaQuery, useMounted } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, ref } from 'vue'
-import { socialList } from '../../composables/socialList'
-
 import { useQRCode } from '../../hooks/useQRCode'
+
+import { socialList } from './socialList'
 
 const { frontmatter, theme } = useData()
 const { hasSidebar } = useLayout()
