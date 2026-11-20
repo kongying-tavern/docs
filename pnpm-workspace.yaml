@@ -30,7 +30,7 @@ packages: []
 overrides:
   '@comark/markdown-it>js-yaml': ^4.3.2
   # 收敛 2026-08 audit 的 Critical/High 依赖告警（全部为同主版本修补升级）
-  '@lunariajs/core>simple-git': ^3.36.0
+  '@lunariajs/core>simple-git': ^4.0.0
   # 14.2.0 同时提供 dist/* 与 lib/* 两套互不兼容的声明（utils.isPunctCharCode
   # 只在 lib 侧），而 @mdit 插件的 ^14.1.2 会解析到它，与 VitePress 的根导入及
   # 本仓 markdown-it/lib/* 深路径类型冲突，锁单副本 14.1.2。
