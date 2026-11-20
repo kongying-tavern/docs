@@ -87,6 +87,7 @@ function parseChunks(chunks: string[]): QAParts {
     }
   }
   catch (err) {
+    // eslint-disable-next-line no-console
     console.error(`Parsing QA config failed:`, err)
   }
 
