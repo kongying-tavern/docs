@@ -35,7 +35,7 @@ const LinkGrid = defineAsyncComponent(() => import('./components/ui/LinkGrid.vue
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))
-const QA = defineAsyncComponent(() => import('./components/QA.vue'))
+const QA = defineAsyncComponent(() => import('./components/qa/QA.vue'))
 const QQGroupList = defineAsyncComponent(() => import('./components/QQGroupList.vue'))
 const ScratchToReveal = defineAsyncComponent(() => import('./components/ui/ScratchToReveal.vue'))
 const SitemapPage = defineAsyncComponent(() => import('./components/SitemapPage.vue'))

@@ -12,7 +12,7 @@ export * from './login'
 export * from './medium-zoom'
 
 export * from './page-alert-region'
-export { default as QA } from './QA.vue'
+export * from './qa'
 export { default as QQGroupList } from './QQGroupList.vue'
 export { default as SitemapPage } from './SitemapPage.vue'
 export { default as UserAvatar } from './UserAvatar.vue'
