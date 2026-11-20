@@ -1,9 +1,8 @@
 import type MarkdownIt from 'markdown-it'
-import type { RenderRule } from 'markdown-it/lib/renderer.mjs'
+import type { Options, PluginSimple } from 'markdown-it'
 import type Token from 'markdown-it/lib/token.mjs'
+import type { MarkdownEnv } from 'vitepress'
 import container from 'markdown-it-container'
-
-type ContainerArgs = [typeof container, string, { render: RenderRule }]
 
 /** 无 | 的旧写法里自动提取的 ISO 日期 */
 const ISO_DATE_RE = /\d{4}-\d{2}-\d{2}/
@@ -99,17 +98,19 @@ function patchTimelineHeadingIds(md: MarkdownInstance, klass: string) {
   }
 }
 
-function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs {
+const MarkdownItTimeline: PluginSimple = (md) => {
+  const klass = 'timeline'
+
   patchTimelineHeadingIds(md, klass)
 
   /** 整组无日期判定按文档缓存，避免每个块重复扫描全部 token */
   const memo: { tokens: Token[] | null, hasAnyDate: boolean, dotIndex: number, lastYear: string, demoEntries: Set<Token> } = { tokens: null, hasAnyDate: false, dotIndex: 0, lastYear: '', demoEntries: new Set() }
 
-  return [
+  md.use(
     container,
     klass,
     {
-      render(tokens: Token[], idx: number, _options, env) {
+      render(tokens: Token[], idx: number, _options: Options, env: MarkdownEnv) {
         if (tokens[idx].nesting !== 1)
           return '</div>\n'
 
@@ -184,7 +185,7 @@ function MarkdownItTimeline(klass: string, md: MarkdownInstance): ContainerArgs 
 `
       },
     },
-  ]
+  )
 }
 
 export default MarkdownItTimeline

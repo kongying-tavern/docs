@@ -72,7 +72,7 @@ export const markdownConfig: MarkdownOptions = {
     md.use(imgSize)
     md.use(obsidianImgSize)
     md.use(figure)
-    md.use(...MarkdownItTimeline('timeline', md))
+    md.use(MarkdownItTimeline)
     md.use(spoiler)
     md.use(MarkdownItLightbox)
     md.use(MarkdownItVariableInject)
