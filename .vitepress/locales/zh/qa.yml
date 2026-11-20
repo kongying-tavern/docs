@@ -1,0 +1,5 @@
+button:
+  collapse: 折叠
+  collapseAll: 全部折叠
+  expand: 展开
+  expandAll: 全部展开

@@ -1,0 +1,5 @@
+button:
+  collapse: 折りたたむ
+  collapseAll: すべて折りたたむ
+  expand: 展開
+  expandAll: すべて展開

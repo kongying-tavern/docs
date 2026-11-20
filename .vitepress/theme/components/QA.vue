@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import '../styles/qa.scss'
 
@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<QAProps>(), {
   collapsible: true,
 })
 
-const { theme } = useData()
+const { t } = useI18n({ useScope: 'global' })
 
 const isOpened = ref<boolean>(!props.collapsible)
 
@@ -44,7 +44,7 @@ function handleToggle() {
           :class="[isOpened ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down']"
         />
         <span class="text">
-          {{ isOpened ? theme.qa.button.collapse : theme.qa.button.expand }}
+          {{ isOpened ? t('qa.button.collapse') : t('qa.button.expand') }}
         </span>
       </div>
     </div>
