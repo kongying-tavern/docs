@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { useTemplateRef } from 'vue'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
 
 const props = defineProps<{
   defaultValue?: string | number

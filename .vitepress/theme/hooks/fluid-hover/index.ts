@@ -30,10 +30,10 @@
  * </template>
  * ```
  */
-export { ACTIVE_ATTR, CONTAINER_ATTR, ITEM_ATTR } from './constants'
-export type { FluidHoverAxis, ItemRect } from './geometry'
-export { useFluidHover, type UseFluidHoverReturn } from './useFluidHover'
+export { ACTIVE_ATTR, CONTAINER_ATTR, ITEM_ATTR } from './constants.ts'
+export type { FluidHoverAxis, ItemRect } from './geometry.ts'
+export { useFluidHover, type UseFluidHoverReturn } from './useFluidHover.ts'
 export {
   useFluidHoverIndicator,
   type UseFluidHoverIndicatorReturn,
-} from './useFluidHoverIndicator'
+} from './useFluidHoverIndicator.ts'

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, provide, ref } from 'vue'
-import { AsyncForumRouteView } from './asyncForumRouteView'
+import { AsyncForumRouteView } from './asyncForumRouteView.ts'
 import ForumLoading from './ForumLoading.vue'
-import { forumLayoutReadyKey, forumStartupKey } from './forumStartup'
+import { forumLayoutReadyKey, forumStartupKey } from './forumStartup.ts'
 
 const initialDocument = inject(forumStartupKey)
 const fullscreen = initialDocument?.value ?? false

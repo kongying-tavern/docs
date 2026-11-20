@@ -8,7 +8,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '../ui/breadcrumb'
+} from '../ui/breadcrumb/index.ts'
 
 const { frontmatter, theme } = useData()
 

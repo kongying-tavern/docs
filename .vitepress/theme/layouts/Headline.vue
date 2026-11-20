@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed, resolveComponent } from 'vue'
-import { Button } from '../components/ui/button'
+import { Button } from '../components/ui/button/index.ts'
 
 const { frontmatter } = useData()
 

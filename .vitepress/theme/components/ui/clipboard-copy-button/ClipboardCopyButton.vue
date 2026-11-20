@@ -2,8 +2,8 @@
 import { CheckIcon, CopyIcon } from '@lucide/vue'
 import { useClipboard } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { toast } from '@/src/services/telemetry/toast'
-import { Button } from '../button'
+import { toast } from '@/src/services/telemetry/toast.ts'
+import { Button } from '../button/index.ts'
 
 const props = withDefaults(defineProps<{
   value: string

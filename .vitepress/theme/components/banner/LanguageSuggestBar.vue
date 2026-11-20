@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import { computed, ref } from 'vue'
-import { cn } from '../../lib/utils'
-import { ensureStartingSlash, getLangPath } from '../../utils'
-import { Button } from '../ui/button'
-import { CloseButton } from '../ui/close-button'
+import { cn } from '../../lib/utils.ts'
+import { ensureStartingSlash, getLangPath } from '../../utils.ts'
+import { Button } from '../ui/button/index.ts'
+import { CloseButton } from '../ui/close-button/index.ts'
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandList,
-} from '../ui/command'
+} from '../ui/command/index.ts'
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '../ui/popover'
+} from '../ui/popover/index.ts'
 
-import { useLocaleConfig } from './configs'
+import { useLocaleConfig } from './configs.ts'
 
 const { suggestLang } = defineProps<{
   suggestLang: string

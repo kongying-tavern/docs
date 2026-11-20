@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useHashChecker } from '@/src/forum/hooks/useHashChecker'
-import useLogin from '@/src/forum/hooks/useLogin'
-import { clearLoginIntent } from '@/src/forum/services/loginIntent'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useHashChecker } from '@/src/forum/hooks/useHashChecker.ts'
+import useLogin from '@/src/forum/hooks/useLogin.ts'
+import { clearLoginIntent } from '@/src/forum/services/loginIntent.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +14,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '../ui/alert-dialog'
+} from '../ui/alert-dialog/index.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 

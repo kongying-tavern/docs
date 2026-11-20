@@ -1,14 +1,14 @@
-import type { FluidHoverAxis, ItemRect } from './geometry'
-import type { FluidHoverStore } from './store'
+import type { FluidHoverAxis, ItemRect } from './geometry.ts'
+import type { FluidHoverStore } from './store.ts'
 import {
   CONTAINER_ATTR,
   ITEM_SELECTOR,
   MEASUREMENT_ATTEMPTS,
   OWN_CLICK_SELECTOR,
-} from './constants'
-import { pickNearest } from './geometry'
-import { collectItems, hasLayoutBox, measureItemRect, onAncestorMotionEnd } from './measure'
-import { getFluidHoverStore } from './store'
+} from './constants.ts'
+import { pickNearest } from './geometry.ts'
+import { collectItems, hasLayoutBox, measureItemRect, onAncestorMotionEnd } from './measure.ts'
+import { getFluidHoverStore } from './store.ts'
 
 export interface ProximityHoverOptions {
   /** Which way the nearest item is measured along: `y` for lists, `x` for strips, `xy` for grids. */

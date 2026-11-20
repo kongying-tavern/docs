@@ -1,14 +1,14 @@
 import type { LocaleConfig, Router } from 'vitepress'
-import type { LocaleRoute } from '../../routes'
+import type { LocaleRoute } from '../../routes/index.ts'
 import { merge } from 'lodash-es'
 import { match } from 'path-to-regexp'
 import { withBase } from 'vitepress'
 import { markRaw } from 'vue'
-import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute'
-import { transitionForumBlog, transitionForumRoute } from '@/src/forum/router/forumViewTransition'
-import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '@/src/forum/services/forumRoute'
-import { AsyncForumRouteView } from '../components/forum'
-import { getLangPath } from '../utils'
+import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute.ts'
+import { transitionForumBlog, transitionForumRoute } from '@/src/forum/router/forumViewTransition.ts'
+import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '@/src/forum/services/forumRoute.ts'
+import { AsyncForumRouteView } from '../components/forum/index.ts'
+import { getLangPath } from '../utils.ts'
 
 const FORUM_TITLES: Record<string, string> = {
   root: '社区反馈',

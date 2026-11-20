@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
 import { computed, onMounted, ref, watch } from 'vue'
-import { ASSET_ORIGIN } from '@/src/constants/site'
-import { isLinkExternal, isRelativeLink } from '../../utils'
+import { ASSET_ORIGIN } from '@/src/constants/site.ts'
+import { isLinkExternal, isRelativeLink } from '../../utils.ts'
 
 const props = withDefaults(defineProps<CardProps>(), {
   desc: '',

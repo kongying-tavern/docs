@@ -2,8 +2,8 @@
 import type { PropType, StyleValue } from 'vue'
 
 import { computed, ref, watch } from 'vue'
-import { cn } from '../../../lib/utils'
-import { UI } from '../config'
+import { cn } from '../../../lib/utils.ts'
+import { UI } from '../config/index.ts'
 
 const props = defineProps({
   as: {

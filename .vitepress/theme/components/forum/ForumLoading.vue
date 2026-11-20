@@ -2,7 +2,7 @@
 import { withBase } from 'vitepress'
 
 import { useI18n } from 'vue-i18n'
-import { SITE_LOGO } from '../../../locales/common'
+import { SITE_LOGO } from '../../../locales/common.ts'
 
 defineProps<{ fullscreen?: boolean }>()
 

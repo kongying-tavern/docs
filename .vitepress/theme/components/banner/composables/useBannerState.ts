@@ -3,12 +3,12 @@ import { useElementSize } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useLanguage } from '../../../composables/useLanguage'
-import { getLangCode, hash } from '../../../utils'
-import { DEFAULT_LOCALE_CODE, useLocaleConfig } from '../configs'
-import { BANNER_CONSTANTS, BANNER_SELECTORS } from '../constants'
-import { isFromExternalPage } from './isFromExternalPage'
-import { useBannerStorage } from './useBannerStorage'
+import { useLanguage } from '../../../composables/useLanguage.ts'
+import { getLangCode, hash } from '../../../utils.ts'
+import { DEFAULT_LOCALE_CODE, useLocaleConfig } from '../configs.ts'
+import { BANNER_CONSTANTS, BANNER_SELECTORS } from '../constants.ts'
+import { isFromExternalPage } from './isFromExternalPage.ts'
+import { useBannerStorage } from './useBannerStorage.ts'
 
 export function useBannerState(banner: Ref<HTMLElement | undefined>) {
   const { t } = useI18n({ useScope: 'global' })

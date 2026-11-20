@@ -1,13 +1,13 @@
 import type { Router, SiteData } from 'vitepress'
 import type { Ref } from 'vue'
-import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute'
-import { isForumToBlogNavigation, transitionForumBlog } from '@/src/forum/router/forumViewTransition'
-import { parseForumLocation } from '@/src/forum/services/forumRoute'
-import { identifySessionIfEnabled } from '@/src/services/telemetry'
-import { routes } from '../../routes'
-import { interfaceLocaleForHref } from '../i18n'
-import handleRouteMatching from '../lib/handleRouteMatching'
-import { preloadForumEntry } from './forumPreload'
+import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute.ts'
+import { isForumToBlogNavigation, transitionForumBlog } from '@/src/forum/router/forumViewTransition.ts'
+import { parseForumLocation } from '@/src/forum/services/forumRoute.ts'
+import { identifySessionIfEnabled } from '@/src/services/telemetry/index.ts'
+import { routes } from '../../routes/index.ts'
+import { interfaceLocaleForHref } from '../i18n/index.ts'
+import handleRouteMatching from '../lib/handleRouteMatching.ts'
+import { preloadForumEntry } from './forumPreload.ts'
 
 /** Install the theme's navigation lifecycle in one place. */
 export function installThemeRouter(router: Router, siteData: Ref<SiteData>, initialDocument: Ref<boolean>, loadLocale: (locale: string) => Promise<void>): void {

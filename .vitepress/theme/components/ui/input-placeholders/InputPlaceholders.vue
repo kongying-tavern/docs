@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { isArray } from 'lodash-es'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
 
 interface Props {
   text: string

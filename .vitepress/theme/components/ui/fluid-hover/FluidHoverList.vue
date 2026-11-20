@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { FluidHoverAxis } from '../../../hooks/fluid-hover'
+import type { FluidHoverAxis } from '../../../hooks/fluid-hover/index.ts'
 import { nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
-import { useFluidHover, useFluidHoverIndicator } from '../../../hooks/fluid-hover'
-import { onAncestorMotionEnd } from '../../../hooks/fluid-hover/measure'
-import { cn } from '../../../lib/utils'
-import { useSectionScrollSpy } from './useSectionScrollSpy'
+import { useFluidHover, useFluidHoverIndicator } from '../../../hooks/fluid-hover/index.ts'
+import { onAncestorMotionEnd } from '../../../hooks/fluid-hover/measure.ts'
+import { cn } from '../../../lib/utils.ts'
+import { useSectionScrollSpy } from './useSectionScrollSpy.ts'
 
 const props = withDefaults(defineProps<{
   /** 列表方向：纵向 y、横排 x、网格 xy（两列/多列必须用 xy） */

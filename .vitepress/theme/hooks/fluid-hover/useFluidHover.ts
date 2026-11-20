@@ -1,10 +1,10 @@
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import type { ProximityHoverOptions } from './proximityHover'
-import type { FluidHoverSource } from './store'
+import type { ProximityHoverOptions } from './proximityHover.ts'
+import type { FluidHoverSource } from './store.ts'
 import { shallowRef, toValue, watch } from 'vue'
-import { collectItems } from './measure'
-import { createProximityHover } from './proximityHover'
-import { getFluidHoverStore } from './store'
+import { collectItems } from './measure.ts'
+import { createProximityHover } from './proximityHover.ts'
+import { getFluidHoverStore } from './store.ts'
 
 export interface UseFluidHoverOptions extends ProximityHoverOptions {}
 

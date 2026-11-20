@@ -8,7 +8,7 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { computed, ref, watch } from 'vue'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
 
 const props = defineProps<SwitchRootProps & { class?: HTMLAttributes['class'] }>()
 

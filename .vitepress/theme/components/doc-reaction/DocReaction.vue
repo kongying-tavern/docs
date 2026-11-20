@@ -3,7 +3,7 @@ import { useRoute } from 'vitepress'
 
 import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumReaction } from '@/src/forum/composables/data/useForumReaction'
+import { useForumReaction } from '@/src/forum/composables/data/useForumReaction.ts'
 import DocFeedbackForm from './DocReactionForm.vue'
 
 const { variant = 'default', showForm = true } = defineProps<{

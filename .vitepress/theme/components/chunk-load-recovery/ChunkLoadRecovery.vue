@@ -2,7 +2,7 @@
 import { useEventListener } from '@vueuse/core'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Button } from '../ui/button'
+import { Button } from '../ui/button/index.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 const failed = ref(false)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIntersectionObserver, useMounted } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
 
 interface BlurFadeProps {
   class?: string

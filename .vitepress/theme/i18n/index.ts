@@ -4,7 +4,7 @@ import type { DefineLocaleMessage } from 'vue-i18n'
 import { useData } from 'vitepress'
 import { watch } from 'vue'
 import { createI18n, useI18n } from 'vue-i18n'
-import { DEFAULT_LOCALE } from '@/src/constants/site'
+import { DEFAULT_LOCALE } from '@/src/constants/site.ts'
 
 const resources = import.meta.glob<DefineLocaleMessage>(['../../locales/*/*.yml', '!../../locales/*/site.yml'], { import: 'default' })
 

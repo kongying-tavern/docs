@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { reactiveOmit } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { cn } from '../../../lib/utils'
-import { Button } from '../button'
-import { Popover, PopoverContent, PopoverTrigger } from '../popover'
+import { cn } from '../../../lib/utils.ts'
+import { Button } from '../button/index.ts'
+import { Popover, PopoverContent, PopoverTrigger } from '../popover/index.ts'
 import MentionPickerPanel from './MentionPickerPanel.vue'
 
 defineOptions({ inheritAttrs: false })

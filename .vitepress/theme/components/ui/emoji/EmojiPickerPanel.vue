@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { EmojiItem } from './types'
+import type { EmojiItem } from './types.ts'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader'
+import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader.ts'
 import EmojiData from '@/src/data/emojis.gen.json'
 
-import { Button } from '../button'
-import { ToggleGroup, ToggleGroupItem } from '../toggle-group'
+import { Button } from '../button/index.ts'
+import { ToggleGroup, ToggleGroupItem } from '../toggle-group/index.ts'
 import Emoji from './Emoji.vue'
 
-export type { EmojiItem } from './types'
+export type { EmojiItem } from './types.ts'
 
 defineOptions({
   inheritAttrs: false,

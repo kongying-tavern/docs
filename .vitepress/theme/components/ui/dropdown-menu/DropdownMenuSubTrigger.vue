@@ -7,7 +7,7 @@ import {
   DropdownMenuSubTrigger,
   useForwardProps,
 } from 'reka-ui'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
 
 const props = defineProps<DropdownMenuSubTriggerProps & { class?: HTMLAttributes['class'], inset?: boolean }>()
 

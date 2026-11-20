@@ -3,7 +3,7 @@ import type { DrawerTitleProps } from 'vaul-vue'
 import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { DrawerTitle } from 'vaul-vue'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
 
 const props = defineProps<DrawerTitleProps & { class?: HTMLAttributes['class'] }>()
 

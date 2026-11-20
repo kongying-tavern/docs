@@ -5,8 +5,8 @@ import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { ToggleGroupItem, useForwardProps } from 'reka-ui'
 import { inject } from 'vue'
-import { cn } from '../../../lib/utils'
-import { toggleVariants } from '../toggle'
+import { cn } from '../../../lib/utils.ts'
+import { toggleVariants } from '../toggle/index.ts'
 
 type ToggleGroupVariants = VariantProps<typeof toggleVariants> & {
   spacing?: number

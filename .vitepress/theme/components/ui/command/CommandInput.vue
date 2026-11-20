@@ -5,8 +5,8 @@ import { Search } from '@lucide/vue'
 import { reactiveOmit } from '@vueuse/core'
 import { ListboxFilter, useForwardProps } from 'reka-ui'
 import { onMounted, watch } from 'vue'
-import { useCommand } from '.'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
+import { useCommand } from './index.ts'
 
 defineOptions({
   inheritAttrs: false,

@@ -2,11 +2,11 @@
 import type { VariantProps } from 'class-variance-authority'
 import type { ToggleGroupRootEmits, ToggleGroupRootProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type { toggleVariants } from '../toggle'
+import type { toggleVariants } from '../toggle/index.ts'
 import { reactiveOmit } from '@vueuse/core'
 import { ToggleGroupRoot, useForwardPropsEmits } from 'reka-ui'
 import { provide } from 'vue'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
 
 type ToggleGroupVariants = VariantProps<typeof toggleVariants>
 

@@ -1,5 +1,5 @@
-import { ACTIVE_ATTR, CONTAINER_SELECTOR, ITEM_SELECTOR, RESUME_DISTANCE } from './constants'
-import { isEligibleItem } from './measure'
+import { ACTIVE_ATTR, CONTAINER_SELECTOR, ITEM_SELECTOR, RESUME_DISTANCE } from './constants.ts'
+import { isEligibleItem } from './measure.ts'
 
 export type FluidHoverSource = 'pointer' | 'keyboard' | 'focus'
 

@@ -2,8 +2,8 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { DocReaction } from '../doc-reaction'
-import { Time } from '../ui/time'
+import { DocReaction } from '../doc-reaction/index.ts'
+import { Time } from '../ui/time/index.ts'
 
 const { showReaction = true } = defineProps<{
   showReaction?: boolean

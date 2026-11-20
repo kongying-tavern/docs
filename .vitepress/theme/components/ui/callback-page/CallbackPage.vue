@@ -3,8 +3,8 @@ import { useRouter, withBase } from 'vitepress'
 
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import useLogin from '@/src/forum/hooks/useLogin'
-import { AuthProgressIsland } from '../progress-island'
+import useLogin from '@/src/forum/hooks/useLogin.ts'
+import { AuthProgressIsland } from '../progress-island/index.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 

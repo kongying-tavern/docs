@@ -1,8 +1,8 @@
 import type { SiteData } from 'vitepress'
 import { useEventListener } from '@vueuse/core'
 import { useData } from 'vitepress'
-import { parseForumLocation } from '@/src/forum/services/forumRoute'
-import { preloadForumRouteView } from '../components/forum'
+import { parseForumLocation } from '@/src/forum/services/forumRoute.ts'
+import { preloadForumRouteView } from '../components/forum/index.ts'
 
 export const loadForumLayout = () => import('../layouts/Forum.vue')
 

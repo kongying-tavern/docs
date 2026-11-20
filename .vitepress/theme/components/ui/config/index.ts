@@ -1,4 +1,4 @@
-import { Avatar } from './avatar'
+import { Avatar } from './avatar.ts'
 
 export const UI = {
   Avatar,

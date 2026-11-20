@@ -2,7 +2,7 @@
 import { usePreferredReducedMotion } from '@vueuse/core'
 import { motion } from 'motion-v'
 import { computed, onMounted, ref } from 'vue'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/utils.ts'
 
 interface SpringConfig {
   type: 'spring'

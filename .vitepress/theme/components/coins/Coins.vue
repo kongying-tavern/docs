@@ -3,8 +3,8 @@ import { useData } from 'vitepress'
 
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useQRCode } from '../../hooks/useQRCode'
-import { BlurFade } from '../ui/blur-fade'
+import { useQRCode } from '../../hooks/useQRCode.ts'
+import { BlurFade } from '../ui/blur-fade/index.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 

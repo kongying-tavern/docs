@@ -4,27 +4,27 @@ import { OctagonXIcon, XIcon } from '@lucide/vue'
 import { useData, withBase } from 'vitepress'
 import { computed, ref, watch } from 'vue'
 import { I18nT, useI18n } from 'vue-i18n'
-import { useAccountLoginExperiment } from '@/src/forum/composables/state/useAccountLoginExperiment'
-import { useHashChecker } from '@/src/forum/hooks/useHashChecker'
-import useLogin from '@/src/forum/hooks/useLogin'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { getLangPath } from '../../utils'
-import { Alert, AlertTitle } from '../ui/alert'
-import { Button } from '../ui/button'
+import { useAccountLoginExperiment } from '@/src/forum/composables/state/useAccountLoginExperiment.ts'
+import { useHashChecker } from '@/src/forum/hooks/useHashChecker.ts'
+import useLogin from '@/src/forum/hooks/useLogin.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { getLangPath } from '../../utils.ts'
+import { Alert, AlertTitle } from '../ui/alert/index.ts'
+import { Button } from '../ui/button/index.ts'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../ui/dialog'
+} from '../ui/dialog/index.ts'
 import {
   Field,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from '../ui/field'
-import { Input } from '../ui/input'
+} from '../ui/field/index.ts'
+import { Input } from '../ui/input/index.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 
