@@ -26,7 +26,7 @@ test('shared custom media is lowered with nesting through the actual Vite CSS pi
 })
 
 test('Vue scoped nested footer rules retain their compiled selectors and responsive conditions', async () => {
-  const filename = resolve('.vitepress/theme/components/Footer.vue')
+  const filename = resolve('.vitepress/theme/components/footer/Footer.vue')
   const { descriptor } = parse(await readFile(filename, 'utf8'), { filename })
   const style = compileStyle({ source: descriptor.styles[0].content, filename, id: 'data-v-css-probe', scoped: true })
   assert.deepEqual(style.errors, [])

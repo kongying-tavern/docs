@@ -72,7 +72,7 @@ export default defineConfig(({ mode }) => ({
       {
         find: /^.*\/VPFooter\.vue$/,
         replacement: fileURLToPath(
-          new URL('./.vitepress/theme/components/Footer.vue', import.meta.url),
+          new URL('./.vitepress/theme/components/footer/Footer.vue', import.meta.url),
         ),
       },
       {
