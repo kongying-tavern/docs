@@ -18,6 +18,7 @@ import MarkdownItEmoji from '../theme/markdown/emoji.ts'
 import MarkdownItKbd from '../theme/markdown/kbd.ts'
 import MarkdownItLightbox from '../theme/markdown/lightbox.ts'
 import MarkdownItMention from '../theme/markdown/mention.ts'
+import { qa } from '../theme/markdown/qa.ts'
 import { ruby } from '../theme/markdown/ruby.ts'
 import { spoiler } from '../theme/markdown/spoiler.ts'
 import MarkdownItTimeline from '../theme/markdown/timeline.ts'
@@ -66,6 +67,7 @@ export const markdownConfig: MarkdownOptions = {
   config(md) {
     md.use(MarkdownItColorPreview)
     md.use(MarkdownItCard)
+    md.use(qa)
     md.use(sub)
     md.use(sup)
     md.use(mark)
