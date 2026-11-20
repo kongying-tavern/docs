@@ -1,7 +1,7 @@
 export * from './banner'
 export * from './card'
 export * from './chunk-load-recovery'
-export { default as Coins } from './Coins.vue'
+export * from './coins'
 export * from './doc-header'
 export * from './doc-reaction'
 export { default as DocAside } from './DocAside.vue'
