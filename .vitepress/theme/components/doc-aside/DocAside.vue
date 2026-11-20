@@ -3,7 +3,7 @@ import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { DocReaction } from '../doc-reaction'
-import Time from '../ui/Time/Time.vue'
+import Time from '../ui/time/Time.vue'
 
 const { showReaction = true } = defineProps<{
   showReaction?: boolean

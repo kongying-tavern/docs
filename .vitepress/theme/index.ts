@@ -14,7 +14,7 @@ import { installTelemetry } from '@/src/services/telemetry'
 import googleAnalytics from '../plugins/google-analytics'
 import { AsyncForumRouteView, forumStartupKey } from './components/forum'
 import { Kbd, KbdGroup } from './components/ui/kbd'
-import KeyboardShortcut from './components/ui/KeyboardShortcut.vue'
+import KeyboardShortcut from './components/ui/keyboard-shortcut/KeyboardShortcut.vue'
 import { installI18n, interfaceLocaleForHref, setupI18n } from './i18n'
 import Blog from './layouts/Blog.vue'
 import Layout from './layouts/Layout.vue'
@@ -25,13 +25,13 @@ import { installThemeRouter } from './router/installThemeRouter'
 import 'uno.css'
 
 const pinia = createPinia()
-const AccordionPanels = defineAsyncComponent(() => import('./components/ui/AccordionPanels.vue'))
+const AccordionPanels = defineAsyncComponent(() => import('./components/ui/accordion-panels/AccordionPanels.vue'))
 const Card = defineAsyncComponent(() => import('./markdown-ext/card/Card.vue'))
 const Coins = defineAsyncComponent(() => import('./components/coins/Coins.vue'))
-const Emoji = defineAsyncComponent(() => import('./components/ui/Emoji.vue'))
+const Emoji = defineAsyncComponent(() => import('./components/ui/emoji/Emoji.vue'))
 const Forum = defineAsyncComponent(loadForumLayout)
 const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
-const LinkGrid = defineAsyncComponent(() => import('./components/ui/LinkGrid.vue'))
+const LinkGrid = defineAsyncComponent(() => import('./components/ui/link-grid/LinkGrid.vue'))
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))

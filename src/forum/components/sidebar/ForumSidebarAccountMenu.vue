@@ -2,7 +2,7 @@
 import type { ForumSidebarMenuItem } from './forumSidebarMenu'
 import { Button } from '@theme/components/ui/button'
 import { Separator } from '@theme/components/ui/separator'
-import User from '@theme/components/ui/User.vue'
+import User from '@theme/components/ui/user/User.vue'
 import UserAvatar from '@theme/components/user-avatar/UserAvatar.vue'
 import { useMediaQuery, useMounted } from '@vueuse/core'
 import { useData } from 'vitepress'

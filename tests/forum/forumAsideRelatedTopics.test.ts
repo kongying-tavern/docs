@@ -15,7 +15,7 @@ vi.mock('@/src/forum/composables/data/useForumQueries', () => ({
 vi.mock('@/src/forum/composables/state/useForumRoute', () => ({
   useForumRoute: () => ({ topicHref: (id: string) => `/feedback/topic/${id}` }),
 }))
-vi.mock('@theme/components/ui/User.vue', () => ({ default: { render: () => null } }))
+vi.mock('@theme/components/ui/user/User.vue', () => ({ default: { render: () => null } }))
 vi.mock('@/src/forum/components/ui/ForumTime.vue', () => ({ default: { render: () => null } }))
 vi.mock('@/src/forum/components/ui/ForumTopicLifecycle.vue', () => ({ default: { render: () => null } }))
 

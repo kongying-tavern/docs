@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types'
-import Avatar from '@theme/components/ui/Avatar.vue'
+import Avatar from '@theme/components/ui/avatar/Avatar.vue'
 import { Button } from '@theme/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@theme/components/ui/drawer'
-import MentionPickerPanel from '@theme/components/ui/MentionPickerPanel.vue'
+import MentionPickerPanel from '@theme/components/ui/mention-picker/MentionPickerPanel.vue'
 import { useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'

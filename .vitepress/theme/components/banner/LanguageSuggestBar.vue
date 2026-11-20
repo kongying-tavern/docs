@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import { cn } from '../../lib/utils'
 import { ensureStartingSlash, getLangPath } from '../../utils'
 import { Button } from '../ui/button'
-import CloseButton from '../ui/CloseButton.vue'
+import CloseButton from '../ui/close-button/CloseButton.vue'
 import {
   Command,
   CommandGroup,

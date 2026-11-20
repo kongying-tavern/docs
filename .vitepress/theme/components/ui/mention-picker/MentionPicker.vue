@@ -4,10 +4,10 @@ import type { HTMLAttributes } from 'vue'
 import type ForumAPI from '@/src/forum/api/types'
 import { reactiveOmit } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { cn } from '../../lib/utils'
-import { Button } from './button'
+import { cn } from '../../../lib/utils'
+import { Button } from '../button'
+import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 import MentionPickerPanel from './MentionPickerPanel.vue'
-import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<PopoverContentProps & { class?: HTMLAttributes['class'], searchTerm?: string, showSearch?: boolean, disabled?: boolean, items?: ForumAPI.User[], recordCount?: number }>(), {

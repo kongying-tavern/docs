@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ClipboardCopyButton from '@theme/components/ui/ClipboardCopyButton.vue'
+import ClipboardCopyButton from '@theme/components/ui/clipboard-copy-button/ClipboardCopyButton.vue'
 import { Switch } from '@theme/components/ui/switch'
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'

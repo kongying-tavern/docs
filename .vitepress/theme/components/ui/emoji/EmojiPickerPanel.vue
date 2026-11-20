@@ -4,10 +4,10 @@ import { computed, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader'
 import EmojiData from '@/src/data/emojis.gen.json'
-import { Button } from './button'
+import { Button } from '../button'
 
+import { ToggleGroup, ToggleGroupItem } from '../toggle-group'
 import Emoji from './Emoji.vue'
-import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
 export interface EmojiItem {
   preset: string

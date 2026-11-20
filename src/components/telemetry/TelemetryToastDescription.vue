@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 import { Button } from '@theme/components/ui/button'
-import ClipboardCopyButton from '@theme/components/ui/ClipboardCopyButton.vue'
+import ClipboardCopyButton from '@theme/components/ui/clipboard-copy-button/ClipboardCopyButton.vue'
 import { computed, isVNode } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences'

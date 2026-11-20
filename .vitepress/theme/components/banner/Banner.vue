@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import CloseButton from '../ui/CloseButton.vue'
+import CloseButton from '../ui/close-button/CloseButton.vue'
 import { useBannerState } from './composables/useBannerState'
 import LanguageSuggestBar from './LanguageSuggestBar.vue'
 

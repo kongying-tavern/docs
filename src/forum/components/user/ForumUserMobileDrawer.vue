@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types'
-import Avatar from '@theme/components/ui/Avatar.vue'
+import Avatar from '@theme/components/ui/avatar/Avatar.vue'
 import { Button } from '@theme/components/ui/button'
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerTitle } from '@theme/components/ui/drawer'
 import { useRouter } from 'vitepress'

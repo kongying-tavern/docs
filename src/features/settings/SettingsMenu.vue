@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SettingsNavigationItem, SettingsSectionId } from './useSettingsNavigation'
 import { FluidHoverList } from '@theme/components/ui/fluid-hover'
-import User from '@theme/components/ui/User.vue'
+import User from '@theme/components/ui/user/User.vue'
 import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useLogin from '@/src/forum/hooks/useLogin'

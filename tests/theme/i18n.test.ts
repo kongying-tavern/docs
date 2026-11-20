@@ -1,5 +1,5 @@
 import type { Composer } from 'vue-i18n'
-import Time from '@theme/components/ui/Time/Time.vue'
+import Time from '@theme/components/ui/time/Time.vue'
 import { installI18n, setupI18n } from '@theme/i18n'
 import { describe, expect, test, vi } from 'vitest'
 import { computed, createRenderer, createSSRApp, h, ref } from 'vue'

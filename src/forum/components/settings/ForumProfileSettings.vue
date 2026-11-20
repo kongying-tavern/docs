@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Avatar from '@theme/components/ui/Avatar.vue'
+import Avatar from '@theme/components/ui/avatar/Avatar.vue'
 import { Button } from '@theme/components/ui/button'
 import { Input } from '@theme/components/ui/input'
 import { useI18n } from 'vue-i18n'

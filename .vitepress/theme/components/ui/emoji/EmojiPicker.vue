@@ -8,10 +8,10 @@ import type { EmojiItem } from './EmojiPickerPanel.vue'
 import { reactiveOmit } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader'
-import { cn } from '../../lib/utils'
-import { Button } from './button'
+import { cn } from '../../../lib/utils'
+import { Button } from '../button'
+import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 import EmojiPickerPanel from './EmojiPickerPanel.vue'
-import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 export type { EmojiItem } from './EmojiPickerPanel.vue'
 
