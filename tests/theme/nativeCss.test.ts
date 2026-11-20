@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { scaleUiCss } from '@theme/uiScale'
 import { preprocessCSS, resolveConfig } from 'vite'
 import { test } from 'vitest'
 import { compileStyle, parse } from 'vue/compiler-sfc'
 import { FORUM_MOBILE_BREAKPOINT_PX } from '@/src/forum/services/forumConfig'
 import siteConfig from '@/vite.config.ts'
+import { scaleUiCss } from '~/plugins/ui-scale'
 
 test('shared custom media is lowered with nesting through the actual Vite CSS pipeline', async () => {
   const config = await resolveConfig({ ...siteConfig({ command: 'serve', mode: 'development' }), configFile: false, plugins: [] }, 'serve')

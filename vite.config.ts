@@ -15,7 +15,7 @@ import { getDeploymentOrigin } from './.vitepress/config/utils.ts'
 import { DEFAULT_LOCALE } from './.vitepress/locales/common.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
 import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
-import { uiScalePlugin } from './.vitepress/theme/uiScale.ts'
+import { uiScalePlugin } from './.vitepress/plugins/ui-scale/index.ts'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
 
 const zhSite = loadSiteLocale(new URL('./.vitepress/locales/zh/site.yml', import.meta.url))

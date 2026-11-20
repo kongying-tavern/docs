@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { Buffer } from 'node:buffer'
-import { createUiScaleVisitor } from '@theme/uiScale'
 import { transform } from 'lightningcss'
 import { test } from 'vitest'
+import { createUiScaleVisitor } from '~/plugins/ui-scale'
 
 function compile(css: string, filename = '/project/src/forum/components/Control.vue'): string {
   return transform({ filename, code: Buffer.from(css), visitor: createUiScaleVisitor() }).code.toString()
