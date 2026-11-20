@@ -1,5 +1,6 @@
 import type MarkdownIt from 'markdown-it'
 import type { Options } from 'markdown-it'
+import type { RuleBlock } from 'markdown-it/lib/parser_block.mjs'
 import type StateBlock from 'markdown-it/lib/rules_block/state_block.mjs'
 import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
@@ -131,7 +132,7 @@ function qaRender(tokens: Token[], index: number, _opts: Options, _env: Markdown
 }
 
 /** Match a `:::qa` block and keep its raw content, the way the built-in fence handles backticks. */
-function qaFence(state: StateBlock, startLine: number, endLine: number): boolean {
+const qaFence: RuleBlock = (state: StateBlock, startLine: number, endLine: number) => {
   const marker = ':'.charCodeAt(0)
   let pos = state.bMarks[startLine] + state.tShift[startLine]
   const max = state.eMarks[startLine]
@@ -150,6 +151,8 @@ function qaFence(state: StateBlock, startLine: number, endLine: number): boolean
   const markup = state.src.slice(begin, pos)
   const params = state.src.slice(pos, max)
   if (params.includes(':'))
+    return false
+  if (params.trim() !== 'qa')
     return false
 
   let nextLine = startLine
