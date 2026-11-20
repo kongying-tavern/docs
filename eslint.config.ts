@@ -1,4 +1,5 @@
 import antfu from '@antfu/eslint-config'
+import nativeImportPath from './scripts/eslint/nativeImportPath.ts'
 
 const themeImportRestrictions = [
   { group: ['**/.vitepress/**'], message: 'src must not import from .vitepress by relative path; use the src/forum/types.ts outlet' },
@@ -150,4 +151,18 @@ export default antfu({
 }).override('antfu/stylistic/rules', {
   // Universal stylistic rules also apply to JSON unless excluded explicitly.
   ignores: ['src/**/*.json', 'tests/**/fixtures/**/*.json'],
+}).append({
+  name: 'project/native-import-path',
+  // The site config is loaded by native Node ESM, which needs exact specifiers.
+  files: ['**/*.{ts,mts,vue}'],
+  plugins: {
+    local: {
+      rules: {
+        'native-import-path': nativeImportPath,
+      },
+    },
+  },
+  rules: {
+    'local/native-import-path': 'error',
+  },
 })
