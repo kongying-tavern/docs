@@ -18,7 +18,7 @@ import KeyboardShortcut from './components/ui/keyboard-shortcut/KeyboardShortcut
 import { installI18n, interfaceLocaleForHref, setupI18n } from './i18n'
 import Blog from './layouts/Blog.vue'
 import Layout from './layouts/Layout.vue'
-import { loadFontStylesheets } from './loadFontStylesheets'
+import { loadFontStylesheets } from './lib/fontStylesheets'
 import { loadForumLayout, useForumLinkPreload } from './router/forumPreload'
 import { installThemeRouter } from './router/installThemeRouter'
 
