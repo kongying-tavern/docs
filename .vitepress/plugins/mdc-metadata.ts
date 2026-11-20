@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { normalizePath } from 'vite'
 import { createCheckerByJson } from 'vue-component-meta'
+import { matchPathAlias, THEME_ALIAS } from '../config/aliases.ts'
 
 const currentDir = fileURLToPath(new URL('.', import.meta.url))
 const projectRoot = resolve(currentDir, '..', '..')
@@ -94,8 +95,11 @@ export function resolveGlobalComponents(): Map<string, string> {
 
     for (const m of src.matchAll(COMPONENT_IMPORT_RE)) {
       let specifier = m[2]
-      if (specifier.startsWith('@theme/'))
-        specifier = resolve(projectRoot, '.vitepress/theme', specifier.slice('@theme/'.length))
+      const alias = matchPathAlias(specifier)
+      // Only theme-internal imports join the registry; page-level components that
+      // are registered globally keep being resolved by Vite, not by this generator.
+      if (alias?.alias === THEME_ALIAS)
+        specifier = resolve(projectRoot, alias.alias.root, alias.rest)
       else if (specifier.startsWith('.'))
         specifier = resolve(themeDir, specifier)
       else continue

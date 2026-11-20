@@ -26,3 +26,9 @@ test('resolves ui barrel exports whether they route through a directory or a .vu
   for (const [name, file] of components)
     expect(existsSync(file), `${name} resolves to a missing file: ${file}`).toBe(true)
 })
+
+test('keeps page-level components out of the registry', () => {
+  // `theme/index.ts` registers SettingsPage from the `@/` alias. Only theme-internal
+  // imports become MDC entries, so page components stay Vite's business.
+  expect(resolveGlobalComponents().has('SettingsPage')).toBe(false)
+})
