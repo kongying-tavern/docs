@@ -1,9 +1,9 @@
 import type { PluginSimple } from 'markdown-it'
 import type MarkdownIt from 'markdown-it'
 import type ForumAPI from '@/src/forum/api/types'
-import blogMember from '../../../src/data/blogMemberList.gen.json' with { type: 'json' }
-import feedbackRepoMember from '../../../src/data/feedbackMemberList.gen.json' with { type: 'json' }
-import teamMember from '../../../src/data/teamMemberList.gen.json' with { type: 'json' }
+import blogMember from '../../../../src/data/blogMemberList.gen.json' with { type: 'json' }
+import feedbackRepoMember from '../../../../src/data/feedbackMemberList.gen.json' with { type: 'json' }
+import teamMember from '../../../../src/data/teamMemberList.gen.json' with { type: 'json' }
 
 const WHITE_LIST: ForumAPI.User[] = [...feedbackRepoMember.data, ...teamMember.data, ...blogMember.data]
 

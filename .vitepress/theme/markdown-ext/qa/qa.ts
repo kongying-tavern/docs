@@ -6,7 +6,7 @@ import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 import { load } from 'js-yaml'
 import { entries, fromPairs, isBoolean, isPlainObject, isString } from 'lodash-es'
-import { stringifyProp } from '../utils'
+import { stringifyProp } from '../../utils'
 
 enum QAPartEnum {
   CONFIG,

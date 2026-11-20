@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
-import { MarkdownExtQA } from '~/theme/markdown/qa'
+import { MarkdownExtQA } from '~/theme/markdown-ext/qa'
 
 function renderer() {
   return createMarkdownRenderer(resolve('pages'), {
