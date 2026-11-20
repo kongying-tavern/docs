@@ -7,7 +7,7 @@ export * from './doc-header'
 export * from './doc-reaction'
 export * from './footer'
 export * from './forum'
-export { default as HighlightTargetedHeading } from './HighlightTargetedHeading.vue'
+export * from './highlight-targeted-heading'
 export * from './login'
 export { default as MediumZoom } from './MediumZoom.vue'
 
