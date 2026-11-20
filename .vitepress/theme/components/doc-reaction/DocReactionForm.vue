@@ -8,9 +8,9 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSubmitTopic } from '@/src/forum/composables/data/useSubmitTopic'
 import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import BlurFade from './ui/BlurFade.vue'
-import { Button } from './ui/button'
-import { Textarea } from './ui/textarea'
+import BlurFade from '../ui/BlurFade.vue'
+import { Button } from '../ui/button'
+import { Textarea } from '../ui/textarea'
 
 const { showForm } = defineProps<{
   showForm: boolean

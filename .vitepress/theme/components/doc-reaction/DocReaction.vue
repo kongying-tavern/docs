@@ -113,7 +113,7 @@ const styles = computed(() => {
 </template>
 
 <style scoped>
-@import '../styles/media.css';
+@import '../../styles/media.css';
 @media (--site-sm) {
   .feedback {
     grid-template-columns: repeat(1, 2fr);

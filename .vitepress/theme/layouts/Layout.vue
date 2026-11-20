@@ -21,7 +21,7 @@ import '../styles/main.css'
 
 const { Layout } = DefaultTheme
 const DocAside = defineAsyncComponent(() => import('../components/DocAside.vue'))
-const DocReaction = defineAsyncComponent(() => import('../components/DocReaction.vue'))
+const DocReaction = defineAsyncComponent(() => import('../components/doc-reaction/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('@/src/forum/components/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('@/src/features/settings/SettingsSidebarExtras.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('../components/LoginAlertDialog.vue'))

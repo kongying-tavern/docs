@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import DocReaction from './DocReaction.vue'
+import { DocReaction } from './doc-reaction'
 import Time from './ui/Time/Time.vue'
 
 const { showReaction = true } = defineProps<{
