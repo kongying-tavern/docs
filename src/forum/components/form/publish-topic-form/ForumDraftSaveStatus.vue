@@ -2,7 +2,7 @@
 import { CheckIcon, CircleAlertIcon, LoaderCircleIcon } from '@lucide/vue'
 import { onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
 
 const props = defineProps<{ status: 'saved' | 'saving' | 'error', savedAt: number, idle: boolean }>()
 const { t } = useI18n({ useScope: 'global' })

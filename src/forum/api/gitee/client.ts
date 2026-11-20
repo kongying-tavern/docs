@@ -1,8 +1,8 @@
-import type { RequestPayload, SearchParamValue } from './types'
+import type { RequestPayload, SearchParamValue } from './types.ts'
 import ky from 'ky'
-import { isNodeEnvironment } from '@/src/services/apiUtils'
-import { getAuthSession } from '@/src/services/authSession'
-import { GITEE_API_CONFIG } from './gitee-config'
+import { isNodeEnvironment } from '@/src/services/apiUtils.ts'
+import { getAuthSession } from '@/src/services/authSession.ts'
+import { GITEE_API_CONFIG } from './gitee-config.ts'
 
 // 错误分类不在 ky hooks 中进行：ky v2 的 HTTPError.data 在抛出时已预解析，
 // 由 apiCall（index.ts）捕获后统一走 toGiteeAPIError。

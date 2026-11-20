@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { SettingsNavigationItem, SettingsSectionId } from './useSettingsNavigation'
-import { Button } from '@theme/components/ui/button'
-import { DrawerDescription, DrawerTitle } from '@theme/components/ui/drawer'
+import type { SettingsNavigationItem, SettingsSectionId } from './useSettingsNavigation.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { DrawerDescription, DrawerTitle } from '@theme/components/ui/drawer/index.ts'
 import { useI18n } from 'vue-i18n'
 import SettingsMenu from './SettingsMenu.vue'
 import SettingsPanel from './SettingsPanel.vue'

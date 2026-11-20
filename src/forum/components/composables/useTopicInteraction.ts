@@ -1,9 +1,9 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useToggle } from '@vueuse/core'
 import { nextTick, readonly, ref } from 'vue'
-import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
-import { updateUrlHash } from '../utils/updateUrlHash'
-import { useNavigateToTopic } from './useNavigateToTopic'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
+import { updateUrlHash } from '../utils/updateUrlHash.ts'
+import { useNavigateToTopic } from './useNavigateToTopic.ts'
 
 export function useTopicInteraction(topic: ForumAPI.Topic | ForumAPI.Post) {
   const { isPost, detailHref, prepareTopicDetail, toPostDetailPage } = useNavigateToTopic(topic)

@@ -1,9 +1,9 @@
 import type { App } from 'vue'
-import { sendClarityEvent } from './clarity'
-import { telemetryLog, TelemetryLogGroup } from './logger'
-import { ensureSession } from './session'
-import { reportingEnabled } from './settings'
-import { randomId } from './util'
+import { sendClarityEvent } from './clarity.ts'
+import { telemetryLog, TelemetryLogGroup } from './logger.ts'
+import { ensureSession } from './session.ts'
+import { reportingEnabled } from './settings.ts'
+import { randomId } from './util.ts'
 
 /**
  * 错误场景前缀,随错误ID一起呈现(如 tp-x7k2m9a1),

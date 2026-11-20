@@ -1,15 +1,15 @@
 import type { JSONContent } from '@tiptap/core'
-import type { DecodedForumText } from './forumContentCodec'
+import type { DecodedForumText } from './forumContentCodec.ts'
 import {
   renderJSONContentToString,
   serializeChildrenToHTMLString,
 } from '@tiptap/static-renderer/json/html-string'
 import DOMPurify from 'dompurify'
 import { find } from 'linkifyjs'
-import { SITE_ORIGIN } from '@/src/constants/site'
-import { decodeForumText } from './forumContentCodec'
-import { getForumDocumentTitle } from './forumDocumentLinkIndex'
-import { forumTextToEditorDoc } from './forumLegacyContent'
+import { SITE_ORIGIN } from '@/src/constants/site.ts'
+import { decodeForumText } from './forumContentCodec.ts'
+import { getForumDocumentTitle } from './forumDocumentLinkIndex.ts'
+import { forumTextToEditorDoc } from './forumLegacyContent.ts'
 import {
   FORUM_LINK_HOST_ALLOWLIST,
   getForumMentionHref,
@@ -18,8 +18,8 @@ import {
   isSafeForumHref,
   SAFE_FORUM_URI_REGEX,
   shortenForumAutoLink,
-} from './forumLinkPolicy'
-import { TOPIC_ID_PATTERN } from './forumTopicQuote'
+} from './forumLinkPolicy.ts'
+import { TOPIC_ID_PATTERN } from './forumTopicQuote.ts'
 
 const EMOJI_FILE_EXTENSION_REGEX = /\.[^.]+$/
 

@@ -1,7 +1,7 @@
 import type { Composer } from 'vue-i18n'
-import type { ImageAttachmentError } from '@/src/forum/services/form/imageAttachment'
-import { IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig'
-import { FORM_HASH } from '../form/publish-topic-form/form-config'
+import type { ImageAttachmentError } from '@/src/forum/services/form/imageAttachment.ts'
+import { IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig.ts'
+import { FORM_HASH } from '../form/publish-topic-form/form-config.ts'
 
 export function formatImageAttachmentError(
   error: ImageAttachmentError,

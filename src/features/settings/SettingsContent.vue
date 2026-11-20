@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import type { SettingsSectionId } from './useSettingsNavigation'
+import type { SettingsSectionId } from './useSettingsNavigation.ts'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences'
-import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences'
-import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation'
-import { reportingEnabled } from '@/src/services/telemetry'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
+import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences.ts'
+import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation.ts'
+import { reportingEnabled } from '@/src/services/telemetry/index.ts'
 import SettingsMenu from './SettingsMenu.vue'
 import SettingsMobileView from './SettingsMobileView.vue'
-import { SETTINGS_SECTION_DEFINITIONS } from './settingsOptions'
+import { SETTINGS_SECTION_DEFINITIONS } from './settingsOptions.ts'
 import SettingsPanel from './SettingsPanel.vue'
-import { useSettingsNavigation } from './useSettingsNavigation'
+import { useSettingsNavigation } from './useSettingsNavigation.ts'
 
 const props = withDefaults(defineProps<{
   dialogOnly?: boolean

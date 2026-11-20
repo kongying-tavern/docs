@@ -1,14 +1,14 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useQuery, useQueryCache } from '@pinia/colada'
 import { computed } from 'vue'
 import blogMemberListRaw from '@/src/data/blogMemberList.gen.json'
 import feedbackMemberListRaw from '@/src/data/feedbackMemberList.gen.json'
 import teamMemberListRaw from '@/src/data/teamMemberList.gen.json'
-import { user } from '@/src/forum/api/gitee'
-import { GITEE_API_CONFIG } from '@/src/forum/api/gitee/gitee-config'
-import { forumKeys } from '@/src/forum/services/forumQueryContracts'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { forumLog, ForumLogGroup } from '@/src/forum/utils/forum-logger'
+import { GITEE_API_CONFIG } from '@/src/forum/api/gitee/gitee-config.ts'
+import { user } from '@/src/forum/api/gitee/index.ts'
+import { forumKeys } from '@/src/forum/services/forumQueryContracts.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { forumLog, ForumLogGroup } from '@/src/forum/utils/forum-logger.ts'
 
 export interface MemberData {
   id: number

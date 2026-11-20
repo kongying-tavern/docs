@@ -1,4 +1,4 @@
-import { ASSET_ORIGIN } from '@/src/constants/site'
+import { ASSET_ORIGIN } from '@/src/constants/site.ts'
 
 export const avatarList = [
   'UI_AvatarIcon_Zhongli_Circle.png',

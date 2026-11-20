@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumSelectOption, ForumSelectSlots } from './shared'
+import type { ForumSelectOption, ForumSelectSlots } from './shared.ts'
 import {
   Drawer,
   DrawerContent,
@@ -7,9 +7,9 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@theme/components/ui/drawer'
+} from '@theme/components/ui/drawer/index.ts'
 import { computed, ref } from 'vue'
-import { groupSelectOptions } from './shared'
+import { groupSelectOptions } from './shared.ts'
 
 const props = defineProps<{
   options: ReadonlyArray<ForumSelectOption>

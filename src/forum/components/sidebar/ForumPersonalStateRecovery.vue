@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumPersonalState } from '@/src/forum/composables/data/useForumPersonalState'
-import { parseForumPersonalState } from '@/src/forum/services/forumPersonalState'
-import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError } from '@/src/forum/services/forumPersonalStateRepository'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { useForumPersonalState } from '@/src/forum/composables/data/useForumPersonalState.ts'
+import { parseForumPersonalState } from '@/src/forum/services/forumPersonalState.ts'
+import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError } from '@/src/forum/services/forumPersonalStateRepository.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 const personal = useForumPersonalState()

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
-import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@theme/components/ui/drawer'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@theme/components/ui/drawer/index.ts'
 import { useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 

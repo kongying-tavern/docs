@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
 import ForumTopicMetadata from '../ui/ForumTopicMetadata.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 import ForumTopicStatusControl from './ForumTopicStatusControl.vue'

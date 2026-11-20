@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { ForumTranslatorRef } from './useTopicTranslationMenu'
-import type ForumAPI from '@/src/forum/api/types'
+import type { ForumTranslatorRef } from './useTopicTranslationMenu.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { isArray } from 'lodash-es'
 import { computed, toValue, useTemplateRef } from 'vue'
-import { useTopicTranslationMenu } from './useTopicTranslationMenu'
+import { useTopicTranslationMenu } from './useTopicTranslationMenu.ts'
 
 export function useTopicState(topic: MaybeRefOrGetter<ForumAPI.Topic | ForumAPI.Post>) {
   const translator = useTemplateRef<ForumTranslatorRef>('translator')

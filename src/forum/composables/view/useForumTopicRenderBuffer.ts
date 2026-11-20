@@ -2,7 +2,7 @@ import type { Range, Virtualizer } from '@tanstack/vue-virtual'
 import type { Ref } from 'vue'
 import { observeWindowOffset } from '@tanstack/vue-virtual'
 import { computed, nextTick, onScopeDispose, shallowRef } from 'vue'
-import { forumTopicRenderDistance, forumTopicRenderIndexes } from '@/src/forum/services/forumTopicRenderBuffer'
+import { forumTopicRenderDistance, forumTopicRenderIndexes } from '@/src/forum/services/forumTopicRenderBuffer.ts'
 
 const RECLAIM_QUIET_MS = 250
 const RECLAIM_IDLE_TIMEOUT_MS = 1000

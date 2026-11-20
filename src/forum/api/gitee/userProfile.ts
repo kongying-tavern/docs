@@ -1,4 +1,4 @@
-import type ForumAPI from '../types'
+import type ForumAPI from '../types.d.ts'
 
 /** 只提交 API 支持的字段；空字符串保留为显式清除，undefined 表示不修改。 */
 export function buildUserProfileForm(profile: ForumAPI.UserProfileUpdate): FormData {

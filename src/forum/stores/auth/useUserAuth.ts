@@ -1,14 +1,14 @@
-import type ForumAPI from '@/src/forum/api/types'
-import { toCamelCaseObject } from '@theme/utils'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { toCamelCaseObject } from '@theme/utils.ts'
 import { defineStore } from 'pinia'
 import { computed, readonly, ref, watch } from 'vue'
-import { useTokenManager } from '@/src/forum/composables/auth/useTokenManager'
-import { useAuthRefresh } from '@/src/forum/hooks/useAuthRefresh'
-import { useSSOAuth } from '@/src/forum/hooks/useSSOAuth'
-import { useSSORefreshManager } from '@/src/forum/hooks/useSSORefreshManager'
-import { log, LogGroup } from '@/src/forum/services/authLogger'
-import { AuthError, createAuthError } from '@/src/services/authErrors'
-import { registerAuthSessionAccessor } from '@/src/services/authSession'
+import { useTokenManager } from '@/src/forum/composables/auth/useTokenManager.ts'
+import { useAuthRefresh } from '@/src/forum/hooks/useAuthRefresh.ts'
+import { useSSOAuth } from '@/src/forum/hooks/useSSOAuth.ts'
+import { useSSORefreshManager } from '@/src/forum/hooks/useSSORefreshManager.ts'
+import { log, LogGroup } from '@/src/forum/services/authLogger.ts'
+import { AuthError, createAuthError } from '@/src/services/authErrors.ts'
+import { registerAuthSessionAccessor } from '@/src/services/authSession.ts'
 
 export interface LocalAuth {
   accessToken: string

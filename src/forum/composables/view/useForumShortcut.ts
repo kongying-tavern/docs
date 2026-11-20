@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { ForumShortcutId } from '@/src/forum/services/forumShortcuts'
+import type { ForumShortcutId } from '@/src/forum/services/forumShortcuts.ts'
 import { createSharedComposable, useEventListener } from '@vueuse/core'
 import { onScopeDispose, toValue } from 'vue'
-import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences'
-import { FORUM_SHORTCUTS, matchesShortcut } from '@/src/forum/services/forumShortcuts'
+import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences.ts'
+import { FORUM_SHORTCUTS, matchesShortcut } from '@/src/forum/services/forumShortcuts.ts'
 
 interface ShortcutRegistration {
   id: ForumShortcutId

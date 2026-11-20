@@ -1,6 +1,6 @@
 import type { JSONContent } from '@tiptap/core'
-import type ForumAPI from '@/src/forum/api/types'
-import { FORUM_IMAGE_ORIGIN } from '@/src/constants/site'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { FORUM_IMAGE_ORIGIN } from '@/src/constants/site.ts'
 
 // HTML 注释以 --> 或 --!> 结束；未闭合的注释按规范延伸到输入末尾
 const TOPIC_COMMENT_SPLIT_REGEX = /(<!--[\s\S]*?(?:-->|--!>|$))/gu

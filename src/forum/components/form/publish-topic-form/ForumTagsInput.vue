@@ -8,22 +8,22 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@theme/components/ui/command'
+} from '@theme/components/ui/command/index.ts'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@theme/components/ui/popover'
+} from '@theme/components/ui/popover/index.ts'
 import {
   TagsInput,
   TagsInputInput,
   TagsInputItem,
   TagsInputItemDelete,
   TagsInputItemText,
-} from '@theme/components/ui/tags-input'
+} from '@theme/components/ui/tags-input/index.ts'
 import { useI18n } from 'vue-i18n'
-import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig'
-import { useTagsInput } from '../composables/useTagsInput'
+import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig.ts'
+import { useTagsInput } from '../composables/useTagsInput.ts'
 
 const { max = VALIDATION_LIMITS.TAGS.MAX_COUNT } = defineProps<{
   class?: HTMLAttributes['class']

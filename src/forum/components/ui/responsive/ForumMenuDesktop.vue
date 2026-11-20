@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type { FORUM } from '../../types'
+import type { FORUM } from '../../types.d.ts'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@theme/components/ui/dropdown-menu'
-import { cn } from '@theme/lib/utils'
+} from '@theme/components/ui/dropdown-menu/index.ts'
+import { cn } from '@theme/lib/utils.ts'
 import ForumDropdownMenu from '../ForumDropdownMenu.vue'
-import { menuContentClasses } from './shared'
+import { menuContentClasses } from './shared.ts'
 
 defineOptions({
   inheritAttrs: false,

@@ -1,11 +1,11 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { FORUM } from '../types'
-import type ForumAPI from '@/src/forum/api/types'
+import type { FORUM } from '../types.d.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { computed, toValue } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences'
-import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation'
-import { areLanguagesEquivalent } from '@/src/forum/services/forumLanguage'
+import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
+import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation.ts'
+import { areLanguagesEquivalent } from '@/src/forum/services/forumLanguage.ts'
 
 export interface ForumTranslatorRef {
   startTranslate: () => void

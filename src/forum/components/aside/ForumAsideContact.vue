@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQRCode } from '@theme/hooks/useQRCode'
+import { useQRCode } from '@theme/hooks/useQRCode.ts'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

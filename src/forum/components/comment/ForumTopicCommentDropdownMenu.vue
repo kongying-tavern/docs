@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FORUM } from '@/src/forum/components/types'
-import { Button } from '@theme/components/ui/button'
+import type { FORUM } from '@/src/forum/components/types.d.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { useI18n } from 'vue-i18n'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 

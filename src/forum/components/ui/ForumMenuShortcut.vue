@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Kbd, KbdGroup } from '@theme/components/ui/kbd'
+import { Kbd, KbdGroup } from '@theme/components/ui/kbd/index.ts'
 import { computed } from 'vue'
 
 const props = defineProps<{ shortcut: string }>()

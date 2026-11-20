@@ -1,6 +1,6 @@
-import { detectWithBrowser, translateWithBrowser } from './browserTranslation'
-import { areLanguagesEquivalent, canonicalizeLanguage, isTextPlausibleForLanguage } from './forumLanguage'
-import { prepareTerminology } from './forumTerminology'
+import { detectWithBrowser, translateWithBrowser } from './browserTranslation.ts'
+import { areLanguagesEquivalent, canonicalizeLanguage, isTextPlausibleForLanguage } from './forumLanguage.ts'
+import { prepareTerminology } from './forumTerminology.ts'
 
 export type TranslationProvider = 'browser' | 'passthrough'
 

@@ -1,5 +1,5 @@
-import type ForumAPI from '@/src/forum/api/types'
-import { TOPIC_EXTRA_STATUS_PRESENTATION, TOPIC_STATUS_DEFINITIONS } from './forumTopicStatus'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { TOPIC_EXTRA_STATUS_PRESENTATION, TOPIC_STATUS_DEFINITIONS } from './forumTopicStatus.ts'
 
 export type TopicStatusIconKey = ForumAPI.TopicDisplayStatus | 'good-issue'
 

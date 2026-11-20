@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { ImageAttachment } from '@/src/forum/services/form/imageAttachment'
+import type { ImageAttachment } from '@/src/forum/services/form/imageAttachment.ts'
 import { createReusableTemplate } from '@vueuse/core'
 import { computed, nextTick, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ForumImage from '@/src/forum/components/ui/ForumImage.vue'
-import { formatImageAttachmentError } from '@/src/forum/components/utils/submitFormUi'
-import { useForumImageDropZone } from '@/src/forum/composables/view/useForumImageDropZone'
-import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig'
+import { formatImageAttachmentError } from '@/src/forum/components/utils/submitFormUi.ts'
+import { useForumImageDropZone } from '@/src/forum/composables/view/useForumImageDropZone.ts'
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig.ts'
 
 const { disabled = false, hideDefaultTrigger = false, size = 'xl', attachments, class: className } = defineProps<{
   attachments: ImageAttachment[]

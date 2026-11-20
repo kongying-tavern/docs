@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
-import { createForumImageScheduler } from '@/src/forum/services/forumImageScheduler'
+import { createForumImageScheduler } from '@/src/forum/services/forumImageScheduler.ts'
 
 type VisibilityListener = (rect: DOMRectReadOnly) => void
 const targets = new Map<Element, VisibilityListener>()

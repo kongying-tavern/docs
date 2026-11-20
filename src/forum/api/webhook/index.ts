@@ -1,7 +1,7 @@
 import ky from 'ky'
 
-import { API_ORIGIN } from '@/src/constants/site'
-import { GITEE_API_CONFIG } from '../gitee/gitee-config'
+import { API_ORIGIN } from '@/src/constants/site.ts'
+import { GITEE_API_CONFIG } from '../gitee/gitee-config.ts'
 
 const WEBHOOK_TOKEN = '4c0001c8-dec1-4c13-a689-4cbcd7d156ae'
 

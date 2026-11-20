@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 
 export function isAuthor(id: string | number) {
   const info = useUserInfoStore()

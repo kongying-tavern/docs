@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { ForumFilter } from '@/src/forum/services/forumRoute'
-import { Button } from '@theme/components/ui/button'
+import type { ForumFilter } from '@/src/forum/services/forumRoute.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { EmptyMorphFrame, EmptySwap } from '@theme/components/ui/empty-motion/index.ts'
 import {
   Empty,
   EmptyActions,
@@ -8,14 +9,13 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from '@theme/components/ui/empty'
-import { EmptyMorphFrame, EmptySwap } from '@theme/components/ui/empty-motion'
+} from '@theme/components/ui/empty/index.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { GiteeAPIError } from '@/src/forum/api/gitee'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { GiteeAPIError } from '@/src/forum/api/gitee/index.ts'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken.ts'
 import ForumOpenFeedbackFormButton from '../form/ForumOpenFeedbackFormButton.vue'
 import ForumEmptyIllustration from '../ui/ForumEmptyIllustration.vue'
 

@@ -7,11 +7,11 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@theme/components/ui/drawer'
-import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover'
+} from '@theme/components/ui/drawer/index.ts'
+import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover/index.ts'
 import { useMediaQuery } from '@vueuse/core'
 import { nextTick, ref, watch } from 'vue'
-import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
 
 const { align = 'start', immersive = false, hideHeader = false } = defineProps<{
   title: string

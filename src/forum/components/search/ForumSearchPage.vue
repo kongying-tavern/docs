@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ForumSearchPanel from './ForumSearchPanel.vue'
-import { useSearchPageController } from './useSearchPageController'
+import { useSearchPageController } from './useSearchPageController.ts'
 
 const controller = useSearchPageController()
 </script>

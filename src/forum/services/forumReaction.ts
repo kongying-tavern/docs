@@ -1,6 +1,6 @@
-import type { INTER_KNOT } from '@/src/forum/api/interknot.site/api'
-import type ForumAPI from '@/src/forum/api/types'
-import { SITE_BASE, SITE_ORIGIN } from '@/src/constants/site'
+import type { INTER_KNOT } from '@/src/forum/api/interknot.site/api.d.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { SITE_BASE, SITE_ORIGIN } from '@/src/constants/site.ts'
 
 export type ReactionState = INTER_KNOT.ReactionState | null
 type ReactionData = NonNullable<INTER_KNOT.ReactionResponse['data']['reaction']>

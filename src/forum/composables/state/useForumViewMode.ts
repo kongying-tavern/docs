@@ -1,9 +1,9 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { FORUM } from '@/src/forum/components/types'
-import { enableTransitions } from '@theme/lib/transitions'
+import type { FORUM } from '@/src/forum/components/types.d.ts'
+import { enableTransitions } from '@theme/lib/transitions.ts'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import { computed, nextTick, toValue } from 'vue'
-import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '@/src/forum/components/shared'
+import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '@/src/forum/components/shared.ts'
 
 export const FORUM_VIEW_MODES = ['CARD', 'COMPACT'] as const
 const DEFAULT_FORUM_VIEW_MODE = 'CARD' as const

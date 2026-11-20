@@ -1,5 +1,5 @@
 import type { InjectionKey } from 'vue'
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { inject, provide, shallowReactive, watch } from 'vue'
 
 interface SummarySnapshot {

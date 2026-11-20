@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog'
-import { Kbd, KbdGroup } from '@theme/components/ui/kbd'
-import { Switch } from '@theme/components/ui/switch'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog/index.ts'
+import { Kbd, KbdGroup } from '@theme/components/ui/kbd/index.ts'
+import { Switch } from '@theme/components/ui/switch/index.ts'
 import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/src/features/settings/SettingsRow.vue'
 import SettingsSection from '@/src/features/settings/SettingsSection.vue'
-import { useForumShortcutRecorder } from '@/src/forum/composables/view/useForumShortcutRecorder'
+import { useForumShortcutRecorder } from '@/src/forum/composables/view/useForumShortcutRecorder.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { TopicFormData } from '@/src/forum/services/form/validation'
+import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
 import { ChevronDownIcon, HashIcon, TagsIcon } from '@lucide/vue'
-import { Button } from '@theme/components/ui/button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@theme/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@theme/components/ui/command/index.ts'
+import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover/index.ts'
 import { refDebounced } from '@vueuse/core'
 import { ListboxFilter } from 'reka-ui'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumTopicsQuery } from '@/src/forum/composables/data/useForumQueries'
-import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig'
-import { isQuotableTopicType } from '@/src/forum/services/forumTopicQuote'
-import { useTagsInput } from '../composables/useTagsInput'
+import { useForumTopicsQuery } from '@/src/forum/composables/data/useForumQueries.ts'
+import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig.ts'
+import { isQuotableTopicType } from '@/src/forum/services/forumTopicQuote.ts'
+import { useTagsInput } from '../composables/useTagsInput.ts'
 
 const props = defineProps<{ tags: string[], quotedTopic?: TopicFormData['quotedTopic'], disabled: boolean }>()
 const emit = defineEmits<{

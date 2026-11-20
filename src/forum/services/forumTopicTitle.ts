@@ -1,5 +1,5 @@
-import type { DecodedForumText } from './forumContentCodec'
-import { decodeForumText } from './forumContentCodec'
+import type { DecodedForumText } from './forumContentCodec.ts'
+import { decodeForumText } from './forumContentCodec.ts'
 
 function summarize(text: string): string {
   return `${text.trim().substring(0, 12)}...`

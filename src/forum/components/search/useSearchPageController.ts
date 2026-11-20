@@ -1,14 +1,14 @@
-import type { FORUM } from '@/src/forum/components/types'
-import type { ForumFilter, ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute'
-import type { ForumSearchFacet } from '@/src/forum/services/forumSearchQuery'
+import type { FORUM } from '@/src/forum/components/types.d.ts'
+import type { ForumFilter, ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute.ts'
+import type { ForumSearchFacet } from '@/src/forum/services/forumSearchQuery.ts'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumTopicsQuery } from '@/src/forum/composables/data/useForumQueries'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
-import { resolveForumListScope } from '@/src/forum/services/forumListSkeleton'
-import { parseForumSearchQuery, toggleForumSearchFacet } from '@/src/forum/services/forumSearchQuery'
+import { useForumTopicsQuery } from '@/src/forum/composables/data/useForumQueries.ts'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
+import { resolveForumListScope } from '@/src/forum/services/forumListSkeleton.ts'
+import { parseForumSearchQuery, toggleForumSearchFacet } from '@/src/forum/services/forumSearchQuery.ts'
 
 export function useSearchPageController() {
   const { route, list, navigate, submitSearch } = useForumRoute()

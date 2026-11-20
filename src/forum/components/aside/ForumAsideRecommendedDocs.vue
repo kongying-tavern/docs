@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { flattenWithTags } from '../utils/submitFormUi'
+import { flattenWithTags } from '../utils/submitFormUi.ts'
 
 const { theme } = useData()
 const { t } = useI18n({ useScope: 'global' })

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { PublishTopicController } from '../composables/usePublishTopicController'
+import type { PublishTopicController } from '../composables/usePublishTopicController.ts'
 import { useEventListener } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, ref, unref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
 import ForumTopicTypeBadge from '@/src/forum/components/ui/ForumTopicTypeBadge.vue'
-import { preparePublishTypeMotion } from '@/src/forum/components/utils/publishTopicTypeTransition'
+import { preparePublishTypeMotion } from '@/src/forum/components/utils/publishTopicTypeTransition.ts'
 import ForumPublishTopicListItem from './ForumPublishTopicListItem.vue'
 
 const props = defineProps<{ form: PublishTopicController['form'], actions: PublishTopicController['actions'], morphType?: boolean, fixedHeight?: boolean }>()

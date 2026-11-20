@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import { useLanguage } from '@theme/composables/useLanguage'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { useLanguage } from '@theme/composables/useLanguage.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { data as forumDocumentLinks } from '@/src/data/forumDocumentLinks.data'
-import { useForumTopicPresentation } from '@/src/forum/composables/view/useForumTopicPresentation'
-import { decodeTopicBody } from '@/src/forum/services/forumContentCodec'
-import { renderForumTopicSummary } from '@/src/forum/services/forumContentRenderer'
-import { useTopicContent } from './composables/useTopicContent'
+import { data as forumDocumentLinks } from '@/src/data/forumDocumentLinks.data.ts'
+import { useForumTopicPresentation } from '@/src/forum/composables/view/useForumTopicPresentation.ts'
+import { decodeTopicBody } from '@/src/forum/services/forumContentCodec.ts'
+import { renderForumTopicSummary } from '@/src/forum/services/forumContentRenderer.ts'
+import { useTopicContent } from './composables/useTopicContent.ts'
 import ForumTopicVisibilityIcon from './ForumTopicVisibilityIcon.vue'
 
 const { topic, detailHref, contentOverride, titleOverride, topicHref } = defineProps<{

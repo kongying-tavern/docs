@@ -1,10 +1,10 @@
 <script setup lang="ts" generic="T extends string">
 import { ChevronDown } from '@lucide/vue'
-import { cn } from '@theme/lib/utils'
+import { cn } from '@theme/lib/utils.ts'
 import { computed } from 'vue'
 import ForumHintIcon from '../ui/ForumHintIcon.vue'
 import ForumResponsiveSelect from '../ui/responsive/ForumResponsiveSelect.vue'
-import { FORUM_SELECT_TRIGGER_CLASSES } from '../ui/responsive/shared'
+import { FORUM_SELECT_TRIGGER_CLASSES } from '../ui/responsive/shared.ts'
 
 const props = defineProps<{
   label: string

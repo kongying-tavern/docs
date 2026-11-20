@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ForumTopicType } from '@/src/forum/services/forumRoute'
+import type { ForumTopicType } from '@/src/forum/services/forumRoute.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumListControlOptions } from '@/src/forum/composables/view/useForumListControlOptions'
+import { useForumListControlOptions } from '@/src/forum/composables/view/useForumListControlOptions.ts'
 import ForumPillSelect from './ForumPillSelect.vue'
 
 const props = defineProps<{ topicType: ForumTopicType }>()

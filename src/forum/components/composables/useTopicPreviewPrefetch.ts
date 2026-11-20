@@ -1,7 +1,7 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { ref } from 'vue'
-import { useForumCommentsQuery } from '@/src/forum/composables/data/useForumQueries'
-import { preloadForumCommentArea } from '../utils/forumComponentPreload'
+import { useForumCommentsQuery } from '@/src/forum/composables/data/useForumQueries.ts'
+import { preloadForumCommentArea } from '../utils/forumComponentPreload.ts'
 
 /** Warm the same comment cache used by both topic previews and image side panels. */
 export function useTopicPreviewPrefetch() {

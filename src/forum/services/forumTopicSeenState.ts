@@ -1,4 +1,4 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 
 const TOPIC_SEEN_KEY = 'forum:topic-seen-at:v1'
 const TOPIC_SEEN_LIMIT = 500

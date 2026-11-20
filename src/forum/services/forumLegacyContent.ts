@@ -1,7 +1,7 @@
 import type { JSONContent } from '@tiptap/core'
 import type Token from 'markdown-it/lib/token.mjs'
 import MarkdownIt from 'markdown-it'
-import { decodeForumText } from './forumContentCodec'
+import { decodeForumText } from './forumContentCodec.ts'
 
 const JSON_LIKE_TEXT_REGEX = /^\s*[[{]/u
 const LEGACY_IMAGE_REGEX = /!\[[^\]]*\]\([^)]*\)/gu

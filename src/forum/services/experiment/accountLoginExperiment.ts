@@ -1,4 +1,4 @@
-import { selectGrayscaleBucket, selectGrayscaleOverride } from './grayscale'
+import { selectGrayscaleBucket, selectGrayscaleOverride } from './grayscale.ts'
 
 /** 管理员默认在灰度内，其他账号按百分比分层；未识别的账号一律不可用 */
 export function selectAccountLoginRollout(accountId: string | number | undefined, percentage: number, canManage: boolean): boolean {

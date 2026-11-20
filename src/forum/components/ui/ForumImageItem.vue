@@ -2,10 +2,10 @@
 import type { ImageItem } from './ForumImage.vue'
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ASSET_ORIGIN } from '@/src/constants/site'
-import { useForumImageLoading } from '@/src/forum/composables/view/useForumImageLoading'
-import { isForumLongImage } from '@/src/forum/services/forumImageLayout'
-import { forumImagePlaceholder } from '@/src/forum/services/forumImagePlaceholder'
+import { ASSET_ORIGIN } from '@/src/constants/site.ts'
+import { useForumImageLoading } from '@/src/forum/composables/view/useForumImageLoading.ts'
+import { isForumLongImage } from '@/src/forum/services/forumImageLayout.ts'
+import { forumImagePlaceholder } from '@/src/forum/services/forumImagePlaceholder.ts'
 import ForumImageContextMenu from './ForumImageContextMenu.vue'
 
 const props = defineProps<{

@@ -1,10 +1,10 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { computed } from 'vue'
-import { data as forumDocumentLinks } from '@/src/data/forumDocumentLinks.data'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { useTopicUserRole } from '@/src/forum/composables/util/useTopicUserRole'
-import { decodeForumText } from '@/src/forum/services/forumContentCodec'
-import { renderForumComment } from '@/src/forum/services/forumContentRenderer'
+import { data as forumDocumentLinks } from '@/src/data/forumDocumentLinks.data.ts'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useTopicUserRole } from '@/src/forum/composables/util/useTopicUserRole.ts'
+import { decodeForumText } from '@/src/forum/services/forumContentCodec.ts'
+import { renderForumComment } from '@/src/forum/services/forumContentRenderer.ts'
 
 export interface UseTopicCommentOptions {
   commentData: ForumAPI.Comment

@@ -1,11 +1,11 @@
-import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '@/src/forum/services/forumSearchQuery'
+import type { ForumSearchFacet, ForumSearchQuery, ForumSearchState } from '@/src/forum/services/forumSearchQuery.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore'
-import { useTopicTagDisplay } from '@/src/forum/composables/util/useTopicTagDisplay'
-import { FORUM_SEARCH_STATES, parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery'
-import { getTopicTagLabelGetter } from '@/src/forum/services/getTopicTagLabelGetter'
-import { getTopicTagMap } from '@/src/forum/services/getTopicTagMap'
+import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore.ts'
+import { useTopicTagDisplay } from '@/src/forum/composables/util/useTopicTagDisplay.ts'
+import { FORUM_SEARCH_STATES, parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery.ts'
+import { getTopicTagLabelGetter } from '@/src/forum/services/getTopicTagLabelGetter.ts'
+import { getTopicTagMap } from '@/src/forum/services/getTopicTagMap.ts'
 
 const REGEXP_SPECIAL_CHARACTERS = /[.*+?^${}()|[\]\\]/gu
 const WHITESPACE_REGEX = /\s/u

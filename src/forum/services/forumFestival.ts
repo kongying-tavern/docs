@@ -1,4 +1,4 @@
-import type { ForumFestivalEffectModule, ForumFestivalEffectOptions } from '@/src/forum/effects/types'
+import type { ForumFestivalEffectModule, ForumFestivalEffectOptions } from '@/src/forum/effects/types.ts'
 
 export type ForumFestivalLocale = 'root' | 'en' | 'ja'
 

@@ -1,8 +1,8 @@
 import type { HTTPError as KyHTTPError } from 'ky'
-import type { HttpMethod } from './types'
+import type { HttpMethod } from './types.ts'
 import { isHTTPError } from 'ky'
 import { isPlainObject } from 'lodash-es'
-import { GiteeApiErrorType } from './types'
+import { GiteeApiErrorType } from './types.ts'
 
 export class GiteeAPIError extends Error {
   type?: GiteeApiErrorType

@@ -1,10 +1,10 @@
 import type { UseInfiniteQueryData } from '@pinia/colada'
-import type { TopicUpdateOutcome } from '@/src/forum/api/gitee/issues'
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '@/src/forum/services/forumQueryContracts'
+import type { TopicUpdateOutcome } from '@/src/forum/api/gitee/issues.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumMutationKind, ForumPage, ForumTopicListParams } from '@/src/forum/services/forumQueryContracts.ts'
 import { useMutation, useQueryCache } from '@pinia/colada'
-import { issues } from '@/src/forum/api/gitee'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { issues } from '@/src/forum/api/gitee/index.ts'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
 import {
   forumKeys,
   forumMutationPolicies,
@@ -14,9 +14,9 @@ import {
   prependTopicToForumPages,
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
-} from '@/src/forum/services/forumQueryContracts'
-import { applyOptimisticTopicPatch } from '@/src/forum/services/forumTopicOptimistic'
-import { invalidateStructuredForumTopics } from '@/src/forum/services/forumTopics'
+} from '@/src/forum/services/forumQueryContracts.ts'
+import { applyOptimisticTopicPatch } from '@/src/forum/services/forumTopicOptimistic.ts'
+import { invalidateStructuredForumTopics } from '@/src/forum/services/forumTopics.ts'
 
 type TopicPatch = Parameters<typeof issues.putTopic>[1]
 interface TopicUpdateInput {

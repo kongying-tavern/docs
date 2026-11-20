@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Member } from './Member'
+import type { Member } from './Member.ts'
 
 import { useI18n } from 'vue-i18n'
 import membersCoreData from './members-core.json'

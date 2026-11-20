@@ -1,4 +1,4 @@
-import type { EmojiAttrs } from '@theme/components/ui/types'
+import type { EmojiAttrs } from '@theme/components/ui/types.ts'
 import { InputRule, mergeAttributes, Node } from '@tiptap/core'
 
 const EMOJI_SYNTAX_REGEX = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/g

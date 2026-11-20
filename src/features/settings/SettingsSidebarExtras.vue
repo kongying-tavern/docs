@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
-import { getLangPath } from '@theme/utils'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { getLangPath } from '@theme/utils.ts'
 import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation'
-import { consumeSettingsReturnUrl } from './settingsNavigation'
-import { SETTINGS_SECTION_DEFINITIONS } from './settingsOptions'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation.ts'
+import { consumeSettingsReturnUrl } from './settingsNavigation.ts'
+import { SETTINGS_SECTION_DEFINITIONS } from './settingsOptions.ts'
 
 const { localeIndex, page } = useData()
 const router = useRouter()

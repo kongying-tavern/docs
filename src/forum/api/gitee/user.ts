@@ -1,9 +1,9 @@
-import type ForumAPI from '../types'
-import { apiCall, deleteApiCache } from '.'
-import { parseGiteeUser, parseGiteeUsers } from './contracts'
-import { GITEE_API_CONFIG } from './gitee-config'
-import { normalizeUser } from './normalize'
-import { buildUserProfileForm } from './userProfile'
+import type ForumAPI from '../types.d.ts'
+import { parseGiteeUser, parseGiteeUsers } from './contracts.ts'
+import { GITEE_API_CONFIG } from './gitee-config.ts'
+import { apiCall, deleteApiCache } from './index.ts'
+import { normalizeUser } from './normalize.ts'
+import { buildUserProfileForm } from './userProfile.ts'
 
 const { OWNER } = GITEE_API_CONFIG
 

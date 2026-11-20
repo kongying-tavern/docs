@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { useI18n } from 'vue-i18n'
-import { rememberLoginIntent } from '@/src/forum/services/loginIntent'
-import { FORM_HASH } from '../form/publish-topic-form/form-config'
+import { rememberLoginIntent } from '@/src/forum/services/loginIntent.ts'
+import { FORM_HASH } from '../form/publish-topic-form/form-config.ts'
 import ForumAsideSection from './ForumAsideSection.vue'
 
 const { t } = useI18n({ useScope: 'global' })

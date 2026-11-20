@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumLabelGroup, ForumLabelRow } from '@/src/forum/services/forumLabelTaxonomy'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumLabelGroup, ForumLabelRow } from '@/src/forum/services/forumLabelTaxonomy.ts'
 import {
   Table,
   TableBody,
@@ -8,14 +8,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@theme/components/ui/table'
+} from '@theme/components/ui/table/index.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getFallbackLabelDisplay } from '@/src/forum/services/forumLabelTaxonomy'
-import { getTopicStatusFromLabel } from '@/src/forum/services/forumTopicStatus'
-import { getTopicTagLabelGetter } from '@/src/forum/services/getTopicTagLabelGetter'
-import { getTopicTagMap } from '@/src/forum/services/getTopicTagMap'
-import { getTopicTypeLabelGetter } from '@/src/forum/services/getTopicTypeLabelGetter'
+import { getFallbackLabelDisplay } from '@/src/forum/services/forumLabelTaxonomy.ts'
+import { getTopicStatusFromLabel } from '@/src/forum/services/forumTopicStatus.ts'
+import { getTopicTagLabelGetter } from '@/src/forum/services/getTopicTagLabelGetter.ts'
+import { getTopicTagMap } from '@/src/forum/services/getTopicTagMap.ts'
+import { getTopicTypeLabelGetter } from '@/src/forum/services/getTopicTypeLabelGetter.ts'
 import ForumTopicStatusBadge from '../ui/ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from '../ui/ForumTopicTypeBadge.vue'
 

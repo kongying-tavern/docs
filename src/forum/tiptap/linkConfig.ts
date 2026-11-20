@@ -1,7 +1,7 @@
 import type { Transaction } from '@tiptap/pm/state'
 import Link from '@tiptap/extension-link'
 import { Plugin } from '@tiptap/pm/state'
-import { getUntrustedForumLinkHref, isAllowedForumHref } from '@/src/forum/services/forumLinkPolicy'
+import { getUntrustedForumLinkHref, isAllowedForumHref } from '@/src/forum/services/forumLinkPolicy.ts'
 
 function exposeUntrustedLinks(tr: Transaction): Transaction {
   const replacements: { from: number, to: number, href: string }[] = []

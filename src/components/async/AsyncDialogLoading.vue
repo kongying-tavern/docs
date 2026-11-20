@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog/index.ts'
 import { useI18n } from 'vue-i18n'
 import AsyncContentLoading from './AsyncContentLoading.vue'
 

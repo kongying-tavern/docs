@@ -1,8 +1,8 @@
-import type ForumAPI from '../types'
-import { catchError } from '@/src/services/apiUtils'
-import { oauthFetcher } from './client'
-import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './gitee-config'
-import { normalizeAuth } from './normalize'
+import type ForumAPI from '../types.d.ts'
+import { catchError } from '@/src/services/apiUtils.ts'
+import { oauthFetcher } from './client.ts'
+import { GITEE_API_CONFIG, GITEE_AUTH_SCOPES } from './gitee-config.ts'
+import { normalizeAuth } from './normalize.ts'
 
 export async function getToken(
   username: string,

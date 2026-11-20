@@ -1,9 +1,9 @@
 import type { Composer } from 'vue-i18n'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
-import { IMAGE_UPLOAD_POLICY, VALIDATION_LIMITS } from '../forumConfig'
-import { decodeForumText } from '../forumContentCodec'
-import { TOPIC_ID_REGEX } from '../forumTopicQuote'
+import { IMAGE_UPLOAD_POLICY, VALIDATION_LIMITS } from '../forumConfig.ts'
+import { decodeForumText } from '../forumContentCodec.ts'
+import { TOPIC_ID_REGEX } from '../forumTopicQuote.ts'
 
 interface TopicValidationMessages {
   announcementPermission: string

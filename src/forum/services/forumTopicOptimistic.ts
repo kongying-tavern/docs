@@ -1,9 +1,9 @@
-import type ForumAPI from '@/src/forum/api/types'
-import { decodeTopicBody } from './forumContentCodec'
-import { isCategoryLabel } from './forumLabel'
-import { parseTopicLabels } from './forumTopicLabels'
-import { normalizeQuotedTopicReference } from './forumTopicQuote'
-import { getTopicStatus } from './forumTopicStatus'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { decodeTopicBody } from './forumContentCodec.ts'
+import { isCategoryLabel } from './forumLabel.ts'
+import { parseTopicLabels } from './forumTopicLabels.ts'
+import { normalizeQuotedTopicReference } from './forumTopicQuote.ts'
+import { getTopicStatus } from './forumTopicStatus.ts'
 
 export interface OptimisticTopicPatch {
   security_hole?: boolean

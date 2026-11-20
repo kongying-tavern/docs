@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { ForumLabelGroup, ForumLabelRow } from '@/src/forum/services/forumLabelTaxonomy'
-import { Alert, AlertDescription, AlertTitle } from '@theme/components/ui/alert'
+import type { ForumLabelGroup, ForumLabelRow } from '@/src/forum/services/forumLabelTaxonomy.ts'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,16 +9,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@theme/components/ui/alert-dialog'
-import { Button } from '@theme/components/ui/button'
-import { Skeleton } from '@theme/components/ui/skeleton'
+} from '@theme/components/ui/alert-dialog/index.ts'
+import { Alert, AlertDescription, AlertTitle } from '@theme/components/ui/alert/index.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { Skeleton } from '@theme/components/ui/skeleton/index.ts'
 import { useRouter } from 'vitepress'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { toast } from '@/src/services/telemetry/toast'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore.ts'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 import ForumLabelFormDialog from './ForumLabelFormDialog.vue'
 import ForumLabelGroupTable from './ForumLabelGroupTable.vue'
 

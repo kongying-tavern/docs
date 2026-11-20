@@ -1,8 +1,8 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import { useForumReaction, useForumReactionState } from './useForumReaction'
+import { useForumReaction, useForumReactionState } from './useForumReaction.ts'
 
-export type { TopicReaction } from '@/src/forum/services/forumReaction'
+export type { TopicReaction } from '@/src/forum/services/forumReaction.ts'
 
 export function useTopicsReaction(
   topicId: MaybeRefOrGetter<string>,

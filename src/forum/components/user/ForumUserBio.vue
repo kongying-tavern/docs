@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ForumProfileForm from './ForumProfileForm.vue'

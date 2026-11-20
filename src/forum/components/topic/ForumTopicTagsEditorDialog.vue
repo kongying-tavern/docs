@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button/index.ts'
 import {
   Dialog,
   DialogClose,
@@ -7,12 +7,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@theme/components/ui/dialog'
+} from '@theme/components/ui/dialog/index.ts'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useTopicManager } from '@/src/forum/composables/state/useTopicManager'
-import { useTopicTagsEditor } from '@/src/forum/composables/state/useTopicTagsEditor'
-import { getEditableTopicLabels } from '@/src/forum/services/forumTopicLabels'
+import { useTopicManager } from '@/src/forum/composables/state/useTopicManager.ts'
+import { useTopicTagsEditor } from '@/src/forum/composables/state/useTopicTagsEditor.ts'
+import { getEditableTopicLabels } from '@/src/forum/services/forumTopicLabels.ts'
 import ForumTagsInput from '../form/publish-topic-form/ForumTagsInput.vue'
 
 const { open, topic } = useTopicTagsEditor()

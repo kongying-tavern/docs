@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@theme/components/ui/select'
+} from '@theme/components/ui/select/index.ts'
 import { computed } from 'vue'
 
 interface SettingsSelectOption {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import { Button } from '@theme/components/ui/button'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { useIntersectionObserver } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
 import ForumQuoteTopicButton from '../topic/ForumQuoteTopicButton.vue'
 import ForumTopicMetadataControl from '../topic/ForumTopicMetadataControl.vue'
 import ForumTopicReactionButton from '../ui/ForumTopicReactionButton.vue'

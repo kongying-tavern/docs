@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Member } from './Member'
+import type { Member } from './Member.ts'
 
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getGiteeProfileHref } from '@/src/constants/site'
+import { getGiteeProfileHref } from '@/src/constants/site.ts'
 
 const props = defineProps<{
   member: Member

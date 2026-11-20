@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
+import type { FORUM } from '../types.d.ts'
 import {
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -11,12 +11,12 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from '@theme/components/ui/dropdown-menu'
+} from '@theme/components/ui/dropdown-menu/index.ts'
 import ForumHintIcon from './ForumHintIcon.vue'
 import ForumMenuShortcut from './ForumMenuShortcut.vue'
 import ForumTopicStatusBadge from './ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from './ForumTopicTypeBadge.vue'
-import { menuContentClasses, menuItemKey, sortMenuItems } from './responsive/shared'
+import { menuContentClasses, menuItemKey, sortMenuItems } from './responsive/shared.ts'
 
 defineProps<{
   items: FORUM.TopicDropdownMenu[]

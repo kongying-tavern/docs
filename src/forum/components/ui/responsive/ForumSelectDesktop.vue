@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ForumSelectOption, ForumSelectSlots } from './shared'
+import type { ForumSelectOption, ForumSelectSlots } from './shared.ts'
 import {
   Select,
   SelectContent,
@@ -7,11 +7,11 @@ import {
   SelectItem,
   SelectLabel,
   SelectSeparator,
-} from '@theme/components/ui/select'
+} from '@theme/components/ui/select/index.ts'
 import { SelectTrigger } from 'reka-ui'
 import { computed } from 'vue'
 import ForumHintIcon from '../ForumHintIcon.vue'
-import { groupSelectOptions } from './shared'
+import { groupSelectOptions } from './shared.ts'
 
 defineOptions({
   inheritAttrs: false,

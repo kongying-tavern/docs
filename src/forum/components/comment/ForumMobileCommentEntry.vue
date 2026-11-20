@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ForumEditorToolIcon from '../form/ForumEditorToolIcon.vue'

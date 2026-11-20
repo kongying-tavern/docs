@@ -1,6 +1,6 @@
 import { shallowRef } from 'vue'
-import { identifyClarityUser } from './clarity'
-import { randomId, readStorage, writeStorage } from './util'
+import { identifyClarityUser } from './clarity.ts'
+import { randomId, readStorage, writeStorage } from './util.ts'
 
 const INSTALL_ID_KEY = 'telemetry:install-id:v1'
 const SUPPORT_CODE_KEY = 'telemetry:support-code:v1'

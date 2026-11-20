@@ -1,9 +1,9 @@
 import type {
   ForumFestivalEffectController,
   ForumFestivalEffectStopOptions,
-} from './types'
+} from './types.ts'
 import confetti from 'canvas-confetti'
-import { readReducedMotion } from '@/src/services/sitePreferences'
+import { readReducedMotion } from '@/src/services/sitePreferences.ts'
 
 export type FestivalConfetti = ReturnType<typeof confetti.create>
 

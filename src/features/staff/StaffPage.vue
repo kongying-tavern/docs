@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { StaffListItem } from './types'
+import type { StaffListItem } from './types.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import staffCommunity from './staff-community.json'

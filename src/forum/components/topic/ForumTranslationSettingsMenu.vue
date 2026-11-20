@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button/index.ts'
 import {
   Drawer,
   DrawerContent,
@@ -7,11 +7,11 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@theme/components/ui/drawer'
-import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover'
+} from '@theme/components/ui/drawer/index.ts'
+import { Popover, PopoverContent, PopoverTrigger } from '@theme/components/ui/popover/index.ts'
 import { useMediaQuery } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
 import ForumTranslationSettings from '../settings/ForumTranslationSettings.vue'
 
 const { t } = useI18n({ useScope: 'global' })

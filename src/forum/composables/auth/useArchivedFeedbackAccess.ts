@@ -1,8 +1,8 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
-import { useRuleChecks } from './useRuleChecks'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
+import { useRuleChecks } from './useRuleChecks.ts'
 
 export function useArchivedFeedbackAccess(creator: MaybeRefOrGetter<string | null | undefined>) {
   const userAuth = useUserAuthStore()

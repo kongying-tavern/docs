@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
+import type { FORUM } from '../types.d.ts'
 import ForumResponsiveMenu from './responsive/ForumResponsiveMenu.vue'
 
 defineProps<{

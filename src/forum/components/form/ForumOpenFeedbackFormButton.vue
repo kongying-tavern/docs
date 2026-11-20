@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import type { ButtonVariants } from '@theme/components/ui/button'
-import { Button } from '@theme/components/ui/button'
+import type { ButtonVariants } from '@theme/components/ui/button/index.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@theme/components/ui/dropdown-menu'
+} from '@theme/components/ui/dropdown-menu/index.ts'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useForumShortcut } from '@/src/forum/composables/view/useForumShortcut'
-import { rememberLoginIntent } from '@/src/forum/services/loginIntent'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi'
-import { FORM_HASH } from './publish-topic-form/form-config'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useForumShortcut } from '@/src/forum/composables/view/useForumShortcut.ts'
+import { rememberLoginIntent } from '@/src/forum/services/loginIntent.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { preloadForumPublishForm, publishTopic } from '../utils/submitFormUi.ts'
+import { FORM_HASH } from './publish-topic-form/form-config.ts'
 
 const { variant = 'default', hideOnMobile = true, label } = defineProps<{
   label?: string

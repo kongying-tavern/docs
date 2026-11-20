@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { defineAsyncComponent } from 'vue'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
 import ForumAsideHomeResources from './ForumAsideHomeResources.vue'
 import ForumAsideLoginPrompt from './ForumAsideLoginPrompt.vue'
 import ForumAsideMeta from './ForumAsideMeta.vue'

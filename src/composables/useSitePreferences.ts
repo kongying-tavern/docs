@@ -1,4 +1,4 @@
-import type { MotionPreference, ThemePreference, ToastPosition } from '@/src/features/settings/settingsOptions'
+import type { MotionPreference, ThemePreference, ToastPosition } from '@/src/features/settings/settingsOptions.ts'
 import { createGlobalState, useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { computed, watchEffect } from 'vue'
 import {
@@ -6,7 +6,7 @@ import {
   isThemePreference,
   isToastPosition,
   TOAST_DURATION_DEFINITIONS,
-} from '@/src/features/settings/settingsOptions'
+} from '@/src/features/settings/settingsOptions.ts'
 import {
   applySitePreferences,
   DEFAULT_UI_FONT_SIZE,
@@ -16,9 +16,9 @@ import {
   POINTER_CURSOR_STORAGE_KEY,
   resolveReducedMotion,
   UI_FONT_SIZE_STORAGE_KEY,
-} from '@/src/services/sitePreferences'
+} from '@/src/services/sitePreferences.ts'
 
-export type { ThemePreference, ToastPosition } from '@/src/features/settings/settingsOptions'
+export type { ThemePreference, ToastPosition } from '@/src/features/settings/settingsOptions.ts'
 
 const THEME_STORAGE_KEY = 'vitepress-theme-appearance'
 const TOAST_POSITION_STORAGE_KEY = 'site-toast-position'

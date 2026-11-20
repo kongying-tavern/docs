@@ -1,6 +1,6 @@
-import type { ForumPersonalState } from './forumPersonalState'
-import { gists, GiteeAPIError } from '@/src/forum/api/gitee'
-import { decodeForumPersonalState, emptyForumPersonalState, parseForumPersonalState, serializeForumPersonalState } from './forumPersonalState'
+import type { ForumPersonalState } from './forumPersonalState.ts'
+import { gists, GiteeAPIError } from '@/src/forum/api/gitee/index.ts'
+import { decodeForumPersonalState, emptyForumPersonalState, parseForumPersonalState, serializeForumPersonalState } from './forumPersonalState.ts'
 
 const GIST_ID_KEY_PREFIX = 'forum-personal-gist:'
 let writeQueue = Promise.resolve()
