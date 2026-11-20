@@ -11,7 +11,7 @@ export * from './highlight-targeted-heading'
 export * from './login'
 export * from './medium-zoom'
 
-export { default as PageAlertRegion } from './PageAlertRegion.vue'
+export * from './page-alert-region'
 export { default as QA } from './QA.vue'
 export { default as QQGroupList } from './QQGroupList.vue'
 export { default as SitemapPage } from './SitemapPage.vue'

@@ -13,7 +13,7 @@ import { Banner } from '../components/banner'
 import ChunkLoadRecovery from '../components/chunk-load-recovery/ChunkLoadRecovery.vue'
 import { DocHeader } from '../components/doc-header'
 import HighlightTargetedHeading from '../components/highlight-targeted-heading/HighlightTargetedHeading.vue'
-import PageAlertRegion from '../components/PageAlertRegion.vue'
+import PageAlertRegion from '../components/page-alert-region/PageAlertRegion.vue'
 import { Sonner } from '../components/ui/sonner'
 import { useThemeTransition } from '../hooks/useThemeTransition'
 
