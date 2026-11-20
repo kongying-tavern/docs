@@ -1,1 +1,1 @@
-export { applyComarkPatches } from './comark-patches.ts'
+export { applyComarkPatches } from './comarkPatches.ts'
