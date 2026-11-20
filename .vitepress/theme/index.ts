@@ -26,7 +26,7 @@ import 'uno.css'
 
 const pinia = createPinia()
 const AccordionPanels = defineAsyncComponent(() => import('./components/ui/AccordionPanels.vue'))
-const Card = defineAsyncComponent(() => import('./components/Card.vue'))
+const Card = defineAsyncComponent(() => import('./components/card/Card.vue'))
 const Coins = defineAsyncComponent(() => import('./components/Coins.vue'))
 const Emoji = defineAsyncComponent(() => import('./components/ui/Emoji.vue'))
 const Forum = defineAsyncComponent(loadForumLayout)
