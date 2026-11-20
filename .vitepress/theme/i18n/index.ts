@@ -6,7 +6,7 @@ import { watch } from 'vue'
 import { createI18n, useI18n } from 'vue-i18n'
 import { DEFAULT_LOCALE } from '@/src/constants/site'
 
-const resources = import.meta.glob<DefineLocaleMessage>(['../locales/*/*.yml', '!../locales/*/site.yml'], { import: 'default' })
+const resources = import.meta.glob<DefineLocaleMessage>(['../../locales/*/*.yml', '!../../locales/*/site.yml'], { import: 'default' })
 
 export function interfaceLocaleForHref(href: string, site: SiteData): string {
   const pathname = new URL(href, 'https://vitepress.local').pathname
@@ -31,7 +31,7 @@ export async function installI18n(app: App, initialLocale = DEFAULT_LOCALE) {
     const existing = pending.get(locale)
     if (existing)
       return existing
-    const entries = Object.entries(resources).filter(([path]) => path.startsWith(`../locales/${locale}/`))
+    const entries = Object.entries(resources).filter(([path]) => path.startsWith(`../../locales/${locale}/`))
     const loading = Promise.all(entries.map(async ([path, load]) => [path.split('/').at(-1)!.slice(0, -4), await load()] as const))
       .then((messages) => {
         if (!messages.length)
