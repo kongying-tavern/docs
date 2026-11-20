@@ -1,5 +1,5 @@
 import antfu from '@antfu/eslint-config'
-import nativeImportPath from './scripts/eslint/nativeImportPath.ts'
+import { localPlugin } from './eslint/index.ts'
 
 const themeImportRestrictions = [
   { group: ['**/.vitepress/**'], message: 'src must not import from .vitepress by relative path; use the src/forum/types.ts outlet' },
@@ -154,15 +154,12 @@ export default antfu({
 }).append({
   name: 'project/native-import-path',
   // The site config is loaded by native Node ESM, which needs exact specifiers.
-  files: ['**/*.{ts,mts,vue}'],
+  files: ['**/*.{js,cjs,mjs,jsx,ts,tsx,mts,cts,vue}'],
   plugins: {
-    local: {
-      rules: {
-        'native-import-path': nativeImportPath,
-      },
-    },
+    local: localPlugin,
   },
   rules: {
     'local/native-import-path': 'error',
+    'local/prefer-barrel-import': 'error',
   },
 })
