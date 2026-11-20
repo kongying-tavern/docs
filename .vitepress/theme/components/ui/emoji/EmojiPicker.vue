@@ -4,7 +4,7 @@
 <script setup lang="ts">
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type { EmojiItem } from './EmojiPickerPanel.vue'
+import type { EmojiItem } from './types'
 import { reactiveOmit } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader'
@@ -13,7 +13,7 @@ import { Button } from '../button'
 import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 import EmojiPickerPanel from './EmojiPickerPanel.vue'
 
-export type { EmojiItem } from './EmojiPickerPanel.vue'
+export type { EmojiItem } from './types'
 
 defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<PopoverContentProps & { class?: HTMLAttributes['class'], recordCount?: number, disabled?: boolean }>(), {

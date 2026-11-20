@@ -3,9 +3,9 @@ import type ForumAPI from '@/src/forum/api/types'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useForumMentionCandidates } from '@/src/forum/composables/view/useForumMentionCandidates'
-import Avatar from '../avatar/Avatar.vue'
+import { Avatar } from '../avatar'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../command'
-import User from '../user/User.vue'
+import { User } from '../user'
 
 const props = withDefaults(defineProps<{ disabled?: boolean, items?: ForumAPI.User[], groups?: { heading: string, items: ForumAPI.User[] }[], recordCount?: number, showSearch?: boolean, searchTerm?: string, compact?: boolean }>(), { recordCount: 4, showSearch: true, searchTerm: '' })
 const emit = defineEmits<{ select: [user: ForumAPI.User] }>()
