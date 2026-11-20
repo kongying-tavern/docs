@@ -1,17 +1,11 @@
 import type MarkdownIt from 'markdown-it'
-import type { RenderRule } from 'markdown-it/lib/renderer.mjs'
+import type { Options } from 'markdown-it'
+import type StateBlock from 'markdown-it/lib/rules_block/state_block.mjs'
 import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 import { load } from 'js-yaml'
-import MarkdownItFence from 'markdown-it-fence'
-import {
-  entries,
-  fromEntries,
-  isBoolean,
-  isPlainObject,
-  isString,
-  stringifyProp,
-} from '../utils'
+import { entries, fromPairs, isBoolean, isPlainObject, isString } from 'lodash-es'
+import { stringifyProp } from '../utils'
 
 enum QAPartEnum {
   CONFIG,
@@ -99,7 +93,6 @@ function parseChunks(chunks: string[]): QAParts {
   parts.summary = lines[QAPartEnum.SUMMARY].join('\n')
   parts.detail = lines[QAPartEnum.DETAIL].join('\n')
 
-  console.log(parts)
   return parts
 }
 
@@ -107,15 +100,15 @@ function checkQAProps(config: unknown): QAOptions | null {
   if (!isPlainObject(config))
     return null
 
-  return fromEntries(
-    entries(config).filter(
+  return fromPairs(
+    entries(config as Record<string, unknown>).filter(
       (item): item is [string, string | boolean] =>
         QA_PROPS.includes(item[0]) && (isString(item[1]) || isBoolean(item[1])),
     ),
   ) as QAOptions
 }
 
-function qaRender(tokens: Token[], index: number, _opts: MarkdownIt.Options, _env: MarkdownEnv, md?: MarkdownIt): string {
+function qaRender(tokens: Token[], index: number, _opts: Options, _env: MarkdownEnv, md?: MarkdownIt): string {
   const token = tokens[index]
   const { content } = token
 
@@ -137,29 +130,72 @@ function qaRender(tokens: Token[], index: number, _opts: MarkdownIt.Options, _en
     </QA>`
 }
 
-export function qa(md: MarkdownIt, _options: any) {
-  md.use(...createFence('qa', md))
+/** Match a `:::qa` block and keep its raw content, the way the built-in fence handles backticks. */
+function qaFence(state: StateBlock, startLine: number, endLine: number): boolean {
+  const marker = ':'.charCodeAt(0)
+  let pos = state.bMarks[startLine] + state.tShift[startLine]
+  const max = state.eMarks[startLine]
+
+  if (state.sCount[startLine] - state.blkIndent >= 4 || pos + 3 > max)
+    return false
+  if (state.src.charCodeAt(pos) !== marker)
+    return false
+
+  const begin = pos
+  pos = state.skipChars(pos, marker)
+  const length = pos - begin
+  if (length < 3)
+    return false
+
+  const markup = state.src.slice(begin, pos)
+  const params = state.src.slice(pos, max)
+  if (params.includes(':'))
+    return false
+
+  let nextLine = startLine
+  let hasEndMarker = false
+  for (;;) {
+    nextLine++
+    if (nextLine >= endLine)
+      break
+
+    const lineStart = state.bMarks[nextLine] + state.tShift[nextLine]
+    const lineEnd = state.eMarks[nextLine]
+
+    if (lineStart < lineEnd && state.sCount[nextLine] < state.blkIndent)
+      break
+    if (state.src.charCodeAt(lineStart) !== marker)
+      continue
+    if (state.sCount[nextLine] - state.blkIndent >= 4)
+      continue
+
+    let end = state.skipChars(lineStart, marker)
+    if (end - lineStart < length)
+      continue
+
+    end = state.skipSpaces(end)
+    if (end < lineEnd)
+      continue
+
+    hasEndMarker = true
+    break
+  }
+
+  const indent = state.sCount[startLine]
+  state.line = nextLine + (hasEndMarker ? 1 : 0)
+
+  const token = state.push('qa', 'div', 0)
+  token.info = params
+  token.content = state.getLines(startLine + 1, nextLine, indent, true)
+  token.markup = markup
+  token.map = [startLine, state.line]
+  return true
 }
 
-type FenceArgs = [
-  typeof MarkdownItFence,
-  string,
-  { marker?: string, render: RenderRule },
-]
-function createFence(klass: string, md: MarkdownIt): FenceArgs {
-  return [
-    MarkdownItFence,
-    klass,
-    {
-      marker: ':',
-      render(
-        tokens: Token[],
-        idx: number,
-        options: MarkdownIt.Options,
-        env: any,
-      ) {
-        return qaRender(tokens, idx, options, <MarkdownEnv>env, md)
-      },
-    },
-  ]
+export function qa(md: MarkdownIt, _options: unknown) {
+  md.block.ruler.before('fence', 'qa', qaFence, {
+    alt: ['paragraph', 'reference', 'blockquote', 'list'],
+  })
+  md.renderer.rules.qa = (tokens, index, options, env) =>
+    qaRender(tokens, index, options, env as MarkdownEnv, md)
 }
