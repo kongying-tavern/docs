@@ -25,7 +25,7 @@ const DocReaction = defineAsyncComponent(() => import('../components/doc-reactio
 const ForumSidebar = defineAsyncComponent(() => import('@/src/forum/components/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('@/src/features/settings/SettingsSidebarExtras.vue'))
 const LoginAlertDialog = defineAsyncComponent(() => import('../components/login/LoginAlertDialog.vue'))
-const MediumZoom = defineAsyncComponent(() => import('../components/MediumZoom.vue'))
+const MediumZoom = defineAsyncComponent(() => import('../components/medium-zoom/MediumZoom.vue'))
 const OAuthLoginAlertDialog = defineAsyncComponent(() => import('../components/login/OAuthLoginAlertDialog.vue'))
 const ToastDiagnosticsDialog = defineAsyncComponent(() => import('@/src/components/telemetry/ToastDiagnosticsDialog.vue'))
 const { diagnostics } = useToastDiagnostics()

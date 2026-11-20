@@ -9,7 +9,7 @@ export * from './footer'
 export * from './forum'
 export * from './highlight-targeted-heading'
 export * from './login'
-export { default as MediumZoom } from './MediumZoom.vue'
+export * from './medium-zoom'
 
 export { default as PageAlertRegion } from './PageAlertRegion.vue'
 export { default as QA } from './QA.vue'
