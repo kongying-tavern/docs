@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import '../styles/qa.scss'
+import '../styles/qa.css'
 
 interface QAProps {
   collapsible?: boolean

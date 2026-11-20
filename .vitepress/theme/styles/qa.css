@@ -1,0 +1,82 @@
+.qa p {
+  margin: 0;
+  padding: 0;
+}
+
+.qa + .qa {
+  border-top: 1px solid var(--vp-c-brand);
+}
+
+.qa-summary {
+  margin: 0.5rem 0;
+  padding: 0 0.3rem;
+}
+
+.qa.qa-collapsible .qa-summary {
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.qa:not(.qa-collapsible) .qa-summary {
+  pointer-events: none;
+}
+
+.qa-detail {
+  margin: 0.6rem 0;
+  padding: 0 0.3rem;
+  overflow-y: hidden;
+  transition: height 10s ease;
+}
+
+.qa.qa-opened .qa-detail {
+  height: auto;
+}
+
+.qa:not(.qa-opened) .qa-detail {
+  display: none;
+  height: 0;
+}
+
+.qa-wrapper {
+  align-items: baseline;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.qa-mark {
+  flex: none;
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  background-color: var(--vp-c-brand);
+  vertical-align: middle;
+  text-align: center;
+  font-size: 1.4rem;
+  border-radius: 0.3rem;
+  font-weight: bolder;
+  color: #fff;
+}
+
+.qa-mark-answer {
+  margin-left: 2.2rem;
+}
+
+.qa-content {
+  flex: auto;
+}
+
+.qa-toggle {
+  flex: none;
+  color: var(--vp-c-brand);
+}
+
+.qa-toggle > span {
+  display: inline-block;
+}
+
+.qa-toggle > .icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  vertical-align: sub;
+}
