@@ -1,5 +1,5 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
-import { toCamelCaseObject } from '@theme/utils.ts'
+import { toCamelCaseObject } from '@theme/lib/string.ts'
 import { defineStore } from 'pinia'
 import { computed, readonly, ref, watch } from 'vue'
 import { useTokenManager } from '@/src/forum/composables/auth/useTokenManager.ts'

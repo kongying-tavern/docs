@@ -1,5 +1,5 @@
 import type { ThumbHashCalculated } from '@/src/forum/services/form/imageAttachment.ts'
-import { binaryToBase64 } from '@theme/utils.ts'
+import { binaryToBase64 } from '@theme/lib/base64.ts'
 import { rgbaToThumbHash, thumbHashToDataURL } from 'thumbhash'
 
 export type { ThumbHashCalculated } from '@/src/forum/services/form/imageAttachment.ts'

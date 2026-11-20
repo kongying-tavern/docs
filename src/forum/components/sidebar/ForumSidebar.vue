@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQueryCache } from '@pinia/colada'
 import { FluidHoverList } from '@theme/components/ui/fluid-hover/index.ts'
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { StorageSerializers, useEventListener, useLocalStorage, useMediaQuery, useMounted } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'

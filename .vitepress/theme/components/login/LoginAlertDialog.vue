@@ -8,7 +8,7 @@ import { useAccountLoginExperiment } from '@/src/forum/composables/state/useAcco
 import { useHashChecker } from '@/src/forum/hooks/useHashChecker.ts'
 import useLogin from '@/src/forum/hooks/useLogin.ts'
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
-import { getLangPath } from '../../utils.ts'
+import { getLangPath } from '../../lib/locale.ts'
 import { Alert, AlertTitle } from '../ui/alert/index.ts'
 import { Button } from '../ui/button/index.ts'
 import {

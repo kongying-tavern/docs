@@ -1,6 +1,6 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useQueryCache } from '@pinia/colada'
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { isString } from 'lodash-es'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'

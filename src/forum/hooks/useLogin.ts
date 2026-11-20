@@ -1,6 +1,6 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useQueryCache } from '@pinia/colada'
-import { removeQueryParam } from '@theme/utils.ts'
+import { removeQueryParam } from '@theme/lib/url.ts'
 import { createSharedComposable } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { nextTick, onMounted, ref } from 'vue'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

@@ -1,5 +1,5 @@
 import type { useTokenManager } from '@/src/forum/composables/auth/useTokenManager.ts'
-import { toCamelCaseObject } from '@theme/utils.ts'
+import { toCamelCaseObject } from '@theme/lib/string.ts'
 import { isHTTPError } from 'ky'
 import { ref, watch } from 'vue'
 import { oauth } from '@/src/forum/api/gitee/index.ts'

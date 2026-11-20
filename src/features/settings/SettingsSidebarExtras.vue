@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@theme/components/ui/button/index.ts'
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'

@@ -22,7 +22,7 @@ function fixture(template: 'zh' | 'en' = 'en') {
     '.vitepress/config/localeDirs.ts',
     '.vitepress/config/locales.ts',
     '.vitepress/locales/common.ts',
-    '.vitepress/theme/utils.ts',
+    '.vitepress/theme/lib/link.ts',
   ])
     cpSync(resolve(path), join(root, path))
   cpSync(resolve(`.vitepress/locales/${template}`), join(root, `.vitepress/locales/${template}`), { recursive: true })

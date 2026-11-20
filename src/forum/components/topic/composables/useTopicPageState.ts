@@ -1,5 +1,5 @@
 import { replaceTitle } from '@theme/composables/replaceTitle.ts'
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'

@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue'
 import type { SettingsSectionGroup, SettingsSectionId } from './settingsOptions.ts'
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { useEventListener } from '@vueuse/core'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, onMounted, ref, toValue, watch } from 'vue'

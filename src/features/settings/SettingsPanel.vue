@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SettingsSectionId } from './useSettingsNavigation.ts'
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

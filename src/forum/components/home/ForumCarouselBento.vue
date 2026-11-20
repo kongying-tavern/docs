@@ -2,7 +2,7 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@theme/components/ui/carousel/index.ts'
 import { User } from '@theme/components/ui/user/index.ts'
-import { getLangPath } from '@theme/utils.ts'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

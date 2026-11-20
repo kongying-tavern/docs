@@ -6,7 +6,7 @@ import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 import { load } from 'js-yaml'
 import { entries, fromPairs, isBoolean, isPlainObject, isString } from 'lodash-es'
-import { stringifyProp } from '../../utils.ts'
+import { stringifyProp } from '../../lib/string.ts'
 
 // Native Node cannot strip enums; plain indices keep the parser runtime-neutral.
 const QA_PART = {
