@@ -32,7 +32,7 @@ We recommend joining groups with fewer members. By applying to join a group, you
 
 <script setup lang="ts">
 import { serverLink } from '@/src/features/links/Community'
-import QQGroupList from '@theme/components/QQGroupList.vue'
+import QQGroupList from '@theme/components/qq-group-list/QQGroupList.vue'
 
 const server = [
   serverLink('discord', 'Discord')

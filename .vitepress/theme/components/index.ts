@@ -13,6 +13,6 @@ export * from './medium-zoom'
 
 export * from './page-alert-region'
 export * from './qa'
-export { default as QQGroupList } from './QQGroupList.vue'
+export * from './qq-group-list'
 export { default as SitemapPage } from './SitemapPage.vue'
 export { default as UserAvatar } from './UserAvatar.vue'
