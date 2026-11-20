@@ -29,6 +29,7 @@ const RESERVED_BLOCK_CONTAINERS = new Set([
   'demo',
   'timeline',
   'card',
+  'qa',
 ])
 
 interface BlockState {
