@@ -1,5 +1,5 @@
 import type { ForumRoute } from '@/src/forum/services/forumRoute'
-import { enableTransitions } from '@theme/shared'
+import { enableTransitions } from '@theme/lib/transitions'
 import { nextTick } from 'vue'
 import { forumTopicTransitioning } from '@/src/forum/composables/state/useForumRoute'
 import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'

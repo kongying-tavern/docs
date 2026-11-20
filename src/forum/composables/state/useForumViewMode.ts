@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '@/src/forum/components/types'
-import { enableTransitions } from '@theme/shared'
+import { enableTransitions } from '@theme/lib/transitions'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import { computed, nextTick, toValue } from 'vue'
 import { FORUM_TOPIC_VIEW_MODE_LOCALE_STORE_KEY } from '@/src/forum/components/shared'
