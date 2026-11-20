@@ -5,7 +5,7 @@ import { createApp, h, nextTick, ref, shallowRef } from 'vue'
 /** Exercise mode migration with controlled heights, without network or card setup costs. */
 export async function mountTopicWindowProbe(initialCount = 80) {
   const moduleUrl = '/forum/composables/view/useForumTopicWindow.ts'
-  const { useForumTopicWindow }: typeof import('@/src/forum/composables/view/useForumTopicWindow') = await import(/* @vite-ignore */ moduleUrl)
+  const { useForumTopicWindow }: typeof import('@/src/forum/composables/view/useForumTopicWindow.ts') = await import(/* @vite-ignore */ moduleUrl)
   const original = (document.getElementById('app') as HTMLElement & { __vue_app__: App }).__vue_app__
   const items = Array.from({ length: 160 }, (_, index) => ({ id: `probe-${index}` }) as ForumAPI.Topic)
   const data = shallowRef(items.slice(0, initialCount))

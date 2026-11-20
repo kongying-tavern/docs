@@ -34,7 +34,7 @@ vi.mock('@/src/forum/stores/auth/useUserInfo.ts', () => ({ useUserInfoStore: () 
 // The real toast module renders a Vue component, which this Node-only suite cannot load.
 vi.mock('@/src/services/telemetry/toast.ts', () => ({ toast: { warning() {}, error() {}, success() {}, loading() {}, dismiss() {} } }))
 vi.mock('@/src/forum/composables/view/useImageAttachmentQueue.ts', async (importOriginal) => {
-  const { useImageAttachmentQueue } = await importOriginal<typeof import('@/src/forum/composables/view/useImageAttachmentQueue')>()
+  const { useImageAttachmentQueue } = await importOriginal<typeof import('@/src/forum/composables/view/useImageAttachmentQueue.ts')>()
   return {
     useImageAttachmentQueue: () => useImageAttachmentQueue({
       upload: (file, uploadOptions) => mocks.upload(file, uploadOptions),

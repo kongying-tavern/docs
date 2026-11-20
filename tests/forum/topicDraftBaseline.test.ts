@@ -40,12 +40,12 @@ vi.mock('@/src/forum/composables/auth/useRuleChecks.ts', async () => {
   return { useRuleChecks: () => ({ hasAnyPermissions: () => ref(false) }) }
 })
 vi.mock('@/src/forum/services/form/validation.ts', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/services/form/validation')>(),
+  ...await importOriginal<typeof import('@/src/forum/services/form/validation.ts')>(),
   createTopicFormSchema: () => undefined,
   getAllowedTopicTypes: () => ['BUG', 'FEAT'],
 }))
 vi.mock('@/src/forum/components/form/publish-topic-form/form-config.ts', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/components/form/publish-topic-form/form-config')>(),
+  ...await importOriginal<typeof import('@/src/forum/components/form/publish-topic-form/form-config.ts')>(),
   getFormTabsConfig: () => [],
 }))
 

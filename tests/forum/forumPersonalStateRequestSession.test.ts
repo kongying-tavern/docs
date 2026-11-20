@@ -5,7 +5,7 @@ import { clearApiCache } from '@/src/forum/api/gitee/index.ts'
 import { getAuthSession, registerAuthSessionAccessor } from '@/src/services/authSession.ts'
 
 vi.mock('../../src/services/apiUtils.ts', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/services/apiUtils')>(),
+  ...await importOriginal<typeof import('@/src/services/apiUtils.ts')>(),
   isNodeEnvironment: () => false,
 }))
 
