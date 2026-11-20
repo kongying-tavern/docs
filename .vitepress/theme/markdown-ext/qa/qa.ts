@@ -6,13 +6,14 @@ import type Token from 'markdown-it/lib/token.mjs'
 import type { MarkdownEnv } from 'vitepress'
 import { load } from 'js-yaml'
 import { entries, fromPairs, isBoolean, isPlainObject, isString } from 'lodash-es'
-import { stringifyProp } from '../../utils'
+import { stringifyProp } from '../../utils.ts'
 
-enum QAPartEnum {
-  CONFIG,
-  SUMMARY,
-  DETAIL,
-}
+// Native Node cannot strip enums; plain indices keep the parser runtime-neutral.
+const QA_PART = {
+  CONFIG: 0,
+  SUMMARY: 1,
+  DETAIL: 2,
+} as const
 
 interface QAParts {
   summary?: string
@@ -36,7 +37,7 @@ function parseChunks(chunks: string[]): QAParts {
   }
 
   // Split lines
-  let curIter: number = QAPartEnum.CONFIG
+  let curIter: number = QA_PART.CONFIG
   let tagLevels: number[] = []
   let lines: [string[], string[], string[]] = [[], [], []]
   for (const chunk of chunks) {
@@ -63,7 +64,7 @@ function parseChunks(chunks: string[]): QAParts {
 
   // Re-arrange config, summary and detail
   const hasConfig: boolean
-    = lines[QAPartEnum.CONFIG].findIndex(
+    = lines[QA_PART.CONFIG].findIndex(
       text => CONFIG_LABEL_TEST === text.trim(),
     ) !== -1
   if (hasConfig) {
@@ -80,8 +81,8 @@ function parseChunks(chunks: string[]): QAParts {
 
   // Parse config
   try {
-    if (lines[QAPartEnum.CONFIG].length > 0) {
-      const config: unknown = load(lines[QAPartEnum.CONFIG].join('\n').trim())
+    if (lines[QA_PART.CONFIG].length > 0) {
+      const config: unknown = load(lines[QA_PART.CONFIG].join('\n').trim())
       const parsedConfig = checkQAProps(config)
       parts.config = parsedConfig
     }
@@ -92,8 +93,8 @@ function parseChunks(chunks: string[]): QAParts {
   }
 
   // Set summary & detail
-  parts.summary = lines[QAPartEnum.SUMMARY].join('\n')
-  parts.detail = lines[QAPartEnum.DETAIL].join('\n')
+  parts.summary = lines[QA_PART.SUMMARY].join('\n')
+  parts.detail = lines[QA_PART.DETAIL].join('\n')
 
   return parts
 }
