@@ -30,9 +30,6 @@ export const markdownConfig: MarkdownOptions = {
     lazyLoad: true,
   },
   preConfig(md) {
-    // demo must stay before Comark, otherwise `:::: demo` is parsed as
-    // an MDC block component and never reaches the demo container plugin.
-    md.use(MarkdownExtDemo)
     md.use(comark, {
       syntax: {
         inlineProps: false,
@@ -45,6 +42,7 @@ export const markdownConfig: MarkdownOptions = {
   config(md) {
     md.use(MarkdownExtColorPreview)
     md.use(MarkdownExtCard)
+    md.use(MarkdownExtDemo)
     md.use(MarkdownExtQA)
     md.use(sub)
     md.use(sup)

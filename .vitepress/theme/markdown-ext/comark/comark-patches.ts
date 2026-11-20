@@ -11,7 +11,8 @@ const RE_INLINE_COMPONENT_NAME = /^:([\w$-]+)/
 
 /**
  * 容器名保留名单:这些名字由 VitePress 内置容器(tip/raw/…)或
- * `config` 阶段的站点插件(timeline/card/…)处理,Comark 必须让出。
+ * `config` 阶段的站点插件(timeline/card/demo/…)处理,Comark 必须让出。
+ * demo 完全依赖本名单让出,注册顺序不再兜底,不可从名单移除。
  */
 const RESERVED_BLOCK_CONTAINERS = new Set([
   'tip',

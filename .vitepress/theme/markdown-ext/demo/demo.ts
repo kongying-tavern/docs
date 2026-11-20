@@ -4,8 +4,8 @@ import { demo } from '@mdit/plugin-demo'
 
 /**
  * `:::: demo` 折叠容器：把示例源码渲染进 <details>，结果与源码分离。
- * 必须在 Comark 之前注册，否则 `:::: demo` 会被当成 MDC 块组件吞掉，
- * 永远到不了 demo 容器插件。
+ * Comark 的块规则通过 RESERVED_BLOCK_CONTAINERS 名单让出 `demo`，
+ * 因此本插件无需抢在 Comark 之前注册。
  */
 export const MarkdownExtDemo: PluginSimple = (md) => {
   md.use(demo, {
