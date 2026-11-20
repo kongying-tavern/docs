@@ -12,7 +12,7 @@ import { reactionEnvironmentForOrigin, recordPublishedTopicQuote } from '@/src/f
 import { buildTopicCreationLabels } from '@/src/forum/services/forumTopicLabels.ts'
 import { buildPublishedTopicTitle } from '@/src/forum/services/forumTopicTitle.ts'
 import { getForumLocaleLabelGetter } from '@/src/forum/services/getForumLocaleGetter.ts'
-import { toast } from '@/src/services/telemetry/toast.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
 
 const localeLabelGetter = getForumLocaleLabelGetter()
 

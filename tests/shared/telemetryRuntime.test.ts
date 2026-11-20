@@ -8,13 +8,13 @@ import { test } from 'vitest'
 import { ref, shallowRef, watch } from 'vue'
 
 const telemetryDir = fileURLToPath(new URL('../../src/services/telemetry/', import.meta.url))
-type ModuleAPI = typeof import('@/src/services/telemetry/clarity')
-  & typeof import('@/src/services/telemetry/capture')
-  & typeof import('@/src/services/telemetry/settings')
-  & typeof import('@/src/services/telemetry/session')
-  & typeof import('@/src/services/telemetry/ops')
-  & typeof import('@/src/services/telemetry/pageAlert')
-  & typeof import('@/src/forum/composables/auth/executeWithAuth')
+type ModuleAPI = typeof import('@/src/services/telemetry/clarity.ts')
+  & typeof import('@/src/services/telemetry/capture.ts')
+  & typeof import('@/src/services/telemetry/settings.ts')
+  & typeof import('@/src/services/telemetry/session.ts')
+  & typeof import('@/src/services/telemetry/ops.ts')
+  & typeof import('@/src/services/telemetry/pageAlert.ts')
+  & typeof import('@/src/forum/composables/auth/executeWithAuth.ts')
 
 function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
   const calls: unknown[][] = []
@@ -59,7 +59,7 @@ function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
           return { telemetryLog: { info() {}, error() {} }, TelemetryLogGroup: {} }
         if (dependency === './toast')
           return { toast: { error() {} } }
-        if (dependency === '@/src/services/telemetry/toast')
+        if (dependency === '@/src/services/telemetry/index' || dependency === '@/src/services/telemetry/toast')
           return { toast: { error: (_message: string, options: unknown) => toasts.push(options) } }
         if (dependency === '@/src/forum/composables/auth/auth-helpers')
           return { withAuth: { execute: (action: () => Promise<unknown>) => action() } }

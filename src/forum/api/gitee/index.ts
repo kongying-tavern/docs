@@ -1,6 +1,6 @@
 import type { KyResponse } from 'ky'
 import type { ApiCallOptions, ApiResult, HttpMethod } from './types.ts'
-import { reportRequestFailure } from '@/src/services/telemetry/request.ts'
+import { reportRequestFailure } from '@/src/services/telemetry/index.ts'
 import { fetcher, prepareRequest } from './client.ts'
 import { toGiteeAPIError } from './errors.ts'
 import * as gists from './gists.ts'

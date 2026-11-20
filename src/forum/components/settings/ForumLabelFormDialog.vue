@@ -21,7 +21,7 @@ import {
   validateForumLabelColor,
   validateForumLabelName,
 } from '@/src/forum/services/forumLabelTaxonomy.ts'
-import { toast } from '@/src/services/telemetry/toast.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
 import { isVisibleFeedback } from '@/src/utils/isVisibleFeedback.ts'
 
 const props = defineProps<{

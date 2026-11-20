@@ -14,7 +14,7 @@ import { useTopicTypeMenu } from '@/src/forum/composables/state/useTopicTypeMenu
 import { useTopicOperationFeedback } from '@/src/forum/composables/view/useTopicOperationFeedback.ts'
 import { getSelectableTopicStatuses } from '@/src/forum/services/forumTopicStatus.ts'
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
-import { toast } from '@/src/services/telemetry/toast.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
 import { useReactionStats } from '../data/useReactionStats.ts'
 import { useTopicReactionState } from '../data/useTopicsReaction.ts'
 import { useTopicTagsEditor } from '../state/useTopicTagsEditor.ts'

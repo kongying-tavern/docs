@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger } from '@theme/components/ui/tabs/index.ts'
 import { computed, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
-import { toast } from '@/src/services/telemetry/toast.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
 import {
   DEFAULT_TOAST_DURATION,
   isToastPosition,

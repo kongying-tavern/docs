@@ -15,9 +15,8 @@ import { createCommentFormSchema } from '@/src/forum/services/form/validation.ts
 import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig.ts'
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
 import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
-import { OpsEvents, trackOp } from '@/src/services/telemetry/index.ts'
+import { OpsEvents, toast, trackOp } from '@/src/services/telemetry/index.ts'
 import { showPageAlert } from '@/src/services/telemetry/pageAlert.ts'
-import { toast } from '@/src/services/telemetry/toast.ts'
 import { formatImageAttachmentError } from '../../utils/submitFormUi.ts'
 
 export function useCommentComposer(options: { repo: ForumAPI.Repo, topicId: string, topic?: ForumAPI.Topic }, onSubmitted: (comment: ForumAPI.Comment) => void) {

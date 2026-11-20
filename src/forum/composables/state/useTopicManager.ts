@@ -9,7 +9,7 @@ import {
   toggleTopicLabel,
 } from '@/src/forum/services/forumTopicLabels.ts'
 import { replaceTopicStatus, topicStatusHidesTopic } from '@/src/forum/services/forumTopicStatus.ts'
-import { toast } from '@/src/services/telemetry/toast.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
 import { useForumTopicMutations } from '../data/useForumMutations.ts'
 import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from '../util/composeTopicBody.ts'
 

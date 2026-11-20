@@ -19,8 +19,7 @@ import {
 } from '@/src/forum/services/forumReaction.ts'
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
 import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
-import { OpsEvents, trackOp } from '@/src/services/telemetry/index.ts'
-import { toast } from '@/src/services/telemetry/toast.ts'
+import { OpsEvents, toast, trackOp } from '@/src/services/telemetry/index.ts'
 
 export type { TopicReaction } from '@/src/forum/services/forumReaction.ts'
 
