@@ -7,7 +7,7 @@ import { markRaw } from 'vue'
 import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute'
 import { transitionForumBlog, transitionForumRoute } from '@/src/forum/router/forumViewTransition'
 import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '@/src/forum/services/forumRoute'
-import { AsyncForumRouteView } from '../components/AsyncForumRouteView'
+import { AsyncForumRouteView } from '../components/forum'
 import { getLangPath } from '../utils'
 
 const FORUM_TITLES: Record<string, string> = {

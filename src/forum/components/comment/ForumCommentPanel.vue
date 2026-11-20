@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types'
-import { forumLayoutReadyKey } from '@theme/components/forumStartup'
+import { forumLayoutReadyKey } from '@theme/components/forum'
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from '@theme/components/ui/empty'
 import { useElementBounding, useElementSize, useEventListener, useIntersectionObserver, useMediaQuery, useMutationObserver, watchOnce } from '@vueuse/core'
 import { computed, inject, nextTick, ref, useTemplateRef, watch } from 'vue'

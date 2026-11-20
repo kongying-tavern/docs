@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
 import ForumGlobalDialogs from '@/src/forum/components/layout/ForumGlobalDialogs.vue'
-import ForumEntry from '../components/ForumEntry.vue'
+import { ForumEntry } from '../components/forum'
 import PageAlertRegion from '../components/PageAlertRegion.vue'
 
 let previousScrollRestoration: ScrollRestoration | undefined
