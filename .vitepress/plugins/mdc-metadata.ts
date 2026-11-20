@@ -14,6 +14,7 @@ const themeDir = resolve(themeEntry, '..')
 const compDir = normalizePath(resolve(projectRoot, '.vitepress/theme/components'))
 const PASCAL_BOUNDARY_RE = /([a-z0-9])([A-Z])/g
 const BARREL_EXPORT_RE = /export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*['"](.+\.vue)['"]/g
+const NAMED_EXPORT_RE = /export\s*\{([^}]+)\}\s*from\s*['"]([^'"]+)['"]/g
 const COMPONENT_IMPORT_RE = /import\s+(\w+)\s+from\s+['"](.+\.vue)['"]/g
 const GLOBAL_REGISTRATION_RE = /app\.component\s*\(\s*['"]([^'"]+)['"]\s*,\s*(\w+)\s*\)/g
 
@@ -49,16 +50,38 @@ function extractProps(meta: ComponentMeta): MdcProp[] {
     }))
 }
 
+/** `default as Foo, Bar` → [`Foo`, `Bar`]; tolerates `type` modifiers and renames. */
+function exportClauseNames(clause: string): string[] {
+  return clause.split(',')
+    .map(part => part.trim().replace(/^type\s+/, '').replace(/^default\s+as\s+/, ''))
+    .filter(Boolean)
+}
+
 /** Parse the theme barrel and index.ts to find globally-registered component file paths. */
-function resolveGlobalComponents(): Map<string, string> {
+export function resolveGlobalComponents(): Map<string, string> {
   const components = new Map<string, string>()
 
-  // 1. ui/index.ts barrel: `export { default as Foo } from './Foo.vue'`
+  // 1. ui/index.ts barrel: `export { default as Foo } from './Foo.vue'`, or a
+  //    named re-export routed through the component directory: `export { Foo } from './foo'`
   const uiIndex = resolve(compDir, 'ui/index.ts')
   if (existsSync(uiIndex)) {
     const src = readFileSync(uiIndex, 'utf-8')
-    for (const m of src.matchAll(BARREL_EXPORT_RE)) {
-      components.set(m[1], resolve(resolve(uiIndex, '..'), m[2]))
+    for (const m of src.matchAll(NAMED_EXPORT_RE)) {
+      const names = exportClauseNames(m[1])
+      const specifier = m[2]
+      if (specifier.endsWith('.vue')) {
+        for (const name of names)
+          components.set(name, resolve(resolve(uiIndex, '..'), specifier))
+        continue
+      }
+      // Directory barrel: resolve each requested name through its index.ts.
+      const barrel = resolve(resolve(uiIndex, '..'), specifier, 'index.ts')
+      if (!existsSync(barrel))
+        continue
+      for (const inner of readFileSync(barrel, 'utf-8').matchAll(BARREL_EXPORT_RE)) {
+        if (names.includes(inner[1]))
+          components.set(inner[1], resolve(resolve(barrel, '..'), inner[2]))
+      }
     }
   }
 
