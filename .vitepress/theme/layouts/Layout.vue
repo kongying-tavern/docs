@@ -20,7 +20,7 @@ import { useThemeTransition } from '../hooks/useThemeTransition'
 import '../styles/main.css'
 
 const { Layout } = DefaultTheme
-const DocAside = defineAsyncComponent(() => import('../components/DocAside.vue'))
+const DocAside = defineAsyncComponent(() => import('../components/doc-aside/DocAside.vue'))
 const DocReaction = defineAsyncComponent(() => import('../components/doc-reaction/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('@/src/forum/components/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('@/src/features/settings/SettingsSidebarExtras.vue'))
