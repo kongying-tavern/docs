@@ -3,7 +3,6 @@ import type { MarkdownOptions } from 'vitepress'
 
 import comark from '@comark/markdown-it'
 import { abbr } from '@mdit/plugin-abbr'
-import { demo } from '@mdit/plugin-demo'
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImgSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
@@ -13,6 +12,7 @@ import { MarkdownExtCard } from '../theme/markdown-ext/card/index.ts'
 import { MarkdownExtColorPreview } from '../theme/markdown-ext/color-preview/index.ts'
 import { applyComarkPatches } from '../theme/markdown-ext/comark/index.ts'
 import { MarkdownExtCustomColor } from '../theme/markdown-ext/custom-color/index.ts'
+import { MarkdownExtDemo } from '../theme/markdown-ext/demo/index.ts'
 import { MarkdownExtDocHeaderTitle } from '../theme/markdown-ext/doc-header-title/index.ts'
 import { MarkdownExtEmoji } from '../theme/markdown-ext/emoji/index.ts'
 import { MarkdownExtKbd } from '../theme/markdown-ext/kbd/index.ts'
@@ -30,31 +30,9 @@ export const markdownConfig: MarkdownOptions = {
     lazyLoad: true,
   },
   preConfig(md) {
-    // `demo` must run before Comark, otherwise `:::: demo` is parsed as
+    // demo must stay before Comark, otherwise `:::: demo` is parsed as
     // an MDC block component and never reaches the demo container plugin.
-    md.use(demo, {
-      openRender: () => {
-        return '<details class="vp-container vp-md-demo">'
-      },
-      closeRender: () => {
-        return '</details>'
-      },
-      contentOpenRender: () => {
-        return [
-          '<summary class="demo-content">',
-          '<div class="vp-container-header">',
-          '<button type="button" title="toggle" class="vp-md-demo-toggle-button"></button>',
-          '</div>',
-          '<div class="vp-md-demo-display">',
-        ].join('')
-      },
-      contentCloseRender: () => {
-        return [
-          '</div>',
-          '</summary>',
-        ].join('')
-      },
-    })
+    md.use(MarkdownExtDemo)
     md.use(comark, {
       syntax: {
         inlineProps: false,
