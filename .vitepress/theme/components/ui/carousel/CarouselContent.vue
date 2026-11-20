@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { WithClassAsProps } from './interface.ts'
+import type { WithClassAsProps } from './types.ts'
 import { cn } from '../../../lib/utils.ts'
 import { useCarousel } from './useCarousel.ts'
 

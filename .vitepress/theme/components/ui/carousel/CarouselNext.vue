@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ButtonVariants } from '../button/index.ts'
-import type { WithClassAsProps } from './interface.ts'
+import type { WithClassAsProps } from './types.ts'
 import { ArrowRight } from '@lucide/vue'
 import { cn } from '../../../lib/utils.ts'
 import { Button } from '../button/index.ts'
