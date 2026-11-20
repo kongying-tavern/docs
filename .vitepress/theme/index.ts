@@ -26,7 +26,7 @@ import 'uno.css'
 
 const pinia = createPinia()
 const AccordionPanels = defineAsyncComponent(() => import('./components/ui/AccordionPanels.vue'))
-const Card = defineAsyncComponent(() => import('./components/card/Card.vue'))
+const Card = defineAsyncComponent(() => import('./markdown-ext/card/Card.vue'))
 const Coins = defineAsyncComponent(() => import('./components/coins/Coins.vue'))
 const Emoji = defineAsyncComponent(() => import('./components/ui/Emoji.vue'))
 const Forum = defineAsyncComponent(loadForumLayout)
@@ -35,9 +35,9 @@ const LinkGrid = defineAsyncComponent(() => import('./components/ui/LinkGrid.vue
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))
-const QA = defineAsyncComponent(() => import('./components/qa/QA.vue'))
+const QA = defineAsyncComponent(() => import('./markdown-ext/qa/QA.vue'))
 const QQGroupList = defineAsyncComponent(() => import('./components/qq-group-list/QQGroupList.vue'))
-const ScratchToReveal = defineAsyncComponent(() => import('./components/ui/ScratchToReveal.vue'))
+const ScratchToReveal = defineAsyncComponent(() => import('./markdown-ext/spoiler/ScratchToReveal.vue'))
 const SitemapPage = defineAsyncComponent(() => import('./components/sitemap-page/SitemapPage.vue'))
 
 export default {
