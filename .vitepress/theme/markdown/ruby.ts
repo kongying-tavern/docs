@@ -105,7 +105,7 @@ const rubyRule: RuleInline = (state, silent) => {
   return true
 }
 
-export const ruby: PluginSimple = (md) => {
+export const MarkdownExtRuby: PluginSimple = (md) => {
   // Must run before emphasis & comark's mdc_inline_props; otherwise '*'
   // is consumed by emphasis or '{…}' is consumed as inline props.
   // Also: return true in silent mode so the 'text' rule stops before '*'.

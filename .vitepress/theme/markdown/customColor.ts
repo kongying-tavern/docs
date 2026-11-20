@@ -3,7 +3,7 @@ import type StateInline from 'markdown-it/lib/rules_inline/state_inline.mjs'
 
 const CUSTOM_COLOR_TAG_REGEX = /^\{color:([^}]+)\}(.*?)\{\/color\}/
 
-function MarkdownItCustomColor(md: MarkdownIt): void {
+function MarkdownExtCustomColor(md: MarkdownIt): void {
   md.inline.ruler.before(
     'emphasis',
     'custom_color',
@@ -39,4 +39,4 @@ function MarkdownItCustomColor(md: MarkdownIt): void {
   )
 }
 
-export default MarkdownItCustomColor
+export default MarkdownExtCustomColor

@@ -9,7 +9,7 @@ import type Token from 'markdown-it/lib/token.mjs'
  * VitePress plugin to add `medium-zoom` lightbox to images.
  * @param {MarkdownIt} md - Markdown instance.
  */
-const MarkdownItLightbox: PluginSimple = (md: MarkdownIt) => {
+const MarkdownExtLightbox: PluginSimple = (md: MarkdownIt) => {
   const imageRule = md.renderer.rules.image as RenderRule
 
   md.renderer.rules.image = (
@@ -27,4 +27,4 @@ const MarkdownItLightbox: PluginSimple = (md: MarkdownIt) => {
   }
 }
 
-export default MarkdownItLightbox
+export default MarkdownExtLightbox

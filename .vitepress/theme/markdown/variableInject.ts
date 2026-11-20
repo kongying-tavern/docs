@@ -16,7 +16,7 @@ function resolveEmojiShortcodes(value: string): string {
 
 const VARIABLE_USAGE_REGEX = /^\{%=\s*(\w+)\s*%\}/
 
-function MarkdownItVariableInject(md: MarkdownIt): void {
+function MarkdownExtVariableInject(md: MarkdownIt): void {
   const variables: Record<string, string> = {}
 
   md.inline.ruler.before(
@@ -81,4 +81,4 @@ function MarkdownItVariableInject(md: MarkdownIt): void {
   )
 }
 
-export default MarkdownItVariableInject
+export default MarkdownExtVariableInject

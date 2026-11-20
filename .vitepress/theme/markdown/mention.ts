@@ -7,7 +7,7 @@ import teamMember from '../../../src/data/teamMemberList.gen.json' with { type: 
 
 const WHITE_LIST: ForumAPI.User[] = [...feedbackRepoMember.data, ...teamMember.data, ...blogMember.data]
 
-const MarkdownItMention: PluginSimple = (md: MarkdownIt) => {
+const MarkdownExtMention: PluginSimple = (md: MarkdownIt) => {
   md.inline.ruler.push('mention', (state, silent) => {
     const start = state.pos
     const max = state.posMax
@@ -52,4 +52,4 @@ const MarkdownItMention: PluginSimple = (md: MarkdownIt) => {
   })
 }
 
-export default MarkdownItMention
+export default MarkdownExtMention

@@ -98,7 +98,7 @@ function patchTimelineHeadingIds(md: MarkdownInstance, klass: string) {
   }
 }
 
-const MarkdownItTimeline: PluginSimple = (md) => {
+const MarkdownExtTimeline: PluginSimple = (md) => {
   const klass = 'timeline'
 
   patchTimelineHeadingIds(md, klass)
@@ -188,4 +188,4 @@ const MarkdownItTimeline: PluginSimple = (md) => {
   )
 }
 
-export default MarkdownItTimeline
+export default MarkdownExtTimeline

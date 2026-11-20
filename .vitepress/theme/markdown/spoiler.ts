@@ -10,7 +10,7 @@ import type Token from 'markdown-it/lib/token.mjs'
 
 const SPOILER_CONTENT_REGEX = /^([^{]*)\{([^}]+)\}$/
 
-export interface MarkdownItSpoilerOptions {
+export interface MarkdownExtSpoilerOptions {
   /**
    * @default "span"
    */
@@ -137,7 +137,7 @@ const tokenize: RuleInline = (state, silent) => {
  * Walk through delimiter list and replace text tokens with tags
  *
  */
-function postProcess(state: StateInline, delimiters: Delimiter[], { tag, attrs }: Required<MarkdownItSpoilerOptions>): void {
+function postProcess(state: StateInline, delimiters: Delimiter[], { tag, attrs }: Required<MarkdownExtSpoilerOptions>): void {
   let token
   const loneMarkers = []
   const max = delimiters.length
@@ -198,12 +198,12 @@ function postProcess(state: StateInline, delimiters: Delimiter[], { tag, attrs }
   }
 }
 
-export const spoiler: PluginWithOptions<MarkdownItSpoilerOptions> = (
+export const MarkdownExtSpoiler: PluginWithOptions<MarkdownExtSpoilerOptions> = (
   md,
   {
     tag = '', // Use empty tag for custom rendering
     attrs = [],
-  }: MarkdownItSpoilerOptions = {},
+  }: MarkdownExtSpoilerOptions = {},
 ) => {
   md.inline.ruler.before('emphasis', 'spoiler', tokenize)
   md.inline.ruler2.before('emphasis', 'spoiler', (state) => {

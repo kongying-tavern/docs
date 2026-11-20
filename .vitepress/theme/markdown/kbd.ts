@@ -55,7 +55,7 @@ function parseSequence(source: string): string[][] | null {
   return pushKey() ? sequence : null
 }
 
-const kbd: PluginSimple = (md) => {
+const MarkdownExtKbd: PluginSimple = (md) => {
   md.inline.ruler.before('link', 'kbd', (state, silent) => {
     const start = state.pos
     // Link-label probing must balance brackets rather than treat shortcuts as links.
@@ -149,4 +149,4 @@ const kbd: PluginSimple = (md) => {
   }
 }
 
-export default kbd
+export default MarkdownExtKbd

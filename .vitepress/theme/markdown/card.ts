@@ -99,7 +99,7 @@ ${content}
   return ''
 }
 
-const MarkdownItCard: PluginSimple = (md) => {
+const MarkdownExtCard: PluginSimple = (md) => {
   // add card container
   md.use(container, {
     name: 'card',
@@ -126,4 +126,4 @@ const MarkdownItCard: PluginSimple = (md) => {
   md.renderer.rules.card = cardRender
 }
 
-export default MarkdownItCard
+export default MarkdownExtCard

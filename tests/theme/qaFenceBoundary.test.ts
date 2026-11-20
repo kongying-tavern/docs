@@ -2,12 +2,12 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
-import { qa } from '~/theme/markdown/qa'
+import { MarkdownExtQA } from '~/theme/markdown/qa'
 
 test('qa fence ignores colon containers it does not own', async () => {
   const markdown = await createMarkdownRenderer(resolve('pages'), {
     config(md) {
-      md.use(qa, {})
+      md.use(MarkdownExtQA, {})
     },
   })
   const html = await markdown.renderAsync(`:::qa

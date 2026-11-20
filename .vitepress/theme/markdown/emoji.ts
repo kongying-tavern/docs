@@ -22,7 +22,7 @@ function initEmojiCache() {
 
 const EMOJI_PATH_REGEX: RegExp = /^:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/
 
-const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
+const MarkdownExtEmoji: PluginSimple = (md: MarkdownIt) => {
   initEmojiCache()
 
   // 匹配 :数字.中文或英文/中文或英文-中文或英文.png: 格式
@@ -72,4 +72,4 @@ const MarkdownItEmoji: PluginSimple = (md: MarkdownIt) => {
   }
 }
 
-export default MarkdownItEmoji
+export default MarkdownExtEmoji

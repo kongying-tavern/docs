@@ -7,7 +7,7 @@ const NON_ASCII_NUMERIC_REGEX = /\P{ASCII}\p{Nd}/gu
 
 const NON_HEX_REGEX = /[^#0-9a-f]/gi
 
-function MarkdownItColorPreview(md: MarkdownIt) {
+function MarkdownExtColorPreview(md: MarkdownIt) {
   const replaceColor = (colorStr: string) => {
     colorStr = colorStr.trim()
     let color = colorStr.replace(NON_ASCII_NUMERIC_REGEX, '')
@@ -32,4 +32,4 @@ function MarkdownItColorPreview(md: MarkdownIt) {
   }
 }
 
-export default MarkdownItColorPreview
+export default MarkdownExtColorPreview

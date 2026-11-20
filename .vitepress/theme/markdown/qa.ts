@@ -195,7 +195,7 @@ const qaFence: RuleBlock = (state: StateBlock, startLine: number, endLine: numbe
   return true
 }
 
-export function qa(md: MarkdownIt, _options: unknown) {
+export function MarkdownExtQA(md: MarkdownIt, _options: unknown) {
   md.block.ruler.before('fence', 'qa', qaFence, {
     alt: ['paragraph', 'reference', 'blockquote', 'list'],
   })
