@@ -19,7 +19,7 @@ const TRAILING_SLASH_PATH_REGEX = /\/$/
 
 // single quote will break @vue/compiler-sfc
 export function stringifyProp(data: unknown): string {
-  return JSON.stringify(data).replace(SINGLE_QUOTE_REGEX, '&#39')
+  return JSON.stringify(data).replace(SINGLE_QUOTE_REGEX, '&#39;')
 }
 
 /**
