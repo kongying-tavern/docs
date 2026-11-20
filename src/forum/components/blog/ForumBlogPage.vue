@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { BlogPost } from '@/src/utils/createBlogLoader'
-import Avatar from '@theme/components/ui/avatar/Avatar.vue'
+import { Avatar } from '@theme/components/ui/avatar'
 import { FluidHoverList } from '@theme/components/ui/fluid-hover'
-import Time from '@theme/components/ui/time/Time.vue'
+import { Time } from '@theme/components/ui/time'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { DEFAULT_LOCALE } from '@/src/constants/site'

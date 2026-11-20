@@ -1,5 +1,5 @@
 import type { FORUM } from '../../types'
-import { SELECT_TRIGGER_CLASSES } from '@theme/components/ui/select/styles'
+import { SELECT_TRIGGER_CLASSES } from '@theme/components/ui/select'
 
 /**
  * 单选下拉的统一选项模型：桌面（SelectContent）与移动端（底部抽屉）共用，

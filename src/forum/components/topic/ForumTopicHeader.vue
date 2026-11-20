@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import type ForumAPI from '@/src/forum/api/types'
-import User from '@theme/components/ui/user/User.vue'
+import { User } from '@theme/components/ui/user'
 import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FORUM } from '../types'
 import type ForumAPI from '@/src/forum/api/types'
-import Avatar from '@theme/components/ui/avatar/Avatar.vue'
+import { Avatar } from '@theme/components/ui/avatar'
 import { Button } from '@theme/components/ui/button'
 import { useDebounceFn, useElementBounding, useEventListener, useMediaQuery } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'

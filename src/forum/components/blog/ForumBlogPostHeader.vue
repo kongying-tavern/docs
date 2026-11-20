@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Avatar from '@theme/components/ui/avatar/Avatar.vue'
-import Time from '@theme/components/ui/time/Time.vue'
+import { Avatar } from '@theme/components/ui/avatar'
+import { Time } from '@theme/components/ui/time'
 import { useData, useRoute } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'

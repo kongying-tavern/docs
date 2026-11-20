@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Time from '@theme/components/ui/time/Time.vue'
+import { Time } from '@theme/components/ui/time'
 import { useData } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
 import { DEFAULT_LOCALE } from '@/src/constants/site'

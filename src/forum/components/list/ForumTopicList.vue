@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TopicTranslationSnapshot } from '../topic/ForumTopicTranslator.vue'
 import type ForumAPI from '@/src/forum/api/types'
-import Divider from '@theme/components/ui/divider/Divider.vue'
+import { Divider } from '@theme/components/ui/divider'
 import { FluidHoverList } from '@theme/components/ui/fluid-hover'
-import Separator from '@theme/components/ui/separator/Separator.vue'
+import { Separator } from '@theme/components/ui/separator'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, nextTick, onActivated, onDeactivated, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'

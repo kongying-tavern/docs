@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Separator from '@theme/components/ui/separator/Separator.vue'
+import { Separator } from '@theme/components/ui/separator'
 import { Skeleton } from '@theme/components/ui/skeleton'
 import { createReusableTemplate, useWindowSize } from '@vueuse/core'
 import { computed } from 'vue'

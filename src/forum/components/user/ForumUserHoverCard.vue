@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types'
-import Avatar from '@theme/components/ui/avatar/Avatar.vue'
+import { Avatar } from '@theme/components/ui/avatar'
 import { Button } from '@theme/components/ui/button'
 import {
   HoverCard,

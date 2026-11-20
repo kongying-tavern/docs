@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types'
-import User from '@theme/components/ui/user/User.vue'
+import { User } from '@theme/components/ui/user'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useForumTopicTimelineQuery } from '@/src/forum/composables/data/useForumQueries'
