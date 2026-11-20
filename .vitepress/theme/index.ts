@@ -38,7 +38,7 @@ const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/compo
 const QA = defineAsyncComponent(() => import('./components/qa/QA.vue'))
 const QQGroupList = defineAsyncComponent(() => import('./components/qq-group-list/QQGroupList.vue'))
 const ScratchToReveal = defineAsyncComponent(() => import('./components/ui/ScratchToReveal.vue'))
-const SitemapPage = defineAsyncComponent(() => import('./components/SitemapPage.vue'))
+const SitemapPage = defineAsyncComponent(() => import('./components/sitemap-page/SitemapPage.vue'))
 
 export default {
   extends: DefaultTheme,
