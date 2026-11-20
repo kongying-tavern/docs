@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { detectShortcutPlatform, resolveShortcutKey } from '@theme/lib/keyboard'
+import { detectShortcutPlatform, resolveShortcutKey } from '@theme/lib/keyboard.ts'
 import { test } from 'vitest'
 
 test('platform detection has safe fallbacks for Apple, Windows, Linux and unknown clients', () => {

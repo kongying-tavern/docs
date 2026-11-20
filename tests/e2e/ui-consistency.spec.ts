@@ -1,6 +1,6 @@
-import { currentUser, localAuth } from './fixtures/gitee'
-import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules'
-import { expect, test } from './support/test'
+import { currentUser, localAuth } from './fixtures/gitee.ts'
+import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules.ts'
+import { expect, test } from './support/test.ts'
 
 test('mobile notifications stay at the top center and desktop preferences survive resizing', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 })

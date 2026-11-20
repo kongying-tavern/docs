@@ -1,5 +1,5 @@
-import { localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 async function signalLoadFailure(page: import('@playwright/test').Page): Promise<void> {
   await page.evaluate(() => {

@@ -1,21 +1,21 @@
-import type { PythonEnvironment } from './font_subset/config'
-import type { SiteFontCodepoints } from './font_subset/files'
+import type { PythonEnvironment } from './font_subset/config.ts'
+import type { SiteFontCodepoints } from './font_subset/files.ts'
 import { appendFileSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { createMarkdownRenderer } from 'vitepress'
-import { markdownConfig } from '~/config/markdown'
-import { FontArtifacts } from './font_subset/artifacts'
+import { markdownConfig } from '~/config/markdown.ts'
+import { FontArtifacts } from './font_subset/artifacts.ts'
 import {
   loadFontSubsetConfig,
   resolveFontSubsetPaths,
-} from './font_subset/config'
-import { collectSiteCodepoints } from './font_subset/files'
-import { calculateFontInputHashes } from './font_subset/inputs'
-import { createFontBuildManifest } from './font_subset/manifest'
-import { detectPython, runProcess } from './font_subset/process'
+} from './font_subset/config.ts'
+import { collectSiteCodepoints } from './font_subset/files.ts'
+import { calculateFontInputHashes } from './font_subset/inputs.ts'
+import { createFontBuildManifest } from './font_subset/manifest.ts'
+import { detectPython, runProcess } from './font_subset/process.ts'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const projectRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')

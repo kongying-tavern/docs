@@ -5,17 +5,17 @@ import { effectScope, ref } from 'vue'
 // 解析结果依赖真实文案：en 的状态与标签显示名带空格（"Not planned"、"Documentation issue"）
 vi.mock('vue-i18n', async (importOriginal) => {
   const actual = await importOriginal<typeof import('vue-i18n')>()
-  const { loadTestMessages } = await import('../shared/support/i18n')
+  const { loadTestMessages } = await import('../shared/support/i18n.ts')
   const i18n = actual.createI18n({ legacy: false, locale: 'en', messages: { en: loadTestMessages('en') } })
   return { ...actual, useI18n: () => i18n.global }
 })
-vi.mock('@/src/forum/composables/state/useForumLabelStore', async () => {
+vi.mock('@/src/forum/composables/state/useForumLabelStore.ts', async () => {
   const { ref } = await import('vue')
   return { useForumLabelStore: () => ({ categoryLabels: ref([]) }) }
 })
 
-const { useForumSearchToken } = await import('@/src/forum/composables/view/useForumSearchToken')
-const { useForumSearchFilters } = await import('@/src/forum/components/search/composables/useForumSearchFilters')
+const { useForumSearchToken } = await import('@/src/forum/composables/view/useForumSearchToken.ts')
+const { useForumSearchFilters } = await import('@/src/forum/components/search/composables/useForumSearchFilters.ts')
 
 const scope = effectScope()
 const token = scope.run(() => useForumSearchToken())!

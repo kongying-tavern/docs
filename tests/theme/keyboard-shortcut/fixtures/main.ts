@@ -1,4 +1,4 @@
-import { createApp } from './app'
+import { createApp } from './app.ts'
 import 'vitepress/dist/client/theme-default/styles/vars.css'
 import 'vitepress/dist/client/theme-default/styles/base.css'
 import '@theme/styles/theme.css'

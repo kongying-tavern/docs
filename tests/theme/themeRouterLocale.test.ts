@@ -1,17 +1,17 @@
 import type { Router, SiteData } from 'vitepress'
-import { installThemeRouter } from '@theme/router/installThemeRouter'
+import { installThemeRouter } from '@theme/router/installThemeRouter.ts'
 import { expect, test, vi } from 'vitest'
 import { ref, shallowRef } from 'vue'
-import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute'
+import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute.ts'
 
 vi.mock('vitepress', () => ({ useData: vi.fn() }))
-vi.mock('../../src/forum/composables/state/useForumRoute', () => ({ publishForumLocation: vi.fn() }))
-vi.mock('../../src/forum/router/forumViewTransition', () => ({ isForumToBlogNavigation: () => false, transitionForumBlog: vi.fn() }))
-vi.mock('../../src/forum/services/forumRoute', () => ({ parseForumLocation: () => null }))
-vi.mock('../../src/services/telemetry', () => ({ identifySessionIfEnabled: vi.fn() }))
-vi.mock('../../.vitepress/routes', () => ({ routes: [] }))
-vi.mock('../../.vitepress/theme/lib/handleRouteMatching', () => ({ default: async () => true }))
-vi.mock('../../.vitepress/theme/router/forumPreload', () => ({ preloadForumEntry: vi.fn() }))
+vi.mock('../../src/forum/composables/state/useForumRoute.ts', () => ({ publishForumLocation: vi.fn() }))
+vi.mock('../../src/forum/router/forumViewTransition.ts', () => ({ isForumToBlogNavigation: () => false, transitionForumBlog: vi.fn() }))
+vi.mock('../../src/forum/services/forumRoute.ts', () => ({ parseForumLocation: () => null }))
+vi.mock('../../src/services/telemetry/index.ts', () => ({ identifySessionIfEnabled: vi.fn() }))
+vi.mock('../../.vitepress/routes/index.ts', () => ({ routes: [] }))
+vi.mock('../../.vitepress/theme/lib/handleRouteMatching.ts', () => ({ default: async () => true }))
+vi.mock('../../.vitepress/theme/router/forumPreload.ts', () => ({ preloadForumEntry: vi.fn() }))
 
 function routerWith(loadLocale: (locale: string) => Promise<void>, base = '/docs/') {
   const router = { route: { path: '/docs/' } } as Router

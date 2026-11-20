@@ -2,7 +2,7 @@ import type { Plugin, PluginOption } from 'vite'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import createViteConfig from '@/vite.config.ts'
-import createSiteConfig from '~/config'
+import createSiteConfig from '~/config.ts'
 
 async function plugins(options: PluginOption[] = []): Promise<Plugin[]> {
   const result: Plugin[] = []

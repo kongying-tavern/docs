@@ -1,10 +1,10 @@
-import type { ForumPersonalState } from '@/src/forum/services/forumPersonalState'
+import type { ForumPersonalState } from '@/src/forum/services/forumPersonalState.ts'
 import { PiniaColada, useQueryCache } from '@pinia/colada'
 import { createPinia } from 'pinia'
 import { beforeEach, expect, test, vi } from 'vitest'
 import { createSSRApp, effectScope, shallowReactive } from 'vue'
-import { emptyForumPersonalState } from '@/src/forum/services/forumPersonalState'
-import { forumKeys } from '@/src/forum/services/forumQueryContracts'
+import { emptyForumPersonalState } from '@/src/forum/services/forumPersonalState.ts'
+import { forumKeys } from '@/src/forum/services/forumQueryContracts.ts'
 
 const mocks = vi.hoisted(() => ({
   generation: 0,
@@ -14,9 +14,9 @@ const mocks = vi.hoisted(() => ({
   update: vi.fn(),
   recover: vi.fn(),
 }))
-vi.mock('../../src/forum/stores/auth/useUserAuth', () => ({ useUserAuthStore: () => mocks.auth }))
-vi.mock('../../src/forum/stores/auth/useUserInfo', () => ({ useUserInfoStore: () => mocks.userInfo }))
-vi.mock('../../src/forum/services/forumPersonalStateRepository', () => ({
+vi.mock('../../src/forum/stores/auth/useUserAuth.ts', () => ({ useUserAuthStore: () => mocks.auth }))
+vi.mock('../../src/forum/stores/auth/useUserInfo.ts', () => ({ useUserInfoStore: () => mocks.userInfo }))
+vi.mock('../../src/forum/services/forumPersonalStateRepository.ts', () => ({
   loadForumPersonalState: mocks.load,
   updateForumPersonalState: mocks.update,
   recoverForumPersonalState: mocks.recover,
@@ -33,7 +33,7 @@ beforeEach(() => {
 })
 
 async function setup() {
-  const { useForumPersonalState } = await import('@/src/forum/composables/data/useForumPersonalState')
+  const { useForumPersonalState } = await import('@/src/forum/composables/data/useForumPersonalState.ts')
   const scope = effectScope()
   const app = createSSRApp({ render: () => null })
     .use(createPinia())

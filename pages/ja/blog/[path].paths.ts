@@ -1,3 +1,3 @@
-import { usePostData } from '../../../src/composables/usePostData'
+import { usePostData } from '../../../src/composables/usePostData.ts'
 
 export default usePostData('JA')

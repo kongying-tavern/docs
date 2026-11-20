@@ -1,5 +1,5 @@
-import { comment, issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { comment, issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const topic = issue({ comments: 21 })
 const comments = Array.from({ length: 21 }, (_, index) => comment({ id: 99001 + index, body: `分页评论 ${index + 1}` }, topic))

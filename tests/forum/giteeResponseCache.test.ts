@@ -1,13 +1,13 @@
 import type { KyResponse } from 'ky'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
-import { apiCall, clearApiCache, deleteApiCache } from '@/src/forum/api/gitee/index'
+import { apiCall, clearApiCache, deleteApiCache } from '@/src/forum/api/gitee/index.ts'
 
 const requests = vi.hoisted(() => ({
   get: vi.fn<() => Promise<KyResponse<unknown>>>(),
   post: vi.fn<() => Promise<KyResponse<unknown>>>(),
 }))
 
-vi.mock('../../src/forum/api/gitee/client', () => ({
+vi.mock('../../src/forum/api/gitee/client.ts', () => ({
   prepareRequest: async (_endpoint: string, options: object) => options,
   fetcher: requests,
 }))

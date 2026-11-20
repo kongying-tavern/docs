@@ -7,8 +7,8 @@ import {
   isErrorsOnlyPayload,
   isPhoneBindingRequiredError,
   toGiteeAPIError,
-} from '@/src/forum/api/gitee/errors'
-import { GiteeApiErrorType } from '@/src/forum/api/gitee/types'
+} from '@/src/forum/api/gitee/errors.ts'
+import { GiteeApiErrorType } from '@/src/forum/api/gitee/types.ts'
 
 const context = { method: 'post' as const, endpoint: '/repos/KYJGYSDT/Feedback/issues' }
 

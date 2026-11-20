@@ -48,7 +48,9 @@ function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
     runInNewContext(code, {
       module,
       exports: module.exports,
-      require: (dependency: string) => {
+      // Sources spell native ESM specifiers, so strip the extension before matching.
+      require: (specifier: string) => {
+        const dependency = specifier.replace(/\.ts$/, '')
         if (dependency === 'vue')
           return { shallowRef, watch }
         if (dependency === '@vueuse/core')

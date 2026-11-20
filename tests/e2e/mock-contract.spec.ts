@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { installForumApi } from './support/forum-api'
+import { installForumApi } from './support/forum-api.ts'
 
 test('Mock separates detail from comments and blocks unknown reads and accidental writes', async ({ page }) => {
   const api = await installForumApi(page)

@@ -1,5 +1,5 @@
-import { currentUser, issue, localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { currentUser, issue, localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 interface RemovalState { captured: boolean, sameList: boolean, leave: boolean, leaveDuringRouteTransition: boolean }
 type RemovalWindow = Window & { originalList: Element | null, removal: RemovalState }

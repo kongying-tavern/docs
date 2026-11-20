@@ -1,7 +1,7 @@
 import type { Locator } from '@playwright/test'
-import { DEFAULT_TOAST_DURATION } from '@/src/features/settings/settingsOptions'
-import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules'
-import { expect, test } from './support/test'
+import { DEFAULT_TOAST_DURATION } from '@/src/features/settings/settingsOptions.ts'
+import { TELEMETRY_TOAST_MODULE, warmModules } from './support/modules.ts'
+import { expect, test } from './support/test.ts'
 
 async function settleToast(notification: Locator): Promise<void> {
   await notification.evaluate(async element => Promise.all(

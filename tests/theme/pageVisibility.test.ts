@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { resolveConfig } from 'vitepress'
 import { expect, test, vi } from 'vitest'
-import { getPageExclusions } from '~/config/pageVisibility'
+import { getPageExclusions } from '~/config/pageVisibility.ts'
 
 test('only the GitHub Pages target discovers flagged Markdown routes', async () => {
   const root = mkdtempSync(join(tmpdir(), 'docs-visibility-'))

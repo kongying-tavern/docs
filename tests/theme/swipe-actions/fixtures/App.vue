@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SwipeActions, SwipeActionsRow } from '@theme/components/ui/swipe-actions/index'
+import { SwipeActions, SwipeActionsRow } from '@theme/components/ui/swipe-actions/index.ts'
 import { ref } from 'vue'
 
 const items = ref([1, 2, 3])

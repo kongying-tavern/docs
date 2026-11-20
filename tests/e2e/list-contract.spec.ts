@@ -1,5 +1,5 @@
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const topics = [
   issue({ number: '123', title: 'FEAT:needle suggestion', comments: 0 }),

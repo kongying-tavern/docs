@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import { installI18n } from '@theme/i18n'
+import { installI18n } from '@theme/i18n/index.ts'
 import { createApp, h, ref } from 'vue'
 
 /** Mount a second consumer of the same cached reaction outside the viewport. */

@@ -1,5 +1,5 @@
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test.use({ scenario: {
   topics: Array.from({ length: 20 }, (_, index) => issue({

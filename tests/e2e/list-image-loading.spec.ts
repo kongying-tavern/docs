@@ -1,6 +1,6 @@
 import type { Route } from '@playwright/test'
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const metadata = '{thumbhash:"1fsrB38I9wiIh4hwj3CI+AiIgIAICIgA",width:"640",height:"480"}'
 const topics = Array.from({ length: 20 }, (_, index) => issue({ id: 980000 + index, number: `IM${index}`, body: `图片优先级测试。\n![image ${index}](https://example.com/priority-${index}.svg)${metadata}` }))

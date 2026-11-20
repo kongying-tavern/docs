@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { createGenerator } from 'unocss'
 import { test } from 'vitest'
-import { FORUM_MOBILE_BREAKPOINT_PX } from '@/src/forum/services/forumConfig'
+import { FORUM_MOBILE_BREAKPOINT_PX } from '@/src/forum/services/forumConfig.ts'
 import config from '@/unocss.config.ts'
 
 test('scrollbar shortcuts preserve overflow and generate standard and WebKit styling', async () => {

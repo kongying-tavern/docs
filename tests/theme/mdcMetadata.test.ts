@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs'
 import { expect, test } from 'vitest'
-import { resolveGlobalComponents } from '~/plugins/mdc-metadata'
+import { resolveGlobalComponents } from '~/plugins/mdc-metadata.ts'
 
 const UI_BARREL_EXPORTS = [
   'AccordionPanels',

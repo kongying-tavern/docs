@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict'
 import { beforeEach, test, vi } from 'vitest'
-import { buildFonts, getFontCacheInputs } from '@/scripts/buildFonts'
-import { FontArtifacts } from '@/scripts/font_subset/artifacts'
+import { buildFonts, getFontCacheInputs } from '@/scripts/buildFonts.ts'
+import { FontArtifacts } from '@/scripts/font_subset/artifacts.ts'
 
 const mocks = vi.hoisted(() => ({ detectPython: vi.fn(async () => null), runProcess: vi.fn() }))
-vi.mock('../../scripts/font_subset/process', () => mocks)
+vi.mock('../../scripts/font_subset/process.ts', () => mocks)
 beforeEach(() => vi.clearAllMocks())
 
 test('calculating cache inputs does not require the Python toolchain', async () => {

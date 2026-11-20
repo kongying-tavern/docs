@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { test } from 'vitest'
-import { loadFontSubsetConfig } from '@/scripts/font_subset/config'
-import { generateFontaineFallbackCss } from '@/scripts/font_subset/fontaine'
+import { loadFontSubsetConfig } from '@/scripts/font_subset/config.ts'
+import { generateFontaineFallbackCss } from '@/scripts/font_subset/fontaine.ts'
 
 const projectRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)))
 

@@ -13,7 +13,7 @@ import { presetScrollbar } from 'unocss-preset-scrollbar'
 import { presetShadcn } from 'unocss-preset-shadcn'
 import { shadcnPreflights, shadcnRules } from './.vitepress/theme/unocss/index.ts'
 import { resolveCustomIcons } from './scripts/resolveCustomIcons.ts'
-import { FORUM_MOBILE_BREAKPOINT_PX } from './src/forum/services/forumConfig'
+import { FORUM_MOBILE_BREAKPOINT_PX } from './src/forum/services/forumConfig.ts'
 
 const scaledUiSize = (size: number) => `calc(${size}px * var(--site-ui-scale))`
 const uiFontSizes = [6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 30, 32, 36, 40, 42]

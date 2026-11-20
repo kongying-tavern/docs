@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { forumListPrefetchDistance } from '@/src/forum/services/forumListPrefetch'
+import { forumListPrefetchDistance } from '@/src/forum/services/forumListPrefetch.ts'
 
 describe('forum list prefetch distance', () => {
   test('keeps anonymous and stationary/upward scrolling at the bottom threshold', () => {

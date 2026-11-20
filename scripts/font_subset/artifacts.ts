@@ -1,4 +1,4 @@
-import type { FontSubsetConfig, FontSubsetPaths } from './config'
+import type { FontSubsetConfig, FontSubsetPaths } from './config.ts'
 import { createHash } from 'node:crypto'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'

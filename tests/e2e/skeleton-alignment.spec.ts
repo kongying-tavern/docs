@@ -1,6 +1,6 @@
 import type { Locator } from '@playwright/test'
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const avatar = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32"%3E%3Crect width="32" height="32" fill="gray"/%3E%3C/svg%3E'
 test.use({ scenario: { topics: [issue({ user: { ...issue().user, avatar_url: avatar }, comments: 0 })] } })

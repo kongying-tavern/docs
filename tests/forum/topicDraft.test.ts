@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { readSavedTopicDrafts, readTopicDraft, removeTopicDraft, restoreTopicDraft, writeTopicDraft } from '@/src/forum/services/form/topicDraft'
-import { STORAGE_KEYS } from '@/src/forum/services/forumConfig'
+import { readSavedTopicDrafts, readTopicDraft, removeTopicDraft, restoreTopicDraft, writeTopicDraft } from '@/src/forum/services/form/topicDraft.ts'
+import { STORAGE_KEYS } from '@/src/forum/services/forumConfig.ts'
 
 function withStorage(run: (storage: Map<string, string>) => void): void {
   const storage = new Map<string, string>()

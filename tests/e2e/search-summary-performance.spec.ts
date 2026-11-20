@@ -1,5 +1,5 @@
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const keyword = 'needle '.repeat(20).trim()
 const topics = Array.from({ length: 45 }, (_, index) => issue({

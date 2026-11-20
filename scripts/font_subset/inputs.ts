@@ -1,10 +1,10 @@
-import type { FontSubsetConfig } from './config'
-import type { SiteFontCodepoints } from './files'
+import type { FontSubsetConfig } from './config.ts'
+import type { SiteFontCodepoints } from './files.ts'
 import { resolve } from 'node:path'
-import { resolveFontSubsetPaths } from './config'
-import { collectFiles } from './files'
-import { calculateHash } from './hash'
-import { fontBuildManifestVersion } from './manifest'
+import { resolveFontSubsetPaths } from './config.ts'
+import { collectFiles } from './files.ts'
+import { calculateHash } from './hash.ts'
+import { fontBuildManifestVersion } from './manifest.ts'
 
 export function calculateFontInputHashes(
   projectRoot: string,

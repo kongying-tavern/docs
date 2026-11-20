@@ -1,4 +1,4 @@
-import { expect, test } from './support/test'
+import { expect, test } from './support/test.ts'
 
 test('password login requires remembered rollout access after logout', async ({ page }) => {
   await page.goto('feedback#account-login-alert')

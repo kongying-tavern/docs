@@ -8,8 +8,8 @@ import {
   parseGiteeIssues,
   parseGiteeUser,
   parseGiteeUsers,
-} from '@/src/forum/api/gitee/contracts'
-import { extractOfficialAndAuthorComments } from '@/src/forum/api/gitee/officialComments'
+} from '@/src/forum/api/gitee/contracts.ts'
+import { extractOfficialAndAuthorComments } from '@/src/forum/api/gitee/officialComments.ts'
 
 const user = {
   id: 1,

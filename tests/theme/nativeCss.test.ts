@@ -4,9 +4,9 @@ import { resolve } from 'node:path'
 import { preprocessCSS, resolveConfig } from 'vite'
 import { test } from 'vitest'
 import { compileStyle, parse } from 'vue/compiler-sfc'
-import { FORUM_MOBILE_BREAKPOINT_PX } from '@/src/forum/services/forumConfig'
+import { FORUM_MOBILE_BREAKPOINT_PX } from '@/src/forum/services/forumConfig.ts'
 import siteConfig from '@/vite.config.ts'
-import { scaleUiCss } from '~/plugins/ui-scale'
+import { scaleUiCss } from '~/plugins/ui-scale/index.ts'
 
 test('shared custom media is lowered with nesting through the actual Vite CSS pipeline', async () => {
   const config = await resolveConfig({ ...siteConfig({ command: 'serve', mode: 'development' }), configFile: false, plugins: [] }, 'serve')

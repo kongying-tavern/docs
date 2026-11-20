@@ -5,7 +5,7 @@ import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
 import { run } from 'zhlint'
 import { createLintZhOptions } from '@/scripts/lintZhOptions.mjs'
-import { markdownConfig } from '~/config/markdown'
+import { markdownConfig } from '~/config/markdown.ts'
 
 test('Chinese formatting preserves emoji syntax while fixing surrounding prose', () => {
   const options = createLintZhOptions()

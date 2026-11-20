@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { sroundedRules } from '@theme/unocss/srounded'
+import { sroundedRules } from '@theme/unocss/srounded.ts'
 import { createGenerator, presetWind4 } from 'unocss'
 import { test } from 'vitest'
 

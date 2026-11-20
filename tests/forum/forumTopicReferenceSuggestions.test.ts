@@ -1,8 +1,8 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { renderForumTopic } from '@/src/forum/services/forumContentRenderer'
-import { getTopicReferenceSuggestions, normalizeTopicReferenceId } from '@/src/forum/services/forumTopicReferenceSuggestions'
+import { renderForumTopic } from '@/src/forum/services/forumContentRenderer.ts'
+import { getTopicReferenceSuggestions, normalizeTopicReferenceId } from '@/src/forum/services/forumTopicReferenceSuggestions.ts'
 
 function topic(id: string, title: string): ForumAPI.Topic {
   return { id, title } as ForumAPI.Topic

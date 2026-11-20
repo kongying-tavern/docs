@@ -1,4 +1,4 @@
-import { expect, test } from './support/test'
+import { expect, test } from './support/test.ts'
 
 for (const width of [390, 820]) {
   test(`mobile sidebar stays below login dialog and its backdrop at ${width}px`, async ({ page }) => {

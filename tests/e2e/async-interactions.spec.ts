@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
-import { currentUser, localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { currentUser, localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 async function holdModule(page: Page, module: string): Promise<() => void> {
   let release!: () => void

@@ -1,5 +1,5 @@
-import { alice, localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { alice, localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test('sticky profile bar follows the content column across viewport sizes', async ({ page }) => {
   await page.goto('feedback/@alice')

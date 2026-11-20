@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { expect, test } from './support/test'
+import { expect, test } from './support/test.ts'
 
 const preview = process.env.FORUM_E2E_PREVIEW === 'true'
 const base = preview ? '/docs/' : '/'

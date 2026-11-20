@@ -1,5 +1,5 @@
 import type Token from 'markdown-it/lib/token.mjs'
-import type { FontRole, FontSubsetConfig } from './config'
+import type { FontRole, FontSubsetConfig } from './config.ts'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { extname, join, resolve } from 'node:path'
 import { JSON_SCHEMA, load as loadYaml } from 'js-yaml'

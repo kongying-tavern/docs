@@ -1,7 +1,7 @@
 import { Buffer } from 'node:buffer'
 import { readFile } from 'node:fs/promises'
-import { currentUser, issue, localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { currentUser, issue, localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test.use({ viewport: { width: 1440, height: 900 }, scenario: { topics: [issue({ body: '![手机截图](https://example.com/phone.jpeg)' })] } })
 
