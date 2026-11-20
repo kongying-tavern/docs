@@ -1,6 +1,6 @@
 import type { Plugin } from 'vite'
 import type { ComponentMeta } from 'vue-component-meta'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { normalizePath } from 'vite'
@@ -15,9 +15,30 @@ const themeDir = resolve(themeEntry, '..')
 const compDir = normalizePath(resolve(projectRoot, '.vitepress/theme/components'))
 const PASCAL_BOUNDARY_RE = /([a-z0-9])([A-Z])/g
 const BARREL_EXPORT_RE = /export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*['"](.+\.vue)['"]/g
-const NAMED_EXPORT_RE = /export\s*\{([^}]+)\}\s*from\s*['"]([^'"]+)['"]/g
-const COMPONENT_IMPORT_RE = /import\s+(\w+)\s+from\s+['"](.+\.vue)['"]/g
+const IMPORT_RE = /^import\s+(?:(type)\s+)?(\{[^}]*\}|[\w$]+(?:\s*,\s*\{[^}]*\})?)\s+from\s+['"]([^'"]+)['"]/gm
+const ASYNC_COMPONENT_RE = /const\s+(\w+)\s*=\s*defineAsyncComponent\(\s*\(\)\s*=>\s*import\(\s*['"]([^'"]+)['"]\s*\)\s*\)/g
 const GLOBAL_REGISTRATION_RE = /app\.component\s*\(\s*['"]([^'"]+)['"]\s*,\s*(\w+)\s*\)/g
+
+/**
+ * Components from the `components/ui` barrel that Markdown may use as MDC tags.
+ * The barrel exposes the whole ui layer; this is the deliberate subset authors get.
+ */
+export const MDC_COMPONENTS = [
+  'AccordionPanels',
+  'Avatar',
+  'Button',
+  'Divider',
+  'Emoji',
+  'EmojiPicker',
+  'InputPlaceholders',
+  'LazyImage',
+  'LinkGrid',
+  'MentionPicker',
+  'Separator',
+  'User',
+] as const
+
+const MDC_COMPONENT_NAMES = new Set<string>(MDC_COMPONENTS)
 
 const SKIP_PROPS = new Set([
   'key',
@@ -51,41 +72,88 @@ function extractProps(meta: ComponentMeta): MdcProp[] {
     }))
 }
 
-/** `default as Foo, Bar` → [`Foo`, `Bar`]; tolerates `type` modifiers and renames. */
-function exportClauseNames(clause: string): string[] {
-  return clause.split(',')
-    .map(part => part.trim().replace(/^type\s+/, '').replace(/^default\s+as\s+/, ''))
-    .filter(Boolean)
+/** Every component re-exported by a per-component barrel under `components/ui`. */
+function resolveUiComponents(): Map<string, string> {
+  const components = new Map<string, string>()
+  const uiDir = resolve(compDir, 'ui')
+
+  for (const entry of readdirSync(uiDir, { withFileTypes: true })) {
+    if (!entry.isDirectory())
+      continue
+    const barrel = resolve(uiDir, entry.name, 'index.ts')
+    if (!existsSync(barrel))
+      continue
+    for (const m of readFileSync(barrel, 'utf-8').matchAll(BARREL_EXPORT_RE))
+      components.set(m[1], resolve(resolve(barrel, '..'), m[2]))
+  }
+
+  return components
 }
 
-/** Parse the theme barrel and index.ts to find globally-registered component file paths. */
+/** Local bindings introduced by an import clause: `Foo`, `{ Bar, Baz as Qux }`. */
+function importedBindings(clause: string): string[] {
+  const bindings: string[] = []
+  const named = clause.match(/\{([^}]*)\}/)
+
+  if (named) {
+    for (const part of named[1].split(',')) {
+      const cleaned = part.trim().replace(/^type\s+/, '')
+      if (!cleaned)
+        continue
+      bindings.push(cleaned.split(/\s+as\s+/).pop()!.trim())
+    }
+  }
+
+  const defaultBinding = clause.replace(/\{[^}]*\}/, '').split(',')[0].trim()
+  if (defaultBinding)
+    bindings.push(defaultBinding)
+
+  return bindings
+}
+
+/** Absolute path of a theme-internal specifier; page-level and external ones yield `undefined`. */
+function resolveModulePath(specifier: string): string | undefined {
+  const alias = matchPathAlias(specifier)
+  let base: string
+
+  if (alias?.alias === THEME_ALIAS)
+    base = resolve(projectRoot, alias.alias.root, alias.rest)
+  else if (specifier.startsWith('.'))
+    base = resolve(themeDir, specifier)
+  else
+    return undefined
+
+  if (base.endsWith('.vue'))
+    return existsSync(base) ? base : undefined
+
+  return [base, `${base}.ts`, join(base, 'index.ts')].find(path => existsSync(path))
+}
+
+/** The `.vue` file a module exposes under `binding`, following its directory barrel. */
+function resolveComponentFile(specifier: string, binding: string): string | undefined {
+  const modulePath = resolveModulePath(specifier)
+  if (!modulePath)
+    return undefined
+  if (modulePath.endsWith('.vue'))
+    return modulePath
+
+  for (const m of readFileSync(modulePath, 'utf-8').matchAll(BARREL_EXPORT_RE)) {
+    if (m[1] === binding)
+      return resolve(resolve(modulePath, '..'), m[2])
+  }
+
+  return undefined
+}
+
+/** Resolve the globally-registered component files that Markdown can reach as MDC tags. */
 export function resolveGlobalComponents(): Map<string, string> {
   const components = new Map<string, string>()
 
-  // 1. ui/index.ts barrel: `export { default as Foo } from './Foo.vue'`, or a
-  //    named re-export routed through the component directory: `export { Foo } from './foo/index.ts'`
-  const uiIndex = resolve(compDir, 'ui/index.ts')
-  if (existsSync(uiIndex)) {
-    const src = readFileSync(uiIndex, 'utf-8')
-    for (const m of src.matchAll(NAMED_EXPORT_RE)) {
-      const names = exportClauseNames(m[1])
-      const specifier = m[2]
-      if (specifier.endsWith('.vue')) {
-        for (const name of names)
-          components.set(name, resolve(resolve(uiIndex, '..'), specifier))
-        continue
-      }
-      // Directory barrel: resolve each requested name through its index.ts.
-      const barrel = specifier.endsWith('/index.ts')
-        ? resolve(resolve(uiIndex, '..'), specifier)
-        : resolve(resolve(uiIndex, '..'), specifier, 'index.ts')
-      if (!existsSync(barrel))
-        continue
-      for (const inner of readFileSync(barrel, 'utf-8').matchAll(BARREL_EXPORT_RE)) {
-        if (names.includes(inner[1]))
-          components.set(inner[1], resolve(resolve(barrel, '..'), inner[2]))
-      }
-    }
+  // 1. ui barrels: the barrel exports the whole ui layer, `MDC_COMPONENTS` narrows it
+  //    down to the tags authors are allowed to use.
+  for (const [name, file] of resolveUiComponents()) {
+    if (MDC_COMPONENT_NAMES.has(name))
+      components.set(name, file)
   }
 
   // 2. theme/index.ts: individually registered via app.component('Name', Binding)
@@ -93,17 +161,23 @@ export function resolveGlobalComponents(): Map<string, string> {
     const src = readFileSync(themeEntry, 'utf-8')
     const importMap = new Map<string, string>()
 
-    for (const m of src.matchAll(COMPONENT_IMPORT_RE)) {
-      let specifier = m[2]
-      const alias = matchPathAlias(specifier)
-      // Only theme-internal imports join the registry; page-level components that
-      // are registered globally keep being resolved by Vite, not by this generator.
-      if (alias?.alias === THEME_ALIAS)
-        specifier = resolve(projectRoot, alias.alias.root, alias.rest)
-      else if (specifier.startsWith('.'))
-        specifier = resolve(themeDir, specifier)
-      else continue
-      importMap.set(m[1], specifier)
+    // Only theme-internal imports join the registry; page-level components that are
+    // registered globally keep being resolved by Vite, not by this generator.
+    for (const m of src.matchAll(IMPORT_RE)) {
+      if (m[1])
+        continue
+      for (const binding of importedBindings(m[2])) {
+        const file = resolveComponentFile(m[3], binding)
+        if (file)
+          importMap.set(binding, file)
+      }
+    }
+
+    // `const Foo = defineAsyncComponent(() => import('./Foo.vue'))`
+    for (const m of src.matchAll(ASYNC_COMPONENT_RE)) {
+      const file = resolveModulePath(m[2])
+      if (file)
+        importMap.set(m[1], file)
     }
 
     for (const m of src.matchAll(GLOBAL_REGISTRATION_RE)) {
