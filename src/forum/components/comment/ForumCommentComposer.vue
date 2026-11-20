@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { JSONContent } from '@tiptap/core'
 import type { ImageAttachment } from '@/src/forum/services/form/imageAttachment'
-import UserAvatar from '@theme/components/UserAvatar.vue'
+import UserAvatar from '@theme/components/user-avatar/UserAvatar.vue'
 import { I18nT, useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences'
 import { ForumPreloadedRichTextarea as ForumRichTextarea } from '../utils/forumComponentPreload'
