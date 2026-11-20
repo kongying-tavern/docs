@@ -11,7 +11,7 @@ import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '@/src/features/sett
 import SettingsPage from '@/src/features/settings/SettingsPage.vue'
 import Banner from '../components/banner/Banner.vue'
 import ChunkLoadRecovery from '../components/ChunkLoadRecovery.vue'
-import DocHeader from '../components/DocHeader.vue'
+import { DocHeader } from '../components/doc-header'
 import HighlightTargetedHeading from '../components/HighlightTargetedHeading.vue'
 import PageAlertRegion from '../components/PageAlertRegion.vue'
 import { Sonner } from '../components/ui/sonner'
