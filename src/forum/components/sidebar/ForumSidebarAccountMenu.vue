@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { ForumSidebarMenuItem } from './forumSidebarMenu.ts'
+import { UserAvatar } from '@theme/components/ui/avatar/index.ts'
 import { Button } from '@theme/components/ui/button/index.ts'
 import { Separator } from '@theme/components/ui/separator/index.ts'
 import { User } from '@theme/components/ui/user/index.ts'
-import { UserAvatar } from '@theme/components/user-avatar/index.ts'
 import { useMediaQuery, useMounted } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, nextTick, ref, watch } from 'vue'

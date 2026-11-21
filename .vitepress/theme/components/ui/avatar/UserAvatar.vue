@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ASSET_ORIGIN } from '@/src/constants/site.ts'
-import { Avatar } from '../ui/avatar/index.ts'
+import Avatar from './Avatar.vue'
 
 const {
   src = `${ASSET_ORIGIN}/res_ext/avatar/UI_AvatarIcon_71045_Circle.png`,
