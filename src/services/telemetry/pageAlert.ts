@@ -1,6 +1,6 @@
-import type { PageAlertVariant } from '@theme/stores/usePageAlert.ts'
+import type { PageAlertVariant } from '@theme/stores/pageAlert.ts'
 import type { Scene } from './capture.ts'
-import { usePageAlertStore } from '@theme/stores/usePageAlert.ts'
+import { usePageAlertStore } from '@theme/stores/pageAlert.ts'
 import { formatMessage } from '@/src/utils/formatMessage.ts'
 import { reportError } from './capture.ts'
 import { formatTraceId } from './describeError.ts'

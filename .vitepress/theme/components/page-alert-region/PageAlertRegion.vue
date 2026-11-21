@@ -4,7 +4,7 @@ import { OctagonXIcon, TriangleAlertIcon, XIcon } from '@lucide/vue'
 import { useRoute } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { usePageAlertStore } from '../../stores/usePageAlert.ts'
+import { usePageAlertStore } from '../../stores/pageAlert.ts'
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert/index.ts'
 
 const props = defineProps<{

@@ -65,7 +65,7 @@ function runtime(options: { loaded?: boolean, storageFails?: boolean } = {}) {
           return { withAuth: { execute: (action: () => Promise<unknown>) => action() } }
         if (dependency === '@/src/services/apiUtils')
           return { catchError: (promise: Promise<unknown>) => promise.then(value => [null, value], error => [error, undefined]) }
-        if (dependency === '@theme/stores/usePageAlert')
+        if (dependency === '@theme/stores/pageAlert')
           return { usePageAlertStore: () => ({ hasRegion: true, push: (alert: { description?: string }) => alerts.push(alert) }) }
         if (dependency === '@/src/utils/formatMessage')
           return { formatMessage: (text: string, values: Record<string, string>) => text.replace(/\{(\w+)\}/g, (match, key) => values[key] ?? match) }
