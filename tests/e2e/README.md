@@ -31,7 +31,7 @@ pnpm exec playwright install webkit
 pnpm exec playwright test --config tests/e2e/playwright.webkit.config.ts
 ```
 
-此配置只运行 `sidebar-overlay`，覆盖手机和平板宽度；iOS Safari 真机仍需单独验证。
+此配置只运行 `forum/layout/sidebar-overlay`，覆盖手机和平板宽度；iOS Safari 真机仍需单独验证。
 
 导航使用相对 URL（例如 `page.goto('feedback/topic/123')`），让 Playwright 的 baseURL
 处理 `/docs/` 前缀。生产测试 fixture 模拟部署的论坛子路由 fallback，并检查 hydration 错误；
@@ -53,32 +53,35 @@ Windows 上若被中断的 dev 运行留下损坏缓存，可将 `.vitepress/cac
   `page.clock` 专门验证持续时间和过期边界。手势采样间隔属于输入模拟，可以保留。
 - 浏览器变换后的几何值使用小且明确的浮点容差。新增尺寸/排版组合优先归入专门的布局检查，
   不塞进发布、登录等事务流程。
-- 参数组合和业务失败分支优先放在 `tests/forum`；E2E 保留真实组件接起来的关键流程。
+- 参数组合和业务失败分支优先放在 `tests/runtime/forum`；E2E 保留真实组件接起来的关键流程。
 
 ## 场景分类
 
-| 文件 | 验证契约 |
+用例按领域与功能分目录：`forum/<模块>/` 是论坛旅程，`site/<模块>/` 是只测站点本身的旅程。
+`fixtures/` 与 `support/` 是共享支撑，不对应具体用例。
+
+| 路径（相对 tests/e2e） | 验证契约 |
 | --- | --- |
-| forum-smoke | 列表→详情→后退→前进；直接打开详情；正确的评论数组、正文、作者 |
-| comment-navigation | 后页评论深链、焦点与可视区域；目标不存在的结束状态；pending 不显示终态 |
-| list-contract | URL 的关键词/类型/排序与真实请求及结果一致，刷新保留；页内换词与侧栏标签不改地址路径也即时重查；失败后点击重试恢复 |
-| empty-state | 搜索空态、用户空态、详情错误及 401/403/500 的不同提示/动作 |
-| mobile-comment | 真实 Tiptap 编辑、mention、emoji、附件；关闭重开、失败保留、重试成功清理；上传不重复 |
-| publish-topic | 实际发布表单；2xx errors 失败恢复、双击锁、成功刷新列表及再次打开后的清理 |
-| image-failure | 图片请求失败后容器/替代图片继续存在，正文仍可读 |
-| image-upload | 同内容上传复用、取消隔离、拖放、移动失败重试、动画保留与静态图片压缩 |
-| image-previewer | 竖图折叠预览与点击缩放；侧栏折叠状态跨图片与刷新保持 |
-| user-drawer | 移动端访客、未关注/已关注、本人；资料页导航与关闭；桌面点击及 hover 不同入口 |
-| contact-aside | 站点首页确实渲染；footer 二维码可见，切换深色主题重新生成 |
-| mock-contract | 请求处理器自身：详情/评论互不混淆，未知读取和意外写入被阻止 |
-| lazy-interaction | 省流模式、空闲预加载、交互触发加载及慢加载时弹层响应和编辑器焦点 |
-| reaction | 话题详情读取服务端计数；点赞→撤销→反向切换按服务端权威值写回；写入失败回滚计数 |
-| entry-animation | 文档 header 先于正文入场、减动效同时关闭、blur fade 时长与终态 |
-| search-facet-transition | 筛选切换在正常与减动效下保持焦点 |
-| markdown-rendering | Markdown demo 的类型化 props 与独立 spoiler 属性，覆盖多宽度 |
-| mobile-toast | 移动端连续通知的完整时长、队列动作与触摸关闭、诊断卡片在来源消失后仍可读 |
-| ui-consistency | 移动端通知位置、窄屏错误卡片的 trace 复制与重试、语言设置面板宽度与标签层级 |
-| chunk-recovery | 加载失败只提供一次手动恢复提示、取消恢复保留未发送评论（桌面/移动） |
+| forum/topics/forum-smoke | 列表→详情→后退→前进；直接打开详情；正确的评论数组、正文、作者 |
+| forum/comments/comment-navigation | 后页评论深链、焦点与可视区域；目标不存在的结束状态；pending 不显示终态 |
+| forum/topics/list-contract | URL 的关键词/类型/排序与真实请求及结果一致，刷新保留；页内换词与侧栏标签不改地址路径也即时重查；失败后点击重试恢复 |
+| forum/layout/empty-state | 搜索空态、用户空态、详情错误及 401/403/500 的不同提示/动作 |
+| forum/comments/mobile-comment | 真实 Tiptap 编辑、mention、emoji、附件；关闭重开、失败保留、重试成功清理；上传不重复 |
+| forum/topics/publish-topic | 实际发布表单；2xx errors 失败恢复、双击锁、成功刷新列表及再次打开后的清理 |
+| forum/images/image-failure | 图片请求失败后容器/替代图片继续存在，正文仍可读 |
+| forum/images/image-upload | 同内容上传复用、取消隔离、拖放、移动失败重试、动画保留与静态图片压缩 |
+| forum/images/image-previewer | 竖图折叠预览与点击缩放；侧栏折叠状态跨图片与刷新保持 |
+| forum/layout/user-drawer | 移动端访客、未关注/已关注、本人；资料页导航与关闭；桌面点击及 hover 不同入口 |
+| site/layout/contact-aside | 站点首页确实渲染；footer 二维码可见，切换深色主题重新生成 |
+| forum/api/mock-contract | 请求处理器自身：详情/评论互不混淆，未知读取和意外写入被阻止 |
+| forum/images/lazy-interaction | 省流模式、空闲预加载、交互触发加载及慢加载时弹层响应和编辑器焦点 |
+| forum/comments/reaction | 话题详情读取服务端计数；点赞→撤销→反向切换按服务端权威值写回；写入失败回滚计数 |
+| site/docs/entry-animation | 文档 header 先于正文入场、减动效同时关闭、blur fade 时长与终态 |
+| forum/search/search-facet-transition | 筛选切换在正常与减动效下保持焦点 |
+| site/docs/markdown-rendering | Markdown demo 的类型化 props 与独立 spoiler 属性，覆盖多宽度 |
+| site/layout/mobile-toast | 移动端连续通知的完整时长、队列动作与触摸关闭、诊断卡片在来源消失后仍可读 |
+| site/layout/ui-consistency | 移动端通知位置、窄屏错误卡片的 trace 复制与重试、语言设置面板宽度与标签层级 |
+| forum/boot/chunk-recovery | 加载失败只提供一次手动恢复提示、取消恢复保留未发送评论（桌面/移动） |
 
 反馈表单统一使用 compact 实现，所有登录账号均可保存、恢复及自动保存草稿。
 浏览器测试覆盖侧栏草稿入口、关闭确认、删除取消和保存后恢复。
@@ -87,7 +90,7 @@ Windows 上若被中断的 dev 运行留下损坏缓存，可将 `.vitepress/cac
 ## Mock 维护规则
 
 - `fixtures/gitee.ts` 是合成的原始 provider 数据，默认有效对象通过生产 parser 校验；
-  领域 Topic/Comment 的单元 fixture 留在 `tests/forum`，不能与原始接口对象混用。
+  领域 Topic/Comment 的单元 fixture 留在 `tests/runtime/forum`，不能与原始接口对象混用。
 - 字段形状来自当前 provider schema 及 2026-10-04 审查的公开列表/评论 GET 样本；
   写入响应按实际消费者构造，未声称完成所有 Gitee 接口的线上验证。
 - 多话题 fixture 要提供不同的 id/number；评论 target、链接、计数与页数据保持关联。
