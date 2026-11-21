@@ -2,7 +2,10 @@
 import type { HTMLAttributes } from 'vue'
 import { useSlots } from 'vue'
 import { cn } from '../../../lib/tailwind.ts'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../accordion/index.ts'
+import Accordion from './Accordion.vue'
+import AccordionContent from './AccordionContent.vue'
+import AccordionItem from './AccordionItem.vue'
+import AccordionTrigger from './AccordionTrigger.vue'
 
 interface AccordionPanelItem {
   value: string

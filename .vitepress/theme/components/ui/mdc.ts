@@ -5,7 +5,7 @@
 // back empty and contributes no tags to the MDC registry. Nothing imports this module,
 // so its `.vue` re-exports never reach the native Node module graph. A tag also needs
 // `app.component()` in `theme/index.ts` to resolve at render time.
-export { AccordionPanels } from './accordion-panels/index.ts'
+export { AccordionPanels } from './accordion/index.ts'
 export { Avatar } from './avatar/index.ts'
 export { Button } from './button/index.ts'
 export { Divider } from './divider/index.ts'

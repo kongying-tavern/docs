@@ -27,7 +27,7 @@ import 'uno.css'
 const pinia = createPinia()
 // Async entries point at the SFC itself: a directory barrel would also load the
 // sibling exports into the same chunk.
-const AccordionPanels = defineAsyncComponent(() => import('./components/ui/accordion-panels/AccordionPanels.vue'))
+const AccordionPanels = defineAsyncComponent(() => import('./components/ui/accordion/AccordionPanels.vue'))
 const Card = defineAsyncComponent(() => import('./markdown-ext/card/Card.vue'))
 const Coins = defineAsyncComponent(() => import('./components/coins/Coins.vue'))
 const Emoji = defineAsyncComponent(() => import('./components/ui/emoji/Emoji.vue'))

@@ -1,5 +1,4 @@
 // Public surface of the ui layer: one re-export per component directory.
-export * from './accordion-panels/index.ts'
 export * from './accordion/index.ts'
 export * from './alert-dialog/index.ts'
 export * from './alert/index.ts'
