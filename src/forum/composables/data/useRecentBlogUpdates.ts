@@ -11,7 +11,7 @@ import { selectRecentBlogUpdates } from '@/src/forum/services/blogUpdateFeed.ts'
  * 窗口按客户端当前时间滚动，条目过期后无需重新构建即会消失；首页与「团队博客」列表互斥，
  * 两处都取自这里以保证判断一致。
  *
- * 调用方传入 `~/_data/forumBlogPosts.data` 的构建期数据，其中仅保留最新更新及边栏所需元信息。
+ * 调用方传入 `data/loader/forumBlogPosts.data.ts` 的构建期数据，其中仅保留最新更新及边栏所需元信息。
  */
 export function useRecentBlogUpdates(posts: readonly BlogUpdatePost[]): ComputedRef<BlogUpdateItem[]> {
   const { lang } = useData()

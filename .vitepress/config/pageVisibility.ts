@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import matter from 'gray-matter'
-import { shouldPublishPage } from '../../src/data/pageVisibility.ts'
+import { shouldPublishPage } from '../../src/utils/pageVisibility.ts'
 
 const GLOB_SPECIAL_CHARACTERS = /[()[\]{}*?!+@|]/g
 

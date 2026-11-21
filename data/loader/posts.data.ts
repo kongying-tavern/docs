@@ -1,8 +1,8 @@
-import { createBlogLoader } from '../utils/createBlogLoader.ts'
+import { createBlogLoader } from '../../src/utils/createBlogLoader.ts'
 
 export declare const data: Awaited<ReturnType<typeof loader.load>>
 
-export type { BlogPost } from '../utils/createBlogLoader.ts'
+export type { BlogPost } from '../../src/utils/createBlogLoader.ts'
 
 const source = createBlogLoader('*/blog/posts/*.md')
 

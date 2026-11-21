@@ -45,6 +45,7 @@
     "**/composables/**/*.ts",
     "**/scripts/**/*.ts",
     "**/src/**/*.ts",
+    "data/**/*.ts",
     "src/**/*.vue",
     "pages/**/*.ts",
     "tests/runtime/**/*.ts",
