@@ -10,7 +10,7 @@ const { chromium } = require('@playwright/test')
 
 const vitepressRequire = createRequire(require.resolve('vitepress/package.json'))
 const vue = vitepressRequire('@vitejs/plugin-vue').default
-const root = fileURLToPath(new URL('../../../', import.meta.url)).replaceAll('\\', '/').replace(/\/$/, '')
+const root = fileURLToPath(new URL('../../../../', import.meta.url)).replaceAll('\\', '/').replace(/\/$/, '')
 const fixture = fileURLToPath(new URL('./fixtures/main.ts', import.meta.url)).replaceAll('\\', '/')
 const entry = fileURLToPath(new URL('./fixtures/server.ts', import.meta.url)).replaceAll('\\', '/')
 

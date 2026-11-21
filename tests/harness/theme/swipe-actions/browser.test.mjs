@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.SWIPE_PLAYWRIGHT_PATH || '@playwright/test')
 const vitepressRequire = createRequire(require.resolve('vitepress/package.json'))
 const vue = vitepressRequire('@vitejs/plugin-vue').default
-const root = fileURLToPath(new URL('../../../', import.meta.url)).replaceAll('\\', '/').replace(/\/$/, '')
+const root = fileURLToPath(new URL('../../../../', import.meta.url)).replaceAll('\\', '/').replace(/\/$/, '')
 const fixture = fileURLToPath(new URL('./fixtures/main.ts', import.meta.url)).replaceAll('\\', '/')
 
 test('swipe actions browser regression', { timeout: 120000 }, async (t) => {
