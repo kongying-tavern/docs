@@ -19,26 +19,8 @@ const IMPORT_RE = /^import\s+(?:(type)\s+)?(\{[^}]*\}|[\w$]+(?:\s*,\s*\{[^}]*\})
 const ASYNC_COMPONENT_RE = /const\s+(\w+)\s*=\s*defineAsyncComponent\(\s*\(\)\s*=>\s*import\(\s*['"]([^'"]+)['"]\s*\)\s*\)/g
 const GLOBAL_REGISTRATION_RE = /app\.component\s*\(\s*['"]([^'"]+)['"]\s*,\s*(\w+)\s*\)/g
 
-/**
- * Components from the `components/ui` barrel that Markdown may use as MDC tags.
- * The barrel exposes the whole ui layer; this is the deliberate subset authors get.
- */
-export const MDC_COMPONENTS = [
-  'AccordionPanels',
-  'Avatar',
-  'Button',
-  'Divider',
-  'Emoji',
-  'EmojiPicker',
-  'InputPlaceholders',
-  'LazyImage',
-  'LinkGrid',
-  'MentionPicker',
-  'Separator',
-  'User',
-] as const
-
-const MDC_COMPONENT_NAMES = new Set<string>(MDC_COMPONENTS)
+const mdcAllowlistFile = normalizePath(resolve(compDir, 'ui/mdc.ts'))
+const MDC_EXPORT_RE = /export\s*\{([^}]+)\}\s*from\s*['"]/g
 
 const SKIP_PROPS = new Set([
   'key',
@@ -70,6 +52,26 @@ function extractProps(meta: ComponentMeta): MdcProp[] {
       required: Boolean(p.required),
       description: p.description || '',
     }))
+}
+
+/**
+ * The MDC allowlist, parsed from `components/ui/mdc.ts`.
+ * The module is never imported: its `.vue` re-exports must stay out of the Node graph.
+ */
+export function resolveMdcAllowlist(): Set<string> {
+  const names = new Set<string>()
+  if (!existsSync(mdcAllowlistFile))
+    return names
+
+  for (const m of readFileSync(mdcAllowlistFile, 'utf-8').matchAll(MDC_EXPORT_RE)) {
+    for (const part of m[1].split(',')) {
+      const cleaned = part.trim().replace(/^type\s+/, '')
+      if (cleaned)
+        names.add(cleaned.split(/\s+as\s+/).pop()!.trim())
+    }
+  }
+
+  return names
 }
 
 /** Every component re-exported by a per-component barrel under `components/ui`. */
@@ -149,10 +151,11 @@ function resolveComponentFile(specifier: string, binding: string): string | unde
 export function resolveGlobalComponents(): Map<string, string> {
   const components = new Map<string, string>()
 
-  // 1. ui barrels: the barrel exports the whole ui layer, `MDC_COMPONENTS` narrows it
+  // 1. ui barrels: the barrel exports the whole ui layer, `ui/mdc.ts` narrows it
   //    down to the tags authors are allowed to use.
+  const allowlist = resolveMdcAllowlist()
   for (const [name, file] of resolveUiComponents()) {
-    if (MDC_COMPONENT_NAMES.has(name))
+    if (allowlist.has(name))
       components.set(name, file)
   }
 
