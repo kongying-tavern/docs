@@ -114,14 +114,14 @@ export default antfu({
   },
 }, {
   name: 'project/vitest-tests',
-  files: ['tests/{forum,shared,theme,fonts}/**/*.test.ts'],
+  files: ['tests/runtime/**/*.test.ts'],
   rules: {
     'test/consistent-test-it': ['error', { fn: 'test', withinDescribe: 'test' }],
     'test/prefer-lowercase-title': 'off',
   },
 }, {
   name: 'project/node-browser-tests',
-  files: ['tests/theme/swipe-actions/browser.test.mjs', 'tests/theme/keyboard-shortcut/browser.test.mjs'],
+  files: ['tests/harness/**/*.mjs'],
   rules: {
     // The standalone Playwright harness retains its Node runner.
     'test/no-import-node-test': 'off',

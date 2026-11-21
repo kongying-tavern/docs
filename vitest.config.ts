@@ -18,7 +18,7 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['tests/{forum,shared,theme,fonts}/**/*.test.ts'],
+    include: ['tests/runtime/**/*.test.ts'],
     environment: 'node',
     maxWorkers: 4,
     restoreMocks: true,
