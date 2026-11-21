@@ -71,7 +71,9 @@ shared 套件还通过独立 Node 进程实际验证两份站点配置和三个�
 - 只有本领域使用的 fixture/helper 放在本领域或模块的 `fixtures/`、`support/`，不为单次使用
   新建全局 helper。领域 fixture 与原始 API fixture 分开。
 - 新测试不要放进生产目录；确实需要跨领域的浏览器 fixture 才放 `tests/e2e/support/`。
-- 测试直接导入生产模块；使用相对路径或项目已有别名，不复制实现。
+- 测试导入生产模块一律用相对路径，不依赖别名解析；优先指向定义文件，纯 re-export 的
+  `index.ts` 只在它不携带 UI 或其它副作用时使用。barrel 引入 SFC 会让 Playwright 无法加载
+  用例，这类副作用应拆到独立模块（见 `services/telemetry` 的 `toast.ts`）。
 - 页面截图、trace 和临时捕获放在忽略的产物目录，不当作维护中的测试源码。
 - `pnpm typecheck:ts` 覆盖 runtime 逻辑测试，`pnpm typecheck:forum:ui` 单独检查 e2e，
   `pnpm typecheck:vue` 检查 Vue 侧。
