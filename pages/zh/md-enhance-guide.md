@@ -382,7 +382,7 @@ paragraph _style me_{.vp-link} more text
 ```
 
 ::: warning 说明
-「被提及的人或团队」会根据 `src/data` 目录下团队成员的 Gitee 账号数据，通过 `username` 或 `login` 字段转换成 Gitee 地址链接。
+「被提及的人或团队」会根据 `data/static/common` 目录下团队成员的 Gitee 账号数据，通过 `username` 或 `login` 字段转换成 Gitee 地址链接。
 :::
 
 #### 示例
