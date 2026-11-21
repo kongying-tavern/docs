@@ -1,5 +1,5 @@
 // @unocss-include
-export const Avatar = {
+export const AvatarConfig = {
   wrapper: 'relative inline-flex items-center justify-center flex-shrink-0',
   background: 'bg-[var(--vp-c-gray-soft)]',
   rounded: 'rounded-full',

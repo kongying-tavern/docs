@@ -1,5 +1,4 @@
 // Public surface of the ui layer: one re-export per component directory.
-// `config/` is intentionally absent — it exposes the `UI` config object, not a component.
 export * from './accordion-panels/index.ts'
 export * from './accordion/index.ts'
 export * from './alert-dialog/index.ts'

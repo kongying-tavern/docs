@@ -3,7 +3,7 @@ import type { PropType, StyleValue } from 'vue'
 
 import { computed, ref, watch } from 'vue'
 import { cn } from '../../../lib/tailwind.ts'
-import { UI } from '../config/index.ts'
+import { AvatarConfig } from './config.ts'
 
 const props = defineProps({
   as: {
@@ -28,9 +28,9 @@ const props = defineProps({
   },
   size: {
     type: String as () => 'xs' | 'sm' | 'md' | 'lg' | 'xl',
-    default: () => UI.Avatar.default.size,
+    default: () => AvatarConfig.default.size,
     validator(value: string) {
-      return Object.keys(UI.Avatar.size).includes(value)
+      return Object.keys(AvatarConfig.size).includes(value)
     },
   },
   chipText: {
@@ -52,11 +52,11 @@ const props = defineProps({
 })
 
 const imgClass = computed(() => {
-  return cn(UI.Avatar.rounded, UI.Avatar.size[props.size], props.imgClass)
+  return cn(AvatarConfig.rounded, AvatarConfig.size[props.size], props.imgClass)
 })
 
 const iconClass = computed(() => {
-  return cn(UI.Avatar.icon.base, UI.Avatar.icon.size[props.size])
+  return cn(AvatarConfig.icon.base, AvatarConfig.icon.size[props.size])
 })
 
 const url = computed(() => {
@@ -70,10 +70,10 @@ const error = ref(false)
 
 const wrapperClass = computed(() => {
   return cn(
-    UI.Avatar.wrapper,
-    (error.value || !url.value) && UI.Avatar.background,
-    UI.Avatar.rounded,
-    UI.Avatar.size[props.size],
+    AvatarConfig.wrapper,
+    (error.value || !url.value) && AvatarConfig.background,
+    AvatarConfig.rounded,
+    AvatarConfig.size[props.size],
     props.class,
   )
 })
