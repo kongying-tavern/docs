@@ -1,10 +1,10 @@
-import type { INTER_KNOT } from '@/src/forum/api/interknot.site/api.d.ts'
+import type { INTER_KNOT } from '../../../../src/forum/api/interknot.site/api.d.ts'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
-import { logout, refreshToken } from '@/src/forum/api/interknot.site/oauth.ts'
-import { getPageReaction, setPageReaction } from '@/src/forum/api/interknot.site/reactions.ts'
-import { generateRandomString, normalizeSSOAuth, signToken } from '@/src/forum/api/interknot.site/utils.ts'
-import { AuthError, AuthErrorType } from '@/src/services/authErrors.ts'
+import { logout, refreshToken } from '../../../../src/forum/api/interknot.site/oauth.ts'
+import { getPageReaction, setPageReaction } from '../../../../src/forum/api/interknot.site/reactions.ts'
+import { generateRandomString, normalizeSSOAuth, signToken } from '../../../../src/forum/api/interknot.site/utils.ts'
+import { AuthError, AuthErrorType } from '../../../../src/services/authErrors.ts'
 
 const mocks = vi.hoisted(() => ({
   requests: [] as Array<{ method: string, path: string, options: Record<string, unknown> }>,
@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
   }) as () => unknown,
 }))
 
-vi.mock('@/src/forum/api/interknot.site/index.ts', () => ({
+vi.mock('../../../../src/forum/api/interknot.site/client.ts', () => ({
   SSO_SESSION_CONTEXT: { ssoSession: true },
   fetcher: {
     get: (path: string, options: Record<string, unknown> = {}) => {

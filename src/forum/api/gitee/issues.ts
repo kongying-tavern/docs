@@ -9,7 +9,6 @@ import { reformat } from '../webhook/index.ts'
 import { parseGiteeComment, parseGiteeComments, parseGiteeIssue, parseGiteeIssues } from './contracts.ts'
 import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors.ts'
 import { GITEE_API_CONFIG } from './gitee-config.ts'
-import { apiCall, deleteApiCache } from './index.ts'
 import {
   normalizeComment,
   normalizeIssue,
@@ -17,6 +16,7 @@ import {
   processLabels,
 } from './normalize.ts'
 import { extractOfficialAndAuthorComments } from './officialComments.ts'
+import { apiCall, deleteApiCache } from './transport.ts'
 import { GiteeApiErrorType } from './types.ts'
 
 export type TopicUpdateOutcome

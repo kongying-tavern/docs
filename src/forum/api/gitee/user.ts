@@ -1,8 +1,8 @@
 import type ForumAPI from '../types.d.ts'
 import { parseGiteeUser, parseGiteeUsers } from './contracts.ts'
 import { GITEE_API_CONFIG } from './gitee-config.ts'
-import { apiCall, deleteApiCache } from './index.ts'
 import { normalizeUser } from './normalize.ts'
+import { apiCall, deleteApiCache } from './transport.ts'
 import { buildUserProfileForm } from './userProfile.ts'
 
 const { OWNER } = GITEE_API_CONFIG
