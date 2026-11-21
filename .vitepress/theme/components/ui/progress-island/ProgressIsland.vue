@@ -175,7 +175,7 @@ function getStepStatusClass(status: ProgressStep['status']) {
   border-radius: v-bind(borderRadius);
 }
 
-/* ScrollIsland Inner - Following original bg-natural-900 style */
+/* ProgressIsland Inner - Following original bg-natural-900 style */
 .scroll-island-inner {
   background: var(--vp-c-bg-alt);
   color: var(--vp-c-text-1);
