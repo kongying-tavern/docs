@@ -2,7 +2,7 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import type { ForumImageCommand } from '@/src/forum/composables/view/useForumImageMenu.ts'
 import type { ForumImageResource } from '@/src/forum/services/forumImageResource.ts'
-import { FeyCards } from '@theme/components/ui/cards/index.ts'
+import { FeyCards } from '@theme/components/ui/fey-cards/index.ts'
 import { useLocalStorage, useMediaQuery } from '@vueuse/core'
 import { DialogContent, DialogRoot, DialogTitle } from 'reka-ui'
 import { computed, nextTick, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
