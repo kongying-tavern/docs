@@ -10,7 +10,7 @@ vi.mock('../../src/forum/router/forumViewTransition.ts', () => ({ isForumToBlogN
 vi.mock('../../src/forum/services/forumRoute.ts', () => ({ parseForumLocation: () => null }))
 vi.mock('../../src/services/telemetry/index.ts', () => ({ identifySessionIfEnabled: vi.fn() }))
 vi.mock('../../.vitepress/routes/index.ts', () => ({ routes: [] }))
-vi.mock('../../.vitepress/theme/lib/handleRouteMatching.ts', () => ({ default: async () => true }))
+vi.mock('../../.vitepress/theme/router/handleRouteMatching.ts', () => ({ default: async () => true }))
 vi.mock('../../.vitepress/theme/router/forumPreload.ts', () => ({ preloadForumEntry: vi.fn() }))
 
 function routerWith(loadLocale: (locale: string) => Promise<void>, base = '/docs/') {

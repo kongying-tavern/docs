@@ -6,8 +6,8 @@ import { parseForumLocation } from '@/src/forum/services/forumRoute.ts'
 import { identifySessionIfEnabled } from '@/src/services/telemetry/index.ts'
 import { routes } from '../../routes/index.ts'
 import { interfaceLocaleForHref } from '../i18n/index.ts'
-import handleRouteMatching from '../lib/handleRouteMatching.ts'
 import { preloadForumEntry } from './forumPreload.ts'
+import handleRouteMatching from './handleRouteMatching.ts'
 
 /** Install the theme's navigation lifecycle in one place. */
 export function installThemeRouter(router: Router, siteData: Ref<SiteData>, initialDocument: Ref<boolean>, loadLocale: (locale: string) => Promise<void>): void {

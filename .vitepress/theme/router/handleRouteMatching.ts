@@ -8,7 +8,7 @@ import { publishForumLocation } from '@/src/forum/composables/state/useForumRout
 import { transitionForumBlog, transitionForumRoute } from '@/src/forum/router/forumViewTransition.ts'
 import { canonicalizeForumLocation, forumRouteParams, parseForumLocation } from '@/src/forum/services/forumRoute.ts'
 import { AsyncForumRouteView } from '../components/forum/index.ts'
-import { getLangPath } from './locale.ts'
+import { getLangPath } from '../lib/locale.ts'
 
 const FORUM_TITLES: Record<string, string> = {
   root: '社区反馈',
