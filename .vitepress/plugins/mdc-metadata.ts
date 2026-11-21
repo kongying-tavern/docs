@@ -14,13 +14,15 @@ const themeEntry = normalizePath(resolve(projectRoot, '.vitepress/theme/index.ts
 const themeDir = resolve(themeEntry, '..')
 const compDir = normalizePath(resolve(projectRoot, '.vitepress/theme/components'))
 const PASCAL_BOUNDARY_RE = /([a-z0-9])([A-Z])/g
-const BARREL_EXPORT_RE = /export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*['"](.+\.vue)['"]/g
+const BARREL_EXPORT_RE = /^[ \t]*export\s*\{\s*default\s+as\s+(\w+)\s*\}\s*from\s*['"](.+\.vue)['"]/gm
 const IMPORT_RE = /^import\s+(?:(type)\s+)?(\{[^}]*\}|[\w$]+(?:\s*,\s*\{[^}]*\})?)\s+from\s+['"]([^'"]+)['"]/gm
 const ASYNC_COMPONENT_RE = /const\s+(\w+)\s*=\s*defineAsyncComponent\(\s*\(\)\s*=>\s*import\(\s*['"]([^'"]+)['"]\s*\)\s*\)/g
 const GLOBAL_REGISTRATION_RE = /app\.component\s*\(\s*['"]([^'"]+)['"]\s*,\s*(\w+)\s*\)/g
 
 const mdcAllowlistFile = normalizePath(resolve(compDir, 'ui/mdc.ts'))
-const MDC_EXPORT_RE = /export\s*\{([^}]+)\}\s*from\s*['"]/g
+// Anchored to the line start so a comment showing `export { ... } from '...'` is not
+// mistaken for a real entry.
+const MDC_EXPORT_RE = /^[ \t]*export\s*\{([^}]+)\}\s*from\s*['"]/gm
 
 const SKIP_PROPS = new Set([
   'key',
