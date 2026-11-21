@@ -49,11 +49,13 @@
     "pages/**/*.ts",
     "tests/runtime/**/*.ts",
     "tests/support/**/*.ts",
-    "tests/fixtures/**/*.ts"
+    "tests/fixtures/**/*.ts",
+    "tests/harness/**/*.ts"
   ],
   "exclude": [
     "**/node_modules/**",
-    "**/dist/**"
+    "**/dist/**",
+    ".vitepress/cache/**"
   ],
   "ts-node": {
     "esm": true
