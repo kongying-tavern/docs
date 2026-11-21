@@ -58,7 +58,8 @@ Windows 上若被中断的 dev 运行留下损坏缓存，可将 `.vitepress/cac
 ## 场景分类
 
 用例按领域与功能分目录：`forum/<模块>/` 是论坛旅程，`site/<模块>/` 是只测站点本身的旅程。
-`fixtures/` 与 `support/` 是共享支撑，不对应具体用例。
+`support/` 是 Playwright 专属共享支撑，不对应具体用例；纯数据 fixture 在上层
+`tests/fixtures/`，跨运行方式共用的 helper 在 `tests/support/`。
 
 | 路径（相对 tests/e2e） | 验证契约 |
 | --- | --- |
@@ -89,8 +90,9 @@ Windows 上若被中断的 dev 运行留下损坏缓存，可将 `.vitepress/cac
 
 ## Mock 维护规则
 
-- `fixtures/gitee.ts` 是合成的原始 provider 数据，默认有效对象通过生产 parser 校验；
-  领域 Topic/Comment 的单元 fixture 留在 `tests/runtime/forum`，不能与原始接口对象混用。
+- `tests/fixtures/gitee.ts` 是合成的原始 provider 数据，默认有效对象通过生产 parser 校验；
+  领域 Topic/Comment 的单元 fixture 留在 `tests/fixtures/forum-content.ts` 与各测试旁，
+  不能与原始接口对象混用。
 - 字段形状来自当前 provider schema 及 2026-10-04 审查的公开列表/评论 GET 样本；
   写入响应按实际消费者构造，未声称完成所有 Gitee 接口的线上验证。
 - 多话题 fixture 要提供不同的 id/number；评论 target、链接、计数与页数据保持关联。

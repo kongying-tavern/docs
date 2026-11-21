@@ -6,25 +6,27 @@
 
 ```text
 tests/
+  support/                  跨运行方式共享的 helper，不依赖任何运行器
+  fixtures/                 跨套件复用的纯数据 fixture，用生产 parser 校验
   runtime/                  Vitest，Node 环境
     forum/                  论坛：api、auth、comments、content、images、layout、personal-state、
                             publish、queries、routing、search、topics
     theme/                  主题：blog、config、fluid-hover、i18n、keyboard-shortcut、layout、
                             markdown、router、swipe-actions、unocss
     shared/                 站点共享：content、contracts、site、telemetry
-    fonts/                  字体流水线：build、cache、config、pipeline
+    fonts/                  字体流水线：build、cache、config、pipeline（support/ 是 Python 脚本）
   e2e/                      Playwright，浏览器旅程
     forum/                  论坛：api、auth、boot、comments、images、layout、personal-state、
                             routing、search、topics
     site/                   站点：boot、docs、i18n、layout、settings
-    fixtures/               原始 provider 数据
     support/                Mock 请求处理器和 Playwright fixture
   harness/                  组件浏览器 harness，node --test
     theme/                  keyboard-shortcut、swipe-actions
 ```
 
 顶层项目内部至少一层子目录。领域下再按功能模块分，模块内放测试文件；模块没有内容时
-不要保留空目录。`fixtures/` 与 `support/` 是支撑目录，不计作领域或模块。
+不要保留空目录。运行器专属的基座（`e2e/support/`、harness 的 `fixtures/` 页面、fonts 的
+Python 脚本）留在对应运行方式目录内，不上移。
 
 | 命令 | 发现范围 |
 | --- | --- |
@@ -69,8 +71,9 @@ shared 套件还通过独立 Node 进程实际验证两份站点配置和三个�
 
 - Vitest 逻辑测试用 `*.test.ts`，Playwright 旅程用 `*.spec.ts`，组件 harness 用 `browser.test.mjs`。
 - 新测试先找所属领域与功能模块；模块内直接放文件，不再为单个文件新开子目录。
-- 只有本领域使用的 fixture/helper 放在本领域或模块的 `fixtures/`、`support/`，不为单次使用
-  新建全局 helper。领域 fixture 与原始 API fixture 分开。
+- 跨运行方式共用的 helper 放 `tests/support/`（不依赖任何运行器）；跨套件复用的纯数据
+  fixture 放 `tests/fixtures/`（用生产 parser 校验，如原始 Gitee 对象）。运行器专属的
+  基座和探针留在该运行方式目录下，不为单次使用新建全局 helper。
 - 新测试不要放进生产目录；确实需要跨领域的浏览器 fixture 才放 `tests/e2e/support/`。
 - 测试导入生产模块一律用相对路径，不依赖别名解析；优先指向定义文件，纯 re-export 的
   `index.ts` 只在它不携带 UI 或其它副作用时使用。barrel 引入 SFC 会让 Playwright 无法加载
