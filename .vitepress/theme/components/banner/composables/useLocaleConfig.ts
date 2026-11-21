@@ -1,10 +1,7 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { DEFAULT_LOCALE } from '../../../locales/common.ts'
 
-export const STORE_KEY = 'BANNER'
-export const DEFAULT_LOCALE_CODE = DEFAULT_LOCALE
-
+/** Site locales as the options the language-suggest bar offers. */
 export function useLocaleConfig() {
   const { site } = useData()
   return computed(() =>

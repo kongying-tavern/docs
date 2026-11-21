@@ -3,13 +3,14 @@ import { useElementSize } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { DEFAULT_LOCALE } from '@/src/constants/site.ts'
 import { useLanguage } from '../../../composables/useLanguage.ts'
 import { getLangCode } from '../../../lib/locale.ts'
 import { isFromExternalPage } from '../../../lib/navigation.ts'
 import { hash } from '../../../lib/string.ts'
-import { DEFAULT_LOCALE_CODE, useLocaleConfig } from '../config.ts'
 import { BANNER_CONSTANTS, BANNER_SELECTORS } from '../constants.ts'
 import { useBannerStorage } from './useBannerStorage.ts'
+import { useLocaleConfig } from './useLocaleConfig.ts'
 
 export function useBannerState(banner: Ref<HTMLElement | undefined>) {
   const { t } = useI18n({ useScope: 'global' })
@@ -18,13 +19,13 @@ export function useBannerState(banner: Ref<HTMLElement | undefined>) {
   const localeConfig = useLocaleConfig()
   const { matchedLang } = useLanguage(
     localeConfig.value.map(val => val.lang),
-    DEFAULT_LOCALE_CODE,
+    DEFAULT_LOCALE,
   )
   const { insertOrUpdateBannerData, isBannerDismissed } = useBannerStorage()
 
   const suggestLanguage = import.meta.env.SSR
-    ? DEFAULT_LOCALE_CODE
-    : getLangCode(matchedLang) || DEFAULT_LOCALE_CODE
+    ? DEFAULT_LOCALE
+    : getLangCode(matchedLang) || DEFAULT_LOCALE
 
   const isShowBanner = ref(false)
 
