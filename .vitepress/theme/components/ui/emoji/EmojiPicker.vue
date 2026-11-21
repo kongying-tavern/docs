@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <script setup lang="ts">
 import type { PopoverContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'

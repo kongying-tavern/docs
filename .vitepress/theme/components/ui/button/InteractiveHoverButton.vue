@@ -72,5 +72,3 @@ const props = withDefaults(defineProps<Props>(), {
     </div>
   </button>
 </template>
-
-<style></style>
