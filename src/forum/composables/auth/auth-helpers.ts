@@ -5,7 +5,7 @@
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
 import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 import { AuthError, AuthErrorType } from '@/src/services/authErrors.ts'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 
 export class AuthHelper {
   private static _instance: AuthHelper

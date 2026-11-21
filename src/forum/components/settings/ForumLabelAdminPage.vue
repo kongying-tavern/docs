@@ -19,7 +19,7 @@ import { useI18n } from 'vue-i18n'
 import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
 import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore.ts'
 import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 import ForumLabelFormDialog from './ForumLabelFormDialog.vue'
 import ForumLabelGroupTable from './ForumLabelGroupTable.vue'
 

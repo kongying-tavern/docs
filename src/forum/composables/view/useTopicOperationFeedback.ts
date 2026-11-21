@@ -1,6 +1,6 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { nextTick } from 'vue'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 import { isVisibleFeedback } from '@/src/utils/isVisibleFeedback.ts'
 
 export function useTopicOperationFeedback() {

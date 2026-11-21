@@ -66,11 +66,13 @@ vi.mock('../../../../src/forum/stores/auth/useUserInfo.ts', async importOriginal
   ...await importOriginal<typeof import('../../../../src/forum/stores/auth/useUserInfo.ts')>(),
   useUserInfoStore: () => mocks.userInfo,
 }))
-// The real telemetry tree imports Vue components, which this Node-only suite cannot load.
+// The real toast layer renders a Vue component, which this Node-only suite cannot load.
 vi.mock('../../../../src/services/telemetry/index.ts', () => ({
   OpsEvents: {},
   reportError() {},
   trackOp() {},
+}))
+vi.mock('../../../../src/services/telemetry/toast.ts', () => ({
   toast: { loading() {}, success() {}, error() {}, dismiss() {} },
 }))
 vi.mock('../../../../src/forum/components/form/composables/useFormState.ts', () => ({ useFormState: () => mocks.state }))
