@@ -4,8 +4,8 @@ import type { FluidHoverAxis } from '../../../composables/fluid-hover/index.ts'
 import { nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useFluidHover, useFluidHoverIndicator } from '../../../composables/fluid-hover/index.ts'
 import { onAncestorMotionEnd } from '../../../composables/fluid-hover/measure.ts'
+import { useSectionScrollSpy } from '../../../composables/useSectionScrollSpy.ts'
 import { cn } from '../../../lib/tailwind.ts'
-import { useSectionScrollSpy } from './useSectionScrollSpy.ts'
 
 const props = withDefaults(defineProps<{
   /** 列表方向：纵向 y、横排 x、网格 xy（两列/多列必须用 xy） */
