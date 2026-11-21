@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from '../ui/popover/index.ts'
 
-import { useLocaleConfig } from './configs.ts'
+import { useLocaleConfig } from './config.ts'
 
 const { suggestLang } = defineProps<{
   suggestLang: string
