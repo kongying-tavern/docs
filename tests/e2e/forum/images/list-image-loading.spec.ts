@@ -1,5 +1,5 @@
 import type { Route } from '@playwright/test'
-import { issue } from '../../fixtures/gitee.ts'
+import { issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 const metadata = '{thumbhash:"1fsrB38I9wiIh4hwj3CI+AiIgIAICIgA",width:"640",height:"480"}'

@@ -19,7 +19,7 @@ vi.mock('@vueuse/core', async importOriginal => ({
 }))
 vi.mock('vue-i18n', async (importOriginal) => {
   const actual = await importOriginal<typeof import('vue-i18n')>()
-  const { loadTestMessages } = await import('../../shared/support/i18n.ts')
+  const { loadTestMessages } = await import('../../../support/i18n.ts')
   const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
   return { ...actual, useI18n: () => i18n.global }
 })

@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer'
-import { comment, localAuth } from '../../fixtures/gitee.ts'
+import { comment, localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ viewport: { width: 375, height: 812 }, scenario: { following: false } })

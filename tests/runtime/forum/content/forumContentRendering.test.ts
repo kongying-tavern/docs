@@ -17,7 +17,7 @@ import {
   RICH_TIPTAP_WITH_ATTACHMENT,
   UNSAFE_LINK_TIPTAP_DOC,
   VALID_JSON_PLAIN_TEXTS,
-} from '../fixtures/content.ts'
+} from '../../../fixtures/forum-content.ts'
 
 test('valid JSON-looking Topic and legacy Comment bodies stay exact plain text', () => {
   for (const raw of VALID_JSON_PLAIN_TEXTS) {

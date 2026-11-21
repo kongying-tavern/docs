@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises'
-import { issue } from '../../fixtures/gitee.ts'
+import { issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ viewport: { width: 1440, height: 900 }, scenario: { topics: Array.from({ length: 20 }, (_, index) => issue({ id: 900001 + index, number: String(123 + index), body: Array.from({ length: 3 }, (_, image) => `![image](https://example.com/image-${image}.svg)`).join('\n') })) } })

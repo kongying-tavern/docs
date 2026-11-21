@@ -1,4 +1,4 @@
-import { alice, currentUser, issue, localAuth } from '../../fixtures/gitee.ts'
+import { alice, currentUser, issue, localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ viewport: { width: 1440, height: 900 }, scenario: { following: false, user: { ...currentUser, id: 2 }, topics: [issue({ user: { ...issue().user, id: 2, login: currentUser.login, name: currentUser.name } })], comments: [] } })

@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
 import process from 'node:process'
-import { loadTestMessages } from '../../../runtime/shared/support/i18n.ts'
+import { loadTestMessages } from '../../../support/i18n.ts'
 import { expect, test } from '../../support/test.ts'
 
 const preview = process.env.FORUM_E2E_PREVIEW === 'true'

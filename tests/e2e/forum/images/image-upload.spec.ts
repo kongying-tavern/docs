@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test'
 import { Buffer } from 'node:buffer'
 import { fileURLToPath } from 'node:url'
-import { currentUser, localAuth } from '../../fixtures/gitee.ts'
-import { animatedPng, animatedWebp, png } from '../../fixtures/images.ts'
+import { currentUser, localAuth } from '../../../fixtures/gitee.ts'
+import { animatedPng, animatedWebp, png } from '../../../fixtures/images.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ scenario: { following: false, user: { ...currentUser, id: 2 }, comments: [] } })

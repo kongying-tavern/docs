@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 import type { ForumScenario } from '../../support/forum-api.ts'
 import { writeFile } from 'node:fs/promises'
-import { issue } from '../../fixtures/gitee.ts'
+import { issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 const topics = Array.from({ length: 5000 }, (_, index) => issue({

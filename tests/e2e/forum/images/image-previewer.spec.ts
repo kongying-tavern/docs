@@ -1,4 +1,4 @@
-import { issue } from '../../fixtures/gitee.ts'
+import { issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 const imageMetadata = '{thumbhash:"1fsrB38I9wiIh4hwj3CI+AiIgIAICIgA",width:"640",height:"480"}'

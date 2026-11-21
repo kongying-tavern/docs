@@ -1,6 +1,6 @@
 import { Buffer } from 'node:buffer'
 import { writeFile } from 'node:fs/promises'
-import { currentUser, issue, localAuth } from '../../fixtures/gitee.ts'
+import { currentUser, issue, localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 const topics = Array.from({ length: 1000 }, (_, index) => issue({

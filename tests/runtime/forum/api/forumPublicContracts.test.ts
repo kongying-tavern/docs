@@ -12,7 +12,7 @@ import {
   TIPTAP_WITH_LITERAL_MENTION_TEXT,
   VALID_JSON_PLAIN_TEXTS,
   VALID_TIPTAP_DOC,
-} from '../fixtures/content.ts'
+} from '../../../fixtures/forum-content.ts'
 
 const user = {
   id: 7,

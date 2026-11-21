@@ -8,7 +8,7 @@ import Time from '../../../../.vitepress/theme/components/ui/time/Time.vue'
 import { installI18n, setupI18n } from '../../../../.vitepress/theme/i18n/index.ts'
 import { DEFAULT_LOCALE } from '../../../../src/constants/site.ts'
 import { relativeTimeValue } from '../../../../src/utils/dateTime.ts'
-import { loadTestMessages } from '../../shared/support/i18n.ts'
+import { loadTestMessages } from '../../../support/i18n.ts'
 
 vi.mock('vitepress', async () => {
   const { computed, inject, ref } = await import('vue')

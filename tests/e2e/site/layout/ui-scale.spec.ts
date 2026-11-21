@@ -1,4 +1,4 @@
-import { issue, localAuth } from '../../fixtures/gitee.ts'
+import { issue, localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 for (const width of [390, 1450]) {

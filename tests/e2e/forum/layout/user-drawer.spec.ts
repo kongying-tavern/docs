@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test'
-import { alice, localAuth } from '../../fixtures/gitee.ts'
+import { alice, localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ scenario: { following: false } })

@@ -1,4 +1,4 @@
-import { issue } from '../../fixtures/gitee.ts'
+import { issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ scenario: { topics: [issue({ body: '图片失败仍保留容器\n![broken](https://webp.assets.interknot.site/e2e-missing.webp)' })] } })

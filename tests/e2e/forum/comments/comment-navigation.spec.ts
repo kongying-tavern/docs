@@ -1,4 +1,4 @@
-import { comment, issue } from '../../fixtures/gitee.ts'
+import { comment, issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 const topic = issue({ comments: 21 })

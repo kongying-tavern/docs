@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
-import { issue, localAuth } from '../../fixtures/gitee.ts'
+import { issue, localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 const topics = Array.from({ length: 45 }, (_, index) => issue({

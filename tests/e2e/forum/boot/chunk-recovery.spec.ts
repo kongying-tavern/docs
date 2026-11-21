@@ -1,4 +1,4 @@
-import { localAuth } from '../../fixtures/gitee.ts'
+import { localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 async function signalLoadFailure(page: import('@playwright/test').Page): Promise<void> {

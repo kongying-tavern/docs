@@ -1,4 +1,4 @@
-import { localAuth } from '../../fixtures/gitee.ts'
+import { localAuth } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true, scenario: { following: false } })

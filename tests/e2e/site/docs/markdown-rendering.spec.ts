@@ -1,4 +1,4 @@
-import { png } from '../../fixtures/images.ts'
+import { png } from '../../../fixtures/images.ts'
 import { expect, test } from '../../support/test.ts'
 
 for (const width of [1440, 390]) {

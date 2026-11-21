@@ -18,7 +18,7 @@ import {
   TOPIC_WITH_METADATA_AND_IMAGE,
   VALID_JSON_PLAIN_TEXTS,
   VALID_TIPTAP_DOC,
-} from '../fixtures/content.ts'
+} from '../../../fixtures/forum-content.ts'
 
 test('updates Topic metadata while preserving unknown keys and content', () => {
   const updated = updateTopicMetadata(TOPIC_WITH_METADATA_AND_IMAGE, {

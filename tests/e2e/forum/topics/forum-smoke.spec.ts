@@ -1,4 +1,4 @@
-import { issue } from '../../fixtures/gitee.ts'
+import { issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 async function assertDetail(page: import('@playwright/test').Page) {

@@ -1,5 +1,5 @@
 import type { Route } from '@playwright/test'
-import { issue } from '../../fixtures/gitee.ts'
+import { issue } from '../../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 
 test.use({ scenario: { topics: [issue({ body: '![长截图](https://assets.webp.inter-knot.site/images/long.jpeg)\n![普通图片](https://example.com/normal.svg)' })] } })

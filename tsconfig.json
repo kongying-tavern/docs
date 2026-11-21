@@ -47,7 +47,9 @@
     "**/src/**/*.ts",
     "src/**/*.vue",
     "pages/**/*.ts",
-    "tests/runtime/**/*.ts"
+    "tests/runtime/**/*.ts",
+    "tests/support/**/*.ts",
+    "tests/fixtures/**/*.ts"
   ],
   "exclude": [
     "**/node_modules/**",
