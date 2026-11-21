@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { FORUM } from '../../types.d.ts'
-import { replaceTitle } from '@theme/composables/replaceTitle.ts'
+import { replaceTitle } from '@theme/lib/documentTitle.ts'
 import { computed, toValue, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getGiteeMessagesHref } from '@/src/constants/site.ts'

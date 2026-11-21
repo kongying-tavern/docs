@@ -1,4 +1,4 @@
-import { replaceTitle } from '@theme/composables/replaceTitle.ts'
+import { replaceTitle } from '@theme/lib/documentTitle.ts'
 import { getLangPath } from '@theme/lib/locale.ts'
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, watch, watchEffect } from 'vue'
