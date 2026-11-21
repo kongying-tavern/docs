@@ -1,14 +1,14 @@
 import type { MaybeRefOrGetter } from 'vue'
 import type { Composer } from 'vue-i18n'
-import type ForumAPI from '@/src/forum/api/types'
-import type { FORUM } from '@/src/forum/components/types'
-import type { TopicStatusDefinition } from '@/src/forum/services/forumTopicStatus'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { FORUM } from '@/src/forum/components/types.d.ts'
+import type { TopicStatusDefinition } from '@/src/forum/services/forumTopicStatus.ts'
 import { computed, toValue } from 'vue'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useTopicManager } from '@/src/forum/composables/state/useTopicManager'
-import { useTopicOperationFeedback } from '@/src/forum/composables/view/useTopicOperationFeedback'
-import { getSelectableTopicStatuses, groupTopicStatuses, TOPIC_STATUS_LABEL } from '@/src/forum/services/forumTopicStatus'
-import { useForumRoute } from './useForumRoute'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useTopicManager } from '@/src/forum/composables/state/useTopicManager.ts'
+import { useTopicOperationFeedback } from '@/src/forum/composables/view/useTopicOperationFeedback.ts'
+import { getSelectableTopicStatuses, groupTopicStatuses, TOPIC_STATUS_LABEL } from '@/src/forum/services/forumTopicStatus.ts'
+import { useForumRoute } from './useForumRoute.ts'
 
 /** Both the topic menu and the inline status picker use the same groups and actions. */
 export function createTopicStatusGroupItems(

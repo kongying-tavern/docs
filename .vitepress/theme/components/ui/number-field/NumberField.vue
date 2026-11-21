@@ -3,7 +3,7 @@ import type { NumberFieldRootEmits, NumberFieldRootProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { NumberFieldRoot, useForwardPropsEmits } from 'reka-ui'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/tailwind.ts'
 
 const props = defineProps<NumberFieldRootProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<NumberFieldRootEmits>()

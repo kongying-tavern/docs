@@ -1,6 +1,6 @@
 import process from 'node:process'
-import { localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const preview = process.env.FORUM_E2E_PREVIEW === 'true'
 const base = preview ? '/docs/' : '/'

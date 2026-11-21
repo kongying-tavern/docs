@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import Separator from '@theme/components/ui/separator/Separator.vue'
-import { Skeleton } from '@theme/components/ui/skeleton'
+import { Separator } from '@theme/components/ui/separator/index.ts'
+import { Skeleton } from '@theme/components/ui/skeleton/index.ts'
 import { createReusableTemplate, useWindowSize } from '@vueuse/core'
 import { computed } from 'vue'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
 import {
   buildForumListCacheKey,
   MAX_SKELETON_COUNT,
@@ -13,7 +13,7 @@ import {
   resolveForumListParams,
   resolveForumListScope,
   skeletonItemOpacity,
-} from '@/src/forum/services/forumListSkeleton'
+} from '@/src/forum/services/forumListSkeleton.ts'
 
 const props = defineProps<{ viewportOnly?: boolean }>()
 const [TopicCardSkeleton, UseTopicCardSkeleton] = createReusableTemplate()

@@ -1,17 +1,17 @@
-import type { TopicFormData } from '@/src/forum/services/form/validation'
+import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
 import { useForm } from 'vee-validate'
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
 import {
   createDefaultTopicDraft,
   readTopicDraft,
   removeTopicDraft,
   restoreTopicDraft,
   writeTopicDraft,
-} from '@/src/forum/services/form/topicDraft'
-import { createTopicFormSchema, getAllowedTopicTypes } from '@/src/forum/services/form/validation'
-import { getFormTabsConfig } from '../publish-topic-form/form-config'
+} from '@/src/forum/services/form/topicDraft.ts'
+import { createTopicFormSchema, getAllowedTopicTypes } from '@/src/forum/services/form/validation.ts'
+import { getFormTabsConfig } from '../publish-topic-form/form-config.ts'
 
 export function useFormState() {
   const { t } = useI18n({ useScope: 'global' })

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ForumSelectOption, ForumSelectSlots } from './shared'
+import type { ForumSelectOption, ForumSelectSlots } from './shared.ts'
 import { useMediaQuery } from '@vueuse/core'
 import { defineAsyncComponent } from 'vue'
-import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
 
 const props = defineProps<{
   options: ReadonlyArray<ForumSelectOption>

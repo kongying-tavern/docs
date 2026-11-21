@@ -1,9 +1,9 @@
-import type { ForumShortcutId } from '@/src/forum/services/forumShortcuts'
+import type { ForumShortcutId } from '@/src/forum/services/forumShortcuts.ts'
 import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, onScopeDispose, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences'
-import { FORUM_SHORTCUTS, shortcutBindingError, shortcutFromEvent } from '@/src/forum/services/forumShortcuts'
+import { useForumShortcutPreferences } from '@/src/forum/composables/state/useForumShortcutPreferences.ts'
+import { FORUM_SHORTCUTS, shortcutBindingError, shortcutFromEvent } from '@/src/forum/services/forumShortcuts.ts'
 
 export function useForumShortcutRecorder() {
   const preferences = useForumShortcutPreferences()

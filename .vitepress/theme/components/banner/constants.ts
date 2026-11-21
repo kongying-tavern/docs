@@ -1,3 +1,6 @@
+/** localStorage key holding the banner ids the visitor has dismissed. */
+export const BANNER_STORE_KEY = 'BANNER'
+
 export const BANNER_CONSTANTS = {
   ONE_DAY_MS: 24 * 60 * 60 * 1000,
   HEIGHT_OFFSET: 16,

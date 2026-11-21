@@ -1,17 +1,17 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { Composer } from 'vue-i18n'
-import type { TopicUpdateOutcome } from '@/src/forum/api/gitee/issues'
-import type ForumAPI from '@/src/forum/api/types'
+import type { TopicUpdateOutcome } from '@/src/forum/api/gitee/issues.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { computed, toValue } from 'vue'
-import { withAuth } from '@/src/forum/composables/auth/auth-helpers'
+import { withAuth } from '@/src/forum/composables/auth/auth-helpers.ts'
 import {
   replaceEditableTopicLabels,
   toggleTopicLabel,
-} from '@/src/forum/services/forumTopicLabels'
-import { replaceTopicStatus, topicStatusHidesTopic } from '@/src/forum/services/forumTopicStatus'
-import { toast } from '@/src/services/telemetry/toast'
-import { useForumTopicMutations } from '../data/useForumMutations'
-import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from '../util/composeTopicBody'
+} from '@/src/forum/services/forumTopicLabels.ts'
+import { replaceTopicStatus, topicStatusHidesTopic } from '@/src/forum/services/forumTopicStatus.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
+import { useForumTopicMutations } from '../data/useForumMutations.ts'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch } from '../util/composeTopicBody.ts'
 
 const pendingOperations = new Map<string, Promise<unknown>>()
 

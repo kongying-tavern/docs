@@ -1,15 +1,15 @@
-import type { AuthSessionAccessor } from '@/src/services/authSession'
+import type { AuthSessionAccessor } from '@/src/services/authSession.ts'
 import assert from 'node:assert/strict'
 import { createPinia } from 'pinia'
 import { test, vi } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { getAuthSession, registerAuthSessionAccessor } from '@/src/services/authSession'
+import { getAuthSession, registerAuthSessionAccessor } from '@/src/services/authSession.ts'
 
 // Exercise the real client hooks without a custom Node module loader.
 vi.stubEnv('SSR', false)
-const { fetcher, SSO_SESSION_CONTEXT } = await import('@/src/forum/api/interknot.site/index')
-const { useUserInfoStore } = await import('@/src/forum/stores/auth/useUserInfo')
+const { fetcher, SSO_SESSION_CONTEXT } = await import('@/src/forum/api/interknot.site/index.ts')
+const { useUserInfoStore } = await import('@/src/forum/stores/auth/useUserInfo.ts')
 
 let clock = Date.now()
 

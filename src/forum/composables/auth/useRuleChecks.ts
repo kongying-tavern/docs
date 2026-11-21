@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
-import { usePermissionData } from './usePermissionData'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
+import { usePermissionData } from './usePermissionData.ts'
 
 const rolesPermissions = {
   teamMember: ['edit_feedback', 'manage_feedback', 'write_blog', 'manage_blog'],

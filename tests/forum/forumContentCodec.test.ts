@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { FORUM_IMAGE_ORIGIN } from '@/src/constants/site'
+import { FORUM_IMAGE_ORIGIN } from '@/src/constants/site.ts'
 import {
   decodeCommentBody,
   decodeForumText,
@@ -10,7 +10,7 @@ import {
   formatAttachmentMarkdownList,
   parseAttachmentMarkdown,
   updateTopicMetadata,
-} from '@/src/forum/services/forumContentCodec'
+} from '@/src/forum/services/forumContentCodec.ts'
 import {
   AMBIGUOUS_JSON_COMMENT,
   MALFORMED_AND_ORDINARY_COMMENTS,
@@ -18,7 +18,7 @@ import {
   TOPIC_WITH_METADATA_AND_IMAGE,
   VALID_JSON_PLAIN_TEXTS,
   VALID_TIPTAP_DOC,
-} from './fixtures/content'
+} from './fixtures/content.ts'
 
 test('updates Topic metadata while preserving unknown keys and content', () => {
   const updated = updateTopicMetadata(TOPIC_WITH_METADATA_AND_IMAGE, {

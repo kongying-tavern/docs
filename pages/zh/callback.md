@@ -9,7 +9,7 @@ docHeader: false
 ---
 
 <script lang="ts" setup>
-import CallbackPage from '@theme/components/ui/CallbackPage.vue'
+import CallbackPage from '@theme/components/ui/callback-page/CallbackPage.vue'
 </script>
 
 <CallbackPage />

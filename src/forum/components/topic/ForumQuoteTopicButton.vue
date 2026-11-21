@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { ReloadIcon } from '@radix-icons/vue'
-import { Button } from '@theme/components/ui/button'
-import { TextMorph } from '@theme/components/ui/text-morph'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { TextMorph } from '@theme/components/ui/text-morph/index.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumReaction } from '@/src/forum/composables/data/useForumReaction'
-import { buildQuotedTopicFormHref, isQuotableTopicType } from '@/src/forum/services/forumTopicQuote'
-import { FORM_HASH } from '../form/publish-topic-form/form-config'
-import { preloadForumPublishForm } from '../utils/submitFormUi'
+import { useForumReaction } from '@/src/forum/composables/data/useForumReaction.ts'
+import { buildQuotedTopicFormHref, isQuotableTopicType } from '@/src/forum/services/forumTopicQuote.ts'
+import { FORM_HASH } from '../form/publish-topic-form/form-config.ts'
+import { preloadForumPublishForm } from '../utils/submitFormUi.ts'
 
 const { autoload = true, topic } = defineProps<{ topic: ForumAPI.Topic, autoload?: boolean }>()
 const { t } = useI18n({ useScope: 'global' })

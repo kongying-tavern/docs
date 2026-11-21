@@ -1,5 +1,5 @@
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 async function assertDetail(page: import('@playwright/test').Page) {
   await expect(page.locator('[data-forum-shared-topic="title"]')).toContainText('测试反馈路由可用')

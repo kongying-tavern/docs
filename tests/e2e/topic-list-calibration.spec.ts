@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises'
 import process from 'node:process'
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 // Calibration expectations describe the build being tested, not a production option.
 const fullLimit = Number(process.env.FORUM_HYBRID_LIMIT || 80)

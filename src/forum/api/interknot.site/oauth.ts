@@ -1,10 +1,10 @@
-import type { INTER_KNOT } from './api'
-import type { SSOAuth } from '@/src/forum/stores/auth/useUserAuth'
-import type { AuthResult } from '@/src/services/authErrors'
-import { catchError } from '@/src/services/apiUtils'
-import { createAuthError } from '@/src/services/authErrors'
-import { fetcher, SSO_SESSION_CONTEXT } from '.'
-import { generateRandomString, normalizeSSOAuth, signToken } from './utils'
+import type { INTER_KNOT } from './api.d.ts'
+import type { SSOAuth } from '@/src/forum/stores/auth/useUserAuth.ts'
+import type { AuthResult } from '@/src/services/authErrors.ts'
+import { catchError } from '@/src/services/apiUtils.ts'
+import { createAuthError } from '@/src/services/authErrors.ts'
+import { fetcher, SSO_SESSION_CONTEXT } from './index.ts'
+import { generateRandomString, normalizeSSOAuth, signToken } from './utils.ts'
 
 export async function refreshToken(accessToken: string): Promise<AuthResult<SSOAuth>> {
   const nonce = generateRandomString(16)

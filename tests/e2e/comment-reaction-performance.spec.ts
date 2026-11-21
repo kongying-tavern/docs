@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url'
-import { expect, test } from './support/test'
+import { expect, test } from './support/test.ts'
 
 test('offscreen cached comment counts do not initialize character measurements', { tag: '@source' }, async ({ page, forum }) => {
   await page.goto('feedback')

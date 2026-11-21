@@ -1,4 +1,4 @@
-import { expect, test } from './support/test'
+import { expect, test } from './support/test.ts'
 
 const cases = [320, 390, 768, 959, 960, 1440].map(width => ({ width, query: '' }))
 cases.push({ width: 960, query: 'test' }, { width: 1440, query: 'test' })

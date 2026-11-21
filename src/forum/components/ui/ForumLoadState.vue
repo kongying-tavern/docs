@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ReloadIcon } from '@radix-icons/vue'
-import { Button } from '@theme/components/ui/button'
-import Divider from '@theme/components/ui/divider/Divider.vue'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { Divider } from '@theme/components/ui/divider/index.ts'
 import { useI18n } from 'vue-i18n'
 
 const { loading = false, canLoadMore = false, error = false, text = '', status = 'status', rateLimit = false, errorMessage = '' } = defineProps<{

@@ -1,9 +1,9 @@
-import type ForumAPI from '../types'
-import { buildFormData } from '@/src/services/apiUtils'
-import { apiCall, deleteApiCache } from '.'
-import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
-import { GITEE_API_CONFIG } from './gitee-config'
-import { GiteeApiErrorType } from './types'
+import type ForumAPI from '../types.d.ts'
+import { buildFormData } from '@/src/services/apiUtils.ts'
+import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors.ts'
+import { GITEE_API_CONFIG } from './gitee-config.ts'
+import { apiCall, deleteApiCache } from './index.ts'
+import { GiteeApiErrorType } from './types.ts'
 
 const { OWNER, FEEDBACK_REPO } = GITEE_API_CONFIG
 

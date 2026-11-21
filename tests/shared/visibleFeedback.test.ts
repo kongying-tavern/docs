@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { isVisibleFeedback } from '@/src/utils/isVisibleFeedback'
+import { isVisibleFeedback } from '@/src/utils/isVisibleFeedback.ts'
 
 test('only an exposed result in the foreground viewport replaces a toast', () => {
   const originalDocument = Object.getOwnPropertyDescriptor(globalThis, 'document')

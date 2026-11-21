@@ -1,5 +1,5 @@
-import type { ForumFilter, ForumListRouteState, ForumRoute, ForumRouteOptions, ForumSort, ForumTopicType, ParsedForumLocation } from '@/src/forum/services/forumRoute'
-import type { ForumSearchFacet } from '@/src/forum/services/forumSearchQuery'
+import type { ForumFilter, ForumListRouteState, ForumRoute, ForumRouteOptions, ForumSort, ForumTopicType, ParsedForumLocation } from '@/src/forum/services/forumRoute.ts'
+import type { ForumSearchFacet } from '@/src/forum/services/forumSearchQuery.ts'
 import { useData, useRouter } from 'vitepress'
 import { computed, readonly, shallowRef } from 'vue'
 import {
@@ -8,8 +8,8 @@ import {
   isSameForumDestination,
   navigateForumDestination,
   parseForumLocation,
-} from '@/src/forum/services/forumRoute'
-import { appendForumSearchFacet, toggleForumSearchFacet } from '@/src/forum/services/forumSearchQuery'
+} from '@/src/forum/services/forumRoute.ts'
+import { appendForumSearchFacet, toggleForumSearchFacet } from '@/src/forum/services/forumSearchQuery.ts'
 
 const forumLocation = shallowRef<ParsedForumLocation | null>(null)
 // Cached list rows settle after the topic transition, so removals stay visible.

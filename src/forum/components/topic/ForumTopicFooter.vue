@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import ForumTopicReactionButton from '../ui/ForumTopicReactionButton.vue'
 import ForumCopyLinkButton from './ForumCopyLinkButton.vue'
 import ForumQuoteTopicButton from './ForumQuoteTopicButton.vue'

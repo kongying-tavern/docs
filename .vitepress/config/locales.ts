@@ -2,7 +2,7 @@ import type { DefaultTheme, LocaleConfig } from 'vitepress'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { DEFAULT_LOCALE } from '../locales/common.ts'
-import { baseHelper } from '../theme/utils.ts'
+import { baseHelper } from '../theme/lib/link.ts'
 import { getLocaleDirs, LOCALES_DIR } from './localeDirs.ts'
 import { loadSiteLocale } from './siteLocale.ts'
 

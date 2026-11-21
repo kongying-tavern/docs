@@ -1,21 +1,21 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { createSSRApp, h, ref } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { renderToString } from 'vue/server-renderer'
-import { normalizeIssue } from '@/src/forum/api/gitee/normalize'
+import { normalizeIssue } from '@/src/forum/api/gitee/normalize.ts'
 import ForumAsideRelatedTopics from '@/src/forum/components/aside/ForumAsideRelatedTopics.vue'
 
 const mocks = vi.hoisted(() => ({ topics: [] as ForumAPI.Topic[] }))
 
-vi.mock('@/src/forum/composables/data/useForumQueries', () => ({
+vi.mock('@/src/forum/composables/data/useForumQueries.ts', () => ({
   useForumTopicsQuery: () => ({ rows: ref(mocks.topics) }),
 }))
-vi.mock('@/src/forum/composables/state/useForumRoute', () => ({
+vi.mock('@/src/forum/composables/state/useForumRoute.ts', () => ({
   useForumRoute: () => ({ topicHref: (id: string) => `/feedback/topic/${id}` }),
 }))
-vi.mock('@theme/components/ui/User.vue', () => ({ default: { render: () => null } }))
+vi.mock('@theme/components/ui/user/User.vue', () => ({ default: { render: () => null } }))
 vi.mock('@/src/forum/components/ui/ForumTime.vue', () => ({ default: { render: () => null } }))
 vi.mock('@/src/forum/components/ui/ForumTopicLifecycle.vue', () => ({ default: { render: () => null } }))
 

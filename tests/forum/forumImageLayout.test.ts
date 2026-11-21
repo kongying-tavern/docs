@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { isForumLongImage, planForumImageGrid, planForumImageRow } from '@/src/forum/services/forumImageLayout'
+import { isForumLongImage, planForumImageGrid, planForumImageRow } from '@/src/forum/services/forumImageLayout.ts'
 
 const wide = { width: 1600, height: 800 }
 const tall = { width: 800, height: 1600 }

@@ -1,22 +1,22 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumPage, ForumTopicListParams } from '@/src/forum/services/forumQueryContracts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumPage, ForumTopicListParams } from '@/src/forum/services/forumQueryContracts.ts'
 import { useInfiniteQuery, useQuery, useQueryCache } from '@pinia/colada'
 import { computed, ref, toValue, watch } from 'vue'
-import { issues, user } from '@/src/forum/api/gitee'
-import { useArchivedFeedbackAccess } from '@/src/forum/composables/auth/useArchivedFeedbackAccess'
-import { usePermissionData } from '@/src/forum/composables/auth/usePermissionData'
-import { FORUM_CONFIG } from '@/src/forum/services/forumConfig'
+import { issues, user } from '@/src/forum/api/gitee/index.ts'
+import { useArchivedFeedbackAccess } from '@/src/forum/composables/auth/useArchivedFeedbackAccess.ts'
+import { usePermissionData } from '@/src/forum/composables/auth/usePermissionData.ts'
+import { FORUM_CONFIG } from '@/src/forum/services/forumConfig.ts'
 import {
   buildForumListCacheKey,
   saveSkeletonListCount,
-} from '@/src/forum/services/forumListSkeleton'
+} from '@/src/forum/services/forumListSkeleton.ts'
 import {
   flattenForumPages,
   forumKeys,
   normalizeTopicListParams,
-} from '@/src/forum/services/forumQueryContracts'
-import { getForumTopics, getPinnedForumTopics, invalidateStructuredForumTopics } from '@/src/forum/services/forumTopics'
+} from '@/src/forum/services/forumQueryContracts.ts'
+import { getForumTopics, getPinnedForumTopics, invalidateStructuredForumTopics } from '@/src/forum/services/forumTopics.ts'
 
 // 列表页 scope：传入时首屏成功记录条数供骨架屏复用（见 forumListSkeleton）；pageSize=1 的计数查询不要传
 export function useForumTopicsQuery(

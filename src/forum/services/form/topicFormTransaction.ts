@@ -1,8 +1,8 @@
-import type { ImageAttachmentError, UploadImageAttachmentsResult } from './imageAttachment'
-import type { TopicFormData } from './validation'
-import type ForumAPI from '@/src/forum/api/types'
-import { formatAttachmentMarkdownList } from '@/src/forum/services/forumContentCodec'
-import { createTopicDraftSchema } from './validation'
+import type { ImageAttachmentError, UploadImageAttachmentsResult } from './imageAttachment.ts'
+import type { TopicFormData } from './validation.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { formatAttachmentMarkdownList } from '@/src/forum/services/forumContentCodec.ts'
+import { createTopicDraftSchema } from './validation.ts'
 
 export type TopicFormTransactionResult
   = | { ok: true, topic: ForumAPI.Topic }

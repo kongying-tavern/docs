@@ -1,6 +1,6 @@
 import type { Locator } from '@playwright/test'
-import { issue, localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue, localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test.use({ scenario: { following: false, topics: [issue()], comments: [] } })
 

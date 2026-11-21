@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { FORUM } from '../../types'
+import type { FORUM } from '../../types.d.ts'
 import ForumMenuShortcut from '../ForumMenuShortcut.vue'
 import ForumTopicStatusBadge from '../ForumTopicStatusBadge.vue'
 import ForumTopicTypeBadge from '../ForumTopicTypeBadge.vue'
-import { menuItemKey, sortMenuItems } from './shared'
+import { menuItemKey, sortMenuItems } from './shared.ts'
 
 defineProps<{
   items: FORUM.TopicDropdownMenu[]

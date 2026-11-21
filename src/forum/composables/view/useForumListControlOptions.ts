@@ -1,9 +1,9 @@
-import type { FORUM } from '@/src/forum/components/types'
-import type { ForumFilter, ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute'
+import type { FORUM } from '@/src/forum/components/types.d.ts'
+import type { ForumFilter, ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { FORUM_VIEW_MODES, getViewModeIconClass } from '@/src/forum/composables/state/useForumViewMode'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { FORUM_VIEW_MODES, getViewModeIconClass } from '@/src/forum/composables/state/useForumViewMode.ts'
 
 export function useForumListControlOptions() {
   const { t } = useI18n({ useScope: 'global' })

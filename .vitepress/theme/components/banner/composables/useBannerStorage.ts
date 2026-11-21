@@ -1,11 +1,11 @@
 import type { Ref } from 'vue'
-import type { PartialBannerItem } from '../types'
+import type { PartialBannerItem } from '../types.ts'
 import { useLocalStorage } from '@vueuse/core'
 import { watchEffect } from 'vue'
-import { STORE_KEY } from '../configs'
+import { BANNER_STORE_KEY } from '../constants.ts'
 
 export function useBannerStorage() {
-  const bannerData = useLocalStorage<PartialBannerItem[]>(STORE_KEY, [])
+  const bannerData = useLocalStorage<PartialBannerItem[]>(BANNER_STORE_KEY, [])
 
   if (!import.meta.env.SSR && !Array.isArray(bannerData.value)) {
     bannerData.value = []

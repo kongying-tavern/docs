@@ -1,5 +1,5 @@
-import { comment, issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { comment, issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const topics = Array.from({ length: 40 }, (_, index) => issue({
   id: 930000 + index,

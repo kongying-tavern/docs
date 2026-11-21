@@ -3,26 +3,28 @@ import type { MarkdownOptions } from 'vitepress'
 
 import comark from '@comark/markdown-it'
 import { abbr } from '@mdit/plugin-abbr'
-import { demo } from '@mdit/plugin-demo'
 import { figure } from '@mdit/plugin-figure'
 import { imgSize, obsidianImgSize } from '@mdit/plugin-img-size'
 import { mark } from '@mdit/plugin-mark'
 import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
-import MarkdownExtCard from '../theme/markdown/card.ts'
-import MarkdownExtColorPreview from '../theme/markdown/colorPreview.ts'
-import { applyComarkPatches } from '../theme/markdown/comark-patches.ts'
-import MarkdownExtCustomColor from '../theme/markdown/customColor.ts'
-import MarkdownExtDocHeaderTitle from '../theme/markdown/docHeaderTitle.ts'
-import MarkdownExtEmoji from '../theme/markdown/emoji.ts'
-import MarkdownExtKbd from '../theme/markdown/kbd.ts'
-import MarkdownExtLightbox from '../theme/markdown/lightbox.ts'
-import MarkdownExtMention from '../theme/markdown/mention.ts'
-import { MarkdownExtQA } from '../theme/markdown/qa.ts'
-import { MarkdownExtRuby } from '../theme/markdown/ruby.ts'
-import { MarkdownExtSpoiler } from '../theme/markdown/spoiler.ts'
-import MarkdownExtTimeline from '../theme/markdown/timeline.ts'
-import MarkdownExtVariableInject from '../theme/markdown/variableInject.ts'
+import {
+  applyComarkPatches,
+  MarkdownExtCard,
+  MarkdownExtColorPreview,
+  MarkdownExtCustomColor,
+  MarkdownExtDemo,
+  MarkdownExtDocHeaderTitle,
+  MarkdownExtEmoji,
+  MarkdownExtKbd,
+  MarkdownExtLightbox,
+  MarkdownExtMention,
+  MarkdownExtQA,
+  MarkdownExtRuby,
+  MarkdownExtSpoiler,
+  MarkdownExtTimeline,
+  MarkdownExtVariableInject,
+} from '../theme/markdown-ext/index.ts'
 
 export const markdownConfig: MarkdownOptions = {
   attrs: true,
@@ -30,31 +32,6 @@ export const markdownConfig: MarkdownOptions = {
     lazyLoad: true,
   },
   preConfig(md) {
-    // `demo` must run before Comark, otherwise `:::: demo` is parsed as
-    // an MDC block component and never reaches the demo container plugin.
-    md.use(demo, {
-      openRender: () => {
-        return '<details class="vp-container vp-md-demo">'
-      },
-      closeRender: () => {
-        return '</details>'
-      },
-      contentOpenRender: () => {
-        return [
-          '<summary class="demo-content">',
-          '<div class="vp-container-header">',
-          '<button type="button" title="toggle" class="vp-md-demo-toggle-button"></button>',
-          '</div>',
-          '<div class="vp-md-demo-display">',
-        ].join('')
-      },
-      contentCloseRender: () => {
-        return [
-          '</div>',
-          '</summary>',
-        ].join('')
-      },
-    })
     md.use(comark, {
       syntax: {
         inlineProps: false,
@@ -67,6 +44,7 @@ export const markdownConfig: MarkdownOptions = {
   config(md) {
     md.use(MarkdownExtColorPreview)
     md.use(MarkdownExtCard)
+    md.use(MarkdownExtDemo)
     md.use(MarkdownExtQA)
     md.use(sub)
     md.use(sup)

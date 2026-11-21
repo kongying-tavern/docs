@@ -1,10 +1,10 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { normalizeComment, normalizeIssue } from '@/src/forum/api/gitee/normalize'
-import { extractOfficialAndAuthorComments } from '@/src/forum/api/gitee/officialComments'
-import { composeTopicBody, writeTopicBodyComment } from '@/src/forum/composables/util/composeTopicBody'
-import { getForumSearchSuggestions } from '@/src/forum/services/forumSearchSuggestions'
-import { getTopicReferenceSuggestions } from '@/src/forum/services/forumTopicReferenceSuggestions'
+import { normalizeComment, normalizeIssue } from '@/src/forum/api/gitee/normalize.ts'
+import { extractOfficialAndAuthorComments } from '@/src/forum/api/gitee/officialComments.ts'
+import { composeTopicBody, writeTopicBodyComment } from '@/src/forum/composables/util/composeTopicBody.ts'
+import { getForumSearchSuggestions } from '@/src/forum/services/forumSearchSuggestions.ts'
+import { getTopicReferenceSuggestions } from '@/src/forum/services/forumTopicReferenceSuggestions.ts'
 import {
   LEGACY_PLAIN_COMMENT,
   LEGACY_PLAIN_TOPIC,
@@ -12,7 +12,7 @@ import {
   TIPTAP_WITH_LITERAL_MENTION_TEXT,
   VALID_JSON_PLAIN_TEXTS,
   VALID_TIPTAP_DOC,
-} from './fixtures/content'
+} from './fixtures/content.ts'
 
 const user = {
   id: 7,

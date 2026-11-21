@@ -1,10 +1,10 @@
-import type { PublishTopicPresentation } from '@/src/forum/components/form/composables/usePublishTopicController'
-import type { UploadImageAttachmentsResult } from '@/src/forum/services/form/imageAttachment'
-import type { TopicFormData } from '@/src/forum/services/form/validation'
+import type { PublishTopicPresentation } from '@/src/forum/components/form/composables/usePublishTopicController.ts'
+import type { UploadImageAttachmentsResult } from '@/src/forum/services/form/imageAttachment.ts'
+import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { effectScope, reactive, ref, shallowRef } from 'vue'
-import { usePublishTopicController } from '@/src/forum/components/form/composables/usePublishTopicController'
+import { usePublishTopicController } from '@/src/forum/components/form/composables/usePublishTopicController.ts'
 
 const mocks = vi.hoisted(() => ({
   drafts: new Map<string, unknown>(),
@@ -26,51 +26,55 @@ vi.mock('@vueuse/core', async importOriginal => ({
 }))
 vi.mock('vue-i18n', async (importOriginal) => {
   const actual = await importOriginal<typeof import('vue-i18n')>()
-  const { loadTestMessages } = await import('../shared/support/i18n')
+  const { loadTestMessages } = await import('../shared/support/i18n.ts')
   const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
   return { ...actual, useI18n: () => i18n.global }
 })
-vi.mock('@/src/forum/api/gitee', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/api/gitee')>(),
+vi.mock('@/src/forum/api/gitee/index.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/api/gitee/index.ts')>(),
   isPhoneBindingRequiredError: () => false,
 }))
-vi.mock('@/src/forum/components/utils/submitFormUi', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/components/utils/submitFormUi')>(),
+vi.mock('@/src/forum/components/utils/submitFormUi.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/components/utils/submitFormUi.ts')>(),
   formatImageAttachmentError: () => '',
 }))
-vi.mock('@/src/forum/composables/data/useForumQueries', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/composables/data/useForumQueries')>(),
+vi.mock('@/src/forum/composables/data/useForumQueries.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/composables/data/useForumQueries.ts')>(),
   useForumTopicQuery: () => ({ data: ref(undefined), error: ref(null), isLoading: ref(false) }),
 }))
-vi.mock('@/src/forum/hooks/useHashChecker', () => ({ useHashChecker: (_hash: unknown, handler: (hash: string) => unknown) => mocks.hashHandler = handler }))
-vi.mock('@/src/forum/services/form/topicDraft', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/services/form/topicDraft')>(),
+vi.mock('@/src/forum/hooks/useHashChecker.ts', () => ({ useHashChecker: (_hash: unknown, handler: (hash: string) => unknown) => mocks.hashHandler = handler }))
+vi.mock('@/src/forum/services/form/topicDraft.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/services/form/topicDraft.ts')>(),
   readTopicDraft: (type: TopicFormData['type']) => mocks.drafts.get(type),
   readSavedTopicDrafts: () => [...mocks.drafts.values()],
 }))
-vi.mock('@/src/forum/services/forumTopicQuote', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/services/forumTopicQuote')>(),
+vi.mock('@/src/forum/services/forumTopicQuote.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/services/forumTopicQuote.ts')>(),
   isQuotableTopicType: () => true,
   readQuotedTopicRequest: () => undefined,
   clearQuotedTopicRequest: () => {},
 }))
-vi.mock('@/src/forum/services/loginIntent', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/services/loginIntent')>(),
+vi.mock('@/src/forum/services/loginIntent.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/services/loginIntent.ts')>(),
   rememberLoginIntent: () => {},
 }))
-vi.mock('@/src/forum/stores/auth/useUserAuth', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/stores/auth/useUserAuth')>(),
+vi.mock('@/src/forum/stores/auth/useUserAuth.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/stores/auth/useUserAuth.ts')>(),
   useUserAuthStore: () => ({ isTokenValid: true }),
 }))
-vi.mock('@/src/forum/stores/auth/useUserInfo', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/stores/auth/useUserInfo')>(),
+vi.mock('@/src/forum/stores/auth/useUserInfo.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('@/src/forum/stores/auth/useUserInfo.ts')>(),
   useUserInfoStore: () => mocks.userInfo,
 }))
 // The real telemetry tree imports Vue components, which this Node-only suite cannot load.
-vi.mock('@/src/services/telemetry', () => ({ OpsEvents: {}, reportError() {}, trackOp() {} }))
-vi.mock('@/src/services/telemetry/toast', () => ({ toast: { loading() {}, success() {}, error() {}, dismiss() {} } }))
-vi.mock('@/src/forum/components/form/composables/useFormState', () => ({ useFormState: () => mocks.state }))
-vi.mock('@/src/forum/components/form/composables/useFormSubmit', () => ({ useFormSubmit: () => mocks.formSubmit }))
+vi.mock('@/src/services/telemetry/index.ts', () => ({
+  OpsEvents: {},
+  reportError() {},
+  trackOp() {},
+  toast: { loading() {}, success() {}, error() {}, dismiss() {} },
+}))
+vi.mock('@/src/forum/components/form/composables/useFormState.ts', () => ({ useFormState: () => mocks.state }))
+vi.mock('@/src/forum/components/form/composables/useFormSubmit.ts', () => ({ useFormSubmit: () => mocks.formSubmit }))
 
 function deferred<T>() {
   let resolve!: (value: T) => void

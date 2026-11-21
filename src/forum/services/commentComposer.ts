@@ -1,5 +1,5 @@
 import type { JSONContent } from '@tiptap/core'
-import type ForumAPI from '../api/types'
+import type ForumAPI from '../api/types.d.ts'
 
 /** Keep the first (highest-priority) identity; never shuffle mention suggestions. */
 export function collectMentionUsers(...groups: readonly (readonly ForumAPI.User[])[]): ForumAPI.User[] {

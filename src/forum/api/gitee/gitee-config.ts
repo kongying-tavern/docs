@@ -1,4 +1,4 @@
-import type ForumAPI from '../types'
+import type ForumAPI from '../types.d.ts'
 
 export const GITEE_API_CONFIG = {
   BASE_URL: 'https://gitee.com',

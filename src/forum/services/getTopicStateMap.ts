@@ -1,5 +1,5 @@
 import type { Composer } from 'vue-i18n'
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 
 /**
  * Gitee 三态在本项目里的称呼，刻意与导航/筛选器一致：

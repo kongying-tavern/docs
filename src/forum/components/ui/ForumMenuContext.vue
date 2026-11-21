@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { FORUM } from '../types'
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@theme/components/ui/context-menu'
-import { cn } from '@theme/lib/utils'
+import type { FORUM } from '../types.d.ts'
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@theme/components/ui/context-menu/index.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'
-import { menuContentClasses } from './responsive/shared'
+import { menuContentClasses } from './responsive/shared.ts'
 
 const { menu = [], class: className } = defineProps<{
   menu?: FORUM.TopicDropdownMenu[]

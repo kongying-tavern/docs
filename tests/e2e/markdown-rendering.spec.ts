@@ -1,5 +1,5 @@
-import { png } from './fixtures/images'
-import { expect, test } from './support/test'
+import { png } from './fixtures/images.ts'
+import { expect, test } from './support/test.ts'
 
 for (const width of [1440, 390]) {
   test(`Markdown demos render typed props and independent spoiler attributes at ${width}px`, async ({ page }) => {

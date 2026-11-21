@@ -1,8 +1,8 @@
-import { useLanguage } from '@theme/composables/useLanguage'
+import { useLanguage } from '@theme/composables/useLanguage.ts'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
 import supportedLanguages from '@/src/data/supportedLanguages.json'
-import { matchLanguages } from '@/src/forum/composables/data/matchLanguages'
+import { matchLanguages } from '@/src/forum/composables/data/matchLanguages.ts'
 
 export const useForumTranslationPreferences = createGlobalState(() => {
   const { currentPageLang } = useLanguage()

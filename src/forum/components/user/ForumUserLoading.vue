@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Skeleton } from '@theme/components/ui/skeleton'
+import { Skeleton } from '@theme/components/ui/skeleton/index.ts'
 import { useI18n } from 'vue-i18n'
 import AsyncLoadError from '@/src/components/async/AsyncLoadError.vue'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
 import ForumLayout from '../layout/ForumLayout.vue'
 import ForumListQuickControls from '../list/ForumListQuickControls.vue'
 import ForumTopicListSkeletons from '../list/ForumTopicListSkeletons.vue'

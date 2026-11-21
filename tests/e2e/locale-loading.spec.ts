@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 import process from 'node:process'
-import { loadTestMessages } from '../shared/support/i18n'
-import { expect, test } from './support/test'
+import { loadTestMessages } from '../shared/support/i18n.ts'
+import { expect, test } from './support/test.ts'
 
 const preview = process.env.FORUM_E2E_PREVIEW === 'true'
 const feedback = (locale: string) => (loadTestMessages(locale).docReaction as { feedbackMsg: string }).feedbackMsg

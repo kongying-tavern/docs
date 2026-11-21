@@ -1,12 +1,12 @@
 import type { AfterResponseHook, BeforeRequestHook, BeforeRetryHook } from 'ky'
 import ky, { isHTTPError } from 'ky'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
-import { getAuthSession } from '@/src/services/authSession'
-import { reportRequestFailure } from '@/src/services/telemetry/request'
-import * as oauth from './oauth'
-import * as reactions from './reactions'
-import * as upload from './upload'
-import { isAccessTokenRejectionStatus } from './utils'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
+import { getAuthSession } from '@/src/services/authSession.ts'
+import { reportRequestFailure } from '@/src/services/telemetry/index.ts'
+import * as oauth from './oauth.ts'
+import * as reactions from './reactions.ts'
+import * as upload from './upload.ts'
+import { isAccessTokenRejectionStatus } from './utils.ts'
 
 /**
  * sso 会话管理接口（刷新/注销）的 context 标记，hooks 据此跳过 SSO token 附加与刷新：

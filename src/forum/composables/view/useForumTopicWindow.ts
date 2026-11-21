@@ -1,13 +1,13 @@
 import type { VirtualItem, Virtualizer } from '@tanstack/vue-virtual'
 import type { ComponentPublicInstance, Ref } from 'vue'
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useWindowVirtualizer } from '@tanstack/vue-virtual'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, onScopeDispose, ref, shallowRef, watch } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
-import { useForumTopicRenderBuffer } from '@/src/forum/composables/view/useForumTopicRenderBuffer'
-import { layoutTop } from '@/src/forum/utils/layoutPosition'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
+import { useForumTopicRenderBuffer } from '@/src/forum/composables/view/useForumTopicRenderBuffer.ts'
+import { layoutTop } from '@/src/forum/utils/layoutPosition.ts'
 
 const FULL_TOPIC_LIST_LIMIT = 80
 

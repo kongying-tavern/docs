@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Member } from './Member'
+import type { Member } from './Member.ts'
 import TeamMember from './TeamMember.vue'
 
 defineProps<{

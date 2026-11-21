@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { getLangPath } from '@theme/utils'
+import { getLangPath } from '@theme/lib/locale.ts'
 import { useData, useRouter, withBase } from 'vitepress'
 import { onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { defineRecoverableAsyncComponent } from '@/src/components/async/defineRecoverableAsyncComponent'
-import { loadSettingsContent } from './settingsLoader'
-import { closeSettingsDialog, closeSettingsPage, consumeSettingsReturnUrl } from './settingsNavigation'
+import { defineRecoverableAsyncComponent } from '@/src/components/async/defineRecoverableAsyncComponent.ts'
+import { loadSettingsContent } from './settingsLoader.ts'
+import { closeSettingsDialog, closeSettingsPage, consumeSettingsReturnUrl } from './settingsNavigation.ts'
 import SettingsShell from './SettingsShell.vue'
 import SettingsSkeleton from './SettingsSkeleton.vue'
 

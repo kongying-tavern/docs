@@ -10,7 +10,7 @@ beforeEach(() => {
 
 describe('forum placeholder cache', () => {
   test('remounted identical images do not repeat placeholder decoding', async () => {
-    const { forumImagePlaceholder } = await import('@/src/forum/services/forumImagePlaceholder')
+    const { forumImagePlaceholder } = await import('@/src/forum/services/forumImagePlaceholder.ts')
     const hash = btoa('valid-placeholder')
     expect(forumImagePlaceholder(hash)).toBe('data:image/png;base64,placeholder')
     expect(forumImagePlaceholder(hash)).toBe('data:image/png;base64,placeholder')
@@ -18,7 +18,7 @@ describe('forum placeholder cache', () => {
   })
 
   test('recent placeholders survive eviction while older entries are released', async () => {
-    const { forumImagePlaceholder } = await import('@/src/forum/services/forumImagePlaceholder')
+    const { forumImagePlaceholder } = await import('@/src/forum/services/forumImagePlaceholder.ts')
     for (let index = 0; index < 128; index++)
       forumImagePlaceholder(btoa(`hash-${index}`))
     forumImagePlaceholder(btoa('hash-0'))
@@ -30,7 +30,7 @@ describe('forum placeholder cache', () => {
   })
 
   test('malformed optional metadata falls back without blocking original images', async () => {
-    const { forumImagePlaceholder } = await import('@/src/forum/services/forumImagePlaceholder')
+    const { forumImagePlaceholder } = await import('@/src/forum/services/forumImagePlaceholder.ts')
     expect(forumImagePlaceholder('not base64!')).toBeUndefined()
     expect(forumImagePlaceholder('not base64!')).toBeUndefined()
     expect(thumbHashToDataURL).not.toHaveBeenCalled()

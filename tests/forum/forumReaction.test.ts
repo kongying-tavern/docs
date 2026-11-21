@@ -1,4 +1,4 @@
-import type { TopicReaction } from '@/src/forum/services/forumReaction'
+import type { TopicReaction } from '@/src/forum/services/forumReaction.ts'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
 import {
@@ -13,7 +13,7 @@ import {
   recordPublishedTopicQuote,
   resolveReactionViewer,
   topicReactionResource,
-} from '@/src/forum/services/forumReaction'
+} from '@/src/forum/services/forumReaction.ts'
 
 function reaction(state: TopicReaction['state'], likeCount = 0, dislikeCount = 0): TopicReaction {
   return {

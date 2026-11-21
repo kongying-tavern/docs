@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import { GiteeAPIError } from '@/src/forum/api/gitee'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { GiteeAPIError } from '@/src/forum/api/gitee/index.ts'
 import ForumLoadState from '../ui/ForumLoadState.vue'
 import ForumTopicList from './ForumTopicList.vue'
 

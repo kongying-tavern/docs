@@ -1,23 +1,23 @@
-import type ForumAPI from '../types'
-import type { OfficialUserPredicate } from './officialComments'
-import type { SearchParamValue } from './types'
-import type { TopicStateFilter } from '@/src/forum/services/forumQueryContracts'
-import { parseTopicLabels } from '@/src/forum/services/forumTopicLabels'
-import { buildFormData } from '@/src/services/apiUtils'
-import { reportRequestFailure } from '@/src/services/telemetry/request'
-import { apiCall, deleteApiCache } from '.'
-import { reformat } from '../webhook'
-import { parseGiteeComment, parseGiteeComments, parseGiteeIssue, parseGiteeIssues } from './contracts'
-import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors'
-import { GITEE_API_CONFIG } from './gitee-config'
+import type ForumAPI from '../types.d.ts'
+import type { OfficialUserPredicate } from './officialComments.ts'
+import type { SearchParamValue } from './types.ts'
+import type { TopicStateFilter } from '@/src/forum/services/forumQueryContracts.ts'
+import { parseTopicLabels } from '@/src/forum/services/forumTopicLabels.ts'
+import { buildFormData } from '@/src/services/apiUtils.ts'
+import { reportRequestFailure } from '@/src/services/telemetry/index.ts'
+import { reformat } from '../webhook/index.ts'
+import { parseGiteeComment, parseGiteeComments, parseGiteeIssue, parseGiteeIssues } from './contracts.ts'
+import { extractErrorMessages, GiteeAPIError, isErrorsOnlyPayload, toGiteeAPIError } from './errors.ts'
+import { GITEE_API_CONFIG } from './gitee-config.ts'
+import { apiCall, deleteApiCache } from './index.ts'
 import {
   normalizeComment,
   normalizeIssue,
   normalizeTopicTimeline,
   processLabels,
-} from './normalize'
-import { extractOfficialAndAuthorComments } from './officialComments'
-import { GiteeApiErrorType } from './types'
+} from './normalize.ts'
+import { extractOfficialAndAuthorComments } from './officialComments.ts'
+import { GiteeApiErrorType } from './types.ts'
 
 export type TopicUpdateOutcome
   = | { status: 'success', topic: ForumAPI.Topic }

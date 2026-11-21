@@ -1,8 +1,8 @@
-import type { TopicFormData } from './validation'
-import { IMAGE_UPLOAD_POLICY, STORAGE_KEYS } from '../forumConfig'
-import { decodeForumText } from '../forumContentCodec'
-import { normalizeQuotedTopicReference } from '../forumTopicQuote'
-import { draftImageSchema } from './validation'
+import type { TopicFormData } from './validation.ts'
+import { IMAGE_UPLOAD_POLICY, STORAGE_KEYS } from '../forumConfig.ts'
+import { decodeForumText } from '../forumContentCodec.ts'
+import { normalizeQuotedTopicReference } from '../forumTopicQuote.ts'
+import { draftImageSchema } from './validation.ts'
 
 /**
  * Legacy single-key draft storage used before drafts were split per topic type.

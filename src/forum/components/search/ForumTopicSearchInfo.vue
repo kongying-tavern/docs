@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Button } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken.ts'
 
 const props = defineProps<{ loading: boolean, total: number }>()
 const { list, clearSearch } = useForumRoute()

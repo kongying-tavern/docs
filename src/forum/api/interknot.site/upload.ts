@@ -1,8 +1,8 @@
-import type { INTER_KNOT } from './api'
-import type ForumAPI from '@/src/forum/api/types'
-import { fetcher } from '.'
-import { createImageUploadCache } from './imageUploadCache'
-import { normalizeImage } from './utils'
+import type { INTER_KNOT } from './api.d.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { createImageUploadCache } from './imageUploadCache.ts'
+import { fetcher } from './index.ts'
+import { normalizeImage } from './utils.ts'
 
 export type ImageUploadRequest = (
   endpoint: string,

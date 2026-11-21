@@ -1,23 +1,23 @@
 import { strict as assert } from 'node:assert'
 import { resolveExtensions } from '@tiptap/core'
 import { test } from 'vitest'
-import { decodeCommentBody, decodeForumText, decodeTopicBody, updateTopicMetadata } from '@/src/forum/services/forumContentCodec'
+import { decodeCommentBody, decodeForumText, decodeTopicBody, updateTopicMetadata } from '@/src/forum/services/forumContentCodec.ts'
 import {
   renderForumComment,
   renderForumTopic,
   renderForumTopicSummary,
   renderTiptapToHtml,
-} from '@/src/forum/services/forumContentRenderer'
-import { buildForumDocumentLinks } from '@/src/forum/services/forumDocumentLinkIndex'
-import { forumTextToEditorDoc } from '@/src/forum/services/forumLegacyContent'
-import { isAllowedForumHref } from '@/src/forum/services/forumLinkPolicy'
-import { createForumContentExtensions, createForumTopicEditorExtensions } from '@/src/forum/services/forumTiptapExtensions'
+} from '@/src/forum/services/forumContentRenderer.ts'
+import { buildForumDocumentLinks } from '@/src/forum/services/forumDocumentLinkIndex.ts'
+import { forumTextToEditorDoc } from '@/src/forum/services/forumLegacyContent.ts'
+import { isAllowedForumHref } from '@/src/forum/services/forumLinkPolicy.ts'
+import { createForumContentExtensions, createForumTopicEditorExtensions } from '@/src/forum/services/forumTiptapExtensions.ts'
 import {
   RICH_TIPTAP_DOC,
   RICH_TIPTAP_WITH_ATTACHMENT,
   UNSAFE_LINK_TIPTAP_DOC,
   VALID_JSON_PLAIN_TEXTS,
-} from './fixtures/content'
+} from './fixtures/content.ts'
 
 test('valid JSON-looking Topic and legacy Comment bodies stay exact plain text', () => {
   for (const raw of VALID_JSON_PLAIN_TEXTS) {

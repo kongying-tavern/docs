@@ -1,17 +1,17 @@
-import type { OfficialUserPredicate } from '@/src/forum/api/gitee/officialComments'
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumTopicListParams, TopicStateFilter } from '@/src/forum/services/forumQueryContracts'
-import type { ForumSearchState } from '@/src/forum/services/forumSearchQuery'
-import { issues } from '@/src/forum/api/gitee'
-import { FORUM_CONFIG } from '@/src/forum/services/forumConfig'
+import type { OfficialUserPredicate } from '@/src/forum/api/gitee/officialComments.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumTopicListParams, TopicStateFilter } from '@/src/forum/services/forumQueryContracts.ts'
+import type { ForumSearchState } from '@/src/forum/services/forumSearchQuery.ts'
+import { issues } from '@/src/forum/api/gitee/index.ts'
+import { FORUM_CONFIG } from '@/src/forum/services/forumConfig.ts'
 import {
   forumExcludedStatesForFilter,
   forumStateForFilter,
   matchesForumTopicListQuery,
   normalizeStrings,
-} from '@/src/forum/services/forumQueryContracts'
-import { getTopicStatusDefinition } from '@/src/forum/services/forumTopicStatus'
-import { getTopicTypeLabelGetter } from '@/src/forum/services/getTopicTypeLabelGetter'
+} from '@/src/forum/services/forumQueryContracts.ts'
+import { getTopicStatusDefinition } from '@/src/forum/services/forumTopicStatus.ts'
+import { getTopicTypeLabelGetter } from '@/src/forum/services/getTopicTypeLabelGetter.ts'
 
 interface ForumQueryParams extends ForumTopicListParams {
   page?: number

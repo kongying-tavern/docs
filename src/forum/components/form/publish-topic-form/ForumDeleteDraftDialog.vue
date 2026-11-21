@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Alert, AlertDescription } from '@theme/components/ui/alert'
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@theme/components/ui/alert-dialog'
-import { Button } from '@theme/components/ui/button'
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@theme/components/ui/alert-dialog/index.ts'
+import { Alert, AlertDescription } from '@theme/components/ui/alert/index.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { useI18n } from 'vue-i18n'
 
 defineProps<{ error?: string }>()

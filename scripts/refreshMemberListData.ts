@@ -1,6 +1,6 @@
-import { user } from '@/src/forum/api/gitee'
-import { GITEE_API_CONFIG } from '@/src/forum/api/gitee/gitee-config'
-import { getAuthToken, saveMemberDataWithTimestamp } from './utils'
+import { GITEE_API_CONFIG } from '@/src/forum/api/gitee/gitee-config.ts'
+import { user } from '@/src/forum/api/gitee/index.ts'
+import { getAuthToken, saveMemberDataWithTimestamp } from './utils.ts'
 
 async function fetchMemberLists() {
   const auth = await getAuthToken()

@@ -9,16 +9,18 @@ import UnoCSS from 'unocss/vite'
 import { defineConfig, loadEnv } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import llmstxt from 'vitepress-plugin-llms'
+import { PATH_ALIASES } from './.vitepress/config/aliases.ts'
 import { getLocaleDirs } from './.vitepress/config/localeDirs.ts'
 import { loadSiteLocale } from './.vitepress/config/siteLocale.ts'
 import { getDeploymentOrigin } from './.vitepress/config/utils.ts'
 import { DEFAULT_LOCALE } from './.vitepress/locales/common.ts'
 import { mdcMetadataPlugin } from './.vitepress/plugins/mdc-metadata.ts'
 import openInEditor from './.vitepress/plugins/open-in-editor/index.ts'
-import { uiScalePlugin } from './.vitepress/theme/uiScale.ts'
+import { uiScalePlugin } from './.vitepress/plugins/ui-scale/index.ts'
 import { fontaineFallbackPlugin } from './scripts/font_subset/fontaine.ts'
 
 const zhSite = loadSiteLocale(new URL('./.vitepress/locales/zh/site.yml', import.meta.url))
+const repoRoot = fileURLToPath(new URL('.', import.meta.url)).replace(/[\\/]$/u, '')
 
 // llms 1.14 drops the site base in nested sidebar groups; keep section entries flat.
 function flattenSidebarItems(items: DefaultTheme.SidebarItem[]): DefaultTheme.SidebarItem[] {
@@ -72,23 +74,13 @@ export default defineConfig(({ mode }) => ({
       {
         find: /^.*\/VPFooter\.vue$/,
         replacement: fileURLToPath(
-          new URL('./.vitepress/theme/components/Footer.vue', import.meta.url),
+          new URL('./.vitepress/theme/components/footer/Footer.vue', import.meta.url),
         ),
       },
-      {
-        find: '@theme',
-        replacement: fileURLToPath(
-          new URL('./.vitepress/theme', import.meta.url),
-        ),
-      },
-      {
-        find: '~',
-        replacement: fileURLToPath(new URL('./.vitepress', import.meta.url)),
-      },
-      {
-        find: '@',
-        replacement: fileURLToPath(new URL('.', import.meta.url)).replace(/[\\/]$/u, ''),
-      },
+      ...PATH_ALIASES.map(({ prefix, root }) => ({
+        find: prefix,
+        replacement: root === '.' ? repoRoot : fileURLToPath(new URL(`./${root}`, import.meta.url)),
+      })),
     ],
   },
   plugins: [

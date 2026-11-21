@@ -1,5 +1,5 @@
-import type { INTER_KNOT } from './api'
-import { fetcher } from '.'
+import type { INTER_KNOT } from './api.d.ts'
+import { fetcher } from './index.ts'
 
 export interface ReactionQuery {
   userId?: string

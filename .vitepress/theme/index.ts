@@ -8,38 +8,40 @@ import DefaultTheme, {
 } from 'vitepress/theme-without-fonts'
 import { defineAsyncComponent, ref } from 'vue'
 import SettingsPage from '@/src/features/settings/SettingsPage.vue'
-import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences'
-import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
-import { installTelemetry } from '@/src/services/telemetry'
-import googleAnalytics from '../plugins/google-analytics'
-import { AsyncForumRouteView } from './components/AsyncForumRouteView'
-import { forumStartupKey } from './components/forumStartup'
-import { Kbd, KbdGroup } from './components/ui/kbd'
-import KeyboardShortcut from './components/ui/KeyboardShortcut.vue'
-import { installI18n, interfaceLocaleForHref, setupI18n } from './i18n'
+import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
+import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
+import { installTelemetry } from '@/src/services/telemetry/index.ts'
+import googleAnalytics from '../plugins/google-analytics/index.ts'
+import { forumStartupKey } from './components/forum/index.ts'
+import { Kbd, KbdGroup } from './components/ui/kbd/index.ts'
+import { KeyboardShortcut } from './components/ui/keyboard-shortcut/index.ts'
+import { installI18n, interfaceLocaleForHref, setupI18n } from './i18n/index.ts'
 import Blog from './layouts/Blog.vue'
 import Layout from './layouts/Layout.vue'
-import { loadFontStylesheets } from './loadFontStylesheets'
-import { loadForumLayout, useForumLinkPreload } from './router/forumPreload'
-import { installThemeRouter } from './router/installThemeRouter'
+import { loadFontStylesheets } from './lib/fontStylesheets.ts'
+import { AsyncForumRouteView } from './router/asyncForumRouteView.ts'
+import { loadForumLayout, useForumLinkPreload } from './router/forumPreload.ts'
+import { installThemeRouter } from './router/installThemeRouter.ts'
 
 import 'uno.css'
 
 const pinia = createPinia()
-const AccordionPanels = defineAsyncComponent(() => import('./components/ui/AccordionPanels.vue'))
-const Card = defineAsyncComponent(() => import('./components/Card.vue'))
-const Coins = defineAsyncComponent(() => import('./components/Coins.vue'))
-const Emoji = defineAsyncComponent(() => import('./components/ui/Emoji.vue'))
+// Async entries point at the SFC itself: a directory barrel would also load the
+// sibling exports into the same chunk.
+const AccordionPanels = defineAsyncComponent(() => import('./components/ui/accordion/AccordionPanels.vue'))
+const Card = defineAsyncComponent(() => import('./markdown-ext/card/Card.vue'))
+const Coins = defineAsyncComponent(() => import('./components/coins/Coins.vue'))
+const Emoji = defineAsyncComponent(() => import('./components/ui/emoji/Emoji.vue'))
 const Forum = defineAsyncComponent(loadForumLayout)
 const Headline = defineAsyncComponent(() => import('./layouts/Headline.vue'))
-const LinkGrid = defineAsyncComponent(() => import('./components/ui/LinkGrid.vue'))
+const LinkGrid = defineAsyncComponent(() => import('./components/ui/link-grid/LinkGrid.vue'))
 const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))
-const QA = defineAsyncComponent(() => import('./components/QA.vue'))
-const QQGroupList = defineAsyncComponent(() => import('./components/QQGroupList.vue'))
-const ScratchToReveal = defineAsyncComponent(() => import('./components/ui/ScratchToReveal.vue'))
-const SitemapPage = defineAsyncComponent(() => import('./components/SitemapPage.vue'))
+const QA = defineAsyncComponent(() => import('./markdown-ext/qa/QA.vue'))
+const QQGroupList = defineAsyncComponent(() => import('./components/qq-group-list/QQGroupList.vue'))
+const Spoiler = defineAsyncComponent(() => import('./markdown-ext/spoiler/Spoiler.vue'))
+const SitemapPage = defineAsyncComponent(() => import('./components/sitemap-page/SitemapPage.vue'))
 
 export default {
   extends: DefaultTheme,
@@ -81,7 +83,7 @@ export default {
     app.component('KeyboardShortcut', KeyboardShortcut)
     app.component('QA', QA)
     app.component('QQGroupList', QQGroupList)
-    app.component('ScratchToReveal', ScratchToReveal)
+    app.component('Spoiler', Spoiler)
     app.component('SitemapPage', SitemapPage)
     app.component('VPBadge', VPBadge)
     app.component('VPImage', VPImage)

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { TranslationResult } from '@/src/forum/services/forumTranslation'
-import { useLanguage } from '@theme/composables/useLanguage'
-import { cn } from '@theme/lib/utils'
+import type { TranslationResult } from '@/src/forum/services/forumTranslation.ts'
+import { useLanguage } from '@theme/composables/useLanguage.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 import { useElementVisibility } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences'
-import { translate, translateAuto } from '@/src/forum/services/forumTranslation'
-import { toast } from '@/src/services/telemetry/toast'
+import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
+import { translate, translateAuto } from '@/src/forum/services/forumTranslation.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
 import ForumTranslationSettingsMenu from './ForumTranslationSettingsMenu.vue'
 
 export interface TopicTranslationSnapshot {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Skeleton } from '@theme/components/ui/skeleton'
+import { Skeleton } from '@theme/components/ui/skeleton/index.ts'
 import { useI18n } from 'vue-i18n'
 
 defineProps<{ mention: boolean }>()

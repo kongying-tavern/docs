@@ -1,5 +1,5 @@
-import { issue, localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue, localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test('preview keeps the topic visible after comment failure and allows retry', async ({ page, scenario }) => {
   let failing = true

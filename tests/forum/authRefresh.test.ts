@@ -2,13 +2,13 @@ import assert from 'node:assert/strict'
 import { HTTPError } from 'ky'
 import { afterEach, beforeEach, test, vi } from 'vitest'
 import { effectScope, nextTick } from 'vue'
-import { oauth } from '@/src/forum/api/gitee/index'
-import { useTokenManager } from '@/src/forum/composables/auth/useTokenManager'
-import { useAuthRefresh } from '@/src/forum/hooks/useAuthRefresh'
-import { log } from '@/src/forum/services/authLogger'
-import { createAuthError } from '@/src/services/authErrors'
+import { oauth } from '@/src/forum/api/gitee/index.ts'
+import { useTokenManager } from '@/src/forum/composables/auth/useTokenManager.ts'
+import { useAuthRefresh } from '@/src/forum/hooks/useAuthRefresh.ts'
+import { log } from '@/src/forum/services/authLogger.ts'
+import { createAuthError } from '@/src/services/authErrors.ts'
 
-vi.mock('../../src/forum/api/gitee', () => ({ oauth: { refreshToken: vi.fn() } }))
+vi.mock('../../src/forum/api/gitee/index.ts', () => ({ oauth: { refreshToken: vi.fn() } }))
 const cleanup: (() => void)[] = []
 beforeEach(() => {
   vi.useFakeTimers()

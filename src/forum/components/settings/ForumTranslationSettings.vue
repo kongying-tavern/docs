@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { CheckIcon, ChevronDownIcon } from '@lucide/vue'
-import { Button } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button/index.ts'
 import {
   Popover,
   PopoverAnchor,
   PopoverContent,
   PopoverTrigger,
-} from '@theme/components/ui/popover'
-import { Switch } from '@theme/components/ui/switch'
+} from '@theme/components/ui/popover/index.ts'
+import { Switch } from '@theme/components/ui/switch/index.ts'
 import {
   TagsInput,
   TagsInputInput,
   TagsInputItem,
   TagsInputItemDelete,
   TagsInputItemText,
-} from '@theme/components/ui/tags-input'
-import { useLanguage } from '@theme/composables/useLanguage'
+} from '@theme/components/ui/tags-input/index.ts'
+import { useLanguage } from '@theme/composables/useLanguage.ts'
 import {
   ListboxContent,
   ListboxFilter,
@@ -28,7 +28,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import supportedLanguages from '@/src/data/supportedLanguages.json'
 import SettingsRow from '@/src/features/settings/SettingsRow.vue'
-import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences'
+import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 const { currentPageLang } = useLanguage()

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { SearchPageController } from './useSearchPageController'
-import type { ForumSearchFacet } from '@/src/forum/services/forumSearchQuery'
-import { Button } from '@theme/components/ui/button'
-import { EmptyMorphFrame, EmptySwap } from '@theme/components/ui/empty-motion'
-import { SearchFieldTransition } from '@theme/components/ui/search-field'
+import type { SearchPageController } from './useSearchPageController.ts'
+import type { ForumSearchFacet } from '@/src/forum/services/forumSearchQuery.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { SearchFieldTransition } from '@theme/components/ui/search-field/index.ts'
+import { ContentSwap, MorphFrame } from '@theme/components/ui/swap-motion/index.ts'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken'
-import { parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery'
+import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken.ts'
+import { parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery.ts'
 import ForumTopicResults from '../list/ForumTopicResults.vue'
 import ForumSearchFilterPicker from './ForumSearchFilterPicker.vue'
 import ForumSearchInput from './ForumSearchInput.vue'
@@ -97,11 +97,11 @@ function clearRecentSearches(): void {
     <template v-if="!hasCriteria && !suggestionMode">
       <section class="forum-search-section" :aria-label="sectionTitle">
         <h2 class="forum-search-section-title">
-          <EmptySwap :swap-key="sectionTitle">
+          <ContentSwap :swap-key="sectionTitle">
             {{ sectionTitle }}
-          </EmptySwap>
+          </ContentSwap>
         </h2>
-        <EmptyMorphFrame :morph-key="activeFacet ?? 'root'">
+        <MorphFrame :morph-key="activeFacet ?? 'root'">
           <div ref="filterStage" class="forum-search-filter-stage">
             <SearchFieldTransition @before-leave="hideLeavingFilter">
               <ForumSearchFilterPicker
@@ -116,7 +116,7 @@ function clearRecentSearches(): void {
               />
             </SearchFieldTransition>
           </div>
-        </EmptyMorphFrame>
+        </MorphFrame>
       </section>
 
       <section v-if="!activeFacet && (recentSearches.length || historyCleared)" class="forum-search-section" :aria-label="t('forum.header.search.recentSearches')">

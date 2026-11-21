@@ -7,7 +7,3 @@ html [data-slot='switch-thumb'] {
 html [data-slot='switch-thumb'][data-state='checked'] {
   translate: calc((18px - (var(--un-scale-x, 1) - 1) * 8px) * var(--site-ui-scale));
 }
-/* Reuse the existing icon-size contract, including its contextual overrides. */
-:root {
-  --forum-topic-lifecycle-icon-size: var(--text-ui-12-fontSize);
-}

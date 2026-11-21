@@ -1,4 +1,4 @@
-import type { SwipeSide } from './types'
+import type { SwipeSide } from './types.ts'
 
 export const ACTION_WIDTH = 76
 export const SWIPE_SLOP = 8

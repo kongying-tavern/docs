@@ -4,29 +4,31 @@ import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme-without-fonts'
 import { computed, defineAsyncComponent, onMounted, provide, ref, shallowRef, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { useToastDiagnostics } from '@/src/composables/useToastDiagnostics'
-import { closeSettingsDialog } from '@/src/features/settings/settingsNavigation'
-import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '@/src/features/settings/settingsOptions'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useToastDiagnostics } from '@/src/composables/useToastDiagnostics.ts'
+import { closeSettingsDialog } from '@/src/features/settings/settingsNavigation.ts'
+import { DEFAULT_TOAST_DURATION, isSettingsSectionId } from '@/src/features/settings/settingsOptions.ts'
 import SettingsPage from '@/src/features/settings/SettingsPage.vue'
-import Banner from '../components/banner/Banner.vue'
-import ChunkLoadRecovery from '../components/ChunkLoadRecovery.vue'
-import DocHeader from '../components/DocHeader.vue'
-import HighlightTargetedHeading from '../components/HighlightTargetedHeading.vue'
-import PageAlertRegion from '../components/PageAlertRegion.vue'
-import { Sonner } from '../components/ui/sonner'
-import { useThemeTransition } from '../hooks/useThemeTransition'
+import { Banner } from '../components/banner/index.ts'
+import { ChunkLoadRecovery } from '../components/chunk-load-recovery/index.ts'
+import { DocHeader } from '../components/doc-header/index.ts'
+import { HighlightTargetedHeading } from '../components/highlight-targeted-heading/index.ts'
+import { PageAlertRegion } from '../components/page-alert-region/index.ts'
+import { Sonner } from '../components/ui/sonner/index.ts'
+import { useThemeTransition } from '../composables/useThemeTransition.ts'
 
 import '../styles/main.css'
+import '../markdown-ext/demo/demo.css'
+import '../markdown-ext/timeline/timeline.css'
 
 const { Layout } = DefaultTheme
-const DocAside = defineAsyncComponent(() => import('../components/DocAside.vue'))
-const DocReaction = defineAsyncComponent(() => import('../components/DocReaction.vue'))
+const DocAside = defineAsyncComponent(() => import('../components/doc-aside/DocAside.vue'))
+const DocReaction = defineAsyncComponent(() => import('../components/doc-reaction/DocReaction.vue'))
 const ForumSidebar = defineAsyncComponent(() => import('@/src/forum/components/sidebar/ForumSidebar.vue'))
 const SettingsSidebarExtras = defineAsyncComponent(() => import('@/src/features/settings/SettingsSidebarExtras.vue'))
-const LoginAlertDialog = defineAsyncComponent(() => import('../components/LoginAlertDialog.vue'))
-const MediumZoom = defineAsyncComponent(() => import('../components/MediumZoom.vue'))
-const OAuthLoginAlertDialog = defineAsyncComponent(() => import('../components/OAuthLoginAlertDialog.vue'))
+const LoginAlertDialog = defineAsyncComponent(() => import('../components/login/LoginAlertDialog.vue'))
+const MediumZoom = defineAsyncComponent(() => import('../components/medium-zoom/MediumZoom.vue'))
+const OAuthLoginAlertDialog = defineAsyncComponent(() => import('../components/login/OAuthLoginAlertDialog.vue'))
 const ToastDiagnosticsDialog = defineAsyncComponent(() => import('@/src/components/telemetry/ToastDiagnosticsDialog.vue'))
 const { diagnostics } = useToastDiagnostics()
 const diagnosticsActivated = ref(false)

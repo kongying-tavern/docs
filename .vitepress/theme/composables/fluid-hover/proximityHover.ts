@@ -1,0 +1,307 @@
+import type { FluidHoverAxis, ItemRect } from './geometry.ts'
+import type { FluidHoverStore } from './store.ts'
+import {
+  CONTAINER_ATTR,
+  ITEM_SELECTOR,
+  MEASUREMENT_ATTEMPTS,
+  OWN_CLICK_SELECTOR,
+} from './constants.ts'
+import { pickNearest } from './geometry.ts'
+import { collectItems, hasLayoutBox, measureItemRect, onAncestorMotionEnd } from './measure.ts'
+import { getFluidHoverStore } from './store.ts'
+
+export interface ProximityHoverOptions {
+  /** Which way the nearest item is measured along: `y` for lists, `x` for strips, `xy` for grids. */
+  axis?: FluidHoverAxis
+  /** Skips an item without remeasuring; consulted on every pick, so keep it cheap. */
+  isItemDisabled?: (element: HTMLElement) => boolean
+  /**
+   * Non-item content (group labels, headers) that highlights nothing, where a real gap picks the
+   * nearest item.
+   */
+  ignore?: string
+  /**
+   * Routes a click that lands between items to the highlighted one, so what is lit is what a click
+   * hits. Default false; pass `{ maxDistance }` to route only clicks within that many pixels of the
+   * highlighted item's edge. Never enable where empty space should stay inert or a wrong click
+   * would hurt.
+   */
+  gapClick?: boolean | { maxDistance?: number }
+}
+
+export interface ProximityHover {
+  store: FluidHoverStore
+  /** Measures the items again, for geometry that changed without a DOM mutation or a resize. */
+  remeasure: () => void
+  destroy: () => void
+}
+
+const ACTIVATOR_SELECTOR
+  = 'a[href], button, [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [role="option"], [role="radio"], [role="checkbox"], [role="tab"], [role="link"], [role="button"]'
+
+/**
+ * The element a routed click should land on. A registered item is usually the interactive row
+ * itself; when it is only a box around one, the first control inside is what a real click on the
+ * row would have reached.
+ */
+function resolveActivator(element: HTMLElement): HTMLElement {
+  if (element.matches(ACTIVATOR_SELECTOR) || element.hasAttribute('tabindex'))
+    return element
+  return element.querySelector<HTMLElement>(ACTIVATOR_SELECTOR) ?? element
+}
+
+/**
+ * Highlights the item under the pointer or, in gaps and padding, the nearest one. Items carry
+ * `data-fluid-hover-item`; disabled ones are skipped. The container must be positioned and becomes
+ * the discovery scope: items inside a nested fluid hover container belong to that one.
+ */
+export function createProximityHover(
+  container: HTMLElement,
+  options: ProximityHoverOptions = {},
+): ProximityHover {
+  const axis = options.axis ?? 'y'
+  const gapClick = options.gapClick ?? false
+  const gapClickMaxDistance = typeof gapClick === 'object'
+    ? gapClick.maxDistance ?? Number.POSITIVE_INFINITY
+    : Number.POSITIVE_INFINITY
+  const store = getFluidHoverStore(container)
+
+  let items: HTMLElement[] = []
+  let rects: (ItemRect | undefined)[] = []
+  let px = 0
+  let py = 0
+  let hovering = false
+  let stale = true
+  let dirty = false
+  let forced = false
+  let scrolled = false
+  let raf = 0
+  let measurementTries = MEASUREMENT_ATTEMPTS
+  let pickedLeft = container.scrollLeft
+  let pickedTop = container.scrollTop
+  const observed = new Set<HTMLElement>()
+
+  const resizeObserver = new ResizeObserver(() => invalidate())
+  resizeObserver.observe(container)
+  const mutationObserver = new MutationObserver(() => invalidate())
+  mutationObserver.observe(container, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    // 'open' covers collapsible sections: toggling a <details> changes which rows have layout.
+    attributeFilter: ['disabled', 'aria-disabled', 'data-disabled', 'open'],
+  })
+  // Rects measured while an ancestor was scaled (a menu mid zoom-in) are off, and nothing mutates when it ends.
+  const stopMotionEnd = onAncestorMotionEnd(container, () => {
+    if (!stale)
+      invalidate()
+  })
+
+  container.setAttribute(CONTAINER_ATTR, '')
+
+  // 容器未定位时 offset 链离开容器，测量静默失败（reka popper 的内容元素默认不定位）
+  if (import.meta.env.DEV && getComputedStyle(container).position === 'static') {
+    // eslint-disable-next-line no-console
+    console.warn('[fluid-hover] container must be positioned (e.g. `relative`), measurement would fail')
+  }
+
+  function invalidate() {
+    stale = true
+    if (hovering && !store.pointerSuspended()) {
+      dirty = true
+      schedule()
+    }
+  }
+
+  function schedule() {
+    if (!raf)
+      raf = requestAnimationFrame(pick)
+  }
+
+  /**
+   * 发布所有有布局盒的 item 的 rect。无盒 item 是合法缺位（折叠的 `<details>` 隐藏行）——跳过而非
+   * 整轮失败；仅当容器自身无盒（弹层未布局）时保留上次测量并等待重试。
+   */
+  function measure(): boolean {
+    if (!hasLayoutBox(container))
+      return false
+    const next = collectItems(container)
+    const nextRects: (ItemRect | undefined)[] = []
+    for (let index = 0; index < next.length; index++) {
+      const item = next[index]!
+      if (!hasLayoutBox(item))
+        continue
+      const rect = measureItemRect(item, container)
+      if (rect)
+        nextRects[index] = rect
+    }
+    items = next
+    rects = nextRects
+    const current = new Set(items)
+    for (const item of current) {
+      if (!observed.has(item)) {
+        observed.add(item)
+        resizeObserver.observe(item)
+      }
+    }
+    for (const item of observed) {
+      if (!current.has(item)) {
+        observed.delete(item)
+        resizeObserver.unobserve(item)
+      }
+    }
+    return true
+  }
+
+  function pick() {
+    raf = 0
+    if (!hovering || store.pointerSuspended())
+      return
+    if (stale) {
+      if (!measure()) {
+        // A popup can be in the DOM one frame before it is laid out: retry a few frames, and stop
+        // so a list that stays hidden does not spin forever (a later resize re-triggers).
+        if (measurementTries > 0) {
+          measurementTries--
+          schedule()
+        }
+        return
+      }
+      stale = false
+      measurementTries = MEASUREMENT_ATTEMPTS
+    }
+    if (!dirty)
+      return
+    // A virtualizer can re-render mid-scroll before the scroll event arrives; that event re-picks.
+    if (!forced && (container.scrollLeft !== pickedLeft || container.scrollTop !== pickedTop))
+      return
+    dirty = forced = false
+    pickedLeft = container.scrollLeft
+    pickedTop = container.scrollTop
+    const box = container.getBoundingClientRect()
+    const isItemDisabled = options.isItemDisabled
+    const index = pickNearest({
+      axis,
+      point: { x: px, y: py },
+      rects,
+      containerRect: { left: box.left, top: box.top, width: box.width, height: box.height },
+      scroll: { x: container.scrollLeft, y: container.scrollTop },
+      border: { x: container.clientLeft, y: container.clientTop },
+      layoutSize: { width: container.offsetWidth, height: container.offsetHeight },
+      // The container's viewport rect as the visible window: correct both when the container is
+      // the scroller and when it is nested inside one and moves with its scroll.
+      view: { x: box.left, y: box.top, width: box.width, height: box.height },
+      isDisabled: isItemDisabled
+        ? index => isItemDisabled(items[index]!)
+        : undefined,
+    })
+    const item = index === null ? null : items[index] ?? null
+    store.snap = scrolled
+    store.highlight(item, 'pointer')
+    scrolled = false
+  }
+
+  function onPointerEnter(event: PointerEvent) {
+    if (event.pointerType === 'touch')
+      return
+    hovering = true
+    stale = true
+    store.beginSession()
+    onPointerMove(event)
+  }
+
+  function onPointerMove(event: PointerEvent) {
+    if (!hovering)
+      return
+    px = event.clientX
+    py = event.clientY
+    if (!store.acceptsPointer(event))
+      return
+    const target = event.target as Element | null
+    if (options.ignore && target && target !== container && container.contains(target)) {
+      // Over ignored content nothing is highlighted; a pick queued for an earlier position must
+      // not override the clear.
+      if (!target.closest(ITEM_SELECTOR) && target.closest(options.ignore)) {
+        dirty = forced = false
+        if (stale)
+          schedule()
+        if (store.source === 'pointer')
+          store.highlight(null, null)
+        return
+      }
+    }
+    dirty = forced = true
+    schedule()
+  }
+
+  function onPointerLeave() {
+    hovering = false
+    store.resumePointer()
+    if (store.source === 'pointer')
+      store.highlight(null, null)
+    if (raf) {
+      cancelAnimationFrame(raf)
+      raf = 0
+    }
+  }
+
+  // Content moving under a still pointer is followed at once, like native :hover.
+  function onScroll() {
+    if (!hovering || store.pointerSuspended())
+      return
+    dirty = forced = scrolled = true
+    schedule()
+  }
+
+  function onClick(event: MouseEvent) {
+    const item = store.highlighted
+    const target = event.target as Element | null
+    if (!item || !target)
+      return
+    if (target.closest(`${ITEM_SELECTOR}, ${OWN_CLICK_SELECTOR}`))
+      return
+    // A row that unmounted while its own click was still bubbling already landed; it is not a gap.
+    if (!target.isConnected)
+      return
+    if (gapClickMaxDistance !== Number.POSITIVE_INFINITY) {
+      const rect = item.getBoundingClientRect()
+      const dx = Math.max(rect.left - event.clientX, 0, event.clientX - rect.right)
+      const dy = Math.max(rect.top - event.clientY, 0, event.clientY - rect.bottom)
+      if (Math.hypot(dx, dy) > gapClickMaxDistance)
+        return
+    }
+    resolveActivator(item).click()
+  }
+
+  const listeners: Array<[type: string, listener: EventListener, options?: AddEventListenerOptions]> = [
+    ['pointerenter', onPointerEnter as EventListener],
+    ['pointermove', onPointerMove as EventListener, { passive: true }],
+    ['pointerleave', onPointerLeave as EventListener],
+  ]
+  if (gapClick)
+    listeners.push(['click', onClick as EventListener])
+  for (const [type, listener, listenerOptions] of listeners)
+    container.addEventListener(type, listener, listenerOptions)
+
+  // 捕获到 document：容器本身、父级滚动容器、后代滚动容器任一滚动都会重选取
+  const scrollTarget: Document = container.ownerDocument
+  scrollTarget.addEventListener('scroll', onScroll as EventListener, { passive: true, capture: true })
+
+  return {
+    store,
+    remeasure: invalidate,
+    destroy() {
+      if (raf) {
+        cancelAnimationFrame(raf)
+        raf = 0
+      }
+      stopMotionEnd()
+      resizeObserver.disconnect()
+      mutationObserver.disconnect()
+      for (const [type, listener, listenerOptions] of listeners)
+        container.removeEventListener(type, listener, listenerOptions)
+      scrollTarget.removeEventListener('scroll', onScroll as EventListener, { capture: true })
+      container.removeAttribute(CONTAINER_ATTR)
+    },
+  }
+}

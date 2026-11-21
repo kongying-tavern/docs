@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import type { EmojiItem } from '@theme/components/ui/EmojiPicker.vue'
-import type ForumAPI from '@/src/forum/api/types'
+import type { EmojiItem } from '@theme/components/ui/emoji/index.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { LoaderCircleIcon } from '@lucide/vue'
-import { Button } from '@theme/components/ui/button'
-import EmojiPicker from '@theme/components/ui/EmojiPicker.vue'
-import EmojiPickerPanel from '@theme/components/ui/EmojiPickerPanel.vue'
-import MentionPicker from '@theme/components/ui/MentionPicker.vue'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { EmojiPicker, EmojiPickerPanel } from '@theme/components/ui/emoji/index.ts'
+import { MentionPicker } from '@theme/components/ui/mention-picker/index.ts'
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig'
+import { IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig.ts'
 import ForumEditorToolIcon from './ForumEditorToolIcon.vue'
 
 const { imageCount = 0, disabled } = defineProps<{

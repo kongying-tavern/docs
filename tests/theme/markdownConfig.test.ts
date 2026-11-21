@@ -4,8 +4,8 @@ import { resolve } from 'node:path'
 import { createMarkdownRenderer, mergeMarkdownLocales } from 'vitepress'
 import { test } from 'vitest'
 import { compileTemplate } from 'vue/compiler-sfc'
-import { createLocalesConfig } from '~/config/locales'
-import { markdownConfig } from '~/config/markdown'
+import { createLocalesConfig } from '~/config/locales.ts'
+import { markdownConfig } from '~/config/markdown.ts'
 
 test('code copy buttons use the page locale during Markdown rendering', async () => {
   const locales = createLocalesConfig()
@@ -89,10 +89,10 @@ test('the enhancement guide emits Vue named slots and valid MDC props', async ()
   const html = await markdown.renderAsync(source)
   assert.match(html, /<template #default="">/)
   assert.match(html, /<template #details="">/)
-  assert.match(html, /<scratch-to-reveal[^>]*>刮开这里查看隐藏内容<\/scratch-to-reveal>/)
+  assert.match(html, /<spoiler[^>]*>刮开这里查看隐藏内容<\/spoiler>/)
   assert.match(html, /link="https:\/\/yuanshen.site\/"/)
   assert.doesNotMatch(html, /link="&lt;https:/)
-  assert.match(html, /<scratch-to-reveal :width="300"/)
+  assert.match(html, /<spoiler :width="300"/)
   const compiled = compileTemplate({ source: html, filename: 'guide.vue', id: 'guide' })
   assert.deepEqual(compiled.errors, [])
 })
@@ -100,8 +100,8 @@ test('the enhancement guide emits Vue named slots and valid MDC props', async ()
 test('spoiler attributes stay independent and render typed widths and alignment', async () => {
   const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)
   const html = await markdown.renderAsync('!!first!!{width=200} !!second!!{w=300} !!third!!{width=250,align=center} !!fourth!!{a=right} !!plain!!')
-  assert.match(html, /<ScratchToReveal class="inline-spoiler" :width="200">first<\/ScratchToReveal>/)
-  assert.match(html, /<ScratchToReveal class="inline-spoiler" :width="300">second<\/ScratchToReveal>/)
+  assert.match(html, /<Spoiler class="inline-spoiler" :width="200">first<\/Spoiler>/)
+  assert.match(html, /<Spoiler class="inline-spoiler" :width="300">second<\/Spoiler>/)
   assert.match(html, /:width="250" style="text-align: center;">third/)
   assert.match(html, /class="inline-spoiler" style="text-align: right;">fourth/)
   assert.match(html, /class="inline-spoiler">plain/)

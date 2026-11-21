@@ -1,5 +1,5 @@
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test.use({ viewport: { width: 390, height: 844 }, scenario: { topics: Array.from({ length: 20 }, (_, index) => issue({ id: 980000 + index, number: `ID${index}` })) } })
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumFilter, ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumFilter, ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute.ts'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
 import ForumSearchInput from '../search/ForumSearchInput.vue'
 import ForumTopicCategoryDropdown from './ForumTopicCategoryDropdown.vue'
 import ForumTopicTypeDropdown from './ForumTopicTypeDropdown.vue'

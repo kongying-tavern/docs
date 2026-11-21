@@ -3,7 +3,7 @@ import { useData, useRoute } from 'vitepress'
 import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import ForumBlogPostHeader from '@/src/forum/components/blog/ForumBlogPostHeader.vue'
-import { replaceTitle } from '../composables/replaceTitle'
+import { replaceTitle } from '../lib/documentTitle.ts'
 
 const DOT_SLASH_REGEX = /[./]+/g
 

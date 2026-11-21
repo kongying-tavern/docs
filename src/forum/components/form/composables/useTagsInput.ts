@@ -1,8 +1,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore'
-import { useTopicTagDisplay } from '@/src/forum/composables/util/useTopicTagDisplay'
-import { addTagToModel, removeTagFromModel } from '@/src/forum/services/form/topicTagModel'
+import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore.ts'
+import { useTopicTagDisplay } from '@/src/forum/composables/util/useTopicTagDisplay.ts'
+import { addTagToModel, removeTagFromModel } from '@/src/forum/services/form/topicTagModel.ts'
 
 export interface UseTagsInputOptions {
   modelValue: import('vue').Ref<string[]>

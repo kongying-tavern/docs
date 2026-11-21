@@ -2,7 +2,7 @@
 import type { VariantProps } from 'class-variance-authority'
 import { cva } from 'class-variance-authority'
 import { computed } from 'vue'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/tailwind.ts'
 
 const props = defineProps<DividerProps>()
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute'
+import type { ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute.ts'
 import { ChevronDown } from '@lucide/vue'
-import { Button } from '@theme/components/ui/button'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getViewModeIconClass, useForumViewMode } from '@/src/forum/composables/state/useForumViewMode'
+import { getViewModeIconClass, useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
 import ForumResponsiveSelect from '../ui/responsive/ForumResponsiveSelect.vue'
 
 defineProps<{

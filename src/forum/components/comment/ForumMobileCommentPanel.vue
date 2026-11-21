@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { Maximize2Icon, Minimize2Icon } from '@lucide/vue'
-import { Alert, AlertDescription } from '@theme/components/ui/alert'
-import { Button } from '@theme/components/ui/button'
-import { Dialog, DialogContent, DialogTitle } from '@theme/components/ui/dialog'
+import { Alert, AlertDescription } from '@theme/components/ui/alert/index.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { Dialog, DialogContent, DialogTitle } from '@theme/components/ui/dialog/index.ts'
 import { createReusableTemplate, useEventListener, useMutationObserver } from '@vueuse/core'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { useMobileEditorViewport } from '@/src/forum/composables/view/useMobileEditorViewport'
-import { useCommentEditorMorph } from './composables/useCommentEditorMorph'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useMobileEditorViewport } from '@/src/forum/composables/view/useMobileEditorViewport.ts'
+import { useCommentEditorMorph } from './composables/useCommentEditorMorph.ts'
 
 const props = defineProps<{ embedded: boolean, pending: boolean, origin?: HTMLElement, replyUser?: ForumAPI.User, error?: string }>()
 const emit = defineEmits<{ 'cancel-reply': [], 'focus-editor': [] }>()

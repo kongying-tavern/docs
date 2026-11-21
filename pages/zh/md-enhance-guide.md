@@ -473,10 +473,10 @@ MDC 用于在 Markdown 中声明 Vue 组件、传递属性和编写插槽内容�
 
 ### Inline Component Demo
 
-<!-- zhlint ignore: :scratch-to-reveal -->
+<!-- zhlint ignore: :spoiler -->
 
 :::: demo
-:scratch-to-reveal[刮开这里查看隐藏内容]{:width=300 .mt-4}
+:spoiler[刮开这里查看隐藏内容]{:width=300 .mt-4}
 ::::
 
 ### Block Component Demo

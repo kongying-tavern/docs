@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { ForumFestivalEffectController } from '@/src/forum/effects/types'
-import type { ActiveForumFestival } from '@/src/forum/services/forumFestival'
+import type { ForumFestivalEffectController } from '@/src/forum/effects/types.ts'
+import type { ActiveForumFestival } from '@/src/forum/services/forumFestival.ts'
 import { defaultDocument, useEventListener, useIntervalFn, useLocalStorage } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { forumFestivals } from '@/src/forum/config/forumFestivals'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { forumFestivals } from '@/src/forum/config/forumFestivals.ts'
 import {
   FESTIVAL_AUTOPLAYED_STORAGE_KEY,
   FESTIVAL_DISMISSALS_STORAGE_KEY,
@@ -15,7 +15,7 @@ import {
   pruneOccurrenceList,
   resolveActiveForumFestival,
   resolveForumFestivalAutoStart,
-} from '@/src/forum/services/forumFestival'
+} from '@/src/forum/services/forumFestival.ts'
 
 const { localeIndex } = useData()
 const { t } = useI18n({ useScope: 'global' })

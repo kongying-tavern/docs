@@ -1,8 +1,8 @@
-import type { ForumRoute } from '@/src/forum/services/forumRoute'
-import { enableTransitions } from '@theme/shared'
+import type { ForumRoute } from '@/src/forum/services/forumRoute.ts'
+import { enableTransitions } from '@theme/lib/transitions.ts'
 import { nextTick } from 'vue'
-import { forumTopicTransitioning } from '@/src/forum/composables/state/useForumRoute'
-import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
+import { forumTopicTransitioning } from '@/src/forum/composables/state/useForumRoute.ts'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
 
 type SharedRoute = Extract<ForumRoute, { name: 'topic' } | { name: 'user' }>
 let activeRouteTransition: ViewTransition | undefined

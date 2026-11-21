@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import Avatar from '@theme/components/ui/Avatar.vue'
-import { Button } from '@theme/components/ui/button'
-import { Input } from '@theme/components/ui/input'
+import { Avatar } from '@theme/components/ui/avatar/index.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { Input } from '@theme/components/ui/input/index.ts'
 import { useI18n } from 'vue-i18n'
-import { getGiteeSettingsHref } from '@/src/constants/site'
+import { getGiteeSettingsHref } from '@/src/constants/site.ts'
 import SettingsRow from '@/src/features/settings/SettingsRow.vue'
-import { USER_PROFILE_READONLY_FIELDS } from '@/src/forum/config/userProfile'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { USER_PROFILE_READONLY_FIELDS } from '@/src/forum/config/userProfile.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 import ForumProfileForm from '../user/ForumProfileForm.vue'
 
 const { t } = useI18n({ useScope: 'global' })

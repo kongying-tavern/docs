@@ -8,7 +8,7 @@ import {
   DropdownMenuRadioItem,
   useForwardPropsEmits,
 } from 'reka-ui'
-import { cn } from '../../../lib/utils'
+import { cn } from '../../../lib/tailwind.ts'
 
 const props = defineProps<DropdownMenuRadioItemProps & { class?: HTMLAttributes['class'] }>()
 

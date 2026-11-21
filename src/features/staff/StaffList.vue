@@ -1,7 +1,7 @@
 // @unocss-includes
 <script setup lang="ts">
-import type { StaffListItem } from './types'
-import Timeline from '@theme/components/ui/Timeline.vue'
+import type { StaffListItem } from './types.ts'
+import { Timeline } from '@theme/components/ui/timeline/index.ts'
 
 const { list, title, desc } = defineProps<{
   list: StaffListItem[]

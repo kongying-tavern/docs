@@ -1,5 +1,5 @@
-import type ForumAPI from '../types'
-import { normalizeComment } from './normalize'
+import type ForumAPI from '../types.d.ts'
+import { normalizeComment } from './normalize.ts'
 
 export type OfficialUserPredicate = (userId: string | number) => boolean
 

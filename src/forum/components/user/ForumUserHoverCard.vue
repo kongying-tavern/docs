@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import Avatar from '@theme/components/ui/Avatar.vue'
-import { Button } from '@theme/components/ui/button'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { Avatar } from '@theme/components/ui/avatar/index.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from '@theme/components/ui/hover-card'
+} from '@theme/components/ui/hover-card/index.ts'
 import { useMediaQuery } from '@vueuse/core'
 import { useRouter } from 'vitepress'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getGiteeMessagesHref } from '@/src/constants/site'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useForumUserProfileQuery } from '@/src/forum/composables/data/useForumQueries'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { getGiteeMessagesHref } from '@/src/constants/site.ts'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useForumUserProfileQuery } from '@/src/forum/composables/data/useForumQueries.ts'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumFollowUserButton from './ForumFollowUserButton.vue'
 import ForumUserMobileDrawer from './ForumUserMobileDrawer.vue'

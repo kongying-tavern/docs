@@ -1,9 +1,18 @@
-import type { EmojiAttrs } from '@theme/components/ui/types'
 import { InputRule, mergeAttributes, Node } from '@tiptap/core'
 
 const EMOJI_SYNTAX_REGEX = /:(\d+\.[\u4E00-\u9FA5\w]+\/[\u4E00-\u9FA5\w-]+\.(?:png|gif|webp)):/g
 
 const EMOJI_FILE_EXTENSION_REGEX = /\.[^.]+$/
+
+interface EmojiAttrs {
+  'emoji': string
+  'width'?: number
+  'height'?: number
+  'src'?: string
+  'alt'?: string
+  'title'?: string
+  'data-emoji'?: string
+}
 
 export const EmojiNode = Node.create({
   name: 'emoji',

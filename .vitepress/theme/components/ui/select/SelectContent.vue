@@ -8,9 +8,9 @@ import {
   SelectViewport,
   useForwardPropsEmits,
 } from 'reka-ui'
-import { SelectScrollDownButton, SelectScrollUpButton } from '.'
-import { cn } from '../../../lib/utils'
-import { FluidHoverList } from '../fluid-hover'
+import { cn } from '../../../lib/tailwind.ts'
+import { FluidHoverList } from '../fluid-hover-list/index.ts'
+import { SelectScrollDownButton, SelectScrollUpButton } from './index.ts'
 
 defineOptions({
   inheritAttrs: false,

@@ -1,4 +1,4 @@
-import { expect, test } from './support/test'
+import { expect, test } from './support/test.ts'
 
 test('site home footer QR code regenerates when the color scheme changes', async ({ page }) => {
   await page.goto('./')

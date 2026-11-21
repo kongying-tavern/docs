@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Info } from '@lucide/vue'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@theme/components/ui/hover-card'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@theme/components/ui/hover-card/index.ts'
 
 defineProps<{
   /** 悬停提示正文，同时作为图标对读屏器的名称 */

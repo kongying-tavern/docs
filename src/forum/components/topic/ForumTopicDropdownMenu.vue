@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import type { FORUM } from '../types'
-import type ForumAPI from '@/src/forum/api/types'
-import { Button } from '@theme/components/ui/button'
-import { cn } from '@theme/lib/utils'
+import type { FORUM } from '../types.d.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { defineTopicDropdownMenu } from '@/src/forum/composables/util/defineTopicDropdownMenu'
+import { defineTopicDropdownMenu } from '@/src/forum/composables/util/defineTopicDropdownMenu.ts'
 import ForumResponsiveMenu from '../ui/responsive/ForumResponsiveMenu.vue'
 
 defineOptions({

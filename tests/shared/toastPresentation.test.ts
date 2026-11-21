@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { resolveToastTiming } from '@/src/services/telemetry/toastPresentation'
+import { resolveToastTiming } from '@/src/services/telemetry/toastPresentation.ts'
 
 test('mobile errors and actionable notifications remain available until dismissed', () => {
   assert.deepEqual(resolveToastTiming(true, 'error'), { duration: Infinity, closeButton: true })

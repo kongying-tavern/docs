@@ -3,15 +3,15 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { beforeEach, test, vi } from 'vitest'
-import { fontSubsetPlugin } from '~/plugins/font-subset/index'
-import { mdcMetadataPlugin } from '~/plugins/mdc-metadata'
+import { fontSubsetPlugin } from '~/plugins/font-subset/index.ts'
+import { mdcMetadataPlugin } from '~/plugins/mdc-metadata.ts'
 
 const mocks = vi.hoisted(() => ({
   runProcess: vi.fn<(command: string, args: string[], cwd: string, handlers: unknown) => Promise<number>>(async () => 0),
   writeFile: vi.fn(),
   checker: vi.fn(() => ({ getComponentMeta: () => ({ props: [] }) })),
 }))
-vi.mock('../../scripts/font_subset/process', () => ({ runProcess: mocks.runProcess }))
+vi.mock('../../scripts/font_subset/process.ts', () => ({ runProcess: mocks.runProcess }))
 vi.mock('vue-component-meta', () => ({ createCheckerByJson: mocks.checker }))
 vi.mock('node:fs', async original => ({
   ...await original<typeof import('node:fs')>(),

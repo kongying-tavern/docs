@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { constrainSwipe, fullSwipeThreshold, resolveSwipeRelease, swipeSide, swipeVelocity } from '@theme/components/ui/swipe-actions/gesture'
+import { constrainSwipe, fullSwipeThreshold, resolveSwipeRelease, swipeSide, swipeVelocity } from '@theme/components/ui/swipe-actions/index.ts'
 import { test } from 'vitest'
 
 const input = { value: 100, velocity: 0, count: 2, width: 400, fullSwipe: true, armed: false }

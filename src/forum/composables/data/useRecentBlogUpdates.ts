@@ -1,9 +1,9 @@
 import type { ComputedRef } from 'vue'
-import type { BlogUpdateItem, BlogUpdatePost } from '@/src/forum/services/blogUpdateFeed'
+import type { BlogUpdateItem, BlogUpdatePost } from '@/src/forum/services/blogUpdateFeed.ts'
 import { useIntervalFn } from '@vueuse/core'
 import { useData } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
-import { selectRecentBlogUpdates } from '@/src/forum/services/blogUpdateFeed'
+import { selectRecentBlogUpdates } from '@/src/forum/services/blogUpdateFeed.ts'
 
 /**
  * 首页 aside 的「最近更新」。

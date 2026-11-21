@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ButtonVariants } from '../button'
-import type { WithClassAsProps } from './interface'
+import type { ButtonVariants } from '../button/index.ts'
+import type { WithClassAsProps } from './types.ts'
 import { ArrowRight } from '@lucide/vue'
-import { cn } from '../../../lib/utils'
-import { Button } from '../button'
-import { useCarousel } from './useCarousel'
+import { cn } from '../../../lib/tailwind.ts'
+import { Button } from '../button/index.ts'
+import { useCarousel } from './useCarousel.ts'
 
 const props = withDefaults(defineProps<{
   variant?: ButtonVariants['variant']

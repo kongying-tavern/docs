@@ -1,4 +1,4 @@
-import { createLogger, LogLevel } from '@/src/utils/logger'
+import { createLogger, LogLevel } from '@/src/utils/logger.ts'
 
 export { LogLevel }
 

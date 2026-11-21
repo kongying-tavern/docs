@@ -1,10 +1,10 @@
-import type { useTokenManager } from '@/src/forum/composables/auth/useTokenManager'
-import { toCamelCaseObject } from '@theme/utils'
+import type { useTokenManager } from '@/src/forum/composables/auth/useTokenManager.ts'
+import { toCamelCaseObject } from '@theme/lib/string.ts'
 import { isHTTPError } from 'ky'
 import { ref, watch } from 'vue'
-import { oauth } from '@/src/forum/api/gitee'
-import { log, LogGroup } from '@/src/forum/services/authLogger'
-import { AuthError, createAuthError } from '@/src/services/authErrors'
+import { oauth } from '@/src/forum/api/gitee/index.ts'
+import { log, LogGroup } from '@/src/forum/services/authLogger.ts'
+import { AuthError, createAuthError } from '@/src/services/authErrors.ts'
 
 const TOKEN_REFRESH_BASE_RETRY_INTERVAL_MS = 5000
 const TOKEN_REFRESH_MAX_RETRIES = 3

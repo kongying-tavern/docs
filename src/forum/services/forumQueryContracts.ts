@@ -1,7 +1,7 @@
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumSearchState } from '@/src/forum/services/forumSearchQuery'
-import { FORUM_CONFIG } from '@/src/forum/services/forumConfig'
-import { getTopicDisplayStatus } from '@/src/forum/services/forumTopicStatus'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumSearchState } from '@/src/forum/services/forumSearchQuery.ts'
+import { FORUM_CONFIG } from '@/src/forum/services/forumConfig.ts'
+import { getTopicDisplayStatus } from '@/src/forum/services/forumTopicStatus.ts'
 
 export type TopicStateFilter = ForumAPI.TopicState | 'all'
 

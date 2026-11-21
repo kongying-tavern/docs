@@ -1,0 +1,182 @@
+<script setup lang="ts">
+import { useData } from 'vitepress'
+
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useQRCode } from '../../composables/useQRCode.ts'
+import { BlurFade } from '../ui/blur-fade/index.ts'
+
+const { t } = useI18n({ useScope: 'global' })
+
+const { theme } = useData()
+const coins = computed(() => theme.value.payment)
+
+const selectedPayment = ref<string>()
+const qrcodeText = computed(
+  () => (selectedPayment.value ? coins.value[selectedPayment.value]?.address : ''),
+)
+const qrcode = useQRCode(qrcodeText)
+const qrcodeAlt = computed(() =>
+  selectedPayment.value
+    ? t('ui.payment.qrcodeAlt', { name: t(`payment.${selectedPayment.value}.name`) })
+    : '',
+)
+const icon = ref()
+
+function updatePaymentType() {
+  const hash = window.location.hash.slice(1)
+  if (hash && coins.value[hash]?.address) {
+    selectedPayment.value = hash
+    nextTick(() => {
+      icon.value.className = `i-custom-${hash}`
+    })
+  }
+}
+
+onMounted(() => {
+  updatePaymentType()
+  window.addEventListener('hashchange', updatePaymentType)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hashchange', updatePaymentType)
+})
+</script>
+
+<template>
+  <div slide-enter>
+    <div class="one-time-donations">
+      <div class="links font-[var(--vp-font-family-subtitle)]">
+        <a
+          v-for="(_payment, key) in coins"
+          :key="key"
+          :href="`#${key}`"
+          :title="t(`payment.${key}.name`)"
+        >
+          <span :class="`i-custom-${key}`" />
+          {{ t(`payment.${key}.name`) }}
+        </a>
+      </div>
+    </div>
+
+    <BlurFade
+      v-if="selectedPayment && coins[selectedPayment]"
+      :duration="0.2"
+      :delay="200"
+      class="coin-details font-[var(--vp-font-family-subtitle)]"
+    >
+      <p>
+        <span ref="icon" />
+        {{ t(`payment.${selectedPayment}.name`) }} {{ t('ui.payment.addressLabel') }}{{ t('ui.labelSeparator') }}<br><a
+          :href="coins[selectedPayment].address"
+          :title="t(`payment.${selectedPayment}.name`)"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ coins[selectedPayment].address }}</a>
+      </p>
+      <img :src="qrcode" :alt="qrcodeAlt">
+    </BlurFade>
+  </div>
+</template>
+
+<style scoped>
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+
+  a {
+    flex: 1 1 auto;
+    padding: 12px 8px;
+    text-decoration: none !important;
+    user-select: none;
+    transition: transform 0.3s;
+    display: inline-block;
+    @apply text-ui-16;
+    text-align: center;
+    font-weight: 600;
+    text-indent: 8px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: var(--vp-c-text-1);
+
+    & > span {
+      display: inline-block;
+      height: 2em;
+      width: 2em;
+    }
+
+    @media (any-hover: hover) {
+      &:hover,
+      &:active {
+        transform: translateY(-3px);
+      }
+
+      svg {
+        &:hover {
+          transform: scale(1);
+        }
+      }
+    }
+
+    svg {
+      margin-right: 5px;
+    }
+  }
+}
+
+@media (max-width: 788px) {
+  .coin-details > p {
+    display: none !important;
+  }
+}
+
+.coin-details {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2rem;
+
+  img {
+    box-shadow: var(--vp-shadow-1);
+  }
+
+  p {
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    width: 400px;
+
+    a {
+      font-weight: normal;
+    }
+
+    span {
+      display: block;
+      height: 5rem;
+      width: 5rem;
+      margin-left: 1rem;
+      margin-bottom: 12px;
+      animation: 4s whirling linear;
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
+    }
+  }
+}
+
+@keyframes whirling {
+  from {
+    transform: rotate3d(0, 1, 0, -90deg) scale(0.9);
+  }
+
+  to {
+    transform: rotate3d(0, 1, 0, 90deg) scale(1);
+  }
+}
+</style>

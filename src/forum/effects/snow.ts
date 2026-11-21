@@ -2,8 +2,8 @@ import type {
   ForumFestivalEffectController,
   ForumFestivalEffectOptions,
   ForumFestivalEffectStopOptions,
-} from './types'
-import { readReducedMotion } from '@/src/services/sitePreferences'
+} from './types.ts'
+import { readReducedMotion } from '@/src/services/sitePreferences.ts'
 import './snow.css'
 
 interface Snowflake {

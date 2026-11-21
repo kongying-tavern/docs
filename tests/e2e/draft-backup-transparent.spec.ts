@@ -1,5 +1,5 @@
-import { currentUser, localAuth } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { currentUser, localAuth } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test.use({ viewport: { width: 1440, height: 900 }, scenario: { user: { ...currentUser, id: 2 }, following: false } })
 

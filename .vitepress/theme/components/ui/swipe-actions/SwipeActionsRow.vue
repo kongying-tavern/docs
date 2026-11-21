@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { SwipeAction, SwipeSide } from './types'
+import type { SwipeAction, SwipeSide } from './types.ts'
 import { LoaderCircle, MoreHorizontal } from '@lucide/vue'
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { stepSpring } from '../../../hooks/fluid-hover/spring'
-import { cn } from '../../../lib/utils'
-import { Button } from '../button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '../dropdown-menu'
-import { ACTION_WIDTH, constrainSwipe, fullSwipeThreshold, resolveSwipeRelease, SWIPE_SLOP, swipeSide, swipeVelocity } from './gesture'
-import { swipeActionsKey } from './types'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { stepSpring } from '../../../composables/fluid-hover/spring.ts'
+import { cn } from '../../../lib/tailwind.ts'
+import { Button } from '../button/index.ts'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '../dropdown-menu/index.ts'
+import { ACTION_WIDTH, constrainSwipe, fullSwipeThreshold, resolveSwipeRelease, SWIPE_SLOP, swipeSide, swipeVelocity } from './gesture.ts'
+import { swipeActionsKey } from './types.ts'
 
 const props = withDefaults(defineProps<{
   label: string

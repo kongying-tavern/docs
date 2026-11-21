@@ -1,14 +1,14 @@
 import type { Extensions } from '@tiptap/core'
 import type { SuggestionOptions } from '@tiptap/suggestion'
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumEditorSuggestionItem } from '@/src/forum/tiptap/forumSuggestionRenderer'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumEditorSuggestionItem } from '@/src/forum/tiptap/forumSuggestionRenderer.ts'
 import StarterKit from '@tiptap/starter-kit'
-import { EmojiNode } from '@/src/forum/tiptap/emojiNode'
-import { createLinkExtension } from '@/src/forum/tiptap/linkConfig'
-import { createMentionNode, MentionNode } from '@/src/forum/tiptap/mentionNode'
-import { createTopicReferenceNode } from '@/src/forum/tiptap/topicReferenceNode'
-import { getForumDocumentTitle } from './forumDocumentLinkIndex'
-import { shortenForumAutoLink } from './forumLinkPolicy'
+import { EmojiNode } from '@/src/forum/tiptap/emojiNode.ts'
+import { createLinkExtension } from '@/src/forum/tiptap/linkConfig.ts'
+import { createMentionNode, MentionNode } from '@/src/forum/tiptap/mentionNode.ts'
+import { createTopicReferenceNode } from '@/src/forum/tiptap/topicReferenceNode.ts'
+import { getForumDocumentTitle } from './forumDocumentLinkIndex.ts'
+import { shortenForumAutoLink } from './forumLinkPolicy.ts'
 
 export function createForumContentExtensions(options: {
   openLinks?: boolean

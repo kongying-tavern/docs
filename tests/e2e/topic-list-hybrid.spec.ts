@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test'
 import { fileURLToPath } from 'node:url'
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 interface Probe {
   setCount: (count: number) => void

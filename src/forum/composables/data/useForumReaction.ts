@@ -1,12 +1,12 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { INTER_KNOT } from '@/src/forum/api/interknot.site/api'
-import type { TopicReaction } from '@/src/forum/services/forumReaction'
+import type { INTER_KNOT } from '@/src/forum/api/interknot.site/api.d.ts'
+import type { TopicReaction } from '@/src/forum/services/forumReaction.ts'
 import { useMutation, useQuery, useQueryCache, useQueryState } from '@pinia/colada'
 import { withBase } from 'vitepress'
 import { computed, reactive, ref, toValue } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { reactions } from '@/src/forum/api/interknot.site'
-import { forumKeys } from '@/src/forum/services/forumQueryContracts'
+import { reactions } from '@/src/forum/api/interknot.site/index.ts'
+import { forumKeys } from '@/src/forum/services/forumQueryContracts.ts'
 import {
   coordinateReactionMutation,
   forumReactionResource,
@@ -16,13 +16,12 @@ import {
   reactionCacheIdentity,
   reactionEnvironmentForOrigin,
   resolveReactionViewer,
-} from '@/src/forum/services/forumReaction'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
-import { OpsEvents, trackOp } from '@/src/services/telemetry'
-import { toast } from '@/src/services/telemetry/toast'
+} from '@/src/forum/services/forumReaction.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
+import { OpsEvents, toast, trackOp } from '@/src/services/telemetry/index.ts'
 
-export type { TopicReaction } from '@/src/forum/services/forumReaction'
+export type { TopicReaction } from '@/src/forum/services/forumReaction.ts'
 
 const pendingReactionKeys = reactive(new Set<string>())
 

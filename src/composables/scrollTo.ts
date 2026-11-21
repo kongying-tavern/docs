@@ -1,4 +1,4 @@
-import { readReducedMotion } from '@/src/services/sitePreferences'
+import { readReducedMotion } from '@/src/services/sitePreferences.ts'
 
 interface ScrollToOptions {
   offset?: number

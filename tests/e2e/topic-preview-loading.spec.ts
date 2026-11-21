@@ -1,5 +1,5 @@
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 test.use({ scenario: { topics: [issue({ body: '预览正文。\n![测试图片](https://example.com/preview-sheet.svg){width:"640",height:"480"}' })] } })
 

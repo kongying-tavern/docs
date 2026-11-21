@@ -1,4 +1,4 @@
-import type ForumAPI from '../api/types'
+import type ForumAPI from '../api/types.d.ts'
 
 const profileKeys = ['username', 'bio', 'blog', 'weibo'] as const
 

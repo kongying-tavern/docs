@@ -1,4 +1,4 @@
-import type { FontSubsetConfig } from './config'
+import type { FontSubsetConfig } from './config.ts'
 
 export const fontBuildManifestVersion = 2
 

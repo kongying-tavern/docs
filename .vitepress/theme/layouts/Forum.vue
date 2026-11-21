@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
 import ForumGlobalDialogs from '@/src/forum/components/layout/ForumGlobalDialogs.vue'
-import ForumEntry from '../components/ForumEntry.vue'
-import PageAlertRegion from '../components/PageAlertRegion.vue'
+import { ForumEntry } from '../components/forum/index.ts'
+import { PageAlertRegion } from '../components/page-alert-region/index.ts'
 
 let previousScrollRestoration: ScrollRestoration | undefined
 let previousOverflowAnchor = ''

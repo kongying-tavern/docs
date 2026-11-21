@@ -1,4 +1,4 @@
-import type { GiteeGist } from './gists'
+import type { GiteeGist } from './gists.ts'
 import { z } from 'zod'
 
 const gistSchema = z.object({

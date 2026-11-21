@@ -1,7 +1,7 @@
-import { sendClarityEvent } from './clarity'
-import { telemetryLog, TelemetryLogGroup } from './logger'
-import { ensureSession } from './session'
-import { reportingEnabled } from './settings'
+import { sendClarityEvent } from './clarity.ts'
+import { telemetryLog, TelemetryLogGroup } from './logger.ts'
+import { ensureSession } from './session.ts'
+import { reportingEnabled } from './settings.ts'
 
 /** 操作打点事件白名单:失败路径统一走 reportError,这里只记录成功/里程碑类操作 */
 export const OpsEvents = {

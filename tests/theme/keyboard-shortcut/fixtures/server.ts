@@ -1,4 +1,4 @@
 import { renderToString } from 'vue/server-renderer'
-import { createApp } from './app'
+import { createApp } from './app.ts'
 
 export const render = () => renderToString(createApp())

@@ -8,7 +8,7 @@ import {
   RECENT_UPDATE_WINDOW_DAYS,
   selectRecentBlogUpdates,
   toTimestamp,
-} from '@/src/forum/services/blogUpdateFeed'
+} from '@/src/forum/services/blogUpdateFeed.ts'
 
 const COPY = {
   quoted: (title: string, summary: string) => `${title}：${summary}`,

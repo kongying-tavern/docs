@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
-import Avatar from '@theme/components/ui/Avatar.vue'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { Avatar } from '@theme/components/ui/avatar/index.ts'
 import { ref } from 'vue'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
 import ForumTopicTranslator from '../topic/ForumTopicTranslator.vue'
 import ForumImage from '../ui/ForumImage.vue'
 import ForumRoleBadge from '../ui/ForumRoleBadge.vue'
 import ForumUserAtTag from '../user/ForumUserAtTag.vue'
 import ForumUserHoverCard from '../user/ForumUserHoverCard.vue'
-import { useTopicComment } from './composables/useTopicComment'
-import { COMMENT_STYLES } from './constants/commentStyles'
+import { useTopicComment } from './composables/useTopicComment.ts'
+import { COMMENT_STYLES } from './constants/commentStyles.ts'
 import ForumCommentFooter from './ForumCommentFooter.vue'
 
 const { size = 'normal', repo = 'Feedback', commentPage = 1, commentData, topicAuthorId, commentClickHandler, topicId } = defineProps<{

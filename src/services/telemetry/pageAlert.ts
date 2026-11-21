@@ -1,10 +1,10 @@
-import type { PageAlertVariant } from '@theme/stores/usePageAlert'
-import type { Scene } from './capture'
-import { usePageAlertStore } from '@theme/stores/usePageAlert'
-import { formatMessage } from '@/src/utils/formatMessage'
-import { reportError } from './capture'
-import { formatTraceId } from './describeError'
-import { toast } from './toast'
+import type { PageAlertVariant } from '@theme/stores/pageAlert.ts'
+import type { Scene } from './capture.ts'
+import { usePageAlertStore } from '@theme/stores/pageAlert.ts'
+import { formatMessage } from '@/src/utils/formatMessage.ts'
+import { reportError } from './capture.ts'
+import { formatTraceId } from './describeError.ts'
+import { toast } from './toast.ts'
 
 export interface PageAlertOptions {
   id?: string

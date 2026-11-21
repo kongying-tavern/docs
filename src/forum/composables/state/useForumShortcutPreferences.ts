@@ -1,8 +1,8 @@
-import type { ForumShortcutId, ShortcutPreferences } from '@/src/forum/services/forumShortcuts'
+import type { ForumShortcutId, ShortcutPreferences } from '@/src/forum/services/forumShortcuts.ts'
 import { createGlobalState, useLocalStorage, useMounted } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { normalizeShortcutPreferences, resolveShortcut, shortcutBindingError } from '@/src/forum/services/forumShortcuts'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { normalizeShortcutPreferences, resolveShortcut, shortcutBindingError } from '@/src/forum/services/forumShortcuts.ts'
 
 const MAC_PLATFORM = /Mac|iPhone|iPad/
 

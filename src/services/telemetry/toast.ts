@@ -1,13 +1,13 @@
 import type { Component } from 'vue'
-import type { ReportResult, Scene } from './capture'
+import type { ReportResult, Scene } from './capture.ts'
 import { isVNode, markRaw } from 'vue'
 import { toast as sonner } from 'vue-sonner'
 import TelemetryToastDescription from '@/src/components/telemetry/TelemetryToastDescription.vue'
-import { DESKTOP_UI_MEDIA_QUERY } from '../sitePreferences'
-import { reportError } from './capture'
-import { describeError, formatTraceId } from './describeError'
-import { resolveToastTiming } from './toastPresentation'
-import { createToastQueue } from './toastQueue'
+import { DESKTOP_UI_MEDIA_QUERY } from '../sitePreferences.ts'
+import { reportError } from './capture.ts'
+import { describeError, formatTraceId } from './describeError.ts'
+import { resolveToastTiming } from './toastPresentation.ts'
+import { createToastQueue } from './toastQueue.ts'
 
 type SonnerMessage = Parameters<typeof sonner.error>[0]
 type SonnerOptions = Parameters<typeof sonner.error>[1]

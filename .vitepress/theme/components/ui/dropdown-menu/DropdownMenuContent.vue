@@ -7,8 +7,8 @@ import {
   DropdownMenuPortal,
   useForwardPropsEmits,
 } from 'reka-ui'
-import { cn } from '../../../lib/utils'
-import { FluidHoverList } from '../fluid-hover'
+import { cn } from '../../../lib/tailwind.ts'
+import { FluidHoverList } from '../fluid-hover-list/index.ts'
 
 defineOptions({
   inheritAttrs: false,

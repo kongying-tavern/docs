@@ -1,5 +1,5 @@
-import { issue } from './fixtures/gitee'
-import { expect, test } from './support/test'
+import { issue } from './fixtures/gitee.ts'
+import { expect, test } from './support/test.ts'
 
 const imageMetadata = '{thumbhash:"1fsrB38I9wiIh4hwj3CI+AiIgIAICIgA",width:"640",height:"480"}'
 test.use({ scenario: { topics: [issue({ body: `![测试图片](https://example.com/preview.png)${imageMetadata}\n![另一张图片](https://example.com/preview.png?second)${imageMetadata}` })] } })

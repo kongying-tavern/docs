@@ -1,5 +1,5 @@
-import type ForumAPI from '@/src/forum/api/types'
-import { IMAGE_UPLOAD_POLICY } from '../forumConfig'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { IMAGE_UPLOAD_POLICY } from '../forumConfig.ts'
 
 export interface ThumbHashCalculated {
   /** The image data URL used as an HTML src attribute. */

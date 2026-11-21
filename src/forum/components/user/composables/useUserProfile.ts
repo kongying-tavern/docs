@@ -1,14 +1,14 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { FORUM } from '../../types'
-import { replaceTitle } from '@theme/composables/replaceTitle'
+import type { FORUM } from '../../types.d.ts'
+import { replaceTitle } from '@theme/lib/documentTitle.ts'
 import { computed, toValue, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getGiteeMessagesHref } from '@/src/constants/site'
-import { useArchivedFeedbackAccess } from '@/src/forum/composables/auth/useArchivedFeedbackAccess'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useForumUserProfileQuery } from '@/src/forum/composables/data/useForumQueries'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { getGiteeMessagesHref } from '@/src/constants/site.ts'
+import { useArchivedFeedbackAccess } from '@/src/forum/composables/auth/useArchivedFeedbackAccess.ts'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useForumUserProfileQuery } from '@/src/forum/composables/data/useForumQueries.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 
 export function useUserProfile(usernameSource: MaybeRefOrGetter<string>) {
   const username = computed(() => toValue(usernameSource))

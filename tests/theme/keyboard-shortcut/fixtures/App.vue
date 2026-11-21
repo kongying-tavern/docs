@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import KeyboardShortcut from '@theme/components/ui/KeyboardShortcut.vue'
+import { KeyboardShortcut } from '@theme/components/ui/keyboard-shortcut/index.ts'
 import { defineAsyncComponent, ref } from 'vue'
 
 const DeferredShortcut = defineAsyncComponent(async () => {

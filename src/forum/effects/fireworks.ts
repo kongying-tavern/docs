@@ -1,6 +1,6 @@
-import type { FestivalConfetti } from './canvasConfettiRuntime'
-import type { ForumFestivalEffectOptions } from './types'
-import { startCanvasFestival } from './canvasConfettiRuntime'
+import type { FestivalConfetti } from './canvasConfettiRuntime.ts'
+import type { ForumFestivalEffectOptions } from './types.ts'
+import { startCanvasFestival } from './canvasConfettiRuntime.ts'
 
 interface ActiveRocket {
   colors: string[]

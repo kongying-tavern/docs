@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { onBeforeUnmount, onMounted, provide, ref } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences'
-import { cn } from '../../../lib/utils'
-import { swipeActionsKey } from './types'
+import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { cn } from '../../../lib/tailwind.ts'
+import { swipeActionsKey } from './types.ts'
 
 const props = defineProps<{ label: string, class?: HTMLAttributes['class'] }>()
 const list = ref<HTMLElement>()

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FORUM } from '../types'
-import type ForumAPI from '@/src/forum/api/types'
+import type { FORUM } from '../types.d.ts'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -9,18 +9,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@theme/components/ui/alert-dialog'
-import { Button } from '@theme/components/ui/button'
+} from '@theme/components/ui/alert-dialog/index.ts'
+import { Button } from '@theme/components/ui/button/index.ts'
 import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { executeWithAuth } from '@/src/forum/composables/auth/executeWithAuth'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks'
-import { useForumCommentMutations } from '@/src/forum/composables/data/useForumMutations'
-import { useForumReactionState } from '@/src/forum/composables/data/useForumReaction'
-import { useReactionStats } from '@/src/forum/composables/data/useReactionStats'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute'
-import { toast } from '@/src/services/telemetry/toast'
+import { executeWithAuth } from '@/src/forum/composables/auth/executeWithAuth.ts'
+import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useForumCommentMutations } from '@/src/forum/composables/data/useForumMutations.ts'
+import { useForumReactionState } from '@/src/forum/composables/data/useForumReaction.ts'
+import { useReactionStats } from '@/src/forum/composables/data/useReactionStats.ts'
+import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { toast } from '@/src/services/telemetry/index.ts'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumCommentReactionButtons from './ForumCommentReactionButtons.vue'
 import ForumTopicCommentDropdownMenu from './ForumTopicCommentDropdownMenu.vue'

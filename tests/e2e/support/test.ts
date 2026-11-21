@@ -1,7 +1,7 @@
-import type { ForumScenario } from './forum-api'
+import type { ForumScenario } from './forum-api.ts'
 import process from 'node:process'
 import { test as base, expect } from '@playwright/test'
-import { installForumApi } from './forum-api'
+import { installForumApi } from './forum-api.ts'
 
 /**
  * An option fixture is one object per worker, not one per test: `test.use({ scenario })`

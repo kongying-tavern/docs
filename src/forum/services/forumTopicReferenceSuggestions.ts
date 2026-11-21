@@ -1,5 +1,5 @@
-import type ForumAPI from '@/src/forum/api/types'
-import { TOPIC_ID_REGEX } from './forumTopicQuote'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import { TOPIC_ID_REGEX } from './forumTopicQuote.ts'
 
 const HASH_PREFIX_REGEX = /^#/
 

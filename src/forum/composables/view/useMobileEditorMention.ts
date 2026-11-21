@@ -1,12 +1,12 @@
 import type { Editor } from '@tiptap/core'
 import type { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion'
 import type { ShallowRef } from 'vue'
-import type ForumAPI from '@/src/forum/api/types'
-import type { ForumEditorSuggestionItem } from '@/src/forum/tiptap/forumSuggestionRenderer'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { ForumEditorSuggestionItem } from '@/src/forum/tiptap/forumSuggestionRenderer.ts'
 import { exitSuggestion } from '@tiptap/suggestion'
 import { useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, ref, shallowRef, watch } from 'vue'
-import { mentionPluginKey } from '@/src/forum/tiptap/mentionNode'
+import { mentionPluginKey } from '@/src/forum/tiptap/mentionNode.ts'
 
 const WHITESPACE = /\s/
 

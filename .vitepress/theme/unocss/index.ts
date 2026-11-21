@@ -1,5 +1,5 @@
 import type { Preflight } from 'unocss'
-import { scrollFadePreflight, scrollFadeRules } from './scroll-fade.ts'
+import { scrollFadePreflight, scrollFadeRules } from './scrollFade.ts'
 import { shimmerPreflight, shimmerRules } from './shimmer.ts'
 import { sroundedRules } from './srounded.ts'
 import { switchRules } from './switch.ts'

@@ -129,7 +129,7 @@ Apply it when a Latin/numeric-only label gets its own block box and its vertical
 
 **Balanced headings.** Short display lines take `text-wrap: balance` so their lines come out even instead of leaving a stub — the blog post header (`ForumBlogPostHeader`), the blog page title and lead (`ForumBlogPage`, `Post.vue`), the publish paper's headline (`ForumPublishTopicForm.css`), and the `Empty` primitives. Balancing is capped at a handful of lines, which is exactly the display case, so it is never applied to a reading column.
 
-**Pretty paragraphs.** `text-wrap: pretty` on short prose, so a paragraph does not end on a lone word — the aside cards (`ForumAsideLoginPrompt`, `ForumAsideRecentUpdates`, `ForumAsideTeamBlog`) — plus `text-balance` on empty-state copy (`ui/empty`, `ui/empty-motion/EmptySwap`). Long-form reading text (`.vp-doc`, topic bodies, comments) keeps the default `wrap`.
+**Pretty paragraphs.** `text-wrap: pretty` on short prose, so a paragraph does not end on a lone word — the aside cards (`ForumAsideLoginPrompt`, `ForumAsideRecentUpdates`, `ForumAsideTeamBlog`) — plus `text-balance` on empty-state copy (`ui/empty`, `ui/swap-motion/ContentSwap`). Long-form reading text (`.vp-doc`, topic bodies, comments) keeps the default `wrap`.
 
 ## Tokens — Spacing & Shapes
 
@@ -327,7 +327,7 @@ One ring everywhere: 1px outline + 2px ring in primary green (`oklch(0.7168 0.13
 
 **The highlight glides; it never blinks.** A row list does not toggle a background per row. One highlight layer lives in the container and slides to whichever row sits nearest the pointer, so the highlight is always under the cursor and there is no dead zone in gaps, padding, or the space past the last row. This is the house rule for any list or menu that highlights rows — reach for `FluidHoverList` instead of writing per-row `hover:bg-*`.
 
-`FluidHoverList` (`.vitepress/theme/components/ui/fluid-hover/`) wraps the headless core in `.vitepress/theme/hooks/fluid-hover/`: a pure nearest-centre pick (`geometry.ts`) plus a single absolutely-positioned indicator driven by a critically damped closed-form spring (the framer-motion `{ type: 'spring', duration, bounce: 0 }` curve). Its transform, size and opacity are written per frame — never through a CSS transition — so the pointer can retarget mid-flight without a restart.
+`FluidHoverList` (`.vitepress/theme/components/ui/fluid-hover-list/`) wraps the headless core in `.vitepress/theme/composables/fluid-hover/`: a pure nearest-centre pick (`geometry.ts`) plus a single absolutely-positioned indicator driven by a critically damped closed-form spring (the framer-motion `{ type: 'spring', duration, bounce: 0 }` curve). Its transform, size and opacity are written per frame — never through a CSS transition — so the pointer can retarget mid-flight without a restart.
 
 | Motion | Value |
 |--------|-------|

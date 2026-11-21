@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import ForumTopicLifecycle from './ForumTopicLifecycle.vue'
 import ForumTopicTypeBadge from './ForumTopicTypeBadge.vue'
 

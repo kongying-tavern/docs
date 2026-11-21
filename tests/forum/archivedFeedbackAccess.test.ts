@@ -1,4 +1,4 @@
-import type ForumAPI from '@/src/forum/api/types'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { PiniaColada } from '@pinia/colada'
 import { createPinia } from 'pinia'
@@ -6,9 +6,9 @@ import { test } from 'vitest'
 import { createSSRApp, effectScope, ref } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import teamMembers from '@/src/data/teamMemberList.gen.json'
-import { useArchivedFeedbackAccess } from '@/src/forum/composables/auth/useArchivedFeedbackAccess'
-import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth'
-import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo'
+import { useArchivedFeedbackAccess } from '@/src/forum/composables/auth/useArchivedFeedbackAccess.ts'
+import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 
 test('archived feedback requires a logged-in administrator or the queried creator', async () => {
   const app = createSSRApp({ setup: () => () => null })
