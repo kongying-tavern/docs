@@ -1,10 +1,10 @@
-import type { useSSOAuth } from '@/src/forum/hooks/useSSOAuth.ts'
+import type { useSSOAuth } from '../../../../src/forum/hooks/useSSOAuth.ts'
 import assert from 'node:assert/strict'
 import { afterEach, beforeEach, test, vi } from 'vitest'
 import { effectScope, nextTick } from 'vue'
-import { useTokenManager } from '@/src/forum/composables/auth/useTokenManager.ts'
-import { useSSORefreshManager } from '@/src/forum/hooks/useSSORefreshManager.ts'
-import { log } from '@/src/forum/services/authLogger.ts'
+import { useTokenManager } from '../../../../src/forum/composables/auth/useTokenManager.ts'
+import { useSSORefreshManager } from '../../../../src/forum/hooks/useSSORefreshManager.ts'
+import { log } from '../../../../src/forum/services/authLogger.ts'
 
 const cleanup: (() => void)[] = []
 beforeEach(() => {

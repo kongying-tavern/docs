@@ -1,7 +1,7 @@
-import type { ForumFestivalDefinition } from '@/src/forum/services/forumFestival.ts'
+import type { ForumFestivalDefinition } from '../../../../src/forum/services/forumFestival.ts'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { forumFestivals } from '@/src/forum/config/forumFestivals.ts'
+import { forumFestivals } from '../../../../src/forum/config/forumFestivals.ts'
 import {
   FESTIVAL_AUTO_TOLERANCE_MS,
   formatFestivalDate,
@@ -9,7 +9,7 @@ import {
   pruneOccurrenceList,
   resolveActiveForumFestival,
   resolveForumFestivalAutoStart,
-} from '@/src/forum/services/forumFestival.ts'
+} from '../../../../src/forum/services/forumFestival.ts'
 
 function timestamp(value: string): number {
   return Date.parse(value)

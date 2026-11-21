@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest'
 import { effectScope, ref, shallowRef } from 'vue'
-import { usePreviewerTransform } from '@/src/forum/components/ui/image-previewer/composables/usePreviewerTransform.ts'
+import { usePreviewerTransform } from '../../../../src/forum/components/ui/image-previewer/composables/usePreviewerTransform.ts'
 
 function fixture(zoomEnabled = true, swipeEnabled = true) {
   const scope = effectScope()

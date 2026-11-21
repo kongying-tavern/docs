@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
 import { effectScope, nextTick, shallowRef } from 'vue'
-import { usePreviewerFlip } from '@/src/forum/components/ui/image-previewer/composables/usePreviewerFlip.ts'
+import { usePreviewerFlip } from '../../../../src/forum/components/ui/image-previewer/composables/usePreviewerFlip.ts'
 
 function fixture(reducedMotion = false, loaded = true) {
   const originalWindow = globalThis.window

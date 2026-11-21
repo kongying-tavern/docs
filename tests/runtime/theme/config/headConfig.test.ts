@@ -1,8 +1,8 @@
 import type { PageData, SiteConfig, TransformContext } from 'vitepress'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { cfgDynamicHead } from '~/config/head.ts'
-import { createSitemapConfig } from '~/config/sitemap.ts'
+import { cfgDynamicHead } from '../../../../.vitepress/config/head.ts'
+import { createSitemapConfig } from '../../../../.vitepress/config/sitemap.ts'
 
 for (const base of ['/docs/', '/', '/preview/']) {
   test(`production font stylesheets load from the current deployment at ${base}`, () => {

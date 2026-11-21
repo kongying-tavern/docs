@@ -1,4 +1,4 @@
-import type { data } from '@/src/data/posts.data.ts'
+import type { data } from '../../../../src/data/posts.data.ts'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
 

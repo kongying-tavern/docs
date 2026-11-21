@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { retroDither } from '@/src/utils/retroDither.ts'
+import { retroDither } from '../../../../src/utils/retroDither.ts'
 
 describe('retroDither', () => {
   test('distributes intermediate luminance across the Bayer tile and preserves alpha', () => {

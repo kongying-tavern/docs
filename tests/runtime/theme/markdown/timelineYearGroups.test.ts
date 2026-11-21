@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
-import { markdownConfig } from '~/config/markdown.ts'
+import { markdownConfig } from '../../../../.vitepress/config/markdown.ts'
 
 test('timeline marks only the first dated entry and subsequent year changes', async () => {
   const markdown = await createMarkdownRenderer(resolve('pages'), markdownConfig)

@@ -1,17 +1,17 @@
 import { strict as assert } from 'node:assert'
 import { resolveExtensions } from '@tiptap/core'
 import { test } from 'vitest'
-import { decodeCommentBody, decodeForumText, decodeTopicBody, updateTopicMetadata } from '@/src/forum/services/forumContentCodec.ts'
+import { decodeCommentBody, decodeForumText, decodeTopicBody, updateTopicMetadata } from '../../../../src/forum/services/forumContentCodec.ts'
 import {
   renderForumComment,
   renderForumTopic,
   renderForumTopicSummary,
   renderTiptapToHtml,
-} from '@/src/forum/services/forumContentRenderer.ts'
-import { buildForumDocumentLinks } from '@/src/forum/services/forumDocumentLinkIndex.ts'
-import { forumTextToEditorDoc } from '@/src/forum/services/forumLegacyContent.ts'
-import { isAllowedForumHref } from '@/src/forum/services/forumLinkPolicy.ts'
-import { createForumContentExtensions, createForumTopicEditorExtensions } from '@/src/forum/services/forumTiptapExtensions.ts'
+} from '../../../../src/forum/services/forumContentRenderer.ts'
+import { buildForumDocumentLinks } from '../../../../src/forum/services/forumDocumentLinkIndex.ts'
+import { forumTextToEditorDoc } from '../../../../src/forum/services/forumLegacyContent.ts'
+import { isAllowedForumHref } from '../../../../src/forum/services/forumLinkPolicy.ts'
+import { createForumContentExtensions, createForumTopicEditorExtensions } from '../../../../src/forum/services/forumTiptapExtensions.ts'
 import {
   RICH_TIPTAP_DOC,
   RICH_TIPTAP_WITH_ATTACHMENT,

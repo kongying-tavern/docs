@@ -3,8 +3,8 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { beforeEach, test, vi } from 'vitest'
-import { fontSubsetPlugin } from '~/plugins/font-subset/index.ts'
-import { mdcMetadataPlugin } from '~/plugins/mdc-metadata.ts'
+import { fontSubsetPlugin } from '../../../../.vitepress/plugins/font-subset/index.ts'
+import { mdcMetadataPlugin } from '../../../../.vitepress/plugins/mdc-metadata.ts'
 
 const mocks = vi.hoisted(() => ({
   runProcess: vi.fn<(command: string, args: string[], cwd: string, handlers: unknown) => Promise<number>>(async () => 0),

@@ -1,7 +1,7 @@
 import type { KyResponse } from 'ky'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { extractPaginationParams } from '@/src/forum/api/gitee/normalize.ts'
+import { extractPaginationParams } from '../../../../src/forum/api/gitee/normalize.ts'
 
 const cases: Array<{ name: string, headers: Record<string, string>, expected: unknown }> = [
   { name: 'Gitee headers', headers: { Total_count: '21', Total_page: '2' }, expected: { total: 21, totalPage: 2 } },

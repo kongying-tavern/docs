@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
-import { compressImageForUpload } from '@/src/forum/services/form/compressImageForUpload.ts'
+import { compressImageForUpload } from '../../../../src/forum/services/form/compressImageForUpload.ts'
 
 const MIN_COMPRESSION_BYTES = 512 * 1024
 

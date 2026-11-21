@@ -1,7 +1,7 @@
-import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
+import type { TopicFormData } from '../../../../src/forum/services/form/validation.ts'
 import { beforeEach, expect, test, vi } from 'vitest'
-import { createDefaultTopicDraft, readTopicDraft, readTopicDraftBackup, restoreTopicDraftBackup, writeTopicDraft } from '@/src/forum/services/form/topicDraft.ts'
-import { STORAGE_KEYS } from '@/src/forum/services/forumConfig.ts'
+import { createDefaultTopicDraft, readTopicDraft, readTopicDraftBackup, restoreTopicDraftBackup, writeTopicDraft } from '../../../../src/forum/services/form/topicDraft.ts'
+import { STORAGE_KEYS } from '../../../../src/forum/services/forumConfig.ts'
 
 const legacyKey = STORAGE_KEYS.FORUM_FORM_DATA
 const bugKey = `${legacyKey}-bug`

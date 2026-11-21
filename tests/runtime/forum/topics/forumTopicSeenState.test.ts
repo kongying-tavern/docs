@@ -4,7 +4,7 @@ import {
   isClosedUnseen,
   markForumTopicSeen,
   readForumTopicSeenMap,
-} from '@/src/forum/services/forumTopicSeenState.ts'
+} from '../../../../src/forum/services/forumTopicSeenState.ts'
 
 function storage(initial: Record<string, string> = {}) {
   const values = new Map(Object.entries(initial))

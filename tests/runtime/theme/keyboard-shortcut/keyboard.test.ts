@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import { detectShortcutPlatform, resolveShortcutKey } from '@theme/lib/keyboard.ts'
 import { test } from 'vitest'
+import { detectShortcutPlatform, resolveShortcutKey } from '../../../../.vitepress/theme/lib/keyboard.ts'
 
 test('platform detection has safe fallbacks for Apple, Windows, Linux and unknown clients', () => {
   for (const platform of ['MacIntel', 'iPhone', 'iPad'])

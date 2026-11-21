@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { FORUM_IMAGE_ORIGIN } from '@/src/constants/site.ts'
+import { FORUM_IMAGE_ORIGIN } from '../../../../src/constants/site.ts'
 import {
   decodeCommentBody,
   decodeForumText,
@@ -10,7 +10,7 @@ import {
   formatAttachmentMarkdownList,
   parseAttachmentMarkdown,
   updateTopicMetadata,
-} from '@/src/forum/services/forumContentCodec.ts'
+} from '../../../../src/forum/services/forumContentCodec.ts'
 import {
   AMBIGUOUS_JSON_COMMENT,
   MALFORMED_AND_ORDINARY_COMMENTS,

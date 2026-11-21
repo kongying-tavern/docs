@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { putTopic } from '@/src/forum/api/gitee/issues.ts'
+import { putTopic } from '../../../../src/forum/api/gitee/issues.ts'
 
 const issue = {
   number: 'I1',

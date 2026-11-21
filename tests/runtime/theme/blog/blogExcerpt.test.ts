@@ -2,8 +2,8 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
-import { extractBlogExcerpt } from '@/src/utils/blogExcerpt.ts'
-import { markdownConfig } from '~/config/markdown.ts'
+import { markdownConfig } from '../../../../.vitepress/config/markdown.ts'
+import { extractBlogExcerpt } from '../../../../src/utils/blogExcerpt.ts'
 
 test('blog summaries render macros and Markdown from the latest update only', async () => {
   const source = `{define:L_NORMAL}{color:#2bbc6e}**普通级**{/color}{/define}

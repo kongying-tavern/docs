@@ -1,10 +1,10 @@
-import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { createImageUploadCache } from '@/src/forum/api/interknot.site/imageUploadCache.ts'
-import { useImageAttachmentQueue } from '@/src/forum/composables/view/useImageAttachmentQueue.ts'
-import { serializeUploadedAttachments, validateImageBatch } from '@/src/forum/services/form/imageAttachment.ts'
-import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig.ts'
+import { createImageUploadCache } from '../../../../src/forum/api/interknot.site/imageUploadCache.ts'
+import { useImageAttachmentQueue } from '../../../../src/forum/composables/view/useImageAttachmentQueue.ts'
+import { serializeUploadedAttachments, validateImageBatch } from '../../../../src/forum/services/form/imageAttachment.ts'
+import { IMAGE_UPLOAD_ACCEPT, IMAGE_UPLOAD_POLICY } from '../../../../src/forum/services/forumConfig.ts'
 
 function file(name: string, type = 'image/png', size = 16): File {
   return new File([new Uint8Array(size)], name, { type })

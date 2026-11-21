@@ -1,8 +1,8 @@
-import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { effectScope } from 'vue'
-import { useCommentComposer } from '@/src/forum/components/comment/composables/useCommentComposer.ts'
+import { useCommentComposer } from '../../../../src/forum/components/comment/composables/useCommentComposer.ts'
 
 type UploadImpl = (file: File, options?: { signal?: AbortSignal }) => Promise<ForumAPI.Image>
 
@@ -23,18 +23,18 @@ vi.mock('vue-i18n', async (importOriginal) => {
   const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
   return { ...actual, useI18n: () => i18n.global }
 })
-vi.mock('@/src/forum/composables/data/useForumMutations.ts', async () => {
+vi.mock('../../../../src/forum/composables/data/useForumMutations.ts', async () => {
   const { ref } = await import('vue')
   return { useForumCommentMutations: () => ({ creatingComment: ref(false) }) }
 })
-vi.mock('@/src/forum/composables/data/useForumPersonalState.ts', () => ({ useForumPersonalState: () => ({}) }))
-vi.mock('@/src/forum/hooks/useLogin.ts', () => ({ default: () => ({ logout() {}, redirectAuth() {} }) }))
-vi.mock('@/src/forum/stores/auth/useUserAuth.ts', () => ({ useUserAuthStore: () => ({}) }))
-vi.mock('@/src/forum/stores/auth/useUserInfo.ts', () => ({ useUserInfoStore: () => ({}) }))
+vi.mock('../../../../src/forum/composables/data/useForumPersonalState.ts', () => ({ useForumPersonalState: () => ({}) }))
+vi.mock('../../../../src/forum/hooks/useLogin.ts', () => ({ default: () => ({ logout() {}, redirectAuth() {} }) }))
+vi.mock('../../../../src/forum/stores/auth/useUserAuth.ts', () => ({ useUserAuthStore: () => ({}) }))
+vi.mock('../../../../src/forum/stores/auth/useUserInfo.ts', () => ({ useUserInfoStore: () => ({}) }))
 // The real toast module renders a Vue component, which this Node-only suite cannot load.
-vi.mock('@/src/services/telemetry/toast.ts', () => ({ toast: { warning() {}, error() {}, success() {}, loading() {}, dismiss() {} } }))
-vi.mock('@/src/forum/composables/view/useImageAttachmentQueue.ts', async (importOriginal) => {
-  const { useImageAttachmentQueue } = await importOriginal<typeof import('@/src/forum/composables/view/useImageAttachmentQueue.ts')>()
+vi.mock('../../../../src/services/telemetry/toast.ts', () => ({ toast: { warning() {}, error() {}, success() {}, loading() {}, dismiss() {} } }))
+vi.mock('../../../../src/forum/composables/view/useImageAttachmentQueue.ts', async (importOriginal) => {
+  const { useImageAttachmentQueue } = await importOriginal<typeof import('../../../../src/forum/composables/view/useImageAttachmentQueue.ts')>()
   return {
     useImageAttachmentQueue: () => useImageAttachmentQueue({
       upload: (file, uploadOptions) => mocks.upload(file, uploadOptions),

@@ -2,8 +2,8 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { createMarkdownRenderer } from 'vitepress'
 import { test } from 'vitest'
-import { markdownConfig } from '~/config/markdown.ts'
-import { MarkdownExtQA } from '~/theme/markdown-ext/qa/index.ts'
+import { markdownConfig } from '../../../../.vitepress/config/markdown.ts'
+import { MarkdownExtQA } from '../../../../.vitepress/theme/markdown-ext/qa/index.ts'
 
 test('qa fence ignores colon containers it does not own', async () => {
   const markdown = await createMarkdownRenderer(resolve('pages'), {

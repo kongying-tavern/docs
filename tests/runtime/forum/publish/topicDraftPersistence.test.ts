@@ -1,9 +1,9 @@
-import type { ImageAttachment, UploadImageAttachmentsResult } from '@/src/forum/services/form/imageAttachment.ts'
-import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
+import type { ImageAttachment, UploadImageAttachmentsResult } from '../../../../src/forum/services/form/imageAttachment.ts'
+import type { TopicFormData } from '../../../../src/forum/services/form/validation.ts'
 import assert from 'node:assert/strict'
 import { afterEach, test, vi } from 'vitest'
 import { computed, effectScope, ref } from 'vue'
-import { useTopicDraftPersistence } from '@/src/forum/components/form/composables/useTopicDraftPersistence.ts'
+import { useTopicDraftPersistence } from '../../../../src/forum/components/form/composables/useTopicDraftPersistence.ts'
 
 function deferred<T>() {
   let resolve!: (value: T) => void

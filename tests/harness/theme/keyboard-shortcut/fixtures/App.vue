@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { KeyboardShortcut } from '@theme/components/ui/keyboard-shortcut/index.ts'
 import { defineAsyncComponent, ref } from 'vue'
+import KeyboardShortcut from '../../../../../.vitepress/theme/components/ui/keyboard-shortcut/KeyboardShortcut.vue'
 
 const DeferredShortcut = defineAsyncComponent(async () => {
   if (!import.meta.env.SSR)

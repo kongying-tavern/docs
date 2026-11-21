@@ -1,4 +1,4 @@
-import { parseGiteeComment, parseGiteeIssue, parseGiteeUser } from '@/src/forum/api/gitee/contracts.ts'
+import { parseGiteeComment, parseGiteeIssue, parseGiteeUser } from '../../../src/forum/api/gitee/contracts.ts'
 
 // Synthetic raw provider data, validated with the production parsers. No captured credentials.
 // Field shapes follow the Gitee list/comment GET samples reviewed on 2026-10-04.

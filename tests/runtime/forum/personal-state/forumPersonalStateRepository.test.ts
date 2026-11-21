@@ -1,10 +1,10 @@
-import type { GiteeGist } from '@/src/forum/api/gitee/gists.ts'
-import type { ForumPersonalState } from '@/src/forum/services/forumPersonalState.ts'
+import type { GiteeGist } from '../../../../src/forum/api/gitee/gists.ts'
+import type { ForumPersonalState } from '../../../../src/forum/services/forumPersonalState.ts'
 import { beforeEach, expect, test, vi } from 'vitest'
-import { FORUM_STATE_BACKUP_DESCRIPTION, FORUM_STATE_BACKUP_FILE, FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '@/src/forum/api/gitee/gists.ts'
-import { clearApiCache } from '@/src/forum/api/gitee/index.ts'
-import { emptyForumPersonalState, setFollowedTopic, toggleFollowedTopic } from '@/src/forum/services/forumPersonalState.ts'
-import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError, loadForumPersonalState, recoverForumPersonalState, updateForumPersonalState } from '@/src/forum/services/forumPersonalStateRepository.ts'
+import { FORUM_STATE_BACKUP_DESCRIPTION, FORUM_STATE_BACKUP_FILE, FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '../../../../src/forum/api/gitee/gists.ts'
+import { clearApiCache } from '../../../../src/forum/api/gitee/index.ts'
+import { emptyForumPersonalState, setFollowedTopic, toggleFollowedTopic } from '../../../../src/forum/services/forumPersonalState.ts'
+import { ForumPersonalStateConflictError, ForumPersonalStateCorruptionError, loadForumPersonalState, recoverForumPersonalState, updateForumPersonalState } from '../../../../src/forum/services/forumPersonalStateRepository.ts'
 
 const aliceKey = 'forum-personal-gist:alice'
 const topicA = { topicId: 'IA', title: 'Topic A', type: 'BUG' as const, authorLogin: 'alice', recordedAt: '2026-10-12T00:00:00.000Z' }
@@ -375,7 +375,7 @@ test.fails('two independent clients must not silently lose one of their committe
   seed()
   // Separate module instances model independent browser queues sharing one server.
   vi.resetModules()
-  const otherClient = await import('@/src/forum/services/forumPersonalStateRepository.ts')
+  const otherClient = await import('../../../../src/forum/services/forumPersonalStateRepository.ts')
   afterRead = twoReaders()
   const outcomes = await Promise.allSettled([
     updateForumPersonalState('alice', state => toggleFollowedTopic(state, topicA)),
@@ -387,7 +387,7 @@ test.fails('two independent clients must not silently lose one of their committe
 
 test('two first-time clients currently create two independent state gists', { timeout: 3000 }, async () => {
   vi.resetModules()
-  const otherClient = await import('@/src/forum/services/forumPersonalStateRepository.ts')
+  const otherClient = await import('../../../../src/forum/services/forumPersonalStateRepository.ts')
   afterList = twoReaders()
   await Promise.all([
     updateForumPersonalState('alice', state => toggleFollowedTopic(state, topicA)),

@@ -1,8 +1,8 @@
 import type { Router, SiteData } from 'vitepress'
-import { installThemeRouter } from '@theme/router/installThemeRouter.ts'
 import { expect, test, vi } from 'vitest'
 import { ref, shallowRef } from 'vue'
-import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute.ts'
+import { installThemeRouter } from '../../../../.vitepress/theme/router/installThemeRouter.ts'
+import { publishForumLocation } from '../../../../src/forum/composables/state/useForumRoute.ts'
 
 vi.mock('vitepress', () => ({ useData: vi.fn() }))
 vi.mock('../../../../src/forum/composables/state/useForumRoute.ts', () => ({ publishForumLocation: vi.fn() }))

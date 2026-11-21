@@ -1,7 +1,7 @@
-import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { applyOptimisticTopicPatch } from '@/src/forum/services/forumTopicOptimistic.ts'
+import { applyOptimisticTopicPatch } from '../../../../src/forum/services/forumTopicOptimistic.ts'
 
 const topic = {
   id: '1',

@@ -1,6 +1,6 @@
 import type { KyResponse } from 'ky'
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
-import { apiCall, clearApiCache, deleteApiCache } from '@/src/forum/api/gitee/index.ts'
+import { apiCall, clearApiCache, deleteApiCache } from '../../../../src/forum/api/gitee/index.ts'
 
 const requests = vi.hoisted(() => ({
   get: vi.fn<() => Promise<KyResponse<unknown>>>(),

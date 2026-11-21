@@ -1,5 +1,5 @@
-import type { GiteeGist } from '@/src/forum/api/gitee/gists.ts'
-import { FORUM_STATE_BACKUP_DESCRIPTION, FORUM_STATE_BACKUP_FILE, FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '@/src/forum/api/gitee/gists.ts'
+import type { GiteeGist } from '../../../../src/forum/api/gitee/gists.ts'
+import { FORUM_STATE_BACKUP_DESCRIPTION, FORUM_STATE_BACKUP_FILE, FORUM_STATE_GIST_DESCRIPTION, FORUM_STATE_GIST_FILE } from '../../../../src/forum/api/gitee/gists.ts'
 import { currentUser, localAuth } from '../../fixtures/gitee.ts'
 import { expect, test } from '../../support/test.ts'
 

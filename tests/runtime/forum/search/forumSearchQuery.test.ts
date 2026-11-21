@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { clearStructuredSearchFilters, mergeTypedSearchFacet } from '@/src/forum/services/forumSearchInput.ts'
+import { clearStructuredSearchFilters, mergeTypedSearchFacet } from '../../../../src/forum/services/forumSearchInput.ts'
 import {
   appendForumSearchFacet,
   parseForumSearchQuery,
   removeForumSearchFacet,
   stringifyForumSearchQuery,
   toggleForumSearchFacet,
-} from '@/src/forum/services/forumSearchQuery.ts'
-import { getForumSearchUserGroups } from '@/src/forum/services/forumSearchUsers.ts'
+} from '../../../../src/forum/services/forumSearchQuery.ts'
+import { getForumSearchUserGroups } from '../../../../src/forum/services/forumSearchUsers.ts'
 
 test('parses grouped tags and states without consuming ordinary keywords', () => {
   assert.deepEqual(parseForumSearchQuery('tags:CATA-DOCS,CATA-TYPOS state:closed,fixed map crash'), {

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { describeError, formatTraceId } from '@/src/services/telemetry/describeError.ts'
+import { describeError, formatTraceId } from '../../../../src/services/telemetry/describeError.ts'
 
 test('describeError surfaces the concrete error text instead of ids', () => {
   assert.equal(describeError(new Error('Failed to fetch')), 'Failed to fetch')

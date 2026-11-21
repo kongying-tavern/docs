@@ -1,10 +1,10 @@
-import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { isTopicTypeChangeConfirmed } from '@/src/forum/api/gitee/issues.ts'
-import { normalizeIssue } from '@/src/forum/api/gitee/normalize.ts'
-import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '@/src/forum/composables/util/composeTopicBody.ts'
-import { decodeTopicBody } from '@/src/forum/services/forumContentCodec.ts'
+import { isTopicTypeChangeConfirmed } from '../../../../src/forum/api/gitee/issues.ts'
+import { normalizeIssue } from '../../../../src/forum/api/gitee/normalize.ts'
+import { buildTopicMembershipPatch, buildTopicTypeChangePatch, composeTopicBody } from '../../../../src/forum/composables/util/composeTopicBody.ts'
+import { decodeTopicBody } from '../../../../src/forum/services/forumContentCodec.ts'
 import {
   buildTopicCreationLabels,
   getEditableTopicLabels,
@@ -12,7 +12,7 @@ import {
   replaceEditableTopicLabels,
   replaceTopicTypeLabel,
   toggleTopicLabel,
-} from '@/src/forum/services/forumTopicLabels.ts'
+} from '../../../../src/forum/services/forumTopicLabels.ts'
 import {
   getAvailableTopicStatuses,
   getConclusiveTopicStatuses,
@@ -21,7 +21,7 @@ import {
   getTopicStatusDefinition,
   replaceTopicStatus,
   topicStatusHidesTopic,
-} from '@/src/forum/services/forumTopicStatus.ts'
+} from '../../../../src/forum/services/forumTopicStatus.ts'
 
 test('topic label edits preserve provider labels and keep one type', () => {
   const labels = ['WEB-FEEDBACK', 'LC-ZH', 'TYP-BUG', 'CATA-DOCS', 'PINNED']

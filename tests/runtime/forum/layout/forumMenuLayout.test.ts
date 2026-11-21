@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { menuContentClasses } from '@/src/forum/components/ui/responsive/shared.ts'
+import { menuContentClasses } from '../../../../src/forum/components/ui/responsive/shared.ts'
 
 test('shared popup layout finds grouped shortcuts and sizes submenus independently', () => {
   assert.equal(menuContentClasses([{ type: 'item', label: 'Action' }]), 'w-max text-nowrap')

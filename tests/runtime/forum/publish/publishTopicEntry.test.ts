@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { resolvePublishTopicType } from '@/src/forum/services/form/publishTopicEntry.ts'
-import { buildPublishedTopicTitle } from '@/src/forum/services/forumTopicTitle.ts'
+import { resolvePublishTopicType } from '../../../../src/forum/services/form/publishTopicEntry.ts'
+import { buildPublishedTopicTitle } from '../../../../src/forum/services/forumTopicTitle.ts'
 
 test('published titles use readable rich text and preserve explicit and legacy titles', () => {
   const text = '地图标记无法正常显示，请检查'

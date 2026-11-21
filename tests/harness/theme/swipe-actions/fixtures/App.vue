@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { SwipeActions, SwipeActionsRow } from '@theme/components/ui/swipe-actions/index.ts'
 import { ref } from 'vue'
+import SwipeActions from '../../../../../.vitepress/theme/components/ui/swipe-actions/SwipeActions.vue'
+import SwipeActionsRow from '../../../../../.vitepress/theme/components/ui/swipe-actions/SwipeActionsRow.vue'
 
 const items = ref([1, 2, 3])
 const selected = ref('')

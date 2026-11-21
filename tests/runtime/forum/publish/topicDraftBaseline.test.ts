@@ -1,10 +1,10 @@
-import type { TopicFormData } from '@/src/forum/services/form/validation.ts'
+import type { TopicFormData } from '../../../../src/forum/services/form/validation.ts'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { useFormState } from '@/src/forum/components/form/composables/useFormState.ts'
-import * as draftStorage from '@/src/forum/services/form/topicDraft.ts'
+import { useFormState } from '../../../../src/forum/components/form/composables/useFormState.ts'
+import * as draftStorage from '../../../../src/forum/services/form/topicDraft.ts'
 
 const mocks = vi.hoisted(() => ({
   resets: 0,
@@ -35,17 +35,17 @@ vi.mock('vue-i18n', async (importOriginal) => {
   const i18n = actual.createI18n({ legacy: false, locale: 'zh', messages: { zh: loadTestMessages('zh') } })
   return { ...actual, useI18n: () => i18n.global }
 })
-vi.mock('@/src/forum/composables/auth/useRuleChecks.ts', async () => {
+vi.mock('../../../../src/forum/composables/auth/useRuleChecks.ts', async () => {
   const { ref } = await import('vue')
   return { useRuleChecks: () => ({ hasAnyPermissions: () => ref(false) }) }
 })
-vi.mock('@/src/forum/services/form/validation.ts', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/services/form/validation.ts')>(),
+vi.mock('../../../../src/forum/services/form/validation.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('../../../../src/forum/services/form/validation.ts')>(),
   createTopicFormSchema: () => undefined,
   getAllowedTopicTypes: () => ['BUG', 'FEAT'],
 }))
-vi.mock('@/src/forum/components/form/publish-topic-form/form-config.ts', async importOriginal => ({
-  ...await importOriginal<typeof import('@/src/forum/components/form/publish-topic-form/form-config.ts')>(),
+vi.mock('../../../../src/forum/components/form/publish-topic-form/form-config.ts', async importOriginal => ({
+  ...await importOriginal<typeof import('../../../../src/forum/components/form/publish-topic-form/form-config.ts')>(),
   getFormTabsConfig: () => [],
 }))
 

@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert'
 import { readFileSync } from 'node:fs'
 import { test } from 'vitest'
-import { resolveForumDirection, resolveForumScroll, resolveForumSharedRoute } from '@/src/forum/router/forumViewTransition.ts'
+import { resolveForumDirection, resolveForumScroll, resolveForumSharedRoute } from '../../../../src/forum/router/forumViewTransition.ts'
 import {
   buildForumHref,
   canonicalizeForumLocation,
@@ -9,7 +9,7 @@ import {
   navigateForumDestination,
   parseForumLocation,
   readForumCommentId,
-} from '@/src/forum/services/forumRoute.ts'
+} from '../../../../src/forum/services/forumRoute.ts'
 
 const ROUTE_OPTIONS = {
   base: '/docs/',

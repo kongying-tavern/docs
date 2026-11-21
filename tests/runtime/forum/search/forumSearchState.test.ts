@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { buildTopicListRequest } from '@/src/forum/api/gitee/issues.ts'
-import { forumKeys } from '@/src/forum/services/forumQueryContracts.ts'
-import { buildForumHref, parseForumLocation } from '@/src/forum/services/forumRoute.ts'
-import { buildForumProviderRequest } from '@/src/forum/services/forumTopics.ts'
+import { buildTopicListRequest } from '../../../../src/forum/api/gitee/issues.ts'
+import { forumKeys } from '../../../../src/forum/services/forumQueryContracts.ts'
+import { buildForumHref, parseForumLocation } from '../../../../src/forum/services/forumRoute.ts'
+import { buildForumProviderRequest } from '../../../../src/forum/services/forumTopics.ts'
 
 const routeOptions = { base: '/docs/', locales: ['root', 'en', 'ja'] } as const
 

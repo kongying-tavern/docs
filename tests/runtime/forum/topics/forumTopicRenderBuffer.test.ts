@@ -1,6 +1,6 @@
 import type { VirtualItem } from '@tanstack/vue-virtual'
 import { describe, expect, test } from 'vitest'
-import { forumTopicRenderDistance, forumTopicRenderIndexes } from '@/src/forum/services/forumTopicRenderBuffer.ts'
+import { forumTopicRenderDistance, forumTopicRenderIndexes } from '../../../../src/forum/services/forumTopicRenderBuffer.ts'
 
 const measurements: VirtualItem[] = Array.from({ length: 5000 }, (_, index) => ({ key: `topic-${index}`, index, start: index * 100, size: 100, end: (index + 1) * 100, lane: 0 }))
 const range = { startIndex: 100, endIndex: 107, count: 5000, overscan: 0 }

@@ -1,13 +1,13 @@
-import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
 import { ref } from 'vue'
-import { useImageAttachmentQueue } from '@/src/forum/composables/view/useImageAttachmentQueue.ts'
-import { createDefaultTopicDraft, readTopicDraft, restoreTopicDraft, writeTopicDraft } from '@/src/forum/services/form/topicDraft.ts'
-import { submitTopicFormTransaction } from '@/src/forum/services/form/topicFormTransaction.ts'
-import { addTagToModel, removeTagFromModel } from '@/src/forum/services/form/topicTagModel.ts'
-import { createTopicDraftSchema, getAllowedTopicTypes } from '@/src/forum/services/form/validation.ts'
-import { VALIDATION_LIMITS } from '@/src/forum/services/forumConfig.ts'
+import { useImageAttachmentQueue } from '../../../../src/forum/composables/view/useImageAttachmentQueue.ts'
+import { createDefaultTopicDraft, readTopicDraft, restoreTopicDraft, writeTopicDraft } from '../../../../src/forum/services/form/topicDraft.ts'
+import { submitTopicFormTransaction } from '../../../../src/forum/services/form/topicFormTransaction.ts'
+import { addTagToModel, removeTagFromModel } from '../../../../src/forum/services/form/topicTagModel.ts'
+import { createTopicDraftSchema, getAllowedTopicTypes } from '../../../../src/forum/services/form/validation.ts'
+import { VALIDATION_LIMITS } from '../../../../src/forum/services/forumConfig.ts'
 
 function validDraft(type: 'BUG' | 'FEAT' | 'ANN' = 'BUG') {
   return {

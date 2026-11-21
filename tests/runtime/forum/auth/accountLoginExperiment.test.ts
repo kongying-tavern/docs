@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { resolveAccountLoginRollout, selectAccountLoginRollout } from '@/src/forum/services/experiment/accountLoginExperiment.ts'
+import { resolveAccountLoginRollout, selectAccountLoginRollout } from '../../../../src/forum/services/experiment/accountLoginExperiment.ts'
 
 test('administrators are enrolled by default and other accounts stay out', () => {
   assert.equal(selectAccountLoginRollout('123', 0, true), true)

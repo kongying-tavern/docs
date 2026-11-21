@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { decodeForumPersonalState, serializeForumPersonalState } from '@/src/forum/services/forumPersonalState.ts'
+import { decodeForumPersonalState, serializeForumPersonalState } from '../../../../src/forum/services/forumPersonalState.ts'
 
 const validTopic = {
   topicId: 'IABC',

@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import { test } from 'vitest'
-import { matchLanguages } from '@/src/forum/composables/data/matchLanguages.ts'
-import { areLanguagesEquivalent } from '@/src/forum/services/forumLanguage.ts'
-import { prepareTerminology } from '@/src/forum/services/forumTerminology.ts'
-import { detectLanguage, translate, translateAuto } from '@/src/forum/services/forumTranslation.ts'
+import { matchLanguages } from '../../../../src/forum/composables/data/matchLanguages.ts'
+import { areLanguagesEquivalent } from '../../../../src/forum/services/forumLanguage.ts'
+import { prepareTerminology } from '../../../../src/forum/services/forumTerminology.ts'
+import { detectLanguage, translate, translateAuto } from '../../../../src/forum/services/forumTranslation.ts'
 
 test('automatic translation stays conservative without reliable language evidence', async () => {
   assert.deepEqual(

@@ -1,13 +1,13 @@
-import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { PiniaColada, useQueryCache } from '@pinia/colada'
 import { createPinia } from 'pinia'
 import { test, vi } from 'vitest'
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import { useForumCommentMutations, useForumTopicMutations } from '@/src/forum/composables/data/useForumMutations.ts'
-import { forumKeys } from '@/src/forum/services/forumQueryContracts.ts'
-import { getStructuredForumTopics } from '@/src/forum/services/forumTopics.ts'
+import { useForumCommentMutations, useForumTopicMutations } from '../../../../src/forum/composables/data/useForumMutations.ts'
+import { forumKeys } from '../../../../src/forum/services/forumQueryContracts.ts'
+import { getStructuredForumTopics } from '../../../../src/forum/services/forumTopics.ts'
 
 const rawIssue = {
   number: 'A',

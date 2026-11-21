@@ -2,8 +2,8 @@ import assert from 'node:assert/strict'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { test } from 'vitest'
-import { loadFontSubsetConfig } from '@/scripts/font_subset/config.ts'
-import { detectPython, runProcess } from '@/scripts/font_subset/process.ts'
+import { loadFontSubsetConfig } from '../../../../scripts/font_subset/config.ts'
+import { detectPython, runProcess } from '../../../../scripts/font_subset/process.ts'
 
 const projectRoot = resolve(fileURLToPath(new URL('../../../..', import.meta.url)))
 const python = await detectPython(projectRoot, loadFontSubsetConfig().python)

@@ -2,12 +2,12 @@ import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
 import { createSSRApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
-import ForumReactionStatsDialog from '@/src/forum/components/ui/ForumReactionStatsDialog.vue'
+import ForumReactionStatsDialog from '../../../../src/forum/components/ui/ForumReactionStatsDialog.vue'
 
 const stats = vi.hoisted(() => ({ commentId: undefined as string | undefined, viewCount: 3642 }))
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }))
-vi.mock('@/src/forum/composables/data/useReactionStats.ts', async () => {
+vi.mock('../../../../src/forum/composables/data/useReactionStats.ts', async () => {
   const { ref } = await import('vue')
   return {
     useReactionStats: () => ({
@@ -18,7 +18,7 @@ vi.mock('@/src/forum/composables/data/useReactionStats.ts', async () => {
     }),
   }
 })
-vi.mock('@/src/forum/composables/data/useForumReaction.ts', async () => {
+vi.mock('../../../../src/forum/composables/data/useForumReaction.ts', async () => {
   const { ref } = await import('vue')
   return {
     useForumReaction: () => ({
@@ -29,7 +29,7 @@ vi.mock('@/src/forum/composables/data/useForumReaction.ts', async () => {
     }),
   }
 })
-vi.mock('@theme/components/ui/dialog/index.ts', () => {
+vi.mock('../../../../.vitepress/theme/components/ui/dialog/index.ts', () => {
   const slot = { template: '<div><slot /></div>' }
   return Object.fromEntries([
     'Dialog',
@@ -40,8 +40,8 @@ vi.mock('@theme/components/ui/dialog/index.ts', () => {
     'DialogTitle',
   ].map(name => [name, slot]))
 })
-vi.mock('@theme/components/ui/button/index.ts', () => ({ Button: { template: '<button><slot /></button>' } }))
-vi.mock('@theme/components/ui/text-morph/index.ts', () => ({ TextMorph: { props: ['text'], template: '<span>{{ text }}</span>' } }))
+vi.mock('../../../../.vitepress/theme/components/ui/button/index.ts', () => ({ Button: { template: '<button><slot /></button>' } }))
+vi.mock('../../../../.vitepress/theme/components/ui/text-morph/index.ts', () => ({ TextMorph: { props: ['text'], template: '<span>{{ text }}</span>' } }))
 
 for (const commentId of [undefined, '99001']) {
   test(`reaction stats display server viewCount for ${commentId ? 'comments' : 'topics'}, independently of clickCount`, async () => {

@@ -1,7 +1,7 @@
-import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
-import { serializeTopicCommentMutation } from '@/src/forum/composables/data/useForumMutations.ts'
+import { serializeTopicCommentMutation } from '../../../../src/forum/composables/data/useForumMutations.ts'
 import {
   collectForumTopics,
   flattenForumPages,
@@ -11,7 +11,7 @@ import {
   prependTopicToForumPages,
   removeTopicFromForumPages,
   requiresAuthoritativeRefetch,
-} from '@/src/forum/services/forumQueryContracts.ts'
+} from '../../../../src/forum/services/forumQueryContracts.ts'
 
 const home = { filter: 'all', sort: 'created', creator: null, q: '', pageSize: 20 } as const
 

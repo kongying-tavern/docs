@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs'
 import { expect, test } from 'vitest'
-import { resolveGlobalComponents, resolveMdcAllowlist } from '~/plugins/mdc-metadata.ts'
+import { resolveGlobalComponents, resolveMdcAllowlist } from '../../../../.vitepress/plugins/mdc-metadata.ts'
 
 test('resolves every whitelisted ui component through its directory barrel', () => {
   const allowlist = resolveMdcAllowlist()
