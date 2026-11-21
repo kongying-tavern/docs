@@ -5,10 +5,10 @@ import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useLanguage } from '../../../composables/useLanguage.ts'
 import { getLangCode } from '../../../lib/locale.ts'
+import { isFromExternalPage } from '../../../lib/navigation.ts'
 import { hash } from '../../../lib/string.ts'
 import { DEFAULT_LOCALE_CODE, useLocaleConfig } from '../config.ts'
 import { BANNER_CONSTANTS, BANNER_SELECTORS } from '../constants.ts'
-import { isFromExternalPage } from './isFromExternalPage.ts'
 import { useBannerStorage } from './useBannerStorage.ts'
 
 export function useBannerState(banner: Ref<HTMLElement | undefined>) {
