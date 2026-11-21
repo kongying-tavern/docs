@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends string">
 import { ChevronDown } from '@lucide/vue'
-import { cn } from '@theme/lib/utils.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 import { computed } from 'vue'
 import ForumHintIcon from '../ui/ForumHintIcon.vue'
 import ForumResponsiveSelect from '../ui/responsive/ForumResponsiveSelect.vue'

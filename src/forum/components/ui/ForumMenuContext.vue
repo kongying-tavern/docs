@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import type { FORUM } from '../types.d.ts'
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@theme/components/ui/context-menu/index.ts'
-import { cn } from '@theme/lib/utils.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'
 import { menuContentClasses } from './responsive/shared.ts'
 

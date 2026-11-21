@@ -2,7 +2,7 @@
 import type { LabelProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { Label } from '../label/index.ts'
 
 const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>()

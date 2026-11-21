@@ -2,8 +2,8 @@
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import { computed, ref } from 'vue'
 import { getLangPath } from '../../lib/locale.ts'
+import { cn } from '../../lib/tailwind.ts'
 import { ensureStartingSlash } from '../../lib/url.ts'
-import { cn } from '../../lib/utils.ts'
 import { Button } from '../ui/button/index.ts'
 import { CloseButton } from '../ui/close-button/index.ts'
 import {

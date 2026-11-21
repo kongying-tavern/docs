@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import { ListboxRoot, useFilter, useForwardExpose, useForwardPropsEmits } from 'reka-ui'
 import { reactive, ref, watch } from 'vue'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { provideCommandContext } from './index.ts'
 
 const props = withDefaults(defineProps<ListboxRootProps & { class?: HTMLAttributes['class'] }>(), {

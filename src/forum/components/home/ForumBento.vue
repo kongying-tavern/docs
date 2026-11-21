@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@theme/lib/utils.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 
 interface Props {
   class?: HTMLAttributes['class']

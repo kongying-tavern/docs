@@ -2,7 +2,7 @@
 import type { ButtonVariants } from '../button/index.ts'
 import type { WithClassAsProps } from './types.ts'
 import { ArrowLeft } from '@lucide/vue'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { Button } from '../button/index.ts'
 import { useCarousel } from './useCarousel.ts'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WithClassAsProps } from './types.ts'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { useCarousel } from './useCarousel.ts'
 
 const props = defineProps<WithClassAsProps>()

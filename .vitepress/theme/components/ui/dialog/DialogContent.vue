@@ -10,7 +10,7 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { useI18n } from 'vue-i18n'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import DialogOverlay from './DialogOverlay.vue'
 
 defineOptions({

@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@theme/components/ui/dialog/index.ts'
-import { cn } from '@theme/lib/utils.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'

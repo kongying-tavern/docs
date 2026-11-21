@@ -6,7 +6,7 @@ import {
   ContextMenuSubContent,
   useForwardPropsEmits,
 } from 'reka-ui'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 
 const props = defineProps<ContextMenuSubContentProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<ContextMenuSubContentEmits>()

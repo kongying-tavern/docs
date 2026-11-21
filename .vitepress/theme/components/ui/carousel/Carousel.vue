@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CarouselEmits, CarouselProps, WithClassAsProps } from './types.ts'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { useProvideCarousel } from './useCarousel.ts'
 
 const props = withDefaults(defineProps<CarouselProps & WithClassAsProps>(), {

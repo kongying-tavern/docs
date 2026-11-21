@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'vue'
 import { ChevronDown } from '@lucide/vue'
 import { reactiveOmit } from '@vueuse/core'
 import { SelectIcon, SelectTrigger, useForwardProps } from 'reka-ui'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { SELECT_TRIGGER_CLASSES } from './styles.ts'
 
 const props = withDefaults(

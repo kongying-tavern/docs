@@ -2,7 +2,7 @@
 import type { PropType, StyleValue } from 'vue'
 
 import { computed, ref, watch } from 'vue'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { UI } from '../config/index.ts'
 
 const props = defineProps({

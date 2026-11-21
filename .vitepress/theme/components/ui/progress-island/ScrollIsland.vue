@@ -3,7 +3,7 @@ import NumberFlow from '@number-flow/vue'
 import { motion, MotionConfig } from 'motion-v'
 import { useData } from 'vitepress'
 import { computed, ref, useSlots } from 'vue'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import AnimatedCircularProgressBar from './AnimatedCircularProgressBar.vue'
 
 export interface ProgressStep {

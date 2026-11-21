@@ -5,7 +5,7 @@ import { Search } from '@lucide/vue'
 import { reactiveOmit } from '@vueuse/core'
 import { ListboxFilter, useForwardProps } from 'reka-ui'
 import { onMounted, watch } from 'vue'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { useCommand } from './index.ts'
 
 defineOptions({

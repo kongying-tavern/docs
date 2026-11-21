@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { useId } from 'reka-ui'
 import { provide } from 'vue'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { FORM_ITEM_INJECTION_KEY } from './injectionKeys.ts'
 
 const props = defineProps<{

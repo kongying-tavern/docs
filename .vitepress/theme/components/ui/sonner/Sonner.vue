@@ -4,7 +4,7 @@ import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon
 import { computed } from 'vue'
 import { Toaster as Sonner } from 'vue-sonner'
 import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { buttonVariants } from '../button/index.ts'
 
 const props = defineProps<ToasterProps>()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { EmptyActionsVariants } from './index.ts'
-import { cn } from '../../../lib/utils.ts'
+import { cn } from '../../../lib/tailwind.ts'
 import { emptyActionsVariants } from './index.ts'
 
 const props = defineProps<{

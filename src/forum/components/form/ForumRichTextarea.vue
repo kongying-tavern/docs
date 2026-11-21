@@ -7,7 +7,7 @@ import type { ImageAttachment } from '@/src/forum/services/form/imageAttachment.
 import { useQueryCache } from '@pinia/colada'
 import { EmojiPicker } from '@theme/components/ui/emoji/index.ts'
 import { InputPlaceholders } from '@theme/components/ui/input-placeholders/index.ts'
-import { cn } from '@theme/lib/utils.ts'
+import { cn } from '@theme/lib/tailwind.ts'
 import CharacterCount from '@tiptap/extension-character-count'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import { createReusableTemplate, onClickOutside } from '@vueuse/core'
