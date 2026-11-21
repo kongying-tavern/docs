@@ -3,7 +3,7 @@
  *
  * `vite.config.ts` expands these into `resolve.alias`, the ESLint rule
  * `local/native-import-path` and the MDC resolver resolve through `matchPathAlias`,
- * and `tsconfig.json` mirrors the same table. `tests/shared/pathAliases.test.ts`
+ * and `tsconfig.json` mirrors the same table. `tests/runtime/shared/contracts/pathAliases.test.ts`
  * fails when that mirror drifts.
  */
 export interface PathAlias {

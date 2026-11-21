@@ -1,0 +1,55 @@
+import assert from 'node:assert/strict'
+import { test, vi } from 'vitest'
+import { computed } from 'vue'
+import { useFormSubmit } from '../../../../src/forum/components/form/composables/useFormSubmit.ts'
+
+const mocks = vi.hoisted(() => ({
+  failRestore: true,
+  failTransaction: true,
+  transactionCalls: 0,
+}))
+
+// The composable runs outside a component instance, where the real hook only warns.
+vi.mock('vue', async importOriginal => ({
+  ...await importOriginal<typeof import('vue')>(),
+  onBeforeUnmount() {},
+}))
+vi.mock('../../../../src/forum/api/interknot.site/upload.ts', () => ({ uploadImg() {} }))
+vi.mock('../../../../src/forum/composables/data/useSubmitTopic.ts', () => ({ useSubmitTopic: () => ({ submitData() {} }) }))
+vi.mock('../../../../src/forum/composables/view/calculateThumbHashForFile.ts', () => ({ calculateThumbHashForFile() {} }))
+vi.mock('../../../../src/forum/composables/view/useImageAttachmentQueue.ts', () => ({
+  useImageAttachmentQueue: () => ({
+    restore() {
+      if (mocks.failRestore)
+        throw new Error('Draft storage unavailable')
+    },
+  }),
+}))
+vi.mock('../../../../src/forum/services/form/topicDraft.ts', () => ({ readTopicDraft: () => ({ attachments: [] }) }))
+vi.mock('../../../../src/forum/services/form/topicFormTransaction.ts', () => ({
+  submitTopicFormTransaction: async () => {
+    mocks.transactionCalls++
+    if (mocks.failTransaction)
+      throw new Error('Upload interrupted')
+    return { ok: true, topic: { id: 'I123' } }
+  },
+}))
+
+test('queue initialization and transaction rejection both release the submission lock', async () => {
+  const submit = useFormSubmit(computed(() => 'BUG'))
+  const draft = { type: 'BUG' as const, title: '', text: 'Working draft', tags: ['PLATFORM_PC'] }
+  await assert.rejects(submit.handleSubmit(draft, false), /Draft storage unavailable/)
+  assert.equal(submit.submitLoading.value, false)
+  assert.equal(mocks.transactionCalls, 0)
+  mocks.failRestore = false
+  await assert.rejects(submit.handleSubmit(draft, false), /Upload interrupted/)
+  assert.equal(submit.submitLoading.value, false)
+  mocks.failTransaction = false
+  const first = submit.handleSubmit(draft, false)
+  const joined = submit.handleSubmit(draft, false)
+  const [result, shared] = await Promise.all([first, joined])
+  assert.equal(result.ok, true)
+  assert.equal(shared, result)
+  assert.equal(mocks.transactionCalls, 2)
+  assert.equal(submit.submitLoading.value, false)
+})

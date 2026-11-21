@@ -1,6 +1,6 @@
 import { useLocalStorage } from '@vueuse/core'
 import { watch } from 'vue'
-// tests/shared/telemetryRuntime.test.ts 的源码加载器只接受无扩展名相对导入并自行补 `.ts`
+// tests/runtime/shared/telemetry/telemetryRuntime.test.ts 的源码加载器只接受无扩展名相对导入并自行补 `.ts`
 import { TELEMETRY_ENABLED_STORAGE_KEY } from '../../constants/telemetry.ts'
 import { grantClarityConsent, revokeClarityConsent } from './clarity.ts'
 import { identifySession, rotateSupportCode } from './session.ts'

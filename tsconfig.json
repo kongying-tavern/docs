@@ -47,14 +47,15 @@
     "**/src/**/*.ts",
     "src/**/*.vue",
     "pages/**/*.ts",
-    "tests/forum/**/*.ts",
-    "tests/shared/**/*.ts",
-    "tests/theme/**/*.ts",
-    "tests/fonts/**/*.ts"
+    "tests/runtime/**/*.ts",
+    "tests/support/**/*.ts",
+    "tests/fixtures/**/*.ts",
+    "tests/harness/**/*.ts"
   ],
   "exclude": [
     "**/node_modules/**",
-    "**/dist/**"
+    "**/dist/**",
+    ".vitepress/cache/**"
   ],
   "ts-node": {
     "esm": true

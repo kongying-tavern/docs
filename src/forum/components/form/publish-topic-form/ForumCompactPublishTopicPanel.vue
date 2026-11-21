@@ -18,7 +18,7 @@ import ForumTopicTypeBadge from '@/src/forum/components/ui/ForumTopicTypeBadge.v
 import ForumMenuDesktop from '@/src/forum/components/ui/responsive/ForumMenuDesktop.vue'
 import { useForumImageDropZone } from '@/src/forum/composables/view/useForumImageDropZone.ts'
 import { IMAGE_UPLOAD_POLICY } from '@/src/forum/services/forumConfig.ts'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 import { useMobilePublishViewport } from '../composables/useMobilePublishViewport.ts'
 import ForumCompactProperties from './ForumCompactProperties.vue'
 import ForumContentInputBox from './ForumContentInputBox.vue'

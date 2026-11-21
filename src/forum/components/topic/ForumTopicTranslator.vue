@@ -8,7 +8,7 @@ import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from
 import { useI18n } from 'vue-i18n'
 import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
 import { translate, translateAuto } from '@/src/forum/services/forumTranslation.ts'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 import ForumTranslationSettingsMenu from './ForumTranslationSettingsMenu.vue'
 
 export interface TopicTranslationSnapshot {

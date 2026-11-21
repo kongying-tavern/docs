@@ -20,7 +20,7 @@ import { useForumCommentMutations } from '@/src/forum/composables/data/useForumM
 import { useForumReactionState } from '@/src/forum/composables/data/useForumReaction.ts'
 import { useReactionStats } from '@/src/forum/composables/data/useReactionStats.ts'
 import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumCommentReactionButtons from './ForumCommentReactionButtons.vue'
 import ForumTopicCommentDropdownMenu from './ForumTopicCommentDropdownMenu.vue'

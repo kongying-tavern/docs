@@ -1,6 +1,6 @@
 import type { ApiCallOptions } from './types.ts'
 import { parseGiteeGist, parseGiteeGists } from './contracts.ts'
-import { apiCall } from './index.ts'
+import { apiCall } from './transport.ts'
 
 export type GistRequestOptions = Pick<ApiCallOptions, 'expectedSessionGeneration'>
 

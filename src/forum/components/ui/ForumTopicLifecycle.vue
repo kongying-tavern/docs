@@ -3,7 +3,7 @@ import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useClipboard } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 
 const { state, topicId, iconOnly = false, copyable = false } = defineProps<{
   state: ForumAPI.TopicState

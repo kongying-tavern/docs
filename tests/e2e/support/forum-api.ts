@@ -1,6 +1,6 @@
 import type { Page, Route } from '@playwright/test'
-import type { INTER_KNOT } from '@/src/forum/api/interknot.site/api.d.ts'
-import { alice, comment, currentUser, issue } from '../fixtures/gitee.ts'
+import type { INTER_KNOT } from '../../../src/forum/api/interknot.site/api.d.ts'
+import { alice, comment, currentUser, issue } from '../../fixtures/gitee.ts'
 
 const collaboratorsPath = /^\/api\/v5\/repos\/KYJGYSDT\/(?:Feedback|Blog)\/collaborators$/
 const searchQualifiers = /\s+(?:repo|state|author):\S+/g

@@ -15,8 +15,9 @@ import { clearLoginIntent, takeLoginIntent } from '@/src/forum/services/loginInt
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
 import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
 import { AuthError, AuthErrorType } from '@/src/services/authErrors.ts'
-import { OpsEvents, reportError, toast, trackOp } from '@/src/services/telemetry/index.ts'
+import { OpsEvents, reportError, trackOp } from '@/src/services/telemetry/index.ts'
 import { showPageAlert } from '@/src/services/telemetry/pageAlert.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 import { isVisibleFeedback } from '@/src/utils/isVisibleFeedback.ts'
 
 const REDIRECT_LINK_KEY = 'redirect-link'

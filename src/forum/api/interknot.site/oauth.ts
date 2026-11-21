@@ -3,7 +3,7 @@ import type { SSOAuth } from '@/src/forum/stores/auth/useUserAuth.ts'
 import type { AuthResult } from '@/src/services/authErrors.ts'
 import { catchError } from '@/src/services/apiUtils.ts'
 import { createAuthError } from '@/src/services/authErrors.ts'
-import { fetcher, SSO_SESSION_CONTEXT } from './index.ts'
+import { fetcher, SSO_SESSION_CONTEXT } from './client.ts'
 import { generateRandomString, normalizeSSOAuth, signToken } from './utils.ts'
 
 export async function refreshToken(accessToken: string): Promise<AuthResult<SSOAuth>> {

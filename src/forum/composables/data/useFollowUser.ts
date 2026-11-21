@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { user } from '@/src/forum/api/gitee/index.ts'
 import { authGuards } from '@/src/forum/composables/auth/auth-helpers.ts'
 import { useUserInfoStore } from '@/src/forum/stores/auth/useUserInfo.ts'
-import { toast } from '@/src/services/telemetry/index.ts'
+import { toast } from '@/src/services/telemetry/toast.ts'
 
 export function useFollowUser(targetUser: string, authorizedUser?: string) {
   const followState = ref<boolean | null>(null)
