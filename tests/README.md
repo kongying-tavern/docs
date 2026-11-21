@@ -38,7 +38,8 @@ tests/
 | `pnpm test:shared` | runtime/shared |
 | `pnpm test:theme` | runtime/shared + runtime/theme，保留主题原有网站设置检查 |
 | `pnpm test:fonts` | runtime/fonts |
-| `pnpm test:forum:ui` | e2e 的 `*.spec.ts`，自动启动 VitePress |
+| `pnpm test:forum:ui` | `tests/e2e` 下 forum 与 site 的 `*.spec.ts`，自动启动 VitePress |
+| `pnpm test:forum:ui:list` | 列出 e2e 用例，不启动浏览器 |
 | `pnpm test:forum:ui:build` | 构建独立的 `/docs/` 浏览器测试产物 |
 | `pnpm test:forum:ui:production` | 构建产物上的用户流程、hydration 与 chunk 检查 |
 | `pnpm test:forum:ui:source` | `@source` 源码专项，自动启动开发服务器 |

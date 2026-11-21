@@ -27,7 +27,7 @@
 | commentComposerTransaction 的 legacy plain 与 ordered attachments 两项 | 移除纯 codec 重复；forumContentCodec 已验证 plain/Tiptap/附件顺序，事务失败和成功测试保留 |
 | forumLoadState 的模板表达式 regex | 删除；浏览器 comment-navigation 的 pending→收到评论→终态与 empty-state/list-contract 的错误/重试负责真实显示 |
 | forumImageFailure 的 v-if regex | 删除；浏览器 image-failure 请求实际失败并断言替代图片仍存在 |
-| 冒烟重复回程 | tests/e2e/forum-smoke 合并为一条后退/前进旅程，独立深链保留 |
+| 冒烟重复回程 | `tests/e2e/forum/topics/forum-smoke.spec.ts` 合并为一条后退/前进旅程，独立深链保留 |
 | user-drawer-shot 的移动截图 | 已有 user-drawer 行为覆盖；默认回归不再维护仅人工截图的重复场景 |
 | user-drawer-shot 的桌面 hover | 移入 user-drawer 行为测试，保留该独特入口与作者断言 |
 

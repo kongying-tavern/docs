@@ -24,7 +24,7 @@ const showTitle = computed(() => frontmatter.value.docHeaderTitle !== false)
     <DocsBreadCrumb
       class="text-sm/6 text-primary font-semibold mb-3 flex gap-1.5 items-center"
     />
-    <!-- 页头容器本身不参与入场动画：标题块作为唯一直接子元素承接首帧，随后是面包屑与正文分级（tests/e2e/entry-animation.spec.ts） -->
+    <!-- 页头容器本身不参与入场动画：标题块作为唯一直接子元素承接首帧，随后是面包屑与正文分级（tests/e2e/site/docs/entry-animation.spec.ts） -->
     <div v-if="showTitle" class="slide-enter">
       <h1
         class="text-3xl text-gray-900 tracking-tight font-bold sm:text-4xl dark:text-white"
