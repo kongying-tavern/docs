@@ -1,7 +1,7 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { isArray } from 'lodash-es'
-import BlogRepoMember from '../../data/blogMemberList.gen.json' with { type: 'json' }
-import TeamMember from '../../data/teamMemberList.gen.json' with { type: 'json' }
+import BlogRepoMember from '../../../data/static/common/blog-member-list.gen.json' with { type: 'json' }
+import TeamMember from '../../../data/static/common/team-member-list.gen.json' with { type: 'json' }
 
 /**
  * 解析作者信息

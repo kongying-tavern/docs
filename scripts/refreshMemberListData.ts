@@ -23,9 +23,9 @@ const members = await fetchMemberLists().catch((error: unknown) => {
 if (members) {
   const [teamMembers, feedbackMembers, blogMembers] = members
   await Promise.all([
-    saveMemberDataWithTimestamp('teamMemberList', teamMembers),
-    saveMemberDataWithTimestamp('feedbackMemberList', feedbackMembers),
-    saveMemberDataWithTimestamp('blogMemberList', blogMembers),
+    saveMemberDataWithTimestamp('team-member-list', teamMembers),
+    saveMemberDataWithTimestamp('feedback-member-list', feedbackMembers),
+    saveMemberDataWithTimestamp('blog-member-list', blogMembers),
   ])
   console.info('所有成员列表数据已更新完成')
 }

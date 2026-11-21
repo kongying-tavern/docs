@@ -47,7 +47,7 @@
   "markdown.validate.enabled": true,
   "search.exclude": {
     "**/node_modules": true,
-    "**/src/data": true,
+    "data/**": true,
     "**/.vitepress/.cache/**": true,
     "**/.vitepress/.temp/**": true,
     "**/dist/**": true,

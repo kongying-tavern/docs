@@ -23,7 +23,7 @@ export async function getAuthToken() {
 }
 
 export async function saveMemberDataWithTimestamp(filename: string, memberData: unknown) {
-  const outputFilePath = new URL(`../src/data/${filename}.gen.json`, import.meta.url)
+  const outputFilePath = new URL(`../data/static/common/${filename}.gen.json`, import.meta.url)
   const dataWithTimestamp = {
     data: memberData,
     lastUpdated: Date.now(),

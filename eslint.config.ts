@@ -99,7 +99,7 @@ export default antfu({
 }, {
   name: 'project/data-json',
   // Data generators own layout; still reject malformed JSON and duplicate keys.
-  files: ['src/**/*.json', 'tests/**/fixtures/**/*.json'],
+  files: ['data/**/*.json', 'src/**/*.json', 'tests/**/fixtures/**/*.json'],
   rules: {
     'jsonc/array-bracket-spacing': 'off',
     'jsonc/comma-dangle': 'off',
@@ -150,7 +150,7 @@ export default antfu({
   },
 }).override('antfu/stylistic/rules', {
   // Universal stylistic rules also apply to JSON unless excluded explicitly.
-  ignores: ['src/**/*.json', 'tests/**/fixtures/**/*.json'],
+  ignores: ['data/**/*.json', 'src/**/*.json', 'tests/**/fixtures/**/*.json'],
 }).append({
   name: 'project/native-import-path',
   // The site config is loaded by native Node ESM, which needs exact specifiers.

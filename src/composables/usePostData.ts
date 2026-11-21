@@ -1,5 +1,5 @@
 import type ForumAPI from '../forum/api/types.d.ts'
-import Blog from '../data/posts.json'
+import Blog from '../../data/static/common/posts.json'
 import { isCategoryLabel } from '../forum/services/forumLabel.ts'
 import { getTopicStatus } from '../forum/services/forumTopicStatus.ts'
 import { getForumLocaleLabelGetter } from '../forum/services/getForumLocaleGetter.ts'
