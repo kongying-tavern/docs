@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ForumFilter } from '@/src/forum/services/forumRoute.ts'
 import { Button } from '@theme/components/ui/button/index.ts'
-import { EmptyMorphFrame, EmptySwap } from '@theme/components/ui/empty-motion/index.ts'
 import {
   Empty,
   EmptyActions,
@@ -10,6 +9,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@theme/components/ui/empty/index.ts'
+import { ContentSwap, MorphFrame } from '@theme/components/ui/swap-motion/index.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
@@ -122,22 +122,22 @@ async function handleRetry() {
   <Empty data-testid="feedback-empty-state" :data-state="stateKey" class="forum-empty-state border-none" :aria-busy="retrying" :role="error ? 'alert' : 'status'">
     <EmptyHeader>
       <EmptyMedia>
-        <EmptySwap :swap-key="stateKey" variant="icon">
+        <ContentSwap :swap-key="stateKey" variant="icon">
           <ForumEmptyIllustration :variant="stateKey" :busy="retrying" />
-        </EmptySwap>
+        </ContentSwap>
       </EmptyMedia>
-      <EmptyMorphFrame :morph-key="morphKey">
+      <MorphFrame :morph-key="morphKey">
         <EmptyTitle class="w-full">
-          <EmptySwap :swap-key="title">
+          <ContentSwap :swap-key="title">
             {{ title }}
-          </EmptySwap>
+          </ContentSwap>
         </EmptyTitle>
         <EmptyDescription class="max-w-72 w-full">
-          <EmptySwap :swap-key="description">
+          <ContentSwap :swap-key="description">
             {{ description }}
-          </EmptySwap>
+          </ContentSwap>
         </EmptyDescription>
-      </EmptyMorphFrame>
+      </MorphFrame>
     </EmptyHeader>
 
     <EmptyActions variant="pills">
