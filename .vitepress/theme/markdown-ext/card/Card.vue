@@ -37,6 +37,7 @@ const iconMap: Record<string, string> = {
   'support.qq.com': 'i-custom-txc',
   'youtube.com': 'i-logos-youtube-icon',
   'twitter.com': 'i-logos-twitter',
+  'x.com': 'i-logos-twitter',
   'discord': 'i-logos-discord-icon',
   'reddit.com': 'i-logos-reddit-icon',
   'baidu.com': 'i-custom-baidu',
