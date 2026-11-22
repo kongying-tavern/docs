@@ -4,6 +4,7 @@ import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import UnoCSS from 'unocss/vite'
 import { createServer } from 'vite'
+import { PATH_ALIASES } from '../../../../.vitepress/config/aliases.ts'
 
 // Use the root dev dependency; keep the existing explicit installation override.
 const require = createRequire(import.meta.url)
@@ -29,12 +30,10 @@ test('swipe actions browser regression', { timeout: 120000 }, async (t) => {
     }],
     resolve: {
       dedupe: ['vue'],
-      alias: {
-        '@theme': `${root}/.vitepress/theme`,
-        '~': `${root}/.vitepress`,
-        '@': root,
-        '#': `${root}/data`,
-      },
+      alias: Object.fromEntries(PATH_ALIASES.map(({ prefix, root: aliasRoot }) => [
+        prefix,
+        aliasRoot === '.' ? root : `${root}/${aliasRoot}`,
+      ])),
     },
     optimizeDeps: { entries: [fixture], include: ['vue', '@lucide/vue', 'cn', '@vueuse/core', 'reka-ui', 'class-variance-authority'] },
     server: { host: '127.0.0.1', port: 0 },
