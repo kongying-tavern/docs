@@ -26,7 +26,7 @@ import {
 } from 'reka-ui'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import supportedLanguages from '#/static/common/supported-languages.json'
+import supportedLanguages from '#data/static/common/supported-languages.json'
 import SettingsRow from '@/src/features/settings/SettingsRow.vue'
 import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
 

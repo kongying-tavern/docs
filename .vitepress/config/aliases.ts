@@ -20,7 +20,7 @@ export const PATH_ALIASES: readonly PathAlias[] = [
   { prefix: '@theme', root: '.vitepress/theme' },
   { prefix: '~', root: '.vitepress' },
   { prefix: '@', root: '.' },
-  { prefix: '#', root: 'data' },
+  { prefix: '#data', root: 'data' },
 ]
 
 /** Theme-internal imports also feed the MDC component registry. */

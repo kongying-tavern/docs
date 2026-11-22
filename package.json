@@ -1,6 +1,9 @@
 {
   "type": "module",
   "private": "true",
+  "imports": {
+    "#data/*": "./data/*"
+  },
   "packageManager": "pnpm@12.3.4",
   "license": "MIT",
   "scripts": {

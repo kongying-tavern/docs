@@ -5,7 +5,7 @@ import { useData } from 'vitepress'
 import { VPLink } from 'vitepress/theme-without-fonts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import postsData from '#/static/common/posts.json'
+import postsData from '#data/static/common/posts.json'
 import { DEFAULT_LOCALE } from '@/src/constants/site.ts'
 import { getForumLocaleLabelGetter } from '@/src/forum/services/getForumLocaleGetter.ts'
 
