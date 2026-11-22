@@ -15,6 +15,7 @@ export default defineConfig({
       '@theme': fileURLToPath(new URL('./.vitepress/theme', import.meta.url)),
       '~': fileURLToPath(new URL('./.vitepress', import.meta.url)),
       '@': fileURLToPath(new URL('.', import.meta.url)).replace(/[\\/]$/u, ''),
+      '#': fileURLToPath(new URL('./data', import.meta.url)).replace(/[\\/]$/u, ''),
     },
   },
   test: {

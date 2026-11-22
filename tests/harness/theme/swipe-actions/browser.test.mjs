@@ -33,6 +33,7 @@ test('swipe actions browser regression', { timeout: 120000 }, async (t) => {
         '@theme': `${root}/.vitepress/theme`,
         '~': `${root}/.vitepress`,
         '@': root,
+        '#': `${root}/data`,
       },
     },
     optimizeDeps: { entries: [fixture], include: ['vue', '@lucide/vue', 'cn', '@vueuse/core', 'reka-ui', 'class-variance-authority'] },
