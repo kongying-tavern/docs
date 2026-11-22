@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { CloseButton } from '../ui/close-button/index.ts'
-import { useBannerState } from './composables/useBannerState.ts'
+import { useBannerState } from './hooks/useBannerState.ts'
 import LanguageSuggestBar from './LanguageSuggestBar.vue'
 
 const banner = ref<HTMLElement>()
