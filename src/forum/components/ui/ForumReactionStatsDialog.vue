@@ -12,8 +12,8 @@ import {
 import { TextMorph } from '@theme/components/ui/text-morph/index.ts'
 import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumReaction } from '@/src/forum/composables/data/useForumReaction.ts'
-import { useReactionStats } from '@/src/forum/composables/data/useReactionStats.ts'
+import { useForumReaction } from '@/src/forum/hooks/data/useForumReaction.ts'
+import { useReactionStats } from '@/src/forum/hooks/data/useReactionStats.ts'
 
 const { open, target } = useReactionStats()
 const { t } = useI18n({ useScope: 'global' })

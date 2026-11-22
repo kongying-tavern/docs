@@ -107,7 +107,7 @@ function initLocale(options: Options): void {
     fail(`missing title or themeConfig in ${template} template site.yml`)
   const blogPath = 'blog/[path].paths.ts'
   const blog = readFileSync(join(ROOT, `pages/${template}/${blogPath}`), 'utf8')
-  const templateBlogLocale = `usePostData('${template.toUpperCase()}')`
+  const templateBlogLocale = `createBlogPostPaths('${template.toUpperCase()}')`
   if (!blog.includes(templateBlogLocale))
     fail(`pattern not found in pages/${template}/${blogPath}: ${templateBlogLocale}`)
 
@@ -119,7 +119,7 @@ function initLocale(options: Options): void {
     console.log(`✓ Copied ${dir}/${template} → ${dir}/${code}`)
   }
 
-  writeFileSync(join(ROOT, `pages/${code}/${blogPath}`), blog.replace(templateBlogLocale, `usePostData('${code.toUpperCase()}')`))
+  writeFileSync(join(ROOT, `pages/${code}/${blogPath}`), blog.replace(templateBlogLocale, `createBlogPostPaths('${code.toUpperCase()}')`))
   const sitePath = join(ROOT, `.vitepress/locales/${code}/site.yml`)
   site.label = label
   site.lang = lang

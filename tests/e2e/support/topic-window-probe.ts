@@ -3,9 +3,8 @@ import type ForumAPI from '../../../src/forum/api/types.d.ts'
 import { createApp, h, nextTick, ref, shallowRef } from 'vue'
 
 /** Exercise mode migration with controlled heights, without network or card setup costs. */
-export async function mountTopicWindowProbe(initialCount = 80) {
-  const moduleUrl = '/forum/composables/view/useForumTopicWindow.ts'
-  const { useForumTopicWindow }: typeof import('../../../src/forum/composables/view/useForumTopicWindow.ts') = await import(/* @vite-ignore */ moduleUrl)
+export async function mountTopicWindowProbe(moduleUrl: string, initialCount = 80) {
+  const { useForumTopicWindow }: typeof import('../../../src/forum/hooks/view/useForumTopicWindow.ts') = await import(/* @vite-ignore */ moduleUrl)
   const original = (document.getElementById('app') as HTMLElement & { __vue_app__: App }).__vue_app__
   const items = Array.from({ length: 160 }, (_, index) => ({ id: `probe-${index}` }) as ForumAPI.Topic)
   const data = shallowRef(items.slice(0, initialCount))

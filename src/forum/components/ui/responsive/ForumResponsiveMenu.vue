@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DropdownMenuContentProps } from 'reka-ui'
-import type { FORUM } from '../../types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { useMediaQuery } from '@vueuse/core'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

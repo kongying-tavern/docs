@@ -10,7 +10,7 @@ import { parseGiteeIssue } from '../../../../src/forum/api/gitee/contracts.ts'
 import { clearApiCache } from '../../../../src/forum/api/gitee/index.ts'
 import { getTopicListRelatedComments } from '../../../../src/forum/api/gitee/issues.ts'
 import { normalizeIssue } from '../../../../src/forum/api/gitee/normalize.ts'
-import { useForumTopicsQuery } from '../../../../src/forum/composables/data/useForumQueries.ts'
+import { useForumTopicsQuery } from '../../../../src/forum/hooks/data/useForumQueries.ts'
 import { forumKeys } from '../../../../src/forum/services/forumQueryContracts.ts'
 import { useUserInfoStore } from '../../../../src/forum/stores/auth/useUserInfo.ts'
 

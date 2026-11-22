@@ -2,10 +2,10 @@ import type { Router, SiteData } from 'vitepress'
 import { expect, test, vi } from 'vitest'
 import { ref, shallowRef } from 'vue'
 import { installThemeRouter } from '../../../../.vitepress/theme/router/installThemeRouter.ts'
-import { publishForumLocation } from '../../../../src/forum/composables/state/useForumRoute.ts'
+import { publishForumLocation } from '../../../../src/forum/hooks/state/useForumRoute.ts'
 
 vi.mock('vitepress', () => ({ useData: vi.fn() }))
-vi.mock('../../../../src/forum/composables/state/useForumRoute.ts', () => ({ publishForumLocation: vi.fn() }))
+vi.mock('../../../../src/forum/hooks/state/useForumRoute.ts', () => ({ publishForumLocation: vi.fn() }))
 vi.mock('../../../../src/forum/router/forumViewTransition.ts', () => ({ isForumToBlogNavigation: () => false, transitionForumBlog: vi.fn() }))
 vi.mock('../../../../src/forum/services/forumRoute.ts', () => ({ parseForumLocation: () => null }))
 vi.mock('../../../../src/services/telemetry/index.ts', () => ({ identifySessionIfEnabled: vi.fn() }))

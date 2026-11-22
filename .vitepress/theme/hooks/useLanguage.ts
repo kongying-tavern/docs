@@ -1,6 +1,6 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { matchLanguages } from '@/src/forum/composables/data/matchLanguages.ts'
+import { matchLanguages } from '@/src/forum/utils/matchLanguages.ts'
 import { DEFAULT_LOCALE } from '../../locales/common.ts'
 import { getLangPath } from '../lib/locale.ts'
 

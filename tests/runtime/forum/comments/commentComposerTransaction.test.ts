@@ -2,7 +2,7 @@ import type { JSONContent } from '@tiptap/core'
 import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import { strict as assert } from 'node:assert'
 import { test } from 'vitest'
-import { useImageAttachmentQueue } from '../../../../src/forum/composables/view/useImageAttachmentQueue.ts'
+import { useImageAttachmentQueue } from '../../../../src/forum/hooks/view/useImageAttachmentQueue.ts'
 import {
   submitCommentTransaction,
 } from '../../../../src/forum/services/commentTransaction.ts'

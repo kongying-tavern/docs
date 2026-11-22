@@ -1,15 +1,16 @@
-import { fileURLToPath } from 'node:url'
+import { sourceModuleUrl } from '../../support/modules.ts'
 import { expect, test } from '../../support/test.ts'
 
 test('offscreen cached comment counts do not initialize character measurements', { tag: '@source' }, async ({ page, forum }) => {
   await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30_000 })
-  const moduleUrl = `/@fs/${fileURLToPath(new URL('../../support/reaction-cache-probe.ts', import.meta.url)).replaceAll('\\', '/')}`
-  await page.evaluate(async (url) => {
-    const { mountReactionCacheProbe } = await import(url)
-    const probe = await mountReactionCacheProbe()
+  const probeUrl = sourceModuleUrl('tests/e2e/support/reaction-cache-probe.ts')
+  const componentUrl = sourceModuleUrl('src/forum/components/comment/ForumCommentReactionButtons.vue')
+  await page.evaluate(async ({ probeUrl, componentUrl }) => {
+    const { mountReactionCacheProbe } = await import(/* @vite-ignore */ probeUrl)
+    const probe = await mountReactionCacheProbe(componentUrl)
     document.getElementById('reaction-cache-probe')!.addEventListener('show-second', () => probe.showSecond())
-  }, moduleUrl)
+  }, { probeUrl, componentUrl })
   const probe = page.locator('#reaction-cache-probe')
   await expect(probe.locator('[aria-live="polite"]')).toContainText('3')
   const before = forum.requests.filter(request => request.path === '/api/reactions').length

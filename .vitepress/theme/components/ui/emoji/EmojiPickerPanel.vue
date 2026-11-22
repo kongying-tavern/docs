@@ -4,7 +4,7 @@ import { useLocalStorage } from '@vueuse/core'
 import { computed, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import EmojiData from '#data/static/common/emojis.gen.json'
-import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '@/src/composables/useGlobalEmojiPreloader.ts'
+import { RECENT_EMOJIS_STORAGE_KEY, useEmojiPreload } from '@/src/hooks/useGlobalEmojiPreloader.ts'
 
 import { Button } from '../button/index.ts'
 import { ToggleGroup, ToggleGroupItem } from '../toggle-group/index.ts'

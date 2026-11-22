@@ -28,7 +28,7 @@ function fixture(template: 'zh' | 'en' = 'en') {
   cpSync(resolve(`.vitepress/locales/${template}`), join(root, `.vitepress/locales/${template}`), { recursive: true })
   writeFileSync(join(root, 'package.json'), '{"type":"module"}')
   writeFileSync(join(root, 'lunaria.config.json'), JSON.stringify({ locales: [{ lang: template, label: template }] }))
-  writeFileSync(join(root, `pages/${template}/blog/[path].paths.ts`), `usePostData('${template.toUpperCase()}')`)
+  writeFileSync(join(root, `pages/${template}/blog/[path].paths.ts`), `createBlogPostPaths('${template.toUpperCase()}')`)
   for (const page of ['index.md', 'frontmatter.md', 'md-enhance-guide.md', 'announcement.md'])
     writeFileSync(join(root, `pages/${template}/${page}`), `# ${page}`)
   return root
@@ -52,7 +52,7 @@ test.each(['zh', 'en'] as const)('init:locale loads a complete language from the
   })
   for (const file of ['ui', 'forum', 'settings', 'payment', 'asideLinks', 'docReaction', 'staff', 'team', 'changelog'])
     assert.equal(readFileSync(join(root, `.vitepress/locales/fr/${file}.yml`), 'utf8'), readFileSync(join(root, `.vitepress/locales/${template}/${file}.yml`), 'utf8'))
-  assert.equal(readFileSync(join(root, 'pages/fr/blog/[path].paths.ts'), 'utf8'), 'usePostData(\'FR\')')
+  assert.equal(readFileSync(join(root, 'pages/fr/blog/[path].paths.ts'), 'utf8'), 'createBlogPostPaths(\'FR\')')
   assert.equal(existsSync(join(root, 'pages/fr/index.md')), true)
   for (const page of ['frontmatter.md', 'md-enhance-guide.md', 'announcement.md'])
     assert.equal(existsSync(join(root, `pages/fr/${page}`)), template !== 'zh')

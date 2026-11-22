@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useHashChecker } from '@/src/forum/hooks/useHashChecker.ts'
-import useLogin from '@/src/forum/hooks/useLogin.ts'
+import useLogin from '@/src/forum/hooks/auth/useLogin.ts'
 import { clearLoginIntent } from '@/src/forum/services/loginIntent.ts'
 import { useUserAuthStore } from '@/src/forum/stores/auth/useUserAuth.ts'
+import { useHashChecker } from '@/src/hooks/useHashChecker.ts'
 import {
   AlertDialog,
   AlertDialogAction,

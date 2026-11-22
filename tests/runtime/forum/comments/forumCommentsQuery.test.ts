@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import { test } from 'vitest'
 import { createSSRApp, effectScope, ref } from 'vue'
 import { clearApiCache } from '../../../../src/forum/api/gitee/index.ts'
-import { useForumCommentsQuery } from '../../../../src/forum/composables/data/useForumQueries.ts'
+import { useForumCommentsQuery } from '../../../../src/forum/hooks/data/useForumQueries.ts'
 import { FORUM_CONFIG } from '../../../../src/forum/services/forumConfig.ts'
 
 const headerCases: Record<string, string>[] = [{}, { Link: '<https://gitee.com/comments?page=2>; rel="last"' }]

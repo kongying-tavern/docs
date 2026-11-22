@@ -1,0 +1,114 @@
+import type { MaybeRefOrGetter } from 'vue'
+import type { Composer } from 'vue-i18n'
+import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { TopicStatusDefinition } from '@/src/forum/services/forumTopicStatus.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
+import { computed, toValue } from 'vue'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
+import { useTopicManager } from '@/src/forum/hooks/state/useTopicManager.ts'
+import { createTopicOperationFeedback } from '@/src/forum/lib/topicFeedback.ts'
+import { getSelectableTopicStatuses, groupTopicStatuses, TOPIC_STATUS_LABEL } from '@/src/forum/services/forumTopicStatus.ts'
+import { useForumRoute } from './useForumRoute.ts'
+
+/** Both the topic menu and the inline status picker use the same groups and actions. */
+export function createTopicStatusGroupItems(
+  definitions: readonly TopicStatusDefinition[],
+  idPrefix: string,
+  t: Composer['t'],
+  disabled: boolean,
+  createAction: (status: ForumAPI.TopicStatus) => () => unknown,
+): FORUM.MenuElement[] {
+  const items: FORUM.MenuElement[] = []
+  for (const { group, definitions: grouped } of groupTopicStatuses(definitions)) {
+    if (items.length)
+      items.push({ type: 'separator' })
+    items.push({
+      type: 'group',
+      items: [
+        {
+          type: 'label',
+          label: t(`forum.topic.statusGroups.${group}`),
+          // 结论状态会把未结反馈带走，「已结」这件事不写出来用户看不出来
+          hint: grouped.some(definition => definition.hidesTopic)
+            ? t('forum.topic.menu.modifyStatus.conclusiveHint')
+            : undefined,
+        },
+        ...grouped.map(definition => ({
+          id: `${idPrefix}-${definition.id}`,
+          type: 'item' as const,
+          label: t(`forum.topic.status.${definition.id}`),
+          status: definition.id,
+          disabled,
+          action: createAction(definition.id),
+        })),
+      ],
+    })
+  }
+  return items
+}
+
+export function useTopicStatusMenu(topicData: MaybeRefOrGetter<ForumAPI.Topic>, t: Composer['t']) {
+  const currentTopic = computed(() => toValue(topicData))
+
+  const { setTopicStatus, updatingTopic } = useTopicManager(currentTopic, t, createTopicOperationFeedback())
+  const { route, leaveTopic } = useForumRoute()
+  const { hasAnyPermissions } = useRuleChecks(() => currentTopic.value.user.id)
+  const canEdit = hasAnyPermissions('edit_feedback')
+  async function handleSetTopicStatus(status: ForumAPI.TopicStatus | null) {
+    if (!canEdit.value || updatingTopic.value)
+      return
+    const topicId = String(currentTopic.value.id)
+    const wasOpen = currentTopic.value.state === 'open'
+    const result = await setTopicStatus(status)
+    if (!result)
+      return
+    if (wasOpen && result.state !== 'open' && route.value?.name === 'topic' && route.value.topicId === topicId)
+      await leaveTopic()
+  }
+
+  const hasStatusConflict = computed(() => (currentTopic.value.labels ?? []).filter(label => TOPIC_STATUS_LABEL.test(label)).length > 1)
+
+  /**
+   * 状态直接选、不再经过弹窗。候选里不含话题当前状态 —— 它已经在话题上，
+   * 再选一次没有意义；要脱离当前状态就走「清除状态」，因此该行只在有状态时出现。
+   */
+  const statusSubmenuItems = computed<FORUM.MenuElement[]>(() => {
+    const currentStatus = currentTopic.value.status
+    const items: FORUM.MenuElement[] = []
+
+    if (currentStatus) {
+      items.push({
+        id: 'status-topic-none',
+        type: 'item',
+        label: t('forum.topic.menu.modifyStatus.none'),
+        status: null,
+        disabled: updatingTopic.value,
+        action: () => handleSetTopicStatus(null),
+      })
+    }
+
+    if (hasStatusConflict.value) {
+      items.push({
+        id: 'status-topic-conflict',
+        type: 'info',
+        label: t('forum.topic.menu.modifyStatus.conflict'),
+        class: 'important:c-[var(--vp-c-warning-1)] max-w-56',
+      })
+    }
+
+    if (items.length)
+      items.push({ type: 'separator' })
+
+    items.push(...createTopicStatusGroupItems(
+      getSelectableTopicStatuses(currentTopic.value.type, currentStatus),
+      'status-topic',
+      t,
+      updatingTopic.value,
+      status => () => handleSetTopicStatus(status),
+    ))
+
+    return items
+  })
+
+  return { items: statusSubmenuItems, canEdit, updatingTopic }
+}

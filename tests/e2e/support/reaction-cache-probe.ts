@@ -3,8 +3,7 @@ import { createApp, h, ref } from 'vue'
 import { installI18n } from '../../../.vitepress/theme/i18n/index.ts'
 
 /** Mount a second consumer of the same cached reaction outside the viewport. */
-export async function mountReactionCacheProbe() {
-  const componentUrl = '/forum/components/comment/ForumCommentReactionButtons.vue'
+export async function mountReactionCacheProbe(componentUrl: string) {
   const { default: ForumCommentReactionButtons } = await import(/* @vite-ignore */ componentUrl)
   const original = (document.getElementById('app') as HTMLElement & { __vue_app__: App }).__vue_app__
   const second = ref(false)

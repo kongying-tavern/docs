@@ -1,3 +1,3 @@
-import { usePostData } from '../../../src/composables/usePostData.ts'
+import { createBlogPostPaths } from '../../../src/features/blog/postPaths.ts'
 
-export default usePostData('EN')
+export default createBlogPostPaths('EN')

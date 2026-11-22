@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 
 const { variant = 'feedback' } = defineProps<{
   variant?: 'feedback' | 'search' | 'filtered' | 'error' | 'rate-limit' | 'locked' | 'comment'

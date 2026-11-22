@@ -1,7 +1,7 @@
 import type ForumAPI from '../../../../src/forum/api/types.d.ts'
 import assert from 'node:assert/strict'
 import { test, vi } from 'vitest'
-import { serializeTopicCommentMutation } from '../../../../src/forum/composables/data/useForumMutations.ts'
+import { serializeTopicCommentMutation } from '../../../../src/forum/hooks/data/useForumMutations.ts'
 import {
   collectForumTopics,
   flattenForumPages,

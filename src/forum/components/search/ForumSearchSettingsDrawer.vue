@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { FORUM } from '@/src/forum/components/types.d.ts'
 import type { ForumFilter, ForumSort, ForumTopicType } from '@/src/forum/services/forumRoute.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
-import { useForumListControlOptions } from '@/src/forum/composables/view/useForumListControlOptions.ts'
+import { useForumViewMode } from '@/src/forum/hooks/state/useForumViewMode.ts'
+import { useForumListControlOptions } from '@/src/forum/hooks/view/useForumListControlOptions.ts'
 import ForumFilterDrawer from '../ui/ForumFilterDrawer.vue'
 
 interface ForumSearchSettings {

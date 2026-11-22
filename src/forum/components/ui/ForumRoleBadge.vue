@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
 import { isAuthor } from '@/src/forum/services/isAuthor.ts'
 
 const { authorId = null, type = null } = defineProps<{

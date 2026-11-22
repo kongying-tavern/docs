@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FORUM } from '../types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { Button } from '@theme/components/ui/button/index.ts'
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import ForumTopicLifecycle from '../ui/ForumTopicLifecycle.vue'

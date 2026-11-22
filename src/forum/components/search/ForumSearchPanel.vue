@@ -6,7 +6,7 @@ import { SearchFieldTransition } from '@theme/components/ui/search-field/index.t
 import { ContentSwap, MorphFrame } from '@theme/components/ui/swap-motion/index.ts'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumSearchToken } from '@/src/forum/composables/view/useForumSearchToken.ts'
+import { useForumSearchToken } from '@/src/forum/hooks/view/useForumSearchToken.ts'
 import { parseForumSearchQuery } from '@/src/forum/services/forumSearchQuery.ts'
 import ForumTopicResults from '../list/ForumTopicResults.vue'
 import ForumSearchFilterPicker from './ForumSearchFilterPicker.vue'

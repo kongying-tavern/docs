@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FORUM } from '../types.d.ts'
 import type ForumAPI from '@/src/forum/api/types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -14,12 +14,12 @@ import { Button } from '@theme/components/ui/button/index.ts'
 import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { executeWithAuth } from '@/src/forum/composables/auth/executeWithAuth.ts'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
-import { useForumCommentMutations } from '@/src/forum/composables/data/useForumMutations.ts'
-import { useForumReactionState } from '@/src/forum/composables/data/useForumReaction.ts'
-import { useReactionStats } from '@/src/forum/composables/data/useReactionStats.ts'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
+import { useForumCommentMutations } from '@/src/forum/hooks/data/useForumMutations.ts'
+import { useForumReactionState } from '@/src/forum/hooks/data/useForumReaction.ts'
+import { useReactionStats } from '@/src/forum/hooks/data/useReactionStats.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
+import { executeWithAuth } from '@/src/forum/lib/executeWithAuth.ts'
 import { toast } from '@/src/services/telemetry/toast.ts'
 import ForumTime from '../ui/ForumTime.vue'
 import ForumCommentReactionButtons from './ForumCommentReactionButtons.vue'

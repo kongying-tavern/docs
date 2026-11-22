@@ -5,10 +5,10 @@ import AsyncDialogLoading from '@/src/components/async/AsyncDialogLoading.vue'
 import { defineRecoverableAsyncComponent } from '@/src/components/async/defineRecoverableAsyncComponent.ts'
 import { FORM_HASH } from '@/src/forum/components/form/publish-topic-form/form-config.ts'
 import ForumPublishTopicLoading from '@/src/forum/components/form/publish-topic-form/ForumPublishTopicLoading.vue'
-import { useReactionStats } from '@/src/forum/composables/data/useReactionStats.ts'
-import { useForumImageMetadata } from '@/src/forum/composables/state/useForumImageMetadata.ts'
-import { useTopicStatusEditor } from '@/src/forum/composables/state/useTopicStatusEditor.ts'
-import { useTopicTagsEditor } from '@/src/forum/composables/state/useTopicTagsEditor.ts'
+import { useReactionStats } from '@/src/forum/hooks/data/useReactionStats.ts'
+import { useForumImageMetadata } from '@/src/forum/hooks/state/useForumImageMetadata.ts'
+import { useTopicStatusEditor } from '@/src/forum/hooks/state/useTopicStatusEditor.ts'
+import { useTopicTagsEditor } from '@/src/forum/hooks/state/useTopicTagsEditor.ts'
 
 // 论坛全局对话框的唯一挂载点：平台层布局只渲染本组件，
 // 新增对话框在此追加异步组件与状态 composable，平台层零改动。

@@ -2,8 +2,8 @@
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@theme/components/ui/dialog/index.ts'
 import { computed, onScopeDispose, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
-import { useForumImageMetadata } from '@/src/forum/composables/state/useForumImageMetadata.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
+import { useForumImageMetadata } from '@/src/forum/hooks/state/useForumImageMetadata.ts'
 import { fetchImageResource } from '@/src/forum/services/forumImageResource.ts'
 
 const { open, image } = useForumImageMetadata()

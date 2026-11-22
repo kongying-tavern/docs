@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
-import { fileURLToPath } from 'node:url'
 import { issue } from '../../../fixtures/gitee.ts'
+import { sourceModuleUrl } from '../../support/modules.ts'
 import { expect, test } from '../../support/test.ts'
 
 interface Probe {
@@ -13,11 +13,12 @@ interface Probe {
 async function openProbe(page: Page): Promise<void> {
   await page.goto('feedback')
   await expect(page.locator('.forum-topic-item').first()).toBeVisible({ timeout: 30_000 })
-  const probeUrl = `/@fs/${fileURLToPath(new URL('../../support/topic-window-probe.ts', import.meta.url)).replaceAll('\\', '/')}`
-  await page.evaluate(async (probeUrl) => {
+  const probeUrl = sourceModuleUrl('tests/e2e/support/topic-window-probe.ts')
+  const moduleUrl = sourceModuleUrl('src/forum/hooks/view/useForumTopicWindow.ts')
+  await page.evaluate(async ({ probeUrl, moduleUrl }) => {
     const { mountTopicWindowProbe } = await import(/* @vite-ignore */ probeUrl)
-    Object.assign(window, { windowProbe: await mountTopicWindowProbe() })
-  }, probeUrl)
+    Object.assign(window, { windowProbe: await mountTopicWindowProbe(moduleUrl) })
+  }, { probeUrl, moduleUrl })
 }
 
 test('rich-card threshold preserves images, expansion, focus and append-only animation', async ({ page, scenario }) => {

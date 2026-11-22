@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ForumImageCommand } from '@/src/forum/composables/view/useForumImageMenu.ts'
+import type { ForumImageCommand } from '@/src/forum/hooks/view/useForumImageMenu.ts'
 import type { ForumImageResource } from '@/src/forum/services/forumImageResource.ts'
-import { useForumImageMenu } from '@/src/forum/composables/view/useForumImageMenu.ts'
+import { useForumImageMenu } from '@/src/forum/hooks/view/useForumImageMenu.ts'
 import ForumMenuContext from './ForumMenuContext.vue'
 
 const props = defineProps<{

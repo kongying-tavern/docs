@@ -2,7 +2,7 @@ import type { Range, Virtualizer } from '@tanstack/vue-virtual'
 import type { EffectScope } from 'vue'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { effectScope, nextTick, ref } from 'vue'
-import { useForumTopicRenderBuffer } from '../../../../src/forum/composables/view/useForumTopicRenderBuffer.ts'
+import { useForumTopicRenderBuffer } from '../../../../src/forum/hooks/view/useForumTopicRenderBuffer.ts'
 
 const observation = vi.hoisted(() => ({
   callback: undefined as ((offset: number, scrolling: boolean) => void) | undefined,

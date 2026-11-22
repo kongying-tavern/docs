@@ -8,7 +8,7 @@ import {
   isToastPosition,
   TOAST_DURATION_DEFINITIONS,
   TOAST_POSITION_DEFINITIONS,
-} from '../../../../src/features/settings/settingsOptions.ts'
+} from '../../../../src/constants/preferences.ts'
 import {
   applySitePreferences,
   DEFAULT_UI_FONT_SIZE,

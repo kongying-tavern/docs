@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import { onBeforeUnmount, onMounted, provide, ref } from 'vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import { cn } from '../../../lib/tailwind.ts'
 import { swipeActionsKey } from './types.ts'
 

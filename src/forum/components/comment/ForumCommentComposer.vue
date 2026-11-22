@@ -3,7 +3,7 @@ import type { JSONContent } from '@tiptap/core'
 import type { ImageAttachment } from '@/src/forum/services/form/imageAttachment.ts'
 import { UserAvatar } from '@theme/components/ui/avatar/index.ts'
 import { I18nT, useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import { ForumPreloadedRichTextarea as ForumRichTextarea } from '../utils/forumComponentPreload.ts'
 
 const props = defineProps<{

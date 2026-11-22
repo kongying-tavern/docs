@@ -1,6 +1,10 @@
 import { currentUser, localAuth } from '../../../fixtures/gitee.ts'
-import { TELEMETRY_TOAST_MODULE, warmModules } from '../../support/modules.ts'
+import { sourceModuleUrl, TELEMETRY_TOAST_MODULE, warmModules } from '../../support/modules.ts'
 import { expect, test } from '../../support/test.ts'
+
+const telemetryToastModule = sourceModuleUrl('src/services/telemetry/toast.ts')
+const telemetryDescriptionModule = sourceModuleUrl('src/components/telemetry/TelemetryToastDescription.vue')
+const tagsEditorModule = sourceModuleUrl('src/forum/hooks/state/useTopicTagsEditor.ts')
 
 test('mobile notifications stay at the top center and desktop preferences survive resizing', { tag: '@source' }, async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 })
@@ -17,7 +21,7 @@ test('mobile notifications stay at the top center and desktop preferences surviv
   await expect(page.getByRole('combobox', { name: '显示位置', exact: true })).toBeVisible()
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.info('通知位置回归', { report: false })
   })()`)
   const toaster = page.locator('[data-sonner-toaster]')
@@ -46,7 +50,7 @@ test('mobile notifications stay at the top center and desktop preferences surviv
   await page.setViewportSize({ width: 390, height: 844 })
   await page.mouse.move(380, 800)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.dismiss()
     toast.info('移动端默认时长', { report: false })
   })()`)
@@ -58,10 +62,10 @@ test('narrow error notifications keep trace copying and retry within the card', 
   await page.setViewportSize({ width: 320, height: 700 })
   await page.goto('feedback')
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
-  await warmModules(page, TELEMETRY_TOAST_MODULE, '/components/telemetry/TelemetryToastDescription.vue')
+  await warmModules(page, TELEMETRY_TOAST_MODULE, telemetryDescriptionModule)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
-    const { default: Description } = await import('/components/telemetry/TelemetryToastDescription.vue')
+    const { toast } = await import('${telemetryToastModule}')
+    const { default: Description } = await import('${telemetryDescriptionModule}')
     toast.error('无法保存反馈', {
       report: false,
       description: Description,
@@ -100,7 +104,7 @@ test('language settings adapt to the panel width and tag actions keep their hier
   await expect.poll(() => row.evaluate(element => getComputedStyle(element).flexDirection)).toBe('row')
   await page.goto('feedback')
   await page.evaluate(`(async () => {
-    const { useTopicTagsEditor } = await import('/forum/composables/state/useTopicTagsEditor.ts')
+    const { useTopicTagsEditor } = await import('${tagsEditorModule}')
     useTopicTagsEditor().openTopicTagsEditorDialog({ id: '123', type: 'FEAT', tags: [] })
   })()`)
   const dialog = page.getByRole('dialog', { name: '编辑反馈标签（#123）' })

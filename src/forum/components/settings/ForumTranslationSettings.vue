@@ -28,7 +28,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import supportedLanguages from '#data/static/common/supported-languages.json'
 import SettingsRow from '@/src/features/settings/SettingsRow.vue'
-import { useForumTranslationPreferences } from '@/src/forum/composables/data/useForumTranslationPreferences.ts'
+import { useForumTranslationPreferences } from '@/src/forum/hooks/data/useForumTranslationPreferences.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 const { currentPageLang } = useLanguage()

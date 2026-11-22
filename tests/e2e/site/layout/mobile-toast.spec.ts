@@ -1,7 +1,9 @@
 import type { Locator } from '@playwright/test'
-import { DEFAULT_TOAST_DURATION } from '../../../../src/features/settings/settingsOptions.ts'
-import { TELEMETRY_TOAST_MODULE, warmModules } from '../../support/modules.ts'
+import { DEFAULT_TOAST_DURATION } from '../../../../src/constants/preferences.ts'
+import { sourceModuleUrl, TELEMETRY_TOAST_MODULE, warmModules } from '../../support/modules.ts'
 import { expect, test } from '../../support/test.ts'
+
+const telemetryToastModule = sourceModuleUrl('src/services/telemetry/toast.ts')
 
 async function settleToast(notification: Locator): Promise<void> {
   await notification.evaluate(async element => Promise.all(
@@ -39,7 +41,7 @@ test('mobile burst gives each notification its full display duration', { tag: '@
   await page.clock.install()
   await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 50)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.info('第一条', { report: false })
     setTimeout(() => toast.warning('第二条', { report: false }), 350)
     setTimeout(() => toast.success('第三条'), 700)
@@ -77,7 +79,7 @@ test('mobile queue advances through actions and touch dismissal', { tag: '@sourc
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.success('已移除', { action: { label: '撤销', onClick: () => {} } })
     const id = toast.loading('排队加载')
     toast.success('加载完成', { id, duration: Infinity })
@@ -105,7 +107,7 @@ test('mobile diagnostics remain readable after the originating toast is dismisse
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.error('评论发送失败', {
       id: 'diagnostic-error', report: false,
       description: '请检查网络连接后重试。',
@@ -193,7 +195,7 @@ test('mobile diagnostics remain readable after the originating toast is dismisse
   await toast.getByRole('button', { name: '查看错误详情', exact: true }).click()
   await expect(dialog).toBeVisible()
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.dismiss('diagnostic-error')
   })()`)
   await expect(toast).toHaveCount(0)
@@ -212,7 +214,7 @@ test('mobile errors persist and explicit expiry still wins', { tag: '@source' },
   await page.clock.install()
   await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 50)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.error('需要处理的错误', { report: false, id: 'persistent-error' })
   })()`)
   const persistent = page.locator('[data-sonner-toast]').filter({ hasText: '需要处理的错误' })
@@ -225,7 +227,7 @@ test('mobile errors persist and explicit expiry still wins', { tag: '@source' },
   await expect(persistent).toHaveCount(0)
   await page.clock.pauseAt(await page.evaluate(() => Date.now()) + 50)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.error('显式短暂提示', { report: false, duration: 1000 })
   })()`)
   const temporary = page.locator('[data-sonner-toast]').filter({ hasText: '显式短暂提示' })
@@ -245,7 +247,7 @@ test('desktop error layout and configured timing stay unchanged after mobile use
   await page.setViewportSize({ width: 1280, height: 900 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.error('桌面错误回归', {
       report: false, error: new Error('Concrete desktop error'),
       action: { label: '重试', onClick: () => {} },
@@ -273,7 +275,7 @@ test('same-id updates do not duplicate notifications and mobile exposes one at a
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.error('待处理错误', { id: 'first-error', report: false })
     toast.info('操作处理中', { id: 'operation', report: false, duration: 60000 })
     toast.success('操作已完成', { id: 'operation', duration: 60000 })
@@ -284,13 +286,13 @@ test('same-id updates do not duplicate notifications and mobile exposes one at a
   await expect(front).toContainText('待处理错误')
   await expect(page.locator('[data-sonner-toast]').filter({ hasText: '操作已完成' })).toHaveCount(0)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.dismiss('first-error')
   })()`)
   await expect(front).toContainText('操作已完成')
   await expect(front).toBeVisible()
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.dismiss()
     toast.error('只有详情的错误', { report: false, error: new Error('Diagnostic details') })
   })()`)
@@ -313,7 +315,7 @@ test('large text and long actions remain reachable in a short mobile viewport', 
   await page.evaluate(() => document.documentElement.style.setProperty('--site-ui-scale', '2'))
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.error('网络连接中断，请稍后再试', {
       report: false,
       description: 'Your comment could not be sent. Check your connection before trying again.',
@@ -341,7 +343,7 @@ test('mobile actions reuse Button colors and exit without scrollbars', { tag: '@
   await expect(page.locator('.forum-topic-item')).toHaveCount(1, { timeout: 30000 })
   await warmModules(page, TELEMETRY_TOAST_MODULE)
   await page.evaluate(`(async () => {
-    const { toast } = await import('/services/telemetry/toast.ts')
+    const { toast } = await import('${telemetryToastModule}')
     toast.success('已移除', { action: { label: '撤销', onClick: () => {} } })
   })()`)
   const notification = page.locator('[data-sonner-toast]')

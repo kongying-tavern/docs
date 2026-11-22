@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { ForumTranslatorRef } from '../composables/useTopicTranslationMenu.ts'
 import { computed, ref, useTemplateRef, watch } from 'vue'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
-import { useForumTopicSeenState } from '@/src/forum/composables/state/useForumTopicSeenState.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
+import { useForumTopicSeenState } from '@/src/forum/hooks/state/useForumTopicSeenState.ts'
 import ForumAside from '../aside/ForumAside.vue'
 import ForumCommentArea from '../comment/ForumCommentArea.vue'
 import { useTopicTranslationMenu } from '../composables/useTopicTranslationMenu.ts'

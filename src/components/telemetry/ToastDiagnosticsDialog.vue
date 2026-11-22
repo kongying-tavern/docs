@@ -3,7 +3,7 @@ import { Button } from '@theme/components/ui/button/index.ts'
 import { ClipboardCopyButton } from '@theme/components/ui/clipboard-copy-button/index.ts'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@theme/components/ui/dialog/index.ts'
 import { useI18n } from 'vue-i18n'
-import { useToastDiagnostics } from '@/src/composables/useToastDiagnostics.ts'
+import { useToastDiagnostics } from '@/src/hooks/useToastDiagnostics.ts'
 
 const { t } = useI18n({ useScope: 'global' })
 const { diagnostics, closeDiagnostics, restoreDiagnosticsFocus } = useToastDiagnostics()

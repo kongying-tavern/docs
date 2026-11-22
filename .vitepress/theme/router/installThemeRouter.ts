@@ -1,6 +1,6 @@
 import type { Router, SiteData } from 'vitepress'
 import type { Ref } from 'vue'
-import { publishForumLocation } from '@/src/forum/composables/state/useForumRoute.ts'
+import { publishForumLocation } from '@/src/forum/hooks/state/useForumRoute.ts'
 import { isForumToBlogNavigation, transitionForumBlog } from '@/src/forum/router/forumViewTransition.ts'
 import { parseForumLocation } from '@/src/forum/services/forumRoute.ts'
 import { identifySessionIfEnabled } from '@/src/services/telemetry/index.ts'

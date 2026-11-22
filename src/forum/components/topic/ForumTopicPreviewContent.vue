@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { computed } from 'vue'
-import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
+import { useForumRoute } from '@/src/forum/hooks/state/useForumRoute.ts'
 import ForumTopicItemFooter from '../list/ForumTopicItemFooter.vue'
 import ForumTagList from '../ui/ForumTagList.vue'
 import { ForumPreloadedCommentArea as ForumCommentArea } from '../utils/forumComponentPreload.ts'

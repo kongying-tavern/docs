@@ -5,9 +5,9 @@ import { createReusableTemplate } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AsyncContentLoading from '@/src/components/async/AsyncContentLoading.vue'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
-import { useRuleChecks } from '@/src/forum/composables/auth/useRuleChecks.ts'
+import { useRuleChecks } from '@/src/forum/hooks/auth/useRuleChecks.ts'
 import { isBrowserTranslationSupported } from '@/src/forum/services/browserTranslation.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import { useSettingsNavigation } from './useSettingsNavigation.ts'
 
 defineOptions({ inheritAttrs: false })

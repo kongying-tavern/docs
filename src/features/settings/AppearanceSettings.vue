@@ -4,19 +4,19 @@ import { ToggleGroup, ToggleGroupItem } from '@theme/components/ui/toggle-group/
 import { useThemeTransition } from '@theme/hooks/useThemeTransition.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'
+import {
+  isMotionPreference,
+  isThemePreference,
+  MOTION_OPTION_DEFINITIONS,
+  THEME_OPTION_DEFINITIONS,
+} from '@/src/constants/preferences.ts'
+import { useSitePreferences } from '@/src/hooks/useSitePreferences.ts'
 import {
   DEFAULT_UI_FONT_SIZE,
   MAX_UI_FONT_SIZE,
   MIN_UI_FONT_SIZE,
   normalizeUiFontSize,
 } from '@/src/services/sitePreferences.ts'
-import {
-  isMotionPreference,
-  isThemePreference,
-  MOTION_OPTION_DEFINITIONS,
-  THEME_OPTION_DEFINITIONS,
-} from './settingsOptions.ts'
 import SettingsRow from './SettingsRow.vue'
 import SettingsSelect from './SettingsSelect.vue'
 import SettingsThemePreview from './SettingsThemePreview.vue'

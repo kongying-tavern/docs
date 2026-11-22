@@ -5,7 +5,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@theme/components
 import { useMediaQuery } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumTopicQuery } from '@/src/forum/composables/data/useForumQueries.ts'
+import { useForumTopicQuery } from '@/src/forum/hooks/data/useForumQueries.ts'
 import { FORUM_MOBILE_MEDIA_QUERY } from '@/src/forum/services/forumConfig.ts'
 import { decodeForumText } from '@/src/forum/services/forumContentCodec.ts'
 import ForumQuotedTopicCard from '../topic/ForumQuotedTopicCard.vue'

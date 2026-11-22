@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { FORUM } from '../types.d.ts'
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import type { SavedTopicDraft } from '@/src/forum/services/form/topicDraft.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { useResizeObserver } from '@vueuse/core'
 import { nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'

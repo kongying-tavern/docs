@@ -33,7 +33,7 @@ beforeEach(() => {
 })
 
 async function setup() {
-  const { useForumPersonalState } = await import('../../../../src/forum/composables/data/useForumPersonalState.ts')
+  const { useForumPersonalState } = await import('../../../../src/forum/hooks/data/useForumPersonalState.ts')
   const scope = effectScope()
   const app = createSSRApp({ render: () => null })
     .use(createPinia())

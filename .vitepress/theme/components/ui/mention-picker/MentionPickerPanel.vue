@@ -2,7 +2,7 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumMentionCandidates } from '@/src/forum/composables/view/useForumMentionCandidates.ts'
+import { useForumMentionCandidates } from '@/src/forum/hooks/view/useForumMentionCandidates.ts'
 import { Avatar } from '../avatar/index.ts'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../command/index.ts'
 import { User } from '../user/index.ts'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { FORUM } from '../types.d.ts'
+import type { FORUM } from '@/src/forum/shared/types.d.ts'
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@theme/components/ui/context-menu/index.ts'
 import { cn } from '@theme/lib/tailwind.ts'
 import ForumDropdownMenu from './ForumDropdownMenu.vue'

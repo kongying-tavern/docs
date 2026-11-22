@@ -1,8 +1,7 @@
 import type { App } from 'vue'
 import { createApp, h, nextTick, ref } from 'vue'
 
-export async function mountListPrefetchProbe() {
-  const moduleUrl = '/forum/composables/view/useForumListPrefetch.ts'
+export async function mountListPrefetchProbe(moduleUrl: string) {
   const { useForumListPrefetch } = await import(/* @vite-ignore */ moduleUrl)
   const original = (document.getElementById('app') as HTMLElement & { __vue_app__: App }).__vue_app__
   const host = ref<HTMLElement | null>(null)

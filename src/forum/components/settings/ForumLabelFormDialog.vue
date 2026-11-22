@@ -12,7 +12,7 @@ import {
 import { Input } from '@theme/components/ui/input/index.ts'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useForumLabelStore } from '@/src/forum/composables/state/useForumLabelStore.ts'
+import { useForumLabelStore } from '@/src/forum/hooks/state/useForumLabelStore.ts'
 import {
   getFallbackLabelDisplay,
   getForumLabelPrefix,

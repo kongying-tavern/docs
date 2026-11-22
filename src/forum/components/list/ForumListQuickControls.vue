@@ -4,7 +4,7 @@ import { ChevronDown } from '@lucide/vue'
 import { Button } from '@theme/components/ui/button/index.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getViewModeIconClass, useForumViewMode } from '@/src/forum/composables/state/useForumViewMode.ts'
+import { getViewModeIconClass, useForumViewMode } from '@/src/forum/hooks/state/useForumViewMode.ts'
 import ForumResponsiveSelect from '../ui/responsive/ForumResponsiveSelect.vue'
 
 defineProps<{
