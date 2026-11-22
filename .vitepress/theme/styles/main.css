@@ -352,6 +352,12 @@ html.dark .vp-doc figure figcaption {
   color: var(--vp-c-brand-1);
 }
 
+#app .VPNavBarTranslations .title,
+#app .VPNavTranslations.group > .title,
+#app .VPNavScreenTranslations .title {
+  color: var(--vp-c-brand-1);
+}
+
 .VPSidebarGroup .link {
   padding: 3px 0 !important;
 }
