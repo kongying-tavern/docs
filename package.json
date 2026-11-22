@@ -1,11 +1,11 @@
 {
   "type": "module",
   "private": "true",
+  "packageManager": "pnpm@12.3.4",
+  "license": "MIT",
   "imports": {
     "#data/*": "./data/*"
   },
-  "packageManager": "pnpm@12.3.4",
-  "license": "MIT",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
