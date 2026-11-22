@@ -30,8 +30,10 @@ export default defineConfig({
       include: [
         'src/forum/{api,composables,hooks,router,services,stores,utils}/**/*.ts',
         'src/{composables,services,utils}/**/*.ts',
-        '.vitepress/theme/composables/fluid-hover/**/*.ts',
-        '.vitepress/theme/composables/{useQRCode,useThemeTransition}.ts',
+        '.vitepress/theme/components/ui/fluid-hover/**/*.ts',
+        '.vitepress/theme/components/ui/utils/spring.ts',
+        '.vitepress/theme/hooks/{useQRCode,useThemeTransition}.ts',
+        '.vitepress/theme/constants/qrCode.ts',
         'scripts/font_subset/**/*.ts',
       ],
       exclude: ['**/*.d.ts', '**/types/**'],

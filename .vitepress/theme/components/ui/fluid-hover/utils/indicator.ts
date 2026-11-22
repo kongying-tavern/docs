@@ -1,7 +1,7 @@
-import type { MotionTier } from './constants.ts'
-import { FADE_IN, FADE_OUT, MOTION_TIERS } from './constants.ts'
+import type { MotionTier } from '../constants.ts'
+import { stepSpring } from '../../utils/spring.ts'
+import { FADE_IN, FADE_OUT, MOTION_TIERS } from '../constants.ts'
 import { hasLayoutBox, measureItemRect, onAncestorMotionEnd } from './measure.ts'
-import { stepSpring } from './spring.ts'
 import { getFluidHoverStore } from './store.ts'
 
 export interface HighlightIndicatorOptions {

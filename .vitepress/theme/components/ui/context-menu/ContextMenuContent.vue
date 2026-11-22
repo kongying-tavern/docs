@@ -8,8 +8,8 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { computed, useTemplateRef } from 'vue'
-import { useFluidHover, useFluidHoverIndicator } from '../../../composables/fluid-hover/index.ts'
 import { cn } from '../../../lib/tailwind.ts'
+import { useFluidHover, useFluidHoverIndicator } from '../fluid-hover/index.ts'
 
 defineOptions({
   inheritAttrs: false,

@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
-import type { HighlightIndicatorOptions } from './indicator.ts'
+import type { HighlightIndicatorOptions } from '../utils/indicator.ts'
 import { toValue, watch } from 'vue'
-import { createHighlightIndicator } from './indicator.ts'
+import { createHighlightIndicator } from '../utils/indicator.ts'
 
 export interface UseFluidHoverIndicatorOptions extends HighlightIndicatorOptions {}
 

@@ -2,7 +2,7 @@
 import type { TopicTranslationSnapshot } from '../topic/ForumTopicTranslator.vue'
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { Divider } from '@theme/components/ui/divider/index.ts'
-import { FluidHoverList } from '@theme/components/ui/fluid-hover-list/index.ts'
+import { FluidHoverList } from '@theme/components/ui/fluid-hover/index.ts'
 import { Separator } from '@theme/components/ui/separator/index.ts'
 import { useMediaQuery } from '@vueuse/core'
 import { computed, nextTick, onActivated, onDeactivated, ref, useTemplateRef, watch } from 'vue'

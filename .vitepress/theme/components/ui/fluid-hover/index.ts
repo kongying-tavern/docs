@@ -31,9 +31,10 @@
  * ```
  */
 export { ACTIVE_ATTR, CONTAINER_ATTR, ITEM_ATTR } from './constants.ts'
-export type { FluidHoverAxis, ItemRect } from './geometry.ts'
-export { useFluidHover, type UseFluidHoverReturn } from './useFluidHover.ts'
+export { default as FluidHoverList } from './FluidHoverList.vue'
+export { useFluidHover, type UseFluidHoverReturn } from './hooks/useFluidHover.ts'
 export {
   useFluidHoverIndicator,
   type UseFluidHoverIndicatorReturn,
-} from './useFluidHoverIndicator.ts'
+} from './hooks/useFluidHoverIndicator.ts'
+export type { FluidHoverAxis, ItemRect } from './utils/geometry.ts'
