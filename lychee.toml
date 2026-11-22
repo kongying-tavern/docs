@@ -1,0 +1,29 @@
+#:schema https://raw.githubusercontent.com/lycheeverse/lychee/master/docs/schema.json
+
+# Shared lychee options. The workspace-dependent remap lives in .github/workflows/links.yml.
+
+verbose = "info"
+no_progress = true
+max_concurrency = 4
+max_retries = 4
+retry_wait_time = 5
+root_dir = "pages"
+fallback_extensions = ["md"]
+
+remap = [
+  '^(file://.*)/pages/(imgs|emojis|fonts|llms|common)/(.*) $1/pages/public/$2/$3',
+  '^(file://.*)/pages/index\.md$ $1/pages/zh/index.md',
+  '^(file://.*)/pages/.*?~/(.*) $1/src/$2',
+]
+
+exclude = [
+  '^https://(?:download\.)?yuanshen\.site/.*',
+  '^https://deepwiki\.com/.*',
+  '^https://github\.com/.*',
+  '^https://(?:www\.)?npmjs\.com/.*',
+  '^https://(?:www\.)?pixiv\.net/.*',
+  '^https://tongji\.baidu\.com/.*',
+  '^https://(?:www\.|space\.)?bilibili\.com/?.*',
+  '^https://(?:upload-bbs\.)?miyoushe\.com/.*',
+  '^mailto:[^@]+@(.*\.)?yuanshen\.site',
+]

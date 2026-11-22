@@ -38,31 +38,10 @@ jobs:
         id: lychee
         uses: lycheeverse/lychee-action@v2
         with:
+          # github.workspace is only known at CI runtime, so this remap stays in args.
           args: >-
-            --verbose
-            --no-progress
-            --max-concurrency 4
-            --max-retries 4
-            --retry-wait-time 5
-            --root-dir pages
-            --fallback-extensions md
+            --config lychee.toml
             --remap '^https://github\.com/kongying-tavern/docs/blob/main/(.*)$ file://${{ github.workspace }}/$1'
-            --remap '^(file://.*)/pages/(imgs|emojis|fonts|llms|common)/(.*) $1/pages/public/$2/$3'
-            --remap '^(file://.*)/pages/index\.md$ $1/pages/zh/index.md'
-            --remap '^(file://.*)/pages/.*?~/(.*) $1/src/$2'
-            --exclude 'https://download.yuanshen.site/.*'
-            --exclude '^https://deepwiki\.com/(badge\.svg|kongying-tavern/docs)/?$'
-            --exclude 'https://github.com/kongying-tavern/docs/tree/dev/.*'
-            --exclude 'https://www.npmjs.com/.*'
-            --exclude 'https://www.pixiv.net/.*'
-            --exclude 'https://tongji\.baidu\.com/web/help/article.*'
-            --exclude 'https://www\.bilibili\.com/.*'
-            --exclude 'https://space\.bilibili\.com/.*'
-            --exclude 'https://yuanshen\.site/.*'
-            --exclude 'https://upload-bbs\.miyoushe\.com/.*'
-            --exclude 'https://github\.com/kongying-tavern/docs/blob/main/\.github/trans-guide-new-language\.md'
-            --exclude 'https://github.com/([^/]+/docs/assets|user-attachments/assets)/.*'
-            --exclude 'email.*support@yuanshen'
             './**/*.md'
             './**/*.html'
             './**/*.rst'
