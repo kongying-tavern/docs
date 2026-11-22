@@ -63,11 +63,13 @@ head:
 :::
 ::::
 
+<!-- markdownlint-enable MD034 -->
+
 ### Card 卡片 {#card}
 
 #### 语法
 
-MDC 形式(YAML props 使用 `---` 包裹)：
+MDC 形式，属性写法见 [MDC 的 YAML 属性块](#mdc-props-yaml)：
 
 ```markdown
 ::Card
@@ -76,11 +78,8 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 <属性名2>: <属性值2>
 ...
 ---
-
 ::
 ```
-
-> YAML props 也支持用 ` ```yaml [props] ` 包裹，效果与 `---` 相同。
 
 #### 卡片属性
 
@@ -107,58 +106,47 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 ::: demo
 ::Card
 ---
-
 logo: self
 title: That normal theme card
 desc: This is description
 cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png
 ---
-
 ::
 ::::
 
 :::: demo
-
 ::Card
 ---
-
 logo: self
 title: That normal theme card
 desc: No cover
 hoverShadow: true
 ---
-
 ::
 ::::
 
 > 中等主题
 
 :::: demo
-
 ::Card
 ---
-
 title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
 shadow: true
 ---
-
 ::
 ::::
 
 :::: demo
-
 ::Card
 ---
-
 title: 网页版地图
 link: https://yuanshen.site/
 logo: self
 desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
 ---
-
 ::
 ::::
 
@@ -469,94 +457,153 @@ The HTML specificationis maintained by the W3C.
 
 ## MDC {#mdc}
 
-MDC 用于在 Markdown 中声明 Vue 组件、传递属性和编写插槽内容。
+MDC 是一套兼容 Markdown 的 Vue 组件书写语法。
 
-### Inline Component Demo
+### 行内组件 {#mdc-inline}
+
+行内组件嵌在正文里，写法是 `:组件名[内容]`。方括号内的内容会按 Markdown 渲染，可以继续使用加粗、行内代码等标记。
 
 <!-- zhlint ignore: :spoiler -->
 
 :::: demo
-:spoiler[刮开这里查看隐藏内容]{:width=300 .mt-4}
+:spoiler[刮开这里查看隐藏内容]
 ::::
 
-### Block Component Demo
+### 块组件 {#mdc-block}
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+块组件独占段落，写法是 `::组件名` 开始、单独一行 `::` 结束。两行之间的内容会按 Markdown 渲染，可以写多段、列表等。
+
+<!-- zhlint ignore: ::spoiler -->
 
 :::: demo
-::link-grid{.mt-4}
----
-items:
-
-- icon: i-custom-bilibili
-  name: Bilibili
-  link: https://bilibili.com
-  secondary: 小电视
-- icon: i-custom-gitee
-  name: Gitee
-  link: https://gitee.com
-  secondary: 码云
-
----
-
+::spoiler
+刮开这里查看隐藏内容
 ::
 ::::
 
-### Slot Demo
+### 属性 {#mdc-props}
 
-<!-- markdownlint-enable MD034 -->
-<!-- markdownlint-disable MD018 -- MDC slot markers require no space after #. -->
+#### 花括号属性 {#mdc-props-brace}
+
+花括号属性用于给组件传属性。行内组件和块组件的写法不同：行内组件写在 `[内容]` 后，块组件写在起始行，下面分别列出。
+
+行内组件：
+
+| 语法            | 说明                             | 示例                       |
+| --------------- | -------------------------------- | -------------------------- |
+| `{key=value}`   | 传入字符串属性                   | `{name=foo}`               |
+| `{key="value"}` | 传入字符串，避免歧义时用引号     | `{name="foo bar"}`         |
+| `{.class-name}` | 添加 class，可写多个             | `{.vp-link}`               |
+| `{#id-name}`    | 设置元素 ID                      | `{#main}`                  |
+| `{flag}`        | 作为静态属性传入字符串 `true`    | `{disabled}`               |
+| `{:key=value}`  | Vue 绑定，值按表达式解析         | `{:width=300}`             |
+| `{:key='expr'}` | Vue 绑定，值含引号时用单引号包裹 | `{:data='{"key": "val"}'}` |
+| `{:key}`        | Vue 绑定布尔值 `true`            | `{:disabled}`              |
+
+块组件：
+
+| 语法            | 说明                                                   | 示例                        |
+| --------------- | ------------------------------------------------------ | --------------------------- |
+| `{key=value}`   | 字符串按普通属性传入；数字、布尔、数组、对象按表达式解析 | `{name=foo}`、`{width=300}` |
+| `{key="value"}` | 传入字符串，避免歧义时用引号                           | `{name="foo bar"}`          |
+| `{.class-name}` | 添加 class，可写多个                                   | `{.vp-link}`                |
+| `{#id-name}`    | 设置元素 ID                                            | `{#main}`                   |
+| `{flag}`        | 传入布尔值 `true`                                      | `{disabled}`                |
+
+多个属性写在同一个 `{...}` 中，用空格分隔，例如 `{:width=300 .text-red}`。
+
+#### YAML 属性块 {#mdc-props-yaml}
+
+YAML 属性块只用于块组件，以独立一行 `---` 开始和结束：
+
+```markdown
+::Card
+---
+title: 卡片标题
+count: 3
+hoverShadow: true
+items:
+  - name: A
+    link: https://a.com
+---
+::
+```
+
+也可用 `yaml` 代码块包裹，`[props]` 标记不可省略：
+
+````markdown
+::Card
+```yaml [props]
+title: 卡片标题
+count: 3
+hoverShadow: true
+items:
+  - name: A
+    link: https://a.com
+```
+::
+````
+
+### 插槽 {#mdc-slots}
+
+插槽用于向组件传入 Markdown 内容。
+
+- 用独立一行的 `#名称` 定义插槽，`#` 后不留空格；其后的内容直到下一个插槽标记或组件结束标记都属于该插槽。
+- 未标记的内容进入默认插槽，默认插槽名是 `default`；也可以显式写 `#default`。
+
+<!-- markdownlint-disable MD007 MD018 MD032 -- MDC slot markers require no space after #; YAML lists are data, not Markdown lists. -->
 
 :::: demo
 ::accordion-panels
 ---
-type: multiple
-defaultValue:
-
-- overview
-- details
 items:
-- value: overview
-  title: 默认 Slot：Markdown 内容
-  slot: default
-- value: details
-  title: 命名 Slot：Markdown 内容
-
+  - value: overview
+    title: 默认插槽
+    slot: default
+  - value: details
+    title: 命名插槽
 ---
 
 #default
-这里是默认 slot 的内容。
-
-- 支持无序列表
-- 支持**粗体**和 `inline code`
-- 支持[普通链接](https://gitee.com)
+这是**默认插槽**的内容，会显示在第一个面板里。
 
 #details
-这里是命名 slot 的内容。
-
-> 这个区块来自 `#details`。
-
-1. 支持有序列表
-2. 支持 ==高亮==
-
+这是 `#details` 插槽的内容，会显示在第二个面板里。
 ::
 ::::
 
-<!-- markdownlint-enable MD018 -->
+<!-- markdownlint-enable MD007 MD018 MD032 -->
 
-> 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
-> `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props(`---` 块)必须紧跟在组件起始行之后。
+### 组合规则 {#mdc-composition}
 
-### Props 语法
+组合时按以下规则书写：
 
-行内组件的 props 需要写在同一个 `{...}` 中，不支持连续声明多个 props block。
+- **内容**：
+  - 行内组件可以放在段落、列表、表格等 Markdown 内容中。
+  - 块组件内部可以继续写行内组件、块组件和多段 Markdown。
+- **花括号属性**：
+  - 行内组件写在 `[内容]` 后，例如 `:spoiler[文本]{width=300}`。
+  - 块组件写在起始行，例如 `::Card{.mt-4}`。
+  - 花括号属性与 Attrs 写法相似，但用途不同：前者是 MDC 的组件属性语法，后者用于给 Markdown 元素添加属性。
+- **数量限制**：一个组件最多写一组花括号属性和一块 YAML 属性块。
+- 花括号属性和 YAML 属性块可同时使用；同名属性以 YAML 属性块的值为准。
 
-数值、布尔值或数组等需要使用 Vue 绑定，例如 `{:width=300}`、`{:disabled=true}`；普通 `width=300` 会传入字符串。
+### 示例 {#mdc-example}
 
-| 语法            | 含义                  | 示例          |
-| --------------- | --------------------- | ------------- |
-| `{key="value"}` | 字符串 prop（引号）   | `{.text-red}` |
-| `{key=value}`   | 字符串 prop（无引号） | `{name=foo}`  |
-| `{.class-name}` | class 简写            | `{.vp-link}`  |
-| `{#id-name}`    | id 简写               | `{#main}`     |
-| `{flag}`        | 布尔 prop（仅键名）   | `{disabled}`  |
+<!-- zhlint ignore: :spoiler -->
+
+:::: demo
+:spoiler[默认刮刮卡]
+
+:spoiler[自定义宽度]{:width=200}
+::::
+
+:::: demo
+::Card{.mt-4 title=花括号标题}
+---
+title: YAML 标题
+desc: 描述文字
+theme: medium
+---
+::
+::::
