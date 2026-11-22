@@ -14,7 +14,7 @@ import { test } from 'vitest'
 
 const projectRoot = fileURLToPath(new URL('../../../..', import.meta.url))
 const CONFIG_DIR = '.vitepress/config'
-const DATA_LOADERS = ['posts', 'forumBlogPosts', 'forumDocumentLinks'].map(name => `src/data/${name}.data.ts`)
+const DATA_LOADERS = ['posts', 'forumBlogPosts', 'forumDocumentLinks'].map(name => `data/loader/${name}.data.ts`)
 
 /** Config modules are enumerated so a new one joins the surface automatically. */
 function nativeEntries(): string[] {

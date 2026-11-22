@@ -4,6 +4,7 @@ import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import UnoCSS from 'unocss/vite'
 import { createServer } from 'vite'
+import { PATH_ALIASES } from '../../../../.vitepress/config/aliases.ts'
 
 const require = createRequire(import.meta.url)
 const { chromium } = require('@playwright/test')
@@ -37,11 +38,10 @@ test('keyboard shortcut SSR and browser regression', { timeout: 120000 }, async 
     }],
     resolve: {
       dedupe: ['vue', 'vue-i18n'],
-      alias: {
-        '@theme': `${root}/.vitepress/theme`,
-        '~': `${root}/.vitepress`,
-        '@': root,
-      },
+      alias: Object.fromEntries(PATH_ALIASES.map(({ prefix, root: aliasRoot }) => [
+        prefix,
+        aliasRoot === '.' ? root : `${root}/${aliasRoot}`,
+      ])),
     },
     optimizeDeps: { entries: [fixture], include: ['vue', 'vue-i18n', 'cn', '@vueuse/core'] },
     server: { host: '127.0.0.1', port: 0 },

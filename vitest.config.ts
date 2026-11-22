@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
+import { PATH_ALIASES } from './.vitepress/config/aliases.ts'
 
 export default defineConfig({
   plugins: [vue(), VueI18nPlugin({
@@ -11,11 +12,10 @@ export default defineConfig({
     fullInstall: false,
   })],
   resolve: {
-    alias: {
-      '@theme': fileURLToPath(new URL('./.vitepress/theme', import.meta.url)),
-      '~': fileURLToPath(new URL('./.vitepress', import.meta.url)),
-      '@': fileURLToPath(new URL('.', import.meta.url)).replace(/[\\/]$/u, ''),
-    },
+    alias: Object.fromEntries(PATH_ALIASES.map(({ prefix, root }) => [
+      prefix,
+      fileURLToPath(new URL(root === '.' ? '.' : `./${root}`, import.meta.url)).replace(/[\\/]$/u, ''),
+    ])),
   },
   test: {
     include: ['tests/runtime/**/*.test.ts'],

@@ -1,5 +1,5 @@
 /**
- * Single source of truth for the `@`-style path aliases.
+ * Single source of truth for the path aliases.
  *
  * `vite.config.ts` expands these into `resolve.alias`, the ESLint rule
  * `local/native-import-path` and the MDC resolver resolve through `matchPathAlias`,
@@ -20,6 +20,7 @@ export const PATH_ALIASES: readonly PathAlias[] = [
   { prefix: '@theme', root: '.vitepress/theme' },
   { prefix: '~', root: '.vitepress' },
   { prefix: '@', root: '.' },
+  { prefix: '#', root: 'data' },
 ]
 
 /** Theme-internal imports also feed the MDC component registry. */
@@ -31,7 +32,7 @@ export interface PathAliasMatch {
   rest: string
 }
 
-/** Match a bare `@`-style specifier against the alias table. */
+/** Match a bare alias specifier against the alias table. */
 export function matchPathAlias(specifier: string): PathAliasMatch | null {
   for (const alias of PATH_ALIASES) {
     if (specifier === alias.prefix)

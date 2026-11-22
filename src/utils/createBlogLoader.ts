@@ -4,10 +4,10 @@ import { join } from 'node:path'
 import { createContentLoader } from 'vitepress'
 import { BLOG_POST_ORDER } from '../constants/blog.ts'
 import { DEFAULT_LOCALE } from '../constants/site.ts'
-import { shouldPublishPage } from '../data/pageVisibility.ts'
 import { parseAuthors } from '../forum/utils/frontmatter.ts'
 import { extractBlogExcerpt } from './blogExcerpt.ts'
 import { getGitFileInfo } from './git.ts'
+import { shouldPublishPage } from './pageVisibility.ts'
 
 const BLOG_LANGUAGE_PATH_REGEX = /^\/([^/]+)\/blog\/posts\//
 

@@ -1,6 +1,6 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { computed } from 'vue'
-import { data as forumDocumentLinks } from '@/src/data/forumDocumentLinks.data.ts'
+import { data as forumDocumentLinks } from '#/loader/forumDocumentLinks.data.ts'
 import { useForumRoute } from '@/src/forum/composables/state/useForumRoute.ts'
 import { useTopicUserRole } from '@/src/forum/composables/util/useTopicUserRole.ts'
 import { decodeForumText } from '@/src/forum/services/forumContentCodec.ts'

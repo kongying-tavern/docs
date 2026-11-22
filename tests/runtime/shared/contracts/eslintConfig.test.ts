@@ -39,11 +39,11 @@ test('unused variables report once and unused imports retain a separate error', 
 })
 
 test('data JSON checks correctness without changing generator formatting', async () => {
-  const valid = await messages('{"items":[1,2]}', 'src/data/eslint-probe.json')
+  const valid = await messages('{"items":[1,2]}', 'data/static/common/eslint-probe.json')
   assert.deepEqual(valid, [])
-  const duplicate = await messages('{"key":1,"key":2}', 'src/data/eslint-probe.json')
+  const duplicate = await messages('{"key":1,"key":2}', 'data/static/common/eslint-probe.json')
   assert.ok(duplicate.some(message => message.ruleId === 'jsonc/no-dupe-keys'))
-  const invalid = await messages('{"key":}', 'src/data/eslint-probe.json')
+  const invalid = await messages('{"key":}', 'data/static/common/eslint-probe.json')
   assert.ok(invalid.some(message => message.fatal))
 })
 
