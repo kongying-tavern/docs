@@ -24,10 +24,10 @@ dist
 
 # Generated files required as build inputs are checked in explicitly.
 *.gen.*
-!/src/data/blogMemberList.gen.json
-!/src/data/feedbackMemberList.gen.json
-!/src/data/teamMemberList.gen.json
-!/src/data/emojis.gen.json
+!/data/static/common/blog-member-list.gen.json
+!/data/static/common/feedback-member-list.gen.json
+!/data/static/common/team-member-list.gen.json
+!/data/static/common/emojis.gen.json
 
 # VitePress files
 .vitepress/cache/
