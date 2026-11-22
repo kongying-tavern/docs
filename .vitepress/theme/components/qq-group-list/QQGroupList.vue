@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import groups from '@/data/static/common/qq-groups.json'
+import groups from '#/static/common/qq-groups.json'
 
 function getGroupClass(status: string): string {
   return `qq-group qq-group--${status}`

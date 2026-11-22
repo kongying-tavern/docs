@@ -3,7 +3,7 @@ import { getLangPath } from '@theme/lib/locale.ts'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { data as allBlogPosts } from '@/data/loader/forumBlogPosts.data.ts'
+import { data as allBlogPosts } from '#/loader/forumBlogPosts.data.ts'
 import { DEFAULT_LOCALE } from '@/src/constants/site.ts'
 import ForumTime from '../ui/ForumTime.vue'
 

@@ -4,8 +4,8 @@ import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { mergeAttributes } from '@tiptap/core'
 import Mention from '@tiptap/extension-mention'
 import { PluginKey } from '@tiptap/pm/state'
-import feedbackRepoMember from '@/data/static/common/feedback-member-list.gen.json'
-import TeamMember from '@/data/static/common/team-member-list.gen.json'
+import feedbackRepoMember from '#/static/common/feedback-member-list.gen.json'
+import TeamMember from '#/static/common/team-member-list.gen.json'
 import { getForumMentionHref } from '@/src/forum/services/forumLinkPolicy.ts'
 
 const officialMember = [...new Map(

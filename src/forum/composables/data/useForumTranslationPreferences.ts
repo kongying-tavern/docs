@@ -1,7 +1,7 @@
 import { useLanguage } from '@theme/composables/useLanguage.ts'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
-import supportedLanguages from '@/data/static/common/supported-languages.json'
+import supportedLanguages from '#/static/common/supported-languages.json'
 import { matchLanguages } from '@/src/forum/composables/data/matchLanguages.ts'
 
 export const useForumTranslationPreferences = createGlobalState(() => {

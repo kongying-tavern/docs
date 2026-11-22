@@ -1,8 +1,8 @@
 import type ForumAPI from '@/src/forum/api/types.d.ts'
 import { useLocalStorage } from '@vueuse/core'
 import { computed, watchEffect } from 'vue'
-import feedbackMembers from '@/data/static/common/feedback-member-list.gen.json'
-import teamMembers from '@/data/static/common/team-member-list.gen.json'
+import feedbackMembers from '#/static/common/feedback-member-list.gen.json'
+import teamMembers from '#/static/common/team-member-list.gen.json'
 import { collectMentionUsers } from '@/src/forum/services/commentComposer.ts'
 
 export function useForumMentionCandidates(getParticipants: () => readonly ForumAPI.User[] = () => []) {
