@@ -5,7 +5,7 @@ import { FluidHoverList } from '@theme/components/ui/fluid-hover-list/index.ts'
 import { Time } from '@theme/components/ui/time/index.ts'
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { data as allPosts } from '#/loader/posts.data.ts'
+import { data as allPosts } from '#data/loader/posts.data.ts'
 import { DEFAULT_LOCALE } from '@/src/constants/site.ts'
 
 const { lang, frontmatter } = useData()
