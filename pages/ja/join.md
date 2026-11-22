@@ -134,4 +134,4 @@ wip: true
 
 :::
 
-<style scoped src="@/src/features/links/Join.css"></style>
+<style scoped src="../../src/features/links/Join.css"></style>

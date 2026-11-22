@@ -36,4 +36,4 @@ If you have proposals for a new idea or mechanic, join us to make it real.
 
 :::
 
-<style scoped src="@/src/features/links/Join.css"></style>
+<style scoped src="../../src/features/links/Join.css"></style>

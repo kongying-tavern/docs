@@ -161,4 +161,4 @@ import { useJoinRedirect } from '@/src/features/links/Join'
 useJoinRedirect()
 </script>
 
-<style scoped src="@/src/features/links/Join.css"></style>
+<style scoped src="../../src/features/links/Join.css"></style>
