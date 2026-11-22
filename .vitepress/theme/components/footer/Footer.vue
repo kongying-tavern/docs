@@ -4,7 +4,7 @@ import { useMediaQuery, useMounted } from '@vueuse/core'
 import { useData, withBase } from 'vitepress'
 import { useLayout } from 'vitepress/theme-without-fonts'
 import { computed, ref } from 'vue'
-import { useQRCode } from '../../composables/useQRCode.ts'
+import { useQRCode } from '../../hooks/useQRCode.ts'
 
 import { socialList } from './socialList.ts'
 

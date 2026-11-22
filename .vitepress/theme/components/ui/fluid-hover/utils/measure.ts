@@ -1,5 +1,5 @@
 import type { ItemRect } from './geometry.ts'
-import { CONTAINER_SELECTOR, DISABLED_SELECTOR, ITEM_SELECTOR } from './constants.ts'
+import { CONTAINER_SELECTOR, DISABLED_SELECTOR, ITEM_SELECTOR } from '../constants.ts'
 
 const GEOMETRY_PROPERTY = /^(?:transform|translate|scale|rotate|zoom|width|height)$/
 

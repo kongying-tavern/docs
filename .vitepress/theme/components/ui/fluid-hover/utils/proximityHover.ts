@@ -5,7 +5,7 @@ import {
   ITEM_SELECTOR,
   MEASUREMENT_ATTEMPTS,
   OWN_CLICK_SELECTOR,
-} from './constants.ts'
+} from '../constants.ts'
 import { pickNearest } from './geometry.ts'
 import { collectItems, hasLayoutBox, measureItemRect, onAncestorMotionEnd } from './measure.ts'
 import { getFluidHoverStore } from './store.ts'

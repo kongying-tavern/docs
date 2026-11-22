@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 import type { TranslationResult } from '@/src/forum/services/forumTranslation.ts'
-import { useLanguage } from '@theme/composables/useLanguage.ts'
+import { useLanguage } from '@theme/hooks/useLanguage.ts'
 import { cn } from '@theme/lib/tailwind.ts'
 import { useElementVisibility } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'

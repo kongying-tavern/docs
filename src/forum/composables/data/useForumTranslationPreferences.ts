@@ -1,4 +1,4 @@
-import { useLanguage } from '@theme/composables/useLanguage.ts'
+import { useLanguage } from '@theme/hooks/useLanguage.ts'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
 import supportedLanguages from '#data/static/common/supported-languages.json'
