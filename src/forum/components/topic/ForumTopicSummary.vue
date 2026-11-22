@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type ForumAPI from '@/src/forum/api/types.d.ts'
-import { useLanguage } from '@theme/composables/useLanguage.ts'
+import { useLanguage } from '@theme/hooks/useLanguage.ts'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { data as forumDocumentLinks } from '#data/loader/forumDocumentLinks.data.ts'

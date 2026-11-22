@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Switch } from '@theme/components/ui/switch/index.ts'
 import { ToggleGroup, ToggleGroupItem } from '@theme/components/ui/toggle-group/index.ts'
-import { useThemeTransition } from '@theme/composables/useThemeTransition.ts'
+import { useThemeTransition } from '@theme/hooks/useThemeTransition.ts'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSitePreferences } from '@/src/composables/useSitePreferences.ts'

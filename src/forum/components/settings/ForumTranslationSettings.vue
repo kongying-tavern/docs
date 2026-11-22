@@ -15,7 +15,7 @@ import {
   TagsInputItemDelete,
   TagsInputItemText,
 } from '@theme/components/ui/tags-input/index.ts'
-import { useLanguage } from '@theme/composables/useLanguage.ts'
+import { useLanguage } from '@theme/hooks/useLanguage.ts'
 import {
   ListboxContent,
   ListboxFilter,
