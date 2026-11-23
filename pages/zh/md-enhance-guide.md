@@ -45,6 +45,17 @@ head:
 - 省略竖线时，日期与标题写在同一段，`YYYY-MM-DD` 会被识别为日期，如 `::: timeline 2023-05-24`；其他内容则作为标题。
 - 整组条目都没有日期时，左侧日期列收起，圆点左移。
 
+#### 圆点样式
+
+| 类名       | 描述                               |
+| ---------- | ---------------------------------- |
+| `border-*` | 圆点边框颜色，如 `border-red-500`  |
+| `i-*`      | 圆点中心的图标，如 `i-lucide-flag` |
+
+- 多个样式用逗号分隔。
+- `border-*` 来自 [UnoCSS 的 Wind4 预设](https://unocss.dev/presets/wind4)，颜色用其默认调色板。
+- `i-*` 来自 [UnoCSS 图标预设](https://unocss.dev/presets/icons)，类名写作 `i-<图标集>-<图标名>`。站点已安装 lucide、ph、ic、logos、simple-icons 图标集，可在 [Iconify](https://icon-sets.iconify.design/) 查看。
+
 #### 示例
 
 :::: demo
