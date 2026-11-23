@@ -39,6 +39,7 @@ const Post = defineAsyncComponent(() => import('./layouts/Post.vue'))
 const Settings = defineAsyncComponent(() => import('./layouts/Settings.vue'))
 const ForumLabelAdminPage = defineAsyncComponent(() => import('@/src/forum/components/settings/ForumLabelAdminPage.vue'))
 const QA = defineAsyncComponent(() => import('./markdown-ext/qa/QA.vue'))
+const QaGroup = defineAsyncComponent(() => import('./markdown-ext/qa/QaGroup.vue'))
 const QQGroupList = defineAsyncComponent(() => import('./components/qq-group-list/QQGroupList.vue'))
 const Spoiler = defineAsyncComponent(() => import('./markdown-ext/spoiler/Spoiler.vue'))
 const SitemapPage = defineAsyncComponent(() => import('./components/sitemap-page/SitemapPage.vue'))
@@ -84,6 +85,8 @@ export default {
     // Comark kebab-cases the MDC tag `::QA` to `<qa>`, and Vue resolves that to
     // the registered name `Qa`; a `QA` registration would never match.
     app.component('Qa', QA)
+    // Likewise `:::QAGroup` arrives as `<qa-group>`, which resolves to `QaGroup`.
+    app.component('QaGroup', QaGroup)
     app.component('QQGroupList', QQGroupList)
     app.component('Spoiler', Spoiler)
     app.component('SitemapPage', SitemapPage)

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, useId } from 'vue'
+import { ref, toRef, useId } from 'vue'
+
 import { useI18n } from 'vue-i18n'
+import { useQaGroupControl } from './useQaGroupControl.ts'
 
 import './qa.css'
 
@@ -28,11 +30,20 @@ const questionId = useId()
 const toggleTextId = useId()
 const toggleLabel = `${questionId} ${toggleTextId}`
 
-function handleToggle() {
+// The only way the state changes, for the toggle and for the group alike; an
+// answer that has no toggle refuses both, so the two can never disagree.
+function setOpened(opened: boolean) {
   if (!props.collapsible)
     return
-  isOpened.value = !isOpened.value
+  isOpened.value = opened
 }
+
+function handleToggle() {
+  setOpened(!isOpened.value)
+}
+
+// A QA outside a group joins nothing and simply stays on its own.
+useQaGroupControl(toRef(props, 'collapsible'), setOpened)
 </script>
 
 <template>

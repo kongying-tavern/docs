@@ -1,0 +1,41 @@
+.qa-group {
+  margin: 1rem 0;
+}
+
+.qa-group-header {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 0 0.3rem 0.45rem;
+}
+
+.qa-group-action {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--vp-c-brand);
+  font: inherit;
+  white-space: nowrap;
+}
+
+.qa-group-action:hover {
+  text-decoration: underline;
+}
+
+/* Same reasoning as the per-QA toggle: the site-wide cursor preference leaves
+   a bare button looking inert, and these are meant to read as actions. */
+.qa-group .qa-group-action {
+  cursor: pointer !important;
+}
+
+.qa-group-action:focus-visible {
+  border-radius: 0.3rem;
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+/* The first QA sits straight under the header, so it takes the divider that
+   `.qa + .qa` draws only between neighbours. */
+.qa-group-body > .qa:first-child {
+  border-top: 1px solid var(--vp-c-brand);
+}
