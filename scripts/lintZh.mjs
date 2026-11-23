@@ -17,11 +17,17 @@ import { createLintZhOptions } from './lintZhOptions.mjs'
 const fix = process.argv.includes('--fix')
 const options = createLintZhOptions()
 
+// MDC 行内组件的起始冒号是语法，不是需要改写的中文标点。交给 zhlint 之前换成
+// 全角冒号，跑完再还原，行内组件因此不再需要 `<!-- zhlint ignore: :Name -->`。
+// 两者等长，校验位置可以直接对应源文件。
+const MDC_INLINE_COLON = /:(?=[a-z][\w-]*\[)/gi
+const MDC_INLINE_COLON_MASKED = /：(?=[a-z][\w-]*\[)/gi
+
 const resultList = globSync('pages/zh/**/*.md').map((file) => {
   console.log(`[start] ${file}`)
   const origin = readFileSync(file, { encoding: 'utf8' })
-  const { result, validations } = run(origin, options)
-  return { file, origin, result, validations }
+  const { result, validations } = run(origin.replace(MDC_INLINE_COLON, '：'), options)
+  return { file, origin, result: result.replace(MDC_INLINE_COLON_MASKED, ':'), validations }
 })
 
 const exitCode = report(resultList)
