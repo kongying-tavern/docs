@@ -3,7 +3,6 @@
  * which cannot evaluate the `.vue` renderers that the per-directory barrels also
  * export, so every plugin is re-exported from its implementation file.
  */
-export { default as MarkdownExtCard } from './card/card.ts'
 export { default as MarkdownExtColorPreview } from './color-preview/colorPreview.ts'
 export { applyComarkPatches } from './comark/comarkPatches.ts'
 export { default as MarkdownExtCustomColor } from './custom-color/customColor.ts'

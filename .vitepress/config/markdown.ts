@@ -10,7 +10,6 @@ import { sub } from '@mdit/plugin-sub'
 import { sup } from '@mdit/plugin-sup'
 import {
   applyComarkPatches,
-  MarkdownExtCard,
   MarkdownExtColorPreview,
   MarkdownExtCustomColor,
   MarkdownExtDemo,
@@ -43,7 +42,6 @@ export const markdownConfig: MarkdownOptions = {
   },
   config(md) {
     md.use(MarkdownExtColorPreview)
-    md.use(MarkdownExtCard)
     md.use(MarkdownExtDemo)
     md.use(MarkdownExtQA)
     md.use(sub)

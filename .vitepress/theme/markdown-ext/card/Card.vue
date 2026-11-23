@@ -279,32 +279,6 @@ const descText = computed(() => {
   overflow-wrap: anywhere;
 }
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: stretch;
-  align-items: stretch;
-  justify-content: center;
-
-  .card {
-    flex-basis: calc(50% - 3rem);
-    max-width: unset;
-    margin: 0.5rem;
-
-    @media (--site-mobile) {
-      flex-basis: 100%;
-    }
-
-    @media (max-width: 719px) {
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 419px) {
-      font-size: 0.9rem;
-    }
-  }
-}
-
 .card-theme-medium {
   width: auto;
   margin: 1rem 0.5rem;
