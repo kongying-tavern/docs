@@ -96,9 +96,15 @@ MDC 形式，属性写法见 [MDC 的 YAML 属性块](#mdc-props-yaml)：
 ::: warning 说明
 以下渠道的 logo 可通过链接自动识别，无需手动填写：
 
-<!-- zhlint ignore: [B 站](https://www.bilibili.com/) [百度](https://www.baidu.com/) [QQ](https://www.qq.com/) [YouTube](https://www.youtube.com/) [X](https://x.com/) [Discord](https://discord.com/) [Reddit](https://www.reddit.com/) [兔小巢](https://support.qq.com/products/321980/) [维系天理](https://www.weixitianli.com/) -->
-
-[B 站](https://www.bilibili.com/) [百度](https://www.baidu.com/) [QQ](https://www.qq.com/) [YouTube](https://www.youtube.com/) [X](https://x.com/) [Discord](https://discord.com/) [Reddit](https://www.reddit.com/) [兔小巢](https://support.qq.com/products/321980/) [维系天理](https://www.weixitianli.com/)
+<span class="i-custom-bilibili inline-block align-middle"></span> [B 站](https://www.bilibili.com/)
+<span class="inline-block w-3"></span> <span class="i-custom-baidu inline-block align-middle"></span> [百度](https://www.baidu.com/)
+<span class="inline-block w-3"></span> <span class="i-custom-qq inline-block align-middle"></span> [QQ](https://www.qq.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-youtube-icon inline-block align-middle"></span> [YouTube](https://www.youtube.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-twitter inline-block align-middle"></span> [X](https://x.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-discord-icon inline-block align-middle"></span> [Discord](https://discord.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-reddit-icon inline-block align-middle"></span> [Reddit](https://www.reddit.com/)
+<span class="inline-block w-3"></span> <span class="i-custom-txc inline-block align-middle"></span> [兔小巢](https://support.qq.com/products/321980/)
+<span class="inline-block w-3"></span> <span class="i-custom-wxtl inline-block align-middle"></span> [维系天理](https://www.weixitianli.com/)
 
 :::
 
