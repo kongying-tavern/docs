@@ -103,7 +103,7 @@ MDC 形式，属性写法见 [MDC 的 YAML 属性块](#mdc-props-yaml)：
 <span class="inline-block w-3"></span> <span class="i-logos-twitter inline-block align-middle"></span> [X](https://x.com/)
 <span class="inline-block w-3"></span> <span class="i-logos-discord-icon inline-block align-middle"></span> [Discord](https://discord.com/)
 <span class="inline-block w-3"></span> <span class="i-logos-reddit-icon inline-block align-middle"></span> [Reddit](https://www.reddit.com/)
-<span class="inline-block w-3"></span> <span class="i-custom-txc inline-block align-middle"></span> [兔小巢](https://support.qq.com/products/321980/)
+<span class="inline-block w-3"></span> <span class="i-custom-txc inline-block align-middle"></span> [兔小巢](https://txc.qq.com/)
 <span class="inline-block w-3"></span> <span class="i-custom-wxtl inline-block align-middle"></span> [维系天理](https://www.weixitianli.com/)
 
 :::
