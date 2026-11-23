@@ -45,6 +45,28 @@ A
   assert.match(yamlHtml, /<qa :collapsible="false">/)
 })
 
+test('qa block binds collapsed from brace props and YAML props', async () => {
+  const markdown = await renderer()
+  const braceHtml = await markdown.renderAsync(`::QA{collapsed=true}
+#question
+Q
+#answer
+A
+::`)
+  assert.match(braceHtml, /<qa :collapsed="true">/)
+
+  const yamlHtml = await markdown.renderAsync(`::QA
+---
+collapsed: true
+---
+#question
+Q
+#answer
+A
+::`)
+  assert.match(yamlHtml, /<qa :collapsed="true">/)
+})
+
 test('qa block keeps following blocks and emits valid slots', async () => {
   const markdown = await renderer()
   const html = await markdown.renderAsync(`::QA

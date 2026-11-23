@@ -6,15 +6,18 @@ import './qa.css'
 
 interface QAProps {
   collapsible?: boolean
+  collapsed?: boolean
 }
 
 const props = withDefaults(defineProps<QAProps>(), {
   collapsible: true,
+  collapsed: false,
 })
 
 const { t } = useI18n({ useScope: 'global' })
 
-const isOpened = ref<boolean>(!props.collapsible)
+// An answer that cannot be collapsed stays open, whatever `collapsed` says.
+const isOpened = ref<boolean>(!props.collapsible || !props.collapsed)
 
 function handleToggle() {
   if (!props.collapsible)
