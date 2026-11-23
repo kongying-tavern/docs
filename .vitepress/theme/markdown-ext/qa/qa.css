@@ -12,21 +12,6 @@
   padding: 0 0.3rem;
 }
 
-.qa.qa-collapsible .qa-question {
-  cursor: pointer;
-  pointer-events: all;
-}
-
-.qa.qa-collapsible .qa-question:focus-visible {
-  border-radius: 0.3rem;
-  outline: 2px solid var(--vp-c-brand-1);
-  outline-offset: 2px;
-}
-
-.qa:not(.qa-collapsible) .qa-question {
-  pointer-events: none;
-}
-
 .qa-answer {
   margin: 0.6rem 0;
   padding: 0 0.3rem;
@@ -74,15 +59,24 @@
 
 .qa-toggle {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0;
+  border: none;
+  background: none;
   color: var(--vp-c-brand);
+  font: inherit;
+  white-space: nowrap;
 }
 
-.qa-toggle > span {
-  display: inline-block;
+.qa-toggle:focus-visible {
+  border-radius: 0.3rem;
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
 }
 
 .qa-toggle > .icon {
   width: 1.3rem;
   height: 1.3rem;
-  vertical-align: sub;
 }
