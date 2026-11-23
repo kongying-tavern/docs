@@ -1,3 +1,4 @@
+:::QAGroup
 ::QA
 ---
 collapsible: true
@@ -18,3 +19,11 @@ Answer 1
 
 Answer 1
 ::
+
+::QA{collapsed=true}
+#question
+Question 2
+#answer
+Answer 2
+::
+:::
