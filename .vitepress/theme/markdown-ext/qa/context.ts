@@ -1,11 +1,13 @@
-import type { InjectionKey } from 'vue'
+import type { InjectionKey, Ref } from 'vue'
 
 /**
- * A QA as its group sees it: whether it may be switched, and how to switch it.
- * `collapsible` is read at call time so a prop change is honoured.
+ * A QA as its group sees it: whether it may be switched, whether it is open,
+ * and how to switch it. Both flags are read at call time, so a prop change or
+ * a single toggle is honoured by the group.
  */
 export interface QaControl {
   readonly collapsible: boolean
+  readonly isOpened: Ref<boolean>
   setOpened: (opened: boolean) => void
 }
 

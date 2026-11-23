@@ -9,7 +9,7 @@ import './qa-group.css'
 
 const { t } = useI18n({ useScope: 'global' })
 
-const { register, unregister, setAll } = useQaGroup()
+const { register, unregister, expandAll, collapseAll, canExpand, canCollapse } = useQaGroup()
 
 provide(qaGroupKey, { register, unregister })
 </script>
@@ -17,10 +17,20 @@ provide(qaGroupKey, { register, unregister })
 <template>
   <div class="qa-group">
     <div class="qa-group-header">
-      <button type="button" class="qa-group-action" @click="setAll(true)">
+      <button
+        type="button"
+        class="qa-group-action"
+        :disabled="!canExpand"
+        @click="expandAll"
+      >
         {{ t('qa.button.expandAll') }}
       </button>
-      <button type="button" class="qa-group-action" @click="setAll(false)">
+      <button
+        type="button"
+        class="qa-group-action"
+        :disabled="!canCollapse"
+        @click="collapseAll"
+      >
         {{ t('qa.button.collapseAll') }}
       </button>
     </div>

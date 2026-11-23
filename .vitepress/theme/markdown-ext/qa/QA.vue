@@ -43,7 +43,11 @@ function handleToggle() {
 }
 
 // A QA outside a group joins nothing and simply stays on its own.
-useQaGroupControl(toRef(props, 'collapsible'), setOpened)
+useQaGroupControl({
+  collapsible: toRef(props, 'collapsible'),
+  isOpened,
+  setOpened,
+})
 </script>
 
 <template>

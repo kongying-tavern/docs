@@ -18,7 +18,7 @@
   white-space: nowrap;
 }
 
-.qa-group-action:hover {
+.qa-group-action:hover:not(:disabled) {
   text-decoration: underline;
 }
 
@@ -26,6 +26,12 @@
    a bare button looking inert, and these are meant to read as actions. */
 .qa-group .qa-group-action {
   cursor: pointer !important;
+}
+
+/* A batch that would change nothing says so instead of looking clickable. */
+.qa-group .qa-group-action:disabled {
+  color: var(--vp-c-text-3);
+  cursor: default !important;
 }
 
 .qa-group-action:focus-visible {
