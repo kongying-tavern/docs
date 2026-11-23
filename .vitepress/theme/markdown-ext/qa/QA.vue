@@ -34,7 +34,15 @@ function handleToggle() {
       'qa-opened': isOpened,
     }"
   >
-    <div class="qa-wrapper qa-question" @click="handleToggle">
+    <div
+      class="qa-wrapper qa-question"
+      :role="collapsible ? 'button' : undefined"
+      :tabindex="collapsible ? 0 : undefined"
+      :aria-expanded="collapsible ? isOpened : undefined"
+      @click="handleToggle"
+      @keydown.enter.prevent="handleToggle"
+      @keydown.space.prevent="handleToggle"
+    >
       <div class="qa-mark qa-mark-question">
         Q
       </div>

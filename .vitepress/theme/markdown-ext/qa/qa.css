@@ -17,6 +17,12 @@
   pointer-events: all;
 }
 
+.qa.qa-collapsible .qa-question:focus-visible {
+  border-radius: 0.3rem;
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
 .qa:not(.qa-collapsible) .qa-question {
   pointer-events: none;
 }
