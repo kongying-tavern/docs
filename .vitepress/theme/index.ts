@@ -81,7 +81,9 @@ export default {
     app.component('Kbd', Kbd)
     app.component('KbdGroup', KbdGroup)
     app.component('KeyboardShortcut', KeyboardShortcut)
-    app.component('QA', QA)
+    // Comark kebab-cases the MDC tag `::QA` to `<qa>`, and Vue resolves that to
+    // the registered name `Qa`; a `QA` registration would never match.
+    app.component('Qa', QA)
     app.component('QQGroupList', QQGroupList)
     app.component('Spoiler', Spoiler)
     app.component('SitemapPage', SitemapPage)
