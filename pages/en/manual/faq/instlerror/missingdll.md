@@ -8,8 +8,14 @@ description: Please use the portable version.
 
 Please use the portable version.
 
-```card
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
+::Card
+---
 title: Download Page
 link: ../../../download-client
 theme: medium
-```
+---
+::
+
+<!-- markdownlint-enable MD034 -->

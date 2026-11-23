@@ -124,13 +124,19 @@ The **Position Tracker** feature cannot overlay the game window, you can use the
 
 Showcase：
 
-```card
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
+::Card
+---
 layout: doc
 title: The Best Underground Map (Kongying Tavern x Teyvat Map Institute)
 
 link: https://www.reddit.com/r/Genshin_Impact/comments/12znlyd/the_best_underground_map_kongying_tavern_x_teyvat/
 theme: medium
-```
+---
+::
+
+<!-- markdownlint-enable MD034 -->
 
 ## 2. Cannot download **Position Tracker** module, the download window flashes or the download speed is 0.00 kb/s {#issue2}
 

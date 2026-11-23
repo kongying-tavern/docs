@@ -16,29 +16,39 @@ pageClass: download-client
 
 ::: details クライアントの使い方
 
-```card
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
+::Card
+---
 title: Windows クライアントマニュアル
 logo: self
 link: /ja/manual/client/
 theme: medium
-```
+---
+::
 
-```card
+::Card
+---
 title: クライアントの基本的な使い方チュートリアル
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
-```
+---
+::
 
 :::
 
 ## Web 版
 
-```card
+::Card
+---
 title: Web版マップ V3
 logo: self
 link: https://v3.yuanshen.site
 theme: medium
-```
+---
+::
+
+<!-- markdownlint-enable MD034 -->
 
 <script setup lang="ts">
 import { clientLink, useDownloadRedirect } from '@/src/features/links/Download.ts'

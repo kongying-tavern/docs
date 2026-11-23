@@ -14,19 +14,27 @@ If you are interested in aiding our development, consider [Join Us](./join)
 
 ## Map Client User Manual
 
-```card
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
+::Card
+---
 title: Map Client User Manual
 link: /en/manual/client/
 theme: medium
-```
+---
+::
 
 ## Web Version
 
-```card
+::Card
+---
 title: Web Version Portal
 link: https://yuanshen.site
 theme: medium
-```
+---
+::
+
+<!-- markdownlint-enable MD034 -->
 
 <script setup lang="ts">
 import { clientLink, useDownloadRedirect } from '@/src/features/links/Download'

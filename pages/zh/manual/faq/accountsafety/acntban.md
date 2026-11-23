@@ -10,17 +10,25 @@ description: 我们非常尊重有关规定绝不会做读取游戏内存数据�
 
 ---
 
-```card
+<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+
+::Card
+---
 title: 地图网页版入口
 link: https://yuanshen.site
 theme: medium
-```
+---
+::
 
-```card
+::Card
+---
 title: 地图客户端官方下载渠道
 link: /download-client
 theme: medium
-```
+---
+::
+
+<!-- markdownlint-enable MD034 -->
 
 ---
 
