@@ -37,7 +37,8 @@
   width: 2rem;
   height: 2rem;
   line-height: 2rem;
-  background-color: var(--vp-c-brand);
+  /* White on the brand green lands at 2.4:1, so take the dark end of the ramp. */
+  background-color: var(--vp-c-indigo-3);
   text-align: center;
   font-size: 1.4rem;
   border-radius: 0.3rem;
