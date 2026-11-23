@@ -459,16 +459,16 @@ The HTML specificationis maintained by the W3C.
 
 ## MDC {#mdc}
 
-MDC 是一套兼容 Markdown 的 Vue 组件书写语法。
+MDC 是一套兼容 Markdown 的 Vue 组件书写语法。组件名注意大小写，请按各组件的文档写法书写。
 
 ### 行内组件 {#mdc-inline}
 
 行内组件嵌在正文里，写法是 `:组件名[内容]`。方括号内的内容会按 Markdown 渲染，可以继续使用加粗、行内代码等标记。
 
-<!-- zhlint ignore: :spoiler -->
+<!-- zhlint ignore: :Spoiler -->
 
 :::: demo
-:spoiler[刮开这里查看隐藏内容]
+:Spoiler[刮开这里查看隐藏内容]
 ::::
 
 ### 块组件 {#mdc-block}
@@ -584,7 +584,7 @@ items:
   - 行内组件可以放在段落、列表、表格等 Markdown 内容中。
   - 块组件内部可以继续写行内组件、块组件和多段 Markdown。
 - **花括号属性**：
-  - 行内组件写在 `[内容]` 后，例如 `:spoiler[文本]{width=300}`。
+  - 行内组件写在 `[内容]` 后，例如 `:Spoiler[文本]{width=300}`。
   - 块组件写在起始行，例如 `::Card{.mt-4}`。
   - 花括号属性与 Attrs 写法相似，但用途不同：前者是 MDC 的组件属性语法，后者用于给 Markdown 元素添加属性。
 - **数量限制**：一个组件最多写一组花括号属性和一块 YAML 属性块。
@@ -592,12 +592,12 @@ items:
 
 ### 示例 {#mdc-example}
 
-<!-- zhlint ignore: :spoiler -->
+<!-- zhlint ignore: :Spoiler -->
 
 :::: demo
-:spoiler[默认刮刮卡]
+:Spoiler[默认刮刮卡]
 
-:spoiler[自定义宽度]{:width=200}
+:Spoiler[自定义宽度]{:width=200}
 ::::
 
 :::: demo
