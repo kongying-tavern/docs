@@ -49,6 +49,9 @@ jobs:
       - name: Run eslint
         run: pnpm lint:eslint:fix
 
+      - name: Run mdclint fix
+        run: pnpm lint:md:fix
+
       - name: Run Zhlint fix
         run: pnpm lint:zh:fix
 
