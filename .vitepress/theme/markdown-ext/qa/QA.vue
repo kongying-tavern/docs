@@ -22,6 +22,12 @@ const isOpened = ref<boolean>(!props.collapsible || !props.collapsed)
 // Links the toggle button to the answer it hides, so screen readers announce the pair.
 const answerId = useId()
 
+// Naming the button after its own question keeps a page of QAs apart when a
+// screen reader lists the buttons; the visible label stays part of the name.
+const questionId = useId()
+const toggleTextId = useId()
+const toggleLabel = `${questionId} ${toggleTextId}`
+
 function handleToggle() {
   if (!props.collapsible)
     return
@@ -41,7 +47,7 @@ function handleToggle() {
       <div class="qa-mark qa-mark-question">
         Q
       </div>
-      <div class="qa-content">
+      <div :id="questionId" class="qa-content">
         <slot name="question" />
       </div>
       <button
@@ -50,13 +56,14 @@ function handleToggle() {
         class="qa-toggle"
         :aria-expanded="isOpened"
         :aria-controls="answerId"
+        :aria-labelledby="toggleLabel"
         @click="handleToggle"
       >
         <span
           class="icon"
           :class="[isOpened ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down']"
         />
-        <span class="text">
+        <span :id="toggleTextId" class="text">
           {{ isOpened ? t('qa.button.collapse') : t('qa.button.expand') }}
         </span>
       </button>
