@@ -361,7 +361,7 @@ Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
 
 ### 变量声明 {#variable}
 
-变量声明可将 Markdown 声明为局部变量，并在后续 Markdown 中嵌入使用。
+变量声明用于在 Markdown 内定义局部变量，并在后续内容中嵌入使用。
 
 #### 语法
 
