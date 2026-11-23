@@ -41,7 +41,7 @@ function handleToggle() {
       <div v-if="collapsible" class="qa-toggle">
         <span
           class="icon"
-          :class="[isOpened ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down']"
+          :class="[isOpened ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down']"
         />
         <span class="text">
           {{ isOpened ? t('qa.button.collapse') : t('qa.button.expand') }}
