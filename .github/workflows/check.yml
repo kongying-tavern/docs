@@ -91,7 +91,7 @@ jobs:
       - name: ESLint
         run: pnpm lint:eslint
 
-      - name: Markdownlint
+      - name: Markdown lint (mdclint)
         run: pnpm lint:md
 
       - name: Typecheck

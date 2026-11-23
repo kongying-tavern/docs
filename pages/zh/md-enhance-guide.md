@@ -67,7 +67,7 @@ head:
 
 #### 语法
 
-MDC 形式(YAML props 使用 `---` 包裹)：
+MDC 形式，属性写法见 [MDC 的 YAML 属性块](#mdc-props-yaml)：
 
 ```markdown
 ::Card
@@ -76,13 +76,10 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 <属性名2>: <属性值2>
 ...
 ---
-
 ::
 ```
 
-> YAML props 也支持用 ` ```yaml [props] ` 包裹，效果与 `---` 相同。
-
-#### 卡片属性
+#### 组件属性
 
 | 属性名      | 描述                                                    | 默认值 |       类型        |
 | ----------- | :------------------------------------------------------ | :----: | :---------------: |
@@ -96,73 +93,160 @@ MDC 形式(YAML props 使用 `---` 包裹)：
 | hoverShadow | 是否启用卡片 hover 时阴影效果，默认不启用               | false  |     `Boolean`     |
 | shadow      | 是否启用卡片阴影效果，默认不启用                        | false  |     `Boolean`     |
 
-> B 站，百度，QQ，米游社，Youtube，X，Reddit，反馈平台的链接可以自动识别，无需手动填写 logo
+::: warning 说明
+以下渠道的 logo 可通过链接自动识别，无需手动填写：
+
+<span class="i-custom-bilibili inline-block align-middle"></span> [B 站](https://www.bilibili.com/)
+<span class="inline-block w-3"></span> <span class="i-custom-baidu inline-block align-middle"></span> [百度](https://www.baidu.com/)
+<span class="inline-block w-3"></span> <span class="i-custom-qq inline-block align-middle"></span> [QQ](https://www.qq.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-youtube-icon inline-block align-middle"></span> [YouTube](https://www.youtube.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-twitter inline-block align-middle"></span> [X](https://x.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-discord-icon inline-block align-middle"></span> [Discord](https://discord.com/)
+<span class="inline-block w-3"></span> <span class="i-logos-reddit-icon inline-block align-middle"></span> [Reddit](https://www.reddit.com/)
+<span class="inline-block w-3"></span> <span class="i-custom-txc inline-block align-middle"></span> [兔小巢](https://txc.qq.com/)
+<span class="inline-block w-3"></span> <span class="i-custom-wxtl inline-block align-middle"></span> [维系天理](https://www.weixitianli.com/)
+
+:::
 
 #### 示例
 
 > 基础主题
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
-
 ::: demo
 ::Card
 ---
-
 logo: self
 title: That normal theme card
 desc: This is description
 cover: https://upload-bbs.miyoushe.com/upload/2024/02/21/292762008/86d3c06e1a1adf7ef432cf838f7abb8c_7693471731342377565.png
 ---
-
 ::
 ::::
 
 :::: demo
-
 ::Card
 ---
-
 logo: self
 title: That normal theme card
 desc: No cover
 hoverShadow: true
 ---
-
 ::
 ::::
 
 > 中等主题
 
 :::: demo
-
 ::Card
 ---
-
 title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
 shadow: true
 ---
-
 ::
 ::::
 
 :::: demo
-
 ::Card
 ---
-
 title: 网页版地图
 link: https://yuanshen.site/
 logo: self
 desc: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 theme: medium
 ---
-
 ::
 ::::
 
-<!-- markdownlint-enable MD034 -->
+### QA 问答 {#qa}
+
+#### 语法
+
+MDC 形式，标签写作大写 `QA`。问题写进 `#question` 插槽，回答写进 `#answer` 插槽，没写插槽标记的内容不会显示，插槽写法见 [MDC 的插槽](#mdc-slots)：
+
+```markdown
+::QA
+#question
+<问题>
+#answer
+<回答>
+::
+```
+
+#### 组件属性
+
+| 属性名      | 描述               | 默认值 |   类型    |
+| ----------- | ------------------ | :----: | :-------: |
+| collapsible | 是否显示折叠按钮   |  true  | `Boolean` |
+| collapsed   | 初始是否已折叠回答 | false  | `Boolean` |
+
+#### 问答组 {#qa-group}
+
+把多条问答放进 `QAGroup`，可以一次展开或折叠组内所有带折叠按钮的问答，嵌套写法见[组件嵌套](#mdc-nesting)：
+
+```markdown
+:::QAGroup
+::QA
+#question
+<问题>
+#answer
+<回答>
+::
+:::
+```
+
+#### 示例
+
+:::: demo
+:::QAGroup
+::QA
+#question
+问答块的内容支持 Markdown 吗？
+
+#answer
+支持，两个插槽都会按 Markdown 渲染，列表和代码块也生效。
+::
+
+::QA{collapsed=true}
+#question
+问答可以默认收起吗？
+
+#answer
+可以，写 `collapsed=true` 后回答初始就是折叠的。
+::
+
+::QA{collapsible=false}
+#question
+可以不要折叠按钮吗？
+
+#answer
+可以，设置 `collapsible=false` 后回答一直展示。
+::
+
+::QA
+---
+collapsible: false
+---
+#question
+多个问答块之间会自动分隔吗？
+
+#answer
+会，连续书写时相邻两条之间只隔着一条分隔线。
+::
+
+::QA
+---
+collapsed: true
+---
+#question
+可以只写问题不写回答吗？
+
+#answer
+可以，没写 `#answer` 时回答区为空。
+::
+:::
+::::
 
 ## Markdown 语法扩展 {#section-markdown-syntax}
 
@@ -277,7 +361,7 @@ Windows：[[Mod+K]]{platform=windows}；macOS：[[Mod+K]]{platform=mac}。
 
 ### 变量声明 {#variable}
 
-变量声明可将 Markdown 声明为局部变量，并在后续 Markdown 中嵌入使用。
+变量声明用于在 Markdown 内定义局部变量，并在后续内容中嵌入使用。
 
 #### 语法
 
@@ -469,94 +553,187 @@ The HTML specificationis maintained by the W3C.
 
 ## MDC {#mdc}
 
-MDC 用于在 Markdown 中声明 Vue 组件、传递属性和编写插槽内容。
+MDC 是一套兼容 Markdown 的 Vue 组件书写语法。组件名注意大小写，请按各组件的文档写法书写。
 
-### Inline Component Demo
+### 行内组件 {#mdc-inline}
 
-<!-- zhlint ignore: :spoiler -->
+行内组件嵌在正文里，写法是 `:组件名[内容]`。方括号内的内容会按 Markdown 渲染，可以继续使用加粗、行内代码等标记。
 
 :::: demo
-:spoiler[刮开这里查看隐藏内容]{:width=300 .mt-4}
+:Spoiler[刮开这里查看隐藏内容]
 ::::
 
-### Block Component Demo
+### 块组件 {#mdc-block}
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
+块组件独占段落，写法是 `::组件名` 开始、单独一行 `::` 结束。两行之间的内容会按 Markdown 渲染，可以写多段、列表等。
 
 :::: demo
-::link-grid{.mt-4}
----
-items:
-
-- icon: i-custom-bilibili
-  name: Bilibili
-  link: https://bilibili.com
-  secondary: 小电视
-- icon: i-custom-gitee
-  name: Gitee
-  link: https://gitee.com
-  secondary: 码云
-
----
-
+::Spoiler
+刮开这里查看隐藏内容
 ::
 ::::
 
-### Slot Demo
+### 属性 {#mdc-props}
 
-<!-- markdownlint-enable MD034 -->
-<!-- markdownlint-disable MD018 -- MDC slot markers require no space after #. -->
+#### 花括号属性 {#mdc-props-brace}
+
+花括号属性用于给组件传属性。行内组件和块组件的写法不同：行内组件写在 `[内容]` 后，块组件写在起始行，下面分别列出。
+
+行内组件：
+
+| 语法            | 说明                             | 示例                       |
+| --------------- | -------------------------------- | -------------------------- |
+| `{key=value}`   | 传入字符串属性                   | `{name=foo}`               |
+| `{key="value"}` | 传入字符串，避免歧义时用引号     | `{name="foo bar"}`         |
+| `{.class-name}` | 添加 class，可写多个             | `{.vp-link}`               |
+| `{#id-name}`    | 设置元素 ID                      | `{#main}`                  |
+| `{flag}`        | 作为静态属性传入字符串 `true`    | `{disabled}`               |
+| `{:key=value}`  | Vue 绑定，值按表达式解析         | `{:width=300}`             |
+| `{:key='expr'}` | Vue 绑定，值含引号时用单引号包裹 | `{:data='{"key": "val"}'}` |
+| `{:key}`        | Vue 绑定布尔值 `true`            | `{:disabled}`              |
+
+块组件：
+
+| 语法            | 说明                                                   | 示例                        |
+| --------------- | ------------------------------------------------------ | --------------------------- |
+| `{key=value}`   | 字符串按普通属性传入；数字、布尔、数组、对象按表达式解析 | `{name=foo}`、`{width=300}` |
+| `{key="value"}` | 传入字符串，避免歧义时用引号                           | `{name="foo bar"}`          |
+| `{.class-name}` | 添加 class，可写多个                                   | `{.vp-link}`                |
+| `{#id-name}`    | 设置元素 ID                                            | `{#main}`                   |
+| `{flag}`        | 传入布尔值 `true`                                      | `{disabled}`                |
+
+多个属性写在同一个 `{...}` 中，用空格分隔，例如 `{:width=300 .text-red}`。
+
+#### YAML 属性块 {#mdc-props-yaml}
+
+YAML 属性块只用于块组件，以独立一行 `---` 开始和结束：
+
+```markdown
+::Card
+---
+title: 卡片标题
+count: 3
+hoverShadow: true
+items:
+  - name: A
+    link: https://a.com
+---
+::
+```
+
+也可用 `yaml` 代码块包裹，`[props]` 标记不可省略：
+
+````markdown
+::Card
+```yaml [props]
+title: 卡片标题
+count: 3
+hoverShadow: true
+items:
+  - name: A
+    link: https://a.com
+```
+::
+````
+
+### 插槽 {#mdc-slots}
+
+插槽用于向组件传入 Markdown 内容。
+
+- 用独立一行的 `#名称` 定义插槽，`#` 后不留空格；其后的内容直到下一个插槽标记或组件结束标记都属于该插槽。
+- 未标记的内容进入默认插槽，默认插槽名是 `default`；也可以显式写 `#default`。
 
 :::: demo
 ::accordion-panels
 ---
-type: multiple
-defaultValue:
-
-- overview
-- details
 items:
-- value: overview
-  title: 默认 Slot：Markdown 内容
-  slot: default
-- value: details
-  title: 命名 Slot：Markdown 内容
-
+  - value: overview
+    title: 默认插槽
+    slot: default
+  - value: details
+    title: 命名插槽
 ---
 
 #default
-这里是默认 slot 的内容。
-
-- 支持无序列表
-- 支持**粗体**和 `inline code`
-- 支持[普通链接](https://gitee.com)
+这是**默认插槽**的内容，会显示在第一个面板里。
 
 #details
-这里是命名 slot 的内容。
-
-> 这个区块来自 `#details`。
-
-1. 支持有序列表
-2. 支持 ==高亮==
-
+这是 `#details` 插槽的内容，会显示在第二个面板里。
 ::
 ::::
 
-<!-- markdownlint-enable MD018 -->
+### 组合规则 {#mdc-composition}
 
-> 命名 slot 默认取 `items[].value`，也可以通过 `slot` 字段显式指定。
-> `#slot-name` 与其内容需要和 `::accordion-panels` 保持同级缩进；YAML props(`---` 块)必须紧跟在组件起始行之后。
+组合时按以下规则书写：
 
-### Props 语法
+- **内容**：
+  - 行内组件可以放在段落、列表、表格等 Markdown 内容中。
+  - 块组件内部可以继续写行内组件、块组件和多段 Markdown，冒号写法见[组件嵌套](#mdc-nesting)。
+- **花括号属性**：
+  - 行内组件写在 `[内容]` 后，例如 `:Spoiler[文本]{width=300}`。
+  - 块组件写在起始行，例如 `::Card{.mt-4}`。
+  - 花括号属性与 Attrs 写法相似，但用途不同：前者是 MDC 的组件属性语法，后者用于给 Markdown 元素添加属性。
+- **数量限制**：一个组件最多写一组花括号属性和一块 YAML 属性块。
+- 花括号属性和 YAML 属性块可同时使用；同名属性以 YAML 属性块的值为准。
 
-行内组件的 props 需要写在同一个 `{...}` 中，不支持连续声明多个 props block。
+### 组件嵌套 {#mdc-nesting}
 
-数值、布尔值或数组等需要使用 Vue 绑定，例如 `{:width=300}`、`{:disabled=true}`；普通 `width=300` 会传入字符串。
+嵌套时按以下规则书写：
 
-| 语法            | 含义                  | 示例          |
-| --------------- | --------------------- | ------------- |
-| `{key="value"}` | 字符串 prop（引号）   | `{.text-red}` |
-| `{key=value}`   | 字符串 prop（无引号） | `{name=foo}`  |
-| `{.class-name}` | class 简写            | `{.vp-link}`  |
-| `{#id-name}`    | id 简写               | `{#main}`     |
-| `{flag}`        | 布尔 prop（仅键名）   | `{disabled}`  |
+- **块组件内部**：可以写行内组件，也可以继续写块组件。
+- **行内组件内部**：不能嵌套行内组件。在 `:Spoiler[:Mark[文本]]` 中，外层会把内层组件的 `]` 视为自身内容的结尾，剩余的 `]` 将作为正文显示；需要两层时改用块组件包裹行内组件。
+- **具名插槽内部**：可以放块组件，但要比 `#插槽` 行多缩进一层，否则会进入默认插槽。
+- **表格单元格内部**：只能写行内组件，块组件不会被解析。
+- **冒号写法**：起始行至少两个冒号，结束标记的冒号数与起始行相同。
+- **缩进**：内层比上一层的行首多缩进 1–3 个空格；不能更多，因为 4 个及以上的行首缩进会被 Markdown 解析成代码块，Tab 按 4 个空格计算。
+
+嵌套有两种写法：
+
+逐层加冒号：
+
+```markdown
+:::Outer
+::Inner
+<内容>
+::
+:::
+```
+
+冒号数不变、内层缩进：
+
+```markdown
+::Outer
+  ::Inner
+  <内容>
+  ::
+::
+```
+
+插槽里的块组件同样缩进：
+
+```markdown
+::Outer
+#body
+  ::Inner
+  <内容>
+  ::
+::
+```
+
+### 示例 {#mdc-example}
+
+:::: demo
+:Spoiler[默认刮刮卡]
+
+:Spoiler[自定义宽度]{:width=200}
+::::
+
+:::: demo
+::Card{.mt-4 title=花括号标题}
+---
+title: YAML 标题
+desc: 描述文字
+theme: medium
+---
+::
+::::

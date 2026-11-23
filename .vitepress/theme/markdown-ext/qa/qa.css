@@ -1,40 +1,29 @@
-.qa p {
-  margin: 0;
-  padding: 0;
-}
-
 .qa + .qa {
   border-top: 1px solid var(--vp-c-brand);
 }
 
-.qa-summary {
+.qa-question {
   margin: 0.5rem 0;
   padding: 0 0.3rem;
 }
 
-.qa.qa-collapsible .qa-summary {
-  cursor: pointer;
-  pointer-events: all;
+/* Rows sit flush with their own edges, while a multi-paragraph answer keeps the
+   gap between its paragraphs. */
+.qa-content > :first-child {
+  margin-top: 0;
 }
 
-.qa:not(.qa-collapsible) .qa-summary {
-  pointer-events: none;
+.qa-content > :last-child {
+  margin-bottom: 0;
 }
 
-.qa-detail {
+.qa-answer {
   margin: 0.6rem 0;
   padding: 0 0.3rem;
-  overflow-y: hidden;
-  transition: height 10s ease;
 }
 
-.qa.qa-opened .qa-detail {
-  height: auto;
-}
-
-.qa:not(.qa-opened) .qa-detail {
+.qa:not(.qa-opened) .qa-answer {
   display: none;
-  height: 0;
 }
 
 .qa-wrapper {
@@ -45,12 +34,11 @@
 
 .qa-mark {
   flex: none;
-  display: inline-block;
   width: 2rem;
   height: 2rem;
   line-height: 2rem;
-  background-color: var(--vp-c-brand);
-  vertical-align: middle;
+  /* White on the brand green lands at 2.4:1, so take the dark end of the ramp. */
+  background-color: var(--vp-c-indigo-3);
   text-align: center;
   font-size: 1.4rem;
   border-radius: 0.3rem;
@@ -58,8 +46,23 @@
   color: #fff;
 }
 
+/* Each theme gets the answer mark it reads best with: on light pages an
+   outline in the same green as the question, on dark ones a neutral plate
+   whose edge is a step brighter than the page dividers, since dark green on
+   the dark page falls near 3.8:1. */
 .qa-mark-answer {
   margin-left: 2.2rem;
+  box-sizing: border-box;
+  line-height: calc(2rem - 2px);
+  border: 1px solid var(--vp-c-indigo-3);
+  background-color: transparent;
+  color: var(--vp-c-indigo-3);
+}
+
+.dark .qa-mark-answer {
+  border-color: var(--vp-c-gray-1);
+  background-color: var(--vp-c-default-soft);
+  color: var(--vp-c-text-1);
 }
 
 .qa-content {
@@ -68,15 +71,31 @@
 
 .qa-toggle {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0;
+  border: none;
+  background: none;
   color: var(--vp-c-brand);
+  font: inherit;
+  white-space: nowrap;
 }
 
-.qa-toggle > span {
-  display: inline-block;
+/* The toggle is the only hit target now, so it always advertises itself as
+   clickable; the site-wide cursor preference only picks a value for the
+   selectors it lists, and its `default` would leave this one looking inert. */
+.qa .qa-toggle {
+  cursor: pointer !important;
+}
+
+.qa-toggle:focus-visible {
+  border-radius: 0.3rem;
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
 }
 
 .qa-toggle > .icon {
   width: 1.3rem;
   height: 1.3rem;
-  vertical-align: sub;
 }

@@ -37,6 +37,7 @@ const iconMap: Record<string, string> = {
   'support.qq.com': 'i-custom-txc',
   'youtube.com': 'i-logos-youtube-icon',
   'twitter.com': 'i-logos-twitter',
+  'x.com': 'i-logos-twitter',
   'discord': 'i-logos-discord-icon',
   'reddit.com': 'i-logos-reddit-icon',
   'baidu.com': 'i-custom-baidu',
@@ -276,32 +277,6 @@ const descText = computed(() => {
   font-size: 0.9em;
   line-height: 1.5;
   overflow-wrap: anywhere;
-}
-
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: stretch;
-  align-items: stretch;
-  justify-content: center;
-
-  .card {
-    flex-basis: calc(50% - 3rem);
-    max-width: unset;
-    margin: 0.5rem;
-
-    @media (--site-mobile) {
-      flex-basis: 100%;
-    }
-
-    @media (max-width: 719px) {
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 419px) {
-      font-size: 0.9rem;
-    }
-  }
 }
 
 .card-theme-medium {

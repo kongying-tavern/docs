@@ -14,29 +14,35 @@ comment: true
 
 ::: details 客户端使用教程
 
-```card
+::Card
+---
 title: Windows 客户端使用手册
 logo: self
 link: /manual/client/
 theme: medium
-```
+---
+::
 
-```card
+::Card
+---
 title: 观看客户端基础使用教程
 link: https://www.bilibili.com/video/BV1uU4y157Te
 theme: medium
-```
+---
+::
 
 :::
 
 ## 网页地图
 
-```card
+::Card
+---
 title: 网页地图 V3
 logo: self
 link: https://v3.yuanshen.site
 theme: medium
-```
+---
+::
 
 <script setup lang="ts">
 import { clientLink, useDownloadRedirect } from '@/src/features/links/Download.ts'

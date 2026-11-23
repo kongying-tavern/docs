@@ -11,17 +11,21 @@ wip: true
 
 ---
 
-```card
+::Card
+---
 title: 地图网页版入口
 link: https://yuanshen.site
 theme: medium
-```
+---
+::
 
-```card
+::Card
+---
 title: 地图客户端官方下载渠道
 link: ./download-client
 theme: medium
-```
+---
+::
 
 ---
 

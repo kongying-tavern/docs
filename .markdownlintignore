@@ -1,6 +1,9 @@
 **/node_modules/**
 **/__tests__/**
 CHANGELOG.md
+# 指向 AGENTS.md 的符号链接，正文由 AGENTS.md 承担；Windows 未开启 core.symlinks
+# 时会检出成只含目标路径的普通文件，检查只会得到一个 MD047 假问题。
+CLAUDE.md
 
 dist
 plans/

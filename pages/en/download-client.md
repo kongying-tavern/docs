@@ -14,19 +14,23 @@ If you are interested in aiding our development, consider [Join Us](./join)
 
 ## Map Client User Manual
 
-```card
+::Card
+---
 title: Map Client User Manual
 link: /en/manual/client/
 theme: medium
-```
+---
+::
 
 ## Web Version
 
-```card
+::Card
+---
 title: Web Version Portal
 link: https://yuanshen.site
 theme: medium
-```
+---
+::
 
 <script setup lang="ts">
 import { clientLink, useDownloadRedirect } from '@/src/features/links/Download'

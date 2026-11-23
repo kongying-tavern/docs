@@ -8,8 +8,10 @@ description: Please use the portable version.
 
 Please use the portable version.
 
-```card
+::Card
+---
 title: Download Page
 link: ../../../download-client
 theme: medium
-```
+---
+::

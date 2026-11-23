@@ -9,8 +9,10 @@ wip: true
 
 # 友情链接
 
-```card
+::Card
+---
 title: 维系天理
 link: https://www.weixitianlizhi.ren/
 logo: https://www.weixitianlizhi.ren/images/hero_tianli.png
-```
+---
+::

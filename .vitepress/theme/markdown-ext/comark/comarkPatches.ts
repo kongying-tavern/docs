@@ -10,8 +10,10 @@ const RE_CONTAINER_LINE = /^:{2,}\s*([A-Z][\w-]*)/i
 const RE_INLINE_COMPONENT_NAME = /^:([\w$-]+)/
 
 /**
- * 容器名保留名单:这些名字由 VitePress 内置容器(tip/raw/…)或
- * `config` 阶段的站点插件(timeline/card/demo/…)处理,Comark 必须让出。
+ * 容器名保留名单:VitePress 内置容器(tip/raw/…)与 markdown-ext 下所有扩展
+ * (demo/card/qa/spoiler/…)都在此列,Comark 必须让出,不可把它们的名字当成
+ * MDC 组件。按源文本大小写精确匹配,故 PascalCase 标签(::Card/::Spoiler/
+ * ::QA)不受影响,小写形式(:::card/::spoiler)则被挡下。
  * demo 完全依赖本名单让出,注册顺序不再兜底,不可从名单移除。
  */
 const RESERVED_BLOCK_CONTAINERS = new Set([
@@ -26,10 +28,21 @@ const RESERVED_BLOCK_CONTAINERS = new Set([
   'raw',
   'v-pre',
   'code-group',
-  'demo',
-  'timeline',
+  // markdown-ext 下的全部扩展,与语法形式(::: name / 行内 / 纯 MDC)无关。
   'card',
+  'color-preview',
+  'custom-color',
+  'demo',
+  'doc-header-title',
+  'emoji',
+  'kbd',
+  'lightbox',
+  'mention',
   'qa',
+  'ruby',
+  'spoiler',
+  'timeline',
+  'variable-inject',
 ])
 
 interface BlockState {
@@ -138,7 +151,7 @@ export function applyComarkPatches(md: MarkdownIt): void {
 
   // ── block rules: yield reserved container names ─────────────────────
   // Comark 在 `preConfig` 中注册,先于 VitePress 内置容器(tip/raw/…)与
-  // `config` 阶段的站点插件(timeline/card/…)。其块规则匹配任意 `::: 名字`,
+  // `config` 阶段的站点插件(timeline/…)。其块规则匹配任意 `::: 名字`,
   // 若不避让,`::: tip` 等会被当作 MDC 组件(<tip>)并在 Vue 编译时被丢弃。
   const rules = (md.block.ruler as unknown as { __rules__?: RuleEntry[] }).__rules__
   for (const name of ['mdc_block_shorthand', 'mdc_block']) {

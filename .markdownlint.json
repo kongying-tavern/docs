@@ -1,5 +1,4 @@
 {
-  "default": true,
   "MD003": false,
   "MD004": {
     "style": "consistent"
@@ -43,6 +42,8 @@
       "h3"
     ]
   },
+  "MD034": false,
+  "MDC034": false,
   "MD035": false,
   "MD040": false,
   "MD041": false,
@@ -52,6 +53,7 @@
   "MD053": false,
   "MD001": false,
   "MD022": false,
+  "MDC022": false,
   "MD036": false,
   "MD042": false,
   "MD051": false,

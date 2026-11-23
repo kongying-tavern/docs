@@ -123,13 +123,15 @@ You can visit the files' directory quickly through the **Position Tracker** sett
 《空蛍酒場原神地图》目前没有标题所述的叠加、悬浮窗功能，在网上能看到的演示视频，属于另外一个姊妹项目《天理地图》
 如果需要使用，可以在以下链接下载（尚在开发中，不稳定）
 
-```card
+::Card
+---
 layout: doc
 title: 维系天理
 
 link: http://www.weixitianli.com/
 theme: medium
-```
+---
+::
 
 ## 2. 位置追踪无法下载，窗口闪现或速度为 0.00kb/s {#issue2}
 
