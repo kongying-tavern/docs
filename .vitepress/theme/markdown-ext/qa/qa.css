@@ -46,8 +46,23 @@
   color: #fff;
 }
 
+/* Each theme gets the answer mark it reads best with: on light pages an
+   outline in the same green as the question, on dark ones a neutral plate
+   whose edge is a step brighter than the page dividers, since dark green on
+   the dark page falls near 3.8:1. */
 .qa-mark-answer {
   margin-left: 2.2rem;
+  box-sizing: border-box;
+  line-height: calc(2rem - 2px);
+  border: 1px solid var(--vp-c-indigo-3);
+  background-color: transparent;
+  color: var(--vp-c-indigo-3);
+}
+
+.dark .qa-mark-answer {
+  border-color: var(--vp-c-gray-1);
+  background-color: var(--vp-c-default-soft);
+  color: var(--vp-c-text-1);
 }
 
 .qa-content {
