@@ -70,6 +70,13 @@
   white-space: nowrap;
 }
 
+/* The toggle is the only hit target now, so it always advertises itself as
+   clickable; the site-wide cursor preference only picks a value for the
+   selectors it lists, and its `default` would leave this one looking inert. */
+.qa .qa-toggle {
+  cursor: pointer !important;
+}
+
 .qa-toggle:focus-visible {
   border-radius: 0.3rem;
   outline: 2px solid var(--vp-c-brand-1);
