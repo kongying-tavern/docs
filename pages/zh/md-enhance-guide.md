@@ -548,8 +548,6 @@ items:
 - 用独立一行的 `#名称` 定义插槽，`#` 后不留空格；其后的内容直到下一个插槽标记或组件结束标记都属于该插槽。
 - 未标记的内容进入默认插槽，默认插槽名是 `default`；也可以显式写 `#default`。
 
-<!-- markdownlint-disable MD007 MD018 MD032 -- MDC slot markers require no space after #; YAML lists are data, not Markdown lists. -->
-
 :::: demo
 ::accordion-panels
 ---
@@ -568,8 +566,6 @@ items:
 这是 `#details` 插槽的内容，会显示在第二个面板里。
 ::
 ::::
-
-<!-- markdownlint-enable MD007 MD018 MD032 -->
 
 ### 组合规则 {#mdc-composition}
 

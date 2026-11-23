@@ -1,5 +1,3 @@
-<!-- markdownlint-disable MD018 -- MDC slot markers require no space after #. -->
-
 ::QA
 ---
 collapsible: true
@@ -20,5 +18,3 @@ Answer 1
 
 Answer 1
 ::
-
-<!-- markdownlint-enable MD018 -->
