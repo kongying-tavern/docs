@@ -9,8 +9,6 @@ wip: true
 
 请使用免安装压缩包，正是为此准备的
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
-
 ::Card
 ---
 title: 地图客户端官方下载渠道
@@ -18,5 +16,3 @@ link: ./download-client
 theme: medium
 ---
 ::
-
-<!-- markdownlint-enable MD034 -->

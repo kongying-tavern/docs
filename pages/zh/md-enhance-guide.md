@@ -63,8 +63,6 @@ head:
 :::
 ::::
 
-<!-- markdownlint-enable MD034 -->
-
 ### Card 卡片 {#card}
 
 #### 语法
@@ -108,8 +106,6 @@ MDC 形式，属性写法见 [MDC 的 YAML 属性块](#mdc-props-yaml)：
 #### 示例
 
 > 基础主题
-
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
 
 ::: demo
 ::Card
@@ -157,8 +153,6 @@ theme: medium
 ---
 ::
 ::::
-
-<!-- markdownlint-enable MD034 -->
 
 ## Markdown 语法扩展 {#section-markdown-syntax}
 

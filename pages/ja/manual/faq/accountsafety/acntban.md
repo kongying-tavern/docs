@@ -11,8 +11,6 @@ wip: true
 
 ---
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
-
 ::Card
 ---
 title: 地图网页版入口
@@ -28,8 +26,6 @@ link: ./download-client
 theme: medium
 ---
 ::
-
-<!-- markdownlint-enable MD034 -->
 
 ---
 

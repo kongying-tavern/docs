@@ -6,8 +6,6 @@ comment: false
 
 ## bilibili 原神知名攻略 UP
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
-
 ::Card
 ---
 title: 你的影月月
@@ -119,5 +117,3 @@ desc: 原神地图位置追踪、天理启动器
 theme: medium
 ---
 ::
-
-<!-- markdownlint-enable MD034 -->

@@ -16,8 +16,6 @@ pageClass: download-client
 
 ::: details クライアントの使い方
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
-
 ::Card
 ---
 title: Windows クライアントマニュアル
@@ -47,8 +45,6 @@ link: https://v3.yuanshen.site
 theme: medium
 ---
 ::
-
-<!-- markdownlint-enable MD034 -->
 
 <script setup lang="ts">
 import { clientLink, useDownloadRedirect } from '@/src/features/links/Download.ts'

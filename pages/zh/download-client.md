@@ -14,8 +14,6 @@ comment: true
 
 ::: details 客户端使用教程
 
-<!-- markdownlint-disable MD034 -- MDC YAML props require literal URLs. -->
-
 ::Card
 ---
 title: Windows 客户端使用手册
@@ -45,8 +43,6 @@ link: https://v3.yuanshen.site
 theme: medium
 ---
 ::
-
-<!-- markdownlint-enable MD034 -->
 
 <script setup lang="ts">
 import { clientLink, useDownloadRedirect } from '@/src/features/links/Download.ts'
