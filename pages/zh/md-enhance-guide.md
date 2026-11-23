@@ -475,10 +475,10 @@ MDC 是一套兼容 Markdown 的 Vue 组件书写语法。
 
 块组件独占段落，写法是 `::组件名` 开始、单独一行 `::` 结束。两行之间的内容会按 Markdown 渲染，可以写多段、列表等。
 
-<!-- zhlint ignore: ::spoiler -->
+<!-- zhlint ignore: ::Spoiler -->
 
 :::: demo
-::spoiler
+::Spoiler
 刮开这里查看隐藏内容
 ::
 ::::
