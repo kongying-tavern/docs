@@ -93,8 +93,7 @@ MDC 形式，属性写法见 [MDC 的 YAML 属性块](#mdc-props-yaml)：
 | hoverShadow | 是否启用卡片 hover 时阴影效果，默认不启用               | false  |     `Boolean`     |
 | shadow      | 是否启用卡片阴影效果，默认不启用                        | false  |     `Boolean`     |
 
-::: info
-
+::: warning 说明
 以下渠道的 logo 可通过链接自动识别，无需手动填写：
 
 <!-- zhlint ignore: [B 站](https://www.bilibili.com/) [百度](https://www.baidu.com/) [QQ](https://www.qq.com/) [YouTube](https://www.youtube.com/) [X](https://x.com/) [Discord](https://discord.com/) [Reddit](https://www.reddit.com/) [兔小巢](https://support.qq.com/products/321980/) [维系天理](https://www.weixitianli.com/) -->
