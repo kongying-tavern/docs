@@ -26,6 +26,17 @@ function actionTags(html: string): string[] {
   return html.match(/<button[^>]*class="qa-group-action"[^>]*>/g) ?? []
 }
 
+function fakeAnswer(collapsible: boolean, opened: boolean) {
+  const isOpened = ref(opened)
+  return {
+    collapsible,
+    isOpened,
+    setOpened: (next: boolean) => {
+      isOpened.value = next
+    },
+  }
+}
+
 test('the group offers an expand-all and a collapse-all action', async () => {
   const html = await renderGroup()
 
@@ -41,43 +52,75 @@ test('the group renders the answers nested inside it', async () => {
   expect(html).toMatch(/<div class="qa-group-body">.*<div class="qa qa-collapsible qa-opened">/)
 })
 
-test('setAll only reaches the answers that have a toggle', () => {
-  const { register, setAll } = useQaGroup()
-  const log: string[] = []
+test('the static page does not ship both actions disabled', async () => {
+  const html = await renderGroup()
 
-  register({ collapsible: true, setOpened: opened => log.push(`movable:${opened}`) })
-  register({ collapsible: false, setOpened: opened => log.push(`fixed:${opened}`) })
+  expect(actionTags(html).every(tag => !tag.includes('disabled'))).toBe(true)
+})
 
-  setAll(false)
-  setAll(true)
+test('the batch actions skip the answers that have no toggle', () => {
+  const { register, expandAll, collapseAll } = useQaGroup()
+  const asked: string[] = []
 
-  expect(log).toEqual(['movable:false', 'movable:true'])
+  register({ ...fakeAnswer(false, true), setOpened: () => void asked.push('fixed') })
+  register({ ...fakeAnswer(true, false), setOpened: () => void asked.push('movable') })
+
+  collapseAll()
+  expandAll()
+
+  expect(asked).toEqual(['movable', 'movable'])
+})
+
+test('each action is offered only while it would change something', () => {
+  const { register, expandAll, collapseAll, canExpand, canCollapse } = useQaGroup()
+  const state = () => [canExpand.value, canCollapse.value]
+
+  // Nobody has signed up yet, so the state is unknown: both stay offered.
+  expect(state()).toEqual([true, true])
+
+  // A fixed answer is always open and never makes a batch unnecessary.
+  register(fakeAnswer(false, true))
+  expect(state()).toEqual([false, false])
+
+  register(fakeAnswer(true, true))
+  expect(state()).toEqual([false, true])
+
+  collapseAll()
+  expect(state()).toEqual([true, false])
+
+  expandAll()
+  expect(state()).toEqual([false, true])
 })
 
 test('an answer stops answering the group once it unmounts', () => {
-  const { register, unregister, setAll } = useQaGroup()
+  const { register, unregister, expandAll, canExpand } = useQaGroup()
   let switched = 0
-  const control = {
+  const staying = fakeAnswer(true, true)
+  const leaving = {
     collapsible: true,
+    isOpened: ref(false),
     setOpened: () => {
       switched++
     },
   }
 
-  register(control)
-  setAll(true)
-  expect(switched).toBe(1)
+  register(staying)
+  register(leaving)
+  expect(canExpand.value).toBe(true)
 
-  unregister(control)
-  setAll(true)
-  expect(switched).toBe(1)
+  unregister(leaving)
+  expect(canExpand.value).toBe(false)
+
+  expandAll()
+  expect(switched).toBe(0)
 })
 
 test('the same answer registered twice is switched once', () => {
-  const { register, setAll } = useQaGroup()
+  const { register, expandAll } = useQaGroup()
   let switched = 0
   const control = {
     collapsible: true,
+    isOpened: ref(false),
     setOpened: () => {
       switched++
     },
@@ -85,7 +128,7 @@ test('the same answer registered twice is switched once', () => {
 
   register(control)
   register(control)
-  setAll(true)
+  expandAll()
 
   expect(switched).toBe(1)
 })
@@ -93,11 +136,12 @@ test('the same answer registered twice is switched once', () => {
 test('an answer hands itself to the group above it', async () => {
   const registered: QaControl[] = []
   const collapsible = ref(true)
+  const isOpened = ref(true)
 
   // `inject` reads the ancestors' provides, so the group sits one level up.
   const answer = defineComponent({
     setup() {
-      useQaGroupControl(collapsible, () => {})
+      useQaGroupControl({ collapsible, isOpened, setOpened: () => {} })
       return () => h('div')
     },
   })
@@ -118,6 +162,10 @@ test('an answer hands itself to the group above it', async () => {
 
   collapsible.value = false
   expect(registered[0].collapsible).toBe(false)
+
+  // The group reads the same ref the answer owns, not a copy.
+  isOpened.value = false
+  expect(registered[0].isOpened.value).toBe(false)
 })
 
 test('two groups on one page keep their own answers', async () => {
